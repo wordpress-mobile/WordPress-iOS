@@ -1,0 +1,21 @@
+{
+    "credentials": [{
+        "host": "example.com",
+        "port": 21,
+        "user": "example",
+        "path": "\/",
+        "type": "ftp",
+        "role": "main",
+        "still_valid": true
+    }],
+    "has_cloud": false,
+    "most_recent": {
+        "duration": 24,
+        "error": false,
+        "is_initial": false,
+        "progress": 100,
+        "timestamp": "2020-11-17T00:19:45+00:00"
+    },
+    "state": "idle",
+    "threats": []
+}

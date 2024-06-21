@@ -124,6 +124,30 @@ platform :ios do
     trainer(path: lane_context[SharedValues::SCAN_GENERATED_XCRESULT_PATH], fail_build: true)
   end
 
+  # Run tests of given pod in the Pods project
+  #
+  # @option [String] name Shared scheme in the Pods.xcodeproj
+  #
+  # @called_by CI
+  #
+  desc 'Run tests of given pod in the Pods project'
+  lane :test_pod do |options|
+    run_tests(
+      project: 'Pods/Pods.xcodeproj',
+      scheme: options[:name],
+      device: options[:device],
+      deployment_target_version: options[:ios_version],
+      ensure_devices_found: true,
+      output_directory: File.join(PROJECT_ROOT_FOLDER, 'build', 'results'),
+      reset_simulator: true,
+      result_bundle: true,
+      output_types: '',
+      fail_build: false
+    )
+
+    trainer(path: lane_context[SharedValues::SCAN_GENERATED_XCRESULT_PATH], fail_build: true)
+  end
+
   # Builds the WordPress app and uploads it to TestFlight, for beta-testing or final release
   #
   # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
@@ -435,11 +459,7 @@ platform :ios do
       distribute_external: true,
       groups: distribution_groups,
       # If there is a build waiting for beta review, we ~~want~~ would like to to reject that so the new build can be submitted instead.
-      # Unfortunately, this is not (no longer?) possible via the ASC API.
-      # See https://github.com/fastlane/fastlane/issues/18408
-      #
-      # As a quick workaround to avoid CI failures, let's explicitly disable rejecting builds waiting for review.
-      reject_build_waiting_for_review: false
+      reject_build_waiting_for_review: true
     )
   end
 

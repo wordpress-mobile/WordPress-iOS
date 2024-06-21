@@ -105,18 +105,6 @@ private struct PostMediaUploadItemView: View {
         }
     }
 
-    struct HostDetailsView: UIViewControllerRepresentable {
-        let media: Media
-
-        func makeUIViewController(context: Context) -> MediaItemViewController {
-            MediaItemViewController(media: media)
-        }
-
-        func updateUIViewController(_ uiViewController: MediaItemViewController, context: Context) {
-            // Do nothing
-        }
-    }
-
     private var menu: some View {
         Menu {
             menuItems
@@ -177,7 +165,6 @@ private struct MediaThubmnailImageView: View {
 private enum Strings {
     static let title = NSLocalizedString("postMediaUploadStatusView.title", value: "Media Uploads", comment: "Title for post media upload status view")
     static let empty = NSLocalizedString("postMediaUploadStatusView.noPendingUploads", value: "No pending uploads", comment: "Placeholder text in postMediaUploadStatusView when no uploads remain")
-    static let close = NSLocalizedString("postMediaUploadStatusView.close", value: "Close", comment: "Close button in postMediaUploadStatusView")
     static let retryUpload = NSLocalizedString("postMediaUploadStatusView.retryUpload", value: "Retry Upload", comment: "Retry (single) upload button in postMediaUploadStatusView")
     static let cancelUpload = NSLocalizedString("postMediaUploadStatusView.cancelUpload", value: "Cancel Upload", comment: "Cancel (single) upload button in postMediaUploadStatusView")
     static let retryUploads = NSLocalizedString("postMediaUploadStatusView.retryUploads", value: "Retry Uploads", comment: "Retry upload button in postMediaUploadStatusView")

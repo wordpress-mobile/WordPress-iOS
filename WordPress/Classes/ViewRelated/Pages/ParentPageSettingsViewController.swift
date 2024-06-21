@@ -33,8 +33,6 @@ private struct Row: ImmuTableRow {
 }
 
 class ParentPageSettingsViewController: UIViewController {
-    var onClose: (() -> Void)?
-
     @IBOutlet private var tableView: UITableView!
     @IBOutlet private var searchBar: UISearchBar!
 
@@ -142,23 +140,6 @@ class ParentPageSettingsViewController: UIViewController {
         return view.convert(keyboardFrame, from: nil)
     }
 
-    private func reloadData(at section: Int, animation: UITableView.RowAnimation = .none) {
-        let sections = IndexSet(integer: section)
-        tableView.reloadSections(sections, with: animation)
-    }
-
-    private func originalRow(with pages: [Page]) -> Row? {
-        if selectedPage.isTopLevelPage {
-            return Row()
-        }
-
-        guard let parent = (pages.first { $0.postID == selectedPage.parentID }) else {
-            return nil
-        }
-
-        return Row(page: parent, type: .child)
-    }
-
     private func triggerNoResults(display: Bool) {
         if display {
             if noResultsViewController.view.superview != nil {
@@ -229,13 +210,12 @@ extension ParentPageSettingsViewController: UITableViewDelegate {
 /// ParentPageSettingsViewController class constructor
 //
 extension ParentPageSettingsViewController {
-    class func make(with pages: [Page], selectedPage: Page, onClose: @escaping () -> Void) -> UIViewController {
+    class func make(with pages: [Page], selectedPage: Page) -> UIViewController {
         let storyboard = UIStoryboard(name: "Pages", bundle: Bundle.main)
         guard let viewController = storyboard.instantiateViewController(withIdentifier: "ParentPageSettings") as? ParentPageSettingsViewController else {
             fatalError("A ParentPageSettingsViewController view controller is required for Parent Page Settings")
         }
         viewController.set(pages: pages, for: selectedPage)
-        viewController.onClose = onClose
         return viewController
     }
 }

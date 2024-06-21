@@ -283,9 +283,6 @@
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "Tem a certeza que quer desligar o Jetpack do site?";
 
-/* Message of the trash confirmation alert. */
-"Are you sure you want to trash this post?" = "Tem a certeza que pretende mover este artigo para o lixo?";
-
 /* No comment provided by engineer. */
 "Authenticating" = "A autenticar";
 
@@ -366,7 +363,6 @@
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
-   Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
    Cancel
    Cancel a prompt
@@ -741,8 +737,7 @@
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "Eliminar menu";
 
-/* Delete option in the confirmation alert when deleting a post from the trash.
-   Title for button on the comment details page that deletes the comment when tapped. */
+/* Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "Eliminar permanentemente";
 
 /* Button label for deleting the current site
@@ -910,8 +905,7 @@
 /* No comment provided by engineer. */
 "Enter a password" = "Insira uma senha";
 
-/* (placeholder) Help enter WordPress password
-   Placeholder of a field to type a password to protect the post. */
+/* (placeholder) Help enter WordPress password */
 "Enter password" = "Insira a senha";
 
 /* Instructional text shown when requesting the user's password for login. */
@@ -1217,7 +1211,6 @@
 
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
    Button shown if there are unsaved changes and the author is trying to move away from the post.
-   Button shown when the author is asked for publishing confirmation.
    Goes back to editing the post. */
 "Keep Editing" = "Continuar a editar";
 
@@ -1484,7 +1477,6 @@
 "More Options" = "Mais opções";
 
 /* Title for button on the comment details page that moves the comment to trash when tapped.
-   Trash option in the trash confirmation alert.
    Trashes the comment */
 "Move to Trash" = "Mover para o lixo";
 
@@ -1776,9 +1768,6 @@
    Title for screen that shows self hosted password editor. */
 "Password" = "Senha";
 
-/* Privacy setting for posts set to 'Password protected'. Should be the same as in core WP. */
-"Password protected" = "Protegido por senha";
-
 /* Button title for Pending comment state.
    Status for Media object that is being processed locally.
    Title of pending Comments filter. */
@@ -1937,18 +1926,13 @@
    Privacy Settings Title */
 "Privacy Settings" = "Definições de privacidade";
 
-/* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
+/* Name for the status of a post that is marked private. */
 "Private" = "Privada";
 
 /* Menu item label for linking a project page. */
 "Projects" = "Projectos";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
-"Public" = "Público";
-
-/* Button title. Publishes a post.
-   Label for the publish (verb) button. Tapping publishes a draft post.
+/* Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen */
 "Publish" = "Publicar";
@@ -1960,9 +1944,6 @@
    Period Stats 'Published' header
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Publicado";
-
-/* Text displayed in HUD while a post is being published. */
-"Publishing..." = "A publicar...";
 
 /* Title of screen showing site purchases */
 "Purchases" = "Compras";
@@ -2100,10 +2081,8 @@
 /* A prompt to attempt the failed network request again
    A prompt to attempt the failed network request again.
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
-   Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
    Opens the media library .
-   Retries the upload of a user's post.
    Retry updating User's Role
    Retry. Action
    Retry. Verb – retry a failed media upload.
@@ -2142,25 +2121,12 @@
    Title of action button to save a Reader post to read later. */
 "Save" = "Guardar";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from the post. */
-"Save Draft" = "Guardar rascunho";
-
-/* Title of button allowing users to change the status of the post they are currently editing to Draft. */
-"Save as Draft" = "Guardar como rascunho";
-
-/* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a post is being saved as a draft. */
+/* Menus save button title while it is saving a Menu. */
 "Saving..." = "A guardar...";
-
-/* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
-"Schedule" = "Agendar";
 
 /* Name for the status of a scheduled post
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Agendado";
-
-/* Text displayed in HUD while a post is being scheduled to be published. */
-"Scheduling..." = "A agendar...";
 
 /* Placeholder text for the search bar
    Title of Stats section that shows search engine referrer traffic.
@@ -2367,9 +2333,6 @@
    The item to select during a guided tour. */
 "Stats" = "Estatísticas";
 
-/* The status of the post. Should be the same as in core WP. */
-"Status" = "Estado";
-
 /* User action to stop upload. */
 "Stop upload" = "Parar carregamento";
 
@@ -2381,9 +2344,6 @@
 
 /* Submit for review button label (saving content, ex: Post, Page, Comment). */
 "Submit for Review" = "Submeter para revisão";
-
-/* Text displayed in HUD while a post is being submitted for review. */
-"Submitting for Review..." = "Submeter para revisão...";
 
 /* Setting: WordPress.com Suggestions
    Suggested domains */
@@ -2620,9 +2580,6 @@
    Trashes the comment */
 "Trash" = "Lixo";
 
-/* Title of the trash confirmation alert. */
-"Trash this post?" = "Mover este artigo para o lixo?";
-
 /* Name for the status of a trashed post
    Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
    Title of trashed Comments filter. */
@@ -2756,20 +2713,13 @@
    Update button label (saving content, ex: Post, Page, Comment). */
 "Update" = "Actualizar";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from an already saved draft. */
-"Update Draft" = "Actualizar rascunho";
-
 /* Label action for updating a link on the editor */
 "Update Link" = "Actualizar ligação";
-
-/* Text displayed in HUD while a draft or scheduled post is being updated. */
-"Updating..." = "A actualizar...";
 
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "Carregar multimédia";
 
-/* Message displayed on a post's card when the post has failed to upload
-   System notification displayed to the user when media files have failed to upload. */
+/* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "O carregamento falhou.";
 
 /* Label for the date a media asset (image / video) was uploaded
@@ -2785,9 +2735,6 @@
 
 /* Title for alert when trying to save/exit a post before media upload process is complete. */
 "Uploading media" = "A carregar multimédia";
-
-/* Message displayed on a post's card while the post is uploading media */
-"Uploading media..." = "A carregar multimédia...";
 
 /* Label to show while uploading media to server */
 "Uploading..." = "A carregar...";
@@ -2831,8 +2778,7 @@
 /* Period Stats 'Videos' header */
 "Videos" = "Vídeos";
 
-/* Button title. Displays a summary / sharing screen for a specific post.
-   Opens the post epilogue screen to allow sharing / viewing of a post.
+/* Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Ver";
@@ -2873,8 +2819,7 @@
    Today's Stats 'Views' label */
 "Views" = "Visualizações";
 
-/* The visibility settings of the post. Should be the same as in core WP.
-   Visibility label */
+/* The visibility settings of the post. Should be the same as in core WP. */
 "Visibility" = "Visibilidade";
 
 /* An option to visit the site to which a specific post belongs */

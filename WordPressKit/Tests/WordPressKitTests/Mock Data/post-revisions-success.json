@@ -1,0 +1,128 @@
+{
+    "diffs": [
+        {
+            "from": 93,
+            "to": 95,
+            "diff": {
+                "post_title": [
+                    {
+                        "op": "copy",
+                        "value": "Lorem ipsum dolor sit amet"
+                    }
+                ],
+                "post_content": [
+                    {
+                        "op": "copy",
+                        "value": "Etiam in convallis orci. Dolor sit amet, consectetur adipiscing elit. Cras eget consequat magna, quis gravida sapien."
+                    }
+                ],
+                "totals": {}
+            }
+        },
+        {
+            "from": 94,
+            "to": 93,
+            "diff": {
+                "post_title": [
+                    {
+                        "op": "copy",
+                        "value": "Lorem ipsum dolor sit amet"
+                    }
+                ],
+                "post_content": [
+                    {
+                        "op": "del",
+                        "value": "Lorem ipsum d"
+                    },
+                    {
+                        "op": "add",
+                        "value": "Etiam in convallis orci. D"
+                    },
+                    {
+                        "op": "copy",
+                        "value": "olor sit amet, consectetur adipiscing elit. "
+                    },
+                    {
+                        "op": "del",
+                        "value": "Aenean et urna libero."
+                    },
+                    {
+                        "op": "add",
+                        "value": "Cras eget consequat magna, quis gravida sapien."
+                    },
+                    {
+                        "op": "copy",
+                        "value": "\n"
+                    }
+                ],
+                "totals": {
+                    "del": 2,
+                    "add": 2
+                }
+            }
+        },
+        {
+            "from": 0,
+            "to": 94,
+            "diff": {
+                "post_title": [
+                    {
+                        "op": "add",
+                        "value": "Lorem ipsum dolor sit amet"
+                    },
+                    {
+                        "op": "copy",
+                        "value": "\n"
+                    }
+                ],
+                "post_content": [
+                    {
+                        "op": "del",
+                        "value": ""
+                    },
+                    {
+                        "op": "add",
+                        "value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean et urna libero."
+                    },
+                    {
+                        "op": "copy",
+                        "value": "\n"
+                    }
+                ],
+                "totals": {
+                    "add": 6,
+                    "del": 0
+                }
+            }
+        }
+    ],
+    "revisions": {
+        "93": {
+            "post_date_gmt": "2018-10-24 15:38:28Z",
+            "post_modified_gmt": "2018-10-24 15:38:28Z",
+            "post_author": "136610416",
+            "id": 93,
+            "post_content": "Etiam in convallis orci. Dolor sit amet, consectetur adipiscing elit. Cras eget consequat magna, quis gravida sapien.",
+            "post_excerpt": "",
+            "post_title": "Lorem ipsum dolor sit amet"
+        },
+        "94": {
+            "post_date_gmt": "2018-10-24 15:34:07Z",
+            "post_modified_gmt": "2018-10-24 15:34:07Z",
+            "post_author": "136610416",
+            "id": 94,
+            "post_content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean et urna libero.",
+            "post_excerpt": "",
+            "post_title": "Lorem ipsum dolor sit amet"
+        },
+        "95": {
+            "post_date_gmt": "2018-10-24 15:38:29Z",
+            "post_modified_gmt": "2018-10-24 15:38:29Z",
+            "post_author": "136610416",
+            "id": 95,
+            "post_content": "Etiam in convallis orci. Dolor sit amet, consectetur adipiscing elit. Cras eget consequat magna, quis gravida sapien.",
+            "post_excerpt": "",
+            "post_title": "Lorem ipsum dolor sit amet"
+        }
+    }
+}

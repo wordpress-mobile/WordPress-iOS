@@ -133,6 +133,7 @@ class AbstractPostListViewController: UIViewController,
         updateSelectedFilter()
 
         refreshResults()
+        automaticallySyncIfAppropriate()
 
         // Show it initially but allow the user to dismiss it by scrolling
         navigationItem.hidesSearchBarWhenScrolling = false
@@ -140,8 +141,6 @@ class AbstractPostListViewController: UIViewController,
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
-        automaticallySyncIfAppropriate()
 
         navigationItem.hidesSearchBarWhenScrolling = true
     }
@@ -467,12 +466,6 @@ class AbstractPostListViewController: UIViewController,
     // MARK: - Syncing
 
     private func automaticallySyncIfAppropriate() {
-        // Only automatically refresh if the view is loaded and visible on the screen
-        if !isViewLoaded || view.window == nil {
-            DDLogVerbose("View is not visible and will not check for auto refresh.")
-            return
-        }
-
         // Do not start auto-sync if connection is down
         let appDelegate = WordPressAppDelegate.shared
 
@@ -488,6 +481,9 @@ class AbstractPostListViewController: UIViewController,
     }
 
     @objc func syncItemsWithUserInteraction(_ userInteraction: Bool) {
+        if !userInteraction {
+            showRefreshingIndicator()
+        }
         syncHelper.syncContentWithUserInteraction(userInteraction)
         refreshResults()
     }
@@ -605,6 +601,7 @@ class AbstractPostListViewController: UIViewController,
                 self.refreshControl.endRefreshing()
             }
         }
+        hideRefreshingIndicator()
         setFooterHidden(true)
         noResultsViewController.removeFromView()
 
@@ -627,6 +624,7 @@ class AbstractPostListViewController: UIViewController,
             return
         }
 
+        hideRefreshingIndicator()
         dismissAllNetworkErrorNotices()
 
         // If there is no internet connection, we'll show the specific error message defined in
@@ -677,6 +675,8 @@ class AbstractPostListViewController: UIViewController,
     }
 
     func trash(_ post: AbstractPost, completion: @escaping () -> Void) {
+        WPAnalytics.track(.postListTrashAction, withProperties: propertiesForAnalytics())
+
         let post = post.original()
 
         func performAction() {
@@ -701,6 +701,8 @@ class AbstractPostListViewController: UIViewController,
     }
 
     func delete(_ post: AbstractPost, completion: @escaping () -> Void) {
+        WPAnalytics.track(.postListDeleteAction, properties: propertiesForAnalytics())
+
         let post = post.original()
 
         let alert = UIAlertController(title: Strings.Delete.actionTitle, message: Strings.Delete.message(for: post.latest()), preferredStyle: .alert)
@@ -714,6 +716,11 @@ class AbstractPostListViewController: UIViewController,
             }
         }
         alert.presentFromRootViewController()
+    }
+
+    func retry(_ post: AbstractPost) {
+        WPAnalytics.track(.postListRetryAction, properties: propertiesForAnalytics())
+        PostCoordinator.shared.retrySync(for: post.original())
     }
 
     func stats(for post: AbstractPost) {
@@ -822,6 +829,31 @@ class AbstractPostListViewController: UIViewController,
 
     // MARK: - Misc
 
+    private func showRefreshingIndicator() {
+        guard navigationItem.titleView == nil else {
+            return
+        }
+
+        let spinner = UIActivityIndicatorView(style: .medium)
+        spinner.startAnimating()
+        spinner.tintColor = .secondaryLabel
+        spinner.transform = .init(scaleX: 0.8, y: 0.8)
+
+        let titleView = UILabel()
+        titleView.text = Strings.updating + "..."
+        titleView.font = WPStyleGuide.navigationBarStandardFont
+        titleView.textColor = UIColor.secondaryLabel
+
+        let stack = UIStackView(arrangedSubviews: [spinner, titleView])
+        stack.spacing = 8
+
+        navigationItem.titleView = stack
+    }
+
+    private func hideRefreshingIndicator() {
+        navigationItem.titleView = nil
+    }
+
     private func setFooterHidden(_ isHidden: Bool) {
         if isHidden {
             tableView.tableFooterView = nil
@@ -842,6 +874,11 @@ class AbstractPostListViewController: UIViewController,
 
 extension AbstractPostListViewController: NetworkStatusDelegate {
     func networkStatusDidChange(active: Bool) {
+        // Only automatically refresh if the view is loaded and visible on the screen
+        if !isViewLoaded || view.window == nil {
+            DDLogVerbose("View is not visible and will not check for auto refresh.")
+            return
+        }
         automaticallySyncIfAppropriate()
     }
 }
@@ -859,6 +896,8 @@ extension AbstractPostListViewController: NoResultsViewControllerDelegate {
 
 private enum Strings {
     static let cancelText = NSLocalizedString("postList.cancel", value: "Cancel", comment: "Cancels an Action")
+    // TODO: Add namespace (kahu-offline-mode)
+    static let updating = NSLocalizedString("Updating", comment: "Updating label title")
 
     enum Trash {
         static let actionTitle = NSLocalizedString("postList.trash.actionTitle", value: "Move to Trash", comment: "Trash option in the trash post or page confirmation alert.")

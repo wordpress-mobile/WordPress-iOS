@@ -58,10 +58,7 @@ def gravatar
 end
 
 def wordpress_kit
-  pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: 'c334dad3c0e8fced5a61c5bf1d745d23d1924a9c'
-  # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: ''
-  # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', tag: ''
-  # pod 'WordPressKit', path: '../WordPressKit-iOS'
+  pod 'WordPressKit', path: './WordPressKit', testspecs: ['Tests']
 end
 
 def kanvas
@@ -152,10 +149,7 @@ abstract_target 'Apps' do
 
   pod 'NSURL+IDN', '~> 0.4'
 
-  pod 'WordPressAuthenticator', '~> 9.0', '>= 9.0.8'
-  # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', commit: ''
-  # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', branch: ''
-  # pod 'WordPressAuthenticator', path: '../WordPressAuthenticator-iOS'
+  pod 'WordPressAuthenticator', path: './WordPressAuthenticator', testspecs: ['Tests']
 
   pod 'MediaEditor', '~> 1.2', '>= 1.2.2'
   # pod 'MediaEditor', git: 'https://github.com/wordpress-mobile/MediaEditor-iOS.git', commit: ''

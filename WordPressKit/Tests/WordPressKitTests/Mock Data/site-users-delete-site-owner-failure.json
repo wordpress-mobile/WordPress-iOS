@@ -1,0 +1,4 @@
+{
+    "error": "forbidden",
+    "message": "A site owner can not be removed through this endpoint."
+}

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="aQT-Gx-U3x">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Site Address View Controller-->
+        <scene sceneID="7Rf-Qz-qsw">
+            <objects>
+                <viewController storyboardIdentifier="SiteAddressViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="aQT-Gx-U3x" customClass="SiteAddressViewController" customModule="WordPressAuthenticator" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ljV-kF-TaY">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dFS-Ic-byk" userLabel="Containing View">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <subviews>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" bounces="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="KLl-Uz-wEP">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="591"/>
+                                        <sections/>
+                                        <connections>
+                                            <outlet property="dataSource" destination="aQT-Gx-U3x" id="Sct-0G-HTk"/>
+                                            <outlet property="delegate" destination="aQT-Gx-U3x" id="2xB-Wr-Hdh"/>
+                                        </connections>
+                                    </tableView>
+                                    <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xwA-rd-6jO" userLabel="Button background view">
+                                        <rect key="frame" x="0.0" y="591" width="375" height="76"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ClH-Cn-49d" userLabel="Primary Button" customClass="NUXButton" customModule="WordPressAuthenticator" customModuleProvider="target">
+                                                <rect key="frame" x="16" y="16" width="343" height="44"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="submitButton"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="44" id="iBk-Pi-8cv"/>
+                                                </constraints>
+                                                <state key="normal" title="Button"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="handleContinueButtonTapped:" destination="aQT-Gx-U3x" eventType="touchUpInside" id="bzz-8w-4bV"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="bottomMargin" secondItem="ClH-Cn-49d" secondAttribute="bottom" constant="8" id="3Ba-yg-JKx"/>
+                                            <constraint firstItem="ClH-Cn-49d" firstAttribute="top" secondItem="xwA-rd-6jO" secondAttribute="topMargin" constant="8" id="GgD-0x-Aud"/>
+                                        </constraints>
+                                        <viewLayoutGuide key="safeArea" id="VfW-kE-aWC"/>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <constraints>
+                                    <constraint firstItem="xwA-rd-6jO" firstAttribute="bottom" secondItem="dFS-Ic-byk" secondAttribute="bottomMargin" constant="8" id="85d-XY-Mr8"/>
+                                    <constraint firstItem="xwA-rd-6jO" firstAttribute="trailing" secondItem="dFS-Ic-byk" secondAttribute="trailing" id="Bkw-QJ-Tbe"/>
+                                    <constraint firstItem="KLl-Uz-wEP" firstAttribute="trailing" secondItem="ClH-Cn-49d" secondAttribute="trailing" constant="16" id="Bpv-qx-bHc"/>
+                                    <constraint firstItem="ClH-Cn-49d" firstAttribute="leading" secondItem="KLl-Uz-wEP" secondAttribute="leading" constant="16" id="Rnp-SF-SGh"/>
+                                    <constraint firstItem="xwA-rd-6jO" firstAttribute="top" secondItem="KLl-Uz-wEP" secondAttribute="bottom" id="gkZ-OV-HMi"/>
+                                    <constraint firstItem="xwA-rd-6jO" firstAttribute="leading" secondItem="dFS-Ic-byk" secondAttribute="leading" id="wBE-xi-42q"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="KLl-Uz-wEP" firstAttribute="leading" secondItem="ihD-pY-rg9" secondAttribute="leading" id="7Fn-Eh-Xx9"/>
+                            <constraint firstItem="ihD-pY-rg9" firstAttribute="trailing" secondItem="KLl-Uz-wEP" secondAttribute="trailing" id="7MD-ux-8i0"/>
+                            <constraint firstItem="ihD-pY-rg9" firstAttribute="bottom" secondItem="dFS-Ic-byk" secondAttribute="bottom" id="Dva-c1-u2U"/>
+                            <constraint firstItem="KLl-Uz-wEP" firstAttribute="top" secondItem="ihD-pY-rg9" secondAttribute="top" id="R3r-wt-ya5"/>
+                            <constraint firstItem="dFS-Ic-byk" firstAttribute="top" secondItem="ihD-pY-rg9" secondAttribute="top" id="YEy-EW-XmD"/>
+                            <constraint firstItem="dFS-Ic-byk" firstAttribute="leading" secondItem="ljV-kF-TaY" secondAttribute="leading" id="msS-7X-Za9"/>
+                            <constraint firstItem="dFS-Ic-byk" firstAttribute="trailing" secondItem="ljV-kF-TaY" secondAttribute="trailing" id="zY1-Yz-kTf"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="ihD-pY-rg9"/>
+                    </view>
+                    <connections>
+                        <outlet property="bottomContentConstraint" destination="Dva-c1-u2U" id="cA6-Wt-5oj"/>
+                        <outlet property="submitButton" destination="ClH-Cn-49d" id="kBa-QN-0oH"/>
+                        <outlet property="tableView" destination="KLl-Uz-wEP" id="ntt-cX-m20"/>
+                        <outlet property="tableViewLeadingConstraint" destination="7Fn-Eh-Xx9" id="yKO-sE-7mh"/>
+                        <outlet property="tableViewTrailingConstraint" destination="7MD-ux-8i0" id="jbD-Z7-rAn"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ipm-G3-kY7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-162.40000000000001" y="20.239880059970016"/>
+        </scene>
+        <!--Site Credentials View Controller-->
+        <scene sceneID="SNM-jM-Hwx">
+            <objects>
+                <viewController storyboardIdentifier="SiteCredentialsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="y6V-vh-KSr" customClass="SiteCredentialsViewController" customModule="WordPressAuthenticator" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="rzp-ZY-4sV">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HOD-IX-jQc" userLabel="Containing View">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <subviews>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" bounces="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="msV-bz-Sqp">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="591"/>
+                                        <sections/>
+                                        <connections>
+                                            <outlet property="dataSource" destination="y6V-vh-KSr" id="Jh2-5j-HIR"/>
+                                            <outlet property="delegate" destination="y6V-vh-KSr" id="0cM-sM-O0r"/>
+                                        </connections>
+                                    </tableView>
+                                    <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YGp-eK-oRp" userLabel="Button background view">
+                                        <rect key="frame" x="0.0" y="591" width="375" height="76"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bUY-a5-oHJ" userLabel="Primary Button" customClass="NUXButton" customModule="WordPressAuthenticator" customModuleProvider="target">
+                                                <rect key="frame" x="16" y="16" width="343" height="44"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="submitButton"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="44" id="v9D-Cw-nFD"/>
+                                                </constraints>
+                                                <state key="normal" title="Button"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="handleContinueButtonTapped:" destination="y6V-vh-KSr" eventType="touchUpInside" id="qJ4-PC-qO2"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                        <constraints>
+                                            <constraint firstItem="bUY-a5-oHJ" firstAttribute="top" secondItem="YGp-eK-oRp" secondAttribute="topMargin" constant="8" id="7ST-0h-lCv"/>
+                                            <constraint firstAttribute="bottomMargin" secondItem="bUY-a5-oHJ" secondAttribute="bottom" constant="8" id="CIb-xr-SzK"/>
+                                        </constraints>
+                                        <viewLayoutGuide key="safeArea" id="Hd0-aR-a4s"/>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <constraints>
+                                    <constraint firstItem="YGp-eK-oRp" firstAttribute="bottom" secondItem="HOD-IX-jQc" secondAttribute="bottomMargin" constant="8" id="AHZ-rn-MEN"/>
+                                    <constraint firstItem="bUY-a5-oHJ" firstAttribute="leading" secondItem="msV-bz-Sqp" secondAttribute="leading" constant="16" id="EOR-16-rjC"/>
+                                    <constraint firstItem="YGp-eK-oRp" firstAttribute="trailing" secondItem="HOD-IX-jQc" secondAttribute="trailing" id="FKm-da-ANZ"/>
+                                    <constraint firstItem="YGp-eK-oRp" firstAttribute="top" secondItem="msV-bz-Sqp" secondAttribute="bottom" id="Wt7-Vo-sCx"/>
+                                    <constraint firstItem="msV-bz-Sqp" firstAttribute="trailing" secondItem="bUY-a5-oHJ" secondAttribute="trailing" constant="16" id="Yeq-i8-mJg"/>
+                                    <constraint firstItem="YGp-eK-oRp" firstAttribute="leading" secondItem="HOD-IX-jQc" secondAttribute="leading" id="piw-Hs-lPT"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="HOD-IX-jQc" firstAttribute="top" secondItem="5Dn-ej-Nhp" secondAttribute="top" id="Iud-8M-zpD"/>
+                            <constraint firstItem="5Dn-ej-Nhp" firstAttribute="bottom" secondItem="HOD-IX-jQc" secondAttribute="bottom" id="Qxf-z0-9lF"/>
+                            <constraint firstItem="msV-bz-Sqp" firstAttribute="top" secondItem="5Dn-ej-Nhp" secondAttribute="top" id="Wxv-oA-2Kw"/>
+                            <constraint firstItem="msV-bz-Sqp" firstAttribute="leading" secondItem="5Dn-ej-Nhp" secondAttribute="leading" id="XJE-JH-rvO"/>
+                            <constraint firstItem="HOD-IX-jQc" firstAttribute="trailing" secondItem="rzp-ZY-4sV" secondAttribute="trailing" id="bF4-se-bcv"/>
+                            <constraint firstItem="5Dn-ej-Nhp" firstAttribute="trailing" secondItem="msV-bz-Sqp" secondAttribute="trailing" id="odn-ry-dZH"/>
+                            <constraint firstItem="HOD-IX-jQc" firstAttribute="leading" secondItem="rzp-ZY-4sV" secondAttribute="leading" id="txP-xH-B39"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="5Dn-ej-Nhp"/>
+                    </view>
+                    <connections>
+                        <outlet property="bottomContentConstraint" destination="Qxf-z0-9lF" id="QCJ-ks-Lz9"/>
+                        <outlet property="submitButton" destination="bUY-a5-oHJ" id="AyH-o7-6z2"/>
+                        <outlet property="tableView" destination="msV-bz-Sqp" id="UhW-BX-cA3"/>
+                        <outlet property="tableViewLeadingConstraint" destination="XJE-JH-rvO" id="KKt-z5-KD9"/>
+                        <outlet property="tableViewTrailingConstraint" destination="odn-ry-dZH" id="JKu-G5-4Jr"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Pmu-qI-bIl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="561" y="20"/>
+        </scene>
+    </scenes>
+</document>

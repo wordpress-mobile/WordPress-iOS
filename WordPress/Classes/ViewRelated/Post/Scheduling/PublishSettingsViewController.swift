@@ -1,7 +1,5 @@
 import Foundation
-import CocoaLumberjack
 import WordPressShared
-import WordPressFlux
 
 struct PublishSettingsViewModel {
     enum State {
@@ -20,33 +18,16 @@ struct PublishSettingsViewModel {
 
     private(set) var state: State
     let timeZone: TimeZone
-    let title: String?
-
-    var detailString: String {
-        switch state {
-        case .scheduled(let date), .published(let date):
-            return dateTimeFormatter.string(from: date)
-        case .immediately:
-            return NSLocalizedString("Immediately", comment: "Undated post time label")
-        }
-    }
 
     private let post: AbstractPost
 
-    var isRequired: Bool { (post.original ?? post).status == .publish }
-    let dateFormatter: DateFormatter
-    let dateTimeFormatter: DateFormatter
+    var isRequired: Bool { post.original().isStatus(in: [.publish, .scheduled]) }
 
-    init(post: AbstractPost, context: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
+    init(post: AbstractPost) {
         state = State(post: post)
 
         self.post = post
-
-        title = post.postTitle
         timeZone = post.blog.timeZone ?? TimeZone.current
-
-        dateFormatter = SiteDateFormatters.dateFormatter(for: timeZone, dateStyle: .long, timeStyle: .none)
-        dateTimeFormatter = SiteDateFormatters.dateFormatter(for: timeZone, dateStyle: .medium, timeStyle: .short)
     }
 
     var date: Date? {

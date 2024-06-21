@@ -1,0 +1,28 @@
+{
+    "@context": "https://www.w3.org/ns/activitystreams",
+    "summary": "Activity log",
+    "type": "OrderedCollection",
+    "totalItems": 608,
+    "page": 1,
+    "totalPages": 31,
+    "itemsPerPage": 20,
+    "id": "https://public-api.wordpress.com/wpcom/v2/sites/activity002.mystagingwebsite.com/activity?number=20",
+    "first": "https://public-api.wordpress.com/wpcom/v2/sites/activity002.mystagingwebsite.com/activity?number=20&page=1",
+    "last": "https://public-api.wordpress.com/wpcom/v2/sites/activity002.mystagingwebsite.com/activity?number=20&page=31",
+    "current": {
+        "type": "OrderedCollectionPage",
+        "id": "https://public-api.wordpress.com/wpcom/v2/sites/activity002.mystagingwebsite.com/activity?number=20&page=1",
+        "next": "https://public-api.wordpress.com/wpcom/v2/sites/activity002.mystagingwebsite.com/activity?number=20&page=2",
+        "totalItems": 20,
+        "orderedItems": [
+                         {
+                         "summary": "Login Succeeded",
+                         "content": {"text": "activity002 logged in successfully"},
+                         "name": "user__login",
+                         "actor": {
+                         "type": "Person",
+                         "name": "activity002",
+                         "external_user_id": 1,
+                         "wpcom_user_id": 60261367,
+                         "icon": {
+                         "type": "Image",

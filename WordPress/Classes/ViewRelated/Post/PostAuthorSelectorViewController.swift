@@ -1,9 +1,6 @@
 import UIKit
 
 @objc class PostAuthorSelectorViewController: SettingsSelectionViewController {
-    /// The post to change the author.
-    private var post: AbstractPost!
-
     /// A completion block that is called after the user selects an option.
     @objc var completion: (() -> Void)?
 
@@ -13,8 +10,6 @@ import UIKit
     // MARK: - Constructors
 
     @objc init(_ post: AbstractPost) {
-        self.post = post
-
         let authors = PostAuthorSelectorViewController.sortedActiveAuthors(for: post.blog)
 
         guard !authors.isEmpty, let currentAuthorID = post.authorID else {

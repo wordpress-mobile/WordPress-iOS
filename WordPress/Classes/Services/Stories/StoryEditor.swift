@@ -211,10 +211,6 @@ class StoryEditor: CameraController {
 }
 
 extension StoryEditor: PublishingEditor {
-    var prepublishingSourceView: UIView? {
-        return nil
-    }
-
     var alertBarButtonItem: UIBarButtonItem? {
         return nil
     }
@@ -234,10 +230,6 @@ extension StoryEditor: PublishingEditor {
 
     func getHTML() -> String {
         return post.content ?? ""
-    }
-
-    func cancelUploadOfAllMedia(for post: AbstractPost) {
-
     }
 
     func publishingDismissed() {

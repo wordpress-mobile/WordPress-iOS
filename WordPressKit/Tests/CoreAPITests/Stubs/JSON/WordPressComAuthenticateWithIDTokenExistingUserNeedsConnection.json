@@ -1,0 +1,10 @@
+{
+    "data": {
+        "errors": [{
+                   "code":"user_exists",
+                   "message":"User exists but not connected"
+        }],
+        "two_step_nonce": "two_step_nonce",
+        "email": "email",        
+    }
+}

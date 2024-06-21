@@ -23,8 +23,6 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         post.blog.dotComID?.intValue
     }
 
-    private lazy var publishSettingsViewModel = PublishSettingsViewModel(post: post)
-
     private var completion: ((PrepublishingSheetResult) -> ())?
 
     /// The data source for the table rows, based on the filtered `identifiers`.
@@ -42,6 +40,10 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     private let uploadsViewModel: PostMediaUploadsViewModel
 
     private var cancellables: [AnyCancellable] = []
+
+    deinit {
+        mediaPollingTimer?.invalidate()
+    }
 
     init(post: AbstractPost,
          isStandalone: Bool,
@@ -480,7 +482,6 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
     fileprivate enum Constants {
         static let reuseIdentifier = "wpTableViewCell"
-        static let nuxButtonInsets = UIEdgeInsets(top: 16, left: 20, bottom: 16, right: 20)
         static let analyticsDefaultProperty = ["via": "prepublishing_nudges"]
     }
 }
@@ -512,13 +513,6 @@ enum PrepublishingIdentifier {
     case tags
     case categories
     case autoSharing
-
-    static var defaultIdentifiers: [PrepublishingIdentifier] {
-        if RemoteFeatureFlag.jetpackSocialImprovements.enabled() {
-            return [.visibility, .schedule, .tags, .categories, .autoSharing]
-        }
-        return [.visibility, .schedule, .tags, .categories]
-    }
 }
 
 extension PrepublishingOption {

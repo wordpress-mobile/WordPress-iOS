@@ -1,0 +1,105 @@
+{
+    "date": "2024-03-26",
+    "tags": [
+        {
+            "tags": [
+                {
+                    "type": "category",
+                    "name": "Innovations",
+                    "link": "http://test.site.com/category/innovations/"
+                }
+            ],
+            "views": 20500
+        },
+        {
+            "tags": [
+                {
+                    "type": "category",
+                    "name": "Tech Updates",
+                    "link": "http://test.site.com/category/tech-updates/"
+                }
+            ],
+            "views": 19200
+        },
+        {
+            "tags": [
+                {
+                    "type": "category",
+                    "name": "Product News",
+                    "link": "http://test.site.com/category/product-news/"
+                }
+            ],
+            "views": 18200
+        },
+        {
+            "tags": [
+                {
+                    "type": "tag",
+                    "name": "Web Design",
+                    "link": "http://test.site.com/tag/web-design/"
+                }
+            ],
+            "views": 8000
+        },
+        {
+            "tags": [
+                {
+                    "type": "tag",
+                    "name": "SEO",
+                    "link": "http://test.site.com/tag/seo/"
+                }
+            ],
+            "views": 3900
+        },
+        {
+            "tags": [
+                {
+                    "type": "category",
+                    "name": "Tutorials",
+                    "link": "http://test.site.com/category/tutorials/"
+                }
+            ],
+            "views": 3750
+        },
+        {
+            "tags": [
+                {
+                    "type": "category",
+                    "name": "User Guides",
+                    "link": "http://test.site.com/category/user-guides/"
+                }
+            ],
+            "views": 3300
+        },
+        {
+            "tags": [
+                {
+                    "type": "category",
+                    "name": "Design Inspiration",
+                    "link": "http://test.site.com/category/design-inspiration/"
+                }
+            ],
+            "views": 2450
+        },
+        {
+            "tags": [
+                {
+                    "type": "tag",
+                    "name": "E-commerce",
+                    "link": "http://test.site.com/tag/e-commerce/"
+                }
+            ],
+            "views": 2290
+        },
+        {
+            "tags": [
+                {
+                    "type": "category",
+                    "name": "Success Stories",
+                    "link": "http://test.site.com/category/success-stories/"
+                }
+            ],
+            "views": 2180
+        }
+    ]
+}

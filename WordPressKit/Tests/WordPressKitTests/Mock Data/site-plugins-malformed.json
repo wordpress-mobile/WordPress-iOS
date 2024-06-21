@@ -1,0 +1,11 @@
+
+{
+    "plugins": 
+        {
+    ],
+    "file_mod_capabilities": {
+        "modify_files": true,
+        "autoupdate_files": true
+    }
+}
+

@@ -1,0 +1,19 @@
+{
+  "guid": "OO4thna8",
+  "title": "VideoPress demo",
+  "description": "",
+  "width": 1280,
+  "height": 720,
+  "duration": 143700,
+  "display_embed": true,
+  "allow_download": false,
+  "rating": "G",
+  "poster": "https://videos.files.wordpress.com/OO4thna8/videopress2-web2_hd.original.jpg",
+  "original": "https://videos.files.wordpress.com/OO4thna8/videopress2-web2.mov",
+  "watermark": "https://wptv.files.wordpress.com/2010/07/wptv.png",
+  "bg_color": "",
+  "blog_id": 9999,
+  "post_id": 1913,
+  "privacy_setting": 0,
+  "finished": true
+}

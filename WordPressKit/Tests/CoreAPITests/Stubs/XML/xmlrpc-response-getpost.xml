@@ -1,0 +1,39 @@
+<methodResponse>
+    <params>
+        <param>
+            <value>
+                <struct>
+                    <member><name>dateCreated</name><value><dateTime.iso8601>20130225T14:14:31</dateTime.iso8601></value></member>
+                    <member><name>userid</name><value><string>1</string></value></member>
+                    <member><name>postid</name><value><int>123</int></value></member>
+                    <member><name>description</name><value><string></string></value></member>
+                    <member><name>title</name><value><string>This is a very long title, which should trigger the autosave methods. Just in case... Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc est neque, adipiscing vitae euismod ut, elementum nec nibh. In hac habitasse platea dictumst. Mauris eu est lectus, sed elementum nunc. Praesent elit enim, facilisis eu tincidunt imperdiet, iaculis eu elit. In hac habitasse platea dictumst. Pellentesque feugiat elementum nulla, vitae pellentesque urna porttitor quis. Quisque et libero leo. Vestibulum ut erat ut ligula aliquet iaculis. Morbi egestas justo id nunc feugiat viverra vel sed risus. Nunc non ligula erat, eu ullamcorper purus. Nullam vitae erat velit, semper congue nibh. Vestibulum pulvinar mi a justo tincidunt venenatis in nec tortor. Curabitur tortor risus, consequat eget sollicitudin gravida, vestibulum vitae lacus. Aenean ut magna adipiscing mauris iaculis sollicitudin at id nisi.</string></value></member>
+                    <member><name>link</name><value><string>http://test.blog/?p=123</string></value></member>
+                    <member><name>permaLink</name><value><string>http://test.blog/?p=123</string></value></member>
+                    <member><name>categories</name><value><array><data>
+                        <value><string>Uncategorized</string></value>
+                    </data></array></value></member>
+                    <member><name>mt_excerpt</name><value><string></string></value></member>
+                    <member><name>mt_text_more</name><value><string></string></value></member>
+                    <member><name>wp_more_text</name><value><string></string></value></member>
+                    <member><name>mt_allow_comments</name><value><int>1</int></value></member>
+                    <member><name>mt_allow_pings</name><value><int>1</int></value></member>
+                    <member><name>mt_keywords</name><value><string></string></value></member>
+                    <member><name>wp_slug</name><value><string></string></value></member>
+                    <member><name>wp_password</name><value><string></string></value></member>
+                    <member><name>wp_author_id</name><value><string>1</string></value></member>
+                    <member><name>wp_author_display_name</name><value><string>q</string></value></member>
+                    <member><name>date_created_gmt</name><value><dateTime.iso8601>20130225T14:14:31</dateTime.iso8601></value></member>
+                    <member><name>post_status</name><value><string>draft</string></value></member>
+                    <member><name>custom_fields</name><value><array><data>
+                    </data></array></value></member>
+                    <member><name>wp_post_format</name><value><string>standard</string></value></member>
+                    <member><name>sticky</name><value><boolean>0</boolean></value></member>
+                    <member><name>date_modified</name><value><dateTime.iso8601>20130225T14:14:31</dateTime.iso8601></value></member>
+                    <member><name>date_modified_gmt</name><value><dateTime.iso8601>20130225T14:14:31</dateTime.iso8601></value></member>
+                    <member><name>wp_post_thumbnail</name><value><string></string></value></member>
+                </struct>
+            </value>
+        </param>
+    </params>
+</methodResponse>

@@ -145,7 +145,6 @@ struct PostNoticePublishSuccessView: View {
 
 private enum Strings {
     static let title = NSLocalizedString("publishSuccessView.title", value: "Post published!", comment: "Post publish success view: title")
-    static let trafficSectionTitle = NSLocalizedString("publishSuccessView.trafficSectionTitle", value: "Get more traffic:", comment: "Post publish success view: section 'Get more traffic:' title")
     static let view = NSLocalizedString("publishSuccessView.view", value: "View post", comment: "Post publish success view: button 'View post'")
     static let share = NSLocalizedString("publishSuccessView.share", value: "Share post", comment: "Post publish success view: button 'Share post'")
     static let promoteWithBlaze = NSLocalizedString("publishSuccessView.promoteWithBlaze", value: "Promote with Blaze", comment: "Post publish success view: button 'Promote with Blaze'")

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-29 15:54:08+0000 */
+/* Translation-Revision-Date: 2024-06-13 15:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: he_IL */
@@ -841,12 +841,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "האם אכן ברצונך למחוק פריט זה לצמיתות?";
 
-/* Message of the confirmation alert when deleting a post from the trash. */
-"Are you sure you want to permanently delete this post?" = "ביקשת למחוק פוסט זה לצמיתות - האם ההחלטה סופית?";
-
-/* Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
-"Are you sure you want to publish?" = "האם ברצונך לפרסם?";
-
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title. */
 "Are you sure you want to remove %1$@ from %2$@?" = "האם ברצונך להסיר את %1$@ מ-%2$@?";
 
@@ -855,24 +849,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Description for the confirm restore action. %1$@ is a placeholder for the selected date. */
 "Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then." = "האם ברצונך לשחזר את האתר חזרה לגרסה מתאריך %1$@? פעולה זו תסיר את התוכן והאפשרויות שנוצרו או ששונו מאז.";
-
-/* Title of the message shown when the user taps Save as Draft while editing a post.  Options will be Save Now and Keep Editing. */
-"Are you sure you want to save as draft?" = "האם ברצונך לשמור כטיוטה?";
-
-/* Title of the message shown when the user taps Save while editing a post.  Options will be Save Now and Keep Editing. */
-"Are you sure you want to save?" = "האם ברצונך לשמור?";
-
-/* Title of message shown when the user taps Schedule while editing a post. Options will be Schedule and Keep Editing */
-"Are you sure you want to schedule?" = "האם ברצונך לקבוע לוח זמנים?";
-
-/* Title of message shown when user taps submit for review. */
-"Are you sure you want to submit for review?" = "האם ברצונך לשלוח לביקורת?";
-
-/* Message of the trash confirmation alert. */
-"Are you sure you want to trash this post?" = "בחרת לשלוח פוסט זה לפח - האם ההחלטה סופית?";
-
-/* Title of message shown when user taps update. */
-"Are you sure you want to update?" = "האם ברצונך לעדכן?";
 
 /* Title that asks the user if they are the trying to login.  %1$@ is a placeholder for the browser name (Chrome/Firefox), %2$@ is a placeholder for the users location */
 "Are you trying to log in to %1$@ near %2$@?" = "האם ניסית להתחבר אל %1$@ ליד %2$@?";
@@ -1049,9 +1025,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* All Time Stats 'Best views ever' label */
 "Best views ever" = "כמות הצפיות הגבוהה בכל הזמנים";
 
-/* Notice that a page without content has been created */
-"Blank page created" = "נוצר עמוד ריק";
-
 /* Noun. Links to a blog's Blaze screen. */
 "Blaze" = "Blaze";
 
@@ -1213,7 +1186,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
-   Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
    Cancel
    Cancel a prompt
@@ -1835,9 +1807,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Copy post text" = "להעתיק את הטקסט של הפוסט";
 
-/* Button title displayed in popup indicating the user copied the local copy */
-"Copy the version from this app" = "להעתיק את הגרסה מהאפליקציה הזאת";
-
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
 "Could Not Follow Topic" = "לא ניתן היה לעקוב אחר הנושא";
 
@@ -2154,12 +2123,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "מחיקת תפריט";
 
-/* Delete option in the confirmation alert when deleting a post from the trash.
-   Title for button on the comment details page that deletes the comment when tapped. */
+/* Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "מחק לצמיתות";
-
-/* Title of the confirmation alert when deleting a post from the trash. */
-"Delete Permanently?" = "למחוק לצמיתות?";
 
 /* Button label for deleting the current site
    Label for selecting the Delete Site Settings item
@@ -2508,9 +2473,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "עריכת כפתורי שיתוף";
 
-/* Button title displayed in popup indicating that the user edits the post first */
-"Edit the post first" = "לערוך את הפוסט קודם כל";
-
 /* No comment provided by engineer. */
 "Edit using web editor" = "לערוך באמצעות עורך אינטרנט";
 
@@ -2646,11 +2608,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Enter a password" = "הזן סיסמה";
 
-/* Message explaining why the user might enter a password. */
-"Enter a password to protect this post" = "להזין סיסמה כדי להגן על פוסט זה";
-
-/* (placeholder) Help enter WordPress password
-   Placeholder of a field to type a password to protect the post. */
+/* (placeholder) Help enter WordPress password */
 "Enter password" = "הזן סיסמה";
 
 /* Instruction text on the login's site addresss screen.
@@ -2743,18 +2701,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message displayed when trashing a comment fails. */
 "Error moving comment to trash." = "שגיאת בהעברת התגובה לפח.";
-
-/* Text displayed in HUD while a post revision is being loaded. */
-"Error occurred\nduring loading" = "אירעה שגיאה \nבמהלך הטעינה";
-
-/* Text displayed in notice while a post is being published. */
-"Error occurred during publishing" = "אירעה שגיאה במהלך הפרסום";
-
-/* Text displayed in notice after attempting to save a draft post and an error occurred. */
-"Error occurred during saving" = "אירעה שגיאה במהלך השמירה";
-
-/* Text displayed in notice while a post is being scheduled to be published. */
-"Error occurred during scheduling" = "אירעה שגיאה במהלך קביעת המועד";
 
 /* Register Domain - Domain contact information error message shown to indicate an error during fetching domain contact information */
 "Error occurred fetching domain contact information" = "אירעה שגיאה בקבלה של פרטי יצירת קשר עם הדומיין";
@@ -3049,14 +2995,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Format for blogging prompts attribution. %1$@ is the attribution source. */
 "From %1$@" = "מאת %1$@";
 
-/* Button title displayed in popup indicating date of change on another device */
-"From another device" = "ממכשיר אחר";
-
 /* No comment provided by engineer. */
 "From clipboard" = "מהלוח";
-
-/* Button title displayed in popup indicating date of change on device */
-"From this device" = "מהמכשיר הזה";
 
 /* Full size image. (default). Should be the same as in core WP. */
 "Full Size" = "גודל מלא";
@@ -3088,9 +3028,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title. A call to action to generate a new invite link. */
 "Generate new link" = "ליצור קישור חדש";
-
-/* Message to indicate progress of generating preview */
-"Generating Preview" = "יוצר תצוגה מקדימה";
 
 /* View title for initial auth views. */
 "Get Started" = "מתחילים כאן";
@@ -3701,7 +3638,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
    Button shown if there are unsaved changes and the author is trying to move away from the post.
-   Button shown when the author is asked for publishing confirmation.
    Goes back to editing the post. */
 "Keep Editing" = "המשך לערוך";
 
@@ -4265,7 +4201,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Move menu item" = "להעביר פריט תפריט";
 
 /* Title for button on the comment details page that moves the comment to trash when tapped.
-   Trash option in the trash confirmation alert.
    Trashes the comment */
 "Move to Trash" = "העברה לפח";
 
@@ -4915,32 +4850,11 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "בלוק של מעבר דף. %s";
 
-/* Notice that a page with content has been created */
-"Page created" = "העמוד נוצר";
-
-/* Title of notification displayed when a page has been successfully saved as a draft. */
-"Page draft uploaded" = "הטיוטה של העמוד הועלתה";
-
-/* Title of notification displayed when a page has failed to upload. */
-"Page failed to upload" = "ההעלאה של העמוד נכשלה";
-
-/* Title of notification displayed when a page has been successfully saved as a draft. */
-"Page pending review" = "העמוד ממתין לביקורת";
-
-/* Title of notification displayed when a page has been successfully published. */
-"Page published" = "העמוד פורסם";
-
-/* Title of notification displayed when a page has been successfully scheduled. */
-"Page scheduled" = "העמוד תוזמן לפרסום";
-
 /* translators: accessibility text. %s: text content of the page title. */
 "Page title. %s" = "כותרת העמוד. %s";
 
 /* translators: accessibility text. empty page title. */
 "Page title. Empty" = "כותרת העמוד. ריק";
-
-/* Title of notification displayed when a page has been successfully updated. */
-"Page updated" = "עמוד עודכן";
 
 /* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
@@ -4974,9 +4888,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Loader title displayed by the loading view while the password is changed successfully */
 "Password changed successfully" = "שינוי הסיסמה בוצע בהצלחה";
-
-/* Privacy setting for posts set to 'Password protected'. Should be the same as in core WP. */
-"Password protected" = "מוגן בסיסמה";
 
 /* No comment provided by engineer. */
 "Paste URL" = "להדביק את כתובת ה-URL";
@@ -5217,29 +5128,11 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* The footer text appears within the footer displaying when the post has been created. */
 "Post created on %@" = "הפוסט נוצר ב %@";
 
-/* Title of notification displayed when a post has been successfully saved as a draft. */
-"Post draft uploaded" = "הטיוטה של הפוסט הועלתה";
-
-/* Title of notification displayed when a post has failed to upload. */
-"Post failed to upload" = "העלאת הפוסט נכשלה";
-
-/* Title of notification displayed when a post has been successfully saved as a draft. */
-"Post pending review" = "הפוסט ממתין לביקורת";
-
-/* Title of notification displayed when a post has been successfully published. */
-"Post published" = "הפוסט פורסם";
-
 /* Title of the notification presented in Reader when a post is removed from save for later */
 "Post removed." = "הפוסט הוסר.";
 
 /* Title of the notification presented in Reader when a post is saved for later */
 "Post saved." = "הפוסט נשמר.";
-
-/* Title of notification displayed when a post has been successfully scheduled. */
-"Post scheduled" = "הפוסט תוזמן";
-
-/* Title displayed in popup when user tries to copy a post with unsaved changes */
-"Post sync conflict" = "התנגשות בסנכרון הפוסט";
 
 /* translators: accessibility text. %s: text content of the post title. */
 "Post title. %s" = "כותרת הפוסט. %s";
@@ -5249,9 +5142,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of camera permissions screen */
 "Post to WordPress" = "פרסום ב-WordPress";
-
-/* Title of notification displayed when a post has been successfully updated. */
-"Post updated" = "פוסט עודכן";
 
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "מיקוד";
@@ -5356,8 +5246,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Link to the CCPA privacy notice for residents of California. */
 "Privacy notice for California users" = "הצהרת פרטיות למשתמשים מקליפורניה";
 
-/* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
+/* Name for the status of a post that is marked private. */
 "Private" = "פרטי";
 
 /* No comment provided by engineer. */
@@ -5389,11 +5278,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    View title for Blogging Prompts list. */
 "Prompts" = "הצעות";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
-"Public" = "ציבורי";
-
-/* Button title. Publishes a post.
-   Label for the publish (verb) button. Tapping publishes a draft post.
+/* Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen */
 "Publish" = "פרסם";
@@ -5423,9 +5308,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A short message that informs the user a post is being published to the server from the share extension. */
 "Publishing post..." = "מפרסם את הפוסט...";
-
-/* Text displayed in HUD while a post is being published. */
-"Publishing..." = "מפרסם...";
 
 /* Title of screen showing site purchases */
 "Purchases" = "רכישות";
@@ -5736,10 +5618,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A prompt to attempt the failed network request again
    A prompt to attempt the failed network request again.
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
-   Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
    Opens the media library .
-   Retries the upload of a user's post.
    Retry updating User's Role
    Retry. Action
    Retry. Verb – retry a failed media upload.
@@ -5823,14 +5703,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post. */
 "Save 1 photo as a draft post on:" = "שמירה של תמונה אחת כטיוטה של הפוסט במיקום:";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from the post. */
-"Save Draft" = "שמור טיוטה";
-
 /* Title of alert informing users about the Reader Save for Later feature. */
 "Save Posts for Later" = "שמירת פוסטים למועד מאוחר יותר";
-
-/* Title of button allowing users to change the status of the post they are currently editing to Draft. */
-"Save as Draft" = "לשמור כטיוטה";
 
 /* Text displayed in the share extension's summary view that describes the save draft page action. */
 "Save draft page on:" = "לשמור את עמוד הטיוטה במיקום:";
@@ -5860,8 +5734,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A short message that informs the user a draft post is being saved to the server from the share extension. */
 "Saving post…" = "שומר פוסט...";
 
-/* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a post is being saved as a draft. */
+/* Menus save button title while it is saving a Menu. */
 "Saving..." = "שומר...";
 
 /* Noun. Links to a blog's Jetpack Scan screen.
@@ -5888,15 +5761,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for label when the actively scanning the users site */
 "Scanning files" = "סורק קבצים";
 
-/* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
-"Schedule" = "פרסום מתוזמן";
-
 /* Name for the status of a scheduled post
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "מתוזמן לפרסום";
-
-/* Text displayed in HUD while a post is being scheduled to be published. */
-"Scheduling..." = "מבצע תזמון...";
 
 /* No comment provided by engineer. */
 "Scrollable block menu closed." = "תפריט בלוק לגלילה סגור.";
@@ -6531,9 +6398,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The loading view title displayed when an error occurred */
 "Stats not loaded" = "הנתונים הסטטיסטיים לא נטענו";
 
-/* The status of the post. Should be the same as in core WP. */
-"Status" = "סטטוס";
-
 /* Title of the first alert preparing users to grant permission for us to send them push notifications. */
 "Stay in the loop" = "להישאר בעניינים";
 
@@ -6575,9 +6439,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Submit for review button label (saving content, ex: Post, Page, Comment). */
 "Submit for Review" = "הגשה לאישור";
-
-/* Text displayed in HUD while a post is being submitted for review. */
-"Submitting for Review..." = "הגשה לאישור...";
 
 /* Notice displayed to the user after clearing the spotlight index in app settings. */
 "Successfully cleared spotlight index" = "האינדקס של Spotlight נוקה בהצלחה";
@@ -6925,9 +6786,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "מספר הפוסטים שניתן להציג בכל עמוד.";
 
-/* Message displayed in popup when user tries to copy a post with conflicts */
-"The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "לפוסט שברצונך להעתיק קיימות שתי גרסאות שונות זו מזו, או שערכת את הפוסט אבל לא שמרת את השינויים.\n עליך קודם לערוך את הפוסט כדי לפתור התנגשויות בין הגרסאות ואז להמשיך בפעולת ההעתקה של הגרסה מהאפליקציה.";
-
 /* A failure reason for when the request couldn't be serialized. */
 "The serialization of the request failed." = "הסריאליזציה של הבקשה נכשלה.";
 
@@ -7147,12 +7005,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "פריט המדיה נמחק.";
 
-/* Prompts the user that the page is being uploaded and cannot be edited while that process is ongoing. */
-"This page is currently uploading. It won't take long – try again soon and you'll be able to edit it." = "העמוד מועלה כעת. הפעולה לא דורשת זמן רב - מומלץ לנסות שוב עוד מעט ולקבל גישה לעריכת הפוסט.";
-
-/* Prompts the user that the post is being uploaded and cannot be edited while that process is ongoing. */
-"This post is currently uploading. It won't take long – try again soon and you'll be able to edit it." = "הפוסט מועלה כעת. הפעולה לא דורשת זמן רב - מומלץ לנסות שוב עוד מעט ולקבל גישה לעריכת הפוסט.";
-
 /* Post is in my likes. Accessibility label */
 "This post is in My Likes" = "הפוסט הנוכחי נמצא ברשימת הלייקים שלי";
 
@@ -7336,9 +7188,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Trashes a comment
    Trashes the comment */
 "Trash" = "לאשפה";
-
-/* Title of the trash confirmation alert. */
-"Trash this post?" = "האם להעביר את הפוסט לפח?";
 
 /* Name for the status of a trashed post
    Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
@@ -7626,17 +7475,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Update button label (saving content, ex: Post, Page, Comment). */
 "Update" = "עדכון";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from an already saved draft. */
-"Update Draft" = "עדכן טיוטא";
-
 /* Label action for updating a link on the editor */
 "Update Link" = "עדכון קישור";
-
-/* Button shown if there are unsaved changes and the author is trying to move away from an already published page. */
-"Update Page" = "עדכן עמוד";
-
-/* Button shown if there are unsaved changes and the author is trying to move away from an already published post. */
-"Update Post" = "עדכון פוסט";
 
 /* Update profile photo in Me > My Profile */
 "Update Profile Photo" = "עדכון תמונת פרופיל";
@@ -7668,9 +7508,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text in the profile editing page. Lets the user know about the consequences of their profile editing actions and how this relates to Gravatar. */
 "Updating your avatar, name and about info here will also update it across all sites that use Gravatar profiles." = "עדכון של תמונת הפרופיל, השם והמידע עליך כאן יעדכן את הפרטים בכל האתרים שמשתמשים בפרופילים של Gravatar.";
 
-/* Text displayed in HUD while a draft or scheduled post is being updated. */
-"Updating..." = "מעדכן...";
-
 /* No comment provided by engineer. */
 "Upgrade your plan to upload audio" = "יש לשדרג את התוכנית שלך כדי להעלות אודיו";
 
@@ -7680,8 +7517,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "העלאת מדיה";
 
-/* Message displayed on a post's card when the post has failed to upload
-   System notification displayed to the user when media files have failed to upload. */
+/* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "העלאה נכשלה";
 
 /* Description to show on post setting for a featured image that failed to upload. */
@@ -7715,15 +7551,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for alert when trying to save/exit a post before media upload process is complete. */
 "Uploading media" = "מעלה מדיה";
-
-/* Message displayed on a post's card while the post is uploading media */
-"Uploading media..." = "מעלה מדיה...";
-
-/* Title for alert when trying to preview a post before the uploading process is complete. */
-"Uploading post" = "מעלה את הפוסט";
-
-/* Message displayed on a post's card when the post has failed to upload */
-"Uploading post..." = "מעלה פוסט...";
 
 /* Message of an alert informing users that the video they are trying to select is not allowed. */
 "Uploading videos longer than 5 minutes requires a paid plan." = "להעלאת סרטון שאורכו מעל חמש דקות נדרשת תוכנית בתשלום.";
@@ -7818,8 +7645,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Period Stats 'Videos' header */
 "Videos" = "סרטונים";
 
-/* Button title. Displays a summary / sharing screen for a specific post.
-   Opens the post epilogue screen to allow sharing / viewing of a post.
+/* Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "הצג";
@@ -7869,8 +7695,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Insights views and visitors header */
 "Views & Visitors" = "צפיות ומבקרים";
 
-/* The visibility settings of the post. Should be the same as in core WP.
-   Visibility label */
+/* The visibility settings of the post. Should be the same as in core WP. */
 "Visibility" = "נראות";
 
 /* An option to visit the site to which a specific post belongs */
@@ -7953,97 +7778,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "We are working hard to add more blocks with each release." = "אנחנו מקדישים מאמץ רב כדי להוסיף עוד בלוקים בכל גרסה.";
 
-/* Text displayed in notice after the app fails to upload a page, not new attempt will be made. */
-"We couldn't complete this action, and didn't publish this page." = "לא הצלחנו להשלים את הפעולה ולא פרסמנו את העמוד פוסט.";
-
-/* Text displayed in notice after the app fails to upload a post, not new attempt will be made. */
-"We couldn't complete this action, and didn't publish this post." = "לא הצלחנו להשלים את הפעולה ולא פרסמנו את הפוסט.";
-
-/* Text displayed after the app fails to upload a private page, no new attempt will be made. */
-"We couldn't complete this action, and didn't publish this private page." = "לא הצלחנו להשלים את הפעולה ולא פרסמנו את העמוד הפרטי הזה.";
-
-/* Text displayed after the app fails to upload a private post, no new attempt will be made. */
-"We couldn't complete this action, and didn't publish this private post." = "לא הצלחנו להשלים את הפעולה ולא פרסמנו את הפוסט הפרטי הזה.";
-
-/* Text displayed after the app fails to upload a scheduled page, no new attempt will be made. */
-"We couldn't complete this action, and didn't schedule this page." = "לא הצלחנו להשלים את הפעולה ולא תזמנו את העמוד.";
-
-/* Text displayed after the app fails to upload a scheduled post, no new attempt will be made. */
-"We couldn't complete this action, and didn't schedule this post." = "לא הצלחנו להשלים את הפעולה ולא תזמנו את הפוסט.";
-
-/* Text displayed in notice after the app fails to upload a page, not new attempt will be made. */
-"We couldn't complete this action, and didn't submit this page for review." = "לא הצלחנו להשלים את הפעולה ולא שלחנו את העמוד לבדיקה.";
-
-/* Text displayed in notice after the app fails to upload a post, not new attempt will be made. */
-"We couldn't complete this action, and didn't submit this post for review." = "לא הצלחנו להשלים את הפעולה ולא שלחנו את הפוסט לבדיקה.";
-
-/* Text displayed after the app fails to upload a page, it will attempt to upload it later.
-   Text displayed after the app fails to upload a post, it will attempt to upload it later. */
-"We couldn't complete this action, but we'll try again later." = "לא הצלחנו להשלים את הפעולה אבל ננסה שוב מאוחר יותר.";
-
-/* Text displayed after the app fails to upload a page, no new attempt will be made.
-   Text displayed after the app fails to upload a post, no new attempt will be made. */
-"We couldn't complete this action." = "לא הצלחנו להשלים את הפעולה.";
-
 /* Message for error displayed when preparing a backup fails. */
 "We couldn't create your backup. Please try again later." = "לא הצלחנו ליצור את הגיבוי שלך. יש לנסות שוב מאוחר יותר.";
-
-/* Text displayed in notice after the app fails to upload a page, it will attempt to upload it later. */
-"We couldn't publish this page, but we'll try again later." = "לא הצלחנו לפרסם את העמוד אבל ננסה שוב מאוחר יותר.";
-
-/* Text displayed in notice after the app fails to upload a post, it will attempt to upload it later. */
-"We couldn't publish this post, but we'll try again later." = "לא הצלחנו לפרסם את הפוסט אבל ננסה שוב מאוחר יותר.";
-
-/* Text displayed after the app fails to upload a private page, it will attempt to upload it later. */
-"We couldn't publish this private page, but we'll try again later." = "לא הצלחנו לפרסם את העמוד הפרטי אבל ננסה שוב מאוחר יותר.";
-
-/* Text displayed after the app fails to upload a private post, it will attempt to upload it later. */
-"We couldn't publish this private post, but we'll try again later." = "לא הצלחנו לפרסם את הפוסט הפרטי אבל ננסה שוב מאוחר יותר.";
 
 /* Message for error displayed when restoring a site fails. */
 "We couldn't restore your site. Please try again later." = "לא הצלחנו לשחזר את האתר שלך. יש לנסות שוב מאוחר יותר.";
 
 /* Description that appears when a media fails to load in the Media Editor. */
 "We couldn't retrieve this media.\nPlease tap to retry." = "לא הצלחנו לאחזר את המדיה.\nיש להקיש כדי לנסות שוב.";
-
-/* Text displayed after the app fails to upload a scheduled page, it will attempt to upload it later. */
-"We couldn't schedule this page, but we'll try again later." = "לא הצלחנו לתזמן את העמוד אבל ננסה שוב מאוחר יותר.";
-
-/* Text displayed after the app fails to upload a scheduled post, it will attempt to upload it later. */
-"We couldn't schedule this post, but we'll try again later." = "לא הצלחנו לתזמן את הפוסט אבל ננסה שוב מאוחר יותר.";
-
-/* Text displayed in notice after the app fails to upload a page, it will attempt to upload it later. */
-"We couldn't submit this page for review, but we'll try again later." = "לא הצלחנו לשלוח את העמוד לבדיקה אבל ננסה שוב מאוחר יותר.";
-
-/* Text displayed in notice after the app fails to upload a post, it will attempt to upload it later. */
-"We couldn't submit this post for review, but we'll try again later." = "לא הצלחנו לשלוח את הפוסט לבדיקה אבל ננסה שוב מאוחר יותר.";
-
-/* Text displayed if a media couldn't be uploaded for a published page. */
-"We couldn't upload this media, and didn't publish the page." = "לא הצלחנו להעלות את המדיה ולא פרסמנו את העמוד.";
-
-/* Text displayed if a media couldn't be uploaded for a published post. */
-"We couldn't upload this media, and didn't publish the post." = "לא הצלחנו להעלות את המדיה ולא פרסמנו את הפוסט.";
-
-/* Text displayed if a media couldn't be uploaded for a private page. */
-"We couldn't upload this media, and didn't publish this private page." = "לא הצלחנו להעלות את המדיה ולא פרסמנו את העמוד הפרטי הזה.";
-
-/* Text displayed if a media couldn't be uploaded for a private post. */
-"We couldn't upload this media, and didn't publish this private post." = "לא הצלחנו להעלות את המדיה ולא פרסמנו את הפוסט הפרטי הזה.";
-
-/* Text displayed if a media couldn't be uploaded for a scheduled page. */
-"We couldn't upload this media, and didn't schedule this page." = "לא הצלחנו להעלות את המדיה ולא תזמנו את העמוד.";
-
-/* Text displayed if a media couldn't be uploaded for a scheduled post. */
-"We couldn't upload this media, and didn't schedule this post." = "לא הצלחנו להעלות את המדיה ולא תזמנו את הפוסט.";
-
-/* Text displayed if a media couldn't be uploaded for a pending page. */
-"We couldn't upload this media, and didn't submit this page for review." = "לא הצלחנו להעלות את המדיה ולא שלחנו את העמוד לבדיקה.";
-
-/* Text displayed if a media couldn't be uploaded for a pending post. */
-"We couldn't upload this media, and didn't submit this post for review." = "לא הצלחנו להעלות את המדיה ולא שלחנו את הפוסט לבדיקה.";
-
-/* Text displayed if a media couldnt be uploaded. */
-"We couldn't upload this media." = "לא הצלחנו להעלות את המדיה.";
 
 /* Hint displayed when we fail to fetch the status of the backup in progress. */
 "We couldn’t find the status to say how long your backup will take." = "לא הצלחנו למצוא את הסטטוס כדי לציין כמה זמן צפוי להימשך הגיבוי שלך.";
@@ -8078,22 +7820,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description for label when the actively scanning the users site */
 "We will send you an email if security threats are found. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "אנחנו נשלח אליך אימייל אם יימצאו איומי אבטחה. בינתיים, אפשר להמשיך להשתמש באתר כרגיל ולחזור לבדוק את ההתקדמות בכל שלב.";
 
-/* Title for notice displayed on canceling auto-upload published page
-   Title for notice displayed on canceling auto-upload published post */
-"We won't publish these changes." = "לא נפרסם את השינויים האלה.";
-
-/* Title for notice displayed on canceling auto-upload of a draft page
-   Title for notice displayed on canceling auto-upload of a draft post */
-"We won't save the latest changes to your draft." = "אנחנו לא נשמור את השינויים האחרונים שבוצעו בטיוטה.";
-
-/* Title for notice displayed on canceling auto-upload of a scheduled page
-   Title for notice displayed on canceling auto-upload of a scheduled post */
-"We won't schedule these changes." = "אנחנו לא נתזמן את השינויים האלה.";
-
-/* Title for notice displayed on canceling auto-upload pending page
-   Title for notice displayed on canceling auto-upload pending post */
-"We won't submit these changes for review." = "אנחנו לא נשלח את השינויים האלה לבדיקה.";
-
 /* Instructional text for the magic link login flow. */
 "We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" = "נשלח לך קישור מיוחד להתחברות מיידית, ללא צורך בסיסמה. לא צריך לחפש או לנחש!";
 
@@ -8105,33 +7831,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
 "We'll notify you when you get new followers, comments, and likes. Would you like to allow push notifications?" = "אנחנו נודיע לך כאשר יהיו לך עוקבים, תגובות או לייקים חדשים. האם ברצונך לאפשר הודעות דחיפה?";
-
-/* Text displayed in notice after a page if published while offline. */
-"We'll publish the page when your device is back online." = "אנחנו נפרסם את העמוד כאשר המכשיר שלך יחובר שוב לאינטרנט.";
-
-/* Text displayed in notice after a post if published while offline. */
-"We'll publish the post when your device is back online." = "אנחנו נפרסם את הפוסט כאשר המכשיר שלך יהיה שוב מחובר לאינטרנט.";
-
-/* Text displayed in notice after the app fails to upload a private page. */
-"We'll publish your private page when your device is back online." = "אנחנו נפרסם את העמוד הפרטי כאשר המכשיר שלך יחובר שוב לאינטרנט.";
-
-/* Text displayed in notice after the app fails to upload a private post. */
-"We'll publish your private post when your device is back online." = "אנחנו נפרסם את הפוסט הפרטי כאשר המכשיר שלך יהיה שוב מחובר לאינטרנט.";
-
-/* Text displayed in notice after the app fails to upload a draft. */
-"We'll save your draft when your device is back online." = "אנחנו נשמור את הטיוטה כאשר המכשיר שלך יהיה שוב מחובר לאינטרנט.";
-
-/* Text displayed after the app fails to upload a scheduled page. */
-"We'll schedule your page when your device is back online." = "אנחנו נתזמן את העמוד כאשר המכשיר שלך יחובר שוב לאינטרנט.";
-
-/* Text displayed after the app fails to upload a scheduled post. */
-"We'll schedule your post when your device is back online." = "אנחנו נתזמן את הפוסט כאשר המכשיר שלך יהיה שוב מחובר לאינטרנט.";
-
-/* Text displayed in notice after the app fails to upload a page], it will attempt to upload it later. */
-"We'll submit your page for review when your device is back online." = "אנחנו נשלח את העמוד לבדיקה כאשר המכשיר שלך יחובר שוב לאינטרנט.";
-
-/* Text displayed in notice after the app fails to upload a post, it will attempt to upload it later. */
-"We'll submit your post for review when your device is back online." = "אנחנו נשלח את הפוסט לבדיקה כאשר המכשיר שלך יהיה שוב מחובר לאינטרנט.";
 
 /* Text confirming email address to be used for new account. */
 "We'll use this email address to create your new WordPress.com account." = "אנחנו נשתמש בכתובת האימייל הזאת כדי ליצור את החשבון החדש שלך ב-WordPress.com.";
@@ -8279,9 +7978,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "בעת ביצוע שינויים באתר שלך, אפשר לראות את היסטוריית הפעילות כאן.";
-
-/* Title displayed in popup when user has the option to load unsaved changes */
-"Which version would you like to edit?" = "איזו גרסה ברצונך לערוך?";
 
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "משהו השתבש ולא ניתן לבצע חיבור לחשבון. יש לנסות שוב!";
@@ -8577,10 +8273,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
 "You received *50 likes* on your site today" = "קיבלת ⁦*50 likes* on your site today⁩";
 
-/* Message displayed in popup when user has the option to load unsaved changes. 
- is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively. */
-"You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "לאחרונה ביצעת שינויים בפוסט וטרם שמרת אותם. יש לבחור את הגרסה שברצונך לטעון: \n\nמהמכשיר הנייד הזה\nנשמר בתאריך %1$@\n\nממכשיר אחר\nנשמר בתאריך %2$@\n";
-
 /* Informs that the user has replied to this comment.
    Notification text - below a comment notification detail
    Text to look for */
@@ -8610,9 +8302,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message displayed when unable to close user account due to being unauthorized. */
 "You're not authorized to close the account." = "אין לך הרשאה לסגור את החשבון הזה.";
-
-/* Message displayed on a post's card when the post has unsaved changes */
-"You've made unsaved changes to this post" = "ביצעת שינויים שלא נשמרו בפוסט הזה";
 
 /* The item to select during a guided tour. */
 "Your Site Icon" = "הסמל של האתר שלך";
@@ -8649,9 +8338,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Help text that describes how the password should be. It appears while editing the password */
 "Your password should be at least six characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! \" ? $ % ^ & )." = "על הסיסמה להיות באורך שישה תווים לפחות. כדי להפוך אותה קשה יותר לפיצוח, כדאי להשתמש באותיות קטנות וגדולות, מספרים וסמלים כגון ! \" ? $ % ^ & ).";
-
-/* This is a notification the user receives if they are trying to preview a post before the upload process is complete. */
-"Your post is currently being uploaded. Please wait until this completes." = "הפוסט שלך מועלה כעת. יש להמתין להשלמת הפעולה.";
 
 /* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
 "Your post is publishing... in the meantime, set up your blogging reminders on days you want to post." = "הפוסט שלך מתפרסם... בינתיים, אפשר להגדיר את התזכורות שלך לכתוב בלוג בימים שבחרת לפרסם.";
@@ -8956,6 +8642,9 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 
 /* Title for the checkout view */
 "checkout.title" = "קופה";
+
+/* Post Editor / Button in the 'More' menu */
+"classicEditor.moreMenu.saveDraft" = "לשמור טיוטה";
 
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "תגובה";
@@ -10195,32 +9884,11 @@ Example: Reply to Pamela Nguyen */
 /* Message informing the user that their static homepage page was set successfully */
 "pages.updatePage.successTitle" = "העמוד עודכן בהצלחה.";
 
-/* Delete option in the confirmation alert when deleting a page from the trash. */
-"pagesList.deletePermanently.actionTitle" = "למחוק לצמיתות";
-
-/* Message of the confirmation alert when deleting a page from the trash. */
-"pagesList.deletePermanently.alertMessage" = "האם ברצונך למחוק את העמוד לצמיתות?";
-
-/* Title of the confirmation alert when deleting a page from the trash. */
-"pagesList.deletePermanently.alertTitle" = "למחוק לצמיתות?";
-
 /* Menu option for filtering posts by everyone */
 "pagesList.pagesByEveryone" = "Pages by everyone";
 
 /* Menu option for filtering posts by me */
 "pagesList.pagesByMe" = "Pages by me";
-
-/* Trash option in the trash page confirmation alert. */
-"pagesList.trash.actionTitle" = "להעביר לפח";
-
-/* Message of the trash page confirmation alert. */
-"pagesList.trash.alertMessage" = "בחרת לשלוח עמוד זה לפח – האם ההחלטה סופית?";
-
-/* Title of the trash page confirmation alert. */
-"pagesList.trash.alertTitle" = "האם להעביר את העמוד לפח?";
-
-/* Cancels an Action */
-"pagesList.trash.cancel" = "ביטול";
 
 /* Navigation title displayed on the navigation bar */
 "parentPageSettings.title" = "עמוד הורה";
@@ -10288,12 +9956,6 @@ Example: Reply to Pamela Nguyen */
 /* Title for the plan selection view */
 "planSelection.title" = "תוכניות";
 
-/* Status mesasge for post cells */
-"post.deletingPostPermanentlyStatusMessage" = "מוחק פוסט";
-
-/* Status mesasge for post cells */
-"post.movingToTrashStatusMessage" = "מעביר לפח...";
-
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "לבטל את השינויים";
 
@@ -10334,6 +9996,9 @@ Example: Reply to Pamela Nguyen */
 "postEditor.moreMenu.revisions" = "גרסאות קודמות";
 
 /* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.saveDraft" = "לשמור טיוטה";
+
+/* Post Editor / Button in the 'More' menu */
 "postEditor.moreMenu.visualEditor" = "עורך ויזואלי";
 
 /* A 'View' action for a snackbar informing the user that some media files requires their attention */
@@ -10364,7 +10029,19 @@ Example: Reply to Pamela Nguyen */
 "postEditor.savingDraftForPreview" = "שומר טיוטה...";
 
 /* Button title */
+"postFromAudio.beginRecording" = "להתחיל הקלטה";
+
+/* Button title */
 "postFromAudio.buttonUpgrade" = "יש לשדרג לבקשות נוספות";
+
+/* Button title */
+"postFromAudio.done" = "בוצע";
+
+/* The AI failed to understand the request for any reasons */
+"postFromAudio.errorMessage.cantUnderstandRequest" = "נתקלנו בכמה בעיות בעיבוד הבקשה. יש לנסות שוב מאוחר יותר.";
+
+/* The screen subtitle in the error state */
+"postFromAudio.errorMessage.generic" = "משהו השתבש";
 
 /* Message for 'not eligible' state view */
 "postFromAudio.notEnoughRequestsMessage" = "אין לך יתרת בקשות מספקת ליצירת פוסט מאודיו.";
@@ -10374,9 +10051,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Button title */
 "postFromAudio.retry" = "לנסות שוב";
-
-/* The screen subtitle in the error state */
-"postFromAudio.subtitleError" = "משהו השתבש";
 
 /* The screen subtitle */
 "postFromAudio.subtitleRequestsAvailable" = "בקשות זמינות:";
@@ -10389,6 +10063,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The screen title when recording */
 "postFromAudio.titleRecoding" = "מקליט...";
+
+/* The value for the `requests available:` field for an unlimited plan */
+"postFromAudio.unlimited" = "ללא הגבלה";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "מאת %@.";
@@ -10465,9 +10142,6 @@ Example: Reply to Pamela Nguyen */
 /* A generic error message title */
 "postNotice.errorTitle" = "אירעה שגיאה";
 
-/* An error message */
-"postNotice.errorUnsyncedChangesMessage" = "האפליקציה מעלה שינויים שבוצעו בעבר בשרת. יש לנסות שוב מאוחר יותר.";
-
 /* Button OK */
 "postNotice.ok" = "אישור";
 
@@ -10543,9 +10217,6 @@ Example: Reply to Pamela Nguyen */
 /* Button in Post Settings */
 "postSettings.setFeaturedImageButton" = "קביעת תמונה מרכזית";
 
-/* Error message on post/page settings screen */
-"postSettings.updateFailedMessage" = "העדכון של הגדרות ההודעה נכשל.";
-
 /* An alert message explaning that by changing the visibility to private, the post will be published immediately to your site */
 "postSettings.warningPostWillBePublishedAlertMessage" = "על ידי שינוי הנראות ל'פרטי', הפוסט יפורסם באופן מיידי";
 
@@ -10588,9 +10259,6 @@ Example: Reply to Pamela Nguyen */
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "לקדם עם Blaze";
 
-/* Label for the Post List option that cancels automatic uploading of a post. */
-"posts.cancelUpload.actionTitle" = "לבטל העלאה";
-
 /* Label for post comments option. Tapping displays comments for a post. */
 "posts.comments.actionTitle" = "תגובות";
 
@@ -10611,9 +10279,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the publish post button. */
 "posts.publish.actionTitle" = "לפרסם";
-
-/* Retry uploading the post. */
-"posts.retry.actionTitle" = "לנסות שוב";
 
 /* Set the selected page as the homepage. */
 "posts.setHomepage.actionTitle" = "Set as homepage";
@@ -10638,18 +10303,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the view post button. Tapping displays the post as it appears on the web. */
 "posts.view.actionTitle" = "להציג";
-
-/* A short message explaining that a page was deleted permanently. */
-"postsList.deletePage.message" = "Page deleted permanently";
-
-/* A short message explaining that a post was deleted permanently. */
-"postsList.deletePost.message" = "Post deleted permanently";
-
-/* A short message explaining that a page was moved to the trash bin. */
-"postsList.movePageToTrash.message" = "העמוד הועבר לפח";
-
-/* A short message explaining that a post was moved to the trash bin. */
-"postsList.movePostToTrash.message" = "הפוסט הועבר לפח";
 
 /* Menu option for filtering posts by everyone */
 "postsList.postsByEveryone" = "Posts by everyone";
@@ -10677,9 +10330,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Details for a publish button state in the pre-publishing sheet; count as a parameter */
 "prepublishing.mediaUploadFailedDetails" = "ההעלאה של %@ פריטים נכשלה";
-
-/* Placeholder for a cell in the pre-publishing sheet */
-"prepublishing.postTitle" = "כותרת";
 
 /* Primary button label in the pre-publishing sheet */
 "prepublishing.publish" = "לפרסם";

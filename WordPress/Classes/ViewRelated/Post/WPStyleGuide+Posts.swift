@@ -10,10 +10,6 @@ extension WPStyleGuide {
         cell.contentView.backgroundColor = .listBackground
     }
 
-    class func applyPostTitleStyle(_ label: UILabel) {
-        label.textColor = .text
-    }
-
     class func applyBorderStyle(_ view: UIView) {
         view.updateConstraint(for: .height, withRelation: .equal, setConstant: .hairlineBorderWidth, setActive: true)
         view.backgroundColor = .divider

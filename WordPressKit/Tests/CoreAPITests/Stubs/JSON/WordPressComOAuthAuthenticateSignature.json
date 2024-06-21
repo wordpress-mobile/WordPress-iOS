@@ -1,0 +1,12 @@
+{
+    "success": true,
+    "data": {
+        "bearer_token": "bearer_token",
+        "token_links": [
+            "https:\/\/jetpack.com\/remote-login.php?wpcom_rem...",
+            "https:\/\/fieldguide.automattic.com\/remote-logi...",
+            "https:\/\/learn.a8c.com\/remote-login.php?wpcom_remote_login...",
+            "https:\/\/a8c.tv\/remote-login.php?wpcom_remote_login=vali..."
+        ]
+    }
+}

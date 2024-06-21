@@ -1,0 +1,17 @@
+{
+  "page": 1,
+  "pages": 1,
+  "total": 1,
+  "total_email": 1,
+  "total_wpcom": 1,
+  "subscribers": [
+    {
+      "avatar": "https://localhost/image",
+      "label": "test@test.com",
+      "ID": "123456",
+      "url": null,
+      "follow_data": null,
+      "date_subscribed": "2022-01-01T00:00:00+00:00"
+    }
+  ]
+}

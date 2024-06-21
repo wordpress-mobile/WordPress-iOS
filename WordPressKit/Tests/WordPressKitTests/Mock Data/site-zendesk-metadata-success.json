@@ -1,0 +1,5 @@
+{
+  "sites": [
+    { "ID": 123, "zendesk_site_meta": { "plan": "free", "addon": [] } }
+  ]
+}

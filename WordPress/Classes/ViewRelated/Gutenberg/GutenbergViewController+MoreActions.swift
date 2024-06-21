@@ -84,18 +84,32 @@ extension GutenbergViewController {
 
     func makeMoreMenu() -> UIMenu {
         UIMenu(title: "", image: nil, identifier: nil, options: [], children: [
-            UIDeferredMenuElement.uncached { [weak self] in
-                $0(self?.makeMoreMenuSections() ?? [])
+            UIDeferredMenuElement.uncached { [weak self] callback in
+                // Common actions at the top so they are always in the same
+                // relative place.
+                callback(self?.makeMoreMenuMainSections() ?? [])
+            },
+            UIDeferredMenuElement.uncached { [weak self] callback in
+                // Dynamic actions at the bottom. The actions are loaded asynchronously
+                // because they need the latest post content from the editor
+                // to display the correct state.
+                self?.requestHTML {
+                    callback(self?.makeMoreMenuAsyncSections() ?? [])
+                }
             }
         ])
     }
 
-    private func makeMoreMenuSections() -> [UIMenuElement] {
-        var sections: [UIMenuElement] = [
-            // Common actions at the top so they are always in the same relative place
+    private func makeMoreMenuMainSections() -> [UIMenuElement] {
+        return  [
             UIMenu(title: "", subtitle: "", options: .displayInline, children: makeMoreMenuActions()),
+        ]
+    }
+
+    private func makeMoreMenuAsyncSections() -> [UIMenuElement] {
+        var sections: [UIMenuElement] = [
             // Dynamic actions at the bottom
-            UIMenu(title: "", subtitle: "", options: .displayInline, children: makeSecondaryActions())
+            UIMenu(title: "", subtitle: "", options: .displayInline, children: makeMoreMenuSecondaryActions())
         ]
         if let string = makeContextStructureString() {
             sections.append(UIAction(subtitle: string, attributes: [.disabled], handler: { _ in }))
@@ -103,7 +117,7 @@ extension GutenbergViewController {
         return sections
     }
 
-    private func makeSecondaryActions() -> [UIAction] {
+    private func makeMoreMenuSecondaryActions() -> [UIAction] {
         var actions: [UIAction] = []
         if post.original().isStatus(in: [.draft, .pending]) {
             actions.append(UIAction(title: Strings.saveDraft, image: UIImage(systemName: "doc"), attributes: (editorHasChanges && editorHasContent) ? [] : [.disabled]) { [weak self] _ in
