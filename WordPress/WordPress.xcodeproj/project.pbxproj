@@ -255,6 +255,8 @@
 		01E70EBC2BB5CCCF000BFE45 /* NumberFormatter+Stats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E70EBA2BB5CCCF000BFE45 /* NumberFormatter+Stats.swift */; };
 		01E70EBD2BB5D035000BFE45 /* NumberFormatter+Stats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E70EBA2BB5CCCF000BFE45 /* NumberFormatter+Stats.swift */; };
 		01E78D1D296EA54F00FB6863 /* StatsPeriodHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E78D1C296EA54F00FB6863 /* StatsPeriodHelperTests.swift */; };
+		01FB42F42C25651000F5069E /* StatsRowsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FB42F32C25651000F5069E /* StatsRowsCell.swift */; };
+		01FB42F52C25651000F5069E /* StatsRowsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FB42F32C25651000F5069E /* StatsRowsCell.swift */; };
 		02761EC02270072F009BAF0F /* BlogDetailsViewController+SectionHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02761EBF2270072F009BAF0F /* BlogDetailsViewController+SectionHelpers.swift */; };
 		02761EC222700A9C009BAF0F /* BlogDetailsSubsectionToSectionCategoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02761EC122700A9C009BAF0F /* BlogDetailsSubsectionToSectionCategoryTests.swift */; };
 		02761EC4227010BC009BAF0F /* BlogDetailsSectionIndexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02761EC3227010BC009BAF0F /* BlogDetailsSectionIndexTests.swift */; };
@@ -6056,6 +6058,7 @@
 		01E2580D2ACDC88100F09666 /* PlanWizardContentViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanWizardContentViewModelTests.swift; sourceTree = "<group>"; };
 		01E70EBA2BB5CCCF000BFE45 /* NumberFormatter+Stats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NumberFormatter+Stats.swift"; sourceTree = "<group>"; };
 		01E78D1C296EA54F00FB6863 /* StatsPeriodHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsPeriodHelperTests.swift; sourceTree = "<group>"; };
+		01FB42F32C25651000F5069E /* StatsRowsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsRowsCell.swift; sourceTree = "<group>"; };
 		02761EBF2270072F009BAF0F /* BlogDetailsViewController+SectionHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogDetailsViewController+SectionHelpers.swift"; sourceTree = "<group>"; };
 		02761EC122700A9C009BAF0F /* BlogDetailsSubsectionToSectionCategoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDetailsSubsectionToSectionCategoryTests.swift; sourceTree = "<group>"; };
 		02761EC3227010BC009BAF0F /* BlogDetailsSectionIndexTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDetailsSectionIndexTests.swift; sourceTree = "<group>"; };
@@ -14659,6 +14662,7 @@
 				987535622282682D001661B4 /* DetailDataCell.xib */,
 				DC9AF768285DF8A300EA2A0D /* StatsFollowersChartViewModel.swift */,
 				1762B6DB2845510400F270A5 /* StatsReferrersChartViewModel.swift */,
+				01FB42F32C25651000F5069E /* StatsRowsCell.swift */,
 			);
 			path = "Stats Detail";
 			sourceTree = "<group>";
@@ -23344,6 +23348,7 @@
 				01B7590B2B3ED63B00179AE6 /* DomainDetailsWebViewControllerWrapper.swift in Sources */,
 				0CB424F12ADEE52A0080B807 /* PostSearchToken.swift in Sources */,
 				98AA6D1126B8CE7200920C8B /* Comment+CoreDataClass.swift in Sources */,
+				01FB42F42C25651000F5069E /* StatsRowsCell.swift in Sources */,
 				7E4A773720F802A8001C706D /* ActivityRangesFactory.swift in Sources */,
 				E1AC282D18282423004D394C /* SFHFKeychainUtils.m in Sources */,
 				7EDAB3F420B046FE002D1A76 /* CircularProgressView+ActivityIndicatorType.swift in Sources */,
@@ -25340,6 +25345,7 @@
 				F41E32FF287B47A500F89082 /* SuggestionsListViewModel.swift in Sources */,
 				F4EDAA5129A795C600622D3D /* BlockedAuthor.swift in Sources */,
 				FABB238E2602FC2C00C8785C /* NotificationSettingsService.swift in Sources */,
+				01FB42F52C25651000F5069E /* StatsRowsCell.swift in Sources */,
 				019105872BE8BD6000CDFB16 /* StatsGhostSingleValueCell.swift in Sources */,
 				8091019429078CFE00FCB4EA /* JetpackFullscreenOverlayViewController.swift in Sources */,
 				FA347AEE26EB6E300096604B /* GrowAudienceCell.swift in Sources */,

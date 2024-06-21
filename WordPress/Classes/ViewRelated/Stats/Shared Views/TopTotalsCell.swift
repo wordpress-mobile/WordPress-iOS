@@ -7,13 +7,12 @@ import UIKit
 /// If the row has child rows, those child rows are added to the stack view below the selected row.
 ///
 
-class TopTotalsCell: StatsBaseCell, NibLoadable {
+final class TopTotalsCell: StatsRowsCell, NibLoadable {
 
     // MARK: - Properties
 
     @IBOutlet weak var outerStackView: UIStackView!
     @IBOutlet weak var subtitleStackView: UIStackView!
-    @IBOutlet weak var rowsStackView: UIStackView!
     @IBOutlet weak var itemSubtitleLabel: UILabel!
     @IBOutlet weak var dataSubtitleLabel: UILabel!
     @IBOutlet weak var dataSubtitleLabelWidthConstraint: NSLayoutConstraint!
@@ -77,39 +76,25 @@ class TopTotalsCell: StatsBaseCell, NibLoadable {
         self.forDetails = forDetails
 
         if !forDetails {
-            addRows(dataRows,
-                    toStackView: rowsStackView,
-                    forType: siteStatsPeriodDelegate != nil ? .period : .insights,
+            configureTotalRows(
+                dataRows,
+                inStackView: rowsStackView,
+                forType: siteStatsPeriodDelegate != nil ? .period : .insights,
+                configuration: .init(
                     limitRowsDisplayed: limitRowsDisplayed,
                     rowDelegate: self,
                     referrerDelegate: self,
-                    viewMoreDelegate: self)
-
+                    viewMoreDelegate: self
+                )
+            )
             initChildRows()
+        } else {
+            rowsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         }
 
         setSubtitleVisibility()
         applyStyles()
         prepareForVoiceOver()
-    }
-
-    override func prepareForReuse() {
-        super.prepareForReuse()
-
-        rowsStackView.arrangedSubviews.forEach { subview in
-
-            // Remove granchild rows
-            if let row = subview as? StatsTotalRow {
-                removeChildRowsForRow(row)
-            }
-
-            // Remove child rows
-            if let childView = subview as? StatsChildRowsView {
-                removeRowsFromStackView(childView.rowsStackView)
-            }
-        }
-
-        removeRowsFromStackView(rowsStackView)
     }
 
     private enum Metrics {
@@ -136,8 +121,6 @@ private extension TopTotalsCell {
     /// - Hide the stack view.
     ///
     func setSubtitleVisibility() {
-        subtitleStackView.layoutIfNeeded()
-
         if forDetails {
             bottomSeparatorLine.isHidden = true
 
