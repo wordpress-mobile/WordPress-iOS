@@ -1243,7 +1243,13 @@ extension NewGutenbergViewController: PostEditorNavigationBarManagerDelegate {
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton) {
-        requestHTML(for: .close)
+        Task {
+            // TODO: read title as well
+            let content = try? await editorViewController.getContent()
+            NSLog("loaded content: \(content)")
+        }
+
+//        requestHTML(for: .close)
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, undoWasPressed sender: UIButton) {
