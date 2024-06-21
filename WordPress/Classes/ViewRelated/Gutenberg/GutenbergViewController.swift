@@ -494,8 +494,13 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
     }
 
     func requestHTML(_ completion: @escaping () -> Void) {
+        let startTime = CFAbsoluteTimeGetCurrent()
         htmlDidChange.first()
-            .sink { completion() }
+            .sink {
+                let duration = CFAbsoluteTimeGetCurrent() - startTime
+                print("performance-get-content:", duration)
+                completion()
+            }
             .store(in: &cancellables)
 
         guard !isRequestingHTML else { return }
