@@ -12,6 +12,7 @@ enum FeatureFlag: Int, CaseIterable {
     case googleDomainsCard
     case newTabIcons
     case autoSaveDrafts
+    case newGutenberg
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -40,6 +41,8 @@ enum FeatureFlag: Int, CaseIterable {
             return true
         case .autoSaveDrafts:
             return false
+        case .newGutenberg:
+            return true
         }
     }
 
@@ -82,6 +85,8 @@ extension FeatureFlag {
             return "New Tab Icons"
         case .autoSaveDrafts:
             return "Autosave Drafts"
+        case .newGutenberg:
+            return "New Gutenberg"
         }
     }
 }

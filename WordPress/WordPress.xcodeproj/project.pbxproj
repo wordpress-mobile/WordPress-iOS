@@ -10499,6 +10499,13 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		0C61AA0D2C2593BD00FA7E46 /* NewGutenberg */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = NewGutenberg;
+			sourceTree = "<group>";
+		};
 		0C7D48182A4DB91B0023CF84 /* Blaze */ = {
 			isa = PBXGroup;
 			children = (
@@ -13899,6 +13906,7 @@
 				083ED8CA2A4322A7007F89B3 /* EEUUSCompliance */,
 				081E4B4A281BFB520085E89C /* Feature Highlight */,
 				98AA9F1F27EA888C00B3A98C /* Feature Introduction */,
+				0C61AA0D2C2593BD00FA7E46 /* NewGutenberg */,
 				7E3E9B6E2177C9C300FD5797 /* Gutenberg */,
 				FA6C32962BEE316900BBDDB4 /* AppUpdate */,
 				E1F391ED1FF25DEC00DB32A3 /* Jetpack */,
