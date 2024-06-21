@@ -5,6 +5,7 @@ import WordPressFlux
 import React
 import AutomatticTracks
 import Combine
+import GutenbergKit
 
 class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor {
     let errorDomain: String = "GutenbergViewController.errorDomain"
@@ -21,12 +22,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
     lazy var gutenbergSettings: GutenbergSettings = {
         return GutenbergSettings()
-    }()
-
-    lazy var ghostView: GutenGhostView = {
-        let view = GutenGhostView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
     }()
 
     private lazy var service: BlogJetpackSettingsService? = {
@@ -265,6 +260,10 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     private var isRequestingHTML = false
     private var cancellables: [AnyCancellable] = []
 
+    // MARK: - GutenbergKit
+
+    private let editorViewController = GutenbergEditorViewController()
+
     // MARK: - Initializers
     required convenience init(
         post: AbstractPost,
@@ -322,7 +321,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         setupKeyboardObservers()
         WPFontManager.loadNotoFontFamily()
         createRevisionOfPost(loadAutosaveRevision: false)
-        setupGutenbergView()
+        setupEditorView()
         configureNavigationBar()
         refreshInterface()
         observeNetworkStatus()
@@ -336,13 +335,15 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
             DDLogError("Error syncing JETPACK: \(String(describing: error))")
         })
 
+        if let content = post.content {
+            editorViewController.setContent(content)
+        }
+
         onViewDidLoad()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        verificationPromptHelper?.updateVerificationStatus()
-        ghostView.startAnimation()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -355,16 +356,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         super.viewWillDisappear(animated)
     }
 
-    override func viewLayoutMarginsDidChange() {
-        super.viewLayoutMarginsDidChange()
-        ghostView.frame = view.frame
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        ghostView.frame = view.frame
-    }
-
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
@@ -375,12 +366,13 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         }
     }
 
-    override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
-        super.present(viewControllerToPresent, animated: flag, completion: completion)
+    private func setupEditorView() {
+        view.tintColor = .editorPrimary
 
-        // Update the tint color for React Native modals when presented
-        let presentedView = presentedViewController?.view
-        presentedView?.tintColor = .editorPrimary
+        addChild(editorViewController)
+        view.addSubview(editorViewController.view)
+        view.pinSubviewToAllEdges(editorViewController.view)
+        editorViewController.didMove(toParent: self)
     }
 
     // MARK: - Functions
@@ -546,24 +538,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
     @objc func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         return presentationController(forPresented: presented, presenting: presenting)
-    }
-}
-
-// MARK: - Views setup
-
-extension NewGutenbergViewController {
-    private func setupGutenbergView() {
-        view.backgroundColor = .white
-        view.tintColor = .editorPrimary
-        gutenberg.rootView.translatesAutoresizingMaskIntoConstraints = false
-        gutenberg.rootView.backgroundColor = .basicBackground
-        view.addSubview(gutenberg.rootView)
-
-        view.pinSubviewToAllEdges(gutenberg.rootView)
-        gutenberg.rootView.pinSubviewToAllEdges(ghostView)
-
-        // Update the tint color of switches within React Native modals, as they require direct mutation
-        UISwitch.appearance(whenContainedInInstancesOf: [RCTModalHostViewController.self]).onTintColor = .editorPrimary
     }
 }
 
@@ -1099,7 +1073,7 @@ extension NewGutenbergViewController: GutenbergBridgeDataSource {
     }
 
     var loadingView: UIView? {
-        return ghostView
+        return nil
     }
 
     func gutenbergLocale() -> String? {
