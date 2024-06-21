@@ -490,6 +490,8 @@
 		0C3C50432BA3A024002A37B4 /* PostNoticePublishSuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C3C50412BA3A024002A37B4 /* PostNoticePublishSuccessView.swift */; };
 		0C5751102B011468001074E5 /* RemoteConfigDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C57510F2B011468001074E5 /* RemoteConfigDebugView.swift */; };
 		0C5751112B011468001074E5 /* RemoteConfigDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C57510F2B011468001074E5 /* RemoteConfigDebugView.swift */; };
+		0C61AA092C2510C600FA7E46 /* GutenbergKit in Frameworks */ = {isa = PBXBuildFile; productRef = 0C61AA082C2510C600FA7E46 /* GutenbergKit */; };
+		0C61AA0B2C2510D500FA7E46 /* GutenbergKit in Frameworks */ = {isa = PBXBuildFile; productRef = 0C61AA0A2C2510D500FA7E46 /* GutenbergKit */; };
 		0C63266F2A3D1305000B8C57 /* GutenbergFilesAppMediaSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C63266E2A3D1305000B8C57 /* GutenbergFilesAppMediaSourceTests.swift */; };
 		0C6C4CD02A4F0A000049E762 /* BlazeCampaignsStreamTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6C4CCF2A4F0A000049E762 /* BlazeCampaignsStreamTests.swift */; };
 		0C6C4CD42A4F0AD90049E762 /* blaze-search-page-1.json in Resources */ = {isa = PBXBuildFile; fileRef = 0C6C4CD32A4F0AD80049E762 /* blaze-search-page-1.json */; };
@@ -6275,6 +6277,7 @@
 		0C391E632A312DB20040EA91 /* BlazeCampaignViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeCampaignViewModelTests.swift; sourceTree = "<group>"; };
 		0C3C50412BA3A024002A37B4 /* PostNoticePublishSuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostNoticePublishSuccessView.swift; sourceTree = "<group>"; };
 		0C57510F2B011468001074E5 /* RemoteConfigDebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigDebugView.swift; sourceTree = "<group>"; };
+		0C61AA0C2C2593A800FA7E46 /* GutenbergKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = GutenbergKit; path = ../../GutenbergKit; sourceTree = "<group>"; };
 		0C63266E2A3D1305000B8C57 /* GutenbergFilesAppMediaSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergFilesAppMediaSourceTests.swift; sourceTree = "<group>"; };
 		0C6C4CCF2A4F0A000049E762 /* BlazeCampaignsStreamTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeCampaignsStreamTests.swift; sourceTree = "<group>"; };
 		0C6C4CD32A4F0AD80049E762 /* blaze-search-page-1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "blaze-search-page-1.json"; sourceTree = "<group>"; };
@@ -9711,6 +9714,7 @@
 				E1A386C814DB05C300954CF8 /* AVFoundation.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				296890780FE971DC00770264 /* Security.framework in Frameworks */,
+				0C61AA0B2C2510D500FA7E46 /* GutenbergKit in Frameworks */,
 				83F3E26011275E07004CD686 /* MapKit.framework in Frameworks */,
 				83F3E2D311276371004CD686 /* CoreLocation.framework in Frameworks */,
 				24CE2EB1258D687A0000C297 /* WordPressFlux in Frameworks */,
@@ -9835,6 +9839,7 @@
 				FABB26232602FC2C00C8785C /* QuickLook.framework in Frameworks */,
 				3F9F232D2B0B281400B56061 /* JetpackStatsWidgetsCore in Frameworks */,
 				FABB26242602FC2C00C8785C /* CoreText.framework in Frameworks */,
+				0C61AA092C2510C600FA7E46 /* GutenbergKit in Frameworks */,
 				FABB26252602FC2C00C8785C /* UserNotifications.framework in Frameworks */,
 				FABB26262602FC2C00C8785C /* Photos.framework in Frameworks */,
 				FABB26272602FC2C00C8785C /* NotificationCenter.framework in Frameworks */,
@@ -11019,6 +11024,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				0C61AA0C2C2593A800FA7E46 /* GutenbergKit */,
 				3F20FDF3276BF21000DA3CAD /* Packages */,
 				F14B5F6F208E648200439554 /* config */,
 				E1B34C091CCDFFCE00889709 /* Credentials */,
@@ -18948,6 +18954,7 @@
 				3F9F232A2B0B27DD00B56061 /* JetpackStatsWidgetsCore */,
 				08E63FCE2B28E53400747E21 /* DesignSystem */,
 				1DF7A0CC2B9F66970003CBA3 /* SwiftSoup */,
+				0C61AA0A2C2510D500FA7E46 /* GutenbergKit */,
 			);
 			productName = WordPress;
 			productReference = 1D6058910D05DD3D006BFB54 /* WordPress.app */;
@@ -19209,6 +19216,7 @@
 				3F9F232C2B0B281400B56061 /* JetpackStatsWidgetsCore */,
 				08E63FCC2B28E52B00747E21 /* DesignSystem */,
 				1DF7A0CA2B9F66810003CBA3 /* SwiftSoup */,
+				0C61AA082C2510C600FA7E46 /* GutenbergKit */,
 			);
 			productName = WordPress;
 			productReference = FABB26522602FC2C00C8785C /* Jetpack.app */;
@@ -19429,6 +19437,7 @@
 				3F338B6F289BD3040014ADC5 /* XCRemoteSwiftPackageReference "Nimble" */,
 				0CD9FB852AFA71B9009D9C7A /* XCRemoteSwiftPackageReference "Charts" */,
 				1DF7A0C92B9F61CC0003CBA3 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
+				0C61AA072C2510C600FA7E46 /* XCRemoteSwiftPackageReference "GutenbergKit" */,
 			);
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
@@ -30715,6 +30724,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		0C61AA072C2510C600FA7E46 /* XCRemoteSwiftPackageReference "GutenbergKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kean/GutenbergKit";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		0CD9FB852AFA71B9009D9C7A /* XCRemoteSwiftPackageReference "Charts" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/danielgindi/Charts";
@@ -30797,6 +30814,16 @@
 		08E63FCE2B28E53400747E21 /* DesignSystem */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DesignSystem;
+		};
+		0C61AA082C2510C600FA7E46 /* GutenbergKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0C61AA072C2510C600FA7E46 /* XCRemoteSwiftPackageReference "GutenbergKit" */;
+			productName = GutenbergKit;
+		};
+		0C61AA0A2C2510D500FA7E46 /* GutenbergKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0C61AA072C2510C600FA7E46 /* XCRemoteSwiftPackageReference "GutenbergKit" */;
+			productName = GutenbergKit;
 		};
 		0CD9FB862AFA71B9009D9C7A /* DGCharts */ = {
 			isa = XCSwiftPackageProductDependency;
