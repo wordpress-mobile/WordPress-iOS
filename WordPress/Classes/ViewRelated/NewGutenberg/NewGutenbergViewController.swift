@@ -1245,8 +1245,10 @@ extension NewGutenbergViewController: PostEditorNavigationBarManagerDelegate {
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton) {
         Task {
             // TODO: read title as well
+            let startTime = CFAbsoluteTimeGetCurrent()
             let content = try? await editorViewController.getContent()
-            NSLog("loaded content: \(content)")
+            let duration = CFAbsoluteTimeGetCurrent() - startTime
+            print("performance-get-content:", duration)
         }
 
 //        requestHTML(for: .close)
