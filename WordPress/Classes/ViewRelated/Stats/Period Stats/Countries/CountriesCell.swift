@@ -1,12 +1,11 @@
 import UIKit
 
-class CountriesCell: StatsBaseCell, NibLoadable {
+final class CountriesCell: StatsRowsCell, NibLoadable {
 
     // MARK: - Properties
 
     @IBOutlet weak var topSeparatorLine: UIView!
     @IBOutlet weak var subtitleStackView: UIStackView!
-    @IBOutlet weak var rowsStackView: UIStackView!
     @IBOutlet weak var itemSubtitleLabel: UILabel!
     @IBOutlet weak var dataSubtitleLabel: UILabel!
     @IBOutlet weak var bottomSeparatorLine: UIView!
@@ -20,12 +19,6 @@ class CountriesCell: StatsBaseCell, NibLoadable {
     private var dataRows = [StatsTotalRowData]()
     private typealias Style = WPStyleGuide.Stats
     private var forDetails = false
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-
-        addDefaultTotalRows(toStackView: rowsStackView)
-    }
 
     // MARK: - Configure
 

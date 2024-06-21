@@ -7,13 +7,12 @@ import UIKit
 /// If the row has child rows, those child rows are added to the stack view below the selected row.
 ///
 
-class TopTotalsCell: StatsBaseCell, NibLoadable {
+final class TopTotalsCell: StatsRowsCell, NibLoadable {
 
     // MARK: - Properties
 
     @IBOutlet weak var outerStackView: UIStackView!
     @IBOutlet weak var subtitleStackView: UIStackView!
-    @IBOutlet weak var rowsStackView: UIStackView!
     @IBOutlet weak var itemSubtitleLabel: UILabel!
     @IBOutlet weak var dataSubtitleLabel: UILabel!
     @IBOutlet weak var dataSubtitleLabelWidthConstraint: NSLayoutConstraint!
@@ -43,12 +42,6 @@ class TopTotalsCell: StatsBaseCell, NibLoadable {
     private weak var siteStatsDetailsDelegate: SiteStatsDetailsDelegate?
     private weak var postStatsDelegate: PostStatsDelegate?
     private typealias Style = WPStyleGuide.Stats
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-
-        addDefaultTotalRows(toStackView: rowsStackView)
-    }
 
     // MARK: - Configure
 
