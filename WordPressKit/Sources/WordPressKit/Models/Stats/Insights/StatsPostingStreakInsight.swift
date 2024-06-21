@@ -141,8 +141,6 @@ extension StatsPostingStreakInsight: StatsInsightData {
     }
 
     fileprivate static var dateFormatter: DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        return formatter
+        return RFC339NoTimeDateFormatter()
     }
 }
