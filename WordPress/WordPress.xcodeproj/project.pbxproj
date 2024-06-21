@@ -430,6 +430,7 @@
 		0A9610F928B2E56300076EBA /* UserSuggestion+Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9610F828B2E56300076EBA /* UserSuggestion+Comparable.swift */; };
 		0A9610FA28B2E56300076EBA /* UserSuggestion+Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9610F828B2E56300076EBA /* UserSuggestion+Comparable.swift */; };
 		0A9687BC28B40771009DCD2F /* FullScreenCommentReplyViewModelMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9687BB28B40771009DCD2F /* FullScreenCommentReplyViewModelMock.swift */; };
+		0C00EA652C25968200D4636C /* NewGutenbergViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C61AA0E2C2594C800FA7E46 /* NewGutenbergViewController.swift */; };
 		0C01A6EA2AB37F0F009F7145 /* SiteMediaCollectionCellSelectionOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C01A6E92AB37F0F009F7145 /* SiteMediaCollectionCellSelectionOverlayView.swift */; };
 		0C01A6EB2AB37F0F009F7145 /* SiteMediaCollectionCellSelectionOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C01A6E92AB37F0F009F7145 /* SiteMediaCollectionCellSelectionOverlayView.swift */; };
 		0C02E6C52BE3B6E30055F0F6 /* PostTrashedOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C02E6C42BE3B6E30055F0F6 /* PostTrashedOverlayView.swift */; };
@@ -492,6 +493,7 @@
 		0C5751112B011468001074E5 /* RemoteConfigDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C57510F2B011468001074E5 /* RemoteConfigDebugView.swift */; };
 		0C61AA092C2510C600FA7E46 /* GutenbergKit in Frameworks */ = {isa = PBXBuildFile; productRef = 0C61AA082C2510C600FA7E46 /* GutenbergKit */; };
 		0C61AA0B2C2510D500FA7E46 /* GutenbergKit in Frameworks */ = {isa = PBXBuildFile; productRef = 0C61AA0A2C2510D500FA7E46 /* GutenbergKit */; };
+		0C61AA0F2C2594C800FA7E46 /* NewGutenbergViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C61AA0E2C2594C800FA7E46 /* NewGutenbergViewController.swift */; };
 		0C63266F2A3D1305000B8C57 /* GutenbergFilesAppMediaSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C63266E2A3D1305000B8C57 /* GutenbergFilesAppMediaSourceTests.swift */; };
 		0C6C4CD02A4F0A000049E762 /* BlazeCampaignsStreamTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6C4CCF2A4F0A000049E762 /* BlazeCampaignsStreamTests.swift */; };
 		0C6C4CD42A4F0AD90049E762 /* blaze-search-page-1.json in Resources */ = {isa = PBXBuildFile; fileRef = 0C6C4CD32A4F0AD80049E762 /* blaze-search-page-1.json */; };
@@ -6278,6 +6280,7 @@
 		0C3C50412BA3A024002A37B4 /* PostNoticePublishSuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostNoticePublishSuccessView.swift; sourceTree = "<group>"; };
 		0C57510F2B011468001074E5 /* RemoteConfigDebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigDebugView.swift; sourceTree = "<group>"; };
 		0C61AA0C2C2593A800FA7E46 /* GutenbergKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = GutenbergKit; path = ../../GutenbergKit; sourceTree = "<group>"; };
+		0C61AA0E2C2594C800FA7E46 /* NewGutenbergViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGutenbergViewController.swift; sourceTree = "<group>"; };
 		0C63266E2A3D1305000B8C57 /* GutenbergFilesAppMediaSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergFilesAppMediaSourceTests.swift; sourceTree = "<group>"; };
 		0C6C4CCF2A4F0A000049E762 /* BlazeCampaignsStreamTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeCampaignsStreamTests.swift; sourceTree = "<group>"; };
 		0C6C4CD32A4F0AD80049E762 /* blaze-search-page-1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "blaze-search-page-1.json"; sourceTree = "<group>"; };
@@ -10502,6 +10505,7 @@
 		0C61AA0D2C2593BD00FA7E46 /* NewGutenberg */ = {
 			isa = PBXGroup;
 			children = (
+				0C61AA0E2C2594C800FA7E46 /* NewGutenbergViewController.swift */,
 			);
 			path = NewGutenberg;
 			sourceTree = "<group>";
@@ -21402,6 +21406,7 @@
 				B587798619B799EB00E57C5A /* Notification+Interface.swift in Sources */,
 				175A650C20B6F7280023E71B /* ReaderSaveForLater+Analytics.swift in Sources */,
 				9A2B28F52192121400458F2A /* RevisionOperation.swift in Sources */,
+				0C61AA0F2C2594C800FA7E46 /* NewGutenbergViewController.swift in Sources */,
 				F4FB0ACD292587D500F651F9 /* MeHeaderViewConfiguration.swift in Sources */,
 				80DB57982AF99E0900C728FF /* BlogListConfiguration.swift in Sources */,
 				80D9CFFA29E5E6FE00FE3400 /* DashboardCardTableView.swift in Sources */,
@@ -25179,6 +25184,7 @@
 				FABB235C2602FC2C00C8785C /* WPAnalyticsTrackerWPCom.m in Sources */,
 				C3C2F84928AC8EBF00937E45 /* JetpackBannerScrollVisibility.swift in Sources */,
 				FABB235D2602FC2C00C8785C /* AztecAttachmentViewController.swift in Sources */,
+				0C00EA652C25968200D4636C /* NewGutenbergViewController.swift in Sources */,
 				FABB235F2602FC2C00C8785C /* LoginEpilogueBlogCell.swift in Sources */,
 				FABB23602602FC2C00C8785C /* PostServiceRemoteFactory.swift in Sources */,
 				FABB23612602FC2C00C8785C /* ReaderTabItemsStore.swift in Sources */,

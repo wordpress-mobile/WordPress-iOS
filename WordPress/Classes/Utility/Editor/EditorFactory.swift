@@ -14,6 +14,9 @@ class EditorFactory {
 
     func instantiateEditor(for post: AbstractPost, replaceEditor: @escaping ReplaceEditorBlock) -> EditorViewController {
         if gutenbergSettings.mustUseGutenberg(for: post) {
+            if FeatureFlag.newGutenberg.enabled {
+                return NewGutenbergViewController(post: post, replaceEditor: replaceEditor)
+            }
             return createGutenbergVC(with: post, replaceEditor: replaceEditor)
         } else {
             return AztecPostViewController(post: post, replaceEditor: replaceEditor)
