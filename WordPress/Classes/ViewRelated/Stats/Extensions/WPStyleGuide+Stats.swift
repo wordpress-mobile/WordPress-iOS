@@ -73,7 +73,7 @@ extension WPStyleGuide {
             label.textColor = .DS.Foreground.secondary
             label.font = .DS.font(.footnote)
             label.adjustsFontSizeToFitWidth = true
-            label.maximumContentSizeCategory = .accessibilityLarge
+            label.maximumContentSizeCategory = .extraExtraExtraLarge
         }
 
         static func configureLabelAsLink(_ label: UILabel) {
