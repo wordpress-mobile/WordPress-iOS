@@ -76,9 +76,9 @@ class StatsRemoteV2Tests: RemoteTestCase, RESTTestable {
 
             let calendar = Calendar.autoupdatingCurrent
 
-            let march28 = DateComponents(year: 2018, month: 3, day: 28)
-            let march29 = DateComponents(year: 2018, month: 3, day: 29)
-            let feb7 = DateComponents(year: 2019, month: 2, day: 7)
+            let march28 = DateComponents(timeZone: .current, year: 2018, month: 3, day: 28)
+            let march29 = DateComponents(timeZone: .current, year: 2018, month: 3, day: 29)
+            let feb7 = DateComponents(timeZone: .current, year: 2019, month: 2, day: 7)
 
             XCTAssertEqual(insight?.longestStreakStart, calendar.date(from: march28))
             XCTAssertEqual(insight?.longestStreakEnd, calendar.date(from: march29))
@@ -407,7 +407,7 @@ class StatsRemoteV2Tests: RemoteTestCase, RESTTestable {
 
         stubRemoteResponse(siteVisitsDataEndpoint, filename: getVisitsDayMockFilename, contentType: .ApplicationJSON)
 
-        let feb21 = DateComponents(year: 2019, month: 2, day: 21)
+        let feb21 = DateComponents(timeZone: .current, year: 2019, month: 2, day: 21)
         let date = Calendar.autoupdatingCurrent.date(from: feb21)!
 
         remote.getData(for: .day, endingOn: date) { (summary: StatsSummaryTimeIntervalData?, error: Error?) in
@@ -516,7 +516,7 @@ class StatsRemoteV2Tests: RemoteTestCase, RESTTestable {
 
         stubRemoteResponse(siteVisitsDataEndpoint, filename: getVisitsWeekMockFilename, contentType: .ApplicationJSON)
 
-        let feb21 = DateComponents(year: 2019, month: 2, day: 21)
+        let feb21 = DateComponents(timeZone: .current, year: 2019, month: 2, day: 21)
         let date = Calendar.autoupdatingCurrent.date(from: feb21)!
 
         remote.getData(for: .week, endingOn: date) { (summary: StatsSummaryTimeIntervalData?, error: Error?) in
@@ -530,7 +530,7 @@ class StatsRemoteV2Tests: RemoteTestCase, RESTTestable {
             XCTAssertEqual(summary?.summaryData[0].likesCount, 855)
             XCTAssertEqual(summary?.summaryData[0].commentsCount, 44)
 
-            let dec17 = DateComponents(year: 2018, month: 12, day: 17)
+            let dec17 = DateComponents(timeZone: .current, year: 2018, month: 12, day: 17)
             let dec17Date = Calendar.autoupdatingCurrent.date(from: dec17)!
             XCTAssertEqual(summary?.summaryData[0].periodStartDate, dec17Date)
 
@@ -554,7 +554,7 @@ class StatsRemoteV2Tests: RemoteTestCase, RESTTestable {
 
         stubRemoteResponse(siteVisitsDataEndpoint, filename: getVisitsMonthMockFilename, contentType: .ApplicationJSON)
 
-        let feb21 = DateComponents(year: 2019, month: 2, day: 21)
+        let feb21 = DateComponents(timeZone: .current, year: 2019, month: 2, day: 21)
         let date = Calendar.autoupdatingCurrent.date(from: feb21)!
 
         remote.getData(for: .month, endingOn: date) { (summary: StatsSummaryTimeIntervalData?, error: Error?) in
@@ -568,7 +568,7 @@ class StatsRemoteV2Tests: RemoteTestCase, RESTTestable {
             XCTAssertEqual(summary?.summaryData[0].likesCount, 72)
             XCTAssertEqual(summary?.summaryData[0].commentsCount, 0)
 
-            let may1 = DateComponents(year: 2018, month: 5, day: 1)
+            let may1 = DateComponents(timeZone: .current, year: 2018, month: 5, day: 1)
             let may1Date = Calendar.autoupdatingCurrent.date(from: may1)!
             XCTAssertEqual(summary?.summaryData[0].periodStartDate, may1Date)
 
@@ -577,7 +577,7 @@ class StatsRemoteV2Tests: RemoteTestCase, RESTTestable {
             XCTAssertEqual(summary?.summaryData[9].likesCount, 116)
             XCTAssertEqual(summary?.summaryData[9].commentsCount, 0)
 
-            let nineMonthsFromMay1 = Calendar.autoupdatingCurrent.date(byAdding: .month, value: 9, to: may1Date)!
+            let nineMonthsFromMay1 = Calendar.autoupdatingCurrent.date(from: DateComponents(timeZone: .current, year: 2019, month: 2, day: 1))!
 
             XCTAssertEqual(summary?.summaryData[9].periodStartDate, nineMonthsFromMay1)
 
@@ -592,7 +592,7 @@ class StatsRemoteV2Tests: RemoteTestCase, RESTTestable {
 
         stubRemoteResponse(siteVisitsDataEndpoint, filename: getVisitsMonthWithWeekUnitMockFilename, contentType: .ApplicationJSON)
 
-        let jan31 = DateComponents(year: 2024, month: 1, day: 31)
+        let jan31 = DateComponents(timeZone: .current, year: 2024, month: 1, day: 31)
         let date = Calendar.autoupdatingCurrent.date(from: jan31)!
 
         remote.getData(for: .month, unit: .week, endingOn: date, limit: 5) { (summary: StatsSummaryTimeIntervalData?, error: Error?) in
@@ -609,7 +609,7 @@ class StatsRemoteV2Tests: RemoteTestCase, RESTTestable {
             XCTAssertEqual(summary?.summaryData[0].commentsCount, 50)
             XCTAssertEqual(summary?.summaryData[0].period, .week)
 
-            let jan1 = DateComponents(year: 2024, month: 1, day: 1)
+            let jan1 = DateComponents(timeZone: .current, year: 2024, month: 1, day: 1)
             let jan1Date = Calendar.autoupdatingCurrent.date(from: jan1)!
             XCTAssertEqual(summary?.summaryData[0].periodStartDate, jan1Date)
 
@@ -628,7 +628,7 @@ class StatsRemoteV2Tests: RemoteTestCase, RESTTestable {
 
         stubRemoteResponse(siteVisitsDataEndpoint, filename: getVisitsMonthMockFilename, contentType: .ApplicationJSON)
 
-        let feb21 = DateComponents(year: 2019, month: 2, day: 21)
+        let feb21 = DateComponents(timeZone: .current, year: 2019, month: 2, day: 21)
         let date = Calendar.autoupdatingCurrent.date(from: feb21)!
 
         remote.getData(for: .month, endingOn: date) { (summary: StatsLikesSummaryTimeIntervalData?, error: Error?) in
@@ -642,7 +642,7 @@ class StatsRemoteV2Tests: RemoteTestCase, RESTTestable {
             XCTAssertEqual(summary?.summaryData[0].likesCount, 72)
             XCTAssertEqual(summary?.summaryData[0].commentsCount, 0)
 
-            let may1 = DateComponents(year: 2018, month: 5, day: 1)
+            let may1 = DateComponents(timeZone: .current, year: 2018, month: 5, day: 1)
             let may1Date = Calendar.autoupdatingCurrent.date(from: may1)!
             XCTAssertEqual(summary?.summaryData[0].periodStartDate, may1Date)
 
@@ -651,7 +651,7 @@ class StatsRemoteV2Tests: RemoteTestCase, RESTTestable {
             XCTAssertEqual(summary?.summaryData[9].likesCount, 116)
             XCTAssertEqual(summary?.summaryData[9].commentsCount, 0)
 
-            let nineMonthsFromMay1 = Calendar.autoupdatingCurrent.date(byAdding: .month, value: 9, to: may1Date)!
+            let nineMonthsFromMay1 = Calendar.autoupdatingCurrent.date(from: DateComponents(timeZone: .current, year: 2019, month: 2, day: 1))!
 
             XCTAssertEqual(summary?.summaryData[9].periodStartDate, nineMonthsFromMay1)
 

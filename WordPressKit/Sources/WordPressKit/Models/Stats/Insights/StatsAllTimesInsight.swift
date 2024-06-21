@@ -46,8 +46,6 @@ extension StatsAllTimesInsight: StatsInsightData {
 
     // MARK: -
     private static var dateFormatter: DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        return formatter
+        RFC339NoTimeDateFormatter()
     }
 }
