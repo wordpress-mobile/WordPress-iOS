@@ -128,8 +128,6 @@ private extension TopTotalsCell {
     /// - Hide the stack view.
     ///
     func setSubtitleVisibility() {
-        subtitleStackView.setNeedsLayout()
-
         if forDetails {
             bottomSeparatorLine.isHidden = true
 

@@ -75,7 +75,6 @@ private extension CountriesCell {
     }
 
     func setSubtitleVisibility() {
-        subtitleStackView.setNeedsLayout()
         let subtitleHeight = subtitlesStackViewTopConstraint.constant * 2 + subtitleStackView.frame.height
 
         if forDetails {
