@@ -12,7 +12,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
     enum RequestHTMLReason {
         case publish
-        case close
         case more
         case autoSave
     }
@@ -263,6 +262,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     // MARK: - GutenbergKit
 
     private let editorViewController = GutenbergEditorViewController()
+    private weak var autosaveTimer: Timer?
 
     // MARK: - Initializers
     required convenience init(
@@ -312,6 +312,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         tearDownKeyboardObservers()
         gutenberg.invalidate()
         attachmentDelegate.cancelAllPendingMediaRequests()
+        autosaveTimer?.invalidate()
     }
 
     // MARK: - Lifecycle methods
@@ -337,6 +338,10 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
         if let content = post.content {
             editorViewController.setContent(content)
+        }
+
+        autosaveTimer = .scheduledTimer(withTimeInterval: 10, repeats: true) { [weak self] _ in
+            self?.performAutoSave()
         }
 
         onViewDidLoad()
@@ -471,6 +476,25 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
         navigationBarManager.undoButton.isHidden = mode == .html
         navigationBarManager.redoButton.isHidden = mode == .html
+    }
+
+    private func performAutoSave() {
+        Task {
+            await getLatestContent()
+        }
+    }
+
+    private func getLatestContent() async {
+        // TODO: read title as well
+        let startTime = CFAbsoluteTimeGetCurrent()
+        let content = try? await editorViewController.getContent()
+        let duration = CFAbsoluteTimeGetCurrent() - startTime
+        print("gutenbergkit-measure_get-latest-content:", duration)
+
+        if content != post.content {
+            post.content = content
+            post.managedObjectContext.map(ContextManager.shared.save)
+        }
     }
 
     private func presentEditingModeSwitchedNotice() {
@@ -816,9 +840,6 @@ extension NewGutenbergViewController: GutenbergBridgeDelegate {
                 } else {
                     showAlertForEmptyPostPublish()
                 }
-            case .close:
-                isEditorClosing = true
-                cancelEditing()
             case .more:
                 fatalError("no longer supported")
             case .autoSave:
@@ -1243,15 +1264,13 @@ extension NewGutenbergViewController: PostEditorNavigationBarManagerDelegate {
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton) {
+        navigationController?.view.isUserInteractionEnabled = false
         Task {
-            // TODO: read title as well
-            let startTime = CFAbsoluteTimeGetCurrent()
-            let content = try? await editorViewController.getContent()
-            let duration = CFAbsoluteTimeGetCurrent() - startTime
-            print("performance-get-content:", duration)
+            await getLatestContent()
+            navigationController?.view.isUserInteractionEnabled = true
+            isEditorClosing = true
+            cancelEditing()
         }
-
-//        requestHTML(for: .close)
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, undoWasPressed sender: UIButton) {
