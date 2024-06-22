@@ -154,6 +154,21 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         subscribeToModelChanges()
         subscribeToPostPublished()
         subscribeToWillEnterForeground()
+
+        if FeatureFlag.newGutenberg.enabled {
+            let _ = WebViewWarmup.shared
+        }
+    }
+
+    class WebViewWarmup {
+        static let shared = WebViewWarmup()
+        private let webView: WKWebView
+
+        private init() {
+            // WebKit warm-up so the editor opens faster on subsequent launches
+            webView = WKWebView()
+            webView.loadHTMLString("", baseURL: nil)
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {

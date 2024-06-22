@@ -88,7 +88,7 @@ extension FeatureFlag {
         case .tipKit: "TipKit"
         case .sidebar: "Sidebar"
         case .newGutenberg:
-            return "New Gutenberg"
+            return "GutenbergKit"
         }
     }
 }
