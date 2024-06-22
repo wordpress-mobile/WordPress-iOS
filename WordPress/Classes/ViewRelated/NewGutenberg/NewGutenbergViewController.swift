@@ -24,10 +24,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         SupportCoordinator(controllerToShowFrom: topmostPresentedViewController, tag: .editorHelp)
     }()
 
-    // MARK: - Aztec
-
-    var replaceEditor: (EditorViewController, EditorViewController) -> ()
-
     // MARK: - PostEditor
 
     var html: String {
@@ -154,13 +150,14 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
     // MARK: - GutenbergKit
 
-    private let editorViewController = GutenbergEditorViewController()
+    private let editorViewController: GutenbergEditorViewController
     private weak var autosaveTimer: Timer?
 
     // TODO: remove (unused)
     var autosaver = Autosaver(action: {})
     func prepopulateMediaItems(_ media: [Media]) {}
     var debouncer = WordPressShared.Debouncer(delay: 10)
+    var replaceEditor: (EditorViewController, EditorViewController) -> ()
 
     // MARK: - Initializers
     required convenience init(
@@ -194,6 +191,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         self.replaceEditor = replaceEditor
         self.editorSession = PostEditorAnalyticsSession(editor: .gutenberg, post: post)
         self.navigationBarManager = navigationBarManager ?? PostEditorNavigationBarManager()
+        self.editorViewController = GutenbergEditorViewController(content: post.content ?? "")
 
         super.init(nibName: nil, bundle: nil)
 
@@ -213,6 +211,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         setupKeyboardObservers()
         createRevisionOfPost(loadAutosaveRevision: false)
         setupEditorView()
@@ -227,11 +226,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 //        }, failure: { (error) in
 //            DDLogError("Error syncing JETPACK: \(String(describing: error))")
 //        })
-
-        // TODO: set when instantiating
-        if let content = post.content {
-            editorViewController.setContent(content)
-        }
 
         autosaveTimer = .scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             self?.performAutoSave()
