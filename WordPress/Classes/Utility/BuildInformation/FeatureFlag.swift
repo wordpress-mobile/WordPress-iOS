@@ -86,7 +86,7 @@ extension FeatureFlag {
         case .autoSaveDrafts:
             return "Autosave Drafts"
         case .newGutenberg:
-            return "New Gutenberg"
+            return "GutenbergKit"
         }
     }
 }

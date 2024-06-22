@@ -176,6 +176,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         }
     }
 
+    // TODO: remove
     func getHTML() -> String {
         return html
     }
