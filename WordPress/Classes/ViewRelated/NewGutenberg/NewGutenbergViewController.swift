@@ -11,7 +11,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     let errorDomain: String = "GutenbergViewController.errorDomain"
 
     enum RequestHTMLReason {
-        case publish
         case more
         case autoSave
     }
@@ -340,7 +339,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
             editorViewController.setContent(content)
         }
 
-        autosaveTimer = .scheduledTimer(withTimeInterval: 10, repeats: true) { [weak self] _ in
+        autosaveTimer = .scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             self?.performAutoSave()
         }
 
@@ -811,17 +810,6 @@ extension NewGutenbergViewController: GutenbergBridgeDelegate {
         present(alertController, animated: true, completion: nil)
     }
 
-    func editorHasContent(title: String, content: String) -> Bool {
-        let hasTitle = !title.isEmpty
-        var hasContent = !content.isEmpty
-        if let contentInfo = contentInfo {
-            let isEmpty = contentInfo.blockCount == 0
-            let isOneEmptyParagraph = (contentInfo.blockCount == 1 && contentInfo.paragraphCount == 1 && contentInfo.characterCount == 0)
-            hasContent = !(isEmpty || isOneEmptyParagraph)
-        }
-        return hasTitle || hasContent
-    }
-
     func gutenbergDidProvideHTML(title: String, html: String, changed: Bool, contentInfo: ContentInfo?) {
         isRequestingHTML = false
         if changed {
@@ -834,12 +822,6 @@ extension NewGutenbergViewController: GutenbergBridgeDelegate {
         if let reason = requestHTMLReason {
             requestHTMLReason = nil // clear the reason
             switch reason {
-            case .publish:
-                if editorHasContent(title: title, content: html) {
-                    handlePrimaryActionButtonTap()
-                } else {
-                    showAlertForEmptyPostPublish()
-                }
             case .more:
                 fatalError("no longer supported")
             case .autoSave:
@@ -1264,10 +1246,7 @@ extension NewGutenbergViewController: PostEditorNavigationBarManagerDelegate {
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton) {
-        navigationController?.view.isUserInteractionEnabled = false
-        Task {
-            await getLatestContent()
-            navigationController?.view.isUserInteractionEnabled = true
+        performAfterUpdatingContent { [self] in
             isEditorClosing = true
             cancelEditing()
         }
@@ -1285,12 +1264,27 @@ extension NewGutenbergViewController: PostEditorNavigationBarManagerDelegate {
         requestHTML(for: .more)
     }
 
-    func navigationBarManager(_ manager: PostEditorNavigationBarManager, publishButtonWasPressed sender: UIButton) {
-        requestHTML(for: .publish)
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, displayCancelMediaUploads sender: UIButton) {
+        fatalError("not supported")
     }
 
-    func navigationBarManager(_ manager: PostEditorNavigationBarManager, displayCancelMediaUploads sender: UIButton) {
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, publishButtonWasPressed sender: UIButton) {
+        performAfterUpdatingContent { [self] in
+            if editorHasContent {
+                handlePrimaryActionButtonTap()
+            } else {
+                showAlertForEmptyPostPublish()
+            }
+        }
+    }
 
+    private func performAfterUpdatingContent(_ closure: @MainActor @escaping () -> Void) {
+        navigationController?.view.isUserInteractionEnabled = false
+        Task { @MainActor in
+            await getLatestContent()
+            navigationController?.view.isUserInteractionEnabled = true
+            closure()
+        }
     }
 }
 
