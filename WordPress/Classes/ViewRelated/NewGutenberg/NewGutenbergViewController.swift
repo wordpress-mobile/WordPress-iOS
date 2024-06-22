@@ -212,6 +212,8 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        view.backgroundColor = .systemBackground
+
         setupKeyboardObservers()
         createRevisionOfPost(loadAutosaveRevision: false)
         setupEditorView()
@@ -261,6 +263,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     private func setupEditorView() {
         view.tintColor = .editorPrimary
 
+//        editorViewController.edgesForExtendedLayout = .all
         addChild(editorViewController)
         view.addSubview(editorViewController.view)
         view.pinSubviewToAllEdges(editorViewController.view)
@@ -300,27 +303,14 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     }
 
     private func configureNavigationBar() {
-        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.accessibilityIdentifier = "Gutenberg Editor Navigation Bar"
         navigationItem.leftBarButtonItems = navigationBarManager.leftBarButtonItems
 
-        // Add bottom border line
-        let screenScale = UIScreen.main.scale
-        let borderWidth: CGFloat = 1.0 / screenScale
-        let borderColor = UIColor(red: 60/255, green: 60/255, blue: 67/255, alpha: 0.36).cgColor
-
-        let borderBottom = UIView()
-        borderBottom.backgroundColor = UIColor(cgColor: borderColor)
-        borderBottom.frame = CGRect(x: 0, y: navigationController?.navigationBar.frame.size.height ?? 0 - borderWidth, width: navigationController?.navigationBar.frame.size.width ?? 0, height: borderWidth)
-        borderBottom.autoresizingMask = [.flexibleWidth, .flexibleTopMargin]
-        navigationController?.navigationBar.addSubview(borderBottom)
+        configureDefaultNavigationBarAppearance()
 
         navigationBarManager.moreButton.menu = makeMoreMenu()
         navigationBarManager.moreButton.showsMenuAsPrimaryAction = true
-    }
-
-    @objc private func buttonMoreTapped() {
-
     }
 
     private func reloadBlogIconView() {
@@ -337,6 +327,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         }
     }
 
+    // TODO: this should not be called on viewDidLoad
     private func reloadEditorContents() {
         let content = post.content ?? String()
 
