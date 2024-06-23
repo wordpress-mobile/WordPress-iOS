@@ -47,14 +47,8 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     var analyticsEditorSource: String { Analytics.editorSource }
     var editorSession: PostEditorAnalyticsSession
     var onClose: ((Bool) -> Void)?
-    var postIsReblogged: Bool = false
 
     // MARK: - Editor Media actions
-
-    // TODO: reimplement
-    var isUploadingMedia: Bool {
-        return false
-    }
 
     // MARK: - Set content
 
@@ -94,15 +88,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     }
 
     let navigationBarManager: PostEditorNavigationBarManager
-
-    var wordCount: UInt {
-        0
-//        guard let currentMetrics = contentInfo else {
-//            return 0
-//        }
-
-//        return UInt(currentMetrics.wordCount)
-    }
 
     // MARK: - Private variables
 
@@ -152,6 +137,9 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     var debouncer = WordPressShared.Debouncer(delay: 10)
     var replaceEditor: (EditorViewController, EditorViewController) -> ()
     var verificationPromptHelper: (any VerificationPromptHelper)?
+    var isUploadingMedia: Bool { false }
+    var wordCount: UInt { 0 }
+    var postIsReblogged: Bool = false
 
     // MARK: - Initializers
     required convenience init(
