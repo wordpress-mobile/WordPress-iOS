@@ -150,8 +150,25 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
     // MARK: - GutenbergKit
 
-    private let editorViewController: GutenbergEditorViewController
+    private let editorViewController: GutenbergKit.EditorViewController
     private weak var autosaveTimer: Timer?
+
+    var editorHasChanges: Bool {
+        var changes = post.changes
+        // TODO: cleanup (+ it doesn't handle scenarios like load from a revision)
+        // - warning: it has to compare two version serialized using the same system
+        if editorViewController.initialContent != post.content {
+            changes.content = post.content
+        } else {
+            changes.content = nil // yes, it needs to be set to .none manually
+        }
+        return !changes.isEmpty
+    }
+
+    // TODO: this has to be incorrect and/or lagging behind
+    var editorHasContent: Bool {
+        !editorViewController.state.isEmpty
+    }
 
     // TODO: remove (unused)
     var autosaver = Autosaver(action: {})
@@ -191,10 +208,11 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         self.replaceEditor = replaceEditor
         self.editorSession = PostEditorAnalyticsSession(editor: .gutenberg, post: post)
         self.navigationBarManager = navigationBarManager ?? PostEditorNavigationBarManager()
-        self.editorViewController = GutenbergEditorViewController(content: post.content ?? "")
+        self.editorViewController = GutenbergKit.EditorViewController(content: post.content ?? "")
 
         super.init(nibName: nil, bundle: nil)
 
+        self.editorViewController.delegate = self
         self.navigationBarManager.delegate = self
     }
 
@@ -229,10 +247,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 //            DDLogError("Error syncing JETPACK: \(String(describing: error))")
 //        })
 
-        autosaveTimer = .scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
-            self?.performAutoSave()
-        }
-
         onViewDidLoad()
     }
 
@@ -263,7 +277,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     private func setupEditorView() {
         view.tintColor = .editorPrimary
 
-//        editorViewController.edgesForExtendedLayout = .all
         addChild(editorViewController)
         view.addSubview(editorViewController.view)
         view.pinSubviewToAllEdges(editorViewController.view)
@@ -417,6 +430,33 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
     @objc func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         return presentationController(forPresented: presented, presenting: presenting)
+    }
+}
+
+extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate {
+    func editor(_ viewContoller: GutenbergKit.EditorViewController, didDisplayInitialContent content: String) {
+        // Do nothing
+    }
+
+    func editor(_ viewContoller: GutenbergKit.EditorViewController, didEncounterCriticalError error: any Error) {
+        let alert = UIAlertController(title: "Editor Critical Error", message: error.localizedDescription, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default) { [weak self] _ in
+            self?.onClose?(false)
+        })
+        present(alert, animated: true)
+    }
+
+    func editor(_ viewController: GutenbergKit.EditorViewController, didUpdateContentWithState state: GutenbergKit.EditorState) {
+        editorContentWasUpdated()
+
+        // Save the changes on disk (crash protection). Throttle to ensure
+        // it doesn't happen too often.
+        if autosaveTimer == nil {
+            autosaveTimer = .scheduledTimer(withTimeInterval: 7, repeats: false) { [weak self] _ in
+                self?.autosaveTimer = nil
+                self?.performAutoSave()
+            }
+        }
     }
 }
 
