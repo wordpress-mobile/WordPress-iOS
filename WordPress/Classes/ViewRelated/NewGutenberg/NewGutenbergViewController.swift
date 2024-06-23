@@ -1,8 +1,4 @@
 import UIKit
-//import Gutenberg
-//import Aztec
-//import WordPressFlux
-//import React
 import AutomatticTracks
 import Combine
 import GutenbergKit
@@ -27,22 +23,13 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     // MARK: - PostEditor
 
     var html: String {
-        set {
-            post.content = newValue
-        }
-        get {
-            return post.content ?? ""
-        }
+        set { post.content = newValue }
+        get { return post.content ?? "" }
     }
 
     var postTitle: String {
-        set {
-            post.postTitle = newValue
-        }
-
-        get {
-            return post.postTitle ?? ""
-        }
+        set { post.postTitle = newValue }
+        get { return post.postTitle ?? "" }
     }
 
     var entryPoint: PostEditorEntryPoint = .unknown {
@@ -57,19 +44,10 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         return PostEditorStateContext(post: post, delegate: self)
     }()
 
-    var verificationPromptHelper: VerificationPromptHelper?
-
-    var analyticsEditorSource: String {
-        return Analytics.editorSource
-    }
-
+    var analyticsEditorSource: String { Analytics.editorSource }
     var editorSession: PostEditorAnalyticsSession
-
     var onClose: ((Bool) -> Void)?
-
     var postIsReblogged: Bool = false
-
-    var isEditorClosing: Bool = false
 
     // MARK: - Editor Media actions
 
@@ -137,8 +115,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
             return .html
         }
     }
-    private var isFirstGutenbergLayout = true
-    var shouldPresentInformativeDialog = false
 
     // TODO: reimplemet
 //    internal private(set) var contentInfo: ContentInfo?
@@ -170,11 +146,12 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         !editorViewController.state.isEmpty
     }
 
-    // TODO: remove (unused)
+    // TODO: remove (unused but required by the PostEditor protocol)
     var autosaver = Autosaver(action: {})
     func prepopulateMediaItems(_ media: [Media]) {}
     var debouncer = WordPressShared.Debouncer(delay: 10)
     var replaceEditor: (EditorViewController, EditorViewController) -> ()
+    var verificationPromptHelper: (any VerificationPromptHelper)?
 
     // MARK: - Initializers
     required convenience init(
@@ -221,7 +198,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     }
 
     deinit {
-        tearDownKeyboardObservers()
         autosaveTimer?.invalidate()
     }
 
@@ -232,7 +208,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
         view.backgroundColor = .systemBackground
 
-        setupKeyboardObservers()
         createRevisionOfPost(loadAutosaveRevision: false)
         setupEditorView()
         configureNavigationBar()
@@ -250,28 +225,10 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         onViewDidLoad()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
-
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         // Handles refreshing controls with state context after options screen is dismissed
         editorContentWasUpdated()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-    }
-
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-
-        // Required to work around an issue present in iOS 14 beta 2
-        // https://github.com/wordpress-mobile/WordPress-iOS/issues/14460
-        if presentedViewController?.view.accessibilityIdentifier == MoreSheetAlert.accessibilityIdentifier {
-            dismiss(animated: true)
-        }
     }
 
     private func setupEditorView() {
@@ -291,36 +248,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     }
 
     // MARK: - Functions
-
-    private var keyboardShowObserver: Any?
-    private var keyboardHideObserver: Any?
-    private var keyboardFrame = CGRect.zero
-    private var suggestionViewBottomConstraint: NSLayoutConstraint?
-    private var previousFirstResponder: UIView?
-
-    private func setupKeyboardObservers() {
-        keyboardShowObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidShowNotification, object: nil, queue: .main) { [weak self] (notification) in
-            if let self = self, let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
-                self.keyboardFrame = keyboardRect
-                self.updateConstraintsToAvoidKeyboard(frame: keyboardRect)
-            }
-        }
-        keyboardHideObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidShowNotification, object: nil, queue: .main) { [weak self] (notification) in
-            if let self = self, let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
-                self.keyboardFrame = keyboardRect
-                self.updateConstraintsToAvoidKeyboard(frame: keyboardRect)
-            }
-        }
-    }
-
-    private func tearDownKeyboardObservers() {
-        if let keyboardShowObserver = keyboardShowObserver {
-            NotificationCenter.default.removeObserver(keyboardShowObserver)
-        }
-        if let keyboardHideObserver = keyboardHideObserver {
-            NotificationCenter.default.removeObserver(keyboardHideObserver)
-        }
-    }
 
     private func configureNavigationBar() {
         navigationController?.navigationBar.accessibilityIdentifier = "Gutenberg Editor Navigation Bar"
@@ -433,12 +360,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 //            }
 //        }
     }
-
-    // MARK: - Event handlers
-
-    @objc func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        return presentationController(forPresented: presented, presenting: presenting)
-    }
 }
 
 extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate {
@@ -530,24 +451,6 @@ extension NewGutenbergViewController {
         self.present(controller, animated: true)
     }
 
-    // TODO: remove (web view should be able to handle it)
-    func updateConstraintsToAvoidKeyboard(frame: CGRect) {
-        keyboardFrame = frame
-        let minimumKeyboardHeight = CGFloat(50)
-        guard let suggestionViewBottomConstraint = suggestionViewBottomConstraint else {
-            return
-        }
-
-        // There are cases where the keyboard is not visible, but the system instead of returning zero, returns a low number, for example: 0, 3, 69.
-        // So in those scenarios, we just need to take in account the safe area and ignore the keyboard all together.
-        if keyboardFrame.height < minimumKeyboardHeight {
-            suggestionViewBottomConstraint.constant = -self.view.safeAreaInsets.bottom
-        }
-        else {
-            suggestionViewBottomConstraint.constant = -self.keyboardFrame.height
-        }
-    }
-
     // TODO: remove
 //    func gutenbergDidRequestMention(callback: @escaping (Swift.Result<String, NSError>) -> Void) {
 //        DispatchQueue.main.async(execute: { [weak self] in
@@ -585,69 +488,6 @@ extension NewGutenbergViewController {
         let controller = SupportTableViewController()
         let navController = UINavigationController(rootViewController: controller)
         self.topmostPresentedViewController.present(navController, animated: true)
-    }
-}
-
-// MARK: - Suggestions implementation
-
-extension NewGutenbergViewController {
-
-    // TODO: reimplement (is it for user-names?)
-    private func showSuggestions(type: SuggestionType, callback: @escaping (Swift.Result<String, NSError>) -> Void) {
-        guard let siteID = post.blog.dotComID else {
-            callback(.failure(GutenbergSuggestionsViewController.SuggestionError.notAvailable as NSError))
-            return
-        }
-
-        switch type {
-        case .mention:
-            guard SuggestionService.shared.shouldShowSuggestions(for: post.blog) else { return }
-        case .xpost:
-            guard SiteSuggestionService.shared.shouldShowSuggestions(for: post.blog) else { return }
-        }
-
-        previousFirstResponder = view.findFirstResponder()
-        let suggestionsController = GutenbergSuggestionsViewController(siteID: siteID, suggestionType: type)
-        suggestionsController.onCompletion = { (result) in
-            callback(result)
-            suggestionsController.view.removeFromSuperview()
-            suggestionsController.removeFromParent()
-            if let previousFirstResponder = self.previousFirstResponder {
-                previousFirstResponder.becomeFirstResponder()
-            }
-
-            var analyticsName: String
-            switch type {
-            case .mention:
-                analyticsName = "user"
-            case .xpost:
-                analyticsName = "xpost"
-            }
-
-            var didSelectSuggestion = false
-            if case let .success(text) = result, !text.isEmpty {
-                didSelectSuggestion = true
-            }
-
-            let analyticsProperties: [String: Any] = [
-                "suggestion_type": analyticsName,
-                "did_select_suggestion": didSelectSuggestion
-            ]
-
-            WPAnalytics.track(.gutenbergSuggestionSessionFinished, properties: analyticsProperties)
-        }
-        addChild(suggestionsController)
-        view.addSubview(suggestionsController.view)
-        let suggestionsBottomConstraint = suggestionsController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
-        NSLayoutConstraint.activate([
-            suggestionsController.view.leadingAnchor.constraint(equalTo: view.safeLeadingAnchor, constant: 0),
-            suggestionsController.view.trailingAnchor.constraint(equalTo: view.safeTrailingAnchor, constant: 0),
-            suggestionsBottomConstraint,
-            suggestionsController.view.topAnchor.constraint(equalTo: view.safeTopAnchor)
-        ])
-        self.suggestionViewBottomConstraint = suggestionsBottomConstraint
-        updateConstraintsToAvoidKeyboard(frame: keyboardFrame)
-        suggestionsController.didMove(toParent: self)
     }
 }
 
@@ -774,7 +614,6 @@ extension NewGutenbergViewController: PostEditorNavigationBarManagerDelegate {
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton) {
         performAfterUpdatingContent { [self] in
-            isEditorClosing = true
             cancelEditing()
         }
     }
