@@ -113,6 +113,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
     private let editorViewController: GutenbergKit.EditorViewController
     private weak var autosaveTimer: Timer?
+    private var navigationBarOverlay = UIView()
 
     var editorHasChanges: Bool {
         var changes = post.changes
@@ -219,6 +220,17 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         editorContentWasUpdated()
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        if let navigationController {
+            var frame = navigationController.navigationBar.bounds
+            frame.origin.y -= 80
+            frame.size.height += 80
+            navigationBarOverlay.frame = frame
+        }
+    }
+
     private func setupEditorView() {
         view.tintColor = .editorPrimary
 
@@ -247,6 +259,10 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
         navigationBarManager.moreButton.menu = makeMoreMenu()
         navigationBarManager.moreButton.showsMenuAsPrimaryAction = true
+
+        navigationBarOverlay.backgroundColor = UIColor.black.withAlphaComponent(0.2)
+        navigationController!.navigationBar.addSubview(navigationBarOverlay)
+        navigationBarOverlay.isHidden = true
     }
 
     private func reloadBlogIconView() {
@@ -373,6 +389,19 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
                 self?.autosaveTimer = nil
                 self?.performAutoSave()
             }
+        }
+    }
+
+    func editor(_ viewController: GutenbergKit.EditorViewController, didUpdateSheetVisibility isShown: Bool) {
+        let isOverlayHidden = !isShown
+        if !isOverlayHidden {
+            self.navigationBarOverlay.alpha = 0
+            self.navigationBarOverlay.isHidden = false
+        }
+        UIView.animate(withDuration: 0.2) {
+            self.navigationBarOverlay.alpha = isOverlayHidden ? 0 : 1
+        } completion: { _ in
+            self.navigationBarOverlay.isHidden = isOverlayHidden
         }
     }
 }
