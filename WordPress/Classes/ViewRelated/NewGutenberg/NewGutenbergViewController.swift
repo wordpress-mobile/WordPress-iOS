@@ -281,6 +281,13 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         view.addSubview(editorViewController.view)
         view.pinSubviewToAllEdges(editorViewController.view)
         editorViewController.didMove(toParent: self)
+
+        if #available(iOS 16.4, *) {
+            editorViewController.webView.isInspectable = true // TODO: should be diasble in production
+        }
+
+        // Doesn't seem to do anything
+        setContentScrollView(editorViewController.webView.scrollView)
     }
 
     // MARK: - Functions
@@ -316,11 +323,12 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     }
 
     private func configureNavigationBar() {
-        navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.accessibilityIdentifier = "Gutenberg Editor Navigation Bar"
         navigationItem.leftBarButtonItems = navigationBarManager.leftBarButtonItems
 
-        configureDefaultNavigationBarAppearance()
+        edgesForExtendedLayout = []
+        // TODO: make it work
+//        configureDefaultNavigationBarAppearance()
 
         navigationBarManager.moreButton.menu = makeMoreMenu()
         navigationBarManager.moreButton.showsMenuAsPrimaryAction = true
