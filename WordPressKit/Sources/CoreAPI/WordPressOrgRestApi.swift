@@ -144,7 +144,16 @@ public final class WordPressOrgRestApi: NSObject {
         }
     }
 
-    private func perform<Success>(
+    // TODO: rework (WIP)
+    public func _perform(method: String, path: String) async throws -> (URLResponse, Data?) {
+        var builder = HTTPRequestBuilder(url: apiBaseURL())
+            .dotOrgRESTAPI(route: path, site: site)
+            .method(.init(rawValue: method)!) // TODO: extent to support all HTTP methods
+        let response = try await perform(builder: builder).get()
+        return (response.response, response.body)
+    }
+
+    func perform<Success>(
         _ method: HTTPRequestBuilder.Method,
         path: String,
         parameters: [String: Any]? = nil,

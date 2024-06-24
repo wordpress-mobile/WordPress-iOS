@@ -174,7 +174,12 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         self.replaceEditor = replaceEditor
         self.editorSession = PostEditorAnalyticsSession(editor: .gutenberg, post: post)
         self.navigationBarManager = navigationBarManager ?? PostEditorNavigationBarManager()
-        self.editorViewController = GutenbergKit.EditorViewController(content: post.content ?? "")
+
+        let networkClient = NewGutenbergNetworkClient(blog: post.blog)
+        self.editorViewController = GutenbergKit.EditorViewController(
+            content: post.content ?? "",
+            service: GutenbergKit.EditorService(client: networkClient)
+        )
 
         super.init(nibName: nil, bundle: nil)
 
@@ -408,6 +413,33 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
         } completion: { _ in
             self.navigationBarOverlay.isHidden = isOverlayHidden
         }
+    }
+
+    func editor(_ viewController: GutenbergKit.EditorViewController, performRequest: GutenbergKit.EditorNetworkRequest) async throws -> GutenbergKit.EditorNetworkResponse {
+        throw URLError(.unknown)
+    }
+}
+
+private struct NewGutenbergNetworkClient: GutenbergKit.EditorNetworkingClient {
+    private let api: WordPressOrgRestApi?
+
+    init(blog: Blog) {
+        self.api = WordPressOrgRestApi(blog: blog)
+    }
+
+    func send(_ request: GutenbergKit.EditorNetworkRequest) async throws -> GutenbergKit.EditorNetworkResponse {
+        guard let api else {
+            throw URLError(.unknown) // Should never happen
+        }
+        // TODO: Add support for other requests
+        var path = request.url.absoluteString
+        guard path.hasPrefix("./wp-json") else {
+            throw URLError(.unknown) // Currently unsupported
+        }
+        path.removePrefix("./wp-json")
+
+        let (response, data) = try await api._perform(method: request.method, path: path)
+        return GutenbergKit.EditorNetworkResponse(urlResponse: response, data: data)
     }
 }
 
@@ -835,7 +867,10 @@ private extension NewGutenbergViewController {
 extension NewGutenbergViewController {
 
     private func fetchBlockSettings() {
-        editorSettingsService?.fetchSettings({ [weak self] result in
+        guard let service = editorSettingsService else {
+            return // TODO: when can it happen?
+        }
+        service.fetchSettings({ [weak self] result in
             guard let `self` = self else { return }
             switch result {
             case .success(let response):
