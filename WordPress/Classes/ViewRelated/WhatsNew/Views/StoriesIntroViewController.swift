@@ -70,14 +70,14 @@ class StoriesIntroViewController: WhatIsNewViewController {
 
     /// To be called when the view controller from `makeController` is shown.
     static func trackShown() {
-        WPAnalytics.track(.storyIntroShown)
+//        WPAnalytics.track(.storyIntroShown)
     }
 
     static func trackContinue() {
-        WPAnalytics.track(.storyIntroCreateStoryButtonTapped)
+//        WPAnalytics.track(.storyIntroCreateStoryButtonTapped)
     }
 
     static func trackDismiss() {
-        WPAnalytics.track(.storyIntroDismissed)
+//        WPAnalytics.track(.storyIntroDismissed)
     }
 }

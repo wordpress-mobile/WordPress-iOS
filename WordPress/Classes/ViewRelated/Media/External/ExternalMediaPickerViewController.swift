@@ -28,6 +28,8 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
 
     let source: MediaSource
 
+    private static let cellReuseID = "ExternalMediaPickerCollectionCell"
+
     init(dataSource: ExternalMediaDataSource,
          source: MediaSource,
          allowsMultipleSelection: Bool = false) {
@@ -86,7 +88,7 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
     }
 
     private func configureCollectionView() {
-        collectionView.register(cell: ExternalMediaPickerCollectionCell.self)
+        collectionView.register(ExternalMediaPickerCollectionCell.self, forCellWithReuseIdentifier: Self.cellReuseID)
 
         view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -230,7 +232,7 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeue(cell: ExternalMediaPickerCollectionCell.self, for: indexPath)!
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Self.cellReuseID, for: indexPath) as! ExternalMediaPickerCollectionCell
         let item = dataSource.assets[indexPath.item]
         cell.configure(imageURL: item.thumbnailURL, size: flowLayout.itemSize.scaled(by: UIScreen.main.scale))
         return cell
