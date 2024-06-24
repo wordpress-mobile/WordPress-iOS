@@ -133,9 +133,6 @@ class StoryEditor: CameraController {
         self.onClose = onClose
         self.editorSession = PostEditorAnalyticsSession(editor: .stories, post: post)
 
-        Kanvas.KanvasColors.shared = KanvasCustomUI.shared.cameraColors()
-        Kanvas.KanvasFonts.shared = KanvasCustomUI.shared.cameraFonts()
-        Kanvas.KanvasImages.shared = KanvasCustomUI.shared.cameraImages()
         Kanvas.KanvasStrings.shared = KanvasStrings(
             cameraPermissionsTitleLabel: NSLocalizedString("Post to WordPress", comment: "Title of camera permissions screen"),
             cameraPermissionsDescriptionLabel: NSLocalizedString("Allow access so you can start taking photos and videos.", comment: "Message on camera permissions screen to explain why the app needs camera and microphone permissions")
@@ -150,9 +147,9 @@ class StoryEditor: CameraController {
         }
 
         super.init(settings: settings,
-                 mediaPicker: WPMediaPickerForKanvas.self,
+                 mediaPicker: nil,
                  stickerProvider: nil,
-                 analyticsProvider: KanvasAnalyticsHandler(),
+                 analyticsProvider: nil,
                  quickBlogSelectorCoordinator: nil,
                  tagCollection: nil,
                  saveDirectory: saveDirectory)
