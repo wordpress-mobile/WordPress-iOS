@@ -1,6 +1,5 @@
 import Foundation
 import DGCharts
-import Kanvas
 
 // MARK: - StatsInsightsFilterDimension
 
