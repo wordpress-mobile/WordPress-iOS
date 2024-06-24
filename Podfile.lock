@@ -32,8 +32,6 @@ PODS:
   - Gridicons (1.2.0)
   - Gutenberg (1.120.1)
   - JTAppleCalendar (8.0.5)
-  - Kanvas (1.4.9):
-    - CropViewController
   - MediaEditor (1.2.2):
     - CropViewController (~> 2.5.3)
   - NSObject-SafeExpectations (0.0.6)
@@ -135,7 +133,6 @@ DEPENDENCIES:
   - Gridicons (~> 1.2)
   - Gutenberg (from `https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.120.1.podspec`)
   - JTAppleCalendar (~> 8.0.5)
-  - Kanvas (~> 1.4.4)
   - MediaEditor (>= 1.2.2, ~> 1.2)
   - NSObject-SafeExpectations (~> 0.0.4)
   - "NSURL+IDN (~> 0.4)"
@@ -175,7 +172,6 @@ SPEC REPOS:
     - GravatarUI
     - Gridicons
     - JTAppleCalendar
-    - Kanvas
     - MediaEditor
     - NSObject-SafeExpectations
     - "NSURL+IDN"
@@ -234,7 +230,6 @@ SPEC CHECKSUMS:
   Gridicons: 4455b9f366960121430e45997e32112ae49ffe1d
   Gutenberg: 0699e7dd207afb591ccd5e81252a92e6e7781391
   JTAppleCalendar: 16c6501b22cb27520372c28b0a2e0b12c8d0cd73
-  Kanvas: cc027f8058de881a4ae2b5aa5f05037b6d054d08
   MediaEditor: d08314cfcbfac74361071a306b4bc3a39b3356ae
   NSObject-SafeExpectations: c01c8881cbd97efad6f668286b913cd0b7d62ab5
   "NSURL+IDN": afc873e639c18138a1589697c3add197fe8679ca
@@ -265,6 +260,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: 6f6fc1319d254884bd93ef1f6d3f2478fa9f49f5
+PODFILE CHECKSUM: cb6ea221990308a46df17cd6e0b929adf8f6e9a8
 
 COCOAPODS: 1.15.2
