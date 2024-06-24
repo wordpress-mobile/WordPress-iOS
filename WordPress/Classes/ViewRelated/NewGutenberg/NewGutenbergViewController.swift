@@ -277,6 +277,11 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         } else {
             navigationBarManager.siteIconView.imageView.image = UIImage.siteIconPlaceholder
         }
+
+        // TODO: implement
+        // Docs: https://wordpress.org/gutenberg-framework/docs/basic-concepts/undo-redo
+        navigationBarManager.undoButton.isHidden = true
+        navigationBarManager.redoButton.isHidden = true
     }
 
     // TODO: this should not be called on viewDidLoad
