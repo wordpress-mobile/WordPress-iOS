@@ -37,12 +37,6 @@ class StoryEditor: CameraController {
         return "stories"
     }
 
-    private var cameraHandler: CameraHandler?
-    private var poster: StoryPoster?
-    private lazy var storyLoader: StoryMediaLoader = {
-        return StoryMediaLoader()
-    }()
-
     private static let useMetal = false
 
     static var cameraSettings: CameraSettings {
@@ -153,53 +147,10 @@ class StoryEditor: CameraController {
                  quickBlogSelectorCoordinator: nil,
                  tagCollection: nil,
                  saveDirectory: saveDirectory)
-
-        cameraHandler = CameraHandler(created: { [weak self] media in
-            self?.poster = StoryPoster(context: post.blog.managedObjectContext ?? ContextManager.shared.mainContext, mediaFiles: mediaFiles)
-            let postMedia: [StoryPoster.MediaItem] = media.compactMap { result in
-                switch result {
-                case .success(let item):
-                    guard let item = item else { return nil }
-                    return StoryPoster.MediaItem(url: item.output, size: item.size, archive: item.archive, original: item.unmodified)
-                case .failure:
-                    return nil
-                }
-            }
-
-            guard let self = self else { return }
-
-            let uploads: (String, [Media])? = try? self.poster?.add(mediaItems: postMedia, post: post)
-
-            let content = uploads?.0 ?? ""
-
-            updated(.success(content))
-
-            if publishOnCompletion {
-                // Replace the contents if we are publishing a new post
-                post.content = content
-
-                do {
-                    try post.managedObjectContext?.save()
-                } catch let error {
-                    assertionFailure("Failed to save post during story update: \(error)")
-                }
-
-                wpAssertionFailure("stories are no longer supported")
-            } else {
-                self.dismiss(animated: true, completion: nil)
-            }
-        })
-        self.delegate = cameraHandler
     }
 
     func present(on: UIViewController, with files: [MediaFile]) {
-        storyLoader.download(files: files, for: post) { [weak self] output in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                self.show(media: output)
-                on.present(self, animated: true, completion: {})
-            }
-        }
+        fatalError()
     }
 
     func trackOpen() {
