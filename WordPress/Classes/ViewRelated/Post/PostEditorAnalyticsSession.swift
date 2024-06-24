@@ -104,7 +104,6 @@ private extension PostEditorAnalyticsSession {
 extension PostEditorAnalyticsSession {
     enum Editor: String {
         case gutenberg
-        case stories
         case classic
         case html
     }
