@@ -82,8 +82,6 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeatureTenor,
     /// Does the blog support setting the homepage type and pages?
     BlogFeatureHomepageSettings,
-    /// Does the blog support stories?
-    BlogFeatureStories,
     /// Does the blog support Jetpack contact info block?
     BlogFeatureContactInfo,
     BlogFeatureBlockEditorSettings,

@@ -56,20 +56,3 @@ struct PageAction: ActionSheetItem {
                                             })
     }
 }
-
-struct StoryAction: ActionSheetItem {
-    let handler: () -> Void
-    let source: String
-
-    private let action = "create_new_story"
-
-    func makeButton() -> ActionSheetButton {
-        return ActionSheetButton(title: NSLocalizedString("Story post", comment: "Create new Story button title"),
-                                            image: .gridicon(.story),
-                                            identifier: "storyButton",
-                                            action: {
-                                                WPAnalytics.track(.createSheetActionTapped, properties: ["source": source, "action": action])
-                                                handler()
-                                            })
-    }
-}

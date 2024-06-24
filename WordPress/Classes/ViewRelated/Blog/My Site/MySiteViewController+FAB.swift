@@ -20,19 +20,9 @@ extension MySiteViewController {
             })
         }
 
-        let newStory = {
-            let presenter = RootViewCoordinator.sharedPresenter
-            let blog = presenter.currentOrLastBlog()
-            presenter.showStoryEditor(forBlog: blog)
-        }
-
         let source = "my_site"
 
         var actions: [ActionSheetItem] = []
-
-        if blog?.supports(.stories) ?? false {
-            actions.append(StoryAction(handler: newStory, source: source))
-        }
 
         actions.append(PostAction(handler: newPost, source: source))
         // TODO: check if the current site is eligible
