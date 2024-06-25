@@ -2,6 +2,7 @@ import WordPressAuthenticator
 import UIKit
 import SwiftUI
 import WordPressUI
+import GutenbergKit
 
 final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSitesViewDelegate {
     enum Section: Int, CaseIterable {
@@ -156,19 +157,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         subscribeToWillEnterForeground()
 
         if FeatureFlag.newGutenberg.enabled {
-            let _ = WebViewWarmup.shared
-        }
-    }
-
-    class WebViewWarmup {
-        static let shared = WebViewWarmup()
-        private let webView: WKWebView
-
-        private init() {
-            // WebKit warm-up so the editor opens faster on subsequent launches
-            // TODO: not sure if it's actually working as intended. It doesn't seem to affect first draw in a singificant way.
-            webView = WKWebView()
-            webView.loadHTMLString("", baseURL: nil)
+            GutenbergKit.EditorViewController.warmup()
         }
     }
 
