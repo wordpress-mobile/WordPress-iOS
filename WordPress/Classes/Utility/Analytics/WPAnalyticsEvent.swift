@@ -148,12 +148,6 @@ import Foundation
     case featureAnnouncementShown
     case featureAnnouncementButtonTapped
 
-    // Stories
-    case storyIntroShown
-    case storyIntroDismissed
-    case storyIntroCreateStoryButtonTapped
-    case storyAddedMedia
-
     // Jetpack
     case jetpackSettingsViewed
     case jetpackManageConnectionViewed
@@ -886,16 +880,6 @@ import Foundation
             return "feature_announcement_shown"
         case .featureAnnouncementButtonTapped:
             return "feature_announcement_button_tapped"
-
-        // Stories
-        case .storyIntroShown:
-            return "story_intro_shown"
-        case .storyIntroDismissed:
-            return "story_intro_dismissed"
-        case .storyIntroCreateStoryButtonTapped:
-            return "story_intro_create_story_button_tapped"
-        case .storyAddedMedia:
-            return "story_added_media"
 
         // Jetpack
         case .jetpackSettingsViewed:

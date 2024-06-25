@@ -11,7 +11,6 @@ private enum UPRUConstants {
     static let createButtonTooltipWasDisplayed = "CreateButtonTooltipWasDisplayed"
     static let createButtonTooltipDisplayCount = "CreateButtonTooltipDisplayCount"
     static let savedPostsPromoWasDisplayed = "SavedPostsV1PromoWasDisplayed"
-    static let storiesIntroWasAcknowledged = "storiesIntroWasAcknowledged"
     static let currentAnnouncementsKey = "currentAnnouncements"
     static let currentAnnouncementsDateKey = "currentAnnouncementsDate"
     static let announcementsVersionDisplayedKey = "announcementsVersionDisplayed"
@@ -123,15 +122,6 @@ extension UserPersistentRepositoryUtility {
         }
         set {
             UserPersistentStoreFactory.instance().set(newValue, forKey: UPRUConstants.savedPostsPromoWasDisplayed)
-        }
-    }
-
-    var storiesIntroWasAcknowledged: Bool {
-        get {
-            return UserPersistentStoreFactory.instance().bool(forKey: UPRUConstants.storiesIntroWasAcknowledged)
-        }
-        set {
-            UserPersistentStoreFactory.instance().set(newValue, forKey: UPRUConstants.storiesIntroWasAcknowledged)
         }
     }
 

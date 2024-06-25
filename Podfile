@@ -61,13 +61,6 @@ def wordpress_kit
   pod 'WordPressKit', path: './WordPressKit', testspecs: ['Tests']
 end
 
-def kanvas
-  pod 'Kanvas', '~> 1.4.4'
-  # pod 'Kanvas', git: 'https://github.com/tumblr/Kanvas-iOS.git', tag: ''
-  # pod 'Kanvas', git: 'https://github.com/tumblr/Kanvas-iOS.git', commit: ''
-  # pod 'Kanvas', path: '../Kanvas-iOS'
-end
-
 def shared_with_all_pods
   wordpress_shared
   pod 'CocoaLumberjack/Swift', '~> 3.0'
@@ -136,7 +129,6 @@ abstract_target 'Apps' do
   ##
   wordpress_kit
   wordpress_shared
-  kanvas
   gravatar
 
   # Production

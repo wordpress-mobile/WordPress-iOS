@@ -602,8 +602,6 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
             return [self isAdmin];
         case BlogFeatureHomepageSettings:
             return [self supportsRestApi] && [self isAdmin];
-        case BlogFeatureStories:
-            return [self supportsStories];
         case BlogFeatureContactInfo:
             return [self supportsContactInfo];
         case BlogFeatureBlockEditorSettings:
@@ -715,11 +713,6 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
     }
 
     return supports;
-}
-
-- (BOOL)supportsStories
-{
-    return NO;
 }
 
 - (BOOL)supportsContactInfo

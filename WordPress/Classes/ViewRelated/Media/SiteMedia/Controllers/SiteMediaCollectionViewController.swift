@@ -52,6 +52,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
 
     static let spacing: CGFloat = 2
     static let spacingAspectRatio: CGFloat = 8
+    private static let cellReuseID = "SiteMediaCollectionCell"
 
     var selectedMedia: [Media] {
         guard let selection = selection.array as? [Media] else {
@@ -106,7 +107,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     }
 
     private func configureCollectionView() {
-        collectionView.register(cell: SiteMediaCollectionCell.self)
+        collectionView.register(SiteMediaCollectionCell.self, forCellWithReuseIdentifier: Self.cellReuseID)
 
         view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -438,7 +439,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeue(cell: SiteMediaCollectionCell.self, for: indexPath)!
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Self.cellReuseID, for: indexPath) as! SiteMediaCollectionCell
         let media = fetchController.object(at: indexPath)
         let viewModel = getViewModel(for: media)
         cell.configure(viewModel: viewModel)
