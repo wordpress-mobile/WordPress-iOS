@@ -1058,10 +1058,14 @@ private extension SiteStatsInsightsDetailsViewModel {
     }
 
     func fileDownloadsRowData() -> [StatsTotalRowData] {
-        return periodStore.getTopFileDownloads()?.fileDownloads.map { StatsTotalRowData(name: $0.file,
+        return periodStore.getTopFileDownloads()?.fileDownloads.map {
+            StatsTotalRowData(
+                id: UUID(),
+                name: $0.file,
                 data: $0.downloadCount.abbreviatedString(),
-                statSection: .periodFileDownloads) }
-                ?? []
+                statSection: .periodFileDownloads
+            )
+        } ?? []
     }
 
     // MARK: - Post Stats
