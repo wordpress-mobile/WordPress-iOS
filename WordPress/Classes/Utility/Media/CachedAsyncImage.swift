@@ -11,7 +11,7 @@ struct CachedAsyncImage<Content>: View where Content: View {
 
     public var body: some View {
         content(phase)
-            .task(id: url, fetchImage)
+            .task(id: url) { await fetchImage() }
     }
 
     // MARK: - Initializers
@@ -57,7 +57,6 @@ struct CachedAsyncImage<Content>: View where Content: View {
 
     // MARK: - Helpers
 
-    @Sendable
     private func fetchImage() async {
         do {
             if let url {
