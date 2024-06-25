@@ -442,7 +442,7 @@ private extension UIColor {
     - parameter brightnessValue: A number that represents the brightness of a color. It ranges from 0.0 (black) to 1.0 (white).
     - return: YES if brightness is higher than the brightness value provided.
     */
-    public func brighterThan(_ brightnessValue: Double) -> Bool {
+    func brighterThan(_ brightnessValue: Double) -> Bool {
         return Double(YIQBrightness()) / 255 > brightnessValue
     }
 

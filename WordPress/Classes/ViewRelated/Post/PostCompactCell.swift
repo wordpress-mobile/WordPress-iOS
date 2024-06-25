@@ -142,7 +142,6 @@ class PostCompactCell: UITableViewCell {
         guard let viewModel = viewModel else {
             return
         }
-
         badgesLabel.textColor = viewModel.statusColor
         badgesLabel.text = viewModel.statusAndBadges(separatedBy: Constants.separator)
         if badgesLabel.text?.isEmpty ?? true {
@@ -153,9 +152,6 @@ class PostCompactCell: UITableViewCell {
     }
 
     private func configureMenuInteraction() {
-        guard let viewModel = viewModel else {
-            return
-        }
         menuButton.isEnabled = true
         menuButton.alpha = 1.0
     }
