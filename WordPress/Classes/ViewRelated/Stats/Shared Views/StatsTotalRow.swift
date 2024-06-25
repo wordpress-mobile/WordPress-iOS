@@ -1,6 +1,7 @@
 import UIKit
 
 struct StatsTotalRowData: Equatable {
+    var id: UUID?
     var name: String
     var data: String
     var secondData: String?
@@ -18,7 +19,8 @@ struct StatsTotalRowData: Equatable {
     var statSection: StatSection?
     var isReferrerSpam: Bool
 
-    init(name: String,
+    init(id: UUID? = nil,
+         name: String,
          data: String,
          secondData: String? = nil,
          mediaID: NSNumber? = nil,
@@ -34,6 +36,7 @@ struct StatsTotalRowData: Equatable {
          childRows: [StatsTotalRowData]? = [StatsTotalRowData](),
          statSection: StatSection? = nil,
          isReferrerSpam: Bool = false) {
+        self.id = id
         self.name = name
         self.data = data
         self.secondData = secondData
@@ -65,7 +68,8 @@ struct StatsTotalRowData: Equatable {
     }
 
     static func == (lhs: StatsTotalRowData, rhs: StatsTotalRowData) -> Bool {
-        return lhs.name == rhs.name &&
+        return lhs.id == rhs.id &&
+            lhs.name == rhs.name &&
             lhs.data == rhs.data &&
             lhs.mediaID == rhs.mediaID &&
             lhs.postID == rhs.postID &&
