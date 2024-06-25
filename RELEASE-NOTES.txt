@@ -4,6 +4,7 @@
 * [*] [Jetpack-only] Stats: Made optimizations to enhance scrolling performance. [#22847]
 * [*] Simplify post list context menu sections [#23356]
 * [*] Fix an issue with incorrect snackbar shown when saving drafts manually [#23358]
+* [**] Support editing media metadata for sites not powered by Jetpack and reliant on XML-RPC [#23316]
 * [*] Fix rare crash in the unsupported block editor [#23379]
 
 25.1
