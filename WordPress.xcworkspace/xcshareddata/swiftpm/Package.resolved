@@ -38,6 +38,15 @@
         }
       },
       {
+        "package": "GutenbergKit",
+        "repositoryURL": "https://github.com/kean/GutenbergKit",
+        "state": {
+          "branch": "main",
+          "revision": "a13dabb6d7c9b043a23d25f764581ce62d55c6fd",
+          "version": null
+        }
+      },
+      {
         "package": "Lottie",
         "repositoryURL": "https://github.com/airbnb/lottie-ios.git",
         "state": {
