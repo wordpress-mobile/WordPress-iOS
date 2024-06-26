@@ -29,6 +29,10 @@ open class WordPressOrgXMLRPCApi: NSObject {
     ///
     @objc public static let minimumSupportedVersion = "4.0"
 
+    @objc public static var errorDomain: String {
+        wpxmlrpc.WPXMLRPCFaultErrorDomain
+    }
+
     private lazy var urlSession: URLSession = makeSession(configuration: .default)
     private lazy var uploadURLSession: URLSession = {
         backgroundUploads

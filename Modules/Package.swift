@@ -139,7 +139,6 @@ enum XcodeSupport {
                 .product(name: "UIDeviceIdentifier", package: "UIDeviceIdentifier"),
                 .product(name: "WordPressShared", package: "WordPress-iOS-Shared"),
                 .product(name: "WordPressUI", package: "WordPressUI-iOS"),
-                .product(name: "wpxmlrpc", package: "wpxmlrpc"),
                 .product(name: "ZendeskSupportSDK", package: "support_sdk_ios"),
                 .product(name: "ZIPFoundation", package: "ZIPFoundation"),
             ]),

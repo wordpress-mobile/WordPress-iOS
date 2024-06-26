@@ -7,6 +7,8 @@
 
 NSInteger const SupportButtonIndex = 0;
 
+@import WordPressKit;
+
 @interface WPError ()
 
 @property (nonatomic, assign) BOOL alertShowing;
@@ -48,7 +50,7 @@ NSInteger const SupportButtonIndex = 0;
 {
     NSString *cleanedErrorMsg = [error localizedDescription];
 
-    if ([error.domain isEqualToString:WPXMLRPCFaultErrorDomain] && error.code == 401) {
+    if ([error.domain isEqualToString:WordPressOrgXMLRPCApi.errorDomain] && error.code == 401) {
         cleanedErrorMsg = NSLocalizedString(@"Sorry, you cannot access this feature. Please check your User Role on this site.", @"");
     }
 
