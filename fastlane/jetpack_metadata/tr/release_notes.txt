@@ -1,0 +1,2 @@
+Gönderileri çöp kutusuna gönderirken uygulamanın çökmesine neden olan nadir bir hata düzeltildi. Bir kişinin çöpü bazen başkalarının da çöpüdür.
+Ayrıca Gönderi Görünürlüğü seçicideki gezinme çubuğuyla ilgili bir sorunu düzelttik. Hazır elimiz değmişken düzenleyicinin Gönderi Ayarları ekranını da yeni gezinme çubuğu stilini kullanacak şekilde güncelledik. Güzel.
