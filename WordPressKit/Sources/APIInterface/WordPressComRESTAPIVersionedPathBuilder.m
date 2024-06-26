@@ -1,10 +1,5 @@
 #import <Foundation/Foundation.h>
-#if SWIFT_PACKAGE
-#import "WordPressComRESTAPIVersionedPathBuilder.h"
 #import "WordPressComRESTAPIVersion.h"
-#else
-#import "WordPressKit/WordPressComRESTAPIVersionedPathBuilder.h"
-#endif
 
 static NSString* const WordPressComRESTApiVersionStringInvalid = @"invalid_api_version";
 static NSString* const WordPressComRESTApiVersionString_1_0 = @"rest/v1";

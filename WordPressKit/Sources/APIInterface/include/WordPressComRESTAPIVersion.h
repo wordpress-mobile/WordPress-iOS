@@ -7,3 +7,11 @@ typedef NS_ENUM(NSInteger, WordPressComRESTAPIVersion) {
     WordPressComRESTAPIVersion_1_3 = 1003,
     WordPressComRESTAPIVersion_2_0 = 2000
 };
+
+@interface WordPressComRESTAPIVersionedPathBuilder: NSObject
+
++ (NSString *)pathForEndpoint:(NSString *)endpoint
+                  withVersion:(WordPressComRESTAPIVersion)apiVersion
+NS_SWIFT_NAME(path(forEndpoint:withVersion:));
+
+@end
