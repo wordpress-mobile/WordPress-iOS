@@ -119,7 +119,6 @@ abstract_target 'Apps' do
   pod 'SVProgressHUD', '2.2.5'
   pod 'ZendeskSupportSDK', '5.3.0'
   pod 'AlamofireImage', '~> 4.0'
-  pod 'AlamofireNetworkActivityIndicator', '~> 3.0'
   pod 'FSInteractiveMap', git: 'https://github.com/wordpress-mobile/FSInteractiveMap.git', tag: '0.2.0'
   pod 'JTAppleCalendar', '~> 8.0.5'
   pod 'CropViewController', '2.5.3'

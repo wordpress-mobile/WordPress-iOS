@@ -2,8 +2,6 @@ PODS:
   - Alamofire (5.9.0)
   - AlamofireImage (4.3.0):
     - Alamofire (~> 5.8)
-  - AlamofireNetworkActivityIndicator (3.1.0):
-    - Alamofire (~> 5.1)
   - AppCenter (5.0.4):
     - AppCenter/Analytics (= 5.0.4)
     - AppCenter/Crashes (= 5.0.4)
@@ -119,7 +117,6 @@ PODS:
 
 DEPENDENCIES:
   - AlamofireImage (~> 4.0)
-  - AlamofireNetworkActivityIndicator (~> 3.0)
   - AppCenter (~> 5.0)
   - AppCenter/Distribute (~> 5.0)
   - Automattic-Tracks-iOS (~> 3.3)
@@ -160,7 +157,6 @@ SPEC REPOS:
   trunk:
     - Alamofire
     - AlamofireImage
-    - AlamofireNetworkActivityIndicator
     - AppCenter
     - Automattic-Tracks-iOS
     - CocoaLumberjack
@@ -216,7 +212,6 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Alamofire: 02b772c9910e8eba1a079227c32fbd9e46c90a24
   AlamofireImage: 843953fa97bee5f561cf05d83abd759e590b068d
-  AlamofireNetworkActivityIndicator: 6564782bd7b9e6c430ae67d9277af01907b01ca4
   AppCenter: 85c92db0759d2792a65eb61d6842d2e86611a49a
   Automattic-Tracks-iOS: fc307762052ec20b733ae76363d1387a9d93d6a5
   CocoaLumberjack: 78abfb691154e2a9df8ded4350d504ee19d90732
@@ -260,6 +255,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: cb6ea221990308a46df17cd6e0b929adf8f6e9a8
+PODFILE CHECKSUM: a956923616800ba5557285fb18f9bf782cfd0381
 
 COCOAPODS: 1.15.2

@@ -4,7 +4,6 @@ import Reachability
 import AutomatticTracks
 import WordPressAuthenticator
 import WordPressShared
-import AlamofireNetworkActivityIndicator
 import AutomatticAbout
 import UIDeviceIdentifier
 import WordPressUI
@@ -258,7 +257,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         ZendeskUtils.setup()
 
-        setupNetworkActivityIndicator()
         WPUserAgent.useWordPressInWebViews()
 
         // Push notifications
@@ -473,10 +471,6 @@ extension WordPressAppDelegate {
         trackDeepLink(for: url) { url in
             UniversalLinkRouter.shared.handle(url: url)
         }
-    }
-
-    @objc func setupNetworkActivityIndicator() {
-        NetworkActivityIndicatorManager.shared.isEnabled = true
     }
 
     @objc func configureWordPressComApi() {
