@@ -838,7 +838,8 @@
 /* Title for sheet displayed allowing user to update their site icon */
 "Update Site Icon" = "Ažurirajte ikonu web mjesta";
 
-/* Describes a status of a plugin */
+/* Describes a status of a plugin
+   Updating label title */
 "Updating" = "Ažuriranje ";
 
 /* Label for the date a media asset (image / video) was uploaded

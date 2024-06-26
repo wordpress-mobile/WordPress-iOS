@@ -7463,7 +7463,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Updates the title." = "Updates the title.";
 
-/* Describes a status of a plugin */
+/* Describes a status of a plugin
+   Updating label title */
 "Updating" = "Updating";
 
 /* No comment provided by engineer. */

@@ -7298,7 +7298,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Updates the title." = "Aktualizuje název.";
 
-/* Describes a status of a plugin */
+/* Describes a status of a plugin
+   Updating label title */
 "Updating" = "Aktualizace";
 
 /* No comment provided by engineer. */

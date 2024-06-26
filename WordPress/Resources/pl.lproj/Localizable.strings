@@ -2859,7 +2859,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Updates the title." = "Uaktualnia tytuł.";
 
-/* Describes a status of a plugin */
+/* Describes a status of a plugin
+   Updating label title */
 "Updating" = "Aktualizacja";
 
 /* System notification displayed to the user when media files have failed to upload. */

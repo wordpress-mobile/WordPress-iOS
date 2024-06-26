@@ -5132,7 +5132,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Accessibility hint for the Visitors button in Stats Overview. */
 "Updates the bar chart to show visitors." = "Oppdaterer søylediagrammet for å vise besøkende.";
 
-/* Describes a status of a plugin */
+/* Describes a status of a plugin
+   Updating label title */
 "Updating" = "Oppdaterer";
 
 /* Title for button displayed when the user has an empty media library */

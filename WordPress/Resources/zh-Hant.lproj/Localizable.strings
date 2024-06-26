@@ -7499,7 +7499,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Updates the title." = "更新標題。";
 
-/* Describes a status of a plugin */
+/* Describes a status of a plugin
+   Updating label title */
 "Updating" = "正在更新";
 
 /* Text in the profile editing page. Lets the user know about the consequences of their profile editing actions and how this relates to Gravatar. */
