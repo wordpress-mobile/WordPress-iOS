@@ -2,7 +2,6 @@ import AuthenticationServices
 import NSURL_IDN
 import UIKit
 import WordPressShared
-import WordPressUI
 import WordPressKit
 
 // MARK: - WordPressAuthenticator: Public API to deal with WordPress.com and WordPress.org authentication.
