@@ -474,6 +474,8 @@
 		0C0DF88C2C2DE6FD00011B7D /* SVProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 0C0DF88B2C2DE6FD00011B7D /* SVProgressHUD */; };
 		0C0DF88E2C2DE71200011B7D /* Gridicons in Frameworks */ = {isa = PBXBuildFile; productRef = 0C0DF88D2C2DE71200011B7D /* Gridicons */; };
 		0C0DF8942C2DF14600011B7D /* LoginFacadeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C0DF8932C2DF12A00011B7D /* LoginFacadeTests.m */; };
+		0C0DF8962C2E10B100011B7D /* WordPressShared in Frameworks */ = {isa = PBXBuildFile; productRef = 0C0DF8952C2E10B100011B7D /* WordPressShared */; };
+		0C0DF8982C2E10E600011B7D /* WordPressUI in Frameworks */ = {isa = PBXBuildFile; productRef = 0C0DF8972C2E10E600011B7D /* WordPressUI */; };
 		0C13ACC72BF406CB00FF7405 /* VoiceToContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C13ACC62BF406CB00FF7405 /* VoiceToContentView.swift */; };
 		0C13ACC92BF406E700FF7405 /* VoiceToContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C13ACC82BF406E700FF7405 /* VoiceToContentViewModel.swift */; };
 		0C13ACCA2BF4084400FF7405 /* VoiceToContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C13ACC62BF406CB00FF7405 /* VoiceToContentView.swift */; };
@@ -12049,6 +12051,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				4AEB35BD2C22E59C00D5AE8C /* OCMock in Frameworks */,
+				0C0DF8962C2E10B100011B7D /* WordPressShared in Frameworks */,
+				0C0DF8982C2E10E600011B7D /* WordPressUI in Frameworks */,
 				3FFB3F242AFC730C00A742B0 /* JetpackStatsWidgetsCore in Frameworks */,
 				3F338B71289BD3040014ADC5 /* Nimble in Frameworks */,
 				3F3B23C22858A1B300CACE60 /* BuildkiteTestCollector in Frameworks */,
@@ -23323,6 +23327,8 @@
 				3FFB3F232AFC730C00A742B0 /* JetpackStatsWidgetsCore */,
 				4AEB35B72C22D25B00D5AE8C /* OHHTTPStubsSwift */,
 				4AEB35BC2C22E59C00D5AE8C /* OCMock */,
+				0C0DF8952C2E10B100011B7D /* WordPressShared */,
+				0C0DF8972C2E10E600011B7D /* WordPressUI */,
 			);
 			productName = WordPressTest;
 			productReference = E16AB92A14D978240047A2E5 /* WordPressTest.xctest */;
@@ -32467,6 +32473,7 @@
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_PARAMETER = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
@@ -32503,6 +32510,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_PARAMETER = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
@@ -32537,6 +32545,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_PARAMETER = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
@@ -32571,6 +32580,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_PARAMETER = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
@@ -36755,6 +36765,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4A2A358F2C2361AF00F47E9C /* XCRemoteSwiftPackageReference "Gridicons-iOS" */;
 			productName = Gridicons;
+		};
+		0C0DF8952C2E10B100011B7D /* WordPressShared */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0C0DF8622C2DBF1500011B7D /* XCRemoteSwiftPackageReference "WordPress-iOS-Shared" */;
+			productName = WordPressShared;
+		};
+		0C0DF8972C2E10E600011B7D /* WordPressUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0C86B19F2C2DB2A7001AB70C /* XCRemoteSwiftPackageReference "WordPressUI-iOS" */;
+			productName = WordPressUI;
 		};
 		0C86B1A02C2DB2A7001AB70C /* WordPressUI */ = {
 			isa = XCSwiftPackageProductDependency;
