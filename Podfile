@@ -19,16 +19,6 @@ inhibit_all_warnings!
 use_frameworks!
 workspace 'WordPress.xcworkspace'
 
-## Pods shared between all the targets
-## ===================================
-##
-def wordpress_shared
-  pod 'WordPressShared', '~> 2.3', '>= 2.3.1'
-  # pod 'WordPressShared', git: 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', branch: ''
-  # pod 'WordPressShared', git: 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', commit: ''
-  # pod 'WordPressShared', path: '../WordPress-iOS-Shared'
-end
-
 def aztec
   ## When using a tagged version, feel free to comment out the WordPress-Aztec-iOS line below.
   ## When using a commit number (during development) you should provide the same commit number for both pods.
@@ -48,28 +38,14 @@ def gravatar
   pod 'GravatarUI', '2.0.0'
 end
 
-def shared_with_all_pods
-  wordpress_shared
-end
-
 def shared_test_pods
   pod 'Expecta', '1.0.6'
   pod 'Specta', '1.0.7'
   gutenberg_pod
 end
 
-def shared_with_extension_pods
-  # The PrivacyInfo in this library is incorrectly copied to the app bundle's root directory.
-  # That conflicts with the our own app's PrivacyInfo. We can update this library once the
-  # issue is resolved.
-  # See https://github.com/weichsel/ZIPFoundation/pull/314
-end
-
 abstract_target 'Apps' do
   project 'WordPress/WordPress.xcodeproj'
-
-  shared_with_all_pods
-  shared_with_extension_pods
 
   ## Gutenberg (React Native)
   ## =====================
@@ -91,7 +67,6 @@ abstract_target 'Apps' do
   ## Automattic libraries
   ## ====================
   ##
-  wordpress_shared
   gravatar
 
   # Production
@@ -125,19 +100,13 @@ end
 target 'WordPressShareExtension' do
   project 'WordPress/WordPress.xcodeproj'
 
-  shared_with_extension_pods
-
   aztec
-  shared_with_all_pods
 end
 
 target 'JetpackShareExtension' do
   project 'WordPress/WordPress.xcodeproj'
 
-  shared_with_extension_pods
-
   aztec
-  shared_with_all_pods
 end
 
 ## DraftAction Extension
@@ -146,68 +115,13 @@ end
 target 'WordPressDraftActionExtension' do
   project 'WordPress/WordPress.xcodeproj'
 
-  shared_with_extension_pods
-
   aztec
-  shared_with_all_pods
 end
 
 target 'JetpackDraftActionExtension' do
   project 'WordPress/WordPress.xcodeproj'
 
-  shared_with_extension_pods
-
   aztec
-  shared_with_all_pods
-end
-
-## Widgets
-## ============
-##
-
-target 'JetpackStatsWidgets' do
-  project 'WordPress/WordPress.xcodeproj'
-
-  shared_with_all_pods
-end
-
-## Intents
-## ============
-##
-
-target 'JetpackIntents' do
-  project 'WordPress/WordPress.xcodeproj'
-
-  shared_with_all_pods
-end
-
-## Notification Service Extension
-## ==============================
-##
-target 'WordPressNotificationServiceExtension' do
-  project 'WordPress/WordPress.xcodeproj'
-
-  wordpress_shared
-end
-
-target 'JetpackNotificationServiceExtension' do
-  project 'WordPress/WordPress.xcodeproj'
-
-  wordpress_shared
-end
-
-## Screenshot Generation
-## ===================
-##
-target 'WordPressScreenshotGeneration' do
-  project 'WordPress/WordPress.xcodeproj'
-end
-
-## UI Tests
-## ===================
-##
-target 'WordPressUITests' do
-  project 'WordPress/WordPress.xcodeproj'
 end
 
 ## Tools
@@ -231,7 +145,7 @@ end
 # Linking the shared frameworks statically would lead to duplicate symbols
 # A future version of CocoaPods may make this easier to do. See https://github.com/CocoaPods/CocoaPods/issues/7428
 shared_targets = %w[WordPressFlux]
-dyanmic_framework_pods = %w[WordPressFlux WordPressShared]
+dyanmic_framework_pods = %w[WordPressFlux]
 # Statically linking Sentry results in a conflict with `NSDictionary.objectAtKeyPath`, but dynamically
 # linking it resolves this.
 dyanmic_framework_pods += %w[Sentry SentryPrivate]

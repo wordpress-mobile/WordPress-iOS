@@ -23,7 +23,6 @@ PODS:
   - WordPress-Aztec-iOS (1.19.11)
   - WordPress-Editor-iOS (1.19.11):
     - WordPress-Aztec-iOS (= 1.19.11)
-  - WordPressShared (2.4.0)
 
 DEPENDENCIES:
   - AppCenter (~> 5.0)
@@ -38,13 +37,11 @@ DEPENDENCIES:
   - Specta (= 1.0.7)
   - SwiftLint (= 0.54.0)
   - WordPress-Editor-iOS (~> 1.19.11)
-  - WordPressShared (>= 2.3.1, ~> 2.3)
 
 SPEC REPOS:
   https://github.com/wordpress-mobile/cocoapods-specs.git:
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
-    - WordPressShared
   trunk:
     - AppCenter
     - CropViewController
@@ -80,8 +77,7 @@ SPEC CHECKSUMS:
   SwiftLint: c1de071d9d08c8aba837545f6254315bc900e211
   WordPress-Aztec-iOS: 3732c6d865a5c9f35788377bdeda8a80ea10d0a1
   WordPress-Editor-iOS: 453345420ced3d3ef20f0051b3df46ff10281e0c
-  WordPressShared: 0160364ed24f4d67fed4e85003fefa837faad84f
 
-PODFILE CHECKSUM: 66c21862899cff2ad15d7d514a10c3212f9f9a9d
+PODFILE CHECKSUM: f65c3de1d7b83328fa3e3aad7e154cafcb1887e0
 
 COCOAPODS: 1.15.2
