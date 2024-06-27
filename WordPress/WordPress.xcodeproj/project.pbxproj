@@ -473,6 +473,7 @@
 		0C0DF8882C2DE1D100011B7D /* WordPressShared in Frameworks */ = {isa = PBXBuildFile; productRef = 0C0DF8872C2DE1D100011B7D /* WordPressShared */; };
 		0C0DF88C2C2DE6FD00011B7D /* SVProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 0C0DF88B2C2DE6FD00011B7D /* SVProgressHUD */; };
 		0C0DF88E2C2DE71200011B7D /* Gridicons in Frameworks */ = {isa = PBXBuildFile; productRef = 0C0DF88D2C2DE71200011B7D /* Gridicons */; };
+		0C0DF8942C2DF14600011B7D /* LoginFacadeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C0DF8932C2DF12A00011B7D /* LoginFacadeTests.m */; };
 		0C13ACC72BF406CB00FF7405 /* VoiceToContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C13ACC62BF406CB00FF7405 /* VoiceToContentView.swift */; };
 		0C13ACC92BF406E700FF7405 /* VoiceToContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C13ACC82BF406E700FF7405 /* VoiceToContentViewModel.swift */; };
 		0C13ACCA2BF4084400FF7405 /* VoiceToContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C13ACC62BF406CB00FF7405 /* VoiceToContentView.swift */; };
@@ -7446,6 +7447,7 @@
 		0C0AD1092B0CCFA400EC06E6 /* MediaPreviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPreviewController.swift; sourceTree = "<group>"; };
 		0C0AE7582A8FAD6A007D9D6C /* MediaPickerMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerMenu.swift; sourceTree = "<group>"; };
 		0C0D3B0C2A4C79DE0050A00D /* BlazeCampaignsStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeCampaignsStream.swift; sourceTree = "<group>"; };
+		0C0DF8932C2DF12A00011B7D /* LoginFacadeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginFacadeTests.m; sourceTree = "<group>"; };
 		0C13ACC62BF406CB00FF7405 /* VoiceToContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceToContentView.swift; sourceTree = "<group>"; };
 		0C13ACC82BF406E700FF7405 /* VoiceToContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceToContentViewModel.swift; sourceTree = "<group>"; };
 		0C1531FD2AE17140003CDE13 /* PostSearchViewModel+Highlighter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostSearchViewModel+Highlighter.swift"; sourceTree = "<group>"; };
@@ -9241,7 +9243,6 @@
 		4AD9558D2C2171F000D0EEFA /* NavigationToEnterAccountTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationToEnterAccountTests.swift; sourceTree = "<group>"; };
 		4AD9558E2C2171F000D0EEFA /* NavigationToEnterSiteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationToEnterSiteTests.swift; sourceTree = "<group>"; };
 		4AD9558F2C2171F000D0EEFA /* NavigationToRootTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationToRootTests.swift; sourceTree = "<group>"; };
-		4AD955912C2171F000D0EEFA /* LegacyLoginFacadeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LegacyLoginFacadeTests.m; sourceTree = "<group>"; };
 		4AD955932C2171F000D0EEFA /* AppleAuthenticatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleAuthenticatorTests.swift; sourceTree = "<group>"; };
 		4AD955942C2171F000D0EEFA /* LoginViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewControllerTests.swift; sourceTree = "<group>"; };
 		4AD955952C2171F000D0EEFA /* SiteAddressViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteAddressViewModelTests.swift; sourceTree = "<group>"; };
@@ -16437,7 +16438,7 @@
 		4AD955922C2171F000D0EEFA /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				4AD955912C2171F000D0EEFA /* LegacyLoginFacadeTests.m */,
+				0C0DF8932C2DF12A00011B7D /* LoginFacadeTests.m */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -28189,6 +28190,7 @@
 				4AD955A22C2171F000D0EEFA /* Character+URLSafeTests.swift in Sources */,
 				4AD9559B2C2171F000D0EEFA /* PasteboardTests.swift in Sources */,
 				4AD955AA2C2171F000D0EEFA /* GoogleOAuthTokenGettingStub.swift in Sources */,
+				0C0DF8942C2DF14600011B7D /* LoginFacadeTests.m in Sources */,
 				4AD955BE2C2171F000D0EEFA /* WordPressComSiteInfoTests.swift in Sources */,
 				4AD955A92C2171F000D0EEFA /* GoogleOAuthTokenGetterTests.swift in Sources */,
 				4AD955A62C2171F000D0EEFA /* Data+SHA256Tests.swift in Sources */,
