@@ -1,6 +1,7 @@
 #import <XCTest/XCTest.h>
 
 @import WordPressAuthenticator;
+@import WordPressSharedObjC;
 
 @interface CaptureLogs : NSObject<WordPressLoggingDelegate>
 

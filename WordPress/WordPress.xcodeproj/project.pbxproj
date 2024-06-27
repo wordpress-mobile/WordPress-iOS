@@ -471,6 +471,8 @@
 		0C0DF8822C2DDE7900011B7D /* WordPressKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4A98A2F42C22736F00A2CE58 /* WordPressKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0C0DF8862C2DE0C900011B7D /* WordPressShared in Frameworks */ = {isa = PBXBuildFile; productRef = 0C0DF8852C2DE0C900011B7D /* WordPressShared */; };
 		0C0DF8882C2DE1D100011B7D /* WordPressShared in Frameworks */ = {isa = PBXBuildFile; productRef = 0C0DF8872C2DE1D100011B7D /* WordPressShared */; };
+		0C0DF88C2C2DE6FD00011B7D /* SVProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 0C0DF88B2C2DE6FD00011B7D /* SVProgressHUD */; };
+		0C0DF88E2C2DE71200011B7D /* Gridicons in Frameworks */ = {isa = PBXBuildFile; productRef = 0C0DF88D2C2DE71200011B7D /* Gridicons */; };
 		0C13ACC72BF406CB00FF7405 /* VoiceToContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C13ACC62BF406CB00FF7405 /* VoiceToContentView.swift */; };
 		0C13ACC92BF406E700FF7405 /* VoiceToContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C13ACC82BF406E700FF7405 /* VoiceToContentViewModel.swift */; };
 		0C13ACCA2BF4084400FF7405 /* VoiceToContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C13ACC62BF406CB00FF7405 /* VoiceToContentView.swift */; };
@@ -2486,7 +2488,6 @@
 		4AD955C02C2171F000D0EEFA /* NavigationToEnterAccountTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD9558D2C2171F000D0EEFA /* NavigationToEnterAccountTests.swift */; };
 		4AD955C12C2171F000D0EEFA /* NavigationToEnterSiteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD9558E2C2171F000D0EEFA /* NavigationToEnterSiteTests.swift */; };
 		4AD955C22C2171F000D0EEFA /* NavigationToRootTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD9558F2C2171F000D0EEFA /* NavigationToRootTests.swift */; };
-		4AD955C32C2171F000D0EEFA /* LoginFacadeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD955912C2171F000D0EEFA /* LoginFacadeTests.m */; };
 		4AD955C42C2171F000D0EEFA /* AppleAuthenticatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD955932C2171F000D0EEFA /* AppleAuthenticatorTests.swift */; };
 		4AD955C52C2171F000D0EEFA /* LoginViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD955942C2171F000D0EEFA /* LoginViewControllerTests.swift */; };
 		4AD955C62C2171F000D0EEFA /* SiteAddressViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD955952C2171F000D0EEFA /* SiteAddressViewModelTests.swift */; };
@@ -9240,7 +9241,7 @@
 		4AD9558D2C2171F000D0EEFA /* NavigationToEnterAccountTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationToEnterAccountTests.swift; sourceTree = "<group>"; };
 		4AD9558E2C2171F000D0EEFA /* NavigationToEnterSiteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationToEnterSiteTests.swift; sourceTree = "<group>"; };
 		4AD9558F2C2171F000D0EEFA /* NavigationToRootTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationToRootTests.swift; sourceTree = "<group>"; };
-		4AD955912C2171F000D0EEFA /* LoginFacadeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginFacadeTests.m; sourceTree = "<group>"; };
+		4AD955912C2171F000D0EEFA /* LegacyLoginFacadeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LegacyLoginFacadeTests.m; sourceTree = "<group>"; };
 		4AD955932C2171F000D0EEFA /* AppleAuthenticatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleAuthenticatorTests.swift; sourceTree = "<group>"; };
 		4AD955942C2171F000D0EEFA /* LoginViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewControllerTests.swift; sourceTree = "<group>"; };
 		4AD955952C2171F000D0EEFA /* SiteAddressViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteAddressViewModelTests.swift; sourceTree = "<group>"; };
@@ -11933,6 +11934,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C0DF88E2C2DE71200011B7D /* Gridicons in Frameworks */,
+				0C0DF88C2C2DE6FD00011B7D /* SVProgressHUD in Frameworks */,
 				4AD028632C22EEBB004FBDD0 /* OCMock in Frameworks */,
 				4A0274862C224FB000290D8B /* WordPressAuthenticator.framework in Frameworks */,
 				0C0DF8882C2DE1D100011B7D /* WordPressShared in Frameworks */,
@@ -13270,7 +13273,7 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
 				3F20FDF3276BF21000DA3CAD /* Packages */,
@@ -16434,7 +16437,7 @@
 		4AD955922C2171F000D0EEFA /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				4AD955912C2171F000D0EEFA /* LoginFacadeTests.m */,
+				4AD955912C2171F000D0EEFA /* LegacyLoginFacadeTests.m */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -23095,6 +23098,8 @@
 			packageProductDependencies = (
 				4AD028622C22EEBB004FBDD0 /* OCMock */,
 				0C0DF8872C2DE1D100011B7D /* WordPressShared */,
+				0C0DF88B2C2DE6FD00011B7D /* SVProgressHUD */,
+				0C0DF88D2C2DE71200011B7D /* Gridicons */,
 			);
 			productName = WordPressAuthenticatorTests;
 			productReference = 4AD953BB2C21451700D0EEFA /* WordPressAuthenticatorTests.xctest */;
@@ -23617,7 +23622,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			packageReferences = (
 				3FF1442E266F3C2400138163 /* XCRemoteSwiftPackageReference "ScreenObject" */,
 				3FC2C33B26C4CF0A00C6D98F /* XCRemoteSwiftPackageReference "XCUITestHelpers" */,
@@ -25333,11 +25338,11 @@
 			files = (
 			);
 			inputPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist,
 			);
 			name = "Copy Gutenberg JS";
 			outputFileListPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist,
 			);
 			outputPaths = (
 				"",
@@ -25494,13 +25499,13 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist,
 			);
 			inputPaths = (
 			);
 			name = "Copy Gutenberg JS";
 			outputFileListPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist,
 			);
 			outputPaths = (
 			);
@@ -28186,7 +28191,6 @@
 				4AD955AA2C2171F000D0EEFA /* GoogleOAuthTokenGettingStub.swift in Sources */,
 				4AD955BE2C2171F000D0EEFA /* WordPressComSiteInfoTests.swift in Sources */,
 				4AD955A92C2171F000D0EEFA /* GoogleOAuthTokenGetterTests.swift in Sources */,
-				4AD955C32C2171F000D0EEFA /* LoginFacadeTests.m in Sources */,
 				4AD955A62C2171F000D0EEFA /* Data+SHA256Tests.swift in Sources */,
 				4AD955BB2C2171F000D0EEFA /* WordpressAuthenticatorProvider.swift in Sources */,
 				4AD955C12C2171F000D0EEFA /* NavigationToEnterSiteTests.swift in Sources */,
@@ -36739,6 +36743,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 0C0DF8622C2DBF1500011B7D /* XCRemoteSwiftPackageReference "WordPress-iOS-Shared" */;
 			productName = WordPressShared;
+		};
+		0C0DF88B2C2DE6FD00011B7D /* SVProgressHUD */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A91C6CE2C22F64700AD6324 /* XCRemoteSwiftPackageReference "SVProgressHUD" */;
+			productName = SVProgressHUD;
+		};
+		0C0DF88D2C2DE71200011B7D /* Gridicons */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A2A358F2C2361AF00F47E9C /* XCRemoteSwiftPackageReference "Gridicons-iOS" */;
+			productName = Gridicons;
 		};
 		0C86B1A02C2DB2A7001AB70C /* WordPressUI */ = {
 			isa = XCSwiftPackageProductDependency;
