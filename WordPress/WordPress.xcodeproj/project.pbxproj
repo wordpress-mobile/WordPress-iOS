@@ -459,6 +459,14 @@
 		0C0DF86C2C2DC01A00011B7D /* WordPressShared in Frameworks */ = {isa = PBXBuildFile; productRef = 0C0DF86B2C2DC01A00011B7D /* WordPressShared */; };
 		0C0DF86E2C2DC05B00011B7D /* WordPressShared in Frameworks */ = {isa = PBXBuildFile; productRef = 0C0DF86D2C2DC05B00011B7D /* WordPressShared */; };
 		0C0DF8702C2DC06C00011B7D /* WordPressShared in Frameworks */ = {isa = PBXBuildFile; productRef = 0C0DF86F2C2DC06C00011B7D /* WordPressShared */; };
+		0C0DF8722C2DDCA800011B7D /* WordPressUI in Frameworks */ = {isa = PBXBuildFile; productRef = 0C0DF8712C2DDCA800011B7D /* WordPressUI */; };
+		0C0DF8742C2DDCB000011B7D /* WordPressShared in Frameworks */ = {isa = PBXBuildFile; productRef = 0C0DF8732C2DDCB000011B7D /* WordPressShared */; };
+		0C0DF8762C2DDCC500011B7D /* WordPressUI in Frameworks */ = {isa = PBXBuildFile; productRef = 0C0DF8752C2DDCC500011B7D /* WordPressUI */; };
+		0C0DF8782C2DDCCE00011B7D /* WordPressShared in Frameworks */ = {isa = PBXBuildFile; productRef = 0C0DF8772C2DDCCE00011B7D /* WordPressShared */; };
+		0C0DF87A2C2DDCE200011B7D /* WordPressUI in Frameworks */ = {isa = PBXBuildFile; productRef = 0C0DF8792C2DDCE200011B7D /* WordPressUI */; };
+		0C0DF87C2C2DDCEA00011B7D /* WordPressShared in Frameworks */ = {isa = PBXBuildFile; productRef = 0C0DF87B2C2DDCEA00011B7D /* WordPressShared */; };
+		0C0DF87E2C2DDD4900011B7D /* WordPressUI in Frameworks */ = {isa = PBXBuildFile; productRef = 0C0DF87D2C2DDD4900011B7D /* WordPressUI */; };
+		0C0DF8802C2DDD5100011B7D /* WordPressShared in Frameworks */ = {isa = PBXBuildFile; productRef = 0C0DF87F2C2DDD5100011B7D /* WordPressShared */; };
 		0C13ACC72BF406CB00FF7405 /* VoiceToContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C13ACC62BF406CB00FF7405 /* VoiceToContentView.swift */; };
 		0C13ACC92BF406E700FF7405 /* VoiceToContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C13ACC82BF406E700FF7405 /* VoiceToContentViewModel.swift */; };
 		0C13ACCA2BF4084400FF7405 /* VoiceToContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C13ACC62BF406CB00FF7405 /* VoiceToContentView.swift */; };
@@ -11907,6 +11915,7 @@
 				4A91C6CB2C22F45200AD6324 /* AlamofireImage in Frameworks */,
 				93F2E5421E9E5A350050D489 /* QuickLook.framework in Frameworks */,
 				08E63FCF2B28E53400747E21 /* DesignSystem in Frameworks */,
+				0C0DF87E2C2DDD4900011B7D /* WordPressUI in Frameworks */,
 				93F2E53E1E9E5A010050D489 /* CoreText.framework in Frameworks */,
 				E185474E1DED8D8800D875D7 /* UserNotifications.framework in Frameworks */,
 				FF75933B1BE2423800814D3B /* Photos.framework in Frameworks */,
@@ -11943,6 +11952,7 @@
 				FD3D6D2C1349F5D30061136A /* ImageIO.framework in Frameworks */,
 				B5AA54D51A8E7510003BDD12 /* WebKit.framework in Frameworks */,
 				93F2E5401E9E5A180050D489 /* libsqlite3.tbd in Frameworks */,
+				0C0DF8802C2DDD5100011B7D /* WordPressShared in Frameworks */,
 				4A2A359E2C23635D00F47E9C /* Gridicons in Frameworks */,
 				1DF7A0CD2B9F66970003CBA3 /* SwiftSoup in Frameworks */,
 				17A8858D2757B97F0071FCA3 /* AutomatticAbout in Frameworks */,
@@ -12020,7 +12030,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C0DF87A2C2DDCE200011B7D /* WordPressUI in Frameworks */,
 				4A972D3F2C23A4C8006AE0F0 /* WordPressKit.framework in Frameworks */,
+				0C0DF87C2C2DDCEA00011B7D /* WordPressShared in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12030,11 +12042,13 @@
 			files = (
 				4A2A35942C23623D00F47E9C /* Gridicons in Frameworks */,
 				4A2A35982C23629000F47E9C /* Reachability in Frameworks */,
+				0C0DF8762C2DDCC500011B7D /* WordPressUI in Frameworks */,
 				4A0CB2832C2388DC00A006B0 /* CocoaLumberjackSwift in Frameworks */,
 				4A65FC572C23677D006ED20C /* WordPressKit.framework in Frameworks */,
 				4A3E8C462C238396003628B3 /* Down in Frameworks */,
 				A2C95CCF203760D9372C5857 /* Pods_WordPressDraftActionExtension.framework in Frameworks */,
 				4A3E8C422C238365003628B3 /* ZIPFoundation in Frameworks */,
+				0C0DF8782C2DDCCE00011B7D /* WordPressShared in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12094,11 +12108,13 @@
 			files = (
 				4A2A35922C23622F00F47E9C /* Gridicons in Frameworks */,
 				4A2A35962C23627B00F47E9C /* Reachability in Frameworks */,
+				0C0DF8722C2DDCA800011B7D /* WordPressUI in Frameworks */,
 				4A0CB2812C2388CF00A006B0 /* CocoaLumberjackSwift in Frameworks */,
 				4A65FC522C236746006ED20C /* WordPressKit.framework in Frameworks */,
 				D0E2AA7C4D4CB1679173958E /* Pods_WordPressShareExtension.framework in Frameworks */,
 				4A3E8C442C238378003628B3 /* Down in Frameworks */,
 				4A3E8C482C2383FD003628B3 /* ZIPFoundation in Frameworks */,
+				0C0DF8742C2DDCB000011B7D /* WordPressShared in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -23029,6 +23045,8 @@
 				4A3E8C4C2C238471003628B3 /* Gifu */,
 				4AE417E32C23870400B383AF /* ZendeskSupportSDK */,
 				4A0CB2842C238B7800A006B0 /* CocoaLumberjackSwift */,
+				0C0DF87D2C2DDD4900011B7D /* WordPressUI */,
+				0C0DF87F2C2DDD5100011B7D /* WordPressShared */,
 			);
 			productName = WordPress;
 			productReference = 1D6058910D05DD3D006BFB54 /* WordPress.app */;
@@ -23190,6 +23208,10 @@
 				4A972D422C23A4C8006AE0F0 /* PBXTargetDependency */,
 			);
 			name = WordPressNotificationServiceExtension;
+			packageProductDependencies = (
+				0C0DF8792C2DDCE200011B7D /* WordPressUI */,
+				0C0DF87B2C2DDCEA00011B7D /* WordPressShared */,
+			);
 			productName = WordPressNotificationServiceExtension;
 			productReference = 7358E6B8210BD318002323EB /* WordPressNotificationServiceExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -23217,6 +23239,8 @@
 				4A3E8C412C238365003628B3 /* ZIPFoundation */,
 				4A3E8C452C238396003628B3 /* Down */,
 				4A0CB2822C2388DC00A006B0 /* CocoaLumberjackSwift */,
+				0C0DF8752C2DDCC500011B7D /* WordPressUI */,
+				0C0DF8772C2DDCCE00011B7D /* WordPressShared */,
 			);
 			productName = WordPressDraftActionExtension;
 			productReference = 74576672202B558C00F42E40 /* WordPressDraftActionExtension.appex */;
@@ -23346,6 +23370,8 @@
 				4A3E8C432C238378003628B3 /* Down */,
 				4A3E8C472C2383FD003628B3 /* ZIPFoundation */,
 				4A0CB2802C2388CF00A006B0 /* CocoaLumberjackSwift */,
+				0C0DF8712C2DDCA800011B7D /* WordPressUI */,
+				0C0DF8732C2DDCB000011B7D /* WordPressShared */,
 			);
 			productName = WordPressShare;
 			productReference = 932225A71C7CE50300443B02 /* WordPressShareExtension.appex */;
@@ -36808,6 +36834,46 @@
 			productName = WordPressShared;
 		};
 		0C0DF86F2C2DC06C00011B7D /* WordPressShared */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0C0DF8622C2DBF1500011B7D /* XCRemoteSwiftPackageReference "WordPress-iOS-Shared" */;
+			productName = WordPressShared;
+		};
+		0C0DF8712C2DDCA800011B7D /* WordPressUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0C86B19F2C2DB2A7001AB70C /* XCRemoteSwiftPackageReference "WordPressUI-iOS" */;
+			productName = WordPressUI;
+		};
+		0C0DF8732C2DDCB000011B7D /* WordPressShared */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0C0DF8622C2DBF1500011B7D /* XCRemoteSwiftPackageReference "WordPress-iOS-Shared" */;
+			productName = WordPressShared;
+		};
+		0C0DF8752C2DDCC500011B7D /* WordPressUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0C86B19F2C2DB2A7001AB70C /* XCRemoteSwiftPackageReference "WordPressUI-iOS" */;
+			productName = WordPressUI;
+		};
+		0C0DF8772C2DDCCE00011B7D /* WordPressShared */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0C0DF8622C2DBF1500011B7D /* XCRemoteSwiftPackageReference "WordPress-iOS-Shared" */;
+			productName = WordPressShared;
+		};
+		0C0DF8792C2DDCE200011B7D /* WordPressUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0C86B19F2C2DB2A7001AB70C /* XCRemoteSwiftPackageReference "WordPressUI-iOS" */;
+			productName = WordPressUI;
+		};
+		0C0DF87B2C2DDCEA00011B7D /* WordPressShared */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0C0DF8622C2DBF1500011B7D /* XCRemoteSwiftPackageReference "WordPress-iOS-Shared" */;
+			productName = WordPressShared;
+		};
+		0C0DF87D2C2DDD4900011B7D /* WordPressUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0C86B19F2C2DB2A7001AB70C /* XCRemoteSwiftPackageReference "WordPressUI-iOS" */;
+			productName = WordPressUI;
+		};
+		0C0DF87F2C2DDD5100011B7D /* WordPressShared */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 0C0DF8622C2DBF1500011B7D /* XCRemoteSwiftPackageReference "WordPress-iOS-Shared" */;
 			productName = WordPressShared;
