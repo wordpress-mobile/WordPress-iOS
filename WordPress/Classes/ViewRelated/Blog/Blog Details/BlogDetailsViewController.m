@@ -15,11 +15,11 @@
 #import "MenusViewController.h"
 #import "UIViewController+RemoveQuickStart.h"
 #import "NSMutableArray+NullableObjects.h"
-#import <WordPressShared/WPTableViewCell.h>
 
 @import Gridicons;
 @import Reachability;
 @import WordPressUIObjC;
+@import WordPressShared;
 
 static NSString *const BlogDetailsCellIdentifier = @"BlogDetailsCell";
 static NSString *const BlogDetailsPlanCellIdentifier = @"BlogDetailsPlanCell";

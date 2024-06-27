@@ -3,9 +3,9 @@
 #import "Menu+ViewDesign.h"
 #import "Blog.h"
 #import "WPAppAnalytics.h"
-#import <WordPressShared/WPFontManager.h>
-#import <WordPressShared/WPStyleGuide.h>
 #import "WordPress-Swift.h"
+
+@import WordPressShared;
 
 @import Gridicons;
 @import WordPressUI;

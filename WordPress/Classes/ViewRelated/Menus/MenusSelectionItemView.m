@@ -1,9 +1,9 @@
 #import "MenusSelectionItemView.h"
 #import "MenusSelectionView.h"
 #import "Menu+ViewDesign.h"
-#import <WordPressShared/WPStyleGuide.h>
 #import "WordPress-Swift.h"
 
+@import WordPressShared;
 @import Gridicons;
 
 @interface MenusSelectionItemView ()

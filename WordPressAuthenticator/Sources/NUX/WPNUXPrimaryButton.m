@@ -1,5 +1,6 @@
 #import "WPNUXPrimaryButton.h"
-#import <WordPressShared/WPFontManager.h>
+
+@import WordPressShared;
 
 @implementation WPNUXPrimaryButton
 

@@ -1,9 +1,10 @@
-#import <WordPressShared/WPAnalytics.h>
 #import <XCTest/XCTest.h>
 
 #import "AccountService.h"
 #import "WPAppAnalytics.h"
 #import "WPAnalyticsTrackerWPCom.h"
+
+@import WordPressShared;
 @import OCMock;
 
 typedef void(^OCMockInvocationBlock)(NSInvocation* invocation);

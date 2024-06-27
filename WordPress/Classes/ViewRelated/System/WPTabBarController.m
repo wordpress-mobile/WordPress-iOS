@@ -8,7 +8,6 @@
 #import "BlogListViewController.h"
 #import "BlogDetailsViewController.h"
 #import "WPScrollableViewController.h"
-#import <WordPressShared/WPDeviceIdentification.h>
 #import "WPAppAnalytics.h"
 #import "WordPress-Swift.h"
 

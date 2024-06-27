@@ -1,9 +1,7 @@
 #import "SettingsTextViewController.h"
-#import <WordPressShared/WPTextFieldTableViewCell.h>
-#import <WordPressShared/WPStyleGuide.h>
 #import "WordPress-Swift.h"
 
-
+@import WordPressShared;
 
 #pragma mark - Constants
 

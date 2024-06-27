@@ -13,7 +13,9 @@
 #import "WordPress-Swift.h"
 #import "WPWebViewController.h"
 #import "AccountService.h"
+
 @import WordPressKit;
+@import WordPressShared;
 @import wpxmlrpc;
 @import NSURL_IDN;
 

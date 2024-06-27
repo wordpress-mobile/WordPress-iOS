@@ -4,9 +4,9 @@
 #import "SharingConnectionsViewController.h"
 #import "SVProgressHUD+Dismiss.h"
 #import "WordPress-Swift.h"
-#import <WordPressShared/WPTableViewCell.h>
 
 @import WordPressUI;
+@import WordPressShared;
 
 typedef NS_ENUM(NSInteger, SharingSectionType) {
     SharingSectionUndefined = 1000,

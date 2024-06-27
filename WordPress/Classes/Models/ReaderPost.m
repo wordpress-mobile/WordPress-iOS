@@ -3,9 +3,9 @@
 #import "CoreDataStack.h"
 #import "SourcePostAttribution.h"
 #import "WPAccount.h"
-#import <WordPressShared/NSString+Util.h>
-#import <WordPressShared/NSString+XMLExtensions.h>
 #import "WordPress-Swift.h"
+
+@import WordPressShared;
 
 // These keys are used in the getStoredComment method
 NSString * const ReaderPostStoredCommentIDKey = @"commentID";

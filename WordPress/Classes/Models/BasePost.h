@@ -1,7 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "Blog.h"
 #import "PostContentProvider.h"
-@import WordPressShared;
 
 NS_ASSUME_NONNULL_BEGIN
 

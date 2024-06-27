@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 /// TextFieldTableViewCell: a textfield with a custom border line in a UITableViewCell.
 ///

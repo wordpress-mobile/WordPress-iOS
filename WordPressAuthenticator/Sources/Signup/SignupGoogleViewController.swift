@@ -1,3 +1,6 @@
+import UIKit
+import WordPressShared
+
 /// View controller that handles the google signup flow
 ///
 class SignupGoogleViewController: LoginViewController {

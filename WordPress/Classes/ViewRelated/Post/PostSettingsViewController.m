@@ -12,8 +12,6 @@
 #import <Photos/Photos.h>
 #import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 #import "WPGUIConstants.h"
-#import <WordPressShared/NSString+XMLExtensions.h>
-#import <WordPressShared/WPTextFieldTableViewCell.h>
 #import "WordPress-Swift.h"
 
 @import Gridicons;

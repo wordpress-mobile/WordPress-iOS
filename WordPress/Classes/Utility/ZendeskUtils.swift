@@ -2,6 +2,7 @@ import Foundation
 import CoreTelephony
 import WordPressAuthenticator
 import WordPressKit
+import WordPressShared
 import DesignSystem
 
 import SupportSDK

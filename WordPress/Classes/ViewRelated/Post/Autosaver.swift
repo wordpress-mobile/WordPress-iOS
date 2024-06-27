@@ -1,3 +1,6 @@
+import Foundation
+import WordPressShared
+
 /// Post autosave helper that triggers an action after X ammount of changes or Y time of inactivity.
 ///
 class Autosaver {

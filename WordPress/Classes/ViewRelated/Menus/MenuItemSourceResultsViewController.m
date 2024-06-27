@@ -4,8 +4,9 @@
 #import "MenuItemSourceFooterView.h"
 #import "Blog.h"
 #import "Menu+ViewDesign.h"
-#import <WordPressShared/WPStyleGuide.h>
 #import "WordPress-Swift.h"
+
+@import WordPressShared;
 
 static NSTimeInterval const SearchBarFetchRequestUpdateDelay = 0.10;
 static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
