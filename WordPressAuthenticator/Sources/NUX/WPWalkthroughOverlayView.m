@@ -5,6 +5,7 @@
 #import <WordPressShared/WPNUXUtility.h>
 
 @import WordPressUI;
+@import WordPressUIObjC;
 
 @interface WPWalkthroughOverlayView() {
     UIImageView *_logo;

@@ -1,10 +1,15 @@
 import UIKit
 import WordPressKit
 
-@objc public protocol NUXButtonViewControllerDelegate {
+public protocol NUXButtonViewControllerDelegate: AnyObject {
     func primaryButtonPressed()
-    @objc optional func secondaryButtonPressed()
-    @objc optional func tertiaryButtonPressed()
+    func secondaryButtonPressed()
+    func tertiaryButtonPressed()
+}
+
+extension NUXButtonViewControllerDelegate {
+    public func secondaryButtonPressed() {}
+    public func tertiaryButtonPressed() {}
 }
 
 struct NUXButtonConfig {
@@ -249,7 +254,7 @@ open class NUXButtonViewController: UIViewController {
 
     @IBAction func secondaryButtonPressed(_ sender: Any) {
         guard let callback = topButtonConfig?.callback else {
-            delegate?.secondaryButtonPressed?()
+            delegate?.secondaryButtonPressed()
             return
         }
         callback()
@@ -257,7 +262,7 @@ open class NUXButtonViewController: UIViewController {
 
     @IBAction func tertiaryButtonPressed(_ sender: Any) {
         guard let callback = tertiaryButtonConfig?.callback else {
-            delegate?.tertiaryButtonPressed?()
+            delegate?.tertiaryButtonPressed()
             return
         }
         callback()

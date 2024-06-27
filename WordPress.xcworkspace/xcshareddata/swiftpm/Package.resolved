@@ -398,6 +398,15 @@
         }
       },
       {
+        "package": "WordPressUI",
+        "repositoryURL": "https://github.com/wordpress-mobile/WordPressUI-iOS",
+        "state": {
+          "branch": "kean-patch-1",
+          "revision": "e848400c7af850e0668b36a4e566a2c71e4e0d7b",
+          "version": null
+        }
+      },
+      {
         "package": "wpxmlrpc",
         "repositoryURL": "https://github.com/wordpress-mobile/wpxmlrpc",
         "state": {

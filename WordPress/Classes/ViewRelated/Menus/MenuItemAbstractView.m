@@ -4,6 +4,8 @@
 #import <WordPressShared/WPStyleGuide.h>
 #import "WordPress-Swift.h"
 
+@import WordPressUI;
+@import WordPressUIObjC;
 
 @interface MenuItemDrawingView ()
 

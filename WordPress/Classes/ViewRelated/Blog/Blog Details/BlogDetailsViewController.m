@@ -19,6 +19,7 @@
 
 @import Gridicons;
 @import Reachability;
+@import WordPressUIObjC;
 
 static NSString *const BlogDetailsCellIdentifier = @"BlogDetailsCell";
 static NSString *const BlogDetailsPlanCellIdentifier = @"BlogDetailsPlanCell";

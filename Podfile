@@ -39,14 +39,6 @@ def aztec
   pod 'WordPress-Editor-iOS', '~> 1.19.11'
 end
 
-def wordpress_ui
-  pod 'WordPressUI', '~> 1.16'
-  # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', tag: ''
-  # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', branch: ''
-  # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', commit: ''
-  # pod 'WordPressUI', path: '../WordPressUI-iOS'
-end
-
 def gravatar
   # pod 'Gravatar', path: '../Gravatar-SDK-iOS'
   # pod 'GravatarUI', path: '../Gravatar-SDK-iOS'
@@ -109,7 +101,6 @@ abstract_target 'Apps' do
   # pod 'MediaEditor', path: '../MediaEditor-iOS'
 
   aztec
-  wordpress_ui
 
   ## WordPress App iOS
   ## =================
@@ -138,7 +129,6 @@ target 'WordPressShareExtension' do
 
   aztec
   shared_with_all_pods
-  wordpress_ui
 end
 
 target 'JetpackShareExtension' do
@@ -148,7 +138,6 @@ target 'JetpackShareExtension' do
 
   aztec
   shared_with_all_pods
-  wordpress_ui
 end
 
 ## DraftAction Extension
@@ -161,7 +150,6 @@ target 'WordPressDraftActionExtension' do
 
   aztec
   shared_with_all_pods
-  wordpress_ui
 end
 
 target 'JetpackDraftActionExtension' do
@@ -171,7 +159,6 @@ target 'JetpackDraftActionExtension' do
 
   aztec
   shared_with_all_pods
-  wordpress_ui
 end
 
 ## Widgets
@@ -182,7 +169,6 @@ target 'JetpackStatsWidgets' do
   project 'WordPress/WordPress.xcodeproj'
 
   shared_with_all_pods
-  wordpress_ui
 end
 
 ## Intents
@@ -193,7 +179,6 @@ target 'JetpackIntents' do
   project 'WordPress/WordPress.xcodeproj'
 
   shared_with_all_pods
-  wordpress_ui
 end
 
 ## Notification Service Extension
@@ -203,14 +188,12 @@ target 'WordPressNotificationServiceExtension' do
   project 'WordPress/WordPress.xcodeproj'
 
   wordpress_shared
-  wordpress_ui
 end
 
 target 'JetpackNotificationServiceExtension' do
   project 'WordPress/WordPress.xcodeproj'
 
   wordpress_shared
-  wordpress_ui
 end
 
 ## Screenshot Generation
@@ -248,7 +231,7 @@ end
 # Linking the shared frameworks statically would lead to duplicate symbols
 # A future version of CocoaPods may make this easier to do. See https://github.com/CocoaPods/CocoaPods/issues/7428
 shared_targets = %w[WordPressFlux]
-dyanmic_framework_pods = %w[WordPressFlux WordPressShared WordPressUI]
+dyanmic_framework_pods = %w[WordPressFlux WordPressShared]
 # Statically linking Sentry results in a conflict with `NSDictionary.objectAtKeyPath`, but dynamically
 # linking it resolves this.
 dyanmic_framework_pods += %w[Sentry SentryPrivate]

@@ -1,3 +1,4 @@
+import WordPressAuthenticator
 
 // MARK: - Tab Access Tracking
 
@@ -17,6 +18,10 @@ fileprivate extension WPTab {
 }
 
 extension WPTabBarController {
+    @objc public class var wpSigninDidFinishNotification: String {
+        WordPressAuthenticator.WPSigninDidFinishNotification
+    }
+
     private static let tabIndexToStatMap: [WPTab: WPAnalyticsStat] = [.mySites: .mySitesTabAccessed, .reader: .readerAccessed]
 
     private struct AssociatedKeys {

@@ -1,6 +1,12 @@
 import Foundation
+import WordPressAuthenticator
 
 extension BlogListViewController: SearchableActivityConvertable {
+    @objc func showLoginForSelfHostedSite() {
+        setEditing(false, animated: false)
+        WordPressAuthenticator.showLoginForSelfHostedSite(self)
+    }
+
     var activityType: String {
         return WPActivityType.siteList.rawValue
     }
