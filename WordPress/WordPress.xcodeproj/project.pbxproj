@@ -33595,8 +33595,9 @@
 				);
 				INFOPLIST_FILE = JetpackShareExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
-					"@executable_path/Frameworks",
 					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D DEBUG";
@@ -33664,8 +33665,9 @@
 				);
 				INFOPLIST_FILE = JetpackShareExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
-					"@executable_path/Frameworks",
 					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.jetpack.JetpackShare;
@@ -33732,8 +33734,9 @@
 				);
 				INFOPLIST_FILE = "JetpackShareExtension/Info-Internal.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
-					"@executable_path/Frameworks",
 					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D INTERNAL_BUILD";
@@ -33801,8 +33804,9 @@
 				);
 				INFOPLIST_FILE = "JetpackShareExtension/Info-Alpha.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
-					"@executable_path/Frameworks",
 					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D ALPHA_BUILD -D INTERNAL_BUILD";
@@ -34628,8 +34632,9 @@
 				);
 				INFOPLIST_FILE = WordPressShareExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
-					"@executable_path/Frameworks",
 					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D DEBUG";
@@ -34695,8 +34700,9 @@
 				);
 				INFOPLIST_FILE = WordPressShareExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
-					"@executable_path/Frameworks",
 					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressShare;
@@ -34761,8 +34767,9 @@
 				);
 				INFOPLIST_FILE = "WordPressShareExtension/Info-Internal.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
-					"@executable_path/Frameworks",
 					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D INTERNAL_BUILD";
@@ -34828,8 +34835,9 @@
 				);
 				INFOPLIST_FILE = "WordPressShareExtension/Info-Alpha.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
-					"@executable_path/Frameworks",
 					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D ALPHA_BUILD -D INTERNAL_BUILD";
