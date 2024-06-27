@@ -38,12 +38,6 @@ def gravatar
   pod 'GravatarUI', '2.0.0'
 end
 
-def shared_test_pods
-  pod 'Expecta', '1.0.6'
-  pod 'Specta', '1.0.7'
-  gutenberg_pod
-end
-
 abstract_target 'Apps' do
   project 'WordPress/WordPress.xcodeproj'
 
@@ -84,7 +78,7 @@ abstract_target 'Apps' do
     target 'WordPressTest' do
       inherit! :search_paths
 
-      shared_test_pods
+      gutenberg_pod
     end
   end
 
