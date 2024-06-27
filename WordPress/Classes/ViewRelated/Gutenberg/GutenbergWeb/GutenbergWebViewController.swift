@@ -1,6 +1,7 @@
 import UIKit
 import WebKit
 import Gutenberg
+import Combine
 
 class GutenbergWebViewController: GutenbergWebSingleBlockViewController, WebKitAuthenticatable, NoResultsViewHost {
     enum GutenbergWebError: Error {
@@ -12,6 +13,7 @@ class GutenbergWebViewController: GutenbergWebSingleBlockViewController, WebKitA
     private let progressView = WebProgressView()
     private let userId: String
     let gutenbergReadySemaphore = DispatchSemaphore(value: 0)
+    private var cancellables: [AnyCancellable] = []
 
     init(with post: AbstractPost, block: Block) throws {
         authenticator = GutenbergRequestAuthenticator(blog: post.blog)
@@ -42,28 +44,6 @@ class GutenbergWebViewController: GutenbergWebSingleBlockViewController, WebKitA
         waitForGutenbergToLoad(fallback: showTroubleshootingInstructions)
         if #available(iOS 16.4, *) {
             webView.isInspectable = true
-        }
-    }
-
-    deinit {
-        webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress))
-    }
-
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
-        guard
-            let object = object as? WKWebView,
-            object == webView,
-            let keyPath = keyPath
-        else {
-            return
-        }
-
-        switch keyPath {
-        case #keyPath(WKWebView.estimatedProgress):
-            progressView.progress = Float(webView.estimatedProgress)
-            progressView.isHidden = webView.estimatedProgress == 1
-        default:
-            assertionFailure("Observed change to web view that we are not handling")
         }
     }
 
@@ -155,7 +135,11 @@ class GutenbergWebViewController: GutenbergWebSingleBlockViewController, WebKitA
     }
 
     private func startObservingWebView() {
-        webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: [.new], context: nil)
+        webView.publisher(for: \.estimatedProgress, options: [.new]).sink { [weak self] progress in
+            guard let self else { return }
+            progressView.progress = Float(progress)
+            progressView.isHidden = progress == 1
+        }.store(in: &cancellables)
     }
 
     private func addProgressView() {

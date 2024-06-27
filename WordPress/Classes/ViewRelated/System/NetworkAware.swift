@@ -61,11 +61,11 @@ extension NetworkStatusDelegate where Self: UIViewController {
 
     fileprivate var receiver: ReachabilityNotificationObserver? {
         get {
-            return objc_getAssociatedObject(self, &NetworkStatusAssociatedKeys.associatedObjectKey) as? ReachabilityNotificationObserver
+            return objc_getAssociatedObject(self, NetworkStatusAssociatedKeys.associatedObjectKey) as? ReachabilityNotificationObserver
         }
 
         set {
-            objc_setAssociatedObject(self, &NetworkStatusAssociatedKeys.associatedObjectKey, newValue, .OBJC_ASSOCIATION_RETAIN)
+            objc_setAssociatedObject(self, NetworkStatusAssociatedKeys.associatedObjectKey, newValue, .OBJC_ASSOCIATION_RETAIN)
         }
     }
 }
@@ -80,17 +80,17 @@ extension NetworkStatusDelegate where Self: NetworkStatusReceiver {
 
     fileprivate var receiver: ReachabilityNotificationObserver? {
         get {
-            return objc_getAssociatedObject(self, &NetworkStatusAssociatedKeys.associatedObjectKey) as? ReachabilityNotificationObserver
+            return objc_getAssociatedObject(self, NetworkStatusAssociatedKeys.associatedObjectKey) as? ReachabilityNotificationObserver
         }
 
         set {
-            objc_setAssociatedObject(self, &NetworkStatusAssociatedKeys.associatedObjectKey, newValue, .OBJC_ASSOCIATION_RETAIN)
+            objc_setAssociatedObject(self, NetworkStatusAssociatedKeys.associatedObjectKey, newValue, .OBJC_ASSOCIATION_RETAIN)
         }
     }
 }
 
 fileprivate struct NetworkStatusAssociatedKeys {
-    static var associatedObjectKey = "org.wordpress.networkstatus.notificationreceiver"
+    static let associatedObjectKey = malloc(1)!
 }
 
 fileprivate final class ReachabilityNotificationObserver: NSObject {

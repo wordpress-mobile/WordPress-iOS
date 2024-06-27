@@ -230,7 +230,6 @@ private extension SiteStatsDashboardViewController {
 
     func updatePeriodView(oldSelectedTab: StatsTabType) {
         let selectedPeriodChanged = currentSelectedTab != oldSelectedTab
-        let previousSelectedPeriodWasInsights = oldSelectedTab == .insights
         let pageViewControllerIsEmpty = pageViewController?.viewControllers?.isEmpty ?? true
         let isGrowAudienceShowingOnInsights = insightsTableViewController.isGrowAudienceShowing
 

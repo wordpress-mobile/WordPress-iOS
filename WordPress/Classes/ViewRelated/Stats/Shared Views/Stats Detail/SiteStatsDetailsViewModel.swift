@@ -814,10 +814,14 @@ private extension SiteStatsDetailsViewModel {
     }
 
     func fileDownloadsRowData() -> [StatsTotalRowData] {
-        return periodStore.getTopFileDownloads()?.fileDownloads.map { StatsTotalRowData(name: $0.file,
-                                                                                        data: $0.downloadCount.abbreviatedString(),
-                                                                                        statSection: .periodFileDownloads) }
-            ?? []
+        return periodStore.getTopFileDownloads()?.fileDownloads.map {
+            StatsTotalRowData(
+                id: UUID(),
+                name: $0.file,
+                data: $0.downloadCount.abbreviatedString(),
+                statSection: .periodFileDownloads
+            )
+        } ?? []
     }
 
     // MARK: - Post Stats

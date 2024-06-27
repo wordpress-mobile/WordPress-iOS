@@ -717,13 +717,6 @@ class PostCoordinator: NSObject {
         return post.titleForDisplay()
     }
 
-    func add(assets: [ExportableAsset], to post: AbstractPost) -> [Media?] {
-        let media = assets.map { asset in
-            return mediaCoordinator.addMedia(from: asset, to: post)
-        }
-        return media
-    }
-
     private func observeMedia(for post: AbstractPost, completion: @escaping (Result<AbstractPost, SavingError>) -> ()) -> UUID {
         // Only observe if we're not already
         let handleSingleMediaFailure = { [weak self] (error: Error) -> Void in

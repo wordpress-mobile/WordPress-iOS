@@ -1,3 +1,5 @@
+import UIKit
+
 class QuickStartChecklistManager: NSObject {
     typealias QuickStartChecklistDidSelectTour = (QuickStartTour) -> Void
 
@@ -63,7 +65,7 @@ extension QuickStartChecklistManager: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: QuickStartChecklistHeader.identifier) as? QuickStartChecklistHeader
+        let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: QuickStartChecklistHeader.defaultReuseID) as? QuickStartChecklistHeader
         headerView?.title = title
         return headerView
     }

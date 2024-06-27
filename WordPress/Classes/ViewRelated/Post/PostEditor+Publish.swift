@@ -30,9 +30,6 @@ protocol PublishingEditor where Self: UIViewController {
     /// Return the current html in the editor
     func getHTML() -> String
 
-    /// When the Prepublishing sheet or Prepublishing alert is dismissed, this is called.
-    func publishingDismissed()
-
     /// Returns the word counts of the content in the editor.
     var wordCount: UInt { get }
 
@@ -43,11 +40,6 @@ protocol PublishingEditor where Self: UIViewController {
 }
 
 extension PublishingEditor {
-
-    func publishingDismissed() {
-        // Default implementation is empty, can be optionally implemented by other classes.
-    }
-
     func emitPostSaveEvent() {
         // Default implementation is empty, can be optionally implemented by other classes.
     }
@@ -119,7 +111,6 @@ extension PublishingEditor {
                 let presentBloggingReminders = JetpackNotificationMigrationService.shared.shouldPresentNotifications()
                 self.dismissOrPopView(presentBloggingReminders: presentBloggingReminders)
             case .cancelled:
-                self.publishingDismissed()
                 WPAnalytics.track(.editorPostPublishDismissed)
             }
         }

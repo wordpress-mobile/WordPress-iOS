@@ -546,12 +546,6 @@
 	<key>UIAppFonts</key>
 	<array>
 		<string>Noticons.ttf</string>
-		<string>oswald_upper.ttf</string>
-		<string>Shrikhand-Regular.ttf</string>
-		<string>LibreBaskerville-Regular.ttf</string>
-		<string>SpaceMono-Bold.ttf</string>
-		<string>Pacifico-Regular.ttf</string>
-		<string>Nunito-Bold.ttf</string>
 		<string>EBGaramond-Regular.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>

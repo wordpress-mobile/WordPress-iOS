@@ -95,7 +95,7 @@ extension CacheEntry {
         switch self {
         case .ready(let image):
             return image.cost
-        case .inProgress(let task):
+        case .inProgress:
             return nil
         }
     }

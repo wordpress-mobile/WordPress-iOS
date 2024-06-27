@@ -74,6 +74,8 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeatureNoncePreviews,
     /// Does the blog support editing media metadata?
     BlogFeatureMediaMetadataEditing,
+    /// Does the blog support editing media alternative text?
+    BlogFeatureMediaAltEditing,
     /// Does the blog support deleting media?
     BlogFeatureMediaDeletion,
     /// Does the blog support Stock Photos feature (free photos library)
@@ -82,8 +84,6 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeatureTenor,
     /// Does the blog support setting the homepage type and pages?
     BlogFeatureHomepageSettings,
-    /// Does the blog support stories?
-    BlogFeatureStories,
     /// Does the blog support Jetpack contact info block?
     BlogFeatureContactInfo,
     BlogFeatureBlockEditorSettings,

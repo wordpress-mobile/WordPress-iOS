@@ -3733,7 +3733,8 @@
 /* Update profile photo in Me > My Profile */
 "Update Profile Photo" = "Aktualizovať Profilovú fotografiu";
 
-/* Describes a status of a plugin */
+/* Describes a status of a plugin
+   Updating label title */
 "Updating" = "Aktualizovanie";
 
 /* Title for button displayed when the user has an empty media library */

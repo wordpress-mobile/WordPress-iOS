@@ -70,5 +70,4 @@ extension UITableViewCell {
         row.configure(statSection: statSection, delegate: delegate)
         rowsStackView.addArrangedSubview(row)
     }
-
 }

@@ -16,8 +16,6 @@ PODS:
   - GravatarUI (2.0.0):
     - Gravatar (= 2.0.0)
   - Gutenberg (1.120.1)
-  - Kanvas (1.4.9):
-    - CropViewController
   - MediaEditor (1.2.2):
     - CropViewController (~> 2.5.3)
   - Specta (1.0.7)
@@ -37,7 +35,6 @@ DEPENDENCIES:
   - Gravatar (= 2.0.0)
   - GravatarUI (= 2.0.0)
   - Gutenberg (from `https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.120.1.podspec`)
-  - Kanvas (~> 1.4.4)
   - MediaEditor (>= 1.2.2, ~> 1.2)
   - Specta (= 1.0.7)
   - SwiftLint (= 0.54.0)
@@ -57,7 +54,6 @@ SPEC REPOS:
     - Expecta
     - Gravatar
     - GravatarUI
-    - Kanvas
     - MediaEditor
     - Specta
     - SwiftLint
@@ -82,7 +78,6 @@ SPEC CHECKSUMS:
   Gravatar: 54fc63ea6298e9afca7329007815be25868f1dfe
   GravatarUI: bb5e03cda2da61e54aa1c20d4dde32b7153fa8b4
   Gutenberg: 0699e7dd207afb591ccd5e81252a92e6e7781391
-  Kanvas: cc027f8058de881a4ae2b5aa5f05037b6d054d08
   MediaEditor: d08314cfcbfac74361071a306b4bc3a39b3356ae
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
   SwiftLint: c1de071d9d08c8aba837545f6254315bc900e211
@@ -91,6 +86,6 @@ SPEC CHECKSUMS:
   WordPressShared: 0160364ed24f4d67fed4e85003fefa837faad84f
   WordPressUI: f883fdd2508a0bc525c19805b2bbae980b581271
 
-PODFILE CHECKSUM: be2b1266b694f9fb945c63ec61af8a26ee415305
+PODFILE CHECKSUM: 2c4301332e4759f1e2cf52493c97c0c95207b1a0
 
 COCOAPODS: 1.15.2

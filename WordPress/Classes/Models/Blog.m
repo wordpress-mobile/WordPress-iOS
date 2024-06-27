@@ -592,13 +592,16 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
         case BlogFeatureNoncePreviews:
             return [self supportsRestApi] && ![self isHostedAtWPcom];
         case BlogFeatureMediaMetadataEditing:
-            return [self supportsRestApi] && [self isAdmin];
+            return [self isAdmin];
+        case BlogFeatureMediaAltEditing:
+            // alt is not supported via XML-RPC API
+            // https://core.trac.wordpress.org/ticket/58582
+            // https://github.com/wordpress-mobile/WordPress-Android/issues/18514#issuecomment-1589752274
+            return [self supportsRestApi];
         case BlogFeatureMediaDeletion:
             return [self isAdmin];
         case BlogFeatureHomepageSettings:
             return [self supportsRestApi] && [self isAdmin];
-        case BlogFeatureStories:
-            return [self supportsStories];
         case BlogFeatureContactInfo:
             return [self supportsContactInfo];
         case BlogFeatureBlockEditorSettings:
@@ -710,11 +713,6 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
     }
 
     return supports;
-}
-
-- (BOOL)supportsStories
-{
-    return NO;
 }
 
 - (BOOL)supportsContactInfo
