@@ -469,6 +469,7 @@
 		0C0DF8802C2DDD5100011B7D /* WordPressShared in Frameworks */ = {isa = PBXBuildFile; productRef = 0C0DF87F2C2DDD5100011B7D /* WordPressShared */; };
 		0C0DF8812C2DDE7900011B7D /* WordPressKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A98A2F42C22736F00A2CE58 /* WordPressKit.framework */; };
 		0C0DF8822C2DDE7900011B7D /* WordPressKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4A98A2F42C22736F00A2CE58 /* WordPressKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0C0DF8862C2DE0C900011B7D /* WordPressShared in Frameworks */ = {isa = PBXBuildFile; productRef = 0C0DF8852C2DE0C900011B7D /* WordPressShared */; };
 		0C13ACC72BF406CB00FF7405 /* VoiceToContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C13ACC62BF406CB00FF7405 /* VoiceToContentView.swift */; };
 		0C13ACC92BF406E700FF7405 /* VoiceToContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C13ACC82BF406E700FF7405 /* VoiceToContentViewModel.swift */; };
 		0C13ACCA2BF4084400FF7405 /* VoiceToContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C13ACC62BF406CB00FF7405 /* VoiceToContentView.swift */; };
@@ -11905,6 +11906,7 @@
 				4A91C6CD2C22F45E00AD6324 /* Alamofire in Frameworks */,
 				4AEB35B32C22B91600D5AE8C /* WordPressKit.framework in Frameworks */,
 				4AEB35BA2C22D43200D5AE8C /* OHHTTPStubsSwift in Frameworks */,
+				0C0DF8862C2DE0C900011B7D /* WordPressShared in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -23020,7 +23022,6 @@
 				4A98A2F72C22736F00A2CE58 /* Sources */,
 				4A98A2F82C22736F00A2CE58 /* Frameworks */,
 				4A98A2F92C22736F00A2CE58 /* Resources */,
-				4A41C6DC2C22B1C6007F353D /* [Custom] Embed Frameworks */,
 				4AEB35B52C22B91600D5AE8C /* Embed Frameworks */,
 			);
 			buildRules = (
@@ -23033,6 +23034,7 @@
 				4AEB35B92C22D43200D5AE8C /* OHHTTPStubsSwift */,
 				4AD028602C22EEAB004FBDD0 /* OCMock */,
 				4A91C6CC2C22F45E00AD6324 /* Alamofire */,
+				0C0DF8852C2DE0C900011B7D /* WordPressShared */,
 			);
 			productName = WordPressKitTests;
 			productReference = 4A98A2FB2C22736F00A2CE58 /* WordPressKitTests.xctest */;
@@ -25119,26 +25121,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"$SRCROOT/../Scripts/BuildPhases/Authenticator/EmbedFrameworks.sh\"\n";
-		};
-		4A41C6DC2C22B1C6007F353D /* [Custom] Embed Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/WordPressKit/EmbedFrameworks-input.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "[Custom] Embed Frameworks";
-			outputFileListPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/WordPressKit/EmbedFrameworks-output.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"$SRCROOT/../Scripts/BuildPhases/WordPressKit/EmbedFrameworks.sh\"\n";
 		};
 		4C304224F0F810A17D96A402 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -36775,6 +36757,11 @@
 			productName = WordPressUI;
 		};
 		0C0DF87F2C2DDD5100011B7D /* WordPressShared */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0C0DF8622C2DBF1500011B7D /* XCRemoteSwiftPackageReference "WordPress-iOS-Shared" */;
+			productName = WordPressShared;
+		};
+		0C0DF8852C2DE0C900011B7D /* WordPressShared */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 0C0DF8622C2DBF1500011B7D /* XCRemoteSwiftPackageReference "WordPress-iOS-Shared" */;
 			productName = WordPressShared;

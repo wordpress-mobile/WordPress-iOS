@@ -1,8 +1,8 @@
 #import <Foundation/Foundation.h>
 
-NS_ASSUME_NONNULL_BEGIN
+@import WordPressSharedObjC;
 
-@protocol WordPressLoggingDelegate;
+NS_ASSUME_NONNULL_BEGIN
 
 FOUNDATION_EXTERN id<WordPressLoggingDelegate> _Nullable WPKitGetLoggingDelegate(void);
 FOUNDATION_EXTERN void WPKitSetLoggingDelegate(id<WordPressLoggingDelegate> _Nullable logger);
