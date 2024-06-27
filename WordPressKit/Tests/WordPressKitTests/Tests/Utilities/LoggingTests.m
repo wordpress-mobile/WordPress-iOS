@@ -1,5 +1,6 @@
 #import <XCTest/XCTest.h>
 
+@import WordPressShared;
 @import WordPressKit;
 
 @interface CaptureLogs : NSObject<WordPressLoggingDelegate>
@@ -28,6 +29,18 @@
 - (void)logError:(NSString *)str
 {
     [self.errorLogs addObject:str];
+}
+
+- (void)logDebug:(nonnull NSString *)str { 
+
+}
+
+- (void)logVerbose:(nonnull NSString *)str { 
+
+}
+
+- (void)logWarning:(nonnull NSString *)str { 
+
 }
 
 @end

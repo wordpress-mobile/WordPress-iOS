@@ -6,14 +6,6 @@
 #import "WordPressXMLRPCAPIFacade.h"
 #import "WPAuthenticator-Swift.h"
 
-#if __has_include("WordPressAuthenticatorTests-Swift.h")
-#import "WordPressAuthenticatorTests-Swift.h"
-#endif
-
-#if __has_include("WordPressAuthenticator_Unit_Tests-Swift.h")
-#import "WordPressAuthenticator_Unit_Tests-Swift.h"
-#endif
-
 @import WordPressKit;
 
 

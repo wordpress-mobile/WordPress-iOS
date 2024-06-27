@@ -1,4 +1,0 @@
-${SRCROOT}/../Scripts/BuildPhases/Authenticator/CopyResources.sh
-${SRCROOT}/../WordPressAuthenticator/Sources/Resources/WordPressAuthenticatorResources.bundle
-${PODS_CONFIGURATION_BUILD_DIR}/WordPressUI/WordPressUIResources.bundle
-${PODS_CONFIGURATION_BUILD_DIR}/WordPressShared/WordPressShared.bundle
