@@ -488,6 +488,7 @@
 		0C391E642A312DB20040EA91 /* BlazeCampaignViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C391E632A312DB20040EA91 /* BlazeCampaignViewModelTests.swift */; };
 		0C3C50422BA3A024002A37B4 /* PostNoticePublishSuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C3C50412BA3A024002A37B4 /* PostNoticePublishSuccessView.swift */; };
 		0C3C50432BA3A024002A37B4 /* PostNoticePublishSuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C3C50412BA3A024002A37B4 /* PostNoticePublishSuccessView.swift */; };
+		0C4CE8492C2F418000B9EEAC /* AppImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 433840C622C2BA5B00CB13F8 /* AppImages.xcassets */; };
 		0C5751102B011468001074E5 /* RemoteConfigDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C57510F2B011468001074E5 /* RemoteConfigDebugView.swift */; };
 		0C5751112B011468001074E5 /* RemoteConfigDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C57510F2B011468001074E5 /* RemoteConfigDebugView.swift */; };
 		0C63266F2A3D1305000B8C57 /* GutenbergFilesAppMediaSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C63266E2A3D1305000B8C57 /* GutenbergFilesAppMediaSourceTests.swift */; };
@@ -1617,7 +1618,7 @@
 		73E40D8921238BF50012ABA6 /* Tracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FA22821C99F6180016CA7C /* Tracks.swift */; };
 		73E40D8C21238C520012ABA6 /* Tracks+ServiceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E40D8B21238C520012ABA6 /* Tracks+ServiceExtension.swift */; };
 		73E4E376227A033A0007D752 /* PostChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E4E375227A033A0007D752 /* PostChart.swift */; };
-		73E8E592212CD635000B26A5 /* UIImage+Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58C4EC9207C5E1900E32E4D /* UIImage+Assets.swift */; };
+		73E8E592212CD635000B26A5 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58C4EC9207C5E1900E32E4D /* UIImage+Extensions.swift */; };
 		73EDC70A212E5D6700E5E3ED /* RemoteNotificationStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73EDC709212E5D6700E5E3ED /* RemoteNotificationStyles.swift */; };
 		73F6DD42212BA54700CE447D /* RichNotificationContentFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F6DD41212BA54700CE447D /* RichNotificationContentFormatter.swift */; };
 		73F6DD44212C714F00CE447D /* RichNotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F6DD43212C714F00CE447D /* RichNotificationViewModel.swift */; };
@@ -2073,7 +2074,6 @@
 		8096217A28E55C9400940A5D /* WordPressShare.js in Resources */ = {isa = PBXBuildFile; fileRef = E1AFA8C21E8E34230004A323 /* WordPressShare.js */; };
 		8096217B28E55C9400940A5D /* ShareExtension.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 74F5CD371FE0646F00764E7C /* ShareExtension.storyboard */; };
 		8096217C28E55C9400940A5D /* NoResults.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98B33C87202283860071E1E2 /* NoResults.storyboard */; };
-		8096217D28E55C9400940A5D /* AppImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 433840C622C2BA5B00CB13F8 /* AppImages.xcassets */; };
 		8096217E28E55C9400940A5D /* ColorPalette.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 435B76292297484200511813 /* ColorPalette.xcassets */; };
 		8096218E28E55F8600940A5D /* JetpackDraftActionExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 8096218528E55C9400940A5D /* JetpackDraftActionExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		8096219328E5613700940A5D /* AppImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 433840C622C2BA5B00CB13F8 /* AppImages.xcassets */; };
@@ -2168,7 +2168,7 @@
 		80F6D04128EE866A00953C1A /* Notifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73BFDA89211D054800907245 /* Notifiable.swift */; };
 		80F6D04228EE866A00953C1A /* NotificationTextContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFF208920EADCB6009C4699 /* NotificationTextContent.swift */; };
 		80F6D04328EE866A00953C1A /* FeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D690151F828FF000200E30 /* FeatureFlag.swift */; };
-		80F6D04428EE866A00953C1A /* UIImage+Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58C4EC9207C5E1900E32E4D /* UIImage+Assets.swift */; };
+		80F6D04428EE866A00953C1A /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58C4EC9207C5E1900E32E4D /* UIImage+Extensions.swift */; };
 		80F6D04528EE866A00953C1A /* BuildConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D690141F828FF000200E30 /* BuildConfiguration.swift */; };
 		80F6D04628EE866A00953C1A /* Tracks+ServiceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E40D8B21238C520012ABA6 /* Tracks+ServiceExtension.swift */; };
 		80F6D04728EE866A00953C1A /* UNNotificationContent+RemoteNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73768B6A212B4E4F005136A1 /* UNNotificationContent+RemoteNotification.swift */; };
@@ -2917,7 +2917,7 @@
 		B5882C471D5297D1008E0EAA /* NotificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5882C461D5297D1008E0EAA /* NotificationTests.swift */; };
 		B5899ADE1B419C560075A3D6 /* NotificationSettingDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5899ADD1B419C560075A3D6 /* NotificationSettingDetailsViewController.swift */; };
 		B5899AE41B422D990075A3D6 /* NotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5899AE31B422D990075A3D6 /* NotificationSettings.swift */; };
-		B58C4ECA207C5E1A00E32E4D /* UIImage+Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58C4EC9207C5E1900E32E4D /* UIImage+Assets.swift */; };
+		B58C4ECA207C5E1A00E32E4D /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58C4EC9207C5E1900E32E4D /* UIImage+Extensions.swift */; };
 		B5969E2220A49E86005E9DF1 /* UIAlertController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5969E2120A49E86005E9DF1 /* UIAlertController+Helpers.swift */; };
 		B59B18751CC7FB8D0055EB7C /* PersonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59B18741CC7FB8D0055EB7C /* PersonViewController.swift */; };
 		B59D40A61DB522DF003D2D79 /* NSAttributedStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59D40A51DB522DF003D2D79 /* NSAttributedStringTests.swift */; };
@@ -4893,7 +4893,7 @@
 		FABB238B2602FC2C00C8785C /* ReaderSpacerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66EB6F81C1B7A76003DABC5 /* ReaderSpacerView.swift */; };
 		FABB238D2602FC2C00C8785C /* WPStyleGuide+SiteCreation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B560914B208A671E00399AE4 /* WPStyleGuide+SiteCreation.swift */; };
 		FABB238E2602FC2C00C8785C /* NotificationSettingsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EFB1C11B31B98E007608A3 /* NotificationSettingsService.swift */; };
-		FABB23922602FC2C00C8785C /* UIImage+Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58C4EC9207C5E1900E32E4D /* UIImage+Assets.swift */; };
+		FABB23922602FC2C00C8785C /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58C4EC9207C5E1900E32E4D /* UIImage+Extensions.swift */; };
 		FABB23942602FC2C00C8785C /* LoginEpilogueUserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6158AC91ECDF518005FA441 /* LoginEpilogueUserInfo.swift */; };
 		FABB23962602FC2C00C8785C /* StatsTableFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983DBBA922125DD300753988 /* StatsTableFooter.swift */; };
 		FABB23972602FC2C00C8785C /* BlogSyncFacade.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D239A21AE5A5FC0074768D /* BlogSyncFacade.m */; };
@@ -8269,7 +8269,7 @@
 		B5882C461D5297D1008E0EAA /* NotificationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationTests.swift; sourceTree = "<group>"; };
 		B5899ADD1B419C560075A3D6 /* NotificationSettingDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationSettingDetailsViewController.swift; sourceTree = "<group>"; };
 		B5899AE31B422D990075A3D6 /* NotificationSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NotificationSettings.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		B58C4EC9207C5E1900E32E4D /* UIImage+Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Assets.swift"; sourceTree = "<group>"; };
+		B58C4EC9207C5E1900E32E4D /* UIImage+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
 		B5969E2120A49E86005E9DF1 /* UIAlertController+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Helpers.swift"; sourceTree = "<group>"; };
 		B59B18741CC7FB8D0055EB7C /* PersonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonViewController.swift; sourceTree = "<group>"; };
 		B59D40A51DB522DF003D2D79 /* NSAttributedStringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSAttributedStringTests.swift; sourceTree = "<group>"; };
@@ -15616,7 +15616,7 @@
 				1707CE411F3121750020B7FE /* UICollectionViewCell+Tint.swift */,
 				E1823E6B1E42231C00C19F53 /* UIEdgeInsets.swift */,
 				0C3090212B12A5C90071C551 /* UIButton+Extensions.swift */,
-				B58C4EC9207C5E1900E32E4D /* UIImage+Assets.swift */,
+				B58C4EC9207C5E1900E32E4D /* UIImage+Extensions.swift */,
 				FF70A3211FD5840500BC270D /* UIImage+Export.swift */,
 				FADC40A72A8BC2A200C19997 /* UIImage+Gravatar.swift */,
 				B5E94D141FE04815000E7C20 /* UIImageView+SiteIcon.swift */,
@@ -19849,7 +19849,7 @@
 				4A690C182BA794C800A8E0C5 /* PrivacyInfo.xcprivacy in Resources */,
 				8096217B28E55C9400940A5D /* ShareExtension.storyboard in Resources */,
 				8096217C28E55C9400940A5D /* NoResults.storyboard in Resources */,
-				8096217D28E55C9400940A5D /* AppImages.xcassets in Resources */,
+				0C4CE8492C2F418000B9EEAC /* AppImages.xcassets in Resources */,
 				8058730B28F7B70B00340C11 /* InfoPlist.strings in Resources */,
 				8096217E28E55C9400940A5D /* ColorPalette.xcassets in Resources */,
 			);
@@ -22355,7 +22355,7 @@
 				C3FF78E828354A91008FA600 /* SiteDesignSectionLoader.swift in Sources */,
 				4A690C122BA3F4AD00A8E0C5 /* WPUserAgent.swift in Sources */,
 				803BB989295B80D300B3F6D6 /* RootViewPresenter+EditorNavigation.swift in Sources */,
-				B58C4ECA207C5E1A00E32E4D /* UIImage+Assets.swift in Sources */,
+				B58C4ECA207C5E1A00E32E4D /* UIImage+Extensions.swift in Sources */,
 				E6158ACA1ECDF518005FA441 /* LoginEpilogueUserInfo.swift in Sources */,
 				C3234F5427EBBACA004ADB29 /* SiteIntentVertical.swift in Sources */,
 				983DBBAB22125DD500753988 /* StatsTableFooter.swift in Sources */,
@@ -23416,7 +23416,7 @@
 				7335AC5E21220C630012EF2D /* Notifiable.swift in Sources */,
 				7335AC6321220E6E0012EF2D /* NotificationTextContent.swift in Sources */,
 				83A1B19E28AFE86A00E737AC /* FeatureFlag.swift in Sources */,
-				73E8E592212CD635000B26A5 /* UIImage+Assets.swift in Sources */,
+				73E8E592212CD635000B26A5 /* UIImage+Extensions.swift in Sources */,
 				83A1B1A328AFE89F00E737AC /* BuildConfiguration.swift in Sources */,
 				73E40D8C21238C520012ABA6 /* Tracks+ServiceExtension.swift in Sources */,
 				73768B6B212B4E4F005136A1 /* UNNotificationContent+RemoteNotification.swift in Sources */,
@@ -23695,7 +23695,7 @@
 				80F6D04128EE866A00953C1A /* Notifiable.swift in Sources */,
 				80F6D04228EE866A00953C1A /* NotificationTextContent.swift in Sources */,
 				80F6D04328EE866A00953C1A /* FeatureFlag.swift in Sources */,
-				80F6D04428EE866A00953C1A /* UIImage+Assets.swift in Sources */,
+				80F6D04428EE866A00953C1A /* UIImage+Extensions.swift in Sources */,
 				80F6D04528EE866A00953C1A /* BuildConfiguration.swift in Sources */,
 				80F6D04628EE866A00953C1A /* Tracks+ServiceExtension.swift in Sources */,
 				80F6D04728EE866A00953C1A /* UNNotificationContent+RemoteNotification.swift in Sources */,
@@ -25237,7 +25237,7 @@
 				019105872BE8BD6000CDFB16 /* StatsGhostSingleValueCell.swift in Sources */,
 				8091019429078CFE00FCB4EA /* JetpackFullscreenOverlayViewController.swift in Sources */,
 				FA347AEE26EB6E300096604B /* GrowAudienceCell.swift in Sources */,
-				FABB23922602FC2C00C8785C /* UIImage+Assets.swift in Sources */,
+				FABB23922602FC2C00C8785C /* UIImage+Extensions.swift in Sources */,
 				FABB23942602FC2C00C8785C /* LoginEpilogueUserInfo.swift in Sources */,
 				086F2483284F52DF00032F39 /* Tooltip.swift in Sources */,
 				FA6C32BD2BF21B1C00BBDDB4 /* AppStoreInfoViewModel.swift in Sources */,

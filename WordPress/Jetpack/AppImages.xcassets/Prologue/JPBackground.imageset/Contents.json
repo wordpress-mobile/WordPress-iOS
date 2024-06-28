@@ -1,19 +1,8 @@
 {
   "images" : [
     {
-      "filename" : "background-light_Normal.png",
-      "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "background-light_Normal@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "background-light_Normal@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "jetpack-firstrun-background.svg",
+      "idiom" : "universal"
     }
   ],
   "info" : {
