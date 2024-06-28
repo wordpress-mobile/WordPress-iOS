@@ -164,6 +164,15 @@
         }
       },
       {
+        "package": "MediaEditor",
+        "repositoryURL": "https://github.com/wordpress-mobile/MediaEditor-iOS",
+        "state": {
+          "branch": "task/spm-support",
+          "revision": "4f3fe298a95d1de81099f8c9e5612e0c59c9bf53",
+          "version": null
+        }
+      },
+      {
         "package": "ZendeskMessagingSDK",
         "repositoryURL": "https://github.com/zendesk/messaging_sdk_ios",
         "state": {
@@ -386,6 +395,15 @@
           "branch": null,
           "revision": "77c7f492f5c1c9ca159f73d18f56bbd1186390b0",
           "version": "0.3.0"
+        }
+      },
+      {
+        "package": "TOCropViewController",
+        "repositoryURL": "https://github.com/TimOliver/TOCropViewController",
+        "state": {
+          "branch": null,
+          "revision": "a634cb7cdfd580006e79a6e74e64417fe9e9783b",
+          "version": "2.7.4"
         }
       },
       {

@@ -56,18 +56,11 @@ abstract_target 'Apps' do
   pod 'AppCenter/Distribute', app_center_version, configurations: app_center_configurations
 
   pod 'FSInteractiveMap', git: 'https://github.com/wordpress-mobile/FSInteractiveMap.git', tag: '0.2.0'
-  pod 'CropViewController', '2.5.3'
 
   ## Automattic libraries
   ## ====================
   ##
   gravatar
-
-  # Production
-
-  pod 'MediaEditor', '~> 1.2', '>= 1.2.2'
-  # pod 'MediaEditor', git: 'https://github.com/wordpress-mobile/MediaEditor-iOS.git', commit: ''
-  # pod 'MediaEditor', path: '../MediaEditor-iOS'
 
   aztec
 
