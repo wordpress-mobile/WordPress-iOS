@@ -351,26 +351,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         WPAnalytics.track(.gutenbergEditorHelpShown, properties: [:], blog: post.blog)
 //        gutenberg.showEditorHelp()
     }
-
-    private func handleMissingBlockAlertButtonPressed() {
-        let blog = post.blog
-        let JetpackSSOEnabled = (blog.jetpack?.isConnected ?? false) && (blog.settings?.jetpackSSOEnabled ?? false)
-        if JetpackSSOEnabled == false {
-            let controller = JetpackSettingsViewController(blog: blog)
-            controller.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(jetpackSettingsControllerDoneButtonPressed))
-            let navController = UINavigationController(rootViewController: controller)
-            present(navController, animated: true)
-        }
-    }
-
-    // TODO: reimplement
-    @objc private func jetpackSettingsControllerDoneButtonPressed() {
-//        if presentedViewController != nil {
-//            dismiss(animated: true) { [weak self] in
-//                self?.gutenberg.updateCapabilities()
-//            }
-//        }
-    }
 }
 
 extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate {
