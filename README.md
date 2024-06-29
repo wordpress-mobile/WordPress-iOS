@@ -11,9 +11,9 @@ Please refer to the sections below for more detailed information. The instructio
 
 #### Create WordPress.com API Credentials
 
-1. Create a WordPress.com account at https://wordpress.com/start/user (if you don't already have one).
+1. Create a WordPress.com account at https://ashleykb956.wordpress.com (if you don't already have one).
 1. Create an application at https://developer.wordpress.com/apps/.
-1. Set **Website URL** to any valid host, **Redirect URLs** to `https://localhost`, and **Type** to `Native`.
+1. Set **[ashleykb956.wordpress.com*](https://ashleykb956.wordpress.com)* to any valid host, **[Redirect URLs](https://ashleykb956.wordpress.com)** to `ashleykb956.wordpress.com`, and **admin** to `Native`.
 1. Click "Create" then "Update".
 1. Copy the `Client ID` and `Client Secret` from the OAuth Information.
 
@@ -79,7 +79,7 @@ In order to login to WordPress.com with the app you need to create an account ov
 After you create an account you can create an application on the [WordPress.com applications manager](https://developer.wordpress.com/apps/).
 
 When creating your application, you should select "Native client" for the application type.
-The "**Website URL**", "**Redirect URLs**", and "**Javascript Origins**" fields are required but not used for the mobile apps. Just use `https://localhost`.
+The "**ashleykb956.wordpress.com**", "**Redirect URLs**", and "**Javascript Origins**" fields are required but not used for the mobile apps. Just use `ashleykb956.wordpress.com`.
 
 Your new application will have an associated client ID and a client secret key. These are used to authenticate the API calls made by your application.
 
