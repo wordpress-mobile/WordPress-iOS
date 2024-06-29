@@ -22,18 +22,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
     // MARK: - PostEditor
 
-    var html: String {
-        set { post.content = newValue }
-        get { return post.content ?? "" }
-    }
-
-    var postTitle: String {
-        set { post.postTitle = newValue }
-        get { return post.postTitle ?? "" }
-    }
-
-    /// Maintainer of state for editor - like for post button
-    ///
     private(set) lazy var postEditorStateContext: PostEditorStateContext = {
         return PostEditorStateContext(post: post, delegate: self)
     }()
@@ -41,8 +29,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     var analyticsEditorSource: String { Analytics.editorSource }
     var editorSession: PostEditorAnalyticsSession
     var onClose: ((Bool) -> Void)?
-
-    // MARK: - Editor Media actions
 
     // MARK: - Set content
 
