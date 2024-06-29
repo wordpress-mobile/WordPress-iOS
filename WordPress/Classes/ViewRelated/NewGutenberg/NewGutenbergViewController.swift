@@ -322,15 +322,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         }
     }
 
-    // TODO: reimplement
-    func focusTitleIfNeeded() {
-//        guard !post.hasContent(), shouldPresentInformativeDialog == false, shouldPresentPhase2informativeDialog == false else {
-//            return
-//        }
-//        gutenberg.setFocusOnTitle()
-    }
-
-    // TODO: reimplement
     func showEditorHelp() {
         guard let url = URL(string: "https://wordpress.com/support/wordpress-editor/") else { return }
         present(SFSafariViewController(url: url), animated: true)
@@ -402,34 +393,8 @@ private struct NewGutenbergNetworkClient: GutenbergKit.EditorNetworkingClient {
 
 // MARK: - GutenbergBridgeDelegate
 
-/// - warning: the app can't make any assumption about the thread on which `GutenbergBridgeDelegate` gets invoked. In some scenarios, it gets called from the main thread, for example, if being invoked directly from [Gutenberg.swift](https://github.com/WordPress/gutenberg/blob/64f9d9d1ced7a5aa7f3874890306554c5b703ce6/packages/react-native-bridge/ios/Gutenberg.swift). And sometimes, it gets called on a dispatch queue created by the React Native runtime for a native module (see [React Native: Threading](https://reactnative.dev/docs/native-modules-ios#threading). It happens when the methods are invoked directly from JavaScript.
 extension NewGutenbergViewController {
-    // TODO: reimplement (run local server)
-    func gutenbergDidGetRequestFetch(path: String, completion: @escaping (Result<Any, NSError>) -> Void) {
-//        guard let context = post.managedObjectContext else {
-//            didEncounterMissingContextError()
-//            completion(.failure(URLError(.unknown) as NSError))
-//            return
-//        }
-//        context.perform {
-//            GutenbergNetworkRequest(path: path, blog: self.post.blog, method: .get).request(completion: completion)
-//        }
-    }
-
-    // TODO: reimplement (run local server)
-    func gutenbergDidPostRequestFetch(path: String, data: [String: AnyObject]?, completion: @escaping (Result<Any, NSError>) -> Void) {
-//        guard let context = post.managedObjectContext else {
-//            didEncounterMissingContextError()
-//            completion(.failure(URLError(.unknown) as NSError))
-//            return
-//        }
-//        context.perform {
-//            GutenbergNetworkRequest(path: path, blog: self.post.blog, method: .post, data: data).request(completion: completion)
-//        }
-    }
-
     func showAlertForEmptyPostPublish() {
-
         let title: String = (self.post is Page) ? EmptyPostActionSheet.titlePage : EmptyPostActionSheet.titlePost
         let message: String = EmptyPostActionSheet.message
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
@@ -446,6 +411,7 @@ extension NewGutenbergViewController {
         present(alertController, animated: true, completion: nil)
     }
 
+    // TODO: are we going to show this natively?
     func gutenbergDidRequestImagePreview(with fullSizeUrl: URL, thumbUrl: URL?) {
         navigationController?.definesPresentationContext = true
 
@@ -462,7 +428,7 @@ extension NewGutenbergViewController {
         self.present(controller, animated: true)
     }
 
-    // TODO: remove
+    // TODO: reimplement
 //    func gutenbergDidRequestMention(callback: @escaping (Swift.Result<String, NSError>) -> Void) {
 //        DispatchQueue.main.async(execute: { [weak self] in
 //            self?.showSuggestions(type: .mention, callback: callback)
@@ -474,32 +440,6 @@ extension NewGutenbergViewController {
 //            self?.showSuggestions(type: .xpost, callback: callback)
 //        })
 //    }
-
-    // TODO: reimplement (it it used?)
-    func gutenbergDidRequestPreview() {
-//        displayPreview()
-    }
-
-    // TODO: reimplement (where is it used?)
-//    func gutenbergDidRequestBlockTypeImpressions() -> [String: Int] {
-//        return gutenbergSettings.blockTypeImpressions
-//    }
-//
-//    func gutenbergDidRequestSetBlockTypeImpressions(_ impressions: [String: Int]) -> Void {
-//        gutenbergSettings.blockTypeImpressions = impressions
-//    }
-
-    // TODO: reimplement (where is it used?)
-    func gutenbergDidRequestContactCustomerSupport() {
-        coordinator.showSupport()
-    }
-
-    // TODO: reimplement (where is it used?)
-    func gutenbergDidRequestGotoCustomerSupportOptions() {
-        let controller = SupportTableViewController()
-        let navController = UINavigationController(rootViewController: controller)
-        self.topmostPresentedViewController.present(navController, animated: true)
-    }
 }
 
 // MARK: - GutenbergBridgeDataSource
