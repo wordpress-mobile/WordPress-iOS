@@ -55,25 +55,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 //        gutenberg.setTitle(title)
     }
 
-    // TODO: reimplement
-    func setHTML(_ html: String) {
-//        guard gutenberg.isLoaded else {
-//            return
-//        }
-
-        self.html = html
-
-        // Avoid sending the HTML back to the editor if it's closing.
-        // Otherwise, it will cause the editor to recreate all blocks.
-//        if !isEditorClosing {
-//            gutenberg.updateHtml(html)
-//        }
-    }
-
-    func getHTML() -> String {
-        return html
-    }
-
     var post: AbstractPost {
         didSet {
             postEditorStateContext = PostEditorStateContext(post: post, delegate: self)
@@ -113,7 +94,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         !editorViewController.state.isEmpty
     }
 
-    // TODO: remove (unused but required by the PostEditor protocol)
+    // TODO: remove (none of these APIs are needed for the new editor)
     var autosaver = Autosaver(action: {})
     func prepopulateMediaItems(_ media: [Media]) {}
     var debouncer = WordPressShared.Debouncer(delay: 10)
@@ -123,6 +104,8 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     var wordCount: UInt { 0 }
     var postIsReblogged: Bool = false
     var entryPoint: PostEditorEntryPoint = .unknown
+    func setHTML(_ html: String) {}
+    func getHTML() -> String { post.content ?? "" }
 
     // MARK: - Initializers
     required convenience init(
@@ -261,7 +244,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         let content = post.content ?? String()
 
         setTitle(post.postTitle ?? "")
-        setHTML(content)
+        editorViewController.setContent(content)
 
         // TODO: reimplement
 //        SiteSuggestionService.shared.prefetchSuggestionsIfNeeded(for: post.blog) { [weak self] in
