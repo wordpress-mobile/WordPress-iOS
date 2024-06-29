@@ -1,7 +1,7 @@
 import UIKit
 import AutomatticTracks
-import Combine
 import GutenbergKit
+import SafariServices
 
 class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor {
     let errorDomain: String = "GutenbergViewController.errorDomain"
@@ -91,23 +91,11 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
     // MARK: - Private variables
 
-    private(set) var mode: EditMode = .richText
-    private var analyticsEditor: PostEditorAnalyticsSession.Editor {
-        switch mode {
-        case .richText:
-            return .gutenberg
-        case .html:
-            return .html
-        }
-    }
-
     // TODO: reimplemet
 //    internal private(set) var contentInfo: ContentInfo?
     lazy var editorSettingsService: BlockEditorSettingsService? = {
         BlockEditorSettingsService(blog: post.blog, coreDataStack: ContextManager.sharedInstance())
     }()
-
-    private var cancellables: [AnyCancellable] = []
 
     // MARK: - GutenbergKit
 
@@ -311,10 +299,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
     func toggleEditingMode() {
         editorViewController.isCodeEditorEnabled.toggle()
-
-        // TODO: ??
-//        navigationBarManager.undoButton.isHidden = mode == .html
-//        navigationBarManager.redoButton.isHidden = mode == .html
     }
 
     private func performAutoSave() {
@@ -348,8 +332,8 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
     // TODO: reimplement
     func showEditorHelp() {
-        WPAnalytics.track(.gutenbergEditorHelpShown, properties: [:], blog: post.blog)
-//        gutenberg.showEditorHelp()
+        guard let url = URL(string: "https://wordpress.com/support/wordpress-editor/") else { return }
+        present(SFSafariViewController(url: url), animated: true)
     }
 }
 
@@ -739,8 +723,8 @@ extension NewGutenbergViewController {
     private func makeMoreMenuActions() -> [UIAction] {
         var actions: [UIAction] = []
 
-        let toggleModeTitle = mode == .richText ? Strings.codeEditor : Strings.visualEditor
-        let toggleModeIconName = mode == .richText ? "curlybraces" : "doc.richtext"
+        let toggleModeTitle = editorViewController.isCodeEditorEnabled ? Strings.visualEditor: Strings.codeEditor
+        let toggleModeIconName = editorViewController.isCodeEditorEnabled ? "doc.richtext" : "curlybraces"
         actions.append(UIAction(title: toggleModeTitle, image: UIImage(systemName: toggleModeIconName)) { [weak self] _ in
             self?.toggleEditingMode()
         })
