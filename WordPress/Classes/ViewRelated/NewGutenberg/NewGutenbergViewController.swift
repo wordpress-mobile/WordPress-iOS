@@ -309,13 +309,10 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         navigationItem.rightBarButtonItems = post.status == .trash ? [] : navigationBarManager.rightBarButtonItems
     }
 
-    // TODO: reimplement
     func toggleEditingMode() {
-//        gutenberg.toggleHTMLMode()
-//        mode.toggle()
-//        editorSession.switch(editor: analyticsEditor)
-//        presentEditingModeSwitchedNotice()
-//
+        editorViewController.isCodeEditorEnabled.toggle()
+
+        // TODO: ??
 //        navigationBarManager.undoButton.isHidden = mode == .html
 //        navigationBarManager.redoButton.isHidden = mode == .html
     }
@@ -382,11 +379,7 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
     }
 
     func editor(_ viewContoller: GutenbergKit.EditorViewController, didEncounterCriticalError error: any Error) {
-        let alert = UIAlertController(title: "Editor Critical Error", message: error.localizedDescription, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default) { [weak self] _ in
-            self?.onClose?(false)
-        })
-        present(alert, animated: true)
+        onClose?(false)
     }
 
     func editor(_ viewController: GutenbergKit.EditorViewController, didUpdateContentWithState state: GutenbergKit.EditorState) {
