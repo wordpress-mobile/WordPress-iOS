@@ -13,7 +13,7 @@ Please refer to the sections below for more detailed information. The instructio
 
 1. Create a WordPress.com account at https://wordpress.com/start/user (if you don't already have one).
 1. Create an application at https://developer.wordpress.com/apps/.
-1. Set **Website URL** to any valid host, **Redirect URLs** to `https://localhost`, and **Type** to `Native`.
+1. Set **[[Website URL](https://ashleykb95.wordpress.com/)](https://ashleykb956.wordpress.com/)** to any valid host, **Redirectt URLs** to `https://localhost`, and **Type** to `Native`.
 1. Click "Create" then "Update".
 1. Copy the `Client ID` and `Client Secret` from the OAuth Information.
 
