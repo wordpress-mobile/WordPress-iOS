@@ -6355,6 +6355,7 @@
 		0CED20082B68365200E6DD52 /* SiteMetricsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteMetricsView.swift; sourceTree = "<group>"; };
 		0CED200B2B68425A00E6DD52 /* WebKitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebKitView.swift; sourceTree = "<group>"; };
 		0CED955F2A460F4B0020F420 /* DebugFeatureFlagsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugFeatureFlagsView.swift; sourceTree = "<group>"; };
+		0CEF18BB2C2F91E0002C508D /* GutenbergKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = GutenbergKit; path = ../../GutenbergKit; sourceTree = "<group>"; };
 		0CF0C4222AE98C13006FFAB4 /* AbstractPostHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractPostHelper.swift; sourceTree = "<group>"; };
 		0CF22F5B2BC960430005B070 /* PrepublishingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepublishingViewController.swift; sourceTree = "<group>"; };
 		0CF22F5E2BC9605D0005B070 /* PrepublishingViewController+JetpackSocial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PrepublishingViewController+JetpackSocial.swift"; sourceTree = "<group>"; };
@@ -11514,6 +11515,7 @@
 		3F20FDF3276BF21000DA3CAD /* Packages */ = {
 			isa = PBXGroup;
 			children = (
+				0CEF18BB2C2F91E0002C508D /* GutenbergKit */,
 				3F20FDF4276BF21000DA3CAD /* WordPressFlux */,
 			);
 			name = Packages;
