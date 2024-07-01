@@ -1,3 +1,6 @@
+# Most of the steps need to run on a macOS agent, so let's define it as a root property.
+agents:
+  queue: mac
 env:
   IMAGE_ID: $IMAGE_ID
 
