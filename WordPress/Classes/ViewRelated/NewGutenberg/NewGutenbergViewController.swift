@@ -90,6 +90,10 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     var wordCount: UInt { 0 }
     var postIsReblogged: Bool = false
     var entryPoint: PostEditorEntryPoint = .unknown
+    var postTitle: String {
+        get { post.postTitle ?? "" }
+        set { post.postTitle = newValue }
+    }
     func setHTML(_ html: String) {}
     func getHTML() -> String { post.content ?? "" }
 
