@@ -267,6 +267,14 @@ import 'lanes/release_management_in_ci.rb'
 default_platform(:ios)
 
 before_all do |lane|
+  # Various actions run 'xcodebuild -showBuildSettings ...' which can at times fail, possibly due to networking and SPM resolution.
+  # See for example this failure https://buildkite.com/automattic/wordpress-ios/builds/22979#01906bdc-3077-4d17-b742-a55c9a9db4b4
+  #
+  # Bumping the interval Fastlane waits for xcodebuild to provide output before retrying seems to be an effective workaround.
+  #
+  # See also https://github.com/fastlane/fastlane/issues/20919
+  ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '120'
+
   # Skip these checks/steps for test lane (not needed for testing)
   next if lane == :test_without_building
 
