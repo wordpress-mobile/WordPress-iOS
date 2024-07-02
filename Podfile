@@ -46,8 +46,6 @@ abstract_target 'Apps' do
   pod 'AppCenter', app_center_version, configurations: app_center_configurations
   pod 'AppCenter/Distribute', app_center_version, configurations: app_center_configurations
 
-  pod 'FSInteractiveMap', git: 'https://github.com/wordpress-mobile/FSInteractiveMap.git', tag: '0.2.0'
-
   ## Automattic libraries
   ## ====================
   ##

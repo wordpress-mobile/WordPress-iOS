@@ -128,6 +128,15 @@
         }
       },
       {
+        "package": "FSInteractiveMap",
+        "repositoryURL": "https://github.com/wordpress-mobile/FSInteractiveMap/",
+        "state": {
+          "branch": null,
+          "revision": "3a05cd433c4f6bfe66f09253459cef2be058b3ec",
+          "version": "0.3.0"
+        }
+      },
+      {
         "package": "Gifu",
         "repositoryURL": "https://github.com/kaishin/Gifu",
         "state": {
