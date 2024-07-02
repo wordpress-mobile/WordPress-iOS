@@ -37,15 +37,6 @@ abstract_target 'Apps' do
   ##
   gutenberg_pod
 
-  ## Third party libraries
-  ## =====================
-  ##
-
-  app_center_version = '~> 5.0'
-  app_center_configurations = %w[Release-Internal Release-Alpha]
-  pod 'AppCenter', app_center_version, configurations: app_center_configurations
-  pod 'AppCenter/Distribute', app_center_version, configurations: app_center_configurations
-
   ## Automattic libraries
   ## ====================
   ##

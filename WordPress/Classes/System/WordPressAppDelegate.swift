@@ -8,12 +8,6 @@ import WordPressShared
 import AutomatticAbout
 import UIDeviceIdentifier
 import WordPressUI
-
-#if APPCENTER_ENABLED
-import AppCenter
-import AppCenterDistribute
-#endif
-
 import ZendeskCoreSDK
 
 class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
@@ -236,7 +230,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         // Local notifications
         addNotificationObservers()
 
-        configureAppCenterSDK()
         configureAppRatingUtility()
 
         let libraryLogger = WordPressLibraryLogger()
@@ -372,12 +365,6 @@ extension WordPressAppDelegate {
         let utility = AppRatingUtility.shared
         utility.systemWideSignificantEventCountRequiredForPrompt = 20
         utility.setVersion(version)
-    }
-
-    @objc func configureAppCenterSDK() {
-        #if APPCENTER_ENABLED
-        AppCenter.start(withAppSecret: ApiCredentials.appCenterAppId, services: [Distribute.self])
-        #endif
     }
 
     func configureReachability() {
