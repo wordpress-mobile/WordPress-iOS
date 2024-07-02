@@ -29,15 +29,6 @@ def aztec
   pod 'WordPress-Editor-iOS', '~> 1.19.11'
 end
 
-def gravatar
-  # pod 'Gravatar', path: '../Gravatar-SDK-iOS'
-  # pod 'GravatarUI', path: '../Gravatar-SDK-iOS'
-  # pod 'Gravatar', git: 'https://github.com/Automattic/Gravatar-SDK-iOS', commit: ''
-  # pod 'GravatarUI', git: 'https://github.com/Automattic/Gravatar-SDK-iOS', commit: ''
-  pod 'Gravatar', '2.0.0'
-  pod 'GravatarUI', '2.0.0'
-end
-
 abstract_target 'Apps' do
   project 'WordPress/WordPress.xcodeproj'
 
@@ -60,8 +51,6 @@ abstract_target 'Apps' do
   ## Automattic libraries
   ## ====================
   ##
-  gravatar
-
   aztec
 
   ## WordPress App iOS

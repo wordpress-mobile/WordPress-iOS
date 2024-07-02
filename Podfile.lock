@@ -10,9 +10,6 @@ PODS:
   - AppCenter/Distribute (5.0.4):
     - AppCenter/Core
   - FSInteractiveMap (0.1.0)
-  - Gravatar (2.0.0)
-  - GravatarUI (2.0.0):
-    - Gravatar (= 2.0.0)
   - Gutenberg (1.120.1)
   - SwiftLint (0.54.0)
   - WordPress-Aztec-iOS (1.19.11)
@@ -23,8 +20,6 @@ DEPENDENCIES:
   - AppCenter (~> 5.0)
   - AppCenter/Distribute (~> 5.0)
   - FSInteractiveMap (from `https://github.com/wordpress-mobile/FSInteractiveMap.git`, tag `0.2.0`)
-  - Gravatar (= 2.0.0)
-  - GravatarUI (= 2.0.0)
   - Gutenberg (from `https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.120.1.podspec`)
   - SwiftLint (= 0.54.0)
   - WordPress-Editor-iOS (~> 1.19.11)
@@ -35,8 +30,6 @@ SPEC REPOS:
     - WordPress-Editor-iOS
   trunk:
     - AppCenter
-    - Gravatar
-    - GravatarUI
     - SwiftLint
 
 EXTERNAL SOURCES:
@@ -54,13 +47,11 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   AppCenter: 85c92db0759d2792a65eb61d6842d2e86611a49a
   FSInteractiveMap: a396f610f48b76cb540baa87139d056429abda86
-  Gravatar: 54fc63ea6298e9afca7329007815be25868f1dfe
-  GravatarUI: bb5e03cda2da61e54aa1c20d4dde32b7153fa8b4
   Gutenberg: 0699e7dd207afb591ccd5e81252a92e6e7781391
   SwiftLint: c1de071d9d08c8aba837545f6254315bc900e211
   WordPress-Aztec-iOS: 3732c6d865a5c9f35788377bdeda8a80ea10d0a1
   WordPress-Editor-iOS: 453345420ced3d3ef20f0051b3df46ff10281e0c
 
-PODFILE CHECKSUM: bea840133d26465e2a9bed7bce2663da40746848
+PODFILE CHECKSUM: 3bda7c5b90ba3f24024e44710eb54cc00a48e81b
 
 COCOAPODS: 1.15.2

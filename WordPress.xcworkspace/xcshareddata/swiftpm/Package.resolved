@@ -137,6 +137,15 @@
         }
       },
       {
+        "package": "Gravatar",
+        "repositoryURL": "https://github.com/Automattic/Gravatar-SDK-iOS",
+        "state": {
+          "branch": null,
+          "revision": "337a2b639ecafc5159eb0d2af49391a95ad1637a",
+          "version": "2.1.0"
+        }
+      },
+      {
         "package": "Gridicons",
         "repositoryURL": "https://github.com/Automattic/Gridicons-iOS",
         "state": {
