@@ -1,5 +1,7 @@
 # This pipeline is meant to be run via the Buildkite API, and is only used for release builds
 
+agents:
+  queue: mac
 env:
   IMAGE_ID: $IMAGE_ID
 
