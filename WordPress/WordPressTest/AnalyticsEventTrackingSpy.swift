@@ -1,3 +1,4 @@
+import WordPressShared
 @testable import WordPress
 
 class AnalyticsEventTrackingSpy: AnalyticsEventTracking {

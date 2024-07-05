@@ -1,5 +1,5 @@
 import Foundation
-import WordPressShared.WPStyleGuide
+import WordPressShared
 import CocoaLumberjack
 
 /// Actions provided in cell button triggered action sheet

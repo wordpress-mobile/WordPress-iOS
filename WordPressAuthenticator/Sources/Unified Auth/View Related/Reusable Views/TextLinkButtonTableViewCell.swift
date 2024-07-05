@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 /// TextLinkButtonTableViewCell: a plain button made to look like a text link.
 ///

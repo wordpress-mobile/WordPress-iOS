@@ -5,6 +5,8 @@
 #import "AccountService.h"
 #import "WordPress-Swift.h"
 
+@import WordPressShared;
+
 static NSString* const ThemeAdminUrlCustomize = @"customize.php?theme=%@&hide_close=true";
 static NSString* const ThemeUrlDemoParameters = @"?demo=true&iframe=true&theme_preview=true";
 static NSString* const ThemeUrlSupport = @"https://wordpress.com/themes/%@/support/?preview=true&iframe=true";

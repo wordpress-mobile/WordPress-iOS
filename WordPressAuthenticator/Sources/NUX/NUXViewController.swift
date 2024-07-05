@@ -1,4 +1,5 @@
 import WordPressUI
+import UIKit
 
 // MARK: - NUXViewController
 /// Base class to use for NUX view controllers that aren't a table view

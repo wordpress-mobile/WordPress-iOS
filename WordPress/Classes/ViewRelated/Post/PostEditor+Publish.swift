@@ -1,6 +1,7 @@
 import Foundation
 import WordPressFlux
 import WordPressUI
+import WordPressShared
 
 protocol PublishingEditor where Self: UIViewController {
     var post: AbstractPost { get set }

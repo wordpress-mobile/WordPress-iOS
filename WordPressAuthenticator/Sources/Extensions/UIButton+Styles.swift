@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 extension UIButton {
     /// Applies the style that looks like a plain text link.

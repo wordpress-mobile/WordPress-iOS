@@ -2,6 +2,7 @@ import Foundation
 import AuthenticationServices
 import WordPressKit
 import SVProgressHUD
+import WordPressShared
 
 @objc protocol AppleAuthenticatorDelegate {
     func showWPComLogin(loginFields: LoginFields)

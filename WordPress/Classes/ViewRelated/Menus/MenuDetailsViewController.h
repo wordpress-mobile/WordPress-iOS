@@ -1,5 +1,4 @@
 #import <UIKit/UIKit.h>
-#import <WordPressShared/WPAnalytics.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

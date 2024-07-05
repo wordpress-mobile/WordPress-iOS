@@ -1,7 +1,9 @@
 #import "WPStyleGuide+Pages.h"
-#import <WordPressShared/WPFontManager.h>
 #import <QuartzCore/QuartzCore.h>
 #import "WordPress-Swift.h"
+
+@import WordPressShared;
+@import WordPressShared;
 
 @implementation WPStyleGuide (Pages)
 

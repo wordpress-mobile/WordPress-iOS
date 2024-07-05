@@ -1,6 +1,6 @@
 import Foundation
 import Gridicons
-import WordPressShared.WPTableViewCell
+import WordPressShared
 
 open class ActivityTableViewCell: WPTableViewCell, NibReusable {
 

@@ -1,5 +1,6 @@
 import XCTest
-import WordPressShared.WPStyleGuide
+import WordPressShared
+
 @testable import WordPress
 
 class WPStyleGuide_BlogTests: XCTestCase {

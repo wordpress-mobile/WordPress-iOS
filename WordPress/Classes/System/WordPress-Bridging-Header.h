@@ -108,12 +108,4 @@
 
 #import "WPAddPostCategoryViewController.h"
 
-// Pods
-
-#import <WordPressShared/WPDeviceIdentification.h>
-#import <WordPressShared/WPFontManager.h>
-#import <WordPressShared/WPStyleGuide.h>
-#import <WordPressShared/WPTableViewCell.h>
-#import <WordPressShared/WPAnalytics.h>
-
 FOUNDATION_EXTERN void SetCocoaLumberjackObjCLogLevel(NSUInteger ddLogLevelRawValue);

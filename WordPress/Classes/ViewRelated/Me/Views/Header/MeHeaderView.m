@@ -3,6 +3,8 @@
 #import "WordPress-Swift.h"
 #import "Gravatar-Swift.h"
 
+@import WordPressShared;
+
 const CGFloat MeHeaderViewHeight = 154;
 const CGFloat MeHeaderViewGravatarSize = 64.0;
 const CGFloat MeHeaderViewLabelHeight = 20.0;

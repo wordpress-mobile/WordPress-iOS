@@ -6,8 +6,7 @@
 #import "WPAppAnalytics.h"
 #import "WordPress-Swift.h"
 
-#import <WordPressShared/NSString+XMLExtensions.h>
-
+@import WordPressShared;
 @import NSObject_SafeExpectations;
 
 @implementation BlogSyncFacade

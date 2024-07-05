@@ -1,11 +1,9 @@
 #import "MenuItemSourceTextBar.h"
 #import "Menu+ViewDesign.h"
-#import <WordPressShared/WPDeviceIdentification.h>
-#import <WordPressShared/WPFontManager.h>
-#import <WordPressShared/WPStyleGuide.h>
 #import "WordPress-Swift.h"
 
 @import Gridicons;
+@import WordPressShared;
 
 @interface MenuItemSourceTextBarFieldObserver ()
 

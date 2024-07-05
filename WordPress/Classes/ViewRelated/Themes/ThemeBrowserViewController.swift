@@ -1,7 +1,6 @@
 import Foundation
 import CocoaLumberjack
-import WordPressShared.WPAnalytics
-import WordPressShared.WPStyleGuide
+import WordPressShared
 
 /**
  *  @brief      Support for filtering themes by purchasability

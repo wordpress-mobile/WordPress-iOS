@@ -5,10 +5,10 @@
 #import "ReaderPost.h"
 #import "ReaderPostService.h"
 #import "WPAccount.h"
-#import <WordPressShared/NSString+XMLExtensions.h>
 #import "WordPress-Swift.h"
-@import WordPressKit;
 
+@import WordPressKit;
+@import WordPressShared;
 
 NSString * const ReaderTopicFreshlyPressedPathCommponent = @"freshly-pressed";
 static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTopicPathKey";

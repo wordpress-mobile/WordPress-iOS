@@ -1,6 +1,7 @@
 import UIKit
 import SafariServices
 import WordPressKit
+import WordPressShared
 
 /// The source for the sign in flow for external tracking.
 public enum SignInSource: Equatable {

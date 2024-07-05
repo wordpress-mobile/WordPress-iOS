@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 /// Implements the analytics tracking logic for our sign in flow.
 ///

@@ -1,3 +1,5 @@
+import Foundation
+
 /// Encapsulates logic to reply to a comment
 class ReplyToComment: DefaultNotificationActionCommand {
     static let title = NSLocalizedString("Reply", comment: "Reply to a comment.")

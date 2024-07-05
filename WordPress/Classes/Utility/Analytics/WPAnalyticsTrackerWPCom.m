@@ -2,6 +2,8 @@
 #import "WPUserAgent.h"
 #import "Constants.h"
 
+@import WordPressShared;
+
 @implementation WPAnalyticsTrackerWPCom
 
 - (void)track:(WPAnalyticsStat)stat

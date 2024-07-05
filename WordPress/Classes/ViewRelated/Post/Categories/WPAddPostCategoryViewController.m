@@ -7,9 +7,8 @@
 #import "CoreDataStack.h"
 #import "BlogService.h"
 #import "WordPress-Swift.h"
-#import <WordPressShared/NSString+Util.h>
-#import <WordPressShared/WPTableViewCell.h>
-#import <WordPressShared/WPTextFieldTableViewCell.h>
+
+@import WordPressShared;
 
 @interface WPAddPostCategoryViewController ()<PostCategoriesViewControllerDelegate, UITextFieldDelegate>
 

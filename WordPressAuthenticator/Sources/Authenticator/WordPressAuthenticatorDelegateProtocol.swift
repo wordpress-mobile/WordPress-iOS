@@ -1,3 +1,6 @@
+import Foundation
+import WordPressShared
+
 // MARK: - WordPressAuthenticator Delegate Protocol
 //
 public protocol WordPressAuthenticatorDelegate: AnyObject {

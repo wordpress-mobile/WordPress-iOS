@@ -1,8 +1,8 @@
 #import "WPError.h"
 #import "WPAccount.h"
-#import <WordPressShared/NSString+XMLExtensions.h>
 #import "WordPress-Swift.h"
 
+@import WordPressShared;
 @import wpxmlrpc;
 
 NSInteger const SupportButtonIndex = 0;
