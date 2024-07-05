@@ -1,8 +1,9 @@
 #import <XCTest/XCTest.h>
-#import <OCMock/OCMock.h>
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-value"
+
+@import OCMock;
 
 @interface PushNotificationsManagerTests : XCTestCase
 

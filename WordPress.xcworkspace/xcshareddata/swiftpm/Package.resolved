@@ -3,7 +3,7 @@
     "pins": [
       {
         "package": "Alamofire",
-        "repositoryURL": "https://github.com/Alamofire/Alamofire.git",
+        "repositoryURL": "https://github.com/Alamofire/Alamofire",
         "state": {
           "branch": null,
           "revision": "f455c2975872ccd2d9c81594c658af65716e9b9a",
@@ -17,15 +17,6 @@
           "branch": null,
           "revision": "1eaf3b6c6882bed10f6e7b119665599dd2329aa1",
           "version": "4.3.0"
-        }
-      },
-      {
-        "package": "AlamofireNetworkActivityIndicator",
-        "repositoryURL": "https://github.com/Alamofire/AlamofireNetworkActivityIndicator",
-        "state": {
-          "branch": null,
-          "revision": "392bed083e8d193aca16bfa684ee24e4bcff0510",
-          "version": "3.1.0"
         }
       },
       {
@@ -48,11 +39,11 @@
       },
       {
         "package": "DGCharts",
-        "repositoryURL": "https://github.com/danielgindi/Charts",
+        "repositoryURL": "https://github.com/ChartsOrg/Charts",
         "state": {
           "branch": null,
-          "revision": "0a229f8c914b0ec93798cee058cf75b339297513",
-          "version": "5.0.0"
+          "revision": "dd9c72e3d7e751e769971092a6bd72d39198ae63",
+          "version": "5.1.0"
         }
       },
       {

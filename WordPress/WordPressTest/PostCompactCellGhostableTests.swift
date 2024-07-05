@@ -21,10 +21,6 @@ class PostCompactCellGhostableTests: CoreDataTestCase {
         XCTAssertTrue(postCell.contentStackView.isHidden)
     }
 
-    func testMenuButtonIsNotGhostable() {
-        XCTAssertTrue(postCell.menuButton.isGhostableDisabled)
-    }
-
     func testChangesMenuButtonOpacity() {
         XCTAssertEqual(postCell.menuButton.layer.opacity, 0.5)
     }

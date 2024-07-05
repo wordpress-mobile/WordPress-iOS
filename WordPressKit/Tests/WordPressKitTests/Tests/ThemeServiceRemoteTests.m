@@ -1,5 +1,3 @@
-
-#import <OCMock/OCMock.h>
 #import <XCTest/XCTest.h>
 
 #if __has_include("WordPressKitTests-Swift.h")
@@ -11,6 +9,7 @@
 #endif
 
 @import WordPressKit;
+@import OCMock;
 
 // OCMock helper typedefs
 typedef BOOL (^DictionaryVerificationBlock)(NSDictionary *dictionary);
