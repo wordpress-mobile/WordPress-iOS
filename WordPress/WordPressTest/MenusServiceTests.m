@@ -1,4 +1,3 @@
-#import <OCMock/OCMock.h>
 #import <XCTest/XCTest.h>
 #import "MenusService.h"
 #import "Blog.h"
@@ -6,6 +5,8 @@
 #import "MenuLocation.h"
 #import "MenuItem.h"
 #import "WordPressTest-Swift.h"
+
+@import OCMock;
 
 @interface WPAccount ()
 @property (nonatomic, readwrite) WordPressComRestApi *wordPressComRestApi;

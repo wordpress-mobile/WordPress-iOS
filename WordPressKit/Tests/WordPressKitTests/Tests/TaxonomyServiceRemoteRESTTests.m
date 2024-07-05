@@ -1,8 +1,9 @@
-#import <OCMock/OCMock.h>
 #import <XCTest/XCTest.h>
 #import "TaxonomyServiceRemoteREST.h"
 #import "RemotePostTag.h"
+
 @import WordPressKit;
+@import OCMock;
 
 @interface TaxonomyServiceRemoteRESTTests : XCTestCase
 

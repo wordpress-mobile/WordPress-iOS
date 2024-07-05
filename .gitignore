@@ -58,6 +58,7 @@ WordPress/Derived Sources/
 # coverage.py
 */CoverageData/*
 WordPress/Images.xcassets/AppIcon-Internal.appiconset
+Modules/Package.resolved
 
 # Dependencies
 vendor
