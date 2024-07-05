@@ -1,6 +1,7 @@
 import Foundation
 import AuthenticationServices
 import SVProgressHUD
+import WordPressKit
 
 /// The authorization flow handled by this class starts by showing Apple's `ASAuthorizationController`
 /// through our class `StoredCredentialsPicker`.  This controller lets the user pick the credentials they

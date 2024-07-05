@@ -1,9 +1,10 @@
 #import <Foundation/Foundation.h>
-#import <OCMock/OCMock.h>
 #import <XCTest/XCTest.h>
 #import "PostServiceRemoteREST.h"
 #import "RemotePost.h"
 #import "WPKit-Swift.h"
+
+@import OCMock;
 
 @interface PostServiceRemoteRESTTests : XCTestCase
 @end

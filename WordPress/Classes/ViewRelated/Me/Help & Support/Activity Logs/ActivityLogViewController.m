@@ -5,6 +5,8 @@
 #import "WPLogger.h"
 #import "WPGUIConstants.h"
 
+@import WordPressShared;
+
 static NSString *const ActivityLogCellIdentifier = @"ActivityLogCell";
 
 @interface ActivityLogViewController ()

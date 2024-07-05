@@ -1,5 +1,6 @@
 import UIKit
 import WordPressShared
+import WordPressUI
 
 /// Step one in the auth link flow. This VC displays a form to request a "magic"
 /// authentication link be emailed to the user.  Allows the user to signin via

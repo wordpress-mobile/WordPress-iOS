@@ -1,7 +1,8 @@
 import Foundation
 import AutomatticTracks
+import AutomatticEncryptedLogs
 
-struct EventLoggingDelegate: AutomatticTracks.EventLoggingDelegate {
+struct EventLoggingDelegate: AutomatticEncryptedLogs.EventLoggingDelegate {
 
     var shouldUploadLogFiles: Bool {
         return

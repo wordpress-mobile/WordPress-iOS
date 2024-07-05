@@ -1,5 +1,5 @@
-#import <Foundation/Foundation.h>
-#import <WordPressShared/WPStyleGuide.h>
+@import UIKit;
+@import WordPressSharedObjC;
 
 #pragma mark - WebViewController Styles
 

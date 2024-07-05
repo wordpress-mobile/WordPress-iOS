@@ -1,7 +1,8 @@
-#import <OCMock/OCMock.h>
 #import <XCTest/XCTest.h>
 #import "MenusServiceRemote.h"
 #import "WPKit-Swift.h"
+
+@import OCMock;
 
 @interface MenusServicRemoteTests : XCTestCase
 

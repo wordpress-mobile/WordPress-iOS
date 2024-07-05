@@ -1,5 +1,7 @@
 #import "WPKitLogging.h"
 
+@import WordPressShared;
+
 static id<WordPressLoggingDelegate> wordPressKitLogger = nil;
 
 id<WordPressLoggingDelegate> _Nullable WPKitGetLoggingDelegate(void)

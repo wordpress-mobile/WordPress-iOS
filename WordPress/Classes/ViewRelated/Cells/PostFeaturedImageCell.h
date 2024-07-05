@@ -1,4 +1,4 @@
-#import <WordPressShared/WPTableViewCell.h>
+@import WordPressShared;
 
 @class AbstractPost;
 @class PostFeaturedImageCell;

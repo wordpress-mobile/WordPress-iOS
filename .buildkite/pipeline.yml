@@ -1,3 +1,6 @@
+# Most of the steps need to run on a macOS agent, so let's define it as a root property.
+agents:
+  queue: mac
 env:
   IMAGE_ID: $IMAGE_ID
 
@@ -58,15 +61,6 @@ steps:
     notify:
       - github_commit_status:
           context: "Unit Tests"
-
-  - label: "🔬 :wordpress: Tests {{ matrix }}"
-    command: ".buildkite/commands/run-pod-tests.sh {{ matrix }}"
-    plugins: [$CI_TOOLKIT_PLUGIN]
-    artifact_paths:
-      - "build/results/*"
-    matrix:
-      - WordPressKit
-      - WordPressAuthenticator
 
   #################
   # UI Tests

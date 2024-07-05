@@ -78,11 +78,7 @@ public extension AppSelector {
 
     /// Convenience init for a picker that calls supported email clients apps, defined in EmailClients.plist
     convenience init?(sourceView: UIView) {
-        guard let bundlePath = Bundle(for: type(of: self))
-            .path(forResource: "WordPressAuthenticatorResources", ofType: "bundle"),
-            let wpAuthenticatorBundle = Bundle(path: bundlePath) else {
-                return nil
-        }
+        let wpAuthenticatorBundle = WordPressAuthenticator.bundle
 
         let plistFile = "EmailClients"
         var defaultAction: UIAlertAction?

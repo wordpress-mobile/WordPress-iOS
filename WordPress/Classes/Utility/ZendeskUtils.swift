@@ -2,11 +2,13 @@ import Foundation
 import CoreTelephony
 import WordPressAuthenticator
 import WordPressKit
+import WordPressShared
 import DesignSystem
 
 import SupportSDK
 import ZendeskCoreSDK
 import AutomatticTracks
+import AutomatticEncryptedLogs
 
 extension NSNotification.Name {
     static let ZendeskPushNotificationReceivedNotification = NSNotification.Name(rawValue: "ZendeskPushNotificationReceivedNotification")

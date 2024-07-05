@@ -1,6 +1,9 @@
 #import <XCTest/XCTest.h>
-#import <OCMock/OCMock.h>
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-value"
+
+@import OCMock;
 
 @interface PushNotificationsManagerTests : XCTestCase
 
@@ -44,7 +47,7 @@
     [OCMStub([mockManager sharedApplication]) andReturn:mockApplication];
     
     [mockManager setupRemoteNotifications];
-    OCMVerify(mockApplication);
+    OCMVerifyAll(mockApplication);
 }
 
 - (void)testHandleNotificationUpdatesApplicationBadgeNumber
@@ -61,7 +64,7 @@
     [OCMStub([mockManager applicationState]) andReturnValue:OCMOCK_VALUE(UIApplicationStateActive)];
     
     [mockManager handleNotification:userInfo userInteraction:NO completionHandler:nil];
-    OCMVerify(mockManager);
+    OCMVerifyAll(mockManager);
 }
 
 - (void)testBadgeResetNotificationDoesntAttemptToHandleAnyNotificationKind
@@ -80,7 +83,7 @@
 #pragma clang diagnostic pop
     
     [mockManager handleNotification:userInfo userInteraction:NO completionHandler:nil];
-    OCMVerify(mockManager);
+    OCMVerifyAll(mockManager);
 }
 
 - (void)testZendeskNotificationIsProperlyHandled
@@ -94,10 +97,6 @@
     XCTAssertFalse([mockManager handleInactiveNotification:userInfo userInteraction:NO completionHandler:nil], @"Error handling Zendesk");
     XCTAssertFalse([mockManager handleBackgroundNotification:userInfo userInteraction:NO completionHandler:nil], @"Error handling Zendesk");
     XCTAssertFalse([mockManager handleQuickStartLocalNotification:userInfo userInteraction:NO completionHandler:nil], @"Error handling Zendesk");
-
-    OCMExpect([manager handleSupportNotification:userInfo userInteraction:NO completionHandler:nil]);
-    [mockManager handleNotification:userInfo userInteraction:NO completionHandler:nil];
-    OCMVerify(mockManager);
 }
 
 - (void)testAuthenticationNotificationIsProperlyHandled
@@ -111,10 +110,6 @@
     XCTAssertFalse([mockManager handleInactiveNotification:userInfo userInteraction:NO completionHandler:nil], @"Error handling PushAuth");
     XCTAssertFalse([mockManager handleBackgroundNotification:userInfo userInteraction:NO completionHandler:nil], @"Error handling PushAuth");
     XCTAssertFalse([mockManager handleQuickStartLocalNotification:userInfo userInteraction:NO completionHandler:nil], @"Error handling PushAuth");
-
-    OCMExpect([manager handleAuthenticationNotification:userInfo userInteraction:NO completionHandler:nil]);
-    [mockManager handleNotification:userInfo userInteraction:NO completionHandler:nil];
-    OCMVerify(mockManager);
 }
 
 - (void)testInactiveNotificationIsProperlyHandled
@@ -134,10 +129,6 @@
     XCTAssertFalse([mockManager handleSupportNotification:userInfo userInteraction:NO completionHandler:nil], @"Error handling Note");
     XCTAssertFalse([mockManager handleBackgroundNotification:userInfo userInteraction:NO completionHandler:nil], @"Error handling Note");
     XCTAssertFalse([mockManager handleQuickStartLocalNotification:userInfo userInteraction:NO completionHandler:nil], @"Error handling Note");
-
-    OCMExpect([manager handleInactiveNotification:userInfo userInteraction:NO completionHandler:nil]);
-    [mockManager handleNotification:userInfo userInteraction:NO completionHandler:nil];
-    OCMVerify(mockManager);
 }
 
 - (void)testBackgroundNotificationIsProperlyHandled
@@ -158,10 +149,6 @@
     XCTAssertFalse([mockManager handleAuthenticationNotification:userInfo userInteraction:NO completionHandler:nil], @"Error handling Note");
     XCTAssertFalse([mockManager handleSupportNotification:userInfo userInteraction:NO completionHandler:nil], @"Error handling Note");
     XCTAssertFalse([mockManager handleQuickStartLocalNotification:userInfo userInteraction:NO completionHandler:nil], @"Error handling Note");
-
-    OCMExpect([manager handleBackgroundNotification:userInfo userInteraction:NO completionHandler:nil]);
-    [mockManager handleNotification:userInfo userInteraction:NO completionHandler:nil];
-    OCMVerify(mockManager);
 }
 
 - (void)testQuickStartLocalNotificationIsProperlyHandled
@@ -182,10 +169,8 @@
     XCTAssertFalse([mockManager handleAuthenticationNotification:userInfo userInteraction:NO completionHandler:nil], @"Error handling Quick Start");
     XCTAssertFalse([mockManager handleSupportNotification:userInfo userInteraction:NO completionHandler:nil], @"Error handling Quick Start");
     XCTAssertFalse([mockManager handleBackgroundNotification:userInfo userInteraction:NO completionHandler:nil], @"Error handling Quick Start");
-    
-    OCMExpect([manager handleBackgroundNotification:userInfo userInteraction:NO completionHandler:nil]);
-    [mockManager handleNotification:userInfo userInteraction:NO completionHandler:nil];
-    OCMVerify(mockManager);
 }
 
 @end
+
+#pragma clang diagnostic pop

@@ -2,8 +2,9 @@
 #import "MenusSelectionDetailView.h"
 #import "MenusSelectionItemView.h"
 #import "Menu+ViewDesign.h"
-#import <WordPressShared/WPDeviceIdentification.h>
 #import "WordPress-Swift.h"
+
+@import WordPressShared;
 
 @interface MenusSelectionView () <MenusSelectionDetailViewDelegate, MenusSelectionItemViewDelegate>
 

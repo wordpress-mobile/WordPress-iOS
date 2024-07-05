@@ -3,7 +3,9 @@
 #import "CoreDataStack.h"
 #import "WordPress-Swift.h"
 #import "BasePost.h"
+
 @import WordPressKit;
+@import WordPressShared;
 
 @implementation AbstractPost
 

@@ -1,9 +1,11 @@
 #import <Foundation/Foundation.h>
-#import <OCMock/OCMock.h>
 #import <XCTest/XCTest.h>
 #import "BlogServiceRemoteREST.h"
-@import OHHTTPStubs;
+
 @import WordPressKit;
+@import OHHTTPStubs;
+@import OHHTTPStubsSwift;
+@import OCMock;
 
 static NSTimeInterval const TestExpectationTimeout = 5;
 

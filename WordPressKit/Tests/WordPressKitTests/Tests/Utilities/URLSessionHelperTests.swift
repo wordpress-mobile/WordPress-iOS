@@ -2,6 +2,7 @@ import Foundation
 import CryptoKit
 import XCTest
 import OHHTTPStubs
+import OHHTTPStubsSwift
 
 @testable import WordPressKit
 

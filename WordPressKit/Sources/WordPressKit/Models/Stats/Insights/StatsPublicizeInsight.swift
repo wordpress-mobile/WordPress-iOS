@@ -1,3 +1,5 @@
+import Foundation
+
 public struct StatsPublicizeInsight: Codable {
     public let publicizeServices: [StatsPublicizeService]
 

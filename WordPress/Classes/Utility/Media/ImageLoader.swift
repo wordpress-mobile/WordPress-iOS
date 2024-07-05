@@ -1,6 +1,7 @@
 import MobileCoreServices
 import AlamofireImage
 import AutomatticTracks
+import WordPressShared
 
 /// Class used together with `CachedAnimatedImageView` to facilitate the loading of both
 /// still images and animated gifs.

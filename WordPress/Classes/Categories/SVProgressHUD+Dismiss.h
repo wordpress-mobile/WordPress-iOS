@@ -1,4 +1,4 @@
-#import <SVProgressHUD/SVProgressHUD.h>
+@import SVProgressHUD;
 
 @interface SVProgressHUD (Dismiss)
 

@@ -3,10 +3,9 @@
 #import "BlogService.h"
 #import "SVProgressHUD+Dismiss.h"
 #import "SharingAuthorizationHelper.h"
-#import <WordPressShared/WPTableViewCell.h>
 #import "WordPress-Swift.h"
 
-
+@import WordPressShared;
 
 static NSString *const CellIdentifier = @"CellIdentifier";
 

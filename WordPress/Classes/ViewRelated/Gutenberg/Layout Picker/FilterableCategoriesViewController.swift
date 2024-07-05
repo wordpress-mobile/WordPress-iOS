@@ -1,6 +1,7 @@
 import UIKit
 import Gridicons
 import Gutenberg
+import WordPressShared
 
 class FilterableCategoriesViewController: CollapsableHeaderViewController {
     private enum CategoryFilterAnalyticsKeys {

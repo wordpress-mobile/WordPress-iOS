@@ -1,9 +1,8 @@
 #import "MenuItemCheckButtonView.h"
 #import "Menu+ViewDesign.h"
-#import <WordPressShared/WPFontManager.h>
-#import <WordPressShared/WPStyleGuide.h>
 #import "WordPress-Swift.h"
 
+@import WordPressShared;
 @import Gridicons;
 
 static CGFloat const iconPadding = 3.0;

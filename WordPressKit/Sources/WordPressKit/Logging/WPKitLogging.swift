@@ -1,3 +1,6 @@
+import Foundation
+import WordPressShared
+
 func WPKitLogError(_ format: String, _ arguments: CVarArg...) {
     withVaList(arguments) { WPKitLogvError(format, $0) }
 }

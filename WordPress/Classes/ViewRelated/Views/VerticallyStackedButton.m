@@ -1,7 +1,6 @@
 #import "VerticallyStackedButton.h"
-#import <WordPressShared/WPFontManager.h>
-#import <WordPressShared/WPStyleGuide.h>
 
+@import WordPressShared;
 
 static const CGFloat ImageLabelSeparation = 2.f;
 static const CGFloat LabelFontSize = 11.f;

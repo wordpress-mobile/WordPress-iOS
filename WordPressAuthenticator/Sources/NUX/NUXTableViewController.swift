@@ -1,3 +1,5 @@
+import UIKit
+
 // MARK: - NUXTableViewController
 /// Base class to use for NUX view controllers that are also a table view controller
 /// Note: shares most of its code with NUXViewController.

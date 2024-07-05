@@ -1,6 +1,7 @@
 import AutomatticTracks
 import Aztec
 import Gridicons
+import WordPressShared
 
 final class AuthenticatedImageDownload: AsyncOperation {
     enum DownloadError: Error {

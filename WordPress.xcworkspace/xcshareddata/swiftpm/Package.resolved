@@ -2,6 +2,33 @@
   "object": {
     "pins": [
       {
+        "package": "Alamofire",
+        "repositoryURL": "https://github.com/Alamofire/Alamofire",
+        "state": {
+          "branch": null,
+          "revision": "f455c2975872ccd2d9c81594c658af65716e9b9a",
+          "version": "5.9.1"
+        }
+      },
+      {
+        "package": "AlamofireImage",
+        "repositoryURL": "https://github.com/Alamofire/AlamofireImage",
+        "state": {
+          "branch": null,
+          "revision": "1eaf3b6c6882bed10f6e7b119665599dd2329aa1",
+          "version": "4.3.0"
+        }
+      },
+      {
+        "package": "AutomatticTracksiOS",
+        "repositoryURL": "https://github.com/Automattic/Automattic-Tracks-iOS",
+        "state": {
+          "branch": null,
+          "revision": "948c7642009237c74ef30dad59f03835416873eb",
+          "version": "3.4.2"
+        }
+      },
+      {
         "package": "AutomatticAbout",
         "repositoryURL": "https://github.com/automattic/AutomatticAbout-swift",
         "state": {
@@ -12,11 +39,56 @@
       },
       {
         "package": "DGCharts",
-        "repositoryURL": "https://github.com/danielgindi/Charts",
+        "repositoryURL": "https://github.com/ChartsOrg/Charts",
         "state": {
           "branch": null,
-          "revision": "0a229f8c914b0ec93798cee058cf75b339297513",
-          "version": "5.0.0"
+          "revision": "dd9c72e3d7e751e769971092a6bd72d39198ae63",
+          "version": "5.1.0"
+        }
+      },
+      {
+        "package": "CocoaLumberjack",
+        "repositoryURL": "https://github.com/CocoaLumberjack/CocoaLumberjack",
+        "state": {
+          "branch": null,
+          "revision": "4b8714a7fb84d42393314ce897127b3939885ec3",
+          "version": "3.8.5"
+        }
+      },
+      {
+        "package": "CollectionConcurrencyKit",
+        "repositoryURL": "https://github.com/JohnSundell/CollectionConcurrencyKit.git",
+        "state": {
+          "branch": null,
+          "revision": "b4f23e24b5a1bff301efc5e70871083ca029ff95",
+          "version": "0.2.0"
+        }
+      },
+      {
+        "package": "ZendeskCommonUISDK",
+        "repositoryURL": "https://github.com/zendesk/commonui_sdk_ios",
+        "state": {
+          "branch": null,
+          "revision": "8729e7f4e316b46f6d33f046e663b6eedfe9955a",
+          "version": "9.0.1"
+        }
+      },
+      {
+        "package": "ZendeskCoreSDK",
+        "repositoryURL": "https://github.com/zendesk/core_sdk_ios",
+        "state": {
+          "branch": null,
+          "revision": "8163d4d67f3aa8954467aa8191ee13cb4f1a2b9e",
+          "version": "5.0.3"
+        }
+      },
+      {
+        "package": "CryptoSwift",
+        "repositoryURL": "https://github.com/krzyzanowskim/CryptoSwift.git",
+        "state": {
+          "branch": null,
+          "revision": "c9c3df6ab812de32bae61fc0cd1bf6d45170ebf0",
+          "version": "1.8.2"
         }
       },
       {
@@ -38,12 +110,93 @@
         }
       },
       {
+        "package": "Down",
+        "repositoryURL": "https://github.com/johnxnguyen/Down",
+        "state": {
+          "branch": "master",
+          "revision": "e754ab1c80920dd51a8e08290c912ac1c2ac8b58",
+          "version": null
+        }
+      },
+      {
+        "package": "FSInteractiveMap",
+        "repositoryURL": "https://github.com/wordpress-mobile/FSInteractiveMap/",
+        "state": {
+          "branch": null,
+          "revision": "3a05cd433c4f6bfe66f09253459cef2be058b3ec",
+          "version": "0.3.0"
+        }
+      },
+      {
+        "package": "Gifu",
+        "repositoryURL": "https://github.com/kaishin/Gifu",
+        "state": {
+          "branch": null,
+          "revision": "82da0086dea14ca9afc9801234ad8dc4cd9e2738",
+          "version": "3.4.1"
+        }
+      },
+      {
+        "package": "Gravatar",
+        "repositoryURL": "https://github.com/Automattic/Gravatar-SDK-iOS",
+        "state": {
+          "branch": null,
+          "revision": "337a2b639ecafc5159eb0d2af49391a95ad1637a",
+          "version": "2.1.0"
+        }
+      },
+      {
+        "package": "Gridicons",
+        "repositoryURL": "https://github.com/Automattic/Gridicons-iOS",
+        "state": {
+          "branch": "develop",
+          "revision": "79c7e58c81ea5cfad954974b1982b9ed9a0a48ad",
+          "version": null
+        }
+      },
+      {
+        "package": "JTAppleCalendar",
+        "repositoryURL": "https://github.com/patchthecode/JTAppleCalendar",
+        "state": {
+          "branch": null,
+          "revision": "718f0ab68ba0fcd2bc134f6e9d30edc1b9b038e1",
+          "version": "8.0.5"
+        }
+      },
+      {
         "package": "Lottie",
         "repositoryURL": "https://github.com/airbnb/lottie-ios.git",
         "state": {
           "branch": null,
           "revision": "f522990668c2f9132323a2e68d924c7dcb9130b4",
           "version": "4.4.0"
+        }
+      },
+      {
+        "package": "MediaEditor",
+        "repositoryURL": "https://github.com/wordpress-mobile/MediaEditor-iOS",
+        "state": {
+          "branch": "task/spm-support",
+          "revision": "4f3fe298a95d1de81099f8c9e5612e0c59c9bf53",
+          "version": null
+        }
+      },
+      {
+        "package": "ZendeskMessagingSDK",
+        "repositoryURL": "https://github.com/zendesk/messaging_sdk_ios",
+        "state": {
+          "branch": null,
+          "revision": "4dbb16d26b90452c1d41cba8e8dc81a1bcea7f1e",
+          "version": "6.0.1"
+        }
+      },
+      {
+        "package": "ZendeskMessagingAPISDK",
+        "repositoryURL": "https://github.com/zendesk/messagingapi_sdk_ios",
+        "state": {
+          "branch": null,
+          "revision": "2f21e014a1f284edf484faf39b2b6fe377ec8c64",
+          "version": "6.0.0"
         }
       },
       {
@@ -56,12 +209,165 @@
         }
       },
       {
+        "package": "NSObject-SafeExpectations",
+        "repositoryURL": "https://github.com/wordpress-mobile/NSObject-SafeExpectations",
+        "state": {
+          "branch": null,
+          "revision": "eb84d994ab13a153888a19e5b99f536aafa77434",
+          "version": "0.0.6"
+        }
+      },
+      {
+        "package": "NSURL+IDN",
+        "repositoryURL": "https://github.com/wordpress-mobile/NSURL-IDN",
+        "state": {
+          "branch": "trunk",
+          "revision": "50a0ffd324bb27ef76a5ca685b990307528dd9ea",
+          "version": null
+        }
+      },
+      {
+        "package": "OCMock",
+        "repositoryURL": "https://github.com/erikdoe/ocmock",
+        "state": {
+          "branch": null,
+          "revision": "2c0bfd373289f4a7716db5d6db471640f91a6507",
+          "version": null
+        }
+      },
+      {
+        "package": "OHHTTPStubs",
+        "repositoryURL": "https://github.com/AliSoftware/OHHTTPStubs",
+        "state": {
+          "branch": null,
+          "revision": "12f19662426d0434d6c330c6974d53e2eb10ecd9",
+          "version": "9.1.0"
+        }
+      },
+      {
+        "package": "Reachability",
+        "repositoryURL": "https://github.com/tonymillion/Reachability",
+        "state": {
+          "branch": null,
+          "revision": "3e16ffa862dda39ca9c49722d9bcb68cc2ae83d5",
+          "version": "3.7.6"
+        }
+      },
+      {
         "package": "ScreenObject",
         "repositoryURL": "https://github.com/Automattic/ScreenObject",
         "state": {
           "branch": null,
           "revision": "328db56c62aab91440ec5e07cc9f7eef6e26a26e",
           "version": "0.2.3"
+        }
+      },
+      {
+        "package": "ZendeskSDKConfigurationsSDK",
+        "repositoryURL": "https://github.com/zendesk/sdkconfigurations_sdk_ios",
+        "state": {
+          "branch": null,
+          "revision": "fec7b8bf3d85cb895a0820a2f9d102f9d6ba3070",
+          "version": "4.0.0"
+        }
+      },
+      {
+        "package": "Sentry",
+        "repositoryURL": "https://github.com/getsentry/sentry-cocoa",
+        "state": {
+          "branch": null,
+          "revision": "08862789e1cbba7a9561bed69832a9306f339cd3",
+          "version": "8.29.1"
+        }
+      },
+      {
+        "package": "SourceKitten",
+        "repositoryURL": "https://github.com/jpsim/SourceKitten.git",
+        "state": {
+          "branch": null,
+          "revision": "b6dc09ee51dfb0c66e042d2328c017483a1a5d56",
+          "version": "0.34.1"
+        }
+      },
+      {
+        "package": "Starscream",
+        "repositoryURL": "https://github.com/daltoniam/Starscream",
+        "state": {
+          "branch": null,
+          "revision": "c6bfd1af48efcc9a9ad203665db12375ba6b145a",
+          "version": "4.0.8"
+        }
+      },
+      {
+        "package": "ZendeskSupportProvidersSDK",
+        "repositoryURL": "https://github.com/zendesk/support_providers_sdk_ios",
+        "state": {
+          "branch": null,
+          "revision": "16da780d8a0aa905b3935eee7836b9a0ee276597",
+          "version": "8.0.3"
+        }
+      },
+      {
+        "package": "ZendeskSupportSDK",
+        "repositoryURL": "https://github.com/zendesk/support_sdk_ios",
+        "state": {
+          "branch": null,
+          "revision": "44cf26111bf0bc608a2474578b3d506793eef483",
+          "version": "8.0.3"
+        }
+      },
+      {
+        "package": "SVProgressHUD",
+        "repositoryURL": "https://github.com/SVProgressHUD/SVProgressHUD",
+        "state": {
+          "branch": null,
+          "revision": "c33f7c775ba7feea6047a1fc3257f2e5863b44f7",
+          "version": "2.3.1"
+        }
+      },
+      {
+        "package": "swift-argument-parser",
+        "repositoryURL": "https://github.com/apple/swift-argument-parser.git",
+        "state": {
+          "branch": null,
+          "revision": "8f4d2753f0e4778c76d5f05ad16c74f707390531",
+          "version": "1.2.3"
+        }
+      },
+      {
+        "package": "swift-log",
+        "repositoryURL": "https://github.com/apple/swift-log",
+        "state": {
+          "branch": null,
+          "revision": "e97a6fcb1ab07462881ac165fdbb37f067e205d5",
+          "version": "1.5.4"
+        }
+      },
+      {
+        "package": "Sodium",
+        "repositoryURL": "https://github.com/jedisct1/swift-sodium",
+        "state": {
+          "branch": null,
+          "revision": "4f9164a0a2c9a6a7ff53a2833d54a5c79c957342",
+          "version": "0.9.1"
+        }
+      },
+      {
+        "package": "swift-syntax",
+        "repositoryURL": "https://github.com/apple/swift-syntax.git",
+        "state": {
+          "branch": null,
+          "revision": "6ad4ea24b01559dde0773e3d091f1b9e36175036",
+          "version": "509.0.2"
+        }
+      },
+      {
+        "package": "SwiftLint",
+        "repositoryURL": "https://github.com/realm/SwiftLint",
+        "state": {
+          "branch": null,
+          "revision": "f17a4f9dfb6a6afb0408426354e4180daaf49cee",
+          "version": "0.54.0"
         }
       },
       {
@@ -74,6 +380,24 @@
         }
       },
       {
+        "package": "SwiftyTextTable",
+        "repositoryURL": "https://github.com/scottrhoyt/SwiftyTextTable.git",
+        "state": {
+          "branch": null,
+          "revision": "c6df6cf533d120716bff38f8ff9885e1ce2a4ac3",
+          "version": "0.9.0"
+        }
+      },
+      {
+        "package": "SWXMLHash",
+        "repositoryURL": "https://github.com/drmohundro/SWXMLHash.git",
+        "state": {
+          "branch": null,
+          "revision": "a853604c9e9a83ad9954c7e3d2a565273982471f",
+          "version": "7.0.2"
+        }
+      },
+      {
         "package": "BuildkiteTestCollector",
         "repositoryURL": "https://github.com/buildkite/test-collector-swift",
         "state": {
@@ -83,12 +407,75 @@
         }
       },
       {
+        "package": "TOCropViewController",
+        "repositoryURL": "https://github.com/TimOliver/TOCropViewController",
+        "state": {
+          "branch": null,
+          "revision": "a634cb7cdfd580006e79a6e74e64417fe9e9783b",
+          "version": "2.7.4"
+        }
+      },
+      {
+        "package": "UIDeviceIdentifier",
+        "repositoryURL": "https://github.com/squarefrog/UIDeviceIdentifier",
+        "state": {
+          "branch": null,
+          "revision": "4699794b08bb79a4d77785edaba6ea739e298e4b",
+          "version": "2.3.0"
+        }
+      },
+      {
+        "package": "WordPressShared",
+        "repositoryURL": "https://github.com/wordpress-mobile/WordPress-iOS-Shared",
+        "state": {
+          "branch": "task/remove-swiftlint",
+          "revision": "85dfbf34fc7d6ca73ae230991ceb5a335ee6f30e",
+          "version": null
+        }
+      },
+      {
+        "package": "WordPressUI",
+        "repositoryURL": "https://github.com/wordpress-mobile/WordPressUI-iOS",
+        "state": {
+          "branch": "kean-patch-1",
+          "revision": "e848400c7af850e0668b36a4e566a2c71e4e0d7b",
+          "version": null
+        }
+      },
+      {
+        "package": "wpxmlrpc",
+        "repositoryURL": "https://github.com/wordpress-mobile/wpxmlrpc",
+        "state": {
+          "branch": null,
+          "revision": "bfc413d336bdeaab89e62dc483380baa99b2257e",
+          "version": "0.10.0"
+        }
+      },
+      {
         "package": "XCUITestHelpers",
         "repositoryURL": "https://github.com/Automattic/XCUITestHelpers",
         "state": {
           "branch": null,
           "revision": "5179cb69d58b90761cc713bdee7740c4889d3295",
           "version": "0.4.0"
+        }
+      },
+      {
+        "package": "Yams",
+        "repositoryURL": "https://github.com/jpsim/Yams.git",
+        "state": {
+          "branch": null,
+          "revision": "9234124cff5e22e178988c18d8b95a8ae8007f76",
+          "version": "5.1.2"
+        }
+      },
+      {
+        "package": "ZIPFoundation",
+        "repositoryURL": "https://github.com/weichsel/ZIPFoundation",
+        "state": {
+          "branch": null,
+          "revision": "02b6abe5f6eef7e3cbd5f247c5cc24e246efcfe0",
+          "version": "0.9.19"
         }
       }
     ]
