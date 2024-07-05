@@ -1,5 +1,4 @@
 import Foundation
-import Alamofire
 import XCTest
 import CryptoKit
 #if SWIFT_PACKAGE
@@ -25,14 +24,6 @@ class MutliparFormDataTests: XCTestCase {
             return Form(fields: fields)
         }
 
-        func formDataUsingAlamofire() throws -> Data {
-            let formData = MultipartFormData(boundary: "testboundary")
-            for field in fields {
-                formData.append(field.content.data(using: .utf8)!, withName: field.name)
-            }
-            return try formData.encode()
-        }
-
         func formData() throws -> Data {
             try fields
                 .map {
@@ -46,40 +37,33 @@ class MutliparFormDataTests: XCTestCase {
     func testRandomForm() throws {
         let tempDir = FileManager.default.temporaryDirectory
         let testData = tempDir.appendingPathComponent("test-form.json")
-        let afOutput = tempDir.appendingPathComponent("test-form.af.txt")
         let wpOutput = tempDir.appendingPathComponent("test-form.wp.txt")
 
-        let form = Form.random()
+        let form = Form(fields: [
+            .init(name: "key-1", content: "a"),
+            .init(name: "key-2", content: "b"),
+        ])
         try JSONEncoder().encode(form).write(to: testData)
-
-        let afEncoded = try form.formDataUsingAlamofire()
-        try afEncoded.write(to: afOutput)
 
         let encoded = try form.formData()
         try encoded.write(to: wpOutput)
 
         add(XCTAttachment(contentsOfFile: testData))
-        add(XCTAttachment(contentsOfFile: afOutput))
         add(XCTAttachment(contentsOfFile: wpOutput))
 
-        XCTAssertEqual(afEncoded, encoded)
+        let expected = "--testboundary\r\nContent-Disposition: form-data; name=\"key-1\"\r\n\r\na\r\n--testboundary\r\nContent-Disposition: form-data; name=\"key-2\"\r\n\r\nb\r\n--testboundary--\r\n".data(using: .utf8)
+        XCTAssertEqual(expected, encoded)
     }
 
     func testPlainText() throws {
-        let af = MultipartFormData()
-        af.append("hello".data(using: .utf8)!, withName: "world")
-        af.append("foo".data(using: .utf8)!, withName: "bar")
-        af.append("the".data(using: .utf8)!, withName: "end")
-        let afEncoded = try af.encode()
-
         let fields = [
             MultipartFormField(text: "hello", name: "world"),
             MultipartFormField(text: "foo", name: "bar"),
             MultipartFormField(text: "the", name: "end"),
         ]
-        let encoded = try fields.multipartFormDataStream(boundary: af.boundary).readToEnd()
-
-        XCTAssertEqual(afEncoded, encoded)
+        let encoded = try fields.multipartFormDataStream(boundary: "wpkit.boundary.9d4adfc909a08bfa").readToEnd()
+        let expected = "--wpkit.boundary.9d4adfc909a08bfa\r\nContent-Disposition: form-data; name=\"world\"\r\n\r\nhello\r\n--wpkit.boundary.9d4adfc909a08bfa\r\nContent-Disposition: form-data; name=\"bar\"\r\n\r\nfoo\r\n--wpkit.boundary.9d4adfc909a08bfa\r\nContent-Disposition: form-data; name=\"end\"\r\n\r\nthe\r\n--wpkit.boundary.9d4adfc909a08bfa--\r\n".data(using: .utf8)
+        XCTAssertEqual(expected, encoded)
     }
 
     func testEmptyForm() throws {
@@ -88,13 +72,12 @@ class MutliparFormDataTests: XCTestCase {
     }
 
     func testOneField() throws {
-        let af = MultipartFormData()
-        af.append("hello".data(using: .utf8)!, withName: "world")
-        let afEncoded = try af.encode()
+        let formData = try [MultipartFormField(text: "hello", name: "world")]
+            .multipartFormDataStream(boundary: "wpkit.boundary.9d4adfc909a08bfa")
+            .readToEnd()
 
-        let formData = try [MultipartFormField(text: "hello", name: "world")].multipartFormDataStream(boundary: af.boundary).readToEnd()
-
-        XCTAssertEqual(afEncoded, formData)
+        let expected = "--wpkit.boundary.9d4adfc909a08bfa\r\nContent-Disposition: form-data; name=\"world\"\r\n\r\nhello\r\n--wpkit.boundary.9d4adfc909a08bfa--\r\n".data(using: .utf8)!
+        XCTAssertEqual(expected, formData)
     }
 
     func testUploadSmallFile() throws {

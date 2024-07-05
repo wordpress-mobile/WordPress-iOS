@@ -115,7 +115,7 @@ private extension StatsDotComFollowersInsightTests {
         guard var components = URLComponents(string: urlString) else { return nil }
         components.query = "d=mm&s=60"
 
-        return try? components.asURL()
+        return components.url
     }
 
 }
