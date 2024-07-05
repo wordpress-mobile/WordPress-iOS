@@ -149,9 +149,7 @@ enum XcodeSupport {
                 .product(name: "WordPressShared", package: "WordPress-iOS-Shared"),
             ]),
             .xcodeTarget("XcodeTarget_WordPressKit", dependencies: wordPressKitDependencies),
-            .xcodeTarget("XcodeTarget_WordPressKitTests", dependencies: wordPressKitDependencies + testDependencies + [
-                .product(name: "Alamofire", package: "Alamofire"),
-            ]),
+            .xcodeTarget("XcodeTarget_WordPressKitTests", dependencies: wordPressKitDependencies + testDependencies),
             .xcodeTarget("XcodeTarget_WordPressAuthentificator", dependencies: wordPresAuthentificatorDependencies),
             .xcodeTarget("XcodeTarget_WordPressAuthentificatorTests", dependencies: wordPresAuthentificatorDependencies + testDependencies),
             .xcodeTarget("XcodeTarget_ShareExtension", dependencies: shareAndDraftExtensionsDependencies),
