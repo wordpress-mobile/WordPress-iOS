@@ -1,4 +1,5 @@
 import XCTest
+import WordPressShared
 
 @testable import WordPressAuthenticator
 

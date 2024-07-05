@@ -2,7 +2,6 @@ import AuthenticationServices
 import NSURL_IDN
 import UIKit
 import WordPressShared
-import WordPressUI
 import WordPressKit
 
 // MARK: - WordPressAuthenticator: Public API to deal with WordPress.com and WordPress.org authentication.
@@ -533,11 +532,16 @@ import WordPressKit
     ///
     public class var bundle: Bundle {
         let defaultBundle = Bundle(for: WordPressAuthenticator.self)
+
+        #if COCOAPODS
         // If installed with CocoaPods, resources will be in WordPressAuthenticator.bundle
         if let bundleURL = defaultBundle.resourceURL,
+           // TODO: Update bundle lookup
             let resourceBundle = Bundle(url: bundleURL.appendingPathComponent("WordPressAuthenticatorResources.bundle")) {
             return resourceBundle
         }
+        #endif
+
         // Otherwise, the default bundle is used for resources
         return defaultBundle
     }

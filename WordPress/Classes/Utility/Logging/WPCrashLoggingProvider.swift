@@ -1,6 +1,7 @@
 import UIKit
 import Combine
 import AutomatticTracks
+import AutomatticEncryptedLogs
 
 /// A wrapper around the logging stack – provides shared initialization and configuration for Tracks Crash and Event Logging
 struct WPLoggingStack {

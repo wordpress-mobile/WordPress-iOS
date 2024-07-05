@@ -1,7 +1,7 @@
 import AlamofireImage
 import Foundation
 import AutomatticTracks
-import WordPressShared.WPStyleGuide
+import WordPressShared
 
 open class ReaderCrossPostCell: UITableViewCell {
 

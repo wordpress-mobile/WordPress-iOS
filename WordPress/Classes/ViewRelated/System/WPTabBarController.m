@@ -1,5 +1,4 @@
 #import "WPTabBarController.h"
-#import <WordPressUI/UIImage+Util.h>
 
 #import "AccountService.h"
 #import "CoreDataStack.h"
@@ -9,12 +8,12 @@
 #import "BlogListViewController.h"
 #import "BlogDetailsViewController.h"
 #import "WPScrollableViewController.h"
-#import <WordPressShared/WPDeviceIdentification.h>
 #import "WPAppAnalytics.h"
 #import "WordPress-Swift.h"
 
 @import Gridicons;
 @import WordPressShared;
+@import WordPressUI;
 
 static NSString * const WPTabBarButtonClassname = @"UITabBarButton";
 static NSString * const WPApplicationIconBadgeNumberKeyPath = @"applicationIconBadgeNumber";
@@ -97,7 +96,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(signinDidFinish:)
-                                                     name:WordPressAuthenticator.WPSigninDidFinishNotification
+                                                     name:WPTabBarController.wpSigninDidFinishNotification
                                                    object:nil];
 
         // Watch for application badge number changes

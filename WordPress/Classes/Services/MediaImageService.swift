@@ -1,5 +1,6 @@
 import UIKit
 import CoreData
+import WordPressShared
 
 /// A service for retrieval and caching of thumbnails for ``Media`` objects.
 final class MediaImageService {

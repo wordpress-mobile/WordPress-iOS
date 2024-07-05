@@ -1,10 +1,10 @@
 #import "BlogToAccount.h"
-#import <NSURL_IDN/NSURL+IDN.h>
 #import "WPAccount.h"
 #import "Constants.h"
 #import "WordPress-Swift.h"
 
 @import NSObject_SafeExpectations;
+@import NSURL_IDN;
 
 @implementation BlogToAccount {
     NSString *_defaultWpcomUsername;

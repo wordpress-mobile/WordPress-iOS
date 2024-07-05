@@ -1,10 +1,9 @@
 #import "MenuItemTypeSelectionView.h"
 #import "Menu+ViewDesign.h"
 #import "MenuItem+ViewDesign.h"
-#import <WordPressShared/WPFontManager.h>
-#import <WordPressShared/WPStyleGuide.h>
 #import "WordPress-Swift.h"
 
+@import WordPressShared;
 @import Gridicons;
 
 @interface MenuItemTypeSelectionView ()

@@ -2,7 +2,7 @@
 #import <OCMock/OCMock.h>
 #import <XCTest/XCTest.h>
 
-#if __has_include("WordPressKit-Swift.h")
+#if __has_include("WordPressKitTests-Swift.h")
 #import "WordPressKitTests-Swift.h"
 #endif
 

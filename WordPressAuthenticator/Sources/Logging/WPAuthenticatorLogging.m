@@ -1,5 +1,7 @@
 #import "WPAuthenticatorLogging.h"
 
+@import WordPressShared;
+
 static id<WordPressLoggingDelegate> wordPressAuthenticatorLogger = nil;
 
 id<WordPressLoggingDelegate> _Nullable WPAuthenticatorGetLoggingDelegate(void)

@@ -1,9 +1,11 @@
 import Foundation
 import XCTest
 import OHHTTPStubs
+import OHHTTPStubsSwift
 #if SWIFT_PACKAGE
 @testable import CoreAPI
-import OHHTTPStubsSwift
+import OHHTTPStubs
+import OHHTTPStubsSwiftSwift
 #else
 @testable import WordPressKit
 #endif

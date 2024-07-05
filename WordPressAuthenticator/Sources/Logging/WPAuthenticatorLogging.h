@@ -1,8 +1,8 @@
 #import <Foundation/Foundation.h>
 
-@import WordPressShared;
-
 NS_ASSUME_NONNULL_BEGIN
+
+@protocol WordPressLoggingDelegate;
 
 FOUNDATION_EXTERN id<WordPressLoggingDelegate> _Nullable WPAuthenticatorGetLoggingDelegate(void);
 FOUNDATION_EXTERN void WPAuthenticatorSetLoggingDelegate(id<WordPressLoggingDelegate> _Nullable logger);

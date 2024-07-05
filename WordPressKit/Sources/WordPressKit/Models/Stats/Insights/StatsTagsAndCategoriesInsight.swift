@@ -1,3 +1,5 @@
+import Foundation
+
 public struct StatsTagsAndCategoriesInsight: Codable {
     public let topTagsAndCategories: [StatsTagAndCategory]
 

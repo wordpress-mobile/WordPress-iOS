@@ -8,6 +8,7 @@
 #import "AbstractPost.h"
 #import "WordPress-Swift.h"
 
+@import WordPressShared;
 
 NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
 NSInteger const  WPNumberOfCommentsToSync = 100;

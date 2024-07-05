@@ -1,3 +1,5 @@
+import Foundation
+
 public enum ReaderSortingOption: String, CaseIterable {
     case popularity
     case date

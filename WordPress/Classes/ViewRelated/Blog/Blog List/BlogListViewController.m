@@ -2,6 +2,9 @@
 #import "WordPress-Swift.h"
 #import "SVProgressHUD+Dismiss.h"
 
+@import WordPressUI;
+@import WordPressUIObjC;
+
 static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
 
 static NSInteger HideAllMinSites = 10;
@@ -566,7 +569,7 @@ static NSInteger HideSearchMinSites = 3;
 
 
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(showLoginControllerForAddingSelfHostedSite)
+                                             selector:@selector(showLoginForSelfHostedSite)
                                                  name:NSNotification.PSIAddSelfHosted
                                                object:nil];
 }
@@ -955,12 +958,6 @@ static NSInteger HideSearchMinSites = 3;
     return [WPAccount lookupDefaultWordPressComAccountInContext:context];
 }
 
-- (void)showLoginControllerForAddingSelfHostedSite
-{
-    [self setEditing:NO animated:NO];
-    [WordPressAuthenticator showLoginForSelfHostedSite:self];
-}
-
 - (void)setVisible:(BOOL)visible forBlog:(Blog *)blog
 {
     if(!visible && self.dataSource.blogsCount > HideAllMinSites) {
@@ -1040,7 +1037,7 @@ static NSInteger HideSearchMinSites = 3;
         UIAlertController *alertController = [factory makeAddSiteAlertWithSource:@"my_site" canCreateWPComSite:canCreateWPComSite createWPComSite:^{
             [self launchSiteCreation];
         } canAddSelfHostedSite:canAddSelfHostedSite addSelfHostedSite:^{
-            [self showLoginControllerForAddingSelfHostedSite];
+            [self showLoginForSelfHostedSite];
         }];
 
         if ([source isKindOfClass:[UIView class]]) {

@@ -2,6 +2,7 @@ import Foundation
 import XCTest
 import UniformTypeIdentifiers
 import OHHTTPStubs
+import OHHTTPStubsSwift
 import wpxmlrpc
 
 /// This type acts like a WordPress Media Library. It can be used in test cases to stub loading media library content

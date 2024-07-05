@@ -1,5 +1,5 @@
 import Foundation
-import WordPressShared.WPStyleGuide
+import WordPressShared
 import Gridicons
 
 // MARK: - ReplyTextViewDelegate

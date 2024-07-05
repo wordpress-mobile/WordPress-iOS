@@ -1,5 +1,5 @@
 import Foundation
-import WordPressShared.WPStyleGuide
+import WordPressShared
 
 class NoteBlockImageTableViewCell: NoteBlockTableViewCell {
     // MARK: - Public Properties

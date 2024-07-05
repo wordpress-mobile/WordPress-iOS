@@ -2,6 +2,7 @@ import UIKit
 import Gutenberg
 import Aztec
 import WordPressFlux
+import WordPressShared
 import React
 import AutomatticTracks
 import Combine

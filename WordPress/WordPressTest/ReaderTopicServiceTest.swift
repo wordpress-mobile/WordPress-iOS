@@ -3,6 +3,7 @@ import Foundation
 import CoreData
 import Nimble
 import OHHTTPStubs
+import OHHTTPStubsSwift
 
 @testable import WordPress
 

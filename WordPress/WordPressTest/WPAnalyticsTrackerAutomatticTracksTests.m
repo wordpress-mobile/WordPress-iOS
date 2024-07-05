@@ -2,6 +2,7 @@
 #import <XCTest/XCTest.h>
 #import "WPAnalyticsTrackerAutomatticTracks.h"
 @import AutomatticTracks;
+@import AutomatticTracksEvents;
 #import <OCMock/OCMock.h>
 
 @interface WPAnalyticsTrackerAutomatticTracksTests : XCTestCase

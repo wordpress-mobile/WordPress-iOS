@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "EBC0D38A-5F0A-4C69-BBED-1B55B7711736",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:WordPress.xcodeproj",
+        "identifier" : "4AD953BA2C21451700D0EEFA",
+        "name" : "WordPressAuthenticatorTests"
+      }
+    }
+  ],
+  "version" : 1
+}

@@ -1,3 +1,6 @@
+import UIKit
+import WordPressShared
+
 /// A seasonal card view shown in the WordPress app to promote State of the Word 2023.
 ///
 class SotWCardView: UIView {

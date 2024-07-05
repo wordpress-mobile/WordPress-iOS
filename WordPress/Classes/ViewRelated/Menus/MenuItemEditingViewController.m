@@ -7,9 +7,9 @@
 #import "MenuItemSourceViewController.h"
 #import "MenuItemTypeViewController.h"
 #import "CoreDataStack.h"
-#import <WordPressShared/WPDeviceIdentification.h>
-#import <WordPressShared/WPStyleGuide.h>
 #import "WordPress-Swift.h"
+
+@import WordPressShared;
 
 NSString * const MenuItemEditingTypeSelectionChangedNotification = @"MenuItemEditingTypeSelectionChangedNotification";
 

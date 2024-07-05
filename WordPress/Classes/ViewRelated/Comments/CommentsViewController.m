@@ -2,7 +2,8 @@
 #import "Blog.h"
 #import "WordPress-Swift.h"
 #import "WPTableViewHandler.h"
-#import <WordPressShared/WPStyleGuide.h>
+
+@import WordPressShared;
 
 @class Comment;
 
