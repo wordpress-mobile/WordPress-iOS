@@ -85,7 +85,6 @@ enum XcodeSupport {
     static let targets: [Target] = {
         let wordPressKitDependencies: [Target.Dependency] = [
             .product(name: "NSObject-SafeExpectations", package: "NSObject-SafeExpectations"),
-            .product(name: "UIDeviceIdentifier", package: "UIDeviceIdentifier"),
             .product(name: "WordPressShared", package: "WordPress-iOS-Shared"),
             .product(name: "wpxmlrpc", package: "wpxmlrpc"),
         ]
