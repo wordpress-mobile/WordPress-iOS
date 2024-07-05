@@ -3,7 +3,6 @@
 #import "WordPress-Swift.h"
 
 @import WordPressShared;
-@import wpxmlrpc;
 
 NSInteger const SupportButtonIndex = 0;
 

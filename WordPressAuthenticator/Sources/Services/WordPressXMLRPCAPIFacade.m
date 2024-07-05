@@ -2,8 +2,6 @@
 #import "WPAuthenticator-Swift.h"
 
 @import WordPressKit;
-@import wpxmlrpc;
-
 
 @interface WordPressXMLRPCAPIFacade ()
 

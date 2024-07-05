@@ -94,7 +94,8 @@ enum XcodeSupport {
             .product(name: "Gridicons", package: "Gridicons-iOS"),
             .product(name: "SVProgressHUD", package: "SVProgressHUD"),
             .product(name: "WordPressUI", package: "WordPressUI-iOS"),
-        ] + wordPressKitDependencies
+            .product(name: "WordPressShared", package: "WordPress-iOS-Shared"),
+        ]
 
         let shareAndDraftExtensionsDependencies: [Target.Dependency] = [
             .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
