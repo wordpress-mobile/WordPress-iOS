@@ -1,5 +1,4 @@
 import Foundation
-import UIDeviceIdentifier
 import WordPressShared
 
 /// The purpose of this class is to encapsulate all of the interaction with the Notifications REST endpoints.
@@ -77,7 +76,7 @@ open class NotificationSettingsServiceRemote: ServiceRemoteWordPressComREST {
             "device_family": "apple",
             "app_secret_key": pushNotificationAppId,
             "device_name": device.name,
-            "device_model": UIDeviceHardware.platform(),
+            "device_model": device.platform,
             "os_version": device.systemVersion,
             "app_version": Bundle.main.bundleVersion(),
             "device_uuid": device.wordPressIdentifier()

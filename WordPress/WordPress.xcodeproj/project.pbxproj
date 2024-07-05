@@ -444,6 +444,7 @@
 		0C0AD10B2B0CCFA400EC06E6 /* MediaPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0AD1092B0CCFA400EC06E6 /* MediaPreviewController.swift */; };
 		0C0AE7592A8FAD6A007D9D6C /* MediaPickerMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0AE7582A8FAD6A007D9D6C /* MediaPickerMenu.swift */; };
 		0C0AE75A2A8FAD6A007D9D6C /* MediaPickerMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0AE7582A8FAD6A007D9D6C /* MediaPickerMenu.swift */; };
+		0C0B34DC2C38ADC3005CB484 /* UIDevice+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0B34DB2C38ADC3005CB484 /* UIDevice+Extensions.swift */; };
 		0C0D3B0D2A4C79DE0050A00D /* BlazeCampaignsStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0D3B0C2A4C79DE0050A00D /* BlazeCampaignsStream.swift */; };
 		0C0D3B0E2A4C79DE0050A00D /* BlazeCampaignsStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0D3B0C2A4C79DE0050A00D /* BlazeCampaignsStream.swift */; };
 		0C0DF8812C2DDE7900011B7D /* WordPressKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A98A2F42C22736F00A2CE58 /* WordPressKit.framework */; };
@@ -7476,6 +7477,7 @@
 		0C0AD1052B0C483F00EC06E6 /* ExternalMediaSelectionTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalMediaSelectionTitleView.swift; sourceTree = "<group>"; };
 		0C0AD1092B0CCFA400EC06E6 /* MediaPreviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPreviewController.swift; sourceTree = "<group>"; };
 		0C0AE7582A8FAD6A007D9D6C /* MediaPickerMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerMenu.swift; sourceTree = "<group>"; };
+		0C0B34DB2C38ADC3005CB484 /* UIDevice+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Extensions.swift"; sourceTree = "<group>"; };
 		0C0D3B0C2A4C79DE0050A00D /* BlazeCampaignsStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeCampaignsStream.swift; sourceTree = "<group>"; };
 		0C0DF8932C2DF12A00011B7D /* LoginFacadeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginFacadeTests.m; sourceTree = "<group>"; };
 		0C13ACC62BF406CB00FF7405 /* VoiceToContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceToContentView.swift; sourceTree = "<group>"; };
@@ -15209,6 +15211,7 @@
 				4A98A4452C22741500A2CE58 /* NSString+MD5.m */,
 				4A98A4462C22741500A2CE58 /* ObjectValidation.swift */,
 				4A98A4472C22741500A2CE58 /* ZendeskMetadata.swift */,
+				0C0B34DB2C38ADC3005CB484 /* UIDevice+Extensions.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -27408,6 +27411,7 @@
 				4A98A4C72C22741500A2CE58 /* RemotePostParameters.swift in Sources */,
 				4A98A4F52C22741500A2CE58 /* QRLoginServiceRemote.swift in Sources */,
 				4A98A4FD2C22741500A2CE58 /* ActivityServiceRemote.swift in Sources */,
+				0C0B34DC2C38ADC3005CB484 /* UIDevice+Extensions.swift in Sources */,
 				4A98A5542C22741600A2CE58 /* TaxonomyServiceRemoteREST.m in Sources */,
 				4A98A5392C22741600A2CE58 /* ReaderPostServiceRemote.m in Sources */,
 				4A98A4922C22741500A2CE58 /* StatsSearchTermTimeIntervalData.swift in Sources */,
