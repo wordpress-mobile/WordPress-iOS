@@ -11,6 +11,8 @@ Please refer to the sections below for more detailed information. The instructio
 
 #### Create WordPress.com API Credentials
 
+test
+
 1. Create a WordPress.com account at https://wordpress.com/start/user (if you don't already have one).
 1. Create an application at https://developer.wordpress.com/apps/.
 1. Set **Website URL** to any valid host, **Redirect URLs** to `https://localhost`, and **Type** to `Native`.
