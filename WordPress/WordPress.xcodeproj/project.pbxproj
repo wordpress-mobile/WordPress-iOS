@@ -448,6 +448,10 @@
 		0C0AE75A2A8FAD6A007D9D6C /* MediaPickerMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0AE7582A8FAD6A007D9D6C /* MediaPickerMenu.swift */; };
 		0C0D3B0D2A4C79DE0050A00D /* BlazeCampaignsStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0D3B0C2A4C79DE0050A00D /* BlazeCampaignsStream.swift */; };
 		0C0D3B0E2A4C79DE0050A00D /* BlazeCampaignsStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0D3B0C2A4C79DE0050A00D /* BlazeCampaignsStream.swift */; };
+		0C0DB38C2C3486F700F21218 /* Gravatar in Frameworks */ = {isa = PBXBuildFile; productRef = 0C0DB38B2C3486F700F21218 /* Gravatar */; };
+		0C0DB38E2C3486F700F21218 /* GravatarUI in Frameworks */ = {isa = PBXBuildFile; productRef = 0C0DB38D2C3486F700F21218 /* GravatarUI */; };
+		0C0DB3902C34870600F21218 /* Gravatar in Frameworks */ = {isa = PBXBuildFile; productRef = 0C0DB38F2C34870600F21218 /* Gravatar */; };
+		0C0DB3922C34870600F21218 /* GravatarUI in Frameworks */ = {isa = PBXBuildFile; productRef = 0C0DB3912C34870600F21218 /* GravatarUI */; };
 		0C0DF85B2C2DB5EC00011B7D /* WordPressUI in Frameworks */ = {isa = PBXBuildFile; productRef = 0C0DF85A2C2DB5EC00011B7D /* WordPressUI */; };
 		0C0DF85D2C2DB60100011B7D /* WordPressUI in Frameworks */ = {isa = PBXBuildFile; productRef = 0C0DF85C2C2DB60100011B7D /* WordPressUI */; };
 		0C0DF85F2C2DB61300011B7D /* WordPressUI in Frameworks */ = {isa = PBXBuildFile; productRef = 0C0DF85E2C2DB61300011B7D /* WordPressUI */; };
@@ -500,6 +504,7 @@
 		0C2C83FB2A6EABF300A3ACD9 /* StatsPeriodCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2C83F92A6EABF300A3ACD9 /* StatsPeriodCache.swift */; };
 		0C2C83FD2A6EBD3F00A3ACD9 /* StatsInsightsCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2C83FC2A6EBD3F00A3ACD9 /* StatsInsightsCache.swift */; };
 		0C2C83FE2A6EBD3F00A3ACD9 /* StatsInsightsCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2C83FC2A6EBD3F00A3ACD9 /* StatsInsightsCache.swift */; };
+		0C3060242C2EE6340096D0F6 /* MediaEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 0C3060232C2EE6340096D0F6 /* MediaEditor */; };
 		0C308FFE2B1234E70071C551 /* SiteMediaFilterButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C308FFD2B1234E70071C551 /* SiteMediaFilterButtonView.swift */; };
 		0C308FFF2B1234E70071C551 /* SiteMediaFilterButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C308FFD2B1234E70071C551 /* SiteMediaFilterButtonView.swift */; };
 		0C3090222B12A5C90071C551 /* UIButton+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C3090212B12A5C90071C551 /* UIButton+Extensions.swift */; };
@@ -518,6 +523,8 @@
 		0C3C50432BA3A024002A37B4 /* PostNoticePublishSuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C3C50412BA3A024002A37B4 /* PostNoticePublishSuccessView.swift */; };
 		0C5751102B011468001074E5 /* RemoteConfigDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C57510F2B011468001074E5 /* RemoteConfigDebugView.swift */; };
 		0C5751112B011468001074E5 /* RemoteConfigDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C57510F2B011468001074E5 /* RemoteConfigDebugView.swift */; };
+		0C5C56B72C348D1A0064CF19 /* FSInteractiveMap in Frameworks */ = {isa = PBXBuildFile; productRef = 0C5C56B62C348D1A0064CF19 /* FSInteractiveMap */; };
+		0C5C56B92C348D270064CF19 /* FSInteractiveMap in Frameworks */ = {isa = PBXBuildFile; productRef = 0C5C56B82C348D270064CF19 /* FSInteractiveMap */; };
 		0C63266F2A3D1305000B8C57 /* GutenbergFilesAppMediaSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C63266E2A3D1305000B8C57 /* GutenbergFilesAppMediaSourceTests.swift */; };
 		0C6C4CD02A4F0A000049E762 /* BlazeCampaignsStreamTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6C4CCF2A4F0A000049E762 /* BlazeCampaignsStreamTests.swift */; };
 		0C6C4CD42A4F0AD90049E762 /* blaze-search-page-1.json in Resources */ = {isa = PBXBuildFile; fileRef = 0C6C4CD32A4F0AD80049E762 /* blaze-search-page-1.json */; };
@@ -605,6 +612,7 @@
 		0CB54F582AEC320700582080 /* WordPressAppDelegate+PostCoordinatorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB54F562AEC320700582080 /* WordPressAppDelegate+PostCoordinatorDelegate.swift */; };
 		0CC21C6C2B95220E003BDB4A /* PostCoordinator+Notices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC21C6B2B95220E003BDB4A /* PostCoordinator+Notices.swift */; };
 		0CC21C6D2B95220E003BDB4A /* PostCoordinator+Notices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC21C6B2B95220E003BDB4A /* PostCoordinator+Notices.swift */; };
+		0CC3903A2C2EE6B30037C201 /* MediaEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 0CC390392C2EE6B30037C201 /* MediaEditor */; };
 		0CD223DF2AA8ADFD002BD761 /* DashboardQuickActionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD223DE2AA8ADFD002BD761 /* DashboardQuickActionsViewModel.swift */; };
 		0CD223E02AA8ADFD002BD761 /* DashboardQuickActionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD223DE2AA8ADFD002BD761 /* DashboardQuickActionsViewModel.swift */; };
 		0CD382832A4B699E00612173 /* DashboardBlazeCardCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD382822A4B699E00612173 /* DashboardBlazeCardCellViewModel.swift */; };
@@ -11851,6 +11859,7 @@
 				3F411B6F28987E3F002513AE /* Lottie in Frameworks */,
 				374CB16215B93C0800DD0EBC /* AudioToolbox.framework in Frameworks */,
 				E10B3655158F2D7800419A93 /* CoreGraphics.framework in Frameworks */,
+				0C5C56B92C348D270064CF19 /* FSInteractiveMap in Frameworks */,
 				E10B3654158F2D4500419A93 /* UIKit.framework in Frameworks */,
 				E10B3652158F2D3F00419A93 /* QuartzCore.framework in Frameworks */,
 				0CD9FB892AFA71C2009D9C7A /* DGCharts in Frameworks */,
@@ -11859,6 +11868,7 @@
 				4A0CB2852C238B7800A006B0 /* CocoaLumberjackSwift in Frameworks */,
 				4A3AB6512C22F6E8006E0FA8 /* SVProgressHUD in Frameworks */,
 				4A3E8C4D2C238471003628B3 /* Gifu in Frameworks */,
+				0C0DB3902C34870600F21218 /* Gravatar in Frameworks */,
 				4AEB35C22C22E90300D5AE8C /* AutomatticEncryptedLogs in Frameworks */,
 				E1A386CA14DB05F700954CF8 /* CoreMedia.framework in Frameworks */,
 				E1A386C814DB05C300954CF8 /* AVFoundation.framework in Frameworks */,
@@ -11876,9 +11886,11 @@
 				FD3D6D2C1349F5D30061136A /* ImageIO.framework in Frameworks */,
 				B5AA54D51A8E7510003BDD12 /* WebKit.framework in Frameworks */,
 				93F2E5401E9E5A180050D489 /* libsqlite3.tbd in Frameworks */,
+				0C0DB3922C34870600F21218 /* GravatarUI in Frameworks */,
 				0C0DF8802C2DDD5100011B7D /* WordPressShared in Frameworks */,
 				4A2A359E2C23635D00F47E9C /* Gridicons in Frameworks */,
 				1DF7A0CD2B9F66970003CBA3 /* SwiftSoup in Frameworks */,
+				0CC3903A2C2EE6B30037C201 /* MediaEditor in Frameworks */,
 				17A8858D2757B97F0071FCA3 /* AutomatticAbout in Frameworks */,
 				FF4DEAD8244B56E300ACA032 /* CoreServices.framework in Frameworks */,
 				A1C54EBE8C34FFD5015F8FC9 /* Pods_Apps_WordPress.framework in Frameworks */,
@@ -12080,10 +12092,12 @@
 				FABB26222602FC2C00C8785C /* CoreSpotlight.framework in Frameworks */,
 				FABB26232602FC2C00C8785C /* QuickLook.framework in Frameworks */,
 				3F9F232D2B0B281400B56061 /* JetpackStatsWidgetsCore in Frameworks */,
+				0C0DB38E2C3486F700F21218 /* GravatarUI in Frameworks */,
 				FABB26242602FC2C00C8785C /* CoreText.framework in Frameworks */,
 				FABB26252602FC2C00C8785C /* UserNotifications.framework in Frameworks */,
 				FABB26262602FC2C00C8785C /* Photos.framework in Frameworks */,
 				FABB26272602FC2C00C8785C /* NotificationCenter.framework in Frameworks */,
+				0C5C56B72C348D1A0064CF19 /* FSInteractiveMap in Frameworks */,
 				FABB26282602FC2C00C8785C /* CoreTelephony.framework in Frameworks */,
 				FABB26292602FC2C00C8785C /* SystemConfiguration.framework in Frameworks */,
 				08E63FCD2B28E52B00747E21 /* DesignSystem in Frameworks */,
@@ -12092,6 +12106,7 @@
 				0CD9FB872AFA71B9009D9C7A /* DGCharts in Frameworks */,
 				FABB262C2602FC2C00C8785C /* UIKit.framework in Frameworks */,
 				4A972D3A2C23A3B0006AE0F0 /* ZendeskSupportSDK in Frameworks */,
+				0C3060242C2EE6340096D0F6 /* MediaEditor in Frameworks */,
 				4A972D3C2C23A3D2006AE0F0 /* Reachability in Frameworks */,
 				0C0DF8642C2DBF1500011B7D /* WordPressShared in Frameworks */,
 				FABB262D2602FC2C00C8785C /* QuartzCore.framework in Frameworks */,
@@ -12106,6 +12121,7 @@
 				FABB26322602FC2C00C8785C /* Security.framework in Frameworks */,
 				FABB26332602FC2C00C8785C /* MapKit.framework in Frameworks */,
 				4A972D002C239C50006AE0F0 /* AlamofireImage in Frameworks */,
+				0C0DB38C2C3486F700F21218 /* Gravatar in Frameworks */,
 				4A972D082C239C79006AE0F0 /* Gifu in Frameworks */,
 				FABB26342602FC2C00C8785C /* CoreLocation.framework in Frameworks */,
 				FABB26352602FC2C00C8785C /* WordPressFlux in Frameworks */,
@@ -22981,6 +22997,10 @@
 				4A0CB2842C238B7800A006B0 /* CocoaLumberjackSwift */,
 				0C0DF87D2C2DDD4900011B7D /* WordPressUI */,
 				0C0DF87F2C2DDD5100011B7D /* WordPressShared */,
+				0CC390392C2EE6B30037C201 /* MediaEditor */,
+				0C0DB38F2C34870600F21218 /* Gravatar */,
+				0C0DB3912C34870600F21218 /* GravatarUI */,
+				0C5C56B82C348D270064CF19 /* FSInteractiveMap */,
 			);
 			productName = WordPress;
 			productReference = 1D6058910D05DD3D006BFB54 /* WordPress.app */;
@@ -23157,7 +23177,6 @@
 				7457666E202B558C00F42E40 /* Sources */,
 				7457666F202B558C00F42E40 /* Frameworks */,
 				74576670202B558C00F42E40 /* Resources */,
-				9D186898B0632AA1273C9DE2 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -23186,7 +23205,6 @@
 				809620D128E540D700940A5D /* Sources */,
 				8096211428E540D700940A5D /* Frameworks */,
 				8096211628E540D700940A5D /* Resources */,
-				4C304224F0F810A17D96A402 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -23215,7 +23233,6 @@
 				8096213228E55C9400940A5D /* Sources */,
 				8096217528E55C9400940A5D /* Frameworks */,
 				8096217728E55C9400940A5D /* Resources */,
-				D880C306E1943EA76DA53078 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -23284,7 +23301,6 @@
 				932225A31C7CE50300443B02 /* Sources */,
 				932225A41C7CE50300443B02 /* Frameworks */,
 				932225A51C7CE50300443B02 /* Resources */,
-				83D79708413A3DA10638659F /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -23408,6 +23424,10 @@
 				4A972D3D2C23A3ED006AE0F0 /* Starscream */,
 				0C86B1A02C2DB2A7001AB70C /* WordPressUI */,
 				0C0DF8632C2DBF1500011B7D /* WordPressShared */,
+				0C3060232C2EE6340096D0F6 /* MediaEditor */,
+				0C0DB38B2C3486F700F21218 /* Gravatar */,
+				0C0DB38D2C3486F700F21218 /* GravatarUI */,
+				0C5C56B62C348D1A0064CF19 /* FSInteractiveMap */,
 			);
 			productName = WordPress;
 			productReference = FABB26522602FC2C00C8785C /* Jetpack.app */;
@@ -23662,6 +23682,9 @@
 				4A0CB27B2C23883B00A006B0 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */,
 				0C86B19F2C2DB2A7001AB70C /* XCRemoteSwiftPackageReference "WordPressUI-iOS" */,
 				0C0DF8622C2DBF1500011B7D /* XCRemoteSwiftPackageReference "WordPress-iOS-Shared" */,
+				0C3060222C2EE6340096D0F6 /* XCRemoteSwiftPackageReference "MediaEditor-iOS" */,
+				0C0DB38A2C3486F700F21218 /* XCRemoteSwiftPackageReference "Gravatar-SDK-iOS" */,
+				0C5C56B52C348D1A0064CF19 /* XCRemoteSwiftPackageReference "FSInteractiveMap" */,
 			);
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
@@ -25050,11 +25073,15 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Apps-WordPress/Pods-Apps-WordPress-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/WordPress-Aztec-iOS/Aztec.framework",
+				"${BUILT_PRODUCTS_DIR}/WordPress-Editor-iOS/WordPressEditor.framework",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Gutenberg/Gutenberg.framework/Gutenberg",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Gutenberg/hermes.framework/hermes",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Aztec.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WordPressEditor.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Gutenberg.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
 			);
@@ -25101,26 +25128,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "$SRCROOT/../Scripts/BuildPhases/ConfigureSimulatorForUITesting.sh\n";
-			showEnvVarsInLog = 0;
-		};
-		4C304224F0F810A17D96A402 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-JetpackShareExtension/Pods-JetpackShareExtension-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/WordPress-Aztec-iOS/WordPress-Aztec-iOS.bundle",
-				"${PODS_ROOT}/WordPress-Editor-iOS/WordPressEditor/WordPressEditor/Assets/aztec.png",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WordPress-Aztec-iOS.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/aztec.png",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JetpackShareExtension/Pods-JetpackShareExtension-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		4F4D5C2BB6478A3E90ADC3C5 /* [CP] Check Pods Manifest.lock */ = {
@@ -25195,26 +25202,6 @@
 			shellPath = /bin/sh;
 			shellScript = "#!/bin/sh\n\n# This script adds the version number to the icon of internal releases.\n\nexport PATH=/opt/local/bin/:/opt/local/sbin:$PATH:/usr/local/bin:\nif [ \"${CONFIGURATION}\" != \"Release-Internal\" ]; then\nexit 0;\nfi\n\nsh ../Scripts/BuildPhases/AddVersionToIcons.sh\n";
 		};
-		83D79708413A3DA10638659F /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-WordPressShareExtension/Pods-WordPressShareExtension-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/WordPress-Aztec-iOS/WordPress-Aztec-iOS.bundle",
-				"${PODS_ROOT}/WordPress-Editor-iOS/WordPressEditor/WordPressEditor/Assets/aztec.png",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WordPress-Aztec-iOS.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/aztec.png",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WordPressShareExtension/Pods-WordPressShareExtension-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		920B9A6DAD47189622A86A9C /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -25222,51 +25209,15 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Apps-WordPress/Pods-Apps-WordPress-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/CropViewController/TOCropViewControllerBundle.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/GravatarUI/GravatarUI.bundle",
-				"${BUILT_PRODUCTS_DIR}/MediaEditor/MediaEditor.framework/MediaEditorDrawing.storyboardc",
-				"${BUILT_PRODUCTS_DIR}/MediaEditor/MediaEditor.framework/MediaEditorFilters.storyboardc",
-				"${BUILT_PRODUCTS_DIR}/MediaEditor/MediaEditor.framework/MediaEditorHub.storyboardc",
-				"${PODS_CONFIGURATION_BUILD_DIR}/MediaEditor/MediaEditor.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/WordPress-Aztec-iOS/WordPress-Aztec-iOS.bundle",
-				"${PODS_ROOT}/WordPress-Editor-iOS/WordPressEditor/WordPressEditor/Assets/aztec.png",
 				"${PODS_CONFIGURATION_BUILD_DIR}/AppCenter/AppCenterDistributeResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TOCropViewControllerBundle.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GravatarUI.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MediaEditorDrawing.storyboardc",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MediaEditorFilters.storyboardc",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MediaEditorHub.storyboardc",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MediaEditor.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WordPress-Aztec-iOS.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/aztec.png",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AppCenterDistributeResources.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Apps-WordPress/Pods-Apps-WordPress-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		9D186898B0632AA1273C9DE2 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-WordPressDraftActionExtension/Pods-WordPressDraftActionExtension-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/WordPress-Aztec-iOS/WordPress-Aztec-iOS.bundle",
-				"${PODS_ROOT}/WordPress-Editor-iOS/WordPressEditor/WordPressEditor/Assets/aztec.png",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WordPress-Aztec-iOS.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/aztec.png",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WordPressDraftActionExtension/Pods-WordPressDraftActionExtension-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A279580D198819F50031C6A3 /* ShellScript */ = {
@@ -25281,26 +25232,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# sh ../run-oclint.sh <optional: filename to lint>\nsh ../Scripts/run-oclint.sh";
-			showEnvVarsInLog = 0;
-		};
-		D880C306E1943EA76DA53078 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-JetpackDraftActionExtension/Pods-JetpackDraftActionExtension-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/WordPress-Aztec-iOS/WordPress-Aztec-iOS.bundle",
-				"${PODS_ROOT}/WordPress-Editor-iOS/WordPressEditor/WordPressEditor/Assets/aztec.png",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WordPress-Aztec-iOS.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/aztec.png",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JetpackDraftActionExtension/Pods-JetpackDraftActionExtension-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E00F6488DE2D86BDC84FBB0B /* [CP] Check Pods Manifest.lock */ = {
@@ -25453,11 +25384,15 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Apps-Jetpack/Pods-Apps-Jetpack-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/WordPress-Aztec-iOS/Aztec.framework",
+				"${BUILT_PRODUCTS_DIR}/WordPress-Editor-iOS/WordPressEditor.framework",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Gutenberg/Gutenberg.framework/Gutenberg",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Gutenberg/hermes.framework/hermes",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Aztec.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WordPressEditor.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Gutenberg.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
 			);
@@ -25473,26 +25408,10 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Apps-Jetpack/Pods-Apps-Jetpack-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/CropViewController/TOCropViewControllerBundle.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/GravatarUI/GravatarUI.bundle",
-				"${BUILT_PRODUCTS_DIR}/MediaEditor/MediaEditor.framework/MediaEditorDrawing.storyboardc",
-				"${BUILT_PRODUCTS_DIR}/MediaEditor/MediaEditor.framework/MediaEditorFilters.storyboardc",
-				"${BUILT_PRODUCTS_DIR}/MediaEditor/MediaEditor.framework/MediaEditorHub.storyboardc",
-				"${PODS_CONFIGURATION_BUILD_DIR}/MediaEditor/MediaEditor.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/WordPress-Aztec-iOS/WordPress-Aztec-iOS.bundle",
-				"${PODS_ROOT}/WordPress-Editor-iOS/WordPressEditor/WordPressEditor/Assets/aztec.png",
 				"${PODS_CONFIGURATION_BUILD_DIR}/AppCenter/AppCenterDistributeResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TOCropViewControllerBundle.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GravatarUI.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MediaEditorDrawing.storyboardc",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MediaEditorFilters.storyboardc",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MediaEditorHub.storyboardc",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MediaEditor.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WordPress-Aztec-iOS.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/aztec.png",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AppCenterDistributeResources.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -36392,12 +36311,36 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		0C0DB38A2C3486F700F21218 /* XCRemoteSwiftPackageReference "Gravatar-SDK-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Automattic/Gravatar-SDK-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.1.0;
+			};
+		};
 		0C0DF8622C2DBF1500011B7D /* XCRemoteSwiftPackageReference "WordPress-iOS-Shared" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/wordpress-mobile/WordPress-iOS-Shared";
 			requirement = {
 				branch = "task/remove-swiftlint";
 				kind = branch;
+			};
+		};
+		0C3060222C2EE6340096D0F6 /* XCRemoteSwiftPackageReference "MediaEditor-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/wordpress-mobile/MediaEditor-iOS";
+			requirement = {
+				branch = "task/spm-support";
+				kind = branch;
+			};
+		};
+		0C5C56B52C348D1A0064CF19 /* XCRemoteSwiftPackageReference "FSInteractiveMap" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/wordpress-mobile/FSInteractiveMap/";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.3.0;
 			};
 		};
 		0C86B19F2C2DB2A7001AB70C /* XCRemoteSwiftPackageReference "WordPressUI-iOS" */ = {
@@ -36659,6 +36602,26 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = DesignSystem;
 		};
+		0C0DB38B2C3486F700F21218 /* Gravatar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0C0DB38A2C3486F700F21218 /* XCRemoteSwiftPackageReference "Gravatar-SDK-iOS" */;
+			productName = Gravatar;
+		};
+		0C0DB38D2C3486F700F21218 /* GravatarUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0C0DB38A2C3486F700F21218 /* XCRemoteSwiftPackageReference "Gravatar-SDK-iOS" */;
+			productName = GravatarUI;
+		};
+		0C0DB38F2C34870600F21218 /* Gravatar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0C0DB38A2C3486F700F21218 /* XCRemoteSwiftPackageReference "Gravatar-SDK-iOS" */;
+			productName = Gravatar;
+		};
+		0C0DB3912C34870600F21218 /* GravatarUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0C0DB38A2C3486F700F21218 /* XCRemoteSwiftPackageReference "Gravatar-SDK-iOS" */;
+			productName = GravatarUI;
+		};
 		0C0DF85A2C2DB5EC00011B7D /* WordPressUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 0C86B19F2C2DB2A7001AB70C /* XCRemoteSwiftPackageReference "WordPressUI-iOS" */;
@@ -36784,6 +36747,21 @@
 			package = 0C86B19F2C2DB2A7001AB70C /* XCRemoteSwiftPackageReference "WordPressUI-iOS" */;
 			productName = WordPressUI;
 		};
+		0C3060232C2EE6340096D0F6 /* MediaEditor */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0C3060222C2EE6340096D0F6 /* XCRemoteSwiftPackageReference "MediaEditor-iOS" */;
+			productName = MediaEditor;
+		};
+		0C5C56B62C348D1A0064CF19 /* FSInteractiveMap */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0C5C56B52C348D1A0064CF19 /* XCRemoteSwiftPackageReference "FSInteractiveMap" */;
+			productName = FSInteractiveMap;
+		};
+		0C5C56B82C348D270064CF19 /* FSInteractiveMap */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0C5C56B52C348D1A0064CF19 /* XCRemoteSwiftPackageReference "FSInteractiveMap" */;
+			productName = FSInteractiveMap;
+		};
 		0C86B1A02C2DB2A7001AB70C /* WordPressUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 0C86B19F2C2DB2A7001AB70C /* XCRemoteSwiftPackageReference "WordPressUI-iOS" */;
@@ -36793,6 +36771,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 0C86B19F2C2DB2A7001AB70C /* XCRemoteSwiftPackageReference "WordPressUI-iOS" */;
 			productName = WordPressUI;
+		};
+		0CC390392C2EE6B30037C201 /* MediaEditor */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0C3060222C2EE6340096D0F6 /* XCRemoteSwiftPackageReference "MediaEditor-iOS" */;
+			productName = MediaEditor;
 		};
 		0CD9FB862AFA71B9009D9C7A /* DGCharts */ = {
 			isa = XCSwiftPackageProductDependency;

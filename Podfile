@@ -29,15 +29,6 @@ def aztec
   pod 'WordPress-Editor-iOS', '~> 1.19.11'
 end
 
-def gravatar
-  # pod 'Gravatar', path: '../Gravatar-SDK-iOS'
-  # pod 'GravatarUI', path: '../Gravatar-SDK-iOS'
-  # pod 'Gravatar', git: 'https://github.com/Automattic/Gravatar-SDK-iOS', commit: ''
-  # pod 'GravatarUI', git: 'https://github.com/Automattic/Gravatar-SDK-iOS', commit: ''
-  pod 'Gravatar', '2.0.0'
-  pod 'GravatarUI', '2.0.0'
-end
-
 abstract_target 'Apps' do
   project 'WordPress/WordPress.xcodeproj'
 
@@ -55,20 +46,9 @@ abstract_target 'Apps' do
   pod 'AppCenter', app_center_version, configurations: app_center_configurations
   pod 'AppCenter/Distribute', app_center_version, configurations: app_center_configurations
 
-  pod 'FSInteractiveMap', git: 'https://github.com/wordpress-mobile/FSInteractiveMap.git', tag: '0.2.0'
-  pod 'CropViewController', '2.5.3'
-
   ## Automattic libraries
   ## ====================
   ##
-  gravatar
-
-  # Production
-
-  pod 'MediaEditor', '~> 1.2', '>= 1.2.2'
-  # pod 'MediaEditor', git: 'https://github.com/wordpress-mobile/MediaEditor-iOS.git', commit: ''
-  # pod 'MediaEditor', path: '../MediaEditor-iOS'
-
   aztec
 
   ## WordPress App iOS
@@ -130,39 +110,6 @@ end
 
 abstract_target 'Tools' do
   pod 'SwiftLint', swiftlint_version
-end
-
-# Static Frameworks:
-# ============
-#
-# Make all pods that are not shared across multiple targets into static frameworks by overriding the static_framework? function to return true
-# Linking the shared frameworks statically would lead to duplicate symbols
-# A future version of CocoaPods may make this easier to do. See https://github.com/CocoaPods/CocoaPods/issues/7428
-shared_targets = %w[WordPressFlux]
-dyanmic_framework_pods = %w[WordPressFlux]
-# Statically linking Sentry results in a conflict with `NSDictionary.objectAtKeyPath`, but dynamically
-# linking it resolves this.
-dyanmic_framework_pods += %w[Sentry SentryPrivate]
-pre_install do |installer|
-  static = []
-  dynamic = []
-  installer.pod_targets.each do |pod|
-    use_dynamic_frameworks = false
-    use_dynamic_frameworks = true if dyanmic_framework_pods.include? pod.name
-
-    # If this pod is a dependency of one of our shared targets, it must be linked dynamically
-    use_dynamic_frameworks = true if pod.target_definitions.any? { |t| shared_targets.include? t.name }
-
-    if use_dynamic_frameworks
-      dynamic << pod
-      pod.instance_variable_set(:@build_type, Pod::BuildType.dynamic_framework)
-    else
-      static << pod
-      pod.instance_variable_set(:@build_type, Pod::BuildType.static_framework)
-    end
-  end
-  puts "Installing #{static.count} pods as static frameworks"
-  puts "Installing #{dynamic.count} pods as dynamic frameworks"
 end
 
 post_install do |installer|

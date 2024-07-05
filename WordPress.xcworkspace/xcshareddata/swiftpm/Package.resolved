@@ -128,12 +128,30 @@
         }
       },
       {
+        "package": "FSInteractiveMap",
+        "repositoryURL": "https://github.com/wordpress-mobile/FSInteractiveMap/",
+        "state": {
+          "branch": null,
+          "revision": "3a05cd433c4f6bfe66f09253459cef2be058b3ec",
+          "version": "0.3.0"
+        }
+      },
+      {
         "package": "Gifu",
         "repositoryURL": "https://github.com/kaishin/Gifu",
         "state": {
           "branch": null,
           "revision": "82da0086dea14ca9afc9801234ad8dc4cd9e2738",
           "version": "3.4.1"
+        }
+      },
+      {
+        "package": "Gravatar",
+        "repositoryURL": "https://github.com/Automattic/Gravatar-SDK-iOS",
+        "state": {
+          "branch": null,
+          "revision": "337a2b639ecafc5159eb0d2af49391a95ad1637a",
+          "version": "2.1.0"
         }
       },
       {
@@ -161,6 +179,15 @@
           "branch": null,
           "revision": "f522990668c2f9132323a2e68d924c7dcb9130b4",
           "version": "4.4.0"
+        }
+      },
+      {
+        "package": "MediaEditor",
+        "repositoryURL": "https://github.com/wordpress-mobile/MediaEditor-iOS",
+        "state": {
+          "branch": "task/spm-support",
+          "revision": "4f3fe298a95d1de81099f8c9e5612e0c59c9bf53",
+          "version": null
         }
       },
       {
@@ -386,6 +413,15 @@
           "branch": null,
           "revision": "77c7f492f5c1c9ca159f73d18f56bbd1186390b0",
           "version": "0.3.0"
+        }
+      },
+      {
+        "package": "TOCropViewController",
+        "repositoryURL": "https://github.com/TimOliver/TOCropViewController",
+        "state": {
+          "branch": null,
+          "revision": "a634cb7cdfd580006e79a6e74e64417fe9e9783b",
+          "version": "2.7.4"
         }
       },
       {
