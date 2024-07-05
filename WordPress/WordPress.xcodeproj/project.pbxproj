@@ -22959,7 +22959,6 @@
 				1D60588F0D05DD3D006BFB54 /* Frameworks */,
 				93E5284E19A7741A003A1A9C /* Embed Foundation Extensions */,
 				37399571B0D91BBEAE911024 /* [CP] Embed Pods Frameworks */,
-				920B9A6DAD47189622A86A9C /* [CP] Copy Pods Resources */,
 				E1C5456F219F10E000896227 /* Copy Gutenberg JS */,
 				4AD953C92C21451800D0EEFA /* Embed Frameworks */,
 			);
@@ -23386,7 +23385,6 @@
 				FABB261F2602FC2C00C8785C /* Frameworks */,
 				FABB26402602FC2C00C8785C /* Embed Foundation Extensions */,
 				FABB264A2602FC2C00C8785C /* [CP] Embed Pods Frameworks */,
-				FABB264B2602FC2C00C8785C /* [CP] Copy Pods Resources */,
 				FABB264C2602FC2C00C8785C /* Copy Gutenberg JS */,
 				4AD9555E2C21716A00D0EEFA /* Embed Frameworks */,
 			);
@@ -25202,24 +25200,6 @@
 			shellPath = /bin/sh;
 			shellScript = "#!/bin/sh\n\n# This script adds the version number to the icon of internal releases.\n\nexport PATH=/opt/local/bin/:/opt/local/sbin:$PATH:/usr/local/bin:\nif [ \"${CONFIGURATION}\" != \"Release-Internal\" ]; then\nexit 0;\nfi\n\nsh ../Scripts/BuildPhases/AddVersionToIcons.sh\n";
 		};
-		920B9A6DAD47189622A86A9C /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Apps-WordPress/Pods-Apps-WordPress-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/AppCenter/AppCenterDistributeResources.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AppCenterDistributeResources.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Apps-WordPress/Pods-Apps-WordPress-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		A279580D198819F50031C6A3 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -25399,24 +25379,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Apps-Jetpack/Pods-Apps-Jetpack-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		FABB264B2602FC2C00C8785C /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Apps-Jetpack/Pods-Apps-Jetpack-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/AppCenter/AppCenterDistributeResources.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AppCenterDistributeResources.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Apps-Jetpack/Pods-Apps-Jetpack-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FABB264C2602FC2C00C8785C /* Copy Gutenberg JS */ = {
@@ -34849,7 +34811,6 @@
 					"$(inherited)",
 					INTERNAL_BUILD,
 					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
-					APPCENTER_ENABLED,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
@@ -34880,7 +34841,7 @@
 					"-l\"sqlite3.0\"",
 					"-l\"z\"",
 				);
-				OTHER_SWIFT_FLAGS = "$(inherited) -D INTERNAL_BUILD -D APPCENTER_ENABLED";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D INTERNAL_BUILD";
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.internal;
 				PRODUCT_NAME = WordPress;
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.internal";
@@ -35494,7 +35455,6 @@
 					"$(inherited)",
 					INTERNAL_BUILD,
 					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
-					APPCENTER_ENABLED,
 					"JETPACK=1",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
@@ -35525,7 +35485,7 @@
 					"-l\"sqlite3.0\"",
 					"-l\"z\"",
 				);
-				OTHER_SWIFT_FLAGS = "$(inherited) -D INTERNAL_BUILD -D APPCENTER_ENABLED -D JETPACK";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D INTERNAL_BUILD -D JETPACK";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.internal;
 				PRODUCT_MODULE_NAME = WordPress;
 				PRODUCT_NAME = "$(TARGET_NAME)";
