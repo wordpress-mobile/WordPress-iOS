@@ -29,7 +29,9 @@ struct JetpackPrologueStyleGuide {
     static let whiteWithAlpha07 = UIColor.white.withAlphaComponent(0.7)
 
     // Background image with gradient for the new Jetpack prologue screen
-    static let prologueBackgroundImage: UIImage? = UIImage(named: "JPBackground")
+    static var prologueBackgroundImage: UIImage? {
+        UIImage(named: "JPBackground")?.blur(radius: 155)
+    }
     // Blur effect for the prologue buttons
     static let prologueButtonsBlurEffect: UIBlurEffect? = UIBlurEffect(style: .regular)
 
