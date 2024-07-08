@@ -8,9 +8,6 @@
       location = "group:Modules">
    </FileRef>
    <FileRef
-      location = "group:WordPressFlux">
-   </FileRef>
-   <FileRef
       location = "group:Pods/Pods.xcodeproj">
    </FileRef>
 </Workspace>
