@@ -1,5 +1,6 @@
 import Foundation
 import WordPressAPI
+import Network
 
 struct WordPressSite {
     enum SiteType {
@@ -9,14 +10,53 @@ struct WordPressSite {
 
     let baseUrl: String
     let type: WordPressSite.SiteType
+
+    init(baseUrl: ParsedUrl, type: WordPressSite.SiteType) {
+        self.baseUrl = baseUrl.url()
+        self.type = type
+    }
 }
 
 actor WordPressClient {
 
-    private let api: WordPressAPI
+    enum ReachabilityStatus {
+        case unknown
+        case available(path: NWPath)
+        case unavailable(reason: NWPath.UnsatisfiedReason)
+    }
 
-    init(api: WordPressAPI) {
+    let api: WordPressAPI
+    private let rootUrl: String
+
+    private let underlyingConnection: NWConnection
+    private let dispatchQueue = DispatchQueue(label: "wordpress-client")
+    var reachabilityStatus: ReachabilityStatus = .unknown
+
+    init(api: WordPressAPI, rootUrl: ParsedUrl) {
         self.api = api
+        self.rootUrl = rootUrl.url()
+
+        let endpoint = NWEndpoint.url(URL(string: rootUrl.url())!)
+
+        self.underlyingConnection = NWConnection(to: endpoint, using: NWParameters())
+        self.underlyingConnection.pathUpdateHandler = { path in
+            debugPrint("reachability is now \(path)")
+            Task {
+                switch path.status {
+                    case .requiresConnection: await self.setReachabilityStatus(to: .unknown)
+                    case .satisfied: await self.setReachabilityStatus(to: .available(path: path))
+                    case .unsatisfied: await self.setReachabilityStatus(to: .unavailable(
+                        reason: path.unsatisfiedReason)
+                    )
+                    @unknown default: fatalError()
+                }
+            }
+        }
+        self.underlyingConnection.start(queue: self.dispatchQueue)
+    }
+
+    private func setReachabilityStatus(to newValue: ReachabilityStatus) {
+        self.reachabilityStatus = newValue
     }
 
     static func `for`(site: WordPressSite, in session: URLSession) throws -> WordPressClient {
@@ -25,10 +65,10 @@ actor WordPressClient {
         switch site.type {
         case .dotCom(let emailAddress, let authToken):
             let api = WordPressAPI(urlSession: session, baseUrl: parsedUrl, authenticationStategy: .authorizationHeader(token: authToken))
-            return WordPressClient(api: api)
+            return WordPressClient(api: api, rootUrl: parsedUrl)
         case .selfHosted(let username, let authToken):
             let api = WordPressAPI.init(urlSession: session, baseUrl: parsedUrl, authenticationStategy: .init(username: username, password: authToken))
-            return WordPressClient(api: api)
+            return WordPressClient(api: api, rootUrl: parsedUrl)
         }
     }
 

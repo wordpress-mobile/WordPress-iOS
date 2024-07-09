@@ -438,7 +438,7 @@
         "repositoryURL": "https://github.com/Automattic/wordpress-rs",
         "state": {
           "branch": null,
-          "revision": "0f5123a518b17750f2568ea9171ebbb3bc526b78",
+          "revision": "5a92dd173fe4df0822a9f2c049cc632b58830bae",
           "version": null
         }
       },

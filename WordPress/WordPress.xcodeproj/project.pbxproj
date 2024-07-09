@@ -904,6 +904,8 @@
 		24384BC22C3CA53A009AF28A /* WordPressClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24384BC02C3CA53A009AF28A /* WordPressClient.swift */; };
 		24384BC42C3CB910009AF28A /* LoginClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24384BC32C3CB910009AF28A /* LoginClient.swift */; };
 		24384BC52C3CB910009AF28A /* LoginClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24384BC32C3CB910009AF28A /* LoginClient.swift */; };
+		24384BCA2C3CCBD2009AF28A /* BlogService+List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24384BC92C3CCBD2009AF28A /* BlogService+List.swift */; };
+		24384BCB2C3CCBD2009AF28A /* BlogService+List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24384BC92C3CCBD2009AF28A /* BlogService+List.swift */; };
 		246D0A0325E97D5D0028B83F /* Blog+ObjcTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 246D0A0225E97D5D0028B83F /* Blog+ObjcTests.m */; };
 		2481B17F260D4D4E00AE59DB /* WPAccount+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2481B17E260D4D4E00AE59DB /* WPAccount+Lookup.swift */; };
 		2481B180260D4D4E00AE59DB /* WPAccount+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2481B17E260D4D4E00AE59DB /* WPAccount+Lookup.swift */; };
@@ -7799,6 +7801,7 @@
 		24351253264DCA08009BB2B6 /* Secrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Secrets.swift; path = ../Secrets/Secrets.swift; sourceTree = BUILT_PRODUCTS_DIR; };
 		24384BC02C3CA53A009AF28A /* WordPressClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordPressClient.swift; sourceTree = "<group>"; };
 		24384BC32C3CB910009AF28A /* LoginClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginClient.swift; sourceTree = "<group>"; };
+		24384BC92C3CCBD2009AF28A /* BlogService+List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogService+List.swift"; sourceTree = "<group>"; };
 		2439B1DB264ECBDF00239130 /* Jetpack.alpha.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Jetpack.alpha.xcconfig; sourceTree = "<group>"; };
 		246D0A0225E97D5D0028B83F /* Blog+ObjcTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "Blog+ObjcTests.m"; sourceTree = "<group>"; };
 		2481B17E260D4D4E00AE59DB /* WPAccount+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPAccount+Lookup.swift"; sourceTree = "<group>"; };
@@ -18334,6 +18337,7 @@
 				93C1148418EDF6E100DAC95C /* BlogService.m */,
 				9A341E5221997A1E0036662E /* BlogService+BlogAuthors.swift */,
 				8320BDE4283D9359009DF2DE /* BlogService+BloggingPrompts.swift */,
+				24384BC92C3CCBD2009AF28A /* BlogService+List.swift */,
 				F1BC842D27035A1800C39993 /* BlogService+Domains.swift */,
 				9A2D0B22225CB92B009E585F /* BlogService+JetpackConvenience.swift */,
 				176BA53A268266DE0025E4A3 /* BlogService+Reminders.swift */,
@@ -25699,6 +25703,7 @@
 				F4D36AD5298498E600E6B84C /* ReaderPostBlockingController.swift in Sources */,
 				C31B6D5B28BFB6F300E64FEB /* SplashPrologueView.swift in Sources */,
 				B5F641B31E37C36700B7819F /* AdaptiveNavigationController.swift in Sources */,
+				24384BCA2C3CCBD2009AF28A /* BlogService+List.swift in Sources */,
 				74BC35B820499EEB00AC1525 /* RemotePostCategory+Extensions.swift in Sources */,
 				57D5812D2228526C002BAAD7 /* WPError+Swift.swift in Sources */,
 				FADFBD3B265F5B2E00039C41 /* WPStyleGuide+Jetpack.swift in Sources */,
@@ -30099,6 +30104,7 @@
 				FABB248C2602FC2C00C8785C /* PluginListViewController.swift in Sources */,
 				FABB248D2602FC2C00C8785C /* PostCoordinator.swift in Sources */,
 				FABB248E2602FC2C00C8785C /* AztecAttachmentDelegate.swift in Sources */,
+				24384BCB2C3CCBD2009AF28A /* BlogService+List.swift in Sources */,
 				803DE81428FFAE36007D4E9C /* RemoteConfigStore.swift in Sources */,
 				0CF22F602BC9605D0005B070 /* PrepublishingViewController+JetpackSocial.swift in Sources */,
 				086C117D2A2F6451004A3821 /* CompliancePopover.swift in Sources */,
