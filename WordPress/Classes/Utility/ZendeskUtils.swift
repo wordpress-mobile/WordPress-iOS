@@ -346,6 +346,7 @@ extension ZendeskUtils {
 
     func createNewRequest(
         in viewController: UIViewController,
+        subject: String? = nil,
         description: String,
         tags: [String],
         alertOptions: IdentityAlertOptions,
@@ -364,7 +365,7 @@ extension ZendeskUtils {
                 request.customFields = requestConfig.customFields
                 request.tags = requestConfig.tags
                 request.ticketFormId = requestConfig.ticketFormID
-                request.subject = requestConfig.subject
+                request.subject = subject ?? requestConfig.subject
                 request.requestDescription = description
 
                 provider.createRequest(request) { response, error in
