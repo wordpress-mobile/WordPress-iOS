@@ -623,6 +623,8 @@
 		0CE783422B08FB2E00B114EB /* ExternalMediaPickerCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE783402B08FB2E00B114EB /* ExternalMediaPickerCollectionCell.swift */; };
 		0CEA55522BC55940008D0FE5 /* WPInstrumentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEA55512BC55940008D0FE5 /* WPInstrumentation.swift */; };
 		0CEA55532BC55940008D0FE5 /* WPInstrumentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEA55512BC55940008D0FE5 /* WPInstrumentation.swift */; };
+		0CEA84CF2C3DD619008E0B06 /* SubmitFeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEA84CE2C3DD619008E0B06 /* SubmitFeedbackViewController.swift */; };
+		0CEA84D02C3DD619008E0B06 /* SubmitFeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEA84CE2C3DD619008E0B06 /* SubmitFeedbackViewController.swift */; };
 		0CED1FED2B61AAF600E6DD52 /* AtomicSiteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED1FEC2B61AAF600E6DD52 /* AtomicSiteService.swift */; };
 		0CED1FEE2B61AAF600E6DD52 /* AtomicSiteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED1FEC2B61AAF600E6DD52 /* AtomicSiteService.swift */; };
 		0CED20002B6809CB00E6DD52 /* FilterCompactButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED1FFF2B6809CB00E6DD52 /* FilterCompactButton.swift */; };
@@ -4809,8 +4811,6 @@
 		F4FB0ACD292587D500F651F9 /* MeHeaderViewConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FB0ACC292587D500F651F9 /* MeHeaderViewConfiguration.swift */; };
 		F4FE743429C3767300AC2729 /* AddressTableViewCell+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FE743329C3767300AC2729 /* AddressTableViewCell+ViewModel.swift */; };
 		F4FE743529C3767300AC2729 /* AddressTableViewCell+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FE743329C3767300AC2729 /* AddressTableViewCell+ViewModel.swift */; };
-		F4FF50E72B4D7D590076DB0C /* SubmitFeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FF50E52B4D7D590076DB0C /* SubmitFeedbackViewController.swift */; };
-		F4FF50E82B4D7D590076DB0C /* SubmitFeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FF50E52B4D7D590076DB0C /* SubmitFeedbackViewController.swift */; };
 		F4FF50E92B4D7D590076DB0C /* InAppFeedbackPromptCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FF50E62B4D7D590076DB0C /* InAppFeedbackPromptCoordinator.swift */; };
 		F4FF50EA2B4D7D590076DB0C /* InAppFeedbackPromptCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FF50E62B4D7D590076DB0C /* InAppFeedbackPromptCoordinator.swift */; };
 		F4FF50EC2B4ECE320076DB0C /* MySiteOverlaysCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FF50EB2B4ECE320076DB0C /* MySiteOverlaysCoordinator.swift */; };
@@ -7485,6 +7485,7 @@
 		0CE7833C2B08F3C300B114EB /* ExternalMediaPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalMediaPickerViewController.swift; sourceTree = "<group>"; };
 		0CE783402B08FB2E00B114EB /* ExternalMediaPickerCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalMediaPickerCollectionCell.swift; sourceTree = "<group>"; };
 		0CEA55512BC55940008D0FE5 /* WPInstrumentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPInstrumentation.swift; sourceTree = "<group>"; };
+		0CEA84CE2C3DD619008E0B06 /* SubmitFeedbackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitFeedbackViewController.swift; sourceTree = "<group>"; };
 		0CED1FEC2B61AAF600E6DD52 /* AtomicSiteService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicSiteService.swift; sourceTree = "<group>"; };
 		0CED1FFF2B6809CB00E6DD52 /* FilterCompactButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCompactButton.swift; sourceTree = "<group>"; };
 		0CED20012B6809D600E6DD52 /* FilterCompactDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCompactDatePicker.swift; sourceTree = "<group>"; };
@@ -11273,7 +11274,6 @@
 		F4F9D5F32909B7C100502576 /* MigrationWelcomeBlogTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationWelcomeBlogTableViewCell.swift; sourceTree = "<group>"; };
 		F4FB0ACC292587D500F651F9 /* MeHeaderViewConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeHeaderViewConfiguration.swift; sourceTree = "<group>"; };
 		F4FE743329C3767300AC2729 /* AddressTableViewCell+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddressTableViewCell+ViewModel.swift"; sourceTree = "<group>"; };
-		F4FF50E52B4D7D590076DB0C /* SubmitFeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmitFeedbackViewController.swift; sourceTree = "<group>"; };
 		F4FF50E62B4D7D590076DB0C /* InAppFeedbackPromptCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InAppFeedbackPromptCoordinator.swift; sourceTree = "<group>"; };
 		F4FF50EB2B4ECE320076DB0C /* MySiteOverlaysCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySiteOverlaysCoordinator.swift; sourceTree = "<group>"; };
 		F50B0E7A246212B8006601DD /* NoticeAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeAnimator.swift; sourceTree = "<group>"; };
@@ -21557,7 +21557,7 @@
 			isa = PBXGroup;
 			children = (
 				E14A52361E39F43E00EE203E /* AppRatingsUtility.swift */,
-				F4FF50E52B4D7D590076DB0C /* SubmitFeedbackViewController.swift */,
+				0CEA84CE2C3DD619008E0B06 /* SubmitFeedbackViewController.swift */,
 				F4FF50E62B4D7D590076DB0C /* InAppFeedbackPromptCoordinator.swift */,
 			);
 			path = "In-App Feedback";
@@ -25417,6 +25417,7 @@
 				0C23F33E2AC4AEF600EE6117 /* SiteMediaPickerViewController.swift in Sources */,
 				F1E72EBA267790110066FF91 /* UIViewController+Dismissal.swift in Sources */,
 				E1ECE34F1FA88DA2007FA37A /* StoreContainer.swift in Sources */,
+				0CEA84CF2C3DD619008E0B06 /* SubmitFeedbackViewController.swift in Sources */,
 				FAE4201A1C5AEFE100C1D036 /* StartOverViewController.swift in Sources */,
 				0A3FCA1D28B71CBD00499A15 /* FullScreenCommentReplyViewModel.swift in Sources */,
 				1790A4531E28F0ED00AE54C2 /* UINavigationController+Helpers.swift in Sources */,
@@ -26094,7 +26095,6 @@
 				17AD36D51D36C1A60044B10D /* WPStyleGuide+Search.swift in Sources */,
 				F4FF50EC2B4ECE320076DB0C /* MySiteOverlaysCoordinator.swift in Sources */,
 				F1E3536B25B9F74C00992E3A /* WindowManager.swift in Sources */,
-				F4FF50E72B4D7D590076DB0C /* SubmitFeedbackViewController.swift in Sources */,
 				FF0148E51DFABBC9001AD265 /* NSFileManager+FolderSize.swift in Sources */,
 				731E88CB21C9A10B0055C014 /* ErrorStateViewController.swift in Sources */,
 				BE87E1A01BD4054F0075D45B /* WP3DTouchShortcutCreator.swift in Sources */,
@@ -29134,6 +29134,7 @@
 				FABB23382602FC2C00C8785C /* WordPress-22-23.xcmappingmodel in Sources */,
 				01C4472D2BE4F8560006F787 /* StatsGhostLineChartCell.swift in Sources */,
 				FED65D79293511E4008071BF /* SharedDataIssueSolver.swift in Sources */,
+				0CEA84D02C3DD619008E0B06 /* SubmitFeedbackViewController.swift in Sources */,
 				FABB23392602FC2C00C8785C /* CountriesMap.swift in Sources */,
 				F45EB50C2B883E6E004E9053 /* CommentNotification.swift in Sources */,
 				98BC522527F6245700D6E8C2 /* BloggingPromptsFeatureIntroduction.swift in Sources */,
@@ -29381,7 +29382,6 @@
 				FABB23F02602FC2C00C8785C /* TitleSubtitleTextfieldHeader.swift in Sources */,
 				FABB23F12602FC2C00C8785C /* DefaultStockPhotosService.swift in Sources */,
 				FABB23F22602FC2C00C8785C /* Animator.swift in Sources */,
-				F4FF50E82B4D7D590076DB0C /* SubmitFeedbackViewController.swift in Sources */,
 				FABB23F32602FC2C00C8785C /* SiteStatsDashboardViewController.swift in Sources */,
 				F4141EEC2AE945C7000D2AAE /* AllDomainsListItemViewModel.swift in Sources */,
 				9895401226C1F39300EDEB5A /* EditCommentTableViewController.swift in Sources */,
