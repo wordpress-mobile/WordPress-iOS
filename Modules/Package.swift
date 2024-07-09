@@ -45,6 +45,7 @@ let package = Package(
         .package(url: "https://github.com/wordpress-mobile/NSURL-IDN", branch: "trunk"),
         .package(url: "https://github.com/wordpress-mobile/WordPressKit-iOS", branch: "wpios-edition"),
         .package(url: "https://github.com/zendesk/support_sdk_ios", from: "8.0.3"),
+        .package(url: "https://github.com/Automattic/wordpress-rs", revision: "0f5123a518b17750f2568ea9171ebbb3bc526b78"),
     ],
     targets: XcodeSupport.targets + [
         .target(name: "JetpackStatsWidgetsCore"),
@@ -153,6 +154,7 @@ enum XcodeSupport {
                 .product(name: "WordPressKit", package: "WordPressKit-iOS"),
                 .product(name: "ZendeskSupportSDK", package: "support_sdk_ios"),
                 .product(name: "ZIPFoundation", package: "ZIPFoundation"),
+                .product(name: "WordPressAPI", package: "wordpress-rs"),
             ]),
             .xcodeTarget("XcodeTarget_WordPressTests", dependencies: testDependencies + [
                 "WordPressShared",
@@ -171,6 +173,7 @@ enum XcodeSupport {
                 "JetpackStatsWidgetsCore",
                 "WordPressShared",
                 .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
+                .product(name: "WordPressAPI", package: "wordpress-rs"),
             ]),
             .xcodeTarget("XcodeTarget_Intents", dependencies: [
                 "JetpackStatsWidgetsCore",
