@@ -6,7 +6,7 @@ PODS:
     - WordPress-Aztec-iOS (= 1.19.11)
 
 DEPENDENCIES:
-  - Gutenberg (from `https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-80c9f88a26f89804fbec0e929f24ac240dca38d4.podspec`)
+  - Gutenberg (from `https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-0239a7b2494802dfff1e9d8faa486efdf0885631.podspec`)
   - SwiftLint (= 0.54.0)
   - WordPress-Editor-iOS (~> 1.19.11)
 
@@ -19,10 +19,10 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   Gutenberg:
-    :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-80c9f88a26f89804fbec0e929f24ac240dca38d4.podspec
+    :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-0239a7b2494802dfff1e9d8faa486efdf0885631.podspec
 
 SPEC CHECKSUMS:
-  Gutenberg: 9a76b99b224d5d82ee3aadc0b418ac399c5c1e76
+  Gutenberg: 187b75f69ee51b81347329df29d3a7d78bda032c
   SwiftLint: c1de071d9d08c8aba837545f6254315bc900e211
   WordPress-Aztec-iOS: 3732c6d865a5c9f35788377bdeda8a80ea10d0a1
   WordPress-Editor-iOS: 453345420ced3d3ef20f0051b3df46ff10281e0c
