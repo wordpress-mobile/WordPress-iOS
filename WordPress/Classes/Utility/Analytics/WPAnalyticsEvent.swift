@@ -626,7 +626,7 @@ import Foundation
     case inAppUpdateAccepted
 
     // REST API
-    case unableToPerformURLAutodiscovery
+    case performedUrlDiscovery
 
     /// A String that represents the event
     var value: String {
@@ -1243,7 +1243,7 @@ import Foundation
         case .inAppUpdateAccepted: "in_app_update_accepted"
 
         // REST API
-        case .unableToPerformURLAutodiscovery: "unable_to_perform_url_autodiscovery"
+        case .performedUrlDiscovery: "performed_url_autodiscovery"
 
         } // END OF SWITCH
     }

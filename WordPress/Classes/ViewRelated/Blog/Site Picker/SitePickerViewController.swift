@@ -16,6 +16,7 @@ final class SitePickerViewController: UIViewController {
     var siteIconPickerPresenter: SiteIconPickerPresenter?
     var onBlogSwitched: ((Blog) -> Void)?
     var onBlogListDismiss: (() -> Void)?
+    private var siteFetcherTask: Task<Void, Never>?
 
     let meScenePresenter: ScenePresenter
     let blogService: BlogService
@@ -47,6 +48,35 @@ final class SitePickerViewController: UIViewController {
         setupHeaderView()
         startObservingQuickStart()
         startObservingTitleChanges()
+
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        let blogs = (try? blogService.listBlogs(in: ContextManager.shared.mainContext).compactMap { $0.url }) ?? []
+
+        self.siteFetcherTask = Task {
+            let loginClient = LoginClient(session: .shared)
+
+            await withTaskGroup(of: Void.self) { group in
+                for blog in blogs {
+                    group.addTask {
+                        do {
+                            let result = try await loginClient.performLoginAutodiscovery(for: blog)
+                            DDLogInfo("🟢 Login Autodiscovery was successful for \(blog): \(result.rootUrl), \(String(describing: result.loginUrl))")
+                        } catch {
+                            DDLogError("🔴 Unable to perform login autodiscovery for \(blog): \(error.localizedDescription)")
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.siteFetcherTask?.cancel()
     }
 
     private func setupHeaderView() {
@@ -99,7 +129,6 @@ extension SitePickerViewController: BlogDetailHeaderViewDelegate {
         } else {
             presentLegacySiteSwitcher()
         }
-
     }
 
     private func presentNewSiteSwitcher() {
