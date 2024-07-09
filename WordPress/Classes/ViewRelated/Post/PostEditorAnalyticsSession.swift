@@ -21,17 +21,17 @@ struct PostEditorAnalyticsSession {
         contentType = ContentType(post: post).rawValue
     }
 
-    mutating func start(unsupportedBlocks: [String] = [], galleryWithImageBlocks: Bool? = nil) {
+    mutating func start(unsupportedBlocks: [String] = []) {
         assert(!started, "An editor session was attempted to start more than once")
         hasUnsupportedBlocks = !unsupportedBlocks.isEmpty
 
-        let properties = startEventProperties(with: unsupportedBlocks, galleryWithImageBlocks: galleryWithImageBlocks)
+        let properties = startEventProperties(with: unsupportedBlocks)
 
         WPAppAnalytics.track(.editorSessionStart, withProperties: properties)
         started = true
     }
 
-    private func startEventProperties(with unsupportedBlocks: [String], galleryWithImageBlocks: Bool?) -> [String: Any] {
+    private func startEventProperties(with unsupportedBlocks: [String]) -> [String: Any] {
         // On Android, we are tracking this in milliseconds, which seems like a good enough time scale
         // Let's make sure to round the value and send an integer for consistency
         let startupTimeNanoseconds = DispatchTime.now().uptimeNanoseconds - startTime
@@ -42,12 +42,6 @@ struct PostEditorAnalyticsSession {
         if let data = try? JSONSerialization.data(withJSONObject: unsupportedBlocks, options: .fragmentsAllowed) {
             let blocksJSON = String(data: data, encoding: .utf8)
             properties[Property.unsupportedBlocks] = blocksJSON
-        }
-
-        if let galleryWithImageBlocks = galleryWithImageBlocks {
-            properties[Property.unstableGalleryWithImageBlocks] = "\(galleryWithImageBlocks)"
-        } else {
-            properties[Property.unstableGalleryWithImageBlocks] = "unknown"
         }
 
         properties[Property.entryPoint] = (entryPoint ?? .unknown).rawValue
@@ -84,7 +78,6 @@ private extension PostEditorAnalyticsSession {
         static let sessionId = "session_id"
         static let template = "template"
         static let startupTime = "startup_time_ms"
-        static let unstableGalleryWithImageBlocks = "unstable_gallery_with_image_blocks"
         static let entryPoint = "entry_point"
     }
 
