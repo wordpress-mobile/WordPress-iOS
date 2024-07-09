@@ -45,7 +45,7 @@ let package = Package(
         .package(url: "https://github.com/wordpress-mobile/NSURL-IDN", branch: "trunk"),
         .package(url: "https://github.com/wordpress-mobile/WordPressKit-iOS", branch: "wpios-edition"),
         .package(url: "https://github.com/zendesk/support_sdk_ios", from: "8.0.3"),
-        .package(url: "https://github.com/Automattic/wordpress-rs", revision: "0f5123a518b17750f2568ea9171ebbb3bc526b78"),
+        .package(url: "https://github.com/Automattic/wordpress-rs", revision: "5a92dd173fe4df0822a9f2c049cc632b58830bae"),
     ],
     targets: XcodeSupport.targets + [
         .target(name: "JetpackStatsWidgetsCore"),
