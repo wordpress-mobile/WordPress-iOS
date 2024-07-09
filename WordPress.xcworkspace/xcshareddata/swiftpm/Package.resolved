@@ -434,6 +434,15 @@
         }
       },
       {
+        "package": "WordPress",
+        "repositoryURL": "https://github.com/Automattic/wordpress-rs",
+        "state": {
+          "branch": null,
+          "revision": "0f5123a518b17750f2568ea9171ebbb3bc526b78",
+          "version": null
+        }
+      },
+      {
         "package": "WordPressUI",
         "repositoryURL": "https://github.com/wordpress-mobile/WordPressUI-iOS",
         "state": {
