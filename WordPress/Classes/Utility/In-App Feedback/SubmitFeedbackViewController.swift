@@ -3,10 +3,21 @@ import SwiftUI
 import WordPressShared
 
 final class SubmitFeedbackViewController: UIViewController {
+    private var source: String
+
+    init(source: String) {
+        self.source = source
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let viewController = UIHostingController(rootView: SubmitFeedbackView(presentingViewController: self))
+        let viewController = UIHostingController(rootView: SubmitFeedbackView(presentingViewController: self, source: source))
         viewController.configureDefaultNavigationBarAppearance()
 
         let navigationController = UINavigationController(rootViewController: viewController)
@@ -22,6 +33,7 @@ final class SubmitFeedbackViewController: UIViewController {
 
 private struct SubmitFeedbackView: View {
     weak var presentingViewController: UIViewController?
+    let source: String
 
     @State private var subject = ""
     @State private var text = ""
@@ -66,7 +78,7 @@ private struct SubmitFeedbackView: View {
             }
         }
         .onAppear {
-            WPAnalytics.track(.appReviewsOpenedFeedbackScreen)
+            WPAnalytics.track(.appReviewsOpenedFeedbackScreen, withProperties: ["source": source])
             isSubjectFieldFocused = true
         }
         .disabled(isSubmitting)
@@ -165,7 +177,7 @@ private struct SubmitFeedbackView: View {
     private func didSubmitFeedback(with result: Result<Void, ZendeskRequestError>) {
         switch result {
         case .success:
-            WPAnalytics.track(.appReviewsSentFeedback, withProperties: ["feedback": text])
+            WPAnalytics.track(.appReviewsSentFeedback, withProperties: ["feedback": text, "source": source])
 
             UINotificationFeedbackGenerator().notificationOccurred(.success)
             let notice = Notice(title: Strings.successNoticeTitle, message: Strings.successNoticeMessage)
@@ -211,6 +223,6 @@ private enum Strings {
 
 #Preview {
     NavigationView {
-        SubmitFeedbackView()
+        SubmitFeedbackView(source: "preview")
     }
 }
