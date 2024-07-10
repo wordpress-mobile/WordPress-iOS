@@ -8,6 +8,7 @@ final class SubmitFeedbackViewController: UIViewController {
     init(source: String) {
         self.source = source
         super.init(nibName: nil, bundle: nil)
+        self.modalPresentationStyle = .formSheet
     }
 
     required init?(coder: NSCoder) {

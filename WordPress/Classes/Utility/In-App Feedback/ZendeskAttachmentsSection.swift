@@ -133,7 +133,7 @@ final class ZendeskAttachmentViewModel: ObservableObject, Identifiable {
 
     var isUploaded: Bool { response != nil }
 
-    static let attachmentSizeLimit: Int64 = 10_000_000
+    static let attachmentSizeLimit: Int64 = 8_000_000
 
     var response: ZDKUploadResponse? {
         guard case .uploaded(let response) = status else { return nil }
