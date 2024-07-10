@@ -78,7 +78,7 @@ final class InAppFeedbackPromptCoordinator: InAppFeedbackPromptPresenting {
             preferredStyle: .alert
         )
         let yes = UIAlertAction(title: Strings.NegativeFeedbackAlert.yes, style: .default) { _ in
-            let destination = UINavigationController(rootViewController: SubmitFeedbackViewController())
+            let destination = UINavigationController(rootViewController: SubmitFeedbackViewController(source: "in_app_feedback"))
             controller.present(destination, animated: true)
         }
         let no = UIAlertAction(title: Strings.NegativeFeedbackAlert.no, style: .default) { _ in
