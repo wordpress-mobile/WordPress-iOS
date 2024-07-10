@@ -25,11 +25,15 @@ private struct SubmitFeedbackView: View {
 
     @State private var subject = ""
     @State private var text = ""
-    @State private var isProcessing = false
+    @State private var isSubmitting = false
     @State private var isShowingCancellationConfirmation = false
+    @State private var isShowingAttachmentsUploadingAlert = false
+
+    @StateObject private var attachmentsViewModel = ZendeskAttachmentsSectionViewModel()
 
     @FocusState private var isSubjectFieldFocused: Bool
 
+    private let subjectLimit = 100
     private let textLimit = 500
 
     var isInputEmpty: Bool {
@@ -37,27 +41,10 @@ private struct SubmitFeedbackView: View {
     }
 
     var body: some View {
-        Form {
-            Section(header: Spacer(minLength: 0)) {
-                TextField(Strings.subject, text: $subject)
-                    .focused($isSubjectFieldFocused)
-            }
-            Section {
-                TextEditor(text: $text)
-                    .frame(height: 170)
-                    .accessibilityLabel(Strings.details)
-            } header: {
-                Text(Strings.details)
-            } footer: {
-                HStack {
-                    Spacer()
-                    Text(max(0, textLimit - text.count).description)
-                        .monospacedDigit()
-                        .foregroundStyle(text.count >= textLimit ? .red : .secondary)
-                }
-            }
+        List {
+            form
         }
-        .listSectionCompactSpacing()
+        .listStyle(.plain)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
                 Button(Strings.cancel) {
@@ -70,7 +57,7 @@ private struct SubmitFeedbackView: View {
             }
 
             ToolbarItem(placement: .confirmationAction) {
-                if isProcessing {
+                if isSubmitting {
                     ProgressView()
                 } else {
                     Button(Strings.submit, action: submit)
@@ -82,15 +69,21 @@ private struct SubmitFeedbackView: View {
             WPAnalytics.track(.appReviewsOpenedFeedbackScreen)
             isSubjectFieldFocused = true
         }
-        .disabled(isProcessing)
+        .disabled(isSubmitting)
         .confirmationDialog(Strings.cancellationAlertTitle, isPresented: $isShowingCancellationConfirmation) {
             Button(Strings.cancellationAlertContinueEditing, role: .cancel) {}
             Button(Strings.cancellationAlertDiscardFeedbackButton, role: .destructive) {
                 dismiss()
             }
         }
+        .alert(Strings.attachmentsStillUploadingAlertTitle, isPresented: $isShowingAttachmentsUploadingAlert) {
+            Button(Strings.ok) {}
+        }
         .onChange(of: isInputEmpty) {
             presentingViewController?.isModalInPresentation = !$0
+        }
+        .onChange(of: subject) { subject in
+            self.subject = String(subject.prefix(subjectLimit))
         }
         .onChange(of: text) { text in
             if text.count > textLimit {
@@ -101,18 +94,48 @@ private struct SubmitFeedbackView: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 
+    @ViewBuilder
+    private var form: some View {
+        Section {
+            TextField(Strings.subject, text: $subject)
+                .focused($isSubjectFieldFocused)
+        }
+        Section {
+            TextEditor(text: $text)
+                .frame(height: 170)
+                .accessibilityLabel(Strings.details)
+                .overlay(alignment: .bottomTrailing) {
+                    Text(max(0, textLimit - text.count).description)
+                        .font(.footnote)
+                        .monospacedDigit()
+                        .foregroundStyle(text.count >= textLimit ? .red : .secondary)
+                        .background(Color(uiColor: .systemBackground))
+                }
+                .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+        }
+        if #available(iOS 16, *) {
+            ZendeskAttachmentsSection(viewModel: attachmentsViewModel)
+                .listRowSeparator(.hidden)
+        }
+    }
+
     private func submit() {
+        guard attachmentsViewModel.attachments.allSatisfy(\.isUploaded) else {
+            isShowingAttachmentsUploadingAlert = true
+            return
+        }
+
         wpAssert(!text.isEmpty)
 
         guard let presentingViewController else {
             return wpAssertionFailure("presentingViewController missing")
         }
 
-        isProcessing = true
+        isSubmitting = true
 
         let subject = subject.trim().nonEmptyString()
         let text = text.trim()
-        let tags = ["appreview_jetpack", "in_app_feedback"]
+        let tags = ["appreview_jetpack", "in_app_feedback", AppConstants.eventNamePrefix]
 
         let identityAlertOptions = ZendeskUtils.IdentityAlertOptions(
             optionalIdentity: true,
@@ -130,6 +153,7 @@ private struct SubmitFeedbackView: View {
             subject: subject,
             description: text,
             tags: tags,
+            attachments: attachmentsViewModel.attachments.compactMap(\.response),
             alertOptions: identityAlertOptions
         ) { result in
             DispatchQueue.main.async {
@@ -153,7 +177,7 @@ private struct SubmitFeedbackView: View {
 
             UINotificationFeedbackGenerator().notificationOccurred(.error)
             WPError.showAlert(withTitle: Strings.failureAlertTitle, message: error.localizedDescription)
-            isProcessing = false
+            isSubmitting = false
         }
     }
 
@@ -163,6 +187,7 @@ private struct SubmitFeedbackView: View {
 }
 
 private enum Strings {
+    static let ok = NSLocalizedString("submit.feedback.buttonOK", value: "OK", comment: "The button title for the Cancel button in the In-App Feedback screen")
     static let cancel = NSLocalizedString("submit.feedback.buttonCancel", value: "Cancel", comment: "The button title for the Cancel button in the In-App Feedback screen")
     static let submit = NSLocalizedString("submit.feedback.submit.button", value: "Submit", comment: "The button title for the Submit button in the In-App Feedback screen")
     static let title = NSLocalizedString("submit.feedback.title", value: "Feedback", comment: "The title for the the In-App Feedback screen")
@@ -178,6 +203,7 @@ private enum Strings {
     static let cancellationAlertTitle = NSLocalizedString("submitFeedback.cancellationAlertTitle", value: "Are you sure you want to discard the feedback", comment: "Submit feedback screen cancellation confirmation alert title")
     static let cancellationAlertContinueEditing = NSLocalizedString("submitFeedback.cancellationAlertContinueEditing", value: "Continue Editing", comment: "Submit feedback screen cancellation confirmation alert action")
     static let cancellationAlertDiscardFeedbackButton = NSLocalizedString("submitFeedback.cancellationAlertDiscardFeedbackButton", value: "Discard Feedback", comment: "Submit feedback screen cancellation confirmation alert action")
+    static let attachmentsStillUploadingAlertTitle = NSLocalizedString("submitFeedback.attachmentsStillUploadingAlertTitle", value: "Some attachments were not uploaded", comment: "Submit feedback screen failure alert title")
     static let failureAlertTitle = NSLocalizedString("submitFeedback.failureAlertTitle", value: "Failed to submit feedback", comment: "Submit feedback screen failure alert title")
     static let successNoticeTitle = NSLocalizedString("submitFeedback.successNoticeTitle", value: "Feedback sent", comment: "Submit feedback screen submit fsuccess notice title")
     static let successNoticeMessage = NSLocalizedString("submitFeedback.successNoticeMessage", value: "Thank you for helping us improve the app", comment: "Submit feedback screen submit success notice messages")

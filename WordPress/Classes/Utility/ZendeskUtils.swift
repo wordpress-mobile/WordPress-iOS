@@ -6,6 +6,7 @@ import WordPressShared
 import DesignSystem
 
 import SupportSDK
+import SupportProvidersSDK
 import ZendeskCoreSDK
 import AutomatticTracks
 import AutomatticEncryptedLogs
@@ -344,11 +345,24 @@ extension ZendeskUtils {
         createNewRequest(in: viewController, description: description, tags: tags, alertOptions: .withName, completion: completion)
     }
 
+    func uploadAttachment(_ data: Data, contentType: String) async throws -> ZDKUploadResponse {
+        try await withUnsafeThrowingContinuation { continuation in
+            ZDKUploadProvider().uploadAttachment(data, withFilename: "attachment", andContentType: contentType) { response, error in
+                if let response {
+                    continuation.resume(returning: response)
+                } else {
+                    continuation.resume(throwing: error ?? URLError(.unknown))
+                }
+            }
+        }
+    }
+
     func createNewRequest(
         in viewController: UIViewController,
         subject: String? = nil,
         description: String,
         tags: [String],
+        attachments: [ZDKUploadResponse] = [],
         alertOptions: IdentityAlertOptions,
         status: ZendeskNewRequestLoadingStatus? = nil,
         completion: @escaping ZendeskNewRequestCompletion
@@ -367,6 +381,7 @@ extension ZendeskUtils {
                 request.ticketFormId = requestConfig.ticketFormID
                 request.subject = subject ?? requestConfig.subject
                 request.requestDescription = description
+                request.attachments = attachments
 
                 provider.createRequest(request) { response, error in
                     if let error {
