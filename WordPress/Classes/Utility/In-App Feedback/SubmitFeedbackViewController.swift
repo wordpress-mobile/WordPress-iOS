@@ -147,7 +147,7 @@ private struct SubmitFeedbackView: View {
 
         let subject = subject.trim().nonEmptyString()
         let text = text.trim()
-        let tags = ["appreview_jetpack", "in_app_feedback", AppConstants.eventNamePrefix]
+        let tags = ["appreview_jetpack", "in_app_feedback"]
 
         let identityAlertOptions = ZendeskUtils.IdentityAlertOptions(
             optionalIdentity: true,
