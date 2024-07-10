@@ -625,6 +625,8 @@
 		0CEA55532BC55940008D0FE5 /* WPInstrumentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEA55512BC55940008D0FE5 /* WPInstrumentation.swift */; };
 		0CEA84CF2C3DD619008E0B06 /* SubmitFeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEA84CE2C3DD619008E0B06 /* SubmitFeedbackViewController.swift */; };
 		0CEA84D02C3DD619008E0B06 /* SubmitFeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEA84CE2C3DD619008E0B06 /* SubmitFeedbackViewController.swift */; };
+		0CEA84D52C3EE0E2008E0B06 /* ZendeskAttachmentsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEA84D42C3EE0E1008E0B06 /* ZendeskAttachmentsSection.swift */; };
+		0CEA84D62C3EE0E2008E0B06 /* ZendeskAttachmentsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEA84D42C3EE0E1008E0B06 /* ZendeskAttachmentsSection.swift */; };
 		0CED1FED2B61AAF600E6DD52 /* AtomicSiteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED1FEC2B61AAF600E6DD52 /* AtomicSiteService.swift */; };
 		0CED1FEE2B61AAF600E6DD52 /* AtomicSiteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED1FEC2B61AAF600E6DD52 /* AtomicSiteService.swift */; };
 		0CED20002B6809CB00E6DD52 /* FilterCompactButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED1FFF2B6809CB00E6DD52 /* FilterCompactButton.swift */; };
@@ -7573,6 +7575,7 @@
 		0CE783402B08FB2E00B114EB /* ExternalMediaPickerCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalMediaPickerCollectionCell.swift; sourceTree = "<group>"; };
 		0CEA55512BC55940008D0FE5 /* WPInstrumentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPInstrumentation.swift; sourceTree = "<group>"; };
 		0CEA84CE2C3DD619008E0B06 /* SubmitFeedbackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitFeedbackViewController.swift; sourceTree = "<group>"; };
+		0CEA84D42C3EE0E1008E0B06 /* ZendeskAttachmentsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZendeskAttachmentsSection.swift; sourceTree = "<group>"; };
 		0CED1FEC2B61AAF600E6DD52 /* AtomicSiteService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicSiteService.swift; sourceTree = "<group>"; };
 		0CED1FFF2B6809CB00E6DD52 /* FilterCompactButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCompactButton.swift; sourceTree = "<group>"; };
 		0CED20012B6809D600E6DD52 /* FilterCompactDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCompactDatePicker.swift; sourceTree = "<group>"; };
@@ -21947,6 +21950,7 @@
 			children = (
 				E14A52361E39F43E00EE203E /* AppRatingsUtility.swift */,
 				0CEA84CE2C3DD619008E0B06 /* SubmitFeedbackViewController.swift */,
+				0CEA84D42C3EE0E1008E0B06 /* ZendeskAttachmentsSection.swift */,
 				F4FF50E62B4D7D590076DB0C /* InAppFeedbackPromptCoordinator.swift */,
 			);
 			path = "In-App Feedback";
@@ -26712,6 +26716,7 @@
 				B5B68BD41C19AAED00EB59E0 /* InteractiveNotificationsManager.swift in Sources */,
 				46183CF5251BD658004F9AFD /* PageTemplateLayout+CoreDataProperties.swift in Sources */,
 				FA20751427A86B73001A644D /* UIScrollView+Helpers.swift in Sources */,
+				0CEA84D52C3EE0E2008E0B06 /* ZendeskAttachmentsSection.swift in Sources */,
 				981D464825B0D4E7000AA65C /* ReaderSeenAction.swift in Sources */,
 				FE34ACDC2B17AA9400108B3C /* BloganuaryOverlayViewController.swift in Sources */,
 				F57402A7235FF9C300374346 /* SchedulingDate+Helpers.swift in Sources */,
@@ -29854,6 +29859,7 @@
 				FABB23C42602FC2C00C8785C /* MenuItemsVisualOrderingView.m in Sources */,
 				FABB23C52602FC2C00C8785C /* JetpackScanViewController.swift in Sources */,
 				FABB23C62602FC2C00C8785C /* ReaderSubscribingNotificationAction.swift in Sources */,
+				0CEA84D62C3EE0E2008E0B06 /* ZendeskAttachmentsSection.swift in Sources */,
 				FABB23C72602FC2C00C8785C /* GutenbergMediaInserterHelper.swift in Sources */,
 				4AFB1A822A9C08CE007CE165 /* StoppableProgressIndicatorView.swift in Sources */,
 				FABB23C92602FC2C00C8785C /* JetpackState.swift in Sources */,
