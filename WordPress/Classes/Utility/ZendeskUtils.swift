@@ -336,6 +336,16 @@ protocol ZendeskUtilsProtocol {
         }
     }
 
+    /// If there is no identity set yet, create an anonymous one.
+    ///
+    /// - warning: This method should only be used for interactions with Zendesk
+    /// that doesn't require a confirmed identity and/or a response from support,
+    /// such as sending feedback about the app.
+    static func createIdentitySilentlyIfNeeded() {
+        if Zendesk.instance?.identity == nil {
+            Zendesk.instance?.setIdentity(Identity.createAnonymous())
+        }
+    }
 }
 
 // MARK: - Create Request
@@ -357,13 +367,16 @@ extension ZendeskUtils {
         }
     }
 
+    /// - parameter alertOptions: If the value is `nil`, the request will be
+    /// created using the existing identity without prompting to confirm user information.
+    /// In that case, the app is responsible for creating an identity before calling this method.
     func createNewRequest(
         in viewController: UIViewController,
         subject: String? = nil,
         description: String,
         tags: [String],
         attachments: [ZDKUploadResponse] = [],
-        alertOptions: IdentityAlertOptions,
+        alertOptions: IdentityAlertOptions?,
         status: ZendeskNewRequestLoadingStatus? = nil,
         completion: @escaping ZendeskNewRequestCompletion
     ) {
@@ -397,6 +410,11 @@ extension ZendeskUtils {
                     }
                 }
             }
+        }
+
+        guard let alertOptions else {
+            createRequest()
+            return // Continue using the previously created identity
         }
 
         status?(.identifyingUser)
@@ -541,7 +559,6 @@ private extension ZendeskUtils {
     }
 
     static func createZendeskIdentity(completion: @escaping (Bool) -> Void) {
-
         guard let userEmail = ZendeskUtils.sharedInstance.userEmail else {
             DDLogInfo("No user email to create Zendesk identity with.")
             let identity = Identity.createAnonymous()
