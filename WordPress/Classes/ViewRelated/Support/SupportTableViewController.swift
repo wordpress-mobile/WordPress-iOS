@@ -1,4 +1,5 @@
 import UIKit
+import SwiftUI
 import WordPressAuthenticator
 
 class SupportTableViewController: UITableViewController {
@@ -192,6 +193,11 @@ private extension SupportTableViewController {
         switch supportConfiguration {
         case .zendesk:
             var rows = [ImmuTableRow]()
+            if #available(iOS 16.0, *) {
+                rows.append(SwiftUIRow(action: supportIdentitySelected(), configuration: UIHostingConfiguration {
+                    SupportIdentityView(name: ZendeskUtils.identity.0, email: ZendeskUtils.identity.1)
+                }))
+            }
             rows.append(HelpRow(title: LocalizedText.wpHelpCenter, action: helpCenterSelected(), accessibilityIdentifier: "help-center-link-button"))
             rows.append(HelpRow(title: LocalizedText.contactUs, action: contactUsSelected(), accessibilityIdentifier: "contact-support-button"))
             rows.append(HelpRow(title: LocalizedText.tickets, action: myTicketsSelected(), showIndicator: ZendeskUtils.showSupportNotificationIndicator, accessibilityIdentifier: "my-tickets-button"))
@@ -253,6 +259,12 @@ private extension SupportTableViewController {
     }
 
     // MARK: - Row Handlers
+
+    func supportIdentitySelected() -> ImmuTableAction {
+        return { _ in
+            // Do the thing
+        }
+    }
 
     func helpCenterSelected() -> ImmuTableAction {
         return { [unowned self] _ in
@@ -476,6 +488,19 @@ private extension SupportTableViewController {
 
             cell.titleLabel.text = title
             cell.descriptionLabel.text = description
+        }
+    }
+
+    @available(iOS 16.0, *)
+    struct SwiftUIRow: ImmuTableRow {
+        var action: ImmuTableAction?
+
+        static let cell = ImmuTableCell.class(WPTableViewCellDefault.self)
+
+        let configuration: (any UIContentConfiguration)?
+
+        func configureCell(_ cell: UITableViewCell) {
+            cell.contentConfiguration = configuration
         }
     }
 

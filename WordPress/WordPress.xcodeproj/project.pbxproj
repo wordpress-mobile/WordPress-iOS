@@ -915,6 +915,8 @@
 		2420BEF125D8DAB300966129 /* Blog+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2420BEF025D8DAB300966129 /* Blog+Lookup.swift */; };
 		24351254264DCA08009BB2B6 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24351253264DCA08009BB2B6 /* Secrets.swift */; };
 		24351255264DCA08009BB2B6 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24351253264DCA08009BB2B6 /* Secrets.swift */; };
+		24384BE72C40795E009AF28A /* SupportIdentityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24384BE62C40795E009AF28A /* SupportIdentityView.swift */; };
+		24384BE82C40795E009AF28A /* SupportIdentityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24384BE62C40795E009AF28A /* SupportIdentityView.swift */; };
 		246D0A0325E97D5D0028B83F /* Blog+ObjcTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 246D0A0225E97D5D0028B83F /* Blog+ObjcTests.m */; };
 		2481B17F260D4D4E00AE59DB /* WPAccount+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2481B17E260D4D4E00AE59DB /* WPAccount+Lookup.swift */; };
 		2481B180260D4D4E00AE59DB /* WPAccount+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2481B17E260D4D4E00AE59DB /* WPAccount+Lookup.swift */; };
@@ -7822,6 +7824,7 @@
 		24351059264DC1E2009BB2B6 /* Jetpack.release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Jetpack.release.xcconfig; sourceTree = "<group>"; };
 		243511A4264DC2D9009BB2B6 /* Jetpack.internal.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Jetpack.internal.xcconfig; sourceTree = "<group>"; };
 		24351253264DCA08009BB2B6 /* Secrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Secrets.swift; path = ../Secrets/Secrets.swift; sourceTree = BUILT_PRODUCTS_DIR; };
+		24384BE62C40795E009AF28A /* SupportIdentityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportIdentityView.swift; sourceTree = "<group>"; };
 		2439B1DB264ECBDF00239130 /* Jetpack.alpha.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Jetpack.alpha.xcconfig; sourceTree = "<group>"; };
 		246D0A0225E97D5D0028B83F /* Blog+ObjcTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "Blog+ObjcTests.m"; sourceTree = "<group>"; };
 		2481B17E260D4D4E00AE59DB /* WPAccount+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPAccount+Lookup.swift"; sourceTree = "<group>"; };
@@ -21952,6 +21955,7 @@
 				0CEA84CE2C3DD619008E0B06 /* SubmitFeedbackViewController.swift */,
 				0CEA84D42C3EE0E1008E0B06 /* ZendeskAttachmentsSection.swift */,
 				F4FF50E62B4D7D590076DB0C /* InAppFeedbackPromptCoordinator.swift */,
+				24384BE62C40795E009AF28A /* SupportIdentityView.swift */,
 			);
 			path = "In-App Feedback";
 			sourceTree = "<group>";
@@ -25896,6 +25900,7 @@
 				3F5B9B43288AFE4B001D17E9 /* DashboardBadgeCell.swift in Sources */,
 				C743535627BD7144008C2644 /* AnimatedGifAttachmentViewProvider.swift in Sources */,
 				E66969E21B9E67A000EC9C00 /* ReaderTopicToReaderSiteTopic37to38.swift in Sources */,
+				24384BE72C40795E009AF28A /* SupportIdentityView.swift in Sources */,
 				80535DC0294B7D3200873161 /* BlogDetailsViewController+JetpackBrandingMenuCard.swift in Sources */,
 				B543D2B520570B5A00D3D4CC /* WordPressComSyncService.swift in Sources */,
 				017008452B35C25C00C80490 /* SiteDomainsViewModel.swift in Sources */,
@@ -30690,6 +30695,7 @@
 				4AA33EFC2999AE3B005B6E23 /* ReaderListTopic+Creation.swift in Sources */,
 				F10D635026F0B78E00E46CC7 /* Blog+Organization.swift in Sources */,
 				FABB26122602FC2C00C8785C /* ActivityRangesFactory.swift in Sources */,
+				24384BE82C40795E009AF28A /* SupportIdentityView.swift in Sources */,
 				08A4E12D289D2337001D9EC7 /* UserPersistentRepository.swift in Sources */,
 				FEA1124029964BCA008097B0 /* WPComJetpackRemoteInstallViewModel.swift in Sources */,
 				C35D4FF2280077F100DB90B5 /* SiteCreationStep.swift in Sources */,

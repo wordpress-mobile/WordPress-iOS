@@ -346,6 +346,13 @@ protocol ZendeskUtilsProtocol {
             Zendesk.instance?.setIdentity(Identity.createAnonymous())
         }
     }
+
+    static var identity: (String?, String?) {
+        switch Zendesk.instance?.identity {
+            case .anonymous(let anonymous): return (anonymous.name, anonymous.email)
+            default: return (nil, nil)
+        }
+    }
 }
 
 // MARK: - Create Request

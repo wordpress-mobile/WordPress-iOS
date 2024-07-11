@@ -111,6 +111,7 @@ private struct SubmitFeedbackView: View {
     @ViewBuilder
     private var form: some View {
         Section {
+            SupportIdentityView(name: ZendeskUtils.identity.0, email: ZendeskUtils.identity.1)
             TextField(Strings.subject, text: $subject)
                 .focused($isSubjectFieldFocused)
         }
@@ -182,6 +183,10 @@ private struct SubmitFeedbackView: View {
 
     private func dismiss() {
         presentingViewController?.presentingViewController?.dismiss(animated: true)
+    }
+
+    private var identity: (String?, String?) {
+        ZendeskUtils.identity
     }
 }
 
