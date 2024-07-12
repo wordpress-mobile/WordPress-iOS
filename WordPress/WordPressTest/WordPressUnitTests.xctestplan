@@ -33,13 +33,6 @@
   "testTargets" : [
     {
       "target" : {
-        "containerPath" : "container:..\/WordPressFlux",
-        "identifier" : "WordPressFluxTests",
-        "name" : "WordPressFluxTests"
-      }
-    },
-    {
-      "target" : {
         "containerPath" : "container:..\/Modules",
         "identifier" : "JetpackStatsWidgetsCoreTests",
         "name" : "JetpackStatsWidgetsCoreTests"
@@ -64,6 +57,34 @@
         "containerPath" : "container:WordPress.xcodeproj",
         "identifier" : "4A98A2FA2C22736F00A2CE58",
         "name" : "WordPressKitTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..\/Modules",
+        "identifier" : "DesignSystemTests",
+        "name" : "DesignSystemTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..\/Modules",
+        "identifier" : "WordPressFluxTests",
+        "name" : "WordPressFluxTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..\/Modules",
+        "identifier" : "WordPressSharedObjCTests",
+        "name" : "WordPressSharedObjCTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..\/Modules",
+        "identifier" : "WordPressSharedTests",
+        "name" : "WordPressSharedTests"
       }
     }
   ],
