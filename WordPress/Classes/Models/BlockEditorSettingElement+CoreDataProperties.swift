@@ -11,12 +11,6 @@ enum BlockEditorSettingElementTypes: String {
     }
 }
 
-enum BlockEditorExperimentalFeatureKeys: String {
-    case galleryWithImageBlocks
-    case quoteBlockV2
-    case listBlockV2
-}
-
 extension BlockEditorSettingElement {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<BlockEditorSettingElement> {
