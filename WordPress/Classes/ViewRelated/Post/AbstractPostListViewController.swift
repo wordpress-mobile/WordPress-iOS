@@ -3,9 +3,9 @@ import CoreData
 import Gridicons
 import CocoaLumberjack
 import WordPressShared
-import wpxmlrpc
 import WordPressFlux
 import WordPressUI
+import WordPressKit
 import Combine
 
 class AbstractPostListViewController: UIViewController,
@@ -618,8 +618,8 @@ class AbstractPostListViewController: UIViewController,
     }
 
     @objc func handleSyncFailure(_ error: NSError) {
-        if error.domain == WPXMLRPCFaultErrorDomain
-            && error.code == type(of: self).httpErrorCodeForbidden {
+        if error.domain == WordPressOrgXMLRPCApi.errorDomain &&
+            error.code == type(of: self).httpErrorCodeForbidden {
             WordPressAppDelegate.shared?.showPasswordInvalidPrompt(for: blog)
             return
         }

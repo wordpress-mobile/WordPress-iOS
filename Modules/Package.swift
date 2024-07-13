@@ -45,7 +45,6 @@ let package = Package(
         .package(url: "https://github.com/wordpress-mobile/NSObject-SafeExpectations", from: "0.0.6"),
         .package(url: "https://github.com/wordpress-mobile/NSURL-IDN", branch: "trunk"),
         .package(url: "https://github.com/wordpress-mobile/WordPressKit-iOS", branch: "wpios-edition"),
-        .package(url: "https://github.com/wordpress-mobile/wpxmlrpc", from: "0.10.0"),
         .package(url: "https://github.com/zendesk/support_sdk_ios", from: "8.0.3"),
     ],
     targets: XcodeSupport.targets + [
@@ -106,7 +105,6 @@ enum XcodeSupport {
             .product(name: "NSURL+IDN", package: "NSURL-IDN"),
             .product(name: "SVProgressHUD", package: "SVProgressHUD"),
             .product(name: "WordPressKit", package: "WordPressKit-iOS"),
-            .product(name: "wpxmlrpc", package: "wpxmlrpc"),
         ]
 
         let shareAndDraftExtensionsDependencies: [Target.Dependency] = [
@@ -155,7 +153,6 @@ enum XcodeSupport {
                 .product(name: "SwiftSoup", package: "SwiftSoup"),
                 .product(name: "UIDeviceIdentifier", package: "UIDeviceIdentifier"),
                 .product(name: "WordPressKit", package: "WordPressKit-iOS"),
-                .product(name: "wpxmlrpc", package: "wpxmlrpc"),
                 .product(name: "ZendeskSupportSDK", package: "support_sdk_ios"),
                 .product(name: "ZIPFoundation", package: "ZIPFoundation"),
             ]),
