@@ -423,6 +423,15 @@
       }
     },
     {
+      "identity" : "wordpresskit-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/wordpress-mobile/WordPressKit-iOS",
+      "state" : {
+        "branch" : "wpios-edition",
+        "revision" : "eee1e016b517e7f447d71281efcec7a9480b34fc"
+      }
+    },
+    {
       "identity" : "wpxmlrpc",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/wordpress-mobile/wpxmlrpc",

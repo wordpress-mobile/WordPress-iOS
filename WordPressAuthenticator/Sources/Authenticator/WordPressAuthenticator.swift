@@ -1,5 +1,6 @@
 import AuthenticationServices
 import NSURL_IDN
+import NSObject_SafeExpectations
 import UIKit
 import WordPressShared
 import WordPressKit

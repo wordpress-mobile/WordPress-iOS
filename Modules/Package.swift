@@ -44,6 +44,7 @@ let package = Package(
         .package(url: "https://github.com/wordpress-mobile/MediaEditor-iOS", branch: "task/spm-support"),
         .package(url: "https://github.com/wordpress-mobile/NSObject-SafeExpectations", from: "0.0.6"),
         .package(url: "https://github.com/wordpress-mobile/NSURL-IDN", branch: "trunk"),
+        .package(url: "https://github.com/wordpress-mobile/WordPressKit-iOS", branch: "wpios-edition"),
         .package(url: "https://github.com/wordpress-mobile/wpxmlrpc", from: "0.10.0"),
         .package(url: "https://github.com/zendesk/support_sdk_ios", from: "8.0.3"),
     ],
@@ -98,11 +99,13 @@ enum XcodeSupport {
 
     static let targets: [Target] = {
         let wordPresAuthentificatorDependencies: [Target.Dependency] = [
-            "WordPressUI",
             "WordPressShared",
-            .product(name: "NSURL+IDN", package: "NSURL-IDN"),
+            "WordPressUI",
             .product(name: "Gridicons", package: "Gridicons-iOS"),
+            .product(name: "NSObject-SafeExpectations", package: "NSObject-SafeExpectations"),
+            .product(name: "NSURL+IDN", package: "NSURL-IDN"),
             .product(name: "SVProgressHUD", package: "SVProgressHUD"),
+            .product(name: "WordPressKit", package: "WordPressKit-iOS"),
             .product(name: "wpxmlrpc", package: "wpxmlrpc"),
         ]
 
@@ -151,6 +154,7 @@ enum XcodeSupport {
                 .product(name: "SVProgressHUD", package: "SVProgressHUD"),
                 .product(name: "SwiftSoup", package: "SwiftSoup"),
                 .product(name: "UIDeviceIdentifier", package: "UIDeviceIdentifier"),
+                .product(name: "WordPressKit", package: "WordPressKit-iOS"),
                 .product(name: "wpxmlrpc", package: "wpxmlrpc"),
                 .product(name: "ZendeskSupportSDK", package: "support_sdk_ios"),
                 .product(name: "ZIPFoundation", package: "ZIPFoundation"),
@@ -166,9 +170,11 @@ enum XcodeSupport {
             .xcodeTarget("XcodeTarget_DraftActionExtension", dependencies: shareAndDraftExtensionsDependencies),
             .xcodeTarget("XcodeTarget_NotificationServiceExtension", dependencies: [
                 "WordPressUI",
+                "WordPressShared",
             ]),
             .xcodeTarget("XcodeTarget_StatsWidget", dependencies: [
                 "JetpackStatsWidgetsCore",
+                "WordPressShared",
                 .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
             ]),
             .xcodeTarget("XcodeTarget_Intents", dependencies: [
