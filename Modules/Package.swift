@@ -101,7 +101,6 @@ enum XcodeSupport {
             "WordPressShared",
             "WordPressUI",
             .product(name: "Gridicons", package: "Gridicons-iOS"),
-            .product(name: "NSObject-SafeExpectations", package: "NSObject-SafeExpectations"),
             .product(name: "NSURL+IDN", package: "NSURL-IDN"),
             .product(name: "SVProgressHUD", package: "SVProgressHUD"),
             .product(name: "WordPressKit", package: "WordPressKit-iOS"),
