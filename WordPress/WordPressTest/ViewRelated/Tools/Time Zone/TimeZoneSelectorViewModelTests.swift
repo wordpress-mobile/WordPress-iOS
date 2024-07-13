@@ -1,7 +1,8 @@
 import Foundation
 import XCTest
+import WordPressKit
+
 @testable import WordPress
-@testable import WordPressKit
 
 class TimeZoneSelectorViewModelTests: CoreDataTestCase {
 

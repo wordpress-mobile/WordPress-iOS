@@ -1,8 +1,8 @@
 import XCTest
 import ZendeskCoreSDK
+import WordPressKit
 
 @testable import WordPress
-@testable import WordPressKit
 
 class ZendeskUtilsPlans: XCTestCase {
 
