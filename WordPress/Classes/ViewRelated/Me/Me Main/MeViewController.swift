@@ -200,8 +200,13 @@ class MeViewController: UITableViewController {
             ImmuTableSection(rows: {
                 var rows: [ImmuTableRow] = [helpAndSupportIndicator]
 
+                rows.append(NavigationItemRow(title: Strings.submitFeedback,
+                                              icon: UIImage.gridicon(.pencil),
+                                              accessoryType: accessoryType,
+                                              action: showFeedbackView()))
+
                 rows.append(NavigationItemRow(title: ShareAppContentPresenter.RowConstants.buttonTitle,
-                                              icon: ShareAppContentPresenter.RowConstants.buttonIconImage,
+                                              icon: UIImage.gridicon(.shareiOS),
                                               accessoryType: accessoryType,
                                               action: displayShareFlow(),
                                               loading: sharePresenter.isLoading))
@@ -322,6 +327,15 @@ class MeViewController: UITableViewController {
             self.present(controller, animated: true) {
                 self.tableView.deselectSelectedRowWithAnimation(true)
             }
+        }
+    }
+
+    func showFeedbackView() -> ImmuTableAction {
+        return { [weak self] row in
+            defer {
+                self?.tableView.deselectSelectedRowWithAnimation(true)
+            }
+            self?.present(SubmitFeedbackViewController(source: "me_menu"), animated: true)
         }
     }
 
@@ -650,4 +664,8 @@ extension MeViewController {
         JetpackBrandingCoordinator.presentOverlay(from: self)
         JetpackBrandingAnalyticsHelper.trackJetpackPoweredBadgeTapped(screen: .me)
     }
+}
+
+private enum Strings {
+    static let submitFeedback = NSLocalizedString("meMenu.submitFeedback", value: "Submit Feedback", comment: "Me tab menu items")
 }

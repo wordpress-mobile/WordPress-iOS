@@ -6,6 +6,7 @@ import WordPressShared
 import DesignSystem
 
 import SupportSDK
+import SupportProvidersSDK
 import ZendeskCoreSDK
 import AutomatticTracks
 import AutomatticEncryptedLogs
@@ -335,6 +336,16 @@ protocol ZendeskUtilsProtocol {
         }
     }
 
+    /// If there is no identity set yet, create an anonymous one.
+    ///
+    /// - warning: This method should only be used for interactions with Zendesk
+    /// that doesn't require a confirmed identity and/or a response from support,
+    /// such as sending feedback about the app.
+    static func createIdentitySilentlyIfNeeded() {
+        if Zendesk.instance?.identity == nil {
+            Zendesk.instance?.setIdentity(Identity.createAnonymous())
+        }
+    }
 }
 
 // MARK: - Create Request
@@ -344,11 +355,28 @@ extension ZendeskUtils {
         createNewRequest(in: viewController, description: description, tags: tags, alertOptions: .withName, completion: completion)
     }
 
+    func uploadAttachment(_ data: Data, contentType: String) async throws -> ZDKUploadResponse {
+        try await withUnsafeThrowingContinuation { continuation in
+            ZDKUploadProvider().uploadAttachment(data, withFilename: "attachment", andContentType: contentType) { response, error in
+                if let response {
+                    continuation.resume(returning: response)
+                } else {
+                    continuation.resume(throwing: error ?? URLError(.unknown))
+                }
+            }
+        }
+    }
+
+    /// - parameter alertOptions: If the value is `nil`, the request will be
+    /// created using the existing identity without prompting to confirm user information.
+    /// In that case, the app is responsible for creating an identity before calling this method.
     func createNewRequest(
         in viewController: UIViewController,
+        subject: String? = nil,
         description: String,
         tags: [String],
-        alertOptions: IdentityAlertOptions,
+        attachments: [ZDKUploadResponse] = [],
+        alertOptions: IdentityAlertOptions?,
         status: ZendeskNewRequestLoadingStatus? = nil,
         completion: @escaping ZendeskNewRequestCompletion
     ) {
@@ -364,8 +392,9 @@ extension ZendeskUtils {
                 request.customFields = requestConfig.customFields
                 request.tags = requestConfig.tags
                 request.ticketFormId = requestConfig.ticketFormID
-                request.subject = requestConfig.subject
+                request.subject = subject ?? requestConfig.subject
                 request.requestDescription = description
+                request.attachments = attachments
 
                 provider.createRequest(request) { response, error in
                     if let error {
@@ -381,6 +410,11 @@ extension ZendeskUtils {
                     }
                 }
             }
+        }
+
+        guard let alertOptions else {
+            createRequest()
+            return // Continue using the previously created identity
         }
 
         status?(.identifyingUser)
@@ -525,7 +559,6 @@ private extension ZendeskUtils {
     }
 
     static func createZendeskIdentity(completion: @escaping (Bool) -> Void) {
-
         guard let userEmail = ZendeskUtils.sharedInstance.userEmail else {
             DDLogInfo("No user email to create Zendesk identity with.")
             let identity = Identity.createAnonymous()

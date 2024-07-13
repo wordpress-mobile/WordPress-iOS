@@ -78,7 +78,7 @@ final class InAppFeedbackPromptCoordinator: InAppFeedbackPromptPresenting {
             preferredStyle: .alert
         )
         let yes = UIAlertAction(title: Strings.NegativeFeedbackAlert.yes, style: .default) { _ in
-            let destination = UINavigationController(rootViewController: self.submitFeedbackViewController(in: controller))
+            let destination = UINavigationController(rootViewController: SubmitFeedbackViewController(source: "in_app_feedback"))
             controller.present(destination, animated: true)
         }
         let no = UIAlertAction(title: Strings.NegativeFeedbackAlert.no, style: .default) { _ in
@@ -91,18 +91,6 @@ final class InAppFeedbackPromptCoordinator: InAppFeedbackPromptPresenting {
         WPAnalytics.track(.appReviewsDidntLikeApp)
         appRatingUtility.dislikedCurrentVersion()
     }
-
-    private func submitFeedbackViewController(in controller: UIViewController) -> SubmitFeedbackViewController {
-        let destination = SubmitFeedbackViewController()
-        destination.onFeedbackSubmitted = { [weak controller] _, _ in
-            controller?.displayNotice(
-                title: Strings.ConfirmationNotice.title,
-                message: Strings.ConfirmationNotice.message
-            )
-        }
-        return destination
-    }
-
 }
 
 // MARK: - Strings
@@ -132,6 +120,7 @@ extension InAppFeedbackPromptCoordinator {
                 comment: "The 'no' button title for the first feedback alert"
             )
         }
+
         enum NegativeFeedbackAlert {
             static let title = NSLocalizedString(
                 "in-app.feedback.negative.alert.title",
@@ -152,18 +141,6 @@ extension InAppFeedbackPromptCoordinator {
                 "in-app.feedback.negative.alert.no",
                 value: "Not now",
                 comment: "The 'no' button for the negative feedback alert"
-            )
-        }
-        enum ConfirmationNotice {
-            static let title = NSLocalizedString(
-                "in-app.feedback.confirmation.notice.title",
-                value: "Feedback sent",
-                comment: ""
-            )
-            static let message = NSLocalizedString(
-                "in-app.feedback.confirmation.notice.message",
-                value: "Thanks for helping us improve the app.",
-                comment: ""
             )
         }
     }
