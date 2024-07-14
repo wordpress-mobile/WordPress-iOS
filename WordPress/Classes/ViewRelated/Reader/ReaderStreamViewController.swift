@@ -1090,7 +1090,7 @@ import AutomatticTracks
         }
         if let syncHelper = syncHelper, syncHelper.isSyncing {
             let alertTitle = NSLocalizedString("Busy", comment: "Title of a prompt letting the user know that they must wait until the current aciton completes.")
-            let alertMessage = NSLocalizedString("Please wait til the current fetch completes.", comment: "Asks the usre to wait until the currently running fetch request completes.")
+            let alertMessage = NSLocalizedString("Please wait until the current fetch completes.", comment: "Asks the user to wait until the currently running fetch request completes.")
             let cancelTitle = NSLocalizedString("OK", comment: "Title of a button that dismisses a prompt")
             let alertController = UIAlertController(title: alertTitle,
                 message: alertMessage,
