@@ -1,6 +1,6 @@
 # Localization
 
-## Technical consideraations
+## Technical considerations
 
 During development, using [`NSLocalizedString()`](https://developer.apple.com/documentation/foundation/nslocalizedstring) in the code should be enough. You shouldn't need to touch the `Localizable.strings` files manually.
 
