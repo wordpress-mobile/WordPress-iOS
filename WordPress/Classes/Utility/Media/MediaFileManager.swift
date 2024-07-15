@@ -16,7 +16,7 @@ enum MediaDirectory {
 
     /// Returns the directory URL for the directory type.
     ///
-    fileprivate var url: URL {
+    var url: URL {
         let fileManager = FileManager.default
         // Get a parent directory, based on the type.
         let parentDirectory: URL

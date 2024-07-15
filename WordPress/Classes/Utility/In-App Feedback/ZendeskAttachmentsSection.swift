@@ -3,6 +3,8 @@ import Photos
 import PhotosUI
 import SupportProvidersSDK
 import UniformTypeIdentifiers
+import QuickLook
+import QuickLookThumbnailing
 
 @available(iOS 16, *)
 struct ZendeskAttachmentsSection: View {
@@ -41,7 +43,7 @@ struct ZendeskAttachmentsSection: View {
     }
 
     private var photosPicker: some View {
-        PhotosPicker(selection: $selection, maxSelectionCount: 5, matching: .images, preferredItemEncoding: .compatible) {
+        PhotosPicker(selection: $selection, maxSelectionCount: 5, preferredItemEncoding: .compatible) {
             HStack {
                 Image(systemName: "paperclip")
                 Text(Strings.addAttachment)
@@ -98,7 +100,7 @@ private struct ZendeskAttachmentView: View {
             Rectangle()
                 .foregroundStyle(Color(uiColor: .secondarySystemBackground))
 
-            viewModel.preview?
+            viewModel.thumbnail?
                 .resizable()
                 .aspectRatio(contentMode: .fill)
 
@@ -117,7 +119,7 @@ private struct ZendeskAttachmentView: View {
                 EmptyView()
             }
         }
-        .frame(minWidth: viewModel.preview == nil ? 100 : 44, maxWidth: ZendeskAttachmentView.previewMaxWidth)
+        .frame(minWidth: viewModel.thumbnail == nil ? 100 : 44, maxWidth: ZendeskAttachmentView.previewMaxWidth)
         .frame(height: 80)
         .cornerRadius(8)
     }
@@ -126,14 +128,14 @@ private struct ZendeskAttachmentView: View {
 final class ZendeskAttachmentViewModel: ObservableObject, Identifiable {
     let id: AnyHashable
 
-    @Published private(set) var preview: Image?
+    @Published private(set) var thumbnail: Image?
     @Published private(set) var status: Status = .uploading
 
     private var task: Task<Void, Never>?
 
     var isUploaded: Bool { response != nil }
 
-    static let attachmentSizeLimit: Int64 = 8_000_000
+    static let attachmentSizeLimit: Int64 = 32_000_000
 
     var response: ZDKUploadResponse? {
         guard case .uploaded(let response) = status else { return nil }
@@ -146,13 +148,19 @@ final class ZendeskAttachmentViewModel: ObservableObject, Identifiable {
         case uploaded(ZDKUploadResponse)
     }
 
+    private let directory = MediaDirectory.temporary(id: UUID())
+
     @available(iOS 16, *)
     init(item: PhotosPickerItem) {
         self.id = item
-        self.preview = preview
+        self.thumbnail = thumbnail
         self.task = Task {
             await self.process(item: item)
         }
+    }
+
+    deinit {
+        try? FileManager.default.removeItem(at: directory.url)
     }
 
     func cancel() {
@@ -163,33 +171,31 @@ final class ZendeskAttachmentViewModel: ObservableObject, Identifiable {
     @MainActor private func process(item: PhotosPickerItem) async {
         status = .uploading
         do {
-            let previewSize = CGSize(width: ZendeskAttachmentView.previewMaxWidth, height: ZendeskAttachmentView.previewMaxWidth)
-                .scaled(by: UITraitCollection.current.displayScale)
-            let contentType = preferredExportContentType(for: item)
-            let (data, preview) = try await export(item, contentType: contentType, previewSize: previewSize)
-            self.preview = preview
+            let export = try await export(item)
 
-            // Checking the limit _after_ displaying the review
-            guard data.count < ZendeskAttachmentViewModel.attachmentSizeLimit else {
+            let thumbnailSize = CGSize(width: ZendeskAttachmentView.previewMaxWidth, height: ZendeskAttachmentView.previewMaxWidth)
+                .scaled(by: UITraitCollection.current.displayScale)
+            self.thumbnail = try? await makeThumbnail(for: export, thumbnailSize: thumbnailSize)
+
+            // Checking the limit _after_ displaying the preview
+            guard (export.fileSize ?? 0) < ZendeskAttachmentViewModel.attachmentSizeLimit else {
                 throw SubmitFeedbackAttachmentError.attachmentTooLarge
             }
-
-            let response = try await ZendeskUtils.sharedInstance.uploadAttachment(data, contentType: contentType.preferredMIMEType ?? "image/jpeg")
-            status = .uploaded(response)
+            status = .uploaded(try await upload(export))
         } catch {
             status = .failed(error)
         }
     }
 
     @available(iOS 16, *)
-    private func export(_ item: PhotosPickerItem, contentType: UTType, previewSize: CGSize) async throws -> (Data, Image) {
+    private func export(_ item: PhotosPickerItem) async throws -> MediaExport {
         guard let rawData = try await item.loadTransferable(type: Data.self) else {
             throw SubmitFeedbackAttachmentError.invalidAttachment
         }
-        // TODO: Add Transferable support in ItemProviderMediaExporter
-        let itemProvider = NSItemProvider(item: rawData as NSData, typeIdentifier: contentType.identifier)
+        let contentType = item.supportedContentTypes.first
+        let itemProvider = NSItemProvider(item: rawData as NSData, typeIdentifier: contentType?.identifier)
         let exporter = ItemProviderMediaExporter(provider: itemProvider)
-        exporter.mediaDirectoryType = .temporary
+        exporter.mediaDirectoryType = directory
         exporter.imageOptions = {
             var options = MediaImageExporter.Options()
             options.maximumImageSize = 1024
@@ -197,16 +203,26 @@ final class ZendeskAttachmentViewModel: ObservableObject, Identifiable {
             options.stripsGeoLocationIfNeeded = true
             return options
         }()
+        exporter.videoOptions = {
+            var options = MediaVideoExporter.Options()
+            options.exportPreset = AVAssetExportPresetLowQuality
+            options.durationLimit = 5 * 60
+            options.stripsGeoLocationIfNeeded = true
+            return options
+        }()
+        return try await exporter.export()
+    }
 
-        let export = try await exporter.export()
+    private func makeThumbnail(for export: MediaExport, thumbnailSize: CGSize) async throws -> Image {
+        let thumbnailRequest = QLThumbnailGenerator.Request(fileAt: export.url, size: thumbnailSize, scale: 1, representationTypes: .all)
+        let preview = try await QLThumbnailGenerator().generateBestRepresentation(for: thumbnailRequest)
+        return Image(uiImage: preview.uiImage)
+    }
+
+    private func upload(_ export: MediaExport) async throws -> ZDKUploadResponse {
+        let contentType = UTType(filenameExtension: export.url.pathExtension) ?? .data
         let data = try Data(contentsOf: export.url)
-        try FileManager.default.removeItem(at: export.url)
-
-        guard let image = UIImage(data: data),
-              let preview = await image.byPreparingThumbnail(ofSize: previewSize) else {
-            throw SubmitFeedbackAttachmentError.invalidAttachment
-        }
-        return (data, Image(uiImage: preview))
+        return try await ZendeskUtils.sharedInstance.uploadAttachment(data, contentType: contentType.preferredMIMEType ?? "image/jpeg")
     }
 }
 
