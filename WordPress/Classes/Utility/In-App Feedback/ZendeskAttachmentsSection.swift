@@ -182,26 +182,21 @@ final class ZendeskAttachmentViewModel: ObservableObject, Identifiable {
     }
 
     @available(iOS 16, *)
-    private func preferredExportContentType(for item: PhotosPickerItem) -> UTType {
-        let supportedImageTypes: Set<UTType> = [UTType.png, UTType.jpeg, UTType.gif]
-        if let type = item.supportedContentTypes.first, supportedImageTypes.contains(type) {
-            return type
-        }
-        return UTType.jpeg
-    }
-
-    @available(iOS 16, *)
     private func export(_ item: PhotosPickerItem, contentType: UTType, previewSize: CGSize) async throws -> (Data, Image) {
         guard let rawData = try await item.loadTransferable(type: Data.self) else {
             throw SubmitFeedbackAttachmentError.invalidAttachment
         }
-
-        let exporter = MediaImageExporter(data: rawData, filename: nil, typeHint: item.supportedContentTypes.first?.identifier)
-        exporter.options.maximumImageSize = 1024
-        exporter.options.imageCompressionQuality = 0.7
+        // TODO: Add Transferable support in ItemProviderMediaExporter
+        let itemProvider = NSItemProvider(item: rawData as NSData, typeIdentifier: contentType.identifier)
+        let exporter = ItemProviderMediaExporter(provider: itemProvider)
         exporter.mediaDirectoryType = .temporary
-        exporter.options.stripsGeoLocationIfNeeded = true
-        exporter.options.exportImageType = contentType.identifier
+        exporter.imageOptions = {
+            var options = MediaImageExporter.Options()
+            options.maximumImageSize = 1024
+            options.imageCompressionQuality = 0.7
+            options.stripsGeoLocationIfNeeded = true
+            return options
+        }()
 
         let export = try await exporter.export()
         let data = try Data(contentsOf: export.url)
