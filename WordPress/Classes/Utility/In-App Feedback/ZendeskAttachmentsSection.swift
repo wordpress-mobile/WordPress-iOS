@@ -5,6 +5,7 @@ import SupportProvidersSDK
 import UniformTypeIdentifiers
 import QuickLook
 import QuickLookThumbnailing
+import AVFoundation
 
 @available(iOS 16, *)
 struct ZendeskAttachmentsSection: View {
@@ -25,21 +26,41 @@ struct ZendeskAttachmentsSection: View {
         }
         .listRowBackground(Color.clear)
         .onDisappear(perform: viewModel.onDisappear)
+        .quickLookPreview($previewURL)
     }
 
     private var attachmentsStack: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 8) {
-                ForEach(viewModel.attachments) { attachment in
-                    ZendeskAttachmentView(viewModel: attachment, onRemoveTapped: {
-                        if  let item = attachment.id as? PhotosPickerItem,
-                            let index = selection.firstIndex(of: item) {
-                            selection.remove(at: index)
-                        }
-                    })
-                }
+                ForEach(viewModel.attachments, content: makeView)
             }
         }._scrollClipDisabled()
+    }
+
+    private func makeView(for attachment: ZendeskAttachmentViewModel) -> some View {
+        ZendeskAttachmentView(viewModel: attachment) {
+            Section {
+                if let export = attachment.export {
+                    Button(action: { previewURL = export.url }) {
+                        Label(Strings.previewAttachment, systemImage: "eye")
+                    }
+                }
+                Button(role: .destructive, action: { removeAttachment(attachment) }) {
+                    Label(Strings.removeAttachment, systemImage: "trash")
+                }
+            } header: {
+                if case .failed(let error) = attachment.status {
+                    Text(error.localizedDescription)
+                }
+            }
+        }
+    }
+
+    private func removeAttachment(_ attachment: ZendeskAttachmentViewModel) {
+        if  let item = attachment.id as? PhotosPickerItem,
+            let index = selection.firstIndex(of: item) {
+            selection.remove(at: index)
+        }
     }
 
     private var photosPicker: some View {
@@ -73,23 +94,13 @@ final class ZendeskAttachmentsSectionViewModel: ObservableObject {
 }
 
 @available(iOS 16, *)
-private struct ZendeskAttachmentView: View {
+private struct ZendeskAttachmentView<Actions: View>: View {
     @ObservedObject var viewModel: ZendeskAttachmentViewModel
-    var onRemoveTapped: () -> Void
-
-    static let previewMaxWidth: CGFloat = 120
+    @ViewBuilder var actions: () -> Actions
 
     var body: some View {
         Menu {
-            Section {
-                Button(role: .destructive, action: onRemoveTapped) {
-                    Label(Strings.removeAttachment, systemImage: "trash")
-                }
-            } header: {
-                if case .failed(let error) = viewModel.status {
-                    Text(error.localizedDescription)
-                }
-            }
+            actions() // Reloading it here because this view observes the ViewModel
         } label: {
             contents
         }
@@ -116,10 +127,14 @@ private struct ZendeskAttachmentView: View {
                     .foregroundStyle(.white, .red)
                     .font(.system(size: 22))
             case .uploaded:
-                EmptyView()
+                if let duration = viewModel.export?.duration, duration > 0 {
+                    Image(systemName: "play.circle.fill")
+                        .font(.system(size: 20))
+                        .foregroundStyle(Color(.secondaryLabel), Color(.secondarySystemBackground))
+                }
             }
         }
-        .frame(minWidth: viewModel.thumbnail == nil ? 100 : 44, maxWidth: ZendeskAttachmentView.previewMaxWidth)
+        .frame(minWidth: viewModel.thumbnail == nil ? 100 : 44, maxWidth: Constants.thumbnailMaxWidth)
         .frame(height: 80)
         .cornerRadius(8)
     }
@@ -129,13 +144,12 @@ final class ZendeskAttachmentViewModel: ObservableObject, Identifiable {
     let id: AnyHashable
 
     @Published private(set) var thumbnail: Image?
+    @Published private(set) var export: MediaExport?
     @Published private(set) var status: Status = .uploading
 
     private var task: Task<Void, Never>?
 
     var isUploaded: Bool { response != nil }
-
-    static let attachmentSizeLimit: Int64 = 32_000_000
 
     var response: ZDKUploadResponse? {
         guard case .uploaded(let response) = status else { return nil }
@@ -172,13 +186,14 @@ final class ZendeskAttachmentViewModel: ObservableObject, Identifiable {
         status = .uploading
         do {
             let export = try await export(item)
+            self.export = export
 
-            let thumbnailSize = CGSize(width: ZendeskAttachmentView.previewMaxWidth, height: ZendeskAttachmentView.previewMaxWidth)
+            let thumbnailSize = CGSize(width: Constants.thumbnailMaxWidth, height: Constants.thumbnailMaxWidth)
                 .scaled(by: UITraitCollection.current.displayScale)
             self.thumbnail = try? await makeThumbnail(for: export, thumbnailSize: thumbnailSize)
 
             // Checking the limit _after_ displaying the preview
-            guard (export.fileSize ?? 0) < ZendeskAttachmentViewModel.attachmentSizeLimit else {
+            guard (export.fileSize ?? 0) < Constants.attachmentSizeLimit else {
                 throw SubmitFeedbackAttachmentError.attachmentTooLarge
             }
             status = .uploaded(try await upload(export))
@@ -196,20 +211,8 @@ final class ZendeskAttachmentViewModel: ObservableObject, Identifiable {
         let itemProvider = NSItemProvider(item: rawData as NSData, typeIdentifier: contentType?.identifier)
         let exporter = ItemProviderMediaExporter(provider: itemProvider)
         exporter.mediaDirectoryType = directory
-        exporter.imageOptions = {
-            var options = MediaImageExporter.Options()
-            options.maximumImageSize = 1024
-            options.imageCompressionQuality = 0.7
-            options.stripsGeoLocationIfNeeded = true
-            return options
-        }()
-        exporter.videoOptions = {
-            var options = MediaVideoExporter.Options()
-            options.exportPreset = AVAssetExportPresetLowQuality
-            options.durationLimit = 5 * 60
-            options.stripsGeoLocationIfNeeded = true
-            return options
-        }()
+        exporter.imageOptions = Constants.imageExportOptions
+        exporter.videoOptions = Constants.videoExportOptions
         return try await exporter.export()
     }
 
@@ -236,7 +239,7 @@ private enum SubmitFeedbackAttachmentError: Error, LocalizedError {
             return NSLocalizedString("zendeskAttachmentsSection.unsupportedAttachmentErrorMessage", value: "Unsupported attachment", comment: "Managing Zendesk attachments")
         case .attachmentTooLarge:
             let format = NSLocalizedString("zendeskAttachmentsSection.unsupportedAttachmentErrorMessage", value: "The attachment is too large. The maximum allowed size is %@.", comment: "Managing Zendesk attachments")
-            return String(format: format, ByteCountFormatter().string(fromByteCount: ZendeskAttachmentViewModel.attachmentSizeLimit))
+            return String(format: format, ByteCountFormatter().string(fromByteCount: Constants.attachmentSizeLimit))
         }
     }
 }
@@ -252,8 +255,31 @@ private extension View {
     }
 }
 
+private enum Constants {
+    static let thumbnailMaxWidth: CGFloat = 120
+
+    static let attachmentSizeLimit: Int64 = 32_000_000
+
+    static let imageExportOptions: MediaImageExporter.Options =  {
+        var options = MediaImageExporter.Options()
+        options.maximumImageSize = 1024
+        options.imageCompressionQuality = 0.7
+        options.stripsGeoLocationIfNeeded = true
+        return options
+    }()
+
+    static let videoExportOptions: MediaVideoExporter.Options = {
+        var options = MediaVideoExporter.Options()
+        options.exportPreset = AVAssetExportPreset1280x720
+        options.durationLimit = 5 * 60
+        options.stripsGeoLocationIfNeeded = true
+        return options
+    }()
+}
+
 private enum Strings {
     static let addAttachment = NSLocalizedString("zendeskAttachmentsSection.addAttachment", value: "Add Attachments", comment: "Managing Zendesk attachments")
+    static let previewAttachment = NSLocalizedString("zendeskAttachmentsSection.previewAttachment", value: "Preview", comment: "Managing Zendesk attachments")
     static let removeAttachment = NSLocalizedString("zendeskAttachmentsSection.removeAttachment", value: "Remove Attachment", comment: "Managing Zendesk attachments")
     static let unsupportedAttachmentErrorMessage = NSLocalizedString("zendeskAttachmentsSection.unsupportedAttachmentErrorMessage", value: "Unsupported attachment", comment: "Managing Zendesk attachments")
 }
