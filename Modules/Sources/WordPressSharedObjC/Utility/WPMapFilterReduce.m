@@ -25,13 +25,4 @@
     return [NSArray arrayWithArray:results];
 }
 
-- (id)wp_reduce:(WPReduceBlock)reduceBlock withInitialValue:(id)initial
-{
-    id accumulator = initial;
-    for (id obj in self) {
-        accumulator = reduceBlock(accumulator, obj);
-    }
-    return accumulator;
-}
-
 @end

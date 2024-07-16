@@ -65,14 +65,4 @@
     }];
 }
 
-- (void)testReduce
-{
-    NSArray *test = @[ @1, @2, @3, @4, @5, @6, @7, @8, @9, @10 ];
-    NSNumber *result = [test wp_reduce:^id(id accumulator, id obj) {
-        return @([accumulator longLongValue] + [obj longLongValue]);
-    } withInitialValue:@0];
-    NSNumber *expected = @55;
-    XCTAssertEqualObjects(expected, result);
-}
-
 @end
