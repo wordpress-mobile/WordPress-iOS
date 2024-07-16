@@ -435,7 +435,7 @@
       },
       {
         "package": "WordPress",
-        "repositoryURL": "https://github.com/Automattic/wordpress-rs",
+        "repositoryURL": "git@github.com:Automattic/wordpress-rs",
         "state": {
           "branch": null,
           "revision": "6394b30b34ed6bf204be8de5558ba2c73d2a10e3",

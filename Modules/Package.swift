@@ -43,7 +43,9 @@ let package = Package(
         .package(url: "https://github.com/wordpress-mobile/WordPressUI-iOS", branch: "kean-patch-1"),
         .package(url: "https://github.com/wordpress-mobile/wpxmlrpc", from: "0.10.0"),
         .package(url: "https://github.com/zendesk/support_sdk_ios", from: "8.0.3"),
-        .package(url: "https://github.com/Automattic/wordpress-rs", from: "0.1.0"),
+        // This is currently a private repo.
+        // Fetching it via SSH to avoid HTTPS auth prompts in CI.
+        .package(url: "git@github.com:Automattic/wordpress-rs", from: "0.1.0"),
     ],
     targets: XcodeSupport.targets + [
         .target(name: "JetpackStatsWidgetsCore"),
