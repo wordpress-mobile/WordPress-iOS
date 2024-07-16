@@ -1,9 +1,6 @@
 import Foundation
 import UIKit
-
-#if SWIFT_PACKAGE
 import WordPressSharedObjC
-#endif
 
 /// Contains methods for formatting post or comment content for display.
 ///

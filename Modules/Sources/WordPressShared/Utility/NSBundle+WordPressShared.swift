@@ -9,7 +9,6 @@ extension Bundle {
     /// otherwise it will be the framework bundle.
     ///
     @objc public class var wordPressSharedBundle: Bundle {
-#if SWIFT_PACKAGE
 #if DEBUG
         // Workaround for https://forums.swift.org/t/swift-5-3-swiftpm-resources-in-tests-uses-wrong-bundle-path/37051
         if let testBundlePath = ProcessInfo.processInfo.environment["XCTestBundlePath"],
@@ -18,15 +17,5 @@ extension Bundle {
         }
 #endif
         return Bundle.module
-#else
-        let defaultBundle = Bundle(for: BundleFinder.self)
-        // If installed with CocoaPods, resources will be in WordPressShared.bundle
-        if let bundleURL = defaultBundle.resourceURL,
-           let resourceBundle = Bundle(url: bundleURL.appendingPathComponent("WordPressShared.bundle")) {
-            return resourceBundle
-        }
-        // Otherwise, the default bundle is used for resources
-        return defaultBundle
-#endif
-        }
+    }
 }
