@@ -96,7 +96,7 @@ void SetCocoaLumberjackObjCLogLevel(NSUInteger ddLogLevelRawValue)
             NSString *result = [[NSString alloc] initWithBytes:[logData bytes]
                                                         length:[logData length]
                                                       encoding: NSUTF8StringEncoding];
-            
+
             [description appendString:result];
         }
     }
