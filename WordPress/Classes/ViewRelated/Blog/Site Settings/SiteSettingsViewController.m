@@ -16,7 +16,6 @@
 
 @import WordPressKit;
 @import WordPressShared;
-@import wpxmlrpc;
 @import NSURL_IDN;
 
 NS_ENUM(NSInteger, SiteSettingsAccount) {

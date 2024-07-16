@@ -1,8 +1,0 @@
-{
-    "capabilities": [
-        "backup",
-        "backup-realtime",
-        "scan",
-        "antispam"
-    ]
-}

@@ -408,12 +408,12 @@ import WordPressKit
             return false
         }
 
-        guard let authToken = queryDictionary.string(forKey: "token") else {
+        guard let authToken = queryDictionary["token"] as? String else {
             WPAuthenticatorLogError("Magic link error: we couldn't retrieve the authentication token from the sign-in URL.")
             return false
         }
 
-        guard let flowRawValue = queryDictionary.string(forKey: "flow") else {
+        guard let flowRawValue = queryDictionary["flow"] as? String else {
             WPAuthenticatorLogError("Magic link error: we couldn't retrieve the flow from the sign-in URL.")
             return false
         }

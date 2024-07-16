@@ -1,5 +1,6 @@
 import Foundation
 import WordPressShared
+import NSObject_SafeExpectations
 import UserNotifications
 import CocoaLumberjack
 

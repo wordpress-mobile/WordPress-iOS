@@ -1,7 +1,7 @@
-
 import XCTest
+import WordPressKit
+
 @testable import WordPress
-@testable import WordPressKit
 
 // MARK: - SiteCreatorTests
 

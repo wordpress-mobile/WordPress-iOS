@@ -1,7 +1,7 @@
 import UIKit
-import wpxmlrpc
 import SafariServices
 import WordPressUI
+import WordPressKit
 
 extension FancyAlertViewController {
     private struct Strings {
@@ -88,7 +88,7 @@ extension FancyAlertViewController {
             }
         }
 
-        if error.domain != WPXMLRPCFaultErrorDomain && error.code != NSURLErrorBadURL {
+        if error.domain != WordPressOrgXMLRPCApi.errorDomain && error.code != NSURLErrorBadURL {
             if WordPressAuthenticator.shared.delegate?.supportEnabled == true {
                 return alertForGenericErrorMessageWithHelpButton(message, loginFields: loginFields, sourceTag: sourceTag)
             }

@@ -1,7 +1,8 @@
-@testable import WordPress
-@testable import WordPressKit
 import XCTest
+import WordPressKit
 import WordPressFlux
+
+@testable import WordPress
 
 struct MockAnnouncementsCache: AnnouncementsCache {
 
