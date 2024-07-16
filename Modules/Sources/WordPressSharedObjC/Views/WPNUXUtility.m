@@ -11,11 +11,6 @@
     return [WPFontManager systemRegularFontOfSize:16.0];
 }
 
-+ (UIFont *)descriptionTextFont
-{
-    return [WPFontManager systemRegularFontOfSize:15.0];
-}
-
 + (UIFont *)titleFont
 {
     return [WPFontManager systemLightFontOfSize:24.0];

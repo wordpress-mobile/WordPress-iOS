@@ -3,7 +3,6 @@
 @interface WPNUXUtility : NSObject
 
 + (UIFont *)textFieldFont;
-+ (UIFont *)descriptionTextFont;
 + (UIFont *)titleFont;
 + (UIFont *)swipeToContinueFont;
 + (UIFont *)tosLabelFont;
