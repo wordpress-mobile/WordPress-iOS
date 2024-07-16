@@ -26,7 +26,6 @@ struct ZendeskAttachmentsSection: View {
         }
         .listRowBackground(Color.clear)
         .onDisappear(perform: viewModel.onDisappear)
-        .quickLookPreview($previewURL)
     }
 
     private var attachmentsStack: some View {
@@ -40,11 +39,6 @@ struct ZendeskAttachmentsSection: View {
     private func makeView(for attachment: ZendeskAttachmentViewModel) -> some View {
         ZendeskAttachmentView(viewModel: attachment) {
             Section {
-                if let export = attachment.export {
-                    Button(action: { previewURL = export.url }) {
-                        Label(Strings.previewAttachment, systemImage: "eye")
-                    }
-                }
                 Button(role: .destructive, action: { removeAttachment(attachment) }) {
                     Label(Strings.removeAttachment, systemImage: "trash")
                 }
@@ -279,7 +273,6 @@ private enum Constants {
 
 private enum Strings {
     static let addAttachment = NSLocalizedString("zendeskAttachmentsSection.addAttachment", value: "Add Attachments", comment: "Managing Zendesk attachments")
-    static let previewAttachment = NSLocalizedString("zendeskAttachmentsSection.previewAttachment", value: "Preview", comment: "Managing Zendesk attachments")
     static let removeAttachment = NSLocalizedString("zendeskAttachmentsSection.removeAttachment", value: "Remove Attachment", comment: "Managing Zendesk attachments")
     static let unsupportedAttachmentErrorMessage = NSLocalizedString("zendeskAttachmentsSection.unsupportedAttachmentErrorMessage", value: "Unsupported attachment", comment: "Managing Zendesk attachments")
 }
