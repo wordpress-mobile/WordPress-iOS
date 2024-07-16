@@ -234,7 +234,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         let libraryLogger = WordPressLibraryLogger()
         TracksLogging.delegate = libraryLogger
-        WPSharedSetLoggingDelegate(libraryLogger)
         WPKitSetLoggingDelegate(libraryLogger)
         WPAuthenticatorSetLoggingDelegate(libraryLogger)
 

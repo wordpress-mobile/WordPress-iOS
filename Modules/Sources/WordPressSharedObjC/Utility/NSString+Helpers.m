@@ -1,7 +1,6 @@
 #import "NSString+Helpers.h"
 #import <CommonCrypto/CommonDigest.h>
 #import "NSString+XMLExtensions.h"
-#import "WPSharedLogging.h"
 
 static NSString *const Ellipsis =  @"\u2026";
 
@@ -15,7 +14,6 @@ static NSString *const Ellipsis =  @"\u2026";
 + (NSString *)emojiFromCoreEmojiImageTag:(NSString *)tag
 {
     if ([tag rangeOfString:@"<img"].location == NSNotFound || [tag rangeOfString:@"/images/core/emoji/"].location == NSNotFound) {
-        WPSharedLogError(@"Tried to extract emoji from a string that was not a core emoji image tag.");
         return nil;
     }
 
