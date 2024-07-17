@@ -275,17 +275,6 @@ before_all do |lane|
   # See also https://github.com/fastlane/fastlane/issues/20919
   ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '120'
 
-  # Experiment!
-  #
-  # Despite us configuring Git to fetch private repos, and it working
-  # see https://buildkite.com/automattic/wordpress-ios/builds/23081#0190be63-d1dd-4940-9576-3569df1452d7/352-742
-  # Gym fails to find WordPress-rs, see
-  # https://buildkite.com/automattic/wordpress-ios/builds/23081#0190be63-d1dd-4940-9576-3569df1452d7/945-1016
-  #
-  # Could it be because xcodebuild uses a different Git configuration?
-  ENV['GYM_USE_SYSTEM_SCM'] = 'true'
-  # TODO: Given our CI manages the SPM cache, we might want to bypass SPM resolution entirely
-
   # Skip these checks/steps for test lane (not needed for testing)
   next if lane == :test_without_building
 
