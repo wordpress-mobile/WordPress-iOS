@@ -36,7 +36,6 @@ private struct SubmitFeedbackView: View {
     weak var presentingViewController: UIViewController?
     let source: String
 
-    @State private var subject = ""
     @State private var text = ""
     @State private var isSubmitting = false
     @State private var isShowingCancellationConfirmation = false
@@ -44,13 +43,12 @@ private struct SubmitFeedbackView: View {
 
     @StateObject private var attachmentsViewModel = ZendeskAttachmentsSectionViewModel()
 
-    @FocusState private var isSubjectFieldFocused: Bool
+    @FocusState private var isTextEditorFocused: Bool
 
-    private let subjectLimit = 100
     private let textLimit = 500
 
     var isInputEmpty: Bool {
-        text.trim().isEmpty && subject.trim().isEmpty
+        text.trim().isEmpty
     }
 
     var body: some View {
@@ -81,7 +79,7 @@ private struct SubmitFeedbackView: View {
         .onAppear {
             WPAnalytics.track(.appReviewsOpenedFeedbackScreen, withProperties: ["source": source])
             ZendeskUtils.createIdentitySilentlyIfNeeded()
-            isSubjectFieldFocused = true
+            isTextEditorFocused = true
         }
         .disabled(isSubmitting)
         .confirmationDialog(Strings.cancellationAlertTitle, isPresented: $isShowingCancellationConfirmation) {
@@ -96,9 +94,6 @@ private struct SubmitFeedbackView: View {
         .onChange(of: isInputEmpty) {
             presentingViewController?.isModalInPresentation = !$0
         }
-        .onChange(of: subject) { subject in
-            self.subject = String(subject.prefix(subjectLimit))
-        }
         .onChange(of: text) { text in
             if text.count > textLimit {
                 self.text = String(text.prefix(textLimit))
@@ -111,12 +106,9 @@ private struct SubmitFeedbackView: View {
     @ViewBuilder
     private var form: some View {
         Section {
-            TextField(Strings.subject, text: $subject)
-                .focused($isSubjectFieldFocused)
-        }
-        Section {
             TextEditor(text: $text)
-                .frame(height: 170)
+                .focused($isTextEditorFocused)
+                .frame(height: 192)
                 .accessibilityLabel(Strings.details)
                 .overlay(alignment: .bottomTrailing) {
                     Text(max(0, textLimit - text.count).description)
@@ -149,7 +141,6 @@ private struct SubmitFeedbackView: View {
 
         ZendeskUtils.sharedInstance.createNewRequest(
             in: presentingViewController,
-            subject: subject.trim().nonEmptyString(),
             description: text.trim(),
             tags: ["appreview_jetpack", "in_app_feedback"],
             attachments: attachmentsViewModel.attachments.compactMap(\.response),
@@ -190,8 +181,7 @@ private enum Strings {
     static let cancel = NSLocalizedString("submit.feedback.buttonCancel", value: "Cancel", comment: "The button title for the Cancel button in the In-App Feedback screen")
     static let submit = NSLocalizedString("submit.feedback.submit.button", value: "Submit", comment: "The button title for the Submit button in the In-App Feedback screen")
     static let title = NSLocalizedString("submit.feedback.title", value: "Feedback", comment: "The title for the the In-App Feedback screen")
-    static let subject = NSLocalizedString("submit.feedback.subjectPlaceholder", value: "Subject", comment: "The section title and or placeholder")
-    static let details = NSLocalizedString("submit.feedback.subjectPlaceholder", value: "Details", comment: "The section title and or placeholder")
+    static let details = NSLocalizedString("submit.feedback.detailsPlaceholder", value: "Details", comment: "The section title and or placeholder")
 
     static let cancellationAlertTitle = NSLocalizedString("submitFeedback.cancellationAlertTitle", value: "Are you sure you want to discard the feedback", comment: "Submit feedback screen cancellation confirmation alert title")
     static let cancellationAlertContinueEditing = NSLocalizedString("submitFeedback.cancellationAlertContinueEditing", value: "Continue Editing", comment: "Submit feedback screen cancellation confirmation alert action")
