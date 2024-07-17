@@ -1,8 +1,5 @@
 import Foundation
-
-#if SWIFT_PACKAGE
 import WordPressSharedObjC
-#endif
 
 extension String {
 
@@ -15,7 +12,7 @@ extension String {
         do {
             regex = try NSRegularExpression(pattern: pattern, options: options)
         } catch {
-            WPSharedLogError("Error parsing regex: \(error)")
+            assertionFailure("Failed to create regex: \(error)")
             return self
         }
 

@@ -184,10 +184,6 @@ extension FancyAlertViewController {
         return FancyAlertViewController.controllerWithConfiguration(configuration: config)
     }
 
-    /// Shows a WPWalkthroughOverlayView for a bad url error message.
-    ///
-    /// - Parameter message: The error message to show.
-    ///
     private static func alertForBadURL(with message: String) -> FancyAlertViewController {
         let moreHelpButton = ButtonConfig(Strings.moreHelp) { controller, _ in
             controller.dismiss(animated: true) {

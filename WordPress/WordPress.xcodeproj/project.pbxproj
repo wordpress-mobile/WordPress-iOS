@@ -1467,12 +1467,8 @@
 		4AD954F22C2145CB00D0EEFA /* WPHelpIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD9542B2C2145CB00D0EEFA /* WPHelpIndicatorView.swift */; };
 		4AD954F32C2145CB00D0EEFA /* WPNUXMainButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 4AD9542C2C2145CB00D0EEFA /* WPNUXMainButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4AD954F42C2145CB00D0EEFA /* WPNUXMainButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD9542D2C2145CB00D0EEFA /* WPNUXMainButton.m */; };
-		4AD954F52C2145CB00D0EEFA /* WPNUXPrimaryButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 4AD9542E2C2145CB00D0EEFA /* WPNUXPrimaryButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4AD954F62C2145CB00D0EEFA /* WPNUXPrimaryButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD9542F2C2145CB00D0EEFA /* WPNUXPrimaryButton.m */; };
 		4AD954F72C2145CB00D0EEFA /* WPNUXSecondaryButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 4AD954302C2145CB00D0EEFA /* WPNUXSecondaryButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4AD954F82C2145CB00D0EEFA /* WPNUXSecondaryButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD954312C2145CB00D0EEFA /* WPNUXSecondaryButton.m */; };
-		4AD954F92C2145CB00D0EEFA /* WPWalkthroughOverlayView.h in Headers */ = {isa = PBXBuildFile; fileRef = 4AD954322C2145CB00D0EEFA /* WPWalkthroughOverlayView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4AD954FA2C2145CB00D0EEFA /* WPWalkthroughOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD954332C2145CB00D0EEFA /* WPWalkthroughOverlayView.m */; };
 		4AD954FB2C2145CB00D0EEFA /* WPWalkthroughTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = 4AD954342C2145CB00D0EEFA /* WPWalkthroughTextField.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4AD954FC2C2145CB00D0EEFA /* WPWalkthroughTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD954352C2145CB00D0EEFA /* WPWalkthroughTextField.m */; };
 		4AD955052C2145CB00D0EEFA /* LoginFacade.h in Headers */ = {isa = PBXBuildFile; fileRef = 4AD954432C2145CB00D0EEFA /* LoginFacade.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -7443,12 +7439,8 @@
 		4AD9542B2C2145CB00D0EEFA /* WPHelpIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WPHelpIndicatorView.swift; sourceTree = "<group>"; };
 		4AD9542C2C2145CB00D0EEFA /* WPNUXMainButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPNUXMainButton.h; sourceTree = "<group>"; };
 		4AD9542D2C2145CB00D0EEFA /* WPNUXMainButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPNUXMainButton.m; sourceTree = "<group>"; };
-		4AD9542E2C2145CB00D0EEFA /* WPNUXPrimaryButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPNUXPrimaryButton.h; sourceTree = "<group>"; };
-		4AD9542F2C2145CB00D0EEFA /* WPNUXPrimaryButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPNUXPrimaryButton.m; sourceTree = "<group>"; };
 		4AD954302C2145CB00D0EEFA /* WPNUXSecondaryButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPNUXSecondaryButton.h; sourceTree = "<group>"; };
 		4AD954312C2145CB00D0EEFA /* WPNUXSecondaryButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPNUXSecondaryButton.m; sourceTree = "<group>"; };
-		4AD954322C2145CB00D0EEFA /* WPWalkthroughOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPWalkthroughOverlayView.h; sourceTree = "<group>"; };
-		4AD954332C2145CB00D0EEFA /* WPWalkthroughOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPWalkthroughOverlayView.m; sourceTree = "<group>"; };
 		4AD954342C2145CB00D0EEFA /* WPWalkthroughTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPWalkthroughTextField.h; sourceTree = "<group>"; };
 		4AD954352C2145CB00D0EEFA /* WPWalkthroughTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPWalkthroughTextField.m; sourceTree = "<group>"; };
 		4AD954372C2145CB00D0EEFA /* WPAuthenticator-Swift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WPAuthenticator-Swift.h"; sourceTree = "<group>"; };
@@ -12967,12 +12959,8 @@
 				4AD9542B2C2145CB00D0EEFA /* WPHelpIndicatorView.swift */,
 				4AD9542C2C2145CB00D0EEFA /* WPNUXMainButton.h */,
 				4AD9542D2C2145CB00D0EEFA /* WPNUXMainButton.m */,
-				4AD9542E2C2145CB00D0EEFA /* WPNUXPrimaryButton.h */,
-				4AD9542F2C2145CB00D0EEFA /* WPNUXPrimaryButton.m */,
 				4AD954302C2145CB00D0EEFA /* WPNUXSecondaryButton.h */,
 				4AD954312C2145CB00D0EEFA /* WPNUXSecondaryButton.m */,
-				4AD954322C2145CB00D0EEFA /* WPWalkthroughOverlayView.h */,
-				4AD954332C2145CB00D0EEFA /* WPWalkthroughOverlayView.m */,
 				4AD954342C2145CB00D0EEFA /* WPWalkthroughTextField.h */,
 				4AD954352C2145CB00D0EEFA /* WPWalkthroughTextField.m */,
 			);
@@ -19602,11 +19590,9 @@
 				4AD955052C2145CB00D0EEFA /* LoginFacade.h in Headers */,
 				4AD955102C2145CB00D0EEFA /* WordPressXMLRPCAPIFacade.h in Headers */,
 				4AD954F32C2145CB00D0EEFA /* WPNUXMainButton.h in Headers */,
-				4AD954F92C2145CB00D0EEFA /* WPWalkthroughOverlayView.h in Headers */,
 				4AD954FB2C2145CB00D0EEFA /* WPWalkthroughTextField.h in Headers */,
 				4AD954D82C2145CB00D0EEFA /* WPAuthenticatorLogging.h in Headers */,
 				4AD954F72C2145CB00D0EEFA /* WPNUXSecondaryButton.h in Headers */,
-				4AD954F52C2145CB00D0EEFA /* WPNUXPrimaryButton.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -23684,7 +23670,6 @@
 				4AD955512C2145CB00D0EEFA /* VerifyEmailViewController.swift in Sources */,
 				4AD954A52C2145CB00D0EEFA /* AuthenticatorAnalyticsTracker.swift in Sources */,
 				4AD954DB2C2145CB00D0EEFA /* LoginFields.swift in Sources */,
-				4AD954FA2C2145CB00D0EEFA /* WPWalkthroughOverlayView.m in Sources */,
 				4AD9550D2C2145CB00D0EEFA /* WordPressComBlogService.swift in Sources */,
 				4AD954DA2C2145CB00D0EEFA /* WPAuthenticatorLogging.swift in Sources */,
 				4AD955122C2145CB00D0EEFA /* AppleAuthenticator.swift in Sources */,
@@ -23713,7 +23698,6 @@
 				4AD954D92C2145CB00D0EEFA /* WPAuthenticatorLogging.m in Sources */,
 				4AD954B02C2145CB00D0EEFA /* WordPressSupportSourceTag.swift in Sources */,
 				4AD955362C2145CB00D0EEFA /* GoogleSignupConfirmationViewController.swift in Sources */,
-				4AD954F62C2145CB00D0EEFA /* WPNUXPrimaryButton.m in Sources */,
 				4AD954FC2C2145CB00D0EEFA /* WPWalkthroughTextField.m in Sources */,
 				4AD954BD2C2145CB00D0EEFA /* UIStoryboard+Helpers.swift in Sources */,
 				4AD954CB2C2145CB00D0EEFA /* GoogleOAuthTokenGetting.swift in Sources */,

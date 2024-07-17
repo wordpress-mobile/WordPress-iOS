@@ -256,7 +256,7 @@ NSInteger const LeftImageSpacing = 8;
     // This is a fix for a bug where the text field reverts to a system
     // serif font if you disable secure text entry while it contains text.
     self.font = nil;
-    self.font = [WPNUXUtility textFieldFont];
+    self.font = [WPFontManager systemRegularFontOfSize:16.0];
 
     [super setSecureTextEntry:secureTextEntry];
     [self updateSecureTextEntryToggleImage];

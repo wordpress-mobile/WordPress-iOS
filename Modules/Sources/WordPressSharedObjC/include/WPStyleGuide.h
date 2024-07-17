@@ -39,45 +39,17 @@ NS_ASSUME_NONNULL_BEGIN
 + (UIColor *)greyDarken30;
 + (UIColor *)darkGrey;
 + (UIColor *)jazzyOrange;
-+ (UIColor *)fireOrange;
-+ (UIColor *)validGreen;
-+ (UIColor *)warningYellow;
 + (UIColor *)errorRed;
-+ (UIColor *)alertYellowDark;
-+ (UIColor *)alertYellowLighter;
-+ (UIColor *)alertRedDarker;
-
-// Misc
-+ (UIColor *)keyboardColor;
-+ (UIColor *)textFieldPlaceholderGrey;
 
 // Bar Button Styles
 + (UIBarButtonItemStyle)barButtonStyleForDone;
 + (UIBarButtonItemStyle)barButtonStyleForBordered;
-+ (void)setLeftBarButtonItemWithCorrectSpacing:(UIBarButtonItem *)barButtonItem forNavigationItem:(UINavigationItem *)navigationItem;
-+ (void)setRightBarButtonItemWithCorrectSpacing:(UIBarButtonItem *)barButtonItem forNavigationItem:(UINavigationItem *)navigationItem;
-+ (void)configureNavigationBarAppearance;
-+ (void)configureDocumentPickerNavBarAppearance;
 
-// Move to a feature category
-+ (UIColor *)buttonActionColor;
-+ (UIColor *)nuxFormText;
-+ (UIColor *)nuxFormPlaceholderText;
++ (void)setRightBarButtonItemWithCorrectSpacing:(UIBarButtonItem *)barButtonItem forNavigationItem:(UINavigationItem *)navigationItem;
 
 // Deprecated Colors
-+ (UIColor *)baseLighterBlue;
-+ (UIColor *)baseDarkerBlue;
 + (UIColor *)newKidOnTheBlockBlue;
 + (UIColor *)midnightBlue;
-+ (UIColor *)bigEddieGrey;
-+ (UIColor *)littleEddieGrey;
-+ (UIColor *)whisperGrey;
-+ (UIColor *)allTAllShadeGrey;
-+ (UIColor *)readGrey;
-+ (UIColor *)itsEverywhereGrey;
-+ (UIColor *)darkAsNightGrey;
-+ (UIColor *)validationErrorRed;
-
 @end
 
 NS_ASSUME_NONNULL_END

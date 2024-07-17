@@ -234,7 +234,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         let libraryLogger = WordPressLibraryLogger()
         TracksLogging.delegate = libraryLogger
-        WPSharedSetLoggingDelegate(libraryLogger)
         WPKitSetLoggingDelegate(libraryLogger)
         WPAuthenticatorSetLoggingDelegate(libraryLogger)
 
@@ -646,7 +645,7 @@ extension WordPressAppDelegate {
         let architecture = UIDeviceHardware.platform()
         let languages = UserPersistentStoreFactory.instance().array(forKey: "AppleLanguages")
         let currentLanguage = languages?.first ?? unknown
-        let udid = device.wordPressIdentifier() ?? unknown
+        let udid = device.identifierForVendor?.uuidString ?? unknown
 
         DDLogInfo("Device model: \(devicePlatform) (\(architecture))")
         DDLogInfo("OS:        \(device.systemName), \(device.systemVersion)")

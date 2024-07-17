@@ -1,7 +1,6 @@
 #import "NSString+Helpers.h"
 #import <CommonCrypto/CommonDigest.h>
 #import "NSString+XMLExtensions.h"
-#import "WPSharedLogging.h"
 
 static NSString *const Ellipsis =  @"\u2026";
 
@@ -15,7 +14,6 @@ static NSString *const Ellipsis =  @"\u2026";
 + (NSString *)emojiFromCoreEmojiImageTag:(NSString *)tag
 {
     if ([tag rangeOfString:@"<img"].location == NSNotFound || [tag rangeOfString:@"/images/core/emoji/"].location == NSNotFound) {
-        WPSharedLogError(@"Tried to extract emoji from a string that was not a core emoji image tag.");
         return nil;
     }
 
@@ -81,37 +79,6 @@ static NSString *const Ellipsis =  @"\u2026";
         return nil;
     }
     return [[NSString alloc] initWithBytes:&hex length:4 encoding:NSUTF32LittleEndianStringEncoding];
-}
-
-+ (NSString *)stripShortcodesFromString:(NSString *)string
-{
-    if (!string) {
-        return nil;
-    }
-    static NSRegularExpression *regex;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        NSError *error;
-        NSString *pattern = @"\\[[^\\]]+\\]";
-        regex = [[NSRegularExpression alloc] initWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:&error];
-        if (error) {
-            WPSharedLogError(@"Error parsing regex: %@", error);
-        }
-    });
-    NSRange range = NSMakeRange(0, [string length]);
-    return [regex stringByReplacingMatchesInString:string
-                                           options:NSMatchingReportCompletion
-                                             range:range
-                                      withTemplate:@""];
-}
-
-// Taken from AFNetworking's AFPercentEscapedQueryStringPairMemberFromStringWithEncoding
-- (NSString *)stringByUrlEncoding
-{
-    NSMutableCharacterSet * allowedCharacterSet = [[NSCharacterSet URLQueryAllowedCharacterSet] mutableCopy];
-    NSString *charactersToLeaveUnescaped = @"[].";
-    [allowedCharacterSet addCharactersInString:charactersToLeaveUnescaped];
-    return [self stringByAddingPercentEncodingWithAllowedCharacters:allowedCharacterSet];
 }
 
 - (NSMutableDictionary *)dictionaryFromQueryString

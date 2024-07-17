@@ -179,21 +179,6 @@ extension Date {
         return DateFormatters.shortDateTime.string(from: self)
     }
 
-    @available(*, deprecated, message: "Not used, as far as I can tell – @jkmassel, Jan 2021")
-    fileprivate func toStringForPageSections() -> String {
-        let interval = timeIntervalSinceNow
-
-        if interval > 0 && interval < 86400 {
-            return NSLocalizedString("later today", comment: "Later today")
-        } else {
-            let formatter = RelativeDateTimeFormatter()
-            formatter.unitsStyle = .short
-            formatter.dateTimeStyle = .named
-
-            return formatter.localizedString(fromTimeInterval: interval)
-        }
-    }
-
     /// Returns the date components object.
     ///
     public func dateAndTimeComponents() -> DateComponents {
@@ -242,11 +227,6 @@ extension NSDate {
     ///
     @objc public func shortStringWithTime() -> String {
         return (self as Date).shortStringWithTime()
-    }
-
-    @available(*, deprecated, message: "Scheduled for removal with FormatterKit – if it's still used, we'll rewrite it with modern APIs")
-    @objc public func toStringForPageSections() -> String {
-        return (self as Date).toStringForPageSections()
     }
 
     /// Returns the date components object.

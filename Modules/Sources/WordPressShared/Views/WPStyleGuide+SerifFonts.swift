@@ -1,9 +1,6 @@
 import Foundation
 import UIKit
-
-#if SWIFT_PACKAGE
 import WordPressSharedObjC
-#endif
 
 /// WPStyleGuide Extension to use serif fonts.
 ///
