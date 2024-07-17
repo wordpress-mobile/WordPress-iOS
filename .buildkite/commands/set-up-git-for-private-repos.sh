@@ -1,5 +1,10 @@
 #!/bin/bash -eu
 
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+  echo "This script must be sourced, not executed, because it exports GIT_SSH_COMMAND."
+  exit 1
+fi
+
 echo "--- :git: Change Git SSH key to fetch private dependencies"
 
 PRIVATE_REPO_FETCH_KEY_NAME="private_repos_key"
