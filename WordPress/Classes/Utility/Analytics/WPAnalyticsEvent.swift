@@ -682,7 +682,7 @@ import Foundation
         case .gutenbergEditorHelpShown: "editor_help_shown"
         case .gutenbergEditorBlockInserted: "editor_block_inserted"
         case .gutenbergEditorBlockMoved: "editor_block_moved"
-        
+
         // Notifications permissions
         case .pushNotificationsPrimerSeen: "notifications_primer_seen"
         case .pushNotificationsPrimerAllowTapped: "notifications_primer_allow_tapped"
@@ -690,7 +690,7 @@ import Foundation
         case .secondNotificationsAlertSeen: "notifications_second_alert_seen"
         case .secondNotificationsAlertAllowTapped: "notifications_second_alert_allow_tapped"
         case .secondNotificationsAlertNoTapped: "notifications_second_alert_no_tapped"
-        
+
         // Reader
         case .selectInterestsShown: "select_interests_shown"
         case .selectInterestsPicked: "select_interests_picked"
