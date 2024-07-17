@@ -667,5 +667,5 @@ extension MeViewController {
 }
 
 private enum Strings {
-    static let submitFeedback = NSLocalizedString("meMenu.submitFeedback", value: "Submit Feedback", comment: "Me tab menu items")
+    static let submitFeedback = NSLocalizedString("meMenu.submitFeedback", value: "Send Feedback", comment: "Me tab menu items")
 }
