@@ -34,7 +34,6 @@ let package = Package(
         .package(url: "https://github.com/kaishin/Gifu", from: "3.4.1"),
         .package(url: "https://github.com/patchthecode/JTAppleCalendar", from: "8.0.5"),
         .package(url: "https://github.com/Quick/Nimble", from: "10.0.0"),
-        .package(url: "https://github.com/realm/SwiftLint", exact: "0.54.0"),
         .package(url: "https://github.com/scinfu/SwiftSoup", exact: "2.7.1"),
         .package(url: "https://github.com/squarefrog/UIDeviceIdentifier", from: "2.3.0"),
         .package(url: "https://github.com/SVProgressHUD/SVProgressHUD", from: "2.3.1"),
