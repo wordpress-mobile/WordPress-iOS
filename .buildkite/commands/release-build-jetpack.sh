@@ -1,5 +1,7 @@
 #!/bin/bash -eu
 
+"$(dirname "${BASH_SOURCE[0]}")/set-up-git-for-private-repos.sh"
+
 brew install imagemagick
 brew install ghostscript
 # Sentry CLI needs to be up-to-date
