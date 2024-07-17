@@ -3,7 +3,7 @@ import WordPressAPI
 import AutomatticTracks
 
 actor LoginClient {
-    
+
     struct ApiDetails {
         let rootUrl: ParsedUrl
         let loginUrl: String?
