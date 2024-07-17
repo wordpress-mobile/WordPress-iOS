@@ -3,6 +3,18 @@ import WordPressKit
 import Gutenberg
 
 extension BlockEditorSettings: GutenbergEditorSettings {
+    public var galleryWithImageBlocks: Bool {
+        false
+    }
+
+    public var quoteBlockV2: Bool {
+        false
+    }
+
+    public var listBlockV2: Bool {
+        false
+    }
+
     public var colors: [[String: String]]? {
         elementsByType(.color)
     }

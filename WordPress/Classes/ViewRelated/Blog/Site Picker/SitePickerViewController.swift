@@ -4,6 +4,7 @@ import WordPressShared
 import SwiftUI
 import SVProgressHUD
 import DesignSystem
+import WordPressAPI
 
 final class SitePickerViewController: UIViewController {
 
@@ -57,14 +58,14 @@ final class SitePickerViewController: UIViewController {
         let blogs = (try? blogService.listBlogs(in: ContextManager.shared.mainContext).compactMap { $0.url }) ?? []
 
         self.siteFetcherTask = Task {
-            let loginClient = LoginClient(session: .shared)
+            let loginClient = WordPressLoginClient(urlSession: .shared)
 
             await withTaskGroup(of: Void.self) { group in
                 for blog in blogs {
                     group.addTask {
                         do {
-                            let result = try await loginClient.performLoginAutodiscovery(for: blog)
-                            DDLogInfo("🟢 Login Autodiscovery was successful for \(blog): \(result.rootUrl), \(String(describing: result.loginUrl))")
+                            let result = try await loginClient.discoverLoginUrl(for: blog)
+                            DDLogInfo("🟢 Login Autodiscovery was successful for \(blog): \(result.apiRootUrl), \(String(describing: result.apiDetails.findApplicationPasswordsAuthenticationUrl()))")
                         } catch {
                             DDLogError("🔴 Unable to perform login autodiscovery for \(blog): \(error.localizedDescription)")
                         }
