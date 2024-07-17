@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 
-"$(dirname "${BASH_SOURCE[0]}")/set-up-git-for-private-repos.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/set-up-git-for-private-repos.sh"
 
 # Sentry CLI needs to be up-to-date
 brew upgrade sentry-cli
