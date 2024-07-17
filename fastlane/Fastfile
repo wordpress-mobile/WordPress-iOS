@@ -284,13 +284,7 @@ before_all do |lane|
   #
   # Could it be because xcodebuild uses a different Git configuration?
   ENV['GYM_USE_SYSTEM_SCM'] = 'true'
-  #
-  # Update 1:
-  # The setting above is applied, but does not solve the problem.
-  # See https://buildkite.com/automattic/wordpress-ios/builds/23082#0190be6e-df9f-4515-a4b5-1be43b4b2f3d/944-951
-  #
-  # Try bypassing SPM entirely
-  ENV['GYM_SKIP_PACKAGE_DEPENDENCIES_RESOLUTION'] = 'true'
+  # TODO: Given our CI manages the SPM cache, we might want to bypass SPM resolution entirely
 
   # Skip these checks/steps for test lane (not needed for testing)
   next if lane == :test_without_building
