@@ -3,7 +3,7 @@ import WordPressUI
 import GravatarUI
 
 extension UIImageView {
-    func setGravatarImage(with email: String, placeholder: UIImage? = nil, rating: Rating = .general, preferredSize: CGSize? = nil) async throws {
+    func setGravatarImage(with email: String, placeholder: UIImage = .gravatarPlaceholderImage, rating: Rating = .general, preferredSize: CGSize? = nil) async throws {
         var options: [ImageSettingOption]?
         if let cache = WordPressUI.ImageCache.shared as? Gravatar.ImageCaching {
             options = [.imageCache(cache)]

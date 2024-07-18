@@ -38,7 +38,7 @@ class LoginLinkRequestViewController: LoginViewController {
         let email = loginFields.username
         if email.isValidEmail() {
             Task {
-                try await gravatarView?.setGravatarImage(with: email, placeholder: .gravatarPlaceholderImage, rating: .x)
+                try await gravatarView?.setGravatarImage(with: email, rating: .x)
             }
         } else {
             gravatarView?.isHidden = true
