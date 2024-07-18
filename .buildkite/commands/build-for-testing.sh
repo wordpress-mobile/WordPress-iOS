@@ -8,7 +8,7 @@ if [[ "$APP" != "wordpress" && "$APP" != "jetpack" ]]; then
 fi
 
 # shellcheck disable=SC1091
-source "$(dirname "${BASH_SOURCE[0]}")/set-up-git-for-private-repos.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/set-up-git-to-fetch-wordpress-rs.sh"
 
 echo "--- :rubygems: Setting up Gems"
 install_gems
