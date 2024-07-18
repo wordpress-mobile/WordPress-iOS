@@ -11,6 +11,7 @@ extension UIImageView {
         else {
             assertionFailure("WordPressUI.ImageCache.shared should conform to Gravatar.ImageCaching")
         }
+        listenForGravatarChanges(forEmail: email)
         try await gravatar.setImage(avatarID: .email(email),
                                     placeholder: placeholder,
                                     rating: .x,
