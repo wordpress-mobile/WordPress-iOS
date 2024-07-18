@@ -3,7 +3,7 @@ import WordPressUI
 import GravatarUI
 
 extension UIImageView {
-    func setGravatarImage(with email: String, placeholder: UIImage? = nil, rating: Rating = .general) async throws {
+    func setGravatarImage(with email: String, placeholder: UIImage? = nil, rating: Rating = .general, preferredSize: CGSize? = nil) async throws {
         var options: [ImageSettingOption]?
         if let cache = WordPressUI.ImageCache.shared as? Gravatar.ImageCaching {
             options = [.imageCache(cache)]
@@ -14,6 +14,7 @@ extension UIImageView {
         try await gravatar.setImage(avatarID: .email(email),
                                     placeholder: placeholder,
                                     rating: .x,
+                                    preferredSize: preferredSize,
                                     defaultAvatarOption: .status404,
                                     options: options)
     }
