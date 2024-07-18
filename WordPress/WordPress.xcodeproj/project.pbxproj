@@ -2609,6 +2609,8 @@
 		91B0535D2B726F810073455C /* GravatarInfoRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B0535C2B726F810073455C /* GravatarInfoRow.swift */; };
 		91B0535E2B726F810073455C /* GravatarInfoRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B0535C2B726F810073455C /* GravatarInfoRow.swift */; };
 		91BE834E2C48FF0F00BB5B3B /* UIImageView+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91BE834D2C48FF0F00BB5B3B /* UIImageView+Additions.swift */; };
+		91BE83512C4914E600BB5B3B /* Gravatar in Frameworks */ = {isa = PBXBuildFile; productRef = 91BE83502C4914E600BB5B3B /* Gravatar */; };
+		91BE83532C4914E600BB5B3B /* GravatarUI in Frameworks */ = {isa = PBXBuildFile; productRef = 91BE83522C4914E600BB5B3B /* GravatarUI */; };
 		91D8364121946EFB008340B2 /* GutenbergMediaPickerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91D8364021946EFB008340B2 /* GutenbergMediaPickerHelper.swift */; };
 		91DCE84621A6A7F50062F134 /* PostEditor+MoreOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DCE84521A6A7F50062F134 /* PostEditor+MoreOptions.swift */; };
 		91DCE84821A6C58C0062F134 /* PostEditor+Publish.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DCE84721A6C58C0062F134 /* PostEditor+Publish.swift */; };
@@ -10122,6 +10124,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				91BE83532C4914E600BB5B3B /* GravatarUI in Frameworks */,
+				91BE83512C4914E600BB5B3B /* Gravatar in Frameworks */,
 				0C6AC6282C364A9000BF7600 /* XcodeTarget_WordPressAuthentificator in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -19695,6 +19699,8 @@
 			name = WordPressAuthenticator;
 			packageProductDependencies = (
 				0C6AC6272C364A9000BF7600 /* XcodeTarget_WordPressAuthentificator */,
+				91BE83502C4914E600BB5B3B /* Gravatar */,
+				91BE83522C4914E600BB5B3B /* GravatarUI */,
 			);
 			productName = WordPressAuthenticator;
 			productReference = 4AD953B42C21451700D0EEFA /* WordPressAuthenticator.framework */;
@@ -20180,6 +20186,7 @@
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			packageReferences = (
+				91BE834F2C4914E600BB5B3B /* XCRemoteSwiftPackageReference "Gravatar-SDK-iOS" */,
 			);
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
@@ -31308,6 +31315,17 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		91BE834F2C4914E600BB5B3B /* XCRemoteSwiftPackageReference "Gravatar-SDK-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Automattic/Gravatar-SDK-iOS.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		0C2155A52C39A24D00EFE2C0 /* XcodeTarget_UITests */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -31368,6 +31386,16 @@
 		0CFFFECA2C36F5760044709B /* XcodeTarget_WordPressAuthentificatorTests */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = XcodeTarget_WordPressAuthentificatorTests;
+		};
+		91BE83502C4914E600BB5B3B /* Gravatar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 91BE834F2C4914E600BB5B3B /* XCRemoteSwiftPackageReference "Gravatar-SDK-iOS" */;
+			productName = Gravatar;
+		};
+		91BE83522C4914E600BB5B3B /* GravatarUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 91BE834F2C4914E600BB5B3B /* XCRemoteSwiftPackageReference "Gravatar-SDK-iOS" */;
+			productName = GravatarUI;
 		};
 /* End XCSwiftPackageProductDependency section */
 
