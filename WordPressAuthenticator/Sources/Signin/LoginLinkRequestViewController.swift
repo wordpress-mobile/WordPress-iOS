@@ -1,6 +1,7 @@
 import UIKit
 import WordPressShared
 import WordPressUI
+import GravatarUI
 
 /// Step one in the auth link flow. This VC displays a form to request a "magic"
 /// authentication link be emailed to the user.  Allows the user to signin via
@@ -36,7 +37,9 @@ class LoginLinkRequestViewController: LoginViewController {
 
         let email = loginFields.username
         if email.isValidEmail() {
-            gravatarView?.downloadGravatarWithEmail(email, rating: .x)
+            Task {
+                try await gravatarView?.setGravatarImage(with: email, rating: .x)
+            }
         } else {
             gravatarView?.isHidden = true
         }

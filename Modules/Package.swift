@@ -103,6 +103,8 @@ enum XcodeSupport {
             .product(name: "NSURL+IDN", package: "NSURL-IDN"),
             .product(name: "SVProgressHUD", package: "SVProgressHUD"),
             .product(name: "WordPressKit", package: "WordPressKit-iOS"),
+            .product(name: "Gravatar", package: "Gravatar-SDK-iOS"),
+            .product(name: "GravatarUI", package: "Gravatar-SDK-iOS"),
         ]
 
         let shareAndDraftExtensionsDependencies: [Target.Dependency] = [

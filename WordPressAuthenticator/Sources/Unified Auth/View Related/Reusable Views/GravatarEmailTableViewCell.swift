@@ -37,7 +37,9 @@ class GravatarEmailTableViewCell: UITableViewCell {
                 return
         }
 
-        gravatarImageView?.downloadGravatarWithEmail(email, placeholderImage: placeholderImage ?? gridicon)
+        Task {
+            try await gravatarImageView?.setGravatarImage(with: email, placeholder: placeholderImage ?? gridicon, preferredSize: gridicon.size)
+        }
 
         gravatarImageViewSizeConstraints.forEach { constraint in
             constraint.constant = gridicon.size.width
