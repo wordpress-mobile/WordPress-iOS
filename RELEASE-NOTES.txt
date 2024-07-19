@@ -6,6 +6,8 @@
 * [*] Fix an issue with incorrect snackbar shown when saving drafts manually [#23358]
 * [**] Support editing media metadata for sites not powered by Jetpack and reliant on XML-RPC [#23316]
 * [*] Fix rare crash in the unsupported block editor [#23379]
+* [**] Block editor: Fixed an issue preventing some users from editing or creating content [https://github.com/wordpress-mobile/gutenberg-mobile/pull/6967]
+* [*] Block editor: Added partial prefix support for creating Headings, List, and Quote blocks [https://github.com/WordPress/gutenberg/pull/62576]
 
 25.1
 -----
