@@ -495,6 +495,8 @@
 		0C4CE8492C2F418000B9EEAC /* AppImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 433840C622C2BA5B00CB13F8 /* AppImages.xcassets */; };
 		0C5751102B011468001074E5 /* RemoteConfigDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C57510F2B011468001074E5 /* RemoteConfigDebugView.swift */; };
 		0C5751112B011468001074E5 /* RemoteConfigDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C57510F2B011468001074E5 /* RemoteConfigDebugView.swift */; };
+		0C5F19D02C4F1800000A1AD0 /* RegisterDomainSitePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5F19CF2C4F1800000A1AD0 /* RegisterDomainSitePickerView.swift */; };
+		0C5F19D12C4F1800000A1AD0 /* RegisterDomainSitePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5F19CF2C4F1800000A1AD0 /* RegisterDomainSitePickerView.swift */; };
 		0C63266F2A3D1305000B8C57 /* GutenbergFilesAppMediaSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C63266E2A3D1305000B8C57 /* GutenbergFilesAppMediaSourceTests.swift */; };
 		0C6AC6122C364A2800BF7600 /* XcodeTarget_App in Frameworks */ = {isa = PBXBuildFile; productRef = 0C6AC6112C364A2800BF7600 /* XcodeTarget_App */; };
 		0C6AC6142C364A3100BF7600 /* XcodeTarget_ShareExtension in Frameworks */ = {isa = PBXBuildFile; productRef = 0C6AC6132C364A3100BF7600 /* XcodeTarget_ShareExtension */; };
@@ -6570,6 +6572,7 @@
 		0C3C50412BA3A024002A37B4 /* PostNoticePublishSuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostNoticePublishSuccessView.swift; sourceTree = "<group>"; };
 		0C43FF802C3601770084B698 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/iOSSupport/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		0C57510F2B011468001074E5 /* RemoteConfigDebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigDebugView.swift; sourceTree = "<group>"; };
+		0C5F19CF2C4F1800000A1AD0 /* RegisterDomainSitePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterDomainSitePickerView.swift; sourceTree = "<group>"; };
 		0C63266E2A3D1305000B8C57 /* GutenbergFilesAppMediaSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergFilesAppMediaSourceTests.swift; sourceTree = "<group>"; };
 		0C6C4CCF2A4F0A000049E762 /* BlazeCampaignsStreamTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeCampaignsStreamTests.swift; sourceTree = "<group>"; };
 		0C6C4CD32A4F0AD80049E762 /* blaze-search-page-1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "blaze-search-page-1.json"; sourceTree = "<group>"; };
@@ -12675,6 +12678,7 @@
 			children = (
 				43D74AD520FB5AD5004AD934 /* RegisterDomainSectionHeaderView.swift */,
 				43D74AD320FB5ABA004AD934 /* RegisterDomainSectionHeaderView.xib */,
+				0C5F19CF2C4F1800000A1AD0 /* RegisterDomainSitePickerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -22397,6 +22401,7 @@
 				016231502B3B3CAD0010E377 /* PrimaryDomainView.swift in Sources */,
 				8067340A27E3A50900ABC95E /* UIViewController+RemoveQuickStart.m in Sources */,
 				3F8CBE0B24EEB0EA00F71234 /* AnnouncementsDataSource.swift in Sources */,
+				0C5F19D02C4F1800000A1AD0 /* RegisterDomainSitePickerView.swift in Sources */,
 				FE7FAABE299A998E0032A6F2 /* EventTracker.swift in Sources */,
 				7305138321C031FC006BD0A1 /* AssembledSiteView.swift in Sources */,
 				321955C324BF77E400E3F316 /* ReaderTopicService+FollowedInterests.swift in Sources */,
@@ -24724,6 +24729,7 @@
 				FABB20F12602FC2C00C8785C /* RecentSitesService.swift in Sources */,
 				FA332AD129C1F97A00182FBB /* MovedToJetpackViewController.swift in Sources */,
 				8BD66ED52787530C00CCD95A /* PostsCardViewModel.swift in Sources */,
+				0C5F19D12C4F1800000A1AD0 /* RegisterDomainSitePickerView.swift in Sources */,
 				FABB20F22602FC2C00C8785C /* PlanService.swift in Sources */,
 				FABB20F32602FC2C00C8785C /* Routes+Mbar.swift in Sources */,
 				B038BD162BE1A37D009FD7E9 /* SubscribersChartMarker.swift in Sources */,
