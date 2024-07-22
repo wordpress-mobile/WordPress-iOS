@@ -26,7 +26,7 @@ extension MySiteViewController {
 
         actions.append(PostAction(handler: newPost, source: source))
         // TODO: check if the current site is eligible
-        if RemoteFeatureFlag.voiceToContent.enabled() {
+        if Feature.enabled(.voiceToContent) {
             actions.append(PostFromAudioAction(handler: { [weak self] in
                 self?.dismiss(animated: true) {
                     self?.startPostFromAudioFlow()

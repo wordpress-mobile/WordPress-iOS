@@ -12,6 +12,7 @@ enum FeatureFlag: Int, CaseIterable {
     case googleDomainsCard
     case newTabIcons
     case autoSaveDrafts
+    case voiceToContent
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -40,6 +41,8 @@ enum FeatureFlag: Int, CaseIterable {
             return true
         case .autoSaveDrafts:
             return false
+        case .voiceToContent:
+            return AppConfiguration.isJetpack && BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         }
     }
 
@@ -62,26 +65,17 @@ extension FeatureFlag {
     /// Descriptions used to display the feature flag override menu in debug builds
     var description: String {
         switch self {
-        case .bloggingPrompts:
-            return "Blogging Prompts"
-        case .jetpackDisconnect:
-            return "Jetpack disconnect"
-        case .debugMenu:
-            return "Debug menu"
-        case .siteIconCreator:
-            return "Site Icon Creator"
-        case .betaSiteDesigns:
-            return "Fetch Beta Site Designs"
-        case .commentModerationUpdate:
-            return "Comments Moderation Update"
-        case .compliancePopover:
-            return "Compliance Popover"
-        case .googleDomainsCard:
-            return "Google Domains Promotional Card"
-        case .newTabIcons:
-            return "New Tab Icons"
-        case .autoSaveDrafts:
-            return "Autosave Drafts"
+        case .bloggingPrompts: "Blogging Prompts"
+        case .jetpackDisconnect: "Jetpack disconnect"
+        case .debugMenu: "Debug menu"
+        case .siteIconCreator: "Site Icon Creator"
+        case .betaSiteDesigns: "Fetch Beta Site Designs"
+        case .commentModerationUpdate: "Comments Moderation Update"
+        case .compliancePopover: "Compliance Popover"
+        case .googleDomainsCard: "Google Domains Promotional Card"
+        case .newTabIcons: "New Tab Icons"
+        case .autoSaveDrafts: "Autosave Drafts"
+        case .voiceToContent: "Voice to Content"
         }
     }
 }
