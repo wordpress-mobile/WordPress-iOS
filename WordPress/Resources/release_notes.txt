@@ -1,2 +1,7 @@
-We fixed a rare bug that made the app crash when trashing posts. One person’s trash is another person’s… still trash, we guess.
-We also fixed an issue with the navigation bar in the Post Visibility picker. While we were at it, we updated the editor’s Post Settings screen to use the new navigation bar style. Nice.
+* [*] Simplify post list context menu sections [#23356]
+* [*] Fix an issue with incorrect snackbar shown when saving drafts manually [#23358]
+* [**] Support editing media metadata for sites not powered by Jetpack and reliant on XML-RPC [#23316]
+* [*] Fix rare crash in the unsupported block editor [#23379]
+* [**] Block editor: Fixed an issue preventing some users from editing or creating content [https://github.com/wordpress-mobile/gutenberg-mobile/pull/6967]
+* [*] Block editor: Added partial prefix support for creating Headings, List, and Quote blocks [https://github.com/WordPress/gutenberg/pull/62576]
+
