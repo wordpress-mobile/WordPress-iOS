@@ -62,6 +62,7 @@ enum DashboardQuickAction: String, CaseIterable {
     case pages
     case media
     case comments
+    case applicationPasswords
     case more
 
     var localizedTitle: String {
@@ -76,6 +77,8 @@ enum DashboardQuickAction: String, CaseIterable {
             return NSLocalizedString("dashboard.menu.comments", value: "Comments", comment: "Title for comments button on dashboard.")
         case .stats:
             return NSLocalizedString("dashboard.menu.stats", value: "Stats", comment: "Title for stats button on dashboard.")
+        case .applicationPasswords:
+            return "Application Passwords"
         case .more:
             return NSLocalizedString("dashboard.menu.more", value: "More", comment: "Title for more button on dashboard.")
         }
@@ -93,6 +96,8 @@ enum DashboardQuickAction: String, CaseIterable {
             return UIImage(named: "site-menu-comments")?.imageFlippedForRightToLeftLayoutDirection()
         case .stats:
             return UIImage(named: "site-menu-stats")
+        case .applicationPasswords:
+            return UIImage(systemName: "lock")
         case .more:
             return UIImage(named: "site-menu-more")
         }
@@ -110,6 +115,8 @@ enum DashboardQuickAction: String, CaseIterable {
             return nil
         case .stats:
             return .stats
+        case .applicationPasswords:
+            return nil
         case .more:
             return .siteMenu
         }
@@ -117,7 +124,7 @@ enum DashboardQuickAction: String, CaseIterable {
 
     var isEnabledByDefault: Bool {
         switch self {
-        case .posts, .pages, .media, .stats, .more:
+        case .posts, .pages, .media, .stats, .more, .applicationPasswords:
             return true
         case .comments:
             return false
@@ -131,6 +138,8 @@ enum DashboardQuickAction: String, CaseIterable {
         case .stats:
             return blog.supports(.stats)
         case .posts, .comments, .media, .more:
+            return true
+        case .applicationPasswords:
             return true
         }
     }

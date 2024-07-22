@@ -1,6 +1,9 @@
 import UIKit
+import ViewLayer
 import Combine
 import WordPressShared
+import SwiftUI
+import WordPressAPI
 
 final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITableViewDataSource, UITableViewDelegate {
 
@@ -22,10 +25,10 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
     private weak var parentViewController: BlogDashboardViewController?
     private weak var blogDetailsViewController: BlogDetailsViewController?
     private var cancellables: [AnyCancellable] = []
+    private var wpClient: WordPressClient?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-
         createView()
     }
 
@@ -38,9 +41,14 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
         contentView.pinSubviewToAllEdges(tableView, priority: UILayoutPriority(999))
     }
 
-    func configure(viewModel: DashboardQuickActionsViewModel, viewController: BlogDashboardViewController) {
+    func configure(
+        viewModel: DashboardQuickActionsViewModel,
+        viewController: BlogDashboardViewController,
+        wpClient: WordPressClient?
+    ) {
         self.parentViewController = viewController
         self.viewModel = viewModel
+        self.wpClient = wpClient
 
         cancellables = []
 
@@ -76,6 +84,11 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
         cell.backgroundColor = .clear
         cell.accessoryType = .disclosureIndicator
         cell.isSeparatorHidden = indexPath.row == (items.count - 1)
+
+        if self.wpClient == nil {
+            cell.disable()
+        }
+
         return cell
     }
 
@@ -104,6 +117,12 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
         case .stats:
             trackQuickActionsEvent(.statsAccessed, blog: blog)
             StatsViewController.show(for: blog, from: parentViewController)
+        case .applicationPasswords:
+            if let wordpressClient = self.wpClient {
+                let service = ApplicationPasswordService(api: wordpressClient)
+                let viewController = UIHostingController(rootView: ApplicationTokenListView(dataProvider: service))
+                self.parentViewController?.show(viewController, sender: nil)
+            }
         case .more:
             let viewController = BlogDetailsViewController()
             viewController.isScrollEnabled = true
