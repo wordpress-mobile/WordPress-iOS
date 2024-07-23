@@ -1,9 +1,9 @@
-class SiteIconView: UIView {
+import UIKit
+
+final class SiteDetailsSiteIconView: UIView {
 
     private enum Constants {
-        static let imageSize: CGFloat = 40
-        static let borderRadius: CGFloat = 4
-        static let imageRadius: CGFloat = 2
+        static var imageSize: CGFloat { SiteIconViewModel.Size.regular.width }
         static let spotlightOffset: CGFloat = 8
     }
 
@@ -20,11 +20,10 @@ class SiteIconView: UIView {
     /// A block to be called when an image is dropped on to the view.
     var dropped: (([UIImage]) -> Void)?
 
-    let imageView: UIImageView = {
-        let imageView = UIImageView(frame: .zero)
+    let imageView: SiteIconHostingView = {
+        let imageView = SiteIconHostingView(frame: .zero)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = Constants.imageRadius
         NSLayoutConstraint.activate([
             imageView.widthAnchor.constraint(equalToConstant: Constants.imageSize),
             imageView.heightAnchor.constraint(equalToConstant: Constants.imageSize)
@@ -34,7 +33,6 @@ class SiteIconView: UIView {
 
     let activityIndicator: UIActivityIndicatorView = {
         let indicatorView = UIActivityIndicatorView(style: .medium)
-        indicatorView.color = .white
         indicatorView.translatesAutoresizingMaskIntoConstraints = false
         return indicatorView
     }()
@@ -51,11 +49,8 @@ class SiteIconView: UIView {
 
     private let button: UIButton = {
         let button = UIButton(frame: .zero)
-        button.backgroundColor = UIColor(light: .white, dark: .systemGray5)
+        button.backgroundColor = UIColor.clear
         button.clipsToBounds = true
-        button.layer.borderColor = UIColor.systemGray3.cgColor
-        button.layer.borderWidth = 1
-        button.layer.cornerRadius = Constants.borderRadius
         return button
     }()
 
@@ -121,7 +116,7 @@ class SiteIconView: UIView {
     }
 }
 
-extension SiteIconView: UIDropInteractionDelegate {
+extension SiteDetailsSiteIconView: UIDropInteractionDelegate {
     func dropInteraction(_ interaction: UIDropInteraction, sessionDidEnter session: UIDropSession) {
         imageView.depressSpringAnimation()
     }

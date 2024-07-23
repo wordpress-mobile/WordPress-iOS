@@ -1,14 +1,14 @@
 import DesignSystem
 import SwiftUI
+import WordPressShared
 
 struct BlogListSiteView: View {
     let site: BlogListSiteViewModel
 
     var body: some View {
         HStack(alignment: .center, spacing: .DS.Padding.double) {
-            siteIconView
+            SiteIconView(viewModel: site.icon)
                 .frame(width: 40, height: 40)
-                .clipShape(RoundedRectangle(cornerRadius: 6))
 
             VStack(alignment: .leading) {
                 Text(site.title)
@@ -23,42 +23,14 @@ struct BlogListSiteView: View {
             }
         }
     }
-
-    @ViewBuilder
-    private var siteIconView: some View {
-        if let imageURL = site.imageURL {
-            CachedAsyncImage(url: imageURL) { image in
-                image.resizable().aspectRatio(contentMode: .fit)
-            } placeholder: {
-                Color.DS.Background.secondary
-                    .overlay {
-                        Image.DS.icon(named: .vector)
-                            .resizable()
-                            .frame(width: 18, height: 18)
-                            .tint(.DS.Foreground.tertiary)
-                    }
-            }
-        } else {
-            Color(.secondarySystemBackground)
-                .overlay {
-                    Text(site.firstLetter?.uppercased() ?? "@")
-                        .font(.system(size: 22, weight: .medium, design: .rounded))
-                        .foregroundStyle(.secondary.opacity(0.8))
-                }
-        }
-    }
 }
 
 final class BlogListSiteViewModel: Identifiable {
     var id: NSManagedObjectID { blog.objectID }
     let title: String
     let domain: String
-    let imageURL: URL?
+    let icon: SiteIconViewModel
     let searchTags: String
-
-    var firstLetter: Character? {
-        title.first ?? domain.first
-    }
 
     var siteURL: URL? {
         blog.url.flatMap(URL.init)
@@ -70,7 +42,7 @@ final class BlogListSiteViewModel: Identifiable {
         self.blog = blog
         self.title = blog.title ?? "–"
         self.domain = blog.displayURL as String? ?? ""
-        self.imageURL = blog.hasIcon ? blog.icon.flatMap(URL.init) : nil
+        self.icon = SiteIconViewModel(blog: blog)
 
         // By adding displayURL _after_ the title, it loweres its weight in search
         self.searchTags = "\(title) \(domain)"

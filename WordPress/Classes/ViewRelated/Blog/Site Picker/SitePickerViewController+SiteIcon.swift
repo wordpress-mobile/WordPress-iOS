@@ -180,7 +180,6 @@ extension SitePickerViewController {
         imageCropController.onCompletion = { [weak self] image, modified in
             self?.dismiss(animated: true)
             self?.uploadDroppedSiteIcon(image, completion: {
-                self?.blogDetailHeaderView.blavatarImageView.image = image
                 self?.blogDetailHeaderView.updatingIcon = false
             })
         }

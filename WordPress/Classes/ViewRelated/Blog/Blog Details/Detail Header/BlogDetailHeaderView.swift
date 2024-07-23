@@ -1,6 +1,7 @@
 import Gridicons
 import UIKit
 import DesignSystem
+import SwiftUI
 
 @objc protocol BlogDetailHeaderViewDelegate {
     func makeSiteIconMenu() -> UIMenu?
@@ -25,6 +26,7 @@ class BlogDetailHeaderView: UIView {
 
     @objc var updatingIcon: Bool = false {
         didSet {
+            titleView.siteIconView.imageView.isHidden = updatingIcon
             if updatingIcon {
                 titleView.siteIconView.activityIndicator.startAnimating()
             } else {
@@ -33,7 +35,7 @@ class BlogDetailHeaderView: UIView {
         }
     }
 
-    @objc var blavatarImageView: UIImageView {
+    @objc var blavatarImageView: UIView {
         return titleView.siteIconView.imageView
     }
 
@@ -53,16 +55,11 @@ class BlogDetailHeaderView: UIView {
     }
 
     @objc func refreshIconImage() {
-        if let blog = blog,
-            blog.hasIcon == true {
-            titleView.siteIconView.imageView.downloadSiteIcon(for: blog)
-        } else if let blog = blog,
-            blog.isWPForTeams() {
-            titleView.siteIconView.imageView.tintColor = UIColor.listIcon
-            titleView.siteIconView.imageView.image = UIImage.gridicon(.p2)
-        } else {
-            titleView.siteIconView.imageView.image = UIImage.siteIconPlaceholder
-        }
+        guard let blog else { return }
+
+        var viewModel = SiteIconViewModel(blog: blog)
+        viewModel.background = Color(.systemBackground)
+        titleView.siteIconView.imageView.setIcon(with: viewModel)
 
         toggleSpotlightOnSiteIcon()
     }
@@ -225,8 +222,8 @@ extension BlogDetailHeaderView {
             return stackView
         }()
 
-        let siteIconView: SiteIconView = {
-            let siteIconView = SiteIconView(frame: .zero)
+        let siteIconView: SiteDetailsSiteIconView = {
+            let siteIconView = SiteDetailsSiteIconView(frame: .zero)
             siteIconView.translatesAutoresizingMaskIntoConstraints = false
             return siteIconView
         }()
