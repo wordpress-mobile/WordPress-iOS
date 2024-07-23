@@ -288,6 +288,11 @@ import Foundation
     case siteSwitcherToggleBlogVisible
     case siteSwitcherSiteTapped
 
+    // Site List
+    case siteListViewTapped
+    case siteListShareTapped
+    case siteListCopyLinktapped
+
     // Post List
     case postListItemSelected
     case postListShareAction
@@ -1128,6 +1133,14 @@ import Foundation
             return "site_switcher_toggle_blog_visible"
         case .siteSwitcherSiteTapped:
             return "site_switcher_site_tapped"
+
+        // Site List
+        case .siteListViewTapped:
+            return "site_list_view_tapped"
+        case .siteListShareTapped:
+            return "site_list_share_tapped"
+        case .siteListCopyLinktapped:
+            return "site_list_copy_link_tapped"
 
         // Post List
         case .postListItemSelected:

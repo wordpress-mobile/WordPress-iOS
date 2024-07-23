@@ -103,19 +103,17 @@ extension SitePickerViewController: BlogDetailHeaderViewDelegate {
     }
 
     private func presentNewSiteSwitcher() {
-        let viewController = UIHostingController(
-            rootView: SiteSwitcherView(
-                addSiteAction: { [weak self] in
-                    self?.addSiteTapped()
-                },
-                onSiteSelected: { [weak self] site in
-                    self?.switchToBlog(site)
-                    RecentSitesService().touch(blog: site)
-                    self?.dismiss(animated: true) { [weak self] in
-                        self?.onBlogListDismiss?()
-                    }
+        let viewController = SiteSwitcherViewController(
+            addSiteAction: { [weak self] in
+                self?.addSiteTapped()
+            },
+            onSiteSelected: { [weak self] site in
+                self?.switchToBlog(site)
+                RecentSitesService().touch(blog: site)
+                self?.dismiss(animated: true) { [weak self] in
+                    self?.onBlogListDismiss?()
                 }
-            )
+            }
         )
         present(viewController, animated: true)
         WPAnalytics.track(.mySiteSiteSwitcherTapped)
