@@ -103,29 +103,22 @@ extension SitePickerViewController: BlogDetailHeaderViewDelegate {
     }
 
     private func presentNewSiteSwitcher() {
-        var dismissAction: (() -> Void)? = nil
-        let hostingController = UIHostingController(
+        let viewController = UIHostingController(
             rootView: SiteSwitcherView(
-                selectionCallback: { [weak self] siteID in
-                    guard let selectedBlog = BlogListViewModel().allBlogs.first(where: { $0.dotComID == siteID }) else {
-                        return
-                    }
-                    self?.switchToBlog(selectedBlog)
-                    RecentSitesService().touch(blog: selectedBlog)
-                    // Dismiss hosting controller with completion block
-                    dismissAction?()
-                }, addSiteCallback: { [weak self] in
+                addSiteAction: { [weak self] in
                     self?.addSiteTapped()
+                },
+                onSiteSelected: { [weak self] site in
+                    self?.switchToBlog(site)
+                    RecentSitesService().touch(blog: site)
+                    self?.dismiss(animated: true) { [weak self] in
+                        self?.onBlogListDismiss?()
+                    }
                 }
             )
         )
-        dismissAction = {
-            hostingController.dismiss(animated: true) { [weak self] in
-                self?.onBlogListDismiss?()
-            }
-        }
-        present(hostingController, animated: true)
-        WPAnalytics.track(.siteSwitcherAddSiteTapped)
+        present(viewController, animated: true)
+        WPAnalytics.track(.mySiteSiteSwitcherTapped)
     }
 
     private func presentLegacySiteSwitcher() {

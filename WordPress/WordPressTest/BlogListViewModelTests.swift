@@ -11,22 +11,6 @@ final class BlogListViewModelTests: CoreDataTestCase {
     }
 
     // MARK: - Tests for Retrieval Functions
-    func testPinnedSitesWithNoData() {
-        XCTAssertTrue(viewModel.pinnedSites.isEmpty)
-    }
-
-    func testPinnedSitesWithValidData() throws {
-        let siteID = 34984
-        let _ = BlogBuilder(mainContext)
-            .with(dotComID: siteID)
-            .with(pinnedDate: Date())
-            .build()
-        try mainContext.save()
-
-        viewModel = BlogListViewModel(contextManager: contextManager)
-
-        XCTAssertEqual(viewModel.pinnedSites.first?.id, 34984)
-    }
 
     func testRecentSitesWithNoData() {
         XCTAssertTrue(viewModel.recentSites.isEmpty)
@@ -37,7 +21,6 @@ final class BlogListViewModelTests: CoreDataTestCase {
         let _ = BlogBuilder(mainContext)
             .with(dotComID: siteID)
             .with(lastUsed: Date())
-            .with(pinnedDate: nil)
             .build()
         try mainContext.save()
 
@@ -47,46 +30,47 @@ final class BlogListViewModelTests: CoreDataTestCase {
         XCTAssertEqual(viewModel.recentSites.count, 1)
     }
 
-    func testAllRemainingSitesWithNoData() {
-        XCTAssertTrue(viewModel.allRemainingSites.isEmpty)
-    }
-
-    func testAllRemainingSitesWithValidData() throws {
+    func testAllSitesAreDisplayedAndSortedByName() throws {
         let siteID1 = 34984
         let _ = BlogBuilder(mainContext)
+            .with(siteName: "A")
             .with(dotComID: siteID1)
             .with(lastUsed: Date())
             .build()
 
-        let siteID2 = 13287
+        let siteID2 = 54317
         let _ = BlogBuilder(mainContext)
+            .with(siteName: "51 Zone")
             .with(dotComID: siteID2)
             .with(pinnedDate: Date())
             .build()
 
-        let siteID3 = 43788
+        let siteID3 = 13287
         let _ = BlogBuilder(mainContext)
+            .with(siteName: "a")
             .with(dotComID: siteID3)
+            .with(pinnedDate: Date())
             .build()
+
+        let siteID4 = 54317
+        let _ = BlogBuilder(mainContext)
+            .with(siteName: ".Org")
+            .with(dotComID: siteID4)
+            .with(pinnedDate: Date())
+            .build()
+
+        let siteID5 = 43788
+        let _ = BlogBuilder(mainContext)
+            .with(siteName: "C")
+            .with(dotComID: siteID5)
+            .build()
+
         try mainContext.save()
 
         viewModel = BlogListViewModel(contextManager: contextManager)
 
-        XCTAssertEqual(viewModel.allRemainingSites.first?.id, siteID3 as NSNumber)
-        XCTAssertEqual(viewModel.allRemainingSites.count, 1)
-    }
-
-    func testTogglePinnedSiteUpdatesPinnedSites() throws {
-        let id = 23948
-        let blog = BlogBuilder(mainContext)
-            .with(dotComID: id)
-            .build()
-        try mainContext.save()
-
-        viewModel.togglePinnedSite(siteID: blog.dotComID)
-
-        XCTAssertEqual(viewModel.pinnedSites.first?.id, id as NSNumber)
-        XCTAssertEqual(viewModel.pinnedSites.count, 1)
+        let displayedNames = viewModel.allSites.map(\.title)
+        XCTAssertEqual(displayedNames, [".Org", "51 Zone", "a", "A", "C"])
     }
 
     func testSiteSelectedUpdatesLastUsedDate() throws {
@@ -97,7 +81,7 @@ final class BlogListViewModelTests: CoreDataTestCase {
             .build()
         try mainContext.save()
 
-        viewModel.siteSelected(siteID: siteID as NSNumber)
+        _ = viewModel.didSelectSite(withSiteID: siteID as NSNumber)
 
         XCTAssertEqual(viewModel.recentSites.first?.id, siteID as NSNumber)
     }
