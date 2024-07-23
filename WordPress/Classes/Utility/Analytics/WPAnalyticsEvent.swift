@@ -286,8 +286,6 @@ import Foundation
     case siteSwitcherAddSiteTapped
     case siteSwitcherSearchPerformed
     case siteSwitcherToggleBlogVisible
-    case siteSwitcherToggledPinTapped
-    case siteSwitcherPinUpdated
     case siteSwitcherSiteTapped
 
     // Post List
@@ -1128,10 +1126,6 @@ import Foundation
             return "site_switcher_search_performed"
         case .siteSwitcherToggleBlogVisible:
             return "site_switcher_toggle_blog_visible"
-        case .siteSwitcherToggledPinTapped:
-            return "site_switcher_toggled_pin_tapped"
-        case .siteSwitcherPinUpdated:
-            return "site_switcher_pin_updated"
         case .siteSwitcherSiteTapped:
             return "site_switcher_site_tapped"
 

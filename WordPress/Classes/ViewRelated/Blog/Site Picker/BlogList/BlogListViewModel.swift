@@ -1,17 +1,14 @@
+import CoreData
 import SwiftUI
 
 final class BlogListViewModel: NSObject, ObservableObject {
-    @Published var recentSites: [BlogListView.Site] = []
-    @Published var pinnedSites: [BlogListView.Site] = []
-    @Published var allRemainingSites: [BlogListView.Site] = []
-    @Published var searchSites: [BlogListView.Site] = []
-    var allBlogs: [Blog] = []
+    @Published private(set) var recentSites: [BlogListSiteViewModel] = []
+    @Published private(set) var allSites: [BlogListSiteViewModel] = []
+    @Published private(set) var searchResults: [BlogListSiteViewModel] = []
+
+    private var rawSites: [Blog] = []
     private var searchText: String = ""
-
-    private var pinnedSitesController: NSFetchedResultsController<Blog>?
-    private var recentSitesController: NSFetchedResultsController<Blog>?
-    private var allBlogsController: NSFetchedResultsController<Blog>?
-
+    private let fetchedResultsController: NSFetchedResultsController<Blog>
     private let contextManager: ContextManager
     private let eventTracker: EventTracker
 
@@ -20,8 +17,9 @@ final class BlogListViewModel: NSObject, ObservableObject {
     ) {
         self.contextManager = contextManager
         self.eventTracker = eventTracker
+        self.fetchedResultsController = createFetchedResultsController(in: contextManager.mainContext)
         super.init()
-        setupFetchedResultsControllers()
+        setupFetchedResultsController()
     }
 
     func searchQueryChanged(_ newText: String) {
@@ -29,175 +27,99 @@ final class BlogListViewModel: NSObject, ObservableObject {
         updateSearchResults()
     }
 
-    func togglePinnedSite(siteID: NSNumber?) {
-        guard let siteID, let blog = allBlogs.first(where: { $0.dotComID == siteID }) else {
-            return
+    func didSelectSite(withSiteID siteID: NSNumber) -> Blog? {
+        guard let blog = rawSites.first(where: { $0.dotComID == siteID }) else {
+            return nil
         }
-        let isCurrentlyPinned = blog.pinnedDate != nil
-
-        trackPinned(blog: blog)
-
-        blog.pinnedDate = isCurrentlyPinned ? nil : Date()
-
-        contextManager.saveContextAndWait(contextManager.mainContext)
-    }
-
-    func siteSelected(siteID: NSNumber?) {
-        guard let siteID, let blog = allBlogs.first(where: { $0.dotComID == siteID }) else {
-            return
-        }
-
-        trackSiteSelected(blog: blog)
-
+        eventTracker.track(.siteSwitcherSiteTapped, properties: [
+            "section": blog.lastUsed != nil ? "recent" : "all"
+        ])
         blog.lastUsed = Date()
-
         contextManager.saveContextAndWait(contextManager.mainContext)
-    }
-
-    private func trackPinned(blog: Blog) {
-        eventTracker.track(
-            .siteSwitcherPinUpdated,
-            properties: [
-                "blog_id": blog.dotComID ?? "",
-                "pinned": blog.pinnedDate == nil
-            ]
-        )
-    }
-
-    private func trackSiteSelected(blog: Blog) {
-        let sectionName: String
-
-        if blog.pinnedDate != nil {
-            sectionName = "pinned"
-        } else if blog.lastUsed != nil {
-            sectionName = "recent"
-        } else {
-            sectionName = "all"
-        }
-
-        eventTracker.track(
-            .siteSwitcherSiteTapped,
-            properties: [
-                "section": sectionName,
-            ]
-        )
+        return blog
     }
 
     func viewAppeared() {
-        if recentSites.isEmpty && pinnedSites.isEmpty {
+        if recentSites.isEmpty {
             selectedBlog()?.lastUsed = Date()
         }
-
         contextManager.save(contextManager.mainContext)
     }
 
     private func selectedBlog() -> Blog? {
-        return RootViewCoordinator.sharedPresenter.currentOrLastBlog()
+        RootViewCoordinator.sharedPresenter.currentOrLastBlog()
     }
-}
 
-extension BlogListView.Site {
-    init(blog: Blog) {
-        self.init(
-            id: blog.dotComID ?? 0,
-            title: blog.title ?? "",
-            domain: blog.url ?? "",
-            imageURL: blog.hasIcon ? URL(string: blog.icon ?? "") : nil
-        )
+    private func setupFetchedResultsController() {
+        fetchedResultsController.delegate = self
+        do {
+            try fetchedResultsController.performFetch()
+        } catch {
+            wpAssertionFailure("sites-fetch-failed", userInfo: ["error": "\(error)"])
+        }
+        refreshSites()
+    }
+
+    private func refreshSites() {
+        rawSites = getFilteredSites(from: fetchedResultsController)
+
+        recentSites = rawSites
+            .sorted { ($0.lastUsed ?? .distantPast) > ($1.lastUsed ?? .distantPast) }
+            .prefix(5)
+            .map(BlogListSiteViewModel.init)
+            .sorted {
+                $0.title.localizedCaseInsensitiveCompare($1.title) == .orderedAscending
+            }
+
+        allSites = rawSites.map(BlogListSiteViewModel.init)
+            .sorted {
+                $0.title.localizedCaseInsensitiveCompare($1.title) == .orderedAscending
+            }
+
+        updateSearchResults()
+    }
+
+    private func updateSearchResults() {
+        if searchText.isEmpty {
+            searchResults = []
+        } else {
+            let searchText = searchText
+            Task { @MainActor in
+                let searchResults = await search(searchTerm: searchText, sites: allSites)
+                if searchText == self.searchText {
+                    self.searchResults = searchResults
+                }
+            }
+        }
     }
 }
 
 extension BlogListViewModel: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        updatePublishedSitesFromControllers()
+        refreshSites()
     }
 }
 
-extension BlogListViewModel {
-    private func setupFetchedResultsControllers() {
-        pinnedSitesController = createResultsController(
-            with: NSPredicate(format: "pinnedDate != nil"),
-            descriptor: NSSortDescriptor(key: "pinnedDate", ascending: false)
-        )
-        recentSitesController = createResultsController(
-            with: NSPredicate(format: "lastUsed != nil AND pinnedDate == nil"),
-            descriptor: NSSortDescriptor(key: "lastUsed", ascending: false),
-            fetchLimit: 8
-        )
-        allBlogsController = createResultsController(
-            with: nil,
-            descriptor: NSSortDescriptor(key: "settings.name", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))
-        )
-
-        [
-            pinnedSitesController,
-            recentSitesController,
-            allBlogsController
-        ].forEach { [weak self] controller in
-            controller?.delegate = self
-            try? controller?.performFetch()
-        }
-        self.updatePublishedSitesFromControllers()
+private func getFilteredSites(from fetchedResultsController: NSFetchedResultsController<Blog>) -> [Blog] {
+    var blogs = fetchedResultsController.fetchedObjects ?? []
+    if BlogListConfiguration.defaultConfig.shouldHideSelfHostedSites {
+        blogs = blogs.filter { $0.isAccessibleThroughWPCom() }
     }
-
-    private func updatePublishedSitesFromControllers() {
-        pinnedSites = filteredBlogs(resultsController: pinnedSitesController).compactMap(
-            BlogListView.Site.init
-        )
-        recentSites = filteredBlogs(resultsController: recentSitesController).compactMap(
-            BlogListView.Site.init
-        )
-        allBlogs = filteredBlogs(resultsController: allBlogsController)
-        allRemainingSites = allBlogs.compactMap(BlogListView.Site.init).filter({ site in
-            return !pinnedSites.contains(site) && !recentSites.contains(site)
-        })
-        updateSearchResults()
+    if BlogListConfiguration.defaultConfig.shouldHideBlogsNotSupportingDomains {
+        blogs = blogs.filter { $0.supports(.domains) }
     }
+    return blogs
+}
 
-    private func filteredBlogs(resultsController: NSFetchedResultsController<Blog>?) -> [Blog] {
-        guard var blogs = resultsController?.fetchedObjects else {
-            return []
-        }
-        if BlogListConfiguration.defaultConfig.shouldHideSelfHostedSites {
-            blogs = blogs.filter { $0.isAccessibleThroughWPCom() }
-        }
-        if BlogListConfiguration.defaultConfig.shouldHideBlogsNotSupportingDomains {
-            blogs = blogs.filter { $0.supports(.domains) }
-        }
-        return blogs
-    }
+private func createFetchedResultsController(in context: NSManagedObjectContext) -> NSFetchedResultsController<Blog> {
+    let request = NSFetchRequest<Blog>(entityName: NSStringFromClass(Blog.self))
+    /// - warning: sorting happens in the ViewModel. It's irrelevant what descriptor
+    /// is provided here, but Core Data requires one.
+    request.sortDescriptors = [NSSortDescriptor(keyPath: \Blog.lastUsed, ascending: true)]
+    return NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+}
 
-    private func updateSearchResults() {
-        if searchText.isEmpty {
-            searchSites = allBlogs.compactMap(BlogListView.Site.init)
-        } else {
-            searchSites = allBlogs
-                .filter {
-                    $0.url?.lowercased().contains(searchText.lowercased()) == true
-                    || $0.title?.lowercased().contains(searchText.lowercased()) == true
-                }
-                .compactMap(BlogListView.Site.init)
-        }
-    }
-
-    private func createResultsController(
-        with predicate: NSPredicate?,
-        descriptor: NSSortDescriptor,
-        fetchLimit: Int? = nil
-    ) -> NSFetchedResultsController<Blog> {
-        let context = contextManager.mainContext
-        let request = NSFetchRequest<Blog>(entityName: NSStringFromClass(Blog.self))
-        request.predicate = predicate
-        request.sortDescriptors = [descriptor]
-        if let fetchLimit {
-            request.fetchLimit = fetchLimit
-        }
-        let controller = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
-        do {
-            try controller.performFetch()
-        } catch {
-            fatalError("Error fetching blogs list: \(error)")
-        }
-        return controller
-    }
+private func search(searchTerm: String, sites: [BlogListSiteViewModel]) async -> [BlogListSiteViewModel] {
+    let ranking = StringRankedSearch(searchTerm: searchTerm)
+    return ranking.search(in: sites, input: \.searchTags)
 }

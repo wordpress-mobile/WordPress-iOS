@@ -75,6 +75,14 @@ final class BlogBuilder {
         return self
     }
 
+    func with(siteName: String) -> Self {
+        if blog.settings == nil {
+            blog.settings =  NSEntityDescription.insertNewObject(forEntityName: BlogSettings.entityName(), into: context) as! BlogSettings
+        }
+        blog.settings?.name = siteName
+        return self
+    }
+
     func with(siteVisibility: SiteVisibility) -> Self {
         blog.siteVisibility = siteVisibility
 
