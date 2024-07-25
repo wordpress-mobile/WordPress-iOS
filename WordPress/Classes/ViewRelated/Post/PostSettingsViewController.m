@@ -863,19 +863,11 @@ FeaturedImageViewControllerDelegate>
                                       canEditSharing:(BOOL)canEditSharing
                                              section:(NSInteger)section
 {
-    BOOL isJetpackSocialEnabled = [RemoteFeature enabled:RemoteFeatureFlagJetpackSocialImprovements];
     UITableViewCell *cell = [self getWPTableViewImageAndAccessoryCell];
-    UIImage *image = [WPStyleGuide socialIconFor:connection.service];
-    if (isJetpackSocialEnabled) {
-        image = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFill
-                                            bounds:CGSizeMake(28.0, 28.0)
-                              interpolationQuality:kCGInterpolationDefault];
-    }
+    UIImage *image = [[WPStyleGuide socialIconFor:connection.service] resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:CGSizeMake(28.0, 28.0) interpolationQuality:kCGInterpolationDefault];
     [cell.imageView setImage:image];
     cell.imageView.alpha = 1.0;
-    if (canEditSharing && !isJetpackSocialEnabled) {
-        cell.imageView.tintColor = [WPStyleGuide tintColorForConnectedService: connection.service];
-    } else if (!canEditSharing && isJetpackSocialEnabled) {
+    if (!canEditSharing) {
         cell.imageView.alpha = 0.36;
     }
     cell.textLabel.text = connection.externalDisplay;

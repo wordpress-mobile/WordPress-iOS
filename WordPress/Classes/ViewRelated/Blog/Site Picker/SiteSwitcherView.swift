@@ -1,146 +1,99 @@
 import SwiftUI
 import DesignSystem
 
-struct SiteSwitcherView: View {
-    @State private var isEditing: Bool = false
-    private let selectionCallback: ((NSNumber) -> Void)
-    private let addSiteCallback: (() -> Void)
-    private let eventTracker: EventTracker
+final class SiteSwitcherViewController: UIViewController {
+    private let addSiteAction: (() -> Void)
+    private let onSiteSelected: ((Blog) -> Void)
+
+    init(addSiteAction: @escaping (() -> Void),
+         onSiteSelected: @escaping ((Blog) -> Void)) {
+        self.addSiteAction = addSiteAction
+        self.onSiteSelected = onSiteSelected
+
+        super.init(nibName: nil, bundle: nil)
+        self.modalPresentationStyle = .formSheet
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        let viewController = UIHostingController(rootView: SiteSwitcherView(addSiteAction: addSiteAction, onSiteSelected: onSiteSelected))
+        viewController.configureDefaultNavigationBarAppearance() // Importanat
+
+        viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(title: SharedStrings.Button.close, style: .plain, target: self, action: #selector(buttonCloseTapped))
+
+        let navigationController = UINavigationController(rootViewController: viewController)
+        navigationController.navigationBar.isTranslucent = true // Reset to default
+
+        addChild(navigationController)
+        view.addSubview(navigationController.view)
+        navigationController.view.translatesAutoresizingMaskIntoConstraints = false
+        view.pinSubviewToAllEdges(navigationController.view)
+        navigationController.didMove(toParent: self)
+    }
+
+    @objc private func buttonCloseTapped() {
+        presentingViewController?.dismiss(animated: true)
+    }
+}
+
+private struct SiteSwitcherView: View {
     @State private var searchText = ""
     @State private var isSearching = false
-    @Environment(\.dismiss) private var dismiss
 
-    init(selectionCallback: @escaping ((NSNumber) -> Void),
-         addSiteCallback: @escaping (() -> Void),
-         eventTracker: EventTracker = DefaultEventTracker()
-    ) {
-        self.selectionCallback = selectionCallback
-        self.addSiteCallback = addSiteCallback
-        self.eventTracker = eventTracker
-    }
+    let addSiteAction: (() -> Void)
+    let onSiteSelected: ((Blog) -> Void)
+    var eventTracker: EventTracker = DefaultEventTracker()
 
     var body: some View {
         if #available(iOS 17.0, *) {
-            NavigationStack {
-                blogListVStack
-            }
-            .searchable(
-                text: $searchText,
-                isPresented: $isSearching,
-                placement: .navigationBarDrawer(displayMode: .always)
-            )
-        } else {
-            NavigationView {
-                blogListVStack
-                    .navigationBarTitleDisplayMode(.inline)
-                    .searchable(
-                        text: $searchText,
-                        placement: .navigationBarDrawer(displayMode: .always)
-                    )
-                    .onChange(of: searchText) { newValue in
-                        isSearching = !newValue.isEmpty
-                    }
-            }
-        }
-    }
-
-    private var blogListVStack: some View {
-        VStack(spacing: 0) {
             blogListView
-            if !isSearching {
-                addSiteButtonVStack
-            }
+                .searchable(
+                    text: $searchText,
+                    isPresented: $isSearching,
+                    placement: .navigationBarDrawer(displayMode: .always)
+                )
+        } else {
+            blogListView
+                .searchable(
+                    text: $searchText,
+                    placement: .navigationBarDrawer(displayMode: .always)
+                )
+                .onChange(of: searchText) { newValue in
+                    isSearching = !newValue.isEmpty
+                }
         }
     }
 
     private var blogListView: some View {
         BlogListView(
-            isEditing: $isEditing,
             isSearching: $isSearching,
             searchText: $searchText,
-            selectionCallback: selectionCallback
+            onSiteSelected: onSiteSelected
         )
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                cancelButton
-            }
-            ToolbarItem(placement: .navigationBarTrailing) {
-                editButton
+        .safeAreaInset(edge: .bottom) {
+            if !isSearching {
+                HStack {
+                    Spacer()
+                    FAB(action: addSiteAction)
+                        .padding(.trailing, 20)
+                        .padding(.bottom, UIDevice.current.userInterfaceIdiom == .pad ? 20 : 0)
+                }
             }
         }
         .navigationTitle(Strings.navigationTitle)
         .navigationBarTitleDisplayMode(.inline)
     }
-
-    private var cancelButton: some View {
-        Button(action: {
-            dismiss()
-        }, label: {
-            Text(Strings.navigationDismissButtonTitle)
-                .style(.bodyLarge(.regular))
-                .foregroundStyle(
-                    Color.DS.Foreground.primary
-                )
-        })
-    }
-
-    private var editButton: some View {
-        Button(action: {
-            isEditing.toggle()
-            eventTracker.track(.siteSwitcherToggledPinTapped, properties: ["state": isEditing ? "edit" : "done"])
-        }, label: {
-            Text(isEditing ? Strings.navigationDoneButtonTitle: Strings.navigationEditButtonTitle)
-                .style(.bodyLarge(.regular))
-                .foregroundStyle(
-                    Color.DS.Foreground.primary
-                )
-        })
-    }
-
-    private var addSiteButtonVStack: some View {
-        VStack(spacing: .DS.Padding.medium) {
-            Divider()
-                .background(Color.DS.Foreground.secondary)
-            DSButton(title: Strings.addSiteButtonTitle, style: .init(emphasis: .primary, size: .large)) {
-                addSiteCallback()
-            }
-            .accessibilityIdentifier("add-site-button")
-            .padding(.horizontal, .DS.Padding.medium)
-        }
-        .background(Color.DS.Background.primary)
-    }
 }
 
-private extension SiteSwitcherView {
-    enum Strings {
-        static let navigationTitle = NSLocalizedString(
-            "site_switcher_title",
-            value: "Choose a site",
-            comment: "Title for site switcher screen."
-        )
-
-        static let navigationDismissButtonTitle = NSLocalizedString(
-            "site_switcher_dismiss_button_title",
-            value: "Cancel",
-            comment: "Dismiss button title above the search."
-        )
-
-        static let navigationEditButtonTitle = NSLocalizedString(
-            "site_switcher_edit_button_title",
-            value: "Edit",
-            comment: "Edit button title above the search."
-        )
-
-        static let navigationDoneButtonTitle = NSLocalizedString(
-            "site_switcher_done_button_title",
-            value: "Done",
-            comment: "Done button title above the search."
-        )
-
-        static let addSiteButtonTitle = NSLocalizedString(
-            "site_switcher_cta_title",
-            value: "Add a site",
-            comment: "CTA title for the site switcher screen."
-        )
-    }
+private enum Strings {
+    static let navigationTitle = NSLocalizedString(
+        "sitePicker.title",
+        value: "My Sites",
+        comment: "Title for site switcher screen"
+    )
 }
