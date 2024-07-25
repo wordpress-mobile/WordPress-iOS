@@ -18,6 +18,7 @@ import WordPressUI
 /// The subtitle is optional and will only show if provided.
 /// If this view is presented as a result of connectivity issue we will override the title, subtitle, image and accessorySubview (if it was set) to default values defined in the NoConnection struct
 ///
+/// - warning: Soft-deprecated
 @objc class NoResultsViewController: UIViewController {
 
     // MARK: - Properties

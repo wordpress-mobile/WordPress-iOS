@@ -39,8 +39,6 @@ final class SiteTagsViewController: UITableViewController {
         returnValue.obscuresBackgroundDuringPresentation = false
         returnValue.searchResultsUpdater = self
         returnValue.delegate = self
-
-        WPStyleGuide.configureSearchBar(returnValue.searchBar)
         return returnValue
     }()
 
@@ -49,7 +47,7 @@ final class SiteTagsViewController: UITableViewController {
     @objc
     public init(blog: Blog) {
         self.blog = blog
-        super.init(style: .grouped)
+        super.init(style: .plain)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -59,10 +57,10 @@ final class SiteTagsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        navigationItem.searchController = searchController
         noResultsViewController.delegate = self
 
         setAccessibilityIdentifier()
-        applyStyleGuide()
         applyTitle()
         setupTable()
 
@@ -73,28 +71,11 @@ final class SiteTagsViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        searchController.searchBar.isHidden = false
         refreshNoResultsView()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        // HACK: Normally, to hide the scroll bars we'd define a presentation context.
-        // This is impacting layout when navigating back from a detail. As a work
-        // around we can simply hide the search bar.
-        if searchController.isActive {
-            searchController.searchBar.isHidden = true
-        }
     }
 
     private func setAccessibilityIdentifier() {
         tableView.accessibilityIdentifier = TableConstants.accesibilityIdentifier
-    }
-
-    private func applyStyleGuide() {
-        WPStyleGuide.configureColors(view: view, tableView: tableView)
-        WPStyleGuide.configureAutomaticHeightRows(for: tableView)
     }
 
     private func applyTitle() {
@@ -152,17 +133,6 @@ final class SiteTagsViewController: UITableViewController {
         } else {
             navigationItem.rightBarButtonItem = nil
         }
-    }
-
-    private func setupSearchBar() {
-        guard tableView.tableHeaderView == nil else {
-            return
-        }
-       tableView.tableHeaderView = searchController.searchBar
-    }
-
-    private func removeSearchBar() {
-        tableView.tableHeaderView = nil
     }
 
     @objc private func createTag() {
