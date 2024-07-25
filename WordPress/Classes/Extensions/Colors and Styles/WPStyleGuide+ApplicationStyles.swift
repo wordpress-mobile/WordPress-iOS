@@ -2,9 +2,28 @@ import Foundation
 import WordPressShared
 
 extension WPStyleGuide {
-    @objc
-    public class var preferredStatusBarStyle: UIStatusBarStyle {
-        .default
+
+    public class func configureAppearance() {
+        // iOS 14 started rendering backgrounds for stack views, when previous versions
+        // of iOS didn't show them. This is a little hacky, but ensures things keep
+        // looking the same on newer versions of iOS.
+        UIStackView.appearance().backgroundColor = .clear
+
+        WPStyleGuide.configureNavigationAppearance()
+        WPStyleGuide.configureTableViewAppearance()
+        WPStyleGuide.configureDefaultTint()
+
+        UISwitch.appearance().onTintColor = .primary
+
+        // SVProgressHUD
+        SVProgressHUD.setBackgroundColor(UIColor.neutral(.shade70).withAlphaComponent(0.95))
+        SVProgressHUD.setForegroundColor(.white)
+        SVProgressHUD.setErrorImage(UIImage(named: "hud_error")!)
+        SVProgressHUD.setSuccessImage(UIImage(named: "hud_success")!)
+
+        // Post Settings styles
+        UITableView.appearance(whenContainedInInstancesOf: [AztecNavigationController.self]).tintColor = .editorPrimary
+        UISwitch.appearance(whenContainedInInstancesOf: [AztecNavigationController.self]).onTintColor = .editorPrimary
     }
 
     @objc

@@ -41,10 +41,6 @@ class EditPageViewController: UIViewController {
         }
     }
 
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return WPStyleGuide.preferredStatusBarStyle
-    }
-
     fileprivate func pageToEdit() -> Page {
         if let page = self.page {
             return page

@@ -263,10 +263,6 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         super.viewWillDisappear(animated)
     }
 
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .default
-    }
-
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 

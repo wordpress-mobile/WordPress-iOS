@@ -20,10 +20,6 @@ class AztecNavigationController: UINavigationController {
         return delegate as? AztecNavigationControllerDelegate
     }
 
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return WPStyleGuide.preferredStatusBarStyle
-    }
-
     // MARK: - Overriden Methods
 
     override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {

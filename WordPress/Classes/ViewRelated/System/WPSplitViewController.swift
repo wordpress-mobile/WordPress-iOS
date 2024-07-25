@@ -84,17 +84,6 @@ class WPSplitViewController: UISplitViewController {
         preferredDisplayMode = .oneBesideSecondary
     }
 
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return WPStyleGuide.preferredStatusBarStyle
-    }
-
-    override var childForStatusBarStyle: UIViewController? {
-        if let _ = topDetailViewController as? DefinesVariableStatusBarStyle {
-            return topDetailViewController
-        }
-        return nil
-    }
-
     @objc var overrideTraitCollection: UITraitCollection? = nil
 
     override var traitCollection: UITraitCollection {
@@ -677,10 +666,6 @@ extension UIViewController {
 /// delegate method detects that there are no fullscreen view controllers left
 /// in the stack.
 protocol PrefersFullscreenDisplay: AnyObject {}
-
-/// Used to indicate whether a view controller varies its preferred status bar style.
-///
-protocol DefinesVariableStatusBarStyle: AnyObject {}
 
 // MARK: - WPSplitViewControllerDetailProvider Protocol
 

@@ -144,8 +144,6 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
 
     // MARK: - Navbar Help and App Logo methods
 
-    // TODO: remove !!!
-
     func styleNavigationBar(forUnified: Bool = false) {
         var backgroundColor: UIColor
         var buttonTextColor: UIColor

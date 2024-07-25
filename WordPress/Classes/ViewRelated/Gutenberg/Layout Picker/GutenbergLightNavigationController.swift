@@ -6,10 +6,6 @@ class GutenbergLightNavigationController: UINavigationController {
         return .separator
     }
 
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .default
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 

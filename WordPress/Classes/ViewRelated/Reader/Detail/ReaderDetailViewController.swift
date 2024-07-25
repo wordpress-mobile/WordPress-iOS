@@ -142,10 +142,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         }
     }
 
-    override open var preferredStatusBarStyle: UIStatusBarStyle {
-        return currentPreferredStatusBarStyle
-    }
-
     override var hidesBottomBarWhenPushed: Bool {
         set { }
         get { true }
@@ -1360,10 +1356,6 @@ extension ReaderDetailViewController {
         )
     }
 }
-
-// MARK: - DefinesVariableStatusBarStyle
-// Allows this VC to control the statusbar style dynamically
-extension ReaderDetailViewController: DefinesVariableStatusBarStyle {}
 
 // MARK: - BorderedButtonTableViewCellDelegate
 // For the `View All Comments` button.

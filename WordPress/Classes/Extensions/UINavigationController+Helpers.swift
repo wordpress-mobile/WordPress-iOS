@@ -1,17 +1,6 @@
 import UIKit
 
 extension UINavigationController {
-    override open var preferredStatusBarStyle: UIStatusBarStyle {
-        return WPStyleGuide.preferredStatusBarStyle
-    }
-
-    override open var childForStatusBarStyle: UIViewController? {
-        if let _ = topViewController as? DefinesVariableStatusBarStyle {
-            return topViewController
-        }
-        return nil
-    }
-
     @objc func scrollContentToTopAnimated(_ animated: Bool) {
         guard viewControllers.count == 1 else { return }
 
