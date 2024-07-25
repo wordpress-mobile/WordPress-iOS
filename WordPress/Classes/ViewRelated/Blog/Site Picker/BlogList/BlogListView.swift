@@ -1,23 +1,14 @@
 import SwiftUI
 import DesignSystem
+import WordPressUI
 
 struct BlogListView: View {
     @StateObject var viewModel = BlogListViewModel()
 
-    @Binding private var isSearching: Bool
-    @Binding private var searchText: String
+    @Binding var isSearching: Bool
+    @Binding var searchText: String
 
-    private let onSiteSelected: ((Blog) -> Void)
-
-    init(
-        isSearching: Binding<Bool>,
-        searchText: Binding<String>,
-        onSiteSelected: @escaping ((Blog) -> Void)
-    ) {
-        self._isSearching = isSearching
-        self._searchText = searchText
-        self.onSiteSelected = onSiteSelected
-    }
+    let onSiteSelected: ((Blog) -> Void)
 
     var body: some View {
         List {
@@ -27,14 +18,16 @@ struct BlogListView: View {
                 listContent
             }
         }
+        .refreshable {
+            try? await viewModel.refresh()
+        }
         .environment(\.defaultMinListRowHeight, 30) // For custom section headers
         .listStyle(.plain)
         .onChange(of: searchText) { newValue in
             viewModel.searchQueryChanged(newValue)
         }
-        .onAppear {
-            viewModel.viewAppeared()
-        }
+        .onAppear(perform: viewModel.onAppear)
+        .onDisappear(perform: viewModel.onDisappear)
     }
 
     @ViewBuilder
@@ -65,15 +58,38 @@ struct BlogListView: View {
 
     private func makeSiteList(with sites: [BlogListSiteViewModel]) -> some View {
         ForEach(sites) { site in
-            Button {
-                if let site = viewModel.didSelectSite(withSiteID: site.id) {
-                    onSiteSelected(site)
-                }
-            } label: {
-                BlogListSiteView(site: site)
+            makeSiteView(with: site)
+                .listRowSeparator(site.id == sites.first?.id ? .hidden : .automatic, edges: .top)
+                .listRowSeparator(site.id == sites.last?.id ? .hidden : .automatic, edges: .bottom)
+        }
+    }
+
+    @ViewBuilder
+    private func makeSiteView(with site: BlogListSiteViewModel) -> some View {
+        let view = Button {
+            if let site = viewModel.didSelectSite(withSiteID: site.id) {
+                onSiteSelected(site)
             }
-            .listRowSeparator(site.id == sites.first?.id ? .hidden : .automatic, edges: .top)
-            .listRowSeparator(site.id == sites.last?.id ? .hidden : .automatic, edges: .bottom)
+        } label: {
+            BlogListSiteView(site: site)
+        }
+        if #available(iOS 16, *), let siteURL = site.siteURL {
+            view.swipeActions(edge: .leading) {
+                Button(SharedStrings.Button.view, systemImage: "safari", action: site.buttonViewTapped)
+                    .tint(Color.blue)
+            }
+            .swipeActions(edge: .trailing) {
+                ShareLink(item: siteURL)
+            }
+            .contextMenu {
+                Button(SharedStrings.Button.view, systemImage: "safari", action: site.buttonViewTapped)
+                Button(SharedStrings.Button.copyLink, systemImage: "doc.on.doc", action: site.buttonCopyLinkTapped)
+                ShareLink(item: siteURL)
+            } preview: {
+                WebView(url: siteURL)
+            }
+        } else {
+            view
         }
     }
 }

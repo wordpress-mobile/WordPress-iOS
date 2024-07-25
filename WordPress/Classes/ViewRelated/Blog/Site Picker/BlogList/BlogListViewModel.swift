@@ -10,12 +10,14 @@ final class BlogListViewModel: NSObject, ObservableObject {
     private var searchText: String = ""
     private let fetchedResultsController: NSFetchedResultsController<Blog>
     private let contextManager: ContextManager
+    private let blogService: BlogService
     private let eventTracker: EventTracker
+    private var syncBlogsTask: Task<Void, Error>?
 
     init(contextManager: ContextManager = ContextManager.sharedInstance(),
-         eventTracker: EventTracker = DefaultEventTracker()
-    ) {
+         eventTracker: EventTracker = DefaultEventTracker()) {
         self.contextManager = contextManager
+        self.blogService = BlogService(coreDataStack: contextManager)
         self.eventTracker = eventTracker
         self.fetchedResultsController = createFetchedResultsController(in: contextManager.mainContext)
         super.init()
@@ -39,12 +41,23 @@ final class BlogListViewModel: NSObject, ObservableObject {
         return blog
     }
 
-    func viewAppeared() {
+    func onAppear() {
         if recentSites.isEmpty {
             selectedBlog()?.lastUsed = Date()
         }
         contextManager.save(contextManager.mainContext)
+
+        Task {
+            try? await refresh()
+        }
     }
+
+    func onDisappear() {
+        syncBlogsTask?.cancel()
+        syncBlogsTask = nil
+    }
+
+    // MARK: - Data Source
 
     private func selectedBlog() -> Blog? {
         RootViewCoordinator.sharedPresenter.currentOrLastBlog()
@@ -57,10 +70,10 @@ final class BlogListViewModel: NSObject, ObservableObject {
         } catch {
             wpAssertionFailure("sites-fetch-failed", userInfo: ["error": "\(error)"])
         }
-        refreshSites()
+        updateDisplayedSites()
     }
 
-    private func refreshSites() {
+    private func updateDisplayedSites() {
         rawSites = getFilteredSites(from: fetchedResultsController)
 
         recentSites = rawSites
@@ -92,11 +105,36 @@ final class BlogListViewModel: NSObject, ObservableObject {
             }
         }
     }
+
+    // MARK: - Sync
+
+    func refresh() async throws {
+        if let task = syncBlogsTask {
+            return try await task.value
+        }
+        let task = Task {
+            defer { syncBlogsTask = nil }
+            try await syncBlogs()
+        }
+        syncBlogsTask = task
+        return try await task.value
+    }
+
+    @MainActor
+    private func syncBlogs() async throws {
+        guard let account = try WPAccount.lookupDefaultWordPressComAccount(in: contextManager.mainContext) else {
+            return
+        }
+        try await withUnsafeThrowingContinuation { continuation in
+            blogService.syncBlogs(for: account, success: continuation.resume, failure: continuation.resume(throwing:))
+        }
+        StoreContainer.shared.statsWidgets.refreshStatsWidgetsSiteList()
+    }
 }
 
 extension BlogListViewModel: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        refreshSites()
+        updateDisplayedSites()
     }
 }
 
