@@ -55,7 +55,7 @@ class SiteStatsDashboardViewController: UIViewController {
 
     @objc lazy var manageInsightsButton: UIBarButtonItem = {
         let button = UIBarButtonItem(
-                image: .gridicon(.cog),
+                image: UIImage(systemName: "gearshape"),
                 style: .plain,
                 target: self,
                 action: #selector(manageInsightsButtonTapped))
@@ -97,7 +97,7 @@ class SiteStatsDashboardViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Important to make navigation bar matcht the filter bar
+        // Important to make navigation bar match the filter bar
         view.backgroundColor = .systemBackground
 
         configureJetpackBanner()

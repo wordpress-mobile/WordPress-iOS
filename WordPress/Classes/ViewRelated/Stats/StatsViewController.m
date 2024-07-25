@@ -31,6 +31,7 @@
 {
     StatsViewController *statsController = [StatsViewController new];
     statsController.blog = blog;
+    statsController.hidesBottomBarWhenPushed = YES;
     statsController.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [controller.navigationController pushViewController:statsController animated:YES];
     

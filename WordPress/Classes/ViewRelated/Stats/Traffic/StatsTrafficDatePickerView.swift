@@ -27,7 +27,6 @@ struct StatsTrafficDatePickerView: View {
                 }
                 .padding(.vertical, .DS.Padding.single)
                 .padding(.horizontal, .DS.Padding.double)
-                .background(Color.DS.Background.secondary)
                 .clipShape(RoundedRectangle(cornerRadius: .DS.Radius.max))
                 .overlay(
                     RoundedRectangle(cornerRadius: .DS.Radius.max)
