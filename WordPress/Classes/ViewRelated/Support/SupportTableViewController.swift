@@ -28,7 +28,7 @@ class SupportTableViewController: UITableViewController {
 
     // MARK: - Init
 
-    init(configuration: Configuration = .init(), style: UITableView.Style = .grouped) {
+    init(configuration: Configuration = .init(), style: UITableView.Style = .insetGrouped) {
         self.configuration = configuration
         super.init(style: style)
     }
@@ -38,18 +38,19 @@ class SupportTableViewController: UITableViewController {
     }
 
     required convenience init(dismissTapped: (() -> ())?) {
-        self.init(configuration: .init(), style: .grouped)
+        self.init(configuration: .init(), style: .insetGrouped)
         self.dismissTapped = dismissTapped
     }
 
     @objc public convenience init() {
-        self.init(configuration: .init(), style: .grouped)
+        self.init(configuration: .init(), style: .insetGrouped)
     }
 
     // MARK: - View
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         WPAnalytics.track(.openedSupport)
         setupNavBar()
         setupTable()
@@ -173,8 +174,7 @@ private extension SupportTableViewController {
                                tableView: tableView)
         tableHandler = ImmuTableViewHandler(takeOver: self)
         reloadViewModel()
-        WPStyleGuide.configureColors(view: view, tableView: tableView)
-        tableView.tableFooterView = UIView() // remove empty cells
+
         if let headerConfig = configuration.meHeaderConfiguration {
             let headerView = MeHeaderView()
             headerView.update(with: headerConfig)
