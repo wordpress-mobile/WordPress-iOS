@@ -35,17 +35,17 @@ final class SiteTagsViewController: UITableViewController {
     }()
 
     private lazy var searchController: UISearchController = {
-        let returnValue = UISearchController(searchResultsController: nil)
-        returnValue.hidesNavigationBarDuringPresentation = false
-        returnValue.obscuresBackgroundDuringPresentation = false
-        returnValue.searchResultsUpdater = self
-        returnValue.delegate = self
-        return returnValue
+        let controller = UISearchController(searchResultsController: nil)
+        controller.hidesNavigationBarDuringPresentation = false
+        controller.obscuresBackgroundDuringPresentation = false
+        controller.searchResultsUpdater = self
+        controller.delegate = self
+        return controller
     }()
 
     private var stateView: UIView? {
         didSet {
-            stateView?.removeFromSuperview()
+            oldValue?.removeFromSuperview()
             if let stateView {
                 tableView.addSubview(stateView)
                 stateView.translatesAutoresizingMaskIntoConstraints = false
@@ -197,6 +197,7 @@ extension SiteTagsViewController {
         tagsService.save(tag, for: blog, success: { [weak self] tag in
             self?.refreshControl?.endRefreshing()
             self?.tableView.reloadData()
+            self?.refreshNoResultsView()
         }, failure: { error in
             self.refreshControl?.endRefreshing()
         })
@@ -332,7 +333,7 @@ extension SiteTagsViewController {
         let confirmationSubtitle = NSLocalizedString("Are you sure you want to delete this tag?", comment: "Message asking for confirmation on tag deletion")
         let actionTitle = NSLocalizedString("Delete", comment: "Delete")
         let cancelTitle = NSLocalizedString("Cancel", comment: "Alert dismissal title")
-        let trashIcon = UIImage.gridicon(.trash)
+        let trashIcon = UIImage(systemName: "trash") ?? UIImage()
 
         return SettingsTitleSubtitleController.Confirmation(title: confirmationTitle,
                                                             subtitle: confirmationSubtitle,
@@ -398,6 +399,7 @@ private extension SiteTagsViewController {
     func hideNoResults() {
         stateView = nil
         navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
         tableView.reloadData()
     }
 
