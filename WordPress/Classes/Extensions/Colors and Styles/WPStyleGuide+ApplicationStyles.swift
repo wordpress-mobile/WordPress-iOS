@@ -51,27 +51,6 @@ extension WPStyleGuide {
     class func configureTableViewAppearance() {
         UITableView.appearance().sectionHeaderTopPadding = 0
     }
-
-    /// Style the tab bar using Muriel colors
-    class func configureTabBarAppearance() {
-        UITabBar.appearance().tintColor = .tabSelected
-        UITabBar.appearance().unselectedItemTintColor = .tabUnselected
-
-        let appearance = UITabBarAppearance()
-        appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = .systemBackground
-
-        UITabBar.appearance().standardAppearance = appearance
-        UITabBar.appearance().scrollEdgeAppearance = appearance
-    }
-
-    class func configureToolbarAppearance() {
-        let appearance = UIToolbarAppearance()
-        appearance.configureWithDefaultBackground()
-
-        UIToolbar.appearance().standardAppearance = appearance
-        UIToolbar.appearance().scrollEdgeAppearance = appearance
-    }
 }
 
 extension WPStyleGuide {

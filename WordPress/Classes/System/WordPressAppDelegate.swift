@@ -815,11 +815,9 @@ extension WordPressAppDelegate {
         // looking the same on newer versions of iOS.
         UIStackView.appearance().backgroundColor = .clear
 
-        WPStyleGuide.configureTabBarAppearance()
         WPStyleGuide.configureNavigationAppearance()
         WPStyleGuide.configureTableViewAppearance()
         WPStyleGuide.configureDefaultTint()
-        WPStyleGuide.configureToolbarAppearance()
 
         UISwitch.appearance().onTintColor = .primary
 
