@@ -155,6 +155,6 @@ extension TimeZoneSelectorViewController {
     }
 
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        0 // Important
+        0 // Hide ghost footer added by ImmuTableViewHandler
     }
 }
