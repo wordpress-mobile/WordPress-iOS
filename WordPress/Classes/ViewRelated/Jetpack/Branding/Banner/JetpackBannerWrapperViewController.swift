@@ -27,8 +27,6 @@ final class JetpackBannerWrapperViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        extendedLayoutIncludesOpaqueBars = true
-
         let stackView = UIStackView()
         configureStackView(stackView)
         configureChildVC(stackView)

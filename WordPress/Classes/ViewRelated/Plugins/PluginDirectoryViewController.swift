@@ -29,7 +29,6 @@ class PluginDirectoryViewController: UITableViewController {
         WPStyleGuide.configureColors(view: nil, tableView: tableView)
 
         definesPresentationContext = true
-        extendedLayoutIncludesOpaqueBars = true
 
         viewModelReceipt = viewModel.onChange { [weak self] in
             self?.reloadTable()

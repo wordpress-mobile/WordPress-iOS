@@ -82,8 +82,6 @@ class WPSplitViewController: UISplitViewController {
 
         delegate = self
         preferredDisplayMode = .oneBesideSecondary
-
-        extendedLayoutIncludesOpaqueBars = true
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -159,8 +157,6 @@ class WPSplitViewController: UISplitViewController {
             // see a large tab bar sized gap underneath each view controller.
             for viewController in viewControllers {
                 if let viewController = viewController as? UINavigationController {
-                    viewController.extendedLayoutIncludesOpaqueBars = true
-
                     // Override traits to pass a compact size class if necessary
                     setOverrideTraitCollection(overriddenTraitCollectionForDetailViewController,
                                                forChild: viewController)
@@ -338,7 +334,6 @@ class WPSplitViewController: UISplitViewController {
             navigationController = UINavigationController(rootViewController: viewController)
         }
         navigationController.delegate = self
-        navigationController.extendedLayoutIncludesOpaqueBars = true
         WPStyleGuide.configureColors(view: navigationController.view, tableView: nil)
 
         return navigationController

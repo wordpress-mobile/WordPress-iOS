@@ -59,13 +59,6 @@ class ReaderDisplaySettingViewController: UIViewController {
     }
 
     private func setupNavigationItems() {
-        // configure transparent navigation bar for the view
-        let navAppearance = UINavigationBarAppearance()
-        navAppearance.configureWithTransparentBackground()
-        navigationItem.standardAppearance = navAppearance
-        navigationItem.scrollEdgeAppearance = navAppearance
-        navigationItem.compactAppearance = navAppearance
-
         guard let displaySetting = viewModel?.displaySetting else {
             return
         }

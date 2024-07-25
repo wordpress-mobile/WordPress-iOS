@@ -6,7 +6,6 @@ extension PostEditor {
     func displayPostSettings() {
         let viewController = PostSettingsViewController.make(for: post)
         viewController.featuredImageDelegate = self as? FeaturedImageDelegate
-        viewController.configureDefaultNavigationBarAppearance()
         let doneButton = UIBarButtonItem(systemItem: .done, primaryAction: .init(handler: { [weak self] _ in
             self?.editorContentWasUpdated()
             self?.navigationController?.dismiss(animated: true)
@@ -15,7 +14,6 @@ extension PostEditor {
         viewController.navigationItem.rightBarButtonItem = doneButton
 
         let navigation = UINavigationController(rootViewController: viewController)
-        navigation.navigationBar.isTranslucent = true // Reset to default
         self.navigationController?.present(navigation, animated: true)
     }
 

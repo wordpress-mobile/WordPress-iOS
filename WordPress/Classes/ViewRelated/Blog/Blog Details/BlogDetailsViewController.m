@@ -266,7 +266,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     self = [super init];
     
     if (self) {
-        self.extendedLayoutIncludesOpaqueBars = true;
         self.isScrollEnabled = false;
     }
     

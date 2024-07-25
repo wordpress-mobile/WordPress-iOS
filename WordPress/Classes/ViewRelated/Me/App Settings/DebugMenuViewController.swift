@@ -178,10 +178,8 @@ final class DebugMenuViewController: UIHostingController<DebugMenuView> {
         viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(systemItem: .close, primaryAction: .init { [weak topViewController] _ in
             topViewController?.dismiss(animated: true)
         })
-        viewController.configureDefaultNavigationBarAppearance()
 
         let navigation = UINavigationController(rootViewController: viewController)
-        navigation.navigationBar.isTranslucent = true // Reset to default
         topViewController.present(navigation, animated: true)
     }
 }

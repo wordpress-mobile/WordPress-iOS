@@ -44,16 +44,6 @@ class MigrationNavigationController: UINavigationController {
     }
 
     private func configure() {
-        let navigationBar = self.navigationBar
-        let standardAppearance = UINavigationBarAppearance()
-        standardAppearance.configureWithDefaultBackground()
-        let scrollEdgeAppearance = UINavigationBarAppearance()
-        scrollEdgeAppearance.configureWithTransparentBackground()
-        navigationBar.standardAppearance = standardAppearance
-        navigationBar.scrollEdgeAppearance = scrollEdgeAppearance
-        navigationBar.compactAppearance = standardAppearance
-        navigationBar.compactScrollEdgeAppearance = scrollEdgeAppearance
-        navigationBar.isTranslucent = true
         listenForStateChanges()
     }
 

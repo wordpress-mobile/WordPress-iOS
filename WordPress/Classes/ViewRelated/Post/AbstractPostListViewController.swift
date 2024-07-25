@@ -91,7 +91,6 @@ class AbstractPostListViewController: UIViewController,
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
 
         edgesForExtendedLayout = .all
-        extendedLayoutIncludesOpaqueBars = true
     }
 
     required init?(coder: NSCoder) {
@@ -109,7 +108,6 @@ class AbstractPostListViewController: UIViewController,
         configureTableView()
         configureSearchController()
         configureAuthorFilter()
-        configureDefaultNavigationBarAppearance()
 
         updateAndPerformFetchRequest()
 

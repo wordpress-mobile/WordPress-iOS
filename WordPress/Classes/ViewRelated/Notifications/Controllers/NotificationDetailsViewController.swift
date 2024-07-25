@@ -1167,7 +1167,6 @@ private extension NotificationDetailsViewController {
         let navController = UINavigationController(rootViewController: editViewController!)
         navController.modalPresentationStyle = .formSheet
         navController.modalTransitionStyle = .coverVertical
-        navController.navigationBar.isTranslucent = false
 
         CommentAnalytics.trackCommentEditorOpened(block: block)
         present(navController, animated: true)

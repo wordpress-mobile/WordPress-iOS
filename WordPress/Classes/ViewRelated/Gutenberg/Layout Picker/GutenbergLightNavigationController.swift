@@ -12,6 +12,8 @@ class GutenbergLightNavigationController: UINavigationController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        // TDODO: remove!
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = .systemBackground
         appearance.shadowColor = separatorColor

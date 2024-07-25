@@ -102,7 +102,6 @@ final class AllDomainsListViewController: UIViewController {
         searchController.searchBar.placeholder = Strings.searchBar
         self.navigationItem.searchController = searchController
         self.navigationItem.hidesSearchBarWhenScrolling = false
-        self.extendedLayoutIncludesOpaqueBars = true
         self.edgesForExtendedLayout = .top
     }
 

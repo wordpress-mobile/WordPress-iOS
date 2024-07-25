@@ -48,9 +48,6 @@ class MeViewController: UITableViewController {
         tableView.accessibilityIdentifier = "Me Table"
 
         reloadViewModel()
-
-        extendedLayoutIncludesOpaqueBars = true
-        configureDefaultNavigationBarAppearance()
     }
 
     override func viewDidLayoutSubviews() {

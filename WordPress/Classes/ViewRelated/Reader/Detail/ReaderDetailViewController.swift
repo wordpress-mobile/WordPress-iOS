@@ -863,8 +863,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         }
 
         let navController = UINavigationController(rootViewController: viewController)
-        navController.navigationBar.isTranslucent = true
-
         if let sheet = navController.sheetPresentationController {
             sheet.detents = [.large()]
             sheet.prefersGrabberVisible = false

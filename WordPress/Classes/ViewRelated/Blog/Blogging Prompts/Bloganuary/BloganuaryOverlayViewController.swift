@@ -70,12 +70,6 @@ class BloganuaryOverlayViewController: UIViewController {
     }
 
     private func setupNavigationBar() {
-        let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = .systemBackground
-        appearance.shadowColor = .clear
-        navigationItem.scrollEdgeAppearance = appearance
-        navigationItem.compactScrollEdgeAppearance = appearance
-
         // Set up the close button in the navigation bar.
         let dismissAction = UIAction { [weak self] _ in
             BloganuaryTracker.trackModalDismissed()

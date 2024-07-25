@@ -110,11 +110,6 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
             viewController.tableView.isScrollEnabled = true
             viewController.blog = blog
             viewController.presentationDelegate = self
-            viewController.navigationItem.scrollEdgeAppearance = {
-                let appearance = UINavigationBarAppearance()
-                appearance.configureWithTransparentBackground()
-                return appearance
-            }()
             self.blogDetailsViewController = viewController
             self.parentViewController?.show(viewController, sender: nil)
         }

@@ -45,12 +45,6 @@ class JetpackActivityLogViewController: BaseActivityListViewController {
 
     // MARK: - View lifecycle
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        extendedLayoutIncludesOpaqueBars = true
-    }
-
     private func configureBanner() {
         containerStackView.addArrangedSubview(jetpackBannerView)
         addTranslationObserver(jetpackBannerView)

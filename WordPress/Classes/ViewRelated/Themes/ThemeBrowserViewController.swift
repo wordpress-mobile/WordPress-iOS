@@ -316,7 +316,6 @@ public protocol ThemePresenter: AnyObject {
     }
 
     fileprivate func configureSearchController() {
-        extendedLayoutIncludesOpaqueBars = true
         definesPresentationContext = true
 
         searchController = UISearchController(searchResultsController: nil)

@@ -537,8 +537,6 @@ private extension PeopleViewController {
     func setupView() {
         title = NSLocalizedString("People", comment: "Noun. Title of the people management feature.")
 
-        extendedLayoutIncludesOpaqueBars = true
-
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
                                                             target: self,
                                                             action: #selector(invitePersonWasPressed))

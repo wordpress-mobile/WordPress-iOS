@@ -65,8 +65,6 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
 
     func configureAppearance() {
         WPStyleGuide.configureColors(view: view, tableView: tableView)
-
-        extendedLayoutIncludesOpaqueBars = true
     }
 
     // MARK: - ImmuTablePresenter

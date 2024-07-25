@@ -239,9 +239,6 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         setStaticText()
         scrollableView.delegate = self
 
-        formatNavigationController()
-        extendedLayoutIncludesOpaqueBars = true
-        edgesForExtendedLayout = .top
         updateSeperatorStyle()
     }
 
@@ -324,22 +321,6 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     }
 
     // MARK: - Format Nav Bar
-    /*
-     * To allow more flexibility in the navigation bar's header items, we keep the navigation bar available.
-     * However, that space is also essential to a uniform design of the header. This function updates the design of the
-     * navigation bar. We set the design to the `navigationItem`, which is ViewController specific.
-     */
-    private func formatNavigationController() {
-        let newAppearance = UINavigationBarAppearance()
-        newAppearance.configureWithTransparentBackground()
-        newAppearance.backgroundColor = .clear
-        newAppearance.shadowColor = .clear
-        newAppearance.shadowImage = UIImage()
-        navigationItem.standardAppearance = newAppearance
-        navigationItem.scrollEdgeAppearance = newAppearance
-        navigationItem.compactAppearance = newAppearance
-        setNeedsStatusBarAppearanceUpdate()
-    }
 
     // MARK: - View Styling
     private func setStaticText() {
