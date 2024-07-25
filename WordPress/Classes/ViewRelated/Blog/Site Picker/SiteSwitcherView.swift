@@ -22,12 +22,10 @@ final class SiteSwitcherViewController: UIViewController {
         super.viewDidLoad()
 
         let viewController = UIHostingController(rootView: SiteSwitcherView(addSiteAction: addSiteAction, onSiteSelected: onSiteSelected))
-        viewController.configureDefaultNavigationBarAppearance() // Importanat
 
         viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(title: SharedStrings.Button.close, style: .plain, target: self, action: #selector(buttonCloseTapped))
 
         let navigationController = UINavigationController(rootViewController: viewController)
-        navigationController.navigationBar.isTranslucent = true // Reset to default
 
         addChild(navigationController)
         view.addSubview(navigationController.view)

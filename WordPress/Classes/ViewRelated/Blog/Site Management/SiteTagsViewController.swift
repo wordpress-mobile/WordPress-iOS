@@ -380,12 +380,12 @@ private extension SiteTagsViewController {
 
     func showLoadingView() {
         configureAndDisplayNoResults(title: NoResultsText.loadingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
-        removeSearchBar()
+        navigationItem.searchController = nil
     }
 
     func showEmptyResultsView() {
         configureAndDisplayNoResults(title: NoResultsText.noTagsTitle, subtitle: NoResultsText.noTagsMessage, buttonTitle: NoResultsText.createButtonTitle)
-        removeSearchBar()
+        navigationItem.searchController = nil
     }
 
     func showNoSearchResultsView() {
@@ -430,7 +430,7 @@ private extension SiteTagsViewController {
 
     func hideNoResults() {
         noResultsViewController.removeFromView()
-        setupSearchBar()
+        navigationItem.searchController = searchController
         tableView.reloadData()
     }
 
