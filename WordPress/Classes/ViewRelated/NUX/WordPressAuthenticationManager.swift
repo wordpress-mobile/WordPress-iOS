@@ -699,9 +699,6 @@ private extension WordPressAuthenticationManager {
 private extension WordPressAuthenticationManager {
     /// Presents the support screen which displays different support options depending on whether this is the WordPress app or the Jetpack app.
     private func presentSupport(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag) {
-        // Reset the nav style so the Support nav bar has the WP style, not the Auth style.
-        WPStyleGuide.configureNavigationAppearance()
-
         // Since we're presenting the support VC as a form sheet, the parent VC's viewDidAppear isn't called
         // when this VC is dismissed.  This means the tracking step isn't reset properly, so we'll need to do
         // it here manually before tracking the new step.
@@ -717,7 +714,6 @@ private extension WordPressAuthenticationManager {
 
         let navController = UINavigationController(rootViewController: controller)
         navController.modalPresentationStyle = .formSheet
-
         sourceViewController.present(navController, animated: true)
     }
 }

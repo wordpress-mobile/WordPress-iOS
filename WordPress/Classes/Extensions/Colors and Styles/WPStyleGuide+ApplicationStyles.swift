@@ -1,49 +1,31 @@
 import Foundation
+import UIKit
 import WordPressShared
 
 extension WPStyleGuide {
 
     public class func configureAppearance() {
+        WPStyleGuide.configureNavigationAppearance()
+
         // iOS 14 started rendering backgrounds for stack views, when previous versions
         // of iOS didn't show them. This is a little hacky, but ensures things keep
         // looking the same on newer versions of iOS.
         UIStackView.appearance().backgroundColor = .clear
 
-        WPStyleGuide.configureNavigationAppearance()
-        WPStyleGuide.configureTableViewAppearance()
-        WPStyleGuide.configureDefaultTint()
-
+        UIWindow.appearance().tintColor = .primary
         UISwitch.appearance().onTintColor = .primary
 
-        // SVProgressHUD
-        SVProgressHUD.setBackgroundColor(UIColor.neutral(.shade70).withAlphaComponent(0.95))
-        SVProgressHUD.setForegroundColor(.white)
-        SVProgressHUD.setErrorImage(UIImage(named: "hud_error")!)
-        SVProgressHUD.setSuccessImage(UIImage(named: "hud_success")!)
-
-        // Post Settings styles
-        UITableView.appearance(whenContainedInInstancesOf: [AztecNavigationController.self]).tintColor = .editorPrimary
-        UISwitch.appearance(whenContainedInInstancesOf: [AztecNavigationController.self]).onTintColor = .editorPrimary
+        UITableView.appearance().sectionHeaderTopPadding = 0
     }
 
-    @objc
     public class var navigationBarStandardFont: UIFont {
         return AppStyleGuide.navigationBarStandardFont
     }
 
-    @objc
-    public class var navigationBarLargeFont: UIFont {
-        return AppStyleGuide.navigationBarLargeFont
-    }
-
-    class func configureDefaultTint() {
-        UIWindow.appearance().tintColor = .primary
-    }
-
     /// Style the navigation appearance using Muriel colors
-    class func configureNavigationAppearance() {
+    private class func configureNavigationAppearance() {
         var textAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.appBarText]
-        let largeTitleTextAttributes: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.navigationBarLargeFont]
+        let largeTitleTextAttributes: [NSAttributedString.Key: Any] = [.font: AppStyleGuide.navigationBarLargeFont]
 
         textAttributes[.font] = WPStyleGuide.navigationBarStandardFont
 
@@ -64,11 +46,6 @@ extension WPStyleGuide {
         appearance.compactAppearance = standardAppearance
         appearance.scrollEdgeAppearance = scrollEdgeAppearance
         appearance.compactScrollEdgeAppearance = scrollEdgeAppearance
-    }
-
-    /// Style `UITableView` in the app
-    class func configureTableViewAppearance() {
-        UITableView.appearance().sectionHeaderTopPadding = 0
     }
 }
 

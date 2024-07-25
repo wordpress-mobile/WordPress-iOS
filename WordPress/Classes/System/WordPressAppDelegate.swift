@@ -811,6 +811,15 @@ extension WordPressAppDelegate {
         window?.tintColor = .primary
 
         WPStyleGuide.configureAppearance()
+
+        SVProgressHUD.setBackgroundColor(UIColor.neutral(.shade70).withAlphaComponent(0.95))
+        SVProgressHUD.setForegroundColor(.white)
+        SVProgressHUD.setErrorImage(UIImage(named: "hud_error")!)
+        SVProgressHUD.setSuccessImage(UIImage(named: "hud_success")!)
+
+        // Post Settings styles
+        UITableView.appearance(whenContainedInInstancesOf: [AztecNavigationController.self]).tintColor = .editorPrimary
+        UISwitch.appearance(whenContainedInInstancesOf: [AztecNavigationController.self]).onTintColor = .editorPrimary
     }
 }
 

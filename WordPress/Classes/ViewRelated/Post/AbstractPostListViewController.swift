@@ -839,7 +839,7 @@ class AbstractPostListViewController: UIViewController,
 
         let titleView = UILabel()
         titleView.text = Strings.updating + "..."
-        titleView.font = WPStyleGuide.navigationBarStandardFont
+        titleView.font = UIFont.preferredFont(forTextStyle: .headline)
         titleView.textColor = UIColor.secondaryLabel
 
         let stack = UIStackView(arrangedSubviews: [spinner, titleView])
