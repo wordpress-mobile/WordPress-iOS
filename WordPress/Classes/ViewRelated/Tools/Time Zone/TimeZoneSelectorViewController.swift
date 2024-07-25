@@ -31,7 +31,7 @@ class TimeZoneSelectorViewController: UITableViewController, UISearchResultsUpda
     init(selectedValue: String?, onSelectionChanged: @escaping (WPTimeZone) -> Void) {
         self.onSelectionChanged = onSelectionChanged
         self.viewModel = TimeZoneSelectorViewModel(state: .loading, selectedValue: selectedValue, filter: nil)
-        super.init(style: .grouped)
+        super.init(style: .plain)
         searchController.searchResultsUpdater = self
         title = NSLocalizedString("Time Zone", comment: "Title for the time zone selector")
     }
@@ -42,9 +42,13 @@ class TimeZoneSelectorViewController: UITableViewController, UISearchResultsUpda
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         ImmuTable.registerRows([TimeZoneRow.self], tableView: tableView)
-        WPStyleGuide.configureColors(view: view, tableView: tableView)
-        WPStyleGuide.configureSearchBar(searchController.searchBar)
+
+        navigationItem.searchController = searchController
+
+//        WPStyleGuide.configureColors(view: view, tableView: tableView)
+//        WPStyleGuide.configureSearchBar(searchController.searchBar)
 
         configureTableHeaderView()
 
