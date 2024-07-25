@@ -96,6 +96,10 @@ class SiteStatsDashboardViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        // Important to make navigation bar matcht the filter bar
+        view.backgroundColor = .systemBackground
+
         configureJetpackBanner()
         setupFilterBar()
         restoreSelectedDateFromUserDefaults()

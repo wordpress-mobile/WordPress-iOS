@@ -1,6 +1,3 @@
-@import WordPressShared;
-@import Reachability;
-
 #import "StatsViewController.h"
 #import "Blog.h"
 #import "WPAccount.h"
@@ -8,6 +5,9 @@
 #import "BlogService.h"
 #import "WordPress-Swift.h"
 #import "WPAppAnalytics.h"
+
+@import WordPressShared;
+@import Reachability;
 
 @interface StatsViewController () <NoResultsViewControllerDelegate>
 
