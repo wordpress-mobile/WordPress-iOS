@@ -141,9 +141,6 @@ class WPSplitViewController: UISplitViewController {
 
     override var viewControllers: [UIViewController] {
         didSet {
-            // Ensure that each top level navigation controller has
-            // `extendedLayoutIncludesOpaqueBars` set to true. Otherwise we
-            // see a large tab bar sized gap underneath each view controller.
             for viewController in viewControllers {
                 if let viewController = viewController as? UINavigationController {
                     // Override traits to pass a compact size class if necessary

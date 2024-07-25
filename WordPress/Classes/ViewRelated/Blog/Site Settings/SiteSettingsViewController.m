@@ -121,8 +121,6 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     [self.tableView registerNib:MediaQuotaCell.nib forCellReuseIdentifier:MediaQuotaCell.defaultReuseIdentifier];
 
     self.navigationItem.title = NSLocalizedString(@"Settings", @"Title for screen that allows configuration of your blog/site settings.");
-    
-    self.extendedLayoutIncludesOpaqueBars = YES;
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleDataModelChange:)
