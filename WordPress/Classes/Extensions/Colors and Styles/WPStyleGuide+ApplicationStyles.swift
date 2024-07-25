@@ -23,36 +23,28 @@ extension WPStyleGuide {
 
     /// Style the navigation appearance using Muriel colors
     class func configureNavigationAppearance() {
-        let navigationAppearance = UINavigationBar.appearance()
-        navigationAppearance.isTranslucent = false
-        navigationAppearance.tintColor = .appBarTint
-        navigationAppearance.barTintColor = .appBarBackground
-
         var textAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.appBarText]
         let largeTitleTextAttributes: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.navigationBarLargeFont]
 
         textAttributes[.font] = WPStyleGuide.navigationBarStandardFont
 
-        navigationAppearance.titleTextAttributes = textAttributes
-        navigationAppearance.largeTitleTextAttributes = largeTitleTextAttributes
+        let standardAppearance = UINavigationBarAppearance()
+        standardAppearance.configureWithDefaultBackground()
+        standardAppearance.titleTextAttributes = textAttributes
+        standardAppearance.largeTitleTextAttributes = largeTitleTextAttributes
 
-        // Required to fix detail navigation controller appearance due to https://stackoverflow.com/q/56615513
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = .appBarBackground
-        appearance.titleTextAttributes = textAttributes
-        appearance.largeTitleTextAttributes = largeTitleTextAttributes
-        appearance.shadowColor = .separator
+        let scrollEdgeAppearance = UINavigationBarAppearance()
+        scrollEdgeAppearance.configureWithTransparentBackground()
+        scrollEdgeAppearance.titleTextAttributes = textAttributes
+        scrollEdgeAppearance.largeTitleTextAttributes = largeTitleTextAttributes
 
-        let scrollEdgeAppearance = appearance.copy()
-        scrollEdgeAppearance.shadowColor = .clear
-        navigationAppearance.scrollEdgeAppearance = scrollEdgeAppearance
+        let appearance = UINavigationBar.appearance()
+        appearance.tintColor = .appBarTint
 
-        navigationAppearance.standardAppearance = appearance
-        navigationAppearance.compactAppearance = appearance
-
-        let buttonBarAppearance = UIBarButtonItem.appearance()
-        buttonBarAppearance.tintColor = .appBarTint
+        appearance.standardAppearance = standardAppearance
+        appearance.compactAppearance = standardAppearance
+        appearance.scrollEdgeAppearance = scrollEdgeAppearance
+        appearance.compactScrollEdgeAppearance = scrollEdgeAppearance
     }
 
     /// Style `UITableView` in the app
@@ -71,38 +63,6 @@ extension WPStyleGuide {
 
         UITabBar.appearance().standardAppearance = appearance
         UITabBar.appearance().scrollEdgeAppearance = appearance
-    }
-
-    /// Style the `LightNavigationController` UINavigationBar and BarButtonItems
-    class func configureLightNavigationBarAppearance() {
-        let separatorColor: UIColor
-        separatorColor = .systemGray4
-
-        let navigationBarAppearanceProxy = UINavigationBar.appearance(whenContainedInInstancesOf: [LightNavigationController.self])
-        navigationBarAppearanceProxy.backgroundColor = .white // Only used on iOS 12 so doesn't need dark mode support
-        navigationBarAppearanceProxy.barStyle = .default
-        navigationBarAppearanceProxy.barTintColor = .white
-
-        navigationBarAppearanceProxy.titleTextAttributes = [
-            NSAttributedString.Key.foregroundColor: UIColor.text
-        ]
-
-        let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = .systemBackground
-        appearance.shadowColor = separatorColor
-        navigationBarAppearanceProxy.standardAppearance = appearance
-
-        let tintColor = UIColor.lightAppBarTint
-
-        let buttonBarAppearance = UIBarButtonItem.appearance(whenContainedInInstancesOf: [LightNavigationController.self])
-        buttonBarAppearance.tintColor = tintColor
-        buttonBarAppearance.setTitleTextAttributes([NSAttributedString.Key.font: WPFontManager.systemRegularFont(ofSize: 17.0),
-                                                    NSAttributedString.Key.foregroundColor: tintColor],
-                                                   for: .normal)
-        buttonBarAppearance.setTitleTextAttributes([NSAttributedString.Key.font: WPFontManager.systemRegularFont(ofSize: 17.0),
-                                                    NSAttributedString.Key.foregroundColor: tintColor.withAlphaComponent(0.25)],
-                                                   for: .disabled)
-
     }
 
     class func configureToolbarAppearance() {

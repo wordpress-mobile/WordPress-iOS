@@ -819,7 +819,6 @@ extension WordPressAppDelegate {
         WPStyleGuide.configureNavigationAppearance()
         WPStyleGuide.configureTableViewAppearance()
         WPStyleGuide.configureDefaultTint()
-        WPStyleGuide.configureLightNavigationBarAppearance()
         WPStyleGuide.configureToolbarAppearance()
 
         UISwitch.appearance().onTintColor = .primary
@@ -829,8 +828,6 @@ extension WordPressAppDelegate {
         navReferenceAppearance.barTintColor = .primary
 
         UIToolbar.appearance(whenContainedInInstancesOf: [UIReferenceLibraryViewController.self]).barTintColor = .darkGray
-
-        WPStyleGuide.configureSearchBarAppearance()
 
         // SVProgressHUD
         SVProgressHUD.setBackgroundColor(UIColor.neutral(.shade70).withAlphaComponent(0.95))
