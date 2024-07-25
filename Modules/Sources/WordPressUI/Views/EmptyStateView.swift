@@ -12,7 +12,7 @@ public struct EmptyStateView<Label: View, Description: View, Actions: View>: Vie
     }
 
     public var body: some View {
-        VStack(alignment: .center, spacing: 16) {
+        VStack(alignment: .center, spacing: 24) {
             VStack(alignment: .center, spacing: 6) {
                 label()
                     .font(.title2.weight(.medium))

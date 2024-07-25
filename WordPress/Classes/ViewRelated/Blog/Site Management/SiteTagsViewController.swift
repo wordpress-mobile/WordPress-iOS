@@ -1,5 +1,7 @@
 import UIKit
+import SwiftUI
 import Gridicons
+import WordPressUI
 import WordPressShared
 
 final class SiteTagsViewController: UITableViewController {
@@ -9,14 +11,13 @@ final class SiteTagsViewController: UITableViewController {
     }
     private let blog: Blog
 
-    private lazy var noResultsViewController = NoResultsViewController.controller()
     private var isSearching = false
 
-    fileprivate lazy var context: NSManagedObjectContext = {
+    private lazy var context: NSManagedObjectContext = {
         return ContextManager.sharedInstance().mainContext
     }()
 
-    fileprivate lazy var defaultPredicate: NSPredicate = {
+    private lazy var defaultPredicate: NSPredicate = {
         return NSPredicate(format: "blog.blogID = %@", blog.dotComID!)
     }()
 
@@ -24,7 +25,7 @@ final class SiteTagsViewController: UITableViewController {
         return [NSSortDescriptor(key: "name", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))]
     }()
 
-    fileprivate lazy var resultsController: NSFetchedResultsController<NSFetchRequestResult> = {
+    private lazy var resultsController: NSFetchedResultsController<NSFetchRequestResult> = {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "PostTag")
         request.sortDescriptors = self.sortDescriptors
 
@@ -33,7 +34,7 @@ final class SiteTagsViewController: UITableViewController {
         return frc
     }()
 
-    fileprivate lazy var searchController: UISearchController = {
+    private lazy var searchController: UISearchController = {
         let returnValue = UISearchController(searchResultsController: nil)
         returnValue.hidesNavigationBarDuringPresentation = false
         returnValue.obscuresBackgroundDuringPresentation = false
@@ -42,10 +43,20 @@ final class SiteTagsViewController: UITableViewController {
         return returnValue
     }()
 
+    private var stateView: UIView? {
+        didSet {
+            stateView?.removeFromSuperview()
+            if let stateView {
+                tableView.addSubview(stateView)
+                stateView.translatesAutoresizingMaskIntoConstraints = false
+                tableView.pinSubviewToSafeArea(stateView)
+            }
+        }
+    }
+
     private var isPerformingInitialSync = false
 
-    @objc
-    public init(blog: Blog) {
+    @objc public init(blog: Blog) {
         self.blog = blog
         super.init(style: .plain)
     }
@@ -57,13 +68,8 @@ final class SiteTagsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.searchController = searchController
-        noResultsViewController.delegate = self
-
-        setAccessibilityIdentifier()
-        applyTitle()
-        setupTable()
-
+        title = NSLocalizedString("Tags", comment: "Label for the Tags Section in the Blog Settings")
+        setupTableView()
         refreshTags()
         refreshResultsController(predicate: defaultPredicate)
     }
@@ -74,15 +80,8 @@ final class SiteTagsViewController: UITableViewController {
         refreshNoResultsView()
     }
 
-    private func setAccessibilityIdentifier() {
+    private func setupTableView() {
         tableView.accessibilityIdentifier = TableConstants.accesibilityIdentifier
-    }
-
-    private func applyTitle() {
-        title = NSLocalizedString("Tags", comment: "Label for the Tags Section in the Blog Settings")
-    }
-
-    private func setupTable() {
         tableView.tableFooterView = UIView(frame: .zero)
         let nibName = UINib(nibName: TableConstants.cellIdentifier, bundle: nil)
         tableView.register(nibName, forCellReuseIdentifier: TableConstants.cellIdentifier)
@@ -120,16 +119,14 @@ final class SiteTagsViewController: UITableViewController {
             self?.isPerformingInitialSync = false
             self?.refreshControl?.endRefreshing()
             self?.refreshNoResultsView()
-        }) { [weak self] error in
+        }, failure: { [weak self] error in
             self?.tagsFailedLoading(error: error)
-        }
+        })
     }
 
     private func showRightBarButton(_ show: Bool) {
         if show {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
-                                                                target: self,
-                                                                action: #selector(createTag))
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(createTag))
         } else {
             navigationItem.rightBarButtonItem = nil
         }
@@ -147,11 +144,11 @@ final class SiteTagsViewController: UITableViewController {
 // MARK: - Table view datasource
 extension SiteTagsViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return resultsController.sections?.count ?? 0
+        resultsController.sections?.count ?? 0
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return resultsController.sections?[section].numberOfObjects ?? 0
+        resultsController.sections?[section].numberOfObjects ?? 0
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -169,18 +166,17 @@ extension SiteTagsViewController {
     }
 
     fileprivate func tagAtIndexPath(_ indexPath: IndexPath) -> PostTag? {
-        return resultsController.object(at: indexPath) as? PostTag
+        resultsController.object(at: indexPath) as? PostTag
     }
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
+        true
     }
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         guard let selectedTag = tagAtIndexPath(indexPath) else {
             return
         }
-
         delete(selectedTag)
     }
 
@@ -202,7 +198,7 @@ extension SiteTagsViewController {
             self?.refreshControl?.endRefreshing()
             self?.tableView.reloadData()
         }, failure: { error in
-                self.refreshControl?.endRefreshing()
+            self.refreshControl?.endRefreshing()
         })
     }
 }
@@ -213,7 +209,6 @@ extension SiteTagsViewController {
         guard let selectedTag = tagAtIndexPath(indexPath) else {
             return
         }
-
         navigate(to: selectedTag)
     }
 }
@@ -364,7 +359,6 @@ private extension SiteTagsViewController {
     }
 
     func showNoResults() {
-
         if isSearching {
             showNoSearchResultsView()
             return
@@ -379,80 +373,38 @@ private extension SiteTagsViewController {
     }
 
     func showLoadingView() {
-        configureAndDisplayNoResults(title: NoResultsText.loadingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
+        stateView = UIHostingView(view: ProgressView())
         navigationItem.searchController = nil
     }
 
     func showEmptyResultsView() {
-        configureAndDisplayNoResults(title: NoResultsText.noTagsTitle, subtitle: NoResultsText.noTagsMessage, buttonTitle: NoResultsText.createButtonTitle)
+        stateView = UIHostingView(view: EmptyStateView(label: {
+            Label(NoResultsText.noTagsTitle, image: "wp-illustration-empty-results")
+        }, description: {
+            Text(NoResultsText.noTagsMessage)
+        }, actions: {
+            Button(NoResultsText.createButtonTitle) { [weak self] in
+                self?.createTag()
+            }
+            .buttonStyle(.primary)
+        }))
         navigationItem.searchController = nil
     }
 
     func showNoSearchResultsView() {
-
-        // If already shown, don't show again. To prevent the view from "flashing" as the user types.
-        guard !noResultsShown else {
-            return
-        }
-
-        configureAndDisplayNoResults(title: NoResultsText.noResultsTitle, forNoSearchResults: true)
-    }
-
-    func configureAndDisplayNoResults(title: String,
-                                      subtitle: String? = nil,
-                                      buttonTitle: String? = nil,
-                                      accessoryView: UIView? = nil,
-                                      forNoSearchResults: Bool = false) {
-
-        if forNoSearchResults {
-            noResultsViewController.configureForNoSearchResults(title: title)
-        } else {
-            noResultsViewController.configure(title: title, buttonTitle: buttonTitle, subtitle: subtitle, accessoryView: accessoryView)
-        }
-
-        displayNoResults()
-    }
-
-    func displayNoResults() {
-        addChild(noResultsViewController)
-        noResultsViewController.view.frame = tableView.frame
-
-        // Since the tableView doesn't always start at the top, adjust the NRV accordingly.
-        if isSearching {
-            noResultsViewController.view.frame.origin.y = searchController.searchBar.frame.height
-        } else {
-            noResultsViewController.view.frame.origin.y = 0
-        }
-
-        tableView.addSubview(withFadeAnimation: noResultsViewController.view)
-        noResultsViewController.didMove(toParent: self)
+        stateView = UIHostingView(view: EmptyStateView.search())
     }
 
     func hideNoResults() {
-        noResultsViewController.removeFromView()
+        stateView = nil
         navigationItem.searchController = searchController
         tableView.reloadData()
-    }
-
-    var noResultsShown: Bool {
-        return noResultsViewController.parent != nil
     }
 
     struct NoResultsText {
         static let noTagsTitle = NSLocalizedString("You don't have any tags", comment: "Empty state. Tags management (Settings > Writing > Tags)")
         static let noTagsMessage = NSLocalizedString("Tags created here can be quickly added to new posts", comment: "Displayed when the user views tags in blog settings and there are no tags")
         static let createButtonTitle = NSLocalizedString("Create a Tag", comment: "Title of the button in the placeholder for an empty list of blog tags.")
-        static let loadingTitle = NSLocalizedString("Loading...", comment: "Loading tags.")
-        static let noResultsTitle = NSLocalizedString("No tags matching your search", comment: "Displayed when the user is searching site tags and there are no matches.")
-    }
-
-}
-
-// MARK: - NoResultsViewControllerDelegate
-
-extension SiteTagsViewController: NoResultsViewControllerDelegate {
-    func actionButtonPressed() {
-        createTag()
     }
 }
 
