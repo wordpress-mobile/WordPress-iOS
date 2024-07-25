@@ -1,6 +1,6 @@
 import UIKit
 
-final class TimeZoneTableViewCell: UITableViewCell {
+final class TimeZoneTableViewCell: WPTableViewCell {
 
     lazy var titleLabel: UILabel = {
         let label = UILabel()

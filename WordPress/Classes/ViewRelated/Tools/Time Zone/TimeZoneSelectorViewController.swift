@@ -1,7 +1,7 @@
 import UIKit
 import WordPressFlux
 
-class TimeZoneSelectorViewController: UITableViewController, UISearchResultsUpdating {
+final class TimeZoneSelectorViewController: UITableViewController, UISearchResultsUpdating {
     var storeReceipt: Receipt?
     var queryReceipt: Receipt?
 
@@ -46,13 +46,9 @@ class TimeZoneSelectorViewController: UITableViewController, UISearchResultsUpda
         ImmuTable.registerRows([TimeZoneRow.self], tableView: tableView)
 
         navigationItem.searchController = searchController
-
-//        WPStyleGuide.configureColors(view: view, tableView: tableView)
-//        WPStyleGuide.configureSearchBar(searchController.searchBar)
+        navigationItem.hidesSearchBarWhenScrolling = false
 
         configureTableHeaderView()
-
-        tableView.backgroundView = UIView()
 
         let store = StoreContainer.shared.timezone
         storeReceipt = store.onChange { [weak self] in
@@ -64,23 +60,21 @@ class TimeZoneSelectorViewController: UITableViewController, UISearchResultsUpda
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+
         tableView.layoutHeaderView()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+
         searchController.isActive = false
     }
 
     private func configureTableHeaderView() {
         let timeZoneIdentifier = TimeZone.current.identifier
-        guard let headerView = TimeZoneSearchHeaderView.makeFromNib(searchBar: searchController.searchBar,
-                                                                    timezone: timeZoneIdentifier) else {
-            // fallback to default SearchBar if TimeZoneSearchHeaderView cannot be created
-            tableView.tableHeaderView = searchController.searchBar
+        guard let headerView = TimeZoneSearchHeaderView.makeFromNib(timezone: timeZoneIdentifier) else {
             return
         }
-
         headerView.tapped = { [weak self] in
             // check if currentTimeZoneIdentifier has a WPTimeZone instance
             if let selectedTimezone = self?.viewModel.getTimeZoneForIdentifier(timeZoneIdentifier) {
@@ -88,7 +82,6 @@ class TimeZoneSelectorViewController: UITableViewController, UISearchResultsUpda
                 self?.onSelectionChanged(selectedTimezone)
             }
         }
-
         tableView.tableHeaderView = headerView
     }
 
@@ -112,7 +105,6 @@ class TimeZoneSelectorViewController: UITableViewController, UISearchResultsUpda
         }
         return searchController.searchBar.text?.nonEmptyString()
     }
-
 }
 
 // MARK: - No Results Handling
@@ -143,7 +135,6 @@ private extension TimeZoneSelectorViewController {
         addChild(noResultsViewController)
         noResultsViewController.didMove(toParent: self)
     }
-
 }
 
 // MARK: - NoResultsViewControllerDelegate
@@ -161,5 +152,9 @@ extension TimeZoneSelectorViewController {
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
+    }
+
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        0 // Important
     }
 }
