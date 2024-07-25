@@ -138,7 +138,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
             rootViewController = self.makeReaderTabViewController;
         }
         _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
-        _readerNavigationController.navigationBar.translucent = NO;
         _readerNavigationController.view.backgroundColor = [UIColor murielBasicBackground];
 
         if ([Feature enabled:FeatureFlagNewTabIcons]) {
@@ -170,7 +169,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         rootViewController = self.notificationsViewController;
     }
     _notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
-    _notificationsNavigationController.navigationBar.translucent = NO;
     if ([Feature enabled:FeatureFlagNewTabIcons]) {
         self.notificationsTabBarImage = [[UIImage imageNamed:@"tab-bar-notifications-unselected"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         NSString *unreadImageName = [AppConfiguration isJetpack] ? @"tab-bar-notifications-unread-jp" : @"tab-bar-notifications-unread-wp";

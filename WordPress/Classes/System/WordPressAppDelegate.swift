@@ -821,12 +821,6 @@ extension WordPressAppDelegate {
 
         UISwitch.appearance().onTintColor = .primary
 
-        let navReferenceAppearance = UINavigationBar.appearance(whenContainedInInstancesOf: [UIReferenceLibraryViewController.self])
-        navReferenceAppearance.setBackgroundImage(nil, for: .default)
-        navReferenceAppearance.barTintColor = .primary
-
-        UIToolbar.appearance(whenContainedInInstancesOf: [UIReferenceLibraryViewController.self]).barTintColor = .darkGray
-
         // SVProgressHUD
         SVProgressHUD.setBackgroundColor(UIColor.neutral(.shade70).withAlphaComponent(0.95))
         SVProgressHUD.setForegroundColor(.white)
