@@ -11,7 +11,7 @@ extension WPStyleGuide {
         searchBar.isTranslucent = true
         searchBar.backgroundImage = UIImage()
         searchBar.backgroundColor = backgroundColor
-        searchBar.layer.borderWidth = 1.0
+//        searchBar.layer.borderWidth = 1.0
         searchBar.returnKeyType = returnKeyType
     }
 
