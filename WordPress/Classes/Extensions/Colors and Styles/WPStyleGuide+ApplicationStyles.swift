@@ -121,25 +121,6 @@ extension WPStyleGuide {
     }
 
     @objc
-    class func configureTableViewTextCell(_ cell: WPTextFieldTableViewCell) {
-        configureTableViewCell(cell)
-
-        if cell.textField.isEnabled {
-            cell.detailTextLabel?.textColor = .text
-            cell.textField.textAlignment = .natural
-        } else {
-            cell.detailTextLabel?.textColor = .textSubtle
-            if cell.effectiveUserInterfaceLayoutDirection == .leftToRight {
-                // swiftlint:disable:next inverse_text_alignment
-                cell.textField.textAlignment = .right
-            } else {
-                // swiftlint:disable:next natural_text_alignment
-                cell.textField.textAlignment = .left
-            }
-        }
-    }
-
-    @objc
     class func configureTableViewSectionFooter(_ footer: UIView) {
         guard let footer = footer as? UITableViewHeaderFooterView,
             let textLabel = footer.textLabel else {
@@ -149,5 +130,4 @@ extension WPStyleGuide {
             textLabel.textColor = .primary
         }
     }
-
 }
