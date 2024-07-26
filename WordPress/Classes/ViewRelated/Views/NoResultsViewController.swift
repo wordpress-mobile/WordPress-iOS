@@ -274,7 +274,7 @@ import WordPressUI
             .paragraphStyle: paragraphStyle
         ]
 
-        let fullTextRange = attributedString.string.foundationRangeOfEntireString
+        let fullTextRange =  NSRange(location: 0, length: attributedString.string.utf16.count)
         let finalAttributedString = NSMutableAttributedString(attributedString: attributedString)
         finalAttributedString.addAttributes(attributes, range: fullTextRange)
 

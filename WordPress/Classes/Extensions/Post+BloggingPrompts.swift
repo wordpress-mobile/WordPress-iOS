@@ -1,3 +1,5 @@
+import Foundation
+
 extension Post {
 
     func prepareForPrompt(_ prompt: BloggingPrompt?) {

@@ -9,7 +9,6 @@ class GutenbergLightNavigationController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // TDODO: remove!
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = .systemBackground
         appearance.shadowColor = separatorColor
@@ -18,7 +17,7 @@ class GutenbergLightNavigationController: UINavigationController {
         navigationBar.barStyle = .default
         navigationBar.barTintColor = .white
 
-        let tintColor = UIColor.lightAppBarTint
+        let tintColor = UIColor.label
         let barButtonItemAppearance = UIBarButtonItem.appearance(whenContainedInInstancesOf: [GutenbergLightNavigationController.self])
         barButtonItemAppearance.tintColor = tintColor
         barButtonItemAppearance.setTitleTextAttributes([NSAttributedString.Key.font: WPFontManager.systemRegularFont(ofSize: 17.0),

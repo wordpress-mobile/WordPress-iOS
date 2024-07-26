@@ -12,10 +12,6 @@ extension UIColor {
         .primary
     }
 
-    static var lightAppBarTint: UIColor {
-        return UIColor(light: .primary, dark: .white)
-    }
-
     static var appBarText: UIColor {
         .text
     }
