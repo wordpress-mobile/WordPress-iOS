@@ -83,6 +83,7 @@ class CalendarViewController: UIViewController {
         view.addSubview(stackView)
         view.pinSubviewToAllEdges(stackView, insets: UIEdgeInsets(top: Constants.headerPadding, left: 0, bottom: 0, right: 0))
         view.backgroundColor = .basicBackground
+        edgesForExtendedLayout = []
 
         setupNavButtons()
 

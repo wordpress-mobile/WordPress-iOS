@@ -129,6 +129,7 @@ class BaseActivityListViewController: UIViewController, TableViewContainer, Immu
         let calendarViewController = CalendarViewController(startDate: viewModel.after, endDate: viewModel.before)
         calendarViewController.delegate = self
         let navigationController = UINavigationController(rootViewController: calendarViewController)
+        navigationController.view.backgroundColor = .systemBackground
         present(navigationController, animated: true, completion: nil)
     }
 

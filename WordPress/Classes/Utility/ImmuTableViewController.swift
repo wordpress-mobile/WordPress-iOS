@@ -61,7 +61,7 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
 
     init(controller: ImmuTableController) {
         self.controller = controller
-        super.init(style: .grouped)
+        super.init(style: .insetGrouped)
 
         title = controller.title
         registerRows(controller.immuTableRows)
