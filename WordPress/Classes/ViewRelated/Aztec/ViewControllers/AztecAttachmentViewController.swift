@@ -38,20 +38,16 @@ class AztecAttachmentViewController: UITableViewController {
     }
 
     required convenience init() {
-        self.init(style: .grouped)
+        self.init(style: .insetGrouped)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        ImmuTable.registerRows([
-            EditableTextRow.self,
-            ], tableView: self.tableView)
+        ImmuTable.registerRows([EditableTextRow.self], tableView: tableView)
 
         handler = ImmuTableViewHandler(takeOver: self)
         handler.viewModel = tableViewModel()
-
-        WPStyleGuide.configureColors(view: view, tableView: tableView)
 
         let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(AztecAttachmentViewController.handleCancelButtonTapped))
         navigationItem.leftBarButtonItem = cancelButton
