@@ -32,7 +32,7 @@ open class ActivityTableViewCell: WPTableViewCell, NibReusable {
         summaryLabel.text = activity.summary
         dateLabel.text = activity.published.toMediumString()
         bulletLabel.text = "\u{2022}"
-        contentLabel.text = activity.text
+        contentLabel.text = activity.text.isEmpty ? "–" : activity.text
 
         summaryLabel.textColor = .textSubtle
         dateLabel.textColor = .textSubtle
@@ -52,11 +52,13 @@ open class ActivityTableViewCell: WPTableViewCell, NibReusable {
         actionButton.setImage(actionGridicon, for: .normal)
         actionButton.tintColor = .listIcon
         actionButton.accessibilityIdentifier = "activity-cell-action-button"
+
+        separatorInset = UIEdgeInsets(top: 0, left: 60, bottom: 0, right: 0)
     }
 
     private func configureFonts() {
         contentLabel.adjustsFontForContentSizeCategory = true
-        contentLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
+        contentLabel.font = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .medium)
 
         [summaryLabel, bulletLabel, dateLabel].forEach {
             $0.adjustsFontForContentSizeCategory = true

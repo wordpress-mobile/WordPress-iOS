@@ -106,8 +106,7 @@ class BaseActivityListViewController: UIViewController, TableViewContainer, Immu
             self?.refreshModel()
         }
 
-        view.backgroundColor = .systemGroupedBackground
-        tableView.backgroundColor = .systemGroupedBackground
+        view.backgroundColor = .systemBackground
         view.addSubview(containerStackView)
         containerStackView.axis = .vertical
 
@@ -290,6 +289,7 @@ extension BaseActivityListViewController: UITableViewDelegate {
 
         cell.separator.isHidden = true
         cell.titleLabel.text = NSLocalizedString("Since you're on a free plan, you'll see limited events in your Activity Log.", comment: "Text displayed as a footer of a table view with Activities when user is on a free plan")
+        cell.backgroundColorView.backgroundColor = .clear
 
         return cell
     }
@@ -304,18 +304,18 @@ extension BaseActivityListViewController: UITableViewDelegate {
         return UITableView.automaticDimension
     }
 
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: ActivityListSectionHeaderView.identifier) as? ActivityListSectionHeaderView else {
-            return nil
-        }
-
-        cell.titleLabel.text = handler.tableView(tableView, titleForHeaderInSection: section)?.localizedUppercase
-
-        return cell
-    }
+//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//        guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: ActivityListSectionHeaderView.identifier) as? ActivityListSectionHeaderView else {
+//            return nil
+//        }
+//
+//        cell.titleLabel.text = handler.tableView(tableView, titleForHeaderInSection: section)?.localizedUppercase
+//
+//        return cell
+//    }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return ActivityListSectionHeaderView.height
+        44
     }
 
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

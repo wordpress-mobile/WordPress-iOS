@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -16,11 +16,11 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L4V-t8-P4G">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
+                    <rect key="frame" x="0.0" y="20" width="320" height="20"/>
                     <color key="backgroundColor" name="Gray0"/>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rTR-ms-4m0">
-                    <rect key="frame" x="16" y="12" width="288" height="26"/>
+                    <rect key="frame" x="16" y="32" width="288" height="6"/>
                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                     <color key="textColor" name="Gray50"/>
                     <nil key="highlightedColor"/>
@@ -38,11 +38,11 @@
                 <constraint firstItem="L4V-t8-P4G" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="2nH-U4-5ow"/>
                 <constraint firstItem="L4V-t8-P4G" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="8H4-AD-Bu1"/>
                 <constraint firstItem="L4V-t8-P4G" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="8lb-5E-Smc"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="rTR-ms-4m0" secondAttribute="trailing" constant="16" id="9o9-W1-rVf"/>
+                <constraint firstAttribute="trailingMargin" secondItem="rTR-ms-4m0" secondAttribute="trailing" id="9o9-W1-rVf"/>
                 <constraint firstItem="XJm-Vt-ZYG" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="CqK-2S-6c6"/>
                 <constraint firstItem="rTR-ms-4m0" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="12" id="F88-hv-bgL"/>
                 <constraint firstItem="L4V-t8-P4G" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="FmN-q3-Hfb"/>
-                <constraint firstItem="rTR-ms-4m0" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="WX8-Q4-85Y"/>
+                <constraint firstItem="rTR-ms-4m0" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="WX8-Q4-85Y"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="rTR-ms-4m0" secondAttribute="bottom" constant="2" id="X29-mW-8MP"/>
                 <constraint firstAttribute="bottom" secondItem="XJm-Vt-ZYG" secondAttribute="bottom" id="rzd-Rm-ABm"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="XJm-Vt-ZYG" secondAttribute="trailing" id="ypY-d4-qzK"/>
