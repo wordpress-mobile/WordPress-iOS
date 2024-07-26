@@ -12,7 +12,7 @@ extension WPStyleGuide {
             cell.textLabel?.sizeToFit()
             cell.textLabel?.textColor = .text
 
-            cell.detailTextLabel?.font = tableviewSubtitleFont()
+            cell.detailTextLabel?.font = .preferredFont(forTextStyle: .callout)
             cell.detailTextLabel?.sizeToFit()
             cell.detailTextLabel?.textColor = .textSubtle
 

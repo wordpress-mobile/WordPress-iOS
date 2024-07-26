@@ -153,10 +153,7 @@ private extension SupportTableViewController {
         title = LocalizedText.viewTitle
 
         if isModal() {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(title: LocalizedText.closeButton,
-                                                                style: WPStyleGuide.barButtonStyleForBordered(),
-                                                               target: self,
-                                                               action: #selector(SupportTableViewController.dismissPressed(_:)))
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: LocalizedText.closeButton, style: .plain, target: self, action: #selector(SupportTableViewController.dismissPressed(_:)))
             navigationItem.rightBarButtonItem?.accessibilityIdentifier = "close-button"
         }
     }

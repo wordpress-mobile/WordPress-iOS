@@ -24,7 +24,7 @@ extension ReaderStreamViewController {
 
         let shareButton = UIBarButtonItem(customView: button)
         shareButton.accessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
-        WPStyleGuide.setRightBarButtonItemWithCorrectSpacing(shareButton, for: navigationItem)
+        navigationItem.rightBarButtonItem = shareButton
     }
 
     // MARK: Private behavior

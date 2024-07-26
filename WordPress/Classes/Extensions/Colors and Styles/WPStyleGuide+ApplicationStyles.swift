@@ -91,7 +91,7 @@ extension WPStyleGuide {
 
         cell.textLabel?.font = tableviewTextFont()
         cell.textLabel?.sizeToFit()
-        cell.detailTextLabel?.font = tableviewSubtitleFont()
+        cell.detailTextLabel?.font = .preferredFont(forTextStyle: .callout)
         cell.detailTextLabel?.sizeToFit()
 
         // we only set the text subtle color, so that system colors are used otherwise
