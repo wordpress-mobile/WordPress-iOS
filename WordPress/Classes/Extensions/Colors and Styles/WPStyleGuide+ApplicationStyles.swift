@@ -47,6 +47,11 @@ extension WPStyleGuide {
         appearance.scrollEdgeAppearance = scrollEdgeAppearance
         appearance.compactScrollEdgeAppearance = scrollEdgeAppearance
     }
+
+    @objc class func configureTabBar(_ tabBar: UITabBar) {
+        tabBar.tintColor = .tabSelected
+        tabBar.unselectedItemTintColor = .tabUnselected
+    }
 }
 
 extension WPStyleGuide {
