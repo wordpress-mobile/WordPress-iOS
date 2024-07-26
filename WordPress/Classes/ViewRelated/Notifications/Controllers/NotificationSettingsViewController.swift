@@ -11,7 +11,7 @@ class NotificationSettingsViewController: UIViewController {
     // MARK: - Properties
 
     private lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .grouped)
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.rowHeight = UITableView.automaticDimension
         tableView.sectionFooterHeight = UITableView.automaticDimension
@@ -102,10 +102,6 @@ class NotificationSettingsViewController: UIViewController {
 
         // Hide the separators, whenever the table is empty
         tableView.tableFooterView = UIView()
-
-        // Style!
-        WPStyleGuide.configureColors(view: view, tableView: tableView)
-        WPStyleGuide.configureAutomaticHeightRows(for: tableView)
 
         activityIndicatorView.tintColor = .textSubtle
     }
@@ -374,6 +370,8 @@ private extension NotificationSettingsViewController {
         }
 
         if let site = siteTopic(at: indexPath) {
+            configureBlogCellStyle(cell)
+
             cell.imageView?.image = .siteIconPlaceholder
 
             cell.accessoryType = .disclosureIndicator
@@ -383,7 +381,6 @@ private extension NotificationSettingsViewController {
             cell.detailTextLabel?.text = URL(string: site.siteURL)?.host
             cell.imageView?.downloadSiteIcon(at: site.siteBlavatar)
 
-            WPStyleGuide.configureTableViewSmallSubtitleCell(cell)
             cell.layoutSubviews()
             return
         }
@@ -400,6 +397,8 @@ private extension NotificationSettingsViewController {
 
         switch settings.channel {
         case .blog:
+            configureBlogCellStyle(cell)
+
             cell.textLabel?.text = settings.blog?.settings?.name ?? settings.channel.description()
             cell.detailTextLabel?.text = settings.blog?.displayURL as String? ?? String()
             cell.accessoryType = .disclosureIndicator
@@ -409,15 +408,23 @@ private extension NotificationSettingsViewController {
             } else {
                 cell.imageView?.image = .siteIconPlaceholder
             }
-
-            WPStyleGuide.configureTableViewSmallSubtitleCell(cell)
-
         default:
             cell.textLabel?.text = settings.channel.description()
             cell.textLabel?.textAlignment = .natural
             cell.accessoryType = .disclosureIndicator
             WPStyleGuide.configureTableViewCell(cell)
         }
+    }
+
+    func configureBlogCellStyle(_ cell: UITableViewCell) {
+        cell.imageView?.layer.cornerRadius = 6
+        cell.imageView?.layer.cornerCurve = .continuous
+        cell.imageView?.layer.masksToBounds = true
+
+        cell.textLabel?.font = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .medium)
+        cell.textLabel?.textColor = .label
+        cell.detailTextLabel?.font = WPStyleGuide.fontForTextStyle(.footnote)
+        cell.detailTextLabel?.textColor = .secondaryLabel
     }
 
     func siteTopic(at index: IndexPath) -> ReaderSiteTopic? {

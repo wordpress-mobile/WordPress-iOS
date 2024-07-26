@@ -39,7 +39,7 @@ class NotificationSettingStreamsViewController: UITableViewController {
     private let rowsCount = 1
 
     convenience init(settings: NotificationSettings) {
-        self.init(style: .grouped)
+        self.init(style: .insetGrouped)
         setupWithSettings(settings)
     }
 
@@ -66,15 +66,7 @@ class NotificationSettingStreamsViewController: UITableViewController {
     }
 
     private func setupTableView() {
-        // Empty Back Button
         navigationItem.backBarButtonItem = UIBarButtonItem(title: String(), style: .plain, target: nil, action: nil)
-
-        // Hide the separators, whenever the table is empty
-        tableView.tableFooterView = UIView()
-
-        // Style!
-        WPStyleGuide.configureColors(view: view, tableView: tableView)
-        WPStyleGuide.configureAutomaticHeightRows(for: tableView)
     }
 
     // MARK: - Public Helpers
