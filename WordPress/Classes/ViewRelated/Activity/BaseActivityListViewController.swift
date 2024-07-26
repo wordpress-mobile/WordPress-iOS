@@ -304,16 +304,6 @@ extension BaseActivityListViewController: UITableViewDelegate {
         return UITableView.automaticDimension
     }
 
-//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: ActivityListSectionHeaderView.identifier) as? ActivityListSectionHeaderView else {
-//            return nil
-//        }
-//
-//        cell.titleLabel.text = handler.tableView(tableView, titleForHeaderInSection: section)?.localizedUppercase
-//
-//        return cell
-//    }
-
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         44
     }
@@ -335,7 +325,6 @@ extension BaseActivityListViewController: UITableViewDelegate {
             viewModel.loadMore()
         }
     }
-
 }
 
 // MARK: - NoResultsViewControllerDelegate
