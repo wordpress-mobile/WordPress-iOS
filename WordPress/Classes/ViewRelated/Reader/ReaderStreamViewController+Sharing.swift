@@ -18,7 +18,7 @@ extension ReaderStreamViewController {
         }
 
         let image = UIImage.gridicon(.shareiOS).withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
-        let button = CustomHighlightButton(frame: CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height))
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height))
         button.setImage(image, for: .normal)
         button.addTarget(self, action: #selector(shareButtonTapped(_:)), for: .touchUpInside)
 
