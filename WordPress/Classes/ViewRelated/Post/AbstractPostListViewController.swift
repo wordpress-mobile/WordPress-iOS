@@ -85,8 +85,6 @@ class AbstractPostListViewController: UIViewController,
 
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-
-        edgesForExtendedLayout = .all
     }
 
     required init?(coder: NSCoder) {

@@ -99,9 +99,9 @@ final class AllDomainsListViewController: UIViewController {
         searchController.delegate = self
         searchController.searchBar.delegate = self
         searchController.searchBar.placeholder = Strings.searchBar
-        self.navigationItem.searchController = searchController
-        self.navigationItem.hidesSearchBarWhenScrolling = false
-        self.edgesForExtendedLayout = .top
+
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
     }
 
     private func setupTableView() {

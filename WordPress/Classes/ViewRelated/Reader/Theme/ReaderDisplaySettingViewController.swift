@@ -36,7 +36,6 @@ class ReaderDisplaySettingViewController: UIViewController {
     }
 
     private func setupView() {
-        edgesForExtendedLayout = .top
         view.backgroundColor = .systemBackground
 
         let viewModel = ReaderDisplaySettingSelectionViewModel(displaySetting: initialSetting) { [weak self] setting in
