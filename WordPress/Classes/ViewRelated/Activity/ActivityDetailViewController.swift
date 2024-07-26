@@ -118,8 +118,8 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
             return
         }
 
-        view.backgroundColor = .listBackground
-        containerView.backgroundColor = .listForeground
+        view.backgroundColor = .systemBackground
+        containerView.backgroundColor = .systemBackground
 
         textLabel.isHidden = true
         textView.textContainerInset = .zero
