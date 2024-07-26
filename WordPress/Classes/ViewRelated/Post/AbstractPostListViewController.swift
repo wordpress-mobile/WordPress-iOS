@@ -63,11 +63,7 @@ class AbstractPostListViewController: UIViewController,
         return syncHelper
     }()
 
-    lazy var noResultsViewController: NoResultsViewController = {
-        let noResultsViewController = NoResultsViewController.controller()
-        noResultsViewController.delegate = self
-        return noResultsViewController
-    }()
+    lazy var noResultsViewController = NoResultsViewController.controller()
 
     lazy var filterSettings: PostListFilterSettings = {
         return PostListFilterSettings(blog: self.blog, postType: self.postTypeToSync())
@@ -882,15 +878,6 @@ extension AbstractPostListViewController: NetworkStatusDelegate {
 }
 
 extension AbstractPostListViewController: EditorAnalyticsProperties { }
-
-// MARK: - NoResultsViewControllerDelegate
-
-extension AbstractPostListViewController: NoResultsViewControllerDelegate {
-    func actionButtonPressed() {
-        WPAnalytics.track(.postListNoResultsButtonPressed, withProperties: propertiesForAnalytics())
-        createPost()
-    }
-}
 
 private enum Strings {
     static let cancelText = NSLocalizedString("postList.cancel", value: "Cancel", comment: "Cancels an Action")
