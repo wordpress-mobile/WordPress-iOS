@@ -57,7 +57,7 @@ class BaseActivityListViewController: UIViewController, TableViewContainer, Immu
     let dateFilterChip = FilterChipButton()
     let activityTypeFilterChip = FilterChipButton()
 
-    var tableView: UITableView = UITableView()
+    let tableView = UITableView(frame: .zero, style: .plain)
     let refreshControl = UIRefreshControl()
 
     let numberOfItemsPerPage = 100
@@ -106,6 +106,8 @@ class BaseActivityListViewController: UIViewController, TableViewContainer, Immu
             self?.refreshModel()
         }
 
+        view.backgroundColor = .systemGroupedBackground
+        tableView.backgroundColor = .systemGroupedBackground
         view.addSubview(containerStackView)
         containerStackView.axis = .vertical
 
@@ -143,8 +145,6 @@ class BaseActivityListViewController: UIViewController, TableViewContainer, Immu
         refreshModel()
 
         tableView.estimatedRowHeight = Constants.estimatedRowHeight
-
-        WPStyleGuide.configureColors(view: view, tableView: tableView)
 
         let nib = UINib(nibName: ActivityListSectionHeaderView.identifier, bundle: nil)
         tableView.register(nib, forHeaderFooterViewReuseIdentifier: ActivityListSectionHeaderView.identifier)
