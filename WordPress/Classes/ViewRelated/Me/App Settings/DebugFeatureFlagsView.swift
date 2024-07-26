@@ -8,7 +8,7 @@ struct DebugFeatureFlagsView: View {
             sections
         }
         .tint(Color(UIColor.jetpackGreen))
-        .listStyle(.grouped)
+        .listStyle(.plain)
         .searchable(text: $viewModel.filterTerm, placement: .navigationBarDrawer(displayMode: .always))
         .navigationTitle(navigationTitle)
         .navigationBarTitleDisplayMode(.inline)
