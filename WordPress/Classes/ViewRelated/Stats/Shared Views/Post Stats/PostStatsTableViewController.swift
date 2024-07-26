@@ -33,10 +33,14 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         navigationItem.title = NSLocalizedString("Post Stats", comment: "Window title for Post Stats view.")
         refreshControl?.addTarget(self, action: #selector(userInitiatedRefresh), for: .valueChanged)
+
+        tableView.separatorInset = .zero
         tableView.estimatedSectionHeaderHeight = SiteStatsTableHeaderView.estimatedHeight
-        Style.configureTable(tableView)
+        view.backgroundColor = .systemBackground
+
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
         initViewModel()
         trackAccessEvent()
