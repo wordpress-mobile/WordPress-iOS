@@ -198,3 +198,44 @@ extension SiteIntentViewController: UISearchBarDelegate {
         tableView.reloadData()
     }
 }
+
+private extension UIScrollView {
+
+    // Scroll to a specific view in a vertical scrollview so that it's top is at the top our scrollview
+    func scrollVerticallyToView(_ view: UIView, animated: Bool) {
+        if let origin = view.superview {
+
+            // Get the Y position of your child view
+            let childStartPoint = origin.convert(view.frame.origin, to: self)
+
+            // Scroll to a rectangle starting at the Y of your subview, with a height of the scrollview safe area
+            // if the bottom of the rectangle is within the content size height.
+            //
+            // Otherwise, scroll all the way to the bottom.
+            //
+            if childStartPoint.y + safeAreaLayoutGuide.layoutFrame.height < contentSize.height {
+                let targetRect = CGRect(x: 0,
+                                        y: childStartPoint.y - Constants.targetRectPadding,
+                                        width: Constants.targetRectDimension,
+                                        height: safeAreaLayoutGuide.layoutFrame.height)
+                scrollRectToVisible(targetRect, animated: animated)
+
+                // This ensures scrolling to the correct position, especially when there are layout changes
+                //
+                // See: https://stackoverflow.com/a/35437399
+                //
+                layoutIfNeeded()
+            } else {
+                scrollToBottom(animated: true)
+            }
+        }
+    }
+
+    enum Constants {
+        /// An arbitrary placeholder value for the target rect -- must be some value larger than 0
+        static let targetRectDimension: CGFloat = 1
+
+        /// Padding for the target rect
+        static let targetRectPadding: CGFloat = 20
+    }
+}
