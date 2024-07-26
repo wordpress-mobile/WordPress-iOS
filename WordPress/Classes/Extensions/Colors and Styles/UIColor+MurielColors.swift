@@ -225,46 +225,11 @@ extension UIColor {
 
 // MARK: - WP Fancy Buttons
     static var primaryButtonBackground = primary
-    static var primaryButtonDownBackground = muriel(color: .primary, .shade80)
-
-    static var secondaryButtonBackground: UIColor {
-        return UIColor(light: .white, dark: .systemGray5)
-    }
-
-    static var secondaryButtonBorder: UIColor {
-        return .systemGray3
-    }
-
-    static var secondaryButtonDownBackground: UIColor {
-        return .systemGray3
-    }
-
-    static var secondaryButtonDownBorder: UIColor {
-        return secondaryButtonBorder
-    }
-
-    static var authSecondaryButtonBackground: UIColor {
-        return UIColor(light: .white, dark: .black)
-    }
-
-    static var authButtonViewBackground: UIColor {
-        return UIColor(light: .white, dark: .black)
-    }
 
     // MARK: - Others
 
-    static var preformattedBackground: UIColor {
-        return .systemGray6
-    }
-
     static var prologueBackground: UIColor {
         return UIColor(light: muriel(color: MurielColor(name: .blue, shade: .shade0)), dark: .systemBackground)
-    }
-
-    // MARK: - Editor
-
-    static var editorActionText: UIColor {
-        return UIColor(light: .black, dark: .white)
     }
 }
 

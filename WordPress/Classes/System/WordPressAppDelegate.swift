@@ -533,13 +533,13 @@ extension WordPressAppDelegate {
         appearance.titleFont = WPStyleGuide.fontForTextStyle(.headline)
         appearance.primaryTitleColor = .white
         appearance.primaryNormalBackgroundColor = .primaryButtonBackground
-        appearance.primaryHighlightBackgroundColor = .primaryButtonDownBackground
+        appearance.primaryHighlightBackgroundColor = .muriel(color: .primary, .shade80)
 
         appearance.secondaryTitleColor = .text
-        appearance.secondaryNormalBackgroundColor = .secondaryButtonBackground
-        appearance.secondaryNormalBorderColor = .secondaryButtonBorder
-        appearance.secondaryHighlightBackgroundColor = .secondaryButtonDownBackground
-        appearance.secondaryHighlightBorderColor = .secondaryButtonDownBorder
+        appearance.secondaryNormalBackgroundColor = UIColor(light: .white, dark: .systemGray5)
+        appearance.secondaryNormalBorderColor = .systemGray3
+        appearance.secondaryHighlightBackgroundColor = .systemGray3
+        appearance.secondaryHighlightBorderColor = .systemGray3
 
         appearance.disabledTitleColor = .neutral(.shade20)
         appearance.disabledBackgroundColor = .textInverted

@@ -57,9 +57,9 @@ class AppFeedbackPromptView: UIView {
 
         // Could improve Button
         rightButton.translatesAutoresizingMaskIntoConstraints = false
-        rightButton.backgroundColor = .secondaryButtonBackground
+        rightButton.backgroundColor = UIColor(light: .white, dark: .systemGray5)
         rightButton.borderWidth = 1.0
-        rightButton.borderColor = .secondaryButtonBorder
+        rightButton.borderColor = .systemGray3
         rightButton.tintColor = .text
         rightButton.setTitleColor(.text, for: .normal)
         rightButton.titleLabel?.font = textFont
