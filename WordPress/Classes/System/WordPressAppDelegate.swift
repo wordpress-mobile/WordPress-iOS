@@ -532,7 +532,7 @@ extension WordPressAppDelegate {
         let appearance = FancyButton.appearance()
         appearance.titleFont = WPStyleGuide.fontForTextStyle(.headline)
         appearance.primaryTitleColor = .white
-        appearance.primaryNormalBackgroundColor = .primaryButtonBackground
+        appearance.primaryNormalBackgroundColor = .primary
         appearance.primaryHighlightBackgroundColor = .muriel(color: .primary, .shade80)
 
         appearance.secondaryTitleColor = .text

@@ -268,7 +268,7 @@ private struct BloganuaryOverlayView: View {
 
         static let descriptionItemTextColor = Color(.init(light: .label, dark: .secondaryLabel))
         static let descriptionIconColor = Color(.init(light: .systemBackground, dark: .label))
-        static let descriptionIconBackgroundColor = Color(.init(light: .label, dark: .tertiaryBackground))
+        static let descriptionIconBackgroundColor = Color(.init(light: .label, dark: .tertiarySystemBackground))
     }
 
     struct Strings {

@@ -158,7 +158,7 @@ static NSTimeInterval const TextfieldEditingAnimationDuration = 0.3;
 
         self.doneButton.alpha = 1.0;
         self.textFieldDesignIcon.hidden = YES;
-        self.textFieldDesignView.backgroundColor = [UIColor murielTertiaryBackground];
+        self.textFieldDesignView.backgroundColor = [UIColor tertiarySystemBackgroundColor];
 
     } completion:nil];
 }

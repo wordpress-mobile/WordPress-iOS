@@ -124,21 +124,6 @@ extension UIColor {
         return .systemBackground
     }
 
-    /// Tertiary background
-    static var tertiaryBackground: UIColor {
-        return .tertiarySystemBackground
-    }
-
-    /// Quaternary background
-    static var quaternaryBackground: UIColor {
-        return .quaternarySystemFill
-    }
-
-    /// Tertiary system fill
-     static var tertiaryFill: UIColor {
-        return .tertiarySystemFill
-     }
-
     /// Default text color: high contrast
     static var text: UIColor {
         return .label
@@ -171,16 +156,6 @@ extension UIColor {
         return UIColor(light: .systemGray6, dark: .systemGray5)
     }
 
-    // MARK: - Search Fields
-
-    static var searchFieldPlaceholderText: UIColor {
-        return .secondaryLabel
-    }
-
-    static var searchFieldIcons: UIColor {
-        return .secondaryLabel
-    }
-
     // MARK: - Table Views
 
     static var divider: UIColor {
@@ -192,16 +167,8 @@ extension UIColor {
         return .secondarySystemGroupedBackground
     }
 
-    static var listForegroundUnread: UIColor {
-        return .tertiarySystemGroupedBackground
-    }
-
     static var listBackground: UIColor {
         return .systemGroupedBackground
-    }
-
-    static var ungroupedListBackground: UIColor {
-        return .systemBackground
     }
 
     /// For icons that are present in a table view, or similar list
@@ -213,18 +180,6 @@ extension UIColor {
     static var listSmallIcon: UIColor {
         return .systemGray
     }
-
-    /// For icons that are present in a toolbar or similar view
-    static var toolbarInactive: UIColor {
-        return .secondaryLabel
-    }
-
-    static var barButtonItemTitle: UIColor {
-        return UIColor(light: UIColor.primary(.shade50), dark: UIColor.primary(.shade30))
-    }
-
-// MARK: - WP Fancy Buttons
-    static var primaryButtonBackground = primary
 
     // MARK: - Others
 

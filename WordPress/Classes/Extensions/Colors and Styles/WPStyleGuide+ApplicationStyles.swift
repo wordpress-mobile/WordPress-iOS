@@ -65,7 +65,7 @@ extension WPStyleGuide {
         guard let view = view else {
             return
         }
-        view.backgroundColor = .basicBackground
+        view.backgroundColor = .systemBackground
     }
 
     class func configureTableViewColors(tableView: UITableView?) {

@@ -173,7 +173,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = UIColor(light: UIColor.muriel(color: .gray, .shade0), dark: .basicBackground)
+        view.backgroundColor = UIColor(light: UIColor.muriel(color: .gray, .shade0), dark: .systemBackground)
 
         let stackView = UIStackView(arrangedSubviews: [
             progressView,

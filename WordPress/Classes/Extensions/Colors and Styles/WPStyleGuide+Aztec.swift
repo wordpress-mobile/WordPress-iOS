@@ -3,7 +3,7 @@ import Gridicons
 import WordPressShared
 
 extension WPStyleGuide {
-    static let aztecFormatBarInactiveColor: UIColor = .toolbarInactive
+    static let aztecFormatBarInactiveColor: UIColor = .secondaryLabel
 
     static let aztecFormatBarActiveColor: UIColor = .primary
 
@@ -19,7 +19,7 @@ extension WPStyleGuide {
 
     static var aztecFormatPickerBackgroundColor: UIColor {
         get {
-            return (UIDevice.isPad()) ? .basicBackground : .neutral(.shade0)
+            return (UIDevice.isPad()) ? .systemBackground : .neutral(.shade0)
         }
     }
 }

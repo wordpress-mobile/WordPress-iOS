@@ -119,7 +119,7 @@ extension WordPressAuthenticationManager {
         }
 
         return WordPressAuthenticatorStyle(
-            primaryNormalBackgroundColor: .primaryButtonBackground,
+            primaryNormalBackgroundColor: .primary,
             primaryNormalBorderColor: nil,
             primaryHighlightBackgroundColor: .muriel(color: .primary, .shade80),
             primaryHighlightBorderColor: nil,
