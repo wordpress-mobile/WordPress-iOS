@@ -120,13 +120,11 @@ open class ThemeBrowserCell: UICollectionViewCell {
 
         actionButton.isExclusiveTouch = true
 
-        layer.borderColor = UIColor.separator.cgColor
-        layer.borderWidth = 0.5
-        layer.cornerRadius = 8
+        layer.cornerRadius = 12
         layer.cornerCurve = .continuous
 
         nameLabel.font = .preferredFont(forTextStyle: .headline)
-        infoLabel.font = .preferredFont(forTextStyle: .footnote)
+        infoLabel.font = .preferredFont(forTextStyle: .headline)
     }
 
     override open func prepareForReuse() {
@@ -147,7 +145,7 @@ open class ThemeBrowserCell: UICollectionViewCell {
 
             nameLabel.text = theme.name
             if theme.isCurrentTheme() {
-                backgroundColor = Styles.activeCellBackgroundColor
+                backgroundColor = .systemBackground
                 infoBar.backgroundColor = Styles.activeCellBackgroundColor
                 actionButton.setImage(activeEllipsisImage, for: .normal)
 
@@ -155,8 +153,8 @@ open class ThemeBrowserCell: UICollectionViewCell {
                 infoLabel.textColor = Styles.activeCellInfoColor
                 infoLabel.text = NSLocalizedString("ACTIVE", comment: "Label for active Theme browser cell")
             } else {
-                backgroundColor = Styles.inactiveCellBackgroundColor
-                infoBar.backgroundColor = Styles.inactiveCellBackgroundColor
+                backgroundColor = .systemBackground
+                infoBar.backgroundColor = .systemBackground
                 actionButton.setImage(inactiveEllipsisImage, for: .normal)
 
                 nameLabel.textColor = Styles.inactiveCellNameColor

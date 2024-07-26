@@ -219,9 +219,6 @@ private extension SiteStatsDashboardViewController {
         filterTabBar.items = displayedTabs
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
         filterTabBar.accessibilityIdentifier = "site-stats-dashboard-filter-bar"
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            filterTabBar.tabSizingStyle = .equalWidths
-        }
         filterTabBar.backgroundColor = .systemBackground
     }
 

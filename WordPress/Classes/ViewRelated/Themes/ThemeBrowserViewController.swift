@@ -296,11 +296,11 @@ public protocol ThemePresenter: AnyObject {
 
     open override func viewDidLoad() {
         super.viewDidLoad()
+
         collectionView.delegate = self
+        collectionView.backgroundColor = .secondarySystemBackground
 
         title = NSLocalizedString("Themes", comment: "Title of Themes browser page")
-
-        WPStyleGuide.configureColors(view: view, collectionView: collectionView)
 
         fetchThemes()
         sections = (themeCount == 0 && customThemeCount == 0) ? [.customThemes, .themes] :
@@ -326,13 +326,9 @@ public protocol ThemePresenter: AnyObject {
         searchController.delegate = self
         searchController.searchResultsUpdater = self
 
-        collectionView.register(UINib(nibName: "ThemeBrowserSectionHeaderView", bundle: Bundle(for: ThemeBrowserSectionHeaderView.self)),
-                                    forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-                                    withReuseIdentifier: ThemeBrowserViewController.reuseIdentifierForThemesHeader)
+        collectionView.register(UINib(nibName: "ThemeBrowserSectionHeaderView", bundle: Bundle(for: ThemeBrowserSectionHeaderView.self)), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ThemeBrowserViewController.reuseIdentifierForThemesHeader)
 
-        collectionView.register(UINib(nibName: "ThemeBrowserSectionHeaderView", bundle: Bundle(for: ThemeBrowserSectionHeaderView.self)),
-                                forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-                                withReuseIdentifier: ThemeBrowserViewController.reuseIdentifierForCustomThemesHeader)
+        collectionView.register(UINib(nibName: "ThemeBrowserSectionHeaderView", bundle: Bundle(for: ThemeBrowserSectionHeaderView.self)), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ThemeBrowserViewController.reuseIdentifierForCustomThemesHeader)
     }
 
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -381,29 +377,19 @@ public protocol ThemePresenter: AnyObject {
     }
 
     fileprivate func registerForKeyboardNotifications() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(ThemeBrowserViewController.keyboardDidShow(_:)),
-                                               name: UIResponder.keyboardDidShowNotification,
-                                               object: nil)
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(ThemeBrowserViewController.keyboardWillHide(_:)),
-                                               name: UIResponder.keyboardWillHideNotification,
-                                               object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ThemeBrowserViewController.keyboardDidShow(_:)), name: UIResponder.keyboardDidShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ThemeBrowserViewController.keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
     fileprivate func unregisterForKeyboardNotifications() {
-        NotificationCenter.default.removeObserver(self,
-                                                  name: UIResponder.keyboardDidShowNotification,
-                                                  object: nil)
-        NotificationCenter.default.removeObserver(self,
-                                                  name: UIResponder.keyboardWillHideNotification,
-                                                  object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
     @objc open func keyboardDidShow(_ notification: Foundation.Notification) {
         let keyboardFrame = localKeyboardFrameFromNotification(notification)
         let keyboardHeight = collectionView.frame.maxY - keyboardFrame.origin.y
-
+//
         collectionView.contentInset.bottom = keyboardHeight
         collectionView.verticalScrollIndicatorInsets.bottom = keyboardHeight
     }
@@ -411,7 +397,6 @@ public protocol ThemePresenter: AnyObject {
     @objc open func keyboardWillHide(_ notification: Foundation.Notification) {
         let tabBarHeight = tabBarController?.tabBar.bounds.height ?? 0
 
-        collectionView.contentInset.top = view.safeAreaInsets.top
         collectionView.contentInset.bottom = tabBarHeight
         collectionView.verticalScrollIndicatorInsets.bottom = tabBarHeight
     }
@@ -683,7 +668,7 @@ public protocol ThemePresenter: AnyObject {
 
     open func willPresentSearchController(_ searchController: UISearchController) {
         hideSectionHeaders = true
-        if sections[1] == .info {
+        if sections[0] == .info {
             collectionView?.collectionViewLayout.invalidateLayout()
             setInfoSectionHidden(true)
         }
@@ -700,20 +685,19 @@ public protocol ThemePresenter: AnyObject {
     }
 
     open func didDismissSearchController(_ searchController: UISearchController) {
-        if sections[1] == .themes || sections[1] == .customThemes {
+        if sections[0] == .themes || sections[0] == .customThemes {
             setInfoSectionHidden(false)
         }
-        collectionView.verticalScrollIndicatorInsets.top = view.safeAreaInsets.top
     }
 
     fileprivate func setInfoSectionHidden(_ hidden: Bool) {
         let hide = {
-            self.collectionView?.deleteSections(IndexSet(integer: 1))
+            self.collectionView?.deleteSections(IndexSet(integer: 0))
             self.sections = [.customThemes, .themes]
         }
 
         let show = {
-            self.collectionView?.insertSections(IndexSet(integer: 1))
+            self.collectionView?.insertSections(IndexSet(integer: 0))
             self.sections = [.info, .customThemes, .themes]
         }
 

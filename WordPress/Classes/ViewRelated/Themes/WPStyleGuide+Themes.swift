@@ -6,8 +6,10 @@ import WordPressShared
 extension WPStyleGuide {
     public struct Themes {
         public static func styleCurrentThemeButton(_ button: UIButton) {
-            button.titleLabel?.font = .preferredFont(forTextStyle: .callout)
-            button.setTitleColor(.label, for: UIControl.State())
+            button.tintColor = .label.withAlphaComponent(0.8)
+            button.imageView?.tintColor = .label.withAlphaComponent(0.8)
+            button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .regular)
+            button.setTitleColor(.label.withAlphaComponent(0.8), for: [])
             button.backgroundColor = .clear
         }
 
@@ -19,13 +21,12 @@ extension WPStyleGuide {
         public static let activeCellNameColor: UIColor = .textInverted
         public static let activeCellInfoColor: UIColor = .primaryLight
 
-        public static let inactiveCellBackgroundColor: UIColor = .listForeground
         public static let inactiveCellNameColor: UIColor = .neutral(.shade70)
         public static let inactiveCellPriceColor: UIColor = .success
 
         // MARK: - Metrics
 
-        public static let currentBarLineHeight: CGFloat = 56
+        public static let currentBarLineHeight: CGFloat = 62
         public static let currentBarSeparator: CGFloat = 0.5
 
         public static func headerHeight(_ horizontallyCompact: Bool) -> CGFloat {
@@ -35,7 +36,7 @@ extension WPStyleGuide {
             } else {
                 headerHeight += currentBarLineHeight
             }
-            return headerHeight
+            return headerHeight + 16 // insets
         }
 
         public static let columnMargin: CGFloat = 12
