@@ -143,6 +143,7 @@ class EditPostViewController: UIViewController {
 
         let navController = AztecNavigationController(rootViewController: editor)
         navController.modalPresentationStyle = .fullScreen
+        navController.view.backgroundColor = .systemBackground
 
         let generator = UIImpactFeedbackGenerator(style: .medium)
         generator.prepare()
