@@ -15,11 +15,13 @@ class PeopleCell: WPTableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        displayNameLabel.textColor = .DS.Foreground.primary
-        displayNameLabel.font = .DS.font(.bodyMedium(.regular))
+        displayNameLabel.textColor = .label
+        displayNameLabel.font = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .medium)
 
-        usernameLabel.textColor = .DS.Foreground.secondary
-        usernameLabel.font = .DS.font(.bodyMedium(.regular))
+        usernameLabel.textColor = .secondaryLabel
+        usernameLabel.font = WPStyleGuide.fontForTextStyle(.footnote)
+
+        separatorInset = UIEdgeInsets(top: 0, left: 72, bottom: 0, right: 0)
     }
 
     override func prepareForReuse() {

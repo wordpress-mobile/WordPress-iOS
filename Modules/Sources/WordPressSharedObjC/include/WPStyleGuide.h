@@ -21,8 +21,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSDictionary *)regularTextAttributes;
 + (UIFont *)tableviewTextFont;
 + (UIFont *)tableviewSubtitleFont;
-+ (UIFont *)tableviewSectionHeaderFont;
-+ (UIFont *)tableviewSectionFooterFont;
 
 // Color
 + (UIColor *)wordPressBlue;

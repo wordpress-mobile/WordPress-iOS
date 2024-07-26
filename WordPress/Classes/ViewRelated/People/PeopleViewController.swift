@@ -513,6 +513,7 @@ private extension PeopleViewController {
 
     func setupFilterBar() {
         WPStyleGuide.configureFilterTabBar(filterBar)
+        filterBar.backgroundColor = .clear
 
         filterBar.items = filtersAvailableForBlog(blog)
         filterBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
@@ -541,10 +542,7 @@ private extension PeopleViewController {
                                                             target: self,
                                                             action: #selector(invitePersonWasPressed))
 
-        WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
-        tableView.separatorStyle = .none
-        tableView.backgroundColor = .DS.Background.primary
 
         setupFilterBar()
         setupTableView()

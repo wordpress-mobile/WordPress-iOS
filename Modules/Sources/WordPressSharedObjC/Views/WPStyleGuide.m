@@ -101,17 +101,6 @@
     return [UIFont preferredFontForTextStyle:UIFontTextStyleCallout];
 }
 
-+ (UIFont *)tableviewSectionHeaderFont
-{
-    return [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-}
-
-+ (UIFont *)tableviewSectionFooterFont
-{
-	return [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-}
-
-
 #pragma mark - Colors
 // https://wordpress.com/design-handbook/colors/
 
