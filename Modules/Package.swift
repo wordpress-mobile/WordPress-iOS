@@ -9,6 +9,7 @@ let package = Package(
     ],
     products: XcodeSupport.products + [
         .library(name: "JetpackStatsWidgetsCore", targets: ["JetpackStatsWidgetsCore"]),
+        .library(name: "ViewLayer", targets: ["ViewLayer"]),
         .library(name: "DesignSystem", targets: ["DesignSystem"]),
         .library(name: "WordPressFlux", targets: ["WordPressFlux"]),
         .library(name: "WordPressShared", targets: ["WordPressShared"]),
@@ -50,6 +51,9 @@ let package = Package(
     targets: XcodeSupport.targets + [
         .target(name: "JetpackStatsWidgetsCore"),
         .target(name: "DesignSystem"),
+        .target(name: "ViewLayer", dependencies: [
+            .target(name: "DesignSystem")
+        ]),
         .target(name: "UITestsFoundation", dependencies: [
             .product(name: "ScreenObject", package: "ScreenObject"),
             .product(name: "XCUITestHelpers", package: "XCUITestHelpers"),
