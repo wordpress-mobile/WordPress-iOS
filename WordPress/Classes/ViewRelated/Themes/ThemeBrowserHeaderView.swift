@@ -51,11 +51,9 @@ open class ThemeBrowserHeaderView: UICollectionReusableView {
             prepareForVoiceOver()
         }
     }
-    fileprivate var filterType: ThemeType = .all {
-        didSet {
-            Styles.styleSearchTypeButton(filterTypeButton, title: filterType.title)
-        }
-    }
+
+    fileprivate var filterType: ThemeType = .all
+
     open weak var presenter: ThemePresenter? {
         didSet {
             if let presenter = presenter {
@@ -85,25 +83,23 @@ open class ThemeBrowserHeaderView: UICollectionReusableView {
     }
 
     fileprivate func applyStyles() {
-        currentThemeBar.backgroundColor = Styles.currentThemeBackgroundColor
-        currentThemeContainer.backgroundColor = Styles.currentThemeBackgroundColor
-        currentThemeDivider.backgroundColor = Styles.currentThemeDividerColor
+        currentThemeBar.backgroundColor = .systemBackground
+        currentThemeContainer.backgroundColor = .systemBackground
+        currentThemeDivider.backgroundColor = .separator
 
-        currentThemeLabel.font = Styles.currentThemeLabelFont
-        currentThemeLabel.textColor = Styles.currentThemeLabelColor
+        currentThemeLabel.font = .preferredFont(forTextStyle: .footnote)
+        currentThemeLabel.textColor = .secondaryLabel
 
-        currentThemeName.font = Styles.currentThemeNameFont
-        currentThemeName.textColor = Styles.currentThemeNameColor
+        currentThemeName.font = .preferredFont(forTextStyle: .headline)
+        currentThemeName.textColor = .label
 
         let currentThemeButtons = [customizeButton, detailsButton, supportButton]
-        currentThemeButtons.forEach { Styles.styleCurrentThemeButton($0!) }
+        currentThemeButtons.forEach { WPStyleGuide.Themes.styleCurrentThemeButton($0!) }
 
-        [customizeIcon, detailsIcon, supportIcon].forEach { $0?.tintColor = .listIcon }
+        [customizeIcon, detailsIcon, supportIcon].forEach { $0?.tintColor = .secondaryLabel }
 
         spotlightCustomizeButtonIfTourIsActive()
-
-        filterBar.backgroundColor = Styles.searchBarBackgroundColor
-        filterBarBorders.forEach { $0.backgroundColor = Styles.searchBarBorderColor }
+        filterBarBorders.forEach { $0.backgroundColor = .separator }
     }
 
     private func spotlightCustomizeButtonIfTourIsActive() {

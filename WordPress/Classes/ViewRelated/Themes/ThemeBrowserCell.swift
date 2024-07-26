@@ -120,15 +120,18 @@ open class ThemeBrowserCell: UICollectionViewCell {
 
         actionButton.isExclusiveTouch = true
 
-        layer.borderWidth = Styles.cellBorderWidth
-        infoBar.layer.borderWidth = Styles.cellBorderWidth
-        nameLabel.font = Styles.cellNameFont
-        infoLabel.font = Styles.cellInfoFont
-        actionButton.layer.borderWidth = Styles.cellBorderWidth
+        layer.borderColor = UIColor.separator.cgColor
+        layer.borderWidth = 0.5
+        layer.cornerRadius = 8
+        layer.cornerCurve = .continuous
+
+        nameLabel.font = .preferredFont(forTextStyle: .headline)
+        infoLabel.font = .preferredFont(forTextStyle: .footnote)
     }
 
     override open func prepareForReuse() {
         super.prepareForReuse()
+
         theme = nil
         presenter = nil
         showPriceInformation = false
@@ -146,9 +149,6 @@ open class ThemeBrowserCell: UICollectionViewCell {
             if theme.isCurrentTheme() {
                 backgroundColor = Styles.activeCellBackgroundColor
                 infoBar.backgroundColor = Styles.activeCellBackgroundColor
-                layer.borderColor = Styles.activeCellBorderColor.cgColor
-                infoBar.layer.borderColor = Styles.activeCellDividerColor.cgColor
-                actionButton.layer.borderColor = Styles.activeCellDividerColor.cgColor
                 actionButton.setImage(activeEllipsisImage, for: .normal)
 
                 nameLabel.textColor = Styles.activeCellNameColor
@@ -157,9 +157,6 @@ open class ThemeBrowserCell: UICollectionViewCell {
             } else {
                 backgroundColor = Styles.inactiveCellBackgroundColor
                 infoBar.backgroundColor = Styles.inactiveCellBackgroundColor
-                layer.borderColor = Styles.inactiveCellBorderColor.cgColor
-                infoBar.layer.borderColor = Styles.inactiveCellDividerColor.cgColor
-                actionButton.layer.borderColor = Styles.inactiveCellDividerColor.cgColor
                 actionButton.setImage(inactiveEllipsisImage, for: .normal)
 
                 nameLabel.textColor = Styles.inactiveCellNameColor

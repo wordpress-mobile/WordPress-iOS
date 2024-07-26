@@ -1951,6 +1951,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
 {
     [WPAppAnalytics track:WPAnalyticsStatThemesAccessedThemeBrowser withBlog:self.blog];
     ThemeBrowserViewController *viewController = [ThemeBrowserViewController browserWithBlog:self.blog];
+    viewController.hidesBottomBarWhenPushed = YES;
     viewController.onWebkitViewControllerClose = ^(void) {
         [self startAlertTimer];
     };
