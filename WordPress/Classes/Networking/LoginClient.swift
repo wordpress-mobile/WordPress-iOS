@@ -1,6 +1,9 @@
 import Foundation
 import WordPressAPI
 import AutomatticTracks
+import ViewLayer
+import SwiftUI
+import AuthenticationServices
 
 actor LoginClient {
 
@@ -13,10 +16,10 @@ actor LoginClient {
         case missingLoginUrl
     }
 
-    private let session: URLSession
+    private let internalClient: WordPressLoginClient
 
     init(session: URLSession) {
-        self.session = session
+        self.internalClient = WordPressLoginClient(urlSession: session)
     }
 
     func performLoginAutodiscovery(for url: URL) async throws -> ApiDetails {
@@ -24,8 +27,6 @@ actor LoginClient {
     }
 
     func performLoginAutodiscovery(for string: String) async throws -> ApiDetails {
-        let internalClient = WordPressLoginClient(urlSession: self.session)
-
         do {
             let result = try await internalClient.discoverLoginUrl(for: string)
             trackSuccess(url: string)
@@ -77,5 +78,114 @@ actor LoginClient {
             "success": false,
             "error": error.localizedDescription
         ])
+    }
+
+    @MainActor
+    static func displaySelfHostedLoginView(in navigationController: UINavigationController) {
+        let loginClient = LoginClient(session: .shared)
+        let vm = SelfHostedLoginViewModel(loginClient: loginClient)
+        let loginViewController = UIHostingController(rootView: LoginWithUrlView(viewModel: vm))
+
+        vm.onLoginComplete = {
+            loginViewController.dismiss(animated: true)
+        }
+
+        navigationController.pushViewController(loginViewController, animated: true)
+    }
+}
+
+class SelfHostedLoginViewModel: LoginWithUrlView.ViewModel {
+    private let loginClient: LoginClient
+    private let presentationContextProvider = SelfHostedLoginViewModelAuthenticationContextProvider()
+
+    var onLoginComplete: (() -> Void)?
+
+    init(loginClient: LoginClient) {
+        self.loginClient = loginClient
+        super.init()
+    }
+
+    override func startLogin() {
+        debugPrint("Attempting login with \(super.urlField)")
+        Task {
+            do {
+                let authUrl = try await self.buildLoginUrl(from: super.urlField)
+                debugPrint("Presenting Login Page \(authUrl)")
+
+                let urlWithToken = try await withUnsafeThrowingContinuation { continuation in
+                    let session = ASWebAuthenticationSession(url: authUrl, callbackURLScheme: "x-wpcom-login") { url, error in
+
+                        if let url {
+                            continuation.resume(returning: url)
+                        }
+
+                        if let error {
+                            continuation.resume(throwing: error)
+                        }
+                    }
+                    session.presentationContextProvider = self.presentationContextProvider
+                    session.start()
+                }
+
+                let credentials = try Blog.SelfHostedLoginDetails.fromApplicationPasswordResponse(urlWithToken)
+                try await BlogService(coreDataStack: ContextManager.shared).create(from: credentials)
+
+                self.onLoginComplete?()
+            } catch let err {
+                debugPrint(err.localizedDescription)
+            }
+        }
+    }
+
+    private func buildLoginUrl(from userInput: String) async throws -> URL {
+        guard
+            let result = try await self.loginClient.performLoginAutodiscovery(for: userInput).loginUrl,
+            var mutableAuthURL = URL(string: result)
+        else {
+            // TODO: Throw an error if there's no login URL available
+            abort()
+        }
+
+        var appNameValue = "Jetpack iOS"
+
+        #if os(macOS)
+        if let deviceName = Host.current().localizedName {
+            appNameValue += " - \(deviceName)"
+        }
+        #else
+        let deviceName = await UIDevice.current.name
+        appNameValue += " - \(deviceName)"
+        #endif
+
+        if #available(iOS 16.0, *) {
+            mutableAuthURL.append(queryItems: [
+                URLQueryItem(name: "app_name", value: appNameValue),
+                URLQueryItem(name: "app_id", value: "00000000-0000-4000-8000-000000000000"),
+                URLQueryItem(name: "success_url", value: "x-wpcom-login://login-confirmation")
+            ])
+        } else {
+            var components = URLComponents(
+                url: mutableAuthURL,
+                resolvingAgainstBaseURL: false
+            )
+
+            components?.queryItems?.append(contentsOf: [
+                URLQueryItem(name: "app_name", value: appNameValue),
+                URLQueryItem(name: "app_id", value: "00000000-0000-4000-8000-000000000000"),
+                URLQueryItem(name: "success_url", value: "x-wpcom-login://login-confirmation")
+            ])
+
+            if let url = components?.url {
+                mutableAuthURL = url
+            }
+        }
+
+        return mutableAuthURL
+    }
+}
+
+class SelfHostedLoginViewModelAuthenticationContextProvider: NSObject, ASWebAuthenticationPresentationContextProviding {
+    func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
+        ASPresentationAnchor()
     }
 }

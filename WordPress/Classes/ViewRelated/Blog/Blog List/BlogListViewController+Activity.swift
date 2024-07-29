@@ -1,10 +1,18 @@
 import Foundation
 import WordPressAuthenticator
+import ViewLayer
+import SwiftUI
 
 extension BlogListViewController: SearchableActivityConvertable {
     @objc func showLoginForSelfHostedSite() {
         setEditing(false, animated: false)
-        WordPressAuthenticator.showLoginForSelfHostedSite(self)
+//        WordPressAuthenticator.showLoginForSelfHostedSite(self)
+
+        guard let navigationController = self.navigationController else {
+            return
+        }
+
+        LoginClient.displaySelfHostedLoginView(in: navigationController)
     }
 
     var activityType: String {
