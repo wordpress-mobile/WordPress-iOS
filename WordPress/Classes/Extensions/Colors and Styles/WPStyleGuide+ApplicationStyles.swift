@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 import WordPressShared
+import WordPressUI
 
 extension WPStyleGuide {
 
@@ -16,6 +17,9 @@ extension WPStyleGuide {
         UISwitch.appearance().onTintColor = .primary
 
         UITableView.appearance().sectionHeaderTopPadding = 0
+
+        setupFancyAlertAppearance()
+        setupFancyButtonAppearance()
     }
 
     public class var navigationBarStandardFont: UIFont {
@@ -51,6 +55,45 @@ extension WPStyleGuide {
     @objc class func configureTabBar(_ tabBar: UITabBar) {
         tabBar.tintColor = .tabSelected
         tabBar.unselectedItemTintColor = .tabUnselected
+    }
+
+    private static func setupFancyAlertAppearance() {
+        let appearance = FancyAlertView.appearance()
+
+        appearance.titleTextColor = .neutral(.shade70)
+        appearance.titleFont = WPStyleGuide.fontForTextStyle(.title2, fontWeight: .semibold)
+
+        appearance.bodyTextColor = .neutral(.shade70)
+        appearance.bodyFont = WPStyleGuide.fontForTextStyle(.body)
+        appearance.bodyBackgroundColor = .neutral(.shade0)
+
+        appearance.actionFont = WPStyleGuide.fontForTextStyle(.headline)
+        appearance.infoFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
+        appearance.infoTintColor = .primary
+
+        appearance.topDividerColor = .neutral(.shade5)
+        appearance.bottomDividerColor = .neutral(.shade0)
+        appearance.headerBackgroundColor = .neutral(.shade0)
+
+        appearance.bottomBackgroundColor = .neutral(.shade0)
+    }
+
+    private static func setupFancyButtonAppearance() {
+        let appearance = FancyButton.appearance()
+        appearance.titleFont = WPStyleGuide.fontForTextStyle(.headline)
+        appearance.primaryTitleColor = .white
+        appearance.primaryNormalBackgroundColor = .primary
+        appearance.primaryHighlightBackgroundColor = .muriel(color: .primary, .shade80)
+
+        appearance.secondaryTitleColor = .text
+        appearance.secondaryNormalBackgroundColor = UIColor(light: .white, dark: .systemGray5)
+        appearance.secondaryNormalBorderColor = .systemGray3
+        appearance.secondaryHighlightBackgroundColor = .systemGray3
+        appearance.secondaryHighlightBorderColor = .systemGray3
+
+        appearance.disabledTitleColor = .neutral(.shade20)
+        appearance.disabledBackgroundColor = .textInverted
+        appearance.disabledBorderColor = .neutral(.shade10)
     }
 }
 

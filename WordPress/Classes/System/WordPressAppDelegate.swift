@@ -111,7 +111,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         InteractiveNotificationsManager.shared.registerForUserNotifications()
         setupPingHub()
         setupBackgroundRefresh(application)
-        setupComponentsAppearance()
         UITestConfigurator.prepareApplicationForUITests(application)
         DebugMenuViewController.configure(in: window)
 
@@ -490,61 +489,6 @@ extension WordPressAppDelegate {
     }
 
     private static let iterableDomain = "links.wp.a8cmail.com"
-}
-
-// MARK: - UIAppearance
-
-extension WordPressAppDelegate {
-
-    /// Sets up all of the shared component(s) Appearance.
-    ///
-    func setupComponentsAppearance() {
-        setupFancyAlertAppearance()
-        setupFancyButtonAppearance()
-    }
-
-    /// Setup: FancyAlertView's Appearance
-    ///
-    private func setupFancyAlertAppearance() {
-        let appearance = FancyAlertView.appearance()
-
-        appearance.titleTextColor = .neutral(.shade70)
-        appearance.titleFont = WPStyleGuide.fontForTextStyle(.title2, fontWeight: .semibold)
-
-        appearance.bodyTextColor = .neutral(.shade70)
-        appearance.bodyFont = WPStyleGuide.fontForTextStyle(.body)
-        appearance.bodyBackgroundColor = .neutral(.shade0)
-
-        appearance.actionFont = WPStyleGuide.fontForTextStyle(.headline)
-        appearance.infoFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
-        appearance.infoTintColor = .primary
-
-        appearance.topDividerColor = .neutral(.shade5)
-        appearance.bottomDividerColor = .neutral(.shade0)
-        appearance.headerBackgroundColor = .neutral(.shade0)
-
-        appearance.bottomBackgroundColor = .neutral(.shade0)
-    }
-
-    /// Setup: FancyButton's Appearance
-    ///
-    private func setupFancyButtonAppearance() {
-        let appearance = FancyButton.appearance()
-        appearance.titleFont = WPStyleGuide.fontForTextStyle(.headline)
-        appearance.primaryTitleColor = .white
-        appearance.primaryNormalBackgroundColor = .primary
-        appearance.primaryHighlightBackgroundColor = .muriel(color: .primary, .shade80)
-
-        appearance.secondaryTitleColor = .text
-        appearance.secondaryNormalBackgroundColor = UIColor(light: .white, dark: .systemGray5)
-        appearance.secondaryNormalBorderColor = .systemGray3
-        appearance.secondaryHighlightBackgroundColor = .systemGray3
-        appearance.secondaryHighlightBorderColor = .systemGray3
-
-        appearance.disabledTitleColor = .neutral(.shade20)
-        appearance.disabledBackgroundColor = .textInverted
-        appearance.disabledBorderColor = .neutral(.shade10)
-    }
 }
 
 // MARK: - Helpers
