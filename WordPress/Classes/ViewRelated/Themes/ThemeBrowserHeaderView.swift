@@ -80,6 +80,7 @@ final class ThemeBrowserHeaderView: UICollectionReusableView {
 
     fileprivate func applyStyles() {
         backgroundColor = .clear
+        contentView.backgroundColor = .systemBackground
 
         contentView.layer.cornerRadius = 12
         contentView.layer.cornerCurve = .continuous
@@ -87,7 +88,7 @@ final class ThemeBrowserHeaderView: UICollectionReusableView {
 
         currentThemeBar.backgroundColor = .systemBackground
         currentThemeContainer.backgroundColor = .systemBackground
-        currentThemeDivider.backgroundColor = .separator
+        currentThemeDivider.backgroundColor = UIDevice.current.userInterfaceIdiom == .pad ? .clear : .separator
 
         currentThemeLabel.font = .preferredFont(forTextStyle: .footnote)
         currentThemeLabel.textColor = .secondaryLabel

@@ -17,14 +17,14 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0Gm-n3-CNm" userLabel="icon" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
-                        <rect key="frame" x="16" y="15.5" width="30" height="30"/>
+                        <rect key="frame" x="20" y="15.5" width="30" height="30"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="30" id="2gR-WZ-UxT"/>
                             <constraint firstAttribute="width" constant="30" id="DVY-mp-ll8"/>
                         </constraints>
                     </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="RzG-YS-PIa">
-                        <rect key="frame" x="21" y="20.5" width="20" height="20"/>
+                        <rect key="frame" x="25" y="20.5" width="20" height="20"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="Paz-2X-1nw"/>
                             <constraint firstAttribute="width" constant="20" id="wQf-nD-j4p"/>
@@ -107,7 +107,7 @@
                     <constraint firstAttribute="trailing" secondItem="myo-BJ-PwG" secondAttribute="trailing" constant="16" id="XpT-mQ-lI9"/>
                     <constraint firstItem="0Gm-n3-CNm" firstAttribute="centerY" secondItem="myo-BJ-PwG" secondAttribute="centerY" id="Y8y-UG-gV8"/>
                     <constraint firstItem="RzG-YS-PIa" firstAttribute="centerX" secondItem="0Gm-n3-CNm" secondAttribute="centerX" id="Ycj-jl-sBn"/>
-                    <constraint firstItem="0Gm-n3-CNm" firstAttribute="leading" secondItem="p6H-P7-J7f" secondAttribute="leadingMargin" id="esq-dG-6ro"/>
+                    <constraint firstItem="0Gm-n3-CNm" firstAttribute="leading" secondItem="p6H-P7-J7f" secondAttribute="leading" constant="20" id="esq-dG-6ro"/>
                 </constraints>
             </tableViewCellContentView>
             <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>

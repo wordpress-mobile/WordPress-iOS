@@ -122,6 +122,8 @@ open class ThemeBrowserCell: UICollectionViewCell {
 
         layer.cornerRadius = 12
         layer.cornerCurve = .continuous
+        layer.borderColor = UIColor.separator.cgColor
+        layer.borderWidth = 0.5
 
         nameLabel.font = .preferredFont(forTextStyle: .headline)
         infoLabel.font = .preferredFont(forTextStyle: .headline)
