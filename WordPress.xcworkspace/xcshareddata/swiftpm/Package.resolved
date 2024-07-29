@@ -41,8 +41,8 @@
         "package": "GutenbergKit",
         "repositoryURL": "https://github.com/kean/GutenbergKit",
         "state": {
-          "branch": "main",
-          "revision": "294c291817142a1b2743a84f84bd4cfd3d860cb9",
+          "branch": null,
+          "revision": "e7bf1b6fdf2be7f6b5028f777f167310b5c6c4f3",
           "version": null
         }
       },

@@ -99,7 +99,7 @@ extension PostSettingsViewController {
     @objc func setupObservingOf(media: Media) {
         removeMediaObserver()
         isUploadingMedia = true
-        mediaObserverReceipt = MediaCoordinator.shared.addObserver({ [weak self](media, state) in
+        mediaObserverReceipt = MediaCoordinator.shared.addObserver({ [weak self](media, state, _, _) in
             self?.mediaObserver(media: media, state: state)
         })
         let progress = MediaCoordinator.shared.progress(for: media)

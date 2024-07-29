@@ -30751,8 +30751,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kean/GutenbergKit";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = revision;
+				revision = e7bf1b6fdf2be7f6b5028f777f167310b5c6c4f3;
 			};
 		};
 		0CD9FB852AFA71B9009D9C7A /* XCRemoteSwiftPackageReference "Charts" */ = {

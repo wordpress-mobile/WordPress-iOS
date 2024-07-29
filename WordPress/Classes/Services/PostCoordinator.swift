@@ -734,7 +734,7 @@ class PostCoordinator: NSObject {
             completion(.failure(SavingError.mediaFailure(post, error)))
         }
 
-        return mediaCoordinator.addObserver({ [weak self](media, state) in
+        return mediaCoordinator.addObserver({ [weak self](media, state, _, _) in
             guard let `self` = self else {
                 return
             }

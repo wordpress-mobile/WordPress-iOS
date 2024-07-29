@@ -3,7 +3,17 @@ import AutomatticTracks
 import GutenbergKit
 import SafariServices
 
-class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor {
+class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor, SiteMediaPickerViewControllerDelegate {
+    func siteMediaPickerViewController(_ viewController: SiteMediaPickerViewController, didFinishWithSelection selection: [Media]) {
+        print("Selection: ", selection)
+    }
+
+    struct MediaData: Encodable {
+        let mediaType: String
+        let url: String
+        let id: Int32
+    }
+
     let errorDomain: String = "GutenbergViewController.errorDomain"
 
     private lazy var service: BlogJetpackSettingsService? = {
@@ -140,7 +150,15 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
         self.editorViewController.delegate = self
         self.navigationBarManager.delegate = self
+        mediaPickerHelper = GutenbergMediaPickerHelper(context: self, post: post)
+        self.addMediaObserver()
     }
+
+    let mediaCoordinator = MediaCoordinator.shared
+
+    lazy var mediaPickerHelper: GutenbergMediaPickerHelper = {
+        return GutenbergMediaPickerHelper(context: self, post: post)
+    }()
 
     required init?(coder aDecoder: NSCoder) {
         fatalError()
@@ -300,6 +318,101 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
                 self?.performAutoSave()
             }
         }
+    }
+
+    func editor(_ viewController: GutenbergKit.EditorViewController, mediaUpload: Bool, body: Any) {
+        let filter: WPMediaType = [.image]
+        if let bodyDict = body as? [String: Any], let callbackName = bodyDict["callback"] as? String, let multiple = bodyDict["multiple"] as? Bool {
+
+            self.mediaPickerHelper.presetDevicePhotosPicker(filter: filter, allowMultipleSelection: multiple) { [weak self] assets in
+                guard let self, let assets, !assets.isEmpty else {
+                    return
+                }
+
+                if let providers = assets as? [NSItemProvider] {
+                    let media: [MediaData] = providers.compactMap {
+                        guard let media = self.mediaCoordinator.addMedia(from: $0, to: self.post, analyticsInfo: nil, callbackName: callbackName, multiple: multiple) else {
+                            return nil
+                        }
+                        let previewURL = self.editorViewController.placeholderURL ?? URL(fileURLWithPath: NSTemporaryDirectory() + "\(media.gutenbergUploadID)")
+                        let mediaType = media.mediaTypeString ?? ""
+                        return MediaData(mediaType: mediaType, url: previewURL.absoluteString, id: media.gutenbergUploadID)
+                    }
+
+                    do {
+                        // Convert the media array to JSON using JSONEncoder
+                        let encoder = JSONEncoder()
+                        let mediaData = try encoder.encode(media)
+                        guard let mediaJSON = String(data: mediaData, encoding: .utf8) else {
+                            print("Error converting media data to JSON string")
+                            return
+                        }
+                        // Notify JavaScript about media upload completion
+                        let jsCallback = """
+                            document.dispatchEvent(new CustomEvent('\(callbackName)', {
+                                detail: { mediaJSON: \(mediaJSON) }
+                            }));
+                        """
+                        // Evaluate the JavaScript code to notify about media upload completion
+                        self.editorViewController.webView.evaluateJavaScript(jsCallback, completionHandler: nil)
+                    } catch {
+                        print("Error serializing media array to JSON: \(error)")
+                    }
+                }
+            }
+        }
+    }
+
+    func addMediaObserver() {
+        mediaCoordinator.addObserver({ [weak self] (mediaUpdate, state, callbackName, multiple) in
+            guard let self = self, let callbackName = callbackName, !callbackName.isEmpty else { return }
+            let isMultiSelection = multiple ?? false
+            let eventName = isMultiSelection ? "mediaUploadComplete-\(mediaUpdate.gutenbergUploadID)" : callbackName
+
+            switch state {
+            case .ended:
+                let mediaURL = mediaUpdate.remoteMediumURL ?? ""
+                let mediaID = mediaUpdate.mediaID ?? 0
+                let jsCallback = """
+                    document.dispatchEvent(new CustomEvent('\(eventName)', {
+                        detail: { url: "\(mediaURL)", id: "\(mediaID)" }
+                    }));
+                    """
+                DispatchQueue.main.async {
+                    self.editorViewController.webView.evaluateJavaScript(jsCallback, completionHandler: nil)
+                }
+            case .thumbnailReady(let url):
+                do {
+                    // Load the image data from the URL
+                    let imageData = try Data(contentsOf: url)
+
+                    // Get the app's Documents directory path
+                    if let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+                        // Create a unique filename for the image
+                        let uniqueFilename = "\(UUID().uuidString).jpg"
+                        let fileURL = documentsDirectory.appendingPathComponent(uniqueFilename)
+
+                        // Save the image data to the file
+                        try imageData.write(to: fileURL)
+
+                        // Create the JavaScript callback to pass the file URL to the web view
+                        let jsCallback = """
+                        document.dispatchEvent(new CustomEvent('\(eventName)', {
+                            detail: { localUrl: "\(fileURL.absoluteString)", id: "\(mediaUpdate.gutenbergUploadID)" }
+                        }));
+                        """
+
+                        DispatchQueue.main.async {
+                            self.editorViewController.webView.evaluateJavaScript(jsCallback, completionHandler: nil)
+                        }
+                    }
+                } catch {
+                    print("Error loading image data: \(error)")
+                }
+            default:
+                break
+            }
+        }, forMediaFor: post)
     }
 
     func editor(_ viewController: GutenbergKit.EditorViewController, performRequest: GutenbergKit.EditorNetworkRequest) async throws -> GutenbergKit.EditorNetworkResponse {

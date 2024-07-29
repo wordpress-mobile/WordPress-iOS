@@ -215,7 +215,7 @@ final class MediaImageService {
     public func getThumbnailURL(for media: Media, _ completion: @escaping (URL?) -> Void) {
         let media = SafeMedia(media)
         Task {
-            guard let (thumbnailURL, export) = await generateLocalThumbnail(for: media, size: .large) else {
+            guard let (thumbnailURL, export) = await generateLocalThumbnail(for: media, size: .small) else {
                 return completion(nil)
             }
 

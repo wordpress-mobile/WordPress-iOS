@@ -2119,7 +2119,7 @@ extension AztecPostViewController {
 extension AztecPostViewController {
 
     func registerMediaObserver() {
-        mediaObserverReceipt =  mediaCoordinator.addObserver({ [weak self](media, state) in
+        mediaObserverReceipt =  mediaCoordinator.addObserver({ [weak self](media, state, _, _) in
             self?.mediaObserver(media: media, state: state)
             }, forMediaFor: post)
     }

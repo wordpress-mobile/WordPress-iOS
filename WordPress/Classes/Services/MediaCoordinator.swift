@@ -151,8 +151,8 @@ class MediaCoordinator: NSObject {
     /// - parameter origin: The location in the app where the upload was initiated (optional).
     ///
     @discardableResult
-    func addMedia(from asset: ExportableAsset, to post: AbstractPost, analyticsInfo: MediaAnalyticsInfo? = nil) -> Media? {
-        addMedia(from: asset, post: post, coordinator: coordinator(for: post), analyticsInfo: analyticsInfo)
+    func addMedia(from asset: ExportableAsset, to post: AbstractPost, analyticsInfo: MediaAnalyticsInfo? = nil, callbackName: String? = "", multiple: Bool? = false) -> Media? {
+        addMedia(from: asset, post: post, coordinator: coordinator(for: post), analyticsInfo: analyticsInfo, callbackName: callbackName, multiple: multiple)
     }
 
     /// Create a `Media` instance from the main context and upload the asset to the Media Library.
@@ -160,7 +160,7 @@ class MediaCoordinator: NSObject {
     /// - Warning: This function must be called from the main thread.
     ///
     /// - SeeAlso: `MediaImportService.createMedia(with:blog:post:thumbnailCallback:completion:)`
-    private func addMedia(from asset: ExportableAsset, post: AbstractPost, coordinator: MediaProgressCoordinator, analyticsInfo: MediaAnalyticsInfo? = nil) -> Media? {
+    private func addMedia(from asset: ExportableAsset, post: AbstractPost, coordinator: MediaProgressCoordinator, analyticsInfo: MediaAnalyticsInfo? = nil, callbackName: String? = "", multiple: Bool? = false) -> Media? {
         coordinator.track(numberOfItems: 1)
         let service = MediaImportService(coreDataStack: coreDataStack)
         let totalProgress = Progress.discreteProgress(totalUnitCount: MediaExportProgressUnits.done)
@@ -169,17 +169,17 @@ class MediaCoordinator: NSObject {
             blog: post.blog,
             post: post,
             thumbnailCallback: { [weak self] media, url in
-                self?.thumbnailReady(url: url, for: media)
+                self?.thumbnailReady(url: url, for: media, callbackName: callbackName, multiple: multiple)
             },
             completion: { [weak self] media, error in
-                self?.handleMediaImportResult(coordinator: coordinator, totalProgress: totalProgress, analyticsInfo: analyticsInfo, media: media, error: error)
+                self?.handleMediaImportResult(coordinator: coordinator, totalProgress: totalProgress, analyticsInfo: analyticsInfo, media: media, error: error, callbackName: callbackName, multiple: multiple)
             }
         )
         guard let (media, creationProgress) = result else {
             return nil
         }
 
-        processing(media)
+        processing(media, callbackName: callbackName)
 
         totalProgress.addChild(creationProgress, withPendingUnitCount: MediaExportProgressUnits.exportDone)
         coordinator.track(progress: totalProgress, of: media, withIdentifier: media.uploadID)
@@ -213,7 +213,7 @@ class MediaCoordinator: NSObject {
         totalProgress.addChild(creationProgress, withPendingUnitCount: MediaExportProgressUnits.exportDone)
     }
 
-    private func handleMediaImportResult(coordinator: MediaProgressCoordinator, totalProgress: Progress, analyticsInfo: MediaAnalyticsInfo?, media: Media?, error: Error?) -> Void {
+    private func handleMediaImportResult(coordinator: MediaProgressCoordinator, totalProgress: Progress, analyticsInfo: MediaAnalyticsInfo?, media: Media?, error: Error?, callbackName: String? = "", multiple: Bool? = false) -> Void {
         if let error = error as NSError? {
             if let media = media {
                 coordinator.attach(error: error as NSError, toMediaID: media.uploadID)
@@ -230,7 +230,7 @@ class MediaCoordinator: NSObject {
 
         trackUploadOf(media, analyticsInfo: analyticsInfo)
 
-        let uploadProgress = uploadMedia(media)
+        let uploadProgress = uploadMedia(media, automatedRetry: false, callbackName: callbackName, multiple: multiple)
         totalProgress.setUserInfoObject(uploadProgress, forKey: .uploadProgress)
         totalProgress.addChild(uploadProgress, withPendingUnitCount: MediaExportProgressUnits.uploadDone)
     }
@@ -363,11 +363,11 @@ class MediaCoordinator: NSObject {
     }
 
     @discardableResult
-    private func uploadMedia(_ media: Media, automatedRetry: Bool = false) -> Progress {
+    private func uploadMedia(_ media: Media, automatedRetry: Bool = false, callbackName: String? = "", multiple: Bool? = false) -> Progress {
         let resultProgress = Progress.discreteProgress(totalUnitCount: 100)
 
         let success: () -> Void = {
-            self.end(media)
+            self.end(media, callbackName: callbackName, multiple: multiple)
         }
         let failure: (Error?) -> Void = { error in
             // Ideally the upload service should always return an error.  This may be easier to enforce
@@ -514,7 +514,7 @@ class MediaCoordinator: NSObject {
 
     // MARK: - Observing
 
-    typealias ObserverBlock = (Media, MediaState) -> Void
+    typealias ObserverBlock = (Media, MediaState, String?, Bool?) -> Void
 
     private var mediaObservers = [UUID: MediaObserver]()
 
@@ -651,8 +651,8 @@ class MediaCoordinator: NSObject {
 
     /// Notifies observers that a media item is processing/importing.
     ///
-    func processing(_ media: Media) {
-        notifyObserversForMedia(media, ofStateChange: .processing)
+    func processing(_ media: Media, callbackName: String? = "") {
+        notifyObserversForMedia(media, ofStateChange: .processing, callbackName: callbackName)
     }
     /// Notifies observers that a media item has begun uploading.
     ///
@@ -662,14 +662,14 @@ class MediaCoordinator: NSObject {
 
     /// Notifies observers that a thumbnail is ready for the media item
     ///
-    func thumbnailReady(url: URL, for media: Media) {
-        notifyObserversForMedia(media, ofStateChange: .thumbnailReady(url: url))
+    func thumbnailReady(url: URL, for media: Media, callbackName: String? = "", multiple: Bool? = false) {
+        notifyObserversForMedia(media, ofStateChange: .thumbnailReady(url: url), callbackName: callbackName, multiple: multiple)
     }
 
     /// Notifies observers that a media item has ended uploading.
     ///
-    func end(_ media: Media) {
-        notifyObserversForMedia(media, ofStateChange: .ended)
+    func end(_ media: Media, callbackName: String? = "", multiple: Bool? = false) {
+        notifyObserversForMedia(media, ofStateChange: .ended, callbackName: callbackName, multiple: multiple)
     }
 
     /// Notifies observers that a media item has failed to upload.
@@ -684,7 +684,7 @@ class MediaCoordinator: NSObject {
         notifyObserversForMedia(media, ofStateChange: .progress(value: value))
     }
 
-    func notifyObserversForMedia(_ media: Media, ofStateChange state: MediaState) {
+    func notifyObserversForMedia(_ media: Media, ofStateChange state: MediaState, callbackName: String? = "", multiple: Bool? = false) {
         let originalPostIDs: [NSManagedObjectID] = coreDataStack.performQuery { context in
             guard let mediaInContext = try? context.existingObject(with: media.objectID) as? Media else {
                 return []
@@ -702,7 +702,7 @@ class MediaCoordinator: NSObject {
             self.observersForMedia(withObjectID: media.objectID, originalPostIDs: originalPostIDs).forEach({ observer in
                 DispatchQueue.main.async {
                     if let media = self.mainContext.object(with: media.objectID) as? Media {
-                        observer.onUpdate(media, state)
+                        observer.onUpdate(media, state, callbackName, multiple)
                     }
                 }
             })
@@ -792,7 +792,7 @@ extension MediaCoordinator {
     // We want to collect more data about that, so we're going to log that info to Sentry,
     // and also delete the `Media` object, since there isn't really a reasonable way to recover from that failure.
     func addObserverForDeletedFiles() {
-        addObserver({ (media, _) in
+        addObserver({ (media, _, _, _) in
             guard let mediaError = media.error,
                 media.hasMissingFileError else {
                 return
