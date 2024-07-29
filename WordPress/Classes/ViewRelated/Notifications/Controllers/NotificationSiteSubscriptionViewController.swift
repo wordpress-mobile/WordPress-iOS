@@ -69,7 +69,7 @@ class NotificationSiteSubscriptionViewController: UITableViewController {
 
     required init(siteId: Int) {
         self.siteId = siteId
-        super.init(style: .grouped)
+        super.init(style: .insetGrouped)
     }
 
     required init?(coder aDecoder: NSCoder) {
