@@ -258,6 +258,7 @@ extension ShareModularViewController {
             self.shareData.postType = postType
             self.refreshModulesTable()
         }
+        typePicker.title = Strings.typeCellTitle
 
         tracks.trackExtensionPostTypeOpened()
         navigationController?.pushViewController(typePicker, animated: true)
@@ -269,6 +270,7 @@ extension ShareModularViewController {
         }
 
         let tagsPicker = ShareTagsPickerViewController(siteID: siteID, tags: shareData.tags)
+        tagsPicker.title = Strings.tagsCellTitle
         tagsPicker.onValueChanged = { [weak self] tagString in
             guard let self = self else { return }
             if self.shareData.tags != tagString {
@@ -292,6 +294,7 @@ extension ShareModularViewController {
 
         let categoryInfo = SiteCategories(siteID: siteID, allCategories: allSiteCategories, selectedCategories: shareData.userSelectedCategories, defaultCategoryID: shareData.defaultCategoryID)
         let categoriesPicker = ShareCategoriesPickerViewController(categoryInfo: categoryInfo)
+        categoriesPicker.title = Strings.categoryCellTitle
         categoriesPicker.onValueChanged = { [weak self] categoryInfo in
             guard let self = self else { return }
             self.shareData.allCategoriesForSelectedSite = categoryInfo.allCategories
@@ -407,14 +410,14 @@ fileprivate extension ShareModularViewController {
         switch moduleSection {
         case .type:
             WPStyleGuide.Share.configureModuleCell(cell)
-            cell.textLabel?.text = AppLocalizedString("Type", comment: "Type menu item in share extension.")
+            cell.textLabel?.text = Strings.typeCellTitle
             cell.accessoryType = .disclosureIndicator
             cell.accessibilityLabel = "Type"
             cell.isUserInteractionEnabled = true
             cell.detailTextLabel?.text = shareData.postType.title
         case .categories:
             WPStyleGuide.Share.configureModuleCell(cell)
-            cell.textLabel?.text = AppLocalizedString("Category", comment: "Category menu item in share extension.")
+            cell.textLabel?.text = Strings.categoryCellTitle
             cell.accessibilityLabel = "Category"
             if isFetchingCategories {
                 cell.isUserInteractionEnabled = false
@@ -445,7 +448,7 @@ fileprivate extension ShareModularViewController {
             }
         case .tags:
             WPStyleGuide.Share.configureModuleCell(cell)
-            cell.textLabel?.text = AppLocalizedString("Tags", comment: "Tags menu item in share extension.")
+            cell.textLabel?.text = Strings.tagsCellTitle
             cell.accessoryType = .disclosureIndicator
             cell.accessibilityLabel = "Tags"
             cell.isUserInteractionEnabled = true
@@ -1007,6 +1010,12 @@ fileprivate extension ShareModularViewController {
         static let cancellingTitle = AppLocalizedString("Canceling...", comment: "A short message that informs the user the share extension is being canceled.")
         static let noSitesTitle = AppLocalizedString("No available sites", comment: "A short message that informs the user no sites could be loaded in the share extension.")
     }
+}
+
+private enum Strings {
+    static let typeCellTitle = AppLocalizedString("Type", comment: "Type menu item in share extension.")
+    static let categoryCellTitle = AppLocalizedString("Category", comment: "Category menu item in share extension.")
+    static let tagsCellTitle = AppLocalizedString("Tags", comment: "Tags menu item in share extension.")
 }
 
 // MARK: - UITableView Cells

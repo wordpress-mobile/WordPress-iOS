@@ -84,6 +84,9 @@ private extension MainShareViewController {
         // We need to make sure we don't end up with stacked modal view controllers by using this:
         shareNavController.modalPresentationStyle = .overCurrentContext
 
+        // - important: scroll edge appearance navigation bar
+        shareNavController.view.backgroundColor = .systemBackground
+
         present(shareNavController, animated: true)
     }
 
