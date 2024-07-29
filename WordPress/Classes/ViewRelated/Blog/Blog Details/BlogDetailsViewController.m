@@ -810,7 +810,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     __weak __typeof(self) weakSelf = self;
     BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Backup", @"Noun. Links to a blog's Jetpack Backups screen.")
                                         accessibilityIdentifier:@"Backup Row"
-                                                          image:[UIImage gridiconOfType:GridiconTypeCloudUpload]
+                                                          image:[UIImage gridiconOfType:GridiconTypeCloudOutline]
                                                        callback:^{
         [weakSelf showBackup];
     }];
@@ -1238,7 +1238,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     if ([self.blog isBackupsAllowed]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Backup", @"Noun. Links to a blog's Jetpack Backups screen.")
                                       accessibilityIdentifier:@"Backup Row"
-                                                        image:[UIImage gridiconOfType:GridiconTypeCloudUpload]
+                                                        image:[UIImage gridiconOfType:GridiconTypeCloudOutline]
                                                      callback:^{
                                                          [weakSelf showBackup];
                                                      }]];
