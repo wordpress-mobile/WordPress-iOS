@@ -42,8 +42,6 @@ final class SiteSwitcherViewController: UIViewController {
 }
 
 private struct SiteSwitcherView: View {
-    @State private var isSearching = false
-
     let addSiteAction: (() -> Void)
     let onSiteSelected: ((Blog) -> Void)
 
@@ -51,7 +49,6 @@ private struct SiteSwitcherView: View {
 
     var body: some View {
         BlogListView(viewModel: viewModel, onSiteSelected: onSiteSelected)
-            /// - warning: The order is important for `isSearching` to work.
             .safeAreaInset(edge: .bottom) {
                 SiteSwitcherToolbarView(addSiteAction: addSiteAction)
             }
@@ -64,6 +61,7 @@ private struct SiteSwitcherView: View {
 private struct SiteSwitcherToolbarView: View {
     let addSiteAction: (() -> Void)
 
+    /// - warning: It has to be defined in a view "below" the .searchable
     @Environment(\.isSearching) var isSearching
 
     var body: some View {
