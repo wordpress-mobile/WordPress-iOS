@@ -74,18 +74,18 @@ Do not use variables as the argument of `NSLocalizedString()` (neither for the k
 
 ```swift
 // Do
-let myText = NSLocalizedString("some.place.title", value: "This is the text I want to translate.", comment: "Put a meaningful comment here.")
+let myText = NSLocalizedString("someScreen.title", value: "This is the text I want to translate.", comment: "Put a meaningful comment here.")
 myTextLabel?.text = myText
 ```
 
 ```swift
 // Don't
 let myText = "This is the text I want to translate."
-myTextLabel?.text = NSLocalizedString("some.place.title", value: myText, comment: "Put a meaningful comment here.")
+myTextLabel?.text = NSLocalizedString("someScreen.title", value: myText, comment: "Put a meaningful comment here.")
 let myKey = "some.place.title"
 myTextLabel?.text = NSLocalizedString(myKey, value: "This is the text I want to translate.", comment: "Put a meaningful comment here.")
 let comment = "Put a meaningful comment here."
-myTextLabel?.text = NSLocalizedString("some.place.title", value: "This is the text I want to translate.", comment: comment)
+myTextLabel?.text = NSLocalizedString("someScreen.title", value: "This is the text I want to translate.", comment: comment)
 ```
 
 ### Do not use Interpolated Strings
@@ -97,14 +97,14 @@ Use [`String.localizedStringWithFormat`](https://developer.apple.com/documentati
 ```swift
 // Do
 let year = 2019
-let template = NSLocalizedString("mysite.copyrightNotice.title", value: "© %d Acme, Inc.", comment: "Copyright Notice")
+let template = NSLocalizedString("mySite.copyrightNotice.title", value: "© %d Acme, Inc.", comment: "Copyright Notice")
 let str = String.localizeStringWithFormat(template, year)
 ```
 
 ```swift
 // Don't
 let year = 2019
-let str = NSLocalizedString("mysite.copyrightNotice.title", value: "© \(year) Acme, Inc.", comment: "Copyright Notice")
+let str = NSLocalizedString("mySite.copyrightNotice.title", value: "© \(year) Acme, Inc.", comment: "Copyright Notice")
 ```
 
 ### Multiline Strings
@@ -114,7 +114,7 @@ For readability, you can split the string and concatenate the parts using the pl
 ```swift
 // Okay
 NSLocalizedString(
-    "some.place.concatenatedDescription",
+    "someScreen.concatenatedDescription",
     value: "Take some long text here " +
     "and then concatenate it using the '+' symbol."
     comment: "You can even use this form of concatenation " +
@@ -128,11 +128,15 @@ Do not use extended delimiters (e.g. triple quotes). They are not automatically 
 ```swift
 // Don't
 NSLocalizedString(
-    "some.place.tripleQuotedDescription",
+    "someScreen.tripleQuotedDescription",
     """Triple-quoted text, when used in NSLocalizedString, is Not OK. Our scripts break when you use this."""
     comment: """Triple-quoted text, when used in NSLocalizedString, is Not OK."""
 )
 ```
+
+### Shared Strings
+
+Use `SharedStrings` for localizable strings used across many screens like button title "Cancel". 
 
 ### Pluralization
 

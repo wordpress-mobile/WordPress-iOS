@@ -1,5 +1,8 @@
+import UIKit
+import Gridicons
+
 /// A rounded button with a shadow intended for use as a "Floating Action Button"
-class FloatingActionButton: UIButton {
+final class FloatingActionButton: UIButton {
 
     private enum Constants {
         static let shadowColor: UIColor = UIColor.gray(.shade20)

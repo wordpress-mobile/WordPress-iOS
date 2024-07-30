@@ -48,14 +48,6 @@ extension WPStyleGuide {
     }
 
     ///
-    ///
-    class func colorForErrorView(_ opaque: Bool) -> UIColor {
-        let alpha: CGFloat = opaque ? 1.0 : 0.95
-        return UIColor(fromRGBAColorWithRed: 17.0, green: 17.0, blue: 17.0, alpha: alpha)
-    }
-
-    ///
-    ///
     class func edgeInsetForLoginTextFields() -> UIEdgeInsets {
         return UIEdgeInsets(top: 7, left: 20, bottom: 7, right: 20)
     }
