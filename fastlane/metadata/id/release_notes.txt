@@ -1,2 +1,5 @@
-Kami memperbaiki bug langka yang menyebabkan aplikasi berhenti bekerja saat menghapus artikel. Sampah seseorang... tetaplah sampah bagi orang lain, kami kira.
-Kami juga memperbaiki kendala pada bar navigasi dalam pemilih Visibilitas Artikel. Selain itu, kami juga memperbarui layar Pengaturan Artikel editor untuk menggunakan style bar navigasi yang baru. Keren.
+Kami mengatasi tiga masalah utama dalam rilis ini:
+* Beberapa pengguna tidak dapat memperbarui konten pos mereka.
+* Gambar milik beberapa pengguna salah diputar.
+* Editor mengalami crash yang jarang terjadi karena blok yang tidak didukung
+Seperti biasa, Anda dapat menghubungi tim dukungan jika terjadi masalah.

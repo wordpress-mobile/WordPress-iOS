@@ -1,2 +1,5 @@
-Wij hebben een zeldzame bug opgelost die de app liet crashen bij het verwijderen van berichten. De ene persoon zijn afval is de andere persoon zijn… nog steeds afval, vermoeden wij
-We hebben ook een probleem met de navigatiebalk in de Bericht zichtbaarheidskiezer opgelost. Terwijl we bezig waren, hebben we het Bericht instellingenscherm van de editor geüpdatet om de nieuwe navigatiebalk stijl te gebruiken. Mooi
+We hebben drie grote problemen opgelost in deze release:
+* Sommige gebruikers konden de inhoud van hun bericht niet updaten.
+* Sommige gebruikers hadden afbeeldingen die de verkeerde kant op waren geroteerd.
+* Een zeldzame crash in de editor veroorzaakt door niet-ondersteunde blokken
+Zoals altijd, neem contact op met support als iets niet goed werkt!
