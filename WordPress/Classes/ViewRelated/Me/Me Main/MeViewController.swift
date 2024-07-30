@@ -227,8 +227,8 @@ class MeViewController: UITableViewController {
                     title: AllDomainsListViewController.Strings.title,
                     icon: UIImage(systemName: "globe"),
                     accessoryType: accessoryType,
-                    action: { action in
-                        self.navigationController?.pushViewController(AllDomainsListViewController(), animated: true)
+                    action: { [weak self] action in
+                        self?.showOrPushController(AllDomainsListViewController())
                         WPAnalytics.track(.meDomainsTapped)
                     },
                     accessibilityIdentifier: "myDomains"
