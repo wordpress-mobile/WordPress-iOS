@@ -48,6 +48,10 @@ struct BlogQuery {
         and(NSPredicate(format: "xmlrpc = %@", xmlrpc))
     }
 
+    func apiKey(is string: String) -> Self {
+        and(NSPredicate(format: "apiKey = %@", string))
+    }
+
     func count(in context: NSManagedObjectContext) -> Int {
         (try? context.count(for: buildFetchRequest())) ?? 0
     }
