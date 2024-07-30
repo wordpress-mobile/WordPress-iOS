@@ -30752,7 +30752,7 @@
 			repositoryURL = "https://github.com/kean/GutenbergKit";
 			requirement = {
 				kind = revision;
-				revision = 9294ed407db7ae342fc9391e63d7cb77ecd2c009;
+				revision = fc2816ce492c95bec6ed42276e9b7e5b794ada2f;
 			};
 		};
 		0CD9FB852AFA71B9009D9C7A /* XCRemoteSwiftPackageReference "Charts" */ = {
