@@ -101,7 +101,6 @@
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
-   Button title. Tapping it cancels the login flow.
    Cancel
    Cancel a prompt
    Cancel Action
@@ -113,7 +112,6 @@
    Cancel action title
    Cancel button
    Cancel button for alert
-   Cancel button label
    Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Cancel button.
    Cancel button. Site creation modal popover.
@@ -135,7 +133,6 @@
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
-   Option to cancel the email app selection when logging in with magic links
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
@@ -165,9 +162,6 @@
 
 /* Center alignment for an image. Should be the same as in core WP. */
 "Center" = "Center";
-
-/* Popup title for wrong SSL certificate. */
-"Certificate error" = "Certifikatsfejl";
 
 /* Title for selecting a new homepage */
 "Choose Homepage" = "Vælg websted";
@@ -217,9 +211,6 @@
 /* Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "Bekræft";
 
-/* No comment provided by engineer. */
-"Connecting to WordPress.com" = "Forbinder til WordPress.com";
-
 /* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connecting..." = "Forbinder...";
 
@@ -229,9 +220,6 @@
 /* Button label for contacting support
    Title of a button. A call to action to contact support for assistance. */
 "Contact support" = "Kontakt support";
-
-/* Part of a prompt suggesting that there is more content for the user to read. */
-"Continue reading" = "Læs videre";
 
 /* Title of an prompt letting the user know there was a problem saving. */
 "Could Not Save Changes" = "Ændringer kunne ikke gemmes";
@@ -245,9 +233,6 @@
 /* Label for list of countries.
    Register Domain - Domain contact information field Country */
 "Country" = "Land";
-
-/* The button title text for creating a new account. */
-"Create Account" = "Opret konto";
 
 /* Button for selecting the current page template.
    Button title, encourages users to create their first page on their blog.
@@ -278,9 +263,6 @@
 
 /* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
 "Dashboard" = "Kontrolpanel";
-
-/* Title of Days stats filter. */
-"Days" = "Dage";
 
 /* Label for selecting the default category of a post
    Title for selecting a default category for a post */
@@ -322,7 +304,6 @@
 "Disabled" = "Slået fra";
 
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
-   Button shown if there are unsaved changes and the author is trying to move away from the post.
    Menus button title for canceling/discarding changes made. */
 "Discard" = "Kasser";
 
@@ -337,10 +318,7 @@
 /* Disconnect from WordPress.com button */
 "Disconnect from WordPress.com" = "Afbryd forbindelse til WordPress.com";
 
-/* Accessibility label for button to dismiss a bottom sheet
-   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
-   Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Dismiss a view. Verb */
+/* Dismiss a view. Verb */
 "Dismiss" = "Afvis";
 
 /* A done button
@@ -397,14 +375,8 @@
 /* Header for a comment author's email address, shown when editing a comment. */
 "Email Address" = "E-mail-adresse";
 
-/* Accessibility label for the email address text field.
-   Describes the email address section in the comment detail screen.
-   Placeholder for a textfield. The user may enter their email address.
-   Placeholder for the email address textfield. */
+/* Describes the email address section in the comment detail screen. */
 "Email address" = "E-mailadresse";
-
-/* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
-"Empty URL" = "Tom URL";
 
 /* No comment provided by engineer. */
 "Enter a password" = "Indtast et kodeord";
@@ -455,9 +427,6 @@
 /* Button title. Follow the comments on a post. */
 "Follow" = "Følg";
 
-/* User role badge */
-"Follower" = "Følger";
-
 /* Label for number of followers. */
 "Followers" = "Følgere";
 
@@ -466,12 +435,6 @@
 
 /* Full size image. (default). Should be the same as in core WP. */
 "Full Size" = "Fuld størrelse";
-
-/* View title for initial auth views. */
-"Get Started" = "Kom i gang!";
-
-/* Alerts the user that wpcom account information is being retrieved. */
-"Getting account information" = "Henter kontooplysninger";
 
 /* Accessibility label for HTML button on formatting toolbar.
    HTML Attachment Label */
@@ -485,9 +448,6 @@
    Open editor help options
    Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Help & Support" = "Hjælp & support";
-
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
-"Hidden" = "Skjult";
 
 /* No comment provided by engineer. */
 "Hide keyboard" = "Skjul tastatur";
@@ -503,9 +463,6 @@
 
 /* Title of the screen for choosing an image's size. */
 "Image Size" = "Billedstørrelse";
-
-/* Undated post time label */
-"Immediately" = "Straks";
 
 /* Default button title used in media picker to insert media (photos / videos) into a post.
    Label action for inserting a link on the editor */
@@ -523,15 +480,6 @@
 /* The Jetpack view title used while the is installing */
 "Installing Jetpack" = "Installer Jetpack";
 
-/* No comment provided by engineer. */
-"Invalid Site Address" = "Ugyldig webstedsadresse";
-
-/* No comment provided by engineer. */
-"Invalid Site Title" = "Ugyldig webstedstitel";
-
-/* No comment provided by engineer. */
-"Invalid username" = "Ugyldigt brugernavn";
-
 /* Accessibility label for italic button on formatting toolbar.
    Discoverability title for italic formatting keyboard shortcut. */
 "Italic" = "Kursiv";
@@ -543,7 +491,6 @@
 "Jetpack Settings" = "Jetpack indstillinger";
 
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
-   Button shown if there are unsaved changes and the author is trying to move away from the post.
    Goes back to editing the post. */
 "Keep Editing" = "Fortsæt redigering";
 
@@ -610,24 +557,15 @@
 /* Used when geo-tagging posts, if the geo-tagging failed. */
 "Location unknown" = "Placering ukendt";
 
-/* Button title.  Tapping takes the user to the login form.
-   Label for logging in to WordPress.com account
-   Log In 3D Touch Shortcut
-   Log In button label.
-   View title during the log in process. */
+/* Label for logging in to WordPress.com account
+   Log In 3D Touch Shortcut */
 "Log In" = "Log ind";
 
 /* Title of a button for signing in. */
 "Log in" = "Log ind";
 
-/* A generic error message for a failed log in. */
-"Log in failed. Please try again." = "Log ind fejlede. Prøv venligst igen.";
-
 /* No comment provided by engineer. */
 "Logs" = "Logfiler";
-
-/* Title of a button. */
-"Lost your password?" = "Mistet din adgangskode?";
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Hovednavigation";
@@ -666,9 +604,6 @@
 /* Medium image size. Should be the same as in core WP. */
 "Medium" = "Medium";
 
-/* Title of Months stats filter. */
-"Months" = "Måneder";
-
 /* Post Stats months and years header. */
 "Months and Years" = "Måneder og år";
 
@@ -703,9 +638,7 @@
 "Newest" = "Nyeste";
 
 /* Next action on comment moderation snackbar.
-   Next action on share extension editor screen.
-   Title of a button.
-   Title of a button. The text should be capitalized. */
+   Next action on share extension editor screen. */
 "Next" = "Næste";
 
 /* Label for a cancel button */
@@ -769,12 +702,10 @@
    Button title. Acknowledges a prompt.
    Button title. An acknowledgement of the message displayed in a prompt.
    Default action
-   Dismisses the alert
    Marks all notifications as read.
    Menus: button title for finishing editing of a menu item.
    OK
    OK button for alert
-   Ok button for dismissing alert helping users understand their site address
    OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
    Submit button on prompt for user information.
@@ -843,12 +774,8 @@
    Title for selecting parent category of a category */
 "Parent Category" = "Forælderkategori";
 
-/* Accessibility label for the password text field in the self-hosted login page.
-   Label for entering password in password field
+/* Label for entering password in password field
    Label for the password field. Should be the same as WP core.
-   Login dialog password placeholder
-   Password placeholder
-   Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "Kodeord";
 
@@ -862,21 +789,6 @@
 
 /* Label for date periods. */
 "Period" = "Periode";
-
-/* No comment provided by engineer. */
-"Please enter a site address." = "Indtast venligst en webstedsadresse.";
-
-/* No comment provided by engineer. */
-"Please enter a username." = "Indtast venligst et brugernavn.";
-
-/* Error message displayed when the user attempts use an invalid email address. */
-"Please enter a valid email address." = "Indtast venligst en gyldig e-mail-adresse.";
-
-/* Popup message to ask for user credentials (fields shown below). */
-"Please enter your credentials" = "Indtast venligst dine legitimationsoplysninger";
-
-/* A short prompt asking the user to properly fill out all login fields. */
-"Please fill out all the fields" = "Udfyld venligts alle felter";
 
 /* No comment provided by engineer. */
 "Please try entering your login details again." = "Prøv at taste dine login oplysninger igen.";
@@ -898,9 +810,6 @@
 
 /* The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Indlægsformat";
-
-/* Title of camera permissions screen */
-"Post to WordPress" = "Udgiv på WordPress";
 
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
@@ -1039,9 +948,6 @@
 /* Right alignment for an image. Should be the same as in core WP. */
 "Right" = "Højre";
 
-/* One Time Code has been sent via SMS */
-"SMS Sent" = "SMS sendt";
-
 /* Menus save button title
    Save Action
    Save button label (saving content, ex: Post, Page, Comment, Category).
@@ -1087,12 +993,6 @@
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Del";
 
-/* When social login fails, this button offers to let them signup for a new WordPress.com account */
-"Sign up" = "Tilmeld dig";
-
-/* Button title. Tapping begins the process of creating a WordPress.com account. */
-"Sign up for WordPress.com" = "Registrer dig på WordPress.com";
-
 /* Title for the Language Picker View */
 "Site Language" = "Webstedets sprog";
 
@@ -1105,9 +1005,6 @@
 /* The item to select during a guided tour. */
 "Site URL" = "Websteds URL";
 
-/* No comment provided by engineer. */
-"Site address must be at least 4 characters." = "Webstedsadresse skal være mindst 4 tegn.";
-
 /* Image size option title. */
 "Size" = "Størrelse";
 
@@ -1116,50 +1013,8 @@
    Continue without making a selection. */
 "Skip" = "Spring over";
 
-/* This error message occurs when a user tries to create a username that contains an invalid phrase for WordPress.com. The %@ may include the phrase in question if it was sent down by the API */
-"Sorry, but your username contains an invalid phrase%@." = "Beklager, dit brugernavn indeholder en ugyldig sætning%@.";
-
 /* Error title when updating the account password fails */
 "Sorry, can't log in" = "Desværre, kan ikke logge ind";
-
-/* No comment provided by engineer. */
-"Sorry, site addresses can only contain lowercase letters (a-z) and numbers." = "Beklager, webstedsadresser kan kun indeholde små bogstaver (a-z) og tal.";
-
-/* No comment provided by engineer. */
-"Sorry, site addresses may not contain the character &#8220;_&#8221;!" = "Beklager, webstedsadresser må ikke indeholde tegnene &#8220;_&#8221;!";
-
-/* No comment provided by engineer. */
-"Sorry, site addresses must have letters too!" = "Beklager, webstedsadresser skal også have bogstaver!";
-
-/* Error message displayed when the entered email is not available. */
-"Sorry, that email address is already being used!" = "Beklager, den e-mail-adresse er allerede i brug!";
-
-/* No comment provided by engineer. */
-"Sorry, that email address is not allowed!" = "Beklager, den e-mail-adresse er ikke tilladt!";
-
-/* No comment provided by engineer. */
-"Sorry, that site already exists!" = "Desværre, det websted eksisterer allerede!";
-
-/* No comment provided by engineer. */
-"Sorry, that site is reserved!" = "Desværre, det websted er reserveret!";
-
-/* No comment provided by engineer. */
-"Sorry, that username already exists!" = "Beklager, det brugernavn eksisterer allerede!";
-
-/* No comment provided by engineer. */
-"Sorry, that username is unavailable." = "Beklager, det brugernavn er ikke tilgængeligt.";
-
-/* No comment provided by engineer. */
-"Sorry, usernames can only contain lowercase letters (a-z) and numbers." = "Beklager, brugernavne kan kun indeholde små bogstaver (a-z) og tal.";
-
-/* No comment provided by engineer. */
-"Sorry, usernames may not contain the character &#8220;_&#8221;!" = "Beklager, brugernavne må ikke indeholde tegnet &#8220;_&#8221;!";
-
-/* No comment provided by engineer. */
-"Sorry, usernames must have letters (a-z) too!" = "Beklager, brugernavne skal også have bogstaver (a-z)!";
-
-/* No comment provided by engineer. */
-"Sorry, you may not use that site address." = "Beklager, du må ikke bruge den adresse til webstedet.";
 
 /* Button title for Spam comment state.
    Marks comment as spam.
@@ -1202,21 +1057,6 @@
 /* Title of a button style */
 "Text Only" = "Kun tekst";
 
-/* No comment provided by engineer. */
-"That email address has already been used. Please check your inbox for an activation email. If you don't activate you can try again in a few days." = "Den e-mail-adresse er allerede brugt. Tjek venligst din indbakke for at finde en aktiverings-mail. Hvis du ikke aktiverer, kan du prøve igen om et par dage.";
-
-/* No comment provided by engineer. */
-"That site address is not allowed." = "Den adresse til webstedet er ikke tilladt.";
-
-/* No comment provided by engineer. */
-"That site is currently reserved but may be available in a couple days." = "Dette websted er på nuværende tidspunkt reserveret, men er måske tilgængeligt om et par dage.";
-
-/* No comment provided by engineer. */
-"That username is currently reserved but may be available in a couple of days." = "Det brugernavn er på nuværende tidspunkt reserveret, men er måske tilgængeligt om et par dage.";
-
-/* No comment provided by engineer. */
-"That username is not allowed." = "Det brugernavn er ikke tilladt.";
-
 /* Error message shown when a media upload fails because the user isn't connected to the Internet.
    Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The Internet connection appears to be offline." = "Internetforbindelsen ser ud til at være nede.";
@@ -1226,9 +1066,6 @@
 
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The internet connection appears to be offline." = "Internetforbindelsen ser ud til at være nede.";
-
-/* No comment provided by engineer. */
-"The site address must be shorter than 64 characters." = "Adressen på webstedet skal være kortere end 64 tegn.";
 
 /* No comment provided by engineer. */
 "The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "Webstedet på %1$@ benytter WordPress %2$@. Vi anbefaler, at du opdaterer til seneste version, eller mindst %3$@";
@@ -1274,9 +1111,6 @@
    Trashes the comment */
 "Trash" = "Slet";
 
-/* Connect when the SSL certificate is invalid */
-"Trust" = "Tillid";
-
 /* Retries an Action
    Retry
    Try Again. Action
@@ -1300,9 +1134,6 @@
 
 /* Message to show in the post-format cell when the post format is not available */
 "Unavailable" = "Utilgængelig";
-
-/* No comment provided by engineer. */
-"Unknown error" = "Ukendt fejl";
 
 /* Displayed when a site has no name */
 "Unnamed Site" = "Unavngivet websted";
@@ -1334,18 +1165,11 @@
 "Uploading…" = "Overfører...";
 
 /* A placeholder for the twitter username
-   Accessibility label for the username text field in the self-hosted login page.
    Account Settings Username label
    Label for entering username in the username field
-   Login dialog username placeholder
-   Placeholder for the username textfield.
    The header and main title
-   Username label text.
-   Username placeholder */
+   Username label text. */
 "Username" = "Brugernavn";
-
-/* No comment provided by engineer. */
-"Username must be at least 4 characters." = "Brugernavne skal være på mindst 4 tegn.";
 
 /* Description for the version label in the What's new page. */
 "Version " = "Version";
@@ -1393,9 +1217,6 @@
    Today's Stats 'Visitors' label */
 "Visitors" = "Besøgende";
 
-/* Title of Weeks stats filter. */
-"Weeks" = "Uger";
-
 /* Post Signup Interstitial Title Text for WordPress iOS */
 "Welcome to WordPress" = "Velkommen til WordPress";
 
@@ -1420,20 +1241,13 @@
 /* Placeholder text for inline compose view */
 "Write a reply…" = "Skriv et svar...";
 
-/* Title of Years stats filter. */
-"Years" = "År";
-
 /* Button title. Confirms that the user wants to proceed with a pending action.
    Label for a button that clears all old activity logs
    Yes */
 "Yes" = "Ja";
 
-/* No comment provided by engineer. */
-"You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "Du kan ikke bruge den e-mail-adresse ved tilmelding. Vi har problemer med, at de blokerer nogle af vores e-mails. Benyt venligst en anden e-mail-udbyder.";
-
 /* Show when clicking cancel on a comment text box and you didn't save your changes.
-   Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment.
-   Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post. */
+   Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment. */
 "You have unsaved changes." = "Du har ikke gemt dine ændringer";
 
 /* Title for a view milestone push notification */
@@ -1462,9 +1276,6 @@
 
 /* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
 "ios-widget.tVvJ9c" = "Select Site Intent";
-
-/* Later today */
-"later today" = "senere i dag";
 
 /* Title of posts label in all time widget */
 "widget.alltime.posts.label" = "Indlæg";

@@ -78,9 +78,6 @@
 /* Placeholder text for the title of a site */
 "A title for the site" = "Nafn á vef";
 
-/* An error message. */
-"A valid email address is needed to mail an authentication link. Please return to the previous screen and provide a valid email address." = "Gilt netfang er nauðsynlegt til þess að fá auðkenningartengil í tölvupósti. Vinsamlegast farðu til baka á fyrri skjámynd og sláðu inn gilt netfang.";
-
 /* Label for active Theme browser cell */
 "ACTIVE" = "VIRKT";
 
@@ -163,15 +160,6 @@
 /* An error message shown when there is no internet connection. */
 "An active internet connection is required to view plans" = "Virk tenging við internetið er nauðsynleg til þess að skoða áskriftarleiðir";
 
-/* An error description explaining that a Menu could not be created. */
-"An error occurred creating the Menu." = "Villa kom upp við að búa til valmynd.";
-
-/* An error description explaining that a Menu could not be deleted. */
-"An error occurred deleting the Menu." = "Villa kom upp við að eyða valmynd.";
-
-/* An error description explaining that Menus could not be fetched. */
-"An error occurred fetching the Menus." = "Villa kom upp við að sækja valmynd.";
-
 /* Menus text shown when an error occurred loading menus from the server. */
 "An error occurred loading menus, please check your internet connection." = "Villa kom upp við að hlaða valmyndum, vinsamlegast athugaðu tenginguna þína við internetið.";
 
@@ -180,9 +168,6 @@
 
 /* The error message displayed when a user is editing a MenuItem and the results cannot be loaded, such as posts, pages, etc. */
 "An error occurred loading the results, please try again in a moment." = "Villa kom upp við að hlaða niðurstöðum, vinsamlegast reyndu aftur eftir augnablik.";
-
-/* An error description explaining that a Menu could not be updated. */
-"An error occurred updating the Menu." = "Villa kom upp við að uppfæra valmyndina.";
 
 /* Error recorded when all of the media associated with a post fail to be attached to the post on the server. */
 "An error occurred when attempting to attach uploaded media to the post." = "Villa kom upp við að reyna að hengja skrá við færsluna.";
@@ -225,9 +210,6 @@
 
 /* No comment provided by engineer. */
 "Authenticating" = "Athuga auðkenni";
-
-/* Popup title to ask for user credentials. */
-"Authentication required for host: %@" = "Auðkenningar krafist fyrir netþjóninn: %@";
 
 /* Author label.
    Label for list of stats by content author.
@@ -296,14 +278,10 @@
 /* Accessibility label for taking an image or video with the camera on formatting toolbar. */
 "Camera" = "Myndavél";
 
-/* Title of an alert letting the user know */
-"Can Not Request Link" = "Gat ekki óskað eftir tengli";
-
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
-   Button title. Tapping it cancels the login flow.
    Cancel
    Cancel a prompt
    Cancel Action
@@ -315,7 +293,6 @@
    Cancel action title
    Cancel button
    Cancel button for alert
-   Cancel button label
    Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Cancel button.
    Cancel button. Site creation modal popover.
@@ -337,7 +314,6 @@
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
-   Option to cancel the email app selection when logging in with magic links
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
@@ -377,9 +353,6 @@
 
 /* Center alignment for an image. Should be the same as in core WP. */
 "Center" = "Miðja";
-
-/* Popup title for wrong SSL certificate. */
-"Certificate error" = "Skírteinisvilla";
 
 /* Button title to edit visibility of sites. */
 "Change Visibility" = "Breyta sýnileika";
@@ -512,9 +485,6 @@
 /* Informs the user of consequences of chooseing a new account to connect to publicize.  The %@ characters are placeholders for account names. */
 "Connecting %@ will replace the existing connection to %@." = "Tenging við %1$@ mun koma í staðinn fyrir tengingu við %2$@.";
 
-/* No comment provided by engineer. */
-"Connecting to WordPress.com" = "Tengist WordPress.com";
-
 /* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connecting..." = "Tengist…";
 
@@ -543,23 +513,11 @@
 /* Menus alert button title to continue making changes. */
 "Continue Working" = "Halda áfram að vinna";
 
-/* Part of a prompt suggesting that there is more content for the user to read. */
-"Continue reading" = "Halda lestri áfram";
-
 /* Title of an prompt letting the user know there was a problem saving. */
 "Could Not Save Changes" = "Gat ekki vistað breytingar";
 
-/* Message shown when site purchases API failed */
-"Could not check site purchases." = "Gat ekki skoðað veftengd kaup.";
-
-/* Error message informing the user that there was a problem subscribing to a site or feed. */
-"Could not follow the site at the address specified." = "Gat ekki fylgt vefnum á þessu veffangi.";
-
 /* An error description explaining that Follow could not be toggled due to a missing blogURL attribute. */
 "Could not toggle Follow: missing blogURL attribute" = "Gat ekki fylgt\/hætt að fylgja: blogURL eingid vantar";
-
-/* Error message informing the user that there was a problem unsubscribing to a site or feed. */
-"Could not unfollow the site at the address specified." = "Gat ekki hætt að fylgja vefnum með gefnu veffangi.";
 
 /* This is the text we display to the user when we ask them for a review and they've indicated they don't like the app */
 "Could you tell us how we could improve?" = "Værir þú til í að benda okkur á hvað má betur fara?";
@@ -573,9 +531,6 @@
 /* Label for list of countries.
    Register Domain - Domain contact information field Country */
 "Country" = "Land";
-
-/* The button title text for creating a new account. */
-"Create Account" = "Stofna aðgang";
 
 /* Button to progress to the next step
    Site creation. Step 1. Screen title
@@ -609,9 +564,6 @@
 
 /* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
 "Dashboard" = "Stjórnborð";
-
-/* Title of Days stats filter. */
-"Days" = "Dagar";
 
 /* Label for selecting the default category of a post
    Title for selecting a default category for a post */
@@ -673,7 +625,6 @@
 "Disabled" = "Óvirk";
 
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
-   Button shown if there are unsaved changes and the author is trying to move away from the post.
    Menus button title for canceling/discarding changes made. */
 "Discard" = "Henda";
 
@@ -707,10 +658,7 @@
    Title for the Discussion Settings Screen */
 "Discussion" = "Umræða";
 
-/* Accessibility label for button to dismiss a bottom sheet
-   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
-   Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Dismiss a view. Verb */
+/* Dismiss a view. Verb */
 "Dismiss" = "Loka";
 
 /* Display Name label text.
@@ -791,9 +739,6 @@
    Label for size of media when the cache is empty. */
 "Empty" = "Tómt";
 
-/* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
-"Empty URL" = "Auð vefslóð";
-
 /* No comment provided by engineer. */
 "Enter a password" = "Sláðu inn lykilorð";
 
@@ -852,9 +797,6 @@
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "Tókst ekki að setja skrá inn í færsluna þína.\n Ýttu til þess að skoða valkosti.";
 
-/* Error message to show when wrong URL format is used to access the REST API */
-"Failed to serialize request to the REST API." = "Gat ekki breytt fyrirspurn á REST API í strengjaform.";
-
 /* Label for the Featured Image area in post settings.
    Title for the Featured Image view */
 "Featured Image" = "Sérkennis Mynd";
@@ -891,9 +833,6 @@
 /* Button title. Follow the comments on a post. */
 "Follow" = "Fylgja";
 
-/* User role badge */
-"Follower" = "Fylgjandi";
-
 /* Label for number of followers. */
 "Followers" = "Fylgjendur";
 
@@ -906,8 +845,7 @@
 /* Full size image. (default). Should be the same as in core WP. */
 "Full Size" = "Full stærð";
 
-/* Add New Stats Card category title
-   Title for the general section in site settings screen */
+/* Title for the general section in site settings screen */
 "General" = "Almennt";
 
 /* Displayed in the Notifications Tab as a message, when there are no notifications */
@@ -915,9 +853,6 @@
 
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "Vektu eftirtekt: skrifaðu athugasemdir við færslur sem þú hefur lesið.";
-
-/* Alerts the user that wpcom account information is being retrieved. */
-"Getting account information" = "Sæki upplýsingar um aðgang";
 
 /* Cancel */
 "Give Up" = "Gefast upp";
@@ -960,9 +895,6 @@
    Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Help & Support" = "Hjálp & aðstoð";
 
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
-"Hidden" = "Falinn";
-
 /* Hides a site from the site picker list
    Title of a button used to collapse a group */
 "Hide" = "Hylja";
@@ -1004,17 +936,8 @@
 /* Hint for image title on image settings. */
 "Image title" = "Titill myndar";
 
-/* Undated post time label */
-"Immediately" = "Strax";
-
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "Í fáeinum orðum, segðu hvað þessi vefur gerir eða fjallar um.";
-
-/* Describes a standard *.wordpress.com site domain */
-"Included with Site" = "Fylgir með vefnum";
-
-/* An error message shown when a user signed in with incorrect credentials. */
-"Incorrect username or password. Please try entering your login details again." = "Ógilt notandanafn eða lykilorð. Vinsamlegast sláðu inn innskráningarupplýsingar þínar aftur.";
 
 /* WordPress.com Community Footer Text */
 "Information on WordPress.com courses and events (online & in-person)." = "Upplýsingar um WordPress.com námskeið og viðburði (á netinu & í kjötheimum).";
@@ -1040,21 +963,6 @@
 /* Title of Insights stats filter. */
 "Insights" = "Innsýn";
 
-/* No comment provided by engineer. */
-"Invalid Site Address" = "Ógilt veffang";
-
-/* No comment provided by engineer. */
-"Invalid Site Title" = "Ógilt nafn á vef";
-
-/* Message to show to user when he tries to add a self-hosted site that isn't HTTP or HTTPS. */
-"Invalid URL scheme inserted, only HTTP and HTTPS are supported." = "Ógild vefslóð, aðeins HTTP og HTTPS er stutt.";
-
-/* Message to show to user when he tries to add a self-hosted site that isn't a valid URL. */
-"Invalid URL, please check if you wrote a valid site address." = "Ógild vefslóð, vinsamlegast athugaðu hvort þú hafir slegið inn gilt veffang.";
-
-/* No comment provided by engineer. */
-"Invalid username" = "Ógilt notandanafn";
-
 /* The app successfully sent an invitation */
 "Invitation Sent!" = "Boð sent!";
 
@@ -1069,7 +977,6 @@
 "Join a conversation: comment on posts from blogs you follow." = "Taktu þátt í samræðum: ritaðu athugasemd eða færslur af bloggunum sem þú fylgist með.";
 
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
-   Button shown if there are unsaved changes and the author is trying to move away from the post.
    Goes back to editing the post. */
 "Keep Editing" = "Halda áfram að breyta";
 
@@ -1191,28 +1098,19 @@
 /* No comment provided by engineer. */
 "Log Files By Created Date" = "Atburðaskrár eftir dagsetningu";
 
-/* Button title.  Tapping takes the user to the login form.
-   Label for logging in to WordPress.com account
-   Log In 3D Touch Shortcut
-   Log In button label.
-   View title during the log in process. */
+/* Label for logging in to WordPress.com account
+   Log In 3D Touch Shortcut */
 "Log In" = "Innskrá";
 
 /* Button for confirming logging out from WordPress.com account
    Label for logging out from WordPress.com account */
 "Log Out" = "Skrá út";
 
-/* A generic error message for a failed log in. */
-"Log in failed. Please try again." = "Innskráning mistókst. Vinsamlegast reyndu aftur.";
-
 /* Login Request Expired */
 "Login Request Expired" = "Innskráningarbeiðni rann út";
 
 /* No comment provided by engineer. */
 "Logs" = "Annálar";
-
-/* Title of a button. */
-"Lost your password?" = "Tapað lykilorð?";
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Aðalvalmynd";
@@ -1227,9 +1125,6 @@
 
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "Sýsla með vef";
-
-/* Describes a domain that was mapped to WordPress.com, but registered elsewhere */
-"Mapped Domain" = "Tengt lén";
 
 /* Marks a notification as unread */
 "Mark Read" = "Merkja lesið";
@@ -1282,9 +1177,6 @@
    Label for the share message field on the post settings. */
 "Message" = "Skilaboð";
 
-/* Title of Months stats filter. */
-"Months" = "Mánuðir";
-
 /* Post Stats months and years header. */
 "Months and Years" = "Máðuðir og ár";
 
@@ -1331,9 +1223,7 @@
 "Newest first" = "Nýjast fyrst";
 
 /* Next action on comment moderation snackbar.
-   Next action on share extension editor screen.
-   Title of a button.
-   Title of a button. The text should be capitalized. */
+   Next action on share extension editor screen. */
 "Next" = "Næsta";
 
 /* Accessibility label for the next notification button */
@@ -1445,12 +1335,10 @@
    Button title. Acknowledges a prompt.
    Button title. An acknowledgement of the message displayed in a prompt.
    Default action
-   Dismisses the alert
    Marks all notifications as read.
    Menus: button title for finishing editing of a menu item.
    OK
    OK button for alert
-   Ok button for dismissing alert helping users understand their site address
    OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
    Submit button on prompt for user information.
@@ -1496,10 +1384,6 @@
 
 /* Opens iOS's Device Settings for WordPress App */
 "Open Device Settings" = "Opna stillingar tækis";
-
-/* The button title text for opening the user's preferred email app.
-   Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
-"Open Mail" = "Opna Mail";
 
 /* Go to the settings app
    Title of a button that opens the apps settings in the system Settings.app */
@@ -1562,12 +1446,8 @@
    Title for selecting parent category of a category */
 "Parent Category" = "Yfirflokkur";
 
-/* Accessibility label for the password text field in the self-hosted login page.
-   Label for entering password in password field
+/* Label for entering password in password field
    Label for the password field. Should be the same as WP core.
-   Login dialog password placeholder
-   Password placeholder
-   Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "Lykilorð";
 
@@ -1597,29 +1477,11 @@
 /* Politely asks the user to check their internet connection before trying again. */
 "Please check your internet connection and try again." = "Vinsamlegast athugaðu tenginguna þína við internetið og reyndu aftur.";
 
-/* No comment provided by engineer. */
-"Please enter a site address." = "Vinsamlegast sláðu inn veffang";
-
-/* No comment provided by engineer. */
-"Please enter a username." = "Vinsamlegast sláðu inn notandanafn.";
-
 /* Title of a prompt. */
 "Please enter a valid URL" = "Vinsamlegast sláðu inn gilda vefslóð";
 
-/* Error message displayed when the user attempts use an invalid email address. */
-"Please enter a valid email address." = "Vinsamlega sláðu inn gilt netfang";
-
-/* Popup message to ask for user credentials (fields shown below). */
-"Please enter your credentials" = "Vinsamlegast sláðu inn aðgangsupplýsingar þínar.";
-
-/* A short prompt asking the user to properly fill out all login fields. */
-"Please fill out all the fields" = "Vinsamlegast fylltu alla reiti út";
-
 /* No comment provided by engineer. */
 "Please try entering your login details again." = "Vinsamlegast reyndu að slá inn innskráningarupplýsingar þínar aftur.";
-
-/* Asks the usre to wait until the currently running fetch request completes. */
-"Please wait til the current fetch completes." = "Vinsamlegast hinkraðu á meðan enn er verið að sækja.";
 
 /* Header of section in Plugin Directory showing popular plugins
    Screen title, where users can see the most popular plugins */
@@ -1750,9 +1612,6 @@
    The loading view button title displayed when an error occurred */
 "Refresh" = "Endurhlaða";
 
-/* Describes a domain that was registered with WordPress.com */
-"Registered Domain" = "Skráð lén";
-
 /* Displayed in the Notifications Tab as a message, when the Unread Filter shows no notifications */
 "Reignite the conversation: write a new post." = "Komdu umræðum aftur af stað: skrifaðu nýja færslu.";
 
@@ -1854,9 +1713,6 @@
    User's Role */
 "Role" = "Hlutverk";
 
-/* One Time Code has been sent via SMS */
-"SMS Sent" = "SMS sent";
-
 /* Menus save button title
    Save Action
    Save button label (saving content, ex: Post, Page, Comment, Category).
@@ -1908,9 +1764,6 @@
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu. */
 "Selecting a different menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Með því að velja aðra valmynd, tapar þú breytingum sem þú hefur gert á núverandi valmynd. Ertu viss um að þú viljir halda áfram?";
-
-/* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
-"Send Link" = "Senda tengil";
 
 /* Settings: Sending Pingbacks */
 "Send Pingbacks" = "Senda tilvísanir";
@@ -1975,9 +1828,6 @@
 /* Title for the Language Picker View */
 "Site Language" = "Tungumál síðu";
 
-/* Describes a site redirect domain */
-"Site Redirect" = "Áframsending vefs";
-
 /* Default title for a site
    Label for site title blog setting
    The item to select during a guided tour.
@@ -1986,9 +1836,6 @@
 
 /* Setting: indicates if Achievements will be notified */
 "Site achievements" = "Vef afrek";
-
-/* No comment provided by engineer. */
-"Site address must be at least 4 characters." = "Veffang verður að vera í það minnsta 4 stafir.";
 
 /* Overlay message displayed when site successfully deleted */
 "Site deleted" = "Vef eytt";
@@ -2013,56 +1860,11 @@
    Update User Failed Title */
 "Sorry!" = "Afsakið!";
 
-/* This error message occurs when a user tries to create a username that contains an invalid phrase for WordPress.com. The %@ may include the phrase in question if it was sent down by the API */
-"Sorry, but your username contains an invalid phrase%@." = "Því miður, notandanafnið þitt inniheldur ólöglegt orð%@.";
-
 /* Error title when updating the account password fails */
 "Sorry, can't log in" = "Því miður, get ekki innskráð";
 
 /* No comment provided by engineer. */
-"Sorry, site addresses can only contain lowercase letters (a-z) and numbers." = "Því miður, vefföng geta einungis innihaldið lágstafi (a-z) og tölustafi.";
-
-/* No comment provided by engineer. */
-"Sorry, site addresses may not contain the character &#8220;_&#8221;!" = "Því miður, vefföng geta ekki innihaldið táknið &#8220;_&#8221;!";
-
-/* No comment provided by engineer. */
-"Sorry, site addresses must have letters too!" = "Því miður, vefföng verða líka að hafa bókstafi!";
-
-/* Error message displayed when the entered email is not available. */
-"Sorry, that email address is already being used!" = "Því miður, þetta netfang er nú þegar í notkun!";
-
-/* No comment provided by engineer. */
-"Sorry, that email address is not allowed!" = "Því miður, þetta netfang er ekki leyfilegt!";
-
-/* This error message occurs when a user tries to create an account with a weak password. */
-"Sorry, that password does not meet our security guidelines. Please choose a password with a minimum length of six characters, mixing uppercase letters, lowercase letters, numbers and symbols." = "Því miður, þetta lykilorð stenst ekki öryggiskröfur. Vinsamlegast veldu lykilorð sem er í það minnsta sex stafir, blandaðu há- og lágstöfum, tölustöfum og táknum.";
-
-/* No comment provided by engineer. */
-"Sorry, that site already exists!" = "Því miður, en þessi vefur finnst núþegar!";
-
-/* No comment provided by engineer. */
-"Sorry, that site is reserved!" = "Því miður, þessi vefur er frátekinn";
-
-/* No comment provided by engineer. */
-"Sorry, that username already exists!" = "Því miður, þetta notandanafn er nú þegar til!";
-
-/* No comment provided by engineer. */
-"Sorry, that username is unavailable." = "Því miður, þetta notandanafn er ekki í boði.";
-
-/* No comment provided by engineer. */
-"Sorry, usernames can only contain lowercase letters (a-z) and numbers." = "Því miður, notendanöfn geta einungis innihaldið lágstafi (a-z) og tölustfai.";
-
-/* No comment provided by engineer. */
-"Sorry, usernames may not contain the character &#8220;_&#8221;!" = "Því miður, notandanafn má ekki innahalda táknið &#8220;_&#8221;!";
-
-/* No comment provided by engineer. */
-"Sorry, usernames must have letters (a-z) too!" = "Því miður, notendanöfn verða að hafa bókstafi (a-z) líka!";
-
-/* No comment provided by engineer. */
 "Sorry, you cannot access this feature. Please check your User Role on this site." = "Því miður, þú hefur ekki aðgang að þessum eiginleika. Vinsamlegast athugaðu hlutverk notanda þíns á þessum vef.";
-
-/* No comment provided by engineer. */
-"Sorry, you may not use that site address." = "Því miður, þú getur ekki notað þetta veffang.";
 
 /* Discussion Settings Title
    Settings: Comments Sort Order */
@@ -2149,36 +1951,12 @@
 /* Message of alert when theme activation succeeds */
 "Thanks for choosing %@ by %@" = "Takk fyrir að velja %1$@ frá %2$@";
 
-/* Message to show to user when he tries to add a self-hosted site that isn't a WordPress site. */
-"That doesn't look like a WordPress site." = "Þetta virðist ekki vera WordPress vefur.";
-
-/* No comment provided by engineer. */
-"That email address has already been used. Please check your inbox for an activation email. If you don't activate you can try again in a few days." = "Þetta netfang hefur nú þegar verið notað. Athugaðu í tölvupósthólfið hvort þar leynist tölvupóstur til þess að virkja. Ef þú hefur ekki virkjað getur þú reynt aftur eftir nokkra daga.";
-
-/* No comment provided by engineer. */
-"That site address is not allowed." = "Veffangið er ekki leyfilegt.";
-
-/* No comment provided by engineer. */
-"That site is currently reserved but may be available in a couple days." = "Þessi vefur er frátekinn í augnablikinu en gæti verið laus innan nokkura daga.";
-
-/* No comment provided by engineer. */
-"That username is currently reserved but may be available in a couple of days." = "Þetta notandanafn frátekið þessa stundina en það gæti orðið laust eftir nokkra daga.";
-
-/* No comment provided by engineer. */
-"That username is not allowed." = "Þetta notandanafn er ekki leyfilegt.";
-
 /* Error message shown when a media upload fails because the user isn't connected to the Internet.
    Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The Internet connection appears to be offline." = "Ekkert samband virðist vera við internetið.";
 
-/* Error message describing a problem with a URL. */
-"The URL is missing a valid host." = "Vefslóðina vantar gilt nafn þjóns.";
-
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "Forritið gat ekki skilið svarið frá netþjóninum. Vinsamlegast yfirfarið stillingar á vefnum þínum.";
-
-/* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
-"The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Skírteinið fyrir þennan netþjón er ógilt. Þú gætir verið að tengjast við netþjón sem er að þykjast vera “%@” og gæti það ógnað upplýsingaöryggi þínu.\n\nViltu treysta skírteininu engu að síður?";
 
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The internet connection appears to be offline." = "Ekkert samband virðist vera við internetið.";
@@ -2190,19 +1968,7 @@
 "The login request has expired. Log in to WordPress.com to try again." = "Beiðnin innskráningu hefur runnið út. Skráðu þig inn til að WordPress.com að reyna aftur.";
 
 /* No comment provided by engineer. */
-"The server returned an empty response. This usually means you need to increase the memory limit for your site." = "Netþjónninn skilaði tómu svari. Það þýðir oftast að þú þurfir meira minni fyrir vefinn þinn.";
-
-/* No comment provided by engineer. */
-"The site address must be shorter than 64 characters." = "Veffangið verður að vera styttra en 64 stafir.";
-
-/* No comment provided by engineer. */
 "The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "Vefurinn %1$@ notar WordPress %2$@. Við mælum með uppfærslu í nýjustu útgáfu eða í það minnsta %3$@";
-
-/* Message shown when site deletion API failed */
-"The site could not be deleted." = "Ekki var unnt að eyða þessum vef.";
-
-/* Message shown when site export API failed */
-"The site could not be exported." = "Ekki var unnt að flytja út þennan vef.";
 
 /* Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
 "The slug is the URL-friendly version of the post title." = "Stuttslóðin er vefvæn útgáfa af titli færslu.";
@@ -2245,17 +2011,11 @@
 /* Informs the user about an issue connecting to the third-party sharing service. The `%@` is a placeholder for the service name. */
 "There is an issue connecting to %@. Reconnect to continue publicizing." = "Það er vandamál við að tengjast %@. Tengdu aftur til þess að halda birtingu áfram.";
 
-/* Error message informing the user that there was a problem blocking posts from a site from their reader. */
-"There was a problem blocking posts from the specified site." = "Það kom upp vandamál við að loka fyrir færslur frá þessum vef.";
-
 /* Message for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
 "There was a problem connecting to WordPress.com. Please log in again." = "Það kom upp vandamál við að tengjast WordPress.com. Vinsamlegast reyndu innskráningu aftur.";
 
 /* A short error message letting the user know about a problem displaying a post. */
 "There was a problem displaying this post." = "Það kom upp vandamál við að sýna þessa færslu.";
-
-/* Error message informing the user that there was a problem clearing the block on site preventing its posts from displaying in the reader. */
-"There was a problem removing the block for specified site." = "Það kom upp vandamál við að fjarlægja lokun fyrir þennan vef.";
 
 /* A short error message shown in a prompt. */
 "There was a problem saving changes to sharing management." = "Það kom upp vandamál við að vista breytingar á deilistjórnun.";
@@ -2323,9 +2083,6 @@
 /* Shortened version of the main title to be used in back navigation */
 "Topic" = "Umfjöllunarefni";
 
-/* Label for total followers */
-"Total" = "Samtals";
-
 /* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */
@@ -2335,9 +2092,6 @@
    Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
    Title of trashed Comments filter. */
 "Trashed" = "Hent í ruslið";
-
-/* Connect when the SSL certificate is invalid */
-"Trust" = "Traust";
 
 /* Theme Try & Customize action title */
 "Try & Customize" = "Prófaðu & sérsníddu";
@@ -2409,9 +2163,6 @@
    Unknown Tag Name */
 "Unknown" = "Óþekkt";
 
-/* No comment provided by engineer. */
-"Unknown error" = "Óþekkt villa";
-
 /* People: Invitation Error */
 "Unknown error has occurred" = "Óþekkt villa kom upp";
 
@@ -2463,27 +2214,17 @@
 "Use" = "Nota";
 
 /* A placeholder for the twitter username
-   Accessibility label for the username text field in the self-hosted login page.
    Account Settings Username label
    Label for entering username in the username field
-   Login dialog username placeholder
-   Placeholder for the username textfield.
    The header and main title
-   Username label text.
-   Username placeholder */
+   Username label text. */
 "Username" = "Notandanafn";
 
 /* Setting: indicates if Mentions will be notified */
 "Username mentions" = "Tilvísanir í notanda";
 
-/* No comment provided by engineer. */
-"Username must be at least 4 characters." = "Notandanafn þarf að innihalda minnst 4 stafi.";
-
 /* Blog Users */
 "Users" = "Notendur";
-
-/* two factor code placeholder */
-"Verification code" = "Staðfestingarkóði";
 
 /* Push Authentication Alert Title */
 "Verify Log In" = "Staðfesta innskráningu";
@@ -2507,9 +2248,6 @@
 
 /* Displays Less Rows */
 "View less…" = "Skoða færri…";
-
-/* User role badge */
-"Viewer" = "Skoðari";
 
 /* Blog Viewers */
 "Viewers" = "Lesendur";
@@ -2562,9 +2300,6 @@
 /* The title of the option group for editing an image's size, alignment, etc. on the image details screen. */
 "Web Display Settings" = "Stillingar vefbirtingar";
 
-/* Title of Weeks stats filter. */
-"Weeks" = "Vikur";
-
 /* A message title */
 "Welcome to the Reader" = "Velkominn í Lesarann";
 
@@ -2592,9 +2327,6 @@
 /* No comment provided by engineer. */
 "WordPress version too old" = "WordPress útgáfa orðin of gömul";
 
-/* No comment provided by engineer. */
-"WordPress version too old. The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "WordPress útgáfa orðin of gömul. Vefurinn %1$@ notar WordPress %2$@. Við mælum með uppfærslu í nýjustu útgáfu eða í það minnsta %3$@";
-
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
@@ -2619,9 +2351,6 @@
 /* Title for the writing section in site settings screen */
 "Writing" = "Ritun";
 
-/* Title of Years stats filter. */
-"Years" = "Ár";
-
 /* Button title. Confirms that the user wants to proceed with a pending action.
    Label for a button that clears all old activity logs
    Yes */
@@ -2640,9 +2369,6 @@
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Þú getur yfirskrifað þessar stillingar fyrir einstaka færslur.";
 
-/* No comment provided by engineer. */
-"You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "Þú getur ekki notað þetta tölvupóstfang til að skrá þig. Við eigum í vandræðum með það að tölvupóstur frá okkur berst ekki þangað. Vinsamlegast notið aðra tölvupóstveitu.";
-
 /* Title displayed when the user doesn't have any media in their media library. Should match Calypso. */
 "You don't have any media." = "Þú ert ekki með neinar margmiðlunarskrár.";
 
@@ -2656,15 +2382,11 @@
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "Þú hefur virkar keyptar uppfærslur á vefnum þínum. Vinsamlegast segðu upp uppfærslunum áður en þú eyðir vefnum þínum.";
 
 /* Show when clicking cancel on a comment text box and you didn't save your changes.
-   Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment.
-   Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post. */
+   Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment. */
 "You have unsaved changes." = "Þú átt óvistaðar breytingar.";
 
 /* Error message informing the user that being logged into a WordPress.com account is required. */
 "You must be signed in to a WordPress.com account to perform this action." = "Þú verður að vera skráð(ur) inn á WordPress.com aðgang til að framkvæma þessa aðgerð.";
-
-/* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
-"You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Svo virðist sem þú hafir sett inn farsímaviðbót frá DudaMobile sem kemur í veg fyrir að forritið geti tengst blogginu þínu";
 
 /* Displayed in the Notification Settings View */
 "Your Sites" = "Vefirnir þínir";
@@ -2698,9 +2420,6 @@
 
 /* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
 "ios-widget.tVvJ9c" = "Select Site Intent";
-
-/* Later today */
-"later today" = "síðar í dag";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "eftirfarandi atriðum verður eytt:";
