@@ -1,2 +1,5 @@
-Gönderileri çöp kutusuna gönderirken uygulamanın çökmesine neden olan nadir bir hata düzeltildi. Bir kişinin çöpü bazen başkalarının da çöpüdür.
-Ayrıca Gönderi Görünürlüğü seçicideki gezinme çubuğuyla ilgili bir sorunu düzelttik. Hazır elimiz değmişken düzenleyicinin Gönderi Ayarları ekranını da yeni gezinme çubuğu stilini kullanacak şekilde güncelledik. Güzel.
+Bu sürümde üç büyük sorun düzeltildi:
+* Bazı kullanıcılar gönderilerinin içeriğini güncelleyemedi.
+* Bazı kullanıcıların görselleri yanlış şekilde döndürüldü.
+* Düzenleyicide desteklenmeyen bloklardan kaynaklanan nadir bir çökme sorunu
+Her zamanki gibi lütfen çalışmayan herhangi bir şey varsa destek ekibiyle iletişime geçin!

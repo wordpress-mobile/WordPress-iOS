@@ -1,2 +1,5 @@
-Corrigimos um bug raro que fazia o aplicativo travar ao enviar posts para a lixeira. O que é lixo para uma pessoa para outra vai ser... bom, lixo.
-Nós também corrigimos um problema com a barra de navegação no seletor "Visibilidade do post". Aproveitamos para atualizar a tela de configurações de post do editor para utilizar o novo estilo da barra de navegação. Arrasamos.
+Resolvemos três problemas grandes nessa atualização:
+* Alguns usuários não podiam alterar os conteúdos do post.
+* Algumas imagens apareciam giradas incorretamente para alguns usuários.
+* Uma falha rara no editor causada por blocos não suportados
+Se algo não estiver funcionando, entre em contato com nosso suporte!
