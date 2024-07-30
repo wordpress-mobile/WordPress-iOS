@@ -6,7 +6,7 @@ final class Blog_RestAPITests: CoreDataTestCase {
         url: URL(string: "http://example.com")!,
         username: "test@example.com",
         password: "StrongPassword!",
-        XMLRPCEndpoint: nil
+        xmlrpcEndpoint: nil
     )
 
     let testKeychain = TestKeychain()

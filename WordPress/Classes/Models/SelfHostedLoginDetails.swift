@@ -6,14 +6,14 @@ struct SelfHostedLoginDetails {
     let url: URL
     let username: String
     let password: String
-    let XMLRPCEndpoint: URL?
+    let xmlrpcEndpoint: URL?
 
     var derivedXMLRPCRoot: URL {
         url.appendingPathComponent("/xmlrpc.php")
     }
 
     var derivedSiteId: String {
-        SHA256.hash(data: Data(url.absoluteString.utf8))
+        SHA256.hash(data: Data(url.absoluteString.localizedLowercase.utf8))
             .compactMap { String(format: "%02x", $0) }
             .joined()
     }
@@ -42,7 +42,7 @@ struct SelfHostedLoginDetails {
             throw Blog.BlogCredentialsError.blogPasswordMissing
         }
 
-        return SelfHostedLoginDetails(url: url, username: username, password: password, XMLRPCEndpoint: nil)
+        return SelfHostedLoginDetails(url: url, username: username, password: password, xmlrpcEndpoint: nil)
     }
 
     static func from(blog: Blog) throws -> SelfHostedLoginDetails {
@@ -50,7 +50,7 @@ struct SelfHostedLoginDetails {
             url: blog.getUrl(),
             username: blog.getUsername(),
             password: blog.getPassword(),
-            XMLRPCEndpoint: try? blog.getXMLRPCEndpoint() // We're ok with this failing because it may not be needed
+            xmlrpcEndpoint: try? blog.getXMLRPCEndpoint() // We're ok with this failing because it may not be needed
         )
     }
 }
