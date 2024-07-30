@@ -334,9 +334,11 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
                         guard let media = self.mediaCoordinator.addMedia(from: $0, to: self.post, analyticsInfo: nil, callbackName: callbackName, multiple: multiple) else {
                             return nil
                         }
-                        let previewURL = self.editorViewController.placeholderURL ?? URL(fileURLWithPath: NSTemporaryDirectory() + "\(media.gutenbergUploadID)")
+                        let fileManager = FileManager.default
+                        let documentsDirectoryURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+                        let placeholderPath = documentsDirectoryURL.appendingPathComponent("Gutenberg/placeholder.png")
                         let mediaType = media.mediaTypeString ?? ""
-                        return MediaData(mediaType: mediaType, url: previewURL.absoluteString, id: media.gutenbergUploadID)
+                        return MediaData(mediaType: mediaType, url: placeholderPath.absoluteString, id: media.gutenbergUploadID)
                     }
 
                     do {
@@ -394,11 +396,12 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
 
                         // Save the image data to the file
                         try imageData.write(to: fileURL)
+                        let encodedFileURL = fileURL.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
 
                         // Create the JavaScript callback to pass the file URL to the web view
                         let jsCallback = """
                         document.dispatchEvent(new CustomEvent('\(eventName)', {
-                            detail: { localUrl: "\(fileURL.absoluteString)", id: "\(mediaUpdate.gutenbergUploadID)" }
+                            detail: { localUrl: "\(encodedFileURL)", id: "\(mediaUpdate.gutenbergUploadID)" }
                         }));
                         """
 
