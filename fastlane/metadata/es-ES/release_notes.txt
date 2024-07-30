@@ -1,2 +1,0 @@
-Hemos solucionado un error poco común que hacía que la aplicación se bloqueara al eliminar entradas. Creemos que la basura de una persona sigue siendo basura para otra.
-También hemos solucionado un problema con la barra de navegación en el selector de visibilidad de entradas. Y además, hemos actualizado la pantalla de configuración de entradas del editor para que utilice el nuevo estilo de barra de navegación. Perfecto.

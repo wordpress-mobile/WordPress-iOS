@@ -1,2 +1,0 @@
-Wir haben einen seltenen Fehler behoben, durch den die App beim Löschen von Beiträgen abgestürzt ist. Was für den einen Müll ist, ist für den anderen … immer noch Müll.
-Außerdem wurde ein Problem mit der Navigationsleiste und der Auswahl für die Sichtbarkeit von Beiträgen behoben. Und wenn wir schon dabei sind: Wir haben den Bildschirm zu Beitragseinstellungen im Editor aktualisiert, sodass er im neuen Stil der Navigationsleiste erscheint. Sehr gut.

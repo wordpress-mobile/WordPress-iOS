@@ -83,7 +83,6 @@
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
-   Button title. Tapping it cancels the login flow.
    Cancel
    Cancel a prompt
    Cancel Action
@@ -95,7 +94,6 @@
    Cancel action title
    Cancel button
    Cancel button for alert
-   Cancel button label
    Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Cancel button.
    Cancel button. Site creation modal popover.
@@ -117,7 +115,6 @@
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
-   Option to cancel the email app selection when logging in with magic links
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
@@ -168,9 +165,6 @@
 /* Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "Potvrdi";
 
-/* No comment provided by engineer. */
-"Connecting to WordPress.com" = "Spajanje sa WordPress.com";
-
 /* Period Stats 'Countries' header */
 "Countries" = "Države";
 
@@ -195,9 +189,6 @@
 /* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
 "Dashboard" = "Nadzorna ploča";
 
-/* Title of Days stats filter. */
-"Days" = "Dani";
-
 /* Delete
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
@@ -221,17 +212,13 @@
 "Disabled" = "Onemogući";
 
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
-   Button shown if there are unsaved changes and the author is trying to move away from the post.
    Menus button title for canceling/discarding changes made. */
 "Discard" = "Odbaci";
 
 /* Menus alert button title to discard changes. */
 "Discard Changes" = "Odbaci promjene";
 
-/* Accessibility label for button to dismiss a bottom sheet
-   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
-   Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Dismiss a view. Verb */
+/* Dismiss a view. Verb */
 "Dismiss" = "Odbaci";
 
 /* A done button
@@ -276,17 +263,11 @@
 /* Title for the editor settings section */
 "Editor" = "Uređivač";
 
-/* Accessibility label for the email address text field.
-   Describes the email address section in the comment detail screen.
-   Placeholder for a textfield. The user may enter their email address.
-   Placeholder for the email address textfield. */
+/* Describes the email address section in the comment detail screen. */
 "Email address" = "Adresa E-pošte";
 
 /* Title for the Emoji section */
 "Emoji" = "Emotikoni";
-
-/* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
-"Empty URL" = "Prazan URL";
 
 /* No comment provided by engineer. */
 "Enter a password" = "Unesite lozinku";
@@ -314,14 +295,8 @@
    Open editor help options */
 "Help" = "Pomoć";
 
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
-"Hidden" = "Skriveno";
-
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "Inspiriran sam radovima fotografa Camerona Karstena. Pokušavat ću primjenjivati te tehnike na svoje sljedeće";
-
-/* Undated post time label */
-"Immediately" = "Odmah";
 
 /* Default button title used in media picker to insert media (photos / videos) into a post.
    Label action for inserting a link on the editor */
@@ -339,9 +314,6 @@
 
 /* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "Neispravan URL. Audio datoteka nije pronađena.";
-
-/* No comment provided by engineer. */
-"Invalid username" = "Neispravno korisničko ime";
 
 /* Accessibility label for italic button on formatting toolbar.
    Discoverability title for italic formatting keyboard shortcut. */
@@ -383,27 +355,18 @@
 /* Used when geo-tagging posts, if the geo-tagging failed. */
 "Location unknown" = "Lokacija nepoznata";
 
-/* Button title.  Tapping takes the user to the login form.
-   Label for logging in to WordPress.com account
-   Log In 3D Touch Shortcut
-   Log In button label.
-   View title during the log in process. */
+/* Label for logging in to WordPress.com account
+   Log In 3D Touch Shortcut */
 "Log In" = "Prijavi se";
 
 /* Title of a button for signing in. */
 "Log in" = "Prijava";
-
-/* A generic error message for a failed log in. */
-"Log in failed. Please try again." = "Prijava nije uspjela. Molimo pokušajte ponovo.";
 
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of Jetpack?" = "Jeste li sigurni da se želite odjaviti s Jetpacka?";
 
 /* No comment provided by engineer. */
 "Logs" = "Zapisnici";
-
-/* Title of a button. */
-"Lost your password?" = "Izgubili ste lozinku?";
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Glavni izbornik";
@@ -435,9 +398,6 @@
 /* No comment provided by engineer. */
 "Mention" = "Spominjanje";
 
-/* Title of Months stats filter. */
-"Months" = "Mjeseci";
-
 /* Example post title used in the login prologue screens. */
 "Museums to See In London" = "Muzeji za posjetiti u Londonu";
 
@@ -454,9 +414,7 @@
 "Newest" = "Najnovije";
 
 /* Next action on comment moderation snackbar.
-   Next action on share extension editor screen.
-   Title of a button.
-   Title of a button. The text should be capitalized. */
+   Next action on share extension editor screen. */
 "Next" = "Sljedeće";
 
 /* Label for a cancel button */
@@ -490,12 +448,10 @@
    Button title. Acknowledges a prompt.
    Button title. An acknowledgement of the message displayed in a prompt.
    Default action
-   Dismisses the alert
    Marks all notifications as read.
    Menus: button title for finishing editing of a menu item.
    OK
    OK button for alert
-   Ok button for dismissing alert helping users understand their site address
    OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
    Submit button on prompt for user information.
@@ -530,12 +486,8 @@
    Title for selecting parent category of a category */
 "Parent Category" = "Matična Kategorija";
 
-/* Accessibility label for the password text field in the self-hosted login page.
-   Label for entering password in password field
+/* Label for entering password in password field
    Label for the password field. Should be the same as WP core.
-   Login dialog password placeholder
-   Password placeholder
-   Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "Lozinka";
 
@@ -550,21 +502,12 @@
 /* Label for date periods. */
 "Period" = "Vremensko razdoblje";
 
-/* Popup message to ask for user credentials (fields shown below). */
-"Please enter your credentials" = "Molimo unesite vaše podatke";
-
-/* A short prompt asking the user to properly fill out all login fields. */
-"Please fill out all the fields" = "Molimo vas da popunite sva polja";
-
 /* Header of section in Plugin Directory showing popular plugins
    Screen title, where users can see the most popular plugins */
 "Popular" = "Popularno";
 
 /* The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Post Format";
-
-/* Title of camera permissions screen */
-"Post to WordPress" = "Objavi na wordPress";
 
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
@@ -698,9 +641,6 @@
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Podijeli ";
 
-/* When social login fails, this button offers to let them signup for a new WordPress.com account */
-"Sign up" = "Registracija";
-
 /* Header for a single site, shown in Notification user profile. */
 "Site" = "Sjedište";
 
@@ -788,12 +728,6 @@
    Notifications Today Section Header */
 "Today" = "Danas";
 
-/* Label for total followers */
-"Total" = "Ukupno";
-
-/* Connect when the SSL certificate is invalid */
-"Trust" = "Vjeruj";
-
 /* Retries an Action
    Retry
    Try Again. Action
@@ -819,9 +753,6 @@
 
 /* Unapproves a Comment */
 "Unapprove Comment" = "Neodobren Komentar";
-
-/* No comment provided by engineer. */
-"Unknown error" = "Nepoznata greška.";
 
 /* Title of unreplied Comments filter. */
 "Unreplied" = "Neodgovoreno";
@@ -854,14 +785,10 @@
 "Uploading..." = "Prijenos...";
 
 /* A placeholder for the twitter username
-   Accessibility label for the username text field in the self-hosted login page.
    Account Settings Username label
    Label for entering username in the username field
-   Login dialog username placeholder
-   Placeholder for the username textfield.
    The header and main title
-   Username label text.
-   Username placeholder */
+   Username label text. */
 "Username" = "Korisničko ime";
 
 /* Description for the version label in the What's new page. */
@@ -897,9 +824,6 @@
 
 /* Example Reader feed title */
 "Web News" = "Web novosti";
-
-/* Title of Weeks stats filter. */
-"Weeks" = "Tjedni";
 
 /* Post Signup Interstitial Title Text for WordPress iOS */
 "Welcome to WordPress" = "Dobro došli u WordPress";
@@ -938,8 +862,7 @@
 "You can update this any time via My Site > Site Settings" = "Ovo možete ažurirati bilo kada preko Moje sjedište > Postavke sjedišta";
 
 /* Show when clicking cancel on a comment text box and you didn't save your changes.
-   Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment.
-   Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post. */
+   Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment. */
 "You have unsaved changes." = "Imate izmjene koje nisu snimljene.";
 
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */

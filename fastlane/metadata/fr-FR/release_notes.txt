@@ -1,2 +1,5 @@
-Nous avons corrigé un bug rare qui faisait planter l’application lors du déplacement d’articles vers la corbeille. Les déchets des uns font… les déchets des autres, on imagine.
-Nous avons également corrigé un problème avec la barre de navigation dans le sélecteur Visibilité de l’article. Nous en avons profité pour mettre à jour l’écran Réglages de l’article de l’éditeur en appliquant le nouveau style de barre de navigation. Sympa, non ?
+Nous avons corrigé trois gros problèmes dans cette version :
+* Certains utilisateurs ne pouvaient pas mettre à jour le contenu de leurs articles.
+* Chez certains utilisateurs, la rotation des images se faisait dans le mauvais sens.
+* Des blocs non pris en charge provoquaient un plantage rare dans l’éditeur.
+Comme toujours, veuillez contacter l’assistance en cas de dysfonctionnement !

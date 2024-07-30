@@ -1,2 +1,0 @@
-Abbiamo risolto un bug anomalo che causava l'arresto dell'app quando venivano sposati gli articoli nel cestino. La spazzatura... è pur sempre spazzatura, no?
-Abbiamo anche risolto un problema con la barra di navigazione nel selezionatore della visibilità dell'articolo. Già che c'eravamo, abbiamo anche aggiornato la schermata delle impostazioni dell'articolo così da poter utilizzare il nuovo stile della barra di navigazione. Ottimo.

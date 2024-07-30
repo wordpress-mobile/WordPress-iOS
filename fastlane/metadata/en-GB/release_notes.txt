@@ -1,2 +1,5 @@
-We fixed a rare bug that made the app crash when binning posts. One person’s rubbish is another person’s… still rubbish, we guess.
-We also fixed an issue with the navigation bar in the Post Visibility picker. While we were at it, we updated the editor’s Post Settings screen to use the new navigation bar style. Nice.
+We've fixed three big issues in this release:
+* Some users couldn't update their post's content.
+* Some users had images that were rotated the wrong way.
+* A rare crash in the editor caused by unsupported blocks.
+As always, please reach out to support if anything isn't working right!

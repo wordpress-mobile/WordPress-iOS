@@ -1,2 +1,0 @@
-Vi har åtgärdat en sällsynt bugg som gjorde att appen kraschade när inlägg togs bort. Skräp är... alltid skräp, antar vi.
-Vi har också åtgärdat ett problem med navigeringsfältet i Synlighet för inlägg-väljaren. Och när vi ändå höll på passade vi dessutom på att uppdatera redigerarskärmen Inläggsinställningar, så att den nya navigeringsfältsstilen används. Skönt.

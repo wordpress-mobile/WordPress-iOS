@@ -87,9 +87,6 @@
 /* Placeholder text for the title of a site */
 "A title for the site" = "Заглавие на сайта";
 
-/* An error message. */
-"A valid email address is needed to mail an authentication link. Please return to the previous screen and provide a valid email address." = "Изисква се валиден имейл адрес, за да изпратим връзка за автентикация. Върнете се на предишния екран и задайте валиден имейл адрес.";
-
 /* Label for active Theme browser cell */
 "ACTIVE" = "АКТИВНИ";
 
@@ -109,14 +106,7 @@
 /* Title of alert when theme activation fails */
 "Activation Error" = "Грешка при активацията";
 
-/* The plugin is active on the site and has not enabled automatic updates */
-"Active, Autoupdates off" = "Активирано, автоматичните обновления са изключени";
-
-/* The plugin is active on the site and has enabled automatic updates */
-"Active, Autoupdates on" = "Активирано, автоматичните обновления са включени";
-
-/* Add New Stats Card category title
-   Noun. Links to a blog's Activity screen.
+/* Noun. Links to a blog's Activity screen.
    Noun. Name of the Activity Log feature
    Title for the activity list */
 "Activity" = "Дейност";
@@ -191,15 +181,6 @@
    Error message when the user tries to visualize a plugin without internet connection */
 "An active internet connection is required to view plugins" = "За преглеждането на разширения е нужна връзка с интернет";
 
-/* An error description explaining that a Menu could not be created. */
-"An error occurred creating the Menu." = "Възникна грешка при създаване на менюто.";
-
-/* An error description explaining that a Menu could not be deleted. */
-"An error occurred deleting the Menu." = "Възникна грешка при изтриване на менюто.";
-
-/* An error description explaining that Menus could not be fetched. */
-"An error occurred fetching the Menus." = "Възникна грешка при зареждане на менюто.";
-
 /* Menus text shown when an error occurred loading menus from the server. */
 "An error occurred loading menus, please check your internet connection." = "Възникна грешка при зареждане на менютата, проверете интернет връзката си.";
 
@@ -208,9 +189,6 @@
 
 /* The error message displayed when a user is editing a MenuItem and the results cannot be loaded, such as posts, pages, etc. */
 "An error occurred loading the results, please try again in a moment." = "Възникна грешка при зареждане на резултатите, опитайте отново по-късно.";
-
-/* An error description explaining that a Menu could not be updated. */
-"An error occurred updating the Menu." = "Възникна грешка при обновяване на менюто.";
 
 /* Error recorded when all of the media associated with a post fail to be attached to the post on the server. */
 "An error occurred when attempting to attach uploaded media to the post." = "Възникна грешка при закачането на отдалечен медиен файл към публикацията.";
@@ -247,9 +225,6 @@
 
 /* No comment provided by engineer. */
 "Authenticating" = "Разрешаване";
-
-/* Popup title to ask for user credentials. */
-"Authentication required for host: %@" = "Изисква се автентикация за хост: %@";
 
 /* Author label.
    Label for list of stats by content author.
@@ -321,14 +296,10 @@
 /* Accessibility label for taking an image or video with the camera on formatting toolbar. */
 "Camera" = "Камера";
 
-/* Title of an alert letting the user know */
-"Can Not Request Link" = "Неуспешно изискване на връзка";
-
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
-   Button title. Tapping it cancels the login flow.
    Cancel
    Cancel a prompt
    Cancel Action
@@ -340,7 +311,6 @@
    Cancel action title
    Cancel button
    Cancel button for alert
-   Cancel button label
    Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Cancel button.
    Cancel button. Site creation modal popover.
@@ -362,7 +332,6 @@
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
-   Option to cancel the email app selection when logging in with magic links
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
@@ -402,9 +371,6 @@
 
 /* Center alignment for an image. Should be the same as in core WP. */
 "Center" = "Центриране";
-
-/* Popup title for wrong SSL certificate. */
-"Certificate error" = "Грешка със сертификата";
 
 /* Button title to edit visibility of sites. */
 "Change Visibility" = "Промяна на видимостта";
@@ -537,9 +503,6 @@
 /* Informs the user of consequences of chooseing a new account to connect to publicize.  The %@ characters are placeholders for account names. */
 "Connecting %@ will replace the existing connection to %@." = "Свързването на %1$@ ще замести сегашната връзка с %2$@.";
 
-/* No comment provided by engineer. */
-"Connecting to WordPress.com" = "Свързване с WordPress.com";
-
 /* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connecting..." = "Свързване...";
 
@@ -564,7 +527,6 @@
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
-   The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
@@ -574,23 +536,11 @@
 /* Menus alert button title to continue making changes. */
 "Continue Working" = "Продължаване";
 
-/* Part of a prompt suggesting that there is more content for the user to read. */
-"Continue reading" = "Продължете да четете";
-
 /* Title of an prompt letting the user know there was a problem saving. */
 "Could Not Save Changes" = "Промените не бяха запазени";
 
-/* Message shown when site purchases API failed */
-"Could not check site purchases." = "Неуспешно изтегляне на покупките.";
-
-/* Error message informing the user that there was a problem subscribing to a site or feed. */
-"Could not follow the site at the address specified." = "Не може да се отабонирате от сайта на указания адрес";
-
 /* An error description explaining that Follow could not be toggled due to a missing blogURL attribute. */
 "Could not toggle Follow: missing blogURL attribute" = "Неуспешна промяна на следването: липсва атрибута blogURL";
-
-/* Error message informing the user that there was a problem unsubscribing to a site or feed. */
-"Could not unfollow the site at the address specified." = "Неуспешно отабонриане на сайта от посочения адрес.";
 
 /* This is the text we display to the user when we ask them for a review and they've indicated they don't like the app */
 "Could you tell us how we could improve?" = "С какво можем да бъдем по-добри?";
@@ -604,9 +554,6 @@
 /* Label for list of countries.
    Register Domain - Domain contact information field Country */
 "Country" = "Страна";
-
-/* The button title text for creating a new account. */
-"Create Account" = "Създаване на профил";
 
 /* Button to progress to the next step
    Site creation. Step 1. Screen title
@@ -637,9 +584,6 @@
 
 /* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
 "Dashboard" = "Табло";
-
-/* Title of Days stats filter. */
-"Days" = "Дни";
 
 /* Description of the default paragraph formatting style in the editor.
    Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post. */
@@ -705,7 +649,6 @@
 "Disabled" = "Изключено";
 
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
-   Button shown if there are unsaved changes and the author is trying to move away from the post.
    Menus button title for canceling/discarding changes made. */
 "Discard" = "Премахване";
 
@@ -739,10 +682,7 @@
    Title for the Discussion Settings Screen */
 "Discussion" = "Дискусия";
 
-/* Accessibility label for button to dismiss a bottom sheet
-   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
-   Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Dismiss a view. Verb */
+/* Dismiss a view. Verb */
 "Dismiss" = "Премахване";
 
 /* Display Name label text.
@@ -825,9 +765,6 @@
 /* Overlay message displayed when export content started */
 "Email sent!" = "Имейлът бе изпратен!";
 
-/* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
-"Empty URL" = "Празен адрес";
-
 /* No comment provided by engineer. */
 "Enter a password" = "Парола";
 
@@ -880,9 +817,6 @@
    The action failed */
 "Failed" = "Неуспешно";
 
-/* Error message to show when wrong URL format is used to access the REST API */
-"Failed to serialize request to the REST API." = "Грешка при сериализацията на данните към REST API.";
-
 /* Label for the Featured Image area in post settings.
    Title for the Featured Image view */
 "Featured Image" = "Основно изображение";
@@ -919,9 +853,6 @@
 /* Button title. Follow the comments on a post. */
 "Follow" = "Следване";
 
-/* User role badge */
-"Follower" = "Последовател";
-
 /* Label for number of followers. */
 "Followers" = "Последователи";
 
@@ -934,12 +865,8 @@
 /* Full size image. (default). Should be the same as in core WP. */
 "Full Size" = "Пълен размер";
 
-/* Add New Stats Card category title
-   Title for the general section in site settings screen */
+/* Title for the general section in site settings screen */
 "General" = "Основни";
-
-/* Alerts the user that wpcom account information is being retrieved. */
-"Getting account information" = "Генериране на информацията за профила";
 
 /* Cancel */
 "Give Up" = "Отмяна";
@@ -1003,9 +930,6 @@
    Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Help & Support" = "Помощ";
 
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
-"Hidden" = "Скрит";
-
 /* Hides a site from the site picker list
    Title of a button used to collapse a group */
 "Hide" = "Скриване";
@@ -1050,23 +974,8 @@
 /* Hint for image title on image settings. */
 "Image title" = "Заглавие на изображението";
 
-/* Undated post time label */
-"Immediately" = "Веднага";
-
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "С няколко думи, разкажете за какво е този сайт.";
-
-/* The plugin is not active on the site and has not enabled automatic updates */
-"Inactive, Autoupdates off" = "Деактивирано, автоматичните обновления са изключени";
-
-/* The plugin is not active on the site and has enabled automatic updates */
-"Inactive, Autoupdates on" = "Деактивирано, автоматичните обновления са включени";
-
-/* Describes a standard *.wordpress.com site domain */
-"Included with Site" = "Включен по подразбиране";
-
-/* An error message shown when a user signed in with incorrect credentials. */
-"Incorrect username or password. Please try entering your login details again." = "Невалидно потребителско име или парола. Опитайте отново.";
 
 /* WordPress.com Community Footer Text */
 "Information on WordPress.com courses and events (online & in-person)." = "Информация за WordPress.com курсове и събития (онлайн и лично).";
@@ -1096,21 +1005,6 @@
 /* Title of Insights stats filter. */
 "Insights" = "Избрани";
 
-/* No comment provided by engineer. */
-"Invalid Site Address" = "Невалиден адрес на сайт";
-
-/* No comment provided by engineer. */
-"Invalid Site Title" = "Невалидно име на сайт";
-
-/* Message to show to user when he tries to add a self-hosted site that isn't HTTP or HTTPS. */
-"Invalid URL scheme inserted, only HTTP and HTTPS are supported." = "Невалидна схема на URL, поддържат се само HTTP и HTTPS.";
-
-/* Message to show to user when he tries to add a self-hosted site that isn't a valid URL. */
-"Invalid URL, please check if you wrote a valid site address." = "Невалиден адрес, моля проверете дали сте написали правилен адрес на сайта.";
-
-/* No comment provided by engineer. */
-"Invalid username" = "Невалидно потребителско име";
-
 /* The app successfully sent an invitation */
 "Invitation Sent!" = "Поканата е изпратена!";
 
@@ -1127,7 +1021,6 @@
 "Jetpack" = "Jetpack";
 
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
-   Button shown if there are unsaved changes and the author is trying to move away from the post.
    Goes back to editing the post. */
 "Keep Editing" = "Ще редактирам още";
 
@@ -1255,28 +1148,19 @@
 /* No comment provided by engineer. */
 "Log Files By Created Date" = "Логове по дата на създаване";
 
-/* Button title.  Tapping takes the user to the login form.
-   Label for logging in to WordPress.com account
-   Log In 3D Touch Shortcut
-   Log In button label.
-   View title during the log in process. */
+/* Label for logging in to WordPress.com account
+   Log In 3D Touch Shortcut */
 "Log In" = "Вход";
 
 /* Button for confirming logging out from WordPress.com account
    Label for logging out from WordPress.com account */
 "Log Out" = "Изход";
 
-/* A generic error message for a failed log in. */
-"Log in failed. Please try again." = "Неуспешно влизане - опитайте отново.";
-
 /* Login Request Expired */
 "Login Request Expired" = "Заявката за влизане е изтекла";
 
 /* No comment provided by engineer. */
 "Logs" = "Логове";
-
-/* Title of a button. */
-"Lost your password?" = "Изгубена парола?";
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Основна навигация";
@@ -1296,9 +1180,6 @@
 
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "Управление на сайт";
-
-/* Describes a domain that was mapped to WordPress.com, but registered elsewhere */
-"Mapped Domain" = "Насочен домейн";
 
 /* Marks a notification as unread */
 "Mark Read" = "Маркиране като прочетено";
@@ -1344,9 +1225,6 @@
    Label for the share message field on the post settings. */
 "Message" = "Съобщение";
 
-/* Title of Months stats filter. */
-"Months" = "Месеца";
-
 /* Post Stats months and years header. */
 "Months and Years" = "Месеци и години";
 
@@ -1378,9 +1256,6 @@
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "Помощ?";
 
-/* Title of the more help button on alert helping users understand their site address */
-"Need more help?" = "Имате нужда от допълнителна помощ?";
-
 /* IP Address or Range Insertion Title */
 "New IP or IP Range" = "Нов IP адрес или обхват от IP адреси";
 
@@ -1400,9 +1275,7 @@
 "Newest first" = "Първо най-новите";
 
 /* Next action on comment moderation snackbar.
-   Next action on share extension editor screen.
-   Title of a button.
-   Title of a button. The text should be capitalized. */
+   Next action on share extension editor screen. */
 "Next" = "Следваща";
 
 /* Accessibility label for the next notification button */
@@ -1511,12 +1384,10 @@
    Button title. Acknowledges a prompt.
    Button title. An acknowledgement of the message displayed in a prompt.
    Default action
-   Dismisses the alert
    Marks all notifications as read.
    Menus: button title for finishing editing of a menu item.
    OK
    OK button for alert
-   Ok button for dismissing alert helping users understand their site address
    OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
    Submit button on prompt for user information.
@@ -1559,10 +1430,6 @@
 /* An informal exclaimation meaning `something went wrong`.
    Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
 "Oops!" = "Упс!";
-
-/* The button title text for opening the user's preferred email app.
-   Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
-"Open Mail" = "Към електронна поща";
 
 /* Go to the settings app
    Title of a button that opens the apps settings in the system Settings.app */
@@ -1629,12 +1496,8 @@
    Title for selecting parent category of a category */
 "Parent Category" = "Категория родител";
 
-/* Accessibility label for the password text field in the self-hosted login page.
-   Label for entering password in password field
+/* Label for entering password in password field
    Label for the password field. Should be the same as WP core.
-   Login dialog password placeholder
-   Password placeholder
-   Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "Парола";
 
@@ -1667,29 +1530,11 @@
 /* Message displayed on an error alert to prompt the user to contact support */
 "Please contact support for assistance." = "Моля, свържете се с отдел поддръжка.";
 
-/* No comment provided by engineer. */
-"Please enter a site address." = "Въведете адрес на сайт.";
-
-/* No comment provided by engineer. */
-"Please enter a username." = "Моля, въведете потребителско име.";
-
 /* Title of a prompt. */
 "Please enter a valid URL" = "Моля въведете валиден адрес";
 
-/* Error message displayed when the user attempts use an invalid email address. */
-"Please enter a valid email address." = "Моля, въвете валиден имейл адрес.";
-
-/* Popup message to ask for user credentials (fields shown below). */
-"Please enter your credentials" = "Въведете вашите потребителски данни";
-
-/* A short prompt asking the user to properly fill out all login fields. */
-"Please fill out all the fields" = "Моля, попълнете всички полета";
-
 /* No comment provided by engineer. */
 "Please try entering your login details again." = "Опитайте да въведете данните си за вход отново.";
-
-/* Asks the usre to wait until the currently running fetch request completes. */
-"Please wait til the current fetch completes." = "Изчакайте докато заявката бъде завършена.";
 
 /* Version of an installed plugin */
 "Plugin version" = "Версия на разширението";
@@ -1830,9 +1675,6 @@
    The loading view button title displayed when an error occurred */
 "Refresh" = "Презареждане";
 
-/* Describes a domain that was registered with WordPress.com */
-"Registered Domain" = "Регистриран домейн";
-
 /* Label for selecting the related posts options */
 "Related Posts" = "Подобни публикации";
 
@@ -1937,9 +1779,6 @@
    User's Role */
 "Role" = "Роля";
 
-/* One Time Code has been sent via SMS */
-"SMS Sent" = "SMS изпратен";
-
 /* Menus save button title
    Save Action
    Save button label (saving content, ex: Post, Page, Comment, Category).
@@ -1985,9 +1824,6 @@
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu. */
 "Selecting a different menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Избирането на друго меню ще отхвърли промените, които сте направили към текущото. Сигурни ли сте, че искате да продължите?";
-
-/* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
-"Send Link" = "Изпращане на връзка";
 
 /* Settings: Sending Pingbacks */
 "Send Pingbacks" = "Изпращане на pingbacks";
@@ -2052,9 +1888,6 @@
 /* Title for the Language Picker View */
 "Site Language" = "Език на сайта";
 
-/* Describes a site redirect domain */
-"Site Redirect" = "Пренасочване на сайт";
-
 /* Default title for a site
    Label for site title blog setting
    The item to select during a guided tour.
@@ -2063,9 +1896,6 @@
 
 /* Setting: indicates if Achievements will be notified */
 "Site achievements" = "Постижения на сайта";
-
-/* No comment provided by engineer. */
-"Site address must be at least 4 characters." = "Адресът на сайта трябва да съдържа поне 4 символа.";
 
 /* Overlay message displayed when site successfully deleted */
 "Site deleted" = "Сайтът бе изтрит";
@@ -2082,53 +1912,11 @@
    Update User Failed Title */
 "Sorry!" = "Съжаляваме!";
 
-/* This error message occurs when a user tries to create a username that contains an invalid phrase for WordPress.com. The %@ may include the phrase in question if it was sent down by the API */
-"Sorry, but your username contains an invalid phrase%@." = "За съжаление потребителското име съдържа невалидна фраза %@.";
-
 /* Error title when updating the account password fails */
 "Sorry, can't log in" = "Неуспешен вход";
 
 /* No comment provided by engineer. */
-"Sorry, site addresses can only contain lowercase letters (a-z) and numbers." = "Адресът на сайта може да бъде само от малки букви (a-z) и цифри.";
-
-/* No comment provided by engineer. */
-"Sorry, site addresses may not contain the character &#8220;_&#8221;!" = "Адресът на сайта не може да съдържа &#8220;_&#8221;!";
-
-/* No comment provided by engineer. */
-"Sorry, site addresses must have letters too!" = "Адресът на сайта трябва да има и букви.";
-
-/* Error message displayed when the entered email is not available. */
-"Sorry, that email address is already being used!" = "Този имейл адрес вече се използва!";
-
-/* No comment provided by engineer. */
-"Sorry, that email address is not allowed!" = "Този имейл адрес не е позволен!";
-
-/* No comment provided by engineer. */
-"Sorry, that site already exists!" = "Този сайт вече съществува!";
-
-/* No comment provided by engineer. */
-"Sorry, that site is reserved!" = "Този сайт е резервиран!";
-
-/* No comment provided by engineer. */
-"Sorry, that username already exists!" = "Това потребителско име вече съществува!";
-
-/* No comment provided by engineer. */
-"Sorry, that username is unavailable." = "Ех, това потребителско име е заето.";
-
-/* No comment provided by engineer. */
-"Sorry, usernames can only contain lowercase letters (a-z) and numbers." = "Потребителското име може да съдържа само малки букви (a-z) и цифри.";
-
-/* No comment provided by engineer. */
-"Sorry, usernames may not contain the character &#8220;_&#8221;!" = "Потребителското име не може да съдържа &#8220;_&#8221;!";
-
-/* No comment provided by engineer. */
-"Sorry, usernames must have letters (a-z) too!" = "Потребителското име трябва да съдържа и букви (a-z).";
-
-/* No comment provided by engineer. */
 "Sorry, you cannot access this feature. Please check your User Role on this site." = "Нямате достъп до тази опция. Проверете правата си в този сайт.";
-
-/* No comment provided by engineer. */
-"Sorry, you may not use that site address." = "Не можете да използвате този адрес.";
 
 /* Discussion Settings Title
    Settings: Comments Sort Order */
@@ -2233,42 +2021,15 @@
 /* Title of a button style */
 "Text Only" = "Само текст";
 
-/* Button title */
-"Text me a code instead" = "Изпращане на код чрез SMS";
-
 /* Message of alert when theme activation succeeds */
 "Thanks for choosing %@ by %@" = "Благодарим ви, че избрахте %1$@ от %2$@";
-
-/* Message to show to user when he tries to add a self-hosted site that isn't a WordPress site. */
-"That doesn't look like a WordPress site." = "Това не прилича на WordPress сайт.";
-
-/* No comment provided by engineer. */
-"That email address has already been used. Please check your inbox for an activation email. If you don't activate you can try again in a few days." = "Този имейл адрес вече се използва. Моля проверете пощата си за писмо за активация. Ако  не активирате, пробвайте отново след няколко дни.";
-
-/* No comment provided by engineer. */
-"That site address is not allowed." = "Този адрес не е позволен.";
-
-/* No comment provided by engineer. */
-"That site is currently reserved but may be available in a couple days." = "Този сайт в момента е запазен. Възможно е да е свободен след няколко дни.";
-
-/* No comment provided by engineer. */
-"That username is currently reserved but may be available in a couple of days." = "Това потребителско име в момента е запазено, но е възможно да е свободно след няколко дни.";
-
-/* No comment provided by engineer. */
-"That username is not allowed." = "Това потребителско име не е позволено.";
 
 /* Error message shown when a media upload fails because the user isn't connected to the Internet.
    Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The Internet connection appears to be offline." = "Няма връзка с интернет.";
 
-/* Error message describing a problem with a URL. */
-"The URL is missing a valid host." = "Този адрес няма валиден хост.";
-
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "Приложението не разпознава отговора на сървъра. Проверете конфигурацията на сайта си.";
-
-/* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
-"The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Сертификатът на този сървър е невалиден. Възможно е да се свързвате със сървър който се преструва че е \"%@\", което да изложи ваша конфиденциална информация на риск.\n\nСигурни ли сте, че искате да се доверите на този сертификат?";
 
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The internet connection appears to be offline." = "Няма връзка с интернет";
@@ -2280,19 +2041,7 @@
 "The login request has expired. Log in to WordPress.com to try again." = "Заявката за влизане е изтекла. Влезте в WordPress.com, за да опитате отново.";
 
 /* No comment provided by engineer. */
-"The server returned an empty response. This usually means you need to increase the memory limit for your site." = "Сървърът върна празен отговор. Това обикновено значи, че трябва да вдигнете паметта на сайта си.";
-
-/* No comment provided by engineer. */
-"The site address must be shorter than 64 characters." = "Адресът на сайта трябва да е по-кратък от 64 символа.";
-
-/* No comment provided by engineer. */
 "The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "Този сайт %1$@ използва WordPress %2$@. Препоръчително е да обновите до последната версия или поне до %3$@";
-
-/* Message shown when site deletion API failed */
-"The site could not be deleted." = "Сайтът не може да бъде изтрит.";
-
-/* Message shown when site export API failed */
-"The site could not be exported." = "Сайтът не може да бъде експортиран.";
 
 /* People: Invitation Error */
 "The specified user cannot be found. Please, verify if it's correctly spelt." = "Този потребител не може да бъде открит. Моля, потвърдете че сте го изписали правилно.";
@@ -2332,17 +2081,11 @@
 /* Informs the user about an issue connecting to the third-party sharing service. The `%@` is a placeholder for the service name. */
 "There is an issue connecting to %@. Reconnect to continue publicizing." = "Възникна грешка при свързването с %@. Свържете се отново, за да продължите да споделяте.";
 
-/* Error message informing the user that there was a problem blocking posts from a site from their reader. */
-"There was a problem blocking posts from the specified site." = "Възникна проблем при блокирането на публикациите от сайта.";
-
 /* Message for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
 "There was a problem connecting to WordPress.com. Please log in again." = "Възникна проблем при свързването с WordPress.com. Моля, влезте отново.";
 
 /* A short error message letting the user know about a problem displaying a post. */
 "There was a problem displaying this post." = "Възникна проблем при показването на тази публикация.";
-
-/* Error message informing the user that there was a problem clearing the block on site preventing its posts from displaying in the reader. */
-"There was a problem removing the block for specified site." = "Възникна проблем при премахването на блока от този сайт.";
 
 /* A short error message shown in a prompt. */
 "There was a problem saving changes to sharing management." = "Възникна проблем при запазването на промените в управлението на споделянето.";
@@ -2404,9 +2147,6 @@
 /* Shortened version of the main title to be used in back navigation */
 "Topic" = "Тема";
 
-/* Label for total followers */
-"Total" = "Общо";
-
 /* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */
@@ -2416,9 +2156,6 @@
    Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
    Title of trashed Comments filter. */
 "Trashed" = "Изхвърлени";
-
-/* Connect when the SSL certificate is invalid */
-"Trust" = "Да, ок";
 
 /* Theme Try & Customize action title */
 "Try & Customize" = "Опитайте и настройте";
@@ -2478,9 +2215,6 @@
    Unknown Tag Name */
 "Unknown" = "Непознат";
 
-/* No comment provided by engineer. */
-"Unknown error" = "Непозната грешка";
-
 /* People: Invitation Error */
 "Unknown error has occurred" = "Възникна неизвестна грешка";
 
@@ -2535,27 +2269,17 @@
 "Use" = "Използване";
 
 /* A placeholder for the twitter username
-   Accessibility label for the username text field in the self-hosted login page.
    Account Settings Username label
    Label for entering username in the username field
-   Login dialog username placeholder
-   Placeholder for the username textfield.
    The header and main title
-   Username label text.
-   Username placeholder */
+   Username label text. */
 "Username" = "Потребителско име";
 
 /* Setting: indicates if Mentions will be notified */
 "Username mentions" = "Споменавания на потребителското име";
 
-/* No comment provided by engineer. */
-"Username must be at least 4 characters." = "Потребителското име трябва да съдържа поне 4 символа.";
-
 /* Blog Users */
 "Users" = "Потребители";
-
-/* two factor code placeholder */
-"Verification code" = "Код за потвърждение";
 
 /* Push Authentication Alert Title */
 "Verify Log In" = "Потвърждение на влизането";
@@ -2579,9 +2303,6 @@
 
 /* Displays Less Rows */
 "View less…" = "По-малко...";
-
-/* User role badge */
-"Viewer" = "Читател";
 
 /* Blog Viewers */
 "Viewers" = "Посетители";
@@ -2631,17 +2352,11 @@
 /* The title of the option group for editing an image's size, alignment, etc. on the image details screen. */
 "Web Display Settings" = "Визуални настройки";
 
-/* Title of Weeks stats filter. */
-"Weeks" = "Седмици";
-
 /* A message title */
 "Welcome to the Reader" = "Добре дошли в Reader";
 
 /* Title displayed in the Notification Settings for WordPress.com */
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "Ще ви изпращаме важни имейли относно профила ви, също можете да получите и някои полезни екстри.";
-
-/* Title of alert helping users understand their site address */
-"What's my site address?" = "Какъв е адресът на моя сайт?";
 
 /* Text rendered at the bottom of the Discussion Moderation Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail or IP, it will be held in the moderation queue. You can enter partial words, so \"press\" will match \"WordPress\"." = "Когато коментар съдържа някоя от тези думи в съдържанието, името, адреса, имейла или IP адреса, този коментар ще бъде задържан за модерация. Можете да добавяте частични думи - например \"press\" ще хване и \"WordPress\".";
@@ -2667,9 +2382,6 @@
 /* No comment provided by engineer. */
 "WordPress version too old" = "Версията на WordPress е прекалено стара";
 
-/* No comment provided by engineer. */
-"WordPress version too old. The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "Версията на WordPress e много стара. Сайтът на %1$@ използва WordPress %2$@. Ние препоръчваме да преминете към последната версия или най-малко на %3$@";
-
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
@@ -2694,9 +2406,6 @@
 /* Title for the writing section in site settings screen */
 "Writing" = "Писане";
 
-/* Title of Years stats filter. */
-"Years" = "Години";
-
 /* Button title. Confirms that the user wants to proceed with a pending action.
    Label for a button that clears all old activity logs
    Yes */
@@ -2715,9 +2424,6 @@
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Можете да презаписвате тези настройки за отделните публикации.";
 
-/* No comment provided by engineer. */
-"You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "Не можете да използвате този адрес за регистрация. Имаме проблеми с тях, блокират писмата от нас. Опитайте с друг имейл адрес от различен доставчик.";
-
 /* Message informing the user that all of their sites are currently hidden (plural) */
 "You have %lu hidden WordPress sites." = "Имате %lu скрити WordPress сайта.";
 
@@ -2728,15 +2434,11 @@
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "Имате активни платени услуги на сайта. Моля, отменете ги преди да изтриете сайта си.";
 
 /* Show when clicking cancel on a comment text box and you didn't save your changes.
-   Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment.
-   Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post. */
+   Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment. */
 "You have unsaved changes." = "Имате незапазени промени.";
 
 /* Error message informing the user that being logged into a WordPress.com account is required. */
 "You must be signed in to a WordPress.com account to perform this action." = "За да извършите това действие, влезте в профила си в WordPress.com.";
-
-/* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
-"You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Изглежда, че сте инсталирали мобилно разширение от DudaMobile, което пречи на приложението да се свърже с вашия блог.";
 
 /* Displayed in the Notification Settings View */
 "Your Sites" = "Вашите сайтове";
@@ -2767,9 +2469,6 @@
 
 /* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
 "ios-widget.tVvJ9c" = "Select Site Intent";
-
-/* Later today */
-"later today" = "по-късно днес";
 
 /* Title of posts label in all time widget */
 "widget.alltime.posts.label" = "Публикации";

@@ -1,2 +1,5 @@
-Kami memperbaiki bug langka yang menyebabkan crash aplikasi saat membuang pos. Bagaimanapun, sampah tetaplah sampah.
-Kami juga menyelesaikan masalah bilah navigasi di pemilih Visibilitas Pos. Selain itu, kami memperbarui layar Pengaturan Pos editor untuk menggunakan gaya bilah navigasi baru. Bagus!
+Kami mengatasi tiga masalah utama dalam rilis ini:
+* Beberapa pengguna tidak dapat memperbarui konten pos mereka.
+* Gambar milik beberapa pengguna salah diputar.
+* Editor mengalami crash yang jarang terjadi karena blok yang tidak didukung
+Seperti biasa, Anda bisa menghubungi tim dukungan jika terjadi masalah.
