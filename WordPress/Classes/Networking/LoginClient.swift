@@ -127,8 +127,8 @@ class SelfHostedLoginViewModel: LoginWithUrlView.ViewModel {
                     session.start()
                 }
 
-                let credentials = try Blog.SelfHostedLoginDetails.fromApplicationPasswordResponse(urlWithToken)
-                try await BlogService(coreDataStack: ContextManager.shared).create(from: credentials)
+                let credentials = try SelfHostedLoginDetails.fromApplicationPasswordResponse(urlWithToken)
+                let blogIdentifier = try await Blog.createRestApiBlog(with: credentials, in: ContextManager.shared)
 
                 self.onLoginComplete?()
             } catch let err {
@@ -138,13 +138,8 @@ class SelfHostedLoginViewModel: LoginWithUrlView.ViewModel {
     }
 
     private func buildLoginUrl(from userInput: String) async throws -> URL {
-        guard
-            let result = try await self.loginClient.performLoginAutodiscovery(for: userInput).loginUrl,
-            var mutableAuthURL = URL(string: result)
-        else {
-            // TODO: Throw an error if there's no login URL available
-            abort()
-        }
+        let result = try await self.loginClient.performLoginAutodiscovery(for: userInput)
+        var mutableAuthURL = URL(string: result.loginUrl.url())!
 
         var appNameValue = "Jetpack iOS"
 
