@@ -143,8 +143,6 @@ class SiteStatsDashboardViewController: UIViewController {
         switch segue.destination {
         case let pageViewController as UIPageViewController:
             self.pageViewController = pageViewController
-            pageViewController.dataSource = self
-            pageViewController.delegate = self
         default:
             break
         }
@@ -160,34 +158,6 @@ class SiteStatsDashboardViewController: UIViewController {
 extension SiteStatsDashboardViewController: StatsForegroundObservable {
     func reloadStatsData() {
         updatePeriodView(oldSelectedTab: currentSelectedTab)
-    }
-}
-
-extension SiteStatsDashboardViewController: UIPageViewControllerDataSource {
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        if let index = allChildViewControllers.firstIndex(of: viewController), index < allChildViewControllers.count - 1 {
-            return allChildViewControllers[index + 1]
-        }
-        return nil
-    }
-
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        if let index = allChildViewControllers.firstIndex(of: viewController), index > 0 {
-            return allChildViewControllers[index - 1]
-        }
-        return nil
-    }
-
-    var allChildViewControllers: [UIViewController] {
-        [trafficTableViewController, insightsTableViewController, subscribersViewController]
-    }
-}
-
-extension SiteStatsDashboardViewController: UIPageViewControllerDelegate {
-    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        if let viewController = pageViewController.viewControllers?.first, let index = allChildViewControllers.firstIndex(of: viewController) {
-            filterTabBar.setSelectedIndex(index, animated: true)
-        }
     }
 }
 
