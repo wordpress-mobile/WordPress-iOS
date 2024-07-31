@@ -20,7 +20,6 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
-                    <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" title="Reader" id="3YL-eA-YLl">
                         <barButtonItem key="backBarButtonItem" title=" " id="ZAb-i3-3cA"/>
                     </navigationItem>
