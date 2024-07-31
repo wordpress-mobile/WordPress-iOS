@@ -1,8 +1,5 @@
 #!/bin/bash -eu
 
-# shellcheck disable=SC1091
-source "$(dirname "${BASH_SOURCE[0]}")/set-up-git-to-fetch-wordpress-rs.sh"
-
 brew install imagemagick
 brew install ghostscript
 # Sentry CLI needs to be up-to-date
