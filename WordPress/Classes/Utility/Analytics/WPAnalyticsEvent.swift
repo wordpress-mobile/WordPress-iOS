@@ -628,6 +628,9 @@ import Foundation
     case inAppUpdateDismissed
     case inAppUpdateAccepted
 
+    // Login Autodiscovery
+    case performedUrlDiscovery
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -1705,6 +1708,10 @@ import Foundation
             return "in_app_update_dismissed"
         case .inAppUpdateAccepted:
             return "in_app_update_accepted"
+
+        // Login Autodiscovery
+        case .performedUrlDiscovery:
+            return "performed_url_discovery"
 
         } // END OF SWITCH
     }
