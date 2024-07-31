@@ -151,6 +151,10 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         }
         _readerNavigationController.tabBarItem.accessibilityIdentifier = @"readerTabButton";
         _readerNavigationController.tabBarItem.title = NSLocalizedString(@"Reader", @"The accessibility value of the Reader tab.");
+
+        UITabBarAppearance *scrollEdgeAppearance = [UITabBarAppearance new];
+        [scrollEdgeAppearance configureWithOpaqueBackground];
+        _readerNavigationController.tabBarItem.scrollEdgeAppearance = scrollEdgeAppearance;
     }
 
     return _readerNavigationController;
