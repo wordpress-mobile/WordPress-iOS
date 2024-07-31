@@ -539,7 +539,7 @@ import AutomatticTracks
         setupJetpackBanner(stackView: stackView)
 
         view.addSubview(stackView)
-        view.pinSubviewToAllEdges(stackView)
+        view.pinSubviewToSafeArea(stackView)
     }
 
     private func setupJetpackBanner(stackView: UIStackView) {
