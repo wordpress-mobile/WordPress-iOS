@@ -35,3 +35,18 @@ class KeychainUtils: NSObject {
                                                updateExisting: updateExisting)
     }
 }
+
+extension KeychainUtils: KeychainAccessible {
+    func getPassword(for username: String, serviceName: String) throws -> String {
+        try self.keychainUtils.getPasswordForUsername(username, andServiceName: serviceName)
+    }
+
+    func setPassword(for username: String, to newValue: String, serviceName: String) throws {
+        try keychainUtils.storeUsername(username, andPassword: newValue, forServiceName: serviceName, updateExisting: true)
+    }
+}
+
+protocol KeychainAccessible {
+    func getPassword(for username: String, serviceName: String) throws -> String
+    func setPassword(for username: String, to newValue: String, serviceName: String) throws
+}

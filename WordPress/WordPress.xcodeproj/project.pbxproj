@@ -908,6 +908,9 @@
 		223EA61E212A7C26A456C32C /* Pods_JetpackDraftActionExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 430F7B409FE22699ADB1A724 /* Pods_JetpackDraftActionExtension.framework */; };
 		241E60B325CA0D2900912CEB /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 241E60B225CA0D2900912CEB /* UserSettings.swift */; };
 		2420BEF125D8DAB300966129 /* Blog+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2420BEF025D8DAB300966129 /* Blog+Lookup.swift */; };
+		2422A2C02C5846DB00402A81 /* Blog+RestAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2422A2BF2C5846DB00402A81 /* Blog+RestAPITests.swift */; };
+		2422A2C22C58470600402A81 /* Blog+SelfHosted.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2422A2C12C58470600402A81 /* Blog+SelfHosted.swift */; };
+		2422A2C32C58470600402A81 /* Blog+SelfHosted.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2422A2C12C58470600402A81 /* Blog+SelfHosted.swift */; };
 		24351254264DCA08009BB2B6 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24351253264DCA08009BB2B6 /* Secrets.swift */; };
 		24351255264DCA08009BB2B6 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24351253264DCA08009BB2B6 /* Secrets.swift */; };
 		246D0A0325E97D5D0028B83F /* Blog+ObjcTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 246D0A0225E97D5D0028B83F /* Blog+ObjcTests.m */; };
@@ -921,6 +924,9 @@
 		24B1AE3124FEC79900B9F334 /* RemoteFeatureFlagTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B1AE3024FEC79900B9F334 /* RemoteFeatureFlagTests.swift */; };
 		24C69A8B2612421900312D9A /* UserSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24C69A8A2612421900312D9A /* UserSettingsTests.swift */; };
 		24C69AC22612467C00312D9A /* UserSettingsTestsObjc.m in Sources */ = {isa = PBXBuildFile; fileRef = 24C69AC12612467C00312D9A /* UserSettingsTestsObjc.m */; };
+		24CDE3412C5863A1005E5E43 /* TestKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24CDE3402C5863A1005E5E43 /* TestKeychain.swift */; };
+		24CDE3442C586A64005E5E43 /* SelfHostedLoginDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24CDE3422C586A40005E5E43 /* SelfHostedLoginDetails.swift */; };
+		24CDE3452C586A66005E5E43 /* SelfHostedLoginDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24CDE3422C586A40005E5E43 /* SelfHostedLoginDetails.swift */; };
 		24F3789825E6E62100A27BB7 /* NSManagedObject+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24F3789725E6E62100A27BB7 /* NSManagedObject+Lookup.swift */; };
 		2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2906F810110CDA8900169D56 /* EditCommentViewController.m */; };
 		296890780FE971DC00770264 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 296890770FE971DC00770264 /* Security.framework */; };
@@ -6879,6 +6885,8 @@
 		23052F0F1F9B2503E33D0A26 /* Pods_JetpackShareExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JetpackShareExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		241E60B225CA0D2900912CEB /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
 		2420BEF025D8DAB300966129 /* Blog+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+Lookup.swift"; sourceTree = "<group>"; };
+		2422A2BF2C5846DB00402A81 /* Blog+RestAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+RestAPITests.swift"; sourceTree = "<group>"; };
+		2422A2C12C58470600402A81 /* Blog+SelfHosted.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+SelfHosted.swift"; sourceTree = "<group>"; };
 		24350E7C264DB76E009BB2B6 /* Jetpack.debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Jetpack.debug.xcconfig; sourceTree = "<group>"; };
 		24351059264DC1E2009BB2B6 /* Jetpack.release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Jetpack.release.xcconfig; sourceTree = "<group>"; };
 		243511A4264DC2D9009BB2B6 /* Jetpack.internal.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Jetpack.internal.xcconfig; sourceTree = "<group>"; };
@@ -6933,6 +6941,8 @@
 		24B54FB02624F8690041B18E /* JetpackDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = JetpackDebug.entitlements; sourceTree = "<group>"; };
 		24C69A8A2612421900312D9A /* UserSettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsTests.swift; sourceTree = "<group>"; };
 		24C69AC12612467C00312D9A /* UserSettingsTestsObjc.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserSettingsTestsObjc.m; sourceTree = "<group>"; };
+		24CDE3402C5863A1005E5E43 /* TestKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestKeychain.swift; sourceTree = "<group>"; };
+		24CDE3422C586A40005E5E43 /* SelfHostedLoginDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfHostedLoginDetails.swift; sourceTree = "<group>"; };
 		24F3789725E6E62100A27BB7 /* NSManagedObject+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Lookup.swift"; sourceTree = "<group>"; };
 		28A0AAE50D9B0CCF005BE974 /* WordPress_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPress_Prefix.pch; sourceTree = "<group>"; };
 		2906F80F110CDA8900169D56 /* EditCommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditCommentViewController.h; sourceTree = "<group>"; };
@@ -11677,6 +11687,7 @@
 				43AF2F962107D3800069C012 /* QuickStartTourState.swift */,
 				17EFD3732578201100AB753C /* ValueTransformers.swift */,
 				241E60B225CA0D2900912CEB /* UserSettings.swift */,
+				24CDE3422C586A40005E5E43 /* SelfHostedLoginDetails.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -13604,6 +13615,7 @@
 				3F759FB92A2DA93B0039A845 /* WPAccount+Fixture.swift */,
 				2481B1E7260D4EAC00AE59DB /* WPAccount+LookupTests.swift */,
 				2481B20B260D8FED00AE59DB /* WPAccount+ObjCLookupTests.m */,
+				2422A2BF2C5846DB00402A81 /* Blog+RestAPITests.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -16178,6 +16190,7 @@
 				8B4EDADC27DF9D5E004073B6 /* Blog+MySite.swift */,
 				4AD5656E28E413160054C676 /* Blog+History.swift */,
 				FEE48EFB2A4C8312008A48E0 /* Blog+JetpackSocial.swift */,
+				2422A2C12C58470600402A81 /* Blog+SelfHosted.swift */,
 			);
 			name = Blog;
 			sourceTree = "<group>";
@@ -17634,6 +17647,7 @@
 				933D1F461EA64108009FB462 /* TestingAppDelegate.m */,
 				933D1F6B1EA7A3AB009FB462 /* TestingMode.storyboard */,
 				3F4A4C202AD39CB100DE5DF8 /* TruthTable.swift */,
+				24CDE3402C5863A1005E5E43 /* TestKeychain.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -22676,6 +22690,7 @@
 				014ACD142A1E5034008A706C /* WebKitViewController+SandboxStore.swift in Sources */,
 				B0960C8727D14BD400BC9717 /* SiteIntentStep.swift in Sources */,
 				9801E682274EEBC4002FDDB6 /* ReaderDetailCommentsHeader.swift in Sources */,
+				2422A2C22C58470600402A81 /* Blog+SelfHosted.swift in Sources */,
 				B5EFB1C21B31B98E007608A3 /* NotificationSettingsService.swift in Sources */,
 				011896A829D5BBB400D34BA9 /* DomainsDashboardFactory.swift in Sources */,
 				011F52BD2A15327700B04114 /* BaseDashboardDomainsCardCell.swift in Sources */,
@@ -22718,6 +22733,7 @@
 				E14DFAFB1E07E7C400494688 /* Data.swift in Sources */,
 				E14B40FD1C58B806005046F6 /* AccountSettingsViewController.swift in Sources */,
 				98B11B892216535100B7F2D7 /* StatsChildRowsView.swift in Sources */,
+				24CDE3442C586A64005E5E43 /* SelfHostedLoginDetails.swift in Sources */,
 				4A358DE929B5F14C00BFCEBE /* SharingButton+Lookup.swift in Sources */,
 				08CC677F1C49B65A00153AD7 /* Menu.m in Sources */,
 				BE13B3E71B2B58D800A4211D /* BlogListViewController.m in Sources */,
@@ -24298,6 +24314,7 @@
 				D8BA274D20FDEA2E007A5C77 /* NotificationTextContentTests.swift in Sources */,
 				2481B1D5260D4E8B00AE59DB /* AccountBuilder.swift in Sources */,
 				E66969C81B9E0A6800EC9C00 /* ReaderTopicServiceTest.swift in Sources */,
+				2422A2C02C5846DB00402A81 /* Blog+RestAPITests.swift in Sources */,
 				E1EBC3731C118ED200F638E0 /* ImmuTableTest.swift in Sources */,
 				F5C00EAE242179780047846F /* WeekdaysHeaderViewTests.swift in Sources */,
 				24C69AC22612467C00312D9A /* UserSettingsTestsObjc.m in Sources */,
@@ -24560,6 +24577,7 @@
 				F44FB6CB287895AF0001E3CE /* SuggestionsListViewModelTests.swift in Sources */,
 				8BD36E062395CC4400EFFF1C /* MediaEditorOperation+DescriptionTests.swift in Sources */,
 				8B5FEC0225A750CB000CBFF7 /* UIApplication+mainWindow.swift in Sources */,
+				24CDE3412C5863A1005E5E43 /* TestKeychain.swift in Sources */,
 				3F28CEA52A4ABB8800B79686 /* PrivacySettingsAnalyticsTrackerTests.swift in Sources */,
 				325D3B3D23A8376400766DF6 /* FullScreenCommentReplyViewControllerTests.swift in Sources */,
 				805CC0B9296680F7002941DC /* RemoteConfigStoreMock.swift in Sources */,
@@ -24694,6 +24712,7 @@
 				FABB20DC2602FC2C00C8785C /* WPAppAnalytics+Media.swift in Sources */,
 				FE6BB144293227AC001E5F7A /* ContentMigrationCoordinator.swift in Sources */,
 				FABB20DD2602FC2C00C8785C /* Post.swift in Sources */,
+				2422A2C32C58470600402A81 /* Blog+SelfHosted.swift in Sources */,
 				FA8E2FE127C6377000DA0982 /* DashboardQuickStartCardCell.swift in Sources */,
 				FABB20DE2602FC2C00C8785C /* GutenbergWebViewController.swift in Sources */,
 				FABB20E02602FC2C00C8785C /* CookieJar.swift in Sources */,
@@ -26443,6 +26462,7 @@
 				83F1BED32BA4D1190057BC0F /* ReaderTopicService+FollowedSites.swift in Sources */,
 				FABB25A82602FC2C00C8785C /* RichTextView.swift in Sources */,
 				FABB25A92602FC2C00C8785C /* ScenePresenter.swift in Sources */,
+				24CDE3452C586A66005E5E43 /* SelfHostedLoginDetails.swift in Sources */,
 				FABB25AA2602FC2C00C8785C /* AccountSettingsStore.swift in Sources */,
 				FABB25AB2602FC2C00C8785C /* FancyAlertViewController+NotificationPrimer.swift in Sources */,
 				FABB25AC2602FC2C00C8785C /* Charts+Support.swift in Sources */,
