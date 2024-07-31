@@ -4,7 +4,6 @@ import WordPressShared
 import SwiftUI
 import SVProgressHUD
 import DesignSystem
-import WordPressAPI
 
 final class SitePickerViewController: UIViewController {
 
@@ -48,7 +47,6 @@ final class SitePickerViewController: UIViewController {
         setupHeaderView()
         startObservingQuickStart()
         startObservingTitleChanges()
-
     }
 
     private func setupHeaderView() {
@@ -101,6 +99,7 @@ extension SitePickerViewController: BlogDetailHeaderViewDelegate {
         } else {
             presentLegacySiteSwitcher()
         }
+
     }
 
     private func presentNewSiteSwitcher() {
