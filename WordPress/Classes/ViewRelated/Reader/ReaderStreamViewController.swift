@@ -373,8 +373,6 @@ import AutomatticTracks
 
         observeNetworkStatus()
 
-        WPStyleGuide.configureColors(view: view, tableView: tableView)
-
         didSetupView = true
 
         NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)

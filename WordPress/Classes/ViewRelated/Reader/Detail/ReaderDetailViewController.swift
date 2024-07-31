@@ -1046,15 +1046,7 @@ extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate
         guard let controller = ReaderDetailViewController.controllerWithSimplePost(post) else {
             return
         }
-
-        // Related posts should be presented in its own nav stack,
-        // so that a user can return to the original post by dismissing the related posts nav stack.
-        if navigationController?.viewControllers.first is ReaderDetailViewController {
-            navigationController?.pushViewController(controller, animated: true)
-        } else {
-            let nav = UINavigationController(rootViewController: controller)
-            self.present(nav, animated: true)
-        }
+        navigationController?.pushViewController(controller, animated: true)
     }
 
     private func getSectionTitle(for postType: RemoteReaderSimplePost.PostType) -> String? {
