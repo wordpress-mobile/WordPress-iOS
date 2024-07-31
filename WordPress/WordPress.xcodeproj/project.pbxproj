@@ -927,6 +927,8 @@
 		24CDE3412C5863A1005E5E43 /* TestKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24CDE3402C5863A1005E5E43 /* TestKeychain.swift */; };
 		24CDE3442C586A64005E5E43 /* SelfHostedLoginDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24CDE3422C586A40005E5E43 /* SelfHostedLoginDetails.swift */; };
 		24CDE3452C586A66005E5E43 /* SelfHostedLoginDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24CDE3422C586A40005E5E43 /* SelfHostedLoginDetails.swift */; };
+		24DB7C132C5AEF0600A0FE92 /* LoginClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24DB7C122C5AEF0500A0FE92 /* LoginClient.swift */; };
+		24DB7C142C5AEF0600A0FE92 /* LoginClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24DB7C122C5AEF0500A0FE92 /* LoginClient.swift */; };
 		24F3789825E6E62100A27BB7 /* NSManagedObject+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24F3789725E6E62100A27BB7 /* NSManagedObject+Lookup.swift */; };
 		2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2906F810110CDA8900169D56 /* EditCommentViewController.m */; };
 		296890780FE971DC00770264 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 296890770FE971DC00770264 /* Security.framework */; };
@@ -6943,6 +6945,7 @@
 		24C69AC12612467C00312D9A /* UserSettingsTestsObjc.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserSettingsTestsObjc.m; sourceTree = "<group>"; };
 		24CDE3402C5863A1005E5E43 /* TestKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestKeychain.swift; sourceTree = "<group>"; };
 		24CDE3422C586A40005E5E43 /* SelfHostedLoginDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfHostedLoginDetails.swift; sourceTree = "<group>"; };
+		24DB7C122C5AEF0500A0FE92 /* LoginClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginClient.swift; sourceTree = "<group>"; };
 		24F3789725E6E62100A27BB7 /* NSManagedObject+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Lookup.swift"; sourceTree = "<group>"; };
 		28A0AAE50D9B0CCF005BE974 /* WordPress_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPress_Prefix.pch; sourceTree = "<group>"; };
 		2906F80F110CDA8900169D56 /* EditCommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditCommentViewController.h; sourceTree = "<group>"; };
@@ -14657,6 +14660,7 @@
 		850BD4531922F95C0032F3AD /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				24DB7C122C5AEF0500A0FE92 /* LoginClient.swift */,
 				F1450CF42437E1A600A28BFE /* MediaHost.swift */,
 				F11C9F75243B3C5E00921DDC /* MediaHost+AbstractPost.swift */,
 				F11C9F73243B3C3E00921DDC /* MediaHost+Blog.swift */,
@@ -21757,6 +21761,7 @@
 				7E4123CC20F418A500DF8486 /* ActivityActionsParser.swift in Sources */,
 				FAB37D4627ED84BC00CA993C /* DashboardStatsNudgeView.swift in Sources */,
 				17F0E1DA20EBDC0A001E9514 /* Routes+Me.swift in Sources */,
+				24DB7C132C5AEF0600A0FE92 /* LoginClient.swift in Sources */,
 				D83CA3AB20842E5F0060E310 /* StockPhotosResultsPage.swift in Sources */,
 				80EF928A280D28140064A971 /* Atomic.swift in Sources */,
 				4348C88321002FBD00735DC0 /* QuickStartTourGuide.swift in Sources */,
@@ -26572,6 +26577,7 @@
 				017C57BC2B2B5555001E7687 /* DomainSelectionViewController.swift in Sources */,
 				FABB25F52602FC2C00C8785C /* FilterableCategoriesViewController.swift in Sources */,
 				FABB25F62602FC2C00C8785C /* Post+CoreDataProperties.swift in Sources */,
+				24DB7C142C5AEF0600A0FE92 /* LoginClient.swift in Sources */,
 				FABB25F72602FC2C00C8785C /* BasePost.swift in Sources */,
 				FABB25F82602FC2C00C8785C /* NotificationContentRange.swift in Sources */,
 				FABB25FA2602FC2C00C8785C /* ImmuTable.swift in Sources */,
