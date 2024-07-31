@@ -28,20 +28,13 @@ extension WPStyleGuide {
 
     /// Style the navigation appearance using Muriel colors
     private class func configureNavigationAppearance() {
-        var textAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.appBarText]
-        let largeTitleTextAttributes: [NSAttributedString.Key: Any] = [.font: AppStyleGuide.navigationBarLargeFont]
-
-        textAttributes[.font] = WPStyleGuide.navigationBarStandardFont
-
         let standardAppearance = UINavigationBarAppearance()
         standardAppearance.configureWithDefaultBackground()
-        standardAppearance.titleTextAttributes = textAttributes
-        standardAppearance.largeTitleTextAttributes = largeTitleTextAttributes
+        configureSharedSettings(for: standardAppearance)
 
         let scrollEdgeAppearance = UINavigationBarAppearance()
         scrollEdgeAppearance.configureWithTransparentBackground()
-        scrollEdgeAppearance.titleTextAttributes = textAttributes
-        scrollEdgeAppearance.largeTitleTextAttributes = largeTitleTextAttributes
+        configureSharedSettings(for: scrollEdgeAppearance)
 
         let appearance = UINavigationBar.appearance()
         appearance.tintColor = .appBarTint
@@ -50,6 +43,25 @@ extension WPStyleGuide {
         appearance.compactAppearance = standardAppearance
         appearance.scrollEdgeAppearance = scrollEdgeAppearance
         appearance.compactScrollEdgeAppearance = scrollEdgeAppearance
+    }
+
+    private class func configureSharedSettings(for appearance: UINavigationBarAppearance) {
+        appearance.titleTextAttributes = [
+            .font: WPStyleGuide.navigationBarStandardFont,
+            .foregroundColor: UIColor.appBarText
+        ]
+        appearance.largeTitleTextAttributes = [
+            .font: AppStyleGuide.navigationBarLargeFont
+        ]
+    }
+
+    class func disableScrollEdgeAppearance(for viewController: UIViewController) {
+        let standardAppearance = UINavigationBarAppearance()
+        standardAppearance.configureWithDefaultBackground()
+        configureSharedSettings(for: standardAppearance)
+
+        viewController.navigationItem.scrollEdgeAppearance = standardAppearance
+        viewController.navigationItem.compactScrollEdgeAppearance = standardAppearance
     }
 
     @objc class func configureTabBar(_ tabBar: UITabBar) {
