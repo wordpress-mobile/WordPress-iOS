@@ -242,7 +242,7 @@ extension ReaderSiteTopic {
         // Create background view
         let unseenCountView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: UnseenCountConstants.viewSize))
         unseenCountView.layer.cornerRadius = UnseenCountConstants.cornerRadius
-        unseenCountView.backgroundColor =  .tertiaryFill
+        unseenCountView.backgroundColor = .tertiarySystemFill
 
         // Create count label
         let countLabel = UILabel()

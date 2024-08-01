@@ -62,7 +62,6 @@ class MySitesCoordinator: NSObject {
         let navigationController = UINavigationController(rootViewController: rootContentViewController)
 
         navigationController.navigationBar.prefersLargeTitles = true
-        navigationController.navigationBar.isTranslucent = false
 
         if FeatureFlag.newTabIcons.enabled {
             navigationController.tabBarItem.image = UIImage(named: "tab-bar-home-unselected")?.withRenderingMode(.alwaysOriginal)
@@ -75,7 +74,6 @@ class MySitesCoordinator: NSObject {
         navigationController.tabBarItem.accessibilityLabel = NSLocalizedString("My Site", comment: "The accessibility value of the my site tab.")
         navigationController.tabBarItem.accessibilityIdentifier = "mySitesTabButton"
         navigationController.tabBarItem.title = NSLocalizedString("My Site", comment: "The accessibility value of the my site tab.")
-        navigationController.extendedLayoutIncludesOpaqueBars = true
 
         return navigationController
     }()

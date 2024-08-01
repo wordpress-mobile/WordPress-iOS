@@ -40,7 +40,7 @@ class LinkSettingsViewController: UITableViewController {
     init(settings: LinkSettings, callback: @escaping LinkCallback) {
         linkSettings = settings
         self.callback = callback
-        super.init(style: .grouped)
+        super.init(style: .insetGrouped)
     }
 
     required init?(coder aDecoder: NSCoder) {

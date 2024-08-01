@@ -31,8 +31,6 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
 
         self.title = NSLocalizedString("Scan", comment: "Title of the view")
 
-        extendedLayoutIncludesOpaqueBars = true
-
         configureTableView()
         coordinator.viewDidLoad()
 

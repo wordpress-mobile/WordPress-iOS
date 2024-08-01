@@ -270,7 +270,7 @@ class ReaderWebView: WKWebView {
             switch shade {
             case .shade0:
                 if displaySetting.color == .system {
-                    return .listForegroundUnread
+                    return .tertiarySystemGroupedBackground
                 }
                 return displaySetting.color.foreground.withAlphaComponent(0.1)
             case .shade5:

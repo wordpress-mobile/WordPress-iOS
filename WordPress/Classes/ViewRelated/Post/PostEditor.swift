@@ -252,7 +252,6 @@ extension PostEditor where Self: UIViewController {
     private func showMediaUploadDetails() {
         let viewController = PostMediaUploadsViewController(post: post)
         let nav = UINavigationController(rootViewController: viewController)
-        nav.navigationBar.isTranslucent = true // Reset to default
         viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(systemItem: .close, primaryAction: UIAction { [weak self] _ in
             self?.dismiss(animated: true)
         })

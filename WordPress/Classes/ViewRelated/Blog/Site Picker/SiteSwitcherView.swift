@@ -22,12 +22,10 @@ final class SiteSwitcherViewController: UIViewController {
         super.viewDidLoad()
 
         let viewController = UIHostingController(rootView: SiteSwitcherView(addSiteAction: addSiteAction, onSiteSelected: onSiteSelected))
-        viewController.configureDefaultNavigationBarAppearance() // Importanat
 
         viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(title: SharedStrings.Button.close, style: .plain, target: self, action: #selector(buttonCloseTapped))
 
         let navigationController = UINavigationController(rootViewController: viewController)
-        navigationController.navigationBar.isTranslucent = true // Reset to default
 
         addChild(navigationController)
         view.addSubview(navigationController.view)
@@ -42,51 +40,37 @@ final class SiteSwitcherViewController: UIViewController {
 }
 
 private struct SiteSwitcherView: View {
-    @State private var searchText = ""
-    @State private var isSearching = false
-
     let addSiteAction: (() -> Void)
     let onSiteSelected: ((Blog) -> Void)
-    var eventTracker: EventTracker = DefaultEventTracker()
+
+    @StateObject private var viewModel = BlogListViewModel()
 
     var body: some View {
-        if #available(iOS 17.0, *) {
-            blogListView
-                .searchable(
-                    text: $searchText,
-                    isPresented: $isSearching,
-                    placement: .navigationBarDrawer(displayMode: .always)
-                )
-        } else {
-            blogListView
-                .searchable(
-                    text: $searchText,
-                    placement: .navigationBarDrawer(displayMode: .always)
-                )
-                .onChange(of: searchText) { newValue in
-                    isSearching = !newValue.isEmpty
-                }
-        }
+        BlogListView(viewModel: viewModel, onSiteSelected: onSiteSelected)
+            .safeAreaInset(edge: .bottom) {
+                SiteSwitcherToolbarView(addSiteAction: addSiteAction)
+            }
+            .searchable(text: $viewModel.searchText, placement: .navigationBarDrawer(displayMode: .always))
+            .navigationTitle(Strings.navigationTitle)
+            .navigationBarTitleDisplayMode(.inline)
     }
+}
 
-    private var blogListView: some View {
-        BlogListView(
-            isSearching: $isSearching,
-            searchText: $searchText,
-            onSiteSelected: onSiteSelected
-        )
-        .safeAreaInset(edge: .bottom) {
-            if !isSearching {
-                HStack {
-                    Spacer()
-                    FAB(action: addSiteAction)
-                        .padding(.trailing, 20)
-                        .padding(.bottom, UIDevice.current.userInterfaceIdiom == .pad ? 20 : 0)
-                }
+private struct SiteSwitcherToolbarView: View {
+    let addSiteAction: (() -> Void)
+
+    /// - warning: It has to be defined in a view "below" the .searchable
+    @Environment(\.isSearching) var isSearching
+
+    var body: some View {
+        if !isSearching {
+            HStack {
+                Spacer()
+                FAB(action: addSiteAction)
+                    .padding(.trailing, 20)
+                    .padding(.bottom, UIDevice.current.userInterfaceIdiom == .pad ? 20 : 0)
             }
         }
-        .navigationTitle(Strings.navigationTitle)
-        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

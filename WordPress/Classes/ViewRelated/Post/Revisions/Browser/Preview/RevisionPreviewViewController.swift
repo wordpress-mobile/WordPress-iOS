@@ -58,7 +58,7 @@ private extension RevisionPreviewViewController {
     private func setupAztec() {
         textView.load(WordPressPlugin())
         textView.textAttachmentDelegate = textViewManager
-        textView.preBackgroundColor = .preformattedBackground
+        textView.preBackgroundColor = .systemGray6
 
         let providers: [TextViewAttachmentImageProvider] = [
             SpecialTagAttachmentRenderer(),

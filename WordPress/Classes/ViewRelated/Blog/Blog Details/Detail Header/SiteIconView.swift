@@ -51,9 +51,9 @@ class SiteIconView: UIView {
 
     private let button: UIButton = {
         let button = UIButton(frame: .zero)
-        button.backgroundColor = UIColor.secondaryButtonBackground
+        button.backgroundColor = UIColor(light: .white, dark: .systemGray5)
         button.clipsToBounds = true
-        button.layer.borderColor = UIColor.secondaryButtonBorder.cgColor
+        button.layer.borderColor = UIColor.systemGray3.cgColor
         button.layer.borderWidth = 1
         button.layer.cornerRadius = Constants.borderRadius
         return button

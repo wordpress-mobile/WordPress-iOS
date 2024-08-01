@@ -183,5 +183,20 @@ private extension ReaderTagCardCell {
             collectionView.scrollToStart(animated: false)
         }
     }
+}
 
+private extension UIScrollView {
+    func scrollToEnd(animated: Bool) {
+        let endOffset = CGPoint(x: contentSize.width - bounds.size.width, y: 0)
+        if endOffset.x > 0 {
+            setContentOffset(endOffset, animated: animated)
+            layoutIfNeeded()
+        }
+    }
+
+    func scrollToStart(animated: Bool) {
+        let startOffset = CGPoint(x: 0, y: 0)
+        setContentOffset(startOffset, animated: animated)
+        layoutIfNeeded()
+    }
 }

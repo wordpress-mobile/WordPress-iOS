@@ -22,7 +22,7 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
         self.query = query
         viewModel = PluginListViewModel(site: site, query: query, store: store)
 
-        super.init(style: .grouped)
+        super.init(style: .plain)
 
         title = viewModel.title
         noResultsViewController.delegate = self
@@ -35,7 +35,6 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        WPStyleGuide.configureColors(view: view, tableView: tableView)
         ImmuTable.registerRows(PluginListViewModel.immutableRows, tableView: tableView)
         setupRefreshControl()
 

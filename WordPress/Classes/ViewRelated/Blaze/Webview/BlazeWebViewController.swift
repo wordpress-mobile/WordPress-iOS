@@ -98,18 +98,7 @@ class BlazeWebViewController: UIViewController, BlazeWebView {
     private func configureNavBar() {
         title = viewModel?.navigationTitle
         navigationItem.rightBarButtonItem = dismissButton
-        configureNavBarAppearance()
         reloadNavBar()
-    }
-
-    private func configureNavBarAppearance() {
-        let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = Colors.navigationBarColor
-        appearance.shadowColor = .clear
-        navigationItem.standardAppearance = appearance
-        navigationItem.compactAppearance = appearance
-        navigationItem.scrollEdgeAppearance = appearance
-        navigationItem.compactScrollEdgeAppearance = appearance
     }
 
     // MARK: Reachability Helpers

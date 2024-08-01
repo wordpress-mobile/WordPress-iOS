@@ -35,7 +35,7 @@ open class StartOverViewController: UITableViewController, MFMailComposeViewCont
 
         let actionCell = WPTableViewCellDefault(style: .value1, reuseIdentifier: nil)
         actionCell.textLabel?.text = contactTitle
-        WPStyleGuide.configureTableViewActionCell(actionCell)
+        actionCell.textLabel?.textColor = .primary
         actionCell.textLabel?.textAlignment = .center
 
         return actionCell
@@ -48,7 +48,7 @@ open class StartOverViewController: UITableViewController, MFMailComposeViewCont
     /// - Parameter blog: The Blog currently at the site
     ///
     @objc convenience init(blog: Blog) {
-        self.init(style: .grouped)
+        self.init(style: .insetGrouped)
         self.blog = blog
     }
 
@@ -62,8 +62,6 @@ open class StartOverViewController: UITableViewController, MFMailComposeViewCont
         tableView.cellLayoutMarginsFollowReadableWidth = true
         tableView.estimatedSectionHeaderHeight = 100.0
         tableView.sectionHeaderHeight = UITableView.automaticDimension
-
-        WPStyleGuide.configureColors(view: view, tableView: tableView)
     }
 
     // MARK: Table View Data Source

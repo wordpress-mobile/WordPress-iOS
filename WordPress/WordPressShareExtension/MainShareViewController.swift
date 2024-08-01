@@ -62,7 +62,6 @@ class MainShareViewController: UIViewController {
     override open func viewDidLoad() {
         super.viewDidLoad()
         trackExtensionLaunch()
-        setupAppearance()
         loadAndPresentNavigationVC()
     }
 }
@@ -70,39 +69,6 @@ class MainShareViewController: UIViewController {
 // MARK: - Private Helpers
 
 private extension MainShareViewController {
-    func setupAppearance() {
-
-        // Notice that this will set the apparence of _all_ `UINavigationBar` instances.
-        //
-        // Such a catch-all approach wouldn't be good in the context of a fully fledged application,
-        // but is acceptable here, given we are in an app extension.
-        let navigationBarAppearace = UINavigationBar.appearance()
-        navigationBarAppearace.isTranslucent = false
-        navigationBarAppearace.tintColor = .appBarTint
-        navigationBarAppearace.barTintColor = .appBarBackground
-        navigationBarAppearace.barStyle = .default
-
-        // Extension-specif settings
-        //
-        // This view controller is shared via target membership by multiple extensions, resulting
-        // in the need to apply some extension-specific settings.
-        //
-        // If we had the time, it would be great to extract all this logic in a standalone
-        // framework or package, and then make the individual extensions import it, and instantiate
-        // and configure the view controller to their liking, without making the code more complex
-        // with branch-logic such as this.
-        switch editorController.originatingExtension {
-        case .saveToDraft:
-            // This should probably be showing over current context but this just matches previous
-            // behavior.
-            view.backgroundColor = .basicBackground
-        case .share:
-            // Without this, the modal view controller will have a semi-transparent bar with a
-            // very low alpha, making it close to fully transparent.
-            navigationBarAppearace.backgroundColor = .basicBackground
-        }
-    }
-
     func loadAndPresentNavigationVC() {
         editorController.context = extensionContext
         editorController.dismissalCompletionBlock = { [weak self] (exitSharing) in
@@ -117,6 +83,9 @@ private extension MainShareViewController {
 
         // We need to make sure we don't end up with stacked modal view controllers by using this:
         shareNavController.modalPresentationStyle = .overCurrentContext
+
+        // - important: scroll edge appearance navigation bar
+        shareNavController.view.backgroundColor = .systemBackground
 
         present(shareNavController, animated: true)
     }

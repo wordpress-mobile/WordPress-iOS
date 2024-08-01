@@ -7,7 +7,6 @@ class PluginDirectoryViewController: UITableViewController {
     private let viewModel: PluginDirectoryViewModel
     private var viewModelReceipt: Receipt?
     private var tableViewModel: ImmuTable!
-    private var searchWrapperView: SearchWrapperView!
 
     private let searchThrottle = Scheduler(seconds: 0.5)
 
@@ -26,10 +25,8 @@ class PluginDirectoryViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        WPStyleGuide.configureColors(view: nil, tableView: tableView)
-
+        view.backgroundColor = .systemBackground
         definesPresentationContext = true
-        extendedLayoutIncludesOpaqueBars = true
 
         viewModelReceipt = viewModel.onChange { [weak self] in
             self?.reloadTable()
@@ -45,7 +42,19 @@ class PluginDirectoryViewController: UITableViewController {
                                tableView: tableView)
 
         tableViewModel = viewModel.tableViewModel(presenter: self)
-        setupSearchBar()
+        navigationItem.searchController = searchController
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        navigationItem.hidesSearchBarWhenScrolling = false
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        navigationItem.hidesSearchBarWhenScrolling = true
     }
 
     private func reloadTable() {
@@ -54,50 +63,18 @@ class PluginDirectoryViewController: UITableViewController {
         tableView.reloadData()
     }
 
-    private func setupSearchBar() {
-        let containerView = SearchWrapperView(frame: CGRect(origin: .zero,
-                                                            size: CGSize(width: tableView.frame.width,
-                                                                         height: searchController.searchBar.frame.height)))
-
-        containerView.addSubview(searchController.searchBar)
-        tableView.tableHeaderView = containerView
-        tableView.verticalScrollIndicatorInsets.top = searchController.searchBar.bounds.height
-        // for some... particlar reason, which I haven't been able to fully track down, if the searchBar is added directly
-        // as the tableHeaderView, the UITableView sort of freaks out and adds like 400pts of random padding
-        // below the content of the tableView. Wrapping it in this container fixes it ¯\_(ツ)_/¯
-
-        searchWrapperView = containerView
-    }
-
     private lazy var searchController: UISearchController = {
         let resultsController = PluginListViewController(site: viewModel.site, query: .feed(type: .search(term: "")))
-
         let controller = UISearchController(searchResultsController: resultsController)
         controller.obscuresBackgroundDuringPresentation = false
         controller.searchResultsUpdater = self
         controller.delegate = self
-
-        let searchBar = controller.searchBar
-        WPStyleGuide.configureSearchBar(searchBar)
-
         return controller
     }()
 
     private enum Constants {
         static var rowHeight: CGFloat = 256
         static var separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-    }
-
-    fileprivate func updateTableHeaderSize() {
-        if searchController.isActive {
-            // Account for the search bar being moved to the top of the screen.
-            searchWrapperView.frame.size.height = (searchController.searchBar.bounds.height + searchController.searchBar.frame.origin.y) - view.safeAreaInsets.top
-        } else {
-            searchWrapperView.frame.size.height = searchController.searchBar.bounds.height
-        }
-
-        // Resetting the tableHeaderView is necessary to get the new height to take effect
-        tableView.tableHeaderView = searchWrapperView
     }
 }
 
@@ -136,18 +113,6 @@ extension PluginDirectoryViewController {
 extension PluginDirectoryViewController: UISearchControllerDelegate {
     func didPresentSearchController(_ searchController: UISearchController) {
         WPAppAnalytics.track(.pluginSearchPerformed, withBlogID: viewModel.site.siteID as NSNumber)
-        // This is required when programmatically `activate`ing the Search controller,
-        // e.g. when the user taps on the "Search" icon in the navbar
-        DispatchQueue.main.async {
-            searchController.searchBar.becomeFirstResponder()
-        }
-        updateTableHeaderSize()
-        tableView.verticalScrollIndicatorInsets.top = searchWrapperView.bounds.height
-        tableView.contentInset.top = 0
-    }
-
-    func didDismissSearchController(_ searchController: UISearchController) {
-        updateTableHeaderSize()
     }
 }
 
@@ -160,7 +125,6 @@ extension PluginDirectoryViewController: UISearchResultsUpdating {
 
         searchThrottle.throttle {
             pluginListViewController.query = .feed(type: .search(term: searchedText))
-            pluginListViewController.tableView.contentInset.top = self.searchWrapperView.bounds.height
         }
     }
 }

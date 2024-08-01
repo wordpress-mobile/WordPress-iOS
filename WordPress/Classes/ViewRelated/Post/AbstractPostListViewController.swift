@@ -63,11 +63,7 @@ class AbstractPostListViewController: UIViewController,
         return syncHelper
     }()
 
-    lazy var noResultsViewController: NoResultsViewController = {
-        let noResultsViewController = NoResultsViewController.controller()
-        noResultsViewController.delegate = self
-        return noResultsViewController
-    }()
+    lazy var noResultsViewController = NoResultsViewController.controller()
 
     lazy var filterSettings: PostListFilterSettings = {
         return PostListFilterSettings(blog: self.blog, postType: self.postTypeToSync())
@@ -89,9 +85,6 @@ class AbstractPostListViewController: UIViewController,
 
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-
-        edgesForExtendedLayout = .all
-        extendedLayoutIncludesOpaqueBars = true
     }
 
     required init?(coder: NSCoder) {
@@ -109,7 +102,6 @@ class AbstractPostListViewController: UIViewController,
         configureTableView()
         configureSearchController()
         configureAuthorFilter()
-        configureDefaultNavigationBarAppearance()
 
         updateAndPerformFetchRequest()
 
@@ -841,7 +833,7 @@ class AbstractPostListViewController: UIViewController,
 
         let titleView = UILabel()
         titleView.text = Strings.updating + "..."
-        titleView.font = WPStyleGuide.navigationBarStandardFont
+        titleView.font = UIFont.preferredFont(forTextStyle: .headline)
         titleView.textColor = UIColor.secondaryLabel
 
         let stack = UIStackView(arrangedSubviews: [spinner, titleView])
@@ -884,15 +876,6 @@ extension AbstractPostListViewController: NetworkStatusDelegate {
 }
 
 extension AbstractPostListViewController: EditorAnalyticsProperties { }
-
-// MARK: - NoResultsViewControllerDelegate
-
-extension AbstractPostListViewController: NoResultsViewControllerDelegate {
-    func actionButtonPressed() {
-        WPAnalytics.track(.postListNoResultsButtonPressed, withProperties: propertiesForAnalytics())
-        createPost()
-    }
-}
 
 private enum Strings {
     static let cancelText = NSLocalizedString("postList.cancel", value: "Cancel", comment: "Cancels an Action")

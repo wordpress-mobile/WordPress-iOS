@@ -142,10 +142,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         }
     }
 
-    override open var preferredStatusBarStyle: UIStatusBarStyle {
-        return currentPreferredStatusBarStyle
-    }
-
     override var hidesBottomBarWhenPushed: Bool {
         set { }
         get { true }
@@ -863,8 +859,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         }
 
         let navController = UINavigationController(rootViewController: viewController)
-        navController.navigationBar.isTranslucent = true
-
         if let sheet = navController.sheetPresentationController {
             sheet.detents = [.large()]
             sheet.prefersGrabberVisible = false
@@ -1052,15 +1046,7 @@ extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate
         guard let controller = ReaderDetailViewController.controllerWithSimplePost(post) else {
             return
         }
-
-        // Related posts should be presented in its own nav stack,
-        // so that a user can return to the original post by dismissing the related posts nav stack.
-        if navigationController?.viewControllers.first is ReaderDetailViewController {
-            navigationController?.pushViewController(controller, animated: true)
-        } else {
-            let nav = UINavigationController(rootViewController: controller)
-            self.present(nav, animated: true)
-        }
+        navigationController?.pushViewController(controller, animated: true)
     }
 
     private func getSectionTitle(for postType: RemoteReaderSimplePost.PostType) -> String? {
@@ -1362,10 +1348,6 @@ extension ReaderDetailViewController {
         )
     }
 }
-
-// MARK: - DefinesVariableStatusBarStyle
-// Allows this VC to control the statusbar style dynamically
-extension ReaderDetailViewController: DefinesVariableStatusBarStyle {}
 
 // MARK: - BorderedButtonTableViewCellDelegate
 // For the `View All Comments` button.

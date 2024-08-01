@@ -470,29 +470,20 @@ private extension PageListViewController {
     func handleRefreshNoResultsViewController(_ noResultsViewController: NoResultsViewController) {
 
         guard connectionAvailable() else {
-              noResultsViewController.configure(title: "", noConnectionTitle: NoResultsText.noConnectionTitle, buttonTitle: NoResultsText.buttonTitle, subtitle: nil, noConnectionSubtitle: NoResultsText.noConnectionSubtitle, attributedSubtitle: nil, attributedSubtitleConfiguration: nil, image: nil, subtitleImage: nil, accessoryView: nil)
+              noResultsViewController.configure(title: "", noConnectionTitle: NoResultsText.noConnectionTitle, buttonTitle: nil, subtitle: nil, noConnectionSubtitle: NoResultsText.noConnectionSubtitle, attributedSubtitle: nil, attributedSubtitleConfiguration: nil, image: nil, subtitleImage: nil, accessoryView: nil)
             return
         }
 
         let accessoryView = syncHelper.isSyncing ? NoResultsViewController.loadingAccessoryView() : nil
 
         noResultsViewController.configure(title: noResultsTitle(),
-                                          buttonTitle: noResultsButtonTitle(),
+                                          buttonTitle: nil,
                                           image: noResultsImageName,
                                           accessoryView: accessoryView)
     }
 
     var noResultsImageName: String {
         return "pages-no-results"
-    }
-
-    func noResultsButtonTitle() -> String? {
-        if syncHelper.isSyncing == true {
-            return nil
-        }
-
-        let filterType = filterSettings.currentPostListFilter().filterType
-        return filterType == .trashed ? nil : NoResultsText.buttonTitle
     }
 
     func noResultsTitle() -> String {
@@ -519,7 +510,6 @@ private extension PageListViewController {
     }
 
     struct NoResultsText {
-        static let buttonTitle = NSLocalizedString("Create Page", comment: "Button title, encourages users to create their first page on their blog.")
         static let fetchingTitle = NSLocalizedString("Fetching pages...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new pages.")
         static let noDraftsTitle = NSLocalizedString("You don't have any draft pages", comment: "Displayed when the user views drafts in the pages list and there are no pages")
         static let noScheduledTitle = NSLocalizedString("You don't have any scheduled pages", comment: "Displayed when the user views scheduled pages in the pages list and there are no pages")

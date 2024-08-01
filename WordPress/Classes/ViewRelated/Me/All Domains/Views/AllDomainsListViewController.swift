@@ -84,7 +84,6 @@ final class AllDomainsListViewController: UIViewController {
         self.setupTableView()
         self.setupRefreshControl()
         self.setupEmptyView()
-        self.setupNavigationBarAppearance()
     }
 
     private func setupBarButtonItems() {
@@ -100,10 +99,9 @@ final class AllDomainsListViewController: UIViewController {
         searchController.delegate = self
         searchController.searchBar.delegate = self
         searchController.searchBar.placeholder = Strings.searchBar
-        self.navigationItem.searchController = searchController
-        self.navigationItem.hidesSearchBarWhenScrolling = false
-        self.extendedLayoutIncludesOpaqueBars = true
-        self.edgesForExtendedLayout = .top
+
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
     }
 
     private func setupTableView() {
@@ -131,13 +129,6 @@ final class AllDomainsListViewController: UIViewController {
             self.emptyView.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor, constant: .DS.Padding.double),
             self.emptyView.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor, constant: -.DS.Padding.double)
         ])
-    }
-
-    /// Force the navigation bar separator to be always visible.
-    private func setupNavigationBarAppearance() {
-        let appearance = self.navigationController?.navigationBar.standardAppearance
-        self.navigationItem.scrollEdgeAppearance = appearance
-        self.navigationItem.compactScrollEdgeAppearance = appearance
     }
 
     private func setupRefreshControl() {

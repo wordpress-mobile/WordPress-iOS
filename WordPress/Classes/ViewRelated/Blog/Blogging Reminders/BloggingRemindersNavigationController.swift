@@ -18,7 +18,6 @@ class BloggingRemindersNavigationController: LightNavigationController {
 
         delegate = self
         setNavigationBarHidden(true, animated: false)
-        navigationBar.isTranslucent = true
     }
 
     required init?(coder aDecoder: NSCoder) {

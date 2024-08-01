@@ -39,7 +39,7 @@ class ShareTagsPickerViewController: UIViewController {
     @objc fileprivate let keyboardObserver = TableViewKeyboardObserver()
     fileprivate let textView = UITextView()
     fileprivate let textViewContainer = UIView()
-    fileprivate let tableView = UITableView(frame: .zero, style: .grouped)
+    fileprivate let tableView = UITableView(frame: .zero, style: .plain)
     fileprivate var dataSource: PostTagPickerDataSource = LoadingDataSource() {
         didSet {
             tableView.dataSource = dataSource
@@ -136,7 +136,7 @@ class ShareTagsPickerViewController: UIViewController {
             textView.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor),
             textView.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor),
 
-            textViewContainer.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
+            textViewContainer.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
             textViewContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.textContainerLeadingConstant),
             textViewContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: Constants.textContainerTrailingConstant),
             textViewContainer.bottomAnchor.constraint(equalTo: tableView.topAnchor),
@@ -144,7 +144,7 @@ class ShareTagsPickerViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-            ])
+        ])
     }
 }
 
@@ -355,7 +355,9 @@ fileprivate extension ShareTagsPickerViewController {
 
     func reloadTableData() {
         tableView.reloadData()
-        textViewContainer.layer.shadowOpacity = tableView.isEmpty ? 0 : 0.5
+
+        textViewContainer.layer.shadowOffset = CGSize(width: 0, height: 2)
+        textViewContainer.layer.shadowOpacity = tableView.isEmpty ? 0 : 0.1
     }
 }
 

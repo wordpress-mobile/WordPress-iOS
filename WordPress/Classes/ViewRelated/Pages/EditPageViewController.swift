@@ -41,10 +41,6 @@ class EditPageViewController: UIViewController {
         }
     }
 
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return WPStyleGuide.preferredStatusBarStyle
-    }
-
     fileprivate func pageToEdit() -> Page {
         if let page = self.page {
             return page
@@ -84,6 +80,7 @@ class EditPageViewController: UIViewController {
 
         let navController = AztecNavigationController(rootViewController: editor)
         navController.modalPresentationStyle = .fullScreen
+        navController.view.backgroundColor = .systemBackground
 
         let generator = UIImpactFeedbackGenerator(style: .medium)
         generator.prepare()

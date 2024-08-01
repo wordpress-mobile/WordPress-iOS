@@ -132,7 +132,7 @@ class SiteStatsTableHeaderView: UIView, NibLoadable, Accessible {
 private extension SiteStatsTableHeaderView {
 
     func applyStyles() {
-        backgroundColor = .listForeground
+        backgroundColor = .secondarySystemGroupedBackground
 
         Style.configureLabelAsCellRowTitle(dateLabel)
         dateLabel.font = Metrics.dateLabelFont

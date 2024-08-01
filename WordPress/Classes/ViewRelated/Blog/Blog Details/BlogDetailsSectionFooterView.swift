@@ -5,7 +5,7 @@ class BlogDetailsSectionFooterView: UITableViewHeaderFooterView {
         let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.numberOfLines = 0
-        titleLabel.font = WPStyleGuide.tableviewSectionFooterFont()
+        titleLabel.font = .preferredFont(forTextStyle: .footnote)
         titleLabel.textColor = .neutral(.shade40)
         return titleLabel
     }()

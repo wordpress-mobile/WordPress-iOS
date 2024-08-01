@@ -82,7 +82,8 @@ class CalendarViewController: UIViewController {
         stackView.setCustomSpacing(Constants.headerPadding, after: header)
         view.addSubview(stackView)
         view.pinSubviewToAllEdges(stackView, insets: UIEdgeInsets(top: Constants.headerPadding, left: 0, bottom: 0, right: 0))
-        view.backgroundColor = .basicBackground
+        view.backgroundColor = .systemBackground
+        edgesForExtendedLayout = []
 
         setupNavButtons()
 
@@ -270,8 +271,8 @@ class CalendarViewController: UIViewController {
     }
 
     private func setUpGradientColors() {
-        gradient.fromColor = .basicBackground
-        gradient.toColor = UIColor.basicBackground.withAlphaComponent(0)
+        gradient.fromColor = .systemBackground
+        gradient.toColor = UIColor.systemBackground.withAlphaComponent(0)
     }
 
     @objc private func done() {

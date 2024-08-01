@@ -479,7 +479,7 @@ extension UITableView: CellRegistrar {
 // MARK: - UITableViewController conformance
 
 @objc public protocol TableViewContainer: AnyObject {
-    var tableView: UITableView! { get set }
+    var tableView: UITableView! { get }
 }
 
 extension UITableViewController: TableViewContainer {}

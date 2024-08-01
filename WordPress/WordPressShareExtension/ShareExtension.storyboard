@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="u7b-jW-v8f">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="u7b-jW-v8f">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -11,12 +11,12 @@
         <!--Share Extension Editor View Controller-->
         <scene sceneID="XV2-Y0-lVd">
             <objects>
-                <viewController storyboardIdentifier="ShareExtensionEditorViewController" id="u7b-jW-v8f" customClass="ShareExtensionEditorViewController" customModule="WordPressDraftActionExtension" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ShareExtensionEditorViewController" id="u7b-jW-v8f" customClass="ShareExtensionEditorViewController" customModule="JetpackDraftActionExtension" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="CCa-df-jpl">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="y1B-wC-cgS"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
                     <navigationItem key="navigationItem" id="bcT-W4-zS9"/>
                     <connections>
@@ -30,7 +30,7 @@
         <!--Share Modular View Controller-->
         <scene sceneID="973-d8-sT6">
             <objects>
-                <viewController storyboardIdentifier="ShareModularViewController" id="smc-Pp-8Yy" customClass="ShareModularViewController" customModule="WordPressDraftActionExtension" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ShareModularViewController" id="smc-Pp-8Yy" customClass="ShareModularViewController" customModule="JetpackDraftActionExtension" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="sVy-D8-YUb">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -40,7 +40,6 @@
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Zay-kg-8re">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="ojH-fx-4CN"/>
                                         </constraints>
@@ -51,7 +50,6 @@
                                     </tableView>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="dkr-rW-x8J">
                                         <rect key="frame" x="0.0" y="44" width="375" height="603"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="dataSource" destination="smc-Pp-8Yy" id="oql-8o-cfh"/>
                                             <outlet property="delegate" destination="smc-Pp-8Yy" id="kWV-je-zJm"/>
@@ -60,6 +58,7 @@
                                 </subviews>
                             </stackView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="ImW-YO-81r"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="Q9s-fa-9u2" secondAttribute="bottom" id="17h-T5-VMb"/>
@@ -67,7 +66,6 @@
                             <constraint firstItem="Q9s-fa-9u2" firstAttribute="leading" secondItem="ImW-YO-81r" secondAttribute="leading" id="ph9-4Z-Gh4"/>
                             <constraint firstItem="Q9s-fa-9u2" firstAttribute="top" secondItem="ImW-YO-81r" secondAttribute="top" id="qfm-Bu-rkq"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="ImW-YO-81r"/>
                     </view>
                     <connections>
                         <outlet property="modulesHeightConstraint" destination="ojH-fx-4CN" id="04s-A4-CXa"/>

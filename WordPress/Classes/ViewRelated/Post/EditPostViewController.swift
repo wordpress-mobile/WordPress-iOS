@@ -101,10 +101,6 @@ class EditPostViewController: UIViewController {
         }
     }
 
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        WPStyleGuide.preferredStatusBarStyle
-    }
-
     fileprivate func postToEdit() -> Post {
         if let post = post {
             return post
@@ -147,6 +143,7 @@ class EditPostViewController: UIViewController {
 
         let navController = AztecNavigationController(rootViewController: editor)
         navController.modalPresentationStyle = .fullScreen
+        navController.view.backgroundColor = .systemBackground
 
         let generator = UIImpactFeedbackGenerator(style: .medium)
         generator.prepare()

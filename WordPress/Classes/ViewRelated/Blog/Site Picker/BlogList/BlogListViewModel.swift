@@ -2,31 +2,32 @@ import CoreData
 import SwiftUI
 
 final class BlogListViewModel: NSObject, ObservableObject {
+    @Published var searchText = "" {
+        didSet { updateSearchResults() }
+    }
+
     @Published private(set) var recentSites: [BlogListSiteViewModel] = []
     @Published private(set) var allSites: [BlogListSiteViewModel] = []
     @Published private(set) var searchResults: [BlogListSiteViewModel] = []
 
+    private let configuration: BlogListConfiguration
     private var rawSites: [Blog] = []
-    private var searchText: String = ""
     private let fetchedResultsController: NSFetchedResultsController<Blog>
     private let contextManager: ContextManager
     private let blogService: BlogService
     private let eventTracker: EventTracker
     private var syncBlogsTask: Task<Void, Error>?
 
-    init(contextManager: ContextManager = ContextManager.sharedInstance(),
+    init(configuration: BlogListConfiguration = .defaultConfig,
+         contextManager: ContextManager = ContextManager.sharedInstance(),
          eventTracker: EventTracker = DefaultEventTracker()) {
+        self.configuration = configuration
         self.contextManager = contextManager
         self.blogService = BlogService(coreDataStack: contextManager)
         self.eventTracker = eventTracker
         self.fetchedResultsController = createFetchedResultsController(in: contextManager.mainContext)
         super.init()
         setupFetchedResultsController()
-    }
-
-    func searchQueryChanged(_ newText: String) {
-        searchText = newText
-        updateSearchResults()
     }
 
     func didSelectSite(withSiteID siteID: NSNumber) -> Blog? {
@@ -130,23 +131,26 @@ final class BlogListViewModel: NSObject, ObservableObject {
         }
         StoreContainer.shared.statsWidgets.refreshStatsWidgetsSiteList()
     }
+
+    // MARK: - Helpers
+
+    private func getFilteredSites(from fetchedResultsController: NSFetchedResultsController<Blog>) -> [Blog] {
+        var blogs = fetchedResultsController.fetchedObjects ?? []
+        if configuration.shouldHideSelfHostedSites {
+            blogs = blogs.filter { $0.isAccessibleThroughWPCom() }
+        }
+        if configuration.shouldHideBlogsNotSupportingDomains {
+            blogs = blogs.filter { $0.supports(.domains) }
+        }
+        return blogs
+    }
+
 }
 
 extension BlogListViewModel: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         updateDisplayedSites()
     }
-}
-
-private func getFilteredSites(from fetchedResultsController: NSFetchedResultsController<Blog>) -> [Blog] {
-    var blogs = fetchedResultsController.fetchedObjects ?? []
-    if BlogListConfiguration.defaultConfig.shouldHideSelfHostedSites {
-        blogs = blogs.filter { $0.isAccessibleThroughWPCom() }
-    }
-    if BlogListConfiguration.defaultConfig.shouldHideBlogsNotSupportingDomains {
-        blogs = blogs.filter { $0.supports(.domains) }
-    }
-    return blogs
 }
 
 private func createFetchedResultsController(in context: NSManagedObjectContext) -> NSFetchedResultsController<Blog> {

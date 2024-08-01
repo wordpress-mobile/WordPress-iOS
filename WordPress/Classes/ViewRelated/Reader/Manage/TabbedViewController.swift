@@ -1,3 +1,5 @@
+import UIKit
+
 /// Contains multiple Child View Controllers with a Filter Tab Bar to switch between them.
 class TabbedViewController: UIViewController {
 
@@ -71,9 +73,15 @@ class TabbedViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.addSubview(stackView)
-        view.pinSubviewToAllEdges(stackView)
+        view.backgroundColor = .systemBackground
 
+        view.addSubview(stackView)
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
         setInitialChild()
     }
 

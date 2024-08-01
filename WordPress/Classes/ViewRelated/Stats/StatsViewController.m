@@ -1,6 +1,3 @@
-@import WordPressShared;
-@import Reachability;
-
 #import "StatsViewController.h"
 #import "Blog.h"
 #import "WPAccount.h"
@@ -8,6 +5,9 @@
 #import "BlogService.h"
 #import "WordPress-Swift.h"
 #import "WPAppAnalytics.h"
+
+@import WordPressShared;
+@import Reachability;
 
 @interface StatsViewController () <NoResultsViewControllerDelegate>
 
@@ -31,6 +31,7 @@
 {
     StatsViewController *statsController = [StatsViewController new];
     statsController.blog = blog;
+    statsController.hidesBottomBarWhenPushed = YES;
     statsController.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [controller.navigationController pushViewController:statsController animated:YES];
     
@@ -43,8 +44,6 @@
 
     self.view.backgroundColor = [UIColor systemGroupedBackgroundColor];
     self.navigationItem.title = NSLocalizedString(@"Stats", @"Stats window title");
-
-    self.extendedLayoutIncludesOpaqueBars = YES;
     
     UINavigationController *statsNavVC = [[UIStoryboard storyboardWithName:@"SiteStatsDashboard" bundle:nil] instantiateInitialViewController];
     self.siteStatsDashboardVC = statsNavVC.viewControllers.firstObject;

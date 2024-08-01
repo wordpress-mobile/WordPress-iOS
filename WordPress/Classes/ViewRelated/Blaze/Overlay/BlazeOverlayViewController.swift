@@ -150,14 +150,6 @@ final class BlazeOverlayViewController: UIViewController {
 
     private func setupNavigationBar() {
         navigationItem.rightBarButtonItem = closeButtonItem
-
-        let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = Colors.backgroundColor
-        appearance.shadowColor = .clear
-        navigationItem.standardAppearance = appearance
-        navigationItem.compactAppearance = appearance
-        navigationItem.scrollEdgeAppearance = appearance
-        navigationItem.compactScrollEdgeAppearance = appearance
     }
 
     private func setupView() {

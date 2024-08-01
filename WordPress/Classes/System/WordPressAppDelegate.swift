@@ -111,7 +111,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         InteractiveNotificationsManager.shared.registerForUserNotifications()
         setupPingHub()
         setupBackgroundRefresh(application)
-        setupComponentsAppearance()
         UITestConfigurator.prepareApplicationForUITests(application)
         DebugMenuViewController.configure(in: window)
 
@@ -492,61 +491,6 @@ extension WordPressAppDelegate {
     private static let iterableDomain = "links.wp.a8cmail.com"
 }
 
-// MARK: - UIAppearance
-
-extension WordPressAppDelegate {
-
-    /// Sets up all of the shared component(s) Appearance.
-    ///
-    func setupComponentsAppearance() {
-        setupFancyAlertAppearance()
-        setupFancyButtonAppearance()
-    }
-
-    /// Setup: FancyAlertView's Appearance
-    ///
-    private func setupFancyAlertAppearance() {
-        let appearance = FancyAlertView.appearance()
-
-        appearance.titleTextColor = .neutral(.shade70)
-        appearance.titleFont = WPStyleGuide.fontForTextStyle(.title2, fontWeight: .semibold)
-
-        appearance.bodyTextColor = .neutral(.shade70)
-        appearance.bodyFont = WPStyleGuide.fontForTextStyle(.body)
-        appearance.bodyBackgroundColor = .neutral(.shade0)
-
-        appearance.actionFont = WPStyleGuide.fontForTextStyle(.headline)
-        appearance.infoFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
-        appearance.infoTintColor = .primary
-
-        appearance.topDividerColor = .neutral(.shade5)
-        appearance.bottomDividerColor = .neutral(.shade0)
-        appearance.headerBackgroundColor = .neutral(.shade0)
-
-        appearance.bottomBackgroundColor = .neutral(.shade0)
-    }
-
-    /// Setup: FancyButton's Appearance
-    ///
-    private func setupFancyButtonAppearance() {
-        let appearance = FancyButton.appearance()
-        appearance.titleFont = WPStyleGuide.fontForTextStyle(.headline)
-        appearance.primaryTitleColor = .white
-        appearance.primaryNormalBackgroundColor = .primaryButtonBackground
-        appearance.primaryHighlightBackgroundColor = .primaryButtonDownBackground
-
-        appearance.secondaryTitleColor = .text
-        appearance.secondaryNormalBackgroundColor = .secondaryButtonBackground
-        appearance.secondaryNormalBorderColor = .secondaryButtonBorder
-        appearance.secondaryHighlightBackgroundColor = .secondaryButtonDownBackground
-        appearance.secondaryHighlightBorderColor = .secondaryButtonDownBorder
-
-        appearance.disabledTitleColor = .neutral(.shade20)
-        appearance.disabledBackgroundColor = .textInverted
-        appearance.disabledBorderColor = .neutral(.shade10)
-    }
-}
-
 // MARK: - Helpers
 
 extension WordPressAppDelegate {
@@ -810,44 +754,12 @@ extension WordPressAppDelegate {
         window?.backgroundColor = .black
         window?.tintColor = .primary
 
-        // iOS 14 started rendering backgrounds for stack views, when previous versions
-        // of iOS didn't show them. This is a little hacky, but ensures things keep
-        // looking the same on newer versions of iOS.
-        UIStackView.appearance().backgroundColor = .clear
+        WPStyleGuide.configureAppearance()
 
-        WPStyleGuide.configureTabBarAppearance()
-        WPStyleGuide.configureNavigationAppearance()
-        WPStyleGuide.configureTableViewAppearance()
-        WPStyleGuide.configureDefaultTint()
-        WPStyleGuide.configureLightNavigationBarAppearance()
-        WPStyleGuide.configureToolbarAppearance()
-
-        UISwitch.appearance().onTintColor = .primary
-
-        let navReferenceAppearance = UINavigationBar.appearance(whenContainedInInstancesOf: [UIReferenceLibraryViewController.self])
-        navReferenceAppearance.setBackgroundImage(nil, for: .default)
-        navReferenceAppearance.barTintColor = .primary
-
-        UIToolbar.appearance(whenContainedInInstancesOf: [UIReferenceLibraryViewController.self]).barTintColor = .darkGray
-
-        WPStyleGuide.configureSearchBarAppearance()
-
-        // SVProgressHUD
         SVProgressHUD.setBackgroundColor(UIColor.neutral(.shade70).withAlphaComponent(0.95))
         SVProgressHUD.setForegroundColor(.white)
         SVProgressHUD.setErrorImage(UIImage(named: "hud_error")!)
         SVProgressHUD.setSuccessImage(UIImage(named: "hud_success")!)
-
-        // Post Settings styles
-        UITableView.appearance(whenContainedInInstancesOf: [AztecNavigationController.self]).tintColor = .editorPrimary
-        UISwitch.appearance(whenContainedInInstancesOf: [AztecNavigationController.self]).onTintColor = .editorPrimary
-
-        /// Sets the `tintColor` for parent category selection within the Post Settings screen
-        UIView.appearance(whenContainedInInstancesOf: [PostCategoriesViewController.self]).tintColor = .editorPrimary
-
-        /// It's necessary to target `PostCategoriesViewController` a second time to "reset" the UI element's `tintColor` for use in the app's Site Settings screen.
-        UIView.appearance(whenContainedInInstancesOf: [PostCategoriesViewController.self, WPSplitViewController.self]).tintColor = .primary
-
     }
 }
 

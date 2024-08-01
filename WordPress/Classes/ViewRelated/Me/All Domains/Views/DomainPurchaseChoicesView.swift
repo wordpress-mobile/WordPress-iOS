@@ -21,7 +21,7 @@ struct DomainPurchaseChoicesView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: .DS.Padding.single) {
                 Text(Strings.header)
-                    .font(.largeTitle.bold())
+                    .font(.system(.largeTitle, design: .serif).weight(.medium))
                 Text(Strings.subheader)
                     .foregroundStyle(Color.DS.Foreground.secondary)
                     .padding(.bottom, .DS.Padding.medium)
@@ -90,7 +90,7 @@ struct DomainPurchaseChoicesView: View {
                     .padding(.top, .DS.Padding.double)
                 VStack(alignment: .leading, spacing: .DS.Padding.single) {
                     Text(title)
-                        .font(.title2.bold())
+                        .font(.title2.weight(.medium))
                     Text(subtitle)
                         .foregroundStyle(Color.DS.Foreground.secondary)
                     if let footer {

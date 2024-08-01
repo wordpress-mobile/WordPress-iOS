@@ -17,7 +17,6 @@
 #import "Constants.h"
 #import "CoreDataStack.h"
 #import "Coordinate.h"
-#import "CustomHighlightButton.h"
 
 #import "EditCommentViewController.h"
 

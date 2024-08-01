@@ -278,22 +278,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         navigationItem.title = Strings.mySite
         navigationItem.backButtonTitle = Strings.mySite
 
-        // Workaround:
-        //
-        // Without the next line, the large title was being lost when going into a child VC with a small
-        // title and pressing "Back" in the navigation bar.
-        //
-        // I'm not sure if this makes sense - it doesn't to me right now, so I'm adding instructions to
-        // test the issue which will be helpful for removing the issue if the workaround is no longer
-        // needed.
-        //
-        // To see the issue in action, comment the line, run the App, go into "Stats" (or any other
-        // child VC that has a small title in the navigation bar), check that the title is small,
-        // press back, and check that this VC has a large title.  If this VC still has a
-        // large title, you can remove the following line.
-        //
-        extendedLayoutIncludesOpaqueBars = true
-
         // Set the nav bar
         navigationController?.navigationBar.accessibilityIdentifier = "my-site-navigation-bar"
     }

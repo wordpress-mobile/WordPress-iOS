@@ -97,14 +97,6 @@ class JetpackFullscreenOverlayViewController: UIViewController {
 
     private func configureNavigationBar() {
         addCloseButtonIfNeeded()
-
-        let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = Colors.backgroundColor
-        appearance.shadowColor = .clear
-        navigationItem.standardAppearance = appearance
-        navigationItem.compactAppearance = appearance
-        navigationItem.scrollEdgeAppearance = appearance
-        navigationItem.compactScrollEdgeAppearance = appearance
     }
 
     private func addCloseButtonIfNeeded() {

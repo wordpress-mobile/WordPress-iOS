@@ -14,7 +14,7 @@ open class LanguageViewController: UITableViewController, LanguageSelectorDelega
     /// - Parameter Blog: The blog for which we wanna display the languages picker
     ///
     @objc public convenience init(blog: Blog) {
-        self.init(style: .grouped)
+        self.init(style: .insetGrouped)
         self.blog = blog
     }
 

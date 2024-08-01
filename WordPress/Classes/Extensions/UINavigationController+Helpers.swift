@@ -1,17 +1,6 @@
 import UIKit
 
 extension UINavigationController {
-    override open var preferredStatusBarStyle: UIStatusBarStyle {
-        return WPStyleGuide.preferredStatusBarStyle
-    }
-
-    override open var childForStatusBarStyle: UIViewController? {
-        if let _ = topViewController as? DefinesVariableStatusBarStyle {
-            return topViewController
-        }
-        return nil
-    }
-
     @objc func scrollContentToTopAnimated(_ animated: Bool) {
         guard viewControllers.count == 1 else { return }
 
@@ -49,29 +38,5 @@ extension UINavigationController {
     func pushViewController(_ viewController: UIViewController, animated: Bool, rightBarButton: UIBarButtonItem?) {
         viewController.navigationItem.rightBarButtonItem = rightBarButton
         self.pushViewController(viewController, animated: animated)
-    }
-}
-
-extension UIViewController {
-    func configureDefaultNavigationBarAppearance() {
-        var textAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.appBarText]
-        let largeTitleTextAttributes: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.navigationBarLargeFont]
-
-        textAttributes[.font] = WPStyleGuide.navigationBarStandardFont
-
-        let standardAppearance = UINavigationBarAppearance()
-        standardAppearance.configureWithDefaultBackground()
-        standardAppearance.titleTextAttributes = textAttributes
-        standardAppearance.largeTitleTextAttributes = largeTitleTextAttributes
-
-        let scrollEdgeAppearance = UINavigationBarAppearance()
-        scrollEdgeAppearance.configureWithTransparentBackground()
-        scrollEdgeAppearance.titleTextAttributes = textAttributes
-        scrollEdgeAppearance.largeTitleTextAttributes = largeTitleTextAttributes
-
-        navigationItem.standardAppearance = standardAppearance
-        navigationItem.compactAppearance = standardAppearance
-        navigationItem.scrollEdgeAppearance = scrollEdgeAppearance
-        navigationItem.compactScrollEdgeAppearance = scrollEdgeAppearance
     }
 }

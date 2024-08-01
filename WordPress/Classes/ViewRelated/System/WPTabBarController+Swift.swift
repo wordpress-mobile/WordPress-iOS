@@ -111,11 +111,6 @@ extension WPTabBarController {
         return true
     }
 
-    /// Set up the tab bar's colors
-    @objc func setupColors() {
-        tabBar.isTranslucent = false
-    }
-
     open override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         guard let selectedViewController else {
             return super.supportedInterfaceOrientations

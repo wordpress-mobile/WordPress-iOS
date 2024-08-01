@@ -21,7 +21,6 @@ extension PostSettingsViewController {
         let viewController = PostSettingsViewController.make(for: revision)
         viewController.isStandalone = true
         let navigation = UINavigationController(rootViewController: viewController)
-        navigation.navigationBar.isTranslucent = true // Reset to default
         presentingViewController.present(navigation, animated: true)
     }
 
@@ -31,8 +30,6 @@ extension PostSettingsViewController {
 
     @objc func setupStandaloneEditor() {
         guard isStandalone else { return }
-
-        configureDefaultNavigationBarAppearance()
 
         wpAssert(navigationController?.presentationController != nil)
         navigationController?.presentationController?.delegate = self
@@ -168,7 +165,6 @@ extension PostSettingsViewController {
         }
         let viewController = UIHostingController(rootView: view)
         viewController.title = PostVisibilityPicker.title
-        viewController.configureDefaultNavigationBarAppearance()
         navigationController?.pushViewController(viewController, animated: true)
     }
 
@@ -188,7 +184,6 @@ extension PostSettingsViewController {
             WPAnalytics.track(.editorPostScheduledChanged, properties: ["via": "settings"])
             viewModel.setDate(date)
         }
-        viewController.configureDefaultNavigationBarAppearance()
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 }

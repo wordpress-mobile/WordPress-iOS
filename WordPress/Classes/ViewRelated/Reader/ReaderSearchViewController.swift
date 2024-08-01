@@ -208,7 +208,7 @@ import Gridicons
             view.trailingAnchor.constraint(equalTo: jpSiteSearchController.view.trailingAnchor),
             filterBar.bottomAnchor.constraint(equalTo: jpSiteSearchController.view.topAnchor),
             view.bottomAnchor.constraint(equalTo: jpSiteSearchController.view.bottomAnchor),
-            ])
+        ])
 
         jpSiteSearchController.didMove(toParent: self)
         jpSiteSearchController.view.isHidden = true
@@ -311,7 +311,7 @@ import Gridicons
         controller.delegate = self
         addChild(controller)
 
-        guard let autoView = controller.view, let searchBar = searchBar else {
+        guard let autoView = controller.view, let filterBar else {
             fatalError("Unexpected")
         }
 
@@ -319,17 +319,17 @@ import Gridicons
         view.addSubview(autoView)
 
         let views = [
-            "searchBar": searchBar,
+            "filterBar": filterBar,
             "autoView": autoView
         ]
 
         // Match the width of the search bar.
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "[autoView(==searchBar)]",
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "[autoView(==filterBar)]",
             options: .alignAllLastBaseline,
             metrics: nil,
             views: views))
         // Pin below the search bar.
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[searchBar][autoView]",
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[filterBar][autoView]",
             options: .alignAllCenterX,
             metrics: nil,
             views: views))
@@ -338,7 +338,7 @@ import Gridicons
             item: autoView,
             attribute: .centerX,
             relatedBy: .equal,
-            toItem: searchBar,
+            toItem: filterBar,
             attribute: .centerX,
             multiplier: 1,
             constant: 0))

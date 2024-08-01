@@ -86,8 +86,6 @@ final class PersonViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = person.fullName.nonEmptyString() ?? screenMode.title
-        WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
     }
 
@@ -395,12 +393,12 @@ private extension PersonViewController {
             assertionFailure("Cell should be of class PersonHeaderCell, but it is \(type(of: cell))")
             return
         }
-        headerCell.fullNameLabel.font = WPStyleGuide.tableviewTextFont()
-        headerCell.fullNameLabel.textColor = .text
+        headerCell.fullNameLabel.font = .preferredFont(forTextStyle: .headline)
+        headerCell.fullNameLabel.textColor = .label
         headerCell.fullNameLabel.text = isEmailFollower ? person.displayName : person.fullName
 
-        headerCell.userNameLabel.font = WPStyleGuide.tableviewSectionHeaderFont()
-        headerCell.userNameLabel.textColor = .primary
+        headerCell.userNameLabel.font = .preferredFont(forTextStyle: .subheadline)
+        headerCell.userNameLabel.textColor = .secondaryLabel
         headerCell.userNameLabel.text = person.username.count > 0 ? "@" + person.username : ""
 
         refreshGravatarImage(in: headerCell.gravatarImageView)

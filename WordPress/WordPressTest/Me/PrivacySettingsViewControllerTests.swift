@@ -6,7 +6,7 @@ final class PrivacySettingsViewControllerTests: XCTestCase {
 
     func testCrashReportingChangedLogsEvent() {
         let spy = PrivacySettingsAnalyticsTrackerSpy()
-        let viewController = PrivacySettingsViewController(style: .grouped, analyticsTracker: spy)
+        let viewController = PrivacySettingsViewController(style: .insetGrouped, analyticsTracker: spy)
 
         viewController.crashReportingChanged(true)
 

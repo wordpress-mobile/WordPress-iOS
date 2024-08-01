@@ -144,7 +144,7 @@ class PostEditorNavigationBarManager {
         button.sizeToFit()
         button.isEnabled = delegate?.isPublishButtonEnabled ?? false
         button.setContentHuggingPriority(.required, for: .horizontal)
-        button.tintColor = .editorActionText
+        button.tintColor = UIColor(light: .black, dark: .white)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 17.0)
         return button
     }()

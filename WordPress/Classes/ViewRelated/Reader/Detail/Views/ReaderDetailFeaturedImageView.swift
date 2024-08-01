@@ -382,14 +382,6 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
             return
         }
 
-        // Transparent navigation bar
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithTransparentBackground()
-        navigationItem.standardAppearance = appearance
-        navigationItem.compactAppearance = appearance
-        navigationItem.scrollEdgeAppearance = appearance
-        navigationItem.compactScrollEdgeAppearance = appearance
-
         if isLoaded, imageView.image == nil {
             navBarTintColor = style.endTintColor
         }

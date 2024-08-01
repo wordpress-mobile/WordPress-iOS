@@ -356,6 +356,7 @@ import AutomatticTracks
         // Disable the view until we have a topic.  This prevents a premature
         // pull to refresh animation.
         view.isUserInteractionEnabled = readerTopic != nil
+        view.backgroundColor = .systemBackground
 
         navigationItem.largeTitleDisplayMode = .never
 
@@ -372,8 +373,6 @@ import AutomatticTracks
         setupResultsStatusView()
 
         observeNetworkStatus()
-
-        WPStyleGuide.configureColors(view: view, tableView: tableView)
 
         didSetupView = true
 
@@ -539,7 +538,12 @@ import AutomatticTracks
         setupJetpackBanner(stackView: stackView)
 
         view.addSubview(stackView)
-        view.pinSubviewToAllEdges(stackView)
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
     }
 
     private func setupJetpackBanner(stackView: UIStackView) {

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Tqa-zb-Liz">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Tqa-zb-Liz">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -29,7 +29,7 @@
         <scene sceneID="TCQ-Sm-O2v">
             <objects>
                 <viewController storyboardIdentifier="SiteStatsDashboardViewController" id="vP4-Vk-Ilg" customClass="SiteStatsDashboardViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" ambiguous="YES" id="IsW-kc-L5Q">
+                    <view key="view" contentMode="scaleToFill" id="IsW-kc-L5Q">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -62,7 +62,7 @@
                         <constraints>
                             <constraint firstItem="n8i-ag-Cgx" firstAttribute="leading" secondItem="Ocg-ig-pQt" secondAttribute="leading" id="Iam-aK-t75"/>
                             <constraint firstItem="n8i-ag-Cgx" firstAttribute="top" secondItem="Ocg-ig-pQt" secondAttribute="top" id="Ttf-cl-TLP"/>
-                            <constraint firstItem="n8i-ag-Cgx" firstAttribute="bottom" secondItem="Ocg-ig-pQt" secondAttribute="bottom" id="d4T-H4-iZZ"/>
+                            <constraint firstItem="n8i-ag-Cgx" firstAttribute="bottom" secondItem="IsW-kc-L5Q" secondAttribute="bottom" constant="20" id="d4T-H4-iZZ"/>
                             <constraint firstItem="n8i-ag-Cgx" firstAttribute="trailing" secondItem="Ocg-ig-pQt" secondAttribute="trailing" id="o42-zf-Aak"/>
                         </constraints>
                     </view>
@@ -79,7 +79,7 @@
         <!--Page View Controller-->
         <scene sceneID="RlY-v4-27D">
             <objects>
-                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="83f-eK-Wfs" sceneMemberID="viewController"/>
+                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="83f-eK-Wfs" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mCQ-F7-hdS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="241" y="935"/>

@@ -725,7 +725,6 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 
     func configureNavigationBar() {
-        navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.accessibilityIdentifier = "Azctec Editor Navigation Bar"
         navigationItem.leftBarButtonItems = navigationBarManager.leftBarButtonItems
         navigationItem.titleView = navigationBarManager.blogTitleViewLabel

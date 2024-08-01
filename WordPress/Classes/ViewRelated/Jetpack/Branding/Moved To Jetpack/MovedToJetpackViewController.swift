@@ -186,13 +186,13 @@ final class MovedToJetpackViewController: UIViewController {
     // MARK: - View setup
 
     private func setupView() {
-        view.backgroundColor = .basicBackground
+        view.backgroundColor = .systemBackground
         view.addSubview(scrollView)
-        view.pinSubviewToAllEdges(scrollView)
+        view.pinSubviewToSafeArea(scrollView)
 
         NSLayoutConstraint.activate([
             containerView.widthAnchor.constraint(equalTo: view.widthAnchor),
-            containerView.heightAnchor.constraint(greaterThanOrEqualTo: view.heightAnchor, constant: 0),
+            containerView.heightAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.heightAnchor, constant: 0),
             jetpackButton.heightAnchor.constraint(equalToConstant: Metrics.buttonHeight),
             jetpackButton.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
             jetpackButton.centerXAnchor.constraint(equalTo: stackView.centerXAnchor),

@@ -33,10 +33,6 @@ final class WizardNavigation: UINavigationController {
         return WPDeviceIdentification.isiPad() ? .all : .portrait
     }
 
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .default
-    }
-
     private func configureSteps() {
         for var step in steps {
             step.delegate = self

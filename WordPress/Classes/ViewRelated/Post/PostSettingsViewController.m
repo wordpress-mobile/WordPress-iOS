@@ -28,7 +28,6 @@ typedef NS_ENUM(NSInteger, PostSettingsRow) {
     PostSettingsRowPublishDate,
     PostSettingsRowPendingReview,
     PostSettingsRowVisibility,
-    PostSettingsRowPassword,
     PostSettingsRowFormat,
     PostSettingsRowFeaturedImage,
     PostSettingsRowFeaturedImageAdd,
@@ -54,22 +53,18 @@ static NSString *const TableViewToggleCellIdentifier = @"TableViewToggleCellIden
 static NSString *const TableViewGenericCellIdentifier = @"TableViewGenericCellIdentifier";
 
 
-@interface PostSettingsViewController () <UITextFieldDelegate,
-UIImagePickerControllerDelegate, UINavigationControllerDelegate,
+@interface PostSettingsViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate,
 UIPopoverControllerDelegate,
 PostCategoriesViewControllerDelegate, PostFeaturedImageCellDelegate,
 FeaturedImageViewControllerDelegate>
 
 @property (nonatomic, strong) AbstractPost *apost;
-@property (nonatomic, strong) UITextField *passwordTextField;
-@property (nonatomic, strong) UIButton *passwordVisibilityButton;
 @property (nonatomic, strong) NSArray *postMetaSectionRows;
 @property (nonatomic, strong) NSArray *formatsList;
 @property (nonatomic, strong) UIImage *featuredImage;
 @property (nonatomic, strong) NSData *animatedFeaturedImageData;
 
 @property (nonatomic, readonly) CGSize featuredImageSize;
-@property (assign) BOOL textFieldDidHaveFocusBeforeOrientationChange;
 
 @property (nonatomic, strong) NSArray *publicizeConnections;
 @property (nonatomic, strong) NSArray<PublicizeConnection *> *unsupportedConnections;
@@ -173,42 +168,6 @@ FeaturedImageViewControllerDelegate>
 {
     DDLogWarn(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super didReceiveMemoryWarning];
-}
-
-- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
-{
-    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-    if ([self.passwordTextField isFirstResponder]) {
-        self.textFieldDidHaveFocusBeforeOrientationChange = YES;
-    }
-}
-
-#pragma mark - Password Field
-
-- (void)togglePasswordVisibility
-{
-    NSAssert(_passwordTextField, @"The password text field should be set here.");
-
-    self.passwordTextField.secureTextEntry = !self.passwordTextField.secureTextEntry;
-    [self refreshPasswordVisibilityButton];
-}
-
-- (void)refreshPasswordVisibilityButton
-{
-    NSAssert(_passwordTextField, @"The password text field should be set here.");
-    NSAssert(_passwordVisibilityButton, @"The password visibility button should be set here.");
-
-    UIImage *icon;
-    BOOL passwordIsVisible = !self.passwordTextField.secureTextEntry;
-
-    if (passwordIsVisible) {
-        icon = [UIImage gridiconOfType:GridiconTypeVisible];
-    } else {
-        icon = [UIImage gridiconOfType:GridiconTypeNotVisible];
-    }
-
-    [self.passwordVisibilityButton setImage:icon forState:UIControlStateNormal];
-    [self.passwordVisibilityButton sizeToFit];
 }
 
 #pragma mark - Additional setup
@@ -332,49 +291,10 @@ FeaturedImageViewControllerDelegate>
     return nil;
 }
 
-- (void)endEditingAction:(id)sender
-{
-    if (self.passwordTextField) {
-        [self.passwordTextField resignFirstResponder];
-    }
-}
-
-- (void)endEditingForTextFieldAction:(id)sender
-{
-    [self.passwordTextField endEditing:YES];
-}
-
 - (void)reloadData
 {
-    self.passwordTextField.text = self.apost.password;
-
     [self configureSections];
     [self.tableView reloadData];
-}
-
-
-#pragma mark - TextField Delegate Methods
-
-- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
-{
-    if (self.textFieldDidHaveFocusBeforeOrientationChange) {
-        self.textFieldDidHaveFocusBeforeOrientationChange = NO;
-        return NO;
-    }
-    return YES;
-}
-
-- (void)textFieldDidEndEditing:(UITextField *)textField
-{
-    if (textField == self.passwordTextField) {
-        self.apost.password = textField.text;
-    }
-}
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    [textField resignFirstResponder];
-    return YES;
 }
 
 #pragma mark - UITableView Delegate
@@ -526,13 +446,6 @@ FeaturedImageViewControllerDelegate>
             return self.featuredImageSize.height + 2.f * PostFeaturedImageCellMargin;
         } else {
             return LoadingIndicatorHeight + 2.f * PostFeaturedImageCellMargin;
-        }
-    }
-
-    if (sectionId == PostSettingsSectionMeta) {
-        NSInteger row = [[self.postMetaSectionRows objectAtIndex:indexPath.row] integerValue];
-        if (row == PostSettingsRowPassword) {
-            return CellHeight;
         }
     }
 
@@ -700,8 +613,6 @@ FeaturedImageViewControllerDelegate>
         cell.tag = PostSettingsRowVisibility;
         cell.accessibilityIdentifier = @"Visibility";
 
-    } else if (row == PostSettingsRowPassword) {
-        cell = [self configurePasswordCell];
     } else if (row == PostSettingsRowPendingReview) {
         // Pending Review
         __weak __typeof(self) weakSelf = self;
@@ -716,39 +627,6 @@ FeaturedImageViewControllerDelegate>
     }
 
     return cell;
-}
-
-- (UITableViewCell *)configurePasswordCell
-{
-    // Password
-    WPTextFieldTableViewCell *textCell = [self getWPTableViewTextFieldCell];
-    textCell.textLabel.text = NSLocalizedString(@"Password", @"Label for the password field. Should be the same as WP core.");
-    textCell.textField.textColor = [UIColor murielText];
-    textCell.textField.text = self.apost.password;
-    textCell.textField.attributedPlaceholder = nil;
-    textCell.textField.placeholder = NSLocalizedString(@"Enter a password", @"");
-    textCell.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    textCell.textField.secureTextEntry = YES;
-
-    textCell.tag = PostSettingsRowPassword;
-
-    self.passwordTextField = textCell.textField;
-    self.passwordTextField.accessibilityIdentifier = @"Password Value";
-
-    [self configureVisibilityButtonForPasswordCell:textCell];
-
-    return textCell;
-}
-
-- (void)configureVisibilityButtonForPasswordCell:(WPTextFieldTableViewCell *)textCell
-{
-    self.passwordVisibilityButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.passwordVisibilityButton.tintColor = [UIColor murielNeutral20];
-    [self.passwordVisibilityButton addTarget:self action:@selector(togglePasswordVisibility) forControlEvents:UIControlEventTouchUpInside];
-
-    [self refreshPasswordVisibilityButton];
-
-    textCell.accessoryView = self.passwordVisibilityButton;
 }
 
 - (UITableViewCell *)configurePostFormatCellForIndexPath:(NSIndexPath *)indexPath
@@ -995,25 +873,6 @@ FeaturedImageViewControllerDelegate>
     cell.selectionStyle = UITableViewCellSelectionStyleBlue;
     [WPStyleGuide configureTableViewActionCell:cell];
 
-    cell.tag = 0;
-    return cell;
-}
-
-- (WPTextFieldTableViewCell *)getWPTableViewTextFieldCell
-{
-    static NSString *WPTextFieldCellIdentifier = @"WPTextFieldCellIdentifier";
-    WPTextFieldTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:WPTextFieldCellIdentifier];
-    if (!cell) {
-        cell = [[WPTextFieldTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:WPTextFieldCellIdentifier];
-        cell.textField.returnKeyType = UIReturnKeyDone;
-        cell.textField.delegate = self;
-        [WPStyleGuide configureTableViewTextCell:cell];
-        if ([self.view userInterfaceLayoutDirection] == UIUserInterfaceLayoutDirectionLeftToRight) {
-            cell.textField.textAlignment = NSTextAlignmentRight;
-        } else {
-            cell.textField.textAlignment = NSTextAlignmentLeft;
-        }
-    }
     cell.tag = 0;
     return cell;
 }

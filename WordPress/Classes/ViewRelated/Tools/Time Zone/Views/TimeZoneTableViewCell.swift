@@ -1,6 +1,6 @@
 import UIKit
 
-class TimeZoneTableViewCell: WPTableViewCell {
+final class TimeZoneTableViewCell: WPTableViewCell {
 
     lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -78,12 +78,7 @@ class TimeZoneTableViewCell: WPTableViewCell {
         stackView.addArrangedSubviews([titleLabel, substack])
 
         contentView.addSubview(stackView)
-        contentView.pinSubviewToAllEdges(stackView, insets: UIEdgeInsets(
-                top: Constants.verticalPadding,
-                left: Constants.horizontalPadding,
-                bottom: Constants.verticalPadding,
-                right: Constants.horizontalPadding)
-        )
+        contentView.pinSubviewToAllEdgeMargins(stackView)
     }
 }
 
@@ -91,8 +86,6 @@ class TimeZoneTableViewCell: WPTableViewCell {
 
 private extension TimeZoneTableViewCell {
     enum Constants {
-        static let horizontalPadding: CGFloat = 16
-        static let verticalPadding: CGFloat = 10
         static let verticalSpacing: CGFloat = 3
         static let subtitleHorizontalSpacing: CGFloat = 8
     }

@@ -26,10 +26,6 @@ open class TableViewHeaderDetailView: UITableViewHeaderFooterView {
         }
     }
 
-    // MARK: - Private Aliases
-
-    fileprivate typealias Style = WPStyleGuide.TableViewHeaderDetailView
-
     // MARK: - Private Properties
 
     fileprivate let titleLabel: UILabel = {
@@ -37,8 +33,8 @@ open class TableViewHeaderDetailView: UITableViewHeaderFooterView {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.numberOfLines = 0
         titleLabel.lineBreakMode = .byWordWrapping
-        titleLabel.font = Style.titleFont
-        titleLabel.textColor = Style.titleColor
+        titleLabel.font = .preferredFont(forTextStyle: .headline)
+        titleLabel.textColor = .label
 
         return titleLabel
     }()
@@ -48,8 +44,8 @@ open class TableViewHeaderDetailView: UITableViewHeaderFooterView {
         detailLabel.translatesAutoresizingMaskIntoConstraints = false
         detailLabel.numberOfLines = 0
         detailLabel.lineBreakMode = .byWordWrapping
-        detailLabel.font = Style.detailFont
-        detailLabel.textColor = Style.detailColor
+        detailLabel.font = .preferredFont(forTextStyle: .subheadline)
+        detailLabel.textColor = .secondaryLabel
 
         return detailLabel
     }()
@@ -60,7 +56,7 @@ open class TableViewHeaderDetailView: UITableViewHeaderFooterView {
         stackView.axis = .vertical
         stackView.alignment = .fill
         stackView.distribution = .fill
-        stackView.spacing = Style.headerDetailSpacing
+        stackView.spacing = 8
 
         return stackView
     }()
@@ -112,22 +108,5 @@ open class TableViewHeaderDetailView: UITableViewHeaderFooterView {
 
         title = ""
         detail = ""
-    }
-}
-
-/// WPStyleGuide extension with styles and methods specific to TableViewHeaderDetailView.
-///
-extension WPStyleGuide {
-    public struct TableViewHeaderDetailView {
-        // MARK: - Text Styles
-
-        public static let titleFont = WPStyleGuide.tableviewSectionHeaderFont()
-        public static let titleColor = UIColor.neutral(.shade50)
-
-        public static let detailFont = WPStyleGuide.tableviewSectionHeaderFont()
-        public static let detailColor = UIColor.neutral(.shade40)
-
-        // MARK: - Metrics
-        public static let headerDetailSpacing: CGFloat = 8
     }
 }
