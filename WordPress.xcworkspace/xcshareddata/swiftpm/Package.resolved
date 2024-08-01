@@ -102,7 +102,7 @@
     {
       "identity" : "fsinteractivemap",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/wordpress-mobile/FSInteractiveMap",
+      "location" : "https://github.com/wordpress-mobile/FSInteractiveMap/",
       "state" : {
         "revision" : "3a05cd433c4f6bfe66f09253459cef2be058b3ec",
         "version" : "0.3.0"
@@ -348,6 +348,15 @@
       "state" : {
         "revision" : "4699794b08bb79a4d77785edaba6ea739e298e4b",
         "version" : "2.3.0"
+      }
+    },
+    {
+      "identity" : "wordpress-rs",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Automattic/wordpress-rs.git",
+      "state" : {
+        "revision" : "6394b30b34ed6bf204be8de5558ba2c73d2a10e3",
+        "version" : "0.1.0"
       }
     },
     {
