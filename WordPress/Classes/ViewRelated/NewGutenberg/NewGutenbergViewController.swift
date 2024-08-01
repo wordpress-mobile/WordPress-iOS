@@ -133,7 +133,9 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         let networkClient = NewGutenbergNetworkClient(blog: post.blog)
         self.editorViewController = GutenbergKit.EditorViewController(
             content: post.content ?? "",
-            service: GutenbergKit.EditorService(client: networkClient)
+            service: GutenbergKit.EditorService(client: networkClient),
+            siteUrl: post.blog.url ?? "",
+            apiToken: post.blog.authToken ?? ""
         )
 
         super.init(nibName: nil, bundle: nil)
