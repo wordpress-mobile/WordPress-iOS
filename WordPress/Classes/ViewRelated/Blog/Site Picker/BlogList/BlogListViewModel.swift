@@ -81,6 +81,7 @@ final class BlogListViewModel: NSObject, ObservableObject {
         rawSites = getFilteredSites(from: fetchedResultsController)
 
         recentSites = rawSites
+            .filter { $0.lastUsed != nil }
             .sorted { ($0.lastUsed ?? .distantPast) > ($1.lastUsed ?? .distantPast) }
             .prefix(5)
             .map(BlogListSiteViewModel.init)
