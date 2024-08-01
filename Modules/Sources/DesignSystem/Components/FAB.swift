@@ -2,25 +2,34 @@ import SwiftUI
 
 public struct FAB: View {
     let image: Image
-    let action: () -> Void
+    let action: (() -> Void)?
 
-    public init(image: Image = Image(systemName: "plus"), action: @escaping () -> Void) {
+    public init(image: Image = Image(systemName: "plus"), action: (() -> Void)? = nil) {
         self.image = image
         self.action = action
     }
 
     public var body: some View {
-        Button(action: action) {
+        content
+            .dynamicTypeSize(...DynamicTypeSize.accessibility1) // important to be attached from the outside
+    }
+
+    @ViewBuilder
+    private var content: some View {
+        if let action {
+            Button(action: action) {
+                FABContentView(image: image)
+            }
+        } else {
             FABContentView(image: image)
         }
-        .dynamicTypeSize(...DynamicTypeSize.accessibility1) // important to be attached from the outside
     }
 }
 
 private struct FABContentView: View {
     let image: Image
 
-    @ScaledMetric(relativeTo: .title2) private var size = 50.0
+    @ScaledMetric(relativeTo: .title2) private var size = 54.0
     @ScaledMetric(relativeTo: .title2) private var shadowRadios = 4.0
     @Environment(\.colorScheme) var colorScheme
 

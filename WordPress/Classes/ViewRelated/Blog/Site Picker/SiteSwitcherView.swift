@@ -2,10 +2,10 @@ import SwiftUI
 import DesignSystem
 
 final class SiteSwitcherViewController: UIViewController {
-    private let addSiteAction: (() -> Void)
+    private let addSiteAction: ((AddSiteAlertViewModel.Selection) -> Void)
     private let onSiteSelected: ((Blog) -> Void)
 
-    init(addSiteAction: @escaping (() -> Void),
+    init(addSiteAction: @escaping ((AddSiteAlertViewModel.Selection) -> Void),
          onSiteSelected: @escaping ((Blog) -> Void)) {
         self.addSiteAction = addSiteAction
         self.onSiteSelected = onSiteSelected
@@ -40,7 +40,7 @@ final class SiteSwitcherViewController: UIViewController {
 }
 
 private struct SiteSwitcherView: View {
-    let addSiteAction: (() -> Void)
+    let addSiteAction: ((AddSiteAlertViewModel.Selection) -> Void)
     let onSiteSelected: ((Blog) -> Void)
 
     @StateObject private var viewModel = BlogListViewModel()
@@ -57,7 +57,7 @@ private struct SiteSwitcherView: View {
 }
 
 private struct SiteSwitcherToolbarView: View {
-    let addSiteAction: (() -> Void)
+    let addSiteAction: ((AddSiteAlertViewModel.Selection) -> Void)
 
     /// - warning: It has to be defined in a view "below" the .searchable
     @Environment(\.isSearching) var isSearching
@@ -66,9 +66,29 @@ private struct SiteSwitcherToolbarView: View {
         if !isSearching {
             HStack {
                 Spacer()
-                FAB(action: addSiteAction)
+                button
                     .padding(.trailing, 20)
                     .padding(.bottom, UIDevice.current.userInterfaceIdiom == .pad ? 20 : 0)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var button: some View {
+        let viewModel = AddSiteAlertViewModel(onSelection: addSiteAction)
+        switch viewModel.actions.count {
+        case 0:
+            EmptyView()
+        case 1:
+            FAB(action: viewModel.actions[0].handler)
+        default:
+            Menu {
+                // Menu reverses actions by default
+                ForEach(viewModel.actions.reversed()) { action in
+                    Button(action.title, action: action.handler)
+                }
+            } label: {
+                FAB()
             }
         }
     }
