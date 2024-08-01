@@ -40,38 +40,6 @@ struct SiteIconView: View {
     }
 }
 
-struct SiteIconViewModel {
-    let imageURL: URL?
-    let firstLetter: Character?
-    let size: Size
-    var background = Color(.secondarySystemBackground)
-
-    enum Size {
-        case small
-        case regular
-
-        var width: CGFloat {
-            switch self {
-            case .small: 24
-            case .regular: 40
-            }
-        }
-    }
-
-    init(blog: Blog, size: Size = .regular) {
-        self.size = size
-        self.firstLetter = blog.title?.first
-
-        if blog.hasIcon, let iconURL = blog.icon.flatMap(URL.init) {
-            let targetSize = CGSize(width: size.width, height: size.width)
-                .scaled(by: UITraitCollection.current.displayScale)
-            self.imageURL = WPImageURLHelper.imageURLWithSize(targetSize, forImageURL: iconURL)
-        } else {
-            self.imageURL = nil
-        }
-    }
-}
-
 // MARK: - SiteIconHostingView (UIKit)
 
 final class SiteIconHostingView: UIView {

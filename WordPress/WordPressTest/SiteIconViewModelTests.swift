@@ -3,12 +3,7 @@ import XCTest
 
 @testable import WordPress
 
-final class SiteIconTests: XCTestCase {
-
-    /// Instance to access the extension methods declared in `UIImageView+SiteIcon.swift`.
-    /// Perhaps those methods should be static.
-    let imageView = UIImageView()
-
+final class SiteIconViewModelTests: XCTestCase {
     // MARK: - Test `optimizedURL(for:)`
 
     /// Tests that a dotcom image URL with default image size is valid.
@@ -17,7 +12,7 @@ final class SiteIconTests: XCTestCase {
         let path =  Constants.dotcomPath
 
         // When
-        let optimizedURL = imageView.optimizedURL(for: path)
+        let optimizedURL = SiteIconViewModel.optimizedURL(for: path)
 
         // Then
         let size = 40 * Int(UIScreen.main.scale)
@@ -31,7 +26,7 @@ final class SiteIconTests: XCTestCase {
         let path = Constants.gravatarPath
 
         // When
-        let optimizedURL = imageView.optimizedURL(for: path)
+        let optimizedURL = SiteIconViewModel.optimizedURL(for: path)
 
         // Then
         let size = 40 * Int(UIScreen.main.scale)
@@ -45,7 +40,7 @@ final class SiteIconTests: XCTestCase {
         let path = Constants.photonPath
 
         // When
-        let optimizedURL = imageView.optimizedURL(for: path)
+        let optimizedURL = SiteIconViewModel.optimizedURL(for: path)
 
         // Then
         let size = 40 * Int(UIScreen.main.scale)
@@ -60,7 +55,7 @@ final class SiteIconTests: XCTestCase {
         let path = Constants.dotcomPath
 
         // When
-        let optimizedURL = imageView.optimizedURL(for: path, imageSize: sizeInPoints)
+        let optimizedURL = SiteIconViewModel.optimizedURL(for: path, imageSize: sizeInPoints)
 
         // Then
         let size = Int(sizeInPoints.width) * Int(UIScreen.main.scale)
@@ -75,7 +70,7 @@ final class SiteIconTests: XCTestCase {
         let path = Constants.gravatarPath
 
         // When
-        let optimizedURL = imageView.optimizedURL(for: path, imageSize: sizeInPoints)
+        let optimizedURL = SiteIconViewModel.optimizedURL(for: path, imageSize: sizeInPoints)
 
         // Then
         let size = Int(sizeInPoints.width) * Int(UIScreen.main.scale)
@@ -90,7 +85,7 @@ final class SiteIconTests: XCTestCase {
         let path = Constants.photonPath
 
         // When
-        let optimizedURL = imageView.optimizedURL(for: path, imageSize: sizeInPoints)
+        let optimizedURL = SiteIconViewModel.optimizedURL(for: path, imageSize: sizeInPoints)
 
         // Then
         let size = Int(sizeInPoints.width) * Int(UIScreen.main.scale)
