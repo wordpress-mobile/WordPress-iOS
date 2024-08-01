@@ -3,16 +3,13 @@ import DesignSystem
 import WordPressUI
 
 struct BlogListView: View {
-    @StateObject var viewModel = BlogListViewModel()
-
-    @Binding var isSearching: Bool
-    @Binding var searchText: String
+    @ObservedObject var viewModel: BlogListViewModel
 
     let onSiteSelected: ((Blog) -> Void)
 
     var body: some View {
         List {
-            if !searchText.isEmpty {
+            if !viewModel.searchText.isEmpty {
                 makeSiteList(with: viewModel.searchResults)
             } else {
                 listContent
@@ -23,9 +20,6 @@ struct BlogListView: View {
         }
         .environment(\.defaultMinListRowHeight, 30) // For custom section headers
         .listStyle(.plain)
-        .onChange(of: searchText) { newValue in
-            viewModel.searchQueryChanged(newValue)
-        }
         .onAppear(perform: viewModel.onAppear)
         .onDisappear(perform: viewModel.onDisappear)
     }
