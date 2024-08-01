@@ -25,7 +25,6 @@ extension SitePickerViewController {
         let menuItems = [
             MenuItem.visitSite({ [weak self] in self?.visitSiteTapped() }),
             MenuItem.shareSite { [weak self] in self?.buttonShareSiteTapped() },
-            MenuItem.addSite({ [weak self] in self?.addSiteTapped()} ),
             MenuItem.switchSite({ [weak self] in self?.siteSwitcherTapped() })
         ]
         return UIMenu(options: .displayInline, children: menuItems.map { $0.toAction })
@@ -73,37 +72,13 @@ extension SitePickerViewController {
 
     // MARK: - Add site
 
-    func addSiteTapped() {
-        let canCreateWPComSite = defaultAccount() != nil
-        let canAddSelfHostedSite = AppConfiguration.showAddSelfHostedSiteButton
+    func addSiteTapped(siteType: AddSiteAlertViewModel.Selection) {
+        WPAnalytics.trackEvent(.mySiteHeaderAddSiteTapped, properties: ["siteType": siteType.rawValue])
 
-        // Launch wp.com site creation if the user can't add self-hosted sites
-        if canCreateWPComSite && !canAddSelfHostedSite {
-            launchSiteCreation()
-            return
+        switch siteType {
+        case .dotCom: launchSiteCreation()
+        case .selfHosted: launchLoginForSelfHostedSite()
         }
-
-        showAddSiteActionSheet(from: blogDetailHeaderView.titleView.siteSwitcherButton,
-                               canCreateWPComSite: canCreateWPComSite,
-                               canAddSelfHostedSite: canAddSelfHostedSite)
-
-        WPAnalytics.trackEvent(.mySiteHeaderAddSiteTapped)
-    }
-
-    private func showAddSiteActionSheet(from sourceView: UIView, canCreateWPComSite: Bool, canAddSelfHostedSite: Bool) {
-        let actionSheet = AddSiteAlertFactory().makeAddSiteAlert(
-            source: "my_site",
-            canCreateWPComSite: canCreateWPComSite,
-            createWPComSite: { [weak self] in self?.launchSiteCreation() },
-            canAddSelfHostedSite: canAddSelfHostedSite,
-            addSelfHostedSite: { [weak self] in self?.launchLoginForSelfHostedSite() }
-        )
-
-        actionSheet.popoverPresentationController?.sourceView = sourceView
-        actionSheet.popoverPresentationController?.sourceRect = sourceView.bounds
-        actionSheet.popoverPresentationController?.permittedArrowDirections = .up
-
-        presentedViewController?.present(actionSheet, animated: true)
     }
 
     private func launchSiteCreation() {

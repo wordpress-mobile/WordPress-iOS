@@ -96,7 +96,7 @@ extension SitePickerViewController: BlogDetailHeaderViewDelegate {
     func siteSwitcherTapped() {
         let viewController = SiteSwitcherViewController(
             addSiteAction: { [weak self] in
-                self?.addSiteTapped()
+                self?.addSiteTapped(siteType: $0)
             },
             onSiteSelected: { [weak self] site in
                 self?.switchToBlog(site)
