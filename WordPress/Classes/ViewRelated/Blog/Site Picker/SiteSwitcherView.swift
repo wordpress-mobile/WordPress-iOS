@@ -37,6 +37,18 @@ final class SiteSwitcherViewController: UIViewController {
     @objc private func buttonCloseTapped() {
         presentingViewController?.dismiss(animated: true)
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        WPAnalytics.track(.siteSwitcherDisplayed)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        WPAnalytics.track(.siteSwitcherDismissed)
+    }
 }
 
 private struct SiteSwitcherView: View {

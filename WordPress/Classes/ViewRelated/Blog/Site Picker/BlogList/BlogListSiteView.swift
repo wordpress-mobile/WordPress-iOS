@@ -50,7 +50,7 @@ struct BlogListSiteView: View {
 }
 
 final class BlogListSiteViewModel: Identifiable {
-    let id: NSNumber
+    var id: NSManagedObjectID { blog.objectID }
     let title: String
     let domain: String
     let imageURL: URL?
@@ -68,12 +68,9 @@ final class BlogListSiteViewModel: Identifiable {
 
     init(blog: Blog) {
         self.blog = blog
-        self.id = blog.dotComID ?? 0
         self.title = blog.title ?? "–"
         self.domain = blog.displayURL as String? ?? ""
         self.imageURL = blog.hasIcon ? blog.icon.flatMap(URL.init) : nil
-
-        NSLog(blog.icon ?? "")
 
         // By adding displayURL _after_ the title, it loweres its weight in search
         self.searchTags = "\(title) \(domain)"
