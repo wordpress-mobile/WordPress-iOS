@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import SwiftUI
 import WordPressShared
 import WordPressFlux
 
@@ -115,7 +116,7 @@ private class AccountSettingsController: SettingsController {
         let primarySite = EditableTextRow(
             title: NSLocalizedString("Primary Site", comment: "Primary Web Site"),
             value: primarySiteName,
-            action: presenter.present(insideNavigationController(editPrimarySite(settings, service: service))),
+            action: presenter.present(editPrimarySite(settings, service: service)),
             fieldName: "primary_site"
         )
 
@@ -225,27 +226,17 @@ private class AccountSettingsController: SettingsController {
     }
 
     func editPrimarySite(_ settings: AccountSettings?, service: AccountSettingsService) -> ImmuTableRowControllerGenerator {
-        return {
-            row in
+        return { _ in
+            let configuration = BlogListConfiguration(shouldHideSelfHostedSites: true)
+            let viewController = SitePickerHostingController(configuration: configuration) { [weak self] selectedBlog in
+                guard let self, let dotComID = selectedBlog.dotComID?.intValue else { return }
 
-            let selectorViewController = BlogSelectorViewController(selectedBlogDotComID: settings?.primarySiteID as NSNumber?,
-                                                                    successHandler: { (dotComID: NSNumber?) in
-                                                                        if let dotComID = dotComID?.intValue {
-                                                                            WPAnalytics.trackSettingsChange(self.trackingKey, fieldName: "primary_site")
-
-                                                                            let change = AccountSettingsChange.primarySite(dotComID)
-                                                                            service.saveChange(change)
-                                                                        }
-            },
-                                                                    dismissHandler: nil)
-
-            selectorViewController.title = NSLocalizedString("Primary Site", comment: "Primary Site Picker's Title")
-            selectorViewController.displaysOnlyDefaultAccountSites = true
-            selectorViewController.displaysCancelButton = true
-            selectorViewController.dismissOnCompletion = true
-            selectorViewController.dismissOnCancellation = true
-
-            return selectorViewController
+                WPAnalytics.trackSettingsChange(self.trackingKey, fieldName: "primary_site")
+                let change = AccountSettingsChange.primarySite(dotComID)
+                service.saveChange(change)
+            }
+            viewController.title = NSLocalizedString("Primary Site", comment: "Primary Site Picker's Title")
+            return viewController
         }
     }
 

@@ -62,26 +62,13 @@ private extension ReaderReblogPresenter {
                            coreDataStack: CoreDataStack,
                            readerPost: ReaderPost) {
 
-        let selectorViewController = BlogSelectorViewController(selectedBlogObjectID: nil,
-                                                                successHandler: nil,
-                                                                dismissHandler: nil)
-
-        selectorViewController.displaysNavigationBarWhenSearching = WPDeviceIdentification.isiPad()
-        selectorViewController.dismissOnCancellation = true
-        selectorViewController.displaysOnlyDefaultAccountSites = true
-
-        let navigationController = getNavigationController(selectorViewController)
-
-        let successHandler: BlogSelectorSuccessHandler = { selectedObjectID in
-            guard let newBlog = coreDataStack.mainContext.object(with: selectedObjectID) as? Blog else {
-                return
-            }
-            navigationController.dismiss(animated: true) {
-                self.presentEditor(with: readerPost, blog: newBlog, origin: origin)
+        let configuration = BlogListConfiguration(shouldHideSelfHostedSites: true)
+        let sitePickerViewController = SitePickerHostingController(configuration: configuration) { seletedBlog in
+            origin.dismiss(animated: true) {
+                self.presentEditor(with: readerPost, blog: seletedBlog, origin: origin)
             }
         }
-        selectorViewController.successHandler = successHandler
-        origin.present(navigationController, animated: true)
+        origin.present(sitePickerViewController, animated: true)
     }
 
     /// returns an AdaptiveNavigationController with preconfigured modal presentation style

@@ -148,7 +148,6 @@ final class BlogListViewModel: NSObject, ObservableObject {
         }
         return blogs
     }
-
 }
 
 extension BlogListViewModel: NSFetchedResultsControllerDelegate {

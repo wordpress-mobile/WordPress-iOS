@@ -20,7 +20,6 @@ class BloggingPromptsIntroductionPresenter: NSObject {
         return UINavigationController(rootViewController: vc)
     }()
 
-    private var siteSelectorNavigationController: UINavigationController?
     private var selectedBlog: Blog?
 
     private lazy var accountSites: [Blog]? = {
@@ -42,7 +41,7 @@ class BloggingPromptsIntroductionPresenter: NSObject {
 
     // MARK: - Init
 
-    init(interactionType: BloggingPromptsFeatureIntroduction.InteractionType = .actionable(blog: nil)) {
+    init(interactionType: BloggingPromptsFeatureIntroduction.InteractionType) {
         self.interactionType = interactionType
         if case .actionable(let blog) = interactionType {
             selectedBlog = blog
@@ -68,54 +67,20 @@ class BloggingPromptsIntroductionPresenter: NSObject {
     // MARK: - Action Handling
 
     func primaryButtonSelected() {
-        showSiteSelectorIfNeeded(completion: { [weak self] in
-            self?.showPostCreation()
-        })
+        showPostCreation()
     }
 
     func secondaryButtonSelected() {
-        showSiteSelectorIfNeeded(completion: { [weak self] in
-            self?.showRemindersScheduling()
-        })
+        showRemindersScheduling()
     }
-
 }
 
 private extension BloggingPromptsIntroductionPresenter {
 
-    func showSiteSelectorIfNeeded(completion: @escaping () -> Void) {
-        guard accountHasMultipleSites, selectedBlog == nil else {
-            completion()
-            return
-        }
-
-        let successHandler: BlogSelectorSuccessDotComHandler = { [weak self] (dotComID: NSNumber?) in
-            self?.selectedBlog = self?.accountSites?.first(where: { $0.dotComID == dotComID })
-            self?.siteSelectorNavigationController?.dismiss(animated: true)
-            completion()
-        }
-
-        let dismissHandler: BlogSelectorDismissHandler = {
-            completion()
-        }
-
-        let selectorViewController = BlogSelectorViewController(selectedBlogDotComID: nil,
-                                                                successHandler: successHandler,
-                                                                dismissHandler: dismissHandler)
-
-        selectorViewController.displaysOnlyDefaultAccountSites = true
-        selectorViewController.dismissOnCompletion = false
-        selectorViewController.dismissOnCancellation = true
-        selectorViewController.shouldHideSelfHostedSites = true
-
-        let selectorNavigationController = UINavigationController(rootViewController: selectorViewController)
-        self.navigationController.present(selectorNavigationController, animated: true)
-        siteSelectorNavigationController = selectorNavigationController
-    }
-
     func showPostCreation() {
         guard let blog = blogToUse(),
               let presentingViewController = presentingViewController else {
+            wpAssertionFailure("invalid_state")
             navigationController.dismiss(animated: true)
             return
         }
@@ -141,6 +106,7 @@ private extension BloggingPromptsIntroductionPresenter {
     func showRemindersScheduling() {
         guard let blog = blogToUse(),
         let presentingViewController = presentingViewController else {
+            wpAssertionFailure("invalid_state")
             navigationController.dismiss(animated: true)
             return
         }

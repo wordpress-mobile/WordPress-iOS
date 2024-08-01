@@ -16,7 +16,6 @@ import UIKit
     /// Defines the interaction sources for Blogging Prompts.
     enum Source {
         case dashboard
-        case featureIntroduction
         case actionSheetHeader
         case promptNotification
         case promptStaticNotification
@@ -25,8 +24,6 @@ import UIKit
             switch self {
             case .dashboard:
                 return .dashboard
-            case .featureIntroduction:
-                return .bloggingPromptsFeatureIntroduction
             case .actionSheetHeader:
                 return .bloggingPromptsActionSheetHeader
             case .promptNotification, .promptStaticNotification:
