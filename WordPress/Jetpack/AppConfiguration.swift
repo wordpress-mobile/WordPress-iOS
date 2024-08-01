@@ -12,7 +12,6 @@ import Foundation
     @objc static let showJetpackSitesOnly: Bool = false
     @objc static let allowsNewPostShortcut: Bool = true
     @objc static let allowsConnectSite: Bool = true
-    @objc static let allowSiteCreation: Bool = true
     @objc static let allowSignUp: Bool = true
     @objc static let allowsCustomAppIcons: Bool = true
     @objc static let allowsDomainRegistration: Bool = true

@@ -131,11 +131,7 @@ class PostSignUpInterstitialViewController: UIViewController {
 
     /// Determines whether or not the PSI should be displayed for the logged in user
     @objc class func shouldDisplay() -> Bool {
-        guard AppConfiguration.allowSiteCreation else {
-            return false
-        }
-
-        return self.numberOfBlogs() == 0
+        numberOfBlogs() == 0
     }
 
     private class func numberOfBlogs() -> Int {

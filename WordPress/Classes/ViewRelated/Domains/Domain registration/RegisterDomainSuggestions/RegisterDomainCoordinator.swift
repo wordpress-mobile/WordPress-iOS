@@ -103,20 +103,10 @@ class RegisterDomainCoordinator {
     /// Adds the selected domain to the cart then presents a site picker view.
     func handleExistingSiteChoice(on viewController: UIViewController) {
         let configuration = BlogListConfiguration(
-            shouldShowCancelButton: false,
-            shouldShowNavBarButtons: false,
-            navigationTitle: TextContent.sitePickerNavigationTitle,
-            backButtonTitle: TextContent.sitePickerNavigationTitle,
             shouldHideSelfHostedSites: true,
             shouldHideBlogsNotSupportingDomains: true,
             analyticsSource: analyticsSource
         )
-
-        guard RemoteFeatureFlag.siteSwitcherRedesign.enabled() else {
-            showLegacySitePicker(configuration: configuration, in: viewController)
-            return
-        }
-
         let sitePickerView = RegisterDomainSitePickerView(viewModel: BlogListViewModel(configuration: configuration)) { [weak self] selectedBlog in
             guard let self else { return }
             SVProgressHUD.show()
@@ -135,32 +125,6 @@ class RegisterDomainCoordinator {
         let sitePickerViewController = UIHostingController(rootView: sitePickerView)
         sitePickerViewController.navigationItem.title =  TextContent.sitePickerNavigationTitle // important to set on `UIViewContoller`
         viewController.navigationController?.pushViewController(sitePickerViewController, animated: true)
-    }
-
-    private func showLegacySitePicker(configuration: BlogListConfiguration, in viewController: UIViewController) {
-        let blogListViewController = BlogListViewController(configuration: configuration, meScenePresenter: nil)
-
-        blogListViewController.blogSelected = { [weak self] controller, selectedBlog in
-            guard let self else {
-                return
-            }
-            controller.showLoading()
-            self.createCart { [weak self] result in
-                guard let self else {
-                    return
-                }
-                switch result {
-                case .success(let domain):
-                    self.site = selectedBlog
-                    self.domainAddedToCartAndLinkedToSiteCallback?(controller, domain.domainName, selectedBlog)
-                case .failure:
-                    controller.displayActionableNotice(title: TextContent.errorTitle, actionTitle: TextContent.errorDismiss)
-                }
-                controller.hideLoading()
-            }
-        }
-
-        viewController.navigationController?.pushViewController(blogListViewController, animated: true)
     }
 
     func trackDomainPurchasingCompleted() {

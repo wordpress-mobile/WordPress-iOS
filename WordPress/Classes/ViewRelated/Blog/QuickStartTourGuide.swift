@@ -11,7 +11,6 @@ import WordPressShared
 }
 
 open class QuickStartTourGuide: NSObject {
-    var navigationSettings = QuickStartNavigationSettings()
     private var currentSuggestion: QuickStartTour?
     private var currentTourState: TourState?
     private var suggestionWorkItem: DispatchWorkItem?

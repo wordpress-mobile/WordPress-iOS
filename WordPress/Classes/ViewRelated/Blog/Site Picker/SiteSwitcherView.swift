@@ -24,6 +24,7 @@ final class SiteSwitcherViewController: UIViewController {
         let viewController = UIHostingController(rootView: SiteSwitcherView(addSiteAction: addSiteAction, onSiteSelected: onSiteSelected))
 
         viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(title: SharedStrings.Button.close, style: .plain, target: self, action: #selector(buttonCloseTapped))
+        viewController.navigationItem.leftBarButtonItem?.accessibilityIdentifier = "my-sites-cancel-button"
 
         let navigationController = UINavigationController(rootViewController: viewController)
 
@@ -81,6 +82,7 @@ private struct SiteSwitcherToolbarView: View {
                 FAB(action: addSiteAction)
                     .padding(.trailing, 20)
                     .padding(.bottom, UIDevice.current.userInterfaceIdiom == .pad ? 20 : 0)
+                    .accessibilityIdentifier("add-site-button")
             }
         }
     }
