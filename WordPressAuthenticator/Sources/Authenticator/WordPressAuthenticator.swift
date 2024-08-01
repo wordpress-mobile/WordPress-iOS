@@ -304,7 +304,6 @@ import WordPressKit
         presenter.present(navController, animated: true, completion: nil)
     }
 
-    /// Used to present the new self-hosted login flow from BlogListViewController
     @objc public class func showLoginForSelfHostedSite(_ presenter: UIViewController) {
         defer {
             trackOpenedLogin()

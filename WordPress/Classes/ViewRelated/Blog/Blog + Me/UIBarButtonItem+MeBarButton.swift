@@ -1,24 +1,6 @@
 import Gridicons
 import UIKit
 
-/// Add a UIBarButtonItem to the navigation bar that  presents the Me scene.
-extension UIViewController {
-
-    @objc func addMeButtonToNavigationBar(email: String?, meScenePresenter: ScenePresenter? = nil) {
-        var action: UIBarButtonItem.TapAction?
-        if let meScenePresenter {
-            action = { [weak self] in
-                guard let self = self else {
-                    return
-                }
-                meScenePresenter.present(on: self, animated: true, completion: nil)
-            }
-        }
-        let rightBarButtonItem = UIBarButtonItem(email: email, action: action)
-        self.navigationItem.rightBarButtonItem = rightBarButtonItem
-    }
-}
-
 extension UIBarButtonItem {
     typealias TapAction = () -> Void
 

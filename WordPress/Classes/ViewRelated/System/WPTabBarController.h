@@ -12,7 +12,6 @@ extern NSNotificationName const WPTabBarHeightChangedNotification;
 @class AbstractPost;
 @class Blog;
 @class BloggingPromptCoordinator;
-@class BlogListViewController;
 @class MeViewController;
 @class MySitesCoordinator;
 @class NotificationsViewController;
