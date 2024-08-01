@@ -57,7 +57,7 @@ class BaseActivityListViewController: UIViewController, TableViewContainer, Immu
     let dateFilterChip = FilterChipButton()
     let activityTypeFilterChip = FilterChipButton()
 
-    var tableView: UITableView = UITableView()
+    let tableView = UITableView(frame: .zero, style: .plain)
     let refreshControl = UIRefreshControl()
 
     let numberOfItemsPerPage = 100
@@ -106,6 +106,7 @@ class BaseActivityListViewController: UIViewController, TableViewContainer, Immu
             self?.refreshModel()
         }
 
+        view.backgroundColor = .systemBackground
         view.addSubview(containerStackView)
         containerStackView.axis = .vertical
 
@@ -128,6 +129,7 @@ class BaseActivityListViewController: UIViewController, TableViewContainer, Immu
         let calendarViewController = CalendarViewController(startDate: viewModel.after, endDate: viewModel.before)
         calendarViewController.delegate = self
         let navigationController = UINavigationController(rootViewController: calendarViewController)
+        navigationController.view.backgroundColor = .systemBackground
         present(navigationController, animated: true, completion: nil)
     }
 
@@ -143,8 +145,6 @@ class BaseActivityListViewController: UIViewController, TableViewContainer, Immu
         refreshModel()
 
         tableView.estimatedRowHeight = Constants.estimatedRowHeight
-
-        WPStyleGuide.configureColors(view: view, tableView: tableView)
 
         let nib = UINib(nibName: ActivityListSectionHeaderView.identifier, bundle: nil)
         tableView.register(nib, forHeaderFooterViewReuseIdentifier: ActivityListSectionHeaderView.identifier)
@@ -290,6 +290,7 @@ extension BaseActivityListViewController: UITableViewDelegate {
 
         cell.separator.isHidden = true
         cell.titleLabel.text = NSLocalizedString("Since you're on a free plan, you'll see limited events in your Activity Log.", comment: "Text displayed as a footer of a table view with Activities when user is on a free plan")
+        cell.backgroundColorView.backgroundColor = .clear
 
         return cell
     }
@@ -304,18 +305,8 @@ extension BaseActivityListViewController: UITableViewDelegate {
         return UITableView.automaticDimension
     }
 
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: ActivityListSectionHeaderView.identifier) as? ActivityListSectionHeaderView else {
-            return nil
-        }
-
-        cell.titleLabel.text = handler.tableView(tableView, titleForHeaderInSection: section)?.localizedUppercase
-
-        return cell
-    }
-
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return ActivityListSectionHeaderView.height
+        44
     }
 
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -335,7 +326,6 @@ extension BaseActivityListViewController: UITableViewDelegate {
             viewModel.loadMore()
         }
     }
-
 }
 
 // MARK: - NoResultsViewControllerDelegate

@@ -163,7 +163,7 @@ private extension LoginEpilogueViewController {
     ///
     func configureButtonPanel() {
         topLineHeightConstraint.constant = .hairlineBorderWidth
-        buttonPanel.backgroundColor = .quaternaryBackground
+        buttonPanel.backgroundColor = .quaternarySystemFill
         topLine.isHidden = false
         blurEffectView.effect = UIBlurEffect(style: blurEffect)
         blurEffectView.isHidden = false

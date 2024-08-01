@@ -173,7 +173,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = UIColor(light: UIColor.muriel(color: .gray, .shade0), dark: .basicBackground)
+        view.backgroundColor = UIColor(light: UIColor.muriel(color: .gray, .shade0), dark: .systemBackground)
 
         let stackView = UIStackView(arrangedSubviews: [
             progressView,
@@ -272,7 +272,6 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         }
 
         setupCloseButton()
-        styleNavBar()
     }
 
     private func setupRefreshButton() {
@@ -300,21 +299,6 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         }
     }
 
-    private func styleNavBar() {
-        guard let navigationBar = navigationController?.navigationBar else {
-            return
-        }
-        navigationBar.barStyle = .default
-
-        // Remove serif title bar formatting
-        navigationBar.standardAppearance.titleTextAttributes = [:]
-
-        navigationBar.shadowImage = UIImage(color: WPStyleGuide.webViewModalNavigationBarShadow())
-        navigationBar.setBackgroundImage(UIImage(color: WPStyleGuide.webViewModalNavigationBarBackground()), for: .default)
-
-        fixBarButtonsColorForBoldText(on: navigationBar)
-    }
-
     // MARK: ToolBar setup
 
     @objc func configureToolbar() {
@@ -325,10 +309,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
             stackViewBottomAnchor?.isActive = false
             return
         }
-
-        styleToolBar()
         configureToolbarButtons()
-        styleToolBarButtons()
     }
 
     func configureToolbarButtons() {
@@ -345,25 +326,6 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
             safariButton
         ]
         setToolbarItems(items, animated: false)
-    }
-
-    private func styleToolBar() {
-        guard let toolBar = navigationController?.toolbar else {
-            return
-        }
-
-        let appearance = UIToolbarAppearance()
-        appearance.configureWithDefaultBackground()
-        appearance.backgroundColor = UIColor(light: .white, dark: .appBarBackground)
-
-        toolBar.standardAppearance = appearance
-        toolBar.scrollEdgeAppearance = appearance
-
-        fixBarButtonsColorForBoldText(on: toolBar)
-    }
-
-    private func styleToolBarButtons() {
-        navigationController?.toolbar.items?.forEach(styleToolBarButton)
     }
 
     /// Sets the width of the web preview
@@ -385,18 +347,6 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         } else {
             widthConstraint?.priority = UILayoutPriority.defaultLow
         }
-    }
-
-    // MARK: Helpers
-
-    private func fixBarButtonsColorForBoldText(on bar: UIView) {
-        if UIAccessibility.isBoldTextEnabled {
-            bar.tintColor = .listIcon
-        }
-    }
-
-    private func styleToolBarButton(_ button: UIBarButtonItem) {
-        button.tintColor = .listIcon
     }
 
     // MARK: Reachability Helpers

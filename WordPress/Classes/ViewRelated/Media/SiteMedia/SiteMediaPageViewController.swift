@@ -29,6 +29,8 @@ final class SiteMediaPageViewController: UIPageViewController, UIPageViewControl
 
         view.backgroundColor = .systemBackground
         updateNavigationForCurrentViewController()
+
+        WPStyleGuide.disableScrollEdgeAppearance(for: self)
     }
 
     func didDeleteItem(_ media: Media, before: Media?, after: Media?) {

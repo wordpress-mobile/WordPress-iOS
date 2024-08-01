@@ -42,14 +42,6 @@
     [self loadImage];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-
-    self.navigationController.navigationBar.translucent = NO;
-    self.navigationController.toolbar.translucent = NO;
-}
-
 #pragma mark - Appearance Related Methods
 
 - (UIBarButtonItem *)doneButton

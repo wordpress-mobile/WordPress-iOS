@@ -46,7 +46,7 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
         super.viewDidLoad()
 
         clearExpandedRows()
-        Style.configureTable(tableView)
+
         refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         tableView.estimatedSectionHeaderHeight = SiteStatsTableHeaderView.estimatedHeight
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)

@@ -69,6 +69,7 @@ extension BlogDetailsViewController {
 
         let statsView = StatsViewController()
         statsView.blog = blog
+        statsView.hidesBottomBarWhenPushed = true
         statsView.navigationItem.largeTitleDisplayMode = .never
         return statsView
     }

@@ -266,7 +266,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     self = [super init];
     
     if (self) {
-        self.extendedLayoutIncludesOpaqueBars = true;
         self.isScrollEnabled = false;
     }
     
@@ -811,7 +810,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     __weak __typeof(self) weakSelf = self;
     BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Backup", @"Noun. Links to a blog's Jetpack Backups screen.")
                                         accessibilityIdentifier:@"Backup Row"
-                                                          image:[UIImage gridiconOfType:GridiconTypeCloudUpload]
+                                                          image:[UIImage gridiconOfType:GridiconTypeCloudOutline]
                                                        callback:^{
         [weakSelf showBackup];
     }];
@@ -1239,7 +1238,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     if ([self.blog isBackupsAllowed]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Backup", @"Noun. Links to a blog's Jetpack Backups screen.")
                                       accessibilityIdentifier:@"Backup Row"
-                                                        image:[UIImage gridiconOfType:GridiconTypeCloudUpload]
+                                                        image:[UIImage gridiconOfType:GridiconTypeCloudOutline]
                                                      callback:^{
                                                          [weakSelf showBackup];
                                                      }]];
@@ -1952,6 +1951,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
 {
     [WPAppAnalytics track:WPAnalyticsStatThemesAccessedThemeBrowser withBlog:self.blog];
     ThemeBrowserViewController *viewController = [ThemeBrowserViewController browserWithBlog:self.blog];
+    viewController.hidesBottomBarWhenPushed = YES;
     viewController.onWebkitViewControllerClose = ^(void) {
         [self startAlertTimer];
     };

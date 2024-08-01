@@ -3,7 +3,7 @@
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -31,7 +31,7 @@
                     </connections>
                 </button>
             </subviews>
-            <color key="backgroundColor" systemColor="secondarySystemGroupedBackgroundColor"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <color key="tintColor" systemColor="linkColor"/>
             <constraints>
                 <constraint firstItem="IFQ-dS-FSp" firstAttribute="top" secondItem="7PP-0C-EJV" secondAttribute="bottom" priority="999" constant="16" id="BGh-Ef-dXj"/>
@@ -55,10 +55,7 @@
     </objects>
     <resources>
         <systemColor name="linkColor">
-            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="secondarySystemGroupedBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

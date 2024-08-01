@@ -417,7 +417,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
     }
 
     private func configureNavigationBar() {
-        navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.accessibilityIdentifier = "Gutenberg Editor Navigation Bar"
         navigationItem.leftBarButtonItems = navigationBarManager.leftBarButtonItems
 

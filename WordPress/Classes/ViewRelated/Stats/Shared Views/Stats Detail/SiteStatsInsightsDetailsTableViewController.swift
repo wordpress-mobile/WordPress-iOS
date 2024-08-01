@@ -31,7 +31,6 @@ class SiteStatsInsightsDetailsTableViewController: SiteStatsBaseTableViewControl
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        WPStyleGuide.Stats.configureTable(tableView)
         refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         tableView.estimatedSectionHeaderHeight = SiteStatsTableHeaderView.estimatedHeight
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
@@ -106,6 +105,8 @@ private extension SiteStatsInsightsDetailsTableViewController {
         }
 
         siteStatsTableHeaderView.animateGhostLayers(viewModel?.storeIsFetching(statSection: statSection) == true)
+        siteStatsTableHeaderView.backgroundColor = .clear
+        siteStatsTableHeaderView.bottomSeparatorLine.isHidden = true
 
         tableView.tableHeaderView = siteStatsTableHeaderView
 

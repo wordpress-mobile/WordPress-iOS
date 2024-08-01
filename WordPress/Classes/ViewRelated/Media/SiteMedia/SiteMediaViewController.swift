@@ -26,7 +26,6 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
         super.init(nibName: nil, bundle: nil)
 
         hidesBottomBarWhenPushed = true
-        extendedLayoutIncludesOpaqueBars = true
     }
 
     required init?(coder: NSCoder) {
@@ -42,7 +41,6 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
         collectionViewController.delegate = self
 
         configureAddMediaButton()
-        configureDefaultNavigationBarAppearance()
         configureNavigationTitle()
         refreshNavigationItems()
     }

@@ -59,9 +59,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     [super viewDidLoad];
 
     self.navigationItem.title = NSLocalizedString(@"Sharing", @"Title for blog detail sharing screen.");
-    
-    self.extendedLayoutIncludesOpaqueBars = YES;
-    
+        
     if (self.isModal) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                                target:self

@@ -70,12 +70,6 @@ class BloganuaryOverlayViewController: UIViewController {
     }
 
     private func setupNavigationBar() {
-        let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = .systemBackground
-        appearance.shadowColor = .clear
-        navigationItem.scrollEdgeAppearance = appearance
-        navigationItem.compactScrollEdgeAppearance = appearance
-
         // Set up the close button in the navigation bar.
         let dismissAction = UIAction { [weak self] _ in
             BloganuaryTracker.trackModalDismissed()
@@ -274,7 +268,7 @@ private struct BloganuaryOverlayView: View {
 
         static let descriptionItemTextColor = Color(.init(light: .label, dark: .secondaryLabel))
         static let descriptionIconColor = Color(.init(light: .systemBackground, dark: .label))
-        static let descriptionIconBackgroundColor = Color(.init(light: .label, dark: .tertiaryBackground))
+        static let descriptionIconBackgroundColor = Color(.init(light: .label, dark: .tertiarySystemBackground))
     }
 
     struct Strings {

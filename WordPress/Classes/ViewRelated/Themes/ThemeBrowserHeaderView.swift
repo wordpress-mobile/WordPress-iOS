@@ -1,17 +1,14 @@
 import UIKit
 import WordPressShared
 
-open class ThemeBrowserHeaderView: UICollectionReusableView {
+final class ThemeBrowserHeaderView: UICollectionReusableView {
     // MARK: - Constants
 
     @objc public static let reuseIdentifier = "ThemeBrowserHeaderView"
 
-    // MARK: - Private Aliases
-
-    fileprivate typealias Styles = WPStyleGuide.Themes
-
     // MARK: - Outlets
 
+    @IBOutlet weak var contentView: UIStackView!
     @IBOutlet weak var currentThemeBar: UIView!
     @IBOutlet weak var currentThemeLabel: UILabel!
     @IBOutlet weak var currentThemeDivider: UIView!
@@ -23,9 +20,7 @@ open class ThemeBrowserHeaderView: UICollectionReusableView {
     @IBOutlet weak var detailsIcon: UIImageView!
     @IBOutlet weak var supportButton: UIButton!
     @IBOutlet weak var supportIcon: UIImageView!
-    @IBOutlet var filterBarBorders: [UIView]!
-    @IBOutlet weak var filterBar: UIView!
-    @IBOutlet weak var filterTypeButton: UIButton!
+
     var quickStartSpotlightView = QuickStartSpotlightView()
 
     // MARK: - Properties
@@ -51,12 +46,10 @@ open class ThemeBrowserHeaderView: UICollectionReusableView {
             prepareForVoiceOver()
         }
     }
-    fileprivate var filterType: ThemeType = .all {
-        didSet {
-            Styles.styleSearchTypeButton(filterTypeButton, title: filterType.title)
-        }
-    }
-    open weak var presenter: ThemePresenter? {
+
+    fileprivate var filterType: ThemeType = .all
+
+    weak var presenter: ThemePresenter? {
         didSet {
             if let presenter = presenter {
                 theme = presenter.currentTheme()
@@ -64,7 +57,8 @@ open class ThemeBrowserHeaderView: UICollectionReusableView {
                 if ThemeType.mayPurchase {
                     filterType = presenter.filterType
                 } else {
-                    filterBar.isHidden = true
+                    // It will need to be re-implementing if purchasing support added
+//                    filterBar.isHidden = true
                 }
             }
         }
@@ -72,10 +66,10 @@ open class ThemeBrowserHeaderView: UICollectionReusableView {
 
     // MARK: - GUI
 
-    override open func awakeFromNib() {
+    override func awakeFromNib() {
         super.awakeFromNib()
 
-        let buttons = [customizeButton, detailsButton, supportButton, filterTypeButton]
+        let buttons = [customizeButton, detailsButton, supportButton]
         buttons.forEach { $0?.isExclusiveTouch = true }
 
         applyStyles()
@@ -85,25 +79,29 @@ open class ThemeBrowserHeaderView: UICollectionReusableView {
     }
 
     fileprivate func applyStyles() {
-        currentThemeBar.backgroundColor = Styles.currentThemeBackgroundColor
-        currentThemeContainer.backgroundColor = Styles.currentThemeBackgroundColor
-        currentThemeDivider.backgroundColor = Styles.currentThemeDividerColor
+        backgroundColor = .clear
+        contentView.backgroundColor = .systemBackground
 
-        currentThemeLabel.font = Styles.currentThemeLabelFont
-        currentThemeLabel.textColor = Styles.currentThemeLabelColor
+        contentView.layer.cornerRadius = 12
+        contentView.layer.cornerCurve = .continuous
+        contentView.layer.masksToBounds = true
 
-        currentThemeName.font = Styles.currentThemeNameFont
-        currentThemeName.textColor = Styles.currentThemeNameColor
+        currentThemeBar.backgroundColor = .systemBackground
+        currentThemeContainer.backgroundColor = .systemBackground
+        currentThemeDivider.backgroundColor = UIDevice.current.userInterfaceIdiom == .pad ? .clear : .separator
+
+        currentThemeLabel.font = .preferredFont(forTextStyle: .footnote)
+        currentThemeLabel.textColor = .secondaryLabel
+
+        currentThemeName.font = .preferredFont(forTextStyle: .headline)
+        currentThemeName.textColor = .label
 
         let currentThemeButtons = [customizeButton, detailsButton, supportButton]
-        currentThemeButtons.forEach { Styles.styleCurrentThemeButton($0!) }
+        currentThemeButtons.forEach { WPStyleGuide.Themes.styleCurrentThemeButton($0!) }
 
-        [customizeIcon, detailsIcon, supportIcon].forEach { $0?.tintColor = .listIcon }
+        [customizeIcon, detailsIcon, supportIcon].forEach { $0?.tintColor = .secondaryLabel }
 
         spotlightCustomizeButtonIfTourIsActive()
-
-        filterBar.backgroundColor = Styles.searchBarBackgroundColor
-        filterBarBorders.forEach { $0.backgroundColor = Styles.searchBarBorderColor }
     }
 
     private func spotlightCustomizeButtonIfTourIsActive() {
@@ -141,7 +139,7 @@ open class ThemeBrowserHeaderView: UICollectionReusableView {
         supportButton.setTitle(supportButtonText, for: .normal)
     }
 
-    override open func prepareForReuse() {
+    override func prepareForReuse() {
         super.prepareForReuse()
         theme = nil
         presenter = nil
@@ -170,28 +168,6 @@ open class ThemeBrowserHeaderView: UICollectionReusableView {
 
         filterType = type
         presenter?.filterType = type
-    }
-
-    @IBAction func didTapSearchTypeButton(_ sender: UIButton) {
-        let title = NSLocalizedString("Show themes:", comment: "Alert title picking theme type to browse")
-        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
-
-        ThemeType.types.forEach { type in
-            alertController.addActionWithTitle(type.title,
-                style: .default,
-                handler: { [weak self] (action: UIAlertAction) in
-                    self?.updateFilterType(type)
-            })
-        }
-
-        alertController.modalPresentationStyle = .popover
-        if let popover = alertController.popoverPresentationController {
-            popover.sourceView = filterTypeButton
-            popover.sourceRect = filterTypeButton.bounds
-            popover.permittedArrowDirections = .any
-            popover.canOverlapSourceViewRect = true
-        }
-        alertController.presentFromRootViewController()
     }
 
     private enum Constants {

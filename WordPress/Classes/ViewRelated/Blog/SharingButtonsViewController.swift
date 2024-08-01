@@ -70,8 +70,6 @@ import WordPressShared
 
         navigationItem.title = NSLocalizedString("Manage", comment: "Verb. Title of the screen for managing sharing buttons and settings related to sharing.")
 
-        extendedLayoutIncludesOpaqueBars = true
-
         if isModal() {
             navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done,
                                                                 target: self,

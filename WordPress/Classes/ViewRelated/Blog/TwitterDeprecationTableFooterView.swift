@@ -13,7 +13,7 @@
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
-        label.font = WPStyleGuide.tableviewSectionFooterFont()
+        label.font = .preferredFont(forTextStyle: .footnote)
         label.textColor = .secondaryLabel
 
         let paragraphStyle = NSMutableParagraphStyle()

@@ -54,7 +54,7 @@ class NotificationSettingDetailsViewController: UITableViewController {
     }
 
     convenience init(settings: NotificationSettings, stream: NotificationSettings.Stream) {
-        self.init(style: .grouped)
+        self.init(style: .insetGrouped)
         self.settings = settings
         self.stream = stream
     }
@@ -96,13 +96,6 @@ class NotificationSettingDetailsViewController: UITableViewController {
         // Register the cells
         tableView.register(SwitchTableViewCell.self, forCellReuseIdentifier: CellKind.Setting.rawValue)
         tableView.register(WPTableViewCellValue1.self, forCellReuseIdentifier: CellKind.Text.rawValue)
-
-        // Hide the separators, whenever the table is empty
-        tableView.tableFooterView = UIView()
-
-        // Style!
-        WPStyleGuide.configureColors(view: view, tableView: tableView)
-        WPStyleGuide.configureAutomaticHeightRows(for: tableView)
     }
 
     @IBAction func reloadTable() {

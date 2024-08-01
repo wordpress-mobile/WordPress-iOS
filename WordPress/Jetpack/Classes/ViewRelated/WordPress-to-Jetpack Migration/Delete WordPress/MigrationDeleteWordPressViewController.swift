@@ -45,7 +45,7 @@ final class MigrationDeleteWordPressViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setupNavigationBar()
+
         self.setupDismissButton()
     }
 
@@ -55,16 +55,6 @@ final class MigrationDeleteWordPressViewController: UIViewController {
     }
 
     // MARK: - Setup
-
-    private func setupNavigationBar() {
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithTransparentBackground()
-        appearance.backgroundColor = MigrationAppearance.backgroundColor
-        navigationItem.standardAppearance = appearance
-        navigationItem.scrollEdgeAppearance = appearance
-        navigationItem.compactAppearance = appearance
-        navigationItem.compactScrollEdgeAppearance = appearance
-    }
 
     private func setupDismissButton() {
         let closeButton = UIButton.makeCloseButton()

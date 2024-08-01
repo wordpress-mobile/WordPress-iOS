@@ -273,29 +273,20 @@ private extension PostListViewController {
     func handleRefreshNoResultsViewController(_ noResultsViewController: NoResultsViewController) {
 
         guard connectionAvailable() else {
-            noResultsViewController.configure(title: "", noConnectionTitle: NoResultsText.noConnectionTitle, buttonTitle: NoResultsText.buttonTitle, subtitle: nil, noConnectionSubtitle: NoResultsText.noConnectionSubtitle, attributedSubtitle: nil, attributedSubtitleConfiguration: nil, image: nil, subtitleImage: nil, accessoryView: nil)
+            noResultsViewController.configure(title: "", noConnectionTitle: NoResultsText.noConnectionTitle, buttonTitle: nil, subtitle: nil, noConnectionSubtitle: NoResultsText.noConnectionSubtitle, attributedSubtitle: nil, attributedSubtitleConfiguration: nil, image: nil, subtitleImage: nil, accessoryView: nil)
             return
         }
 
         let accessoryView = syncHelper.isSyncing ? NoResultsViewController.loadingAccessoryView() : nil
 
         noResultsViewController.configure(title: noResultsTitle(),
-                                          buttonTitle: noResultsButtonTitle(),
+                                          buttonTitle: nil,
                                           image: noResultsImageName,
                                           accessoryView: accessoryView)
     }
 
     var noResultsImageName: String {
         return "posts-no-results"
-    }
-
-    func noResultsButtonTitle() -> String? {
-        if syncHelper.isSyncing == true {
-            return nil
-        }
-
-        let filterType = filterSettings.currentPostListFilter().filterType
-        return filterType == .trashed ? nil : NoResultsText.buttonTitle
     }
 
     func noResultsTitle() -> String {
@@ -322,7 +313,6 @@ private extension PostListViewController {
     }
 
     struct NoResultsText {
-        static let buttonTitle = NSLocalizedString("Create Post", comment: "Button title, encourages users to create post on their blog.")
         static let fetchingTitle = NSLocalizedString("Fetching posts...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.")
         static let noDraftsTitle = NSLocalizedString("You don't have any draft posts", comment: "Displayed when the user views drafts in the posts list and there are no posts")
         static let noScheduledTitle = NSLocalizedString("You don't have any scheduled posts", comment: "Displayed when the user views scheduled posts in the posts list and there are no posts")

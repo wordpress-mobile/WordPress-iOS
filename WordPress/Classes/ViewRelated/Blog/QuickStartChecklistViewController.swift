@@ -100,14 +100,6 @@ private extension QuickStartChecklistViewController {
 
     func configureNavigationBar() {
         navigationItem.rightBarButtonItem = closeButtonItem
-
-        let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = .systemBackground
-        appearance.shadowColor = .clear
-        navigationItem.standardAppearance = appearance
-        navigationItem.compactAppearance = appearance
-        navigationItem.scrollEdgeAppearance = appearance
-        navigationItem.compactScrollEdgeAppearance = appearance
     }
 
     func startObservingForQuickStart() {

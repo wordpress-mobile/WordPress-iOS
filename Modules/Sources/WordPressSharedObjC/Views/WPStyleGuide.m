@@ -29,19 +29,6 @@
     return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [self subtitleFont]};
 }
 
-+ (UIFont *)subtitleFontItalic
-{
-    return [UIFont italicSystemFontOfSize:[[self subtitleFont] pointSize]];
-}
-
-+ (NSDictionary *)subtitleItalicAttributes
-{
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.minimumLineHeight = 14;
-    paragraphStyle.maximumLineHeight = 14;
-    return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [self subtitleFontItalic]};
-}
-
 + (UIFont *)subtitleFontBold
 {
     return [UIFont systemFontOfSize:[[self subtitleFont] pointSize] weight:UIFontWeightBold];
@@ -65,52 +52,15 @@
     return [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
 }
 
-+ (NSDictionary *)labelAttributes
-{
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.minimumLineHeight = 12;
-    paragraphStyle.maximumLineHeight = 12;
-    return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [self labelFont]};
-}
-
 + (UIFont *)regularTextFont
 {
     return [UIFont preferredFontForTextStyle:UIFontTextStyleCallout];
-}
-
-+ (UIFont *)regularTextFontSemiBold
-{
-    return [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
-}
-
-+ (NSDictionary *)regularTextAttributes
-{
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.minimumLineHeight = 24;
-    paragraphStyle.maximumLineHeight = 24;
-    return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [self regularTextFont]};
 }
 
 + (UIFont *)tableviewTextFont
 {
     return [UIFont preferredFontForTextStyle:UIFontTextStyleCallout];
 }
-
-+ (UIFont *)tableviewSubtitleFont
-{
-    return [UIFont preferredFontForTextStyle:UIFontTextStyleCallout];
-}
-
-+ (UIFont *)tableviewSectionHeaderFont
-{
-    return [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-}
-
-+ (UIFont *)tableviewSectionFooterFont
-{
-	return [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-}
-
 
 #pragma mark - Colors
 // https://wordpress.com/design-handbook/colors/
@@ -197,49 +147,6 @@
 + (UIColor *)jazzyOrange
 {
     return [self colorWithR:240 G:130 B:30 alpha:1.0];
-}
-
-#pragma mark - Validations / Alerts
-
-+ (UIColor *)errorRed
-{
-    return [self colorWithR:217 G:79 B:79 alpha:1.0];
-}
-
-#pragma mark - Bar styles
-
-+ (UIBarButtonItemStyle)barButtonStyleForDone
-{
-    return UIBarButtonItemStylePlain;
-}
-
-+ (UIBarButtonItemStyle)barButtonStyleForBordered
-{
-    return UIBarButtonItemStylePlain;
-}
-
-+ (void)setRightBarButtonItemWithCorrectSpacing:(UIBarButtonItem *)barButtonItem forNavigationItem:(UINavigationItem *)navigationItem
-{
-    navigationItem.rightBarButtonItems = @[[self spacerForNavigationBarButtonItems], barButtonItem];
-}
-
-+ (UIBarButtonItem *)spacerForNavigationBarButtonItems
-{
-    UIBarButtonItem *spacerButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    spacerButton.width = -16.0;
-    return spacerButton;
-}
-
-#pragma mark - Deprecated Colors
-
-+ (UIColor *)newKidOnTheBlockBlue __deprecated
-{
-    return [self mediumBlue];
-}
-
-+ (UIColor *)midnightBlue __deprecated
-{
-    return [self darkBlue];
 }
 
 @end

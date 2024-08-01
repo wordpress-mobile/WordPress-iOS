@@ -91,7 +91,7 @@ final class SettingsTitleSubtitleController: UITableViewController {
     public init(content: SettingsTitleSubtitleController.Content, confirmation: SettingsTitleSubtitleController.Confirmation? = nil) {
         self.content = content
         self.confirmation = confirmation
-        super.init(style: .grouped)
+        super.init(style: .insetGrouped)
     }
 
     /// Closure to be executed when the right bar button item is tapped. If there was a Confirmation passed in this VC's constructor, this closure will be called only after users confirm an alert.
@@ -115,7 +115,11 @@ final class SettingsTitleSubtitleController: UITableViewController {
 
         setupNavigationBar()
         setupTitle()
-        setupTable()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
         nameTextField.becomeFirstResponder()
     }
 
@@ -146,11 +150,6 @@ final class SettingsTitleSubtitleController: UITableViewController {
         navigationItem.title = content.title
     }
 
-    private func setupTable() {
-        WPStyleGuide.configureColors(view: view, tableView: tableView)
-        tableView.tableFooterView = UIView(frame: .zero)
-    }
-
     private func makeCell(content: UIView) -> WPTableViewCell {
         let cell = WPTableViewCell(style: .default, reuseIdentifier: nil)
         cell.selectionStyle = .none
@@ -162,7 +161,7 @@ final class SettingsTitleSubtitleController: UITableViewController {
             content.trailingAnchor.constraint(equalTo: readableGuide.trailingAnchor),
             content.topAnchor.constraint(equalTo: readableGuide.topAnchor),
             content.bottomAnchor.constraint(equalTo: readableGuide.bottomAnchor)
-            ])
+        ])
 
         WPStyleGuide.configureTableViewActionCell(cell)
         return cell

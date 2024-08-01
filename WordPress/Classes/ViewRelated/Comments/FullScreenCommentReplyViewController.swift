@@ -161,14 +161,6 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
     private func configureNavigationAppearance() {
         // Remove the title
         title = ""
-
-        // Hide the bottom line on the navigation bar
-        let appearance = navigationController?.navigationBar.standardAppearance ?? UINavigationBarAppearance()
-        appearance.configureWithTransparentBackground()
-        appearance.backgroundColor = .basicBackground
-        appearance.shadowImage = UIImage()
-        navigationItem.standardAppearance = appearance
-        navigationItem.compactAppearance = appearance
     }
 
     /// Creates the `leftBarButtonItem` and the `rightBarButtonItem`

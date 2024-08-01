@@ -123,7 +123,7 @@ private extension SupportChatBotViewController {
     func setupNavigationBar() {
         if isModal() {
             navigationItem.leftBarButtonItem = UIBarButtonItem(title: Strings.closeButton,
-                                                               style: WPStyleGuide.barButtonStyleForBordered(),
+                                                               style: .plain,
                                                                target: self,
                                                                action: #selector(closeTapped))
         }

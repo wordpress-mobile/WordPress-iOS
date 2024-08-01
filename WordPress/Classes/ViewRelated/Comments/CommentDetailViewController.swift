@@ -179,14 +179,6 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         return nil
     }
 
-    // transparent navigation bar style with visual blur effect.
-    private lazy var blurredBarAppearance: UINavigationBarAppearance = {
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithTransparentBackground()
-        appearance.backgroundEffect = UIBlurEffect(style: .systemThinMaterial)
-        return appearance
-    }()
-
     // MARK: Nav Bar Buttons
 
     private(set) lazy var editBarButtonItem: UIBarButtonItem = {
@@ -348,8 +340,6 @@ private extension CommentDetailViewController {
     }
 
     func configureNavigationBar() {
-        navigationItem.standardAppearance = blurredBarAppearance
-        navigationController?.navigationBar.isTranslucent = true
         configureNavBarButton()
     }
 

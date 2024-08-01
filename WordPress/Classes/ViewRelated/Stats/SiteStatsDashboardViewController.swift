@@ -55,7 +55,7 @@ class SiteStatsDashboardViewController: UIViewController {
 
     @objc lazy var manageInsightsButton: UIBarButtonItem = {
         let button = UIBarButtonItem(
-                image: .gridicon(.cog),
+                image: UIImage(systemName: "gearshape"),
                 style: .plain,
                 target: self,
                 action: #selector(manageInsightsButtonTapped))
@@ -96,6 +96,10 @@ class SiteStatsDashboardViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        // Important to make navigation bar match the filter bar
+        view.backgroundColor = .systemBackground
+
         configureJetpackBanner()
         setupFilterBar()
         restoreSelectedDateFromUserDefaults()
@@ -185,6 +189,7 @@ private extension SiteStatsDashboardViewController {
         filterTabBar.items = displayedTabs
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
         filterTabBar.accessibilityIdentifier = "site-stats-dashboard-filter-bar"
+        filterTabBar.backgroundColor = .systemBackground
     }
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
@@ -192,7 +197,6 @@ private extension SiteStatsDashboardViewController {
 
         configureNavBar()
     }
-
 }
 
 // MARK: - User Defaults Support

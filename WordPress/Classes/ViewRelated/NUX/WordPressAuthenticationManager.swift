@@ -118,38 +118,40 @@ extension WordPressAuthenticationManager {
             prologueSecondaryButtonStyle = authenticationHandler?.prologueSecondaryButtonStyle
         }
 
-        return WordPressAuthenticatorStyle(primaryNormalBackgroundColor: .primaryButtonBackground,
-                                           primaryNormalBorderColor: nil,
-                                           primaryHighlightBackgroundColor: .primaryButtonDownBackground,
-                                           primaryHighlightBorderColor: nil,
-                                           secondaryNormalBackgroundColor: .authSecondaryButtonBackground,
-                                           secondaryNormalBorderColor: .secondaryButtonBorder,
-                                           secondaryHighlightBackgroundColor: .secondaryButtonDownBackground,
-                                           secondaryHighlightBorderColor: .secondaryButtonDownBorder,
-                                           disabledBackgroundColor: .textInverted,
-                                           disabledBorderColor: .neutral(.shade10),
-                                           primaryTitleColor: .white,
-                                           secondaryTitleColor: .text,
-                                           disabledTitleColor: .neutral(.shade20),
-                                           disabledButtonActivityIndicatorColor: .text,
-                                           textButtonColor: .primary,
-                                           textButtonHighlightColor: .primaryDark,
-                                           instructionColor: .text,
-                                           subheadlineColor: .textSubtle,
-                                           placeholderColor: .textPlaceholder,
-                                           viewControllerBackgroundColor: .listBackground,
-                                           textFieldBackgroundColor: .listForeground,
-                                           buttonViewBackgroundColor: .authButtonViewBackground,
-                                           buttonViewTopShadowImage: buttonViewTopShadowImage,
-                                           navBarImage: .gridicon(.mySites),
-                                           navBarBadgeColor: .accent(.shade20),
-                                           navBarBackgroundColor: .appBarBackground,
-                                           prologueBackgroundColor: .primary,
-                                           prologueTitleColor: .textInverted,
-                                           prologuePrimaryButtonStyle: prologuePrimaryButtonStyle,
-                                           prologueSecondaryButtonStyle: prologueSecondaryButtonStyle,
-                                           prologueTopContainerChildViewController: prologueVC,
-                                           statusBarStyle: statusBarStyle)
+        return WordPressAuthenticatorStyle(
+            primaryNormalBackgroundColor: .primary,
+            primaryNormalBorderColor: nil,
+            primaryHighlightBackgroundColor: .muriel(color: .primary, .shade80),
+            primaryHighlightBorderColor: nil,
+            secondaryNormalBackgroundColor: UIColor(light: .white, dark: .black),
+            secondaryNormalBorderColor: .systemGray3,
+            secondaryHighlightBackgroundColor: .systemGray3,
+            secondaryHighlightBorderColor: .systemGray3,
+            disabledBackgroundColor: .textInverted,
+            disabledBorderColor: .neutral(.shade10),
+            primaryTitleColor: .white,
+            secondaryTitleColor: .text,
+            disabledTitleColor: .neutral(.shade20),
+            disabledButtonActivityIndicatorColor: .text,
+            textButtonColor: .primary,
+            textButtonHighlightColor: .primaryDark,
+            instructionColor: .text,
+            subheadlineColor: .textSubtle,
+            placeholderColor: .textPlaceholder,
+            viewControllerBackgroundColor: .listBackground,
+            textFieldBackgroundColor: .listForeground,
+            buttonViewBackgroundColor: UIColor(light: .white, dark: .black),
+            buttonViewTopShadowImage: buttonViewTopShadowImage,
+            navBarImage: .gridicon(.mySites),
+            navBarBadgeColor: .accent(.shade20),
+            navBarBackgroundColor: .appBarBackground,
+            prologueBackgroundColor: .primary,
+            prologueTitleColor: .textInverted,
+            prologuePrimaryButtonStyle: prologuePrimaryButtonStyle,
+            prologueSecondaryButtonStyle: prologueSecondaryButtonStyle,
+            prologueTopContainerChildViewController: prologueVC,
+            statusBarStyle: statusBarStyle
+        )
     }
 
     private func unifiedStyle() -> WordPressAuthenticatorUnifiedStyle {
@@ -164,20 +166,22 @@ extension WordPressAuthenticationManager {
         /// Uses the same prologueButtonsBackgroundColor but we need to be able to return nil
         let prologueViewBackgroundColor: UIColor? = authenticationHandler?.prologueButtonsBackgroundColor
 
-        return WordPressAuthenticatorUnifiedStyle(borderColor: .divider,
-                                                  errorColor: .error,
-                                                  textColor: .text,
-                                                  textSubtleColor: .textSubtle,
-                                                  textButtonColor: .primary,
-                                                  textButtonHighlightColor: .primaryDark,
-                                                  viewControllerBackgroundColor: .basicBackground,
-                                                  prologueButtonsBackgroundColor: prologueButtonsBackgroundColor,
-                                                  prologueViewBackgroundColor: prologueViewBackgroundColor,
-                                                  prologueBackgroundImage: authenticationHandler?.prologueBackgroundImage,
-                                                  prologueButtonsBlurEffect: nil,
-                                                  navBarBackgroundColor: .appBarBackground,
-                                                  navButtonTextColor: .appBarTint,
-                                                  navTitleTextColor: .appBarText)
+        return WordPressAuthenticatorUnifiedStyle(
+            borderColor: .divider,
+            errorColor: .error,
+            textColor: .text,
+            textSubtleColor: .textSubtle,
+            textButtonColor: .primary,
+            textButtonHighlightColor: .primaryDark,
+            viewControllerBackgroundColor: .basicBackground,
+            prologueButtonsBackgroundColor: prologueButtonsBackgroundColor,
+            prologueViewBackgroundColor: prologueViewBackgroundColor,
+            prologueBackgroundImage: authenticationHandler?.prologueBackgroundImage,
+            prologueButtonsBlurEffect: nil,
+            navBarBackgroundColor: .appBarBackground,
+            navButtonTextColor: .appBarTint,
+            navTitleTextColor: .appBarText
+        )
     }
 }
 
@@ -699,9 +703,6 @@ private extension WordPressAuthenticationManager {
 private extension WordPressAuthenticationManager {
     /// Presents the support screen which displays different support options depending on whether this is the WordPress app or the Jetpack app.
     private func presentSupport(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag) {
-        // Reset the nav style so the Support nav bar has the WP style, not the Auth style.
-        WPStyleGuide.configureNavigationAppearance()
-
         // Since we're presenting the support VC as a form sheet, the parent VC's viewDidAppear isn't called
         // when this VC is dismissed.  This means the tracking step isn't reset properly, so we'll need to do
         // it here manually before tracking the new step.
@@ -717,7 +718,6 @@ private extension WordPressAuthenticationManager {
 
         let navController = UINavigationController(rootViewController: controller)
         navController.modalPresentationStyle = .formSheet
-
         sourceViewController.present(navController, animated: true)
     }
 }

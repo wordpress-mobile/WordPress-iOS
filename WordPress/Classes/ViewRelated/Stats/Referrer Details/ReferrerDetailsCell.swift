@@ -43,7 +43,6 @@ extension ReferrerDetailsCell: Accessible {
 private extension ReferrerDetailsCell {
     func setupViews() {
         selectionStyle = .none
-        backgroundColor = Style.cellBackgroundColor
         setupReferrerLabel()
         setupViewsLabel()
         setupSeparatorView()

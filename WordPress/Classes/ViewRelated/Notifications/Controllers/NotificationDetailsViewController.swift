@@ -355,7 +355,7 @@ extension NotificationDetailsViewController {
     }
 
     func setupMainView() {
-        view.backgroundColor = note.isBadge ? .ungroupedListBackground : .listBackground
+        view.backgroundColor = .systemBackground
     }
 
     func setupTableView() {
@@ -363,7 +363,7 @@ extension NotificationDetailsViewController {
         tableView.keyboardDismissMode       = .interactive
         tableView.accessibilityIdentifier   = .notificationDetailsTableAccessibilityId
         tableView.accessibilityLabel        = NSLocalizedString("Notification Details Table", comment: "Notifications Details Accessibility Identifier")
-        tableView.backgroundColor           = note.isBadge ? .ungroupedListBackground : .listBackground
+        tableView.backgroundColor           = .systemBackground
     }
 
     func setupTableViewCells() {
@@ -1167,7 +1167,6 @@ private extension NotificationDetailsViewController {
         let navController = UINavigationController(rootViewController: editViewController!)
         navController.modalPresentationStyle = .formSheet
         navController.modalTransitionStyle = .coverVertical
-        navController.navigationBar.isTranslucent = false
 
         CommentAnalytics.trackCommentEditorOpened(block: block)
         present(navController, animated: true)

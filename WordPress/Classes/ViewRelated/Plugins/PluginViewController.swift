@@ -16,19 +16,19 @@ class PluginViewController: UITableViewController {
 
     init(plugin: Plugin, capabilities: SitePluginCapabilities, site: JetpackSiteRef) {
         viewModel = PluginViewModel(plugin: plugin, capabilities: capabilities, site: site)
-        super.init(style: .grouped)
+        super.init(style: .insetGrouped)
         commonInit()
     }
 
     init(directoryEntry: PluginDirectoryEntry, site: JetpackSiteRef) {
         viewModel = PluginViewModel(directoryEntry: directoryEntry, site: site)
-        super.init(style: .grouped)
+        super.init(style: .insetGrouped)
         commonInit()
     }
 
     init(slug: String, site: JetpackSiteRef) {
         viewModel = PluginViewModel(slug: slug, site: site)
-        super.init(style: .grouped)
+        super.init(style: .insetGrouped)
         commonInit()
     }
 

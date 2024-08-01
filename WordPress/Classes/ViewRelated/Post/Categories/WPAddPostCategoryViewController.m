@@ -41,11 +41,8 @@
     self.tableView.estimatedRowHeight = 0.0f;
     self.view.tintColor = [UIColor murielEditorPrimary];
 
-    self.saveButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment, Category).")
-                                                           style:[WPStyleGuide barButtonStyleForDone]
-                                                          target:self
-                                                          action:@selector(saveAddCategory:)];
-    
+    self.saveButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment, Category).") style:UIBarButtonItemStylePlain target:self action:@selector(saveAddCategory:)];
+
     self.navigationItem.rightBarButtonItem = self.saveButtonItem;
 
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel

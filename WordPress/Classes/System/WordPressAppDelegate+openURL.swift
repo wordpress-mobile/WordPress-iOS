@@ -113,7 +113,6 @@ import AutomatticTracks
 
         let navController = UINavigationController(rootViewController: statsViewController)
         navController.modalPresentationStyle = .currentContext
-        navController.navigationBar.isTranslucent = false
 
         RootViewCoordinator.sharedPresenter.rootViewController.present(navController, animated: true, completion: nil)
 

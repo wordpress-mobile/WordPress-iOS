@@ -71,7 +71,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         [self setDelegate:self];
         [[self tabBar] setAccessibilityIdentifier:@"Main Navigation"];
         [[self tabBar] setAccessibilityLabel:NSLocalizedString(@"Main Navigation", nil)];
-        [self setupColors];
+        [WPStyleGuide configureTabBar:[self tabBar]];
 
         self.meScenePresenter = [[MeScenePresenter alloc] init];
 
@@ -139,8 +139,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
             rootViewController = self.makeReaderTabViewController;
         }
         _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
-        _readerNavigationController.navigationBar.translucent = NO;
-        _readerNavigationController.view.backgroundColor = [UIColor murielBasicBackground];
+        _readerNavigationController.view.backgroundColor = [UIColor systemBackgroundColor];
 
         if ([Feature enabled:FeatureFlagNewTabIcons]) {
             _readerNavigationController.tabBarItem.image = [[UIImage imageNamed:@"tab-bar-reader-unselected"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
@@ -152,6 +151,10 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         }
         _readerNavigationController.tabBarItem.accessibilityIdentifier = @"readerTabButton";
         _readerNavigationController.tabBarItem.title = NSLocalizedString(@"Reader", @"The accessibility value of the Reader tab.");
+
+        UITabBarAppearance *scrollEdgeAppearance = [UITabBarAppearance new];
+        [scrollEdgeAppearance configureWithOpaqueBackground];
+        _readerNavigationController.tabBarItem.scrollEdgeAppearance = scrollEdgeAppearance;
     }
 
     return _readerNavigationController;
@@ -171,7 +174,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         rootViewController = self.notificationsViewController;
     }
     _notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
-    _notificationsNavigationController.navigationBar.translucent = NO;
     if ([Feature enabled:FeatureFlagNewTabIcons]) {
         self.notificationsTabBarImage = [[UIImage imageNamed:@"tab-bar-notifications-unselected"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         NSString *unreadImageName = [AppConfiguration isJetpack] ? @"tab-bar-notifications-unread-jp" : @"tab-bar-notifications-unread-wp";

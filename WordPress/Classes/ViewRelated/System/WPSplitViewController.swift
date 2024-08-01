@@ -82,19 +82,6 @@ class WPSplitViewController: UISplitViewController {
 
         delegate = self
         preferredDisplayMode = .oneBesideSecondary
-
-        extendedLayoutIncludesOpaqueBars = true
-    }
-
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return WPStyleGuide.preferredStatusBarStyle
-    }
-
-    override var childForStatusBarStyle: UIViewController? {
-        if let _ = topDetailViewController as? DefinesVariableStatusBarStyle {
-            return topDetailViewController
-        }
-        return nil
     }
 
     @objc var overrideTraitCollection: UITraitCollection? = nil
@@ -154,13 +141,8 @@ class WPSplitViewController: UISplitViewController {
 
     override var viewControllers: [UIViewController] {
         didSet {
-            // Ensure that each top level navigation controller has
-            // `extendedLayoutIncludesOpaqueBars` set to true. Otherwise we
-            // see a large tab bar sized gap underneath each view controller.
             for viewController in viewControllers {
                 if let viewController = viewController as? UINavigationController {
-                    viewController.extendedLayoutIncludesOpaqueBars = true
-
                     // Override traits to pass a compact size class if necessary
                     setOverrideTraitCollection(overriddenTraitCollectionForDetailViewController,
                                                forChild: viewController)
@@ -338,7 +320,6 @@ class WPSplitViewController: UISplitViewController {
             navigationController = UINavigationController(rootViewController: viewController)
         }
         navigationController.delegate = self
-        navigationController.extendedLayoutIncludesOpaqueBars = true
         WPStyleGuide.configureColors(view: navigationController.view, tableView: nil)
 
         return navigationController
@@ -682,10 +663,6 @@ extension UIViewController {
 /// delegate method detects that there are no fullscreen view controllers left
 /// in the stack.
 protocol PrefersFullscreenDisplay: AnyObject {}
-
-/// Used to indicate whether a view controller varies its preferred status bar style.
-///
-protocol DefinesVariableStatusBarStyle: AnyObject {}
 
 // MARK: - WPSplitViewControllerDetailProvider Protocol
 

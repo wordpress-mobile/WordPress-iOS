@@ -12,10 +12,6 @@ extension UIColor {
         .text
     }
 
-    static var lightAppBarTint: UIColor {
-        return .text
-    }
-
     static var appBarText: UIColor {
         .text
     }

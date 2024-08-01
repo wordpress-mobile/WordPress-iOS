@@ -110,18 +110,12 @@
 
 - (void)showCancelBarButton
 {
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil)
-                                                                             style:UIBarButtonItemStylePlain
-                                                                            target:self
-                                                                            action:@selector(btnCancelPressed)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(btnCancelPressed)];
 }
 
 - (void)showSaveBarButton
 {
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).")
-                                                                              style:[WPStyleGuide barButtonStyleForDone]
-                                                                             target:self
-                                                                             action:@selector(btnSavePressed)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).") style:UIBarButtonItemStylePlain target:self action:@selector(btnSavePressed)];
 }
 
 - (void)setInterfaceEnabled:(BOOL)enabled

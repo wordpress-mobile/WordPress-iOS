@@ -19,10 +19,8 @@ final class SubmitFeedbackViewController: UIViewController {
         super.viewDidLoad()
 
         let viewController = UIHostingController(rootView: SubmitFeedbackView(presentingViewController: self, source: source))
-        viewController.configureDefaultNavigationBarAppearance()
 
         let navigationController = UINavigationController(rootViewController: viewController)
-        navigationController.navigationBar.isTranslucent = true // Reset to default
 
         addChild(navigationController)
         view.addSubview(navigationController.view)

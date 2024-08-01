@@ -36,7 +36,6 @@ class ReaderDisplaySettingViewController: UIViewController {
     }
 
     private func setupView() {
-        edgesForExtendedLayout = .top
         view.backgroundColor = .systemBackground
 
         let viewModel = ReaderDisplaySettingSelectionViewModel(displaySetting: initialSetting) { [weak self] setting in
@@ -59,13 +58,6 @@ class ReaderDisplaySettingViewController: UIViewController {
     }
 
     private func setupNavigationItems() {
-        // configure transparent navigation bar for the view
-        let navAppearance = UINavigationBarAppearance()
-        navAppearance.configureWithTransparentBackground()
-        navigationItem.standardAppearance = navAppearance
-        navigationItem.scrollEdgeAppearance = navAppearance
-        navigationItem.compactAppearance = navAppearance
-
         guard let displaySetting = viewModel?.displaySetting else {
             return
         }

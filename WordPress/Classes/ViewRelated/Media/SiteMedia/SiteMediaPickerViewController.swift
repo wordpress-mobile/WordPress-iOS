@@ -30,7 +30,6 @@ final class SiteMediaPickerViewController: UIViewController, SiteMediaCollection
         super.init(nibName: nil, bundle: nil)
 
         title = Strings.title
-        extendedLayoutIncludesOpaqueBars = true
         modalPresentationStyle = .formSheet
     }
 
@@ -44,7 +43,6 @@ final class SiteMediaPickerViewController: UIViewController, SiteMediaCollection
         collectionViewController.embed(in: self)
         collectionViewController.delegate = self
 
-        configureDefaultNavigationBarAppearance()
         configureNavigationItems()
         startSelection()
     }

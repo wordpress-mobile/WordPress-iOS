@@ -27,6 +27,7 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         configureAppearance()
         ImmuTable.registerRows([PlanListRow.self], tableView: tableView)
         handler.viewModel = viewModel.tableViewModelWithPresenter(self)
@@ -65,8 +66,6 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
 
     func configureAppearance() {
         WPStyleGuide.configureColors(view: view, tableView: tableView)
-
-        extendedLayoutIncludesOpaqueBars = true
     }
 
     // MARK: - ImmuTablePresenter

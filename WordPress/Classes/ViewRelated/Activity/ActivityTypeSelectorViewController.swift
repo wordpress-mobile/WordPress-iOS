@@ -19,7 +19,7 @@ class ActivityTypeSelectorViewController: UITableViewController {
     init(viewModel: ActivityListViewModel) {
         self.viewModel = viewModel
         self.selectedGroupsKeys = viewModel.selectedGroups.map { $0.key }
-        super.init(style: .grouped)
+        super.init(style: .insetGrouped)
     }
 
     required init?(coder: NSCoder) {

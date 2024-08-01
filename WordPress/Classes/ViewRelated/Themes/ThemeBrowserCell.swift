@@ -120,15 +120,18 @@ open class ThemeBrowserCell: UICollectionViewCell {
 
         actionButton.isExclusiveTouch = true
 
-        layer.borderWidth = Styles.cellBorderWidth
-        infoBar.layer.borderWidth = Styles.cellBorderWidth
-        nameLabel.font = Styles.cellNameFont
-        infoLabel.font = Styles.cellInfoFont
-        actionButton.layer.borderWidth = Styles.cellBorderWidth
+        layer.cornerRadius = 12
+        layer.cornerCurve = .continuous
+        layer.borderColor = UIColor.separator.cgColor
+        layer.borderWidth = 0.5
+
+        nameLabel.font = .preferredFont(forTextStyle: .headline)
+        infoLabel.font = .preferredFont(forTextStyle: .headline)
     }
 
     override open func prepareForReuse() {
         super.prepareForReuse()
+
         theme = nil
         presenter = nil
         showPriceInformation = false
@@ -144,22 +147,16 @@ open class ThemeBrowserCell: UICollectionViewCell {
 
             nameLabel.text = theme.name
             if theme.isCurrentTheme() {
-                backgroundColor = Styles.activeCellBackgroundColor
+                backgroundColor = .systemBackground
                 infoBar.backgroundColor = Styles.activeCellBackgroundColor
-                layer.borderColor = Styles.activeCellBorderColor.cgColor
-                infoBar.layer.borderColor = Styles.activeCellDividerColor.cgColor
-                actionButton.layer.borderColor = Styles.activeCellDividerColor.cgColor
                 actionButton.setImage(activeEllipsisImage, for: .normal)
 
                 nameLabel.textColor = Styles.activeCellNameColor
                 infoLabel.textColor = Styles.activeCellInfoColor
                 infoLabel.text = NSLocalizedString("ACTIVE", comment: "Label for active Theme browser cell")
             } else {
-                backgroundColor = Styles.inactiveCellBackgroundColor
-                infoBar.backgroundColor = Styles.inactiveCellBackgroundColor
-                layer.borderColor = Styles.inactiveCellBorderColor.cgColor
-                infoBar.layer.borderColor = Styles.inactiveCellDividerColor.cgColor
-                actionButton.layer.borderColor = Styles.inactiveCellDividerColor.cgColor
+                backgroundColor = .systemBackground
+                infoBar.backgroundColor = .systemBackground
                 actionButton.setImage(inactiveEllipsisImage, for: .normal)
 
                 nameLabel.textColor = Styles.inactiveCellNameColor

@@ -23,7 +23,7 @@ struct DomainSetupNoticeView: View {
         }
         .padding(Metrics.noticeBoxPadding)
         .frame(maxWidth: .infinity)
-        .background(Color(UIColor.tertiaryFill))
+        .background(Color(UIColor.tertiarySystemFill))
         .cornerRadius(Metrics.noticeBoxCornerRadius)
     }
 }
