@@ -14,10 +14,15 @@ struct SiteIconView: View {
     @ViewBuilder
     private var contents: some View {
         if let imageURL = viewModel.imageURL {
-            CachedAsyncImage(url: imageURL, host: viewModel.host) { image in
-                image.resizable().aspectRatio(contentMode: .fit)
-            } placeholder: {
-                viewModel.background
+            CachedAsyncImage(url: imageURL, host: viewModel.host) { phase in
+                switch phase {
+                case .success(let image):
+                    image.resizable().aspectRatio(contentMode: .fit)
+                case .failure:
+                    failureStateView
+                default:
+                    viewModel.background
+                }
             }
         } else {
             noIconView
@@ -31,11 +36,17 @@ struct SiteIconView: View {
                     .font(.system(size: 24, weight: .medium, design: .rounded))
                     .foregroundStyle(.secondary.opacity(0.8))
             } else {
-                Image.DS.icon(named: .vector)
-                    .resizable()
-                    .frame(width: 18, height: 18)
-                    .tint(.DS.Foreground.tertiary)
+                failureStateView
             }
+        }
+    }
+
+    private var failureStateView: some View {
+        viewModel.background.overlay {
+            Image.DS.icon(named: .vector)
+                .resizable()
+                .frame(width: 18, height: 18)
+                .tint(.DS.Foreground.tertiary)
         }
     }
 }
