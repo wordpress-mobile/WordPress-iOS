@@ -54,9 +54,7 @@ final class CommentDetailInfoViewController: UIViewController {
     private func setPreferredContentSize() {
         tableView.layoutIfNeeded()
 
-        if UIDevice.isPad() {
-            preferredContentSize = CGSize(width: 320, height: tableView.contentSize.height)
-        }
+        preferredContentSize = CGSize(width: 320, height: tableView.contentSize.height)
     }
 }
 
