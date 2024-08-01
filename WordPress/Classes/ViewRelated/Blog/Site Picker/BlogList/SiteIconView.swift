@@ -14,7 +14,7 @@ struct SiteIconView: View {
     @ViewBuilder
     private var contents: some View {
         if let imageURL = viewModel.imageURL {
-            CachedAsyncImage(url: imageURL) { image in
+            CachedAsyncImage(url: imageURL, host: viewModel.host) { image in
                 image.resizable().aspectRatio(contentMode: .fit)
             } placeholder: {
                 viewModel.background

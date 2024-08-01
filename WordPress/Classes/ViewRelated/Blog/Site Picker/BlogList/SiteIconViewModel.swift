@@ -3,10 +3,11 @@ import SwiftUI
 import WordPressShared
 
 struct SiteIconViewModel {
-    let imageURL: URL?
-    let firstLetter: Character?
-    let size: Size
+    var imageURL: URL?
+    var firstLetter: Character?
+    var size: Size
     var background = Color(.secondarySystemBackground)
+    var host: MediaHost?
 
     enum Size {
         case small
@@ -28,12 +29,9 @@ struct SiteIconViewModel {
         self.size = size
         self.firstLetter = blog.title?.first
 
-        if blog.hasIcon, let iconURL = blog.icon.flatMap(URL.init) {
-            let targetSize = CGSize(width: size.width, height: size.width)
-                .scaled(by: UITraitCollection.current.displayScale)
-            self.imageURL = WPImageURLHelper.imageURLWithSize(targetSize, forImageURL: iconURL)
-        } else {
-            self.imageURL = nil
+        if blog.hasIcon, let icon = blog.icon {
+            self.imageURL = SiteIconViewModel.optimizedURL(for: icon, imageSize: size.size)
+            self.host = MediaHost(with: blog)
         }
     }
 }
