@@ -113,6 +113,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         setupBackgroundRefresh(application)
         UITestConfigurator.prepareApplicationForUITests(application)
         DebugMenuViewController.configure(in: window)
+        AppTips.initialize()
 
         // This was necessary to properly load fonts for the Stories editor. I believe external libraries may require this call to access fonts.
         let fonts = Bundle.main.urls(forResourcesWithExtension: "ttf", subdirectory: nil)

@@ -619,6 +619,8 @@
 		0CDA09042BD022130032D123 /* PostMediaUploadsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDA09022BD022130032D123 /* PostMediaUploadsView.swift */; };
 		0CDA090C2BD04B270032D123 /* PostMediaUploadsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDA090B2BD04B270032D123 /* PostMediaUploadsViewModel.swift */; };
 		0CDA090D2BD04B270032D123 /* PostMediaUploadsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDA090B2BD04B270032D123 /* PostMediaUploadsViewModel.swift */; };
+		0CDB4CF42C5D6723001BE6D7 /* AppTips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDB4CF32C5D6723001BE6D7 /* AppTips.swift */; };
+		0CDB4CF52C5D6863001BE6D7 /* AppTips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDB4CF32C5D6723001BE6D7 /* AppTips.swift */; };
 		0CDEC40C2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDEC40B2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift */; };
 		0CDEC40D2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDEC40B2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift */; };
 		0CE538CA2B0D6E0000834BA2 /* ExternalMediaDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE538C92B0D6E0000834BA2 /* ExternalMediaDataSource.swift */; };
@@ -6602,6 +6604,7 @@
 		0CD9FB8A2AFADAFE009D9C7A /* SiteMediaPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteMediaPageViewController.swift; sourceTree = "<group>"; };
 		0CDA09022BD022130032D123 /* PostMediaUploadsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostMediaUploadsView.swift; sourceTree = "<group>"; };
 		0CDA090B2BD04B270032D123 /* PostMediaUploadsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostMediaUploadsViewModel.swift; sourceTree = "<group>"; };
+		0CDB4CF32C5D6723001BE6D7 /* AppTips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTips.swift; sourceTree = "<group>"; };
 		0CDEC40B2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazeCampaignsCardView.swift; sourceTree = "<group>"; };
 		0CE538C92B0D6E0000834BA2 /* ExternalMediaDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalMediaDataSource.swift; sourceTree = "<group>"; };
 		0CE538CF2B0E317000834BA2 /* StockPhotosWelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosWelcomeView.swift; sourceTree = "<group>"; };
@@ -10906,6 +10909,14 @@
 			path = Search;
 			sourceTree = "<group>";
 		};
+		0CDB4CF22C5D6715001BE6D7 /* Tips */ = {
+			isa = PBXGroup;
+			children = (
+				0CDB4CF32C5D6723001BE6D7 /* AppTips.swift */,
+			);
+			path = Tips;
+			sourceTree = "<group>";
+		};
 		0CE7833F2B08FB1B00B114EB /* External */ = {
 			isa = PBXGroup;
 			children = (
@@ -14676,6 +14687,7 @@
 				D865720F21869C380023A99C /* Site Creation */,
 				3792259E12F6DBCC00F2176A /* Stats */,
 				319D6E8219E44C7B0013871C /* Suggestions */,
+				0CDB4CF22C5D6715001BE6D7 /* Tips */,
 				98077B58207555E400109F95 /* Support */,
 				8584FDB619243AC40019C02E /* System */,
 				5DA5BF4918E32DDB005F11F9 /* Themes */,
@@ -22106,6 +22118,7 @@
 				E6D3B1431D1C702600008D4B /* ReaderFollowedSitesViewController.swift in Sources */,
 				8BEE846427B1E05B0001A93C /* DashboardCardModel.swift in Sources */,
 				3F6AD0562502A91400080F3B /* AnnouncementsCache.swift in Sources */,
+				0CDB4CF42C5D6723001BE6D7 /* AppTips.swift in Sources */,
 				43FF64EF20DAA0840060A69A /* GravatarUploader.swift in Sources */,
 				B5899ADE1B419C560075A3D6 /* NotificationSettingDetailsViewController.swift in Sources */,
 				D8A3A5AA2069E53900992576 /* AztecMediaPickingCoordinator.swift in Sources */,
@@ -26306,6 +26319,7 @@
 				FABB25A12602FC2C00C8785C /* QuickStartChecklistViewController.swift in Sources */,
 				FABB25A22602FC2C00C8785C /* MenuItemsViewController.m in Sources */,
 				FABB25A32602FC2C00C8785C /* ReachabilityUtils+OnlineActions.swift in Sources */,
+				0CDB4CF52C5D6863001BE6D7 /* AppTips.swift in Sources */,
 				FABB25A42602FC2C00C8785C /* TableViewKeyboardObserver.swift in Sources */,
 				FABB25A52602FC2C00C8785C /* BlogToJetpackAccount.m in Sources */,
 				FABB25A62602FC2C00C8785C /* NotificationSettingsViewController.swift in Sources */,
