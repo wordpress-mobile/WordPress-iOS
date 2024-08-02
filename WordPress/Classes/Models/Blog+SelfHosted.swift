@@ -1,4 +1,5 @@
 import Foundation
+import WordPressAPI
 
 extension Blog {
 
@@ -79,6 +80,10 @@ extension Blog {
     /// A null-safe replacement for `Blog.password(set)`
     func setPassword(to newValue: String, using keychainImplementation: KeychainAccessible = KeychainUtils()) throws {
         try keychainImplementation.setPassword(for: self.getUsername(), to: newValue, serviceName: self.getXMLRPCEndpoint().absoluteString)
+    }
+
+    func wordPressClientParsedUrl() throws -> ParsedUrl {
+        try ParsedUrl.parse(input: self.getUrl().absoluteString)
     }
 
     /// A null-and-type-safe replacement for `Blog.url(get)`
