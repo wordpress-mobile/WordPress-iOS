@@ -117,12 +117,6 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
         case .stats:
             trackQuickActionsEvent(.statsAccessed, blog: blog)
             StatsViewController.show(for: blog, from: parentViewController)
-        case .applicationPasswords:
-            if let wordpressClient = self.wpClient {
-                let service = ApplicationPasswordService(api: wordpressClient)
-                let viewController = UIHostingController(rootView: ApplicationTokenListView(dataProvider: service))
-                self.parentViewController?.show(viewController, sender: nil)
-            }
         case .more:
             let viewController = BlogDetailsViewController()
             viewController.isScrollEnabled = true
