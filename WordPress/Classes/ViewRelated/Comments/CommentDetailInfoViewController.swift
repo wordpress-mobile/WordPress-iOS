@@ -8,15 +8,13 @@ protocol CommentDetailInfoView: AnyObject {
 
 final class CommentDetailInfoViewController: UIViewController {
     private static let cellReuseIdentifier = "infoCell"
-    private let tableView: UITableView = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        return $0
-    }(UITableView())
+    private let tableView = UITableView(frame: .zero, style: .plain)
 
     private let viewModel: CommentDetailInfoViewModelType
 
     init(viewModel: CommentDetailInfoViewModelType) {
         self.viewModel = viewModel
+
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -26,12 +24,14 @@ final class CommentDetailInfoViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         configureTableView()
         addTableViewConstraints()
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+
         setPreferredContentSize()
     }
 
@@ -42,6 +42,7 @@ final class CommentDetailInfoViewController: UIViewController {
     }
 
     private func addTableViewConstraints() {
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             view.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
@@ -52,7 +53,8 @@ final class CommentDetailInfoViewController: UIViewController {
 
     private func setPreferredContentSize() {
         tableView.layoutIfNeeded()
-        preferredContentSize = tableView.contentSize
+
+        preferredContentSize = CGSize(width: 320, height: tableView.contentSize.height)
     }
 }
 
@@ -100,24 +102,23 @@ extension CommentDetailInfoViewController: UITableViewDelegate {
     }
 }
 
-// MARK: - DrawerPresentable
-extension CommentDetailInfoViewController: DrawerPresentable {
-    var collapsedHeight: DrawerHeight {
-        .intrinsicHeight
-    }
-
-    var allowsUserTransition: Bool {
-        false
-    }
-
-    var compactWidth: DrawerWidth {
-        .maxWidth
-    }
-}
-
-// MARK: - ChildDrawerPositionable
-extension CommentDetailInfoViewController: ChildDrawerPositionable {
-    var preferredDrawerPosition: DrawerPosition {
-        .collapsed
+extension CommentDetailInfoViewController {
+    func show(from presentingViewController: UIViewController, sourceView: UIView) {
+        let navigationController = UINavigationController(rootViewController: self)
+        if presentingViewController.traitCollection.horizontalSizeClass == .regular {
+            navigationController.modalPresentationStyle = .popover
+            navigationController.popoverPresentationController?.sourceView = sourceView
+            navigationController.popoverPresentationController?.permittedArrowDirections = [.up]
+        } else {
+            self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: SharedStrings.Button.close, primaryAction: UIAction { [weak presentingViewController] _ in
+                presentingViewController?.dismiss(animated: true)
+            })
+            if let sheet = navigationController.sheetPresentationController {
+                sheet.detents = [.medium(), .large()]
+                sheet.prefersGrabberVisible = true
+                navigationController.additionalSafeAreaInsets = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0) // For grabber
+            }
+        }
+        presentingViewController.present(navigationController, animated: true)
     }
 }

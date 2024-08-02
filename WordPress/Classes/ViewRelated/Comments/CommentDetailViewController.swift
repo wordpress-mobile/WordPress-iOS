@@ -703,9 +703,9 @@ private extension CommentDetailViewController {
             isAdmin: comment.allowsModeration()
         )
         let viewController = CommentDetailInfoViewController(viewModel: viewModel)
+        viewController.title = comment.authorForDisplay()
         viewModel.view = viewController
-        let bottomSheet = BottomSheetViewController(childViewController: viewController, customHeaderSpacing: 0)
-        bottomSheet.show(from: self)
+        viewController.show(from: self, sourceView: senderView)
     }
 }
 
