@@ -7,6 +7,10 @@ if [[ "$APP" != "wordpress" && "$APP" != "jetpack" ]]; then
   exit 1
 fi
 
+echo "--- :beer: Installing Homebrew Dependencies"
+brew tap FelixHerrmann/tap
+brew install swift-package-list
+
 echo "--- :rubygems: Setting up Gems"
 install_gems
 
