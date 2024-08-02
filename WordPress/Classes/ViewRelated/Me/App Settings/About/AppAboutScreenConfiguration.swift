@@ -10,6 +10,11 @@ struct WebViewPresenter {
         let webViewController = WebViewControllerFactory.controller(url: url, source: "about")
         context.viewController.navigationController?.pushViewController(webViewController, animated: true)
     }
+
+    func presentInNavigationControlller(url: URL, context: AboutItemActionContext) {
+        let webViewController = WebViewControllerFactory.controller(url: url, source: "about")
+        context.viewController.present(UINavigationController(rootViewController: webViewController), animated: true)
+    }
 }
 
 class AppAboutScreenConfiguration: AboutScreenConfiguration {
@@ -41,11 +46,11 @@ class AppAboutScreenConfiguration: AboutScreenConfiguration {
                 }),
                 AboutItem(title: TextContent.twitter, subtitle: AppConstants.productTwitterHandle, cellStyle: .value1, action: { [weak self] context in
                     self?.tracker.buttonPressed(.twitter)
-                    self?.webViewPresenter.present(for: Links.twitter, context: context)
+                    self?.webViewPresenter.presentInNavigationControlller(url: Links.twitter, context: context)
                 }),
                 AboutItem(title: AppConstants.AboutScreen.blogName, subtitle: AppConstants.productBlogDisplayURL, cellStyle: .value1, action: { [weak self] context in
                     self?.tracker.buttonPressed(.blog)
-                    self?.webViewPresenter.present(for: Links.blog, context: context)
+                    self?.webViewPresenter.presentInNavigationControlller(url: Links.blog, context: context)
                 })
             ],
             [
@@ -58,14 +63,14 @@ class AppAboutScreenConfiguration: AboutScreenConfiguration {
             [
                 AboutItem(title: TextContent.automatticFamily, accessoryType: .disclosureIndicator, hidesSeparator: true, action: { [weak self] context in
                     self?.tracker.buttonPressed(.automatticFamily)
-                    self?.webViewPresenter.present(for: Links.automattic, context: context)
+                    self?.webViewPresenter.presentInNavigationControlller(url: Links.automattic, context: context)
                 }),
                 AboutItem(title: "", cellStyle: .appLogos, accessoryType: .none)
             ] : nil,
             [
                 AboutItem(title: AppConstants.AboutScreen.workWithUs, subtitle: TextContent.workWithUsSubtitle, cellStyle: .subtitle, accessoryType: .disclosureIndicator, action: { [weak self] context in
                     self?.tracker.buttonPressed(.workWithUs)
-                    self?.webViewPresenter.present(for: Links.workWithUs, context: context)
+                    self?.webViewPresenter.presentInNavigationControlller(url: Links.workWithUs, context: context)
                 }),
             ]
         ].compactMap { $0 }
