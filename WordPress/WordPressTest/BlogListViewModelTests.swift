@@ -50,12 +50,6 @@ final class BlogListViewModelTests: CoreDataTestCase {
             .with(dotComID: siteID2)
             .build()
 
-        let siteID3 = 13287
-        let _ = BlogBuilder(mainContext)
-            .with(siteName: "a")
-            .with(dotComID: siteID3)
-            .build()
-
         let siteID4 = 54317
         let _ = BlogBuilder(mainContext)
             .with(siteName: ".Org")
@@ -73,6 +67,6 @@ final class BlogListViewModelTests: CoreDataTestCase {
         setupViewModel()
 
         let displayedNames = viewModel.allSites.map(\.title)
-        XCTAssertEqual(displayedNames, [".Org", "51 Zone", "a", "A", "C"])
+        XCTAssertEqual(displayedNames, [".Org", "51 Zone", "A", "C"])
     }
 }

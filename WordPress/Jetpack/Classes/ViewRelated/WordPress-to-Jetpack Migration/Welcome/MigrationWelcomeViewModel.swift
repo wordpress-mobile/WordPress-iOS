@@ -6,33 +6,23 @@ final class MigrationWelcomeViewModel {
 
     let gravatarEmail: String?
     let configuration: MigrationStepConfiguration
-    let blogListDataSource: BlogListDataSource
+    let sites: [BlogListSiteViewModel]
 
     // MARK: - Init
 
-    init(gravatarEmail: String?, blogListDataSource: BlogListDataSource, configuration: MigrationStepConfiguration) {
-        self.gravatarEmail = gravatarEmail
-        self.configuration = configuration
-        self.blogListDataSource = blogListDataSource
-    }
-
-    convenience init(account: WPAccount?, actions: MigrationActionsViewConfiguration) {
-        let blogsDataSource = BlogListDataSource()
-        blogsDataSource.loggedIn = true
-        blogsDataSource.account = account
+    init(account: WPAccount?, actions: MigrationActionsViewConfiguration) {
+        self.gravatarEmail = account?.email
+        self.sites = ((try? BlogQuery().blogs(in: ContextManager.shared.mainContext)) ?? [])
+            .map(BlogListSiteViewModel.init)
+            .sorted { $0.title.localizedCaseInsensitiveCompare($1.title) == .orderedAscending }
         let header = MigrationHeaderConfiguration(
             step: .welcome,
-            multiSite: blogsDataSource.visibleBlogsCount > 1
+            multiSite: sites.count > 1
         )
-        let configuration = MigrationStepConfiguration(
+        self.configuration = MigrationStepConfiguration(
             headerConfiguration: header,
             centerViewConfiguration: nil,
             actionsConfiguration: actions
-        )
-        self.init(
-            gravatarEmail: account?.email,
-            blogListDataSource: blogsDataSource,
-            configuration: configuration
         )
     }
 }
