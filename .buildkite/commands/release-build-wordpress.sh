@@ -1,8 +1,5 @@
 #!/bin/bash -eu
 
-# shellcheck disable=SC1091
-source "$(dirname "${BASH_SOURCE[0]}")/set-up-git-for-private-repos.sh"
-
 echo "--- :arrow_down: Installing Release Dependencies"
 brew install imagemagick
 brew install ghostscript
