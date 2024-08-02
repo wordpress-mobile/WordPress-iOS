@@ -104,7 +104,7 @@ class EncryptedLogTableViewController: UITableViewController {
             /// For now, just enqueue any file – doesn't have to be the log
             let data = try Data(contentsOf: Bundle.main.url(forResource: "acknowledgements", withExtension: "html")!)
 
-            let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString)
+            let url = URL.Helpers.temporaryFile()
             try data.write(to: url)
 
             try self.eventLogging.enqueueLogForUpload(log: LogFile(url: url))

@@ -4,8 +4,9 @@ import Nimble
 @testable import WordPress
 
 final class ReaderPostBackupTests: XCTestCase {
-    private let storeURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("ReaderPostBackup.sqlite")
-    private let backupURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("ReaderPostBackup-backup.sqlite")
+    private let storeURL = URL.Helpers.temporaryFile(named: "ReaderPostBackup.sqlite")
+    private let backupURL = URL.Helpers.temporaryFile(named: "ReaderPostBackup-backup.sqlite")
+
     private var coreDataStack: CoreDataStack!
 
     override func setUpWithError() throws {

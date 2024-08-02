@@ -4,7 +4,7 @@ import XCTest
 class BloggingRemindersStoreTests: XCTestCase {
 
     func testNewlyCreatedBloggingReminderStoreHasNoScheduleForUnscheduledBlog() {
-        let tempFile = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true).appendingPathComponent("testBlogReminders_" + UUID().uuidString + ".plist")
+        let tempFile = URL.Helpers.temporaryFile(named: "testBlogReminders_" + UUID().uuidString + ".plist")
         let blogIdentifier = URL(string: "someBlog")!
         let store: BloggingRemindersStore
 
@@ -19,7 +19,7 @@ class BloggingRemindersStoreTests: XCTestCase {
     }
 
     func testPreexistingBloggingReminderStoreMaintainsSchedule() {
-        let tempFile = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true).appendingPathComponent("testBlogReminders_" + UUID().uuidString + ".plist")
+        let tempFile = URL.Helpers.temporaryFile(named: "testBlogReminders_" + UUID().uuidString + ".plist")
         let configuration = [
             URL(string: "someBlog")!: BloggingRemindersStore.ScheduledReminders.weekdays([
                 .init(weekday: .monday, notificationID: UUID().uuidString),
@@ -66,7 +66,7 @@ class BloggingRemindersStoreTests: XCTestCase {
         let firstBlogID = URL(string: "someBlog")!
         let secondBlogID = URL(string: "someBlog2")!
 
-        let tempFile = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true).appendingPathComponent("testBlogReminders_" + UUID().uuidString + ".plist")
+        let tempFile = URL.Helpers.temporaryFile(named: "testBlogReminders_" + UUID().uuidString + ".plist")
         let configuration = [
             firstBlogID: BloggingRemindersStore.ScheduledReminders.weekdays([
                 .init(weekday: .monday, notificationID: UUID().uuidString),

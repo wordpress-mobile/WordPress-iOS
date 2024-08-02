@@ -116,8 +116,7 @@ extension NSItemProvider {
     }
 }
 
-private let temporaryFolderURL = URL(fileURLWithPath: NSTemporaryDirectory())
-    .appendingPathComponent("org.automattic.NSItemProvider", isDirectory: true)
+private let temporaryFolderURL = URL.Helpers.temporaryDirectory(named: "org.automattic.NSItemProvider")
 
 private func getTemporaryFolderURL() -> URL {
     let folderURL = temporaryFolderURL

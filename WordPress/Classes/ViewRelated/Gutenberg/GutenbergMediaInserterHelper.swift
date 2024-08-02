@@ -53,7 +53,7 @@ class GutenbergMediaInserterHelper: NSObject {
             // it doesn't need to point anywhere. The placeholder gets displayed
             // as soon as `MediaImportService` generated it (see `MediaState.thumbnailReady`).
             // This way we, dramatically cut CPU and especially memory usage.
-            let previewURL = URL(fileURLWithPath: NSTemporaryDirectory() + "\(media.gutenbergUploadID)")
+            let previewURL = URL.Helpers.temporaryFile(named: "\(media.gutenbergUploadID)")
             return MediaInfo(id: media.gutenbergUploadID, url: previewURL.absoluteString, type: media.mediaTypeString)
         }
         callback(media)
@@ -75,8 +75,8 @@ class GutenbergMediaInserterHelper: NSObject {
         }
         let mediaUploadID = media.gutenbergUploadID
 
-        let filePath = NSTemporaryDirectory() + "\(mediaUploadID).jpg"
-        let url = URL(fileURLWithPath: filePath)
+        let url = URL.Helpers.temporaryFile(named: "\(mediaUploadID).jpg")
+
         do {
             try image.writeJPEGToURL(url)
             callback([MediaInfo(id: mediaUploadID, url: url.absoluteString, type: media.mediaTypeString)])
