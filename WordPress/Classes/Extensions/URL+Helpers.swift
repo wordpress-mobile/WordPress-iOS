@@ -66,27 +66,6 @@ extension URL {
         return url
     }
 
-        get {
-            if isVideo {
-                let asset = AVAsset(url: self as URL)
-                if let track = asset.tracks(withMediaType: .video).first {
-                    return track.naturalSize.applying(track.preferredTransform)
-                }
-            } else if isImage {
-                let options: [NSString: NSObject] = [kCGImageSourceShouldCache: false as CFBoolean]
-                if
-                    let imageSource = CGImageSourceCreateWithURL(self as NSURL, nil),
-                    let imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, options as CFDictionary?) as NSDictionary?,
-                    let pixelWidth = imageProperties[kCGImagePropertyPixelWidth as NSString] as? Int,
-                    let pixelHeight = imageProperties[kCGImagePropertyPixelHeight as NSString] as? Int
-                {
-                    return CGSize(width: pixelWidth, height: pixelHeight)
-                }
-            }
-            return CGSize.zero
-        }
-    }
-
     var mimeType: String {
         contentType?.preferredMIMEType ?? "application/octet-stream"
     }
@@ -127,24 +106,6 @@ extension URL {
 
     var isWPComEmoji: Bool {
         absoluteString.contains(".wp.com/i/emojis")
-    }
-
-    /// Handle the common link protocols.
-    /// - tel: open a prompt to call the phone number
-    /// - sms: compose new message in iMessage app
-    /// - mailto: compose new email in Mail app
-    ///
-    var isLinkProtocol: Bool {
-        guard let urlScheme = scheme else {
-            return false
-        }
-
-        let linkProtocols = ["tel", "sms", "mailto"]
-        if linkProtocols.contains(urlScheme) && UIApplication.shared.canOpenURL(self) {
-            return true
-        }
-
-        return false
     }
 
     /// Does a quick test to see if 2 urls are equal to each other by
