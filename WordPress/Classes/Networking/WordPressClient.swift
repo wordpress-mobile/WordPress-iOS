@@ -65,7 +65,10 @@ actor WordPressClient {
                 case .unsatisfied: await self.setReachabilityStatus(to: .unavailable(
                     reason: path.unsatisfiedReason)
                 )
-                @unknown default: fatalError()
+                @unknown default:
+                    assertionFailure("Unknown status: \(path.status)")
+                    DDLogError("Unknown status: \(path.status)")
+                    await self.setReachabilityStatus(to: .unknown)
                 }
             }
         }
