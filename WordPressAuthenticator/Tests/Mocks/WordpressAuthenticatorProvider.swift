@@ -40,7 +40,7 @@ public class WordpressAuthenticatorProvider: NSObject {
                 placeholderColor: UIColor.random(),
                 viewControllerBackgroundColor: UIColor.random(),
                 textFieldBackgroundColor: UIColor.random(),
-                navBarImage: UIImage(color: UIColor.random()),
+                navBarImage: UIImage.from(color: UIColor.random()),
                 navBarBadgeColor: UIColor.random(),
                 navBarBackgroundColor: UIColor.random()
             )
