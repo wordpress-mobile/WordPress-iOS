@@ -54,7 +54,9 @@ actor WordPressClient {
         let endpoint = NWEndpoint.url(URL(string: rootUrl.url())!)
 
         self.underlyingConnection = NWConnection(to: endpoint, using: NWParameters())
-        self.underlyingConnection.pathUpdateHandler = { path in
+        self.underlyingConnection.pathUpdateHandler = { [weak self] path in
+            guard let self else { return }
+
             debugPrint("reachability is now \(path)")
             Task {
                 switch path.status {
