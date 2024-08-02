@@ -20,6 +20,7 @@
 
 NS_ENUM(NSInteger, SiteSettingsAccount) {
     SiteSettingsAccountUsername = 0,
+    // TODO: Hide this row when authenticating using application password.
     SiteSettingsAccountPassword,
     SiteSettingsAccountCount,
 };

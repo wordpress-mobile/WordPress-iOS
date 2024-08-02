@@ -102,6 +102,11 @@ extension SitePickerViewController {
     }
 
     private func launchLoginForSelfHostedSite() {
+        guard FeatureFlag.authenticateUsingApplicationPassword.enabled else {
+            WordPressAuthenticator.showLoginForSelfHostedSite(presentedViewController ?? self)
+            return
+        }
+
         guard let navigationController = presentedViewController?.navigationController else {
             return
         }
