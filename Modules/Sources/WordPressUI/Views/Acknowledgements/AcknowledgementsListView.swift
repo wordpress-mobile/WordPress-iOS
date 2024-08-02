@@ -33,11 +33,11 @@ public struct AcknowledgementsListView: View {
                 }
             }
         }
-        .navigationTitle(Localizations.acknowledgementsTitle)
+        .navigationTitle(Strings.acknowledgementsTitle)
         .task { await viewModel.loadItems() }
     }
 
-    struct Localizations {
+    private enum Strings {
         static let acknowledgementsTitle = NSLocalizedString(
             "acknowledgements.title",
             value: "Acknowledgements",
