@@ -11,7 +11,10 @@ public struct AcknowledgementsListView: View {
 
     public var body: some View {
         Group {
-            if viewModel.isLoadingItems {
+            if let error = viewModel.error {
+                EmptyStateView(error.localizedDescription, systemImage: "exclamationmark.triangle.fill")
+                    .multilineTextAlignment(.center)
+            } else if viewModel.isLoadingItems {
                 ProgressView()
             } else {
                 List(viewModel.items) { item in
@@ -36,7 +39,11 @@ public struct AcknowledgementsListView: View {
     }
 
     struct Localizations {
-        static let acknowledgementsTitle = NSLocalizedString("acknowledgements.title", value: "Acknowledgements", comment: "The title for the list of third-party software we use")
+        static let acknowledgementsTitle = NSLocalizedString(
+            "acknowledgements.title",
+            value: "Acknowledgements",
+            comment: "The title for the list of third-party software we use"
+        )
     }
 }
 
