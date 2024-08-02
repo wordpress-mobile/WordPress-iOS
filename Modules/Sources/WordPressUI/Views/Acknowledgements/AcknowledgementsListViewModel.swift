@@ -1,55 +1,52 @@
 import SwiftUI
 
-open class AcknowledgementsListViewModel: ObservableObject {
+public class AcknowledgementsListViewModel: ObservableObject {
 
-    @Published
-    public var items: [AcknowledgementItem]
-
-    @Published
-    public var isLoadingItems: Bool
-
-    @Published
-    public var error: Error?
-
-    private var taskHandle: Task<Void, Error>?
-
-    open func loadItems() async throws -> [AcknowledgementItem] {
-        abort() // This should never run – subclass this ViewModel and override this method
+    public protocol DataProvider: Actor {
+        func loadItems() throws -> [AcknowledgementItem]
     }
 
-    public init() {
-        self.items = []
-        self.isLoadingItems = true
-    }
+    package actor DefaultAcknowledgementsDataProvider: DataProvider {
+        let items: [AcknowledgementItem]
 
-    private init(items: [AcknowledgementItem]) {
-        self.items = items
-        self.isLoadingItems = false
-    }
+        init(items: [AcknowledgementItem]) {
+            self.items = items
+        }
 
-    @MainActor
-    func onAppear() {
-        self.taskHandle = Task {
-            do {
-                let items = try await self.loadItems()
-                await MainActor.run {
-                    self.items = items
-                    self.isLoadingItems = false
-                }
-            } catch {
-                await MainActor.run {
-                    self.error = error
-                }
-            }
+        package func loadItems() throws -> [AcknowledgementItem] {
+            return items
         }
     }
 
+    @Published
+    public var items: [AcknowledgementItem] = []
+
+    @Published
+    public var isLoadingItems: Bool = true
+
+    @Published
+    public var error: Error? = nil
+
+    private let dataProvider: DataProvider
+
     @MainActor
-    func onDisappear() {
-        self.taskHandle?.cancel()
+    func loadItems() async {
+        do {
+            let items = try await dataProvider.loadItems()
+            self.items = items
+            self.isLoadingItems = false
+        } catch {
+            self.error = error
+            self.isLoadingItems = false
+        }
+    }
+
+    public init(dataProvider: DataProvider) {
+        self.dataProvider = dataProvider
     }
 
     package static func withSampleData() -> AcknowledgementsListViewModel {
-        AcknowledgementsListViewModel(items: AcknowledgementItem.sampleData)
+        let dataProvider = DefaultAcknowledgementsDataProvider(items: AcknowledgementItem.sampleData)
+        return AcknowledgementsListViewModel(dataProvider: dataProvider)
     }
 }

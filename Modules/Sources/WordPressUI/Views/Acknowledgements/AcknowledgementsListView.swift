@@ -33,9 +33,8 @@ public struct AcknowledgementsListView: View {
                 }
             }
         }
-        .onAppear(perform: viewModel.onAppear)
-        .onDisappear(perform: viewModel.onDisappear)
         .navigationTitle(Localizations.acknowledgementsTitle)
+        .task { await viewModel.loadItems() }
     }
 
     struct Localizations {

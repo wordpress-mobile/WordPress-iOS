@@ -3,8 +3,7 @@ import WordPressUI
 
 /// Manages data for our package dependencies
 ///
-actor AcknowledgementsService {
-
+actor AcknowledgementsService: AcknowledgementsListViewModel.DataProvider {
     enum Errors: LocalizedError {
         case packageManifestNotFound
 
@@ -47,7 +46,7 @@ actor AcknowledgementsService {
 
     fileprivate var items: [AcknowledgementItem] = []
 
-    func fetchPackageData() throws -> [AcknowledgementItem] {
+    func loadItems() throws -> [WordPressUI.AcknowledgementItem] {
         if items.isEmpty {
             items = try loadPackages().map { package in
                 AcknowledgementItem(

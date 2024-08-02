@@ -927,8 +927,6 @@
 		2448ABAC2C5D4F3500DC0091 /* URL+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0845B8C51E833C56001BA771 /* URL+Helpers.swift */; };
 		2448ABAE2C5D515700DC0091 /* URL+AVKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448ABAD2C5D515700DC0091 /* URL+AVKit.swift */; };
 		2448ABAF2C5D515700DC0091 /* URL+AVKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448ABAD2C5D515700DC0091 /* URL+AVKit.swift */; };
-		245562332C5C104100A15446 /* AcknowledgementsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 245562322C5C104100A15446 /* AcknowledgementsViewController.swift */; };
-		245562342C5C104100A15446 /* AcknowledgementsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 245562322C5C104100A15446 /* AcknowledgementsViewController.swift */; };
 		245562362C5C107800A15446 /* AcknowledgementsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 245562352C5C107800A15446 /* AcknowledgementsService.swift */; };
 		245562372C5C107800A15446 /* AcknowledgementsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 245562352C5C107800A15446 /* AcknowledgementsService.swift */; };
 		246D0A0325E97D5D0028B83F /* Blog+ObjcTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 246D0A0225E97D5D0028B83F /* Blog+ObjcTests.m */; };
@@ -6884,7 +6882,6 @@
 		24351253264DCA08009BB2B6 /* Secrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Secrets.swift; path = ../Secrets/Secrets.swift; sourceTree = BUILT_PRODUCTS_DIR; };
 		2439B1DB264ECBDF00239130 /* Jetpack.alpha.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Jetpack.alpha.xcconfig; sourceTree = "<group>"; };
 		2448ABAD2C5D515700DC0091 /* URL+AVKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+AVKit.swift"; sourceTree = "<group>"; };
-		245562322C5C104100A15446 /* AcknowledgementsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcknowledgementsViewController.swift; sourceTree = "<group>"; };
 		245562352C5C107800A15446 /* AcknowledgementsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcknowledgementsService.swift; sourceTree = "<group>"; };
 		246D0A0225E97D5D0028B83F /* Blog+ObjcTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "Blog+ObjcTests.m"; sourceTree = "<group>"; };
 		2481B17E260D4D4E00AE59DB /* WPAccount+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPAccount+Lookup.swift"; sourceTree = "<group>"; };
@@ -11893,7 +11890,6 @@
 			children = (
 				F1A75B9A2732EF3700784A70 /* AboutScreenTracker.swift */,
 				173DF290274522A1007C64B5 /* AppAboutScreenConfiguration.swift */,
-				245562322C5C104100A15446 /* AcknowledgementsViewController.swift */,
 			);
 			path = About;
 			sourceTree = "<group>";
@@ -22221,7 +22217,6 @@
 				4631359124AD013F0017E65C /* PageCoordinator.swift in Sources */,
 				43290D04215C28D800F6B398 /* Blog+QuickStart.swift in Sources */,
 				987C40C625E590BE002A0955 /* CommentsViewController+Filters.swift in Sources */,
-				245562332C5C104100A15446 /* AcknowledgementsViewController.swift in Sources */,
 				D82253E5219956540014D0E2 /* AddressTableViewCell.swift in Sources */,
 				FF1FD0242091268900186384 /* URL+LinkNormalization.swift in Sources */,
 				3234BB082530D7DC0068DA40 /* ReaderTopicService+SiteInfo.swift in Sources */,
@@ -26159,7 +26154,6 @@
 				FABB24FB2602FC2C00C8785C /* ReaderListStreamHeader.swift in Sources */,
 				FABB24FC2602FC2C00C8785C /* NoResultsViewController+MediaLibrary.swift in Sources */,
 				FA4B203929A8C48F0089FE68 /* AbstractPost+Blaze.swift in Sources */,
-				245562342C5C104100A15446 /* AcknowledgementsViewController.swift in Sources */,
 				083ED8CD2A4322CB007F89B3 /* ComplianceLocationService.swift in Sources */,
 				0CB424F72AE0416D0080B807 /* SolidColorActivityIndicator.swift in Sources */,
 				FABB24FD2602FC2C00C8785C /* StockPhotosDataLoader.swift in Sources */,

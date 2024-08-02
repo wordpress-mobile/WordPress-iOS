@@ -120,7 +120,7 @@ class LegalAndMoreSubmenuConfiguration: AboutScreenConfiguration {
                 linkItem(title: Titles.privacyPolicy, link: Links.privacyPolicy, button: .privacyPolicy),
                 linkItem(title: Titles.sourceCode, link: Links.sourceCode, button: .sourceCode),
                 AboutItem(title: Titles.acknowledgements, action: { context in
-                    let rootView = AcknowledgementsListView(viewModel: AcknowledgementsListViewModel())
+                    let rootView = AcknowledgementsListView(viewModel: AcknowledgementsListViewModel(dataProvider: AcknowledgementsService()))
                     context.viewController.navigationController?.pushViewController(
                         UIHostingController(rootView: rootView),
                         animated: true
