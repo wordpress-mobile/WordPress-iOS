@@ -94,18 +94,9 @@ extension SitePickerViewController: BlogDetailHeaderViewDelegate {
     }
 
     func siteSwitcherTapped() {
-        if RemoteFeatureFlag.siteSwitcherRedesign.enabled() {
-            presentNewSiteSwitcher()
-        } else {
-            presentLegacySiteSwitcher()
-        }
-
-    }
-
-    private func presentNewSiteSwitcher() {
         let viewController = SiteSwitcherViewController(
             addSiteAction: { [weak self] in
-                self?.addSiteTapped()
+                self?.addSiteTapped(siteType: $0)
             },
             onSiteSelected: { [weak self] site in
                 self?.switchToBlog(site)
@@ -116,23 +107,6 @@ extension SitePickerViewController: BlogDetailHeaderViewDelegate {
             }
         )
         present(viewController, animated: true)
-        WPAnalytics.track(.mySiteSiteSwitcherTapped)
-    }
-
-    private func presentLegacySiteSwitcher() {
-        let blogListController = BlogListViewController(configuration: .defaultConfig, meScenePresenter: meScenePresenter)
-
-        blogListController.blogSelected = { [weak self] controller, selectedBlog in
-            guard let self else { return }
-            self.switchToBlog(selectedBlog)
-            controller.dismiss(animated: true) {
-                self.onBlogListDismiss?()
-            }
-        }
-
-        let navigationController = UINavigationController(rootViewController: blogListController)
-        navigationController.modalPresentationStyle = .formSheet
-        present(navigationController, animated: true)
         WPAnalytics.track(.mySiteSiteSwitcherTapped)
     }
 

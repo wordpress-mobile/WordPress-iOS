@@ -27,7 +27,6 @@ enum RemoteFeatureFlag: Int, CaseIterable {
     case inAppRating
     case siteMonitoring
     case readerDiscoverEndpoint
-    case siteSwitcherRedesign
     case readingPreferences
     case readingPreferencesFeedback
     case readerAnnouncementCard
@@ -87,8 +86,6 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return false
         case .readerDiscoverEndpoint:
             return true
-        case .siteSwitcherRedesign:
-            return false
         case .readingPreferences:
             return true
         case .readingPreferencesFeedback:
@@ -157,8 +154,6 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "site_monitoring"
         case .readerDiscoverEndpoint:
             return "reader_discover_new_endpoint"
-        case .siteSwitcherRedesign:
-            return "site_switcher_redesign"
         case .readingPreferences:
             return "reading_preferences"
         case .readingPreferencesFeedback:
@@ -226,8 +221,6 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "Site Monitoring"
         case .readerDiscoverEndpoint:
             return "Reader Discover New Endpoint"
-        case .siteSwitcherRedesign:
-            return "Site Switcher Redesign"
         case .readingPreferences:
             return "Reading Preferences"
         case .readingPreferencesFeedback:

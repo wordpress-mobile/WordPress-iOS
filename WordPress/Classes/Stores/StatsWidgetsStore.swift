@@ -346,9 +346,3 @@ extension StatsViewController {
         StoreContainer.shared.statsWidgets.initializeStatsWidgetsIfNeeded()
     }
 }
-
-extension BlogListViewController {
-    @objc func refreshStatsWidgetsSiteList() {
-        StoreContainer.shared.statsWidgets.refreshStatsWidgetsSiteList()
-    }
-}

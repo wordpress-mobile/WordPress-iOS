@@ -18,7 +18,7 @@ final class BlogListViewModelTests: CoreDataTestCase {
 
     func testRecentSitesWithValidData() throws {
         let siteID = 34984
-        let _ = BlogBuilder(mainContext)
+        let site = BlogBuilder(mainContext)
             .with(dotComID: siteID)
             .with(lastUsed: Date())
             .build()
@@ -26,7 +26,7 @@ final class BlogListViewModelTests: CoreDataTestCase {
 
         viewModel = BlogListViewModel(contextManager: contextManager)
 
-        XCTAssertEqual(viewModel.recentSites.first?.id, siteID as NSNumber)
+        XCTAssertEqual(viewModel.recentSites.first?.id, site.objectID)
         XCTAssertEqual(viewModel.recentSites.count, 1)
     }
 
@@ -71,18 +71,5 @@ final class BlogListViewModelTests: CoreDataTestCase {
 
         let displayedNames = viewModel.allSites.map(\.title)
         XCTAssertEqual(displayedNames, [".Org", "51 Zone", "a", "A", "C"])
-    }
-
-    func testSiteSelectedUpdatesLastUsedDate() throws {
-        let siteID = 4839
-        let _ = BlogBuilder(mainContext)
-            .with(dotComID: siteID)
-            .with(lastUsed: nil)
-            .build()
-        try mainContext.save()
-
-        _ = viewModel.didSelectSite(withSiteID: siteID as NSNumber)
-
-        XCTAssertEqual(viewModel.recentSites.first?.id, siteID as NSNumber)
     }
 }

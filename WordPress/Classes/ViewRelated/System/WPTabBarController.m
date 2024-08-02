@@ -5,7 +5,6 @@
 #import "BlogService.h"
 #import "Blog.h"
 
-#import "BlogListViewController.h"
 #import "BlogDetailsViewController.h"
 #import "WPScrollableViewController.h"
 #import "WPAppAnalytics.h"

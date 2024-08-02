@@ -126,15 +126,6 @@ extern NSNotificationName const WPAccountEmailAndDefaultBlogUpdatedNotification;
  */
 - (void)restoreDisassociatedAccountIfNecessary;
 
-///--------------------
-/// @name Visible blogs
-///--------------------
-
-/**
- Sets the visibility for the given blogs
- */
-- (void)setVisibility:(BOOL)visible forBlogs:(NSArray *)blogs;
-
 @end
 
 NS_ASSUME_NONNULL_END

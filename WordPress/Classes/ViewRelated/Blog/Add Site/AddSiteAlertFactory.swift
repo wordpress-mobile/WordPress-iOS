@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 /// This class takes care of constructing our "Add Site" action sheets.  It does not handle any presentation logic and does
 /// not know any external data sources - all of the data is received as parameters.
@@ -34,7 +35,7 @@ class AddSiteAlertFactory: NSObject {
 
     private func addSelfHostedSiteAction(handler: @escaping () -> Void) -> UIAlertAction {
         return UIAlertAction(
-            title: NSLocalizedString("Add self-hosted site", comment: "Add self-hosted site button"),
+            title: Strings.addSelfHostedSite,
             style: .default,
             handler: { _ in
                 handler()
@@ -49,10 +50,50 @@ class AddSiteAlertFactory: NSObject {
 
     private func createWPComSiteAction(handler: @escaping () -> Void) -> UIAlertAction {
         return UIAlertAction(
-            title: NSLocalizedString("Create WordPress.com site", comment: "Create WordPress.com site button"),
+            title: Strings.createDotComSite,
             style: .default,
             handler: { _ in
                 handler()
             })
     }
+}
+
+struct AddSiteAlertViewModel {
+    let actions: [Action]
+
+    enum Selection: String {
+        case dotCom
+        case selfHosted
+    }
+
+    struct Action: Identifiable {
+        let id = UUID()
+        let title: String
+        let handler: () -> Void
+    }
+
+    init(context: ContextManager = .shared, onSelection: @escaping (Selection) -> Void) {
+        let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: context.mainContext)
+        let canAddSelfHostedSite = AppConfiguration.showAddSelfHostedSiteButton
+
+        var actions: [Action] = []
+        if defaultAccount != nil {
+            actions.append(Action(title: Strings.createDotComSite) {
+                onSelection(.dotCom)
+            })
+        }
+
+        if canAddSelfHostedSite {
+            actions.append(Action(title: Strings.addSelfHostedSite) {
+                onSelection(.selfHosted)
+            })
+        }
+
+        self.actions = actions
+    }
+}
+
+private enum Strings {
+    static let createDotComSite = NSLocalizedString("button.createDotCoSite", value: "Create WordPress.com site", comment: "Create WordPress.com site button")
+    static let addSelfHostedSite = NSLocalizedString("button.addSelfHostedSite", value: "Add self-hosted site", comment: "Add self-hosted site button")
 }

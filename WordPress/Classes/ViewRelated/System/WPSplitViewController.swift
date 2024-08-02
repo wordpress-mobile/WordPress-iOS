@@ -14,8 +14,6 @@ import WordPressShared
 
 class WPSplitViewController: UISplitViewController {
 
-    private let quickStartNavigationSettings = QuickStartNavigationSettings()
-
     /// Determines how the split view handles the detail pane when collapsing itself.
     /// If 'Automatic', then the detail pane will be pushed onto the primary navigation stack
     /// if the user has manually changed the selection in the primary pane. Otherwise,
@@ -496,8 +494,6 @@ extension WPSplitViewController: UINavigationControllerDelegate {
         } else if navigationController == viewControllers.last {
             detailNavigationController(navigationController, willShowViewController: viewController, animated: animated)
         }
-
-        quickStartNavigationSettings.updateWith(navigationController: navigationController, andViewController: viewController)
     }
 
     fileprivate func primaryNavigationController(_ navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {

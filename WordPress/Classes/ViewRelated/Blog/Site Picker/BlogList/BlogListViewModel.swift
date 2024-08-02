@@ -30,9 +30,12 @@ final class BlogListViewModel: NSObject, ObservableObject {
         setupFetchedResultsController()
     }
 
-    func didSelectSite(withSiteID siteID: NSNumber) -> Blog? {
-        guard let blog = rawSites.first(where: { $0.dotComID == siteID }) else {
+    func didSelectSite(withID objectID: NSManagedObjectID) -> Blog? {
+        guard let blog = rawSites.first(where: { $0.objectID == objectID }) else {
             return nil
+        }
+        if selectedBlog() != blog {
+            PushNotificationsManager.shared.deletePendingLocalNotifications()
         }
         eventTracker.track(.siteSwitcherSiteTapped, properties: [
             "section": blog.lastUsed != nil ? "recent" : "all"
@@ -78,6 +81,7 @@ final class BlogListViewModel: NSObject, ObservableObject {
         rawSites = getFilteredSites(from: fetchedResultsController)
 
         recentSites = rawSites
+            .filter { $0.lastUsed != nil }
             .sorted { ($0.lastUsed ?? .distantPast) > ($1.lastUsed ?? .distantPast) }
             .prefix(5)
             .map(BlogListSiteViewModel.init)

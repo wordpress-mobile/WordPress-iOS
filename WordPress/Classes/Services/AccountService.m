@@ -78,7 +78,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         WPAccount *accountInContext = [context existingObjectWithID:account.objectID error:nil];
         [context deleteObject:accountInContext];
     }];
-    
+
     // Clear WordPress.com cookies
     NSArray<id<CookieJar>> *cookieJars = @[
         (id<CookieJar>)[NSHTTPCookieStorage sharedHTTPCookieStorage],
@@ -93,7 +93,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 
     // Remove defaults
     [[UserPersistentStoreFactory userDefaultsInstance] removeObjectForKey:DefaultDotcomAccountUUIDDefaultsKey];
-    
+
     [WPAnalytics refreshMetadata];
     [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
 
@@ -292,8 +292,8 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 }
 
 - (void)updateUserDetailsForAccount:(WPAccount *)account
-                           success:(nullable void (^)(void))success
-                           failure:(nullable void (^)(NSError * _Nonnull))failure
+                            success:(nullable void (^)(void))success
+                            failure:(nullable void (^)(NSError * _Nonnull))failure
 {
     NSAssert(account, @"Account can not be nil");
     NSAssert(account.username, @"account.username can not be nil");
@@ -403,7 +403,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     Blog *defaultBlog = [defaultAccount defaultBlog];
     NSNumber *siteId    = defaultBlog.dotComID;
     NSString *blogName  = defaultBlog.settings.name;
-    
+
     if (defaultBlog == nil || defaultBlog.isDeleted) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [ShareExtensionService removeShareExtensionConfiguration];
@@ -427,7 +427,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
             [NotificationSupportService insertServiceExtensionUserID:defaultAccount.userID.stringValue];
         });
     }
-    
+
 }
 
 - (void)purgeAccountIfUnused:(WPAccount *)account
@@ -452,43 +452,6 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
             [context deleteObject:accountInContext];
         }
     }];
-}
-
-///--------------------
-/// @name Visible blogs
-///--------------------
-
-- (void)setVisibility:(BOOL)visible forBlogs:(NSArray *)blogs
-{
-    NSArray<NSManagedObjectID *> *blogIds = [blogs wp_map:^id(Blog *obj) {
-        return obj.objectID;
-    }];
-    NSMutableDictionary *blogVisibility = [NSMutableDictionary dictionaryWithCapacity:blogIds.count];
-
-    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
-        // `defaultAccount` is only used in the `NSAssert` check below, but in our release builds
-        // `NSAssert` are ignored resulting in `defaultAccount` being unused and the compiler
-        // throwing an error. The `__unused` annotation lets us work aruond that.
-        __unused WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:context];
-
-        for (NSManagedObjectID *blogId in blogIds) {
-            Blog *blog = [context existingObjectWithID:blogId error:nil];
-            NSAssert(blog.dotComID.unsignedIntegerValue > 0, @"blog should have a wp.com ID");
-            NSAssert([blog.account isEqual:defaultAccount], @"blog should belong to the default account");
-            // This shouldn't happen, but just in case, let's not crash if
-            // something tries to change visibility for a self hosted
-            if (blog.dotComID) {
-                blogVisibility[blog.dotComID] = @(visible);
-            }
-            blog.visible = visible;
-        }
-    } completion:^{
-        WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:self.coreDataStack.mainContext];
-        AccountServiceRemoteREST *remote = [self remoteForAccount:defaultAccount];
-        [remote updateBlogsVisibility:blogVisibility success:nil failure:^(NSError *error) {
-            DDLogError(@"Error setting blog visibility: %@", error);
-        }];
-    } onQueue:dispatch_get_main_queue()];
 }
 
 @end
