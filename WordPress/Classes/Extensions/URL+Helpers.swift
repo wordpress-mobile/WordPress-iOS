@@ -4,6 +4,24 @@ import UniformTypeIdentifiers
 
 extension URL {
 
+    struct Helpers {
+        static func temporaryFile(named name: String = UUID().uuidString) -> URL {
+            if #available(iOS 16.0, *) {
+                return URL.temporaryDirectory.appending(path: name)
+            } else {
+                return URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(name)
+            }
+        }
+
+        static func temporaryDirectory(named name: String) -> URL {
+            if #available(iOS 16.0, *) {
+                return URL.temporaryDirectory.appending(path: name, directoryHint: .isDirectory)
+            } else {
+                return URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(name, isDirectory: true)
+            }
+        }
+    }
+
     /// The URLResource fileSize of the file at the URL in bytes, if available.
     ///
     var fileSize: Int64? {
@@ -48,7 +66,6 @@ extension URL {
         return url
     }
 
-    var pixelSize: CGSize {
         get {
             if isVideo {
                 let asset = AVAsset(url: self as URL)

@@ -1,7 +1,9 @@
 import Foundation
+import WordPressUI
 import UIKit
 import WordPressShared
 import AutomatticAbout
+import SwiftUI
 
 struct WebViewPresenter {
     func present(for url: URL, context: AboutItemActionContext) {
@@ -113,7 +115,13 @@ class LegalAndMoreSubmenuConfiguration: AboutScreenConfiguration {
                 linkItem(title: Titles.termsOfService, link: Links.termsOfService, button: .termsOfService),
                 linkItem(title: Titles.privacyPolicy, link: Links.privacyPolicy, button: .privacyPolicy),
                 linkItem(title: Titles.sourceCode, link: Links.sourceCode, button: .sourceCode),
-                linkItem(title: Titles.acknowledgements, link: Links.acknowledgements, button: .acknowledgements),
+                AboutItem(title: Titles.acknowledgements, action: { context in
+                    let rootView = AcknowledgementsListView(viewModel: AcknowledgementsListViewModel())
+                    context.viewController.navigationController?.pushViewController(
+                        UIHostingController(rootView: rootView),
+                        animated: true
+                    )
+                })
             ]
         ]
     }()
@@ -145,13 +153,12 @@ class LegalAndMoreSubmenuConfiguration: AboutScreenConfiguration {
         static let termsOfService     = NSLocalizedString("Terms of Service", comment: "Title of button that displays the App's terms of service")
         static let privacyPolicy      = NSLocalizedString("Privacy Policy", comment: "Title of button that displays the App's privacy policy")
         static let sourceCode         = NSLocalizedString("Source Code", comment: "Title of button that displays the App's source code information")
-        static let acknowledgements   = NSLocalizedString("Acknowledgements", comment: "Title of button that displays the App's acknoledgements")
+        static let acknowledgements   = NSLocalizedString("Acknowledgements", comment: "Title of button that displays the App's acknowledgements")
     }
 
     private enum Links {
         static let termsOfService = URL(string: WPAutomatticTermsOfServiceURL)!
         static let privacyPolicy = URL(string: WPAutomatticPrivacyURL)!
         static let sourceCode = URL(string: WPGithubMainURL)!
-        static let acknowledgements: URL = URL(string: Bundle.main.url(forResource: "acknowledgements", withExtension: "html")?.absoluteString ?? "")!
     }
 }
