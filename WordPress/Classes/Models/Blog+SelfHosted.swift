@@ -10,6 +10,7 @@ extension Blog {
         case blogIdentifierMissing
         case invalidCredentialsUrl
         case invalidXmlRpcEndpoint
+        case incorrectCredentials
     }
 
     static func createRestApiBlog(

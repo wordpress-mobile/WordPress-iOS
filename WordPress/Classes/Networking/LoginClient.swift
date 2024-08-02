@@ -4,6 +4,8 @@ import AutomatticTracks
 import ViewLayer
 import SwiftUI
 import AuthenticationServices
+import WordPressKit
+import WordPressAuthenticator
 
 actor LoginClient {
 
@@ -128,7 +130,22 @@ class SelfHostedLoginViewModel: LoginWithUrlView.ViewModel {
                 }
 
                 let credentials = try SelfHostedLoginDetails.fromApplicationPasswordResponse(urlWithToken)
-                let blogIdentifier = try await Blog.createRestApiBlog(with: credentials, in: ContextManager.shared)
+                let blogOptions = try await loadSiteOptions(details: credentials)
+
+                // Only store the new site after credentials are validated.
+                let _ = try await Blog.createRestApiBlog(with: credentials, in: ContextManager.shared)
+
+                // Automatically show the new site.
+                assert(WordPressAuthenticator.shared.delegate != nil)
+                let wporg = WordPressOrgCredentials(
+                    username: credentials.username,
+                    password: credentials.password,
+                    xmlrpc: credentials.derivedXMLRPCRoot.absoluteString,
+                    options: blogOptions
+                )
+                WordPressAuthenticator.shared.delegate!.sync(credentials: .init(wporg: wporg)) {
+                    NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification), object: nil)
+                }
 
                 self.onLoginComplete?()
             } catch let err {
@@ -176,6 +193,17 @@ class SelfHostedLoginViewModel: LoginWithUrlView.ViewModel {
         }
 
         return mutableAuthURL
+    }
+
+    private func loadSiteOptions(details: SelfHostedLoginDetails) async throws -> [AnyHashable: Any] {
+        try await withCheckedThrowingContinuation { continuation in
+            let api = WordPressXMLRPCAPIFacade()
+            api.getBlogOptions(withEndpoint: details.derivedXMLRPCRoot, username: details.username, password: details.password) { options in
+                continuation.resume(returning: options ?? [:])
+            } failure: { error in
+                continuation.resume(throwing: error ?? Blog.BlogCredentialsError.incorrectCredentials)
+            }
+        }
     }
 }
 
