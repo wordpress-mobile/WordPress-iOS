@@ -13,7 +13,8 @@ class RecentSitesServiceTests: XCTestCase {
         service.touch(site: "site2")
         service.touch(site: "site3")
         service.touch(site: "site4")
-        XCTAssertEqual(service.recentSites, ["site4", "site3", "site2"])
+        service.touch(site: "site5")
+        XCTAssertEqual(service.recentSites, ["site5", "site4", "site3", "site2"])
     }
 
     func testDoesNotDuplicate() {
