@@ -8,8 +8,7 @@ import SwiftUI
 struct WebViewPresenter {
     func present(for url: URL, context: AboutItemActionContext) {
         let webViewController = WebViewControllerFactory.controller(url: url, source: "about")
-        let navigationController = UINavigationController(rootViewController: webViewController)
-        context.viewController.present(navigationController, animated: true, completion: nil)
+        context.viewController.navigationController?.pushViewController(webViewController, animated: true)
     }
 }
 
