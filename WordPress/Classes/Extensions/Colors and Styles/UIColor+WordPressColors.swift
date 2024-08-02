@@ -1,4 +1,5 @@
 import UIKit
+import WordPressUI
 
 // MARK: - UI elements
 extension UIColor {
@@ -33,7 +34,7 @@ extension UIColor {
     }
 
     /// Note: these values are intended to match the iOS defaults
-    static var tabUnselected: UIColor =  UIColor(light: UIColor(hexString: "999999"), dark: UIColor(hexString: "757575"))
+    static var tabUnselected: UIColor =  UIColor(light: UIColor(fromHex: 0x999999), dark: UIColor(fromHex: 0x757575))
 
     static var statsPrimaryHighlight: UIColor {
         return  UIColor(light: .accent(.shade30), dark: .accent(.shade60))

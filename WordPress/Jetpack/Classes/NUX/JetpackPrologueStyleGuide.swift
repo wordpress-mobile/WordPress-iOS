@@ -1,5 +1,6 @@
 import UIKit
 import WordPressAuthenticator
+import WordPressUI
 
 struct JetpackPrologueStyleGuide {
     // Background color
@@ -8,7 +9,7 @@ struct JetpackPrologueStyleGuide {
     // Gradient overlay color
     static let gradientColor = UIColor(
         light: .white,
-        dark: UIColor(hexString: "050A21")
+        dark: UIColor(fromHex: 0x050A21)
     )
 
     // Continue with WordPress button colors
