@@ -119,7 +119,7 @@ class LegalAndMoreSubmenuConfiguration: AboutScreenConfiguration {
                 linkItem(title: Titles.termsOfService, link: Links.termsOfService, button: .termsOfService),
                 linkItem(title: Titles.privacyPolicy, link: Links.privacyPolicy, button: .privacyPolicy),
                 linkItem(title: Titles.sourceCode, link: Links.sourceCode, button: .sourceCode),
-                AboutItem(title: Titles.acknowledgements, action: { context in
+                AboutItem(title: Titles.acknowledgements, accessoryType: .disclosureIndicator, action: { context in
                     let rootView = AcknowledgementsListView(viewModel: AcknowledgementsListViewModel(dataProvider: AcknowledgementsService()))
                     context.viewController.navigationController?.pushViewController(
                         UIHostingController(rootView: rootView),
@@ -131,7 +131,7 @@ class LegalAndMoreSubmenuConfiguration: AboutScreenConfiguration {
     }()
 
     private func linkItem(title: String, link: URL, button: AboutScreenTracker.Event.Button) -> AboutItem {
-        AboutItem(title: title, action: { [weak self] context in
+        AboutItem(title: title, accessoryType: .disclosureIndicator, action: { [weak self] context in
             self?.buttonPressed(link: link, context: context, button: button)
         })
     }
