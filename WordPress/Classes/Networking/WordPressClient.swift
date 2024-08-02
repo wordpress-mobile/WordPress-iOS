@@ -5,6 +5,7 @@ import Network
 struct WordPressSite {
     enum SiteType {
         case dotCom(emailAddress: String, authToken: String)
+        // FIXME: authToken _needs_ to be an application password. WordPress site account password doesn't work with REST API.
         case selfHosted(username: String, authToken: String)
     }
 
