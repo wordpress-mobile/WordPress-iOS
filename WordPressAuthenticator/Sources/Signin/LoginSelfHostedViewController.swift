@@ -8,7 +8,7 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
     @IBOutlet var siteHeaderView: SiteInfoHeaderView!
     @IBOutlet var usernameField: WPWalkthroughTextField!
     @IBOutlet var passwordField: WPWalkthroughTextField!
-    @IBOutlet var forgotPasswordButton: WPNUXSecondaryButton!
+    @IBOutlet var forgotPasswordButton: UIButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
     override var sourceTag: WordPressSupportSourceTag {

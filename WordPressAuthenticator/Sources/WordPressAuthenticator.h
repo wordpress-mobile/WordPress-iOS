@@ -14,5 +14,4 @@ FOUNDATION_EXPORT const unsigned char WordPressAuthenticatorVersionString[];
 
 #import <WordPressAuthenticator/WPAuthenticatorLogging.h>
 #import <WordPressAuthenticator/WPNUXMainButton.h>
-#import <WordPressAuthenticator/WPNUXSecondaryButton.h>
 #import <WordPressAuthenticator/WPWalkthroughTextField.h>
