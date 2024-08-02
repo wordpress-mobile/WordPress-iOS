@@ -18,7 +18,6 @@
 @import WordPressShared;
 @import WordPressKit;
 @import WordPressUI;
-@import WordPressUIObjC;
 @import Reachability;
 
 typedef NS_ENUM(NSInteger, PostSettingsRow) {

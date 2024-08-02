@@ -1,10 +1,6 @@
 import Foundation
 import UIKit
 
-#if SWIFT_PACKAGE
-import WordPressUIObjC
-#endif
-
 public extension UIImageView {
     enum ImageDownloadError: Error {
         case noURLSpecifiedInRequest

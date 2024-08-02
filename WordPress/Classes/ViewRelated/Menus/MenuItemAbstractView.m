@@ -3,7 +3,6 @@
 #import "WordPress-Swift.h"
 
 @import WordPressUI;
-@import WordPressUIObjC;
 @import WordPressShared;
 
 @interface MenuItemDrawingView ()

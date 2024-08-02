@@ -18,7 +18,6 @@
 
 @import Gridicons;
 @import Reachability;
-@import WordPressUIObjC;
 @import WordPressShared;
 
 static NSString *const BlogDetailsCellIdentifier = @"BlogDetailsCell";
