@@ -270,7 +270,7 @@ class MediaImageServiceTests: CoreDataTestCase {
                   let width = Int(values[0]), let height = Int(values[1]) else {
                 return HTTPStubsResponse(error: URLError(.unknown))
             }
-            let resizedImage = image.resizedImage(CGSize(width: width, height: height), interpolationQuality: .default)
+            let resizedImage = image.resized(to: CGSize(width: width, height: height))
             let responseData = resizedImage?.jpegData(compressionQuality: 0.8) ?? Data()
             return HTTPStubsResponse(data: responseData, statusCode: 200, headers: nil)
         })

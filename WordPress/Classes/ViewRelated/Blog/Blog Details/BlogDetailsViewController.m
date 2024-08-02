@@ -751,7 +751,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
 {
     __weak __typeof(self) weakSelf = self;
     CGSize iconSize = CGSizeMake(BlogDetailGridiconSize, BlogDetailGridiconSize);
-    UIImage *blazeIcon = [[UIImage imageNamed:@"icon-blaze"] resizedImage:iconSize interpolationQuality:kCGInterpolationHigh];
+    UIImage *blazeIcon = [[UIImage imageNamed:@"icon-blaze"] resizedTo:iconSize format:ScalingModeScaleAspectFit];
     BlogDetailsRow *blazeRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Blaze", @"Noun. Links to a blog's Blaze screen.")
                                              accessibilityIdentifier:@"Blaze Row"
                                                                image:[blazeIcon imageFlippedForRightToLeftLayoutDirection]

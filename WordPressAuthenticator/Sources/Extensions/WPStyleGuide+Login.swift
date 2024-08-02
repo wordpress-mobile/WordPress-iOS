@@ -294,7 +294,7 @@ extension WPStyleGuide {
                                                                       y: Constants.domainsIconPaddingToRemove,
                                                                       width: originalDomainsIcon.size.width - Constants.domainsIconPaddingToRemove * 2,
                                                                       height: originalDomainsIcon.size.height - Constants.domainsIconPaddingToRemove * 2))
-            domainsIcon = domainsIcon.resizedImage(Constants.domainsIconSize, interpolationQuality: .high)
+            domainsIcon = domainsIcon.resized(to: Constants.domainsIconSize)
             let domainsAttachment = NSTextAttachment()
             domainsAttachment.image = domainsIcon
             domainsAttachment.bounds = CGRect(x: 0, y: font.descender, width: domainsIcon.size.width, height: domainsIcon.size.height)

@@ -311,8 +311,8 @@ extension WPStyleGuide {
         let selectedIcon = UIImage(named: "icon-reader-comment-outline-highlighted")?.imageFlippedForRightToLeftLayoutDirection()
 
         guard
-            let resizedIcon = icon?.resizedImage(size, interpolationQuality: .high)?.withRenderingMode(.alwaysTemplate),
-            let resizedSelectedIcon = selectedIcon?.resizedImage(size, interpolationQuality: .high).withRenderingMode(.alwaysTemplate)
+            let resizedIcon = icon?.resized(to: size).withRenderingMode(.alwaysTemplate),
+            let resizedSelectedIcon = selectedIcon?.resized(to: size).withRenderingMode(.alwaysTemplate)
         else {
             return
         }
