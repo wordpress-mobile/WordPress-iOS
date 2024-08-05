@@ -2,7 +2,6 @@ import SwiftUI
 import WordPressKit
 import UIKit
 
-@available(iOS 16, *)
 struct PHPLogsView: View {
     @StateObject var viewModel: PHPLogsViewModel
     @State private var searchCriteria = PHPLogsSearchCriteria(startDate: Date.oneWeekAgo())

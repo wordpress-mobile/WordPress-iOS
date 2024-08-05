@@ -7,7 +7,6 @@ import QuickLook
 import QuickLookThumbnailing
 import AVFoundation
 
-@available(iOS 16, *)
 struct ZendeskAttachmentsSection: View {
     @ObservedObject var viewModel: ZendeskAttachmentsSectionViewModel
 
@@ -73,7 +72,6 @@ struct ZendeskAttachmentsSection: View {
 final class ZendeskAttachmentsSectionViewModel: ObservableObject {
     @Published private(set) var attachments: [ZendeskAttachmentViewModel] = []
 
-    @available(iOS 16, *)
     func process(selection: [PhotosPickerItem]) {
         var previous = Dictionary(uniqueKeysWithValues: attachments.map { ($0.id, $0) })
         self.attachments = selection.map {
@@ -87,7 +85,6 @@ final class ZendeskAttachmentsSectionViewModel: ObservableObject {
     }
 }
 
-@available(iOS 16, *)
 private struct ZendeskAttachmentView<Actions: View>: View {
     @ObservedObject var viewModel: ZendeskAttachmentViewModel
     @ViewBuilder var actions: () -> Actions
@@ -158,7 +155,6 @@ final class ZendeskAttachmentViewModel: ObservableObject, Identifiable {
 
     private let directory = MediaDirectory.temporary(id: UUID())
 
-    @available(iOS 16, *)
     init(item: PhotosPickerItem) {
         self.id = item
         self.thumbnail = thumbnail
@@ -175,7 +171,6 @@ final class ZendeskAttachmentViewModel: ObservableObject, Identifiable {
         task?.cancel()
     }
 
-    @available(iOS 16, *)
     @MainActor private func process(item: PhotosPickerItem) async {
         status = .uploading
         do {
@@ -196,7 +191,6 @@ final class ZendeskAttachmentViewModel: ObservableObject, Identifiable {
         }
     }
 
-    @available(iOS 16, *)
     private func export(_ item: PhotosPickerItem) async throws -> MediaExport {
         guard let rawData = try await item.loadTransferable(type: Data.self) else {
             throw SubmitFeedbackAttachmentError.invalidAttachment

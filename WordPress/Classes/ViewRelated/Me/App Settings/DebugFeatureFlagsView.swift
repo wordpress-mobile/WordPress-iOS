@@ -12,7 +12,14 @@ struct DebugFeatureFlagsView: View {
         .searchable(text: $viewModel.filterTerm, placement: .navigationBarDrawer(displayMode: .always))
         .navigationTitle(navigationTitle)
         .navigationBarTitleDisplayMode(.inline)
-        .apply(addToolbarTitleMenu)
+        .toolbarTitleMenu {
+            Picker("Filter", selection: $viewModel.filter) {
+                Text("Feature Flags (All)").tag(DebugFeatureFlagFilter.all)
+                Text("Remote Feature Flags").tag(DebugFeatureFlagFilter.remote)
+                Text("Local Feature Flags").tag(DebugFeatureFlagFilter.local)
+                Text("Overriden Feature Flags").tag(DebugFeatureFlagFilter.overriden)
+            }.pickerStyle(.inline)
+        }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu(content: {
@@ -56,22 +63,6 @@ struct DebugFeatureFlagsView: View {
                         .foregroundColor(.secondary)
                 }
             }
-        }
-    }
-
-    @ViewBuilder
-    func addToolbarTitleMenu<T: View>(_ view: T) -> some View {
-        if #available(iOS 16, *) {
-            view.toolbarTitleMenu {
-                Picker("Filter", selection: $viewModel.filter) {
-                    Text("Feature Flags (All)").tag(DebugFeatureFlagFilter.all)
-                    Text("Remote Feature Flags").tag(DebugFeatureFlagFilter.remote)
-                    Text("Local Feature Flags").tag(DebugFeatureFlagFilter.local)
-                    Text("Overriden Feature Flags").tag(DebugFeatureFlagFilter.overriden)
-                }.pickerStyle(.inline)
-            }
-        } else {
-            view
         }
     }
 

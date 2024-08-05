@@ -1,6 +1,5 @@
 import SwiftUI
 
-@available(iOS 16, *)
 struct SiteMonitoringEntryDetailsView: View {
     let text: NSAttributedString
 
@@ -116,17 +115,13 @@ private enum Strings {
 
 #Preview("AtomicErrorLogEntry") {
     NavigationView {
-        if #available(iOS 16, *) {
-            SiteMonitoringEntryDetailsView(text: errorLogEntry.attributedDescription)
-        }
+        SiteMonitoringEntryDetailsView(text: errorLogEntry.attributedDescription)
     }
 }
 
 #Preview("AtomicWebServerLogEntry") {
     NavigationView {
-        if #available(iOS 16, *) {
-            SiteMonitoringEntryDetailsView(text: serverLogEntry.attributedDescription)
-        }
+        SiteMonitoringEntryDetailsView(text: serverLogEntry.attributedDescription)
     }
 }
 

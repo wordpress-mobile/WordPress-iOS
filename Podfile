@@ -151,20 +151,6 @@ post_install do |installer|
 
   File.write("#{project_root}/Pods/Target Support Files/Pods-Apps-WordPress/acknowledgements.html", styled_html)
 
-  # Let Pods targets inherit deployment target from the app
-  # This solution is suggested here: https://github.com/CocoaPods/CocoaPods/issues/4859
-  # =====================================
-  #
-  installer.pods_project.targets.each do |target|
-    # Exclude RCT-Folly as it requires explicit deployment target https://git.io/JPb73
-    next unless target.name != 'RCT-Folly'
-
-    target.build_configurations.each do |configuration|
-      pod_ios_deployment_target = Gem::Version.new(configuration.build_settings['IPHONEOS_DEPLOYMENT_TARGET'])
-      configuration.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET' if pod_ios_deployment_target <= APP_IOS_DEPLOYMENT_TARGET
-    end
-  end
-
   # Fix a code signing issue in Xcode 14 beta.
   # This solution is suggested here: https://github.com/CocoaPods/CocoaPods/issues/11402#issuecomment-1189861270
   # ====================================

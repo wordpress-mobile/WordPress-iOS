@@ -1,6 +1,5 @@
 import WidgetKit
 
-@available(iOS 16.0, *)
 struct LockScreenAllTimeViewsStatWidgetConfig: LockScreenStatsWidgetConfig {
     typealias WidgetData = HomeWidgetAllTimeData
     typealias ViewProvider = LockScreenSingleStatWidgetViewProvider
