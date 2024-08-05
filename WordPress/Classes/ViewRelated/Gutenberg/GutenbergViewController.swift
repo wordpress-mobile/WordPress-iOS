@@ -440,17 +440,8 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
     }
 
     private func reloadBlogIconView() {
-        let blog = post.blog
-
-        if blog.hasIcon == true {
-            let size = CGSize(width: 24, height: 24)
-            navigationBarManager.siteIconView.imageView.downloadSiteIcon(for: blog, imageSize: size)
-        } else if blog.isWPForTeams() {
-            navigationBarManager.siteIconView.imageView.tintColor = UIColor.listIcon
-            navigationBarManager.siteIconView.imageView.image = UIImage.gridicon(.p2)
-        } else {
-            navigationBarManager.siteIconView.imageView.image = UIImage.siteIconPlaceholder
-        }
+        let viewModel = SiteIconViewModel(blog: post.blog, size: .small)
+        navigationBarManager.siteIconView.imageView.setIcon(with: viewModel)
     }
 
     private func reloadEditorContents() {
