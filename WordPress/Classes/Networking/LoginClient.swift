@@ -88,8 +88,8 @@ actor LoginClient {
         let vm = SelfHostedLoginViewModel(loginClient: loginClient)
         let loginViewController = UIHostingController(rootView: LoginWithUrlView(viewModel: vm))
 
-        vm.onLoginComplete = {
-            loginViewController.dismiss(animated: true)
+        vm.onLoginComplete = { [weak loginViewController] in
+            loginViewController?.dismiss(animated: true)
         }
 
         navigationController.pushViewController(loginViewController, animated: true)
