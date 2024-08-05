@@ -107,7 +107,7 @@ extension SitePickerViewController {
             return
         }
 
-        guard let navigationController = presentedViewController?.navigationController else {
+        guard let navigationController = presentedViewController?.navigationController ?? (presentedViewController as? UINavigationController) else {
             return
         }
 

@@ -1,17 +1,10 @@
 import SwiftUI
 import DesignSystem
 
-final class SiteSwitcherViewController: UIViewController {
-    private let addSiteAction: ((AddSiteAlertViewModel.Selection) -> Void)
-    private let onSiteSelected: ((Blog) -> Void)
-
+final class SiteSwitcherViewController: UIHostingController<SiteSwitcherView> {
     init(addSiteAction: @escaping ((AddSiteAlertViewModel.Selection) -> Void),
          onSiteSelected: @escaping ((Blog) -> Void)) {
-        self.addSiteAction = addSiteAction
-        self.onSiteSelected = onSiteSelected
-
-        super.init(nibName: nil, bundle: nil)
-        self.modalPresentationStyle = .formSheet
+        super.init(rootView: SiteSwitcherView(addSiteAction: addSiteAction, onSiteSelected: onSiteSelected))
     }
 
     required init?(coder: NSCoder) {
@@ -21,18 +14,8 @@ final class SiteSwitcherViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let viewController = UIHostingController(rootView: SiteSwitcherView(addSiteAction: addSiteAction, onSiteSelected: onSiteSelected))
-
-        viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(title: SharedStrings.Button.close, style: .plain, target: self, action: #selector(buttonCloseTapped))
-        viewController.navigationItem.leftBarButtonItem?.accessibilityIdentifier = "my-sites-cancel-button"
-
-        let navigationController = UINavigationController(rootViewController: viewController)
-
-        addChild(navigationController)
-        view.addSubview(navigationController.view)
-        navigationController.view.translatesAutoresizingMaskIntoConstraints = false
-        view.pinSubviewToAllEdges(navigationController.view)
-        navigationController.didMove(toParent: self)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: SharedStrings.Button.close, style: .plain, target: self, action: #selector(buttonCloseTapped))
+        navigationItem.leftBarButtonItem?.accessibilityIdentifier = "my-sites-cancel-button"
     }
 
     @objc private func buttonCloseTapped() {
@@ -52,7 +35,7 @@ final class SiteSwitcherViewController: UIViewController {
     }
 }
 
-private struct SiteSwitcherView: View {
+struct SiteSwitcherView: View {
     let addSiteAction: ((AddSiteAlertViewModel.Selection) -> Void)
     let onSiteSelected: ((Blog) -> Void)
 

@@ -106,7 +106,9 @@ extension SitePickerViewController: BlogDetailHeaderViewDelegate {
                 }
             }
         )
-        present(viewController, animated: true)
+        let navigationController = UINavigationController(rootViewController: viewController)
+        navigationController.modalPresentationStyle = .formSheet
+        present(navigationController, animated: true)
         WPAnalytics.track(.mySiteSiteSwitcherTapped)
     }
 
