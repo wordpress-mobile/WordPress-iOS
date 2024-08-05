@@ -30,7 +30,7 @@ struct SiteIconViewModel {
         self.firstLetter = blog.title?.first
 
         if blog.hasIcon, let icon = blog.icon {
-            self.imageURL = SiteIconViewModel.optimizedURL(for: icon, imageSize: size.size)
+            self.imageURL = SiteIconViewModel.optimizedURL(for: icon, imageSize: size.size, isP2: blog.isAutomatticP2)
             self.host = MediaHost(with: blog)
         }
     }
@@ -38,8 +38,8 @@ struct SiteIconViewModel {
 
 extension SiteIconViewModel {
     /// Returns the Size Optimized URL for a given Path.
-    static func optimizedURL(for path: String, imageSize: CGSize = SiteIconViewModel.Size.regular.size) -> URL? {
-        if isPhotonURL(path) || isDotcomURL(path) {
+    static func optimizedURL(for path: String, imageSize: CGSize = SiteIconViewModel.Size.regular.size, isP2: Bool = false) -> URL? {
+        if isPhotonURL(path) || isDotcomURL(path) || isP2 {
             return optimizedDotcomURL(from: path, imageSize: imageSize)
         }
         if isBlavatarURL(path) {

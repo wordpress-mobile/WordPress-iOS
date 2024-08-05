@@ -108,7 +108,7 @@ extension UIImageView {
         imageSize: CGSize = SiteIconDefaults.imageSize,
         placeholderImage: UIImage? = .siteIconPlaceholder
     ) {
-        guard let siteIconPath = blog.icon, let siteIconURL = SiteIconViewModel.optimizedURL(for: siteIconPath, imageSize: imageSize) else {
+        guard let siteIconPath = blog.icon, let siteIconURL = SiteIconViewModel.optimizedURL(for: siteIconPath, imageSize: imageSize, isP2: blog.isAutomatticP2) else {
 
             if blog.isWPForTeams() && placeholderImage == .siteIconPlaceholder {
                 image = UIImage.gridicon(.p2, size: imageSize)
