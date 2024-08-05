@@ -73,11 +73,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
             navigationController.modalPresentationStyle = .formSheet
         } else {
             if let sheetController = navigationController.sheetPresentationController {
-                if #available(iOS 16, *) {
-                    sheetController.detents = [.custom { _ in 530 }, .large()]
-                } else {
-                    sheetController.detents = [.medium(), .large()]
-                }
+                sheetController.detents = [.custom { _ in 530 }, .large()]
                 sheetController.prefersGrabberVisible = true
                 sheetController.preferredCornerRadius = 16
                 navigationController.additionalSafeAreaInsets = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)

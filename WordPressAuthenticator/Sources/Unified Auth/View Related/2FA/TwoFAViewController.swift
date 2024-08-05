@@ -212,7 +212,6 @@ private extension TwoFAViewController {
 
     // MARK: - Security Keys
 
-    @available(iOS 16, *)
     func loginWithSecurityKeys() {
 
         guard let twoStepNonce = loginFields.nonceInfo?.nonceWebauthn else {
@@ -231,7 +230,6 @@ private extension TwoFAViewController {
         }
     }
 
-    @available(iOS 16, *)
     func signChallenge(_ challengeInfo: WebauthnChallengeInfo) {
 
         loginFields.nonceInfo?.updateNonce(with: challengeInfo.twoStepNonce)
@@ -295,8 +293,7 @@ extension TwoFAViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
 
         // Validate necessary data
-        guard #available(iOS 16, *),
-              let credential = authorization.credential as? ASAuthorizationPlatformPublicKeyCredentialAssertion,
+        guard let credential = authorization.credential as? ASAuthorizationPlatformPublicKeyCredentialAssertion,
               let challengeInfo = loginFields.webauthnChallengeInfo,
               let clientDataJson = extractClientData(from: credential, challengeInfo: challengeInfo) else {
             return displaySecurityKeyErrorMessageAndExitFlow()
@@ -317,7 +314,6 @@ extension TwoFAViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
     }
 
     // Some password managers(like 1P) don't deliver `rawClientDataJSON`. In those cases we need to assemble it manually.
-    @available(iOS 16, *)
     func extractClientData(from credential: ASAuthorizationPlatformPublicKeyCredentialAssertion, challengeInfo: WebauthnChallengeInfo) -> Data? {
 
         if credential.rawClientDataJSON.count > 0 {
@@ -491,7 +487,7 @@ private extension TwoFAViewController {
         rows.append(.spacer(4))
         rows.append(.sendCode)
 
-        if #available(iOS 16, *), WordPressAuthenticator.shared.configuration.enablePasskeys, loginFields.nonceInfo?.nonceWebauthn.isEmpty == false {
+        if WordPressAuthenticator.shared.configuration.enablePasskeys, loginFields.nonceInfo?.nonceWebauthn.isEmpty == false {
             rows.append(.spacer(4))
             rows.append(.enterSecurityKey)
         }
@@ -575,9 +571,7 @@ private extension TwoFAViewController {
             guard let self = self else { return }
 
             self.tracker.track(click: .enterSecurityKey)
-            if #available(iOS 16, *) {
-                self.loginWithSecurityKeys()
-            }
+            self.loginWithSecurityKeys()
         }
     }
 

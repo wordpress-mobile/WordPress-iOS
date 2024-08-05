@@ -1,7 +1,6 @@
 import SwiftUI
 import JetpackStatsWidgetsCore
 
-@available(iOS 16.0, *)
 struct LockScreenSingleStatWidgetViewProvider<WidgetData: HomeWidgetData>: LockScreenStatsWidgetsViewProvider {
     typealias SiteSelectedView = LockScreenSingleStatView
     typealias LoggedOutView = LockScreenUnconfiguredView

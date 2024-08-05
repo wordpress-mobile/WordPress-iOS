@@ -55,7 +55,7 @@ private struct PostMediaUploadItemView: View {
     @ObservedObject var viewModel: PostMediaUploadItemViewModel
 
     var body: some View {
-        let view = HStack(alignment: .center, spacing: 0) {
+        HStack(alignment: .center, spacing: 0) {
             MediaThubmnailImageView(image: viewModel.thumbnail)
                 .aspectRatio(viewModel.thumbnailAspectRatio, contentMode: .fit)
                 .frame(maxHeight: viewModel.thumbnailMaxHeight)
@@ -91,17 +91,13 @@ private struct PostMediaUploadItemView: View {
                 }
             }
         }
-            .task {
-                await viewModel.loadThumbnail()
-            }
-        if #available(iOS 16, *) {
-            view.contextMenu {
-                menuItems
-            } preview: {
-                SiteMediaPreviewView(media: viewModel.media)
-            }
-        } else {
-            view
+        .contextMenu {
+            menuItems
+        } preview: {
+            SiteMediaPreviewView(media: viewModel.media)
+        }
+        .task {
+            await viewModel.loadThumbnail()
         }
     }
 
