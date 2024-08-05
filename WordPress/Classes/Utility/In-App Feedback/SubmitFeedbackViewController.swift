@@ -117,10 +117,8 @@ private struct SubmitFeedbackView: View {
                 }
                 .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
         }
-        if #available(iOS 16, *) {
-            ZendeskAttachmentsSection(viewModel: attachmentsViewModel)
-                .listRowSeparator(.hidden)
-        }
+        ZendeskAttachmentsSection(viewModel: attachmentsViewModel)
+            .listRowSeparator(.hidden)
     }
 
     private func submit() {

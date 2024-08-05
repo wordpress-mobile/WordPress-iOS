@@ -34,16 +34,12 @@ final class NotificationsTableHeaderView: UITableViewHeaderFooterView {
             config.directionalLayoutMargins = Appearance.layoutMarginsLeading
             return config
         }()
-        if #available(iOS 16.0, *) {
-            self.backgroundConfiguration = {
-                var config = self.defaultBackgroundConfiguration()
-                config.backgroundColor = Appearance.backgroundColor
-                config.visualEffect = nil
-                return config
-            }()
-        } else {
-            self.contentView.backgroundColor = Appearance.backgroundColor
-        }
+        self.backgroundConfiguration = {
+            var config = self.defaultBackgroundConfiguration()
+            config.backgroundColor = Appearance.backgroundColor
+            config.visualEffect = nil
+            return config
+        }()
     }
 
     // MARK: - Update

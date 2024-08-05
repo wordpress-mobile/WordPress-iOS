@@ -1,7 +1,6 @@
 import SwiftUI
 import UIKit
 
-@available(iOS 16, *)
 struct SiteMonitoringView: View {
     @StateObject var viewModel: SiteMonitoringViewModel
 
@@ -60,7 +59,6 @@ enum SiteMonitoringTab: Int, CaseIterable, Identifiable {
     }
 }
 
-@available(iOS 16, *)
 final class SiteMonitoringViewController: UIHostingController<SiteMonitoringView> {
 
     init(blog: Blog, selectedTab: SiteMonitoringTab? = nil) {

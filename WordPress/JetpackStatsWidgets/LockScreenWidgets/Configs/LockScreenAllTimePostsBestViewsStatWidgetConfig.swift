@@ -1,7 +1,6 @@
 import WidgetKit
 import JetpackStatsWidgetsCore
 
-@available(iOS 16.0, *)
 struct LockScreenAllTimePostsBestViewsStatWidgetConfig: LockScreenStatsWidgetConfig {
     typealias WidgetData = HomeWidgetAllTimeData
     typealias ViewProvider = LockScreenMultiStatWidgetViewProvider

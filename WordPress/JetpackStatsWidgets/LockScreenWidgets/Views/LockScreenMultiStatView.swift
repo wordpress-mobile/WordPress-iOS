@@ -1,7 +1,6 @@
 import SwiftUI
 import WidgetKit
 
-@available(iOS 16.0, *)
 struct LockScreenMultiStatView: View {
     @Environment(\.widgetFamily) var family: WidgetFamily
     let viewModel: LockScreenMultiStatViewModel
@@ -61,7 +60,6 @@ struct LockScreenMultiStatView: View {
     }
 }
 
-@available(iOS 16.0, *)
 struct LockScreenMultiStatView_Previews: PreviewProvider {
     static let viewModels = [
         LockScreenMultiStatViewModel(
