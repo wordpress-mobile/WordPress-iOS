@@ -25,7 +25,6 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
     private weak var parentViewController: BlogDashboardViewController?
     private weak var blogDetailsViewController: BlogDetailsViewController?
     private var cancellables: [AnyCancellable] = []
-    private var wpClient: WordPressClient?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -43,12 +42,10 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
 
     func configure(
         viewModel: DashboardQuickActionsViewModel,
-        viewController: BlogDashboardViewController,
-        wpClient: WordPressClient?
+        viewController: BlogDashboardViewController
     ) {
         self.parentViewController = viewController
         self.viewModel = viewModel
-        self.wpClient = wpClient
 
         cancellables = []
 
@@ -84,10 +81,6 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
         cell.backgroundColor = .clear
         cell.accessoryType = .disclosureIndicator
         cell.isSeparatorHidden = indexPath.row == (items.count - 1)
-
-        if self.wpClient == nil {
-            cell.disable()
-        }
 
         return cell
     }

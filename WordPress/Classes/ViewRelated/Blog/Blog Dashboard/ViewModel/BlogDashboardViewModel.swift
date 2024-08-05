@@ -69,7 +69,7 @@ final class BlogDashboardViewModel {
             case .quickActions:
                 let cellType = DashboardQuickActionsCardCell.self
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellType.defaultReuseID, for: indexPath) as! DashboardQuickActionsCardCell
-                cell.configure(viewModel: quickActionsViewModel, viewController: viewController, wpClient: wordpressClient)
+                cell.configure(viewModel: quickActionsViewModel, viewController: viewController)
                 return cell
             case .cards(let cardModel):
                 let cellType = cardModel.cardType.cell
