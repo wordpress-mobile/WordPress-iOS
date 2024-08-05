@@ -158,16 +158,10 @@ class SelfHostedLoginViewModel: LoginWithUrlView.ViewModel {
         let result = try await self.loginClient.performLoginAutodiscovery(for: userInput)
         var mutableAuthURL = URL(string: result.loginUrl.url())!
 
-        var appNameValue = AppConfiguration.isJetpack ? "Jetpack iOS" : "WordPress iOS"
-
-        #if os(macOS)
-        if let deviceName = Host.current().localizedName {
-            appNameValue += " - \(deviceName)"
-        }
-        #else
+        let appName = AppConfiguration.isJetpack ? "Jetpack iOS" : "WordPress iOS"
         let deviceName = await UIDevice.current.name
-        appNameValue += " - \(deviceName)"
-        #endif
+        let timestamp = ISO8601DateFormatter.string(from: Date(), timeZone: .current)
+        let appNameValue = "\(appName) - \(deviceName) (\(timestamp))"
 
         if #available(iOS 16.0, *) {
             mutableAuthURL.append(queryItems: [
