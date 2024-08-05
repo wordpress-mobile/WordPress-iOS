@@ -1,12 +1,9 @@
 import Foundation
 
 struct BlogListConfiguration {
-    var shouldHideSelfHostedSites: Bool
-    var shouldHideBlogsNotSupportingDomains: Bool
+    var shouldHideSelfHostedSites = false
+    var shouldHideBlogsNotSupportingDomains = false
     var analyticsSource: String?
 
-    static let defaultConfig: BlogListConfiguration = .init(
-        shouldHideSelfHostedSites: false,
-        shouldHideBlogsNotSupportingDomains: false
-    )
+    static let defaultConfig: BlogListConfiguration = .init()
 }
