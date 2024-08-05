@@ -144,16 +144,6 @@ final class BlogBuilder {
         return self
     }
 
-    func with(pinnedDate: Date?) -> Self {
-        blog.pinnedDate = pinnedDate
-        return self
-    }
-
-    func with(lastUsed: Date?) -> Self {
-        blog.lastUsed = lastUsed
-        return self
-    }
-
     func with(url: String) -> Self {
         blog.url = url
 

@@ -173,10 +173,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite, nullable) NSDictionary *capabilities;
 @property (nonatomic, strong, readwrite, nullable) NSSet<QuickStartTourState *> *quickStartTours;
 @property (nonatomic, strong, readwrite, nullable) NSNumber *quickStartTypeValue;
-
-// Site Switcher Convenience Properties
-@property (nonatomic, strong, readwrite, nullable) NSDate *pinnedDate;
-@property (nonatomic, strong, readwrite, nullable) NSDate *lastUsed;
 /// The blog's user ID for the current user
 @property (nonatomic, strong, readwrite, nullable) NSNumber *userID;
 /// Disk quota for site, this is only available for WP.com sites
