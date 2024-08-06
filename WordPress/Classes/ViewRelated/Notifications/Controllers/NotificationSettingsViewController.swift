@@ -1,4 +1,5 @@
 import UIKit
+import SwiftUI
 import WordPressShared
 
 /// The purpose of this class is to retrieve the collection of NotificationSettings from WordPress.com
@@ -32,7 +33,7 @@ class NotificationSettingsViewController: UIViewController {
 
     // MARK: - Private Constants
 
-    fileprivate let blogReuseIdentifier = WPBlogTableViewCell.classNameWithoutNamespaces()
+    fileprivate let siteViewReuseIdentifier = "blogReuseID"
 
     fileprivate let defaultReuseIdentifier = WPTableViewCell.classNameWithoutNamespaces()
     fileprivate let switchReuseIdentifier = SwitchTableViewCell.classNameWithoutNamespaces()
@@ -93,8 +94,7 @@ class NotificationSettingsViewController: UIViewController {
     }
 
     fileprivate func setupTableView() {
-        // Register the cells
-        tableView.register(WPBlogTableViewCell.self, forCellReuseIdentifier: blogReuseIdentifier)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: siteViewReuseIdentifier)
         tableView.register(WPTableViewCell.self, forCellReuseIdentifier: defaultReuseIdentifier)
         tableView.register(SwitchTableViewCell.self, forCellReuseIdentifier: switchReuseIdentifier)
         tableView.dataSource = self
@@ -350,8 +350,10 @@ private extension NotificationSettingsViewController {
 
     func reusableIdentifierForIndexPath(_ indexPath: IndexPath) -> String {
         switch section(at: indexPath.section) {
-        case .blog where !isPaginationRow(indexPath), .followedSites where !isPaginationRow(indexPath):
-            return blogReuseIdentifier
+        case .followedSites where !isPaginationRow(indexPath):
+            return siteViewReuseIdentifier
+        case .blog where !isPaginationRow(indexPath):
+            return siteViewReuseIdentifier
         case .notificationControl:
             return switchReuseIdentifier
         default:
@@ -369,19 +371,11 @@ private extension NotificationSettingsViewController {
             return
         }
 
-        if let site = siteTopic(at: indexPath) {
-            configureBlogCellStyle(cell)
-
-            cell.imageView?.image = .siteIconPlaceholder
-
+        if let topic = siteTopic(at: indexPath) {
+            cell.contentConfiguration = UIHostingConfiguration {
+                NotificationSettingsSiteView(viewModel: .init(topic: topic))
+            }.margins(.vertical, 9)
             cell.accessoryType = .disclosureIndicator
-            cell.imageView?.backgroundColor = .neutral(.shade5)
-
-            cell.textLabel?.text = site.title
-            cell.detailTextLabel?.text = URL(string: site.siteURL)?.host
-            cell.imageView?.downloadSiteIcon(at: site.siteBlavatar)
-
-            cell.layoutSubviews()
             return
         }
 
@@ -397,16 +391,13 @@ private extension NotificationSettingsViewController {
 
         switch settings.channel {
         case .blog:
-            configureBlogCellStyle(cell)
-
-            cell.textLabel?.text = settings.blog?.settings?.name ?? settings.channel.description()
-            cell.detailTextLabel?.text = settings.blog?.displayURL as String? ?? String()
-            cell.accessoryType = .disclosureIndicator
-
             if let blog = settings.blog {
-                cell.imageView?.downloadSiteIcon(for: blog)
+                cell.contentConfiguration = UIHostingConfiguration {
+                    NotificationSettingsSiteView(viewModel: .init(blog: blog))
+                }.margins(.vertical, 9)
+                cell.accessoryType = .disclosureIndicator
             } else {
-                cell.imageView?.image = .siteIconPlaceholder
+                wpAssertionFailure("invalid_state")
             }
         default:
             cell.textLabel?.text = settings.channel.description()
@@ -414,17 +405,6 @@ private extension NotificationSettingsViewController {
             cell.accessoryType = .disclosureIndicator
             WPStyleGuide.configureTableViewCell(cell)
         }
-    }
-
-    func configureBlogCellStyle(_ cell: UITableViewCell) {
-        cell.imageView?.layer.cornerRadius = 6
-        cell.imageView?.layer.cornerCurve = .continuous
-        cell.imageView?.layer.masksToBounds = true
-
-        cell.textLabel?.font = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .medium)
-        cell.textLabel?.textColor = .label
-        cell.detailTextLabel?.font = WPStyleGuide.fontForTextStyle(.footnote)
-        cell.detailTextLabel?.textColor = .secondaryLabel
     }
 
     func siteTopic(at index: IndexPath) -> ReaderSiteTopic? {

@@ -34,6 +34,12 @@ struct SiteIconViewModel {
             self.host = MediaHost(with: blog)
         }
     }
+
+    init(readerSiteTopic: ReaderSiteTopic, size: Size = .regular) {
+        self.size = size
+        self.firstLetter = readerSiteTopic.title.first
+        self.imageURL = SiteIconViewModel.optimizedBlavatarURL(from: readerSiteTopic.siteBlavatar, imageSize: size.size)
+    }
 }
 
 extension SiteIconViewModel {
@@ -54,7 +60,7 @@ extension SiteIconViewModel {
         return parseURL(path: path, query: query)
     }
 
-    private static func optimizedBlavatarURL(from path: String, imageSize: CGSize) -> URL? {
+    static func optimizedBlavatarURL(from path: String, imageSize: CGSize) -> URL? {
         let size = imageSize.scaled(by: UITraitCollection.current.displayScale)
         let query = String(format: "d=404&s=%d", Int(max(size.width, size.height)))
         return parseURL(path: path, query: query)

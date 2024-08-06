@@ -1,4 +1,3 @@
-import DesignSystem
 import SwiftUI
 import WordPressShared
 
@@ -6,19 +5,18 @@ struct BlogListSiteView: View {
     let site: BlogListSiteViewModel
 
     var body: some View {
-        HStack(alignment: .center, spacing: .DS.Padding.double) {
+        HStack(alignment: .center, spacing: 16) {
             SiteIconView(viewModel: site.icon)
                 .frame(width: 40, height: 40)
 
             VStack(alignment: .leading) {
                 Text(site.title)
                     .font(.callout.weight(.medium))
-                    .foregroundStyle(Color.DS.Foreground.primary)
                     .lineLimit(2)
 
                 Text(site.domain)
                     .font(.footnote)
-                    .foregroundStyle(Color.DS.Foreground.secondary)
+                    .foregroundStyle(.secondary)
                     .lineLimit(1)
             }
         }
