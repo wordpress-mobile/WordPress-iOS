@@ -1,5 +1,4 @@
 import Foundation
-import CoreTelephony
 import WordPressAuthenticator
 import WordPressKit
 import WordPressShared
@@ -215,7 +214,6 @@ protocol ZendeskUtilsProtocol {
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.appVersion, value: ZendeskUtils.appVersion))
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.allBlogs, value: ZendeskUtils.getBlogInformation()))
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.deviceFreeSpace, value: ZendeskUtils.getDeviceFreeSpace()))
-        ticketFields.append(CustomField(fieldId: TicketFieldIDs.networkInformation, value: ZendeskUtils.getNetworkInformation()))
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.logs, value: ZendeskUtils.getEncryptedLogUUID()))
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.currentSite, value: ZendeskUtils.getCurrentSiteDescription()))
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.sourcePlatform, value: Constants.sourcePlatform))
@@ -817,34 +815,6 @@ private extension ZendeskUtils {
         return tags
     }
 
-    static func getNetworkInformation() -> String {
-
-        var networkInformation = [String]()
-
-        let reachibilityStatus = ZDKReachability.forInternetConnection().currentReachabilityStatus()
-
-        let networkType: String = {
-            switch reachibilityStatus {
-            case .reachableViaWiFi:
-                return Constants.networkWiFi
-            case .reachableViaWWAN:
-                return Constants.networkWWAN
-            default:
-                return Constants.unknownValue
-            }
-        }()
-
-        let networkCarrier = CTTelephonyNetworkInfo().serviceSubscriberCellularProviders?.values.first
-        let carrierName = networkCarrier?.carrierName ?? Constants.unknownValue
-        let carrierCountryCode = networkCarrier?.isoCountryCode ?? Constants.unknownValue
-
-        networkInformation.append("\(Constants.networkTypeLabel) \(networkType)")
-        networkInformation.append("\(Constants.networkCarrierLabel) \(carrierName)")
-        networkInformation.append("\(Constants.networkCountryCodeLabel) \(carrierCountryCode)")
-
-        return networkInformation.joined(separator: "\n")
-    }
-
     func trackSourceEvent(_ event: WPAnalyticsStat) {
         guard let sourceTag = sourceTag else {
             WPAnalytics.track(event)
@@ -1136,9 +1106,6 @@ private extension ZendeskUtils {
         static let wpComTag = "wpcom"
         static let networkWiFi = "WiFi"
         static let networkWWAN = "Mobile"
-        static let networkTypeLabel = "Network Type:"
-        static let networkCarrierLabel = "Carrier:"
-        static let networkCountryCodeLabel = "Country Code:"
         static let zendeskProfileUDKey = "wp_zendesk_profile"
         static let profileEmailKey = "email"
         static let profileNameKey = "name"
@@ -1157,7 +1124,6 @@ private extension ZendeskUtils {
         static let appVersion: Int64 = 360000086866
         static let allBlogs: Int64 = 360000087183
         static let deviceFreeSpace: Int64 = 360000089123
-        static let networkInformation: Int64 = 360000086966
         static let logs: Int64 = 22871957
         static let currentSite: Int64 = 360000103103
         static let sourcePlatform: Int64 = 360009311651
