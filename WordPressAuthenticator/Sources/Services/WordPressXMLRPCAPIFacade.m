@@ -68,7 +68,7 @@ NSString *const XMLRPCOriginalErrorKey = @"XMLRPCOriginalErrorKey";
 {
     
     WordPressOrgXMLRPCApi *api = [[WordPressOrgXMLRPCApi alloc] initWithEndpoint:xmlrpc userAgent:self.userAgent];
-    [api checkCredentials:username password:password success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+    [api checkCredentials:username password:password success:^(id responseObject, NSHTTPURLResponse *httpResponse __unused) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (![responseObject isKindOfClass:[NSDictionary class]]) {
                 if (failure) {
@@ -83,7 +83,7 @@ NSString *const XMLRPCOriginalErrorKey = @"XMLRPCOriginalErrorKey";
             }
         });
 
-    } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+    } failure:^(NSError *error, NSHTTPURLResponse *httpResponse __unused) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (failure) {
                 failure(error);
