@@ -1,4 +1,5 @@
 import UIKit
+import SwiftUI
 
 final class MigrationWelcomeViewController: UIViewController {
 
@@ -32,6 +33,8 @@ final class MigrationWelcomeViewController: UIViewController {
         }
         return actionsView
     }()
+
+    private let blogCellID = "blogCelID"
 
     // MARK: - Lifecycle
 
@@ -71,7 +74,7 @@ final class MigrationWelcomeViewController: UIViewController {
     private func setupTableView() {
         self.tableView.backgroundColor = .clear
         self.tableView.directionalLayoutMargins.leading = Constants.tableViewLeadingMargin
-        self.tableView.register(MigrationWelcomeBlogTableViewCell.self, forCellReuseIdentifier: MigrationWelcomeBlogTableViewCell.defaultReuseID)
+        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: blogCellID)
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
         self.tableView.dataSource = self
         self.tableView.tableHeaderView = headerView
@@ -125,17 +128,19 @@ final class MigrationWelcomeViewController: UIViewController {
 extension MigrationWelcomeViewController: UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel.blogListDataSource.numberOfSections(in: tableView)
+        1
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.blogListDataSource.tableView(tableView, numberOfRowsInSection: section)
+        viewModel.sites.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let blog = viewModel.blogListDataSource.blog(at: indexPath)
-        let cell = tableView.dequeueReusableCell(withIdentifier: MigrationWelcomeBlogTableViewCell.defaultReuseID, for: indexPath) as! MigrationWelcomeBlogTableViewCell
-        cell.update(with: blog)
+        let blog = viewModel.sites[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: blogCellID, for: indexPath)
+        cell.contentConfiguration = UIHostingConfiguration {
+            BlogListSiteView(site: blog)
+        }
         return cell
     }
 }
