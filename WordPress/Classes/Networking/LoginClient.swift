@@ -163,28 +163,11 @@ class SelfHostedLoginViewModel: LoginWithUrlView.ViewModel {
         let timestamp = ISO8601DateFormatter.string(from: Date(), timeZone: .current)
         let appNameValue = "\(appName) - \(deviceName) (\(timestamp))"
 
-        if #available(iOS 16.0, *) {
-            mutableAuthURL.append(queryItems: [
-                URLQueryItem(name: "app_name", value: appNameValue),
-                URLQueryItem(name: "app_id", value: "00000000-0000-4000-8000-000000000000"),
-                URLQueryItem(name: "success_url", value: "x-wpcom-login://login-confirmation")
-            ])
-        } else {
-            var components = URLComponents(
-                url: mutableAuthURL,
-                resolvingAgainstBaseURL: false
-            )
-
-            components?.queryItems?.append(contentsOf: [
-                URLQueryItem(name: "app_name", value: appNameValue),
-                URLQueryItem(name: "app_id", value: "00000000-0000-4000-8000-000000000000"),
-                URLQueryItem(name: "success_url", value: "x-wpcom-login://login-confirmation")
-            ])
-
-            if let url = components?.url {
-                mutableAuthURL = url
-            }
-        }
+        mutableAuthURL.append(queryItems: [
+            URLQueryItem(name: "app_name", value: appNameValue),
+            URLQueryItem(name: "app_id", value: "00000000-0000-4000-8000-000000000000"),
+            URLQueryItem(name: "success_url", value: "x-wpcom-login://login-confirmation")
+        ])
 
         return mutableAuthURL
     }
