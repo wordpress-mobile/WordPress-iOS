@@ -41,7 +41,7 @@ extension UIImageView {
         imageSize: CGSize = SiteIconDefaults.imageSize,
         placeholderImage: UIImage?
     ) {
-        guard let siteIconURL = optimizedURL(for: path, imageSize: imageSize) else {
+        guard let siteIconURL = SiteIconViewModel.optimizedURL(for: path, imageSize: imageSize) else {
             image = placeholderImage
             return
         }
@@ -85,7 +85,7 @@ extension UIImageView {
                     self.image = image
                 }
 
-                self.removePlaceholderBorder()
+                self.layer.borderColor = UIColor.clear.cgColor
             case .failure(let error):
                 if case .requestCancelled = error {
                     // Do not log intentionally cancelled requests as errors.
@@ -108,7 +108,7 @@ extension UIImageView {
         imageSize: CGSize = SiteIconDefaults.imageSize,
         placeholderImage: UIImage? = .siteIconPlaceholder
     ) {
-        guard let siteIconPath = blog.icon, let siteIconURL = optimizedURL(for: siteIconPath, imageSize: imageSize) else {
+        guard let siteIconPath = blog.icon, let siteIconURL = SiteIconViewModel.optimizedURL(for: siteIconPath, imageSize: imageSize, isP2: blog.isAutomatticP2) else {
 
             if blog.isWPForTeams() && placeholderImage == .siteIconPlaceholder {
                 image = UIImage.gridicon(.p2, size: imageSize)
@@ -138,101 +138,6 @@ extension UIImageView {
     }
 }
 
-// MARK: - Private Methods
-//
-extension UIImageView {
-    /// Returns the Size Optimized URL for a given Path.
-    ///
-    func optimizedURL(for path: String, imageSize: CGSize = SiteIconDefaults.imageSize) -> URL? {
-        if isPhotonURL(path) || isDotcomURL(path) {
-            return optimizedDotcomURL(from: path, imageSize: imageSize)
-        }
-
-        if isBlavatarURL(path) {
-            return optimizedBlavatarURL(from: path, imageSize: imageSize)
-        }
-
-        return optimizedPhotonURL(from: path, imageSize: imageSize)
-    }
-
-    // MARK: - Private Helpers
-
-    /// Returns the download URL for a square icon with a size of `imageSize` in pixels.
-    ///
-    /// - Parameter path: SiteIcon URL (string encoded).
-    ///
-    private func optimizedDotcomURL(from path: String, imageSize: CGSize = SiteIconDefaults.imageSize) -> URL? {
-        let size = imageSize.toPixels()
-        let query = String(format: "w=%d&h=%d", Int(size.width), Int(size.height))
-
-        return parseURL(path: path, query: query)
-    }
-
-    /// Returns the icon URL corresponding to the provided path
-    ///
-    /// - Parameter path: Blavatar URL (string encoded).
-    ///
-    private func optimizedBlavatarURL(from path: String, imageSize: CGSize = SiteIconDefaults.imageSize) -> URL? {
-        let size = imageSize.toPixels()
-        let query = String(format: "d=404&s=%d", Int(max(size.width, size.height)))
-
-        return parseURL(path: path, query: query)
-    }
-
-    /// Returs the photon URL for the provided path
-    ///
-    /// - Parameter siteIconPath: SiteIcon URL (string encoded).
-    ///
-    private func optimizedPhotonURL(from path: String, imageSize: CGSize = SiteIconDefaults.imageSize) -> URL? {
-        guard let url = URL(string: path) else {
-            return nil
-        }
-
-        return PhotonImageURLHelper.photonURL(with: imageSize, forImageURL: url)
-    }
-
-    /// Indicates if the received URL is hosted at WordPress.com
-    ///
-    private func isDotcomURL(_ path: String) -> Bool {
-        return path.contains(".files.wordpress.com")
-    }
-
-    /// Indicates if the received URL is hosted at Gravatar.com
-    ///
-    private func isBlavatarURL(_ path: String) -> Bool {
-        return path.contains("gravatar.com/blavatar")
-    }
-
-    /// Indicates if the received URL is a Photon Endpoint
-    /// Possible matches are "i0.wp.com", "i1.wp.com" & "i2.wp.com" -> https://developer.wordpress.com/docs/photon/
-    ///
-    private func isPhotonURL(_ path: String) -> Bool {
-        return path.contains(".wp.com")
-    }
-
-    /// Attempts to parse the URL contained within a Path, with a given query. Returns nil on failure.
-    ///
-    private func parseURL(path: String, query: String) -> URL? {
-        guard var components = URLComponents(string: path) else {
-            return nil
-        }
-
-        components.query = query
-
-        return components.url
-    }
-}
-
-// MARK: - Border handling
-
-@objc
-extension UIImageView {
-
-    func removePlaceholderBorder() {
-        layer.borderColor = UIColor.clear.cgColor
-    }
-}
-
 // MARK: - Logging Support
 
 /// This is just a temporary extension to try and narrow down the caused behind this issue: https://sentry.io/share/issue/3da4662c65224346bb3a731c131df13d/
@@ -252,21 +157,5 @@ private extension UIImageView {
         }
 
         DDLogInfo("URL optimized from \(original) to \(optimized.absoluteString) for blog \(blogInfo)")
-    }
-}
-
-// MARK: - CGFloat Extension
-
-private extension CGSize {
-
-    func toPixels() -> CGSize {
-        return CGSize(width: width.toPixels(), height: height.toPixels())
-    }
-}
-
-private extension CGFloat {
-
-    func toPixels() -> CGFloat {
-        return self * UIScreen.main.scale
     }
 }

@@ -9,9 +9,8 @@ class BloggingPromptsFeatureIntroduction: FeatureIntroductionViewController {
     private var interactionType: BloggingPromptsFeatureIntroduction.InteractionType
 
     enum InteractionType {
-        // Two buttons are displayed, both perform an action. Shows a site picker
-        // if `blog` is `nil` and user has multiple sites.
-        case actionable(blog: Blog?)
+        // Two buttons are displayed, both perform an action.
+        case actionable(blog: Blog)
         // One button is displayed, which only dismisses the view.
         case informational
 

@@ -2,7 +2,6 @@ import WidgetKit
 import SwiftUI
 import JetpackStatsWidgetsCore
 
-@available(iOS 16.0, *)
 struct LockScreenStatsWidget<T: LockScreenStatsWidgetConfig>: Widget {
     private let tracks = Tracks(appGroupName: WPAppGroupName)
     private let config: T

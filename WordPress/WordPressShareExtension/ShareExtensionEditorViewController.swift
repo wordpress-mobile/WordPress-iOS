@@ -981,9 +981,11 @@ extension ShareExtensionEditorViewController {
         alertController.popoverPresentationController?.sourceView = richTextView
         alertController.popoverPresentationController?.sourceRect = CGRect(origin: position, size: CGSize(width: 1, height: 1))
         alertController.popoverPresentationController?.permittedArrowDirections = .any
-        present(alertController, animated: true, completion: { () in
-            UIMenuController.shared.hideMenu()
-        })
+        present(alertController, animated: true) {
+            for interaction in self.richTextView.interactions {
+                (interaction as? UIEditMenuInteraction)?.dismissMenu()
+            }
+        }
     }
 }
 

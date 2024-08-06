@@ -1,7 +1,6 @@
 import SwiftUI
 import WidgetKit
 
-@available(iOS 16.0, *)
 struct LockScreenUnconfiguredView: View {
     @Environment(\.widgetFamily) var family: WidgetFamily
     let viewModel: LockScreenUnconfiguredViewModel
@@ -22,7 +21,6 @@ struct LockScreenUnconfiguredView: View {
     }
 }
 
-@available(iOS 16.0, *)
 struct LockScreenUnconfiguredView_Previews: PreviewProvider {
     static let viewModel = LockScreenUnconfiguredViewModel(
         message: "Log in to Jetpack to see today's stats."

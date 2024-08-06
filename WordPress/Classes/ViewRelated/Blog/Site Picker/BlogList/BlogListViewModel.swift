@@ -16,14 +16,17 @@ final class BlogListViewModel: NSObject, ObservableObject {
     private let contextManager: ContextManager
     private let blogService: BlogService
     private let eventTracker: EventTracker
+    private let recentSitesService: RecentSitesService
     private var syncBlogsTask: Task<Void, Error>?
 
     init(configuration: BlogListConfiguration = .defaultConfig,
          contextManager: ContextManager = ContextManager.sharedInstance(),
+         recentSitesService: RecentSitesService = RecentSitesService(),
          eventTracker: EventTracker = DefaultEventTracker()) {
         self.configuration = configuration
         self.contextManager = contextManager
         self.blogService = BlogService(coreDataStack: contextManager)
+        self.recentSitesService = recentSitesService
         self.eventTracker = eventTracker
         self.fetchedResultsController = createFetchedResultsController(in: contextManager.mainContext)
         super.init()
@@ -37,18 +40,13 @@ final class BlogListViewModel: NSObject, ObservableObject {
         if selectedBlog() != blog {
             PushNotificationsManager.shared.deletePendingLocalNotifications()
         }
-        eventTracker.track(.siteSwitcherSiteTapped, properties: [
-            "section": blog.lastUsed != nil ? "recent" : "all"
-        ])
-        blog.lastUsed = Date()
+        eventTracker.track(.siteSwitcherSiteTapped)
+        recentSitesService.touch(blog: blog)
         contextManager.saveContextAndWait(contextManager.mainContext)
         return blog
     }
 
     func onAppear() {
-        if recentSites.isEmpty {
-            selectedBlog()?.lastUsed = Date()
-        }
         contextManager.save(contextManager.mainContext)
 
         Task {
@@ -80,19 +78,18 @@ final class BlogListViewModel: NSObject, ObservableObject {
     private func updateDisplayedSites() {
         rawSites = getFilteredSites(from: fetchedResultsController)
 
-        recentSites = rawSites
-            .filter { $0.lastUsed != nil }
-            .sorted { ($0.lastUsed ?? .distantPast) > ($1.lastUsed ?? .distantPast) }
-            .prefix(5)
+        var sitesByURL: [String: Blog] = [:]
+        for site in rawSites where site.url != nil {
+            sitesByURL[site.url!] = site
+        }
+
+        recentSites = recentSitesService.recentSites
+            .compactMap { sitesByURL[$0] }
             .map(BlogListSiteViewModel.init)
-            .sorted {
-                $0.title.localizedCaseInsensitiveCompare($1.title) == .orderedAscending
-            }
+            .sorted { $0.title.localizedCaseInsensitiveCompare($1.title) == .orderedAscending }
 
         allSites = rawSites.map(BlogListSiteViewModel.init)
-            .sorted {
-                $0.title.localizedCaseInsensitiveCompare($1.title) == .orderedAscending
-            }
+            .sorted { $0.title.localizedCaseInsensitiveCompare($1.title) == .orderedAscending }
 
         updateSearchResults()
     }
@@ -148,7 +145,6 @@ final class BlogListViewModel: NSObject, ObservableObject {
         }
         return blogs
     }
-
 }
 
 extension BlogListViewModel: NSFetchedResultsControllerDelegate {
@@ -161,7 +157,7 @@ private func createFetchedResultsController(in context: NSManagedObjectContext) 
     let request = NSFetchRequest<Blog>(entityName: NSStringFromClass(Blog.self))
     /// - warning: sorting happens in the ViewModel. It's irrelevant what descriptor
     /// is provided here, but Core Data requires one.
-    request.sortDescriptors = [NSSortDescriptor(keyPath: \Blog.lastUsed, ascending: true)]
+    request.sortDescriptors = [NSSortDescriptor(keyPath: \Blog.url, ascending: true)]
     return NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
 }
 

@@ -9,15 +9,6 @@ protocol SettingsController: ImmuTableController {
 
 // MARK: - Actions
 extension SettingsController {
-    func insideNavigationController(_ generator: @escaping ImmuTableRowControllerGenerator) -> ImmuTableRowControllerGenerator {
-        return { row in
-            let controller = generator(row)
-            let navigation = UINavigationController(rootViewController: controller)
-            navigation.modalPresentationStyle = .formSheet
-            return navigation
-        }
-    }
-
     func editText(_ changeType: @escaping AccountSettingsChangeWithString, hint: String? = nil, service: AccountSettingsService) -> (ImmuTableRow) -> SettingsTextViewController {
         return { row in
             let editableRow = row as! EditableTextRow

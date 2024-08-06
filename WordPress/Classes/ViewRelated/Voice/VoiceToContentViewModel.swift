@@ -187,13 +187,8 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
                 startProcessing()
                 return
             }
-
-            if #available(iOS 16.0, *) {
-                self.subtitle = Duration.seconds(timeRemaining)
-                    .formatted(.time(pattern: .minuteSecond(padMinuteToLength: 2)))
-            } else {
-                self.subtitle = timeRemaining.minuteSecond
-            }
+            self.subtitle = Duration.seconds(timeRemaining)
+                .formatted(.time(pattern: .minuteSecond(padMinuteToLength: 2)))
         }
     }
 

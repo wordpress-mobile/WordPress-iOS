@@ -3,11 +3,16 @@ import XCTest
 
 final class BlogListViewModelTests: CoreDataTestCase {
     private var viewModel: BlogListViewModel!
+    private let recentSitesService = RecentSitesService(database: EphemeralKeyValueDatabase())
 
     override func setUp() {
         super.setUp()
 
-        viewModel = BlogListViewModel(contextManager: contextManager)
+        setupViewModel()
+    }
+
+    private func setupViewModel() {
+        viewModel = BlogListViewModel(contextManager: contextManager, recentSitesService: recentSitesService)
     }
 
     // MARK: - Tests for Retrieval Functions
@@ -20,11 +25,13 @@ final class BlogListViewModelTests: CoreDataTestCase {
         let siteID = 34984
         let site = BlogBuilder(mainContext)
             .with(dotComID: siteID)
-            .with(lastUsed: Date())
+            .with(url: "test")
             .build()
         try mainContext.save()
 
-        viewModel = BlogListViewModel(contextManager: contextManager)
+        recentSitesService.touch(blog: site)
+
+        setupViewModel()
 
         XCTAssertEqual(viewModel.recentSites.first?.id, site.objectID)
         XCTAssertEqual(viewModel.recentSites.count, 1)
@@ -35,28 +42,24 @@ final class BlogListViewModelTests: CoreDataTestCase {
         let _ = BlogBuilder(mainContext)
             .with(siteName: "A")
             .with(dotComID: siteID1)
-            .with(lastUsed: Date())
             .build()
 
         let siteID2 = 54317
         let _ = BlogBuilder(mainContext)
             .with(siteName: "51 Zone")
             .with(dotComID: siteID2)
-            .with(pinnedDate: Date())
             .build()
 
         let siteID3 = 13287
         let _ = BlogBuilder(mainContext)
             .with(siteName: "a")
             .with(dotComID: siteID3)
-            .with(pinnedDate: Date())
             .build()
 
         let siteID4 = 54317
         let _ = BlogBuilder(mainContext)
             .with(siteName: ".Org")
             .with(dotComID: siteID4)
-            .with(pinnedDate: Date())
             .build()
 
         let siteID5 = 43788
@@ -67,7 +70,7 @@ final class BlogListViewModelTests: CoreDataTestCase {
 
         try mainContext.save()
 
-        viewModel = BlogListViewModel(contextManager: contextManager)
+        setupViewModel()
 
         let displayedNames = viewModel.allSites.map(\.title)
         XCTAssertEqual(displayedNames, [".Org", "51 Zone", "a", "A", "C"])

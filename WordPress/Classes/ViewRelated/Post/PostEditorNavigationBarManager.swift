@@ -40,8 +40,8 @@ class PostEditorNavigationBarManager {
 
     /// Dismiss Button
     ///
-    let siteIconView: SiteIconView = {
-        let siteIconView = SiteIconView(frame: .zero)
+    let siteIconView: SiteDetailsSiteIconView = {
+        let siteIconView = SiteDetailsSiteIconView(frame: .zero)
         siteIconView.translatesAutoresizingMaskIntoConstraints = false
         siteIconView.imageView.sizeToFit()
 

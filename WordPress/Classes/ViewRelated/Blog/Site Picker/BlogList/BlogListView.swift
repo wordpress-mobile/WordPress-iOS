@@ -67,7 +67,7 @@ struct BlogListView: View {
         } label: {
             BlogListSiteView(site: site)
         }
-        if #available(iOS 16, *), let siteURL = site.siteURL {
+        if let siteURL = site.siteURL {
             view.swipeActions(edge: .leading) {
                 Button(SharedStrings.Button.view, systemImage: "safari", action: site.buttonViewTapped)
                     .tint(Color.blue)

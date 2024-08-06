@@ -93,8 +93,6 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 @dynamic quotaSpaceUsed;
 @dynamic pageTemplateCategories;
 @dynamic publicizeInfo;
-@dynamic pinnedDate;
-@dynamic lastUsed;
 
 @synthesize isSyncingPosts;
 @synthesize isSyncingPages;
@@ -629,10 +627,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
         case BlogFeaturePages:
             return [self isListingPagesAllowed];
         case BlogFeatureSiteMonitoring:
-            if (@available(iOS 16, *)) {
-                return [self isAdmin] && [self isAtomic];
-            }
-            return false;
+            return [self isAdmin] && [self isAtomic];
     }
 }
 

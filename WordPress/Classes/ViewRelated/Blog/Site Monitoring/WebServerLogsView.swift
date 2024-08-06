@@ -2,7 +2,6 @@ import SwiftUI
 import WordPressKit
 import UIKit
 
-@available(iOS 16, *)
 struct WebServerLogsView: View {
     @StateObject var viewModel: WebServerLogsViewModel
     @State private var searchCriteria = WebServerLogsSearchCriteria(startDate: Date.oneWeekAgo())

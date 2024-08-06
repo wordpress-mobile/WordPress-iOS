@@ -107,7 +107,7 @@ class RegisterDomainCoordinator {
             shouldHideBlogsNotSupportingDomains: true,
             analyticsSource: analyticsSource
         )
-        let sitePickerView = RegisterDomainSitePickerView(viewModel: BlogListViewModel(configuration: configuration)) { [weak self] selectedBlog in
+        let sitePickerView = SitePickerView(viewModel: BlogListViewModel(configuration: configuration)) { [weak self] selectedBlog in
             guard let self else { return }
             SVProgressHUD.show()
             self.createCart { [weak self] result in

@@ -516,7 +516,8 @@ private extension DashboardPromptsCardCell {
 
     func learnMoreTapped() {
         WPAnalytics.track(.promptsDashboardCardMenuLearnMore)
-        guard let presenterViewController = presenterViewController else {
+        guard let presenterViewController = presenterViewController, let blog else {
+            wpAssertionFailure("invalid_state")
             return
         }
         BloggingPromptsIntroductionPresenter(interactionType: .actionable(blog: blog)).present(from: presenterViewController)
