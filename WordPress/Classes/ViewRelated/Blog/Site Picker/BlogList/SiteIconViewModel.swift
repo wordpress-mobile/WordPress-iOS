@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 import WordPressShared
+import WordPressKit
 
 struct SiteIconViewModel {
     var imageURL: URL?
@@ -54,7 +55,7 @@ extension SiteIconViewModel {
         return parseURL(path: path, query: query)
     }
 
-    private static func optimizedBlavatarURL(from path: String, imageSize: CGSize) -> URL? {
+    static func optimizedBlavatarURL(from path: String, imageSize: CGSize) -> URL? {
         let size = imageSize.scaled(by: UITraitCollection.current.displayScale)
         let query = String(format: "d=404&s=%d", Int(max(size.width, size.height)))
         return parseURL(path: path, query: query)
