@@ -27,7 +27,9 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
     }()
 
     private static var calendar: Calendar = {
-        .init(identifier: .gregorian)
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = .gmt
+        return calendar
     }()
 
     private var api: MockWordPressComRestApi!
