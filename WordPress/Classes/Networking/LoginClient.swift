@@ -7,7 +7,9 @@ import AuthenticationServices
 import WordPressKit
 import WordPressAuthenticator
 
-actor LoginClient {
+final actor LoginClient {
+
+    static let callbackURLScheme = "x-wpcom-login"
 
     struct ApiDetails {
         let rootUrl: ParsedUrl
@@ -15,7 +17,13 @@ actor LoginClient {
     }
 
     enum LoginClientError: Error {
+        case invalidSiteAddress(UrlDiscoveryError)
         case missingLoginUrl
+        case authenticationFailure(ASWebAuthenticationSessionError)
+        case invalidApplicationPasswordCallback
+        case loadingSiteInfoFailure
+        case savingSiteFailure
+        case unknown(error: Error)
     }
 
     private let internalClient: WordPressLoginClient
@@ -24,36 +32,35 @@ actor LoginClient {
         self.internalClient = WordPressLoginClient(urlSession: session)
     }
 
-    func performLoginAutodiscovery(for url: URL) async throws -> ApiDetails {
-        try await performLoginAutodiscovery(for: url.absoluteString)
+    func performLoginAutodiscovery(for url: URL) async -> Result<ApiDetails, LoginClientError> {
+        let result = await performLoginAutodiscovery(for: url.absoluteString)
+
+        if case let .failure(error) = result {
+            trackTypedError(error, url: url.absoluteString)
+        }
+
+        return result
     }
 
-    func performLoginAutodiscovery(for string: String) async throws -> ApiDetails {
+    private func performLoginAutodiscovery(for string: String) async -> Result<ApiDetails, LoginClientError> {
+        let result: UrlDiscoverySuccess
         do {
-            let result = try await internalClient.discoverLoginUrl(for: string)
-            trackSuccess(url: string)
-
-            // All sites should have some form of authentication we can use
-            guard let passwordAuthenticationUrl = result.apiDetails.findApplicationPasswordsAuthenticationUrl() else {
-                throw LoginClientError.missingLoginUrl
-            }
-
-            let details = ApiDetails(
-                rootUrl: result.apiRootUrl,
-                loginUrl: try ParsedUrl.parse(input: passwordAuthenticationUrl)
-            )
-
-            return details
+            result = try await internalClient.discoverLoginUrl(for: string)
+        } catch let error as UrlDiscoveryError {
+            DDLogError("Discovery login url error: \(error)")
+            return .failure(.invalidSiteAddress(error))
+        } catch {
+            DDLogError("Discovery login url error: \(error)")
+            return .failure(.unknown(error: error))
         }
-        catch let error as LoginClientError { // We can have nicer logging for typed errors
-            trackTypedError(error, url: string)
-            throw error
+
+        // All sites should have some form of authentication we can use
+        guard let passwordAuthenticationUrl = result.apiDetails.findApplicationPasswordsAuthenticationUrl(),
+              let parsedLoginUrl = try? ParsedUrl.parse(input: passwordAuthenticationUrl) else {
+            return .failure(.missingLoginUrl)
         }
-        catch {
-            await WordPressAppDelegate.crashLogging?.logError(error) // This might result in a *lot* of errors...
-            trackError(error, url: string)
-            throw error
-        }
+
+        return .success(ApiDetails(rootUrl: result.apiRootUrl, loginUrl: parsedLoginUrl))
     }
 
     private func trackSuccess(url: String) {
@@ -82,94 +89,91 @@ actor LoginClient {
         ])
     }
 
-    @MainActor
-    static func displaySelfHostedLoginView(in navigationController: UINavigationController) {
-        let loginClient = LoginClient(session: .shared)
-        let vm = SelfHostedLoginViewModel(loginClient: loginClient)
-        let loginViewController = UIHostingController(rootView: LoginWithUrlView(viewModel: vm))
-
-        vm.onLoginComplete = { [weak loginViewController] in
-            loginViewController?.dismiss(animated: true)
-        }
-
-        navigationController.pushViewController(loginViewController, animated: true)
-    }
-}
-
-class SelfHostedLoginViewModel: LoginWithUrlView.ViewModel {
-    private let loginClient: LoginClient
-    private let presentationContextProvider = SelfHostedLoginViewModelAuthenticationContextProvider()
-
-    var onLoginComplete: (() -> Void)?
-
-    init(loginClient: LoginClient) {
-        self.loginClient = loginClient
-        super.init()
-    }
-
-    override func startLogin() {
-        debugPrint("Attempting login with \(super.urlField)")
-        Task {
-            do {
-                let authUrl = try await self.buildLoginUrl(from: super.urlField)
-                debugPrint("Presenting Login Page \(authUrl)")
-
-                let urlWithToken = try await withUnsafeThrowingContinuation { continuation in
-                    let session = ASWebAuthenticationSession(url: authUrl, callbackURLScheme: "x-wpcom-login") { url, error in
-
-                        if let url {
-                            continuation.resume(returning: url)
-                        }
-
-                        if let error {
-                            continuation.resume(throwing: error)
-                        }
-                    }
-                    session.presentationContextProvider = self.presentationContextProvider
-                    session.start()
-                }
-
-                let credentials = try SelfHostedLoginDetails.fromApplicationPasswordResponse(urlWithToken)
-                let blogOptions = try await loadSiteOptions(details: credentials)
-
-                // Only store the new site after credentials are validated.
-                let _ = try await Blog.createRestApiBlog(with: credentials, in: ContextManager.shared)
-
-                // Automatically show the new site.
-                assert(WordPressAuthenticator.shared.delegate != nil)
-                let wporg = WordPressOrgCredentials(
-                    username: credentials.username,
-                    password: credentials.password,
-                    xmlrpc: credentials.derivedXMLRPCRoot.absoluteString,
-                    options: blogOptions
-                )
-                WordPressAuthenticator.shared.delegate!.sync(credentials: .init(wporg: wporg)) {
-                    NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification), object: nil)
-                }
-
-                self.onLoginComplete?()
-            } catch let err {
-                debugPrint(err.localizedDescription)
+    func login(site: String, from anchor: ASPresentationAnchor?) async -> Result<WordPressOrgCredentials, LoginClientError> {
+        let authURL = await buildLoginUrl(from: site)
+        switch authURL {
+        case let .success(authURL):
+            let urlWithToken = await presentWebView(authURL: authURL, from: anchor)
+            switch urlWithToken {
+            case let .success(urlWithToken):
+                return await handleAuthenticationCallback(urlWithToken)
+            case let .failure(error):
+                return .failure(error)
             }
+        case let .failure(error):
+            return .failure(error)
         }
     }
 
-    private func buildLoginUrl(from userInput: String) async throws -> URL {
-        let result = try await self.loginClient.performLoginAutodiscovery(for: userInput)
-        var mutableAuthURL = URL(string: result.loginUrl.url())!
+    @MainActor
+    func buildLoginUrl(from userInput: String) async -> Result<URL, LoginClientError> {
+        await self.performLoginAutodiscovery(for: userInput)
+            .map { result in
+                var mutableAuthURL = URL(string: result.loginUrl.url())!
 
-        let appName = AppConfiguration.isJetpack ? "Jetpack iOS" : "WordPress iOS"
-        let deviceName = await UIDevice.current.name
-        let timestamp = ISO8601DateFormatter.string(from: Date(), timeZone: .current)
-        let appNameValue = "\(appName) - \(deviceName) (\(timestamp))"
+                let appName = AppConfiguration.isJetpack ? "Jetpack iOS" : "WordPress iOS"
+                let deviceName = UIDevice.current.name
+                let timestamp = ISO8601DateFormatter.string(from: .now, timeZone: .current, formatOptions: .withInternetDateTime)
+                let appNameValue = "\(appName) - \(deviceName) (\(timestamp))"
 
-        mutableAuthURL.append(queryItems: [
-            URLQueryItem(name: "app_name", value: appNameValue),
-            URLQueryItem(name: "app_id", value: "00000000-0000-4000-8000-000000000000"),
-            URLQueryItem(name: "success_url", value: "x-wpcom-login://login-confirmation")
-        ])
+                mutableAuthURL.append(queryItems: [
+                    URLQueryItem(name: "app_name", value: appNameValue),
+                    URLQueryItem(name: "app_id", value: "00000000-0000-4000-8000-000000000000"),
+                    URLQueryItem(name: "success_url", value: "\(Self.callbackURLScheme)://login-confirmation")
+                ])
 
-        return mutableAuthURL
+                return mutableAuthURL
+            }
+    }
+
+    @MainActor
+    func presentWebView(authURL: URL, from anchor: ASPresentationAnchor?) async -> Result<URL, LoginClientError> {
+        debugPrint("Presenting Login Page \(authURL)")
+        let contextProvider = SelfHostedLoginViewModelAuthenticationContextProvider(anchor: anchor ?? ASPresentationAnchor())
+        return await withCheckedContinuation { continuation in
+            let session = ASWebAuthenticationSession(url: authURL, callbackURLScheme: LoginClient.callbackURLScheme) { url, error in
+                if let url {
+                    continuation.resume(returning: .success(url))
+                } else if let error = error as? ASWebAuthenticationSessionError {
+                    continuation.resume(returning: .failure(.authenticationFailure(error)))
+                } else {
+                    continuation.resume(returning: .failure(.invalidApplicationPasswordCallback))
+                }
+            }
+            session.presentationContextProvider = contextProvider
+            session.start()
+        }
+    }
+
+    func handleAuthenticationCallback(_ urlWithToken: URL) async -> Result<WordPressOrgCredentials, LoginClientError> {
+        let credentials: SelfHostedLoginDetails
+        do {
+            credentials = try SelfHostedLoginDetails.fromApplicationPasswordResponse(urlWithToken)
+        } catch {
+            return .failure(.invalidApplicationPasswordCallback)
+        }
+
+        let blogOptions: [AnyHashable: Any]
+        do {
+            blogOptions = try await loadSiteOptions(details: credentials)
+        } catch {
+            return .failure(.loadingSiteInfoFailure)
+        }
+
+        // Only store the new site after credentials are validated.
+        do {
+            let _ = try await Blog.createRestApiBlog(with: credentials, in: ContextManager.shared)
+        } catch {
+            return .failure(.savingSiteFailure)
+        }
+
+        let wporg = WordPressOrgCredentials(
+            username: credentials.username,
+            password: credentials.password,
+            xmlrpc: credentials.derivedXMLRPCRoot.absoluteString,
+            options: blogOptions
+        )
+        return .success(wporg)
     }
 
     private func loadSiteOptions(details: SelfHostedLoginDetails) async throws -> [AnyHashable: Any] {
@@ -182,10 +186,17 @@ class SelfHostedLoginViewModel: LoginWithUrlView.ViewModel {
             }
         }
     }
+
 }
 
-class SelfHostedLoginViewModelAuthenticationContextProvider: NSObject, ASWebAuthenticationPresentationContextProviding {
+private class SelfHostedLoginViewModelAuthenticationContextProvider: NSObject, ASWebAuthenticationPresentationContextProviding {
+    let anchor: ASPresentationAnchor
+
+    init(anchor: ASPresentationAnchor) {
+        self.anchor = anchor
+    }
+
     func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
-        ASPresentationAnchor()
+        anchor
     }
 }

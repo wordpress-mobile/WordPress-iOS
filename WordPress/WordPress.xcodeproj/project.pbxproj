@@ -1619,6 +1619,8 @@
 		4AD955C52C2171F000D0EEFA /* LoginViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD955942C2171F000D0EEFA /* LoginViewControllerTests.swift */; };
 		4AD955C62C2171F000D0EEFA /* SiteAddressViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD955952C2171F000D0EEFA /* SiteAddressViewModelTests.swift */; };
 		4AD955C82C2171F000D0EEFA /* MemoryManagementTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD955982C2171F000D0EEFA /* MemoryManagementTests.swift */; };
+		4ADE3F812C619E8A0046EC8A /* LoginWithUrlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ADE3F802C619E8A0046EC8A /* LoginWithUrlView.swift */; };
+		4ADE3F822C619E8A0046EC8A /* LoginWithUrlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ADE3F802C619E8A0046EC8A /* LoginWithUrlView.swift */; };
 		4AEF2DD929A84B2C00345734 /* ReaderSiteServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEF2DD829A84B2C00345734 /* ReaderSiteServiceTests.swift */; };
 		4AFB1A812A9C08CE007CE165 /* StoppableProgressIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AFB1A802A9C08CE007CE165 /* StoppableProgressIndicatorView.swift */; };
 		4AFB1A822A9C08CE007CE165 /* StoppableProgressIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AFB1A802A9C08CE007CE165 /* StoppableProgressIndicatorView.swift */; };
@@ -7564,6 +7566,7 @@
 		4AD955942C2171F000D0EEFA /* LoginViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewControllerTests.swift; sourceTree = "<group>"; };
 		4AD955952C2171F000D0EEFA /* SiteAddressViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteAddressViewModelTests.swift; sourceTree = "<group>"; };
 		4AD955982C2171F000D0EEFA /* MemoryManagementTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemoryManagementTests.swift; sourceTree = "<group>"; };
+		4ADE3F802C619E8A0046EC8A /* LoginWithUrlView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginWithUrlView.swift; sourceTree = "<group>"; };
 		4AEF2DD829A84B2C00345734 /* ReaderSiteServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSiteServiceTests.swift; sourceTree = "<group>"; };
 		4AFB1A802A9C08CE007CE165 /* StoppableProgressIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoppableProgressIndicatorView.swift; sourceTree = "<group>"; };
 		4AFB8FBE2824999400A2F4B2 /* ContextManager+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ContextManager+Helpers.swift"; sourceTree = "<group>"; };
@@ -10515,6 +10518,7 @@
 				8584FDB719243E550019C02E /* System */,
 				8584FDB4192437160019C02E /* Utility */,
 				8584FDB31923EF4F0019C02E /* ViewRelated */,
+				4ADE3F7C2C619E140046EC8A /* Login */,
 				FA4FE0AF2BEA7FA800A635D3 /* RemotePost+Metadata.swift */,
 			);
 			path = Classes;
@@ -13301,6 +13305,14 @@
 				4A1267D52C21739300717174 /* WordPressAuthenticator.xctestplan */,
 			);
 			path = Tests;
+			sourceTree = "<group>";
+		};
+		4ADE3F7C2C619E140046EC8A /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				4ADE3F802C619E8A0046EC8A /* LoginWithUrlView.swift */,
+			);
+			path = Login;
 			sourceTree = "<group>";
 		};
 		5703A4C722C0214C0028A343 /* Style */ = {
@@ -23414,6 +23426,7 @@
 				3234B8E7252FA0930068DA40 /* ReaderSitesCardCell.swift in Sources */,
 				C7234A4E2832C47D0045C63F /* QRLoginVerifyAuthorizationViewController.swift in Sources */,
 				08CBC77929AE6CC4000026E7 /* SiteCreationEmptySiteTemplate.swift in Sources */,
+				4ADE3F812C619E8A0046EC8A /* LoginWithUrlView.swift in Sources */,
 				D865722E2186F96D0023A99C /* SiteSegmentsWizardContent.swift in Sources */,
 				E66969E01B9E648100EC9C00 /* ReaderTopicToReaderDefaultTopic37to38.swift in Sources */,
 				9856A3E4261FD27A008D6354 /* UserProfileSectionHeader.swift in Sources */,
@@ -25320,6 +25333,7 @@
 				086F2482284F52DD00032F39 /* TooltipAnchor.swift in Sources */,
 				83914BD22A2E89F30017A588 /* JetpackSocialNoConnectionView.swift in Sources */,
 				FABB22D62602FC2C00C8785C /* PostEditor+MoreOptions.swift in Sources */,
+				4ADE3F822C619E8A0046EC8A /* LoginWithUrlView.swift in Sources */,
 				FABB22D72602FC2C00C8785C /* NotificationSupportService.swift in Sources */,
 				FABB22D82602FC2C00C8785C /* MenusSelectionView.m in Sources */,
 				FABB22D92602FC2C00C8785C /* UITextView+RichTextView.swift in Sources */,

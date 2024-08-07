@@ -107,11 +107,30 @@ extension SitePickerViewController {
             return
         }
 
+        launchApplicationPasswordAuthenticationForSelfHostedSite()
+    }
+
+    private func launchApplicationPasswordAuthenticationForSelfHostedSite() {
         guard let navigationController = presentedViewController?.navigationController ?? (presentedViewController as? UINavigationController) else {
             return
         }
 
-        LoginClient.displaySelfHostedLoginView(in: navigationController)
+        guard let window = navigationController.view.window else {
+            return
+        }
+
+        let view = LoginWithUrlView(anchor: window) { [weak navigationController] credentials in
+            navigationController?.dismiss(animated: true)
+
+            WordPressAuthenticator.shared.delegate!.sync(credentials: .init(wporg: credentials)) {
+                NotificationCenter.default.post(
+                    name: Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification),
+                    object: nil
+                )
+            }
+        }
+
+        navigationController.pushViewController(UIHostingController(rootView: view), animated: true)
     }
 
     // MARK: - Personalize home
