@@ -1635,7 +1635,6 @@
 		4AFB1A822A9C08CE007CE165 /* StoppableProgressIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AFB1A802A9C08CE007CE165 /* StoppableProgressIndicatorView.swift */; };
 		4AFB8FBF2824999500A2F4B2 /* ContextManager+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AFB8FBE2824999400A2F4B2 /* ContextManager+Helpers.swift */; };
 		4BB2296498BE66D515E3D610 /* Pods_JetpackShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23052F0F1F9B2503E33D0A26 /* Pods_JetpackShareExtension.framework */; };
-		4D520D4F22972BC9002F5924 /* acknowledgements.html in Resources */ = {isa = PBXBuildFile; fileRef = 4D520D4E22972BC9002F5924 /* acknowledgements.html */; };
 		5703A4C622C003DC0028A343 /* WPStyleGuide+Posts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5703A4C522C003DC0028A343 /* WPStyleGuide+Posts.swift */; };
 		570BFD902282418A007859A8 /* PostBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570BFD8F2282418A007859A8 /* PostBuilder.swift */; };
 		5727EAF82284F5AC00822104 /* InteractivePostViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5727EAF72284F5AC00822104 /* InteractivePostViewDelegate.swift */; };
@@ -4400,7 +4399,6 @@
 		FABB20962602FC2C00C8785C /* ColorPalette.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 435B76292297484200511813 /* ColorPalette.xcassets */; };
 		FABB20972602FC2C00C8785C /* RestoreCompleteView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAB800C125AEE3D200D5D54A /* RestoreCompleteView.xib */; };
 		FABB209A2602FC2C00C8785C /* PostListFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D732F981AE84E5400CD89E7 /* PostListFooterView.xib */; };
-		FABB209B2602FC2C00C8785C /* acknowledgements.html in Resources */ = {isa = PBXBuildFile; fileRef = 4D520D4E22972BC9002F5924 /* acknowledgements.html */; };
 		FABB209C2602FC2C00C8785C /* ReaderDetailViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8BDA5A6E247C308300AB124C /* ReaderDetailViewController.storyboard */; };
 		FABB209D2602FC2C00C8785C /* EditCommentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D6C4AFD1B603CE9005E3C43 /* EditCommentViewController.xib */; };
 		FABB209E2602FC2C00C8785C /* GutenGhostView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1E5D00132493E8C90004B708 /* GutenGhostView.xib */; };
@@ -7582,7 +7580,6 @@
 		4AEF2DD829A84B2C00345734 /* ReaderSiteServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSiteServiceTests.swift; sourceTree = "<group>"; };
 		4AFB1A802A9C08CE007CE165 /* StoppableProgressIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoppableProgressIndicatorView.swift; sourceTree = "<group>"; };
 		4AFB8FBE2824999400A2F4B2 /* ContextManager+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ContextManager+Helpers.swift"; sourceTree = "<group>"; };
-		4D520D4E22972BC9002F5924 /* acknowledgements.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = acknowledgements.html; path = "../Pods/Target Support Files/Pods-Apps-WordPress/acknowledgements.html"; sourceTree = "<group>"; };
 		51A5F017948878F7E26979A0 /* Pods-Apps-WordPress.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Apps-WordPress.release.xcconfig"; path = "../Pods/Target Support Files/Pods-Apps-WordPress/Pods-Apps-WordPress.release.xcconfig"; sourceTree = "<group>"; };
 		56FEDB6A28783D8F00E1EA93 /* WordPress 145.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 145.xcdatamodel"; sourceTree = "<group>"; };
 		5703A4C522C003DC0028A343 /* WPStyleGuide+Posts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Posts.swift"; sourceTree = "<group>"; };
@@ -17200,7 +17197,6 @@
 		CC098B8116A9EB0400450976 /* HTML */ = {
 			isa = PBXGroup;
 			children = (
-				4D520D4E22972BC9002F5924 /* acknowledgements.html */,
 				5DB767401588F64D00EBE36C /* postPreview.html */,
 				E18165FC14E4428B006CE885 /* loader.html */,
 				A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */,
@@ -20441,7 +20437,6 @@
 				1761F18526209AEE000815EF /* pride-icon-app-60x60@3x.png in Resources */,
 				5D732F991AE84E5400CD89E7 /* PostListFooterView.xib in Resources */,
 				17222DB0261DDDF90047B163 /* spectrum-classic-icon-app-83.5x83.5@2x.png in Resources */,
-				4D520D4F22972BC9002F5924 /* acknowledgements.html in Resources */,
 				17222D91261DDDF90047B163 /* blue-classic-icon-app-76x76@2x.png in Resources */,
 				8BDA5A70247C36C100AB124C /* ReaderDetailViewController.storyboard in Resources */,
 				17222DA0261DDDF90047B163 /* pink-classic-icon-app-60x60@2x.png in Resources */,
@@ -21003,7 +20998,6 @@
 				FABB209A2602FC2C00C8785C /* PostListFooterView.xib in Resources */,
 				98E5501A265C977E00B4BE9A /* ReaderDetailLikesView.xib in Resources */,
 				83317EE02BC72DED001AD2F4 /* ReaderTagCell.xib in Resources */,
-				FABB209B2602FC2C00C8785C /* acknowledgements.html in Resources */,
 				F46597BF28E6687800D5F49A /* neumorphic-dark-icon-app-83.5@2x.png in Resources */,
 				F465980C28E66A5B00D5F49A /* white-on-blue-icon-app-83.5@2x.png in Resources */,
 				F41E4E9928F20802001880C6 /* white-on-pink-icon-app-60@2x.png in Resources */,
