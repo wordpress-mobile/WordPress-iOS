@@ -270,4 +270,23 @@ final class BlogTests: CoreDataTestCase {
 
         XCTAssertFalse(result, "Domains should not be supported when the site is P2 site")
     }
+
+    // Blog URL Parsing Tests
+    func testBlogUrlShouldBeParseableForBlogWithSimpleUrl() throws {
+        let blog = BlogBuilder(mainContext)
+            .isHostedAtWPcom()
+            .with(url: "http://example.com")
+            .build()
+
+        XCTAssertEqual(try blog.wordPressClientParsedUrl().url(), "http://example.com/")
+    }
+
+    func testBlogUrlShouldBeParseableForBlogWithMappedDomain() throws {
+        let blog = BlogBuilder(mainContext)
+            .with(url: "http://example.com")
+            .withMappedDomain(mappedDomainUrl: "http://example2.com")
+            .build()
+
+        XCTAssertEqual(try blog.wordPressClientParsedUrl().url(), "http://example.com/")
+    }
 }

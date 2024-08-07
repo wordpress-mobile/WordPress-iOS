@@ -27,6 +27,10 @@ final class BlogDashboardViewModel {
 
     private var blog: Blog
 
+    private var error: Error?
+
+    private let wordpressClient: WordPressClient?
+
     private var currentCards: [DashboardCardModel] = []
 
     private lazy var draftStatusesToSync: [BasePost.Status] = {
@@ -60,6 +64,7 @@ final class BlogDashboardViewModel {
             var cellType: DashboardCollectionViewCell.Type
             var cardType: DashboardCard
             var apiResponse: BlogDashboardRemoteEntity?
+
             switch item {
             case .quickActions:
                 let cellType = DashboardQuickActionsCardCell.self
@@ -88,14 +93,30 @@ final class BlogDashboardViewModel {
     private var quickActionsViewModel: DashboardQuickActionsViewModel
     private var personalizationService: BlogDashboardPersonalizationService
 
-    init(viewController: BlogDashboardViewController, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext, blog: Blog) {
+    init(
+        viewController: BlogDashboardViewController,
+        managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext,
+        blog: Blog
+    ) {
         self.viewController = viewController
         self.managedObjectContext = managedObjectContext
         self.blog = blog
         self.personalizationService = BlogDashboardPersonalizationService(siteID: blog.dotComID?.intValue ?? 0)
         self.blazeViewModel = DashboardBlazeCardCellViewModel(blog: blog)
         self.quickActionsViewModel = DashboardQuickActionsViewModel(blog: blog, personalizationService: personalizationService)
+
+        var _error: Error?
+
+        do {
+            self.wordpressClient = try WordPressClient.for(site: .from(blog: self.blog), in: .shared)
+        } catch {
+            _error = error
+            self.wordpressClient = nil
+        }
+
         registerNotifications()
+
+        self.error = _error
     }
 
     /// Apply the initial configuration when the view loaded

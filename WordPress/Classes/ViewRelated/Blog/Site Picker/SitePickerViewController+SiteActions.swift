@@ -1,6 +1,7 @@
 import UIKit
 import SwiftUI
 import WordPressAuthenticator
+import ViewLayer
 
 extension SitePickerViewController {
 
@@ -101,7 +102,16 @@ extension SitePickerViewController {
     }
 
     private func launchLoginForSelfHostedSite() {
-        WordPressAuthenticator.showLoginForSelfHostedSite(presentedViewController ?? self)
+        guard FeatureFlag.authenticateUsingApplicationPassword.enabled else {
+            WordPressAuthenticator.showLoginForSelfHostedSite(presentedViewController ?? self)
+            return
+        }
+
+        guard let navigationController = presentedViewController?.navigationController ?? (presentedViewController as? UINavigationController) else {
+            return
+        }
+
+        LoginClient.displaySelfHostedLoginView(in: navigationController)
     }
 
     // MARK: - Personalize home

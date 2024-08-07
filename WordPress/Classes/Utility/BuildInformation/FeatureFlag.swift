@@ -13,6 +13,7 @@ enum FeatureFlag: Int, CaseIterable {
     case newTabIcons
     case autoSaveDrafts
     case voiceToContent
+    case authenticateUsingApplicationPassword
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -43,6 +44,8 @@ enum FeatureFlag: Int, CaseIterable {
             return false
         case .voiceToContent:
             return AppConfiguration.isJetpack && BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+        case .authenticateUsingApplicationPassword:
+            return false
         }
     }
 
@@ -76,6 +79,7 @@ extension FeatureFlag {
         case .newTabIcons: "New Tab Icons"
         case .autoSaveDrafts: "Autosave Drafts"
         case .voiceToContent: "Voice to Content"
+        case .authenticateUsingApplicationPassword: "Authenticate self-hosted sites using Application Password"
         }
     }
 }

@@ -1,4 +1,5 @@
 import Foundation
+import WordPressAPI
 
 extension Blog {
 
@@ -10,6 +11,7 @@ extension Blog {
         case blogIdentifierMissing
         case invalidCredentialsUrl
         case invalidXmlRpcEndpoint
+        case incorrectCredentials
     }
 
     static func createRestApiBlog(
@@ -21,9 +23,13 @@ extension Blog {
             let blog = Blog.createBlankBlog(in: context)
             blog.setUrl(details.url)
             blog.username = details.username
-            try blog.setPassword(to: details.password, using: keychainImplementation)
             blog.setXMLRPCEndpoint(to: details.derivedXMLRPCRoot)
             blog.setSiteIdentifier(details.derivedSiteId)
+
+            // `url` and `xmlrpc` need to be set before setting passwords.
+            try blog.setApplicationToken(details.password, using: keychainImplementation)
+            // Application token can also be used in XMLRPC.
+            try blog.setPassword(to: details.password, using: keychainImplementation)
 
             return details.derivedSiteId
         }
@@ -42,19 +48,19 @@ extension Blog {
     // which fields are present. These wrappers will `throw` if the `Blog` is invalid, allowing any dependent
     // code can be much simpler.
 
-    /// An alias for `getPassword` to make it obvious how to retrieve Application Tokens
+    /// Retrieve Application Tokens
     ///
     func getApplicationToken(using keychainImplementation: KeychainAccessible = KeychainUtils()) throws -> String {
-        try getPassword(using: keychainImplementation)
+        try keychainImplementation.getPassword(for: self.getUsername(), serviceName: self.getUrlString())
     }
 
-    /// An alias for `setPassword` to make it obvious how to store Application Tokens
+    /// Store Application Tokens
     ///
     func setApplicationToken(
         _ newValue: String,
         using keychainImplementation: KeychainAccessible = KeychainUtils()
     ) throws {
-        try setPassword(to: newValue, using: keychainImplementation)
+        try keychainImplementation.setPassword(for: self.getUsername(), to: newValue, serviceName: self.getUrlString())
     }
 
     /// A null-safe wrapper for `Blog.username`
@@ -68,12 +74,16 @@ extension Blog {
 
     /// A null-safe replacement for `Blog.password(get)`
     func getPassword(using keychainImplementation: KeychainAccessible = KeychainUtils()) throws -> String {
-        try keychainImplementation.getPassword(for: self.getUsername(), serviceName: self.getUrlString())
+        try keychainImplementation.getPassword(for: self.getUsername(), serviceName: self.getXMLRPCEndpoint().absoluteString)
     }
 
     /// A null-safe replacement for `Blog.password(set)`
     func setPassword(to newValue: String, using keychainImplementation: KeychainAccessible = KeychainUtils()) throws {
-        try keychainImplementation.setPassword(for: self.getUsername(), to: newValue, serviceName: self.getUrlString())
+        try keychainImplementation.setPassword(for: self.getUsername(), to: newValue, serviceName: self.getXMLRPCEndpoint().absoluteString)
+    }
+
+    func wordPressClientParsedUrl() throws -> ParsedUrl {
+        try ParsedUrl.parse(input: self.getUrl().absoluteString)
     }
 
     /// A null-and-type-safe replacement for `Blog.url(get)`

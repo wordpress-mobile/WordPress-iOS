@@ -6,7 +6,7 @@ final class FreeToPaidPlansDashboardCardHelperTests: CoreDataTestCase {
         let blog = BlogBuilder(mainContext)
             .with(supportsDomains: true)
             .with(domainCount: 1, of: .wpCom)
-            .with(hasMappedDomain: false)
+            .withoutMappedDomain()
             .with(hasPaidPlan: false)
             .build()
 
@@ -19,7 +19,7 @@ final class FreeToPaidPlansDashboardCardHelperTests: CoreDataTestCase {
         let blog = BlogBuilder(mainContext)
             .with(supportsDomains: true)
             .with(domainCount: 1, of: .wpCom)
-            .with(hasMappedDomain: false)
+            .withoutMappedDomain()
             .with(hasPaidPlan: true)
             .build()
 
@@ -33,7 +33,7 @@ final class FreeToPaidPlansDashboardCardHelperTests: CoreDataTestCase {
             .with(supportsDomains: true)
             .with(domainCount: 1, of: .wpCom)
             .with(domainCount: 1, of: .registered)
-            .with(hasMappedDomain: true)
+            .withMappedDomain()
             .with(hasPaidPlan: false)
             .build()
 

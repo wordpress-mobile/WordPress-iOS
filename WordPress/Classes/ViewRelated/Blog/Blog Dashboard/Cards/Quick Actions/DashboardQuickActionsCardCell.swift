@@ -1,6 +1,9 @@
 import UIKit
+import ViewLayer
 import Combine
 import WordPressShared
+import SwiftUI
+import WordPressAPI
 
 final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITableViewDataSource, UITableViewDelegate {
 
@@ -25,7 +28,6 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-
         createView()
     }
 
@@ -38,7 +40,10 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
         contentView.pinSubviewToAllEdges(tableView, priority: UILayoutPriority(999))
     }
 
-    func configure(viewModel: DashboardQuickActionsViewModel, viewController: BlogDashboardViewController) {
+    func configure(
+        viewModel: DashboardQuickActionsViewModel,
+        viewController: BlogDashboardViewController
+    ) {
         self.parentViewController = viewController
         self.viewModel = viewModel
 
@@ -76,6 +81,7 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
         cell.backgroundColor = .clear
         cell.accessoryType = .disclosureIndicator
         cell.isSeparatorHidden = indexPath.row == (items.count - 1)
+
         return cell
     }
 
