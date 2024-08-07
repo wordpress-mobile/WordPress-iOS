@@ -476,6 +476,8 @@
 		0C23F33E2AC4AEF600EE6117 /* SiteMediaPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C23F33D2AC4AEF600EE6117 /* SiteMediaPickerViewController.swift */; };
 		0C23F33F2AC4AEF600EE6117 /* SiteMediaPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C23F33D2AC4AEF600EE6117 /* SiteMediaPickerViewController.swift */; };
 		0C2518AE2ABE1F2800381D31 /* iphone-photo.heic in Resources */ = {isa = PBXBuildFile; fileRef = 0C2518AD2ABE1EA000381D31 /* iphone-photo.heic */; };
+		0C27CEAB2C6137C3002E3F05 /* NotificationSettingsSiteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C27CEAA2C6137C2002E3F05 /* NotificationSettingsSiteView.swift */; };
+		0C27CEAC2C6137C3002E3F05 /* NotificationSettingsSiteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C27CEAA2C6137C2002E3F05 /* NotificationSettingsSiteView.swift */; };
 		0C2C83FA2A6EABF300A3ACD9 /* StatsPeriodCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2C83F92A6EABF300A3ACD9 /* StatsPeriodCache.swift */; };
 		0C2C83FB2A6EABF300A3ACD9 /* StatsPeriodCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2C83F92A6EABF300A3ACD9 /* StatsPeriodCache.swift */; };
 		0C2C83FD2A6EBD3F00A3ACD9 /* StatsInsightsCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2C83FC2A6EBD3F00A3ACD9 /* StatsInsightsCache.swift */; };
@@ -6542,6 +6544,7 @@
 		0C23F3352AC4AD3400EE6117 /* SiteMediaSelectionTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteMediaSelectionTitleView.swift; sourceTree = "<group>"; };
 		0C23F33D2AC4AEF600EE6117 /* SiteMediaPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteMediaPickerViewController.swift; sourceTree = "<group>"; };
 		0C2518AD2ABE1EA000381D31 /* iphone-photo.heic */ = {isa = PBXFileReference; lastKnownFileType = file; path = "iphone-photo.heic"; sourceTree = "<group>"; };
+		0C27CEAA2C6137C2002E3F05 /* NotificationSettingsSiteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsSiteView.swift; sourceTree = "<group>"; };
 		0C2C83F92A6EABF300A3ACD9 /* StatsPeriodCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsPeriodCache.swift; sourceTree = "<group>"; };
 		0C2C83FC2A6EBD3F00A3ACD9 /* StatsInsightsCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsInsightsCache.swift; sourceTree = "<group>"; };
 		0C308FFD2B1234E70071C551 /* SiteMediaFilterButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteMediaFilterButtonView.swift; sourceTree = "<group>"; };
@@ -16675,6 +16678,7 @@
 				B52C4C7C199D4CD3009FD823 /* NoteBlockUserTableViewCell.swift */,
 				B5C66B791ACF074600F68370 /* NoteBlockUserTableViewCell.xib */,
 				FEDDD46E26A03DE900F8942B /* ListTableViewCell+Notifications.swift */,
+				0C27CEAA2C6137C2002E3F05 /* NotificationSettingsSiteView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -23033,6 +23037,7 @@
 				176DEEE91D4615FE00331F30 /* WPSplitViewController.swift in Sources */,
 				400F4625201E74EE000CFD9E /* CollectionViewContainerRow.swift in Sources */,
 				9A8ECE0E2254A3260043C8DA /* JetpackConnectionWebViewController.swift in Sources */,
+				0C27CEAB2C6137C3002E3F05 /* NotificationSettingsSiteView.swift in Sources */,
 				B06378C1253F639D00FD45D2 /* SiteSuggestion+CoreDataProperties.swift in Sources */,
 				0C2C83FA2A6EABF300A3ACD9 /* StatsPeriodCache.swift in Sources */,
 				4353BFB221A376BF0009CED3 /* UntouchableWindow.swift in Sources */,
@@ -26218,6 +26223,7 @@
 				FABB25452602FC2C00C8785C /* Blog+Interface.swift in Sources */,
 				FABB25462602FC2C00C8785C /* PostFeaturedImageCell.m in Sources */,
 				FABB25472602FC2C00C8785C /* WPException.m in Sources */,
+				0C27CEAC2C6137C3002E3F05 /* NotificationSettingsSiteView.swift in Sources */,
 				FABB25482602FC2C00C8785C /* StatsGhostCells.swift in Sources */,
 				FABB25492602FC2C00C8785C /* NotificationCenter+ObserveOnce.swift in Sources */,
 				FABB254A2602FC2C00C8785C /* SharePost.swift in Sources */,

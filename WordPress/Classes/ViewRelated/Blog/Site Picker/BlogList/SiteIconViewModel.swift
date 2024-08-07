@@ -35,6 +35,12 @@ struct SiteIconViewModel {
             self.host = MediaHost(with: blog)
         }
     }
+
+    init(readerSiteTopic: ReaderSiteTopic, size: Size = .regular) {
+        self.size = size
+        self.firstLetter = readerSiteTopic.title.first
+        self.imageURL = SiteIconViewModel.optimizedBlavatarURL(from: readerSiteTopic.siteBlavatar, imageSize: size.size)
+    }
 }
 
 extension SiteIconViewModel {
