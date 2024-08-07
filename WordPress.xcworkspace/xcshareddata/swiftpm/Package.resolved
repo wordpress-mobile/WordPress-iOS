@@ -353,10 +353,10 @@
     {
       "identity" : "wordpress-rs",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Automattic/wordpress-rs.git",
+      "location" : "https://github.com/Automattic/wordpress-rs",
       "state" : {
-        "revision" : "6394b30b34ed6bf204be8de5558ba2c73d2a10e3",
-        "version" : "0.1.0"
+        "branch" : "alpha-swift-20240808",
+        "revision" : "6efd6fe5d3074da4ffa8bd459122fee59dd95d18"
       }
     },
     {
