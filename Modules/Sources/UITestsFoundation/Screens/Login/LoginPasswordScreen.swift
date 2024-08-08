@@ -26,10 +26,10 @@ class LoginPasswordScreen: ScreenObject {
         )
     }
 
-    func proceedWith(password: String) throws -> LoginEpilogueScreen {
+    func proceedWith(password: String) throws -> MySiteScreen {
         tryProceed(password: password)
 
-        return try LoginEpilogueScreen()
+        return try MySiteScreen()
     }
 
     @discardableResult

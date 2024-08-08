@@ -19,11 +19,6 @@ class LoginTests: XCTestCase {
             .selectContinue()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .proceedWithValidPassword()
-            .verifyEpilogueDisplays(
-                username: WPUITestCredentials.testWPcomUsername,
-                siteUrl: WPUITestCredentials.testWPcomPaidSite
-            )
-            .continueWithSelectedSite()
         try TabNavComponent()
             .goToMeScreen()
             .logoutToPrologue()
@@ -40,7 +35,6 @@ class LoginTests: XCTestCase {
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .proceedWithLink()
             .openMagicLoginLink()
-            .continueWithSelectedSite()
             .dismissNotificationAlertIfNeeded()
         try TabNavComponent()
             .goToMeScreen()
@@ -78,11 +72,6 @@ class LoginTests: XCTestCase {
             .selectContinue()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .proceedWithValidPassword()
-            .verifyEpilogueDisplays(
-                username: WPUITestCredentials.testWPcomUsername,
-                siteUrl: WPUITestCredentials.testWPcomPaidSite
-            )
-            .continueWithSelectedSite() //returns MySite screen
 
             // From here, bring up the sites list and choose to add a new self-hosted site.
             .showSiteSwitcher()

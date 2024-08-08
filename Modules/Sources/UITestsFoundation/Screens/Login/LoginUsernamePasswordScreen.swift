@@ -32,10 +32,10 @@ public class LoginUsernamePasswordScreen: ScreenObject {
         )
     }
 
-    public func proceedWith(username: String, password: String) throws -> LoginEpilogueScreen {
+    public func proceedWith(username: String, password: String) throws -> MySiteScreen {
         fill(username: username, password: password)
-
-        return try LoginEpilogueScreen()
+        try dismissOnboardingQuestionsPromptIfNeeded()
+        return try MySiteScreen()
     }
 
     public func proceedWithSelfHostedSiteAddedFromSitesList(username: String, password: String) throws -> MySitesScreen {

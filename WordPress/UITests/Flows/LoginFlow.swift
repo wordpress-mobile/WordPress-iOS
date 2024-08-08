@@ -9,7 +9,6 @@ class LoginFlow {
             .selectContinue()
             .proceedWith(email: email)
             .proceedWithValidPassword()
-            .continueWithSelectedSite(siteAddress)
     }
 
     // Login with self-hosted site via Site Address.
@@ -19,7 +18,6 @@ class LoginFlow {
             .selectSiteAddress()
             .proceedWith(siteAddress: siteAddress)
             .proceedWith(username: username, password: password)
-            .continueWithSelectedSite()
     }
 
     // Login with WP site via Site Address.
@@ -28,16 +26,6 @@ class LoginFlow {
         return try PrologueScreen()
             .selectSiteAddress()
             .proceedWithWordPress(siteAddress)
-            .proceedWith(email: email)
-            .proceedWithValidPassword()
-            .continueWithSelectedSite(siteAddress)
-    }
-
-    // Login without selecting site
-    @discardableResult
-    static func loginWithoutSelectingSite(email: String) throws -> LoginEpilogueScreen {
-        return try PrologueScreen()
-            .selectContinue()
             .proceedWith(email: email)
             .proceedWithValidPassword()
     }

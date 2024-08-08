@@ -27,9 +27,21 @@ public class PasswordScreen: ScreenObject {
     }
 
     @discardableResult
-    public func proceedWithValidPassword() throws -> LoginEpilogueScreen {
+    public func proceedWithValidPassword() throws -> MySiteScreen {
         try tryProceed(password: "pw")
-        return try LoginEpilogueScreen()
+        try dismissOnboardingQuestionsPromptIfNeeded()
+        return try MySiteScreen()
+    }
+
+    private func dismissOnboardingQuestionsPromptIfNeeded() throws {
+        XCTContext.runActivity(named: "Dismiss onboarding questions prompt if needed.") { _ in
+            Logger.log(message: "Dismissing onboarding questions prompt...", event: .i)
+            do {
+                _ = try OnboardingQuestionsPromptScreen().selectSkip()
+            } catch {
+                return
+            }
+        }
     }
 
     public func proceedWithInvalidPassword() throws -> Self {

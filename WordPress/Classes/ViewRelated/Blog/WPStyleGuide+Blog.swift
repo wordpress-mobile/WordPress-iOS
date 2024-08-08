@@ -33,13 +33,3 @@ extension WPStyleGuide {
     }
 
 }
-
-extension LoginEpilogueBlogCell {
-    // Per Apple's documentation (https://developer.apple.com/documentation/xcode/supporting_dark_mode_in_your_interface),
-    // `cgColor` objects do not adapt to appearance changes (i.e. toggling light/dark mode).
-    // `tintColorDidChange` is called when the appearance changes, so re-set the border color when this occurs.
-    override func tintColorDidChange() {
-        super.tintColorDidChange()
-        imageView?.layer.borderColor = UIColor.neutral(.shade10).cgColor
-    }
-}
