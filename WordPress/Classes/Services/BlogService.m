@@ -511,7 +511,6 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
     blog.icon = remoteBlog.icon;
     blog.capabilities = remoteBlog.capabilities;
     blog.isAdmin = remoteBlog.isAdmin;
-    blog.visible = remoteBlog.visible;
     blog.options = remoteBlog.options;
     blog.planID = remoteBlog.planID;
     blog.planTitle = remoteBlog.planTitle;

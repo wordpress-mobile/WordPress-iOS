@@ -107,16 +107,6 @@
     _wordPressComRestApi = nil;
 }
 
-- (NSArray *)visibleBlogs
-{
-    NSSet *visibleBlogs = [self.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"visible = YES"]];
-    NSSortDescriptor *descriptor = [NSSortDescriptor sortDescriptorWithKey:@"settings.name"
-                                                                 ascending:YES
-                                                                  selector:@selector(localizedCaseInsensitiveCompare:)];
-
-    return [visibleBlogs sortedArrayUsingDescriptors:@[descriptor]];
-}
-
 - (BOOL)hasAtomicSite {
     for (Blog *blog in self.blogs) {
         if ([blog isAtomic]) {

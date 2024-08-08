@@ -18,15 +18,12 @@ extension Blog {
         }
 
         return try? BlogQuery()
-            .visible(true)
             .hostname(matching: url)
             .blog(in: context)
     }
 
     private static func firstBlog(in context: NSManagedObjectContext) -> Blog? {
-        try? BlogQuery()
-            .visible(true)
-            .blog(in: context)
+        try? BlogQuery().blog(in: context)
     }
 
 }
