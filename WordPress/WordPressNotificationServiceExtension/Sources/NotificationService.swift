@@ -241,8 +241,7 @@ private extension NotificationService {
     ///   - fileName: The filename to use for the file
     /// - Returns: The file URL to the media attachment, or nil if writing failed for any reason
     private func saveMediaAttachment(data: Data, fileName: String) -> URL? {
-        let directory = URL(fileURLWithPath: NSTemporaryDirectory())
-        let directoryPath = directory.appendingPathComponent(ProcessInfo.processInfo.globallyUniqueString, isDirectory: true)
+        let directoryPath = URL.Helpers.temporaryDirectory(named: ProcessInfo.processInfo.globallyUniqueString)
 
         do {
             try FileManager.default.createDirectory(at: directoryPath, withIntermediateDirectories: true, attributes: nil)

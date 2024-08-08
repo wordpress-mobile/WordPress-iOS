@@ -106,51 +106,6 @@ end
 post_install do |installer|
   gutenberg_post_install(installer: installer)
 
-  project_root = File.dirname(__FILE__)
-
-  ## Convert the 3rd-party license acknowledgements markdown into html for use in the app
-  require 'commonmarker'
-
-  acknowledgements = 'Acknowledgments'
-  markdown = File.read("#{project_root}/Pods/Target Support Files/Pods-Apps-WordPress/Pods-Apps-WordPress-acknowledgements.markdown")
-  rendered_html = Commonmarker.to_html(markdown)
-  styled_html = "<head>
-                     <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
-                     <style>
-                       body {
-                         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-                         font-size: 16px;
-                         color: #1a1a1a;
-                         margin: 20px;
-                       }
-                      @media (prefers-color-scheme: dark) {
-                       body {
-                        background: #1a1a1a;
-                        color: white;
-                       }
-                      }
-                       pre {
-                        white-space: pre-wrap;
-                       }
-                     </style>
-                     <title>
-                       #{acknowledgements}
-                     </title>
-                   </head>
-                   <body>
-                     #{rendered_html}
-                   </body>"
-
-  ## Remove the <h1>, since we've promoted it to <title>
-  styled_html = styled_html.sub('<h1>Acknowledgements</h1>', '')
-
-  ## The glog library's license contains a URL that does not wrap in the web view,
-  ## leading to a large right-hand whitespace gutter.  Work around this by explicitly
-  ## inserting a <br> in the HTML.  Use gsub juuust in case another one sneaks in later.
-  styled_html = styled_html.gsub('p?hl=en#dR3YEbitojA/COPYING', 'p?hl=en#dR3YEbitojA/COPYING<br>')
-
-  File.write("#{project_root}/Pods/Target Support Files/Pods-Apps-WordPress/acknowledgements.html", styled_html)
-
   # Fix a code signing issue in Xcode 14 beta.
   # This solution is suggested here: https://github.com/CocoaPods/CocoaPods/issues/11402#issuecomment-1189861270
   # ====================================

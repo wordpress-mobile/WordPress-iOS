@@ -791,3 +791,23 @@ private extension ReaderDetailCoordinator {
     }
 
 }
+
+private extension URL {
+    /// Handle the common link protocols.
+    /// - tel: open a prompt to call the phone number
+    /// - sms: compose new message in iMessage app
+    /// - mailto: compose new email in Mail app
+    ///
+    var isLinkProtocol: Bool {
+        guard let urlScheme = scheme else {
+            return false
+        }
+
+        let linkProtocols = ["tel", "sms", "mailto"]
+        if linkProtocols.contains(urlScheme) && UIApplication.shared.canOpenURL(self) {
+            return true
+        }
+
+        return false
+    }
+}

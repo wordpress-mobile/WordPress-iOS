@@ -125,9 +125,7 @@ extension Media {
     }
 
     private static let remoteDataTemporaryDirectoryURL: URL = {
-        var tempDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory())
-            .appendingPathComponent("org.automattic.RemoteMediaTEmporaryDirectory", isDirectory: true)
-        // Remove data from the previous sessions.
+        let tempDirectoryURL = URL.Helpers.temporaryDirectory(named: "org.automattic.RemoteMediaTEmporaryDirectory")
         try? FileManager.default.removeItem(at: tempDirectoryURL)
         try? FileManager.default.createDirectory(at: tempDirectoryURL, withIntermediateDirectories: true)
         return tempDirectoryURL

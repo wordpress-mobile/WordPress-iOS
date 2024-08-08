@@ -1,13 +1,19 @@
 import Foundation
+import WordPressUI
 import UIKit
 import WordPressShared
 import AutomatticAbout
+import SwiftUI
 
 struct WebViewPresenter {
     func present(for url: URL, context: AboutItemActionContext) {
         let webViewController = WebViewControllerFactory.controller(url: url, source: "about")
-        let navigationController = UINavigationController(rootViewController: webViewController)
-        context.viewController.present(navigationController, animated: true, completion: nil)
+        context.viewController.navigationController?.pushViewController(webViewController, animated: true)
+    }
+
+    func presentInNavigationControlller(url: URL, context: AboutItemActionContext) {
+        let webViewController = WebViewControllerFactory.controller(url: url, source: "about")
+        context.viewController.present(UINavigationController(rootViewController: webViewController), animated: true)
     }
 }
 
@@ -40,11 +46,11 @@ class AppAboutScreenConfiguration: AboutScreenConfiguration {
                 }),
                 AboutItem(title: TextContent.twitter, subtitle: AppConstants.productTwitterHandle, cellStyle: .value1, action: { [weak self] context in
                     self?.tracker.buttonPressed(.twitter)
-                    self?.webViewPresenter.present(for: Links.twitter, context: context)
+                    self?.webViewPresenter.presentInNavigationControlller(url: Links.twitter, context: context)
                 }),
                 AboutItem(title: AppConstants.AboutScreen.blogName, subtitle: AppConstants.productBlogDisplayURL, cellStyle: .value1, action: { [weak self] context in
                     self?.tracker.buttonPressed(.blog)
-                    self?.webViewPresenter.present(for: Links.blog, context: context)
+                    self?.webViewPresenter.presentInNavigationControlller(url: Links.blog, context: context)
                 })
             ],
             [
@@ -57,14 +63,14 @@ class AppAboutScreenConfiguration: AboutScreenConfiguration {
             [
                 AboutItem(title: TextContent.automatticFamily, accessoryType: .disclosureIndicator, hidesSeparator: true, action: { [weak self] context in
                     self?.tracker.buttonPressed(.automatticFamily)
-                    self?.webViewPresenter.present(for: Links.automattic, context: context)
+                    self?.webViewPresenter.presentInNavigationControlller(url: Links.automattic, context: context)
                 }),
                 AboutItem(title: "", cellStyle: .appLogos, accessoryType: .none)
             ] : nil,
             [
                 AboutItem(title: AppConstants.AboutScreen.workWithUs, subtitle: TextContent.workWithUsSubtitle, cellStyle: .subtitle, accessoryType: .disclosureIndicator, action: { [weak self] context in
                     self?.tracker.buttonPressed(.workWithUs)
-                    self?.webViewPresenter.present(for: Links.workWithUs, context: context)
+                    self?.webViewPresenter.presentInNavigationControlller(url: Links.workWithUs, context: context)
                 }),
             ]
         ].compactMap { $0 }
@@ -113,13 +119,19 @@ class LegalAndMoreSubmenuConfiguration: AboutScreenConfiguration {
                 linkItem(title: Titles.termsOfService, link: Links.termsOfService, button: .termsOfService),
                 linkItem(title: Titles.privacyPolicy, link: Links.privacyPolicy, button: .privacyPolicy),
                 linkItem(title: Titles.sourceCode, link: Links.sourceCode, button: .sourceCode),
-                linkItem(title: Titles.acknowledgements, link: Links.acknowledgements, button: .acknowledgements),
+                AboutItem(title: Titles.acknowledgements, accessoryType: .disclosureIndicator, action: { context in
+                    let rootView = AcknowledgementsListView(viewModel: AcknowledgementsListViewModel(dataProvider: AcknowledgementsService()))
+                    context.viewController.navigationController?.pushViewController(
+                        UIHostingController(rootView: rootView),
+                        animated: true
+                    )
+                })
             ]
         ]
     }()
 
     private func linkItem(title: String, link: URL, button: AboutScreenTracker.Event.Button) -> AboutItem {
-        AboutItem(title: title, action: { [weak self] context in
+        AboutItem(title: title, accessoryType: .disclosureIndicator, action: { [weak self] context in
             self?.buttonPressed(link: link, context: context, button: button)
         })
     }
@@ -145,13 +157,12 @@ class LegalAndMoreSubmenuConfiguration: AboutScreenConfiguration {
         static let termsOfService     = NSLocalizedString("Terms of Service", comment: "Title of button that displays the App's terms of service")
         static let privacyPolicy      = NSLocalizedString("Privacy Policy", comment: "Title of button that displays the App's privacy policy")
         static let sourceCode         = NSLocalizedString("Source Code", comment: "Title of button that displays the App's source code information")
-        static let acknowledgements   = NSLocalizedString("Acknowledgements", comment: "Title of button that displays the App's acknoledgements")
+        static let acknowledgements   = NSLocalizedString("Acknowledgements", comment: "Title of button that displays the App's acknowledgements")
     }
 
     private enum Links {
         static let termsOfService = URL(string: WPAutomatticTermsOfServiceURL)!
         static let privacyPolicy = URL(string: WPAutomatticPrivacyURL)!
         static let sourceCode = URL(string: WPGithubMainURL)!
-        static let acknowledgements: URL = URL(string: Bundle.main.url(forResource: "acknowledgements", withExtension: "html")?.absoluteString ?? "")!
     }
 }

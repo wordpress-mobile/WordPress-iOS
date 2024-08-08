@@ -3,7 +3,6 @@
 source 'https://rubygems.org'
 
 gem 'cocoapods', '~> 1.14'
-gem 'commonmarker'
 gem 'danger-dangermattic', '~> 1.0'
 gem 'dotenv'
 # 2.221.0 includes a fix for an ASC-interfacing bug

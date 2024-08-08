@@ -352,9 +352,7 @@ private extension DataMigratorTests {
     // Slightly modified from: https://developer.apple.com/documentation/xctest/xctestcase/2887226-addteardownblock
     func temporaryDatabaseFileURL() -> URL {
         // Create a URL for an unique file in the system's temporary directory.
-        let directory = NSTemporaryDirectory()
-        let filename = "\(UUID().uuidString).sqlite"
-        let fileURL = URL(fileURLWithPath: directory).appendingPathComponent(filename)
+        let fileURL = URL.Helpers.temporaryFile(named: "\(UUID().uuidString).sqlite")
 
         // Add a teardown block to delete any file at `fileURL`.
         addTeardownBlock {

@@ -1,9 +1,14 @@
 #!/bin/bash -eu
 
-brew install imagemagick
-brew install ghostscript
+echo "--- :beer: Installing Homebrew Dependencies"
 # Sentry CLI needs to be up-to-date
 brew upgrade sentry-cli
+
+brew tap FelixHerrmann/tap
+brew install swift-package-list
+
+brew install imagemagick
+brew install ghostscript
 
 echo "--- :rubygems: Setting up Gems"
 install_gems
