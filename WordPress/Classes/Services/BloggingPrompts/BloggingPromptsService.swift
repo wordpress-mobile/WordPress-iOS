@@ -54,7 +54,7 @@ class BloggingPromptsService {
     ///   - failure: Closure to be called when the fetch process failed.
     func fetchPrompts(from startDate: Date? = nil,
                       to endDate: Date? = nil,
-                      number: Int = 25,
+                      number: Int = defaultNumberOfResults,
                       success: (([BloggingPrompt]) -> Void)? = nil,
                       failure: ((Error?) -> Void)? = nil) {
         let fromDate = startDate ?? defaultStartDate
@@ -253,17 +253,21 @@ class BloggingPromptsServiceFactory {
     }
 }
 
-// MARK: - Private Helpers
-
-private extension BloggingPromptsService {
-
+// MARK: – Internal Helpers
+extension BloggingPromptsService {
     var defaultStartDate: Date {
-        calendar.date(byAdding: .day, value: -10, to: Date()) ?? Date()
+        calendar.date(byAdding: .day, value: -10, to: Date())! // This should crash if it's somehow invalid
     }
 
     var listStartDate: Date {
-        calendar.date(byAdding: .day, value: -(maxListPrompts - 1), to: Date()) ?? Date()
+        calendar.date(byAdding: .day, value: -(maxListPrompts - 1), to: Date())! // This should crash if it's somehow invalid
     }
+
+    static let defaultNumberOfResults = 25
+}
+
+// MARK: - Private Helpers
+private extension BloggingPromptsService {
 
     /// Converts the given date to UTC preserving the date and ignores the time information.
     /// Examples:
@@ -376,16 +380,13 @@ private extension BloggingPromptsService {
 
         // incoming remote prompts should have unique dates.
         // fetch requests require the date to be `NSDate` specifically, hence the cast.
-        let incomingDates = Set(remotePrompts.map(\.date))
-        let promptsByDate = remotePrompts.reduce(into: [Date: BloggingPromptRemoteObject]()) { partialResult, remotePrompt in
-            partialResult[remotePrompt.date] = remotePrompt
+        let incomingDates = Set(remotePrompts.map(\.dateString))
+        let promptsByDate = remotePrompts.reduce(into: [String: BloggingPromptRemoteObject]()) { partialResult, remotePrompt in
+            partialResult[remotePrompt.dateString] = remotePrompt
         }
 
-        let predicate = NSPredicate(format: "\(#keyPath(BloggingPrompt.siteID)) = %@ AND \(#keyPath(BloggingPrompt.date)) IN %@",
-                                    siteID,
-                                    incomingDates.map { $0 as NSDate })
         let fetchRequest = BloggingPrompt.fetchRequest()
-        fetchRequest.predicate = predicate
+        fetchRequest.predicate = NSPredicate(format: "\(#keyPath(BloggingPrompt.siteID)) = %@", siteID)
 
         contextManager.performAndSave({ derivedContext in
             /// Try to overwrite prompts that have the same dates.
@@ -393,23 +394,23 @@ private extension BloggingPromptsService {
             /// Perf. notes: since we're at most updating 25 entries, it should be acceptable to update them one by one.
             /// However, if requirements change and we need to work through a larger data set, consider switching to
             /// a drop-and-replace strategy with `NSBatchDeleteRequest` as it's more performant.
-            var updatedExistingDates = Set<Date>()
-            let results = try derivedContext.fetch(fetchRequest)
-            results.forEach { prompt in
-                guard let incoming = promptsByDate[prompt.date] else {
+            var updatedExistingDates = Set<String>()
+
+            try derivedContext.fetch(fetchRequest).forEach { prompt in
+                guard let incoming = promptsByDate[prompt.dateString] else {
                     return
                 }
 
                 // ensure that there's only one prompt for each date.
                 // if the prompt with this date has been updated before, then it's a duplicate. Let's delete it.
-                if updatedExistingDates.contains(prompt.date) {
+                if updatedExistingDates.contains(prompt.dateString) {
                     derivedContext.deleteObject(prompt)
                     return
                 }
 
                 // otherwise, we can update the prompt matching the date with the incoming prompt.
                 prompt.configure(with: incoming, for: self.siteID.int32Value)
-                updatedExistingDates.insert(incoming.date)
+                updatedExistingDates.insert(incoming.dateString)
             }
 
             // process the remaining new prompts.
