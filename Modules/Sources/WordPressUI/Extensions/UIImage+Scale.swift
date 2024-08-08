@@ -9,7 +9,7 @@ public extension UIImage {
     }
 
     @objc
-    func resized (to newSize: CGSize, format: ScalingMode = .scaleAspectFit) -> UIImage {
+    func resized(to newSize: CGSize, format: ScalingMode = .scaleAspectFit) -> UIImage {
         let renderFormat = UIGraphicsImageRendererFormat.default()
         renderFormat.opaque = false
 
