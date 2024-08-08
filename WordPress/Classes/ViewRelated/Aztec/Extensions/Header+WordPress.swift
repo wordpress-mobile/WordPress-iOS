@@ -45,7 +45,7 @@ extension Header.HeaderType {
 
     var iconImage: UIImage? {
         switch self {
-        case .none: return UIImage.from(color: .clear, havingSize: Gridicon.defaultSize)
+        case .none: return UIImage(color: .clear, size: Gridicon.defaultSize)
         default: return formattingIdentifier.iconImage
         }
     }
