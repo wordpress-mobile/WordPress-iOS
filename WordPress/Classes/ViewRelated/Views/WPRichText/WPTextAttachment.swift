@@ -40,7 +40,7 @@ open class WPTextAttachment: NSTextAttachment {
         self.src = src
 
         // Initialize with default image data to prevent placeholder graphics appearing on iOS 13.
-        super.init(data: UIImage(color: .basicBackground).pngData(), ofType: UTType.png.identifier)
+        super.init(data: UIImage(color: .basicBackground, size: CGSize(width: 1, height: 1)).pngData(), ofType: UTType.png.identifier)
     }
 
     /// For required NSCoding support.

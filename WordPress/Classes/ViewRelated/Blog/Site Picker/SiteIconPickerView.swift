@@ -1,5 +1,6 @@
 import SwiftUI
 import UIKit
+import WordPressUI
 
 struct SiteIconPickerView: View {
     private let initialIcon = Image("blavatar-default")
@@ -8,7 +9,7 @@ struct SiteIconPickerView: View {
     var onDismiss: (() -> Void)? = nil
 
     @SwiftUI.State private var currentIcon: String? = nil
-    @SwiftUI.State private var currentBackgroundColor: UIColor = .init(hexString: "#969CA1") ?? .gray
+    @SwiftUI.State private var currentBackgroundColor = UIColor(fromHex: 0x969CA1)
 
     private var hasMadeSelection: Bool {
         currentIcon != nil
@@ -312,17 +313,17 @@ struct SiteIconPickerView: View {
     }
 
     private static let backgroundColors = [
-        UIColor(hexString: "#d1e4dd"),
-        UIColor(hexString: "#d1dfe4"),
-        UIColor(hexString: "#d1d1e4"),
-        UIColor(hexString: "#e4d1d1"),
-        UIColor(hexString: "#e4dad1"),
-        UIColor(hexString: "#eeeadd"),
-        UIColor(hexString: "#ffffff"),
-        UIColor(hexString: "#39414d"),
-        UIColor(hexString: "#28303d"),
+        UIColor(fromHex: 0xd1e4dd),
+        UIColor(fromHex: 0xd1dfe4),
+        UIColor(fromHex: 0xd1d1e4),
+        UIColor(fromHex: 0xe4d1d1),
+        UIColor(fromHex: 0xe4dad1),
+        UIColor(fromHex: 0xeeeadd),
+        UIColor(fromHex: 0xffffff),
+        UIColor(fromHex: 0x39414d),
+        UIColor(fromHex: 0x28303d),
         UIColor.black
-    ].compactMap { $0 }
+    ]
 }
 
 private struct EmojiColumnView: View {

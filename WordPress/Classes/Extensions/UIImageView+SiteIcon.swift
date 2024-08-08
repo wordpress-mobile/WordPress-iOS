@@ -80,7 +80,7 @@ extension UIImageView {
                 // ensure there is no UI breakage due to having larger images set here.
                 //
                 if image.size != expectedSize {
-                    self.image = image.resizedImage(with: .scaleAspectFill, bounds: expectedSize, interpolationQuality: .default)
+                    self.image = image.resized(to: expectedSize, format: .scaleAspectFill)
                 } else {
                     self.image = image
                 }

@@ -45,13 +45,13 @@ enum BloggingPromptsAttribution: String {
             .foregroundColor: UIColor.text,
         ]
         static let iconSize = CGSize(width: 18, height: 18)
-        static let dayOneIcon = UIImage(named: "logo-dayone")?.resizedImage(Constants.iconSize, interpolationQuality: .default)
+        static let dayOneIcon = UIImage(named: "logo-dayone")?.resized(to: Constants.iconSize)
 
         /// This is computed so it can react accordingly on color scheme changes.
         static var bloganuaryIcon: UIImage? {
             UIImage(named: "logo-bloganuary")?
                 .withRenderingMode(.alwaysTemplate)
-                .resizedImage(Constants.bloganuaryIconSize, interpolationQuality: .default)
+                .resized(to: Constants.bloganuaryIconSize)
                 .withAlignmentRectInsets(.init(allEdges: -6.0))
                 .withTintColor(.label)
         }

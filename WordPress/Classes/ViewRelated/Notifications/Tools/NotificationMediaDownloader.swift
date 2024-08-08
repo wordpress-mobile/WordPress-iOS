@@ -208,7 +208,7 @@ class NotificationMediaDownloader: NSObject {
                 animatedImage.targetSize = targetSize
                 resizedImage = animatedImage
             } else {
-                resizedImage = image.resizedImage(targetSize, interpolationQuality: .high)
+                resizedImage = image.resized(to: targetSize)
             }
 
             DispatchQueue.main.async {

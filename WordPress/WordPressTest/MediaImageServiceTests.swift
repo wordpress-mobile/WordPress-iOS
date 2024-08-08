@@ -124,7 +124,10 @@ class MediaImageServiceTests: CoreDataTestCase {
         let thumbnail = try await sut.image(for: media, size: .small)
 
         // THEN a small thumbnail is created
-        let expectedSize = await MediaImageService.getThumbnailSize(for: media.pixelSize(), size: .small)
+        let expectedSize = await MediaImageService
+            .getThumbnailSize(for: media.pixelSize(), size: .small)
+            .scaled(by: UIScreen.main.scale)
+
         XCTAssertEqual(thumbnail.size, expectedSize)
 
         // GIVEN local asset is deleted
@@ -270,9 +273,13 @@ class MediaImageServiceTests: CoreDataTestCase {
                   let width = Int(values[0]), let height = Int(values[1]) else {
                 return HTTPStubsResponse(error: URLError(.unknown))
             }
-            let resizedImage = image.resizedImage(CGSize(width: width, height: height), interpolationQuality: .default)
-            let responseData = resizedImage?.jpegData(compressionQuality: 0.8) ?? Data()
-            return HTTPStubsResponse(data: responseData, statusCode: 200, headers: nil)
+            do {
+                let resizedImage = image.resized(to: CGSize(width: width, height: height))
+                let responseData = try XCTUnwrap(resizedImage.jpegData(compressionQuality: 0.8))
+                return HTTPStubsResponse(data: responseData, statusCode: 200, headers: nil)
+            } catch {
+                return HTTPStubsResponse(error: error)
+            }
         })
     }
 

@@ -4,9 +4,9 @@ import UIKit
 extension UIImage {
 
     func gravatarIcon(size: CGFloat) -> UIImage? {
-        let iconSize = CGSize(width: size, height: size)
-        let resizedImage = self.resizedImage(iconSize, interpolationQuality: .default)
-        return resizedImage?.cropToCircle().withRenderingMode(.alwaysOriginal)
+        resized(to: CGSize(width: size, height: size))
+            .cropToCircle()
+            .withRenderingMode(.alwaysOriginal)
     }
 
     func cropToCircle() -> UIImage {

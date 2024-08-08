@@ -3,7 +3,6 @@
 #import "WordPress-Swift.h"
 
 @import WordPressUI;
-@import WordPressUIObjC;
 @import WordPressShared;
 
 @interface MenuItemDrawingView ()
@@ -218,10 +217,8 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.translatesAutoresizingMaskIntoConstraints = NO;
     button.backgroundColor = [UIColor clearColor];
-
-    UIImage *resizedImage = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:CGSizeMake(MenusDesignItemIconSize, MenusDesignItemIconSize) interpolationQuality:kCGInterpolationDefault];
-    [button setImage:[resizedImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
-    button.tintColor = [UIColor murielTextTertiary];
+    [button setImage: image forState: UIControlStateNormal];
+    [button setTintColor: [UIColor murielTextTertiary]];
 
     CGFloat padding = 6.0;
     CGFloat side = MenusDesignItemIconSize + (padding * 2);

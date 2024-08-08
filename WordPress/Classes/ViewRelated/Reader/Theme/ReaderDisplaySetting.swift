@@ -138,17 +138,17 @@ struct ReaderDisplaySetting: Codable, Equatable {
             case .system:
                 return .text
             case .soft:
-                return .init(fromHex: 0x2d2e2e)
+                return UIColor(fromHex: 0x2d2e2e)
             case .sepia:
-                return .init(fromHex: 0x27201b)
+                return UIColor(fromHex: 0x27201b)
             case .evening:
-                return .init(fromHex: 0xabaab2)
+                return UIColor(fromHex: 0xabaab2)
             case .oled:
                 return .text.color(for: .init(userInterfaceStyle: .dark))
             case .hacker:
                 return .green
             case .candy:
-                return .init(fromHex: 0x0066ff)
+                return UIColor(fromHex: 0x0066ff)
             }
         }
 
@@ -166,17 +166,17 @@ struct ReaderDisplaySetting: Codable, Equatable {
             case .system:
                 return .systemBackground
             case .soft:
-                return .init(fromHex: 0xf2f2f2)
+                return UIColor(fromHex: 0xf2f2f2)
             case .sepia:
-                return .init(fromHex: 0xeae0cd)
+                return UIColor(fromHex: 0xeae0cd)
             case .evening:
-                return .init(fromHex: 0x3a3a3c)
+                return UIColor(fromHex: 0x3a3a3c)
             case .oled:
                 return .systemBackground.color(for: .init(userInterfaceStyle: .dark))
             case .hacker:
                 return .systemBackground.color(for: .init(userInterfaceStyle: .dark))
             case .candy:
-                return .init(fromHex: 0xffe8fd)
+                return UIColor(fromHex: 0xffe8fd)
             }
         }
 

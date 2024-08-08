@@ -332,9 +332,7 @@ private extension PrepublishingSocialAccountsViewController {
         let isOn: Bool
 
         lazy var imageForCell: UIImage = {
-            service.localIconImage.resizedImage(with: .scaleAspectFit,
-                                                bounds: Constants.cellImageSize,
-                                                interpolationQuality: .default)
+            service.localIconImage.resized(to: Constants.cellImageSize, format: .scaleAspectFit)
         }()
     }
 

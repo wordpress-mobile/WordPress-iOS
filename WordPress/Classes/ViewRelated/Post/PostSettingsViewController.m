@@ -18,7 +18,6 @@
 @import WordPressShared;
 @import WordPressKit;
 @import WordPressUI;
-@import WordPressUIObjC;
 @import Reachability;
 
 typedef NS_ENUM(NSInteger, PostSettingsRow) {
@@ -742,7 +741,7 @@ FeaturedImageViewControllerDelegate>
                                              section:(NSInteger)section
 {
     UITableViewCell *cell = [self getWPTableViewImageAndAccessoryCell];
-    UIImage *image = [[WPStyleGuide socialIconFor:connection.service] resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:CGSizeMake(28.0, 28.0) interpolationQuality:kCGInterpolationDefault];
+    UIImage *image = [[WPStyleGuide socialIconFor:connection.service] resizedTo:CGSizeMake(28.0, 28.0) format: ScalingModeScaleAspectFill];
     [cell.imageView setImage:image];
     cell.imageView.alpha = 1.0;
     if (!canEditSharing) {

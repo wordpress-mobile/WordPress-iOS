@@ -342,20 +342,3 @@ extension ReaderWebView: WKScriptMessageHandler {
     }
 
 }
-
-private extension UIColor {
-    /// Produces an 8-digit CSS color hex string representation of `UIColor`.
-    /// The last two digits represent the alpha value of the color.
-    var hexStringWithAlpha: String {
-        // A CGColor either has 4 components (r,g,b,a) or 2 components (white, alpha).
-        // Regardless the type of components, the last component is guaranteed to represent the alpha value.
-        guard let hexString = hexString(),
-              let components = cgColor.components,
-              let alphaValue: CGFloat = components.last?.clamp(min: .zero, max: 1.0) else {
-            return String()
-        }
-
-        let alphaValueInHex = String(format: "%02lx", lroundf(Float(alphaValue) * 255))
-        return hexString.appending(alphaValueInHex)
-    }
-}

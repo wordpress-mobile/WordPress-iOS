@@ -89,7 +89,7 @@ struct ColorGallery: View {
     }
 
     private func hexString(for color: UIColor?) -> String? {
-        colorScheme == .light ? color?.lightVariant().hexString() : color?.darkVariant().hexString()
+        colorScheme == .light ? color?.lightVariant().hexString : color?.darkVariant().hexString
     }
 
     private func sectionTitle(_ title: String) -> some View {
@@ -140,7 +140,7 @@ private extension UIColor {
         return color(for: UITraitCollection(userInterfaceStyle: .dark))
     }
 
-    func hexString() -> String? {
+    var hexString: String? {
         guard let components = cgColor.components, components.count >= 3 else {
             return nil
         }

@@ -258,7 +258,7 @@ private struct PaddedInfoRow: ImmuTableRow {
     func configureCell(_ cell: UITableViewCell) {
         cell.textLabel?.text = title
         cell.textLabel?.numberOfLines = 10
-        cell.imageView?.image = UIImage(color: .clear, havingSize: Gridicon.defaultSize)
+        cell.imageView?.image = UIImage(color: .clear, size: Gridicon.defaultSize)
         cell.selectionStyle = .none
 
         WPStyleGuide.configureTableViewCell(cell)
@@ -273,7 +273,7 @@ private struct PaddedLinkRow: ImmuTableRow {
 
     func configureCell(_ cell: UITableViewCell) {
         cell.textLabel?.text = title
-        cell.imageView?.image = UIImage(color: .clear, havingSize: Gridicon.defaultSize)
+        cell.imageView?.image = UIImage(color: .clear, size: Gridicon.defaultSize)
 
         WPStyleGuide.configureTableViewActionCell(cell)
         cell.textLabel?.textColor = .primary

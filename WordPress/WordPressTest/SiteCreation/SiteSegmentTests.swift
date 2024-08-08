@@ -8,7 +8,7 @@ final class SiteSegmentTests: XCTestCase {
         static let title = "Blogger"
         static let subtitle = "Publish a collection of posts."
         static let icon = URL(string: "https://wordpress.com/icon/blogger.png")!
-        static let iconColor = UIColor(hexString: "FFFAFA")
+        static let iconColor = UIColor(fromHex: 0xFFFAFA)
     }
 
     private var subject: SiteSegment?

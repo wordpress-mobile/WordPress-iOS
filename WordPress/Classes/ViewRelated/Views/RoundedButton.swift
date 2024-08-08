@@ -77,7 +77,7 @@ class RoundedButton: UIButton {
             setBackgroundImage(UIImage(color: tintColor), for: .highlighted)
         } else {
             setTitleColor(tintColor.withAlphaComponent(0.5), for: .highlighted)
-            setBackgroundImage(UIImage(color: selectedBackgroundColor ?? backgroundColor), for: .highlighted)
+            setBackgroundImage(UIImage(color: selectedBackgroundColor ?? backgroundColor ?? .clear), for: .highlighted)
         }
     }
 

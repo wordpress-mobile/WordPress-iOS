@@ -546,7 +546,7 @@ private extension DashboardPromptsCardCell {
     struct Style {
         static var avatarPlaceholderImage: UIImage {
             // this needs to be computed so the color is correct depending on the user interface style.
-            return UIImage(color: .init(light: .quaternarySystemFill, dark: .systemGray4))
+            return UIImage(color: UIColor(light: .quaternarySystemFill, dark: .systemGray4))
         }
     }
 
