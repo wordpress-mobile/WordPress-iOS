@@ -123,15 +123,14 @@ private extension UrlDiscoveryError {
 
         switch self {
         case let .UrlDiscoveryFailed(attempts):
-            errors = attempts
-                .compactMap {
-                    switch $0 {
-                    case let .failure(failure):
-                        return failure
-                    case .success:
-                        return nil
-                    }
+            errors = attempts.values.compactMap {
+                switch $0 {
+                case let .failure(failure):
+                    return failure
+                case .success:
+                    return nil
                 }
+            }
         }
 
         let notWordPressSite = errors.contains {
