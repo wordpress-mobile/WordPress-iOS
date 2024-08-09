@@ -57,6 +57,12 @@ public class BloggingPrompt: NSManagedObject {
     func inSameDay(as dateToCompare: Date) -> Bool {
         return DateFormatters.utc.string(from: date) == DateFormatters.local.string(from: dateToCompare)
     }
+
+    /// Used for comparison on upsert  – there can't be two `BloggingPrompt` objects with the same date, so we can use it as a unique identifier
+    @objc
+    var dateString: String {
+        DateFormatters.local.string(from: date)
+    }
 }
 
 // MARK: - Notification Payload
