@@ -36,10 +36,6 @@ struct BlogQuery {
         and(NSPredicate(format: "url = %@", hostname))
     }
 
-    func visible(_ flag: Bool) -> Self {
-        and(NSPredicate(format: "visible = %@", NSNumber(booleanLiteral: flag)))
-    }
-
     func hostedByWPCom(_ flag: Bool) -> Self {
         and(NSPredicate(format: flag ? "account != NULL" : "account == NULL"))
     }

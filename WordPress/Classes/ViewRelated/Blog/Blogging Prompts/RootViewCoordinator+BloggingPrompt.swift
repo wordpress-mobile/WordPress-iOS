@@ -42,7 +42,7 @@ extension RootViewCoordinator {
 
 private extension RootViewCoordinator {
 
-    var accountSites: [Blog]? {
-        try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)?.visibleBlogs
+    var accountSites: Set<Blog>? {
+        (try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext))?.blogs
     }
 }

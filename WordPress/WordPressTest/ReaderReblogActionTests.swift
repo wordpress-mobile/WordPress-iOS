@@ -48,7 +48,7 @@ class ReblogPresenterTests: ReblogTestCase {
 
     func testPresentEditorForOneSite() throws {
         // Given
-        BlogBuilder(contextManager.mainContext).with(visible: true).isHostedAtWPcom().withAnAccount().build()
+        BlogBuilder(contextManager.mainContext).isHostedAtWPcom().withAnAccount().build()
         // TODO: Replace this expectation with other ways to assert the `ReaderReblogPresenter.presentEditor` is called.
         let draftPosts = NSFetchRequest<Post>(entityName: "Post")
         draftPosts.predicate = NSPredicate(format: "status = %@", Post.Status.draft.rawValue)
@@ -63,7 +63,7 @@ class ReblogPresenterTests: ReblogTestCase {
     func testPresentEditorForMultipleSites() {
         // Given
         for _ in 1...2 {
-            BlogBuilder(contextManager.mainContext).with(visible: true).isHostedAtWPcom().withAnAccount().build()
+            BlogBuilder(contextManager.mainContext).isHostedAtWPcom().withAnAccount().build()
         }
         let presenter = ReaderReblogPresenter(postService: postService!)
         let origin = MockViewController()

@@ -89,12 +89,6 @@ final class BlogBuilder {
         return self
     }
 
-    func with(visible: Bool) -> Self {
-        blog.visible = visible
-
-        return self
-    }
-
     func withAccount(id: NSManagedObjectID) throws -> Self {
         blog.account = try XCTUnwrap(context.existingObject(with: id) as? WPAccount)
         return self

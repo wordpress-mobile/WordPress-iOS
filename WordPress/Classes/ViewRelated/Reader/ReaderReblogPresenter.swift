@@ -37,13 +37,13 @@ class ReaderReblogPresenter {
                        readerPost: ReaderPost,
                        origin: UIViewController) {
         let context = coreDataStack.mainContext
-        let blogCount = BlogQuery().visible(true).hostedByWPCom(true).count(in: context)
+        let blogCount = BlogQuery().hostedByWPCom(true).count(in: context)
 
         switch blogCount {
         case 0:
             presentNoSitesScene(origin: origin)
         case 1:
-            guard let blog = try? BlogQuery().visible(true).hostedByWPCom(true).blog(in: context) else {
+            guard let blog = try? BlogQuery().hostedByWPCom(true).blog(in: context) else {
                 return
             }
             presentEditor(with: readerPost, blog: blog, origin: origin)

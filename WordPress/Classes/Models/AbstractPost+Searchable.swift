@@ -10,10 +10,6 @@ extension AbstractPost: SearchableItemConvertable {
             // Don't index trashed posts
             return false
         }
-        guard blog.visible else {
-            // Don't index posts for non-visible sites (not visible in the My Sites list)
-            return false
-        }
         return true
     }
 

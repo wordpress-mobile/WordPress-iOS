@@ -72,7 +72,6 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 @dynamic postTypes;
 @dynamic postFormats;
 @dynamic isActivated;
-@dynamic visible;
 @dynamic account;
 @dynamic isAdmin;
 @dynamic isMultiAuthor;
