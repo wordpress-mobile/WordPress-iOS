@@ -102,7 +102,7 @@
     {
       "identity" : "fsinteractivemap",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/wordpress-mobile/FSInteractiveMap",
+      "location" : "https://github.com/wordpress-mobile/FSInteractiveMap/",
       "state" : {
         "revision" : "3a05cd433c4f6bfe66f09253459cef2be058b3ec",
         "version" : "0.3.0"
@@ -365,7 +365,7 @@
       "location" : "https://github.com/wordpress-mobile/WordPressKit-iOS",
       "state" : {
         "branch" : "wpios-edition",
-        "revision" : "0583ccc9f1f6b748bab6a9242bbf585351d18caa"
+        "revision" : "c3eeb90e7a4f3664f85ff53f1fef009cda17d5b6"
       }
     },
     {
