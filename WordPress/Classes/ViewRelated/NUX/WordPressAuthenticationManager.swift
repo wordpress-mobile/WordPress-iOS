@@ -314,78 +314,39 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     /// Presents the Login Epilogue, in the specified NavigationController.
     ///
     func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, source: SignInSource?, onDismiss: @escaping () -> Void) {
+        let mainContext = ContextManager.shared.mainContext
 
         // If adding a self-hosted site, skip the Epilogue
         if let wporg = credentials.wporg,
-           let blog = Blog.lookup(username: wporg.username, xmlrpc: wporg.xmlrpc, in: ContextManager.shared.mainContext) {
-
+           let blog = Blog.lookup(username: wporg.username, xmlrpc: wporg.xmlrpc, in: mainContext) {
             if self.windowManager.isShowingFullscreenSignIn {
                 self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
             } else {
                 navigationController.dismiss(animated: true)
             }
-
             return
         }
 
-        if PostSignUpInterstitialViewController.shouldDisplay() {
+        let account = try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext)
+        wpAssert(account != nil)
+
+        let sites = account?.blogs ?? []
+
+        guard var selectedBlog = sites.first else {
             self.presentPostSignUpInterstitial(in: navigationController, onDismiss: onDismiss)
             return
         }
 
-        // Present the epilogue view
-        let storyboard = UIStoryboard(name: "LoginEpilogue", bundle: .main)
-        guard let epilogueViewController = storyboard.instantiateInitialViewController() as? LoginEpilogueViewController else {
-            fatalError()
+        if let primarySiteID = account?.primaryBlogID,
+           let site = sites.first(where: { $0.dotComID == primarySiteID }) {
+            selectedBlog = site
         }
 
-        let onBlogSelected: ((Blog) -> Void) = { [weak self, weak navigationController] blog in
-            guard let self, let navigationController else {
-                return
-            }
+        // If the user just signed in, refresh the A/B assignments
+        ABTest.start()
 
-            // If the user just signed in, refresh the A/B assignments
-            ABTest.start()
-
-            self.recentSiteService.touch(blog: blog)
-            self.presentOnboardingQuestionsPrompt(in: navigationController, blog: blog, onDismiss: onDismiss)
-        }
-
-        // If the user has only 1 blog, skip the site selector and go right to the next step
-        if numberOfBlogs() == 1, let firstBlog = firstBlog() {
-            onBlogSelected(firstBlog)
-            return
-        }
-
-        epilogueViewController.credentials = credentials
-        epilogueViewController.onBlogSelected = onBlogSelected
-
-        let onDismissQuickStartPromptForNewSiteHandler = onDismissQuickStartPromptHandler(type: .newSite, onDismiss: onDismiss)
-
-        epilogueViewController.onCreateNewSite = { [weak navigationController] in
-            guard let navigationController else { return }
-
-            let source = "login_epilogue"
-            JetpackFeaturesRemovalCoordinator.presentSiteCreationOverlayIfNeeded(in: navigationController, source: source, onDidDismiss: {
-                guard JetpackFeaturesRemovalCoordinator.siteCreationPhase() != .two else {
-                    return
-                }
-
-                // Display site creation flow if not in phase two
-                let wizardLauncher = SiteCreationWizardLauncher(onDismiss: onDismissQuickStartPromptForNewSiteHandler)
-                guard let wizard = wizardLauncher.ui else {
-                    return
-                }
-
-                RootViewCoordinator.shared.isSiteCreationActive = true
-                navigationController.present(wizard, animated: true)
-                SiteCreationAnalyticsHelper.trackSiteCreationAccessed(source: source)
-            })
-        }
-
-        navigationController.delegate = epilogueViewController
-        navigationController.pushViewController(epilogueViewController, animated: true)
-
+        recentSiteService.touch(blog: selectedBlog)
+        presentOnboardingQuestionsPrompt(in: navigationController, blog: selectedBlog, onDismiss: onDismiss)
     }
 
     /// Presents the Signup Epilogue, in the specified NavigationController.
@@ -518,11 +479,6 @@ private extension WordPressAuthenticationManager {
 
         return numberOfBlogs
     }
-
-    private func firstBlog() -> Blog? {
-        let context = ContextManager.sharedInstance().mainContext
-        return try? WPAccount.lookupDefaultWordPressComAccount(in: context)?.blogs?.first
-    }
 }
 
 // MARK: - Onboarding Questions Prompt
@@ -576,38 +532,6 @@ private extension WordPressAuthenticationManager {
         }
     }
 
-}
-
-// MARK: - Quick Start Prompt
-private extension WordPressAuthenticationManager {
-
-    typealias QuickStartOnDismissHandler = (Blog, Bool) -> Void
-
-    func onDismissQuickStartPromptHandler(type: QuickStartType, onDismiss: @escaping () -> Void) -> QuickStartOnDismissHandler {
-        return { [weak self] blog, _ in
-            guard let self = self else {
-                // If self is nil the user will be stuck on the login and not able to progress
-                // Trigger a fatal so we can track this better in Sentry.
-                // This case should be very rare.
-                fatalError("Could not get a reference to self when selecting the blog on the login epilogue")
-            }
-
-            onDismiss()
-
-            // If the quick start prompt has already been dismissed,
-            // then show the My Site screen for the specified blog
-            guard !self.quickStartSettings.promptWasDismissed(for: blog) else {
-                self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
-                return
-            }
-
-            // Otherwise, show the My Site screen for the specified blog and after a short delay,
-            // trigger the Quick Start tour
-            self.windowManager.showAppUI(for: blog, completion: {
-                QuickStartTourGuide.shared.setupWithDelay(for: blog, type: type)
-            })
-        }
-    }
 }
 
 // MARK: - WordPressAuthenticatorManager
