@@ -316,14 +316,18 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, source: SignInSource?, onDismiss: @escaping () -> Void) {
         let mainContext = ContextManager.shared.mainContext
 
-        // If adding a self-hosted site, skip the Epilogue
-        if let wporg = credentials.wporg,
-           let blog = Blog.lookup(username: wporg.username, xmlrpc: wporg.xmlrpc, in: mainContext) {
+        func dismissLoginFlow(blog: Blog) {
             if self.windowManager.isShowingFullscreenSignIn {
                 self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
             } else {
                 navigationController.dismiss(animated: true)
             }
+        }
+
+        // If adding a self-hosted site, skip the Epilogue
+        if let wporg = credentials.wporg,
+           let blog = Blog.lookup(username: wporg.username, xmlrpc: wporg.xmlrpc, in: mainContext) {
+            dismissLoginFlow(blog: blog)
             return
         }
 
@@ -346,7 +350,12 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         ABTest.start()
 
         recentSiteService.touch(blog: selectedBlog)
-        presentOnboardingQuestionsPrompt(in: navigationController, blog: selectedBlog, onDismiss: onDismiss)
+
+        if Feature.enabled(.tipKit) {
+            dismissLoginFlow(blog: selectedBlog)
+        } else {
+            presentOnboardingQuestionsPrompt(in: navigationController, blog: selectedBlog, onDismiss: onDismiss)
+        }
     }
 
     /// Presents the Signup Epilogue, in the specified NavigationController.
