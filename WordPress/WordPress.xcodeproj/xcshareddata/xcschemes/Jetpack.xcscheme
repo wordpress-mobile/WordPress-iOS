@@ -83,18 +83,6 @@
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "-com.apple.TipKit.ShowAllTips 1"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "-com.apple.TipKit.HideAllTips 1"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "-com.apple.TipKit.ResetDataStore 1"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
             argument = "-extra_debug 1"
             isEnabled = "NO">
          </CommandLineArgument>
@@ -112,6 +100,18 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-debugJetpackConnectionFlow"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-com.apple.TipKit.ShowAllTips 1"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-com.apple.TipKit.HideAllTips 1"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-com.apple.TipKit.ResetDataStore 1"
             isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>
