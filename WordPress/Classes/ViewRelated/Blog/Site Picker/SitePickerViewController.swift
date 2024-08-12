@@ -4,7 +4,6 @@ import WordPressShared
 import SwiftUI
 import SVProgressHUD
 import DesignSystem
-import TipKit
 
 final class SitePickerViewController: UIViewController {
 
@@ -28,9 +27,7 @@ final class SitePickerViewController: UIViewController {
         return headerView
     }()
 
-    private var tipSitePicker = AppTips.SitePickerTip()
-    private var tipSitePickerTask: Task<Void, Never>?
-    private weak var tipPopoverController: UIViewController?
+    private var sitePickerTipObserver: TipObserver?
 
     init(blog: Blog,
          meScenePresenter: ScenePresenter,
@@ -58,15 +55,19 @@ final class SitePickerViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        if #available(iOS 17.0, *) {
-            startObservingTips()
+        if #available(iOS 17, *), sitePickerTipObserver == nil {
+            sitePickerTipObserver = registerTipPopover(
+                AppTips.SitePickerTip(),
+                sourceView: blogDetailHeaderView.titleView.siteSwitcherButton,
+                arrowDirection: [.up]
+            )
         }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        stopObservingTips()
+        sitePickerTipObserver = nil
     }
 
     private func setupHeaderView() {
@@ -83,34 +84,6 @@ final class SitePickerViewController: UIViewController {
         DispatchQueue.main.async {
             self.updateTitles()
         }
-    }
-
-    @available(iOS 17.0, *)
-    private func startObservingTips() {
-        guard Feature.enabled(.tipKit) else { return }
-
-        tipSitePickerTask = tipSitePickerTask ?? Task { @MainActor in
-            for await shouldDisplay in tipSitePicker.shouldDisplayUpdates {
-                if shouldDisplay {
-                    let popoverController = TipUIPopoverViewController(tipSitePicker, sourceItem: blogDetailHeaderView.titleView.siteSwitcherButton)
-                    popoverController.view.tintColor = .secondaryLabel
-                    popoverController.popoverPresentationController?.permittedArrowDirections = [.up]
-                    present(popoverController, animated: true)
-                    tipPopoverController = popoverController
-                }
-                else {
-                    if presentedViewController is TipUIPopoverViewController {
-                        dismiss(animated: true)
-                        tipPopoverController = nil
-                    }
-                }
-            }
-        }
-    }
-
-    private func stopObservingTips() {
-        tipSitePickerTask?.cancel()
-        tipSitePickerTask = nil
     }
 }
 
