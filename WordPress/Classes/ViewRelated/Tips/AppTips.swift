@@ -41,7 +41,8 @@ extension UIViewController {
     func registerTipPopover(
         _ tip: some Tip,
         sourceView: UIView,
-        arrowDirection: UIPopoverArrowDirection? = nil
+        arrowDirection: UIPopoverArrowDirection? = nil,
+        actionHandler: ((Tips.Action) -> Void)? = nil
     ) -> TipObserver? {
         guard Feature.enabled(.tipKit) else {
             return nil
@@ -49,7 +50,7 @@ extension UIViewController {
         let task = Task { @MainActor [weak self] in
             for await shouldDisplay in tip.shouldDisplayUpdates {
                 if shouldDisplay {
-                    let popoverController = TipUIPopoverViewController(tip, sourceItem: sourceView)
+                    let popoverController = TipUIPopoverViewController(tip, sourceItem: sourceView, actionHandler: actionHandler ?? { _ in })
                     popoverController.view.tintColor = .secondaryLabel
                     if let arrowDirection {
                         popoverController.popoverPresentationController?.permittedArrowDirections = arrowDirection
