@@ -1,7 +1,6 @@
 import UIKit
 import SwiftUI
 import WordPressAuthenticator
-import ViewLayer
 
 extension SitePickerViewController {
 
@@ -119,7 +118,8 @@ extension SitePickerViewController {
             return
         }
 
-        let view = LoginWithUrlView(anchor: window) { [weak navigationController] credentials in
+        let client = LoginClient(session: URLSession(configuration: .ephemeral))
+        let view = LoginWithUrlView(client: client, anchor: window) { [weak navigationController] credentials in
             navigationController?.dismiss(animated: true)
 
             WordPressAuthenticator.shared.delegate!.sync(credentials: .init(wporg: credentials)) {

@@ -629,7 +629,7 @@ import Foundation
     case inAppUpdateAccepted
 
     // Login Autodiscovery
-    case performedUrlDiscovery
+    case applicationPasswordLogin
 
     /// A String that represents the event
     var value: String {
@@ -1710,8 +1710,8 @@ import Foundation
             return "in_app_update_accepted"
 
         // Login Autodiscovery
-        case .performedUrlDiscovery:
-            return "performed_url_discovery"
+        case .applicationPasswordLogin:
+            return "application_password_login"
 
         } // END OF SWITCH
     }

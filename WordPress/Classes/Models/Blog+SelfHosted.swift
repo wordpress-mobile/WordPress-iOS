@@ -1,4 +1,5 @@
 import Foundation
+import CryptoKit
 import WordPressAPI
 
 extension Blog {
@@ -15,15 +16,15 @@ extension Blog {
     }
 
     static func createRestApiBlog(
-        with details: SelfHostedLoginDetails,
+        with details: WpApiApplicationPasswordDetails,
         in contextManager: ContextManager,
         using keychainImplementation: KeychainAccessible = KeychainUtils()
     ) async throws -> String {
         try await contextManager.performAndSave { context in
             let blog = Blog.createBlankBlog(in: context)
-            blog.setUrl(details.url)
-            blog.username = details.username
-            blog.setXMLRPCEndpoint(to: details.derivedXMLRPCRoot)
+            blog.url = details.siteUrl
+            blog.username = details.userLogin
+            try blog.setXMLRPCEndpoint(to: details.derivedXMLRPCRoot)
             blog.setSiteIdentifier(details.derivedSiteId)
 
             // `url` and `xmlrpc` need to be set before setting passwords.
@@ -138,5 +139,20 @@ extension Blog {
 
     func setSiteIdentifier(_ newValue: SiteIdentifier) {
         self.apiKey = newValue
+    }
+}
+
+extension WpApiApplicationPasswordDetails {
+    var derivedXMLRPCRoot: URL {
+        get throws {
+            let url = try ParsedUrl.parse(input: siteUrl).asURL()
+            return url.appending(path: "xmlrpc.php")
+        }
+    }
+
+    var derivedSiteId: String {
+        SHA256.hash(data: Data(siteUrl.localizedLowercase.utf8))
+            .compactMap { String(format: "%02x", $0) }
+            .joined()
     }
 }
