@@ -316,18 +316,14 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, source: SignInSource?, onDismiss: @escaping () -> Void) {
         let mainContext = ContextManager.shared.mainContext
 
-        func dismissLoginFlow(blog: Blog) {
+        // If adding a self-hosted site, skip the Epilogue
+        if let wporg = credentials.wporg,
+           let blog = Blog.lookup(username: wporg.username, xmlrpc: wporg.xmlrpc, in: mainContext) {
             if self.windowManager.isShowingFullscreenSignIn {
                 self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
             } else {
                 navigationController.dismiss(animated: true)
             }
-        }
-
-        // If adding a self-hosted site, skip the Epilogue
-        if let wporg = credentials.wporg,
-           let blog = Blog.lookup(username: wporg.username, xmlrpc: wporg.xmlrpc, in: mainContext) {
-            dismissLoginFlow(blog: blog)
             return
         }
 
@@ -350,12 +346,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         ABTest.start()
 
         recentSiteService.touch(blog: selectedBlog)
-
-        if Feature.enabled(.tipKit) {
-            dismissLoginFlow(blog: selectedBlog)
-        } else {
-            presentOnboardingQuestionsPrompt(in: navigationController, blog: selectedBlog, onDismiss: onDismiss)
-        }
+        presentOnboardingQuestionsPrompt(in: navigationController, blog: selectedBlog, onDismiss: onDismiss)
     }
 
     /// Presents the Signup Epilogue, in the specified NavigationController.
@@ -507,8 +498,6 @@ private extension WordPressAuthenticationManager {
         let coordinator = OnboardingQuestionsCoordinator()
         coordinator.navigationController = navigationController
 
-        let viewController = OnboardingQuestionsPromptViewController(with: coordinator)
-
         coordinator.onDismiss = { [weak navigationController] selectedOption in
             guard let navigationController else { return }
 
@@ -528,7 +517,20 @@ private extension WordPressAuthenticationManager {
             onDismiss?()
         }
 
-        navigationController.pushViewController(viewController, animated: true)
+        if Feature.enabled(.tipKit) {
+            Task { @MainActor in
+                let settings = await UNUserNotificationCenter.current().notificationSettings()
+                guard settings.authorizationStatus == .notDetermined else {
+                    coordinator.onDismiss?(.skip)
+                    return
+                }
+                let controller = OnboardingEnableNotificationsViewController(with: coordinator, option: .skip)
+                navigationController.pushViewController(controller, animated: true)
+            }
+        } else {
+            let viewController = OnboardingQuestionsPromptViewController(with: coordinator)
+            navigationController.pushViewController(viewController, animated: true)
+        }
     }
 
     /// To prevent a weird jump from the MySite tab to the reader/notifications tab
