@@ -131,6 +131,10 @@ extension SitePickerViewController: BlogDetailHeaderViewDelegate {
         navigationController.modalPresentationStyle = .formSheet
         present(navigationController, animated: true)
         WPAnalytics.track(.mySiteSiteSwitcherTapped)
+
+        if #available(iOS 17, *) {
+            AppTips.SitePickerTip().invalidate(reason: .actionPerformed)
+        }
     }
 
     func visitSiteTapped() {
