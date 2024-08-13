@@ -41,13 +41,16 @@ final actor LoginClient {
     @MainActor
     func login(site: String, from anchor: ASPresentationAnchor?) async -> Result<WordPressOrgCredentials, LoginClientError> {
         let appId: WpUuid
-        do {
-            appId = try WpUuid.parse(input: "00000000-0000-4000-8000-000000000000")
-        } catch {
-            fatalError("The app id should be a valid WpUuid: \(error)")
+        let appName: String
+
+        if AppConfiguration.isJetpack {
+            appId = try! WpUuid.parse(input: "7088f42d-34e9-4402-ab50-b506b819f3e4")
+            appName = "Jetpack iOS"
+        } else {
+            appId = try! WpUuid.parse(input: "a9cb72ed-311b-4f01-a0ac-a7af563d103e")
+            appName = "WordPress iOS"
         }
 
-        let appName = AppConfiguration.isJetpack ? "Jetpack iOS" : "WordPress iOS"
         let deviceName = UIDevice.current.name
         let timestamp = ISO8601DateFormatter.string(from: .now, timeZone: .current, formatOptions: .withInternetDateTime)
         let appNameValue = "\(appName) - \(deviceName) (\(timestamp))"
