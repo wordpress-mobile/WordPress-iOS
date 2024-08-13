@@ -45,7 +45,9 @@ struct LoginWithUrlView: View {
             TextField(text: $urlField) {
                 Text("example.com")
             }
-            .padding(.vertical)
+            .padding(.top)
+            .padding(.bottom, 8)
+            .overlay(alignment: .bottom) { Divider() }
             .overlay(Divider(), alignment: .bottom)
             .tint(.green)
             .textContentType(.URL)
