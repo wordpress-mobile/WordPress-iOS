@@ -32,7 +32,14 @@ struct LoginWithUrlView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            Text(Self.enterSiteAddress).padding(.vertical)
+            VStack(alignment: .center, spacing: 16) {
+                Image("splashLogo")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 60, height: 60)
+                    .padding(24)
+                Text(Self.enterSiteAddress)
+            }
 
             TextField(text: $urlField) {
                 Text("example.com")
@@ -72,7 +79,10 @@ struct LoginWithUrlView: View {
             } else {
                 button.buttonStyle(.borderedProminent)
             }
-        }.padding()
+        }
+        .padding()
+        .navigationTitle(Self.title)
+        .navigationBarTitleDisplayMode(.inline)
     }
 
     private func buttonContent() -> some View {
@@ -107,6 +117,7 @@ struct LoginWithUrlView: View {
 }
 
 extension LoginWithUrlView {
+    static var title: String { NSLocalizedString("addSite.selfHosted.title", value: "Add Self-Hosted Site", comment: "Title of the page to add a self-hosted site") }
     static var enterSiteAddress: String { NSLocalizedString("addSite.selfHosted.enterSiteAddress", value: "Enter the address of the WordPress site you'd like to connect.", comment: "A message to inform users to type the site address in the text field.") }
 }
 
