@@ -15,6 +15,7 @@ public extension UIImage {
 
         return UIGraphicsImageRenderer(size: newSize, format: renderFormat).image { context in
             context.cgContext.concatenate(transform(forSuggestedSize: newSize))
+            self.draw(in: CGRect(origin: .zero, size: newSize))
         }
     }
 
