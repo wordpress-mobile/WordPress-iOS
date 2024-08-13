@@ -38,8 +38,4 @@ final class BlogDashboardPersonalizationViewModelTests: CoreDataTestCase {
             XCTAssertTrue(!card.title.isEmpty)
         }
     }
-
-    func testThatQuickStartCardsIsNotDisplayedWhenNoTourIsActive() {
-        XCTAssertFalse(viewModel.cards.contains(where: { $0.id == .quickStart }))
-    }
 }

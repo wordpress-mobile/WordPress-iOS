@@ -1,3 +1,6 @@
+import CoreData
+
+@available(*, deprecated, message: "No longer used")
 @objc(QuickStartTourState)
 open class QuickStartTourState: NSManagedObject {
     // Relations

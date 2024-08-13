@@ -35,12 +35,6 @@ final class SiteAssemblyWizardContent: UIViewController {
     /// Locally tracks the network connection status via `NetworkStatusDelegate`
     private var isNetworkActive = ReachabilityUtils.isInternetReachable()
 
-    /// UseDefaults helper for quick start settings
-    private let quickStartSettings: QuickStartSettings
-
-    /// Closure to be executed upon dismissal
-    private let onDismiss: ((Blog, Bool) -> Void)?
-
     // MARK: SiteAssemblyWizardContent
 
     /// The designated initializer.
@@ -48,16 +42,9 @@ final class SiteAssemblyWizardContent: UIViewController {
     /// - Parameters:
     ///   - creator: the in-flight creation instance
     ///   - service: the service to use for initiating site creation
-    ///   - quickStartSettings: the UserDefaults helper for quick start settings
-    ///   - onDismiss: the closure to be executed upon dismissal
-    init(creator: SiteCreator,
-         service: SiteAssemblyService,
-         quickStartSettings: QuickStartSettings = QuickStartSettings(),
-         onDismiss: ((Blog, Bool) -> Void)? = nil) {
+    init(creator: SiteCreator, service: SiteAssemblyService) {
         self.siteCreator = creator
         self.service = service
-        self.quickStartSettings = quickStartSettings
-        self.onDismiss = onDismiss
         self.contentView = SiteAssemblyContentView(siteCreator: siteCreator)
 
         super.init(nibName: nil, bundle: nil)
@@ -296,49 +283,11 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
             return
         }
 
-        if let onDismiss = self.onDismiss {
-            let quickstartPrompt = QuickStartPromptViewController(blog: blog)
-            quickstartPrompt.onDismiss = onDismiss
-            navigationController.pushViewController(quickstartPrompt, animated: true)
-            return
-        }
-
         RootViewCoordinator.shared.isSiteCreationActive = false
         RootViewCoordinator.shared.reloadUIIfNeeded(blog: blog)
 
         dismissTapped(viaDone: true) { [blog, weak self] in
             RootViewCoordinator.sharedPresenter.showBlogDetails(for: blog)
-
-            guard let self = self, AppConfiguration.isJetpack else {
-                return
-            }
-
-            let completedSteps: [QuickStartTour] = self.siteCreator.hasSiteTitle ? [QuickStartSiteTitleTour(blog: blog)] : []
-            self.showQuickStartPrompt(for: blog, completedSteps: completedSteps)
         }
-    }
-
-    private func showQuickStartPrompt(for blog: Blog, completedSteps: [QuickStartTour] = []) {
-        guard !quickStartSettings.promptWasDismissed(for: blog) else {
-            return
-        }
-
-        // Disable the prompt for WordPress when the blog has no domains.
-        guard AppConfiguration.isJetpack || isDashboardEnabled(for: blog) else {
-            return
-        }
-
-        let rootViewController = RootViewCoordinator.sharedPresenter.rootViewController
-        let quickstartPrompt = QuickStartPromptViewController(blog: blog)
-        quickstartPrompt.onDismiss = { blog, showQuickStart in
-            if showQuickStart {
-                QuickStartTourGuide.shared.setupWithDelay(for: blog, type: .newSite, withCompletedSteps: completedSteps)
-            }
-        }
-        rootViewController.present(quickstartPrompt, animated: true)
-    }
-
-    private func isDashboardEnabled(for blog: Blog) -> Bool {
-        return JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() && blog.isAccessibleThroughWPCom()
     }
 }

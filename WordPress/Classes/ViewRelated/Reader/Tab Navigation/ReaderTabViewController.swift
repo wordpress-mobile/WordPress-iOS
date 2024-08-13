@@ -37,7 +37,6 @@ class ReaderTabViewController: UIViewController {
 
         NotificationCenter.default.addObserver(self, selector: #selector(defaultAccountDidChange(_:)), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-        startObservingQuickStart()
 
         viewModel.fetchReaderMenu()
     }
@@ -76,7 +75,6 @@ class ReaderTabViewController: UIViewController {
 
         createButtonCoordinator?.removeCreateButton()
 
-        QuickStartTourGuide.shared.endCurrentTour()
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
 
@@ -141,20 +139,6 @@ class ReaderTabViewController: UIViewController {
     }
 }
 
-// MARK: Observing Quick Start
-extension ReaderTabViewController {
-    private func startObservingQuickStart() {
-        NotificationCenter.default.addObserver(self, selector: #selector(handleQuickStartTourElementChangedNotification(_:)), name: .QuickStartTourElementChangedNotification, object: nil)
-    }
-
-    @objc private func handleQuickStartTourElementChangedNotification(_ notification: Foundation.Notification) {
-        // TODO: Revisit Reader spotlight
-//        if let info = notification.userInfo,
-//           let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
-//        }
-    }
-}
-
 // MARK: - Notifications
 extension ReaderTabViewController {
     // Ensure that topics and sites are synced when account changes
@@ -181,7 +165,6 @@ extension ReaderTabViewController {
         )
         static let storyBoardInitError = "Storyboard instantiation not supported"
         static let discoverIndex = 0
-        static let spotlightOffset = UIOffset(horizontal: 20, vertical: -10)
         static let settingsButtonContentEdgeInsets = UIEdgeInsets(top: 2, left: 0, bottom: 0, right: 0)
     }
 }

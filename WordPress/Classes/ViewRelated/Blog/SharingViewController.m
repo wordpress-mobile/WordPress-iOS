@@ -243,11 +243,6 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
     [WPStyleGuide configureTableViewCell:cell];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    if (indexPath == [NSIndexPath indexPathForRow:0 inSection:0] && [[QuickStartTourGuide shared] isCurrentElement:QuickStartTourElementConnections]) {
-        cell.accessoryView = [QuickStartSpotlightView new];
-    } else {
-        cell.accessoryView = nil;
-    }
 
     SharingSectionType sectionType = [self sectionTypeForIndex:indexPath.section];
     switch (sectionType) {
@@ -339,8 +334,6 @@ static NSString *const CellIdentifier = @"CellIdentifier";
             PublicizeService *publicizer = [self publicizeServiceForIndexPath:indexPath];
             controller = [[SharingConnectionsViewController alloc] initWithBlog:self.blog publicizeService:publicizer];
             [WPAppAnalytics track:WPAnalyticsStatSharingOpenedPublicize withBlog:self.blog];
-
-            [[QuickStartTourGuide shared] visited:QuickStartTourElementConnections];
             break;
         }
 

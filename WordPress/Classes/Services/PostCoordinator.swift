@@ -128,9 +128,6 @@ class PostCoordinator: NSObject {
 
     @MainActor
     private func didPublish(_ post: AbstractPost) {
-        if post.status == .publish {
-            QuickStartTourGuide.shared.complete(tour: QuickStartPublishTour(), silentlyForBlog: post.blog)
-        }
         if post.status == .scheduled {
             notifyNewPostScheduled()
         } else if post.status == .publish {

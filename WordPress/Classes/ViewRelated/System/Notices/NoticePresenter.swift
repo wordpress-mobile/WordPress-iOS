@@ -258,7 +258,6 @@ class NoticePresenter {
         let toState = animator.state(for: noticeContainerView, in: view, withTransition: .onscreen,
                                         bottomOffset: onScreenNoticeContainerBottomConstraintConstant)
         animator.animatePresentation(fromState: fromState, toState: toState, completion: {
-            // Quick Start notices don't get automatically dismissed
             guard notice.style.isDismissable else {
                 return
             }

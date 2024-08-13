@@ -4,15 +4,13 @@ struct ActionSheetButton {
     let title: String
     let image: UIImage
     let identifier: String
-    let highlight: Bool
     let badge: UIView?
     let action: () -> Void
 
-    init(title: String, image: UIImage, identifier: String, highlight: Bool = false, badge: UIView? = nil, action: @escaping () -> Void) {
+    init(title: String, image: UIImage, identifier: String, badge: UIView? = nil, action: @escaping () -> Void) {
         self.title = title
         self.image = image
         self.identifier = identifier
-        self.highlight = highlight
         self.badge = badge
         self.action = action
     }
@@ -183,21 +181,7 @@ class ActionSheetViewController: UIViewController {
             ])
         }
 
-        if info.highlight {
-            addSpotlight(to: button)
-        }
         return button
-    }
-
-    private func addSpotlight(to button: UIButton) {
-        let spotlight = QuickStartSpotlightView()
-        spotlight.translatesAutoresizingMaskIntoConstraints = false
-        button.addSubview(spotlight)
-
-        NSLayoutConstraint.activate([
-            spotlight.trailingAnchor.constraint(equalTo: button.trailingAnchor, constant: -Constants.Header.insets.right),
-            spotlight.centerYAnchor.constraint(equalTo: button.centerYAnchor)
-        ])
     }
 
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

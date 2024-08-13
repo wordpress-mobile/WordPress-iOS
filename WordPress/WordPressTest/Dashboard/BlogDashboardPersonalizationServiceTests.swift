@@ -33,18 +33,6 @@ final class BlogDashboardPersonalizationServiceTests: XCTestCase {
         XCTAssertTrue(service.hasPreference(for: .prompts))
     }
 
-    func testThatSettingsAreSavedPerSite() {
-        // Given prompts disabled for site 1
-        BlogDashboardPersonalizationService(repository: repository, siteID: 1)
-            .setEnabled(false, for: .quickStart)
-
-        // When service is created for site 2
-        let service = BlogDashboardPersonalizationService(repository: repository, siteID: 2)
-
-        // Then settings for site 1 are ignored
-        XCTAssertTrue(service.isEnabled(.quickStart))
-    }
-
     func testThatUserDefaultsKeysAreSpecifiedForAllPersonalizableCards() {
         let service = BlogDashboardPersonalizationService(repository: repository, siteID: 1)
         for card in DashboardCard.personalizableCards {

@@ -83,7 +83,7 @@ private extension DashboardCard {
             return NSLocalizedString("personalizeHome.dashboardCard.activityLog", value: "Recent activity", comment: "Card title for the pesonalization menu")
         case .pages:
             return NSLocalizedString("personalizeHome.dashboardCard.pages", value: "Pages", comment: "Card title for the pesonalization menu")
-        case .dynamic, .quickStart, .ghost,
+        case .dynamic, .ghost,
                 .failure, .personalize, .jetpackBadge,
                 .jetpackInstall, .empty, .freeToPaidPlansDashboardCard,
                 .domainRegistration, .jetpackSocial, .bloganuaryNudge,

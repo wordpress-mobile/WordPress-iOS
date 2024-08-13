@@ -34,7 +34,6 @@ public class LoginUsernamePasswordScreen: ScreenObject {
 
     public func proceedWith(username: String, password: String) throws -> MySiteScreen {
         fill(username: username, password: password)
-        try dismissOnboardingQuestionsPromptIfNeeded()
         return try MySiteScreen()
     }
 
@@ -67,26 +66,6 @@ public class LoginUsernamePasswordScreen: ScreenObject {
 
         if #available(iOS 17.2, *) {
             app.dismissSavePasswordPrompt()
-        }
-    }
-
-    private func dismissQuickStartPromptIfNeeded() throws {
-        try XCTContext.runActivity(named: "Dismiss quick start prompt if needed.") { (activity) in
-            if QuickStartPromptScreen.isLoaded() {
-                Logger.log(message: "Dismising quick start prompt...", event: .i)
-                _ = try QuickStartPromptScreen().selectNoThanks()
-                return
-            }
-        }
-    }
-
-    private func dismissOnboardingQuestionsPromptIfNeeded() throws {
-        try XCTContext.runActivity(named: "Dismiss onboarding questions prompt if needed.") { (activity) in
-            if OnboardingQuestionsPromptScreen.isLoaded() {
-                Logger.log(message: "Dismissing onboarding questions prompt...", event: .i)
-                _ = try OnboardingQuestionsPromptScreen().selectSkip()
-                return
-            }
         }
     }
 }

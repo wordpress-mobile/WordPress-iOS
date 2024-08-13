@@ -71,21 +71,6 @@ protocol ReaderTopicsChipsDelegate: AnyObject {
     // Ghost cells placeholders
     @IBOutlet private weak var ghostPlaceholderView: UIView!
 
-    // Spotlight view
-    private let spotlightView: UIView = {
-        let spotlightView = QuickStartSpotlightView()
-        spotlightView.translatesAutoresizingMaskIntoConstraints = false
-        spotlightView.isHidden = true
-        return spotlightView
-    }()
-
-    /// Whether or not to show the spotlight animation to illustrate tapping the icon.
-    var spotlightIsShown: Bool = false {
-        didSet {
-            spotlightView.isHidden = !spotlightIsShown || !shouldShowCommentActionButton
-        }
-    }
-
     @objc open weak var delegate: ReaderPostCellDelegate?
     private weak var contentProvider: ReaderPostContentProvider?
 
@@ -164,7 +149,6 @@ protocol ReaderTopicsChipsDelegate: AnyObject {
         configureFeaturedImageView()
         setupSummaryLabel()
         setupAttributionView()
-        setupSpotlightView()
         adjustInsetsForTextDirection()
     }
 
@@ -228,8 +212,6 @@ private extension OldReaderPostCardCell {
         static let authorAvatarPlaceholderImage: UIImage? = UIImage(named: "gravatar")
         static let rotate270Degrees: CGFloat = CGFloat.pi * 1.5
         static let rotate90Degrees: CGFloat = CGFloat.pi / 2
-        static let spotlightXOffset: CGFloat = 10
-        static let spotlightYOffset: CGFloat = 10
     }
 
     // MARK: - Configuration
@@ -259,16 +241,6 @@ private extension OldReaderPostCardCell {
 
         menuButton.setImage(tintedIcon, for: .normal)
         menuButton.setImage(highlightIcon, for: .highlighted)
-    }
-
-    private func setupSpotlightView() {
-        addSubview(spotlightView)
-        bringSubviewToFront(spotlightView)
-
-        NSLayoutConstraint.activate([
-            commentActionButton.centerXAnchor.constraint(equalTo: spotlightView.centerXAnchor),
-            commentActionButton.centerYAnchor.constraint(equalTo: spotlightView.centerYAnchor, constant: Constants.spotlightYOffset)
-        ])
     }
 
     func adjustInsetsForTextDirection() {

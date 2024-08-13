@@ -57,9 +57,6 @@ final class PageListViewController: AbstractPostListViewController {
     @objc class func controllerWithBlog(_ blog: Blog) -> PageListViewController {
         let vc = PageListViewController()
         vc.blog = blog
-        if QuickStartTourGuide.shared.isCurrentElement(.pages) {
-            vc.filterSettings.setFilterWithPostStatus(BasePost.Status.publish)
-        }
         return vc
     }
 
@@ -67,18 +64,12 @@ final class PageListViewController: AbstractPostListViewController {
         let controller = PageListViewController.controllerWithBlog(blog)
         controller.navigationItem.largeTitleDisplayMode = .never
         sourceController.navigationController?.pushViewController(controller, animated: true)
-
-        QuickStartTourGuide.shared.visited(.pages)
     }
 
     // MARK: - UIViewController
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        if QuickStartTourGuide.shared.isCurrentElement(.newPage) {
-            updateFilterWithPostStatus(.publish)
-        }
 
         super.updateAndPerformFetchRequest()
 
@@ -101,7 +92,6 @@ final class PageListViewController: AbstractPostListViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        QuickStartTourGuide.shared.endCurrentTour()
 
         if self.isMovingFromParent {
             fetchAllPagesTask?.cancel()
@@ -400,8 +390,6 @@ final class PageListViewController: AbstractPostListViewController {
     private func createPage(_ starterLayout: PageTemplateLayout?) {
         let editorViewController = EditPageViewController(blog: blog, postTitle: starterLayout?.title, content: starterLayout?.content)
         present(editorViewController, animated: false)
-
-        QuickStartTourGuide.shared.visited(.newPage)
     }
 
     // MARK: - Cell Action Handling

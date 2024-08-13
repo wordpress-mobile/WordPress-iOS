@@ -156,8 +156,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         subscribeToPostSignupNotifications()
         subscribeToModelChanges()
         subscribeToPostPublished()
-        startObservingQuickStart()
-        startObservingOnboardingPrompt()
         subscribeToWillEnterForeground()
     }
 
@@ -590,11 +588,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         willDisplayPostSignupFlow = false
     }
 
-    @objc
-    func toggleSpotlightOnSitePicker() {
-        sitePickerViewController?.toggleSpotlightOnHeaderView()
-    }
-
     // MARK: - Blog Details UI Logic
 
     private func hideBlogDetails() {
@@ -853,19 +846,6 @@ extension MySiteViewController: UIViewControllerTransitioningDelegate {
         }
 
         return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
-    }
-}
-
-// MARK: - QuickStart
-//
-extension MySiteViewController {
-    func startAlertTimer() {
-        switch currentSection {
-        case .dashboard:
-            blogDashboardViewController?.startAlertTimer()
-        case .siteMenu:
-            blogDetailsViewController?.startAlertTimer()
-        }
     }
 }
 

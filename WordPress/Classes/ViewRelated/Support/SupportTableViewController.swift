@@ -544,8 +544,8 @@ fileprivate enum SupportTableLayoutSpacing {
 
 class ButtonCell: WPTableViewCellDefault {
 
-    let button: SpotlightableButton = {
-        let button = SpotlightableButton(type: .custom)
+    let button: UIButton = {
+        let button = UIButton(type: .custom)
 
         button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.callout)
         button.titleLabel?.adjustsFontForContentSizeCategory = true

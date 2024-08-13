@@ -85,18 +85,13 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 @dynamic hasPaidPlan;
 @dynamic sharingButtons;
 @dynamic capabilities;
-@dynamic quickStartTours;
-@dynamic quickStartTypeValue;
 @dynamic userID;
 @dynamic quotaSpaceAllowed;
 @dynamic quotaSpaceUsed;
 @dynamic pageTemplateCategories;
 @dynamic publicizeInfo;
 
-@synthesize isSyncingPosts;
-@synthesize isSyncingPages;
 @synthesize videoPressEnabled;
-@synthesize isSyncingMedia;
 @synthesize xmlrpcApi = _xmlrpcApi;
 @synthesize selfHostedSiteRestApi = _selfHostedSiteRestApi;
 
