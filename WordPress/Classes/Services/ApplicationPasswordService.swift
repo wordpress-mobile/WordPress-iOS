@@ -1,23 +1,25 @@
 import Foundation
 import WordPressAPI
-import ViewLayer
 
-struct ApplicationPasswordService {
+@objc class ApplicationPasswordService: NSObject {
 
     private let apiClient: WordPressClient
+    private let currentUserId: Int
 
-    init(api: WordPressClient) {
+    init(api: WordPressClient, currentUserId: Int) {
         self.apiClient = api
+        self.currentUserId = currentUserId
     }
 
-    func fetchTokens(forUserId userId: Int32) async throws -> [ApplicationPasswordWithEditContext] {
-        try await apiClient.api.applicationPasswords.listWithEditContext(userId: Int32())
+    private func fetchTokens(forUserId userId: Int32) async throws -> [ApplicationPasswordWithEditContext] {
+        try await apiClient.api.applicationPasswords.listWithEditContext(userId: userId)
     }
 }
 
 extension ApplicationPasswordService: ApplicationTokenListDataProvider {
-    func loadApplicationTokens() async throws -> [ViewLayer.ApplicationTokenItem] {
-        try await fetchTokens(forUserId: 1).compactMap(ApplicationTokenItem.init)
+    func loadApplicationTokens() async throws -> [ApplicationTokenItem] {
+        try await fetchTokens(forUserId: Int32(currentUserId))
+            .compactMap(ApplicationTokenItem.init)
     }
 }
 
@@ -25,16 +27,12 @@ extension ApplicationTokenItem {
     init?(_ rawToken: ApplicationPasswordWithEditContext) {
         guard
             let uuid = UUID(uuidString: rawToken.uuid.uuid),
-            let createdAt = ISO8601DateFormatter().date(from: rawToken.created)
+            let createdAt = Date.fromWordPressDate(rawToken.created)
         else {
             return nil
         }
 
-        var lastUsed: Date? = nil
-
-        if let rawLastUsed = rawToken.lastUsed {
-            lastUsed = ISO8601DateFormatter().date(from: rawLastUsed)
-        }
+        let lastUsed = rawToken.lastUsed.flatMap(Date.fromWordPressDate(_:))
 
         self = ApplicationTokenItem(
             name: rawToken.name,

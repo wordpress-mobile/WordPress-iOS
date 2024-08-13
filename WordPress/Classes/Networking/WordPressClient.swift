@@ -83,7 +83,7 @@ actor WordPressClient {
         let parsedUrl = try ParsedUrl.parse(input: site.baseUrl)
 
         switch site.type {
-        case .dotCom(let emailAddress, let authToken):
+        case let .dotCom(_, authToken):
             let api = WordPressAPI(urlSession: session, baseUrl: parsedUrl, authenticationStategy: .authorizationHeader(token: authToken))
             return WordPressClient(api: api, rootUrl: parsedUrl)
         case .selfHosted(let username, let authToken):

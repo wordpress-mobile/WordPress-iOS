@@ -17,12 +17,26 @@ public struct ApplicationTokenListItemView: View {
                 Text(item.name)
                     .font(.headline)
                     .multilineTextAlignment(.leading)
-                Text(item.uuid.uuidString)
+                    .lineLimit(2)
+                    .truncationMode(.middle)
+                Text(lastUsedText)
                     .font(.callout)
                     .lineLimit(1)
             }
         })
     }
+
+    private var lastUsedText: String {
+        guard let lastUsed = item.lastUsed else {
+            return Self.unusedText
+        }
+
+        return String(format: Self.lastUsedFormat, lastUsed.toShortString())
+    }
+
+    private static let unusedText: String = NSLocalizedString("application-password.list.item.unused", value: "Not used yet.", comment: "Last used time of an application password if it's never been used")
+
+    private static let lastUsedFormat: String = NSLocalizedString("application-password.list.item.last-used-format", value: "Last used %@", comment: "String format of last used time of an application password. There is one argument: the last used time relative to now (i.e. 5 days ago).")
 }
 
 #Preview {
