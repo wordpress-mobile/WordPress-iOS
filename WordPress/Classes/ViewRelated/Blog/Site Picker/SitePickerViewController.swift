@@ -27,6 +27,8 @@ final class SitePickerViewController: UIViewController {
         return headerView
     }()
 
+    private var sitePickerTipObserver: TipObserver?
+
     init(blog: Blog,
          meScenePresenter: ScenePresenter,
          blogService: BlogService? = nil,
@@ -44,9 +46,32 @@ final class SitePickerViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         setupHeaderView()
         startObservingQuickStart()
         startObservingTitleChanges()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        if #available(iOS 17, *) {
+            AppTips.SitePickerTip.blogCount = blog.account?.blogs.count ?? 0
+
+            if sitePickerTipObserver == nil {
+                sitePickerTipObserver = registerTipPopover(
+                    AppTips.SitePickerTip(),
+                    sourceView: blogDetailHeaderView.titleView.siteSwitcherButton,
+                    arrowDirection: [.up]
+                )
+            }
+        }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        sitePickerTipObserver = nil
     }
 
     private func setupHeaderView() {
@@ -110,6 +135,10 @@ extension SitePickerViewController: BlogDetailHeaderViewDelegate {
         navigationController.modalPresentationStyle = .formSheet
         present(navigationController, animated: true)
         WPAnalytics.track(.mySiteSiteSwitcherTapped)
+
+        if #available(iOS 17, *) {
+            AppTips.SitePickerTip().invalidate(reason: .actionPerformed)
+        }
     }
 
     func visitSiteTapped() {

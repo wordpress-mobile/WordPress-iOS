@@ -206,9 +206,11 @@ import WordPressUI
     }
 
     private func showCreateButton(notice: Notice) {
-        if !didDismissTooltip {
-            noticeContainerView = noticeAnimator.present(notice: notice, in: viewController!.view, sourceView: button)
-            shownTooltipCount += 1
+        if !Feature.enabled(.tipKit) {
+            if !didDismissTooltip {
+                noticeContainerView = noticeAnimator.present(notice: notice, in: viewController!.view, sourceView: button)
+                shownTooltipCount += 1
+            }
         }
 
         if UIAccessibility.isReduceMotionEnabled {

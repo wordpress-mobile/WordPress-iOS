@@ -14,6 +14,7 @@ enum FeatureFlag: Int, CaseIterable {
     case autoSaveDrafts
     case voiceToContent
     case authenticateUsingApplicationPassword
+    case tipKit
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -46,6 +47,8 @@ enum FeatureFlag: Int, CaseIterable {
             return AppConfiguration.isJetpack && BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .authenticateUsingApplicationPassword:
             return false
+        case .tipKit:
+            return BuildConfiguration.current != .appStore
         }
     }
 
@@ -80,6 +83,7 @@ extension FeatureFlag {
         case .autoSaveDrafts: "Autosave Drafts"
         case .voiceToContent: "Voice to Content"
         case .authenticateUsingApplicationPassword: "Authenticate self-hosted sites using Application Password"
+        case .tipKit: "TipKit"
         }
     }
 }

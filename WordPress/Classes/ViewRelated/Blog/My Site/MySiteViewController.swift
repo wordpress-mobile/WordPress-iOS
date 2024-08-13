@@ -201,7 +201,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         Task { @MainActor in
             await overlaysCoordinator.presentOverlayIfNeeded(in: self)
         }
-
     }
 
     override func viewDidLayoutSubviews() {

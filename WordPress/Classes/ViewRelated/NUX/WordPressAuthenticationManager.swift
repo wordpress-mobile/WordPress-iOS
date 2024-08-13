@@ -498,8 +498,6 @@ private extension WordPressAuthenticationManager {
         let coordinator = OnboardingQuestionsCoordinator()
         coordinator.navigationController = navigationController
 
-        let viewController = OnboardingQuestionsPromptViewController(with: coordinator)
-
         coordinator.onDismiss = { [weak navigationController] selectedOption in
             guard let navigationController else { return }
 
@@ -519,7 +517,20 @@ private extension WordPressAuthenticationManager {
             onDismiss?()
         }
 
-        navigationController.pushViewController(viewController, animated: true)
+        if Feature.enabled(.tipKit) {
+            Task { @MainActor in
+                let settings = await UNUserNotificationCenter.current().notificationSettings()
+                guard settings.authorizationStatus == .notDetermined else {
+                    coordinator.onDismiss?(.skip)
+                    return
+                }
+                let controller = OnboardingEnableNotificationsViewController(with: coordinator, option: .skip)
+                navigationController.pushViewController(controller, animated: true)
+            }
+        } else {
+            let viewController = OnboardingQuestionsPromptViewController(with: coordinator)
+            navigationController.pushViewController(viewController, animated: true)
+        }
     }
 
     /// To prevent a weird jump from the MySite tab to the reader/notifications tab

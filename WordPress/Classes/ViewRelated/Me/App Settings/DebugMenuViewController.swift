@@ -2,6 +2,7 @@ import UIKit
 import AutomatticTracks
 import SwiftUI
 import WordPressFlux
+import TipKit
 
 struct DebugMenuView: View {
     @StateObject private var viewModel = DebugMenuViewModel()
@@ -12,6 +13,9 @@ struct DebugMenuView: View {
         List {
             Section { main }
             Section(Strings.sectionSettings) { settings }
+            if #available(iOS 17, *) {
+                Section(Strings.sectionTipKit) { tipKit }
+            }
             if let blog = viewModel.blog {
                 Section(Strings.sectionQuickStart) { makeQuickStart(with: blog) }
             }
@@ -49,6 +53,22 @@ struct DebugMenuView: View {
         }
         NavigationLink(Strings.readerCssTitle) {
             readerSettings
+        }
+    }
+
+    @available(iOS 17, *)
+    @ViewBuilder private var tipKit: some View {
+        Button(Strings.showAllTips) {
+            Tips.showAllTipsForTesting()
+            showSuccessNotice()
+        }
+        Button(Strings.hideAllTips) {
+            Tips.hideAllTipsForTesting()
+            showSuccessNotice()
+        }
+        Button(Strings.resetTipKitData, role: .destructive) {
+            try? Tips.resetDatastore()
+            showSuccessNotice()
         }
     }
 
@@ -206,6 +226,7 @@ private enum Strings {
     static let sectionSettings = NSLocalizedString("debugMenu.section.settings", value: "Settings", comment: "Debug Menu section title")
     static let sectionLogging = NSLocalizedString("debugMenu.section.logging", value: "Logging", comment: "Debug Menu section title")
     static let sectionQuickStart = NSLocalizedString("debugMenu.section.quickStart", value: "Quick Start", comment: "Debug Menu section title")
+    static let sectionTipKit = NSLocalizedString("debugMenu.section.tipKit", value: "TipKit", comment: "Debug Menu section title")
     static let sandboxStoreCookieSecretRow = NSLocalizedString("Sandbox Store", comment: "Title of a row displayed on the debug screen used to configure the sandbox store use in the App.")
     static let quickStartForNewSiteRow = NSLocalizedString("Enable Quick Start for New Site", comment: "Title of a row displayed on the debug screen used in debug builds of the app")
     static let quickStartForExistingSiteRow = NSLocalizedString("Enable Quick Start for Existing Site", comment: "Title of a row displayed on the debug screen used in debug builds of the app")
@@ -222,4 +243,8 @@ private enum Strings {
     static let removeQuickStartRow = NSLocalizedString("debugMenu.removeQuickStart", value: "Remove Current Tour", comment: "Remove current quick start tour menu item")
     static let weeklyRoundup = NSLocalizedString("debugMenu.weeklyRoundup", value: "Weekly Roundup", comment: "Weekly Roundup debug menu item")
     static let booleanUserDefaults = NSLocalizedString("debugMenu.booleanUserDefaults", value: "Boolean User Defaults", comment: "Boolean User Defaults debug menu item")
+
+    static let showAllTips = NSLocalizedString("debugMenu.showAllTips", value: "Show All Tips", comment: "Debug Menu action for TipKit")
+    static let hideAllTips = NSLocalizedString("debugMenu.hideAllTips", value: "Hide All Tips", comment: "Debug Menu action for TipKit")
+    static let resetTipKitData = NSLocalizedString("debugMenu.resetTipKitData", value: "Reset Data", comment: "Debug Menu action for TipKit")
 }
