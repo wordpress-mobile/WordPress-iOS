@@ -1,4 +1,5 @@
 import UIKit
+import Aztec
 
 final class SiteMediaCollectionCellSelectionOverlayView: UIView {
     private let overlayView = UIView()
