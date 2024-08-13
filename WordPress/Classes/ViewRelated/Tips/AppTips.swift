@@ -7,7 +7,7 @@ enum AppTips {
     static func initialize() {
         guard Feature.enabled(.tipKit), #available(iOS 17, *) else { return }
         do {
-            try Tips.configure([.displayFrequency(.daily)])
+            try Tips.configure()
         } catch {
             DDLogError("Error initializing tips: \(error)")
         }
