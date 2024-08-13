@@ -183,7 +183,7 @@ final class AllDomainsListViewController: UIViewController {
             analyticsSource: Constants.analyticsSource
         )
         destination.configureSandboxStore {
-            navigationController.pushViewController(destination, animated: true)
+            navigationController.present(destination.makeLightNavigationController(), animated: true)
         }
     }
 }
