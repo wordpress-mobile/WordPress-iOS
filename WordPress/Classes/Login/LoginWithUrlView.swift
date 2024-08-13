@@ -137,7 +137,7 @@ private extension LoginClient.LoginClientError {
             return NSLocalizedString("addSite.selfHosted.loadingSiteInfoFailure", value: "Cannot load the WordPress site details", comment: "Error message shown when failing to load details from a self-hosted WordPress site")
         case .savingSiteFailure:
             return NSLocalizedString("addSite.selfHosted.savingSiteFailure", value: "Cannot save the WordPress site, please try again later.", comment: "Error message shown when failing to save a self-hosted site to user's device")
-        case .authentication(.unknown), .unknown:
+        case .authentication(.unknown):
             return NSLocalizedString("addSite.selfHosted.unknownError", value: "Something went wrong. Please try again.", comment: "Error message when an unknown error occurred when adding a self-hosted site")
         }
     }

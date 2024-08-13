@@ -12,7 +12,6 @@ final actor LoginClient {
         case authentication(WordPressLoginClient.Error)
         case loadingSiteInfoFailure
         case savingSiteFailure
-        case unknown(error: Error)
     }
 
     private let internalClient: WordPressLoginClient
