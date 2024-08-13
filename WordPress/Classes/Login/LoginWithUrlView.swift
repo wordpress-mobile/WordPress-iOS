@@ -42,19 +42,7 @@ struct LoginWithUrlView: View {
                 Text(Self.enterSiteAddress)
             }
 
-            TextField(text: $urlField) {
-                Text("example.com")
-            }
-            .padding(.top)
-            .padding(.bottom, 8)
-            .overlay(alignment: .bottom) { Divider() }
-            .overlay(Divider(), alignment: .bottom)
-            .tint(.green)
-            .textContentType(.URL)
-            .keyboardType(.URL)
-            .textInputAutocapitalization(.never)
-            .onSubmit(startLogin)
-            .disabled(isLoading)
+            siteAdddressTextField()
 
             if let errorMessage {
                 Text(errorMessage)
@@ -76,6 +64,22 @@ struct LoginWithUrlView: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 
+    private func siteAdddressTextField() -> some View {
+        TextField(text: $urlField) {
+            Text("example.com")
+        }
+        .padding(.top)
+        .padding(.bottom, 8)
+        .overlay(alignment: .bottom) { Divider() }
+        .overlay(Divider(), alignment: .bottom)
+        .tint(.green)
+        .textContentType(.URL)
+        .keyboardType(.URL)
+        .textInputAutocapitalization(.never)
+        .onSubmit(startLogin)
+        .disabled(isLoading)
+    }
+
     private func startLogin() {
         errorMessage = nil
         isLoading = true
@@ -94,7 +98,7 @@ struct LoginWithUrlView: View {
     }
 }
 
-extension LoginWithUrlView {
+private extension LoginWithUrlView {
     static var title: String { NSLocalizedString("addSite.selfHosted.title", value: "Add Self-Hosted Site", comment: "Title of the page to add a self-hosted site") }
     static var enterSiteAddress: String { NSLocalizedString("addSite.selfHosted.enterSiteAddress", value: "Enter the address of the WordPress site you'd like to connect.", comment: "A message to inform users to type the site address in the text field.") }
 }
