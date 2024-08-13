@@ -2,6 +2,7 @@ import SwiftUI
 import AuthenticationServices
 import WordPressAPI
 import WordPressAuthenticator
+import DesignSystem
 
 struct LoginWithUrlView: View {
 
@@ -60,25 +61,13 @@ struct LoginWithUrlView: View {
 
             Spacer()
 
-            let button = Button(action: startLogin) {
-                    HStack(alignment: .center) {
-                        Spacer()
-                        if isLoading {
-                            ProgressView()
-                        } else {
-                            Text(SharedStrings.Button.continue)
-                        }
-                        Spacer()
-                    }
-                    .padding(8)
-                }
-                .disabled(isContinueButtonDisabled)
-
-            if isContinueButtonDisabled {
-                button.buttonStyle(.bordered)
-            } else {
-                button.buttonStyle(.borderedProminent)
-            }
+            DSButton(
+                title: SharedStrings.Button.continue,
+                style: DSButtonStyle(emphasis: .primary, size: .large),
+                isLoading: .constant(isLoading),
+                action: startLogin
+            )
+            .disabled(isContinueButtonDisabled)
         }
         .padding()
         .navigationTitle(Self.title)
