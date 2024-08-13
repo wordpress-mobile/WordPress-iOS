@@ -74,19 +74,6 @@ struct LoginWithUrlView: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 
-    private func buttonContent() -> some View {
-        HStack(alignment: .center) {
-            Spacer()
-            if isLoading {
-                ProgressView()
-            } else {
-                Text(SharedStrings.Button.continue)
-            }
-            Spacer()
-        }
-        .padding(8)
-    }
-
     private func startLogin() {
         errorMessage = nil
         isLoading = true
