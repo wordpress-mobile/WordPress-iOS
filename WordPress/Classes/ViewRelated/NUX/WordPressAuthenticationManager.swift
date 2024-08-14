@@ -480,7 +480,8 @@ private extension WordPressAuthenticationManager {
     private func presentEnableNotificationsPrompt(in navigationController: UINavigationController, blog: Blog, onDismiss: (() -> Void)? = nil) {
         let windowManager = self.windowManager
 
-        guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
+        guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(),
+              !UserPersistentStoreFactory.instance().onboardingNotificationsPromptDisplayed else {
             if self.windowManager.isShowingFullscreenSignIn {
                 self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
             } else {
