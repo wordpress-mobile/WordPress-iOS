@@ -16,22 +16,6 @@ extension SitePickerViewController {
         ])
     }
 
-    func didShowSiteIconMenu() {
-        if QuickStartTourGuide.shared.isCurrentElement(.siteIcon) {
-            // There is no good way to determine when `UIMenu` is cancelled,
-            // so we wait until nothing is presented by the site picker.
-            NoticesDispatch.lock()
-            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-                if self.presentedViewController == nil {
-                    NoticesDispatch.unlock()
-                    self.showNoticeAsNeeded()
-                    timer.invalidate()
-                }
-            }
-        }
-        QuickStartTourGuide.shared.visited(.siteIcon)
-    }
-
     private func makeUpdateSiteIconActions() -> [UIAction] {
         guard siteIconShouldAllowDroppedImages() else {
             return [] // Not eligible to change the icon
@@ -75,7 +59,6 @@ extension SitePickerViewController {
             }
 
             self?.siteIconPickerPresenter = nil
-            self?.startAlertTimer()
         }
         presenter.onIconSelection = { [weak self] in
             self?.blogDetailHeaderView.updatingIcon = true
@@ -115,7 +98,6 @@ extension SitePickerViewController {
     }
 
     func updateBlogIconWithMedia(_ media: Media) {
-        QuickStartTourGuide.shared.completeSiteIconTour(forBlog: blog)
         blog.settings?.iconMediaID = media.mediaID
         updateBlogSettingsAndRefreshIcon()
     }

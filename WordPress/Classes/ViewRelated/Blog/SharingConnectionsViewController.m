@@ -270,8 +270,6 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 - (void)sharingAuthorizationHelper:(SharingAuthorizationHelper *)helper didConnectToService:(PublicizeService *)service withPublicizeConnection:(PublicizeConnection *)keyringConnection
 {
-    [[QuickStartTourGuide shared] completeSharingTourForBlog:self.blog];
-
     self.connecting = NO;
     [self.tableView reloadData];
     [self showDetailForConnection:keyringConnection];

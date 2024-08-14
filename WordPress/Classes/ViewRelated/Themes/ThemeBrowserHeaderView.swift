@@ -21,11 +21,7 @@ final class ThemeBrowserHeaderView: UICollectionReusableView {
     @IBOutlet weak var supportButton: UIButton!
     @IBOutlet weak var supportIcon: UIImageView!
 
-    var quickStartSpotlightView = QuickStartSpotlightView()
-
     // MARK: - Properties
-
-    private var observer: NSObjectProtocol?
 
     fileprivate var theme: Theme? {
         didSet {
@@ -74,8 +70,6 @@ final class ThemeBrowserHeaderView: UICollectionReusableView {
 
         applyStyles()
         setTextForLabels()
-
-        startObservingForQuickStart()
     }
 
     fileprivate func applyStyles() {
@@ -100,26 +94,6 @@ final class ThemeBrowserHeaderView: UICollectionReusableView {
         currentThemeButtons.forEach { WPStyleGuide.Themes.styleCurrentThemeButton($0!) }
 
         [customizeIcon, detailsIcon, supportIcon].forEach { $0?.tintColor = .secondaryLabel }
-
-        spotlightCustomizeButtonIfTourIsActive()
-    }
-
-    private func spotlightCustomizeButtonIfTourIsActive() {
-
-        if QuickStartTourGuide.shared.isCurrentElement(.customize) {
-            customizeButton.addSubview(quickStartSpotlightView)
-            quickStartSpotlightView.translatesAutoresizingMaskIntoConstraints = false
-            addConstraints([
-                quickStartSpotlightView.centerYAnchor.constraint(equalTo: customizeButton.centerYAnchor),
-                quickStartSpotlightView.trailingAnchor.constraint(equalTo: customizeButton.trailingAnchor, constant: Constants.spotlightViewPadding)
-                ])
-        }
-    }
-
-    private func startObservingForQuickStart() {
-        observer = NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] (notification) in
-            self?.spotlightCustomizeButtonIfTourIsActive()
-        }
     }
 
     fileprivate func setTextForLabels() {
@@ -149,8 +123,6 @@ final class ThemeBrowserHeaderView: UICollectionReusableView {
 
     @IBAction fileprivate func didTapCustomizeButton(_ sender: UIButton) {
         presenter?.presentCustomizeForTheme(theme)
-
-        quickStartSpotlightView.removeFromSuperview()
     }
 
     @IBAction fileprivate func didTapDetailsButton(_ sender: UIButton) {
@@ -168,10 +140,6 @@ final class ThemeBrowserHeaderView: UICollectionReusableView {
 
         filterType = type
         presenter?.filterType = type
-    }
-
-    private enum Constants {
-        static let spotlightViewPadding: CGFloat = -5.0
     }
 }
 

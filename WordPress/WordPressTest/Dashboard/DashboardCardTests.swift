@@ -17,36 +17,10 @@ class DashboardCardTests: CoreDataTestCase {
     }
 
     override func tearDown() {
-        QuickStartTourGuide.shared.remove(from: blog)
         blog = nil
         try? featureFlags.override(RemoteFeatureFlag.activityLogDashboardCard, withValue: RemoteFeatureFlag.activityLogDashboardCard.originalValue)
         try? featureFlags.override(RemoteFeatureFlag.pagesDashboardCard, withValue: RemoteFeatureFlag.pagesDashboardCard.originalValue)
         super.tearDown()
-    }
-
-    // MARK: Quick Start
-
-    func testShouldShowQuickStartIfEnabledAndDefaultSectionIsDashboard() {
-        // Given
-        QuickStartTourGuide.shared.setup(for: blog, type: .newSite)
-
-        // When
-        let shouldShow = DashboardCard.quickStart.shouldShow(for: blog)
-
-        // Then
-        XCTAssertTrue(shouldShow)
-    }
-
-    func testShouldNotShowQuickStartIfDisabled() {
-        // Given
-        QuickStartTourGuide.shared.setup(for: blog, type: .newSite)
-        QuickStartTourGuide.shared.remove(from: blog)
-
-        // When
-        let shouldShow = DashboardCard.quickStart.shouldShow(for: blog)
-
-        // Then
-        XCTAssertFalse(shouldShow)
     }
 
     // MARK: Stats

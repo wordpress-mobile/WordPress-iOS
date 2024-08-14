@@ -121,8 +121,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil)
         })
 
-        PushNotificationsManager.shared.deletePendingLocalNotifications()
-
         startObservingAppleIDCredentialRevoked()
 
         NotificationCenter.default.post(name: .applicationLaunchCompleted, object: nil)

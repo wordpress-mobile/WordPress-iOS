@@ -64,10 +64,6 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
         headerView?.updateFollowButtonState(post: post)
     }
 
-    func followButtonMidPoint() -> CGPoint? {
-        headerView?.followButtonMidPoint()
-    }
-
     // MARK: - Table Methods
 
     func numberOfSections(in tableView: UITableView) -> Int {

@@ -122,7 +122,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 - (void)dealloc
 {
     [self.tabBar removeObserver:self forKeyPath:WPTabBarFrameKeyPath];
-    [self stopWatchingQuickTours];
     [[UIApplication sharedApplication] removeObserver:self forKeyPath:WPApplicationIconBadgeNumberKeyPath];
 }
 
@@ -412,23 +411,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
     // If we're selecting a new tab...
     if (selectedIndex != tabBarController.selectedIndex) {
-        switch (selectedIndex) {
-            case WPTabMySites: {
-                break;
-            }
-            case WPTabReader: {
-                [self alertQuickStartThatReaderWasTapped];
-                break;
-            }
-            case WPTabNotifications: {
-                [self alertQuickStartThatNotificationsWasTapped];
-                break;
-            }
-            default: break;
-        }
-
         [self trackTabAccessForTabIndex:selectedIndex];
-        [self alertQuickStartThatOtherTabWasTapped];
     } else {
         // If the current view controller is selected already and it's at its root then scroll to the top
         if ([viewController isKindOfClass:[UINavigationController class]]) {
@@ -578,7 +561,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 {
     [super viewDidAppear:animated];
     [self updateNotificationBadgeVisibility];
-    [self startWatchingQuickTours];
 
     [self trackTabAccessOnViewDidAppear];
 }

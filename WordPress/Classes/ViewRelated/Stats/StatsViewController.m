@@ -34,8 +34,6 @@
     statsController.hidesBottomBarWhenPushed = YES;
     statsController.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [controller.navigationController pushViewController:statsController animated:YES];
-    
-    [[QuickStartTourGuide shared] visited:QuickStartTourElementStats];
 }
 
 - (void)viewDidLoad
@@ -76,12 +74,6 @@
 {
     // Track as significant event for App Rating calculations
     [[AppRatingUtility shared] incrementSignificantEvent];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [self dismissQuickStartTaskCompleteNotice];
 }
 
 - (void)setBlog:(Blog *)blog

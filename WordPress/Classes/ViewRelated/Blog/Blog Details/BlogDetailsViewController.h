@@ -9,7 +9,6 @@
 typedef NS_ENUM(NSUInteger, BlogDetailsSectionCategory) {
     BlogDetailsSectionCategoryReminders,
     BlogDetailsSectionCategoryDomainCredit,
-    BlogDetailsSectionCategoryQuickStart,
     BlogDetailsSectionCategoryHome,
     BlogDetailsSectionCategoryGeneral,
     BlogDetailsSectionCategoryJetpack,
@@ -29,7 +28,6 @@ typedef NS_ENUM(NSUInteger, BlogDetailsSectionCategory) {
 typedef NS_ENUM(NSUInteger, BlogDetailsSubsection) {
     BlogDetailsSubsectionReminders,
     BlogDetailsSubsectionDomainCredit,
-    BlogDetailsSubsectionQuickStart,
     BlogDetailsSubsectionStats,
     BlogDetailsSubsectionPosts,
     BlogDetailsSubsectionCustomize,
@@ -50,42 +48,6 @@ typedef NS_ENUM(NSUInteger, BlogDetailsSubsection) {
     BlogDetailsSubsectionSiteMonitoring
 };
 
-typedef NS_ENUM(NSInteger, QuickStartTitleState) {
-    QuickStartTitleStateUndefined = 0,
-    QuickStartTitleStateCustomizeIncomplete = 1,
-    QuickStartTitleStateGrowIncomplete = 2,
-    QuickStartTitleStateCompleted = 3,
-};
-
-typedef NS_ENUM(NSInteger, QuickStartTourElement) {
-    QuickStartTourElementNoSuchElement = 0,
-    QuickStartTourElementTabFlipped = 1,
-    QuickStartTourElementBlogDetailNavigation = 2,
-    QuickStartTourElementViewSite = 3,
-    QuickStartTourElementChecklist = 4,
-    QuickStartTourElementThemes = 5,
-    QuickStartTourElementCustomize = 6,
-    QuickStartTourElementNewpost = 7,
-    QuickStartTourElementSharing = 8,
-    QuickStartTourElementConnections = 9,
-    QuickStartTourElementReaderTab = 10,
-    QuickStartTourElementReaderDiscoverSubscriptions = 12,
-    QuickStartTourElementTourCompleted = 13,
-    QuickStartTourElementCongratulations = 14,
-    QuickStartTourElementSiteIcon = 15,
-    QuickStartTourElementPages = 16,
-    QuickStartTourElementNewPage = 17,
-    QuickStartTourElementStats = 18,
-    QuickStartTourElementPlans = 19,
-    QuickStartTourElementSiteTitle = 20,
-    QuickStartTourElementSiteMenu = 21,
-    QuickStartTourElementNotifications = 22,
-    QuickStartTourElementSetupQuickStart = 23,
-    QuickStartTourElementUpdateQuickStart = 24,
-    QuickStartTourElementMediaScreen = 25,
-    QuickStartTourElementMediaUpload = 26,
-};
-
 typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
     BlogDetailsNavigationSourceButton = 0,
     BlogDetailsNavigationSourceRow = 1,
@@ -104,7 +66,6 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 @property (nonatomic, strong, nonnull, readonly) NSArray *rows;
 @property (nonatomic, strong, nullable, readonly) NSString *footerTitle;
 @property (nonatomic, readonly) BlogDetailsSectionCategory category;
-@property (nonatomic) BOOL showQuickStartMenu;
 
 - (instancetype _Nonnull)initWithTitle:(NSString * __nullable)title andRows:(NSArray * __nonnull)rows category:(BlogDetailsSectionCategory)category;
 - (instancetype _Nonnull)initWithTitle:(NSString * __nullable)title rows:(NSArray * __nonnull)rows footerTitle:(NSString * __nullable)footerTitle category:(BlogDetailsSectionCategory)category;
@@ -126,8 +87,6 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 @property (nonatomic) BOOL forDestructiveAction;
 @property (nonatomic) BOOL showsDisclosureIndicator;
 @property (nonatomic, copy, nullable) void (^callback)(void);
-@property (nonatomic) QuickStartTourElement quickStartIdentifier;
-@property (nonatomic) QuickStartTitleState quickStartTitleState;
 
 - (instancetype _Nonnull)initWithTitle:(NSString * __nonnull)title
                             identifier:(NSString * __nonnull)identifier
@@ -178,7 +137,6 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 - (NSIndexPath * _Nonnull)indexPathForSubsection:(BlogDetailsSubsection)subsection;
 - (void)reloadTableViewPreservingSelection;
 - (void)configureTableViewData;
-- (void)scrollToElement:(QuickStartTourElement)element;
 
 - (void)switchToBlog:(nonnull Blog *)blog;
 - (void)showInitialDetailsForBlog;

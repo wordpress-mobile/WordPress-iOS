@@ -6,7 +6,6 @@ import SwiftUI
 @objc protocol BlogDetailHeaderViewDelegate {
     func makeSiteIconMenu() -> UIMenu?
     func makeSiteActionsMenu() -> UIMenu?
-    func didShowSiteIconMenu()
     func siteIconReceivedDroppedImage(_ image: UIImage?)
     func siteIconShouldAllowDroppedImages() -> Bool
     func siteTitleTapped()
@@ -42,8 +41,6 @@ class BlogDetailHeaderView: UIView {
     @objc var blog: Blog? {
         didSet {
             refreshIconImage()
-            toggleSpotlightOnSiteTitle()
-            toggleSpotlightOnSiteUrl()
             refreshSiteTitle()
 
             if let displayURL = blog?.displayURL as String? {
@@ -60,30 +57,17 @@ class BlogDetailHeaderView: UIView {
         var viewModel = SiteIconViewModel(blog: blog)
         viewModel.background = Color(.systemBackground)
         titleView.siteIconView.imageView.setIcon(with: viewModel)
-
-        toggleSpotlightOnSiteIcon()
     }
 
     func setTitleLoading(_ isLoading: Bool) {
-        isLoading ? titleView.titleButton.startLoading() : titleView.titleButton.stopLoading()
+        titleView.alpha = isLoading ? 0.5 : 1.0
+        titleView.isUserInteractionEnabled = !isLoading
     }
 
     func refreshSiteTitle() {
         let blogName = blog?.settings?.name
         let title = blogName != nil && blogName?.isEmpty == false ? blogName : blog?.displayURL as String?
         titleView.titleButton.setTitle(title, for: .normal)
-    }
-
-    func toggleSpotlightOnSiteTitle() {
-        titleView.titleButton.shouldShowSpotlight = QuickStartTourGuide.shared.isCurrentElement(.siteTitle)
-    }
-
-    func toggleSpotlightOnSiteUrl() {
-        titleView.subtitleButton.shouldShowSpotlight = QuickStartTourGuide.shared.isCurrentElement(.viewSite)
-    }
-
-    func toggleSpotlightOnSiteIcon() {
-        titleView.siteIconView.spotlightIsShown = QuickStartTourGuide.shared.isCurrentElement(.siteIcon)
     }
 
     private enum LayoutSpacing {
@@ -125,9 +109,7 @@ class BlogDetailHeaderView: UIView {
 
         if let siteIconMenu = delegate?.makeSiteIconMenu() {
             titleView.siteIconView.setMenu(siteIconMenu) { [weak self] in
-                self?.delegate?.didShowSiteIconMenu()
                 WPAnalytics.track(.siteSettingsSiteIconTapped)
-                self?.titleView.siteIconView.spotlightIsShown = false
             }
         }
 
@@ -172,9 +154,6 @@ class BlogDetailHeaderView: UIView {
 
     @objc
     private func titleButtonTapped() {
-        QuickStartTourGuide.shared.visited(.siteTitle)
-        titleView.titleButton.shouldShowSpotlight = false
-
         delegate?.siteTitleTapped()
     }
 
@@ -228,8 +207,8 @@ extension BlogDetailHeaderView {
             return siteIconView
         }()
 
-        let subtitleButton: SpotlightableButton = {
-            let button = SpotlightableButton(type: .custom)
+        let subtitleButton: UIButton = {
+            let button = UIButton(type: .custom)
 
             var configuration = UIButton.Configuration.plain()
             configuration.titleTextAttributesTransformer = .init { attributes in
@@ -256,9 +235,8 @@ extension BlogDetailHeaderView {
             return button
         }()
 
-        let titleButton: SpotlightableButton = {
-            let button = SpotlightableButton(type: .custom)
-            button.spotlightHorizontalPosition = .trailing
+        let titleButton: UIButton = {
+            let button = UIButton(type: .custom)
 
             var configuration = UIButton.Configuration.plain()
             configuration.titleTextAttributesTransformer = .init { attributes in

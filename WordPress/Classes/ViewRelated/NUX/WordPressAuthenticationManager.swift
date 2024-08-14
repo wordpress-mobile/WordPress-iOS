@@ -13,21 +13,15 @@ class WordPressAuthenticationManager: NSObject {
     /// Allows overriding some WordPressAuthenticator delegate methods
     /// without having to reimplement WordPressAuthenticatorDelegate
     private let authenticationHandler: AuthenticationHandler?
-
-    private let quickStartSettings: QuickStartSettings
-
     private let recentSiteService: RecentSitesService
-
     private let remoteFeaturesStore: RemoteFeatureFlagStore
 
     init(windowManager: WindowManager,
          authenticationHandler: AuthenticationHandler? = nil,
-         quickStartSettings: QuickStartSettings = QuickStartSettings(),
          recentSiteService: RecentSitesService = RecentSitesService(),
          remoteFeaturesStore: RemoteFeatureFlagStore) {
         self.windowManager = windowManager
         self.authenticationHandler = authenticationHandler
-        self.quickStartSettings = quickStartSettings
         self.recentSiteService = recentSiteService
         self.remoteFeaturesStore = remoteFeaturesStore
     }
@@ -346,7 +340,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         ABTest.start()
 
         recentSiteService.touch(blog: selectedBlog)
-        presentOnboardingQuestionsPrompt(in: navigationController, blog: selectedBlog, onDismiss: onDismiss)
+        presentEnableNotificationsPrompt(in: navigationController, blog: selectedBlog, onDismiss: onDismiss)
     }
 
     /// Presents the Signup Epilogue, in the specified NavigationController.
@@ -483,10 +477,11 @@ private extension WordPressAuthenticationManager {
 
 // MARK: - Onboarding Questions Prompt
 private extension WordPressAuthenticationManager {
-    private func presentOnboardingQuestionsPrompt(in navigationController: UINavigationController, blog: Blog, onDismiss: (() -> Void)? = nil) {
+    private func presentEnableNotificationsPrompt(in navigationController: UINavigationController, blog: Blog, onDismiss: (() -> Void)? = nil) {
         let windowManager = self.windowManager
 
-        guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
+        guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(),
+              !UserPersistentStoreFactory.instance().onboardingNotificationsPromptDisplayed else {
             if self.windowManager.isShowingFullscreenSignIn {
                 self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
             } else {
@@ -495,54 +490,28 @@ private extension WordPressAuthenticationManager {
             return
         }
 
-        let coordinator = OnboardingQuestionsCoordinator()
-        coordinator.navigationController = navigationController
-
-        coordinator.onDismiss = { [weak navigationController] selectedOption in
+        let onEnableNotificationsCompletion = { [weak navigationController] in
             guard let navigationController else { return }
 
-            self.handleOnboardingQuestionsWillDismiss(option: selectedOption)
-
-            let completion: (() -> Void)? = {
-                let userInfo = ["option": selectedOption]
-                NotificationCenter.default.post(name: .onboardingPromptWasDismissed, object: nil, userInfo: userInfo)
-            }
-
             if windowManager.isShowingFullscreenSignIn {
-                windowManager.dismissFullscreenSignIn(completion: completion)
+                windowManager.dismissFullscreenSignIn(completion: nil)
             } else {
-                navigationController.dismiss(animated: true, completion: completion)
+                navigationController.dismiss(animated: true, completion: nil)
             }
 
             onDismiss?()
         }
 
-        if Feature.enabled(.tipKit) {
-            Task { @MainActor in
-                let settings = await UNUserNotificationCenter.current().notificationSettings()
-                guard settings.authorizationStatus == .notDetermined else {
-                    coordinator.onDismiss?(.skip)
-                    return
-                }
-                let controller = OnboardingEnableNotificationsViewController(with: coordinator, option: .skip)
-                navigationController.pushViewController(controller, animated: true)
+        Task { @MainActor in
+            let settings = await UNUserNotificationCenter.current().notificationSettings()
+            guard settings.authorizationStatus == .notDetermined else {
+                onEnableNotificationsCompletion()
+                return
             }
-        } else {
-            let viewController = OnboardingQuestionsPromptViewController(with: coordinator)
-            navigationController.pushViewController(viewController, animated: true)
+            let controller = OnboardingEnableNotificationsViewController(completion: onEnableNotificationsCompletion)
+            navigationController.pushViewController(controller, animated: true)
         }
     }
-
-    /// To prevent a weird jump from the MySite tab to the reader/notifications tab
-    /// We'll pre-switch to the users selected tab before the login flow dismisses
-    private func handleOnboardingQuestionsWillDismiss(option: OnboardingOption) {
-        if option == .reader {
-            RootViewCoordinator.sharedPresenter.showReaderTab()
-        } else if option == .notifications {
-            RootViewCoordinator.sharedPresenter.showNotificationsTab()
-        }
-    }
-
 }
 
 // MARK: - WordPressAuthenticatorManager

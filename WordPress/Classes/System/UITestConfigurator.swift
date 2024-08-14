@@ -39,6 +39,7 @@ struct UITestConfigurator {
     private static func disableCompliancePopover() {
         if CommandLine.arguments.contains("-ui-testing") {
             UserDefaults.standard.didShowCompliancePopup = true
+            UserPersistentStoreFactory.instance().onboardingNotificationsPromptDisplayed = true
         }
     }
 }

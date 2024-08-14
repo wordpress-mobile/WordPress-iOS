@@ -29,7 +29,6 @@ final class DashboardQuickActionsViewModel {
                 DashboardQuickActionItemViewModel(
                     image: $0.image,
                     title: $0.localizedTitle,
-                    tourElement: $0.tourElement,
                     action: $0
                 )
             }
@@ -52,7 +51,6 @@ struct DashboardQuickActionItemViewModel: Hashable {
     let image: UIImage?
     let title: String
     var details: String?
-    var tourElement: QuickStartTourElement?
     let action: DashboardQuickAction
 }
 
@@ -95,23 +93,6 @@ enum DashboardQuickAction: String, CaseIterable {
             return UIImage(named: "site-menu-stats")
         case .more:
             return UIImage(named: "site-menu-more")
-        }
-    }
-
-    var tourElement: QuickStartTourElement? {
-        switch self {
-        case .posts:
-            return nil
-        case .pages:
-            return .pages
-        case .media:
-            return .mediaScreen
-        case .comments:
-            return nil
-        case .stats:
-            return .stats
-        case .more:
-            return .siteMenu
         }
     }
 

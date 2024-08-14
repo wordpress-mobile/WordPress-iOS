@@ -76,9 +76,4 @@ extension AppConstants {
     struct Zendesk {
         static let ticketSubject = NSLocalizedString("WordPress for iOS Support", comment: "Subject of new Zendesk ticket.")
     }
-
-    struct QuickStart {
-        static let getToKnowTheAppTourTitle = NSLocalizedString("Get to know the WordPress app",
-                                                                comment: "Name of the Quick Start list that guides users through a few tasks to explore the WordPress app.")
-    }
 }

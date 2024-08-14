@@ -62,10 +62,6 @@ class ReaderDetailCommentsHeader: UITableViewHeaderFooterView, NibReusable {
         self.post = post
         configureButton()
     }
-
-    func followButtonMidPoint() -> CGPoint {
-        CGPoint(x: followButton.frame.midX, y: followButton.frame.minY)
-    }
 }
 
 // MARK: - Private Extension

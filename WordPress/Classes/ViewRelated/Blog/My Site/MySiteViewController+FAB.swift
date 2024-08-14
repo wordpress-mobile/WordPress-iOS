@@ -15,9 +15,7 @@ extension MySiteViewController {
 
         let newPost = { [weak self] in
             let presenter = RootViewCoordinator.sharedPresenter
-            presenter.showPostTab(completion: {
-                self?.startAlertTimer()
-            })
+            presenter.showPostTab(completion: {})
         }
 
         let source = "my_site"

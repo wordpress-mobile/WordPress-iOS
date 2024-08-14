@@ -37,9 +37,6 @@ final class BlogListViewModel: NSObject, ObservableObject {
         guard let blog = rawSites.first(where: { $0.objectID == objectID }) else {
             return nil
         }
-        if selectedBlog() != blog {
-            PushNotificationsManager.shared.deletePendingLocalNotifications()
-        }
         eventTracker.track(.siteSwitcherSiteTapped)
         recentSitesService.touch(blog: blog)
         contextManager.saveContextAndWait(contextManager.mainContext)

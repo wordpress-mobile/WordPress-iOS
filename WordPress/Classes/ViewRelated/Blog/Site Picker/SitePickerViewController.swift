@@ -48,7 +48,6 @@ final class SitePickerViewController: UIViewController {
         super.viewDidLoad()
 
         setupHeaderView()
-        startObservingQuickStart()
         startObservingTitleChanges()
     }
 
@@ -158,9 +157,6 @@ extension SitePickerViewController {
         self.blog = blog
         blogDetailHeaderView.blog = blog
 
-        QuickStartTourGuide.shared.endCurrentTour()
-        toggleSpotlightOnHeaderView()
-
         onBlogSwitched?(blog)
     }
 
@@ -178,10 +174,6 @@ extension SitePickerViewController {
                 return
             }
             self.saveSiteTitleSettings(value, for: self.blog)
-        }
-
-        controller.onDismiss = { [weak self] in
-            self?.startAlertTimer()
         }
 
         let navigationController = UINavigationController(rootViewController: controller)
@@ -207,9 +199,6 @@ extension SitePickerViewController {
         let existingBlogTitle = blog.settings?.name ?? SiteTitleStrings.defaultSiteTitle
         blog.settings?.name = title
         blogDetailHeaderView.setTitleLoading(true)
-
-        QuickStartTourGuide.shared.complete(tour: QuickStartSiteTitleTour(blog: blog),
-                                            silentlyForBlog: blog)
 
         blogService.updateSettings(for: blog, success: { [weak self] in
 
@@ -255,7 +244,7 @@ extension SitePickerViewController {
             blog: blog,
             source: Constants.viewSiteSource,
             withDeviceModes: true,
-            onClose: self.startAlertTimer
+            onClose: nil
         )
 
         let navigationController = LightNavigationController(rootViewController: webViewController)
@@ -264,18 +253,7 @@ extension SitePickerViewController {
             navigationController.modalPresentationStyle = .fullScreen
         }
 
-        present(navigationController, animated: true) {
-            self.toggleSpotlightOnHeaderView()
-        }
-
-        let tourGuide = QuickStartTourGuide.shared
-        if tourGuide.isCurrentElement(.viewSite) {
-            tourGuide.visited(.viewSite)
-        } else {
-            // Just mark as completed if we've viewed the site and aren't
-            //  currently working on the View Site tour.
-            tourGuide.completeViewSiteTour(forBlog: blog)
-        }
+        present(navigationController, animated: true)
     }
 }
 

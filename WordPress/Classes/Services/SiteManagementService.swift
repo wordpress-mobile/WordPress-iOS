@@ -94,25 +94,6 @@ open class SiteManagementService: NSObject {
             })
     }
 
-    /// Trigger a masterbar notification celebrating completion of mobile quick start.
-    ///
-    /// - Parameters:
-    ///   - blog: The Blog whose quick start checklist is completed
-    ///   - completion: Optional completion block
-    ///
-    @objc open func markQuickStartChecklistAsComplete(for blog: Blog, completion: ((Bool, NSError?) -> Void)? = nil) {
-        guard let remote = siteManagementServiceRemoteForBlog(blog),
-            let blogId = blog.dotComID else {
-                return
-        }
-
-        remote.markQuickStartChecklistAsComplete(blogId, success: {
-            completion?(true, nil)
-        }, failure: { error in
-            completion?(false, error)
-        })
-    }
-
     /// Creates a remote service for site management
     ///
     /// - Note: Only WordPress.com API supports site management

@@ -54,11 +54,11 @@ final class BlogDashboardViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         setupNavigation()
         setupCollectionView()
         addHeightObservers()
         addWillEnterForegroundObserver()
-        addQuickStartObserver()
         viewModel.viewDidLoad()
 
         // Force the view to update its layout immediately, so the content size is calculated correctly
@@ -80,8 +80,6 @@ final class BlogDashboardViewController: UIViewController {
             }
             cards.forEach(trackCardViewed)
         }
-        QuickStartTourGuide.shared.currentEntryPoint = .blogDashboard
-        startAlertTimer()
 
         WPAnalytics.track(.mySiteDashboardShown)
     }
@@ -90,7 +88,6 @@ final class BlogDashboardViewController: UIViewController {
         super.viewWillDisappear(animated)
 
         viewModel.viewWillDisappear()
-        stopAlertTimer()
     }
 
     func reloadCardsLocally() {
@@ -161,32 +158,6 @@ final class BlogDashboardViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
 
-    private func addQuickStartObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(handleQuickStartTourElementChangedNotification(_:)), name: .QuickStartTourElementChangedNotification, object: nil)
-    }
-
-    @objc private func handleQuickStartTourElementChangedNotification(_ notification: Foundation.Notification) {
-        if let info = notification.userInfo,
-           let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
-
-            switch element {
-            case .setupQuickStart:
-                self.loadCardsFromCache()
-                self.displayQuickStart()
-            case .updateQuickStart:
-                self.loadCardsFromCache()
-            case .stats, .mediaScreen:
-                if self.embeddedInScrollView {
-                    self.mySiteScrollView?.scrollToTop(animated: true)
-                } else {
-                    self.collectionView.scrollToTop(animated: true)
-                }
-            default:
-                break
-            }
-        }
-    }
-
     @objc private func updateCollectionViewHeight(notification: Notification) {
         collectionView.collectionViewLayout.invalidateLayout()
     }
@@ -250,59 +221,6 @@ extension BlogDashboardViewController {
         section.contentInsetsReference = .readableContent
 
         return section
-    }
-}
-
-private var alertWorkItem: DispatchWorkItem?
-
-extension BlogDashboardViewController {
-    @objc func startAlertTimer() {
-        let newWorkItem = DispatchWorkItem { [weak self] in
-            self?.showNoticeAsNeeded()
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: newWorkItem)
-        alertWorkItem = newWorkItem
-    }
-
-    @objc func stopAlertTimer() {
-        alertWorkItem?.cancel()
-        alertWorkItem = nil
-    }
-
-    private func showNoticeAsNeeded() {
-        let quickStartGuide = QuickStartTourGuide.shared
-
-        guard let tourToSuggest = quickStartGuide.tourToSuggest(for: blog) else {
-            quickStartGuide.showCongratsNoticeIfNeeded(for: blog)
-            return
-        }
-
-        if quickStartGuide.tourInProgress {
-            // If tour is in progress, show notice regardless of quickstart is shown in dashboard or my site
-            quickStartGuide.suggest(tourToSuggest, for: blog)
-        } else {
-            guard shouldShowQuickStartChecklist() else {
-                return
-            }
-            // Show initial notice only if quick start is shown in the dashboard
-            quickStartGuide.suggest(tourToSuggest, for: blog)
-        }
-    }
-
-    private func shouldShowQuickStartChecklist() -> Bool {
-        return DashboardCard.quickStart.shouldShow(for: blog)
-    }
-
-    private func displayQuickStart() {
-        let currentCollections = QuickStartFactory.collections(for: blog)
-        guard let collectionToShow = currentCollections.first else {
-            return
-        }
-        let checklist = QuickStartChecklistViewController(blog: blog, collection: collectionToShow)
-        let navigationViewController = UINavigationController(rootViewController: checklist)
-        present(navigationViewController, animated: true)
-
-        QuickStartTourGuide.shared.visited(.checklist)
     }
 }
 

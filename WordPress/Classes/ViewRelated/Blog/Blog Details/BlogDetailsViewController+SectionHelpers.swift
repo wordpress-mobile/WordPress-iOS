@@ -9,8 +9,6 @@ extension BlogDetailsSubsection {
         switch self {
         case .domainCredit:
             return .domainCredit
-        case .quickStart:
-            return .quickStart
         case .activity, .jetpackSettings, .siteMonitoring:
             return .jetpack
         case .stats where blog.shouldShowJetpackSection:

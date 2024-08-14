@@ -4,14 +4,6 @@ final class SiteDetailsSiteIconView: UIView {
 
     private enum Constants {
         static var imageSize: CGFloat { SiteIconViewModel.Size.regular.width }
-        static let spotlightOffset: CGFloat = 8
-    }
-
-    /// Whether or not to show the spotlight animation to illustrate tapping the icon.
-    var spotlightIsShown: Bool = true {
-        didSet {
-            spotlightView.isHidden = !spotlightIsShown
-        }
     }
 
     /// A block to be called when the image button is tapped.
@@ -54,14 +46,6 @@ final class SiteDetailsSiteIconView: UIView {
         return button
     }()
 
-    private let spotlightView: UIView = {
-        let spotlightView = QuickStartSpotlightView()
-        spotlightView.translatesAutoresizingMaskIntoConstraints = false
-
-        spotlightView.isHidden = true
-        return spotlightView
-    }()
-
     var allowsDropInteraction: Bool = false {
         didSet {
             if allowsDropInteraction {
@@ -92,13 +76,6 @@ final class SiteDetailsSiteIconView: UIView {
         accessibilityElements = [button]
 
         addSubview(button)
-
-        addSubview(spotlightView)
-
-        NSLayoutConstraint.activate([
-            leadingAnchor.constraint(equalTo: spotlightView.leadingAnchor, constant: Constants.spotlightOffset),
-            topAnchor.constraint(equalTo: spotlightView.topAnchor, constant: Constants.spotlightOffset)
-        ])
 
         pinSubviewToAllEdges(button)
     }

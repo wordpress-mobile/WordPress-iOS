@@ -21,8 +21,6 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
         controller.navigationItem.largeTitleDisplayMode = .never
         controller.initialFilterWithPostStatus = postStatus
         sourceController.navigationController?.pushViewController(controller, animated: true)
-
-        QuickStartTourGuide.shared.visited(.blogDetailNavigation)
     }
 
     // MARK: - UIViewController

@@ -32,7 +32,14 @@ extension XCTestCase {
         // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
 
-        app.launchArguments = ["-wpcom-api-base-url", WireMock.URL().absoluteString, "-no-animations", "-ui-testing", "-logout-at-launch"]
+        app.launchArguments = [
+            "-wpcom-api-base-url",
+            WireMock.URL().absoluteString,
+            "-no-animations",
+            "-ui-testing",
+            "-logout-at-launch",
+            "-com.apple.TipKit.HideAllTips", "1"
+        ]
 
         if crashOnCoreDataConcurrencyIssues {
             app.launchArguments.append(contentsOf: ["-com.apple.CoreData.ConcurrencyDebug", "1"])
@@ -41,8 +48,6 @@ extension XCTestCase {
         if let selectWPComSite {
             app.launchArguments.append(contentsOf: ["-ui-test-select-wpcom-site", selectWPComSite])
         }
-
-        app.launchArguments.append(contentsOf: ["-ff-override-TipKit", "false"])
 
         if removeBeforeLaunching {
             removeApp(app)
