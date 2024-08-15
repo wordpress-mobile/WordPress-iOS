@@ -933,8 +933,6 @@
 		24C69A8B2612421900312D9A /* UserSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24C69A8A2612421900312D9A /* UserSettingsTests.swift */; };
 		24C69AC22612467C00312D9A /* UserSettingsTestsObjc.m in Sources */ = {isa = PBXBuildFile; fileRef = 24C69AC12612467C00312D9A /* UserSettingsTestsObjc.m */; };
 		24CDE3412C5863A1005E5E43 /* TestKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24CDE3402C5863A1005E5E43 /* TestKeychain.swift */; };
-		24CDE3442C586A64005E5E43 /* SelfHostedLoginDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24CDE3422C586A40005E5E43 /* SelfHostedLoginDetails.swift */; };
-		24CDE3452C586A66005E5E43 /* SelfHostedLoginDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24CDE3422C586A40005E5E43 /* SelfHostedLoginDetails.swift */; };
 		24DB7C132C5AEF0600A0FE92 /* LoginClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24DB7C122C5AEF0500A0FE92 /* LoginClient.swift */; };
 		24DB7C142C5AEF0600A0FE92 /* LoginClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24DB7C122C5AEF0500A0FE92 /* LoginClient.swift */; };
 		24DB7C162C5AFA7200A0FE92 /* WordPressClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24DB7C152C5AFA7200A0FE92 /* WordPressClient.swift */; };
@@ -6827,7 +6825,6 @@
 		24C69A8A2612421900312D9A /* UserSettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsTests.swift; sourceTree = "<group>"; };
 		24C69AC12612467C00312D9A /* UserSettingsTestsObjc.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserSettingsTestsObjc.m; sourceTree = "<group>"; };
 		24CDE3402C5863A1005E5E43 /* TestKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestKeychain.swift; sourceTree = "<group>"; };
-		24CDE3422C586A40005E5E43 /* SelfHostedLoginDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfHostedLoginDetails.swift; sourceTree = "<group>"; };
 		24DB7C122C5AEF0500A0FE92 /* LoginClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginClient.swift; sourceTree = "<group>"; };
 		24DB7C152C5AFA7200A0FE92 /* WordPressClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordPressClient.swift; sourceTree = "<group>"; };
 		24DB7C182C5AFC0600A0FE92 /* ApplicationPasswordService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplicationPasswordService.swift; sourceTree = "<group>"; };
@@ -11494,7 +11491,6 @@
 				43AF2F962107D3800069C012 /* QuickStartTourState.swift */,
 				17EFD3732578201100AB753C /* ValueTransformers.swift */,
 				241E60B225CA0D2900912CEB /* UserSettings.swift */,
-				24CDE3422C586A40005E5E43 /* SelfHostedLoginDetails.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -22399,7 +22395,6 @@
 				E14DFAFB1E07E7C400494688 /* Data.swift in Sources */,
 				E14B40FD1C58B806005046F6 /* AccountSettingsViewController.swift in Sources */,
 				98B11B892216535100B7F2D7 /* StatsChildRowsView.swift in Sources */,
-				24CDE3442C586A64005E5E43 /* SelfHostedLoginDetails.swift in Sources */,
 				4A358DE929B5F14C00BFCEBE /* SharingButton+Lookup.swift in Sources */,
 				08CC677F1C49B65A00153AD7 /* Menu.m in Sources */,
 				C768B5B425828A5D00556E75 /* JetpackScanStatusCell.swift in Sources */,
@@ -26052,7 +26047,6 @@
 				83F1BED32BA4D1190057BC0F /* ReaderTopicService+FollowedSites.swift in Sources */,
 				FABB25A82602FC2C00C8785C /* RichTextView.swift in Sources */,
 				FABB25A92602FC2C00C8785C /* ScenePresenter.swift in Sources */,
-				24CDE3452C586A66005E5E43 /* SelfHostedLoginDetails.swift in Sources */,
 				FABB25AA2602FC2C00C8785C /* AccountSettingsStore.swift in Sources */,
 				FABB25AB2602FC2C00C8785C /* FancyAlertViewController+NotificationPrimer.swift in Sources */,
 				24DB7C172C5AFA7200A0FE92 /* WordPressClient.swift in Sources */,

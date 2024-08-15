@@ -2,6 +2,7 @@ import SwiftUI
 import AuthenticationServices
 import WordPressAPI
 import WordPressAuthenticator
+import DesignSystem
 
 struct LoginWithUrlView: View {
 
@@ -16,29 +17,32 @@ struct LoginWithUrlView: View {
     @State private var urlField: String = ""
     @State private var isLoading = false
 
+    private var isContinueButtonDisabled: Bool {
+        isLoading || urlField.trim().isEmpty
+    }
+
     init(
+        client: LoginClient,
         anchor: ASPresentationAnchor,
         loginCompleted: @escaping (WordPressOrgCredentials) -> Void
     ) {
-        self.client = LoginClient(session: URLSession(configuration: .ephemeral))
+        self.client = client
         self.anchor = anchor
         self.loginCompleted = loginCompleted
     }
 
     var body: some View {
         VStack(alignment: .leading) {
-            Text("Enter the address of the WordPress site you'd like to connect.").padding(.vertical)
-
-            TextField(text: $urlField) {
-                Text("example.com")
+            VStack(alignment: .center, spacing: 16) {
+                Image("splashLogo")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 60, height: 60)
+                    .padding(24)
+                Text(Self.enterSiteAddress)
             }
-            .padding(.vertical)
-            .overlay(Divider(), alignment: .bottom)
-            .tint(.green)
-            .keyboardType(.URL)
-            .textInputAutocapitalization(.never)
-            .onSubmit(startLogin)
-            .disabled(isLoading)
+
+            siteAdddressTextField()
 
             if let errorMessage {
                 Text(errorMessage)
@@ -47,31 +51,36 @@ struct LoginWithUrlView: View {
 
             Spacer()
 
-            Button(action: startLogin, label: {
-                HStack(alignment: .center) {
-                    Spacer()
-                    if isLoading {
-                        ProgressView()
-                    } else {
-                        Text("Continue")
-                    }
-                    Spacer()
-                }
-                .animation(.default, value: 0)
-                .padding()
-                .background(
-                    RoundedRectangle(
-                        cornerRadius: .DS.Radius.small,
-                        style: .continuous
-                    )
-                    .stroke(.primary, lineWidth: 2)
-                )
-            })
-            .tint(.primary)
-        }.padding()
+            DSButton(
+                title: SharedStrings.Button.continue,
+                style: DSButtonStyle(emphasis: .primary, size: .large),
+                isLoading: .constant(isLoading),
+                action: startLogin
+            )
+            .disabled(isContinueButtonDisabled)
+        }
+        .padding()
+        .navigationTitle(Self.title)
+        .navigationBarTitleDisplayMode(.inline)
     }
 
-    func startLogin() {
+    private func siteAdddressTextField() -> some View {
+        TextField(text: $urlField) {
+            Text("example.com")
+        }
+        .padding(.top)
+        .padding(.bottom, 8)
+        .overlay(alignment: .bottom) { Divider() }
+        .overlay(Divider(), alignment: .bottom)
+        .tint(.green)
+        .textContentType(.URL)
+        .keyboardType(.URL)
+        .textInputAutocapitalization(.never)
+        .onSubmit(startLogin)
+        .disabled(isLoading)
+    }
+
+    private func startLogin() {
         errorMessage = nil
         isLoading = true
 
@@ -89,26 +98,28 @@ struct LoginWithUrlView: View {
     }
 }
 
+private extension LoginWithUrlView {
+    static var title: String { NSLocalizedString("addSite.selfHosted.title", value: "Add Self-Hosted Site", comment: "Title of the page to add a self-hosted site") }
+    static var enterSiteAddress: String { NSLocalizedString("addSite.selfHosted.enterSiteAddress", value: "Enter the address of the WordPress site you'd like to connect.", comment: "A message to inform users to type the site address in the text field.") }
+}
+
 private extension LoginClient.LoginClientError {
 
     var errorMessage: String? {
         switch self {
-        case let .invalidSiteAddress(error):
+        case let .authentication(.invalidSiteAddress(error)):
             return error.errorMessage
-        case .missingLoginUrl:
+        case .authentication(.missingLoginUrl):
             return NSLocalizedString("addSite.selfHosted.noLoginUrlFound", value: "Application Password authentication needs to be enabled on the WordPress site.", comment: "Error message shown when application-password authentication is disabled on a self-hosted WordPress site")
-        case let .authenticationFailure(error):
-            if error.code == .canceledLogin {
-                return nil
-            }
-            fallthrough
-        case .invalidApplicationPasswordCallback:
+        case .authentication(.cancelled):
+            return nil
+        case .authentication(.authenticationError), .authentication(.invalidApplicationPasswordCallback):
             return NSLocalizedString("addSite.selfHosted.authenticationFailed", value: "Cannot login using Application Password authentication.", comment: "Error message shown when an receiving an invalid application-password authentication result from a self-hosted WordPress site")
         case .loadingSiteInfoFailure:
             return NSLocalizedString("addSite.selfHosted.loadingSiteInfoFailure", value: "Cannot load the WordPress site details", comment: "Error message shown when failing to load details from a self-hosted WordPress site")
         case .savingSiteFailure:
             return NSLocalizedString("addSite.selfHosted.savingSiteFailure", value: "Cannot save the WordPress site, please try again later.", comment: "Error message shown when failing to save a self-hosted site to user's device")
-        case .unknown:
+        case .authentication(.unknown):
             return NSLocalizedString("addSite.selfHosted.unknownError", value: "Something went wrong. Please try again.", comment: "Error message when an unknown error occurred when adding a self-hosted site")
         }
     }
@@ -153,5 +164,8 @@ private extension UrlDiscoveryError {
 // MARK: - SwiftUI Preview
 
 #Preview {
-    LoginWithUrlView(anchor: ASPresentationAnchor()) { _ in }
+    LoginWithUrlView(
+        client: .init(session: .shared),
+        anchor: ASPresentationAnchor()
+    ) { _ in }
 }

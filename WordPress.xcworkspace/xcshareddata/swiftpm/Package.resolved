@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/automattic/AutomatticAbout-swift",
       "state" : {
-        "revision" : "0f784591b324e5d3ddc5771808ef8eca923e3de2",
-        "version" : "1.1.2"
+        "revision" : "31045d654bcc1f2b56c85dd658f160fad5b50a29",
+        "version" : "1.1.4"
       }
     },
     {
@@ -102,7 +102,7 @@
     {
       "identity" : "fsinteractivemap",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/wordpress-mobile/FSInteractiveMap/",
+      "location" : "https://github.com/wordpress-mobile/FSInteractiveMap",
       "state" : {
         "revision" : "3a05cd433c4f6bfe66f09253459cef2be058b3ec",
         "version" : "0.3.0"
@@ -355,8 +355,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Automattic/wordpress-rs",
       "state" : {
-        "branch" : "alpha-swift-20240809",
-        "revision" : "3c2c64e9f637a511651cf79a2f1264046fc8c1cb"
+        "branch" : "alpha-swift-20240813",
+        "revision" : "b51c560d83a61917eb3361441e65779b71fb96ce"
       }
     },
     {

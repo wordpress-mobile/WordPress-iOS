@@ -1,12 +1,12 @@
 import XCTest
+import WordPressAPI
 @testable import WordPress
 
 final class Blog_RestAPITests: CoreDataTestCase {
-    let loginDetails = SelfHostedLoginDetails(
-        url: URL(string: "http://example.com")!,
-        username: "test@example.com",
-        password: "StrongPassword!",
-        xmlrpcEndpoint: nil
+    let loginDetails = WpApiApplicationPasswordDetails(
+        siteUrl: "https://example.com",
+        userLogin: "test@example.com",
+        password: "StrongPassword!"
     )
 
     let testKeychain = TestKeychain()
@@ -19,11 +19,11 @@ final class Blog_RestAPITests: CoreDataTestCase {
     }
 
     func testThatCreateRestApiBlogStoresUrl() throws {
-        XCTAssertEqual(try blog.getUrl(), loginDetails.url)
+        XCTAssertEqual(try blog.getUrl().absoluteString, loginDetails.siteUrl)
     }
 
     func testThatCreateRestApiBlogStoresUsername() throws {
-        XCTAssertEqual(try blog.getUsername(), loginDetails.username)
+        XCTAssertEqual(try blog.getUsername(), loginDetails.userLogin)
     }
 
     func testThatCreateRestApiBlogStoresPassword() throws {
@@ -35,7 +35,7 @@ final class Blog_RestAPITests: CoreDataTestCase {
     }
 
     func testThatCreateRestApiBlogStoresDerivedXMLRPCEndpoint() throws {
-        XCTAssertEqual(try blog.getXMLRPCEndpoint(), loginDetails.derivedXMLRPCRoot)
+        try XCTAssertEqual(blog.getXMLRPCEndpoint(), loginDetails.derivedXMLRPCRoot)
     }
 
     func testThatExistingBlogWithInvalidUrlThrowsErrorOnAccess() throws {
