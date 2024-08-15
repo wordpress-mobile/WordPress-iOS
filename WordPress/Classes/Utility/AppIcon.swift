@@ -17,11 +17,11 @@ struct AppIcon {
     let isPrimary: Bool
 
     var displayName: String {
-        return name.replacingMatches(of: " Classic", with: "")
+        return name.replacingOccurrences(of: " Classic", with: "")
     }
 
     var imageName: String {
-        let lowered = name.lowercased().replacingMatches(of: " ", with: "-")
+        let lowered = name.lowercased().replacingOccurrences(of: " ", with: "-")
         return "\(lowered)-\(Constants.imageBaseName)"
     }
 

@@ -122,7 +122,7 @@ struct DomainsService {
     // If any of the suggestions matches the base exactly,
     // then sort that suggestion up to the top of the list.
     private func sortedSuggestions(_ suggestions: [RemoteDomainSuggestion], query: String) -> [RemoteDomainSuggestion] {
-        let normalizedQuery = query.lowercased().replacingMatches(of: " ", with: "")
+        let normalizedQuery = query.lowercased().replacingOccurrences(of: " ", with: "")
 
         var filteredSuggestions = suggestions
         if let matchedSuggestionIndex = suggestions.firstIndex(where: { $0.subdomain == query || $0.subdomain == normalizedQuery }) {

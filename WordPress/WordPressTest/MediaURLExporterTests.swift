@@ -20,8 +20,8 @@ class MediaURLExporterTests: XCTestCase {
         exporter.mediaDirectoryType = .temporary
         exporter.export(onCompletion: { (urlExport) in
                         expect.fulfill()
-                        let exportFileName = urlExport.url.lastPathComponent.replacingMatches(of: "." + urlExport.url.pathExtension, with: "")
-                        let originalFileName = url.lastPathComponent.replacingMatches(of: "." + url.pathExtension, with: "")
+                        let exportFileName = urlExport.url.lastPathComponent.replacingOccurrences(of: "." + urlExport.url.pathExtension, with: "")
+                        let originalFileName = url.lastPathComponent.replacingOccurrences(of: "." + url.pathExtension, with: "")
                         XCTAssertEqual(exportFileName, originalFileName)
                         MediaExporterTests.cleanUpExportedMedia(atURL: urlExport.url)
         }) { (error) in

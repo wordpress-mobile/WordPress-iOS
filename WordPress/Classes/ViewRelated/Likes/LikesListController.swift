@@ -238,7 +238,9 @@ class LikesListController: NSObject {
         if beforeStr != nil,
            let modifiedDate = modifiedBeforeDate() {
             // The endpoints expect a format like YYYY-MM-DD HH:MM:SS. It isn't expecting the T or Z, hence the replacingMatches calls.
-            beforeStr = ISO8601DateFormatter().string(from: modifiedDate).replacingMatches(of: "T", with: " ").replacingMatches(of: "Z", with: "")
+            beforeStr = ISO8601DateFormatter().string(from: modifiedDate)
+                .replacingOccurrences(of: "T", with: " ")
+                .replacingOccurrences(of: "Z", with: "")
         }
 
         switch content {
