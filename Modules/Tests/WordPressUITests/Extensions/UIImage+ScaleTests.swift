@@ -40,10 +40,4 @@ final class UIImage_ScaleTests: XCTestCase {
         let size = originalImage.dimensions(forSuggestedSize: targetSize, format: .scaleAspectFill)
         XCTAssertEqual(size, CGSize(width: 2000, height: 1500))
     }
-
-    func testFoo() {
-        let targetSize = CGSize(width: 0, height: 0)
-        let originalImage = UIImage.from(color: .blue, havingSize: CGSize(width: 1024, height: 680))
-        let size = originalImage.dimensions(forSuggestedSize: targetSize, format: .scaleAspectFill)
-    }
 }
