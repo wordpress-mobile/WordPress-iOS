@@ -140,7 +140,7 @@ class BlogDetailHeaderView: UIView {
         return [
             titleView.topAnchor.constraint(equalTo: topAnchor, constant: LayoutSpacing.top),
             titleView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: LayoutSpacing.atSides),
-            titleView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -LayoutSpacing.atSides),
+            titleView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -10),
             titleView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ]
     }
@@ -180,8 +180,8 @@ class BlogDetailHeaderView: UIView {
 extension BlogDetailHeaderView {
     class TitleView: UIView {
         private enum Dimensions {
-            static let siteSwitcherHeight: CGFloat = 36
-            static let siteSwitcherWidth: CGFloat = 32
+            static let siteSwitcherHeight: CGFloat = 44
+            static let siteSwitcherWidth: CGFloat = 44
         }
 
         // MARK: - Child Views
@@ -196,7 +196,7 @@ extension BlogDetailHeaderView {
             stackView.alignment = .center
             stackView.spacing = 12
             stackView.translatesAutoresizingMaskIntoConstraints = false
-            stackView.setCustomSpacing(4, after: titleStackView)
+            stackView.setCustomSpacing(2, after: titleStackView)
 
             return stackView
         }()
@@ -256,13 +256,14 @@ extension BlogDetailHeaderView {
         }()
 
         let siteSwitcherButton: UIButton = {
-            let button = UIButton(frame: .zero)
-            let image = UIImage(named: "chevron-down-slim")?.withRenderingMode(.alwaysTemplate)
+            var configuration = UIButton.Configuration.plain()
+            configuration.image = UIImage(systemName: "chevron.down.circle.fill")?.withBaselineOffset(fromBottom: 4)
+            configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(paletteColors: [.secondaryLabel, .secondarySystemFill])
+                .applying(UIImage.SymbolConfiguration(font: WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)))
+            configuration.baseForegroundColor = .label
 
-            button.setImage(image, for: .normal)
-            button.contentMode = .center
+            let button = UIButton(configuration: configuration)
             button.translatesAutoresizingMaskIntoConstraints = false
-            button.tintColor = .secondaryLabel
             button.accessibilityLabel = NSLocalizedString("mySite.siteActions.button", value: "Site Actions", comment: "Button that reveals more site actions")
             button.accessibilityHint = NSLocalizedString("mySite.siteActions.hint", value: "Tap to show more site actions", comment: "Accessibility hint for button used to show more site actions")
             button.accessibilityIdentifier = .switchSiteAccessibilityId
