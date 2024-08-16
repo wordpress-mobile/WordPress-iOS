@@ -1629,7 +1629,6 @@
 		57D6C83E22945A10003DDC7E /* PostCompactCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D6C83D22945A10003DDC7E /* PostCompactCellTests.swift */; };
 		590E873B1CB8205700D1B734 /* PostListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 590E873A1CB8205700D1B734 /* PostListViewController.swift */; };
 		591232691CCEAA5100B86207 /* AbstractPostListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591232681CCEAA5100B86207 /* AbstractPostListViewController.swift */; };
-		591A428F1A6DC6F2003807A6 /* WPGUIConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 591A428E1A6DC6F2003807A6 /* WPGUIConstants.m */; };
 		591AA5011CEF9BF20074934F /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591AA4FF1CEF9BF20074934F /* Post.swift */; };
 		591AA5021CEF9BF20074934F /* Post+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591AA5001CEF9BF20074934F /* Post+CoreDataProperties.swift */; };
 		593F26611CAB00CA00F14073 /* PostSharingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 593F26601CAB00CA00F14073 /* PostSharingController.swift */; };
@@ -5440,7 +5439,6 @@
 		FABB25E12602FC2C00C8785C /* WPActivityDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D95EB717A28F5E00A3E9F3 /* WPActivityDefaults.m */; };
 		FABB25E22602FC2C00C8785C /* RegisterDomainDetailsViewModel+CellIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D562F2117410C00CEAA33 /* RegisterDomainDetailsViewModel+CellIndex.swift */; };
 		FABB25E32602FC2C00C8785C /* RouteMatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1714F8CF20E6DA8900226DCB /* RouteMatcher.swift */; };
-		FABB25E42602FC2C00C8785C /* WPGUIConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 591A428E1A6DC6F2003807A6 /* WPGUIConstants.m */; };
 		FABB25E52602FC2C00C8785C /* UIColor+Notice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FD272DF24CF8F270021F0C8 /* UIColor+Notice.swift */; };
 		FABB25E62602FC2C00C8785C /* JetpackBackupOptionsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD9457D25B5647B00F011B5 /* JetpackBackupOptionsCoordinator.swift */; };
 		FABB25E72602FC2C00C8785C /* PluginStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CA0A6B1FA73053004C4BBE /* PluginStore.swift */; };
@@ -7478,8 +7476,6 @@
 		57E15BC2269B6B7419464B6F /* Pods_Apps_Jetpack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Apps_Jetpack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		590E873A1CB8205700D1B734 /* PostListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostListViewController.swift; sourceTree = "<group>"; };
 		591232681CCEAA5100B86207 /* AbstractPostListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AbstractPostListViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		591A428D1A6DC6F2003807A6 /* WPGUIConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPGUIConstants.h; sourceTree = "<group>"; };
-		591A428E1A6DC6F2003807A6 /* WPGUIConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPGUIConstants.m; sourceTree = "<group>"; };
 		591AA4FF1CEF9BF20074934F /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		591AA5001CEF9BF20074934F /* Post+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Post+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		593F26601CAB00CA00F14073 /* PostSharingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostSharingController.swift; sourceTree = "<group>"; };
@@ -14659,8 +14655,6 @@
 				0CB54F562AEC320700582080 /* WordPressAppDelegate+PostCoordinatorDelegate.swift */,
 				43B0BA952229927F00328C69 /* WordPressAppDelegate+openURL.swift */,
 				F1E3536A25B9F74C00992E3A /* WindowManager.swift */,
-				591A428D1A6DC6F2003807A6 /* WPGUIConstants.h */,
-				591A428E1A6DC6F2003807A6 /* WPGUIConstants.m */,
 				17F7C24822770B68002E5C2E /* main.swift */,
 			);
 			path = System;
@@ -23170,7 +23164,6 @@
 				436D56302117410C00CEAA33 /* RegisterDomainDetailsViewModel+CellIndex.swift in Sources */,
 				C39ABBAE294BE84000F6F278 /* BackupListViewController+JetpackBannerViewController.swift in Sources */,
 				1714F8D020E6DA8900226DCB /* RouteMatcher.swift in Sources */,
-				591A428F1A6DC6F2003807A6 /* WPGUIConstants.m in Sources */,
 				3FD272E024CF8F270021F0C8 /* UIColor+Notice.swift in Sources */,
 				98830A922747043B0061A87C /* BorderedButtonTableViewCell.swift in Sources */,
 				FAD9457E25B5647B00F011B5 /* JetpackBackupOptionsCoordinator.swift in Sources */,
@@ -26124,7 +26117,6 @@
 				FABB25E12602FC2C00C8785C /* WPActivityDefaults.m in Sources */,
 				FABB25E22602FC2C00C8785C /* RegisterDomainDetailsViewModel+CellIndex.swift in Sources */,
 				FABB25E32602FC2C00C8785C /* RouteMatcher.swift in Sources */,
-				FABB25E42602FC2C00C8785C /* WPGUIConstants.m in Sources */,
 				FABB25E52602FC2C00C8785C /* UIColor+Notice.swift in Sources */,
 				0147D64F294B1E1600AA6410 /* StatsRevampStore.swift in Sources */,
 				FABB25E62602FC2C00C8785C /* JetpackBackupOptionsCoordinator.swift in Sources */,

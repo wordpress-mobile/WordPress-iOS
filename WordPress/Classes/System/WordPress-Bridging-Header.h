@@ -88,7 +88,6 @@
 #import "WPAuthTokenIssueSolver.h"
 #import "WPUploadStatusButton.h"
 #import "WPError.h"
-#import "WPGUIConstants.h"
 #import "WPImageViewController.h"
 #import "WPScrollableViewController.h"
 #import "WPStyleGuide+Pages.h"

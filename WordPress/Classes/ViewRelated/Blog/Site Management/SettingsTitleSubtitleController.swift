@@ -57,9 +57,9 @@ final class SettingsTitleSubtitleController: UITableViewController {
         var height: CGFloat {
             switch self {
             case .name:
-                return WPTableViewDefaultRowHeight
+                return 44
             case .description:
-                return WPTableViewDefaultRowHeight * 3
+                return 44 * 3
             }
         }
 

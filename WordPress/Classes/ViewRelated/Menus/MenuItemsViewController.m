@@ -7,7 +7,6 @@
 #import "MenuItemsVisualOrderingView.h"
 #import "CoreDataStack.h"
 #import "Menu+ViewDesign.h"
-#import "WPGUIConstants.h"
 #import "WordPress-Swift.h"
 
 @import WordPressShared;
@@ -235,13 +234,13 @@ static CGFloat const ItemOrderingTouchesDetectionInset = 10.0;
 
     for (MenuItemInsertionView *insertionView in self.insertionViews) {
         insertionView.hidden = YES;
-        insertionView.alpha = WPAlphaZero;
+        insertionView.alpha = 0;
     }
-    [UIView animateWithDuration:WPAnimationDurationDefault animations:^{
+    [UIView animateWithDuration:0.33 animations:^{
 
         for (MenuItemInsertionView *insertionView in self.insertionViews) {
             insertionView.hidden = NO;
-            insertionView.alpha = WPAlphaFull;
+            insertionView.alpha = 1;
         }
         // inform the delegate to handle this content change based on the rect we are focused on
         // a delegate will likely scroll the content with the size change
@@ -279,11 +278,11 @@ static CGFloat const ItemOrderingTouchesDetectionInset = 10.0;
     // since we are removing content above the toggledItemView, the toggledItemView (focus) will move upwards with the updated content size
     updatedRect.origin.y -= MenuItemsStackableViewDefaultHeight;
 
-    [UIView animateWithDuration:WPAnimationDurationDefault delay:0.0 options:0 animations:^{
+    [UIView animateWithDuration:0.33 delay:0.0 options:0 animations:^{
 
         for (MenuItemInsertionView *insertionView in self.insertionViews) {
             insertionView.hidden = YES;
-            insertionView.alpha = WPAlphaZero;
+            insertionView.alpha = 0;
         }
         // inform the delegate to handle this content change based on the rect we are focused on
         // a delegate will likely scroll the content with the size change
