@@ -124,7 +124,8 @@ extension BlogDetailsViewController {
     }
 
     @objc func shouldShowApplicationPasswordRow() -> Bool {
-        return self.blog.userID != nil && (try? WordPressSite.from(blog: self.blog)) != nil
+        // Only available for application-password authenticated self-hosted sites.
+        return self.blog.account == nil && self.blog.userID != nil && (try? WordPressSite.from(blog: self.blog)) != nil
     }
 
     private func createApplicationPasswordService() -> ApplicationPasswordService? {
