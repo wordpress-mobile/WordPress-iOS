@@ -48,7 +48,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
     }
 
     func currentlySelectedScreen() -> String {
-        fatalError()
+        ""
     }
 
     // TODO: (wpsidebar) Can we eliminate it?
