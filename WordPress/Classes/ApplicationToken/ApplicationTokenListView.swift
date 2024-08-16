@@ -74,6 +74,19 @@ class ApplicationTokenListViewModel: ObservableObject {
 
         do {
             let tokens = try await self.dataProvider.loadApplicationTokens()
+                .sorted { lhs, rhs in
+                    // The most recently used/created is placed at the top.
+                    switch (lhs.lastUsed, rhs.lastUsed) {
+                    case let (.some(lhsLastUsed), .some(rhsLastUsed)):
+                        return lhsLastUsed > rhsLastUsed
+                    case (.some, .none):
+                        return true
+                    case (.none, .some):
+                        return false
+                    default:
+                        return lhs.createdAt > rhs.createdAt
+                    }
+                }
             self.applicationTokens = tokens
         } catch let error as WpApiError {
             self.errorMessage = error.errorMessage
