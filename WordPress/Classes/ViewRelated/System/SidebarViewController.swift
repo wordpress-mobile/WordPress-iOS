@@ -1,6 +1,7 @@
 import UIKit
 import SwiftUI
 
+/// The sidebar dispalyed on the iPad.
 final class SidebarViewController: UIHostingController<SidebarView> {
     init() {
         super.init(rootView: SidebarView())

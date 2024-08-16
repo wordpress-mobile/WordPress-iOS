@@ -1,32 +1,39 @@
 import UIKit
 
 final class SplitViewRootPresenter: RootViewPresenter {
-    let rootViewController: UIViewController
-
-    private let meScenePresenter = MeScenePresenter()
+    private let splitVC = UISplitViewController(style: .tripleColumn)
 
     init() {
         // TODO: (wpsidebar) remove this?
-        self.mySitesCoordinator = MySitesCoordinator(meScenePresenter: meScenePresenter, onBecomeActiveTab: {})
+        self.mySitesCoordinator = MySitesCoordinator(meScenePresenter: MeScenePresenter(), onBecomeActiveTab: {})
 
-        let splitVC = UISplitViewController(style: .tripleColumn)
+        let sidebarVC = SidebarViewController()
 
         // TODO: (wpsidebar) Configure on iPad
         // These three columns are displayed with `.regular` size class
-        splitVC.setViewController(SidebarViewController(), for: .primary)
-        // TODO: (wpsidebar) show blog DetailsVC directly
-        splitVC.setViewController(mySitesCoordinator.navigationController, for: .supplementary)
-        // TODO: (wpsidebar) delegate selection from BlogDetailsViewController
-        splitVC.setViewController(UIViewController(), for: .secondary)
+        splitVC.setViewController(sidebarVC, for: .primary)
+
+        // TODO: (wpsidebar) Display based on the selection from sidebar
+        if let blog = Blog.lastUsedOrFirst(in: ContextManager.shared.mainContext) {
+            let siteMenuVC = SiteMenuViewController(blog: blog)
+            siteMenuVC.delegate = self
+            splitVC.setViewController(siteMenuVC, for: .supplementary)
+
+            // TODO: (wpsidebar) Refactor this (initial .secondary vc managed based on the VC presentation)
+            _ = siteMenuVC.view
+        } else {
+            splitVC.setViewController(UIViewController(), for: .supplementary)
+            splitVC.setViewController(UIViewController(), for: .secondary)
+        }
 
         // The `.compact` column is displayed with `.compact` size class, including iPhone
         let tabBarVC = WPTabBarController(staticScreens: false)
         splitVC.setViewController(tabBarVC, for: .compact)
-
-        self.rootViewController = splitVC
     }
 
     // MARK: – RootViewPresenter
+
+    var rootViewController: UIViewController { splitVC }
 
     // MARK: – RootViewPresenter (Unimplemented)
 
@@ -44,7 +51,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
         fatalError()
     }
 
-    // TODO: Can we eliminate it?
+    // TODO: (wpsidebar) Can we eliminate it?
     func currentlyVisibleBlog() -> Blog? {
         mySitesCoordinator.currentBlog
     }
@@ -159,5 +166,11 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
     func popMeScreenToRoot() {
         fatalError()
+    }
+}
+
+extension SplitViewRootPresenter: SiteMenuViewControllerDelegate {
+    func siteMenuViewController(_ siteMenuViewController: SiteMenuViewController, showDetailsViewController viewController: UIViewController) {
+        splitVC.setViewController(viewController, for: .secondary)
     }
 }

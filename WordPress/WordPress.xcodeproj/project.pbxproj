@@ -594,6 +594,8 @@
 		0CCC13CA2C6FA10E0010940A /* SplitViewRootPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC13C82C6FA10D0010940A /* SplitViewRootPresenter.swift */; };
 		0CCC13CD2C6FDDB50010940A /* SidebarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC13CC2C6FDDB50010940A /* SidebarViewController.swift */; };
 		0CCC13CE2C6FDDB50010940A /* SidebarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC13CC2C6FDDB50010940A /* SidebarViewController.swift */; };
+		0CCC13D32C6FE2940010940A /* SiteMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC13D22C6FE2940010940A /* SiteMenuViewController.swift */; };
+		0CCC13D42C6FE2940010940A /* SiteMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC13D22C6FE2940010940A /* SiteMenuViewController.swift */; };
 		0CD223DF2AA8ADFD002BD761 /* DashboardQuickActionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD223DE2AA8ADFD002BD761 /* DashboardQuickActionsViewModel.swift */; };
 		0CD223E02AA8ADFD002BD761 /* DashboardQuickActionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD223DE2AA8ADFD002BD761 /* DashboardQuickActionsViewModel.swift */; };
 		0CD382832A4B699E00612173 /* DashboardBlazeCardCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD382822A4B699E00612173 /* DashboardBlazeCardCellViewModel.swift */; };
@@ -6519,6 +6521,7 @@
 		0CC21C6B2B95220E003BDB4A /* PostCoordinator+Notices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostCoordinator+Notices.swift"; sourceTree = "<group>"; };
 		0CCC13C82C6FA10D0010940A /* SplitViewRootPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitViewRootPresenter.swift; sourceTree = "<group>"; };
 		0CCC13CC2C6FDDB50010940A /* SidebarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarViewController.swift; sourceTree = "<group>"; };
+		0CCC13D22C6FE2940010940A /* SiteMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteMenuViewController.swift; sourceTree = "<group>"; };
 		0CD223DE2AA8ADFD002BD761 /* DashboardQuickActionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardQuickActionsViewModel.swift; sourceTree = "<group>"; };
 		0CD382822A4B699E00612173 /* DashboardBlazeCardCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazeCardCellViewModel.swift; sourceTree = "<group>"; };
 		0CD382852A4B6FCE00612173 /* DashboardBlazeCardCellViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazeCardCellViewModelTest.swift; sourceTree = "<group>"; };
@@ -14689,6 +14692,7 @@
 				803BB98B29637AFC00B3F6D6 /* BlurredEmptyViewController.swift */,
 				FADC40A42A8BBA4200C19997 /* WPTabBarController+MeTab.swift */,
 				0CCC13CC2C6FDDB50010940A /* SidebarViewController.swift */,
+				0CCC13D22C6FE2940010940A /* SiteMenuViewController.swift */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -21910,6 +21914,7 @@
 				98458CB821A39D350025D232 /* StatsNoDataRow.swift in Sources */,
 				FE1E20152A47042500CE7C90 /* PublicizeInfo+CoreDataProperties.swift in Sources */,
 				3234BB172530DFCA0068DA40 /* ReaderTableCardCell.swift in Sources */,
+				0CCC13D32C6FE2940010940A /* SiteMenuViewController.swift in Sources */,
 				7462BFD42028CD4400B552D8 /* ShareNoticeNavigationCoordinator.swift in Sources */,
 				803BB97C2959559500B3F6D6 /* RootViewPresenter.swift in Sources */,
 				178810B52611D25600A98BD8 /* Text+BoldSubString.swift in Sources */,
@@ -25384,6 +25389,7 @@
 				FABB23A82602FC2C00C8785C /* MeViewController.swift in Sources */,
 				FABB23A92602FC2C00C8785C /* BlogService+BlogAuthors.swift in Sources */,
 				C324D7AC28C2F73F00310DEF /* SplashPrologueViewController.swift in Sources */,
+				0CCC13D42C6FE2940010940A /* SiteMenuViewController.swift in Sources */,
 				FABB23AA2602FC2C00C8785C /* AuthorFilterButton.swift in Sources */,
 				FABB23AB2602FC2C00C8785C /* MenuItemTagsViewController.m in Sources */,
 				0CB4057A29C8DDEE008EED0A /* BlogDashboardPersonalizationViewModel.swift in Sources */,

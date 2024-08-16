@@ -1001,6 +1001,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
 
 // TODO: (wpsidebar) Remove
 - (Boolean)isSplitViewDisplayed {
+    if (self.isSiteMenuModeEnabled) {
+        return true;
+    }
     return ![self splitViewControllerIsHorizontallyCompact] && [MySitesCoordinator isSplitViewEnabled];
 }
 
@@ -1450,8 +1453,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
 
     self.restorableSelectedIndexPath = nil;
     
-    WPSplitViewController *splitViewController = (WPSplitViewController *)self.splitViewController;
-    splitViewController.isShowingInitialDetail = YES;
+    if ([self.splitViewController isKindOfClass:[WPSplitViewController class]]) {
+        WPSplitViewController *splitViewController = (WPSplitViewController *)self.splitViewController;
+        splitViewController.isShowingInitialDetail = YES;
+    }
+
     BlogDetailsSubsection subsection = [self defaultSubsection];
     switch (subsection) {
         case BlogDetailsSubsectionHome:
@@ -1557,9 +1563,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    WPSplitViewController *splitViewController = (WPSplitViewController *)self.splitViewController;
-    splitViewController.isShowingInitialDetail = NO;
-    
+    if ([self.splitViewController isKindOfClass:[WPSplitViewController class]]) {
+        WPSplitViewController *splitViewController = (WPSplitViewController *)self.splitViewController;
+        splitViewController.isShowingInitialDetail = NO;
+    }
+
     BlogDetailsSection *section = [self.tableSections objectAtIndex:indexPath.section];
     BlogDetailsRow *row = [section.rows objectAtIndex:indexPath.row];
     row.callback();
