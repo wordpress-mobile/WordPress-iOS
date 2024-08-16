@@ -1,14 +1,29 @@
 import UIKit
 
 final class SplitViewRootPresenter: RootViewPresenter {
-    let rootViewController: UIViewController = {
-        let vc = UIViewController()
-        vc.view.backgroundColor = .red
-        return vc
-    }()
+    let rootViewController: UIViewController
+
+    private let meScenePresenter = MeScenePresenter()
 
     init() {
-        self.mySitesCoordinator = MySitesCoordinator(meScenePresenter: MeScenePresenter(), onBecomeActiveTab: {})
+        // TODO: (wpsidebar) remove this?
+        self.mySitesCoordinator = MySitesCoordinator(meScenePresenter: meScenePresenter, onBecomeActiveTab: {})
+
+        let splitVC = UISplitViewController(style: .tripleColumn)
+
+        // TODO: (wpsidebar) Configure on iPad
+        // These three columns are displayed with `.regular` size class
+        splitVC.setViewController(SidebarViewController(), for: .primary)
+        // TODO: (wpsidebar) show blog DetailsVC directly
+        splitVC.setViewController(mySitesCoordinator.navigationController, for: .supplementary)
+        // TODO: (wpsidebar) delegate selection from BlogDetailsViewController
+        splitVC.setViewController(UIViewController(), for: .secondary)
+
+        // The `.compact` column is displayed with `.compact` size class, including iPhone
+        let tabBarVC = WPTabBarController(staticScreens: false)
+        splitVC.setViewController(tabBarVC, for: .compact)
+
+        self.rootViewController = splitVC
     }
 
     // MARK: – RootViewPresenter

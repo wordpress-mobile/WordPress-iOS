@@ -999,6 +999,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     self.tableSections = [NSArray arrayWithArray:marr];
 }
 
+// TODO: (wpsidebar) Remove
 - (Boolean)isSplitViewDisplayed {
     return ![self splitViewControllerIsHorizontallyCompact] && [MySitesCoordinator isSplitViewEnabled];
 }

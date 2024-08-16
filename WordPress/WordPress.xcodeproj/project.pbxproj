@@ -592,6 +592,8 @@
 		0CC21C6D2B95220E003BDB4A /* PostCoordinator+Notices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC21C6B2B95220E003BDB4A /* PostCoordinator+Notices.swift */; };
 		0CCC13C92C6FA10E0010940A /* SplitViewRootPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC13C82C6FA10D0010940A /* SplitViewRootPresenter.swift */; };
 		0CCC13CA2C6FA10E0010940A /* SplitViewRootPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC13C82C6FA10D0010940A /* SplitViewRootPresenter.swift */; };
+		0CCC13CD2C6FDDB50010940A /* SidebarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC13CC2C6FDDB50010940A /* SidebarViewController.swift */; };
+		0CCC13CE2C6FDDB50010940A /* SidebarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC13CC2C6FDDB50010940A /* SidebarViewController.swift */; };
 		0CD223DF2AA8ADFD002BD761 /* DashboardQuickActionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD223DE2AA8ADFD002BD761 /* DashboardQuickActionsViewModel.swift */; };
 		0CD223E02AA8ADFD002BD761 /* DashboardQuickActionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD223DE2AA8ADFD002BD761 /* DashboardQuickActionsViewModel.swift */; };
 		0CD382832A4B699E00612173 /* DashboardBlazeCardCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD382822A4B699E00612173 /* DashboardBlazeCardCellViewModel.swift */; };
@@ -6516,6 +6518,7 @@
 		0CB54F562AEC320700582080 /* WordPressAppDelegate+PostCoordinatorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WordPressAppDelegate+PostCoordinatorDelegate.swift"; sourceTree = "<group>"; };
 		0CC21C6B2B95220E003BDB4A /* PostCoordinator+Notices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostCoordinator+Notices.swift"; sourceTree = "<group>"; };
 		0CCC13C82C6FA10D0010940A /* SplitViewRootPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitViewRootPresenter.swift; sourceTree = "<group>"; };
+		0CCC13CC2C6FDDB50010940A /* SidebarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarViewController.swift; sourceTree = "<group>"; };
 		0CD223DE2AA8ADFD002BD761 /* DashboardQuickActionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardQuickActionsViewModel.swift; sourceTree = "<group>"; };
 		0CD382822A4B699E00612173 /* DashboardBlazeCardCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazeCardCellViewModel.swift; sourceTree = "<group>"; };
 		0CD382852A4B6FCE00612173 /* DashboardBlazeCardCellViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazeCardCellViewModelTest.swift; sourceTree = "<group>"; };
@@ -14685,6 +14688,7 @@
 				57BAD50B225CCE1A006139EC /* WPTabBarController+Swift.swift */,
 				803BB98B29637AFC00B3F6D6 /* BlurredEmptyViewController.swift */,
 				FADC40A42A8BBA4200C19997 /* WPTabBarController+MeTab.swift */,
+				0CCC13CC2C6FDDB50010940A /* SidebarViewController.swift */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -21930,6 +21934,7 @@
 				3F8B45AC292C455800730FA4 /* MigrationSuccessCell.swift in Sources */,
 				E11000991CDB5F1E00E33887 /* KeychainTools.swift in Sources */,
 				E6D2E1671B8AAD8C0000ED14 /* ReaderTagStreamHeader.swift in Sources */,
+				0CCC13CD2C6FDDB50010940A /* SidebarViewController.swift in Sources */,
 				321E292623A5F10900588610 /* FullScreenCommentReplyViewController.swift in Sources */,
 				E6D3B1431D1C702600008D4B /* ReaderFollowedSitesViewController.swift in Sources */,
 				8BEE846427B1E05B0001A93C /* DashboardCardModel.swift in Sources */,
@@ -25888,6 +25893,7 @@
 				FABB25142602FC2C00C8785C /* RevisionsTableViewController.swift in Sources */,
 				FABB25152602FC2C00C8785C /* PeopleService.swift in Sources */,
 				FABB25162602FC2C00C8785C /* StatsPeriodStore.swift in Sources */,
+				0CCC13CE2C6FDDB50010940A /* SidebarViewController.swift in Sources */,
 				FABB25172602FC2C00C8785C /* ImmuTable+WordPress.swift in Sources */,
 				4ADE3F8C2C6365E00046EC8A /* ApplicationTokenItem.swift in Sources */,
 				4A5DE7392B0D511900363171 /* PageTree.swift in Sources */,
