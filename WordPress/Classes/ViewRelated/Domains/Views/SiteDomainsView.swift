@@ -8,6 +8,11 @@ struct SiteDomainsView: View {
     @ObservedObject var blog: Blog
     @State var isShowingDomainSelectionWithType: DomainSelectionType?
     @StateObject var viewModel: SiteDomainsViewModel
+    let context: PresentationContext
+
+    final class PresentationContext {
+        weak var viewController: UIViewController?
+    }
 
     // Property observer
     private func showingDomainSelectionWithType(to value: DomainSelectionType?) {
@@ -81,17 +86,14 @@ struct SiteDomainsView: View {
         Section {
             ForEach(rows) { row  in
                 if let navigation = row.navigation {
-                    NavigationLink(destination: {
-                        DomainDetailsWebViewControllerWrapper(
-                            domain: navigation.domain,
-                            siteSlug: navigation.siteSlug,
-                            type: navigation.type,
-                            analyticsSource: navigation.analyticsSource
-                        )
-                        .navigationTitle(navigation.domain)
-                    }, label: {
-                        AllDomainsListCardView(viewModel: row.viewModel, padding: 0)
-                    })
+                    Button(action: { showDetails(for: navigation) }) {
+                        HStack(alignment: .center) {
+                            AllDomainsListCardView(viewModel: row.viewModel, padding: 0)
+                            Image(systemName: "chevron.right")
+                                .font(.subheadline.weight(.medium))
+                                .foregroundColor(.secondary.opacity(0.5))
+                        }
+                    }
                 } else {
                     AllDomainsListCardView(viewModel: row.viewModel, padding: 0)
                 }
@@ -105,6 +107,18 @@ struct SiteDomainsView: View {
                 Text(footer)
             }
         }
+    }
+
+    private func showDetails(for navigation: SiteDomainsViewModel.Navigation) {
+        wpAssert(context.viewController != nil)
+
+        let viewController = DomainDetailsWebViewController(
+            domain: navigation.domain,
+            siteSlug: navigation.siteSlug,
+            type: navigation.type,
+            analyticsSource: navigation.analyticsSource
+        ).makeLightNavigationController()
+        context.viewController?.present(viewController, animated: true)
     }
 
     private func makeAddDomainSection(blog: Blog) -> some View {
@@ -238,7 +252,11 @@ final class SiteDomainsViewController: UIHostingController<SiteDomainsView> {
         let domainsService = DomainsService(coreDataStack: ContextManager.shared, wordPressComRestApi: account?.wordPressComRestApi)
         let viewModel = SiteDomainsViewModel(blog: blog, domainsService: domainsService)
         self.viewModel = viewModel
-        super.init(rootView: .init(blog: blog, viewModel: viewModel))
+        let context = SiteDomainsView.PresentationContext()
+        let view = SiteDomainsView(blog: blog, viewModel: viewModel, context: context)
+        super.init(rootView: view)
+
+        context.viewController = self
     }
 
     @MainActor required dynamic init?(coder aDecoder: NSCoder) {
