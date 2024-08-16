@@ -29,7 +29,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
         fatalError()
     }
 
-    // TODO: Can we remove it?
+    // TODO: Can we eliminate it?
     func currentlyVisibleBlog() -> Blog? {
         mySitesCoordinator.currentBlog
     }

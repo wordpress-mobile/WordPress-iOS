@@ -59,7 +59,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
     private var createButtonCoordinator: CreateButtonCoordinator?
 
-    private let meScenePresenter: ScenePresenter
     private let blogService: BlogService
 
     private let viewModel: MySiteViewModel
@@ -70,10 +69,8 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
     // MARK: - Initializers
 
-    init(meScenePresenter: ScenePresenter,
-         blogService: BlogService? = nil,
+    init(blogService: BlogService? = nil,
          overlaysCoordinator: MySiteOverlaysCoordinator = .init()) {
-        self.meScenePresenter = meScenePresenter
         self.blogService = blogService ?? BlogService(coreDataStack: ContextManager.shared)
         self.viewModel = MySiteViewModel()
         self.overlaysCoordinator = overlaysCoordinator
@@ -652,7 +649,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     }
 
     private func makeSitePickerViewController(for blog: Blog) -> SitePickerViewController {
-        let sitePickerViewController = SitePickerViewController(blog: blog, meScenePresenter: meScenePresenter)
+        let sitePickerViewController = SitePickerViewController(blog: blog)
 
         sitePickerViewController.onBlogSwitched = { [weak self] blog in
             guard let self = self else {

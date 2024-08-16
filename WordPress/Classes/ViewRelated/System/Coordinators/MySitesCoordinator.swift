@@ -83,7 +83,7 @@ class MySitesCoordinator: NSObject {
     }()
 
     private func makeMySiteViewController() -> MySiteViewController {
-        MySiteViewController(meScenePresenter: self.meScenePresenter)
+        MySiteViewController()
     }
 
     // MARK: - Navigation
