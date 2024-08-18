@@ -14,6 +14,10 @@ final class SharedPersistentContainer: NSPersistentContainer {
     }
 }
 
+#if compiler(>=6)
+extension SharedPersistentContainer: @unchecked Sendable {}
+#endif
+
 class SharedCoreDataStack {
 
     // MARK: - Private Properties
