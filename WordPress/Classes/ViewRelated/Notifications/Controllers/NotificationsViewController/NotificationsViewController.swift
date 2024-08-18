@@ -561,7 +561,7 @@ private extension NotificationsViewController {
     func setupInlinePrompt() {
         precondition(inlinePromptView != nil)
 
-        inlinePromptView.alpha = WPAlphaZero
+        inlinePromptView.alpha = 0
 
         inlinePromptView.isHidden = true
     }
@@ -1483,7 +1483,7 @@ private extension NotificationsViewController {
             return
         }
 
-        UIView.animate(withDuration: WPAnimationDurationDefault, animations: {
+        UIView.animate(withDuration: 0.33, animations: {
             self.filterTabBar.isHidden = false
         })
     }
@@ -1575,7 +1575,7 @@ private extension NotificationsViewController {
         }
 
         if columnWidth == .default {
-            splitViewController.dimDetailViewController(shouldDimDetailViewController, withAlpha: WPAlphaZero)
+            splitViewController.dimDetailViewController(shouldDimDetailViewController, withAlpha: 0)
         }
     }
 
@@ -1640,27 +1640,27 @@ extension NotificationsViewController: NoResultsViewControllerDelegate {
 //
 internal extension NotificationsViewController {
     func showInlinePrompt() {
-        guard inlinePromptView.alpha != WPAlphaFull,
+        guard inlinePromptView.alpha != 1,
             userDefaults.notificationPrimerAlertWasDisplayed,
             userDefaults.notificationsTabAccessCount >= Constants.inlineTabAccessCount else {
             return
         }
 
-        UIView.animate(withDuration: WPAnimationDurationDefault, delay: 0, options: .curveEaseIn, animations: {
+        UIView.animate(withDuration: 0.33, delay: 0, options: .curveEaseIn, animations: {
             self.inlinePromptView.isHidden = false
         })
 
-        UIView.animate(withDuration: WPAnimationDurationDefault * 0.5, delay: WPAnimationDurationDefault * 0.75, options: .curveEaseIn, animations: {
-            self.inlinePromptView.alpha = WPAlphaFull
+        UIView.animate(withDuration: 0.33 * 0.5, delay: 0.33 * 0.75, options: .curveEaseIn, animations: {
+            self.inlinePromptView.alpha = 1
         })
     }
 
     func hideInlinePrompt(delay: TimeInterval) {
-        UIView.animate(withDuration: WPAnimationDurationDefault * 0.75, delay: delay, animations: {
-            self.inlinePromptView.alpha = WPAlphaZero
+        UIView.animate(withDuration: 0.33 * 0.75, delay: delay, animations: {
+            self.inlinePromptView.alpha = 0
         })
 
-        UIView.animate(withDuration: WPAnimationDurationDefault, delay: delay + WPAnimationDurationDefault * 0.5, animations: {
+        UIView.animate(withDuration: 0.33, delay: delay + 0.33 * 0.5, animations: {
             self.inlinePromptView.isHidden = true
         })
     }

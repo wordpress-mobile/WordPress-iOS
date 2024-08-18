@@ -201,7 +201,7 @@ class WPSplitViewController: UISplitViewController {
             if dimmingView.superview == nil {
                 view.addSubview(dimmingView)
                 updateDimmingViewFrame()
-                dimmingView.alpha = WPAlphaZero
+                dimmingView.alpha = 0
 
                 // Dismiss the keyboard from the detail view controller if active
                 topDetailViewController?.navigationController?.view.endEditing(true)
@@ -211,7 +211,7 @@ class WPSplitViewController: UISplitViewController {
             }
         } else if dimmingView.superview != nil {
             UIView.animate(withDuration: dimmingViewAnimationDuration, animations: {
-                self.dimmingView.alpha = WPAlphaZero
+                self.dimmingView.alpha = 0
                 }, completion: { _ in
                     self.dimmingView.removeFromSuperview()
             })

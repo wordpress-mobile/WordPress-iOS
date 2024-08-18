@@ -790,7 +790,7 @@ private extension DomainSelectionViewController {
         }
 
         let constraints = transferFooterViewConstraints
-        let duration = animated ? WPAnimationDurationDefault : 0
+        let duration = animated ? 0.33 : 0
 
         NSLayoutConstraint.deactivate(hidden ? constraints.visible : constraints.hidden)
         NSLayoutConstraint.activate(hidden ? constraints.hidden : constraints.visible)

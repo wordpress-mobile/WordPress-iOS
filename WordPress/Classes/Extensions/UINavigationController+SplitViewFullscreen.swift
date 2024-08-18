@@ -79,7 +79,7 @@ extension UIView {
 
         UIView.animate(withDuration: UIView.blankingSnapshotFadeDuration,
                        animations: {
-                        blankingView.alpha = WPAlphaZero
+                        blankingView.alpha = 0
         }, completion: { _ in
             blankingView.removeFromSuperview()
         })
@@ -201,7 +201,7 @@ class WPFullscreenNavigationTransition: NSObject, UIViewControllerAnimatedTransi
             toView.layer.addSublayer(shadowLayer)
             toView.addSubview(dimmingView)
         } else {
-            fromView.alpha = WPAlphaZero
+            fromView.alpha = 0
 
             containerView.insertSubview(toView, at: 0)
 
@@ -318,8 +318,8 @@ private struct WPFullscreenNavigationTransitionViewModel {
 
         let dimmingViewXOffset = (isRTLLayout) ? fromFrame.width : -fromFrame.width
         dimmingViewFrame = CGRect(x: dimmingViewXOffset, y: 0, width: fromFrame.width, height: fromFrame.height)
-        dimmingViewInitialAlpha = (operation == .push) ? WPAlphaZero : WPAlphaFull
-        dimmingViewFinalAlpha =   (operation == .push) ? WPAlphaFull : WPAlphaZero
+        dimmingViewInitialAlpha = (operation == .push) ? 0 : 1
+        dimmingViewFinalAlpha =   (operation == .push) ? 1 : 0
     }
 }
 

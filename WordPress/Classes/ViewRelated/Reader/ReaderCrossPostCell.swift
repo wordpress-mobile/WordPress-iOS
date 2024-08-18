@@ -97,8 +97,8 @@ private extension ReaderCrossPostCell {
 
     func applyHighlightedEffect(_ highlighted: Bool, animated: Bool) {
         func updateBorder() {
-            label.alpha = highlighted ? 0.50 : WPAlphaFull
-            titleLabel.alpha = highlighted ? 0.50 : WPAlphaFull
+            label.alpha = highlighted ? 0.50 : 1
+            titleLabel.alpha = highlighted ? 0.50 : 1
         }
         guard animated else {
             updateBorder()

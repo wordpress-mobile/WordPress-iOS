@@ -40,7 +40,7 @@ open class ReaderGapMarkerCell: UITableViewCell {
     }
 
     @objc open func animateActivityView(_ animate: Bool) {
-        button.alpha = animate ? WPAlphaZero : WPAlphaFull
+        button.alpha = animate ? 0 : 1
         if animate {
             activityView.startAnimating()
         } else {
