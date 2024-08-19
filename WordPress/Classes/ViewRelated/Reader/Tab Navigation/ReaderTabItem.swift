@@ -1,4 +1,5 @@
-struct ReaderTabItem: FilterTabBarItem, Hashable {
+struct ReaderTabItem: FilterTabBarItem, Hashable, Identifiable {
+    var id: ReaderTabItem { self }
 
     let shouldHideStreamFilters: Bool
     let shouldHideSettingsButton: Bool

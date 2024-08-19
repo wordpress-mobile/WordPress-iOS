@@ -9,6 +9,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
     private var splitVC = UISplitViewController(style: .tripleColumn)
     private var cancellables: [AnyCancellable] = []
 
+    // TODO: (wpsidebar) this seems to lose scroll position when running on a phisical device. Should Reader has a sidebar of its own for "Discover" stuff?
     private var splitViewStyle: UISplitViewController.Style = .tripleColumn {
         didSet {
             guard oldValue != splitViewStyle else { return }
@@ -55,6 +56,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
         rootVC.contentViewController = splitVC
     }
 
+    // TODO: (wpsidebar) reset .secondary column navigation when changing selection
     private func configure(for selection: SidebarSelection) {
         splitViewStyle = getSplitViewStyle(for: selection)
 
@@ -82,6 +84,11 @@ final class SplitViewRootPresenter: RootViewPresenter {
             splitVC.setViewController(notificationsVC, for: .supplementary)
         case .reader:
             let readerVC = ReaderViewController()
+
+            // TODO: (wpsidebar) add search
+            let readerSidebarVS = ReaderSidebarViewController(viewModel: readerVC.readerTabViewModel)
+            splitVC.setViewController(readerSidebarVS, for: .supplementary)
+
             splitVC.setViewController(readerVC, for: .secondary)
         case .domains:
             // TODO: (wisidebar) figure out what to do with selection
@@ -98,7 +105,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
     private func getSplitViewStyle(for selection: SidebarSelection) -> UISplitViewController.Style {
         switch selection {
-        case .empty, .reader:
+        case .empty:
             return .doubleColumn
         default:
             return .tripleColumn
