@@ -5,18 +5,8 @@ import Combine
 /// and a tab-bar based navigation for `.compact` size class.
 final class SplitViewRootPresenter: RootViewPresenter {
     private let sidebarViewModel = SidebarViewModel()
-    private let rootVC = DynamicRootViewController()
-    private var splitVC = UISplitViewController(style: .tripleColumn)
+    private let splitVC = UISplitViewController(style: .tripleColumn)
     private var cancellables: [AnyCancellable] = []
-
-    // TODO: (wpsidebar) this seems to lose scroll position when running on a phisical device. Should Reader has a sidebar of its own for "Discover" stuff?
-    private var splitViewStyle: UISplitViewController.Style = .tripleColumn {
-        didSet {
-            guard oldValue != splitViewStyle else { return }
-            splitVC = UISplitViewController(style: splitViewStyle)
-            configure(splitVC)
-        }
-    }
 
     init() {
         // TODO: (wpsidebar) remove this?
@@ -28,6 +18,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
         } else {
             sidebarViewModel.selection = .empty
         }
+
         // TODO: (wpsidebar) add to recent sites, etc – do everything MySiteVC does
         sidebarViewModel.$selection.compactMap { $0 }.sink { [weak self] in
             self?.configure(for: $0)
@@ -37,29 +28,16 @@ final class SplitViewRootPresenter: RootViewPresenter {
             self?.showMeScreen()
         }
 
-        configure(splitVC)
-    }
-
-    /// There is no convenience API for dynamically switching from `.tripleColumn`
-    /// to `.doubleColumn` split view controller style. So instead the app
-    /// recreates the entire UISplitViewController but keep the sidebar.
-    ///
-    /// - seealso: https://stackoverflow.com/questions/68336349/swift-uisplitviewcontroller-how-to-go-from-triple-to-double-columns
-    private func configure(_ splitViewController: UISplitViewController) {
         let sidebarVC = SidebarViewController(viewModel: sidebarViewModel)
         splitVC.setViewController(sidebarVC, for: .primary)
 
         // The `.compact` column is displayed with `.compact` size class, including iPhone
         let tabBarVC = WPTabBarController(staticScreens: false)
         splitVC.setViewController(tabBarVC, for: .compact)
-
-        rootVC.contentViewController = splitVC
     }
 
     // TODO: (wpsidebar) reset .secondary column navigation when changing selection
     private func configure(for selection: SidebarSelection) {
-        splitViewStyle = getSplitViewStyle(for: selection)
-
         switch selection {
         case .empty:
             // TODO: (sidebar) add support for the "no sites" scenario
@@ -94,27 +72,18 @@ final class SplitViewRootPresenter: RootViewPresenter {
             // TODO: (wisidebar) figure out what to do with selection
             let domainsVC = AllDomainsListViewController()
             let navigationVC = UINavigationController(rootViewController: domainsVC)
-            rootVC.present(navigationVC, animated: true)
+            splitVC.present(navigationVC, animated: true)
         case .help:
             let supportVC = SupportTableViewController()
             let navigationVC = UINavigationController(rootViewController: supportVC)
-            rootVC.present(navigationVC, animated: true)
+            splitVC.present(navigationVC, animated: true)
             break
-        }
-    }
-
-    private func getSplitViewStyle(for selection: SidebarSelection) -> UISplitViewController.Style {
-        switch selection {
-        case .empty:
-            return .doubleColumn
-        default:
-            return .tripleColumn
         }
     }
 
     // MARK: – RootViewPresenter
 
-    var rootViewController: UIViewController { rootVC }
+    var rootViewController: UIViewController { splitVC }
 
     var currentViewController: UIViewController?
 
@@ -241,30 +210,11 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
     func showMeScreen() {
         let meViewController = MeSplitViewController()
-        rootVC.present(meViewController, animated: true)
+        splitVC.present(meViewController, animated: true)
     }
 
     func popMeScreenToRoot() {
         fatalError()
-    }
-}
-
-private final class DynamicRootViewController: UIViewController {
-    var contentViewController: UIViewController? {
-        didSet {
-            if let viewController = oldValue {
-                viewController.willMove(toParent: nil)
-                viewController.view.removeFromSuperview()
-                viewController.removeFromParent()
-            }
-            if let viewController = contentViewController {
-                addChild(viewController)
-                view.addSubview(viewController.view)
-                viewController.view.translatesAutoresizingMaskIntoConstraints = false
-                view.pinSubviewToAllEdges(viewController.view)
-                viewController.didMove(toParent: self)
-            }
-        }
     }
 }
 
