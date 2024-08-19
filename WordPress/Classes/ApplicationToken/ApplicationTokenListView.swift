@@ -82,7 +82,7 @@ class ApplicationTokenListViewModel: ObservableObject {
         } catch let error as WpApiError {
             self.errorMessage = error.errorMessage
         } catch {
-            self.errorMessage = NSLocalizedString("Something went wrong", comment: "A generic error message")
+            self.errorMessage = SharedStrings.Error.generic
         }
     }
 }

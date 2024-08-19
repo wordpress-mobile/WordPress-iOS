@@ -16,4 +16,8 @@ enum SharedStrings {
         static let copyLink = NSLocalizedString("shared.button.copyLink", value: "Copy Link", comment: "A shared button title used in different contexts")
         static let `continue` = NSLocalizedString("shared.button.continue", value: "Continue", comment: "A shared button title used in different contexts")
     }
+
+    enum Error {
+        static let generic = NSLocalizedString("shared.error.geneirc", value: "Something went wrong", comment: "A generic error message")
+    }
 }
