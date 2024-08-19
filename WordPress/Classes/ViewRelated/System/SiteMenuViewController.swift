@@ -35,6 +35,8 @@ final class SiteMenuViewController: UIViewController {
         view.pinSubviewToAllEdges(blogDetailsVC.view)
 
         blogDetailsVC.showInitialDetailsForBlog()
+
+        navigationItem.title = blog.settings?.name ?? (blog.displayURL as String?) ?? ""
     }
 }
 

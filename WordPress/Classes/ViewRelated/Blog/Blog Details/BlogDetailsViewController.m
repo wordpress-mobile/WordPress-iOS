@@ -1139,7 +1139,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Home", @"Noun. Links to a blog's dashboard screen.")
                                   accessibilityIdentifier:@"Home Row"
-                                                    image:[UIImage gridiconOfType:GridiconTypeHouse]
+                                                    image:[UIImage imageNamed:@"site-menu-home"]
                                                  callback:^{
                                                     [weakSelf showDashboard];
                                                  }]];
