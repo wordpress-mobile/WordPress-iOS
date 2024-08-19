@@ -61,7 +61,7 @@ struct BlogListView: View {
     @ViewBuilder
     private func makeSiteView(with site: BlogListSiteViewModel) -> some View {
         let view = Button {
-            if let site = viewModel.didSelectSite(withID: site.id) {
+            if let site = viewModel.didSelectSite(withID: site.id.objectID) {
                 onSiteSelected(site)
             }
         } label: {

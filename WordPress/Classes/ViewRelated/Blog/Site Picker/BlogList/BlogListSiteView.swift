@@ -38,7 +38,7 @@ struct BlogListSiteView: View {
 }
 
 final class BlogListSiteViewModel: Identifiable {
-    var id: NSManagedObjectID { blog.objectID }
+    var id: TaggedManagedObjectID<Blog> { TaggedManagedObjectID(blog) }
     let title: String
     let domain: String
     let icon: SiteIconViewModel

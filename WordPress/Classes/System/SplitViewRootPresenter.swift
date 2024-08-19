@@ -1,34 +1,68 @@
 import UIKit
+import Combine
 
+/// The presenter that uses triple-column navigation for `.regular` size classes
+/// and a tab-bar based navigation for `.compact` size class.
 final class SplitViewRootPresenter: RootViewPresenter {
+    private let sidebarViewModel = SidebarViewModel()
     private let splitVC = UISplitViewController(style: .tripleColumn)
+    private var cancellables: [AnyCancellable] = []
 
     init() {
         // TODO: (wpsidebar) remove this?
         self.mySitesCoordinator = MySitesCoordinator(meScenePresenter: MeScenePresenter(), onBecomeActiveTab: {})
 
-        let sidebarVC = SidebarViewController()
+        let blog = Blog.lastUsedOrFirst(in: ContextManager.shared.mainContext)
+        if let blog {
+            sidebarViewModel.selection = .blog(TaggedManagedObjectID(blog))
+        }
+        sidebarViewModel.$selection.sink { [weak self] in
+            self?.configure(for: $0)
+        }.store(in: &cancellables)
 
-        // TODO: (wpsidebar) Configure on iPad
-        // These three columns are displayed with `.regular` size class
+        let sidebarVC = SidebarViewController(viewModel: sidebarViewModel)
         splitVC.setViewController(sidebarVC, for: .primary)
 
         // TODO: (wpsidebar) Display based on the selection from sidebar
-        if let blog = Blog.lastUsedOrFirst(in: ContextManager.shared.mainContext) {
-            let siteMenuVC = SiteMenuViewController(blog: blog)
-            siteMenuVC.delegate = self
-            splitVC.setViewController(siteMenuVC, for: .supplementary)
 
-            // TODO: (wpsidebar) Refactor this (initial .secondary vc managed based on the VC presentation)
-            _ = siteMenuVC.view
-        } else {
-            splitVC.setViewController(UIViewController(), for: .supplementary)
-            splitVC.setViewController(UIViewController(), for: .secondary)
-        }
+//        configure(for: blog)
 
         // The `.compact` column is displayed with `.compact` size class, including iPhone
         let tabBarVC = WPTabBarController(staticScreens: false)
         splitVC.setViewController(tabBarVC, for: .compact)
+    }
+
+    private func configure(for selection: SidebarSelection?) {
+        guard let selection else {
+            // TODO: (wpsidebar) handle no selection scenario? show empty state?
+            return
+        }
+        switch selection {
+        case .blog(let objectID):
+            do {
+                let blog = try ContextManager.shared.mainContext.existingObject(with: objectID)
+
+                let siteMenuVC = SiteMenuViewController(blog: blog)
+                siteMenuVC.delegate = self
+                splitVC.setViewController(siteMenuVC, for: .supplementary)
+
+                // TODO: (wpsidebar) Refactor this (initial .secondary vc managed based on the VC presentation)
+                _ = siteMenuVC.view
+
+            } catch {
+                // TODO: (wpsidebar) show empty state?
+            }
+        case .reader:
+            break
+        case .notifications:
+            break
+        case .domain:
+            break
+        case .help:
+            break
+        case .profile:
+            break
+        }
     }
 
     // MARK: – RootViewPresenter

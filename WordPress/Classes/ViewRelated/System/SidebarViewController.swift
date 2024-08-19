@@ -3,8 +3,8 @@ import SwiftUI
 
 /// The sidebar dispalyed on the iPad.
 final class SidebarViewController: UIHostingController<SidebarView> {
-    init() {
-        super.init(rootView: SidebarView())
+    init(viewModel: SidebarViewModel) {
+        super.init(rootView: SidebarView(viewModel: viewModel))
     }
 
     @MainActor required dynamic init?(coder aDecoder: NSCoder) {
@@ -13,7 +13,7 @@ final class SidebarViewController: UIHostingController<SidebarView> {
 }
 
 enum SidebarSelection: Hashable {
-    case blog(NSManagedObjectID)
+    case blog(TaggedManagedObjectID<Blog>)
     case reader
     case notifications
     case domain
@@ -22,14 +22,12 @@ enum SidebarSelection: Hashable {
 }
 
 struct SidebarView: View {
+    @ObservedObject var viewModel: SidebarViewModel
     @StateObject private var blogListViewModel = BlogListViewModel()
-
-    // TODO: (wpsidebar) inject selection
-    @State var selection: SidebarSelection?
 
     var body: some View {
         // TODO: (wpsidebar) add a way to see all sites
-        List(selection: $selection) {
+        List(selection: $viewModel.selection) {
             Section(Strings.sectionMySites) {
                 makeSiteListSection(with: blogListViewModel)
             }
@@ -62,6 +60,10 @@ struct SidebarView: View {
     private func makeSiteView(with site: BlogListSiteViewModel) -> some View {
         BlogListSiteView(site: site)
     }
+}
+
+final class SidebarViewModel: ObservableObject {
+    @Published var selection: SidebarSelection?
 }
 
 private enum Strings {

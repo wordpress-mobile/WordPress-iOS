@@ -23,7 +23,6 @@ final class SiteMenuViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // TODO: Use MySiteViewController with .siteMenu style
         blogDetailsVC.blog = blog
         blogDetailsVC.isSiteMenuModeEnabled = true
         blogDetailsVC.isScrollEnabled = true
