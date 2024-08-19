@@ -6,6 +6,7 @@ import WordPressShared
 import SVProgressHUD
 import WordPressFlux
 import DesignSystem
+import WordPressUI
 
 class AppSettingsViewController: UITableViewController {
     fileprivate var handler: ImmuTableViewHandler!
@@ -376,6 +377,15 @@ class AppSettingsViewController: UITableViewController {
             RootViewCoordinator.shared.presentWhatIsNew(on: self)
         }
     }
+
+    func pushExperimentalFeatures() -> ImmuTableAction {
+        return { [weak self] row in
+            let dataProvider = ExperimentalFeaturesDataProvider()
+            let vc = UIHostingController(rootView: ExperimentalFeaturesList(dataProvider: dataProvider))
+            self?.tableView.deselectSelectedRowWithAnimation(true)
+            self?.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
 }
 
 // MARK: - SearchableActivity Conformance
@@ -544,12 +554,18 @@ private extension AppSettingsViewController {
             action: pushAppIconSwitcher()
         )
 
+        let experimentalFeaturesRow = NavigationItemRow(
+            title: Strings.experimentalFeatures,
+            icon: UIImage(systemName: "testtube.2"),
+            action: pushExperimentalFeatures()
+        )
+
         let settingsRow = NavigationItemRow(
             title: NSLocalizedString("Open Device Settings", comment: "Opens iOS's Device Settings for WordPress App"),
             action: openApplicationSettings()
         )
 
-        var rows: [ImmuTableRow] = [settingsRow]
+        var rows: [ImmuTableRow] = [experimentalFeaturesRow, settingsRow]
 
         if AppConfiguration.allowsCustomAppIcons && UIApplication.shared.supportsAlternateIcons {
             // We don't show custom icons for Jetpack
@@ -599,5 +615,13 @@ extension AppSettingsViewController {
     @objc private func jetpackButtonTapped() {
         JetpackBrandingCoordinator.presentOverlay(from: self)
         JetpackBrandingAnalyticsHelper.trackJetpackPoweredBadgeTapped(screen: .appSettings)
+    }
+
+    enum Strings {
+        static let experimentalFeatures = NSLocalizedString(
+            "application-settings.experimental-features",
+            value: "Experimental Features",
+            comment: "The list item of experimental features that users can choose to enable"
+        )
     }
 }
