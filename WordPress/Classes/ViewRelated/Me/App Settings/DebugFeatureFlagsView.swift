@@ -81,7 +81,7 @@ private final class DebugFeatureFlagsViewModel: ObservableObject {
     private let overrideStore = FeatureFlagOverrideStore()
 
     private let allRemoteFlags = RemoteFeatureFlag.allCases.filter(\.canOverride)
-    private let allLocalFlags = FeatureFlag.allCases.filter(\.canOverride)
+    private let allLocalFlags = FeatureFlag.allCases
 
     @Published var filter: DebugFeatureFlagFilter = .all
     @Published var filterTerm = ""
@@ -115,7 +115,7 @@ private final class DebugFeatureFlagsViewModel: ObservableObject {
     }
 
     private func override(_ flag: OverridableFlag, withValue value: Bool) {
-        try? overrideStore.override(flag, withValue: value)
+        overrideStore.override(flag, withValue: value)
         objectWillChange.send()
     }
 
@@ -146,10 +146,10 @@ private final class DebugFeatureFlagsViewModel: ObservableObject {
 
     func enableAllFlags() {
         for flag in RemoteFeatureFlag.allCases where !flag.enabled() {
-            try? overrideStore.override(flag, withValue: true)
+            overrideStore.override(flag, withValue: true)
         }
         for flag in FeatureFlag.allCases where !flag.enabled {
-            try? overrideStore.override(flag, withValue: true)
+            overrideStore.override(flag, withValue: true)
         }
         objectWillChange.send()
     }

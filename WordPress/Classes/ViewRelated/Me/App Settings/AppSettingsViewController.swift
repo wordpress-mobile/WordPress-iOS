@@ -40,7 +40,7 @@ class AppSettingsViewController: UITableViewController {
             ImageSizingRow.self,
             SwitchRow.self,
             NavigationItemRow.self
-            ], tableView: self.tableView)
+        ], tableView: self.tableView)
 
         handler = ImmuTableViewHandler(takeOver: self)
         reloadViewModel()
@@ -551,6 +551,7 @@ private extension AppSettingsViewController {
 
         let iconRow = NavigationItemRow(
             title: NSLocalizedString("App Icon", comment: "Navigates to picker screen to change the app's icon"),
+            icon: UIImage(systemName: "app.dashed"),
             action: pushAppIconSwitcher()
         )
 
@@ -562,6 +563,7 @@ private extension AppSettingsViewController {
 
         let settingsRow = NavigationItemRow(
             title: NSLocalizedString("Open Device Settings", comment: "Opens iOS's Device Settings for WordPress App"),
+            icon: UIImage(systemName: "gear"),
             action: openApplicationSettings()
         )
 
@@ -572,7 +574,7 @@ private extension AppSettingsViewController {
             rows.insert(iconRow, at: 0)
         }
 
-        if FeatureFlag.debugMenu.enabled {
+        if BuildConfiguration.current.isInternal {
             rows.append(debugRow)
             rows.append(designSystem)
         }
@@ -585,7 +587,12 @@ private extension AppSettingsViewController {
             rows.append(whatIsNewRow)
         }
 
-        let appearanceRow = NavigationItemRow(title: NSLocalizedString("Appearance", comment: "The title of the app appearance settings screen"), detail: AppAppearance.current.appearanceDescription, action: pushAppearanceSettings())
+        let appearanceRow = NavigationItemRow(
+            title: NSLocalizedString("Appearance", comment: "The title of the app appearance settings screen"),
+            detail: AppAppearance.current.appearanceDescription,
+            icon: UIImage(systemName: "circle.lefthalf.filled"),
+            action: pushAppearanceSettings()
+        )
 
         rows.insert(appearanceRow, at: 0)
 
