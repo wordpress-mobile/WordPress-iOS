@@ -115,7 +115,7 @@ private extension WpApiError {
 // MARK: - Localization
 
 extension ApplicationTokenListView {
-    static var title: String { NSLocalizedString("application-password.list.title", value: "Application Passwords", comment: "Title of application passwords list") }
+    static var title: String { NSLocalizedString("applicationPassword.list.title", value: "Application Passwords", comment: "Title of application passwords list") }
 
     static var errorTitle: String { NSLocalizedString("generic.error.title", value: "Error", comment: "A generic title for an error") }
 }

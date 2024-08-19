@@ -34,9 +34,9 @@ public struct ApplicationTokenListItemView: View {
         return String(format: Self.lastUsedFormat, lastUsed.toShortString())
     }
 
-    private static let unusedText: String = NSLocalizedString("application-password.list.item.unused", value: "Not used yet.", comment: "Last used time of an application password if it's never been used")
+    private static let unusedText: String = NSLocalizedString("applicationPassword.list.item.unused", value: "Not used yet.", comment: "Last used time of an application password if it's never been used")
 
-    private static let lastUsedFormat: String = NSLocalizedString("application-password.list.item.last-used-format", value: "Last used %@", comment: "String format of last used time of an application password. There is one argument: the last used time relative to now (i.e. 5 days ago).")
+    private static let lastUsedFormat: String = NSLocalizedString("applicationPassword.list.item.last-used-format", value: "Last used %@", comment: "String format of last used time of an application password. There is one argument: the last used time relative to now (i.e. 5 days ago).")
 }
 
 #Preview {

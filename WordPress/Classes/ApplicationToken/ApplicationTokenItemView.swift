@@ -52,15 +52,15 @@ struct ApplicationTokenItemView: View {
 // MARK: - Localization
 
 private extension ApplicationTokenItemView {
-    static var name: String { NSLocalizedString("application-password.item.name", value: "Name", comment: "Title of row for displaying an application password name") }
+    static var name: String { NSLocalizedString("applicationPassword.item.name", value: "Name", comment: "Title of row for displaying an application password name") }
 
-    static var security: String { NSLocalizedString("application-password.item.section.security", value: "Security", comment: "Title of section for displaying application password details") }
+    static var security: String { NSLocalizedString("applicationPassword.item.section.security", value: "Security", comment: "Title of section for displaying application password details") }
 
-    static var creationDate: String { NSLocalizedString("application-password.item.creatationDate", value: "Creation Date", comment: "Title of row for displaying an application password's creation date") }
+    static var creationDate: String { NSLocalizedString("applicationPassword.item.creationDate", value: "Creation Date", comment: "Title of row for displaying an application password's creation date") }
 
-    static var lastUsed: String { NSLocalizedString("application-password.item.lastUsed", value: "Last Used", comment: "Title of row for displaying an application password's last used date") }
+    static var lastUsed: String { NSLocalizedString("applicationPassword.item.lastUsed", value: "Last Used", comment: "Title of row for displaying an application password's last used date") }
 
-    static var lastUsedIp: String { NSLocalizedString("application-password.item.lastUsed", value: "Last IP Address", comment: "Title of row for displaying an application password's last used IP address") }
+    static var lastUsedIp: String { NSLocalizedString("applicationPassword.item.lastUsed", value: "Last IP Address", comment: "Title of row for displaying an application password's last used IP address") }
 }
 
 // MARK: - SwiftUI Preview
