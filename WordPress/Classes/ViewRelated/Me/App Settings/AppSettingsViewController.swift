@@ -380,8 +380,7 @@ class AppSettingsViewController: UITableViewController {
 
     func pushExperimentalFeatures() -> ImmuTableAction {
         return { [weak self] row in
-            let dataProvider = ExperimentalFeaturesDataProvider()
-            let vc = UIHostingController(rootView: ExperimentalFeaturesList(dataProvider: dataProvider))
+            let vc = ExperimentalFeaturesList.asViewController(dataProvider: ExperimentalFeaturesDataProvider())
             self?.tableView.deselectSelectedRowWithAnimation(true)
             self?.navigationController?.pushViewController(vc, animated: true)
         }

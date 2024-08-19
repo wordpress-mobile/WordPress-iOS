@@ -5,10 +5,6 @@ public struct ExperimentalFeaturesList: View {
     @ObservedObject
     var viewModel: ExperimentalFeaturesViewModel
 
-    public init(dataProvider: ExperimentalFeaturesViewModel.DataProvider) {
-        self.viewModel = ExperimentalFeaturesViewModel(dataProvider: dataProvider)
-    }
-
     package init(viewModel: ExperimentalFeaturesViewModel) {
         self.viewModel = viewModel
     }
@@ -26,10 +22,29 @@ public struct ExperimentalFeaturesList: View {
                 ))
             }
         }
-        .navigationTitle("Experimental Features")
+        .navigationTitle(Strings.pageTitle)
         .task {
             await viewModel.loadItems()
         }
+    }
+
+    public static func asViewController(
+        dataProvider: ExperimentalFeaturesViewModel.DataProvider
+    ) -> UIHostingController<Self> {
+        let viewModel = ExperimentalFeaturesViewModel(dataProvider: dataProvider)
+        let rootView  = ExperimentalFeaturesList(viewModel: viewModel)
+
+        let vc = UIHostingController(rootView: rootView)
+        vc.title = Strings.pageTitle
+        return vc
+    }
+
+    enum Strings {
+        static let pageTitle = NSLocalizedString(
+            "experimental-features-list.heading",
+            value: "Experimental Features",
+            comment: "The title for the experimental features list"
+        )
     }
 }
 
