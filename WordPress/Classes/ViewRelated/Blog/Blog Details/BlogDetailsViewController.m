@@ -1001,7 +1001,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
 
 // TODO: (wpsidebar) Remove
 - (Boolean)isSplitViewDisplayed {
-    if (self.isSiteMenuModeEnabled) {
+    if (self.isSidebarModeEnabled) {
         return true;
     }
     return ![self splitViewControllerIsHorizontallyCompact] && [MySitesCoordinator isSplitViewEnabled];

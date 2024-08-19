@@ -7,6 +7,7 @@ import AutomatticAbout
 
 class MeViewController: UITableViewController {
     var handler: ImmuTableViewHandler!
+    var isSidebarModeEnabled = false
 
     // MARK: - Table View Controller
 
@@ -218,7 +219,7 @@ class MeViewController: UITableViewController {
         ]
 
         #if JETPACK
-        if RemoteFeatureFlag.domainManagement.enabled() && loggedIn {
+        if RemoteFeatureFlag.domainManagement.enabled() && loggedIn && !isSidebarModeEnabled {
             sections.append(.init(rows: [
                 NavigationItemRow(
                     title: AllDomainsListViewController.Strings.title,

@@ -19,7 +19,7 @@ enum SidebarSelection: Hashable {
     case blog(TaggedManagedObjectID<Blog>)
     case notifications
     case reader
-    case domain
+    case domains
     case help
 }
 
@@ -87,6 +87,10 @@ struct SidebarView: View {
             .tag(SidebarSelection.notifications)
         makeMenuItem(Strings.reader, image: "tab-bar-reader-unselected")
             .tag(SidebarSelection.reader)
+        makeMenuItem(Strings.domains, image: "site-menu-domains")
+            .tag(SidebarSelection.domains)
+        makeMenuItem(Strings.help, image: "theme-support")
+            .tag(SidebarSelection.help)
     }
 
     private func makeMenuItem(_ title: String, image: String) -> some View {
@@ -140,4 +144,5 @@ private enum Strings {
     static let notifications = NSLocalizedString("sidebar.notifications", value: "Notifications", comment: "Sidebar item on iPad")
     static let reader = NSLocalizedString("sidebar.reader", value: "Reader", comment: "Sidebar item on iPad")
     static let domains = NSLocalizedString("sidebar.domains", value: "Domains", comment: "Sidebar item on iPad")
+    static let help = NSLocalizedString("sidebar.help", value: "Help & Support", comment: "Sidebar item on iPad")
 }

@@ -24,7 +24,7 @@ final class SiteMenuViewController: UIViewController {
         super.viewDidLoad()
 
         blogDetailsVC.blog = blog
-        blogDetailsVC.isSiteMenuModeEnabled = true
+        blogDetailsVC.isSidebarModeEnabled = true
         blogDetailsVC.isScrollEnabled = true
         blogDetailsVC.presentationDelegate = self
 

@@ -60,6 +60,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
         switch selection {
         case .empty:
+            // TODO: (sidebar) add support for the "no sites" scenario
             break
         case .blog(let objectID):
             do {
@@ -82,9 +83,15 @@ final class SplitViewRootPresenter: RootViewPresenter {
         case .reader:
             let readerVC = ReaderViewController()
             splitVC.setViewController(readerVC, for: .secondary)
-        case .domain:
-            break
+        case .domains:
+            // TODO: (wisidebar) figure out what to do with selection
+            let domainsVC = AllDomainsListViewController()
+            let navigationVC = UINavigationController(rootViewController: domainsVC)
+            rootVC.present(navigationVC, animated: true)
         case .help:
+            let supportVC = SupportTableViewController()
+            let navigationVC = UINavigationController(rootViewController: supportVC)
+            rootVC.present(navigationVC, animated: true)
             break
         }
     }

@@ -16,6 +16,8 @@ final class MeSplitViewController: UISplitViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setViewController(MeViewController(), for: .primary)
+        let meVC = MeViewController()
+        meVC.isSidebarModeEnabled = true
+        setViewController(meVC, for: .primary)
     }
 }

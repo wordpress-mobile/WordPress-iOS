@@ -132,7 +132,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 @property (nonatomic, strong, nullable) BlogDetailsRow *meRow;
 
 /// A new display mode for the displaying it as part of the site menu.
-@property (nonatomic) BOOL isSiteMenuModeEnabled;
+@property (nonatomic) BOOL isSidebarModeEnabled;
 
 - (id _Nonnull)init;
 - (void)showDetailViewForSubsection:(BlogDetailsSubsection)section;
