@@ -224,6 +224,10 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         track(.webKitViewDisplayed)
     }
 
+    override func contentScrollView(for edge: NSDirectionalRectEdge) -> UIScrollView? {
+        webView.scrollView
+    }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         stopWaitingForConnectionRestored()
@@ -603,5 +607,17 @@ extension WebKitViewController: UIPopoverPresentationControllerDelegate {
 extension WebKitViewController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
       return true
+    }
+}
+
+extension WebKitViewController {
+    /// Returns the view controller wrapped in the navigation controller with
+    /// light mode suited for presentation of the web pages not optimized for
+    /// dark mode.
+    func makeLightNavigationController() -> UINavigationController {
+        let navigationController = UINavigationController(rootViewController: self)
+        navigationController.overrideUserInterfaceStyle = .light
+        navigationController.modalPresentationStyle = .formSheet
+        return navigationController
     }
 }

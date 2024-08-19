@@ -41,7 +41,7 @@ public struct NoticeAnimator {
     }
 
     func animate(noticeContainer: NoticeContainerView, completion: (() -> Void)? = nil) {
-        noticeContainer.noticeView.alpha = WPAlphaZero
+        noticeContainer.noticeView.alpha = 0
 
         let fromState = state(for: noticeContainer, withTransition: .offscreen)
         let toState = state(for: noticeContainer, withTransition: .onscreen)
@@ -57,9 +57,9 @@ public struct NoticeAnimator {
             let alpha: CGFloat
             switch transition {
             case .onscreen:
-                alpha = WPAlphaFull
+                alpha = 1
             case .offscreen:
-                alpha = WPAlphaZero
+                alpha = 0
             }
 
             noticeContainer.noticeView.alpha = alpha

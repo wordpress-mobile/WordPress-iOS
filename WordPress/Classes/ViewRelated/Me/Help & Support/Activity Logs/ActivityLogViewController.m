@@ -3,7 +3,6 @@
 #import <CocoaLumberjack/DDFileLogger.h>
 #import "WordPress-Swift.h"
 #import "WPLogger.h"
-#import "WPGUIConstants.h"
 
 @import WordPressShared;
 

@@ -297,7 +297,7 @@ class NoticePresenter {
                            initialSpringVelocity: Animations.appearanceSpringVelocity,
                            options: [],
                            animations: {
-                    container.noticeView.alpha = WPAlphaZero
+                    container.noticeView.alpha = 0
             },
                            completion: { _ in
                     container.removeFromSuperview()

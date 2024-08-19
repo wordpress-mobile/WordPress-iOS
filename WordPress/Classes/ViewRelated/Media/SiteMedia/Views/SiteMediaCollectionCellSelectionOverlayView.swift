@@ -1,4 +1,5 @@
 import UIKit
+import Aztec
 
 final class SiteMediaCollectionCellSelectionOverlayView: UIView {
     private let overlayView = UIView()
@@ -27,14 +28,7 @@ final class SiteMediaCollectionCellSelectionOverlayView: UIView {
     func setBadge(_ badge: SiteMediaCollectionCellViewModel.BadgeType) {
         switch badge {
         case .unordered:
-            badgeView.textLabel.attributedText = NSAttributedString(attachment: {
-                let attachment = NSTextAttachment()
-                let configuration = UIImage.SymbolConfiguration(font: UIFont.systemFont(ofSize: 11, weight: .semibold))
-                attachment.image = UIImage(systemName: "checkmark", withConfiguration: configuration)?.withTintColor(.white, renderingMode: .alwaysTemplate)
-                return attachment
-            }(), attributes: [
-                NSAttributedString.Key.baselineOffset: 1 // It doesn't appear visually centered othwerwise
-            ])
+            badgeView.textLabel.text = "✓"
         case .ordered(let index):
             badgeView.textLabel.text = (index + 1).description
         }

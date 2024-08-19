@@ -1,6 +1,7 @@
 import UIKit
 import CoreData
 import WordPressUI
+import Aztec
 
 // Notification sent when a Comment is permanently deleted so the Notifications list (NotificationsViewController) is immediately updated.
 extension NSNotification.Name {
@@ -84,8 +85,9 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         iconAttachment.image = Style.ReplyIndicator.iconImage
 
         let attributedString = NSMutableAttributedString()
-        attributedString.append(.init(attachment: iconAttachment, attributes: Style.ReplyIndicator.textAttributes))
-        attributedString.append(.init(string: " " + .replyIndicatorLabelText, attributes: Style.ReplyIndicator.textAttributes))
+        attributedString.append(NSAttributedString(attachment: iconAttachment))
+        attributedString.append(.init(string: " " + .replyIndicatorLabelText))
+        attributedString.addAttributes(Style.ReplyIndicator.textAttributes, range: NSMakeRange(0, attributedString.length))
 
         // reverse the attributed strings in RTL direction.
         if view.effectiveUserInterfaceLayoutDirection == .rightToLeft {

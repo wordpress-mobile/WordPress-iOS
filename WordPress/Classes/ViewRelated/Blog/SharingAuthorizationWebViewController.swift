@@ -120,7 +120,17 @@ class SharingAuthorizationWebViewController: WPWebViewController {
 
 extension SharingAuthorizationWebViewController {
 
+#if compiler(>=6)
+    override func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping @MainActor @Sendable (WKNavigationActionPolicy) -> Void) {
+        decidePolicy(webView: webView, navigationAction: navigationAction, decisionHandler: decisionHandler)
+    }
+#else
     override func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        decidePolicy(webView: webView, navigationAction: navigationAction) { decisionHandler($0) }
+    }
+#endif
+
+    private func decidePolicy(webView: WKWebView, navigationAction: WKNavigationAction, decisionHandler: @escaping @MainActor @Sendable (WKNavigationActionPolicy) -> Void) {
 
         // Prevent a second verify load by someone happy clicking.
         guard !loadingVerify,
