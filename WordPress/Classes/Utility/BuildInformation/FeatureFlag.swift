@@ -78,7 +78,7 @@ extension FeatureFlag {
         case .newTabIcons: "New Tab Icons"
         case .autoSaveDrafts: "Autosave Drafts"
         case .voiceToContent: "Voice to Content"
-        case .authenticateUsingApplicationPassword: "Authenticate self-hosted sites using Application Password"
+        case .authenticateUsingApplicationPassword: "Application Passwords for self-hosted sites"
         case .tipKit: "TipKit"
         }
     }
