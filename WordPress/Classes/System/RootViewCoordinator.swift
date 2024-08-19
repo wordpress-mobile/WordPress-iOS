@@ -103,7 +103,7 @@ class RootViewCoordinator {
     }
 
     private func createPresenter(_ appType: AppUIType) -> RootViewPresenter {
-        if Feature.enabled(.sidebar) {
+        if UIDevice.isPad() && Feature.enabled(.sidebar) {
             return SplitViewRootPresenter()
         }
         switch appType {
