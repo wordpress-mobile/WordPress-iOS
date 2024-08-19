@@ -32,6 +32,10 @@ final class SplitViewRootPresenter: RootViewPresenter {
             self?.configure(for: $0)
         }.store(in: &cancellables)
 
+        sidebarViewModel.showProfileDetails = { [weak self] in
+            self?.showMeScreen()
+        }
+
         configure(splitVC)
     }
 
@@ -97,8 +101,6 @@ final class SplitViewRootPresenter: RootViewPresenter {
     // MARK: – RootViewPresenter
 
     var rootViewController: UIViewController { rootVC }
-
-    // MARK: – RootViewPresenter (Unimplemented)
 
     var currentViewController: UIViewController?
 
@@ -224,7 +226,8 @@ final class SplitViewRootPresenter: RootViewPresenter {
     var meViewController: MeViewController?
 
     func showMeScreen() {
-        fatalError()
+        let meViewController = MeSplitViewController()
+        rootVC.present(meViewController, animated: true)
     }
 
     func popMeScreenToRoot() {
