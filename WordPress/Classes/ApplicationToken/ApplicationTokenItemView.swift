@@ -13,33 +13,39 @@ struct ApplicationTokenItemView: View {
     var body: some View {
         Form {
             Section {
-                VStack(alignment: .leading) {
-                    Text(Self.name)
-                        .font(.headline)
-                        .foregroundStyle(.secondary)
-                    Text(token.name)
-                }
-                .contextMenu(ContextMenu(menuItems: {
-                    Button(SharedStrings.Button.copy, systemImage: "doc.on.doc.fill") {
-                        UIPasteboard.general.string = token.name
-                    }
-                }))
+                detailItem(title: Self.name, value: token.name)
             }
 
             Section(Self.security) {
-                DSListDetailItem(title: Self.creationDate, value: token.createdAt.formatted())
+                detailItem(title: Self.creationDate, value: token.createdAt.formatted())
 
                 if let lastUsed = token.lastUsed {
-                    DSListDetailItem(title: Self.lastUsed, value: lastUsed.formatted())
+                    detailItem(title: Self.lastUsed, value: lastUsed.formatted())
                 }
 
                 if let lastIpAddress = token.lastIpAddress {
-                    DSListDetailItem(title: Self.lastUsedIp, value: lastIpAddress)
+                    detailItem(title: Self.lastUsedIp, value: lastIpAddress)
                 }
             }
         }
         .navigationTitle(token.name)
         .navigationBarTitleDisplayMode(.inline)
+    }
+
+    private func detailItem(title: String, value: String) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(title)
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+            Text(value)
+                .font(.body)
+                .foregroundStyle(.primary)
+        }
+        .contextMenu {
+            Button("Copy", systemImage: "doc.on.doc.fill") {
+                UIPasteboard.general.string = value
+            }
+        }
     }
 }
 
