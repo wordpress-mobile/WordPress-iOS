@@ -5,8 +5,17 @@ import Combine
 /// and a tab-bar based navigation for `.compact` size class.
 final class SplitViewRootPresenter: RootViewPresenter {
     private let sidebarViewModel = SidebarViewModel()
-    private let splitVC = UISplitViewController(style: .tripleColumn)
+    private let rootVC = DynamicRootViewController()
+    private var splitVC = UISplitViewController(style: .tripleColumn)
     private var cancellables: [AnyCancellable] = []
+
+    private var splitViewStyle: UISplitViewController.Style = .tripleColumn {
+        didSet {
+            guard oldValue != splitViewStyle else { return }
+            splitVC = UISplitViewController(style: splitViewStyle)
+            configure(splitVC)
+        }
+    }
 
     init() {
         // TODO: (wpsidebar) remove this?
@@ -15,29 +24,39 @@ final class SplitViewRootPresenter: RootViewPresenter {
         let blog = Blog.lastUsedOrFirst(in: ContextManager.shared.mainContext)
         if let blog {
             sidebarViewModel.selection = .blog(TaggedManagedObjectID(blog))
+        } else {
+            sidebarViewModel.selection = .empty
         }
-        sidebarViewModel.$selection.sink { [weak self] in
+        // TODO: (wpsidebar) add to recent sites, etc – do everything MySiteVC does
+        sidebarViewModel.$selection.compactMap { $0 }.sink { [weak self] in
             self?.configure(for: $0)
         }.store(in: &cancellables)
 
+        configure(splitVC)
+    }
+
+    /// There is no convenience API for dynamically switching from `.tripleColumn`
+    /// to `.doubleColumn` split view controller style. So instead the app
+    /// recreates the entire UISplitViewController but keep the sidebar.
+    ///
+    /// - seealso: https://stackoverflow.com/questions/68336349/swift-uisplitviewcontroller-how-to-go-from-triple-to-double-columns
+    private func configure(_ splitViewController: UISplitViewController) {
         let sidebarVC = SidebarViewController(viewModel: sidebarViewModel)
         splitVC.setViewController(sidebarVC, for: .primary)
-
-        // TODO: (wpsidebar) Display based on the selection from sidebar
-
-//        configure(for: blog)
 
         // The `.compact` column is displayed with `.compact` size class, including iPhone
         let tabBarVC = WPTabBarController(staticScreens: false)
         splitVC.setViewController(tabBarVC, for: .compact)
+
+        rootVC.contentViewController = splitVC
     }
 
-    private func configure(for selection: SidebarSelection?) {
-        guard let selection else {
-            // TODO: (wpsidebar) handle no selection scenario? show empty state?
-            return
-        }
+    private func configure(for selection: SidebarSelection) {
+        splitViewStyle = getSplitViewStyle(for: selection)
+
         switch selection {
+        case .empty:
+            break
         case .blog(let objectID):
             do {
                 let blog = try ContextManager.shared.mainContext.existingObject(with: objectID)
@@ -52,22 +71,32 @@ final class SplitViewRootPresenter: RootViewPresenter {
             } catch {
                 // TODO: (wpsidebar) show empty state?
             }
-        case .reader:
-            break
         case .notifications:
-            break
+            // TODO: (wpsidebar) update tab bar item accordingly
+            let notificationsVC = UIStoryboard(name: "Notifications", bundle: nil).instantiateInitialViewController()
+            splitVC.setViewController(notificationsVC, for: .supplementary)
+        case .reader:
+            let readerVC = ReaderViewController()
+            splitVC.setViewController(readerVC, for: .secondary)
         case .domain:
             break
         case .help:
             break
-        case .profile:
-            break
+        }
+    }
+
+    private func getSplitViewStyle(for selection: SidebarSelection) -> UISplitViewController.Style {
+        switch selection {
+        case .empty, .reader:
+            return .doubleColumn
+        default:
+            return .tripleColumn
         }
     }
 
     // MARK: – RootViewPresenter
 
-    var rootViewController: UIViewController { splitVC }
+    var rootViewController: UIViewController { rootVC }
 
     // MARK: – RootViewPresenter (Unimplemented)
 
@@ -200,6 +229,25 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
     func popMeScreenToRoot() {
         fatalError()
+    }
+}
+
+private final class DynamicRootViewController: UIViewController {
+    var contentViewController: UIViewController? {
+        didSet {
+            if let viewController = oldValue {
+                viewController.willMove(toParent: nil)
+                viewController.view.removeFromSuperview()
+                viewController.removeFromParent()
+            }
+            if let viewController = contentViewController {
+                addChild(viewController)
+                view.addSubview(viewController.view)
+                viewController.view.translatesAutoresizingMaskIntoConstraints = false
+                view.pinSubviewToAllEdges(viewController.view)
+                viewController.didMove(toParent: self)
+            }
+        }
     }
 }
 

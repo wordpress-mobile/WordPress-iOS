@@ -492,6 +492,8 @@
 		0C4CE8492C2F418000B9EEAC /* AppImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 433840C622C2BA5B00CB13F8 /* AppImages.xcassets */; };
 		0C5751102B011468001074E5 /* RemoteConfigDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C57510F2B011468001074E5 /* RemoteConfigDebugView.swift */; };
 		0C5751112B011468001074E5 /* RemoteConfigDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C57510F2B011468001074E5 /* RemoteConfigDebugView.swift */; };
+		0C5A17162C73E52A00EEF067 /* ReaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5A17152C73E52A00EEF067 /* ReaderViewController.swift */; };
+		0C5A17172C73E52A00EEF067 /* ReaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5A17152C73E52A00EEF067 /* ReaderViewController.swift */; };
 		0C63266F2A3D1305000B8C57 /* GutenbergFilesAppMediaSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C63266E2A3D1305000B8C57 /* GutenbergFilesAppMediaSourceTests.swift */; };
 		0C6AC6122C364A2800BF7600 /* XcodeTarget_App in Frameworks */ = {isa = PBXBuildFile; productRef = 0C6AC6112C364A2800BF7600 /* XcodeTarget_App */; };
 		0C6AC6142C364A3100BF7600 /* XcodeTarget_ShareExtension in Frameworks */ = {isa = PBXBuildFile; productRef = 0C6AC6132C364A3100BF7600 /* XcodeTarget_ShareExtension */; };
@@ -6467,6 +6469,7 @@
 		0C3C50412BA3A024002A37B4 /* PostNoticePublishSuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostNoticePublishSuccessView.swift; sourceTree = "<group>"; };
 		0C43FF802C3601770084B698 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/iOSSupport/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		0C57510F2B011468001074E5 /* RemoteConfigDebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigDebugView.swift; sourceTree = "<group>"; };
+		0C5A17152C73E52A00EEF067 /* ReaderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderViewController.swift; sourceTree = "<group>"; };
 		0C63266E2A3D1305000B8C57 /* GutenbergFilesAppMediaSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergFilesAppMediaSourceTests.swift; sourceTree = "<group>"; };
 		0C6C4CCF2A4F0A000049E762 /* BlazeCampaignsStreamTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeCampaignsStreamTests.swift; sourceTree = "<group>"; };
 		0C6C4CD32A4F0AD80049E762 /* blaze-search-page-1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "blaze-search-page-1.json"; sourceTree = "<group>"; };
@@ -11680,6 +11683,7 @@
 				3F09CCA72428FF3300D00A8C /* ReaderTabViewController.swift */,
 				3F6975FE242D941E001F1807 /* ReaderTabViewModel.swift */,
 				3FF1A852242D5FCB00373F5D /* WPTabBarController+ReaderTabNavigation.swift */,
+				0C5A17152C73E52A00EEF067 /* ReaderViewController.swift */,
 			);
 			path = "Tab Navigation";
 			sourceTree = "<group>";
@@ -22197,6 +22201,7 @@
 				F5D399302541F25B0058D0AB /* SheetActions.swift in Sources */,
 				93F7214F271831820021A09F /* SiteStatsPinnedItemStore.swift in Sources */,
 				77DFF0882B68362200FA561D /* BooleanUserDefaultsDebugViewModel.swift in Sources */,
+				0C5A17162C73E52A00EEF067 /* ReaderViewController.swift in Sources */,
 				9895401126C1F39300EDEB5A /* EditCommentTableViewController.swift in Sources */,
 				018635842A8109DE00915532 /* SupportChatBotViewController.swift in Sources */,
 				0CED1FED2B61AAF600E6DD52 /* AtomicSiteService.swift in Sources */,
@@ -24658,6 +24663,7 @@
 				013A8CB72AB83B40004FF5D0 /* DashboardDomainsCardSearchView.swift in Sources */,
 				1E732A7D2BB59AA1001103D4 /* UIImageView+Gravatar.swift in Sources */,
 				FA98B61A29A3BF050071AAE8 /* DashboardBlazePromoCardView.swift in Sources */,
+				0C5A17172C73E52A00EEF067 /* ReaderViewController.swift in Sources */,
 				FABB21942602FC2C00C8785C /* AztecPostViewController.swift in Sources */,
 				F1585442267D3BF900A2E966 /* CalendarDayToggleButton.swift in Sources */,
 				FE4C46FF27FAE61700285F35 /* DashboardPromptsCardCell.swift in Sources */,

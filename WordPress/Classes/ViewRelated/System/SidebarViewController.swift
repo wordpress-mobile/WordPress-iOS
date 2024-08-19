@@ -13,12 +13,12 @@ final class SidebarViewController: UIHostingController<SidebarView> {
 }
 
 enum SidebarSelection: Hashable {
+    case empty // No sites
     case blog(TaggedManagedObjectID<Blog>)
-    case reader
     case notifications
+    case reader
     case domain
     case help
-    case profile
 }
 
 struct SidebarView: View {
@@ -31,10 +31,15 @@ struct SidebarView: View {
             Section(Strings.sectionMySites) {
                 makeSiteListSection(with: blogListViewModel)
             }
+            Section(Strings.moreSection) {
+                more
+            }
         }
         .listStyle(.sidebar)
         .searchable(text: $blogListViewModel.searchText, placement: .navigationBarDrawer(displayMode: .always))
     }
+
+    // MARK: - My Sites
 
     // TODO: (wpsidebar) add support for recent sites
     @ViewBuilder
@@ -60,6 +65,24 @@ struct SidebarView: View {
     private func makeSiteView(with site: BlogListSiteViewModel) -> some View {
         BlogListSiteView(site: site)
     }
+
+    // MARK: - More
+
+    @ViewBuilder
+    private var more: some View {
+        makeMenuItem(Strings.notifications, image: "tab-bar-notifications-unselected")
+            .tag(SidebarSelection.notifications)
+        makeMenuItem(Strings.reader, image: "tab-bar-reader-unselected")
+            .tag(SidebarSelection.reader)
+    }
+
+    private func makeMenuItem(_ title: String, image: String) -> some View {
+        Label {
+            Text(title)
+        } icon: {
+            Image(image).renderingMode(.template)
+        }
+    }
 }
 
 final class SidebarViewModel: ObservableObject {
@@ -68,4 +91,8 @@ final class SidebarViewModel: ObservableObject {
 
 private enum Strings {
     static let sectionMySites = NSLocalizedString("sidebar.mySitesSectionTitle", value: "My Sites", comment: "Sidebar section title on iPad")
+    static let moreSection = NSLocalizedString("sidebar.moreSectionTitle", value: "More", comment: "Sidebar section title on iPad")
+    static let notifications = NSLocalizedString("sidebar.notifications", value: "Notifications", comment: "Sidebar item on iPad")
+    static let reader = NSLocalizedString("sidebar.reader", value: "Reader", comment: "Sidebar item on iPad")
+    static let domains = NSLocalizedString("sidebar.domains", value: "Domains", comment: "Sidebar item on iPad")
 }
