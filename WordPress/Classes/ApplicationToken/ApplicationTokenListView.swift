@@ -50,13 +50,13 @@ struct ApplicationTokenListView: View {
 class ApplicationTokenListViewModel: ObservableObject {
 
     @Published
-    var isLoadingData: Bool = false
+    private(set) var isLoadingData: Bool = false
 
     @Published
-    var errorMessage: String? = nil
+    private(set) var errorMessage: String? = nil
 
     @Published
-    var applicationTokens: [ApplicationTokenItem]
+    private(set) var applicationTokens: [ApplicationTokenItem]
 
     private let dataProvider: ApplicationTokenListDataProvider!
 
