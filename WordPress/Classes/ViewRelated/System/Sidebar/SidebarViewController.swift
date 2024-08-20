@@ -8,10 +8,18 @@ import WordPressUI
 final class SidebarViewController: UIHostingController<AnyView> {
     init(viewModel: SidebarViewModel) {
         super.init(rootView: AnyView(SidebarView(viewModel: viewModel)))
+        self.title = Strings.sectionMySites
+        self.navigationItem.largeTitleDisplayMode = .always
     }
 
     @MainActor required dynamic init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
 }
 
@@ -25,7 +33,7 @@ private struct SidebarView: View {
             if !blogListViewModel.searchText.isEmpty {
                 searchResults
             } else {
-                Section(Strings.sectionMySites) {
+                Section {
                     makeSiteListSection(with: blogListViewModel)
                 }
                 Section(Strings.moreSection) {
@@ -72,6 +80,7 @@ private struct SidebarView: View {
 
     private func makeSiteList(with sites: [BlogListSiteViewModel]) -> some View {
         ForEach(sites) { site in
+            // TODO: udpate background color
             BlogListSiteView(site: site)
                 .tag(SidebarSelection.blog(site.id))
         }
@@ -81,14 +90,17 @@ private struct SidebarView: View {
 
     @ViewBuilder
     private var more: some View {
-        Label(Strings.notifications, systemImage: "bell")
-            .tag(SidebarSelection.notifications)
-        Label(Strings.reader, systemImage: "eyeglasses")
-            .tag(SidebarSelection.reader)
-        Label(Strings.domains, systemImage: "network")
-            .tag(SidebarSelection.domains)
-        Label(Strings.help, systemImage: "questionmark.circle")
-            .tag(SidebarSelection.help)
+        Group {
+            Label(Strings.notifications, systemImage: "bell")
+                .tag(SidebarSelection.notifications)
+            Label(Strings.reader, systemImage: "eyeglasses")
+                .tag(SidebarSelection.reader)
+            Label(Strings.domains, systemImage: "network")
+                .tag(SidebarSelection.domains)
+            Label(Strings.help, systemImage: "questionmark.circle")
+                .tag(SidebarSelection.help)
+        }
+        .foregroundStyle(.primary)
     }
 }
 
@@ -110,7 +122,7 @@ private struct SidebarProfileContainerView: View {
 }
 
 private enum Strings {
-    static let sectionMySites = NSLocalizedString("sidebar.mySitesSectionTitle", value: "My Sites", comment: "Sidebar section title on iPad")
+    static let sectionMySites = NSLocalizedString("sidebar.mySitesSectionTitle", value: "Sites", comment: "Sidebar section title on iPad")
     static let moreSection = NSLocalizedString("sidebar.moreSectionTitle", value: "More", comment: "Sidebar section title on iPad")
     static let addSite = NSLocalizedString("sidebar.addSite", value: "Add Site", comment: "Sidebar button title on iPad")
     static let notifications = NSLocalizedString("sidebar.notifications", value: "Notifications", comment: "Sidebar item on iPad")

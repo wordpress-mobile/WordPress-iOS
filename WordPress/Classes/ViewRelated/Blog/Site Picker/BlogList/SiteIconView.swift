@@ -51,6 +51,10 @@ struct SiteIconView: View {
     }
 }
 
+//private struct CaptionColorKey: EnvironmentKey {
+//  static let defaultValue = Color(.secondarySystemBackground)
+//}
+
 // MARK: - SiteIconHostingView (UIKit)
 
 final class SiteIconHostingView: UIView {
