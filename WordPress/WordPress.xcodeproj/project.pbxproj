@@ -498,6 +498,10 @@
 		0C5A171A2C73FCAD00EEF067 /* MeSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5A17182C73FCAC00EEF067 /* MeSplitViewController.swift */; };
 		0C5A171C2C740C3700EEF067 /* ReaderSidebarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5A171B2C740C3700EEF067 /* ReaderSidebarViewController.swift */; };
 		0C5A171D2C740C3700EEF067 /* ReaderSidebarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5A171B2C740C3700EEF067 /* ReaderSidebarViewController.swift */; };
+		0C5A17202C74CFFA00EEF067 /* SidebarProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5A171F2C74CFFA00EEF067 /* SidebarProfileView.swift */; };
+		0C5A17212C74CFFA00EEF067 /* SidebarProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5A171F2C74CFFA00EEF067 /* SidebarProfileView.swift */; };
+		0C5A17232C74D01900EEF067 /* SidebarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5A17222C74D01900EEF067 /* SidebarViewModel.swift */; };
+		0C5A17242C74D01900EEF067 /* SidebarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5A17222C74D01900EEF067 /* SidebarViewModel.swift */; };
 		0C63266F2A3D1305000B8C57 /* GutenbergFilesAppMediaSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C63266E2A3D1305000B8C57 /* GutenbergFilesAppMediaSourceTests.swift */; };
 		0C6AC6122C364A2800BF7600 /* XcodeTarget_App in Frameworks */ = {isa = PBXBuildFile; productRef = 0C6AC6112C364A2800BF7600 /* XcodeTarget_App */; };
 		0C6AC6142C364A3100BF7600 /* XcodeTarget_ShareExtension in Frameworks */ = {isa = PBXBuildFile; productRef = 0C6AC6132C364A3100BF7600 /* XcodeTarget_ShareExtension */; };
@@ -6476,6 +6480,8 @@
 		0C5A17152C73E52A00EEF067 /* ReaderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderViewController.swift; sourceTree = "<group>"; };
 		0C5A17182C73FCAC00EEF067 /* MeSplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeSplitViewController.swift; sourceTree = "<group>"; };
 		0C5A171B2C740C3700EEF067 /* ReaderSidebarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSidebarViewController.swift; sourceTree = "<group>"; };
+		0C5A171F2C74CFFA00EEF067 /* SidebarProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarProfileView.swift; sourceTree = "<group>"; };
+		0C5A17222C74D01900EEF067 /* SidebarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarViewModel.swift; sourceTree = "<group>"; };
 		0C63266E2A3D1305000B8C57 /* GutenbergFilesAppMediaSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergFilesAppMediaSourceTests.swift; sourceTree = "<group>"; };
 		0C6C4CCF2A4F0A000049E762 /* BlazeCampaignsStreamTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeCampaignsStreamTests.swift; sourceTree = "<group>"; };
 		0C6C4CD32A4F0AD80049E762 /* blaze-search-page-1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "blaze-search-page-1.json"; sourceTree = "<group>"; };
@@ -10728,6 +10734,17 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		0C5A171E2C74CFD700EEF067 /* Sidebar */ = {
+			isa = PBXGroup;
+			children = (
+				0CCC13CC2C6FDDB50010940A /* SidebarViewController.swift */,
+				0C5A17222C74D01900EEF067 /* SidebarViewModel.swift */,
+				0C5A171F2C74CFFA00EEF067 /* SidebarProfileView.swift */,
+				0CCC13D22C6FE2940010940A /* SiteMenuViewController.swift */,
+			);
+			path = Sidebar;
+			sourceTree = "<group>";
+		};
 		0C7D48182A4DB91B0023CF84 /* Blaze */ = {
 			isa = PBXGroup;
 			children = (
@@ -14684,6 +14701,7 @@
 		8584FDB619243AC40019C02E /* System */ = {
 			isa = PBXGroup;
 			children = (
+				0C5A171E2C74CFD700EEF067 /* Sidebar */,
 				0CED1FFE2B6809C100E6DD52 /* FilterCompact */,
 				F5E032E22408D537003AF350 /* Action Sheet */,
 				F551E7F323F6EA1400751212 /* Floating Create Button */,
@@ -14703,8 +14721,6 @@
 				57BAD50B225CCE1A006139EC /* WPTabBarController+Swift.swift */,
 				803BB98B29637AFC00B3F6D6 /* BlurredEmptyViewController.swift */,
 				FADC40A42A8BBA4200C19997 /* WPTabBarController+MeTab.swift */,
-				0CCC13CC2C6FDDB50010940A /* SidebarViewController.swift */,
-				0CCC13D22C6FE2940010940A /* SiteMenuViewController.swift */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -21918,6 +21934,7 @@
 				B52C4C7D199D4CD3009FD823 /* NoteBlockUserTableViewCell.swift in Sources */,
 				E64384831C628FCC0052ADB5 /* WPStyleGuide+Sharing.swift in Sources */,
 				0CA10FA82ADB7C5200CE75AC /* PostSearchService.swift in Sources */,
+				0C5A17232C74D01900EEF067 /* SidebarViewModel.swift in Sources */,
 				981C82B62193A7B900A06E84 /* Double+Stats.swift in Sources */,
 				175507B327A062980038ED28 /* PublicizeConnectionURLMatcher.swift in Sources */,
 				177074851FB209F100951A4A /* CircularProgressView.swift in Sources */,
@@ -22469,6 +22486,7 @@
 				F41D98D72B389735004EC050 /* DashboardDynamicCardAnalyticsEvent.swift in Sources */,
 				80B016D12803AB9F00D15566 /* DashboardPostsListCardCell.swift in Sources */,
 				E64595F0256B5D7800F7F90C /* CommentAnalytics.swift in Sources */,
+				0C5A17202C74CFFA00EEF067 /* SidebarProfileView.swift in Sources */,
 				4A2172F828EAACFF0006F4F1 /* BlogQuery.swift in Sources */,
 				FA5C740F1C599BA7000B528C /* TableViewHeaderDetailView.swift in Sources */,
 				0857C2771CE5375F0014AE99 /* MenuItemAbstractView.m in Sources */,
@@ -25049,6 +25067,7 @@
 				FABB22B72602FC2C00C8785C /* SettingsListEditorViewController.swift in Sources */,
 				80C523A82995D73C00B1C14B /* BlazeCreateCampaignWebViewModel.swift in Sources */,
 				982DDF97263238A6002B3904 /* LikeUserPreferredBlog+CoreDataProperties.swift in Sources */,
+				0C5A17242C74D01900EEF067 /* SidebarViewModel.swift in Sources */,
 				0CED1FEE2B61AAF600E6DD52 /* AtomicSiteService.swift in Sources */,
 				C3234F4F27EB96AB004ADB29 /* IntentCell.swift in Sources */,
 				98AA6D1226B8CE7200920C8B /* Comment+CoreDataClass.swift in Sources */,
@@ -25342,6 +25361,7 @@
 				8352AC722B2A185A00F8492C /* ReaderNavigationButton.swift in Sources */,
 				175CC17D2723103000622FB4 /* WPAnalytics+Domains.swift in Sources */,
 				FABB237A2602FC2C00C8785C /* LikeComment.swift in Sources */,
+				0C5A17212C74CFFA00EEF067 /* SidebarProfileView.swift in Sources */,
 				FABB237B2602FC2C00C8785C /* Page.swift in Sources */,
 				0CF22F5D2BC960430005B070 /* PrepublishingViewController.swift in Sources */,
 				FABB237C2602FC2C00C8785C /* ReaderInterestsCoordinator.swift in Sources */,

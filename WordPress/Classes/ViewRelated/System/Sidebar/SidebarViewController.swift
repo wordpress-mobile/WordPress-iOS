@@ -1,12 +1,13 @@
 import UIKit
 import SwiftUI
-import WordPressKit
 import Combine
+import WordPressKit
+import WordPressUI
 
-/// The sidebar dispalyed on the iPad.
-final class SidebarViewController: UIHostingController<SidebarView> {
+/// The sidebar for the iPad version of the app.
+final class SidebarViewController: UIHostingController<AnyView> {
     init(viewModel: SidebarViewModel) {
-        super.init(rootView: SidebarView(viewModel: viewModel))
+        super.init(rootView: AnyView(SidebarView(viewModel: viewModel)))
     }
 
     @MainActor required dynamic init?(coder aDecoder: NSCoder) {
@@ -14,41 +15,38 @@ final class SidebarViewController: UIHostingController<SidebarView> {
     }
 }
 
-enum SidebarSelection: Hashable {
-    case empty // No sites
-    case blog(TaggedManagedObjectID<Blog>)
-    case notifications
-    case reader
-    case domains
-    case help
-}
-
-struct SidebarView: View {
+private struct SidebarView: View {
     @ObservedObject var viewModel: SidebarViewModel
     @StateObject private var blogListViewModel = BlogListViewModel()
 
     var body: some View {
         // TODO: (wpsidebar) add a way to see all sites
         List(selection: $viewModel.selection) {
-            Section(Strings.sectionMySites) {
-                makeSiteListSection(with: blogListViewModel)
-            }
-            Section(Strings.moreSection) {
-                more
+            if !blogListViewModel.searchText.isEmpty {
+                searchResults
+            } else {
+                Section(Strings.sectionMySites) {
+                    makeSiteListSection(with: blogListViewModel)
+                }
+                Section(Strings.moreSection) {
+                    more
+                }
             }
         }
         .listStyle(.sidebar)
-        // TODO: (wpsidebar) show searchable only if there is more than visible # of sites
-        .searchable(text: $blogListViewModel.searchText, placement: .navigationBarDrawer(displayMode: .always))
         .safeAreaInset(edge: .bottom) {
-            if let account = viewModel.account {
-                Button(action: viewModel.showProfileDetails) {
-                    SidebarProfileView(account: account)
-                }
-                .buttonStyle(.plain)
-                .padding()
-                .background(Color(uiColor: .secondarySystemBackground))
-            }
+            SidebarProfileContainerView(viewModel: viewModel)
+        }
+        // TODO: (wpsidebar) show searchable only if there is more than visible # of sites
+        .searchable(text: $blogListViewModel.searchText, placement: .sidebar)
+    }
+
+    @ViewBuilder
+    var searchResults: some View {
+        if blogListViewModel.searchResults.isEmpty {
+            EmptyStateView.search()
+        } else {
+            makeSiteList(with: blogListViewModel.searchResults)
         }
     }
 
@@ -89,39 +87,19 @@ struct SidebarView: View {
     }
 }
 
-private struct SidebarProfileView: View {
-    @ObservedObject var account: WPAccount
+private struct SidebarProfileContainerView: View {
+    @ObservedObject var viewModel: SidebarViewModel
+    @Environment(\.isSearching) private var isSearching // placemenet is important
 
     var body: some View {
-        HStack {
-            let avatarURL: String? = account.avatarURL
-            AvatarsView<Circle>(style: .single(avatarURL.flatMap(URL.init)))
-
-            VStack(alignment: .leading, spacing: 0) {
-                Text(account.displayName)
-                    .font(.callout.weight(.medium))
-                Text(account.username)
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
+        if let account = viewModel.account, !isSearching {
+            Button(action: viewModel.showProfileDetails) {
+                SidebarProfileView(account: account)
             }
-
-            Spacer()
-
-            Image(systemName: "gearshape")
-                .foregroundColor(Color.secondary.opacity(0.7))
+            .buttonStyle(.plain)
+            .padding()
+            .background(Color(uiColor: .secondarySystemBackground))
         }
-    }
-}
-
-final class SidebarViewModel: ObservableObject {
-    @Published var selection: SidebarSelection?
-    @Published var account: WPAccount?
-
-    var showProfileDetails: () -> Void = {}
-
-    init() {
-        // TODO: (wpsidebar) can it change during the root presenter lifetime?
-        self.account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
     }
 }
 
