@@ -33,12 +33,10 @@ final class SplitViewRootPresenter: RootViewPresenter {
         let sidebarVC = SidebarViewController(viewModel: sidebarViewModel)
         splitVC.setViewController(sidebarVC, for: .primary)
 
-        // The `.compact` column is displayed with `.compact` size class
         let tabBarVC = WPTabBarController(staticScreens: false)
         splitVC.setViewController(tabBarVC, for: .compact)
     }
 
-    // TODO: (wpsidebar) reset .secondary column navigation when changing selection
     private func configure(for selection: SidebarSelection) {
         switch selection {
         case .empty:
