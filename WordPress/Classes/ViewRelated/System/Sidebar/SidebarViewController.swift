@@ -63,6 +63,11 @@ private struct SidebarView: View {
             // TODO: (wpsidebar) handle no-sites scenarios
             Text("–")
         }
+        Menu {
+            Text("Not Implemented")
+        } label: {
+            Label(Strings.addSite, systemImage: "plus.circle")
+        }
     }
 
     private func makeSiteList(with sites: [BlogListSiteViewModel]) -> some View {
@@ -106,6 +111,7 @@ private struct SidebarProfileContainerView: View {
 private enum Strings {
     static let sectionMySites = NSLocalizedString("sidebar.mySitesSectionTitle", value: "My Sites", comment: "Sidebar section title on iPad")
     static let moreSection = NSLocalizedString("sidebar.moreSectionTitle", value: "More", comment: "Sidebar section title on iPad")
+    static let addSite = NSLocalizedString("sidebar.addSite", value: "Add Site", comment: "Sidebar button title on iPad")
     static let notifications = NSLocalizedString("sidebar.notifications", value: "Notifications", comment: "Sidebar item on iPad")
     static let reader = NSLocalizedString("sidebar.reader", value: "Reader", comment: "Sidebar item on iPad")
     static let domains = NSLocalizedString("sidebar.domains", value: "Domains", comment: "Sidebar item on iPad")
