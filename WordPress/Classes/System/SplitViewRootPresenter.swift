@@ -28,6 +28,8 @@ final class SplitViewRootPresenter: RootViewPresenter {
             self?.showMeScreen()
         }
 
+        splitVC.preferredSplitBehavior = .tile
+
         let sidebarVC = SidebarViewController(viewModel: sidebarViewModel)
         splitVC.setViewController(sidebarVC, for: .primary)
 
