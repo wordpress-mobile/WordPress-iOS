@@ -102,7 +102,8 @@ private struct SidebarProfileContainerView: View {
                 SidebarProfileView(account: account)
             }
             .buttonStyle(.plain)
-            .padding()
+            .padding(.horizontal)
+            .padding(.top, 8)
             .background(Color(uiColor: .secondarySystemBackground))
         }
     }
