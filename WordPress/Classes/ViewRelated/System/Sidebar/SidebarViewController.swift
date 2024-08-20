@@ -27,10 +27,9 @@ private struct SidebarView: View {
     @ObservedObject var viewModel: SidebarViewModel
     @StateObject private var blogListViewModel = BlogListViewModel()
 
-    private let displayedSiteLimit = RecentSitesService.maxSiteCount
+    static let displayedSiteLimit = RecentSitesService.maxSiteCount
 
     var body: some View {
-        // TODO: (wpsidebar) add a way to see all sites
         let list = List(selection: $viewModel.selection) {
             if !blogListViewModel.searchText.isEmpty {
                 searchResults
@@ -47,7 +46,7 @@ private struct SidebarView: View {
         .safeAreaInset(edge: .bottom) {
             SidebarProfileContainerView(viewModel: viewModel)
         }
-        if blogListViewModel.allSites.count > displayedSiteLimit {
+        if blogListViewModel.allSites.count > SidebarView.displayedSiteLimit {
             list.searchable(text: $blogListViewModel.searchText, placement: .sidebar)
         } else {
             list
@@ -65,17 +64,15 @@ private struct SidebarView: View {
 
     // MARK: - Sites
 
-    // TODO: (wpsidebar) add support for recent sites
     @ViewBuilder
     private func makeSiteListSection(with viewModel: BlogListViewModel) -> some View {
-        if !viewModel.searchText.isEmpty {
-            makeSiteList(with: viewModel.searchResults)
-        } else if !viewModel.allSites.isEmpty {
-            makeSiteList(with: viewModel.allSites)
+        let topSites = viewModel.topSites
+        if !topSites.isEmpty {
+            makeSiteList(with: topSites)
         } else {
             Text(Strings.noSites)
         }
-        if viewModel.allSites.count > displayedSiteLimit {
+        if viewModel.allSites.count > SidebarView.displayedSiteLimit {
             Menu {
                 Text("Not Implemented")
             } label: {
@@ -127,6 +124,24 @@ private struct SidebarProfileContainerView: View {
             .padding(.horizontal)
             .padding(.top, 8)
             .background(Color(uiColor: .secondarySystemBackground))
+        }
+    }
+}
+
+private extension BlogListViewModel {
+    /// Returns the most recent sites and mixes and mixes in the rest of the sites
+    /// until the display limimt is reached.
+    var topSites: [BlogListSiteViewModel] {
+        var topSites = recentSites.prefix(SidebarView.displayedSiteLimit)
+        var encounteredIDs = Set(topSites.map(\.id))
+        for site in allSites where !encounteredIDs.contains(site.id) {
+            if topSites.count >= SidebarView.displayedSiteLimit {
+                break
+            }
+            encounteredIDs.insert(site.id)
+            topSites.append(site)
+        }
+        return Array(topSites).sorted { $0.title.localizedCaseInsensitiveCompare($1.title) == .orderedAscending
         }
     }
 }
