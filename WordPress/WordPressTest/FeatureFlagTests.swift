@@ -89,6 +89,10 @@ enum MockFeatureFlag: OverridableFlag {
         }
     }
 
+    var key: String {
+        "ff-override-\(String(describing: self))"
+    }
+
     var remoteValue: Bool? {
         switch self {
         case .remotelyEnabledLocallyEnabledFeature,
