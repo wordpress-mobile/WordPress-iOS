@@ -16,11 +16,7 @@ final class ReaderViewController: UIViewController {
                 }
             },
             searchNavigationFactory: { [weak self] in
-                guard let self else {
-                    return
-                }
-                // TODO: (wpsitebar) implement (why was it in tabbar??)
-                // self.navigateToReaderSearch()
+                self?.openSeach()
             },
             tabItemsStore: ReaderTabItemsStore(),
             settingsPresenter: ReaderManageScenePresenter()
@@ -61,5 +57,10 @@ final class ReaderViewController: UIViewController {
 
     private func makeReaderTabView(_ viewModel: ReaderTabViewModel) -> ReaderTabView {
         return ReaderTabView(viewModel: self.readerTabViewModel)
+    }
+
+    private func openSeach() {
+        let searchVC = ReaderSearchViewController.controller(withSearchText: "")
+        navigationController?.pushViewController(searchVC, animated: true)
     }
 }

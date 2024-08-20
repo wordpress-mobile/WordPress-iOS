@@ -38,6 +38,8 @@ final class SplitViewRootPresenter: RootViewPresenter {
     }
 
     private func configure(for selection: SidebarSelection) {
+        splitVC.preferredSupplementaryColumnWidth = selection == .reader ? 320 : UISplitViewController.automaticDimension
+
         switch selection {
         case .empty:
             // TODO: (sidebar) add support for the "no sites" scenario
@@ -54,10 +56,10 @@ final class SplitViewRootPresenter: RootViewPresenter {
                 _ = siteMenuVC.view
 
             } catch {
-                // TODO: (wpsidebar) show empty state?
+                // TODO: (wpsidebar) show empty state
             }
         case .notifications:
-            // TODO: (wpsidebar) update tab bar item accordingly
+            // TODO: (wpsidebar) update tab bar item when new notifications arrive
             let notificationsVC = UIStoryboard(name: "Notifications", bundle: nil).instantiateInitialViewController()
             splitVC.setViewController(notificationsVC, for: .supplementary)
         case .reader:
