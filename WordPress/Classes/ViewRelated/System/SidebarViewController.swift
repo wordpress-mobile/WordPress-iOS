@@ -74,31 +74,18 @@ struct SidebarView: View {
         }
     }
 
-    @ViewBuilder
-    private func makeSiteView(with site: BlogListSiteViewModel) -> some View {
-        BlogListSiteView(site: site)
-    }
-
     // MARK: - More
 
     @ViewBuilder
     private var more: some View {
-        makeMenuItem(Strings.notifications, image: "tab-bar-notifications-unselected")
+        Label(Strings.notifications, systemImage: "bell")
             .tag(SidebarSelection.notifications)
-        makeMenuItem(Strings.reader, image: "tab-bar-reader-unselected")
+        Label(Strings.reader, systemImage: "eyeglasses")
             .tag(SidebarSelection.reader)
-        makeMenuItem(Strings.domains, image: "site-menu-domains")
+        Label(Strings.domains, systemImage: "network")
             .tag(SidebarSelection.domains)
-        makeMenuItem(Strings.help, image: "theme-support")
+        Label(Strings.help, systemImage: "questionmark.circle")
             .tag(SidebarSelection.help)
-    }
-
-    private func makeMenuItem(_ title: String, image: String) -> some View {
-        Label {
-            Text(title)
-        } icon: {
-            Image(image).renderingMode(.template)
-        }
     }
 }
 
