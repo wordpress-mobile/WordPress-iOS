@@ -19,7 +19,7 @@ class RecentSitesService: NSObject {
 
     /// The maximum number of recent sites (read only)
     ///
-    @objc let maxSiteCount = 4
+    @objc static let maxSiteCount = 4
 
     // MARK: - Initialization
 
@@ -43,7 +43,7 @@ class RecentSitesService: NSObject {
     /// Returns a list of recently used sites, up to maxSiteCount.
     ///
     @objc var recentSites: [SiteIdentifierType] {
-        return Array(allRecentSites.prefix(maxSiteCount))
+        return Array(allRecentSites.prefix(Self.maxSiteCount))
     }
 
     /// Returns a list of all the recently used sites.

@@ -27,9 +27,11 @@ private struct SidebarView: View {
     @ObservedObject var viewModel: SidebarViewModel
     @StateObject private var blogListViewModel = BlogListViewModel()
 
+    private let displayedSiteLimit = RecentSitesService.maxSiteCount
+
     var body: some View {
         // TODO: (wpsidebar) add a way to see all sites
-        List(selection: $viewModel.selection) {
+        let list = List(selection: $viewModel.selection) {
             if !blogListViewModel.searchText.isEmpty {
                 searchResults
             } else {
@@ -45,8 +47,11 @@ private struct SidebarView: View {
         .safeAreaInset(edge: .bottom) {
             SidebarProfileContainerView(viewModel: viewModel)
         }
-        // TODO: (wpsidebar) show searchable only if there is more than visible # of sites
-        .searchable(text: $blogListViewModel.searchText, placement: .sidebar)
+        if blogListViewModel.allSites.count > displayedSiteLimit {
+            list.searchable(text: $blogListViewModel.searchText, placement: .sidebar)
+        } else {
+            list
+        }
     }
 
     @ViewBuilder
@@ -68,14 +73,22 @@ private struct SidebarView: View {
         } else if !viewModel.allSites.isEmpty {
             makeSiteList(with: viewModel.allSites)
         } else {
-            // TODO: (wpsidebar) handle no-sites scenarios
-            Text("–")
+            Text(Strings.noSites)
+        }
+        if viewModel.allSites.count > displayedSiteLimit {
+            Menu {
+                Text("Not Implemented")
+            } label: {
+                Label(Strings.allSites, systemImage: "rectangle.stack")
+            }
+            .tint(Color.primary)
         }
         Menu {
             Text("Not Implemented")
         } label: {
             Label(Strings.addSite, systemImage: "plus.circle")
         }
+        .tint(Color.primary)
     }
 
     private func makeSiteList(with sites: [BlogListSiteViewModel]) -> some View {
@@ -121,6 +134,8 @@ private struct SidebarProfileContainerView: View {
 private enum Strings {
     static let sectionMySites = NSLocalizedString("sidebar.mySitesSectionTitle", value: "Sites", comment: "Sidebar section title on iPad")
     static let moreSection = NSLocalizedString("sidebar.moreSectionTitle", value: "More", comment: "Sidebar section title on iPad")
+    static let allSites = NSLocalizedString("sidebar.allSites", value: "All Sites", comment: "Sidebar button title on iPad")
+    static let noSites = NSLocalizedString("sidebar.noSites", value: "No Sites", comment: "Sidebar empty state title on iPad")
     static let addSite = NSLocalizedString("sidebar.addSite", value: "Add Site", comment: "Sidebar button title on iPad")
     static let notifications = NSLocalizedString("sidebar.notifications", value: "Notifications", comment: "Sidebar item on iPad")
     static let reader = NSLocalizedString("sidebar.reader", value: "Reader", comment: "Sidebar item on iPad")
