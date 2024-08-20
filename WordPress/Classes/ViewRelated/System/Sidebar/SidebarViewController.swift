@@ -58,7 +58,7 @@ private struct SidebarView: View {
         }
     }
 
-    // MARK: - My Sites
+    // MARK: - Sites
 
     // TODO: (wpsidebar) add support for recent sites
     @ViewBuilder
@@ -80,8 +80,8 @@ private struct SidebarView: View {
 
     private func makeSiteList(with sites: [BlogListSiteViewModel]) -> some View {
         ForEach(sites) { site in
-            // TODO: udpate background color
             BlogListSiteView(site: site)
+                .environment(\.siteIconBackgroundColor, Color(.systemBackground))
                 .tag(SidebarSelection.blog(site.id))
         }
     }
@@ -90,17 +90,14 @@ private struct SidebarView: View {
 
     @ViewBuilder
     private var more: some View {
-        Group {
-            Label(Strings.notifications, systemImage: "bell")
-                .tag(SidebarSelection.notifications)
-            Label(Strings.reader, systemImage: "eyeglasses")
-                .tag(SidebarSelection.reader)
-            Label(Strings.domains, systemImage: "network")
-                .tag(SidebarSelection.domains)
-            Label(Strings.help, systemImage: "questionmark.circle")
-                .tag(SidebarSelection.help)
-        }
-        .foregroundStyle(.primary)
+        Label(Strings.notifications, systemImage: "bell")
+            .tag(SidebarSelection.notifications)
+        Label(Strings.reader, systemImage: "eyeglasses")
+            .tag(SidebarSelection.reader)
+        Label(Strings.domains, systemImage: "network")
+            .tag(SidebarSelection.domains)
+        Label(Strings.help, systemImage: "questionmark.circle")
+            .tag(SidebarSelection.help)
     }
 }
 

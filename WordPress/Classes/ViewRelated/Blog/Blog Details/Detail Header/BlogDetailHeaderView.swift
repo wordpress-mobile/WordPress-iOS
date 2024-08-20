@@ -54,8 +54,7 @@ class BlogDetailHeaderView: UIView {
     @objc func refreshIconImage() {
         guard let blog else { return }
 
-        var viewModel = SiteIconViewModel(blog: blog)
-        viewModel.background = Color(.systemBackground)
+        let viewModel = SiteIconViewModel(blog: blog)
         titleView.siteIconView.imageView.setIcon(with: viewModel)
     }
 
