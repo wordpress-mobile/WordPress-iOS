@@ -18,15 +18,29 @@ struct ReaderSidebar: View {
     // TODO: (wpsidebar) inline subscriptions, tags, and list with diclosure indicators
 
     var body: some View {
-        List(viewModel.filterItems) { item in
-            menuButton(for: item)
-            if item == viewModel.filterItems.last && viewModel.listItems.count > 0 {
-                // TODO: (wpsidebar) fix support for lists
-                listMenuItem
+        List(selection: selection) {
+            ForEach(viewModel.filterItems) {
+                menuButton(for: $0)
             }
+            // TODO: (wpsidebar) add support for lists
+//            if item == viewModel.filterItems.last && viewModel.listItems.count > 0 {
+//                listMenuItem
+//            }
         }
         .listStyle(.sidebar)
         .navigationTitle(Strings.reader)
+    }
+
+    // TODO: (wpsidebar) refactor selection
+
+    private var selection: Binding<ReaderTabItem?> {
+        Binding {
+            viewModel.selectedItem
+        } set: { item in
+            if let item, let index = viewModel.filterItems.firstIndex(of: item) {
+                viewModel.showTab(at: index)
+            }
+        }
     }
 
     private var menuItemGroups: [[ReaderTabItem]] {
@@ -44,6 +58,7 @@ struct ReaderSidebar: View {
         return items
     }
 
+    // TODO: (wpsidebar)
     @ViewBuilder
     private var listMenuItem: some View {
         if viewModel.listItems.count > 2 {
@@ -66,18 +81,20 @@ struct ReaderSidebar: View {
     }
 
     private func menuButton(for item: ReaderTabItem) -> some View {
-        let index = viewModel.tabItems.firstIndex(of: item) ?? 0
-        let eventId = item.dropdownEventId
-        return Button {
-            viewModel.showTab(at: index)
-            WPAnalytics.track(.readerDropdownItemTapped, properties: ["id": eventId])
-        } label: {
-            Label {
-                Text(item.title)
-            } icon: {
-                item.image
-            }
+        // TODO: (wpsidebar) implement tracking
+        // let index = viewModel.tabItems.firstIndex(of: item) ?? 0
+        //        let eventId = item.dropdownEventId
+        //        return Button {
+        //            viewModel.showTab(at: index)
+        //            WPAnalytics.track(.readerDropdownItemTapped, properties: ["id": eventId])
+        //        } label: {
+        //        }
+        Label {
+            Text(item.title)
+        } icon: {
+            item.image
         }
+        .tag(item)
         .accessibilityIdentifier(item.accessibilityIdentifier)
     }
 }

@@ -43,7 +43,7 @@ private struct SidebarView: View {
             }
         }
         .listStyle(.sidebar)
-        .safeAreaInset(edge: .bottom) {
+        .overlay(alignment: .bottom) {
             SidebarProfileContainerView(viewModel: viewModel)
         }
         if blogListViewModel.allSites.count > SidebarView.displayedSiteLimit {
