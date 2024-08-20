@@ -15,7 +15,7 @@ class ReaderTabViewController: UIViewController {
         return makeReaderTabView(viewModel)
     }()
 
-    var shouldHideNavigationBar = true
+    var isSidebarModeEnabled = true
 
     init(viewModel: ReaderTabViewModel, readerTabViewFactory: @escaping (ReaderTabViewModel) -> ReaderTabView) {
         self.viewModel = viewModel
@@ -67,9 +67,7 @@ class ReaderTabViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        if shouldHideNavigationBar {
-            navigationController?.setNavigationBarHidden(true, animated: animated)
-        }
+        navigationController?.setNavigationBarHidden(true, animated: animated)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -79,9 +77,7 @@ class ReaderTabViewController: UIViewController {
 
         createButtonCoordinator?.removeCreateButton()
 
-        if shouldHideNavigationBar {
-            navigationController?.setNavigationBarHidden(false, animated: animated)
-        }
+        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
 
     override func loadView() {

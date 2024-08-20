@@ -31,6 +31,8 @@ class ReaderTabView: UIView {
         return viewModel.tabItems.firstIndex(where: { ($0.content.topic as? ReaderTeamTopic)?.organizationID == SiteOrganizationType.p2.rawValue })
     }
 
+    var isSidebarModeEnabled = false
+
     init(viewModel: ReaderTabViewModel) {
         mainStackView = UIStackView()
         containerView = UIView()

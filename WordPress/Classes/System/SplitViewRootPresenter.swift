@@ -28,7 +28,8 @@ final class SplitViewRootPresenter: RootViewPresenter {
             self?.showMeScreen()
         }
 
-        splitVC.preferredSplitBehavior = .tile
+        // TODO: (sidebar) configure it based on the available space
+        // splitVC.preferredSplitBehavior = .tile
 
         let sidebarVC = SidebarViewController(viewModel: sidebarViewModel)
         splitVC.setViewController(sidebarVC, for: .primary)
@@ -51,6 +52,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
                 let siteMenuVC = SiteMenuViewController(blog: blog)
                 siteMenuVC.delegate = self
                 splitVC.setViewController(siteMenuVC, for: .supplementary)
+                splitVC.setViewController(UINavigationController(), for: .secondary)
 
                 // TODO: (wpsidebar) Refactor this (initial .secondary vc managed based on the VC presentation)
                 _ = siteMenuVC.view
@@ -64,11 +66,10 @@ final class SplitViewRootPresenter: RootViewPresenter {
             splitVC.setViewController(notificationsVC, for: .supplementary)
         case .reader:
             let readerVC = ReaderViewController()
-
-            // TODO: (wpsidebar) add search
             let readerSidebarVS = ReaderSidebarViewController(viewModel: readerVC.readerTabViewModel)
             splitVC.setViewController(readerSidebarVS, for: .supplementary)
-            splitVC.setViewController(readerVC, for: .secondary)
+            let navigationVC = UINavigationController(rootViewController: readerVC)
+            splitVC.setViewController(navigationVC, for: .secondary)
         case .domains:
             // TODO: (wisidebar) figure out what to do with selection
             let domainsVC = AllDomainsListViewController()

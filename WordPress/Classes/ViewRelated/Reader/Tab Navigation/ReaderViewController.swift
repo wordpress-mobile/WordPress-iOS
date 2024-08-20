@@ -21,6 +21,7 @@ final class ReaderViewController: UIViewController {
             tabItemsStore: ReaderTabItemsStore(),
             settingsPresenter: ReaderManageScenePresenter()
         )
+        viewModel.isSidebarModeEnabled = true
         return viewModel
     }()
 
@@ -33,7 +34,7 @@ final class ReaderViewController: UIViewController {
             }
             return self.makeReaderTabView(viewModel)
         }
-        viewController.shouldHideNavigationBar = false
+        viewController.isSidebarModeEnabled = false
 
         addChild(viewController)
         view.addSubview(viewController.view)
