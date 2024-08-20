@@ -68,7 +68,6 @@ final class SplitViewRootPresenter: RootViewPresenter {
             // TODO: (wpsidebar) add search
             let readerSidebarVS = ReaderSidebarViewController(viewModel: readerVC.readerTabViewModel)
             splitVC.setViewController(readerSidebarVS, for: .supplementary)
-
             splitVC.setViewController(readerVC, for: .secondary)
         case .domains:
             // TODO: (wisidebar) figure out what to do with selection

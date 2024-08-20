@@ -933,6 +933,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
 
 - (UITableViewScrollPosition)optimumScrollPositionForIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.isSidebarModeEnabled) {
+        return UITableViewScrollPositionNone;
+    }
     // Try and avoid scrolling if not necessary
     CGRect cellRect = [self.tableView rectForRowAtIndexPath:indexPath];
     BOOL cellIsNotFullyVisible = !CGRectContainsRect(self.tableView.bounds, cellRect);
