@@ -20,7 +20,7 @@ private struct SidebarView: View {
     @ObservedObject var viewModel: SidebarViewModel
     @StateObject private var blogListViewModel = BlogListViewModel()
 
-    static let displayedSiteLimit = RecentSitesService.maxSiteCount
+    static let displayedSiteLimit = 4
 
     var body: some View {
         let list = List(selection: $viewModel.selection) {

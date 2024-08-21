@@ -11,11 +11,9 @@ final class ReaderSidebarViewController: UIHostingController<ReaderSidebar> {
     }
 }
 
+// TODO: (wpsidebar) reimplement – this is just for the demonstration
 struct ReaderSidebar: View {
     @ObservedObject var viewModel: ReaderTabViewModel
-
-    // TODO: (wpsidebar) implement selection
-    // TODO: (wpsidebar) inline subscriptions, tags, and list with diclosure indicators
 
     var body: some View {
         List(selection: selection) {
@@ -58,7 +56,6 @@ struct ReaderSidebar: View {
         return items
     }
 
-    // TODO: (wpsidebar)
     @ViewBuilder
     private var listMenuItem: some View {
         if viewModel.listItems.count > 2 {

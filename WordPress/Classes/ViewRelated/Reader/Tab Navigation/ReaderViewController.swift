@@ -44,7 +44,6 @@ final class ReaderViewController: UIViewController {
     }
 
     private func makeReaderContentViewController(with content: ReaderContent) -> ReaderContentViewController {
-
         if content.topicType == .discover, let topic = content.topic {
             let controller = ReaderCardsStreamViewController.controller(topic: topic)
             controller.shouldShowCommentSpotlight = readerTabViewModel.shouldShowCommentSpotlight

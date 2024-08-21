@@ -9,27 +9,8 @@ final class SplitViewRootPresenter: RootViewPresenter {
     private var cancellables: [AnyCancellable] = []
 
     init() {
-        // TODO: (wpsidebar) refactor and remove
+        // TODO: (wpsidebar) refactor
         self.mySitesCoordinator = MySitesCoordinator(meScenePresenter: MeScenePresenter(), onBecomeActiveTab: {})
-
-        let blog = Blog.lastUsedOrFirst(in: ContextManager.shared.mainContext)
-        if let blog {
-            sidebarViewModel.selection = .blog(TaggedManagedObjectID(blog))
-        } else {
-            sidebarViewModel.selection = .empty
-        }
-
-        // TODO: (wpsidebar) add to recent sites on selection, etc – do everything MySiteVC does
-        sidebarViewModel.$selection.compactMap { $0 }.sink { [weak self] in
-            self?.configure(for: $0)
-        }.store(in: &cancellables)
-
-        sidebarViewModel.navigate = { [weak self] in
-            self?.navigate(to: $0)
-        }
-
-        // TODO: (sidebar) configure it based on the available space
-        // splitVC.preferredSplitBehavior = .tile
 
         let sidebarVC = SidebarViewController(viewModel: sidebarViewModel)
         let navigationVC = makeRootNavigationController(with: sidebarVC)
@@ -37,6 +18,14 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
         let tabBarVC = WPTabBarController(staticScreens: false)
         splitVC.setViewController(tabBarVC, for: .compact)
+
+        sidebarViewModel.$selection.compactMap { $0 }.sink { [weak self] in
+            self?.configure(for: $0)
+        }.store(in: &cancellables)
+
+        sidebarViewModel.navigate = { [weak self] in
+            self?.navigate(to: $0)
+        }
     }
 
     private func configure(for selection: SidebarSelection) {
@@ -44,7 +33,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
         switch selection {
         case .empty:
-            // TODO: (sidebar) add support for the "no sites" scenario
+            // TODO: (wpsidebar) add support for the "no sites" scenario
             break
         case .blog(let objectID):
             do {
@@ -68,6 +57,8 @@ final class SplitViewRootPresenter: RootViewPresenter {
     }
 
     private func showDetails(for site: Blog) {
+        RecentSitesService().touch(blog: site)
+
         let siteMenuVC = SiteMenuViewController(blog: site)
         siteMenuVC.delegate = self
         let navigationVC = makeRootNavigationController(with: siteMenuVC)
@@ -98,7 +89,8 @@ final class SplitViewRootPresenter: RootViewPresenter {
             let navigationVC = UINavigationController(rootViewController: supportVC)
             splitVC.present(navigationVC, animated: true)
         case .profile:
-            showMeScreen()
+            let meVC = MeSplitViewController()
+            splitVC.present(meVC, animated: true)
         }
     }
 
@@ -120,7 +112,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
         ""
     }
 
-    // TODO: (wpsidebar) Can we eliminate it?
+    // TODO: (wpsidebar) Can we remove it?
     func currentlyVisibleBlog() -> Blog? {
         mySitesCoordinator.currentBlog
     }
@@ -230,8 +222,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
     var meViewController: MeViewController?
 
     func showMeScreen() {
-        let meViewController = MeSplitViewController()
-        splitVC.present(meViewController, animated: true)
+        navigate(to: .profile)
     }
 
     func popMeScreenToRoot() {

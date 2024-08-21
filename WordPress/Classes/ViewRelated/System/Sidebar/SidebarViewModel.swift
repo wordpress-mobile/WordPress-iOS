@@ -20,8 +20,15 @@ final class SidebarViewModel: ObservableObject {
 
     var navigate: (SidebarNavigationStep) -> Void = { _ in }
 
-    init() {
+    init(contextManager: CoreDataStackSwift = ContextManager.shared) {
+        let blog = Blog.lastUsedOrFirst(in: contextManager.mainContext)
+        if let blog {
+            selection = .blog(TaggedManagedObjectID(blog))
+        } else {
+            selection = .empty
+        }
+
         // TODO: (wpsidebar) can it change during the root presenter lifetime?
-        self.account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
+        self.account = try? WPAccount.lookupDefaultWordPressComAccount(in: contextManager.mainContext)
     }
 }

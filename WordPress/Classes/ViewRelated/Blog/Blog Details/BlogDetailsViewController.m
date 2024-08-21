@@ -1002,7 +1002,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     self.tableSections = [NSArray arrayWithArray:marr];
 }
 
-// TODO: (wpsidebar) Remove
+// TODO: (wpsidebar) Remove when WPSPlitViewController is removed on iPhone
 - (Boolean)isSplitViewDisplayed {
     if (self.isSidebarModeEnabled) {
         return true;
