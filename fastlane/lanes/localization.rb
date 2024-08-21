@@ -125,7 +125,9 @@ platform :ios do
     # We jump in the tempdir immediately, even though we might not need it.
     # It's just simpler to rely on the Ruby block API for it than to manage it by hand.
     Dir.mktmpdir do |tempdir|
-      cocoapods
+      # Fetch fresh pods to read the latest localizations from them.
+      # In CI, we expect the pods to be already available and up to date.
+      cocoapods unless is_ci
 
       custom_gutenber_path = options[:gutenberg_path]
       if custom_gutenber_path
