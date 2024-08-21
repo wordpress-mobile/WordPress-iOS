@@ -97,10 +97,12 @@ private struct SidebarView: View {
             .tag(SidebarSelection.notifications)
         Label(Strings.reader, systemImage: "eyeglasses")
             .tag(SidebarSelection.reader)
-        Label(Strings.domains, systemImage: "network")
-            .tag(SidebarSelection.domains)
-        Label(Strings.help, systemImage: "questionmark.circle")
-            .tag(SidebarSelection.help)
+        Button(action: { viewModel.navigate(.domains) }) {
+            Label(Strings.domains, systemImage: "network")
+        }
+        Button(action: { viewModel.navigate(.help) }) {
+            Label(Strings.help, systemImage: "questionmark.circle")
+        }
     }
 }
 
@@ -110,7 +112,7 @@ private struct SidebarProfileContainerView: View {
 
     var body: some View {
         if let account = viewModel.account, !isSearching {
-            Button(action: viewModel.showProfileDetails) {
+            Button(action: { viewModel.navigate(.profile) }) {
                 SidebarProfileView(account: account)
             }
             .buttonStyle(.plain)

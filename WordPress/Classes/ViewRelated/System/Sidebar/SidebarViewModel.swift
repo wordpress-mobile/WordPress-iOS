@@ -6,15 +6,19 @@ enum SidebarSelection: Hashable {
     case blog(TaggedManagedObjectID<Blog>)
     case notifications
     case reader
+}
+
+enum SidebarNavigationStep {
     case domains
     case help
+    case profile
 }
 
 final class SidebarViewModel: ObservableObject {
     @Published var selection: SidebarSelection?
     @Published var account: WPAccount?
 
-    var showProfileDetails: () -> Void = {}
+    var navigate: (SidebarNavigationStep) -> Void = { _ in }
 
     init() {
         // TODO: (wpsidebar) can it change during the root presenter lifetime?

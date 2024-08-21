@@ -9,7 +9,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
     private var cancellables: [AnyCancellable] = []
 
     init() {
-        // TODO: (wpsidebar) remove this?
+        // TODO: (wpsidebar) refactor and remove
         self.mySitesCoordinator = MySitesCoordinator(meScenePresenter: MeScenePresenter(), onBecomeActiveTab: {})
 
         let blog = Blog.lastUsedOrFirst(in: ContextManager.shared.mainContext)
@@ -19,13 +19,13 @@ final class SplitViewRootPresenter: RootViewPresenter {
             sidebarViewModel.selection = .empty
         }
 
-        // TODO: (wpsidebar) add to recent sites, etc – do everything MySiteVC does
+        // TODO: (wpsidebar) add to recent sites on selection, etc – do everything MySiteVC does
         sidebarViewModel.$selection.compactMap { $0 }.sink { [weak self] in
             self?.configure(for: $0)
         }.store(in: &cancellables)
 
-        sidebarViewModel.showProfileDetails = { [weak self] in
-            self?.showMeScreen()
+        sidebarViewModel.navigate = { [weak self] in
+            self?.navigate(to: $0)
         }
 
         // TODO: (sidebar) configure it based on the available space
@@ -64,16 +64,6 @@ final class SplitViewRootPresenter: RootViewPresenter {
             let readerSidebarVS = ReaderSidebarViewController(viewModel: readerVC.readerTabViewModel)
             splitVC.setViewController(UINavigationController(rootViewController: readerSidebarVS), for: .supplementary)
             splitVC.setViewController(UINavigationController(rootViewController: readerVC), for: .secondary)
-        case .domains:
-            // TODO: (wisidebar) figure out what to do with selection
-            let domainsVC = AllDomainsListViewController()
-            let navigationVC = UINavigationController(rootViewController: domainsVC)
-            splitVC.present(navigationVC, animated: true)
-        case .help:
-            let supportVC = SupportTableViewController()
-            let navigationVC = UINavigationController(rootViewController: supportVC)
-            splitVC.present(navigationVC, animated: true)
-            break
         }
     }
 
@@ -95,6 +85,21 @@ final class SplitViewRootPresenter: RootViewPresenter {
         viewController.navigationItem.largeTitleDisplayMode = .automatic
         navigationVC.navigationBar.prefersLargeTitles = true
         return navigationVC
+    }
+
+    private func navigate(to step: SidebarNavigationStep) {
+        switch step {
+        case .domains:
+            let domainsVC = AllDomainsListViewController()
+            let navigationVC = UINavigationController(rootViewController: domainsVC)
+            splitVC.present(navigationVC, animated: true)
+        case .help:
+            let supportVC = SupportTableViewController()
+            let navigationVC = UINavigationController(rootViewController: supportVC)
+            splitVC.present(navigationVC, animated: true)
+        case .profile:
+            showMeScreen()
+        }
     }
 
     // MARK: – RootViewPresenter
