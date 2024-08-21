@@ -55,7 +55,8 @@ final class SplitViewRootPresenter: RootViewPresenter {
             }
         case .notifications:
             // TODO: (wpsidebar) update tab bar item when new notifications arrive
-            let notificationsVC = UIStoryboard(name: "Notifications", bundle: nil).instantiateInitialViewController()!
+            let notificationsVC = UIStoryboard(name: "Notifications", bundle: nil).instantiateInitialViewController() as! NotificationsViewController
+            notificationsVC.isSidebarModeEnabled = true
             let navigationVC = UINavigationController(rootViewController: notificationsVC)
             splitVC.setViewController(navigationVC, for: .supplementary)
         case .reader:
