@@ -150,7 +150,7 @@ extension ReaderTabView {
             mainStackViewTopAnchor,
             mainStackView.trailingAnchor.constraint(equalTo: safeTrailingAnchor),
             mainStackView.leadingAnchor.constraint(equalTo: safeLeadingAnchor),
-            mainStackView.bottomAnchor.constraint(equalTo: safeBottomAnchor),
+            mainStackView.bottomAnchor.constraint(equalTo: viewModel.isSidebarModeEnabled ? bottomAnchor : safeBottomAnchor),
         ])
     }
 
