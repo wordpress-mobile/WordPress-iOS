@@ -182,6 +182,8 @@ platform :ios do
         paths: [
           'WordPress/',
           'Pods/WordPress*/',
+          'Modules/Sources/',
+          'WordPressAuthenticator/Sources/',
           gutenberg_path
         ],
         exclude: ['*Vendor*', 'WordPress/WordPressTest/**', '**/AppLocalizedString.swift'],
