@@ -62,7 +62,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
         case .reader:
             let readerVC = ReaderViewController()
             let readerSidebarVS = ReaderSidebarViewController(viewModel: readerVC.readerTabViewModel)
-            splitVC.setViewController(UINavigationController(rootViewController: readerSidebarVS), for: .supplementary)
+            splitVC.setViewController(makeRootNavigationController(with: readerSidebarVS), for: .supplementary)
             splitVC.setViewController(UINavigationController(rootViewController: readerVC), for: .secondary)
         }
     }

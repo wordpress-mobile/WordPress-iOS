@@ -12,7 +12,7 @@ struct SidebarProfileView: View {
             VStack(alignment: .leading, spacing: 0) {
                 Text(account.displayName)
                     .font(.callout.weight(.medium))
-                Text(account.username)
+                Text("@\(account.username)")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
             }
