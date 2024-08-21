@@ -73,7 +73,7 @@ class Feature: NSObject {
 extension FeatureFlag {
     /// Descriptions used to display the feature flag override menu in debug builds
     var description: String {
-        switch self {
+        return switch self {
         case .bloggingPrompts: "Blogging Prompts"
         case .jetpackDisconnect: "Jetpack disconnect"
         case .siteIconCreator: "Site Icon Creator"
@@ -87,8 +87,7 @@ extension FeatureFlag {
         case .authenticateUsingApplicationPassword: "Application Passwords for self-hosted sites"
         case .tipKit: "TipKit"
         case .sidebar: "Sidebar"
-        case .newGutenberg:
-            return "GutenbergKit"
+        case .newGutenberg: "GutenbergKit"
         }
     }
 }
