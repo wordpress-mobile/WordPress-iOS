@@ -878,6 +878,16 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     return row;
 }
 
+- (BlogDetailsRow *)applicationPasswordManagementRow
+{
+    __weak __typeof(self) weakSelf = self;
+    NSString *title = NSLocalizedString(@"Application Passwords", @"Noun. Title. Links to the application password management feature.");
+    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:title
+                                                          image:[UIImage systemImageNamed:@"lock"]
+                                                       callback:^{ [weakSelf showApplicationPasswordManagement]; }];
+    return row;
+}
+
 #pragma mark - Data Model setup
 
 - (void)reloadTableViewPreservingSelection
@@ -1077,6 +1087,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     }
     if ([self shouldAddDomainRegistrationRow]) {
         [secondSectionRows addObject:[self domainsRow]];
+    }
+    if ([self shouldShowApplicationPasswordRow]) {
+        [secondSectionRows addObject:[self applicationPasswordManagementRow]];
     }
     [secondSectionRows addObject:[self siteSettingsRow]];
 
@@ -1315,6 +1328,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
                                                      callback:^{
                                                          [weakSelf showPlugins];
                                                      }]];
+    }
+
+    if ([self shouldShowApplicationPasswordRow]) {
+        [rows addObject:[self applicationPasswordManagementRow]];
     }
 
     BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Site Settings", @"Noun. Title. Links to the blog's Settings screen.")

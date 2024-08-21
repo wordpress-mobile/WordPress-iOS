@@ -1,5 +1,4 @@
 import UIKit
-import ViewLayer
 import Combine
 import WordPressShared
 import SwiftUI

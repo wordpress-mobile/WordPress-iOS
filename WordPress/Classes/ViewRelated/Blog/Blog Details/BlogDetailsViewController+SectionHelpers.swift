@@ -1,3 +1,7 @@
+import Foundation
+import UIKit
+import SwiftUI
+
 extension Array where Element: BlogDetailsSection {
     fileprivate func findSectionIndex(of category: BlogDetailsSectionCategory) -> Int? {
         return firstIndex(where: { $0.category == category })
@@ -117,5 +121,35 @@ extension BlogDetailsViewController {
 
     @objc func shouldAddDomainRegistrationRow() -> Bool {
         return AppConfiguration.allowsDomainRegistration && blog.supports(.domains)
+    }
+
+    @objc func shouldShowApplicationPasswordRow() -> Bool {
+        // Only available for application-password authenticated self-hosted sites.
+        return self.blog.account == nil && self.blog.userID != nil && (try? WordPressSite.from(blog: self.blog)) != nil
+    }
+
+    private func createApplicationPasswordService() -> ApplicationPasswordService? {
+        guard let userId = self.blog.userID?.intValue else {
+            return nil
+        }
+
+        do {
+            let site = try WordPressSite.from(blog: self.blog)
+            let client = try WordPressClient.for(site: site, in: .shared)
+            return ApplicationPasswordService(api: client, currentUserId: userId)
+        } catch {
+            DDLogError("Failed to create WordPressClient: \(error)")
+            return nil
+        }
+    }
+
+    @objc func showApplicationPasswordManagement() {
+        guard let presentationDelegate, let service = createApplicationPasswordService() else {
+            return
+        }
+
+        let viewModel = ApplicationTokenListViewModel(dataProvider: service)
+        let viewController = UIHostingController(rootView: ApplicationTokenListView(viewModel: viewModel))
+        presentationDelegate.presentBlogDetailsViewController(viewController)
     }
 }

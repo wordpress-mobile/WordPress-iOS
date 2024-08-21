@@ -22,16 +22,3 @@ public struct ApplicationTokenItem: Identifiable {
         self.lastIpAddress = lastIpAddress
     }
 }
-
-package extension ApplicationTokenItem {
-    static let bobToken = ApplicationTokenItem(name: "Bob's iPad Mini", uuid: UUID(), appId: "1234", createdAt: .now, lastUsed: .now.advanced(by: -10_000), lastIpAddress: IPv4Address.any.debugDescription)
-
-    static let aliceToken = ApplicationTokenItem(name: "Alice's super fast and tiny tablet with keyboard", uuid: UUID(), appId: "1234", createdAt: .now, lastUsed: nil, lastIpAddress: nil)
-}
-
-package extension [ApplicationTokenItem] {
-    static let testTokens: [ApplicationTokenItem] = [
-        .bobToken,
-        .aliceToken
-    ]
-}
