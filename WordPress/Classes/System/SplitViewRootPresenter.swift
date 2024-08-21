@@ -32,7 +32,8 @@ final class SplitViewRootPresenter: RootViewPresenter {
         // splitVC.preferredSplitBehavior = .tile
 
         let sidebarVC = SidebarViewController(viewModel: sidebarViewModel)
-        splitVC.setViewController(sidebarVC, for: .primary)
+        let navigationVC = makeRootNavigationController(with: sidebarVC)
+        splitVC.setViewController(navigationVC, for: .primary)
 
         let tabBarVC = WPTabBarController(staticScreens: false)
         splitVC.setViewController(tabBarVC, for: .compact)
@@ -47,29 +48,21 @@ final class SplitViewRootPresenter: RootViewPresenter {
             break
         case .blog(let objectID):
             do {
-                let blog = try ContextManager.shared.mainContext.existingObject(with: objectID)
-
-                let siteMenuVC = SiteMenuViewController(blog: blog)
-                siteMenuVC.delegate = self
-                splitVC.setViewController(siteMenuVC, for: .supplementary)
-                splitVC.setViewController(UINavigationController(), for: .secondary)
-
-                // TODO: (wpsidebar) Refactor this (initial .secondary vc managed based on the VC presentation)
-                _ = siteMenuVC.view
-
+                let site = try ContextManager.shared.mainContext.existingObject(with: objectID)
+                showDetails(for: site)
             } catch {
                 // TODO: (wpsidebar) show empty state
             }
         case .notifications:
             // TODO: (wpsidebar) update tab bar item when new notifications arrive
-            let notificationsVC = UIStoryboard(name: "Notifications", bundle: nil).instantiateInitialViewController()
-            splitVC.setViewController(notificationsVC, for: .supplementary)
+            let notificationsVC = UIStoryboard(name: "Notifications", bundle: nil).instantiateInitialViewController()!
+            let navigationVC = UINavigationController(rootViewController: notificationsVC)
+            splitVC.setViewController(navigationVC, for: .supplementary)
         case .reader:
             let readerVC = ReaderViewController()
             let readerSidebarVS = ReaderSidebarViewController(viewModel: readerVC.readerTabViewModel)
-            splitVC.setViewController(readerSidebarVS, for: .supplementary)
-            let navigationVC = UINavigationController(rootViewController: readerVC)
-            splitVC.setViewController(navigationVC, for: .secondary)
+            splitVC.setViewController(UINavigationController(rootViewController: readerSidebarVS), for: .supplementary)
+            splitVC.setViewController(UINavigationController(rootViewController: readerVC), for: .secondary)
         case .domains:
             // TODO: (wisidebar) figure out what to do with selection
             let domainsVC = AllDomainsListViewController()
@@ -81,6 +74,26 @@ final class SplitViewRootPresenter: RootViewPresenter {
             splitVC.present(navigationVC, animated: true)
             break
         }
+    }
+
+    private func showDetails(for site: Blog) {
+        let siteMenuVC = SiteMenuViewController(blog: site)
+        siteMenuVC.delegate = self
+        let navigationVC = makeRootNavigationController(with: siteMenuVC)
+        splitVC.setViewController(navigationVC, for: .supplementary)
+
+        // Reset navigation stack
+        splitVC.setViewController(UINavigationController(), for: .secondary)
+
+        // TODO: (wpsidebar) Refactor this (initial .secondary vc managed based on the VC presentation)
+        _ = siteMenuVC.view
+    }
+
+    private func makeRootNavigationController(with viewController: UIViewController) -> UINavigationController {
+        let navigationVC = UINavigationController(rootViewController: viewController)
+        viewController.navigationItem.largeTitleDisplayMode = .automatic
+        navigationVC.navigationBar.prefersLargeTitles = true
+        return navigationVC
     }
 
     // MARK: – RootViewPresenter
