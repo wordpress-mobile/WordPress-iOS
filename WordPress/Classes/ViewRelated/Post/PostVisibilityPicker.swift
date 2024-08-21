@@ -2,6 +2,7 @@ import SwiftUI
 
 struct PostVisibilityPicker: View {
     @State private var selection: Selection
+    @State private var previousSelection: Selection
     @State private var isDismissing = false
     @FocusState private var isPasswordFieldFocused: Bool
 
@@ -21,6 +22,7 @@ struct PostVisibilityPicker: View {
 
     init(selection: Selection, onSubmit: @escaping (Selection) -> Void) {
         self._selection = State(initialValue: selection)
+        self._previousSelection = State(initialValue: selection)
         self.onSubmit = onSubmit
     }
 
@@ -31,22 +33,29 @@ struct PostVisibilityPicker: View {
         .disabled(isDismissing)
         .navigationTitle(Strings.title)
         .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(isPasswordFieldFocused)
+        .toolbar {
+            if isPasswordFieldFocused {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button(SharedStrings.Button.cancel) {
+                        withAnimation {
+                            selection = previousSelection
+                        }
+                    }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button(SharedStrings.Button.done) {
+                        buttonSavePasswordTapped()
+                    }
+                    .disabled(selection.password.trimmingCharacters(in: .whitespaces).isEmpty)
+                }
+            }
+        }
     }
 
     @ViewBuilder
     private func makeRow(for visibility: PostVisibility) -> some View {
-        Button(action: {
-            withAnimation {
-                selection.type = visibility
-                selection.password = ""
-
-                if visibility == .protected {
-                    isPasswordFieldFocused = true
-                } else {
-                    onSubmit(selection)
-                }
-            }
-        }, label: {
+        Button(action: { didSelectVisibility(visibility) }) {
             HStack {
                 VStack(alignment: .leading) {
                     Text(visibility.localizedTitle)
@@ -60,7 +69,7 @@ struct PostVisibilityPicker: View {
                     .tint(Color(uiColor: .primary))
                     .opacity((selection.type == visibility && !isPasswordFieldFocused) ? 1 : 0)
             }
-        })
+        }
         .tint(.primary)
         .disabled(isPasswordFieldFocused && visibility != .protected)
 
@@ -69,39 +78,39 @@ struct PostVisibilityPicker: View {
         }
     }
 
+    private func didSelectVisibility(_ visibility: PostVisibility) {
+        withAnimation {
+            previousSelection = selection
+            selection.type = visibility
+            selection.password = ""
+            if visibility == .protected {
+                isPasswordFieldFocused = true
+            } else {
+                onSubmit(selection)
+            }
+        }
+    }
+
     @ViewBuilder
     private var enterPasswordRows: some View {
         PasswordField(password: $selection.password, isFocused: isPasswordFieldFocused)
             .focused($isPasswordFieldFocused)
             .onSubmit(buttonSavePasswordTapped)
-
-        if isPasswordFieldFocused {
-            HStack {
-                Button(Strings.cancel) {
-                    withAnimation {
-                        selection.type = .public
-                        selection.password = ""
-                    }
-                }
-                .keyboardShortcut(.cancelAction)
-                Spacer()
-                Button(Strings.save, action: buttonSavePasswordTapped)
-                    .font(.body.weight(.medium))
-                    .disabled(selection.password.trimmingCharacters(in: .whitespaces).isEmpty)
-            }
-            .buttonStyle(.plain)
-            .foregroundStyle(Color(uiColor: .brand))
-        }
     }
 
     private func buttonSavePasswordTapped() {
         withAnimation {
             isPasswordFieldFocused = false
             selection.password = selection.password.trimmingCharacters(in: .whitespaces)
-            isDismissing = true
-            // Let the keyboard dismiss first to avoid janky animation
-            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(550)) {
-                onSubmit(selection)
+
+            if !selection.password.isEmpty {
+                isDismissing = true
+                // Let the keyboard dismiss first to avoid janky animation
+                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(550)) {
+                    onSubmit(selection)
+                }
+            } else {
+                selection = previousSelection
             }
         }
     }
