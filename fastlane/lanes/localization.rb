@@ -122,29 +122,31 @@ platform :ios do
   # @called_by complete_code_freeze
   #
   lane :generate_strings_file_for_glotpress do |options|
-    cocoapods
-
-    # On top of fetching the latest Pods, we also need to fetch the source for the Gutenberg code.
-    # To get it, we need to manually clone the repo, since Gutenberg is distributed via XCFramework.
-    # XCFrameworks are binary targets and cannot extract strings via genstrings from there.
-    config = gutenberg_config!
-
-    ref_node = config[:ref]
-    UI.user_error!('Could not find Gutenberg ref to clone the repository in order to access its strings.') if ref_node.nil?
-
-    ref = ref_node[:tag] || ref_node[:commit]
-    UI.user_error!('The ref to clone Gutenberg in order to access its strings has neither tag nor commit values.') if ref.nil?
-
-    github_org = config[:github_org]
-    UI.user_error!('Could not find GitHub organization name to clone Gutenberg in order to access its strings.') if github_org.nil?
-
-    repo_name = config[:repo_name]
-    UI.user_error!('Could not find GitHub repository name to clone Gutenberg in order to access its strings.') if repo_name.nil?
-
-    # Create a temporary directory to clone Gutenberg into.
-    # We'll run the rest of the automation from within the block, but notice that only the Gutenbreg cloning happens within the temporary directory.
-    gutenberg_clone_name = 'Gutenberg-Strings-Clone'
+    # We create the tempdir immediately, even though we might not need it.
+    # It's just simpler to rely on the Ruby block API for it than to manage it by hand.
     Dir.mktmpdir do |tempdir|
+      cocoapods
+
+      # On top of fetching the latest Pods, we also need to fetch the source for the Gutenberg code.
+      # To get it, we need to manually clone the repo, since Gutenberg is distributed via XCFramework.
+      # XCFrameworks are binary targets and cannot extract strings via genstrings from there.
+      config = gutenberg_config!
+
+      ref_node = config[:ref]
+      UI.user_error!('Could not find Gutenberg ref to clone the repository in order to access its strings.') if ref_node.nil?
+
+      ref = ref_node[:tag] || ref_node[:commit]
+      UI.user_error!('The ref to clone Gutenberg in order to access its strings has neither tag nor commit values.') if ref.nil?
+
+      github_org = config[:github_org]
+      UI.user_error!('Could not find GitHub organization name to clone Gutenberg in order to access its strings.') if github_org.nil?
+
+      repo_name = config[:repo_name]
+      UI.user_error!('Could not find GitHub repository name to clone Gutenberg in order to access its strings.') if repo_name.nil?
+
+      # Create a temporary directory to clone Gutenberg into.
+      # We'll run the rest of the automation from within the block, but notice that only the Gutenbreg cloning happens within the temporary directory.
+      gutenberg_clone_name = 'Gutenberg-Strings-Clone'
       Dir.chdir(tempdir) do
         repo_url = "https://github.com/#{github_org}/#{repo_name}"
         UI.message("Cloning Gutenberg from #{repo_url} into #{gutenberg_clone_name}. This might take a few minutes…")
