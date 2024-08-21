@@ -93,13 +93,17 @@ private struct SidebarView: View {
 
     @ViewBuilder
     private var more: some View {
+#if JETPACK
         Label(Strings.notifications, systemImage: "bell")
             .tag(SidebarSelection.notifications)
         Label(Strings.reader, systemImage: "eyeglasses")
             .tag(SidebarSelection.reader)
-        Button(action: { viewModel.navigate(.domains) }) {
-            Label(Strings.domains, systemImage: "network")
+        if RemoteFeatureFlag.domainManagement.enabled() {
+            Button(action: { viewModel.navigate(.domains) }) {
+                Label(Strings.domains, systemImage: "network")
+            }
         }
+#endif
         Button(action: { viewModel.navigate(.help) }) {
             Label(Strings.help, systemImage: "questionmark.circle")
         }

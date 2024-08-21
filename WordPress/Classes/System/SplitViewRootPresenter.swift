@@ -81,9 +81,13 @@ final class SplitViewRootPresenter: RootViewPresenter {
     private func navigate(to step: SidebarNavigationStep) {
         switch step {
         case .domains:
+#if JETPACK
             let domainsVC = AllDomainsListViewController()
             let navigationVC = UINavigationController(rootViewController: domainsVC)
             splitVC.present(navigationVC, animated: true)
+#else
+            wpAssertionFailure("domains are not supported in wpios")
+#endif
         case .help:
             let supportVC = SupportTableViewController()
             let navigationVC = UINavigationController(rootViewController: supportVC)
