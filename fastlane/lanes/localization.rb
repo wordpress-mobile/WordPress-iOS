@@ -97,6 +97,11 @@ MANUALLY_MAINTAINED_STRINGS_FILES = {
   File.join('WordPress', 'JetpackIntents', 'en.lproj', 'Sites.strings') => 'ios-widget.' # Strings from the `.intentdefinition`, used for configuring the iOS Widget
 }.freeze
 
+# The names of the remote Swift Packages that we want to add to our localizations, as they'll be checked out during resolvePackageDependencies in the Derived Data folder
+REMOTE_SWIFT_PACKAGES_TO_LOCALIZE = %w[
+  WordPressKit-iOS
+].freeze
+
 # Application-agnostic settings for the `upload_to_app_store` action (also known as `deliver`).
 # Used in `update_*_metadata_on_app_store_connect` lanes.
 #
@@ -128,6 +133,10 @@ platform :ios do
       # Fetch fresh pods to read the latest localizations from them.
       # In CI, we expect the pods to be already available and up to date.
       cocoapods unless is_ci
+
+      # For the same reason, fetch fresh packages
+      # FIXME: We yet don't have an explicit way to set the derived data in CI, so we'll run it in CI, too
+      resolve_packages(derived_data_path: DERIVED_DATA_PATH)
 
       custom_gutenber_path = options[:gutenberg_path]
       if custom_gutenber_path
@@ -186,7 +195,8 @@ platform :ios do
           'Pods/WordPress*/',
           'Modules/Sources/',
           'WordPressAuthenticator/Sources/',
-          gutenberg_path
+          gutenberg_path,
+          *REMOTE_SWIFT_PACKAGES_TO_LOCALIZE.map { |name| File.join(DERIVED_DATA_PATH, 'SourcePackages', 'checkouts', name, 'Sources') }
         ],
         exclude: ['*Vendor*', 'WordPress/WordPressTest/**', '**/AppLocalizedString.swift'],
         routines: ['AppLocalizedString'],
