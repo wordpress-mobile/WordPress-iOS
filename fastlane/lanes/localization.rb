@@ -136,7 +136,8 @@ platform :ios do
 
       # For the same reason, fetch fresh packages
       # FIXME: We yet don't have an explicit way to set the derived data in CI, so we'll run it in CI, too
-      resolve_packages(derived_data_path: DERIVED_DATA_PATH)
+      derived_data_path = options[:derived_data_path] || DERIVED_DATA_PATH
+      resolve_packages(derived_data_path: derived_data_path)
 
       custom_gutenber_path = options[:gutenberg_path]
       if custom_gutenber_path
@@ -196,7 +197,7 @@ platform :ios do
           'Modules/Sources/',
           'WordPressAuthenticator/Sources/',
           gutenberg_path,
-          *REMOTE_SWIFT_PACKAGES_TO_LOCALIZE.map { |name| File.join(DERIVED_DATA_PATH, 'SourcePackages', 'checkouts', name, 'Sources') }
+          *REMOTE_SWIFT_PACKAGES_TO_LOCALIZE.map { |name| File.join(derived_data_path, 'SourcePackages', 'checkouts', name, 'Sources') }
         ],
         exclude: ['*Vendor*', 'WordPress/WordPressTest/**', '**/AppLocalizedString.swift'],
         routines: ['AppLocalizedString'],
