@@ -4,9 +4,6 @@ import SwiftUI
 final class MeSplitViewController: UISplitViewController {
     init() {
         super.init(style: .doubleColumn)
-
-        // TODO: (wpsidebar) increase size
-        modalPresentationStyle = .formSheet
     }
 
     required init?(coder: NSCoder) {
@@ -15,6 +12,8 @@ final class MeSplitViewController: UISplitViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        presentsWithGesture = false
 
         let meVC = MeViewController()
         meVC.isSidebarModeEnabled = true

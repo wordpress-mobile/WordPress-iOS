@@ -49,6 +49,13 @@ class MeViewController: UITableViewController {
         tableView.accessibilityIdentifier = "Me Table"
 
         reloadViewModel()
+
+        if isSidebarModeEnabled {
+            tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .none)
+            if let myProfileViewController {
+                showOrPushController(myProfileViewController)
+            }
+        }
     }
 
     override func viewDidLayoutSubviews() {
