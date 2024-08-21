@@ -164,7 +164,11 @@ platform :ios do
       # However, we are still in the tempdir block, so that once the automation is done, the tempdir will be automatically deleted.
       wordpress_en_lproj = File.join('WordPress', 'Resources', 'en.lproj')
       ios_generate_strings_file_from_code(
-        paths: ['WordPress/', 'Pods/WordPress*/', 'Pods/WPMediaPicker/', 'WordPressShared/WordPressShared/', File.join(tempdir, gutenberg_clone_name)],
+        paths: [
+          'WordPress/',
+          'Pods/WordPress*/',
+          File.join(tempdir, gutenberg_clone_name)
+        ],
         exclude: ['*Vendor*', 'WordPress/WordPressTest/**', '**/AppLocalizedString.swift'],
         routines: ['AppLocalizedString'],
         output_dir: wordpress_en_lproj
