@@ -16,6 +16,9 @@ echo '--- :git: Checkout release branch'
 echo '--- :ruby: Setup Ruby tools'
 install_gems
 
+echo "--- :swift: Set up Swift Packages"
+install_swiftpm_dependencies
+
 echo '--- :closed_lock_with_key: Access secrets'
 bundle exec fastlane run configure_apply
 
