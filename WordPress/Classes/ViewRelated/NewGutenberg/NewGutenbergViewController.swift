@@ -2,6 +2,7 @@ import UIKit
 import AutomatticTracks
 import GutenbergKit
 import SafariServices
+import WordPressShared
 
 class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor {
     let errorDomain: String = "GutenbergViewController.errorDomain"
@@ -213,15 +214,15 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     private func reloadBlogIconView() {
         let blog = post.blog
 
-        if blog.hasIcon == true {
-            let size = CGSize(width: 24, height: 24)
-            navigationBarManager.siteIconView.imageView.downloadSiteIcon(for: blog, imageSize: size)
-        } else if blog.isWPForTeams() {
-            navigationBarManager.siteIconView.imageView.tintColor = UIColor.listIcon
-            navigationBarManager.siteIconView.imageView.image = UIImage.gridicon(.p2)
-        } else {
-            navigationBarManager.siteIconView.imageView.image = UIImage.siteIconPlaceholder
-        }
+//        if blog.hasIcon == true {
+//            let size = CGSize(width: 24, height: 24)
+//            navigationBarManager.siteIconView.imageView.downloadSiteIcon(for: blog, imageSize: size)
+//        } else if blog.isWPForTeams() {
+//            navigationBarManager.siteIconView.imageView.tintColor = UIColor.listIcon
+//            navigationBarManager.siteIconView.imageView.image = UIImage.gridicon(.p2)
+//        } else {
+//            navigationBarManager.siteIconView.imageView.image = UIImage.siteIconPlaceholder
+//        }
 
         // TODO: implement
         // Docs: https://wordpress.org/gutenberg-framework/docs/basic-concepts/undo-redo
@@ -325,8 +326,7 @@ private struct NewGutenbergNetworkClient: GutenbergKit.EditorNetworkingClient {
         }
         path.removePrefix("./wp-json")
 
-        let (response, data) = try await api._perform(method: request.method, path: path)
-        return GutenbergKit.EditorNetworkResponse(urlResponse: response, data: data)
+        throw URLError(.unknown) // Should never happen
     }
 }
 

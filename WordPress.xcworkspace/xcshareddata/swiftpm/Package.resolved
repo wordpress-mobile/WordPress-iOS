@@ -136,6 +136,15 @@
       }
     },
     {
+      "identity" : "gutenbergkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/wordpress-mobile/GutenbergKit",
+      "state" : {
+        "branch" : "latest",
+        "revision" : "5d719a8698c052dd4e3bffde9d2e7b88375c1528"
+      }
+    },
+    {
       "identity" : "jtapplecalendar",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/patchthecode/JTAppleCalendar",
