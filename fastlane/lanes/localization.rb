@@ -97,6 +97,11 @@ MANUALLY_MAINTAINED_STRINGS_FILES = {
   File.join('WordPress', 'JetpackIntents', 'en.lproj', 'Sites.strings') => 'ios-widget.' # Strings from the `.intentdefinition`, used for configuring the iOS Widget
 }.freeze
 
+# The names of the remote Swift Packages that we want to add to our localizations, as they'll be checked out during resolvePackageDependencies in the Derived Data folder
+REMOTE_SWIFT_PACKAGES_TO_LOCALIZE = %w[
+  WordPressKit-iOS
+].freeze
+
 # Application-agnostic settings for the `upload_to_app_store` action (also known as `deliver`).
 # Used in `update_*_metadata_on_app_store_connect` lanes.
 #
@@ -122,49 +127,78 @@ platform :ios do
   # @called_by complete_code_freeze
   #
   lane :generate_strings_file_for_glotpress do |options|
-    cocoapods
-
-    # On top of fetching the latest Pods, we also need to fetch the source for the Gutenberg code.
-    # To get it, we need to manually clone the repo, since Gutenberg is distributed via XCFramework.
-    # XCFrameworks are binary targets and cannot extract strings via genstrings from there.
-    config = gutenberg_config!
-
-    ref_node = config[:ref]
-    UI.user_error!('Could not find Gutenberg ref to clone the repository in order to access its strings.') if ref_node.nil?
-
-    ref = ref_node[:tag] || ref_node[:commit]
-    UI.user_error!('The ref to clone Gutenberg in order to access its strings has neither tag nor commit values.') if ref.nil?
-
-    github_org = config[:github_org]
-    UI.user_error!('Could not find GitHub organization name to clone Gutenberg in order to access its strings.') if github_org.nil?
-
-    repo_name = config[:repo_name]
-    UI.user_error!('Could not find GitHub repository name to clone Gutenberg in order to access its strings.') if repo_name.nil?
-
-    # Create a temporary directory to clone Gutenberg into.
-    # We'll run the rest of the automation from within the block, but notice that only the Gutenbreg cloning happens within the temporary directory.
-    gutenberg_clone_name = 'Gutenberg-Strings-Clone'
+    # We jump in the tempdir immediately, even though we might not need it.
+    # It's just simpler to rely on the Ruby block API for it than to manage it by hand.
     Dir.mktmpdir do |tempdir|
-      Dir.chdir(tempdir) do
-        repo_url = "https://github.com/#{github_org}/#{repo_name}"
-        UI.message("Cloning Gutenberg from #{repo_url} into #{gutenberg_clone_name}. This might take a few minutes…")
-        sh("git clone --depth 1 #{repo_url} #{gutenberg_clone_name}")
-        Dir.chdir(gutenberg_clone_name) do
-          if config[:ref][:tag]
-            sh("git fetch origin refs/tags/#{ref}:refs/tags/#{ref}")
-            sh("git checkout refs/tags/#{ref}")
-          else
-            sh("git fetch origin #{ref}")
-            sh("git checkout #{ref}")
+      # Fetch fresh pods to read the latest localizations from them.
+      # In CI, we expect the pods to be already available and up to date.
+      cocoapods unless is_ci
+
+      # For the same reason, fetch fresh packages
+      # FIXME: We yet don't have an explicit way to set the derived data in CI, so we'll run it in CI, too
+      derived_data_path = options.fetch(:derived_data_path, DERIVED_DATA_PATH)
+      resolve_packages(derived_data_path: derived_data_path)
+
+      custom_gutenber_path = options[:gutenberg_path]
+      if custom_gutenber_path
+        # It's simpler to ask the caller to give an absolute path than to make it absolute ourselves be
+        # Given this is a debug option, it seems like an okay tradeoff.
+        UI.user_error!("Please provide gutenberg_path as an absolute path. Current value: #{custom_gutenber_path}") unless File.absolute_path?(custom_gutenber_path)
+
+        UI.user_error!("Could not find Gutenber project at given path #{custom_gutenber_path}") unless Dir.exist?(custom_gutenber_path)
+
+        gutenberg_path = custom_gutenber_path
+        UI.message("Using Gutenberg from #{gutenberg_path} instead of cloning it...")
+      else
+        # On top of fetching the latest Pods, we also need to fetch the source for the Gutenberg code.
+        # To get it, we need to manually clone the repo, since Gutenberg is distributed via XCFramework.
+        # XCFrameworks are binary targets and cannot extract strings via genstrings from there.
+        config = gutenberg_config!
+
+        ref_node = config[:ref]
+        UI.user_error!('Could not find Gutenberg ref to clone the repository in order to access its strings.') if ref_node.nil?
+
+        ref = ref_node[:tag] || ref_node[:commit]
+        UI.user_error!('The ref to clone Gutenberg in order to access its strings has neither tag nor commit values.') if ref.nil?
+
+        github_org = config[:github_org]
+        UI.user_error!('Could not find GitHub organization name to clone Gutenberg in order to access its strings.') if github_org.nil?
+
+        repo_name = config[:repo_name]
+        UI.user_error!('Could not find GitHub repository name to clone Gutenberg in order to access its strings.') if repo_name.nil?
+
+        # Create a temporary directory to clone Gutenberg into.
+        # We'll run the rest of the automation from within the block, but notice that only the Gutenbreg cloning happens within the temporary directory.
+        gutenberg_clone_name = 'Gutenberg-Strings-Clone'
+        Dir.chdir(tempdir) do
+          repo_url = "https://github.com/#{github_org}/#{repo_name}"
+          UI.message("Cloning Gutenberg from #{repo_url} into #{gutenberg_clone_name}. This might take a few minutes…")
+          sh("git clone --depth 1 #{repo_url} #{gutenberg_clone_name}")
+          Dir.chdir(gutenberg_clone_name) do
+            if config[:ref][:tag]
+              sh("git fetch origin refs/tags/#{ref}:refs/tags/#{ref}")
+              sh("git checkout refs/tags/#{ref}")
+            else
+              sh("git fetch origin #{ref}")
+              sh("git checkout #{ref}")
+            end
           end
         end
+        gutenberg_path = File.join(tempdir, gutenberg_clone_name)
       end
 
       # Notice that we are no longer in the tempdir, so the paths below are back to being relative to the project root folder.
       # However, we are still in the tempdir block, so that once the automation is done, the tempdir will be automatically deleted.
       wordpress_en_lproj = File.join('WordPress', 'Resources', 'en.lproj')
       ios_generate_strings_file_from_code(
-        paths: ['WordPress/', 'Pods/WordPress*/', 'Pods/WPMediaPicker/', 'WordPressShared/WordPressShared/', File.join(tempdir, gutenberg_clone_name)],
+        paths: [
+          'WordPress/',
+          'Pods/WordPress*/',
+          'Modules/Sources/',
+          'WordPressAuthenticator/Sources/',
+          gutenberg_path,
+          *REMOTE_SWIFT_PACKAGES_TO_LOCALIZE.map { |name| File.join(derived_data_path, 'SourcePackages', 'checkouts', name, 'Sources') }
+        ],
         exclude: ['*Vendor*', 'WordPress/WordPressTest/**', '**/AppLocalizedString.swift'],
         routines: ['AppLocalizedString'],
         output_dir: wordpress_en_lproj

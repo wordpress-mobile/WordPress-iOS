@@ -7,7 +7,7 @@ APPCENTER_OWNER_NAME = 'automattic'
 APPCENTER_OWNER_TYPE = 'organization'
 CONCURRENT_SIMULATORS = 2
 
-# Shared options to use when invoking `gym` / `build_app`.
+# Shared options to use when invoking `build_app` (`gym`).
 #
 # - `manageAppVersionAndBuildNumber: false` prevents `xcodebuild` from bumping
 #   the build number when extracting an archive into an IPA file. We want to
@@ -171,7 +171,7 @@ platform :ios do
 
     appstore_code_signing
 
-    gym(
+    build_app(
       scheme: 'WordPress',
       workspace: WORKSPACE_PATH,
       clean: true,
@@ -236,7 +236,7 @@ platform :ios do
 
     jetpack_appstore_code_signing
 
-    gym(
+    build_app(
       scheme: 'Jetpack',
       workspace: WORKSPACE_PATH,
       clean: true,
@@ -315,6 +315,17 @@ platform :ios do
     )
   end
 
+  lane :resolve_packages do |derived_data_path: DERIVED_DATA_PATH|
+    sh(
+      'xcodebuild',
+      '-resolvePackageDependencies',
+      '-onlyUsePackageVersionsFromResolvedFile',
+      '-workspace', File.join(PROJECT_ROOT_FOLDER, 'WordPress.xcworkspace'),
+      '-scheme', 'WordPress',
+      '-derivedDataPath', derived_data_path
+    )
+  end
+
   #################################################
   # Helper Functions
   #################################################
@@ -357,7 +368,7 @@ platform :ios do
     new_config.save_as(Pathname.new(version_config_path))
 
     # Build
-    gym(
+    build_app(
       scheme: scheme,
       workspace: WORKSPACE_PATH,
       configuration: configuration,
