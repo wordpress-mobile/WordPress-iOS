@@ -134,7 +134,7 @@ class FeatureFlagTests: XCTestCase {
         let flag = MockFeatureFlag.enabledFeature
 
         XCTAssertNil(store.overriddenValue(for: flag))
-        try? store.override(flag, withValue: false)
+        store.override(flag, withValue: false)
 
         let value = store.overriddenValue(for: flag)
         XCTAssertNotNil(value)
@@ -145,18 +145,11 @@ class FeatureFlagTests: XCTestCase {
         let flag = MockFeatureFlag.disabledFeature
 
         XCTAssertNil(store.overriddenValue(for: flag))
-        try? store.override(flag, withValue: true)
+        store.override(flag, withValue: true)
 
         let value = store.overriddenValue(for: flag)
         XCTAssertNotNil(value)
         XCTAssert(value == true)
-    }
-
-    func testNonOverrideableFeatureFlagCannotBeOverridden() {
-        let flag = MockFeatureFlag.nonOverrideableFeature
-
-        try? store.override(flag, withValue: false)
-        XCTAssertFalse(store.isOverridden(flag))
     }
 
     func testEnabledFeatureFlagValueIsNotOverriddenWhenResetToNormalState() {
@@ -164,10 +157,10 @@ class FeatureFlagTests: XCTestCase {
 
         XCTAssertFalse(store.isOverridden(flag))
 
-        try? store.override(flag, withValue: false)
+        store.override(flag, withValue: false)
         XCTAssertTrue(store.isOverridden(flag))
 
-        try? store.override(flag, withValue: true)
+        store.override(flag, withValue: true)
         XCTAssertFalse(store.isOverridden(flag))
     }
 
@@ -176,10 +169,10 @@ class FeatureFlagTests: XCTestCase {
 
         XCTAssertFalse(store.isOverridden(flag))
 
-        try? store.override(flag, withValue: true)
+        store.override(flag, withValue: true)
         XCTAssertTrue(store.isOverridden(flag))
 
-        try? store.override(flag, withValue: false)
+        store.override(flag, withValue: false)
         XCTAssertFalse(store.isOverridden(flag))
     }
 }
