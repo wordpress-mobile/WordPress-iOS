@@ -317,13 +317,12 @@ platform :ios do
 
   lane :resolve_packages do |derived_data_path: DERIVED_DATA_PATH|
     sh(
-      command: <<~CMD
-        xcodebuild \
-          -resolvePackageDependencies \
-          -workspace #{File.join(PROJECT_ROOT_FOLDER, 'WordPress.xcworkspace')} \
-          -scheme WordPress \
-          -derivedDataPath #{derived_data_path}
-      CMD
+      'xcodebuild',
+      '-resolvePackageDependencies',
+      '-onlyUsePackageVersionsFromResolvedFile',
+      '-workspace', File.join(PROJECT_ROOT_FOLDER, 'WordPress.xcworkspace'),
+      '-scheme', 'WordPress',
+      '-derivedDataPath', derived_data_path
     )
   end
 
