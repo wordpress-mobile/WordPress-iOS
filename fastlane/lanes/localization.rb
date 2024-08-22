@@ -148,7 +148,7 @@ platform :ios do
         UI.user_error!("Could not find Gutenber project at given path #{custom_gutenber_path}") unless Dir.exist?(custom_gutenber_path)
 
         gutenberg_path = custom_gutenber_path
-        UI.message("Using Gutenberg from #{gutenberg_path} instead of cloing it...")
+        UI.message("Using Gutenberg from #{gutenberg_path} instead of cloning it...")
       else
         # On top of fetching the latest Pods, we also need to fetch the source for the Gutenberg code.
         # To get it, we need to manually clone the repo, since Gutenberg is distributed via XCFramework.
