@@ -136,7 +136,7 @@ platform :ios do
 
       # For the same reason, fetch fresh packages
       # FIXME: We yet don't have an explicit way to set the derived data in CI, so we'll run it in CI, too
-      derived_data_path = options[:derived_data_path] || DERIVED_DATA_PATH
+      derived_data_path = options.fetch(:derived_data_path, DERIVED_DATA_PATH)
       resolve_packages(derived_data_path: derived_data_path)
 
       custom_gutenber_path = options[:gutenberg_path]
