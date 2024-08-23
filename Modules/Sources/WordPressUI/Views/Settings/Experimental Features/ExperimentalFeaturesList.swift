@@ -29,9 +29,8 @@ public struct ExperimentalFeaturesList: View {
     }
 
     public static func asViewController(
-        dataProvider: ExperimentalFeaturesViewModel.DataProvider
+        viewModel: ExperimentalFeaturesViewModel
     ) -> UIHostingController<Self> {
-        let viewModel = ExperimentalFeaturesViewModel(dataProvider: dataProvider)
         let rootView  = ExperimentalFeaturesList(viewModel: viewModel)
 
         let vc = UIHostingController(rootView: rootView)

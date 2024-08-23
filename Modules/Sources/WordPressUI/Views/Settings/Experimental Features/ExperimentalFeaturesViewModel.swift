@@ -46,7 +46,7 @@ public class ExperimentalFeaturesViewModel: ObservableObject {
 
     var dataProvider: DataProvider
 
-    init(dataProvider: DataProvider) {
+    public init(dataProvider: DataProvider) {
         self.dataProvider = dataProvider
     }
 

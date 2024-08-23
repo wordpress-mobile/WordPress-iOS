@@ -378,11 +378,17 @@ class AppSettingsViewController: UITableViewController {
         }
     }
 
+    private let experimentalFeaturesVM = ExperimentalFeaturesViewModel(dataProvider: ExperimentalFeaturesDataProvider())
+
     func pushExperimentalFeatures() -> ImmuTableAction {
         return { [weak self] row in
-            let vc = ExperimentalFeaturesList.asViewController(dataProvider: ExperimentalFeaturesDataProvider())
-            self?.tableView.deselectSelectedRowWithAnimation(true)
-            self?.navigationController?.pushViewController(vc, animated: true)
+            guard let self else {
+                return
+            }
+
+            let vc = ExperimentalFeaturesList.asViewController(viewModel: self.experimentalFeaturesVM)
+            self.tableView.deselectSelectedRowWithAnimation(true)
+            self.navigationController?.pushViewController(vc, animated: true)
         }
     }
 }
