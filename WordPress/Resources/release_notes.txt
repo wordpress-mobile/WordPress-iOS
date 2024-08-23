@@ -1,5 +1,2 @@
-We've fixed three big issues in this release:
-* Some users couldn't update their post's content.
-* Some users had images that were rotated the wrong way.
-* A rare crash in the editor caused by unsupported blocks
-As always, please reach out to support if anything isn't working right!
+
+
