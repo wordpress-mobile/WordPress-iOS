@@ -1,2 +1,10 @@
+This month we have lots of visual fixes, and one new experimental feature we'd love your feedback on.
 
+Visually, we've:
+- Updated the site picker to be simpler and easier to use – it adds support for staging sites, context menus, and previews.
+- Fixed an issue where some navigation bars in the app were transparent.
+- Fixed an issue where private site icons wouldn't load.
+- Updated dozens of screens to avoid visual bugs by simplifying the code.
+- Fixed an issue where the Subscribers chart would show the wrong background color.
 
+Under "App Settings", you now can try out Application Passwords – a new Experimental Feature for self-hosted sites that allows them to work with the apps if they use 2FA or SSO.
