@@ -2,7 +2,7 @@ import SwiftUI
 
 public class ExperimentalFeaturesViewModel: ObservableObject {
     public protocol DataProvider {
-        func loadItems() throws -> [Feature]
+        func loadItems() async throws -> [Feature]
         func value(for: Feature) -> Bool
         func didChangeValue(for feature: Feature, to newValue: Bool)
     }
@@ -36,15 +36,15 @@ public class ExperimentalFeaturesViewModel: ObservableObject {
     }
 
     @Published
-    public var items: [Feature] = []
+    public private(set) var items: [Feature] = []
 
     @Published
-    public var isLoadingItems: Bool = true
+    public private(set) var isLoadingItems: Bool = true
 
     @Published
-    public var error: Error? = nil
+    public private(set) var error: Error? = nil
 
-    var dataProvider: DataProvider
+    private var dataProvider: DataProvider
 
     public init(dataProvider: DataProvider) {
         self.dataProvider = dataProvider
