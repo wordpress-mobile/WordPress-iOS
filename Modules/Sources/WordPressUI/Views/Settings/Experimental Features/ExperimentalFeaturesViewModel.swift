@@ -62,6 +62,17 @@ public class ExperimentalFeaturesViewModel: ObservableObject {
         }
     }
 
+    func binding(for item: Feature) -> Binding<Bool> {
+        Binding<Bool>(
+            get: {
+                self.dataProvider.value(for: item)
+            },
+            set: { newValue in
+                self.objectWillChange.send()
+                self.dataProvider.didChangeValue(for: item, to: newValue)
+            }
+        )
+    }
     package static func withSampleData() -> ExperimentalFeaturesViewModel {
         let dataProvider = DefaultDataProvider(items: Feature.SampleData)
         return ExperimentalFeaturesViewModel(dataProvider: dataProvider)

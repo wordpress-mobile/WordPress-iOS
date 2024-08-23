@@ -11,16 +11,7 @@ public struct ExperimentalFeaturesList: View {
 
     public var body: some View {
         List(viewModel.items) { item in
-            HStack {
-                Toggle(item.name, isOn: Binding<Bool>(
-                    get: {
-                        viewModel.dataProvider.value(for: item)
-                    },
-                    set: { newValue in
-                        viewModel.dataProvider.didChangeValue(for: item, to: newValue)
-                    }
-                ))
-            }
+            Toggle(item.name, isOn: viewModel.binding(for: item))
         }
         .navigationTitle(Strings.pageTitle)
         .task {
