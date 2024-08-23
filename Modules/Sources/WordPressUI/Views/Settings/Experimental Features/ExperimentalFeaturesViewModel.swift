@@ -50,15 +50,15 @@ public class ExperimentalFeaturesViewModel: ObservableObject {
         self.dataProvider = dataProvider
     }
 
-    @MainActor
     func loadItems() async {
+        isLoadingItems = true
+        defer { isLoadingItems = false }
+
         do {
-            let items = try dataProvider.loadItems()
+            let items = try await dataProvider.loadItems()
             self.items = items
-            self.isLoadingItems = false
         } catch {
             self.error = error
-            self.isLoadingItems = false
         }
     }
 
@@ -73,6 +73,7 @@ public class ExperimentalFeaturesViewModel: ObservableObject {
             }
         )
     }
+
     package static func withSampleData() -> ExperimentalFeaturesViewModel {
         let dataProvider = DefaultDataProvider(items: Feature.SampleData)
         return ExperimentalFeaturesViewModel(dataProvider: dataProvider)
