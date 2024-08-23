@@ -173,7 +173,7 @@ private class WeeklyRoundupDataProvider {
     ///
     private func filterCandidateSites(_ sites: [Site], result: @escaping (Result<[Site], Error>) -> Void) {
         let administeredSites = sites.filter { site in
-            site.isAdmin && ((FeatureFlag.debugMenu.enabled && debugSettings.isEnabledForA8cP2s) || !site.isAutomatticP2)
+            site.isAdmin && !site.isAutomatticP2
         }
 
         guard administeredSites.count > 0 else {

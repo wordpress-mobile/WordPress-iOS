@@ -253,6 +253,10 @@ enum RemoteFeatureFlag: Int, CaseIterable {
 }
 
 extension RemoteFeatureFlag: OverridableFlag {
+    var key: String {
+        return "ff-override-\(String(describing: self))"
+    }
+
     var originalValue: Bool {
         return enabled()
     }

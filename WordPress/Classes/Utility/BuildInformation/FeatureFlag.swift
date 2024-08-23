@@ -4,7 +4,6 @@
 enum FeatureFlag: Int, CaseIterable {
     case bloggingPrompts
     case jetpackDisconnect
-    case debugMenu
     case siteIconCreator
     case betaSiteDesigns
     case commentModerationUpdate
@@ -27,8 +26,6 @@ enum FeatureFlag: Int, CaseIterable {
             return AppConfiguration.isJetpack
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
-        case .debugMenu:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         case .siteIconCreator:
             return BuildConfiguration.current != .appStore
         case .betaSiteDesigns:
@@ -73,7 +70,6 @@ extension FeatureFlag {
         switch self {
         case .bloggingPrompts: "Blogging Prompts"
         case .jetpackDisconnect: "Jetpack disconnect"
-        case .debugMenu: "Debug menu"
         case .siteIconCreator: "Site Icon Creator"
         case .betaSiteDesigns: "Fetch Beta Site Designs"
         case .commentModerationUpdate: "Comments Moderation Update"
@@ -82,7 +78,7 @@ extension FeatureFlag {
         case .newTabIcons: "New Tab Icons"
         case .autoSaveDrafts: "Autosave Drafts"
         case .voiceToContent: "Voice to Content"
-        case .authenticateUsingApplicationPassword: "Authenticate self-hosted sites using Application Password"
+        case .authenticateUsingApplicationPassword: "Application Passwords for self-hosted sites"
         case .tipKit: "TipKit"
         }
     }
@@ -94,13 +90,8 @@ extension FeatureFlag: OverridableFlag {
         return enabled
     }
 
-    var canOverride: Bool {
-        switch self {
-        case .debugMenu:
-            return false
-        default:
-            return true
-        }
+    var key: String {
+        return "ff-override-\(String(describing: self))"
     }
 }
 

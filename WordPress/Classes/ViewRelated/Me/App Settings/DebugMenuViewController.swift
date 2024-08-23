@@ -157,9 +157,10 @@ final class DebugMenuViewController: UIHostingController<DebugMenuView> {
     }
 
     static func configure(in window: UIWindow?) {
-        guard FeatureFlag.debugMenu.enabled else {
+        guard BuildConfiguration.current.isInternal else {
             return
         }
+
         assert(window != nil)
 
         let gesture = UIScreenEdgePanGestureRecognizer(target: DebugMenuViewController.self, action: #selector(showDebugMenu))
