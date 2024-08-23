@@ -40,7 +40,7 @@ public struct ExperimentalFeaturesList: View {
 
     enum Strings {
         static let pageTitle = NSLocalizedString(
-            "experimental-features-list.heading",
+            "experimentalFeaturesList.heading",
             value: "Experimental Features",
             comment: "The title for the experimental features list"
         )
