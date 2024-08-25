@@ -46,11 +46,7 @@ struct RelatedPostsSettingsView: View {
         } footer: {
             Text(Strings.optionsFooter)
         }
-        if #available(iOS 15, *) {
-            return section.tint(Color(UIColor.jetpackGreen))
-        } else {
-            return section.toggleStyle(SwitchToggleStyle(tint: Color(UIColor.jetpackGreen)))
-        }
+        return section.tint(Color(UIColor.jetpackGreen))
     }
 
     private var previewsSection: some View {

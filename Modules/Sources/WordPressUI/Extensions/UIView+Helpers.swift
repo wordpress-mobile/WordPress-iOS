@@ -58,14 +58,12 @@ extension UIView {
     ///   - subview: a subview to be pinned to self's safe area.
     ///   - insets: spacing between each subview edge to self's safe area. A positive value for an edge indicates that the subview is inside safe area on that edge.
     @objc public func pinSubviewToSafeArea(_ subview: UIView, insets: UIEdgeInsets) {
-        if #available(iOS 11.0, *) {
-            NSLayoutConstraint.activate([
-                safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: subview.leadingAnchor, constant: -insets.left),
-                safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: subview.trailingAnchor, constant: insets.right),
-                safeAreaLayoutGuide.topAnchor.constraint(equalTo: subview.topAnchor, constant: -insets.top),
-                safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: subview.bottomAnchor, constant: insets.bottom)
-                ])
-        }
+        NSLayoutConstraint.activate([
+            safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: subview.leadingAnchor, constant: -insets.left),
+            safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: subview.trailingAnchor, constant: insets.right),
+            safeAreaLayoutGuide.topAnchor.constraint(equalTo: subview.topAnchor, constant: -insets.top),
+            safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: subview.bottomAnchor, constant: insets.bottom)
+        ])
     }
 
     @objc public func findFirstResponder() -> UIView? {

@@ -211,12 +211,10 @@ open class FancyAlertView: UIView {
     }
 
     func preferredContentSizeDidChange() {
-        if #available(iOS 11.0, *) {
-            if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
-                bottomSwitchStackView.axis = .vertical
-            } else {
-                bottomSwitchStackView.axis = .horizontal
-            }
+        if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
+            bottomSwitchStackView.axis = .vertical
+        } else {
+            bottomSwitchStackView.axis = .horizontal
         }
     }
 }
