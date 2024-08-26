@@ -131,8 +131,13 @@ platform :ios do
     # In CI, we expect the pods to be already available and up to date.
     cocoapods unless is_ci
 
-    # For the same reason, fetch fresh packages
-    # FIXME: We yet don't have an explicit way to set the derived data in CI, so we'll run it in CI, too
+    # For the same reason, fetch fresh packages.
+    # However, notice we currently need to do this in CI as well.
+    # That's because we haven't yet implemented a method to share the derived data folder explicitly between the CI SPM caching logic and this lane.
+    #
+    # See also:
+    # - https://github.com/wordpress-mobile/WordPress-iOS/pull/23506/files/f694d2c3f433d616deeb15a61a3e9a01f55bc07e#r1725934262
+    # - https://github.com/wordpress-mobile/WordPress-iOS/pull/23506#discussion_r1727419190
     derived_data_path = options.fetch(:derived_data_path, DERIVED_DATA_PATH)
     resolve_packages(derived_data_path: derived_data_path)
 
