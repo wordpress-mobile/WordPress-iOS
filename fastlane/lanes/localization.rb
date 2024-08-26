@@ -136,15 +136,15 @@ platform :ios do
     derived_data_path = options.fetch(:derived_data_path, DERIVED_DATA_PATH)
     resolve_packages(derived_data_path: derived_data_path)
 
-    custom_gutenber_path = options[:gutenberg_path]
-    if custom_gutenber_path
+    custom_gutenberg_path = options[:gutenberg_path]
+    if custom_gutenberg_path
       # It's simpler to ask the caller to give an absolute path than to make it absolute ourselves be
       # Given this is a debug option, it seems like an okay tradeoff.
-      UI.user_error!("Please provide gutenberg_path as an absolute path. Current value: #{custom_gutenber_path}") unless File.absolute_path?(custom_gutenber_path)
+      UI.user_error!("Please provide gutenberg_path as an absolute path. Current value: #{custom_gutenberg_path}") unless File.absolute_path?(custom_gutenberg_path)
 
-      UI.user_error!("Could not find Gutenber project at given path #{custom_gutenber_path}") unless Dir.exist?(custom_gutenber_path)
+      UI.user_error!("Could not find Gutenber project at given path #{custom_gutenberg_path}") unless Dir.exist?(custom_gutenberg_path)
 
-      gutenberg_path = custom_gutenber_path
+      gutenberg_path = custom_gutenberg_path
       UI.message("Using Gutenberg from #{gutenberg_path} instead of cloning it...")
     else
       # On top of fetching the latest Pods, we also need to fetch the source for the Gutenberg code.
