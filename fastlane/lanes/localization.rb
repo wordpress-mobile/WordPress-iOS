@@ -131,14 +131,12 @@ platform :ios do
     # In CI, we expect the pods to be already available and up to date.
     cocoapods unless is_ci
 
-    # We jump in the tempdir immediately, even though we might not need it.
-    # It's just simpler to rely on the Ruby block API for it than to manage it by hand.
-    Dir.mktmpdir do |tempdir|
-      # For the same reason, fetch fresh packages
-      # FIXME: We yet don't have an explicit way to set the derived data in CI, so we'll run it in CI, too
-      derived_data_path = options.fetch(:derived_data_path, DERIVED_DATA_PATH)
-      resolve_packages(derived_data_path: derived_data_path)
+    # For the same reason, fetch fresh packages
+    # FIXME: We yet don't have an explicit way to set the derived data in CI, so we'll run it in CI, too
+    derived_data_path = options.fetch(:derived_data_path, DERIVED_DATA_PATH)
+    resolve_packages(derived_data_path: derived_data_path)
 
+    Dir.mktmpdir do |tempdir|
       custom_gutenber_path = options[:gutenberg_path]
       if custom_gutenber_path
         # It's simpler to ask the caller to give an absolute path than to make it absolute ourselves be
