@@ -19,6 +19,13 @@ final class SplitViewRootPresenter: RootViewPresenter {
         let tabBarVC = WPTabBarController(staticScreens: false)
         splitVC.setViewController(tabBarVC, for: .compact)
 
+        NotificationCenter.default.publisher(for: MySiteViewController.didPickSiteNotification).sink { [weak self] in
+            guard let site = $0.userInfo?[MySiteViewController.siteUserInfoKey] as? Blog else {
+                return wpAssertionFailure("invalid notification")
+            }
+            self?.sidebarViewModel.selection = .blog(TaggedManagedObjectID(site))
+        }.store(in: &cancellables)
+
         sidebarViewModel.$selection.compactMap { $0 }.sink { [weak self] in
             self?.configure(for: $0)
         }.store(in: &cancellables)
@@ -29,7 +36,12 @@ final class SplitViewRootPresenter: RootViewPresenter {
     }
 
     private func configure(for selection: SidebarSelection) {
-        splitVC.preferredSupplementaryColumnWidth = selection == .reader ? 320 : UISplitViewController.automaticDimension
+        switch selection {
+        case .blog, .reader:
+            splitVC.preferredSupplementaryColumnWidth = 320
+        default:
+            splitVC.preferredSupplementaryColumnWidth = UISplitViewController.automaticDimension
+        }
 
         switch selection {
         case .empty:
@@ -61,7 +73,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
         let siteMenuVC = SiteMenuViewController(blog: site)
         siteMenuVC.delegate = self
-        let navigationVC = makeRootNavigationController(with: siteMenuVC)
+        let navigationVC = UINavigationController(rootViewController: siteMenuVC)
         splitVC.setViewController(navigationVC, for: .supplementary)
 
         // Reset navigation stack

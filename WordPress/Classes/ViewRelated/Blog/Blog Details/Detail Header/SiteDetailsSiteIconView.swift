@@ -12,16 +12,15 @@ final class SiteDetailsSiteIconView: UIView {
     /// A block to be called when an image is dropped on to the view.
     var dropped: (([UIImage]) -> Void)?
 
-    let imageView: SiteIconHostingView = {
-        let imageView = SiteIconHostingView(frame: .zero)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.clipsToBounds = true
-        NSLayoutConstraint.activate([
-            imageView.widthAnchor.constraint(equalToConstant: Constants.imageSize),
-            imageView.heightAnchor.constraint(equalToConstant: Constants.imageSize)
-        ])
-        return imageView
-    }()
+    let imageView = SiteIconHostingView()
+
+    private let imageViewSizeConstraints: [NSLayoutConstraint]
+
+    func setImageViewSize(_ size: CGFloat) {
+        for constraint in imageViewSizeConstraints {
+            constraint.constant = size
+        }
+    }
 
     let activityIndicator: UIActivityIndicatorView = {
         let indicatorView = UIActivityIndicatorView(style: .medium)
@@ -61,6 +60,14 @@ final class SiteDetailsSiteIconView: UIView {
     }
 
     init(frame: CGRect, insets: UIEdgeInsets = .zero) {
+        imageView.clipsToBounds = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageViewSizeConstraints = [
+            imageView.widthAnchor.constraint(equalToConstant: Constants.imageSize),
+            imageView.heightAnchor.constraint(equalToConstant: Constants.imageSize)
+        ]
+        NSLayoutConstraint.activate(imageViewSizeConstraints)
+
         super.init(frame: frame)
 
         button.addSubview(imageView)

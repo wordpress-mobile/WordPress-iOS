@@ -15,6 +15,7 @@ enum FeatureFlag: Int, CaseIterable {
     case authenticateUsingApplicationPassword
     case tipKit
     case sidebar
+    case serif
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -48,6 +49,8 @@ enum FeatureFlag: Int, CaseIterable {
         case .tipKit:
             return BuildConfiguration.current != .appStore
         case .sidebar:
+            return false
+        case .serif:
             return false
         }
     }
@@ -84,6 +87,7 @@ extension FeatureFlag {
         case .authenticateUsingApplicationPassword: "Application Passwords for self-hosted sites"
         case .tipKit: "TipKit"
         case .sidebar: "Sidebar"
+        case .serif: "Serif"
         }
     }
 }

@@ -57,6 +57,8 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     /// A boolean indicating whether a site creation or adding self-hosted site flow has been initiated but not yet displayed.
     var willDisplayPostSignupFlow: Bool = false
 
+    private var isSidebarModeEnabled = false
+
     private var createButtonCoordinator: CreateButtonCoordinator?
 
     private let blogService: BlogService
@@ -68,6 +70,13 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     private let overlaysCoordinator: MySiteOverlaysCoordinator
 
     // MARK: - Initializers
+
+    @objc class func make(forBlog blog: Blog, isSidebarModeEnabled: Bool = false) -> MySiteViewController {
+        let viewContoller = MySiteViewController()
+        viewContoller.isSidebarModeEnabled = isSidebarModeEnabled
+        viewContoller.blog = blog
+        return viewContoller
+    }
 
     init(blogService: BlogService? = nil,
          overlaysCoordinator: MySiteOverlaysCoordinator = .init()) {
@@ -90,7 +99,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     /// Convenience setter and getter for the blog.  This calculated property takes care of showing the appropriate VC, depending
     /// on whether there's a blog to show or not.
     ///
-    var blog: Blog? {
+    @objc var blog: Blog? {
         set {
             guard let newBlog = newValue else {
                 showBlogDetailsForMainBlogOrNoSites()
@@ -274,19 +283,41 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
         // Set the nav bar
         navigationController?.navigationBar.accessibilityIdentifier = "my-site-navigation-bar"
+
+        if isSidebarModeEnabled {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: nil, image: UIImage(systemName: "ellipsis"), target: nil, action: nil, menu: UIMenu(options: .displayInline, children: [
+                UIDeferredMenuElement.uncached { [weak self] in
+                    $0(self?.sitePickerViewController?.makeSiteActionsMenu()?.children ?? [])
+                }
+            ]))
+        }
     }
 
     private func configureNavBarAppearance(animated: Bool) {
         if scrollView.contentOffset.y >= 60 {
             if isNavigationBarHidden {
-                navigationController?.setNavigationBarHidden(false, animated: animated)
+                setNavigationBarHidden(false, animated: animated)
             }
             isNavigationBarHidden = false
         } else {
             if !isNavigationBarHidden {
-                navigationController?.setNavigationBarHidden(true, animated: animated)
+                setNavigationBarHidden(true, animated: animated)
             }
             isNavigationBarHidden = true
+        }
+    }
+
+    private func setNavigationBarHidden(_ isHidden: Bool, animated: Bool) {
+        if isSidebarModeEnabled {
+            navigationItem.titleView = isHidden ? UIView() : {
+                let button = UIButton.makeMenuButton(title: navigationItem.title ?? Strings.mySite)
+                button.addAction(UIAction { [weak self] _ in
+                    self?.sitePickerViewController?.siteSwitcherTapped()
+                }, for: .primaryActionTriggered)
+                return button
+            }()
+        } else {
+            navigationController?.setNavigationBarHidden(isHidden, animated: animated)
         }
     }
 
@@ -319,7 +350,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         showSitePicker(for: blog)
         updateNavigationTitle(for: blog)
 
-        let section = viewModel.getSection(
+        let section = isSidebarModeEnabled ? .dashboard : viewModel.getSection(
             for: blog,
             jetpackFeaturesEnabled: JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(),
             splitViewControllerIsHorizontallyCompact: splitViewControllerIsHorizontallyCompact,
@@ -649,16 +680,22 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     }
 
     private func makeSitePickerViewController(for blog: Blog) -> SitePickerViewController {
-        let sitePickerViewController = SitePickerViewController(blog: blog)
+        let sitePickerViewController = SitePickerViewController(blog: blog, isSidebarModeEnabled: isSidebarModeEnabled)
 
         sitePickerViewController.onBlogSwitched = { [weak self] blog in
-            guard let self = self else {
-                return
+            guard let self else { return }
+
+            if self.isSidebarModeEnabled {
+                self.dismiss(animated: true)
+                NotificationCenter.default.post(name: MySiteViewController.didPickSiteNotification, object: self, userInfo: [
+                    MySiteViewController.siteUserInfoKey: blog
+                ])
+            } else {
+                self.configure(for: blog)
+                self.updateChildViewController(for: blog)
+                self.createFABIfNeeded()
+                self.fetchPrompt(for: blog)
             }
-            self.configure(for: blog)
-            self.updateChildViewController(for: blog)
-            self.createFABIfNeeded()
-            self.fetchPrompt(for: blog)
         }
 
         sitePickerViewController.onBlogListDismiss = { [weak self] in
@@ -922,4 +959,9 @@ extension MySiteViewController: JetpackRemoteInstallDelegate {
     func jetpackRemoteInstallWebviewFallback() {
         // no op
     }
+}
+
+extension MySiteViewController {
+    static var didPickSiteNotification = Foundation.Notification.Name("org.wordpress.mySiteViewController.didPickSiteNotification")
+    static var siteUserInfoKey = "siteUserInfoKey"
 }
