@@ -160,12 +160,6 @@ class MySitesCoordinator: NSObject {
         mySiteViewController.launchSiteCreation(source: "my_site")
     }
 
-    @objc
-    func showAddNewSite() {
-        showRootViewController()
-        mySiteViewController.presentInterfaceForAddingNewSite()
-    }
-
     // MARK: - Post creation
 
     func showCreateSheet(for blog: Blog?) {

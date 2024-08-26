@@ -327,7 +327,11 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         let sites = account?.blogs ?? []
 
         guard var selectedBlog = sites.first else {
-            self.presentPostSignUpInterstitial(in: navigationController, onDismiss: onDismiss)
+            if windowManager.isShowingFullscreenSignIn {
+                windowManager.dismissFullscreenSignIn()
+            } else {
+                navigationController.dismiss(animated: true)
+            }
             return
         }
 
@@ -359,14 +363,10 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
                 return
             }
 
-            if PostSignUpInterstitialViewController.shouldDisplay() {
-                self.presentPostSignUpInterstitial(in: navigationController)
+            if self.windowManager.isShowingFullscreenSignIn {
+                self.windowManager.dismissFullscreenSignIn()
             } else {
-                if self.windowManager.isShowingFullscreenSignIn {
-                    self.windowManager.dismissFullscreenSignIn()
-                } else {
-                    navigationController.dismiss(animated: true)
-                }
+                navigationController.dismiss(animated: true)
             }
 
             UserPersistentStoreFactory.instance().set(false, forKey: UserPersistentStoreFactory.instance().welcomeNotificationSeenKey)
@@ -517,44 +517,6 @@ private extension WordPressAuthenticationManager {
 // MARK: - WordPressAuthenticatorManager
 //
 private extension WordPressAuthenticationManager {
-    /// Displays the post sign up interstitial if needed, if it's not displayed
-    private func presentPostSignUpInterstitial(
-        in navigationController: UINavigationController,
-        onDismiss: (() -> Void)? = nil) {
-
-        let viewController = PostSignUpInterstitialViewController()
-        let windowManager = self.windowManager
-
-        viewController.dismiss = { [weak navigationController] dismissAction in
-            guard let navigationController else { return }
-
-            let completion: (() -> Void)?
-
-            switch dismissAction {
-            case .none:
-                completion = nil
-            case .addSelfHosted:
-                completion = {
-                    NotificationCenter.default.post(name: .addSelfHosted, object: nil)
-                }
-            case .createSite:
-                completion = {
-                    NotificationCenter.default.post(name: .createSite, object: nil)
-                }
-            }
-
-            if windowManager.isShowingFullscreenSignIn {
-                windowManager.dismissFullscreenSignIn(completion: completion)
-            } else {
-                navigationController.dismiss(animated: true, completion: completion)
-            }
-
-            onDismiss?()
-        }
-
-        navigationController.pushViewController(viewController, animated: true)
-    }
-
     /// Synchronizes a WordPress.com account with the specified credentials.
     ///
     private func syncWPCom(authToken: String, isJetpackLogin: Bool, onCompletion: @escaping () -> ()) {
