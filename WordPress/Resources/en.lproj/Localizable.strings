@@ -307,6 +307,9 @@
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
 
+/* Comment Attachment Label */
+"[COMMENT]" = "[COMMENT]";
+
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "\"Lazy-load\" images";
 
@@ -796,6 +799,24 @@
    Link to App Settings section
    Title of the 'App Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "App Settings" = "App Settings";
+
+/* App key 1, no value */
+"app.key1" = "app.key1";
+
+/* App key 2, with value containing placeholder. */
+"app.key2" = "appvalue2, %1$@.";
+
+/* App key 3, no value, with key containing placeholder, and with comment literal spanning multiple lines in code. */
+"app.key3.%1@d" = "app.key3.%1@d";
+
+/* App key 4, with value, bundle and placeholder. */
+"app.key4" = "appvalue4, %1$@.";
+
+/* App key 6, no value, with key containing placeholder. */
+"app.key6.%1@d" = "app.key6.%1@d";
+
+/* App key 8, with value containing placeholder. */
+"app.key8" = "appvalue8, %1$@.";
 
 /* The title of the app appearance settings screen */
 "Appearance" = "Appearance";
@@ -2938,6 +2959,9 @@ Example: Reply to Pamela Nguyen */
    User action to edit media details. */
 "Edit" = "Edit";
 
+/* Title of Gutenberg WEB editor running on a Web View. %@ is the localized block name. */
+"Edit %@ block" = "Edit %@ block";
+
 /* Title for the edit more button section */
 "Edit \"More\" button" = "Edit \"More\" button";
 
@@ -3833,7 +3857,8 @@ Example: Reply to Pamela Nguyen */
 /* Title for the fix section in Threat Details */
 "How will we fix it?" = "How will we fix it?";
 
-/* Accessibility label for HTML button on formatting toolbar. */
+/* Accessibility label for HTML button on formatting toolbar.
+   HTML Attachment Label */
 "HTML" = "HTML";
 
 /* Post HTML content */
@@ -5187,6 +5212,9 @@ Please install the %3$@ to use the app with this site.";
 /* Summary description for a threat */
 "Miscellaneous vulnerability" = "Miscellaneous vulnerability";
 
+/* No comment provided by engineer. */
+"Missing file extension." = "Missing file extension.";
+
 /* Title for the mobile web preview */
 "Mobile" = "Mobile";
 
@@ -5878,6 +5906,7 @@ Please install the %3$@ to use the app with this site.";
    Marks all notifications as read.
    Menus: button title for finishing editing of a menu item.
    OK
+   OK button
    OK button for alert
    Ok button for dismissing alert helping users understand their site address
    OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
@@ -6134,6 +6163,9 @@ Please install the %3$@ to use the app with this site.";
 
 /* No comment provided by engineer. */
 "Paste URL" = "Paste URL";
+
+/* Paste without Formatting Menu Item */
+"Paste without Formatting" = "Paste without Formatting";
 
 /* Button title for Pending comment state.
    Status for Media object that is being processed locally.
@@ -6395,6 +6427,24 @@ Please install the %3$@ to use the app with this site.";
 /* Noun. Title. Links to the plugin management feature.
    Title for the plugin directory */
 "Plugins" = "Plugins";
+
+/* Pod key 1, no value */
+"pod.key1" = "pod.key1";
+
+/* Pod key 2, with value containing placeholder. */
+"pod.key2" = "podvalue2, %1$@.";
+
+/* Pod key 3, no value, with key containing placeholder,and with multi-line comment */
+"pod.key3.%1@d" = "pod.key3.%1@d";
+
+/* Pod key 4, with value, bundle and placeholder. */
+"pod.key4" = "podvalue4, %1$@.";
+
+/* Pod key 6, no value, with key containing placeholder. */
+"pod.key6.%1@d" = "pod.key6.%1@d";
+
+/* Pod key 8, with value containing placeholder. */
+"pod.key8" = "podvalue8, %1$@.";
 
 /* An example tag used in the login prologue screens.
    Politics site intent topic */
@@ -10375,7 +10425,8 @@ This empty state component is displayed only when the app fails to load posts un
 /* Title for error notice shown if the app can't find a specific site belonging to the user */
 "universalLink.qrCodeMedia.error.title" = "Site not found";
 
-/* Label for size of media when it's not possible to calculate it. */
+/* Label for size of media when it's not possible to calculate it.
+   Unknown Tag Name */
 "Unknown" = "Unknown";
 
 /* No comment provided by engineer. */
@@ -10422,6 +10473,9 @@ This empty state component is displayed only when the app fails to load posts un
 
 /* No comment provided by engineer. */
 "Unsupported" = "Unsupported";
+
+/* No comment provided by engineer. */
+"Unsupported file extension." = "Unsupported file extension.";
 
 /* Label for an untitled post in the revision browser */
 "Untitled" = "Untitled";
