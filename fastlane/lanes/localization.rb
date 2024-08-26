@@ -127,13 +127,13 @@ platform :ios do
   # @called_by complete_code_freeze
   #
   lane :generate_strings_file_for_glotpress do |options|
+    # Fetch fresh pods to read the latest localizations from them.
+    # In CI, we expect the pods to be already available and up to date.
+    cocoapods unless is_ci
+
     # We jump in the tempdir immediately, even though we might not need it.
     # It's just simpler to rely on the Ruby block API for it than to manage it by hand.
     Dir.mktmpdir do |tempdir|
-      # Fetch fresh pods to read the latest localizations from them.
-      # In CI, we expect the pods to be already available and up to date.
-      cocoapods unless is_ci
-
       # For the same reason, fetch fresh packages
       # FIXME: We yet don't have an explicit way to set the derived data in CI, so we'll run it in CI, too
       derived_data_path = options.fetch(:derived_data_path, DERIVED_DATA_PATH)
