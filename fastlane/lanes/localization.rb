@@ -172,7 +172,7 @@ platform :ios do
           UI.message("Cloning Gutenberg from #{repo_url} into #{gutenberg_clone_name}. This might take a few minutes…")
           sh("git clone --depth 1 #{repo_url} #{gutenberg_clone_name}")
           Dir.chdir(gutenberg_clone_name) do
-            if config[:ref][:tag]
+            if ref_node[:tag]
               sh("git fetch origin refs/tags/#{ref}:refs/tags/#{ref}")
               sh("git checkout refs/tags/#{ref}")
             else
