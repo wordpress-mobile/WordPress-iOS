@@ -118,6 +118,8 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 {
     DDLogMethod();
     [super viewDidLoad];
+
+    self.tableView.cellLayoutMarginsFollowReadableWidth = YES;
     [self.tableView registerClass:[SettingTableViewCell class] forCellReuseIdentifier:SettingsTableViewCellReuseIdentifier];
     [self.tableView registerNib:MediaQuotaCell.nib forCellReuseIdentifier:MediaQuotaCell.defaultReuseIdentifier];
 

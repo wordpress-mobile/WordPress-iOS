@@ -61,6 +61,7 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
         tableView.estimatedRowHeight = 500
         tableView.estimatedSectionHeaderHeight = SiteStatsTableHeaderView.estimatedHeight
+        tableView.cellLayoutMarginsFollowReadableWidth = true
         sendScrollEventsToBanner()
 
         viewModel = SiteStatsPeriodViewModel(store: store,
@@ -96,17 +97,31 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
     override func initTableView() {
         let embeddedDatePickerView = UIView.embedSwiftUIView(datePickerView)
         view.addSubview(embeddedDatePickerView)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
+        embeddedDatePickerView.translatesAutoresizingMaskIntoConstraints = false
+
         view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
             view.topAnchor.constraint(equalTo: embeddedDatePickerView.topAnchor, constant: 0),
-            view.leadingAnchor.constraint(equalTo: embeddedDatePickerView.leadingAnchor, constant: 0),
-            view.trailingAnchor.constraint(equalTo: embeddedDatePickerView.trailingAnchor, constant: 0),
+            view.readableContentGuide.leadingAnchor.constraint(equalTo: embeddedDatePickerView.leadingAnchor, constant: 0),
+            view.readableContentGuide.trailingAnchor.constraint(equalTo: embeddedDatePickerView.trailingAnchor, constant: 0),
             embeddedDatePickerView.bottomAnchor.constraint(equalTo: tableView.topAnchor, constant: 0),
             view.leadingAnchor.constraint(equalTo: tableView.leadingAnchor, constant: 0),
             view.trailingAnchor.constraint(equalTo: tableView.trailingAnchor, constant: 0),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
+        ])
+
+        let divider = UIView()
+        divider.backgroundColor = .separator
+
+        view.addSubview(divider)
+        divider.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            divider.heightAnchor.constraint(equalToConstant: 0.5),
+            divider.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            divider.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            divider.bottomAnchor.constraint(equalTo: embeddedDatePickerView.bottomAnchor)
         ])
 
         tableView.refreshControl = refreshControl

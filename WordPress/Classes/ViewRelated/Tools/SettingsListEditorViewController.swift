@@ -46,6 +46,7 @@ open class SettingsListEditorViewController: UITableViewController {
     fileprivate func setupTableView() {
         tableView.register(WPTableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
         WPStyleGuide.configureColors(view: view, tableView: tableView)
+        tableView.cellLayoutMarginsFollowReadableWidth = true
     }
 
     // MARK: - Button Handlers

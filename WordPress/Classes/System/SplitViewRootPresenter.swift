@@ -275,6 +275,13 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
 extension SplitViewRootPresenter: SiteMenuViewControllerDelegate {
     func siteMenuViewController(_ siteMenuViewController: SiteMenuViewController, showDetailsViewController viewController: UIViewController) {
-        splitVC.setViewController(viewController, for: .secondary)
+        if viewController is UINavigationController ||
+            viewController is UISplitViewController {
+            splitVC.setViewController(viewController, for: .secondary)
+        } else {
+            // Reset previous navigation or split stack
+            let navigationVC = UINavigationController(rootViewController: viewController)
+            splitVC.setViewController(navigationVC, for: .secondary)
+        }
     }
 }
