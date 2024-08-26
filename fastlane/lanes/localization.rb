@@ -115,6 +115,8 @@ UPLOAD_TO_APP_STORE_COMMON_PARAMS = {
   app_rating_config_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'metadata', 'ratings_config.json')
 }.freeze
 
+WORDPRESS_EN_LPROJ = File.join('WordPress', 'Resources', 'en.lproj')
+
 #################################################
 # Lanes
 #################################################
@@ -149,8 +151,8 @@ platform :ios do
 
       UI.user_error!("Could not find Gutenber project at given path #{custom_gutenberg_path}") unless Dir.exist?(custom_gutenberg_path)
 
-      gutenberg_path = custom_gutenberg_path
       UI.message("Using Gutenberg from #{gutenberg_path} instead of cloning it...")
+      generate_strings_file(gutenberg_path: custom_gutenberg_path, derived_data_path: derived_data_path)
     else
       # On top of fetching the latest Pods, we also need to fetch the source for the Gutenberg code.
       # To get it, we need to manually clone the repo, since Gutenberg is distributed via XCFramework.
@@ -169,14 +171,15 @@ platform :ios do
       repo_name = config[:repo_name]
       UI.user_error!('Could not find GitHub repository name to clone Gutenberg in order to access its strings.') if repo_name.nil?
 
-      gutenberg_clone_name = 'Gutenberg-Strings-Clone'
       # Create a temporary directory to clone Gutenberg into.
       Dir.mktmpdir do |tempdir|
+        gutenberg_clone_name = 'Gutenberg-Strings-Clone'
+        gutenberg_path = File.join(tempdir, gutenberg_clone_name)
         Dir.chdir(tempdir) do
           repo_url = "https://github.com/#{github_org}/#{repo_name}"
           UI.message("Cloning Gutenberg from #{repo_url} into #{gutenberg_clone_name}. This might take a few minutes…")
-          sh("git clone --depth 1 #{repo_url} #{gutenberg_clone_name}")
-          Dir.chdir(gutenberg_clone_name) do
+          sh("git clone --depth 1 #{repo_url} #{gutenberg_path}")
+          Dir.chdir(gutenberg_path) do
             if ref_node[:tag]
               sh("git fetch origin refs/tags/#{ref}:refs/tags/#{ref}")
               sh("git checkout refs/tags/#{ref}")
@@ -186,12 +189,22 @@ platform :ios do
             end
           end
         end
-        gutenberg_path = File.join(tempdir, gutenberg_clone_name)
+
+        generate_strings_file(gutenberg_path: gutenberg_path, derived_data_path: derived_data_path)
       end
     end
 
-    # Notice that we are no longer in the tempdir, so the paths below are back to being relative to the project root folder.
-    wordpress_en_lproj = File.join('WordPress', 'Resources', 'en.lproj')
+    # Merge various manually-maintained `.strings` files into the previously generated `Localizable.strings` so their extra keys are also imported in GlotPress.
+    # Note: We will re-extract the translations back during `download_localized_strings_and_metadata` (via a call to `ios_extract_keys_from_strings_files`)
+    ios_merge_strings_files(
+      paths_to_merge: MANUALLY_MAINTAINED_STRINGS_FILES,
+      destination: File.join(WORDPRESS_EN_LPROJ, 'Localizable.strings')
+    )
+
+    git_commit(path: [WORDPRESS_EN_LPROJ], message: 'Update strings for localization', allow_nothing_to_commit: true) unless options[:skip_commit]
+  end
+
+  def generate_strings_file(gutenberg_path:, derived_data_path:)
     ios_generate_strings_file_from_code(
       paths: [
         'WordPress/',
@@ -203,17 +216,8 @@ platform :ios do
       ],
       exclude: ['*Vendor*', 'WordPress/WordPressTest/**', '**/AppLocalizedString.swift'],
       routines: ['AppLocalizedString'],
-      output_dir: wordpress_en_lproj
+      output_dir: WORDPRESS_EN_LPROJ
     )
-
-    # Merge various manually-maintained `.strings` files into the previously generated `Localizable.strings` so their extra keys are also imported in GlotPress.
-    # Note: We will re-extract the translations back during `download_localized_strings_and_metadata` (via a call to `ios_extract_keys_from_strings_files`)
-    ios_merge_strings_files(
-      paths_to_merge: MANUALLY_MAINTAINED_STRINGS_FILES,
-      destination: File.join(wordpress_en_lproj, 'Localizable.strings')
-    )
-
-    git_commit(path: [wordpress_en_lproj], message: 'Update strings for localization', allow_nothing_to_commit: true) unless options[:skip_commit]
   end
 
   # Updates the `AppStoreStrings.po` files (WP+JP) with the latest content from the `release_notes.txt` files and the other text sources
