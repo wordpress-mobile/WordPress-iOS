@@ -138,7 +138,7 @@ platform :ios do
 
     custom_gutenberg_path = options[:gutenberg_path]
     if custom_gutenberg_path
-      # It's simpler to ask the caller to give an absolute path than to make it absolute ourselves be
+      # It's simpler to ask the caller to give an absolute path than to make it absolute ourselves
       # Given this is a debug option, it seems like an okay tradeoff.
       UI.user_error!("Please provide gutenberg_path as an absolute path. Current value: #{custom_gutenberg_path}") unless File.absolute_path?(custom_gutenberg_path)
 
