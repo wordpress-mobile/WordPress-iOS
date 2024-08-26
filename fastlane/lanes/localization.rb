@@ -151,7 +151,7 @@ platform :ios do
 
       UI.user_error!("Could not find Gutenber project at given path #{custom_gutenberg_path}") unless Dir.exist?(custom_gutenberg_path)
 
-      UI.message("Using Gutenberg from #{gutenberg_path} instead of cloning it...")
+      UI.message("Using Gutenberg from #{custom_gutenberg_path} instead of cloning it...")
       generate_strings_file(gutenberg_path: custom_gutenberg_path, derived_data_path: derived_data_path)
     else
       # On top of fetching the latest Pods, we also need to fetch the source for the Gutenberg code.
