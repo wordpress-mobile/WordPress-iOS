@@ -33,7 +33,7 @@ final class BlogListViewModelTests: CoreDataTestCase {
 
         setupViewModel()
 
-        XCTAssertEqual(viewModel.recentSites.first?.id, site.objectID)
+        XCTAssertEqual(viewModel.recentSites.first?.id, TaggedManagedObjectID(site))
         XCTAssertEqual(viewModel.recentSites.count, 1)
     }
 

@@ -17,7 +17,6 @@ final class SitePickerViewController: UIViewController {
     var onBlogSwitched: ((Blog) -> Void)?
     var onBlogListDismiss: (() -> Void)?
 
-    let meScenePresenter: ScenePresenter
     let blogService: BlogService
     let mediaService: MediaService
 
@@ -30,11 +29,9 @@ final class SitePickerViewController: UIViewController {
     private var sitePickerTipObserver: TipObserver?
 
     init(blog: Blog,
-         meScenePresenter: ScenePresenter,
          blogService: BlogService? = nil,
          mediaService: MediaService? = nil) {
         self.blog = blog
-        self.meScenePresenter = meScenePresenter
         self.blogService = blogService ?? BlogService(coreDataStack: ContextManager.shared)
         self.mediaService = mediaService ?? MediaService(managedObjectContext: ContextManager.shared.mainContext)
         super.init(nibName: nil, bundle: nil)

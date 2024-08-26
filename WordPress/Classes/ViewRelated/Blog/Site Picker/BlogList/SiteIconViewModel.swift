@@ -7,7 +7,6 @@ struct SiteIconViewModel {
     var imageURL: URL?
     var firstLetter: Character?
     var size: Size
-    var background = Color(.secondarySystemBackground)
     var host: MediaHost?
 
     enum Size {

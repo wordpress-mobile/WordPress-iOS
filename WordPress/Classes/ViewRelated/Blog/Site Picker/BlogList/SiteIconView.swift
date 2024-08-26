@@ -6,6 +6,8 @@ import WordPressShared
 struct SiteIconView: View {
     let viewModel: SiteIconViewModel
 
+    @Environment(\.siteIconBackgroundColor) private var backgroundColor
+
     var body: some View {
         contents
             .clipShape(RoundedRectangle(cornerRadius: 6))
@@ -21,7 +23,7 @@ struct SiteIconView: View {
                 case .failure:
                     failureStateView
                 default:
-                    viewModel.background
+                    backgroundColor
                 }
             }
         } else {
@@ -30,7 +32,7 @@ struct SiteIconView: View {
     }
 
     private var noIconView: some View {
-        viewModel.background.overlay {
+        backgroundColor.overlay {
             if let firstLetter = viewModel.firstLetter {
                 Text(firstLetter.uppercased())
                     .font(.system(size: 24, weight: .medium, design: .rounded))
@@ -42,13 +44,24 @@ struct SiteIconView: View {
     }
 
     private var failureStateView: some View {
-        viewModel.background.overlay {
+        backgroundColor.overlay {
             Image.DS.icon(named: .vector)
                 .resizable()
                 .frame(width: 18, height: 18)
                 .tint(.DS.Foreground.tertiary)
         }
     }
+}
+
+private struct SiteIconViewBackgroundColorKey: EnvironmentKey {
+    static let defaultValue = Color(.secondarySystemBackground)
+}
+
+extension EnvironmentValues {
+  var siteIconBackgroundColor: Color {
+    get { self[SiteIconViewBackgroundColorKey.self] }
+    set { self[SiteIconViewBackgroundColorKey.self] = newValue }
+  }
 }
 
 // MARK: - SiteIconHostingView (UIKit)
@@ -83,6 +96,8 @@ private struct _SiteIconHostingView: View {
     @ObservedObject var viewModel: SiteIconHostingViewModel
 
     var body: some View {
-        viewModel.icon.map(SiteIconView.init)
+        viewModel.icon
+            .map(SiteIconView.init)
+            .environment(\.siteIconBackgroundColor, Color(.systemBackground))
     }
 }

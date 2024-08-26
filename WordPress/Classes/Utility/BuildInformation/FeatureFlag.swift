@@ -14,6 +14,7 @@ enum FeatureFlag: Int, CaseIterable {
     case voiceToContent
     case authenticateUsingApplicationPassword
     case tipKit
+    case sidebar
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -46,6 +47,8 @@ enum FeatureFlag: Int, CaseIterable {
             return false
         case .tipKit:
             return BuildConfiguration.current != .appStore
+        case .sidebar:
+            return false
         }
     }
 
@@ -80,6 +83,7 @@ extension FeatureFlag {
         case .voiceToContent: "Voice to Content"
         case .authenticateUsingApplicationPassword: "Application Passwords for self-hosted sites"
         case .tipKit: "TipKit"
+        case .sidebar: "Sidebar"
         }
     }
 }
