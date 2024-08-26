@@ -87,7 +87,7 @@ extension FeatureFlag {
         case .authenticateUsingApplicationPassword: "Application Passwords for self-hosted sites"
         case .tipKit: "TipKit"
         case .sidebar: "Sidebar"
-        case .newGutenberg: "GutenbergKit"
+        case .newGutenberg: "Experimental Block Editor"
         }
     }
 }
