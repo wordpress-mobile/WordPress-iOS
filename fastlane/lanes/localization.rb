@@ -186,8 +186,8 @@ platform :ios do
             end
           end
         end
+        gutenberg_path = File.join(tempdir, gutenberg_clone_name)
       end
-      gutenberg_path = File.join(tempdir, gutenberg_clone_name)
     end
 
     # Notice that we are no longer in the tempdir, so the paths below are back to being relative to the project root folder.
