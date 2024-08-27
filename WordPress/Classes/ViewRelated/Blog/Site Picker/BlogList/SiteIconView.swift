@@ -35,11 +35,18 @@ struct SiteIconView: View {
         backgroundColor.overlay {
             if let firstLetter = viewModel.firstLetter {
                 Text(firstLetter.uppercased())
-                    .font(.system(size: 24, weight: .medium, design: .rounded))
+                    .font(.system(size: iconFontSize(for: viewModel.size), weight: .medium, design: .rounded))
                     .foregroundStyle(.secondary.opacity(0.8))
             } else {
                 failureStateView
             }
+        }
+    }
+
+    private func iconFontSize(for size: SiteIconViewModel.Size) -> CGFloat {
+        switch size {
+        case .small: 18
+        case .regular: 24
         }
     }
 
@@ -58,10 +65,10 @@ private struct SiteIconViewBackgroundColorKey: EnvironmentKey {
 }
 
 extension EnvironmentValues {
-  var siteIconBackgroundColor: Color {
-    get { self[SiteIconViewBackgroundColorKey.self] }
-    set { self[SiteIconViewBackgroundColorKey.self] = newValue }
-  }
+    var siteIconBackgroundColor: Color {
+        get { self[SiteIconViewBackgroundColorKey.self] }
+        set { self[SiteIconViewBackgroundColorKey.self] = newValue }
+    }
 }
 
 // MARK: - SiteIconHostingView (UIKit)

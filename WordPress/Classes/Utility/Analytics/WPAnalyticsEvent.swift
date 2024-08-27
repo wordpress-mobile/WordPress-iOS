@@ -264,6 +264,9 @@ import Foundation
     case purchaseDomainCompleted
     case myDomainsSearchDomainTapped
 
+    // Sidebar
+    case sidebarAllSitesTapped
+
     // My Site
     case mySitePullToRefresh
 
@@ -1096,6 +1099,10 @@ import Foundation
             return "domain_management_purchase_domain_completed"
         case .myDomainsSearchDomainTapped:
             return "domain_management_my_domains_search_domain_tapped"
+
+        // Sidebar
+        case .sidebarAllSitesTapped:
+            return "sidebar_all_sites_tapped"
 
         // My Site
         case .mySitePullToRefresh:

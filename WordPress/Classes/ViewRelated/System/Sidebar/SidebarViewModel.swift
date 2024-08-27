@@ -1,5 +1,7 @@
 import Foundation
+import Combine
 import WordPressKit
+import WordPressAuthenticator
 
 enum SidebarSelection: Hashable {
     case empty // No sites
@@ -9,6 +11,8 @@ enum SidebarSelection: Hashable {
 }
 
 enum SidebarNavigationStep {
+    case allSites
+    case addSite(selection: AddSiteMenuViewModel.Selection)
     case domains
     case help
     case profile
@@ -16,19 +20,44 @@ enum SidebarNavigationStep {
 
 final class SidebarViewModel: ObservableObject {
     @Published var selection: SidebarSelection?
-    @Published var account: WPAccount?
+    @Published private(set) var account: WPAccount?
 
     var navigate: (SidebarNavigationStep) -> Void = { _ in }
 
+    private let contextManager: CoreDataStackSwift
+    private var cancellables: [AnyCancellable] = []
+
     init(contextManager: CoreDataStackSwift = ContextManager.shared) {
+        self.contextManager = contextManager
+
+        // TODO: (wpsidebar) can it change during the root presenter lifetime?
+        account = try? WPAccount.lookupDefaultWordPressComAccount(in: contextManager.mainContext)
+        resetSelection()
+        setupObservers()
+    }
+
+    private func setupObservers() {
+        NotificationCenter.default
+            .publisher(for: MySiteViewController.didPickSiteNotification)
+            .sink { [weak self] in
+                guard let site = $0.userInfo?[MySiteViewController.siteUserInfoKey] as? Blog else {
+                    return wpAssertionFailure("invalid notification")
+                }
+                self?.selection = .blog(TaggedManagedObjectID(site))
+            }.store(in: &cancellables)
+
+        NotificationCenter.default
+            .publisher(for: .init(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification))
+            .sink { [weak self] _ in self?.resetSelection() }
+            .store(in: &cancellables)
+    }
+
+    private func resetSelection() {
         let blog = Blog.lastUsedOrFirst(in: contextManager.mainContext)
         if let blog {
             selection = .blog(TaggedManagedObjectID(blog))
         } else {
             selection = .empty
         }
-
-        // TODO: (wpsidebar) can it change during the root presenter lifetime?
-        self.account = try? WPAccount.lookupDefaultWordPressComAccount(in: contextManager.mainContext)
     }
 }

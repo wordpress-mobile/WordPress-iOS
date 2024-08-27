@@ -15,7 +15,7 @@ struct SiteIconViewModel {
 
         var width: CGFloat {
             switch self {
-            case .small: 24
+            case .small: 28
             case .regular: 40
             }
         }
