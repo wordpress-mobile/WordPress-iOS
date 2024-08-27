@@ -149,7 +149,7 @@ platform :ios do
       # Given this is a debug option, it seems like an okay tradeoff.
       UI.user_error!("Please provide gutenberg_path as an absolute path. Current value: #{custom_gutenberg_path}") unless File.absolute_path?(custom_gutenberg_path)
 
-      UI.user_error!("Could not find Gutenber project at given path #{custom_gutenberg_path}") unless Dir.exist?(custom_gutenberg_path)
+      UI.user_error!("Could not find Gutenberg project at given path #{custom_gutenberg_path}") unless Dir.exist?(custom_gutenberg_path)
 
       UI.message("Using Gutenberg from #{custom_gutenberg_path} instead of cloning it...")
       generate_strings_file(gutenberg_path: custom_gutenberg_path, derived_data_path: derived_data_path)
