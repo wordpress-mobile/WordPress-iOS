@@ -307,9 +307,6 @@
 /* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
 
-/* Comment Attachment Label */
-"[COMMENT]" = "[COMMENT]";
-
 /* Title for the lazy load images setting */
 "\"Lazy-load\" images" = "\"Lazy-load\" images";
 
@@ -3836,8 +3833,7 @@ Example: Reply to Pamela Nguyen */
 /* Title for the fix section in Threat Details */
 "How will we fix it?" = "How will we fix it?";
 
-/* Accessibility label for HTML button on formatting toolbar.
-   HTML Attachment Label */
+/* Accessibility label for HTML button on formatting toolbar. */
 "HTML" = "HTML";
 
 /* Post HTML content */
@@ -6138,9 +6134,6 @@ Please install the %3$@ to use the app with this site.";
 
 /* No comment provided by engineer. */
 "Paste URL" = "Paste URL";
-
-/* Paste without Formatting Menu Item */
-"Paste without Formatting" = "Paste without Formatting";
 
 /* Button title for Pending comment state.
    Status for Media object that is being processed locally.
@@ -10382,8 +10375,7 @@ This empty state component is displayed only when the app fails to load posts un
 /* Title for error notice shown if the app can't find a specific site belonging to the user */
 "universalLink.qrCodeMedia.error.title" = "Site not found";
 
-/* Label for size of media when it's not possible to calculate it.
-   Unknown Tag Name */
+/* Label for size of media when it's not possible to calculate it. */
 "Unknown" = "Unknown";
 
 /* No comment provided by engineer. */
