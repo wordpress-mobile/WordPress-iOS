@@ -132,9 +132,19 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         self.navigationBarManager = navigationBarManager ?? PostEditorNavigationBarManager()
 
         let networkClient = NewGutenbergNetworkClient(blog: post.blog)
+
+        let siteId = post.blog.dotComID?.stringValue ?? nil
+        let authType = siteId != nil ? "Bearer" : "Basic"
+        let authToken = post.blog.authToken ?? ""
+        let authHeader = "\(authType) \(authToken)"
+        let siteApiNamespace = post.blog.dotComID != nil ? "sites/\(siteId ?? "")" : ""
+
         self.editorViewController = GutenbergKit.EditorViewController(
             content: post.content ?? "",
-            service: GutenbergKit.EditorService(client: networkClient)
+            service: GutenbergKit.EditorService(client: networkClient),
+            siteApiRoot: post.blog.wordPressComRestApi()?.baseURL.absoluteString ?? "",
+            siteApiNamespace: siteApiNamespace,
+            authHeader: authHeader
         )
 
         super.init(nibName: nil, bundle: nil)
