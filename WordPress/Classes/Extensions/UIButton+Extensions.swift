@@ -4,12 +4,21 @@ extension UIButton {
     /// Creates a bar button item that looks like the native title menu
     /// (see `navigationItem.titleMenuProvider`, iOS 16+).
     static func makeMenu(title: String, menu: UIMenu) -> UIButton {
-        let button = UIButton(configuration: {
+        let button = makeMenuButton(title: title)
+        button.menu = menu
+        button.showsMenuAsPrimaryAction = true
+        return button
+    }
+
+    /// Creates a bar button item that looks like the native title menu
+    /// (see `navigationItem.titleMenuProvider`, iOS 16+).
+    static func makeMenuButton(title: String) -> UIButton {
+        UIButton(configuration: {
             var configuration = UIButton.Configuration.plain()
             configuration.title = title
             configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer {
                 var attributes = $0
-                attributes.font = WPStyleGuide.fontForTextStyle(.headline)
+                attributes.font = AppStyleGuide.navigationBarStandardFont
                 return attributes
             }
             configuration.image = UIImage(systemName: "chevron.down.circle.fill")?.withBaselineOffset(fromBottom: 4)
@@ -20,8 +29,5 @@ extension UIButton {
             configuration.baseForegroundColor = .label
             return configuration
         }())
-        button.menu = menu
-        button.showsMenuAsPrimaryAction = true
-        return button
     }
 }
