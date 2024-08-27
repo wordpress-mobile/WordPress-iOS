@@ -16,6 +16,7 @@ enum FeatureFlag: Int, CaseIterable {
     case tipKit
     case sidebar
     case newGutenberg
+    case serif
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -51,6 +52,7 @@ enum FeatureFlag: Int, CaseIterable {
         case .sidebar:
             return false
         case .newGutenberg:
+        case .serif:
             return false
         }
     }
@@ -88,6 +90,7 @@ extension FeatureFlag {
         case .tipKit: "TipKit"
         case .sidebar: "Sidebar"
         case .newGutenberg: "Experimental Block Editor"
+        case .serif: "Serif"
         }
     }
 }

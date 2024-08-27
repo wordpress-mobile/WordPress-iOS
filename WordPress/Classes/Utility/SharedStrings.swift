@@ -3,6 +3,7 @@ import Foundation
 /// Shared localizable strings that can be used in different contexts.
 enum SharedStrings {
     enum Button {
+        static let ok = NSLocalizedString("shared.button.ok", value: "OK", comment: "A shared button title used in different contexts")
         static let cancel = NSLocalizedString("shared.button.cancel", value: "Cancel", comment: "A shared button title used in different contexts")
         static let close = NSLocalizedString("shared.button.close", value: "Close", comment: "A shared button title used in different contexts")
         static let done = NSLocalizedString("shared.button.done", value: "Done", comment: "A shared button title used in different contexts")

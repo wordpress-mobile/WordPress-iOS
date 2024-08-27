@@ -7,7 +7,7 @@ protocol SiteMenuViewControllerDelegate: AnyObject {
 /// The site menu for the split view navigation.
 final class SiteMenuViewController: UIViewController {
     private let blog: Blog
-    private let blogDetailsVC = BlogDetailsViewController()
+    private let blogDetailsVC = SiteMenuListViewController()
 
     weak var delegate: SiteMenuViewControllerDelegate?
 
@@ -36,6 +36,53 @@ final class SiteMenuViewController: UIViewController {
         blogDetailsVC.showInitialDetailsForBlog()
 
         navigationItem.title = blog.settings?.name ?? (blog.displayURL as String?) ?? ""
+    }
+}
+
+// Updates the `BlogDetailsViewController` style to match the native sidebar style.
+private final class SiteMenuListViewController: BlogDetailsViewController {
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        let title = super.tableView(tableView, titleForHeaderInSection: section)
+        return title == nil ? (section == 0 ? 0 : 20) : 52
+    }
+
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let title = super.tableView(tableView, titleForHeaderInSection: section) else {
+            return nil
+        }
+        let label = UILabel()
+        label.font = UIFont.preferredFont(forTextStyle: .headline)
+        label.text = title
+
+        let headerView = UIView()
+        headerView.addSubview(label)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            label.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 20),
+            label.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -10),
+            label.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: 20)
+        ])
+        return headerView
+    }
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
+
+        cell.backgroundColor = .clear
+        cell.selectedBackgroundView = {
+            let backgroundView = UIView()
+            backgroundView.backgroundColor = .systemFill
+            backgroundView.layer.cornerRadius = 10
+            backgroundView.layer.cornerCurve = .continuous
+
+            let container = UIView()
+            container.addSubview(backgroundView)
+            backgroundView.translatesAutoresizingMaskIntoConstraints = false
+            container.pinSubviewToAllEdges(backgroundView, insets: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16))
+            return container
+        }()
+
+        return cell
     }
 }
 

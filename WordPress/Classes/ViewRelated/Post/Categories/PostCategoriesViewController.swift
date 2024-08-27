@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 
 @objc protocol PostCategoriesViewControllerDelegate {
     @objc optional func postCategoriesViewController(_ controller: PostCategoriesViewController, didSelectCategory category: PostCategory)
@@ -88,15 +89,20 @@ import Foundation
     }
 
     @objc private func showAddNewCategory() {
-        guard let addCategoriesViewController = WPAddPostCategoryViewController(blog: blog) else {
-            return
+        let view = PostCategoryCreateView(blog: blog) { [weak self] category in
+            guard let self else { return }
+            switch selectionMode {
+            case .post, .parent:
+                selectedCategories.append(category)
+                delegate?.postCategoriesViewController?(self, didUpdateSelectedCategories: NSSet(array: selectedCategories))
+            case .blogDefault:
+                selectedCategories.removeAll()
+                selectedCategories.append(category)
+                delegate?.postCategoriesViewController?(self, didSelectCategory: category)
+            }
+            reloadCategories()
         }
-
-        addCategoriesViewController.delegate = self
-
-        let addCategoriesNavigationController = UINavigationController(rootViewController: addCategoriesViewController)
-        navigationController?.modalPresentationStyle = .formSheet
-        present(addCategoriesNavigationController, animated: true, completion: nil)
+        present(UIHostingController(rootView: NavigationView { view }), animated: true)
     }
 
     private func syncCategories() {
@@ -236,6 +242,9 @@ import Foundation
             if let category = category {
                 delegate?.postCategoriesViewController?(self, didSelectCategory: category)
                 navigationController?.popViewController(animated: true)
+            } else {
+                delegate?.postCategoriesViewController?(self, didUpdateSelectedCategories: NSSet(array: []))
+                navigationController?.popViewController(animated: true)
             }
         case .post:
             category = categories[row]
@@ -271,21 +280,5 @@ private extension PostCategoriesViewController {
     struct Constants {
         static let categoryCellIdentifier = "CategoryCellIdentifier"
         static let categoryCellIndentation = CGFloat(16.0)
-    }
-}
-
-extension PostCategoriesViewController: WPAddPostCategoryViewControllerDelegate {
-    func addPostCategoryViewController(_ controller: WPAddPostCategoryViewController, didAdd category: PostCategory) {
-        switch selectionMode {
-        case .post, .parent:
-            selectedCategories.append(category)
-            delegate?.postCategoriesViewController?(self, didUpdateSelectedCategories: NSSet(array: selectedCategories))
-        case .blogDefault:
-            selectedCategories.removeAll()
-            selectedCategories.append(category)
-            delegate?.postCategoriesViewController?(self, didSelectCategory: category)
-        }
-
-        reloadCategories()
     }
 }
