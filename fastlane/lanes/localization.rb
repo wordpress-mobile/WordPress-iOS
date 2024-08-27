@@ -128,7 +128,7 @@ platform :ios do
   #
   # @called_by complete_code_freeze
   #
-  lane :generate_strings_file_for_glotpress do |options|
+  lane :generate_strings_file_for_glotpress do |skip_commit: false, derived_data_path: DERIVED_DATA_PATH, gutenberg_absolute_path: nil|
     # Fetch fresh pods to read the latest localizations from them.
     # In CI, we expect the pods to be already available and up to date.
     cocoapods unless is_ci
@@ -140,19 +140,19 @@ platform :ios do
     # See also:
     # - https://github.com/wordpress-mobile/WordPress-iOS/pull/23506/files/f694d2c3f433d616deeb15a61a3e9a01f55bc07e#r1725934262
     # - https://github.com/wordpress-mobile/WordPress-iOS/pull/23506#discussion_r1727419190
-    derived_data_path = options.fetch(:derived_data_path, DERIVED_DATA_PATH)
     resolve_packages(derived_data_path: derived_data_path)
 
-    custom_gutenberg_path = options[:gutenberg_path]
-    if custom_gutenberg_path
+    if gutenberg_absolute_path
       # It's simpler to ask the caller to give an absolute path than to make it absolute ourselves
       # Given this is a debug option, it seems like an okay tradeoff.
-      UI.user_error!("Please provide gutenberg_path as an absolute path. Current value: #{custom_gutenberg_path}") unless File.absolute_path?(custom_gutenberg_path)
+      unless File.absolute_path?(gutenberg_absolute_path)
+        UI.user_error!("Please provide gutenberg_absolute_path as an absolute path. Current value: #{gutenberg_absolute_path}")
+      end
 
-      UI.user_error!("Could not find Gutenberg project at given path #{custom_gutenberg_path}") unless Dir.exist?(custom_gutenberg_path)
+      UI.user_error!("Could not find Gutenberg project at given path #{gutenberg_absolute_path}") unless Dir.exist?(gutenberg_absolute_path)
 
-      UI.message("Using Gutenberg from #{custom_gutenberg_path} instead of cloning it...")
-      generate_strings_file(gutenberg_path: custom_gutenberg_path, derived_data_path: derived_data_path)
+      UI.message("Using Gutenberg from #{gutenberg_absolute_path} instead of cloning it...")
+      generate_strings_file(gutenberg_path: gutenberg_absolute_path, derived_data_path: derived_data_path)
     else
       # On top of fetching the latest Pods, we also need to fetch the source for the Gutenberg code.
       # To get it, we need to manually clone the repo, since Gutenberg is distributed via XCFramework.
@@ -200,7 +200,7 @@ platform :ios do
       destination: File.join(WORDPRESS_EN_LPROJ, 'Localizable.strings')
     )
 
-    git_commit(path: [WORDPRESS_EN_LPROJ], message: 'Update strings for localization', allow_nothing_to_commit: true) unless options[:skip_commit]
+    git_commit(path: [WORDPRESS_EN_LPROJ], message: 'Update strings for localization', allow_nothing_to_commit: true) unless skip_commit
   end
 
   def generate_strings_file(gutenberg_path:, derived_data_path:)
