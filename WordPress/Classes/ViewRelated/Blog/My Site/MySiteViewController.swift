@@ -2,6 +2,7 @@ import WordPressAuthenticator
 import UIKit
 import SwiftUI
 import WordPressUI
+import GutenbergKit
 
 final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSitesViewDelegate {
     enum Section: Int, CaseIterable {
@@ -163,6 +164,10 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         subscribeToModelChanges()
         subscribeToPostPublished()
         subscribeToWillEnterForeground()
+
+        if FeatureFlag.newGutenberg.enabled {
+            GutenbergKit.EditorViewController.warmup()
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {

@@ -149,7 +149,9 @@ class EditPostViewController: UIViewController {
         generator.prepare()
 
         present(navController, animated: !showImmediately) {
-            generator.impactOccurred()
+            if !(editor is NewGutenbergViewController) {
+                generator.impactOccurred()
+            }
 
             if let insertedMedia = self.insertedMedia {
                 editor.prepopulateMediaItems(insertedMedia)

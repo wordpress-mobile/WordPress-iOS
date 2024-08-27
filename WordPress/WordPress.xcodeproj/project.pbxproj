@@ -924,6 +924,8 @@
 		1E732A7D2BB59AA1001103D4 /* UIImageView+Gravatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EABC442BB56EE10098D330 /* UIImageView+Gravatar.swift */; };
 		1E9D544D23C4C56300F6A9E0 /* GutenbergRollout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9D544C23C4C56300F6A9E0 /* GutenbergRollout.swift */; };
 		223EA61E212A7C26A456C32C /* Pods_JetpackDraftActionExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 430F7B409FE22699ADB1A724 /* Pods_JetpackDraftActionExtension.framework */; };
+		24007FBD2C76ABEB0054E108 /* NewGutenbergViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24007FBB2C76ABEA0054E108 /* NewGutenbergViewController.swift */; };
+		24007FBE2C76AC120054E108 /* NewGutenbergViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24007FBB2C76ABEA0054E108 /* NewGutenbergViewController.swift */; };
 		241E60B325CA0D2900912CEB /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 241E60B225CA0D2900912CEB /* UserSettings.swift */; };
 		2420BEF125D8DAB300966129 /* Blog+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2420BEF025D8DAB300966129 /* Blog+Lookup.swift */; };
 		2422A2C02C5846DB00402A81 /* Blog+RestAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2422A2BF2C5846DB00402A81 /* Blog+RestAPITests.swift */; };
@@ -6795,6 +6797,7 @@
 		1E9D544C23C4C56300F6A9E0 /* GutenbergRollout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergRollout.swift; sourceTree = "<group>"; };
 		213A62FF811EBDB969FA7669 /* Pods_WordPressShareExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPressShareExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		23052F0F1F9B2503E33D0A26 /* Pods_JetpackShareExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JetpackShareExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		24007FBB2C76ABEA0054E108 /* NewGutenbergViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewGutenbergViewController.swift; sourceTree = "<group>"; };
 		241E60B225CA0D2900912CEB /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
 		2420BEF025D8DAB300966129 /* Blog+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+Lookup.swift"; sourceTree = "<group>"; };
 		2422A2BF2C5846DB00402A81 /* Blog+RestAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+RestAPITests.swift"; sourceTree = "<group>"; };
@@ -11259,6 +11262,14 @@
 			path = GutenbergWeb;
 			sourceTree = "<group>";
 		};
+		24007FBC2C76ABEA0054E108 /* NewGutenberg */ = {
+			isa = PBXGroup;
+			children = (
+				24007FBB2C76ABEA0054E108 /* NewGutenbergViewController.swift */,
+			);
+			path = NewGutenberg;
+			sourceTree = "<group>";
+		};
 		24AE9EF5264B3D8E00AC7F15 /* Derived Sources */ = {
 			isa = PBXGroup;
 			children = (
@@ -14589,6 +14600,7 @@
 				31F4F6641A13858F00196A98 /* Me */,
 				5DA5BF4A18E32DE2005F11F9 /* Media */,
 				08D978491CD2AF7D0054F19A /* Menus */,
+				24007FBC2C76ABEA0054E108 /* NewGutenberg */,
 				CC1D800D1656D8B2002A542F /* Notifications */,
 				850D22B21729EE8600EC6A16 /* NUX */,
 				EC4696A80EA74DAC0040EE8E /* Pages */,
@@ -22856,6 +22868,7 @@
 				176DEEE91D4615FE00331F30 /* WPSplitViewController.swift in Sources */,
 				400F4625201E74EE000CFD9E /* CollectionViewContainerRow.swift in Sources */,
 				9A8ECE0E2254A3260043C8DA /* JetpackConnectionWebViewController.swift in Sources */,
+				24007FBD2C76ABEB0054E108 /* NewGutenbergViewController.swift in Sources */,
 				0C27CEAB2C6137C3002E3F05 /* NotificationSettingsSiteView.swift in Sources */,
 				B06378C1253F639D00FD45D2 /* SiteSuggestion+CoreDataProperties.swift in Sources */,
 				0C2C83FA2A6EABF300A3ACD9 /* StatsPeriodCache.swift in Sources */,
@@ -26183,6 +26196,7 @@
 				FABB25C32602FC2C00C8785C /* FormattableContentActionCommand.swift in Sources */,
 				F44293D328E3B18E00D340AF /* AppIconListViewModelType.swift in Sources */,
 				FABB25C42602FC2C00C8785C /* AuthorFilterViewController.swift in Sources */,
+				24007FBE2C76AC120054E108 /* NewGutenbergViewController.swift in Sources */,
 				0C748B4C2A9D71A100809E1A /* SiteMediaCollectionViewController.swift in Sources */,
 				FABB25C52602FC2C00C8785C /* MenusSelectionItemView.m in Sources */,
 				FABB25C62602FC2C00C8785C /* TenorReponseParser.swift in Sources */,
