@@ -631,6 +631,8 @@ import Foundation
     // Login Autodiscovery
     case applicationPasswordLogin
 
+    case wpcomWebSignIn
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -1713,6 +1715,8 @@ import Foundation
         case .applicationPasswordLogin:
             return "application_password_login"
 
+        case .wpcomWebSignIn:
+            return "wpcom_web_sign_in"
         } // END OF SWITCH
     }
 

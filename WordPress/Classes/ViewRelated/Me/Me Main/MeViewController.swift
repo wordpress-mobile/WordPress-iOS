@@ -558,7 +558,25 @@ class MeViewController: UITableViewController {
     /// into a self-hosted site the ability to create a WordPress.com account.
     ///
     fileprivate func promptForLoginOrSignup() {
-        WordPressAuthenticator.showLogin(from: self, animated: true, showCancel: true, restrictToWPCom: true)
+        Task { @MainActor in
+            WPAnalytics.track(.wpcomWebSignIn, properties: ["stage": "start"])
+
+            let token: String
+            do {
+                token = try await WordPressDotComAuthenticator().authenticate(from: self)
+            } catch {
+                WPAnalytics.track(.wpcomWebSignIn, properties: ["stage": "error", "error": "\(error)"])
+                return
+            }
+
+            WPAnalytics.track(.wpcomWebSignIn, properties: ["stage": "success"])
+
+            SVProgressHUD.show()
+            let credentials = WordPressComCredentials(authToken: token, isJetpackLogin: false, multifactor: false)
+            WordPressAuthenticator.shared.delegate!.sync(credentials: .init(wpcom: credentials)) {
+                SVProgressHUD.dismiss()
+            }
+        }
     }
 
     private lazy var sharePresenter: ShareAppContentPresenter = {
