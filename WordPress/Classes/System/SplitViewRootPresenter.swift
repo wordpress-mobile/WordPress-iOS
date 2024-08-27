@@ -96,6 +96,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
 #if JETPACK
             let domainsVC = AllDomainsListViewController()
             let navigationVC = UINavigationController(rootViewController: domainsVC)
+            navigationVC.modalPresentationStyle = .formSheet
             splitVC.present(navigationVC, animated: true)
 #else
             wpAssertionFailure("domains are not supported in wpios")
@@ -103,6 +104,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
         case .help:
             let supportVC = SupportTableViewController()
             let navigationVC = UINavigationController(rootViewController: supportVC)
+            navigationVC.modalPresentationStyle = .formSheet
             splitVC.present(navigationVC, animated: true)
         case .profile:
             let meVC = MeSplitViewController()

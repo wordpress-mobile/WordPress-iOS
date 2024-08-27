@@ -30,6 +30,7 @@ import Foundation
 
         let navigationController = UINavigationController(rootViewController: domainSuggestionsViewController)
         navigationController.isModalInPresentation = true
+        navigationController.modalPresentationStyle = .formSheet
         allDomainsViewController.present(navigationController, animated: true)
     }
 }

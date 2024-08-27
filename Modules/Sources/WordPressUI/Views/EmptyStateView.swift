@@ -5,7 +5,11 @@ public struct EmptyStateView<Label: View, Description: View, Actions: View>: Vie
     @ViewBuilder var description: () -> Description
     @ViewBuilder var actions: () -> Actions
 
-    public init(label: @escaping () -> Label, description: @escaping () -> Description, actions: @escaping () -> Actions) {
+    public init(
+        @ViewBuilder label: @escaping () -> Label,
+        @ViewBuilder description: @escaping () -> Description,
+        @ViewBuilder actions: @escaping () -> Actions
+    ) {
         self.label = label
         self.description = description
         self.actions = actions
