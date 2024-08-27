@@ -92,6 +92,10 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
     private func navigate(to step: SidebarNavigationStep) {
         switch step {
+        case .allSites:
+            showSitePicker()
+        case .addSite(let selection):
+            showAddSiteScreen(selection: selection)
         case .domains:
 #if JETPACK
             let domainsVC = AllDomainsListViewController()
@@ -110,6 +114,29 @@ final class SplitViewRootPresenter: RootViewPresenter {
         }
     }
 
+    private func showSitePicker() {
+        let sitePickerVC = SiteSwitcherViewController(
+            configuration: BlogListConfiguration(shouldHideRecentSites: true),
+            addSiteAction: { [weak self] in
+                self?.showAddSiteScreen(selection: $0)
+            },
+            onSiteSelected: { [weak self] site in
+                self?.splitVC.dismiss(animated: true)
+                RecentSitesService().touch(blog: site)
+                self?.sidebarViewModel.selection = .blog(TaggedManagedObjectID(site))
+            }
+        )
+        let navigationVC = UINavigationController(rootViewController: sitePickerVC)
+        navigationVC.modalPresentationStyle = .formSheet
+        self.splitVC.present(navigationVC, animated: true)
+        WPAnalytics.track(.sidebarAllSitesTapped)
+    }
+
+    private func showAddSiteScreen(selection: AddSiteMenuViewModel.Selection) {
+        AddSiteController(viewController: splitVC.presentedViewController ?? splitVC, source: "sidebar")
+            .showSiteCreationScreen(selection: selection)
+    }
+
     // MARK: – RootViewPresenter
 
     var rootViewController: UIViewController { splitVC }
@@ -117,7 +144,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
     var currentViewController: UIViewController?
 
     func showBlogDetails(for blog: Blog) {
-        fatalError()
+        sidebarViewModel.selection = .blog(TaggedManagedObjectID(blog))
     }
 
     func getMeScenePresenter() -> any ScenePresenter {

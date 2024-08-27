@@ -66,26 +66,49 @@ private struct SidebarView: View {
             Text(Strings.noSites)
         }
         if viewModel.allSites.count > SidebarView.displayedSiteLimit {
-            Menu {
-                Text("Not Implemented")
+            Button {
+                self.viewModel.navigate(.allSites)
             } label: {
                 Label(Strings.allSites, systemImage: "rectangle.stack")
             }
             .tint(Color.primary)
         }
-        Menu {
-            Text("Not Implemented")
-        } label: {
-            Label(Strings.addSite, systemImage: "plus.circle")
-        }
-        .tint(Color.primary)
+        addSiteView
+            .tint(Color.primary)
     }
 
     private func makeSiteList(with sites: [BlogListSiteViewModel]) -> some View {
         ForEach(sites) { site in
-            BlogListSiteView(site: site)
+            BlogListSiteView(site: site, style: .sidebar)
                 .environment(\.siteIconBackgroundColor, Color(.systemBackground))
                 .tag(SidebarSelection.blog(site.id))
+                .listRowInsets(EdgeInsets(top: 9, leading: 8, bottom: 9, trailing: 8))
+        }
+    }
+
+    @ViewBuilder
+    private var addSiteView: some View {
+        let viewModel = AddSiteMenuViewModel(onSelection: { [weak viewModel] in
+            viewModel?.navigate(.addSite(selection: $0))
+        })
+        let label = Label {
+            Text(Strings.addSite)
+        } icon: {
+            Image(systemName: "plus.square.fill")
+                .foregroundStyle(Color(.brand), Color(.secondarySystemFill))
+                .font(.title2)
+        }
+        switch viewModel.actions.count {
+        case 0:
+            EmptyView()
+        case 1:
+            Button(action: viewModel.actions[0].handler) { label }
+        default:
+            Menu {
+                ForEach(viewModel.actions) { action in
+                    Button(action.title, action: action.handler)
+                }
+            } label: { label }
         }
     }
 

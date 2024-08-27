@@ -1028,7 +1028,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     [rows addObject:[self mediaRow]];
     [rows addObject:[self commentsRow]];
 
-    NSString *title = [BlogDetailsViewControllerStrings contentSectionTitle];
+    NSString *title = self.isSidebarModeEnabled ? nil : [BlogDetailsViewControllerStrings contentSectionTitle];
     return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows category:BlogDetailsSectionCategoryContent];
 }
 

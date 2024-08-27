@@ -3,19 +3,23 @@ import WordPressShared
 
 struct BlogListSiteView: View {
     let site: BlogListSiteViewModel
+    var style: Style = .default
+
+    enum Style {
+        case `default`, sidebar
+    }
 
     var body: some View {
-        HStack(alignment: .center, spacing: 16) {
-            SiteIconView(viewModel: site.icon)
-                .frame(width: 40, height: 40)
-
+        HStack(alignment: .center, spacing: style == .default ? 16 : 10) {
+            let icon = style == .default ? site.icon : site.makeIcon(with: .small)
+            SiteIconView(viewModel: icon)
+                .frame(width: icon.size.width, height: icon.size.width)
             VStack(alignment: .leading) {
                 HStack(alignment: .center) {
                     Text(site.title)
                         .font(.callout.weight(.medium))
-
                     if let badge = site.badge {
-                        makeBadge(with: badge)
+                        BlogListBadgeView(badge: badge)
                     }
                 }
                 Text(site.domain)
@@ -25,13 +29,17 @@ struct BlogListSiteView: View {
             .lineLimit(1)
         }
     }
+}
 
-    func makeBadge(with viewModel: BlogListSiteViewModel.Badge) -> some View {
-        Text(viewModel.title.uppercased())
+private struct BlogListBadgeView: View {
+    let badge: BlogListSiteViewModel.Badge
+
+    var body: some View {
+        Text(badge.title.uppercased())
             .lineLimit(1)
             .font(.caption2.weight(.semibold))
             .padding(EdgeInsets(top: 3, leading: 5, bottom: 3, trailing: 5))
-            .background(viewModel.color)
+            .background(badge.color)
             .clipShape(RoundedRectangle(cornerRadius: 6))
             .frame(height: 10) // Make sure it doesn't affect the layout and spacing
     }
@@ -52,6 +60,10 @@ final class BlogListSiteViewModel: Identifiable {
     struct Badge {
         let title: String
         let color: Color
+    }
+
+    func makeIcon(with size: SiteIconViewModel.Size) -> SiteIconViewModel {
+        SiteIconViewModel(blog: blog, size: size)
     }
 
     private let blog: Blog
