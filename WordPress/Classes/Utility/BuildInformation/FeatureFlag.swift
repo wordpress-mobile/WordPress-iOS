@@ -52,6 +52,7 @@ enum FeatureFlag: Int, CaseIterable {
         case .sidebar:
             return false
         case .newGutenberg:
+            return false
         case .serif:
             return false
         }
