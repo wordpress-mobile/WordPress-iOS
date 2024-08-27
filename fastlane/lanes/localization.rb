@@ -178,14 +178,14 @@ platform :ios do
         Dir.chdir(tempdir) do
           repo_url = "https://github.com/#{github_org}/#{repo_name}"
           UI.message("Cloning Gutenberg from #{repo_url} into #{gutenberg_clone_name}. This might take a few minutes…")
-          sh("git clone --depth 1 #{repo_url} #{gutenberg_path}")
+          sh('git', 'clone', '--depth', '1', repo_url, gutenberg_path)
           Dir.chdir(gutenberg_path) do
             if ref_node[:tag]
-              sh("git fetch origin refs/tags/#{ref}:refs/tags/#{ref}")
-              sh("git checkout refs/tags/#{ref}")
+              sh('git', 'fetch', 'origin', "refs/tags/#{ref}:refs/tags/#{ref}")
+              sh('git', 'checkout', "refs/tags/#{ref}")
             else
-              sh("git fetch origin #{ref}")
-              sh("git checkout #{ref}")
+              sh('git', 'fetch', 'origin', ref)
+              sh('git', 'checkout', ref)
             end
           end
         end
