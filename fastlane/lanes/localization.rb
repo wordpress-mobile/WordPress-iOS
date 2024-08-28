@@ -115,6 +115,8 @@ UPLOAD_TO_APP_STORE_COMMON_PARAMS = {
   app_rating_config_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'metadata', 'ratings_config.json')
 }.freeze
 
+WORDPRESS_EN_LPROJ = File.join('WordPress', 'Resources', 'en.lproj')
+
 #################################################
 # Lanes
 #################################################
@@ -126,93 +128,95 @@ platform :ios do
   #
   # @called_by complete_code_freeze
   #
-  lane :generate_strings_file_for_glotpress do |options|
-    # We jump in the tempdir immediately, even though we might not need it.
-    # It's just simpler to rely on the Ruby block API for it than to manage it by hand.
-    Dir.mktmpdir do |tempdir|
-      # Fetch fresh pods to read the latest localizations from them.
-      # In CI, we expect the pods to be already available and up to date.
-      cocoapods unless is_ci
+  lane :generate_strings_file_for_glotpress do |skip_commit: false, derived_data_path: DERIVED_DATA_PATH, gutenberg_absolute_path: nil|
+    # Fetch fresh pods to read the latest localizations from them.
+    # In CI, we expect the pods to be already available and up to date.
+    cocoapods unless is_ci
 
-      # For the same reason, fetch fresh packages
-      # FIXME: We yet don't have an explicit way to set the derived data in CI, so we'll run it in CI, too
-      derived_data_path = options.fetch(:derived_data_path, DERIVED_DATA_PATH)
-      resolve_packages(derived_data_path: derived_data_path)
+    # For the same reason, fetch fresh packages.
+    # However, notice we currently need to do this in CI as well.
+    # That's because we haven't yet implemented a method to share the derived data folder explicitly between the CI SPM caching logic and this lane.
+    #
+    # See also:
+    # - https://github.com/wordpress-mobile/WordPress-iOS/pull/23506/files/f694d2c3f433d616deeb15a61a3e9a01f55bc07e#r1725934262
+    # - https://github.com/wordpress-mobile/WordPress-iOS/pull/23506#discussion_r1727419190
+    resolve_packages(derived_data_path: derived_data_path)
 
-      custom_gutenber_path = options[:gutenberg_path]
-      if custom_gutenber_path
-        # It's simpler to ask the caller to give an absolute path than to make it absolute ourselves be
-        # Given this is a debug option, it seems like an okay tradeoff.
-        UI.user_error!("Please provide gutenberg_path as an absolute path. Current value: #{custom_gutenber_path}") unless File.absolute_path?(custom_gutenber_path)
-
-        UI.user_error!("Could not find Gutenber project at given path #{custom_gutenber_path}") unless Dir.exist?(custom_gutenber_path)
-
-        gutenberg_path = custom_gutenber_path
-        UI.message("Using Gutenberg from #{gutenberg_path} instead of cloning it...")
-      else
-        # On top of fetching the latest Pods, we also need to fetch the source for the Gutenberg code.
-        # To get it, we need to manually clone the repo, since Gutenberg is distributed via XCFramework.
-        # XCFrameworks are binary targets and cannot extract strings via genstrings from there.
-        config = gutenberg_config!
-
-        ref_node = config[:ref]
-        UI.user_error!('Could not find Gutenberg ref to clone the repository in order to access its strings.') if ref_node.nil?
-
-        ref = ref_node[:tag] || ref_node[:commit]
-        UI.user_error!('The ref to clone Gutenberg in order to access its strings has neither tag nor commit values.') if ref.nil?
-
-        github_org = config[:github_org]
-        UI.user_error!('Could not find GitHub organization name to clone Gutenberg in order to access its strings.') if github_org.nil?
-
-        repo_name = config[:repo_name]
-        UI.user_error!('Could not find GitHub repository name to clone Gutenberg in order to access its strings.') if repo_name.nil?
-
-        # Create a temporary directory to clone Gutenberg into.
-        # We'll run the rest of the automation from within the block, but notice that only the Gutenbreg cloning happens within the temporary directory.
-        gutenberg_clone_name = 'Gutenberg-Strings-Clone'
-        Dir.chdir(tempdir) do
-          repo_url = "https://github.com/#{github_org}/#{repo_name}"
-          UI.message("Cloning Gutenberg from #{repo_url} into #{gutenberg_clone_name}. This might take a few minutes…")
-          sh("git clone --depth 1 #{repo_url} #{gutenberg_clone_name}")
-          Dir.chdir(gutenberg_clone_name) do
-            if config[:ref][:tag]
-              sh("git fetch origin refs/tags/#{ref}:refs/tags/#{ref}")
-              sh("git checkout refs/tags/#{ref}")
-            else
-              sh("git fetch origin #{ref}")
-              sh("git checkout #{ref}")
-            end
-          end
-        end
-        gutenberg_path = File.join(tempdir, gutenberg_clone_name)
+    if gutenberg_absolute_path
+      # It's simpler to ask the caller to give an absolute path than to make it absolute ourselves
+      # Given this is a debug option, it seems like an okay tradeoff.
+      unless File.absolute_path?(gutenberg_absolute_path)
+        UI.user_error!("Please provide gutenberg_absolute_path as an absolute path. Current value: #{gutenberg_absolute_path}")
       end
 
-      # Notice that we are no longer in the tempdir, so the paths below are back to being relative to the project root folder.
-      # However, we are still in the tempdir block, so that once the automation is done, the tempdir will be automatically deleted.
-      wordpress_en_lproj = File.join('WordPress', 'Resources', 'en.lproj')
-      ios_generate_strings_file_from_code(
-        paths: [
-          'WordPress/',
-          'Pods/WordPress*/',
-          'Modules/Sources/',
-          'WordPressAuthenticator/Sources/',
-          gutenberg_path,
-          *REMOTE_SWIFT_PACKAGES_TO_LOCALIZE.map { |name| File.join(derived_data_path, 'SourcePackages', 'checkouts', name, 'Sources') }
-        ],
-        exclude: ['*Vendor*', 'WordPress/WordPressTest/**', '**/AppLocalizedString.swift'],
-        routines: ['AppLocalizedString'],
-        output_dir: wordpress_en_lproj
-      )
+      UI.user_error!("Could not find Gutenberg project at given path #{gutenberg_absolute_path}") unless Dir.exist?(gutenberg_absolute_path)
 
-      # Merge various manually-maintained `.strings` files into the previously generated `Localizable.strings` so their extra keys are also imported in GlotPress.
-      # Note: We will re-extract the translations back during `download_localized_strings_and_metadata` (via a call to `ios_extract_keys_from_strings_files`)
-      ios_merge_strings_files(
-        paths_to_merge: MANUALLY_MAINTAINED_STRINGS_FILES,
-        destination: File.join(wordpress_en_lproj, 'Localizable.strings')
-      )
+      UI.message("Using Gutenberg from #{gutenberg_absolute_path} instead of cloning it...")
+      generate_strings_file(gutenberg_path: gutenberg_absolute_path, derived_data_path: derived_data_path)
+    else
+      # On top of fetching the latest Pods, we also need to fetch the source for the Gutenberg code.
+      # To get it, we need to manually clone the repo, since Gutenberg is distributed via XCFramework.
+      # XCFrameworks are binary targets and cannot extract strings via genstrings from there.
+      config = gutenberg_config!
 
-      git_commit(path: [wordpress_en_lproj], message: 'Update strings for localization', allow_nothing_to_commit: true) unless options[:skip_commit]
+      ref_node = config[:ref]
+      UI.user_error!('Could not find Gutenberg ref to clone the repository in order to access its strings.') if ref_node.nil?
+
+      ref = ref_node[:tag] || ref_node[:commit]
+      UI.user_error!('The ref to clone Gutenberg in order to access its strings has neither tag nor commit values.') if ref.nil?
+
+      github_org = config[:github_org]
+      UI.user_error!('Could not find GitHub organization name to clone Gutenberg in order to access its strings.') if github_org.nil?
+
+      repo_name = config[:repo_name]
+      UI.user_error!('Could not find GitHub repository name to clone Gutenberg in order to access its strings.') if repo_name.nil?
+
+      # Create a temporary directory to clone Gutenberg into.
+      Dir.mktmpdir do |tempdir|
+        gutenberg_clone_name = 'Gutenberg-Strings-Clone'
+        gutenberg_path = File.join(tempdir, gutenberg_clone_name)
+        repo_url = "https://github.com/#{github_org}/#{repo_name}"
+        UI.message("Cloning Gutenberg from #{repo_url} into #{gutenberg_clone_name}. This might take a few minutes…")
+        sh('git', 'clone', '--depth', '1', repo_url, gutenberg_path)
+
+        Dir.chdir(gutenberg_path) do
+          if ref_node[:tag]
+            sh('git', 'fetch', 'origin', "refs/tags/#{ref}:refs/tags/#{ref}")
+            sh('git', 'checkout', "refs/tags/#{ref}")
+          else
+            sh('git', 'fetch', 'origin', ref)
+            sh('git', 'checkout', ref)
+          end
+        end
+
+        generate_strings_file(gutenberg_path: gutenberg_path, derived_data_path: derived_data_path)
+      end
     end
+
+    # Merge various manually-maintained `.strings` files into the previously generated `Localizable.strings` so their extra keys are also imported in GlotPress.
+    # Note: We will re-extract the translations back during `download_localized_strings_and_metadata` (via a call to `ios_extract_keys_from_strings_files`)
+    ios_merge_strings_files(
+      paths_to_merge: MANUALLY_MAINTAINED_STRINGS_FILES,
+      destination: File.join(WORDPRESS_EN_LPROJ, 'Localizable.strings')
+    )
+
+    git_commit(path: [WORDPRESS_EN_LPROJ], message: 'Update strings for localization', allow_nothing_to_commit: true) unless skip_commit
+  end
+
+  def generate_strings_file(gutenberg_path:, derived_data_path:)
+    ios_generate_strings_file_from_code(
+      paths: [
+        'WordPress/',
+        'Pods/WordPress*/',
+        'Modules/Sources/',
+        'WordPressAuthenticator/Sources/',
+        gutenberg_path,
+        *REMOTE_SWIFT_PACKAGES_TO_LOCALIZE.map { |name| File.join(derived_data_path, 'SourcePackages', 'checkouts', name, 'Sources') }
+      ],
+      exclude: ['*Vendor*', 'WordPress/WordPressTest/**', '**/AppLocalizedString.swift'],
+      routines: ['AppLocalizedString'],
+      output_dir: WORDPRESS_EN_LPROJ
+    )
   end
 
   # Updates the `AppStoreStrings.po` files (WP+JP) with the latest content from the `release_notes.txt` files and the other text sources
