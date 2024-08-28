@@ -56,27 +56,27 @@ final class ImageView: UIView {
 
     func setImage(with imageURL: URL, host: MediaHost? = nil, size: CGSize? = nil) {
         task?.cancel()
+        task = Task { [downloader, weak self] in
 
-        if let image = downloader.cachedImage(for: imageURL, size: size) {
-            setState(.success(image))
-        } else {
-            setState(.loading)
-            task = Task { [downloader, weak self] in
-                do {
-                    let options = ImageRequestOptions(size: size)
-                    let image: UIImage
-                    if let host {
-                        image = try await downloader.image(from: imageURL, host: host, options: options)
-                    } else {
+            if let image = await downloader.cachedImage(for: imageURL, size: size) {
+                self?.setState(.success(image))
+            } else {
+                self?.setState(.loading)
+                    do {
+                        let options = ImageRequestOptions(size: size)
+                        let image: UIImage
+                        if let host {
+                            image = try await downloader.image(from: imageURL, host: host, options: options)
+                        } else {
                         image = try await downloader.image(from: imageURL, options: options)
+                        }
+                        guard !Task.isCancelled else { return }
+                        self?.setState(.success(image))
+                    } catch {
+                        guard !Task.isCancelled else { return }
+                        self?.setState(.failure)
                     }
-                    guard !Task.isCancelled else { return }
-                    self?.setState(.success(image))
-                } catch {
-                    guard !Task.isCancelled else { return }
-                    self?.setState(.failure)
                 }
-            }
         }
     }
 

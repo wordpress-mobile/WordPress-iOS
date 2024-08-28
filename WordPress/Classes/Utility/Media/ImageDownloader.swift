@@ -86,11 +86,11 @@ actor ImageDownloader {
     ///
     /// - note: Use it to retrieve the image synchronously, which is no not possible
     /// with the async functions.
-    nonisolated func cachedImage(for imageURL: URL, size: CGSize? = nil) -> UIImage? {
+    func cachedImage(for imageURL: URL, size: CGSize? = nil) -> UIImage? {
         cache[makeKey(for: imageURL, size: size)]
     }
 
-    nonisolated func setCachedImage(_ image: UIImage?, for imageURL: URL, size: CGSize? = nil) {
+    func setCachedImage(_ image: UIImage?, for imageURL: URL, size: CGSize? = nil) {
         cache[makeKey(for: imageURL, size: size)] = image
     }
 
