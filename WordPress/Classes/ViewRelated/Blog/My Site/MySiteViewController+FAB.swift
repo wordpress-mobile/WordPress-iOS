@@ -13,7 +13,7 @@ extension MySiteViewController {
             presenter.showPageEditor(forBlog: blog)
         }
 
-        let newPost = { [weak self] in
+        let newPost = {
             let presenter = RootViewCoordinator.sharedPresenter
             presenter.showPostTab(completion: {})
         }
