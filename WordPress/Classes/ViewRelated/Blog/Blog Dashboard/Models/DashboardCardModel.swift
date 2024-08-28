@@ -1,6 +1,6 @@
 import Foundation
 
-enum DashboardCardModel: Hashable {
+enum DashboardCardModel: Hashable, Sendable {
 
     case normal(DashboardNormalCardModel)
     case dynamic(DashboardDynamicCardModel)
@@ -105,7 +105,7 @@ extension DashboardNormalCardModel: BlogDashboardPersonalizable, BlogDashboardAn
 
 // MARK: - Dynamic Card Model
 
-struct DashboardDynamicCardModel: Hashable {
+struct DashboardDynamicCardModel: Hashable, Sendable {
 
     typealias Payload = BlogDashboardRemoteEntity.BlogDashboardDynamic
 
