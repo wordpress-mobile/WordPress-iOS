@@ -106,10 +106,7 @@ public class BottomSheetViewController: UIViewController {
     private var stackView: UIStackView!
 
     private var defaultBrackgroundColor: UIColor {
-        if #available(iOS 13, *) {
-            return .systemBackground
-        }
-        return .white
+        return .systemBackground
     }
 
     @objc func buttonPressed() {

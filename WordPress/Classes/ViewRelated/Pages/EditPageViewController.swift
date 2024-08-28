@@ -86,7 +86,9 @@ class EditPageViewController: UIViewController {
         generator.prepare()
 
         present(navController, animated: true) {
-            generator.impactOccurred()
+            if !(editor is NewGutenbergViewController) {
+                generator.impactOccurred()
+            }
         }
     }
 

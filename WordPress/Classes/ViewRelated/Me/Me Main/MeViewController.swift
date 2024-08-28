@@ -7,6 +7,7 @@ import AutomatticAbout
 
 class MeViewController: UITableViewController {
     var handler: ImmuTableViewHandler!
+    var isSidebarModeEnabled = false
 
     // MARK: - Table View Controller
 
@@ -48,6 +49,13 @@ class MeViewController: UITableViewController {
         tableView.accessibilityIdentifier = "Me Table"
 
         reloadViewModel()
+
+        if isSidebarModeEnabled {
+            tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .none)
+            if let myProfileViewController {
+                showOrPushController(myProfileViewController)
+            }
+        }
     }
 
     override func viewDidLayoutSubviews() {
@@ -218,7 +226,7 @@ class MeViewController: UITableViewController {
         ]
 
         #if JETPACK
-        if RemoteFeatureFlag.domainManagement.enabled() && loggedIn {
+        if RemoteFeatureFlag.domainManagement.enabled() && loggedIn && !isSidebarModeEnabled {
             sections.append(.init(rows: [
                 NavigationItemRow(
                     title: AllDomainsListViewController.Strings.title,

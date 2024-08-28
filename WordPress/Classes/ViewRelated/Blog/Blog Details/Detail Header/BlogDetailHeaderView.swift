@@ -54,8 +54,7 @@ class BlogDetailHeaderView: UIView {
     @objc func refreshIconImage() {
         guard let blog else { return }
 
-        var viewModel = SiteIconViewModel(blog: blog)
-        viewModel.background = Color(.systemBackground)
+        let viewModel = SiteIconViewModel(blog: blog)
         titleView.siteIconView.imageView.setIcon(with: viewModel)
     }
 
@@ -74,15 +73,15 @@ class BlogDetailHeaderView: UIView {
         static let atSides: CGFloat = 20
         static let top: CGFloat = 10
         static let bottom: CGFloat = 16
-        static func betweenTitleViewAndActionRow(_ showsActionRow: Bool) -> CGFloat {
-            return showsActionRow ? 32 : 0
-        }
     }
+
+    private let isSidebarModeEnabled: Bool
 
     // MARK: - Initializers
 
-    required init(delegate: BlogDetailHeaderViewDelegate) {
-        titleView = TitleView(frame: .zero)
+    required init(delegate: BlogDetailHeaderViewDelegate, isSidebarModeEnabled: Bool) {
+        titleView = TitleView(isSidebarModeEnabled: isSidebarModeEnabled)
+        self.isSidebarModeEnabled = isSidebarModeEnabled
 
         super.init(frame: .zero)
 
@@ -108,7 +107,7 @@ class BlogDetailHeaderView: UIView {
         }
 
         if let siteIconMenu = delegate?.makeSiteIconMenu() {
-            titleView.siteIconView.setMenu(siteIconMenu) { [weak self] in
+            titleView.siteIconView.setMenu(siteIconMenu) {
                 WPAnalytics.track(.siteSettingsSiteIconTapped)
             }
         }
@@ -129,8 +128,6 @@ class BlogDetailHeaderView: UIView {
 
     // MARK: - Constraints
 
-    private var topActionRowConstraint: NSLayoutConstraint?
-
     private func setupConstraintsForChildViews() {
         let constraints = constraintsForTitleView()
         NSLayoutConstraint.activate(constraints)
@@ -138,7 +135,7 @@ class BlogDetailHeaderView: UIView {
 
     private func constraintsForTitleView() -> [NSLayoutConstraint] {
         return [
-            titleView.topAnchor.constraint(equalTo: topAnchor, constant: LayoutSpacing.top),
+            titleView.topAnchor.constraint(equalTo: topAnchor, constant: isSidebarModeEnabled ? 3 : LayoutSpacing.top),
             titleView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: LayoutSpacing.atSides),
             titleView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -10),
             titleView.bottomAnchor.constraint(equalTo: bottomAnchor)
@@ -161,20 +158,6 @@ class BlogDetailHeaderView: UIView {
     private func subtitleButtonTapped() {
         delegate?.visitSiteTapped()
     }
-
-    // MARK: - Accessibility
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        refreshStackViewVisibility()
-    }
-
-    private func refreshStackViewVisibility() {
-        let showsActionRow = !traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-
-        topActionRowConstraint?.constant = LayoutSpacing.betweenTitleViewAndActionRow(showsActionRow)
-    }
 }
 
 extension BlogDetailHeaderView {
@@ -194,7 +177,7 @@ extension BlogDetailHeaderView {
             ])
 
             stackView.alignment = .center
-            stackView.spacing = 12
+            stackView.spacing = isSidebarModeEnabled ? 20 : 12
             stackView.translatesAutoresizingMaskIntoConstraints = false
             stackView.setCustomSpacing(2, after: titleStackView)
 
@@ -207,7 +190,7 @@ extension BlogDetailHeaderView {
             return siteIconView
         }()
 
-        let subtitleButton: UIButton = {
+        private(set) lazy var subtitleButton: UIButton = {
             let button = UIButton(type: .custom)
 
             var configuration = UIButton.Configuration.plain()
@@ -217,7 +200,7 @@ extension BlogDetailHeaderView {
                 attributes.foregroundColor = .primary
                 return attributes
             }
-            configuration.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 0, bottom: 1, trailing: 0)
+            configuration.contentInsets = isSidebarModeEnabled ? NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 2, trailing: 0) : NSDirectionalEdgeInsets(top: 2, leading: 0, bottom: 1, trailing: 0)
             configuration.titleLineBreakMode = .byTruncatingTail
             button.configuration = configuration
 
@@ -235,17 +218,18 @@ extension BlogDetailHeaderView {
             return button
         }()
 
-        let titleButton: UIButton = {
+        private(set) lazy var titleButton: UIButton = {
             let button = UIButton(type: .custom)
 
             var configuration = UIButton.Configuration.plain()
+            let font = isSidebarModeEnabled ? AppStyleGuide.navigationBarLargeFont : WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
             configuration.titleTextAttributesTransformer = .init { attributes in
                 var attributes = attributes
-                attributes.font = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
+                attributes.font = font
                 attributes.foregroundColor = UIColor.label
                 return attributes
             }
-            configuration.contentInsets = NSDirectionalEdgeInsets(top: 1, leading: 0, bottom: 1, trailing: 0)
+            configuration.contentInsets = isSidebarModeEnabled ? .zero : NSDirectionalEdgeInsets(top: 1, leading: 0, bottom: 1, trailing: 0)
             configuration.titleLineBreakMode = .byTruncatingTail
             button.configuration = configuration
 
@@ -284,12 +268,18 @@ extension BlogDetailHeaderView {
             return stackView
         }()
 
+        private let isSidebarModeEnabled: Bool
+
         // MARK: - Initializers
 
-        override init(frame: CGRect) {
-            super.init(frame: frame)
+        init(isSidebarModeEnabled: Bool) {
+            self.isSidebarModeEnabled = isSidebarModeEnabled
+            super.init(frame: .zero)
 
             setupChildViews()
+            if isSidebarModeEnabled {
+                configureLargeTitleMode()
+            }
         }
 
         required init?(coder: NSCoder) {
@@ -297,6 +287,19 @@ extension BlogDetailHeaderView {
         }
 
         // MARK: - Configuration
+
+        fileprivate func configureLargeTitleMode() {
+            siteIconView.setImageViewSize(50)
+
+            siteIconView.transform = CGAffineTransform(translationX: 0, y: 2) // Visually center vertically
+
+            siteSwitcherButton.removeFromSuperview()
+            mainStackView.addSubview(siteSwitcherButton)
+            NSLayoutConstraint.activate([
+                siteSwitcherButton.lastBaselineAnchor.constraint(equalTo: titleButton.lastBaselineAnchor, constant: -2),
+                siteSwitcherButton.leadingAnchor.constraint(equalTo: titleButton.trailingAnchor, constant: 2)
+            ])
+        }
 
         func set(url: String) {
             subtitleButton.setTitle(url, for: .normal)
@@ -318,7 +321,7 @@ extension BlogDetailHeaderView {
             addSubview(mainStackView)
 
             NSLayoutConstraint.activate([
-                mainStackView.topAnchor.constraint(equalTo: topAnchor, constant: .DS.Padding.double),
+                mainStackView.topAnchor.constraint(equalTo: topAnchor, constant: isSidebarModeEnabled ? 0 : .DS.Padding.double),
                 mainStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
                 mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
                 mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12)

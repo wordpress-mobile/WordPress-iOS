@@ -64,6 +64,7 @@ import WordPressShared
         // Setup tableView
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
+        tableView.cellLayoutMarginsFollowReadableWidth = true
 
         ImmuTable.registerRows([CheckmarkRow.self, NavigationItemRow.self, ActivityIndicatorRow.self], tableView: tableView)
         reloadViewModel()

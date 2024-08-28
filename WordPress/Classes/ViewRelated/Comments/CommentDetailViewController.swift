@@ -194,7 +194,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
     private(set) lazy var shareBarButtonItem: UIBarButtonItem = {
         let button = UIBarButtonItem(
             image: comment.allowsModeration()
-            ? UIImage(systemName: Style.Content.ellipsisIconImageName)
+            ? UIImage(systemName: "ellipsis")
             : UIImage(systemName: Style.Content.shareIconImageName),
             style: .plain,
             target: self,
@@ -203,6 +203,8 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         button.accessibilityLabel = NSLocalizedString("Share comment", comment: "Accessibility label for button to share a comment from a notification")
         return button
     }()
+
+    @objc var isSidebarModeEnabled = false
 
     // MARK: Initialization
 
@@ -597,7 +599,13 @@ private extension CommentDetailViewController {
         }
 
         let readerViewController = ReaderDetailViewController.controllerWithPostID(NSNumber(value: comment.postID), siteID: siteID, isFeed: false)
-        navigationController?.pushFullscreenViewController(readerViewController, animated: true)
+        if isSidebarModeEnabled {
+            let navigationController = UINavigationController(rootViewController: readerViewController)
+            navigationController.modalPresentationStyle = .pageSheet
+            present(navigationController, animated: true)
+        } else {
+            navigationController?.pushFullscreenViewController(readerViewController, animated: true)
+        }
     }
 
     func openWebView(for url: URL?) {
@@ -625,7 +633,6 @@ private extension CommentDetailViewController {
 
         CommentAnalytics.trackCommentEditorOpened(comment: comment)
         let navigationControllerToPresent = UINavigationController(rootViewController: editCommentTableViewController)
-        navigationControllerToPresent.modalPresentationStyle = .fullScreen
         present(navigationControllerToPresent, animated: true)
     }
 

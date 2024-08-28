@@ -103,6 +103,9 @@ class RootViewCoordinator {
     }
 
     private func createPresenter(_ appType: AppUIType) -> RootViewPresenter {
+        if UIDevice.isPad() && Feature.enabled(.sidebar) {
+            return SplitViewRootPresenter()
+        }
         switch appType {
         case .normal:
             return WPTabBarController(staticScreens: false)

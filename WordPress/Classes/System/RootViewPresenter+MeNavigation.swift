@@ -2,11 +2,6 @@ import UIKit
 
 /// Methods to access the Me Scene and sub levels
 extension RootViewPresenter {
-    /// removes all but the primary viewControllers from the stack
-    func popMeTabToRoot() {
-        getNavigationController()?.popToRootViewController(animated: false)
-    }
-
     /// presents the Me scene. If the feature flag is disabled, replaces the previously defined `showMeTab`
     func showMeScene(animated: Bool = true, completion: ((MeViewController?) -> Void)? = nil) {
         let meScenePresenter = getMeScenePresenter()

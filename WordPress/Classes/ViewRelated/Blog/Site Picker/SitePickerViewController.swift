@@ -17,26 +17,26 @@ final class SitePickerViewController: UIViewController {
     var onBlogSwitched: ((Blog) -> Void)?
     var onBlogListDismiss: (() -> Void)?
 
-    let meScenePresenter: ScenePresenter
     let blogService: BlogService
     let mediaService: MediaService
 
     private(set) lazy var blogDetailHeaderView: BlogDetailHeaderView = {
-        let headerView = BlogDetailHeaderView(delegate: self)
+        let headerView = BlogDetailHeaderView(delegate: self, isSidebarModeEnabled: isSidebarModeEnabled)
         headerView.translatesAutoresizingMaskIntoConstraints = false
         return headerView
     }()
 
     private var sitePickerTipObserver: TipObserver?
+    private let isSidebarModeEnabled: Bool
 
     init(blog: Blog,
-         meScenePresenter: ScenePresenter,
          blogService: BlogService? = nil,
-         mediaService: MediaService? = nil) {
+         mediaService: MediaService? = nil,
+         isSidebarModeEnabled: Bool) {
         self.blog = blog
-        self.meScenePresenter = meScenePresenter
         self.blogService = blogService ?? BlogService(coreDataStack: ContextManager.shared)
         self.mediaService = mediaService ?? MediaService(managedObjectContext: ContextManager.shared.mainContext)
+        self.isSidebarModeEnabled = isSidebarModeEnabled
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -76,7 +76,17 @@ final class SitePickerViewController: UIViewController {
     private func setupHeaderView() {
         blogDetailHeaderView.blog = blog
         view.addSubview(blogDetailHeaderView)
-        view.pinSubviewToAllEdges(blogDetailHeaderView)
+
+        if isSidebarModeEnabled {
+            NSLayoutConstraint.activate([
+                blogDetailHeaderView.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor),
+                blogDetailHeaderView.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor),
+                blogDetailHeaderView.topAnchor.constraint(equalTo: view.topAnchor),
+                blogDetailHeaderView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            ])
+        } else {
+            view.pinSubviewToAllEdges(blogDetailHeaderView)
+        }
     }
 
     private func startObservingTitleChanges() {
@@ -134,10 +144,6 @@ extension SitePickerViewController: BlogDetailHeaderViewDelegate {
         navigationController.modalPresentationStyle = .formSheet
         present(navigationController, animated: true)
         WPAnalytics.track(.mySiteSiteSwitcherTapped)
-
-        if #available(iOS 17, *) {
-            AppTips.SitePickerTip().invalidate(reason: .actionPerformed)
-        }
     }
 
     func visitSiteTapped() {

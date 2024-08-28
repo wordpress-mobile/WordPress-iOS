@@ -72,65 +72,10 @@ extension SitePickerViewController {
 
     // MARK: - Add site
 
-    func addSiteTapped(siteType: AddSiteAlertViewModel.Selection) {
+    func addSiteTapped(siteType: AddSiteMenuViewModel.Selection) {
         WPAnalytics.trackEvent(.mySiteHeaderAddSiteTapped, properties: ["siteType": siteType.rawValue])
-
-        switch siteType {
-        case .dotCom: launchSiteCreation()
-        case .selfHosted: launchLoginForSelfHostedSite()
-        }
-    }
-
-    private func launchSiteCreation() {
-        let viewController = presentedViewController ?? self
-        let source = "my_site"
-        JetpackFeaturesRemovalCoordinator.presentSiteCreationOverlayIfNeeded(in: viewController, source: source, onDidDismiss: {
-            guard JetpackFeaturesRemovalCoordinator.siteCreationPhase() != .two else {
-                return
-            }
-
-            // Display site creation flow if not in phase two
-            let wizardLauncher = SiteCreationWizardLauncher()
-            guard let wizard = wizardLauncher.ui else {
-                return
-            }
-            RootViewCoordinator.shared.isSiteCreationActive = true
-            viewController.present(wizard, animated: true)
-            SiteCreationAnalyticsHelper.trackSiteCreationAccessed(source: source)
-        })
-    }
-
-    private func launchLoginForSelfHostedSite() {
-        guard FeatureFlag.authenticateUsingApplicationPassword.enabled else {
-            WordPressAuthenticator.showLoginForSelfHostedSite(presentedViewController ?? self)
-            return
-        }
-
-        launchApplicationPasswordAuthenticationForSelfHostedSite()
-    }
-
-    private func launchApplicationPasswordAuthenticationForSelfHostedSite() {
-        guard let navigationController = presentedViewController?.navigationController ?? (presentedViewController as? UINavigationController) else {
-            return
-        }
-
-        guard let window = navigationController.view.window else {
-            return
-        }
-
-        let client = LoginClient(session: URLSession(configuration: .ephemeral))
-        let view = LoginWithUrlView(client: client, anchor: window) { [weak navigationController] credentials in
-            navigationController?.dismiss(animated: true)
-
-            WordPressAuthenticator.shared.delegate!.sync(credentials: .init(wporg: credentials)) {
-                NotificationCenter.default.post(
-                    name: Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification),
-                    object: nil
-                )
-            }
-        }
-
-        navigationController.pushViewController(UIHostingController(rootView: view), animated: true)
+        AddSiteController(viewController: presentedViewController ?? self, source: "my_site")
+            .showSiteCreationScreen(selection: siteType)
     }
 
     // MARK: - Personalize home

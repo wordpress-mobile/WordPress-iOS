@@ -124,7 +124,7 @@ public struct DSButton: View {
         switch style.emphasis {
         case .primary:
             RoundedRectangle(cornerRadius: .DS.Radius.small)
-                .fill(style.backgroundColor.opacity(priamryDisabledOpacity))
+                .fill(style.backgroundColor.opacity(primaryDisabledOpacity))
         case .secondary:
             RoundedRectangle(cornerRadius: .DS.Radius.small)
                 .stroke(Color.DS.Background.tertiary, lineWidth: 1)
@@ -147,12 +147,12 @@ public struct DSButton: View {
         return disabledOpacity
     }
 
-    private var priamryDisabledOpacity: CGFloat {
+    private var primaryDisabledOpacity: CGFloat {
         isEnabled ? 1 : disabledOpacity
     }
 
     private var disabledOpacity: CGFloat {
-        colorScheme == .light ? 0.5 : 0.6
+        colorScheme == .light ? 0.2 : 0.3
     }
 }
 

@@ -121,6 +121,8 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
         NotificationsViewModel(userDefaults: userDefaults)
     }()
 
+    var isSidebarModeEnabled = false
+
     // MARK: - View Lifecycle
 
     required init?(coder aDecoder: NSCoder) {
@@ -835,6 +837,8 @@ extension NotificationsViewController {
     private func displayViewController(_ controller: UIViewController) {
         if shouldPushDetailsViewController {
             navigationController?.pushViewController(controller, animated: true)
+        } else if isSidebarModeEnabled {
+            splitViewController?.setViewController(controller, for: .secondary)
         } else {
             showDetailViewController(controller, sender: nil)
         }

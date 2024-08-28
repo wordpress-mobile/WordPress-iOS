@@ -10,14 +10,10 @@ public class GripButton: UIButton {
     }
 
     private var color: UIColor {
-        if #available(iOS 13, *) {
-            if traitCollection.userInterfaceStyle == .dark {
-                return .systemGray4
-            } else {
-                return .systemGray5
-            }
+        if traitCollection.userInterfaceStyle == .dark {
+            return .systemGray4
         } else {
-            return UIColor(red: 0.764706, green: 0.768627, blue: 0.780392, alpha: 1)
+            return .systemGray5
         }
     }
 

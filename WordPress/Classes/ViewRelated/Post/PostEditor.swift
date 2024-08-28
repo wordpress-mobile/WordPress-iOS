@@ -160,7 +160,7 @@ extension PostEditor where Self: UIViewController {
         if post.status != post.original().status {
             post.status = post.original().status
         }
-        if post.changes.isEmpty {
+        if !editorHasChanges {
             AbstractPost.deleteLatestRevision(post, in: context)
         } else {
             if FeatureFlag.autoSaveDrafts.enabled, PostCoordinator.shared.isSyncAllowed(for: post) {

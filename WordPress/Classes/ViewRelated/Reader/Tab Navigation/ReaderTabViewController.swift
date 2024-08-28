@@ -15,6 +15,8 @@ class ReaderTabViewController: UIViewController {
         return makeReaderTabView(viewModel)
     }()
 
+    var isSidebarModeEnabled = true
+
     init(viewModel: ReaderTabViewModel, readerTabViewFactory: @escaping (ReaderTabViewModel) -> ReaderTabView) {
         self.viewModel = viewModel
         self.makeReaderTabView = readerTabViewFactory

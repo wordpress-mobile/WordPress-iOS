@@ -6,6 +6,8 @@ import WordPressShared
 struct SiteIconView: View {
     let viewModel: SiteIconViewModel
 
+    @Environment(\.siteIconBackgroundColor) private var backgroundColor
+
     var body: some View {
         contents
             .clipShape(RoundedRectangle(cornerRadius: 6))
@@ -21,7 +23,7 @@ struct SiteIconView: View {
                 case .failure:
                     failureStateView
                 default:
-                    viewModel.background
+                    backgroundColor
                 }
             }
         } else {
@@ -30,10 +32,10 @@ struct SiteIconView: View {
     }
 
     private var noIconView: some View {
-        viewModel.background.overlay {
+        backgroundColor.overlay {
             if let firstLetter = viewModel.firstLetter {
                 Text(firstLetter.uppercased())
-                    .font(.system(size: 24, weight: .medium, design: .rounded))
+                    .font(.system(size: iconFontSize(for: viewModel.size), weight: .medium, design: .rounded))
                     .foregroundStyle(.secondary.opacity(0.8))
             } else {
                 failureStateView
@@ -41,13 +43,31 @@ struct SiteIconView: View {
         }
     }
 
+    private func iconFontSize(for size: SiteIconViewModel.Size) -> CGFloat {
+        switch size {
+        case .small: 18
+        case .regular: 24
+        }
+    }
+
     private var failureStateView: some View {
-        viewModel.background.overlay {
+        backgroundColor.overlay {
             Image.DS.icon(named: .vector)
                 .resizable()
                 .frame(width: 18, height: 18)
                 .tint(.DS.Foreground.tertiary)
         }
+    }
+}
+
+private struct SiteIconViewBackgroundColorKey: EnvironmentKey {
+    static let defaultValue = Color(.secondarySystemBackground)
+}
+
+extension EnvironmentValues {
+    var siteIconBackgroundColor: Color {
+        get { self[SiteIconViewBackgroundColorKey.self] }
+        set { self[SiteIconViewBackgroundColorKey.self] = newValue }
     }
 }
 
@@ -83,6 +103,8 @@ private struct _SiteIconHostingView: View {
     @ObservedObject var viewModel: SiteIconHostingViewModel
 
     var body: some View {
-        viewModel.icon.map(SiteIconView.init)
+        viewModel.icon
+            .map(SiteIconView.init)
+            .environment(\.siteIconBackgroundColor, Color(.systemBackground))
     }
 }

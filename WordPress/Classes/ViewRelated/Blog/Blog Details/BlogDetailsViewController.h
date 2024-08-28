@@ -122,7 +122,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 - (void)presentBlogDetailsViewController:(UIViewController * __nonnull)viewController;
 @end
 
-@interface BlogDetailsViewController : UIViewController <UIViewControllerTransitioningDelegate>
+@interface BlogDetailsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIViewControllerTransitioningDelegate>
 
 @property (nonatomic, strong, nonnull) Blog * blog;
 @property (nonatomic, strong, readonly) CreateButtonCoordinator * _Nullable createButtonCoordinator;
@@ -130,6 +130,9 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 @property (nonatomic) BOOL isScrollEnabled;
 @property (nonatomic, weak, nullable) id<BlogDetailsPresentationDelegate> presentationDelegate;
 @property (nonatomic, strong, nullable) BlogDetailsRow *meRow;
+
+/// A new display mode for the displaying it as part of the site menu.
+@property (nonatomic) BOOL isSidebarModeEnabled;
 
 - (id _Nonnull)init;
 - (void)showDetailViewForSubsection:(BlogDetailsSubsection)section;

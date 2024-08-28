@@ -28,17 +28,9 @@ extension UIControl {
         set(alignment) {
             switch alignment {
             case .leading:
-                if #available(iOS 11.0, *) {
-                    contentHorizontalAlignment = .leading
-                } else {
-                    contentHorizontalAlignment = userInterfaceLayoutDirection() == .leftToRight ? .left : .right
-                }
+                contentHorizontalAlignment = .leading
             case .trailing:
-                if #available(iOS 11.0, *) {
-                    contentHorizontalAlignment = .trailing
-                } else {
-                    contentHorizontalAlignment = userInterfaceLayoutDirection() == .leftToRight ? .right : .left
-                }
+                contentHorizontalAlignment = .trailing
             case .center:
                 fallthrough
             default:

@@ -38,6 +38,11 @@ protocol PublishingEditor where Self: UIViewController {
     var debouncer: Debouncer { get }
 
     func emitPostSaveEvent()
+
+    // TODO: rework how the editors manage their changes
+    var editorHasContent: Bool { get }
+
+    var editorHasChanges: Bool { get }
 }
 
 extension PublishingEditor {
@@ -179,7 +184,7 @@ extension PublishingEditor {
         ActionDispatcher.dispatch(NoticeAction.clearWithTag(uploadFailureNoticeTag))
         stopEditing()
 
-        guard !post.changes.isEmpty && post.hasContent() else {
+        guard editorHasChanges && editorHasContent else {
             return discardAndDismiss()
         }
 

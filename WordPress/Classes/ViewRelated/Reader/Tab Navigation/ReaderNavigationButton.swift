@@ -124,7 +124,7 @@ struct ReaderNavigationButton: View {
 
 }
 
-private extension ReaderTabItem {
+extension ReaderTabItem {
 
     var image: Image? {
         if content.type == .saved {

@@ -47,6 +47,7 @@ let package = Package(
         .package(url: "https://github.com/zendesk/support_sdk_ios", from: "8.0.3"),
         // We can't use wordpress-rs branches nor commits here. Only tags work.
         .package(url: "https://github.com/Automattic/wordpress-rs", revision: "alpha-swift-20240813"),
+        .package(url: "https://github.com/wordpress-mobile/GutenbergKit", revision: "latest"),
     ],
     targets: XcodeSupport.targets + [
         .target(name: "JetpackStatsWidgetsCore"),
@@ -144,6 +145,7 @@ enum XcodeSupport {
                 .product(name: "Gravatar", package: "Gravatar-SDK-iOS"),
                 .product(name: "GravatarUI", package: "Gravatar-SDK-iOS"),
                 .product(name: "Gridicons", package: "Gridicons-iOS"),
+                .product(name: "GutenbergKit", package: "GutenbergKit"),
                 .product(name: "JTAppleCalendar", package: "JTAppleCalendar"),
                 .product(name: "Lottie", package: "lottie-ios"),
                 .product(name: "MediaEditor", package: "MediaEditor-iOS"),

@@ -38,10 +38,19 @@ final class AllDomainsListEmptyView: UIView {
     func update(with viewModel: ViewModel?) {
         stackView.removeAllSubviews()
 
-        if let viewModel = viewModel,
-           let stateView = UIHostingController(rootView: DomainsStateView(viewModel: viewModel)).view {
-            stateView.backgroundColor = .clear
-            stackView.addArrangedSubview(stateView)
+        if let viewModel {
+
+            let stateView = EmptyStateView {
+                Label(viewModel.title, systemImage: "network")
+            } description: {
+                Text(viewModel.description)
+            } actions: {
+                if let button = viewModel.button {
+                    Button(button.title, action: button.action)
+                        .buttonStyle(.primary)
+                }
+            }
+            stackView.addArrangedSubview(UIHostingView(view: stateView))
         }
     }
 }

@@ -14,6 +14,9 @@ enum FeatureFlag: Int, CaseIterable {
     case voiceToContent
     case authenticateUsingApplicationPassword
     case tipKit
+    case sidebar
+    case newGutenberg
+    case serif
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -46,6 +49,12 @@ enum FeatureFlag: Int, CaseIterable {
             return false
         case .tipKit:
             return BuildConfiguration.current != .appStore
+        case .sidebar:
+            return false
+        case .newGutenberg:
+            return false
+        case .serif:
+            return false
         }
     }
 
@@ -67,7 +76,7 @@ class Feature: NSObject {
 extension FeatureFlag {
     /// Descriptions used to display the feature flag override menu in debug builds
     var description: String {
-        switch self {
+        return switch self {
         case .bloggingPrompts: "Blogging Prompts"
         case .jetpackDisconnect: "Jetpack disconnect"
         case .siteIconCreator: "Site Icon Creator"
@@ -80,6 +89,9 @@ extension FeatureFlag {
         case .voiceToContent: "Voice to Content"
         case .authenticateUsingApplicationPassword: "Application Passwords for self-hosted sites"
         case .tipKit: "TipKit"
+        case .sidebar: "Sidebar"
+        case .newGutenberg: "Experimental Block Editor"
+        case .serif: "Serif"
         }
     }
 }

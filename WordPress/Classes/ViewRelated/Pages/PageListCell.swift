@@ -68,12 +68,11 @@ final class PageListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
             featuredImageView.setImage(with: thumbnailURL, host: host)
         }
 
-        separatorInset = UIEdgeInsets(top: 0, left: 16 + CGFloat(indentation) * 32, bottom: 0, right: 0)
         contentStackView.directionalLayoutMargins = NSDirectionalEdgeInsets(
-            top: 12,
-            leading: 16 + CGFloat(max(0, indentation - 1)) * 32,
-            bottom: 12,
-            trailing: 16
+            top: 0,
+            leading: CGFloat(max(0, indentation - 1)) * 32,
+            bottom: 0,
+            trailing: 0
         )
         indentationIconView.isHidden = indentation == 0
         indentationIconView.alpha = isFirstSubdirectory ? 1 : 0 // Still contribute to layout
@@ -148,7 +147,7 @@ final class PageListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
 
         contentView.addSubview(contentStackView)
         contentStackView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.pinSubviewToAllEdges(contentStackView)
+        contentView.pinSubviewToAllEdgeMargins(contentStackView)
     }
 
     private func setupLabels() {

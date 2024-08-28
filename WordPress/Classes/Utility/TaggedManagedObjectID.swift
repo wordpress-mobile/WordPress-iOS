@@ -26,7 +26,7 @@ import Foundation
 /// we can't perform the validation described in `init(objectID:)`.
 ///
 /// - SeeAlso: swift-tagged: https://github.com/pointfreeco/swift-tagged
-struct TaggedManagedObjectID<Model: NSManagedObject>: Equatable {
+struct TaggedManagedObjectID<Model: NSManagedObject>: Hashable {
     let objectID: NSManagedObjectID
 
     /// Create an `TaggedManagedObjectID` instance of the given object.

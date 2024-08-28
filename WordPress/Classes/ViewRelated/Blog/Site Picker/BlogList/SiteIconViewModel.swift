@@ -7,7 +7,6 @@ struct SiteIconViewModel {
     var imageURL: URL?
     var firstLetter: Character?
     var size: Size
-    var background = Color(.secondarySystemBackground)
     var host: MediaHost?
 
     enum Size {
@@ -16,7 +15,7 @@ struct SiteIconViewModel {
 
         var width: CGFloat {
             switch self {
-            case .small: 24
+            case .small: 28
             case .regular: 40
             }
         }

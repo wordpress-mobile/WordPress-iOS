@@ -2,9 +2,17 @@ import SwiftUI
 import DesignSystem
 
 final class SiteSwitcherViewController: UIHostingController<SiteSwitcherView> {
-    init(addSiteAction: @escaping ((AddSiteAlertViewModel.Selection) -> Void),
+    private let viewModel: BlogListViewModel
+
+    init(configuration: BlogListConfiguration = .defaultConfig,
+         addSiteAction: @escaping ((AddSiteMenuViewModel.Selection) -> Void),
          onSiteSelected: @escaping ((Blog) -> Void)) {
-        super.init(rootView: SiteSwitcherView(addSiteAction: addSiteAction, onSiteSelected: onSiteSelected))
+        self.viewModel = BlogListViewModel(configuration: configuration)
+        super.init(rootView: SiteSwitcherView(
+            viewModel: viewModel,
+            addSiteAction: addSiteAction,
+            onSiteSelected: onSiteSelected
+        ))
     }
 
     required init?(coder: NSCoder) {
@@ -14,8 +22,13 @@ final class SiteSwitcherViewController: UIHostingController<SiteSwitcherView> {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: SharedStrings.Button.close, style: .plain, target: self, action: #selector(buttonCloseTapped))
+         navigationItem.leftBarButtonItem = UIBarButtonItem(title: SharedStrings.Button.close, style: .plain, target: self, action: #selector(buttonCloseTapped))
+
         navigationItem.leftBarButtonItem?.accessibilityIdentifier = "my-sites-cancel-button"
+
+        if #available(iOS 17, *) {
+            AppTips.SitePickerTip().invalidate(reason: .actionPerformed)
+        }
     }
 
     @objc private func buttonCloseTapped() {
@@ -36,10 +49,10 @@ final class SiteSwitcherViewController: UIHostingController<SiteSwitcherView> {
 }
 
 struct SiteSwitcherView: View {
-    let addSiteAction: ((AddSiteAlertViewModel.Selection) -> Void)
-    let onSiteSelected: ((Blog) -> Void)
+    @ObservedObject var viewModel: BlogListViewModel
 
-    @StateObject private var viewModel = BlogListViewModel()
+    let addSiteAction: ((AddSiteMenuViewModel.Selection) -> Void)
+    let onSiteSelected: ((Blog) -> Void)
 
     var body: some View {
         BlogListView(viewModel: viewModel, onSiteSelected: onSiteSelected)
@@ -53,7 +66,7 @@ struct SiteSwitcherView: View {
 }
 
 private struct SiteSwitcherToolbarView: View {
-    let addSiteAction: ((AddSiteAlertViewModel.Selection) -> Void)
+    let addSiteAction: ((AddSiteMenuViewModel.Selection) -> Void)
 
     /// - warning: It has to be defined in a view "below" the .searchable
     @Environment(\.isSearching) var isSearching
@@ -72,7 +85,7 @@ private struct SiteSwitcherToolbarView: View {
 
     @ViewBuilder
     private var button: some View {
-        let viewModel = AddSiteAlertViewModel(onSelection: addSiteAction)
+        let viewModel = AddSiteMenuViewModel(onSelection: addSiteAction)
         switch viewModel.actions.count {
         case 0:
             EmptyView()
