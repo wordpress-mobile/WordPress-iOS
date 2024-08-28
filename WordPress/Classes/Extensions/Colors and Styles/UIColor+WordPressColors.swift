@@ -2,6 +2,7 @@ import UIKit
 import WordPressUI
 
 // MARK: - UI elements
+@available(*, deprecated, message: "Use AppStyleGuide instead")
 extension UIColor {
 
     /// Muriel/iOS navigation color
@@ -9,10 +10,12 @@ extension UIColor {
         UIColor(light: .white, dark: .gray(.shade100))
     }
 
+    @available(*, deprecated, renamed: "primary", message: "Use the platform's default instead")
     static var appBarTint: UIColor {
         .primary
     }
 
+    @available(*, deprecated, renamed: "text", message: "Use the platform's default instead")
     static var appBarText: UIColor {
         .text
     }
@@ -37,10 +40,10 @@ extension UIColor {
     static var tabUnselected: UIColor =  UIColor(light: UIColor(fromHex: 0x999999), dark: UIColor(fromHex: 0x757575))
 
     static var statsPrimaryHighlight: UIColor {
-        return  UIColor(light: .accent(.shade30), dark: .accent(.shade60))
+        return  UIColor(light: AppStyleGuide.accent(.shade30), dark: AppStyleGuide.accent(.shade60))
     }
 
     static var statsSecondaryHighlight: UIColor {
-        return UIColor(light: .accent(.shade60), dark: .accent(.shade30))
+        return UIColor(light: AppStyleGuide.accent(.shade60), dark: AppStyleGuide.accent(.shade30))
     }
 }

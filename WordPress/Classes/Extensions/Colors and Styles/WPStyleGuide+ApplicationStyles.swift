@@ -13,8 +13,8 @@ extension WPStyleGuide {
         // looking the same on newer versions of iOS.
         UIStackView.appearance().backgroundColor = .clear
 
-        UIWindow.appearance().tintColor = .primary
-        UISwitch.appearance().onTintColor = .primary
+        UIWindow.appearance().tintColor = AppStyleGuide.primary
+        UISwitch.appearance().onTintColor = AppStyleGuide.primary
 
         UITableView.appearance().sectionHeaderTopPadding = 0
 
@@ -37,7 +37,7 @@ extension WPStyleGuide {
         configureSharedSettings(for: scrollEdgeAppearance)
 
         let appearance = UINavigationBar.appearance()
-        appearance.tintColor = .appBarTint
+        appearance.tintColor = AppStyleGuide.primary
 
         appearance.standardAppearance = standardAppearance
         appearance.compactAppearance = standardAppearance
@@ -48,7 +48,7 @@ extension WPStyleGuide {
     private class func configureSharedSettings(for appearance: UINavigationBarAppearance) {
         appearance.titleTextAttributes = [
             .font: WPStyleGuide.navigationBarStandardFont,
-            .foregroundColor: UIColor.appBarText
+            .foregroundColor: AppStyleGuide.primary
         ]
         appearance.largeTitleTextAttributes = [
             .font: AppStyleGuide.navigationBarLargeFont
@@ -65,7 +65,7 @@ extension WPStyleGuide {
     }
 
     @objc class func configureTabBar(_ tabBar: UITabBar) {
-        tabBar.tintColor = .tabSelected
+        tabBar.tintColor = .primary
         tabBar.unselectedItemTintColor = .tabUnselected
     }
 
@@ -81,7 +81,7 @@ extension WPStyleGuide {
 
         appearance.actionFont = WPStyleGuide.fontForTextStyle(.headline)
         appearance.infoFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
-        appearance.infoTintColor = .primary
+        appearance.infoTintColor = AppStyleGuide.primary
 
         appearance.topDividerColor = .neutral(.shade5)
         appearance.bottomDividerColor = .neutral(.shade0)
@@ -94,10 +94,10 @@ extension WPStyleGuide {
         let appearance = FancyButton.appearance()
         appearance.titleFont = WPStyleGuide.fontForTextStyle(.headline)
         appearance.primaryTitleColor = .white
-        appearance.primaryNormalBackgroundColor = .primary
-        appearance.primaryHighlightBackgroundColor = .muriel(color: .primary, .shade80)
+        appearance.primaryNormalBackgroundColor = AppStyleGuide.primary
+        appearance.primaryHighlightBackgroundColor = AppStyleGuide.primary(.shade80)
 
-        appearance.secondaryTitleColor = .text
+        appearance.secondaryTitleColor = .label
         appearance.secondaryNormalBackgroundColor = UIColor(light: .white, dark: .systemGray5)
         appearance.secondaryNormalBorderColor = .systemGray3
         appearance.secondaryHighlightBackgroundColor = .systemGray3
@@ -150,7 +150,7 @@ extension WPStyleGuide {
         cell.detailTextLabel?.sizeToFit()
 
         // we only set the text subtle color, so that system colors are used otherwise
-        cell.detailTextLabel?.textColor = .textSubtle
+        cell.detailTextLabel?.textColor = .secondaryLabel
         cell.imageView?.tintColor = .neutral(.shade30)
 
     }
@@ -158,13 +158,13 @@ extension WPStyleGuide {
     class func configureTableViewSmallSubtitleCell(_ cell: UITableViewCell) {
         configureTableViewColors(view: cell)
         cell.detailTextLabel?.font = subtitleFont()
-        cell.detailTextLabel?.textColor = .textSubtle
+        cell.detailTextLabel?.textColor = .secondaryLabel
     }
 
     @objc
     class func configureTableViewActionCell(_ cell: UITableViewCell?) {
         configureTableViewCell(cell)
-        cell?.textLabel?.textColor = .primary
+        cell?.textLabel?.textColor = AppStyleGuide.primary
     }
 
     @objc
@@ -172,7 +172,7 @@ extension WPStyleGuide {
         configureTableViewCell(cell)
 
         cell.textLabel?.textAlignment = .center
-        cell.textLabel?.textColor = UIColor.systemRed
+        cell.textLabel?.textColor = AppStyleGuide.error
     }
 
     @objc
@@ -182,7 +182,7 @@ extension WPStyleGuide {
             return
         }
         if textLabel.isUserInteractionEnabled {
-            textLabel.textColor = .primary
+            textLabel.textColor = AppStyleGuide.primary
         }
     }
 }

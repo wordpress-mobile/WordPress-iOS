@@ -46,33 +46,51 @@ enum MurielColorShade: Int, CustomStringConvertible {
 struct MurielColor {
     let name: MurielColorName
     let shade: MurielColorShade
+    let assetName: String
 
     init(name: MurielColorName, shade: MurielColorShade = .shade50) {
         self.name = name
         self.shade = shade
+        self.assetName = "\(name)\(shade)"
     }
 
-    init(from identifier: MurielColor, shade: MurielColorShade) {
-        self.name = identifier.name
-        self.shade = shade
+    init(from identifier: MurielColor, shade: MurielColorShade = .shade50) {
+        self.init(name: identifier.name, shade: shade)
     }
 
     // MARK: - Muriel's semantic colors
+    @available(*, deprecated, message: "Use AppStyleGuide instead")
     static let accent = AppStyleGuide.accent
+    @available(*, deprecated, message: "Use AppStyleGuide instead")
     static let brand = AppStyleGuide.brand
+    @available(*, deprecated, message: "Use AppStyleGuide instead")
     static let divider = AppStyleGuide.divider
+    @available(*, deprecated, message: "Use AppStyleGuide instead")
     static let error = AppStyleGuide.error
+    @available(*, deprecated, message: "Use AppStyleGuide instead")
     static let gray = AppStyleGuide.gray
+    @available(*, deprecated, message: "Use AppStyleGuide instead")
     static let primary = AppStyleGuide.primary
+    @available(*, deprecated, message: "Use AppStyleGuide instead")
     static let success = AppStyleGuide.success
+    @available(*, deprecated, message: "Use AppStyleGuide instead")
     static let text = AppStyleGuide.text
+    @available(*, deprecated, message: "Use AppStyleGuide instead")
     static let textSubtle = AppStyleGuide.textSubtle
+    @available(*, deprecated, message: "Use AppStyleGuide instead")
     static let warning = AppStyleGuide.warning
+    @available(*, deprecated, message: "Use AppStyleGuide instead")
     static let jetpackGreen = AppStyleGuide.jetpackGreen
+    @available(*, deprecated, message: "Use AppStyleGuide instead")
     static let editorPrimary = AppStyleGuide.editorPrimary
 
-    /// The full name of the color, with required shade value
-    func assetName() -> String {
-        return "\(name)\(shade)"
+    var color: UIColor {
+        let color = UIColor(named: assetName)
+
+        guard let unwrappedColor = color else {
+            preconditionFailure("Invalid color: \(assetName)")
+        }
+
+        return unwrappedColor
     }
 }

@@ -1,3 +1,4 @@
+@available(*, deprecated, message: "Use AppStyleGuide instead")
 extension UIColor {
     /// Get a UIColor from the Muriel color palette
     ///
@@ -5,8 +6,7 @@ extension UIColor {
     ///   - color: an instance of a MurielColor
     /// - Returns: UIColor. Red in cases of error
     class func muriel(color murielColor: MurielColor) -> UIColor {
-        let assetName = murielColor.assetName()
-        let color = UIColor(named: assetName)
+        let color = UIColor(named: murielColor.assetName)
 
         guard let unwrappedColor = color else {
             return .red
@@ -33,45 +33,34 @@ extension UIColor {
     }
 }
 // MARK: - Basic Colors
+@available(*, deprecated, message: "Use AppStyleGuide instead")
 extension UIColor {
     /// Muriel accent color
-    static var accent = muriel(color: .accent)
-    static var accentDark = muriel(color: .accent, .shade70)
-    class func accent(_ shade: MurielColorShade) -> UIColor {
-        return muriel(color: .accent, shade)
+    static var accent = AppStyleGuide.accent
+    static var accentDark: UIColor {
+        fatalError()
     }
 
     /// Muriel brand color
-    static var brand = muriel(color: .brand)
+    static var brand = AppStyleGuide.brand
 
     /// Muriel error color
-    static var error = muriel(color: .error)
-    class func error(_ shade: MurielColorShade) -> UIColor {
-        return muriel(color: .error, shade)
-    }
+    static var error = AppStyleGuide.error
 
     /// Muriel primary color
-    static var primary = muriel(color: .primary)
-    static var primaryLight = muriel(color: .primary, .shade30)
-    static var primaryDark = muriel(color: .primary, .shade70)
-    class func primary(_ shade: MurielColorShade) -> UIColor {
-        return muriel(color: .primary, shade)
-    }
+    static var primary = AppStyleGuide.primary
 
     /// Muriel editor primary color
-    static var editorPrimary = muriel(color: .editorPrimary)
+    static var editorPrimary = AppStyleGuide.editorPrimary
 
     /// Muriel success color
-    static var success = muriel(color: .success)
+    static var success = AppStyleGuide.success
 
     /// Muriel warning color
-    static var warning = muriel(color: .warning)
-    class func warning(_ shade: MurielColorShade) -> UIColor {
-        return muriel(color: .warning, shade)
-    }
+    static var warning = AppStyleGuide.warning
 
     /// Muriel jetpack green color
-    static var jetpackGreen = muriel(color: .jetpackGreen)
+    static var jetpackGreen = AppStyleGuide.jetpackGreen
 }
 
 // MARK: - Grays
@@ -79,7 +68,7 @@ extension UIColor {
     /// Muriel gray palette
     /// - Parameter shade: a MurielColorShade of the desired shade of gray
     class func gray(_ shade: MurielColorShade) -> UIColor {
-        return muriel(color: .gray, shade)
+        AppStyleGuide.muriel(name: .gray, shade)
     }
 
     /// Muriel neutral colors, which invert in dark mode
@@ -88,31 +77,19 @@ extension UIColor {
         return neutral(.shade50)
     }
     class func neutral(_ shade: MurielColorShade) -> UIColor {
-        switch shade {
-        case .shade0:
-            return UIColor(light: muriel(color: .gray, .shade0), dark: muriel(color: .gray, .shade100))
-            case .shade5:
-            return UIColor(light: muriel(color: .gray, .shade5), dark: muriel(color: .gray, .shade90))
-            case .shade10:
-            return UIColor(light: muriel(color: .gray, .shade10), dark: muriel(color: .gray, .shade80))
-            case .shade20:
-            return UIColor(light: muriel(color: .gray, .shade20), dark: muriel(color: .gray, .shade70))
-            case .shade30:
-            return UIColor(light: muriel(color: .gray, .shade30), dark: muriel(color: .gray, .shade60))
-            case .shade40:
-            return UIColor(light: muriel(color: .gray, .shade40), dark: muriel(color: .gray, .shade50))
-            case .shade50:
-            return UIColor(light: muriel(color: .gray, .shade50), dark: muriel(color: .gray, .shade40))
-            case .shade60:
-            return UIColor(light: muriel(color: .gray, .shade60), dark: muriel(color: .gray, .shade30))
-            case .shade70:
-            return UIColor(light: muriel(color: .gray, .shade70), dark: muriel(color: .gray, .shade20))
-            case .shade80:
-            return UIColor(light: muriel(color: .gray, .shade80), dark: muriel(color: .gray, .shade10))
-            case .shade90:
-            return UIColor(light: muriel(color: .gray, .shade90), dark: muriel(color: .gray, .shade5))
-            case .shade100:
-            return UIColor(light: muriel(color: .gray, .shade100), dark: muriel(color: .gray, .shade0))
+        return switch shade {
+            case .shade0: UIColor(light: gray(.shade0), dark: gray(.shade100))
+            case .shade5: UIColor(light: gray(.shade5), dark: gray(.shade90))
+            case .shade10: UIColor(light: gray(.shade10), dark: gray(.shade80))
+            case .shade20: UIColor(light: gray(.shade20), dark: gray(.shade70))
+            case .shade30: UIColor(light: gray(.shade30), dark: gray(.shade60))
+            case .shade40: UIColor(light: gray(.shade40), dark: gray(.shade50))
+            case .shade50: UIColor(light: gray(.shade50), dark: gray(.shade40))
+            case .shade60: UIColor(light: gray(.shade60), dark: gray(.shade30))
+            case .shade70: UIColor(light: gray(.shade70), dark: gray(.shade20))
+            case .shade80: UIColor(light: gray(.shade80), dark: gray(.shade10))
+            case .shade90: UIColor(light: gray(.shade90), dark: gray(.shade5))
+            case .shade100: UIColor(light: gray(.shade100), dark: gray(.shade0))
         }
     }
 }
@@ -120,31 +97,38 @@ extension UIColor {
 // MARK: - UI elements
 extension UIColor {
     /// The most basic background: white in light mode, black in dark mode
+    @available(*, deprecated, renamed: "systemBackground", message: "Use the platform's default instead")
     static var basicBackground: UIColor {
         return .systemBackground
     }
 
     /// Default text color: high contrast
+    @available(*, deprecated, renamed: "label", message: "Use the platform's default instead")
     static var text: UIColor {
         return .label
     }
 
     /// Secondary text color: less contrast
+    @available(*, deprecated, renamed: "secondaryLabel", message: "Use the platform's default instead")
     static var textSubtle: UIColor {
         return .secondaryLabel
     }
 
     /// Very low contrast text
+    @available(*, deprecated, renamed: "tertiaryLabel", message: "Use the platform's default instead")
     static var textTertiary: UIColor {
         return .tertiaryLabel
     }
 
     /// Very, very low contrast text
+    @available(*, deprecated, renamed: "quaternaryLabel", message: "Use the platform's default instead")
     static var textQuaternary: UIColor {
         return .quaternaryLabel
     }
 
     static var textInverted = UIColor(light: .white, dark: .gray(.shade100))
+
+    @available(*, deprecated, renamed: "tertiaryLabel", message: "Use the platform's default instead")
     static var textPlaceholder: UIColor {
         return .tertiaryLabel
     }
@@ -157,26 +141,30 @@ extension UIColor {
     }
 
     // MARK: - Table Views
-
+    @available(*, deprecated, renamed: "separator", message: "Use the platform's default instead")
     static var divider: UIColor {
         return .separator
     }
 
     /// WP color for table foregrounds (cells, etc)
+    @available(*, deprecated, renamed: "secondarySystemGroupedBackground", message: "Use the platform's default instead")
     static var listForeground: UIColor {
         return .secondarySystemGroupedBackground
     }
 
+    @available(*, deprecated, renamed: "listBackground", message: "Use the platform's default instead")
     static var listBackground: UIColor {
         return .systemGroupedBackground
     }
 
     /// For icons that are present in a table view, or similar list
+    @available(*, deprecated, renamed: "listIcon", message: "Use the platform's default instead")
     static var listIcon: UIColor {
         return .secondaryLabel
     }
 
     /// For small icons, such as the badges on notification gravatars
+    @available(*, deprecated, renamed: "listSmallIcon", message: "Use the platform's default instead")
     static var listSmallIcon: UIColor {
         return .systemGray
     }
@@ -184,7 +172,10 @@ extension UIColor {
     // MARK: - Others
 
     static var prologueBackground: UIColor {
-        return UIColor(light: muriel(color: MurielColor(name: .blue, shade: .shade0)), dark: .systemBackground)
+        UIColor(
+            light: AppStyleGuide.muriel(name: .blue, .shade0),
+            dark: .systemBackground
+        )
     }
 }
 

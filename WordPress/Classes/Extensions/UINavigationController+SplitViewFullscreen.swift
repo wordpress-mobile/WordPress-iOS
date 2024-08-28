@@ -88,11 +88,11 @@ extension UIView {
 
 extension UINavigationBar {
     @objc func fadeOutNavigationItems(animated: Bool = true) {
-        fadeNavigationItems(withTintColor: .appBarBackground, textColor: .appBarBackground, animated: animated)
+        fadeNavigationItems(withTintColor: .primary, textColor: .label, animated: animated)
     }
 
     @objc func fadeInNavigationItemsIfNecessary(animated: Bool = true) {
-        fadeNavigationItems(withTintColor: .appBarTint, textColor: .appBarText, animated: animated)
+        fadeNavigationItems(withTintColor: .primary, textColor: .label, animated: animated)
     }
 
     private func fadeNavigationItems(withTintColor tintColor: UIColor, textColor: UIColor, animated: Bool) {

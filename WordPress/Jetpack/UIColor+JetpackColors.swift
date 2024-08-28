@@ -2,6 +2,7 @@ import UIKit
 import WordPressUI
 
 // MARK: - UI elements
+@available(*, deprecated, message: "Use AppStyleGuide instead")
 extension UIColor {
 
     /// Muriel/iOS navigation color

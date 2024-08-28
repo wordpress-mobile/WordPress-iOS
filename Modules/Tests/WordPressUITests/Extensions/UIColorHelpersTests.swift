@@ -11,6 +11,14 @@ class UIColorHelpersTests: XCTestCase {
         XCTAssertEqual(components?[3], 1.0)
     }
 
+    func testThatHexLiteralsAreCorrect() {
+        let components = UIColor(fromHex: 0x999999).cgColor.components
+        XCTAssertEqual(components?[0], 117/255)
+        XCTAssertEqual(components?[1], 117/255)
+        XCTAssertEqual(components?[2], 117/255)
+        XCTAssertEqual(components?[3], 117/255)
+    }
+
     func testThatHexStringsCanBeParsed() {
         let components = UIColor(hexString: "#ffffff")?.cgColor.components
         XCTAssertEqual(components?[0], 1.0)
