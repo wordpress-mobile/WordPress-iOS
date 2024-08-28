@@ -117,6 +117,7 @@ private struct SidebarView: View {
     @ViewBuilder
     private var more: some View {
 #if JETPACK
+        // Mirror the tab bar on iPhone or compact screen.
         Label(Strings.notifications, systemImage: "bell")
             .tag(SidebarSelection.notifications)
         Label(Strings.reader, systemImage: "eyeglasses")
@@ -126,10 +127,17 @@ private struct SidebarView: View {
                 Label(Strings.domains, systemImage: "network")
             }
         }
-#endif
+        // A dedicated profile view is displayed at the bottom when user is signed in.
+        if viewModel.account == nil {
+            Button(action: { viewModel.navigate(.profile) }) {
+                Label(Strings.me, systemImage: "person")
+            }
+        }
+#else
         Button(action: { viewModel.navigate(.help) }) {
             Label(Strings.help, systemImage: "questionmark.circle")
         }
+#endif
     }
 }
 
@@ -140,7 +148,11 @@ private struct SidebarProfileContainerView: View {
     var body: some View {
         if let account = viewModel.account, !isSearching {
             Button(action: { viewModel.navigate(.profile) }) {
-                SidebarProfileView(account: account)
+                SidebarProfileView(
+                    username: account.username,
+                    displayName: account.displayName,
+                    avatar: account.avatarURL.flatMap(URL.init(string:))
+                )
             }
             .buttonStyle(.plain)
             .padding(.horizontal)
@@ -178,4 +190,5 @@ private enum Strings {
     static let reader = NSLocalizedString("sidebar.reader", value: "Reader", comment: "Sidebar item on iPad")
     static let domains = NSLocalizedString("sidebar.domains", value: "Domains", comment: "Sidebar item on iPad")
     static let help = NSLocalizedString("sidebar.help", value: "Help & Support", comment: "Sidebar item on iPad")
+    static let me = NSLocalizedString("sidebar.me", value: "Me", comment: "Sidebar item on iPad")
 }

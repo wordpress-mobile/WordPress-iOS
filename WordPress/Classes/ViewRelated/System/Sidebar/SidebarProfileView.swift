@@ -2,17 +2,18 @@ import SwiftUI
 import WordPressUI
 
 struct SidebarProfileView: View {
-    @ObservedObject var account: WPAccount
+    var username: String
+    var displayName: String
+    var avatar: URL?
 
     var body: some View {
         HStack {
-            let avatarURL: String? = account.avatarURL
-            AvatarsView<Circle>(style: .single(avatarURL.flatMap(URL.init)))
+            AvatarsView<Circle>(style: .single(avatar))
 
             VStack(alignment: .leading, spacing: 0) {
-                Text(account.displayName)
+                Text(displayName)
                     .font(.callout.weight(.medium))
-                Text("@\(account.username)")
+                Text("@\(username)")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
             }
