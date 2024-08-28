@@ -8,4 +8,13 @@ extension UIBarButtonItem {
         activityIndicator.startAnimating()
         return UIBarButtonItem(customView: activityIndicator)
     }
+
+    /// If there is one action, set it as a primary action. Otherwise, show a menu.
+    func setAdaptiveActions(_ actions: [UIAction]) {
+        if actions.count == 1 {
+            primaryAction = actions[0]
+        } else {
+            menu = UIMenu(children: actions)
+        }
+    }
 }

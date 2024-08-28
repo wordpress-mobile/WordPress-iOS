@@ -67,12 +67,14 @@ private struct SidebarView: View {
             Text(Strings.noSites)
         }
         if viewModel.allSites.count > SidebarView.displayedSiteLimit {
-            Button {
-                self.viewModel.navigate(.allSites)
-            } label: {
-                Label(Strings.allSites, systemImage: "rectangle.stack")
+            GeometryReader { proxy in
+                Button {
+                    self.viewModel.navigate(.allSites(sourceRect: proxy.frame(in: .global)))
+                } label: {
+                    Label(Strings.allSites, systemImage: "rectangle.stack")
+                }
+                .tint(Color.primary)
             }
-            .tint(Color.primary)
         }
         addSiteView
             .tint(Color.primary)

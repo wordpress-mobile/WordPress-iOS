@@ -6,7 +6,7 @@ import SVProgressHUD
 import Gridicons
 import PhotosUI
 
-extension SitePickerViewController {
+extension HomeSiteHeaderViewController {
 
     func makeSiteIconMenu() -> UIMenu? {
         UIMenu(options: .displayInline, children: [
@@ -172,7 +172,7 @@ extension SitePickerViewController {
     }
 }
 
-extension SitePickerViewController {
+extension HomeSiteHeaderViewController {
 
     private enum SiteIconAlertStrings {
 

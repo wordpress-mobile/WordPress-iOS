@@ -9,7 +9,7 @@ import SwiftUI
     func siteIconReceivedDroppedImage(_ image: UIImage?)
     func siteIconShouldAllowDroppedImages() -> Bool
     func siteTitleTapped()
-    func siteSwitcherTapped()
+    func siteSwitcherTapped(sourceView: UIView)
     func visitSiteTapped()
 }
 
@@ -100,7 +100,7 @@ class BlogDetailHeaderView: UIView {
 
         if let siteActionsMenu = delegate?.makeSiteActionsMenu() {
             titleView.siteSwitcherButton.menu = siteActionsMenu
-            titleView.siteSwitcherButton.addTarget(self, action: #selector(siteSwitcherTapped), for: .touchUpInside)
+            titleView.siteSwitcherButton.addTarget(self, action: #selector(siteSwitcherTapped), for: .primaryActionTriggered)
             titleView.siteSwitcherButton.addAction(UIAction { _ in
                 WPAnalytics.trackEvent(.mySiteHeaderMoreTapped)
             }, for: .menuActionTriggered)
@@ -146,7 +146,7 @@ class BlogDetailHeaderView: UIView {
 
     @objc
     private func siteSwitcherTapped() {
-        delegate?.siteSwitcherTapped()
+        delegate?.siteSwitcherTapped(sourceView: titleView.siteSwitcherButton)
     }
 
     @objc

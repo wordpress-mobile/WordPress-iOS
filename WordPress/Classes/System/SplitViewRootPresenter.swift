@@ -99,8 +99,8 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
     private func navigate(to step: SidebarNavigationStep) {
         switch step {
-        case .allSites:
-            showSitePicker()
+        case .allSites(let sourceRect):
+            showSitePicker(sourceRect: sourceRect)
         case .addSite(let selection):
             showAddSiteScreen(selection: selection)
         case .domains:
@@ -122,7 +122,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
         }
     }
 
-    private func showSitePicker() {
+    private func showSitePicker(sourceRect: CGRect) {
         let sitePickerVC = SiteSwitcherViewController(
             configuration: BlogListConfiguration(shouldHideRecentSites: true),
             addSiteAction: { [weak self] in
@@ -135,7 +135,11 @@ final class SplitViewRootPresenter: RootViewPresenter {
             }
         )
         let navigationVC = UINavigationController(rootViewController: sitePickerVC)
-        navigationVC.modalPresentationStyle = .formSheet
+        navigationVC.modalPresentationStyle = .popover
+        navigationVC.popoverPresentationController?.sourceView = splitVC.view
+        navigationVC.popoverPresentationController?.sourceRect = sourceRect
+        // Show no arrow and simply overlay the sidebar
+        navigationVC.popoverPresentationController?.permittedArrowDirections = [.left]
         self.splitVC.present(navigationVC, animated: true)
         WPAnalytics.track(.sidebarAllSitesTapped)
     }
