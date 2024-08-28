@@ -164,11 +164,14 @@ class AbstractPostListViewController: UIViewController,
         tableView.estimatedRowHeight = 110
         tableView.rowHeight = UITableView.automaticDimension
         tableView.refreshControl = refreshControl
+        tableView.cellLayoutMarginsFollowReadableWidth = true
         refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
     }
 
     private func configureFilterBar() {
         WPStyleGuide.configureFilterTabBar(filterTabBar)
+        filterTabBar.isAutomaticTabSizingStyleEnabled = true
+        filterTabBar.isFollowingReaderGuide = true
         filterTabBar.backgroundColor = .clear
         filterTabBar.items = filterSettings.availablePostListFilters()
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
@@ -200,7 +203,6 @@ class AbstractPostListViewController: UIViewController,
 
         definesPresentationContext = true
         navigationItem.searchController = searchController
-        navigationItem.preferredSearchBarPlacement = .stacked
     }
 
     func propertiesForAnalytics() -> [String: AnyObject] {

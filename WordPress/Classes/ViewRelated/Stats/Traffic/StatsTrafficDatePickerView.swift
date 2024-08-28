@@ -9,18 +9,12 @@ struct StatsTrafficDatePickerView: View {
     var body: some View {
         HStack {
             granularityPicker
-                .padding(.leading, 36) // Matching grouped table style
+                .padding(.leading, 16) // Matching grouped table style
             Spacer()
             periodPicker
-                .padding(.trailing, 20)
+                .padding(.trailing, 16)
         }
         .background(Color(.systemBackground))
-        .overlay(
-            Rectangle()
-                .frame(height: .DS.Border.thin)
-                .foregroundColor(Color.DS.Foreground.tertiary),
-            alignment: .bottom
-        )
     }
 
     @ViewBuilder

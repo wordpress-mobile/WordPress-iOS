@@ -56,6 +56,7 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
         tableView.dataSource = dataSource
         tableView.delegate = self
         tableView.sectionHeaderTopPadding = 0
+        tableView.cellLayoutMarginsFollowReadableWidth = true
     }
 
     private func bindViewModel() {
