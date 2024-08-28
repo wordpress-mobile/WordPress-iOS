@@ -101,7 +101,7 @@ extension BlogDashboardRemoteEntity {
     }
 }
 
-extension Activity: Hashable {
+extension Activity: @retroactive Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(activityID)
     }
