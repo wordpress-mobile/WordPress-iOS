@@ -40,8 +40,6 @@ import AutomatticTracks
     /// Called if the stream or tag fails to load
     var streamLoadFailureBlock: (() -> Void)? = nil
 
-    var shouldShowCommentSpotlight: Bool = false
-
     var tableView: UITableView! {
         return tableViewController.tableView
     }
@@ -403,10 +401,6 @@ import AutomatticTracks
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-
-        if shouldShowCommentSpotlight {
-            resetReaderDiscoverNudgeFlow()
-        }
 
         dismissNoNetworkAlert()
 
@@ -1655,16 +1649,6 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             post.rendered = true
             WPAppAnalytics.track(.trainTracksRender, withProperties: railcar)
         }
-    }
-
-    func reloadReaderDiscoverNudgeFlow(at indexPath: IndexPath) {
-        resetReaderDiscoverNudgeFlow()
-        tableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.fade)
-    }
-
-    private func resetReaderDiscoverNudgeFlow() {
-        shouldShowCommentSpotlight = false
-        RootViewCoordinator.sharedPresenter.resetReaderDiscoverNudgeFlow()
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

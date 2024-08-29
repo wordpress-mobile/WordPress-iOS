@@ -61,12 +61,6 @@ extension ReaderSaveForLaterAction {
             WPAppAnalytics.track(.readerPostUnsaved, withProperties: properties)
         }
     }
-
-    func trackViewAllSavedPostsAction(origin: ReaderSaveForLaterOrigin) {
-        let properties = [ readerSaveForLaterSourceKey: origin.viewAllPostsValue ]
-
-        WPAnalytics.trackReader(.readerSavedListShown, properties: properties)
-    }
 }
 
 extension ReaderStreamViewController {

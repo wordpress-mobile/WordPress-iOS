@@ -184,23 +184,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
         fatalError()
     }
 
-    func switchToSavedPosts() {
-        fatalError()
-    }
-
-    func resetReaderDiscoverNudgeFlow() {
-        fatalError()
-    }
-
-    func resetReaderTab() {
-        fatalError()
-    }
-
     func navigateToReaderSearch() {
-        fatalError()
-    }
-
-    func navigateToReaderSearch(withSearchText: String) {
         fatalError()
     }
 
