@@ -171,13 +171,12 @@ private final class PeriodChartDataTransformer {
     }
 
     static func primaryHighlightColor(forCount count: Int) -> UIColor? {
-        return count > 0 ? .statsPrimaryHighlight : nil
+        return count > 0 ? AppStyleGuide.statsPrimaryHighlight : nil
     }
 
     static func secondaryHighlightColor(forCount count: Int) -> UIColor? {
-        return count > 0 ? .statsSecondaryHighlight : nil
+        return count > 0 ? AppStyleGuide.statsSecondaryHighlight : nil
     }
-
 }
 
 // MARK: - ViewsPeriodChartStyling

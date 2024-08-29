@@ -1,3 +1,9 @@
+extension UIColor {
+    var variantInverted: UIColor {
+        UIColor(light: self.darkVariant(), dark: self.lightVariant())
+    }
+}
+
 @available(*, deprecated, message: "Use AppStyleGuide instead")
 extension UIColor {
     /// Get a UIColor from the Muriel color palette
@@ -65,14 +71,10 @@ extension UIColor {
 
 // MARK: - Grays
 extension UIColor {
-    /// Muriel gray palette
-    /// - Parameter shade: a MurielColorShade of the desired shade of gray
-    class func gray(_ shade: MurielColorShade) -> UIColor {
-        AppStyleGuide.gray(shade)
-    }
 
     /// Muriel neutral colors, which invert in dark mode
     /// - Parameter shade: a MurielColorShade of the desired neutral shade
+    @available(*, deprecated, renamed: "AppStyleGuide.neutral", message: "Use AppStyleGuide")
     static var neutral: UIColor {
         AppStyleGuide.neutral(.shade50)
     }
@@ -110,7 +112,8 @@ extension UIColor {
         return .quaternaryLabel
     }
 
-    static var textInverted = UIColor(light: .white, dark: .gray(.shade100))
+    @available(*, deprecated, renamed: "label.variantInverted", message: "Use AppStyleGuide")
+    static var textInverted = UIColor(light: .white, dark: AppStyleGuide.gray(.shade100))
 
     @available(*, deprecated, renamed: "tertiaryLabel", message: "Use the platform's default instead")
     static var textPlaceholder: UIColor {
@@ -157,7 +160,7 @@ extension UIColor {
 
     static var prologueBackground: UIColor {
         UIColor(
-            light: AppStyleGuide.muriel(name: .blue, .shade0),
+            light: AppStyleGuide.blue(.shade0),
             dark: .systemBackground
         )
     }

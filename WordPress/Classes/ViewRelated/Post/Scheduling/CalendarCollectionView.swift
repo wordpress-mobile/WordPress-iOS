@@ -360,11 +360,11 @@ extension DateCell {
             rightPlaceholder.backgroundColor = .clear
             dateLabel.backgroundColor = .clear
             if state.date > Date() {
-                textColor = .textSubtle
+                textColor = .secondaryLabel
             } else if state.dateBelongsTo == .thisMonth {
-              textColor = .text
+                textColor = .label
             } else {
-              textColor = .textSubtle
+                textColor = .secondaryLabel
             }
         }
 
@@ -425,7 +425,7 @@ class CalendarYearHeaderView: JTACMonthReusableView {
     private enum Constants {
         static let stackViewSpacing: CGFloat = 16
         static let spacingAfterWeekdays: CGFloat = 8
-        static let titleColor = UIColor(light: .gray(.shade70), dark: .textSubtle)
+        static let titleColor = UIColor(light: AppStyleGuide.gray(.shade70), dark: .secondaryLabel)
     }
 }
 

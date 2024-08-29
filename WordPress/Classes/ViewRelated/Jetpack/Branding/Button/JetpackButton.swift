@@ -30,20 +30,19 @@ class JetpackButton: CircularImageButton {
     private var buttonBackgroundColor: UIColor {
         switch style {
         case .badge:
-            return UIColor(light: .muriel(color: .jetpackGreen, .shade40),
-                           dark: .muriel(color: .jetpackGreen, .shade90))
+            return UIColor(
+                light: AppStyleGuide.jetpackGreen(.shade40),
+                dark: AppStyleGuide.jetpackGreen(.shade90)
+            )
         case .banner:
             return .clear
         }
     }
 
     private var buttonTintColor: UIColor {
-        switch style {
-        case .badge:
-            return UIColor(light: .white,
-                           dark: .muriel(color: .jetpackGreen, .shade40))
-        case .banner:
-            return .muriel(color: .jetpackGreen, .shade40)
+        return switch style {
+        case .badge: UIColor(light: .white, dark: AppStyleGuide.jetpackGreen(.shade40))
+        case .banner: AppStyleGuide.jetpackGreen(.shade40)
         }
     }
 
@@ -57,12 +56,9 @@ class JetpackButton: CircularImageButton {
     }
 
     private var imageBackgroundColor: UIColor {
-        switch style {
-        case .badge:
-            return UIColor(light: .muriel(color: .jetpackGreen, .shade40),
-                           dark: .white)
-        case .banner:
-            return .white
+        return switch style {
+        case .badge: UIColor(light: AppStyleGuide.jetpackGreen(.shade40), dark: .white)
+        case .banner: .white
         }
     }
 

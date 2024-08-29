@@ -395,16 +395,16 @@ struct JetpackScanThreatViewModel {
 
         struct colors {
             struct normal {
-                static let text = UIColor.muriel(color: .gray, .shade100)
-                static let background = UIColor.muriel(color: .gray, .shade5)
-                static let numberText = UIColor.muriel(color: .gray, .shade100)
-                static let numberBackground = UIColor.muriel(color: .gray, .shade20)
+                static let text = AppStyleGuide.gray(.shade100)
+                static let background = AppStyleGuide.gray(.shade5)
+                static let numberText = AppStyleGuide.gray(.shade100)
+                static let numberBackground = AppStyleGuide.gray(.shade20)
             }
 
             struct highlighted {
                 static let text = UIColor.white
-                static let background = UIColor.muriel(color: .error, .shade50)
-                static let numberBackground = UIColor.muriel(color: .error, .shade5)
+                static let background = AppStyleGuide.gray(.shade50)
+                static let numberBackground = AppStyleGuide.gray(.shade5)
             }
         }
     }

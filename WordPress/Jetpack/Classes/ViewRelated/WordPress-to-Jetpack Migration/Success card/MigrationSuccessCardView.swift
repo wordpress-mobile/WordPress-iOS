@@ -89,7 +89,7 @@ class MigrationSuccessCardView: UIView {
                                                      value: "Learn more",
                                                      comment: "Title of a button that displays a blog post in a web view.")
         static let learnMoreFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
-        static let learnMoreTextColor = UIColor.muriel(color: .jetpackGreen, .shade40)
+        static let learnMoreTextColor = AppStyleGuide.jetpackGreen(.shade40)
     }
 }
 

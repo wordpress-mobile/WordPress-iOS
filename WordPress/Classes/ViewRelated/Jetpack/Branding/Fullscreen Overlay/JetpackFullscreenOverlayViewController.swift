@@ -284,20 +284,26 @@ private extension JetpackFullscreenOverlayViewController {
     }
 
     enum Colors {
-        private static let jetpackGreen50 = UIColor.muriel(color: .jetpackGreen, .shade50).lightVariant()
-        private static let jetpackGreen30 = UIColor.muriel(color: .jetpackGreen, .shade30).lightVariant()
-        private static let jetpackGreen90 = UIColor.muriel(color: .jetpackGreen, .shade90).lightVariant()
+        private static let jetpackGreen50 = AppStyleGuide.jetpackGreen(.shade50)
+        private static let jetpackGreen30 = AppStyleGuide.jetpackGreen(.shade30)
+        private static let jetpackGreen90 = AppStyleGuide.jetpackGreen(.shade90)
 
-        static let backgroundColor = UIColor(light: .systemBackground,
-                                             dark: .muriel(color: .jetpackGreen, .shade100))
-        static let footnoteTextColor = UIColor(light: .muriel(color: .gray, .shade50),
-                                               dark: .muriel(color: .gray, .shade5))
-        static let actionInfoTextColor = UIColor.textSubtle
+        static let backgroundColor = UIColor(
+            light: .systemBackground,
+            dark: AppStyleGuide.jetpackGreen(.shade100)
+        )
+        static let footnoteTextColor = UIColor(
+            light: AppStyleGuide.gray(.shade50),
+            dark: AppStyleGuide.gray(.shade5)
+        )
+        static let actionInfoTextColor = UIColor.secondaryLabel
         static let learnMoreButtonTextColor = UIColor(light: jetpackGreen50, dark: jetpackGreen30)
         static let switchButtonBackgroundColor = jetpackGreen50
         static let continueButtonTextColor = UIColor(light: jetpackGreen50, dark: .white)
         static let switchButtonTextColor = UIColor.white
-        static let closeButtonTintColor = UIColor(light: .muriel(color: .gray, .shade5),
-                                                  dark: jetpackGreen90)
+        static let closeButtonTintColor = UIColor(
+            light: AppStyleGuide.gray(.shade5),
+            dark: jetpackGreen90
+        )
     }
 }

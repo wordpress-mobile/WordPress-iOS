@@ -1,4 +1,5 @@
 /// Generates the names of the named colors in the ColorPalette.xcasset
+@available(*, deprecated, message: "Use AppStyleGuide instead")
 enum MurielColorName: String, CustomStringConvertible {
     // MARK: - Base colors
     case wordPressBlue
@@ -23,6 +24,8 @@ enum MurielColorName: String, CustomStringConvertible {
 ///
 /// Note: There are a finite number of acceptable values. Not just any Int works.
 ///       Also, enum cases cannot begin with a number, thus the `shade` prefix.
+
+@available(*, deprecated, message: "Use AppStyleGuide instead")
 enum MurielColorShade: Int, CustomStringConvertible {
     case shade0 = 0
     case shade5 = 5
@@ -43,6 +46,7 @@ enum MurielColorShade: Int, CustomStringConvertible {
 }
 
 /// A specific color and shade from the muriel palette's asset file
+@available(*, deprecated, message: "Use AppStyleGuide instead")
 struct MurielColor {
     let name: MurielColorName
     let shade: MurielColorShade

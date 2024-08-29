@@ -125,7 +125,7 @@ open class DeleteSiteViewController: UITableViewController {
         paragraphStyle.alignment = .natural
 
         let attributes: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular),
-                                                        .foregroundColor: UIColor.neutral(.shade70),
+                                                        .foregroundColor: AppStyleGuide.neutral(.shade70),
                                                         .paragraphStyle: paragraphStyle ]
         let htmlAttributes: StyledHTMLAttributes = [.BodyAttribute: attributes]
 
@@ -139,7 +139,7 @@ open class DeleteSiteViewController: UITableViewController {
         sectionThreeBody.attributedText = combinedAttributedString
         sectionThreeBody.textColor = AppStyleGuide.neutral(.shade70)
 
-        let contactButtonAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.primary,
+        let contactButtonAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: AppStyleGuide.primary,
                                                                      .underlineStyle: NSUnderlineStyle.single.rawValue]
         supportButton.setAttributedTitle(NSAttributedString(string: NSLocalizedString("Contact Support",
                                                             comment: "Button label for contacting support"),
@@ -154,11 +154,11 @@ open class DeleteSiteViewController: UITableViewController {
     fileprivate func setupDeleteButton() {
         let trashIcon = UIImage(systemName: "trash") ?? .init()
         deleteSiteButton.setTitle("  " + NSLocalizedString("Delete Site", comment: "Button label for deleting the current site"), for: .normal)
-        deleteSiteButton.tintColor = .error
-        deleteSiteButton.setImage(trashIcon.imageWithTintColor(.error), for: .normal)
-        deleteSiteButton.setImage(trashIcon.imageWithTintColor(.error(.shade70)), for: .highlighted)
-        deleteSiteButton.setTitleColor(.error, for: .normal)
-        deleteSiteButton.setTitleColor(.error(.shade70), for: .highlighted)
+        deleteSiteButton.tintColor = AppStyleGuide.error
+        deleteSiteButton.setImage(trashIcon.imageWithTintColor(AppStyleGuide.error), for: .normal)
+        deleteSiteButton.setImage(trashIcon.imageWithTintColor(AppStyleGuide.error(.shade70)), for: .highlighted)
+        deleteSiteButton.setTitleColor(AppStyleGuide.error, for: .normal)
+        deleteSiteButton.setTitleColor(AppStyleGuide.error(.shade70), for: .highlighted)
         deleteSiteButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
     }
 

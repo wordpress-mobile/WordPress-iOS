@@ -12,6 +12,7 @@ struct AppStyleGuide {
     /// Get a UIColor from the Muriel color palette, adjusted to a given shade
     /// - Parameter color: an instance of a MurielColor
     /// - Parameter shade: a MurielColorShade
+    @available(*, deprecated, message: "Use AppStyleGuide instead")
     static func muriel(color: MurielColor, _ shade: MurielColorShade) -> UIColor {
         MurielColor(from: color, shade: shade).color
     }
@@ -21,34 +22,55 @@ struct AppStyleGuide {
     ///   - name: a MurielColorName
     ///   - shade: a MurielColorShade
     /// - Returns: the desired color/shade
+    @available(*, deprecated, message: "Use AppStyleGuide instead")
     static func muriel(name: MurielColorName, _ shade: MurielColorShade) -> UIColor {
         MurielColor(name: name, shade: shade).color
     }
 
-    static func primary(_ shade: MurielColorShade) -> UIColor {
-        MurielColor(name: .blue, shade: shade).color
+    static func primary(_ shade: ColorStudioShade) -> UIColor {
+        CSColor.Blue.shade(shade)
     }
 
-    static func accent(_ shade: MurielColorShade) -> UIColor {
-        MurielColor(name: .pink, shade: shade).color
+    static func accent(_ shade: ColorStudioShade) -> UIColor {
+        CSColor.Pink.shade(shade)
     }
 
-    static func gray(_ shade: MurielColorShade) -> UIColor {
-        MurielColor(name: .gray, shade: shade).color
+    static func error(_ shade: ColorStudioShade) -> UIColor {
+        CSColor.Red.shade(shade)
     }
 
-    static func blue(_ shade: MurielColorShade) -> UIColor {
-        MurielColor(name: .blue, shade: shade).color
+    static func warning(_ shade: ColorStudioShade) -> UIColor {
+        CSColor.Yellow.shade(shade)
     }
 
-    static func jetpackGreen(_ shade: MurielColorShade) -> UIColor {
-        MurielColor(name: .jetpackGreen, shade: shade).color
+    static func success(_ shade: ColorStudioShade) -> UIColor {
+        CSColor.Green.shade(shade)
+    }
+
+    static func gray(_ shade: ColorStudioShade) -> UIColor {
+        CSColor.Gray.shade(shade)
+    }
+
+    static func blue(_ shade: ColorStudioShade) -> UIColor {
+        CSColor.Blue.shade(shade)
+    }
+
+    static func green(_ shade: ColorStudioShade) -> UIColor {
+        CSColor.Green.shade(shade)
+    }
+
+    static func red(_ shade: ColorStudioShade) -> UIColor {
+        CSColor.Red.shade(shade)
+    }
+
+    static func jetpackGreen(_ shade: ColorStudioShade) -> UIColor {
+        CSColor.JetpackGreen.shade(shade)
     }
 
     static let primaryLight: UIColor = primary(.shade30)
     static let primaryDark: UIColor = primary(.shade70)
 
-    static func neutral(_ shade: MurielColorShade) -> UIColor {
+    static func neutral(_ shade: ColorStudioShade) -> UIColor {
         return switch shade {
             case .shade0: UIColor(light: gray(.shade0), dark: gray(.shade100))
             case .shade5: UIColor(light: gray(.shade5), dark: gray(.shade90))
@@ -68,18 +90,27 @@ struct AppStyleGuide {
 
 // MARK: - Colors
 extension AppStyleGuide {
-    static let accent = MurielColor(name: .pink).color
-    static let brand = MurielColor(name: .wordPressBlue).color
-    static let divider = MurielColor(name: .gray, shade: .shade10).color
-    static let error = MurielColor(name: .red).color
-    static let gray = MurielColor(name: .gray).color
-    static let primary = MurielColor(name: .blue).color
-    static let success = MurielColor(name: .green).color
-    static let text = MurielColor(name: .gray, shade: .shade80).color
-    static let textSubtle = MurielColor(name: .gray, shade: .shade50).color
-    static let warning = MurielColor(name: .yellow).color
-    static let jetpackGreen = MurielColor(name: .jetpackGreen).color
-    static let editorPrimary = MurielColor(name: .blue).color
+    static let accent = CSColor.Pink.base
+    static let brand = CSColor.WordPressBlue.base
+    static let divider = CSColor.Gray.shade(.shade10)
+    static let error = CSColor.Red.base
+    static let gray = CSColor.Gray.base
+    static let blue = CSColor.Blue.base
+    static let primary = CSColor.Blue.base
+    static let success = CSColor.Green.base
+    static let text = CSColor.Gray.shade(.shade80)
+    static let textSubtle = CSColor.Gray.shade(.shade50)
+    static let warning = CSColor.Yellow.base
+    static let jetpackGreen = CSColor.JetpackGreen.base
+    static let editorPrimary = CSColor.Blue.base
+    static let neutral = CSColor.Gray.base
+
+    static let statsPrimaryHighlight = UIColor(light: accent(.shade30), dark: accent(.shade60))
+    static let statsSecondaryHighlight = UIColor(light: accent(.shade60), dark: accent(.shade30))
+
+    // TODO : These should be customized for WP and JP
+    static let appBarTint = UIColor.systemOrange
+    static let appBarText = UIColor.systemOrange
 }
 
 // MARK: - Images

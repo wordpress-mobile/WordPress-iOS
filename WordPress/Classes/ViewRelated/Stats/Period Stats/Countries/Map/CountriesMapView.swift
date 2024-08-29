@@ -35,8 +35,8 @@ class CountriesMapView: UIView, NibLoadable {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        backgroundColor = .listForeground
-        map.backgroundColor = .listForeground
+        backgroundColor = .secondarySystemGroupedBackground
+        map.backgroundColor = .secondarySystemGroupedBackground
         colors = mapColors()
     }
 
@@ -69,9 +69,9 @@ private extension CountriesMapView {
 
     func mapColors() -> [UIColor] {
         if traitCollection.userInterfaceStyle == .dark {
-            return [.primary(.shade90), .primary]
+            return [AppStyleGuide.primary(.shade90), AppStyleGuide.primary]
         } else {
-            return [.primary(.shade5), .primary]
+            return [AppStyleGuide.primary(.shade5), AppStyleGuide.primary]
         }
     }
 
@@ -81,7 +81,7 @@ private extension CountriesMapView {
     }
 
     func setBasicMapColors() {
-        map.strokeColor = .listForeground
+        map.strokeColor = .secondarySystemGroupedBackground
         map.fillColor = WPStyleGuide.Stats.mapBackground
     }
 }

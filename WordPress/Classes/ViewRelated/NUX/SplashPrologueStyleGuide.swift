@@ -15,13 +15,13 @@ struct SplashPrologueStyleGuide {
     }
 
     /// Use the same shade for light and dark modes
-    private static let primaryButtonColor: UIColor = .muriel(color: .primary)
+    private static let primaryButtonColor: UIColor = AppStyleGuide.primary
         .resolvedColor(with: UITraitCollection(userInterfaceStyle: .light))
-    private static let primaryButtonHighlightedColor: UIColor = .muriel(color: .primary, .shade60)
+    private static let primaryButtonHighlightedColor: UIColor = AppStyleGuide.primary(.shade60)
         .resolvedColor(with: UITraitCollection(userInterfaceStyle: .light))
 
     private static let secondaryButtonColor: UIColor = .white
-    private static let secondaryButtonHighlightedColor: UIColor = .muriel(color: .gray, .shade5)
+    private static let secondaryButtonHighlightedColor: UIColor = AppStyleGuide.gray(.shade5)
 
     static let primaryButtonStyle = NUXButtonStyle(
         normal: .init(backgroundColor: Self.primaryButtonColor,

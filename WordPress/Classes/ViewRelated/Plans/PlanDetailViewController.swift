@@ -79,10 +79,10 @@ class PlanDetailViewController: UIViewController {
         configurePlanImageDropshadow()
 
         separator.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth).isActive = true
-        separator.backgroundColor = .divider
+        separator.backgroundColor = .separator
 
-        headerView.backgroundColor = .listBackground
-        headerContainerView.backgroundColor = .listBackground
+        headerView.backgroundColor = .systemGroupedBackground
+        headerContainerView.backgroundColor = .systemGroupedBackground
     }
 
     fileprivate func configureTableView() {
@@ -92,7 +92,7 @@ class PlanDetailViewController: UIViewController {
 
     fileprivate func configurePlanImageDropshadow() {
         dropshadowImageView.layer.masksToBounds = false
-        dropshadowImageView.layer.shadowColor = UIColor.neutral(.shade5).cgColor
+        dropshadowImageView.layer.shadowColor = AppStyleGuide.neutral(.shade5).cgColor
         dropshadowImageView.layer.shadowOpacity = 1.0
         dropshadowImageView.layer.shadowRadius = planImageDropshadowRadius
         dropshadowImageView.layer.shadowOffset = .zero

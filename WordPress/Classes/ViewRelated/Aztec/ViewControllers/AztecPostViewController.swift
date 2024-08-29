@@ -3159,18 +3159,18 @@ extension AztecPostViewController {
     }
 
     struct Colors {
-        static let aztecBackground              = UIColor.basicBackground
-        static let title                        = UIColor.text
-        static let separator                    = UIColor.divider
-        static let placeholder                  = UIColor.textPlaceholder
-        static let progressBackground           = UIColor.primary
+        static let aztecBackground              = UIColor.systemBackground
+        static let title                        = UIColor.label
+        static let separator                    = UIColor.separator
+        static let placeholder                  = UIColor.tertiaryLabel
+        static let progressBackground           = AppStyleGuide.primary
         static let progressTint                 = UIColor.white
-        static let progressTrack                = UIColor.primary
-        static let mediaProgressOverlay         = UIColor.neutral(.shade70).withAlphaComponent(CGFloat(0.6))
-        static let mediaProgressBarBackground   = UIColor.neutral(.shade0)
-        static let mediaProgressBarTrack        = UIColor.primary
-        static let aztecLinkColor               = UIColor.primary
-        static let mediaOverlayBorderColor      = UIColor.primary
+        static let progressTrack                = AppStyleGuide.primary
+        static let mediaProgressOverlay         = AppStyleGuide.neutral(.shade70).withAlphaComponent(CGFloat(0.6))
+        static let mediaProgressBarBackground   = AppStyleGuide.neutral(.shade0)
+        static let mediaProgressBarTrack        = AppStyleGuide.primary
+        static let aztecLinkColor               = AppStyleGuide.primary
+        static let mediaOverlayBorderColor      = AppStyleGuide.primary
     }
 
     struct Fonts {

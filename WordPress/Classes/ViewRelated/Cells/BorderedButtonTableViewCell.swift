@@ -144,8 +144,8 @@ private extension BorderedButtonTableViewCell {
     struct Defaults {
         static let buttonInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         static let titleFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
-        static let normalColor: UIColor = .text
-        static let highlightedColor: UIColor = .textInverted
+        static let normalColor: UIColor = .label
+        static let highlightedColor: UIColor = .label.variantInverted
     }
 
     func toggleLoading(_ loading: Bool) {

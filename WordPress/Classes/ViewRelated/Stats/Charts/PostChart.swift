@@ -25,7 +25,7 @@ extension PostChartType {
         case .latest:
             return nil
         case .selected:
-            return .accent(.shade30)
+            return AppStyleGuide.accent(.shade30)
         }
     }
 }

@@ -96,21 +96,21 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
     }
 
     private func setupLabelStyles() {
-        nameLabel.textColor = .text
+        nameLabel.textColor = .label
         nameLabel.font = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .footnote).pointSize,
                                            weight: .semibold)
-        textLabel.textColor = .text
-        summaryLabel.textColor = .textSubtle
+        textLabel.textColor = .label
+        summaryLabel.textColor = .secondaryLabel
 
-        roleLabel.textColor = .textSubtle
-        dateLabel.textColor = .textSubtle
-        timeLabel.textColor = .textSubtle
+        roleLabel.textColor = .secondaryLabel
+        dateLabel.textColor = .secondaryLabel
+        timeLabel.textColor = .secondaryLabel
 
-        rewindButton.setTitleColor(.primary, for: .normal)
-        rewindButton.setTitleColor(.primaryDark, for: .highlighted)
+        rewindButton.setTitleColor(AppStyleGuide.primary, for: .normal)
+        rewindButton.setTitleColor(AppStyleGuide.primaryDark, for: .highlighted)
 
-        backupButton.setTitleColor(.primary, for: .normal)
-        backupButton.setTitleColor(.primaryDark, for: .highlighted)
+        backupButton.setTitleColor(AppStyleGuide.primary, for: .normal)
+        backupButton.setTitleColor(AppStyleGuide.primaryDark, for: .highlighted)
     }
 
     private func setupViews() {

@@ -104,7 +104,7 @@ extension WPStyleGuide {
         appearance.secondaryHighlightBorderColor = .systemGray3
 
         appearance.disabledTitleColor = AppStyleGuide.neutral(.shade20)
-        appearance.disabledBackgroundColor = .textInverted
+        appearance.disabledBackgroundColor = UIColor(light: .white, dark: AppStyleGuide.gray(.shade100))
         appearance.disabledBorderColor = AppStyleGuide.neutral(.shade10)
     }
 }

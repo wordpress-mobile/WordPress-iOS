@@ -288,7 +288,7 @@ extension AddressTableViewCell {
     }
 
     private func styleCheckmark() {
-        tintColor = .primary(.shade40)
+        tintColor = AppStyleGuide.primary(.shade40)
     }
 
     override func prepareForReuse() {
