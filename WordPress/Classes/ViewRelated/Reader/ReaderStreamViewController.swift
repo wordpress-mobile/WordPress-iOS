@@ -1611,7 +1611,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             cell.prepareForDisplay()
         }
 
-        guard cell.isKind(of: OldReaderPostCardCell.self) || cell.isKind(of: ReaderCrossPostCell.self) else {
+        guard cell.isKind(of: ReaderCrossPostCell.self) else {
             return
         }
 
@@ -2109,19 +2109,6 @@ private extension ReaderStreamViewController {
         static let contentErrorTitle = NSLocalizedString("Unable to load this content right now.", comment: "Default title shown for no-results when the device is offline.")
         static let contentErrorSubtitle = NSLocalizedString("Check your network connection and try again.", comment: "Default subtitle for no-results when there is no connection")
         static let contentErrorImage = "cloud"
-    }
-}
-
-extension ReaderStreamViewController: ReaderTopicsChipsDelegate {
-    func heightDidChange() {
-        // Forces the table view to layout the cells and update their heights
-        tableView.beginUpdates()
-        tableView.endUpdates()
-    }
-
-    func didSelect(topic: String) {
-        let topicStreamViewController = ReaderStreamViewController.controllerWithTagSlug(topic)
-        navigationController?.pushViewController(topicStreamViewController, animated: true)
     }
 }
 
