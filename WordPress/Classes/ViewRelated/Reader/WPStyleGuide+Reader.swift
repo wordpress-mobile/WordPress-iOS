@@ -24,13 +24,6 @@ extension WPStyleGuide {
         return Cards.contentTextStyle
     }
 
-    // MARK: - Reader Card Styles
-
-    @objc public class func readerCardBlogNameLabelTextColor() -> UIColor {
-        return UIColor(light: .muriel(color: .gray, .shade90),
-                       dark: .muriel(color: .gray, .shade0))
-    }
-
     // MARK: - Custom Colors
     @objc public class func readerCardCellBorderColor() -> UIColor {
         return .divider
@@ -70,17 +63,6 @@ extension WPStyleGuide {
         ]
     }
 
-    // MARK: - Detail styles
-
-    @objc public class func readerDetailTitleAttributes() -> [NSAttributedString.Key: Any] {
-        let style: UIFont.TextStyle = UIDevice.isPad() ? .title1 : .title2
-        let font = WPStyleGuide.serifFontForTextStyle(style, fontWeight: .semibold)
-
-        return [
-            .font: font
-        ]
-    }
-
     // MARK: - No Followed Sites Error Text Attributes
     @objc public class func noFollowedSitesErrorTitleAttributes() -> [NSAttributedString.Key: Any] {
         let paragraphStyle = NSMutableParagraphStyle()
@@ -112,16 +94,6 @@ extension WPStyleGuide {
         button.setTitleColor(.primary, for: UIControl.State())
         button.setTitleColor(.primaryDark, for: .highlighted)
         button.setTitleColor(.text, for: .disabled)
-    }
-
-    @objc public class func applyReaderCardBylineLabelStyle(_ label: UILabel) {
-        WPStyleGuide.configureLabel(label, textStyle: Cards.subtextTextStyle)
-        label.textColor = UIColor(light: .muriel(color: .gray, .shade40),
-                                  dark: .muriel(color: .gray, .shade20))
-    }
-
-    @objc public class func applyReaderCardTitleLabelStyle(_ label: UILabel) {
-        label.textColor = UIColor(light: .gray(.shade90), dark: .text)
     }
 
     public class func applyReaderCardAttributionLabelStyle(_ label: UILabel) {
@@ -339,9 +311,9 @@ extension WPStyleGuide {
     // MARK: - Metrics
 
     public struct Cards {
+        public static let defaultLineSpacing: CGFloat = WPDeviceIdentification.isiPad() ? 6.0 : 3.0
         public static let contentTextStyle: UIFont.TextStyle = .footnote
         public static let buttonTextStyle: UIFont.TextStyle = .subheadline
-        public static let subtextTextStyle: UIFont.TextStyle = .caption1
         public static let loadMoreButtonTextStyle: UIFont.TextStyle = .subheadline
     }
 
