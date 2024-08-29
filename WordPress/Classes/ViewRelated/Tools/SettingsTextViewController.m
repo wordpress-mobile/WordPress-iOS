@@ -105,6 +105,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
     
     // Don't auto-size rows
     self.tableView.estimatedRowHeight = 0;
+    self.tableView.cellLayoutMarginsFollowReadableWidth = YES;
 
     [self startListeningTextfieldChanges];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
@@ -218,11 +219,11 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
     self.textField.translatesAutoresizingMaskIntoConstraints = NO;
     UILayoutGuide *readableGuide = _textFieldCell.contentView.readableContentGuide;
     [NSLayoutConstraint activateConstraints:@[
-                                               [self.textField.leadingAnchor constraintEqualToAnchor:readableGuide.leadingAnchor],
-                                               [self.textField.topAnchor constraintEqualToAnchor:_textFieldCell.contentView.topAnchor],
-                                               [self.textField.trailingAnchor constraintEqualToAnchor:readableGuide.trailingAnchor],
-                                               [self.textField.bottomAnchor constraintEqualToAnchor:_textFieldCell.contentView.bottomAnchor],
-                                               ]];
+        [self.textField.leadingAnchor constraintEqualToAnchor:readableGuide.leadingAnchor],
+        [self.textField.topAnchor constraintEqualToAnchor:_textFieldCell.contentView.topAnchor],
+        [self.textField.trailingAnchor constraintEqualToAnchor:readableGuide.trailingAnchor],
+        [self.textField.bottomAnchor constraintEqualToAnchor:_textFieldCell.contentView.bottomAnchor],
+    ]];
 
     return _textFieldCell;
 }

@@ -33,6 +33,11 @@ final class BlogListViewModel: NSObject, ObservableObject {
         setupFetchedResultsController()
     }
 
+    var isShowingRecentSites: Bool {
+        guard !configuration.shouldHideRecentSites else { return false }
+        return allSites.count > 10 && !recentSites.isEmpty
+    }
+
     func didSelectSite(withID objectID: NSManagedObjectID) -> Blog? {
         guard let blog = rawSites.first(where: { $0.objectID == objectID }) else {
             return nil

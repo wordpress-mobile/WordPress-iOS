@@ -1028,7 +1028,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     [rows addObject:[self mediaRow]];
     [rows addObject:[self commentsRow]];
 
-    NSString *title = [BlogDetailsViewControllerStrings contentSectionTitle];
+    NSString *title = self.isSidebarModeEnabled ? nil : [BlogDetailsViewControllerStrings contentSectionTitle];
     return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows category:BlogDetailsSectionCategoryContent];
 }
 
@@ -1692,9 +1692,28 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
 - (void)showCommentsFromSource:(BlogDetailsNavigationSource)source
 {
     [self trackEvent:WPAnalyticsStatOpenedComments fromSource:source];
-    CommentsViewController *controller = [CommentsViewController controllerWithBlog:self.blog];
-    controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
-    [self.presentationDelegate presentBlogDetailsViewController:controller];
+    CommentsViewController *commentsVC = [CommentsViewController controllerWithBlog:self.blog];
+    commentsVC.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+
+    if (self.isSidebarModeEnabled) {
+        commentsVC.isSidebarModeEnabled = YES;
+
+        UISplitViewController *splitVC = [[UISplitViewController alloc] initWithStyle:UISplitViewControllerStyleDoubleColumn];
+        splitVC.presentsWithGesture = NO;
+        splitVC.preferredDisplayMode = UISplitViewControllerDisplayModeOneBesideSecondary;
+        [splitVC setPreferredPrimaryColumnWidth:320];
+        [splitVC setMinimumPrimaryColumnWidth:375];
+        [splitVC setMaximumPrimaryColumnWidth:400];
+        [splitVC setViewController:commentsVC forColumn:UISplitViewControllerColumnPrimary];
+
+        UIViewController *noSelectionVC = [UIViewController new];
+        noSelectionVC.view.backgroundColor = [UIColor systemBackgroundColor];
+        [splitVC setViewController:noSelectionVC forColumn:UISplitViewControllerColumnSecondary];
+
+        [self.presentationDelegate presentBlogDetailsViewController:splitVC];
+    } else {
+        [self.presentationDelegate presentBlogDetailsViewController:commentsVC];
+    }
 }
 
 - (void)showPostListFromSource:(BlogDetailsNavigationSource)source

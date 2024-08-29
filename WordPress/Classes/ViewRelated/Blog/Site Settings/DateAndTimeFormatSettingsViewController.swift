@@ -47,6 +47,7 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
         title = NSLocalizedString("Date and Time Format", comment: "Title for the Date and Time Format Settings Screen")
         ImmuTable.registerRows([NavigationItemRow.self], tableView: tableView)
         WPStyleGuide.configureColors(view: view, tableView: tableView)
+        tableView.cellLayoutMarginsFollowReadableWidth = true
         reloadViewModel()
     }
 

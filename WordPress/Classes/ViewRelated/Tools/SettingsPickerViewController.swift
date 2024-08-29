@@ -57,6 +57,7 @@ open class SettingsPickerViewController: UITableViewController {
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         tableView.estimatedRowHeight = estimatedRowHeight
         tableView.rowHeight = UITableView.automaticDimension
+        tableView.cellLayoutMarginsFollowReadableWidth = true
     }
 
     // MARK: - UITableViewDataSoutce Methods

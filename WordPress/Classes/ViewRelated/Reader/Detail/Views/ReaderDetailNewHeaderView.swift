@@ -1,21 +1,15 @@
 import SwiftUI
 import WordPressUI
-import Gridicons
 
-/// A protocol conformed by both `ReaderDetailHeaderView` and `ReaderDetailNewHeaderViewHost`.
-/// This is a temporary solution to abstract and simplify usage in the view controller.
-///
-/// NOTE: This protocol should be removed once the `readerImprovements` flag is deleted.
-///
-protocol ReaderDetailHeader: NSObjectProtocol {
-    var delegate: ReaderDetailHeaderViewDelegate? { get set }
-    var useCompatibilityMode: Bool { get set }
-
-    func configure(for post: ReaderPost)
-    func refreshFollowButton()
+protocol ReaderDetailHeaderViewDelegate: AnyObject {
+    func didTapBlogName()
+    func didTapMenuButton(_ sender: UIView)
+    func didTapHeaderAvatar()
+    func didTapFollowButton(completion: @escaping () -> Void)
+    func didSelectTopic(_ topic: String)
+    func didTapLikes()
+    func didTapComments()
 }
-
-// MARK: - SwiftUI View Host
 
 class ReaderDetailNewHeaderViewHost: UIView {
     weak var delegate: ReaderDetailHeaderViewDelegate? {
@@ -79,7 +73,7 @@ class ReaderDetailNewHeaderViewHost: UIView {
 
 // MARK: ReaderDetailHeader
 
-extension ReaderDetailNewHeaderViewHost: ReaderDetailHeader {
+extension ReaderDetailNewHeaderViewHost {
     func configure(for post: ReaderPost) {
         viewModel.configure(with: TaggedManagedObjectID(post),
                             completion: refreshContainerLayout)

@@ -33,14 +33,14 @@ struct LoginWithUrlView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            VStack(alignment: .center, spacing: 16) {
-                Image("splashLogo")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 60, height: 60)
-                    .padding(24)
-                Text(Self.enterSiteAddress)
-            }
+            Image("splashLogo")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 60, height: 60)
+                .padding(24)
+                .frame(maxWidth: .infinity, alignment: .center)
+
+            Text(Self.enterSiteAddress)
 
             siteAdddressTextField()
 

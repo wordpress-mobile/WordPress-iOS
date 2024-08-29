@@ -43,7 +43,7 @@ final class SiteMenuViewController: UIViewController {
 private final class SiteMenuListViewController: BlogDetailsViewController {
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         let title = super.tableView(tableView, titleForHeaderInSection: section)
-        return title == nil ? (section == 0 ? 0 : 20) : 52
+        return title == nil ? 0 : 48
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -59,7 +59,7 @@ private final class SiteMenuListViewController: BlogDetailsViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             label.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 20),
-            label.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -10),
+            label.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -8),
             label.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: 20)
         ])
         return headerView
@@ -68,10 +68,11 @@ private final class SiteMenuListViewController: BlogDetailsViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
 
+        cell.textLabel?.font = .preferredFont(forTextStyle: .body)
         cell.backgroundColor = .clear
         cell.selectedBackgroundView = {
             let backgroundView = UIView()
-            backgroundView.backgroundColor = .systemFill
+            backgroundView.backgroundColor = .secondarySystemFill
             backgroundView.layer.cornerRadius = 10
             backgroundView.layer.cornerCurve = .continuous
 
