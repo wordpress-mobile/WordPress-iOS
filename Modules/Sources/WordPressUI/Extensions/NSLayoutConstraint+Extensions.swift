@@ -6,8 +6,8 @@ extension NSLayoutConstraint {
         return self
     }
 
-    public func withPriority(_ priotity: UILayoutPriority) -> NSLayoutConstraint {
-        self.priority = priotity
+    public func withPriority(_ priority: UILayoutPriority) -> NSLayoutConstraint {
+        self.priority = priority
         return self
     }
 }
