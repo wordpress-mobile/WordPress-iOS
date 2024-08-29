@@ -64,7 +64,7 @@ private enum ReaderCardDiscoverAttribution: Int {
         textLabel.isUserInteractionEnabled = true
         imageView.isUserInteractionEnabled = true
 
-        backgroundColor = .listForeground
+        backgroundColor = .secondarySystemGroupedBackground
         applyOpaqueBackgroundColors()
     }
 
@@ -133,8 +133,8 @@ private enum ReaderCardDiscoverAttribution: Int {
         if !displayAsLink {
             WPStyleGuide.applyReaderCardAttributionLabelStyle(textLabel)
         } else {
-            textLabel.textColor = .primary
-            textLabel.highlightedTextColor = .primary
+            textLabel.textColor = AppStyleGuide.primary
+//            textLabel.highlightedtextColor = AppStyleGuide.primary
         }
         textLabel.attributedText = attributedString
         attributionAction = .visitSite

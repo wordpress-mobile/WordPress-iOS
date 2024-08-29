@@ -26,7 +26,7 @@ class RevisionsTableViewFooter: UIView {
 
 private extension RevisionsTableViewFooter {
     private func setupUI() {
-        backgroundColor = .listBackground
+        backgroundColor = .systemGroupedBackground
 
         autoresizingMask = .flexibleWidth
 

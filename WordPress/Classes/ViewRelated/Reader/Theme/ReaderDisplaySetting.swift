@@ -136,7 +136,7 @@ struct ReaderDisplaySetting: Codable, Equatable {
         var foreground: UIColor {
             switch self {
             case .system:
-                return .text
+                return .label
             case .soft:
                 return UIColor(fromHex: 0x2d2e2e)
             case .sepia:
@@ -144,7 +144,7 @@ struct ReaderDisplaySetting: Codable, Equatable {
             case .evening:
                 return UIColor(fromHex: 0xabaab2)
             case .oled:
-                return .text.color(for: .init(userInterfaceStyle: .dark))
+                return .label.color(for: .init(userInterfaceStyle: .dark))
             case .hacker:
                 return .green
             case .candy:

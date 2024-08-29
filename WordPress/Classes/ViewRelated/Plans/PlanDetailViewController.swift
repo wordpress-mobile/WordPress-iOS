@@ -35,7 +35,7 @@ class PlanDetailViewController: UIViewController {
     fileprivate lazy var currentPlanLabel: UIView = {
         let label = UILabel()
         label.font = WPFontManager.systemSemiBoldFont(ofSize: 13.0)
-        label.textColor = .success
+        label.textColor = AppStyleGuide.success
         label.text = NSLocalizedString("Current Plan", comment: "Label title. Refers to the current WordPress.com plan for a user's site.").localizedUppercase
         label.translatesAutoresizingMaskIntoConstraints = false
 
@@ -70,11 +70,11 @@ class PlanDetailViewController: UIViewController {
     }
 
     fileprivate func configureAppearance() {
-        view.backgroundColor = .basicBackground
-        tableView.backgroundColor = .basicBackground
+        view.backgroundColor = .systemBackground
+        tableView.backgroundColor = .systemBackground
 
-        planTitleLabel.textColor = .primary
-        planDescriptionLabel.textColor = .text
+        planTitleLabel.textColor = AppStyleGuide.primary
+        planDescriptionLabel.textColor = .label
         dropshadowImageView.backgroundColor = UIColor.white
         configurePlanImageDropshadow()
 
@@ -189,7 +189,7 @@ extension PlanDetailViewController: UITableViewDataSource, UITableViewDelegate {
             cell.separatorInset = UIEdgeInsets(top: 0, left: separatorInset, bottom: 0, right: separatorInset)
         }
 
-        cell.contentView.backgroundColor = .listForeground
+        cell.contentView.backgroundColor = .secondarySystemGroupedBackground
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

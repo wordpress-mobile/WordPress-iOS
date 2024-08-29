@@ -124,7 +124,7 @@ class UnifiedProloguePageViewController: UIViewController {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
 
         configureTitleFont()
-        titleLabel.textColor = .text
+        titleLabel.textColor = .label
         titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 0
         titleLabel.adjustsFontSizeToFitWidth = true

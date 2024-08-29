@@ -157,8 +157,8 @@ private extension ReaderTagCardCell {
 
         let options = GhostOptions(reuseIdentifier: ReaderTagCell.classNameWithoutNamespaces(), rowsPerSection: [3])
         let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
-                               beatStartColor: .placeholderElement,
-                               beatEndColor: .placeholderElementFaded)
+                               beatStartColor: AppStyleGuide.placeholderElement,
+                               beatEndColor: AppStyleGuide.placeholderElementFaded)
 
         ghostableCollectionView.removeGhostContent()
         ghostableCollectionView.displayGhostContent(options: options, style: style)

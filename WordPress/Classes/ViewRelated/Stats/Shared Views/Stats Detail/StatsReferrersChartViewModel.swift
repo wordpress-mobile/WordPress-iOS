@@ -67,9 +67,9 @@ struct StatsReferrersChartViewModel {
 
         static let referrersMaxGroupCount = 3
         static let referrersSegmentColors: [UIColor] = [
-            .muriel(name: .blue, .shade80),
-            .muriel(name: .blue, .shade50),
-            .muriel(name: .blue, .shade5)
+            AppStyleGuide.blue(.shade80),
+            AppStyleGuide.blue(.shade50),
+            AppStyleGuide.blue(.shade5)
         ]
 
         static let referrersTitlesMap = [

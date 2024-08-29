@@ -54,7 +54,7 @@ import WordPressShared
         titleLabel.textColor = .label
         valueLabel.font = UIFont.preferredFont(forTextStyle: .callout)
         valueLabel.textColor = .secondaryLabel
-        progressView.progressTintColor = .primary
+        progressView.progressTintColor = AppStyleGuide.primary
         progressView.trackTintColor = .separator
     }
 

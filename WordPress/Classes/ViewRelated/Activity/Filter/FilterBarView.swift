@@ -11,7 +11,7 @@ class FilterBarView: UIScrollView {
         filterStackView.translatesAutoresizingMaskIntoConstraints = false
 
         let filterIcon = UIImageView(image: UIImage.gridicon(.filter))
-        filterIcon.tintColor = .listIcon
+        filterIcon.tintColor = .secondaryLabel
         filterIcon.heightAnchor.constraint(equalToConstant: Constants.filterHeightAnchor).isActive = true
 
         filterStackView.addArrangedSubview(filterIcon)

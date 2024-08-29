@@ -61,12 +61,12 @@ class JetpackScanStatusCell: UITableViewCell, NibReusable {
             return
         }
 
-        let attributedTitle = WPStyleGuide.Jetpack.highlightString(warningButtonTitle.substring,
+        let attributedTitle = StringHighlighter.highlightString(warningButtonTitle.substring,
                                                                    inString: warningButtonTitle.string)
 
         warningButton.setAttributedTitle(attributedTitle, for: .normal)
         warningButton.setImage(.gridicon(.plusSmall), for: .normal)
-        warningButton.setTitleColor(.text, for: .normal)
+        warningButton.setTitleColor(.label, for: .normal)
         warningButton.titleLabel?.numberOfLines = 0
         warningButton.titleLabel?.lineBreakMode = .byWordWrapping
 

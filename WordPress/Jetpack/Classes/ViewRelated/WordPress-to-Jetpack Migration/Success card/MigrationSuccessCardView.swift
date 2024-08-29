@@ -68,7 +68,7 @@ class MigrationSuccessCardView: UIView {
             iconImageView.heightAnchor.constraint(equalToConstant: 32),
             iconImageView.widthAnchor.constraint(equalToConstant: 56)
         ])
-        backgroundColor = .listForeground
+        backgroundColor = .secondarySystemGroupedBackground
         layer.cornerRadius = 10
         clipsToBounds = true
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(viewTapped)))

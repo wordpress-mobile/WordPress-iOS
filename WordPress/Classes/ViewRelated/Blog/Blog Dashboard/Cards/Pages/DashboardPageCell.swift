@@ -22,7 +22,7 @@ class DashboardPageCell: UITableViewCell, Reusable {
         label.adjustsFontForContentSizeCategory = true
         label.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
         label.numberOfLines = 1
-        label.textColor = .text
+        label.textColor = .label
         return label
     }()
 

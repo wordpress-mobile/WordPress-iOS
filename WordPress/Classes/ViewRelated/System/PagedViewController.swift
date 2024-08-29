@@ -56,14 +56,14 @@ class PagedViewController: UIViewController {
     }
 
     fileprivate func applyWPStyles() {
-        view.backgroundColor = .listBackground
-        pageControlContainer.backgroundColor = .listBackground
+        view.backgroundColor = .systemGroupedBackground
+        pageControlContainer.backgroundColor = .systemGroupedBackground
 
         divider.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth).isActive = true
-        divider.backgroundColor = .divider
+        divider.backgroundColor = .separator
 
-        pageControl.currentPageIndicatorTintColor = .listSmallIcon
-        pageControl.pageIndicatorTintColor = UIColor.listSmallIcon.withAlphaComponent(0.5)
+        pageControl.currentPageIndicatorTintColor = .systemGray
+        pageControl.pageIndicatorTintColor = .systemGray.withAlphaComponent(0.5)
     }
 
     fileprivate func addViewControllers() {

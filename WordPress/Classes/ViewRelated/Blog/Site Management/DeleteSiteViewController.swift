@@ -71,7 +71,7 @@ open class DeleteSiteViewController: UITableViewController {
     fileprivate func setupHeaderSection() {
         let warningIcon = UIImage.gridicon(.notice, size: CGSize(width: 48.0, height: 48.0))
         warningImage.image = warningIcon
-        warningImage.tintColor = UIColor.warning
+        warningImage.tintColor = AppStyleGuide.warning
         siteTitleLabel.textColor = AppStyleGuide.neutral(.shade70)
         siteTitleLabel.font = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .semibold)
         siteTitleLabel.text = blog.displayURL as String?

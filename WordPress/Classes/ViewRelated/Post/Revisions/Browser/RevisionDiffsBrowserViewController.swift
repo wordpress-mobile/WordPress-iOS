@@ -144,8 +144,8 @@ private extension RevisionDiffsBrowserViewController {
         navigationItem.leftBarButtonItems = [doneBarButtonItem]
         navigationItem.rightBarButtonItems = [moreBarButtonItem, loadBarButtonItem]
         navigationItem.title = NSLocalizedString("Revision", comment: "Title of the screen that shows the revisions.")
-        strokeView.backgroundColor = .divider
-        revisionContainer.backgroundColor = .listForeground
+        strokeView.backgroundColor = .separator
+        revisionContainer.backgroundColor = .secondarySystemGroupedBackground
     }
 
     private func updateNextPreviousButtons() {

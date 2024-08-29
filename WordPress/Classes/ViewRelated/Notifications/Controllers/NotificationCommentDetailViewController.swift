@@ -102,7 +102,7 @@ class NotificationCommentDetailViewController: UIViewController, NoResultsViewHo
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavBar()
-        view.backgroundColor = .basicBackground
+        view.backgroundColor = .systemBackground
         loadComment()
     }
 

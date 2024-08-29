@@ -87,7 +87,7 @@ struct JetpackScanThreatViewModel {
 
         // Threat Details
         detailIconImage = UIImage(named: "jetpack-scan-state-error")
-        detailIconImageColor = .error
+        detailIconImageColor = AppStyleGuide.error
         problemTitle = Strings.details.titles.problem
         problemDescription = threat.description
         fixTitle = Self.fixTitle(for: threat)
@@ -235,13 +235,10 @@ struct JetpackScanThreatViewModel {
     }
 
     private static func iconColor(for status: JetpackScanThreat.ThreatStatus?) -> UIColor {
-        switch status {
-        case .current:
-            return .error
-        case .fixed:
-            return .success
-        default:
-            return AppStyleGuide.neutral(.shade20)
+        return switch status {
+        case .current: AppStyleGuide.error
+        case .fixed: AppStyleGuide.success
+        default: AppStyleGuide.neutral(.shade20)
         }
     }
 

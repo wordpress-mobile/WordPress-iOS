@@ -68,7 +68,7 @@ class TemplatePreviewViewController: UIViewController, NoResultsViewHost, UIPopo
         styleButtons()
         webView.scrollView.contentInset.bottom = footerView.frame.height
         webView.navigationDelegate = self
-        webView.backgroundColor = .basicBackground
+        webView.backgroundColor = .systemBackground
         delegate?.previewViewed()
         observeProgressEstimations()
         configurePreviewDeviceButton()

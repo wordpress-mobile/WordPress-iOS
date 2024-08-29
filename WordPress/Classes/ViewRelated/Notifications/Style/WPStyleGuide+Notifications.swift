@@ -302,8 +302,8 @@ extension WPStyleGuide {
         fileprivate static let subjectTextColor         = UIColor.label
         fileprivate static let subjectNoticonColor      = noticonReadColor
         fileprivate static let footerTextColor          = UIColor.secondaryLabel
-        fileprivate static let blockNoticonColor        = UIColor.neutral
-        fileprivate static let snippetColor             = UIColor.neutral
+        fileprivate static let blockNoticonColor        = AppStyleGuide.neutral
+        fileprivate static let snippetColor             = AppStyleGuide.neutral
         fileprivate static let headerTitleContextColor  = AppStyleGuide.primary
 
         // Fonts

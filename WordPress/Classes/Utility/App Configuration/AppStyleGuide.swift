@@ -1,5 +1,6 @@
 import Foundation
 import WordPressShared
+import WordPressUI
 
 /// - Warning:
 /// This configuration struct has a **Jetpack** counterpart in the Jetpack bundle.
@@ -43,6 +44,26 @@ struct AppStyleGuide {
 
     static func red(_ shade: ColorStudioShade) -> UIColor {
         CSColor.Red.shade(shade)
+    }
+
+    static func pink(_ shade: ColorStudioShade) -> UIColor {
+        CSColor.Pink.shade(shade)
+    }
+
+    static func yellow(_ shade: ColorStudioShade) -> UIColor {
+        CSColor.Yellow.shade(shade)
+    }
+
+    static func purple(_ shade: ColorStudioShade) -> UIColor {
+        CSColor.Purple.shade(shade)
+    }
+
+    static func orange(_ shade: ColorStudioShade) -> UIColor {
+        CSColor.Orange.shade(shade)
+    }
+
+    static func celadon(_ shade: ColorStudioShade) -> UIColor {
+        CSColor.Celadon.shade(shade)
     }
 
     static func jetpackGreen(_ shade: ColorStudioShade) -> UIColor {
@@ -93,6 +114,11 @@ extension AppStyleGuide {
     // TODO : These should be customized for WP and JP
     static let appBarTint = UIColor.systemOrange
     static let appBarText = UIColor.systemOrange
+
+    static let placeholderElement = UIColor(light: .systemGray5, dark: .systemGray4)
+    static let placeholderElementFaded: UIColor = UIColor(light: .systemGray6, dark: .systemGray5)
+
+    static let prologueBackground = UIColor(light: blue(.shade0), dark: .systemBackground)
 }
 
 // MARK: - Images

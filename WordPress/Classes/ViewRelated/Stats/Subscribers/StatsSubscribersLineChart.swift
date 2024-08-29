@@ -25,7 +25,7 @@ class StatsSubscribersLineChart {
 // MARK: - StatsSubscribersLineChartStyling
 
 private struct SubscribersLineChartStyling: LineChartStyling {
-    let primaryLineColor: UIColor                   = UIColor(light: .muriel(name: .blue, .shade50), dark: .muriel(name: .blue, .shade50))
+    let primaryLineColor: UIColor                   = AppStyleGuide.blue(.shade50)
     let secondaryLineColor: UIColor?                = nil
     let primaryHighlightColor: UIColor?             = UIColor(red: 209.0/255.0, green: 209.0/255.0, blue: 214.0/255.0, alpha: 1.0)
     let labelColor: UIColor                         = UIColor(light: .secondaryLabel, dark: .tertiaryLabel)

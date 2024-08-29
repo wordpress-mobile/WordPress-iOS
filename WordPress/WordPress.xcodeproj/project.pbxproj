@@ -954,6 +954,9 @@
 		245562362C5C107800A15446 /* AcknowledgementsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 245562352C5C107800A15446 /* AcknowledgementsService.swift */; };
 		245562372C5C107800A15446 /* AcknowledgementsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 245562352C5C107800A15446 /* AcknowledgementsService.swift */; };
 		246D0A0325E97D5D0028B83F /* Blog+ObjcTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 246D0A0225E97D5D0028B83F /* Blog+ObjcTests.m */; };
+		246EB6E32C80380000343F28 /* AppStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2538E26116A1600EDAF88 /* AppStyleGuide.swift */; };
+		246EB6E52C8038F700343F28 /* StringHighlighting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 246EB6E42C8038F700343F28 /* StringHighlighting.swift */; };
+		246EB6E62C8038F700343F28 /* StringHighlighting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 246EB6E42C8038F700343F28 /* StringHighlighting.swift */; };
 		2481B17F260D4D4E00AE59DB /* WPAccount+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2481B17E260D4D4E00AE59DB /* WPAccount+Lookup.swift */; };
 		2481B180260D4D4E00AE59DB /* WPAccount+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2481B17E260D4D4E00AE59DB /* WPAccount+Lookup.swift */; };
 		2481B1D5260D4E8B00AE59DB /* AccountBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2481B1D4260D4E8B00AE59DB /* AccountBuilder.swift */; };
@@ -6784,6 +6787,7 @@
 		2448F12D2C8023CD002AE7C1 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		245562352C5C107800A15446 /* AcknowledgementsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcknowledgementsService.swift; sourceTree = "<group>"; };
 		246D0A0225E97D5D0028B83F /* Blog+ObjcTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "Blog+ObjcTests.m"; sourceTree = "<group>"; };
+		246EB6E42C8038F700343F28 /* StringHighlighting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringHighlighting.swift; sourceTree = "<group>"; };
 		2481B17E260D4D4E00AE59DB /* WPAccount+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPAccount+Lookup.swift"; sourceTree = "<group>"; };
 		2481B1D4260D4E8B00AE59DB /* AccountBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountBuilder.swift; sourceTree = "<group>"; };
 		2481B1E7260D4EAC00AE59DB /* WPAccount+LookupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPAccount+LookupTests.swift"; sourceTree = "<group>"; };
@@ -14658,6 +14662,7 @@
 				4A5DE7372B0D511900363171 /* PageTree.swift */,
 				FA87A22D2BF798E40062154A /* Version.swift */,
 				0C03EF9E2C495D2E00B7F828 /* SharedStrings.swift */,
+				246EB6E42C8038F700343F28 /* StringHighlighting.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -22167,6 +22172,7 @@
 				FEA1123F29964BCA008097B0 /* WPComJetpackRemoteInstallViewModel.swift in Sources */,
 				B538F3891EF46EC8001003D5 /* UnknownEditorViewController.swift in Sources */,
 				937D9A1119F838C2007B9D5F /* AccountToAccount22to23.swift in Sources */,
+				246EB6E52C8038F700343F28 /* StringHighlighting.swift in Sources */,
 				0C35FFF129CB81F700D224EB /* BlogDashboardHelpers.swift in Sources */,
 				D8212CB320AA6861008E8AE8 /* ReaderFollowAction.swift in Sources */,
 				F5D399302541F25B0058D0AB /* SheetActions.swift in Sources */,
@@ -24834,6 +24840,7 @@
 				FA4BC0D12996A589005EB077 /* BlazeService.swift in Sources */,
 				01B759092B3ECAF300179AE6 /* DomainsStateView.swift in Sources */,
 				FABB22302602FC2C00C8785C /* Double+Stats.swift in Sources */,
+				246EB6E62C8038F700343F28 /* StringHighlighting.swift in Sources */,
 				FABB22312602FC2C00C8785C /* CircularProgressView.swift in Sources */,
 				FABB22322602FC2C00C8785C /* StatsNoDataRow.swift in Sources */,
 				FABB22332602FC2C00C8785C /* ReaderTableCardCell.swift in Sources */,
@@ -25538,6 +25545,7 @@
 				F1C197A72670DDB100DE1FF7 /* BloggingRemindersTracker.swift in Sources */,
 				FABB242E2602FC2C00C8785C /* OffsetTableViewHandler.swift in Sources */,
 				FABB242F2602FC2C00C8785C /* UINavigationController+SplitViewFullscreen.swift in Sources */,
+				246EB6E32C80380000343F28 /* AppStyleGuide.swift in Sources */,
 				803BB99029667BAF00B3F6D6 /* JetpackBrandingTextProvider.swift in Sources */,
 				F48EBF8B2B2F94DD004CD561 /* BlogDashboardAnalyticPropertiesProviding.swift in Sources */,
 				0CE7833E2B08F3C300B114EB /* ExternalMediaPickerViewController.swift in Sources */,

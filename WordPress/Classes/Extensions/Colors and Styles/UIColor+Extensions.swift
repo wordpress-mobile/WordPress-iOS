@@ -1,18 +1,8 @@
 import Foundation
+import WordPressUI
 
 @objc
 extension UIColor {
-    // A way to create dynamic colors that's compatible with iOS 11 & 12
-    @objc
-    convenience init(light: UIColor, dark: UIColor) {
-        self.init { traitCollection in
-            if traitCollection.userInterfaceStyle == .dark {
-                return dark
-            } else {
-                return light
-            }
-        }
-    }
 
     convenience init(color: UIColor) {
         var r: CGFloat = 0

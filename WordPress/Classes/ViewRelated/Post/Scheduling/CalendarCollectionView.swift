@@ -330,7 +330,7 @@ extension DateCell {
         leftPlaceholder.backgroundColor = .clear
         rightPlaceholder.backgroundColor = .clear
         dateLabel.backgroundColor = .clear
-        textColor = .text
+        textColor = .label
         dateLabel.accessibilityTraits = .button
         if state.isSelected {
             dateLabel.accessibilityTraits.insert(.selected)
@@ -338,23 +338,23 @@ extension DateCell {
 
         switch position(for: state.date, startDate: startDate, endDate: endDate) {
         case .middle:
-            textColor = .text
+            textColor = .label
             leftPlaceholder.backgroundColor = Constants.selectedColor
             rightPlaceholder.backgroundColor = Constants.selectedColor
             dateLabel.backgroundColor = .clear
         case .left:
             textColor = .white
-            dateLabel.backgroundColor = .primary
+            dateLabel.backgroundColor = AppStyleGuide.primary
             rightPlaceholder.backgroundColor = Constants.selectedColor
         case .right:
             textColor = .white
-            dateLabel.backgroundColor = .primary
+            dateLabel.backgroundColor = AppStyleGuide.primary
             leftPlaceholder.backgroundColor = Constants.selectedColor
         case .full:
-            textColor = .textInverted
+            textColor = .invertedLabel
             leftPlaceholder.backgroundColor = .clear
             rightPlaceholder.backgroundColor = .clear
-            dateLabel.backgroundColor = .primary
+            dateLabel.backgroundColor = AppStyleGuide.primary
         case .none:
             leftPlaceholder.backgroundColor = .clear
             rightPlaceholder.backgroundColor = .clear

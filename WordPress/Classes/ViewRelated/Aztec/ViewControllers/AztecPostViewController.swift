@@ -123,7 +123,7 @@ class AztecPostViewController: UIViewController, PostEditor {
             defaultMissingImage: Assets.defaultMissingImage)
 
         editorView.clipsToBounds = false
-        editorView.htmlStorage.textColor = .text
+        editorView.htmlStorage.textColor = .label
         setupHTMLTextView(editorView.htmlTextView)
         setupRichTextView(editorView.richTextView)
 
@@ -162,7 +162,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         textView.backgroundColor = Colors.aztecBackground
         textView.blockquoteBackgroundColor = AppStyleGuide.neutral(.shade5)
-        textView.blockquoteBorderColors = [.listIcon]
+        textView.blockquoteBorderColors = [.secondaryLabel]
         textView.preBackgroundColor = AppStyleGuide.neutral(.shade5)
 
         textView.linkTextAttributes = linkAttributes
@@ -245,9 +245,11 @@ class AztecPostViewController: UIViewController, PostEditor {
         let titleParagraphStyle = NSMutableParagraphStyle()
         titleParagraphStyle.alignment = .natural
 
-        let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.text,
-                                                        .font: Fonts.title,
-                                                        .paragraphStyle: titleParagraphStyle]
+        let attributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.label,
+            .font: Fonts.title,
+            .paragraphStyle: titleParagraphStyle
+        ]
 
         let textView =
             UIApplication.shared.isCreatingScreenshots() ? UITextViewWithoutCaret() : UITextView()
@@ -257,7 +259,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         textView.delegate = self
         textView.font = Fonts.title
         textView.returnKeyType = .next
-        textView.textColor = .text
+        textView.textColor = .label
         textView.typingAttributes = attributes
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.textAlignment = .natural
@@ -397,8 +399,8 @@ class AztecPostViewController: UIViewController, PostEditor {
     fileprivate lazy var insertToolbarItem: UIButton = {
         let insertItem = UIButton(type: .custom)
         insertItem.titleLabel?.font = Fonts.mediaPickerInsert
-        insertItem.tintColor = .primary
-        insertItem.setTitleColor(.primary, for: .normal)
+        insertItem.tintColor = AppStyleGuide.primary
+        insertItem.setTitleColor(AppStyleGuide.primary, for: .normal)
         insertItem.accessibilityLabel = Constants.mediaPickerInsertAccessibilityLabel
         insertItem.accessibilityIdentifier = "insert_media_button"
 
@@ -719,7 +721,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     private func configureDefaultProperties(for textView: UITextView, accessibilityLabel: String) {
         textView.accessibilityLabel = accessibilityLabel
         textView.keyboardDismissMode = .interactive
-        textView.textColor = .text
+        textView.textColor = .label
         textView.translatesAutoresizingMaskIntoConstraints = false
     }
 
@@ -1508,7 +1510,7 @@ extension AztecPostViewController {
         trackFormatBarAnalytics(stat: .editorTappedList)
         let listOptions = Constants.lists.map { listType -> OptionsTableViewOption in
             let attributes: [NSAttributedString.Key: Any] = [
-                .foregroundColor: UIColor.text
+                .foregroundColor: UIColor.label
             ]
 
             let title = NSAttributedString(string: listType.description, attributes: attributes)
@@ -1768,7 +1770,7 @@ extension AztecPostViewController {
         let headerOptions = Constants.headers.map { headerType -> OptionsTableViewOption in
             let attributes: [NSAttributedString.Key: Any] = [
                 .font: UIFont.systemFont(ofSize: CGFloat(headerType.fontSize)),
-                .foregroundColor: UIColor.text
+                .foregroundColor: UIColor.label
             ]
 
             let title = NSAttributedString(string: headerType.description, attributes: attributes)
@@ -1955,7 +1957,7 @@ extension AztecPostViewController {
         toolbar.overflowToggleIcon = .gridicon(.ellipsis)
 
         let mediaButton = makeToolbarButton(identifier: .media)
-        mediaButton.normalTintColor = .primary
+        mediaButton.normalTintColor = AppStyleGuide.primary
         toolbar.leadingItem = mediaButton
 
         updateToolbar(toolbar, forMode: .text)

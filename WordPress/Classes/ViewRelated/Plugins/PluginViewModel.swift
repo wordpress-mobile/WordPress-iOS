@@ -597,7 +597,7 @@ class PluginViewModel: Observable {
             guard let font = value as? UIFont, font.familyName == "Times New Roman" else { return }
 
             copy.addAttribute(.font, value: WPStyleGuide.subtitleFont(), range: range)
-            copy.addAttribute(.foregroundColor, value: UIColor.text, range: range)
+            copy.addAttribute(.foregroundColor, value: UIColor.label, range: range)
         }
 
         var paragraphAttributes: [(paragraph: NSParagraphStyle, range: NSRange)] = []

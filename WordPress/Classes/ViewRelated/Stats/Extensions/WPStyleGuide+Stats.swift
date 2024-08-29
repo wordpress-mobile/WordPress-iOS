@@ -195,9 +195,9 @@ extension WPStyleGuide {
             // For FilterTabBar on StatsInsights
             if forNewInsightsCard {
                 filterTabBar.tabSizingStyle = .fitting
-                filterTabBar.tintColor = UIColor.text
-                filterTabBar.selectedTitleColor = UIColor.text
-                filterTabBar.backgroundColor = .listForeground
+                filterTabBar.tintColor = UIColor.label
+                filterTabBar.selectedTitleColor = UIColor.label
+                filterTabBar.backgroundColor = .secondarySystemGroupedBackground
                 filterTabBar.deselectedTabColor = UIColor(light: AppStyleGuide.neutral(.shade20), dark: AppStyleGuide.neutral(.shade50))
             }
         }

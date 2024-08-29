@@ -127,7 +127,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         let contentView = VStack {
             PrepublishingStackView(view: stackView)
             PublishButton(viewModel: publishButtonViewModel)
-                .tint(Color(uiColor: .primary))
+                .tint(Color(uiColor: AppStyleGuide.primary))
                 .padding()
         }.ignoresSafeArea(.keyboard)
 

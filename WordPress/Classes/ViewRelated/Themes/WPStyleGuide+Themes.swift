@@ -18,11 +18,11 @@ extension WPStyleGuide {
         public static let placeholderColor: UIColor = AppStyleGuide.neutral(.shade10)
 
         public static let activeCellBackgroundColor: UIColor = AppStyleGuide.neutral(.shade40)
-        public static let activeCellNameColor: UIColor = .textInverted
+        public static let activeCellNameColor: UIColor = .invertedLabel
         public static let activeCellInfoColor: UIColor = AppStyleGuide.primaryLight
 
         public static let inactiveCellNameColor: UIColor = AppStyleGuide.neutral(.shade70)
-        public static let inactiveCellPriceColor: UIColor = .success
+        public static let inactiveCellPriceColor: UIColor = AppStyleGuide.success
 
         // MARK: - Metrics
 

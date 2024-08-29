@@ -1757,7 +1757,7 @@ extension NotificationsViewController: WPSplitViewControllerDetailProvider {
         // The first notification view will be populated by `selectFirstNotificationIfAppropriate`
         // on viewWillAppear, so we'll just return an empty view here.
         let controller = UIViewController()
-        controller.view.backgroundColor = .basicBackground
+        controller.view.backgroundColor = .systemBackground
         return controller
     }
 }

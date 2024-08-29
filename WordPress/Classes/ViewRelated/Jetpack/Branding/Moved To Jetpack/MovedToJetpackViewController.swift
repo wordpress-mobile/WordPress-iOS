@@ -82,7 +82,7 @@ final class MovedToJetpackViewController: UIViewController {
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = true
         label.numberOfLines = 0
-        label.textColor = .text
+        label.textColor = .label
         return label
     }()
 
@@ -94,7 +94,7 @@ final class MovedToJetpackViewController: UIViewController {
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = true
         label.numberOfLines = 0
-        label.textColor = .text
+        label.textColor = .label
         return label
     }()
 

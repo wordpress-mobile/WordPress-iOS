@@ -151,7 +151,7 @@ private extension WebCommentContentRenderer {
     }()
 
     var textColor: UIColor {
-        ReaderDisplaySetting.customizationEnabled ? displaySetting.color.foreground : .text
+        ReaderDisplaySetting.customizationEnabled ? displaySetting.color.foreground : .label
     }
 
     var mentionBackgroundColor: UIColor {

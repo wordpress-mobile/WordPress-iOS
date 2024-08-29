@@ -101,7 +101,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     private var onClose: (() -> Void)?
 
     private var navBarTitleColor: UIColor {
-        .text
+        .label
     }
 
     private struct WebViewErrors {

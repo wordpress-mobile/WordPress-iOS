@@ -36,7 +36,7 @@ class DashboardPostListErrorCell: UITableViewCell, Reusable {
     private lazy var errorTitle: UILabel = {
         let errorTitle = UILabel()
         errorTitle.textAlignment = .center
-        errorTitle.textColor = .textSubtle
+        errorTitle.textColor = .secondaryLabel
         WPStyleGuide.configureLabel(errorTitle, textStyle: .callout, fontWeight: .semibold)
         return errorTitle
     }()
@@ -45,7 +45,7 @@ class DashboardPostListErrorCell: UITableViewCell, Reusable {
         let retryLabel = UILabel()
         retryLabel.textAlignment = .center
         retryLabel.text = Strings.tapToRetry
-        retryLabel.textColor = .textSubtle
+        retryLabel.textColor = .secondaryLabel
         WPStyleGuide.configureLabel(retryLabel, textStyle: .callout, fontWeight: .regular)
         return retryLabel
     }()

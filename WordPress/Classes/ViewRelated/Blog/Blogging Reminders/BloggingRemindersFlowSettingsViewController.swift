@@ -97,7 +97,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     private lazy var frequencyView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .basicBackground
+        view.backgroundColor = .systemBackground
         view.addSubview(frequencyLabel)
         return view
     }()
@@ -125,7 +125,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     private lazy var timeSelectionView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .basicBackground
+        view.backgroundColor = .systemBackground
         view.addSubview(timeSelectionStackView)
         return view
     }()
@@ -151,7 +151,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(.gridicon(.helpOutline), for: .normal)
-        button.tintColor = .listSmallIcon
+        button.tintColor = .systemGray
         button.accessibilityLabel = TextContent.bloggingPromptsInfoButton
         button.addTarget(self, action: #selector(bloggingPromptsInfoButtonTapped), for: .touchUpInside)
         return button
@@ -171,7 +171,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .preferredFont(forTextStyle: .subheadline)
         label.text = TextContent.bloggingPromptsDescription
-        label.textColor = .textSubtle
+        label.textColor = .secondaryLabel
         label.numberOfLines = 0
         return label
     }()
@@ -270,7 +270,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .basicBackground
+        view.backgroundColor = .systemBackground
 
         configureStackView()
         configureConstraints()
@@ -439,7 +439,7 @@ private extension BloggingRemindersFlowSettingsViewController {
     func makeDivider() -> UIView {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.divider
+        view.backgroundColor = UIColor.separator
         return view
     }
 
@@ -488,7 +488,7 @@ private extension BloggingRemindersFlowSettingsViewController {
         timeSelectionStackView.isHidden = false
 
         let defaultAttributes: [NSAttributedString.Key: AnyObject] = [
-            .foregroundColor: UIColor.text,
+            .foregroundColor: UIColor.label,
         ]
 
         let frequencyDescription = scheduleFormatter.shortScheduleDescription(for: .weekdays(weekdays))

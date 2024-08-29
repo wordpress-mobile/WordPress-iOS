@@ -25,7 +25,7 @@ class BorderedButtonTableViewCell: UITableViewCell {
     private var normalColor = Defaults.normalColor
     private var highlightedColor = Defaults.highlightedColor
     private var borderColor = Defaults.normalColor
-    private var buttonBackgroundColor: UIColor = .basicBackground
+    private var buttonBackgroundColor: UIColor = .systemBackground
 
     // Toggles the loading state of the cell.
     var isLoading: Bool = false {
@@ -53,7 +53,7 @@ class BorderedButtonTableViewCell: UITableViewCell {
 
     private lazy var loadingOverlayView: UIView = {
         let view = UIView()
-        view.backgroundColor = .basicBackground
+        view.backgroundColor = .systemBackground
         view.translatesAutoresizingMaskIntoConstraints = false
 
         view.addSubview(loadingBackgroundView)
@@ -75,7 +75,7 @@ class BorderedButtonTableViewCell: UITableViewCell {
                    highlightedColor: UIColor = Defaults.highlightedColor,
                    borderColor: UIColor? = nil,
                    buttonInsets: UIEdgeInsets = Defaults.buttonInsets,
-                   backgroundColor: UIColor = .basicBackground) {
+                   backgroundColor: UIColor = .systemBackground) {
         self.buttonTitle = buttonTitle
         self.titleFont = titleFont
         self.normalColor = normalColor

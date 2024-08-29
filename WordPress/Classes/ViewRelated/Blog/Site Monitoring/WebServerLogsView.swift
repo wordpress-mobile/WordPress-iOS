@@ -260,22 +260,22 @@ final class WebServerLogsViewModel: ObservableObject {
 
 extension AtomicWebServerLogEntry: Identifiable {
     var requestTypeBackgroundColor: UIColor {
-        switch requestType {
-        case "GET": return .muriel(name: .green, .shade5)
-        case "HEAD", "PUT": return .muriel(name: .gray, .shade5)
-        case "POST": return .muriel(name: .blue, .shade5)
-        case "DELETE": return .muriel(name: .red, .shade5)
-        default: return .clear
+        return switch requestType {
+        case "GET": AppStyleGuide.green(.shade5)
+        case "HEAD", "PUT": AppStyleGuide.gray(.shade5)
+        case "POST": AppStyleGuide.blue(.shade5)
+        case "DELETE": AppStyleGuide.red(.shade5)
+        default: .clear
         }
     }
 
     var requestTypeTextColor: UIColor {
-        switch requestType {
-        case "GET": return .muriel(name: .green, .shade80)
-        case "HEAD", "PUT": return .muriel(name: .gray, .shade80)
-        case "POST": return .muriel(name: .blue, .shade80)
-        case "DELETE": return .muriel(name: .red, .shade80)
-        default: return .clear
+        return switch requestType {
+        case "GET": AppStyleGuide.green(.shade80)
+        case "HEAD", "PUT": AppStyleGuide.green(.shade80)
+        case "POST": AppStyleGuide.blue(.shade80)
+        case "DELETE": AppStyleGuide.red(.shade80)
+        default: .clear
         }
     }
 }

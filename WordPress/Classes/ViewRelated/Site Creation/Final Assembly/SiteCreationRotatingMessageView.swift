@@ -54,7 +54,7 @@ class SiteCreationRotatingMessageView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
 
         label.font = WPStyleGuide.fontForTextStyle(.title2)
-        label.textColor = .textSubtle
+        label.textColor = .secondaryLabel
         label.textAlignment = .center
 
         return label

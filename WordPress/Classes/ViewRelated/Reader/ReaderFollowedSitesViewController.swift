@@ -411,8 +411,8 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
 
         // Reset the site icon first to address: https://github.com/wordpress-mobile/WordPress-iOS/issues/8513
         cell.imageView?.image = placeholderImage
-        cell.imageView?.tintColor = .listIcon
-        cell.imageView?.backgroundColor = UIColor.listForeground
+        cell.imageView?.tintColor = .secondaryLabel
+        cell.imageView?.backgroundColor = UIColor.secondarySystemGroupedBackground
 
         if showsAccessoryFollowButtons {
             let button = followButton(title: site.title)

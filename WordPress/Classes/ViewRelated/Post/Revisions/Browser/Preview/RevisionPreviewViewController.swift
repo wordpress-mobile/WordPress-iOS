@@ -94,7 +94,7 @@ private extension RevisionPreviewViewController {
 //
 private extension RevisionPreviewViewController {
     private func addSubviews() {
-        view.backgroundColor = .basicBackground
+        view.backgroundColor = .systemBackground
         view.addSubview(textView)
         textView.addSubview(titleLabel)
     }

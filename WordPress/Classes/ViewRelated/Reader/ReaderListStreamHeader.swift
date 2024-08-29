@@ -18,8 +18,8 @@ import WordPressShared
     }
 
     @objc func applyStyles() {
-        backgroundColor = .listBackground
-        borderedView.backgroundColor = .listForeground
+        backgroundColor = .systemGroupedBackground
+        borderedView.backgroundColor = .secondarySystemGroupedBackground
         borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
         borderedView.layer.borderWidth = .hairlineBorderWidth
         WPStyleGuide.applyReaderStreamHeaderTitleStyle(titleLabel)

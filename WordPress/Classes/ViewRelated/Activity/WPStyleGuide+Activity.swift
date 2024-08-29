@@ -10,22 +10,26 @@ extension WPStyleGuide {
 
         // MARK: - Public Properties
 
-        public static let linkColor = UIColor.primary
+        public static let linkColor = AppStyleGuide.primary
 
         public static var contentRegularStyle: [NSAttributedString.Key: Any] {
-            return  [.paragraphStyle: contentParagraph,
-                     .font: contentRegularFont,
-                     .foregroundColor: UIColor.text]
+            return  [
+                .paragraphStyle: contentParagraph,
+                .font: contentRegularFont,
+                .foregroundColor: UIColor.label
+            ]
         }
 
         public static var contentItalicStyle: [NSAttributedString.Key: Any] {
-            return  [.paragraphStyle: contentParagraph,
-                     .font: contentItalicFont,
-                     .foregroundColor: UIColor.text]
+            return  [
+                .paragraphStyle: contentParagraph,
+                .font: contentItalicFont,
+                .foregroundColor: UIColor.label
+            ]
         }
 
         public static func backgroundColor() -> UIColor {
-            return .listForeground
+            return .secondarySystemGroupedBackground
         }
 
         public static func getGridiconTypeForActivity(_ activity: Activity) -> GridiconType? {
@@ -43,11 +47,11 @@ extension WPStyleGuide {
         public static func getColorByActivityStatus(_ activity: Activity) -> UIColor {
             switch activity.status {
             case ActivityStatus.error:
-                return .error
+                return AppStyleGuide.error
             case ActivityStatus.success:
-                return .success
+                return AppStyleGuide.success
             case ActivityStatus.warning:
-                return .warning
+                return AppStyleGuide.warning
             default:
                 return AppStyleGuide.neutral(.shade20)
             }

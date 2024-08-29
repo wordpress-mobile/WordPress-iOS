@@ -44,8 +44,8 @@ class RevisionOperationView: UIView {
 
         var color: UIColor {
             switch self {
-            case .add: return .primary
-            case .del: return .error
+            case .add: return AppStyleGuide.primary
+            case .del: return AppStyleGuide.error
             }
         }
 

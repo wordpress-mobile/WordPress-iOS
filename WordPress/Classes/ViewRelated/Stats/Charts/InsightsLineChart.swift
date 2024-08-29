@@ -131,9 +131,9 @@ class InsightsLineChart {
 private extension InsightsLineChart {
     enum Constants {
         static let primaryHighlightColor: UIColor = UIColor(red: 209.0/255.0, green: 209.0/255.0, blue: 214.0/255.0, alpha: 1.0)
-        static let secondaryLineColor: UIColor = UIColor(light: .textQuaternary, dark: .textTertiary)
-        static let primaryLineColorViews: UIColor = UIColor(light: .muriel(name: .blue, .shade50), dark: .muriel(name: .blue, .shade50))
-        static let primaryLineColorVisitors: UIColor = UIColor(light: .muriel(name: .purple, .shade50), dark: .muriel(name: .purple, .shade50))
+        static let secondaryLineColor: UIColor = UIColor(light: .quaternaryLabel, dark: .tertiaryLabel)
+        static let primaryLineColorViews: UIColor = AppStyleGuide.blue(.shade50)
+        static let primaryLineColorVisitors: UIColor = AppStyleGuide.purple(.shade50)
     }
 }
 

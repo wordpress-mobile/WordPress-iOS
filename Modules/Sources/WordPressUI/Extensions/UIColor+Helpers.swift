@@ -2,6 +2,18 @@ import UIKit
 
 public extension UIColor {
 
+    // A way to create dynamic colors that's compatible with iOS 11 & 12
+    @objc
+    convenience init(light: UIColor, dark: UIColor) {
+        self.init { traitCollection in
+            if traitCollection.userInterfaceStyle == .dark {
+                return dark
+            } else {
+                return light
+            }
+        }
+    }
+
     /// Creates a color based on a hexString. If the string is not a valid hexColor it return nil
     /// Example of colors: #FF0000, #00FF0000
     ///

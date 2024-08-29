@@ -37,7 +37,7 @@ class ActionSheetViewController: UIViewController {
             static let imagePadding: CGFloat = 16
             static let imageTintColor: UIColor = AppStyleGuide.neutral(.shade30)
             static let font: UIFont = .preferredFont(forTextStyle: .callout)
-            static let textColor: UIColor = .text
+            static let textColor: UIColor = .label
             static let badgeHorizontalPadding: CGFloat = 10
         }
 
@@ -81,7 +81,7 @@ class ActionSheetViewController: UIViewController {
         view.clipsToBounds = true
         view.layer.cornerRadius = Constants.cornerRadius
         view.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
-        view.backgroundColor = .basicBackground
+        view.backgroundColor = .systemBackground
 
         let headerLabelView = UIView()
         let headerLabel = UILabel()
@@ -167,7 +167,7 @@ class ActionSheetViewController: UIViewController {
             return configuration
         }()
         button.configurationUpdateHandler = { button in
-            button.configuration?.background.backgroundColor = button.isHighlighted ? .divider : .clear
+            button.configuration?.background.backgroundColor = button.isHighlighted ? .separator : .clear
         }
         button.contentHorizontalAlignment = .leading
         button.accessibilityIdentifier = info.identifier

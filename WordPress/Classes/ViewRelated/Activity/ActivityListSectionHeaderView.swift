@@ -11,8 +11,8 @@ class ActivityListSectionHeaderView: UITableViewHeaderFooterView {
     override func awakeFromNib() {
         super.awakeFromNib()
         WPStyleGuide.applyBorderStyle(separator)
-        separator.backgroundColor = .divider
+        separator.backgroundColor = .separator
 
-        backgroundColorView.backgroundColor = .listBackground
+        backgroundColorView.backgroundColor = .systemGroupedBackground
     }
 }

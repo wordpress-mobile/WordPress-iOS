@@ -31,10 +31,10 @@ class FeatureItemCell: WPTableViewCell {
 
     private func configureAppearance() {
         separator.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth).isActive = true
-        separator.backgroundColor = .divider
+        separator.backgroundColor = .separator
 
-        featureTitleLabel.textColor = .primary
-        featureDescriptionLabel.textColor = .text
+        featureTitleLabel.textColor = AppStyleGuide.primary
+        featureDescriptionLabel.textColor = .label
     }
 
     override func prepareForReuse() {

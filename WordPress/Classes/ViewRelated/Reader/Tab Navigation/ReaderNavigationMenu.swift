@@ -123,7 +123,7 @@ struct ReaderNavigationMenu: View {
     }
 
     struct Colors {
-        static let searchIcon: Color = Color(uiColor: .text)
+        static let searchIcon: Color = Color(uiColor: .label)
 
         struct StreamFilter {
             static let text = Color.primary

@@ -22,13 +22,13 @@ class RevisionDiffViewController: UIViewController, StoryboardLoadable {
 
 private extension RevisionDiffViewController {
     private func setupUI() {
-        view.backgroundColor = .basicBackground
-        scrollView.backgroundColor = .basicBackground
+        view.backgroundColor = .systemBackground
+        scrollView.backgroundColor = .systemBackground
 
         titleLabel.font = WPFontManager.notoBoldFont(ofSize: 24.0)
         contentLabel.font = WPFontManager.notoRegularFont(ofSize: 16)
-        titleLabel.textColor = .text
-        contentLabel.textColor = .text
+        titleLabel.textColor = .label
+        contentLabel.textColor = .label
     }
 
     private func showRevision() {

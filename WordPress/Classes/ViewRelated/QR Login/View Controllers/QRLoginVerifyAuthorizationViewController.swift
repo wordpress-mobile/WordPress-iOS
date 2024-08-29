@@ -152,7 +152,7 @@ extension QRLoginVerifyAuthorizationViewController: QRLoginVerifyView {
 extension QRLoginVerifyAuthorizationViewController {
     private func applyStyles() {
         titleLabel.font = WPStyleGuide.serifFontForTextStyle(.title1, fontWeight: .semibold)
-        titleLabel.textColor = .text
+        titleLabel.textColor = .label
 
         subTitleLabel.font = .preferredFont(forTextStyle: .headline)
         subTitleLabel.textColor = .systemRed

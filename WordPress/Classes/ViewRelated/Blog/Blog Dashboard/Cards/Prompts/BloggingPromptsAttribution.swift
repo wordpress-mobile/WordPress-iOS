@@ -42,7 +42,7 @@ enum BloggingPromptsAttribution: String {
         ]
         static let sourceAttributes: [NSAttributedString.Key: Any] = [
             .font: WPStyleGuide.fontForTextStyle(.caption1, fontWeight: .medium),
-            .foregroundColor: UIColor.text,
+            .foregroundColor: UIColor.label,
         ]
         static let iconSize = CGSize(width: 18, height: 18)
         static let dayOneIcon = UIImage(named: "logo-dayone")?.resized(to: Constants.iconSize)

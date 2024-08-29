@@ -248,22 +248,22 @@ final class AddressTableViewCell: UITableViewCell {
         static let contentMargins = NSDirectionalEdgeInsets(top: 16, leading: 40, bottom: 16, trailing: 16)
 
         static let domainFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
-        static let domainTextColor = UIColor.text
+        static let domainTextColor = UIColor.label
 
         static let regularCostFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         static let semiboldCostFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
         static let smallCostFont = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular)
-        static let saleCostTextColor = UIColor(light: .muriel(name: .jetpackGreen, .shade50), dark: .muriel(name: .jetpackGreen, .shade30))
+        static let saleCostTextColor = UIColor(light: AppStyleGuide.jetpackGreen(.shade50), dark: AppStyleGuide.jetpackGreen(.shade30))
 
         static let tagFont = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular)
         static let tagTextColor: (ViewModel.Tag?) -> UIColor = { tag in
             guard let tag else {
                 return .clear
             }
-            switch tag {
-            case .recommended: return UIColor(light: .muriel(name: .jetpackGreen, .shade50), dark: .muriel(name: .jetpackGreen, .shade30))
-            case .bestAlternative: return UIColor(light: .muriel(name: .purple, .shade50), dark: .muriel(name: .purple, .shade30))
-            case .sale: return UIColor(light: .muriel(name: .yellow, .shade50), dark: .muriel(name: .yellow, .shade30))
+            return switch tag {
+            case .recommended: UIColor(light: AppStyleGuide.jetpackGreen(.shade50), dark: AppStyleGuide.jetpackGreen(.shade30))
+            case .bestAlternative: UIColor(light: AppStyleGuide.purple(.shade50), dark: AppStyleGuide.purple(.shade30))
+            case .sale: UIColor(light: AppStyleGuide.yellow(.shade50), dark: AppStyleGuide.yellow(.shade30))
             }
         }
 
@@ -322,8 +322,8 @@ extension AddressTableViewCell {
 
     private struct TextStyleAttributes {
         static let defaults: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular),
-                                                              .foregroundColor: UIColor.textSubtle]
+                                                              .foregroundColor: UIColor.secondaryLabel]
         static let customName: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular),
-                                                                .foregroundColor: UIColor.text]
+                                                                .foregroundColor: UIColor.label]
     }
 }

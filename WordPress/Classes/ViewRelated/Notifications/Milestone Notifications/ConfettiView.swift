@@ -177,21 +177,21 @@ extension ConfettiView {
         }
 
         // Colors
-        let purple = UIColor(light: .muriel(name: .purple, .shade20), dark: .muriel(name: .purple, .shade40))
+        let purple = UIColor(light: AppStyleGuide.purple(.shade20), dark: AppStyleGuide.purple(.shade40))
 
-        let orange = UIColor(light: .muriel(name: .orange, .shade10), dark: .muriel(name: .orange, .shade30))
+        let orange = UIColor(light: AppStyleGuide.orange(.shade10), dark: AppStyleGuide.orange(.shade30))
 
-        let green = UIColor(light: .muriel(name: .green, .shade10), dark: .muriel(name: .green, .shade30))
+        let green = UIColor(light: AppStyleGuide.green(.shade10), dark: AppStyleGuide.green(.shade30))
 
-        let celadon = UIColor(light: .muriel(name: .celadon, .shade10), dark: .muriel(name: .celadon, .shade20))
+        let celadon = UIColor(light: AppStyleGuide.celadon(.shade10), dark: AppStyleGuide.celadon(.shade20))
 
-        let pink = UIColor(light: .muriel(name: .pink, .shade20), dark: .muriel(name: .pink, .shade40))
+        let pink = UIColor(light: AppStyleGuide.pink(.shade20), dark: AppStyleGuide.pink(.shade40))
 
-        let red = UIColor(light: .muriel(name: .red, .shade10), dark: .muriel(name: .red, .shade30))
+        let red = UIColor(light: AppStyleGuide.red(.shade10), dark: AppStyleGuide.red(.shade30))
 
-        let blue = UIColor(light: .muriel(name: .blue, .shade30), dark: .muriel(name: .blue, .shade50))
+        let blue = UIColor(light: AppStyleGuide.blue(.shade30), dark: AppStyleGuide.blue(.shade50))
 
-        let yellow = UIColor(light: .muriel(name: .yellow, .shade10), dark: .muriel(name: .yellow, .shade30))
+        let yellow = UIColor(light: AppStyleGuide.yellow(.shade10), dark: AppStyleGuide.yellow(.shade30))
 
         let starParticles = [purple, orange, green, blue].map { Particle(image: star, tintColor: $0) }
         let circleParticles = [celadon, pink, red, yellow].map { Particle(image: circle, tintColor: $0) }

@@ -148,7 +148,7 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
         backupButton.naturalContentHorizontalAlignment = .leading
         backupButton.setImage(.gridicon(.cloudDownload, size: Constants.gridiconSize), for: .normal)
 
-        let attributedTitle = WPStyleGuide.Jetpack.highlightString(RewindStatus.Strings.multisiteNotAvailableSubstring,
+        let attributedTitle = StringHighlighter.highlightString(RewindStatus.Strings.multisiteNotAvailableSubstring,
                                                                    inString: RewindStatus.Strings.multisiteNotAvailable)
 
         warningButton.setAttributedTitle(attributedTitle, for: .normal)
@@ -175,7 +175,7 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
             jetpackBadgeButton.topAnchor.constraint(equalTo: jetpackBadgeView.topAnchor, constant: Constants.jetpackBadgeTopInset),
             jetpackBadgeButton.bottomAnchor.constraint(equalTo: jetpackBadgeView.bottomAnchor)
         ])
-        jetpackBadgeView.backgroundColor = .listBackground
+        jetpackBadgeView.backgroundColor = .systemGroupedBackground
     }
 
     @objc private func jetpackButtonTapped() {

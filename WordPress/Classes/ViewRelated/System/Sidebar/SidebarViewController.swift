@@ -96,7 +96,7 @@ private struct SidebarView: View {
             Text(Strings.addSite)
         } icon: {
             Image(systemName: "plus.square.fill")
-                .foregroundStyle(Color(.brand), Color(.secondarySystemFill))
+                .foregroundStyle(Color(AppStyleGuide.brand), Color(.secondarySystemFill))
                 .font(.title2)
         }
         switch viewModel.actions.count {
