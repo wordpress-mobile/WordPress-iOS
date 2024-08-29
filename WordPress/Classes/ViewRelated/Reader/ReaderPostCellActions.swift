@@ -19,7 +19,6 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
     private weak var saveForLaterAction: ReaderSaveForLaterAction?
 
     /// Saved posts that have been removed but not yet discarded
-    var removedPosts = ReaderSaveForLaterRemovedPosts()
     weak var savedPostsDelegate: ReaderSavedPostCellActionsDelegate?
 
     init(context: NSManagedObjectContext, origin: UIViewController, topic: ReaderAbstractTopic? = nil, visibleConfirmation: Bool = true) {
@@ -62,9 +61,10 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
 
     func readerCell(_ cell: OldReaderPostCardCell, saveActionForProvider provider: ReaderPostContentProvider) {
         if let origin = origin as? ReaderStreamViewController, origin.contentType == .saved {
-            if let post = provider as? ReaderPost {
-                removedPosts.add(post)
-            }
+//            if let post = provider as? ReaderPost {
+//                removedPosts.add(post)
+//            }
+            // TODO: rework
             savedPostsDelegate?.willRemove(cell)
         } else {
             guard let post = provider as? ReaderPost else {
@@ -198,22 +198,5 @@ enum ReaderActionsVisibility: Equatable {
         case .visible(let enabled):
             return enabled
         }
-    }
-}
-
-// MARK: - Saved Posts
-extension ReaderPostCellActions {
-
-    func postIsRemoved(_ post: ReaderPost) -> Bool {
-        return removedPosts.contains(post)
-    }
-
-    func restoreUnsavedPost(_ post: ReaderPost) {
-        removedPosts.remove(post)
-    }
-
-    func clearRemovedPosts() {
-        removedPosts.all().forEach({ toggleSavedForLater(for: $0) })
-        removedPosts = ReaderSaveForLaterRemovedPosts()
     }
 }

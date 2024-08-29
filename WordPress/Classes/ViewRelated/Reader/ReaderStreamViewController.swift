@@ -218,7 +218,6 @@ import AutomatticTracks
 
     private weak var streamHeader: ReaderStreamHeader?
 
-    private var removedPosts = Set<ReaderPost>()
     private var showConfirmation = true
 
     // NOTE: This is currently a workaround for the 'Your Tags' stream use case.
@@ -412,11 +411,6 @@ import AutomatticTracks
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        if contentType == .saved {
-            postCellActions?.clearRemovedPosts()
-            clearRemovedPosts()
-        }
-
         if shouldShowCommentSpotlight {
             resetReaderDiscoverNudgeFlow()
         }
@@ -576,7 +570,6 @@ import AutomatticTracks
         tableViewController.didMove(toParent: self)
         tableConfiguration.setup(tableView)
         tableView.delegate = self
-        setupUndoCell(tableView)
     }
 
     @objc func configureRefreshControl() {
@@ -933,18 +926,15 @@ import AutomatticTracks
     }
 
     func removePost(_ post: ReaderPost) {
-        guard let posts = content.content as? [ReaderPost],
-              let row = posts.firstIndex(of: post) else {
-            return
+        guard let posts = content.content as? [ReaderPost] else {
+            return wpAssertionFailure("unexpected post content")
         }
-        removedPosts.insert(post)
-        let cellIndex = IndexPath(row: row, section: 0)
-        tableView.reloadRows(at: [cellIndex], with: .fade)
-    }
-
-    func clearRemovedPosts() {
-        removedPosts.forEach(togglePostSave)
-        removedPosts.removeAll()
+        togglePostSave(post)
+        let notice = Notice(title: Strings.postRemoved, actionTitle: SharedStrings.Button.undo) { [weak self] accepted in
+            guard accepted else { return }
+            self?.togglePostSave(post)
+        }
+        ActionDispatcherFacade().dispatch(NoticeAction.post(notice))
     }
 
     func togglePostSave(_ post: ReaderPost) {
@@ -1637,12 +1627,6 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             return cell
         }
 
-        if contentType == .saved && (postCellActions?.postIsRemoved(post) == true || removedPosts.contains(post)) {
-            let cell = undoCell(tableView)
-            configureUndoCell(cell, with: post)
-            return cell
-        }
-
         let cell = tableConfiguration.postCardCell(tableView)
         let viewModel = ReaderPostCardCellViewModel(contentProvider: post,
                                                     isLoggedIn: isLoggedIn,
@@ -2118,19 +2102,6 @@ extension ReaderStreamViewController: ReaderSavedPostCellActionsDelegate {
     }
 }
 
-// MARK: - Undo
-
-extension ReaderStreamViewController: ReaderPostUndoCellDelegate {
-    func readerCellWillUndo(_ cell: ReaderSavedPostUndoCell) {
-        if let cellIndex = tableView.indexPath(for: cell),
-           let post: ReaderPost = content.object(at: cellIndex) {
-            postCellActions?.restoreUnsavedPost(post)
-            removedPosts.remove(post)
-            tableView.reloadRows(at: [cellIndex], with: .fade)
-        }
-    }
-}
-
 // MARK: - View content types without a topic
 private extension ReaderStreamViewController {
 
@@ -2244,5 +2215,8 @@ extension ReaderStreamViewController {
     func logReaderError(_ error: ReaderStreamError) {
         CrashLogging.main.logError(error, tags: ["source": "reader_stream"])
     }
+}
 
+private enum Strings {
+    static let postRemoved = NSLocalizedString("reader.savedPostRemovedNotificationTitle", value: "Saved post removed", comment: "Notification title for when saved post is removed")
 }

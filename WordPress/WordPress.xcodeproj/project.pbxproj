@@ -3409,9 +3409,6 @@
 		D865722E2186F96D0023A99C /* SiteSegmentsWizardContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D865722C2186F96B0023A99C /* SiteSegmentsWizardContent.swift */; };
 		D865722F2186F96D0023A99C /* SiteSegmentsWizardContent.xib in Resources */ = {isa = PBXBuildFile; fileRef = D865722D2186F96C0023A99C /* SiteSegmentsWizardContent.xib */; };
 		D87A329620ABD60700F4726F /* ReaderTableContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87A329520ABD60700F4726F /* ReaderTableContent.swift */; };
-		D88106F720C0C9A8001D2F00 /* ReaderSavedPostUndoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88106F520C0C9A8001D2F00 /* ReaderSavedPostUndoCell.swift */; };
-		D88106F820C0C9A8001D2F00 /* ReaderSavedPostUndoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D88106F620C0C9A8001D2F00 /* ReaderSavedPostUndoCell.xib */; };
-		D88106FA20C0CFEE001D2F00 /* ReaderSaveForLaterRemovedPosts.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88106F920C0CFEE001D2F00 /* ReaderSaveForLaterRemovedPosts.swift */; };
 		D88A6492208D7A0A008AE9BC /* MockStockPhotosService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88A6491208D7A0A008AE9BC /* MockStockPhotosService.swift */; };
 		D88A6494208D7AD0008AE9BC /* DefaultStockPhotosService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88A6493208D7AD0008AE9BC /* DefaultStockPhotosService.swift */; };
 		D88A649E208D82D2008AE9BC /* XCTestCase+Wait.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88A649D208D82D2008AE9BC /* XCTestCase+Wait.swift */; };
@@ -4270,7 +4267,6 @@
 		FABB1FEE2602FC2C00C8785C /* AppImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 433840C622C2BA5B00CB13F8 /* AppImages.xcassets */; };
 		FABB1FEF2602FC2C00C8785C /* MediaQuotaCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF00889C204DFF77007CCE66 /* MediaQuotaCell.xib */; };
 		FABB1FF02602FC2C00C8785C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 931DF4D818D09A2F00540BDD /* InfoPlist.strings */; };
-		FABB1FF22602FC2C00C8785C /* ReaderSavedPostUndoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D88106F620C0C9A8001D2F00 /* ReaderSavedPostUndoCell.xib */; };
 		FABB1FF32602FC2C00C8785C /* OldReaderPostCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D5A6E921B613CA400DAF819 /* OldReaderPostCardCell.xib */; };
 		FABB1FF52602FC2C00C8785C /* RevisionsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4349B0AE218A477F0034118A /* RevisionsTableViewCell.xib */; };
 		FABB1FF72602FC2C00C8785C /* Revisions.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 439F4F37219B636500F8D0C7 /* Revisions.storyboard */; };
@@ -4611,7 +4607,6 @@
 		FABB21D72602FC2C00C8785C /* Routes+Stats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1715179120F4B2EB002C4A38 /* Routes+Stats.swift */; };
 		FABB21D92602FC2C00C8785C /* SearchIdentifierGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74729CA92057100200D1394D /* SearchIdentifierGenerator.swift */; };
 		FABB21DA2602FC2C00C8785C /* StatsTwoColumnRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D52C3022B1CFEB00831529 /* StatsTwoColumnRow.swift */; };
-		FABB21DC2602FC2C00C8785C /* ReaderSaveForLaterRemovedPosts.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88106F920C0CFEE001D2F00 /* ReaderSaveForLaterRemovedPosts.swift */; };
 		FABB21DD2602FC2C00C8785C /* NSAttributedString+StyledHTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1751E5921CE23801000CA08D /* NSAttributedString+StyledHTML.swift */; };
 		FABB21DE2602FC2C00C8785C /* Accessible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8071630203DA23700B32FD9 /* Accessible.swift */; };
 		FABB21DF2602FC2C00C8785C /* PostingActivityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9826AE8E21B5D3CD00C851FA /* PostingActivityCell.swift */; };
@@ -5260,7 +5255,6 @@
 		FABB24EA2602FC2C00C8785C /* PageTemplateLayout+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46183CF2251BD658004F9AFD /* PageTemplateLayout+CoreDataClass.swift */; };
 		FABB24EB2602FC2C00C8785C /* NoResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982A4C3420227D6700B5518E /* NoResultsViewController.swift */; };
 		FABB24EC2602FC2C00C8785C /* ActionDispatcherFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C3D392235DFD8E00FE9CE6 /* ActionDispatcherFacade.swift */; };
-		FABB24ED2602FC2C00C8785C /* ReaderSavedPostUndoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88106F520C0C9A8001D2F00 /* ReaderSavedPostUndoCell.swift */; };
 		FABB24EE2602FC2C00C8785C /* Suggestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03B9235250BC5FD000A40AF /* Suggestion.swift */; };
 		FABB24EF2602FC2C00C8785C /* ShareNoticeConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EA3B87202A0462004F802D /* ShareNoticeConstants.swift */; };
 		FABB24F02602FC2C00C8785C /* FeatureFlagOverrideStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A09B98238FE13B0022AE0D /* FeatureFlagOverrideStore.swift */; };
@@ -8938,9 +8932,6 @@
 		D865722C2186F96B0023A99C /* SiteSegmentsWizardContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteSegmentsWizardContent.swift; sourceTree = "<group>"; };
 		D865722D2186F96C0023A99C /* SiteSegmentsWizardContent.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SiteSegmentsWizardContent.xib; sourceTree = "<group>"; };
 		D87A329520ABD60700F4726F /* ReaderTableContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTableContent.swift; sourceTree = "<group>"; };
-		D88106F520C0C9A8001D2F00 /* ReaderSavedPostUndoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSavedPostUndoCell.swift; sourceTree = "<group>"; };
-		D88106F620C0C9A8001D2F00 /* ReaderSavedPostUndoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReaderSavedPostUndoCell.xib; sourceTree = "<group>"; };
-		D88106F920C0CFEE001D2F00 /* ReaderSaveForLaterRemovedPosts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSaveForLaterRemovedPosts.swift; sourceTree = "<group>"; };
 		D88A6491208D7A0A008AE9BC /* MockStockPhotosService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockStockPhotosService.swift; sourceTree = "<group>"; };
 		D88A6493208D7AD0008AE9BC /* DefaultStockPhotosService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultStockPhotosService.swift; sourceTree = "<group>"; };
 		D88A649D208D82D2008AE9BC /* XCTestCase+Wait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Wait.swift"; sourceTree = "<group>"; };
@@ -13332,7 +13323,6 @@
 				E6D3B1421D1C702600008D4B /* ReaderFollowedSitesViewController.swift */,
 				E6DE44661B90D251000FA7EF /* ReaderHelpers.swift */,
 				D817799320ABFDB300330998 /* ReaderPostCellActions.swift */,
-				D88106F920C0CFEE001D2F00 /* ReaderSaveForLaterRemovedPosts.swift */,
 				E6DAABDC1CF632EC0069D933 /* ReaderSearchSuggestionsViewController.swift */,
 				E64ECA4C1CE62041000188A0 /* ReaderSearchViewController.swift */,
 				17CE77EE20C6CDAA001DEA5A /* ReaderSiteSearchViewController.swift */,
@@ -13407,8 +13397,6 @@
 				83204EDB2ACE098B000C3229 /* ReaderPostCardCellViewModel.swift */,
 				3234BB322530EA980068DA40 /* ReaderRecommendedSiteCardCell.swift */,
 				3234BB332530EA980068DA40 /* ReaderRecommendedSiteCardCell.xib */,
-				D88106F520C0C9A8001D2F00 /* ReaderSavedPostUndoCell.swift */,
-				D88106F620C0C9A8001D2F00 /* ReaderSavedPostUndoCell.xib */,
 				83317ED52BC71BA8001AD2F4 /* ReaderTagCardCell.swift */,
 				83317ED82BC71CEB001AD2F4 /* ReaderTagCardCell.xib */,
 				83BF48BA2BD6F03000C0E1A1 /* ReaderTagCardCellViewModel.swift */,
@@ -20090,7 +20078,6 @@
 				FF00889D204DFF77007CCE66 /* MediaQuotaCell.xib in Resources */,
 				17222D81261DDDF90047B163 /* celadon-classic-icon-app-76x76@2x.png in Resources */,
 				931DF4D618D09A2F00540BDD /* InfoPlist.strings in Resources */,
-				D88106F820C0C9A8001D2F00 /* ReaderSavedPostUndoCell.xib in Resources */,
 				801D9511291AB3CF0051993E /* JetpackStatsLogoAnimation_ltr.json in Resources */,
 				FE23EB4926E7C91F005A1698 /* richCommentTemplate.html in Resources */,
 				1761F18826209AEE000815EF /* pride-icon-app-76x76.png in Resources */,
@@ -20655,7 +20642,6 @@
 				F41E4EC328F22932001880C6 /* spectrum-icon-app-60@3x.png in Resources */,
 				FABB1FEF2602FC2C00C8785C /* MediaQuotaCell.xib in Resources */,
 				FABB1FF02602FC2C00C8785C /* InfoPlist.strings in Resources */,
-				FABB1FF22602FC2C00C8785C /* ReaderSavedPostUndoCell.xib in Resources */,
 				F41E4EAB28F20DF9001880C6 /* stroke-light-icon-app-60@2x.png in Resources */,
 				FABB1FF32602FC2C00C8785C /* OldReaderPostCardCell.xib in Resources */,
 				B026DAB12A96D9E900995410 /* support_chat_error_handler.js in Resources */,
@@ -21832,7 +21818,6 @@
 				1715179220F4B2EB002C4A38 /* Routes+Stats.swift in Sources */,
 				74729CAA2057100200D1394D /* SearchIdentifierGenerator.swift in Sources */,
 				98D52C3222B1CFEC00831529 /* StatsTwoColumnRow.swift in Sources */,
-				D88106FA20C0CFEE001D2F00 /* ReaderSaveForLaterRemovedPosts.swift in Sources */,
 				1751E5931CE23801000CA08D /* NSAttributedString+StyledHTML.swift in Sources */,
 				3F8513DF260D091500A4B938 /* RoundRectangleView.swift in Sources */,
 				8B4EDADD27DF9D5E004073B6 /* Blog+MySite.swift in Sources */,
@@ -22921,7 +22906,6 @@
 				46183CF4251BD658004F9AFD /* PageTemplateLayout+CoreDataClass.swift in Sources */,
 				982A4C3520227D6700B5518E /* NoResultsViewController.swift in Sources */,
 				57C3D393235DFD8E00FE9CE6 /* ActionDispatcherFacade.swift in Sources */,
-				D88106F720C0C9A8001D2F00 /* ReaderSavedPostUndoCell.swift in Sources */,
 				B03B9236250BC5FD000A40AF /* Suggestion.swift in Sources */,
 				74EA3B88202A0462004F802D /* ShareNoticeConstants.swift in Sources */,
 				17A09B99238FE13B0022AE0D /* FeatureFlagOverrideStore.swift in Sources */,
@@ -24802,7 +24786,6 @@
 				FABB21DA2602FC2C00C8785C /* StatsTwoColumnRow.swift in Sources */,
 				8352AC752B2A485100F8492C /* ReaderNavigationMenu.swift in Sources */,
 				982DDF91263238A6002B3904 /* LikeUser+CoreDataClass.swift in Sources */,
-				FABB21DC2602FC2C00C8785C /* ReaderSaveForLaterRemovedPosts.swift in Sources */,
 				FABB21DD2602FC2C00C8785C /* NSAttributedString+StyledHTML.swift in Sources */,
 				FABB21DE2602FC2C00C8785C /* Accessible.swift in Sources */,
 				FABB21DF2602FC2C00C8785C /* PostingActivityCell.swift in Sources */,
@@ -25891,7 +25874,6 @@
 				FAD7625C29ED780B00C09583 /* JSONDecoderExtension.swift in Sources */,
 				FABB24EC2602FC2C00C8785C /* ActionDispatcherFacade.swift in Sources */,
 				4A690C132BA3F4AD00A8E0C5 /* WPUserAgent.swift in Sources */,
-				FABB24ED2602FC2C00C8785C /* ReaderSavedPostUndoCell.swift in Sources */,
 				FABB24EE2602FC2C00C8785C /* Suggestion.swift in Sources */,
 				FABB24EF2602FC2C00C8785C /* ShareNoticeConstants.swift in Sources */,
 				FABB24F02602FC2C00C8785C /* FeatureFlagOverrideStore.swift in Sources */,
