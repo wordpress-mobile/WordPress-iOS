@@ -2,10 +2,10 @@ import UIKit
 
 extension WPStyleGuide {
     @objc class func configureFilterTabBar(_ filterTabBar: FilterTabBar) {
-        filterTabBar.backgroundColor = .filterBarBackground
+        filterTabBar.backgroundColor = .secondarySystemGroupedBackground
         filterTabBar.tintColor = .filterBarSelected
         filterTabBar.selectedTitleColor = .filterBarSelectedText
-        filterTabBar.deselectedTabColor = .textSubtle
-        filterTabBar.dividerColor = .neutral(.shade10)
+        filterTabBar.deselectedTabColor = .secondaryLabel
+        filterTabBar.dividerColor = AppStyleGuide.neutral(.shade10)
     }
 }

@@ -132,7 +132,7 @@ struct PluginDirectoryAccessoryItem {
                 color = .primary(.shade40)
             } else {
                 image = .gridicon(.starOutline, size: Constants.starImageSize)
-                color = .neutral(.shade10)
+                color = AppStyleGuide.neutral(.shade10)
             }
 
             let imageView = UIImageView(image: image)
@@ -165,7 +165,7 @@ struct PluginDirectoryAccessoryItem {
         leftHalf.addConstraint(NSLayoutConstraint(item: leftHalf, attribute: .width, relatedBy: .equal, toItem: leftHalf, attribute: .height, multiplier: 0.5, constant: 0))
 
         let rightHalf = UIImageView(image: .gridicon(.starOutline, size: size))
-        rightHalf.tintColor = .neutral(.shade10)
+        rightHalf.tintColor = AppStyleGuide.neutral(.shade10)
         rightHalf.translatesAutoresizingMaskIntoConstraints = false
         rightHalf.contentMode = .right
         rightHalf.clipsToBounds = true

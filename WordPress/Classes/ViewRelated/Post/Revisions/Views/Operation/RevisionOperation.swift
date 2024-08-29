@@ -35,7 +35,7 @@ class RevisionOperationView: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        numbersLabel.textColor = .neutral(.shade40)
+        numbersLabel.textColor = AppStyleGuide.neutral(.shade40)
     }
 
     enum OperationType {

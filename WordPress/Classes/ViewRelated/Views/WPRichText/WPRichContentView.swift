@@ -71,7 +71,7 @@ class WPRichContentView: UITextView {
             textColorHex: UIColor.text.hexString,
             blockQuoteColorHex: UIColor.textSubtle.hexString,
             linkColorHex: UIColor.primary.hexString,
-            linkColorActiveHex: UIColor.primaryDark.hexString
+            linkColorActiveHex: AppStyleGuide.primaryDark.hexString
         ))
     }
 
@@ -80,8 +80,8 @@ class WPRichContentView: UITextView {
         return formattedAttributedString(for: string, style: AttributedStringStyle(
             textColorHex: UIColor.text.color(for: trait).hexString,
             blockQuoteColorHex: UIColor.textSubtle.color(for: trait).hexString,
-            linkColorHex: UIColor.primary.color(for: trait).hexString,
-            linkColorActiveHex: UIColor.primaryDark.color(for: trait).hexString
+            linkColorHex: AppStyleGuide.primary.color(for: trait).hexString,
+            linkColorActiveHex: AppStyleGuide.primaryDark.color(for: trait).hexString
         ))
     }
 

@@ -49,7 +49,7 @@ extension WPStyleGuide {
             case ActivityStatus.warning:
                 return .warning
             default:
-                return .neutral(.shade20)
+                return AppStyleGuide.neutral(.shade20)
             }
         }
 

@@ -241,7 +241,7 @@ struct JetpackScanThreatViewModel {
         case .fixed:
             return .success
         default:
-            return .neutral(.shade20)
+            return AppStyleGuide.neutral(.shade20)
         }
     }
 

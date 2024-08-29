@@ -35,7 +35,7 @@ class ActionSheetViewController: UIViewController {
             static let height: CGFloat = 54
             static let contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 35)
             static let imagePadding: CGFloat = 16
-            static let imageTintColor: UIColor = .neutral(.shade30)
+            static let imageTintColor: UIColor = AppStyleGuide.neutral(.shade30)
             static let font: UIFont = .preferredFont(forTextStyle: .callout)
             static let textColor: UIColor = .text
             static let badgeHorizontalPadding: CGFloat = 10

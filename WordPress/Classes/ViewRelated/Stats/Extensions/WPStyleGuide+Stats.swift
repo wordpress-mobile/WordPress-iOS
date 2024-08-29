@@ -198,7 +198,7 @@ extension WPStyleGuide {
                 filterTabBar.tintColor = UIColor.text
                 filterTabBar.selectedTitleColor = UIColor.text
                 filterTabBar.backgroundColor = .listForeground
-                filterTabBar.deselectedTabColor = UIColor(light: .neutral(.shade20), dark: .neutral(.shade50))
+                filterTabBar.deselectedTabColor = UIColor(light: AppStyleGuide.neutral(.shade20), dark: AppStyleGuide.neutral(.shade50))
             }
         }
 
@@ -248,7 +248,7 @@ extension WPStyleGuide {
         static let gridiconSize = CGSize(width: 24, height: 24)
 
         struct PostingActivityColors {
-            static let range1 = UIColor(light: .neutral(.shade5), dark: .neutral(.shade10))
+            static let range1 = UIColor(light: AppStyleGuide.neutral(.shade5), dark: AppStyleGuide.neutral(.shade10))
             static let range2 = UIColor.primary(.shade5)
             static let range3 = UIColor.primaryLight
             static let range4 = UIColor.primary

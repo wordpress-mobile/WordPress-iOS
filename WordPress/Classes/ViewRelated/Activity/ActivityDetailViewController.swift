@@ -132,7 +132,7 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
         }
 
         if let avatar = activity.actor?.avatarURL, let avatarURL = URL(string: avatar) {
-            imageView.backgroundColor = .neutral(.shade20)
+            imageView.backgroundColor = AppStyleGuide.neutral(.shade20)
             imageView.downloadImage(from: avatarURL, placeholderImage: .gridicon(.user, size: Constants.gridiconSize))
         } else if let iconType = WPStyleGuide.ActivityStyleGuide.getGridiconTypeForActivity(activity) {
             imageView.contentMode = .center

@@ -32,6 +32,38 @@ struct AppStyleGuide {
     static func accent(_ shade: MurielColorShade) -> UIColor {
         MurielColor(name: .pink, shade: shade).color
     }
+
+    static func gray(_ shade: MurielColorShade) -> UIColor {
+        MurielColor(name: .gray, shade: shade).color
+    }
+
+    static func blue(_ shade: MurielColorShade) -> UIColor {
+        MurielColor(name: .blue, shade: shade).color
+    }
+
+    static func jetpackGreen(_ shade: MurielColorShade) -> UIColor {
+        MurielColor(name: .jetpackGreen, shade: shade).color
+    }
+
+    static let primaryLight: UIColor = primary(.shade30)
+    static let primaryDark: UIColor = primary(.shade70)
+
+    static func neutral(_ shade: MurielColorShade) -> UIColor {
+        return switch shade {
+            case .shade0: UIColor(light: gray(.shade0), dark: gray(.shade100))
+            case .shade5: UIColor(light: gray(.shade5), dark: gray(.shade90))
+            case .shade10: UIColor(light: gray(.shade10), dark: gray(.shade80))
+            case .shade20: UIColor(light: gray(.shade20), dark: gray(.shade70))
+            case .shade30: UIColor(light: gray(.shade30), dark: gray(.shade60))
+            case .shade40: UIColor(light: gray(.shade40), dark: gray(.shade50))
+            case .shade50: UIColor(light: gray(.shade50), dark: gray(.shade40))
+            case .shade60: UIColor(light: gray(.shade60), dark: gray(.shade30))
+            case .shade70: UIColor(light: gray(.shade70), dark: gray(.shade20))
+            case .shade80: UIColor(light: gray(.shade80), dark: gray(.shade10))
+            case .shade90: UIColor(light: gray(.shade90), dark: gray(.shade5))
+            case .shade100: UIColor(light: gray(.shade100), dark: gray(.shade0))
+        }
+    }
 }
 
 // MARK: - Colors

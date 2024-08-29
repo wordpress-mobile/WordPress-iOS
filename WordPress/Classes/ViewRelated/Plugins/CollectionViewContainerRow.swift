@@ -169,7 +169,7 @@ class CollectionViewContainerCell: UITableViewCell {
         titleLabel = UILabel(frame: .zero)
         titleLabel.font = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .title2).pointSize,
                                             weight: .bold)
-        titleLabel.textColor = .neutral(.shade70)
+        titleLabel.textColor = AppStyleGuide.neutral(.shade70)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
 
         self.addSubview(titleLabel)

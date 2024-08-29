@@ -161,9 +161,9 @@ class AztecPostViewController: UIViewController, PostEditor {
         textView.textAttachmentDelegate = self
 
         textView.backgroundColor = Colors.aztecBackground
-        textView.blockquoteBackgroundColor = .neutral(.shade5)
+        textView.blockquoteBackgroundColor = AppStyleGuide.neutral(.shade5)
         textView.blockquoteBorderColors = [.listIcon]
-        textView.preBackgroundColor = .neutral(.shade5)
+        textView.preBackgroundColor = AppStyleGuide.neutral(.shade5)
 
         textView.linkTextAttributes = linkAttributes
 
@@ -1946,7 +1946,7 @@ extension AztecPostViewController {
     func createToolbar() -> Aztec.FormatBar {
         let toolbar = Aztec.FormatBar()
 
-        toolbar.backgroundColor = .filterBarBackground
+        toolbar.backgroundColor = .secondarySystemGroupedBackground
         toolbar.tintColor = WPStyleGuide.aztecFormatBarInactiveColor
         toolbar.highlightedTintColor = WPStyleGuide.aztecFormatBarActiveColor
         toolbar.selectedTintColor = WPStyleGuide.aztecFormatBarActiveColor

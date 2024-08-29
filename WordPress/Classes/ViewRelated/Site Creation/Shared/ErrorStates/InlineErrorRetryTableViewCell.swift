@@ -122,7 +122,7 @@ final class InlineErrorRetryTableViewCell: UITableViewCell, ReusableCell {
     private func initialize() {
         if let label = textLabel {
             WPStyleGuide.configureLabel(label, textStyle: .body)
-            label.textColor = .neutral(.shade40)
+            label.textColor = AppStyleGuide.neutral(.shade40)
         }
 
         let borderColor = UIColor.divider

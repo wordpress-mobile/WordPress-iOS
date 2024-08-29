@@ -22,7 +22,7 @@ final class AuthorFilterButton: UIControl {
         let imageView = CircularImageView(image: UIImage.gravatarPlaceholderImage)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.setContentHuggingPriority(.required, for: .horizontal)
-        imageView.tintColor = .neutral(.shade70)
+        imageView.tintColor = AppStyleGuide.neutral(.shade70)
         return imageView
     }()
 

@@ -31,6 +31,6 @@ private struct SubscribersLineChartStyling: LineChartStyling {
     let labelColor: UIColor                         = UIColor(light: .secondaryLabel, dark: .tertiaryLabel)
     let legendColor: UIColor?                       = nil
     let legendTitle: String?                        = NSLocalizedString("stats.subscribers.chart.legend", value: "Subscribers", comment: "Title for the legend of the Stats Subscribers line chart.")
-    let lineColor: UIColor                          = .neutral(.shade5)
+    let lineColor: UIColor                          = AppStyleGuide.neutral(.shade5)
     let yAxisValueFormatter: AxisValueFormatter    = VerticalAxisFormatter()
 }

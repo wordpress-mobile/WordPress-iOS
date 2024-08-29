@@ -26,11 +26,11 @@ extension WPStyleGuide {
 
     // MARK: - Custom Colors
     @objc public class func readerCardCellBorderColor() -> UIColor {
-        return .divider
+        .divider
     }
 
     @objc public class func readerCardCellHighlightedBorderColor() -> UIColor {
-        return .neutral(.shade10)
+        AppStyleGuide.neutral(.shade10)
     }
 
     public class func readerCardBlogIconBorderColor() -> UIColor {
@@ -140,11 +140,11 @@ extension WPStyleGuide {
     class func applyReaderActionButtonStyle(_ button: UIButton,
                                             titleColor: UIColor = .listIcon,
                                             imageColor: UIColor = .listIcon,
-                                            disabledColor: UIColor = .neutral(.shade10)) {
+                                            disabledColor: UIColor = AppStyleGuide.neutral(.shade10)) {
         button.tintColor = imageColor
-        let highlightedColor: UIColor = .neutral
-        let selectedColor: UIColor = .primary(.shade40)
-        let bothColor: UIColor = .primaryLight
+        let highlightedColor: UIColor = AppStyleGuide.neutral
+        let selectedColor: UIColor = AppStyleGuide.primary(.shade40)
+        let bothColor: UIColor = AppStyleGuide.primaryLight
 
         let highlightedImage = button.image(for: .highlighted)
         let selectedImage = button.image(for: .selected)
@@ -301,11 +301,11 @@ extension WPStyleGuide {
     }
 
     @objc public class func gapMarkerButtonBackgroundColor() -> UIColor {
-        return .neutral(.shade40)
+        return AppStyleGuide.neutral(.shade40)
     }
 
     @objc public class func gapMarkerButtonBackgroundColorHighlighted() -> UIColor {
-        return .primaryLight
+        return AppStyleGuide.primaryLight
     }
 
     // MARK: - Metrics

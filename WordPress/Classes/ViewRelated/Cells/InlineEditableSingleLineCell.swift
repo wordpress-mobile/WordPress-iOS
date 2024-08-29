@@ -105,7 +105,7 @@ private extension InlineEditableSingleLineCell {
 
     func configureInteraction(_ disabled: Bool) {
         isUserInteractionEnabled = !disabled
-        textField.textColor = disabled ? .neutral(.shade20) : .text
+        textField.textColor = disabled ? AppStyleGuide.neutral(.shade20) : .text
     }
 
 }

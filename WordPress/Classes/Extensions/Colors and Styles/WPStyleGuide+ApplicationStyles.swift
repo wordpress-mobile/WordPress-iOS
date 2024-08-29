@@ -65,29 +65,29 @@ extension WPStyleGuide {
     }
 
     @objc class func configureTabBar(_ tabBar: UITabBar) {
-        tabBar.tintColor = .primary
-        tabBar.unselectedItemTintColor = .tabUnselected
+        tabBar.tintColor = AppStyleGuide.primary
+        tabBar.unselectedItemTintColor = UIColor(named: "TabUnselected")
     }
 
     private static func setupFancyAlertAppearance() {
         let appearance = FancyAlertView.appearance()
 
-        appearance.titleTextColor = .neutral(.shade70)
+        appearance.titleTextColor = AppStyleGuide.neutral(.shade70)
         appearance.titleFont = WPStyleGuide.fontForTextStyle(.title2, fontWeight: .semibold)
 
-        appearance.bodyTextColor = .neutral(.shade70)
+        appearance.bodyTextColor = AppStyleGuide.neutral(.shade70)
         appearance.bodyFont = WPStyleGuide.fontForTextStyle(.body)
-        appearance.bodyBackgroundColor = .neutral(.shade0)
+        appearance.bodyBackgroundColor = AppStyleGuide.neutral(.shade0)
 
         appearance.actionFont = WPStyleGuide.fontForTextStyle(.headline)
         appearance.infoFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
         appearance.infoTintColor = AppStyleGuide.primary
 
-        appearance.topDividerColor = .neutral(.shade5)
-        appearance.bottomDividerColor = .neutral(.shade0)
-        appearance.headerBackgroundColor = .neutral(.shade0)
+        appearance.topDividerColor = AppStyleGuide.neutral(.shade5)
+        appearance.bottomDividerColor = AppStyleGuide.neutral(.shade0)
+        appearance.headerBackgroundColor = AppStyleGuide.neutral(.shade0)
 
-        appearance.bottomBackgroundColor = .neutral(.shade0)
+        appearance.bottomBackgroundColor = AppStyleGuide.neutral(.shade0)
     }
 
     private static func setupFancyButtonAppearance() {
@@ -103,9 +103,9 @@ extension WPStyleGuide {
         appearance.secondaryHighlightBackgroundColor = .systemGray3
         appearance.secondaryHighlightBorderColor = .systemGray3
 
-        appearance.disabledTitleColor = .neutral(.shade20)
+        appearance.disabledTitleColor = AppStyleGuide.neutral(.shade20)
         appearance.disabledBackgroundColor = .textInverted
-        appearance.disabledBorderColor = .neutral(.shade10)
+        appearance.disabledBorderColor = AppStyleGuide.neutral(.shade10)
     }
 }
 
@@ -128,14 +128,14 @@ extension WPStyleGuide {
             return
         }
 
-        tableView.backgroundColor = .listBackground
-        tableView.separatorColor = .neutral(.shade10)
+        tableView.backgroundColor = .systemGroupedBackground
+        tableView.separatorColor = AppStyleGuide.neutral(.shade10)
     }
 
     class func configureColors(view: UIView, collectionView: UICollectionView) {
         configureTableViewColors(view: view)
         collectionView.backgroundView = nil
-        collectionView.backgroundColor = .listBackground
+        collectionView.backgroundColor = .systemGroupedBackground
     }
 
     @objc
@@ -151,7 +151,7 @@ extension WPStyleGuide {
 
         // we only set the text subtle color, so that system colors are used otherwise
         cell.detailTextLabel?.textColor = .secondaryLabel
-        cell.imageView?.tintColor = .neutral(.shade30)
+        cell.imageView?.tintColor = AppStyleGuide.neutral(.shade30)
 
     }
 

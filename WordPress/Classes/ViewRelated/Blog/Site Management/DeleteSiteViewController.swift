@@ -72,10 +72,10 @@ open class DeleteSiteViewController: UITableViewController {
         let warningIcon = UIImage.gridicon(.notice, size: CGSize(width: 48.0, height: 48.0))
         warningImage.image = warningIcon
         warningImage.tintColor = UIColor.warning
-        siteTitleLabel.textColor = .neutral(.shade70)
+        siteTitleLabel.textColor = AppStyleGuide.neutral(.shade70)
         siteTitleLabel.font = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .semibold)
         siteTitleLabel.text = blog.displayURL as String?
-        siteTitleSubText.textColor = .neutral(.shade70)
+        siteTitleSubText.textColor = AppStyleGuide.neutral(.shade70)
         siteTitleSubText.text = NSLocalizedString("will be unavailable in the future.",
                                                   comment: "Second part of delete screen title stating [the site] will be unavailable in the future.")
     }
@@ -83,9 +83,9 @@ open class DeleteSiteViewController: UITableViewController {
     /// One time setup of second section (list)
     ///
     fileprivate func setupListSection() {
-        sectionTwoHeader.textColor = .neutral(.shade30)
+        sectionTwoHeader.textColor = AppStyleGuide.neutral(.shade30)
         sectionTwoHeader.font = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .semibold)
-        sectionTwoColumnItems.forEach({ $0.textColor = .neutral(.shade70) })
+        sectionTwoColumnItems.forEach({ $0.textColor = AppStyleGuide.neutral(.shade70) })
 
         sectionTwoHeader.text = NSLocalizedString("these items will be deleted:",
                                                   comment: "Header of delete screen section listing things that will be deleted.").localizedUppercase
@@ -137,7 +137,7 @@ open class DeleteSiteViewController: UITableViewController {
         combinedAttributedString.append(NSAttributedString(string: "\n\r", attributes: attributes))
         combinedAttributedString.append(attributedText2)
         sectionThreeBody.attributedText = combinedAttributedString
-        sectionThreeBody.textColor = .neutral(.shade70)
+        sectionThreeBody.textColor = AppStyleGuide.neutral(.shade70)
 
         let contactButtonAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.primary,
                                                                      .underlineStyle: NSUnderlineStyle.single.rawValue]

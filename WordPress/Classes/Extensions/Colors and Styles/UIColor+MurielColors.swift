@@ -68,29 +68,13 @@ extension UIColor {
     /// Muriel gray palette
     /// - Parameter shade: a MurielColorShade of the desired shade of gray
     class func gray(_ shade: MurielColorShade) -> UIColor {
-        AppStyleGuide.muriel(name: .gray, shade)
+        AppStyleGuide.gray(shade)
     }
 
     /// Muriel neutral colors, which invert in dark mode
     /// - Parameter shade: a MurielColorShade of the desired neutral shade
     static var neutral: UIColor {
-        return neutral(.shade50)
-    }
-    class func neutral(_ shade: MurielColorShade) -> UIColor {
-        return switch shade {
-            case .shade0: UIColor(light: gray(.shade0), dark: gray(.shade100))
-            case .shade5: UIColor(light: gray(.shade5), dark: gray(.shade90))
-            case .shade10: UIColor(light: gray(.shade10), dark: gray(.shade80))
-            case .shade20: UIColor(light: gray(.shade20), dark: gray(.shade70))
-            case .shade30: UIColor(light: gray(.shade30), dark: gray(.shade60))
-            case .shade40: UIColor(light: gray(.shade40), dark: gray(.shade50))
-            case .shade50: UIColor(light: gray(.shade50), dark: gray(.shade40))
-            case .shade60: UIColor(light: gray(.shade60), dark: gray(.shade30))
-            case .shade70: UIColor(light: gray(.shade70), dark: gray(.shade20))
-            case .shade80: UIColor(light: gray(.shade80), dark: gray(.shade10))
-            case .shade90: UIColor(light: gray(.shade90), dark: gray(.shade5))
-            case .shade100: UIColor(light: gray(.shade100), dark: gray(.shade0))
-        }
+        AppStyleGuide.neutral(.shade50)
     }
 }
 
@@ -152,19 +136,19 @@ extension UIColor {
         return .secondarySystemGroupedBackground
     }
 
-    @available(*, deprecated, renamed: "listBackground", message: "Use the platform's default instead")
+    @available(*, deprecated, renamed: "systemGroupedBackground", message: "Use the platform's default instead")
     static var listBackground: UIColor {
         return .systemGroupedBackground
     }
 
     /// For icons that are present in a table view, or similar list
-    @available(*, deprecated, renamed: "listIcon", message: "Use the platform's default instead")
+    @available(*, deprecated, renamed: "secondaryLabel", message: "Use the platform's default instead")
     static var listIcon: UIColor {
         return .secondaryLabel
     }
 
     /// For small icons, such as the badges on notification gravatars
-    @available(*, deprecated, renamed: "listSmallIcon", message: "Use the platform's default instead")
+    @available(*, deprecated, renamed: "systemGray", message: "Use the platform's default instead")
     static var listSmallIcon: UIColor {
         return .systemGray
     }

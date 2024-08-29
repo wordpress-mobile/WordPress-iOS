@@ -6,39 +6,43 @@ import WordPressUI
 extension UIColor {
 
     /// Muriel/iOS navigation color
+    @available(*, deprecated, renamed: "secondarySystemGroupedBackground", message: "Use the platform's default instead")
     static var appBarBackground: UIColor {
         .secondarySystemGroupedBackground
     }
 
+    @available(*, deprecated, renamed: "text", message: "Use the platform's default instead")
     static var appBarTint: UIColor {
         .text
     }
 
+    @available(*, deprecated, renamed: "appBarText", message: "Use the platform's default instead")
     static var appBarText: UIColor {
         .text
     }
 
+    @available(*, deprecated, renamed: "secondarySystemGroupedBackground", message: "Use the platform's default instead")
     static var filterBarBackground: UIColor {
         return .secondarySystemGroupedBackground
     }
 
+    @available(*, deprecated, renamed: "text", message: "Use the platform's default instead")
     static var filterBarSelected: UIColor {
         return .text
     }
 
+    @available(*, deprecated, renamed: "text", message: "Use the platform's default instead")
     static var filterBarSelectedText: UIColor {
         return .text
     }
 
+    @available(*, deprecated, renamed: "tabSelected", message: "Use the platform's default instead")
     static var tabSelected: UIColor {
         return .text
     }
 
-    /// Note: these values are intended to match the iOS defaults
-    static var tabUnselected: UIColor =  UIColor(light: UIColor(fromHex: 0x999999), dark: UIColor(fromHex: 0x757575))
-
     static var statsPrimaryHighlight: UIColor {
-        return  UIColor(light: muriel(color: MurielColor(name: .pink, shade: .shade30)),
+        return UIColor(light: muriel(color: MurielColor(name: .pink, shade: .shade30)),
                         dark: muriel(color: MurielColor(name: .pink, shade: .shade60)))
     }
 

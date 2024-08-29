@@ -56,7 +56,7 @@ extension WPStyleGuide {
             cell.textLabel?.sizeToFit()
             cell.textLabel?.textColor = .label
 
-            cell.backgroundColor = .neutral(.shade5)
+            cell.backgroundColor = AppStyleGuide.neutral(.shade5)
             cell.separatorInset = UIEdgeInsets.zero
         }
 
@@ -82,7 +82,7 @@ extension WPStyleGuide {
 
             cell.imageView?.layer.borderColor = UIColor.white.cgColor
             cell.imageView?.layer.borderWidth = 1
-            cell.imageView?.tintColor = .neutral(.shade30)
+            cell.imageView?.tintColor = AppStyleGuide.neutral(.shade30)
 
             cell.backgroundColor = .secondarySystemGroupedBackground
             cell.tintColor = AppStyleGuide.primary
