@@ -29,7 +29,7 @@ struct WordPressDotComAuthenticator {
 
         let callbackURL: URL = try await withCheckedThrowingContinuation { continuation in
             DispatchQueue.main.async {
-                let provider = ContextProvider(window: viewController.view.window ?? UIWindow())
+                let provider = WebAuthenticationPresentationAnchorProvider(anchor: viewController.view.window ?? UIWindow())
                 let session = ASWebAuthenticationSession(url: authorizeURL, callbackURLScheme: "x-wordpress-app") { url, error in
                     if let url {
                         continuation.resume(returning: url)
@@ -90,18 +90,6 @@ struct WordPressDotComAuthenticator {
         } catch {
             DDLogError("Failed to parse token request response: \(error)")
             throw Error.obtainAccessToken
-        }
-    }
-
-    private class ContextProvider: NSObject, ASWebAuthenticationPresentationContextProviding {
-        private let window: UIWindow
-
-        init(window: UIWindow) {
-            self.window = window
-        }
-
-        func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
-            window
         }
     }
 }
