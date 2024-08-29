@@ -16,6 +16,7 @@ final class ReaderTableConfiguration {
     func setup(_ tableView: UITableView) {
         setupAccessibility(tableView)
         setUpSeparator(tableView)
+        setUpCardCell(tableView)
         setUpBlockerCell(tableView)
         setUpGapMarkerCell(tableView)
         setUpCrossPostCell(tableView)
@@ -28,6 +29,10 @@ final class ReaderTableConfiguration {
 
     private func setUpSeparator(_ tableView: UITableView) {
         tableView.separatorStyle = .none
+    }
+
+    private func setUpCardCell(_ tableView: UITableView) {
+        tableView.register(ReaderPostCardCell.self, forCellReuseIdentifier: readerCardCellReuseIdentifier)
     }
 
     private func setUpBlockerCell(_ tableView: UITableView) {
