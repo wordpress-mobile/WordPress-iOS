@@ -120,8 +120,6 @@ import AutomatticTracks
     private let tableConfiguration = ReaderTableConfiguration()
     /// Configuration of cells
     private let cellConfiguration = ReaderCellConfiguration()
-    /// Actions
-    private var postCellActions: ReaderPostCellActions?
 
     private var siteID: NSNumber? {
         didSet {
@@ -198,7 +196,6 @@ import AutomatticTracks
                 updateContent(synchronize: false)
                 // TODO: Analytics
             }
-            postCellActions?.visibleConfirmation = contentType != .saved
             showConfirmation = contentType != .saved
         }
     }
@@ -359,11 +356,7 @@ import AutomatticTracks
 
         navigationItem.largeTitleDisplayMode = .never
 
-        NotificationCenter.default.addObserver(self, selector: #selector(defaultAccountDidChange(_:)), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
-
         NotificationCenter.default.addObserver(self, selector: #selector(postSeenToggled(_:)), name: .ReaderPostSeenToggled, object: nil)
-
-        refreshImageRequestAuthToken()
 
         configureCloseButtonIfNeeded()
         setupStackView()
@@ -703,12 +696,6 @@ import AutomatticTracks
         dismiss(animated: true)
     }
 
-    /// Fetch and cache the current defaultAccount authtoken, if available.
-    private func refreshImageRequestAuthToken() {
-        let account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
-        postCellActions?.imageRequestAuthToken = account?.authToken
-    }
-
     // MARK: - Instance Methods
 
     /// Retrieve an instance of the specified post from the main NSManagedObjectContext.
@@ -926,9 +913,6 @@ import AutomatticTracks
     }
 
     func removePost(_ post: ReaderPost) {
-        guard let posts = content.content as? [ReaderPost] else {
-            return wpAssertionFailure("unexpected post content")
-        }
         togglePostSave(post)
         let notice = Notice(title: Strings.postRemoved, actionTitle: SharedStrings.Button.undo) { [weak self] accepted in
             guard accepted else { return }
@@ -1290,10 +1274,6 @@ import AutomatticTracks
 
     // MARK: - Notifications
 
-    @objc private func defaultAccountDidChange(_ notification: Foundation.Notification) {
-        refreshImageRequestAuthToken()
-    }
-
     @objc private func postSeenToggled(_ notification: Foundation.Notification) {
 
         // When a post's seen status is toggled outside the stream (ex: post details),
@@ -1347,37 +1327,6 @@ import AutomatticTracks
         NSSortDescriptor(key: "title", ascending: true) :
         NSSortDescriptor(key: "sortRank", ascending: ascending)
         return [sortDescriptor]
-    }
-
-    private func configurePostCardCell(_ cell: UITableViewCell, post: ReaderPost) {
-        if postCellActions == nil {
-            postCellActions = ReaderPostCellActions(context: viewContext, origin: self, topic: readerTopic)
-        }
-        postCellActions?.isLoggedIn = isLoggedIn
-        postCellActions?.savedPostsDelegate = self
-
-        // Restrict the topics header to only display on the Discover, and tag detail views
-        var displayTopics = false
-
-        if let topic = readerTopic {
-            let type = ReaderHelpers.topicType(topic)
-
-            switch type {
-            case .discover, .tag:
-                displayTopics = true
-            default:
-                displayTopics = false
-            }
-        }
-
-        cellConfiguration.configurePostCardCell(cell,
-                                                withPost: post,
-                                                topic: readerTopic ?? post.topic,
-                                                delegate: postCellActions,
-                                                loggedInActionVisibility: .visible(enabled: isLoggedIn),
-                                                topicChipsDelegate: self,
-                                                displayTopics: displayTopics)
-
     }
 
     // MARK: - Helpers for ReaderStreamHeader
@@ -2088,16 +2037,6 @@ extension ReaderStreamViewController: ReaderContentViewController {
             ReaderTracker.shared.start(.filteredList)
         } else {
             ReaderTracker.shared.stop(.filteredList)
-        }
-    }
-}
-
-// TODO: Delete when the reader improvements v1 (`readerImprovements`) flag is removed
-// MARK: - Saved Posts Delegate
-extension ReaderStreamViewController: ReaderSavedPostCellActionsDelegate {
-    func willRemove(_ cell: OldReaderPostCardCell) {
-        if let cellIndex = tableView.indexPath(for: cell) {
-            tableView.reloadRows(at: [cellIndex], with: .fade)
         }
     }
 }
