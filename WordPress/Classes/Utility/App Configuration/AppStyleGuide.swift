@@ -9,24 +9,6 @@ struct AppStyleGuide {
     static let navigationBarLargeFont: UIFont = WPStyleGuide.fixedSerifFontForTextStyle(.largeTitle, fontWeight: .semibold)
     static let epilogueTitleFont: UIFont = WPStyleGuide.fixedSerifFontForTextStyle(.largeTitle, fontWeight: .semibold)
 
-    /// Get a UIColor from the Muriel color palette, adjusted to a given shade
-    /// - Parameter color: an instance of a MurielColor
-    /// - Parameter shade: a MurielColorShade
-    @available(*, deprecated, message: "Use AppStyleGuide instead")
-    static func muriel(color: MurielColor, _ shade: MurielColorShade) -> UIColor {
-        MurielColor(from: color, shade: shade).color
-    }
-
-    /// Get a UIColor from the Muriel color palette by name, adjusted to a given shade
-    /// - Parameters:
-    ///   - name: a MurielColorName
-    ///   - shade: a MurielColorShade
-    /// - Returns: the desired color/shade
-    @available(*, deprecated, message: "Use AppStyleGuide instead")
-    static func muriel(name: MurielColorName, _ shade: MurielColorShade) -> UIColor {
-        MurielColor(name: name, shade: shade).color
-    }
-
     static func primary(_ shade: ColorStudioShade) -> UIColor {
         CSColor.Blue.shade(shade)
     }
