@@ -11,7 +11,10 @@ struct WordPressDotComAuthenticator {
     enum Error: Swift.Error {
         case invalidCallbackURL
         case obtainAccessToken
+        case urlError(URLError)
+        case parsing(DecodingError)
         case cancelled
+        case unknown(error)
     }
 
     func authenticate(from viewController: UIViewController) async throws -> String {
@@ -82,9 +85,13 @@ struct WordPressDotComAuthenticator {
             let token = try decoder.decode(Response.self, from: data).accessToken
 
             return token
+        } catch let error as URLError {
+            throw Error.urlError(error)
+        } catch let error as DecodingError {
+            throw Error.parsing(error)
         } catch {
             DDLogError("Failed to parse token request response: \(error)")
-            throw Error.obtainAccessToken
+            throw Error.unknown(error)
         }
     }
 }
