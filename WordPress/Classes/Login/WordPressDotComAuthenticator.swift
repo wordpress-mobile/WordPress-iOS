@@ -59,7 +59,7 @@ struct WordPressDotComAuthenticator {
 
         var tokenRequest = URLRequest(url: URL(string: "https://public-api.wordpress.com/oauth2/token")!)
         tokenRequest.httpMethod = "POST"
-        let parameters = [
+        let parameters: [String: String] = [
             "grant_type": "authorization_code",
             "client_id": clientId,
             "client_secret": clientSecret,
@@ -67,12 +67,7 @@ struct WordPressDotComAuthenticator {
             "code": code,
         ]
 
-        do {
-            tokenRequest = try URLEncodedFormParameterEncoder().encode(parameters, into: tokenRequest)
-        } catch {
-            DDLogError("Failed to encode token request")
-            throw Error.obtainAccessToken
-        }
+        tokenRequest = try! URLEncodedFormParameterEncoder().encode(parameters, into: tokenRequest)
 
         do {
             let urlSession = URLSession(configuration: .default)
