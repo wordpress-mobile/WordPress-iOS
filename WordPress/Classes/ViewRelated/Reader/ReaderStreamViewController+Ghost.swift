@@ -1,3 +1,4 @@
+import UIKit
 import Foundation
 import WordPressUI
 
@@ -18,19 +19,18 @@ extension ReaderStreamViewController {
         ])
 
         ghostableTableView.accessibilityIdentifier = "Reader Ghost Loading"
-        ghostableTableView.separatorStyle = .none
+        ghostableTableView.cellLayoutMarginsFollowReadableWidth = true
 
-        let postCardTextCellNib = UINib(nibName: "OldReaderPostCardCell", bundle: Bundle.main)
-        ghostableTableView.register(postCardTextCellNib, forCellReuseIdentifier: "OldReaderPostCardCell")
+        ghostableTableView.register(ReaderGhostCell.self, forCellReuseIdentifier: "ReaderGhostCell")
+        let ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: "ReaderGhostCell", rowsPerSection: [10])
 
-        let ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: "OldReaderPostCardCell", rowsPerSection: [10])
         let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
                                beatStartColor: .placeholderElement,
                                beatEndColor: .placeholderElementFaded)
         ghostableTableView.estimatedRowHeight = 200
         ghostableTableView.removeGhostContent()
         ghostableTableView.displayGhostContent(options: ghostOptions, style: style)
-        ghostableTableView.isScrollEnabled = false
+        ghostableTableView.isUserInteractionEnabled = false
         ghostableTableView.isHidden = false
     }
 
@@ -38,5 +38,46 @@ extension ReaderStreamViewController {
     func hideGhost() {
         ghostableTableView.removeGhostContent()
         ghostableTableView.removeFromSuperview()
+    }
+}
+
+private final class ReaderGhostCell: UITableViewCell {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        func makeLeafView(height: CGFloat, width: CGFloat = CGFloat.random(in: 44...320)) -> UIView {
+            let view = UIView()
+            view.translatesAutoresizingMaskIntoConstraints = false
+            view.backgroundColor = UIColor.secondarySystemBackground
+            NSLayoutConstraint.activate([
+                view.widthAnchor.constraint(equalToConstant: width).withPriority(.defaultLow),
+                view.heightAnchor.constraint(equalToConstant: height).withPriority(.defaultHigh),
+            ])
+            return view
+        }
+
+        let imageView = makeLeafView(height: 320, width: 1200)
+        imageView.layer.cornerRadius = 8
+        imageView.layer.masksToBounds = true
+        imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: 0.5).isActive = true
+
+        let insets = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
+        let stackView = UIStackView(axis: .vertical, alignment: .leading, spacing: 14, insets: insets, [
+            makeLeafView(height: 10, width: .random(in: 140...200)),
+            makeLeafView(height: 18, width: .random(in: 160...320)),
+            UIStackView(axis: .vertical, alignment: .leading, spacing: 4, [
+                makeLeafView(height: 10, width: 2000),
+                makeLeafView(height: 10, width: .random(in: 200...600))
+            ]),
+            imageView,
+            makeLeafView(height: 10, width: .random(in: 200...240))
+        ])
+        contentView.addSubview(stackView)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.pinSubviewToAllEdgeMargins(stackView)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

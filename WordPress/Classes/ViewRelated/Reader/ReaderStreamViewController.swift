@@ -209,7 +209,7 @@ import AutomatticTracks
     }
     var statSource: StatSource = .reader
 
-    let ghostableTableView = UITableView()
+    let ghostableTableView = UITableView(frame: .zero, style: .plain)
 
     private var readerTopicChangesObserver: AnyCancellable?
 
