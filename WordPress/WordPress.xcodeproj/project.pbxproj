@@ -496,8 +496,6 @@
 		0C5751112B011468001074E5 /* RemoteConfigDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C57510F2B011468001074E5 /* RemoteConfigDebugView.swift */; };
 		0C5A17162C73E52A00EEF067 /* ReaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5A17152C73E52A00EEF067 /* ReaderViewController.swift */; };
 		0C5A17172C73E52A00EEF067 /* ReaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5A17152C73E52A00EEF067 /* ReaderViewController.swift */; };
-		0C5A17192C73FCAD00EEF067 /* MeSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5A17182C73FCAC00EEF067 /* MeSplitViewController.swift */; };
-		0C5A171A2C73FCAD00EEF067 /* MeSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5A17182C73FCAC00EEF067 /* MeSplitViewController.swift */; };
 		0C5A171C2C740C3700EEF067 /* ReaderSidebarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5A171B2C740C3700EEF067 /* ReaderSidebarViewController.swift */; };
 		0C5A171D2C740C3700EEF067 /* ReaderSidebarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5A171B2C740C3700EEF067 /* ReaderSidebarViewController.swift */; };
 		0C5A17202C74CFFA00EEF067 /* SidebarProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5A171F2C74CFFA00EEF067 /* SidebarProfileView.swift */; };
@@ -6464,7 +6462,6 @@
 		0C43FF802C3601770084B698 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/iOSSupport/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		0C57510F2B011468001074E5 /* RemoteConfigDebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigDebugView.swift; sourceTree = "<group>"; };
 		0C5A17152C73E52A00EEF067 /* ReaderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderViewController.swift; sourceTree = "<group>"; };
-		0C5A17182C73FCAC00EEF067 /* MeSplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeSplitViewController.swift; sourceTree = "<group>"; };
 		0C5A171B2C740C3700EEF067 /* ReaderSidebarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSidebarViewController.swift; sourceTree = "<group>"; };
 		0C5A171F2C74CFFA00EEF067 /* SidebarProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarProfileView.swift; sourceTree = "<group>"; };
 		0C5A17222C74D01900EEF067 /* SidebarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarViewModel.swift; sourceTree = "<group>"; };
@@ -11781,7 +11778,6 @@
 			isa = PBXGroup;
 			children = (
 				E1A8CACA1C22FF7C0038689E /* MeViewController.swift */,
-				0C5A17182C73FCAC00EEF067 /* MeSplitViewController.swift */,
 				3F43602D23F31C06001DEE70 /* Presenter */,
 			);
 			path = "Me Main";
@@ -21654,7 +21650,6 @@
 				E1B9128F1BB05B1D003C25B9 /* PeopleCell.swift in Sources */,
 				086023D42B73AFD0000D084A /* NotificationsTableViewCellContent.swift in Sources */,
 				F15272FD243B27BC00C8DC7A /* AbstractPost+Local.swift in Sources */,
-				0C5A17192C73FCAD00EEF067 /* MeSplitViewController.swift in Sources */,
 				3F43603123F31E09001DEE70 /* MeScenePresenter.swift in Sources */,
 				FA98B61629A3B76A0071AAE8 /* DashboardBlazeCardCell.swift in Sources */,
 				4ADE3F8F2C6365E00046EC8A /* ApplicationTokenListDataProvider.swift in Sources */,
@@ -24492,7 +24487,6 @@
 				FABB21202602FC2C00C8785C /* TenorClient.swift in Sources */,
 				FABB21222602FC2C00C8785C /* JetpackRemoteInstallViewModel.swift in Sources */,
 				FABB21232602FC2C00C8785C /* InteractivePostViewDelegate.swift in Sources */,
-				0C5A171A2C73FCAD00EEF067 /* MeSplitViewController.swift in Sources */,
 				FABB21252602FC2C00C8785C /* ActivityLogViewController.m in Sources */,
 				0189AF062ACAD89700F63393 /* ShoppingCartService.swift in Sources */,
 				FABB21262602FC2C00C8785C /* UIViewController+ChildViewController.swift in Sources */,

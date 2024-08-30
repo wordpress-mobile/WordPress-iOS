@@ -141,6 +141,7 @@ private struct SidebarProfileContainerView: View {
         if let account = viewModel.account, !isSearching {
             Button(action: { viewModel.navigate(.profile) }) {
                 SidebarProfileView(account: account)
+                    .containerShape(Rectangle()) // Make entire row interactive
             }
             .buttonStyle(.plain)
             .padding(.horizontal)

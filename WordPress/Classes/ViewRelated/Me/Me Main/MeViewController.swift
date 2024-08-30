@@ -1,7 +1,6 @@
 import UIKit
 import CocoaLumberjack
 import WordPressShared
-import Gridicons
 import WordPressAuthenticator
 import AutomatticAbout
 
@@ -49,13 +48,6 @@ class MeViewController: UITableViewController {
         tableView.accessibilityIdentifier = "Me Table"
 
         reloadViewModel()
-
-        if isSidebarModeEnabled {
-            tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .none)
-            if let myProfileViewController {
-                showOrPushController(myProfileViewController)
-            }
-        }
     }
 
     override func viewDidLayoutSubviews() {
@@ -136,10 +128,11 @@ class MeViewController: UITableViewController {
 
         return NavigationItemRow(
             title: RowTitles.appSettings,
-            icon: .gridicon(.phone),
+            icon: UIImage(named: "wpl-tablet"),
             accessoryType: accessoryType,
             action: pushAppSettings(),
-            accessibilityIdentifier: "appSettings")
+            accessibilityIdentifier: "appSettings"
+        )
     }
 
     fileprivate func tableViewModel(with account: WPAccount?) -> ImmuTable {
@@ -149,28 +142,28 @@ class MeViewController: UITableViewController {
 
         let myProfile = NavigationItemRow(
             title: RowTitles.myProfile,
-            icon: .gridicon(.user),
+            icon: UIImage(named: "site-menu-people"),
             accessoryType: accessoryType,
             action: pushMyProfile(),
             accessibilityIdentifier: "myProfile")
 
         let qrLogin = NavigationItemRow(
             title: RowTitles.qrLogin,
-            icon: .gridicon(.camera),
+            icon: UIImage(named: "wpl-capture-photo"),
             accessoryType: accessoryType,
             action: presentQRLogin(),
             accessibilityIdentifier: "qrLogin")
 
         let accountSettings = NavigationItemRow(
             title: RowTitles.accountSettings,
-            icon: .gridicon(.cog),
+            icon: UIImage(named: "wpl-gearshape"),
             accessoryType: accessoryType,
             action: pushAccountSettings(),
             accessibilityIdentifier: "accountSettings")
 
         let helpAndSupportIndicator = IndicatorNavigationItemRow(
             title: RowTitles.support,
-            icon: .gridicon(.help),
+            icon: UIImage(named: "wpl-help"),
             showIndicator: ZendeskUtils.showSupportNotificationIndicator,
             accessoryType: accessoryType,
             action: pushHelp())
@@ -199,28 +192,34 @@ class MeViewController: UITableViewController {
 
                     rows = loggedInRows + rows
                 }
-                return rows
+                return rows + [helpAndSupportIndicator]
             }()),
             // middle section
             ImmuTableSection(rows: {
-                var rows: [ImmuTableRow] = [helpAndSupportIndicator]
+                var rows: [ImmuTableRow] = []
 
-                rows.append(NavigationItemRow(title: Strings.submitFeedback,
-                                              icon: UIImage.gridicon(.pencil),
-                                              accessoryType: accessoryType,
-                                              action: showFeedbackView()))
+                rows.append(NavigationItemRow(
+                    title: Strings.submitFeedback,
+                    tintColor: .brand,
+                    accessoryType: .none,
+                    action: showFeedbackView())
+                )
 
-                rows.append(NavigationItemRow(title: ShareAppContentPresenter.RowConstants.buttonTitle,
-                                              icon: UIImage.gridicon(.shareiOS),
-                                              accessoryType: accessoryType,
-                                              action: displayShareFlow(),
-                                              loading: sharePresenter.isLoading))
+                rows.append(NavigationItemRow(
+                    title: ShareAppContentPresenter.RowConstants.buttonTitle,
+                    tintColor: .brand,
+                    accessoryType: .none,
+                    action: displayShareFlow(),
+                    loading: sharePresenter.isLoading)
+                )
 
-                rows.append(NavigationItemRow(title: RowTitles.about,
-                                              icon: UIImage.gridicon(AppConfiguration.isJetpack ? .plans : .mySites),
-                                              accessoryType: accessoryType,
-                                              action: pushAbout(),
-                                              accessibilityIdentifier: "About"))
+                rows.append(NavigationItemRow(
+                    title: RowTitles.about,
+                    tintColor: .brand,
+                    accessoryType: .none,
+                    action: pushAbout(),
+                    accessibilityIdentifier: "About")
+                )
                 return rows
             }())
         ]
@@ -230,7 +229,7 @@ class MeViewController: UITableViewController {
             sections.append(.init(rows: [
                 NavigationItemRow(
                     title: AllDomainsListViewController.Strings.title,
-                    icon: UIImage(systemName: "globe"),
+                    icon: UIImage(named: "wpl-globe"),
                     accessoryType: accessoryType,
                     action: { [weak self] action in
                         self?.showOrPushController(AllDomainsListViewController())
@@ -458,7 +457,7 @@ class MeViewController: UITableViewController {
             completion?()
             return
         } else if let navigationController {
-            navigationController.pushViewController(controller, animated: true, rightBarButton: self.navigationItem.rightBarButtonItem)
+            navigationController.pushViewController(controller, animated: true, rightBarButton: self.isSidebarModeEnabled ? nil : self.navigationItem.rightBarButtonItem)
             navigationController.transitionCoordinator?.animate(alongsideTransition: nil, completion: { _ in
                 completion?()
             })

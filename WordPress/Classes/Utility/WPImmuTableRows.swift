@@ -8,15 +8,17 @@ struct NavigationItemRow: ImmuTableRow {
     let title: String
     let detail: String?
     let icon: UIImage?
+    let tintColor: UIColor?
     let action: ImmuTableAction?
     let accessoryType: UITableViewCell.AccessoryType
     let accessibilityIdentifier: String?
     let loading: Bool
 
-    init(title: String, detail: String? = nil, icon: UIImage? = nil, badgeCount: Int = 0, accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator, action: @escaping ImmuTableAction, accessibilityIdentifier: String? = nil, loading: Bool = false) {
+    init(title: String, detail: String? = nil, icon: UIImage? = nil, tintColor: UIColor? = nil, accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator, action: @escaping ImmuTableAction, accessibilityIdentifier: String? = nil, loading: Bool = false) {
         self.title = title
         self.detail = detail
         self.icon = icon
+        self.tintColor = tintColor
         self.accessoryType = accessoryType
         self.action = action
         self.accessibilityIdentifier = accessibilityIdentifier
@@ -39,6 +41,9 @@ struct NavigationItemRow: ImmuTableRow {
         }
 
         WPStyleGuide.configureTableViewCell(cell)
+
+        cell.imageView?.tintColor = tintColor
+        cell.textLabel?.textColor = tintColor
     }
 }
 

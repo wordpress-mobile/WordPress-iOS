@@ -105,13 +105,13 @@ const CGFloat MeHeaderViewVerticalSpacing = 10.0;
     NSLayoutConstraint *stackViewBottomConstraint =  [self.bottomAnchor constraintEqualToAnchor:self.stackView.bottomAnchor constant:MeHeaderViewVerticalSpacing];
     stackViewBottomConstraint.priority = 999;
     NSArray *constraints = @[
-                             heightConstraint,
-                             [self.gravatarImageView.widthAnchor constraintEqualToConstant:MeHeaderViewGravatarSize],
-                             spaceHeightConstraint,
-                             stackViewTopConstraint,
-                             stackViewBottomConstraint,
-                             [self.stackView.centerXAnchor constraintEqualToAnchor:self.centerXAnchor],
-                             ];
+        heightConstraint,
+        [self.gravatarImageView.widthAnchor constraintEqualToConstant:MeHeaderViewGravatarSize],
+        spaceHeightConstraint,
+        stackViewTopConstraint,
+        stackViewBottomConstraint,
+        [self.stackView.centerXAnchor constraintEqualToAnchor:self.safeAreaLayoutGuide.centerXAnchor],
+    ];
 
     [NSLayoutConstraint activateConstraints:constraints];
 

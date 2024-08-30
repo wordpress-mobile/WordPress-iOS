@@ -111,8 +111,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
             navigationVC.modalPresentationStyle = .formSheet
             splitVC.present(navigationVC, animated: true)
         case .profile:
-            let meVC = MeSplitViewController()
-            splitVC.present(meVC, animated: true)
+            showMeScreen()
         }
     }
 
@@ -267,7 +266,19 @@ final class SplitViewRootPresenter: RootViewPresenter {
     var meViewController: MeViewController?
 
     func showMeScreen() {
-        navigate(to: .profile)
+        let meVC = MeViewController()
+        meVC.isSidebarModeEnabled = true
+        meVC.navigationItem.rightBarButtonItem = {
+            let button = UIBarButtonItem(title: SharedStrings.Button.done, primaryAction: .init { [weak self] _ in
+                self?.splitVC.dismiss(animated: true)
+            })
+            button.setTitleTextAttributes([.font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)], for: .normal)
+            return button
+        }()
+
+        let navigationVC = UINavigationController(rootViewController: meVC)
+        navigationVC.modalPresentationStyle = .formSheet
+        splitVC.present(navigationVC, animated: true)
     }
 
     func popMeScreenToRoot() {

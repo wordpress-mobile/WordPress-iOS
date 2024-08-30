@@ -7,11 +7,11 @@ struct SidebarProfileView: View {
     var body: some View {
         HStack {
             let avatarURL: String? = account.avatarURL
-            AvatarsView<Circle>(style: .single(avatarURL.flatMap(URL.init)))
+            AvatarsView<Circle>(style: .single(avatarURL.flatMap(URL.init)), diameter: 30)
 
             VStack(alignment: .leading, spacing: 0) {
                 Text(account.displayName)
-                    .font(.callout.weight(.medium))
+                    .font(.subheadline.weight(.medium))
                 Text("@\(account.username)")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
