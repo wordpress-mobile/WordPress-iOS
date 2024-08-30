@@ -64,8 +64,7 @@ class MySitesCoordinator: NSObject {
         let navigationController = UINavigationController(rootViewController: rootContentViewController)
 
         navigationController.navigationBar.prefersLargeTitles = true
-        navigationController.tabBarItem.image = UIImage(named: "tab-bar-home-unselected")?.withRenderingMode(.alwaysOriginal)
-        navigationController.tabBarItem.selectedImage = UIImage(named: "tab-bar-home-selected")
+        navigationController.tabBarItem.image = UIImage(named: "tab-bar-home")
         navigationController.tabBarItem.accessibilityLabel = NSLocalizedString("My Site", comment: "The accessibility value of the my site tab.")
         navigationController.tabBarItem.accessibilityIdentifier = "mySitesTabButton"
         navigationController.tabBarItem.title = NSLocalizedString("My Site", comment: "The accessibility value of the my site tab.")
