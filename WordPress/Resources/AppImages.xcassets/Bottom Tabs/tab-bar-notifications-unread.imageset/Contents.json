@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "Bell-1.pdf",
+      "filename" : "Notifications-1.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "Bell.pdf",
+      "filename" : "Notifications-2.pdf",
       "idiom" : "universal"
     }
   ],
