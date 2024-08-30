@@ -40,7 +40,10 @@ final class MeHeaderView: UIView {
 
         addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        pinSubviewToAllEdges(stackView)
+        pinSubviewToAllEdges(stackView).forEach {
+            // tableView.headerView inevitably has to break something
+            $0.priority = UILayoutPriority(999)
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -70,6 +73,12 @@ final class MeHeaderView: UIView {
             iconView.overrideGravatarImageCache(image, gravatarRating: .x, email: gravatarEmail)
             iconView.updateGravatar(image: image, email: gravatarEmail)
         }
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        NSLog(traitCollection.debugDescription)
     }
 }
 
