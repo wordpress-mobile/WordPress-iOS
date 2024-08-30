@@ -50,7 +50,7 @@ final class BlogDashboardPersonalizeCardCell: DashboardCollectionViewCell {
         container.pinSubviewToAllEdges(personalizeButton)
 
         contents.translatesAutoresizingMaskIntoConstraints = false
-        container.pinSubviewToAllEdges(contents, insets: .init(allEdges: 16))
+        container.pinSubviewToAllEdges(contents, insets: UIEdgeInsets(.all, 16))
 
         contentView.addSubview(container)
         container.translatesAutoresizingMaskIntoConstraints = false

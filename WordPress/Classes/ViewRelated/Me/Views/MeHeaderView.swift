@@ -11,7 +11,7 @@ final class MeHeaderView: UIView {
         axis: .vertical,
         alignment: .center,
         spacing: 10,
-        insets: UIEdgeInsets(top: 8, left: 20, bottom: 8, right: 20),
+        insets: UIEdgeInsets(horizontal: 20, vertical: 8),
         [iconView, infoStackView]
     )
 
