@@ -70,7 +70,7 @@ open class NotificationSettings {
         switch channel {
         case .blog:
             // Email Streams require a special treatment
-            return stream?.kind == .Email ? blogEmailPreferenceKeys : blogPreferenceKeys
+            return stream?.kind == .email ? blogEmailPreferenceKeys : blogPreferenceKeys
         case .other:
             return otherPreferenceKeys
         case .wordPressCom:
@@ -112,26 +112,26 @@ open class NotificationSettings {
         ///     - preferences: Raw remote preferences, retrieved from the backend
         ///
         public init(kind: String, preferences: [String: Bool]?) {
-            self.kind           = Kind(rawValue: kind) ?? .Email
-            self.preferences    = preferences
+            self.kind = Kind(rawValue: kind) ?? .email
+            self.preferences = preferences
         }
 
         /// Enumerates all of the possible Stream Kinds
         ///
         public enum Kind: String {
-            case Timeline       = "timeline"
-            case Email          = "email"
-            case Device         = "device"
+            case timeline = "timeline"
+            case email = "email"
+            case device = "device"
 
             /// Returns the localized description of the current enum value
             ///
             func description() -> String {
                 switch self {
-                case .Timeline:
+                case .timeline:
                     return NSLocalizedString("Notifications Tab", comment: "WordPress.com Notifications Timeline")
-                case .Email:
+                case .email:
                     return NSLocalizedString("Email", comment: "Email Notifications Channel")
-                case .Device:
+                case .device:
                     return NSLocalizedString("Push Notifications", comment: "Mobile Push Notifications")
                 }
             }
@@ -149,22 +149,22 @@ open class NotificationSettings {
         return keys
     }
     fileprivate let blogEmailPreferenceKeys = [Keys.commentAdded, Keys.commentLiked, Keys.postLiked, Keys.follower, Keys.mention]
-    fileprivate let otherPreferenceKeys     = [Keys.commentLiked, Keys.commentReplied]
-    fileprivate let wpcomPreferenceKeys     = [Keys.marketing, Keys.research, Keys.community]
+    fileprivate let otherPreferenceKeys = [Keys.commentLiked, Keys.commentReplied]
+    fileprivate let wpcomPreferenceKeys = [Keys.marketing, Keys.research, Keys.community]
 
     // MARK: - Setting Keys
     fileprivate struct Keys {
-        static let commentAdded     = "new_comment"
-        static let commentLiked     = "comment_like"
-        static let commentReplied   = "comment_reply"
-        static let postLiked        = "post_like"
-        static let follower         = "follow"
-        static let achievement      = "achievement"
-        static let mention          = "mentions"
-        static let marketing        = "marketing"
-        static let research         = "research"
-        static let community        = "community"
-        static let weeklyRoundup    = "weekly_roundup"
+        static let commentAdded = "new_comment"
+        static let commentLiked = "comment_like"
+        static let commentReplied = "comment_reply"
+        static let postLiked = "post_like"
+        static let follower = "follow"
+        static let achievement = "achievement"
+        static let mention = "mentions"
+        static let marketing = "marketing"
+        static let research = "research"
+        static let community = "community"
+        static let weeklyRoundup = "weekly_roundup"
 
         static let localizedDescriptionMap = [
             commentAdded: NSLocalizedString("Comments on my site",
