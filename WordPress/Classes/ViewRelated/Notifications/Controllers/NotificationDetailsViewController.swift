@@ -1309,13 +1309,11 @@ extension NotificationDetailsViewController {
         }
 
         notificationCommentDetailCoordinator?.onSelectedNoteChange = self.onSelectedNoteChange
-        weak var navigationController = navigationController
 
-        dismiss(animated: true, completion: {
-            commentDetailViewController.navigationItem.largeTitleDisplayMode = .never
-            navigationController?.popViewController(animated: false)
-            navigationController?.pushViewController(commentDetailViewController, animated: false)
-        })
+        let navigationController = navigationController // important to keep reference
+        commentDetailViewController.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.popViewController(animated: false)
+        navigationController?.pushViewController(commentDetailViewController, animated: false)
     }
 
     var shouldEnablePreviousButton: Bool {
