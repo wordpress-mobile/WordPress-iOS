@@ -33,6 +33,27 @@ final class SplitViewRootPresenter: RootViewPresenter {
         sidebarViewModel.navigate = { [weak self] in
             self?.navigate(to: $0)
         }
+
+        // Automatically switch to a site or show the sign in screen, when the current blog is removed.
+        NotificationCenter.default
+            .publisher(for: .NSManagedObjectContextObjectsDidChange, object: ContextManager.shared.mainContext)
+            .sink { [weak self] in
+                guard let self,
+                      let blog = self.currentlyVisibleBlog(),
+                      let deleted = $0.userInfo?[NSDeletedObjectsKey] as? Set<NSManagedObject>,
+                      deleted.contains(blog)
+                else {
+                    return
+                }
+
+                if let newSite = Blog.lastUsedOrFirst(in: ContextManager.shared.mainContext) {
+                    self.sidebarViewModel.selection = .blog(TaggedManagedObjectID(newSite))
+                } else {
+                    self.sidebarViewModel.selection = .empty
+                    WordPressAppDelegate.shared?.windowManager.showSignInUI()
+                }
+            }
+            .store(in: &cancellables)
     }
 
     private func configure(for selection: SidebarSelection) {
@@ -159,7 +180,13 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
     // TODO: (wpsidebar) Can we remove it?
     func currentlyVisibleBlog() -> Blog? {
-        mySitesCoordinator.currentBlog
+        assert(Thread.isMainThread)
+
+        guard case let .blog(id) = sidebarViewModel.selection else {
+            return nil
+        }
+
+        return try? ContextManager.shared.mainContext.existingObject(with: id)
     }
 
     func willDisplayPostSignupFlow() {
