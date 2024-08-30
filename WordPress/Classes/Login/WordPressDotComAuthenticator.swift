@@ -14,7 +14,7 @@ struct WordPressDotComAuthenticator {
         case urlError(URLError)
         case parsing(DecodingError)
         case cancelled
-        case unknown(error)
+        case unknown(Swift.Error)
     }
 
     func authenticate(from viewController: UIViewController) async throws -> String {
@@ -70,7 +70,12 @@ struct WordPressDotComAuthenticator {
             "code": code,
         ]
 
-        tokenRequest = try! URLEncodedFormParameterEncoder().encode(parameters, into: tokenRequest)
+        do {
+            tokenRequest = try URLEncodedFormParameterEncoder().encode(parameters, into: tokenRequest)
+        } catch {
+            wpAssertionFailure("Unexpected form encoding error", userInfo: ["error": "\(error)"])
+            throw Error.unknown(error)
+        }
 
         do {
             let urlSession = URLSession(configuration: .default)
