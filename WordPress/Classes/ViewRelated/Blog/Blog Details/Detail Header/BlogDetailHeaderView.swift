@@ -145,8 +145,8 @@ class BlogDetailHeaderView: UIView {
     // MARK: - User Action Handlers
 
     @objc
-    private func siteSwitcherTapped() {
-        delegate?.siteSwitcherTapped(sourceView: titleView.siteSwitcherButton)
+    private func siteSwitcherTapped(_ sender: UIButton) {
+        delegate?.siteSwitcherTapped(sourceView: sender)
     }
 
     @objc
