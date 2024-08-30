@@ -8,6 +8,7 @@ final class NotificationsButtonViewModel: ObservableObject {
     @Published private(set) var image: UIImage?
 
     private var cancellables: [AnyCancellable] = []
+    private let badgeObserver = NotificationBadgeObserver()
 
     init() {
         refresh()
@@ -22,10 +23,7 @@ final class NotificationsButtonViewModel: ObservableObject {
             .sink { [weak self] _ in self?.refresh() }
             .store(in: &cancellables)
 
-        UIApplication.shared
-            .publisher(for: \.applicationIconBadgeNumber)
-            .sink { [weak self] _ in self?.refresh() }
-            .store(in: &cancellables)
+        badgeObserver.onChange = { [weak self] in self?.refresh() }
     }
 
     private func refresh() {
@@ -37,5 +35,27 @@ final class NotificationsButtonViewModel: ObservableObject {
         } else {
             image = UIImage(systemName: "bell")
         }
+    }
+}
+
+final class NotificationBadgeObserver: NSObject {
+    var onChange: () -> Void = {}
+
+    private let keyPath = "applicationIconBadgeNumber"
+
+    deinit {
+        UIApplication.shared.removeObserver(self, forKeyPath: keyPath)
+    }
+
+    /// - warning: The `applicationIconBadgeNumber` API is getting deprecated,
+    /// and it has some issues that seemingly prevent it being used from Combine.
+    override init() {
+        super.init()
+
+        UIApplication.shared.addObserver(self, forKeyPath: keyPath, options: [.new], context: nil)
+    }
+
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
+        onChange()
     }
 }
