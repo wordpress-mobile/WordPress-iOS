@@ -9,14 +9,15 @@ extension BlogDetailsViewController {
             return
         }
 
-        ImageDownloader.shared.downloadGravatarImage(with: email) { [weak self] image in
-            guard let image,
-                  let gravatarIcon = image.gravatarIcon(size: Metrics.iconSize) else {
-                return
+        Task { @MainActor [weak self] in
+            do {
+                let service = Gravatar.AvatarService()
+                let result = try await service.fetch(with: .email(email))
+                row.image = result.image.gravatarIcon(size: Metrics.iconSize) ?? result.image
+                self?.reloadMeRow()
+            } catch {
+                // Do nothing
             }
-
-            row.image = gravatarIcon
-            self?.reloadMeRow()
         }
     }
 
@@ -26,14 +27,10 @@ extension BlogDetailsViewController {
 
     @objc private func updateGravatarImage(_ notification: Foundation.Notification) {
         guard let userInfo = notification.userInfo,
-            let email = userInfo["email"] as? String,
-            let image = userInfo["image"] as? UIImage,
-            let url = AvatarURL.url(for: email),
-            let gravatarIcon = image.gravatarIcon(size: Metrics.iconSize) else {
-                return
+              let image = userInfo["image"] as? UIImage,
+              let gravatarIcon = image.gravatarIcon(size: Metrics.iconSize) else {
+            return
         }
-
-        ImageCache.shared.setImage(image, forKey: url.absoluteString)
         meRow?.image = gravatarIcon
         reloadMeRow()
     }

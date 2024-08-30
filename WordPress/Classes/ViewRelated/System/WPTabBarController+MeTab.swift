@@ -24,24 +24,22 @@ extension WPTabBarController {
             return
         }
 
-        ImageDownloader.shared.downloadGravatarImage(with: email) { [weak self] image in
-            guard let image else {
-                return
+        Task { @MainActor [weak self] in
+            do {
+                let service = Gravatar.AvatarService()
+                let result = try await service.fetch(with: .email(email))
+                self?.meNavigationController?.tabBarItem.configureGravatarImage(result.image)
+            } catch {
+                // Do nothing
             }
-
-            self?.meNavigationController?.tabBarItem.configureGravatarImage(image)
         }
     }
 
     @objc private func updateGravatarImage(_ notification: Foundation.Notification) {
         guard let userInfo = notification.userInfo,
-            let email = userInfo["email"] as? String,
-            let image = userInfo["image"] as? UIImage,
-            let url = AvatarURL.url(for: email) else {
-                return
+              let image = userInfo["image"] as? UIImage else {
+            return
         }
-
-        ImageCache.shared.setImage(image, forKey: url.absoluteString)
         meNavigationController?.tabBarItem.configureGravatarImage(image)
     }
 

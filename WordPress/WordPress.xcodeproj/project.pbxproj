@@ -5559,8 +5559,6 @@
 		FADC40A92A8BC2A200C19997 /* UIImage+Gravatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADC40A72A8BC2A200C19997 /* UIImage+Gravatar.swift */; };
 		FADC40AB2A8D093900C19997 /* BlogDetailsViewController+Me.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADC40AA2A8D093900C19997 /* BlogDetailsViewController+Me.swift */; };
 		FADC40AC2A8D093900C19997 /* BlogDetailsViewController+Me.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADC40AA2A8D093900C19997 /* BlogDetailsViewController+Me.swift */; };
-		FADC40AE2A8D2E8D00C19997 /* ImageDownloader+Gravatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADC40AD2A8D2E8D00C19997 /* ImageDownloader+Gravatar.swift */; };
-		FADC40AF2A8D2E8D00C19997 /* ImageDownloader+Gravatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADC40AD2A8D2E8D00C19997 /* ImageDownloader+Gravatar.swift */; };
 		FADFBD26265F580500039C41 /* MultilineButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADFBD25265F580500039C41 /* MultilineButton.swift */; };
 		FADFBD27265F580500039C41 /* MultilineButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADFBD25265F580500039C41 /* MultilineButton.swift */; };
 		FAE4201A1C5AEFE100C1D036 /* StartOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE420191C5AEFE100C1D036 /* StartOverViewController.swift */; };
@@ -9687,7 +9685,6 @@
 		FADC40A42A8BBA4200C19997 /* WPTabBarController+MeTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPTabBarController+MeTab.swift"; sourceTree = "<group>"; };
 		FADC40A72A8BC2A200C19997 /* UIImage+Gravatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Gravatar.swift"; sourceTree = "<group>"; };
 		FADC40AA2A8D093900C19997 /* BlogDetailsViewController+Me.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogDetailsViewController+Me.swift"; sourceTree = "<group>"; };
-		FADC40AD2A8D2E8D00C19997 /* ImageDownloader+Gravatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageDownloader+Gravatar.swift"; sourceTree = "<group>"; };
 		FADFBD25265F580500039C41 /* MultilineButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultilineButton.swift; sourceTree = "<group>"; };
 		FAE420191C5AEFE100C1D036 /* StartOverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartOverViewController.swift; sourceTree = "<group>"; };
 		FAEC116D2AEBEEA600F9DA54 /* AbstractPostMenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractPostMenuViewModel.swift; sourceTree = "<group>"; };
@@ -10605,7 +10602,6 @@
 				742B7F39209CB2B6002E3CC9 /* GIFPlaybackStrategy.swift */,
 				0C1DB5FE2B095DA50028F200 /* ImageView.swift */,
 				B5EB19EB20C6DACC008372B9 /* ImageDownloader.swift */,
-				FADC40AD2A8D2E8D00C19997 /* ImageDownloader+Gravatar.swift */,
 				0C1DB6072B0A419B0028F200 /* ImageDecoder.swift */,
 				3F2ABE15277037A9005D8916 /* VideoLimitsAlertPresenter.swift */,
 				0C7073942A65CB2E00F325CE /* MemoryCache.swift */,
@@ -23054,7 +23050,6 @@
 				D8212CC320AA7F57008E8AE8 /* ReaderBlockSiteAction.swift in Sources */,
 				FA8E1F7725EEFA7300063673 /* ReaderPostService+RelatedPosts.swift in Sources */,
 				B518E1651CCAA19200ADFE75 /* Blog+Capabilities.swift in Sources */,
-				FADC40AE2A8D2E8D00C19997 /* ImageDownloader+Gravatar.swift in Sources */,
 				08216FC91CDBF96000304BA7 /* MenuItemCategoriesViewController.m in Sources */,
 				1DE9F2B02BA30C930044AA53 /* GutenbergProcessor.swift in Sources */,
 				082635BB1CEA69280088030C /* MenuItemsViewController.m in Sources */,
@@ -26175,7 +26170,6 @@
 				FABB260E2602FC2C00C8785C /* NoteBlockHeaderTableViewCell.swift in Sources */,
 				FABB260F2602FC2C00C8785C /* RemoteFeatureFlagStore.swift in Sources */,
 				FABB26102602FC2C00C8785C /* SuggestionsTableViewCell.m in Sources */,
-				FADC40AF2A8D2E8D00C19997 /* ImageDownloader+Gravatar.swift in Sources */,
 				4AA33EFC2999AE3B005B6E23 /* ReaderListTopic+Creation.swift in Sources */,
 				F10D635026F0B78E00E46CC7 /* Blog+Organization.swift in Sources */,
 				FABB26122602FC2C00C8785C /* ActivityRangesFactory.swift in Sources */,
