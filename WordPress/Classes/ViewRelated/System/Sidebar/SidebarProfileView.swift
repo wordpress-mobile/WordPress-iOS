@@ -8,11 +8,11 @@ struct SidebarProfileView: View {
 
     var body: some View {
         HStack {
-            AvatarsView<Circle>(style: .single(avatar))
+            AvatarsView<Circle>(style: .single(avatar), diameter: 30)
 
             VStack(alignment: .leading, spacing: 0) {
                 Text(displayName)
-                    .font(.callout.weight(.medium))
+                    .font(.subheadline.weight(.medium))
                 Text("@\(username)")
                     .font(.footnote)
                     .foregroundStyle(.secondary)

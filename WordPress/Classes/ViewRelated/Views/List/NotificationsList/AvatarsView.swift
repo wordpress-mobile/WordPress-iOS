@@ -37,16 +37,19 @@ struct AvatarsView<S: Shape>: View {
     private let style: Style
     private let borderColor: Color
     private let placeholderImage: Image?
+    private let diameter: CGFloat
     @ScaledMetric private var scale = 1
 
     init(
         avatarShape: S = Circle(),
         style: Style,
+        diameter: CGFloat? = nil,
         borderColor: Color = .DS.Background.primary,
         placeholderImage: Image? = nil
     ) {
         self.avatarShape = avatarShape
         self.style = style
+        self.diameter = diameter ?? style.diameter
         self.borderColor = borderColor
         self.placeholderImage = placeholderImage
     }
@@ -75,7 +78,7 @@ struct AvatarsView<S: Shape>: View {
 
     private func avatar(url: URL?) -> some View {
         let processedURL: URL?
-        let size = Int(ceil(style.diameter * UIScreen.main.scale))
+        let size = Int(ceil(diameter * UIScreen.main.scale))
         if let url, let gravatar = AvatarURL(url: url, options: .init(preferredSize: .pixels(size))) {
             processedURL = gravatar.url
         } else {
@@ -91,7 +94,7 @@ struct AvatarsView<S: Shape>: View {
                 placeholderZStack
             }
         }
-        .frame(width: style.diameter * scale, height: style.diameter * scale)
+        .frame(width: diameter * scale, height: diameter * scale)
         .clipShape(avatarShape)
     }
 

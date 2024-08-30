@@ -14,6 +14,7 @@ public final class UIHostingView<Content: View>: UIView {
         super.init(frame: .zero)
 
         addSubview(hostingController.view)
+        hostingController.view.backgroundColor = .clear
         hostingController.view.translatesAutoresizingMaskIntoConstraints = false
         pinSubviewToAllEdges(hostingController.view)
     }

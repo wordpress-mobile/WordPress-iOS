@@ -100,6 +100,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
 #if JETPACK
             let domainsVC = AllDomainsListViewController()
             let navigationVC = UINavigationController(rootViewController: domainsVC)
+            navigationVC.modalPresentationStyle = .formSheet
             splitVC.present(navigationVC, animated: true)
 #else
             wpAssertionFailure("domains are not supported in wpios")
@@ -107,10 +108,10 @@ final class SplitViewRootPresenter: RootViewPresenter {
         case .help:
             let supportVC = SupportTableViewController()
             let navigationVC = UINavigationController(rootViewController: supportVC)
+            navigationVC.modalPresentationStyle = .formSheet
             splitVC.present(navigationVC, animated: true)
         case .profile:
-            let meVC = MeSplitViewController()
-            splitVC.present(meVC, animated: true)
+            showMeScreen()
         }
     }
 
@@ -265,7 +266,19 @@ final class SplitViewRootPresenter: RootViewPresenter {
     var meViewController: MeViewController?
 
     func showMeScreen() {
-        navigate(to: .profile)
+        let meVC = MeViewController()
+        meVC.isSidebarModeEnabled = true
+        meVC.navigationItem.rightBarButtonItem = {
+            let button = UIBarButtonItem(title: SharedStrings.Button.done, primaryAction: .init { [weak self] _ in
+                self?.splitVC.dismiss(animated: true)
+            })
+            button.setTitleTextAttributes([.font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)], for: .normal)
+            return button
+        }()
+
+        let navigationVC = UINavigationController(rootViewController: meVC)
+        navigationVC.modalPresentationStyle = .formSheet
+        splitVC.present(navigationVC, animated: true)
     }
 
     func popMeScreenToRoot() {
@@ -275,6 +288,13 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
 extension SplitViewRootPresenter: SiteMenuViewControllerDelegate {
     func siteMenuViewController(_ siteMenuViewController: SiteMenuViewController, showDetailsViewController viewController: UIViewController) {
-        splitVC.setViewController(viewController, for: .secondary)
+        if viewController is UINavigationController ||
+            viewController is UISplitViewController {
+            splitVC.setViewController(viewController, for: .secondary)
+        } else {
+            // Reset previous navigation or split stack
+            let navigationVC = UINavigationController(rootViewController: viewController)
+            splitVC.setViewController(navigationVC, for: .secondary)
+        }
     }
 }

@@ -66,6 +66,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
                                                                                                action:@selector(doneButtonTapped)];
     }
 
+    self.tableView.cellLayoutMarginsFollowReadableWidth = YES;
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [self.publicizeServicesState addInitialConnections:[self allConnections]];
 

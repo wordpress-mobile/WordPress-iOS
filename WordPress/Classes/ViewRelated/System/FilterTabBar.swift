@@ -149,7 +149,15 @@ class FilterTabBar: UIControl {
         }
     }
 
+    var isFollowingReaderGuide = false {
+        didSet { updateForCurrentEnvironment() }
+    }
+
     // MARK: - Tab Sizing
+
+    var isAutomaticTabSizingStyleEnabled = false {
+        didSet { updateForCurrentEnvironment() }
+    }
 
     private var stackViewEdgeConstraints: [NSLayoutConstraint]! {
         didSet {
@@ -273,6 +281,12 @@ class FilterTabBar: UIControl {
         createTopTabSeparatorPlacementConstraints()
         createBottomTabSeparatorPlacementConstraints()
         activateTabSeparatorPlacementConstraints()
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        updateForCurrentEnvironment()
     }
 
     // MARK: - Tabs
@@ -538,6 +552,31 @@ class FilterTabBar: UIControl {
         static let duration: TimeInterval = 0.3
         static let springDamping: CGFloat = 0.9
         static let initialVelocity: CGFloat = -0.5
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if isAutomaticTabSizingStyleEnabled {
+            updateForCurrentEnvironment()
+        }
+    }
+
+    private func updateForCurrentEnvironment() {
+        tabSizingStyle = traitCollection.horizontalSizeClass == .regular ? .equalWidths : .fitting
+
+        if isFollowingReaderGuide {
+            switch tabSizingStyle {
+            case .equalWidths:
+                let readableFrame = readableContentGuide.layoutFrame
+                let inset = readableFrame.minX
+                scrollView.contentInset = UIEdgeInsets(top: 0, left: inset, bottom: 0, right: -inset)
+                stackViewWidthConstraint.constant = -(2 * inset)
+            case .fitting:
+                scrollView.contentInset = .zero
+                stackViewWidthConstraint.constant = 0
+            }
+        }
     }
 }
 

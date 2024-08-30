@@ -153,6 +153,7 @@ private struct SidebarProfileContainerView: View {
                     displayName: account.displayName,
                     avatar: account.avatarURL.flatMap(URL.init(string:))
                 )
+                .containerShape(Rectangle()) // Make entire row interactive
             }
             .buttonStyle(.plain)
             .padding(.horizontal)

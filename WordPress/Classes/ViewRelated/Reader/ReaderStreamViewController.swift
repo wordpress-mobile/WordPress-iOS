@@ -120,8 +120,6 @@ import AutomatticTracks
     private let tableConfiguration = ReaderTableConfiguration()
     /// Configuration of cells
     private let cellConfiguration = ReaderCellConfiguration()
-    /// Actions
-    private var postCellActions: ReaderPostCellActions?
 
     private var siteID: NSNumber? {
         didSet {
@@ -198,7 +196,6 @@ import AutomatticTracks
                 updateContent(synchronize: false)
                 // TODO: Analytics
             }
-            postCellActions?.visibleConfirmation = contentType != .saved
             showConfirmation = contentType != .saved
         }
     }
@@ -212,13 +209,12 @@ import AutomatticTracks
     }
     var statSource: StatSource = .reader
 
-    let ghostableTableView = UITableView()
+    let ghostableTableView = UITableView(frame: .zero, style: .plain)
 
     private var readerTopicChangesObserver: AnyCancellable?
 
     private weak var streamHeader: ReaderStreamHeader?
 
-    private var removedPosts = Set<ReaderPost>()
     private var showConfirmation = true
 
     // NOTE: This is currently a workaround for the 'Your Tags' stream use case.
@@ -360,11 +356,7 @@ import AutomatticTracks
 
         navigationItem.largeTitleDisplayMode = .never
 
-        NotificationCenter.default.addObserver(self, selector: #selector(defaultAccountDidChange(_:)), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
-
         NotificationCenter.default.addObserver(self, selector: #selector(postSeenToggled(_:)), name: .ReaderPostSeenToggled, object: nil)
-
-        refreshImageRequestAuthToken()
 
         configureCloseButtonIfNeeded()
         setupStackView()
@@ -411,11 +403,6 @@ import AutomatticTracks
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-
-        if contentType == .saved {
-            postCellActions?.clearRemovedPosts()
-            clearRemovedPosts()
-        }
 
         if shouldShowCommentSpotlight {
             resetReaderDiscoverNudgeFlow()
@@ -576,7 +563,6 @@ import AutomatticTracks
         tableViewController.didMove(toParent: self)
         tableConfiguration.setup(tableView)
         tableView.delegate = self
-        setupUndoCell(tableView)
     }
 
     @objc func configureRefreshControl() {
@@ -708,12 +694,6 @@ import AutomatticTracks
 
     @objc private func closeButtonTapped() {
         dismiss(animated: true)
-    }
-
-    /// Fetch and cache the current defaultAccount authtoken, if available.
-    private func refreshImageRequestAuthToken() {
-        let account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
-        postCellActions?.imageRequestAuthToken = account?.authToken
     }
 
     // MARK: - Instance Methods
@@ -933,18 +913,12 @@ import AutomatticTracks
     }
 
     func removePost(_ post: ReaderPost) {
-        guard let posts = content.content as? [ReaderPost],
-              let row = posts.firstIndex(of: post) else {
-            return
+        togglePostSave(post)
+        let notice = Notice(title: Strings.postRemoved, actionTitle: SharedStrings.Button.undo) { [weak self] accepted in
+            guard accepted else { return }
+            self?.togglePostSave(post)
         }
-        removedPosts.insert(post)
-        let cellIndex = IndexPath(row: row, section: 0)
-        tableView.reloadRows(at: [cellIndex], with: .fade)
-    }
-
-    func clearRemovedPosts() {
-        removedPosts.forEach(togglePostSave)
-        removedPosts.removeAll()
+        ActionDispatcherFacade().dispatch(NoticeAction.post(notice))
     }
 
     func togglePostSave(_ post: ReaderPost) {
@@ -1300,10 +1274,6 @@ import AutomatticTracks
 
     // MARK: - Notifications
 
-    @objc private func defaultAccountDidChange(_ notification: Foundation.Notification) {
-        refreshImageRequestAuthToken()
-    }
-
     @objc private func postSeenToggled(_ notification: Foundation.Notification) {
 
         // When a post's seen status is toggled outside the stream (ex: post details),
@@ -1357,37 +1327,6 @@ import AutomatticTracks
         NSSortDescriptor(key: "title", ascending: true) :
         NSSortDescriptor(key: "sortRank", ascending: ascending)
         return [sortDescriptor]
-    }
-
-    private func configurePostCardCell(_ cell: UITableViewCell, post: ReaderPost) {
-        if postCellActions == nil {
-            postCellActions = ReaderPostCellActions(context: viewContext, origin: self, topic: readerTopic)
-        }
-        postCellActions?.isLoggedIn = isLoggedIn
-        postCellActions?.savedPostsDelegate = self
-
-        // Restrict the topics header to only display on the Discover, and tag detail views
-        var displayTopics = false
-
-        if let topic = readerTopic {
-            let type = ReaderHelpers.topicType(topic)
-
-            switch type {
-            case .discover, .tag:
-                displayTopics = true
-            default:
-                displayTopics = false
-            }
-        }
-
-        cellConfiguration.configurePostCardCell(cell,
-                                                withPost: post,
-                                                topic: readerTopic ?? post.topic,
-                                                delegate: postCellActions,
-                                                loggedInActionVisibility: .visible(enabled: isLoggedIn),
-                                                topicChipsDelegate: self,
-                                                displayTopics: displayTopics)
-
     }
 
     // MARK: - Helpers for ReaderStreamHeader
@@ -1637,12 +1576,6 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             return cell
         }
 
-        if contentType == .saved && (postCellActions?.postIsRemoved(post) == true || removedPosts.contains(post)) {
-            let cell = undoCell(tableView)
-            configureUndoCell(cell, with: post)
-            return cell
-        }
-
         let cell = tableConfiguration.postCardCell(tableView)
         let viewModel = ReaderPostCardCellViewModel(contentProvider: post,
                                                     isLoggedIn: isLoggedIn,
@@ -1678,7 +1611,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             cell.prepareForDisplay()
         }
 
-        guard cell.isKind(of: OldReaderPostCardCell.self) || cell.isKind(of: ReaderCrossPostCell.self) else {
+        guard cell.isKind(of: ReaderCrossPostCell.self) else {
             return
         }
 
@@ -2108,29 +2041,6 @@ extension ReaderStreamViewController: ReaderContentViewController {
     }
 }
 
-// TODO: Delete when the reader improvements v1 (`readerImprovements`) flag is removed
-// MARK: - Saved Posts Delegate
-extension ReaderStreamViewController: ReaderSavedPostCellActionsDelegate {
-    func willRemove(_ cell: OldReaderPostCardCell) {
-        if let cellIndex = tableView.indexPath(for: cell) {
-            tableView.reloadRows(at: [cellIndex], with: .fade)
-        }
-    }
-}
-
-// MARK: - Undo
-
-extension ReaderStreamViewController: ReaderPostUndoCellDelegate {
-    func readerCellWillUndo(_ cell: ReaderSavedPostUndoCell) {
-        if let cellIndex = tableView.indexPath(for: cell),
-           let post: ReaderPost = content.object(at: cellIndex) {
-            postCellActions?.restoreUnsavedPost(post)
-            removedPosts.remove(post)
-            tableView.reloadRows(at: [cellIndex], with: .fade)
-        }
-    }
-}
-
 // MARK: - View content types without a topic
 private extension ReaderStreamViewController {
 
@@ -2202,19 +2112,6 @@ private extension ReaderStreamViewController {
     }
 }
 
-extension ReaderStreamViewController: ReaderTopicsChipsDelegate {
-    func heightDidChange() {
-        // Forces the table view to layout the cells and update their heights
-        tableView.beginUpdates()
-        tableView.endUpdates()
-    }
-
-    func didSelect(topic: String) {
-        let topicStreamViewController = ReaderStreamViewController.controllerWithTagSlug(topic)
-        navigationController?.pushViewController(topicStreamViewController, animated: true)
-    }
-}
-
 // MARK: - Jetpack banner delegate
 
 extension ReaderStreamViewController: UITableViewDelegate, JPScrollViewDelegate {
@@ -2244,5 +2141,8 @@ extension ReaderStreamViewController {
     func logReaderError(_ error: ReaderStreamError) {
         CrashLogging.main.logError(error, tags: ["source": "reader_stream"])
     }
+}
 
+private enum Strings {
+    static let postRemoved = NSLocalizedString("reader.savedPostRemovedNotificationTitle", value: "Saved post removed", comment: "Notification title for when saved post is removed")
 }

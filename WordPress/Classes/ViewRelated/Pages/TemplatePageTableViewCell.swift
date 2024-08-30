@@ -9,17 +9,11 @@ class TemplatePageTableViewCell: UITableViewCell {
         hostViewController.view.translatesAutoresizingMaskIntoConstraints = false
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.addSubview(hostViewController.view)
-        contentView.pinSubviewToAllEdges(hostViewController.view)
-        applyStyles()
+        contentView.pinSubviewToAllEdgeMargins(hostViewController.view)
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    private func applyStyles() {
-        backgroundColor = .neutral(.shade5)
-        separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
     }
 }
 
@@ -29,8 +23,6 @@ private struct TemplatePageView: View {
             text
             icon
         }
-        .padding(EdgeInsets(top: 12.0, leading: 16.0, bottom: 12.0, trailing: 16.0))
-        .background(Color(UIColor.listForeground))
     }
 
     private var text: some View {

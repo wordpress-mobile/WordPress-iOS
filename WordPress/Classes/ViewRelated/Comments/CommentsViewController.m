@@ -128,7 +128,6 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 - (void)configureTableView
 {
     self.tableView.accessibilityIdentifier  = @"Comments Table";
-    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
     // Register the cells
     UINib *listCellNibInstance = [UINib nibWithNibName:[ListTableViewCell classNameWithoutNamespaces] bundle:[NSBundle mainBundle]];
@@ -200,8 +199,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ListTableViewCell *cell = (ListTableViewCell *)[tableView dequeueReusableCellWithIdentifier:ListTableViewCell.reuseIdentifier
-                                                                                   forIndexPath:indexPath];
+    ListTableViewCell *cell = (ListTableViewCell *)[tableView dequeueReusableCellWithIdentifier:ListTableViewCell.reuseIdentifier forIndexPath:indexPath];
     [self configureListCell:cell atIndexPath:indexPath];
     return cell;
 }
@@ -233,7 +231,13 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
                                                                                isLastInList:[self isLastRow:indexPath]
                                                                        managedObjectContext:[ContextManager sharedInstance].mainContext];
     self.commentDetailViewController.commentDelegate = self;
-    [self.navigationController pushViewController:self.commentDetailViewController animated:YES];
+    if (self.isSidebarModeEnabled) {
+        self.commentDetailViewController.isSidebarModeEnabled = true;
+        self.commentDetailViewController.navigationItem.hidesBackButton = YES;
+        [self showDetailViewController:self.commentDetailViewController sender:nil];
+    } else {
+        [self.navigationController pushViewController:self.commentDetailViewController animated:YES];
+    }
     [CommentAnalytics trackCommentViewedWithComment:comment];
 }
 
@@ -567,34 +571,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     [self updateFetchRequestPredicate:statusFilter];
     [self saveSelectedFilterToUserDefaults];
     self.currentStatusFilter = statusFilter;
-    [self refreshWithAnimationIfNeeded];
-}
-
-- (void)refreshWithAnimationIfNeeded
-{
-    // If the refresh control is already active skip the animation.
-    if (self.tableView.refreshControl.refreshing) {
-        [self refreshAndSyncWithInteraction];
-        return;
-    }
-
-    // If the tableView is scrolled down skip the animation.
-    if (self.tableView.contentOffset.y > 60) {
-        [self.tableView.refreshControl beginRefreshing];
-        [self refreshAndSyncWithInteraction];
-        return;
-    }
-
-    // Just telling the refreshControl to beginRefreshing can look jarring.
-    // Make it nicer by animating the tableView into position before starting
-    // the spinner and syncing.
-    [self.tableView layoutIfNeeded]; // Necessary to ensure a smooth start.
-    [UIView animateWithDuration:0.25 animations:^{
-        self.tableView.contentOffset = CGPointMake(0, -60);
-    } completion:^(BOOL __unused finished) {
-        [self.tableView.refreshControl beginRefreshing];
-        [self refreshAndSyncWithInteraction];
-    }];
+    [self refreshAndSyncWithInteraction];
 }
 
 - (void)refreshInfiniteScroll

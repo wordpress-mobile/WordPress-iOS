@@ -34,6 +34,8 @@ final class AllDomainsListViewController: UIViewController {
     private let refreshControl = UIRefreshControl()
     private let emptyView = AllDomainsListEmptyView()
 
+    private let searchController = UISearchController(searchResultsController: nil)
+
     // MARK: - Properties
 
     private lazy var state: ViewModel.State = viewModel.state
@@ -95,12 +97,9 @@ final class AllDomainsListViewController: UIViewController {
     }
 
     private func setupSearchBar() {
-        let searchController = UISearchController(searchResultsController: nil)
         searchController.delegate = self
         searchController.searchBar.delegate = self
-        searchController.searchBar.placeholder = Strings.searchBar
 
-        navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
     }
 
@@ -161,6 +160,7 @@ final class AllDomainsListViewController: UIViewController {
                 self.emptyView.update(with: viewModel)
             }
             self.emptyView.isHidden = !tableView.isHidden
+            self.navigationItem.searchController = tableView.isHidden ? nil : self.searchController
         }.store(in: &cancellable)
     }
 
@@ -255,5 +255,15 @@ extension AllDomainsListViewController: UISearchControllerDelegate, UISearchBarD
 
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         WPAnalytics.track(.myDomainsSearchDomainTapped)
+    }
+}
+
+extension AllDomainsListViewController {
+    enum Strings {
+        static let title = NSLocalizedString(
+            "domain.management.title",
+            value: "All Domains",
+            comment: "Domain Management Screen Title"
+        )
     }
 }
