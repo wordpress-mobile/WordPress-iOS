@@ -1392,6 +1392,10 @@
 		4A9314E52979FA4700360232 /* PostCategory+Creation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9314E32979FA4700360232 /* PostCategory+Creation.swift */; };
 		4A9314E7297A0C5000360232 /* PostCategory+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9314E6297A0C5000360232 /* PostCategory+Lookup.swift */; };
 		4A9314E8297A0C5000360232 /* PostCategory+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9314E6297A0C5000360232 /* PostCategory+Lookup.swift */; };
+		4A9672AF2C7E84B200337176 /* WordPressDotComAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9672AE2C7E84B200337176 /* WordPressDotComAuthenticator.swift */; };
+		4A9672B02C7E84B200337176 /* WordPressDotComAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9672AE2C7E84B200337176 /* WordPressDotComAuthenticator.swift */; };
+		4A9672B22C813EEA00337176 /* WebAuthenticationPresentationAnchorProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9672B12C813EEA00337176 /* WebAuthenticationPresentationAnchorProvider.swift */; };
+		4A9672B32C813EEA00337176 /* WebAuthenticationPresentationAnchorProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9672B12C813EEA00337176 /* WebAuthenticationPresentationAnchorProvider.swift */; };
 		4A9948E229714EF1006282A9 /* AccountSettingsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9948E129714EF1006282A9 /* AccountSettingsServiceTests.swift */; };
 		4A9948E4297624EF006282A9 /* Blog+Creation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9948E3297624EF006282A9 /* Blog+Creation.swift */; };
 		4A9948E5297624EF006282A9 /* Blog+Creation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9948E3297624EF006282A9 /* Blog+Creation.swift */; };
@@ -7240,6 +7244,8 @@
 		4A9314DB297790C300360232 /* PeopleServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleServiceTests.swift; sourceTree = "<group>"; };
 		4A9314E32979FA4700360232 /* PostCategory+Creation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostCategory+Creation.swift"; sourceTree = "<group>"; };
 		4A9314E6297A0C5000360232 /* PostCategory+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostCategory+Lookup.swift"; sourceTree = "<group>"; };
+		4A9672AE2C7E84B200337176 /* WordPressDotComAuthenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordPressDotComAuthenticator.swift; sourceTree = "<group>"; };
+		4A9672B12C813EEA00337176 /* WebAuthenticationPresentationAnchorProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebAuthenticationPresentationAnchorProvider.swift; sourceTree = "<group>"; };
 		4A98A9022C2274E100A2CE58 /* WordPressKitTests.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = WordPressKitTests.xcconfig; sourceTree = "<group>"; };
 		4A98A9032C2274E100A2CE58 /* WordPressKit.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = WordPressKit.xcconfig; sourceTree = "<group>"; };
 		4A9948E129714EF1006282A9 /* AccountSettingsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsServiceTests.swift; sourceTree = "<group>"; };
@@ -13162,6 +13168,7 @@
 			isa = PBXGroup;
 			children = (
 				4ADE3F802C619E8A0046EC8A /* LoginWithUrlView.swift */,
+				4A9672AE2C7E84B200337176 /* WordPressDotComAuthenticator.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -16231,6 +16238,7 @@
 				FA3FCD522B640C2D009B9740 /* View+Helpers.swift */,
 				80EF9289280D28140064A971 /* Atomic.swift */,
 				2448ABAD2C5D515700DC0091 /* URL+AVKit.swift */,
+				4A9672B12C813EEA00337176 /* WebAuthenticationPresentationAnchorProvider.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -22859,6 +22867,7 @@
 				F1C740BF26B18E42005D0809 /* StoreSandboxSecretScreen.swift in Sources */,
 				5D42A3E2175E7452005CFF05 /* ReaderPost.m in Sources */,
 				FEA7948D26DD136700CEC520 /* CommentHeaderTableViewCell.swift in Sources */,
+				4A9672B32C813EEA00337176 /* WebAuthenticationPresentationAnchorProvider.swift in Sources */,
 				C3C39B0726F50D3900B1238D /* WordPressSupportSourceTag+Editor.swift in Sources */,
 				46183CF4251BD658004F9AFD /* PageTemplateLayout+CoreDataClass.swift in Sources */,
 				982A4C3520227D6700B5518E /* NoResultsViewController.swift in Sources */,
@@ -23189,6 +23198,7 @@
 				4ADE3F812C619E8A0046EC8A /* LoginWithUrlView.swift in Sources */,
 				D865722E2186F96D0023A99C /* SiteSegmentsWizardContent.swift in Sources */,
 				E66969E01B9E648100EC9C00 /* ReaderTopicToReaderDefaultTopic37to38.swift in Sources */,
+				4A9672B02C7E84B200337176 /* WordPressDotComAuthenticator.swift in Sources */,
 				9856A3E4261FD27A008D6354 /* UserProfileSectionHeader.swift in Sources */,
 				801D951A291AC0B00051993E /* OverlayFrequencyTracker.swift in Sources */,
 				FEF4DC5528439357003806BE /* ReminderScheduleCoordinator.swift in Sources */,
@@ -24806,6 +24816,7 @@
 				FABB220E2602FC2C00C8785C /* PublishSettingsViewController.swift in Sources */,
 				FABB220F2602FC2C00C8785C /* MediaHost+AbstractPost.swift in Sources */,
 				FABB22102602FC2C00C8785C /* PageTemplateCategory+CoreDataProperties.swift in Sources */,
+				4A9672AF2C7E84B200337176 /* WordPressDotComAuthenticator.swift in Sources */,
 				FABB22112602FC2C00C8785C /* MyProfileHeaderView.swift in Sources */,
 				FABB22142602FC2C00C8785C /* TitleBadgeDisclosureCell.swift in Sources */,
 				FABB22152602FC2C00C8785C /* FormattableContent.swift in Sources */,
@@ -25610,6 +25621,7 @@
 				FABB24562602FC2C00C8785C /* SiteStatsInsightsViewModel.swift in Sources */,
 				0C71959C2A3CA582002EA18C /* SiteSettingsRelatedPostsView.swift in Sources */,
 				FACF66CE2ADD645C008C3E13 /* PostListHeaderView.swift in Sources */,
+				4A9672B22C813EEA00337176 /* WebAuthenticationPresentationAnchorProvider.swift in Sources */,
 				FABB24572602FC2C00C8785C /* CheckmarkTableViewCell.swift in Sources */,
 				FABB24582602FC2C00C8785C /* ReaderManageScenePresenter.swift in Sources */,
 				FABB24592602FC2C00C8785C /* MediaService.swift in Sources */,
