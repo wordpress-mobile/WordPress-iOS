@@ -17,6 +17,11 @@ final class MeHeaderView: UIView {
 
     private lazy var infoStackView = UIStackView(axis: .vertical, spacing: 2, [titleLabel, detailsLabel])
 
+    private lazy var iconSizeConstraints = [
+        iconView.widthAnchor.constraint(equalToConstant: 0),
+        iconView.heightAnchor.constraint(equalToConstant: 0)
+    ]
+
     override init(frame: CGRect) {
         super.init(frame: .zero)
 
@@ -29,14 +34,8 @@ final class MeHeaderView: UIView {
         detailsLabel.accessibilityIdentifier = "Username"
         detailsLabel.adjustsFontForContentSizeCategory = true
 
-        let iconSize: CGFloat = 64
-        NSLayoutConstraint.activate([
-            iconView.widthAnchor.constraint(equalToConstant: iconSize),
-            iconView.heightAnchor.constraint(equalToConstant: iconSize)
-        ])
-        iconView.layer.cornerRadius = iconSize / 2
-        iconView.layer.masksToBounds = true
-        iconView.isUserInteractionEnabled = true
+        NSLayoutConstraint.activate(iconSizeConstraints)
+        setIconSize(64)
 
         addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -48,6 +47,14 @@ final class MeHeaderView: UIView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setIconSize(_ size: CGFloat) {
+        for constraint in iconSizeConstraints {
+            constraint.constant = size
+        }
+        iconView.layer.cornerRadius = size / 2
+        iconView.layer.masksToBounds = true
     }
 
     func update(with viewModel: MeHeaderViewModel) {
@@ -75,10 +82,11 @@ final class MeHeaderView: UIView {
         }
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        NSLog(traitCollection.debugDescription)
+    func configureHorizontalMode() {
+        stackView.axis = .horizontal
+        stackView.spacing = 16
+        stackView.layoutMargins = UIEdgeInsets(horizontal: 30, vertical: 6)
+        setIconSize(40)
     }
 }
 

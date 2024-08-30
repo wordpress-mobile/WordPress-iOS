@@ -32,6 +32,12 @@ class MeViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        if isSidebarModeEnabled {
+            /// We can't use trait collection here because on iPad .form sheet is still
+            /// considered to be ` .compact` size class, so it has to be invoked manually.
+            headerView.configureHorizontalMode()
+        }
+
         ImmuTable.registerRows([
             NavigationItemRow.self,
             IndicatorNavigationItemRow.self,
