@@ -321,8 +321,8 @@
 		086023D52B73AFD0000D084A /* NotificationsTableViewCellContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086023D32B73AFD0000D084A /* NotificationsTableViewCellContent.swift */; };
 		086023D72B73B44A000D084A /* HostingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086023D62B73B44A000D084A /* HostingTableViewCell.swift */; };
 		086023D82B73B44A000D084A /* HostingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086023D62B73B44A000D084A /* HostingTableViewCell.swift */; };
-		086023DB2B73BA67000D084A /* AvatarsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086023DA2B73BA67000D084A /* AvatarsView.swift */; };
-		086023DC2B73BA67000D084A /* AvatarsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086023DA2B73BA67000D084A /* AvatarsView.swift */; };
+		086023DB2B73BA67000D084A /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086023DA2B73BA67000D084A /* AvatarView.swift */; };
+		086023DC2B73BA67000D084A /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086023DA2B73BA67000D084A /* AvatarView.swift */; };
 		086103961EE09C91004D7C01 /* MediaVideoExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086103951EE09C91004D7C01 /* MediaVideoExporter.swift */; };
 		086C117C2A2F6451004A3821 /* CompliancePopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086C117B2A2F6451004A3821 /* CompliancePopover.swift */; };
 		086C117D2A2F6451004A3821 /* CompliancePopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086C117B2A2F6451004A3821 /* CompliancePopover.swift */; };
@@ -6292,7 +6292,7 @@
 		0857C2761CE5375F0014AE99 /* MenuItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemView.m; sourceTree = "<group>"; };
 		086023D32B73AFD0000D084A /* NotificationsTableViewCellContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsTableViewCellContent.swift; sourceTree = "<group>"; };
 		086023D62B73B44A000D084A /* HostingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostingTableViewCell.swift; sourceTree = "<group>"; };
-		086023DA2B73BA67000D084A /* AvatarsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarsView.swift; sourceTree = "<group>"; };
+		086023DA2B73BA67000D084A /* AvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
 		086103951EE09C91004D7C01 /* MediaVideoExporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaVideoExporter.swift; sourceTree = "<group>"; };
 		086C117B2A2F6451004A3821 /* CompliancePopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompliancePopover.swift; sourceTree = "<group>"; };
 		086C4D0F1E81F9240011D960 /* Media+Blog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Media+Blog.swift"; sourceTree = "<group>"; };
@@ -10440,7 +10440,7 @@
 		086023D92B73BA47000D084A /* NotificationsList */ = {
 			isa = PBXGroup;
 			children = (
-				086023DA2B73BA67000D084A /* AvatarsView.swift */,
+				086023DA2B73BA67000D084A /* AvatarView.swift */,
 				086023D62B73B44A000D084A /* HostingTableViewCell.swift */,
 				086023D32B73AFD0000D084A /* NotificationsTableViewCellContent.swift */,
 			);
@@ -23295,7 +23295,7 @@
 				F4CBE3D6292597E3004FFBB6 /* SupportTableViewControllerConfiguration.swift in Sources */,
 				8F22804451E5812433733348 /* TimeZoneSearchHeaderView.swift in Sources */,
 				8332DD2429259AE300802F7D /* DataMigrator.swift in Sources */,
-				086023DB2B73BA67000D084A /* AvatarsView.swift in Sources */,
+				086023DB2B73BA67000D084A /* AvatarView.swift in Sources */,
 				8F228F2923045666AE456D2C /* TimeZoneSelectorViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -25451,7 +25451,7 @@
 				FABB23D72602FC2C00C8785C /* MenuItemSourceViewController.m in Sources */,
 				FABB23D82602FC2C00C8785C /* WPReusableTableViewCells.swift in Sources */,
 				FABB23D92602FC2C00C8785C /* HomepageSettingsService.swift in Sources */,
-				086023DC2B73BA67000D084A /* AvatarsView.swift in Sources */,
+				086023DC2B73BA67000D084A /* AvatarView.swift in Sources */,
 				FABB23DA2602FC2C00C8785C /* ReaderSearchSuggestionsViewController.swift in Sources */,
 				FABB23DB2602FC2C00C8785C /* SentryStartupEvent.swift in Sources */,
 				FABB23DC2602FC2C00C8785C /* JetpackScanThreatCell.swift in Sources */,

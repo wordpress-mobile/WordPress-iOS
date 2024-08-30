@@ -3,7 +3,7 @@ import Gravatar
 import DesignSystem
 import WordPressUI
 
-struct AvatarsView<S: Shape>: View {
+struct AvatarView<S: Shape>: View {
     enum Style {
         case single(URL?)
         case double(URL?, URL?)
@@ -138,7 +138,7 @@ struct AvatarsView<S: Shape>: View {
     }
 }
 
-extension AvatarsView.Style {
+extension AvatarView.Style {
     init?(urls: [URL]) {
         var tempURLs: [URL]
         if urls.count > 3 {
@@ -151,11 +151,11 @@ extension AvatarsView.Style {
         case 0:
             return nil
         case 1:
-            self = AvatarsView.Style.single(tempURLs[0])
+            self = AvatarView.Style.single(tempURLs[0])
         case 2:
-            self = AvatarsView.Style.double(tempURLs[0], tempURLs[1])
+            self = AvatarView.Style.double(tempURLs[0], tempURLs[1])
         default:
-            self = AvatarsView.Style.triple(tempURLs[0], tempURLs[1], tempURLs[2])
+            self = AvatarView.Style.triple(tempURLs[0], tempURLs[1], tempURLs[2])
         }
     }
 }
