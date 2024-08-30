@@ -8,6 +8,8 @@ class MeViewController: UITableViewController {
     var handler: ImmuTableViewHandler!
     var isSidebarModeEnabled = false
 
+    private lazy var headerView = MeHeaderView()
+
     // MARK: - Table View Controller
 
     override init(style: UITableView.Style) {
@@ -30,8 +32,6 @@ class MeViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Preventing MultiTouch Scenarios
-        view.isExclusiveTouch = true
         ImmuTable.registerRows([
             NavigationItemRow.self,
             IndicatorNavigationItemRow.self,
@@ -549,8 +549,6 @@ class MeViewController: UITableViewController {
     }
 
     // MARK: - Private Properties
-
-    fileprivate lazy var headerView = MeHeaderView()
 
     /// Shows an actionsheet with options to Log In or Create a WordPress site.
     /// This is a temporary stop-gap measure to preserve for users only logged
