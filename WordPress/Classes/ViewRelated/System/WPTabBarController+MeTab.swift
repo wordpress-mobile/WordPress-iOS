@@ -51,11 +51,6 @@ extension WPTabBarController {
     }
 
     @objc private func accountDidChange() {
-        guard FeatureFlag.newTabIcons.enabled else {
-            configureMeTabImage(placeholderImage: UIImage(named: "icon-tab-me"))
-            return
-        }
-
         configureMeTabImage(unselectedPlaceholderImage: UIImage(named: "tab-bar-me-unselected"),
                             selectedPlaceholderImage: UIImage(named: "tab-bar-me-selected"))
     }
