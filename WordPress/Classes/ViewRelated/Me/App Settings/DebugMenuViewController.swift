@@ -3,6 +3,9 @@ import AutomatticTracks
 import SwiftUI
 import WordPressFlux
 import TipKit
+import Pulse
+import PulseUI
+import PulseProxy
 
 struct DebugMenuView: View {
     @StateObject private var viewModel = DebugMenuViewModel()
@@ -35,6 +38,13 @@ struct DebugMenuView: View {
             BooleanUserDefaultsDebugView()
         } label: {
             DebugMenuRow(systemImage: "server.rack", color: .gray, title: Strings.booleanUserDefaults)
+        }
+        NavigationLink() {
+            PulseUI.ConsoleView()
+                .closeButtonHidden()
+                .tint(.blue)
+        } label: {
+            DebugMenuRow(systemImage: "apple.terminal", color: .blue, title: Strings.logger)
         }
     }
 
@@ -163,6 +173,8 @@ final class DebugMenuViewController: UIHostingController<DebugMenuView> {
 
         assert(window != nil)
 
+        Pulse.NetworkLogger.enableProxy()
+
         let gesture = UIScreenEdgePanGestureRecognizer(target: DebugMenuViewController.self, action: #selector(showDebugMenu))
         gesture.edges = .right
         window?.addGestureRecognizer(gesture)
@@ -187,7 +199,7 @@ final class DebugMenuViewController: UIHostingController<DebugMenuView> {
 private final class NavigationContext {
     weak var parentViewController: UIViewController?
 
-    /// The alternative solution of using `UIViewControllerRepresentable` won't
+    /// The alternative solution of using `UIViewControllerRepresentaable` won't
     /// work well without a convoluted way to pass navigaiton items.
     func push(_ viewController: UIViewController) {
         parentViewController?.navigationController?.pushViewController(viewController, animated: true)
@@ -219,6 +231,7 @@ private enum Strings {
     static let featureFlags = NSLocalizedString("debugMenu.featureFlags", value: "Feature Flags", comment: "Feature flags menu item")
     static let weeklyRoundup = NSLocalizedString("debugMenu.weeklyRoundup", value: "Weekly Roundup", comment: "Weekly Roundup debug menu item")
     static let booleanUserDefaults = NSLocalizedString("debugMenu.booleanUserDefaults", value: "Boolean User Defaults", comment: "Boolean User Defaults debug menu item")
+    static let logger = NSLocalizedString("debugMenu.logger", value: "Logger", comment: "Boolean User Defaults debug menu item")
 
     static let showAllTips = NSLocalizedString("debugMenu.showAllTips", value: "Show All Tips", comment: "Debug Menu action for TipKit")
     static let hideAllTips = NSLocalizedString("debugMenu.hideAllTips", value: "Hide All Tips", comment: "Debug Menu action for TipKit")

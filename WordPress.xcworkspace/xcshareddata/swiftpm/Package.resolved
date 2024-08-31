@@ -23,14 +23,14 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Automattic/Automattic-Tracks-iOS",
       "state" : {
-        "revision" : "948c7642009237c74ef30dad59f03835416873eb",
-        "version" : "3.4.2"
+        "revision" : "4d7d7138a9f2b36c3fd4618aa488ed9e8de2f726",
+        "version" : "3.5.0"
       }
     },
     {
       "identity" : "automatticabout-swift",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/automattic/AutomatticAbout-swift",
+      "location" : "https://github.com/Automattic/AutomatticAbout-swift",
       "state" : {
         "revision" : "31045d654bcc1f2b56c85dd658f160fad5b50a29",
         "version" : "1.1.4"
@@ -77,8 +77,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mattgallagher/CwlCatchException.git",
       "state" : {
-        "revision" : "35f9e770f54ce62dd8526470f14c6e137cef3eea",
-        "version" : "2.1.1"
+        "revision" : "07b2ba21d361c223e25e3c1e924288742923f08c",
+        "version" : "2.2.1"
       }
     },
     {
@@ -86,8 +86,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mattgallagher/CwlPreconditionTesting.git",
       "state" : {
-        "revision" : "c21f7bab5ca8eee0a9998bbd17ca1d0eb45d4688",
-        "version" : "2.1.0"
+        "revision" : "0139c665ebb45e6a9fbdb68aabfd7c39f3fe0071",
+        "version" : "2.2.2"
       }
     },
     {
@@ -122,8 +122,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Automattic/Gravatar-SDK-iOS",
       "state" : {
-        "revision" : "337a2b639ecafc5159eb0d2af49391a95ad1637a",
-        "version" : "2.1.0"
+        "revision" : "08c63e532e957419361ce2dcdcf44f61881d0cd8",
+        "version" : "2.1.1"
       }
     },
     {
@@ -156,10 +156,10 @@
     {
       "identity" : "lottie-ios",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/airbnb/lottie-ios.git",
+      "location" : "https://github.com/airbnb/lottie-ios",
       "state" : {
-        "revision" : "f522990668c2f9132323a2e68d924c7dcb9130b4",
-        "version" : "4.4.0"
+        "revision" : "fe4c6fe3a0aa66cdeb51d549623c82ca9704b9a5",
+        "version" : "4.5.0"
       }
     },
     {
@@ -168,7 +168,7 @@
       "location" : "https://github.com/wordpress-mobile/MediaEditor-iOS",
       "state" : {
         "branch" : "task/spm-support",
-        "revision" : "4f3fe298a95d1de81099f8c9e5612e0c59c9bf53"
+        "revision" : "e9f74b21276d5cd1cb94ee1c09cc060b23187832"
       }
     },
     {
@@ -234,6 +234,15 @@
       }
     },
     {
+      "identity" : "pulse",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kean/Pulse.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "fc36675ed1eb06184f716933bb3989207564b56d"
+      }
+    },
+    {
       "identity" : "reachability",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/tonymillion/Reachability",
@@ -265,8 +274,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/getsentry/sentry-cocoa",
       "state" : {
-        "revision" : "08862789e1cbba7a9561bed69832a9306f339cd3",
-        "version" : "8.29.1"
+        "revision" : "5575af93efb776414f243e93d6af9f6258dc539a",
+        "version" : "8.36.0"
       }
     },
     {
@@ -310,8 +319,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-log",
       "state" : {
-        "revision" : "e97a6fcb1ab07462881ac165fdbb37f067e205d5",
-        "version" : "1.5.4"
+        "revision" : "9cb486020ebf03bfa5b5df985387a14a98744537",
+        "version" : "1.6.1"
       }
     },
     {
@@ -326,7 +335,7 @@
     {
       "identity" : "swiftsoup",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/scinfu/SwiftSoup.git",
+      "location" : "https://github.com/scinfu/SwiftSoup",
       "state" : {
         "revision" : "1d39e56d364cba79ce43b341f9661b534cccb18d",
         "version" : "2.7.1"
@@ -337,8 +346,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/buildkite/test-collector-swift",
       "state" : {
-        "revision" : "77c7f492f5c1c9ca159f73d18f56bbd1186390b0",
-        "version" : "0.3.0"
+        "revision" : "631a2400dbe876141a3ef8c7400885907fec7f89",
+        "version" : "0.4.1"
       }
     },
     {
