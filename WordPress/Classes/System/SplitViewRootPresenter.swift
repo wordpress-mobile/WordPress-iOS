@@ -34,24 +34,10 @@ final class SplitViewRootPresenter: RootViewPresenter {
             self?.navigate(to: $0)
         }
 
-        // Automatically switch to a site or show the sign in screen, when the current blog is removed.
         NotificationCenter.default
             .publisher(for: .NSManagedObjectContextObjectsDidChange, object: ContextManager.shared.mainContext)
             .sink { [weak self] in
-                guard let self,
-                      let blog = self.currentlyVisibleBlog(),
-                      let deleted = $0.userInfo?[NSDeletedObjectsKey] as? Set<NSManagedObject>,
-                      deleted.contains(blog)
-                else {
-                    return
-                }
-
-                if let newSite = Blog.lastUsedOrFirst(in: ContextManager.shared.mainContext) {
-                    self.sidebarViewModel.selection = .blog(TaggedManagedObjectID(newSite))
-                } else {
-                    self.sidebarViewModel.selection = .empty
-                    WordPressAppDelegate.shared?.windowManager.showSignInUI()
-                }
+                self?.handleCoreDataChanges($0)
             }
             .store(in: &cancellables)
     }
@@ -158,6 +144,24 @@ final class SplitViewRootPresenter: RootViewPresenter {
     private func showAddSiteScreen(selection: AddSiteMenuViewModel.Selection) {
         AddSiteController(viewController: splitVC.presentedViewController ?? splitVC, source: "sidebar")
             .showSiteCreationScreen(selection: selection)
+    }
+
+    private func handleCoreDataChanges(_ notification: Foundation.Notification) {
+        // Automatically switch to a site or show the sign in screen, when the current blog is removed.
+
+        guard let blog = self.currentlyVisibleBlog(),
+              let deleted = notification.userInfo?[NSDeletedObjectsKey] as? Set<NSManagedObject>,
+              deleted.contains(blog)
+        else {
+            return
+        }
+
+        if let newSite = Blog.lastUsedOrFirst(in: ContextManager.shared.mainContext) {
+            self.sidebarViewModel.selection = .blog(TaggedManagedObjectID(newSite))
+        } else {
+            self.sidebarViewModel.selection = .empty
+            WordPressAppDelegate.shared?.windowManager.showSignInUI()
+        }
     }
 
     // MARK: – RootViewPresenter
