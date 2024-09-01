@@ -96,9 +96,9 @@ class ReaderTabViewController: UIViewController {
     }
 
     func presentDiscoverTab() {
-        viewModel.shouldShowCommentSpotlight = true
         viewModel.fetchReaderMenu()
         viewModel.showTab(at: ReaderTabConstants.discoverIndex)
+        displayNotice(title: NSLocalizedString("Comment to start making connections.", comment: "Hint for users to grow their audience by commenting on other blogs."))
     }
 
     // MARK: - Reader FAB

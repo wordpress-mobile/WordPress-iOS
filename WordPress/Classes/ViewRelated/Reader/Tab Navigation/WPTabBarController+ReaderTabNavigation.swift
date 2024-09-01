@@ -20,11 +20,9 @@ extension WPTabBarController {
 
     @objc func makeReaderTabViewModel() -> ReaderTabViewModel {
         let viewModel = ReaderTabViewModel(
-            readerContentFactory: { [weak self] content in
+            readerContentFactory: { content in
                 if content.topicType == .discover, let topic = content.topic {
-                    let controller = ReaderCardsStreamViewController.controller(topic: topic)
-                    controller.shouldShowCommentSpotlight = self?.readerTabViewModel.shouldShowCommentSpotlight ?? false
-                    return controller
+                    return ReaderCardsStreamViewController.controller(topic: topic)
                 } else if let topic = content.topic {
                     return ReaderStreamViewController.controllerWithTopic(topic)
                 } else {
@@ -44,11 +42,8 @@ extension WPTabBarController {
     }
 
     private func makeReaderContentViewController(with content: ReaderContent) -> ReaderContentViewController {
-
         if content.topicType == .discover, let topic = content.topic {
-            let controller = ReaderCardsStreamViewController.controller(topic: topic)
-            controller.shouldShowCommentSpotlight = readerTabViewModel.shouldShowCommentSpotlight
-            return controller
+            return ReaderCardsStreamViewController.controller(topic: topic)
         } else if let topic = content.topic {
             return ReaderStreamViewController.controllerWithTopic(topic)
         } else {
@@ -70,11 +65,6 @@ extension WPTabBarController {
         navigateToReader(searchController)
     }
 
-    func navigateToReaderSearch(withSearchText searchText: String) {
-        let searchController = ReaderSearchViewController.controller(withSearchText: searchText)
-        navigateToReader(searchController)
-    }
-
     func navigateToReaderSite(_ topic: ReaderSiteTopic) {
         let contentController = ReaderStreamViewController.controllerWithTopic(topic)
         navigateToReader(contentController)
@@ -92,16 +82,6 @@ extension WPTabBarController {
             return
         }
         readerNavigationController?.pushViewController(controller, animated: true)
-    }
-
-    func resetReaderDiscoverNudgeFlow() {
-        readerTabViewModel.shouldShowCommentSpotlight = false
-    }
-
-    /// methods to select one of the default Reader tabs
-    @objc func switchToSavedPosts() {
-        let title = NSLocalizedString("Saved", comment: "Title of the Saved Reader Tab")
-        switchToTitle(title)
     }
 
     func switchToFollowedSites() {
@@ -129,12 +109,5 @@ extension WPTabBarController {
     func switchToTopic(where predicate: (ReaderAbstractTopic) -> Bool) {
         navigateToReader()
         readerTabViewModel.switchToTab(where: predicate)
-    }
-    /// switches to a menu item topic whose title matched the passed value
-    func switchToTitle(_ title: String) {
-        navigateToReader()
-        readerTabViewModel.switchToTab(where: {
-            $0 == title
-        })
     }
 }

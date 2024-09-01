@@ -47,23 +47,7 @@ extension MySitesCoordinator: RootViewPresenter {
         unsupportedFeatureFallback()
     }
 
-    func switchToSavedPosts() {
-        unsupportedFeatureFallback()
-    }
-
-    func resetReaderDiscoverNudgeFlow() {
-        unsupportedFeatureFallback()
-    }
-
-    func resetReaderTab() {
-        unsupportedFeatureFallback()
-    }
-
     func navigateToReaderSearch() {
-        unsupportedFeatureFallback()
-    }
-
-    func navigateToReaderSearch(withSearchText: String) {
         unsupportedFeatureFallback()
     }
 
