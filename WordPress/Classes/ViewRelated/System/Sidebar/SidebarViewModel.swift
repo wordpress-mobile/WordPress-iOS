@@ -16,6 +16,7 @@ enum SidebarNavigationStep {
     case domains
     case help
     case profile
+    case signIn
 }
 
 final class SidebarViewModel: ObservableObject {

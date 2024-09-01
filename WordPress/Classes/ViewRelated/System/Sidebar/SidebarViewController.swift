@@ -127,12 +127,6 @@ private struct SidebarView: View {
                 Label(Strings.domains, systemImage: "network")
             }
         }
-        // A dedicated profile view is displayed at the bottom when user is signed in.
-        if viewModel.account == nil {
-            Button(action: { viewModel.navigate(.profile) }) {
-                Label(Strings.me, systemImage: "person")
-            }
-        }
 #else
         Button(action: { viewModel.navigate(.help) }) {
             Label(Strings.help, systemImage: "questionmark.circle")
@@ -146,19 +140,56 @@ private struct SidebarProfileContainerView: View {
     @Environment(\.isSearching) private var isSearching // placemenet is important
 
     var body: some View {
-        if let account = viewModel.account, !isSearching {
-            Button(action: { viewModel.navigate(.profile) }) {
-                SidebarProfileView(
-                    username: account.username,
-                    displayName: account.displayName,
-                    avatar: account.avatarURL.flatMap(URL.init(string:))
-                )
-                .containerShape(Rectangle()) // Make entire row interactive
-            }
-            .buttonStyle(.plain)
-            .padding(.horizontal)
-            .padding(.top, 8)
-            .background(Color(uiColor: .secondarySystemBackground))
+        if !isSearching, let content = self.content {
+            content
+                .foregroundStyle(Color(.brand))
+                .padding(.horizontal)
+                .padding(.top, 8)
+        }
+    }
+
+    var content: AnyView? {
+        if let account = viewModel.account {
+            AnyView(
+                Button(action: { viewModel.navigate(.profile) }) {
+                    SidebarProfileView(
+                        username: account.username,
+                        displayName: account.displayName,
+                        avatar: account.avatarURL.flatMap(URL.init(string:))
+                    )
+                }
+                .containerShape(Rectangle())
+            )
+        } else if AppConfiguration.isJetpack {
+            AnyView(
+                HStack {
+                    Button(action: { viewModel.navigate(.signIn) }) {
+                        HStack {
+                            Image(systemName: "person.crop.circle")
+                                .font(.title2)
+                            VStack(alignment: .leading, spacing: 1) {
+                                Text("Sign In")
+                                    .font(.subheadline.weight(.medium))
+                                Text("WordPress.com")
+                                    .font(.footnote)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                    }
+
+                    Spacer()
+
+                    Button(action: { viewModel.navigate(.profile) }) {
+                        Image(systemName: "gearshape")
+                            .font(.title3)
+                            .foregroundColor(Color.secondary)
+                    }
+                    .frame(width: 44, height: 44)
+                    .contentShape(Rectangle())
+                }
+            )
+        } else {
+            nil
         }
     }
 }

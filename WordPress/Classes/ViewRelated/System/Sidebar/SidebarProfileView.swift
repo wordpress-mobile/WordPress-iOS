@@ -21,7 +21,8 @@ struct SidebarProfileView: View {
             Spacer()
 
             Image(systemName: "gearshape")
-                .foregroundColor(Color.secondary.opacity(0.7))
+                .font(.title3)
+                .foregroundColor(Color.secondary)
         }
     }
 }
