@@ -838,7 +838,11 @@ extension NotificationsViewController {
         if shouldPushDetailsViewController {
             navigationController?.pushViewController(controller, animated: true)
         } else if isSidebarModeEnabled {
-            splitViewController?.setViewController(controller, for: .secondary)
+            if let splitViewController {
+                splitViewController.setViewController(controller, for: .secondary)
+            } else {
+                navigationController?.pushViewController(controller, animated: true)
+            }
         } else {
             showDetailViewController(controller, sender: nil)
         }
