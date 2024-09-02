@@ -69,4 +69,54 @@ final class BlogListViewModelTests: CoreDataTestCase {
         let displayedNames = viewModel.allSites.map(\.title)
         XCTAssertEqual(displayedNames, [".Org", "51 Zone", "A", "C"])
     }
+
+    func testTopSites() throws {
+        // Prepare data:
+        //
+        // - Create 10 blogs.
+        //   - id: 1 to 9.
+        //   - title: "Site $id"
+        // - Blog id 5, 6, 7 are recently used blogs.
+
+        // The key of `blogs` is blog id.
+        let blogs: [Int: Blog] = (1...9).reduce(into: [:]) { result, dotComId in
+            let blog = BlogBuilder(mainContext)
+                .with(siteName: "Site \(dotComId)")
+                .with(dotComID: dotComId)
+                .build()
+            result[dotComId] = blog
+        }
+        try mainContext.save()
+
+        recentSitesService.touch(blog: blogs[5]!)
+        recentSitesService.touch(blog: blogs[6]!)
+        recentSitesService.touch(blog: blogs[7]!)
+
+        setupViewModel()
+
+        XCTAssertEqual(
+            viewModel.topSites(limit: 2, containing: nil).map { $0.title },
+            ["Site 5", "Site 6"]
+        )
+
+        XCTAssertEqual(
+            viewModel.topSites(limit: 3, containing: nil).map { $0.title },
+            ["Site 5", "Site 6", "Site 7"]
+        )
+
+        XCTAssertEqual(
+            viewModel.topSites(limit: 4, containing: nil).map { $0.title },
+            ["Site 1", "Site 5", "Site 6", "Site 7"]
+        )
+
+        XCTAssertEqual(
+            viewModel.topSites(limit: 3, containing: TaggedManagedObjectID(blogs[5]!)).map { $0.title },
+            ["Site 5", "Site 6", "Site 7"]
+        )
+
+        XCTAssertEqual(
+            viewModel.topSites(limit: 3, containing: TaggedManagedObjectID(blogs[8]!)).map { $0.title },
+            ["Site 5", "Site 6", "Site 8"]
+        )
+    }
 }

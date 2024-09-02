@@ -60,7 +60,7 @@ private struct SidebarView: View {
 
     @ViewBuilder
     private func makeSiteListSection(with viewModel: BlogListViewModel) -> some View {
-        let topSites = viewModel.topSites(containing: self.viewModel.selection?.selectedSite)
+        let topSites = viewModel.topSites(limit: SidebarView.displayedSiteLimit, containing: self.viewModel.selection?.selectedSite)
         if !topSites.isEmpty {
             makeSiteList(with: topSites)
         } else {
@@ -162,14 +162,14 @@ private struct SidebarProfileContainerView: View {
     }
 }
 
-private extension BlogListViewModel {
+extension BlogListViewModel {
     /// Returns the most recent sites, the site for given blog id, and mixes in the rest of the sites
     /// until the display limimt is reached.
-    func topSites(containing blogId: TaggedManagedObjectID<Blog>?) -> [BlogListSiteViewModel] {
-        var topSites = recentSites.prefix(SidebarView.displayedSiteLimit)
+    func topSites(limit: Int, containing blogId: TaggedManagedObjectID<Blog>?) -> [BlogListSiteViewModel] {
+        var topSites = recentSites.prefix(limit)
         var encounteredIDs = Set(topSites.map(\.id))
         for site in allSites where !encounteredIDs.contains(site.id) {
-            if topSites.count >= SidebarView.displayedSiteLimit {
+            if topSites.count >= limit {
                 break
             }
             encounteredIDs.insert(site.id)
@@ -182,7 +182,7 @@ private extension BlogListViewModel {
 
         var sorted = Array(topSites).sorted { $0.title.localizedCaseInsensitiveCompare($1.title) == .orderedAscending }
 
-        if let blogId, sorted.count > SidebarView.displayedSiteLimit, let toBeRemoved = sorted.lastIndex(where: { $0.id != blogId }) {
+        if let blogId, sorted.count > limit, let toBeRemoved = sorted.lastIndex(where: { $0.id != blogId }) {
             sorted.remove(at: toBeRemoved)
         }
 
