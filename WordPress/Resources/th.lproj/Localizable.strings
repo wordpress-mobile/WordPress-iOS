@@ -73,9 +73,6 @@
 /* No comment provided by engineer. */
 "Add alt text" = "เพิ่ม alt text";
 
-/* Add self-hosted site button */
-"Add self-hosted site" = "เพิ่มเว็บที่ติดตั้งบนโฮสท์ตัวเอง";
-
 /* Label for url blog setting
    Register Domain - Address information field placeholder for Address line */
 "Address" = "ที่อยู่";
@@ -178,7 +175,7 @@
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
-   Cancel
+   Button title. Tapping it cancels the login flow.
    Cancel a prompt
    Cancel Action
    Cancel action on share extension editor screen.
@@ -189,6 +186,7 @@
    Cancel action title
    Cancel button
    Cancel button for alert
+   Cancel button label
    Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Cancel button.
    Cancel button. Site creation modal popover.
@@ -210,6 +208,7 @@
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
+   Option to cancel the email app selection when logging in with magic links
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
@@ -240,6 +239,9 @@
 
 /* Center alignment for an image. Should be the same as in core WP. */
 "Center" = "ตรงกลาง";
+
+/* Popup title for wrong SSL certificate. */
+"Certificate error" = "การรับรองผิดพลาด";
 
 /* No comment provided by engineer. */
 "Clear Old Activity Logs" = "ล้างค่า log กิจกรรมเก่า";
@@ -307,8 +309,20 @@
 /* Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "ยืนยัน";
 
+/* No comment provided by engineer. */
+"Connecting to WordPress.com" = "กำลังเชื่อมต่อไปยัง  WordPress.com";
+
+/* Part of a prompt suggesting that there is more content for the user to read. */
+"Continue reading" = "อ่านเพิ่มเติม";
+
+/* Error message informing the user that there was a problem subscribing to a site or feed. */
+"Could not follow the site at the address specified." = "ไม่สามารถติดตามเว็บไซต์ตามที่อยู่ที่ระบุ";
+
 /* An error description explaining that Follow could not be toggled due to a missing blogURL attribute. */
 "Could not toggle Follow: missing blogURL attribute" = "ไม่สามารถติดตาม toggle : blogURL attribute หายไป";
+
+/* Error message informing the user that there was a problem unsubscribing to a site or feed. */
+"Could not unfollow the site at the address specified." = "ไม่สามารถเลิกติดตามเว็บตามที่อยู่ที่ระบุ";
 
 /* This is the text we display to the user when we ask them for a review and they've indicated they don't like the app */
 "Could you tell us how we could improve?" = "คุณสามารถบอกว่าเราจะพัฒนาได้อย่างไรหรือไม่?";
@@ -323,13 +337,13 @@
    Register Domain - Domain contact information field Country */
 "Country" = "ประเทศ";
 
+/* The button title text for creating a new account. */
+"Create Account" = "สร้างบัญชี";
+
 /* Button to progress to the next step
    Site creation. Step 1. Screen title
    Title for the button to progress with creating the site with the selected design. */
 "Create Site" = "สร้างเว็บไซต์";
-
-/* Create WordPress.com site button */
-"Create WordPress.com site" = "สร้างเว็บไซต์ WordPress.com";
 
 /* No comment provided by engineer. */
 "Current" = "ตอนนี้";
@@ -399,7 +413,10 @@
    Title for the Discussion Settings Screen */
 "Discussion" = "การสนทนา";
 
-/* Dismiss a view. Verb */
+/* Accessibility label for button to dismiss a bottom sheet
+   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+   Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
+   Dismiss a view. Verb */
 "Dismiss" = "ยกเลิก";
 
 /* Display Name label text.
@@ -464,8 +481,8 @@
 /* Notification Settings Channel */
 "Email from WordPress.com" = "อีเมลจาก WordPress.com";
 
-/* No comment provided by engineer. */
-"Enter a password" = "กรุณาใส่รหัสผ่าน";
+/* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
+"Empty URL" = "URL ว่างเปล่า";
 
 /* (placeholder) Help enter WordPress password */
 "Enter password" = "ใส่รหัสผ่าน";
@@ -515,6 +532,9 @@
 /* Button title. Follow the comments on a post. */
 "Follow" = "ติดตาม";
 
+/* User role badge */
+"Follower" = "ผู้ติดตาม";
+
 /* Label for number of followers. */
 "Followers" = "ผู้ติดตาม";
 
@@ -530,6 +550,9 @@
 /* Title for the general section in site settings screen */
 "General" = "ทั่วไป";
 
+/* Alerts the user that wpcom account information is being retrieved. */
+"Getting account information" = "ได้รับข้อมูลบัญชี";
+
 /* Cancel */
 "Give Up" = "ยอมแพ้";
 
@@ -537,8 +560,7 @@
    Opens WPiOS Settings.app Section */
 "Go to iOS Settings" = "ไปที่การตั้งค่า iOS";
 
-/* Accessibility label for HTML button on formatting toolbar.
-   HTML Attachment Label */
+/* Accessibility label for HTML button on formatting toolbar. */
 "HTML" = "HTML";
 
 /* Help button
@@ -550,11 +572,8 @@
    Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Help & Support" = "ช่วยเหลือและสนับสนุน";
 
-/* Hide All */
-"Hide All" = "ซ่อนทั้งหมด";
-
-/* Hide All Sites */
-"Hide All Sites" = "ซ่อนเว็บทั้งหมด";
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
+"Hidden" = "ซ่อน";
 
 /* No comment provided by engineer. */
 "Hide keyboard" = "ซ่อนคีย์บอร์ด";
@@ -586,6 +605,15 @@
 
 /* Title of Insights stats filter. */
 "Insights" = "ข้อมูลเชิงลึก";
+
+/* No comment provided by engineer. */
+"Invalid Site Address" = "ที่อยู่เว็บไม่ถูกต้อง";
+
+/* No comment provided by engineer. */
+"Invalid Site Title" = "หัวข้อเว็บไซต์นี้ใช้งานไม่ได้";
+
+/* No comment provided by engineer. */
+"Invalid username" = "ชื่อผู้ใช้ใช้งานไม่ได้";
 
 /* Accessibility label for italic button on formatting toolbar.
    Discoverability title for italic formatting keyboard shortcut. */
@@ -668,7 +696,6 @@
 "Loading stream..." = "กำลังโหลดสตรีม...";
 
 /* Loading tags
-   Loading tags.
    Loading. Verb
    Suggestions loading message
    Text displayed in HUD while a media item is being loaded.
@@ -684,8 +711,11 @@
 /* No comment provided by engineer. */
 "Log Files By Created Date" = "ไฟล์ log โดยวันที่สร้างขึ้น";
 
-/* Label for logging in to WordPress.com account
-   Log In 3D Touch Shortcut */
+/* Button title.  Tapping takes the user to the login form.
+   Label for logging in to WordPress.com account
+   Log In 3D Touch Shortcut
+   Log In button label.
+   View title during the log in process. */
 "Log In" = "เข้าสู่ระบบ";
 
 /* Login Request Expired */
@@ -693,6 +723,9 @@
 
 /* No comment provided by engineer. */
 "Logs" = "log";
+
+/* Title of a button. */
+"Lost your password?" = "จำรหัสผ่านไม่ได้?";
 
 /* No comment provided by engineer. */
 "Main Navigation" = "เมนูนำทางหลัก";
@@ -719,7 +752,6 @@
 "Me" = "ฉัน";
 
 /* Noun. Title. Links to the blog's Media library.
-   The menu item to select during a guided tour.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "ไฟล์สื่อ";
@@ -758,10 +790,6 @@
    Title of My Site tab */
 "My Site" = "เว็บของฉัน";
 
-/* Title for site picker screen.
-   Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
-"My Sites" = "เว็บไซต์ของฉัน";
-
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "ต้องการความช่วยเหลือ?";
 
@@ -778,7 +806,9 @@
 "Newest first" = "เรียงตามใหม่สุดก่อน";
 
 /* Next action on comment moderation snackbar.
-   Next action on share extension editor screen. */
+   Next action on share extension editor screen.
+   Title of a button.
+   Title of a button. The text should be capitalized. */
 "Next" = "ต่อไป";
 
 /* Label for a cancel button */
@@ -832,7 +862,6 @@
    Notifications tab bar item accessibility label
    Notifications View Controller title
    Noun. Name of the Notifications feature
-   The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "คำเตือน";
 
@@ -849,10 +878,12 @@
    Button title. Acknowledges a prompt.
    Button title. An acknowledgement of the message displayed in a prompt.
    Default action
+   Dismisses the alert
    Marks all notifications as read.
    Menus: button title for finishing editing of a menu item.
    OK
    OK button for alert
+   Ok button for dismissing alert helping users understand their site address
    OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
    Submit button on prompt for user information.
@@ -922,7 +953,6 @@
 "Other Sites" = "เว็บอื่น";
 
 /* Noun. Title. Links to the blog's Pages screen.
-   The item to select during a guided tour.
    This is the section title
    Title of the screen showing the list of pages for a blog. */
 "Pages" = "หน้า";
@@ -936,8 +966,11 @@
    Title for selecting parent category of a category */
 "Parent Category" = "หมวดหมู่หลัก";
 
-/* Label for entering password in password field
-   Label for the password field. Should be the same as WP core.
+/* Accessibility label for the password text field in the self-hosted login page.
+   Label for entering password in password field
+   Login dialog password placeholder
+   Password placeholder
+   Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "รหัสผ่าน";
 
@@ -962,6 +995,21 @@
 
 /* Politely asks the user to check their internet connection before trying again. */
 "Please check your internet connection and try again." = "โปรดตรวจสอบการเชื่อมต่ออินเตอร์เนทของคุณแล้วลองอีกครั้ง";
+
+/* No comment provided by engineer. */
+"Please enter a site address." = "โปรดใส่ที่อยู่เว็บไซต์";
+
+/* No comment provided by engineer. */
+"Please enter a username." = "กรุณาใส่ชื่อผู้ใช้";
+
+/* Error message displayed when the user attempts use an invalid email address. */
+"Please enter a valid email address." = "โปรดใส่ที่อยู่อีเมล์ที่ใช้งานได้";
+
+/* Popup message to ask for user credentials (fields shown below). */
+"Please enter your credentials" = "โปรดใส่การรับรองของคุณ";
+
+/* A short prompt asking the user to properly fill out all login fields. */
+"Please fill out all the fields" = "กรุณากรอกข้อมูลในช่องทั้งหมด";
 
 /* No comment provided by engineer. */
 "Please try entering your login details again." = "กรุณาลองใส่ข้อมูลเข้าสู่ระบบของคุณอีกครั้ง";
@@ -1043,7 +1091,6 @@
    The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
-   The menu item to select during a guided tour.
    Title of the 'Reader' tab - used for spotlight indexing on iOS. */
 "Reader" = "ผู้อ่าน";
 
@@ -1070,11 +1117,9 @@
 "Related Posts" = "เรื่องที่เกี่ยวข้อง";
 
 /* Alert button to confirm a plugin to be removed
-   Button label when removing a blog
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
-   Remove an image/posts/etc
-   Removes a self hosted site from the app */
+   Remove an image/posts/etc */
 "Remove" = "ลบ";
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
@@ -1141,6 +1186,9 @@
 /* Right alignment for an image. Should be the same as in core WP. */
 "Right" = "ขวา";
 
+/* One Time Code has been sent via SMS */
+"SMS Sent" = "ส่ง SMS";
+
 /* Menus save button title
    Save Action
    Save button label (saving content, ex: Post, Page, Comment, Category).
@@ -1158,19 +1206,12 @@
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "เข้าตารางเวลาแล้ว";
 
-/* Placeholder text for the search bar
-   Title of Stats section that shows search engine referrer traffic.
+/* Title of Stats section that shows search engine referrer traffic.
    Title of the Reader's search feature */
 "Search" = "ค้นหา";
 
 /* Period Stats 'Search Terms' header */
 "Search Terms" = "เงื่อนไขการค้นหา";
-
-/* Blog Picker's Title */
-"Select Site" = "เลือกเว็บ";
-
-/* Blog list page edit mode header label */
-"Select which sites will be shown in the site picker." = "เลือกเว็บใดที่จะแสดงในตัวเลือกเว็บ";
 
 /* Settings: Sending Pingbacks */
 "Send Pingbacks" = "ส่ง Pingbacks";
@@ -1208,37 +1249,74 @@
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "แบ่งปันเรื่องของคุณที่นี่...";
 
-/* Alert title picking theme type to browse */
-"Show themes:" = "แสดงธีม:";
-
 /* Title for the Language Picker View */
 "Site Language" = "ภาษาของเว็บ";
 
 /* Default title for a site
    Label for site title blog setting
-   The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "หัวข้อเว็บ";
-
-/* The item to select during a guided tour. */
-"Site URL" = "URL เว็บ";
 
 /* Setting: indicates if Achievements will be notified */
 "Site achievements" = "ความสำเร็จของเว็บ";
 
+/* No comment provided by engineer. */
+"Site address must be at least 4 characters." = "ที่อยู่เว็บไซต์ต้องมีอย่างน้อย 4 ตัวอักษร";
+
 /* Image size option title. */
 "Size" = "ขนาด";
 
-/* Button that allows the user to skip the prompt and be brought to the app
-   Continue without making a selection
+/* Continue without making a selection
    Continue without making a selection. */
 "Skip" = "ข้าม";
+
+/* This error message occurs when a user tries to create a username that contains an invalid phrase for WordPress.com. The %@ may include the phrase in question if it was sent down by the API */
+"Sorry, but your username contains an invalid phrase%@." = "ขอโทษครับ  แต่ชื่อผู้ใช้ของคุณประกอบด้วยสัญญลักษณ์ที่ใช้งานไม่ได้ %@";
 
 /* Error title when updating the account password fails */
 "Sorry, can't log in" = "ขอโทษครับ ไม่สามารถเข้าสู่ระบบได้";
 
 /* No comment provided by engineer. */
+"Sorry, site addresses can only contain lowercase letters (a-z) and numbers." = "ขอโทษครับ  ที่อยู่เว็บไซต์ต้องประกอบด้วยตัวอักษรเล็ก (a-z) และตัวเลขเท่านั้น";
+
+/* No comment provided by engineer. */
+"Sorry, site addresses may not contain the character &#8220;_&#8221;!" = "ขอโทษครับ  ที่อยู่เว็บต้องไม่มีตัวอักษร &#8220;_&#8221;!";
+
+/* No comment provided by engineer. */
+"Sorry, site addresses must have letters too!" = "ขอโทษครับ  ที่อยู่เว็บต้องมีตัวอักษรด้วย";
+
+/* Error message displayed when the entered email is not available. */
+"Sorry, that email address is already being used!" = "ขอโทษครับ  แต่ที่อยู่อีเมล์นี้ถูกใช้ไปแล้ว";
+
+/* No comment provided by engineer. */
+"Sorry, that email address is not allowed!" = "ขอโทษครับ  ที่อยู่อีเมล์นี้ไม่อนุญาตให้ใช้งาน";
+
+/* No comment provided by engineer. */
+"Sorry, that site already exists!" = "ขอโทษครับ  เว็บนั้นมีอยู่แล้ว";
+
+/* No comment provided by engineer. */
+"Sorry, that site is reserved!" = "ขอโทษครับ  ชื่อเว็บนั้นถูกสงวนไว้";
+
+/* No comment provided by engineer. */
+"Sorry, that username already exists!" = "ขอโทษครับ ชื่อผู้ใช้นั้นมีอยู่แล้ว";
+
+/* No comment provided by engineer. */
+"Sorry, that username is unavailable." = "ขอโทษครับ  ชื่อผู้ใช้นั้นไม่สามารถใช้ได้";
+
+/* No comment provided by engineer. */
+"Sorry, usernames can only contain lowercase letters (a-z) and numbers." = "ขอโทษครับ  ชื่อผู้ใช้ต้องประกอบด้วยตัวอักษรตัวเล็ก(a ถึง z)และตัวเลขเท่านั้น";
+
+/* No comment provided by engineer. */
+"Sorry, usernames may not contain the character &#8220;_&#8221;!" = "ขอโทษครับ  ชื่อผู้ใช้ต้องไม่มีตัวอักษร &#8220;_&#8221;!";
+
+/* No comment provided by engineer. */
+"Sorry, usernames must have letters (a-z) too!" = "ขอโทษครับ ชื่อผู้ใช้ต้องมีตัวอักษร (a ถึง z)  ด้วย";
+
+/* No comment provided by engineer. */
 "Sorry, you cannot access this feature. Please check your User Role on this site." = "ขอโทษครับ คุณไม่สามารถใช้คำสั่งนี้  กรุณาตรวจสอบบทบาทของคุณบนเว็บนี้";
+
+/* No comment provided by engineer. */
+"Sorry, you may not use that site address." = "ขอโทษครับ คุณไม่อาจจะใช้ที่อยู่เว็บนั้นได้";
 
 /* Discussion Settings Title
    Settings: Comments Sort Order */
@@ -1258,8 +1336,7 @@
 /* Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
-   Stats window title
-   The item to select during a guided tour. */
+   Stats window title */
 "Stats" = "สถิติ";
 
 /* Accessibility label for strikethrough button on formatting toolbar. */
@@ -1275,9 +1352,6 @@
 /* Support button that appears in the Theme Browser Header
    Theme Support action title */
 "Support" = "สนับสนุน";
-
-/* Title for back button that leads to the site picker screen. */
-"Switch Site" = "เปลี่ยนเว็บไซต์";
 
 /* Label for tagline blog setting
    Title for screen that show tagline editor */
@@ -1305,18 +1379,45 @@
 /* Message of alert when theme activation succeeds */
 "Thanks for choosing %@ by %@" = "ขอบคุณที่เลือกใช้ %1$@ โดย %2$@";
 
+/* No comment provided by engineer. */
+"That email address has already been used. Please check your inbox for an activation email. If you don't activate you can try again in a few days." = "ที่อยู่อีเมล์นี้ถูกใช้ไปแล้ว  กรุณาตรวจสอบกล่องเมล์เข้าของคุณสำหรับอีเมล์ยืนยัน  ถ้าคุณยังไม่ยืนยัน  คุณสามารถยืนยันได้ภายหลังภายในสองสามวัน";
+
+/* No comment provided by engineer. */
+"That site address is not allowed." = "ที่อยู่เว็บนั้นไม่อนุญาตให้ใช้งาน";
+
+/* No comment provided by engineer. */
+"That site is currently reserved but may be available in a couple days." = "ชื่อเว็บนั้นถูกสงวนไว้ แต่อาจจะเปิดให้ใช้งานได้ในไม่กี่วัน";
+
+/* No comment provided by engineer. */
+"That username is currently reserved but may be available in a couple of days." = "ชื่อผู้ใช้นั้นถูกสงวนไว้ แต่อาจจะเปิดให้ใช้งานได้ในไม่กี่วัน ";
+
+/* No comment provided by engineer. */
+"That username is not allowed." = "ชื่อผู้ใช้นั้นไม่อนุญาตให้ใช้งาน";
+
 /* Error message shown when a media upload fails because the user isn't connected to the Internet.
    Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The Internet connection appears to be offline." = "ดูเหมือนว่าไม่มีการเชื่อมต่ออินเตอร์เนต";
 
+/* Error message describing a problem with a URL. */
+"The URL is missing a valid host." = "URL นั้นขาดโฮสท์ที่ใช้งานได้";
+
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "แอพไม่สามารถจดจำการตอบสนองของเซิร์ฟเวอร์ กรุณา ตรวจสอบการตั้งค่าเว็บของคุณ";
+
+/* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
+"The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "การรับรองสำหรับเซิร์ฟเวอร์นี้ใช้งานไม่ได้ คุณอาจจะเชื่อมต่อกับเซิร์ฟเวอร์ที่แกล้งทำเป็น “%@” ซึ่งสามารถทำให้ข้อความความลับของคุณอยู่ในความเสี่ยง\n\nคุณต้องการที่จะเชื่อมั่นการรับรองนี้อยู่หรือไม่?";
 
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The internet connection appears to be offline." = "การเชื่อมต่ออินเตอร์เนตเหมือนว่าปิดใช้งานอยู่";
 
 /* WordPress.com Push Authentication Expired message */
 "The login request has expired. Log in to WordPress.com to try again." = "คำขอร้องเข้าสู่ระบบหมดอายุ  ให้คุณเข้าสู่ระบบ WordPress.com แล้วลองอีกครั้ง";
+
+/* No comment provided by engineer. */
+"The server returned an empty response. This usually means you need to increase the memory limit for your site." = "เซิร์ฟเวอร์ตอบสนองค่าว่างกลับมา  นี่อาจเป็นสัญญาณว่าคุณต้องเพิ่มหน่วยความจำสำหรับเว็บของคุณ";
+
+/* No comment provided by engineer. */
+"The site address must be shorter than 64 characters." = "ที่อยู่เว็บต้องสั้นกว่า 64 ตัวอักษร";
 
 /* No comment provided by engineer. */
 "The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "เว็บไซต์ที่ %1$@ ใช้เวิร์ดเพรส %2$@ เราแนะนำให้อัปเดตไปยังรุ่นล่าสุด  หรืออย่างน้อยรุ่น %3$@";
@@ -1343,6 +1444,12 @@
 
 /* Displayed whenever a Comment Update Fails */
 "There has been an unexpected error while updating your comment" = "มีความผิดพลาดเหนือความคาดหมายในขณะอัปเดตความเห็นของคุณ";
+
+/* Error message informing the user that there was a problem blocking posts from a site from their reader. */
+"There was a problem blocking posts from the specified site." = "มีปัญหาในการปิดกั้นเรื่องจากเว็บที่กำหนด";
+
+/* Error message informing the user that there was a problem clearing the block on site preventing its posts from displaying in the reader. */
+"There was a problem removing the block for specified site." = "มีปัญหาในการปิดกั้นสำหรับเว็บที่กำหนด";
 
 /* An error message display if the users device does not have a camera input available */
 "This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this." = "แอพนี้ต้องการการอนุญาตเข้าถึงกล้องเพื่อถ่ายรูป\/วีดีโอใหม่  โปรดเปลี่ยนการตั้งค่าความเป็นส่วนตัวถ้าคุณต้องการที่จะอนุญาตสิ่งนี้";
@@ -1389,6 +1496,9 @@
    Title of trashed Comments filter. */
 "Trashed" = "ย้ายไปถังขยะแล้ว";
 
+/* Connect when the SSL certificate is invalid */
+"Trust" = "ไว้ใจได้";
+
 /* Theme Try & Customize action title */
 "Try & Customize" = "ทดลองและปรับแต่ง";
 
@@ -1431,9 +1541,11 @@
    Undo action */
 "Undo" = "ย้อนกลับ";
 
-/* Label for size of media when it's not possible to calculate it.
-   Unknown Tag Name */
+/* Label for size of media when it's not possible to calculate it. */
 "Unknown" = "ไม่รู้จัก";
+
+/* No comment provided by engineer. */
+"Unknown error" = "ความผิดพลาดไม่ทราบสาเหตุ";
 
 /* Search Terms label for 'unknown search terms'. */
 "Unknown search terms" = "ไม่รู้จักเงื่อนไขการค้นหา";
@@ -1474,14 +1586,21 @@
 "Uploading..." = "กำลังอัปโหลด...";
 
 /* A placeholder for the twitter username
+   Accessibility label for the username text field in the self-hosted login page.
    Account Settings Username label
    Label for entering username in the username field
+   Login dialog username placeholder
+   Placeholder for the username textfield.
    The header and main title
-   Username label text. */
+   Username label text.
+   Username placeholder */
 "Username" = "ชื่อผู้ใช้";
 
 /* Setting: indicates if Mentions will be notified */
 "Username mentions" = "การอ้างถึงชื่อผู้ใช้";
+
+/* No comment provided by engineer. */
+"Username must be at least 4 characters." = "ชื่อผู้ใช้ต้องมีอย่างน้อย 4 ตัวอักษร";
 
 /* Period Stats 'Videos' header */
 "Videos" = "วีดีโอ";
@@ -1562,9 +1681,6 @@
 /* WordPress.com Notification Settings Title */
 "WordPress.com Updates" = "การอัปเดต WordPress.com";
 
-/* Message offering to hide all WPCom Sites */
-"Would you like to hide all WordPress.com Sites?" = "คุณต้องการที่จะซ่อนเว็บ WordPress.com ทั้งหมด?";
-
 /* Placeholder text for inline compose view */
 "Write a reply…" = "เขียนข้อความตอบกลับ...";
 
@@ -1588,6 +1704,9 @@
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "คุณสามารถตั้งค่าเหล่านี้ทับสำหรับแต่ละเรื่อง";
+
+/* No comment provided by engineer. */
+"You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "คุณไม่สามารถใช้ที่อยู่อีเมล์นั้นในการลงทะเบียนได้  เรามีปัญหากับระบบของพวกเขาที่ปิดกั้นอีเมล์บางส่วนของเรา  โปรดใช้เมล์ของผู้ให้บริการอีเมล์อื่น";
 
 /* Show when clicking cancel on a comment text box and you didn't save your changes.
    Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment. */
@@ -1619,6 +1738,9 @@
 
 /* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
 "ios-widget.tVvJ9c" = "Select Site Intent";
+
+/* Later today */
+"later today" = "ภายหลังในวันนี้";
 
 /* Title of posts label in all time widget */
 "widget.alltime.posts.label" = "เรื่อง";
