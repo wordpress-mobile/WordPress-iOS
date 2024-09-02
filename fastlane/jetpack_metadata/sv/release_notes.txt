@@ -1,0 +1,10 @@
+Den här månaden har vi massor av visuella korrigeringar och en ny experimentell funktion som vi skulle uppskatta din feedback på.
+
+Visuellt har vi:
+- Uppdaterat webbplatsväljaren så att den ska vara enklare att använda, med tillagt stöd för utvecklingswebbplatser, kontextmenyer och förhandsgranskningar.
+- Åtgärdat ett problem som gjorde att vissa navigeringsfält i appen var transparenta.
+- Åtgärdat ett problem som gjorde att ikoner för privata webbplatser inte laddades.
+- Uppdaterat dussintals skärmar för att undvika visuella buggar genom att förenkla koden.
+- Åtgärdat ett problem som gjorde att prenumerantdiagrammet visades med fel bakgrundsfärg.
+
+Under "Appinställningar" kan du nu testa Applikationslösenord – en ny experimentell funktion som gör att webbplatser som drivs på egen server kan fungera med apparna om de använder 2FA eller SSO.
