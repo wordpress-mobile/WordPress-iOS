@@ -185,7 +185,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
     func currentlyVisibleBlog() -> Blog? {
         assert(Thread.isMainThread)
 
-        guard case let .blog(id) = sidebarViewModel.selection else {
+        guard let id = sidebarViewModel.selection?.selectedSite else {
             return nil
         }
 

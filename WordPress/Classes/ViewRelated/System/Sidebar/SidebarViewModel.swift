@@ -8,6 +8,13 @@ enum SidebarSelection: Hashable {
     case blog(TaggedManagedObjectID<Blog>)
     case notifications
     case reader
+
+    var selectedSite: TaggedManagedObjectID<Blog>? {
+        if case let .blog(id) = self {
+            return id
+        }
+        return nil
+    }
 }
 
 enum SidebarNavigationStep {
