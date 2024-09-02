@@ -129,11 +129,6 @@ extension ReaderTabView {
         containerView.pinSubviewToAllEdges(childController.view)
 
         self.childController = childController
-
-        if viewModel.shouldShowCommentSpotlight {
-            let title = NSLocalizedString("Comment to start making connections.", comment: "Hint for users to grow their audience by commenting on other blogs.")
-            childController.displayNotice(title: title)
-        }
     }
 
     private func activateConstraints() {

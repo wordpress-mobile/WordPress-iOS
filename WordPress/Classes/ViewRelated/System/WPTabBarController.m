@@ -281,12 +281,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     self.selectedIndex = WPTabMySites;
 }
 
-- (void)resetReaderTab
-{
-    _readerNavigationController = nil;
-    [self setViewControllers:[self tabViewControllers]];
-}
-
 #pragma mark - Navigation Coordinators
 
 - (MySitesCoordinator *)mySitesCoordinator

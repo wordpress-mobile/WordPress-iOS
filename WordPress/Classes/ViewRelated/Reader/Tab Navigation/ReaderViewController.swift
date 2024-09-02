@@ -4,11 +4,9 @@ import UIKit
 final class ReaderViewController: UIViewController {
     lazy var readerTabViewModel: ReaderTabViewModel = {
         let viewModel = ReaderTabViewModel(
-            readerContentFactory: { [weak self] content in
+            readerContentFactory: { content in
                 if content.topicType == .discover, let topic = content.topic {
-                    let controller = ReaderCardsStreamViewController.controller(topic: topic)
-                    controller.shouldShowCommentSpotlight = self?.readerTabViewModel.shouldShowCommentSpotlight ?? false
-                    return controller
+                    return ReaderCardsStreamViewController.controller(topic: topic)
                 } else if let topic = content.topic {
                     return ReaderStreamViewController.controllerWithTopic(topic)
                 } else {
@@ -45,9 +43,7 @@ final class ReaderViewController: UIViewController {
 
     private func makeReaderContentViewController(with content: ReaderContent) -> ReaderContentViewController {
         if content.topicType == .discover, let topic = content.topic {
-            let controller = ReaderCardsStreamViewController.controller(topic: topic)
-            controller.shouldShowCommentSpotlight = readerTabViewModel.shouldShowCommentSpotlight
-            return controller
+            return ReaderCardsStreamViewController.controller(topic: topic)
         } else if let topic = content.topic {
             return ReaderStreamViewController.controllerWithTopic(topic)
         } else {
