@@ -50,7 +50,7 @@ class NotificationSettingsService {
 
                 for settings in parsed {
                     guard let blog = settings.blog,
-                          let pushNotificationStream = settings.streams.first(where: { $0.kind == .Device }),
+                          let pushNotificationStream = settings.streams.first(where: { $0.kind == .device }),
                           let preferences = pushNotificationStream.preferences else {
 
                         continue
@@ -174,14 +174,14 @@ class NotificationSettingsService {
     /// - Returns: An array of NotificationSettings objects
     ///
     fileprivate func settingsFromRemote(_ remoteSettings: [RemoteNotificationSettings]) -> [NotificationSettings] {
-        var parsed       = [NotificationSettings]()
-        let blogs        = ((try? BlogQuery().blogs(in: coreDataStack.mainContext)) ?? []).filter { $0.dotComID != nil }
-        let blogMap      = Dictionary(blogs.map { ($0.dotComID!.intValue, $0) }, uniquingKeysWith: { _, new in new })
+        var parsed = [NotificationSettings]()
+        let blogs = ((try? BlogQuery().blogs(in: coreDataStack.mainContext)) ?? []).filter { $0.dotComID != nil }
+        let blogMap = Dictionary(blogs.map { ($0.dotComID!.intValue, $0) }, uniquingKeysWith: { _, new in new })
 
         for remoteSetting in remoteSettings {
-            let channel  = channelFromRemote(remoteSetting.channel)
-            let streams  = streamsFromRemote(remoteSetting.streams)
-            let blog     = blogForChannel(channel, blogMap: blogMap)
+            let channel = channelFromRemote(remoteSetting.channel)
+            let streams = streamsFromRemote(remoteSetting.streams)
+            let blog = blogForChannel(channel, blogMap: blogMap)
             let settings = NotificationSettings(channel: channel, streams: streams, blog: blog)
 
             parsed.append(settings)
@@ -256,21 +256,21 @@ class NotificationSettingsService {
     /// - Returns: Dictionary of values, as expected by the Backend, for the specified Channel and Stream.
     ///
     fileprivate func remoteFromSettings(_ settings: [String: Bool], channel: Channel, stream: Stream) -> [String: Any] {
-        var wrappedSettings: Any     = settings as Any
-        var streamKey                 = stream.kind.rawValue
+        var wrappedSettings: Any = settings as Any
+        var streamKey = stream.kind.rawValue
 
         switch stream.kind {
-        case .Device:
+        case .device:
             // Devices require a special structure:
             // The backend actually expects an array of dictionaries of devices, each one with its own
             // device_id set.
             //
-            var updatedSettings             = settings as [String: AnyObject]
-            updatedSettings["device_id"]    = deviceId as AnyObject?
+            var updatedSettings = settings as [String: AnyObject]
+            updatedSettings["device_id"] = deviceId as AnyObject?
 
             // Done!
-            streamKey                       = "devices"
-            wrappedSettings                 = [updatedSettings]
+            streamKey = "devices"
+            wrappedSettings = [updatedSettings]
         default:
             break
         }
