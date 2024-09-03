@@ -182,7 +182,7 @@ extension ReaderTabViewModelTests {
 
 // MARK: - Mocks
 
-class MockItemsStore: ItemsStore {
+class MockItemsStore: ReaderTabItemsStoreProtocol {
     let changeDispatcher = Dispatcher<Void>()
 
     var items: [ReaderTabItem] = [ReaderTabItem(ReaderContent(topic: nil, contentType: .saved))]

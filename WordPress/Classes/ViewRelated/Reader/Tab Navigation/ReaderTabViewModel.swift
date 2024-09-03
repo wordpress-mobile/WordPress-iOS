@@ -6,7 +6,7 @@ import Combine
 
     // MARK: - Properties
     /// tab bar items
-    private let tabItemsStore: ItemsStore
+    private let tabItemsStore: ReaderTabItemsStoreProtocol
     private var subscription: Receipt?
     private let persistentRepository: UserPersistentRepository
     private var onTabBarItemsDidChange: [(([ReaderTabItem], Int) -> Void)] = []
@@ -84,7 +84,7 @@ import Combine
 
     init(readerContentFactory: @escaping (ReaderContent) -> ReaderContentViewController,
          searchNavigationFactory: @escaping () -> Void,
-         tabItemsStore: ItemsStore,
+         tabItemsStore: ReaderTabItemsStoreProtocol,
          settingsPresenter: ScenePresenter,
          persistentRepository: UserPersistentRepository = UserPersistentStoreFactory.instance()) {
         self.makeReaderContentViewController = readerContentFactory
