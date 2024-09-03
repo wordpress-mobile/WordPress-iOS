@@ -321,10 +321,6 @@ final class SplitViewRootPresenter: RootViewPresenter {
         navigationVC.modalPresentationStyle = .formSheet
         splitVC.present(navigationVC, animated: true)
     }
-
-    func popMeScreenToRoot() {
-        fatalError()
-    }
 }
 
 extension SplitViewRootPresenter: SiteMenuViewControllerDelegate {
