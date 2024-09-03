@@ -29,7 +29,7 @@ private struct SidebarView: View {
                 searchResults
             } else {
                 Section {
-                    makeSiteListSection(with: blogListViewModel)
+                    siteListSectionContent
                 }
                 Section(Strings.moreSection) {
                     more
@@ -59,17 +59,17 @@ private struct SidebarView: View {
     // MARK: - Sites
 
     @ViewBuilder
-    private func makeSiteListSection(with viewModel: BlogListViewModel) -> some View {
-        let topSites = viewModel.topSites
+    private var siteListSectionContent: some View {
+        let topSites = blogListViewModel.topSites
         if !topSites.isEmpty {
             makeSiteList(with: topSites)
         } else {
             Text(Strings.noSites)
         }
-        if viewModel.allSites.count > SidebarView.displayedSiteLimit {
+        if blogListViewModel.allSites.count > SidebarView.displayedSiteLimit {
             GeometryReader { proxy in
                 Button {
-                    self.viewModel.navigate(.allSites(sourceRect: proxy.frame(in: .global)))
+                    viewModel.navigate(.allSites(sourceRect: proxy.frame(in: .global)))
                 } label: {
                     Label(Strings.allSites, systemImage: "rectangle.stack")
                 }
