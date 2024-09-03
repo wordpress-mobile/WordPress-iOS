@@ -1,7 +1,6 @@
 import UIKit
 import WordPressFlux
 import WordPressKit
-import CocoaLumberjack
 
 protocol SettingsController: ImmuTableController {
     var trackingKey: String { get }

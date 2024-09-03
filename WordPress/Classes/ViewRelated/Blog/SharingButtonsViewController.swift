@@ -1,5 +1,4 @@
 import UIKit
-import CocoaLumberjack
 import WordPressShared
 
 /// Manages which sharing button are displayed, their order, and other settings

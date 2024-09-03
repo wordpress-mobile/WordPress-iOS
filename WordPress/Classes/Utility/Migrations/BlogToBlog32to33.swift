@@ -1,5 +1,4 @@
 import UIKit
-import CocoaLumberjack
 
 class BlogToBlog32to33: NSEntityMigrationPolicy {
 

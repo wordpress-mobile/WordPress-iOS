@@ -1,6 +1,5 @@
 import UIKit
 import Foundation
-import CocoaLumberjack
 
 /// Note:
 /// This migration policy handles database migration from WPiOS 4.3 to 4.4

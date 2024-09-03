@@ -1,5 +1,4 @@
 import Foundation
-import CocoaLumberjack
 import WordPressKit
 
 open class PlanService: NSObject {

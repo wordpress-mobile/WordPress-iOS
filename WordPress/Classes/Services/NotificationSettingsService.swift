@@ -1,5 +1,4 @@
 import Foundation
-import CocoaLumberjack
 import WordPressKit
 
 /// This service encapsulates the Restful API related to WordPress Notifications.
