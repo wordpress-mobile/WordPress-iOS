@@ -123,7 +123,7 @@ private struct SidebarView: View {
         } icon: {
             if notificationsButtonViewModel.counter > 0 {
                 Image(systemName: "bell.badge")
-                    .foregroundStyle(.red, Color(.brand))
+                    .foregroundStyle(.red, Color(AppStyleGuide.brand))
             } else {
                 Image(systemName: "bell")
             }

@@ -199,14 +199,14 @@ class MeViewController: UITableViewController {
 
                 rows.append(NavigationItemRow(
                     title: Strings.submitFeedback,
-                    tintColor: .brand,
+                    tintColor: AppStyleGuide.brand,
                     accessoryType: .none,
                     action: showFeedbackView())
                 )
 
                 rows.append(NavigationItemRow(
                     title: ShareAppContentPresenter.RowConstants.buttonTitle,
-                    tintColor: .brand,
+                    tintColor: AppStyleGuide.brand,
                     accessoryType: .none,
                     action: displayShareFlow(),
                     loading: sharePresenter.isLoading)
@@ -214,7 +214,7 @@ class MeViewController: UITableViewController {
 
                 rows.append(NavigationItemRow(
                     title: RowTitles.about,
-                    tintColor: .brand,
+                    tintColor: AppStyleGuide.brand,
                     accessoryType: .none,
                     action: pushAbout(),
                     accessibilityIdentifier: "About")
