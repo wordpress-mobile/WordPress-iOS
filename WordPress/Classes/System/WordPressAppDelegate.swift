@@ -164,7 +164,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         updateFeatureFlags()
         updateRemoteConfig()
 
-#if JETPACK
+#if IS_JETPACK
         // JetpackWindowManager is only available in the Jetpack target.
         if let windowManager = windowManager as? JetpackWindowManager {
             windowManager.startMigrationFlowIfNeeded()
@@ -510,7 +510,7 @@ extension WordPressAppDelegate {
             return "Post Editor"
         case is LoginNavigationController:
             return "Login View"
-#if JETPACK
+#if IS_JETPACK
         case is MigrationNavigationController:
             return "Jetpack Migration View"
         case is MigrationLoadWordPressViewController:

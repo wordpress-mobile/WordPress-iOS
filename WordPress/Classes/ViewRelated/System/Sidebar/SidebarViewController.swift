@@ -117,7 +117,7 @@ private struct SidebarView: View {
 
     @ViewBuilder
     private var more: some View {
-#if JETPACK
+#if IS_JETPACK
         Label {
             Text(Strings.notifications)
         } icon: {

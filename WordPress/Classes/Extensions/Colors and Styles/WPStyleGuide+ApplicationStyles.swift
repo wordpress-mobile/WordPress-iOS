@@ -13,8 +13,8 @@ extension WPStyleGuide {
         // looking the same on newer versions of iOS.
         UIStackView.appearance().backgroundColor = .clear
 
-        UIWindow.appearance().tintColor = AppStyleGuide.primary
-        UISwitch.appearance().onTintColor = AppStyleGuide.primary
+        UIWindow.appearance().tintColor = AppStyleGuide.brand
+        UISwitch.appearance().onTintColor = AppStyleGuide.brand
 
         UITableView.appearance().sectionHeaderTopPadding = 0
 
@@ -37,7 +37,7 @@ extension WPStyleGuide {
         configureSharedSettings(for: scrollEdgeAppearance)
 
         let appearance = UINavigationBar.appearance()
-        appearance.tintColor = AppStyleGuide.primary
+        appearance.tintColor = AppStyleGuide.brand // Back button color
 
         appearance.standardAppearance = standardAppearance
         appearance.compactAppearance = standardAppearance
@@ -65,7 +65,7 @@ extension WPStyleGuide {
     }
 
     @objc class func configureTabBar(_ tabBar: UITabBar) {
-        tabBar.tintColor = AppStyleGuide.primary
+        tabBar.tintColor = AppStyleGuide.brand
         tabBar.unselectedItemTintColor = UIColor(named: "TabUnselected")
     }
 

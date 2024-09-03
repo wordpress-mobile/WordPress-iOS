@@ -22,8 +22,7 @@ final class SiteSwitcherViewController: UIHostingController<SiteSwitcherView> {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-         navigationItem.leftBarButtonItem = UIBarButtonItem(title: SharedStrings.Button.close, style: .plain, target: self, action: #selector(buttonCloseTapped))
-
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: SharedStrings.Button.close, style: .plain, target: self, action: #selector(buttonCloseTapped))
         navigationItem.leftBarButtonItem?.accessibilityIdentifier = "my-sites-cancel-button"
 
         if #available(iOS 17, *) {

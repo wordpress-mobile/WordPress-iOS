@@ -223,7 +223,7 @@ class MeViewController: UITableViewController {
             }())
         ]
 
-        #if JETPACK
+        #if IS_JETPACK
         if RemoteFeatureFlag.domainManagement.enabled() && loggedIn && !isSidebarModeEnabled {
             sections.append(.init(rows: [
                 NavigationItemRow(
@@ -386,7 +386,7 @@ class MeViewController: UITableViewController {
     /// Selects the All Domains row and pushes the All Domains view controller
     ///
     public func navigateToAllDomains() {
-    #if JETPACK
+    #if IS_JETPACK
         navigateToTarget(for: AllDomainsListViewController.Strings.title)
     #endif
     }

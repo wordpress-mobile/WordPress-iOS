@@ -26611,7 +26611,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "Jetpack iOS Development Stats Widget";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Jetpack iOS Development Stats Widget";
 				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG IS_JETPACK";
 				SWIFT_OBJC_BRIDGING_HEADER = "JetpackStatsWidgets/Supporting Files/JetpackStatsWidgets-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -26664,6 +26664,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.automattic.jetpack.JetpackStatsWidgets";
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
 				SWIFT_OBJC_BRIDGING_HEADER = "JetpackStatsWidgets/Supporting Files/JetpackStatsWidgets-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -26716,6 +26717,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse com.jetpack.internal.JetpackStatsWidgets";
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
 				SWIFT_OBJC_BRIDGING_HEADER = "JetpackStatsWidgets/Supporting Files/JetpackStatsWidgets-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -26768,6 +26770,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse com.jetpack.alpha.JetpackStatsWidgets";
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
 				SWIFT_OBJC_BRIDGING_HEADER = "JetpackStatsWidgets/Supporting Files/JetpackStatsWidgets-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -26869,6 +26872,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.automattic.jetpack.JetpackIntents";
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
 				SWIFT_OBJC_BRIDGING_HEADER = "JetpackIntents/Supporting Files/JetpackIntents-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -26919,6 +26923,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse com.jetpack.internal.JetpackIntents";
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
 				SWIFT_OBJC_BRIDGING_HEADER = "JetpackIntents/Supporting Files/JetpackIntents-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -26969,6 +26974,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse com.jetpack.alpha.JetpackIntents";
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
 				SWIFT_OBJC_BRIDGING_HEADER = "JetpackIntents/Supporting Files/JetpackIntents-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -27071,6 +27077,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress;
 				PRODUCT_NAME = WordPress;
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress Development";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_WORDPRESS;
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(SWIFT_MODULE_NAME)-Swift-XcodeGenerated.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -27136,6 +27143,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress;
 				PRODUCT_NAME = WordPress;
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore org.wordpress";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_WORDPRESS;
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(SWIFT_MODULE_NAME)-Swift-XcodeGenerated.h";
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
@@ -28188,6 +28196,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Jetpack iOS Development Share Extension";
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressShareExtension/WordPressShare-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -28257,6 +28266,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.automattic.jetpack.JetpackShare";
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressShareExtension/WordPressShare-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				WPCOM_SCHEME = jetpack;
@@ -28327,6 +28337,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse com.jetpack.internal.JetpackShare";
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressShareExtension/WordPressShare-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				WPCOM_SCHEME = jpinternal;
@@ -28397,6 +28408,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse com.jetpack.alpha.JetpackShare";
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressShareExtension/WordPressShare-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				WPCOM_SCHEME = jpalpha;
@@ -28450,7 +28462,7 @@
 				PROVISIONING_PROFILE = "03b7c1c5-4846-447e-a75c-4005a8e52a68";
 				PROVISIONING_PROFILE_SPECIFIER = "Jetpack iOS Development Draft Action Extensions";
 				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG IS_JETPACK";
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressDraftActionExtension/WordPressDraftActionExtension-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -28505,6 +28517,7 @@
 				PROVISIONING_PROFILE = "3dd880ae-7e5a-4858-ab4e-6e482e856041";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.automattic.jetpack.JetpackDraftAction";
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressDraftActionExtension/WordPressDraftActionExtension-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -28559,6 +28572,7 @@
 				PROVISIONING_PROFILE = "0bba6da4-494e-4f1b-b195-dd5f6e31c8b4";
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse com.jetpack.internal.JetpackDraftAction";
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressDraftActionExtension/WordPressDraftActionExtension-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -28613,6 +28627,7 @@
 				PROVISIONING_PROFILE = "81837878-384c-45d9-909a-8c2c56a2ce58";
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse com.jetpack.alpha.JetpackDraftAction";
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressDraftActionExtension/WordPressDraftActionExtension-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -28709,6 +28724,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.automattic.jetpack.$(PRODUCT_NAME:rfc1034identifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressNotificationServiceExtension/Sources/WordPressNotificationServiceExtension-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -28756,6 +28772,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse com.jetpack.internal.$(PRODUCT_NAME:rfc1034identifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressNotificationServiceExtension/Sources/WordPressNotificationServiceExtension-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -28803,6 +28820,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse com.jetpack.alpha.$(PRODUCT_NAME:rfc1034identifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressNotificationServiceExtension/Sources/WordPressNotificationServiceExtension-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -29110,6 +29128,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.alpha;
 				PRODUCT_NAME = WordPress;
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.alpha";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_WORDPRESS;
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(SWIFT_MODULE_NAME)-Swift-XcodeGenerated.h";
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
@@ -29547,6 +29566,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.internal;
 				PRODUCT_NAME = WordPress;
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.internal";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_WORDPRESS;
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(SWIFT_MODULE_NAME)-Swift-XcodeGenerated.h";
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
@@ -30020,7 +30040,6 @@
 					"COCOAPODS=1",
 					"NSLOGGER_BUILD_USERNAME=\"${USER}\"",
 					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
-					"JETPACK=1",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
@@ -30051,12 +30070,13 @@
 					"-l\"sqlite3.0\"",
 					"-l\"z\"",
 				);
-				OTHER_SWIFT_FLAGS = "$(inherited) -D DEBUG -D JETPACK";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.jetpack;
 				PRODUCT_MODULE_NAME = WordPress;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Jetpack iOS Development";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Jetpack iOS Development";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(SWIFT_MODULE_NAME)-Swift-XcodeGenerated.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -30090,7 +30110,6 @@
 					"$(inherited)",
 					NS_BLOCK_ASSERTIONS,
 					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
-					"JETPACK=1",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
@@ -30120,11 +30139,12 @@
 					"-l\"sqlite3.0\"",
 					"-l\"z\"",
 				);
-				OTHER_SWIFT_FLAGS = "$(inherited) -D JETPACK";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.jetpack;
 				PRODUCT_MODULE_NAME = WordPress;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.automattic.jetpack";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(SWIFT_MODULE_NAME)-Swift-XcodeGenerated.h";
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
@@ -30157,7 +30177,6 @@
 					"$(inherited)",
 					INTERNAL_BUILD,
 					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
-					"JETPACK=1",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
@@ -30187,11 +30206,12 @@
 					"-l\"sqlite3.0\"",
 					"-l\"z\"",
 				);
-				OTHER_SWIFT_FLAGS = "$(inherited) -D INTERNAL_BUILD -D JETPACK";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D INTERNAL_BUILD";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.internal;
 				PRODUCT_MODULE_NAME = WordPress;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse com.jetpack.internal";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(SWIFT_MODULE_NAME)-Swift-XcodeGenerated.h";
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
@@ -30224,7 +30244,6 @@
 					"$(inherited)",
 					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 					ALPHA_BUILD,
-					"JETPACK=1",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
@@ -30254,11 +30273,12 @@
 					"-l\"sqlite3.0\"",
 					"-l\"z\"",
 				);
-				OTHER_SWIFT_FLAGS = "$(inherited) -D ALPHA_BUILD -D INTERNAL_BUILD -D JETPACK";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D ALPHA_BUILD -D INTERNAL_BUILD";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.alpha;
 				PRODUCT_MODULE_NAME = WordPress;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse com.jetpack.alpha";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(SWIFT_MODULE_NAME)-Swift-XcodeGenerated.h";
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
