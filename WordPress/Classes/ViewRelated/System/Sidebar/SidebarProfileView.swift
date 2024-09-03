@@ -2,17 +2,18 @@ import SwiftUI
 import WordPressUI
 
 struct SidebarProfileView: View {
-    @ObservedObject var account: WPAccount
+    var username: String
+    var displayName: String
+    var avatar: URL?
 
     var body: some View {
         HStack {
-            let avatarURL: String? = account.avatarURL
-            AvatarsView<Circle>(style: .single(avatarURL.flatMap(URL.init)), diameter: 30)
+            AvatarsView<Circle>(style: .single(avatar), diameter: 30)
 
             VStack(alignment: .leading, spacing: 0) {
-                Text(account.displayName)
+                Text(displayName)
                     .font(.subheadline.weight(.medium))
-                Text("@\(account.username)")
+                Text("@\(username)")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
             }
@@ -20,7 +21,8 @@ struct SidebarProfileView: View {
             Spacer()
 
             Image(systemName: "gearshape")
-                .foregroundColor(Color.secondary.opacity(0.7))
+                .font(.title3)
+                .foregroundColor(Color.secondary)
         }
     }
 }
