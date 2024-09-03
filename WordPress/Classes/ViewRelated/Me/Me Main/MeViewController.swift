@@ -1,5 +1,4 @@
 import UIKit
-import CocoaLumberjack
 import WordPressShared
 import WordPressAuthenticator
 import AutomatticAbout

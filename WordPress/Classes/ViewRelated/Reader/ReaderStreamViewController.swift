@@ -1,6 +1,5 @@
 import Foundation
 
-import CocoaLumberjack
 import SVProgressHUD
 import WordPressShared
 import WordPressFlux

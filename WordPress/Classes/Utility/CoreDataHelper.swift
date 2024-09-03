@@ -1,5 +1,4 @@
 import Foundation
-import CocoaLumberjack
 import CoreData
 
 // MARK: - NSManagedObject Default entityName Helper
