@@ -150,29 +150,29 @@ private struct SidebarProfileContainerView: View {
     @Environment(\.isSearching) private var isSearching // placemenet is important
 
     var body: some View {
-        if !isSearching, let content = self.content {
+        if !isSearching {
             content
-                .foregroundStyle(Color(.brand))
                 .padding(.horizontal)
                 .padding(.top, 8)
+                .background(Color(uiColor: .secondarySystemBackground))
         }
     }
 
-    var content: AnyView? {
+    @ViewBuilder
+    var content: some View {
         if let account = viewModel.account {
-            AnyView(
-                Button(action: { viewModel.navigate(.profile) }) {
-                    SidebarProfileView(
-                        username: account.username,
-                        displayName: account.displayName,
-                        avatar: account.avatarURL.flatMap(URL.init(string:))
-                    )
-                }
-                .containerShape(Rectangle())
-            )
-        } else if AppConfiguration.isJetpack {
-            AnyView(
-                HStack {
+            Button(action: { viewModel.navigate(.profile) }) {
+                SidebarProfileView(
+                    username: account.username,
+                    displayName: account.displayName,
+                    avatar: account.avatarURL.flatMap(URL.init(string:))
+                )
+            }
+            .containerShape(Rectangle())
+            .buttonStyle(.plain)
+        } else {
+            HStack {
+                if AppConfiguration.isJetpack {
                     Button(action: { viewModel.navigate(.signIn) }) {
                         HStack {
                             Image(systemName: "person.crop.circle")
@@ -186,20 +186,19 @@ private struct SidebarProfileContainerView: View {
                             }
                         }
                     }
-
-                    Spacer()
-
-                    Button(action: { viewModel.navigate(.profile) }) {
-                        Image(systemName: "gearshape")
-                            .font(.title3)
-                            .foregroundColor(Color.secondary)
-                    }
-                    .frame(width: 44, height: 44)
-                    .contentShape(Rectangle())
+                    .tint(Color(.brand))
                 }
-            )
-        } else {
-            nil
+
+                Spacer()
+
+                Button(action: { viewModel.navigate(.profile) }) {
+                    Image(systemName: "gearshape")
+                        .font(.title3)
+                        .foregroundColor(Color.secondary)
+                }
+                .frame(width: 44, height: 44)
+                .contentShape(Rectangle())
+            }
         }
     }
 }
