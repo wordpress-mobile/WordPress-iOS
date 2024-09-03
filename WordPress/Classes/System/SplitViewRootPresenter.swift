@@ -6,11 +6,14 @@ import Combine
 final class SplitViewRootPresenter: RootViewPresenter {
     private let sidebarViewModel = SidebarViewModel()
     private let splitVC = UISplitViewController(style: .tripleColumn)
+    private weak var sitePickerPopoverVC: UIViewController?
     private var cancellables: [AnyCancellable] = []
 
     init() {
         // TODO: (wpsidebar) refactor
         self.mySitesCoordinator = MySitesCoordinator(meScenePresenter: MeScenePresenter(), onBecomeActiveTab: {})
+
+        splitVC.delegate = self
 
         let sidebarVC = SidebarViewController(viewModel: sidebarViewModel)
         let navigationVC = makeRootNavigationController(with: sidebarVC)
@@ -140,6 +143,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
         navigationVC.popoverPresentationController?.sourceRect = sourceRect
         // Show no arrow and simply overlay the sidebar
         navigationVC.popoverPresentationController?.permittedArrowDirections = [.left]
+        sitePickerPopoverVC = navigationVC
         self.splitVC.present(navigationVC, animated: true)
         WPAnalytics.track(.sidebarAllSitesTapped)
     }
@@ -302,6 +306,14 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
     func popMeScreenToRoot() {
         fatalError()
+    }
+}
+
+extension SplitViewRootPresenter: UISplitViewControllerDelegate {
+    func splitViewController(_ svc: UISplitViewController, willHide column: UISplitViewController.Column) {
+        if column == .primary {
+            sitePickerPopoverVC?.presentingViewController?.dismiss(animated: true)
+        }
     }
 }
 
