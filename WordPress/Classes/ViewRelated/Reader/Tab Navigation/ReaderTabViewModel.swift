@@ -80,8 +80,6 @@ import Combine
     /// When this property is nil, it means the stream is in an unfiltered state.
     @Published var activeStreamFilter: (filterID: FilterProvider.ID, topic: ReaderAbstractTopic)?
 
-    var isSidebarModeEnabled = false
-
     init(readerContentFactory: @escaping (ReaderContent) -> ReaderContentViewController,
          searchNavigationFactory: @escaping () -> Void,
          tabItemsStore: ReaderTabItemsStoreProtocol,
