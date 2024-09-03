@@ -83,7 +83,7 @@
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
-   Cancel
+   Button title. Tapping it cancels the login flow.
    Cancel a prompt
    Cancel Action
    Cancel action on share extension editor screen.
@@ -94,6 +94,7 @@
    Cancel action title
    Cancel button
    Cancel button for alert
+   Cancel button label
    Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Cancel button.
    Cancel button. Site creation modal popover.
@@ -115,6 +116,7 @@
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
+   Option to cancel the email app selection when logging in with magic links
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
@@ -165,6 +167,9 @@
 /* Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "Potvrdi";
 
+/* No comment provided by engineer. */
+"Connecting to WordPress.com" = "Spajanje sa WordPress.com";
+
 /* Period Stats 'Countries' header */
 "Countries" = "Države";
 
@@ -173,7 +178,6 @@
 "Country" = "Država";
 
 /* Button for selecting the current page template.
-   Button title, encourages users to create their first page on their blog.
    Title for button to make a page with the contents of the selected layout */
 "Create Page" = "Napravi stranu";
 
@@ -218,7 +222,10 @@
 /* Menus alert button title to discard changes. */
 "Discard Changes" = "Odbaci promjene";
 
-/* Dismiss a view. Verb */
+/* Accessibility label for button to dismiss a bottom sheet
+   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+   Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
+   Dismiss a view. Verb */
 "Dismiss" = "Odbaci";
 
 /* A done button
@@ -263,14 +270,17 @@
 /* Title for the editor settings section */
 "Editor" = "Uređivač";
 
-/* Describes the email address section in the comment detail screen. */
+/* Accessibility label for the email address text field.
+   Describes the email address section in the comment detail screen.
+   Placeholder for a textfield. The user may enter their email address.
+   Placeholder for the email address textfield. */
 "Email address" = "Adresa E-pošte";
 
 /* Title for the Emoji section */
 "Emoji" = "Emotikoni";
 
-/* No comment provided by engineer. */
-"Enter a password" = "Unesite lozinku";
+/* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
+"Empty URL" = "Prazan URL";
 
 /* (placeholder) Help enter WordPress password */
 "Enter password" = "Unesite lozinku";
@@ -295,6 +305,9 @@
    Open editor help options */
 "Help" = "Pomoć";
 
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
+"Hidden" = "Skriveno";
+
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "Inspiriran sam radovima fotografa Camerona Karstena. Pokušavat ću primjenjivati te tehnike na svoje sljedeće";
 
@@ -314,6 +327,9 @@
 
 /* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "Neispravan URL. Audio datoteka nije pronađena.";
+
+/* No comment provided by engineer. */
+"Invalid username" = "Neispravno korisničko ime";
 
 /* Accessibility label for italic button on formatting toolbar.
    Discoverability title for italic formatting keyboard shortcut. */
@@ -342,7 +358,6 @@
 "Link" = "Poveznica";
 
 /* Loading tags
-   Loading tags.
    Loading. Verb
    Suggestions loading message
    Text displayed in HUD while a media item is being loaded.
@@ -355,18 +370,27 @@
 /* Used when geo-tagging posts, if the geo-tagging failed. */
 "Location unknown" = "Lokacija nepoznata";
 
-/* Label for logging in to WordPress.com account
-   Log In 3D Touch Shortcut */
+/* Button title.  Tapping takes the user to the login form.
+   Label for logging in to WordPress.com account
+   Log In 3D Touch Shortcut
+   Log In button label.
+   View title during the log in process. */
 "Log In" = "Prijavi se";
 
 /* Title of a button for signing in. */
 "Log in" = "Prijava";
+
+/* A generic error message for a failed log in. */
+"Log in failed. Please try again." = "Prijava nije uspjela. Molimo pokušajte ponovo.";
 
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of Jetpack?" = "Jeste li sigurni da se želite odjaviti s Jetpacka?";
 
 /* No comment provided by engineer. */
 "Logs" = "Zapisnici";
+
+/* Title of a button. */
+"Lost your password?" = "Izgubili ste lozinku?";
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Glavni izbornik";
@@ -387,7 +411,6 @@
 "Me" = "Ja";
 
 /* Noun. Title. Links to the blog's Media library.
-   The menu item to select during a guided tour.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Media";
@@ -414,7 +437,9 @@
 "Newest" = "Najnovije";
 
 /* Next action on comment moderation snackbar.
-   Next action on share extension editor screen. */
+   Next action on share extension editor screen.
+   Title of a button.
+   Title of a button. The text should be capitalized. */
 "Next" = "Sljedeće";
 
 /* Label for a cancel button */
@@ -437,7 +462,6 @@
    Notifications tab bar item accessibility label
    Notifications View Controller title
    Noun. Name of the Notifications feature
-   The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Obavijesti";
 
@@ -448,10 +472,12 @@
    Button title. Acknowledges a prompt.
    Button title. An acknowledgement of the message displayed in a prompt.
    Default action
+   Dismisses the alert
    Marks all notifications as read.
    Menus: button title for finishing editing of a menu item.
    OK
    OK button for alert
+   Ok button for dismissing alert helping users understand their site address
    OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
    Submit button on prompt for user information.
@@ -477,7 +503,6 @@
 "Outside" = "Izvana";
 
 /* Noun. Title. Links to the blog's Pages screen.
-   The item to select during a guided tour.
    This is the section title
    Title of the screen showing the list of pages for a blog. */
 "Pages" = "Stranice";
@@ -486,8 +511,11 @@
    Title for selecting parent category of a category */
 "Parent Category" = "Matična Kategorija";
 
-/* Label for entering password in password field
-   Label for the password field. Should be the same as WP core.
+/* Accessibility label for the password text field in the self-hosted login page.
+   Label for entering password in password field
+   Login dialog password placeholder
+   Password placeholder
+   Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "Lozinka";
 
@@ -501,6 +529,12 @@
 
 /* Label for date periods. */
 "Period" = "Vremensko razdoblje";
+
+/* Popup message to ask for user credentials (fields shown below). */
+"Please enter your credentials" = "Molimo unesite vaše podatke";
+
+/* A short prompt asking the user to properly fill out all login fields. */
+"Please fill out all the fields" = "Molimo vas da popunite sva polja";
 
 /* Header of section in Plugin Directory showing popular plugins
    Screen title, where users can see the most popular plugins */
@@ -549,7 +583,6 @@
    The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
-   The menu item to select during a guided tour.
    Title of the 'Reader' tab - used for spotlight indexing on iOS. */
 "Reader" = "Čitač";
 
@@ -558,11 +591,9 @@
 "Refresh" = "Osvježi";
 
 /* Alert button to confirm a plugin to be removed
-   Button label when removing a blog
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
-   Remove an image/posts/etc
-   Removes a self hosted site from the app */
+   Remove an image/posts/etc */
 "Remove" = "Ukloni";
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
@@ -616,8 +647,7 @@
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Tempirano";
 
-/* Placeholder text for the search bar
-   Title of Stats section that shows search engine referrer traffic.
+/* Title of Stats section that shows search engine referrer traffic.
    Title of the Reader's search feature */
 "Search" = "Pretraži";
 
@@ -641,17 +671,16 @@
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Podijeli ";
 
+/* When social login fails, this button offers to let them signup for a new WordPress.com account */
+"Sign up" = "Registracija";
+
 /* Header for a single site, shown in Notification user profile. */
 "Site" = "Sjedište";
-
-/* The item to select during a guided tour. */
-"Site URL" = "URL Web stranice";
 
 /* Image size option title. */
 "Size" = "Veličina";
 
-/* Button that allows the user to skip the prompt and be brought to the app
-   Continue without making a selection
+/* Continue without making a selection
    Continue without making a selection. */
 "Skip" = "Preskoči";
 
@@ -666,8 +695,7 @@
 /* Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
-   Stats window title
-   The item to select during a guided tour. */
+   Stats window title */
 "Stats" = "Statistika";
 
 /* Support button that appears in the Theme Browser Header
@@ -728,6 +756,9 @@
    Notifications Today Section Header */
 "Today" = "Danas";
 
+/* Connect when the SSL certificate is invalid */
+"Trust" = "Vjeruj";
+
 /* Retries an Action
    Retry
    Try Again. Action
@@ -753,6 +784,9 @@
 
 /* Unapproves a Comment */
 "Unapprove Comment" = "Neodobren Komentar";
+
+/* No comment provided by engineer. */
+"Unknown error" = "Nepoznata greška.";
 
 /* Title of unreplied Comments filter. */
 "Unreplied" = "Neodgovoreno";
@@ -785,10 +819,14 @@
 "Uploading..." = "Prijenos...";
 
 /* A placeholder for the twitter username
+   Accessibility label for the username text field in the self-hosted login page.
    Account Settings Username label
    Label for entering username in the username field
+   Login dialog username placeholder
+   Placeholder for the username textfield.
    The header and main title
-   Username label text. */
+   Username label text.
+   Username placeholder */
 "Username" = "Korisničko ime";
 
 /* Description for the version label in the What's new page. */

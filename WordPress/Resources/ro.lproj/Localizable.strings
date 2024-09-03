@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-07-23 10:00:27+0000 */
+/* Translation-Revision-Date: 2024-08-24 08:09:24+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ro */
@@ -59,10 +59,6 @@
 /* Plural format string for displaying the number of users that answered the blogging prompt. */
 "%1$d answers" = "%1$d răspunsuri";
 
-/* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available.
-   Format string for displaying the number of completed quickstart tutorials. %1$d is the number completed, %2$d is the total number of tutorials available. */
-"%1$d of %2$d completed" = "%1$d din %2$d finalizate";
-
 /* Format string for single unseen post count. The %1$d is a placeholder for the count. */
 "%1$d unseen post" = "%1$d articol nevăzut";
 
@@ -84,17 +80,11 @@
 /* Accessibility identifier for buttons. */
 "%@ Button" = "Buton %@";
 
-/* Title of the task complete hint for the Quick Start Tour */
-"%@ Return to My Site screen when you're ready for the next task." = "%@ - Întoarce-te la ecranul Site-ul meu când ești pregătit pentru următoarea sarcină.";
-
 /* The number of tags in the writting settings. Singular. %@ is a placeholder for the number */
 "%@ Tag" = "%@ etichetă";
 
 /* The number of tags in the writting settings. Plural. %@ is a placeholder for the number */
 "%@ Tags" = "%@ etichete";
-
-/* Title of the task complete hint for the Quick Start Tour */
-"%@ Tip: get updates faster by enabling push notifications." = "%@ - Sfat: primești mai repede actualizările dacă activezi notificările imediate.";
 
 /* Accessibility label for value in billions. Ex: 66.6 billion. */
 "%@ billion" = "%@ miliarde";
@@ -268,17 +258,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Lets a user know that a local draft does not have a title. */
 "(no title)" = "(fără titlu)";
 
-/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
-"*Johann Brandt* is now following your site!" = "Johann Brandt îți urmărește site-ul!";
-
-/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
-"*Johann Brandt* responded to your comment" = "Johan Brandt a răspuns la comentariul tău";
-
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
 "*Johann Brandt* responded to your post" = "*Johan Brandt* a răspuns la articolul tău";
-
-/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
-"*Madison Ruiz* added a new post to their site" = "Madison Ruiz a adăugat un articol nou pe site";
 
 /* Example Like notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
 "*Madison Ruiz* liked your post" = "*Madison Ruiz* ți-a apreciat articolul";
@@ -349,26 +330,26 @@ translators: %s: Block name e.g. \"Image block\" */
 /* A short description of what the 'More' button is and how it works. */
 "A \"more\" button contains a dropdown which displays sharing buttons" = "Un buton \"mai mult\" conține o listă desfășurată care afișează butoane de partajare";
 
+/* Instruction text to explain magic link login step. */
+"A WordPress.com account is connected to your store credentials. To continue, we will send a verification link to the email address above." = "Am conectat un cont WordPress.com la datele de conectare ale magazinului tău. Pentru a continua, îți vom trimite o legătură de verificare la adresa de email de mai sus.";
+
 /* Label for image that is set as a feature image for post/page */
 "A featured image is set. Tap to change it." = "A fost setată o imagine reprezentativă. Atinge pentru a o schimba.";
 
 /* Title for a threat */
 "A file contains a malicious code pattern" = "Un fișier conține un model de cod care poate crea vulnerabilități";
 
-/* A VoiceOver hint to explain what the user gets when they select the 'Get to know the WordPress/Jetpack app' button. */
-"A series of steps helping you to explore the app." = "O serie de pași care te ajută să explorezi aplicația.";
-
-/* A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button. */
-"A series of steps showing you how to add a theme, site icon and more." = "O serie de pași care îți arată cum să adaugi pe site o temă, un icon și altele.";
-
-/* A VoiceOver hint to explain what the user gets when they select the 'Grow Your Audience' button. */
-"A series of steps to assist with growing your site's audience." = "O serie de pași care te ajută să aduci mai mulți vizitatori pe site.";
-
 /* Message of the alert indicating that a tag with that name already exists. The placeholder is the name of the tag */
 "A tag named '%@' already exists." = "Există deja o etichetă cu numele „%@”.";
 
 /* Placeholder text for the title of a site */
 "A title for the site" = "Un titlu pentru site";
+
+/* An error message. */
+"A valid email address is needed to mail an authentication link. Please return to the previous screen and provide a valid email address." = "Este necesară o adresă email validă pentru trimite prin email o legătură de autentificare. Te rog revino la ecranul anterior și furnizează o adresă email validă.";
+
+/* Shown when a user types a non-number into the two factor field. */
+"A verification code will only contain numbers." = "Un cod de verificare va conține numai cifre.";
 
 /* Label for active Theme browser cell */
 "ACTIVE" = "ACTIVĂ";
@@ -413,7 +394,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Overlay message displayed when account successfully closed */
 "Account closed" = "Cont închis";
 
-/* Title of button that displays the App's acknoledgements */
+/* Title of button that displays the App's acknowledgements */
 "Acknowledgements" = "Certificări";
 
 /* Theme Activate action title */
@@ -426,6 +407,12 @@ translators: %s: Block name e.g. \"Image block\" */
    Label for active Theme
    Whether a plugin is active on a site */
 "Active" = "Activ";
+
+/* The plugin is active on the site and has not enabled automatic updates */
+"Active, Autoupdates off" = "Activ, actualizările automate dezactivate";
+
+/* The plugin is active on the site and has enabled automatic updates */
+"Active, Autoupdates on" = "Activ, actualizările automate activate";
 
 /* Noun. Links to a blog's Activity screen.
    Noun. Name of the Activity Log feature
@@ -528,17 +515,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Screen reader text for button that adds a menu item */
 "Add new menu item" = "Adaugă un element de meniu nou";
 
-/* Title of button to add a new site. */
-"Add new site" = "Adaugă site nou";
-
 /* Voiceover accessibility label for the tags field in blog post settings. */
 "Add new tags, separated by commas." = "Adaugă etichete noi, separate prin virgulă.";
 
 /* No comment provided by engineer. */
 "Add paragraph block" = "Adaugă un bloc Paragraf";
-
-/* Add self-hosted site button */
-"Add self-hosted site" = "Adaugă un site auto-găzduit";
 
 /* Button title displayed when the user has removed all Insights from display.
    Label for action to add a new Insight. */
@@ -584,6 +565,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Screen reader text expressing the menu item is after another menu item. Argument is a name for another menu item. */
 "After %@" = "După %@";
 
+/* Option to select the Airmail app when logging in with magic links */
+"Airmail" = "Airmail";
+
 /* Image alignment option title.
    Title of the screen for choosing an image's alignment. */
 "Alignment" = "Aliniere";
@@ -611,9 +595,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of the completion screen of the Blogging Reminders Settings screen. */
 "All set!" = "Gata!";
-
-/* Message shown when all Quick Start tasks are complete. */
-"All tasks complete!" = "Toate sarcinile finalizate!";
 
 /* Insights 'All-Time' header */
 "All-Time" = "Total general";
@@ -650,6 +631,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Jetpack Settings: Allowlisted IP addresses */
 "Allowlisted IP addresses" = "Adrese IP permise în lista";
 
+/* Instructions for users with two-factor authentication enabled. */
+"Almost there! Please enter the verification code from your authenticator app." = "Aproape gata! Te rog să introduci codul de verificare din aplicația Authenticator.";
+
 /* Image alt attribute option title.
    Label for the alt for a media asset (image) */
 "Alt Text" = "Text alternativ";
@@ -663,8 +647,20 @@ translators: %s: Block name e.g. \"Image block\" */
 /* translators: Alternative option included in a warning related to having blocks deeply nested. */
 "Alternatively, you can flatten the content by ungrouping the block." = "Ca alternativă, poți să aplatizezi conținutul prin anularea grupării blocurilor.";
 
+/* Instruction text to explain to help users type their password instead of using magic link login option. */
+"Alternatively, you may enter the password for this account." = "Ca alternativă, poți să introduci parola pentru acest cont.";
+
+/* String displayed before offering alternative login methods */
+"Alternatively:" = "Alternativ:";
+
 /* Title of a row displayed on the debug screen used to indicate whether crash logs should be forced to send, even if they otherwise wouldn't */
 "Always Send Crash Logs" = "Trimite întotdeauna jurnalele de erori fatale";
+
+/* A failure reason for when an error HTTP status code was returned from the site, with the specific error code. */
+"An HTTP error code %i was returned." = "A fost returnat un cod de eroare HTTP %i.";
+
+/* A failure reason for when an error HTTP status code was returned from the site. */
+"An HTTP error code was returned." = "A fost returnat un cod de eroare HTTP.";
 
 /* Error message when loading failed because there's no connection */
 "An active internet connection is required" = "Este obligatorie o conexiune activă la internet";
@@ -691,6 +687,15 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Default error message displayed when unable to close user account. */
 "An error occured while closing account." = "A apărut o eroare la închiderea contului.";
 
+/* An error description explaining that a Menu could not be created. */
+"An error occurred creating the Menu." = "A apărut o eroare la crearea meniului.";
+
+/* An error description explaining that a Menu could not be deleted. */
+"An error occurred deleting the Menu." = "A apărut o eroare la ștergerea meniului.";
+
+/* An error description explaining that Menus could not be fetched. */
+"An error occurred fetching the Menus." = "A apărut o eroare la aducerea meniului.";
+
 /* Menus text shown when an error occurred loading menus from the server. */
 "An error occurred loading menus, please check your internet connection." = "A apărut o eroare la încărcarea meniurilor, te rog verifică-ți conexiunea la internet.";
 
@@ -700,11 +705,20 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The error message displayed when a user is editing a MenuItem and the results cannot be loaded, such as posts, pages, etc. */
 "An error occurred loading the results, please try again in a moment." = "A apărut o eroare la încărcarea rezultatelor, te rog încearcă din nou într-o clipă.";
 
+/* An error description explaining that a Menu could not be updated. */
+"An error occurred updating the Menu." = "A apărut o eroare la actualizarea meniului.";
+
 /* Error recorded when all of the media associated with a post fail to be attached to the post on the server. */
 "An error occurred when attempting to attach uploaded media to the post." = "A apărut o eroare la încercarea de a atașa media încărcată la articol.";
 
+/* Used when a remote response doesn't have a specific message for a specific request */
+"An error occurred while processing your request: " = "A apărut o eroare în timpul procesării cererii tale:";
+
 /* Text displayed when a stat section failed to load. */
 "An error occurred." = "A apărut o eroare.";
+
+/* A failure reason for when the error that occured wasn't able to be determined. */
+"An unknown error occurred." = "A apărut o eroare necunoscută.";
 
 /* Error message shown when a media upload fails for unknown reason and the user should try again. */
 "An unknown error occurred. Please try again." = "A apărut o eroare necunoscută. Te rog să încerci din nou.";
@@ -737,6 +751,12 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The title of the app appearance settings screen */
 "Appearance" = "Apariție";
 
+/* Message shown when Apple authentication fails. */
+"Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "Autentificarea Apple a eșuat.\nTe rog asigură-te că ești conectat la iCloud cu un ID Apple care folosește autentificarea pe două niveluri.";
+
+/* Noun. Title. Links to the application password management feature. */
+"Application Passwords" = "Parole pentru aplicații";
+
 /* No comment provided by engineer. */
 "Applies the setting" = "Aplică setarea";
 
@@ -761,9 +781,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Menus alert message for alerting the user to unsaved changes while trying back out of Menus. */
 "Are you sure you want to cancel and discard changes?" = "Sigur vrei să anulezi și să renunți la modificări?";
-
-/* Title for the remove site confirmation alert, first %@ will be replaced with the blog url, second %@ will be replaced with iPhone/iPad/iPod Touch */
-"Are you sure you want to continue?\n All site data for %@ will be removed from your %@." = "Sigur vrei să continui?\n Toate datele site-ului %1$@ vor fi înlăturate din %2$@.";
 
 /* Title for the remove site confirmation alert, %@ will be replaced with iPhone/iPad/iPod Touch */
 "Are you sure you want to continue?\n All site data will be removed from your %@." = "Sigur vrei să continui?\n Toate datele site-ului vor fi înlăturate din %@.";
@@ -826,6 +843,13 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the error view when the authentication failed for any reason */
 "Authentication Failed" = "Autentificarea a eșuat";
 
+/* Accessibility label for the 2FA text field.
+   Placeholder for the 2FA code textfield. */
+"Authentication code" = "Cod de autentificare";
+
+/* Popup title to ask for user credentials. */
+"Authentication required for host: %@" = "Autentificare necesară pentru gazda: %@";
+
 /* Author label.
    Label for list of stats by content author.
    The author of the post or page.
@@ -842,6 +866,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Describes a status of a plugin */
 "Auto-managed" = "Administrat automat";
 
+/* The plugin can not be manually updated or deactivated */
+"Auto-managed on this site" = "Administrat automat pe acest site";
+
 /* Discussion Settings Title
    Settings: Comments Approval settings */
 "Automatically Approve" = "Aprobă automat";
@@ -857,9 +884,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Discussion Settings: Comments Auto-close */
 "Automatically close comments on content after a certain number of days." = "Închide automat comentariile la conținut după un anume număr de zile.";
-
-/* Description of a Quick Start Tour */
-"Automatically share new posts to your social media accounts." = "Partajează automat articole noi în conturile tale din media socială.";
 
 /* Title of button that displays information about the other apps available from Automattic */
 "Automattic Family" = "Familia Automattic";
@@ -996,7 +1020,7 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Blocklist Title
    Settings: Comments Blocklist */
-"Blocklist" = "Listă blocări";
+"Blocklist" = "Listă cu blocări";
 
 /* No comment provided by engineer. */
 "Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across." = "Blocurile îți permit să te concentrezi pe scrierea conținutului, știind că toate instrumentele de formatare de care ai nevoie sunt acolo ca să te ajute să transmiți mesajul.";
@@ -1041,9 +1065,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Briefly describe the link to help screen reader user" = "Descrie pe scurt legătura pentru a ajuta utilizatorii care folosesc cititorul de ecran";
 
-/* Description of a Quick Start Tour */
-"Bring media straight from your device or camera to your site." = "Aduci elemente media pe site direct din dispozitiv sau cameră.";
-
 /* Jetpack Settings: Brute Force Attack Protection Section */
 "Brute Force Attack Protection" = "Protecție împotriva atacurilor cu forță-brută";
 
@@ -1077,12 +1098,18 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Label for the post author in the post detail. */
 "By " = "De";
 
+/* Legal disclaimer for logging in. The underscores _..._ denote underline. */
+"By continuing, you agree to our _Terms of Service_." = "Dacă continui, ești de acord cu _Termenii noștri de utilizare ai serviciului_.";
+
 /* Terms of Service link displayed when a user is registering domain. Text inside <a> tags will be highlighted. */
 "By registering this domain you agree to our <a>Terms&nbsp;and&nbsp;Conditions<\/a>." = "Prin înregistrarea acestui domeniu ești de acord cu\n<a>termenii&nbsp;și&nbsp;condițiile<\/a>.";
 
 /* Title of the button which opens the Jetpack terms and conditions page. The sentence is composed by 2 lines separated by a line break 
 . Also there is a placeholder %@ which is: Terms and Conditions */
 "By setting up Jetpack you agree to our\n%@" = "Prin inițializarea Jetpack ești de acord cu\n%@";
+
+/* Legal disclaimer for signup buttons, the underscores _..._ denote underline */
+"By signing up, you agree to our _Terms of Service_." = "Prin înregistrare, ești de acord cu _Termenii noștri de utilizare ai serviciului_.";
 
 /* No comment provided by engineer. */
 "CUSTOMIZE" = "PERSONALIZEAZĂ";
@@ -1096,6 +1123,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of an alert informing the user the camera permission for the app is disabled and its needed to proceed */
 "Camera access needed to scan login codes" = "Pentru a scana codurile de autentificare, trebuie să dai acces la aparatul foto";
 
+/* Title of an alert letting the user know */
+"Can Not Request Link" = "Nu poți solicita legătură";
+
 /* Alert message that is shown when trying to publish empty page */
 "Can't publish an empty page" = "Nu pot publica o pagină goală";
 
@@ -1106,7 +1136,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
-   Cancel
+   Button title. Tapping it cancels the login flow.
    Cancel a prompt
    Cancel Action
    Cancel action on share extension editor screen.
@@ -1117,6 +1147,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel action title
    Cancel button
    Cancel button for alert
+   Cancel button label
    Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Cancel button.
    Cancel button. Site creation modal popover.
@@ -1138,6 +1169,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
+   Option to cancel the email app selection when logging in with magic links
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
@@ -1169,6 +1201,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "Anulez...";
 
+/* Error message shown when the input URL does not point to an existing site. */
+"Cannot access the site at this address. Please double-check and try again." = "Nu pot să accesez site-ul la această adresă. Te rog verifică încă o dată și încearcă din nou.";
+
 /* Helper text that appears at the bottom of the design screen. */
 "Can’t decide? You can change the theme at any time." = "Nu te poți decide? Poți să schimbi tema oricând.";
 
@@ -1196,15 +1231,15 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Center alignment for an image. Should be the same as in core WP. */
 "Center" = "Centru";
 
+/* Popup title for wrong SSL certificate. */
+"Certificate error" = "Eroare certificat";
+
 /* Account Settings Change password label
    Main title */
 "Change Password" = "Schimbă parola";
 
 /* Change Username title. */
 "Change Username" = "Schimbă numele de utilizator";
-
-/* Button title to edit visibility of sites. */
-"Change Visibility" = "Schimbă vizibilitatea";
 
 /* No comment provided by engineer. */
 "Change block position" = "Schimbă poziția blocului";
@@ -1220,9 +1255,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Change button. */
 "Change username" = "Schimbă numele de utilizator";
-
-/* Description of a Quick Start Tour */
-"Change, add, or remove your site's pages." = "Modifică paginile, adaugă sau înlătură pagini pe site.";
 
 /* No comment provided by engineer. */
 "Changes to featured image will not be affected by the undo\/redo buttons." = "Modificările imaginii reprezentative nu vor fi afectate de butoanele revenire\/refacere.";
@@ -1243,6 +1275,18 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped. */
 "Check out our top tips to increase your views and traffic" = "Vezi sfaturile noastre importante pentru a mări numărul de vizualizări și a-ți crește traficul";
 
+/* The title text on the magic link requested screen. */
+"Check your email on this device!" = "Verifică-ți emailul primit pe acest dispozitiv!";
+
+/* Instruction text after a login Magic Link was requested. */
+"Check your email on this device, and tap the link in the email you receive from WordPress.com." = "Verifică emailurile primite pe acest dispozitiv și atinge legătura din emailul primit de la WordPress.com.";
+
+/* Instructional text on how to open the email containing a magic link. */
+"Check your email on this device, and tap the link in the email you received from WordPress.com.\n\nNot seeing the email? Check your Spam or Junk Mail folder." = "Verifică pe acest dispozitiv emailurile primite și atinge legătura din emailul primit de la WordPress.com.\n\nNu ai găsit emailul? Caută-l și în dosarul Spam sau Junk.";
+
+/* Alert title for check your email during logIn/signUp. */
+"Check your email!" = "Verifică-ți emailul!";
+
 /* Subtitle shown on the dashboard when it fails to load */
 "Check your internet connection and pull to refresh." = "Verifică dacă ai conexiune la internet și reîmprospătează pagina.";
 
@@ -1259,20 +1303,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Subtitle for No results full page screen displayed from post list when there is no connection */
 "Check your network connection and try again. Or draft a post." = "Verifică conexiunea la rețea și încearcă din nou. Sau creează o ciornă a articolului.";
 
-/* Title of a Quick Start Tour */
-"Check your notifications" = "Vezi notificările";
-
-/* Title of a Quick Start Tour */
-"Check your site stats" = "Vezi statisticile site-ului";
-
-/* Title of a Quick Start Tour */
-"Check your site title" = "Verifică titlul site-ului";
-
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Se verifică cumpărăturile...";
-
-/* Title of button that asks the users if they'd like to focus on checking their sites stats */
-"Checking stats" = "Verificarea statisticilor";
 
 /* Screen reader text expressing the menu item is a child of another menu item. Argument is a name for another menu item. */
 "Child of %@" = "Copil al %@";
@@ -1302,17 +1334,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "Choose a new app icon" = "Alege un icon nou pentru aplicație";
 
-/* A text for title label on Login epilogue screen */
-"Choose a site to open." = "Alege un site pe care să îl deschizi.";
-
 /* Title for the screen to pick a theme and homepage for a site. */
 "Choose a theme" = "Alege o temă";
 
 /* Select the site's intent. Subtitle */
 "Choose a topic from the list below or type your own." = "Alege un subiect din lista de mai jos sau creează tu unul.";
-
-/* Title of a Quick Start Tour */
-"Choose a unique site icon" = "Alege un icon unic pentru site";
 
 /* No comment provided by engineer. */
 "Choose audio" = "Alege fișierul audio";
@@ -1519,39 +1545,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The action is completed */
 "Completed" = "Terminat";
 
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Check your notifications" = "Ai finalizat: vezi notificările";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Check your site stats" = "Finalizat: vezi statistici site";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Check your site title" = "Finalizat: verifică titlul site-ului";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Choose a unique site icon" = "Finalizat: alege un icon unic pentru site";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Connect with other sites" = "Ai finalizat: conectează-te cu alte site-uri";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Create your site" = "Finalizat: creează-ți site-ul";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Publish a post" = "Finalizat: publică un articol";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Review site pages" = "Finalizat: revizuiește paginile site-ului";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Social sharing" = "Finalizat: partajare socială";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Upload photos or videos" = "Finalizat: încarcă fotografii sau videoclipuri";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: View your site" = "Finalizat: vezi site-ul";
-
 /* Section title for the configure table section in the blog details screen */
 "Configure" = "Configurare";
 
@@ -1573,14 +1566,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of alert prompting users to verify their accounts while attempting to publish */
 "Confirm your email first" = "Confirmă-ți mai întâi emailul";
 
-/* Title shown when all tours have been completed. */
-"Congrats! You know your way around" = "Felicitări! Te descurci foarte bine";
-
 /* Title of domain name purchase success screen */
 "Congratulations on your purchase!" = "Felicitări, ai cumpărat!";
-
-/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
-"Congratulations! Your site passed *1000 all-time* views!" = "Felicitări! Site-ul tău a depășit recordul de 1.000 de vizualizări.";
 
 /* Verb. Tapping connects an account to Publicize.
    Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
@@ -1592,9 +1579,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Connect to automatically share your blog posts to %@" = "Conectare pentru a partaja automat articolele blogului tău cu %@";
 
-/* Title of a Quick Start Tour */
-"Connect with other sites" = "Conectează-te cu alte site-uri";
-
 /* No comment provided by engineer. */
 "Connect your favorite social media services to automatically share new posts with friends." = "Conectează serviciile tale sociale media pentru a partaja automat noile articole cu prietenii.";
 
@@ -1604,12 +1588,18 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Noun. Title. Title for the list of accounts for third party sharing services. */
 "Connected Accounts" = "Conturi conectate";
 
+/* Title shown when a user logs in with Google but no matching WordPress.com account is found */
+"Connected But…" = "Conectat dar...";
+
 /* Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name
    Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name. */
 "Connecting %@" = "Conectare cu %@";
 
 /* Informs the user of consequences of chooseing a new account to connect to publicize.  The %@ characters are placeholders for account names. */
 "Connecting %@ will replace the existing connection to %@." = "Conectarea la %1$@ va înlocui actuala conectare la %2$@.";
+
+/* No comment provided by engineer. */
+"Connecting to WordPress.com" = "Se conectează la WordPress.com";
 
 /* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connecting..." = "Conectare...";
@@ -1645,6 +1635,7 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
+   The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
@@ -1656,6 +1647,18 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Menus alert button title to continue making changes. */
 "Continue Working" = "Continuă lucrul";
+
+/* Part of a prompt suggesting that there is more content for the user to read. */
+"Continue reading" = "Citește în continuare";
+
+/* Button title. Tapping begins log in using Apple. */
+"Continue with Apple" = "Continuă cu Apple";
+
+/* Button title. Tapping begins log in using Google. */
+"Continue with Google" = "Continuă cu Google";
+
+/* Shown while logging in with Apple and the app waits for the site creation process to complete. */
+"Continuing with Apple" = "Continui cu Apple";
 
 /* Title of button that displays the WordPress.org contributor page */
 "Contribute" = "Contribuie";
@@ -1693,11 +1696,17 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of an prompt letting the user know there was a problem saving. */
 "Could Not Save Changes" = "Nu pot salva modificările";
 
+/* Message shown when site purchases API failed */
+"Could not check site purchases." = "Nu am putut verifica cumpărăturile pe site.";
+
 /* The app failed to disable notifications for the subscription */
 "Could not disable notifications" = "Nu am putut dezactiva notificările";
 
 /* The app failed to enable notifications for the subscription */
 "Could not enable notifications" = "Nu am putut activa notificările";
+
+/* Error message informing the user that there was a problem subscribing to a site or feed. */
+"Could not follow the site at the address specified." = "Nu am putut urmări site-ul la adresa specificată.";
 
 /* Error message shown when the user scanned an expired log in code. */
 "Could not log you in using this log in code. Please tap the Scan Again button to rescan the code." = "Nu am putut să te autentific folosind acest cod de autentificare. Te rog atinge butonul Scanează din nou pentru a scana din nou codul.";
@@ -1720,6 +1729,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* An error description explaining that Seen could not be toggled due to a missing postID. */
 "Could not toggle Seen: missing postID." = "Nu am putut comuta la Văzut: lipsește postID.";
 
+/* Error message informing the user that there was a problem unsubscribing to a site or feed. */
+"Could not unfollow the site at the address specified." = "Nu am putut să anulez urmărirea site-ului la adresa specificată.";
+
 /* The app failed to unsubscribe from the comments for the post */
 "Could not unsubscribe from comments" = "Nu am putut anula abonamentul la comentarii";
 
@@ -1731,6 +1743,18 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Couldn't Connect" = "Nu m-am putut conecta";
+
+/* Error message shown a URL points to a valid site but not a WordPress site. */
+"Couldn't connect to the WordPress site. There is no valid WordPress site at this address. Check the site address (URL) you entered." = "Nu am putut conecta site-ul WordPress. La această adresă nu există niciun site WordPress valid. Verifică adresa site-ului (URL) pe care ai introdus-o.";
+
+/* Message to show to user when he tries to add a self-hosted site with RSD link present, but xmlrpc is missing. */
+"Couldn't connect. Required XML-RPC methods are missing on the server. Please contact your hosting provider to solve this problem." = "Nu am putut face conexiunea. Metodele XML-RPC necesare lipsesc pe server. Te rog să contactezi  furnizorul tău de găzduire pentru a rezolva această problemă.";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 403 error, meaning that the access to the /xmlrpc.php file is forbidden. */
+"Couldn't connect. We received a 403 error when trying to access your site's XMLRPC endpoint. The app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Nu am putut face conexiunea. Am primit o eroare 403 când am încercat să accesăm punctul-final XMLRPC al site-ului tău. Aplicația are nevoie de el pentru a comunica cu site-ul tău. Te rog să contactezi serviciul tău de găzduire pentru a rezolva această problemă.";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
+"Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Nu am putut face conexiunea. Gazda ta blochează cererile POST, dar aplicația are nevoie de ele pentru a comunica cu site-ul tău. Te rog să contactezi serviciul tău de găzduire pentru a rezolva această problemă.";
 
 /* Error message when tag loading failed */
 "Couldn't load tags." = "Nu am putut încărca etichetele.";
@@ -1769,6 +1793,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Accessibility label for create floating action button */
 "Create" = "Creează";
 
+/* The button title text for creating a new account. */
+"Create Account" = "Creează un cont";
+
 /* Title for button to make a blank page */
 "Create Blank Page" = "Creează o pagină goală";
 
@@ -1776,12 +1803,8 @@ translators: %s: Block name e.g. \"Image block\" */
 "Create New" = "Creează nou";
 
 /* Button for selecting the current page template.
-   Button title, encourages users to create their first page on their blog.
    Title for button to make a page with the contents of the selected layout */
 "Create Page" = "Creează o pagină";
-
-/* Button title, encourages users to create post on their blog. */
-"Create Post" = "Creează un articol";
 
 /* Button to progress to the next step
    Site creation. Step 1. Screen title
@@ -1791,21 +1814,17 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Button allowing the user to create a site icon by choosing an emoji character */
 "Create With Emoji" = "Creează cu un emoticon";
 
-/* Create WordPress.com site button */
-"Create WordPress.com site" = "Creează un site WordPress.com";
-
 /* Displayed in the Notifications Tab as a button title, when the Unread Filter shows no notifications */
 "Create a Post" = "Creează un articol";
+
+/* Navigates to a new flow for site creation. */
+"Create a Site" = "Creează un site";
 
 /* Title of the button in the placeholder for an empty list of blog tags. */
 "Create a Tag" = "Creează o etichetă";
 
-/* A button title
-   Title for a button that when tapped starts the site creation process */
+/* Title for a button that when tapped starts the site creation process */
 "Create a new site" = "Creează un site nou";
-
-/* Text shown when the account has no sites. */
-"Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "Creează un site nou pentru afacerea, revista ta sau blogul personal; sau conectează o instalare WordPress existentă.";
 
 /* Title for the Site Icon Picker */
 "Create a site icon" = "Creează un icon pentru site";
@@ -1821,9 +1840,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Create link" = "Creează o legătură";
-
-/* Title of a Quick Start Tour */
-"Create your site" = "Creează-ți site-ul";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Crearea unui meniu nou va anula modificările pe care le-ai făcut în meniul actual. Sigur vrei să continui?";
@@ -1885,9 +1901,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Customize Gradient" = "Personalizează gradientul";
-
-/* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
-"Customize Your Site" = "Personalizează-ți site-ul";
 
 /* No comment provided by engineer. */
 "Customize blocks" = "Personalizează blocurile";
@@ -2017,6 +2030,9 @@ translators: %s: Block name e.g. \"Image block\" */
    Theme Details action title */
 "Details" = "Detalii";
 
+/* Instructions after a Magic Link was sent, but email is incorrect. */
+"Didn't mean to create a new account? Go back to re-enter your email address." = "Nu ai vrut să creezi un cont nou? Mergi înapoi și reintrodu adresa ta de email.";
+
 /* Label for the dimensions in pixels for a media asset (image / video) */
 "Dimensions" = "Dimensiuni";
 
@@ -2060,21 +2076,15 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Disconnecting this account means published posts will no longer be automatically shared to %@" = "Deconectarea acestui cont înseamnă că articolele publicate nu vor mai fi partajate automat pe %@";
 
-/* The menu item to select during a guided tour. */
-"Discover" = "Descoperă";
-
-/* Description of a Quick Start Tour */
-"Discover and follow sites that inspire you." = "Descoperă și urmărește site-urile care te inspiră.";
-
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
 "Discussion" = "Discuție";
 
-/* Dismiss a view. Verb */
+/* Accessibility label for button to dismiss a bottom sheet
+   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+   Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
+   Dismiss a view. Verb */
 "Dismiss" = "Refuză";
-
-/* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
-"Dismiss %@ Quick Start step" = "Renunță la pasul %@ din Inițierea rapidă";
 
 /* Accessibility hint for the continue button in the Feature Announcements screen. */
 "Dismiss announcements" = "Respinge anunțurile";
@@ -2087,9 +2097,6 @@ translators: %s: Block name e.g. \"Image block\" */
    User's Display Name */
 "Display Name" = "Nume de afișat";
 
-/* Message shown when all tours have been completed */
-"Doesn't it feel good to cross things off a list?" = "Nu te simți bine când bifezi lucrurile dintr-o listă?";
-
 /* Register Domain - Domain contact information section header title */
 "Domain contact information" = "Informații de contact domeniu";
 
@@ -2098,6 +2105,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Noun. Title. Links to the Domains screen. */
 "Domains" = "Domenii";
+
+/* Label for button to log in using your site address. The underscores _..._ denote underline */
+"Don't have an account? _Sign up_" = "Nu ai un cont? _Sign up_";
 
 /* A done button
    Accessibility label for the Done button in the Me screen.
@@ -2130,6 +2140,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Double tap to add a link." = "Atinge de două ori pentru a adăuga o legătură.";
+
+/* Voiceover accessibility hint informing the user they can double tap a modal alert to dismiss it */
+"Double tap to dismiss" = "Atinge de două ori pentru a renunța";
 
 /* No comment provided by engineer. */
 "Double tap to edit button text" = "Atinge de două ori pentru a edita textul butonului";
@@ -2230,9 +2243,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Name for the status of a draft post. */
 "Draft" = "Ciornă";
-
-/* Description of a Quick Start Tour */
-"Draft and publish a post." = "Redactează și publică un articol.";
 
 /* Title of the drafts filter.  This filter shows a list of draft posts. */
 "Drafts" = "Ciorne";
@@ -2343,7 +2353,10 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Header for a comment author's email address, shown when editing a comment. */
 "Email Address" = "Adresă email";
 
-/* Describes the email address section in the comment detail screen. */
+/* Accessibility label for the email address text field.
+   Describes the email address section in the comment detail screen.
+   Placeholder for a textfield. The user may enter their email address.
+   Placeholder for the email address textfield. */
 "Email address" = "Adresă email";
 
 /* Notification Settings Channel */
@@ -2387,6 +2400,9 @@ translators: %s: Block name e.g. \"Image block\" */
    Label for size of media when the cache is empty. */
 "Empty" = "Golire";
 
+/* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
+"Empty URL" = "URL gol";
+
 /* Button title for the enable site notifications action.
    Title of button to enable publicize. */
 "Enable" = "Activează";
@@ -2399,12 +2415,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Text shown when the site doesn't have the Publicize module enabled. */
 "Enable Publicize" = "Activează Publicitate";
-
-/* Title of a row displayed on the debug screen used in debug builds of the app */
-"Enable Quick Start for Existing Site" = "Activează inițierea rapidă pentru acest site";
-
-/* Title of a row displayed on the debug screen used in debug builds of the app */
-"Enable Quick Start for New Site" = "Activează inițierea rapidă pentru site-ul nou";
 
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "Activează statistici site";
@@ -2430,14 +2440,31 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Enter a custom value */
 "Enter a custom value" = "Introdu o valoare personalizată";
 
-/* No comment provided by engineer. */
-"Enter a password" = "Introdu o parolă";
-
 /* (placeholder) Help enter WordPress password */
 "Enter password" = "Introdu parola";
 
+/* Instruction text on the login's site addresss screen.
+   Label for button to log in using your site address. */
+"Enter the address of the WordPress site you'd like to connect." = "Introdu adresa site-ului WordPress pe care vrei să-l conectezi.";
+
+/* Instructional text shown when requesting the user's password for login. */
+"Enter the password for your WordPress.com account." = "Introdu parola pentru contul tău WordPress.com.";
+
 /* (placeholder) Help enter WordPress username */
 "Enter username" = "Introdu numele de utilizator";
+
+/* Enter your account information for {site url}. Asks the user to enter a username and password for their self-hosted site. */
+"Enter your account information for %@." = "Introdu informațiile contului pentru %@.";
+
+/* Instruction text on the initial email address entry screen. */
+"Enter your email address to log in or create a WordPress.com account." = "Introdu adresa ta de email pentru a te autentifica sau creează un cont WordPress.com.";
+
+/* Button title. Takes the user to the login by site address flow. */
+"Enter your existing site address" = "Introdu adresa site-ului tău de acum";
+
+/* Title of a button on the magic link screen.
+   Title of a button. */
+"Enter your password instead." = "În schimb, introdu parola.";
 
 /* Error message displayed when site credentials aren't configured. */
 "Enter your server credentials" = "Introdu datele de conectare la server";
@@ -2623,6 +2650,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Failed to save files.\nPlease tap for options." = "Salvarea fișierelor a eșuat.\nTe rog atinge pentru opțiuni.";
 
+/* Error message to show when wrong URL format is used to access the REST API */
+"Failed to serialize request to the REST API." = "Serializarea cererii către REST API a eșuat.";
+
 /* The app failed to unsubscribe from the comments for the post */
 "Failed to unfollow conversation" = "Anularea urmăririi conversației a eșuat";
 
@@ -2631,6 +2661,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Fashion site intent topic */
 "Fashion" = "Modă";
+
+/* Option to select the Fastmail app when logging in with magic links */
+"Fastmail" = "Fastmail";
 
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "Reprezentative";
@@ -2693,6 +2726,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "Află mai multe";
 
+/* The hint button's title text to help users find their site address. */
+"Find your site address" = "Găsește adresa site-ului";
+
 /* My Profile first name label
    Register Domain - Domain contact information field First name
    User's First Name */
@@ -2730,6 +2766,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Guide for users to follow topics. */
 "Follow topics you're interested in and we'll find some blogs you might like." = "Urmărește subiectele care te interesează și vom găsi câteva bloguri care s-ar putea să îți placă.";
+
+/* User role badge */
+"Follower" = "Urmăritor";
 
 /* Label for number of followers. */
 "Followers" = "Urmăritori";
@@ -2818,6 +2857,12 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title. A call to action to generate a new invite link. */
 "Generate new link" = "Generează o legătură nouă";
 
+/* View title for initial auth views. */
+"Get Started" = "Începe";
+
+/* The button title for a secondary call-to-action button. When the user wants to try sending a magic link instead of entering a password. */
+"Get a login link by email" = "Primești o legătură de autentificare prin email";
+
 /* Displayed in the Notifications Tab as a message, when there are no notifications */
 "Get active! Comment on posts from blogs you follow." = "Fii activ! Comentează la articole de pe blogurile pe care le urmărești.";
 
@@ -2827,32 +2872,20 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "Remarcă-te: comentează la articole pe care le-ai citit.";
 
-/* Description of a Quick Start Tour */
-"Get real time updates from your pocket." = "Primești actualizări în timp real, chiar în buzunar.";
-
 /* Prompt for the screen to pick a template for a page */
 "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "Începe și alege dintr-o mare varietate de aranjamente gata pregătite. Sau începe cu o pagină goală.";
 
 /* No comment provided by engineer. */
 "Get support" = "Ai acces la suport";
 
-/* Name of the Quick Start list that guides users through a few tasks to explore the Jetpack app. */
-"Get to know the Jetpack app" = "Fă cunoștință cu aplicația Jetpack";
-
-/* Name of the Quick Start list that guides users through a few tasks to explore the WordPress app. */
-"Get to know the WordPress app" = "Fă cunoștință cu aplicația WordPress";
-
-/* Name of the Quick Start list that guides users through a few tasks to explore the WordPress/Jetpack app. */
-"Get to know the app" = "Vezi ce face aplicația";
-
 /* Title of the second alert preparing users to grant permission for us to send them push notifications. */
 "Get your notifications faster" = "Primești notificările mai repede";
 
-/* Description of a Quick Start Tour */
-"Get your site up and running" = "Obții un site care funcționează și rulează";
-
 /* Example post title used in the login prologue screens. */
 "Getting Inspired" = "Inspiră-te";
+
+/* Alerts the user that wpcom account information is being retrieved. */
+"Getting account information" = "Preiau informațiile contului";
 
 /* Cancel */
 "Give Up" = "Renunț";
@@ -2860,8 +2893,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Give it a try by adding a few blocks to your post or page!" = "Încearcă-le, adaugă câteva blocuri în articolele sau paginile tale!";
 
-/* Description of a Quick Start Tour */
-"Give your site a name that reflects its personality and topic. First impressions count!" = "Dă-i site-ului un nume care să-i reflecte personalitatea și subiectul (tema). Prima impresie este foarte importantă!";
+/* Option to select the Gmail app when logging in with magic links */
+"Gmail" = "Gmail";
 
 /* Displayed in the Notifications Tab as a button title, when there are no notifications */
 "Go to Reader" = "Du-te la Cititor";
@@ -2872,6 +2905,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Button label for going to settings to approve push notifications
    Opens WPiOS Settings.app Section */
 "Go to iOS Settings" = "Mergi la setările iOS";
+
+/* Message shown on screen after the Google sign up process failed. */
+"Google sign up failed." = "Înregistrarea pe Google a eșuat.";
 
 /* Button title on the blogging prompt's feature introduction view to dismiss the view.
    Title for the continue button in the dashboard's custom What's New page. */
@@ -2889,41 +2925,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "Excelent!\n Ne place să primim vești de la utilizatori mulțumiți \n😁";
 
-/* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
-"Grow Your Audience" = "Crește-ți audiența";
-
-/* This value is used to set the accessibility hint text for viewing the user's notifications. */
-"Guides you through the process of checking your notifications." = "Te îndrumă în procesul de verificare a notificărilor.";
-
-/* This value is used to set the accessibility hint text for creating a new page for the user's site. */
-"Guides you through the process of creating a new page for your site." = "Te îndrumă în procesul de creare a unei pagini noi pentru site-ul tău.";
-
-/* This value is used to set the accessibility hint text for creating the user's site. */
-"Guides you through the process of creating your site." = "Te îndrumă în procesul de creare a site-ului tău.";
-
-/* This value is used to set the accessibility hint text for following the sites of other users. */
-"Guides you through the process of following other sites." = "Te îndrumă în procesul de urmărire a altor site-uri.";
-
-/* This value is used to set the accessibility hint text for previewing a user's site. */
-"Guides you through the process of previewing your site." = "Te îndrumă în procesul de previzualizare a site-ului tău.";
-
-/* This value is used to set the accessibility hint text for publishing a new post on the user's site. */
-"Guides you through the process of publishing a new post on your site." = "Te îndrumă în procesul de publicare a unui articol nou pe site-ul tău.";
-
-/* This value is used to set the accessibility hint text for viewing Stats on the user's site. */
-"Guides you through the process of reviewing statistics for your site." = "Te îndrumă în procesul de examinare a statisticilor pentru site-ul tău.";
-
-/* This value is used to set the accessibility hint text for setting the site title. */
-"Guides you through the process of setting a title for your site." = "Te îndrumă în procesul de setare a unui titlu pentru site-ul tău.";
-
-/* This value is used to set the accessibility hint text for uploading a site icon. */
-"Guides you through the process of uploading an icon for your site." = "Te îndrumă în procesul de încărcare a unui icon pentru site-ul tău.";
-
-/* This value is used to set the accessibility hint text for viewing the user's notifications. */
-"Guides you through the process of uploading new media." = "Te îndrumă în procesul de încărcare a elementelor media.";
-
-/* Accessibility label for HTML button on formatting toolbar.
-   HTML Attachment Label */
+/* Accessibility label for HTML button on formatting toolbar. */
 "HTML" = "HTML";
 
 /* Post HTML content */
@@ -2983,15 +2985,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Help icon" = "Icon pentru ajutor";
 
-/* Hides a site from the site picker list
-   Title of a button used to collapse a group */
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
+"Hidden" = "Ascunse";
+
+/* Title of a button used to collapse a group */
 "Hide" = "Ascunde";
-
-/* Hide All */
-"Hide All" = "Ascunde tot";
-
-/* Hide All Sites */
-"Hide All Sites" = "Ascunde toate site-urile";
 
 /* No comment provided by engineer. */
 "Hide keyboard" = "Ascunde tastatura";
@@ -3059,6 +3057,12 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message to show when site icon update failed */
 "Icon update failed" = "Actualizare icon eșuată";
 
+/* The instructions text about not being able to find the magic link email. */
+"If you can’t find the email, please check your junk or spam email folder" = "Dacă nu ai găsit emailul, te rog să verifici și dosarele Junk și Spam";
+
+/* Legal disclaimer for signing up. The underscores _..._ denote underline. */
+"If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "Dacă continui cu Apple sau Google și nu ai deja un cont WordPress.com, îți creezi un cont și ești de acord cu _Termenii de utilizare ai serviciului_ nostru.";
+
 /* First line of remove user warning in confirmation dialog. Note: '%@' is the placeholder for the user's name and it must exist twice in this string. */
 "If you remove %@, that user will no longer be able to access this site, but any content that was created by %@ will remain on the site." = "Dacă %1$@ este înlăturat, el nu va mai putea accesa acest site, dar întregul conținut creat de %2$@ va rămâne pe site.";
 
@@ -3122,11 +3126,23 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Describes a status of a plugin */
 "Inactive" = "Inactiv";
 
+/* The plugin is not active on the site and has not enabled automatic updates */
+"Inactive, Autoupdates off" = "Inactiv, actualizările automate dezactivate";
+
+/* The plugin is not active on the site and has enabled automatic updates */
+"Inactive, Autoupdates on" = "Inactiv, actualizările automate activate";
+
 /* Title of the switch to turn on or off the blogging prompts feature. */
 "Include a Blogging Prompt" = "Include un îndemn pentru publicare";
 
+/* Describes a standard *.wordpress.com site domain */
+"Included with Site" = "Inclus cu site-ul";
+
 /* Downloadable/Restorable items: general section footer text */
 "Includes wp-config.php and any non WordPress files" = "Include wp-config.php și toate fișierele care nu sunt din WordPress";
+
+/* An error message shown when a user signed in with incorrect credentials. */
+"Incorrect username or password. Please try entering your login details again." = "Nume utilizator incorect sau parolă incorectă. Te rog încearcă să-ți introduci din nou detaliile de autentificare.";
 
 /* Title for a threat */
 "Infected core file" = "Fișier din nucleu infectat";
@@ -3228,14 +3244,38 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title displayed on the feature introduction view. */
 "Introducing Blogging Prompts" = "Îți prezentăm îndemnurile pentru publicare";
 
+/* Title of an alert letting the user know the email address that they've entered isn't valid */
+"Invalid Email Address" = "Adresa de email nu este validă";
+
+/* No comment provided by engineer. */
+"Invalid Site Address" = "Adresa site-ului este invalidă";
+
+/* No comment provided by engineer. */
+"Invalid Site Title" = "Titlul site-ului este invalid";
+
+/* Message to show to user when he tries to add a self-hosted site that isn't HTTP or HTTPS. */
+"Invalid URL scheme inserted, only HTTP and HTTPS are supported." = "S-a inserat o schemă URL invalidă, numai HTTP și HTTPS sunt acceptate.";
+
+/* Message to show to user when he tries to add a self-hosted site that isn't a valid URL. */
+"Invalid URL, please check if you wrote a valid site address." = "URL invalid, te rog verifică dacă ai scris o adresă de site validă.";
+
 /* No comment provided by engineer. */
 "Invalid URL." = "URL-ul nu este valid.";
 
 /* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "URL-ul nu este valid. Nu am găsit fișierul audio.";
 
+/* Error message shown when the input URL is invalid. */
+"Invalid URL. Please double-check and try again." = "URL-ul nu este valid. Te rog verifică încă o dată și încearcă din nou.";
+
 /* No comment provided by engineer. */
 "Invalid URL. Please enter a valid URL." = "URL-ul nu este valid. Te rog să introduci un URL valid.";
+
+/* Error message generated when announcement service is unable to return a valid endpoint. */
+"Invalid endpoint" = "Punct-final invalid";
+
+/* No comment provided by engineer. */
+"Invalid username" = "Numele de utilizator nu este valid";
 
 /* The app successfully sent an invitation */
 "Invitation Sent!" = "Invitație trimisă!";
@@ -3248,6 +3288,12 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Invite People Title */
 "Invite People" = "Invită persoane";
+
+/* An error message shown during log in when the username or password is incorrect. */
+"It looks like this username\/password isn't associated with this site." = "Se pare că acest nume de utilizator nu este asociat sau această parolă nu este asociată cu acest site.";
+
+/* An error message shown when a wpcom user provides the wrong password. */
+"It seems like you've entered an incorrect password. Want to give it another try?" = "Se pare că ai introdus o parolă incorectă. Vrei s-o mai încerci odată?";
 
 /* Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title. */
 "It's time to blog on %@!" = "Azi trebuie să publici pe %@!";
@@ -3357,15 +3403,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Button to cancel the replacement of a featured image. */
 "Keep current" = "Păstrează imaginea curentă";
 
-/* Description of a Quick Start Tour */
-"Keep up to date on your site’s performance." = "Fii la curent cu performanța site-ului tău.";
-
-/* Subtitle giving the user more context about why to enable notifications. */
-"Know when your favorite authors post new content." = "Știi când autorii tăi preferați publică un conținut nou.";
-
-/* Subtitle giving the user more context about why to enable notifications. */
-"Know when your site is getting more traffic, new followers, or when it passes a new milestone!" = "Știi când site-ul tău are mai mult trafic, urmăritori noi sau când trece la un alt nivel.";
-
 /* Autoapprove only from known users */
 "Known Users" = "Utilizatori știuți";
 
@@ -3427,9 +3464,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Jetpack Settings: WordPress.com Login WordPress login footer text */
 "Learn more..." = "Află mai mult...";
-
-/* Description for a prompt asking if users want to try out the quick start checklist. */
-"Learn the basics with a quick walk through." = "Învață elementele de bază cu o scurtă introducere.";
 
 /* Left alignment for an image. Should be the same as in core WP. */
 "Left" = "Stânga";
@@ -3589,7 +3623,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Loading the block editor." = "Încarc editorul de blocuri.";
 
 /* Loading tags
-   Loading tags.
    Loading. Verb
    Suggestions loading message
    Text displayed in HUD while a media item is being loaded.
@@ -3620,8 +3653,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Log Files By Created Date" = "Fișierele de jurnalizare după data creării";
 
-/* Label for logging in to WordPress.com account
-   Log In 3D Touch Shortcut */
+/* Button title.  Tapping takes the user to the login form.
+   Label for logging in to WordPress.com account
+   Log In 3D Touch Shortcut
+   Log In button label.
+   View title during the log in process. */
 "Log In" = "Autentificare";
 
 /* Button for confirming logging out from WordPress.com account
@@ -3630,6 +3666,22 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of a button for signing in. */
 "Log in" = "Autentificare";
+
+/* A generic error message for a failed log in. */
+"Log in failed. Please try again." = "Autentificarea a eșuat. Te rog încearcă din nou.";
+
+/* Button title. Takes the user to the login by email flow.
+   Button title. Tapping begins our normal log in process. */
+"Log in or sign up with WordPress.com" = "Autentifică-te în WordPress.com sau înregistrează-te";
+
+/* Instruction text on the login's email address screen. */
+"Log in to the WordPress.com account you used to connect Jetpack." = "Autentifică-te în contul WordPress.com pe care l-ai folosit pentru a conecta Jetpack.";
+
+/* Instruction text on the login's email address screen. */
+"Log in to your WordPress.com account with your email address." = "Autentifică-te în contul tău WordPress.com cu adresa de email.";
+
+/* Instructions on the WordPress.com username / password log in form. */
+"Log in with your WordPress.com username and password." = "Autentifică-te cu numele de utilizator și parola WordPress.com.";
 
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of Jetpack?" = "Te dezautentifici de pe Jetpack?";
@@ -3640,6 +3692,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Login Request Expired */
 "Login Request Expired" = "Autentificare cerută expirată";
 
+/* Button title. Takes the user to the Enter account password screen. */
+"Login with account password" = "Autentifică-te cu parola contului";
+
 /* No comment provided by engineer. */
 "Logs" = "Jurnale";
 
@@ -3648,6 +3703,12 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message asking the user to sign into Jetpack with WordPress.com credentials */
 "Looks like you have Jetpack set up on your site. Congrats! Log in with your WordPress.com credentials to enable Stats and Notifications." = "Se pare că ai inițializat Jetpack pe site-ul tău. Felicitări! Autentifică-te pe WordPress.com cu datele tale de conectare pentru a activa statisticile și notificările.";
+
+/* Title of a button. */
+"Lost your password?" = "Ai uitat parola?";
+
+/* Option to select the Apple Mail app when logging in with magic links */
+"Mail (Default)" = "Mail (implicit)";
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Navigare principală";
@@ -3676,6 +3737,12 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Manual" = "Manual";
+
+/* Section name for manual offsets in time zone selector */
+"Manual Offsets" = "Completări manuale";
+
+/* Describes a domain that was mapped to WordPress.com, but registered elsewhere */
+"Mapped Domain" = "Domeniu mapat";
 
 /* Marks a notification as unread */
 "Mark Read" = "Marchează ca citit";
@@ -3733,7 +3800,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Me" = "Eu";
 
 /* Noun. Title. Links to the blog's Media library.
-   The menu item to select during a guided tour.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Media";
@@ -3803,6 +3869,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Invite Message Editor's Title
    Label for the share message field on the post settings. */
 "Message" = "Mesaj";
+
+/* Option to select the Microsft Outlook app when logging in with magic links */
+"Microsoft Outlook" = "Microsoft Outlook";
 
 /* Summary description for a threat */
 "Miscellaneous vulnerability" = "Vulnerabilități diverse";
@@ -3902,10 +3971,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Title of My Site tab */
 "My Site" = "Site-ul meu";
 
-/* Title for site picker screen.
-   Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
-"My Sites" = "Site-urile mele";
-
 /* Siri Suggestion to open My Sites */
 "My Sites in WordPress" = "Site-urile mele în WordPress";
 
@@ -3948,8 +4013,15 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "Ai nevoie de ajutor?";
 
-/* The secondary button title in the migration welcome screen */
+/* A button title. */
+"Need help finding your site address?" = "Ai nevoie de ajutor ca să-ți găsești adresa site-ului?";
+
+/* Takes the user to get help
+   The secondary button title in the migration welcome screen */
 "Need help?" = "Ai nevoie de ajutor?";
+
+/* Title of the more help button on alert helping users understand their site address */
+"Need more help?" = "Ai nevoie de mai mult ajutor?";
 
 /* Describes a status of a plugin */
 "Needs Update" = "Necesită actualizare";
@@ -3998,12 +4070,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "News" = "Știri";
 
 /* Next action on comment moderation snackbar.
-   Next action on share extension editor screen. */
+   Next action on share extension editor screen.
+   Title of a button.
+   Title of a button. The text should be capitalized. */
 "Next" = "Următorul";
-
-/* Table view title for the quick start section.
-   Title for the Quick Start dashboard card. */
-"Next Steps" = "Pașii următori";
 
 /* Accessibility label for the next notification button */
 "Next notification" = "Notificare următoare";
@@ -4185,11 +4255,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts. */
 "No saved posts" = "Nu ai salvat niciun articol";
 
-/* Displayed when the user is searching site tags and there are no matches. */
-"No tags matching your search" = "Nu s-a potrivit nicio etichetă cu căutarea ta";
-
-/* Button label for denying our request to re-allow push notifications
-   Button title. When tapped, the quick start checklist will not be shown, and the prompt will be dismissed. */
+/* Button label for denying our request to re-allow push notifications */
 "No thanks" = "Nu, mulțumesc";
 
 /* Text displayed when theme name search has no matches */
@@ -4224,15 +4290,14 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Not enough space to upload" = "Nu există suficient spațiu pentru încărcare";
 
 /* Button label for denying our request to allow push notifications
-   Not now button title shown in alert preparing users to grant permission for us to send them push notifications.
-   Phrase displayed to dismiss a quick start tour suggestion. */
+   Not now button title shown in alert preparing users to grant permission for us to send them push notifications. */
 "Not now" = "Nu acum";
 
 /* Title for a button that when tapped cancels the site creation process */
 "Not right now" = "Nu chiar acum";
 
-/* Button that allows users unsure of what selection they'd like */
-"Not sure, show me around" = "Nu sunt sigur, arată-mi și altceva";
+/* Instructions after a Magic Link was sent, but the email can't be found in their inbox. */
+"Not seeing the email? Check your Spam or Junk Mail folder." = "Nu ai găsit emailul? Uită-te și în dosarele Spam sau Junk.";
 
 /* Label for the note displayed in the Feature Introduction view. */
 "Note:" = "Notă:";
@@ -4270,7 +4335,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Notifications tab bar item accessibility label
    Notifications View Controller title
    Noun. Name of the Notifications feature
-   The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Notificări";
 
@@ -4308,10 +4372,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Button title. Acknowledges a prompt.
    Button title. An acknowledgement of the message displayed in a prompt.
    Default action
+   Dismisses the alert
    Marks all notifications as read.
    Menus: button title for finishing editing of a menu item.
    OK
    OK button for alert
+   Ok button for dismissing alert helping users understand their site address
    OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
    Submit button on prompt for user information.
@@ -4388,6 +4454,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Open Jetpack Security settings" = "Deschide setările Securitate Jetpack";
 
+/* The button title text for opening the user's preferred email app.
+   Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
+"Open Mail" = "DESCHIDE CORESPONDENȚA";
+
 /* Go to the settings app
    Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Deschide setările";
@@ -4430,6 +4500,15 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Divider on initial auth view separating auth options. */
 "Or" = "Sau";
+
+/* Instruction text for other forms of two-factor auth methods. */
+"Or choose another form of authentication." = "Sau alege o alt tip de autentificare.";
+
+/* Label for button to log in using site address. Underscores _..._ denote underline. */
+"Or log in by _entering your site address_." = "Sau autentifică-te prin _introducerea adresei site-ului tău_.";
+
+/* The button title for a secondary call-to-action button on the password screen. When the user wants to try sending a magic link instead of entering a password. */
+"Or log in with magic link" = "Sau autentifică-te cu legătura magică";
 
 /* Accessibility label for Ordered list button on formatting toolbar. */
 "Ordered List" = "Listă ordonată";
@@ -4497,7 +4576,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Page title. Empty" = "Titlu pagină. Gol";
 
 /* Noun. Title. Links to the blog's Pages screen.
-   The item to select during a guided tour.
    This is the section title
    Title of the screen showing the list of pages for a blog. */
 "Pages" = "Pagini";
@@ -4514,8 +4592,11 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Parenting site intent topic */
 "Parenting" = "Creșterea și educarea copiilor";
 
-/* Label for entering password in password field
-   Label for the password field. Should be the same as WP core.
+/* Accessibility label for the password text field in the self-hosted login page.
+   Label for entering password in password field
+   Login dialog password placeholder
+   Password placeholder
+   Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "Parolă";
 
@@ -4530,9 +4611,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Paste block after" = "Plasează blocul după";
-
-/* Paste without Formatting Menu Item */
-"Paste without Formatting" = "Plasează fără formatare";
 
 /* Button title for Pending comment state.
    Status for Media object that is being processed locally.
@@ -4605,6 +4683,15 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Message asking users to make sure that the block editor is enabled on their site in order for the Unsupported Block Editor to load properly. */
 "Please ensure the block editor is enabled on your site. If it is not enabled, it will not load." = "Te rog asigură-te că editorul de blocuri este activat pe site-ul tău. Dacă nu este activat, el nu se va încărca.";
 
+/* Error message shown when a URL is invalid. */
+"Please enter a complete website address, like example.com." = "Te rog introdu adresa completă a site-ului web, adică exemplu.com.";
+
+/* No comment provided by engineer. */
+"Please enter a site address." = "Te rog introdu o adresă de site.";
+
+/* No comment provided by engineer. */
+"Please enter a username." = "Te rog să introduci un nume de utilizator.";
+
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid City" = "Te rog introdu un oraș valid";
 
@@ -4635,14 +4722,35 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid address" = "Te rog introdu o adresă validă";
 
+/* An error message. */
+"Please enter a valid email address for a WordPress.com account." = "Te rog introdu o adresă de email validă pentru un cont WordPress.com.";
+
+/* Error message displayed when the user attempts use an invalid email address. */
+"Please enter a valid email address." = "Te rog să introduci o adresă de email validă.";
+
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid phone number" = "Te rog să introduci un număr valid de telefon";
+
+/* Instructional text shown when requesting the user's password for a login initiated via Sign In with Apple */
+"Please enter the password for your WordPress.com account to log in with your Apple ID." = "Te rog introdu parola pentru contul tău WordPress.com pentru a te autentifica cu ID-ul Apple.";
+
+/* Instruction text on the two-factor screen. */
+"Please enter the verification code from your authenticator app." = "Te rog să introduci codul de verificare din aplicația Authenticator.";
+
+/* Popup message to ask for user credentials (fields shown below). */
+"Please enter your credentials" = "Te rog să-ți introduci datele de conectare";
 
 /* Instructions for alert asking for email. */
 "Please enter your email address." = "Te rog să introduci adresa ta de email.";
 
+/* A short prompt asking the user to properly fill out all login fields. */
+"Please fill out all the fields" = "Te rog să completezi toate câmpurile";
+
 /* Share extension dialog text  - displayed when user is missing a login token. */
 "Please launch the WordPress app, log in to WordPress.com and make sure you have at least one site, then try again." = "Te rog lansează aplicația WordPress, autentifică-te în WordPress.com și asigură-te că ai cel puțin un site, apoi încearcă din nou.";
+
+/* Message for alert to prompt user to logout before connecting to a different wordpress.com site. */
+"Please log out before connecting to a different wordpress.com site" = "Te rog dezautentifică-te înainte de a te conecta la un alt site WordPress.com";
 
 /* Used on an error alert to prompt the user to try again */
 "Please try again later" = "Te rog încearcă din nou mai târziu";
@@ -4815,9 +4923,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Preview post" = "Previzualizează articolul";
 
-/* Description of a Quick Start Tour */
-"Preview your site to see what your visitors will see." = "Previzualizează site-ul pentru a vedea cum apare pentru vizitatori.";
-
 /* Accessibility label for the previous notification button */
 "Previous notification" = "Notificare anterioară";
 
@@ -4891,9 +4996,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Publică imediat";
 
-/* Title of a Quick Start Tour */
-"Publish a post" = "Publică un articol";
-
 /* Text displayed in the share extension's summary view. It describes the publish page action. */
 "Publish page on:" = "Publică pagina pe:";
 
@@ -4940,12 +5042,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
    The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
-   The menu item to select during a guided tour.
    Title of the 'Reader' tab - used for spotlight indexing on iOS. */
 "Reader" = "Cititor";
-
-/* Title of button that asks the users if they'd like to focus on checking their sites stats */
-"Reading posts from other sites" = "Citirea articolelor de pe alte site-uri";
 
 /* Real Estate site intent topic */
 "Real Estate" = "Imobiliare";
@@ -5007,6 +5105,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Register Domain - Register publicly option title */
 "Register publicly" = "Înregistrează-l public";
 
+/* Describes a domain that was registered with WordPress.com */
+"Registered Domain" = "Domeniu înregistrat";
+
 /* Displayed in the Notifications Tab as a message, when the Unread Filter shows no notifications */
 "Reignite the conversation: write a new post." = "Reaprinde conversația: a scrie un articol nou.";
 
@@ -5020,11 +5121,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Reminders removed" = "Reamintirile au fost înlăturate";
 
 /* Alert button to confirm a plugin to be removed
-   Button label when removing a blog
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
-   Remove an image/posts/etc
-   Removes a self hosted site from the app */
+   Remove an image/posts/etc */
 "Remove" = "Îndepărtează";
 
 /* Remove Person Alert Title
@@ -5039,9 +5138,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Option to enable the removal of location information/gps from photos and videos */
 "Remove Location From Media" = "Înlătură locația din Media";
-
-/* Title for action that will remove the next steps/quick start menus. */
-"Remove Next Steps" = "Înlătură pașii următori";
 
 /* Button to remove a plugin from a site */
 "Remove Plugin" = "Înlătură modulul";
@@ -5090,9 +5186,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Removes a post from My Likes. Spoken Hint. */
 "Removes this post from My Likes" = "Înlătură acest articol din Aprecierile mele";
-
-/* Explanation of what will happen if the user confirms this alert. */
-"Removing Next Steps will hide all tours on this site. This action cannot be undone." = "Înlăturarea pașilor următori va ascunde toate tururile de pe acest site. Această acțiune nu poate fi anulată.";
 
 /* First line of remove follower warning in confirmation dialog. */
 "Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "Dacă înlături urmăritorii, ei nu vor mai primi actualizări de la site-ul tău. Dacă vor, pot să-ți viziteze site-ul și să-l urmărească din nou.";
@@ -5177,6 +5270,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility label for the reset date range button */
 "Reset Date Range filter" = "Resetează filtrul pentru interval de timp";
 
+/* The button title for a secondary call-to-action button. When the user can't remember their password. */
+"Reset your password" = "Resetează-ți parola";
+
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "Redimensionare și decupare";
 
@@ -5245,9 +5341,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility hint describing what happens if the undo button is tapped. */
 "Reverts the action performed on this notification." = "Revine la acțiunea efectuată pentru această notificare.";
 
-/* Title of a Quick Start Tour */
-"Review site pages" = "Revizuiește paginile site-ului";
-
 /* Title of the screen that shows the revisions. */
 "Revision" = "Revizii";
 
@@ -5267,6 +5360,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
    User Roles Title
    User's Role */
 "Role" = "Rol";
+
+/* One Time Code has been sent via SMS */
+"SMS Sent" = "SMS trimis";
 
 /* Section title for the moderation section of the comment details screen. */
 "STATUS" = "STARE";
@@ -5367,8 +5463,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Scrollable block menu opened. Select a block." = "Meniul derulabil cu blocuri este deschis. Selectează un bloc.";
 
-/* Placeholder text for the search bar
-   Title of Stats section that shows search engine referrer traffic.
+/* Title of Stats section that shows search engine referrer traffic.
    Title of the Reader's search feature */
 "Search" = "Caută";
 
@@ -5427,44 +5522,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Select action on the app extension post type picker screen. Saves the selected post type for the post. */
 "Select" = "Selectează";
 
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to continue" = "Selectează %@ pentru a continua";
-
-/* A step in a guided tour for quick start. %@ will be the name of the segmented control item to select on the Site Menu screen. */
-"Select %@ to continue." = "Selectează %@ pentru a continua.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to create a new post" = "Selectează %@ pentru a crea un articol nou";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to find other sites." = "Selectează %@ ca să găsești alte site-uri.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to see how your site is performing." = "Selectează %@ pentru a vedea cum funcționează site-ul tău.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to see your current library." = "Selectează %@ pentru a vedea biblioteca actuală.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to see your page list." = "Selectează %@ pentru a vedea lista cu pagini.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to set a new title." = "Selectează %@ pentru a seta un titlu nou.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to upload a new one." = "Selectează %@ pentru a încărca unul nou.";
-
-/* A step in a guided tour for quick start. %@ will be the site url. */
-"Select %@ to view your site" = "Selectează %@ ca să-ți vizualizezi site-ul";
-
-/* A step in a guided tour for quick start. %@ will be a plus icon. */
-"Select %@to upload media. You can add it to your posts \/ pages from any device." = "Selectează %@ pentru a încărca elemente media. Le poți adăuga în articole\/pagini de pe orice dispozitiv.";
-
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "Selectează țara";
-
-/* Blog Picker's Title */
-"Select Site" = "Selectează site-ul";
 
 /* Register Domain - Address information field placeholder for State */
 "Select State" = "Selectează județul (provincia, statul)";
@@ -5483,12 +5542,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Selectează stil paragraf";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select the %@ tab to get updates on the go." = "Selectează fila %@ pentru a beneficia de actualizări din mers.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select the %@ to add your social media accounts" = "Selectează %@ pentru a-ți adăuga conturile din media socială";
 
 /* Instructional text about the Sharing feature. */
 "Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account." = "Selectează contul pe care vrei să-l autorizezi. Reține că articolele tale vor fi automat partajate pe contul respectiv.";
@@ -5510,9 +5563,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Voiceover accessibility hint, informing the user they can select an item to show posts written by all users on the site */
 "Select to show everyone's posts." = "Selectează pentru a arăta articolele tuturor.";
-
-/* Blog list page edit mode header label */
-"Select which sites will be shown in the site picker." = "Selectează site-urile care vor fi arătate în selectorul de site-uri.";
 
 /* Screen reader text to represent the selected state of a button */
 "Selected" = "Selectat";
@@ -5554,6 +5604,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for a topic in the Site Creation intents view. */
 "Selects this topic as the intent for your site." = "Selectează acest subiect ca un scop pentru site-ul tău.";
 
+/* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
+"Send Link" = "Trimite legătura";
+
+/* The button title text for sending a magic link. */
+"Send Link by Email" = "Trimite legătura prin email";
+
 /* Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly */
 "Send Log Message" = "Trimite un mesaj la jurnalizare";
 
@@ -5562,6 +5618,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly */
 "Send Test Crash" = "Trimite erorile fatale la testare";
+
+/* Button title. Sends a email verification link (Magin link) for signing in. */
+"Send email verification link" = "Trimite legătura de verificare prin email";
 
 /* Jetpack Monitor Settings: Send notifications by email */
 "Send notifications by email" = "Trimite notificări prin email";
@@ -5677,14 +5736,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "Arată butonul de reblogare";
 
-/* Button title. When tapped, the quick start checklist will be shown. */
-"Show me around" = "Arată-mi ce să fac";
+/* Accessibility label for the 'Show password' button in the login page's password field.
+   Accessibility label for the “Show password“ button in the login page's password field. */
+"Show password" = "Arată parola";
 
 /* No comment provided by engineer. */
 "Show post content" = "Arată conținutul articolului";
-
-/* Alert title picking theme type to browse */
-"Show themes:" = "Arată temele:";
 
 /* Voiceover description for the post list filter which shows posts for all users on a site. */
 "Showing everyone's posts" = "Arată articolele tuturor";
@@ -5694,6 +5751,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label on Post Stats view indicating which post the stats are for. */
 "Showing stats for:" = "Arăt statisticile pentru:";
+
+/* Accessibility value if login page's password field is displaying the password. */
+"Shown" = "Vizibilă";
 
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "Arată public când comentezi pe bloguri.";
@@ -5725,6 +5785,21 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for the Reader Cell */
 "Shows the post content" = "Arată conținutul articolului";
 
+/* View title during the sign up process. */
+"Sign Up" = "Înregistrare";
+
+/* Button title. Takes the user the Enter site credentials screen. */
+"Sign in with site credentials" = "Autentifică-te cu datele de conectare ale site-ului";
+
+/* When social login fails, this button offers to let them signup for a new WordPress.com account */
+"Sign up" = "Înregistrare";
+
+/* Button title. Tapping begins the process of creating a WordPress.com account. */
+"Sign up for WordPress.com" = "Înregistrează-te la WordPress.com";
+
+/* Button title. Tapping begins our normal sign up process. */
+"Sign up with Email" = "Înregistrare prin email";
+
 /* Text displayed as a footer of a table view with Activities when user is on a free plan */
 "Since you're on a free plan, you'll see limited events in your Activity Log." = "Deoarece ai un plan gratuit, vei vedea numai anumite evenimente în jurnalul de activități.";
 
@@ -5746,23 +5821,28 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Language Picker View */
 "Site Language" = "Limbă site";
 
+/* Describes a site redirect domain */
+"Site Redirect" = "Redirecționare site";
+
 /* Noun. Title. Links to the blog's Settings screen. */
 "Site Settings" = "Setări site";
 
 /* Default title for a site
    Label for site title blog setting
-   The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "Titlu site";
 
 /* Title of the navigation bar, shown when the large title is hidden. */
 "Site Topic" = "Subiect site";
 
-/* The item to select during a guided tour. */
-"Site URL" = "URL site";
-
 /* Setting: indicates if Achievements will be notified */
 "Site achievements" = "Realizări site";
+
+/* Accessibility label of the site address field shown when adding a self-hosted site. */
+"Site address" = "Adresă site";
+
+/* No comment provided by engineer. */
+"Site address must be at least 4 characters." = "Adresa site-ului trebuie să aibă cel puțin 4 caractere.";
 
 /* Downloadable/Restorable items: Site Database */
 "Site database" = "Bază de date site";
@@ -5785,8 +5865,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Image size option title. */
 "Size" = "Mărime";
 
-/* Button that allows the user to skip the prompt and be brought to the app
-   Continue without making a selection
+/* Continue without making a selection
    Continue without making a selection. */
 "Skip" = "Sari peste";
 
@@ -5805,12 +5884,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "So far, there are no ignored threats on your site." = "Până acum, nu există amenințări ignorate pe site-ul tău.";
 
-/* Label for social followers
-   The menu item to select during a guided tour. */
+/* Label for social followers */
 "Social" = "Social";
-
-/* Title of a Quick Start Tour */
-"Social sharing" = "Partajare pe media socială";
 
 /* No comment provided by engineer. */
 "Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "Unele blocuri au setări suplimentare. Atinge iconul setări din dreapta jos a blocului pentru a vedea mai multe opțiuni.";
@@ -5818,7 +5893,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title shown on the dashboard when it fails to load */
 "Some data wasn't loaded" = "Unele date nu au fost încărcate";
 
-/* Title for a label that appears when the scan failed
+/* A generic error message
+   Title for a label that appears when the scan failed
    Title for the error view when the scan start has failed */
 "Something went wrong" = "Ceva nu a mers bine";
 
@@ -5834,11 +5910,56 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Update User Failed Title */
 "Sorry!" = "Regret!";
 
+/* This error message occurs when a user tries to create a username that contains an invalid phrase for WordPress.com. The %@ may include the phrase in question if it was sent down by the API */
+"Sorry, but your username contains an invalid phrase%@." = "Regret, dar numele de utilizator conține o fraza invalida %@.";
+
 /* Error title when updating the account password fails */
 "Sorry, can't log in" = "Regret, nu pot face autentificarea";
 
 /* No comment provided by engineer. */
+"Sorry, site addresses can only contain lowercase letters (a-z) and numbers." = "Regret, adresele de site-uri pot să conțină numai litere mici (a-z) și cifre.";
+
+/* No comment provided by engineer. */
+"Sorry, site addresses may not contain the character &#8220;_&#8221;!" = "Regret, adresele de site-uri nu pot să conțină caracterul &#8222;_&#8221;!";
+
+/* No comment provided by engineer. */
+"Sorry, site addresses must have letters too!" = "Regret, adresele de site-uri trebuie să conțină și litere!";
+
+/* Error message displayed when the entered email is not available. */
+"Sorry, that email address is already being used!" = "Regret, acea adresă de email este deja folosită!";
+
+/* No comment provided by engineer. */
+"Sorry, that email address is not allowed!" = "Regret, acea adresă de email nu este permisă!";
+
+/* This error message occurs when a user tries to create an account with a weak password. */
+"Sorry, that password does not meet our security guidelines. Please choose a password with a minimum length of six characters, mixing uppercase letters, lowercase letters, numbers and symbols." = "Regret, acea parolă nu respectă regulile noastre generale de securitate. Te rog alege o parolă cu o lungime minimă de șase caractere, combinând litere mari, litere mici, numere și simboluri.";
+
+/* No comment provided by engineer. */
+"Sorry, that site already exists!" = "Regret, acel site există deja!";
+
+/* No comment provided by engineer. */
+"Sorry, that site is reserved!" = "Regret, acel site este rezervat!";
+
+/* No comment provided by engineer. */
+"Sorry, that username already exists!" = "Regret, acel nume de utilizator există deja!";
+
+/* No comment provided by engineer. */
+"Sorry, that username is unavailable." = "Regret, acel nume de utilizator nu este disponibil.";
+
+/* No comment provided by engineer. */
+"Sorry, usernames can only contain lowercase letters (a-z) and numbers." = "Regret, numele de utilizator poate conține doar litere mici (a-z) și numere.";
+
+/* No comment provided by engineer. */
+"Sorry, usernames may not contain the character &#8220;_&#8221;!" = "Regret, numele de utilizatori nu pot conține caracterul &#8222;_&#8221;!";
+
+/* No comment provided by engineer. */
+"Sorry, usernames must have letters (a-z) too!" = "Regret, numele de utilizatori trebuie să conțină și litere (a-z)!";
+
+/* No comment provided by engineer. */
 "Sorry, you cannot access this feature. Please check your User Role on this site." = "Regret, nu poți accesa această funcționalitate. Te rog verifică care este rolul tău de utilizator pe acest site.";
+
+/* No comment provided by engineer. */
+"Sorry, you may not use that site address." = "Regret, nu poți folosi această adresă de site.";
 
 /* A short error message letting the user know the requested reader content could not be loaded. */
 "Sorry. The content could not be loaded." = "Regret. Acest site nu a putut fi încărcat.";
@@ -5863,6 +5984,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Marks comment as spam.
    Title of spam Comments filter. */
 "Spam" = "Spam";
+
+/* Option to select the Spark email app when logging in with magic links */
+"Spark" = "Spark";
 
 /* Label for selecting the Speed up your site Settings section
    Title for the Speed up your site Settings Screen */
@@ -5896,8 +6020,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
-   Stats window title
-   The item to select during a guided tour. */
+   Stats window title */
 "Stats" = "Statistici";
 
 /* The loading view title displayed when an error occurred */
@@ -5908,12 +6031,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Subtitle giving the user more context about why to enable notifications. */
 "Stay in touch with like and comment notifications." = "Cu notificările pentru aprecieri și comentarii, ești mereu la curent.";
-
-/* Subtitle giving the user more context about why to enable notifications. */
-"Stay in touch with your audience with like and comment notifications." = "Cu notificările pentru aprecieri și comentarii, ții legătura cu publicul tău.";
-
-/* Title of button that asks the users if they'd like to focus on checking their sites stats */
-"Staying up to date with notifications" = "Prin notificări, ești mereu la curent";
 
 /* This is the cell title. */
 "Stick post to the front page" = "Evidențiază articolul pe pagina din față";
@@ -5967,9 +6084,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Support button that appears in the Theme Browser Header
    Theme Support action title */
 "Support" = "Suport";
-
-/* Title for back button that leads to the site picker screen. */
-"Switch Site" = "Comută site-ul";
 
 /* Switches the Editor to HTML Mode */
 "Switch to HTML Mode" = "Comută la modul HTML";
@@ -6146,9 +6260,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint, informing user the button can be used to visit the Gravatar website. */
 "Tap to visit the Gravatar website in an external browser" = "Atinge pentru a vizita site-ul Gravatar într-un navigator extern";
 
-/* A hint about the completed guided tour. */
-"Task complete." = "Ai finalizat sarcina.";
-
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Taxonomie";
 
@@ -6179,11 +6290,41 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Când editezi un bloc Text, comenzile pentru formatarea textului se află în bara de unelte poziționată deasupra tastaturii.";
 
+/* Button title */
+"Text me a code instead" = "În schimb, trimite-mi un mesaj text cu un cod";
+
+/* The button's title text to send a 2FA code via SMS text message. */
+"Text me a code via SMS" = "Trimite-mi un cod prin SMS";
+
 /* Message of alert when theme activation succeeds */
 "Thanks for choosing %@ by %@" = "Mulțumim pentru că ai ales %1$@ de %2$@";
 
+/* Shown when a user pastes a code into the two factor field that contains letters or is the wrong length */
+"That doesn't appear to be a valid verification code." = "Aceasta nu pare a fi un cod de verificare valid.";
+
+/* Message to show to user when he tries to add a self-hosted site that isn't a WordPress site. */
+"That doesn't look like a WordPress site." = "Nu arată ca un site WordPress.";
+
+/* No comment provided by engineer. */
+"That email address has already been used. Please check your inbox for an activation email. If you don't activate you can try again in a few days." = "Acea adresă de email este deja folosită. Verifică-ți căsuța de intrare dacă ai primit un email de activare. Dacă nu faci activarea poți să mai încerci din nou în câteva zile.";
+
+/* No comment provided by engineer. */
+"That site address is not allowed." = "Această adresă de site nu este permisă.";
+
+/* No comment provided by engineer. */
+"That site is currently reserved but may be available in a couple days." = "Acel site este în prezent rezervat, dar ar putea fi disponibil în câteva zile.";
+
+/* No comment provided by engineer. */
+"That username is currently reserved but may be available in a couple of days." = "Acel nume utilizator este momentan rezervat dar s-ar putea să fie disponibil în câteva zile.";
+
+/* No comment provided by engineer. */
+"That username is not allowed." = "Acel nume de utilizator nu e permis.";
+
 /* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "Conexiunea Facebook nu găsește nicio pagină. Publicitatea nu se poate conecta la profilurile Facebook, ci numai la pagini Facebook publicate.";
+
+/* Description shown when a user logs in with Google but no matching WordPress.com account is found */
+"The Google account \"%@\" doesn't match any account on WordPress.com" = "Contul Google „%@” nu se potrivește cu niciun cont de pe WordPress.com";
 
 /* Error message shown when a media upload fails because the user isn't connected to the Internet.
    Message of error prompt shown when a user tries to perform an action without an internet connection. */
@@ -6194,6 +6335,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Description of the purpose of a site's title. */
 "The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "Titlul site-ului este afișat în bara de titluri a unui navigator web și, pentru majoritatea temelor, este afișat în antet.";
+
+/* Error message describing a problem with a URL. */
+"The URL is missing a valid host." = "URL-ului îi lipsește o gazdă validă.";
 
 /* Example post title used in the login prologue screens. This is a post about football fans. */
 "The World's Best Fans" = "Cei mai buni fani din lume";
@@ -6206,6 +6350,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Subtitle displayed on the feature introduction view. */
 "The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "Cel mai bun mod de a deveni un scriitor mai bun este să-ți faci un obicei de a scrie și să împărtășești cu ceilalți ce ai scris - aici venim cu îndemnuri!";
+
+/* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
+"The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Certificatul pentru acest server este invalid. E posibil să te conectezi la un server care pretinde doar că e \"%@\" ceea ce poate pune informațiile tale confidențiale în pericol.vvVrei să considerăm oricum valid certificatul?";
 
 /* Message informing the user that posts page cannot be edited */
 "The content of your latest posts page is automatically generated and cannot be edited." = "Conținutul paginii tale cu ultimele articole este generat automat și nu poate fi editat.";
@@ -6249,8 +6396,30 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "Numărul de articole de arătat per pagină.";
 
+/* A failure reason for when the request couldn't be serialized. */
+"The serialization of the request failed." = "Serializarea cererii a eșuat.";
+
+/* A failure reason for when the response couldn't be serialized. */
+"The serialization of the response failed." = "Serializarea răspunsului a eșuat.";
+
+/* No comment provided by engineer. */
+"The server returned an empty response. This usually means you need to increase the memory limit for your site." = "Serverul a returnat un răspuns gol. De obicei, asta înseamnă că trebuie să mărești limita de memorie pentru site-ul tău.";
+
+/* No comment provided by engineer. */
+"The site address must be shorter than 64 characters." = "Adresa site-ului trebuie să aibă maxim 64 de caractere.";
+
 /* No comment provided by engineer. */
 "The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "Site-ul %1$@ folosește WordPress %2$@. Îți recomandăm să actualizezi la ultima versiune sau cel puțin la %3$@";
+
+/* Error message shown a URL does not point to an existing site.
+   Error message shown when a URL does not point to an existing site. */
+"The site at this address is not a WordPress site. For us to connect to it, the site must use WordPress." = "Site-ul de la această adresă nu este un site WordPress. Pentru a-l putea conecta, site-ul trebuie să folosească WordPress.";
+
+/* Message shown when site deletion API failed */
+"The site could not be deleted." = "Site-ul nu a putut fi șters.";
+
+/* Message shown when site export API failed */
+"The site could not be exported." = "Site-ul nu a putut fi exportat.";
 
 /* Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
 "The slug is the URL-friendly version of the post title." = "Descriptorul este versiunea prietenoasă a URL-ului pentru titlul articolului.";
@@ -6325,6 +6494,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    This primary message message is displayed if a user encounters a general error. */
 "There was a problem" = "A fost o problemă";
 
+/* Error message informing the user that there was a problem blocking posts from a site from their reader. */
+"There was a problem blocking posts from the specified site." = "A fost o problemă la blocarea articolelor de pe site-ul specificat.";
+
+/* A general error message shown to the user when there was an API communication failure. */
+"There was a problem communicating with the site." = "A fost o problemă de comunicare cu site-ul.";
+
 /* Message for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
 "There was a problem connecting to WordPress.com. Please log in again." = "A fost o problemă de conectare la WordPress.com. Te rog autentifică-te din nou.";
 
@@ -6333,6 +6508,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The loading view subtitle displayed when an error occurred */
 "There was a problem loading your data, refresh your page to try again." = "A fost o problemă la încărcarea datelor tale, reîmprospătează pagina pentru a încerca din nou.";
+
+/* Error message informing the user that there was a problem clearing the block on site preventing its posts from displaying in the reader. */
+"There was a problem removing the block for specified site." = "A fost o problemă la înlăturarea blocului pentru site-ul specificat.";
 
 /* A short error message shown in a prompt. */
 "There was a problem saving changes to sharing management." = "A apărut o problemă la salvarea modificărilor gestiunii partajării.";
@@ -6412,6 +6590,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Notifies the user that the a domain matching the search term wasn't returned in the results */
 "This domain is unavailable" = "Acest domeniu nu este disponibil";
+
+/* An error message informing the user the email address they entered did not match a WordPress.com account. */
+"This email address is not registered on WordPress.com." = "Această adresă de email nu este înregistrată pe WordPress.com.";
 
 /* Message to show to user when media upload failed because server doesn't support media type */
 "This file is too large to upload to your site or it does not support this media format." = "Acest fișier este prea mare pentru a fi încărcat pe site-ul tău sau nu suportă acest format în media.";
@@ -6498,6 +6679,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title for the time zone selector */
 "Time Zone" = "Fus orar";
 
+/* Error when the uses takes more than 1 minute to submit a security key. */
+"Time's up, but don't worry, your security is our priority. Please try again!" = "Timpul a expirat, dar nu îți face griji, securitatea ta este prioritatea noastră. Te rog să încerci din nou.";
+
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "Sfaturi pentru a folosi la maxim WordPress.com.";
 
@@ -6515,6 +6699,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Instructions for alert asking for email and name. */
 "To continue please enter your email address and name." = "Pentru a continua te rog introdu adresa ta de email și numele.";
 
+/* Text instructing the user to enter their email address. */
+"To create your new WordPress.com account, please enter your email address." = "Pentru a-ți crea un cont WordPress.com nou, te rog introdu adresa ta de email.";
+
 /* Message asking the user if they want to set up Jetpack from notifications */
 "To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin." = "Pentru a primi notificări utile pe telefon de la site-ul tău WordPress, va trebui să instalezi modulul Jetpack.";
 
@@ -6524,8 +6711,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Install Plugin dialog text. */
 "To install plugins, you need to have a custom domain associated with your site." = "Pentru a instala module, trebuie să ai un domeniu personalizat asociat cu site-ul tău.";
 
-/* Prompt asking user to make sites visible in order to use them in the app (plural) */
-"To manage them here, set them to visible." = "Pentru a le administra aici, setează-le ca vizibile.";
+/* Instructional text shown when requesting the user's password for Apple login. */
+"To proceed with this Apple ID, please first log in with your WordPress.com password. This will only be asked once." = "Pentru a continua cu acest ID Apple, mai întâi te rog să te autentifici cu parola WordPress.com. Acest lucru va fi cerut o singură dată.";
+
+/* Instructional text shown when requesting the user's password for Google login. */
+"To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "Pentru a continua cu acest cont Google, mai întâi te rog să te autentifici cu parola WordPress.com. Acest lucru va fi cerut o singură dată.";
 
 /* No comment provided by engineer. */
 "To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block." = "Pentru a înlătura un bloc, selectează blocul și dă clic pe cele trei puncte din dreaptă jos a blocului pentru a vizualiza setările. Acolo, alege opțiunea de a înlătura blocul.";
@@ -6566,6 +6756,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Shortened version of the main title to be used in back navigation */
 "Topic" = "Subiect";
 
+/* Used when a Reader Topic is not found for a specific id */
+"Topic not found for id:" = "Subiect negăsit pentru ID-ul:";
+
 /* 'This Year' label for total number of comments.
    Insights 'Total Comments' header */
 "Total Comments" = "Total comentarii";
@@ -6582,6 +6775,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the traffic section in site settings screen */
 "Traffic" = "Trafic";
+
+/* Describes a domain that was transferred from elsewhere to wordpress.com */
+"Transferred Domain" = "Domeniu transferat";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "Transform %s to" = "Transformă %s în";
@@ -6601,6 +6797,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Travel site intent topic */
 "Travel" = "Călătorie";
+
+/* Connect when the SSL certificate is invalid */
+"Trust" = "De încredere";
 
 /* Theme Try & Customize action title */
 "Try & Customize" = "Încearcă și personalizează";
@@ -6632,6 +6831,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
 "Try the new Block Editor" = "Încearcă noul Editor de blocuri";
+
+/* When social login fails, this button offers to let the user try again with a differen email address */
+"Try with another email" = "Încearcă cu un alt email";
+
+/* When social login fails, this button offers to let them try tp login using a URL */
+"Try with the site address" = "Încearcă cu adresa site-ului";
 
 /* Destructive menu title to remove the prompt card from the dashboard. */
 "Turn off prompts" = "Oprește îndemnurile";
@@ -6674,6 +6879,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Menus label for describing which menu the location uses in the header. */
 "USES" = "UTILIZĂRI";
+
+/* Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com */
+"Unable To Connect" = "Nu mă pot conecta";
 
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "Nu pot încărca articole";
@@ -6729,6 +6937,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Dialog box title for when the user is canceling an upload. */
 "Unable to play video" = "Nu pot rula videoul";
 
+/* No comment provided by engineer. */
+"Unable to read the WordPress site at that URL. Tap 'Need more help?' to view the FAQ." = "Nu pot să găsesc site-ul WordPress la acel URL. Atinge „Ai nevoi de mai mult ajutor?” pentru a vedea Întrebări frecvente.";
+
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "Nu pot să restaurez site-ul";
 
@@ -6755,6 +6966,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Alert displayed to the user when a single post and 1 file has failed to upload. */
 "Unable to upload 1 post, 1 file" = "Nu pot încărca un articol, un fișier";
+
+/* Error message displayed when an error occurred checking for email availability. */
+"Unable to verify the email address. Please try again later." = "Nu pot verifica adresa de email. Te rog reîncearcă mai târziu.";
 
 /* Message displayed when visiting the Jetpack settings page fails. */
 "Unable to visit Jetpack settings for site" = "Nu pot să vizitez setările Jetpack pentru site";
@@ -6804,15 +7018,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Ungroup block" = "Anulează gruparea blocului";
 
-/* Unhides a site from the site picker list */
-"Unhide" = "Anulează ascunderea";
-
-/* Label for size of media when it's not possible to calculate it.
-   Unknown Tag Name */
+/* Label for size of media when it's not possible to calculate it. */
 "Unknown" = "Necunoscută";
 
 /* Title for Unknown HTML Editor */
 "Unknown HTML" = "HTML necunoscut";
+
+/* No comment provided by engineer. */
+"Unknown error" = "Eroare necunoscută";
 
 /* People: Invitation Error */
 "Unknown error has occurred" = "A apărut o eroare necunoscută";
@@ -6908,9 +7121,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description to show on post setting for a featured image that failed to upload. */
 "Upload failed. Tap for options." = "Încărcare eșuată. Atinge pentru opțiuni.";
 
-/* Title of a Quick Start Tour */
-"Upload photos or videos" = "Încarcă fotografii sau videoclipuri";
-
 /* Label for the date a media asset (image / video) was uploaded
    Status for Media object that is uploaded and sync with server. */
 "Uploaded" = "Încărcat";
@@ -6949,8 +7159,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Use the current image */
 "Use" = "Folosește";
 
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Use %@ to find sites and tags." = "Folosește %@ ca să găsești site-uri și etichete.";
+/* The button's title text to use a security key. */
+"Use a security key" = "Folosește o cheie de securitate";
 
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Folosește editorul de blocuri";
@@ -6958,14 +7168,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Use icon button" = "Folosește butonul icon";
 
-/* Description of a Quick Start Tour */
-"Used across the web: in browser tabs, social media previews, and the WordPress.com Reader." = "Este folosit pe web: în filele navigatoarelor, previzualizările rețelelor sociale și Cititorul WordPress.com.";
+/* The button title text for logging in with WP.com password instead of magic link. */
+"Use password to sign in" = "Folosește parola pentru autentificare";
 
 /* A placeholder for the twitter username
+   Accessibility label for the username text field in the self-hosted login page.
    Account Settings Username label
    Label for entering username in the username field
+   Login dialog username placeholder
+   Placeholder for the username textfield.
    The header and main title
-   Username label text. */
+   Username label text.
+   Username placeholder */
 "Username" = "Nume utilizator";
 
 /* Message displayed in a Notice when the username has changed successfully. The placeholder is the new username. */
@@ -6974,8 +7188,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Setting: indicates if Mentions will be notified */
 "Username mentions" = "Mențiuni nume utilizator";
 
+/* No comment provided by engineer. */
+"Username must be at least 4 characters." = "Numele utilizator trebuie să conțină măcar 4 caractere.";
+
 /* Blog Users */
 "Users" = "Utilizatori";
+
+/* two factor code placeholder */
+"Verification code" = "Cod de verificare";
 
 /* Message shown when a verification email was re-sent succesfully */
 "Verification email sent, check your inbox." = "Email de confirmare trimis, verifică-ți emailurile primite.";
@@ -7043,8 +7263,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Menu title to show more prompts. */
 "View more prompts" = "Vezi mai multe îndemnuri";
 
-/* Title of a Quick Start Tour */
-"View your site" = "Vezi site-ul";
+/* User role badge */
+"Viewer" = "Vizitator";
 
 /* Blog Viewers */
 "Viewers" = "Vizitatori";
@@ -7114,11 +7334,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Downloadable/Restorable items: WP-content directory */
 "WP-content directory" = "Directorul wp-content";
 
+/* Message shown on screen while waiting for Google to finish its signup process. */
+"Waiting for Google to complete…" = "Aștept să finalizeze Google...";
+
 /* No comment provided by engineer. */
 "Waiting for connection" = "Aștept conexiunea";
 
-/* Title for a prompt asking if users want to try out the quick start checklist. */
-"Want a little help managing this site with the app?" = "Vrei puțin ajutor ca să-ți administrezi site-ul cu aplicația?";
+/* Text while the webauthn signature is being verified
+   Text while waiting for a security key challenge */
+"Waiting for security key" = "Aștept cheia de securitate";
+
+/* View title during the Google auth process. */
+"Waiting..." = "Așteaptă...";
 
 /* Editing GIF alert title.
    Noun. Title for Jetpack Restore warning.
@@ -7158,6 +7385,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message displayed when a refresh failed */
 "We had trouble loading data" = "Am avut probleme cu încărcarea datelor";
 
+/* message to ask a user to check their email for a WordPress.com email */
+"We just emailed a link to %@. Please check your mail app and tap the link to log in." = "Tocmai am trimis o legătură la %@. Te rog vezi emailul primit și atinge legătura pentru a te autentifica.";
+
+/* The subtitle text on the magic link requested screen followed by the email address. */
+"We just sent a magic link to" = "Tocmai am trimis o legătură magică la";
+
 /* Message displayed when a backup has finished */
 "We successfully created a backup of your site as of %@" = "Am creat cu succes o copie de siguranță a site-ului tău la %@";
 
@@ -7167,14 +7400,26 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Informational text about link to other tracking tools */
 "We use other tracking tools, including some from third parties. Read about these and how to control them." = "Folosim și alte instrumente de urmărire, inclusiv unele de la terți. Citește despre ele și despre cum le controlăm.";
 
+/* Error message displayed when an error occurred sending the magic link email. */
+"We were unable to send you an email at this time. Please try again later." = "N-am putut să-ți trimitem un email acum. Te rog reîncearcă mai târziu.";
+
 /* Description for label when the actively scanning the users site */
 "We will send you an email if security threats are found. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "Îți vom trimite un email dacă găsim amenințări de securitate. Între timp îți poți folosi site-ul așa cum o faci de obicei și poți vedea oricând desfășurarea procesului de scanare.";
+
+/* Instructional text for the magic link login flow. */
+"We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" = "Îți vom trimite prin email o legătură magică care te va autentifica instantaneu, fără nicio parolă. Nu te mai chinui să tastezi!";
+
+/* Instruction text on the Sign Up screen. */
+"We'll email you a signup link to create your new WordPress.com account." = "Îți vom trimite prin email o legătură de înregistrare pentru a-ți crea noul cont WordPress.com.";
 
 /* This is the string we display when asking the user to approve push notifications */
 "We'll notify you when you get followers, comments, and likes." = "Te vom notifica când ai urmăritori noi, primești comentarii și aprecieri.";
 
 /* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
 "We'll notify you when you get new followers, comments, and likes. Would you like to allow push notifications?" = "Te vom notifica când ai urmăritori, comentarii și aprecieri noi. Vrei să activezi notificările imediate?";
+
+/* Text confirming email address to be used for new account. */
+"We'll use this email address to create your new WordPress.com account." = "Vom folosi această adresă de email pentru a-ți crea noul cont WordPress.com.";
 
 /* Description for the Jetpack Backup Status message. %1$@ is a placeholder for the selected date. */
 "We're creating a downloadable backup of your site from %1$@." = "Creăm o copie de siguranță a site-ului tău la %1$@, care poate fi descărcată.";
@@ -7185,6 +7430,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Detail text display informing the user that we're fixing threats */
 "We're hard at work fixing these threats in the background. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "Lucrăm din greu (în fundal) pentru înlăturarea acestor amenințări. Între timp, îți poți folosi site-ul așa cum o faci de obicei și poți vedea oricând progresul făcut.";
 
+/* Error message shown when having trouble connecting to a Jetpack site. */
+"We're not able to connect to the Jetpack site at that URL.  Contact us for assistance." = "Nu putem să ne conectăm la site-ul Jetpack la acel URL. Contactează-ne pentru asistență.";
+
 /* Description for the Jetpack Restore Status message. %1$@ is a placeholder for the selected date. */
 "We're restoring your site back to %1$@." = "Îți restaurăm site-ul înapoi la %1$@.";
 
@@ -7193,6 +7441,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A hint to users indicating a link to the downloadable backup file has also been sent to their email. */
 "We've also emailed you a link to your file." = "De asemenea, ți-am trimis prin email o legătură la fișierul tău.";
+
+/* Instruction text after a signup Magic Link was requested. */
+"We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "Ți-am trimis prin email o legătură de înregistrare pentru a-ți crea noul cont WordPress.com. Verifică emailurile primite pe acest dispozitiv și atinge legătura din emailul primit de la WordPress.com.";
 
 /* Account Settings Web Address label
    Header for a comment author's web address, shown when editing a comment. */
@@ -7224,7 +7475,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Welcome to Jetpack" = "Bine ai venit la Jetpack";
 
 /* Post Signup Interstitial Title Text for WordPress iOS */
-"Welcome to WordPress" = "Bun venit la WordPress";
+"Welcome to WordPress" = "Bine ai venit la WordPress";
 
 /* A message title */
 "Welcome to the Reader" = "Bine ai venit în cititor";
@@ -7269,6 +7520,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* This is a link that takes the user to the external Gravatar website */
 "What is Gravatar?" = "Ce este Gravatar?";
 
+/* Navigates to page with details about What is WordPress.com. */
+"What is WordPress.com?" = "Ce este WordPress.com?";
+
 /* No comment provided by engineer. */
 "What is a block?" = "Ce este un bloc?";
 
@@ -7278,9 +7532,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the problem section in the Threat Details */
 "What was the problem?" = "Care a fost problema?";
 
-/* Title of the view asking the user what they'd like to focus on */
-"What would you like to focus on first?" = "Pe ce ai vrea să te concentrezi mai întâi?";
-
 /* Title of section that contains plugins' change log */
 "What's New" = "Ce este nou";
 
@@ -7289,6 +7540,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Opens the What's New / Feature Announcement modal */
 "What's New in WordPress" = "Care sunt noutățile în WordPress";
+
+/* Title of alert helping users understand their site address */
+"What's my site address?" = "Care este adresa site-ului meu?";
 
 /* Select the site's intent. Title */
 "What's your website about?" = "Despre ce este site-ul tău web?";
@@ -7304,6 +7558,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "Când faci modificări pe site-ul tău, aici vei putea vedea istoricul activităților.";
+
+/* An error message shown when a wpcom user provides the wrong password. */
+"Whoops, something went wrong and we couldn't log you in. Please try again!" = "Hopa, ceva a mers prost și nu te-am putut autentifica. Te rog reîncearcă!";
+
+/* Generic error on the 2FA screen */
+"Whoops, something went wrong. Please try again!" = "Ceva nu a mers bine. Te rog să încerci din nou.";
+
+/* Error when the uses chooses an invalid security key on the 2FA screen. */
+"Whoops, that security key does not seem valid. Please try again with another one" = "Această cheie de securitate nu pare a fi validă. Te rog să încerci din nou cu alta";
+
+/* Error message shown when an incorrect two factor code is provided. */
+"Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "Hopa, acesta nu este un cod valid de verificare cu doi-factori. Verifică-ți din nou codul și reîncearcă!";
 
 /* No comment provided by engineer. */
 "Width Settings" = "Setări lățime";
@@ -7368,6 +7634,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "WordPress version too old" = "Versiune de WordPress prea veche";
 
+/* No comment provided by engineer. */
+"WordPress version too old. The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "Versiunea WordPress este prea veche. Site-ul %1$@ folosește WordPress %2$@. Îți recomandăm să actualizezi la ultima versiune sau cel puțin la %3$@";
+
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
@@ -7401,9 +7670,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Asks the user if they would like to clear their search history. */
 "Would you like to clear your search history?" = "Vrei să-ți ștergi istoricul căutărilor?";
 
-/* Message offering to hide all WPCom Sites */
-"Would you like to hide all WordPress.com Sites?" = "Vrei să ascunzi toate site-urile WordPress.com?";
-
 /* Second line of Remove user/follower/viewer warning in confirmation dialog. */
 "Would you still like to remove this person?" = "Mai vrei să înlături această persoană?";
 
@@ -7423,14 +7689,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Writing & Poetry site intent topic */
 "Writing & Poetry" = "Literatură și poezie";
 
-/* Title of button that asks the users if they'd like to focus on checking their sites stats */
-"Writing blog posts" = "Redactarea articolelor de blog";
-
 /* No comment provided by engineer. */
 "X-Axis Position" = "Poziție pe axa X";
 
 /* No comment provided by engineer. */
 "Y-Axis Position" = "Poziție pe axa Y";
+
+/* Option to select the Yahoo Mail app when logging in with magic links */
+"Yahoo Mail" = "Yahoo Mail";
 
 /* 'This Year' label for the the year. */
 "Year" = "An";
@@ -7442,9 +7708,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button label that confirms the user wants to log in and will authenticate them via the browser */
 "Yes, log me in" = "Da, autentifică-mă";
-
-/* Phrase displayed to begin a quick start tour that's been suggested. */
-"Yes, show me" = "Da, arată-mi";
 
 /* Comments Yesterday Section Header
    Notifications Yesterday Section Header */
@@ -7486,14 +7749,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Poți suprascrie aceste setări pentru articole indiviluale.";
 
-/* A text for subtitle label on Login epilogue screen */
-"You can switch sites at any time." = "Poți comuta între site-uri în orice moment.";
-
 /* Prompt shown on the Blogging Reminders Settings screen. */
 "You can update this any time" = "Poți actualiza oricând";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "Poți actualiza oricând mergând la Site-ul meu > Setări site";
+
+/* No comment provided by engineer. */
+"You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "Nu poți folosi acea adresă de email pentru înregistrare. Avem probleme cu ele blocându-ne unele din emailurile noastre. Te rog folosește un alt furnizor de email.";
 
 /* Displayed when the user views drafts in the pages list and there are no pages */
 "You don't have any draft pages" = "Nu ai nicio pagină în ciornă";
@@ -7521,12 +7784,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message that informs reader comments from a private blog cannot be fetched. */
 "You don't have permission to view this private blog." = "Nu ai permisiunea să vezi acest blog privat.";
-
-/* Message informing the user that all of their sites are currently hidden (plural) */
-"You have %lu hidden WordPress sites." = "Ai %lu site-uri WordPress ascunse.";
-
-/* Message informing the user that all of their sites are currently hidden (singular) */
-"You have 1 hidden WordPress site." = "Ai un site WordPress ascuns.";
 
 /* Description for the first domain purchased with a paid plan. */
 "You have a free one-year domain registration with your plan." = "În planul tău ai o înregistrare gratuită pentru un domeniu în primul an.";
@@ -7568,15 +7825,16 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Body of alert prompting users to verify their accounts while attempting to publish */
 "You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "Trebuie să-ți confirmi contul înainte de a putea publica un articol.\nNu face griji, articolul tău este în siguranță și va fi salvat ca o ciornă.";
 
-/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
-"You received *50 likes* on your comment" = "Ai „50 de aprecieri” la comentariul tău";
-
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
 "You received *50 likes* on your site today" = "Azi ai primit *50 de aprecieri* pe site";
 
 /* Informs that the user has replied to this comment.
-   Notification text - below a comment notification detail */
+   Notification text - below a comment notification detail
+   Text to look for */
 "You replied to this comment." = "Ai răspuns la acest comentariu.";
+
+/* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
+"You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Se pare că ai instalat un modul mobil de la DudaMobile care împiedică aplicația să se conecteze la blogul tău.";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
 "You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "Nu ar trebui să ignori o problemă de securitate decât dacă ești absolut sigur că ea este inofensivă. Dacă alegi să ignori această amenințare, ea va rămâne pe site-ul tău „%1$@”.";
@@ -7599,9 +7857,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message displayed when unable to close user account due to being unauthorized. */
 "You're not authorized to close the account." = "Nu ești autorizat să închizi contul.";
-
-/* The item to select during a guided tour. */
-"Your Site Icon" = "Iconul site-ului tău";
 
 /* Displayed in the Notification Settings View */
 "Your Sites" = "Site-urile tale";
@@ -7648,11 +7903,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* This is shown to the user when their domain search query contains invalid characters. */
 "Your search includes characters not supported in WordPress.com domains. The following characters are allowed: A–Z, a–z, 0–9." = "Căutarea ta include caractere care nu sunt acceptate în domeniile WordPress.com. Sunt permise următoarele caractere: A–Z, a–z, 0–9.";
 
+/* Body text of alert helping users understand their site address */
+"Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "Când îți vizitezi site-ul în Safari, adresa site-ului tău apare în bara din partea de sus a ecranului.";
+
 /* Description for label when the user has a site with VaultPress. */
 "Your site already is protected by VaultPress. You can find a link to your VaultPress dashboard below." = "Site-ul este deja protejat de VaultPress. Mai jos găsești o legătură la panoul de control VaultPress.";
-
-/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
-"Your site appears to be getting *more traffic* than usual!" = "Se pare că site-ul tău are „mai mult trafic” decât în mod normal!";
 
 /* Title for label when the user has VaultPress enabled. */
 "Your site has VaultPress" = "Site-ul folosește VaultPress";
@@ -7696,9 +7951,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Describes the expected behavior when the user enables in-app notifications in Reader Comments. */
 "You’re following this conversation. You will receive an email whenever a new comment is made." = "Urmărești această conversație. Vei primi un email ori de câte ori apare un nou comentariu.";
 
-/* Comment Attachment Label */
-"[COMMENT]" = "[COMENTARIU]";
-
 /* Age between dates equaling one day. */
 "a day" = "o zi";
 
@@ -7711,8 +7963,41 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message displayed when unable to close user account due to having active atomic site. */
 "accountSettings.closeAccount.error.atomicSite" = "Acest cont de utilizator nu poate fi închis imediat deoarece are cumpărături active. Ca să finalizezi ștergerea contului, te rog să contactezi echipa noastră pentru suport.";
 
+/* The file with the acknowledgements is missing */
+"acknowledgements.manifest_not_found" = "Nu pot să încarc mulțumirile";
+
+/* The title for the list of third-party software we use */
+"acknowledgements.title" = "Mulțumiri";
+
 /* Dismiss button title */
 "activityList.dismiss.title" = "Refuză";
+
+/* Error message shown a URL does not point to an existing site. */
+"addSite.restApiNotAvailable" = "Site-ul de la această adresă nu este un site WordPress. Pentru a-l putea conecta, site-ul trebuie să folosească WordPress.";
+
+/* Error message shown when an receiving an invalid application-password authentication result from a self-hosted WordPress site */
+"addSite.selfHosted.authenticationFailed" = "Nu mă pot autentifica folosind autentificarea în Parole pentru aplicații.";
+
+/* A message to inform users to type the site address in the text field. */
+"addSite.selfHosted.enterSiteAddress" = "Introdu adresa site-ului WordPress pe care vrei să-l conectezi.";
+
+/* Error message when user input is not a WordPress site */
+"addSite.selfHosted.invalidUrl" = "Adresa site-ului nu este validă.";
+
+/* Error message shown when failing to load details from a self-hosted WordPress site */
+"addSite.selfHosted.loadingSiteInfoFailure" = "Nu am putut să încarc detaliile despre site-ul WordPress";
+
+/* Error message shown when application-password authentication is disabled on a self-hosted WordPress site */
+"addSite.selfHosted.noLoginUrlFound" = "Autentificarea în Parole pentru aplicații trebuie să fie activată pe site-ul WordPress.";
+
+/* Error message shown when failing to save a self-hosted site to user's device */
+"addSite.selfHosted.savingSiteFailure" = "Nu pot să salvez site-ul WordPress, te rog să reîncerci mai târziu.";
+
+/* Title of the page to add a self-hosted site */
+"addSite.selfHosted.title" = "Adaugă un site auto-găzduit";
+
+/* Error message when an unknown error occurred when adding a self-hosted site */
+"addSite.selfHosted.unknownError" = "Ceva nu a mers bine. Te rog să încerci din nou.";
 
 /* Age between dates equaling one hour. */
 "an hour" = "o oră";
@@ -7764,6 +8049,31 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Section title for what's new in the latest update available */
 "appUpdate.whatsNew" = "Ce este nou";
+
+/* The list item of experimental features that users can choose to enable */
+"application-settings.experimental-features" = "Funcționalități experimentale";
+
+/* Title of row for displaying an application password's creation date */
+"applicationPassword.item.creationDate" = "Data creării";
+
+/* Title of row for displaying an application password's last used date
+   Title of row for displaying an application password's last used IP address */
+"applicationPassword.item.lastUsed" = "Ultima folosită";
+
+/* Title of row for displaying an application password name */
+"applicationPassword.item.name" = "Nume";
+
+/* Title of section for displaying application password details */
+"applicationPassword.item.section.security" = "Securitate";
+
+/* String format of last used time of an application password. There is one argument: the last used time relative to now (i.e. 5 days ago). */
+"applicationPassword.list.item.last-used-format" = "Ultima folosită %@";
+
+/* Last used time of an application password if it's never been used */
+"applicationPassword.list.item.unused" = "Nefolosită până acum.";
+
+/* Title of application passwords list */
+"applicationPassword.list.title" = "Parole pentru aplicații";
 
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "fișier audio";
@@ -7891,6 +8201,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Context menu button title */
 "blogHeader.actionVisitSite" = "Vizitează site-ul";
 
+/* Badge title in site list */
+"blogList.siteBadge.staging" = "În pregătire";
+
 /* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
 "bloganuary.dashboard.card.button.learnMore" = "Află mai multe";
 
@@ -7930,6 +8243,12 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "Refuză";
+
+/* Add self-hosted site button */
+"button.addSelfHostedSite" = "Adaugă un site auto-găzduit";
+
+/* Create WordPress.com site button */
+"button.createDotCoSite" = "Creează un site WordPress.com";
 
 /* Used when displaying author of a plugin. */
 "by %@" = "de %@";
@@ -7984,9 +8303,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Toggle Title for the privacy compliance popover. */
 "compliance.analytics.popover.toggle" = "Analytics";
-
-/* The menu item to select during a guided tour. */
-"connections" = "conexiuni";
 
 /* Create new Blog Post from Audio button title */
 "createFAB.postFromAudio" = "Articol din fișier audio";
@@ -8111,6 +8427,9 @@ Example: Reply to Pamela Nguyen */
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "Comutări funcționalități";
 
+/* Debug Menu action for TipKit */
+"debugMenu.hideAllTips" = "Ascunde toate sfaturile";
+
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "debugMenu.readerCellTitle" = "URL CSS pentru Cititor";
 
@@ -8139,17 +8458,20 @@ Example: Reply to Pamela Nguyen */
    Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "Configurare la distanță";
 
-/* Remove current quick start tour menu item */
-"debugMenu.removeQuickStart" = "Înlătură turul curent";
+/* Debug Menu action for TipKit */
+"debugMenu.resetTipKitData" = "Resetează datele";
 
 /* Debug Menu section title */
 "debugMenu.section.logging" = "Jurnalizare";
 
 /* Debug Menu section title */
-"debugMenu.section.quickStart" = "Inițiere rapidă";
+"debugMenu.section.settings" = "Setări";
 
 /* Debug Menu section title */
-"debugMenu.section.settings" = "Setări";
+"debugMenu.section.tipKit" = "TipKit";
+
+/* Debug Menu action for TipKit */
+"debugMenu.showAllTips" = "Arată toate sfaturile";
 
 /* Title for debug menu screen */
 "debugMenu.title" = "Dezvoltator";
@@ -8307,6 +8629,19 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for more button in dashboard quick start card. */
 "ellipsisButton.AccessibilityLabel" = "Mai mult";
 
+/* Shared empty state view */
+"emptyStateView.noSearchResult.description" = "Încearcă o altă căutare";
+
+/* Shared empty state view */
+"emptyStateView.noSearchResult.title" = "Niciun rezultat";
+
+/* Placeholder for the site url textfield.
+   Site Address placeholder */
+"example.com" = "exemplu.com";
+
+/* The title for the experimental features list */
+"experimentalFeaturesList.heading" = "Funcționalități experimentale";
+
 /* Title for confirmation navigation bar button item */
 "externalMediaPicker.add" = "Adaugă";
 
@@ -8348,6 +8683,15 @@ Example: Reply to Pamela Nguyen */
 
 /* A footer retry button */
 "general.pagingFooterView.retry" = "Reîncearcă";
+
+/* Error message format when REST API returns an error response. The first argument is error message. */
+"generic.error.rest-api-error" = "Site-ul tău a trimis un răspuns cu eroare: %@";
+
+/* A generic title for an error */
+"generic.error.title" = "Eroare";
+
+/* Error message when failing to parse API responses */
+"generic.error.unparsableResponse" = "Site-ul tău a trimis un răspuns pe care aplicația nu l-a putut interpreta";
 
 /* Title for button that will open up the blogging reminders screen. */
 "growAudienceCell.bloggingReminders.actionButton" = "Setează reamintirile pentru publicare";
@@ -8723,6 +9067,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has multiple installed individual Jetpack plugins but not the full plugin. */
 "jetpackinstallcard.notice.multiple" = "Acest site folosește module Jetpack individuale, care încă nu suportă toate funcționalitățile aplicației. Te rog instalează modulul complet Jetpack.";
+
+/* Later today */
+"later today" = "azi, mai târziu";
 
 /* Displayed in the confirmation alert when marking like notifications as read. */
 "like" = "aprecieri";
@@ -9167,6 +9514,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Navigation title displayed on the navigation bar */
 "parentPageSettings.title" = "Pagină părinte";
+
+/* No comment provided by engineer. */
+"password" = "parolă";
 
 /* Section footer displayed below the list of toggles */
 "personalizeHome.cardsSectionFooter" = "Cartușele pot să afișeze conținut diferit în funcție de ceea ce se întâmplă pe site-ul tău. Lucrăm la mai multe cartușe și comenzi.";
@@ -9733,15 +10083,6 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Ești autentificat!";
 
-/* A step in a guided tour for quick start. %@ will be a bolded Subscriptions text. */
-"quick.start.reader.2.subscriptions.base" = "Încearcă să selectezi %@ ca să vezi conținutul la care te-ai abonat și să-ți administrezi abonamentele.";
-
-/* The bolded Subscriptions text in the Reader step 2 description for the quick start tour. */
-"quick.start.reader.2.subscriptions.target" = "Abonamente";
-
-/* The quick tour actions item to select during a guided tour. */
-"quickStart.moreMenu" = "Mai multe";
-
 /* Text for a button that dismisses the announcement card in the Reader. */
 "reader.announcement.button" = "Gata";
 
@@ -10276,15 +10617,6 @@ This empty state component is displayed only when the app fails to load posts un
 /* Spoken accessibility label for the Reading Preferences menu. */
 "readerDetail.displaySettingButton.accessibilityLabel" = "Preferințe pentru citire";
 
-/* Button title for the follow conversations tooltip. */
-"readerDetail.followConversationTooltipButton.accessibilityLabel" = "Am înțeles";
-
-/* Message for the follow conversations tooltip. */
-"readerDetail.followConversationTooltipMessage.accessibilityLabel" = "Primești notificări când sunt adăugate comentarii noi la acest articol.";
-
-/* Title of follow conversations tooltip. */
-"readerDetail.followConversationTooltipTitle.accessibilityLabel" = "Urmărești conversațiile";
-
 /* Section title for global related posts. */
 "readerDetail.globalPostsSection.accessibilityLabel" = "Mai multe pe WordPress.com";
 
@@ -10299,9 +10631,6 @@ This empty state component is displayed only when the app fails to load posts un
 
 /* Spoken accessibility label */
 "readerDetail.shareButton.accessibilityLabel" = "Partajează";
-
-/* Title for the tooltip anchor. */
-"readerDetail.tooltipAnchorTitle.accessibilityLabel" = "Nou";
 
 /* Error message that informs reader detail from a private blog cannot be fetched. */
 "readerDetailCoordinator.readerDetail.privateBlogErrorMessage" = "Nu ai permisiunea să vezi acest blog privat.";
@@ -10407,6 +10736,45 @@ This empty state component is displayed only when the app fails to load posts un
 
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "Eroare de partajare";
+
+/* A shared button title used in different contexts */
+"shared.button.add" = "Adaugă";
+
+/* A shared button title used in different contexts */
+"shared.button.cancel" = "Anulează";
+
+/* A shared button title used in different contexts */
+"shared.button.close" = "Închide";
+
+/* A shared button title used in different contexts */
+"shared.button.continue" = "Continuă";
+
+/* A shared button title used in different contexts */
+"shared.button.copy" = "Copiază";
+
+/* A shared button title used in different contexts */
+"shared.button.copyLink" = "Copiază legătura";
+
+/* A shared button title used in different contexts */
+"shared.button.done" = "Gata";
+
+/* A shared button title used in different contexts */
+"shared.button.edit" = "Editează";
+
+/* A shared button title used in different contexts */
+"shared.button.remove" = "Înlătură";
+
+/* A shared button title used in different contexts */
+"shared.button.save" = "Salvează";
+
+/* A shared button title used in different contexts */
+"shared.button.share" = "Partajează";
+
+/* A shared button title used in different contexts */
+"shared.button.view" = "Vezi";
+
+/* A generic error message */
+"shared.error.geneirc" = "Ceva nu a mers bine";
 
 /* Template site address for the search bar. */
 "site.cration.domain.site.address" = "https:\/\/numelesiteuluitau.com";
@@ -10534,6 +10902,15 @@ This empty state component is displayed only when the app fails to load posts un
 /* Title for web server log screen. */
 "siteMonitoring.webServerLogs" = "Jurnale server web";
 
+/* All sites section title for site switcher. */
+"sitePicker.allSitesSectionTitle" = "Toate site-urile";
+
+/* Recents section title for site switcher. */
+"sitePicker.recentSitesSectionTitle" = "Site-uri recente";
+
+/* Title for site switcher screen */
+"sitePicker.title" = "Site-urile mele";
+
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Confidențialitate";
 
@@ -10560,30 +10937,6 @@ This empty state component is displayed only when the app fails to load posts un
 
 /* Text for unknown privacy setting */
 "siteVisibility.unknown.title" = "Necunoscut";
-
-/* All sites section title for site switcher. */
-"site_switcher.all_sites_section.title" = "Toate site-urile";
-
-/* Pinned section title for site switcher. */
-"site_switcher.pinned_section.title" = "Site-uri fixate";
-
-/* Recents section title for site switcher. */
-"site_switcher.recents_section.title" = "Site-uri recente";
-
-/* CTA title for the site switcher screen. */
-"site_switcher_cta_title" = "Adaugă un site";
-
-/* Dismiss button title above the search. */
-"site_switcher_dismiss_button_title" = "Anulează";
-
-/* Done button title above the search. */
-"site_switcher_done_button_title" = "Gata";
-
-/* Edit button title above the search. */
-"site_switcher_edit_button_title" = "Editează";
-
-/* Title for site switcher screen. */
-"site_switcher_title" = "Alege un site";
 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Reamintiri";
@@ -10981,6 +11334,12 @@ This empty state component is displayed only when the app fails to load posts un
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "aceste elemente vor fi șterse:";
 
+/* Tip for site picker */
+"tips.sitePickerTip.message" = "Atinge pentru a selecta un alt site sau pentru a crea unul nou";
+
+/* Tip for site picker */
+"tips.sitePickerTip.title" = "Site-urile tale";
+
 /* The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...' */
 "top tips" = "cele mai bune sfaturi";
 
@@ -10989,6 +11348,9 @@ This empty state component is displayed only when the app fails to load posts un
 
 /* Title for error notice shown if the app can't find a specific site belonging to the user */
 "universalLink.qrCodeMedia.error.title" = "Nu am găsit site-ul";
+
+/* Used when the response doesn't have a valid url to display */
+"unknown url" = "URL necunoscut";
 
 /* Indicating that referrer was unmarked as spam */
 "unmarked as spam" = "anulează marcarea ca spam";
@@ -11137,6 +11499,9 @@ This empty state component is displayed only when the app fails to load posts un
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "va fi indisponibil în viitor.";
 
+/* Title for the link for site creation guide. */
+"wordPressAuthenticatorDisplayStrings.default.siteCreationGuideButtonTitle" = "Începi un site nou?";
+
 /* This is a comma separated list of keywords used for spotlight indexing of the 'Help & Support' screen within the 'Me' tab */
 "wordpress, help, support, faq, questions, debug, logs, help center, contact" = "wordpress, ajutor, suport, întrebări frecvente, întrebări, depanare, jurnale, centru de ajutor, contact";
 
@@ -11158,6 +11523,9 @@ This empty state component is displayed only when the app fails to load posts un
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, site-uri, site, bloguri, blog";
 
+/* Error message that describes an unknown error had occured */
+"wordpress-api.error.unknown" = "Ceva nu a mers bine, te rog să reîncerci mai târziu.";
+
 /* Jetpack Plugin Modal on WordPress primary button title */
 "wordpress.jetpack.plugin.modal.primary.button.title" = "Comută la aplicația Jetpack";
 
@@ -11176,6 +11544,12 @@ This empty state component is displayed only when the app fails to load posts un
 /* Jetpack Plugin Modal title in WordPress */
 "wordpress.jetpack.plugin.modal.title" = "Regret, acest site nu este acceptat de aplicația WordPress";
 
+/* Message to show when a request for a WP.com API endpoint is throttled */
+"wordpresskit.api.message.endpoint_throttled" = "Ai ajuns la limita maximă. Poți să încerci din nou peste un minut. Dacă încerci mai înainte, vei mări timpul pe care trebuie să-l aștepți ca interdicția să fie ridicată. Dacă crezi că aceasta este o eroare, contactează suportul.";
+
+/* Message to show to user when the app can't find WordPress.org REST API URL. */
+"wordpresskit.org-rest-api.not-found" = "Nu am putut să găsesc URL-ul REST API pentru site-ul tău. Aplicația are nevoie de el pentru a comunica cu site-ul tău. Contactează serviciul tău de găzduire pentru a rezolva această problemă.";
+
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successCard.description" = "Bine ai venit la aplicația Jetpack. Acum poți să dezinstalezi aplicația WordPress.";
 
@@ -11190,6 +11564,9 @@ This empty state component is displayed only when the app fails to load posts un
 
 /* Managing Zendesk attachments */
 "zendeskAttachmentsSection.unsupportedAttachmentErrorMessage" = "Atașamentul nu este acceptat";
+
+/* Label for button to log in using Google. The {G} will be replaced with the Google logo. */
+"{G} Log in with Google." = "{G} Autentifică-te cu Google.";
 
 /* Item 4 of delete screen section listing things that will be deleted. */
 "• Domains" = "• Domenii";
