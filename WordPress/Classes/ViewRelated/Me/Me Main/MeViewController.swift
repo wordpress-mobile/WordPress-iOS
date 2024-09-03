@@ -128,7 +128,8 @@ class MeViewController: UITableViewController {
 
         return NavigationItemRow(
             title: RowTitles.appSettings,
-            icon: UIImage(named: "wpl-tablet"),
+            icon: UIImage(named: "wpl-tablet")?.withRenderingMode(.alwaysTemplate),
+            tintColor: .label,
             accessoryType: accessoryType,
             action: pushAppSettings(),
             accessibilityIdentifier: "appSettings"
@@ -142,28 +143,32 @@ class MeViewController: UITableViewController {
 
         let myProfile = NavigationItemRow(
             title: RowTitles.myProfile,
-            icon: UIImage(named: "site-menu-people"),
+            icon: UIImage(named: "site-menu-people")?.withRenderingMode(.alwaysTemplate),
+            tintColor: .label,
             accessoryType: accessoryType,
             action: pushMyProfile(),
             accessibilityIdentifier: "myProfile")
 
         let qrLogin = NavigationItemRow(
             title: RowTitles.qrLogin,
-            icon: UIImage(named: "wpl-capture-photo"),
+            icon: UIImage(named: "wpl-capture-photo")?.withRenderingMode(.alwaysTemplate),
+            tintColor: .label,
             accessoryType: accessoryType,
             action: presentQRLogin(),
             accessibilityIdentifier: "qrLogin")
 
         let accountSettings = NavigationItemRow(
             title: RowTitles.accountSettings,
-            icon: UIImage(named: "wpl-gearshape"),
+            icon: UIImage(named: "wpl-gearshape")?.withRenderingMode(.alwaysTemplate),
+            tintColor: .label,
             accessoryType: accessoryType,
             action: pushAccountSettings(),
             accessibilityIdentifier: "accountSettings")
 
         let helpAndSupportIndicator = IndicatorNavigationItemRow(
             title: RowTitles.support,
-            icon: UIImage(named: "wpl-help"),
+            icon: UIImage(named: "wpl-help")?.withRenderingMode(.alwaysTemplate),
+            tintColor: .label,
             showIndicator: ZendeskUtils.showSupportNotificationIndicator,
             accessoryType: accessoryType,
             action: pushHelp())
@@ -198,25 +203,22 @@ class MeViewController: UITableViewController {
             ImmuTableSection(rows: {
                 var rows: [ImmuTableRow] = []
 
-                rows.append(NavigationItemRow(
+                rows.append(ButtonRow(
                     title: Strings.submitFeedback,
-                    tintColor: .brand,
-                    accessoryType: .none,
+                    textAlignment: .left,
                     action: showFeedbackView())
                 )
 
-                rows.append(NavigationItemRow(
+                rows.append(ButtonRow(
                     title: ShareAppContentPresenter.RowConstants.buttonTitle,
-                    tintColor: .brand,
-                    accessoryType: .none,
-                    action: displayShareFlow(),
-                    loading: sharePresenter.isLoading)
+                    textAlignment: .left,
+                    isLoading: sharePresenter.isLoading,
+                    action: displayShareFlow())
                 )
 
-                rows.append(NavigationItemRow(
+                rows.append(ButtonRow(
                     title: RowTitles.about,
-                    tintColor: .brand,
-                    accessoryType: .none,
+                    textAlignment: .left,
                     action: pushAbout(),
                     accessibilityIdentifier: "About")
                 )
@@ -229,7 +231,8 @@ class MeViewController: UITableViewController {
             sections.append(.init(rows: [
                 NavigationItemRow(
                     title: AllDomainsListViewController.Strings.title,
-                    icon: UIImage(named: "wpl-globe"),
+                    icon: UIImage(named: "wpl-globe")?.withRenderingMode(.alwaysTemplate),
+                    tintColor: .label,
                     accessoryType: accessoryType,
                     action: { [weak self] action in
                         self?.showOrPushController(AllDomainsListViewController())
