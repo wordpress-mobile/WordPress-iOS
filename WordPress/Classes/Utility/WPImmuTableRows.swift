@@ -32,8 +32,7 @@ struct NavigationItemRow: ImmuTableRow {
         cell.accessibilityIdentifier = accessibilityIdentifier
 
         if loading {
-            let indicator: UIActivityIndicatorView
-            indicator = UIActivityIndicatorView(style: .medium)
+            let indicator = UIActivityIndicatorView(style: .medium)
             indicator.startAnimating()
             cell.accessoryView = indicator
         } else {
@@ -290,8 +289,7 @@ struct ButtonRow: ImmuTableRow {
         cell.textLabel?.textAlignment = textAlignment
 
         if isLoading {
-            let indicator: UIActivityIndicatorView
-            indicator = UIActivityIndicatorView(style: .medium)
+            let indicator = UIActivityIndicatorView(style: .medium)
             indicator.startAnimating()
             cell.accessoryView = indicator
         } else {
