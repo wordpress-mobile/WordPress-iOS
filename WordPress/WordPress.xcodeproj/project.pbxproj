@@ -958,6 +958,7 @@
 		24A2948325D602710000A51E /* BlogTimeZoneTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 24A2948225D602710000A51E /* BlogTimeZoneTests.m */; };
 		24ADA24C24F9A4CB001B5DAE /* RemoteFeatureFlagStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24ADA24B24F9A4CB001B5DAE /* RemoteFeatureFlagStore.swift */; };
 		24B1AE3124FEC79900B9F334 /* RemoteFeatureFlagTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B1AE3024FEC79900B9F334 /* RemoteFeatureFlagTests.swift */; };
+		24B9622E2C88B9CB00FE64C9 /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B9622D2C88B9CB00FE64C9 /* AppColor.swift */; };
 		24C69A8B2612421900312D9A /* UserSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24C69A8A2612421900312D9A /* UserSettingsTests.swift */; };
 		24C69AC22612467C00312D9A /* UserSettingsTestsObjc.m in Sources */ = {isa = PBXBuildFile; fileRef = 24C69AC12612467C00312D9A /* UserSettingsTestsObjc.m */; };
 		24CDE3412C5863A1005E5E43 /* TestKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24CDE3402C5863A1005E5E43 /* TestKeychain.swift */; };
@@ -6816,6 +6817,7 @@
 		24B54FAE2624F8430041B18E /* JetpackRelease-Alpha.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "JetpackRelease-Alpha.entitlements"; sourceTree = "<group>"; };
 		24B54FAF2624F84C0041B18E /* JetpackRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = JetpackRelease.entitlements; sourceTree = "<group>"; };
 		24B54FB02624F8690041B18E /* JetpackDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = JetpackDebug.entitlements; sourceTree = "<group>"; };
+		24B9622D2C88B9CB00FE64C9 /* AppColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColor.swift; sourceTree = "<group>"; };
 		24C69A8A2612421900312D9A /* UserSettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsTests.swift; sourceTree = "<group>"; };
 		24C69AC12612467C00312D9A /* UserSettingsTestsObjc.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserSettingsTestsObjc.m; sourceTree = "<group>"; };
 		24CDE3402C5863A1005E5E43 /* TestKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestKeychain.swift; sourceTree = "<group>"; };
@@ -18694,6 +18696,7 @@
 				FAADE42726159B1300BF29FE /* AppConstants.swift */,
 				C7F7BDCF26262A4C00CE547F /* AppDependency.swift */,
 				800035C0292307E8007D2D26 /* ExtensionConfiguration.swift */,
+				24B9622D2C88B9CB00FE64C9 /* AppColor.swift */,
 			);
 			path = "App Configuration";
 			sourceTree = "<group>";
@@ -21741,6 +21744,7 @@
 				B5E167F419C08D18009535AA /* NSCalendar+Helpers.swift in Sources */,
 				0C0AD10A2B0CCFA400EC06E6 /* MediaPreviewController.swift in Sources */,
 				80A2154629D15B88002FE8EB /* RemoteConfigOverrideStore.swift in Sources */,
+				24B9622E2C88B9CB00FE64C9 /* AppColor.swift in Sources */,
 				F4DDE2C229C92F0D00C02A76 /* CrashLogging+Singleton.swift in Sources */,
 				4629E4212440C5B20002E15C /* GutenbergCoverUploadProcessor.swift in Sources */,
 				FF00889F204E01AE007CCE66 /* MediaQuotaCell.swift in Sources */,
