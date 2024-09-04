@@ -5542,7 +5542,6 @@
 		FAD2539026116A1600EDAF88 /* AppStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2538E26116A1600EDAF88 /* AppStyleGuide.swift */; };
 		FAD2539126116A1600EDAF88 /* AppStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2538E26116A1600EDAF88 /* AppStyleGuide.swift */; };
 		FAD2566F2611AEC700EDAF88 /* AppStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2538E26116A1600EDAF88 /* AppStyleGuide.swift */; };
-		FAD257132611B04D00EDAF88 /* UIColor+JetpackColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD257112611B04D00EDAF88 /* UIColor+JetpackColors.swift */; };
 		FAD3DE812AE2965A00A3B031 /* AbstractPostMenuHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD3DE802AE2965A00A3B031 /* AbstractPostMenuHelper.swift */; };
 		FAD3DE822AE2965A00A3B031 /* AbstractPostMenuHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD3DE802AE2965A00A3B031 /* AbstractPostMenuHelper.swift */; };
 		FAD7625B29ED780B00C09583 /* JSONDecoderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD7625A29ED780B00C09583 /* JSONDecoderExtension.swift */; };
@@ -9677,7 +9676,6 @@
 		FACF66CC2ADD645C008C3E13 /* PostListHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListHeaderView.swift; sourceTree = "<group>"; };
 		FACF66CF2ADD6CD8008C3E13 /* PostListItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListItemViewModel.swift; sourceTree = "<group>"; };
 		FAD2538E26116A1600EDAF88 /* AppStyleGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStyleGuide.swift; sourceTree = "<group>"; };
-		FAD257112611B04D00EDAF88 /* UIColor+JetpackColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+JetpackColors.swift"; sourceTree = "<group>"; };
 		FAD3DE802AE2965A00A3B031 /* AbstractPostMenuHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractPostMenuHelper.swift; sourceTree = "<group>"; };
 		FAD7625A29ED780B00C09583 /* JSONDecoderExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONDecoderExtension.swift; sourceTree = "<group>"; };
 		FAD7626329F1480E00C09583 /* DashboardActivityLogCardCell+ActivityPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DashboardActivityLogCardCell+ActivityPresenter.swift"; sourceTree = "<group>"; };
@@ -18911,7 +18909,6 @@
 				FABB28482603068B00C8785C /* Resources */,
 				FABB268A2602FCD400C8785C /* Supporting Files */,
 				FA25FB8C2609B9CB0005E08F /* App Configuration */,
-				FAD257262611B05D00EDAF88 /* Extensions */,
 			);
 			path = Jetpack;
 			sourceTree = "<group>";
@@ -18962,22 +18959,6 @@
 				FA4B203429A786460089FE68 /* BlazeEventsTracker.swift */,
 			);
 			path = Helpers;
-			sourceTree = "<group>";
-		};
-		FAD257252611B05300EDAF88 /* Colors and Styles */ = {
-			isa = PBXGroup;
-			children = (
-				FAD257112611B04D00EDAF88 /* UIColor+JetpackColors.swift */,
-			);
-			name = "Colors and Styles";
-			sourceTree = "<group>";
-		};
-		FAD257262611B05D00EDAF88 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				FAD257252611B05300EDAF88 /* Colors and Styles */,
-			);
-			name = Extensions;
 			sourceTree = "<group>";
 		};
 		FAD947A125B56A1E00F011B5 /* Coordinators */ = {
@@ -25918,7 +25899,6 @@
 				FABB254D2602FC2C00C8785C /* WPStyleGuide+Notifications.swift in Sources */,
 				FABB254E2602FC2C00C8785C /* SettingTableViewCell.m in Sources */,
 				FABB254F2602FC2C00C8785C /* CountriesMapView.swift in Sources */,
-				FAD257132611B04D00EDAF88 /* UIColor+JetpackColors.swift in Sources */,
 				4A1E77C7298897F6006281CC /* SharingSyncService.swift in Sources */,
 				FABB25512602FC2C00C8785C /* TodayWidgetStats.swift in Sources */,
 				FABB25532602FC2C00C8785C /* WordPress-30-31.xcmappingmodel in Sources */,

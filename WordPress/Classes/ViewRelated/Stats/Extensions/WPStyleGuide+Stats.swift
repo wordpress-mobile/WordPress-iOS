@@ -70,7 +70,7 @@ extension WPStyleGuide {
         }
 
         static func configureLabelAsSubtitle(_ label: UILabel) {
-            label.textColor = .DS.Foreground.secondary
+            label.textColor = .secondaryLabel
             label.font = .DS.font(.footnote)
             label.adjustsFontSizeToFitWidth = true
             label.maximumContentSizeCategory = .extraExtraExtraLarge
@@ -91,12 +91,12 @@ extension WPStyleGuide {
 
         static func configureLabelAsCellValueTitle(_ label: UILabel) {
             label.font = UIFont.DS.font(.footnote)
-            label.textColor = UIColor.DS.Foreground.secondary
+            label.textColor = .secondaryLabel
         }
 
         static func configureLabelAsCellValue(_ label: UILabel) {
             label.font = UIFont.DS.font(.heading2).semibold()
-            label.textColor = UIColor.DS.Foreground.primary
+            label.textColor = .label
         }
 
         static func configureLabelAsData(_ label: UILabel) {
@@ -225,7 +225,7 @@ extension WPStyleGuide {
         static let separatorColor = UIColor.separator
         static let dataBarColor = UIColor.tertiaryLabel
         static let separatorHeight: CGFloat = 1.0 / UIScreen.main.scale
-        static let verticalSeparatorColor = UIColor.DS.Foreground.quaternary
+        static let verticalSeparatorColor = UIColor.separator
 
         static let defaultFilterTintColor = UIColor.label
         static let tabbedCardFilterTintColor = UIColor.label

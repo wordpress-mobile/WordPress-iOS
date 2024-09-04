@@ -17,42 +17,42 @@ struct ColorGallery: View {
         Section(header: sectionTitle("Foreground")) {
             listItem(
                 with: "Primary",
-                hexString: hexString(for: .DS.Foreground.primary),
+                hexString: nil,
                 color: Color.DS.Foreground.primary
             )
             listItem(
                 with: "Secondary",
-                hexString: hexString(for: .DS.Foreground.secondary),
+                hexString: nil,
                 color: Color.DS.Foreground.secondary
             )
             listItem(
                 with: "Tertiary",
-                hexString: hexString(for: .DS.Foreground.tertiary),
+                hexString: nil,
                 color: Color.DS.Foreground.tertiary
             )
             listItem(
                 with: "Quaternary",
-                hexString: hexString(for: .DS.Foreground.quaternary),
+                hexString: nil,
                 color: Color.DS.Foreground.quaternary
             )
             listItem(
                 with: "Brand",
-                hexString: hexString(for: .DS.Foreground.brand(isJetpack: true)),
+                hexString: nil,
                 color: Color.DS.Foreground.brand(isJetpack: true)
             )
             listItem(
                 with: "Success",
-                hexString: hexString(for: .DS.Foreground.success),
+                hexString: nil,
                 color: Color.DS.Foreground.brand(isJetpack: true)
             )
             listItem(
                 with: "Warning",
-                hexString: hexString(for: .DS.Foreground.warning),
+                hexString: nil,
                 color: Color.DS.Foreground.warning
             )
             listItem(
                 with: "Error",
-                hexString: hexString(for: .DS.Foreground.error),
+                hexString: nil,
                 color: Color.DS.Foreground.error
             )
         }
@@ -62,34 +62,30 @@ struct ColorGallery: View {
         Section(header: sectionTitle("Background")) {
             listItem(
                 with: "Primary",
-                hexString: hexString(for: .DS.Background.primary),
+                hexString: nil,
                 color: Color.DS.Background.primary
             )
             listItem(
                 with: "Secondary",
-                hexString: hexString(for: .DS.Background.secondary),
+                hexString: nil,
                 color: Color.DS.Background.secondary
             )
             listItem(
                 with: "Tertiary",
-                hexString: hexString(for: .DS.Background.tertiary),
+                hexString: nil,
                 color: Color.DS.Background.tertiary
             )
             listItem(
                 with: "Quaternary",
-                hexString: hexString(for: .DS.Background.quaternary),
+                hexString: nil,
                 color: Color.DS.Background.quaternary
             )
             listItem(
                 with: "Brand",
-                hexString: hexString(for: .DS.Background.brand(isJetpack: true)),
+                hexString: nil,
                 color: Color.DS.Background.brand(isJetpack: true)
             )
         }
-    }
-
-    private func hexString(for color: UIColor?) -> String? {
-        colorScheme == .light ? color?.lightVariant().hexString : color?.darkVariant().hexString
     }
 
     private func sectionTitle(_ title: String) -> some View {
