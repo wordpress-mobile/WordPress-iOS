@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "tab-bar-notifications-unread-wp.pdf",
+      "filename" : "Notifications-1.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,12 +11,15 @@
           "value" : "dark"
         }
       ],
-      "filename" : "tab-bar-notifications-unread-wp-dark.pdf",
+      "filename" : "Notifications-2.pdf",
       "idiom" : "universal"
     }
   ],
   "info" : {
     "author" : "xcode",
     "version" : 1
+  },
+  "properties" : {
+    "template-rendering-intent" : "original"
   }
 }

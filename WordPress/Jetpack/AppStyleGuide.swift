@@ -27,11 +27,6 @@ extension AppStyleGuide {
     static let editorPrimary = MurielColor(name: .blue)
 }
 
-// MARK: - Images
-extension AppStyleGuide {
-    static let mySiteTabIcon = UIImage(named: "jetpack-icon-tab-mysites")
-}
-
 // MARK: - Fonts
 extension AppStyleGuide {
     static func prominentFont(textStyle: UIFont.TextStyle, weight: UIFont.Weight) -> UIFont {
