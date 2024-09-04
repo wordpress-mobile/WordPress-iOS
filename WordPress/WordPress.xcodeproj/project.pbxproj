@@ -27567,7 +27567,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress Notification Content Extension Dev";
 				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_WORDPRESS;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressNotificationContentExtension/Sources/WordPressNotificationContentExtension-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -27615,6 +27615,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore org.wordpress.WordPressNotificationContentExtension";
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_WORDPRESS;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressNotificationContentExtension/Sources/WordPressNotificationContentExtension-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -27661,6 +27662,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.internal.WordPressNotificationContentExtension";
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_WORDPRESS;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressNotificationContentExtension/Sources/WordPressNotificationContentExtension-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -27707,6 +27709,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.alpha.WordPressNotificationContentExtension";
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_WORDPRESS;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressNotificationContentExtension/Sources/WordPressNotificationContentExtension-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -27753,7 +27756,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress Notification Service Extension Dev";
 				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_WORDPRESS;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressNotificationServiceExtension/Sources/WordPressNotificationServiceExtension-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -27801,6 +27804,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore org.wordpress.WordPressNotificationServiceExtension";
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_WORDPRESS;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressNotificationServiceExtension/Sources/WordPressNotificationServiceExtension-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -27847,6 +27851,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.internal.WordPressNotificationServiceExtension";
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_WORDPRESS;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressNotificationServiceExtension/Sources/WordPressNotificationServiceExtension-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -27893,6 +27898,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.alpha.WordPressNotificationServiceExtension";
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_WORDPRESS;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressNotificationServiceExtension/Sources/WordPressNotificationServiceExtension-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -27946,7 +27952,7 @@
 				PROVISIONING_PROFILE = "03b7c1c5-4846-447e-a75c-4005a8e52a68";
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress Draft Action Development";
 				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_WORDPRESS;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressDraftActionExtension/WordPressDraftActionExtension-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -28000,6 +28006,7 @@
 				PROVISIONING_PROFILE = "3dd880ae-7e5a-4858-ab4e-6e482e856041";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore org.wordpress.WordPressDraftAction";
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_WORDPRESS;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressDraftActionExtension/WordPressDraftActionExtension-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -28053,6 +28060,7 @@
 				PROVISIONING_PROFILE = "0bba6da4-494e-4f1b-b195-dd5f6e31c8b4";
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.internal.WordPressDraftAction";
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_WORDPRESS;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressDraftActionExtension/WordPressDraftActionExtension-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -28106,6 +28114,7 @@
 				PROVISIONING_PROFILE = "81837878-384c-45d9-909a-8c2c56a2ce58";
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.alpha.WordPressDraftAction";
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_WORDPRESS;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressDraftActionExtension/WordPressDraftActionExtension-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -29226,6 +29235,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress Share Extension Development";
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_WORDPRESS;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressShareExtension/WordPressShare-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -29293,6 +29303,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore org.wordpress.WordPressShare";
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_WORDPRESS;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressShareExtension/WordPressShare-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				WPCOM_SCHEME = wordpress;
@@ -29361,6 +29372,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.internal.WordPressShare";
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_WORDPRESS;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressShareExtension/WordPressShare-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				WPCOM_SCHEME = wpinternal;
@@ -29429,6 +29441,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.alpha.WordPressShare";
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_WORDPRESS;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressShareExtension/WordPressShare-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				WPCOM_SCHEME = wpalpha;
