@@ -127,7 +127,7 @@ public struct DSButton: View {
                 .fill(style.backgroundColor.opacity(primaryDisabledOpacity))
         case .secondary:
             RoundedRectangle(cornerRadius: .DS.Radius.small)
-                .stroke(Color(.secondaryLabel), lineWidth: 1)
+                .stroke(style.foregroundColor, lineWidth: 1)
                 .background(Color.clear)
         case .tertiary:
             Color.clear
@@ -139,7 +139,7 @@ public struct DSButton: View {
             return 1
         }
 
-        if style.emphasis == .primary {
+        if style.emphasis == .primary || style.emphasis == .tertiary {
             return 1
         }
 
