@@ -74,20 +74,20 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
 
     private func applyStyles() {
         selectionStyle = .none
-        backgroundColor = .listForeground
+        backgroundColor = .secondarySystemGroupedBackground
 
         viewCountLabel.font = WPStyleGuide.fontForTextStyle(.title1)
-        viewCountLabel.textColor = .textSubtle
+        viewCountLabel.textColor = .secondaryLabel
 
         viewCountDescriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
-        viewCountDescriptionLabel.textColor = .textSubtle
+        viewCountDescriptionLabel.textColor = .secondaryLabel
 
         tipLabel.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
-        tipLabel.textColor = .text
+        tipLabel.textColor = .label
         tipLabel.numberOfLines = 0
 
         detailsLabel.font = WPStyleGuide.fontForTextStyle(.subheadline)
-        detailsLabel.textColor = .text
+        detailsLabel.textColor = .label
         detailsLabel.numberOfLines = 0
 
         dismissButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body)

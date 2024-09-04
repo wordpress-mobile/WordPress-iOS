@@ -5,8 +5,8 @@ extension UITableViewCell {
     @objc func enable() {
         isUserInteractionEnabled = true
         textLabel?.isEnabled = true
-        textLabel?.textColor = .text
-        detailTextLabel?.textColor = .listSmallIcon
+        textLabel?.textColor = .label
+        detailTextLabel?.textColor = .systemGray
     }
 
     /// Disable cell interaction
@@ -14,7 +14,7 @@ extension UITableViewCell {
         accessoryType = .none
         isUserInteractionEnabled = false
         textLabel?.isEnabled = false
-        textLabel?.textColor = .neutral(.shade20)
-        detailTextLabel?.textColor = .neutral(.shade20)
+        textLabel?.textColor = AppColor.neutral(.shade20)
+        detailTextLabel?.textColor = AppColor.neutral(.shade20)
     }
 }

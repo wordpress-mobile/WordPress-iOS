@@ -87,7 +87,7 @@ struct JetpackScanThreatViewModel {
 
         // Threat Details
         detailIconImage = UIImage(named: "jetpack-scan-state-error")
-        detailIconImageColor = .error
+        detailIconImageColor = AppColor.error
         problemTitle = Strings.details.titles.problem
         problemDescription = threat.description
         fixTitle = Self.fixTitle(for: threat)
@@ -235,13 +235,10 @@ struct JetpackScanThreatViewModel {
     }
 
     private static func iconColor(for status: JetpackScanThreat.ThreatStatus?) -> UIColor {
-        switch status {
-        case .current:
-            return .error
-        case .fixed:
-            return .success
-        default:
-            return .neutral(.shade20)
+        return switch status {
+        case .current: AppColor.error
+        case .fixed: AppColor.success
+        default: AppColor.neutral(.shade20)
         }
     }
 
@@ -395,16 +392,16 @@ struct JetpackScanThreatViewModel {
 
         struct colors {
             struct normal {
-                static let text = UIColor.muriel(color: .gray, .shade100)
-                static let background = UIColor.muriel(color: .gray, .shade5)
-                static let numberText = UIColor.muriel(color: .gray, .shade100)
-                static let numberBackground = UIColor.muriel(color: .gray, .shade20)
+                static let text = AppColor.gray(.shade100)
+                static let background = AppColor.gray(.shade5)
+                static let numberText = AppColor.gray(.shade100)
+                static let numberBackground = AppColor.gray(.shade20)
             }
 
             struct highlighted {
                 static let text = UIColor.white
-                static let background = UIColor.muriel(color: .error, .shade50)
-                static let numberBackground = UIColor.muriel(color: .error, .shade5)
+                static let background = AppColor.gray(.shade50)
+                static let numberBackground = AppColor.gray(.shade5)
             }
         }
     }

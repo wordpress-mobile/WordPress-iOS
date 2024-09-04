@@ -11,7 +11,7 @@ class DefaultNotificationActionCommand: FormattableContentActionCommand {
     }
 
     var actionColor: UIColor? {
-        return .primary
+        AppColor.primary
     }
 
     private(set) lazy var mainContext: NSManagedObjectContext? = {

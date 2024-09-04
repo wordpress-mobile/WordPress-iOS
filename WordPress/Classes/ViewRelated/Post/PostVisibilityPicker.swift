@@ -66,7 +66,7 @@ struct PostVisibilityPicker: View {
                 }
                 Spacer()
                 Image(systemName: "checkmark")
-                    .tint(Color(uiColor: .primary))
+                    .tint(Color(uiColor: AppColor.primary))
                     .opacity((selection.type == visibility && !isPasswordFieldFocused) ? 1 : 0)
             }
         }

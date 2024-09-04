@@ -43,7 +43,7 @@ class FilterChipButton: UIView {
         layer.cornerRadius = Constants.cornerRadius
 
         mainButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.callout)
-        mainButton.setTitleColor(.text, for: .normal)
+        mainButton.setTitleColor(.label, for: .normal)
         mainButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.minButtonHeight).isActive = true
         mainButton.contentEdgeInsets = Constants.buttonContentInset
 
@@ -76,9 +76,9 @@ class FilterChipButton: UIView {
     }
 
     private func applyColors() {
-        layer.borderColor = UIColor.textQuaternary.cgColor
+        layer.borderColor = UIColor.quaternaryLabel.cgColor
         resetButton.setImage(UIImage.gridicon(.crossCircle), for: .normal)
-        resetButton.tintColor = .textSubtle
+        resetButton.tintColor = .secondaryLabel
     }
 
     private enum Constants {

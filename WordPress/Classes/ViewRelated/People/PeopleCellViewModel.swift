@@ -26,7 +26,7 @@ struct PeopleCellViewModel {
     }
 
     var usernameColor: UIColor {
-        return .text
+        .label
     }
 
     var roleBackgroundColor: UIColor {

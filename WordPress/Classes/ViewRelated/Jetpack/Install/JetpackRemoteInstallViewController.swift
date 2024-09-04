@@ -50,7 +50,7 @@ private extension JetpackRemoteInstallViewController {
     }
 
     func setupUI() {
-        view.backgroundColor = .neutral(.shade5)
+        view.backgroundColor = AppColor.neutral(.shade5)
 
         jetpackView.delegate = self
         add(jetpackView)

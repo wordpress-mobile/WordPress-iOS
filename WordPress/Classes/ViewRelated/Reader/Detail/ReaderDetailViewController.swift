@@ -319,10 +319,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     /// Show ghost cells indicating the content is loading
     func showLoading() {
-        let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
-                               beatStartColor: .placeholderElement,
-                               beatEndColor: .placeholderElementFaded)
-
+        let style = GhostStyle()
         loadingView.startGhostAnimation(style: style)
     }
 

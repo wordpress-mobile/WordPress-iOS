@@ -15,10 +15,10 @@ class ReaderRelatedPostsSectionHeaderView: UITableViewHeaderFooterView, NibReusa
     private func applyStyles() {
         titleLabel.numberOfLines = 0
         titleLabel.font = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .semibold)
-        titleLabel.textColor = .text
+        titleLabel.textColor = .label
         titleLabel.textAlignment = .natural
 
-        backgroundColorView.backgroundColor = .basicBackground
+        backgroundColorView.backgroundColor = .systemBackground
     }
 
 }

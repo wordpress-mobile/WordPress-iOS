@@ -32,7 +32,7 @@ struct StatsSegmentedControlData: Equatable {
             return nil
         }
 
-        let defaultAttributes = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .subheadline), NSAttributedString.Key.foregroundColor: UIColor.textSubtle]
+        let defaultAttributes = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .subheadline), NSAttributedString.Key.foregroundColor: UIColor.secondaryLabel]
 
         if difference == 0 && segmentData != 0 {
             return NSAttributedString(string: differenceText, attributes: defaultAttributes)

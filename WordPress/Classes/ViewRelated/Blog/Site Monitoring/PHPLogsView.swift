@@ -221,21 +221,21 @@ final class PHPLogsViewModel: ObservableObject {
 extension AtomicErrorLogEntry: Identifiable {
     var severityBackgroundColor: UIColor {
         let severity = AtomicErrorLogEntry.Severity(rawValue: severity ?? "")!
-        switch severity {
-        case .user: return .muriel(name: .gray, .shade5)
-        case .warning: return .muriel(name: .yellow, .shade5)
-        case .deprecated: return .muriel(name: .blue, .shade5)
-        case .fatalError: return .muriel(name: .red, .shade5)
+        return switch severity {
+            case .user: AppColor.gray(.shade5)
+            case .warning: AppColor.yellow(.shade5)
+            case .deprecated: AppColor.blue(.shade5)
+            case .fatalError: AppColor.red(.shade5)
         }
     }
 
     var severityTextColor: UIColor {
         let severity = AtomicErrorLogEntry.Severity(rawValue: severity ?? "")!
-        switch severity {
-        case .user: return .muriel(name: .gray, .shade80)
-        case .warning: return .muriel(name: .yellow, .shade80)
-        case .deprecated: return .muriel(name: .blue, .shade80)
-        case .fatalError: return .muriel(name: .red, .shade80)
+        return switch severity {
+            case .user: AppColor.gray(.shade80)
+            case .warning: AppColor.yellow(.shade80)
+            case .deprecated: AppColor.blue(.shade80)
+            case .fatalError: AppColor.red(.shade80)
         }
     }
 }

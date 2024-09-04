@@ -248,7 +248,7 @@ private extension ReaderTabView {
 
     enum Appearance {
         static let barHeight: CGFloat = 48
-        static let dividerColor: UIColor = .divider
+        static let dividerColor: UIColor = .separator
         static let hideShowBarDuration: CGFloat = 0.2
     }
 }

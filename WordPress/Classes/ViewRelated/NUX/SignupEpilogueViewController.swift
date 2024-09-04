@@ -39,7 +39,7 @@ class SignupEpilogueViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .basicBackground
+        view.backgroundColor = .systemBackground
         defaultTableViewMargin = tableViewLeadingConstraint.constant
         configureDoneButton()
         setTableViewMargins()

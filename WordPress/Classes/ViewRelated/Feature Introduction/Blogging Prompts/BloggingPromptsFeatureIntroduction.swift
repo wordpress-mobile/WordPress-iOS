@@ -142,8 +142,7 @@ private extension BloggingPromptsFeatureIntroduction {
 
     enum HeaderStyle {
         static let imageName = "icon-lightbulb-outline"
-        static let startGradientColor: UIColor = .warning(.shade30)
-        static let endGradientColor: UIColor = .accent(.shade40)
+        static let startGradientColor: UIColor = AppColor.warning(.shade30)
+        static let endGradientColor: UIColor = AppColor.accent(.shade40)
     }
-
 }

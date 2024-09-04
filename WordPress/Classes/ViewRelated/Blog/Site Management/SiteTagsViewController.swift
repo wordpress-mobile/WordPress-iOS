@@ -91,7 +91,7 @@ final class SiteTagsViewController: UITableViewController {
     private func setupRefreshControl() {
         if refreshControl == nil {
             refreshControl = UIRefreshControl()
-            refreshControl?.backgroundColor = .basicBackground
+            refreshControl?.backgroundColor = .systemBackground
             refreshControl?.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
         }
     }

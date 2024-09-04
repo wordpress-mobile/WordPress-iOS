@@ -58,8 +58,8 @@ class PluginDirectoryCollectionViewCell: UICollectionViewCell {
         nameLabel?.text = name
         authorLabel?.text = author
 
-        nameLabel?.textColor = .text
-        authorLabel?.textColor = .textSubtle
+        nameLabel?.textColor = .label
+        authorLabel?.textColor = .secondaryLabel
     }
 
 }

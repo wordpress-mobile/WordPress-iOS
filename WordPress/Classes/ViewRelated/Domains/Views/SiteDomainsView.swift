@@ -274,7 +274,7 @@ final class SiteDomainsViewController: UIHostingController<SiteDomainsView> {
     // MARK: - Setup
 
     private func setupAllDomainsBarButtonItem() {
-#if JETPACK
+#if IS_JETPACK
         guard domainManagementFeatureFlag.enabled() else {
             return
         }

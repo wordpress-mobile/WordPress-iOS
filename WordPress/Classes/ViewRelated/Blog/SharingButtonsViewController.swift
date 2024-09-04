@@ -312,7 +312,7 @@ import WordPressShared
         let row = SortableSharingSwitchRow(buttonID: button.buttonID)
         row.configureCell = {[unowned self] (cell: UITableViewCell) in
             cell.imageView?.image = self.iconForSharingButton(button)
-            cell.imageView?.tintColor = .listIcon
+            cell.imageView?.tintColor = .secondaryLabel
 
             cell.editingAccessoryView = nil
             cell.editingAccessoryType = .none
@@ -383,7 +383,7 @@ import WordPressShared
         cell.editingAccessoryView = cell.accessoryView
         cell.editingAccessoryType = cell.accessoryType
         cell.imageView?.image = self.iconForSharingButton(button)
-        cell.imageView?.tintColor = .listIcon
+        cell.imageView?.tintColor = .secondaryLabel
         cell.textLabel?.text = button.name
     }
 

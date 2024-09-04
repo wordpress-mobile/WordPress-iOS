@@ -54,39 +54,39 @@ struct BlazeCampaignStatusViewModel {
         switch status {
         case .created, .processing:
             self.textColor = UIColor(
-                light: .muriel(name: .yellow, .shade80),
-                dark: .muriel(name: .yellow, .shade10)
+                light: AppColor.yellow(.shade80),
+                dark: AppColor.yellow(.shade10)
             )
             self.backgroundColor = UIColor(
-                light: .muriel(name: .yellow, .shade5),
-                dark: .muriel(name: .yellow, .shade90)
+                light: AppColor.yellow(.shade5),
+                dark: AppColor.yellow(.shade90)
             )
         case .canceled, .rejected:
             self.textColor = UIColor(
-                light: .muriel(name: .red, .shade70),
-                dark: .muriel(name: .red, .shade10)
+                light: AppColor.red(.shade70),
+                dark: AppColor.red(.shade10)
             )
             self.backgroundColor = UIColor(
-                light: .muriel(name: .red, .shade5),
-                dark: .muriel(name: .red, .shade90)
+                light: AppColor.red(.shade5),
+                dark: AppColor.red(.shade90)
             )
         case .active, .approved:
             self.textColor = UIColor(
-                light: .muriel(name: .green, .shade80),
-                dark: .muriel(name: .green, .shade10)
+                light: AppColor.green(.shade80),
+                dark: AppColor.green(.shade10)
             )
             self.backgroundColor = UIColor(
-                light: .muriel(name: .green, .shade5),
-                dark: .muriel(name: .green, .shade90)
+                light: AppColor.green(.shade5),
+                dark: AppColor.green(.shade90)
             )
         case .scheduled, .finished:
             self.textColor = UIColor(
-                light: .muriel(name: .blue, .shade80),
-                dark: .muriel(name: .blue, .shade10).lightVariant() /// Explicitly using the light variant of blue
+                light: AppColor.blue(.shade80),
+                dark: AppColor.blue(.shade10)
             )
             self.backgroundColor = UIColor(
-                light: .muriel(name: .blue, .shade5),
-                dark: .muriel(name: .blue, .shade90).lightVariant() /// Explicitly using the light variant of blue
+                light: AppColor.blue(.shade5),
+                dark: AppColor.blue(.shade90)
             )
         case .unknown:
             self.textColor = .label

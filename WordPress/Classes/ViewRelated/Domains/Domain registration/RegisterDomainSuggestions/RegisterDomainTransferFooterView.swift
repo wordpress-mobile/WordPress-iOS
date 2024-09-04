@@ -66,7 +66,7 @@ final class RegisterDomainTransferFooterView: UIView {
         self.analyticsSource = analyticsSource
         super.init(frame: .zero)
         self.backgroundColor = UIColor(light: .systemBackground, dark: .secondarySystemBackground)
-        self.addTopBorder(withColor: .divider)
+        self.addTopBorder(withColor: .separator)
         self.setup(with: configuration)
     }
 

@@ -68,7 +68,7 @@ class MigrationSuccessCardView: UIView {
             iconImageView.heightAnchor.constraint(equalToConstant: 32),
             iconImageView.widthAnchor.constraint(equalToConstant: 56)
         ])
-        backgroundColor = .listForeground
+        backgroundColor = .secondarySystemGroupedBackground
         layer.cornerRadius = 10
         clipsToBounds = true
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(viewTapped)))
@@ -89,7 +89,7 @@ class MigrationSuccessCardView: UIView {
                                                      value: "Learn more",
                                                      comment: "Title of a button that displays a blog post in a web view.")
         static let learnMoreFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
-        static let learnMoreTextColor = UIColor.muriel(color: .jetpackGreen, .shade40)
+        static let learnMoreTextColor = AppColor.jetpackGreen(.shade40)
     }
 }
 

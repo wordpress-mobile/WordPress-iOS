@@ -6,8 +6,10 @@ class JetpackOverlayView: UIView {
     private var buttonAction: (() -> Void)?
 
     private var dismissButtonTintColor: UIColor {
-        UIColor(light: .muriel(color: .gray, .shade5),
-                       dark: .muriel(color: .jetpackGreen, .shade90).lightVariant())
+        UIColor(
+            light: AppColor.gray(.shade5),
+            dark: AppColor.jetpackGreen(.shade90)
+        )
     }
 
     private var dismissButtonImage: UIImage {
@@ -84,7 +86,7 @@ class JetpackOverlayView: UIView {
 
     private lazy var getJetpackButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .muriel(color: .jetpackGreen, .shade40)
+        button.backgroundColor = AppColor.jetpackGreen(.shade40)
         button.setTitle(TextContent.buttonTitle, for: .normal)
         button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.titleLabel?.adjustsFontForContentSizeCategory = true
@@ -106,8 +108,10 @@ class JetpackOverlayView: UIView {
     }
 
     private func setup() {
-        backgroundColor = UIColor(light: .white,
-                                  dark: .muriel(color: .jetpackGreen, .shade100))
+        backgroundColor = UIColor(
+            light: .white,
+            dark: AppColor.jetpackGreen(.shade100)
+        )
         addSubview(dismissButton)
         addSubview(stackView)
         stackView.setCustomSpacing(Metrics.imageToTitleSpacing, after: animationContainerView)

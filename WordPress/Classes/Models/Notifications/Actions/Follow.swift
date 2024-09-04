@@ -10,7 +10,7 @@ final class Follow: DefaultNotificationActionCommand {
     }
 
     override var actionColor: UIColor {
-        return on ? .neutral(.shade30) : .primary
+        return on ? AppColor.neutral(.shade30) : AppColor.primary
     }
 
     override func execute<ContentType: FormattableContent>(context: ActionContext<ContentType>) {

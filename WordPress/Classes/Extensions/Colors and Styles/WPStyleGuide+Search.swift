@@ -16,6 +16,6 @@ extension WPStyleGuide {
 
     /// configures a search bar with a default `.appBackground` color and a `.done` return key
     @objc public class func configureSearchBar(_ searchBar: UISearchBar) {
-        configureSearchBar(searchBar, backgroundColor: .appBarBackground, returnKeyType: .done)
+        configureSearchBar(searchBar, backgroundColor: .secondarySystemGroupedBackground, returnKeyType: .done)
     }
 }

@@ -4,13 +4,13 @@ import UIKit
 ///
 extension WPStyleGuide {
     public struct CommentDetail {
-        static let tintColor: UIColor = .primary
+        static let tintColor: UIColor = AppColor.primary
 
         static let textFont = WPStyleGuide.fontForTextStyle(.body)
-        static let textColor = UIColor.text
+        static let textColor = UIColor.label
 
         static let secondaryTextFont = WPStyleGuide.fontForTextStyle(.subheadline)
-        static let secondaryTextColor = UIColor.textSubtle
+        static let secondaryTextColor = UIColor.secondaryLabel
 
         static let tertiaryTextFont = WPStyleGuide.fontForTextStyle(.caption2)
 
@@ -23,15 +23,15 @@ extension WPStyleGuide {
         }
 
         public struct Content {
-            static let buttonTintColor: UIColor = .textSubtle
-            static let likedTintColor: UIColor = .primary
+            static let buttonTintColor: UIColor = .secondaryLabel
+            static let likedTintColor: UIColor = AppColor.primary
 
             static let nameFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
             static let nameTextColor = CommentDetail.textColor
 
             static let badgeFont = WPStyleGuide.fontForTextStyle(.caption2, fontWeight: .semibold)
             static let badgeTextColor = UIColor.white
-            static let badgeColor = UIColor.muriel(name: .blue, .shade50)
+            static let badgeColor = AppColor.blue(.shade50)
 
             static let dateFont = CommentDetail.tertiaryTextFont
             static let dateTextColor = CommentDetail.secondaryTextColor
@@ -40,9 +40,12 @@ extension WPStyleGuide {
             static let reactionButtonTextColor = UIColor.label
 
             // highlighted state
-            static let highlightedBackgroundColor = UIColor(light: .muriel(name: .blue, .shade0), dark: .muriel(name: .blue, .shade100)).withAlphaComponent(0.5)
-            static let highlightedBarBackgroundColor = UIColor.muriel(name: .blue, .shade40)
-            static let highlightedReplyButtonTintColor = UIColor.primary
+            static let highlightedBackgroundColor = UIColor(
+                light: AppColor.blue(.shade0),
+                dark: AppColor.blue(.shade100)
+            ).withAlphaComponent(0.5)
+            static let highlightedBarBackgroundColor = AppColor.blue(.shade40)
+            static let highlightedReplyButtonTintColor = AppColor.primary
 
             static let placeholderImage = UIImage.gravatarPlaceholderImage
 

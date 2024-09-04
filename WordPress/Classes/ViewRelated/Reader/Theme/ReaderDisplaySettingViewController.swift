@@ -285,7 +285,7 @@ extension ReaderDisplaySettingSelectionView {
         }
 
         var linkTintColor: UIColor {
-            viewModel.displaySetting.color == .system ? .muriel(color: .init(name: .blue)) : viewModel.displaySetting.color.foreground
+            viewModel.displaySetting.color == .system ? AppColor.blue : viewModel.displaySetting.color.foreground
         }
 
         var tagsView: some View {

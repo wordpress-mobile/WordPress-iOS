@@ -68,7 +68,7 @@ private extension BloggingPromptsHeaderView {
         titleLabel.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
         titleLabel.adjustsFontForContentSizeCategory = true
         infoButton.setImage(.gridicon(.helpOutline), for: .normal)
-        infoButton.tintColor = .listSmallIcon
+        infoButton.tintColor = .systemGray
         promptLabel.font = WPStyleGuide.BloggingPrompts.promptContentFont
         promptLabel.adjustsFontForContentSizeCategory = true
         answerPromptButton.titleLabel?.font = WPStyleGuide.BloggingPrompts.buttonTitleFont

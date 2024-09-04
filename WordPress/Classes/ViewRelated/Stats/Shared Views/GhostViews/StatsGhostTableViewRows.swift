@@ -132,7 +132,7 @@ struct StatsGhostTitleRow: StatsRowGhostable {
 }
 
 enum GhostCellStyle {
-    static let muriel = GhostStyle(beatStartColor: .placeholderElement, beatEndColor: .placeholderElementFaded)
+    static let muriel = GhostStyle()
 }
 
 struct StatsGhostSingleValueRow: StatsRowGhostable {

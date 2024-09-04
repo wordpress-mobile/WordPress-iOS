@@ -137,20 +137,20 @@ class CalendarViewController: UIViewController {
         }
 
         startDateLabel.text = formatter.string(from: startDate)
-        startDateLabel.textColor = .text
+        startDateLabel.textColor = .label
         startDateLabel.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
 
         if let endDate = endDate {
             endDateLabel.text = formatter.string(from: endDate)
-            endDateLabel.textColor = .text
+            endDateLabel.textColor = .label
             endDateLabel.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
-            separatorDateLabel.textColor = .text
+            separatorDateLabel.textColor = .label
             separatorDateLabel.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
         } else {
             endDateLabel.text = Constants.endDateLabel
             endDateLabel.font = WPStyleGuide.fontForTextStyle(.title3)
-            endDateLabel.textColor = .textSubtle
-            separatorDateLabel.textColor = .textSubtle
+            endDateLabel.textColor = .secondaryLabel
+            separatorDateLabel.textColor = .secondaryLabel
         }
 
         header.accessibilityLabel = accessibilityLabelForRangeSummary(startDate: startDate, endDate: endDate)
@@ -234,7 +234,7 @@ class CalendarViewController: UIViewController {
         endDateLabel.text = Constants.endDateLabel
 
         [startDateLabel, separatorDateLabel, endDateLabel].forEach { label in
-            label?.textColor = .textSubtle
+            label?.textColor = .secondaryLabel
             label?.font = WPStyleGuide.fontForTextStyle(.title3)
         }
 

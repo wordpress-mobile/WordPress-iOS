@@ -67,10 +67,10 @@ final class SearchTextField: UITextField {
     private func initialize() {
         translatesAutoresizingMaskIntoConstraints = false
 
-        backgroundColor = .listForeground
+        backgroundColor = .secondarySystemGroupedBackground
         clearButtonMode = .whileEditing
         font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
-        textColor = .text
+        textColor = .label
 
         autocapitalizationType = .none
         autocorrectionType = .no
@@ -85,7 +85,7 @@ final class SearchTextField: UITextField {
 
     private lazy var searchIconImageView: UIImageView = {
         let iconSize = CGSize(width: Constants.iconDimension, height: Constants.iconDimension)
-        let loupeIcon = UIImage.gridicon(.search, size: iconSize).imageWithTintColor(.listIcon)
+        let loupeIcon = UIImage.gridicon(.search, size: iconSize).imageWithTintColor(.secondaryLabel)
         return UIImageView(image: loupeIcon)
     }()
 
