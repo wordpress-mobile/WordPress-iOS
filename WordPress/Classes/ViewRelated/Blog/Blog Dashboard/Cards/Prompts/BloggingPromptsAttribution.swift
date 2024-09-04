@@ -1,3 +1,4 @@
+import UIKit
 import WordPressUI
 
 enum BloggingPromptsAttribution: String {
@@ -52,7 +53,7 @@ enum BloggingPromptsAttribution: String {
             UIImage(named: "logo-bloganuary")?
                 .withRenderingMode(.alwaysTemplate)
                 .resized(to: Constants.bloganuaryIconSize)
-                .withAlignmentRectInsets(.init(allEdges: -6.0))
+                .withAlignmentRectInsets(UIEdgeInsets(.all, -6.0))
                 .withTintColor(.label)
         }
 

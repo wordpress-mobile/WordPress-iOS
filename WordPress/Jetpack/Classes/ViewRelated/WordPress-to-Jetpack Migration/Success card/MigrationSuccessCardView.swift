@@ -63,7 +63,7 @@ class MigrationSuccessCardView: UIView {
         self.onTap = onTap
         super.init(frame: .zero)
         addSubview(mainStackView)
-        pinSubviewToAllEdges(mainStackView, insets: UIEdgeInsets(allEdges: 16))
+        pinSubviewToAllEdges(mainStackView, insets: UIEdgeInsets(.all, 16))
         NSLayoutConstraint.activate([
             iconImageView.heightAnchor.constraint(equalToConstant: 32),
             iconImageView.widthAnchor.constraint(equalToConstant: 56)

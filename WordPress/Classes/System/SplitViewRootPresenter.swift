@@ -1,5 +1,6 @@
 import UIKit
 import Combine
+import WordPressAuthenticator
 
 /// The presenter that uses triple-column navigation for `.regular` size classes
 /// and a tab-bar based navigation for `.compact` size class.
@@ -58,6 +59,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
             do {
                 let site = try ContextManager.shared.mainContext.existingObject(with: objectID)
                 showDetails(for: site)
+                splitVC.hide(.primary)
             } catch {
                 // TODO: (wpsidebar) show empty state
             }
@@ -121,6 +123,10 @@ final class SplitViewRootPresenter: RootViewPresenter {
             splitVC.present(navigationVC, animated: true)
         case .profile:
             showMeScreen()
+        case .signIn:
+            Task {
+                await self.signIn()
+            }
         }
     }
 
@@ -145,6 +151,26 @@ final class SplitViewRootPresenter: RootViewPresenter {
     private func showAddSiteScreen(selection: AddSiteMenuViewModel.Selection) {
         AddSiteController(viewController: splitVC.presentedViewController ?? splitVC, source: "sidebar")
             .showSiteCreationScreen(selection: selection)
+    }
+
+    @MainActor private func signIn() async {
+        WPAnalytics.track(.wpcomWebSignIn, properties: ["source": "sidebar", "stage": "start"])
+
+        let token: String
+        do {
+            token = try await WordPressDotComAuthenticator().authenticate(from: splitVC)
+        } catch {
+            WPAnalytics.track(.wpcomWebSignIn, properties: ["source": "sidebar", "stage": "error", "error": "\(error)"])
+            return
+        }
+
+        WPAnalytics.track(.wpcomWebSignIn, properties: ["source": "sidebar", "stage": "success"])
+
+        SVProgressHUD.show()
+        let credentials = WordPressComCredentials(authToken: token, isJetpackLogin: false, multifactor: false)
+        WordPressAuthenticator.shared.delegate!.sync(credentials: .init(wpcom: credentials)) {
+            SVProgressHUD.dismiss()
+        }
     }
 
     private func handleCoreDataChanges(_ notification: Foundation.Notification) {
@@ -296,10 +322,6 @@ final class SplitViewRootPresenter: RootViewPresenter {
         let navigationVC = UINavigationController(rootViewController: meVC)
         navigationVC.modalPresentationStyle = .formSheet
         splitVC.present(navigationVC, animated: true)
-    }
-
-    func popMeScreenToRoot() {
-        fatalError()
     }
 }
 

@@ -239,7 +239,7 @@ class StatsTotalInsightsCell: StatsBaseCell {
             graphView.heightAnchor.constraint(equalTo: countLabel.heightAnchor)
         ])
 
-        guideView.pinSubviewToAllEdges(guideViewLabel, insets: UIEdgeInsets(allEdges: 16.0), priority: .required)
+        guideView.pinSubviewToAllEdges(guideViewLabel, insets: UIEdgeInsets(.all, 16), priority: .required)
     }
 
     func configure(dataRow: StatsTotalInsightsData, statSection: StatSection, siteStatsInsightsDelegate: SiteStatsInsightsDelegate?) {

@@ -16,6 +16,7 @@ enum SidebarNavigationStep {
     case domains
     case help
     case profile
+    case signIn
 }
 
 final class SidebarViewModel: ObservableObject {
@@ -49,6 +50,15 @@ final class SidebarViewModel: ObservableObject {
         NotificationCenter.default
             .publisher(for: .init(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification))
             .sink { [weak self] _ in self?.resetSelection() }
+            .store(in: &cancellables)
+
+        NotificationCenter.default
+            .publisher(for: .WPAccountDefaultWordPressComAccountChanged)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                self.account = try? WPAccount.lookupDefaultWordPressComAccount(in: self.contextManager.mainContext)
+            }
             .store(in: &cancellables)
     }
 

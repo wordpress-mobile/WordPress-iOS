@@ -59,10 +59,6 @@
 /* Plural format string for displaying the number of users that answered the blogging prompt. */
 "%1$d answers" = "%1$d odpovědí";
 
-/* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available.
-   Format string for displaying the number of completed quickstart tutorials. %1$d is the number completed, %2$d is the total number of tutorials available. */
-"%1$d of %2$d completed" = "%1$d z %2$d dokončeno";
-
 /* Format string for single unseen post count. The %1$d is a placeholder for the count. */
 "%1$d unseen post" = "%1$d neviditelný příspěvek";
 
@@ -84,17 +80,11 @@
 /* Accessibility identifier for buttons. */
 "%@ Button" = "%@ Tlačítko";
 
-/* Title of the task complete hint for the Quick Start Tour */
-"%@ Return to My Site screen when you're ready for the next task." = "%@ Až budete připraveni na další úkol, vraťte se na obrazovku Moje stránky.";
-
 /* The number of tags in the writting settings. Singular. %@ is a placeholder for the number */
 "%@ Tag" = "%@ štítek";
 
 /* The number of tags in the writting settings. Plural. %@ is a placeholder for the number */
 "%@ Tags" = "%@ štítky";
-
-/* Title of the task complete hint for the Quick Start Tour */
-"%@ Tip: get updates faster by enabling push notifications." = "%@ Tip: získejte aktualizace rychleji povolením push notifikací.";
 
 /* Accessibility label for value in billions. Ex: 66.6 billion. */
 "%@ billion" = "%@ miliarda";
@@ -262,17 +252,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Lets a user know that a local draft does not have a title. */
 "(no title)" = "(žádný název)";
 
-/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
-"*Johann Brandt* is now following your site!" = "*Johann Brandt* nyní sleduje váš web!";
-
-/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
-"*Johann Brandt* responded to your comment" = "*Johann Brandt* odpověděl na váš komentář";
-
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
 "*Johann Brandt* responded to your post" = "*Johan Brandt* odpověděl na váš příspěvek";
-
-/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
-"*Madison Ruiz* added a new post to their site" = "*Madison Ruiz* přidal(a) na své stránky nový příspěvek";
 
 /* Example Like notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
 "*Madison Ruiz* liked your post" = "*Madison Ruiz* lajkoval váš příspěvek";
@@ -343,26 +324,26 @@ translators: %s: Block name e.g. \"Image block\" */
 /* A short description of what the 'More' button is and how it works. */
 "A \"more\" button contains a dropdown which displays sharing buttons" = "Tlačítko \"více\" obsahuje rozbalovací seznam, který zobrazuje tlačítka sdílení";
 
+/* Instruction text to explain magic link login step. */
+"A WordPress.com account is connected to your store credentials. To continue, we will send a verification link to the email address above." = "Účet WordPress.com je připojen k přihlašovacím údajům vašeho obchodu. Chcete-li pokračovat, zašleme ověřovací odkaz na výše uvedenou e-mailovou adresu.";
+
 /* Label for image that is set as a feature image for post/page */
 "A featured image is set. Tap to change it." = "Vybraný obrázek je nastaven. Klepnutím ho změňte.";
 
 /* Title for a threat */
 "A file contains a malicious code pattern" = "Soubor obsahuje vzor škodlivého kódu";
 
-/* A VoiceOver hint to explain what the user gets when they select the 'Get to know the WordPress/Jetpack app' button. */
-"A series of steps helping you to explore the app." = "Řada kroků, které vám pomohou prozkoumat aplikaci.";
-
-/* A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button. */
-"A series of steps showing you how to add a theme, site icon and more." = "Série kroků, které vám ukáží, jak přidat šablonu, ikonu webu a další.";
-
-/* A VoiceOver hint to explain what the user gets when they select the 'Grow Your Audience' button. */
-"A series of steps to assist with growing your site's audience." = "Série kroků, které vám pomohou rozšířit publikum vašeho webu.";
-
 /* Message of the alert indicating that a tag with that name already exists. The placeholder is the name of the tag */
 "A tag named '%@' already exists." = "Značka s názvem '%@' již existuje.";
 
 /* Placeholder text for the title of a site */
 "A title for the site" = "Přidat název pro tento web";
+
+/* An error message. */
+"A valid email address is needed to mail an authentication link. Please return to the previous screen and provide a valid email address." = "Platná e-mailová adresa se důležitá pro ověření a propojení. Vraťte se na předchozí obrazovku a zadejte platný e-mail.";
+
+/* Shown when a user types a non-number into the two factor field. */
+"A verification code will only contain numbers." = "Ověřovací kód bude obsahovat pouze čísla.";
 
 /* Label for active Theme browser cell */
 "ACTIVE" = "AKTIVNÍ";
@@ -404,7 +385,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Overlay message displayed when account successfully closed */
 "Account closed" = "Účet uzavřen";
 
-/* Title of button that displays the App's acknoledgements */
+/* Title of button that displays the App's acknowledgements */
 "Acknowledgements" = "Poděkování";
 
 /* Theme Activate action title */
@@ -417,6 +398,12 @@ translators: %s: Block name e.g. \"Image block\" */
    Label for active Theme
    Whether a plugin is active on a site */
 "Active" = "Aktivní";
+
+/* The plugin is active on the site and has not enabled automatic updates */
+"Active, Autoupdates off" = "Aktivní, automatické aktualizace vypnuty";
+
+/* The plugin is active on the site and has enabled automatic updates */
+"Active, Autoupdates on" = "Aktivní, automatické aktualizace zapnuty";
 
 /* Noun. Links to a blog's Activity screen.
    Noun. Name of the Activity Log feature
@@ -513,17 +500,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Screen reader text for button that adds a menu item */
 "Add new menu item" = "Přidat novou položku nabídky";
 
-/* Title of button to add a new site. */
-"Add new site" = "Přidat novou stránku";
-
 /* Voiceover accessibility label for the tags field in blog post settings. */
 "Add new tags, separated by commas." = "Přidejte nové značky oddělené čárkami.";
 
 /* No comment provided by engineer. */
 "Add paragraph block" = "Přidat blok odstavců";
-
-/* Add self-hosted site button */
-"Add self-hosted site" = "Přidejte vlastní web";
 
 /* Button title displayed when the user has removed all Insights from display.
    Label for action to add a new Insight. */
@@ -566,6 +547,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Screen reader text expressing the menu item is after another menu item. Argument is a name for another menu item. */
 "After %@" = "Po %@";
 
+/* Option to select the Airmail app when logging in with magic links */
+"Airmail" = "Letecká pošta";
+
 /* Image alignment option title.
    Title of the screen for choosing an image's alignment. */
 "Alignment" = "Zarovnání";
@@ -590,9 +574,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of the completion screen of the Blogging Reminders Settings screen. */
 "All set!" = "Vše připraveno!";
-
-/* Message shown when all Quick Start tasks are complete. */
-"All tasks complete!" = "Všechny úkoly jsou dokončeny";
 
 /* Insights 'All-Time' header */
 "All-Time" = "Od počátku věků";
@@ -629,12 +610,27 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Jetpack Settings: Allowlisted IP addresses */
 "Allowlisted IP addresses" = "IP adresy na seznamu povolených";
 
+/* Instructions for users with two-factor authentication enabled. */
+"Almost there! Please enter the verification code from your authenticator app." = "Téměř hotovo! Zadejte ověřovací kód z aplikace Authenticator.";
+
 /* Image alt attribute option title.
    Label for the alt for a media asset (image) */
 "Alt Text" = "Alternativní text";
 
+/* Instruction text to explain to help users type their password instead of using magic link login option. */
+"Alternatively, you may enter the password for this account." = "Případně můžete zadat heslo pro tento účet.";
+
+/* String displayed before offering alternative login methods */
+"Alternatively:" = "Alternativní způsoby přihlášení:";
+
 /* Title of a row displayed on the debug screen used to indicate whether crash logs should be forced to send, even if they otherwise wouldn't */
 "Always Send Crash Logs" = "Vždy odesílat protokoly o selhání";
+
+/* A failure reason for when an error HTTP status code was returned from the site, with the specific error code. */
+"An HTTP error code %i was returned." = "Byl vrácen kód chyby HTTP %i.";
+
+/* A failure reason for when an error HTTP status code was returned from the site. */
+"An HTTP error code was returned." = "Byl vrácen kód chyby HTTP.";
 
 /* Error message when loading failed because there's no connection */
 "An active internet connection is required" = "Je vyžadováno aktivní připojení k internetu";
@@ -661,6 +657,15 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Default error message displayed when unable to close user account. */
 "An error occured while closing account." = "Při uzavírání účtu došlo k chybě.";
 
+/* An error description explaining that a Menu could not be created. */
+"An error occurred creating the Menu." = "Došlo k chybě při vytváření menu.";
+
+/* An error description explaining that a Menu could not be deleted. */
+"An error occurred deleting the Menu." = "Došlo k chybě při mazání menu.";
+
+/* An error description explaining that Menus could not be fetched. */
+"An error occurred fetching the Menus." = "Došlo k chybě při načítání menu.";
+
 /* Menus text shown when an error occurred loading menus from the server. */
 "An error occurred loading menus, please check your internet connection." = "Došlo k chybě při načítání menu, zkontrolujte připojení k internetu.";
 
@@ -670,11 +675,20 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The error message displayed when a user is editing a MenuItem and the results cannot be loaded, such as posts, pages, etc. */
 "An error occurred loading the results, please try again in a moment." = "Došlo k chybě při načítání výsledků, zkuste to znovu za chvíli.";
 
+/* An error description explaining that a Menu could not be updated. */
+"An error occurred updating the Menu." = "Došlo k chybě při aktualizaci menu.";
+
 /* Error recorded when all of the media associated with a post fail to be attached to the post on the server. */
 "An error occurred when attempting to attach uploaded media to the post." = "Při pokusu připojit se ke vzdáleným médiím došlo k chybě u příspěvku.";
 
+/* Used when a remote response doesn't have a specific message for a specific request */
+"An error occurred while processing your request: " = "Během zpracování požadavku došlo k chybě:";
+
 /* Text displayed when a stat section failed to load. */
 "An error occurred." = "Vyskytla se chyba.";
+
+/* A failure reason for when the error that occured wasn't able to be determined. */
+"An unknown error occurred." = "Vyskytla se neznámá chyba.";
 
 /* Error message shown when a media upload fails for unknown reason and the user should try again. */
 "An unknown error occurred. Please try again." = "Nastala neznámá chyba. Prosím zkuste to znovu.";
@@ -707,6 +721,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The title of the app appearance settings screen */
 "Appearance" = "Vzhled";
 
+/* Message shown when Apple authentication fails. */
+"Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "Ověření Apple se nezdařilo.\nUjistěte se, že jste přihlášeni k iCloudu pomocí Apple ID, které používá dvoufaktorové ověřování.";
+
 /* No comment provided by engineer. */
 "Applies the setting" = "Použije nastavení";
 
@@ -731,9 +748,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Menus alert message for alerting the user to unsaved changes while trying back out of Menus. */
 "Are you sure you want to cancel and discard changes?" = "Jste si jisti, že chcete zrušit a odstranit změny?";
-
-/* Title for the remove site confirmation alert, first %@ will be replaced with the blog url, second %@ will be replaced with iPhone/iPad/iPod Touch */
-"Are you sure you want to continue?\n All site data for %@ will be removed from your %@." = "Jste si jistý, že chcete pokračovat?\n  Všechna data webu pro %1$@ budou odstraněna z vašeho %2$@.";
 
 /* Title for the remove site confirmation alert, %@ will be replaced with iPhone/iPad/iPod Touch */
 "Are you sure you want to continue?\n All site data will be removed from your %@." = "Opravdu si přejete pokračovat?\n Veškerá webová data budou odstraněna z vašeho %@.";
@@ -796,6 +810,13 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the error view when the authentication failed for any reason */
 "Authentication Failed" = "Autentikace se nezdařila";
 
+/* Accessibility label for the 2FA text field.
+   Placeholder for the 2FA code textfield. */
+"Authentication code" = "Ověřovací kód";
+
+/* Popup title to ask for user credentials. */
+"Authentication required for host: %@" = "Ověření potřebné pro hostitele: %@";
+
 /* Author label.
    Label for list of stats by content author.
    The author of the post or page.
@@ -812,6 +833,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Describes a status of a plugin */
 "Auto-managed" = "Spravován automaticky";
 
+/* The plugin can not be manually updated or deactivated */
+"Auto-managed on this site" = "Automaticky spravováno na tomto webu";
+
 /* Discussion Settings Title
    Settings: Comments Approval settings */
 "Automatically Approve" = "Schválit automaticky";
@@ -827,9 +851,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Discussion Settings: Comments Auto-close */
 "Automatically close comments on content after a certain number of days." = "Automaticky zavře komentáře k obsahu po určitém počtu dní.";
-
-/* Description of a Quick Start Tour */
-"Automatically share new posts to your social media accounts." = "Automaticky sdílejte nové příspěvky se svými účty sociálních médií.";
 
 /* Title of button that displays information about the other apps available from Automattic */
 "Automattic Family" = "Automatická rodina";
@@ -987,9 +1008,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Briefly describe the link to help screen reader user" = "Stručně popište odkaz, abyste pomohli uživatelům s čtečkou obrazovky.";
 
-/* Description of a Quick Start Tour */
-"Bring media straight from your device or camera to your site." = "Přeneste média přímo ze zařízení nebo fotoaparátu na svůj web.";
-
 /* Jetpack Settings: Brute Force Attack Protection Section */
 "Brute Force Attack Protection" = "Ochrana před útokem hrubou silou";
 
@@ -1017,12 +1035,18 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Label for the post author in the post detail. */
 "By " = "od ";
 
+/* Legal disclaimer for logging in. The underscores _..._ denote underline. */
+"By continuing, you agree to our _Terms of Service_." = "Pokračováním vyjadřujete souhlas s našimi _podmínkami služby_.";
+
 /* Terms of Service link displayed when a user is registering domain. Text inside <a> tags will be highlighted. */
 "By registering this domain you agree to our <a>Terms&nbsp;and&nbsp;Conditions<\/a>." = "Registrací této domény souhlasíte s našimi <a>podmínkami <\/a>.";
 
 /* Title of the button which opens the Jetpack terms and conditions page. The sentence is composed by 2 lines separated by a line break 
 . Also there is a placeholder %@ which is: Terms and Conditions */
 "By setting up Jetpack you agree to our\n%@" = "Nastavením Jetpacku souhlasíte s našimi\n%@";
+
+/* Legal disclaimer for signup buttons, the underscores _..._ denote underline */
+"By signing up, you agree to our _Terms of Service_." = "Registrací vyjadřujete souhlas s našimi _podmínkami služby_.";
 
 /* No comment provided by engineer. */
 "CUSTOMIZE" = "PŘIZPŮSOBIT";
@@ -1036,6 +1060,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of an alert informing the user the camera permission for the app is disabled and its needed to proceed */
 "Camera access needed to scan login codes" = "Ke skenování přihlašovacích kódů je nutný přístup k fotoaparátu";
 
+/* Title of an alert letting the user know */
+"Can Not Request Link" = "Nelze načíst adresu";
+
 /* Alert message that is shown when trying to publish empty page */
 "Can't publish an empty page" = "Prázdnou stránku nelze publikovat";
 
@@ -1046,7 +1073,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
-   Cancel
+   Button title. Tapping it cancels the login flow.
    Cancel a prompt
    Cancel Action
    Cancel action on share extension editor screen.
@@ -1057,6 +1084,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel action title
    Cancel button
    Cancel button for alert
+   Cancel button label
    Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Cancel button.
    Cancel button. Site creation modal popover.
@@ -1078,6 +1106,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
+   Option to cancel the email app selection when logging in with magic links
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
@@ -1109,6 +1138,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "Rušení...";
 
+/* Error message shown when the input URL does not point to an existing site. */
+"Cannot access the site at this address. Please double-check and try again." = "Na tuto adresu nelze získat přístup k webu. Zkontrolujte prosím a zkuste to znovu.";
+
 /* Helper text that appears at the bottom of the design screen. */
 "Can’t decide? You can change the theme at any time." = "Nemůžete se rozhodnout? Šablonu můžete kdykoli změnit.";
 
@@ -1136,15 +1168,15 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Center alignment for an image. Should be the same as in core WP. */
 "Center" = "Doprostřed";
 
+/* Popup title for wrong SSL certificate. */
+"Certificate error" = "Chyba certifikátu";
+
 /* Account Settings Change password label
    Main title */
 "Change Password" = "Změnit heslo";
 
 /* Change Username title. */
 "Change Username" = "Změnit uživatelské jméno";
-
-/* Button title to edit visibility of sites. */
-"Change Visibility" = "Změnit viditelnost ";
 
 /* No comment provided by engineer. */
 "Change block position" = "Změňte pozici bloku";
@@ -1160,9 +1192,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Change button. */
 "Change username" = "Změnit uživatelské jméno";
-
-/* Description of a Quick Start Tour */
-"Change, add, or remove your site's pages." = "Změňte, přidejte nebo odeberte stránky svého webu.";
 
 /* No comment provided by engineer. */
 "Changes to featured image will not be affected by the undo\/redo buttons." = "Změny vybraného obrázku nebudou ovlivněny tlačítky zpět\/znovu.";
@@ -1183,6 +1212,18 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped. */
 "Check out our top tips to increase your views and traffic" = "Podívejte se na naše nejlepší tipy ke zvýšení počtu zhlédnutí a návštěvnosti";
 
+/* The title text on the magic link requested screen. */
+"Check your email on this device!" = "Zkontrolujte svůj e-mail na tomto zařízení!";
+
+/* Instruction text after a login Magic Link was requested. */
+"Check your email on this device, and tap the link in the email you receive from WordPress.com." = "Zkontrolujte svůj e-mail v tomto zařízení a klepněte na odkaz v e-mailu, který obdržíte z WordPress.com.";
+
+/* Instructional text on how to open the email containing a magic link. */
+"Check your email on this device, and tap the link in the email you received from WordPress.com.\n\nNot seeing the email? Check your Spam or Junk Mail folder." = "Zkontrolujte svůj e-mail na tomto zařízení a klepněte na odkaz v e-mailu, který jste obdrželi z WordPress.com.\n\nNevidíte e-mail? Zkontrolujte složku spamu nebo nevyžádané pošty.";
+
+/* Alert title for check your email during logIn/signUp. */
+"Check your email!" = "Zkontrolujte si email!";
+
 /* Subtitle shown on the dashboard when it fails to load */
 "Check your internet connection and pull to refresh." = "Zkontrolujte připojení k internetu a zatažením obnovte.";
 
@@ -1199,20 +1240,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Subtitle for No results full page screen displayed from post list when there is no connection */
 "Check your network connection and try again. Or draft a post." = "Zkontrolujte připojení k síti a zkuste to znovu. Nebo vytvořte příspěvek.";
 
-/* Title of a Quick Start Tour */
-"Check your notifications" = "Zkontrolujte svá oznámení";
-
-/* Title of a Quick Start Tour */
-"Check your site stats" = "Zkontrolujte statistiky svého webu";
-
-/* Title of a Quick Start Tour */
-"Check your site title" = "Zadejte název svého webu";
-
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Kontrola nákupů...";
-
-/* Title of button that asks the users if they'd like to focus on checking their sites stats */
-"Checking stats" = "Kontrola statistik";
 
 /* Screen reader text expressing the menu item is a child of another menu item. Argument is a name for another menu item. */
 "Child of %@" = "Dítě %@";
@@ -1242,17 +1271,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "Choose a new app icon" = "Vyberte novou ikonu aplikace";
 
-/* A text for title label on Login epilogue screen */
-"Choose a site to open." = "Vyberte web, který chcete otevřít.";
-
 /* Title for the screen to pick a theme and homepage for a site. */
 "Choose a theme" = "Vybrat šablonu";
 
 /* Select the site's intent. Subtitle */
 "Choose a topic from the list below or type your own." = "Zvolit téma ze seznamu níže nebo napište své vlastní";
-
-/* Title of a Quick Start Tour */
-"Choose a unique site icon" = "Nahrát ikonu webu";
 
 /* No comment provided by engineer. */
 "Choose audio" = "Zvolit audio";
@@ -1456,39 +1479,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The action is completed */
 "Completed" = "Dokončeno";
 
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Check your notifications" = "Dokončeno: Zkontrolujte svá oznámení";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Check your site stats" = "Dokončeno: Zkontrolujte statistiky svého webu";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Check your site title" = "Dokončeno: Nastavte název svého webu";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Choose a unique site icon" = "Dokončeno: Vyberte jedinečnou ikonu webu";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Connect with other sites" = "Dokončeno: Spojte se s jinými weby";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Create your site" = "Dokončeno: Vytvořte si svůj web";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Publish a post" = "Dokončeno: Publikujte příspěvek";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Review site pages" = "Dokončeno: Zkontrolujte stránky webu";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Social sharing" = "Dokončeno: Sdílení na sociálních sítích";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Upload photos or videos" = "Dokončeno: Nahrajte fotografie nebo videa";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: View your site" = "Dokončeno: Zobrazte svůj web";
-
 /* Section title for the configure table section in the blog details screen */
 "Configure" = "Nastavení";
 
@@ -1510,14 +1500,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of alert prompting users to verify their accounts while attempting to publish */
 "Confirm your email first" = "Nejprve potvrďte svůj e-mail";
 
-/* Title shown when all tours have been completed. */
-"Congrats! You know your way around" = "Gratuluji! Znáš cestu";
-
 /* Title of domain name purchase success screen */
 "Congratulations on your purchase!" = "Gratulujeme k nákupu!";
-
-/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
-"Congratulations! Your site passed *1000 all-time* views!" = "Gratulujeme! Váš web překonal *1 000 všech* zobrazení!";
 
 /* Verb. Tapping connects an account to Publicize.
    Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
@@ -1529,9 +1513,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Connect to automatically share your blog posts to %@" = "Automaticky připojit ke sdílení příspěvků na blogu %@";
 
-/* Title of a Quick Start Tour */
-"Connect with other sites" = "Sledujte další stránky";
-
 /* No comment provided by engineer. */
 "Connect your favorite social media services to automatically share new posts with friends." = "Připojte své oblíbené sociální služby, aby automaticky sdílet nová příspěvky s přáteli.";
 
@@ -1541,12 +1522,18 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Noun. Title. Title for the list of accounts for third party sharing services. */
 "Connected Accounts" = "Propojen účet";
 
+/* Title shown when a user logs in with Google but no matching WordPress.com account is found */
+"Connected But…" = "Připojeno ale…";
+
 /* Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name
    Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name. */
 "Connecting %@" = "Připojování %@";
 
 /* Informs the user of consequences of chooseing a new account to connect to publicize.  The %@ characters are placeholders for account names. */
 "Connecting %@ will replace the existing connection to %@." = "Připojování k %1$@ nahradí stávající spojení k %2$@.";
+
+/* No comment provided by engineer. */
+"Connecting to WordPress.com" = "Připojuji se k WordPress.com";
 
 /* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connecting..." = "Připojování...";
@@ -1582,6 +1569,7 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
+   The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
@@ -1593,6 +1581,18 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Menus alert button title to continue making changes. */
 "Continue Working" = "Pokračovat v práci";
+
+/* Part of a prompt suggesting that there is more content for the user to read. */
+"Continue reading" = "Čtěte více";
+
+/* Button title. Tapping begins log in using Apple. */
+"Continue with Apple" = "Pokračujte s Apple";
+
+/* Button title. Tapping begins log in using Google. */
+"Continue with Google" = "Pokračujte pomocí Google";
+
+/* Shown while logging in with Apple and the app waits for the site creation process to complete. */
+"Continuing with Apple" = "Pokračování s Apple";
 
 /* Title of button that displays the WordPress.org contributor page */
 "Contribute" = "Přispět";
@@ -1624,11 +1624,17 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of an prompt letting the user know there was a problem saving. */
 "Could Not Save Changes" = "Nelze uložit změny";
 
+/* Message shown when site purchases API failed */
+"Could not check site purchases." = "Nepodařilo se zjistit nákupy na webu.";
+
 /* The app failed to disable notifications for the subscription */
 "Could not disable notifications" = "Oznámení se nepodařilo zakázat";
 
 /* The app failed to enable notifications for the subscription */
 "Could not enable notifications" = "Oznámení nelze aktivovat";
+
+/* Error message informing the user that there was a problem subscribing to a site or feed. */
+"Could not follow the site at the address specified." = "Nelze začít sledovat web s touto adresou.";
 
 /* Error message shown when the user scanned an expired log in code. */
 "Could not log you in using this log in code. Please tap the Scan Again button to rescan the code." = "Nepodařilo se vás přihlásit pomocí tohoto přihlašovacího kódu. Klepnutím na tlačítko Skenovat znovu kód znovu naskenujte.";
@@ -1651,6 +1657,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* An error description explaining that Seen could not be toggled due to a missing postID. */
 "Could not toggle Seen: missing postID." = "Nelze přepnout na viditelné: chybí ID příspěvku.";
 
+/* Error message informing the user that there was a problem unsubscribing to a site or feed. */
+"Could not unfollow the site at the address specified." = "Nelze zrušit sledování webu s touto adresou.";
+
 /* The app failed to unsubscribe from the comments for the post */
 "Could not unsubscribe from comments" = "Nelze odhlásit odběr komentářů";
 
@@ -1662,6 +1671,15 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Couldn't Connect" = "Nemohu se připojit";
+
+/* Error message shown a URL points to a valid site but not a WordPress site. */
+"Couldn't connect to the WordPress site. There is no valid WordPress site at this address. Check the site address (URL) you entered." = "Nelze se připojit k webu WordPress. Na této adrese není platný web WordPress. Zkontrolujte adresu webu (URL), kterou jste zadali.";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 403 error, meaning that the access to the /xmlrpc.php file is forbidden. */
+"Couldn't connect. We received a 403 error when trying to access your site's XMLRPC endpoint. The app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Nepodařilo se připojit. Při pokusu o přístup ke koncovému bodu XMLRPC vašeho webu jsme obdrželi chybu 403. Ten aplikace potřebuje, aby mohla komunikovat s vaším webem. Kontaktujte prosím svého poskytovatele hostingu, aby tento problém vyřešil.";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
+"Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Nepodařilo se připojit. Váš hostitel blokuje požadavky POST a aplikace je potřebuje, aby mohla komunikovat s vaším webem. Obraťte se na poskytovatele hostingu, aby tento problém vyřešil.";
 
 /* Error message when tag loading failed */
 "Couldn't load tags." = "Značky se nepodařilo načíst.";
@@ -1700,6 +1718,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Accessibility label for create floating action button */
 "Create" = "Vytvořit";
 
+/* The button title text for creating a new account. */
+"Create Account" = "Vytvořit účet";
+
 /* Title for button to make a blank page */
 "Create Blank Page" = "Vytvořit prázdnou stránku";
 
@@ -1707,12 +1728,8 @@ translators: %s: Block name e.g. \"Image block\" */
 "Create New" = "Vytvořit nový";
 
 /* Button for selecting the current page template.
-   Button title, encourages users to create their first page on their blog.
    Title for button to make a page with the contents of the selected layout */
 "Create Page" = "Vytvořit stránku";
-
-/* Button title, encourages users to create post on their blog. */
-"Create Post" = "Vytvořit příspěvek";
 
 /* Button to progress to the next step
    Site creation. Step 1. Screen title
@@ -1722,21 +1739,17 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Button allowing the user to create a site icon by choosing an emoji character */
 "Create With Emoji" = "Vytvořit pomocí emotikonů";
 
-/* Create WordPress.com site button */
-"Create WordPress.com site" = "Vytvořit web na WordPress.com";
-
 /* Displayed in the Notifications Tab as a button title, when the Unread Filter shows no notifications */
 "Create a Post" = "Vytvořit příspěvek";
+
+/* Navigates to a new flow for site creation. */
+"Create a Site" = "Vytvořit web";
 
 /* Title of the button in the placeholder for an empty list of blog tags. */
 "Create a Tag" = "Vytvořit štítek";
 
-/* A button title
-   Title for a button that when tapped starts the site creation process */
+/* Title for a button that when tapped starts the site creation process */
 "Create a new site" = "Vytvořte nový web";
-
-/* Text shown when the account has no sites. */
-"Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "Vytvořte nový web pro své podnikání, časopis nebo osobní blog; nebo připojte stávající instalaci WordPress.";
 
 /* Title for the Site Icon Picker */
 "Create a site icon" = "Vytvořte ikonu webu";
@@ -1752,9 +1765,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Create link" = "Vytvořit odkaz";
-
-/* Title of a Quick Start Tour */
-"Create your site" = "Vytvořit stránku";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Vytvořením nového menu ztratíte změny, které jste provedli v aktuálním menu. Jste si jisti, že chcete pokračovat?";
@@ -1816,9 +1826,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Customize Gradient" = "Přizpůsobte přechod";
-
-/* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
-"Customize Your Site" = "Přizpůsobte si svůj web";
 
 /* No comment provided by engineer. */
 "Customize blocks" = "Přizpůsobte bloky";
@@ -1939,6 +1946,9 @@ translators: %s: Block name e.g. \"Image block\" */
    Theme Details action title */
 "Details" = "Detaily";
 
+/* Instructions after a Magic Link was sent, but email is incorrect. */
+"Didn't mean to create a new account? Go back to re-enter your email address." = "Nechtěli jste vytvořit nový účet? Vraťte se zpět a znovu zadejte svou emailovou adresu.";
+
 /* Label for the dimensions in pixels for a media asset (image / video) */
 "Dimensions" = "Rozměry";
 
@@ -1982,21 +1992,15 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Disconnecting this account means published posts will no longer be automatically shared to %@" = "Odpojení tohoto účtu již nebudou publikované příspěvky automaticky sdíleny %@";
 
-/* The menu item to select during a guided tour. */
-"Discover" = "Objevujte";
-
-/* Description of a Quick Start Tour */
-"Discover and follow sites that inspire you." = "Objevujte a sledujte weby, které vás inspirují.";
-
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
 "Discussion" = "Diskuse";
 
-/* Dismiss a view. Verb */
+/* Accessibility label for button to dismiss a bottom sheet
+   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+   Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
+   Dismiss a view. Verb */
 "Dismiss" = "Skrýt";
-
-/* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
-"Dismiss %@ Quick Start step" = "Zavřít krok %@ rychlého startu";
 
 /* Accessibility hint for the continue button in the Feature Announcements screen. */
 "Dismiss announcements" = "Odmítnout oznámení";
@@ -2009,9 +2013,6 @@ translators: %s: Block name e.g. \"Image block\" */
    User's Display Name */
 "Display Name" = "Zobrazované jméno";
 
-/* Message shown when all tours have been completed */
-"Doesn't it feel good to cross things off a list?" = "není to dobrý pocit, když věci odškrtnete ze seznamu?";
-
 /* Register Domain - Domain contact information section header title */
 "Domain contact information" = "Kontaktní údaje domény";
 
@@ -2020,6 +2021,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Noun. Title. Links to the Domains screen. */
 "Domains" = "Domény";
+
+/* Label for button to log in using your site address. The underscores _..._ denote underline */
+"Don't have an account? _Sign up_" = "Nemáte účet? _Přihlásit se_";
 
 /* A done button
    Accessibility label for the Done button in the Me screen.
@@ -2052,6 +2056,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Double tap to add a link." = "Dvojitým klepnutím přidáte odkaz";
+
+/* Voiceover accessibility hint informing the user they can double tap a modal alert to dismiss it */
+"Double tap to dismiss" = "Dvojitým klepnutím zavřete";
 
 /* No comment provided by engineer. */
 "Double tap to edit button text" = "Dvojitým klepnutím upravíte text tlačítka";
@@ -2153,9 +2160,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Name for the status of a draft post. */
 "Draft" = "Koncept";
 
-/* Description of a Quick Start Tour */
-"Draft and publish a post." = "Navrhněte a publikujte svůj první příspěvek.";
-
 /* Title of the drafts filter.  This filter shows a list of draft posts. */
 "Drafts" = "Koncepty";
 
@@ -2256,7 +2260,10 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Header for a comment author's email address, shown when editing a comment. */
 "Email Address" = "Emailová adresa";
 
-/* Describes the email address section in the comment detail screen. */
+/* Accessibility label for the email address text field.
+   Describes the email address section in the comment detail screen.
+   Placeholder for a textfield. The user may enter their email address.
+   Placeholder for the email address textfield. */
 "Email address" = "E-mailová adresa";
 
 /* Notification Settings Channel */
@@ -2300,6 +2307,9 @@ translators: %s: Block name e.g. \"Image block\" */
    Label for size of media when the cache is empty. */
 "Empty" = "Prázdný";
 
+/* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
+"Empty URL" = "Prázdná URL";
+
 /* Button title for the enable site notifications action.
    Title of button to enable publicize. */
 "Enable" = "Aktivovat";
@@ -2312,12 +2322,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Text shown when the site doesn't have the Publicize module enabled. */
 "Enable Publicize" = "Povolit publikovat";
-
-/* Title of a row displayed on the debug screen used in debug builds of the app */
-"Enable Quick Start for Existing Site" = "Povolit rychlý start pro existující web";
-
-/* Title of a row displayed on the debug screen used in debug builds of the app */
-"Enable Quick Start for New Site" = "Povolit rychlý start pro web";
 
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "Povolit statistiky webu";
@@ -2343,14 +2347,31 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Enter a custom value */
 "Enter a custom value" = "Zadejte vlastní hodnotu";
 
-/* No comment provided by engineer. */
-"Enter a password" = "Zadejte heslo";
-
 /* (placeholder) Help enter WordPress password */
 "Enter password" = "Zadejte heslo";
 
+/* Instruction text on the login's site addresss screen.
+   Label for button to log in using your site address. */
+"Enter the address of the WordPress site you'd like to connect." = "Zadejte adresu webu WordPress, ke kterému se chcete připojit.";
+
+/* Instructional text shown when requesting the user's password for login. */
+"Enter the password for your WordPress.com account." = "Zadejte heslo pro svůj účet WordPress.com.";
+
 /* (placeholder) Help enter WordPress username */
 "Enter username" = "Zadejte uživatelské jméno";
+
+/* Enter your account information for {site url}. Asks the user to enter a username and password for their self-hosted site. */
+"Enter your account information for %@." = "Zadejte informace o svém účtu pro %@.";
+
+/* Instruction text on the initial email address entry screen. */
+"Enter your email address to log in or create a WordPress.com account." = "Zadejte svou e-mailovou adresu pro přihlášení nebo vytvořte účet WordPress.com.";
+
+/* Button title. Takes the user to the login by site address flow. */
+"Enter your existing site address" = "Zadejte svou stávající adresu";
+
+/* Title of a button on the magic link screen.
+   Title of a button. */
+"Enter your password instead." = "Místo toho zadejte své heslo.";
 
 /* Error message displayed when site credentials aren't configured. */
 "Enter your server credentials" = "Zadejte přihlašovací údaje k serveru";
@@ -2533,6 +2554,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Failed to save files.\nPlease tap for options." = "Uložení souborů se nezdařilo.\nMožnosti zobrazíte klepnutím.";
 
+/* Error message to show when wrong URL format is used to access the REST API */
+"Failed to serialize request to the REST API." = "Selhalo spojení s REST API.";
+
 /* The app failed to unsubscribe from the comments for the post */
 "Failed to unfollow conversation" = "Nelze se odhlásit z odběru příspěvků";
 
@@ -2541,6 +2565,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Fashion site intent topic */
 "Fashion" = "Móda";
+
+/* Option to select the Fastmail app when logging in with magic links */
+"Fastmail" = "Fastmail";
 
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "Doporučené";
@@ -2600,6 +2627,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "Zjistit více";
 
+/* The hint button's title text to help users find their site address. */
+"Find your site address" = "Najděte adresu svého webu";
+
 /* My Profile first name label
    Register Domain - Domain contact information field First name
    User's First Name */
@@ -2637,6 +2667,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Guide for users to follow topics. */
 "Follow topics you're interested in and we'll find some blogs you might like." = "Sledujte témata, která vás zajímají, a my najdeme blogy, které by se vám mohly líbit.";
+
+/* User role badge */
+"Follower" = "Odběratel";
 
 /* Label for number of followers. */
 "Followers" = "Odběratelé";
@@ -2716,6 +2749,12 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title. A call to action to generate a new invite link. */
 "Generate new link" = "Generovat nový odkaz";
 
+/* View title for initial auth views. */
+"Get Started" = "Začínáme";
+
+/* The button title for a secondary call-to-action button. When the user wants to try sending a magic link instead of entering a password. */
+"Get a login link by email" = "Získejte odkaz pro přihlášení e-mailem";
+
 /* Displayed in the Notifications Tab as a message, when there are no notifications */
 "Get active! Comment on posts from blogs you follow." = "Buď aktivní! Komentuj příspěvky z blogů, které sledujete.";
 
@@ -2725,32 +2764,20 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "Oznámení: komentáře v příspěvcích, které jste četli.";
 
-/* Description of a Quick Start Tour */
-"Get real time updates from your pocket." = "Získejte aktualizace v reálném čase z vaší kapsy.";
-
 /* Prompt for the screen to pick a template for a page */
 "Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "Začněte výběrem z široké škály předem připravených rozvržení stránky. Nebo jen začněte s prázdnou stránkou.";
 
 /* No comment provided by engineer. */
 "Get support" = "Získejte podporu";
 
-/* Name of the Quick Start list that guides users through a few tasks to explore the Jetpack app. */
-"Get to know the Jetpack app" = "Seznamte se s aplikací Jetpack";
-
-/* Name of the Quick Start list that guides users through a few tasks to explore the WordPress app. */
-"Get to know the WordPress app" = "Seznamte se s WordPress aplikací";
-
-/* Name of the Quick Start list that guides users through a few tasks to explore the WordPress/Jetpack app. */
-"Get to know the app" = "Seznamte se s aplikací";
-
 /* Title of the second alert preparing users to grant permission for us to send them push notifications. */
 "Get your notifications faster" = "Získejte svá oznámení rychleji";
 
-/* Description of a Quick Start Tour */
-"Get your site up and running" = "Zprovozněte svůj web";
-
 /* Example post title used in the login prologue screens. */
 "Getting Inspired" = "Inspirovat se";
+
+/* Alerts the user that wpcom account information is being retrieved. */
+"Getting account information" = "Získávám informace o účtu";
 
 /* Cancel */
 "Give Up" = "Vzdát se";
@@ -2758,8 +2785,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Give it a try by adding a few blocks to your post or page!" = "Vyzkoušejte to přidáním několika bloků do svého příspěvku nebo stránky!";
 
-/* Description of a Quick Start Tour */
-"Give your site a name that reflects its personality and topic. First impressions count!" = "Pojmenujte svůj web podle jeho osobnosti a tématu. Počítají se první dojmy!";
+/* Option to select the Gmail app when logging in with magic links */
+"Gmail" = "Gmail";
 
 /* Displayed in the Notifications Tab as a button title, when there are no notifications */
 "Go to Reader" = "Zobrazit čtečku";
@@ -2770,6 +2797,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Button label for going to settings to approve push notifications
    Opens WPiOS Settings.app Section */
 "Go to iOS Settings" = "Otevřít iOS nastavení";
+
+/* Message shown on screen after the Google sign up process failed. */
+"Google sign up failed." = "Google registrace se nezdařila.";
 
 /* Button title on the blogging prompt's feature introduction view to dismiss the view.
    Title for the continue button in the dashboard's custom What's New page. */
@@ -2787,41 +2817,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "Skvělý!\n  Rádi slyšíme od šťastných uživatelů\n😁";
 
-/* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
-"Grow Your Audience" = "Rozšiřte své publikum";
-
-/* This value is used to set the accessibility hint text for viewing the user's notifications. */
-"Guides you through the process of checking your notifications." = "Provede vás procesem kontroly vašich oznámení.";
-
-/* This value is used to set the accessibility hint text for creating a new page for the user's site. */
-"Guides you through the process of creating a new page for your site." = "Provede vás procesem vytváření nové stránky pro váš web.";
-
-/* This value is used to set the accessibility hint text for creating the user's site. */
-"Guides you through the process of creating your site." = "Provede vás procesem vytváření vašeho webu.";
-
-/* This value is used to set the accessibility hint text for following the sites of other users. */
-"Guides you through the process of following other sites." = "Provede vás procesem sledování dalších webů.";
-
-/* This value is used to set the accessibility hint text for previewing a user's site. */
-"Guides you through the process of previewing your site." = "Provede vás procesem náhledu vašeho webu.";
-
-/* This value is used to set the accessibility hint text for publishing a new post on the user's site. */
-"Guides you through the process of publishing a new post on your site." = "Provede vás procesem publikování nového příspěvku na vašem webu.";
-
-/* This value is used to set the accessibility hint text for viewing Stats on the user's site. */
-"Guides you through the process of reviewing statistics for your site." = "Provede vás procesem kontroly statistik vašeho webu.";
-
-/* This value is used to set the accessibility hint text for setting the site title. */
-"Guides you through the process of setting a title for your site." = "Provede vás procesem nastavení názvu vašeho webu.";
-
-/* This value is used to set the accessibility hint text for uploading a site icon. */
-"Guides you through the process of uploading an icon for your site." = "Provede vás procesem nahrání ikony pro váš web.";
-
-/* This value is used to set the accessibility hint text for viewing the user's notifications. */
-"Guides you through the process of uploading new media." = "Provede vás procesem nahrávání nových médií.";
-
-/* Accessibility label for HTML button on formatting toolbar.
-   HTML Attachment Label */
+/* Accessibility label for HTML button on formatting toolbar. */
 "HTML" = "HTML";
 
 /* Post HTML content */
@@ -2881,15 +2877,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Help icon" = "Ikona nápovědy";
 
-/* Hides a site from the site picker list
-   Title of a button used to collapse a group */
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
+"Hidden" = "Skrytý";
+
+/* Title of a button used to collapse a group */
 "Hide" = "Skrýt";
-
-/* Hide All */
-"Hide All" = "Vše skrýt";
-
-/* Hide All Sites */
-"Hide All Sites" = "Skrýt všechny stránky";
 
 /* No comment provided by engineer. */
 "Hide keyboard" = "Skrýt klávesnici";
@@ -2957,6 +2949,12 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message to show when site icon update failed */
 "Icon update failed" = "Aktualizace ikony se nezdařila";
 
+/* The instructions text about not being able to find the magic link email. */
+"If you can’t find the email, please check your junk or spam email folder" = "Pokud e-mail nemůžete najít, zkontrolujte složku nevyžádané pošty nebo spamu";
+
+/* Legal disclaimer for signing up. The underscores _..._ denote underline. */
+"If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "Pokud budete pokračovat se společností Apple nebo Google a ještě nemáte účet WordPress.com, vytváříte si účet a souhlasíte s našimi _Smluvními podmínkami_.";
+
 /* First line of remove user warning in confirmation dialog. Note: '%@' is the placeholder for the user's name and it must exist twice in this string. */
 "If you remove %@, that user will no longer be able to access this site, but any content that was created by %@ will remain on the site." = "Pokud odstraníte uživatele %1$@, nebude mít přístup k tomuto webu. Ale všechen obsah který vytvořil %2$@, zůstane na webu.";
 
@@ -3020,8 +3018,20 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Describes a status of a plugin */
 "Inactive" = "Neaktivní";
 
+/* The plugin is not active on the site and has not enabled automatic updates */
+"Inactive, Autoupdates off" = "Neaktivní, automatické aktualizace vypnuty";
+
+/* The plugin is not active on the site and has enabled automatic updates */
+"Inactive, Autoupdates on" = "Neaktivní, automatické aktualizace zapnuty";
+
+/* Describes a standard *.wordpress.com site domain */
+"Included with Site" = "Součástí webu";
+
 /* Downloadable/Restorable items: general section footer text */
 "Includes wp-config.php and any non WordPress files" = "Zahrnuje wp-config.php a jakékoli jiné soubory než WordPress";
+
+/* An error message shown when a user signed in with incorrect credentials. */
+"Incorrect username or password. Please try entering your login details again." = "Nesprávné uživatelské jméno nebo heslo. Zkuste to znovu a zadejte vaše přihlašovací údaje.";
 
 /* Title for a threat */
 "Infected core file" = "Infikovaný soubor v jádru";
@@ -3108,14 +3118,38 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Interior Design site intent topic */
 "Interior Design" = "Vzhled interiéru";
 
+/* Title of an alert letting the user know the email address that they've entered isn't valid */
+"Invalid Email Address" = "Špatná e-mailová adresa";
+
+/* No comment provided by engineer. */
+"Invalid Site Address" = "Neplatná adresa webu";
+
+/* No comment provided by engineer. */
+"Invalid Site Title" = "Neplatný název webu";
+
+/* Message to show to user when he tries to add a self-hosted site that isn't HTTP or HTTPS. */
+"Invalid URL scheme inserted, only HTTP and HTTPS are supported." = "Nesprávná forma URL adresy, je podporováno pouze HTTP a HTTPS.";
+
+/* Message to show to user when he tries to add a self-hosted site that isn't a valid URL. */
+"Invalid URL, please check if you wrote a valid site address." = "Neplatná URL adresa, zkontrolujte, zda jste napsal platnou adresu webu.";
+
 /* No comment provided by engineer. */
 "Invalid URL." = "Neplatná URL adresa.";
 
 /* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "Neplatná URL. Audio soubor se nepodařilo nalézt.";
 
+/* Error message shown when the input URL is invalid. */
+"Invalid URL. Please double-check and try again." = "Neplatná URL. Zkontrolujte a zkuste to znovu.";
+
 /* No comment provided by engineer. */
 "Invalid URL. Please enter a valid URL." = "Neplatná URL. Zadejte platnou adresu URL.";
+
+/* Error message generated when announcement service is unable to return a valid endpoint. */
+"Invalid endpoint" = "Neplatný koncový bod";
+
+/* No comment provided by engineer. */
+"Invalid username" = "Špatné uživatelské jméno";
 
 /* The app successfully sent an invitation */
 "Invitation Sent!" = "Pozvánka odeslána!";
@@ -3128,6 +3162,12 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Invite People Title */
 "Invite People" = "Pozvat lidi";
+
+/* An error message shown during log in when the username or password is incorrect. */
+"It looks like this username\/password isn't associated with this site." = "Vypadá to, že toto uživatelské jméno \/ heslo není spojeno s tímto webem.";
+
+/* An error message shown when a wpcom user provides the wrong password. */
+"It seems like you've entered an incorrect password. Want to give it another try?" = "Zdá se, že jste zadali nesprávné heslo. Chcete to zkusit znovu?";
 
 /* Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title. */
 "It's time to blog on %@!" = "Je čas napsat blog na %@!";
@@ -3237,15 +3277,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Button to cancel the replacement of a featured image. */
 "Keep current" = "Udržujte aktuální";
 
-/* Description of a Quick Start Tour */
-"Keep up to date on your site’s performance." = "Mějte aktuální informace o výkonu svého webu.";
-
-/* Subtitle giving the user more context about why to enable notifications. */
-"Know when your favorite authors post new content." = "Zjistěte, kdy vaši oblíbení autoři zveřejní nový obsah.";
-
-/* Subtitle giving the user more context about why to enable notifications. */
-"Know when your site is getting more traffic, new followers, or when it passes a new milestone!" = "Zjistěte, kdy váš web získává větší návštěvnost, nové sledující nebo kdy překonává nový milník!";
-
 /* Autoapprove only from known users */
 "Known Users" = "Známí uživatelé";
 
@@ -3307,9 +3338,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Jetpack Settings: WordPress.com Login WordPress login footer text */
 "Learn more..." = "Další informace...";
-
-/* Description for a prompt asking if users want to try out the quick start checklist. */
-"Learn the basics with a quick walk through." = "Naučte se základy pomocí rychlé procházky.";
 
 /* Left alignment for an image. Should be the same as in core WP. */
 "Left" = "Vlevo";
@@ -3469,7 +3497,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Loading the block editor." = "Načítání editoru bloků.";
 
 /* Loading tags
-   Loading tags.
    Loading. Verb
    Suggestions loading message
    Text displayed in HUD while a media item is being loaded.
@@ -3500,8 +3527,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Log Files By Created Date" = "Zaznamenávat soubory dle data vytvoření";
 
-/* Label for logging in to WordPress.com account
-   Log In 3D Touch Shortcut */
+/* Button title.  Tapping takes the user to the login form.
+   Label for logging in to WordPress.com account
+   Log In 3D Touch Shortcut
+   Log In button label.
+   View title during the log in process. */
 "Log In" = "Přihlásit se";
 
 /* Button for confirming logging out from WordPress.com account
@@ -3510,6 +3540,22 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of a button for signing in. */
 "Log in" = "Přihlásit se";
+
+/* A generic error message for a failed log in. */
+"Log in failed. Please try again." = "Přihlášení selhalo. Zkuste to prosím znovu.";
+
+/* Button title. Takes the user to the login by email flow.
+   Button title. Tapping begins our normal log in process. */
+"Log in or sign up with WordPress.com" = "Přihlaste se nebo se zaregistrujte pomocí WordPress.com ";
+
+/* Instruction text on the login's email address screen. */
+"Log in to the WordPress.com account you used to connect Jetpack." = "Přihlaste se k účtu WordPress.com, který jste použili k připojení Jetpack.";
+
+/* Instruction text on the login's email address screen. */
+"Log in to your WordPress.com account with your email address." = "Přihlaste se ke svému účtu WordPress.com pomocí své e-mailové adresy.";
+
+/* Instructions on the WordPress.com username / password log in form. */
+"Log in with your WordPress.com username and password." = "Přihlaste se pomocí svého uživatelského jména a hesla WordPress.com.";
 
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of Jetpack?" = "Odhlásit se z Jetpacku?";
@@ -3520,6 +3566,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Login Request Expired */
 "Login Request Expired" = "Žádost o přihlášení vypršela";
 
+/* Button title. Takes the user to the Enter account password screen. */
+"Login with account password" = "Přihlaste se heslem účtu";
+
 /* No comment provided by engineer. */
 "Logs" = "Protokoly";
 
@@ -3528,6 +3577,12 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message asking the user to sign into Jetpack with WordPress.com credentials */
 "Looks like you have Jetpack set up on your site. Congrats! Log in with your WordPress.com credentials to enable Stats and Notifications." = "Na svém webu máte nastavený plugin Jetpack. Gratulujeme!\nPro zpřístupnění statistik a oznámení, se prosím níže přihlaste pomocí účtu WordPress.com";
+
+/* Title of a button. */
+"Lost your password?" = "Zapomněli jste heslo?";
+
+/* Option to select the Apple Mail app when logging in with magic links */
+"Mail (Default)" = "Mail (výchozí)";
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Hlavní navigace";
@@ -3553,6 +3608,12 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "Spravovat web";
+
+/* Section name for manual offsets in time zone selector */
+"Manual Offsets" = "Manuální odsazení";
+
+/* Describes a domain that was mapped to WordPress.com, but registered elsewhere */
+"Mapped Domain" = "Zmapované domény";
 
 /* Marks a notification as unread */
 "Mark Read" = "Označit jako přečtené";
@@ -3610,7 +3671,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Me" = "Já";
 
 /* Noun. Title. Links to the blog's Media library.
-   The menu item to select during a guided tour.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Media";
@@ -3680,6 +3740,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Invite Message Editor's Title
    Label for the share message field on the post settings. */
 "Message" = "Zpráva";
+
+/* Option to select the Microsft Outlook app when logging in with magic links */
+"Microsoft Outlook" = "Microsoft Outlook";
 
 /* Summary description for a threat */
 "Miscellaneous vulnerability" = "Různé zranitelnosti";
@@ -3779,10 +3842,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Title of My Site tab */
 "My Site" = "Moje weby";
 
-/* Title for site picker screen.
-   Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
-"My Sites" = "Moje weby";
-
 /* Siri Suggestion to open My Sites */
 "My Sites in WordPress" = "Moje stránky na WordPressu";
 
@@ -3825,8 +3884,15 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "Potřebujete pomoc?";
 
-/* The secondary button title in the migration welcome screen */
+/* A button title. */
+"Need help finding your site address?" = "Potřebujete najít adresu webu?";
+
+/* Takes the user to get help
+   The secondary button title in the migration welcome screen */
 "Need help?" = "Potřebujete pomoc?";
+
+/* Title of the more help button on alert helping users understand their site address */
+"Need more help?" = "Potřebujete poradit?";
 
 /* Describes a status of a plugin */
 "Needs Update" = "Vyžaduje aktualizaci";
@@ -3869,12 +3935,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "News" = "Novinky";
 
 /* Next action on comment moderation snackbar.
-   Next action on share extension editor screen. */
+   Next action on share extension editor screen.
+   Title of a button.
+   Title of a button. The text should be capitalized. */
 "Next" = "Další";
-
-/* Table view title for the quick start section.
-   Title for the Quick Start dashboard card. */
-"Next Steps" = "Další kroky";
 
 /* Accessibility label for the next notification button */
 "Next notification" = "Další notifikace";
@@ -4053,11 +4117,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts. */
 "No saved posts" = "Žádné uložené příspěvky";
 
-/* Displayed when the user is searching site tags and there are no matches. */
-"No tags matching your search" = "Žádné štítky neodpovídají hledanému výrazu";
-
-/* Button label for denying our request to re-allow push notifications
-   Button title. When tapped, the quick start checklist will not be shown, and the prompt will be dismissed. */
+/* Button label for denying our request to re-allow push notifications */
 "No thanks" = "Ne, děkuji";
 
 /* Text displayed when theme name search has no matches */
@@ -4089,15 +4149,14 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Not enough space to upload" = "Nedostatek místa k nahrání";
 
 /* Button label for denying our request to allow push notifications
-   Not now button title shown in alert preparing users to grant permission for us to send them push notifications.
-   Phrase displayed to dismiss a quick start tour suggestion. */
+   Not now button title shown in alert preparing users to grant permission for us to send them push notifications. */
 "Not now" = "Teď ne";
 
 /* Title for a button that when tapped cancels the site creation process */
 "Not right now" = "Teď ne";
 
-/* Button that allows users unsure of what selection they'd like */
-"Not sure, show me around" = "Nejsem si jistý, ukaž mi to";
+/* Instructions after a Magic Link was sent, but the email can't be found in their inbox. */
+"Not seeing the email? Check your Spam or Junk Mail folder." = "Nevidíte e-mail? Zkontrolujte složku spamu nebo nevyžádané pošty.";
 
 /* Label for the note displayed in the Feature Introduction view. */
 "Note:" = "Poznámka:";
@@ -4135,7 +4194,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Notifications tab bar item accessibility label
    Notifications View Controller title
    Noun. Name of the Notifications feature
-   The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Notifikace";
 
@@ -4173,10 +4231,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Button title. Acknowledges a prompt.
    Button title. An acknowledgement of the message displayed in a prompt.
    Default action
+   Dismisses the alert
    Marks all notifications as read.
    Menus: button title for finishing editing of a menu item.
    OK
    OK button for alert
+   Ok button for dismissing alert helping users understand their site address
    OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
    Submit button on prompt for user information.
@@ -4253,6 +4313,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Open Jetpack Security settings" = "Otevřete nastavení Jetpack zabezpečení";
 
+/* The button title text for opening the user's preferred email app.
+   Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
+"Open Mail" = "Otevřít e-mail";
+
 /* Go to the settings app
    Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Otevřít nastavení";
@@ -4295,6 +4359,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Divider on initial auth view separating auth options. */
 "Or" = "Nebo";
+
+/* Label for button to log in using site address. Underscores _..._ denote underline. */
+"Or log in by _entering your site address_." = "Nebo se přihlaste _zadáním adresy vašeho webu_.";
+
+/* The button title for a secondary call-to-action button on the password screen. When the user wants to try sending a magic link instead of entering a password. */
+"Or log in with magic link" = "Nebo se přihlaste pomocí magického odkazu";
 
 /* Accessibility label for Ordered list button on formatting toolbar. */
 "Ordered List" = "Uspořádaný seznam";
@@ -4362,7 +4432,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Page title. Empty" = "Název stránky. Prázdný";
 
 /* Noun. Title. Links to the blog's Pages screen.
-   The item to select during a guided tour.
    This is the section title
    Title of the screen showing the list of pages for a blog. */
 "Pages" = "Stránky";
@@ -4379,8 +4448,11 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Parenting site intent topic */
 "Parenting" = "Rodičovství";
 
-/* Label for entering password in password field
-   Label for the password field. Should be the same as WP core.
+/* Accessibility label for the password text field in the self-hosted login page.
+   Label for entering password in password field
+   Login dialog password placeholder
+   Password placeholder
+   Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "Heslo";
 
@@ -4395,9 +4467,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Paste block after" = "Vložte blok za";
-
-/* Paste without Formatting Menu Item */
-"Paste without Formatting" = "Vložit bez formátování";
 
 /* Button title for Pending comment state.
    Status for Media object that is being processed locally.
@@ -4464,6 +4533,15 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Message asking users to make sure that the block editor is enabled on their site in order for the Unsupported Block Editor to load properly. */
 "Please ensure the block editor is enabled on your site. If it is not enabled, it will not load." = "Ujistěte se, že je na vašem webu povolen editor bloků. Pokud není povoleno, nenačte se.";
 
+/* Error message shown when a URL is invalid. */
+"Please enter a complete website address, like example.com." = "Zadejte úplnou adresu webu, například example.com.";
+
+/* No comment provided by engineer. */
+"Please enter a site address." = "Zadejte prosímwebovou adresu.";
+
+/* No comment provided by engineer. */
+"Please enter a username." = "Zadejte prosím uživatelské jméno.";
+
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid City" = "Zadejte město";
 
@@ -4494,14 +4572,32 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid address" = "Zadejte platnou e-mailovou adresu";
 
+/* An error message. */
+"Please enter a valid email address for a WordPress.com account." = "Zadejte platnou e-mailovou adresu pro účet WordPress.com.";
+
+/* Error message displayed when the user attempts use an invalid email address. */
+"Please enter a valid email address." = "Zadejte prosím platnou e-mailovou adresu.";
+
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid phone number" = "Zadejte telefonní číslo";
+
+/* Instructional text shown when requesting the user's password for a login initiated via Sign In with Apple */
+"Please enter the password for your WordPress.com account to log in with your Apple ID." = "Chcete-li se přihlásit pomocí svého Apple ID, zadejte heslo ke svému účtu WordPress.com.";
+
+/* Popup message to ask for user credentials (fields shown below). */
+"Please enter your credentials" = "Zadejte prosím své přihlašovací údaje";
 
 /* Instructions for alert asking for email. */
 "Please enter your email address." = "Prosím uveďte svůj e-mail.";
 
+/* A short prompt asking the user to properly fill out all login fields. */
+"Please fill out all the fields" = "Vyplňte prosím veškerá pole";
+
 /* Share extension dialog text  - displayed when user is missing a login token. */
 "Please launch the WordPress app, log in to WordPress.com and make sure you have at least one site, then try again." = "Spusťte aplikaci WordPress, přihlaste se na WordPress.com a ujistěte se, že máte alespoň jeden web, potom to zkuste znovu.";
+
+/* Message for alert to prompt user to logout before connecting to a different wordpress.com site. */
+"Please log out before connecting to a different wordpress.com site" = "Před připojením k jiné stránce wordpress.com se odhlaste";
 
 /* Used on an error alert to prompt the user to try again */
 "Please try again later" = "Prosím zkuste to znovu později";
@@ -4671,9 +4767,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Preview post" = "Zobrazit příspěvek";
 
-/* Description of a Quick Start Tour */
-"Preview your site to see what your visitors will see." = "Zobrazte náhled pro kontrolu, jak uvidí stránku ostatní";
-
 /* Accessibility label for the previous notification button */
 "Previous notification" = "Předchozí upozornění";
 
@@ -4744,9 +4837,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Publikovat okamžitě";
 
-/* Title of a Quick Start Tour */
-"Publish a post" = "Publikovat příspěvek";
-
 /* Text displayed in the share extension's summary view. It describes the publish page action. */
 "Publish page on:" = "Publikovat stránku na:";
 
@@ -4793,12 +4883,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
    The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
-   The menu item to select during a guided tour.
    Title of the 'Reader' tab - used for spotlight indexing on iOS. */
 "Reader" = "Čtenář";
-
-/* Title of button that asks the users if they'd like to focus on checking their sites stats */
-"Reading posts from other sites" = "Čtení příspěvků z jiných webů";
 
 /* Real Estate site intent topic */
 "Real Estate" = "Nemovitosti";
@@ -4857,6 +4943,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Register Domain - Register publicly option title */
 "Register publicly" = "Zaregistrujte se veřejně";
 
+/* Describes a domain that was registered with WordPress.com */
+"Registered Domain" = "Registrované domény";
+
 /* Displayed in the Notifications Tab as a message, when the Unread Filter shows no notifications */
 "Reignite the conversation: write a new post." = "Obnovte konverzaci: napište nový příspěvek";
 
@@ -4870,11 +4959,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Reminders removed" = "Připomenutí odstraněny!";
 
 /* Alert button to confirm a plugin to be removed
-   Button label when removing a blog
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
-   Remove an image/posts/etc
-   Removes a self hosted site from the app */
+   Remove an image/posts/etc */
 "Remove" = "Odstranit";
 
 /* Remove Person Alert Title
@@ -4889,9 +4976,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Option to enable the removal of location information/gps from photos and videos */
 "Remove Location From Media" = "Odstraňte polohu u médií";
-
-/* Title for action that will remove the next steps/quick start menus. */
-"Remove Next Steps" = "Odebrat další kroky";
 
 /* Button to remove a plugin from a site */
 "Remove Plugin" = "Odstranit plugin";
@@ -4937,9 +5021,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Removes a post from My Likes. Spoken Hint. */
 "Removes this post from My Likes" = "Odebere tento příspěvek z mých oblíbených";
-
-/* Explanation of what will happen if the user confirms this alert. */
-"Removing Next Steps will hide all tours on this site. This action cannot be undone." = "Odebráním dalších kroků skryjete všechny prohlídky na tomto webu. Tuto akci nelze vrátit zpět.";
 
 /* First line of remove follower warning in confirmation dialog. */
 "Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "Odebráním sledujících přestanou dostávat aktualizace z vašeho webu. Pokud se rozhodnou, mohou stále navštívit váš web a znovu jej sledovat.";
@@ -5024,6 +5105,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility label for the reset date range button */
 "Reset Date Range filter" = "Obnovit filtr časového období";
 
+/* The button title for a secondary call-to-action button. When the user can't remember their password. */
+"Reset your password" = "Resetovat vaše heslo";
+
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "Změnit velikost a oříznutí";
 
@@ -5092,9 +5176,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility hint describing what happens if the undo button is tapped. */
 "Reverts the action performed on this notification." = "Vrátí akci provedenou s tímto oznámením.";
 
-/* Title of a Quick Start Tour */
-"Review site pages" = "Zkontrolujte stránky webu";
-
 /* Title of the screen that shows the revisions. */
 "Revision" = "Revize";
 
@@ -5114,6 +5195,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
    User Roles Title
    User's Role */
 "Role" = "Role";
+
+/* One Time Code has been sent via SMS */
+"SMS Sent" = "SMS byla odeslána";
 
 /* Section title for the moderation section of the comment details screen. */
 "STATUS" = "STAV";
@@ -5211,8 +5295,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Scrollable block menu opened. Select a block." = "Bylo otevřeno rolovací blok menu. Vyberte blok.";
 
-/* Placeholder text for the search bar
-   Title of Stats section that shows search engine referrer traffic.
+/* Title of Stats section that shows search engine referrer traffic.
    Title of the Reader's search feature */
 "Search" = "Hledat";
 
@@ -5268,44 +5351,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Select action on the app extension post type picker screen. Saves the selected post type for the post. */
 "Select" = "Vybrat";
 
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to continue" = "Pokračujte výběrem %@";
-
-/* A step in a guided tour for quick start. %@ will be the name of the segmented control item to select on the Site Menu screen. */
-"Select %@ to continue." = "Pokračujte výběrem %@.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to create a new post" = "Vyberte %@ a vytvořte nový příspěvek";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to find other sites." = "Chcete-li najít další stránky, vyberte %@.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to see how your site is performing." = "Vyberte %@ a podívejte se, jak si váš web vede.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to see your current library." = "Vyberte %@ pro zobrazení vaší aktuální knihovny.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to see your page list." = "Chcete-li zobrazit seznam stránek, vyberte %@";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to set a new title." = "Vyberte %@ a nastavte nový název.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to upload a new one." = "Vyberte %@ a nahrajte nový.";
-
-/* A step in a guided tour for quick start. %@ will be the site url. */
-"Select %@ to view your site" = "Vyberte %@ pro zobrazení vašich stránek";
-
-/* A step in a guided tour for quick start. %@ will be a plus icon. */
-"Select %@to upload media. You can add it to your posts \/ pages from any device." = "Vyberte %@ pro nahrání média. Můžete jej přidat do svých příspěvků \/ stránek z jakéhokoli zařízení.";
-
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "Vybrat zemi";
-
-/* Blog Picker's Title */
-"Select Site" = "Vybrat web";
 
 /* Register Domain - Address information field placeholder for State */
 "Select State" = "Vybrat stát";
@@ -5324,12 +5371,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Vyberte styl odstavce";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select the %@ tab to get updates on the go." = "Vyberte kartu %@ a získejte aktualizace na cestách.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select the %@ to add your social media accounts" = "Vyberte %@ a přidejte své účty sociálních médií";
 
 /* Instructional text about the Sharing feature. */
 "Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account." = "Vyberte účet, který chcete povolit. Všimněte si, že vaše příspěvky budou automaticky sdíleny na vybraný účet.";
@@ -5351,9 +5392,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Voiceover accessibility hint, informing the user they can select an item to show posts written by all users on the site */
 "Select to show everyone's posts." = "Vyberte, chcete-li zobrazit příspěvky všech.";
-
-/* Blog list page edit mode header label */
-"Select which sites will be shown in the site picker." = "Vyberte weby, které se zobrazí ve výběru stránek.";
 
 /* Screen reader text to represent the selected state of a button */
 "Selected" = "Vybráno";
@@ -5395,6 +5433,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for a topic in the Site Creation intents view. */
 "Selects this topic as the intent for your site." = "Vybere toto téma jako záměr vašeho webu.";
 
+/* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
+"Send Link" = "Poslat odkaz";
+
+/* The button title text for sending a magic link. */
+"Send Link by Email" = "Odeslat odkaz e-mailem";
+
 /* Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly */
 "Send Log Message" = "Odeslat zprávu protokolu";
 
@@ -5403,6 +5447,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly */
 "Send Test Crash" = "Odešlete testovací chybu";
+
+/* Button title. Sends a email verification link (Magin link) for signing in. */
+"Send email verification link" = "Odeslat odkaz na ověření e-mailu";
 
 /* Jetpack Monitor Settings: Send notifications by email */
 "Send notifications by email" = "Posílat oznámení e-mailem";
@@ -5518,14 +5565,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "Ukázat reblog tlačítko";
 
-/* Button title. When tapped, the quick start checklist will be shown. */
-"Show me around" = "Ukaž mi to";
+/* Accessibility label for the 'Show password' button in the login page's password field.
+   Accessibility label for the “Show password“ button in the login page's password field. */
+"Show password" = "Zobrazit heslo";
 
 /* No comment provided by engineer. */
 "Show post content" = "Zobrazit obsah příspěvku";
-
-/* Alert title picking theme type to browse */
-"Show themes:" = "Zobrazit šablony:";
 
 /* Voiceover description for the post list filter which shows posts for all users on a site. */
 "Showing everyone's posts" = "Zobrazují se příspěvky všech";
@@ -5535,6 +5580,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label on Post Stats view indicating which post the stats are for. */
 "Showing stats for:" = "Zobrazeny statistiky pro:";
+
+/* Accessibility value if login page's password field is displaying the password. */
+"Shown" = "Zobrazeno";
 
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "Zobrazit publikované komentáře na vašem blogu.";
@@ -5566,6 +5614,21 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for the Reader Cell */
 "Shows the post content" = "Zobrazuje obsah příspěvku";
 
+/* View title during the sign up process. */
+"Sign Up" = "Zaregistrovat se";
+
+/* Button title. Takes the user the Enter site credentials screen. */
+"Sign in with site credentials" = "Přihlaste se pomocí přihlašovacích údajů k webu";
+
+/* When social login fails, this button offers to let them signup for a new WordPress.com account */
+"Sign up" = "Přihlásit se";
+
+/* Button title. Tapping begins the process of creating a WordPress.com account. */
+"Sign up for WordPress.com" = "Přihlásit se k WordPress.com";
+
+/* Button title. Tapping begins our normal sign up process. */
+"Sign up with Email" = "Zaregistrujte se pomocí e-mailu";
+
 /* Text displayed as a footer of a table view with Activities when user is on a free plan */
 "Since you're on a free plan, you'll see limited events in your Activity Log." = "Jelikož máte bezplatný plán, uvidíte v protokolu aktivit omezené události.";
 
@@ -5587,23 +5650,28 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Language Picker View */
 "Site Language" = "Jazyk webu";
 
+/* Describes a site redirect domain */
+"Site Redirect" = "Web přesměrován";
+
 /* Noun. Title. Links to the blog's Settings screen. */
 "Site Settings" = "Nastavení webu";
 
 /* Default title for a site
    Label for site title blog setting
-   The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "Název webu";
 
 /* Title of the navigation bar, shown when the large title is hidden. */
 "Site Topic" = "Téma webu";
 
-/* The item to select during a guided tour. */
-"Site URL" = "URL adresa webu";
-
 /* Setting: indicates if Achievements will be notified */
 "Site achievements" = "Úspěchy webu";
+
+/* Accessibility label of the site address field shown when adding a self-hosted site. */
+"Site address" = "Adresa webu";
+
+/* No comment provided by engineer. */
+"Site address must be at least 4 characters." = "Adresa webu musí obsahovat alespoň 4 znaky";
 
 /* Downloadable/Restorable items: Site Database */
 "Site database" = "Databáze stránek";
@@ -5626,8 +5694,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Image size option title. */
 "Size" = "Velikost";
 
-/* Button that allows the user to skip the prompt and be brought to the app
-   Continue without making a selection
+/* Continue without making a selection
    Continue without making a selection. */
 "Skip" = "Přeskočit";
 
@@ -5646,12 +5713,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "So far, there are no ignored threats on your site." = "Na webu nejsou žádné ignorované hrozby.";
 
-/* Label for social followers
-   The menu item to select during a guided tour. */
+/* Label for social followers */
 "Social" = "Sociální";
-
-/* Title of a Quick Start Tour */
-"Social sharing" = "Povolit sdílení";
 
 /* No comment provided by engineer. */
 "Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "Některé bloky mají další nastavení. Klepnutím na ikonu nastavení v pravém dolním rohu bloku zobrazíte další možnosti.";
@@ -5659,7 +5722,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title shown on the dashboard when it fails to load */
 "Some data wasn't loaded" = "Některá data nebyla načtena";
 
-/* Title for a label that appears when the scan failed
+/* A generic error message
+   Title for a label that appears when the scan failed
    Title for the error view when the scan start has failed */
 "Something went wrong" = "Něco se pokazilo";
 
@@ -5675,11 +5739,56 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Update User Failed Title */
 "Sorry!" = "Promiňte!";
 
+/* This error message occurs when a user tries to create a username that contains an invalid phrase for WordPress.com. The %@ may include the phrase in question if it was sent down by the API */
+"Sorry, but your username contains an invalid phrase%@." = "Litujeme, ale vaše uživatelské jméno obsahuje chybný znak%@.";
+
 /* Error title when updating the account password fails */
 "Sorry, can't log in" = "Nemohli jsme vás přihlásit";
 
 /* No comment provided by engineer. */
+"Sorry, site addresses can only contain lowercase letters (a-z) and numbers." = "Adresa webu může obsahovat pouze malá písmena (a-z) a číslice.";
+
+/* No comment provided by engineer. */
+"Sorry, site addresses may not contain the character &#8220;_&#8221;!" = "Uživatelské jméno nemůže obsahovat symbol podtržítka &#8222;_&#8220;!";
+
+/* No comment provided by engineer. */
+"Sorry, site addresses must have letters too!" = "Adresa webu musí obsahovat také nějaké písmeno!";
+
+/* Error message displayed when the entered email is not available. */
+"Sorry, that email address is already being used!" = "Tato e-mailová adresa je již používána";
+
+/* No comment provided by engineer. */
+"Sorry, that email address is not allowed!" = "Zvolená e-mailová adresa není bohužel povolena!";
+
+/* This error message occurs when a user tries to create an account with a weak password. */
+"Sorry, that password does not meet our security guidelines. Please choose a password with a minimum length of six characters, mixing uppercase letters, lowercase letters, numbers and symbols." = "Heslo nesplňuje naše zásady zabezpečení. Zvolte si heslo o minimální délce šesti znaků, obsahující velká písmena, malá písmena, číslice a symboly.";
+
+/* No comment provided by engineer. */
+"Sorry, that site already exists!" = "Zvolená adresa webu už bohužel existuje!";
+
+/* No comment provided by engineer. */
+"Sorry, that site is reserved!" = "Zvolená adresa webu je už bohužel rezervována!";
+
+/* No comment provided by engineer. */
+"Sorry, that username already exists!" = "Zvolené uživatelské jméno už bohužel existuje!";
+
+/* No comment provided by engineer. */
+"Sorry, that username is unavailable." = "Zvolené uživatelské jméno už bohužel existuje.";
+
+/* No comment provided by engineer. */
+"Sorry, usernames can only contain lowercase letters (a-z) and numbers." = "Adresa webu může obsahovat pouze malá písmena (a-z) a číslice.";
+
+/* No comment provided by engineer. */
+"Sorry, usernames may not contain the character &#8220;_&#8221;!" = "Uživatelské jméno nemůže obsahovat symbol podtržítka &#8222;_&#8220;!";
+
+/* No comment provided by engineer. */
+"Sorry, usernames must have letters (a-z) too!" = "Uživatelské jméno musí obsahovat také nějaké písmeno!";
+
+/* No comment provided by engineer. */
 "Sorry, you cannot access this feature. Please check your User Role on this site." = "Je nám líto, tato funkce není dostupná. Zkontrolujte vaší uživatelskou roli na této stránce.";
+
+/* No comment provided by engineer. */
+"Sorry, you may not use that site address." = "Nemůžete použít tuto adresu webu.";
 
 /* A short error message letting the user know the requested reader content could not be loaded. */
 "Sorry. The content could not be loaded." = "Obsah nelze načíst.";
@@ -5704,6 +5813,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Marks comment as spam.
    Title of spam Comments filter. */
 "Spam" = "Spam";
+
+/* Option to select the Spark email app when logging in with magic links */
+"Spark" = "Spark";
 
 /* Label for selecting the Speed up your site Settings section
    Title for the Speed up your site Settings Screen */
@@ -5737,8 +5849,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
-   Stats window title
-   The item to select during a guided tour. */
+   Stats window title */
 "Stats" = "Statistiky";
 
 /* The loading view title displayed when an error occurred */
@@ -5749,12 +5860,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Subtitle giving the user more context about why to enable notifications. */
 "Stay in touch with like and comment notifications." = "Zůstaňte v kontaktu s upozorněním na lajky a komentáře.";
-
-/* Subtitle giving the user more context about why to enable notifications. */
-"Stay in touch with your audience with like and comment notifications." = "Zůstaňte v kontaktu se svým publikem pomocí upozornění na lajky a komentáře.";
-
-/* Title of button that asks the users if they'd like to focus on checking their sites stats */
-"Staying up to date with notifications" = "Buďte v obraze díky upozorněním";
 
 /* This is the cell title. */
 "Stick post to the front page" = "Připnutý příspěvek na úvodní stránce";
@@ -5808,9 +5913,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Support button that appears in the Theme Browser Header
    Theme Support action title */
 "Support" = "Podpora";
-
-/* Title for back button that leads to the site picker screen. */
-"Switch Site" = "Přepnout web";
 
 /* Switches the Editor to HTML Mode */
 "Switch to HTML Mode" = "Přepněte do režimu HTML";
@@ -5972,9 +6074,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for button used to view the user's site */
 "Tap to view your site" = "Klepnutím zobrazíte svůj web";
 
-/* A hint about the completed guided tour. */
-"Task complete." = "Úkol dokončen.";
-
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Taxonomie";
 
@@ -6005,11 +6104,38 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Ovládací prvky formátování textu se při úpravě textového bloku nacházejí na panelu nástrojů nad klávesnicí";
 
+/* Button title */
+"Text me a code instead" = "Pošlete mi raději kód.";
+
 /* Message of alert when theme activation succeeds */
 "Thanks for choosing %@ by %@" = "Děkujeme, že používáte %1$@ od autora %2$@";
 
+/* Shown when a user pastes a code into the two factor field that contains letters or is the wrong length */
+"That doesn't appear to be a valid verification code." = "Zdá se, že to není platný ověřovací kód.";
+
+/* Message to show to user when he tries to add a self-hosted site that isn't a WordPress site. */
+"That doesn't look like a WordPress site." = "Vypadá to, že toto není WordPress web.";
+
+/* No comment provided by engineer. */
+"That email address has already been used. Please check your inbox for an activation email. If you don't activate you can try again in a few days." = "Tato e-mailová adresa již byla použita. Zkontrolujte prosím, zda nemáte v doručené poště aktivační e-mail. Pokud aktivaci neprovedete hned, můžete zkusit znovu za pár dní.";
+
+/* No comment provided by engineer. */
+"That site address is not allowed." = "Tato adresa webu není povolena.";
+
+/* No comment provided by engineer. */
+"That site is currently reserved but may be available in a couple days." = "Zvolená adresa webu je v současné době rezervována. Pokud ale nebude během několika dní potvrzena, tak se automaticky uvolní pro novou registraci.";
+
+/* No comment provided by engineer. */
+"That username is currently reserved but may be available in a couple of days." = "Zvolené uživatelské jméno je v současné době rezervováno. Pokud ale nebude během několika dní potvrzeno, tak se automaticky uvolní pro novou registraci.";
+
+/* No comment provided by engineer. */
+"That username is not allowed." = "Toto uživatelské jméno není povoleno.";
+
 /* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "Připojení k Facebooku nemůže najít žádné stránky. Publicita se nemůže připojit k profilům Facebooku, pouze k publikovaným stránkám.";
+
+/* Description shown when a user logs in with Google but no matching WordPress.com account is found */
+"The Google account \"%@\" doesn't match any account on WordPress.com" = "Účet Google \"%@\" neodpovídá žádnému účtu na WordPress.com";
 
 /* Error message shown when a media upload fails because the user isn't connected to the Internet.
    Message of error prompt shown when a user tries to perform an action without an internet connection. */
@@ -6020,6 +6146,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Description of the purpose of a site's title. */
 "The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "Název webu se zobrazuje v záhlaví webového prohlížeče a u většiny šablon se zobrazuje v záhlaví.";
+
+/* Error message describing a problem with a URL. */
+"The URL is missing a valid host." = "Chybí adresa URL u hostitele.";
 
 /* Example post title used in the login prologue screens. This is a post about football fans. */
 "The World's Best Fans" = "Nejlepší fanoušci světa";
@@ -6032,6 +6161,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Subtitle displayed on the feature introduction view. */
 "The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "Nejlepší způsob, jak se stát lepším spisovatelem, je vybudovat si návyk na psaní a sdílet ho s ostatními – to je místo, kde přicházejí výzvy!";
+
+/* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
+"The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Certifikát pro tento server je neplatný. Ty by mohly být připojení k serveru, který předstírá, že je \"%@\", což by mohlo ohrozit vaše důvěrné informace.\n\nBudete přesto důvěřovat certifikátu?";
 
 /* Message informing the user that posts page cannot be edited */
 "The content of your latest posts page is automatically generated and cannot be edited." = "Obsah stránky s nejnovějšími příspěvky je generován automaticky a nelze jej upravovat.";
@@ -6072,8 +6204,30 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "Počet příspěvků, které se mají zobrazit na stránce.";
 
+/* A failure reason for when the request couldn't be serialized. */
+"The serialization of the request failed." = "Série požadavků se nezdařila.";
+
+/* A failure reason for when the response couldn't be serialized. */
+"The serialization of the response failed." = "Série odpovědí se nezdařila.";
+
+/* No comment provided by engineer. */
+"The server returned an empty response. This usually means you need to increase the memory limit for your site." = "Server vrátil prázdnou odpověď. To obvykle znamená, že je třeba zvýšit limit paměti pro váš web.";
+
+/* No comment provided by engineer. */
+"The site address must be shorter than 64 characters." = "Adresa webu musí být kratší než 64 znaků.";
+
 /* No comment provided by engineer. */
 "The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "Webová stránka %1$@ používá WordPress %2$@. Neprodleně aktualizujte na poslední verzi WordPress %3$@";
+
+/* Error message shown a URL does not point to an existing site.
+   Error message shown when a URL does not point to an existing site. */
+"The site at this address is not a WordPress site. For us to connect to it, the site must use WordPress." = "Web na této adrese není web WordPress. Abychom se k němu mohli připojit, musí web používat WordPress.";
+
+/* Message shown when site deletion API failed */
+"The site could not be deleted." = "Webová stránka nemůže být odstraněna.";
+
+/* Message shown when site export API failed */
+"The site could not be exported." = "Web nemohl být exportován.";
 
 /* Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
 "The slug is the URL-friendly version of the post title." = "Slug je název stránky (článku) v URL.";
@@ -6148,6 +6302,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    This primary message message is displayed if a user encounters a general error. */
 "There was a problem" = "Nastal problém";
 
+/* Error message informing the user that there was a problem blocking posts from a site from their reader. */
+"There was a problem blocking posts from the specified site." = "Došlo k potížím při blokování příspěvky z této stránky.";
+
+/* A general error message shown to the user when there was an API communication failure. */
+"There was a problem communicating with the site." = "Při komunikaci se stránkou došlo k problému.";
+
 /* Message for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
 "There was a problem connecting to WordPress.com. Please log in again." = "Došlo k potížím s připojením k serveru WordPress.com. Přihlaste se znovu.";
 
@@ -6156,6 +6316,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The loading view subtitle displayed when an error occurred */
 "There was a problem loading your data, refresh your page to try again." = "Při načítání dat došlo k potížím. Obnovte stránku a zkuste to znovu.";
+
+/* Error message informing the user that there was a problem clearing the block on site preventing its posts from displaying in the reader. */
+"There was a problem removing the block for specified site." = "Nastala chyba při odstraňování bloku z určené stránky.";
 
 /* A short error message shown in a prompt. */
 "There was a problem saving changes to sharing management." = "Došlo k chybě při ukládání změn v nastavení sdílení.";
@@ -6235,6 +6398,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Notifies the user that the a domain matching the search term wasn't returned in the results */
 "This domain is unavailable" = "Tato doména není k dispozici";
+
+/* An error message informing the user the email address they entered did not match a WordPress.com account. */
+"This email address is not registered on WordPress.com." = "Tato e-mailová adresa není zaregistrována na WordPress.com.";
 
 /* Message to show to user when media upload failed because server doesn't support media type */
 "This file is too large to upload to your site or it does not support this media format." = "Tento soubor je příliš velký na nahrání na váš web nebo nepodporuje tento formát média.";
@@ -6338,6 +6504,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Instructions for alert asking for email and name. */
 "To continue please enter your email address and name." = "Pro pokračování prosím uveďte svůj e-mail a jméno.";
 
+/* Text instructing the user to enter their email address. */
+"To create your new WordPress.com account, please enter your email address." = "Chcete-li vytvořit svůj nový účet WordPress.com, zadejte svou emailovou adresu.";
+
 /* Message asking the user if they want to set up Jetpack from notifications */
 "To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin." = "Chcete-li ze svého webu WordPress dostávat do telefonu užitečná upozornění, musíte si nainstalovat plugin Jetpack.";
 
@@ -6347,8 +6516,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Install Plugin dialog text. */
 "To install plugins, you need to have a custom domain associated with your site." = "Chcete-li nainstalovat pluginy, musíte mít k vašemu webu přidruženou vlastní doménu.";
 
-/* Prompt asking user to make sites visible in order to use them in the app (plural) */
-"To manage them here, set them to visible." = "Chcete-li je spravovat zde, nastavte aby byly viditelné.";
+/* Instructional text shown when requesting the user's password for Apple login. */
+"To proceed with this Apple ID, please first log in with your WordPress.com password. This will only be asked once." = "Chcete-li pokračovat s tímto Apple ID, nejprve se přihlaste pomocí svého hesla WordPress.com. Toto bude požádáno pouze jednou.";
+
+/* Instructional text shown when requesting the user's password for Google login. */
+"To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "Chcete-li pokračovat v tomto účtu Google, nejprve se přihlaste pomocí svého hesla WordPress.com. Toto bude požádáno pouze jednou.";
 
 /* No comment provided by engineer. */
 "To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block." = "Chcete-li odstranit blok, vyberte blok a kliknutím na tři tečky v pravé dolní části bloku zobrazte nastavení. Odtud vyberte možnost odstranění bloku.";
@@ -6389,6 +6561,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Shortened version of the main title to be used in back navigation */
 "Topic" = "Téma";
 
+/* Used when a Reader Topic is not found for a specific id */
+"Topic not found for id:" = "Téma nenalezeno pro id:";
+
 /* 'This Year' label for total number of comments.
    Insights 'Total Comments' header */
 "Total Comments" = "Celkový počet komentářů";
@@ -6425,6 +6600,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Travel site intent topic */
 "Travel" = "Cestování";
 
+/* Connect when the SSL certificate is invalid */
+"Trust" = "Důvěřovat";
+
 /* Theme Try & Customize action title */
 "Try & Customize" = "Vyzkoušet a upravit";
 
@@ -6455,6 +6633,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
 "Try the new Block Editor" = "Vyzkoušet nový blokový editor";
+
+/* When social login fails, this button offers to let the user try again with a differen email address */
+"Try with another email" = "Zkusit s jiným e-mailem";
+
+/* When social login fails, this button offers to let them try tp login using a URL */
+"Try with the site address" = "Zkuste adresu webu";
 
 /* Title for a button which takes the user to the WordPress app's settings in the system Settings app. */
 "Turn on notifications" = "Zapnout notifikace";
@@ -6494,6 +6678,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Menus label for describing which menu the location uses in the header. */
 "USES" = "USES";
+
+/* Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com */
+"Unable To Connect" = "Připojení se nezdařilo";
 
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "Nedaří se načíst příspěvky";
@@ -6549,6 +6736,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Dialog box title for when the user is canceling an upload. */
 "Unable to play video" = "Nelze přehrát video";
 
+/* No comment provided by engineer. */
+"Unable to read the WordPress site at that URL. Tap 'Need more help?' to view the FAQ." = "Nelze číst WordPress web na této adrese URL. Klepněte na 'Potřebujete další pomoc?' pro zobrazení FAQ.";
+
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "Web nelze obnovit";
 
@@ -6575,6 +6765,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Alert displayed to the user when a single post and 1 file has failed to upload. */
 "Unable to upload 1 post, 1 file" = "Nelze nahrát 1 příspěvek, 1 soubor";
+
+/* Error message displayed when an error occurred checking for email availability. */
+"Unable to verify the email address. Please try again later." = "E-mailovou adresu nelze ověřit. Prosím zkuste to znovu později.";
 
 /* Message displayed when visiting the Jetpack settings page fails. */
 "Unable to visit Jetpack settings for site" = "Nelze zobrazit nastavení Jetpack pro web";
@@ -6621,15 +6814,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation" = "Sledujte konverzaci";
 
-/* Unhides a site from the site picker list */
-"Unhide" = "Odkryjte";
-
-/* Label for size of media when it's not possible to calculate it.
-   Unknown Tag Name */
+/* Label for size of media when it's not possible to calculate it. */
 "Unknown" = "Neznámý";
 
 /* Title for Unknown HTML Editor */
 "Unknown HTML" = "Neznámé HTML";
+
+/* No comment provided by engineer. */
+"Unknown error" = "Neznámá chyba";
 
 /* People: Invitation Error */
 "Unknown error has occurred" = "Došlo k neznámé chybě";
@@ -6716,9 +6908,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description to show on post setting for a featured image that failed to upload. */
 "Upload failed. Tap for options." = "Nahrávání selhalo. Klepnutím zobrazíte možnosti.";
 
-/* Title of a Quick Start Tour */
-"Upload photos or videos" = "Nahrajte fotografie nebo videa";
-
 /* Label for the date a media asset (image / video) was uploaded
    Status for Media object that is uploaded and sync with server. */
 "Uploaded" = "Nahráno";
@@ -6757,23 +6946,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Use the current image */
 "Use" = "Použit";
 
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Use %@ to find sites and tags." = "K vyhledání stránek a značek použijte %@";
-
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Použijte editor bloků";
 
 /* No comment provided by engineer. */
 "Use icon button" = "Použijte ikonu tlačítka";
 
-/* Description of a Quick Start Tour */
-"Used across the web: in browser tabs, social media previews, and the WordPress.com Reader." = "Používá se na webu: na kartách prohlížeče, náhledech na sociálních sítích a ve čtečce WordPress.com.";
+/* The button title text for logging in with WP.com password instead of magic link. */
+"Use password to sign in" = "Pro přihlášení použijte heslo";
 
 /* A placeholder for the twitter username
+   Accessibility label for the username text field in the self-hosted login page.
    Account Settings Username label
    Label for entering username in the username field
+   Login dialog username placeholder
+   Placeholder for the username textfield.
    The header and main title
-   Username label text. */
+   Username label text.
+   Username placeholder */
 "Username" = "Uživatelské jméno";
 
 /* Message displayed in a Notice when the username has changed successfully. The placeholder is the new username. */
@@ -6782,8 +6972,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Setting: indicates if Mentions will be notified */
 "Username mentions" = "V uživatelském jménu zmiňujete";
 
+/* No comment provided by engineer. */
+"Username must be at least 4 characters." = "Uživatelské jméno musí obsahovat alespoň 4 znaky.";
+
 /* Blog Users */
 "Users" = "Uživatelé";
+
+/* two factor code placeholder */
+"Verification code" = "Ověřovací kód";
 
 /* Message shown when a verification email was re-sent succesfully */
 "Verification email sent, check your inbox." = "Byl odeslán ověřovací e-mail, zkontrolujte doručenou poštu.";
@@ -6851,8 +7047,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Menu title to show more prompts. */
 "View more prompts" = "Zobrazit další výzvy";
 
-/* Title of a Quick Start Tour */
-"View your site" = "Zobrazit stránku";
+/* User role badge */
+"Viewer" = "Návštěvník";
 
 /* Blog Viewers */
 "Viewers" = "Zobrazení";
@@ -6922,8 +7118,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Downloadable/Restorable items: WP-content directory */
 "WP-content directory" = "WP-content adresář";
 
-/* Title for a prompt asking if users want to try out the quick start checklist. */
-"Want a little help managing this site with the app?" = "Chcete trochu pomoci se správou tohoto webu pomocí aplikace?";
+/* Message shown on screen while waiting for Google to finish its signup process. */
+"Waiting for Google to complete…" = "Čekání na dokončení Google…";
+
+/* View title during the Google auth process. */
+"Waiting..." = "Čekejte, prosím...";
 
 /* Editing GIF alert title.
    Noun. Title for Jetpack Restore warning.
@@ -6963,6 +7162,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message displayed when a refresh failed */
 "We had trouble loading data" = "Měli jsme potíže s načtením dat";
 
+/* message to ask a user to check their email for a WordPress.com email */
+"We just emailed a link to %@. Please check your mail app and tap the link to log in." = "Právě jsme zaslali e-mailem odkaz na %@. Zkontrolujte svůj e-mail a přihlaste se klepnutím na odkaz.";
+
+/* The subtitle text on the magic link requested screen followed by the email address. */
+"We just sent a magic link to" = "Právě jsme poslali kouzelný odkaz";
+
 /* Message displayed when a backup has finished */
 "We successfully created a backup of your site as of %@" = "Úspěšně jsme vytvořili zálohu vašeho webu od %@";
 
@@ -6972,14 +7177,26 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Informational text about link to other tracking tools */
 "We use other tracking tools, including some from third parties. Read about these and how to control them." = "Používáme další nástroje pro měření, včetně některých nástrojů od třetích stran. Přečtěte si více o těchto nástrojích a jak je ovládat.";
 
+/* Error message displayed when an error occurred sending the magic link email. */
+"We were unable to send you an email at this time. Please try again later." = "V tuto chvíli jsme vám nemohli poslat e-mail. Prosím zkuste to znovu později.";
+
 /* Description for label when the actively scanning the users site */
 "We will send you an email if security threats are found. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "Pokud budou nalezeny bezpečnostní hrozby, zašleme vám e-mail. Mezitím můžete svůj web nadále používat jako obvykle, pokrok můžete kdykoli zkontrolovat.";
+
+/* Instructional text for the magic link login flow. */
+"We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" = "Zašleme vám email, který vás okamžitě přihlásí, bez hesla.";
+
+/* Instruction text on the Sign Up screen. */
+"We'll email you a signup link to create your new WordPress.com account." = "Zašleme vám e-mail s odkazem k vytvoření nového účtu WordPress.com.";
 
 /* This is the string we display when asking the user to approve push notifications */
 "We'll notify you when you get followers, comments, and likes." = "Dáme vám vědět, pokud získáte sledující, komentáře a lajky.";
 
 /* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
 "We'll notify you when you get new followers, comments, and likes. Would you like to allow push notifications?" = "Budeme vás informovat, když získáte nové sledující, komentáře a lajky. Chcete povolit push oznámení?";
+
+/* Text confirming email address to be used for new account. */
+"We'll use this email address to create your new WordPress.com account." = "Tuto e-mailovou adresu použijeme k vytvoření vašeho nového účtu WordPress.com.";
 
 /* Description for the Jetpack Backup Status message. %1$@ is a placeholder for the selected date. */
 "We're creating a downloadable backup of your site from %1$@." = "Vytváříme zálohu vašeho webu ke stažení z %1$@.";
@@ -6990,6 +7207,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Detail text display informing the user that we're fixing threats */
 "We're hard at work fixing these threats in the background. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "Tvrdě pracujeme na opravování těchto hrozeb na pozadí. Mezitím můžete svůj web nadále používat jako obvykle, pokrok můžete kdykoli zkontrolovat.";
 
+/* Error message shown when having trouble connecting to a Jetpack site. */
+"We're not able to connect to the Jetpack site at that URL.  Contact us for assistance." = "Na dané adrese URL se nemůžeme připojit k webu Jetpack. Požádejte nás o pomoc.";
+
 /* Description for the Jetpack Restore Status message. %1$@ is a placeholder for the selected date. */
 "We're restoring your site back to %1$@." = "Obnovujeme váš web zpět na %1$@.";
 
@@ -6998,6 +7218,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A hint to users indicating a link to the downloadable backup file has also been sent to their email. */
 "We've also emailed you a link to your file." = "Také jsme vám zaslali e-mailem odkaz na váš soubor.";
+
+/* Instruction text after a signup Magic Link was requested. */
+"We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "Poslali jsme vám e-mailem odkaz na přihlášení k vytvoření nového účtu WordPress.com. Zkontrolujte svůj e-mail v tomto zařízení a klepněte na odkaz v e-mailu, který obdržíte z WordPress.com.";
 
 /* Account Settings Web Address label
    Header for a comment author's web address, shown when editing a comment. */
@@ -7071,6 +7294,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Co chcete s tímto souborem udělat: nahrát jej a přidat odkaz na soubor do vašeho příspěvku, nebo přidat obsah souboru přímo do příspěvku?";
 
+/* Navigates to page with details about What is WordPress.com. */
+"What is WordPress.com?" = "Co je nového na WordPress.com?";
+
 /* No comment provided by engineer. */
 "What is a block?" = "Co je to blok?";
 
@@ -7080,9 +7306,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the problem section in the Threat Details */
 "What was the problem?" = "Jaký byl problém?";
 
-/* Title of the view asking the user what they'd like to focus on */
-"What would you like to focus on first?" = "Na co byste se chtěli zaměřit jako první?";
-
 /* Title of section that contains plugins' change log */
 "What's New" = "Co je nového";
 
@@ -7091,6 +7314,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Opens the What's New / Feature Announcement modal */
 "What's New in WordPress" = "Co je nového na WordPressu";
+
+/* Title of alert helping users understand their site address */
+"What's my site address?" = "Jaká je adresa mého webu?";
 
 /* Select the site's intent. Title */
 "What's your website about?" = "O čem je váš web?";
@@ -7106,6 +7332,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "Když na svém webu provedete změny, uvidíte zde svoji historii aktivit.";
+
+/* An error message shown when a wpcom user provides the wrong password. */
+"Whoops, something went wrong and we couldn't log you in. Please try again!" = "Jejda, něco se pokazilo a nemohli jsme vás přihlásit. Zkuste to prosím znovu!";
+
+/* Error message shown when an incorrect two factor code is provided. */
+"Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "Jejda, nejde o platný dvoufaktorový ověřovací kód. Zkontrolujte svůj kód a zkuste to znovu!";
 
 /* No comment provided by engineer. */
 "Width Settings" = "Nastavení šířky";
@@ -7170,6 +7402,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "WordPress version too old" = "Příliš stará verze WordPress";
 
+/* No comment provided by engineer. */
+"WordPress version too old. The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "Verze WordPress je příliš stará. Na webu %1$@ používáte WordPress ve verzi %2$@. Doporučujeme aktualizaci na nejnovější verzi, nebo alespoň %3$@";
+
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
@@ -7200,9 +7435,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Asks the user if they would like to clear their search history. */
 "Would you like to clear your search history?" = "Chcete vymazat historii hledávání?";
 
-/* Message offering to hide all WPCom Sites */
-"Would you like to hide all WordPress.com Sites?" = "Přejete si skrýt veškeré weby WordPress.com?";
-
 /* Second line of Remove user/follower/viewer warning in confirmation dialog. */
 "Would you still like to remove this person?" = "Chcete opravdu odstranit uživatele?";
 
@@ -7222,14 +7454,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Writing & Poetry site intent topic */
 "Writing & Poetry" = "Psaní poezie";
 
-/* Title of button that asks the users if they'd like to focus on checking their sites stats */
-"Writing blog posts" = "Psaní blogových příspěvků";
-
 /* No comment provided by engineer. */
 "X-Axis Position" = "Pozice na ose X";
 
 /* No comment provided by engineer. */
 "Y-Axis Position" = "Pozice na ose Y";
+
+/* Option to select the Yahoo Mail app when logging in with magic links */
+"Yahoo Mail" = "Yahoo Mail";
 
 /* 'This Year' label for the the year. */
 "Year" = "Rok";
@@ -7241,9 +7473,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button label that confirms the user wants to log in and will authenticate them via the browser */
 "Yes, log me in" = "Ano, přihlaste se";
-
-/* Phrase displayed to begin a quick start tour that's been suggested. */
-"Yes, show me" = "Ano, ukažte mi to";
 
 /* Comments Yesterday Section Header
    Notifications Yesterday Section Header */
@@ -7276,14 +7505,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Tato nastavení můžete přepsat pro jednotlivé příspěvky.";
 
-/* A text for subtitle label on Login epilogue screen */
-"You can switch sites at any time." = "Stránky můžete kdykoli změnit.";
-
 /* Prompt shown on the Blogging Reminders Settings screen. */
 "You can update this any time" = "Toto můžete kdykoli aktualizovat";
 
 /* Prompt shown on the completion screen of the Blogging Reminders Settings screen. */
 "You can update this any time via My Site > Site Settings" = "Toto můžete kdykoli aktualizovat přes Můj web > Nastavení webu";
+
+/* No comment provided by engineer. */
+"You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "Zvolenou e-mailovou adresu bohužel nemůžete pro registraci použít, protože máme s tímto poskytovatelem e-mailových služeb špatné zkušenosti a často se objevují problémy s nevyžádanými a nedoručenými e-maily. Použijte prosím nějakou jinou e-mailovou adresu.";
 
 /* Displayed when the user views drafts in the pages list and there are no pages */
 "You don't have any draft pages" = "Nemáte žádné koncepty";
@@ -7308,12 +7537,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed when the user views trashed in the posts list and there are no posts */
 "You don't have any trashed posts" = "Nemáte žádné příspěvky v koši";
-
-/* Message informing the user that all of their sites are currently hidden (plural) */
-"You have %lu hidden WordPress sites." = "Máte %lu skrytých WordPress stránek.";
-
-/* Message informing the user that all of their sites are currently hidden (singular) */
-"You have 1 hidden WordPress site." = "Máte 1 skrytou WordPress stránku.";
 
 /* Description for the first domain purchased with a paid plan. */
 "You have a free one-year domain registration with your plan." = "Ke svému plánu máte bezplatnou roční registraci domény";
@@ -7355,15 +7578,16 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Body of alert prompting users to verify their accounts while attempting to publish */
 "You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "Než budete moci publikovat příspěvek, musíte svůj účet ověřit.\nNebojte se, váš příspěvek je v bezpečí a bude uložen jako koncept.";
 
-/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
-"You received *50 likes* on your comment" = "U vašeho komentáře jste obdrželi *50 lajků*";
-
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
 "You received *50 likes* on your site today" = "Dnes jste na svém webu obdrželi *50 lajků*";
 
 /* Informs that the user has replied to this comment.
-   Notification text - below a comment notification detail */
+   Notification text - below a comment notification detail
+   Text to look for */
 "You replied to this comment." = "Odpověděli jste na tento komentář.";
+
+/* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
+"You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Vypadá to, že jste nainstalovali mobilní plugin DudaMobile. Ten zabraňuje aplikaci propojit se s vaší webovou stránkou. ";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
 "You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "Zabezpečení problém byste neměli ignorovat, pokud si nejste zcela jisti, že je neškodný. Pokud se rozhodnete tuto hrozbu ignorovat, zůstane na vašem webu „%1$@“.";
@@ -7386,9 +7610,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message displayed when unable to close user account due to being unauthorized. */
 "You're not authorized to close the account." = "Nemáte oprávnění k uzavření účtu.";
-
-/* The item to select during a guided tour. */
-"Your Site Icon" = "Ikona vašeho webu";
 
 /* Displayed in the Notification Settings View */
 "Your Sites" = "Vaše weby";
@@ -7432,11 +7653,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* This is shown to the user when their domain search query contains invalid characters. */
 "Your search includes characters not supported in WordPress.com domains. The following characters are allowed: A–Z, a–z, 0–9." = "Vaše vyhledávání obsahuje znaky, které nejsou podporovány v doménách WordPress.com. Jsou povoleny pouze alfanumerické znaky: A–Z, a–z, 0–9.";
 
+/* Body text of alert helping users understand their site address */
+"Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "Při návštěvě webu v Safari se na liště v horní části obrazovky zobrazí vaše adresa.";
+
 /* Description for label when the user has a site with VaultPress. */
 "Your site already is protected by VaultPress. You can find a link to your VaultPress dashboard below." = "Vaše stránky jsou již chráněny VaultPress. Níže naleznete odkaz na svůj řídicí panel VaultPress.";
-
-/* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
-"Your site appears to be getting *more traffic* than usual!" = "Zdá se, že vaše stránky mají *větší návštěvnost* než obvykle!";
 
 /* Title for label when the user has VaultPress enabled. */
 "Your site has VaultPress" = "Váš web má VaultPress";
@@ -7479,9 +7700,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Describes the expected behavior when the user enables in-app notifications in Reader Comments. */
 "You’re following this conversation. You will receive an email whenever a new comment is made." = "Sledujete tuto konverzaci. Při každém novém komentáři obdržíte e-mail.";
-
-/* Comment Attachment Label */
-"[COMMENT]" = "[KOMENTÁŘ]";
 
 /* Age between dates equaling one day. */
 "a day" = "den";
@@ -7537,9 +7755,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "komentář";
 
-/* The menu item to select during a guided tour. */
-"connections" = "připojení";
-
 /* Customize Insights description */
 "customizeInsightsCell.content" = "Vytvořte si vlastní přizpůsobený řídicí panel a vyberte, jaké přehledy chcete zobrazit. Zaměřte se na data, na kterých vám nejvíce záleží.";
 
@@ -7572,6 +7787,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility label for more button in dashboard quick start card. */
 "ellipsisButton.AccessibilityLabel" = "Více";
+
+/* Placeholder for the site url textfield.
+   Site Address placeholder */
+"example.com" = "example.com";
 
 /* Title for button that will open up the blogging reminders screen. */
 "growAudienceCell.bloggingReminders.actionButton" = "Nastavte si připomenutí blogů";
@@ -7861,6 +8080,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Write a blog prompt for the jetpack prologue */
 "jetpack.prologue.prompt.writeBlog" = "Napsat blog";
 
+/* Later today */
+"later today" = "Dnes později";
+
 /* Displayed in the confirmation alert when marking like notifications as read. */
 "like" = "líbí se";
 
@@ -7951,6 +8173,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "Odeslat zpětnou vazbu";
 
+/* No comment provided by engineer. */
+"password" = "heslo";
+
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.blaze" = "Zvýraznění";
 
@@ -7993,15 +8218,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Spoken accessibility label */
 "readerDetail.dismissButton.accessibilityLabel" = "Odmítnout";
 
-/* Button title for the follow conversations tooltip. */
-"readerDetail.followConversationTooltipButton.accessibilityLabel" = "Mám to";
-
-/* Message for the follow conversations tooltip. */
-"readerDetail.followConversationTooltipMessage.accessibilityLabel" = "Nechte se upozornit, když budou k tomuto příspěvku přidány nové komentáře.";
-
-/* Title of follow conversations tooltip. */
-"readerDetail.followConversationTooltipTitle.accessibilityLabel" = "Sledujte konverzaci";
-
 /* Section title for global related posts. */
 "readerDetail.globalPostsSection.accessibilityLabel" = "Více informací o WordPress.com";
 
@@ -8016,9 +8232,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Spoken accessibility label */
 "readerDetail.shareButton.accessibilityLabel" = "Sdílet";
-
-/* Title for the tooltip anchor. */
-"readerDetail.tooltipAnchorTitle.accessibilityLabel" = "Nový";
 
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "Odmítnout";
@@ -8155,6 +8368,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...' */
 "top tips" = "nejlepší tipy";
 
+/* Used when the response doesn't have a valid url to display */
+"unknown url" = "neznámá url";
+
 /* Indicating that referrer was unmarked as spam */
 "unmarked as spam" = "neoznačené jako spam";
 
@@ -8271,6 +8487,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Jetpack Plugin Modal title in WordPress */
 "wordpress.jetpack.plugin.modal.title" = "Tento web není aplikací WordPress podporován";
+
+/* Label for button to log in using Google. The {G} will be replaced with the Google logo. */
+"{G} Log in with Google." = "{G} Přihlaste se pomocí Google.";
 
 /* Item 4 of delete screen section listing things that will be deleted. */
 "• Domains" = "• Darování";

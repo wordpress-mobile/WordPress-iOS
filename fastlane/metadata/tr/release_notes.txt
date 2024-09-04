@@ -1,5 +1,8 @@
-Bu sürümde üç büyük sorun düzeltildi:
-* Bazı kullanıcılar gönderilerinin içeriğini güncelleyemedi.
-* Bazı kullanıcıların görselleri yanlış şekilde döndürüldü.
-* Düzenleyicide desteklenmeyen bloklardan kaynaklanan nadir bir çökme sorunu
-Her zamanki gibi lütfen çalışmayan herhangi bir şey varsa destek ekibiyle iletişime geçin!
+Bu ay çok fazla görsel düzeltmemiz ve geri bildiriminizi almayı istediğimiz yeni bir deneysel özelliğimiz var.
+
+Görsel olarak şunları yaptık:
+- Site seçiciyi daha basit ve kullanımı kolay olacak şekilde güncelledik – bu; bağlam menüleri ve önizlemeler için destek ekler.
+- Uygulamadaki bazı gezinme çubuklarının şeffaf olmasına neden olan bir sorun düzeltildi.
+- Kodu basitleştirerek görsel hatalardan kaçınmak için onlarca ekran güncellendi.
+
+"Uygulama Ayarları" bölümünün altında artık kullanıcı tarafından barındırılan sitelerin uygulamalar 2FA veya SSO kullanıyorsa bunlarla çalışmasına izin veren yeni bir Deneysel Özellik olan Uygulama Şifrelerini deneyebilirsiniz.
