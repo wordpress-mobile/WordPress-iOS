@@ -142,12 +142,12 @@ private extension SiteCreationEmptySiteTemplate {
 }
 
 private extension Color {
-    static let emptySiteBackgroundPrimary = Color.DS.custom("emptySiteBackgroundPrimary")
-    static let emptySiteBackgroundSecondary = Color.DS.custom("emptySiteBackgroundSecondary")
-    static let emptySiteForegroundPrimary = Color.DS.custom("emptySiteForegroundPrimary")
-    static let emptySiteForegroundSecondary = Color.DS.custom("emptySiteForegroundSecondary")
-    static let emptySiteGradientInitial = Color.DS.custom("emptySiteGradientInitial")
-    static let emptySiteTooltipGradientInitial = Color.DS.custom("emptySiteTooltipGradientInitial")
-    static let emptySiteTooltipBackground = Color.DS.custom("emptySiteTooltipBackground")
-    static let emptySiteTooltipBorder = Color.DS.custom("emptySiteTooltipBorder")
+    static let emptySiteBackgroundPrimary = Color(.systemBackground)
+    static let emptySiteBackgroundSecondary = Color(.secondarySystemBackground)
+    static let emptySiteForegroundPrimary = Color(.label)
+    static let emptySiteForegroundSecondary = Color(.secondaryLabel)
+    static let emptySiteGradientInitial = Color(.systemGroupedBackground)
+    static let emptySiteTooltipGradientInitial = Color(.secondarySystemGroupedBackground)
+    static let emptySiteTooltipBackground = Color(.placeholderText)
+    static let emptySiteTooltipBorder = Color(.placeholderText)
 }

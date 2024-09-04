@@ -104,7 +104,7 @@ fileprivate extension NotificationsTableViewCellContent {
 
         private var indicator: some View {
             Circle()
-                .fill(Color.DS.Background.brand(isJetpack: AppConfiguration.isJetpack))
+                .fill(AppColor._brand)
                 .frame(width: .DS.Padding.single)
         }
 
@@ -113,7 +113,7 @@ fileprivate extension NotificationsTableViewCellContent {
                 if let title = info.title {
                     Text(title)
                         .style(.bodySmall(.regular))
-                        .foregroundStyle(Color.DS.Foreground.primary)
+                        .foregroundStyle(Color.primary)
                         .layoutPriority(1)
                         .lineLimit(2)
                 }
@@ -121,7 +121,7 @@ fileprivate extension NotificationsTableViewCellContent {
                 if let description = info.description {
                     Text(description)
                         .style(.bodySmall(.regular))
-                        .foregroundStyle(Color.DS.Foreground.secondary)
+                        .foregroundStyle(Color.secondary)
                         .layoutPriority(2)
                         .lineLimit(1)
                         .padding(.top, .DS.Padding.half)
@@ -179,7 +179,7 @@ fileprivate extension NotificationsTableViewCellContent {
                 }
             }
             .frame(height: 60)
-            .background(Color.DS.Foreground.error)
+            .background(Color(AppColor.error))
         }
     }
 }
@@ -212,7 +212,7 @@ extension NotificationsTableViewCellContent {
             } label: {
                 configuration.icon
                     .imageScale(.small)
-                    .foregroundStyle(configuration.color ?? Color.DS.Foreground.secondary)
+                    .foregroundStyle(configuration.color ?? Color.secondary)
                     .frame(width: .DS.Padding.medium, height: .DS.Padding.medium)
                     .transaction { transaction in
                         transaction.animation = nil

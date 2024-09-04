@@ -32,7 +32,7 @@ struct SiteDomainsView: View {
 
     var body: some View {
         ZStack {
-            Color.DS.Background.secondary.edgesIgnoringSafeArea(.all)
+            Color(.systemBackground)
 
             switch viewModel.state {
             case .normal(let sections):
@@ -130,7 +130,7 @@ struct SiteDomainsView: View {
             } label: {
                 Text(TextContent.additionalDomainTitle(blog.canRegisterDomainWithPaidPlan))
                     .style(TextStyle.bodyMedium(.regular))
-                    .foregroundColor(Color.DS.Foreground.brand(isJetpack: AppConfiguration.isJetpack))
+                    .foregroundColor(AppColor._brand)
             }
         }
     }

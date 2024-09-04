@@ -127,7 +127,7 @@ public struct DSButton: View {
                 .fill(style.backgroundColor.opacity(primaryDisabledOpacity))
         case .secondary:
             RoundedRectangle(cornerRadius: .DS.Radius.small)
-                .stroke(Color.DS.Background.tertiary, lineWidth: 1)
+                .stroke(.primary, lineWidth: 1)
                 .background(Color.clear)
 
         case .tertiary:
@@ -160,8 +160,7 @@ public struct DSButton: View {
 struct DSButton_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
-            Color.DS.Background.primary
-                .ignoresSafeArea()
+            Color(uiColor: .systemBackground).ignoresSafeArea()
             DSButton(
                 title: "Get Domain",
                 style: .init(emphasis: .primary, size: .large, isJetpack: true),

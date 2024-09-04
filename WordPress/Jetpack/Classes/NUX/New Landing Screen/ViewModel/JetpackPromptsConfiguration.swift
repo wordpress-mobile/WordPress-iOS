@@ -6,7 +6,7 @@ struct JetpackPromptsConfiguration {
 
     enum Constants {
         // alternate colors in rows
-        static let evenColor = UIColor.DS.Background.brand(isJetpack: false)
+        static let evenColor = UIColor.systemBackground
         static let oddColor = AppColor.jetpackGreen(.shade40)
 
         static let basePrompts = [

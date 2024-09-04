@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct ColorGallery: View {
+    @Environment(\.self) var environment
+
     @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
@@ -17,43 +19,38 @@ struct ColorGallery: View {
         Section(header: sectionTitle("Foreground")) {
             listItem(
                 with: "Primary",
-                hexString: nil,
-                color: Color.DS.Foreground.primary
+                description: "Color(.label)",
+                color: Color(.label)
             )
             listItem(
                 with: "Secondary",
-                hexString: nil,
-                color: Color.DS.Foreground.secondary
+                description: "Color(.secondaryLabel)",
+                color: Color(.secondaryLabel)
             )
             listItem(
                 with: "Tertiary",
-                hexString: nil,
-                color: Color.DS.Foreground.tertiary
+                description: "Color(.tertiaryLabel)",
+                color: Color(.tertiaryLabel)
             )
             listItem(
                 with: "Quaternary",
-                hexString: nil,
-                color: Color.DS.Foreground.quaternary
-            )
-            listItem(
-                with: "Brand",
-                hexString: nil,
-                color: Color.DS.Foreground.brand(isJetpack: true)
+                description: "Color(.quaternaryLabel)",
+                color: Color(.quaternaryLabel)
             )
             listItem(
                 with: "Success",
-                hexString: nil,
-                color: Color.DS.Foreground.brand(isJetpack: true)
+                description: "Color.green",
+                color: Color.green
             )
             listItem(
                 with: "Warning",
-                hexString: nil,
-                color: Color.DS.Foreground.warning
+                description: "Color.yellow",
+                color: Color.yellow
             )
             listItem(
                 with: "Error",
-                hexString: nil,
-                color: Color.DS.Foreground.error
+                description: "Color.red",
+                color: .red
             )
         }
     }
@@ -62,28 +59,48 @@ struct ColorGallery: View {
         Section(header: sectionTitle("Background")) {
             listItem(
                 with: "Primary",
-                hexString: nil,
-                color: Color.DS.Background.primary
+                description: "Color(.systemBackground)",
+                color: Color(.systemBackground)
             )
             listItem(
                 with: "Secondary",
-                hexString: nil,
-                color: Color.DS.Background.secondary
+                description: "Color(.systemBackground)",
+                color: Color(.secondarySystemBackground)
             )
             listItem(
                 with: "Tertiary",
-                hexString: nil,
-                color: Color.DS.Background.tertiary
+                description: "Color(.tertiarySystemBackground)",
+                color: Color(.tertiarySystemBackground)
             )
             listItem(
-                with: "Quaternary",
-                hexString: nil,
-                color: Color.DS.Background.quaternary
+                with: "SystemFill",
+                description: "Color(.systemFill)",
+                color: Color(.systemFill)
             )
             listItem(
-                with: "Brand",
-                hexString: nil,
-                color: Color.DS.Background.brand(isJetpack: true)
+                with: "Secondary SystemFill",
+                description: "Color(.secondarySystemFill)",
+                color: Color(.secondarySystemFill)
+            )
+            listItem(
+                with: "Tertiary SystemFill",
+                description: "Color(.tertiarySystemFill)",
+                color: Color(.tertiarySystemFill)
+            )
+            listItem(
+                with: "Quaternary SystemFill",
+                description: "Color(.quaternarySystemFill)",
+                color: Color(.quaternarySystemFill)
+            )
+            listItem(
+                with: "Grouped",
+                description: "Color(.systemGroupedBackground)",
+                color: Color(.systemGroupedBackground)
+            )
+            listItem(
+                with: "Secondary Grouped",
+                description: "Color(.secondarySystemGroupedBackground)",
+                color: Color(.secondarySystemGroupedBackground)
             )
         }
     }
@@ -91,7 +108,7 @@ struct ColorGallery: View {
     private func sectionTitle(_ title: String) -> some View {
         Text(title)
             .font(Font.headline)
-            .foregroundColor(.DS.Foreground.primary)
+            .foregroundColor(.secondary)
     }
 
     private func colorSquare(_ color: Color) -> some View {
@@ -100,22 +117,43 @@ struct ColorGallery: View {
             .frame(width: 44, height: 44)
     }
 
-    private func listItem(with name: String, hexString: String?, color: Color) -> some View {
+    private func listItem(with name: String, description: String, color: Color) -> some View {
         HStack(spacing: 16) {
             colorSquare(color)
             VStack(spacing: 8) {
                 HStack {
                     Text(name)
-                        .foregroundColor(.DS.Foreground.primary)
+                        .foregroundColor(.primary)
                     Spacer()
                 }
                 HStack {
-                    Text("#\(hexString ?? "")")
-                        .foregroundColor(.DS.Foreground.secondary)
+                    Text(color.hexString(for: environment)).foregroundColor(.secondary).font(.caption)
                     Spacer()
                 }
             }
         }
+    }
+}
+
+private extension Color {
+
+    func hexString(for environment: EnvironmentValues) -> String {
+
+        if #available(iOS 17.0, *) {
+            let resolved = self.resolve(in: environment)
+
+            guard let components = resolved.cgColor.components, components.count >= 3 else {
+                return ""
+            }
+
+            let r = Float(components[0])
+            let g = Float(components[1])
+            let b = Float(components[2])
+
+            return String(format: "#%02lX%02lX%02lX", lroundf(r * 255), lroundf(g * 255), lroundf(b * 255))
+        }
+
+        return ""
     }
 }
 
@@ -136,15 +174,4 @@ private extension UIColor {
         return color(for: UITraitCollection(userInterfaceStyle: .dark))
     }
 
-    var hexString: String? {
-        guard let components = cgColor.components, components.count >= 3 else {
-            return nil
-        }
-
-        let r = Float(components[0])
-        let g = Float(components[1])
-        let b = Float(components[2])
-
-        return String(format: "%02lX%02lX%02lX", lroundf(r * 255), lroundf(g * 255), lroundf(b * 255))
-    }
 }

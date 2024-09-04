@@ -44,7 +44,7 @@ struct AvatarView<S: Shape>: View {
         avatarShape: S = Circle(),
         style: Style,
         diameter: CGFloat? = nil,
-        borderColor: Color = .DS.Background.primary,
+        borderColor: Color = Color.primary,
         placeholderImage: Image? = nil
     ) {
         self.avatarShape = avatarShape
@@ -60,7 +60,7 @@ struct AvatarView<S: Shape>: View {
             avatar(url: primaryURL)
                 .overlay {
                     avatarShape
-                        .stroke(Color.DS.Foreground.primary.opacity(0.1), lineWidth: 0.5)
+                        .stroke(Color.primary.opacity(0.1), lineWidth: 0.5)
                 }
         case let .double(primaryURL, secondaryURL):
             doubleAvatarView(
@@ -129,11 +129,11 @@ struct AvatarView<S: Shape>: View {
 
     private var placeholderZStack: some View {
         ZStack {
-            Color.DS.Background.secondary
+            Color.secondary
             Image.DS.icon(named: .vector)
                 .resizable()
                 .frame(width: 18, height: 18)
-                .tint(.DS.Foreground.tertiary)
+                .tint(Color(AppColor.gray(.shade50)))
         }
     }
 }
@@ -164,7 +164,7 @@ private extension View {
     func avatarBorderOverlay<S: Shape>(shape: S) -> some View {
         self.overlay(
             shape
-                .stroke(Color.DS.Background.primary, lineWidth: 1)
+                .stroke(Color(.systemBackground), lineWidth: 1)
         )
     }
 }
