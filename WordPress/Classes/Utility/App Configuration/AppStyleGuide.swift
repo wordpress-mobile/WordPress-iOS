@@ -1,6 +1,7 @@
 import Foundation
 import WordPressShared
 import WordPressUI
+import ColorStudio
 
 /// - Warning:
 /// This configuration struct has a **Jetpack** counterpart in the Jetpack bundle.

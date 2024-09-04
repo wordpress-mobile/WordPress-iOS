@@ -935,13 +935,6 @@
 		2448ABAC2C5D4F3500DC0091 /* URL+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0845B8C51E833C56001BA771 /* URL+Helpers.swift */; };
 		2448ABAE2C5D515700DC0091 /* URL+AVKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448ABAD2C5D515700DC0091 /* URL+AVKit.swift */; };
 		2448ABAF2C5D515700DC0091 /* URL+AVKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448ABAD2C5D515700DC0091 /* URL+AVKit.swift */; };
-		2448F11F2C7FF959002AE7C1 /* ColorStudioPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448F11E2C7FF959002AE7C1 /* ColorStudioPalette.swift */; };
-		2448F1272C80180E002AE7C1 /* ColorStudioPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448F11E2C7FF959002AE7C1 /* ColorStudioPalette.swift */; };
-		2448F1282C80180E002AE7C1 /* ColorStudioPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448F11E2C7FF959002AE7C1 /* ColorStudioPalette.swift */; };
-		2448F1292C801810002AE7C1 /* ColorStudioPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448F11E2C7FF959002AE7C1 /* ColorStudioPalette.swift */; };
-		2448F12A2C801811002AE7C1 /* ColorStudioPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448F11E2C7FF959002AE7C1 /* ColorStudioPalette.swift */; };
-		2448F12B2C801812002AE7C1 /* ColorStudioPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448F11E2C7FF959002AE7C1 /* ColorStudioPalette.swift */; };
-		2448F12C2C801812002AE7C1 /* ColorStudioPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448F11E2C7FF959002AE7C1 /* ColorStudioPalette.swift */; };
 		2448F12E2C8023CD002AE7C1 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448F12D2C8023CD002AE7C1 /* UIColor+Extensions.swift */; };
 		2448F12F2C8023CD002AE7C1 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448F12D2C8023CD002AE7C1 /* UIColor+Extensions.swift */; };
 		2448F1302C802485002AE7C1 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448F12D2C8023CD002AE7C1 /* UIColor+Extensions.swift */; };
@@ -969,7 +962,6 @@
 		24CED4032C73E267005A1E1D /* ExperimentalFeaturesDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24CED4022C73E266005A1E1D /* ExperimentalFeaturesDataProvider.swift */; };
 		24CED4042C73E267005A1E1D /* ExperimentalFeaturesDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24CED4022C73E266005A1E1D /* ExperimentalFeaturesDataProvider.swift */; };
 		24D0854C2C87B0D7006A215C /* AppStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2538E26116A1600EDAF88 /* AppStyleGuide.swift */; };
-		24D0854D2C87B0E2006A215C /* ColorStudioPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448F11E2C7FF959002AE7C1 /* ColorStudioPalette.swift */; };
 		24DB7C132C5AEF0600A0FE92 /* LoginClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24DB7C122C5AEF0500A0FE92 /* LoginClient.swift */; };
 		24DB7C142C5AEF0600A0FE92 /* LoginClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24DB7C122C5AEF0500A0FE92 /* LoginClient.swift */; };
 		24DB7C162C5AFA7200A0FE92 /* WordPressClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24DB7C152C5AFA7200A0FE92 /* WordPressClient.swift */; };
@@ -6775,7 +6767,6 @@
 		24351253264DCA08009BB2B6 /* Secrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Secrets.swift; path = ../Secrets/Secrets.swift; sourceTree = BUILT_PRODUCTS_DIR; };
 		2439B1DB264ECBDF00239130 /* Jetpack.alpha.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Jetpack.alpha.xcconfig; sourceTree = "<group>"; };
 		2448ABAD2C5D515700DC0091 /* URL+AVKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+AVKit.swift"; sourceTree = "<group>"; };
-		2448F11E2C7FF959002AE7C1 /* ColorStudioPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorStudioPalette.swift; sourceTree = "<group>"; };
 		2448F12D2C8023CD002AE7C1 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		245562352C5C107800A15446 /* AcknowledgementsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcknowledgementsService.swift; sourceTree = "<group>"; };
 		246D0A0225E97D5D0028B83F /* Blog+ObjcTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "Blog+ObjcTests.m"; sourceTree = "<group>"; };
@@ -12335,7 +12326,6 @@
 		4326191322FCB8BE003C7642 /* Colors and Styles */ = {
 			isa = PBXGroup;
 			children = (
-				2448F11E2C7FF959002AE7C1 /* ColorStudioPalette.swift */,
 				436110DF22C4241A000773AD /* UIColor+MurielColorsObjC.swift */,
 				E678FC141C76241000F55F55 /* WPStyleGuide+ApplicationStyles.swift */,
 				17D975AE1EF7F6F100303D63 /* WPStyleGuide+Aztec.swift */,
@@ -21302,7 +21292,6 @@
 				01CE5012290A890B00A9C2E0 /* TracksConfiguration.swift in Sources */,
 				C9C21D7C29BED18C009F68E5 /* LockScreenStatsWidgetsView.swift in Sources */,
 				C9FE382F29C204E700D39841 /* LockScreenSingleStatViewModel.swift in Sources */,
-				24D0854D2C87B0E2006A215C /* ColorStudioPalette.swift in Sources */,
 				0107E0B528F97D5000DE87DB /* StatsWidgetEntry.swift in Sources */,
 				0107E0B628F97D5000DE87DB /* HomeWidgetCache.swift in Sources */,
 				0107E0B728F97D5000DE87DB /* ListStatsView.swift in Sources */,
@@ -22808,7 +22797,6 @@
 				80C523A429959DE000B1C14B /* BlazeWebViewController.swift in Sources */,
 				E6DE44671B90D251000FA7EF /* ReaderHelpers.swift in Sources */,
 				C7BB601C2863B3D600748FD9 /* QRLoginCameraPermissionsHandler.swift in Sources */,
-				2448F11F2C7FF959002AE7C1 /* ColorStudioPalette.swift in Sources */,
 				7E3E7A5320E44B260075D159 /* SubjectContentStyles.swift in Sources */,
 				5D42A3DF175E7452005CFF05 /* AbstractPost.m in Sources */,
 				986C908422319EFF00FC31E1 /* PostStatsTableViewController.swift in Sources */,
@@ -23490,7 +23478,6 @@
 				1752D4FC238D703A002B79E7 /* KeyValueDatabase.swift in Sources */,
 				FAD2566F2611AEC700EDAF88 /* AppStyleGuide.swift in Sources */,
 				736584EC2137533A0029C9A4 /* Tracks+ContentExtension.swift in Sources */,
-				2448F1292C801810002AE7C1 /* ColorStudioPalette.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -23610,7 +23597,6 @@
 				986FF29D2141971C005B28EC /* WPAnimatedBox.m in Sources */,
 				F15A230520A3ECC500625EA2 /* ImgUploadProcessor.swift in Sources */,
 				74021A0C202E1338006CC39F /* ShareExtractor.swift in Sources */,
-				2448F1282C80180E002AE7C1 /* ColorStudioPalette.swift in Sources */,
 				E696542025A8ED7C000E2A52 /* UIApplication+mainWindow.swift in Sources */,
 				1752D4F9238D702D002B79E7 /* KeyValueDatabase.swift in Sources */,
 				74021A23202E1743006CC39F /* FormatBarItemProviders.swift in Sources */,
@@ -23684,7 +23670,6 @@
 				8096210A28E540D700940A5D /* WPReusableTableViewCells.swift in Sources */,
 				8096210B28E540D700940A5D /* WPAnimatedBox.m in Sources */,
 				8096210D28E540D700940A5D /* ImgUploadProcessor.swift in Sources */,
-				2448F12B2C801812002AE7C1 /* ColorStudioPalette.swift in Sources */,
 				8096210E28E540D700940A5D /* UIApplication+mainWindow.swift in Sources */,
 				8096210F28E540D700940A5D /* KeyValueDatabase.swift in Sources */,
 				8096211028E540D700940A5D /* MediaUploadOperation.swift in Sources */,
@@ -23758,7 +23743,6 @@
 				8096216B28E55C9400940A5D /* WPAnimatedBox.m in Sources */,
 				8096216D28E55C9400940A5D /* ImgUploadProcessor.swift in Sources */,
 				8096216E28E55C9400940A5D /* ShareExtractor.swift in Sources */,
-				2448F12C2C801812002AE7C1 /* ColorStudioPalette.swift in Sources */,
 				8096216F28E55C9400940A5D /* UIApplication+mainWindow.swift in Sources */,
 				8096217028E55C9400940A5D /* KeyValueDatabase.swift in Sources */,
 				8096217128E55C9400940A5D /* FormatBarItemProviders.swift in Sources */,
@@ -23897,7 +23881,6 @@
 				7455836B201A216C007809BB /* WPReusableTableViewCells.swift in Sources */,
 				986FF29E2141971D005B28EC /* WPAnimatedBox.m in Sources */,
 				F15A230420A3EBE300625EA2 /* ImgUploadProcessor.swift in Sources */,
-				2448F1272C80180E002AE7C1 /* ColorStudioPalette.swift in Sources */,
 				E696541F25A8ED7C000E2A52 /* UIApplication+mainWindow.swift in Sources */,
 				1752D4FA238D702E002B79E7 /* KeyValueDatabase.swift in Sources */,
 				74AF4D751FE417D200E3EBFE /* MediaUploadOperation.swift in Sources */,
@@ -24384,7 +24367,6 @@
 				FABB20F22602FC2C00C8785C /* PlanService.swift in Sources */,
 				FABB20F32602FC2C00C8785C /* Routes+Mbar.swift in Sources */,
 				B038BD162BE1A37D009FD7E9 /* SubscribersChartMarker.swift in Sources */,
-				2448F12A2C801811002AE7C1 /* ColorStudioPalette.swift in Sources */,
 				FEFA264026C5AE9E009CCB7E /* ShareAppTextActivityItemSource.swift in Sources */,
 				FABB20F42602FC2C00C8785C /* PostListEditorPresenter.swift in Sources */,
 				C7BB60202863B9E800748FD9 /* QRLoginCameraSession.swift in Sources */,

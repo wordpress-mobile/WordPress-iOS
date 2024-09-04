@@ -48,6 +48,7 @@ let package = Package(
         // We can't use wordpress-rs branches nor commits here. Only tags work.
         .package(url: "https://github.com/Automattic/wordpress-rs", revision: "alpha-swift-20240813"),
         .package(url: "https://github.com/wordpress-mobile/GutenbergKit", revision: "latest"),
+        .package(url: "https://github.com/Automattic/color-studio", branch: "add/swift-file-output"),
     ],
     targets: XcodeSupport.targets + [
         .target(name: "JetpackStatsWidgetsCore"),
@@ -118,6 +119,7 @@ enum XcodeSupport {
             .product(name: "Reachability", package: "Reachability"),
             .product(name: "SVProgressHUD", package: "SVProgressHUD"),
             .product(name: "ZIPFoundation", package: "ZIPFoundation"),
+            .product(name: "ColorStudio", package: "color-studio"),
         ]
 
         let testDependencies: [Target.Dependency] = [
@@ -159,6 +161,7 @@ enum XcodeSupport {
                 .product(name: "ZendeskSupportSDK", package: "support_sdk_ios"),
                 .product(name: "ZIPFoundation", package: "ZIPFoundation"),
                 .product(name: "WordPressAPI", package: "wordpress-rs"),
+                .product(name: "ColorStudio", package: "color-studio"),
             ]),
             .xcodeTarget("XcodeTarget_WordPressTests", dependencies: testDependencies + [
                 "WordPressShared",
@@ -179,6 +182,7 @@ enum XcodeSupport {
                 "WordPressShared",
                 .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
                 .product(name: "WordPressAPI", package: "wordpress-rs"),
+                .product(name: "ColorStudio", package: "color-studio"),
             ]),
             .xcodeTarget("XcodeTarget_Intents", dependencies: [
                 "JetpackStatsWidgetsCore",

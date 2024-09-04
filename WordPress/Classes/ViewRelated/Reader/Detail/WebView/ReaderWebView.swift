@@ -1,4 +1,5 @@
 import UIKit
+import ColorStudio
 
 /// A WKWebView that renders post content with styles applied
 ///
