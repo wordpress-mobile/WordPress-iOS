@@ -1,0 +1,10 @@
+Deze maand hebben we een heleboel visuele oplossingen en één nieuwe experimentele functie waarover we je feedback erg op prijs stellen.
+
+De visuele updates:
+- De sitekiezer is eenvoudiger en makkelijker te gebruiken gemaakt en ondersteunt nu testsites, contextmenu's en voorbeeldweergaven.
+- Er is een probleem opgelost waarbij sommige navigatiebalken in de app doorzichtig waren.
+- Er is een probleem opgelost waarbij pictogrammen van privésites niet laadden.
+- Tientallen schermen zijn bijgewerkt om visuele bugs te verhelpen door de code te vereenvoudigen.
+- Er is een probleem opgelost waarbij de grafiek over abonnees de verkeerde achtergrondkleur weergaf.
+
+Bij App-instellingen kan je nu applicatiewachtwoorden uitproberen. Dit is een nieuwe experimentele functie voor zelfgehoste sites, waardoor deze werken met de apps als ze 2FA of SSO gebruiken.

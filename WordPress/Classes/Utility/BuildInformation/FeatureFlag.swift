@@ -9,7 +9,6 @@ enum FeatureFlag: Int, CaseIterable {
     case commentModerationUpdate
     case compliancePopover
     case googleDomainsCard
-    case newTabIcons
     case autoSaveDrafts
     case voiceToContent
     case authenticateUsingApplicationPassword
@@ -39,8 +38,6 @@ enum FeatureFlag: Int, CaseIterable {
             return true
         case .googleDomainsCard:
             return false
-        case .newTabIcons:
-            return true
         case .autoSaveDrafts:
             return false
         case .voiceToContent:
@@ -84,7 +81,6 @@ extension FeatureFlag {
         case .commentModerationUpdate: "Comments Moderation Update"
         case .compliancePopover: "Compliance Popover"
         case .googleDomainsCard: "Google Domains Promotional Card"
-        case .newTabIcons: "New Tab Icons"
         case .autoSaveDrafts: "Autosave Drafts"
         case .voiceToContent: "Voice to Content"
         case .authenticateUsingApplicationPassword: "Application Passwords for self-hosted sites"

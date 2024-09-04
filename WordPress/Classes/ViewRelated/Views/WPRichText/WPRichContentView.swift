@@ -1,6 +1,5 @@
 import Foundation
 import UIKit
-import CocoaLumberjack
 import WordPressShared
 
 @objc protocol WPRichContentViewDelegate: UITextViewDelegate {

@@ -49,9 +49,6 @@ import Combine
     /// search
     var navigateToSearch: () -> Void
 
-    /// Spotlight
-    var shouldShowCommentSpotlight: Bool = false
-
     /// Settings
     private let settingsPresenter: ScenePresenter
 

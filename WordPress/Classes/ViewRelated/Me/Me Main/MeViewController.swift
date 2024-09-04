@@ -1,5 +1,4 @@
 import UIKit
-import CocoaLumberjack
 import WordPressShared
 import WordPressAuthenticator
 import AutomatticAbout
@@ -558,17 +557,17 @@ class MeViewController: UITableViewController {
     ///
     fileprivate func promptForLoginOrSignup() {
         Task { @MainActor in
-            WPAnalytics.track(.wpcomWebSignIn, properties: ["stage": "start"])
+            WPAnalytics.track(.wpcomWebSignIn, properties: ["source": "me", "stage": "start"])
 
             let token: String
             do {
                 token = try await WordPressDotComAuthenticator().authenticate(from: self)
             } catch {
-                WPAnalytics.track(.wpcomWebSignIn, properties: ["stage": "error", "error": "\(error)"])
+                WPAnalytics.track(.wpcomWebSignIn, properties: ["source": "me", "stage": "error", "error": "\(error)"])
                 return
             }
 
-            WPAnalytics.track(.wpcomWebSignIn, properties: ["stage": "success"])
+            WPAnalytics.track(.wpcomWebSignIn, properties: ["source": "me", "stage": "success"])
 
             SVProgressHUD.show()
             let credentials = WordPressComCredentials(authToken: token, isJetpackLogin: false, multifactor: false)

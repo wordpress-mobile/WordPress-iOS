@@ -1,5 +1,4 @@
 import Foundation
-import CocoaLumberjack
 import WordPressShared
 
 typealias HighlightedText = (substring: String, string: String)

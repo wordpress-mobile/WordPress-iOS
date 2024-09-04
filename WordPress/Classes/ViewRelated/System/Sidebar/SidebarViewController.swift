@@ -137,10 +137,11 @@ private struct SidebarView: View {
                 Label(Strings.domains, systemImage: "network")
             }
         }
-#endif
+#else
         Button(action: { viewModel.navigate(.help) }) {
             Label(Strings.help, systemImage: "questionmark.circle")
         }
+#endif
     }
 }
 
@@ -149,15 +150,55 @@ private struct SidebarProfileContainerView: View {
     @Environment(\.isSearching) private var isSearching // placemenet is important
 
     var body: some View {
-        if let account = viewModel.account, !isSearching {
+        if !isSearching {
+            content
+                .padding(.horizontal)
+                .padding(.top, 8)
+                .background(Color(uiColor: .secondarySystemBackground))
+        }
+    }
+
+    @ViewBuilder
+    var content: some View {
+        if let account = viewModel.account {
             Button(action: { viewModel.navigate(.profile) }) {
-                SidebarProfileView(account: account)
-                    .containerShape(Rectangle()) // Make entire row interactive
+                SidebarProfileView(
+                    username: account.username,
+                    displayName: account.displayName,
+                    avatar: account.avatarURL.flatMap(URL.init(string:))
+                )
             }
+            .containerShape(Rectangle())
             .buttonStyle(.plain)
-            .padding(.horizontal)
-            .padding(.top, 8)
-            .background(Color(uiColor: .secondarySystemBackground))
+        } else {
+            HStack {
+                if AppConfiguration.isJetpack {
+                    Button(action: { viewModel.navigate(.signIn) }) {
+                        HStack {
+                            Image(systemName: "person.crop.circle")
+                                .font(.title2)
+                            VStack(alignment: .leading, spacing: 1) {
+                                Text("Sign In")
+                                    .font(.subheadline.weight(.medium))
+                                Text("WordPress.com")
+                                    .font(.footnote)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                    }
+                    .tint(Color(.brand))
+                }
+
+                Spacer()
+
+                Button(action: { viewModel.navigate(.profile) }) {
+                    Image(systemName: "gearshape")
+                        .font(.title3)
+                        .foregroundColor(Color.secondary)
+                }
+                .frame(width: 44, height: 44)
+                .contentShape(Rectangle())
+            }
         }
     }
 }
@@ -190,4 +231,5 @@ private enum Strings {
     static let reader = NSLocalizedString("sidebar.reader", value: "Reader", comment: "Sidebar item on iPad")
     static let domains = NSLocalizedString("sidebar.domains", value: "Domains", comment: "Sidebar item on iPad")
     static let help = NSLocalizedString("sidebar.help", value: "Help & Support", comment: "Sidebar item on iPad")
+    static let me = NSLocalizedString("sidebar.me", value: "Me", comment: "Sidebar item on iPad")
 }

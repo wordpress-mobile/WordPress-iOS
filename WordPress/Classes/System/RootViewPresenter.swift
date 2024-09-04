@@ -20,11 +20,7 @@ protocol RootViewPresenter: AnyObject {
     func showReaderTab()
     func showReaderTab(forPost: NSNumber, onBlog: NSNumber)
     func switchToDiscover()
-    func switchToSavedPosts()
-    func resetReaderDiscoverNudgeFlow()
-    func resetReaderTab()
     func navigateToReaderSearch()
-    func navigateToReaderSearch(withSearchText: String)
     func switchToTopic(where predicate: (ReaderAbstractTopic) -> Bool)
     func switchToMyLikes()
     func switchToFollowedSites()
@@ -52,5 +48,4 @@ protocol RootViewPresenter: AnyObject {
 
     var meViewController: MeViewController? { get }
     func showMeScreen()
-    func popMeScreenToRoot()
 }

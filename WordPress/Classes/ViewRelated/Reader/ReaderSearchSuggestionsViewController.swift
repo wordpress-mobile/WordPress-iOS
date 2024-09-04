@@ -1,5 +1,4 @@
 import Foundation
-import CocoaLumberjack
 import WordPressShared
 
 /// Defines methods that a delegate should implement for clearing suggestions

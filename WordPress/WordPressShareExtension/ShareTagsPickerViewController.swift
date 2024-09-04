@@ -1,5 +1,4 @@
 import Foundation
-import CocoaLumberjack
 import WordPressShared
 
 class ShareTagsPickerViewController: UIViewController {

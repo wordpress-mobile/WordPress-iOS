@@ -1,5 +1,4 @@
 import UIKit
-import CocoaLumberjack
 import Gridicons
 import WordPressFlux
 import WordPressUI

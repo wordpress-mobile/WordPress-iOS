@@ -195,14 +195,6 @@ struct ReaderPostCardCellViewModel {
         guard let readerPost, let parentViewController else {
             return
         }
-
-        if let indexPath = parentViewController.tableView.indexPath(for: cell),
-           let topic = parentViewController.readerTopic,
-           ReaderHelpers.topicIsDiscover(topic),
-           parentViewController.shouldShowCommentSpotlight {
-            parentViewController.reloadReaderDiscoverNudgeFlow(at: indexPath)
-        }
-
         ReaderCommentAction().execute(post: readerPost, origin: parentViewController, source: .postCard)
     }
 
