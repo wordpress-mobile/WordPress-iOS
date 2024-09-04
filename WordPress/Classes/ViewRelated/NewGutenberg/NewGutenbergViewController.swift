@@ -153,6 +153,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
             title: post.postTitle ?? "",
             content: post.content ?? "",
             service: GutenbergKit.EditorService(client: networkClient),
+            themeStyles: FeatureFlag.newGutenbergThemeStyles.enabled,
             siteApiRoot: post.blog.wordPressComRestApi()?.baseURL.absoluteString ?? "",
             siteApiNamespace: siteApiNamespace,
             authHeader: authHeader
