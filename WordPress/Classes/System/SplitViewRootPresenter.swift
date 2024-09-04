@@ -7,18 +7,29 @@ import WordPressAuthenticator
 final class SplitViewRootPresenter: RootViewPresenter {
     private let sidebarViewModel = SidebarViewModel()
     private let splitVC = UISplitViewController(style: .tripleColumn)
+    private let tabBarViewController: WPTabBarController
     private var cancellables: [AnyCancellable] = []
+
+    /// Is the app displaying tab bar UI instead of the full split view UI (with sidebar).
+    private var isDisplayingTabBar: Bool {
+        if splitVC.isCollapsed {
+            wpAssert(splitVC.viewController(for: .compact) == tabBarViewController, "Split view is collapsed, but is not displaying the tab bar view controller")
+            return true
+        }
+
+        return false
+    }
 
     init() {
         // TODO: (wpsidebar) refactor
         self.mySitesCoordinator = MySitesCoordinator(meScenePresenter: MeScenePresenter(), onBecomeActiveTab: {})
+        tabBarViewController = WPTabBarController(staticScreens: false)
 
         let sidebarVC = SidebarViewController(viewModel: sidebarViewModel)
         let navigationVC = makeRootNavigationController(with: sidebarVC)
         splitVC.setViewController(navigationVC, for: .primary)
 
-        let tabBarVC = WPTabBarController(staticScreens: false)
-        splitVC.setViewController(tabBarVC, for: .compact)
+        splitVC.setViewController(tabBarViewController, for: .compact)
 
         NotificationCenter.default.publisher(for: MySiteViewController.didPickSiteNotification).sink { [weak self] in
             guard let site = $0.userInfo?[MySiteViewController.siteUserInfoKey] as? Blog else {
@@ -120,7 +131,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
             navigationVC.modalPresentationStyle = .formSheet
             splitVC.present(navigationVC, animated: true)
         case .profile:
-            showMeScreen()
+            showMeScreen(completion: nil)
         case .signIn:
             Task {
                 await self.signIn()
@@ -306,7 +317,12 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
     var meViewController: MeViewController?
 
-    func showMeScreen() {
+    func showMeScreen(completion: ((MeViewController) -> Void)?) {
+        if isDisplayingTabBar {
+            tabBarViewController.showMeScreen(completion: completion)
+            return
+        }
+
         let meVC = MeViewController()
         meVC.isSidebarModeEnabled = true
         meVC.navigationItem.rightBarButtonItem = {
@@ -319,7 +335,9 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
         let navigationVC = UINavigationController(rootViewController: meVC)
         navigationVC.modalPresentationStyle = .formSheet
-        splitVC.present(navigationVC, animated: true)
+        splitVC.present(navigationVC, animated: true) {
+            completion?(meVC)
+        }
     }
 }
 

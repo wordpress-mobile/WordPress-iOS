@@ -46,6 +46,5 @@ protocol RootViewPresenter: AnyObject {
 
     // MARK: Me
 
-    var meViewController: MeViewController? { get }
-    func showMeScreen()
+    func showMeScreen(completion: ((MeViewController) -> Void)?)
 }

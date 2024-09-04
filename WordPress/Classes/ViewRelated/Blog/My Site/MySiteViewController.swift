@@ -926,6 +926,10 @@ extension MySiteViewController: BlogDetailsPresentationDelegate {
         blogDetailsViewController?.showDetailView(for: subsection, userInfo: userInfo)
     }
 
+    func showBlogDetailsMeSubsection() -> MeViewController? {
+        blogDetailsViewController?.showDetailViewForMeSubsection(userInfo: [:])
+    }
+
     // TODO: Refactor presentation from routes
     // More context: https://github.com/wordpress-mobile/WordPress-iOS/issues/21759
     func presentBlogDetailsViewController(_ viewController: UIViewController) {
