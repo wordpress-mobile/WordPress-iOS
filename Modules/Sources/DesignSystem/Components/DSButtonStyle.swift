@@ -28,17 +28,17 @@ public struct DSButtonStyle {
 extension DSButtonStyle {
     var foregroundColor: Color {
         return switch self.emphasis {
-        case .primary: .primary
-        case .secondary: .secondary
+        case .primary: Color(.systemBackground)
+        case .secondary: Color(.label)
         case .tertiary: .accentColor
         }
     }
 
     var backgroundColor: Color {
         return switch self.emphasis {
-        case .primary: Color(uiColor: .systemBackground)
-        case .secondary: Color(uiColor: .secondarySystemBackground)
-        case .tertiary: Color(uiColor: .tertiarySystemBackground)
+        case .primary: Color(.label)
+        case .secondary: Color(.secondarySystemBackground)
+        case .tertiary: .clear
         }
     }
 }

@@ -127,9 +127,8 @@ public struct DSButton: View {
                 .fill(style.backgroundColor.opacity(primaryDisabledOpacity))
         case .secondary:
             RoundedRectangle(cornerRadius: .DS.Radius.small)
-                .stroke(.primary, lineWidth: 1)
+                .stroke(Color(.secondaryLabel), lineWidth: 1)
                 .background(Color.clear)
-
         case .tertiary:
             Color.clear
         }
