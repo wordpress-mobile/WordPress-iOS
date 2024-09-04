@@ -137,6 +137,9 @@ private struct SidebarView: View {
                 Label(Strings.domains, systemImage: "network")
             }
         }
+        Button(action: { viewModel.navigate(.help) }) {
+            Label(Strings.help, systemImage: "questionmark.circle")
+        }
 #else
         Button(action: { viewModel.navigate(.help) }) {
             Label(Strings.help, systemImage: "questionmark.circle")
