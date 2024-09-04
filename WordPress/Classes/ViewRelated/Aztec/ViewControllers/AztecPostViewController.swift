@@ -2,7 +2,6 @@ import Foundation
 import UIKit
 import PDFKit
 import Aztec
-import CocoaLumberjack
 import Gridicons
 import WordPressShared
 import MobileCoreServices

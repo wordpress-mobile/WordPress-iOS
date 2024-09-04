@@ -217,30 +217,6 @@ extension ReaderStreamViewController {
         tableView.tableHeaderView = headerView
         completion?()
     }
-
-}
-
-// MARK: - Undo cell for saved posts
-extension ReaderStreamViewController {
-
-    private enum UndoCell {
-        static let nibName = "ReaderSavedPostUndoCell"
-        static let reuseIdentifier = "ReaderUndoCellReuseIdentifier"
-    }
-
-    func setupUndoCell(_ tableView: UITableView) {
-        let nib = UINib(nibName: UndoCell.nibName, bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: UndoCell.reuseIdentifier)
-    }
-
-    func undoCell(_ tableView: UITableView) -> ReaderSavedPostUndoCell {
-        return tableView.dequeueReusableCell(withIdentifier: UndoCell.reuseIdentifier) as! ReaderSavedPostUndoCell
-    }
-
-    func configureUndoCell(_ cell: ReaderSavedPostUndoCell, with post: ReaderPost) {
-        cell.title.text = post.titleForDisplay()
-        cell.delegate = self
-    }
 }
 
 // MARK: - Tracks

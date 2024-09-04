@@ -1,5 +1,6 @@
 import UIKit
 import Combine
+import WordPressAuthenticator
 
 /// The presenter that uses triple-column navigation for `.regular` size classes
 /// and a tab-bar based navigation for `.compact` size class.
@@ -33,6 +34,13 @@ final class SplitViewRootPresenter: RootViewPresenter {
         sidebarViewModel.navigate = { [weak self] in
             self?.navigate(to: $0)
         }
+
+        NotificationCenter.default
+            .publisher(for: .NSManagedObjectContextObjectsDidChange, object: ContextManager.shared.mainContext)
+            .sink { [weak self] in
+                self?.handleCoreDataChanges($0)
+            }
+            .store(in: &cancellables)
     }
 
     private func configure(for selection: SidebarSelection) {
@@ -51,6 +59,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
             do {
                 let site = try ContextManager.shared.mainContext.existingObject(with: objectID)
                 showDetails(for: site)
+                splitVC.hide(.primary)
             } catch {
                 // TODO: (wpsidebar) show empty state
             }
@@ -92,10 +101,15 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
     private func navigate(to step: SidebarNavigationStep) {
         switch step {
+        case .allSites:
+            showSitePicker()
+        case .addSite(let selection):
+            showAddSiteScreen(selection: selection)
         case .domains:
 #if JETPACK
             let domainsVC = AllDomainsListViewController()
             let navigationVC = UINavigationController(rootViewController: domainsVC)
+            navigationVC.modalPresentationStyle = .formSheet
             splitVC.present(navigationVC, animated: true)
 #else
             wpAssertionFailure("domains are not supported in wpios")
@@ -103,10 +117,75 @@ final class SplitViewRootPresenter: RootViewPresenter {
         case .help:
             let supportVC = SupportTableViewController()
             let navigationVC = UINavigationController(rootViewController: supportVC)
+            navigationVC.modalPresentationStyle = .formSheet
             splitVC.present(navigationVC, animated: true)
         case .profile:
-            let meVC = MeSplitViewController()
-            splitVC.present(meVC, animated: true)
+            showMeScreen()
+        case .signIn:
+            Task {
+                await self.signIn()
+            }
+        }
+    }
+
+    private func showSitePicker() {
+        let sitePickerVC = SiteSwitcherViewController(
+            configuration: BlogListConfiguration(shouldHideRecentSites: true),
+            addSiteAction: { [weak self] in
+                self?.showAddSiteScreen(selection: $0)
+            },
+            onSiteSelected: { [weak self] site in
+                self?.splitVC.dismiss(animated: true)
+                RecentSitesService().touch(blog: site)
+                self?.sidebarViewModel.selection = .blog(TaggedManagedObjectID(site))
+            }
+        )
+        let navigationVC = UINavigationController(rootViewController: sitePickerVC)
+        navigationVC.modalPresentationStyle = .formSheet
+        self.splitVC.present(navigationVC, animated: true)
+        WPAnalytics.track(.sidebarAllSitesTapped)
+    }
+
+    private func showAddSiteScreen(selection: AddSiteMenuViewModel.Selection) {
+        AddSiteController(viewController: splitVC.presentedViewController ?? splitVC, source: "sidebar")
+            .showSiteCreationScreen(selection: selection)
+    }
+
+    @MainActor private func signIn() async {
+        WPAnalytics.track(.wpcomWebSignIn, properties: ["source": "sidebar", "stage": "start"])
+
+        let token: String
+        do {
+            token = try await WordPressDotComAuthenticator().authenticate(from: splitVC)
+        } catch {
+            WPAnalytics.track(.wpcomWebSignIn, properties: ["source": "sidebar", "stage": "error", "error": "\(error)"])
+            return
+        }
+
+        WPAnalytics.track(.wpcomWebSignIn, properties: ["source": "sidebar", "stage": "success"])
+
+        SVProgressHUD.show()
+        let credentials = WordPressComCredentials(authToken: token, isJetpackLogin: false, multifactor: false)
+        WordPressAuthenticator.shared.delegate!.sync(credentials: .init(wpcom: credentials)) {
+            SVProgressHUD.dismiss()
+        }
+    }
+
+    private func handleCoreDataChanges(_ notification: Foundation.Notification) {
+        // Automatically switch to a site or show the sign in screen, when the current blog is removed.
+
+        guard let blog = self.currentlyVisibleBlog(),
+              let deleted = notification.userInfo?[NSDeletedObjectsKey] as? Set<NSManagedObject>,
+              deleted.contains(blog)
+        else {
+            return
+        }
+
+        if let newSite = Blog.lastUsedOrFirst(in: ContextManager.shared.mainContext) {
+            self.sidebarViewModel.selection = .blog(TaggedManagedObjectID(newSite))
+        } else {
+            self.sidebarViewModel.selection = .empty
+            WordPressAppDelegate.shared?.windowManager.showSignInUI()
         }
     }
 
@@ -117,7 +196,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
     var currentViewController: UIViewController?
 
     func showBlogDetails(for blog: Blog) {
-        fatalError()
+        sidebarViewModel.selection = .blog(TaggedManagedObjectID(blog))
     }
 
     func getMeScenePresenter() -> any ScenePresenter {
@@ -130,7 +209,13 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
     // TODO: (wpsidebar) Can we remove it?
     func currentlyVisibleBlog() -> Blog? {
-        mySitesCoordinator.currentBlog
+        assert(Thread.isMainThread)
+
+        guard case let .blog(id) = sidebarViewModel.selection else {
+            return nil
+        }
+
+        return try? ContextManager.shared.mainContext.existingObject(with: id)
     }
 
     func willDisplayPostSignupFlow() {
@@ -155,23 +240,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
         fatalError()
     }
 
-    func switchToSavedPosts() {
-        fatalError()
-    }
-
-    func resetReaderDiscoverNudgeFlow() {
-        fatalError()
-    }
-
-    func resetReaderTab() {
-        fatalError()
-    }
-
     func navigateToReaderSearch() {
-        fatalError()
-    }
-
-    func navigateToReaderSearch(withSearchText: String) {
         fatalError()
     }
 
@@ -238,16 +307,31 @@ final class SplitViewRootPresenter: RootViewPresenter {
     var meViewController: MeViewController?
 
     func showMeScreen() {
-        navigate(to: .profile)
-    }
+        let meVC = MeViewController()
+        meVC.isSidebarModeEnabled = true
+        meVC.navigationItem.rightBarButtonItem = {
+            let button = UIBarButtonItem(title: SharedStrings.Button.done, primaryAction: .init { [weak self] _ in
+                self?.splitVC.dismiss(animated: true)
+            })
+            button.setTitleTextAttributes([.font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)], for: .normal)
+            return button
+        }()
 
-    func popMeScreenToRoot() {
-        fatalError()
+        let navigationVC = UINavigationController(rootViewController: meVC)
+        navigationVC.modalPresentationStyle = .formSheet
+        splitVC.present(navigationVC, animated: true)
     }
 }
 
 extension SplitViewRootPresenter: SiteMenuViewControllerDelegate {
     func siteMenuViewController(_ siteMenuViewController: SiteMenuViewController, showDetailsViewController viewController: UIViewController) {
-        splitVC.setViewController(viewController, for: .secondary)
+        if viewController is UINavigationController ||
+            viewController is UISplitViewController {
+            splitVC.setViewController(viewController, for: .secondary)
+        } else {
+            // Reset previous navigation or split stack
+            let navigationVC = UINavigationController(rootViewController: viewController)
+            splitVC.setViewController(navigationVC, for: .secondary)
+        }
     }
 }

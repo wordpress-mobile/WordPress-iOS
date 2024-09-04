@@ -1,5 +1,4 @@
 import UIKit
-import CocoaLumberjack
 import WordPressShared
 
 /// Manages which sharing button are displayed, their order, and other settings
@@ -111,6 +110,7 @@ import WordPressShared
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         tableView.setEditing(true, animated: false)
         tableView.allowsSelectionDuringEditing = true
+        tableView.cellLayoutMarginsFollowReadableWidth = true
     }
 
     /// Sets up the sections for the table view and configures their starting state.

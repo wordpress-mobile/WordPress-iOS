@@ -26,11 +26,6 @@ extension AppStyleGuide {
     static let editorPrimary = MurielColor(name: .blue)
 }
 
-// MARK: - Images
-extension AppStyleGuide {
-    static let mySiteTabIcon = UIImage(named: "icon-tab-mysites")
-}
-
 // MARK: - Fonts
 extension AppStyleGuide {
     static func prominentFont(textStyle: UIFont.TextStyle, weight: UIFont.Weight) -> UIFont {

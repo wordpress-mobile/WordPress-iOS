@@ -26,15 +26,10 @@ struct BlogListView: View {
 
     @ViewBuilder
     private var listContent: some View {
-        if viewModel.allSites.count > 12 {
-            if !viewModel.recentSites.isEmpty {
-                makeSection(title: Strings.recentsSectionTitle, sites: viewModel.recentSites)
-            }
-            if !viewModel.allSites.isEmpty {
-                makeSection(title: Strings.allSitesSectionTitle, sites: viewModel.allSites, spacing: viewModel.recentSites.isEmpty ? 0 : 16)
-            }
+        if viewModel.isShowingRecentSites {
+            makeSection(title: Strings.recentsSectionTitle, sites: viewModel.recentSites)
+            makeSection(title: Strings.allSitesSectionTitle, sites: viewModel.allSites, spacing: 12)
         } else {
-            // Too few sites to bother with "Recent"
             makeSiteList(with: viewModel.allSites)
         }
     }

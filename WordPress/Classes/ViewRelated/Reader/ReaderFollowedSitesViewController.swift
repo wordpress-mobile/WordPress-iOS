@@ -1,6 +1,5 @@
 import Foundation
 import WordPressShared
-import CocoaLumberjack
 import WordPressFlux
 import Gridicons
 

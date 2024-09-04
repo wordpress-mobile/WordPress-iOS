@@ -172,7 +172,7 @@ extension WPStyleGuide {
         configureTableViewCell(cell)
 
         cell.textLabel?.textAlignment = .center
-        cell.textLabel?.textColor = UIColor.error
+        cell.textLabel?.textColor = UIColor.systemRed
     }
 
     @objc

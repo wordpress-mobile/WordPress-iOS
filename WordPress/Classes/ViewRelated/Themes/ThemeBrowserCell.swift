@@ -1,6 +1,5 @@
 import Foundation
 import WordPressShared
-import CocoaLumberjack
 
 /// Actions provided in cell button triggered action sheet
 ///

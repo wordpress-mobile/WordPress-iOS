@@ -99,8 +99,6 @@ final class PostListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
     // MARK: - Setup
 
     private func setupViews() {
-        separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
-
         setupContentLabel()
         setupFeaturedImageView()
         setupStatusLabel()
@@ -120,11 +118,8 @@ final class PostListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
             statusLabel
         ])
         mainStackView.spacing = 4
-        mainStackView.isLayoutMarginsRelativeArrangement = true
-        mainStackView.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 12, leading: 16, bottom: 12, trailing: 16)
-
         contentView.addSubview(mainStackView)
-        contentView.pinSubviewToAllEdges(mainStackView)
+        contentView.pinSubviewToAllEdgeMargins(mainStackView)
     }
 
     private func setupContentLabel() {

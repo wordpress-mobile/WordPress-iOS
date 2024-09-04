@@ -19,6 +19,7 @@ final class SidebarViewController: UIHostingController<AnyView> {
 private struct SidebarView: View {
     @ObservedObject var viewModel: SidebarViewModel
     @StateObject private var blogListViewModel = BlogListViewModel()
+    @StateObject private var notificationsButtonViewModel = NotificationsButtonViewModel()
 
     static let displayedSiteLimit = 4
 
@@ -66,26 +67,49 @@ private struct SidebarView: View {
             Text(Strings.noSites)
         }
         if viewModel.allSites.count > SidebarView.displayedSiteLimit {
-            Menu {
-                Text("Not Implemented")
+            Button {
+                self.viewModel.navigate(.allSites)
             } label: {
                 Label(Strings.allSites, systemImage: "rectangle.stack")
             }
             .tint(Color.primary)
         }
-        Menu {
-            Text("Not Implemented")
-        } label: {
-            Label(Strings.addSite, systemImage: "plus.circle")
-        }
-        .tint(Color.primary)
+        addSiteView
+            .tint(Color.primary)
     }
 
     private func makeSiteList(with sites: [BlogListSiteViewModel]) -> some View {
         ForEach(sites) { site in
-            BlogListSiteView(site: site)
+            BlogListSiteView(site: site, style: .sidebar)
                 .environment(\.siteIconBackgroundColor, Color(.systemBackground))
                 .tag(SidebarSelection.blog(site.id))
+                .listRowInsets(EdgeInsets(top: 9, leading: 8, bottom: 9, trailing: 8))
+        }
+    }
+
+    @ViewBuilder
+    private var addSiteView: some View {
+        let viewModel = AddSiteMenuViewModel(onSelection: { [weak viewModel] in
+            viewModel?.navigate(.addSite(selection: $0))
+        })
+        let label = Label {
+            Text(Strings.addSite)
+        } icon: {
+            Image(systemName: "plus.square.fill")
+                .foregroundStyle(Color(.brand), Color(.secondarySystemFill))
+                .font(.title2)
+        }
+        switch viewModel.actions.count {
+        case 0:
+            EmptyView()
+        case 1:
+            Button(action: viewModel.actions[0].handler) { label }
+        default:
+            Menu {
+                ForEach(viewModel.actions) { action in
+                    Button(action.title, action: action.handler)
+                }
+            } label: { label }
         }
     }
 
@@ -94,8 +118,18 @@ private struct SidebarView: View {
     @ViewBuilder
     private var more: some View {
 #if JETPACK
-        Label(Strings.notifications, systemImage: "bell")
-            .tag(SidebarSelection.notifications)
+        Label {
+            Text(Strings.notifications)
+        } icon: {
+            if notificationsButtonViewModel.counter > 0 {
+                Image(systemName: "bell.badge")
+                    .foregroundStyle(.red, Color(.brand))
+            } else {
+                Image(systemName: "bell")
+            }
+        }
+        .tag(SidebarSelection.notifications)
+
         Label(Strings.reader, systemImage: "eyeglasses")
             .tag(SidebarSelection.reader)
         if RemoteFeatureFlag.domainManagement.enabled() {
@@ -103,10 +137,11 @@ private struct SidebarView: View {
                 Label(Strings.domains, systemImage: "network")
             }
         }
-#endif
+#else
         Button(action: { viewModel.navigate(.help) }) {
             Label(Strings.help, systemImage: "questionmark.circle")
         }
+#endif
     }
 }
 
@@ -115,14 +150,55 @@ private struct SidebarProfileContainerView: View {
     @Environment(\.isSearching) private var isSearching // placemenet is important
 
     var body: some View {
-        if let account = viewModel.account, !isSearching {
+        if !isSearching {
+            content
+                .padding(.horizontal)
+                .padding(.top, 8)
+                .background(Color(uiColor: .secondarySystemBackground))
+        }
+    }
+
+    @ViewBuilder
+    var content: some View {
+        if let account = viewModel.account {
             Button(action: { viewModel.navigate(.profile) }) {
-                SidebarProfileView(account: account)
+                SidebarProfileView(
+                    username: account.username,
+                    displayName: account.displayName,
+                    avatar: account.avatarURL.flatMap(URL.init(string:))
+                )
             }
+            .containerShape(Rectangle())
             .buttonStyle(.plain)
-            .padding(.horizontal)
-            .padding(.top, 8)
-            .background(Color(uiColor: .secondarySystemBackground))
+        } else {
+            HStack {
+                if AppConfiguration.isJetpack {
+                    Button(action: { viewModel.navigate(.signIn) }) {
+                        HStack {
+                            Image(systemName: "person.crop.circle")
+                                .font(.title2)
+                            VStack(alignment: .leading, spacing: 1) {
+                                Text("Sign In")
+                                    .font(.subheadline.weight(.medium))
+                                Text("WordPress.com")
+                                    .font(.footnote)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                    }
+                    .tint(Color(.brand))
+                }
+
+                Spacer()
+
+                Button(action: { viewModel.navigate(.profile) }) {
+                    Image(systemName: "gearshape")
+                        .font(.title3)
+                        .foregroundColor(Color.secondary)
+                }
+                .frame(width: 44, height: 44)
+                .contentShape(Rectangle())
+            }
         }
     }
 }
@@ -155,4 +231,5 @@ private enum Strings {
     static let reader = NSLocalizedString("sidebar.reader", value: "Reader", comment: "Sidebar item on iPad")
     static let domains = NSLocalizedString("sidebar.domains", value: "Domains", comment: "Sidebar item on iPad")
     static let help = NSLocalizedString("sidebar.help", value: "Help & Support", comment: "Sidebar item on iPad")
+    static let me = NSLocalizedString("sidebar.me", value: "Me", comment: "Sidebar item on iPad")
 }

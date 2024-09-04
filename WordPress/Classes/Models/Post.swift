@@ -1,6 +1,5 @@
 import Foundation
 import CoreData
-import CocoaLumberjack
 
 @objc(Post)
 class Post: AbstractPost {

@@ -3,7 +3,9 @@ import UIKit
 import SwiftUI
 import WordPressUI
 import GutenbergKit
+import Combine
 
+/// The "Home" page.
 final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSitesViewDelegate {
     enum Section: Int, CaseIterable {
         case dashboard
@@ -65,6 +67,8 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     private let blogService: BlogService
 
     private let viewModel: MySiteViewModel
+    private let notificationsButtonViewModel = NotificationsButtonViewModel()
+    private var cancellables: [AnyCancellable] = []
 
     // MARK: - Dependencies
 
@@ -290,12 +294,33 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         navigationController?.navigationBar.accessibilityIdentifier = "my-site-navigation-bar"
 
         if isSidebarModeEnabled {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(title: nil, image: UIImage(systemName: "ellipsis"), target: nil, action: nil, menu: UIMenu(options: .displayInline, children: [
-                UIDeferredMenuElement.uncached { [weak self] in
-                    $0(self?.sitePickerViewController?.makeSiteActionsMenu()?.children ?? [])
-                }
-            ]))
+            navigationItem.rightBarButtonItems = makeRegularClassSizeNavigationItems()
+
+            notificationsButtonViewModel.$image.dropFirst()
+                .receive(on: DispatchQueue.main) // Skip on hop
+                .sink { [weak self] _ in
+                    guard let self else { return }
+                    self.navigationItem.rightBarButtonItems = self.makeRegularClassSizeNavigationItems()
+                }.store(in: &cancellables)
         }
+    }
+
+    private func makeRegularClassSizeNavigationItems() -> [UIBarButtonItem] {
+        return [
+            UIBarButtonItem(image: notificationsButtonViewModel.image, style: .plain, target: self, action: #selector(buttonShowNotificationsTapped))
+        ]
+    }
+
+    @objc private func buttonShowNotificationsTapped(_ sender: UIBarButtonItem) {
+        let notificationsVC = UIStoryboard(name: "Notifications", bundle: nil).instantiateInitialViewController() as! NotificationsViewController
+        notificationsVC.isSidebarModeEnabled = true
+
+        let navigationVC = UINavigationController(rootViewController: notificationsVC)
+        navigationVC.modalPresentationStyle = .popover
+        navigationVC.preferredContentSize = CGSize(width: 375, height: 800)
+        navigationVC.popoverPresentationController?.sourceItem = sender
+        navigationVC.popoverPresentationController?.permittedArrowDirections = [.up]
+        present(navigationVC, animated: true)
     }
 
     private func configureNavBarAppearance(animated: Bool) {

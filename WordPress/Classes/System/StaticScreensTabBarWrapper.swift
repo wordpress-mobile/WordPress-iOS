@@ -65,23 +65,7 @@ class StaticScreensTabBarWrapper: RootViewPresenter {
         // Do nothing
     }
 
-    func switchToSavedPosts() {
-        // Do nothing
-    }
-
-    func resetReaderDiscoverNudgeFlow() {
-        // Do nothing
-    }
-
-    func resetReaderTab() {
-        // Do nothing
-    }
-
     func navigateToReaderSearch() {
-        // Do nothing
-    }
-
-    func navigateToReaderSearch(withSearchText: String) {
         // Do nothing
     }
 

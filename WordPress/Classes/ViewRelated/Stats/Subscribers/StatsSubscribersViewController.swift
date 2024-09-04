@@ -24,6 +24,7 @@ final class StatsSubscribersViewController: SiteStatsBaseTableViewController {
         super.viewDidLoad()
 
         viewModel.viewMoreDelegate = self
+        tableView.cellLayoutMarginsFollowReadableWidth = true
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
         refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
     }

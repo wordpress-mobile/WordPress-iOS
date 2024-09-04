@@ -1,4 +1,3 @@
-import CocoaLumberjack
 import AutomatticTracks
 import WordPressShared
 import WordPressKit

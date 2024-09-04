@@ -5,8 +5,6 @@ final class ReaderSaveForLaterAction {
     private enum Strings {
         static let postSaved = NSLocalizedString("Post saved.", comment: "Title of the notification presented in Reader when a post is saved for later")
         static let postRemoved = NSLocalizedString("Post removed.", comment: "Title of the notification presented in Reader when a post is removed from save for later")
-        static let viewAll = NSLocalizedString("View All", comment: "Button in the notification presented in Reader when a post is saved for later")
-        static let undo = NSLocalizedString("Undo", comment: "Button in the notification presented in Reader when a post removed from saved for later")
         static let addToSavedError = NSLocalizedString("Could not save post for later", comment: "Title of a prompt.")
         static let removeFromSavedError = NSLocalizedString("Could not remove post from Saved for Later", comment: "Title of a prompt.")
     }
@@ -50,25 +48,13 @@ final class ReaderSaveForLaterAction {
         }
 
         if post.isSavedForLater {
-            presentPostSavedNotice(origin: origin)
+            present(Notice(title: Strings.postSaved, feedbackType: .success))
         } else {
             presentPostRemovedNotice(for: post,
                                      context: context,
                                      origin: origin,
                                      completion: completion)
         }
-    }
-
-    private func presentPostSavedNotice(origin: ReaderSaveForLaterOrigin) {
-        let notice = Notice(title: Strings.postSaved,
-                            feedbackType: .success,
-                            actionTitle: Strings.viewAll,
-                            actionHandler: { _ in
-                                self.trackViewAllSavedPostsAction(origin: origin)
-                                    RootViewCoordinator.sharedPresenter.switchToSavedPosts()
-        })
-
-        present(notice)
     }
 
     private func presentPostRemovedNotice(for post: ReaderPost, context: NSManagedObjectContext, origin: ReaderSaveForLaterOrigin, completion: (() -> Void)?) {
@@ -78,7 +64,7 @@ final class ReaderSaveForLaterAction {
 
         let notice = Notice(title: Strings.postRemoved,
                             feedbackType: .success,
-                            actionTitle: Strings.undo,
+                            actionTitle: SharedStrings.Button.undo,
                             actionHandler: { _ in
                                 self.trackSaveAction(for: post, origin: origin)
                                 self.toggleSavedForLater(post, context: context, origin: origin, completion: completion)
