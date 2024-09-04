@@ -14,7 +14,7 @@ extension UITableViewCell {
         accessoryType = .none
         isUserInteractionEnabled = false
         textLabel?.isEnabled = false
-        textLabel?.textColor = AppColor.neutral(.shade20)
-        detailTextLabel?.textColor = AppColor.neutral(.shade20)
+        textLabel?.textColor = UIAppColor.neutral(.shade20)
+        detailTextLabel?.textColor = UIAppColor.neutral(.shade20)
     }
 }

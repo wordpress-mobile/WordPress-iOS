@@ -64,14 +64,14 @@ class CountriesMapView: UIView, NibLoadable {
 private extension CountriesMapView {
     func decorate(_ label: UILabel) {
         label.font = WPStyleGuide.fontForTextStyle(.footnote)
-        label.textColor = AppColor.neutral(.shade70)
+        label.textColor = UIAppColor.neutral(.shade70)
     }
 
     func mapColors() -> [UIColor] {
         if traitCollection.userInterfaceStyle == .dark {
-            return [AppColor.primary(.shade90), AppColor.primary]
+            return [UIAppColor.primary(.shade90), UIAppColor.primary]
         } else {
-            return [AppColor.primary(.shade5), AppColor.primary]
+            return [UIAppColor.primary(.shade5), UIAppColor.primary]
         }
     }
 

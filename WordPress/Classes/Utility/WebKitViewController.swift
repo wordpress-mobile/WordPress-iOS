@@ -173,7 +173,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = UIColor(light: AppColor.gray(.shade0), dark: .systemBackground)
+        view.backgroundColor = UIColor(light: UIAppColor.gray(.shade0), dark: .systemBackground)
 
         let stackView = UIStackView(arrangedSubviews: [
             progressView,
@@ -294,7 +294,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         titleView.titleLabel.text = NSLocalizedString("Loading...", comment: "Loading. Verb")
 
         titleView.titleLabel.textColor = navBarTitleColor
-        titleView.subtitleLabel.textColor = AppColor.neutral(.shade30)
+        titleView.subtitleLabel.textColor = UIAppColor.neutral(.shade30)
 
         if let title = customTitle {
             self.title = title

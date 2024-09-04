@@ -135,7 +135,7 @@ final class BlazeCampaignTableViewCell: UITableViewCell, Reusable {
     }
 
     private func applyStyle() {
-        backgroundColor = .DS.Background.primary
+        backgroundColor = .systemGroupedBackground
     }
 
     private func setupViews() {

@@ -106,11 +106,11 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
         dateLabel.textColor = .secondaryLabel
         timeLabel.textColor = .secondaryLabel
 
-        rewindButton.setTitleColor(AppColor.primary, for: .normal)
-        rewindButton.setTitleColor(AppColor.primaryDark, for: .highlighted)
+        rewindButton.setTitleColor(UIAppColor.primary, for: .normal)
+        rewindButton.setTitleColor(UIAppColor.primaryDark, for: .highlighted)
 
-        backupButton.setTitleColor(AppColor.primary, for: .normal)
-        backupButton.setTitleColor(AppColor.primaryDark, for: .highlighted)
+        backupButton.setTitleColor(UIAppColor.primary, for: .normal)
+        backupButton.setTitleColor(UIAppColor.primaryDark, for: .highlighted)
     }
 
     private func setupViews() {
@@ -132,7 +132,7 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
         }
 
         if let avatar = activity.actor?.avatarURL, let avatarURL = URL(string: avatar) {
-            imageView.backgroundColor = AppColor.neutral(.shade20)
+            imageView.backgroundColor = UIAppColor.neutral(.shade20)
             imageView.downloadImage(from: avatarURL, placeholderImage: .gridicon(.user, size: Constants.gridiconSize))
         } else if let iconType = WPStyleGuide.ActivityStyleGuide.getGridiconTypeForActivity(activity) {
             imageView.contentMode = .center

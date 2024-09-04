@@ -54,7 +54,7 @@ class WebProgressView: UIProgressView {
     }
 
     private func configure() {
-        progressTintColor = AppColor.primary
+        progressTintColor = UIAppColor.primary
         backgroundColor = .systemGroupedBackground
         progressViewStyle = .bar
     }

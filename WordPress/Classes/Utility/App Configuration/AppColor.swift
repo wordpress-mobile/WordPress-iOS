@@ -1,7 +1,8 @@
 import Foundation
 import ColorStudio
+import SwiftUI
 
-struct AppColor {
+struct UIAppColor {
     static func primary(_ shade: ColorStudioShade) -> UIColor {
         CSColor.Blue.shade(shade)
     }
@@ -118,4 +119,16 @@ struct AppColor {
     static let placeholderElementFaded: UIColor = UIColor(light: .systemGray6, dark: .systemGray5)
 
     static let prologueBackground = UIColor(light: blue(.shade0), dark: .systemBackground)
+
+    static let switchStyle: SwitchToggleStyle = SwitchToggleStyle(tint: Color(UIAppColor.brand))
+}
+
+struct AppColor {
+    #if IS_JETPACK
+    static let brand = Color(CSColor.JetpackGreen.base)
+    #endif
+
+    #if IS_WORDPRESS
+    static let brand = Color(CSColor.WordPressBlue.base)
+    #endif
 }

@@ -15,14 +15,14 @@ extension WPStyleGuide {
 
         // MARK: - Cell Styles
 
-        public static let placeholderColor: UIColor = AppColor.neutral(.shade10)
+        public static let placeholderColor: UIColor = UIAppColor.neutral(.shade10)
 
-        public static let activeCellBackgroundColor: UIColor = AppColor.neutral(.shade40)
+        public static let activeCellBackgroundColor: UIColor = UIAppColor.neutral(.shade40)
         public static let activeCellNameColor: UIColor = .invertedLabel
-        public static let activeCellInfoColor: UIColor = AppColor.primaryLight
+        public static let activeCellInfoColor: UIColor = UIAppColor.primaryLight
 
-        public static let inactiveCellNameColor: UIColor = AppColor.neutral(.shade70)
-        public static let inactiveCellPriceColor: UIColor = AppColor.success
+        public static let inactiveCellNameColor: UIColor = UIAppColor.neutral(.shade70)
+        public static let inactiveCellPriceColor: UIColor = UIAppColor.success
 
         // MARK: - Metrics
 

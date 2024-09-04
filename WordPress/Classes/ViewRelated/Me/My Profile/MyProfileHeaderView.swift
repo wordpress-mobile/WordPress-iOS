@@ -84,6 +84,6 @@ class MyProfileHeaderView: UITableViewHeaderFooterView {
     }
 
     private func configureGravatarButton() {
-        gravatarButton.tintColor = AppColor.primary
+        gravatarButton.tintColor = UIAppColor.primary
     }
 }

@@ -36,14 +36,14 @@ class CircularProgressView: UIView {
             switch self {
             case .primary:
                 return Appearance(
-                    progressIndicatorAppearance: ProgressIndicatorView.Appearance(lineColor: AppColor.primary(.shade40)),
+                    progressIndicatorAppearance: ProgressIndicatorView.Appearance(lineColor: UIAppColor.primary(.shade40)),
                     backgroundColor: .clear,
-                    accessoryViewTintColor: AppColor.neutral(.shade70),
+                    accessoryViewTintColor: UIAppColor.neutral(.shade70),
                     accessoryViewBackgroundColor: .systemGroupedBackground)
             case .mediaCell:
                 return Appearance(
                     progressIndicatorAppearance: ProgressIndicatorView.Appearance(lineColor: .white),
-                    backgroundColor: AppColor.neutral(.shade70),
+                    backgroundColor: UIAppColor.neutral(.shade70),
                     accessoryViewTintColor: .white,
                     accessoryViewBackgroundColor: .clear)
             case .white:

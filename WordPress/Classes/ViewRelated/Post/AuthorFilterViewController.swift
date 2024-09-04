@@ -234,7 +234,7 @@ private class AuthorFilterCell: UITableViewCell {
             separator.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth)
         ])
 
-        tintColor = AppColor.primary(.shade40)
+        tintColor = UIAppColor.primary(.shade40)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -270,7 +270,7 @@ private class AuthorFilterCell: UITableViewCell {
     }
 
     private enum Appearance {
-        static let placeholderTintColor = AppColor.neutral(.shade70)
+        static let placeholderTintColor = UIAppColor.neutral(.shade70)
     }
 
     private enum Metrics {

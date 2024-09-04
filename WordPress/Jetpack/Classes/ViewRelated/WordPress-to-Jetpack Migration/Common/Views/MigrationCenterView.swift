@@ -56,8 +56,8 @@ class MigrationCenterView: UIView {
     private enum Appearance {
         static let fakeAlertToDescriptionSpacing: CGFloat = 20
         static let descriptionTextColor = UIColor(
-            light: AppColor.gray(.shade50),
-            dark: AppColor.gray(.shade10)
+            light: UIAppColor.gray(.shade50),
+            dark: UIAppColor.gray(.shade10)
         )
     }
 }

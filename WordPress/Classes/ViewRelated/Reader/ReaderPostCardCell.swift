@@ -529,7 +529,7 @@ private extension ReaderPostCardCell {
         }
         likeButton.setTitle(isLiked ? Constants.likedButtonText : Constants.likeButtonText, for: .normal)
         likeButton.setImage(isLiked ? Constants.likedButtonImage : Constants.likeButtonImage, for: .normal)
-        likeButton.tintColor = isLiked ? AppColor.jetpackGreen : .secondaryLabel
+        likeButton.tintColor = isLiked ? UIAppColor.jetpackGreen : .secondaryLabel
         likeButton.setTitleColor(likeButton.tintColor, for: .normal)
     }
 

@@ -132,16 +132,16 @@ private extension WebCommentContentRenderer {
     struct Constants {
         static let emptyElementRegexPattern = "<[a-z]+>(<!-- [a-zA-Z0-9\\/: \"{}\\-\\.,\\?=\\[\\]]+ -->)+<\\/[a-z]+>"
 
-        static let highlightColor = UIColor(light: AppColor.primary, dark: AppColor.primary(.shade30))
+        static let highlightColor = UIColor(light: UIAppColor.primary, dark: UIAppColor.primary(.shade30))
 
         static let mentionBackgroundColor: UIColor = {
-            var darkColor = AppColor.primary(.shade90)
+            var darkColor = UIAppColor.primary(.shade90)
 
             if AppConfiguration.isWordPress {
                 darkColor = darkColor.withAlphaComponent(0.5)
             }
 
-            return UIColor(light: AppColor.primary(.shade0), dark: darkColor)
+            return UIColor(light: UIAppColor.primary(.shade0), dark: darkColor)
         }()
     }
 
