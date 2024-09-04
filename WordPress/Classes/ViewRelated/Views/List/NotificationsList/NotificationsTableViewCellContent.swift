@@ -60,6 +60,8 @@ fileprivate extension NotificationsTableViewCellContent {
             HStack(alignment: rootStackAlignment, spacing: 0) {
                 avatarHStack
                     .saveSize(in: $avatarSize)
+                    .accessibilityHidden(true) // VoiceOver users don't care about the avatar
+
                 textsVStack
                     .offset(
                         x: -info.avatarStyle.leadingOffset * 2,
@@ -67,12 +69,17 @@ fileprivate extension NotificationsTableViewCellContent {
                     )
                     .padding(.leading, .DS.Padding.split)
                     .saveSize(in: $textsSize)
+                    .accessibilitySortPriority(1)
                 Spacer()
                 if let inlineAction = info.inlineAction {
+
                     InlineAction(configuration: inlineAction)
                         .padding(.top, actionIconTopPadding())
+                        .accessibilityLabel(inlineAction.accessibilityLabel)
+                        .accessibilityHint(inlineAction.accessibilityHint)
+                        .accessibilitySortPriority(0) // Screenreaders should see the action button last
                 }
-            }
+            }.accessibilityElement(children: .contain)
             .padding(.trailing, .DS.Padding.double)
         }
 
@@ -197,9 +204,14 @@ extension NotificationsTableViewCellContent {
 
             let action: () -> Void
 
-            init(icon: SwiftUI.Image, color: Color? = nil, action: @escaping () -> Void) {
+            let accessibilityLabel: LocalizedString
+            let accessibilityHint: LocalizedString
+
+            init(icon: SwiftUI.Image, color: Color? = nil, accessibilityLabel: LocalizedString, accessibilityHint: LocalizedString, action: @escaping () -> Void) {
                 self.icon = icon
                 self.color = color
+                self.accessibilityLabel = accessibilityLabel
+                self.accessibilityHint = accessibilityHint
                 self.action = action
             }
         }
@@ -271,7 +283,7 @@ private extension View {
                     avatarStyle: .single(
                         URL(string: "https://i.pickadummy.com/index.php?imgsize=40x40")!
                     ),
-                    inlineAction: .init(icon: .DS.icon(named: .ellipsisHorizontal), action: {})
+                    inlineAction: .init(icon: .DS.icon(named: .ellipsisHorizontal), accessibilityLabel: "", accessibilityHint: "", action: {})
                 )
             )
         )
@@ -286,7 +298,7 @@ private extension View {
                         URL(string: "https://i.pickadummy.com/index.php?imgsize=34x34")!,
                         URL(string: "https://i.pickadummy.com/index.php?imgsize=34x34")!
                     ),
-                    inlineAction: .init(icon: .init(systemName: "plus"), action: {})
+                    inlineAction: .init(icon: .init(systemName: "plus"), accessibilityLabel: "", accessibilityHint: "", action: {})
                 )
             )
         )
@@ -301,7 +313,7 @@ private extension View {
                         URL(string: "https://i.pickadummy.com/index.php?imgsize=28x28")!,
                         URL(string: "https://i.pickadummy.com/index.php?imgsize=28x28")!
                     ),
-                    inlineAction: .init(icon: .init(systemName: "square.and.arrow.up"), action: {})
+                    inlineAction: .init(icon: .init(systemName: "square.and.arrow.up"), accessibilityLabel: "", accessibilityHint: "", action: {})
                 )
             )
         )
