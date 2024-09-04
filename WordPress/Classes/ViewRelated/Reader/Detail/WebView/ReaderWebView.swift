@@ -276,17 +276,17 @@ class ReaderWebView: WKWebView {
                 return displaySetting.color.foreground.withAlphaComponent(0.1)
             case .shade5:
                 if displaySetting.color == .system {
-                    return UIColor(light: AppStyleGuide.gray(.shade5), dark: AppStyleGuide.gray(.shade80))
+                    return UIColor(light: AppColor.gray(.shade5), dark: AppColor.gray(.shade80))
                 }
                 return displaySetting.color.border
             case .shade10:
                 if displaySetting.color == .system {
-                    return UIColor(light: AppStyleGuide.gray(.shade10), dark: AppStyleGuide.gray(.shade30))
+                    return UIColor(light: AppColor.gray(.shade10), dark: AppColor.gray(.shade30))
                 }
                 return displaySetting.color.border
             case .shade40:
                 if displaySetting.color == .system {
-                    return UIColor(light: AppStyleGuide.gray(.shade40), dark: AppStyleGuide.gray(.shade20))
+                    return UIColor(light: AppColor.gray(.shade40), dark: AppColor.gray(.shade20))
                 }
                 return displaySetting.color.secondaryForeground
             case .shade50:
@@ -300,12 +300,12 @@ class ReaderWebView: WKWebView {
     }
 
     func linkColor(for trait: UITraitCollection) -> UIColor {
-        let color = displaySetting.color == .system ? AppStyleGuide.blue : displaySetting.color.foreground
+        let color = displaySetting.color == .system ? AppColor.blue : displaySetting.color.foreground
         return color.color(for: trait)
     }
 
     func activeLinkColor(for trait: UITraitCollection) -> UIColor {
-        let color = displaySetting.color == .system ? AppStyleGuide.blue(.shade30) : displaySetting.color.secondaryForeground
+        let color = displaySetting.color == .system ? AppColor.blue(.shade30) : displaySetting.color.secondaryForeground
         return color.color(for: trait)
     }
 }

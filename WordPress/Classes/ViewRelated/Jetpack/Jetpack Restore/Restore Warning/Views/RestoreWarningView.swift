@@ -27,7 +27,7 @@ class RestoreWarningView: UIView, NibLoadable {
     private func applyStyles() {
         backgroundColor = .systemBackground
 
-        icon.tintColor = AppStyleGuide.error
+        icon.tintColor = AppColor.error
 
         titleLabel.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
         titleLabel.textColor = .label

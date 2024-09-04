@@ -236,7 +236,7 @@ class DateCell: JTACDayCell {
         static let labelSize: CGFloat = 28
         static let reuseIdentifier = "dateCell"
         static var selectedColor: UIColor {
-            UIColor(light: AppStyleGuide.primary(.shade5), dark: AppStyleGuide.primary(.shade90))
+            UIColor(light: AppColor.primary(.shade5), dark: AppColor.primary(.shade90))
         }
     }
 
@@ -344,17 +344,17 @@ extension DateCell {
             dateLabel.backgroundColor = .clear
         case .left:
             textColor = .white
-            dateLabel.backgroundColor = AppStyleGuide.primary
+            dateLabel.backgroundColor = AppColor.primary
             rightPlaceholder.backgroundColor = Constants.selectedColor
         case .right:
             textColor = .white
-            dateLabel.backgroundColor = AppStyleGuide.primary
+            dateLabel.backgroundColor = AppColor.primary
             leftPlaceholder.backgroundColor = Constants.selectedColor
         case .full:
             textColor = .invertedLabel
             leftPlaceholder.backgroundColor = .clear
             rightPlaceholder.backgroundColor = .clear
-            dateLabel.backgroundColor = AppStyleGuide.primary
+            dateLabel.backgroundColor = AppColor.primary
         case .none:
             leftPlaceholder.backgroundColor = .clear
             rightPlaceholder.backgroundColor = .clear
@@ -425,7 +425,7 @@ class CalendarYearHeaderView: JTACMonthReusableView {
     private enum Constants {
         static let stackViewSpacing: CGFloat = 16
         static let spacingAfterWeekdays: CGFloat = 8
-        static let titleColor = UIColor(light: AppStyleGuide.gray(.shade70), dark: .secondaryLabel)
+        static let titleColor = UIColor(light: AppColor.gray(.shade70), dark: .secondaryLabel)
     }
 }
 

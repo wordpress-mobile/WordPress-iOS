@@ -19,7 +19,7 @@ struct JetpackSocialNoConnectionView: View {
             HStack {
                 Text(Constants.connectText)
                     .font(.callout)
-                    .foregroundColor(Color(AppStyleGuide.primary))
+                    .foregroundColor(Color(AppColor.primary))
                     .onTapGesture {
                         viewModel.onConnectTap?()
                     }
@@ -27,7 +27,7 @@ struct JetpackSocialNoConnectionView: View {
                     Spacer()
                     Text(Constants.notNowText)
                         .font(.callout)
-                        .foregroundColor(Color(AppStyleGuide.primary))
+                        .foregroundColor(Color(AppColor.primary))
                         .onTapGesture {
                             viewModel.onNotNowTap?()
                         }

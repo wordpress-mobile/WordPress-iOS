@@ -276,6 +276,6 @@ private struct PaddedLinkRow: ImmuTableRow {
         cell.imageView?.image = UIImage(color: .clear, size: Gridicon.defaultSize)
 
         WPStyleGuide.configureTableViewActionCell(cell)
-        cell.textLabel?.textColor = AppStyleGuide.primary
+        cell.textLabel?.textColor = AppColor.primary
     }
 }

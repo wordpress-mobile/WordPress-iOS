@@ -83,9 +83,9 @@ struct PrepublishingSocialAccountsFooterView: View {
 
     private enum Constants {
         static let buttonLabelFont = Font.title3.weight(.medium)
-        static let buttonColor = AppStyleGuide.primary
-        static let buttonHighlightedColor = AppStyleGuide.jetpackGreen(.shade70)
-        static let warningColor = AppStyleGuide.warning(.shade50)
+        static let buttonColor = AppColor.primary
+        static let buttonHighlightedColor = AppColor.jetpackGreen(.shade70)
+        static let warningColor = AppColor.warning(.shade50)
 
         static let remainingSharesLabelTextFormat = NSLocalizedString(
             "prepublishing.socialAccounts.footer.remainingShares.text",

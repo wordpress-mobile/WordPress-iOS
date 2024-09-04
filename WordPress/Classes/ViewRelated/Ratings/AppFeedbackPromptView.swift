@@ -48,7 +48,7 @@ class AppFeedbackPromptView: UIView {
 
         // Yes Button
         leftButton.translatesAutoresizingMaskIntoConstraints = false
-        leftButton.backgroundColor = AppStyleGuide.primary
+        leftButton.backgroundColor = AppColor.primary
         leftButton.tintColor = .white
         leftButton.setTitleColor(.white, for: .normal)
         leftButton.titleLabel?.font = textFont

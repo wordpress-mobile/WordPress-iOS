@@ -33,7 +33,7 @@ class FeatureItemCell: WPTableViewCell {
         separator.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth).isActive = true
         separator.backgroundColor = .separator
 
-        featureTitleLabel.textColor = AppStyleGuide.primary
+        featureTitleLabel.textColor = AppColor.primary
         featureDescriptionLabel.textColor = .label
     }
 

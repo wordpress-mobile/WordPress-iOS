@@ -77,7 +77,7 @@ final class ErrorStateView: UIView {
             label.numberOfLines = 0
 
             label.font = WPStyleGuide.fontForTextStyle(.title2)
-            label.textColor = AppStyleGuide.neutral(.shade40)
+            label.textColor = AppColor.neutral(.shade40)
             label.textAlignment = .center
 
             label.text = configuration.title
@@ -105,7 +105,7 @@ final class ErrorStateView: UIView {
                 label.numberOfLines = 0
 
                 label.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
-                label.textColor = AppStyleGuide.neutral(.shade70)
+                label.textColor = AppColor.neutral(.shade70)
                 label.textAlignment = .center
 
                 label.text = subtitleText
@@ -138,7 +138,7 @@ final class ErrorStateView: UIView {
                 label.numberOfLines = 0
 
                 label.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .medium)
-                label.textColor = AppStyleGuide.primary
+                label.textColor = AppColor.primary
                 label.textAlignment = .center
 
                 label.text = NSLocalizedString("Contact Support",
@@ -156,7 +156,7 @@ final class ErrorStateView: UIView {
 
                 imageView.translatesAutoresizingMaskIntoConstraints = false
                 imageView.contentMode = .scaleAspectFit
-                imageView.tintColor = AppStyleGuide.primary
+                imageView.tintColor = AppColor.primary
 
                 return imageView
             }()

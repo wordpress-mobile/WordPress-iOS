@@ -17,7 +17,7 @@ struct UnifiedPrologueIntroContentView: View {
                             xOffset: -content.size.width * 0.125,
                             yOffset: content.size.height * 0.04,
                             iconType: .pages,
-                            backgroundColor: Color(AppStyleGuide.celadon(.shade30))
+                            backgroundColor: Color(AppColor.celadon(.shade30))
                         )
                     }
                 }
@@ -30,7 +30,7 @@ struct UnifiedPrologueIntroContentView: View {
                             xOffset: -content.size.width * 0.115,
                             yOffset: -content.size.height * 0.07,
                             iconType: .customize,
-                            backgroundColor: Color(AppStyleGuide.orange(.shade30))
+                            backgroundColor: Color(AppColor.orange(.shade30))
                         )
                     }
                     .offset(x: 0, y: -content.size.height * 0.04)
@@ -53,7 +53,7 @@ struct UnifiedPrologueIntroContentView: View {
                             xOffset: content.size.width * 0.06,
                             yOffset: -content.size.height * 0.19,
                             iconType: .create,
-                            backgroundColor: Color(AppStyleGuide.pink(.shade40))
+                            backgroundColor: Color(AppColor.pink(.shade40))
                         )
                     }
                     .offset(x: 0, y: content.size.height * 0.03)

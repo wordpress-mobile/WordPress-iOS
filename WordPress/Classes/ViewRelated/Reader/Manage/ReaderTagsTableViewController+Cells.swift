@@ -35,7 +35,7 @@ private extension UIButton {
     enum Constants {
         static let size = CGSize(width: 40, height: 40)
         static let image = UIImage.gridicon(.crossSmall)
-        static let tintColor = AppStyleGuide.gray(.shade10)
+        static let tintColor = AppColor.gray(.shade10)
         static let insets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: -8) // To better align with the plus sign accessory view
     }
 

@@ -115,6 +115,6 @@ class JetpackScanStatusCell: UITableViewCell, NibReusable {
         progressView.layer.cornerRadius = 4
         progressView.clipsToBounds = true
 
-        progressView.tintColor = AppStyleGuide.jetpackGreen(.shade50)
+        progressView.tintColor = AppColor.jetpackGreen(.shade50)
     }
 }

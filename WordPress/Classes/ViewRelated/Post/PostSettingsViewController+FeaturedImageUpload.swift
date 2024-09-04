@@ -13,7 +13,7 @@ extension PostSettingsViewController: PHPickerViewControllerDelegate, ImagePicke
         let button = UIButton()
         var configuration = UIButton.Configuration.plain()
         configuration.title = Strings.buttonSetFeaturedImage
-        configuration.baseForegroundColor = AppStyleGuide.primary
+        configuration.baseForegroundColor = AppColor.primary
         button.configuration = configuration
         button.menu = makeSetFeaturedImageMenu()
         button.showsMenuAsPrimaryAction = true

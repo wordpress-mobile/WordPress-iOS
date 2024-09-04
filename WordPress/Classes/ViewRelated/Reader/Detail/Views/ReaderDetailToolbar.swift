@@ -190,7 +190,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
     }
 
     private func configureActionButtonStyle(_ button: UIButton) {
-        let standardDisabledColor = UIColor(light: AppStyleGuide.gray(.shade10), dark: .quaternaryLabel)
+        let standardDisabledColor = UIColor(light: AppColor.gray(.shade10), dark: .quaternaryLabel)
         let disabledColor = displaySetting == .standard ? standardDisabledColor : displaySetting.color.border
 
         WPStyleGuide.applyReaderActionButtonStyle(button,

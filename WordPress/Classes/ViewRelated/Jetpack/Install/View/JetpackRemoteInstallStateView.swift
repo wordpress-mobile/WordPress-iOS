@@ -128,15 +128,15 @@ private extension JetpackRemoteInstallStateView {
         }
 
         struct MainButton {
-            static let normalBackground = UIImage.renderBackgroundImage(fill: AppStyleGuide.brand)
-            static let loadingBackground = UIImage.renderBackgroundImage(fill: AppStyleGuide.jetpackGreen(.shade70))
+            static let normalBackground = UIImage.renderBackgroundImage(fill: AppColor.brand)
+            static let loadingBackground = UIImage.renderBackgroundImage(fill: AppColor.jetpackGreen(.shade70))
             static let titleColor = UIColor.white
             static let font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
             static let activityIndicatorColor = UIColor.white
         }
 
         struct SupportButton {
-            static let color = AppStyleGuide.brand
+            static let color = AppColor.brand
             static let font = WPStyleGuide.fontForTextStyle(.body)
             static let text = NSLocalizedString("Contact Support", comment: "Contact Support button title")
         }

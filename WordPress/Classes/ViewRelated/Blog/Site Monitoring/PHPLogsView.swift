@@ -222,20 +222,20 @@ extension AtomicErrorLogEntry: Identifiable {
     var severityBackgroundColor: UIColor {
         let severity = AtomicErrorLogEntry.Severity(rawValue: severity ?? "")!
         return switch severity {
-            case .user: AppStyleGuide.gray(.shade5)
-            case .warning: AppStyleGuide.yellow(.shade5)
-            case .deprecated: AppStyleGuide.blue(.shade5)
-            case .fatalError: AppStyleGuide.red(.shade5)
+            case .user: AppColor.gray(.shade5)
+            case .warning: AppColor.yellow(.shade5)
+            case .deprecated: AppColor.blue(.shade5)
+            case .fatalError: AppColor.red(.shade5)
         }
     }
 
     var severityTextColor: UIColor {
         let severity = AtomicErrorLogEntry.Severity(rawValue: severity ?? "")!
         return switch severity {
-            case .user: AppStyleGuide.gray(.shade80)
-            case .warning: AppStyleGuide.yellow(.shade80)
-            case .deprecated: AppStyleGuide.blue(.shade80)
-            case .fatalError: AppStyleGuide.red(.shade80)
+            case .user: AppColor.gray(.shade80)
+            case .warning: AppColor.yellow(.shade80)
+            case .deprecated: AppColor.blue(.shade80)
+            case .fatalError: AppColor.red(.shade80)
         }
     }
 }

@@ -19,7 +19,7 @@ final class SiteAssemblyContentView: UIView {
         static let verticalSpacing                          = CGFloat(30)
         static let statusStackViewSpacing                   = CGFloat(16)
         static let checkmarkImageSize                       = CGSize(width: 18, height: 18)
-        static let checkmarkImageColor                      = AppStyleGuide.success(.shade20)
+        static let checkmarkImageColor                      = AppColor.success(.shade20)
     }
 
     /// This influences the top of the completion label as it animates into place.

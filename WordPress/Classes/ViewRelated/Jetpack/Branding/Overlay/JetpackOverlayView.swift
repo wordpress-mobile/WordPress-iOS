@@ -7,8 +7,8 @@ class JetpackOverlayView: UIView {
 
     private var dismissButtonTintColor: UIColor {
         UIColor(
-            light: AppStyleGuide.gray(.shade5),
-            dark: AppStyleGuide.jetpackGreen(.shade90)
+            light: AppColor.gray(.shade5),
+            dark: AppColor.jetpackGreen(.shade90)
         )
     }
 
@@ -86,7 +86,7 @@ class JetpackOverlayView: UIView {
 
     private lazy var getJetpackButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = AppStyleGuide.jetpackGreen(.shade40)
+        button.backgroundColor = AppColor.jetpackGreen(.shade40)
         button.setTitle(TextContent.buttonTitle, for: .normal)
         button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.titleLabel?.adjustsFontForContentSizeCategory = true
@@ -110,7 +110,7 @@ class JetpackOverlayView: UIView {
     private func setup() {
         backgroundColor = UIColor(
             light: .white,
-            dark: AppStyleGuide.jetpackGreen(.shade100)
+            dark: AppColor.jetpackGreen(.shade100)
         )
         addSubview(dismissButton)
         addSubview(stackView)

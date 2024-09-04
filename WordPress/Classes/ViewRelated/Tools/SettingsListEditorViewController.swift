@@ -80,7 +80,7 @@ open class SettingsListEditorViewController: UITableViewController {
 
         cell.accessoryType = isEmpty() ? .none : .disclosureIndicator
         cell.textLabel?.text = isEmpty() ? emptyText : stringAtIndexPath(indexPath)
-        cell.textLabel?.textColor = isEmpty() ? AppStyleGuide.neutral(.shade10) : AppStyleGuide.neutral(.shade70)
+        cell.textLabel?.textColor = isEmpty() ? AppColor.neutral(.shade10) : AppColor.neutral(.shade70)
 
         return cell
     }

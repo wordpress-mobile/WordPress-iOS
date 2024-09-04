@@ -54,39 +54,39 @@ struct BlazeCampaignStatusViewModel {
         switch status {
         case .created, .processing:
             self.textColor = UIColor(
-                light: AppStyleGuide.yellow(.shade80),
-                dark: AppStyleGuide.yellow(.shade10)
+                light: AppColor.yellow(.shade80),
+                dark: AppColor.yellow(.shade10)
             )
             self.backgroundColor = UIColor(
-                light: AppStyleGuide.yellow(.shade5),
-                dark: AppStyleGuide.yellow(.shade90)
+                light: AppColor.yellow(.shade5),
+                dark: AppColor.yellow(.shade90)
             )
         case .canceled, .rejected:
             self.textColor = UIColor(
-                light: AppStyleGuide.red(.shade70),
-                dark: AppStyleGuide.red(.shade10)
+                light: AppColor.red(.shade70),
+                dark: AppColor.red(.shade10)
             )
             self.backgroundColor = UIColor(
-                light: AppStyleGuide.red(.shade5),
-                dark: AppStyleGuide.red(.shade90)
+                light: AppColor.red(.shade5),
+                dark: AppColor.red(.shade90)
             )
         case .active, .approved:
             self.textColor = UIColor(
-                light: AppStyleGuide.green(.shade80),
-                dark: AppStyleGuide.green(.shade10)
+                light: AppColor.green(.shade80),
+                dark: AppColor.green(.shade10)
             )
             self.backgroundColor = UIColor(
-                light: AppStyleGuide.green(.shade5),
-                dark: AppStyleGuide.green(.shade90)
+                light: AppColor.green(.shade5),
+                dark: AppColor.green(.shade90)
             )
         case .scheduled, .finished:
             self.textColor = UIColor(
-                light: AppStyleGuide.blue(.shade80),
-                dark: AppStyleGuide.blue(.shade10)
+                light: AppColor.blue(.shade80),
+                dark: AppColor.blue(.shade10)
             )
             self.backgroundColor = UIColor(
-                light: AppStyleGuide.blue(.shade5),
-                dark: AppStyleGuide.blue(.shade90)
+                light: AppColor.blue(.shade5),
+                dark: AppColor.blue(.shade90)
             )
         case .unknown:
             self.textColor = .label

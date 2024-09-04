@@ -200,7 +200,7 @@ private extension ReaderDetailLikesView {
         let lastPart = labelParts.last ?? ""
 
         let foregroundColor = displaySetting.color.secondaryForeground
-        let highlightedColor = displaySetting.color == .system ? AppStyleGuide.primary : displaySetting.color.foreground
+        let highlightedColor = displaySetting.color == .system ? AppColor.primary : displaySetting.color.foreground
 
         let foregroundAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: foregroundColor]
         var highlightedAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: highlightedColor]

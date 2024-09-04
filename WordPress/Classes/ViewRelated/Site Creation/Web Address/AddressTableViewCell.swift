@@ -253,7 +253,7 @@ final class AddressTableViewCell: UITableViewCell {
         static let regularCostFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         static let semiboldCostFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
         static let smallCostFont = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular)
-        static let saleCostTextColor = UIColor(light: AppStyleGuide.jetpackGreen(.shade50), dark: AppStyleGuide.jetpackGreen(.shade30))
+        static let saleCostTextColor = UIColor(light: AppColor.jetpackGreen(.shade50), dark: AppColor.jetpackGreen(.shade30))
 
         static let tagFont = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular)
         static let tagTextColor: (ViewModel.Tag?) -> UIColor = { tag in
@@ -261,9 +261,9 @@ final class AddressTableViewCell: UITableViewCell {
                 return .clear
             }
             return switch tag {
-            case .recommended: UIColor(light: AppStyleGuide.jetpackGreen(.shade50), dark: AppStyleGuide.jetpackGreen(.shade30))
-            case .bestAlternative: UIColor(light: AppStyleGuide.purple(.shade50), dark: AppStyleGuide.purple(.shade30))
-            case .sale: UIColor(light: AppStyleGuide.yellow(.shade50), dark: AppStyleGuide.yellow(.shade30))
+            case .recommended: UIColor(light: AppColor.jetpackGreen(.shade50), dark: AppColor.jetpackGreen(.shade30))
+            case .bestAlternative: UIColor(light: AppColor.purple(.shade50), dark: AppColor.purple(.shade30))
+            case .sale: UIColor(light: AppColor.yellow(.shade50), dark: AppColor.yellow(.shade30))
             }
         }
 
@@ -288,7 +288,7 @@ extension AddressTableViewCell {
     }
 
     private func styleCheckmark() {
-        tintColor = AppStyleGuide.primary(.shade40)
+        tintColor = AppColor.primary(.shade40)
     }
 
     override func prepareForReuse() {

@@ -42,7 +42,7 @@ struct UnifiedPrologueEditorContentView: View {
                             xOffset: -alignImageLeftIconSize * 0.75,
                             yOffset: alignImageLeftIconSize  * 0.75,
                             iconType: .alignImageLeft,
-                            backgroundColor: Color(AppStyleGuide.purple(.shade50))
+                            backgroundColor: Color(AppColor.purple(.shade50))
                         )
 
                         Spacer()
@@ -53,7 +53,7 @@ struct UnifiedPrologueEditorContentView: View {
                             xOffset: plusIconSize * 0.66,
                             yOffset: -plusIconSize * 0.66,
                             iconType: .plus,
-                            backgroundColor: Color(AppStyleGuide.blue(.shade50))
+                            backgroundColor: Color(AppColor.blue(.shade50))
                         )
                     }
                 }
@@ -80,7 +80,7 @@ struct UnifiedPrologueEditorContentView: View {
                                 xOffset: -imageMultipleIconSize / 2,
                                 yOffset: imageMultipleIconSize / 2,
                                 iconType: .imageMultiple,
-                                backgroundColor: Color(AppStyleGuide.pink(.shade40))
+                                backgroundColor: Color(AppColor.pink(.shade40))
                             )
                         }
 

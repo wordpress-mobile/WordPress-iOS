@@ -321,7 +321,7 @@ private extension CommentDetailViewController {
         static let tableBottomMargin: CGFloat = 40.0
         static let replyIndicatorVerticalSpacing: CGFloat = 14.0
         static let deleteButtonInsets = UIEdgeInsets(top: 4, left: 20, bottom: 4, right: 20)
-        static let deleteButtonNormalColor = UIColor(light: AppStyleGuide.error, dark: AppStyleGuide.red(.shade40))
+        static let deleteButtonNormalColor = UIColor(light: AppColor.error, dark: AppColor.red(.shade40))
         static let deleteButtonHighlightColor: UIColor = .white
         static let trashButtonBackgroundColor = UIColor.quaternarySystemFill
         static let trashButtonHighlightColor: UIColor = UIColor.tertiarySystemFill

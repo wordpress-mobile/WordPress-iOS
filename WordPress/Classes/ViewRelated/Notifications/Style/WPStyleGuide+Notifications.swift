@@ -10,14 +10,14 @@ extension WPStyleGuide {
         //
 
         // ListTableViewCell
-        public static let unreadIndicatorColor = AppStyleGuide.primaryLight
+        public static let unreadIndicatorColor = AppColor.primaryLight
 
         // Notification cells
         public static let noticonFont               = UIFont(name: "Noticons", size: 16)
         public static let noticonReadColor          = UIColor.systemGray
 
         // Notification undo overlay
-        public static let noteUndoBackgroundColor   = AppStyleGuide.error
+        public static let noteUndoBackgroundColor   = AppColor.error
         public static let noteUndoTextColor         = UIColor.white
         public static let noteUndoTextFont          = subjectRegularFont
 
@@ -67,7 +67,7 @@ extension WPStyleGuide {
         public static let headerTitleColor          = blockTextColor
         public static let headerTitleBoldFont       = blockBoldFont
 
-        public static let headerDetailsColor        = AppStyleGuide.primary
+        public static let headerDetailsColor        = AppColor.primary
         public static let headerDetailsRegularFont  = blockRegularFont
 
         public static var headerTitleRegularStyle: [NSAttributedString.Key: Any] {
@@ -139,20 +139,20 @@ extension WPStyleGuide {
         public static let blockBoldFont             = WPFontManager.systemSemiBoldFont(ofSize: blockFontSize)
 
         public static let blockTextColor            = UIColor.label
-        public static let blockQuotedColor          = AppStyleGuide.neutral
+        public static let blockQuotedColor          = AppColor.neutral
         public static let blockBackgroundColor      = UIColor.secondarySystemGroupedBackground
-        public static let blockLinkColor            = AppStyleGuide.primary
+        public static let blockLinkColor            = AppColor.primary
         public static let blockSeparatorColor       = UIColor.separator
 
         public static let blockApprovedBgColor      = UIColor.clear
 
-        public static let blockUnapprovedSideColor  = AppStyleGuide.warning(.shade60)
+        public static let blockUnapprovedSideColor  = AppColor.warning(.shade60)
         public static let blockUnapprovedBgColor    = UIColor(
-            light: AppStyleGuide.warning(.shade0),
-            dark: AppStyleGuide.warning(.shade90)
+            light: AppColor.warning(.shade0),
+            dark: AppColor.warning(.shade90)
         )
         public static let blockUnapprovedTextColor  = UIColor.label
-        public static let blockUnapprovedLinkColor  = AppStyleGuide.primary
+        public static let blockUnapprovedLinkColor  = AppColor.primary
 
         public static var contentBlockRegularStyle: [NSAttributedString.Key: Any] {
             return  [.paragraphStyle: contentBlockParagraph,
@@ -192,7 +192,7 @@ extension WPStyleGuide {
 
         // Action Buttons
         public static let blockActionDisabledColor  = UIColor.secondaryLabel
-        public static let blockActionEnabledColor   = AppStyleGuide.primary
+        public static let blockActionEnabledColor   = AppColor.primary
 
         // RichText Helpers
         public static func blockBackgroundColorForRichText(_ isBadge: Bool) -> UIColor {
@@ -232,9 +232,9 @@ extension WPStyleGuide {
             button.titleLabel?.font = WPStyleGuide.subtitleFont()
 
             // Color(s)
-            let normalColor = AppStyleGuide.neutral(.shade50)
-            let highlightedColor = AppStyleGuide.neutral(.shade40)
-            let selectedColor = AppStyleGuide.success
+            let normalColor = AppColor.neutral(.shade50)
+            let highlightedColor = AppColor.neutral(.shade40)
+            let selectedColor = AppColor.success
 
             button.setTitleColor(normalColor, for: .normal)
             button.setTitleColor(selectedColor, for: .selected)
@@ -302,9 +302,9 @@ extension WPStyleGuide {
         fileprivate static let subjectTextColor         = UIColor.label
         fileprivate static let subjectNoticonColor      = noticonReadColor
         fileprivate static let footerTextColor          = UIColor.secondaryLabel
-        fileprivate static let blockNoticonColor        = AppStyleGuide.neutral
-        fileprivate static let snippetColor             = AppStyleGuide.neutral
-        fileprivate static let headerTitleContextColor  = AppStyleGuide.primary
+        fileprivate static let blockNoticonColor        = AppColor.neutral
+        fileprivate static let snippetColor             = AppColor.neutral
+        fileprivate static let headerTitleContextColor  = AppColor.primary
 
         // Fonts
         fileprivate static var subjectRegularFont: UIFont {

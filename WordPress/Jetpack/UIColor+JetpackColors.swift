@@ -6,12 +6,12 @@ import WordPressUI
 extension UIColor {
 
     static let statsPrimaryHighlight = UIColor(
-        light: AppStyleGuide.pink(.shade30),
-        dark: AppStyleGuide.pink(.shade60)
+        light: AppColor.pink(.shade30),
+        dark: AppColor.pink(.shade60)
     )
 
     static let statsSecondaryHighlight = UIColor(
-        light: AppStyleGuide.pink(.shade60),
-        dark: AppStyleGuide.pink(.shade30)
+        light: AppColor.pink(.shade60),
+        dark: AppColor.pink(.shade30)
     )
 }

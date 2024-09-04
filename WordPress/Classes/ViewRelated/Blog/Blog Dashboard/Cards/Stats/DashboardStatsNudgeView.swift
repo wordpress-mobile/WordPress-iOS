@@ -42,7 +42,7 @@ final class DashboardStatsNudgeView: UIView {
     }
 
     private func setTitle(title: String, hint: String?) {
-        let externalAttachment = NSTextAttachment(image: UIImage.gridicon(.external, size: Constants.iconSize).withTintColor(AppStyleGuide.primary))
+        let externalAttachment = NSTextAttachment(image: UIImage.gridicon(.external, size: Constants.iconSize).withTintColor(AppColor.primary))
         externalAttachment.bounds = Constants.iconBounds
 
         let attachmentString = NSAttributedString(attachment: externalAttachment)
@@ -51,7 +51,7 @@ final class DashboardStatsNudgeView: UIView {
         if let hint = hint,
            let subStringRange = title.nsRange(of: hint) {
             titleString.addAttributes([
-                .foregroundColor: AppStyleGuide.primary,
+                .foregroundColor: AppColor.primary,
                 .font: WPStyleGuide.fontForTextStyle(.subheadline).bold()
             ], range: subStringRange)
         }

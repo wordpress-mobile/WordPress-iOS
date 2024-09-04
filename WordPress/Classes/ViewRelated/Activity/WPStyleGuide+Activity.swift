@@ -10,7 +10,7 @@ extension WPStyleGuide {
 
         // MARK: - Public Properties
 
-        public static let linkColor = AppStyleGuide.primary
+        public static let linkColor = AppColor.primary
 
         public static var contentRegularStyle: [NSAttributedString.Key: Any] {
             return  [
@@ -47,13 +47,13 @@ extension WPStyleGuide {
         public static func getColorByActivityStatus(_ activity: Activity) -> UIColor {
             switch activity.status {
             case ActivityStatus.error:
-                return AppStyleGuide.error
+                return AppColor.error
             case ActivityStatus.success:
-                return AppStyleGuide.success
+                return AppColor.success
             case ActivityStatus.warning:
-                return AppStyleGuide.warning
+                return AppColor.warning
             default:
-                return AppStyleGuide.neutral(.shade20)
+                return AppColor.neutral(.shade20)
             }
         }
 

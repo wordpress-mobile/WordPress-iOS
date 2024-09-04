@@ -9,6 +9,6 @@ extension WPStyleGuide {
         public static let textColor         = UIColor.label
         public static let separatorColor    = UIColor.separator
         public static let backgroundColor   = UIColor.systemBackground
-        public static let replyButtonColor  = AppStyleGuide.primary
+        public static let replyButtonColor  = AppColor.primary
     }
 }

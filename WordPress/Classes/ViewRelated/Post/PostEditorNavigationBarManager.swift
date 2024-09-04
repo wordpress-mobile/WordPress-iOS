@@ -131,7 +131,7 @@ class PostEditorNavigationBarManager {
     /// Blog TitleView Label
     lazy var blogTitleViewLabel: UILabel = {
         let label = UILabel()
-        label.textColor = AppStyleGuide.appBarText
+        label.textColor = AppColor.appBarText
         label.font = Fonts.blogTitle
         return label
     }()

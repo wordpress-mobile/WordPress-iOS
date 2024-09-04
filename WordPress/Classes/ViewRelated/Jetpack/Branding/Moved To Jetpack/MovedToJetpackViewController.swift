@@ -115,8 +115,8 @@ final class MovedToJetpackViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(viewModel.jetpackButtonTitle, for: .normal)
         button.isPrimary = true
-        button.primaryNormalBackgroundColor = AppStyleGuide.jetpackGreen
-        button.primaryHighlightBackgroundColor = AppStyleGuide.jetpackGreen(.shade80)
+        button.primaryNormalBackgroundColor = AppColor.jetpackGreen
+        button.primaryHighlightBackgroundColor = AppColor.jetpackGreen(.shade80)
         button.addTarget(self, action: #selector(jetpackButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -125,7 +125,7 @@ final class MovedToJetpackViewController: UIViewController {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setAttributedTitle(learnMoreAttributedString(), for: .normal)
-        button.tintColor = AppStyleGuide.jetpackGreen
+        button.tintColor = AppColor.jetpackGreen
         button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .regular)
         button.addTarget(self, action: #selector(learnMoreButtonTapped), for: .touchUpInside)
         return button
@@ -203,7 +203,7 @@ final class MovedToJetpackViewController: UIViewController {
 
     private func learnMoreAttributedString() -> NSAttributedString {
         let image = UIImage.gridicon(.external, size: Metrics.externalIconSize)
-            .withTintColor(AppStyleGuide.jetpackGreen)
+            .withTintColor(AppColor.jetpackGreen)
         let externalAttachment = NSTextAttachment(image: image)
         externalAttachment.bounds = Metrics.externalIconBounds
         let attachmentString = NSAttributedString(attachment: externalAttachment)

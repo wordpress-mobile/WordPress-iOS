@@ -32,13 +32,13 @@ class RestoreStatusFailedView: UIView, NibLoadable {
         messageTitleLabel.numberOfLines = 0
 
         firstHintIcon.image = .gridicon(.history)
-        firstHintIcon.tintColor = AppStyleGuide.warning
+        firstHintIcon.tintColor = AppColor.warning
 
         secondHintIcon.image = .gridicon(.checkmarkCircle)
-        secondHintIcon.tintColor = AppStyleGuide.success
+        secondHintIcon.tintColor = AppColor.success
 
         thirdHintIcon.image = .gridicon(.checkmarkCircle)
-        thirdHintIcon.tintColor = AppStyleGuide.success
+        thirdHintIcon.tintColor = AppColor.success
 
         let messageLabels = [firstHintLabel, secondHintLabel, thirdHintLabel]
         for label in messageLabels {

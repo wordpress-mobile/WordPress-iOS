@@ -162,8 +162,8 @@ private extension PagesCardViewModel {
     private func configureGhostCell(tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: BlogDashboardPostCardGhostCell.defaultReuseID, for: indexPath) as? BlogDashboardPostCardGhostCell
         let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
-                               beatStartColor: AppStyleGuide.placeholderElement,
-                               beatEndColor: AppStyleGuide.placeholderElementFaded)
+                               beatStartColor: AppColor.placeholderElement,
+                               beatEndColor: AppColor.placeholderElementFaded)
         cell?.contentView.stopGhostAnimation()
         cell?.contentView.startGhostAnimation(style: style)
         return cell ?? UITableViewCell()

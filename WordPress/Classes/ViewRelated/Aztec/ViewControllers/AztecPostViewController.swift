@@ -161,9 +161,9 @@ class AztecPostViewController: UIViewController, PostEditor {
         textView.textAttachmentDelegate = self
 
         textView.backgroundColor = Colors.aztecBackground
-        textView.blockquoteBackgroundColor = AppStyleGuide.neutral(.shade5)
+        textView.blockquoteBackgroundColor = AppColor.neutral(.shade5)
         textView.blockquoteBorderColors = [.secondaryLabel]
-        textView.preBackgroundColor = AppStyleGuide.neutral(.shade5)
+        textView.preBackgroundColor = AppColor.neutral(.shade5)
 
         textView.linkTextAttributes = linkAttributes
 
@@ -399,8 +399,8 @@ class AztecPostViewController: UIViewController, PostEditor {
     fileprivate lazy var insertToolbarItem: UIButton = {
         let insertItem = UIButton(type: .custom)
         insertItem.titleLabel?.font = Fonts.mediaPickerInsert
-        insertItem.tintColor = AppStyleGuide.primary
-        insertItem.setTitleColor(AppStyleGuide.primary, for: .normal)
+        insertItem.tintColor = AppColor.primary
+        insertItem.setTitleColor(AppColor.primary, for: .normal)
         insertItem.accessibilityLabel = Constants.mediaPickerInsertAccessibilityLabel
         insertItem.accessibilityIdentifier = "insert_media_button"
 
@@ -1957,7 +1957,7 @@ extension AztecPostViewController {
         toolbar.overflowToggleIcon = .gridicon(.ellipsis)
 
         let mediaButton = makeToolbarButton(identifier: .media)
-        mediaButton.normalTintColor = AppStyleGuide.primary
+        mediaButton.normalTintColor = AppColor.primary
         toolbar.leadingItem = mediaButton
 
         updateToolbar(toolbar, forMode: .text)
@@ -3165,14 +3165,14 @@ extension AztecPostViewController {
         static let title                        = UIColor.label
         static let separator                    = UIColor.separator
         static let placeholder                  = UIColor.tertiaryLabel
-        static let progressBackground           = AppStyleGuide.primary
+        static let progressBackground           = AppColor.primary
         static let progressTint                 = UIColor.white
-        static let progressTrack                = AppStyleGuide.primary
-        static let mediaProgressOverlay         = AppStyleGuide.neutral(.shade70).withAlphaComponent(CGFloat(0.6))
-        static let mediaProgressBarBackground   = AppStyleGuide.neutral(.shade0)
-        static let mediaProgressBarTrack        = AppStyleGuide.primary
-        static let aztecLinkColor               = AppStyleGuide.primary
-        static let mediaOverlayBorderColor      = AppStyleGuide.primary
+        static let progressTrack                = AppColor.primary
+        static let mediaProgressOverlay         = AppColor.neutral(.shade70).withAlphaComponent(CGFloat(0.6))
+        static let mediaProgressBarBackground   = AppColor.neutral(.shade0)
+        static let mediaProgressBarTrack        = AppColor.primary
+        static let aztecLinkColor               = AppColor.primary
+        static let mediaOverlayBorderColor      = AppColor.primary
     }
 
     struct Fonts {

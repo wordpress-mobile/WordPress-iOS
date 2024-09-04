@@ -52,7 +52,7 @@ final class PostSyncStateViewModel {
         case .offlineChanges:
             return (UIImage(systemName: "wifi.slash"), UIColor.secondaryLabel)
         case .failed:
-            return (UIImage.gridicon(.notice), AppStyleGuide.error)
+            return (UIImage.gridicon(.notice), AppColor.error)
         case .idle, .uploading, .syncing:
             return nil
         }

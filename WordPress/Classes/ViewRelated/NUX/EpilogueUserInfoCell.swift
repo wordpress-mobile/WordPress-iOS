@@ -105,7 +105,7 @@ private extension EpilogueUserInfoCell {
     }
 
     func configureColors() {
-        gravatarAddIcon.tintColor = AppStyleGuide.primary
+        gravatarAddIcon.tintColor = AppColor.primary
         gravatarAddIcon.backgroundColor = .systemBackground
 
         fullNameLabel.textColor = .label

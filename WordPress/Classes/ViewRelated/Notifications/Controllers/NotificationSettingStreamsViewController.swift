@@ -131,7 +131,7 @@ class NotificationSettingStreamsViewController: UITableViewController {
         let disabled = stream.kind == .device && pushNotificationsAuthorized == false
 
         cell.imageView?.image       = imageForStreamKind(stream.kind)
-        cell.imageView?.tintColor   = AppStyleGuide.neutral(.shade20)
+        cell.imageView?.tintColor   = AppColor.neutral(.shade20)
         cell.textLabel?.text        = stream.kind.description()
         cell.detailTextLabel?.text  = disabled ? NSLocalizedString("Off", comment: "Disabled") : String()
         cell.accessoryType          = .disclosureIndicator

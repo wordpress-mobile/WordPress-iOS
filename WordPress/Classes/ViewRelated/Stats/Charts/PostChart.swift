@@ -25,7 +25,7 @@ extension PostChartType {
         case .latest:
             return nil
         case .selected:
-            return AppStyleGuide.accent(.shade30)
+            return AppColor.accent(.shade30)
         }
     }
 }
@@ -124,7 +124,7 @@ private final class PostChartDataTransformer {
     }
 
     static func primaryBarColor(forCount count: Int) -> UIColor {
-        return count > 0 ? AppStyleGuide.primaryLight : AppStyleGuide.neutral(.shade0)
+        return count > 0 ? AppColor.primaryLight : AppColor.neutral(.shade0)
     }
 
     static func primaryHighlightColor(forType type: PostChartType, withCount count: Int) -> UIColor? {
@@ -140,10 +140,10 @@ private struct PostChartStyling: BarChartStyling {
     let secondaryBarColor: UIColor?                 = nil
     let primaryHighlightColor: UIColor?
     let secondaryHighlightColor: UIColor?           = nil
-    let labelColor: UIColor                         = AppStyleGuide.neutral(.shade30)
+    let labelColor: UIColor                         = AppColor.neutral(.shade30)
     let legendColor: UIColor?                       = nil
     let legendTitle: String?                        = nil
-    let lineColor: UIColor                          = AppStyleGuide.neutral(.shade5)
+    let lineColor: UIColor                          = AppColor.neutral(.shade5)
     let xAxisValueFormatter: AxisValueFormatter
     let yAxisValueFormatter: AxisValueFormatter    = VerticalAxisFormatter()
 }

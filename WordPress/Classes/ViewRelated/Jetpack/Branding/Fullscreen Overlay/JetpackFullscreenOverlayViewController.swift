@@ -284,17 +284,17 @@ private extension JetpackFullscreenOverlayViewController {
     }
 
     enum Colors {
-        private static let jetpackGreen50 = AppStyleGuide.jetpackGreen(.shade50)
-        private static let jetpackGreen30 = AppStyleGuide.jetpackGreen(.shade30)
-        private static let jetpackGreen90 = AppStyleGuide.jetpackGreen(.shade90)
+        private static let jetpackGreen50 = AppColor.jetpackGreen(.shade50)
+        private static let jetpackGreen30 = AppColor.jetpackGreen(.shade30)
+        private static let jetpackGreen90 = AppColor.jetpackGreen(.shade90)
 
         static let backgroundColor = UIColor(
             light: .systemBackground,
-            dark: AppStyleGuide.jetpackGreen(.shade100)
+            dark: AppColor.jetpackGreen(.shade100)
         )
         static let footnoteTextColor = UIColor(
-            light: AppStyleGuide.gray(.shade50),
-            dark: AppStyleGuide.gray(.shade5)
+            light: AppColor.gray(.shade50),
+            dark: AppColor.gray(.shade5)
         )
         static let actionInfoTextColor = UIColor.secondaryLabel
         static let learnMoreButtonTextColor = UIColor(light: jetpackGreen50, dark: jetpackGreen30)
@@ -302,7 +302,7 @@ private extension JetpackFullscreenOverlayViewController {
         static let continueButtonTextColor = UIColor(light: jetpackGreen50, dark: .white)
         static let switchButtonTextColor = UIColor.white
         static let closeButtonTintColor = UIColor(
-            light: AppStyleGuide.gray(.shade5),
+            light: AppColor.gray(.shade5),
             dark: jetpackGreen90
         )
     }

@@ -21,7 +21,7 @@ class JetpackRestoreHeaderView: UIView, NibReusable {
     // MARK: - Styling
 
     private func applyStyles() {
-        icon.tintColor = AppStyleGuide.success
+        icon.tintColor = AppColor.success
 
         titleLabel.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
         titleLabel.textColor = .label

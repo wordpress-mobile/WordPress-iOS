@@ -19,6 +19,6 @@ struct StringHighlighter {
     }
 
     // MARK: - Style Values
-    static let substringHighlightTextColor = AppStyleGuide.primary
+    static let substringHighlightTextColor = AppColor.primary
     static let substringHighlightFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
 }

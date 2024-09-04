@@ -3,15 +3,15 @@ extension DiffAbstractValue {
         switch operation {
         case .add:
             return [
-                .backgroundColor: UIColor(light: AppStyleGuide.blue(.shade5), dark: AppStyleGuide.primary(.shade80)),
+                .backgroundColor: UIColor(light: AppColor.blue(.shade5), dark: AppColor.primary(.shade80)),
                 .underlineStyle: NSNumber(value: 2),
-                .underlineColor: UIColor(light: AppStyleGuide.primary, dark: AppStyleGuide.primary(.shade20))
+                .underlineColor: UIColor(light: AppColor.primary, dark: AppColor.primary(.shade20))
             ]
         case .del:
             return [
-                .backgroundColor: UIColor(light: AppStyleGuide.red(.shade5), dark: AppStyleGuide.red(.shade80)),
+                .backgroundColor: UIColor(light: AppColor.red(.shade5), dark: AppColor.red(.shade80)),
                 .underlineStyle: NSNumber(value: 2),
-                .underlineColor: UIColor(light: AppStyleGuide.error, dark: AppStyleGuide.red(.shade20)),
+                .underlineColor: UIColor(light: AppColor.error, dark: AppColor.red(.shade20)),
                 .strikethroughStyle: NSNumber(value: 1),
                 .strikethroughColor: UIColor.label
             ]

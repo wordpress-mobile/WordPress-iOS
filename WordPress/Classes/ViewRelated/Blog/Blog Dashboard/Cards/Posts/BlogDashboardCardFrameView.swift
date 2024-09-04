@@ -243,7 +243,7 @@ class BlogDashboardCardFrameView: UIView {
         let titleString = NSMutableAttributedString(string: title)
         if let hint = hint, let range = title.nsRange(of: hint) {
             titleString.addAttributes([
-                .foregroundColor: AppStyleGuide.primary,
+                .foregroundColor: AppColor.primary,
                 .font: font as Any
             ], range: range)
         }

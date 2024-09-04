@@ -27,7 +27,7 @@ class RestoreStatusView: UIView, NibLoadable {
     private func applyStyles() {
         backgroundColor = .systemBackground
 
-        icon.tintColor = AppStyleGuide.success
+        icon.tintColor = AppColor.success
 
         titleLabel.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
         titleLabel.textColor = .label

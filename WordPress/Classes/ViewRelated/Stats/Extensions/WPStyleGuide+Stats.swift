@@ -16,7 +16,7 @@ extension WPStyleGuide {
             var styleGuideColor: UIColor {
                 switch self {
                 case .blue:
-                    return AppStyleGuide.primary(.shade40)
+                    return AppColor.primary(.shade40)
                 case .grey:
                     return .quaternaryLabel
                 case .darkGrey:
@@ -198,7 +198,7 @@ extension WPStyleGuide {
                 filterTabBar.tintColor = UIColor.label
                 filterTabBar.selectedTitleColor = UIColor.label
                 filterTabBar.backgroundColor = .secondarySystemGroupedBackground
-                filterTabBar.deselectedTabColor = UIColor(light: AppStyleGuide.neutral(.shade20), dark: AppStyleGuide.neutral(.shade50))
+                filterTabBar.deselectedTabColor = UIColor(light: AppColor.neutral(.shade20), dark: AppColor.neutral(.shade50))
             }
         }
 
@@ -212,9 +212,9 @@ extension WPStyleGuide {
         static let headerTextColor = UIColor.secondaryLabel
         static let secondaryTextColor = UIColor.secondaryLabel
         static let itemDetailTextColor = UIColor.secondaryLabel
-        static let actionTextColor = AppStyleGuide.primary
-        static let summaryTextColor = AppStyleGuide.neutral(.shade70)
-        static let iconLoadingBackgroundColor = AppStyleGuide.neutral(.shade10)
+        static let actionTextColor = AppColor.primary
+        static let summaryTextColor = AppColor.neutral(.shade70)
+        static let iconLoadingBackgroundColor = AppColor.neutral(.shade10)
 
         static let subTitleFont = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .medium)
         static let summaryFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
@@ -237,23 +237,23 @@ extension WPStyleGuide {
         static let postTitleFont = WPFontManager.notoBoldFont(ofSize: 17.0)
 
         static let customizeInsightsTitleFont = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
-        static let customizeInsightsButtonTextColor = AppStyleGuide.primary
+        static let customizeInsightsButtonTextColor = AppColor.primary
         static let customizeInsightsDismissButtonFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         static let customizeInsightsTryButtonFont = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .body).pointSize, weight: .medium)
 
-        static let positiveColor = AppStyleGuide.success
-        static let negativeColor = AppStyleGuide.error
-        static let neutralColor = AppStyleGuide.blue
+        static let positiveColor = AppColor.success
+        static let negativeColor = AppColor.error
+        static let neutralColor = AppColor.blue
 
         static let gridiconSize = CGSize(width: 24, height: 24)
 
         struct PostingActivityColors {
-            static let range1 = UIColor(light: AppStyleGuide.neutral(.shade5), dark: AppStyleGuide.neutral(.shade10))
-            static let range2 = AppStyleGuide.primary(.shade5)
-            static let range3 = AppStyleGuide.primaryLight
-            static let range4 = AppStyleGuide.primary
-            static let range5 = AppStyleGuide.primaryDark
-            static let selectedDay = AppStyleGuide.accent
+            static let range1 = UIColor(light: AppColor.neutral(.shade5), dark: AppColor.neutral(.shade10))
+            static let range2 = AppColor.primary(.shade5)
+            static let range3 = AppColor.primaryLight
+            static let range4 = AppColor.primary
+            static let range5 = AppColor.primaryDark
+            static let selectedDay = AppColor.accent
         }
 
         static let mapBackground: UIColor = .systemGray4

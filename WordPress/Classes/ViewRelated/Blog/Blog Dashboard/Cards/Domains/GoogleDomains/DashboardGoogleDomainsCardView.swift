@@ -44,7 +44,7 @@ struct DashboardGoogleDomainsCardView: View {
                 buttonAction()
             } label: {
                 Text(Strings.buttonTitle)
-                    .foregroundColor(Color(AppStyleGuide.primary))
+                    .foregroundColor(Color(AppColor.primary))
                     .font(.callout)
             }
             Spacer()

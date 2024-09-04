@@ -111,13 +111,13 @@ open class RewindStatusTableViewCell: ActivityTableViewCell {
         contentLabel.text = title
         summaryLabel.text = summary
 
-        iconBackgroundImageView.backgroundColor = AppStyleGuide.primary
+        iconBackgroundImageView.backgroundColor = AppColor.primary
         iconImageView.image = UIImage.gridicon(.noticeOutline).imageWithTintColor(.white)
         iconImageView.isHidden = false
         actionButtonContainer.isHidden = true
 
-        progressView.progressTintColor = AppStyleGuide.primary
-        progressView.trackTintColor = UIColor(light: (AppStyleGuide.primary(.shade5)), dark: (AppStyleGuide.primary(.shade80)))
+        progressView.progressTintColor = AppColor.primary
+        progressView.trackTintColor = UIColor(light: (AppColor.primary(.shade5)), dark: (AppColor.primary(.shade80)))
         progressView.setProgress(progress, animated: true)
     }
 

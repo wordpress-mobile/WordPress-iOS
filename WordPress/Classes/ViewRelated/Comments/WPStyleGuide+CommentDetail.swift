@@ -4,7 +4,7 @@ import UIKit
 ///
 extension WPStyleGuide {
     public struct CommentDetail {
-        static let tintColor: UIColor = AppStyleGuide.primary
+        static let tintColor: UIColor = AppColor.primary
 
         static let textFont = WPStyleGuide.fontForTextStyle(.body)
         static let textColor = UIColor.label
@@ -24,14 +24,14 @@ extension WPStyleGuide {
 
         public struct Content {
             static let buttonTintColor: UIColor = .secondaryLabel
-            static let likedTintColor: UIColor = AppStyleGuide.primary
+            static let likedTintColor: UIColor = AppColor.primary
 
             static let nameFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
             static let nameTextColor = CommentDetail.textColor
 
             static let badgeFont = WPStyleGuide.fontForTextStyle(.caption2, fontWeight: .semibold)
             static let badgeTextColor = UIColor.white
-            static let badgeColor = AppStyleGuide.blue(.shade50)
+            static let badgeColor = AppColor.blue(.shade50)
 
             static let dateFont = CommentDetail.tertiaryTextFont
             static let dateTextColor = CommentDetail.secondaryTextColor
@@ -41,11 +41,11 @@ extension WPStyleGuide {
 
             // highlighted state
             static let highlightedBackgroundColor = UIColor(
-                light: AppStyleGuide.blue(.shade0),
-                dark: AppStyleGuide.blue(.shade100)
+                light: AppColor.blue(.shade0),
+                dark: AppColor.blue(.shade100)
             ).withAlphaComponent(0.5)
-            static let highlightedBarBackgroundColor = AppStyleGuide.blue(.shade40)
-            static let highlightedReplyButtonTintColor = AppStyleGuide.primary
+            static let highlightedBarBackgroundColor = AppColor.blue(.shade40)
+            static let highlightedReplyButtonTintColor = AppColor.primary
 
             static let placeholderImage = UIImage.gravatarPlaceholderImage
 

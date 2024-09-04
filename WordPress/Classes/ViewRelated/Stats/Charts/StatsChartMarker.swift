@@ -259,7 +259,7 @@ class StatsChartMarker: MarkerView {
 private extension StatsChartMarker {
     enum Constants {
         static var tooltipColor: UIColor {
-            AppStyleGuide.blue(.shade100)
+            AppColor.blue(.shade100)
         }
 
         static var shadowColor: CGColor {

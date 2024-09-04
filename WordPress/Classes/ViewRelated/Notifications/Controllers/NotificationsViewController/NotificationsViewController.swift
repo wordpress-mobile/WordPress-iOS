@@ -385,7 +385,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
             }
             completionHandler(true)
         })
-        action.backgroundColor = AppStyleGuide.neutral(.shade50)
+        action.backgroundColor = AppColor.neutral(.shade50)
 
         return UISwipeActionsConfiguration(actions: [action])
     }

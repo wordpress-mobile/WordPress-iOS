@@ -56,7 +56,7 @@ class ImageCropViewController: UIViewController, UIScrollViewDelegate {
         scrollView.zoomScale = minimumScale
 
         // Setup: Overlay
-        overlayView.borderColor = AppStyleGuide.primary(.shade40)
+        overlayView.borderColor = AppColor.primary(.shade40)
         overlayView.outerColor = overlayColor
         overlayView.maskShape = maskShape
     }

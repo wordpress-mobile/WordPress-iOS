@@ -96,7 +96,7 @@ private struct SidebarView: View {
             Text(Strings.addSite)
         } icon: {
             Image(systemName: "plus.square.fill")
-                .foregroundStyle(Color(AppStyleGuide.brand), Color(.secondarySystemFill))
+                .foregroundStyle(Color(AppColor.brand), Color(.secondarySystemFill))
                 .font(.title2)
         }
         switch viewModel.actions.count {
@@ -123,7 +123,7 @@ private struct SidebarView: View {
         } icon: {
             if notificationsButtonViewModel.counter > 0 {
                 Image(systemName: "bell.badge")
-                    .foregroundStyle(.red, Color(AppStyleGuide.brand))
+                    .foregroundStyle(.red, Color(AppColor.brand))
             } else {
                 Image(systemName: "bell")
             }
@@ -186,7 +186,7 @@ private struct SidebarProfileContainerView: View {
                             }
                         }
                     }
-                    .tint(Color(AppStyleGuide.brand))
+                    .tint(Color(AppColor.brand))
                 }
 
                 Spacer()

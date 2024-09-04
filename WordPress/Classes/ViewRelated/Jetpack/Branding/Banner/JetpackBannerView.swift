@@ -57,8 +57,8 @@ class JetpackBannerView: UIView {
     /// Preferred minimum height to be used for constraints
     static let minimumHeight: CGFloat = 44
     private static let jetpackBannerBackgroundColor = UIColor(
-        light: AppStyleGuide.jetpackGreen(.shade0),
-        dark: AppStyleGuide.jetpackGreen(.shade90)
+        light: AppColor.jetpackGreen(.shade0),
+        dark: AppColor.jetpackGreen(.shade90)
     )
 }
 

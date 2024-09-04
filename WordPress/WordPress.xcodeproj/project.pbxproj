@@ -959,6 +959,12 @@
 		24ADA24C24F9A4CB001B5DAE /* RemoteFeatureFlagStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24ADA24B24F9A4CB001B5DAE /* RemoteFeatureFlagStore.swift */; };
 		24B1AE3124FEC79900B9F334 /* RemoteFeatureFlagTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B1AE3024FEC79900B9F334 /* RemoteFeatureFlagTests.swift */; };
 		24B9622E2C88B9CB00FE64C9 /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B9622D2C88B9CB00FE64C9 /* AppColor.swift */; };
+		24B9622F2C88BA6600FE64C9 /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B9622D2C88B9CB00FE64C9 /* AppColor.swift */; };
+		24B962302C88BA6700FE64C9 /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B9622D2C88B9CB00FE64C9 /* AppColor.swift */; };
+		24B962332C88BA6900FE64C9 /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B9622D2C88B9CB00FE64C9 /* AppColor.swift */; };
+		24B962342C88BA6A00FE64C9 /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B9622D2C88B9CB00FE64C9 /* AppColor.swift */; };
+		24B962352C88BA6A00FE64C9 /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B9622D2C88B9CB00FE64C9 /* AppColor.swift */; };
+		24B962392C88BA6E00FE64C9 /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B9622D2C88B9CB00FE64C9 /* AppColor.swift */; };
 		24C69A8B2612421900312D9A /* UserSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24C69A8A2612421900312D9A /* UserSettingsTests.swift */; };
 		24C69AC22612467C00312D9A /* UserSettingsTestsObjc.m in Sources */ = {isa = PBXBuildFile; fileRef = 24C69AC12612467C00312D9A /* UserSettingsTestsObjc.m */; };
 		24CDE3412C5863A1005E5E43 /* TestKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24CDE3402C5863A1005E5E43 /* TestKeychain.swift */; };
@@ -21346,6 +21352,7 @@
 				0107E0DB28F97D5000DE87DB /* Double+Stats.swift in Sources */,
 				0188FE462AA624A40093EDA5 /* LockScreenSiteTitleView.swift in Sources */,
 				8031F34C29302A2500E8F95E /* ExtensionConfiguration.swift in Sources */,
+				24B962392C88BA6E00FE64C9 /* AppColor.swift in Sources */,
 				0107E0DC28F97D5000DE87DB /* Tracks.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -23528,6 +23535,7 @@
 				74021A21202E173F006CC39F /* TextList+WordPress.swift in Sources */,
 				433ADC19223B2A0200ED9DE1 /* TextBundleWrapper.m in Sources */,
 				74021A07202E1307006CC39F /* UINavigationController+Extensions.swift in Sources */,
+				24B962302C88BA6700FE64C9 /* AppColor.swift in Sources */,
 				74021A1C202E158F006CC39F /* ShareExtensionService.swift in Sources */,
 				747F88C2203778E000523C7C /* ShareTagsPickerViewController.swift in Sources */,
 				7414A142203CD066005A7D9B /* ShareCategoriesPickerViewController.swift in Sources */,
@@ -23601,6 +23609,7 @@
 				809620D228E540D700940A5D /* UploadOperation.swift in Sources */,
 				809620D328E540D700940A5D /* TextBundleWrapper.m in Sources */,
 				809620D428E540D700940A5D /* ShareNoticeConstants.swift in Sources */,
+				24B962342C88BA6A00FE64C9 /* AppColor.swift in Sources */,
 				809620D528E540D700940A5D /* WPStyleGuide+Share.swift in Sources */,
 				809620D628E540D700940A5D /* ShareExtractor.swift in Sources */,
 				809620D728E540D700940A5D /* ShareExtensionService.swift in Sources */,
@@ -23674,6 +23683,7 @@
 				8096213328E55C9400940A5D /* TextList+WordPress.swift in Sources */,
 				8096213428E55C9400940A5D /* TextBundleWrapper.m in Sources */,
 				8096213528E55C9400940A5D /* UINavigationController+Extensions.swift in Sources */,
+				24B962352C88BA6A00FE64C9 /* AppColor.swift in Sources */,
 				8096213628E55C9400940A5D /* ShareExtensionService.swift in Sources */,
 				8096213728E55C9400940A5D /* ShareTagsPickerViewController.swift in Sources */,
 				8096213828E55C9400940A5D /* ShareCategoriesPickerViewController.swift in Sources */,
@@ -23812,6 +23822,7 @@
 				741E224B1FC0E5C0007967AB /* UploadOperation.swift in Sources */,
 				43EE90EF223B1029006A33E9 /* TextBundleWrapper.m in Sources */,
 				74EA3B89202A0462004F802D /* ShareNoticeConstants.swift in Sources */,
+				24B9622F2C88BA6600FE64C9 /* AppColor.swift in Sources */,
 				B50248AF1C96FF6200AFBDED /* WPStyleGuide+Share.swift in Sources */,
 				E1CE41661E8D1026000CF5A4 /* ShareExtractor.swift in Sources */,
 				930F09191C7E1C1E00995926 /* ShareExtensionService.swift in Sources */,
@@ -24669,6 +24680,7 @@
 				0CED200A2B68365200E6DD52 /* SiteMetricsView.swift in Sources */,
 				FABB21D22602FC2C00C8785C /* WPCategoryTree.swift in Sources */,
 				0CF0C4242AE98C13006FFAB4 /* AbstractPostHelper.swift in Sources */,
+				24B962332C88BA6900FE64C9 /* AppColor.swift in Sources */,
 				019D69A12A5EBF47003B676D /* WordPressAuthenticatorProtocol.swift in Sources */,
 				FABB21D42602FC2C00C8785C /* PageSettingsViewController.m in Sources */,
 				FA73D7E62798765B00DF24B3 /* SitePickerViewController.swift in Sources */,

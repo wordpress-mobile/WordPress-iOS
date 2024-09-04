@@ -27,7 +27,7 @@
             let hyperlinkText = NSAttributedString(string: Constants.hyperlinkText, attributes: [
                 .paragraphStyle: paragraphStyle,
                 .attachment: attachmentURL,
-                .foregroundColor: AppStyleGuide.brand
+                .foregroundColor: AppColor.brand
             ])
             attributedString.append(hyperlinkText)
         }

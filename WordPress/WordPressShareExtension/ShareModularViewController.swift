@@ -442,9 +442,9 @@ fileprivate extension ShareModularViewController {
             cell.detailTextLabel?.text = shareData.selectedCategoriesNameString
             if (shareData.userSelectedCategories == nil || shareData.userSelectedCategories?.count == 0)
                 && shareData.defaultCategoryID == Constants.unknownDefaultCategoryID {
-                cell.detailTextLabel?.textColor = AppStyleGuide.neutral(.shade30)
+                cell.detailTextLabel?.textColor = AppColor.neutral(.shade30)
             } else {
-                cell.detailTextLabel?.textColor = AppStyleGuide.neutral(.shade70)
+                cell.detailTextLabel?.textColor = AppColor.neutral(.shade70)
             }
         case .tags:
             WPStyleGuide.Share.configureModuleCell(cell)
@@ -454,10 +454,10 @@ fileprivate extension ShareModularViewController {
             cell.isUserInteractionEnabled = true
             if let tags = shareData.tags, !tags.isEmpty {
                 cell.detailTextLabel?.text = tags
-                cell.detailTextLabel?.textColor = AppStyleGuide.neutral(.shade70)
+                cell.detailTextLabel?.textColor = AppColor.neutral(.shade70)
             } else {
                 cell.detailTextLabel?.text =  AppLocalizedString("Add tags", comment: "Placeholder text for tags module in share extension.")
-                cell.detailTextLabel?.textColor = AppStyleGuide.neutral(.shade30)
+                cell.detailTextLabel?.textColor = AppColor.neutral(.shade30)
             }
         case .summary:
             // Summary section

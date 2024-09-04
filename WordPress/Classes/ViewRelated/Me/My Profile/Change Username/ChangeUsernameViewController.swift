@@ -201,7 +201,7 @@ private extension ChangeUsernameViewController {
 
         let enabled = textField.text?.isEmpty == false && textField.text == self.viewModel.selectedUsername
         changeUsernameAction?.isEnabled = enabled
-        textField.textColor = enabled ? AppStyleGuide.success : UIColor.label
+        textField.textColor = enabled ? AppColor.success : UIColor.label
     }
 
     enum Constants {

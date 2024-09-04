@@ -126,8 +126,8 @@ extension AppStyleGuide {
     static let editorPrimary = CSColor.Blue.base
     static let neutral = CSColor.Gray.base
 
-    static let statsPrimaryHighlight = UIColor(light: accent(.shade30), dark: accent(.shade60))
-    static let statsSecondaryHighlight = UIColor(light: accent(.shade60), dark: accent(.shade30))
+    static let statsPrimaryHighlight = UIColor(light: AppColor.accent(.shade30), dark: AppColor.accent(.shade60))
+    static let statsSecondaryHighlight = UIColor(light: AppColor.accent(.shade60), dark: AppColor.accent(.shade30))
 
     // TODO : These should be customized for WP and JP
     static let appBarTint = UIColor.systemOrange
@@ -136,7 +136,7 @@ extension AppStyleGuide {
     static let placeholderElement = UIColor(light: .systemGray5, dark: .systemGray4)
     static let placeholderElementFaded: UIColor = UIColor(light: .systemGray6, dark: .systemGray5)
 
-    static let prologueBackground = UIColor(light: blue(.shade0), dark: .systemBackground)
+    static let prologueBackground = UIColor(light: AppColor.blue(.shade0), dark: .systemBackground)
 }
 
 // MARK: - Images

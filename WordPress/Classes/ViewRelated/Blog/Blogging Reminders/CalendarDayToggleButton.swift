@@ -88,9 +88,9 @@ class CalendarDayToggleButton: UIButton {
     private var backgroundColorForCurrentState: UIColor {
         return switch (isSelected, isHighlighted) {
         case (false, false): .quaternarySystemFill
-        case (true, false): AppStyleGuide.green(.shade20)
-        case (false, true): AppStyleGuide.green(.shade10)
-        case (true, true): AppStyleGuide.green(.shade10)
+        case (true, false): AppColor.green(.shade20)
+        case (false, true): AppColor.green(.shade10)
+        case (true, true): AppColor.green(.shade10)
         }
     }
 

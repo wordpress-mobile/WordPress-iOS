@@ -87,7 +87,7 @@ struct JetpackScanThreatViewModel {
 
         // Threat Details
         detailIconImage = UIImage(named: "jetpack-scan-state-error")
-        detailIconImageColor = AppStyleGuide.error
+        detailIconImageColor = AppColor.error
         problemTitle = Strings.details.titles.problem
         problemDescription = threat.description
         fixTitle = Self.fixTitle(for: threat)
@@ -236,9 +236,9 @@ struct JetpackScanThreatViewModel {
 
     private static func iconColor(for status: JetpackScanThreat.ThreatStatus?) -> UIColor {
         return switch status {
-        case .current: AppStyleGuide.error
-        case .fixed: AppStyleGuide.success
-        default: AppStyleGuide.neutral(.shade20)
+        case .current: AppColor.error
+        case .fixed: AppColor.success
+        default: AppColor.neutral(.shade20)
         }
     }
 
@@ -392,16 +392,16 @@ struct JetpackScanThreatViewModel {
 
         struct colors {
             struct normal {
-                static let text = AppStyleGuide.gray(.shade100)
-                static let background = AppStyleGuide.gray(.shade5)
-                static let numberText = AppStyleGuide.gray(.shade100)
-                static let numberBackground = AppStyleGuide.gray(.shade20)
+                static let text = AppColor.gray(.shade100)
+                static let background = AppColor.gray(.shade5)
+                static let numberText = AppColor.gray(.shade100)
+                static let numberBackground = AppColor.gray(.shade20)
             }
 
             struct highlighted {
                 static let text = UIColor.white
-                static let background = AppStyleGuide.gray(.shade50)
-                static let numberBackground = AppStyleGuide.gray(.shade5)
+                static let background = AppColor.gray(.shade50)
+                static let numberBackground = AppColor.gray(.shade5)
             }
         }
     }

@@ -22,16 +22,16 @@ class PluginDetailViewHeaderCell: UITableViewCell {
         let iconPlaceholder = UIImage.gridicon(.plugins, size: CGSize(width: 40, height: 40))
         iconImageView?.downloadImage(from: directoryEntry.icon, placeholderImage: iconPlaceholder)
         iconImageView?.backgroundColor = .secondarySystemGroupedBackground
-        iconImageView?.tintColor = AppStyleGuide.neutral(.shade50)
+        iconImageView?.tintColor = AppColor.neutral(.shade50)
 
         nameLabel?.text = directoryEntry.name
 
         let author = directoryEntry.author
 
         let defaultAttributes: [NSAttributedString.Key: Any] = [.font: UIFont.preferredFont(forTextStyle: .subheadline),
-                                                               .foregroundColor: AppStyleGuide.neutral(.shade70)]
+                                                               .foregroundColor: AppColor.neutral(.shade70)]
 
-        let authorAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: AppStyleGuide.primary(.shade40)]
+        let authorAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: AppColor.primary(.shade40)]
 
         let string = NSLocalizedString("by %@", comment: "Used when displaying author of a plugin.")
         let attrString = NSMutableAttributedString(string: String(format: string, author), attributes: defaultAttributes)

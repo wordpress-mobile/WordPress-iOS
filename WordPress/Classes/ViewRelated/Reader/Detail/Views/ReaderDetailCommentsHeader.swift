@@ -159,7 +159,7 @@ private extension ReaderDetailCommentsHeader {
     }
 
     var followButtonColor: UIColor {
-        AppStyleGuide.primary
+        AppColor.primary
     }
 
     var separatorColor: UIColor {

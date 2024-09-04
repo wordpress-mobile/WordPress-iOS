@@ -45,7 +45,7 @@ struct UnifiedPrologueReaderContentView: View {
                             xOffset: largerIconSize * 0.7,
                             yOffset: -largerIconSize * 0.05,
                             iconType: .readerFollow,
-                            backgroundColor: Color(AppStyleGuide.red(.shade40))
+                            backgroundColor: Color(AppColor.red(.shade40))
                         )
                     }
                 }
@@ -81,7 +81,7 @@ struct UnifiedPrologueReaderContentView: View {
                             xOffset: -smallIconSize * 0.5,
                             yOffset: -smallIconSize  * 0.7,
                             iconType: .star,
-                            backgroundColor: Color(AppStyleGuide.yellow(.shade20))
+                            backgroundColor: Color(AppColor.yellow(.shade20))
                         )
 
                         Spacer()
@@ -114,7 +114,7 @@ struct UnifiedPrologueReaderContentView: View {
                             xOffset: smallIconSize * 0.75,
                             yOffset: -smallIconSize * 0.85,
                             iconType: .bookmarkOutline,
-                            backgroundColor: Color(AppStyleGuide.purple(.shade50))
+                            backgroundColor: Color(AppColor.purple(.shade50))
                         )
                     }
                 }
@@ -194,8 +194,8 @@ private struct TagItem: ViewModifier {
             .truncationMode(.tail)
             .padding(.horizontal, horizontalPadding)
             .padding(.vertical, verticalPadding)
-            .background(Color(UIColor(light: AppStyleGuide.gray(.shade0),
-                                      dark: AppStyleGuide.gray(.shade70)))
+            .background(Color(UIColor(light: AppColor.gray(.shade0),
+                                      dark: AppColor.gray(.shade70)))
             )
             .clipShape(Capsule())
     }

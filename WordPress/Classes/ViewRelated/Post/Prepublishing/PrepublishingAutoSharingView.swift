@@ -93,7 +93,7 @@ private extension PrepublishingAutoSharingView {
     enum Constants {
         static let maxServicesForHorizontalLayout = 3
         static let disabledSocialIconOpacity: CGFloat = 0.36
-        static let warningColor = AppStyleGuide.yellow(.shade50)
+        static let warningColor = AppColor.yellow(.shade50)
 
         static let warningIconAccessibilityText = NSLocalizedString(
             "prepublishing.social.warningIcon.accessibilityHint",

@@ -437,7 +437,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     }
 
     private func resetNavigationBarTintColor() {
-        navigationItem?.setTintColor(useCompatibilityMode ? AppStyleGuide.appBarTint : style.endTintColor)
+        navigationItem?.setTintColor(useCompatibilityMode ? AppColor.appBarTint : style.endTintColor)
     }
 
     // MARK: - Private: Calculations

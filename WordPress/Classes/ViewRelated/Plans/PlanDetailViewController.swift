@@ -35,7 +35,7 @@ class PlanDetailViewController: UIViewController {
     fileprivate lazy var currentPlanLabel: UIView = {
         let label = UILabel()
         label.font = WPFontManager.systemSemiBoldFont(ofSize: 13.0)
-        label.textColor = AppStyleGuide.success
+        label.textColor = AppColor.success
         label.text = NSLocalizedString("Current Plan", comment: "Label title. Refers to the current WordPress.com plan for a user's site.").localizedUppercase
         label.translatesAutoresizingMaskIntoConstraints = false
 
@@ -73,7 +73,7 @@ class PlanDetailViewController: UIViewController {
         view.backgroundColor = .systemBackground
         tableView.backgroundColor = .systemBackground
 
-        planTitleLabel.textColor = AppStyleGuide.primary
+        planTitleLabel.textColor = AppColor.primary
         planDescriptionLabel.textColor = .label
         dropshadowImageView.backgroundColor = UIColor.white
         configurePlanImageDropshadow()
@@ -92,7 +92,7 @@ class PlanDetailViewController: UIViewController {
 
     fileprivate func configurePlanImageDropshadow() {
         dropshadowImageView.layer.masksToBounds = false
-        dropshadowImageView.layer.shadowColor = AppStyleGuide.neutral(.shade5).cgColor
+        dropshadowImageView.layer.shadowColor = AppColor.neutral(.shade5).cgColor
         dropshadowImageView.layer.shadowOpacity = 1.0
         dropshadowImageView.layer.shadowRadius = planImageDropshadowRadius
         dropshadowImageView.layer.shadowOffset = .zero

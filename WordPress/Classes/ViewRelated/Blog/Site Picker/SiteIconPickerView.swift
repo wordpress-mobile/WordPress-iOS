@@ -195,7 +195,7 @@ struct SiteIconPickerView: View {
             .frame(height: Metrics.saveButtonHeight)
             .background(
                 RoundedRectangle(cornerRadius: Metrics.cornerRadius)
-                    .fill(hasMadeSelection ? Color(AppStyleGuide.primary) : Colors.disabledButton)
+                    .fill(hasMadeSelection ? Color(AppColor.primary) : Colors.disabledButton)
             )
     }
 

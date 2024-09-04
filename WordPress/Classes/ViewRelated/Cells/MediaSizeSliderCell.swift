@@ -83,9 +83,9 @@ class MediaSizeSliderCell: WPTableViewCell {
 
     @objc func customizeAppearance() {
         titleLabel.font = WPStyleGuide.tableviewTextFont()
-        titleLabel.textColor = AppStyleGuide.neutral(.shade70)
+        titleLabel.textColor = AppColor.neutral(.shade70)
         valueLabel.font = .preferredFont(forTextStyle: .callout)
-        valueLabel.textColor = AppStyleGuide.neutral(.shade30)
+        valueLabel.textColor = AppColor.neutral(.shade30)
     }
 
     // MARK: - UIKit bindings

@@ -62,7 +62,7 @@ struct ZendeskAttachmentsSection: View {
                 Image(systemName: "paperclip")
                 Text(Strings.addAttachment)
             }
-            .foregroundStyle(Color(uiColor: AppStyleGuide.brand))
+            .foregroundStyle(Color(uiColor: AppColor.brand))
         }
         .onChange(of: selection, perform: viewModel.process)
     }

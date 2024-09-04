@@ -44,7 +44,7 @@ class InlineEditableSingleLineCell: UITableViewCell, NibReusable {
             return
         }
 
-        contentView.layer.borderColor = AppStyleGuide.error.cgColor
+        contentView.layer.borderColor = AppColor.error.cgColor
         contentView.layer.borderWidth = 1.0
         contentView.layer.cornerRadius = 10
     }
@@ -105,7 +105,7 @@ private extension InlineEditableSingleLineCell {
 
     func configureInteraction(_ disabled: Bool) {
         isUserInteractionEnabled = !disabled
-        textField.textColor = disabled ? AppStyleGuide.neutral(.shade20) : .label
+        textField.textColor = disabled ? AppColor.neutral(.shade20) : .label
     }
 
 }

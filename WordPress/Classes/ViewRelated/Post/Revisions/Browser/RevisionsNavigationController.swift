@@ -8,8 +8,8 @@ class RevisionsNavigationController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationBar.setBackgroundImage(UIImage(color: AppStyleGuide.neutral(.shade70)), for: .default)
-        navigationBar.shadowImage = UIImage(color: AppStyleGuide.neutral(.shade60))
+        navigationBar.setBackgroundImage(UIImage(color: AppColor.neutral(.shade70)), for: .default)
+        navigationBar.shadowImage = UIImage(color: AppColor.neutral(.shade60))
     }
 
     private func setupForBrowserState() {

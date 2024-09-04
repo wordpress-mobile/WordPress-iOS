@@ -40,11 +40,11 @@ final class TitleBadgeDisclosureCell: WPTableViewCell {
 
     private func customizeTagCount() {
         cellBadge.font = WPStyleGuide.tableviewTextFont()
-        cellBadge.textColor = AppStyleGuide.primary
+        cellBadge.textColor = AppColor.primary
         cellBadge.textAlignment = .center
         cellBadge.text = ""
         cellBadge.horizontalPadding = BadgeConstants.padding
-        cellBadge.borderColor = AppStyleGuide.primary
+        cellBadge.borderColor = AppColor.primary
         cellBadge.borderWidth = BadgeConstants.border
         cellBadge.cornerRadius = BadgeConstants.radius
     }

@@ -6,7 +6,7 @@ class SparklineView: UIView {
     private let maskLayer = CAShapeLayer()
     private let gradientLayer = CAGradientLayer()
 
-    private static let defaultChartColor = AppStyleGuide.blue(.shade50)
+    private static let defaultChartColor = AppColor.blue(.shade50)
     var chartColor: UIColor! = SparklineView.defaultChartColor {
         didSet {
             if chartColor == nil {
