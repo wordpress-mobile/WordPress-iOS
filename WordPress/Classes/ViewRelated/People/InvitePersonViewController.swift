@@ -591,7 +591,7 @@ private extension InvitePersonViewController {
         }
         generateShareCell.textLabel?.font = WPStyleGuide.tableviewTextFont()
         generateShareCell.textLabel?.textAlignment = .center
-        generateShareCell.textLabel?.textColor = AppColor.primary
+        generateShareCell.textLabel?.textColor = UIAppColor.primary
     }
 
     func createAttributedShareInviteText() -> NSAttributedString {
@@ -655,7 +655,7 @@ private extension InvitePersonViewController {
     func refreshDisableLinkCell() {
         disableLinksCell.textLabel?.text = NSLocalizedString("Disable invite link", comment: "Title. A call to action to disable invite links.")
         disableLinksCell.textLabel?.font = WPStyleGuide.tableviewTextFont()
-        disableLinksCell.textLabel?.textColor = AppColor.error
+        disableLinksCell.textLabel?.textColor = UIAppColor.error
         disableLinksCell.textLabel?.textAlignment = .center
     }
 

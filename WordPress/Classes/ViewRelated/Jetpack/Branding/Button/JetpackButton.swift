@@ -31,8 +31,8 @@ class JetpackButton: CircularImageButton {
         switch style {
         case .badge:
             return UIColor(
-                light: AppColor.jetpackGreen(.shade40),
-                dark: AppColor.jetpackGreen(.shade90)
+                light: UIAppColor.jetpackGreen(.shade40),
+                dark: UIAppColor.jetpackGreen(.shade90)
             )
         case .banner:
             return .clear
@@ -41,8 +41,8 @@ class JetpackButton: CircularImageButton {
 
     private var buttonTintColor: UIColor {
         return switch style {
-        case .badge: UIColor(light: .white, dark: AppColor.jetpackGreen(.shade40))
-        case .banner: AppColor.jetpackGreen(.shade40)
+        case .badge: UIColor(light: .white, dark: UIAppColor.jetpackGreen(.shade40))
+        case .banner: UIAppColor.jetpackGreen(.shade40)
         }
     }
 
@@ -57,7 +57,7 @@ class JetpackButton: CircularImageButton {
 
     private var imageBackgroundColor: UIColor {
         return switch style {
-        case .badge: UIColor(light: AppColor.jetpackGreen(.shade40), dark: .white)
+        case .badge: UIColor(light: UIAppColor.jetpackGreen(.shade40), dark: .white)
         case .banner: .white
         }
     }

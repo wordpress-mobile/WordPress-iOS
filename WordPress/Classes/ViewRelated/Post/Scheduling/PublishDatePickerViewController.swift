@@ -73,7 +73,7 @@ struct PublishDatePickerView: View {
         .environment(\.defaultMinListHeaderHeight, 0)
         .navigationTitle(Strings.title)
         .navigationBarTitleDisplayMode(.inline)
-        .tint(Color(uiColor: AppColor.brand))
+        .tint(Color(uiColor: UIAppColor.brand))
     }
 
     private var dateRow: some View {

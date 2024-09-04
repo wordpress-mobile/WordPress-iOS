@@ -399,7 +399,7 @@ private class AccountSettingsController: SettingsController {
             return nil
         }
 
-        return UIImage.gridicon(.noticeOutline).imageWithTintColor(AppColor.error)
+        return UIImage.gridicon(.noticeOutline).imageWithTintColor(UIAppColor.error)
     }
 
     // MARK: - Constants

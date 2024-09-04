@@ -12,7 +12,7 @@ class PlayIconView: UIView {
 
     @objc var isHighlighted: Bool {
         didSet {
-            let iconColor: UIColor = isHighlighted ? .black : AppColor.neutral(.shade70)
+            let iconColor: UIColor = isHighlighted ? .black : UIAppColor.neutral(.shade70)
             playLayer.strokeColor = iconColor.cgColor
             playLayer.fillColor = iconColor.cgColor
         }

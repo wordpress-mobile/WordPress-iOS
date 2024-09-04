@@ -24,7 +24,7 @@ struct CachedAsyncImage<Content>: View where Content: View {
             if let image = phase.image {
                 image
             } else {
-                Color(uiColor: AppColor.gray(.shade40))
+                Color(uiColor: UIAppColor.gray(.shade40))
             }
         }
     }

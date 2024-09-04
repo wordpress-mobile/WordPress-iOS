@@ -133,8 +133,8 @@ private enum ReaderCardDiscoverAttribution: Int {
         if !displayAsLink {
             WPStyleGuide.applyReaderCardAttributionLabelStyle(textLabel)
         } else {
-            textLabel.textColor = AppColor.primary
-//            textLabel.highlightedtextColor = AppColor.primary
+            textLabel.textColor = UIAppColor.primary
+//            textLabel.highlightedtextColor = UIAppColor.primary
         }
         textLabel.attributedText = attributedString
         attributionAction = .visitSite

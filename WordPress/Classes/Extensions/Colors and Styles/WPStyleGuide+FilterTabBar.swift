@@ -6,6 +6,6 @@ extension WPStyleGuide {
         filterTabBar.tintColor = .label
         filterTabBar.selectedTitleColor = .label
         filterTabBar.deselectedTabColor = .secondaryLabel
-        filterTabBar.dividerColor = AppColor.neutral(.shade10)
+        filterTabBar.dividerColor = UIAppColor.neutral(.shade10)
     }
 }

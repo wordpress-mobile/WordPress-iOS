@@ -182,7 +182,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     }
 
     private func setupEditorView() {
-        view.tintColor = AppColor.editorPrimary
+        view.tintColor = UIAppColor.editorPrimary
 
         addChild(editorViewController)
         view.addSubview(editorViewController.view)

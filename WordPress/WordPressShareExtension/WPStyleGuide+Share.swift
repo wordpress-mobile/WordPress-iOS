@@ -28,7 +28,7 @@ extension WPStyleGuide {
 
             cell.backgroundColor = .secondarySystemGroupedBackground
             cell.separatorInset = UIEdgeInsets.zero
-            cell.tintColor = AppColor.primary
+            cell.tintColor = UIAppColor.primary
         }
 
         static func configureTagCell(_ cell: UITableViewCell) {
@@ -48,7 +48,7 @@ extension WPStyleGuide {
 
             cell.backgroundColor = .secondarySystemGroupedBackground
             cell.separatorInset = UIEdgeInsets.zero
-            cell.tintColor = AppColor.primary
+            cell.tintColor = UIAppColor.primary
         }
 
         static func configureLoadingTagCell(_ cell: UITableViewCell) {
@@ -56,7 +56,7 @@ extension WPStyleGuide {
             cell.textLabel?.sizeToFit()
             cell.textLabel?.textColor = .label
 
-            cell.backgroundColor = AppColor.neutral(.shade5)
+            cell.backgroundColor = UIAppColor.neutral(.shade5)
             cell.separatorInset = UIEdgeInsets.zero
         }
 
@@ -82,10 +82,10 @@ extension WPStyleGuide {
 
             cell.imageView?.layer.borderColor = UIColor.white.cgColor
             cell.imageView?.layer.borderWidth = 1
-            cell.imageView?.tintColor = AppColor.neutral(.shade30)
+            cell.imageView?.tintColor = UIAppColor.neutral(.shade30)
 
             cell.backgroundColor = .secondarySystemGroupedBackground
-            cell.tintColor = AppColor.primary
+            cell.tintColor = UIAppColor.primary
         }
     }
 }

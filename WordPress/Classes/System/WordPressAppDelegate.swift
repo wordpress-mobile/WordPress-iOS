@@ -751,11 +751,11 @@ extension WordPressAppDelegate {
 extension WordPressAppDelegate {
     func customizeAppearance() {
         window?.backgroundColor = .black
-        window?.tintColor = AppColor.primary
+        window?.tintColor = UIAppColor.primary
 
         WPStyleGuide.configureAppearance()
 
-        SVProgressHUD.setBackgroundColor(AppColor.neutral(.shade70).withAlphaComponent(0.95))
+        SVProgressHUD.setBackgroundColor(UIAppColor.neutral(.shade70).withAlphaComponent(0.95))
         SVProgressHUD.setForegroundColor(.white)
         SVProgressHUD.setErrorImage(UIImage(named: "hud_error")!)
         SVProgressHUD.setSuccessImage(UIImage(named: "hud_success")!)

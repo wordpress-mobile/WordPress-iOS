@@ -133,7 +133,7 @@ struct AvatarView<S: Shape>: View {
             Image.DS.icon(named: .vector)
                 .resizable()
                 .frame(width: 18, height: 18)
-                .tint(Color(AppColor.gray(.shade50)))
+                .tint(Color(UIAppColor.gray(.shade50)))
         }
     }
 }

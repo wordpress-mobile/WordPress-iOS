@@ -48,7 +48,7 @@ struct UnifiedPrologueNotificationsContentView: View {
                             xOffset: -smallIconSize * 0.7,
                             yOffset: smallIconSize  * 0.7,
                             iconType: .reply,
-                            backgroundColor: Color(AppColor.celadon(.shade30))
+                            backgroundColor: Color(UIAppColor.celadon(.shade30))
                         )
 
                         Spacer()
@@ -58,7 +58,7 @@ struct UnifiedPrologueNotificationsContentView: View {
                             xOffset: smallIconSize * 0.25,
                             yOffset: -smallIconSize  * 0.7,
                             iconType: .star,
-                            backgroundColor: Color(AppColor.yellow(.shade20))
+                            backgroundColor: Color(UIAppColor.yellow(.shade20))
                         )
                     }
                 }
@@ -103,7 +103,7 @@ struct UnifiedPrologueNotificationsContentView: View {
                             xOffset: largerIconSize * 0.6,
                             yOffset: largerIconSize  * 0.3,
                             iconType: .comment,
-                            backgroundColor: Color(AppColor.blue(.shade50))
+                            backgroundColor: Color(UIAppColor.blue(.shade50))
                         )
                     }
                 }

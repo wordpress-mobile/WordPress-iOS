@@ -1,5 +1,5 @@
 import Foundation
 
 enum MigrationAppearance {
-    static let backgroundColor = UIColor(light: .white, dark: AppColor.jetpackGreen(.shade100))
+    static let backgroundColor = UIColor(light: .white, dark: UIAppColor.jetpackGreen(.shade100))
 }

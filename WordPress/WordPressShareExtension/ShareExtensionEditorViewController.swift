@@ -60,9 +60,9 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
         textView.backgroundColor = ShareColors.aztecBackground
         textView.textColor = .label
         textView.tintColor = ShareColors.aztecCursorColor
-        textView.blockquoteBackgroundColor = AppColor.neutral(.shade5)
+        textView.blockquoteBackgroundColor = UIAppColor.neutral(.shade5)
         textView.blockquoteBorderColors = [.secondaryLabel]
-        textView.preBackgroundColor = AppColor.neutral(.shade5)
+        textView.preBackgroundColor = UIAppColor.neutral(.shade5)
         textView.linkTextAttributes = linkAttributes
         textView.textAlignment = .natural
 
@@ -779,7 +779,7 @@ extension ShareExtensionEditorViewController {
         let headerOptions = Constants.headers.map { headerType -> OptionsTableViewOption in
             let attributes: [NSAttributedString.Key: Any] = [
                 .font: UIFont.systemFont(ofSize: CGFloat(headerType.fontSize)),
-                .foregroundColor: AppColor.neutral(.shade70)
+                .foregroundColor: UIAppColor.neutral(.shade70)
             ]
 
             let title = NSAttributedString(string: headerType.description, attributes: attributes)
@@ -1301,19 +1301,19 @@ fileprivate extension ShareExtensionEditorViewController {
         static let title                          = UIColor.label
         static let separator                      = UIColor.separator
         static let placeholder                    = UIColor.tertiaryLabel
-        static let mediaProgressOverlay           = AppColor.neutral(.shade70).withAlphaComponent(CGFloat(0.6))
-        static let mediaOverlayBorderColor        = AppColor.primary
+        static let mediaProgressOverlay           = UIAppColor.neutral(.shade70).withAlphaComponent(CGFloat(0.6))
+        static let mediaOverlayBorderColor        = UIAppColor.primary
         static let aztecBackground                = UIColor.systemBackground
-        static let aztecLinkColor                 = AppColor.primary
-        static let aztecFormatBarDisabledColor    = AppColor.neutral(.shade10)
+        static let aztecLinkColor                 = UIAppColor.primary
+        static let aztecFormatBarDisabledColor    = UIAppColor.neutral(.shade10)
         static let aztecFormatBarDividerColor     = UIColor.separator
-        static let aztecCursorColor               = AppColor.primary
+        static let aztecCursorColor               = UIAppColor.primary
         static let aztecFormatBarInactiveColor    = UIColor.secondaryLabel
-        static let aztecFormatBarActiveColor      = AppColor.primary
+        static let aztecFormatBarActiveColor      = UIAppColor.primary
 
         static var aztecFormatPickerSelectedCellBackgroundColor: UIColor {
             get {
-                return (UIDevice.current.userInterfaceIdiom == .pad) ? .systemGroupedBackground : AppColor.neutral(.shade5)
+                return (UIDevice.current.userInterfaceIdiom == .pad) ? .systemGroupedBackground : UIAppColor.neutral(.shade5)
             }
         }
 

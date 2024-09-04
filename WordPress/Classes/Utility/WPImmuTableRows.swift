@@ -264,7 +264,7 @@ struct BrandedNavigationRow: ImmuTableRow {
         }
         cell.textLabel?.text = title
         WPStyleGuide.configureTableViewCell(cell)
-        cell.textLabel?.textColor = AppColor.primary
+        cell.textLabel?.textColor = UIAppColor.primary
         cell.showIndicator = showIndicator
         cell.accessibilityTraits = .button
         cell.accessibilityIdentifier = accessibilityIdentifier

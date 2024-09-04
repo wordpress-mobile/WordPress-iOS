@@ -130,7 +130,7 @@ struct SiteDomainsView: View {
             } label: {
                 Text(TextContent.additionalDomainTitle(blog.canRegisterDomainWithPaidPlan))
                     .style(TextStyle.bodyMedium(.regular))
-                    .foregroundColor(AppColor._brand)
+                    .foregroundColor(AppColor.brand)
             }
         }
     }

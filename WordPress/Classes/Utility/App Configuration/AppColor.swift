@@ -2,7 +2,7 @@ import Foundation
 import ColorStudio
 import SwiftUI
 
-struct AppColor {
+struct UIAppColor {
     static func primary(_ shade: ColorStudioShade) -> UIColor {
         CSColor.Blue.shade(shade)
     }
@@ -87,12 +87,10 @@ struct AppColor {
 
     #if IS_JETPACK
     static let brand = CSColor.JetpackGreen.base
-    static let _brand = Color(CSColor.JetpackGreen.base)
     #endif
 
     #if IS_WORDPRESS
     static let brand = CSColor.WordPressBlue.base
-    static let _brand = Color(CSColor.WordPressBlue.base)
     #endif
 
     static let divider = CSColor.Gray.shade(.shade10)
@@ -122,5 +120,15 @@ struct AppColor {
 
     static let prologueBackground = UIColor(light: blue(.shade0), dark: .systemBackground)
 
-    static let switchStyle: SwitchToggleStyle = SwitchToggleStyle(tint: Color(AppColor.brand))
+    static let switchStyle: SwitchToggleStyle = SwitchToggleStyle(tint: Color(UIAppColor.brand))
+}
+
+struct AppColor {
+    #if IS_JETPACK
+    static let brand = Color(CSColor.JetpackGreen.base)
+    #endif
+
+    #if IS_WORDPRESS
+    static let brand = Color(CSColor.WordPressBlue.base)
+    #endif
 }

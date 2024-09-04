@@ -140,15 +140,15 @@ private extension AllDomainsListCardView.ViewModel.StatusType {
 
     var textColor: Color {
         return switch self {
-        case .warning: Color(AppColor.warning)
-        case .alert, .error: Color(AppColor.error)
+        case .warning: Color(UIAppColor.warning)
+        case .alert, .error: Color(UIAppColor.error)
         default: Color.primary
         }
     }
 
     var expireTextColor: Color {
         return switch self {
-            case .warning: Color(AppColor.warning)
+            case .warning: Color(UIAppColor.warning)
             default: Color.secondary
         }
     }

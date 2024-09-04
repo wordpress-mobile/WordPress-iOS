@@ -104,7 +104,7 @@ fileprivate extension NotificationsTableViewCellContent {
 
         private var indicator: some View {
             Circle()
-                .fill(AppColor._brand)
+                .fill(AppColor.brand)
                 .frame(width: .DS.Padding.single)
         }
 
@@ -179,7 +179,7 @@ fileprivate extension NotificationsTableViewCellContent {
                 }
             }
             .frame(height: 60)
-            .background(Color(AppColor.error))
+            .background(Color(UIAppColor.error))
         }
     }
 }

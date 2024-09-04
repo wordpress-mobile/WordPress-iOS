@@ -16,7 +16,7 @@ extension UIColor {
     }
 
     static var invertedLink: UIColor {
-        UIColor(light: AppColor.primary(.shade30), dark: AppColor.primary(.shade50))
+        UIColor(light: UIAppColor.primary(.shade30), dark: UIAppColor.primary(.shade50))
     }
 
     static var invertedSeparator: UIColor {
