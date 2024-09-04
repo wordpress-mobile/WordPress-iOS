@@ -7,7 +7,7 @@ struct NotificationsTableViewCellContent: View {
             let title: AttributedString?
             let description: String?
             let shouldShowIndicator: Bool
-            let avatarStyle: AvatarsView<Circle>.Style
+            let avatarStyle: AvatarView<Circle>.Style
             let inlineAction: InlineAction.Configuration?
         }
 
@@ -81,13 +81,13 @@ fileprivate extension NotificationsTableViewCellContent {
                 if info.shouldShowIndicator {
                     indicator
                         .padding(.horizontal, .DS.Padding.single)
-                    AvatarsView(
+                    AvatarView(
                         style: info.avatarStyle,
                         placeholderImage: placeholderImage
                     )
                     .offset(x: -info.avatarStyle.leadingOffset)
                 } else {
-                    AvatarsView(
+                    AvatarView(
                         style: info.avatarStyle,
                         placeholderImage: placeholderImage
                     )

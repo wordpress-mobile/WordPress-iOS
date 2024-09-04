@@ -22,7 +22,6 @@
 
 #import "Media.h"
 #import "MediaService.h"
-#import "MeHeaderView.h"
 #import "MenuItem.h"
 #import "MenuItemsViewController.h"
 #import "MenusService.h"

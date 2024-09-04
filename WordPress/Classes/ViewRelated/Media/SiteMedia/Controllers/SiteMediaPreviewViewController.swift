@@ -110,7 +110,7 @@ final class SiteMediaPreviewViewController: UIViewController {
 
         let container = UIStackView(arrangedSubviews: [infoView])
         container.alignment = .center
-        container.layoutMargins = UIEdgeInsets(allEdges: 8)
+        container.layoutMargins = UIEdgeInsets(.all, 8)
         container.isLayoutMarginsRelativeArrangement = true
         container.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(container)

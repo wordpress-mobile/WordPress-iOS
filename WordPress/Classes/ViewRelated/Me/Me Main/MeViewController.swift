@@ -7,6 +7,8 @@ class MeViewController: UITableViewController {
     var handler: ImmuTableViewHandler!
     var isSidebarModeEnabled = false
 
+    private lazy var headerView = MeHeaderView()
+
     // MARK: - Table View Controller
 
     override init(style: UITableView.Style) {
@@ -29,8 +31,12 @@ class MeViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Preventing MultiTouch Scenarios
-        view.isExclusiveTouch = true
+        if isSidebarModeEnabled {
+            /// We can't use trait collection here because on iPad .form sheet is still
+            /// considered to be ` .compact` size class, so it has to be invoked manually.
+            headerView.configureHorizontalMode()
+        }
+
         ImmuTable.registerRows([
             NavigationItemRow.self,
             IndicatorNavigationItemRow.self,
@@ -51,6 +57,7 @@ class MeViewController: UITableViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+
         tableView.layoutHeaderView()
     }
 
@@ -95,7 +102,10 @@ class MeViewController: UITableViewController {
         //
         // My guess is the table view adjusts the height of the first section
         // based on if there's a header or not.
-        tableView.tableHeaderView = account.map { headerViewForAccount($0) }
+        if let account {
+            headerView.update(with: MeHeaderViewModel(account: account))
+        }
+        tableView.tableHeaderView = headerView
 
         // After we've reloaded the view model we should maintain the current
         // table row selection, or if the split view we're in is not compact
@@ -112,14 +122,6 @@ class MeViewController: UITableViewController {
             // And finally we'll reselect the selected row, if there is one
             tableView.selectRow(at: selectedIndexPath, animated: false, scrollPosition: .none)
         }
-    }
-
-    fileprivate func headerViewForAccount(_ account: WPAccount) -> MeHeaderView {
-        headerView.displayName = account.displayName
-        headerView.username = account.username
-        headerView.gravatarEmail = account.email
-
-        return headerView
     }
 
     private var appSettingsRow: NavigationItemRow {
@@ -548,8 +550,6 @@ class MeViewController: UITableViewController {
     }
 
     // MARK: - Private Properties
-
-    fileprivate lazy var headerView = MeHeaderView()
 
     /// Shows an actionsheet with options to Log In or Create a WordPress site.
     /// This is a temporary stop-gap measure to preserve for users only logged

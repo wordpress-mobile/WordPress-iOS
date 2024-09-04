@@ -12,10 +12,6 @@ extension UIEdgeInsets {
     func flippedForRightToLeftLayoutDirection() -> UIEdgeInsets {
         return UIEdgeInsets(top: top, left: right, bottom: bottom, right: left)
     }
-
-    init(allEdges: CGFloat) {
-        self.init(top: allEdges, left: allEdges, bottom: allEdges, right: allEdges)
-    }
 }
 
 extension UIButton {
