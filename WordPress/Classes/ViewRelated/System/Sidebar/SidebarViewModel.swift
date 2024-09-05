@@ -11,7 +11,7 @@ enum SidebarSelection: Hashable {
 }
 
 enum SidebarNavigationStep {
-    case allSites
+    case allSites(sourceRect: CGRect)
     case addSite(selection: AddSiteMenuViewModel.Selection)
     case domains
     case help

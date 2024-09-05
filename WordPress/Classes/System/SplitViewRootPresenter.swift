@@ -7,11 +7,14 @@ import WordPressAuthenticator
 final class SplitViewRootPresenter: RootViewPresenter {
     private let sidebarViewModel = SidebarViewModel()
     private let splitVC = UISplitViewController(style: .tripleColumn)
+    private weak var sitePickerPopoverVC: UIViewController?
     private var cancellables: [AnyCancellable] = []
 
     init() {
         // TODO: (wpsidebar) refactor
         self.mySitesCoordinator = MySitesCoordinator(meScenePresenter: MeScenePresenter(), onBecomeActiveTab: {})
+
+        splitVC.delegate = self
 
         let sidebarVC = SidebarViewController(viewModel: sidebarViewModel)
         let navigationVC = makeRootNavigationController(with: sidebarVC)
@@ -103,8 +106,8 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
     private func navigate(to step: SidebarNavigationStep) {
         switch step {
-        case .allSites:
-            showSitePicker()
+        case .allSites(let sourceRect):
+            showSitePicker(sourceRect: sourceRect)
         case .addSite(let selection):
             showAddSiteScreen(selection: selection)
         case .domains:
@@ -132,7 +135,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
         }
     }
 
-    private func showSitePicker() {
+    private func showSitePicker(sourceRect: CGRect) {
         let sitePickerVC = SiteSwitcherViewController(
             configuration: BlogListConfiguration(shouldHideRecentSites: true),
             addSiteAction: { [weak self] in
@@ -145,7 +148,12 @@ final class SplitViewRootPresenter: RootViewPresenter {
             }
         )
         let navigationVC = UINavigationController(rootViewController: sitePickerVC)
-        navigationVC.modalPresentationStyle = .formSheet
+        navigationVC.modalPresentationStyle = .popover
+        navigationVC.popoverPresentationController?.sourceView = splitVC.view
+        navigationVC.popoverPresentationController?.sourceRect = sourceRect
+        // Show no arrow and simply overlay the sidebar
+        navigationVC.popoverPresentationController?.permittedArrowDirections = [.left]
+        sitePickerPopoverVC = navigationVC
         self.splitVC.present(navigationVC, animated: true)
         WPAnalytics.track(.sidebarAllSitesTapped)
     }
@@ -324,6 +332,14 @@ final class SplitViewRootPresenter: RootViewPresenter {
         let navigationVC = UINavigationController(rootViewController: meVC)
         navigationVC.modalPresentationStyle = .formSheet
         splitVC.present(navigationVC, animated: true)
+    }
+}
+
+extension SplitViewRootPresenter: UISplitViewControllerDelegate {
+    func splitViewController(_ svc: UISplitViewController, willHide column: UISplitViewController.Column) {
+        if column == .primary {
+            sitePickerPopoverVC?.presentingViewController?.dismiss(animated: true)
+        }
     }
 }
 

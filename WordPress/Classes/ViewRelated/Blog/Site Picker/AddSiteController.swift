@@ -74,6 +74,10 @@ struct AddSiteMenuViewModel {
         let id = UUID()
         let title: String
         let handler: () -> Void
+
+        var uiAction: UIAction {
+            UIAction(title: title, handler: { _ in handler() })
+        }
     }
 
     init(context: ContextManager = .shared, onSelection: @escaping (Selection) -> Void) {
@@ -93,6 +97,18 @@ struct AddSiteMenuViewModel {
             })
         }
         self.actions = actions
+    }
+}
+
+extension AddSiteMenuViewModel {
+    func makeBarButtonItem() -> UIBarButtonItem? {
+        let actions = self.actions
+        guard !actions.isEmpty else {
+            return nil
+        }
+        let item = UIBarButtonItem(systemItem: .add)
+        item.setAdaptiveActions(actions.map(\.uiAction))
+        return item
     }
 }
 

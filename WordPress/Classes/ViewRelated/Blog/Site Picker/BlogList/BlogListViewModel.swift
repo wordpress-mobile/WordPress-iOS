@@ -9,6 +9,7 @@ final class BlogListViewModel: NSObject, ObservableObject {
     @Published private(set) var recentSites: [BlogListSiteViewModel] = []
     @Published private(set) var allSites: [BlogListSiteViewModel] = []
     @Published private(set) var searchResults: [BlogListSiteViewModel] = []
+    @Published var isPresentedInPopover = false
 
     private let configuration: BlogListConfiguration
     private var rawSites: [Blog] = []
@@ -18,6 +19,8 @@ final class BlogListViewModel: NSObject, ObservableObject {
     private let eventTracker: EventTracker
     private let recentSitesService: RecentSitesService
     private var syncBlogsTask: Task<Void, Error>?
+
+    var onAddSiteTapped: (AddSiteMenuViewModel.Selection) -> Void = { _ in }
 
     init(configuration: BlogListConfiguration = .defaultConfig,
          contextManager: ContextManager = ContextManager.sharedInstance(),

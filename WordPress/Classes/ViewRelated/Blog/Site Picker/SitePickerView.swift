@@ -49,7 +49,6 @@ final class SitePickerHostingController: UIViewController {
         viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(title: SharedStrings.Button.cancel, style: .plain, target: self, action: #selector(buttonCancelTapped))
 
         let navigationController = UINavigationController(rootViewController: viewController)
-
         addChild(navigationController)
         view.addSubview(navigationController.view)
         navigationController.view.translatesAutoresizingMaskIntoConstraints = false

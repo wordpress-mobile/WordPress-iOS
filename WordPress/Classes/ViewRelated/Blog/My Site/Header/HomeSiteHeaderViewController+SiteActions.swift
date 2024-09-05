@@ -2,7 +2,7 @@ import UIKit
 import SwiftUI
 import WordPressAuthenticator
 
-extension SitePickerViewController {
+extension HomeSiteHeaderViewController {
 
     func makeSiteActionsMenu() -> UIMenu? {
         UIMenu(options: .displayInline, children: [
@@ -25,7 +25,6 @@ extension SitePickerViewController {
         let menuItems = [
             MenuItem.visitSite({ [weak self] in self?.visitSiteTapped() }),
             MenuItem.shareSite { [weak self] in self?.buttonShareSiteTapped() },
-            MenuItem.switchSite({ [weak self] in self?.siteSwitcherTapped() })
         ]
         return UIMenu(options: .displayInline, children: menuItems.map { $0.toAction })
     }
@@ -106,8 +105,6 @@ extension SitePickerViewController {
 private enum MenuItem {
     case visitSite(_ handler: () -> Void)
     case shareSite(_ handler: () -> Void)
-    case addSite(_ handler: () -> Void)
-    case switchSite(_ handler: () -> Void)
     case siteTitle(_ handler: () -> Void)
     case personalizeHome(_ handler: () -> Void)
 
@@ -115,8 +112,6 @@ private enum MenuItem {
         switch self {
         case .visitSite: return Strings.visitSite
         case .shareSite: return Strings.shareSite
-        case .addSite: return Strings.addSite
-        case .switchSite: return Strings.switchSite
         case .siteTitle: return Strings.siteTitle
         case .personalizeHome: return Strings.personalizeHome
         }
@@ -126,8 +121,6 @@ private enum MenuItem {
         switch self {
         case .visitSite: return UIImage(systemName: "safari")
         case .shareSite: return UIImage(systemName: "square.and.arrow.up")
-        case .addSite: return UIImage(systemName: "plus")
-        case .switchSite: return UIImage(systemName: "arrow.triangle.swap")
         case .siteTitle: return UIImage(systemName: "character")
         case .personalizeHome: return UIImage(systemName: "slider.horizontal.3")
         }
@@ -137,8 +130,6 @@ private enum MenuItem {
         switch self {
         case .visitSite(let handler),
              .shareSite(let handler),
-             .addSite(let handler),
-             .switchSite(let handler),
              .siteTitle(let handler),
              .personalizeHome(let handler):
             return UIAction(title: title, image: icon) { _ in handler() }
@@ -148,9 +139,7 @@ private enum MenuItem {
 
 private enum Strings {
     static let visitSite = NSLocalizedString("mySite.siteActions.visitSite", value: "Visit site", comment: "Menu title for the visit site option")
-    static let addSite = NSLocalizedString("mySite.siteActions.addSite", value: "Add site", comment: "Menu title for the add site option")
     static let shareSite = NSLocalizedString("mySite.siteActions.shareSite", value: "Share site", comment: "Menu title for the share site option")
-    static let switchSite = NSLocalizedString("mySite.siteActions.switchSite", value: "Switch site", comment: "Menu title for the switch site option")
     static let siteTitle = NSLocalizedString("mySite.siteActions.siteTitle", value: "Change site title", comment: "Menu title for the change site title option")
     static let siteIcon = NSLocalizedString("mySite.siteActions.siteIcon", value: "Change site icon", comment: "Menu title for the change site icon option")
     static let personalizeHome = NSLocalizedString("mySite.siteActions.personalizeHome", value: "Personalize home", comment: "Menu title for the personalize home option")
