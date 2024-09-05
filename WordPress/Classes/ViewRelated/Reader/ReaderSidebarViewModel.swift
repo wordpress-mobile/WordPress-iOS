@@ -20,7 +20,7 @@ final class ReaderSidebarViewModel: ObservableObject {
     }
 
     func getTopic(for topicType: ReaderTopicType) -> ReaderAbstractTopic? {
-        return try? ReaderAbstractTopic.lookupAll(in: contextManager.mainContext).first {
+        return try? ReaderAbstractTopic.lookupAllMenus(in: contextManager.mainContext).first {
             ReaderHelpers.topicType($0) == topicType
         }
     }
@@ -29,6 +29,8 @@ final class ReaderSidebarViewModel: ObservableObject {
 enum ReaderSidebarItem: Identifiable, Hashable {
     /// One of the main navigation areas.
     case main(ReaderStaticScreen)
+    case allSubscriptions
+    case subscription(TaggedManagedObjectID<ReaderSiteTopic>)
 
     var id: ReaderSidebarItem { self }
 }

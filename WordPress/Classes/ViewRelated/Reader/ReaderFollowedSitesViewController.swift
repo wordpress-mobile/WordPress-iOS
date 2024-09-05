@@ -205,11 +205,7 @@ class ReaderFollowedSitesViewController: UIViewController {
         }, failure: { [weak self] (follow, error) in
             DDLogError("Could not unfollow site: \(String(describing: error))")
 
-            let notice = Notice(title: NSLocalizedString("reader.notice.blog.unsubscribed.error",
-                                                         value: "Could not unsubscribe from blog",
-                                                         comment: "Title of a prompt."),
-                                message: error?.localizedDescription,
-                                feedbackType: .error)
+            let notice = Notice(title: Strings.failedToUnfollow, message: error?.localizedDescription, feedbackType: .error)
             self?.post(notice)
         })
     }
@@ -521,5 +517,11 @@ extension ReaderFollowedSitesViewController: UISearchBarDelegate {
         }
         searchBar.text = nil
         searchBar.resignFirstResponder()
+    }
+}
+
+extension ReaderFollowedSitesViewController {
+    enum Strings {
+        static let failedToUnfollow =  NSLocalizedString("reader.notice.blog.unsubscribed.error", value: "Could not unsubscribe from blog", comment: "Title of a prompt.")
     }
 }
