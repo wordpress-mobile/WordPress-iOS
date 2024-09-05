@@ -204,8 +204,8 @@ private struct SidebarProfileContainerView: View {
 }
 
 extension BlogListViewModel {
-    /// Returns the most recent sites, the site for given blog id, and mixes in the rest of the sites
-    /// until the display limimt is reached.
+    /// Returns the most recent sites and mixes in the rest of the sites
+    /// until the display limit is reached.
     func topSites(limit: Int) -> [BlogListSiteViewModel] {
         let comparator: (BlogListSiteViewModel, BlogListSiteViewModel) -> Bool = {
             $0.title.localizedCaseInsensitiveCompare($1.title) == .orderedAscending
