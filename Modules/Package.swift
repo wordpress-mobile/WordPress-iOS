@@ -47,7 +47,7 @@ let package = Package(
         .package(url: "https://github.com/zendesk/support_sdk_ios", from: "8.0.3"),
         // We can't use wordpress-rs branches nor commits here. Only tags work.
         .package(url: "https://github.com/Automattic/wordpress-rs", revision: "alpha-swift-20240813"),
-        .package(url: "https://github.com/wordpress-mobile/GutenbergKit", revision: "cbf06853583406129e2511d44d435e5299fd3db0"),
+        .package(url: "https://github.com/wordpress-mobile/GutenbergKit", revision: "da722c56773fdbf40648a914275ffb8316c1c84c"),
     ],
     targets: XcodeSupport.targets + [
         .target(name: "JetpackStatsWidgetsCore"),
