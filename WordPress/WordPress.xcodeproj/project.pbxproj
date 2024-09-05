@@ -492,8 +492,6 @@
 		0C50FFCF2C8224B400E2CD95 /* MeHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C50FFCD2C82234A00E2CD95 /* MeHeaderView.swift */; };
 		0C5751102B011468001074E5 /* RemoteConfigDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C57510F2B011468001074E5 /* RemoteConfigDebugView.swift */; };
 		0C5751112B011468001074E5 /* RemoteConfigDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C57510F2B011468001074E5 /* RemoteConfigDebugView.swift */; };
-		0C5A17162C73E52A00EEF067 /* ReaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5A17152C73E52A00EEF067 /* ReaderViewController.swift */; };
-		0C5A17172C73E52A00EEF067 /* ReaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5A17152C73E52A00EEF067 /* ReaderViewController.swift */; };
 		0C5A171C2C740C3700EEF067 /* ReaderSidebarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5A171B2C740C3700EEF067 /* ReaderSidebarViewController.swift */; };
 		0C5A171D2C740C3700EEF067 /* ReaderSidebarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5A171B2C740C3700EEF067 /* ReaderSidebarViewController.swift */; };
 		0C5A17202C74CFFA00EEF067 /* SidebarProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5A171F2C74CFFA00EEF067 /* SidebarProfileView.swift */; };
@@ -574,6 +572,8 @@
 		0CA1C8C22A940EE300F691EE /* AvatarMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA1C8C02A940EE300F691EE /* AvatarMenuController.swift */; };
 		0CA3A4A22C5C371E00269EFC /* SiteIconViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA3A4A12C5C371E00269EFC /* SiteIconViewModel.swift */; };
 		0CA3A4A32C5C371E00269EFC /* SiteIconViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA3A4A12C5C371E00269EFC /* SiteIconViewModel.swift */; };
+		0CAC10942C876E47003AB1BC /* ReaderSidebarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CAC10932C876E47003AB1BC /* ReaderSidebarViewModel.swift */; };
+		0CAC10952C876E47003AB1BC /* ReaderSidebarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CAC10932C876E47003AB1BC /* ReaderSidebarViewModel.swift */; };
 		0CAE8EF22A9E9E8D0073EEB9 /* SiteMediaCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CAE8EF12A9E9E8D0073EEB9 /* SiteMediaCollectionCell.swift */; };
 		0CAE8EF32A9E9E8D0073EEB9 /* SiteMediaCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CAE8EF12A9E9E8D0073EEB9 /* SiteMediaCollectionCell.swift */; };
 		0CAE8EF62A9E9EE30073EEB9 /* SiteMediaCollectionCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CAE8EF52A9E9EE30073EEB9 /* SiteMediaCollectionCellViewModel.swift */; };
@@ -4169,10 +4169,10 @@
 		FA70024C29DC3B5500E874FD /* DashboardActivityLogCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA70024B29DC3B5500E874FD /* DashboardActivityLogCardCell.swift */; };
 		FA70024D29DC3B5500E874FD /* DashboardActivityLogCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA70024B29DC3B5500E874FD /* DashboardActivityLogCardCell.swift */; };
 		FA73D7D6278D9E5D00DF24B3 /* BlogDashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA73D7D5278D9E5D00DF24B3 /* BlogDashboardViewController.swift */; };
-		FA73D7E52798765B00DF24B3 /* SitePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA73D7E42798765B00DF24B3 /* SitePickerViewController.swift */; };
-		FA73D7E62798765B00DF24B3 /* SitePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA73D7E42798765B00DF24B3 /* SitePickerViewController.swift */; };
-		FA73D7E927987BA500DF24B3 /* SitePickerViewController+SiteIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA73D7E827987BA500DF24B3 /* SitePickerViewController+SiteIcon.swift */; };
-		FA73D7EA27987BA500DF24B3 /* SitePickerViewController+SiteIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA73D7E827987BA500DF24B3 /* SitePickerViewController+SiteIcon.swift */; };
+		FA73D7E52798765B00DF24B3 /* HomeSiteHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA73D7E42798765B00DF24B3 /* HomeSiteHeaderViewController.swift */; };
+		FA73D7E62798765B00DF24B3 /* HomeSiteHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA73D7E42798765B00DF24B3 /* HomeSiteHeaderViewController.swift */; };
+		FA73D7E927987BA500DF24B3 /* HomeSiteHeaderViewController+SiteIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA73D7E827987BA500DF24B3 /* HomeSiteHeaderViewController+SiteIcon.swift */; };
+		FA73D7EA27987BA500DF24B3 /* HomeSiteHeaderViewController+SiteIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA73D7E827987BA500DF24B3 /* HomeSiteHeaderViewController+SiteIcon.swift */; };
 		FA77E02A1BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA77E0291BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift */; };
 		FA7AA45325BFD9BC005E7200 /* JetpackScanThreatDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7AA45225BFD9BC005E7200 /* JetpackScanThreatDetailsViewController.swift */; };
 		FA7AA4A725BFE0A9005E7200 /* JetpackScanThreatDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA7AA4A625BFE0A9005E7200 /* JetpackScanThreatDetailsViewController.xib */; };
@@ -4200,8 +4200,8 @@
 		FAA5C9102B7FC74C002E073B /* PostSyncStateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA5C90E2B7FC74C002E073B /* PostSyncStateViewModel.swift */; };
 		FAADE42626159AFE00BF29FE /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAADE3F02615996E00BF29FE /* AppConstants.swift */; };
 		FAADE43A26159B2800BF29FE /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAADE42726159B1300BF29FE /* AppConstants.swift */; };
-		FAAEFAE02B1E29F0004AE802 /* SitePickerViewController+SiteActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAEFADF2B1E29F0004AE802 /* SitePickerViewController+SiteActions.swift */; };
-		FAAEFAE12B1E29F0004AE802 /* SitePickerViewController+SiteActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAEFADF2B1E29F0004AE802 /* SitePickerViewController+SiteActions.swift */; };
+		FAAEFAE02B1E29F0004AE802 /* HomeSiteHeaderViewController+SiteActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAEFADF2B1E29F0004AE802 /* HomeSiteHeaderViewController+SiteActions.swift */; };
+		FAAEFAE12B1E29F0004AE802 /* HomeSiteHeaderViewController+SiteActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAEFADF2B1E29F0004AE802 /* HomeSiteHeaderViewController+SiteActions.swift */; };
 		FAB37D4627ED84BC00CA993C /* DashboardStatsNudgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB37D4527ED84BC00CA993C /* DashboardStatsNudgeView.swift */; };
 		FAB37D4727ED84BC00CA993C /* DashboardStatsNudgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB37D4527ED84BC00CA993C /* DashboardStatsNudgeView.swift */; };
 		FAB4F32724EDE12A00F259BA /* FollowCommentsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB4F32624EDE12A00F259BA /* FollowCommentsServiceTests.swift */; };
@@ -6445,7 +6445,6 @@
 		0C43FF802C3601770084B698 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/iOSSupport/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		0C50FFCD2C82234A00E2CD95 /* MeHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeHeaderView.swift; sourceTree = "<group>"; };
 		0C57510F2B011468001074E5 /* RemoteConfigDebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigDebugView.swift; sourceTree = "<group>"; };
-		0C5A17152C73E52A00EEF067 /* ReaderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderViewController.swift; sourceTree = "<group>"; };
 		0C5A171B2C740C3700EEF067 /* ReaderSidebarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSidebarViewController.swift; sourceTree = "<group>"; };
 		0C5A171F2C74CFFA00EEF067 /* SidebarProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarProfileView.swift; sourceTree = "<group>"; };
 		0C5A17222C74D01900EEF067 /* SidebarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarViewModel.swift; sourceTree = "<group>"; };
@@ -6488,6 +6487,7 @@
 		0CA15B4D2BB2128800518D6E /* PostCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCoordinatorTests.swift; sourceTree = "<group>"; };
 		0CA1C8C02A940EE300F691EE /* AvatarMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarMenuController.swift; sourceTree = "<group>"; };
 		0CA3A4A12C5C371E00269EFC /* SiteIconViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteIconViewModel.swift; sourceTree = "<group>"; };
+		0CAC10932C876E47003AB1BC /* ReaderSidebarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSidebarViewModel.swift; sourceTree = "<group>"; };
 		0CAE8EF12A9E9E8D0073EEB9 /* SiteMediaCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteMediaCollectionCell.swift; sourceTree = "<group>"; };
 		0CAE8EF52A9E9EE30073EEB9 /* SiteMediaCollectionCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteMediaCollectionCellViewModel.swift; sourceTree = "<group>"; };
 		0CAFFD7D2C7D0CEC00DBF5C3 /* AddSiteController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSiteController.swift; sourceTree = "<group>"; };
@@ -9623,8 +9623,8 @@
 		FA6FAB4625EF7C6A00666CED /* ReaderRelatedPostsSectionHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReaderRelatedPostsSectionHeaderView.xib; sourceTree = "<group>"; };
 		FA70024B29DC3B5500E874FD /* DashboardActivityLogCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardActivityLogCardCell.swift; sourceTree = "<group>"; };
 		FA73D7D5278D9E5D00DF24B3 /* BlogDashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardViewController.swift; sourceTree = "<group>"; };
-		FA73D7E42798765B00DF24B3 /* SitePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SitePickerViewController.swift; sourceTree = "<group>"; };
-		FA73D7E827987BA500DF24B3 /* SitePickerViewController+SiteIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SitePickerViewController+SiteIcon.swift"; sourceTree = "<group>"; };
+		FA73D7E42798765B00DF24B3 /* HomeSiteHeaderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSiteHeaderViewController.swift; sourceTree = "<group>"; };
+		FA73D7E827987BA500DF24B3 /* HomeSiteHeaderViewController+SiteIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeSiteHeaderViewController+SiteIcon.swift"; sourceTree = "<group>"; };
 		FA77E0291BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeBrowserHeaderView.swift; sourceTree = "<group>"; };
 		FA7AA45225BFD9BC005E7200 /* JetpackScanThreatDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanThreatDetailsViewController.swift; sourceTree = "<group>"; };
 		FA7AA4A625BFE0A9005E7200 /* JetpackScanThreatDetailsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JetpackScanThreatDetailsViewController.xib; sourceTree = "<group>"; };
@@ -9644,7 +9644,7 @@
 		FAA5C90E2B7FC74C002E073B /* PostSyncStateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSyncStateViewModel.swift; sourceTree = "<group>"; };
 		FAADE3F02615996E00BF29FE /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		FAADE42726159B1300BF29FE /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
-		FAAEFADF2B1E29F0004AE802 /* SitePickerViewController+SiteActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SitePickerViewController+SiteActions.swift"; sourceTree = "<group>"; };
+		FAAEFADF2B1E29F0004AE802 /* HomeSiteHeaderViewController+SiteActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeSiteHeaderViewController+SiteActions.swift"; sourceTree = "<group>"; };
 		FAB37D4527ED84BC00CA993C /* DashboardStatsNudgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardStatsNudgeView.swift; sourceTree = "<group>"; };
 		FAB4F32624EDE12A00F259BA /* FollowCommentsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowCommentsServiceTests.swift; sourceTree = "<group>"; };
 		FAB8004825AEDC2300D5D54A /* JetpackBackupCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBackupCompleteViewController.swift; sourceTree = "<group>"; };
@@ -10722,6 +10722,15 @@
 			name = Posts;
 			sourceTree = "<group>";
 		};
+		0CAC10922C876E37003AB1BC /* Sidebar */ = {
+			isa = PBXGroup;
+			children = (
+				0C5A171B2C740C3700EEF067 /* ReaderSidebarViewController.swift */,
+				0CAC10932C876E47003AB1BC /* ReaderSidebarViewModel.swift */,
+			);
+			name = Sidebar;
+			sourceTree = "<group>";
+		};
 		0CAE8EF42A9E9ECC0073EEB9 /* SiteMedia */ = {
 			isa = PBXGroup;
 			children = (
@@ -10733,6 +10742,16 @@
 				0C3090202B1290730071C551 /* Helpers */,
 			);
 			path = SiteMedia;
+			sourceTree = "<group>";
+		};
+		0CAFFD892C7F3E5400DBF5C3 /* Header */ = {
+			isa = PBXGroup;
+			children = (
+				FA73D7E42798765B00DF24B3 /* HomeSiteHeaderViewController.swift */,
+				FAAEFADF2B1E29F0004AE802 /* HomeSiteHeaderViewController+SiteActions.swift */,
+				FA73D7E827987BA500DF24B3 /* HomeSiteHeaderViewController+SiteIcon.swift */,
+			);
+			path = Header;
 			sourceTree = "<group>";
 		};
 		0CB4056F29C8DCD7008EED0A /* BlogPersonalization */ = {
@@ -10812,6 +10831,7 @@
 		1716AEFA25F2926C00CF49EC /* My Site */ = {
 			isa = PBXGroup;
 			children = (
+				0CAFFD892C7F3E5400DBF5C3 /* Header */,
 				1716AEFB25F2927600CF49EC /* MySiteViewController.swift */,
 				F56A33322538C0ED00E2AEF3 /* MySiteViewController+FAB.swift */,
 				3F4A4C222AD3FA2E00DE5DF8 /* MySiteViewModel.swift */,
@@ -11663,8 +11683,6 @@
 				3F09CCA72428FF3300D00A8C /* ReaderTabViewController.swift */,
 				3F6975FE242D941E001F1807 /* ReaderTabViewModel.swift */,
 				3FF1A852242D5FCB00373F5D /* WPTabBarController+ReaderTabNavigation.swift */,
-				0C5A17152C73E52A00EEF067 /* ReaderViewController.swift */,
-				0C5A171B2C740C3700EEF067 /* ReaderSidebarViewController.swift */,
 			);
 			path = "Tab Navigation";
 			sourceTree = "<group>";
@@ -17031,6 +17049,7 @@
 				F5A738C1244DF92300EDE065 /* Manage */,
 				32E1BFD824A66801007A08F0 /* Select Interests */,
 				5D98A1491B6C09730085E904 /* Style */,
+				0CAC10922C876E37003AB1BC /* Sidebar */,
 				3F09CCA62428FE8600D00A8C /* Tab Navigation */,
 				5D08B8FC19647C0300D5B381 /* Views */,
 				5D1D04731B7A50B100CDE646 /* Reader.storyboard */,
@@ -18844,9 +18863,6 @@
 				0822C3FB2BA1EA2400C53B50 /* BlogList */,
 				0822C3F42BA1EA2100C53B50 /* SiteSwitcherView.swift */,
 				0C31F1302C5089020061CAA7 /* SitePickerView.swift */,
-				FA73D7E42798765B00DF24B3 /* SitePickerViewController.swift */,
-				FAAEFADF2B1E29F0004AE802 /* SitePickerViewController+SiteActions.swift */,
-				FA73D7E827987BA500DF24B3 /* SitePickerViewController+SiteIcon.swift */,
 				17C1D67B2670E3DC006C8970 /* SiteIconPickerView.swift */,
 				0CAFFD7D2C7D0CEC00DBF5C3 /* AddSiteController.swift */,
 				17C1D7DB26735631006C8970 /* EmojiRenderer.swift */,
@@ -21481,7 +21497,7 @@
 				E16A76F31FC4766900A661E3 /* CredentialsService.swift in Sources */,
 				F9B862C92478170A008B093C /* EncryptedLogTableViewController.swift in Sources */,
 				4070D75E20E6B4E4007CEBDA /* ActivityDateFormatting.swift in Sources */,
-				FAAEFAE02B1E29F0004AE802 /* SitePickerViewController+SiteActions.swift in Sources */,
+				FAAEFAE02B1E29F0004AE802 /* HomeSiteHeaderViewController+SiteActions.swift in Sources */,
 				E2AA87A518523E5300886693 /* UIView+Subviews.m in Sources */,
 				FEFC0F892731182C001F7F1D /* CommentService+Replies.swift in Sources */,
 				803BB98F29667BAF00B3F6D6 /* JetpackBrandingTextProvider.swift in Sources */,
@@ -22003,7 +22019,7 @@
 				98656BD82037A1770079DE67 /* SignupEpilogueViewController.swift in Sources */,
 				738B9A5721B85CF20005062B /* TableDataCoordinator.swift in Sources */,
 				80D9D00029E85EBF00FE3400 /* PageEditorPresenter.swift in Sources */,
-				FA73D7E52798765B00DF24B3 /* SitePickerViewController.swift in Sources */,
+				FA73D7E52798765B00DF24B3 /* HomeSiteHeaderViewController.swift in Sources */,
 				B541276B1C0F7D610015CA80 /* SettingsMultiTextViewController.m in Sources */,
 				3F810A5A2616870C00ADDCC2 /* UnifiedPrologueIntroContentView.swift in Sources */,
 				F5E6312B243BC83E0088229D /* FilterSheetViewController.swift in Sources */,
@@ -22099,7 +22115,7 @@
 				5703A4C622C003DC0028A343 /* WPStyleGuide+Posts.swift in Sources */,
 				DC8F61F727032B3F0087AC5D /* TimeZoneFormatter.swift in Sources */,
 				91138455228373EB00FB02B7 /* GutenbergVideoUploadProcessor.swift in Sources */,
-				FA73D7E927987BA500DF24B3 /* SitePickerViewController+SiteIcon.swift in Sources */,
+				FA73D7E927987BA500DF24B3 /* HomeSiteHeaderViewController+SiteIcon.swift in Sources */,
 				E125445612BF5B3900D87A0A /* PostCategory.m in Sources */,
 				E6C892D61C601D55007AD612 /* SharingButtonsViewController.swift in Sources */,
 				FA6C32982BEE31A000BBDDB4 /* BlockingUpdateView.swift in Sources */,
@@ -22121,10 +22137,10 @@
 				246EB6E52C8038F700343F28 /* StringHighlighting.swift in Sources */,
 				0C35FFF129CB81F700D224EB /* BlogDashboardHelpers.swift in Sources */,
 				D8212CB320AA6861008E8AE8 /* ReaderFollowAction.swift in Sources */,
+				0CAC10942C876E47003AB1BC /* ReaderSidebarViewModel.swift in Sources */,
 				F5D399302541F25B0058D0AB /* SheetActions.swift in Sources */,
 				93F7214F271831820021A09F /* SiteStatsPinnedItemStore.swift in Sources */,
 				77DFF0882B68362200FA561D /* BooleanUserDefaultsDebugViewModel.swift in Sources */,
-				0C5A17162C73E52A00EEF067 /* ReaderViewController.swift in Sources */,
 				9895401126C1F39300EDEB5A /* EditCommentTableViewController.swift in Sources */,
 				018635842A8109DE00915532 /* SupportChatBotViewController.swift in Sources */,
 				0CED1FED2B61AAF600E6DD52 /* AtomicSiteService.swift in Sources */,
@@ -24450,7 +24466,7 @@
 				FABB21332602FC2C00C8785C /* TwoColumnCell.swift in Sources */,
 				C79C308326EA9A2300E88514 /* ReferrerDetailsCell.swift in Sources */,
 				FABB21342602FC2C00C8785C /* PostSettingsViewController.m in Sources */,
-				FAAEFAE12B1E29F0004AE802 /* SitePickerViewController+SiteActions.swift in Sources */,
+				FAAEFAE12B1E29F0004AE802 /* HomeSiteHeaderViewController+SiteActions.swift in Sources */,
 				FACF66CB2ADD4703008C3E13 /* PostListCell.swift in Sources */,
 				FA3FCD542B640C2D009B9740 /* View+Helpers.swift in Sources */,
 				FABB21352602FC2C00C8785C /* MenuItem.m in Sources */,
@@ -24531,7 +24547,7 @@
 				F195C42C26DFBE21000EC884 /* WeeklyRoundupBackgroundTask.swift in Sources */,
 				FABB21752602FC2C00C8785C /* HeaderContentGroup.swift in Sources */,
 				F4C1FC642A44831300AD7CB0 /* PrivacySettingsAnalyticsTracker.swift in Sources */,
-				FA73D7EA27987BA500DF24B3 /* SitePickerViewController+SiteIcon.swift in Sources */,
+				FA73D7EA27987BA500DF24B3 /* HomeSiteHeaderViewController+SiteIcon.swift in Sources */,
 				01C591462BDBD63D0071515C /* StatsGhostTopCell.swift in Sources */,
 				FABB21772602FC2C00C8785C /* JetpackConnectionViewController.swift in Sources */,
 				803BB97A2959543D00B3F6D6 /* RootViewCoordinator.swift in Sources */,
@@ -24577,7 +24593,6 @@
 				013A8CB72AB83B40004FF5D0 /* DashboardDomainsCardSearchView.swift in Sources */,
 				1E732A7D2BB59AA1001103D4 /* UIImageView+Gravatar.swift in Sources */,
 				FA98B61A29A3BF050071AAE8 /* DashboardBlazePromoCardView.swift in Sources */,
-				0C5A17172C73E52A00EEF067 /* ReaderViewController.swift in Sources */,
 				FABB21942602FC2C00C8785C /* AztecPostViewController.swift in Sources */,
 				F1585442267D3BF900A2E966 /* CalendarDayToggleButton.swift in Sources */,
 				FE4C46FF27FAE61700285F35 /* DashboardPromptsCardCell.swift in Sources */,
@@ -24664,7 +24679,7 @@
 				24B962332C88BA6900FE64C9 /* AppColor.swift in Sources */,
 				019D69A12A5EBF47003B676D /* WordPressAuthenticatorProtocol.swift in Sources */,
 				FABB21D42602FC2C00C8785C /* PageSettingsViewController.m in Sources */,
-				FA73D7E62798765B00DF24B3 /* SitePickerViewController.swift in Sources */,
+				FA73D7E62798765B00DF24B3 /* HomeSiteHeaderViewController.swift in Sources */,
 				FABB21D52602FC2C00C8785C /* SiteDesignContentCollectionViewController.swift in Sources */,
 				C31466CC2939950900D62FC7 /* MigrationLoadWordPressViewController.swift in Sources */,
 				FABB21D62602FC2C00C8785C /* PlanComparisonViewController.swift in Sources */,
@@ -25149,6 +25164,7 @@
 				24DB7C1A2C5AFC0700A0FE92 /* ApplicationPasswordService.swift in Sources */,
 				3F435221289B2B5100CE19ED /* JetpackOverlayViewController.swift in Sources */,
 				FABB23362602FC2C00C8785C /* TenorGIFCollection.swift in Sources */,
+				0CAC10952C876E47003AB1BC /* ReaderSidebarViewModel.swift in Sources */,
 				FAC1B82829B1F1EE00E0C542 /* BlazePostPreviewView.swift in Sources */,
 				3FFDEF7829177D7500B625CE /* MigrationNotificationsViewModel.swift in Sources */,
 				FABB23372602FC2C00C8785C /* WebNavigationDelegate.swift in Sources */,

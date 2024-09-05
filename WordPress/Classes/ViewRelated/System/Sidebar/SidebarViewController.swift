@@ -29,7 +29,7 @@ private struct SidebarView: View {
                 searchResults
             } else {
                 Section {
-                    makeSiteListSection(with: blogListViewModel)
+                    siteListSectionContent
                 }
                 Section(Strings.moreSection) {
                     more
@@ -59,20 +59,22 @@ private struct SidebarView: View {
     // MARK: - Sites
 
     @ViewBuilder
-    private func makeSiteListSection(with viewModel: BlogListViewModel) -> some View {
-        let topSites = viewModel.topSites
+    private var siteListSectionContent: some View {
+        let topSites = blogListViewModel.topSites
         if !topSites.isEmpty {
             makeSiteList(with: topSites)
         } else {
             Text(Strings.noSites)
         }
-        if viewModel.allSites.count > SidebarView.displayedSiteLimit {
-            Button {
-                self.viewModel.navigate(.allSites)
-            } label: {
-                Label(Strings.allSites, systemImage: "rectangle.stack")
+        if blogListViewModel.allSites.count > SidebarView.displayedSiteLimit {
+            GeometryReader { proxy in
+                Button {
+                    viewModel.navigate(.allSites(sourceRect: proxy.frame(in: .global)))
+                } label: {
+                    Label(Strings.allSites, systemImage: "rectangle.stack")
+                }
+                .tint(Color.primary)
             }
-            .tint(Color.primary)
         }
         addSiteView
             .tint(Color.primary)
@@ -92,13 +94,7 @@ private struct SidebarView: View {
         let viewModel = AddSiteMenuViewModel(onSelection: { [weak viewModel] in
             viewModel?.navigate(.addSite(selection: $0))
         })
-        let label = Label {
-            Text(Strings.addSite)
-        } icon: {
-            Image(systemName: "plus.square.fill")
-                .foregroundStyle(Color(UIAppColor.brand), Color(.secondarySystemFill))
-                .font(.title2)
-        }
+        let label = SidebarAddButtonLabel(title: Strings.addSite)
         switch viewModel.actions.count {
         case 0:
             EmptyView()
@@ -136,6 +132,9 @@ private struct SidebarView: View {
             Button(action: { viewModel.navigate(.domains) }) {
                 Label(Strings.domains, systemImage: "network")
             }
+        }
+        Button(action: { viewModel.navigate(.help) }) {
+            Label(Strings.help, systemImage: "questionmark.circle")
         }
 #else
         Button(action: { viewModel.navigate(.help) }) {
@@ -217,6 +216,20 @@ private extension BlogListViewModel {
             topSites.append(site)
         }
         return Array(topSites).sorted { $0.title.localizedCaseInsensitiveCompare($1.title) == .orderedAscending
+        }
+    }
+}
+
+struct SidebarAddButtonLabel: View {
+    let title: String
+
+    var body: some View {
+        Label {
+            Text(title)
+        } icon: {
+            Image(systemName: "plus.square.fill")
+                .foregroundStyle(AppColor.brand, Color(.secondarySystemFill))
+                .font(.title2)
         }
     }
 }

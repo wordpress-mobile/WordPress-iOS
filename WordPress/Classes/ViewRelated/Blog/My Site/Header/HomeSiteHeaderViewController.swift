@@ -5,7 +5,7 @@ import SwiftUI
 import SVProgressHUD
 import DesignSystem
 
-final class SitePickerViewController: UIViewController {
+final class HomeSiteHeaderViewController: UIViewController {
 
     var blog: Blog {
         didSet {
@@ -102,7 +102,7 @@ final class SitePickerViewController: UIViewController {
 
 // MARK: - BlogDetailHeaderViewDelegate
 
-extension SitePickerViewController: BlogDetailHeaderViewDelegate {
+extension HomeSiteHeaderViewController: BlogDetailHeaderViewDelegate {
 
     func siteIconReceivedDroppedImage(_ image: UIImage?) {
         if !siteIconShouldAllowDroppedImages() {
@@ -127,7 +127,7 @@ extension SitePickerViewController: BlogDetailHeaderViewDelegate {
         showSiteTitleSettings()
     }
 
-    func siteSwitcherTapped() {
+    func siteSwitcherTapped(sourceView: UIView) {
         let viewController = SiteSwitcherViewController(
             addSiteAction: { [weak self] in
                 self?.addSiteTapped(siteType: $0)
@@ -142,6 +142,10 @@ extension SitePickerViewController: BlogDetailHeaderViewDelegate {
         )
         let navigationController = UINavigationController(rootViewController: viewController)
         navigationController.modalPresentationStyle = .formSheet
+        if isSidebarModeEnabled {
+            navigationController.modalPresentationStyle = .popover
+            navigationController.popoverPresentationController?.sourceView = sourceView
+        }
         present(navigationController, animated: true)
         WPAnalytics.track(.mySiteSiteSwitcherTapped)
     }
@@ -153,7 +157,7 @@ extension SitePickerViewController: BlogDetailHeaderViewDelegate {
 
 // MARK: - Helpers
 
-extension SitePickerViewController {
+extension HomeSiteHeaderViewController {
 
     private func switchToBlog(_ blog: Blog) {
         guard self.blog != blog else {
@@ -265,7 +269,7 @@ extension SitePickerViewController {
 
 // MARK: - Constants and Strings
 
-extension SitePickerViewController {
+extension HomeSiteHeaderViewController {
 
     private enum Constants {
         static let viewSiteSource = "my_site_view_site"

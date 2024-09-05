@@ -41,16 +41,6 @@ extension WPTabBarController {
         return viewModel
     }
 
-    private func makeReaderContentViewController(with content: ReaderContent) -> ReaderContentViewController {
-        if content.topicType == .discover, let topic = content.topic {
-            return ReaderCardsStreamViewController.controller(topic: topic)
-        } else if let topic = content.topic {
-            return ReaderStreamViewController.controllerWithTopic(topic)
-        } else {
-            return ReaderStreamViewController.controllerForContentType(content.type)
-        }
-    }
-
     private func makeReaderTabView(_ viewModel: ReaderTabViewModel) -> ReaderTabView {
         return ReaderTabView(viewModel: self.readerTabViewModel)
     }

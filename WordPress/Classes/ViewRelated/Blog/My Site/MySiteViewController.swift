@@ -116,11 +116,11 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         }
 
         get {
-            return sitePickerViewController?.blog
+            return headerViewController?.blog
         }
     }
 
-    private(set) weak var sitePickerViewController: SitePickerViewController?
+    private(set) weak var headerViewController: HomeSiteHeaderViewController?
     private(set) weak var blogDetailsViewController: BlogDetailsViewController? {
         didSet {
             blogDetailsViewController?.presentationDelegate = self
@@ -341,8 +341,9 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         if isSidebarModeEnabled {
             navigationItem.titleView = isHidden ? UIView() : {
                 let button = UIButton.makeMenuButton(title: navigationItem.title ?? Strings.mySite)
-                button.addAction(UIAction { [weak self] _ in
-                    self?.sitePickerViewController?.siteSwitcherTapped()
+                button.addAction(UIAction { [weak self, weak button] _ in
+                    guard let self, let button else { return }
+                    self.headerViewController?.siteSwitcherTapped(sourceView: button)
                 }, for: .primaryActionTriggered)
                 return button
             }()
@@ -432,7 +433,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
                 }
 
                 self.updateNavigationTitle(for: blog)
-                self.sitePickerViewController?.blogDetailHeaderView.blog = blog
+                self.headerViewController?.blogDetailHeaderView.blog = blog
             }
 
         case .dashboard:
@@ -459,7 +460,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             }
 
             self.updateNavigationTitle(for: blog)
-            self.sitePickerViewController?.blogDetailHeaderView.blog = blog
+            self.headerViewController?.blogDetailHeaderView.blog = blog
             self.blogDashboardViewController?.reloadCardsLocally()
         }
     }
@@ -694,25 +695,25 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     }
 
     private func showSitePicker(for blog: Blog) {
-        guard let sitePickerViewController = sitePickerViewController else {
+        guard let headerViewController else {
 
-            let sitePickerViewController = makeSitePickerViewController(for: blog)
-            self.sitePickerViewController = sitePickerViewController
+            let headerVC = makeHeaderViewController(for: blog)
+            self.headerViewController = headerVC
 
-            addChild(sitePickerViewController)
-            stackView.insertArrangedSubview(sitePickerViewController.view, at: 0)
-            sitePickerViewController.didMove(toParent: self)
+            addChild(headerVC)
+            stackView.insertArrangedSubview(headerVC.view, at: 0)
+            headerVC.didMove(toParent: self)
 
             return
         }
 
-        sitePickerViewController.blog = blog
+        headerViewController.blog = blog
     }
 
-    private func makeSitePickerViewController(for blog: Blog) -> SitePickerViewController {
-        let sitePickerViewController = SitePickerViewController(blog: blog, isSidebarModeEnabled: isSidebarModeEnabled)
+    private func makeHeaderViewController(for blog: Blog) -> HomeSiteHeaderViewController {
+        let headerVC = HomeSiteHeaderViewController(blog: blog, isSidebarModeEnabled: isSidebarModeEnabled)
 
-        sitePickerViewController.onBlogSwitched = { [weak self] blog in
+        headerVC.onBlogSwitched = { [weak self] blog in
             guard let self else { return }
 
             if self.isSidebarModeEnabled {
@@ -728,11 +729,11 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             }
         }
 
-        sitePickerViewController.onBlogListDismiss = { [weak self] in
+        headerVC.onBlogListDismiss = { [weak self] in
             self?.displayJetpackInstallOverlayIfNeeded()
         }
 
-        return sitePickerViewController
+        return headerVC
     }
 
     private func updateChildViewController(for blog: Blog) {
