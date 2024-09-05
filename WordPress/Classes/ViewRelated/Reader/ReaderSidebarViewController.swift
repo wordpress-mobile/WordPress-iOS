@@ -33,7 +33,7 @@ final class ReaderSidebarViewController: UIHostingController<ReaderSidebarView> 
         case .main(let screen):
             showSecondary(makeViewController(for: screen))
         case .allSubscriptions:
-            showSecondary(ReaderFollowedSitesViewController.controller())
+            showSecondary(makeAllSubscriptionsViewController(), isLargeTitle: true)
         case .subscription(let objectID):
             do {
                 let site = try viewContext.existingObject(with: objectID)
@@ -64,8 +64,22 @@ final class ReaderSidebarViewController: UIHostingController<ReaderSidebarView> 
         }
     }
 
-    private func showSecondary(_ viewController: UIViewController) {
+    private func makeAllSubscriptionsViewController() -> UIViewController {
+        let view = ReaderSubscriptionsView() { [weak self] selection in
+            guard let self else { return }
+            let navigationVC = self.splitViewController?.viewController(for: .secondary) as? UINavigationController
+            wpAssert(navigationVC != nil)
+            let streamVC = ReaderStreamViewController.controllerWithTopic(selection)
+            navigationVC?.pushViewController(streamVC, animated: true)
+        }.environment(\.managedObjectContext, viewContext)
+        return UIHostingController(rootView: view)
+    }
+
+    private func showSecondary(_ viewController: UIViewController, isLargeTitle: Bool = false) {
         let navigationVC = UINavigationController(rootViewController: viewController)
+        if isLargeTitle {
+            navigationVC.navigationBar.prefersLargeTitles = true
+        }
         splitViewController?.setViewController(navigationVC, for: .secondary)
     }
 }
@@ -110,7 +124,6 @@ struct ReaderSidebarView: View {
     }
 }
 
-// TODO: (wpsidebar) Add button to add subscription (how should it work?)
 private struct ReaderSidebarSubscriptionsSection: View {
     let viewModel: ReaderSidebarViewModel
 
@@ -137,7 +150,7 @@ private struct ReaderSidebarSubscriptionsSection: View {
             .tag(ReaderSidebarItem.subscription(TaggedManagedObjectID(site)))
             .swipeActions(edge: .trailing) {
                 Button(role: .destructive) {
-                    unfollow(site)
+                    ReaderSubscriptionHelper.unfollow(site)
                 } label: {
                     Text(Strings.unfollow)
                 }
@@ -149,20 +162,8 @@ private struct ReaderSidebarSubscriptionsSection: View {
     func delete(at offsets: IndexSet) {
         let sites = offsets.map { subscriptions[$0] }
         for site in sites {
-            unfollow(site)
+            ReaderSubscriptionHelper.unfollow(site)
         }
-    }
-
-    private func unfollow(_ site: ReaderSiteTopic) {
-        NotificationCenter.default.post(name: .ReaderTopicUnfollowed, object: nil, userInfo: [ReaderNotificationKeys.topic: site])
-
-        let service = ReaderTopicService(coreDataStack: ContextManager.shared)
-        service.toggleFollowing(forSite: site, success: { _ in
-            // Do nothing
-        }, failure: { _, error in
-            DDLogError("Could not unfollow site: \(String(describing: error))")
-            Notice(title: ReaderFollowedSitesViewController.Strings.failedToUnfollow, message: error?.localizedDescription, feedbackType: .error).post()
-        })
     }
 }
 
