@@ -3,7 +3,7 @@ import UIKit
 
 extension UIImage {
 
-    func gravatarIcon(size: CGFloat) -> UIImage? {
+    func gravatarIcon(size: CGFloat) -> UIImage {
         resized(to: CGSize(width: size, height: size))
             .cropToCircle()
             .withRenderingMode(.alwaysOriginal)

@@ -147,6 +147,10 @@ private struct WordpressUICacheAdapter: GravatarImageCaching {
         cache.getImage(forKey: key)
     }
 
+    func removeImage(forKey key: String) {
+        cache.removeImage(forKey: key)
+    }
+
     // MARK: Gravatar
 
     func setEntry(_ entry: CacheEntry?, for key: String) {

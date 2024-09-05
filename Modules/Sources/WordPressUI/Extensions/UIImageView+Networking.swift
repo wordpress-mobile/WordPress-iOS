@@ -169,6 +169,7 @@ public extension UIImageView {
 public protocol ImageCaching {
     func setImage(_ image: UIImage, forKey key: String)
     func getImage(forKey key: String) -> UIImage?
+    func removeImage(forKey key: String)
 }
 
 public class ImageCache: ImageCaching {
@@ -183,5 +184,9 @@ public class ImageCache: ImageCaching {
 
     public func getImage(forKey key: String) -> UIImage? {
         cache.object(forKey: key as NSString)
+    }
+
+    public func removeImage(forKey key: String) {
+        cache.removeObject(forKey: key as NSString)
     }
 }

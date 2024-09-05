@@ -8,36 +8,38 @@ extension BlogDetailsViewController {
         guard let email = blog.account?.email else {
             return
         }
-
-        Task { @MainActor [weak self] in
-            do {
-                let service = Gravatar.AvatarService()
-                let result = try await service.fetch(with: .email(email))
-                row.image = result.image.gravatarIcon(size: Metrics.iconSize) ?? result.image
-                self?.reloadMeRow()
-            } catch {
-                // Do nothing
+        let service = GravatarImageService.shared
+        if let image = service.cacheImage(for: email) {
+            row.image = image.gravatarIcon(size: Metrics.iconSize)
+            reloadMeRow()
+        } else {
+            Task { @MainActor [weak self] in
+                do {
+                    let image = try await service.image(for: email)
+                    row.image = image.gravatarIcon(size: Metrics.iconSize)
+                    self?.reloadMeRow()
+                } catch {
+                    // Do nothing
+                }
             }
         }
     }
 
     @objc func observeGravatarImageUpdate() {
-        NotificationCenter.default.addObserver(self, selector: #selector(updateGravatarImage(_:)), name: .GravatarImageUpdateNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateGravatarImage), name: .GravatarImageUpdateNotification, object: nil)
     }
 
     @objc private func updateGravatarImage(_ notification: Foundation.Notification) {
         guard let userInfo = notification.userInfo,
-              let image = userInfo["image"] as? UIImage,
-              let gravatarIcon = image.gravatarIcon(size: Metrics.iconSize) else {
+              let image = userInfo["image"] as? UIImage else {
             return
         }
-        meRow?.image = gravatarIcon
+        meRow?.image = image.gravatarIcon(size: Metrics.iconSize)
         reloadMeRow()
     }
 
     private func reloadMeRow() {
-        let meIndexPath = indexPath(for: .me)
-        tableView.reloadRows(at: [meIndexPath], with: .automatic)
+        tableView.reloadRows(at: [indexPath(for: .me)], with: .automatic)
     }
 
     private enum Metrics {

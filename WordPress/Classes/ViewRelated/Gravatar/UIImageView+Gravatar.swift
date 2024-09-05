@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 import GravatarUI
 import WordPressUI
 
@@ -22,13 +23,6 @@ public enum ObjcGravatarRating: Int {
 }
 
 extension UIImageView {
-
-    /// Re-declaration for Objc compatibility
-    @objc(downloadGravatarFor:gravatarRating:)
-    public func objc_downloadGravatar(for email: String, gravatarRating: ObjcGravatarRating) {
-        downloadGravatar(for: email, gravatarRating: gravatarRating.map(), placeholderImage: .gravatarPlaceholderImage)
-    }
-
     /// Downloads and sets the User's Gravatar, given his email.
     /// - Parameters:
     ///   - email: The user's email
@@ -94,7 +88,7 @@ extension UIImageView {
 
     private func gravatarDefaultSize() -> Int {
         guard bounds.size.equalTo(.zero) == false else {
-            return GravatarDefaults.imageSize
+            return GravatarDefaults.imagePixelSize
         }
 
         let targetSize = max(bounds.width, bounds.height) * UIScreen.main.scale
@@ -103,7 +97,7 @@ extension UIImageView {
 }
 
 fileprivate struct GravatarDefaults {
-    static let imageSize = 80
+    static let imagePixelSize = 80
 }
 
 extension AvatarURL {
@@ -117,10 +111,57 @@ extension AvatarURL {
             // Passing GravatarDefaults.imageSize to keep the previous default.
             // But ideally this should be passed explicitly.
             options: .init(
-                preferredSize: preferredSize ?? .pixels(GravatarDefaults.imageSize),
+                preferredSize: preferredSize ?? .pixels(GravatarDefaults.imagePixelSize),
                 rating: gravatarRating,
                 defaultAvatarOption: defaultAvatarOption
             )
         )?.url
+    }
+}
+
+@MainActor
+public final class GravatarImageService {
+    private let service: Gravatar.AvatarService
+    private let cache: GravatarImageCaching?
+    private var cancellables: [AnyCancellable] = []
+
+    public static let shared = GravatarImageService()
+
+    init() {
+        self.cache = WordPressUI.ImageCache.shared as? GravatarImageCaching
+        self.service = Gravatar.AvatarService(cache: cache)
+
+        NotificationCenter.default.publisher(for: .GravatarImageUpdateNotification).sink { [weak self] in
+            guard let email = $0.userInfo?["email"] as? String else { return }
+            self?.overrideCachedImage(for: email)
+        }.store(in: &cancellables)
+    }
+
+    public func cacheImage(for email: String) -> UIImage? {
+        guard let avatarURL = AvatarURL.url(for: email, preferredSize: preferredSize) else {
+            return nil
+        }
+        // TODO: make cache non-async
+        // return cache?.getEntry(with: email)?.image
+        return nil
+    }
+
+    /// Downloads gravatar image with the default size.
+    public func image(for email: String) async throws -> UIImage {
+        let options = Gravatar.ImageDownloadOptions(preferredSize: preferredSize)
+        let result = try await service.fetch(with: .email(email), options: options)
+        return result.image
+    }
+
+    /// - warning: It removes image only for the default size.
+    public func overrideCachedImage(for email: String) {
+        if let avatarURL = AvatarURL.url(for: email, preferredSize: preferredSize) {
+            // TODO: make cache non-async
+//            WordPressUI.ImageCache.shared.setEntry(nil, for: avatarURL.absoluteString)
+        }
+    }
+
+    private var preferredSize: Gravatar.ImageSize {
+        .pixels(GravatarDefaults.imagePixelSize)
     }
 }

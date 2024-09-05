@@ -26,9 +26,8 @@ extension WPTabBarController {
 
         Task { @MainActor [weak self] in
             do {
-                let service = Gravatar.AvatarService()
-                let result = try await service.fetch(with: .email(email))
-                self?.meNavigationController?.tabBarItem.configureGravatarImage(result.image)
+                let image = try await GravatarImageService.shared.image(for: email)
+                self?.meNavigationController?.tabBarItem.configureGravatarImage(image)
             } catch {
                 // Do nothing
             }
@@ -37,7 +36,7 @@ extension WPTabBarController {
 
     @objc private func updateGravatarImage(_ notification: Foundation.Notification) {
         guard let userInfo = notification.userInfo,
-              let image = userInfo["image"] as? UIImage else {
+              let image = notification.userInfo?["image"] as? UIImage else {
             return
         }
         meNavigationController?.tabBarItem.configureGravatarImage(image)
@@ -52,7 +51,7 @@ extension UITabBarItem {
 
     func configureGravatarImage(_ image: UIImage) {
         let gravatarIcon = image.gravatarIcon(size: 26.0)
-        self.image = gravatarIcon?.blackAndWhite?.withAlpha(0.36)
+        self.image = gravatarIcon.blackAndWhite?.withAlpha(0.36)
         self.selectedImage = gravatarIcon
     }
 }
