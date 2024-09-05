@@ -4,28 +4,37 @@ import Gravatar
 
 extension ImageDownloader {
 
-    nonisolated func downloadGravatarImage(with email: String, completion: @escaping (UIImage?) -> Void) {
+    static func downloadGravatarImage(with email: String, completion: @escaping (UIImage?) -> Void) {
 
-        guard let url = AvatarURL.url(for: email) else {
+        let options: ImageDownloadOptions = .init(defaultAvatarOption: .status404)
+
+        guard let avatarURL = AvatarURL(with: .email(email), options: options.avatarQueryOptions) else {
             completion(nil)
             return
         }
 
-        if let cachedImage = ImageCache.shared.getImage(forKey: url.absoluteString) {
+        if let cachedImage = ImageCache.shared.getImage(forKey: avatarURL.url.absoluteString) {
             completion(cachedImage)
             return
         }
 
-        downloadImage(at: url) { image, _ in
-            DispatchQueue.main.async {
+        guard let gravatarCache = WordPressUI.ImageCache.shared as? GravatarImageCaching else {
+            assertionFailure("WordPressUI.ImageCache.shared should conform to GravatarImageCaching.")
+            completion(nil)
+            return
+        }
 
-                guard let image else {
-                    completion(nil)
-                    return
+        let avatarService = Gravatar.AvatarService(cache: gravatarCache)
+        Task {
+            do {
+                let result = try await avatarService.fetch(with: .email(email), options: options)
+                await MainActor.run {
+                    completion(result.image)
                 }
-
-                ImageCache.shared.setImage(image, forKey: url.absoluteString)
-                completion(image)
+            } catch {
+                await MainActor.run {
+                    completion(nil)
+                }
             }
         }
     }

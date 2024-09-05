@@ -98,7 +98,8 @@ extension BlogDetailsViewController {
     }
 
     @objc func shouldAddMeRow() -> Bool {
-        return JetpackFeaturesRemovalCoordinator.currentAppUIType == .simplified
+        true
+        //return JetpackFeaturesRemovalCoordinator.currentAppUIType == .simplified
     }
 
     @objc func shouldAddSharingRow() -> Bool {

@@ -9,7 +9,7 @@ extension BlogDetailsViewController {
             return
         }
 
-        ImageDownloader.shared.downloadGravatarImage(with: email) { [weak self] image in
+        ImageDownloader.downloadGravatarImage(with: email) { [weak self] image in
             guard let image,
                   let gravatarIcon = image.gravatarIcon(size: Metrics.iconSize) else {
                 return

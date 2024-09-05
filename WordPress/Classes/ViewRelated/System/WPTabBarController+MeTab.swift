@@ -24,7 +24,7 @@ extension WPTabBarController {
             return
         }
 
-        ImageDownloader.shared.downloadGravatarImage(with: email) { [weak self] image in
+        ImageDownloader.downloadGravatarImage(with: email) { [weak self] image in
             guard let image else {
                 return
             }
