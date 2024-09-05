@@ -136,7 +136,7 @@ final class BlogDashboardViewController: UIViewController {
 
     private func setupCollectionView() {
         collectionView.isScrollEnabled = !embeddedInScrollView
-        collectionView.backgroundColor = .listBackground
+        collectionView.backgroundColor = .systemGroupedBackground
         collectionView.register(DashboardMigrationSuccessCell.self, forCellWithReuseIdentifier: DashboardMigrationSuccessCell.self.defaultReuseID)
         collectionView.register(DashboardQuickActionsCardCell.self, forCellWithReuseIdentifier: DashboardQuickActionsCardCell.self.defaultReuseID)
         DashboardCard.allCases.forEach {

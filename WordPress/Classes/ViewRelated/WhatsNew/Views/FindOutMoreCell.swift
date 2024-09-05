@@ -6,7 +6,7 @@ class FindOutMoreCell: UITableViewCell, Reusable {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(Appearance.buttonTitle, for: .normal)
         button.contentHorizontalAlignment = .leading
-        button.setTitleColor(.primary, for: .normal)
+        button.setTitleColor(UIAppColor.primary, for: .normal)
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         button.accessibilityIdentifier = Accessibility.findOutMoreButtonIdentifier
         button.accessibilityHint = Accessibility.findOutMoreButtonHint

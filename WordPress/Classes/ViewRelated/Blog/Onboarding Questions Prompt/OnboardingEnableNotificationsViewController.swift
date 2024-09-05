@@ -88,7 +88,7 @@ private extension OnboardingEnableNotificationsViewController {
         navigationController?.navigationBar.isHidden = true
 
         titleLabel.font = WPStyleGuide.serifFontForTextStyle(.title1, fontWeight: .semibold)
-        titleLabel.textColor = .text
+        titleLabel.textColor = .label
 
         subTitleLabel.font = .preferredFont(forTextStyle: .title3)
         subTitleLabel.textColor = .secondaryLabel

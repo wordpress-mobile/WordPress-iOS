@@ -218,7 +218,7 @@ private extension ReaderPostCardCell {
         siteIconBorderView.layer.frame = CGRect(x: 0, y: 0, width: Constants.iconImageSize, height: Constants.iconImageSize)
         siteIconBorderView.layer.cornerRadius = Constants.iconImageSize / 2.0
         siteIconBorderView.layer.borderWidth = Constants.borderWidth + Constants.imageSeparatorBorderWidth
-        siteIconBorderView.layer.borderColor = UIColor.listForeground.cgColor
+        siteIconBorderView.layer.borderColor = UIColor.secondarySystemGroupedBackground.cgColor
         siteIconBorderView.layer.masksToBounds = true
         siteIconBorderView.addSubview(siteIconImageView)
         siteIconContainerView.addSubview(siteIconBorderView)
@@ -234,7 +234,7 @@ private extension ReaderPostCardCell {
         imageView.contentMode = .scaleAspectFill
         imageView.layer.borderWidth = Constants.borderWidth
         imageView.layer.borderColor = Constants.borderColor.cgColor
-        imageView.backgroundColor = .listForeground
+        imageView.backgroundColor = .secondarySystemGroupedBackground
     }
 
     func setupSiteTitle() {
@@ -529,7 +529,7 @@ private extension ReaderPostCardCell {
         }
         likeButton.setTitle(isLiked ? Constants.likedButtonText : Constants.likeButtonText, for: .normal)
         likeButton.setImage(isLiked ? Constants.likedButtonImage : Constants.likeButtonImage, for: .normal)
-        likeButton.tintColor = isLiked ? .jetpackGreen : .secondaryLabel
+        likeButton.tintColor = isLiked ? UIAppColor.jetpackGreen : .secondaryLabel
         likeButton.setTitleColor(likeButton.tintColor, for: .normal)
     }
 

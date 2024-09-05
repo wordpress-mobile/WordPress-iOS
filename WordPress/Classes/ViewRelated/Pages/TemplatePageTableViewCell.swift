@@ -41,7 +41,7 @@ private struct TemplatePageView: View {
         Image(uiImage: .gridicon(.infoOutline))
             .resizable()
             .frame(width: 24.0, height: 24.0)
-            .foregroundColor(Color(UIColor.textSubtle))
+            .foregroundColor(Color(UIColor.secondaryLabel))
             .onTapGesture {
                 WPAnalytics.track(.pageListEditHomepageInfoTapped)
                 guard let url = URL(string: Constants.supportUrl) else {

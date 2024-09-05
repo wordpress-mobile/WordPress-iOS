@@ -39,7 +39,7 @@ struct DSButtonGallery: View {
                 .listRowInsets(.init(top: .DS.Padding.split, leading: 0, bottom: .DS.Padding.split, trailing: 0))
             }
             .navigationTitle("DSButton")
-        }
+        }.tint(.blue)
     }
 }
 

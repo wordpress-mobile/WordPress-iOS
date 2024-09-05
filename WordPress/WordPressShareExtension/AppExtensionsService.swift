@@ -97,7 +97,7 @@ extension AppExtensionsService {
         let remote = AccountServiceRemoteREST(wordPressComRestApi: simpleRestAPI)
 
         var filterJetpackSites = false
-        #if JETPACK
+        #if IS_JETPACK
         filterJetpackSites = true
         #endif
 

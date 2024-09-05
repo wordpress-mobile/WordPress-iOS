@@ -10,7 +10,7 @@ struct DomainSetupNoticeView: View {
         HStack() {
             Image(uiImage: .gridicon(.infoOutline))
                 .frame(height: Metrics.iconHeight)
-                .foregroundColor(Color(UIColor.muriel(color: .gray)))
+                .foregroundColor(Color(UIAppColor.gray))
                 .accessibility(hidden: true)
 
             Spacer().frame(width: Metrics.iconToNoticeSpacing)
@@ -18,7 +18,7 @@ struct DomainSetupNoticeView: View {
             Text(noticeText)
                 .font(.footnote)
                 .dynamicTypeSize(.large)
-                .foregroundColor(Color(UIColor.muriel(color: .textSubtle)))
+                .foregroundColor(Color(.secondaryLabel))
                 .fixedSize(horizontal: false, vertical: true)
         }
         .padding(Metrics.noticeBoxPadding)

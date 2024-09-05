@@ -325,7 +325,7 @@ private extension NoResultsViewController {
         labelButtonStackView.spacing = labelButtonStackViewSpacing
 
         titleLabel.text = titleText
-        titleLabel.textColor = .text
+        titleLabel.textColor = .label
 
         if let titleText = titleText {
             titleLabel.attributedText = nil
@@ -336,7 +336,7 @@ private extension NoResultsViewController {
             titleLabel.attributedText = attributedTitleText
         }
 
-        subtitleTextView.textColor = .textSubtle
+        subtitleTextView.textColor = .secondaryLabel
 
         if let subtitleText = subtitleText {
             subtitleTextView.attributedText = nil

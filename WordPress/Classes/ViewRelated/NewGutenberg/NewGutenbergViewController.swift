@@ -182,7 +182,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     }
 
     private func setupEditorView() {
-        view.tintColor = .editorPrimary
+        view.tintColor = UIAppColor.editorPrimary
 
         addChild(editorViewController)
         view.addSubview(editorViewController.view)
@@ -218,7 +218,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 //            let size = CGSize(width: 24, height: 24)
 //            navigationBarManager.siteIconView.imageView.downloadSiteIcon(for: blog, imageSize: size)
 //        } else if blog.isWPForTeams() {
-//            navigationBarManager.siteIconView.imageView.tintColor = UIColor.listIcon
+//            navigationBarManager.siteIconView.imageView.tintColor = UIColor.secondaryLabel
 //            navigationBarManager.siteIconView.imageView.image = UIImage.gridicon(.p2)
 //        } else {
 //            navigationBarManager.siteIconView.imageView.image = UIImage.siteIconPlaceholder

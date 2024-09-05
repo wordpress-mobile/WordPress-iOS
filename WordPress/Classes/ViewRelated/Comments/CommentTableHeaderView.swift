@@ -124,7 +124,7 @@ private struct CommentHeaderView: View {
             Text(title)
                 .lineLimit(1)
                 .font(.subheadline)
-                .foregroundColor(Color(.text))
+                .foregroundColor(Color(.label))
         }
     }
 

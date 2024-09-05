@@ -13,7 +13,7 @@ struct LengthGallery: View {
                     paddingRectangle(name: "Large").padding(.trailing, .DS.Padding.large)
                     paddingRectangle(name: "Max").padding(.trailing, .DS.Padding.max)
                 }
-                .background(Color.DS.Foreground.warning.opacity(0.7))
+                .background(.red.opacity(0.7))
                 .clipShape(RoundedRectangle(cornerRadius: .DS.Radius.small))
             }
             .listRowBackground(Color.clear)
@@ -29,12 +29,12 @@ struct LengthGallery: View {
     private func paddingRectangle(name: String) -> some View {
         ZStack {
             RoundedRectangle(cornerRadius: .DS.Radius.small)
-                .fill(Color.DS.Background.tertiary)
+                .fill(.background)
                 .frame(height: .DS.Hitbox.minTappableLength)
             HStack {
                 Text(name)
                     .offset(x: .DS.Padding.double)
-                    .foregroundStyle(Color.DS.Foreground.primary)
+                    .foregroundStyle(.primary)
                 Spacer()
             }
         }
@@ -56,10 +56,10 @@ struct LengthGallery: View {
     private func radiusBox(name: String, radius: CGFloat) -> some View {
         ZStack {
             RoundedRectangle(cornerRadius: radius)
-                .fill(Color.DS.Background.tertiary)
+                .fill(.background)
                 .frame(width: 120, height: 120)
             Text(name)
-                .foregroundStyle(Color.DS.Foreground.primary)
+                .foregroundStyle(.primary)
 
         }
     }

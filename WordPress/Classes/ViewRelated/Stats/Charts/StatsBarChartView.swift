@@ -360,7 +360,7 @@ private extension StatsBarChartView {
         if let primaryHighlightColor = styling.primaryHighlightColor {
             markerColor = primaryHighlightColor
         } else {
-            markerColor = .accent
+            markerColor = UIAppColor.accent
         }
         marker.backgroundColor = markerColor.withAlphaComponent(Constants.markerAlpha)
 

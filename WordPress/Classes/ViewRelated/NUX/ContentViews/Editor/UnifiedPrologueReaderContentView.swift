@@ -40,11 +40,13 @@ struct UnifiedPrologueReaderContentView: View {
                     HStack {
                         Spacer()
 
-                        CircledIcon(size: largerIconSize,
-                                    xOffset: largerIconSize * 0.7,
-                                    yOffset: -largerIconSize * 0.05,
-                                    iconType: .readerFollow,
-                                    backgroundColor: Color(UIColor.muriel(name: .red, .shade40)))
+                        CircledIcon(
+                            size: largerIconSize,
+                            xOffset: largerIconSize * 0.7,
+                            yOffset: -largerIconSize * 0.05,
+                            iconType: .readerFollow,
+                            backgroundColor: Color(UIAppColor.red(.shade40))
+                        )
                     }
                 }
                 .fixedSize(horizontal: false, vertical: true)
@@ -74,11 +76,13 @@ struct UnifiedPrologueReaderContentView: View {
                     .disabled(true)
 
                     HStack {
-                        CircledIcon(size: smallIconSize,
-                                    xOffset: -smallIconSize * 0.5,
-                                    yOffset: -smallIconSize  * 0.7,
-                                    iconType: .star,
-                                    backgroundColor: Color(UIColor.muriel(name: .yellow, .shade20)))
+                        CircledIcon(
+                            size: smallIconSize,
+                            xOffset: -smallIconSize * 0.5,
+                            yOffset: -smallIconSize  * 0.7,
+                            iconType: .star,
+                            backgroundColor: Color(UIAppColor.yellow(.shade20))
+                        )
 
                         Spacer()
                     }
@@ -105,11 +109,13 @@ struct UnifiedPrologueReaderContentView: View {
                     HStack {
                         Spacer()
 
-                        CircledIcon(size: smallIconSize,
-                                    xOffset: smallIconSize * 0.75,
-                                    yOffset: -smallIconSize * 0.85,
-                                    iconType: .bookmarkOutline,
-                                    backgroundColor: Color(UIColor.muriel(name: .purple, .shade50)))
+                        CircledIcon(
+                            size: smallIconSize,
+                            xOffset: smallIconSize * 0.75,
+                            yOffset: -smallIconSize * 0.85,
+                            iconType: .bookmarkOutline,
+                            backgroundColor: Color(UIAppColor.purple(.shade50))
+                        )
                     }
                 }
                 .fixedSize(horizontal: false, vertical: true)
@@ -188,8 +194,9 @@ private struct TagItem: ViewModifier {
             .truncationMode(.tail)
             .padding(.horizontal, horizontalPadding)
             .padding(.vertical, verticalPadding)
-            .background(Color(UIColor(light: UIColor.muriel(color: MurielColor(name: .gray, shade: .shade0)),
-                                      dark: UIColor.muriel(color: MurielColor(name: .gray, shade: .shade70)))))
+            .background(Color(UIColor(light: UIAppColor.gray(.shade0),
+                                      dark: UIAppColor.gray(.shade70)))
+            )
             .clipShape(Capsule())
     }
 }

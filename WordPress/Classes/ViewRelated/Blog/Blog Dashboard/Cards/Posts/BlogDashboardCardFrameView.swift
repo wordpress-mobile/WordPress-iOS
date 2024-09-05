@@ -41,7 +41,7 @@ class BlogDashboardCardFrameView: UIView {
     private(set) lazy var ellipsisButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(UIImage(named: "more-horizontal-mobile"), for: .normal)
-        button.tintColor = UIColor.listIcon
+        button.tintColor = UIColor.secondaryLabel
         button.contentEdgeInsets = Constants.ellipsisButtonPadding
         button.isAccessibilityElement = true
         button.accessibilityLabel = Strings.ellipsisButtonAccessibilityLabel
@@ -95,7 +95,7 @@ class BlogDashboardCardFrameView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = .listForeground
+        self.backgroundColor = .secondarySystemGroupedBackground
         self.configureMainStackView()
     }
 
@@ -243,7 +243,7 @@ class BlogDashboardCardFrameView: UIView {
         let titleString = NSMutableAttributedString(string: title)
         if let hint = hint, let range = title.nsRange(of: hint) {
             titleString.addAttributes([
-                .foregroundColor: UIColor.primary,
+                .foregroundColor: UIAppColor.primary,
                 .font: font as Any
             ], range: range)
         }

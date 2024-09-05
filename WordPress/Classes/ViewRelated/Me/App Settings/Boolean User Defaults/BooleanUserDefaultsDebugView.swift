@@ -23,9 +23,6 @@ struct BooleanUserDefaultsDebugView: View {
                             )
                             Toggle(row.title, isOn: isOn)
                                 .font(.caption)
-                                .toggleStyle(
-                                    SwitchToggleStyle(
-                                        tint: Color.DS.Background.brand(isJetpack: AppConfiguration.isJetpack)))
                         }
                     }
             }
@@ -35,6 +32,7 @@ struct BooleanUserDefaultsDebugView: View {
         .onAppear {
             viewModel.load()
         }
+        .tint(AppColor.brand)
     }
 }
 

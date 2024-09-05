@@ -31,7 +31,7 @@ final class BlazePostPreviewView: UIView {
         label.font = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .semibold)
         label.numberOfLines = 0
         label.text = post.titleForDisplay()
-        label.textColor = .text
+        label.textColor = .label
         return label
     }()
 
@@ -43,7 +43,7 @@ final class BlazePostPreviewView: UIView {
         label.font = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular)
         label.numberOfLines = 0
         label.text = post.permaLink
-        label.textColor = .textSubtle
+        label.textColor = .secondaryLabel
         return label
     }()
 

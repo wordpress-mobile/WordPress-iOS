@@ -75,6 +75,9 @@
 /* Placeholder text for the title of a site */
 "A title for the site" = "Teitl y wefan";
 
+/* An error message. */
+"A valid email address is needed to mail an authentication link. Please return to the previous screen and provide a valid email address." = "Mae angen cyfeiriad e-bost dilys er mwyn anfon dolen dilysu. Ewch nôl i'r sgrin flaenorol a darparu cyfeiriad e-bost dilys.";
+
 /* Label for active Theme browser cell */
 "ACTIVE" = "GWEITHREDOL";
 
@@ -111,9 +114,6 @@
 
 /* No comment provided by engineer. */
 "Add menu item to children" = "Ychwanegwch eitem dewislen plentyn";
-
-/* Add self-hosted site button */
-"Add self-hosted site" = "Ychwanegu gwefan hunan-letya";
 
 /* Label for url blog setting
    Register Domain - Address information field placeholder for Address line */
@@ -157,6 +157,15 @@
 /* An error message shown when there is no internet connection. */
 "An active internet connection is required to view plans" = "Mae angen cysylltiad rhyngrwyd gweithredol i weld y cynlluniau";
 
+/* An error description explaining that a Menu could not be created. */
+"An error occurred creating the Menu." = "Digwyddodd gwall wrth greu'r Ddewislen.";
+
+/* An error description explaining that a Menu could not be deleted. */
+"An error occurred deleting the Menu." = "Digwyddodd gwall wrth ddileu'r Ddewislen.";
+
+/* An error description explaining that Menus could not be fetched. */
+"An error occurred fetching the Menus." = "Digwyddodd gwall wrth estyn y Dewislenni.";
+
 /* Menus text shown when an error occurred loading menus from the server. */
 "An error occurred loading menus, please check your internet connection." = "Digwyddodd gwall wrth lwytho'r dewislenni, gwiriwch eich cysylltiad rhyngrwyd.";
 
@@ -165,6 +174,9 @@
 
 /* The error message displayed when a user is editing a MenuItem and the results cannot be loaded, such as posts, pages, etc. */
 "An error occurred loading the results, please try again in a moment." = "Digwyddodd gwall wrth lwytho'r canlyniadau, ceisiwch eto ymhen ychydig.";
+
+/* An error description explaining that a Menu could not be updated. */
+"An error occurred updating the Menu." = "Digwyddodd gwall wrth ddiweddaru'r Ddewislen.";
 
 /* Error recorded when all of the media associated with a post fail to be attached to the post on the server. */
 "An error occurred when attempting to attach uploaded media to the post." = "Digwyddodd gwall wrth geisio atodi cyfrwng wedi ei lwytho i fyny i'r cofnod...";
@@ -201,6 +213,9 @@
 
 /* No comment provided by engineer. */
 "Authenticating" = "Dilysu";
+
+/* Popup title to ask for user credentials. */
+"Authentication required for host: %@" = "Mae angen dilysiad ar gyfer gwesteiwr: %@";
 
 /* Author label.
    Label for list of stats by content author.
@@ -269,11 +284,14 @@
 /* Accessibility label for taking an image or video with the camera on formatting toolbar. */
 "Camera" = "Camera";
 
+/* Title of an alert letting the user know */
+"Can Not Request Link" = "Methu gwneud Cais am Ddnolen";
+
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
-   Cancel
+   Button title. Tapping it cancels the login flow.
    Cancel a prompt
    Cancel Action
    Cancel action on share extension editor screen.
@@ -284,6 +302,7 @@
    Cancel action title
    Cancel button
    Cancel button for alert
+   Cancel button label
    Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Cancel button.
    Cancel button. Site creation modal popover.
@@ -305,6 +324,7 @@
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
+   Option to cancel the email app selection when logging in with magic links
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
@@ -344,6 +364,9 @@
 
 /* Center alignment for an image. Should be the same as in core WP. */
 "Center" = "Canol";
+
+/* Popup title for wrong SSL certificate. */
+"Certificate error" = "Gwall tystysgrif";
 
 /* Message to show when Publicize globally shared setting failed */
 "Change failed" = "Wedi methu newid";
@@ -470,6 +493,9 @@
 /* Informs the user of consequences of chooseing a new account to connect to publicize.  The %@ characters are placeholders for account names. */
 "Connecting %@ will replace the existing connection to %@." = "Bydd cysylltu â %1$@ yn disodli'r cysylltiad presennol â %2$@.";
 
+/* No comment provided by engineer. */
+"Connecting to WordPress.com" = "Cysylltu â WordPress.com";
+
 /* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connecting..." = "Cysylltu...";
 
@@ -495,11 +521,23 @@
 /* Menus alert button title to continue making changes. */
 "Continue Working" = "Parhau i Weithio";
 
+/* Part of a prompt suggesting that there is more content for the user to read. */
+"Continue reading" = "Parhau i ddarllen";
+
 /* Title of an prompt letting the user know there was a problem saving. */
 "Could Not Save Changes" = "Methu Cadw'r Newidiadau";
 
+/* Message shown when site purchases API failed */
+"Could not check site purchases." = "Methu gwirio'r hyn â brynwyd.";
+
+/* Error message informing the user that there was a problem subscribing to a site or feed. */
+"Could not follow the site at the address specified." = "Methu dad-ddilyn gwefan yn y cyfeiriad hwn.";
+
 /* An error description explaining that Follow could not be toggled due to a missing blogURL attribute. */
 "Could not toggle Follow: missing blogURL attribute" = "Methu toglo Dilyn: priodwedd URL blog ar goll";
+
+/* Error message informing the user that there was a problem unsubscribing to a site or feed. */
+"Could not unfollow the site at the address specified." = "Methu dad-ddilyn gwefan yn y cyfeiriad hwn.";
 
 /* This is the text we display to the user when we ask them for a review and they've indicated they don't like the app */
 "Could you tell us how we could improve?" = "Dwedwch wrthym sut y gallwn wella?";
@@ -514,13 +552,13 @@
    Register Domain - Domain contact information field Country */
 "Country" = "Gwlad";
 
+/* The button title text for creating a new account. */
+"Create Account" = "Creu Cyfrif";
+
 /* Button to progress to the next step
    Site creation. Step 1. Screen title
    Title for the button to progress with creating the site with the selected design. */
 "Create Site" = "Creu Gwefan";
-
-/* Create WordPress.com site button */
-"Create WordPress.com site" = "Creu gwefan WordPress.com";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Bydd dewis dewislen gwahanol yn dileu'r newidiadau rydych wedi eu gwneud i'r ddewislen gyfredol. A ydych yn siŵr eich bod am barhau?";
@@ -623,7 +661,10 @@
    Title for the Discussion Settings Screen */
 "Discussion" = "Trafodaeth";
 
-/* Dismiss a view. Verb */
+/* Accessibility label for button to dismiss a bottom sheet
+   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+   Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
+   Dismiss a view. Verb */
 "Dismiss" = "Cau";
 
 /* Display Name label text.
@@ -700,8 +741,8 @@
 /* Overlay message displayed when export content started */
 "Email sent!" = "Anfonwyd yr e-bost!";
 
-/* No comment provided by engineer. */
-"Enter a password" = "Rhowch gyfrinair";
+/* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
+"Empty URL" = "URL gwag";
 
 /* (placeholder) Help enter WordPress password */
 "Enter password" = "Rhowch gyfrinair";
@@ -743,6 +784,9 @@
    The action failed */
 "Failed" = "Methwyd";
 
+/* Error message to show when wrong URL format is used to access the REST API */
+"Failed to serialize request to the REST API." = "Methwyd cyfresu cais i'r API REST.";
+
 /* Label for the Featured Image area in post settings.
    Title for the Featured Image view */
 "Featured Image" = "Delwedd Enghreifftiol";
@@ -773,6 +817,9 @@
 /* Button title. Follow the comments on a post. */
 "Follow" = "Dilyn";
 
+/* User role badge */
+"Follower" = "Dilynwr";
+
 /* Label for number of followers. */
 "Followers" = "Dilynwyr";
 
@@ -788,6 +835,9 @@
 /* Title for the general section in site settings screen */
 "General" = "Cyffredinol";
 
+/* Alerts the user that wpcom account information is being retrieved. */
+"Getting account information" = "Estyn manylion cyfrif";
+
 /* Cancel */
 "Give Up" = "Rhoi'r Gorau";
 
@@ -795,8 +845,7 @@
    Opens WPiOS Settings.app Section */
 "Go to iOS Settings" = "Ewch i osodiadau iOS";
 
-/* Accessibility label for HTML button on formatting toolbar.
-   HTML Attachment Label */
+/* Accessibility label for HTML button on formatting toolbar. */
 "HTML" = "HTML";
 
 /* Post HTML content */
@@ -811,11 +860,8 @@
    Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Help & Support" = "Cymorth a Chefnogaeth";
 
-/* Hide All */
-"Hide All" = "Cuddio Popeth";
-
-/* Hide All Sites */
-"Hide All Sites" = "Cuddio Pob Gwefan";
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
+"Hidden" = "Cudd";
 
 /* No comment provided by engineer. */
 "Hide keyboard" = "Cuddio bysellfwrdd";
@@ -845,6 +891,12 @@
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "Esboniwch, mewn ychydig eiriau, bwrpas y wefan.";
 
+/* Describes a standard *.wordpress.com site domain */
+"Included with Site" = "Wedi ei Gynnwys gyda'r Wefan";
+
+/* An error message shown when a user signed in with incorrect credentials. */
+"Incorrect username or password. Please try entering your login details again." = "Enw defnyddiwr neu gyfrinair anghywir. Ceisiwch fewngofnodi eto.";
+
 /* WordPress.com Community Footer Text */
 "Information on WordPress.com courses and events (online & in-person)." = "Gwybodaeth am gyrsiau a digwyddiadau WordPress.com (ar-lein a byw).";
 
@@ -862,6 +914,21 @@
 
 /* Title of Insights stats filter. */
 "Insights" = "Mewnwelediad";
+
+/* No comment provided by engineer. */
+"Invalid Site Address" = "Cyfeiriad gwefan annilys";
+
+/* No comment provided by engineer. */
+"Invalid Site Title" = "Teitl Gwefan Annilys";
+
+/* Message to show to user when he tries to add a self-hosted site that isn't HTTP or HTTPS. */
+"Invalid URL scheme inserted, only HTTP and HTTPS are supported." = "Cynllun URL annilys wedi ei fewnosod, dim ond HTTP a HTTPS sy'n cael eu cynnal.";
+
+/* Message to show to user when he tries to add a self-hosted site that isn't a valid URL. */
+"Invalid URL, please check if you wrote a valid site address." = "URL Annilys, gwiriwch os oeddech wedi ysgrifennu cyfeiriad gwefan dilys.";
+
+/* No comment provided by engineer. */
+"Invalid username" = "Enw defnyddiwr annilys";
 
 /* The app successfully sent an invitation */
 "Invitation Sent!" = "Anfonwyd y Gwahoddiad!";
@@ -973,7 +1040,6 @@
 "Loading stream..." = "Llwytho llif...";
 
 /* Loading tags
-   Loading tags.
    Loading. Verb
    Suggestions loading message
    Text displayed in HUD while a media item is being loaded.
@@ -995,15 +1061,24 @@
 /* No comment provided by engineer. */
 "Log Files By Created Date" = "Ffeiliau Cofnod yn ôl Dyddiad Creu";
 
-/* Label for logging in to WordPress.com account
-   Log In 3D Touch Shortcut */
+/* Button title.  Tapping takes the user to the login form.
+   Label for logging in to WordPress.com account
+   Log In 3D Touch Shortcut
+   Log In button label.
+   View title during the log in process. */
 "Log In" = "Mewngofnodi";
+
+/* A generic error message for a failed log in. */
+"Log in failed. Please try again." = "Mewngofnodi wedi methu. Ceisiwch eto.";
 
 /* Login Request Expired */
 "Login Request Expired" = "Daeth y Cais Mewngofnodi i Ben";
 
 /* No comment provided by engineer. */
 "Logs" = "Cofnodion";
+
+/* Title of a button. */
+"Lost your password?" = "Wedi colli eich cyfrinair?";
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Llywio";
@@ -1019,6 +1094,9 @@
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "Rheoli'r wefan";
 
+/* Describes a domain that was mapped to WordPress.com, but registered elsewhere */
+"Mapped Domain" = "Parth wedi ei Fapio";
+
 /* Title for the image size settings option. */
 "Max Image Upload Size" = "Maint mwyaf Llwytho Delwedd";
 
@@ -1030,7 +1108,6 @@
 "Me" = "Fi";
 
 /* Noun. Title. Links to the blog's Media library.
-   The menu item to select during a guided tour.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Cyfrwng";
@@ -1076,10 +1153,6 @@
    My Profile view title */
 "My Profile" = "Fy Mhroffil";
 
-/* Title for site picker screen.
-   Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
-"My Sites" = "Gwefannau";
-
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "Angen Cymorth?";
 
@@ -1099,7 +1172,9 @@
 "Newest first" = "Diweddaraf yn gyntaf";
 
 /* Next action on comment moderation snackbar.
-   Next action on share extension editor screen. */
+   Next action on share extension editor screen.
+   Title of a button.
+   Title of a button. The text should be capitalized. */
 "Next" = "Nesaf";
 
 /* Label for a cancel button */
@@ -1185,7 +1260,6 @@
    Notifications tab bar item accessibility label
    Notifications View Controller title
    Noun. Name of the Notifications feature
-   The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Hysbysiadau";
 
@@ -1205,10 +1279,12 @@
    Button title. Acknowledges a prompt.
    Button title. An acknowledgement of the message displayed in a prompt.
    Default action
+   Dismisses the alert
    Marks all notifications as read.
    Menus: button title for finishing editing of a menu item.
    OK
    OK button for alert
+   Ok button for dismissing alert helping users understand their site address
    OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
    Submit button on prompt for user information.
@@ -1251,6 +1327,10 @@
 /* An informal exclaimation meaning `something went wrong`.
    Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
 "Oops!" = "Wps!";
+
+/* The button title text for opening the user's preferred email app.
+   Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
+"Open Mail" = "Agor E-bost";
 
 /* Go to the settings app
    Title of a button that opens the apps settings in the system Settings.app */
@@ -1299,7 +1379,6 @@
 "Page" = "Tudalen";
 
 /* Noun. Title. Links to the blog's Pages screen.
-   The item to select during a guided tour.
    This is the section title
    Title of the screen showing the list of pages for a blog. */
 "Pages" = "Tudalennau";
@@ -1313,8 +1392,11 @@
    Title for selecting parent category of a category */
 "Parent Category" = "Categori Rhiant";
 
-/* Label for entering password in password field
-   Label for the password field. Should be the same as WP core.
+/* Accessibility label for the password text field in the self-hosted login page.
+   Label for entering password in password field
+   Login dialog password placeholder
+   Password placeholder
+   Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "Cyfrinair";
 
@@ -1344,8 +1426,23 @@
 /* Politely asks the user to check their internet connection before trying again. */
 "Please check your internet connection and try again." = "Gwiriwch eich cysylltiad rhyngrwyd a cheisiwch eto.";
 
+/* No comment provided by engineer. */
+"Please enter a site address." = "Rhowch gyfeiriad gwefan.";
+
+/* No comment provided by engineer. */
+"Please enter a username." = "Rhowch enw defnyddiwr.";
+
 /* Title of a prompt. */
 "Please enter a valid URL" = "Rhowch URL dilys";
+
+/* Error message displayed when the user attempts use an invalid email address. */
+"Please enter a valid email address." = "Rhowch gyfeiriad e-bost dilys.";
+
+/* Popup message to ask for user credentials (fields shown below). */
+"Please enter your credentials" = "Rhowch eich manylion";
+
+/* A short prompt asking the user to properly fill out all login fields. */
+"Please fill out all the fields" = "Llenwch pob maes";
 
 /* No comment provided by engineer. */
 "Please try entering your login details again." = "Ceisiwch fewngofnodi eto.";
@@ -1447,7 +1544,6 @@
    The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
-   The menu item to select during a guided tour.
    Title of the 'Reader' tab - used for spotlight indexing on iOS. */
 "Reader" = "Darllennydd";
 
@@ -1482,15 +1578,16 @@
    The loading view button title displayed when an error occurred */
 "Refresh" = "Adnewyddu";
 
+/* Describes a domain that was registered with WordPress.com */
+"Registered Domain" = "Parth Cofrestredig";
+
 /* Label for selecting the related posts options */
 "Related Posts" = "Cofnodion sy'n Perthyn";
 
 /* Alert button to confirm a plugin to be removed
-   Button label when removing a blog
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
-   Remove an image/posts/etc
-   Removes a self hosted site from the app */
+   Remove an image/posts/etc */
 "Remove" = "Tynnu";
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
@@ -1580,6 +1677,9 @@
    User's Role */
 "Role" = "Rôl";
 
+/* One Time Code has been sent via SMS */
+"SMS Sent" = "SMS wedi ei anfon";
+
 /* Menus save button title
    Save Action
    Save button label (saving content, ex: Post, Page, Comment, Category).
@@ -1597,8 +1697,7 @@
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Amserlenwyd";
 
-/* Placeholder text for the search bar
-   Title of Stats section that shows search engine referrer traffic.
+/* Title of Stats section that shows search engine referrer traffic.
    Title of the Reader's search feature */
 "Search" = "Chwilio";
 
@@ -1608,20 +1707,17 @@
 /* Menus search bar placeholder text. */
 "Search..." = "Chwilio...";
 
-/* Blog Picker's Title */
-"Select Site" = "Dewiswch wefan";
-
 /* Instructional text about the Sharing feature. */
 "Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account." = "Dewiswch y cyfrif yr hoffech ei awdurdodi. Sylwch y bydd eich cofnodion yn cael eu rhannu yn awtomatig i'r cyfrif penodol.";
-
-/* Blog list page edit mode header label */
-"Select which sites will be shown in the site picker." = "Dewiswch pa wefannau fydd yn cael eu dangos wrth ddewis gwefan.";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu location. */
 "Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?" = "Bydd dewis dewislen gwahanol yn dileu'r newidiadau rydych wedi eu gwneud i'r ddewislen cyfredol. A ydych yn siŵr eich bod am barhau?";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu. */
 "Selecting a different menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Bydd dewis dewislen gwahanol yn gwaredu'r newidiadau rydych wedi eu gwneud i'r ddewislen ar hyn o bryd. A ydych yn siŵr eich bod am barhau?";
+
+/* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
+"Send Link" = "Anfon Dolen";
 
 /* Settings: Sending Pingbacks */
 "Send Pingbacks" = "Anfon Hysbysiadau Cyfeirio";
@@ -1677,23 +1773,25 @@
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "Dangos y botwm Ailflogio";
 
-/* Alert title picking theme type to browse */
-"Show themes:" = "Dangos themâu:";
-
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "Dangos yn gyhoeddus pan fyddwch yn gwneud sylwadau ar flogiau.";
 
 /* Title for the Language Picker View */
 "Site Language" = "Iaith Gwefan";
 
+/* Describes a site redirect domain */
+"Site Redirect" = "Ailgyfeirio Gwefan";
+
 /* Default title for a site
    Label for site title blog setting
-   The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "Teitl y Wefan";
 
 /* Setting: indicates if Achievements will be notified */
 "Site achievements" = "Llwyddiannau'r wefan";
+
+/* No comment provided by engineer. */
+"Site address must be at least 4 characters." = "Rhaid i gyfeiriad gwefan fod o leiaf 4 nod.";
 
 /* Overlay message displayed when site successfully deleted */
 "Site deleted" = "Gwefan wedi ei dileu";
@@ -1701,8 +1799,7 @@
 /* Image size option title. */
 "Size" = "Maint";
 
-/* Button that allows the user to skip the prompt and be brought to the app
-   Continue without making a selection
+/* Continue without making a selection
    Continue without making a selection. */
 "Skip" = "Hepgor";
 
@@ -1713,11 +1810,53 @@
    Update User Failed Title */
 "Sorry!" = "Ymddiheuriadau!";
 
+/* This error message occurs when a user tries to create a username that contains an invalid phrase for WordPress.com. The %@ may include the phrase in question if it was sent down by the API */
+"Sorry, but your username contains an invalid phrase%@." = "Ymddiheuriadau, ond mae eich enw defnyddiwr yn cynnwys ymadrodd annilys%@.";
+
 /* Error title when updating the account password fails */
 "Sorry, can't log in" = "Ymddiheuriadau, methu eich mewngofnodi";
 
 /* No comment provided by engineer. */
+"Sorry, site addresses can only contain lowercase letters (a-z) and numbers." = "Gall cyfeiriad gwefan gynnwys dim ond llythrennau bach (a-z) a rhifau.";
+
+/* No comment provided by engineer. */
+"Sorry, site addresses may not contain the character &#8220;_&#8221;!" = "Ymddiheuriadau, nid oes modd i enwau defnyddwyr gynnwys y nod &#8220;_&#8221;!";
+
+/* No comment provided by engineer. */
+"Sorry, site addresses must have letters too!" = "Ymddiheuriadau, rhaid i enw gwefan gynnwys llythrennau hefyd!";
+
+/* Error message displayed when the entered email is not available. */
+"Sorry, that email address is already being used!" = "Mae'r cyfeiriad e-bost yna eisoes yn cael ei ddefnyddio!";
+
+/* No comment provided by engineer. */
+"Sorry, that email address is not allowed!" = "Ymddiheuriadau, nid oes modd caniatáu’r cyfeiriad e-bost yna!";
+
+/* No comment provided by engineer. */
+"Sorry, that site already exists!" = "Ymddiheuriadau, mae'r wefan honno'n bodoli eisoes!";
+
+/* No comment provided by engineer. */
+"Sorry, that site is reserved!" = "Ymddiheuriadau, mae'r wefan yma ar gadw!";
+
+/* No comment provided by engineer. */
+"Sorry, that username already exists!" = "Ymddiheuriadau, mae'r enw defnyddiwr yna'n bodoli eisoes!";
+
+/* No comment provided by engineer. */
+"Sorry, that username is unavailable." = "Ymddiheuriadau, mae'r enw defnyddiwr yna'n bodoli eisoes.";
+
+/* No comment provided by engineer. */
+"Sorry, usernames can only contain lowercase letters (a-z) and numbers." = "Gall cyfeiriad gwefan gynnwys dim ond llythrennau bach (a-z) a rhifau.";
+
+/* No comment provided by engineer. */
+"Sorry, usernames may not contain the character &#8220;_&#8221;!" = "Ymddiheuriadau, nid oes modd i enwau defnyddwyr gynnwys y nod &#8220;_&#8221;!";
+
+/* No comment provided by engineer. */
+"Sorry, usernames must have letters (a-z) too!" = "Ymddiheuriadau, rhaid i enwau defnyddwyr fod â llythennau (a-z) hefyd!";
+
+/* No comment provided by engineer. */
 "Sorry, you cannot access this feature. Please check your User Role on this site." = "Ymddiheuriadau, ni allwch gael mynediad i'r nodwedd hon. Gwiriwch eich Rôl Defnydd ar y wefan hon.";
+
+/* No comment provided by engineer. */
+"Sorry, you may not use that site address." = "Nid oes modd i chi ddefnyddio'r cyfeiriad gwefan hwn.";
 
 /* Discussion Settings Title
    Settings: Comments Sort Order */
@@ -1741,8 +1880,7 @@
 /* Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
-   Stats window title
-   The item to select during a guided tour. */
+   Stats window title */
 "Stats" = "Ystadegau";
 
 /* Accessibility label for strikethrough button on formatting toolbar. */
@@ -1761,9 +1899,6 @@
 /* Support button that appears in the Theme Browser Header
    Theme Support action title */
 "Support" = "Cefnogaeth";
-
-/* Title for back button that leads to the site picker screen. */
-"Switch Site" = "Newid Gwefan";
 
 /* Menu item label for linking a specific tag.
    Section header for tag name in Tag Details View. */
@@ -1801,12 +1936,36 @@
 /* Message of alert when theme activation succeeds */
 "Thanks for choosing %@ by %@" = "Diolch am ddewis %1$@ gan %2$@";
 
+/* Message to show to user when he tries to add a self-hosted site that isn't a WordPress site. */
+"That doesn't look like a WordPress site." = "Nid yw hynny'n edrych fel gwefan WordPress.";
+
+/* No comment provided by engineer. */
+"That email address has already been used. Please check your inbox for an activation email. If you don't activate you can try again in a few days." = "Mae'r cyfeiriad e-bost hwnnw eisoes wedi cael ei ddefnyddio. Gwiriwch eich blwch derbyn am e-bost cychwyn. Os nad ydych yn cychwyn gallwch roi cynnig arall ymhen ychydig ddyddiau.";
+
+/* No comment provided by engineer. */
+"That site address is not allowed." = "Nid yw cyfeiriad y safle yn cael ei ganiatáu.";
+
+/* No comment provided by engineer. */
+"That site is currently reserved but may be available in a couple days." = "Mae'r wefan ar gadw ar hyn o bryd ond gall fod ar gael ymhen ychydig o ddyddiau.";
+
+/* No comment provided by engineer. */
+"That username is currently reserved but may be available in a couple of days." = "Mae'r enw defnyddiwr yna ar gadw ar hyn o bryd ond gall fod ar gael ymhen ychydig o ddyddiau.";
+
+/* No comment provided by engineer. */
+"That username is not allowed." = "Nid yw'r enw defnyddiwr yna'n cael ei ganiatáu.";
+
 /* Error message shown when a media upload fails because the user isn't connected to the Internet.
    Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The Internet connection appears to be offline." = "Mae'n ymddangos bod y cysylltiad Rhyngrwyd all-lein.";
 
+/* Error message describing a problem with a URL. */
+"The URL is missing a valid host." = "Nid oes gan URL westai dilys.";
+
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "Nid yw'r ap yn gallu a adnabod ymateb y gweinydd. Gwiriwch ffurfweddiad eich gwefan.";
+
+/* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
+"The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Mae'r dystysgrif ar gyfer y gweinydd hwn yn annilys. Gall eich bod yn cysylltu â gweinydd sy'n esgus bod yn “%@” sy'n gallu peryglu eich gwybodaeth gyfrinachol.\n\nHoffech chi ymddiried yn y dystysgrif beth bynnag?";
 
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The internet connection appears to be offline." = "Mae'n ymddangos bod y cysylltiad rhyngrwyd all-lein.";
@@ -1818,7 +1977,19 @@
 "The login request has expired. Log in to WordPress.com to try again." = "Mae'r cais mewngofnodi wedi dod i ben. Mewngofnodwch i WordPress.comi geisio eto.";
 
 /* No comment provided by engineer. */
+"The server returned an empty response. This usually means you need to increase the memory limit for your site." = "Mae'r gweinydd wedi anfon ymateb gwag. Mae hyn yn golygu fel arfer fod angen cynyddu'r terfyn cof ar gyfer eich gwefan.";
+
+/* No comment provided by engineer. */
+"The site address must be shorter than 64 characters." = "Rhaid i gyfeiriad y wefan fod yn llai na 64 nod.";
+
+/* No comment provided by engineer. */
 "The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "Mae'r wefan %1$@ yn defnyddio WordPress %2$@. Rydym yn argymell ei diweddaru i'r fersiwn diweddaraf, neu o leiaf %3$@";
+
+/* Message shown when site deletion API failed */
+"The site could not be deleted." = "Nid oes modd dileu'r wefan hon.";
+
+/* Message shown when site export API failed */
+"The site could not be exported." = "Nid oes modd allforio'r wefan hon.";
 
 /* Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
 "The slug is the URL-friendly version of the post title." = "Fersiwn cyfeillgar URL o deitl cofnod yw'r bonyn.";
@@ -1858,8 +2029,14 @@
 /* Informs the user about an issue connecting to the third-party sharing service. The `%@` is a placeholder for the service name. */
 "There is an issue connecting to %@. Reconnect to continue publicizing." = "Bu anhawster cysylltu â %@. Ailgysylltwch i barhau'r cyhoeddusrwydd.";
 
+/* Error message informing the user that there was a problem blocking posts from a site from their reader. */
+"There was a problem blocking posts from the specified site." = "Bu anhawster wrth rwystro cofnodion o'r wefan honno.";
+
 /* Message for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
 "There was a problem connecting to WordPress.com. Please log in again." = "Bu anhawster wrth gysylltu â WordPress.com. Mewngofnodwch eto.";
+
+/* Error message informing the user that there was a problem clearing the block on site preventing its posts from displaying in the reader. */
+"There was a problem removing the block for specified site." = "Bu anhawster wrth gael gwared ar y bloc ar gyfer gwefan benodol.";
 
 /* A short error message shown in a prompt. */
 "There was a problem saving changes to sharing management." = "Bu anhawster cadw newidiadau i'r rheolaeth rhannu.";
@@ -1928,6 +2105,9 @@
    Title of trashed Comments filter. */
 "Trashed" = "Wedi eu rhoi yn y sbwriel";
 
+/* Connect when the SSL certificate is invalid */
+"Trust" = "Ymddiried";
+
 /* Theme Try & Customize action title */
 "Try & Customize" = "Defnyddio a chyfaddasu";
 
@@ -1985,9 +2165,11 @@
    Undo action */
 "Undo" = "Dadwneud";
 
-/* Label for size of media when it's not possible to calculate it.
-   Unknown Tag Name */
+/* Label for size of media when it's not possible to calculate it. */
 "Unknown" = "Anhysbys";
+
+/* No comment provided by engineer. */
+"Unknown error" = "Gwall anhysbys";
 
 /* People: Invitation Error */
 "Unknown error has occurred" = "Digwyddodd gwall anhysbys.";
@@ -2037,17 +2219,27 @@
 "Use" = "Defnydd";
 
 /* A placeholder for the twitter username
+   Accessibility label for the username text field in the self-hosted login page.
    Account Settings Username label
    Label for entering username in the username field
+   Login dialog username placeholder
+   Placeholder for the username textfield.
    The header and main title
-   Username label text. */
+   Username label text.
+   Username placeholder */
 "Username" = "Enw defnyddiwr";
 
 /* Setting: indicates if Mentions will be notified */
 "Username mentions" = "Cyfeirio yn ôl enw defnyddiwr";
 
+/* No comment provided by engineer. */
+"Username must be at least 4 characters." = "Rhaid i enw defnyddiwr fod o leiaf yn 4 nod o hyd.";
+
 /* Blog Users */
 "Users" = "Defnyddwyr";
+
+/* two factor code placeholder */
+"Verification code" = "Cod dilysu";
 
 /* Push Authentication Alert Title */
 "Verify Log In" = "Dilysu Mewngofnodi";
@@ -2071,6 +2263,9 @@
 
 /* Displays Less Rows */
 "View less…" = "Gweld llai…";
+
+/* User role badge */
+"Viewer" = "Darllenydd";
 
 /* Blog Viewers */
 "Viewers" = "Darllenwyr";
@@ -2147,6 +2342,9 @@
 /* No comment provided by engineer. */
 "WordPress version too old" = "Mae'r fersiwn yma o WordPress yn rhy hen";
 
+/* No comment provided by engineer. */
+"WordPress version too old. The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "Mae eich fersiwn o WordPress yn rhy hen. Mae'r wefan %1$@ yn defnyddio WordPress %2$@. Rydym yn argymell ei diweddaru i'r fersiwn diweddaraf, neu o leiaf %3$@";
+
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
@@ -2161,9 +2359,6 @@
 
 /* Asks the user if they would like to clear their search history. */
 "Would you like to clear your search history?" = "Hoffech chi glirio eich hanes chwilio?";
-
-/* Message offering to hide all WPCom Sites */
-"Would you like to hide all WordPress.com Sites?" = "Hoffech chi guddio pob gwefan WordPress.com?";
 
 /* Placeholder text for inline compose view */
 "Write a reply…" = "Ysgrifennu ateb…";
@@ -2189,6 +2384,9 @@
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Gallwch diystyru'r gosodiadau hyn ar gyfer cofnodion unigol.";
 
+/* No comment provided by engineer. */
+"You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "Nid oes modd i chi ddefnyddio'r cyfeiriad e-bost yna i ymuno. Mae gennym anhawster ohonynt yn rhwystro rhai o'n e-byst. Defnyddiwch e-bost arall.";
+
 /* Message alert when attempting to delete site with purchases */
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "Mae gennych uwchraddiadau premiwm gweithredol ar eich gwefan. Diddymwch eich uwchraddiadau cyn dileu eich gwefan.";
 
@@ -2198,6 +2396,9 @@
 
 /* Error message informing the user that being logged into a WordPress.com account is required. */
 "You must be signed in to a WordPress.com account to perform this action." = "Rhaid eich bod wedi eich mewngofnodi i gyfrif WordPress.com i wneud hyn.";
+
+/* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
+"You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Mae'n ymddangos eich bod wedi gosod ategyn symudol o'r DudaMobile sy'n atal y ap thag cysylltu â'ch blog";
 
 /* Displayed in the Notification Settings View */
 "Your Sites" = "Eisch Gwefannau";
@@ -2228,6 +2429,9 @@
 
 /* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
 "ios-widget.tVvJ9c" = "Select Site Intent";
+
+/* Later today */
+"later today" = "yn hwyrach heddiw";
 
 /* Title of posts label in all time widget */
 "widget.alltime.posts.label" = "Cofnodion";

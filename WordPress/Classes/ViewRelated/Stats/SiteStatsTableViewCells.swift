@@ -444,7 +444,7 @@ struct AddInsightStatRow: ImmuTableRow {
         cell.textLabel?.text = title
         cell.textLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         cell.textLabel?.adjustsFontForContentSizeCategory = true
-        cell.textLabel?.textColor = enabled ? .text : .textPlaceholder
+        cell.textLabel?.textColor = enabled ? .label : .placeholderText
         cell.selectionStyle = .none
 
         cell.accessibilityLabel = title
@@ -456,7 +456,7 @@ struct AddInsightStatRow: ImmuTableRow {
         cell.accessoryView = canTap ? UIImageView(image: UIImage(systemName: Constants.plusIconName)) : nil
 
         let editingImageView = UIImageView(image: UIImage(systemName: Constants.minusIconName))
-        editingImageView.tintColor = .textSubtle
+        editingImageView.tintColor = .secondaryLabel
         cell.editingAccessoryView = editingImageView
     }
 

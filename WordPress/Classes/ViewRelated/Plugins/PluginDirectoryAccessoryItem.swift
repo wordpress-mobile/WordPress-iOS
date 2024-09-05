@@ -27,7 +27,7 @@ struct PluginDirectoryAccessoryItem {
     }
 
     private static func automanaged() -> UIView {
-        let color = UIColor.neutral(.shade40)
+        let color = UIAppColor.neutral(.shade40)
         let text = NSLocalizedString("Auto-managed", comment: "Describes a status of a plugin")
 
         return PluginDirectoryAccessoryItem.label(with: nil, tintColor: color, text: text)
@@ -35,7 +35,7 @@ struct PluginDirectoryAccessoryItem {
 
     private static func active() -> UIView {
         let icon = UIImage.gridicon(.checkmark, size: Constants.imageSize)
-        let color = UIColor.success
+        let color = UIAppColor.success
         let text = NSLocalizedString("Active", comment: "Describes a status of a plugin")
 
         return PluginDirectoryAccessoryItem.label(with: icon, tintColor: color, text: text)
@@ -43,7 +43,7 @@ struct PluginDirectoryAccessoryItem {
 
     private static func inactive() -> UIView {
         let icon = UIImage.gridicon(.cross, size: Constants.imageSize)
-        let color = UIColor.neutral(.shade40)
+        let color = UIAppColor.neutral(.shade40)
         let text = NSLocalizedString("Inactive", comment: "Describes a status of a plugin")
 
         return PluginDirectoryAccessoryItem.label(with: icon, tintColor: color, text: text)
@@ -51,7 +51,7 @@ struct PluginDirectoryAccessoryItem {
 
     private static func needsUpdate() -> UIView {
         let icon = UIImage.gridicon(.sync, size: Constants.imageSize)
-        let color = UIColor.warning
+        let color = UIAppColor.warning
         let text = NSLocalizedString("Needs Update", comment: "Describes a status of a plugin")
 
         return PluginDirectoryAccessoryItem.label(with: icon, tintColor: color, text: text)
@@ -59,7 +59,7 @@ struct PluginDirectoryAccessoryItem {
 
     private static func updating() -> UIView {
         let icon = UIImage.gridicon(.sync, size: Constants.imageSize)
-        let color = UIColor.warning
+        let color = UIAppColor.warning
         let text = NSLocalizedString("Updating", comment: "Describes a status of a plugin")
 
         return PluginDirectoryAccessoryItem.label(with: icon, tintColor: color, text: text)
@@ -76,7 +76,7 @@ struct PluginDirectoryAccessoryItem {
         let label = UILabel(frame: .zero)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = WPStyleGuide.subtitleFont()
-        label.textColor = .textSubtle
+        label.textColor = .secondaryLabel
         label.text = text
 
         container.axis = .horizontal
@@ -129,10 +129,10 @@ struct PluginDirectoryAccessoryItem {
 
             if i <= Int(wholeStars) {
                 image = .gridicon(.star, size: Constants.starImageSize)
-                color = .primary(.shade40)
+                color = UIAppColor.primary(.shade40)
             } else {
                 image = .gridicon(.starOutline, size: Constants.starImageSize)
-                color = .neutral(.shade10)
+                color = UIAppColor.neutral(.shade10)
             }
 
             let imageView = UIImageView(image: image)
@@ -145,7 +145,7 @@ struct PluginDirectoryAccessoryItem {
     }
 
     private static func halfStar(size: CGSize) -> UIView {
-        let color = UIColor.primary(.shade40)
+        let color = UIAppColor.primary(.shade40)
 
         let container = UIView(frame: .zero)
         container.translatesAutoresizingMaskIntoConstraints = false
@@ -165,7 +165,7 @@ struct PluginDirectoryAccessoryItem {
         leftHalf.addConstraint(NSLayoutConstraint(item: leftHalf, attribute: .width, relatedBy: .equal, toItem: leftHalf, attribute: .height, multiplier: 0.5, constant: 0))
 
         let rightHalf = UIImageView(image: .gridicon(.starOutline, size: size))
-        rightHalf.tintColor = .neutral(.shade10)
+        rightHalf.tintColor = UIAppColor.neutral(.shade10)
         rightHalf.translatesAutoresizingMaskIntoConstraints = false
         rightHalf.contentMode = .right
         rightHalf.clipsToBounds = true

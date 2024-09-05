@@ -10,7 +10,7 @@ class PluginDetailViewHeaderCell: UITableViewCell {
     }
 
     open func configureCell(_ directoryEntry: PluginDirectoryEntry) {
-        contentView.backgroundColor = .listForeground
+        contentView.backgroundColor = .secondarySystemGroupedBackground
 
         if let banner = directoryEntry.banner {
             headerImageView?.isHidden = false
@@ -21,17 +21,17 @@ class PluginDetailViewHeaderCell: UITableViewCell {
 
         let iconPlaceholder = UIImage.gridicon(.plugins, size: CGSize(width: 40, height: 40))
         iconImageView?.downloadImage(from: directoryEntry.icon, placeholderImage: iconPlaceholder)
-        iconImageView?.backgroundColor = .listForeground
-        iconImageView?.tintColor = .neutral
+        iconImageView?.backgroundColor = .secondarySystemGroupedBackground
+        iconImageView?.tintColor = UIAppColor.neutral(.shade50)
 
         nameLabel?.text = directoryEntry.name
 
         let author = directoryEntry.author
 
         let defaultAttributes: [NSAttributedString.Key: Any] = [.font: UIFont.preferredFont(forTextStyle: .subheadline),
-                                                               .foregroundColor: UIColor.neutral(.shade70)]
+                                                               .foregroundColor: UIAppColor.neutral(.shade70)]
 
-        let authorAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.primary(.shade40)]
+        let authorAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIAppColor.primary(.shade40)]
 
         let string = NSLocalizedString("by %@", comment: "Used when displaying author of a plugin.")
         let attrString = NSMutableAttributedString(string: String(format: string, author), attributes: defaultAttributes)

@@ -34,7 +34,7 @@ class SignupEpilogueTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .basicBackground
+        view.backgroundColor = .systemBackground
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -161,7 +161,7 @@ private extension SignupEpilogueTableViewController {
         tableView.register(userInfoNib, forCellReuseIdentifier: CellIdentifiers.epilogueUserInfoCell)
 
         WPStyleGuide.configureColors(view: view, tableView: tableView)
-        tableView.backgroundColor = .basicBackground
+        tableView.backgroundColor = .systemBackground
 
         // remove empty cells
         tableView.tableFooterView = UIView()

@@ -50,7 +50,7 @@ private extension InlineEditableMultiLineCell {
 
     func configureCell() {
         textView.font = .preferredFont(forTextStyle: .body)
-        textView.textColor = .text
+        textView.textColor = .label
         textView.backgroundColor = .clear
     }
 

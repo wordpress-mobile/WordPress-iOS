@@ -145,10 +145,6 @@ extension MySitesCoordinator: RootViewPresenter {
         meViewController.navigationController?.popToViewController(meViewController, animated: false)
     }
 
-    func popMeScreenToRoot() {
-        // Do nothing
-    }
-
     // MARK: Helpers
 
     /// Default implementation for functions that are not supported by the simplified UI.

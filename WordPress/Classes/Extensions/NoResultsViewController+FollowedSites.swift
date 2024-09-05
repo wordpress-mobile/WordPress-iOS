@@ -47,9 +47,9 @@ extension NoResultsViewController {
 extension NoResultsViewController {
 
     func setupReaderButtonStyles() {
-        actionButton.primaryNormalBackgroundColor = .text
+        actionButton.primaryNormalBackgroundColor = .label
         actionButton.primaryTitleColor = .systemBackground
-        actionButton.primaryHighlightBackgroundColor = .text
+        actionButton.primaryHighlightBackgroundColor = .label
     }
 
 }

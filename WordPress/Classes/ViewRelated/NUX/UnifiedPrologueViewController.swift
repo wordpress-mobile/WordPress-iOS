@@ -30,7 +30,7 @@ class UnifiedPrologueViewController: UIPageViewController {
         })
 
         setViewControllers([pages[0]], direction: .forward, animated: false)
-        view.backgroundColor = .prologueBackground
+        view.backgroundColor = UIAppColor.prologueBackground
 
         addPageControl()
         let backgroundView = UIView.embedSwiftUIView(UnifiedPrologueBackgroundView())
@@ -40,8 +40,8 @@ class UnifiedPrologueViewController: UIPageViewController {
 
     private func addPageControl() {
         let pageControl = UIPageControl()
-        pageControl.currentPageIndicatorTintColor = .text
-        pageControl.pageIndicatorTintColor = .textSubtle
+        pageControl.currentPageIndicatorTintColor = .label
+        pageControl.pageIndicatorTintColor = .secondaryLabel
 
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(pageControl)

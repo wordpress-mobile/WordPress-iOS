@@ -29,7 +29,7 @@ class ImageCropViewController: UIViewController, UIScrollViewDelegate {
         // Title
         title = NSLocalizedString("Resize & Crop", comment: "Screen title. Resize and crop an image.")
 
-        view.backgroundColor = .basicBackground
+        view.backgroundColor = .systemBackground
 
         // Setup: NavigationItem
         let useButtonTitle = NSLocalizedString("Use", comment: "Use the current image")
@@ -56,7 +56,7 @@ class ImageCropViewController: UIViewController, UIScrollViewDelegate {
         scrollView.zoomScale = minimumScale
 
         // Setup: Overlay
-        overlayView.borderColor = .primary(.shade40)
+        overlayView.borderColor = UIAppColor.primary(.shade40)
         overlayView.outerColor = overlayColor
         overlayView.maskShape = maskShape
     }
@@ -111,7 +111,7 @@ class ImageCropViewController: UIViewController, UIScrollViewDelegate {
         onCancel?()
     }
 
-    private let overlayColor = UIColor.basicBackground.withAlphaComponent(0.78)
+    private let overlayColor = UIColor.systemBackground.withAlphaComponent(0.78)
 
     // MARK: - Private Constants
     private let maximumScaleFactor  = CGFloat(3)
@@ -122,7 +122,7 @@ class ImageCropViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - IBOutlets
     @IBOutlet private var scrollView: UIScrollView! {
         didSet {
-            scrollView.backgroundColor = .basicBackground
+            scrollView.backgroundColor = .systemBackground
         }
     }
     @IBOutlet private var imageView: UIImageView!

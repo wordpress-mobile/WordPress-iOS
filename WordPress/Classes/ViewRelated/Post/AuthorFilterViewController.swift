@@ -144,7 +144,7 @@ class AuthorFilterViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: Metrics.topinset))
-        view.backgroundColor = .listForeground
+        view.backgroundColor = .secondarySystemGroupedBackground
         return view
     }
 
@@ -193,7 +193,7 @@ private class AuthorFilterCell: UITableViewCell {
 
     private let separator: UIView = {
         let separator = UIView()
-        separator.backgroundColor = .divider
+        separator.backgroundColor = .separator
         separator.translatesAutoresizingMaskIntoConstraints = false
         return separator
     }()
@@ -234,7 +234,7 @@ private class AuthorFilterCell: UITableViewCell {
             separator.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth)
         ])
 
-        tintColor = .primary(.shade40)
+        tintColor = UIAppColor.primary(.shade40)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -270,7 +270,7 @@ private class AuthorFilterCell: UITableViewCell {
     }
 
     private enum Appearance {
-        static let placeholderTintColor = UIColor.neutral(.shade70)
+        static let placeholderTintColor = UIAppColor.neutral(.shade70)
     }
 
     private enum Metrics {

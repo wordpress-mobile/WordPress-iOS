@@ -69,15 +69,15 @@ class ReaderRecommendedSiteCardCell: UITableViewCell {
     }
 
     private func applyStyles() {
-        backgroundColor = .listForeground
+        backgroundColor = .secondarySystemGroupedBackground
 
         // Blog Name
         blogNameLabel.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
-        blogNameLabel.textColor = .text
+        blogNameLabel.textColor = .label
 
         // Host Label
         hostNameLabel.font = WPStyleGuide.fontForTextStyle(.footnote)
-        hostNameLabel.textColor = .textSubtle
+        hostNameLabel.textColor = .secondaryLabel
 
         applyFollowButtonStyles()
         headerStackView.spacing = 12.0

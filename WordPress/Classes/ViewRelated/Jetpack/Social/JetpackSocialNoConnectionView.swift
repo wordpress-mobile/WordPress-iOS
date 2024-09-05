@@ -19,7 +19,7 @@ struct JetpackSocialNoConnectionView: View {
             HStack {
                 Text(Constants.connectText)
                     .font(.callout)
-                    .foregroundColor(Color(UIColor.primary))
+                    .foregroundColor(Color(UIAppColor.primary))
                     .onTapGesture {
                         viewModel.onConnectTap?()
                     }
@@ -27,7 +27,7 @@ struct JetpackSocialNoConnectionView: View {
                     Spacer()
                     Text(Constants.notNowText)
                         .font(.callout)
-                        .foregroundColor(Color(UIColor.primary))
+                        .foregroundColor(Color(UIAppColor.primary))
                         .onTapGesture {
                             viewModel.onNotNowTap?()
                         }
@@ -120,7 +120,7 @@ struct JetpackSocialNoConnectionViewModel {
 
 private struct Constants {
     static let defaultPadding = EdgeInsets(top: 16.0, leading: 16.0, bottom: 24.0, trailing: 16.0)
-    static let defaultBackgroundColor = UIColor.listForeground
+    static let defaultBackgroundColor = UIColor.secondarySystemGroupedBackground
     static let bodyText = NSLocalizedString("social.noconnection.body",
                                             value: "Increase your traffic by auto-sharing your posts with your friends on social media.",
                                             comment: "Body text for the Jetpack Social no connection view")

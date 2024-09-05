@@ -23,7 +23,7 @@ private func makeContentAttributedString(for page: Page) -> NSAttributedString {
     let title = page?.titleForDisplay() ?? ""
     return NSAttributedString(string: title, attributes: [
         .font: WPStyleGuide.fontForTextStyle(.callout, fontWeight: .semibold),
-        .foregroundColor: UIColor.text
+        .foregroundColor: UIColor.label
     ])
 }
 

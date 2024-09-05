@@ -86,11 +86,11 @@ private extension BloggingPromptsFeatureDescriptionView {
 
     enum Style {
         static let labelFont = WPStyleGuide.fontForTextStyle(.body)
-        static let textColor: UIColor = .textSubtle
+        static let textColor: UIColor = .secondaryLabel
         static let noteInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
         static let noteCornerRadius: CGFloat = 6
         static let noteBorderWidth: CGFloat = 1
-        static let noteBorderColor = UIColor.textQuaternary.cgColor
+        static let noteBorderColor = UIColor.quaternaryLabel.cgColor
         static let cardCornerRadius: CGFloat = 10
         static let cardShadowRadius: CGFloat = 14
         static let cardShadowOpacity: Float = 0.1

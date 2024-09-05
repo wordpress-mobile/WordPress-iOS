@@ -416,7 +416,7 @@ private extension SupportTableViewController {
             let cell = cell as! WPTableViewCellIndicator
             cell.textLabel?.text = title
             WPStyleGuide.configureTableViewCell(cell)
-            cell.textLabel?.textColor = .primary
+            cell.textLabel?.textColor = UIAppColor.primary
             cell.showIndicator = showIndicator
             cell.accessibilityTraits = .button
             cell.accessibilityIdentifier = accessibilityIdentifier
@@ -436,7 +436,7 @@ private extension SupportTableViewController {
             cell.textLabel?.text = title
             cell.detailTextLabel?.text = value
             WPStyleGuide.configureTableViewCell(cell)
-            cell.textLabel?.textColor = .primary
+            cell.textLabel?.textColor = UIAppColor.primary
             cell.accessibilityTraits = .button
             cell.accessibilityHint = accessibilityHint
             cell.accessibilityIdentifier = accessibilityIdentifier
@@ -553,7 +553,7 @@ class ButtonCell: WPTableViewCellDefault {
         button.titleLabel?.lineBreakMode = .byTruncatingTail
         button.contentHorizontalAlignment = .trailing
 
-        button.setTitleColor(.primary, for: .normal)
+        button.setTitleColor(UIAppColor.primary, for: .normal)
 
         button.setImage(UIImage.gridicon(.external,
                                          size: CGSize(width: LayoutSpacing.imageSize, height: LayoutSpacing.imageSize)),

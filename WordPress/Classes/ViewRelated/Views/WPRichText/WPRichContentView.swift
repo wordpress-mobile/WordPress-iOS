@@ -68,20 +68,20 @@ class WPRichContentView: UITextView {
 
     @objc class func formattedAttributedStringForString(_ string: String) -> NSAttributedString {
         return formattedAttributedString(for: string, style: AttributedStringStyle(
-            textColorHex: UIColor.text.hexString,
-            blockQuoteColorHex: UIColor.textSubtle.hexString,
-            linkColorHex: UIColor.primary.hexString,
-            linkColorActiveHex: UIColor.primaryDark.hexString
+            textColorHex: UIColor.label.hexString,
+            blockQuoteColorHex: UIColor.secondaryLabel.hexString,
+            linkColorHex: UIAppColor.primary.hexString,
+            linkColorActiveHex: UIAppColor.primaryDark.hexString
         ))
     }
 
     class func formattedAttributedString(for string: String, style: UIUserInterfaceStyle) -> NSAttributedString {
         let trait = UITraitCollection(userInterfaceStyle: style)
         return formattedAttributedString(for: string, style: AttributedStringStyle(
-            textColorHex: UIColor.text.color(for: trait).hexString,
-            blockQuoteColorHex: UIColor.textSubtle.color(for: trait).hexString,
-            linkColorHex: UIColor.primary.color(for: trait).hexString,
-            linkColorActiveHex: UIColor.primaryDark.color(for: trait).hexString
+            textColorHex: UIColor.label.color(for: trait).hexString,
+            blockQuoteColorHex: UIColor.secondaryLabel.color(for: trait).hexString,
+            linkColorHex: UIAppColor.primary.color(for: trait).hexString,
+            linkColorActiveHex: UIAppColor.primaryDark.color(for: trait).hexString
         ))
     }
 
@@ -439,7 +439,7 @@ private extension WPRichContentView {
 @objc fileprivate class BlockquoteBackgroundLayoutManager: NSLayoutManager {
     /// Blockquote's Left Border Color
     ///
-    let blockquoteBorderColor = UIColor.listIcon
+    let blockquoteBorderColor = UIColor.secondaryLabel
 
     /// Blockquote's Left Border width
     ///

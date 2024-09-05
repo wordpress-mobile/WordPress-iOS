@@ -30,7 +30,7 @@ class WhatIsNewView: UIView {
         }
 
         label.font = self.appearance.subHeadlineFont
-        label.textColor = .textSubtle
+        label.textColor = .secondaryLabel
         return label
     }()
 
@@ -97,7 +97,7 @@ class WhatIsNewView: UIView {
     private lazy var divider: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .divider
+        view.backgroundColor = .separator
         return view
     }()
 
@@ -166,7 +166,7 @@ class WhatIsNewView: UIView {
 
         super.init(frame: .zero)
 
-        backgroundColor = .basicBackground
+        backgroundColor = .systemBackground
         addSubview(contentView)
         addSubview(continueButtonStackView)
         pinSubviewToAllEdges(contentView)

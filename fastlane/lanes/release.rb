@@ -151,7 +151,7 @@ platform :ios do
   # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
   #
   desc 'Completes the final steps for the code freeze'
-  lane :complete_code_freeze do |options|
+  lane :complete_code_freeze do |skip_confirm: false|
     ensure_git_branch_is_release_branch
 
     # Verify that there's nothing in progress in the working copy
@@ -161,13 +161,11 @@ platform :ios do
 
     UI.important("Completing code freeze for: #{version}")
 
-    skip_user_confirmation = options[:skip_confirm]
-
-    UI.user_error!('Aborted by user request') unless skip_user_confirmation || UI.confirm('Do you want to continue?')
+    UI.user_error!('Aborted by user request') unless skip_confirm || UI.confirm('Do you want to continue?')
 
     generate_strings_file_for_glotpress
 
-    unless skip_user_confirmation || UI.confirm('Ready to push changes to remote and trigger the beta build?')
+    unless skip_confirm || UI.confirm('Ready to push changes to remote and trigger the beta build?')
       UI.message("Terminating as requested. Don't forget to run the remainder of this automation manually.")
       next
     end
