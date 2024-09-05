@@ -138,6 +138,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         let authToken = post.blog.authToken ?? ""
         let authHeader = "\(authType) \(authToken)"
         let siteApiNamespace = post.blog.dotComID != nil ? "sites/\(siteId ?? "")" : ""
+        let postType = post is Page ? "page" : "post"
         let idValue: Int? = {
             if let number = post.postID {
                 let intValue = number.intValue
@@ -149,7 +150,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
         self.editorViewController = GutenbergKit.EditorViewController(
             id: idValue,
-            type: "post",
+            type: postType,
             title: post.postTitle ?? "",
             content: post.content ?? "",
             service: GutenbergKit.EditorService(client: networkClient),
