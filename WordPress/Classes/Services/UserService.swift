@@ -2,60 +2,51 @@ import Foundation
 import WordPressAPI
 import WordPressUI
 
-struct UserService: Sendable {
+/// UserService is responsible for fetching user acounts via the .org REST API – it's the replacement for `UsersService` (the XMLRPC-based approach)
+///
+struct UserService {
 
-    class ActionDispatcher: UserManagementActionDispatcher {
+    final class ActionDispatcher: UserManagementActionDispatcher {
 
         private let client: WordPressClient
-
-        private var taskHandle: Task<(), Error>? = nil
 
         init(client: WordPressClient) {
             self.client = client
             super.init()
         }
 
-        override func setNewPassword(id: Int32, newPassword: String) {
-            self.taskHandle = Task {
-                do {
-                    _ = try await client.api.users.update(
-                        userId: Int32(id),
-                        params: UserUpdateParams(password: newPassword)
-                    )
-                } catch {
-                    self.error = error
-                }
-            }
+        override func setNewPassword(id: Int32, newPassword: String) async throws {
+            _ = try await client.api.users.update(
+                userId: Int32(id),
+                params: UserUpdateParams(password: newPassword)
+            )
         }
 
-        override func deleteUser(id: Int32, reassigningPostsTo newUserId: Int32) {
-            self.taskHandle = Task {
-                do {
-                    _ = try await client.api.users.delete(
-                        userId: id,
-                        params: UserDeleteParams(reassign: newUserId)
-                    )
-                } catch {
-                    self.error = error
-                }
-            }
-        }
-
-        deinit {
-            taskHandle?.cancel()
+        override func deleteUser(id: Int32, reassigningPostsTo newUserId: Int32) async throws {
+            _ = try await client.api.users.delete(
+                userId: id,
+                params: UserDeleteParams(reassign: newUserId)
+            )
         }
     }
 
     private let apiClient: WordPressClient
     private let currentUserId: Int
 
+    let actionDispatcher: ActionDispatcher
+
     init(api: WordPressClient, currentUserId: Int) {
         self.apiClient = api
         self.currentUserId = currentUserId
+        self.actionDispatcher = ActionDispatcher(client: apiClient)
     }
 }
 
-extension UserService: WordPressUI.UserProvider {
+extension UserService: WordPressUI.UserDataProvider {
+    func fetchCurrentUserCan(_ capability: String) async throws -> Bool {
+        try await apiClient.api.users.retrieveMeWithEditContext().capabilities.keys.contains(capability)
+    }
+
     func fetchUsers() async throws -> [WordPressUI.DisplayUser] {
         try await apiClient.api.users.listWithEditContext(params: UserListParams()).compactMap {
 

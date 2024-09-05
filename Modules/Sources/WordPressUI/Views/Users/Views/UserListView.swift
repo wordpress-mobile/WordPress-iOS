@@ -3,11 +3,9 @@ import SwiftUI
 public struct UserListView: View {
 
     @ObservedObject
-    var viewModel: UserListViewModel
+    var viewModel = UserListViewModel()
 
-    public init(userProvider: UserProvider) {
-        self.viewModel = UserListViewModel(userProvider: userProvider)
-    }
+    public init() {}
 
     public var body: some View {
         Group {
@@ -30,9 +28,7 @@ public struct UserListView: View {
             }
         }
         .navigationTitle(Strings.usersListTitle)
-        .task {
-            await viewModel.fetchItems()
-        }
+        .task { await viewModel.fetchItems() }
     }
 
     enum Strings {
@@ -52,6 +48,6 @@ public struct UserListView: View {
 
 #Preview {
     NavigationView {
-        UserListView(userProvider: MockUserProvider())
+        UserListView()
     }
 }

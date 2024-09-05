@@ -12,7 +12,7 @@ struct UserListItem: View {
 
     var body: some View {
         NavigationLink {
-            UserDetailView(user: user, userIsAdministrator: true)
+            UserDetailView(user: user)
         } label: {
             HStack(alignment: .top) {
                 if !sizeCategory.isAccessibilityCategory {

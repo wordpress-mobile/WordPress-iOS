@@ -1,25 +1,13 @@
 import SwiftUI
 
-/// Subclass this and register it with the SwiftUI `.environmentObject` method
-/// to perform user management actions
-open class UserManagementActionDispatcher: ObservableObject {
-    @Published
-    open var error: Error?
-
-    open func setNewPassword(id: Int32, newPassword: String) {}
-    open func deleteUser(id: Int32, reassigningPostsTo userId: Int32) {}
-
-    public init() {}
-}
-
 struct UserDetailView: View {
 
     let user: DisplayUser
 
-    let userIsAdministrator: Bool
+    let viewModel = UserDetailViewModel()
 
-    @EnvironmentObject
-    var actionDispatcher: UserManagementActionDispatcher
+    @Environment(\.dismiss)
+    var dismissAction: DismissAction
 
     var body: some View {
         Form {
@@ -47,19 +35,28 @@ struct UserDetailView: View {
                 }
             }
 
-            if userIsAdministrator {
+            if viewModel.currentUserCanModifyUsers {
                 Section(Strings.accountManagementSectionTitle) {
-                    Button(Strings.setNewPasswordActionTitle) {
-                        actionDispatcher.setNewPassword(id: user.id, newPassword: "foo")
+                    NavigationLink {
+                        UserChangePasswordView(viewModel: passwordChangeViewModel)
+                    } label: {
+                        Text(Strings.setNewPasswordActionTitle)
                     }
 
                     Button(Strings.deleteUserActionTitle, role: .destructive) {
-                        actionDispatcher.deleteUser(id: user.id, reassigningPostsTo: 42) // TODO
+                        //actionDispatcher.deleteUser(id: user.id, reassigningPostsTo: 42) // TODO
                     }
                 }
-
             }
-        }.navigationTitle(user.displayName)
+        }
+        .navigationTitle(user.displayName)
+        .task {
+            await viewModel.loadCurrentUserRole()
+        }
+    }
+
+    var passwordChangeViewModel: UserChangePasswordViewModel {
+        UserChangePasswordViewModel(user: user)
     }
 
     enum Strings {
@@ -163,6 +160,6 @@ struct UserDetailView: View {
 
 #Preview {
     NavigationStack {
-        UserDetailView(user: DisplayUser.MockUser, userIsAdministrator: true)
+        UserDetailView(user: DisplayUser.MockUser)
     }
 }

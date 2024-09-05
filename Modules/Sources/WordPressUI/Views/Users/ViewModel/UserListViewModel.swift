@@ -9,8 +9,6 @@ class UserListViewModel: ObservableObject {
         let users: [DisplayUser]
     }
 
-    private let userProvider: UserProvider
-
     /// The initial set of users fetched by `fetchItems`
     private var users: [DisplayUser] = []
 
@@ -35,21 +33,16 @@ class UserListViewModel: ObservableObject {
         }
     }
 
-    init(userProvider: UserProvider) {
-        self.userProvider = userProvider
-    }
-
     @MainActor
     func fetchItems() async {
         isLoadingItems = true
         defer { isLoadingItems = false }
 
         do {
-            let users = try await userProvider.fetchUsers()
+            let users = try await UserObjectResolver.userProvider.fetchUsers()
             self.users = users
             self.sortedUsers = sortUsers(users)
         } catch let err {
-            debugPrint(err.localizedDescription)
             self.error = err
         }
     }

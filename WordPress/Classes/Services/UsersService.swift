@@ -1,7 +1,7 @@
 import Foundation
 import WordPressKit
 
-/// UserService is responsible for interacting with UserServiceRemoteXMLRPC to fetch User and Profile related details
+/// UsersService is responsible for interacting with UserServiceRemoteXMLRPC to fetch User and Profile related details
 /// from self-hosted blogs. See the PeopleService for WordPress.com blogs via the REST API.
 ///
 open class UsersService {

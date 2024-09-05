@@ -175,7 +175,10 @@ extension BlogDetailsViewController {
             return
         }
 
-        let viewController = UIHostingController(rootView: UserListView(userProvider: service))
-        presentationDelegate.presentBlogDetailsViewController(viewController)
+        UserObjectResolver.userProvider = service
+        UserObjectResolver.actionDispatcher = service.actionDispatcher
+
+        let userListView = UIHostingController(rootView: UserListView())
+        presentationDelegate.presentBlogDetailsViewController(userListView)
     }
 }
