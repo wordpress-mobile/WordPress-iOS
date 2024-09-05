@@ -52,7 +52,7 @@ struct DynamicDashboardCard: View {
                         .resizable()
                         .aspectRatio(input.featureImageWidthToHeightRatio, contentMode: .fit)
                 default:
-                    Color.DS.Background.secondary
+                        Color(.secondarySystemBackground)
                         .aspectRatio(input.featureImageWidthToHeightRatio, contentMode: .fit)
                 }
             }
@@ -76,7 +76,7 @@ struct DynamicDashboardCard: View {
                                 image
                                     .resizable()
                             default:
-                                Color.DS.Background.secondary
+                                    Color(.secondarySystemBackground)
                             }
                         }
                             .frame(
@@ -90,13 +90,13 @@ struct DynamicDashboardCard: View {
                         if let title = row.title {
                             Text(title)
                                 .style(.bodyLarge(.emphasized))
-                                .foregroundStyle(Color.DS.Foreground.primary)
+                                .foregroundStyle(.primary)
                         }
 
                         if let description = row.description {
                             Text(description)
                                 .style(.bodySmall(.regular))
-                                .foregroundStyle(Color.DS.Foreground.secondary)
+                                .foregroundStyle(.secondary)
                         }
                     }
                     Spacer()

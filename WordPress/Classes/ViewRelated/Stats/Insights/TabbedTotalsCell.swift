@@ -170,8 +170,8 @@ private extension TabbedTotalsCell {
 private extension TabbedTotalsCell {
 
     func applyStyles() {
-        totalCountView.backgroundColor = .listForeground
-        labelsContainer.backgroundColor = .listForeground
+        totalCountView.backgroundColor = .secondarySystemGroupedBackground
+        labelsContainer.backgroundColor = .secondarySystemGroupedBackground
         Style.configureCell(self)
         Style.configureLabelAsTotalCount(totalCountLabel)
         Style.configureViewAsSeparator(topSeparatorLine)

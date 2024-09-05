@@ -8,7 +8,7 @@ class TrashComment: DefaultNotificationActionCommand {
     }
 
     override var actionColor: UIColor {
-        return .error
+        UIAppColor.error
     }
 
     override func execute<ContentType: FormattableContent>(context: ActionContext<ContentType>) {

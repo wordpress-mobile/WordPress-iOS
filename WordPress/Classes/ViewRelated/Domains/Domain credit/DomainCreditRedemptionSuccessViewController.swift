@@ -75,7 +75,7 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
         button.isPrimary = false
         button.accessibilityIdentifier = Accessibility.doneButtonIdentifier
         button.accessibilityHint = Accessibility.doneButtonHint
-        button.secondaryNormalBackgroundColor = UIColor(light: .white, dark: .muriel(name: .blue, .shade40))
+        button.secondaryNormalBackgroundColor = UIColor(light: .white, dark: UIAppColor.blue(.shade40))
         return button
     }()
 
@@ -118,7 +118,7 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.view.backgroundColor = UIColor(light: .primary, dark: .secondarySystemBackground)
+        self.view.backgroundColor = UIColor(light: UIAppColor.primary, dark: .secondarySystemBackground)
 
         navigationController?.setNavigationBarHidden(true, animated: false)
 

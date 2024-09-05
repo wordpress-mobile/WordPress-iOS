@@ -41,7 +41,7 @@ final class SiteMediaCollectionCell: UICollectionViewCell, Reusable {
             return $0
         })
 
-        overlayView.backgroundColor = .neutral(.shade70).withAlphaComponent(0.5)
+        overlayView.backgroundColor = UIAppColor.neutral(.shade70).withAlphaComponent(0.5)
 
         imageContainerView.addSubview(placeholderView)
         placeholderView.translatesAutoresizingMaskIntoConstraints = false

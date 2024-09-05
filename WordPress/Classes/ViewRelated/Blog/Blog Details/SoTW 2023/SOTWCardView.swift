@@ -25,7 +25,7 @@ class SotWCardView: UIView {
     private lazy var watchNowButton: UIButton = {
         let button = UIButton()
         button.setTitle(Strings.button, for: .normal)
-        button.setTitleColor(.primary, for: .normal)
+        button.setTitleColor(UIAppColor.primary, for: .normal)
         button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .subheadline)
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.contentHorizontalAlignment = .leading

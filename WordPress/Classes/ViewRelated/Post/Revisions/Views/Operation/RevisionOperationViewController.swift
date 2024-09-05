@@ -15,7 +15,7 @@ class RevisionOperationViewController: UIViewController {
     }
 
     private func setupViews() {
-        view.backgroundColor = .listForeground
+        view.backgroundColor = .secondarySystemGroupedBackground
 
         addView = RevisionOperation(.add).internalView
         delView = RevisionOperation(.del).internalView

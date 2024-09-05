@@ -16,15 +16,15 @@ class ReaderRelatedPostsCell: UITableViewCell, NibReusable {
         featuredImageView.clipsToBounds = true
         featuredImageView.layer.cornerRadius = Constants.cornerRadius
         featuredImageView.contentMode = .scaleAspectFill
-        featuredImageView.backgroundColor = .placeholderElement
+        featuredImageView.backgroundColor = .placeholderText
 
         titleLabel.numberOfLines = 0
         titleLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
-        titleLabel.textColor = .text
+        titleLabel.textColor = .label
 
         excerptLabel.numberOfLines = 3
         excerptLabel.font = WPStyleGuide.fontForTextStyle(.footnote)
-        excerptLabel.textColor = .text
+        excerptLabel.textColor = .label
     }
 
     override func prepareForReuse() {

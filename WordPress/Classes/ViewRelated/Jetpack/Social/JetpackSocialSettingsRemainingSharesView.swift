@@ -16,14 +16,14 @@ struct JetpackSocialSettingsRemainingSharesView: View {
             }
             Text(Constants.subscribeText)
                 .font(.callout)
-                .foregroundColor(Color(UIColor.primary))
+                .foregroundColor(Color(UIAppColor.primary))
                 .onTapGesture {
                     viewModel.onSubscribeTap()
                 }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(EdgeInsets(top: 12.0, leading: 16.0, bottom: 12.0, trailing: 16.0))
-        .background(Color(UIColor.listForeground))
+        .background(Color(UIColor.secondarySystemGroupedBackground))
     }
 
     private var remainingText: some View {

@@ -14,7 +14,7 @@ class TextWithAccessoryButtonCell: WPReusableTableViewCell {
 
     @IBOutlet private var mainLabel: UILabel? {
         didSet {
-            mainLabel?.textColor = .textSubtle
+            mainLabel?.textColor = .secondaryLabel
         }
     }
     @IBOutlet private var secondaryLabel: UILabel?

@@ -1,5 +1,4 @@
 import Foundation
-import CocoaLumberjack
 import WordPressShared
 
 /// Defines methods that a delegate should implement for clearing suggestions
@@ -169,7 +168,7 @@ extension ReaderSearchSuggestionsViewController: WPTableViewHandlerDelegate {
         }
         let suggestion = suggestions[indexPath.row]
         cell.textLabel?.text = suggestion.searchPhrase
-        cell.textLabel?.textColor = .neutral(.shade70)
+        cell.textLabel?.textColor = UIAppColor.neutral(.shade70)
     }
 
     func tableViewDidChangeContent(_ tableView: UITableView) {

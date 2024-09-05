@@ -120,18 +120,18 @@ class StatsMostPopularTimeInsightsCell: StatsBaseCell {
 
     private func configure(verticalStackView: UIStackView) -> (topLabel: UILabel, middleLabel: UILabel, bottomLabel: UILabel) {
         let topLabel = UILabel()
-        topLabel.textColor = .text
+        topLabel.textColor = .label
         topLabel.font = .preferredFont(forTextStyle: .body)
         topLabel.numberOfLines = 0
 
         let middleLabel = UILabel()
-        middleLabel.textColor = .text
+        middleLabel.textColor = .label
         middleLabel.font = WPStyleGuide.Stats.insightsCountFont
         middleLabel.adjustsFontForContentSizeCategory = true
         middleLabel.numberOfLines = 0
 
         let bottomLabel = UILabel()
-        bottomLabel.textColor = .textSubtle
+        bottomLabel.textColor = .secondaryLabel
         bottomLabel.font = .preferredFont(forTextStyle: .body)
         bottomLabel.numberOfLines = 0
 
@@ -145,7 +145,7 @@ class StatsMostPopularTimeInsightsCell: StatsBaseCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .preferredFont(forTextStyle: .body)
-        label.textColor = .textSubtle
+        label.textColor = .secondaryLabel
         label.numberOfLines = 0
         label.text = TextContent.noData
 

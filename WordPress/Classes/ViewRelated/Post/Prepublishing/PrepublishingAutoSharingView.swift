@@ -77,7 +77,7 @@ struct PrepublishingAutoSharingView: View {
             .resizable()
             .frame(width: imageLength, height: imageLength)
             .opacity(opaque ? 1.0 : Constants.disabledSocialIconOpacity)
-            .background(Color(.listForeground))
+            .background(Color(.secondarySystemGroupedBackground))
             .clipShape(Circle())
     }
 }
@@ -93,7 +93,7 @@ private extension PrepublishingAutoSharingView {
     enum Constants {
         static let maxServicesForHorizontalLayout = 3
         static let disabledSocialIconOpacity: CGFloat = 0.36
-        static let warningColor = UIColor.muriel(color: MurielColor(name: .yellow, shade: .shade50))
+        static let warningColor = UIAppColor.yellow(.shade50)
 
         static let warningIconAccessibilityText = NSLocalizedString(
             "prepublishing.social.warningIcon.accessibilityHint",

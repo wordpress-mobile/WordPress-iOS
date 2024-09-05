@@ -25,15 +25,15 @@ class RestoreWarningView: UIView, NibLoadable {
     // MARK: - Styling
 
     private func applyStyles() {
-        backgroundColor = .basicBackground
+        backgroundColor = .systemBackground
 
-        icon.tintColor = .error
+        icon.tintColor = UIAppColor.error
 
         titleLabel.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
-        titleLabel.textColor = .text
+        titleLabel.textColor = .label
 
         descriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
-        descriptionLabel.textColor = .text
+        descriptionLabel.textColor = .label
         descriptionLabel.numberOfLines = 0
 
         confirmButton.isPrimary = true

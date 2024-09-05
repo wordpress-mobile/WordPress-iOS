@@ -22,7 +22,7 @@ struct RelatedPostsSettingsView: View {
                 previewsSection
             }
         }
-        .toggleStyle(SwitchToggleStyle(tint: Color(UIColor.jetpackGreen)))
+        .toggleStyle(SwitchToggleStyle(tint: Color(UIAppColor.jetpackGreen)))
         .onChange(of: settings.relatedPostsEnabled) {
             save(field: "show_related_posts", value: $0)
         }
@@ -46,7 +46,7 @@ struct RelatedPostsSettingsView: View {
         } footer: {
             Text(Strings.optionsFooter)
         }
-        return section.tint(Color(UIColor.jetpackGreen))
+        return section.tint(Color(UIAppColor.jetpackGreen))
     }
 
     private var previewsSection: some View {
@@ -55,7 +55,7 @@ struct RelatedPostsSettingsView: View {
                 if settings.relatedPostsShowHeadline {
                     Text(Strings.relatedPostsHeader)
                         .font(.system(size: 11, weight: .semibold))
-                        .foregroundColor(Color(UIColor.neutral))
+                        .foregroundColor(Color(UIAppColor.neutral))
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 ForEach(PreviewViewModel.previews, content: makePreview)
@@ -78,10 +78,10 @@ struct RelatedPostsSettingsView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     Text(viewModel.title)
                         .font(.system(size: 14, weight: .semibold))
-                        .foregroundColor(Color(UIColor.neutral(.shade70)))
+                        .foregroundColor(Color(UIAppColor.neutral(.shade70)))
                     Text(viewModel.details)
                         .font(.system(size: 11).italic())
-                        .foregroundColor(Color(UIColor.neutral))
+                        .foregroundColor(Color(UIAppColor.neutral))
                 }
                 Spacer()
             }

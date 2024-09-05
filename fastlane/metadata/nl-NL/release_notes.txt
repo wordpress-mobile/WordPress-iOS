@@ -1,5 +1,8 @@
-We hebben drie grote problemen opgelost in deze release:
-* Sommige gebruikers konden de inhoud van hun bericht niet updaten.
-* Sommige gebruikers hadden afbeeldingen die de verkeerde kant op waren geroteerd.
-* Een zeldzame crash in de editor veroorzaakt door niet-ondersteunde blokken
-Zoals altijd, neem contact op met support als iets niet goed werkt!
+Deze maand hebben we veel visuele oplossingen en één nieuwe experimentele functie waar we graag je feedback op willen.
+
+Visueel hebben we:
+- De site kiezer geüpdatet om eenvoudiger en gebruiksvriendelijker te maken – het voegt ondersteuning toe voor context menu's en voorbeelden.
+- Een probleem opgelost waarbij sommige navigatie balken in de app transparant waren.
+- Tientallen schermen geüpdatet om visuele bugs te vermijden door de code te vereenvoudigen.
+
+Onder "App instellingen" kun je nu applicatie wachtwoorden uitproberen – een nieuwe experimentele functie voor zelf-gehoste sites die hen toestaat om met de apps te werken als ze 2FA of SSO gebruiken.

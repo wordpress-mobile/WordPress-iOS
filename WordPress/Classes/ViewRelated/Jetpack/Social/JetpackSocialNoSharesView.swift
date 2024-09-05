@@ -20,7 +20,7 @@ struct JetpackSocialNoSharesView: View {
                 .padding(.bottom, 5.0)
             Text(Constants.subscribeText)
                 .font(.callout)
-                .foregroundColor(Color(UIColor.primary))
+                .foregroundColor(Color(UIAppColor.primary))
                 .onTapGesture {
                     viewModel.onSubscribeTap()
                 }
@@ -42,9 +42,9 @@ struct JetpackSocialNoSharesView: View {
             .resizable()
             .frame(width: 32.0, height: 32.0)
             .opacity(0.36)
-            .background(Color(UIColor.listForeground))
+            .background(Color(UIColor.secondarySystemGroupedBackground))
             .clipShape(Circle())
-            .overlay(Circle().stroke(Color(UIColor.listForeground), lineWidth: 2.0))
+            .overlay(Circle().stroke(Color(UIColor.secondarySystemGroupedBackground), lineWidth: 2.0))
     }
 }
 

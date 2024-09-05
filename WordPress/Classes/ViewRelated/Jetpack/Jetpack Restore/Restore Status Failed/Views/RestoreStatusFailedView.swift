@@ -25,25 +25,25 @@ class RestoreStatusFailedView: UIView, NibLoadable {
     // MARK: - Styling
 
     private func applyStyles() {
-        backgroundColor = .basicBackground
+        backgroundColor = .systemBackground
 
         messageTitleLabel.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
-        messageTitleLabel.textColor = .text
+        messageTitleLabel.textColor = .label
         messageTitleLabel.numberOfLines = 0
 
         firstHintIcon.image = .gridicon(.history)
-        firstHintIcon.tintColor = .warning
+        firstHintIcon.tintColor = UIAppColor.warning
 
         secondHintIcon.image = .gridicon(.checkmarkCircle)
-        secondHintIcon.tintColor = .success
+        secondHintIcon.tintColor = UIAppColor.success
 
         thirdHintIcon.image = .gridicon(.checkmarkCircle)
-        thirdHintIcon.tintColor = .success
+        thirdHintIcon.tintColor = UIAppColor.success
 
         let messageLabels = [firstHintLabel, secondHintLabel, thirdHintLabel]
         for label in messageLabels {
             label?.font = WPStyleGuide.fontForTextStyle(.body)
-            label?.textColor = .text
+            label?.textColor = .label
             label?.numberOfLines = 0
         }
 

@@ -6,7 +6,7 @@ class BlogDetailsSectionFooterView: UITableViewHeaderFooterView {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.numberOfLines = 0
         titleLabel.font = .preferredFont(forTextStyle: .footnote)
-        titleLabel.textColor = .neutral(.shade40)
+        titleLabel.textColor = UIAppColor.neutral(.shade40)
         return titleLabel
     }()
     private let spacerView = UIView(frame: .zero)

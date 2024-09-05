@@ -310,7 +310,7 @@ extension RegisterDomainDetailsViewController {
             let attributedItem = NSAttributedString.init(
                 string: item,
                 attributes: [.font: WPStyleGuide.tableviewTextFont(),
-                             .foregroundColor: UIColor.text]
+                             .foregroundColor: UIColor.label]
             )
             let option = OptionsTableViewOption(
                 image: nil,
@@ -319,7 +319,7 @@ extension RegisterDomainDetailsViewController {
             options.append(option)
         }
         let viewController = OptionsTableViewController(options: options)
-        viewController.cellBackgroundColor = .listForeground
+        viewController.cellBackgroundColor = .secondarySystemGroupedBackground
         if let selectedIndex = selectedItemIndex[indexPath] {
             viewController.selectRow(at: selectedIndex)
         }

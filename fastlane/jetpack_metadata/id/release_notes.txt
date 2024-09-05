@@ -1,5 +1,10 @@
-Kami mengatasi tiga masalah utama dalam rilis ini:
-* Beberapa pengguna tidak dapat memperbarui konten pos mereka.
-* Gambar milik beberapa pengguna salah diputar.
-* Editor mengalami crash yang jarang terjadi karena blok yang tidak didukung
-Seperti biasa, Anda bisa menghubungi tim dukungan jika terjadi masalah.
+Bulan ini kami telah melakukan banyak perbaikan visual dan ada satu fitur eksperimental baru yang memerlukan umpan balik Anda.
+
+Secara visual, kami telah:
+- Memperbarui pemilih situs agar lebih sederhana dan mudah digunakan sehingga menambah dukungan untuk situs staging, menu konteks, dan pratinjau.
+- Mengatasi masalah beberapa bilah navigasi yang tampak transparan di aplikasi.
+- Mengatasi masalah tidak dimuatnya ikon situs pribadi.
+- Memperbarui puluhan layar untuk mencegah bug visual dengan menyederhanakan kode.
+- Mengatasi masalah bagan Pelanggan yang menunjukkan warna latar belakang yang salah.
+
+Di bawah "Pengaturan Aplikasi", kini Anda dapat mencoba Kata Sandi Aplikasi – Fitur Eksperimental baru untuk situs yang dihosting sendiri agar dapat bekerja dengan aplikasi jika menggunakan 2FA atau SSO.

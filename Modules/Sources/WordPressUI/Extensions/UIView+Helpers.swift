@@ -17,7 +17,8 @@ extension UIView {
     /// Adds constraints that pin a subview to self with zero insets.
     ///
     /// - Parameter subview: a subview to be pinned to self.
-    @objc public func pinSubviewToAllEdges(_ subview: UIView) {
+    @discardableResult
+    @objc public func pinSubviewToAllEdges(_ subview: UIView) -> [NSLayoutConstraint] {
         pinSubviewToAllEdges(subview, insets: .zero)
     }
 
@@ -26,13 +27,16 @@ extension UIView {
     /// - Parameters:
     ///   - subview: a subview to be pinned to self.
     ///   - insets: spacing between each subview edge to self. A positive value for an edge indicates that the subview is inside self on that edge.
-    @objc public func pinSubviewToAllEdges(_ subview: UIView, insets: UIEdgeInsets) {
-        NSLayoutConstraint.activate([
+    @discardableResult
+    @objc public func pinSubviewToAllEdges(_ subview: UIView, insets: UIEdgeInsets) -> [NSLayoutConstraint] {
+        let constraints = [
             leadingAnchor.constraint(equalTo: subview.leadingAnchor, constant: -insets.left),
             trailingAnchor.constraint(equalTo: subview.trailingAnchor, constant: insets.right),
             topAnchor.constraint(equalTo: subview.topAnchor, constant: -insets.top),
             bottomAnchor.constraint(equalTo: subview.bottomAnchor, constant: insets.bottom)
-            ])
+        ]
+        NSLayoutConstraint.activate(constraints)
+        return constraints
     }
 
     @objc public func pinSubviewToAllEdgeMargins(_ subview: UIView) {

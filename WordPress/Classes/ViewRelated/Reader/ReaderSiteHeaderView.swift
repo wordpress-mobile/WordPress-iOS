@@ -115,7 +115,7 @@ struct ReaderSiteHeader: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .padding(EdgeInsets(top: 8, leading: 0, bottom: 16, trailing: 0))
-        .background(Color(UIColor.listForeground))
+        .background(Color(UIColor.secondarySystemGroupedBackground))
     }
 
     private var countsDisplay: some View {

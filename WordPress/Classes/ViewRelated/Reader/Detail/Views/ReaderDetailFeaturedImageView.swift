@@ -26,7 +26,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         let startTintColor: UIColor
         let endTintColor: UIColor
 
-        init(startTintColor: UIColor = .white, endTintColor: UIColor = .text) {
+        init(startTintColor: UIColor = .white, endTintColor: UIColor = .label) {
             self.startTintColor = startTintColor
             self.endTintColor = endTintColor
         }
@@ -123,7 +123,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
             return navigationBar?.tintColor
         }
         set(newValue) {
-            self.navigationItem?.setTintColor(useCompatibilityMode ? .textInverted : newValue)
+            self.navigationItem?.setTintColor(useCompatibilityMode ? .invertedLabel : newValue)
         }
     }
 
@@ -139,7 +139,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        loadingView.backgroundColor = .placeholderElement
+        loadingView.backgroundColor = .placeholderText
         isUserInteractionEnabled = false
 
         reset()
@@ -437,7 +437,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     }
 
     private func resetNavigationBarTintColor() {
-        navigationItem?.setTintColor(useCompatibilityMode ? .appBarTint : style.endTintColor)
+        navigationItem?.setTintColor(useCompatibilityMode ? UIAppColor.appBarTint : style.endTintColor)
     }
 
     // MARK: - Private: Calculations

@@ -317,6 +317,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     [self observeManagedObjectContextObjectsDidChangeNotification];
 
     [self observeGravatarImageUpdate];
+
+    if (@available(iOS 17.0, *)) {
+        [self registerForTraitChanges:@[[UITraitHorizontalSizeClass self]] withAction:@selector(handleTraitChanges)];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -368,6 +372,15 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
 {
     [super traitCollectionDidChange:previousTraitCollection];
 
+    if (@available(iOS 17.0, *)) {
+        // Do nothing. `handleTraitChanges` is registered using iOS 17 API.
+    } else {
+        [self handleTraitChanges];
+    }
+}
+
+- (void)handleTraitChanges
+{
     // Required to add / remove "Home" section when switching between regular and compact width
     [self configureTableViewData];
 

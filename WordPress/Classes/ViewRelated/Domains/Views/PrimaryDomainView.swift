@@ -7,15 +7,15 @@ struct PrimaryDomainView: View {
             HStack(spacing: .DS.Padding.half) {
                 Image(systemName: "globe")
                     .font(.callout)
-                    .foregroundStyle(Color.DS.Foreground.primary)
+                    .foregroundStyle(Color(.label))
                 Text(Strings.primaryDomain)
                     .font(.callout)
-                    .foregroundStyle(Color.DS.Foreground.primary)
+                    .foregroundStyle(Color(.label))
             }
             .padding(.vertical, .DS.Padding.half)
             .padding(.horizontal, .DS.Padding.single)
         }
-        .background(Color.DS.Background.secondary)
+        .background(Color(.secondarySystemBackground))
         .clipShape(RoundedRectangle(cornerRadius: .DS.Radius.small))
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(Strings.primaryDomain)

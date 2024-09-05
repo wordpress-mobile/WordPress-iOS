@@ -54,7 +54,7 @@ void SetCocoaLumberjackObjCLogLevel(NSUInteger ddLogLevelRawValue)
     
     // Sets up the CocoaLumberjack logging; debug output to console and file
 #ifdef DEBUG
-    [DDLog addLogger:[DDTTYLogger sharedInstance]];
+    [DDLog addLogger:[DDOSLogger sharedInstance]];
 #endif
     [DDLog addLogger:self.fileLogger];
 

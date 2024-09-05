@@ -35,7 +35,7 @@ class PreviewWebKitViewController: WebKitViewController {
         let label = PreviewDeviceLabel()
         label.insets = Constants.deviceLabelInset
         label.backgroundColor = Constants.deviceLabelBackgroundColor
-        label.textColor = .textInverted
+        label.textColor = .invertedLabel
         return label
     }()
 
@@ -224,7 +224,7 @@ class PreviewWebKitViewController: WebKitViewController {
 
         static let deviceLabelInset = UIEdgeInsets(top: 6, left: 6, bottom: 8, right: 8)
 
-        static let deviceLabelBackgroundColor = UIColor.text.withAlphaComponent(0.8)
+        static let deviceLabelBackgroundColor = UIColor.label.withAlphaComponent(0.8)
 
         static let noPreviewTitle = NSLocalizedString("No Preview URL available", comment: "missing preview URL for blog post preview")
 

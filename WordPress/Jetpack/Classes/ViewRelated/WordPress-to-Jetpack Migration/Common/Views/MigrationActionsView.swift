@@ -137,6 +137,6 @@ final class MigrationActionsView: UIView {
         static let insets = NSDirectionalEdgeInsets(top: 20, leading: 30, bottom: 20, trailing: 30)
         static let spacing = CGFloat(10)
         static let secondaryButtonFont = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .regular)
-        static let secondaryButtonColor = UIColor.muriel(color: .jetpackGreen, .shade50)
+        static let secondaryButtonColor = UIAppColor.jetpackGreen(.shade50)
     }
 }

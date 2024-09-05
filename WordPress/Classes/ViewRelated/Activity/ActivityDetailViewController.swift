@@ -96,21 +96,21 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
     }
 
     private func setupLabelStyles() {
-        nameLabel.textColor = .text
+        nameLabel.textColor = .label
         nameLabel.font = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .footnote).pointSize,
                                            weight: .semibold)
-        textLabel.textColor = .text
-        summaryLabel.textColor = .textSubtle
+        textLabel.textColor = .label
+        summaryLabel.textColor = .secondaryLabel
 
-        roleLabel.textColor = .textSubtle
-        dateLabel.textColor = .textSubtle
-        timeLabel.textColor = .textSubtle
+        roleLabel.textColor = .secondaryLabel
+        dateLabel.textColor = .secondaryLabel
+        timeLabel.textColor = .secondaryLabel
 
-        rewindButton.setTitleColor(.primary, for: .normal)
-        rewindButton.setTitleColor(.primaryDark, for: .highlighted)
+        rewindButton.setTitleColor(UIAppColor.primary, for: .normal)
+        rewindButton.setTitleColor(UIAppColor.primaryDark, for: .highlighted)
 
-        backupButton.setTitleColor(.primary, for: .normal)
-        backupButton.setTitleColor(.primaryDark, for: .highlighted)
+        backupButton.setTitleColor(UIAppColor.primary, for: .normal)
+        backupButton.setTitleColor(UIAppColor.primaryDark, for: .highlighted)
     }
 
     private func setupViews() {
@@ -132,7 +132,7 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
         }
 
         if let avatar = activity.actor?.avatarURL, let avatarURL = URL(string: avatar) {
-            imageView.backgroundColor = .neutral(.shade20)
+            imageView.backgroundColor = UIAppColor.neutral(.shade20)
             imageView.downloadImage(from: avatarURL, placeholderImage: .gridicon(.user, size: Constants.gridiconSize))
         } else if let iconType = WPStyleGuide.ActivityStyleGuide.getGridiconTypeForActivity(activity) {
             imageView.contentMode = .center
@@ -148,7 +148,7 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
         backupButton.naturalContentHorizontalAlignment = .leading
         backupButton.setImage(.gridicon(.cloudDownload, size: Constants.gridiconSize), for: .normal)
 
-        let attributedTitle = WPStyleGuide.Jetpack.highlightString(RewindStatus.Strings.multisiteNotAvailableSubstring,
+        let attributedTitle = StringHighlighter.highlightString(RewindStatus.Strings.multisiteNotAvailableSubstring,
                                                                    inString: RewindStatus.Strings.multisiteNotAvailable)
 
         warningButton.setAttributedTitle(attributedTitle, for: .normal)
@@ -175,7 +175,7 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
             jetpackBadgeButton.topAnchor.constraint(equalTo: jetpackBadgeView.topAnchor, constant: Constants.jetpackBadgeTopInset),
             jetpackBadgeButton.bottomAnchor.constraint(equalTo: jetpackBadgeView.bottomAnchor)
         ])
-        jetpackBadgeView.backgroundColor = .listBackground
+        jetpackBadgeView.backgroundColor = .systemGroupedBackground
     }
 
     @objc private func jetpackButtonTapped() {

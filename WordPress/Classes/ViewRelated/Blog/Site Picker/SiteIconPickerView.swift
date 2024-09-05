@@ -30,7 +30,7 @@ struct SiteIconPickerView: View {
                 .padding()
             }
             ZStack {
-                Color(UIColor.basicBackground)
+                Color(UIColor.systemBackground)
                 Button(action: { saveIcon() }) {
                     saveButton
                 }
@@ -195,7 +195,7 @@ struct SiteIconPickerView: View {
             .frame(height: Metrics.saveButtonHeight)
             .background(
                 RoundedRectangle(cornerRadius: Metrics.cornerRadius)
-                    .fill(hasMadeSelection ? Color(.primary) : Colors.disabledButton)
+                    .fill(hasMadeSelection ? Color(UIAppColor.primary) : Colors.disabledButton)
             )
     }
 

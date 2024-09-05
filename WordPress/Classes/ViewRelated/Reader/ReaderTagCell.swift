@@ -119,7 +119,7 @@ private extension ReaderTagCell {
         let isLiked = post.isLiked
         likeButton.setTitle(isLiked ? Constants.likedText : Constants.likeText, for: .normal)
         likeButton.setImage(isLiked ? Constants.likedButtonImage : Constants.likeButtonImage, for: .normal)
-        likeButton.tintColor = isLiked ? .jetpackGreen : .secondaryLabel
+        likeButton.tintColor = isLiked ? UIAppColor.jetpackGreen : .secondaryLabel
         likeButton.setTitleColor(likeButton.tintColor, for: .normal)
         likeButton.accessibilityHint = post.isLiked ? AccessibilityConstants.likedButtonHint : AccessibilityConstants.likeButtonHint
     }

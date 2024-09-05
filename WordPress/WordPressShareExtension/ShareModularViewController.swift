@@ -198,7 +198,7 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
         WPStyleGuide.configureColors(view: view, tableView: sitesTableView)
         WPStyleGuide.configureAutomaticHeightRows(for: sitesTableView)
 
-        sitesTableView.separatorColor = .divider
+        sitesTableView.separatorColor = .separator
     }
 
     override func updateViewConstraints() {
@@ -442,9 +442,9 @@ fileprivate extension ShareModularViewController {
             cell.detailTextLabel?.text = shareData.selectedCategoriesNameString
             if (shareData.userSelectedCategories == nil || shareData.userSelectedCategories?.count == 0)
                 && shareData.defaultCategoryID == Constants.unknownDefaultCategoryID {
-                cell.detailTextLabel?.textColor = .neutral(.shade30)
+                cell.detailTextLabel?.textColor = UIAppColor.neutral(.shade30)
             } else {
-                cell.detailTextLabel?.textColor = .neutral(.shade70)
+                cell.detailTextLabel?.textColor = UIAppColor.neutral(.shade70)
             }
         case .tags:
             WPStyleGuide.Share.configureModuleCell(cell)
@@ -454,10 +454,10 @@ fileprivate extension ShareModularViewController {
             cell.isUserInteractionEnabled = true
             if let tags = shareData.tags, !tags.isEmpty {
                 cell.detailTextLabel?.text = tags
-                cell.detailTextLabel?.textColor = .neutral(.shade70)
+                cell.detailTextLabel?.textColor = UIAppColor.neutral(.shade70)
             } else {
                 cell.detailTextLabel?.text =  AppLocalizedString("Add tags", comment: "Placeholder text for tags module in share extension.")
-                cell.detailTextLabel?.textColor = .neutral(.shade30)
+                cell.detailTextLabel?.textColor = UIAppColor.neutral(.shade30)
             }
         case .summary:
             // Summary section

@@ -184,7 +184,7 @@ private extension ReaderDetailCommentsTableViewDelegate {
                            buttonInsets: showCommentsButtonInsets,
                            backgroundColor: .clear)
         } else {
-            cell.configure(buttonTitle: title, borderColor: .textTertiary, buttonInsets: showCommentsButtonInsets)
+            cell.configure(buttonTitle: title, borderColor: .tertiaryLabel, buttonInsets: showCommentsButtonInsets)
         }
 
         cell.delegate = buttonDelegate

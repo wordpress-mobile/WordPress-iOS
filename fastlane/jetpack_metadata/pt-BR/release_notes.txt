@@ -1,5 +1,10 @@
-Resolvemos três problemas grandes nessa atualização:
-* Alguns usuários não podiam alterar os conteúdos do post.
-* Algumas imagens apareciam giradas incorretamente para alguns usuários.
-* Uma falha rara no editor causada por blocos não suportados
-Se algo não estiver funcionando, entre em contato com nosso suporte!
+Dessa vez fizemos várias correções visuais, e adoraríamos seu feedback sobre a nova funcionalidade experimental que adicionamos.
+
+O que fizemos no visual:
+- Atualizamos o seletor de sites para ficar mais simples e fácil de usar. Agora ele é compatível com sites de teste, menus de contexto e pré-visualizações.
+- Resolvemos o problema de algumas barras de navegação ficarem transparentes no aplicativo.
+- Resolvemos o problema de ícones de site privado que não carregavam.
+- Simplificamos o código de várias telas para evitar bugs no visual.
+- Resolvemos um problema com a cor de fundo errada no gráfico de assinantes.
+
+Teste a nova funcionalidade experimental Senhas do aplicativo em Configurações do app. Ela permite que sites auto-hospedados funcionem com aplicativos se usarem 2FA ou SSO.

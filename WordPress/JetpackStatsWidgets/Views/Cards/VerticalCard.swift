@@ -55,7 +55,7 @@ extension VerticalCard {
 
         static let titleFont = Font.caption
         static let titleFontWeight = Font.Weight.semibold
-        static let titleColor = Color(UIColor.primary)
+        static let titleColor = Color(UIAppColor.primary)
 
         static let largeTextFont = Font.largeTitle
         static let extraLargeTextFont = Font.system(size: 48, weight: .bold)

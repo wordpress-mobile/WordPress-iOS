@@ -8,7 +8,7 @@ struct VoiceToContentView: View {
     var body: some View {
         contents
             .onAppear(perform: viewModel.onViewAppeared)
-            .tint(Color(uiColor: .brand))
+            .tint(Color(uiColor: UIAppColor.brand))
             .alert(viewModel.errorAlertMessage ?? "", isPresented: $viewModel.isShowingErrorAlert, actions: {
                 Button(Strings.ok, action: buttonCancelTapped)
             })
@@ -150,7 +150,7 @@ private struct RecordButton: View {
 
     private var backgroundColor: Color {
         if !isRecording {
-            return viewModel.isButtonRecordEnabled ? Color(uiColor: .brand) : Color.secondary.opacity(0.5)
+            return viewModel.isButtonRecordEnabled ? Color(uiColor: UIAppColor.brand) : Color.secondary.opacity(0.5)
         }
         return .black
     }

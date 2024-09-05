@@ -1,16 +1,20 @@
 import UIKit
 import Combine
+import WordPressAuthenticator
 
 /// The presenter that uses triple-column navigation for `.regular` size classes
 /// and a tab-bar based navigation for `.compact` size class.
 final class SplitViewRootPresenter: RootViewPresenter {
     private let sidebarViewModel = SidebarViewModel()
     private let splitVC = UISplitViewController(style: .tripleColumn)
+    private weak var sitePickerPopoverVC: UIViewController?
     private var cancellables: [AnyCancellable] = []
 
     init() {
         // TODO: (wpsidebar) refactor
         self.mySitesCoordinator = MySitesCoordinator(meScenePresenter: MeScenePresenter(), onBecomeActiveTab: {})
+
+        splitVC.delegate = self
 
         let sidebarVC = SidebarViewController(viewModel: sidebarViewModel)
         let navigationVC = makeRootNavigationController(with: sidebarVC)
@@ -68,11 +72,14 @@ final class SplitViewRootPresenter: RootViewPresenter {
             let navigationVC = UINavigationController(rootViewController: notificationsVC)
             splitVC.setViewController(navigationVC, for: .supplementary)
         case .reader:
-            let readerVC = ReaderViewController()
-            let readerSidebarVS = ReaderSidebarViewController(viewModel: readerVC.readerTabViewModel)
-            splitVC.setViewController(makeRootNavigationController(with: readerSidebarVS), for: .supplementary)
-            splitVC.setViewController(UINavigationController(rootViewController: readerVC), for: .secondary)
+            let viewModel = ReaderSidebarViewModel()
+            let sidebarVC = ReaderSidebarViewController(viewModel: viewModel)
+            splitVC.setViewController(makeRootNavigationController(with: sidebarVC), for: .supplementary)
+
+            sidebarVC.showInitialSelection()
         }
+
+        splitVC.hide(.primary)
     }
 
     private func showDetails(for site: Blog) {
@@ -99,17 +106,19 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
     private func navigate(to step: SidebarNavigationStep) {
         switch step {
-        case .allSites:
-            showSitePicker()
+        case .allSites(let sourceRect):
+            showSitePicker(sourceRect: sourceRect)
         case .addSite(let selection):
             showAddSiteScreen(selection: selection)
         case .domains:
-#if JETPACK
+#if IS_JETPACK
             let domainsVC = AllDomainsListViewController()
             let navigationVC = UINavigationController(rootViewController: domainsVC)
             navigationVC.modalPresentationStyle = .formSheet
             splitVC.present(navigationVC, animated: true)
-#else
+#endif
+
+#if IS_WORDPRESS
             wpAssertionFailure("domains are not supported in wpios")
 #endif
         case .help:
@@ -119,10 +128,14 @@ final class SplitViewRootPresenter: RootViewPresenter {
             splitVC.present(navigationVC, animated: true)
         case .profile:
             showMeScreen()
+        case .signIn:
+            Task {
+                await self.signIn()
+            }
         }
     }
 
-    private func showSitePicker() {
+    private func showSitePicker(sourceRect: CGRect) {
         let sitePickerVC = SiteSwitcherViewController(
             configuration: BlogListConfiguration(shouldHideRecentSites: true),
             addSiteAction: { [weak self] in
@@ -135,7 +148,12 @@ final class SplitViewRootPresenter: RootViewPresenter {
             }
         )
         let navigationVC = UINavigationController(rootViewController: sitePickerVC)
-        navigationVC.modalPresentationStyle = .formSheet
+        navigationVC.modalPresentationStyle = .popover
+        navigationVC.popoverPresentationController?.sourceView = splitVC.view
+        navigationVC.popoverPresentationController?.sourceRect = sourceRect
+        // Show no arrow and simply overlay the sidebar
+        navigationVC.popoverPresentationController?.permittedArrowDirections = [.left]
+        sitePickerPopoverVC = navigationVC
         self.splitVC.present(navigationVC, animated: true)
         WPAnalytics.track(.sidebarAllSitesTapped)
     }
@@ -143,6 +161,26 @@ final class SplitViewRootPresenter: RootViewPresenter {
     private func showAddSiteScreen(selection: AddSiteMenuViewModel.Selection) {
         AddSiteController(viewController: splitVC.presentedViewController ?? splitVC, source: "sidebar")
             .showSiteCreationScreen(selection: selection)
+    }
+
+    @MainActor private func signIn() async {
+        WPAnalytics.track(.wpcomWebSignIn, properties: ["source": "sidebar", "stage": "start"])
+
+        let token: String
+        do {
+            token = try await WordPressDotComAuthenticator().authenticate(from: splitVC)
+        } catch {
+            WPAnalytics.track(.wpcomWebSignIn, properties: ["source": "sidebar", "stage": "error", "error": "\(error)"])
+            return
+        }
+
+        WPAnalytics.track(.wpcomWebSignIn, properties: ["source": "sidebar", "stage": "success"])
+
+        SVProgressHUD.show()
+        let credentials = WordPressComCredentials(authToken: token, isJetpackLogin: false, multifactor: false)
+        WordPressAuthenticator.shared.delegate!.sync(credentials: .init(wpcom: credentials)) {
+            SVProgressHUD.dismiss()
+        }
     }
 
     private func handleCoreDataChanges(_ notification: Foundation.Notification) {
@@ -295,9 +333,13 @@ final class SplitViewRootPresenter: RootViewPresenter {
         navigationVC.modalPresentationStyle = .formSheet
         splitVC.present(navigationVC, animated: true)
     }
+}
 
-    func popMeScreenToRoot() {
-        fatalError()
+extension SplitViewRootPresenter: UISplitViewControllerDelegate {
+    func splitViewController(_ svc: UISplitViewController, willHide column: UISplitViewController.Column) {
+        if column == .primary {
+            sitePickerPopoverVC?.presentingViewController?.dismiss(animated: true)
+        }
     }
 }
 

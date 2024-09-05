@@ -2,7 +2,6 @@ import Aztec
 import Foundation
 import WordPressKit
 import WordPressFlux
-import CocoaLumberjack
 import Combine
 import AutomatticTracks
 

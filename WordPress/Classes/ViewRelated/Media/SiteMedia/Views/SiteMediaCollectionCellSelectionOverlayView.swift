@@ -52,7 +52,7 @@ private final class SiteMediaCollectionCellSelectionOverlayBadgeView: UIView {
         stack.translatesAutoresizingMaskIntoConstraints = false
         self.pinSubviewToAllEdges(stack, insets: .init(top: 3, left: 6, bottom: 3, right: 6))
 
-        backgroundColor = .primary
+        backgroundColor = UIAppColor.primary
 
         layer.borderColor = UIColor.white.cgColor
         layer.borderWidth = 1.5

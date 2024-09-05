@@ -9,7 +9,7 @@ class ReaderTagsFooter: UITableViewHeaderFooterView, NibReusable {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        contentView.backgroundColor = .basicBackground
+        contentView.backgroundColor = .systemBackground
         actionButton.isPrimary = false
     }
 

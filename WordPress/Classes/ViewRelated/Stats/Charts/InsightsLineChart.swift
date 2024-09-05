@@ -131,9 +131,9 @@ class InsightsLineChart {
 private extension InsightsLineChart {
     enum Constants {
         static let primaryHighlightColor: UIColor = UIColor(red: 209.0/255.0, green: 209.0/255.0, blue: 214.0/255.0, alpha: 1.0)
-        static let secondaryLineColor: UIColor = UIColor(light: .textQuaternary, dark: .textTertiary)
-        static let primaryLineColorViews: UIColor = UIColor(light: .muriel(name: .blue, .shade50), dark: .muriel(name: .blue, .shade50))
-        static let primaryLineColorVisitors: UIColor = UIColor(light: .muriel(name: .purple, .shade50), dark: .muriel(name: .purple, .shade50))
+        static let secondaryLineColor: UIColor = UIColor(light: .quaternaryLabel, dark: .tertiaryLabel)
+        static let primaryLineColorViews: UIColor = UIAppColor.blue(.shade50)
+        static let primaryLineColorVisitors: UIColor = UIAppColor.purple(.shade50)
     }
 }
 
@@ -152,7 +152,7 @@ private struct ViewsInsightsLineChartStyling: LineChartStyling {
     let primaryHighlightColor: UIColor?
     let labelColor: UIColor                         = UIColor(light: .secondaryLabel, dark: .tertiaryLabel)
     let legendTitle: String?                        = NSLocalizedString("Views", comment: "Title for Views count in the legend of the Stats Insights views and visitors line chart")
-    let lineColor: UIColor                          = .neutral(.shade5)
+    let lineColor: UIColor                          = UIAppColor.neutral(.shade5)
     let yAxisValueFormatter: AxisValueFormatter    = VerticalAxisFormatter()
 }
 
@@ -163,8 +163,8 @@ private struct VisitorsInsightsLineChartStyling: LineChartStyling {
     let secondaryLineColor: UIColor?
     let primaryHighlightColor: UIColor?
     let labelColor: UIColor                         = UIColor(light: .secondaryLabel, dark: .tertiaryLabel)
-    let legendColor: UIColor?                       = .primary(.shade60)
+    let legendColor: UIColor?                       = UIAppColor.primary(.shade60)
     let legendTitle: String?                        = NSLocalizedString("Visitors", comment: "Title for Visitors count in the legend of the Stats Insights views and visitors line chart")
-    let lineColor: UIColor                          = .neutral(.shade5)
+    let lineColor: UIColor                          = UIAppColor.neutral(.shade5)
     let yAxisValueFormatter: AxisValueFormatter    = VerticalAxisFormatter()
 }

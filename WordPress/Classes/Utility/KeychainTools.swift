@@ -1,6 +1,5 @@
 import Foundation
 import Security
-import CocoaLumberjack
 
 private let keychainDebugWipeArgument = "WipeKeychainItem"
 

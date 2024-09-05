@@ -382,7 +382,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
         // Update the tint color for React Native modals when presented
         let presentedView = presentedViewController?.view
-        presentedView?.tintColor = .editorPrimary
+        presentedView?.tintColor = UIAppColor.editorPrimary
     }
 
     // MARK: - Functions
@@ -551,16 +551,16 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 extension GutenbergViewController {
     private func setupGutenbergView() {
         view.backgroundColor = .white
-        view.tintColor = .editorPrimary
+        view.tintColor = UIAppColor.editorPrimary
         gutenberg.rootView.translatesAutoresizingMaskIntoConstraints = false
-        gutenberg.rootView.backgroundColor = .basicBackground
+        gutenberg.rootView.backgroundColor = .systemBackground
         view.addSubview(gutenberg.rootView)
 
         view.pinSubviewToAllEdges(gutenberg.rootView)
         gutenberg.rootView.pinSubviewToAllEdges(ghostView)
 
         // Update the tint color of switches within React Native modals, as they require direct mutation
-        UISwitch.appearance(whenContainedInInstancesOf: [RCTModalHostViewController.self]).onTintColor = .editorPrimary
+        UISwitch.appearance(whenContainedInInstancesOf: [RCTModalHostViewController.self]).onTintColor = UIAppColor.editorPrimary
     }
 }
 

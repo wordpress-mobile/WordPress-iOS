@@ -19,7 +19,7 @@ final class DashboardBlazeCampaignsCardView: UIView {
             configuration.attributedTitle = {
                 var string = AttributedString(Strings.createCampaignButton)
                 string.font = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .bold)
-                string.foregroundColor = UIColor.primary
+                string.foregroundColor = UIAppColor.primary
                 return string
             }()
             configuration.contentInsets = Constants.createCampaignInsets

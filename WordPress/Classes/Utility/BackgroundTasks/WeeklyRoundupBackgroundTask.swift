@@ -203,7 +203,7 @@ private class WeeklyRoundupDataProvider {
     ) -> [Site] {
         return sites.filter { site in
             guard let siteSettings = settings.first(where: { $0.blogManagedObjectID == site.managedObjectID }),
-                  let pushNotificationsStream = siteSettings.streams.first(where: { $0.kind == .Device }),
+                  let pushNotificationsStream = siteSettings.streams.first(where: { $0.kind == .device }),
                   let sitePreferences = pushNotificationsStream.preferences else {
                 return false
             }

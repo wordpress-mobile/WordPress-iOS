@@ -209,7 +209,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     }
 
     private func configureHeaderStyling() {
-        headerView.backgroundColor = .basicBackground
+        headerView.backgroundColor = .systemBackground
         hideHeaderVisualEffects()
     }
 

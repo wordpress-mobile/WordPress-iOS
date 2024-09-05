@@ -19,7 +19,7 @@ final class SiteAssemblyContentView: UIView {
         static let verticalSpacing                          = CGFloat(30)
         static let statusStackViewSpacing                   = CGFloat(16)
         static let checkmarkImageSize                       = CGSize(width: 18, height: 18)
-        static let checkmarkImageColor                      = UIColor.muriel(color: .success, .shade20)
+        static let checkmarkImageColor                      = UIAppColor.success(.shade20)
     }
 
     /// This influences the top of the completion label as it animates into place.
@@ -32,7 +32,7 @@ final class SiteAssemblyContentView: UIView {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.numberOfLines = 0
         $0.font = WPStyleGuide.fontForTextStyle(.body)
-        $0.textColor = .text
+        $0.textColor = .label
         return $0
     }(UILabel())
 
@@ -154,7 +154,7 @@ final class SiteAssemblyContentView: UIView {
             label.numberOfLines = 0
 
             label.font = WPStyleGuide.fontForTextStyle(.title1, fontWeight: .bold)
-            label.textColor = .text
+            label.textColor = .label
 
             if siteCreator.domainPurchasingEnabled {
                 label.textAlignment = .natural
@@ -175,7 +175,7 @@ final class SiteAssemblyContentView: UIView {
             label.numberOfLines = 0
 
             label.font = WPStyleGuide.fontForTextStyle(.largeTitle, fontWeight: .bold)
-            label.textColor = .text
+            label.textColor = .label
             label.textAlignment = .center
 
             let statusText = NSLocalizedString("Hooray!\nAlmost done",
@@ -193,7 +193,7 @@ final class SiteAssemblyContentView: UIView {
             label.numberOfLines = 0
 
             label.font = WPStyleGuide.fontForTextStyle(.title2)
-            label.textColor = .textSubtle
+            label.textColor = .secondaryLabel
             label.textAlignment = .center
 
             let statusText = NSLocalizedString("Your site will be ready shortly",
@@ -249,7 +249,7 @@ final class SiteAssemblyContentView: UIView {
 
             activityIndicator.translatesAutoresizingMaskIntoConstraints = false
             activityIndicator.hidesWhenStopped = true
-            activityIndicator.color = .textSubtle
+            activityIndicator.color = .secondaryLabel
             activityIndicator.startAnimating()
 
             return activityIndicator
@@ -310,7 +310,7 @@ final class SiteAssemblyContentView: UIView {
         translatesAutoresizingMaskIntoConstraints = true
         autoresizingMask = [ .flexibleWidth, .flexibleHeight ]
 
-        backgroundColor = .listBackground
+        backgroundColor = .systemGroupedBackground
 
         statusStackView.addArrangedSubviews([ statusTitleLabel, statusSubtitleLabel, statusImageView, statusMessageRotatingView, activityIndicator ])
         addSubviews([completionLabelsStack, statusStackView])
@@ -397,12 +397,12 @@ final class SiteAssemblyContentView: UIView {
             return
         }
 
-        buttonContainerView.backgroundColor = .basicBackground
+        buttonContainerView.backgroundColor = .systemBackground
 
         // This wrapper view provides underlap for Home indicator
         let buttonContainerContainer = UIView(frame: .zero)
         buttonContainerContainer.translatesAutoresizingMaskIntoConstraints = false
-        buttonContainerContainer.backgroundColor = .basicBackground
+        buttonContainerContainer.backgroundColor = .systemBackground
         buttonContainerContainer.addSubview(buttonContainerView)
         addSubview(buttonContainerContainer)
         self.buttonContainerContainer = buttonContainerContainer
