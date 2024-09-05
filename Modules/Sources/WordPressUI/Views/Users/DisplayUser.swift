@@ -2,19 +2,45 @@ import Foundation
 import WordPressShared
 
 public struct DisplayUser: Identifiable, Codable {
-    public let id: Int
-    let handle: String
-    let username: String
-    let firstName: String
-    let lastName: String
-    let displayName: String
-    let profilePhotoUrl: URL
-    let role: String
+    public let id: Int32
+    public let handle: String
+    public let username: String
+    public let firstName: String
+    public let lastName: String
+    public let displayName: String
+    public let profilePhotoUrl: URL?
+    public let role: String
 
-    let emailAddress: String
-    let websiteUrl: String?
+    public let emailAddress: String
+    public let websiteUrl: String?
 
-    let biography: String?
+    public let biography: String?
+
+    public init(
+        id: Int32,
+        handle: String,
+        username: String,
+        firstName: String,
+        lastName: String,
+        displayName: String,
+        profilePhotoUrl: URL?,
+        role: String,
+        emailAddress: String,
+        websiteUrl: String?,
+        biography: String?
+    ) {
+        self.id = id
+        self.handle = handle
+        self.username = username
+        self.firstName = firstName
+        self.lastName = lastName
+        self.displayName = displayName
+        self.profilePhotoUrl = profilePhotoUrl
+        self.role = role
+        self.emailAddress = emailAddress
+        self.websiteUrl = websiteUrl
+        self.biography = biography
+    }
 
     static package let MockUser = DisplayUser(
         id: 16,
@@ -23,7 +49,7 @@ public struct DisplayUser: Identifiable, Codable {
         firstName: "John",
         lastName: "Smith",
         displayName: "John Smith",
-        profilePhotoUrl: URL(string: "https://gravatar.com/avatar/58fc51586c9a1f9895ac70e3ca60886e?size=256")!,
+        profilePhotoUrl: URL(string: "https://gravatar.com/avatar/58fc51586c9a1f9895ac70e3ca60886e?size=256"),
         role: "administrator",
         emailAddress: "john@example.com",
         websiteUrl: "",
@@ -33,6 +59,8 @@ public struct DisplayUser: Identifiable, Codable {
 
 extension DisplayUser: StringRankedSearchable {
     public var searchString: String {
+
+        // These are in ranked order – the higher something is in the list, the more heavily it's weighted
         [
             handle,
             username,
@@ -45,6 +73,4 @@ extension DisplayUser: StringRankedSearchable {
             .compactMap { $0 }
             .joined(separator: " ")
     }
-    
-
 }

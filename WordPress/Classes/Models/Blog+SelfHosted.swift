@@ -49,6 +49,16 @@ extension Blog {
     // which fields are present. These wrappers will `throw` if the `Blog` is invalid, allowing any dependent
     // code can be much simpler.
 
+    // Does this blog have a valid application token?
+    func hasApplicationToken(using keychainImplementation: KeychainAccessible = KeychainUtils()) -> Bool {
+        do {
+            _ = try getApplicationToken(using: keychainImplementation)
+            return true
+        } catch {
+            return false
+        }
+    }
+
     /// Retrieve Application Tokens
     ///
     func getApplicationToken(using keychainImplementation: KeychainAccessible = KeychainUtils()) throws -> String {
@@ -85,6 +95,15 @@ extension Blog {
 
     func wordPressClientParsedUrl() throws -> ParsedUrl {
         try ParsedUrl.parse(input: self.getUrl().absoluteString)
+    }
+
+    func hasUrl() -> Bool {
+        do {
+            _ = try getUrl()
+            return true
+        } catch {
+            return false
+        }
     }
 
     /// A null-and-type-safe replacement for `Blog.url(get)`
@@ -139,6 +158,10 @@ extension Blog {
 
     func setSiteIdentifier(_ newValue: SiteIdentifier) {
         self.apiKey = newValue
+    }
+
+    @objc var supportsDotOrgRestApi: Bool {
+        self.hasUrl() && self.hasApplicationToken()
     }
 }
 

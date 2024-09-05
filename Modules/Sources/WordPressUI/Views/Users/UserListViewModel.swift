@@ -39,6 +39,7 @@ class UserListViewModel: ObservableObject {
         self.userProvider = userProvider
     }
 
+    @MainActor
     func fetchItems() async {
         isLoadingItems = true
         defer { isLoadingItems = false }

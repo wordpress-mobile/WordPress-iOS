@@ -1,15 +1,15 @@
 import SwiftUI
 
-struct UserListView: View {
+public struct UserListView: View {
 
     @ObservedObject
     var viewModel: UserListViewModel
 
-    init(userProvider: UserProvider) {
+    public init(userProvider: UserProvider) {
         self.viewModel = UserListViewModel(userProvider: userProvider)
     }
 
-    var body: some View {
+    public var body: some View {
         Group {
             if let error = viewModel.error {
                 EmptyStateView(error.localizedDescription, systemImage: "exclamationmark.triangle.fill")

@@ -2,10 +2,14 @@ import SwiftUI
 
 /// Subclass this and register it with the SwiftUI `.environmentObject` method
 /// to perform user management actions
-public class UserManagementActionDispatcher: ObservableObject {
-    open func setNewPassword(id: Int) {}
-    open func sendPasswordResetEmail(id: Int){}
-    open func deleteUser(id: Int){}
+open class UserManagementActionDispatcher: ObservableObject {
+    @Published
+    open var error: Error?
+
+    open func setNewPassword(id: Int32, newPassword: String) {}
+    open func deleteUser(id: Int32, reassigningPostsTo userId: Int32) {}
+
+    public init() {}
 }
 
 struct UserDetailView: View {
@@ -36,25 +40,24 @@ struct UserDetailView: View {
 
             Section(Strings.aboutUserSectionTitle) {
                 LabeledContent(Strings.bioFieldTitle, value: user.biography ?? "")
-                LabeledContent(Strings.profilePictureFieldTitle) {
-                    UserProfileImage(size: CGSize(width: 96, height: 96), url: user.profilePhotoUrl)
+                if let profilePhotoUrl = user.profilePhotoUrl {
+                    LabeledContent(Strings.profilePictureFieldTitle) {
+                        UserProfileImage(size: CGSize(width: 96, height: 96), url: profilePhotoUrl)
+                    }
                 }
             }
 
             if userIsAdministrator {
                 Section(Strings.accountManagementSectionTitle) {
                     Button(Strings.setNewPasswordActionTitle) {
-                        actionDispatcher.setNewPassword(id: user.id)
+                        actionDispatcher.setNewPassword(id: user.id, newPassword: "foo")
                     }
 
-                    Button(Strings.sendPasswordResetEmailActionTitle) {
-                        actionDispatcher.sendPasswordResetEmail(id: user.id)
+                    Button(Strings.deleteUserActionTitle, role: .destructive) {
+                        actionDispatcher.deleteUser(id: user.id, reassigningPostsTo: 42) // TODO
                     }
                 }
 
-                Button(Strings.deleteUserActionTitle, role: .destructive) {
-                    actionDispatcher.deleteUser(id: user.id)
-                }
             }
         }.navigationTitle(user.displayName)
     }
