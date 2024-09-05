@@ -591,7 +591,7 @@ private extension InvitePersonViewController {
         }
         generateShareCell.textLabel?.font = WPStyleGuide.tableviewTextFont()
         generateShareCell.textLabel?.textAlignment = .center
-        generateShareCell.textLabel?.textColor = .primary
+        generateShareCell.textLabel?.textColor = UIAppColor.primary
     }
 
     func createAttributedShareInviteText() -> NSAttributedString {
@@ -622,7 +622,7 @@ private extension InvitePersonViewController {
         }
 
         currentInviteCell.textLabel?.text = NSLocalizedString("Role", comment: "Title. Indicates the user role an invite link is for.")
-        currentInviteCell.textLabel?.textColor = .text
+        currentInviteCell.textLabel?.textColor = .label
 
         // sortedInviteLinks and availableRoles should be complimentary. We can cheat a little and
         // get the localized "display name" to use from availableRoles rather than
@@ -642,7 +642,7 @@ private extension InvitePersonViewController {
         }
 
         expirationCell.textLabel?.text = NSLocalizedString("Expires on", comment: "Title. Indicates an expiration date.")
-        expirationCell.textLabel?.textColor = .text
+        expirationCell.textLabel?.textColor = .label
 
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
@@ -655,7 +655,7 @@ private extension InvitePersonViewController {
     func refreshDisableLinkCell() {
         disableLinksCell.textLabel?.text = NSLocalizedString("Disable invite link", comment: "Title. A call to action to disable invite links.")
         disableLinksCell.textLabel?.font = WPStyleGuide.tableviewTextFont()
-        disableLinksCell.textLabel?.textColor = .error
+        disableLinksCell.textLabel?.textColor = UIAppColor.error
         disableLinksCell.textLabel?.textAlignment = .center
     }
 
@@ -795,22 +795,22 @@ private extension InvitePersonViewController {
 
     func setupRoleCell() {
         roleCell.textLabel?.text = NSLocalizedString("Role", comment: "User's Role")
-        roleCell.textLabel?.textColor = .text
+        roleCell.textLabel?.textColor = .label
         roleCell.accessoryType = .disclosureIndicator
         WPStyleGuide.configureTableViewCell(roleCell)
     }
 
     func setupMessageTextView() {
         messageTextView.font = WPStyleGuide.tableviewTextFont()
-        messageTextView.textColor = .text
-        messageTextView.backgroundColor = .listForeground
+        messageTextView.textColor = .label
+        messageTextView.backgroundColor = .secondarySystemGroupedBackground
         messageTextView.delegate = self
     }
 
     func setupPlaceholderLabel() {
         placeholderLabel.text = NSLocalizedString("Custom message…", comment: "Placeholder for Invite People message field.")
         placeholderLabel.font = WPStyleGuide.tableviewTextFont()
-        placeholderLabel.textColor = UIColor.textPlaceholder
+        placeholderLabel.textColor = UIColor.placeholderText // TODO - find the real answer here
     }
 
     func setupNavigationBar() {
@@ -845,12 +845,12 @@ private extension InvitePersonViewController {
     func refreshUsernameCell() {
         guard let usernameOrEmail = usernameOrEmail?.nonEmptyString() else {
             usernameCell.textLabel?.text = NSLocalizedString("Email or Username…", comment: "Invite Username Placeholder")
-            usernameCell.textLabel?.textColor = .textPlaceholder
+            usernameCell.textLabel?.textColor = .placeholderText
             return
         }
 
         usernameCell.textLabel?.text = usernameOrEmail
-        usernameCell.textLabel?.textColor = .text
+        usernameCell.textLabel?.textColor = .label
     }
 
     func refreshRoleCell() {

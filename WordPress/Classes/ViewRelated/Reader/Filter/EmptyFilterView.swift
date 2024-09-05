@@ -46,7 +46,7 @@ class EmptyFilterView: UIView {
         $0.setTitle(viewModel.suggestedButton, for: .normal)
         $0.setTitleColor(.systemBackground, for: .normal)
         $0.setTitleColor(.systemBackground.withAlphaComponent(0.7), for: .highlighted)
-        $0.backgroundColor = .text
+        $0.backgroundColor = .label
         $0.layer.cornerRadius = 5.0
         $0.addTarget(self, action: #selector(suggestedButtonTapped), for: .touchUpInside)
         return $0
@@ -55,8 +55,8 @@ class EmptyFilterView: UIView {
     private lazy var searchButton: UIButton = {
         $0.configuration = buttonConfig
         $0.setTitle(viewModel.searchButton, for: .normal)
-        $0.setTitleColor(.text, for: .normal)
-        $0.setTitleColor(.text.withAlphaComponent(0.7), for: .highlighted)
+        $0.setTitleColor(.label, for: .normal)
+        $0.setTitleColor(.label.withAlphaComponent(0.7), for: .highlighted)
         $0.backgroundColor = .systemBackground
         $0.layer.cornerRadius = 5.0
         $0.layer.borderWidth = 1.0

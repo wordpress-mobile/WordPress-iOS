@@ -52,10 +52,10 @@ class SiteTableViewCell: UITableViewCell, GhostableView {
         imageView?.contentMode = .scaleAspectFill
 
         textLabel?.font = UIFont.preferredFont(forTextStyle: .callout)
-        textLabel?.textColor = .text
+        textLabel?.textColor = .label
 
         detailTextLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
-        detailTextLabel?.textColor = .textSubtle
+        detailTextLabel?.textColor = .secondaryLabel
     }
 
     override func layoutSubviews() {

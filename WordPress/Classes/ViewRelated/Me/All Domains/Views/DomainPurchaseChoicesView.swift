@@ -23,14 +23,14 @@ struct DomainPurchaseChoicesView: View {
                 Text(Strings.header)
                     .font(.system(.largeTitle, design: .serif).weight(.medium))
                 Text(Strings.subheader)
-                    .foregroundStyle(Color.DS.Foreground.secondary)
+                    .foregroundStyle(.secondary)
                     .padding(.bottom, .DS.Padding.medium)
                 getDomainCard
                     .padding(.bottom, .DS.Padding.medium)
                 chooseSiteCard
                     .padding(.bottom, .DS.Padding.single)
                 Text(Strings.footnote)
-                    .foregroundStyle(Color.DS.Foreground.secondary)
+                    .foregroundStyle(.secondary)
                     .font(.subheadline)
                 Spacer()
             }
@@ -38,7 +38,7 @@ struct DomainPurchaseChoicesView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, .DS.Padding.double)
-        .background(Color.DS.Background.primary)
+        .background(.background)
         .onAppear {
             self.track(.purchaseDomainScreenShown)
         }
@@ -85,17 +85,17 @@ struct DomainPurchaseChoicesView: View {
                 Image(imageName)
                     .renderingMode(.template)
                     .resizable()
-                    .foregroundStyle(Color.DS.Background.brand(isJetpack: AppConfiguration.isJetpack))
+                    .foregroundStyle(AppColor.brand)
                     .frame(width: Constants.imageLength, height: Constants.imageLength)
                     .padding(.top, .DS.Padding.double)
                 VStack(alignment: .leading, spacing: .DS.Padding.single) {
                     Text(title)
                         .font(.title2.weight(.medium))
                     Text(subtitle)
-                        .foregroundStyle(Color.DS.Foreground.secondary)
+                        .foregroundStyle(.secondary)
                     if let footer {
                         Text(footer)
-                            .foregroundStyle(Color.DS.Foreground.brand(isJetpack: AppConfiguration.isJetpack))
+                            .foregroundStyle(AppColor.brand)
                             .font(.body.bold())
                     }
                 }
@@ -111,7 +111,7 @@ struct DomainPurchaseChoicesView: View {
             }
             .padding(.horizontal, .DS.Padding.double)
         }
-        .background(Color.DS.Background.secondary)
+        .background(Color(.secondarySystemBackground))
         .clipShape(RoundedRectangle(cornerRadius: 8))
     }
 
@@ -120,9 +120,9 @@ struct DomainPurchaseChoicesView: View {
             Text(Strings.chooseSiteTitle)
                 .font(.title2.bold())
             Text(Strings.chooseSiteSubtitle)
-                .foregroundStyle(Color.DS.Foreground.secondary)
+                .foregroundStyle(Color(.secondaryLabel))
             Text(Strings.chooseSiteFooter)
-                .foregroundStyle(Color.DS.Foreground.brand(isJetpack: AppConfiguration.isJetpack))
+                .foregroundStyle(AppColor.brand)
         }
     }
 

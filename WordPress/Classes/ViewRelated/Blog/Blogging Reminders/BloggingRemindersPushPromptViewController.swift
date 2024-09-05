@@ -117,7 +117,7 @@ class BloggingRemindersPushPromptViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .basicBackground
+        view.backgroundColor = .systemBackground
         view.addSubview(dismissButton)
 
         configureStackView()

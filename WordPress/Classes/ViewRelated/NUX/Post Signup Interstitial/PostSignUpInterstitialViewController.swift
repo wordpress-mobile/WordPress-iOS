@@ -60,7 +60,7 @@ class PostSignUpInterstitialViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .listBackground
+        view.backgroundColor = .systemGroupedBackground
 
         // Update the banner image for Jetpack
         if AppConfiguration.isJetpack, let image = UIImage(named: "wp-illustration-construct-site-jetpack") {

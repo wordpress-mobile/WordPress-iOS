@@ -99,6 +99,6 @@ final class MigrationHeaderView: UIView {
         static let titleFont: UIFont = WPStyleGuide.fontForTextStyle(.largeTitle, fontWeight: .bold)
         static let primaryDescriptionFont: UIFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         static let secondaryDescriptionFont: UIFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
-        static let secondaryTextColor = UIColor(light: .muriel(color: .gray, .shade50), dark: .muriel(color: .gray, .shade10))
+        static let secondaryTextColor = UIColor(light: UIAppColor.gray(.shade50), dark: UIAppColor.gray(.shade10))
     }
 }

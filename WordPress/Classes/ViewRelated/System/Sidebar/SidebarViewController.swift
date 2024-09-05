@@ -96,7 +96,7 @@ private struct SidebarView: View {
             Text(Strings.addSite)
         } icon: {
             Image(systemName: "plus.square.fill")
-                .foregroundStyle(Color(.brand), Color(.secondarySystemFill))
+                .foregroundStyle(Color(UIAppColor.brand), Color(.secondarySystemFill))
                 .font(.title2)
         }
         switch viewModel.actions.count {
@@ -117,13 +117,13 @@ private struct SidebarView: View {
 
     @ViewBuilder
     private var more: some View {
-#if JETPACK
+#if IS_JETPACK
         Label {
             Text(Strings.notifications)
         } icon: {
             if notificationsButtonViewModel.counter > 0 {
                 Image(systemName: "bell.badge")
-                    .foregroundStyle(.red, Color(.brand))
+                    .foregroundStyle(.red, Color(UIAppColor.brand))
             } else {
                 Image(systemName: "bell")
             }
@@ -186,7 +186,7 @@ private struct SidebarProfileContainerView: View {
                             }
                         }
                     }
-                    .tint(Color(.brand))
+                    .tint(Color(UIAppColor.brand))
                 }
 
                 Spacer()

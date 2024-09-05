@@ -94,7 +94,7 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .basicBackground
+        view.backgroundColor = .systemBackground
 
         configureStackView()
         configureConstraints()

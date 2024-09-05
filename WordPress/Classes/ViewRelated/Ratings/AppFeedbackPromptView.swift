@@ -31,7 +31,7 @@ class AppFeedbackPromptView: UIView {
         let textFont = WPStyleGuide.fontForTextStyle(.subheadline)
 
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .textSubtle
+        label.textColor = .secondaryLabel
         label.textAlignment = .center
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
@@ -48,7 +48,7 @@ class AppFeedbackPromptView: UIView {
 
         // Yes Button
         leftButton.translatesAutoresizingMaskIntoConstraints = false
-        leftButton.backgroundColor = .primary
+        leftButton.backgroundColor = UIAppColor.primary
         leftButton.tintColor = .white
         leftButton.setTitleColor(.white, for: .normal)
         leftButton.titleLabel?.font = textFont
@@ -60,8 +60,8 @@ class AppFeedbackPromptView: UIView {
         rightButton.backgroundColor = UIColor(light: .white, dark: .systemGray5)
         rightButton.borderWidth = 1.0
         rightButton.borderColor = .systemGray3
-        rightButton.tintColor = .text
-        rightButton.setTitleColor(.text, for: .normal)
+        rightButton.tintColor = .label
+        rightButton.setTitleColor(.label, for: .normal)
         rightButton.titleLabel?.font = textFont
         rightButton.accessibilityIdentifier = "no-button"
         buttonStack.addArrangedSubview(rightButton)

@@ -88,11 +88,11 @@ extension UIView {
 
 extension UINavigationBar {
     @objc func fadeOutNavigationItems(animated: Bool = true) {
-        fadeNavigationItems(withTintColor: .appBarBackground, textColor: .appBarBackground, animated: animated)
+        fadeNavigationItems(withTintColor: UIAppColor.primary, textColor: .label, animated: animated)
     }
 
     @objc func fadeInNavigationItemsIfNecessary(animated: Bool = true) {
-        fadeNavigationItems(withTintColor: .appBarTint, textColor: .appBarText, animated: animated)
+        fadeNavigationItems(withTintColor: UIAppColor.primary, textColor: .label, animated: animated)
     }
 
     private func fadeNavigationItems(withTintColor tintColor: UIColor, textColor: UIColor, animated: Bool) {
@@ -161,7 +161,7 @@ class WPFullscreenNavigationTransition: NSObject, UIViewControllerAnimatedTransi
         // transitioning to full screen width (but not yet wide enough).
         // This mask view sits behind the navigation bar and hides it.
         let navigationBarMask = UIView()
-        navigationBarMask.backgroundColor = .primary
+        navigationBarMask.backgroundColor = UIAppColor.primary
         containerView.addSubview(navigationBarMask)
         navigationBarMask.frame = model.navigationBarMaskFrame
 

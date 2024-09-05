@@ -105,13 +105,13 @@ private extension EpilogueUserInfoCell {
     }
 
     func configureColors() {
-        gravatarAddIcon.tintColor = .primary
-        gravatarAddIcon.backgroundColor = .basicBackground
+        gravatarAddIcon.tintColor = UIAppColor.primary
+        gravatarAddIcon.backgroundColor = .systemBackground
 
-        fullNameLabel.textColor = .text
+        fullNameLabel.textColor = .label
         fullNameLabel.font = AppStyleGuide.epilogueTitleFont
 
-        usernameLabel.textColor = .textSubtle
+        usernameLabel.textColor = .secondaryLabel
         usernameLabel.font = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .headline).pointSize, weight: .regular)
     }
 

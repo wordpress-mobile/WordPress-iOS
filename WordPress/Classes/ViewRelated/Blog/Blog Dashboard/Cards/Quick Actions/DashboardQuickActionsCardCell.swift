@@ -14,7 +14,7 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.clipsToBounds = true
         tableView.layer.cornerRadius = 10
-        tableView.backgroundColor = .listForeground
+        tableView.backgroundColor = .secondarySystemGroupedBackground
         tableView.register(DashboardQuickActionCell.self, forCellReuseIdentifier: Constants.cellReuseID)
         return tableView
     }()

@@ -40,9 +40,9 @@ class TemplatePreviewViewController: UIViewController, NoResultsViewHost, UIPopo
     private var accentColor: UIColor {
         return UIColor { (traitCollection: UITraitCollection) -> UIColor in
             if traitCollection.userInterfaceStyle == .dark {
-                return UIColor.muriel(color: .primary, .shade40)
+                return UIAppColor.primary(.shade40)
             } else {
-                return UIColor.muriel(color: .primary, .shade50)
+                return UIAppColor.primary(.shade50)
             }
         }
     }
@@ -68,7 +68,7 @@ class TemplatePreviewViewController: UIViewController, NoResultsViewHost, UIPopo
         styleButtons()
         webView.scrollView.contentInset.bottom = footerView.frame.height
         webView.navigationDelegate = self
-        webView.backgroundColor = .basicBackground
+        webView.backgroundColor = .systemBackground
         delegate?.previewViewed()
         observeProgressEstimations()
         configurePreviewDeviceButton()

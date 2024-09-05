@@ -25,7 +25,7 @@ struct NoSitesView: View {
 
     var body: some View {
         ZStack(alignment: .bottom) {
-            Color(uiColor: .listBackground)
+            Color(uiColor: .systemGroupedBackground)
                 .edgesIgnoringSafeArea(.all)
 
             mainView
@@ -74,7 +74,7 @@ struct NoSitesView: View {
                 .padding(.horizontal, .DS.Padding.medium)
                 .padding(.vertical, .DS.Padding.single)
                 .foregroundColor(.white)
-                .background(colorScheme == .dark ? Color(uiColor: .listForeground) : .black)
+                .background(colorScheme == .dark ? Color(uiColor: .secondarySystemGroupedBackground) : .black)
                 .cornerRadius(5)
                 .font(.callout.weight(.semibold))
         }
@@ -96,7 +96,7 @@ struct NoSitesView: View {
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 8)
-            .background(Color(uiColor: .listForeground))
+            .background(Color(uiColor: .secondarySystemGroupedBackground))
             .cornerRadius(10)
         }
     }

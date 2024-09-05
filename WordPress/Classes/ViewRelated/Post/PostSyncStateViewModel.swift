@@ -50,9 +50,9 @@ final class PostSyncStateViewModel {
     var iconInfo: (image: UIImage?, color: UIColor)? {
         switch state {
         case .offlineChanges:
-            return (UIImage(systemName: "wifi.slash"), UIColor.listIcon)
+            return (UIImage(systemName: "wifi.slash"), UIColor.secondaryLabel)
         case .failed:
-            return (UIImage.gridicon(.notice), UIColor.error)
+            return (UIImage.gridicon(.notice), UIAppColor.error)
         case .idle, .uploading, .syncing:
             return nil
         }

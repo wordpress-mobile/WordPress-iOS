@@ -40,8 +40,8 @@ struct StatsFollowersChartViewModel {
         static let wpComGroupTitle = NSLocalizedString("WordPress", comment: "Title of Stats section that shows WordPress.com followers.")
         static let emailGroupTitle = NSLocalizedString("Email", comment: "Title of Stats section that shows email followers.")
 
-        static let wpComColor: UIColor = .muriel(name: .blue, .shade50)
-        static let emailColor: UIColor = .muriel(name: .blue, .shade5)
+        static let wpComColor: UIColor = UIAppColor.blue(.shade50)
+        static let emailColor: UIColor = UIAppColor.blue(.shade5)
 
         static let chartHeight: CGFloat = 231.0
     }

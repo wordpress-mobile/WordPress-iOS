@@ -38,7 +38,7 @@ extension GhostStyle {
 
     public struct Defaults {
         public static let beatDuration = TimeInterval(0.75)
-        public static let beatStartColor = UIColor(red: 236.0/255.0, green: 240.0/255.0, blue: 241.0/255.0, alpha: 1.0)
-        public static let beatEndColor = UIColor(red: 245.0/255.0, green: 250.0/255.0, blue: 250.0/255.0, alpha: 1.0)
+        public static let beatStartColor = UIColor(light: .systemGray5, dark: .systemGray4)
+        public static let beatEndColor = UIColor(light: .systemGray6, dark: .systemGray5)
     }
 }

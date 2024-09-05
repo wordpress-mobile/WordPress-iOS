@@ -45,7 +45,7 @@ extension FancyAlertViewController {
         let config = FancyAlertViewController.Config(titleText: Strings.titleText,
                                                      bodyText: Strings.bodyText,
                                                      headerImage: image,
-                                                     headerBackgroundColor: .basicBackground,
+                                                     headerBackgroundColor: .systemBackground,
                                                      dividerPosition: .topWithPadding,
                                                      defaultButton: newIconButton,
                                                      cancelButton: dismissButton,

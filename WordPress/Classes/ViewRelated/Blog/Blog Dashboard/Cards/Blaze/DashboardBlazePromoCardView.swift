@@ -12,7 +12,7 @@ final class DashboardBlazePromoCardView: UIView {
         let label = UILabel()
         label.font = Style.titleLabelFont
         label.text = Strings.title
-        label.textColor = .text
+        label.textColor = .label
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -23,7 +23,7 @@ final class DashboardBlazePromoCardView: UIView {
         let label = UILabel()
         label.font = Style.descriptionLabelFont
         label.text = Strings.description
-        label.textColor = .textSubtle
+        label.textColor = .secondaryLabel
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false

@@ -103,7 +103,7 @@ class NotificationSettingsViewController: UIViewController {
         // Hide the separators, whenever the table is empty
         tableView.tableFooterView = UIView()
 
-        activityIndicatorView.tintColor = .textSubtle
+        activityIndicatorView.tintColor = .secondaryLabel
     }
 
     // MARK: - Service Helpers

@@ -78,7 +78,7 @@ private extension RevisionsTableViewController {
             tableView.tableFooterView = tableViewFooter
         }
 
-        tableView.separatorColor = .divider
+        tableView.separatorColor = .separator
         WPStyleGuide.configureColors(view: view, tableView: tableView)
     }
 

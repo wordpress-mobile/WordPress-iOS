@@ -251,7 +251,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     }
 
     private func setupView() {
-        view.backgroundColor = .listBackground
+        view.backgroundColor = .systemGroupedBackground
     }
 
     /// This method builds a layout with the following view hierarchy:
@@ -527,7 +527,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     private func makeNoSitesScrollView() {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.backgroundColor = .listBackground
+        scrollView.backgroundColor = .systemGroupedBackground
 
         view.addSubview(scrollView)
         view.pinSubviewToAllEdges(scrollView)

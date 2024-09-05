@@ -7,14 +7,14 @@ public class GutenbergSuggestionsViewController: UIViewController {
 
     public lazy var backgroundView: UIView = {
         let view = UIView(frame: .zero)
-        view.backgroundColor = .listForeground
+        view.backgroundColor = .secondarySystemGroupedBackground
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
 
     public lazy var separatorView: UIView = {
         let view = UIView(frame: .zero)
-        view.backgroundColor = UIColor.divider
+        view.backgroundColor = UIColor.separator
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = UIColor(light: UIColor.colorFromHex("e9eff3"), dark: UIColor.colorFromHex("2e2e2e"))
         return view
@@ -26,7 +26,7 @@ public class GutenbergSuggestionsViewController: UIViewController {
         textField.clearButtonMode = .whileEditing
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.delegate = self
-        textField.textColor = .text
+        textField.textColor = .label
         return textField
     }()
 

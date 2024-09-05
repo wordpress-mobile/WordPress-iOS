@@ -29,11 +29,11 @@ struct StatsTrafficDatePickerView: View {
             HStack {
                 Text(viewModel.period.label)
                     .style(TextStyle.bodySmall(.emphasized))
-                    .foregroundColor(Color.DS.Foreground.primary)
+                    .foregroundColor(Color.primary)
                     .dynamicTypeSize(...maxDynamicTypeSize)
                 Image(systemName: "chevron.down")
                     .font(.caption2)
-                    .foregroundColor(Color.DS.Foreground.secondary)
+                    .foregroundColor(Color.secondary)
                     .dynamicTypeSize(...maxDynamicTypeSize)
             }
             .padding(.vertical, .DS.Padding.single)
@@ -46,7 +46,7 @@ struct StatsTrafficDatePickerView: View {
         HStack(spacing: 8) {
             Text(viewModel.formattedCurrentPeriod())
                 .style(TextStyle.bodySmall(.emphasized))
-                .foregroundColor(Color.DS.Foreground.primary)
+                .foregroundColor(Color.primary)
                 .lineLimit(1)
                 .dynamicTypeSize(...maxDynamicTypeSize)
                 .padding(.trailing, 8)

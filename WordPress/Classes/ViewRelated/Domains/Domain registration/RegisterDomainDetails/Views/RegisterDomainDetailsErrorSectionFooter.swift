@@ -33,7 +33,7 @@ class RegisterDomainDetailsErrorSectionFooter: UITableViewHeaderFooterView, NibR
     private func errorLabel(message: String?) -> UILabel {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .error
+        label.textColor = UIAppColor.error
         label.font = WPStyleGuide.fontForTextStyle(.footnote)
         label.numberOfLines = 0
         label.text = message

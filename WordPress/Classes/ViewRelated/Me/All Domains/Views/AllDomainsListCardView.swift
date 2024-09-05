@@ -110,7 +110,7 @@ struct AllDomainsListCardView: View {
             if let date = viewModel.expiryDate {
                 Text(date)
                     .font(.subheadline)
-                    .foregroundColor(viewModel.status?.type.expireTextColor ?? Color.DS.Foreground.secondary)
+                    .foregroundColor(viewModel.status?.type.expireTextColor ?? Color(.secondaryLabel))
             } else {
                 EmptyView()
             }
@@ -130,35 +130,26 @@ private extension AllDomainsListCardView.ViewModel.StatusType {
     }
 
     var indicatorColor: Color {
-        switch self {
-        case .success, .premium:
-            return Color.DS.Foreground.success
-        case .warning:
-            return Color.DS.Foreground.warning
-        case .alert, .error:
-            return Color.DS.Foreground.error
-        case .neutral:
-            return Color.DS.Foreground.secondary
+        return switch self {
+        case .success, .premium: .green
+        case .warning: .yellow
+        case .alert, .error: .red
+        default: Color(.systemBackground)
         }
     }
 
     var textColor: Color {
-        switch self {
-        case .warning:
-            return Color.DS.Foreground.warning
-        case .alert, .error:
-            return Color.DS.Foreground.error
-        default:
-            return Color.DS.Foreground.primary
+        return switch self {
+        case .warning: Color(UIAppColor.warning)
+        case .alert, .error: Color(UIAppColor.error)
+        default: Color.primary
         }
     }
 
     var expireTextColor: Color {
-        switch self {
-        case .warning:
-            return Color.DS.Foreground.warning
-        default:
-            return Color.DS.Foreground.secondary
+        return switch self {
+            case .warning: Color(UIAppColor.warning)
+            default: Color.secondary
         }
     }
 }

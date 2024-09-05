@@ -65,7 +65,7 @@ private extension DashboardDomainsCardSearchView {
         static let gradientTopLight = Color(UIColor.secondarySystemBackground)
         static let gradientTopDark = Color(UIColor.tertiarySystemBackground)
         static let containerBackground = Color(UIColor.secondarySystemGroupedBackground)
-        static let icon = Color(UIColor.jetpackGreen)
-        static let text = Color(UIColor.textSubtle)
+        static let icon = Color(UIAppColor.jetpackGreen)
+        static let text = Color(UIColor.secondaryLabel)
     }
 }
