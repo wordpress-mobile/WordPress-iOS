@@ -59,7 +59,6 @@ final class SplitViewRootPresenter: RootViewPresenter {
             do {
                 let site = try ContextManager.shared.mainContext.existingObject(with: objectID)
                 showDetails(for: site)
-                splitVC.hide(.primary)
             } catch {
                 // TODO: (wpsidebar) show empty state
             }
@@ -76,6 +75,8 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
             sidebarVC.showInitialSelection()
         }
+
+        splitVC.hide(.primary)
     }
 
     private func showDetails(for site: Blog) {

@@ -74,6 +74,12 @@ extension Notice: Equatable {
     }
 }
 
+extension Notice {
+    func post() {
+        ActionDispatcher.dispatch(NoticeAction.post(self))
+    }
+}
+
 struct NoticeNotificationInfo {
     /// Unique identifier for this notice. When displayed as a system notification,
     /// this value will be used as the `UNNotificationRequest`'s identifier.

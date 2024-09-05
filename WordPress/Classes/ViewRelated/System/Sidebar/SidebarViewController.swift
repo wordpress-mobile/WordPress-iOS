@@ -92,13 +92,7 @@ private struct SidebarView: View {
         let viewModel = AddSiteMenuViewModel(onSelection: { [weak viewModel] in
             viewModel?.navigate(.addSite(selection: $0))
         })
-        let label = Label {
-            Text(Strings.addSite)
-        } icon: {
-            Image(systemName: "plus.square.fill")
-                .foregroundStyle(Color(UIAppColor.brand), Color(.secondarySystemFill))
-                .font(.title2)
-        }
+        let label = SidebarAddButtonLabel(title: Strings.addSite)
         switch viewModel.actions.count {
         case 0:
             EmptyView()
@@ -220,6 +214,20 @@ private extension BlogListViewModel {
             topSites.append(site)
         }
         return Array(topSites).sorted { $0.title.localizedCaseInsensitiveCompare($1.title) == .orderedAscending
+        }
+    }
+}
+
+struct SidebarAddButtonLabel: View {
+    let title: String
+
+    var body: some View {
+        Label {
+            Text(title)
+        } icon: {
+            Image(systemName: "plus.square.fill")
+                .foregroundStyle(AppColor.brand, Color(.secondarySystemFill))
+                .font(.title2)
         }
     }
 }
