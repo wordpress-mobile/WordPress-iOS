@@ -3,6 +3,7 @@ import SwiftUI
 import Combine
 import WordPressKit
 import WordPressUI
+import Algorithms
 
 /// The sidebar for the iPad version of the app.
 final class SidebarViewController: UIHostingController<AnyView> {
@@ -60,7 +61,7 @@ private struct SidebarView: View {
 
     @ViewBuilder
     private var siteListSectionContent: some View {
-        let topSites = blogListViewModel.topSites(limit: SidebarView.displayedSiteLimit, containing: self.viewModel.selection?.selectedSite)
+        let topSites = blogListViewModel.topSites(limit: SidebarView.displayedSiteLimit)
         if !topSites.isEmpty {
             makeSiteList(with: topSites)
         } else {
@@ -205,28 +206,25 @@ private struct SidebarProfileContainerView: View {
 extension BlogListViewModel {
     /// Returns the most recent sites, the site for given blog id, and mixes in the rest of the sites
     /// until the display limimt is reached.
-    func topSites(limit: Int, containing blogId: TaggedManagedObjectID<Blog>?) -> [BlogListSiteViewModel] {
-        var topSites = recentSites.prefix(limit)
-        var encounteredIDs = Set(topSites.map(\.id))
-        for site in allSites where !encounteredIDs.contains(site.id) {
-            if topSites.count >= limit {
-                break
-            }
-            encounteredIDs.insert(site.id)
-            topSites.append(site)
+    func topSites(limit: Int) -> [BlogListSiteViewModel] {
+        let comparator: (BlogListSiteViewModel, BlogListSiteViewModel) -> Bool = {
+            $0.title.localizedCaseInsensitiveCompare($1.title) == .orderedAscending
         }
 
-        if let blogId, !encounteredIDs.contains(blogId), let site = allSites.first(where: { $0.id == blogId }) {
-            topSites.append(site)
+        var sites = recentSites
+            .prefix(limit)
+            .sorted(by: comparator)
+
+        if sites.count < limit {
+            let existing = Set(sites.map { $0.id })
+            sites.append(contentsOf:
+                allSites
+                    .filter { !existing.contains($0.id) }
+                    .min(count: limit - sites.count, sortedBy: comparator)
+            )
         }
 
-        var sorted = Array(topSites).sorted { $0.title.localizedCaseInsensitiveCompare($1.title) == .orderedAscending }
-
-        if let blogId, sorted.count > limit, let toBeRemoved = sorted.lastIndex(where: { $0.id != blogId }) {
-            sorted.remove(at: toBeRemoved)
-        }
-
-        return sorted
+        return sites
     }
 }
 

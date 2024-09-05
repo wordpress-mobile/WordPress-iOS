@@ -95,28 +95,23 @@ final class BlogListViewModelTests: CoreDataTestCase {
         setupViewModel()
 
         XCTAssertEqual(
-            viewModel.topSites(limit: 2, containing: nil).map { $0.title },
+            viewModel.topSites(limit: 2).map { $0.title },
             ["Site 5", "Site 6"]
         )
 
         XCTAssertEqual(
-            viewModel.topSites(limit: 3, containing: nil).map { $0.title },
+            viewModel.topSites(limit: 3).map { $0.title },
             ["Site 5", "Site 6", "Site 7"]
         )
 
         XCTAssertEqual(
-            viewModel.topSites(limit: 4, containing: nil).map { $0.title },
-            ["Site 1", "Site 5", "Site 6", "Site 7"]
+            viewModel.topSites(limit: 4).map { $0.title },
+            ["Site 5", "Site 6", "Site 7", "Site 1"]
         )
 
         XCTAssertEqual(
-            viewModel.topSites(limit: 3, containing: TaggedManagedObjectID(blogs[5]!)).map { $0.title },
-            ["Site 5", "Site 6", "Site 7"]
-        )
-
-        XCTAssertEqual(
-            viewModel.topSites(limit: 3, containing: TaggedManagedObjectID(blogs[8]!)).map { $0.title },
-            ["Site 5", "Site 6", "Site 8"]
+            viewModel.topSites(limit: 8).map { $0.title },
+            ["Site 5", "Site 6", "Site 7", "Site 1", "Site 2", "Site 3", "Site 4", "Site 8"]
         )
     }
 }

@@ -49,6 +49,7 @@ let package = Package(
         .package(url: "https://github.com/Automattic/wordpress-rs", revision: "alpha-swift-20240813"),
         .package(url: "https://github.com/wordpress-mobile/GutenbergKit", revision: "latest"),
         .package(url: "https://github.com/Automattic/color-studio", branch: "add/swift-file-output"),
+        .package(url: "https://github.com/apple/swift-algorithms", from: "1.2.0"),
     ],
     targets: XcodeSupport.targets + [
         .target(name: "JetpackStatsWidgetsCore"),
@@ -162,6 +163,7 @@ enum XcodeSupport {
                 .product(name: "ZIPFoundation", package: "ZIPFoundation"),
                 .product(name: "WordPressAPI", package: "wordpress-rs"),
                 .product(name: "ColorStudio", package: "color-studio"),
+                .product(name: "Algorithms", package: "swift-algorithms"),
             ]),
             .xcodeTarget("XcodeTarget_WordPressTests", dependencies: testDependencies + [
                 "WordPressShared",
