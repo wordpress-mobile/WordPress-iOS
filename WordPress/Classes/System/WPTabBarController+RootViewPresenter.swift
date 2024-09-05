@@ -49,12 +49,9 @@ extension WPTabBarController: RootViewPresenter {
 
     // MARK: Me
 
-    func showMeScreen() {
+    func showMeScreen(completion: ((MeViewController) -> Void)?) {
         showMeTab()
-        popMeScreenToRoot()
-    }
-
-    func popMeScreenToRoot() {
-        meNavigationController?.popToRootViewController(animated: false)
+        meNavigationController.popToRootViewController(animated: false)
+        completion?(meViewController)
     }
 }

@@ -12,34 +12,26 @@ extension RootViewPresenter {
 
     /// access to sub levels
     func navigateToAccountSettings() {
-        CATransaction.perform {
-            showMeScreen()
-        } completion: {
-            self.meViewController?.navigateToAccountSettings()
+        showMeScreen {
+            $0.navigateToAccountSettings()
         }
     }
 
     func navigateToAllDomains() {
-        CATransaction.perform {
-            showMeScreen()
-        } completion: {
-            self.meViewController?.navigateToAllDomains()
+        showMeScreen {
+            $0.navigateToAllDomains()
         }
     }
 
     func navigateToAppSettings() {
-        CATransaction.perform {
-            showMeScreen()
-        } completion: {
-            self.meViewController?.navigateToAppSettings()
+        showMeScreen() {
+            $0.navigateToAppSettings()
         }
     }
 
     func navigateToSupport() {
-        CATransaction.perform {
-            showMeScreen()
-        } completion: {
-            self.meViewController?.navigateToHelpAndSupport()
+        showMeScreen {
+            $0.navigateToHelpAndSupport()
         }
     }
 
