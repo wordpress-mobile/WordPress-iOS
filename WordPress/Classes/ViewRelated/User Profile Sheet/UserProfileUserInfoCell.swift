@@ -35,10 +35,10 @@ class UserProfileUserInfoCell: UITableViewCell, NibReusable {
 private extension UserProfileUserInfoCell {
 
     func configureCell() {
-        nameLabel.textColor = .text
+        nameLabel.textColor = .label
         nameLabel.font = WPStyleGuide.serifFontForTextStyle(.title3, fontWeight: .semibold)
-        usernameLabel.textColor = .textSubtle
-        userBioLabel.textColor = .text
+        usernameLabel.textColor = .secondaryLabel
+        userBioLabel.textColor = .label
     }
 
     func downloadGravatarWithURL(_ url: String?) {

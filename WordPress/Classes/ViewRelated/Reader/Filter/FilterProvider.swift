@@ -247,7 +247,7 @@ extension ReaderSiteTopic {
         // Create count label
         let countLabel = UILabel()
         countLabel.font = WPStyleGuide.subtitleFont()
-        countLabel.textColor = .text
+        countLabel.textColor = .label
         countLabel.backgroundColor = .clear
         countLabel.text = topic.unseenCount.abbreviatedString()
 

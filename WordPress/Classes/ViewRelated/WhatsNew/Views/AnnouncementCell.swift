@@ -7,7 +7,7 @@ class AnnouncementCell: AnnouncementTableViewCell {
     }()
 
     private lazy var subHeadingLabel: UILabel = {
-        return makeLabel(font: Appearance.subHeadingFont, color: .textSubtle)
+        return makeLabel(font: Appearance.subHeadingFont, color: .secondaryLabel)
     }()
 
     private lazy var descriptionStackView: UIStackView = {

@@ -8,6 +8,6 @@ class EpilogueSectionHeaderFooter: UITableViewHeaderFooterView {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        titleLabel?.textColor = .textSubtle
+        titleLabel?.textColor = .secondaryLabel
     }
 }

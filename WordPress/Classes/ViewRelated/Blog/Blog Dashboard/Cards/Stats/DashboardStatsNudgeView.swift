@@ -13,7 +13,7 @@ final class DashboardStatsNudgeView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = WPStyleGuide.fontForTextStyle(.subheadline)
-        label.textColor = .textSubtle
+        label.textColor = .secondaryLabel
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         return label
@@ -42,7 +42,7 @@ final class DashboardStatsNudgeView: UIView {
     }
 
     private func setTitle(title: String, hint: String?) {
-        let externalAttachment = NSTextAttachment(image: UIImage.gridicon(.external, size: Constants.iconSize).withTintColor(.primary))
+        let externalAttachment = NSTextAttachment(image: UIImage.gridicon(.external, size: Constants.iconSize).withTintColor(UIAppColor.primary))
         externalAttachment.bounds = Constants.iconBounds
 
         let attachmentString = NSAttributedString(attachment: externalAttachment)
@@ -51,7 +51,7 @@ final class DashboardStatsNudgeView: UIView {
         if let hint = hint,
            let subStringRange = title.nsRange(of: hint) {
             titleString.addAttributes([
-                .foregroundColor: UIColor.primary,
+                .foregroundColor: UIAppColor.primary,
                 .font: WPStyleGuide.fontForTextStyle(.subheadline).bold()
             ], range: subStringRange)
         }

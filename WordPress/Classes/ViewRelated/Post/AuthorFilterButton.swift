@@ -22,7 +22,7 @@ final class AuthorFilterButton: UIControl {
         let imageView = CircularImageView(image: UIImage.gravatarPlaceholderImage)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.setContentHuggingPriority(.required, for: .horizontal)
-        imageView.tintColor = .neutral(.shade70)
+        imageView.tintColor = UIAppColor.neutral(.shade70)
         return imageView
     }()
 
@@ -34,7 +34,7 @@ final class AuthorFilterButton: UIControl {
         didSet {
             switch filterType {
             case .everyone:
-                authorImageView.image = UIImage(named: "icon-people")?.withTintColor(.text, renderingMode: .alwaysTemplate)
+                authorImageView.image = UIImage(named: "icon-people")?.withTintColor(.label, renderingMode: .alwaysTemplate)
                 authorImageView.contentMode = .center
             case .user(let email):
                 authorImageView.contentMode = .scaleAspectFill

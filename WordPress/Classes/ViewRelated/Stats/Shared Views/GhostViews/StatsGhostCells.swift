@@ -56,7 +56,7 @@ class StatsGhostTitleCell: StatsGhostBaseCell, NibLoadable {
 class StatsGhostSingleRowCell: StatsGhostBaseCell, NibLoadable {
     @IBOutlet private var border: UIView! {
         didSet {
-            border.backgroundColor = .divider
+            border.backgroundColor = .separator
             border.isGhostableDisabled = true
         }
     }

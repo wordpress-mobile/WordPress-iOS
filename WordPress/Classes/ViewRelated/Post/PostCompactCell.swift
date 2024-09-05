@@ -74,17 +74,17 @@ class PostCompactCell: UITableViewCell {
         titleLabel.font = AppStyleGuide.prominentFont(textStyle: .headline, weight: .bold)
         titleLabel.adjustsFontForContentSizeCategory = true
 
-        titleLabel.textColor = .text
-        timestampLabel.textColor = .textSubtle
-        menuButton.tintColor = .textSubtle
+        titleLabel.textColor = .label
+        timestampLabel.textColor = .secondaryLabel
+        menuButton.tintColor = .secondaryLabel
 
         menuButton.setImage(.gridicon(.ellipsis), for: .normal)
 
         featuredImageView.layer.cornerRadius = Constants.imageRadius
 
-        innerView.backgroundColor = .listForeground
-        backgroundColor = .listForeground
-        contentView.backgroundColor = .listForeground
+        innerView.backgroundColor = .secondarySystemGroupedBackground
+        backgroundColor = .secondarySystemGroupedBackground
+        contentView.backgroundColor = .secondarySystemGroupedBackground
     }
 
     private func setupSeparator() {
@@ -180,7 +180,7 @@ extension PostCompactCell: GhostableView {
         menuButton.isGhostableDisabled = true
         separator.isGhostableDisabled = true
         ghostView.isHidden = !visible
-        ghostView.backgroundColor = .listForeground
+        ghostView.backgroundColor = .secondarySystemGroupedBackground
         contentStackView.isHidden = visible
     }
 

@@ -37,20 +37,24 @@ struct UnifiedPrologueEditorContentView: View {
 
                     HStack {
                         let alignImageLeftIconSize = content.size.height * 0.15
-                        CircledIcon(size: alignImageLeftIconSize,
-                                    xOffset: -alignImageLeftIconSize * 0.75,
-                                    yOffset: alignImageLeftIconSize  * 0.75,
-                                    iconType: .alignImageLeft,
-                                    backgroundColor: Color(UIColor.muriel(name: .purple, .shade50)))
+                        CircledIcon(
+                            size: alignImageLeftIconSize,
+                            xOffset: -alignImageLeftIconSize * 0.75,
+                            yOffset: alignImageLeftIconSize  * 0.75,
+                            iconType: .alignImageLeft,
+                            backgroundColor: Color(UIAppColor.purple(.shade50))
+                        )
 
                         Spacer()
 
                         let plusIconSize = content.size.height * 0.2
-                        CircledIcon(size: plusIconSize,
-                                    xOffset: plusIconSize * 0.66,
-                                    yOffset: -plusIconSize * 0.66,
-                                    iconType: .plus,
-                                    backgroundColor: Color(UIColor.muriel(name: .blue, .shade50)))
+                        CircledIcon(
+                            size: plusIconSize,
+                            xOffset: plusIconSize * 0.66,
+                            yOffset: -plusIconSize * 0.66,
+                            iconType: .plus,
+                            backgroundColor: Color(UIAppColor.blue(.shade50))
+                        )
                     }
                 }
                 .frame(idealHeight: content.size.height * 0.41)
@@ -71,11 +75,13 @@ struct UnifiedPrologueEditorContentView: View {
                                 .aspectRatio(contentMode: .fit)
 
                             let imageMultipleIconSize = content.size.height * 0.18
-                            CircledIcon(size: imageMultipleIconSize,
-                                        xOffset: -imageMultipleIconSize / 2,
-                                        yOffset: imageMultipleIconSize / 2,
-                                        iconType: .imageMultiple,
-                                        backgroundColor: Color(UIColor.muriel(name: .pink, .shade40)))
+                            CircledIcon(
+                                size: imageMultipleIconSize,
+                                xOffset: -imageMultipleIconSize / 2,
+                                yOffset: imageMultipleIconSize / 2,
+                                iconType: .imageMultiple,
+                                backgroundColor: Color(UIAppColor.pink(.shade40))
+                            )
                         }
 
                         Image("page2Img3Food")

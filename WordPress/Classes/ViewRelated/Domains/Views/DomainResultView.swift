@@ -50,7 +50,7 @@ struct DomainResultView: View {
                         AttributedLabel(currentWidth: geometry.size.width, dynamicHeight: $subtitleHeight) {
                             $0.attributedText = subtitleWith(domain: domain)
                         }
-                        .foregroundColor(Color(UIColor.muriel(color: .text)))
+                        .foregroundColor(Color(.label))
                         .frame(height: subtitleHeight)
 
                         Spacer().frame(height: Metrics.subtitleToNoticeBoxSpacing)

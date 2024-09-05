@@ -6,7 +6,7 @@ struct PrimaryButtonStyle: ViewModifier {
             .font(.headline)
             .padding()
             .frame(minWidth: 0, maxWidth: .infinity, minHeight: 44.0, maxHeight: 44.0)
-            .background(Color(.primary))
+            .background(Color(UIAppColor.primary))
             .foregroundColor(.white)
             .clipShape(RoundedRectangle(cornerRadius: 8.0))
     }

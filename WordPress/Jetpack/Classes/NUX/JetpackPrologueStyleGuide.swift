@@ -21,10 +21,10 @@ struct JetpackPrologueStyleGuide {
     // Enter your site address button
     static let siteFillColor = UIColor.clear
     static let siteBorderColor = UIColor.clear
-    static let siteTextColor = UIColor(light: .muriel(color: .jetpackGreen, .shade90), dark: .white)
+    static let siteTextColor = UIColor(light: UIAppColor.jetpackGreen(.shade90), dark: .white)
     static let siteHighlightedFillColor = UIColor.clear
     static let siteHighlightedBorderColor = UIColor.clear
-    static let siteHighlightedTextColor = UIColor(light: .muriel(color: .jetpackGreen, .shade50), dark: whiteWithAlpha07)
+    static let siteHighlightedTextColor = UIColor(light: UIAppColor.jetpackGreen(.shade50), dark: whiteWithAlpha07)
 
     // Color used in both old and versions
     static let whiteWithAlpha07 = UIColor.white.withAlphaComponent(0.7)

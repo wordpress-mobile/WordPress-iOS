@@ -67,7 +67,7 @@ extension PostSettingsViewController {
                                                               onSubscribeTap: onSubscribeTap())
         let hostController = UIHostingController(rootView: JetpackSocialSettingsRemainingSharesView(viewModel: viewModel))
         hostController.view.translatesAutoresizingMaskIntoConstraints = false
-        hostController.view.backgroundColor = .listForeground
+        hostController.view.backgroundColor = .secondarySystemGroupedBackground
         return hostController.view
     }
 

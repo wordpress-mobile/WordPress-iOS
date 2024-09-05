@@ -169,7 +169,7 @@ class CollectionViewContainerCell: UITableViewCell {
         titleLabel = UILabel(frame: .zero)
         titleLabel.font = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .title2).pointSize,
                                             weight: .bold)
-        titleLabel.textColor = .neutral(.shade70)
+        titleLabel.textColor = UIAppColor.neutral(.shade70)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
 
         self.addSubview(titleLabel)
@@ -179,7 +179,7 @@ class CollectionViewContainerCell: UITableViewCell {
         titleLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: Constants.spacing).isActive = true
 
         actionButton = UIButton(type: .custom)
-        actionButton.setTitleColor(.primary(.shade40), for: .normal)
+        actionButton.setTitleColor(UIAppColor.primary(.shade40), for: .normal)
         actionButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
         actionButton.titleLabel?.font = UIFont.preferredFont(forTextStyle: .body)
         actionButton.translatesAutoresizingMaskIntoConstraints = false

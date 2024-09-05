@@ -263,8 +263,8 @@ class StatsTotalRow: UIView, NibLoadable, Accessible {
 private extension StatsTotalRow {
 
     func applyStyles(_ rowData: StatsTotalRowData) {
-        backgroundColor = .listForeground
-        contentView.backgroundColor = .listForeground
+        backgroundColor = .secondarySystemGroupedBackground
+        contentView.backgroundColor = .secondarySystemGroupedBackground
         Style.configureLabelAsCellRowTitle(itemLabel)
         Style.configureLabelItemDetail(itemDetailLabel)
         Style.configureLabelAsData(dataLabel)

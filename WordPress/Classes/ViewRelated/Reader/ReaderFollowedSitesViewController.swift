@@ -205,11 +205,7 @@ class ReaderFollowedSitesViewController: UIViewController {
         }, failure: { [weak self] (follow, error) in
             DDLogError("Could not unfollow site: \(String(describing: error))")
 
-            let notice = Notice(title: NSLocalizedString("reader.notice.blog.unsubscribed.error",
-                                                         value: "Could not unsubscribe from blog",
-                                                         comment: "Title of a prompt."),
-                                message: error?.localizedDescription,
-                                feedbackType: .error)
+            let notice = Notice(title: Strings.failedToUnfollow, message: error?.localizedDescription, feedbackType: .error)
             self?.post(notice)
         })
     }
@@ -411,8 +407,8 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
 
         // Reset the site icon first to address: https://github.com/wordpress-mobile/WordPress-iOS/issues/8513
         cell.imageView?.image = placeholderImage
-        cell.imageView?.tintColor = .listIcon
-        cell.imageView?.backgroundColor = UIColor.listForeground
+        cell.imageView?.tintColor = .secondaryLabel
+        cell.imageView?.backgroundColor = UIColor.secondarySystemGroupedBackground
 
         if showsAccessoryFollowButtons {
             let button = followButton(title: site.title)
@@ -521,5 +517,11 @@ extension ReaderFollowedSitesViewController: UISearchBarDelegate {
         }
         searchBar.text = nil
         searchBar.resignFirstResponder()
+    }
+}
+
+extension ReaderFollowedSitesViewController {
+    enum Strings {
+        static let failedToUnfollow =  NSLocalizedString("reader.notice.blog.unsubscribed.error", value: "Could not unsubscribe from blog", comment: "Title of a prompt.")
     }
 }

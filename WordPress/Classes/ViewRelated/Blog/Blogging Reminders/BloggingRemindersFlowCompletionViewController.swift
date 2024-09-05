@@ -40,7 +40,7 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
         label.font = .preferredFont(forTextStyle: .body)
         label.numberOfLines = 6
         label.textAlignment = .center
-        label.textColor = .text
+        label.textColor = .label
         return label
     }()
 
@@ -94,7 +94,7 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .basicBackground
+        view.backgroundColor = .systemBackground
 
         configureStackView()
         configureConstraints()
@@ -187,7 +187,7 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
 
         let defaultAttributes: [NSAttributedString.Key: AnyObject] = [
             .paragraphStyle: style,
-            .foregroundColor: UIColor.text,
+            .foregroundColor: UIColor.label,
         ]
 
         let promptText = NSMutableAttributedString(attributedString: formatter.longScheduleDescription(for: schedule, time: scheduler.scheduledTime(for: blog).toLocalTime()))

@@ -5,7 +5,7 @@ import Gridicons
 final class FloatingActionButton: UIButton {
 
     private enum Constants {
-        static let shadowColor: UIColor = UIColor.gray(.shade20)
+        static let shadowColor: UIColor = UIAppColor.gray(.shade20)
         static let shadowRadius: CGFloat = 3
     }
 

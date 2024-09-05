@@ -1,34 +1,45 @@
 import Foundation
 import WordPressShared
+import WordPressUI
+import ColorStudio
 
-/// - Warning:
-/// This configuration struct has a **Jetpack** counterpart in the Jetpack bundle.
-/// Make sure to keep them in sync to avoid build errors when building the Jetpack target.
 struct AppStyleGuide {
+
+    #if IS_JETPACK
+    static let navigationBarStandardFont: UIFont = Feature.enabled(.serif) ? WPStyleGuide.fixedSerifFontForTextStyle(.headline, fontWeight: .semibold) : WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
+    static let navigationBarLargeFont: UIFont = Feature.enabled(.serif) ? WPStyleGuide.fixedSerifFontForTextStyle(.largeTitle, fontWeight: .semibold) : WPStyleGuide.fontForTextStyle(.largeTitle, fontWeight: .semibold)
+    static let epilogueTitleFont: UIFont = Feature.enabled(.serif) ? WPStyleGuide.fixedSerifFontForTextStyle(.largeTitle, fontWeight: .semibold) : WPStyleGuide.fontForTextStyle(.largeTitle, fontWeight: .semibold)
+    #endif
+
+    #if IS_WORDPRESS
     static let navigationBarStandardFont: UIFont = WPStyleGuide.fixedSerifFontForTextStyle(.headline, fontWeight: .semibold)
     static let navigationBarLargeFont: UIFont = WPStyleGuide.fixedSerifFontForTextStyle(.largeTitle, fontWeight: .semibold)
     static let epilogueTitleFont: UIFont = WPStyleGuide.fixedSerifFontForTextStyle(.largeTitle, fontWeight: .semibold)
+    #endif
 }
 
-// MARK: - Colors
+// MARK: - Images
 extension AppStyleGuide {
-    static let accent = MurielColor(name: .pink)
-    static let brand = MurielColor(name: .wordPressBlue)
-    static let divider = MurielColor(name: .gray, shade: .shade10)
-    static let error = MurielColor(name: .red)
-    static let gray = MurielColor(name: .gray)
-    static let primary = MurielColor(name: .blue)
-    static let success = MurielColor(name: .green)
-    static let text = MurielColor(name: .gray, shade: .shade80)
-    static let textSubtle = MurielColor(name: .gray, shade: .shade50)
-    static let warning = MurielColor(name: .yellow)
-    static let jetpackGreen = MurielColor(name: .jetpackGreen)
-    static let editorPrimary = MurielColor(name: .blue)
+    #if IS_JETPACK
+    static let mySiteTabIcon = UIImage(named: "jetpack-icon-tab-mysites")
+    #endif
+
+    #if IS_WORDPRESS
+    static let mySiteTabIcon = UIImage(named: "icon-tab-mysites")
+    #endif
 }
 
 // MARK: - Fonts
 extension AppStyleGuide {
+    #if IS_JETPACK
+    static func prominentFont(textStyle: UIFont.TextStyle, weight: UIFont.Weight) -> UIFont {
+        WPStyleGuide.fontForTextStyle(textStyle, fontWeight: weight)
+    }
+    #endif
+
+    #if IS_WORDPRESS
     static func prominentFont(textStyle: UIFont.TextStyle, weight: UIFont.Weight) -> UIFont {
         WPStyleGuide.serifFontForTextStyle(textStyle, fontWeight: weight)
     }
+    #endif
 }

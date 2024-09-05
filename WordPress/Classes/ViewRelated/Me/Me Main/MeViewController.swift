@@ -7,6 +7,8 @@ class MeViewController: UITableViewController {
     var handler: ImmuTableViewHandler!
     var isSidebarModeEnabled = false
 
+    private lazy var headerView = MeHeaderView()
+
     // MARK: - Table View Controller
 
     override init(style: UITableView.Style) {
@@ -29,8 +31,12 @@ class MeViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Preventing MultiTouch Scenarios
-        view.isExclusiveTouch = true
+        if isSidebarModeEnabled {
+            /// We can't use trait collection here because on iPad .form sheet is still
+            /// considered to be ` .compact` size class, so it has to be invoked manually.
+            headerView.configureHorizontalMode()
+        }
+
         ImmuTable.registerRows([
             NavigationItemRow.self,
             IndicatorNavigationItemRow.self,
@@ -51,6 +57,7 @@ class MeViewController: UITableViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+
         tableView.layoutHeaderView()
     }
 
@@ -95,7 +102,10 @@ class MeViewController: UITableViewController {
         //
         // My guess is the table view adjusts the height of the first section
         // based on if there's a header or not.
-        tableView.tableHeaderView = account.map { headerViewForAccount($0) }
+        if let account {
+            headerView.update(with: MeHeaderViewModel(account: account))
+        }
+        tableView.tableHeaderView = headerView
 
         // After we've reloaded the view model we should maintain the current
         // table row selection, or if the split view we're in is not compact
@@ -114,20 +124,13 @@ class MeViewController: UITableViewController {
         }
     }
 
-    fileprivate func headerViewForAccount(_ account: WPAccount) -> MeHeaderView {
-        headerView.displayName = account.displayName
-        headerView.username = account.username
-        headerView.gravatarEmail = account.email
-
-        return headerView
-    }
-
     private var appSettingsRow: NavigationItemRow {
         let accessoryType: UITableViewCell.AccessoryType = isPrimaryViewControllerInSplitView() ? .none : .disclosureIndicator
 
         return NavigationItemRow(
             title: RowTitles.appSettings,
-            icon: UIImage(named: "wpl-tablet"),
+            icon: UIImage(named: "wpl-tablet")?.withRenderingMode(.alwaysTemplate),
+            tintColor: .label,
             accessoryType: accessoryType,
             action: pushAppSettings(),
             accessibilityIdentifier: "appSettings"
@@ -141,28 +144,32 @@ class MeViewController: UITableViewController {
 
         let myProfile = NavigationItemRow(
             title: RowTitles.myProfile,
-            icon: UIImage(named: "site-menu-people"),
+            icon: UIImage(named: "site-menu-people")?.withRenderingMode(.alwaysTemplate),
+            tintColor: .label,
             accessoryType: accessoryType,
             action: pushMyProfile(),
             accessibilityIdentifier: "myProfile")
 
         let qrLogin = NavigationItemRow(
             title: RowTitles.qrLogin,
-            icon: UIImage(named: "wpl-capture-photo"),
+            icon: UIImage(named: "wpl-capture-photo")?.withRenderingMode(.alwaysTemplate),
+            tintColor: .label,
             accessoryType: accessoryType,
             action: presentQRLogin(),
             accessibilityIdentifier: "qrLogin")
 
         let accountSettings = NavigationItemRow(
             title: RowTitles.accountSettings,
-            icon: UIImage(named: "wpl-gearshape"),
+            icon: UIImage(named: "wpl-gearshape")?.withRenderingMode(.alwaysTemplate),
+            tintColor: .label,
             accessoryType: accessoryType,
             action: pushAccountSettings(),
             accessibilityIdentifier: "accountSettings")
 
         let helpAndSupportIndicator = IndicatorNavigationItemRow(
             title: RowTitles.support,
-            icon: UIImage(named: "wpl-help"),
+            icon: UIImage(named: "wpl-help")?.withRenderingMode(.alwaysTemplate),
+            tintColor: .label,
             showIndicator: ZendeskUtils.showSupportNotificationIndicator,
             accessoryType: accessoryType,
             action: pushHelp())
@@ -197,25 +204,22 @@ class MeViewController: UITableViewController {
             ImmuTableSection(rows: {
                 var rows: [ImmuTableRow] = []
 
-                rows.append(NavigationItemRow(
+                rows.append(ButtonRow(
                     title: Strings.submitFeedback,
-                    tintColor: .brand,
-                    accessoryType: .none,
+                    textAlignment: .left,
                     action: showFeedbackView())
                 )
 
-                rows.append(NavigationItemRow(
+                rows.append(ButtonRow(
                     title: ShareAppContentPresenter.RowConstants.buttonTitle,
-                    tintColor: .brand,
-                    accessoryType: .none,
-                    action: displayShareFlow(),
-                    loading: sharePresenter.isLoading)
+                    textAlignment: .left,
+                    isLoading: sharePresenter.isLoading,
+                    action: displayShareFlow())
                 )
 
-                rows.append(NavigationItemRow(
+                rows.append(ButtonRow(
                     title: RowTitles.about,
-                    tintColor: .brand,
-                    accessoryType: .none,
+                    textAlignment: .left,
                     action: pushAbout(),
                     accessibilityIdentifier: "About")
                 )
@@ -223,12 +227,13 @@ class MeViewController: UITableViewController {
             }())
         ]
 
-        #if JETPACK
+        #if IS_JETPACK
         if RemoteFeatureFlag.domainManagement.enabled() && loggedIn && !isSidebarModeEnabled {
             sections.append(.init(rows: [
                 NavigationItemRow(
                     title: AllDomainsListViewController.Strings.title,
-                    icon: UIImage(named: "wpl-globe"),
+                    icon: UIImage(named: "wpl-globe")?.withRenderingMode(.alwaysTemplate),
+                    tintColor: .label,
                     accessoryType: accessoryType,
                     action: { [weak self] action in
                         self?.showOrPushController(AllDomainsListViewController())
@@ -386,7 +391,7 @@ class MeViewController: UITableViewController {
     /// Selects the All Domains row and pushes the All Domains view controller
     ///
     public func navigateToAllDomains() {
-    #if JETPACK
+    #if IS_JETPACK
         navigateToTarget(for: AllDomainsListViewController.Strings.title)
     #endif
     }
@@ -548,8 +553,6 @@ class MeViewController: UITableViewController {
     }
 
     // MARK: - Private Properties
-
-    fileprivate lazy var headerView = MeHeaderView()
 
     /// Shows an actionsheet with options to Log In or Create a WordPress site.
     /// This is a temporary stop-gap measure to preserve for users only logged

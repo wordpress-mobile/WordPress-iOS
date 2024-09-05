@@ -24,9 +24,7 @@ extension ReaderStreamViewController {
         ghostableTableView.register(ReaderGhostCell.self, forCellReuseIdentifier: "ReaderGhostCell")
         let ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: "ReaderGhostCell", rowsPerSection: [10])
 
-        let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
-                               beatStartColor: .placeholderElement,
-                               beatEndColor: .placeholderElementFaded)
+        let style = GhostStyle()
         ghostableTableView.estimatedRowHeight = 200
         ghostableTableView.removeGhostContent()
         ghostableTableView.displayGhostContent(options: ghostOptions, style: style)

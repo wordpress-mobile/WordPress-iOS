@@ -155,7 +155,7 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
 
             label.font = WPStyleGuide.fontForTextStyle(.body)
             label.textAlignment = .center
-            label.textColor = .text
+            label.textColor = .label
             label.text = Strings.noResults
 
             label.sizeToFit()
@@ -208,7 +208,7 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
         searchBar.layer.borderWidth = 0
         searchHeader.addSubview(searchBar)
         searchBar.delegate = self
-        headerView.backgroundColor = .basicBackground
+        headerView.backgroundColor = .systemBackground
 
         NSLayoutConstraint.activate([
             searchBar.leadingAnchor.constraint(equalTo: searchHeader.leadingAnchor, constant: 8),
@@ -434,7 +434,7 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
         searchTextField.accessibilityTraits = .searchField
 
         let placeholderText = Strings.searchPlaceholder
-        let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(.textPlaceholder)
+        let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(.placeholderText)
         let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
         searchTextField.attributedPlaceholder = attributedPlaceholder
         searchTextField.accessibilityHint = Strings.searchAccessibility
@@ -470,11 +470,11 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
     }
 
     private func setupTableBackground() {
-        table.backgroundColor = .basicBackground
+        table.backgroundColor = .systemBackground
     }
 
     private func setupTableSeparator() {
-        table.separatorColor = .divider
+        table.separatorColor = .separator
         table.separatorInset.left = AddressTableViewCell.Appearance.contentMargins.leading
     }
 
@@ -711,8 +711,8 @@ extension DomainSelectionViewController: UITableViewDataSource {
             let newCell = UITableViewCell(style: .subtitle, reuseIdentifier: DomainSelectionViewController.noMatchCellReuseIdentifier)
             newCell.detailTextLabel?.text = Strings.noMatch
             newCell.detailTextLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
-            newCell.detailTextLabel?.textColor = .textSubtle
-            newCell.addBottomBorder(withColor: .divider)
+            newCell.detailTextLabel?.textColor = .secondaryLabel
+            newCell.addBottomBorder(withColor: .separator)
             return newCell
         }()
 

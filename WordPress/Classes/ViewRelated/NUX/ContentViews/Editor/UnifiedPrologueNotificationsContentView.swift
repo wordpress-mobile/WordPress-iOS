@@ -43,19 +43,23 @@ struct UnifiedPrologueNotificationsContentView: View {
                     .padding(spacingUnit / 2)
 
                     HStack {
-                        CircledIcon(size: smallIconSize,
-                                    xOffset: -smallIconSize * 0.7,
-                                    yOffset: smallIconSize  * 0.7,
-                                    iconType: .reply,
-                                    backgroundColor: Color(UIColor.muriel(name: .celadon, .shade30)))
+                        CircledIcon(
+                            size: smallIconSize,
+                            xOffset: -smallIconSize * 0.7,
+                            yOffset: smallIconSize  * 0.7,
+                            iconType: .reply,
+                            backgroundColor: Color(UIAppColor.celadon(.shade30))
+                        )
 
                         Spacer()
 
-                        CircledIcon(size: smallIconSize,
-                                    xOffset: smallIconSize * 0.25,
-                                    yOffset: -smallIconSize  * 0.7,
-                                    iconType: .star,
-                                    backgroundColor: Color(UIColor.muriel(name: .yellow, .shade20)))
+                        CircledIcon(
+                            size: smallIconSize,
+                            xOffset: smallIconSize * 0.25,
+                            yOffset: -smallIconSize  * 0.7,
+                            iconType: .star,
+                            backgroundColor: Color(UIAppColor.yellow(.shade20))
+                        )
                     }
                 }
                 .fixedSize(horizontal: false, vertical: true)
@@ -94,11 +98,13 @@ struct UnifiedPrologueNotificationsContentView: View {
                     HStack {
                         Spacer()
 
-                        CircledIcon(size: largerIconSize,
-                                    xOffset: largerIconSize * 0.6,
-                                    yOffset: largerIconSize  * 0.3,
-                                    iconType: .comment,
-                                    backgroundColor: Color(UIColor.muriel(name: .blue, .shade50)))
+                        CircledIcon(
+                            size: largerIconSize,
+                            xOffset: largerIconSize * 0.6,
+                            yOffset: largerIconSize  * 0.3,
+                            iconType: .comment,
+                            backgroundColor: Color(UIAppColor.blue(.shade50))
+                        )
                     }
                 }
                 .fixedSize(horizontal: false, vertical: true)

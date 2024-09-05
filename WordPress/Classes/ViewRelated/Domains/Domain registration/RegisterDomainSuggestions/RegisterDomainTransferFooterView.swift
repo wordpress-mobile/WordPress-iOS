@@ -47,7 +47,7 @@ final class RegisterDomainTransferFooterView: UIView {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
-        label.textColor = UIColor.DS.Foreground.primary
+        label.textColor = .label
         label.numberOfLines = 2
         label.adjustsFontForContentSizeCategory = true
         return label
@@ -66,7 +66,7 @@ final class RegisterDomainTransferFooterView: UIView {
         self.analyticsSource = analyticsSource
         super.init(frame: .zero)
         self.backgroundColor = UIColor(light: .systemBackground, dark: .secondarySystemBackground)
-        self.addTopBorder(withColor: .divider)
+        self.addTopBorder(withColor: .separator)
         self.setup(with: configuration)
     }
 

@@ -6,13 +6,13 @@ import WordPressShared
 extension WPStyleGuide {
 
     class func applyPostCardStyle(_ cell: UITableViewCell) {
-        cell.backgroundColor = .listBackground
-        cell.contentView.backgroundColor = .listBackground
+        cell.backgroundColor = .systemGroupedBackground
+        cell.contentView.backgroundColor = .systemGroupedBackground
     }
 
     class func applyBorderStyle(_ view: UIView) {
         view.updateConstraint(for: .height, withRelation: .equal, setConstant: .hairlineBorderWidth, setActive: true)
-        view.backgroundColor = .divider
+        view.backgroundColor = .separator
     }
 
     // MARK: - Font Styles

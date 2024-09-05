@@ -185,7 +185,7 @@ extension JetpackScanThreatDetailsViewController {
 
         if let warningActionTitle = viewModel.warningActionTitle {
 
-            let attributedTitle = WPStyleGuide.Jetpack.highlightString(warningActionTitle.substring,
+            let attributedTitle = StringHighlighter.highlightString(warningActionTitle.substring,
                                                                        inString: warningActionTitle.string)
 
             warningButton.setAttributedTitle(attributedTitle, for: .normal)
@@ -202,7 +202,7 @@ extension JetpackScanThreatDetailsViewController {
     // MARK: - Styling
 
     private func applyStyles() {
-        view.backgroundColor = .basicBackground
+        view.backgroundColor = .systemBackground
         styleGeneralInfoSection()
         styleProblemSection()
         styleTechnicalDetailsSection()
@@ -212,27 +212,27 @@ extension JetpackScanThreatDetailsViewController {
 
     private func styleGeneralInfoSection() {
         generalInfoTitleLabel.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
-        generalInfoTitleLabel.textColor = .error
+        generalInfoTitleLabel.textColor = UIAppColor.error
         generalInfoTitleLabel.numberOfLines = 0
 
         generalInfoDescriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
-        generalInfoDescriptionLabel.textColor = .text
+        generalInfoDescriptionLabel.textColor = .label
         generalInfoDescriptionLabel.numberOfLines = 0
     }
 
     private func styleProblemSection() {
         problemTitleLabel.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
-        problemTitleLabel.textColor = .text
+        problemTitleLabel.textColor = .label
         problemTitleLabel.numberOfLines = 0
 
         problemDescriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
-        problemDescriptionLabel.textColor = .text
+        problemDescriptionLabel.textColor = .label
         problemDescriptionLabel.numberOfLines = 0
     }
 
     private func styleTechnicalDetailsSection() {
         technicalDetailsTitleLabel.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
-        technicalDetailsTitleLabel.textColor = .text
+        technicalDetailsTitleLabel.textColor = .label
         technicalDetailsTitleLabel.numberOfLines = 0
 
         technicalDetailsFileContainerView.backgroundColor = viewModel.fileNameBackgroundColor
@@ -242,7 +242,7 @@ extension JetpackScanThreatDetailsViewController {
         technicalDetailsFileLabel.numberOfLines = 0
 
         technicalDetailsDescriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
-        technicalDetailsDescriptionLabel.textColor = .text
+        technicalDetailsDescriptionLabel.textColor = .label
         technicalDetailsDescriptionLabel.numberOfLines = 0
 
         technicalDetailsContextLabel.numberOfLines = 0
@@ -250,11 +250,11 @@ extension JetpackScanThreatDetailsViewController {
 
     private func styleFixSection() {
         fixTitleLabel.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
-        fixTitleLabel.textColor = .text
+        fixTitleLabel.textColor = .label
         fixTitleLabel.numberOfLines = 0
 
         fixDescriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
-        fixDescriptionLabel.textColor = .text
+        fixDescriptionLabel.textColor = .label
         fixDescriptionLabel.numberOfLines = 0
     }
 
@@ -263,7 +263,7 @@ extension JetpackScanThreatDetailsViewController {
 
         ignoreThreatButton.isPrimary = false
 
-        warningButton.setTitleColor(.text, for: .normal)
+        warningButton.setTitleColor(.label, for: .normal)
         warningButton.titleLabel?.lineBreakMode = .byWordWrapping
         warningButton.titleLabel?.numberOfLines = 0
         warningButton.setImage(.gridicon(.plusSmall), for: .normal)

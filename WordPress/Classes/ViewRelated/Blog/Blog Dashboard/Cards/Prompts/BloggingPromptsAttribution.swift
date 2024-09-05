@@ -1,3 +1,4 @@
+import UIKit
 import WordPressUI
 
 enum BloggingPromptsAttribution: String {
@@ -42,7 +43,7 @@ enum BloggingPromptsAttribution: String {
         ]
         static let sourceAttributes: [NSAttributedString.Key: Any] = [
             .font: WPStyleGuide.fontForTextStyle(.caption1, fontWeight: .medium),
-            .foregroundColor: UIColor.text,
+            .foregroundColor: UIColor.label,
         ]
         static let iconSize = CGSize(width: 18, height: 18)
         static let dayOneIcon = UIImage(named: "logo-dayone")?.resized(to: Constants.iconSize)
@@ -52,7 +53,7 @@ enum BloggingPromptsAttribution: String {
             UIImage(named: "logo-bloganuary")?
                 .withRenderingMode(.alwaysTemplate)
                 .resized(to: Constants.bloganuaryIconSize)
-                .withAlignmentRectInsets(.init(allEdges: -6.0))
+                .withAlignmentRectInsets(UIEdgeInsets(.all, -6.0))
                 .withTintColor(.label)
         }
 
