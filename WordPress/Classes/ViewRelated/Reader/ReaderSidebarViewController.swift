@@ -1,6 +1,7 @@
 import UIKit
 import SwiftUI
 import Combine
+import WordPressUI
 
 final class ReaderSidebarViewController: UIHostingController<ReaderSidebarView> {
     let viewModel: ReaderSidebarViewModel
@@ -54,8 +55,7 @@ final class ReaderSidebarViewController: UIHostingController<ReaderSidebarView> 
                     return ReaderStreamViewController.controllerWithTopic(topic)
                 }
             } else {
-                // TODO: (wpsidebar) add error handling (hardcode links to topics?)
-                return UIViewController()
+                return UIHostingController(rootView: EmptyStateView(SharedStrings.Error.generic, systemImage: "exclamationmark.circle")) // This should never happen
             }
         case .saved:
             return ReaderStreamViewController.controllerForContentType(.saved)
