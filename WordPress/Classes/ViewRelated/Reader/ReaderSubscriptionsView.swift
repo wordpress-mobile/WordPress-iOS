@@ -63,7 +63,7 @@ struct ReaderSubscriptionsView: View {
             }
         }
         .listStyle(.plain)
-        .searchable(text: $searchText, placement: .navigationBarDrawer)
+        .searchable(text: $searchText)
         .onReceive(subscriptions.publisher) { _ in
             if !searchText.isEmpty {
                 reloadSearchResults(searchText: searchText)
