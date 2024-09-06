@@ -136,36 +136,49 @@ struct ReaderSubscriptionsView: View {
     }
 }
 
-struct ReaderAddSubscriptionView: View {
+private struct ReaderAddSubscriptionView: View {
     @State private var url = ""
     @FocusState private var isFocused: Bool
+    @Environment(\.dismiss) private var dismiss
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            VStack(alignment: .leading) {
-                Text(Strings.addSubscription)
-                    .font(.title3.weight(.medium))
-                Text(Strings.addSubscriptionSubtitle)
-                    .font(.callout)
-                    .foregroundStyle(.secondary)
-            }
-            HStack {
-                TextField("Link", text: $url, prompt: Text(verbatim: "https://www.site.com"))
-                    .focused($isFocused)
-
-                HStack {
-                    Spacer()
-                    Button(SharedStrings.Button.add) {
-                        // TODO: (wpsidebar) implement "Add"
-                    }.buttonStyle(.borderedProminent)
-                }
-            }
+        VStack(alignment: .leading, spacing: 12) {
+            controls
+            Text(Strings.addSubscriptionSubtitle)
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+            TextField("", text: $url, prompt: Text(verbatim: "example.com"))
+                .keyboardType(.URL)
+                .textContentType(.URL)
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled()
+                .focused($isFocused)
+                .labelsHidden()
+                .padding(.top, 12)
         }
         .padding()
         .onAppear {
             isFocused = true
         }
-        .frame(width: 460)
+        .frame(width: 420)
+        .interactiveDismissDisabled(!url.isEmpty)
+    }
+
+    private var controls: some View {
+        HStack {
+            Button(SharedStrings.Button.cancel) {
+                dismiss()
+            }
+            Spacer()
+            Text(Strings.addSubscription)
+                .font(.headline)
+            Spacer()
+            Button(SharedStrings.Button.add) {
+                // TODO: implement
+            }
+            .disabled(url.isEmpty)
+            .font(.headline)
+        }
     }
 }
 
