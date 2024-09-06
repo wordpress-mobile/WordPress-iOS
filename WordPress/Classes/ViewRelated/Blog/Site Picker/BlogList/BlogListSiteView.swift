@@ -45,17 +45,14 @@ private struct BlogListBadgeView: View {
     }
 }
 
-final class BlogListSiteViewModel: Identifiable {
-    var id: TaggedManagedObjectID<Blog> { TaggedManagedObjectID(blog) }
+struct BlogListSiteViewModel: Identifiable {
+    let id: TaggedManagedObjectID<Blog>
     let title: String
     let domain: String
     let icon: SiteIconViewModel
     let searchTags: String
-    var badge: Badge?
-
-    var siteURL: URL? {
-        blog.url.flatMap(URL.init)
-    }
+    let siteURL: URL?
+    let badge: Badge?
 
     struct Badge {
         let title: String
@@ -63,22 +60,26 @@ final class BlogListSiteViewModel: Identifiable {
     }
 
     func makeIcon(with size: SiteIconViewModel.Size) -> SiteIconViewModel {
-        SiteIconViewModel(blog: blog, size: size)
+        let context = ContextManager.shared.mainContext
+        guard let blog = try? context.existingObject(with: id) else { return icon }
+
+        return SiteIconViewModel(blog: blog, size: size)
     }
 
-    private let blog: Blog
-
     init(blog: Blog) {
-        self.blog = blog
+        self.id = TaggedManagedObjectID(blog)
         self.title = blog.title ?? "–"
         self.domain = blog.displayURL as String? ?? ""
         self.icon = SiteIconViewModel(blog: blog)
+        self.siteURL = blog.url.flatMap(URL.init)
 
         // By adding displayURL _after_ the title, it loweres its weight in search
         self.searchTags = "\(title) \(domain)"
 
         if (blog.getOption(name: "is_wpcom_staging_site") as Bool?) == true {
             badge = Badge(title: Strings.staging, color: Color.yellow.opacity(0.33))
+        } else {
+            badge = nil
         }
     }
 
