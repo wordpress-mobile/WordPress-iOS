@@ -19,14 +19,6 @@ struct ReaderSubscriptionsView: View {
 
     var onSelection: (_ subscription: ReaderSiteTopic) -> Void = { _ in }
 
-    private var visibleSubscriptions: any RandomAccessCollection<ReaderSiteTopic> {
-        if searchText.isEmpty {
-            return subscriptions
-        } else {
-            return searchResults
-        }
-    }
-
     var body: some View {
         Group {
             if subscriptions.isEmpty {
