@@ -4,6 +4,7 @@ public struct EmptyStateView<Label: View, Description: View, Actions: View>: Vie
     @ViewBuilder let label: () -> Label
     @ViewBuilder var description: () -> Description
     @ViewBuilder var actions: () -> Actions
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
     public init(
         @ViewBuilder label: @escaping () -> Label,
@@ -29,7 +30,7 @@ public struct EmptyStateView<Label: View, Description: View, Actions: View>: Vie
             }
             actions()
         }
-        .frame(maxWidth: 300)
+        .frame(maxWidth: horizontalSizeClass == .compact ? 300 : 420)
     }
 }
 
