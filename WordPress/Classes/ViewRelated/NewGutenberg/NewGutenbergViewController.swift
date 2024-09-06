@@ -133,29 +133,34 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
         let networkClient = NewGutenbergNetworkClient(blog: post.blog)
 
-        let siteId = post.blog.dotComID?.stringValue ?? nil
-        let authType = siteId != nil ? "Bearer" : "Basic"
+        let selfHostedApiUrl = post.blog.url(withPath: "wp-json/")
+        let siteApiRoot = post.blog.isAccessibleThroughWPCom() ? post.blog.wordPressComRestApi()?.baseURL.absoluteString : selfHostedApiUrl
+        let siteId = post.blog.dotComID?.stringValue
         let authToken = post.blog.authToken ?? ""
-        let authHeader = "\(authType) \(authToken)"
-        let siteApiNamespace = post.blog.dotComID != nil ? "sites/\(siteId ?? "")" : ""
-        let postType = post is Page ? "page" : "post"
-        let idValue: Int? = {
-            if let number = post.postID {
-                let intValue = number.intValue
-                return (intValue != -1) ? intValue : nil
-            } else {
-                return nil
+        var authHeader = "Bearer \(authToken)"
+
+        let applicationPassword = try? post.blog.getApplicationToken()
+
+        if let appPassword = applicationPassword, let username = post.blog.username {
+            let credentials = "\(username):\(appPassword)"
+            if let credentialsData = credentials.data(using: .utf8) {
+                let base64Credentials = credentialsData.base64EncodedString()
+                authHeader = "Basic \(base64Credentials)"
             }
-        }()
+        }
+
+        let siteApiNamespace = post.blog.dotComID != nil && applicationPassword == nil ? "sites/\(siteId ?? "")" : ""
+        let postType = post is Page ? "page" : "post"
+        let postId: Int? = post.postID?.intValue != -1 ? post.postID?.intValue : nil
 
         self.editorViewController = GutenbergKit.EditorViewController(
-            id: idValue,
+            id: postId,
             type: postType,
             title: post.postTitle ?? "",
             content: post.content ?? "",
             service: GutenbergKit.EditorService(client: networkClient),
             themeStyles: FeatureFlag.newGutenbergThemeStyles.enabled,
-            siteApiRoot: post.blog.wordPressComRestApi()?.baseURL.absoluteString ?? "",
+            siteApiRoot: siteApiRoot!,
             siteApiNamespace: siteApiNamespace,
             authHeader: authHeader
         )
