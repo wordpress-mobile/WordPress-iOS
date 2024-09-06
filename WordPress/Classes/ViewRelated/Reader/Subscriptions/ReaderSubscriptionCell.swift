@@ -40,12 +40,6 @@ struct ReaderSubscriptionCell: View {
             buttonNotificationSettings
             buttonMore
         }
-        .swipeActions(edge: .trailing) {
-            Button(Strings.unfollow, role: .destructive) {
-                onDelete(site)
-            }
-            .tint(Color.red)
-        }
     }
 
     private var buttonNotificationSettings: some View {
@@ -89,7 +83,7 @@ struct ReaderSubscriptionCell: View {
             Button(role: .destructive) {
                 onDelete(site)
             } label: {
-                Label(Strings.unfollow, systemImage: "trash")
+                Label(SharedStrings.Reader.unfollow, systemImage: "trash")
             }
         } label: {
             Image(systemName: "ellipsis")
@@ -101,7 +95,6 @@ struct ReaderSubscriptionCell: View {
 
 private enum Strings {
     static let settings = NSLocalizedString("reader.subscriptions.settings", value: "Settings", comment: "Button title for managing subscription settings")
-    static let unfollow = NSLocalizedString("reader.subscriptions.unfollow", value: "Unfollow", comment: "Destructive button title")
 
     static func numberOfSubscriptions(with count: Int) -> String {
         let singular = NSLocalizedString("reader.subscriptions.subscriptionsSingular", value: "%@ subscriber", comment: "Number of subscriptions on a site (singular)")

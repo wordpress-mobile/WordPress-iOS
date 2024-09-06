@@ -97,6 +97,16 @@ struct ReaderSubscriptionsView: View {
         } label: {
             ReaderSubscriptionCell(site: site, onDelete: delete)
         }
+        .swipeActions(edge: .leading) {
+            if let siteURL = URL(string: site.siteURL) {
+                ShareLink(item: siteURL).tint(.blue)
+            }
+        }
+        .swipeActions(edge: .trailing) {
+            Button(SharedStrings.Reader.unfollow, role: .destructive) {
+                ReaderSubscriptionHelper.unfollow(site)
+            }.tint(.red)
+        }
     }
 
     private func delete(at offsets: IndexSet) {

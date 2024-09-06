@@ -150,11 +150,9 @@ private struct ReaderSidebarSubscriptionsSection: View {
             .lineLimit(1)
             .tag(ReaderSidebarItem.subscription(TaggedManagedObjectID(site)))
             .swipeActions(edge: .trailing) {
-                Button(role: .destructive) {
+                Button(SharedStrings.Reader.unfollow, role: .destructive) {
                     ReaderSubscriptionHelper.unfollow(site)
-                } label: {
-                    Text(Strings.unfollow)
-                }
+                }.tint(.red)
             }
         }
         .onDelete(perform: delete)
@@ -173,5 +171,4 @@ private struct Strings {
     static let allSubscriptions = NSLocalizedString("reader.sidebar.allSubscriptions", value: "All Subscriptions", comment: "Reader sidebar button title")
     static let addSubscription = NSLocalizedString("reader.sidebar.addSubscription", value: "Add Subscription", comment: "Reader sidebar button title")
     static let subscriptions = NSLocalizedString("reader.sidebar.sectionSubscriptionsTitle", value: "Subscriptions", comment: "Reader sidebar section title")
-    static let unfollow = NSLocalizedString("reader.sidebar.unfollow", value: "Unfollow", comment: "Reader sidebar button title")
 }

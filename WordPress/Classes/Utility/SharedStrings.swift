@@ -23,4 +23,8 @@ enum SharedStrings {
     enum Error {
         static let generic = NSLocalizedString("shared.error.geneirc", value: "Something went wrong", comment: "A generic error message")
     }
+
+    enum Reader {
+        static let unfollow = NSLocalizedString("reader.button.unfollow", value: "Unfollow", comment: "Reader sidebar button title")
+    }
 }
