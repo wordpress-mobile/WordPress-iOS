@@ -25,6 +25,7 @@ public struct EmptyStateView<Label: View, Description: View, Actions: View>: Vie
                     .font(.subheadline)
                     .multilineTextAlignment(.center)
                     .foregroundStyle(.secondary)
+                    .lineLimit(4)
             }
             actions()
         }

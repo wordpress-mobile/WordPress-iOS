@@ -13,6 +13,8 @@ struct ReaderSubscriptionsView: View {
 
     @State private var searchResults: [ReaderSiteTopic] = []
 
+    @StateObject private var viewModel = ReaderSubscriptionsViewModel()
+
     var isShowingSearchResuts: Bool { !searchText.isEmpty }
 
     var onSelection: (_ subscription: ReaderSiteTopic) -> Void = { _ in }
@@ -28,12 +30,32 @@ struct ReaderSubscriptionsView: View {
     var body: some View {
         Group {
             if subscriptions.isEmpty {
-                emptyStateView
+                GeometryReader { proxy in
+                    ScrollView { // Make it compatible with refreshable()
+                        stateView.frame(width: proxy.size.width, height: proxy.size.height)
+                    }
+                }
             } else {
                 main
             }
         }
+        .refreshable {
+            await viewModel.refresh()
+        }
         .navigationTitle(Strings.title)
+    }
+
+    @ViewBuilder
+    private var stateView: some View {
+        if let error = viewModel.error {
+            EmptyStateView.failure(error: error) {
+                Task { await viewModel.refresh() }
+            }
+        } else if viewModel.isRefreshing {
+            ProgressView()
+        } else {
+            emptyStateView
+        }
     }
 
     private var emptyStateView: some View {
