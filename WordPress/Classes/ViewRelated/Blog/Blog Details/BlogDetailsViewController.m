@@ -491,11 +491,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
             [self showCommentsFromSource:BlogDetailsNavigationSourceLink];
             break;
         case BlogDetailsSubsectionMe:
-            self.restorableSelectedIndexPath = indexPath;
-            [self.tableView selectRowAtIndexPath:indexPath
-                                        animated:NO
-                                  scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
-            [self showMe];
+            [self showDetailViewForMeSubsectionWithUserInfo: userInfo];
             break;
         case BlogDetailsSubsectionSharing:
             if ([self.blog supports:BlogFeatureSharing]) {
@@ -536,6 +532,15 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
             break;
 
     }
+}
+
+- (MeViewController *)showDetailViewForMeSubsectionWithUserInfo:(NSDictionary *)userInfo {
+    NSIndexPath *indexPath = [self indexPathForSubsection:BlogDetailsSubsectionMe];
+    self.restorableSelectedIndexPath = indexPath;
+    [self.tableView selectRowAtIndexPath:indexPath
+                                animated:NO
+                          scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
+    return [self showMe];
 }
 
 // MARK: Todo: this needs to adjust based on the existence of the QSv2 section
@@ -1756,10 +1761,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     [self.presentationDelegate presentBlogDetailsViewController:controller];
 }
 
-- (void)showMe
+- (MeViewController *)showMe
 {
-    UIViewController *controller = [[MeViewController alloc] init];
+    MeViewController *controller = [[MeViewController alloc] init];
     [self.presentationDelegate presentBlogDetailsViewController:controller];
+    return controller;
 }
 
 - (void)showPeople

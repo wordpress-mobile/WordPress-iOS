@@ -143,12 +143,9 @@ class StaticScreensTabBarWrapper: RootViewPresenter {
         return tabBarController.meViewController
     }
 
-    func showMeScreen() {
+    func showMeScreen(completion: ((MeViewController) -> Void)?) {
         tabBarController.showMeTab()
-        popMeScreenToRoot()
-    }
-
-    func popMeScreenToRoot() {
-        tabBarController.meNavigationController?.popToRootViewController(animated: false)
+        tabBarController.meNavigationController.popToRootViewController(animated: false)
+        completion?(tabBarController.meViewController)
     }
 }
