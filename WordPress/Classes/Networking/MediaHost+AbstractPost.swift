@@ -5,17 +5,17 @@ import Foundation
 ///
 extension MediaHost {
     enum AbstractPostError: Swift.Error {
-        case baseInitializerError(error: BlogError, post: AbstractPost)
+        case baseInitializerError(error: BlogError)
     }
 
     init(with post: AbstractPost, failure: (AbstractPostError) -> ()) {
+        let postId = TaggedManagedObjectID(post)
         self.init(
             with: post.blog,
             failure: { error in
                 // We just associate a post with the underlying error for simpler debugging.
-                failure(AbstractPostError.baseInitializerError(
-                    error: error,
-                    post: post))
-        })
+                failure(AbstractPostError.baseInitializerError(error: error))
+            }
+        )
    }
 }
