@@ -1,5 +1,6 @@
 import CoreData
 import SwiftUI
+import Combine
 
 final class BlogListViewModel: NSObject, ObservableObject {
     @Published var searchText = "" {
@@ -19,6 +20,7 @@ final class BlogListViewModel: NSObject, ObservableObject {
     private let eventTracker: EventTracker
     private let recentSitesService: RecentSitesService
     private var syncBlogsTask: Task<Void, Error>?
+    private var cancellables: Set<AnyCancellable> = []
 
     var onAddSiteTapped: (AddSiteMenuViewModel.Selection) -> Void = { _ in }
 
@@ -34,6 +36,7 @@ final class BlogListViewModel: NSObject, ObservableObject {
         self.fetchedResultsController = createFetchedResultsController(in: contextManager.mainContext)
         super.init()
         setupFetchedResultsController()
+        setupObservers()
     }
 
     var isShowingRecentSites: Bool {
@@ -78,6 +81,14 @@ final class BlogListViewModel: NSObject, ObservableObject {
             wpAssertionFailure("sites-fetch-failed", userInfo: ["error": "\(error)"])
         }
         updateDisplayedSites()
+    }
+
+    private func setupObservers() {
+        NotificationCenter.default
+            .publisher(for: .WPRecentSitesChanged)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in self?.updateDisplayedSites() }
+            .store(in: &cancellables)
     }
 
     private func updateDisplayedSites() {
