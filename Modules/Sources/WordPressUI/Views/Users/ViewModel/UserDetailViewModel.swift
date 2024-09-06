@@ -1,5 +1,6 @@
 import SwiftUI
 
+@MainActor
 class UserDetailViewModel: ObservableObject {
 
     @Published
@@ -12,33 +13,25 @@ class UserDetailViewModel: ObservableObject {
     var error: Error? = nil
 
     func loadCurrentUserRole() async {
-        await MainActor.run {
-            withAnimation {
-                self.isLoadingCurrentUser = true
-            }
+        withAnimation {
+            isLoadingCurrentUser = true
         }
 
         do {
             let hasPermissions = try await UserObjectResolver.userProvider.fetchCurrentUserCan("edit_users")
-            self.error = nil
+            error = nil
 
-            await MainActor.run {
-                withAnimation {
-                    self.currentUserCanModifyUsers = hasPermissions
-                }
+            withAnimation {
+                currentUserCanModifyUsers = hasPermissions
             }
         } catch {
-            await MainActor.run {
-                withAnimation {
-                    self.error = error
-                }
+            withAnimation {
+                self.error = error
             }
         }
 
-        await MainActor.run {
-            withAnimation {
-                self.isLoadingCurrentUser = false
-            }
+        withAnimation {
+            isLoadingCurrentUser = false
         }
     }
 }

@@ -1,6 +1,7 @@
 import SwiftUI
 import WordPressShared
 
+@MainActor
 class UserListViewModel: ObservableObject {
 
     struct Section: Identifiable {
@@ -25,25 +26,53 @@ class UserListViewModel: ObservableObject {
     var searchTerm: String = "" {
         didSet {
             if searchTerm.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
-                self.sortedUsers = sortUsers(users)
+                setSearchResults(sortUsers(users))
             } else {
                 let searchResults = users.search(query: searchTerm)
-                self.sortedUsers = [Section(role: "Search Results", users: searchResults)]
+                setSearchResults([Section(role: "Search Results", users: searchResults)])
             }
         }
     }
 
-    @MainActor
     func fetchItems() async {
-        isLoadingItems = true
-        defer { isLoadingItems = false }
+        withAnimation {
+            isLoadingItems = true
+        }
 
         do {
-            let users = try await UserObjectResolver.userProvider.fetchUsers()
-            self.users = users
-            self.sortedUsers = sortUsers(users)
-        } catch let err {
-            self.error = err
+            let users = try await UserObjectResolver.userProvider.fetchUsers { cachedResults in
+                self.setUsers(cachedResults)
+            }
+            setUsers(users)
+        } catch {
+            self.error = error
+            isLoadingItems = false
+        }
+    }
+
+    @Sendable
+    func refreshItems() async {
+        do {
+            let users = try await UserObjectResolver.userProvider.fetchUsers { cachedResults in
+                self.setUsers(cachedResults)
+            }
+            setUsers(users)
+        } catch {
+            // Do nothing for now – this should probably show a "Toast" notification or something
+        }
+    }
+
+    func setUsers(_ newValue: [DisplayUser]) {
+        withAnimation {
+            self.users = newValue
+            self.sortedUsers = sortUsers(newValue)
+            isLoadingItems = false
+        }
+    }
+
+    func setSearchResults(_ newValue: [Section]) {
+        withAnimation {
+            self.sortedUsers = newValue
         }
     }
 

@@ -4,7 +4,8 @@ struct UserDetailView: View {
 
     let user: DisplayUser
 
-    let viewModel = UserDetailViewModel()
+    @StateObject
+    var viewModel = UserDetailViewModel()
 
     @Environment(\.dismiss)
     var dismissAction: DismissAction
@@ -43,8 +44,11 @@ struct UserDetailView: View {
                         Text(Strings.setNewPasswordActionTitle)
                     }
 
-                    Button(Strings.deleteUserActionTitle, role: .destructive) {
-                        //actionDispatcher.deleteUser(id: user.id, reassigningPostsTo: 42) // TODO
+                    NavigationLink {
+                        // Pass this view's dismiss action, because if we delete a user, we want that screen *and* this one gone
+                        UserDeleteView(user: user, dismiss: dismissAction)
+                    } label: {
+                        Text(Strings.deleteUserActionTitle)
                     }
                 }
             }

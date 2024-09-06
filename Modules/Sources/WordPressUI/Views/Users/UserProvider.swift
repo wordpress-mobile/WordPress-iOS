@@ -1,8 +1,13 @@
 import Foundation
 
 public protocol UserDataProvider {
+
+    typealias CachedUserListCallback = ([WordPressUI.DisplayUser]) async -> Void
+
     func fetchCurrentUserCan(_ capability: String) async throws -> Bool
-    func fetchUsers() async throws -> [DisplayUser]
+    func fetchUsers(cachedResults: CachedUserListCallback?) async throws -> [WordPressUI.DisplayUser]
+
+    func invalidateCaches() async throws
 }
 
 @MainActor
@@ -28,14 +33,19 @@ open class UserManagementActionDispatcher: ObservableObject {
 }
 
 package struct MockUserProvider: UserDataProvider {
+
     let dummyDataUrl = URL(string: "https://my.api.mockaroo.com/users.json?key=067c9730")!
 
-    package func fetchUsers() async throws -> [DisplayUser] {
+    package func fetchUsers(cachedResults: CachedUserListCallback? = nil) async throws -> [WordPressUI.DisplayUser] {
         let response = try await URLSession.shared.data(from: dummyDataUrl)
         return try JSONDecoder().decode([DisplayUser].self, from: response.0)
     }
 
     package func fetchCurrentUserCan(_ capability: String) async throws -> Bool {
         true
+    }
+
+    package func invalidateCaches() async throws {
+        // Do nothing
     }
 }

@@ -160,6 +160,10 @@ extension Blog {
         self.apiKey = newValue
     }
 
+    @objc var isSelfHosted: Bool {
+        self.account == nil
+    }
+
     @objc var supportsDotOrgRestApi: Bool {
         self.hasUrl() && self.hasApplicationToken()
     }

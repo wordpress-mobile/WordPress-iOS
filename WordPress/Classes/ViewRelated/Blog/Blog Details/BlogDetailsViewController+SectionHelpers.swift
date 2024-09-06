@@ -117,7 +117,7 @@ extension BlogDetailsViewController {
     }
 
     @objc func shouldAddUsersRow() -> Bool {
-        blog.supports(.wpOrgRESTAPI)
+        blog.isSelfHosted
     }
 
     @objc func shouldAddPluginsRow() -> Bool {
@@ -171,6 +171,11 @@ extension BlogDetailsViewController {
     }
 
     @objc func showUsers() {
+        guard self.blog.supportsDotOrgRestApi else {
+            // TODO: set up the info screen
+            return
+        }
+
         guard let presentationDelegate, let service = createUserService() else {
             return
         }
