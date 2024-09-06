@@ -23,7 +23,7 @@ struct ReaderSubscriptionsView: View {
         Group {
             if subscriptions.isEmpty {
                 GeometryReader { proxy in
-                    ScrollView { // Make it compatible with refreshable()
+                    ScrollView { // Makes it compatible with refreshable()
                         stateView.frame(width: proxy.size.width, height: proxy.size.height)
                     }
                 }

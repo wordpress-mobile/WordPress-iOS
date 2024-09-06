@@ -3,7 +3,7 @@ import SwiftUI
 struct ReaderSubscriptionCell: View {
     let site: ReaderSiteTopic
 
-    @State private var isEditingSettings = false
+    @State private var isShowingSettings = false
 
     var onDelete: (ReaderSiteTopic) -> Void
 
@@ -37,36 +37,37 @@ struct ReaderSubscriptionCell: View {
 
             Spacer()
 
-            buttonNotificationSettings
+            if let status = ReaderSubscriptionNotificationsStatus(site: site) {
+                makeButtonNotificationSettings(with: status)
+            }
             buttonMore
         }
     }
 
-    private var buttonNotificationSettings: some View {
+    private func makeButtonNotificationSettings(with status: ReaderSubscriptionNotificationsStatus) -> some View {
         Button {
-            isEditingSettings = true
+            isShowingSettings = true
         } label: {
-            // TODO: (wpsidebar) implement
-//            Group {
-//                switch site.status {
-//                case .all:
-//                    Image(systemName: "bell.and.waves.left.and.right")
-//                        .foregroundStyle(Color(.brand))
-//                case .personalized:
-//                    Image(systemName: "bell")
-//                        .foregroundStyle(Color(.brand))
-//                case .none:
-//                    Image(systemName: "bell.slash")
-//                        .foregroundStyle(.secondary)
-//                        .opacity(0.6)
-//                }
-//            }
-//            .font(.subheadline)
-//            .frame(width: 44, alignment: .center)
+            Group {
+                switch status {
+                case .all:
+                    Image(systemName: "bell.and.waves.left.and.right")
+                        .foregroundStyle(AppColor.brand)
+                case .personalized:
+                    Image(systemName: "bell")
+                        .foregroundStyle(AppColor.brand)
+                case .none:
+                    Image(systemName: "bell.slash")
+                        .foregroundStyle(.secondary)
+                        .opacity(0.6)
+                }
+            }
+            .font(.subheadline)
+            .frame(width: 44, alignment: .center)
         }
         .buttonStyle(.plain)
-        .popover(isPresented: $isEditingSettings) {
-            // TODO: (wpsidebar) implement
+        .popover(isPresented: $isShowingSettings) {
+            ReaderSubscriptionNotificationSettingsView(siteID: site.siteID.intValue)
         }
     }
 
@@ -74,11 +75,6 @@ struct ReaderSubscriptionCell: View {
         Menu {
             if let siteURL = URL(string: site.siteURL) {
                 ShareLink(item: siteURL)
-            }
-            Button {
-                // TODO: (wpsidebar) implement
-            } label: {
-                Label(Strings.settings, systemImage: "bell")
             }
             Button(role: .destructive) {
                 onDelete(site)

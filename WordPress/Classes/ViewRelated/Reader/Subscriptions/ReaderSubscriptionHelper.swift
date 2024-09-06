@@ -69,3 +69,28 @@ private func makeURL(fromUserInput string: String) -> URL? {
     }
     return nil
 }
+
+enum ReaderSubscriptionNotificationsStatus {
+    /// Receives both posts and notifications
+    case all
+    /// Receives some notifications
+    case personalized
+    /// Receives none
+    case none
+
+    init?(site: ReaderSiteTopic) {
+        guard let postSubscription = site.postSubscription,
+              let emailSubscription = site.emailSubscription else {
+            return nil
+        }
+        let sendPosts = postSubscription.sendPosts || emailSubscription.sendPosts
+        let sendComments = emailSubscription.sendComments
+        if sendPosts && sendComments {
+            self = .all
+        } else if sendPosts || sendComments {
+            self = .personalized
+        } else {
+            self = .none
+        }
+    }
+}

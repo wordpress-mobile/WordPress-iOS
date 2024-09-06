@@ -636,6 +636,8 @@
 		0CDB1BB12C8B6BA700C83860 /* ReaderSubscriptionAddButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDB1BAF2C8B6BA700C83860 /* ReaderSubscriptionAddButton.swift */; };
 		0CDB1BB32C8B974300C83860 /* ReaderSubscriptionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDB1BB22C8B974300C83860 /* ReaderSubscriptionHelper.swift */; };
 		0CDB1BB42C8B974300C83860 /* ReaderSubscriptionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDB1BB22C8B974300C83860 /* ReaderSubscriptionHelper.swift */; };
+		0CDB1BB62C8BC30900C83860 /* ReaderSubscriptionNotificationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDB1BB52C8BC30900C83860 /* ReaderSubscriptionNotificationSettingsView.swift */; };
+		0CDB1BB72C8BC30900C83860 /* ReaderSubscriptionNotificationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDB1BB52C8BC30900C83860 /* ReaderSubscriptionNotificationSettingsView.swift */; };
 		0CDB4CF42C5D6723001BE6D7 /* AppTips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDB4CF32C5D6723001BE6D7 /* AppTips.swift */; };
 		0CDB4CF52C5D6863001BE6D7 /* AppTips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDB4CF32C5D6723001BE6D7 /* AppTips.swift */; };
 		0CDEC40C2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDEC40B2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift */; };
@@ -6531,6 +6533,7 @@
 		0CDB1BAC2C8B500A00C83860 /* ReaderSubscriptionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSubscriptionsViewModel.swift; sourceTree = "<group>"; };
 		0CDB1BAF2C8B6BA700C83860 /* ReaderSubscriptionAddButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSubscriptionAddButton.swift; sourceTree = "<group>"; };
 		0CDB1BB22C8B974300C83860 /* ReaderSubscriptionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSubscriptionHelper.swift; sourceTree = "<group>"; };
+		0CDB1BB52C8BC30900C83860 /* ReaderSubscriptionNotificationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSubscriptionNotificationSettingsView.swift; sourceTree = "<group>"; };
 		0CDB4CF32C5D6723001BE6D7 /* AppTips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTips.swift; sourceTree = "<group>"; };
 		0CDEC40B2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazeCampaignsCardView.swift; sourceTree = "<group>"; };
 		0CE538C92B0D6E0000834BA2 /* ExternalMediaDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalMediaDataSource.swift; sourceTree = "<group>"; };
@@ -10810,6 +10813,7 @@
 				0CDB1BAC2C8B500A00C83860 /* ReaderSubscriptionsViewModel.swift */,
 				0CDB1BAF2C8B6BA700C83860 /* ReaderSubscriptionAddButton.swift */,
 				0CDB1BB22C8B974300C83860 /* ReaderSubscriptionHelper.swift */,
+				0CDB1BB52C8BC30900C83860 /* ReaderSubscriptionNotificationSettingsView.swift */,
 			);
 			path = Subscriptions;
 			sourceTree = "<group>";
@@ -22672,6 +22676,7 @@
 				FA0A1C362BBEB32F006A2D6F /* PostCoordinator+ResolveConflict.swift in Sources */,
 				1762B6DC2845510400F270A5 /* StatsReferrersChartViewModel.swift in Sources */,
 				3F851428260D1EA300A4B938 /* CircledIcon.swift in Sources */,
+				0CDB1BB62C8BC30900C83860 /* ReaderSubscriptionNotificationSettingsView.swift in Sources */,
 				3101866B1A373B01008F7DF6 /* WPTabBarController.m in Sources */,
 				803BB98C29637AFC00B3F6D6 /* BlurredEmptyViewController.swift in Sources */,
 				85B125461B0294F6008A3D95 /* UIAlertControllerProxy.m in Sources */,
@@ -25202,6 +25207,7 @@
 				3FFDEF7829177D7500B625CE /* MigrationNotificationsViewModel.swift in Sources */,
 				FABB23372602FC2C00C8785C /* WebNavigationDelegate.swift in Sources */,
 				FAFC065227D27241002F0483 /* BlogDetailsViewController+Dashboard.swift in Sources */,
+				0CDB1BB72C8BC30900C83860 /* ReaderSubscriptionNotificationSettingsView.swift in Sources */,
 				0C700B8A2AE1E1940085C2EE /* PageListItemViewModel.swift in Sources */,
 				8B55FAAD2614FC87007D618E /* Text+BoldSubString.swift in Sources */,
 				FABB23382602FC2C00C8785C /* WordPress-22-23.xcmappingmodel in Sources */,
