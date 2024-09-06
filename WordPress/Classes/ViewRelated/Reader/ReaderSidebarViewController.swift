@@ -151,7 +151,7 @@ private struct ReaderSidebarSubscriptionsSection: View {
             .tag(ReaderSidebarItem.subscription(TaggedManagedObjectID(site)))
             .swipeActions(edge: .trailing) {
                 Button(SharedStrings.Reader.unfollow, role: .destructive) {
-                    ReaderSubscriptionHelper.unfollow(site)
+                    ReaderSubscriptionHelper().unfollow(site)
                 }.tint(.red)
             }
         }
@@ -161,7 +161,7 @@ private struct ReaderSidebarSubscriptionsSection: View {
     func delete(at offsets: IndexSet) {
         let sites = offsets.map { subscriptions[$0] }
         for site in sites {
-            ReaderSubscriptionHelper.unfollow(site)
+            ReaderSubscriptionHelper().unfollow(site)
         }
     }
 }

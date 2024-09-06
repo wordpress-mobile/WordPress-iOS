@@ -35,7 +35,7 @@ struct ReaderSubscriptionsView: View {
             await viewModel.refresh()
         }
         .toolbar {
-            ReaderAddSubscriptionButton(style: .navigation)
+            ReaderSubscriptionAddButton(style: .navigation)
             if !subscriptions.isEmpty {
                 EditButton()
             }
@@ -63,14 +63,14 @@ struct ReaderSubscriptionsView: View {
         } description: {
             Text(Strings.emptyStateDetails)
         } actions: {
-            ReaderAddSubscriptionButton(style: .compact)
+            ReaderSubscriptionAddButton(style: .compact)
         }
     }
 
     private var main: some View {
         List {
             if !isShowingSearchResuts {
-                ReaderAddSubscriptionButton(style: .expanded)
+                ReaderSubscriptionAddButton(style: .expanded)
                     .listRowSeparator(.hidden)
                 ForEach(subscriptions, id: \.objectID, content: makeSubscriptionCell)
                     .onDelete(perform: delete)
@@ -104,7 +104,7 @@ struct ReaderSubscriptionsView: View {
         }
         .swipeActions(edge: .trailing) {
             Button(SharedStrings.Reader.unfollow, role: .destructive) {
-                ReaderSubscriptionHelper.unfollow(site)
+                ReaderSubscriptionHelper().unfollow(site)
             }.tint(.red)
         }
     }
@@ -124,26 +124,12 @@ struct ReaderSubscriptionsView: View {
     }
 
     private func delete(_ site: ReaderSiteTopic) {
-        ReaderSubscriptionHelper.unfollow(site)
+        ReaderSubscriptionHelper().unfollow(site)
     }
 
     private func reloadSearchResults(searchText: String) {
         let ranking = StringRankedSearch(searchTerm: searchText)
         searchResults = ranking.search(in: subscriptions) { "\($0.title) \($0.siteURL)" }
-    }
-}
-
-enum ReaderSubscriptionHelper {
-    static func unfollow(_ site: ReaderSiteTopic, in context: CoreDataStackSwift = ContextManager.shared) {
-        NotificationCenter.default.post(name: .ReaderTopicUnfollowed, object: nil, userInfo: [ReaderNotificationKeys.topic: site])
-
-        let service = ReaderTopicService(coreDataStack: context)
-        service.toggleFollowing(forSite: site, success: { _ in
-            // Do nothing
-        }, failure: { _, error in
-            DDLogError("Could not unfollow site: \(String(describing: error))")
-            Notice(title: ReaderFollowedSitesViewController.Strings.failedToUnfollow, message: error?.localizedDescription, feedbackType: .error).post()
-        })
     }
 }
 
