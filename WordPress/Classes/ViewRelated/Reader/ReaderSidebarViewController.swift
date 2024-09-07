@@ -37,10 +37,17 @@ final class ReaderSidebarViewController: UIHostingController<ReaderSidebarView> 
             showSecondary(makeAllSubscriptionsViewController(), isLargeTitle: true)
         case .subscription(let objectID):
             do {
-                let site = try viewContext.existingObject(with: objectID)
-                showSecondary(ReaderStreamViewController.controllerWithTopic(site))
+                let topic = try viewContext.existingObject(with: objectID)
+                showSecondary(ReaderStreamViewController.controllerWithTopic(topic))
             } catch {
                 wpAssertionFailure("site missing", userInfo: ["error": "\(error)"])
+            }
+        case .tag(let objectID):
+            do {
+                let topic = try viewContext.existingObject(with: objectID)
+                showSecondary(ReaderStreamViewController.controllerWithTopic(topic))
+            } catch {
+                wpAssertionFailure("tag missing", userInfo: ["error": "\(error)"])
             }
         }
     }
@@ -88,6 +95,7 @@ struct ReaderSidebarView: View {
     @ObservedObject var viewModel: ReaderSidebarViewModel
 
     @AppStorage("reader_sidebar_subscriptions_expanded") var isSectionSubscriptionsExpanded = true
+    @AppStorage("reader_sidebar_tags_expanded") var isSectionTagsExpanded = true
 
     var body: some View {
         List(selection: $viewModel.selection) {
@@ -100,6 +108,9 @@ struct ReaderSidebarView: View {
             }
             makeSection(Strings.subscriptions, isExpanded: $isSectionSubscriptionsExpanded) {
                 ReaderSidebarSubscriptionsSection(viewModel: viewModel)
+            }
+            makeSection(Strings.tags, isExpanded: $isSectionTagsExpanded) {
+                ReaderSidebarTagsSection()
             }
         }
         .listStyle(.sidebar)
@@ -134,8 +145,6 @@ private struct ReaderSidebarSubscriptionsSection: View {
     )
     private var subscriptions: FetchedResults<ReaderSiteTopic>
 
-    @State private var isShowingAll = false
-
     var body: some View {
         Label(Strings.allSubscriptions, systemImage: "checkmark.rectangle.stack")
             .tag(ReaderSidebarItem.allSubscriptions)
@@ -166,9 +175,36 @@ private struct ReaderSidebarSubscriptionsSection: View {
     }
 }
 
+private struct ReaderSidebarTagsSection: View {
+    @FetchRequest(
+        sortDescriptors: [SortDescriptor(\.title, order: .forward)],
+        predicate: NSPredicate(format: "following == YES AND showInMenu == YES AND type == 'tag'")
+    )
+    private var tags: FetchedResults<ReaderTagTopic>
+
+    var body: some View {
+        ForEach(tags, id: \.self) { tag in
+            Text(tag.title)
+                .lineLimit(1)
+                .tag(ReaderSidebarItem.tag(TaggedManagedObjectID(tag)))
+                .swipeActions(edge: .trailing) {
+                    Button(SharedStrings.Reader.unfollow, role: .destructive) {
+                        // TODO: (wpsidebar) implement
+                    }.tint(.red)
+                }
+        }
+        .onDelete(perform: delete)
+    }
+
+    func delete(at offsets: IndexSet) {
+        // TODO: (wpsidebar) implement
+    }
+}
+
 private struct Strings {
     static let reader = NSLocalizedString("reader.sidebar.navigationTitle", value: "Reader", comment: "Reader sidebar title")
     static let allSubscriptions = NSLocalizedString("reader.sidebar.allSubscriptions", value: "All Subscriptions", comment: "Reader sidebar button title")
     static let addSubscription = NSLocalizedString("reader.sidebar.addSubscription", value: "Add Subscription", comment: "Reader sidebar button title")
-    static let subscriptions = NSLocalizedString("reader.sidebar.sectionSubscriptionsTitle", value: "Subscriptions", comment: "Reader sidebar section title")
+    static let subscriptions = NSLocalizedString("reader.sidebar.section.subscriptions.tTitle", value: "Subscriptions", comment: "Reader sidebar section title")
+    static let tags = NSLocalizedString("reader.sidebar.section.subscriptions.title", value: "Tags", comment: "Reader sidebar section title")
 }
