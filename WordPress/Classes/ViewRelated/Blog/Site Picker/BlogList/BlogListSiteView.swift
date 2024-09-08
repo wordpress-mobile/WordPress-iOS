@@ -53,6 +53,7 @@ struct BlogListSiteViewModel: Identifiable {
     let searchTags: String
     let siteURL: URL?
     let badge: Badge?
+    let blog: Blog
 
     struct Badge {
         let title: String
@@ -60,13 +61,11 @@ struct BlogListSiteViewModel: Identifiable {
     }
 
     func makeIcon(with size: SiteIconViewModel.Size) -> SiteIconViewModel {
-        let context = ContextManager.shared.mainContext
-        guard let blog = try? context.existingObject(with: id) else { return icon }
-
-        return SiteIconViewModel(blog: blog, size: size)
+        SiteIconViewModel(blog: blog, size: size)
     }
 
     init(blog: Blog) {
+        self.blog = blog
         self.id = TaggedManagedObjectID(blog)
         self.title = blog.title ?? "–"
         self.domain = blog.displayURL as String? ?? ""
