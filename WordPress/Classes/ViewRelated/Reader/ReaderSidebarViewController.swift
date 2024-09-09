@@ -118,7 +118,7 @@ struct ReaderSidebarView: View {
         .toolbar {
             EditButton()
         }
-        .tint(Color(UIAppColor.primary))
+        .tint(Color(UIAppColor.brand))
         .environment(\.managedObjectContext, ContextManager.shared.mainContext)
     }
 
