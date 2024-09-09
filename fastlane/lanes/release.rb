@@ -440,7 +440,7 @@ end
 # @param [Boolean] beta Indicate if we should build a beta or regular release
 #
 def trigger_buildkite_release_build(branch:, beta:)
-  buildkite_trigger_build(
+  build_url = buildkite_trigger_build(
     buildkite_organization: BUILDKITE_ORGANIZATION,
     buildkite_pipeline: BUILDKITE_PIPELINE,
     branch: branch,
@@ -448,6 +448,9 @@ def trigger_buildkite_release_build(branch:, beta:)
     pipeline_file: 'release-builds.yml',
     message: beta ? 'Beta Builds' : 'Release Builds'
   )
+
+  message = "This build triggered a build on <code>#{branch}</code>:<br>- #{build_url}"
+  buildkite_annotate(style: 'info', context: 'trigger-release-build', message: message) if is_ci
 end
 
 # Checks that the Gutenberg pod is reference by a tag and not a commit
