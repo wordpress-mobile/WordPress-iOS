@@ -7,14 +7,20 @@ struct ReaderSubscriptionHelper {
         guard let url = makeURL(fromUserInput: siteURL) else {
             throw ReaderFollowSiteError.invalidURL
         }
+
+        let generator = UINotificationFeedbackGenerator()
+        generator.prepare()
+
         try await withUnsafeThrowingContinuation { continuation in
             let service = ReaderSiteService(coreDataStack: contextManager)
             service.followSite(by: url, success: {
                 postSiteFollowedNotification(siteURL: url)
                 continuation.resume(returning: ())
+                generator.notificationOccurred(.success)
             }, failure: { error in
                 DDLogError("Could not follow site: \(String(describing: error))")
                 continuation.resume(throwing: error ?? URLError(.unknown))
+                generator.notificationOccurred(.error)
             })
         }
     }
