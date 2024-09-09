@@ -9,7 +9,6 @@ extension MediaHost {
     }
 
     init(with post: AbstractPost, failure: (AbstractPostError) -> ()) {
-        let postId = TaggedManagedObjectID(post)
         self.init(
             with: post.blog,
             failure: { error in
