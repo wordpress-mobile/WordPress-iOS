@@ -648,6 +648,8 @@
 		0CDDCA092C8F4126005AACA3 /* ReaderTagsAddTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDDCA072C8F4126005AACA3 /* ReaderTagsAddTagView.swift */; };
 		0CDDCA0B2C8F4990005AACA3 /* ReaderTagsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDDCA0A2C8F4990005AACA3 /* ReaderTagsHelper.swift */; };
 		0CDDCA0C2C8F4990005AACA3 /* ReaderTagsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDDCA0A2C8F4990005AACA3 /* ReaderTagsHelper.swift */; };
+		0CDDCA102C8F9528005AACA3 /* ReaderSidebarListsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDDCA0F2C8F9528005AACA3 /* ReaderSidebarListsSection.swift */; };
+		0CDDCA112C8F9528005AACA3 /* ReaderSidebarListsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDDCA0F2C8F9528005AACA3 /* ReaderSidebarListsSection.swift */; };
 		0CDEC40C2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDEC40B2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift */; };
 		0CDEC40D2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDEC40B2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift */; };
 		0CE538CA2B0D6E0000834BA2 /* ExternalMediaDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE538C92B0D6E0000834BA2 /* ExternalMediaDataSource.swift */; };
@@ -6547,6 +6549,7 @@
 		0CDDCA032C8F3F6E005AACA3 /* ReaderSidebarTagsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSidebarTagsSection.swift; sourceTree = "<group>"; };
 		0CDDCA072C8F4126005AACA3 /* ReaderTagsAddTagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTagsAddTagView.swift; sourceTree = "<group>"; };
 		0CDDCA0A2C8F4990005AACA3 /* ReaderTagsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTagsHelper.swift; sourceTree = "<group>"; };
+		0CDDCA0F2C8F9528005AACA3 /* ReaderSidebarListsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSidebarListsSection.swift; sourceTree = "<group>"; };
 		0CDEC40B2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazeCampaignsCardView.swift; sourceTree = "<group>"; };
 		0CE538C92B0D6E0000834BA2 /* ExternalMediaDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalMediaDataSource.swift; sourceTree = "<group>"; };
 		0CE538CF2B0E317000834BA2 /* StockPhotosWelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosWelcomeView.swift; sourceTree = "<group>"; };
@@ -10759,6 +10762,7 @@
 				0CAC10932C876E47003AB1BC /* ReaderSidebarViewModel.swift */,
 				0CDDCA002C8F3F34005AACA3 /* ReaderSidebarSubscriptionsSection.swift */,
 				0CDDCA032C8F3F6E005AACA3 /* ReaderSidebarTagsSection.swift */,
+				0CDDCA0F2C8F9528005AACA3 /* ReaderSidebarListsSection.swift */,
 			);
 			name = Sidebar;
 			sourceTree = "<group>";
@@ -21645,6 +21649,7 @@
 				8313B9EE298B1ACD000AF26E /* SiteSettingsViewController+Blogging.swift in Sources */,
 				E15644F11CE0E56600D96E64 /* FeatureItemCell.swift in Sources */,
 				8BAC9D9E27BAB97E008EA44C /* BlogDashboardRemoteEntity.swift in Sources */,
+				0CDDCA102C8F9528005AACA3 /* ReaderSidebarListsSection.swift in Sources */,
 				E62AFB6B1DC8E593007484FC /* WPRichContentView.swift in Sources */,
 				9856A39D261FC21E008D6354 /* UserProfileUserInfoCell.swift in Sources */,
 				08B6E51A1F036CAD00268F57 /* MediaFileManager.swift in Sources */,
@@ -24505,6 +24510,7 @@
 				FABB21232602FC2C00C8785C /* InteractivePostViewDelegate.swift in Sources */,
 				FABB21252602FC2C00C8785C /* ActivityLogViewController.m in Sources */,
 				0189AF062ACAD89700F63393 /* ShoppingCartService.swift in Sources */,
+				0CDDCA112C8F9528005AACA3 /* ReaderSidebarListsSection.swift in Sources */,
 				FABB21262602FC2C00C8785C /* UIViewController+ChildViewController.swift in Sources */,
 				FABB21272602FC2C00C8785C /* Media+Blog.swift in Sources */,
 				0C03EFA32C498B3D00B7F828 /* BlogListSiteView.swift in Sources */,

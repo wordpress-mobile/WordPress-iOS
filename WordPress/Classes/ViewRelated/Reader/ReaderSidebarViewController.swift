@@ -50,6 +50,13 @@ final class ReaderSidebarViewController: UIHostingController<ReaderSidebarView> 
             } catch {
                 wpAssertionFailure("site missing", userInfo: ["error": "\(error)"])
             }
+        case .list(let objectID):
+            do {
+                let topic = try viewContext.existingObject(with: objectID)
+                showSecondary(ReaderStreamViewController.controllerWithTopic(topic))
+            } catch {
+                wpAssertionFailure("list missing", userInfo: ["error": "\(error)"])
+            }
         case .tag(let objectID):
             do {
                 let topic = try viewContext.existingObject(with: objectID)
@@ -130,6 +137,7 @@ struct ReaderSidebarView: View {
     @ObservedObject var viewModel: ReaderSidebarViewModel
 
     @AppStorage("reader_sidebar_subscriptions_expanded") var isSectionSubscriptionsExpanded = true
+    @AppStorage("reader_sidebar_lists_expanded") var isSectionListsExpanded = true
     @AppStorage("reader_sidebar_tags_expanded") var isSectionTagsExpanded = true
 
     var body: some View {
@@ -143,6 +151,9 @@ struct ReaderSidebarView: View {
             }
             makeSection(Strings.subscriptions, isExpanded: $isSectionSubscriptionsExpanded) {
                 ReaderSidebarSubscriptionsSection(viewModel: viewModel)
+            }
+            makeSection(Strings.lists, isExpanded: $isSectionListsExpanded) {
+                ReaderSidebarListsSection(viewModel: viewModel)
             }
             makeSection(Strings.tags, isExpanded: $isSectionTagsExpanded) {
                 ReaderSidebarTagsSection(viewModel: viewModel)
@@ -174,5 +185,6 @@ struct ReaderSidebarView: View {
 private struct Strings {
     static let reader = NSLocalizedString("reader.sidebar.navigationTitle", value: "Reader", comment: "Reader sidebar title")
     static let subscriptions = NSLocalizedString("reader.sidebar.section.subscriptions.tTitle", value: "Subscriptions", comment: "Reader sidebar section title")
+    static let lists = NSLocalizedString("reader.sidebar.section.lists.title", value: "Lists", comment: "Reader sidebar section title")
     static let tags = NSLocalizedString("reader.sidebar.section.tags.title", value: "Tags", comment: "Reader sidebar section title")
 }
