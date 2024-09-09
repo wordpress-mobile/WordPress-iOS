@@ -4,7 +4,6 @@ struct ReaderSubscriptionAddButton: View {
     enum Style {
         case navigation
         case compact
-        case expanded
     }
 
     let style: Style
@@ -30,33 +29,7 @@ struct ReaderSubscriptionAddButton: View {
             Button(Strings.addSubscription) {
                 isShowingPopover = true
             }.buttonStyle(.primary)
-        case .expanded:
-            expanded
         }
-    }
-
-    private var expanded: some View {
-        Button {
-            isShowingPopover = true
-        } label: {
-            HStack(spacing: 16) {
-                Image(systemName: "plus.circle.fill")
-                    .foregroundStyle(AppColor.brand, Color(.secondarySystemFill))
-                    .font(.largeTitle.weight(.light))
-                    .frame(width: 40)
-                    .padding(.leading, 4)
-                VStack(alignment: .leading) {
-                    Text(Strings.addSubscription)
-                        .font(.callout.weight(.medium))
-                    Text(Strings.addSubscriptionSubtitle)
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
-                }
-                .lineLimit(1)
-            }
-            .padding(.bottom, 4)
-        }
-        .buttonStyle(.plain)
     }
 }
 

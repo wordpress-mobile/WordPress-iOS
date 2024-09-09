@@ -69,13 +69,11 @@ struct ReaderSubscriptionsView: View {
 
     private var main: some View {
         List {
-            if !isShowingSearchResuts {
-                ReaderSubscriptionAddButton(style: .expanded)
-                    .listRowSeparator(.hidden)
-                ForEach(subscriptions, id: \.objectID, content: makeSubscriptionCell)
+            if isShowingSearchResuts {
+                ForEach(searchResults, id: \.objectID, content: makeSubscriptionCell)
                     .onDelete(perform: delete)
             } else {
-                ForEach(searchResults, id: \.objectID, content: makeSubscriptionCell)
+                ForEach(subscriptions, id: \.objectID, content: makeSubscriptionCell)
                     .onDelete(perform: delete)
             }
         }
