@@ -12,6 +12,8 @@ final class ReaderSidebarViewController: UIHostingController<ReaderSidebarView> 
     init(viewModel: ReaderSidebarViewModel) {
         self.viewModel = viewModel
         super.init(rootView: ReaderSidebarView(viewModel: viewModel))
+
+        viewModel.navigate = { [weak self] in self?.navigate(to: $0) }
     }
 
     required dynamic init?(coder aDecoder: NSCoder) {
@@ -62,7 +64,7 @@ final class ReaderSidebarViewController: UIHostingController<ReaderSidebarView> 
                     return ReaderStreamViewController.controllerWithTopic(topic)
                 }
             } else {
-                return UIHostingController(rootView: EmptyStateView(SharedStrings.Error.generic, systemImage: "exclamationmark.circle")) // This should never happen
+                return makeErrorViewController() // This should never happen
             }
         case .saved:
             return ReaderStreamViewController.controllerForContentType(.saved)
@@ -80,6 +82,28 @@ final class ReaderSidebarViewController: UIHostingController<ReaderSidebarView> 
             navigationVC?.pushViewController(streamVC, animated: true)
         }.environment(\.managedObjectContext, viewContext)
         return UIHostingController(rootView: view)
+    }
+
+    private func navigate(to item: ReaderSidebarNavigation) {
+        switch item {
+        case .discoverTags:
+            let tags = viewContext.allObjects(
+                ofType: ReaderTagTopic.self,
+                matching: ReaderSidebarTagsSection.predicate,
+                sortedBy: [NSSortDescriptor(SortDescriptor<ReaderTagTopic>(\.title, order: .forward))]
+            )
+            let interestsVC = ReaderSelectInterestsViewController(topics: tags)
+            interestsVC.didSaveInterests = { [weak self] _ in
+                self?.dismiss(animated: true)
+            }
+            let navigationVC = UINavigationController(rootViewController: interestsVC)
+            navigationVC.modalPresentationStyle = .formSheet
+            present(navigationVC, animated: true, completion: nil)
+        }
+    }
+
+    private func makeErrorViewController() -> UIViewController {
+        UIHostingController(rootView: EmptyStateView(SharedStrings.Error.generic, systemImage: "exclamationmark.circle"))
     }
 
     private func showSecondary(_ viewController: UIViewController, isLargeTitle: Bool = false) {
@@ -110,7 +134,7 @@ struct ReaderSidebarView: View {
                 ReaderSidebarSubscriptionsSection(viewModel: viewModel)
             }
             makeSection(Strings.tags, isExpanded: $isSectionTagsExpanded) {
-                ReaderSidebarTagsSection()
+                ReaderSidebarTagsSection(viewModel: viewModel)
             }
         }
         .listStyle(.sidebar)
@@ -176,11 +200,15 @@ private struct ReaderSidebarSubscriptionsSection: View {
 }
 
 private struct ReaderSidebarTagsSection: View {
+    let viewModel: ReaderSidebarViewModel
+
     @FetchRequest(
         sortDescriptors: [SortDescriptor(\.title, order: .forward)],
-        predicate: NSPredicate(format: "following == YES AND showInMenu == YES AND type == 'tag'")
+        predicate: ReaderSidebarTagsSection.predicate
     )
     private var tags: FetchedResults<ReaderTagTopic>
+
+    static let predicate = NSPredicate(format: "following == YES AND showInMenu == YES AND type == 'tag'")
 
     var body: some View {
         ForEach(tags, id: \.self) { tag in
@@ -207,7 +235,7 @@ private struct ReaderSidebarTagsSection: View {
         }
 
         Button {
-            // TODO: (wpsidebar) implement
+            viewModel.navigate(.discoverTags)
         } label: {
             Label(Strings.discoverTags, systemImage: "sparkle.magnifyingglass")
         }

@@ -139,7 +139,7 @@ extension NSManagedObjectContext {
             objects = try fetch(request) as? [T]
         } catch {
             DDLogError("Error loading Objects [\(String(describing: T.entityName))")
-            assertionFailure()
+            wpAssertionFailure("CoreData.loadObjects failed", userInfo: ["error": "\(error)"])
         }
 
         return objects ?? []

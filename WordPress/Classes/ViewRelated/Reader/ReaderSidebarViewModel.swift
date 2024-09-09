@@ -8,6 +8,8 @@ final class ReaderSidebarViewModel: ObservableObject {
     private let tabItemsStore: ReaderTabItemsStoreProtocol
     private let contextManager: CoreDataStackSwift
 
+    var navigate: (ReaderSidebarNavigation) -> Void = { _ in }
+
     init(tabItemsStore: ReaderTabItemsStoreProtocol = ReaderTabItemsStore(),
          contextManager: CoreDataStackSwift = ContextManager.shared) {
         self.tabItemsStore = tabItemsStore
@@ -34,6 +36,10 @@ enum ReaderSidebarItem: Identifiable, Hashable {
     case tag(TaggedManagedObjectID<ReaderTagTopic>)
 
     var id: ReaderSidebarItem { self }
+}
+
+enum ReaderSidebarNavigation {
+    case discoverTags
 }
 
 /// One of the predefined main navigation areas in the reader. The app displays
