@@ -184,16 +184,33 @@ private struct ReaderSidebarTagsSection: View {
 
     var body: some View {
         ForEach(tags, id: \.self) { tag in
-            Text(tag.title)
-                .lineLimit(1)
-                .tag(ReaderSidebarItem.tag(TaggedManagedObjectID(tag)))
-                .swipeActions(edge: .trailing) {
-                    Button(SharedStrings.Reader.unfollow, role: .destructive) {
-                        // TODO: (wpsidebar) implement
-                    }.tint(.red)
-                }
+            Label {
+                Text(tag.title)
+                    .lineLimit(1)
+            } icon: {
+                Image(systemName: "tag")
+                    .foregroundStyle(.secondary)
+            }
+            .tag(ReaderSidebarItem.tag(TaggedManagedObjectID(tag)))
+            .swipeActions(edge: .trailing) {
+                Button(SharedStrings.Reader.unfollow, role: .destructive) {
+                    // TODO: (wpsidebar) implement
+                }.tint(.red)
+            }
         }
         .onDelete(perform: delete)
+
+        Button {
+            // TODO: (wpsidebar) implement
+        } label: {
+            Label(Strings.addTag, systemImage: "plus.circle")
+        }
+
+        Button {
+            // TODO: (wpsidebar) implement
+        } label: {
+            Label(Strings.discoverTags, systemImage: "sparkle.magnifyingglass")
+        }
     }
 
     func delete(at offsets: IndexSet) {
@@ -206,5 +223,7 @@ private struct Strings {
     static let allSubscriptions = NSLocalizedString("reader.sidebar.allSubscriptions", value: "All Subscriptions", comment: "Reader sidebar button title")
     static let addSubscription = NSLocalizedString("reader.sidebar.addSubscription", value: "Add Subscription", comment: "Reader sidebar button title")
     static let subscriptions = NSLocalizedString("reader.sidebar.section.subscriptions.tTitle", value: "Subscriptions", comment: "Reader sidebar section title")
-    static let tags = NSLocalizedString("reader.sidebar.section.subscriptions.title", value: "Tags", comment: "Reader sidebar section title")
+    static let tags = NSLocalizedString("reader.sidebar.section.tags.title", value: "Tags", comment: "Reader sidebar section title")
+    static let addTag = NSLocalizedString("reader.sidebar.section.tags.addTag", value: "Add tag", comment: "Reader sidebar button")
+    static let discoverTags = NSLocalizedString("reader.sidebar.section.tags.discoverTags", value: "Discover More Tags", comment: "Reader sidebar button")
 }
