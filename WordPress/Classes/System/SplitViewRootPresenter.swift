@@ -11,6 +11,12 @@ final class SplitViewRootPresenter: RootViewPresenter {
     private weak var sitePickerPopoverVC: UIViewController?
     private var cancellables: [AnyCancellable] = []
 
+    private var notifications: UINavigationController? {
+        didSet {
+            assert(notifications == nil || notifications?.viewControllers.first is NotificationsViewController)
+        }
+    }
+
     /// Is the app displaying tab bar UI instead of the full split view UI (with sidebar).
     private var isDisplayingTabBar: Bool {
         if splitVC.isCollapsed {
@@ -77,11 +83,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
                 // TODO: (wpsidebar) show empty state
             }
         case .notifications:
-            // TODO: (wpsidebar) update tab bar item when new notifications arrive
-            let notificationsVC = UIStoryboard(name: "Notifications", bundle: nil).instantiateInitialViewController() as! NotificationsViewController
-            notificationsVC.isSidebarModeEnabled = true
-            let navigationVC = UINavigationController(rootViewController: notificationsVC)
-            splitVC.setViewController(navigationVC, for: .supplementary)
+            showNotificationsTab(completion: nil)
         case .reader:
             let viewModel = ReaderSidebarViewModel()
             let sidebarVC = ReaderSidebarViewController(viewModel: viewModel)
@@ -309,22 +311,22 @@ final class SplitViewRootPresenter: RootViewPresenter {
         fatalError()
     }
 
-    var notificationsViewController: NotificationsViewController?
+    func showNotificationsTab(completion: ((NotificationsViewController) -> Void)?) {
+        // TODO: (wpsidebar) update tab bar item when new notifications arrive
+        let navigationController: UINavigationController
+        if let notifications = self.notifications {
+            navigationController = notifications
+        } else {
+            let notificationsVC = UIStoryboard(name: "Notifications", bundle: nil).instantiateInitialViewController() as! NotificationsViewController
+            notificationsVC.isSidebarModeEnabled = true
+            let navigationVC = UINavigationController(rootViewController: notificationsVC)
+            self.notifications = navigationVC
 
-    func showNotificationsTab() {
-        fatalError()
-    }
+            navigationController = navigationVC
+        }
 
-    func showNotificationsTabForNote(withID notificationID: String) {
-        fatalError()
-    }
-
-    func switchNotificationsTabToNotificationSettings() {
-        fatalError()
-    }
-
-    func popNotificationsTabToRoot() {
-        fatalError()
+        splitVC.setViewController(navigationController, for: .supplementary)
+        completion?(navigationController.viewControllers.first as! NotificationsViewController)
     }
 
     var meViewController: MeViewController?

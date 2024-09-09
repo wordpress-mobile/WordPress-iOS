@@ -38,15 +38,10 @@ extern NSNotificationName const WPTabBarHeightChangedNotification;
 
 - (void)showMySitesTab;
 - (void)showReaderTab;
-- (void)showNotificationsTab;
 - (void)showReaderTabForPost:(NSNumber *)postId onBlog:(NSNumber *)blogId;
 - (void)showMeTab;
 - (void)reloadSplitViewControllers;
 
-- (void)popNotificationsTabToRoot;
-- (void)switchNotificationsTabToNotificationSettings;
-
-- (void)showNotificationsTabForNoteWithID:(NSString *)notificationID;
 - (void)updateNotificationBadgeVisibility;
 
 @end

@@ -398,12 +398,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     return YES;
 }
 
-- (void)showNotificationsTabForNoteWithID:(NSString *)notificationID
-{
-    [self setSelectedIndex:WPTabNotifications];
-    [self.notificationsViewController showDetailsForNotificationWithID:notificationID];
-}
-
 #pragma mark - UITabBarDelegate
 
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
