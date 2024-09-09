@@ -19,6 +19,9 @@ platform :ios do
     # Check out the up-to-date default branch, the designated starting point for the code freeze
     Fastlane::Helper::GitHelper.checkout_and_pull(DEFAULT_BRANCH)
 
+    # Checks if internal dependencies are on a stable version
+    check_pods_references
+
     # Make sure that Gutenberg is configured as expected for a successful code freeze
     gutenberg_dep_check
 
@@ -104,30 +107,44 @@ platform :ios do
 
     push_to_git_remote(tags: false)
 
-    attempts = 0
+    # Protect release/* branch
+    copy_branch_protection(
+      repository: GITHUB_REPO,
+      from_branch: DEFAULT_BRANCH,
+      to_branch: release_branch_name,
+    )
+
     begin
-      attempts += 1
-      copy_branch_protection(
+      # Move PRs to next milestone
+      moved_prs = update_assigned_milestone(
         repository: GITHUB_REPO,
-        from_branch: DEFAULT_BRANCH,
-        to_branch: release_branch_name,
-        github_token: get_required_env('GITHUB_TOKEN')
+        from_milestone: new_version,
+        to_milestone: release_version_next,
+        comment: "Version `#{new_version}` has now entered code-freeze, so the milestone of this PR has been updated to `#{release_version_next}`."
+      )
+
+      # Add ❄️ marker to milestone title to indicate we entered code-freeze
+      set_milestone_frozen_marker(
+        repository: GITHUB_REPO,
+        milestone: new_version
       )
     rescue StandardError => e
-      if attempts < 2
-        sleep_time = 5
-        UI.message("Failed to set branch protection on GitHub. Retrying in #{sleep_time} seconds in case it was because the API hadn't noticed the new branch yet.")
-        sleep(sleep_time)
-        retry
-      else
-        UI.error("Failed to set branch protection on GitHub after #{attempts} attempts")
-        raise e
-      end
+      moved_prs = []
+
+      report_milestone_error(error_title: "Error freezing milestone `#{new_version}`: #{e.message}")
     end
 
-    set_milestone_frozen_marker(repository: GITHUB_REPO, milestone: new_version)
+    UI.message("Moved the following PRs to milestone #{release_version_next}: #{moved_prs.join(', ')}")
 
-    check_pods_references
+    # Annotate the build with the moved PRs
+    moved_prs_info = if moved_prs.empty?
+                       "👍 No open PR were targeting `#{new_version}` at the time of code-freeze"
+                     else
+                       "#{moved_prs.count} PRs targeting `#{new_version}` were still open and thus moved to `#{release_version_next}`:\n" \
+                         + moved_prs.map { |pr_num| "[##{pr_num}](https://github.com/#{GITHUB_REPO}/pull/#{pr_num})" }.join(', ')
+                     end
+
+    buildkite_annotate(style: moved_prs.empty? ? 'success' : 'warning', context: 'start-code-freeze', message: moved_prs_info) if is_ci
 
     print_release_notes_reminder
 
@@ -572,6 +589,19 @@ rescue StandardError => e
   UI.user_error!(error_message)
 
   pr_url
+end
+
+def report_milestone_error(error_title:)
+  error_message = <<-MESSAGE
+    #{error_title}
+
+    - If this is not the first time you are running the release task (e.g. retrying because it failed on first attempt), the milestone might have already been closed and this error is expected.
+    - Otherwise if this is the first you are running the release task for this version, please investigate the error.
+  MESSAGE
+
+  UI.error(error_message)
+
+  buildkite_annotate(style: 'warning', context: 'error-with-milestone', message: error_message) if is_ci
 end
 
 def check_pods_references
