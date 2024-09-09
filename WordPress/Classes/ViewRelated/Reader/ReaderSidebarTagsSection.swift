@@ -26,7 +26,7 @@ struct ReaderSidebarTagsSection: View {
             .tag(ReaderSidebarItem.tag(TaggedManagedObjectID(tag)))
             .swipeActions(edge: .trailing) {
                 Button(SharedStrings.Reader.unfollow, role: .destructive) {
-                    // TODO: (wpsidebar) implement
+                    ReaderTagsHelper().unfollow(tag)
                 }.tint(.red)
             }
         }
@@ -46,7 +46,10 @@ struct ReaderSidebarTagsSection: View {
     }
 
     func delete(at offsets: IndexSet) {
-        // TODO: (wpsidebar) implement
+        let tags = offsets.map { self.tags[$0] }
+        for tag in tags {
+            ReaderTagsHelper().unfollow(tag)
+        }
     }
 }
 
