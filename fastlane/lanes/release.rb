@@ -174,12 +174,7 @@ platform :ios do
 
     trigger_beta_build
 
-    pr_url = create_release_management_pull_request(
-      release_version: version,
-      base_branch: DEFAULT_BRANCH,
-      title: "Merge #{version} code freeze"
-    )
-
+    pr_url = create_backmerge_pr
     message = <<~MESSAGE
       Code freeze completed successfully. Next, review and merge the [integration PR](#{pr_url}).
     MESSAGE
@@ -236,16 +231,7 @@ platform :ios do
 
     trigger_beta_build
 
-    # Create an intermediate branch to avoid conflicts when integrating the changes
-    Fastlane::Helper::GitHelper.create_branch("new_beta/#{release_version}")
-    push_to_git_remote(tags: false)
-
-    pr_url = create_release_management_pull_request(
-      release_version: release_version,
-      base_branch: DEFAULT_BRANCH,
-      title: "Merge changes from #{build_code_current}"
-    )
-
+    pr_url = create_backmerge_pr
     message = <<~MESSAGE
       Beta deployment was successful. Next, review and merge the [integration PR](#{pr_url}).
     MESSAGE
@@ -367,6 +353,8 @@ platform :ios do
     UI.user_error!('Aborted by user request') unless options[:skip_confirm] || UI.confirm('Do you want to continue?')
 
     trigger_release_build(branch_to_build: "release/#{release_version_current}")
+    create_backmerge_pr
+
   end
 
   # Finalizes a release at the end of a sprint to submit to the App Store
@@ -416,12 +404,7 @@ platform :ios do
 
     trigger_release_build
 
-    pr_url = create_release_management_pull_request(
-      release_version: release_version_next,
-      base_branch: DEFAULT_BRANCH,
-      title: "Merge #{version} release finalization"
-    )
-
+    pr_url = create_backmerge_pr
     message = <<~MESSAGE
       Release successfully finalized. Next, review and merge the [integration PR](#{pr_url}).
     MESSAGE
@@ -562,34 +545,29 @@ def commit_version_and_build_files
   )
 end
 
-def create_release_management_pull_request(release_version:, base_branch:, title:)
-  token = ENV.fetch('GITHUB_TOKEN', nil)
+def create_backmerge_pr
+  version = release_version_current
 
-  UI.user_error!('Please export a GitHub API token in the environment as GITHUB_TOKEN') if token.nil?
-
-  pr_url = create_pull_request(
-    api_token: token,
-    repo: 'wordpress-mobile/WordPress-iOS',
-    title: title,
-    head: Fastlane::Helper::GitHelper.current_git_branch,
-    base: base_branch,
-    labels: 'Releases'
-  )
-
-  # Next, set the milestone for the PR
-  #
-  # The create_pull_request action has a 'milestone' parameter, but it expects the milestone id.
-  # We don't know the id of the milestone, but we can use a different action to set it.
-  #
-  # PR URLs are in the format github.com/org/repo/pull/id
-  pr_number = File.basename(pr_url)
-  update_assigned_milestone(
+  pr_url = create_release_backmerge_pull_request(
     repository: GITHUB_REPO,
-    numbers: [pr_number],
-    to_milestone: release_version
+    source_branch: "release/#{version}",
+    labels: ['Releases'],
+    milestone_title: release_version_next
   )
+rescue StandardError => e
+  error_message = <<-MESSAGE
+    Error creating backmerge pull request:
 
-  # Return the PR URL
+    #{e.message}
+
+    If this is not the first time you are running the release task, the backmerge PR for the version `#{version}` might have already been previously created.
+    Please close any previous backmerge PR for `#{version}`, delete the previous merge branch, then run the release task again.
+  MESSAGE
+
+  buildkite_annotate(style: 'error', context: 'error-creating-backmerge', message: error_message) if is_ci
+
+  UI.user_error!(error_message)
+
   pr_url
 end
 
