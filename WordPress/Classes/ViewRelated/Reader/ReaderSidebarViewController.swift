@@ -86,6 +86,11 @@ final class ReaderSidebarViewController: UIHostingController<ReaderSidebarView> 
 
     private func navigate(to item: ReaderSidebarNavigation) {
         switch item {
+        case .addTag:
+            let addTagVC = UIHostingController(rootView: ReaderTagsAddTagView())
+            addTagVC.modalPresentationStyle = .formSheet
+            addTagVC.preferredContentSize = CGSize(width: 420, height: 124)
+            present(addTagVC, animated: true, completion: nil)
         case .discoverTags:
             let tags = viewContext.allObjects(
                 ofType: ReaderTagTopic.self,
@@ -142,7 +147,7 @@ struct ReaderSidebarView: View {
         .toolbar {
             EditButton()
         }
-        .tint(Color(UIAppColor.brand))
+        .tint(Color(UIAppColor.primary))
         .environment(\.managedObjectContext, ContextManager.shared.mainContext)
     }
 

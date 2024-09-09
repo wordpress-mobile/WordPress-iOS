@@ -33,7 +33,7 @@ struct ReaderSidebarTagsSection: View {
         .onDelete(perform: delete)
 
         Button {
-            // TODO: (wpsidebar) implement
+            viewModel.navigate(.addTag)
         } label: {
             Label(Strings.addTag, systemImage: "plus.circle")
         }

@@ -39,6 +39,7 @@ enum ReaderSidebarItem: Identifiable, Hashable {
 }
 
 enum ReaderSidebarNavigation {
+    case addTag
     case discoverTags
 }
 

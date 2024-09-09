@@ -3,6 +3,7 @@ import SwiftUI
 struct ReaderSubscriptionHelper {
     let contextManager: CoreDataStackSwift = ContextManager.shared
 
+    @MainActor
     func followSite(withURL siteURL: String) async throws {
         guard let url = makeURL(fromUserInput: siteURL) else {
             throw ReaderFollowSiteError.invalidURL
@@ -15,12 +16,12 @@ struct ReaderSubscriptionHelper {
             let service = ReaderSiteService(coreDataStack: contextManager)
             service.followSite(by: url, success: {
                 postSiteFollowedNotification(siteURL: url)
-                continuation.resume(returning: ())
                 generator.notificationOccurred(.success)
+                continuation.resume(returning: ())
             }, failure: { error in
                 DDLogError("Could not follow site: \(String(describing: error))")
-                continuation.resume(throwing: error ?? URLError(.unknown))
                 generator.notificationOccurred(.error)
+                continuation.resume(throwing: error ?? URLError(.unknown))
             })
         }
     }
@@ -36,14 +37,19 @@ struct ReaderSubscriptionHelper {
         })
     }
 
+    @MainActor
     func unfollow(_ site: ReaderSiteTopic) {
+        let generator = UINotificationFeedbackGenerator()
+        generator.prepare()
+
         NotificationCenter.default.post(name: .ReaderTopicUnfollowed, object: nil, userInfo: [ReaderNotificationKeys.topic: site])
         let service = ReaderTopicService(coreDataStack: contextManager)
         service.toggleFollowing(forSite: site, success: { _ in
-            // Do nothing
+            generator.notificationOccurred(.success)
         }, failure: { _, error in
             DDLogError("Could not unfollow site: \(String(describing: error))")
             Notice(title: ReaderFollowedSitesViewController.Strings.failedToUnfollow, message: error?.localizedDescription, feedbackType: .error).post()
+            generator.notificationOccurred(.error)
         })
     }
 }
