@@ -169,9 +169,7 @@ platform :ios do
   #
   desc 'Completes the final steps for the code freeze'
   lane :complete_code_freeze do |skip_confirm: false|
-    ensure_git_branch_is_release_branch
-
-    # Verify that there's nothing in progress in the working copy
+    ensure_git_branch_is_release_branch!
     ensure_git_status_clean
 
     version = release_version_current
@@ -215,7 +213,7 @@ platform :ios do
       UI.user_error!("Release branch for version #{release_version} doesn't exist.")
     end
 
-    ensure_git_branch_is_release_branch # This check is mostly redundant
+    ensure_git_branch_is_release_branch! # This check is mostly redundant
 
     # The `release_version_next` is used as the `new internal release version` value because the external and internal
     # release versions are always the same.
@@ -264,7 +262,7 @@ platform :ios do
       UI.user_error!("Release branch for version #{release_version} doesn't exist.")
     end
 
-    ensure_git_branch_is_release_branch # This check is mostly redundant
+    ensure_git_branch_is_release_branch! # This check is mostly redundant
 
     git_pull
 
@@ -357,21 +355,28 @@ platform :ios do
   # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
   #
   desc 'Performs the final checks and triggers a release build for the hotfix in the current branch'
-  lane :finalize_hotfix_release do |options|
-    ensure_git_branch_is_release_branch
-
-    # Verify that there's nothing in progress in the working copy
+  lane :finalize_hotfix_release do |skip_confirm: false|
+    ensure_git_branch_is_release_branch!
     ensure_git_status_clean
 
-    # Pull the latest hotfix release branch changes
-    git_pull
+    hotfix_version = release_version_current
 
-    UI.important("Triggering hotfix build for version: #{release_version_current}")
-    UI.user_error!('Aborted by user request') unless options[:skip_confirm] || UI.confirm('Do you want to continue?')
+    UI.important("Triggering hotfix build for version: #{hotfix_version}")
+    UI.user_error!("Terminating as requested. Don't forget to run the remainder of this automation manually.") unless skip_confirm || UI.confirm('Do you want to continue?')
 
-    trigger_release_build(branch_to_build: "release/#{release_version_current}")
+    trigger_release_build(branch_to_build: "release/#{hotfix_version}")
+
     create_backmerge_pr
 
+    # Close hotfix milestone
+    begin
+      close_milestone(
+        repository: GITHUB_REPO,
+        milestone: hotfix_version
+      )
+    rescue StandardError => e
+      report_milestone_error(error_title: "Error closing milestone `#{hotfix_version}`: #{e.message}")
+    end
   end
 
   # Finalizes a release at the end of a sprint to submit to the App Store
@@ -384,40 +389,27 @@ platform :ios do
   # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
   #
   desc 'Trigger the final release build on CI'
-  lane :finalize_release do |options|
+  lane :finalize_release do |skip_confirm: false|
     UI.user_error!('To finalize a hotfix, please use the finalize_hotfix_release lane instead') if ios_current_branch_is_hotfix
 
-    ensure_git_branch_is_release_branch
-
-    # Verify that there's nothing in progress in the working copy
+    ensure_git_branch_is_release_branch!
     ensure_git_status_clean
 
-    skip_user_confirmation = options[:skip_confirm]
-
     UI.important("Finalizing release: #{release_version_current}")
-    UI.user_error!('Aborted by user request') unless skip_user_confirmation || UI.confirm('Do you want to continue?')
+    UI.user_error!('Aborted by user request') unless skip_confirm || UI.confirm('Do you want to continue?')
 
-    git_pull
-
-    check_all_translations(interactive: skip_user_confirmation == false)
+    check_all_translations(interactive: skip_confirm == false)
 
     download_localized_strings_and_metadata(options)
-    lint_localizations(allow_retry: skip_user_confirmation == false)
+    lint_localizations(allow_retry: skip_confirm == false)
 
     bump_build_codes
 
-    unless skip_user_confirmation || UI.confirm('Ready to push changes to remote and trigger the release build?')
-      UI.message("Terminating as requested. Don't forget to run the remainder of this automation manually.")
-      next
-    end
+    UI.user_error!("Terminating as requested. Don't forget to run the remainder of this automation manually.") unless skip_confirm || UI.confirm('Ready to push changes to remote and trigger the release build?')
 
     push_to_git_remote(tags: false)
 
     version = release_version_current
-    remove_branch_protection(repository: GITHUB_REPO, branch: release_branch_name)
-    set_milestone_frozen_marker(repository: GITHUB_REPO, milestone: version, freeze: false)
-    create_new_milestone(repository: GITHUB_REPO)
-    close_milestone(repository: GITHUB_REPO, milestone: version)
 
     trigger_release_build
 
@@ -426,6 +418,16 @@ platform :ios do
       Release successfully finalized. Next, review and merge the [integration PR](#{pr_url}).
     MESSAGE
     buildkite_annotate(context: 'finalization-completed', style: 'success', message: message) if is_ci
+
+    remove_branch_protection(repository: GITHUB_REPO, branch: release_branch_name)
+
+    # Close milestone
+    begin
+      set_milestone_frozen_marker(repository: GITHUB_REPO, milestone: version, freeze: false)
+      close_milestone(repository: GITHUB_REPO, milestone: version)
+    rescue StandardError => e
+      report_milestone_error(error_title: "Error closing milestone `#{version}`: #{e.message}")
+    end
   end
 
   # Triggers a beta build on CI
@@ -589,6 +591,11 @@ rescue StandardError => e
   UI.user_error!(error_message)
 
   pr_url
+end
+
+def ensure_git_branch_is_release_branch!
+  # Verify that the current branch is a release branch. Notice that `ensure_git_branch` expects a RegEx parameter
+  ensure_git_branch(branch: '^release/')
 end
 
 def report_milestone_error(error_title:)
