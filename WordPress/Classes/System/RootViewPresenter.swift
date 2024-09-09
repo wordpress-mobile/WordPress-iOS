@@ -38,13 +38,35 @@ protocol RootViewPresenter: AnyObject {
 
     // MARK: Notifications
 
-    var notificationsViewController: NotificationsViewController? { get }
-    func showNotificationsTab()
-    func showNotificationsTabForNote(withID notificationID: String)
-    func switchNotificationsTabToNotificationSettings()
-    func popNotificationsTabToRoot()
+    func showNotificationsTab(completion: ((NotificationsViewController) -> Void)?)
 
     // MARK: Me
 
     func showMeScreen(completion: ((MeViewController) -> Void)?)
+}
+
+extension RootViewPresenter {
+
+    func showNotificationsTab() {
+        showNotificationsTab(completion: nil)
+    }
+
+    func showNotificationsTabForNote(withID notificationID: String) {
+        showNotificationsTab {
+            $0.showDetailsForNotificationWithID(notificationID)
+        }
+    }
+
+    func popNotificationsTabToRoot() {
+        showNotificationsTab {
+            $0.navigationController?.popToRootViewController(animated: false)
+        }
+    }
+
+    func switchNotificationsTabToNotificationSettings() {
+        showNotificationsTab {
+            $0.navigationController?.popToRootViewController(animated: false)
+            $0.showNotificationSettings()
+        }
+    }
 }

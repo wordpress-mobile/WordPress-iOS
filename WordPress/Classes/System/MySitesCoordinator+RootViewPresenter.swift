@@ -92,24 +92,7 @@ extension MySitesCoordinator: RootViewPresenter {
 
     // MARK: Notifications
 
-    var notificationsViewController: NotificationsViewController? {
-        unsupportedFeatureFallback()
-        return nil
-    }
-
-    func showNotificationsTab() {
-        unsupportedFeatureFallback()
-    }
-
-    func switchNotificationsTabToNotificationSettings() {
-        unsupportedFeatureFallback()
-    }
-
-    func showNotificationsTabForNote(withID notificationID: String) {
-        unsupportedFeatureFallback()
-    }
-
-    func popNotificationsTabToRoot() {
+    func showNotificationsTab(completion: ((NotificationsViewController) -> Void)?) {
         unsupportedFeatureFallback()
     }
 
