@@ -17,7 +17,7 @@ extension WPTabBarController {
     }
 
     @objc func configureMeTabImage(placeholderImage: UIImage?) {
-        meNavigationController?.tabBarItem.image = placeholderImage
+        meNavigationController.tabBarItem.image = placeholderImage
 
         guard let account = defaultAccount(),
               let email = account.email else {
@@ -29,7 +29,7 @@ extension WPTabBarController {
                 return
             }
 
-            self?.meNavigationController?.tabBarItem.configureGravatarImage(image)
+            self?.meNavigationController.tabBarItem.configureGravatarImage(image)
         }
     }
 
@@ -42,7 +42,7 @@ extension WPTabBarController {
         }
 
         ImageCache.shared.setImage(image, forKey: url.absoluteString)
-        meNavigationController?.tabBarItem.configureGravatarImage(image)
+        meNavigationController.tabBarItem.configureGravatarImage(image)
     }
 
     @objc private func accountDidChange() {

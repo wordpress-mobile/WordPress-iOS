@@ -117,24 +117,8 @@ class StaticScreensTabBarWrapper: RootViewPresenter {
 
     // MARK: Notifications
 
-    var notificationsViewController: NotificationsViewController? {
-        return nil
-    }
-
-    func showNotificationsTab() {
-        tabBarController.showNotificationsTab()
-    }
-
-    func showNotificationsTabForNote(withID notificationID: String) {
-        tabBarController.showNotificationsTab()
-    }
-
-    func switchNotificationsTabToNotificationSettings() {
-        tabBarController.showNotificationsTab()
-    }
-
-    func popNotificationsTabToRoot() {
-        // Do nothing since static notification tab will never have a stack
+    func showNotificationsTab(completion: ((NotificationsViewController) -> Void)?) {
+        tabBarController.showNotificationsTab(completion: completion)
     }
 
     // MARK: Me
@@ -143,12 +127,9 @@ class StaticScreensTabBarWrapper: RootViewPresenter {
         return tabBarController.meViewController
     }
 
-    func showMeScreen() {
+    func showMeScreen(completion: ((MeViewController) -> Void)?) {
         tabBarController.showMeTab()
-        popMeScreenToRoot()
-    }
-
-    func popMeScreenToRoot() {
-        tabBarController.meNavigationController?.popToRootViewController(animated: false)
+        tabBarController.meNavigationController.popToRootViewController(animated: false)
+        completion?(tabBarController.meViewController)
     }
 }

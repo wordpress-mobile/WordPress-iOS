@@ -1,7 +1,7 @@
 import Foundation
 import CoreData
 
-@objc (Page)
+@objc(Page)
 class Page: AbstractPost {
     /// Returns if the Page has a visible parent Page
     @objc var hasVisibleParent: Bool = true

@@ -33,6 +33,11 @@ extension WPTabBarController: RootViewPresenter {
         mySitesCoordinator.willDisplayPostSignupFlow()
     }
 
+    func showNotificationsTab(completion: ((NotificationsViewController) -> Void)?) {
+        self.selectedIndex = WPTab.notifications.rawValue
+        completion?(self.notificationsViewController!)
+    }
+
     // MARK: My Site
 
     func showPages(for blog: Blog) {
@@ -49,12 +54,9 @@ extension WPTabBarController: RootViewPresenter {
 
     // MARK: Me
 
-    func showMeScreen() {
+    func showMeScreen(completion: ((MeViewController) -> Void)?) {
         showMeTab()
-        popMeScreenToRoot()
-    }
-
-    func popMeScreenToRoot() {
-        meNavigationController?.popToRootViewController(animated: false)
+        meNavigationController.popToRootViewController(animated: false)
+        completion?(meViewController)
     }
 }
