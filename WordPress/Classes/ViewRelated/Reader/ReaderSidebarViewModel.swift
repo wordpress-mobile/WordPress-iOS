@@ -7,21 +7,30 @@ final class ReaderSidebarViewModel: ObservableObject {
 
     private let tabItemsStore: ReaderTabItemsStoreProtocol
     private let contextManager: CoreDataStackSwift
+    private var previousReloadTimestamp: Date?
 
     init(tabItemsStore: ReaderTabItemsStoreProtocol = ReaderTabItemsStore(),
          contextManager: CoreDataStackSwift = ContextManager.shared) {
         self.tabItemsStore = tabItemsStore
         self.contextManager = contextManager
-
-        // TODO: (wpsidebar) reload when appropriate
-        tabItemsStore.getItems()
-
         self.selection = .main(.recent)
+        self.reloadMenuIfNeeded()
     }
 
     func getTopic(for topicType: ReaderTopicType) -> ReaderAbstractTopic? {
         return try? ReaderAbstractTopic.lookupAllMenus(in: contextManager.mainContext).first {
             ReaderHelpers.topicType($0) == topicType
+        }
+    }
+
+    func onAppear() {
+        reloadMenuIfNeeded()
+    }
+
+    private func reloadMenuIfNeeded() {
+        if Date.now.timeIntervalSince(previousReloadTimestamp ?? .distantPast) > 60 {
+            previousReloadTimestamp = .now
+            tabItemsStore.getItems()
         }
     }
 }
