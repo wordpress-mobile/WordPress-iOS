@@ -264,6 +264,8 @@ import AutomatticTracks
     /// This is set to true after the Reader Manage view is dismissed
     var shouldForceRefresh = false
 
+    lazy var isSidebarModeEnabled = splitViewController?.isCollapsed == false
+
     // MARK: - Factory Methods
 
     /// Convenience method for instantiating an instance of ReaderStreamViewController
@@ -1570,6 +1572,10 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         }
 
         let cell = tableConfiguration.postCardCell(tableView)
+        if isSidebarModeEnabled {
+            cell.enableSidebarMode()
+        }
+
         let viewModel = ReaderPostCardCellViewModel(contentProvider: post,
                                                     isLoggedIn: isLoggedIn,
                                                     showsSeparator: showsSeparator,

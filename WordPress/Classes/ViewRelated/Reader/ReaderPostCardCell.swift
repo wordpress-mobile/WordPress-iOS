@@ -5,6 +5,7 @@ class ReaderPostCardCell: UITableViewCell {
     // MARK: - Properties
 
     private let contentStackView = UIStackView()
+    private let postStackView = UIStackView()
 
     private let siteStackView = UIStackView()
     private let siteIconContainerView = UIView()
@@ -18,6 +19,7 @@ class ReaderPostCardCell: UITableViewCell {
     private let postTitleLabel = UILabel()
     private let postSummaryLabel = UILabel()
     private let featuredImageView = CachedAnimatedImageView()
+    private var featuredImageWidthConstraint: NSLayoutConstraint?
     private let postCountsLabel = UILabel()
 
     private let controlsStackView = UIStackView()
@@ -54,7 +56,6 @@ class ReaderPostCardCell: UITableViewCell {
         imageLoader.prepareForReuse()
         resetElements()
         addMissingViews()
-        addViewConstraints()
     }
 
     func prepareForDisplay() {
@@ -63,6 +64,28 @@ class ReaderPostCardCell: UITableViewCell {
 
     func configure(with viewModel: ReaderPostCardCellViewModel) {
         self.viewModel = viewModel
+    }
+
+    func enableSidebarMode() {
+        guard let imageWidthConstraint = featuredImageWidthConstraint else {
+            return // Already configured
+        }
+        imageWidthConstraint.isActive = false
+        featuredImageWidthConstraint = nil
+
+        postStackView.spacing = 20
+        postStackView.axis = .horizontal
+        postStackView.alignment = .top
+
+        // Make sure it extends to the whole width of the cell
+        postStackView.widthAnchor.constraint(equalTo: readableContentGuide.widthAnchor)
+            .withPriority(751).isActive = true
+
+        featuredImageView.widthAnchor.constraint(equalToConstant: 250)
+            .withPriority(751).isActive = true
+
+        postTitleLabel.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .medium)
+        postSummaryLabel.font = .preferredFont(forTextStyle: .body)
     }
 
     // MARK: - Constants
@@ -199,6 +222,24 @@ private extension ReaderPostCardCell {
         contentStackView.alignment = .leading
         contentStackView.spacing = Constants.ContentStackView.spacing
         contentView.addSubview(contentStackView)
+
+        postStackView.axis = .vertical
+        postStackView.alignment = .leading
+        postStackView.spacing = 8
+
+        postStackView.addArrangedSubviews([
+            UIStackView(axis: .vertical, alignment: .leading, spacing: 8, [
+                postTitleLabel, postSummaryLabel
+            ]),
+            featuredImageView
+        ])
+
+        contentStackView.addArrangedSubview(siteStackView)
+        if usesAccessibilitySize {
+            contentStackView.addArrangedSubview(postDateLabel)
+        }
+        contentStackView.addArrangedSubview(postStackView)
+        contentStackView.addArrangedSubview(postCountsLabel)
     }
 
     func setupAvatarImage() {
@@ -206,7 +247,6 @@ private extension ReaderPostCardCell {
                        containerView: avatarContainerView,
                        image: Constants.avatarPlaceholder)
         avatarContainerView.addSubview(avatarImageView)
-        siteStackView.addArrangedSubview(avatarContainerView)
     }
 
     func setupSiteIconImage() {
@@ -222,7 +262,6 @@ private extension ReaderPostCardCell {
         siteIconBorderView.layer.masksToBounds = true
         siteIconBorderView.addSubview(siteIconImageView)
         siteIconContainerView.addSubview(siteIconBorderView)
-        siteStackView.addArrangedSubview(siteIconContainerView)
     }
 
     func setupIconImage(_ imageView: UIImageView, containerView: UIView, image: UIImage?) {
@@ -242,7 +281,6 @@ private extension ReaderPostCardCell {
         siteTitleLabel.font = .preferredFont(forTextStyle: .subheadline).semibold()
         siteTitleLabel.numberOfLines = 1
         siteTitleLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        siteStackView.addArrangedSubview(siteTitleLabel)
     }
 
     func setupPostDate() {
@@ -250,11 +288,6 @@ private extension ReaderPostCardCell {
         postDateLabel.font = .preferredFont(forTextStyle: .footnote)
         postDateLabel.numberOfLines = 1
         postDateLabel.textColor = .secondaryLabel
-
-        // if accessibility size
-        if !usesAccessibilitySize {
-            siteStackView.addArrangedSubview(postDateLabel)
-        }
     }
 
     func setupSiteStackView() {
@@ -266,10 +299,14 @@ private extension ReaderPostCardCell {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapSiteHeader))
         siteStackView.addGestureRecognizer(tapGesture)
 
-        contentStackView.addArrangedSubview(siteStackView)
-
-        if usesAccessibilitySize {
-            contentStackView.addArrangedSubview(postDateLabel)
+        siteStackView.addArrangedSubviews([
+            avatarContainerView,
+            siteIconContainerView,
+            siteTitleLabel
+        ])
+        // if accessibility size
+        if !usesAccessibilitySize {
+            siteStackView.addArrangedSubview(postDateLabel)
         }
     }
 
@@ -278,7 +315,6 @@ private extension ReaderPostCardCell {
         postTitleLabel.font = .preferredFont(forTextStyle: .title3).semibold()
         postTitleLabel.numberOfLines = 2
         postTitleLabel.setContentCompressionResistancePriority(.defaultHigh + 2, for: .vertical)
-        contentStackView.addArrangedSubview(postTitleLabel)
     }
 
     func setupPostSummary() {
@@ -286,7 +322,6 @@ private extension ReaderPostCardCell {
         postSummaryLabel.font = .preferredFont(forTextStyle: .footnote)
         postSummaryLabel.numberOfLines = 3
         postSummaryLabel.setContentCompressionResistancePriority(.defaultHigh + 1, for: .vertical)
-        contentStackView.addArrangedSubview(postSummaryLabel)
     }
 
     func setupFeaturedImage() {
@@ -296,14 +331,12 @@ private extension ReaderPostCardCell {
         featuredImageView.contentMode = .scaleAspectFill
         featuredImageView.layer.borderWidth = Constants.borderWidth
         featuredImageView.layer.borderColor = Constants.borderColor.cgColor
-        contentStackView.addArrangedSubview(featuredImageView)
     }
 
     func setupPostCounts() {
         postCountsLabel.font = .preferredFont(forTextStyle: .footnote)
         postCountsLabel.numberOfLines = 1
         postCountsLabel.textColor = .secondaryLabel
-        contentStackView.addArrangedSubview(postCountsLabel)
     }
 
     func setupControlButton(_ button: UIButton, image: UIImage?, text: String? = nil, action: Selector) {
@@ -384,8 +417,7 @@ private extension ReaderPostCardCell {
             contentStackView.leadingAnchor.constraint(equalTo: contentView.readableContentGuide.leadingAnchor),
             contentStackView.trailingAnchor.constraint(equalTo: contentView.readableContentGuide.trailingAnchor),
             contentStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: margins),
-            contentStackView.bottomAnchor.constraint(equalTo: controlsStackView.topAnchor,
-                                                     constant: Constants.ContentStackView.bottomAnchor)
+            contentStackView.bottomAnchor.constraint(equalTo: controlsStackView.topAnchor, constant: Constants.ContentStackView.bottomAnchor)
         ]
     }
 
@@ -416,13 +448,12 @@ private extension ReaderPostCardCell {
     }
 
     func featuredImageContraints() -> [NSLayoutConstraint] {
-        let heightAspectRatio = featuredImageView.heightAnchor.constraint(equalTo: featuredImageView.widthAnchor,
-                                                                          multiplier: Constants.FeaturedImage.heightAspectMultiplier)
+        let heightAspectRatio = featuredImageView.heightAnchor.constraint(equalTo: featuredImageView.widthAnchor, multiplier: Constants.FeaturedImage.heightAspectMultiplier)
         heightAspectRatio.priority = .defaultHigh
-        return [
-            featuredImageView.widthAnchor.constraint(equalTo: contentStackView.widthAnchor),
-            heightAspectRatio
-        ]
+
+        let widthConstraint = featuredImageView.widthAnchor.constraint(equalTo: contentStackView.widthAnchor).withPriority(749)
+        featuredImageWidthConstraint = widthConstraint
+        return [widthConstraint, heightAspectRatio]
     }
 
     func buttonStackViewConstraints() -> [NSLayoutConstraint] {
@@ -480,7 +511,7 @@ private extension ReaderPostCardCell {
 
     func configureAvatar() {
         guard let viewModel, viewModel.isAvatarEnabled else {
-            removeFromStackView(siteStackView, view: avatarContainerView)
+            avatarContainerView.isHidden = true
             return
         }
         viewModel.downloadAvatarIcon(for: avatarImageView)
@@ -489,7 +520,7 @@ private extension ReaderPostCardCell {
     func configureSiteIcon() {
         guard let viewModel, viewModel.isSiteIconEnabled else {
             siteStackView.setCustomSpacing(Constants.SiteStackView.iconSpacing, after: avatarContainerView)
-            removeFromStackView(siteStackView, view: siteIconContainerView)
+            siteIconContainerView.isHidden = true
             return
         }
         viewModel.downloadSiteIcon(for: siteIconImageView)
@@ -497,7 +528,7 @@ private extension ReaderPostCardCell {
 
     func configureFeaturedImage() {
         guard let viewModel, viewModel.isFeaturedImageEnabled else {
-            removeFromStackView(siteStackView, view: featuredImageView)
+            featuredImageView.isHidden = true
             return
         }
         let imageViewSize = CGSize(width: featuredImageView.frame.width,
@@ -509,17 +540,12 @@ private extension ReaderPostCardCell {
         guard let viewModel else {
             return
         }
-
-        if !viewModel.isReblogEnabled {
-            removeFromStackView(controlsStackView, view: reblogButton)
-        }
-        if !viewModel.isCommentsEnabled {
-            removeFromStackView(controlsStackView, view: commentButton)
-        }
+        reblogButton.isHidden = !viewModel.isReblogEnabled
+        commentButton.isHidden = !viewModel.isCommentsEnabled
         if viewModel.isLikesEnabled {
             configureLikeButton()
         } else {
-            removeFromStackView(controlsStackView, view: likeButton)
+            likeButton.isHidden = true
         }
     }
 
@@ -565,14 +591,14 @@ private extension ReaderPostCardCell {
             $0 != reblogButton || !self.usesAccessibilitySize
         }
 
-        siteHeaderViews.enumerated().forEach { (index, view) in
-            addToStackView(siteStackView, view: view, index: index)
+        for view in siteHeaderViews {
+            view.isHidden = false
         }
-        contentViews.enumerated().forEach { (index, view) in
-            addToStackView(contentStackView, view: view, index: index)
+        for view in contentViews {
+            view.isHidden = false
         }
-        controlViews.enumerated().forEach { (index, view) in
-            addToStackView(controlsStackView, view: view, index: index)
+        for view in controlViews {
+            view.isHidden = false
         }
 
         siteStackView.setCustomSpacing(Constants.SiteStackView.avatarSpacing, after: avatarContainerView)
@@ -581,18 +607,6 @@ private extension ReaderPostCardCell {
         controlsStackView.setCustomSpacing(Constants.ControlsStackView.reblogSpacing, after: reblogButton)
         controlsStackView.setCustomSpacing(Constants.ControlsStackView.commentSpacing, after: commentButton)
         controlsStackView.setCustomSpacing(Constants.ControlsStackView.likeSpacing, after: likeButton)
-    }
-
-    func addToStackView(_ stackView: UIStackView, view: UIView, index: Int) {
-        guard view.superview == nil, stackView.arrangedSubviews.count >= index else {
-            return
-        }
-        stackView.insertArrangedSubview(view, at: index)
-    }
-
-    func removeFromStackView(_ stackView: UIStackView, view: UIView) {
-        stackView.removeArrangedSubview(view)
-        view.removeFromSuperview()
     }
 
     func resetElements() {
