@@ -39,6 +39,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
     init() {
         // TODO: (wpsidebar) refactor
+        self.mySitesCoordinator = MySitesCoordinator(meScenePresenter: MeScenePresenter(), onBecomeActiveTab: {})
         tabBarViewController = WPTabBarController(staticScreens: false)
 
         splitVC.delegate = self
