@@ -11,6 +11,7 @@ enum SharedStrings {
         static let add = NSLocalizedString("shared.button.add", value: "Add", comment: "A shared button title used in different contexts")
         static let remove = NSLocalizedString("shared.button.remove", value: "Remove", comment: "A shared button title used in different contexts")
         static let save = NSLocalizedString("shared.button.save", value: "Save", comment: "A shared button title used in different contexts")
+        static let retry = NSLocalizedString("shared.button.retry", value: "Retry", comment: "A shared button title used in different contexts")
         static let view = NSLocalizedString("shared.button.view", value: "View", comment: "A shared button title used in different contexts")
         static let share = NSLocalizedString("shared.button.share", value: "Share", comment: "A shared button title used in different contexts")
         static let copy = NSLocalizedString("shared.button.copy", value: "Copy", comment: "A shared button title used in different contexts")
@@ -21,5 +22,9 @@ enum SharedStrings {
 
     enum Error {
         static let generic = NSLocalizedString("shared.error.geneirc", value: "Something went wrong", comment: "A generic error message")
+    }
+
+    enum Reader {
+        static let unfollow = NSLocalizedString("reader.button.unfollow", value: "Unfollow", comment: "Reader sidebar button title")
     }
 }
