@@ -3,7 +3,9 @@ import UIKit
 import WordPressUI
 
 final class ReaderSidebarViewModel: ObservableObject {
-    @Published var selection: ReaderSidebarItem?
+    @Published var selection: ReaderSidebarItem? {
+        didSet { persistenSelection() }
+    }
 
     private let tabItemsStore: ReaderTabItemsStoreProtocol
     private let contextManager: CoreDataStackSwift
@@ -13,7 +15,8 @@ final class ReaderSidebarViewModel: ObservableObject {
          contextManager: CoreDataStackSwift = ContextManager.shared) {
         self.tabItemsStore = tabItemsStore
         self.contextManager = contextManager
-        self.selection = .main(.recent)
+        let selection = UserDefaults.standard.readerSidebarSelection
+        self.selection = .main(selection ?? .recent)
         self.reloadMenuIfNeeded()
     }
 
@@ -33,6 +36,13 @@ final class ReaderSidebarViewModel: ObservableObject {
             tabItemsStore.getItems()
         }
     }
+
+    private func persistenSelection() {
+        if case .main(let screen)? = selection,
+           screen == .recent || screen == .discover {
+            UserDefaults.standard.readerSidebarSelection = screen
+        }
+    }
 }
 
 enum ReaderSidebarItem: Identifiable, Hashable {
@@ -46,7 +56,7 @@ enum ReaderSidebarItem: Identifiable, Hashable {
 
 /// One of the predefined main navigation areas in the reader. The app displays
 /// these even if the respective "topics" were not loaded yet.
-enum ReaderStaticScreen: CaseIterable, Identifiable, Hashable {
+enum ReaderStaticScreen: String, CaseIterable, Identifiable, Hashable {
     case recent
     case discover
     case saved
