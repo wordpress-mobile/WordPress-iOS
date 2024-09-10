@@ -160,6 +160,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
             content: post.content ?? "",
             service: GutenbergKit.EditorService(client: networkClient),
             themeStyles: FeatureFlag.newGutenbergThemeStyles.enabled,
+            plugins: FeatureFlag.newGutenbergPlugins.enabled,
             siteURL: post.blog.url ?? "",
             siteApiRoot: siteApiRoot!,
             siteApiNamespace: siteApiNamespace,
