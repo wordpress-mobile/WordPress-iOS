@@ -1,6 +1,7 @@
 import UIKit
 import Combine
 import WordPressAuthenticator
+import WordPressUI
 
 /// The presenter that uses triple-column navigation for `.regular` size classes
 /// and a tab-bar based navigation for `.compact` size class.
@@ -11,10 +12,19 @@ final class SplitViewRootPresenter: RootViewPresenter {
     private weak var sitePickerPopoverVC: UIViewController?
     private var cancellables: [AnyCancellable] = []
 
-    private var notifications: UINavigationController? {
-        didSet {
-            assert(notifications == nil || notifications?.viewControllers.first is NotificationsViewController)
-        }
+    private var siteContent: SiteSplitViewContent?
+    private var notificationsContent: NotificationsSplitViewContent?
+    private var readerContent: ReaderSplitViewContent?
+
+    private var displayingContent: SplitViewDisplayable? {
+        let possibleContent: [SplitViewDisplayable?] = [siteContent, notificationsContent, readerContent]
+        let displaying = possibleContent
+            .compactMap { $0 }
+            .filter { $0.isDisplaying(in: splitVC) }
+
+        wpAssert(displaying.count <= 1)
+
+        return displaying.first
     }
 
     /// Is the app displaying tab bar UI instead of the full split view UI (with sidebar).
@@ -29,7 +39,6 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
     init() {
         // TODO: (wpsidebar) refactor
-        self.mySitesCoordinator = MySitesCoordinator(meScenePresenter: MeScenePresenter(), onBecomeActiveTab: {})
         tabBarViewController = WPTabBarController(staticScreens: false)
 
         splitVC.delegate = self
@@ -64,6 +73,11 @@ final class SplitViewRootPresenter: RootViewPresenter {
     }
 
     private func configure(for selection: SidebarSelection) {
+        // Do not re-apply the sidebar selection.
+        guard displayingContent?.selection != selection else {
+            return
+        }
+
         switch selection {
         case .blog, .reader:
             splitVC.preferredSupplementaryColumnWidth = 320
@@ -85,29 +99,20 @@ final class SplitViewRootPresenter: RootViewPresenter {
         case .notifications:
             showNotificationsTab(completion: nil)
         case .reader:
-            let viewModel = ReaderSidebarViewModel()
-            let sidebarVC = ReaderSidebarViewController(viewModel: viewModel)
-            splitVC.setViewController(makeRootNavigationController(with: sidebarVC), for: .supplementary)
-
-            sidebarVC.showInitialSelection()
+            showReaderTab()
         }
 
         splitVC.hide(.primary)
     }
 
     private func showDetails(for site: Blog) {
-        RecentSitesService().touch(blog: site)
-
-        let siteMenuVC = SiteMenuViewController(blog: site)
-        siteMenuVC.delegate = self
-        let navigationVC = UINavigationController(rootViewController: siteMenuVC)
-        splitVC.setViewController(navigationVC, for: .supplementary)
-
-        // Reset navigation stack
-        splitVC.setViewController(UINavigationController(), for: .secondary)
-
-        // TODO: (wpsidebar) Refactor this (initial .secondary vc managed based on the VC presentation)
-        _ = siteMenuVC.view
+        if let siteContent, siteContent.blog == site {
+            display(content: siteContent)
+        } else {
+            let siteContent = SiteSplitViewContent(blog: site)
+            self.siteContent = siteContent
+            display(content: siteContent)
+        }
     }
 
     private func makeRootNavigationController(with viewController: UIViewController) -> UINavigationController {
@@ -236,11 +241,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
     func currentlyVisibleBlog() -> Blog? {
         assert(Thread.isMainThread)
 
-        guard case let .blog(id) = sidebarViewModel.selection else {
-            return nil
-        }
-
-        return try? ContextManager.shared.mainContext.existingObject(with: id)
+        return siteContent?.blog
     }
 
     func willDisplayPostSignupFlow() {
@@ -254,7 +255,13 @@ final class SplitViewRootPresenter: RootViewPresenter {
     var readerNavigationController: UINavigationController?
 
     func showReaderTab() {
-        fatalError()
+        if let readerContent {
+            display(content: readerContent)
+        } else {
+            let readerContent = ReaderSplitViewContent()
+            self.readerContent = readerContent
+            display(content: readerContent)
+        }
     }
 
     func showReaderTab(forPost: NSNumber, onBlog: NSNumber) {
@@ -296,7 +303,13 @@ final class SplitViewRootPresenter: RootViewPresenter {
     var mySitesCoordinator: MySitesCoordinator
 
     func showMySitesTab() {
-        fatalError()
+        if let siteContent {
+            display(content: siteContent)
+        } else if let blog = Blog.lastUsedOrFirst(in: ContextManager.shared.mainContext) {
+            showDetails(for: blog)
+        } else {
+            // TODO: show empty?
+        }
     }
 
     func showPages(for blog: Blog) {
@@ -313,20 +326,17 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
     func showNotificationsTab(completion: ((NotificationsViewController) -> Void)?) {
         // TODO: (wpsidebar) update tab bar item when new notifications arrive
-        let navigationController: UINavigationController
-        if let notifications = self.notifications {
-            navigationController = notifications
+        let notifications: NotificationsSplitViewContent
+        if let existing = self.notificationsContent {
+            notifications = existing
         } else {
-            let notificationsVC = UIStoryboard(name: "Notifications", bundle: nil).instantiateInitialViewController() as! NotificationsViewController
-            notificationsVC.isSidebarModeEnabled = true
-            let navigationVC = UINavigationController(rootViewController: notificationsVC)
-            self.notifications = navigationVC
-
-            navigationController = navigationVC
+            notifications = .init()
+            self.notificationsContent = notifications
         }
 
-        splitVC.setViewController(navigationController, for: .supplementary)
-        completion?(navigationController.viewControllers.first as! NotificationsViewController)
+        display(content: notifications)
+
+        completion?(notifications.notificationsViewController)
     }
 
     var meViewController: MeViewController?
@@ -361,17 +371,50 @@ extension SplitViewRootPresenter: UISplitViewControllerDelegate {
             sitePickerPopoverVC?.presentingViewController?.dismiss(animated: true)
         }
     }
+
+    func splitViewController(_ svc: UISplitViewController, willShow column: UISplitViewController.Column) {
+        if column == .primary, let selection = displayingContent?.selection, selection != sidebarViewModel.selection {
+            sidebarViewModel.selection = selection
+        }
+    }
 }
 
-extension SplitViewRootPresenter: SiteMenuViewControllerDelegate {
-    func siteMenuViewController(_ siteMenuViewController: SiteMenuViewController, showDetailsViewController viewController: UIViewController) {
-        if viewController is UINavigationController ||
-            viewController is UISplitViewController {
-            splitVC.setViewController(viewController, for: .secondary)
-        } else {
-            // Reset previous navigation or split stack
-            let navigationVC = UINavigationController(rootViewController: viewController)
-            splitVC.setViewController(navigationVC, for: .secondary)
-        }
+// MARK: - Content displayed within the split view, alongside the sidebar
+
+/// This protocol is an abstraction of the `supplimentary` and `secondary` columns in a split view.
+///
+/// When in full-screen mode, `SplitViewRootPresenter` presents a triple-column split view. The sidebar is displayed in
+/// the primary column, which is always accessible. The `supplimentary` and `secondary` columns display different
+/// content, depending on what users choose from the sidebar.
+protocol SplitViewDisplayable: AnyObject {
+    var supplimentary: UINavigationController { get }
+    var secondary: UINavigationController? { get set }
+
+    func displayed(in splitVC: UISplitViewController)
+
+    var selection: SidebarSelection { get }
+}
+
+extension SplitViewDisplayable {
+    func isDisplaying(in splitVC: UISplitViewController) -> Bool {
+        splitVC.viewController(for: .supplementary) === self.supplimentary
+    }
+
+    func refresh(with splitVC: UISplitViewController) {
+        guard isDisplaying(in: splitVC) else { return }
+        guard let currentContent = splitVC.viewController(for: .secondary) as? UINavigationController else { return }
+
+        self.secondary = currentContent
+    }
+}
+
+private extension SplitViewRootPresenter {
+    func display(content: SplitViewDisplayable) {
+        displayingContent?.refresh(with: splitVC)
+
+        splitVC.setViewController(content.supplimentary, for: .supplementary)
+        splitVC.setViewController(content.secondary, for: .secondary)
+
+        content.displayed(in: splitVC)
     }
 }
