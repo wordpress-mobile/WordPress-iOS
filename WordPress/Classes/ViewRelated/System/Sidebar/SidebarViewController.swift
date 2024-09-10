@@ -161,11 +161,7 @@ private struct SidebarProfileContainerView: View {
     var content: some View {
         if let account = viewModel.account {
             Button(action: { viewModel.navigate(.profile) }) {
-                SidebarProfileView(
-                    username: account.username,
-                    displayName: account.displayName,
-                    avatar: account.avatarURL.flatMap(URL.init(string:))
-                )
+                SidebarProfileView(account: account)
             }
             .containerShape(Rectangle())
             .buttonStyle(.plain)
