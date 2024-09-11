@@ -26,6 +26,7 @@ platform :ios do
     gutenberg_dep_check
 
     release_branch_name = compute_release_branch_name(options: options, version: release_version_next)
+    ensure_branch_does_not_exist!(release_branch_name)
 
     # The `release_version_next` is used as the `new internal release version` value because the external and internal
     # release versions are always the same.
@@ -596,6 +597,17 @@ end
 def ensure_git_branch_is_release_branch!
   # Verify that the current branch is a release branch. Notice that `ensure_git_branch` expects a RegEx parameter
   ensure_git_branch(branch: '^release/')
+end
+
+def ensure_branch_does_not_exist!(branch_name)
+  return unless Fastlane::Helper::GitHelper.branch_exists_on_remote?(branch_name: branch_name)
+
+  error_message = "The branch `#{branch_name}` already exists. Please check first if there is an existing Pull Request that needs to be merged or closed first, " \
+                  'or delete the branch to then run again the release task.'
+
+  buildkite_annotate(style: 'error', context: 'error-checking-branch', message: error_message) if is_ci
+
+  UI.user_error!(error_message)
 end
 
 def report_milestone_error(error_title:)
