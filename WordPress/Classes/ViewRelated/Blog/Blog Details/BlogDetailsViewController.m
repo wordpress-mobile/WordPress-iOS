@@ -227,7 +227,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
 
 #pragma mark -
 
-@interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate, WPSplitViewControllerDetailProvider>
+@interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate, WPSplitViewControllerDetailProvider, UIAdaptivePresentationControllerDelegate>
 
 @property (nonatomic, strong) NSArray *headerViewHorizontalConstraints;
 @property (nonatomic, strong) NSArray<BlogDetailsSection *> *tableSections;
@@ -1795,7 +1795,22 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     [self trackEvent:WPAnalyticsStatOpenedSiteSettings fromSource:source];
     SiteSettingsViewController *controller = [[SiteSettingsViewController alloc] initWithBlog:self.blog];
     controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
-    [self.presentationDelegate presentBlogDetailsViewController:controller];
+    if (self.isSidebarModeEnabled) {
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+        __weak BlogDetailsViewController *weakSelf = self;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-parameter"
+        controller.navigationItem.rightBarButtonItem  = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone primaryAction:[UIAction actionWithHandler:^(__kindof UIAction * _Nonnull action) {
+            [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
+            [weakSelf dismissViewControllerAnimated:YES completion:nil];
+        }]];
+#pragma clang diagnostic pop
+        navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+        [self presentViewController:navigationController animated:YES completion:nil];
+        navigationController.presentationController.delegate = self;
+    } else {
+        [self.presentationDelegate presentBlogDetailsViewController:controller];
+    }
 }
 
 - (void)showDomainsFromSource:(BlogDetailsNavigationSource)source
@@ -2078,6 +2093,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     }
 
     return nil;
+}
+
+#pragma mark - UIAdaptivePresentationControllerDelegate
+
+- (void)presentationControllerWillDismiss:(UIPresentationController *)presentationController {
+    [self.tableView deselectSelectedRowWithAnimation:YES];
 }
 
 #pragma mark - Domain Registration
