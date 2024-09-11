@@ -85,13 +85,13 @@ struct UIAppColor {
 
     static let accent = CSColor.Pink.base
 
-    #if IS_JETPACK
-    static let brand = CSColor.JetpackGreen.base
-    #endif
+#if IS_JETPACK
+    static let brand = UIColor(light: CSColor.JetpackGreen.shade(.shade40), dark: CSColor.JetpackGreen.shade(.shade30))
+#endif
 
-    #if IS_WORDPRESS
-    static let brand = CSColor.WordPressBlue.base
-    #endif
+#if IS_WORDPRESS
+    static let brand = UIColor(light: CSColor.WordPressBlue.shade(.shade50), dark: CSColor.WordPressBlue.shade(.shade40))
+#endif
 
     static let divider = CSColor.Gray.shade(.shade10)
     static let error = CSColor.Red.base
@@ -124,11 +124,5 @@ struct UIAppColor {
 }
 
 struct AppColor {
-    #if IS_JETPACK
-    static let brand = Color(CSColor.JetpackGreen.base)
-    #endif
-
-    #if IS_WORDPRESS
-    static let brand = Color(CSColor.WordPressBlue.base)
-    #endif
+    static let brand = Color(UIAppColor.brand)
 }
