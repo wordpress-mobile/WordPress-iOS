@@ -39,17 +39,13 @@ struct ReaderSubscriptionHelper {
 
     @MainActor
     func unfollow(_ site: ReaderSiteTopic) {
-        let generator = UINotificationFeedbackGenerator()
-        generator.prepare()
-
         NotificationCenter.default.post(name: .ReaderTopicUnfollowed, object: nil, userInfo: [ReaderNotificationKeys.topic: site])
         let service = ReaderTopicService(coreDataStack: contextManager)
         service.toggleFollowing(forSite: site, success: { _ in
-            generator.notificationOccurred(.success)
+            UINotificationFeedbackGenerator().notificationOccurred(.success)
         }, failure: { _, error in
             DDLogError("Could not unfollow site: \(String(describing: error))")
             Notice(title: ReaderFollowedSitesViewController.Strings.failedToUnfollow, message: error?.localizedDescription, feedbackType: .error).post()
-            generator.notificationOccurred(.error)
         })
     }
 }
