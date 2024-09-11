@@ -1,5 +1,6 @@
 import UIKit
 import WordPressUI
+import Gridicons
 
 enum BloggingPromptsAttribution: String {
     case dayone
@@ -11,8 +12,10 @@ enum BloggingPromptsAttribution: String {
         guard let range = baseText.range(of: source) else {
             return attributedText
         }
-        attributedText.addAttributes(Constants.sourceAttributes, range: NSRange(range, in: baseText))
-
+        
+        let nsRange = NSRange(range, in: baseText)
+        attributedText.addAttributes(Constants.sourceAttributes, range: nsRange)
+        
         return attributedText
     }
 
@@ -28,6 +31,21 @@ enum BloggingPromptsAttribution: String {
         case .dayone: return Constants.dayOneIcon
         case .bloganuary: return Constants.bloganuaryIcon
         }
+    }
+    
+    var externalURL: URL? {
+        switch self {
+        case .dayone: return Constants.dayOneURL
+        case .bloganuary: return nil
+        }
+    }
+    
+    var trailingImage: UIImage? {
+        guard let _ = externalURL else {
+            return nil
+        }
+        
+        return Constants.linkIcon
     }
 
     private struct Strings {
@@ -45,9 +63,13 @@ enum BloggingPromptsAttribution: String {
             .font: WPStyleGuide.fontForTextStyle(.caption1, fontWeight: .medium),
             .foregroundColor: UIColor.label,
         ]
-        static let iconSize = CGSize(width: 18, height: 18)
-        static let dayOneIcon = UIImage(named: "logo-dayone")?.resized(to: Constants.iconSize)
-
+        static let dayOneIconSize = CGSize(width: 18, height: 18)
+        static let dayOneIcon = UIImage(named: "logo-dayone")?.resized(to: Constants.dayOneIconSize)
+        static let dayOneURL = URL(string: "https://dayoneapp.com/?utm_source=jetpack&utm_medium=prompts")
+        
+        static let linkIconSize = CGSize(width: 12, height: 12)
+        static let linkIcon = UIImage.gridicon(.external, size: Constants.linkIconSize)
+        
         /// This is computed so it can react accordingly on color scheme changes.
         static var bloganuaryIcon: UIImage? {
             UIImage(named: "logo-bloganuary")?
