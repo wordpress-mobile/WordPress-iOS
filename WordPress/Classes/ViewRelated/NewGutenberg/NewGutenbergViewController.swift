@@ -140,8 +140,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         let authToken = post.blog.authToken ?? ""
         var authHeader = "Bearer \(authToken)"
 
-        // TODO: Reinstate the application password token getter once supported
-        let applicationPassword = try? post.blog.getPassword()
+        let applicationPassword = try? post.blog.getApplicationToken()
 
         if let appPassword = applicationPassword, let username = post.blog.username {
             let credentials = "\(username):\(appPassword)"
