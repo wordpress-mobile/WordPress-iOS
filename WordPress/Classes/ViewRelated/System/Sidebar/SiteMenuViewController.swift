@@ -83,6 +83,8 @@ private final class SiteMenuListViewController: BlogDetailsViewController {
             return container
         }()
 
+        cell.focusStyle = .custom
+        cell.focusEffect = nil
         return cell
     }
 }
