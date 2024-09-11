@@ -640,6 +640,14 @@
 		0CDB1BB72C8BC30900C83860 /* ReaderSubscriptionNotificationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDB1BB52C8BC30900C83860 /* ReaderSubscriptionNotificationSettingsView.swift */; };
 		0CDB4CF42C5D6723001BE6D7 /* AppTips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDB4CF32C5D6723001BE6D7 /* AppTips.swift */; };
 		0CDB4CF52C5D6863001BE6D7 /* AppTips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDB4CF32C5D6723001BE6D7 /* AppTips.swift */; };
+		0CDDCA012C8F3F34005AACA3 /* ReaderSidebarSubscriptionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDDCA002C8F3F34005AACA3 /* ReaderSidebarSubscriptionsSection.swift */; };
+		0CDDCA022C8F3F34005AACA3 /* ReaderSidebarSubscriptionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDDCA002C8F3F34005AACA3 /* ReaderSidebarSubscriptionsSection.swift */; };
+		0CDDCA042C8F3F6E005AACA3 /* ReaderSidebarTagsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDDCA032C8F3F6E005AACA3 /* ReaderSidebarTagsSection.swift */; };
+		0CDDCA052C8F3F6E005AACA3 /* ReaderSidebarTagsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDDCA032C8F3F6E005AACA3 /* ReaderSidebarTagsSection.swift */; };
+		0CDDCA082C8F4126005AACA3 /* ReaderTagsAddTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDDCA072C8F4126005AACA3 /* ReaderTagsAddTagView.swift */; };
+		0CDDCA092C8F4126005AACA3 /* ReaderTagsAddTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDDCA072C8F4126005AACA3 /* ReaderTagsAddTagView.swift */; };
+		0CDDCA0B2C8F4990005AACA3 /* ReaderTagsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDDCA0A2C8F4990005AACA3 /* ReaderTagsHelper.swift */; };
+		0CDDCA0C2C8F4990005AACA3 /* ReaderTagsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDDCA0A2C8F4990005AACA3 /* ReaderTagsHelper.swift */; };
 		0CDEC40C2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDEC40B2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift */; };
 		0CDEC40D2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDEC40B2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift */; };
 		0CE538CA2B0D6E0000834BA2 /* ExternalMediaDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE538C92B0D6E0000834BA2 /* ExternalMediaDataSource.swift */; };
@@ -6535,6 +6543,10 @@
 		0CDB1BB22C8B974300C83860 /* ReaderSubscriptionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSubscriptionHelper.swift; sourceTree = "<group>"; };
 		0CDB1BB52C8BC30900C83860 /* ReaderSubscriptionNotificationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSubscriptionNotificationSettingsView.swift; sourceTree = "<group>"; };
 		0CDB4CF32C5D6723001BE6D7 /* AppTips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTips.swift; sourceTree = "<group>"; };
+		0CDDCA002C8F3F34005AACA3 /* ReaderSidebarSubscriptionsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSidebarSubscriptionsSection.swift; sourceTree = "<group>"; };
+		0CDDCA032C8F3F6E005AACA3 /* ReaderSidebarTagsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSidebarTagsSection.swift; sourceTree = "<group>"; };
+		0CDDCA072C8F4126005AACA3 /* ReaderTagsAddTagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTagsAddTagView.swift; sourceTree = "<group>"; };
+		0CDDCA0A2C8F4990005AACA3 /* ReaderTagsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTagsHelper.swift; sourceTree = "<group>"; };
 		0CDEC40B2A2FAF0500BB3A91 /* DashboardBlazeCampaignsCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazeCampaignsCardView.swift; sourceTree = "<group>"; };
 		0CE538C92B0D6E0000834BA2 /* ExternalMediaDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalMediaDataSource.swift; sourceTree = "<group>"; };
 		0CE538CF2B0E317000834BA2 /* StockPhotosWelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosWelcomeView.swift; sourceTree = "<group>"; };
@@ -10745,6 +10757,8 @@
 			children = (
 				0C5A171B2C740C3700EEF067 /* ReaderSidebarViewController.swift */,
 				0CAC10932C876E47003AB1BC /* ReaderSidebarViewModel.swift */,
+				0CDDCA002C8F3F34005AACA3 /* ReaderSidebarSubscriptionsSection.swift */,
+				0CDDCA032C8F3F6E005AACA3 /* ReaderSidebarTagsSection.swift */,
 			);
 			name = Sidebar;
 			sourceTree = "<group>";
@@ -10812,8 +10826,8 @@
 				0C14F9702C8A48BA0084E5C0 /* ReaderSubscriptionCell.swift */,
 				0CDB1BAC2C8B500A00C83860 /* ReaderSubscriptionsViewModel.swift */,
 				0CDB1BAF2C8B6BA700C83860 /* ReaderSubscriptionAddButton.swift */,
-				0CDB1BB22C8B974300C83860 /* ReaderSubscriptionHelper.swift */,
 				0CDB1BB52C8BC30900C83860 /* ReaderSubscriptionNotificationSettingsView.swift */,
+				0CDB1BB22C8B974300C83860 /* ReaderSubscriptionHelper.swift */,
 			);
 			path = Subscriptions;
 			sourceTree = "<group>";
@@ -10824,6 +10838,15 @@
 				0CDB4CF32C5D6723001BE6D7 /* AppTips.swift */,
 			);
 			path = Tips;
+			sourceTree = "<group>";
+		};
+		0CDDCA062C8F4116005AACA3 /* Tags */ = {
+			isa = PBXGroup;
+			children = (
+				0CDDCA072C8F4126005AACA3 /* ReaderTagsAddTagView.swift */,
+				0CDDCA0A2C8F4990005AACA3 /* ReaderTagsHelper.swift */,
+			);
+			path = Tags;
 			sourceTree = "<group>";
 		};
 		0CE7833F2B08FB1B00B114EB /* External */ = {
@@ -17083,6 +17106,7 @@
 				0CAC10922C876E37003AB1BC /* Sidebar */,
 				3F09CCA62428FE8600D00A8C /* Tab Navigation */,
 				0CDB1BAB2C8B4FF500C83860 /* Subscriptions */,
+				0CDDCA062C8F4116005AACA3 /* Tags */,
 				5D08B8FC19647C0300D5B381 /* Views */,
 				5D1D04731B7A50B100CDE646 /* Reader.storyboard */,
 				837A53D62AD8C3A400B941A2 /* ReaderFollowButton.swift */,
@@ -22295,6 +22319,7 @@
 				0CF22F622BC963690005B070 /* PrepublishingViewController+Helpers.swift in Sources */,
 				FFEECFFC2084DE2B009B8CDB /* PostSettingsViewController+FeaturedImageUpload.swift in Sources */,
 				D8212CB120AA64E1008E8AE8 /* ReaderLikeAction.swift in Sources */,
+				0CDDCA082C8F4126005AACA3 /* ReaderTagsAddTagView.swift in Sources */,
 				01D7EBA42B7A4BBD00F14992 /* HashableImmutableRow.swift in Sources */,
 				D8212CC920AA87E5008E8AE8 /* ReaderMenuAction.swift in Sources */,
 				593F26611CAB00CA00F14073 /* PostSharingController.swift in Sources */,
@@ -22456,6 +22481,7 @@
 				1756DBDF28328B76006E6DB9 /* DonutChartView.swift in Sources */,
 				C700F9EE257FD64E0090938E /* JetpackScanViewController.swift in Sources */,
 				D8212CB520AA68D5008E8AE8 /* ReaderSubscribingNotificationAction.swift in Sources */,
+				0CDDCA042C8F3F6E005AACA3 /* ReaderSidebarTagsSection.swift in Sources */,
 				FF8C54AD21F677260003ABCF /* GutenbergMediaInserterHelper.swift in Sources */,
 				176BA53B268266E70025E4A3 /* BlogService+Reminders.swift in Sources */,
 				C9B477BB29CD576F008CBF49 /* LockScreenUnconfiguredViewModel.swift in Sources */,
@@ -22574,6 +22600,7 @@
 				FA3A281B2A39C8FF00206D74 /* BlazeCampaignSingleStatView.swift in Sources */,
 				3FB1929026C6109F000F5AA3 /* TimeSelectionView.swift in Sources */,
 				4A535E142AF3368B008B87B9 /* MenusViewController.swift in Sources */,
+				0CDDCA0B2C8F4990005AACA3 /* ReaderTagsHelper.swift in Sources */,
 				FAB8AB8B25AFFE7500F9F8A0 /* JetpackRestoreService.swift in Sources */,
 				821738091FE04A9E00BEC94C /* DateAndTimeFormatSettingsViewController.swift in Sources */,
 				5D6C4B081B603E03005E3C43 /* WPContentSyncHelper.swift in Sources */,
@@ -23004,6 +23031,7 @@
 				01B5C3C72AE7FC61007055BB /* UITestConfigurator.swift in Sources */,
 				FF8DDCDF1B5DB1C10098826F /* SettingTableViewCell.m in Sources */,
 				9A3BDA0E22944F3500FBF510 /* CountriesMapView.swift in Sources */,
+				0CDDCA012C8F3F34005AACA3 /* ReaderSidebarSubscriptionsSection.swift in Sources */,
 				98E58A2F2360D23400E5534B /* TodayWidgetStats.swift in Sources */,
 				80EF672227F160720063B138 /* DashboardCustomAnnouncementCell.swift in Sources */,
 				805CC0BC29668986002941DC /* JetpackBrandedScreen.swift in Sources */,
@@ -24354,6 +24382,7 @@
 				FABB20CE2602FC2C00C8785C /* VerticallyStackedButton.m in Sources */,
 				FABB20CF2602FC2C00C8785C /* PageListViewController.swift in Sources */,
 				4A535E152AF3368B008B87B9 /* MenusViewController.swift in Sources */,
+				0CDDCA022C8F3F34005AACA3 /* ReaderSidebarSubscriptionsSection.swift in Sources */,
 				FABB20D02602FC2C00C8785C /* CoreDataHelper.swift in Sources */,
 				FABB20D12602FC2C00C8785C /* LocalCoreDataService.m in Sources */,
 				FE29EFCE29A91160007CE034 /* WPAdminConvertibleRouter.swift in Sources */,
@@ -24932,6 +24961,7 @@
 				FABB22792602FC2C00C8785C /* WPCrashLoggingProvider.swift in Sources */,
 				FA332AD529C1FC7A00182FBB /* MovedToJetpackViewModel.swift in Sources */,
 				0CA10F742ADB014C00CE75AC /* StringRankedSearch.swift in Sources */,
+				0CDDCA0C2C8F4990005AACA3 /* ReaderTagsHelper.swift in Sources */,
 				FABB227A2602FC2C00C8785C /* StockPhotosMedia.swift in Sources */,
 				FABB227B2602FC2C00C8785C /* FancyAlertViewController+SavedPosts.swift in Sources */,
 				FABB227C2602FC2C00C8785C /* WPRichTextMediaAttachment.swift in Sources */,
@@ -26006,6 +26036,7 @@
 				FABB25762602FC2C00C8785C /* InviteLinks+CoreDataProperties.swift in Sources */,
 				FABB25772602FC2C00C8785C /* NotificationMediaDownloader.swift in Sources */,
 				FABB25782602FC2C00C8785C /* WizardDelegate.swift in Sources */,
+				0CDDCA092C8F4126005AACA3 /* ReaderTagsAddTagView.swift in Sources */,
 				FABB25792602FC2C00C8785C /* Blog+Files.swift in Sources */,
 				FABB257A2602FC2C00C8785C /* RevisionDiffsBrowserViewController.swift in Sources */,
 				FA4FE0B42BEB6EF700A635D3 /* PostHelper+Metadata.swift in Sources */,
@@ -26065,6 +26096,7 @@
 				FABB25992602FC2C00C8785C /* StoryboardLoadable.swift in Sources */,
 				83BF48BC2BD6F03000C0E1A1 /* ReaderTagCardCellViewModel.swift in Sources */,
 				FABB259A2602FC2C00C8785C /* ReaderBlockSiteAction.swift in Sources */,
+				0CDDCA052C8F3F6E005AACA3 /* ReaderSidebarTagsSection.swift in Sources */,
 				FABB259C2602FC2C00C8785C /* ReaderPostService+RelatedPosts.swift in Sources */,
 				FABB259D2602FC2C00C8785C /* Blog+Capabilities.swift in Sources */,
 				1756F1E02822BB6F00CD0915 /* SparklineView.swift in Sources */,

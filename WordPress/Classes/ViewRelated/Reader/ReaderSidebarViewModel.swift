@@ -11,6 +11,8 @@ final class ReaderSidebarViewModel: ObservableObject {
     private let contextManager: CoreDataStackSwift
     private var previousReloadTimestamp: Date?
 
+    var navigate: (ReaderSidebarNavigation) -> Void = { _ in }
+
     init(tabItemsStore: ReaderTabItemsStoreProtocol = ReaderTabItemsStore(),
          contextManager: CoreDataStackSwift = ContextManager.shared) {
         self.tabItemsStore = tabItemsStore
@@ -50,8 +52,14 @@ enum ReaderSidebarItem: Identifiable, Hashable {
     case main(ReaderStaticScreen)
     case allSubscriptions
     case subscription(TaggedManagedObjectID<ReaderSiteTopic>)
+    case tag(TaggedManagedObjectID<ReaderTagTopic>)
 
     var id: ReaderSidebarItem { self }
+}
+
+enum ReaderSidebarNavigation {
+    case addTag
+    case discoverTags
 }
 
 /// One of the predefined main navigation areas in the reader. The app displays

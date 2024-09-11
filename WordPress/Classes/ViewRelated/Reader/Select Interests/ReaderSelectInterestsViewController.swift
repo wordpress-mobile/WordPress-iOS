@@ -11,6 +11,21 @@ struct ReaderSelectInterestsConfiguration {
     let subtitle: String?
     let buttonTitle: (enabled: String, disabled: String)?
     let loading: String
+
+    static let `default` = ReaderSelectInterestsConfiguration(
+        title: NSLocalizedString(
+            "reader.select.interests.follow.title",
+            value: "Follow tags",
+            comment: "Screen title. Reader select interests title label text."
+        ),
+        subtitle: nil,
+        buttonTitle: nil,
+        loading: NSLocalizedString(
+            "reader.select.interests.following",
+            value: "Following new tags...",
+            comment: "Label displayed to the user while loading their selected interests"
+        )
+    )
 }
 
 class ReaderSelectInterestsViewController: UIViewController {
@@ -68,7 +83,7 @@ class ReaderSelectInterestsViewController: UIViewController {
     weak var readerDiscoverFlowDelegate: ReaderDiscoverFlowDelegate?
 
     // MARK: - Init
-    init(configuration: ReaderSelectInterestsConfiguration, topics: [ReaderTagTopic] = []) {
+    init(configuration: ReaderSelectInterestsConfiguration = .default, topics: [ReaderTagTopic] = []) {
         self.configuration = configuration
         self.topics = topics
         super.init(nibName: nil, bundle: nil)
