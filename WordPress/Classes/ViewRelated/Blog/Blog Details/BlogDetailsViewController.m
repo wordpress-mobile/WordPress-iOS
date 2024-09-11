@@ -518,7 +518,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
             if ([self.blog selfHostedSiteRestApi]) {
                 self.restorableSelectedIndexPath = indexPath;
                 [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
-                [self showUsers];
+                if (@available(iOS 16.4, *)) {
+                    [self showUsers];
+                }
             }
             break;
         case BlogDetailsSubsectionPlugins:
@@ -834,7 +836,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
                                         accessibilityIdentifier:@"User Row"
                                                           image:[UIImage imageNamed:@"site-menu-people"]
                                                        callback:^{
-        [weakSelf showUsers];
+        if (@available(iOS 16.4, *)) {
+            [weakSelf showUsers];
+        }
     }];
     return row;
 }

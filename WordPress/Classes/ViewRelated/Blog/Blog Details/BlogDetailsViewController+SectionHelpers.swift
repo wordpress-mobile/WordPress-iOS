@@ -170,10 +170,23 @@ extension BlogDetailsViewController {
         presentationDelegate.presentBlogDetailsViewController(viewController)
     }
 
+    @available(iOS 16.4, *)
     @objc func showUsers() {
         guard self.blog.supportsDotOrgRestApi else {
-            // TODO: set up the info screen
+            let vc = UIHostingController(rootView: RestApiUpgradePrompt(didTapGetStarted: {
+                debugPrint("Tapped get started")
+            }, didTapLearnMore: {
+                debugPrint("Tapped learn more")
+            }))
+
+            if let sheet = vc.sheetPresentationController {
+                sheet.detents = [.medium()]
+            }
+
+            self.navigationController?.present(vc, animated: true)
+
             return
+
         }
 
         guard let presentationDelegate, let service = createUserService() else {
