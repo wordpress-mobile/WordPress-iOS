@@ -1,4 +1,5 @@
 import UIKit
+import SafariServices
 import WordPressShared
 import WordPressFlux
 
@@ -181,6 +182,17 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         RootViewCoordinator.sharedPresenter.readerCoordinator?.showTag(named: "\(Constants.dailyPromptTag)-\(promptID)")
         WPAnalytics.track(.promptsOtherAnswersTapped)
     }
+    
+    @IBAction
+    private func didTapAttribution() {
+        guard let targetURL = prompt?.promptAttribution?.externalURL else {
+            return
+        }
+        
+        let safariViewController = SFSafariViewController(url: targetURL)
+        safariViewController.modalPresentationStyle = .pageSheet
+        presenterViewController?.present(safariViewController, animated: true)
+    }
 
     private var answerInfoView: UIView {
         let stackView = UIStackView()
@@ -211,10 +223,17 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         label.adjustsFontForContentSizeCategory = true
         return label
     }()
+    
+    private lazy var attributionTrailingImage = UIImageView()
 
     private lazy var attributionStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [attributionIcon, attributionSourceLabel])
+        let stackView = UIStackView(arrangedSubviews: [attributionIcon, attributionSourceLabel, attributionTrailingImage])
+        stackView.setCustomSpacing(Constants.attributionTrailingImageSpacing, after: attributionSourceLabel)
         stackView.alignment = .center
+
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(didTapAttribution))
+        stackView.addGestureRecognizer(recognizer)
+
         return stackView
     }()
 
@@ -411,7 +430,9 @@ private extension DashboardPromptsCardCell {
 
         if let attribution = prompt?.promptAttribution {
             attributionIcon.image = attribution.iconImage
+            attributionTrailingImage.image = attribution.trailingImage
             attributionSourceLabel.attributedText = attribution.attributedText
+
             containerStackView.addArrangedSubview(attributionStackView)
         }
 
@@ -554,6 +575,7 @@ private extension DashboardPromptsCardCell {
         static let spacing: CGFloat = 12
         static let answeredButtonsSpacing: CGFloat = 16
         static let answerInfoViewSpacing: CGFloat = 6
+        static let attributionTrailingImageSpacing: CGFloat = 6
         static let containerMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         static let maxAvatarCount = 3
         static let exampleAnswerCount = 19
