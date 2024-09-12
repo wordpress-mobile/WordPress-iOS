@@ -82,7 +82,6 @@ private final class SiteMenuListViewController: BlogDetailsViewController {
             container.pinSubviewToAllEdges(backgroundView, insets: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16))
             return container
         }()
-        cell.focusEffect = nil
 
         return cell
     }
