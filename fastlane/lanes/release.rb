@@ -112,7 +112,7 @@ platform :ios do
     copy_branch_protection(
       repository: GITHUB_REPO,
       from_branch: DEFAULT_BRANCH,
-      to_branch: release_branch_name,
+      to_branch: release_branch_name
     )
 
     begin
@@ -363,7 +363,9 @@ platform :ios do
     hotfix_version = release_version_current
 
     UI.important("Triggering hotfix build for version: #{hotfix_version}")
-    UI.user_error!("Terminating as requested. Don't forget to run the remainder of this automation manually.") unless skip_confirm || UI.confirm('Do you want to continue?')
+    unless skip_confirm || UI.confirm('Do you want to continue?')
+      UI.user_error!("Terminating as requested. Don't forget to run the remainder of this automation manually.")
+    end
 
     trigger_release_build(branch_to_build: "release/#{hotfix_version}")
 
@@ -406,7 +408,9 @@ platform :ios do
 
     bump_build_codes
 
-    UI.user_error!("Terminating as requested. Don't forget to run the remainder of this automation manually.") unless skip_confirm || UI.confirm('Ready to push changes to remote and trigger the release build?')
+    unless skip_confirm || UI.confirm('Ready to push changes to remote and trigger the release build?')
+      UI.user_error!("Terminating as requested. Don't forget to run the remainder of this automation manually.")
+    end
 
     push_to_git_remote(tags: false)
 
