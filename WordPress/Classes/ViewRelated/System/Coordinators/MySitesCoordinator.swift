@@ -43,7 +43,11 @@ class MySitesCoordinator: NSObject {
     }
 
     @objc class var isSplitViewEnabled: Bool {
-        UIDevice.current.userInterfaceIdiom == .pad
+        if Feature.enabled(.sidebar) {
+            return false
+        } else {
+            return UIDevice.current.userInterfaceIdiom == .pad
+        }
     }
 
     @objc
