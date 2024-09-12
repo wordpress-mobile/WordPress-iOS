@@ -168,13 +168,13 @@ final class BlogDashboardViewModel {
     }
 
     func isQuickActionsSection(_ sectionIndex: Int) -> Bool {
-        let showMigration = MigrationSuccessCardView.shouldShowMigrationSuccessCard && !WPDeviceIdentification.isiPad()
+        let showMigration = MigrationSuccessCardView.shouldShowMigrationSuccessCard && isShowingQuickActions
         let targetIndex = showMigration ? DashboardSection.quickActions.rawValue : DashboardSection.quickActions.rawValue - 1
         return sectionIndex == targetIndex
     }
 
     func isMigrationSuccessCardSection(_ sectionIndex: Int) -> Bool {
-        let showMigration = MigrationSuccessCardView.shouldShowMigrationSuccessCard && !WPDeviceIdentification.isiPad()
+        let showMigration = MigrationSuccessCardView.shouldShowMigrationSuccessCard && isShowingQuickActions
         return showMigration ? sectionIndex == DashboardSection.migrationSuccess.rawValue : false
     }
 }
@@ -217,17 +217,24 @@ private extension BlogDashboardViewModel {
         let items = cards.map { DashboardItem.cards($0) }
         let dotComID = blog.dotComID?.intValue ?? 0
         var snapshot = DashboardSnapshot()
-        if MigrationSuccessCardView.shouldShowMigrationSuccessCard, !WPDeviceIdentification.isiPad() {
+        if MigrationSuccessCardView.shouldShowMigrationSuccessCard, isShowingQuickActions {
             snapshot.appendSections([.migrationSuccess])
             snapshot.appendItems([.migrationSuccess], toSection: .migrationSuccess)
         }
-        if !WPDeviceIdentification.isiPad() {
+        if isShowingQuickActions {
             snapshot.appendSections([.quickActions])
             snapshot.appendItems([.quickActions(dotComID)], toSection: .quickActions)
         }
         snapshot.appendSections([.cards])
         snapshot.appendItems(items, toSection: .cards)
         return snapshot
+    }
+
+    var isShowingQuickActions: Bool {
+        guard Feature.enabled(.sidebar) else {
+            return !WPDeviceIdentification.isiPad()
+        }
+        return viewController?.traitCollection.horizontalSizeClass == .compact
     }
 
     // In case a draft is saved and the drafts card
