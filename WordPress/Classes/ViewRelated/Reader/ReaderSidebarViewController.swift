@@ -3,7 +3,7 @@ import SwiftUI
 import Combine
 import WordPressUI
 
-final class ReaderSidebarViewController: UIHostingController<ReaderSidebarView> {
+final class ReaderSidebarViewController: UIHostingController<AnyView> {
     let viewModel: ReaderSidebarViewModel
 
     private var cancellables: [AnyCancellable] = []
@@ -11,7 +11,11 @@ final class ReaderSidebarViewController: UIHostingController<ReaderSidebarView> 
 
     init(viewModel: ReaderSidebarViewModel) {
         self.viewModel = viewModel
-        super.init(rootView: ReaderSidebarView(viewModel: viewModel))
+        // - warning: The `managedObjectContext` has to be set here in order for
+        // `ReaderSidebarView` to eb able to access it
+        let view = ReaderSidebarView(viewModel: viewModel)
+            .environment(\.managedObjectContext, ContextManager.shared.mainContext)
+        super.init(rootView: AnyView(view))
 
         viewModel.navigate = { [weak self] in self?.navigate(to: $0) }
     }
@@ -44,19 +48,24 @@ final class ReaderSidebarViewController: UIHostingController<ReaderSidebarView> 
         case .allSubscriptions:
             showSecondary(makeAllSubscriptionsViewController(), isLargeTitle: true)
         case .subscription(let objectID):
-            do {
-                let topic = try viewContext.existingObject(with: objectID)
-                showSecondary(ReaderStreamViewController.controllerWithTopic(topic))
-            } catch {
-                wpAssertionFailure("site missing", userInfo: ["error": "\(error)"])
-            }
+            showSecondary(makeViewController(withTopicID: objectID))
+        case .list(let objectID):
+            showSecondary(makeViewController(withTopicID: objectID))
         case .tag(let objectID):
-            do {
-                let topic = try viewContext.existingObject(with: objectID)
-                showSecondary(ReaderStreamViewController.controllerWithTopic(topic))
-            } catch {
-                wpAssertionFailure("tag missing", userInfo: ["error": "\(error)"])
-            }
+            showSecondary(makeViewController(withTopicID: objectID))
+        case .organization(let objectID):
+            showSecondary(makeViewController(withTopicID: objectID))
+
+        }
+    }
+
+    private func makeViewController<T: ReaderAbstractTopic>(withTopicID objectID: TaggedManagedObjectID<T>) -> UIViewController {
+        do {
+            let topic = try viewContext.existingObject(with: objectID)
+            return ReaderStreamViewController.controllerWithTopic(topic)
+        } catch {
+            wpAssertionFailure("tag missing", userInfo: ["error": "\(error)"])
+            return makeErrorViewController()
         }
     }
 
@@ -126,11 +135,16 @@ final class ReaderSidebarViewController: UIHostingController<ReaderSidebarView> 
     }
 }
 
-struct ReaderSidebarView: View {
+private struct ReaderSidebarView: View {
     @ObservedObject var viewModel: ReaderSidebarViewModel
 
+    @AppStorage("reader_sidebar_organization_expanded") var isSectionOrganizationExpanded = true
     @AppStorage("reader_sidebar_subscriptions_expanded") var isSectionSubscriptionsExpanded = true
+    @AppStorage("reader_sidebar_lists_expanded") var isSectionListsExpanded = true
     @AppStorage("reader_sidebar_tags_expanded") var isSectionTagsExpanded = true
+
+    @FetchRequest(sortDescriptors: [SortDescriptor(\.title, order: .forward)])
+    private var teams: FetchedResults<ReaderTeamTopic>
 
     var body: some View {
         List(selection: $viewModel.selection) {
@@ -141,8 +155,16 @@ struct ReaderSidebarView: View {
                         .lineLimit(1)
                 }
             }
+            if !teams.isEmpty {
+                makeSection(Strings.organization, isExpanded: $isSectionOrganizationExpanded) {
+                    ReaderSidebarOrganizationSection(viewModel: viewModel, teams: teams)
+                }
+            }
             makeSection(Strings.subscriptions, isExpanded: $isSectionSubscriptionsExpanded) {
                 ReaderSidebarSubscriptionsSection(viewModel: viewModel)
+            }
+            makeSection(Strings.lists, isExpanded: $isSectionListsExpanded) {
+                ReaderSidebarListsSection(viewModel: viewModel)
             }
             makeSection(Strings.tags, isExpanded: $isSectionTagsExpanded) {
                 ReaderSidebarTagsSection(viewModel: viewModel)
@@ -154,7 +176,6 @@ struct ReaderSidebarView: View {
             EditButton()
         }
         .tint(Color(UIAppColor.primary))
-        .environment(\.managedObjectContext, ContextManager.shared.mainContext)
     }
 
     @ViewBuilder
@@ -174,5 +195,7 @@ struct ReaderSidebarView: View {
 private struct Strings {
     static let reader = NSLocalizedString("reader.sidebar.navigationTitle", value: "Reader", comment: "Reader sidebar title")
     static let subscriptions = NSLocalizedString("reader.sidebar.section.subscriptions.tTitle", value: "Subscriptions", comment: "Reader sidebar section title")
+    static let lists = NSLocalizedString("reader.sidebar.section.lists.title", value: "Lists", comment: "Reader sidebar section title")
     static let tags = NSLocalizedString("reader.sidebar.section.tags.title", value: "Tags", comment: "Reader sidebar section title")
+    static let organization = NSLocalizedString("reader.sidebar.section.organization.title", value: "Organization", comment: "Reader sidebar section title")
 }
