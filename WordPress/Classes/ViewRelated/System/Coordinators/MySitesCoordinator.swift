@@ -5,7 +5,6 @@ import WordPressAuthenticator
 class MySitesCoordinator: NSObject {
     let meScenePresenter: ScenePresenter
 
-    // TODO: (wpsidebar) move logic to RootViewPresenter
     let becomeActiveTab: () -> Void
 
     @objc
@@ -43,7 +42,6 @@ class MySitesCoordinator: NSObject {
         }
     }
 
-    // TODO: (wpsidebar) remove
     @objc class var isSplitViewEnabled: Bool {
         UIDevice.current.userInterfaceIdiom == .pad
     }
