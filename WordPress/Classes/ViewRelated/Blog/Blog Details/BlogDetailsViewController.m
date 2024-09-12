@@ -1549,12 +1549,15 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
         return cell;
     }
 
-        if (section.category == BlogDetailsSectionCategoryMigrationSuccess) {
+    if (section.category == BlogDetailsSectionCategoryMigrationSuccess) {
         MigrationSuccessCell *cell = [tableView dequeueReusableCellWithIdentifier:BlogDetailsMigrationSuccessCellIdentifier];
+        if (self.isSidebarModeEnabled) {
+            [cell configureForSidebarMode];
+        }
         [cell configureWithViewController:self];
         return cell;
     }
-    
+
     if (section.category == BlogDetailsSectionCategoryJetpackBrandingCard) {
         JetpackBrandingMenuCardCell *cell = [tableView dequeueReusableCellWithIdentifier:BlogDetailsJetpackBrandingCardCellIdentifier];
         [cell configureWithViewController:self];
