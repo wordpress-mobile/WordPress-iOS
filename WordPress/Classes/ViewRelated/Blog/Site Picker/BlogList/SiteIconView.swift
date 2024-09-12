@@ -36,7 +36,9 @@ struct SiteIconView: View {
             if let firstLetter = viewModel.firstLetter {
                 Text(firstLetter.uppercased())
                     .font(.system(size: iconFontSize(for: viewModel.size), weight: .medium, design: .rounded))
-                    .foregroundStyle(.secondary.opacity(0.8))
+                // - warning: important to use `.foregroundColor` and not
+                // `.foregroundStyle` to avoid it changing in sidebar on selection
+                    .foregroundColor(.secondary.opacity(0.8))
             } else {
                 failureStateView
             }
