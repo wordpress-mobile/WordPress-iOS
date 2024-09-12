@@ -1,0 +1,31 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/buildkite/pipeline-schema/main/schema.json
+---
+
+agents:
+  queue: mac
+
+env:
+  IMAGE_ID: $IMAGE_ID
+
+steps:
+  - label: Publish Release
+    plugins: [$CI_TOOLKIT_PLUGIN]
+    command: |
+      echo '--- :git: Configure Git for release management'
+      .buildkite/commands/configure-git-for-release-management.sh
+
+      echo '--- :git: Checkout release branch'
+      .buildkite/commands/checkout-release-branch.sh $RELEASE_VERSION
+
+      echo '--- :ruby: Setup Ruby tools'
+      install_gems
+
+      echo '--- :closed_lock_with_key: Access secrets'
+      bundle exec fastlane run configure_apply
+
+      echo '--- :package: Publish Release'
+      bundle exec fastlane publish_release skip_confirm:true
+    retry:
+      manual:
+        # If those jobs fail, one should always prefer re-triggering a new build from ReleaseV2 rather than retrying the individual job from Buildkite
+        allowed: false
