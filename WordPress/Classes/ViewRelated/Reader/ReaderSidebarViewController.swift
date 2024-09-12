@@ -1,8 +1,9 @@
 import UIKit
 import SwiftUI
 import Combine
+import WordPressUI
 
-final class ReaderSidebarViewController: UIHostingController<ReaderSidebarView> {
+final class ReaderSidebarViewController: UIHostingController<AnyView> {
     let viewModel: ReaderSidebarViewModel
 
     private var cancellables: [AnyCancellable] = []
@@ -10,11 +11,23 @@ final class ReaderSidebarViewController: UIHostingController<ReaderSidebarView> 
 
     init(viewModel: ReaderSidebarViewModel) {
         self.viewModel = viewModel
-        super.init(rootView: ReaderSidebarView(viewModel: viewModel))
+        // - warning: The `managedObjectContext` has to be set here in order for
+        // `ReaderSidebarView` to eb able to access it
+        let view = ReaderSidebarView(viewModel: viewModel)
+            .environment(\.managedObjectContext, ContextManager.shared.mainContext)
+        super.init(rootView: AnyView(view))
+
+        viewModel.navigate = { [weak self] in self?.navigate(to: $0) }
     }
 
     required dynamic init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        viewModel.onAppear()
     }
 
     func showInitialSelection() {
@@ -33,14 +46,26 @@ final class ReaderSidebarViewController: UIHostingController<ReaderSidebarView> 
         case .main(let screen):
             showSecondary(makeViewController(for: screen))
         case .allSubscriptions:
-            showSecondary(ReaderFollowedSitesViewController.controller())
+            showSecondary(makeAllSubscriptionsViewController(), isLargeTitle: true)
         case .subscription(let objectID):
-            do {
-                let site = try viewContext.existingObject(with: objectID)
-                showSecondary(ReaderStreamViewController.controllerWithTopic(site))
-            } catch {
-                wpAssertionFailure("site missing", userInfo: ["error": "\(error)"])
-            }
+            showSecondary(makeViewController(withTopicID: objectID))
+        case .list(let objectID):
+            showSecondary(makeViewController(withTopicID: objectID))
+        case .tag(let objectID):
+            showSecondary(makeViewController(withTopicID: objectID))
+        case .organization(let objectID):
+            showSecondary(makeViewController(withTopicID: objectID))
+
+        }
+    }
+
+    private func makeViewController<T: ReaderAbstractTopic>(withTopicID objectID: TaggedManagedObjectID<T>) -> UIViewController {
+        do {
+            let topic = try viewContext.existingObject(with: objectID)
+            return ReaderStreamViewController.controllerWithTopic(topic)
+        } catch {
+            wpAssertionFailure("tag missing", userInfo: ["error": "\(error)"])
+            return makeErrorViewController()
         }
     }
 
@@ -54,8 +79,7 @@ final class ReaderSidebarViewController: UIHostingController<ReaderSidebarView> 
                     return ReaderStreamViewController.controllerWithTopic(topic)
                 }
             } else {
-                // TODO: (wpsidebar) add error handling (hardcode links to topics?)
-                return UIViewController()
+                return makeErrorViewController() // This should never happen
             }
         case .saved:
             return ReaderStreamViewController.controllerForContentType(.saved)
@@ -64,16 +88,63 @@ final class ReaderSidebarViewController: UIHostingController<ReaderSidebarView> 
         }
     }
 
-    private func showSecondary(_ viewController: UIViewController) {
+    private func makeAllSubscriptionsViewController() -> UIViewController {
+        let view = ReaderSubscriptionsView() { [weak self] selection in
+            guard let self else { return }
+            let navigationVC = self.splitViewController?.viewController(for: .secondary) as? UINavigationController
+            wpAssert(navigationVC != nil)
+            let streamVC = ReaderStreamViewController.controllerWithTopic(selection)
+            navigationVC?.pushViewController(streamVC, animated: true)
+        }.environment(\.managedObjectContext, viewContext)
+        return UIHostingController(rootView: view)
+    }
+
+    private func navigate(to item: ReaderSidebarNavigation) {
+        switch item {
+        case .addTag:
+            let addTagVC = UIHostingController(rootView: ReaderTagsAddTagView())
+            addTagVC.modalPresentationStyle = .formSheet
+            addTagVC.preferredContentSize = CGSize(width: 420, height: 124)
+            present(addTagVC, animated: true, completion: nil)
+        case .discoverTags:
+            let tags = viewContext.allObjects(
+                ofType: ReaderTagTopic.self,
+                matching: ReaderSidebarTagsSection.predicate,
+                sortedBy: [NSSortDescriptor(SortDescriptor<ReaderTagTopic>(\.title, order: .forward))]
+            )
+            let interestsVC = ReaderSelectInterestsViewController(topics: tags)
+            interestsVC.didSaveInterests = { [weak self] _ in
+                self?.dismiss(animated: true)
+            }
+            let navigationVC = UINavigationController(rootViewController: interestsVC)
+            navigationVC.modalPresentationStyle = .formSheet
+            present(navigationVC, animated: true, completion: nil)
+        }
+    }
+
+    private func makeErrorViewController() -> UIViewController {
+        UIHostingController(rootView: EmptyStateView(SharedStrings.Error.generic, systemImage: "exclamationmark.circle"))
+    }
+
+    private func showSecondary(_ viewController: UIViewController, isLargeTitle: Bool = false) {
         let navigationVC = UINavigationController(rootViewController: viewController)
+        if isLargeTitle {
+            navigationVC.navigationBar.prefersLargeTitles = true
+        }
         splitViewController?.setViewController(navigationVC, for: .secondary)
     }
 }
 
-struct ReaderSidebarView: View {
+private struct ReaderSidebarView: View {
     @ObservedObject var viewModel: ReaderSidebarViewModel
 
+    @AppStorage("reader_sidebar_organization_expanded") var isSectionOrganizationExpanded = true
     @AppStorage("reader_sidebar_subscriptions_expanded") var isSectionSubscriptionsExpanded = true
+    @AppStorage("reader_sidebar_lists_expanded") var isSectionListsExpanded = true
+    @AppStorage("reader_sidebar_tags_expanded") var isSectionTagsExpanded = true
+
+    @FetchRequest(sortDescriptors: [SortDescriptor(\.title, order: .forward)])
+    private var teams: FetchedResults<ReaderTeamTopic>
 
     var body: some View {
         List(selection: $viewModel.selection) {
@@ -84,8 +155,19 @@ struct ReaderSidebarView: View {
                         .lineLimit(1)
                 }
             }
+            if !teams.isEmpty {
+                makeSection(Strings.organization, isExpanded: $isSectionOrganizationExpanded) {
+                    ReaderSidebarOrganizationSection(viewModel: viewModel, teams: teams)
+                }
+            }
             makeSection(Strings.subscriptions, isExpanded: $isSectionSubscriptionsExpanded) {
                 ReaderSidebarSubscriptionsSection(viewModel: viewModel)
+            }
+            makeSection(Strings.lists, isExpanded: $isSectionListsExpanded) {
+                ReaderSidebarListsSection(viewModel: viewModel)
+            }
+            makeSection(Strings.tags, isExpanded: $isSectionTagsExpanded) {
+                ReaderSidebarTagsSection(viewModel: viewModel)
             }
         }
         .listStyle(.sidebar)
@@ -93,7 +175,7 @@ struct ReaderSidebarView: View {
         .toolbar {
             EditButton()
         }
-        .environment(\.managedObjectContext, ContextManager.shared.mainContext)
+        .tint(Color(UIAppColor.primary))
     }
 
     @ViewBuilder
@@ -110,66 +192,10 @@ struct ReaderSidebarView: View {
     }
 }
 
-// TODO: (wpsidebar) Add button to add subscription (how should it work?)
-private struct ReaderSidebarSubscriptionsSection: View {
-    let viewModel: ReaderSidebarViewModel
-
-    @FetchRequest(
-        sortDescriptors: [SortDescriptor(\.title, order: .forward)],
-        predicate: NSPredicate(format: "following = YES")
-    )
-    private var subscriptions: FetchedResults<ReaderSiteTopic>
-
-    @State private var isShowingAll = false
-
-    var body: some View {
-        Label(Strings.allSubscriptions, systemImage: "checkmark.rectangle.stack")
-            .tag(ReaderSidebarItem.allSubscriptions)
-
-        ForEach(subscriptions, id: \.self) { site in
-            Label {
-                Text(site.title)
-            } icon: {
-                SiteIconView(viewModel: SiteIconViewModel(readerSiteTopic: site, size: .small))
-                    .frame(width: 28, height: 28)
-            }
-            .lineLimit(1)
-            .tag(ReaderSidebarItem.subscription(TaggedManagedObjectID(site)))
-            .swipeActions(edge: .trailing) {
-                Button(role: .destructive) {
-                    unfollow(site)
-                } label: {
-                    Text(Strings.unfollow)
-                }
-            }
-        }
-        .onDelete(perform: delete)
-    }
-
-    func delete(at offsets: IndexSet) {
-        let sites = offsets.map { subscriptions[$0] }
-        for site in sites {
-            unfollow(site)
-        }
-    }
-
-    private func unfollow(_ site: ReaderSiteTopic) {
-        NotificationCenter.default.post(name: .ReaderTopicUnfollowed, object: nil, userInfo: [ReaderNotificationKeys.topic: site])
-
-        let service = ReaderTopicService(coreDataStack: ContextManager.shared)
-        service.toggleFollowing(forSite: site, success: { _ in
-            // Do nothing
-        }, failure: { _, error in
-            DDLogError("Could not unfollow site: \(String(describing: error))")
-            Notice(title: ReaderFollowedSitesViewController.Strings.failedToUnfollow, message: error?.localizedDescription, feedbackType: .error).post()
-        })
-    }
-}
-
 private struct Strings {
     static let reader = NSLocalizedString("reader.sidebar.navigationTitle", value: "Reader", comment: "Reader sidebar title")
-    static let allSubscriptions = NSLocalizedString("reader.sidebar.allSubscriptions", value: "All Subscriptions", comment: "Reader sidebar button title")
-    static let addSubscription = NSLocalizedString("reader.sidebar.addSubscription", value: "Add Subscription", comment: "Reader sidebar button title")
-    static let subscriptions = NSLocalizedString("reader.sidebar.sectionSubscriptionsTitle", value: "Subscriptions", comment: "Reader sidebar section title")
-    static let unfollow = NSLocalizedString("reader.sidebar.unfollow", value: "Unfollow", comment: "Reader sidebar button title")
+    static let subscriptions = NSLocalizedString("reader.sidebar.section.subscriptions.tTitle", value: "Subscriptions", comment: "Reader sidebar section title")
+    static let lists = NSLocalizedString("reader.sidebar.section.lists.title", value: "Lists", comment: "Reader sidebar section title")
+    static let tags = NSLocalizedString("reader.sidebar.section.tags.title", value: "Tags", comment: "Reader sidebar section title")
+    static let organization = NSLocalizedString("reader.sidebar.section.organization.title", value: "Organization", comment: "Reader sidebar section title")
 }

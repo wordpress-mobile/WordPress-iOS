@@ -43,14 +43,14 @@ class MediaFileManager: NSObject {
 
     /// The default instance of a MediaFileManager.
     ///
-    @objc (defaultManager)
+    @objc(defaultManager)
     static let `default`: MediaFileManager = {
         return MediaFileManager()
     }()
 
     /// Helper method for getting a MediaFileManager for the .cache directory.
     ///
-    @objc (cacheManager)
+    @objc(cacheManager)
     class var cache: MediaFileManager {
         return MediaFileManager(directory: .cache)
     }

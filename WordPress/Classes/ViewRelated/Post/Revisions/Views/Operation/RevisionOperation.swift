@@ -1,7 +1,7 @@
 import Gridicons
 
 class RevisionOperation: NSObject {
-    @IBOutlet private (set) var internalView: RevisionOperationView!
+    @IBOutlet private(set) var internalView: RevisionOperationView!
 
     init(_ type: RevisionOperationView.OperationType) {
         super.init()

@@ -564,19 +564,6 @@ class FilterTabBar: UIControl {
 
     private func updateForCurrentEnvironment() {
         tabSizingStyle = traitCollection.horizontalSizeClass == .regular ? .equalWidths : .fitting
-
-        if isFollowingReaderGuide {
-            switch tabSizingStyle {
-            case .equalWidths:
-                let readableFrame = readableContentGuide.layoutFrame
-                let inset = readableFrame.minX
-                scrollView.contentInset = UIEdgeInsets(top: 0, left: inset, bottom: 0, right: -inset)
-                stackViewWidthConstraint.constant = -(2 * inset)
-            case .fitting:
-                scrollView.contentInset = .zero
-                stackViewWidthConstraint.constant = 0
-            }
-        }
     }
 }
 

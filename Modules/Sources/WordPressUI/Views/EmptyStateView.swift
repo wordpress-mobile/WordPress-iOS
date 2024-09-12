@@ -4,6 +4,7 @@ public struct EmptyStateView<Label: View, Description: View, Actions: View>: Vie
     @ViewBuilder let label: () -> Label
     @ViewBuilder var description: () -> Description
     @ViewBuilder var actions: () -> Actions
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
     public init(
         @ViewBuilder label: @escaping () -> Label,
@@ -16,7 +17,7 @@ public struct EmptyStateView<Label: View, Description: View, Actions: View>: Vie
     }
 
     public var body: some View {
-        VStack(alignment: .center, spacing: 24) {
+        VStack(alignment: .center, spacing: 40) {
             VStack(alignment: .center, spacing: 6) {
                 label()
                     .font(.title2.weight(.medium))
@@ -25,10 +26,11 @@ public struct EmptyStateView<Label: View, Description: View, Actions: View>: Vie
                     .font(.subheadline)
                     .multilineTextAlignment(.center)
                     .foregroundStyle(.secondary)
+                    .lineLimit(4)
             }
             actions()
         }
-        .frame(maxWidth: 300)
+        .frame(maxWidth: horizontalSizeClass == .compact ? 300 : 420)
     }
 }
 
@@ -58,7 +60,7 @@ private struct EmptyStateViewLabelStyle: LabelStyle {
     @ScaledMetric(relativeTo: .title) var iconSize = 50
 
     func makeBody(configuration: Configuration) -> some View {
-        VStack(alignment: .center, spacing: 12) {
+        VStack(alignment: .center, spacing: 16) {
             configuration.icon
                 .font(.system(size: iconSize).weight(.medium))
                 .foregroundColor(.secondary)

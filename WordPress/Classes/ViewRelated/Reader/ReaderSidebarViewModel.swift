@@ -3,25 +3,46 @@ import UIKit
 import WordPressUI
 
 final class ReaderSidebarViewModel: ObservableObject {
-    @Published var selection: ReaderSidebarItem?
+    @Published var selection: ReaderSidebarItem? {
+        didSet { persistenSelection() }
+    }
 
     private let tabItemsStore: ReaderTabItemsStoreProtocol
     private let contextManager: CoreDataStackSwift
+    private var previousReloadTimestamp: Date?
+
+    var navigate: (ReaderSidebarNavigation) -> Void = { _ in }
 
     init(tabItemsStore: ReaderTabItemsStoreProtocol = ReaderTabItemsStore(),
          contextManager: CoreDataStackSwift = ContextManager.shared) {
         self.tabItemsStore = tabItemsStore
         self.contextManager = contextManager
-
-        // TODO: (wpsidebar) reload when appropriate
-        tabItemsStore.getItems()
-
-        self.selection = .main(.recent)
+        let selection = UserDefaults.standard.readerSidebarSelection
+        self.selection = .main(selection ?? .recent)
+        self.reloadMenuIfNeeded()
     }
 
     func getTopic(for topicType: ReaderTopicType) -> ReaderAbstractTopic? {
         return try? ReaderAbstractTopic.lookupAllMenus(in: contextManager.mainContext).first {
             ReaderHelpers.topicType($0) == topicType
+        }
+    }
+
+    func onAppear() {
+        reloadMenuIfNeeded()
+    }
+
+    private func reloadMenuIfNeeded() {
+        if Date.now.timeIntervalSince(previousReloadTimestamp ?? .distantPast) > 60 {
+            previousReloadTimestamp = .now
+            tabItemsStore.getItems()
+        }
+    }
+
+    private func persistenSelection() {
+        if case .main(let screen)? = selection,
+           screen == .recent || screen == .discover {
+            UserDefaults.standard.readerSidebarSelection = screen
         }
     }
 }
@@ -31,13 +52,21 @@ enum ReaderSidebarItem: Identifiable, Hashable {
     case main(ReaderStaticScreen)
     case allSubscriptions
     case subscription(TaggedManagedObjectID<ReaderSiteTopic>)
+    case list(TaggedManagedObjectID<ReaderListTopic>)
+    case tag(TaggedManagedObjectID<ReaderTagTopic>)
+    case organization(TaggedManagedObjectID<ReaderTeamTopic>)
 
     var id: ReaderSidebarItem { self }
 }
 
+enum ReaderSidebarNavigation {
+    case addTag
+    case discoverTags
+}
+
 /// One of the predefined main navigation areas in the reader. The app displays
 /// these even if the respective "topics" were not loaded yet.
-enum ReaderStaticScreen: CaseIterable, Identifiable, Hashable {
+enum ReaderStaticScreen: String, CaseIterable, Identifiable, Hashable {
     case recent
     case discover
     case saved
