@@ -175,7 +175,6 @@ private struct ReaderSidebarView: View {
         .toolbar {
             EditButton()
         }
-        .tint(Color(UIAppColor.primary))
     }
 
     @ViewBuilder
