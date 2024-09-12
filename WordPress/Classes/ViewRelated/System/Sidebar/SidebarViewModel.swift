@@ -4,7 +4,7 @@ import WordPressKit
 import WordPressAuthenticator
 
 enum SidebarSelection: Hashable {
-    case empty // No sites
+    case welcome
     case blog(TaggedManagedObjectID<Blog>)
     case notifications
     case reader
@@ -66,7 +66,7 @@ final class SidebarViewModel: ObservableObject {
         if let blog {
             selection = .blog(TaggedManagedObjectID(blog))
         } else {
-            selection = .empty
+            selection = .welcome
         }
     }
 }

@@ -1,6 +1,7 @@
 import UIKit
 import Combine
 import WordPressAuthenticator
+import SwiftUI
 
 /// The presenter that uses triple-column navigation for `.regular` size classes
 /// and a tab-bar based navigation for `.compact` size class.
@@ -72,15 +73,14 @@ final class SplitViewRootPresenter: RootViewPresenter {
         }
 
         switch selection {
-        case .empty:
-            // TODO: (wpsidebar) add support for the "no sites" scenario
-            break
+        case .welcome:
+            showNoSitesScreen()
         case .blog(let objectID):
             do {
                 let site = try ContextManager.shared.mainContext.existingObject(with: objectID)
                 showDetails(for: site)
             } catch {
-                // TODO: (wpsidebar) show empty state
+                // TODO: (wpsidebar) switch to a different blog?
             }
         case .notifications:
             showNotificationsTab(completion: nil)
@@ -93,6 +93,20 @@ final class SplitViewRootPresenter: RootViewPresenter {
         }
 
         splitVC.hide(.primary)
+    }
+
+    private func showNoSitesScreen() {
+        splitVC.setViewController(UnifiedPrologueViewController(), for: .supplementary)
+
+        let addSiteViewModel = AddSiteMenuViewModel { [weak self] in
+            self?.navigate(to: .addSite(selection: $0))
+        }
+        let noSitesViewModel = NoSitesViewModel(appUIType: JetpackFeaturesRemovalCoordinator.currentAppUIType, account: nil)
+        let noSiteView = NoSitesView(addSiteViewModel: addSiteViewModel, viewModel: noSitesViewModel)
+        let noSitesVC = UIHostingController(rootView: noSiteView)
+        noSitesVC.view.backgroundColor = .systemBackground
+        let navigationVC = UINavigationController(rootViewController: noSitesVC)
+        splitVC.setViewController(navigationVC, for: .secondary)
     }
 
     private func showDetails(for site: Blog) {
@@ -209,7 +223,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
         if let newSite = Blog.lastUsedOrFirst(in: ContextManager.shared.mainContext) {
             self.sidebarViewModel.selection = .blog(TaggedManagedObjectID(newSite))
         } else {
-            self.sidebarViewModel.selection = .empty
+            self.sidebarViewModel.selection = .welcome
             WordPressAppDelegate.shared?.windowManager.showSignInUI()
         }
     }
