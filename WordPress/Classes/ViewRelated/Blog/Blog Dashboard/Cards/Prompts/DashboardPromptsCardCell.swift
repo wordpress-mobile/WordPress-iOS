@@ -182,13 +182,13 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         RootViewCoordinator.sharedPresenter.readerCoordinator?.showTag(named: "\(Constants.dailyPromptTag)-\(promptID)")
         WPAnalytics.track(.promptsOtherAnswersTapped)
     }
-    
+
     @IBAction
     private func didTapAttribution() {
         guard let targetURL = prompt?.promptAttribution?.externalURL else {
             return
         }
-        
+
         let safariViewController = SFSafariViewController(url: targetURL)
         safariViewController.modalPresentationStyle = .pageSheet
         presenterViewController?.present(safariViewController, animated: true)
@@ -223,7 +223,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         label.adjustsFontForContentSizeCategory = true
         return label
     }()
-    
+
     private lazy var attributionTrailingImage = UIImageView()
 
     private lazy var attributionStackView: UIStackView = {
