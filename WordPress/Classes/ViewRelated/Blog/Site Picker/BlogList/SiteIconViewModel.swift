@@ -96,6 +96,11 @@ extension SiteIconViewModel {
             return nil
         }
         components.query = query
+
+        if components.host == nil {
+            return nil
+        }
+
         return components.url
     }
 }

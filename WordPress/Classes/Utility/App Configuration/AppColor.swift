@@ -59,6 +59,10 @@ struct UIAppColor {
         CSColor.Celadon.shade(shade)
     }
 
+    static func wordPressBlue(_ shade: ColorStudioShade) -> UIColor {
+        CSColor.WordPressBlue.shade(shade)
+    }
+
     static func jetpackGreen(_ shade: ColorStudioShade) -> UIColor {
         CSColor.JetpackGreen.shade(shade)
     }
@@ -85,13 +89,13 @@ struct UIAppColor {
 
     static let accent = CSColor.Pink.base
 
-    #if IS_JETPACK
+#if IS_JETPACK
     static let brand = CSColor.JetpackGreen.base
-    #endif
+#endif
 
-    #if IS_WORDPRESS
+#if IS_WORDPRESS
     static let brand = CSColor.WordPressBlue.base
-    #endif
+#endif
 
     static let divider = CSColor.Gray.shade(.shade10)
     static let error = CSColor.Red.base
@@ -124,11 +128,11 @@ struct UIAppColor {
 }
 
 struct AppColor {
-    #if IS_JETPACK
+#if IS_JETPACK
     static let brand = Color(CSColor.JetpackGreen.base)
-    #endif
+#endif
 
-    #if IS_WORDPRESS
+#if IS_WORDPRESS
     static let brand = Color(CSColor.WordPressBlue.base)
-    #endif
+#endif
 }

@@ -52,7 +52,9 @@ enum ReaderSidebarItem: Identifiable, Hashable {
     case main(ReaderStaticScreen)
     case allSubscriptions
     case subscription(TaggedManagedObjectID<ReaderSiteTopic>)
+    case list(TaggedManagedObjectID<ReaderListTopic>)
     case tag(TaggedManagedObjectID<ReaderTagTopic>)
+    case organization(TaggedManagedObjectID<ReaderTeamTopic>)
 
     var id: ReaderSidebarItem { self }
 }

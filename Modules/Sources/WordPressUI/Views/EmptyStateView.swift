@@ -17,7 +17,7 @@ public struct EmptyStateView<Label: View, Description: View, Actions: View>: Vie
     }
 
     public var body: some View {
-        VStack(alignment: .center, spacing: 24) {
+        VStack(alignment: .center, spacing: 40) {
             VStack(alignment: .center, spacing: 6) {
                 label()
                     .font(.title2.weight(.medium))
@@ -60,7 +60,7 @@ private struct EmptyStateViewLabelStyle: LabelStyle {
     @ScaledMetric(relativeTo: .title) var iconSize = 50
 
     func makeBody(configuration: Configuration) -> some View {
-        VStack(alignment: .center, spacing: 12) {
+        VStack(alignment: .center, spacing: 16) {
             configuration.icon
                 .font(.system(size: iconSize).weight(.medium))
                 .foregroundColor(.secondary)
