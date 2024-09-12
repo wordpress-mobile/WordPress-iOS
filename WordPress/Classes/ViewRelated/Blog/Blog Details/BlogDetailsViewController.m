@@ -242,6 +242,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
 
 @property (nonatomic) BOOL hasLoggedDomainCreditPromptShownEvent;
 
+@property (nonatomic, weak) UIViewController *presentedSiteSettingsViewController;
+
 @end
 
 @implementation BlogDetailsViewController
@@ -1807,6 +1809,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
 #pragma clang diagnostic pop
         navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
         [self presentViewController:navigationController animated:YES completion:nil];
+        self.presentedSiteSettingsViewController = navigationController;
         navigationController.presentationController.delegate = self;
     } else {
         [self.presentationDelegate presentBlogDetailsViewController:controller];
@@ -2098,7 +2101,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
 #pragma mark - UIAdaptivePresentationControllerDelegate
 
 - (void)presentationControllerWillDismiss:(UIPresentationController *)presentationController {
-    [self.tableView deselectSelectedRowWithAnimation:YES];
+    if (presentationController.presentedViewController == self.presentedSiteSettingsViewController) {
+        [self.tableView deselectSelectedRowWithAnimation:YES];
+    }
 }
 
 #pragma mark - Domain Registration
