@@ -458,7 +458,9 @@ platform :ios do
       - If needed, backmerge `#{current_branch}` back into `#{DEFAULT_BRANCH}`
       - Delete the `#{current_branch}` branch
     PROMPT
-    UI.user_error!("Terminating as requested. Don't forget to run the remainder of this automation manually.") unless skip_confirm || UI.confirm('Do you want to continue?')
+    unless skip_confirm || UI.confirm('Do you want to continue?')
+      UI.user_error!("Terminating as requested. Don't forget to run the remainder of this automation manually.")
+    end
 
     UI.important "Publishing release #{version_number} on GitHub"
 
