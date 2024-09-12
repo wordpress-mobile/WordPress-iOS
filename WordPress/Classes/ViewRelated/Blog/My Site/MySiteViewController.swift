@@ -57,9 +57,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         return refreshControl
     }()
 
-    /// A boolean indicating whether a site creation or adding self-hosted site flow has been initiated but not yet displayed.
-    var willDisplayPostSignupFlow: Bool = false
-
     private var isSidebarModeEnabled = false
 
     private var createButtonCoordinator: CreateButtonCoordinator?
@@ -607,12 +604,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         WordPressAuthenticator.showLoginForSelfHostedSite(self)
     }
 
-    @objc
-    func launchSiteCreationFromNotification() {
-        self.launchSiteCreation(source: "signup_epilogue")
-        willDisplayPostSignupFlow = false
-    }
-
     func launchSiteCreation(source: String) {
         JetpackFeaturesRemovalCoordinator.presentSiteCreationOverlayIfNeeded(in: self, source: source, onDidDismiss: {
             guard JetpackFeaturesRemovalCoordinator.siteCreationPhase() != .two else {
@@ -633,7 +624,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     @objc
     private func showAddSelfHostedSite() {
         WordPressAuthenticator.showLoginForSelfHostedSite(self)
-        willDisplayPostSignupFlow = false
     }
 
     // MARK: - Blog Details UI Logic
@@ -946,7 +936,7 @@ extension MySiteViewController: BlogDetailsPresentationDelegate {
 
 private extension MySiteViewController {
     @objc func displayOverlayIfNeeded() {
-        if isViewOnScreen() && !willDisplayPostSignupFlow && !RootViewCoordinator.shared.isSiteCreationActive {
+        if isViewOnScreen() && !RootViewCoordinator.shared.isSiteCreationActive {
             let didReloadUI = RootViewCoordinator.shared.reloadUIIfNeeded(blog: self.blog)
             if !didReloadUI {
                 let phase = JetpackFeaturesRemovalCoordinator.generalPhase()

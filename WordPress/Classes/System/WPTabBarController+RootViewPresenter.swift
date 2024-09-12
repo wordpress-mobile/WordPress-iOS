@@ -29,10 +29,6 @@ extension WPTabBarController: RootViewPresenter {
         return mySitesCoordinator.currentBlog
     }
 
-    func willDisplayPostSignupFlow() {
-        mySitesCoordinator.willDisplayPostSignupFlow()
-    }
-
     func showNotificationsTab(completion: ((NotificationsViewController) -> Void)?) {
         self.selectedIndex = WPTab.notifications.rawValue
         completion?(self.notificationsViewController!)

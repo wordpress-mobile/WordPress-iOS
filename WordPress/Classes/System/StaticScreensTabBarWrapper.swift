@@ -35,10 +35,6 @@ class StaticScreensTabBarWrapper: RootViewPresenter {
         tabBarController.currentlyVisibleBlog()
     }
 
-    func willDisplayPostSignupFlow() {
-        tabBarController.willDisplayPostSignupFlow()
-    }
-
     // MARK: Reader
 
     var readerTabViewController: ReaderTabViewController? {
