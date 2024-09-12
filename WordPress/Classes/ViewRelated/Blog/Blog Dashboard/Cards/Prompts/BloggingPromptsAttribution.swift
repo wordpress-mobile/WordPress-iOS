@@ -67,8 +67,8 @@ enum BloggingPromptsAttribution: String {
         static let dayOneIcon = UIImage(named: "logo-dayone")?.resized(to: Constants.dayOneIconSize)
         static let dayOneURL = URL(string: "https://dayoneapp.com/?utm_source=jetpack&utm_medium=prompts")
 
-        static let linkIconSize = CGSize(width: 12, height: 12)
-        static let linkIcon = UIImage.gridicon(.external, size: Constants.linkIconSize)
+        static let linkIconSize = CGFloat(10)
+        static let linkIcon = UIImage(systemName: "link", withConfiguration: UIImage.SymbolConfiguration(pointSize: linkIconSize))
 
         /// This is computed so it can react accordingly on color scheme changes.
         static var bloganuaryIcon: UIImage? {
