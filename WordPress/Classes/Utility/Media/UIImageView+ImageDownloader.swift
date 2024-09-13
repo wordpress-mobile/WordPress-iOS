@@ -3,9 +3,11 @@ import UIKit
 import Gifu
 
 extension UIImageView {
+    @MainActor
     var wp: ImageViewExtensions { ImageViewExtensions(imageView: self) }
 }
 
+@MainActor
 struct ImageViewExtensions {
     var imageView: UIImageView
 

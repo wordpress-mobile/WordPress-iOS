@@ -1,5 +1,7 @@
 import Foundation
+import UIKit
 
+@MainActor
 final class ImageViewController {
     var downloader: ImageDownloader = .shared
     var onStateChanged: (State) -> Void = { _ in }
@@ -28,7 +30,7 @@ final class ImageViewController {
             onStateChanged(.success(image))
         } else {
             onStateChanged(.loading)
-            task = Task { [downloader, weak self] in
+            task = Task { @MainActor [downloader, weak self] in
                 do {
                     let options = ImageRequestOptions(size: size)
                     let image: UIImage
