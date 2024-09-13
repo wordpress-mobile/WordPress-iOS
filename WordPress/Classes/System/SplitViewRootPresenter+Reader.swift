@@ -3,37 +3,24 @@ import UIKit
 
 class ReaderSplitViewContent: SplitViewDisplayable {
     let sidebar: ReaderSidebarViewController
-    let sidebarNavigationController: UINavigationController
-    var content: UINavigationController
+    let supplementary: UINavigationController
+    var secondary: UINavigationController
 
     var selection: SidebarSelection {
         .reader
     }
 
-    var supplimentary: UINavigationController {
-        sidebarNavigationController
-    }
-
-    var secondary: UINavigationController? {
-        get { content }
-        set {
-            if let newValue {
-                content = newValue
-            }
-        }
-    }
-
     init() {
-        content = UINavigationController()
+        secondary = UINavigationController()
         let viewModel = ReaderSidebarViewModel()
         sidebar = ReaderSidebarViewController(viewModel: viewModel)
         sidebar.navigationItem.largeTitleDisplayMode = .automatic
-        sidebarNavigationController = UINavigationController(rootViewController: sidebar)
-        sidebarNavigationController.navigationBar.prefersLargeTitles = true
+        supplementary = UINavigationController(rootViewController: sidebar)
+        supplementary .navigationBar.prefersLargeTitles = true
     }
 
     func displayed(in splitVC: UISplitViewController) {
-        if content.viewControllers.isEmpty {
+        if secondary.viewControllers.isEmpty {
             sidebar.showInitialSelection()
         }
     }

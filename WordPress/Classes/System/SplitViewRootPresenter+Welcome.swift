@@ -5,11 +5,11 @@ import SwiftUI
 class WelcomeSplitViewContent: SplitViewDisplayable {
     var selection: SidebarSelection { .welcome }
 
-    let supplimentary: UINavigationController
-    var secondary: UINavigationController?
+    let supplementary: UINavigationController
+    var secondary: UINavigationController
 
     init(addSite: @escaping (AddSiteMenuViewModel.Selection) -> Void) {
-        supplimentary = UINavigationController(rootViewController: UnifiedPrologueViewController())
+        supplementary = UINavigationController(rootViewController: UnifiedPrologueViewController())
 
         let addSiteViewModel = AddSiteMenuViewModel(context: .shared, onSelection: addSite)
         let noSitesViewModel = NoSitesViewModel(appUIType: JetpackFeaturesRemovalCoordinator.currentAppUIType, account: nil)
@@ -18,7 +18,7 @@ class WelcomeSplitViewContent: SplitViewDisplayable {
         noSitesVC.view.backgroundColor = .systemBackground
         secondary = UINavigationController(rootViewController: noSitesVC)
 
-        supplimentary.isNavigationBarHidden = true
+        supplementary.isNavigationBarHidden = true
     }
 
     func displayed(in splitVC: UISplitViewController) {

@@ -400,14 +400,14 @@ extension SplitViewRootPresenter: UISplitViewControllerDelegate {
 
 // MARK: - Content displayed within the split view, alongside the sidebar
 
-/// This protocol is an abstraction of the `supplimentary` and `secondary` columns in a split view.
+/// This protocol is an abstraction of the `supplementary` and `secondary` columns in a split view.
 ///
 /// When in full-screen mode, `SplitViewRootPresenter` presents a triple-column split view. The sidebar is displayed in
-/// the primary column, which is always accessible. The `supplimentary` and `secondary` columns display different
+/// the primary column, which is always accessible. The `supplementary` and `secondary` columns display different
 /// content, depending on what users choose from the sidebar.
 protocol SplitViewDisplayable: AnyObject {
-    var supplimentary: UINavigationController { get }
-    var secondary: UINavigationController? { get set }
+    var supplementary: UINavigationController { get }
+    var secondary: UINavigationController { get set }
 
     func displayed(in splitVC: UISplitViewController)
 
@@ -416,7 +416,7 @@ protocol SplitViewDisplayable: AnyObject {
 
 extension SplitViewDisplayable {
     func isDisplaying(in splitVC: UISplitViewController) -> Bool {
-        splitVC.viewController(for: .supplementary) === self.supplimentary
+        splitVC.viewController(for: .supplementary) === self.supplementary
     }
 
     func refresh(with splitVC: UISplitViewController) {
@@ -431,7 +431,7 @@ private extension SplitViewRootPresenter {
     func display(content: SplitViewDisplayable) {
         displayingContent?.refresh(with: splitVC)
 
-        splitVC.setViewController(content.supplimentary, for: .supplementary)
+        splitVC.setViewController(content.supplementary, for: .supplementary)
         splitVC.setViewController(content.secondary, for: .secondary)
 
         content.displayed(in: splitVC)

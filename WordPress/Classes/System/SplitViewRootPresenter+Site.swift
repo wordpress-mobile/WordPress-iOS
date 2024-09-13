@@ -3,8 +3,8 @@ import UIKit
 
 class SiteSplitViewContent: SiteMenuViewControllerDelegate, SplitViewDisplayable {
     let siteMenu: SiteMenuViewController
-    let siteMenuNavigationController: UINavigationController
-    var content: UINavigationController
+    let supplementary: UINavigationController
+    var secondary: UINavigationController
 
     var blog: Blog {
         siteMenu.blog
@@ -14,23 +14,10 @@ class SiteSplitViewContent: SiteMenuViewControllerDelegate, SplitViewDisplayable
         .blog(TaggedManagedObjectID(blog))
     }
 
-    var supplimentary: UINavigationController {
-        siteMenuNavigationController
-    }
-
-    var secondary: UINavigationController? {
-        get { content }
-        set {
-            if let newValue {
-                content = newValue
-            }
-        }
-    }
-
     init(blog: Blog) {
         siteMenu = SiteMenuViewController(blog: blog)
-        siteMenuNavigationController = UINavigationController(rootViewController: siteMenu)
-        content = UINavigationController()
+        supplementary = UINavigationController(rootViewController: siteMenu)
+        secondary = UINavigationController()
         siteMenu.delegate = self
     }
 
