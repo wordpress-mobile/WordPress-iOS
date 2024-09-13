@@ -92,7 +92,9 @@ final class SplitViewRootPresenter: RootViewPresenter {
             sidebarVC.showInitialSelection()
         }
 
-        splitVC.hide(.primary)
+        DispatchQueue.main.async {
+            self.splitVC.hide(.primary)
+        }
     }
 
     private func showNoSitesScreen() {
