@@ -6,10 +6,6 @@ class ReaderSplitViewContent: SplitViewDisplayable {
     let supplementary: UINavigationController
     var secondary: UINavigationController
 
-    var selection: SidebarSelection {
-        .reader
-    }
-
     init() {
         secondary = UINavigationController()
         let viewModel = ReaderSidebarViewModel()

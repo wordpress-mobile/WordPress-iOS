@@ -79,11 +79,6 @@ final class SplitViewRootPresenter: RootViewPresenter {
     }
 
     private func configure(for selection: SidebarSelection) {
-        // Do not re-apply the sidebar selection.
-        guard displayingContent?.selection != selection else {
-            return
-        }
-
         switch selection {
         case .blog, .reader:
             splitVC.preferredSupplementaryColumnWidth = 320
@@ -390,12 +385,6 @@ extension SplitViewRootPresenter: UISplitViewControllerDelegate {
             sitePickerPopoverVC?.presentingViewController?.dismiss(animated: true)
         }
     }
-
-    func splitViewController(_ svc: UISplitViewController, willShow column: UISplitViewController.Column) {
-        if column == .primary, let selection = displayingContent?.selection, selection != sidebarViewModel.selection {
-            sidebarViewModel.selection = selection
-        }
-    }
 }
 
 // MARK: - Content displayed within the split view, alongside the sidebar
@@ -410,8 +399,6 @@ protocol SplitViewDisplayable: AnyObject {
     var secondary: UINavigationController { get set }
 
     func displayed(in splitVC: UISplitViewController)
-
-    var selection: SidebarSelection { get }
 }
 
 extension SplitViewDisplayable {

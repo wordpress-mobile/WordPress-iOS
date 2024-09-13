@@ -3,8 +3,6 @@ import UIKit
 import SwiftUI
 
 class WelcomeSplitViewContent: SplitViewDisplayable {
-    var selection: SidebarSelection { .welcome }
-
     let supplementary: UINavigationController
     var secondary: UINavigationController
 

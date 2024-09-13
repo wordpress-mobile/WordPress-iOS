@@ -10,10 +10,6 @@ class SiteSplitViewContent: SiteMenuViewControllerDelegate, SplitViewDisplayable
         siteMenu.blog
     }
 
-    var selection: SidebarSelection {
-        .blog(TaggedManagedObjectID(blog))
-    }
-
     init(blog: Blog) {
         siteMenu = SiteMenuViewController(blog: blog)
         supplementary = UINavigationController(rootViewController: siteMenu)

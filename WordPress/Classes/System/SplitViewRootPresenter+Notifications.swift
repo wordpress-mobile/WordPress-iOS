@@ -6,10 +6,6 @@ class NotificationsSplitViewContent: SplitViewDisplayable {
     let notificationsViewController: NotificationsViewController
     var secondary: UINavigationController
 
-    var selection: SidebarSelection {
-        .notifications
-    }
-
     init() {
         notificationsViewController = UIStoryboard(name: "Notifications", bundle: nil).instantiateInitialViewController() as! NotificationsViewController
         supplementary = UINavigationController(rootViewController: notificationsViewController)
