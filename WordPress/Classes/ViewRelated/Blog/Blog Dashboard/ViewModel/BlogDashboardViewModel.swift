@@ -166,17 +166,6 @@ final class BlogDashboardViewModel {
         let cards = service.fetchLocal(blog: blog)
         updateCurrentCards(cards: cards)
     }
-
-    func isQuickActionsSection(_ sectionIndex: Int) -> Bool {
-        let showMigration = MigrationSuccessCardView.shouldShowMigrationSuccessCard && isShowingQuickActions
-        let targetIndex = showMigration ? DashboardSection.quickActions.rawValue : DashboardSection.quickActions.rawValue - 1
-        return sectionIndex == targetIndex
-    }
-
-    func isMigrationSuccessCardSection(_ sectionIndex: Int) -> Bool {
-        let showMigration = MigrationSuccessCardView.shouldShowMigrationSuccessCard && isShowingQuickActions
-        return showMigration ? sectionIndex == DashboardSection.migrationSuccess.rawValue : false
-    }
 }
 
 // MARK: - Private methods
@@ -214,6 +203,13 @@ private extension BlogDashboardViewModel {
     }
 
     func createSnapshot(from cards: [DashboardCardModel]) -> DashboardSnapshot {
+        let isShowingQuickActions: Bool = {
+            guard Feature.enabled(.sidebar) else {
+                return !WPDeviceIdentification.isiPad()
+            }
+            return viewController?.traitCollection.horizontalSizeClass == .compact
+        }()
+
         let items = cards.map { DashboardItem.cards($0) }
         let dotComID = blog.dotComID?.intValue ?? 0
         var snapshot = DashboardSnapshot()
@@ -228,13 +224,6 @@ private extension BlogDashboardViewModel {
         snapshot.appendSections([.cards])
         snapshot.appendItems(items, toSection: .cards)
         return snapshot
-    }
-
-    var isShowingQuickActions: Bool {
-        guard Feature.enabled(.sidebar) else {
-            return !WPDeviceIdentification.isiPad()
-        }
-        return viewController?.traitCollection.horizontalSizeClass == .compact
     }
 
     // In case a draft is saved and the drafts card
