@@ -87,9 +87,7 @@ extension HomeSiteHeaderViewController {
         let viewController = UIHostingController(rootView: NavigationView {
             BlogDashboardPersonalizationView(viewModel: .init(blog: self.blog, service: .init(siteID: siteID)))
         }.navigationViewStyle(.stack)) // .stack is required for iPad
-        if UIDevice.isPad() {
-            viewController.modalPresentationStyle = .formSheet
-        }
+        viewController.modalPresentationStyle = .formSheet
         present(viewController, animated: true)
 
         WPAnalytics.trackEvent(.mySiteHeaderPersonalizeHomeTapped)
