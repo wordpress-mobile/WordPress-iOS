@@ -34,9 +34,12 @@ extension UIImageView {
     ///   - email: The user's email
     ///   - gravatarRating: Expected image rating
     ///   - placeholderImage: Image to be used as Placeholder
-    public func downloadGravatar(for email: String, gravatarRating: Rating = .general, placeholderImage: UIImage = .gravatarPlaceholderImage) {
+    public func downloadGravatar(
+        for email: String,
+        gravatarRating: Rating = .general,
+        placeholderImage: UIImage = .gravatarPlaceholderImage
+    ) {
         let avatarURL = AvatarURL.url(for: email, preferredSize: .pixels(gravatarDefaultSize()), gravatarRating: gravatarRating)
-        listenForGravatarChanges(forEmail: email)
         downloadGravatar(fullURL: avatarURL, placeholder: placeholderImage, animate: false, failure: nil)
     }
 
