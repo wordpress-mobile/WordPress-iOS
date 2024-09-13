@@ -606,6 +606,8 @@
 		0CB54F582AEC320700582080 /* WordPressAppDelegate+PostCoordinatorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB54F562AEC320700582080 /* WordPressAppDelegate+PostCoordinatorDelegate.swift */; };
 		0CBF66D82C949231005F1EDC /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CBF66D72C949231005F1EDC /* ImageViewController.swift */; };
 		0CBF66D92C949231005F1EDC /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CBF66D72C949231005F1EDC /* ImageViewController.swift */; };
+		0CBF66DB2C949C1A005F1EDC /* UIImageView+ImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CBF66DA2C949C1A005F1EDC /* UIImageView+ImageDownloader.swift */; };
+		0CBF66DC2C949C1A005F1EDC /* UIImageView+ImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CBF66DA2C949C1A005F1EDC /* UIImageView+ImageDownloader.swift */; };
 		0CC21C6C2B95220E003BDB4A /* PostCoordinator+Notices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC21C6B2B95220E003BDB4A /* PostCoordinator+Notices.swift */; };
 		0CC21C6D2B95220E003BDB4A /* PostCoordinator+Notices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC21C6B2B95220E003BDB4A /* PostCoordinator+Notices.swift */; };
 		0CCC13C92C6FA10E0010940A /* SplitViewRootPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC13C82C6FA10D0010940A /* SplitViewRootPresenter.swift */; };
@@ -6527,6 +6529,7 @@
 		0CB424F52AE0416D0080B807 /* SolidColorActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolidColorActivityIndicator.swift; sourceTree = "<group>"; };
 		0CB54F562AEC320700582080 /* WordPressAppDelegate+PostCoordinatorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WordPressAppDelegate+PostCoordinatorDelegate.swift"; sourceTree = "<group>"; };
 		0CBF66D72C949231005F1EDC /* ImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
+		0CBF66DA2C949C1A005F1EDC /* UIImageView+ImageDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+ImageDownloader.swift"; sourceTree = "<group>"; };
 		0CC21C6B2B95220E003BDB4A /* PostCoordinator+Notices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostCoordinator+Notices.swift"; sourceTree = "<group>"; };
 		0CCC13C82C6FA10D0010940A /* SplitViewRootPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitViewRootPresenter.swift; sourceTree = "<group>"; };
 		0CCC13CC2C6FDDB50010940A /* SidebarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarViewController.swift; sourceTree = "<group>"; };
@@ -10641,6 +10644,7 @@
 				B5EB19EB20C6DACC008372B9 /* ImageDownloader.swift */,
 				FADC40AD2A8D2E8D00C19997 /* ImageDownloader+Gravatar.swift */,
 				0C1DB6072B0A419B0028F200 /* ImageDecoder.swift */,
+				0CBF66DA2C949C1A005F1EDC /* UIImageView+ImageDownloader.swift */,
 				3F2ABE15277037A9005D8916 /* VideoLimitsAlertPresenter.swift */,
 				0C7073942A65CB2E00F325CE /* MemoryCache.swift */,
 				08F531FD2B7E94F20061BD0E /* CachedAsyncImage.swift */,
@@ -22309,6 +22313,7 @@
 				FE9CC71A26D7A2A40026AEF3 /* CommentDetailViewController.swift in Sources */,
 				C3B5545329661F2C00A04753 /* ThemeBrowserViewController+JetpackBannerViewController.swift in Sources */,
 				3FCCAA1523F4A1A3004064C0 /* UIBarButtonItem+MeBarButton.swift in Sources */,
+				0CBF66DB2C949C1A005F1EDC /* UIImageView+ImageDownloader.swift in Sources */,
 				91EABC452BB56EE10098D330 /* UIImageView+Gravatar.swift in Sources */,
 				0CF22F622BC963690005B070 /* PrepublishingViewController+Helpers.swift in Sources */,
 				FFEECFFC2084DE2B009B8CDB /* PostSettingsViewController+FeaturedImageUpload.swift in Sources */,
@@ -24705,6 +24710,7 @@
 				08A250FD28D9F0E200F50420 /* CommentDetailInfoViewModel.swift in Sources */,
 				FABB21B82602FC2C00C8785C /* SiteSegmentsService.swift in Sources */,
 				0C7A48462C1727BE00B16BAA /* AudioRecorderVisualizerView.swift in Sources */,
+				0CBF66DC2C949C1A005F1EDC /* UIImageView+ImageDownloader.swift in Sources */,
 				FABB21BA2602FC2C00C8785C /* MediaItemHeaderView.swift in Sources */,
 				F158541A267D3B6000A2E966 /* BloggingRemindersStore.swift in Sources */,
 				FABB21BB2602FC2C00C8785C /* AbstractPost+fixLocalMediaURLs.swift in Sources */,

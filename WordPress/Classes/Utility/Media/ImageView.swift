@@ -41,7 +41,7 @@ final class ImageView: UIView {
     func prepareForReuse() {
         controller.prepareForReuse()
 
-        if imageView.isAnimatingGIF == true {
+        if imageView.isAnimatingGIF {
             imageView.prepareForReuse()
         } else {
             imageView.image = nil
