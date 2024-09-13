@@ -64,7 +64,7 @@ extension UIImageView {
         wp.prepareForReuse()
         if let fullURL {
             wp.setImage(with: fullURL)
-            if image == nil { // If image wasn't found syncronously in memory cache
+            if image == nil { // If image wasn't found synchronously in memory cache
                 image = placeholder
             }
         }
