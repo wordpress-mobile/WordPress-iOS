@@ -16,9 +16,10 @@ final class SplitViewRootPresenter: RootViewPresenter {
     private var siteContent: SiteSplitViewContent?
     private var notificationsContent: NotificationsSplitViewContent?
     private var readerContent: ReaderSplitViewContent?
+    private var welcomeContent: WelcomeSplitViewContent?
 
     private var displayingContent: SplitViewDisplayable? {
-        let possibleContent: [SplitViewDisplayable?] = [siteContent, notificationsContent, readerContent]
+        let possibleContent: [SplitViewDisplayable?] = [siteContent, notificationsContent, readerContent, welcomeContent]
         let displaying = possibleContent
             .compactMap { $0 }
             .filter { $0.isDisplaying(in: splitVC) }
@@ -90,47 +91,48 @@ final class SplitViewRootPresenter: RootViewPresenter {
             splitVC.preferredSupplementaryColumnWidth = UISplitViewController.automaticDimension
         }
 
+        let content: SplitViewDisplayable
         switch selection {
         case .welcome:
-            showNoSitesScreen()
+            if let welcomeContent {
+                content = welcomeContent
+            } else {
+                welcomeContent = WelcomeSplitViewContent { [weak self] in self?.navigate(to: .addSite(selection: $0)) }
+                content = welcomeContent!
+            }
         case .blog(let objectID):
-            do {
-                let site = try ContextManager.shared.mainContext.existingObject(with: objectID)
-                showDetails(for: site)
-            } catch {
-                // TODO: (wpsidebar) switch to a different blog?
+            if let siteContent, siteContent.blog.objectID == objectID.objectID {
+                content = siteContent
+            } else {
+                do {
+                    let site = try ContextManager.shared.mainContext.existingObject(with: objectID)
+                    siteContent = SiteSplitViewContent(blog: site)
+                    content = siteContent!
+                } catch {
+                    // TODO: (wpsidebar) switch to a different blog?
+                    return
+                }
             }
         case .notifications:
-            showNotificationsTab(completion: nil)
+            // TODO: (wpsidebar) update tab bar item when new notifications arrive
+            if let notificationsContent {
+                content = notificationsContent
+            } else {
+                notificationsContent = NotificationsSplitViewContent()
+                content = notificationsContent!
+            }
         case .reader:
-            showReaderTab()
+            if let readerContent {
+                content = readerContent
+            } else {
+                readerContent = ReaderSplitViewContent()
+                content = readerContent!
+            }
         }
+
+        display(content: content)
 
         splitVC.hide(.primary)
-    }
-
-    private func showNoSitesScreen() {
-        splitVC.setViewController(UnifiedPrologueViewController(), for: .supplementary)
-
-        let addSiteViewModel = AddSiteMenuViewModel { [weak self] in
-            self?.navigate(to: .addSite(selection: $0))
-        }
-        let noSitesViewModel = NoSitesViewModel(appUIType: JetpackFeaturesRemovalCoordinator.currentAppUIType, account: nil)
-        let noSiteView = NoSitesView(addSiteViewModel: addSiteViewModel, viewModel: noSitesViewModel)
-        let noSitesVC = UIHostingController(rootView: noSiteView)
-        noSitesVC.view.backgroundColor = .systemBackground
-        let navigationVC = UINavigationController(rootViewController: noSitesVC)
-        splitVC.setViewController(navigationVC, for: .secondary)
-    }
-
-    private func showDetails(for site: Blog) {
-        if let siteContent, siteContent.blog == site {
-            display(content: siteContent)
-        } else {
-            let siteContent = SiteSplitViewContent(blog: site)
-            self.siteContent = siteContent
-            display(content: siteContent)
-        }
     }
 
     private func makeRootNavigationController(with viewController: UIViewController) -> UINavigationController {
@@ -273,13 +275,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
     var readerNavigationController: UINavigationController?
 
     func showReaderTab() {
-        if let readerContent {
-            display(content: readerContent)
-        } else {
-            let readerContent = ReaderSplitViewContent()
-            self.readerContent = readerContent
-            display(content: readerContent)
-        }
+        sidebarViewModel.selection = .reader
     }
 
     func showReaderTab(forPost: NSNumber, onBlog: NSNumber) {
@@ -321,13 +317,11 @@ final class SplitViewRootPresenter: RootViewPresenter {
     var mySitesCoordinator: MySitesCoordinator
 
     func showMySitesTab() {
-        if let siteContent {
-            display(content: siteContent)
-        } else if let blog = Blog.lastUsedOrFirst(in: ContextManager.shared.mainContext) {
-            showDetails(for: blog)
-        } else {
-            // TODO: show empty?
+        guard let blog = currentlyVisibleBlog() else {
+            // Do nothing.
+            return
         }
+        sidebarViewModel.selection = .blog(TaggedManagedObjectID(blog))
     }
 
     func showPages(for blog: Blog) {
@@ -343,18 +337,11 @@ final class SplitViewRootPresenter: RootViewPresenter {
     }
 
     func showNotificationsTab(completion: ((NotificationsViewController) -> Void)?) {
-        // TODO: (wpsidebar) update tab bar item when new notifications arrive
-        let notifications: NotificationsSplitViewContent
-        if let existing = self.notificationsContent {
-            notifications = existing
-        } else {
-            notifications = .init()
-            self.notificationsContent = notifications
+        sidebarViewModel.selection = .notifications
+
+        if let notifications = self.notificationsContent {
+            completion?(notifications.notificationsViewController)
         }
-
-        display(content: notifications)
-
-        completion?(notifications.notificationsViewController)
     }
 
     var meViewController: MeViewController?
