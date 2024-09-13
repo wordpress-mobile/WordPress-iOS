@@ -10,7 +10,6 @@ protocol RootViewPresenter: AnyObject {
     func getMeScenePresenter() -> ScenePresenter
     func currentlySelectedScreen() -> String
     func currentlyVisibleBlog() -> Blog?
-    func willDisplayPostSignupFlow()
 
     // MARK: Reader
 

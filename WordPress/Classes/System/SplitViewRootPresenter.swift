@@ -257,10 +257,6 @@ final class SplitViewRootPresenter: RootViewPresenter {
         return try? ContextManager.shared.mainContext.existingObject(with: id)
     }
 
-    func willDisplayPostSignupFlow() {
-        fatalError()
-    }
-
     var readerTabViewController: ReaderTabViewController?
 
     var readerCoordinator: ReaderCoordinator?

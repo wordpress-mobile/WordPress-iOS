@@ -151,10 +151,6 @@ class MySitesCoordinator: NSObject {
 
     // MARK: - Adding a new site
 
-    func willDisplayPostSignupFlow() {
-        mySiteViewController.willDisplayPostSignupFlow = true
-    }
-
     func showSiteCreation() {
         showRootViewController()
         mySiteViewController.launchSiteCreation(source: "my_site")
