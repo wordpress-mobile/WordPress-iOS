@@ -1380,6 +1380,8 @@
 		4A26E9922C90EEBA00C1D5DE /* SplitViewRootPresenter+Site.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A26E9902C90EEBA00C1D5DE /* SplitViewRootPresenter+Site.swift */; };
 		4A26E9942C90EEBF00C1D5DE /* SplitViewRootPresenter+Reader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A26E9932C90EEBF00C1D5DE /* SplitViewRootPresenter+Reader.swift */; };
 		4A26E9952C90EEBF00C1D5DE /* SplitViewRootPresenter+Reader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A26E9932C90EEBF00C1D5DE /* SplitViewRootPresenter+Reader.swift */; };
+		4A26E99A2C93AEE200C1D5DE /* SplitViewRootPresenter+Welcome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A26E9992C93AEE200C1D5DE /* SplitViewRootPresenter+Welcome.swift */; };
+		4A26E99B2C93AEE200C1D5DE /* SplitViewRootPresenter+Welcome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A26E9992C93AEE200C1D5DE /* SplitViewRootPresenter+Welcome.swift */; };
 		4A2C73E12A943D9000ACE79E /* TaggedManagedObjectID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2C73E02A943D8F00ACE79E /* TaggedManagedObjectID.swift */; };
 		4A2C73E22A943D9000ACE79E /* TaggedManagedObjectID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2C73E02A943D8F00ACE79E /* TaggedManagedObjectID.swift */; };
 		4A2C73E42A943DEA00ACE79E /* TaggedManagedObjectIDTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2C73E32A943DEA00ACE79E /* TaggedManagedObjectIDTests.swift */; };
@@ -7235,6 +7237,7 @@
 		4A26E98D2C90EE8400C1D5DE /* SplitViewRootPresenter+Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SplitViewRootPresenter+Notifications.swift"; sourceTree = "<group>"; };
 		4A26E9902C90EEBA00C1D5DE /* SplitViewRootPresenter+Site.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SplitViewRootPresenter+Site.swift"; sourceTree = "<group>"; };
 		4A26E9932C90EEBF00C1D5DE /* SplitViewRootPresenter+Reader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SplitViewRootPresenter+Reader.swift"; sourceTree = "<group>"; };
+		4A26E9992C93AEE200C1D5DE /* SplitViewRootPresenter+Welcome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SplitViewRootPresenter+Welcome.swift"; sourceTree = "<group>"; };
 		4A2C73E02A943D8F00ACE79E /* TaggedManagedObjectID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaggedManagedObjectID.swift; sourceTree = "<group>"; };
 		4A2C73E32A943DEA00ACE79E /* TaggedManagedObjectIDTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaggedManagedObjectIDTests.swift; sourceTree = "<group>"; };
 		4A2C73EC2A9577C000ACE79E /* PostHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostHelper.m; sourceTree = "<group>"; };
@@ -14278,6 +14281,7 @@
 				4A26E9902C90EEBA00C1D5DE /* SplitViewRootPresenter+Site.swift */,
 				4A26E98D2C90EE8400C1D5DE /* SplitViewRootPresenter+Notifications.swift */,
 				4A26E9932C90EEBF00C1D5DE /* SplitViewRootPresenter+Reader.swift */,
+				4A26E9992C93AEE200C1D5DE /* SplitViewRootPresenter+Welcome.swift */,
 				803BB97F295957CF00B3F6D6 /* WPTabBarController+RootViewPresenter.swift */,
 				803BB982295957F600B3F6D6 /* MySitesCoordinator+RootViewPresenter.swift */,
 				80A2153C29C35197002FE8EB /* StaticScreensTabBarWrapper.swift */,
@@ -22003,6 +22007,7 @@
 				017008452B35C25C00C80490 /* SiteDomainsViewModel.swift in Sources */,
 				E14A52371E39F43E00EE203E /* AppRatingsUtility.swift in Sources */,
 				46638DF6244904A3006E8439 /* GutenbergBlockProcessor.swift in Sources */,
+				4A26E99B2C93AEE200C1D5DE /* SplitViewRootPresenter+Welcome.swift in Sources */,
 				46241C0F2540BD01002B8A12 /* SiteDesignStep.swift in Sources */,
 				8350E49611D2C71E00A7B073 /* Media.m in Sources */,
 				D8B9B58F204F4EA1003C6042 /* NetworkAware.swift in Sources */,
@@ -25153,6 +25158,7 @@
 				FABB22FB2602FC2C00C8785C /* ReaderFollowAction.swift in Sources */,
 				FABB22FC2602FC2C00C8785C /* SheetActions.swift in Sources */,
 				FABB22FD2602FC2C00C8785C /* ReaderTracker.swift in Sources */,
+				4A26E99A2C93AEE200C1D5DE /* SplitViewRootPresenter+Welcome.swift in Sources */,
 				FEC1B0CF2BE41E1C00CB4A3D /* AdaptiveCollectionViewFlowLayout.swift in Sources */,
 				FABB22FE2602FC2C00C8785C /* PlanFeature.swift in Sources */,
 				17C1D7DD26735631006C8970 /* EmojiRenderer.swift in Sources */,
