@@ -149,13 +149,6 @@ class MySitesCoordinator: NSObject {
         showBlogDetails(for: blog, then: .activity)
     }
 
-    // MARK: - Adding a new site
-
-    func showSiteCreation() {
-        showRootViewController()
-        mySiteViewController.launchSiteCreation(source: "my_site")
-    }
-
     // MARK: - Post creation
 
     func showCreateSheet(for blog: Blog?) {
