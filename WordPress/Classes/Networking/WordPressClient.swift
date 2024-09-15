@@ -4,7 +4,7 @@ import Network
 
 struct WordPressSite {
     enum SiteType {
-        case dotCom(emailAddress: String, authToken: String)
+        case dotCom(authToken: String)
         case selfHosted(username: String, authToken: String)
     }
 
@@ -19,10 +19,7 @@ struct WordPressSite {
     static func from(blog: Blog) throws -> WordPressSite {
         let url = try ParsedUrl.parse(input: blog.getUrlString())
         if let account = blog.account {
-            return WordPressSite(baseUrl: url, type: .dotCom(
-                emailAddress: account.email,
-                authToken: account.authToken
-            ))
+            return WordPressSite(baseUrl: url, type: .dotCom(authToken: account.authToken))
         } else {
             return WordPressSite(baseUrl: url, type: .selfHosted(
                 username: try blog.getUsername(),
@@ -52,7 +49,7 @@ actor WordPressClient {
         let parsedUrl = try ParsedUrl.parse(input: site.baseUrl)
 
         switch site.type {
-        case let .dotCom(_, authToken):
+        case let .dotCom(authToken):
             let api = WordPressAPI(urlSession: session, baseUrl: parsedUrl, authenticationStategy: .authorizationHeader(token: authToken))
             return WordPressClient(api: api, rootUrl: parsedUrl)
         case .selfHosted(let username, let authToken):
