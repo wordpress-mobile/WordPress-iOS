@@ -58,9 +58,6 @@ final class SplitViewRootPresenter: RootViewPresenter {
             }
             self?.sidebarViewModel.selection = .blog(TaggedManagedObjectID(site))
         }.store(in: &cancellables)
-        NotificationCenter.default.publisher(for: UIApplication.didReceiveMemoryWarningNotification).sink { [weak self] _ in
-            self?.handleLowMemoryWarning()
-        }.store(in: &cancellables)
 
         sidebarViewModel.$selection.compactMap { $0 }.sink { [weak self] in
             self?.configure(for: $0)
@@ -362,20 +359,6 @@ final class SplitViewRootPresenter: RootViewPresenter {
         splitVC.present(navigationVC, animated: true) {
             completion?(meVC)
         }
-    }
-
-    private func handleLowMemoryWarning() {
-        let displaying = self.displayingContent
-
-        // Remove the Notifications and Reader out of the memory.
-        if self.notificationsContent !== displaying {
-            self.notificationsContent = nil
-        }
-        if self.readerContent !== displaying {
-            self.readerContent = nil
-        }
-
-        // We need the `siteContent` because it's used to keep track of the currently displayed site.
     }
 }
 
