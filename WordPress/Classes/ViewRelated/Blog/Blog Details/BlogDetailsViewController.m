@@ -977,7 +977,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
         [marr addNullableObject:[self sotw2023SectionViewModel]];
     }
 
-    if (MigrationSuccessCardView.shouldShowMigrationSuccessCard == YES) {
+    if (MigrationSuccessCardView.shouldShowMigrationSuccessCard == YES && ![Feature enabled:FeatureFlagSidebar]) {
         [marr addNullableObject:[self migrationSuccessSectionViewModel]];
     }
 
@@ -1028,7 +1028,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     self.tableSections = [NSArray arrayWithArray:marr];
 }
 
-// TODO: (wpsidebar) Remove when WPSPlitViewController is removed on iPhone
 - (Boolean)isSplitViewDisplayed {
     if (self.isSidebarModeEnabled) {
         return true;
@@ -1551,12 +1550,15 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
         return cell;
     }
 
-        if (section.category == BlogDetailsSectionCategoryMigrationSuccess) {
+    if (section.category == BlogDetailsSectionCategoryMigrationSuccess) {
         MigrationSuccessCell *cell = [tableView dequeueReusableCellWithIdentifier:BlogDetailsMigrationSuccessCellIdentifier];
+        if (self.isSidebarModeEnabled) {
+            [cell configureForSidebarMode];
+        }
         [cell configureWithViewController:self];
         return cell;
     }
-    
+
     if (section.category == BlogDetailsSectionCategoryJetpackBrandingCard) {
         JetpackBrandingMenuCardCell *cell = [tableView dequeueReusableCellWithIdentifier:BlogDetailsJetpackBrandingCardCellIdentifier];
         [cell configureWithViewController:self];

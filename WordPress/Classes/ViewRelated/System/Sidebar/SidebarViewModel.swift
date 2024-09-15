@@ -23,18 +23,36 @@ final class SidebarViewModel: ObservableObject {
     @Published var selection: SidebarSelection?
     @Published private(set) var account: WPAccount?
 
+    let blogListViewModel = BlogListViewModel()
+
     var navigate: (SidebarNavigationStep) -> Void = { _ in }
 
     private let contextManager: CoreDataStackSwift
+    private var previousReloadTimestamp: Date?
     private var cancellables: [AnyCancellable] = []
 
     init(contextManager: CoreDataStackSwift = ContextManager.shared) {
         self.contextManager = contextManager
 
-        // TODO: (wpsidebar) can it change during the root presenter lifetime?
         account = try? WPAccount.lookupDefaultWordPressComAccount(in: contextManager.mainContext)
         resetSelection()
         setupObservers()
+    }
+
+    func onAppear() {
+        reloadMenuIfNeeded()
+    }
+
+    private func reloadMenuIfNeeded() {
+        blogListViewModel.updateDisplayedSites()
+
+        if Date.now.timeIntervalSince(previousReloadTimestamp ?? .distantPast) > 60 {
+            previousReloadTimestamp = .now
+
+            Task {
+                try? await blogListViewModel.refresh()
+            }
+        }
     }
 
     private func setupObservers() {

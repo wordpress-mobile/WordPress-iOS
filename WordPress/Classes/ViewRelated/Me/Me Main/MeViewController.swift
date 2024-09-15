@@ -129,7 +129,7 @@ class MeViewController: UITableViewController {
 
         return NavigationItemRow(
             title: RowTitles.appSettings,
-            icon: UIImage(named: "wpl-tablet")?.withRenderingMode(.alwaysTemplate),
+            icon: UIImage(named: UIDevice.isPad() ? "wpl-tablet" : "wpl-phone")?.withRenderingMode(.alwaysTemplate),
             tintColor: .label,
             accessoryType: accessoryType,
             action: pushAppSettings(),
