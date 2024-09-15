@@ -6,7 +6,7 @@ protocol SiteMenuViewControllerDelegate: AnyObject {
 
 /// The site menu for the split view navigation.
 final class SiteMenuViewController: UIViewController {
-    private let blog: Blog
+    let blog: Blog
     private let blogDetailsVC = SiteMenuListViewController()
 
     weak var delegate: SiteMenuViewControllerDelegate?
