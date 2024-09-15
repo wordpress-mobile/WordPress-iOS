@@ -25,6 +25,7 @@ class SiteStatsBaseTableViewController: UIViewController {
 
     func initTableView() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.cellLayoutMarginsFollowReadableWidth = true
         view.addSubview(tableView)
         view.pinSubviewToAllEdges(tableView)
 

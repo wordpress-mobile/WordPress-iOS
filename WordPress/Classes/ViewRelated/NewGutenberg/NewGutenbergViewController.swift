@@ -134,7 +134,8 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         let networkClient = NewGutenbergNetworkClient(blog: post.blog)
 
         let selfHostedApiUrl = post.blog.url(withPath: "wp-json/")
-        let siteApiRoot = post.blog.isAccessibleThroughWPCom() ? post.blog.wordPressComRestApi()?.baseURL.absoluteString : selfHostedApiUrl
+        let isSelfHosted = !post.blog.isHostedAtWPcom && !post.blog.isAtomic()
+        let siteApiRoot = post.blog.isAccessibleThroughWPCom() && !isSelfHosted ? post.blog.wordPressComRestApi()?.baseURL.absoluteString : selfHostedApiUrl
         let siteId = post.blog.dotComID?.stringValue
         let authToken = post.blog.authToken ?? ""
         var authHeader = "Bearer \(authToken)"
@@ -149,7 +150,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
             }
         }
 
-        let siteApiNamespace = post.blog.dotComID != nil && applicationPassword == nil ? "sites/\(siteId ?? "")" : ""
+        let siteApiNamespace = post.blog.dotComID != nil && !isSelfHosted && applicationPassword == nil ? "sites/\(siteId ?? "")" : ""
         let postType = post is Page ? "page" : "post"
         let postId: Int? = post.postID?.intValue != -1 ? post.postID?.intValue : nil
 
@@ -160,6 +161,8 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
             content: post.content ?? "",
             service: GutenbergKit.EditorService(client: networkClient),
             themeStyles: FeatureFlag.newGutenbergThemeStyles.enabled,
+            plugins: FeatureFlag.newGutenbergPlugins.enabled && isSelfHosted,
+            siteURL: post.blog.url ?? "",
             siteApiRoot: siteApiRoot!,
             siteApiNamespace: siteApiNamespace,
             authHeader: authHeader

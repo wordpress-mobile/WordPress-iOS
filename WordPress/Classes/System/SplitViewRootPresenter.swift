@@ -124,7 +124,9 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
         display(content: content)
 
-        splitVC.hide(.primary)
+        DispatchQueue.main.async {
+            self.splitVC.hide(.primary)
+        }
     }
 
     private func makeRootNavigationController(with viewController: UIViewController) -> UINavigationController {
@@ -254,10 +256,6 @@ final class SplitViewRootPresenter: RootViewPresenter {
         assert(Thread.isMainThread)
 
         return siteContent?.blog
-    }
-
-    func willDisplayPostSignupFlow() {
-        fatalError()
     }
 
     var readerTabViewController: ReaderTabViewController?

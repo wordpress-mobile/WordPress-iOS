@@ -87,7 +87,7 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
 
         let button = UIButton.makeMenu(title: Strings.title, menu: menu)
         self.buttonFilter = button
-        if UIDevice.isPad() {
+        if traitCollection.horizontalSizeClass == .regular {
             navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
         } else {
             navigationItem.titleView = button

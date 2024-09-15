@@ -140,7 +140,6 @@ extension StatsRoute: NavigationAction {
         WPAppAnalytics.track(.deepLinkFailed, withProperties: ["route": path])
 
         if failAndBounce(values) == false {
-            coordinator.showRootViewController()
             postFailureNotice(title: NSLocalizedString("Site not found",
                                                        comment: "Error notice shown if the app can't find a specific site belonging to the user"))
         }

@@ -16,6 +16,7 @@ enum FeatureFlag: Int, CaseIterable {
     case sidebar
     case newGutenberg
     case newGutenbergThemeStyles
+    case newGutenbergPlugins
     case serif
 
     /// Returns a boolean indicating if the feature is enabled
@@ -52,6 +53,8 @@ enum FeatureFlag: Int, CaseIterable {
         case .newGutenberg:
             return false
         case .newGutenbergThemeStyles:
+            return false
+        case .newGutenbergPlugins:
             return false
         case .serif:
             return false
@@ -91,6 +94,7 @@ extension FeatureFlag {
         case .sidebar: "Sidebar"
         case .newGutenberg: "Experimental Block Editor"
         case .newGutenbergThemeStyles: "Experimental Block Editor Styles"
+        case .newGutenbergPlugins: "Experimental Block Editor Plugins"
         case .serif: "Serif"
         }
     }

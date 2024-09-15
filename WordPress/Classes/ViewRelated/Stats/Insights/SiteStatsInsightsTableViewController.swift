@@ -111,6 +111,7 @@ class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController, St
         let controller = InsightsManagementViewController(insightsDelegate: self,
                 insightsManagementDelegate: self, insightsShown: insightsToShow.compactMap { $0.statSection })
         let navigationController = UINavigationController(rootViewController: controller)
+        navigationController.modalPresentationStyle = .formSheet // Has to be set before the delegate
         navigationController.presentationController?.delegate = self
         present(navigationController, animated: true, completion: nil)
     }

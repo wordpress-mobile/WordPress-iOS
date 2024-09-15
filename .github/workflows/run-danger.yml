@@ -7,11 +7,12 @@ on:
 jobs:
   dangermattic:
     if: ${{ (github.event.pull_request.draft == false) }}
-    uses: Automattic/dangermattic/.github/workflows/reusable-retry-buildkite-step-on-events.yml@v1.1.0
+    uses: Automattic/dangermattic/.github/workflows/reusable-retry-buildkite-step-on-events.yml@v1.1.2
     with:
-      org-slug: "automattic"
-      pipeline-slug: "wordpress-ios"
-      retry-step-key: "danger"
-      build-commit-sha: "${{ github.event.pull_request.head.sha }}"
+      org-slug: automattic
+      pipeline-slug: wordpress-ios
+      retry-step-key: danger
+      build-commit-sha: ${{ github.event.pull_request.head.sha }}
+      cancel-running-github-jobs: false
     secrets:
       buildkite-api-token: ${{ secrets.TRIGGER_BK_BUILD_TOKEN }}
