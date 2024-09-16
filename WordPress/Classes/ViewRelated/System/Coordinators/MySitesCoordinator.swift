@@ -104,19 +104,6 @@ class MySitesCoordinator: NSObject {
         }
     }
 
-    // MARK: - Post creation
-
-    func showCreateSheet(for blog: Blog?) {
-        let context = ContextManager.shared.mainContext
-        guard let targetBlog = blog ?? Blog.lastUsedOrFirst(in: context) else {
-            return
-        }
-
-        showBlogDetails(for: targetBlog)
-
-        mySiteViewController.presentCreateSheet()
-    }
-
     // MARK: - My Sites
 
     func showMe() -> MeViewController? {

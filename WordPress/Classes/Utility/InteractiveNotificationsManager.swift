@@ -204,9 +204,9 @@ final class InteractiveNotificationsManager: NSObject {
                 eventTracker.notificationTapped(type: .bloggingReminders)
 
                 if identifier == UNNotificationDefaultActionIdentifier {
-                    let targetBlog: Blog? = blog(from: threadId)
-
-                    RootViewCoordinator.sharedPresenter.mySitesCoordinator.showCreateSheet(for: targetBlog)
+                    if let blog = self.blog(from: threadId) {
+                        RootViewCoordinator.sharedPresenter.showBlogDetails(for: blog)
+                    }
                 }
             case .weeklyRoundup:
                 let targetBlog = blog(from: userInfo)
