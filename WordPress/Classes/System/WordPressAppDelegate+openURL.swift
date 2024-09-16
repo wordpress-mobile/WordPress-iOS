@@ -89,7 +89,7 @@ import AutomatticTracks
 
         guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
             // Display overlay
-            RootViewCoordinator.sharedPresenter.mySitesCoordinator.displayJetpackOverlayForDisabledEntryPoint()
+            RootViewCoordinator.sharedPresenter.showJetpackOverlayForDisabledEntryPoint()
 
             // Track incorrect access
             let properties = ["calling_function": "deep_link", "url": url.absoluteString]

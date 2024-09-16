@@ -70,4 +70,14 @@ extension RootViewPresenter {
     func showMeScreen() {
         showMeScreen(completion: nil)
     }
+
+    // MARK: Misc
+
+    func showJetpackOverlayForDisabledEntryPoint() {
+        JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(
+            in: rootViewController,
+            source: .disabledEntryPoint,
+            blog: currentlyVisibleBlog()
+        )
+    }
 }
