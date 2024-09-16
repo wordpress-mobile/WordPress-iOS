@@ -240,26 +240,23 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
     var rootViewController: UIViewController { splitVC }
 
-    // MARK: RootViewPresenter (Sites)
-
     func currentlySelectedScreen() -> String {
         if splitVC.isCollapsed {
             return tabBarViewController.currentlySelectedScreen()
         } else {
             switch sidebarViewModel.selection {
-            case .welcome:
-                return "Welcome"
-            case .blog:
-                return WPTabBarCurrentlySelectedScreenSites
-            case .notifications:
-                return WPTabBarCurrentlySelectedScreenNotifications
-            case .reader:
-                return WPTabBarCurrentlySelectedScreenReader
-            default:
-                return ""
+            case .welcome: return "Welcome"
+            case .blog: return WPTabBarCurrentlySelectedScreenSites
+            case .notifications: return WPTabBarCurrentlySelectedScreenNotifications
+            case .reader: return WPTabBarCurrentlySelectedScreenReader
+            default: return ""
             }
         }
     }
+
+    // MARK: RootViewPresenter (Sites)
+
+    var mySitesCoordinator: MySitesCoordinator
 
     func currentlyVisibleBlog() -> Blog? {
         assert(Thread.isMainThread)
@@ -276,6 +273,11 @@ final class SplitViewRootPresenter: RootViewPresenter {
                 siteContent?.showSubsection(subsection, userInfo: userInfo)
             }
         }
+    }
+
+    func showMySitesTab() {
+        guard let blog = currentlyVisibleBlog() else { return }
+        sidebarViewModel.selection = .blog(TaggedManagedObjectID(blog))
     }
 
     // MARK: RootViewPresenter (Reader)
@@ -320,15 +322,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
         fatalError()
     }
 
-    var mySitesCoordinator: MySitesCoordinator
-
-    func showMySitesTab() {
-        guard let blog = currentlyVisibleBlog() else {
-            // Do nothing.
-            return
-        }
-        sidebarViewModel.selection = .blog(TaggedManagedObjectID(blog))
-    }
+    // MARK: Notifications
 
     func showNotificationsTab(completion: ((NotificationsViewController) -> Void)?) {
         sidebarViewModel.selection = .notifications
@@ -338,7 +332,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
         }
     }
 
-    var meViewController: MeViewController?
+    // MARK: Me
 
     func showMeScreen(completion: ((MeViewController) -> Void)?) {
         if isDisplayingTabBar {

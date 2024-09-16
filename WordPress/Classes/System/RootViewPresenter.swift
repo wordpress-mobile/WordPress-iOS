@@ -6,11 +6,11 @@ protocol RootViewPresenter: AnyObject {
 
     var rootViewController: UIViewController { get }
     func currentlySelectedScreen() -> String
-    func currentlyVisibleBlog() -> Blog?
 
     // MARK: Sites
 
     var mySitesCoordinator: MySitesCoordinator { get }
+    func currentlyVisibleBlog() -> Blog?
     func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection?, userInfo: [AnyHashable: Any])
     func showMySitesTab()
 
