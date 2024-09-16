@@ -263,18 +263,13 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 {
     if (!_mySitesCoordinator) {
         __weak __typeof(self) weakSelf = self;
-        
+
         _mySitesCoordinator = [[MySitesCoordinator alloc] initOnBecomeActiveTab:^{
             [weakSelf showMySitesTab];
         }];
     }
-    
-    return _mySitesCoordinator;
-}
 
-- (ReaderCoordinator *)readerCoordinator
-{
-    return [[ReaderCoordinator alloc] init];
+    return _mySitesCoordinator;
 }
 
 #pragma mark - Navigation Helpers

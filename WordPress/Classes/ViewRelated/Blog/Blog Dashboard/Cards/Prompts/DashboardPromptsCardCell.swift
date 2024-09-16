@@ -179,7 +179,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
               let promptID = prompt?.promptID else {
             return
         }
-        RootViewCoordinator.sharedPresenter.readerCoordinator?.showTag(named: "\(Constants.dailyPromptTag)-\(promptID)")
+        ReaderCoordinator().showTag(named: "\(Constants.dailyPromptTag)-\(promptID)")
         WPAnalytics.track(.promptsOtherAnswersTapped)
     }
 

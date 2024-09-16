@@ -16,11 +16,6 @@ extension MySitesCoordinator: RootViewPresenter {
 
     // MARK: Reader
 
-    var readerCoordinator: ReaderCoordinator? {
-        unsupportedFeatureFallback()
-        return nil
-    }
-
     var readerNavigationController: UINavigationController? {
         unsupportedFeatureFallback()
         return nil

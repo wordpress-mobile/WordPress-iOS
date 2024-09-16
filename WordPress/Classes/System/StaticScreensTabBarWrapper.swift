@@ -29,10 +29,6 @@ class StaticScreensTabBarWrapper: RootViewPresenter {
 
     // MARK: Reader
 
-    var readerCoordinator: ReaderCoordinator? {
-        return nil
-    }
-
     var readerNavigationController: UINavigationController? {
         return nil
     }

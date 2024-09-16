@@ -1,7 +1,6 @@
 import UIKit
 
-@objc
-class ReaderCoordinator: NSObject {
+struct ReaderCoordinator {
     func showReaderTab() {
         RootViewCoordinator.sharedPresenter.showReaderTab()
     }

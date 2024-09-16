@@ -11,7 +11,6 @@ protocol RootViewPresenter: AnyObject {
 
     // MARK: Reader
 
-    var readerCoordinator: ReaderCoordinator? { get }
     var readerNavigationController: UINavigationController? { get }
     func showReaderTab()
     func showReaderTab(forPost: NSNumber, onBlog: NSNumber)
