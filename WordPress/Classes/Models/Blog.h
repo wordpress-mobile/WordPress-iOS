@@ -110,6 +110,8 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeaturePages,
     /// Does the blog support Site Monitoring?
     BlogFeatureSiteMonitoring,
+    /// Does the blog support the WP.org REST API?
+    BlogFeatureWPOrgRESTAPI,
 };
 
 typedef NS_ENUM(NSInteger, SiteVisibility) {
