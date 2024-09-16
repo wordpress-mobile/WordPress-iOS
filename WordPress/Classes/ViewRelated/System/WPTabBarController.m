@@ -274,7 +274,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (ReaderCoordinator *)readerCoordinator
 {
-    return [[ReaderCoordinator alloc] initWithReaderNavigationController:self.readerNavigationController];
+    return [[ReaderCoordinator alloc] init];
 }
 
 #pragma mark - Navigation Helpers

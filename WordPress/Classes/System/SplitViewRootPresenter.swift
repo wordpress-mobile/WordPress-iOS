@@ -268,7 +268,9 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
     var readerTabViewController: ReaderTabViewController?
 
-    var readerCoordinator: ReaderCoordinator?
+    var readerCoordinator: ReaderCoordinator? {
+        ReaderCoordinator()
+    }
 
     var readerNavigationController: UINavigationController?
 
