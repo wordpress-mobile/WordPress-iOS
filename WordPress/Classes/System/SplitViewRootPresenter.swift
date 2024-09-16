@@ -243,13 +243,26 @@ final class SplitViewRootPresenter: RootViewPresenter {
     }
 
     func currentlySelectedScreen() -> String {
-        ""
+        if splitVC.isCollapsed {
+            return tabBarViewController.currentlySelectedScreen()
+        } else {
+            switch sidebarViewModel.selection {
+            case .welcome:
+                return "Welcome"
+            case .blog:
+                return WPTabBarCurrentlySelectedScreenSites
+            case .notifications:
+                return WPTabBarCurrentlySelectedScreenNotifications
+            case .reader:
+                return WPTabBarCurrentlySelectedScreenReader
+            default:
+                return ""
+            }
+        }
     }
 
-    // TODO: (wpsidebar) Can we remove it?
     func currentlyVisibleBlog() -> Blog? {
         assert(Thread.isMainThread)
-
         return siteContent?.blog
     }
 
