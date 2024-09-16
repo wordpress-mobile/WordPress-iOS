@@ -15,10 +15,6 @@ class StaticScreensTabBarWrapper: RootViewPresenter {
         return tabBarController
     }
 
-    var currentViewController: UIViewController? {
-        return tabBarController.currentViewController
-    }
-
     func getMeScenePresenter() -> ScenePresenter {
         tabBarController.getMeScenePresenter()
     }

@@ -5,9 +5,9 @@ extension UIViewController {
     /// Determines if the current ViewController's View is visible and onscreen
     ///
     public func isViewOnScreen() -> Bool {
-        let visibleAsRoot       = view.window?.rootViewController == self
+        let visibleAsRoot = view.window?.rootViewController == self
         let visibleAsTopOnStack = navigationController?.topViewController == self && view.window != nil
-        let visibleAsPresented  = view.window?.rootViewController?.presentedViewController == self
+        let visibleAsPresented = view.window?.rootViewController?.presentedViewController == self
 
         let isNotPresentingAView = presentedViewController == nil
 
@@ -49,5 +49,10 @@ extension UIViewController {
             controller = presented
         }
         return controller
+    }
+
+    /// Returns the top-most view controller suitable for presenting on top of.
+    public static var topViewController: UIViewController? {
+        UIApplication.shared.delegate?.window??.topmostPresentedViewController
     }
 }

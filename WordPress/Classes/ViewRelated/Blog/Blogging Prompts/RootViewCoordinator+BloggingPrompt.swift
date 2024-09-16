@@ -22,7 +22,7 @@ extension RootViewCoordinator {
         guard FeatureFlag.bloggingPrompts.enabled,
               let siteID = userInfo[BloggingPrompt.NotificationKeys.siteID] as? Int,
               let blog = accountSites?.first(where: { $0.dotComID == NSNumber(value: siteID) }),
-              let viewController = Self.sharedPresenter.currentViewController else {
+              let viewController = UIViewController.topViewController else {
             return
         }
 

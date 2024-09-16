@@ -6,10 +6,6 @@ extension MySitesCoordinator: RootViewPresenter {
 
     // MARK: General
 
-    var currentViewController: UIViewController? {
-        return rootViewController
-    }
-
     func getMeScenePresenter() -> ScenePresenter {
         meScenePresenter
     }

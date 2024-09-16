@@ -59,9 +59,10 @@ final class SplitViewRootPresenter: RootViewPresenter {
             self?.sidebarViewModel.selection = .blog(TaggedManagedObjectID(site))
         }.store(in: &cancellables)
 
-        sidebarViewModel.$selection.compactMap { $0 }.sink { [weak self] in
-            self?.configure(for: $0)
-        }.store(in: &cancellables)
+        sidebarViewModel.$selection.compactMap { $0 }
+            .removeDuplicates()
+            .sink { [weak self] in self?.configure(for: $0) }
+            .store(in: &cancellables)
 
         sidebarViewModel.navigate = { [weak self] in
             self?.navigate(to: $0)
@@ -236,8 +237,6 @@ final class SplitViewRootPresenter: RootViewPresenter {
     // MARK: – RootViewPresenter
 
     var rootViewController: UIViewController { splitVC }
-
-    var currentViewController: UIViewController?
 
     func showBlogDetails(for blog: Blog) {
         sidebarViewModel.selection = .blog(TaggedManagedObjectID(blog))
