@@ -443,7 +443,7 @@ platform :ios do
   #
   lane :publish_release do |skip_confirm: false|
     ensure_git_status_clean
-    ensure_git_branch_is_release_branch
+    ensure_git_branch_is_release_branch!
 
     version_number = release_version_current
 
