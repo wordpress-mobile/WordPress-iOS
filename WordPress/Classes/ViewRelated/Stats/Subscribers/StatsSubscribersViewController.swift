@@ -85,7 +85,7 @@ extension StatsSubscribersViewController: SiteStatsPeriodDelegate {
     func viewMoreSelectedForStatSection(_ statSection: StatSection) {
         switch statSection {
         case .subscribersList:
-            guard let blog = RootViewCoordinator.sharedPresenter.mySitesCoordinator.currentBlog,
+            guard let blog = RootViewCoordinator.sharedPresenter.currentlyVisibleBlog(),
                   let peopleViewController = PeopleViewController.controllerWithBlog(blog, selectedFilter: .followers) else { return }
             navigationController?.pushViewController(peopleViewController, animated: true)
             WPAnalytics.track(.statsSubscribersViewMoreTapped)

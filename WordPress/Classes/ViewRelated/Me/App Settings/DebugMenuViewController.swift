@@ -114,7 +114,7 @@ private func showSuccessNotice() {
 
 private final class DebugMenuViewModel: ObservableObject {
     var blog: Blog? {
-        RootViewCoordinator.sharedPresenter.mySitesCoordinator.currentBlog
+        RootViewCoordinator.sharedPresenter.currentlyVisibleBlog()
     }
 
     var isForcedCrashLoggingEnabled: Bool {
