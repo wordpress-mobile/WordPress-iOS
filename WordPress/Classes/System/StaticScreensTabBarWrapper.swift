@@ -29,10 +29,6 @@ class StaticScreensTabBarWrapper: RootViewPresenter {
 
     // MARK: Reader
 
-    var readerNavigationController: UINavigationController? {
-        return nil
-    }
-
     func showReaderTab() {
         tabBarController.showReaderTab()
     }

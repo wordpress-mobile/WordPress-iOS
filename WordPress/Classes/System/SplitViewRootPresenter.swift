@@ -266,8 +266,6 @@ final class SplitViewRootPresenter: RootViewPresenter {
         return siteContent?.blog
     }
 
-    var readerNavigationController: UINavigationController?
-
     func showReaderTab() {
         sidebarViewModel.selection = .reader
     }
