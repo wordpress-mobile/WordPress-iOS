@@ -93,12 +93,6 @@ class ReaderTabViewController: UIViewController {
         ReaderTracker.shared.start(.main)
     }
 
-    func presentDiscoverTab() {
-        viewModel.fetchReaderMenu()
-        viewModel.showTab(at: ReaderTabConstants.discoverIndex)
-        displayNotice(title: NSLocalizedString("Comment to start making connections.", comment: "Hint for users to grow their audience by commenting on other blogs."))
-    }
-
     // MARK: - Reader FAB
 
     private func createFABIfNeeded() {

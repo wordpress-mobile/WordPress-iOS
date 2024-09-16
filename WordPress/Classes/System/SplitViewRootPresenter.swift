@@ -266,8 +266,6 @@ final class SplitViewRootPresenter: RootViewPresenter {
         return siteContent?.blog
     }
 
-    var readerTabViewController: ReaderTabViewController?
-
     var readerCoordinator: ReaderCoordinator? {
         ReaderCoordinator()
     }

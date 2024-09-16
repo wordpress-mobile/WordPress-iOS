@@ -524,10 +524,9 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
             }
 
             self.navigationController?.popToRootViewController(animated: false)
-            RootViewCoordinator.sharedPresenter.showReaderTab()
-            if let vc = RootViewCoordinator.sharedPresenter.readerTabViewController {
-                vc.presentDiscoverTab()
-            }
+            RootViewCoordinator.sharedPresenter.switchToDiscover()
+
+            Notice(title: NSLocalizedString("Comment to start making connections.", comment: "Hint for users to grow their audience by commenting on other blogs.")).post()
         }
 
         let nc = UINavigationController(rootViewController: vc)
