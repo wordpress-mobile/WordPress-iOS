@@ -51,24 +51,21 @@ private final class ReaderGhostCell: UITableViewCell {
                 view.widthAnchor.constraint(equalToConstant: width).withPriority(.defaultLow),
                 view.heightAnchor.constraint(equalToConstant: height).withPriority(.defaultHigh),
             ])
+            view.layer.cornerRadius = 4
+            view.layer.masksToBounds = true
             return view
         }
 
         let imageView = makeLeafView(height: 320, width: 1200)
         imageView.layer.cornerRadius = 8
-        imageView.layer.masksToBounds = true
         imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: 0.5).isActive = true
 
         let insets = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
-        let stackView = UIStackView(axis: .vertical, alignment: .leading, spacing: 14, insets: insets, [
-            makeLeafView(height: 10, width: .random(in: 140...200)),
-            makeLeafView(height: 18, width: .random(in: 160...320)),
-            UIStackView(axis: .vertical, alignment: .leading, spacing: 4, [
-                makeLeafView(height: 10, width: 2000),
-                makeLeafView(height: 10, width: .random(in: 200...600))
-            ]),
+        let stackView = UIStackView(axis: .vertical, alignment: .leading, spacing: 16, insets: insets, [
+            makeLeafView(height: 16, width: .random(in: 140...200)),
+            makeLeafView(height: 24, width: .random(in: 200...600)),
             imageView,
-            makeLeafView(height: 10, width: .random(in: 200...240))
+            makeLeafView(height: 16, width: .random(in: 200...240))
         ])
         contentView.addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false

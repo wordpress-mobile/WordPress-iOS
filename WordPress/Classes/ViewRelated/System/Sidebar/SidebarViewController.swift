@@ -6,19 +6,28 @@ import WordPressUI
 
 /// The sidebar for the iPad version of the app.
 final class SidebarViewController: UIHostingController<AnyView> {
+    private let viewModel: SidebarViewModel
+
     init(viewModel: SidebarViewModel) {
-        super.init(rootView: AnyView(SidebarView(viewModel: viewModel)))
+        self.viewModel = viewModel
+        super.init(rootView: AnyView(SidebarView(viewModel: viewModel, blogListViewModel: viewModel.blogListViewModel)))
         self.title = Strings.sectionMySites
     }
 
     required dynamic init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        viewModel.onAppear()
+    }
 }
 
 private struct SidebarView: View {
     @ObservedObject var viewModel: SidebarViewModel
-    @StateObject private var blogListViewModel = BlogListViewModel()
+    @ObservedObject var blogListViewModel: BlogListViewModel
     @StateObject private var notificationsButtonViewModel = NotificationsButtonViewModel()
 
     static let displayedSiteLimit = 4

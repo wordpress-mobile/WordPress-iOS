@@ -163,7 +163,6 @@ class AbstractPostListViewController: UIViewController,
         tableView.estimatedRowHeight = 110
         tableView.rowHeight = UITableView.automaticDimension
         tableView.refreshControl = refreshControl
-        tableView.cellLayoutMarginsFollowReadableWidth = true
         refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
     }
 
