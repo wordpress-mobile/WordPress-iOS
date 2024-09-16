@@ -62,6 +62,26 @@ extension RootViewPresenter {
         ])
     }
 
+    func showStats(for blog: Blog, source: BlogDetailsNavigationSource? = nil, tab: StatsTabType? = nil, unit: StatsPeriodUnit? = nil, date: Date? = nil) {
+        guard JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures() else {
+            return showJetpackOverlayForDisabledEntryPoint()
+        }
+        if let date = date {
+            UserPersistentStoreFactory.instance().set(date, forKey: SiteStatsDashboardViewController.lastSelectedStatsDateKey)
+        }
+        if let siteID = blog.dotComID?.intValue, let tab = tab {
+            SiteStatsDashboardPreferences.setSelected(tabType: tab, siteID: siteID)
+        }
+        if let unit = unit {
+            SiteStatsDashboardPreferences.setSelected(periodUnit: unit)
+        }
+        var userInfo: [AnyHashable: Any] = [:]
+        if let source {
+            userInfo[BlogDetailsViewController.userInfoSourceKey()] = NSNumber(value: source.rawValue)
+        }
+        showBlogDetails(for: blog, then: .stats)
+    }
+
     // MARK: Notifications
 
     func showNotificationsTab() {

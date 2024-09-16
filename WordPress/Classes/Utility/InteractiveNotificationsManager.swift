@@ -222,12 +222,13 @@ final class InteractiveNotificationsManager: NSObject {
 
                     let targetDate = date(from: userInfo)
 
-                    RootViewCoordinator.sharedPresenter.mySitesCoordinator.showStats(
+                    RootViewCoordinator.sharedPresenter.showStats(
                         for: targetBlog,
                         source: .notification,
                         tab: .traffic,
                         unit: .week,
-                        date: targetDate)
+                        date: targetDate
+                    )
                 }
 
             case .bloggingPrompt:

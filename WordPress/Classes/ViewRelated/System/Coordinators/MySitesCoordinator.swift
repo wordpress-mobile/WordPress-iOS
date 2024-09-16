@@ -104,45 +104,6 @@ class MySitesCoordinator: NSObject {
         }
     }
 
-    // MARK: - Stats
-
-    func showStats(for blog: Blog) {
-        guard JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures() else {
-            unsupportedFeatureFallback()
-            return
-        }
-
-        showBlogDetails(for: blog, then: .stats)
-    }
-
-    func showStats(for blog: Blog, source: BlogDetailsNavigationSource, tab: StatsTabType? = nil, unit: StatsPeriodUnit? = nil, date: Date? = nil) {
-        guard JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures() else {
-            unsupportedFeatureFallback()
-            return
-        }
-
-        showBlogDetails(for: blog)
-
-        if let date = date {
-            UserPersistentStoreFactory.instance().set(date, forKey: SiteStatsDashboardViewController.lastSelectedStatsDateKey)
-        }
-
-        if let siteID = blog.dotComID?.intValue, let tab = tab {
-            SiteStatsDashboardPreferences.setSelected(tabType: tab, siteID: siteID)
-        }
-
-        if let unit = unit {
-            SiteStatsDashboardPreferences.setSelected(periodUnit: unit)
-        }
-
-        let userInfo: [AnyHashable: Any] = [BlogDetailsViewController.userInfoSourceKey(): NSNumber(value: source.rawValue)]
-        mySiteViewController.showBlogDetailsSubsection(.stats, userInfo: userInfo)
-    }
-
-    func showActivityLog(for blog: Blog) {
-        showBlogDetails(for: blog, then: .activity)
-    }
-
     // MARK: - Post creation
 
     func showCreateSheet(for blog: Blog?) {
