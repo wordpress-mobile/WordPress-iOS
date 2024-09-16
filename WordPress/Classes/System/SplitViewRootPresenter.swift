@@ -40,8 +40,6 @@ final class SplitViewRootPresenter: RootViewPresenter {
     }
 
     init() {
-        // TODO: (wpsidebar) refactor
-        self.mySitesCoordinator = MySitesCoordinator(onBecomeActiveTab: {})
         tabBarViewController = WPTabBarController(staticScreens: false)
 
         splitVC.delegate = self
@@ -255,8 +253,6 @@ final class SplitViewRootPresenter: RootViewPresenter {
     }
 
     // MARK: RootViewPresenter (Sites)
-
-    var mySitesCoordinator: MySitesCoordinator
 
     func currentlyVisibleBlog() -> Blog? {
         assert(Thread.isMainThread)

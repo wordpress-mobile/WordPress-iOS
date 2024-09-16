@@ -9,7 +9,6 @@ protocol RootViewPresenter: AnyObject {
 
     // MARK: Sites
 
-    var mySitesCoordinator: MySitesCoordinator { get }
     func currentlyVisibleBlog() -> Blog?
     func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection?, userInfo: [AnyHashable: Any])
     func showMySitesTab()
