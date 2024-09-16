@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 
 gem 'cocoapods', '~> 1.14'
-gem 'danger-dangermattic', '~> 1.0'
+gem 'danger-dangermattic', '~> 1.1'
 gem 'dotenv'
 # 2.221.0 includes a fix for an ASC-interfacing bug
 #
@@ -15,7 +15,7 @@ gem 'fastlane-plugin-sentry'
 # This comment avoids typing to switch to a development version for testing.
 #
 # gem 'fastlane-plugin-wpmreleasetoolkit', git: 'https://github.com/wordpress-mobile/release-toolkit', ref: ''
-gem 'fastlane-plugin-wpmreleasetoolkit', '~> 11.0'
+gem 'fastlane-plugin-wpmreleasetoolkit', '~> 12.0'
 gem 'rake'
 gem 'rubocop', '~> 1.60'
 gem 'rubocop-rake', '~> 0.6'

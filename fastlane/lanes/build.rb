@@ -209,7 +209,7 @@ platform :ios do
     release_version = release_version_current
 
     version = options[:beta_release] ? build_code : release_version
-    release_url = create_release(
+    release_url = create_github_release(
       repository: GITHUB_REPO,
       version: version,
       release_notes_file_path: WORDPRESS_RELEASE_NOTES_PATH,
