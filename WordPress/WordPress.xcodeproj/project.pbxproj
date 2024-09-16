@@ -1091,7 +1091,6 @@
 		3F435220289B2B2B00CE19ED /* JetpackBrandingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F43704328932F0100475B6E /* JetpackBrandingCoordinator.swift */; };
 		3F435221289B2B5100CE19ED /* JetpackOverlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F43703E2893201400475B6E /* JetpackOverlayViewController.swift */; };
 		3F43602F23F31D48001DEE70 /* ScenePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F43602E23F31D48001DEE70 /* ScenePresenter.swift */; };
-		3F43603123F31E09001DEE70 /* MeScenePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F43603023F31E09001DEE70 /* MeScenePresenter.swift */; };
 		3F43703F2893201400475B6E /* JetpackOverlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F43703E2893201400475B6E /* JetpackOverlayViewController.swift */; };
 		3F4370412893207C00475B6E /* JetpackOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4370402893207C00475B6E /* JetpackOverlayView.swift */; };
 		3F43704428932F0100475B6E /* JetpackBrandingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F43704328932F0100475B6E /* JetpackBrandingCoordinator.swift */; };
@@ -4532,7 +4531,6 @@
 		FABB216F2602FC2C00C8785C /* UIView+ContentLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738B9A5B21B85EB00005062B /* UIView+ContentLayout.swift */; };
 		FABB21702602FC2C00C8785C /* PeopleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B912841BB01266003C25B9 /* PeopleCell.swift */; };
 		FABB21712602FC2C00C8785C /* AbstractPost+Local.swift in Sources */ = {isa = PBXBuildFile; fileRef = F15272FC243B27BC00C8DC7A /* AbstractPost+Local.swift */; };
-		FABB21722602FC2C00C8785C /* MeScenePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F43603023F31E09001DEE70 /* MeScenePresenter.swift */; };
 		FABB21732602FC2C00C8785C /* JetpackScanStatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71BC73E25A652410023D789 /* JetpackScanStatusViewModel.swift */; };
 		FABB21752602FC2C00C8785C /* HeaderContentGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E7A6520E44F200075D159 /* HeaderContentGroup.swift */; };
 		FABB21772602FC2C00C8785C /* JetpackConnectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F668B60255DD11400D0038A /* JetpackConnectionViewController.swift */; };
@@ -6970,7 +6968,6 @@
 		3F3DD0B126FD176800F5F121 /* SiteDomainsPresentationCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteDomainsPresentationCard.swift; sourceTree = "<group>"; };
 		3F3DD0B526FD18EB00F5F121 /* Blog+DomainsDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+DomainsDashboardView.swift"; sourceTree = "<group>"; };
 		3F43602E23F31D48001DEE70 /* ScenePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScenePresenter.swift; sourceTree = "<group>"; };
-		3F43603023F31E09001DEE70 /* MeScenePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeScenePresenter.swift; sourceTree = "<group>"; };
 		3F43703E2893201400475B6E /* JetpackOverlayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackOverlayViewController.swift; sourceTree = "<group>"; };
 		3F4370402893207C00475B6E /* JetpackOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackOverlayView.swift; sourceTree = "<group>"; };
 		3F43704328932F0100475B6E /* JetpackBrandingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBrandingCoordinator.swift; sourceTree = "<group>"; };
@@ -11828,7 +11825,6 @@
 			isa = PBXGroup;
 			children = (
 				E1A8CACA1C22FF7C0038689E /* MeViewController.swift */,
-				3F43602D23F31C06001DEE70 /* Presenter */,
 			);
 			path = "Me Main";
 			sourceTree = "<group>";
@@ -11936,14 +11932,6 @@
 				014ACD132A1E5033008A706C /* WebKitViewController+SandboxStore.swift */,
 			);
 			path = Utility;
-			sourceTree = "<group>";
-		};
-		3F43602D23F31C06001DEE70 /* Presenter */ = {
-			isa = PBXGroup;
-			children = (
-				3F43603023F31E09001DEE70 /* MeScenePresenter.swift */,
-			);
-			path = Presenter;
 			sourceTree = "<group>";
 		};
 		3F43603423F368BF001DEE70 /* Blog Details */ = {
@@ -21664,7 +21652,6 @@
 				E1B9128F1BB05B1D003C25B9 /* PeopleCell.swift in Sources */,
 				086023D42B73AFD0000D084A /* NotificationsTableViewCellContent.swift in Sources */,
 				F15272FD243B27BC00C8DC7A /* AbstractPost+Local.swift in Sources */,
-				3F43603123F31E09001DEE70 /* MeScenePresenter.swift in Sources */,
 				FA98B61629A3B76A0071AAE8 /* DashboardBlazeCardCell.swift in Sources */,
 				4ADE3F8F2C6365E00046EC8A /* ApplicationTokenListDataProvider.swift in Sources */,
 				C71BC73F25A652410023D789 /* JetpackScanStatusViewModel.swift in Sources */,
@@ -24614,7 +24601,6 @@
 				FABB216F2602FC2C00C8785C /* UIView+ContentLayout.swift in Sources */,
 				FABB21702602FC2C00C8785C /* PeopleCell.swift in Sources */,
 				FABB21712602FC2C00C8785C /* AbstractPost+Local.swift in Sources */,
-				FABB21722602FC2C00C8785C /* MeScenePresenter.swift in Sources */,
 				FA34AD972B629FCB00208D65 /* SiteMonitoringView.swift in Sources */,
 				FABB21732602FC2C00C8785C /* JetpackScanStatusViewModel.swift in Sources */,
 				F195C42C26DFBE21000EC884 /* WeeklyRoundupBackgroundTask.swift in Sources */,

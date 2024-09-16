@@ -3,8 +3,6 @@ import WordPressAuthenticator
 
 @objc
 class MySitesCoordinator: NSObject {
-    let meScenePresenter: ScenePresenter
-
     let becomeActiveTab: () -> Void
 
     @objc
@@ -13,8 +11,7 @@ class MySitesCoordinator: NSObject {
     }
 
     @objc
-    init(meScenePresenter: ScenePresenter, onBecomeActiveTab becomeActiveTab: @escaping () -> Void) {
-        self.meScenePresenter = meScenePresenter
+    init(onBecomeActiveTab becomeActiveTab: @escaping () -> Void) {
         self.becomeActiveTab = becomeActiveTab
         super.init()
 
