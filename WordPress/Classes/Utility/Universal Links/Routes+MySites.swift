@@ -80,7 +80,6 @@ extension MySitesRoute: Route {
 
 extension MySitesRoute: NavigationAction {
     func perform(_ values: [String: String], source: UIViewController? = nil, router: LinkRouter) {
-        let coordinator = RootViewCoordinator.sharedPresenter.mySitesCoordinator
         let campaign = AppBannerCampaign.getCampaign(from: values)
 
         guard let blog = blog(from: values) else {
@@ -127,7 +126,9 @@ extension MySitesRoute: NavigationAction {
         case .plugins:
             presenter.showBlogDetails(for: blog, then: .plugins)
         case .managePlugins:
-            coordinator.showManagePlugins(for: blog)
+            presenter.showBlogDetails(for: blog, then: .plugins, userInfo: [
+                BlogDetailsViewController.userInfoShowManagemenetScreenKey(): true
+            ])
         case .siteMonitoring:
             presenter.showSiteMonitoring(for: blog, selectedTab: .metrics)
         case .phpLogs:

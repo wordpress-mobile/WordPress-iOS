@@ -152,4 +152,14 @@ extension BlogDetailsViewController {
         let viewController = UIHostingController(rootView: ApplicationTokenListView(viewModel: viewModel))
         presentationDelegate.presentBlogDetailsViewController(viewController)
     }
-}
+
+    @objc func showManagePluginsScreen() {
+        guard blog.supports(.pluginManagement),
+              let site = JetpackSiteRef(blog: blog) else {
+            return
+        }
+        let query = PluginQuery.all(site: site)
+        let listViewController = PluginListViewController(site: site, query: query)
+        presentationDelegate?.presentBlogDetailsViewController(listViewController)
+    }
+ }

@@ -165,29 +165,6 @@ class MySitesCoordinator: NSObject {
         return mySiteViewController.showBlogDetailsMeSubsection()
     }
 
-    func showManagePlugins(for blog: Blog) {
-        guard blog.supports(.pluginManagement) else {
-            return
-        }
-
-        // PerformWithoutAnimation is required here, otherwise the view controllers
-        // potentially get added to the navigation controller out of order
-        // (ShowDetailViewController, used by BlogDetailsViewController is animated)
-        UIView.performWithoutAnimation {
-            showBlogDetails(for: blog, then: .plugins)
-        }
-
-        guard let site = JetpackSiteRef(blog: blog),
-              let navigationController = splitViewController.topDetailViewController?.navigationController else {
-            return
-        }
-
-        let query = PluginQuery.all(site: site)
-        let listViewController = PluginListViewController(site: site, query: query)
-
-        navigationController.pushViewController(listViewController, animated: false)
-    }
-
     // MARK: Notifications Handling
 
     private func addSignInObserver() {
