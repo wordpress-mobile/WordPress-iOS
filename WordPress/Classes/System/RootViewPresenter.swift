@@ -5,9 +5,17 @@ protocol RootViewPresenter: AnyObject {
     // MARK: General
 
     var rootViewController: UIViewController { get }
-    func showBlogDetails(for blog: Blog)
     func currentlySelectedScreen() -> String
     func currentlyVisibleBlog() -> Blog?
+
+    // MARK: Sites
+
+    var mySitesCoordinator: MySitesCoordinator { get }
+    func showBlogDetails(for blog: Blog)
+    func showMySitesTab()
+    func showPages(for blog: Blog)
+    func showPosts(for blog: Blog)
+    func showMedia(for blog: Blog)
 
     // MARK: Reader
 
@@ -21,14 +29,6 @@ protocol RootViewPresenter: AnyObject {
     func navigateToReaderSite(_ topic: ReaderSiteTopic)
     func navigateToReaderTag(_ tagSlug: String)
     func navigateToReader(_ pushControlller: UIViewController?)
-
-    // MARK: My Site
-
-    var mySitesCoordinator: MySitesCoordinator { get }
-    func showMySitesTab()
-    func showPages(for blog: Blog)
-    func showPosts(for blog: Blog)
-    func showMedia(for blog: Blog)
 
     // MARK: Notifications
 
