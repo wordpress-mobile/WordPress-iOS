@@ -6,10 +6,6 @@ extension MySitesCoordinator: RootViewPresenter {
 
     // MARK: General
 
-    func getMeScenePresenter() -> ScenePresenter {
-        meScenePresenter
-    }
-
     func currentlySelectedScreen() -> String {
         return "Blog List"
     }

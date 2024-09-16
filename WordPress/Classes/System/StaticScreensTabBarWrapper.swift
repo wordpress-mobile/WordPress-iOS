@@ -15,10 +15,6 @@ class StaticScreensTabBarWrapper: RootViewPresenter {
         return tabBarController
     }
 
-    func getMeScenePresenter() -> ScenePresenter {
-        tabBarController.getMeScenePresenter()
-    }
-
     func currentlySelectedScreen() -> String {
         tabBarController.currentlySelectedScreen()
     }

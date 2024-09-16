@@ -242,10 +242,6 @@ final class SplitViewRootPresenter: RootViewPresenter {
         sidebarViewModel.selection = .blog(TaggedManagedObjectID(blog))
     }
 
-    func getMeScenePresenter() -> any ScenePresenter {
-        fatalError()
-    }
-
     func currentlySelectedScreen() -> String {
         ""
     }

@@ -6,7 +6,6 @@ protocol RootViewPresenter: AnyObject {
 
     var rootViewController: UIViewController { get }
     func showBlogDetails(for blog: Blog)
-    func getMeScenePresenter() -> ScenePresenter
     func currentlySelectedScreen() -> String
     func currentlyVisibleBlog() -> Blog?
 
@@ -43,8 +42,9 @@ protocol RootViewPresenter: AnyObject {
     func showMeScreen(completion: ((MeViewController) -> Void)?)
 }
 
-extension RootViewPresenter {
+// MARK: - RootViewPresenter (Extensions)
 
+extension RootViewPresenter {
     func showNotificationsTab() {
         showNotificationsTab(completion: nil)
     }
@@ -66,5 +66,11 @@ extension RootViewPresenter {
             $0.navigationController?.popToRootViewController(animated: false)
             $0.showNotificationSettings()
         }
+    }
+
+    // MARK: Me
+
+    func showMeScreen() {
+        showMeScreen(completion: nil)
     }
 }

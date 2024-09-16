@@ -337,7 +337,7 @@ fileprivate extension SearchManager {
     // MARK: Me Tab Navigation
 
     func openMeTab() -> Bool {
-        RootViewCoordinator.sharedPresenter.showMeScene()
+        RootViewCoordinator.sharedPresenter.showMeScreen()
         return true
     }
 
