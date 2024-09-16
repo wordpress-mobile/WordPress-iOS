@@ -19,8 +19,8 @@ class StaticScreensTabBarWrapper: RootViewPresenter {
         tabBarController.currentlySelectedScreen()
     }
 
-    func showBlogDetails(for blog: Blog) {
-        tabBarController.showBlogDetails(for: blog)
+    func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection?, userInfo: [AnyHashable: Any]) {
+        tabBarController.showBlogDetails(for: blog, then: subsection, userInfo: userInfo)
     }
 
     func currentlyVisibleBlog() -> Blog? {
@@ -77,18 +77,6 @@ class StaticScreensTabBarWrapper: RootViewPresenter {
 
     func showMySitesTab() {
         tabBarController.showMySitesTab()
-    }
-
-    func showPages(for blog: Blog) {
-        tabBarController.showPages(for: blog)
-    }
-
-    func showPosts(for blog: Blog) {
-        tabBarController.showPosts(for: blog)
-    }
-
-    func showMedia(for blog: Blog) {
-        tabBarController.showMedia(for: blog)
     }
 
     // MARK: Notifications

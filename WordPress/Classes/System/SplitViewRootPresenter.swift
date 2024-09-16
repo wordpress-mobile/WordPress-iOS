@@ -236,11 +236,11 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
     // MARK: – RootViewPresenter
 
+    // MARK: RootViewPresenter (General)
+
     var rootViewController: UIViewController { splitVC }
 
-    func showBlogDetails(for blog: Blog) {
-        sidebarViewModel.selection = .blog(TaggedManagedObjectID(blog))
-    }
+    // MARK: RootViewPresenter (Sites)
 
     func currentlySelectedScreen() -> String {
         if splitVC.isCollapsed {
@@ -265,6 +265,20 @@ final class SplitViewRootPresenter: RootViewPresenter {
         assert(Thread.isMainThread)
         return siteContent?.blog
     }
+
+    func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection?, userInfo: [AnyHashable: Any]) {
+        if splitVC.isCollapsed {
+            tabBarViewController.showBlogDetails(for: blog, then: subsection, userInfo: userInfo)
+        } else {
+            sidebarViewModel.selection = .blog(TaggedManagedObjectID(blog))
+            if let subsection {
+                wpAssert(siteContent != nil, "failed to open blog subsection")
+                siteContent?.showSubsection(subsection, userInfo: userInfo)
+            }
+        }
+    }
+
+    // MARK: RootViewPresenter (Reader)
 
     func showReaderTab() {
         sidebarViewModel.selection = .reader
@@ -314,18 +328,6 @@ final class SplitViewRootPresenter: RootViewPresenter {
             return
         }
         sidebarViewModel.selection = .blog(TaggedManagedObjectID(blog))
-    }
-
-    func showPages(for blog: Blog) {
-        fatalError()
-    }
-
-    func showPosts(for blog: Blog) {
-        fatalError()
-    }
-
-    func showMedia(for blog: Blog) {
-        fatalError()
     }
 
     func showNotificationsTab(completion: ((NotificationsViewController) -> Void)?) {

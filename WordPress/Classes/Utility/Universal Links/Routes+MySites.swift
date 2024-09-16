@@ -105,33 +105,35 @@ extension MySitesRoute: NavigationAction {
             return
         }
 
+        let presenter = RootViewCoordinator.sharedPresenter
+
         switch self {
         case .pages:
-            coordinator.showPages(for: blog)
+            presenter.showBlogDetails(for: blog, then: .pages)
         case .posts:
-            coordinator.showPosts(for: blog)
+            presenter.showBlogDetails(for: blog, then: .posts)
         case .media:
             if campaign.flatMap(AppBannerCampaign.init) == .qrCodeMedia {
-                coordinator.showMediaPicker(for: blog)
+                presenter.showMediaPicker(for: blog)
             } else {
-                coordinator.showMedia(for: blog)
+                presenter.showBlogDetails(for: blog, then: .media)
             }
         case .comments:
-            coordinator.showComments(for: blog)
+            presenter.showBlogDetails(for: blog, then: .comments)
         case .sharing:
-            coordinator.showSharing(for: blog)
+            presenter.showBlogDetails(for: blog, then: .sharing)
         case .people:
-            coordinator.showPeople(for: blog)
+            presenter.showBlogDetails(for: blog, then: .people)
         case .plugins:
-            coordinator.showPlugins(for: blog)
+            presenter.showBlogDetails(for: blog, then: .plugins)
         case .managePlugins:
             coordinator.showManagePlugins(for: blog)
         case .siteMonitoring:
-            coordinator.showSiteMonitoring(for: blog, selectedTab: .metrics)
+            presenter.showSiteMonitoring(for: blog, selectedTab: .metrics)
         case .phpLogs:
-            coordinator.showSiteMonitoring(for: blog, selectedTab: .phpLogs)
+            presenter.showSiteMonitoring(for: blog, selectedTab: .phpLogs)
         case .webServerLogs:
-            coordinator.showSiteMonitoring(for: blog, selectedTab: .webServerLogs)
+            presenter.showSiteMonitoring(for: blog, selectedTab: .webServerLogs)
         }
     }
 }

@@ -11,11 +11,8 @@ protocol RootViewPresenter: AnyObject {
     // MARK: Sites
 
     var mySitesCoordinator: MySitesCoordinator { get }
-    func showBlogDetails(for blog: Blog)
+    func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection?, userInfo: [AnyHashable: Any])
     func showMySitesTab()
-    func showPages(for blog: Blog)
-    func showPosts(for blog: Blog)
-    func showMedia(for blog: Blog)
 
     // MARK: Reader
 
@@ -42,6 +39,31 @@ protocol RootViewPresenter: AnyObject {
 // MARK: - RootViewPresenter (Extensions)
 
 extension RootViewPresenter {
+
+    // MARK: Sites
+
+    func showBlogDetails(for blog: Blog) {
+        showBlogDetails(for: blog, then: nil, userInfo: [:])
+    }
+
+    func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection) {
+        showBlogDetails(for: blog, then: subsection, userInfo: [:])
+    }
+
+    func showMediaPicker(for blog: Blog) {
+        showBlogDetails(for: blog, then: .media, userInfo: [
+            BlogDetailsViewController.userInfoShowPickerKey(): true
+        ])
+    }
+
+    func showSiteMonitoring(for blog: Blog, selectedTab: SiteMonitoringTab) {
+        showBlogDetails(for: blog, then: .siteMonitoring, userInfo: [
+            BlogDetailsViewController.userInfoSiteMonitoringTabKey(): selectedTab.rawValue
+        ])
+    }
+
+    // MARK: Notifications
+
     func showNotificationsTab() {
         showNotificationsTab(completion: nil)
     }

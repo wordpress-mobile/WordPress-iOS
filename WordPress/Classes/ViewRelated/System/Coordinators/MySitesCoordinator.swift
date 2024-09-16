@@ -89,8 +89,7 @@ class MySitesCoordinator: NSObject {
 
     // MARK: - Blog Details
 
-    @objc
-    func showBlogDetails(for blog: Blog) {
+    func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection?, userInfo: [AnyHashable: Any]) {
         showRootViewController()
 
         mySiteViewController.blog = blog
@@ -99,12 +98,8 @@ class MySitesCoordinator: NSObject {
         if mySiteViewController.presentedViewController != nil {
             mySiteViewController.dismiss(animated: true, completion: nil)
         }
-    }
 
-    func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection, userInfo: [AnyHashable: Any] = [:]) {
-        showBlogDetails(for: blog)
-
-        if let mySiteViewController = navigationController.topViewController as? MySiteViewController {
+        if let subsection, let mySiteViewController = navigationController.topViewController as? MySiteViewController {
             mySiteViewController.showBlogDetailsSubsection(subsection, userInfo: userInfo)
         }
     }
@@ -168,42 +163,6 @@ class MySitesCoordinator: NSObject {
             return nil
         }
         return mySiteViewController.showBlogDetailsMeSubsection()
-    }
-
-    func showPages(for blog: Blog) {
-        showBlogDetails(for: blog, then: .pages)
-    }
-
-    func showPosts(for blog: Blog) {
-        showBlogDetails(for: blog, then: .posts)
-    }
-
-    func showMedia(for blog: Blog) {
-        showBlogDetails(for: blog, then: .media)
-    }
-
-    func showMediaPicker(for blog: Blog) {
-        showBlogDetails(for: blog, then: .media, userInfo: [BlogDetailsViewController.userInfoShowPickerKey(): true])
-    }
-
-    func showComments(for blog: Blog) {
-        showBlogDetails(for: blog, then: .comments)
-    }
-
-    func showSharing(for blog: Blog) {
-        showBlogDetails(for: blog, then: .sharing)
-    }
-
-    func showPeople(for blog: Blog) {
-        showBlogDetails(for: blog, then: .people)
-    }
-
-    func showPlugins(for blog: Blog) {
-        showBlogDetails(for: blog, then: .plugins)
-    }
-
-    func showSiteMonitoring(for blog: Blog, selectedTab: SiteMonitoringTab) {
-        showBlogDetails(for: blog, then: .siteMonitoring, userInfo: [BlogDetailsViewController.userInfoSiteMonitoringTabKey(): selectedTab.rawValue])
     }
 
     func showManagePlugins(for blog: Blog) {
