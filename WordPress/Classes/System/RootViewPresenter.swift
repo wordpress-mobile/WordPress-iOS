@@ -29,18 +29,6 @@ extension RootViewPresenter {
         showBlogDetails(for: blog, then: subsection, userInfo: [:])
     }
 
-    func showMediaPicker(for blog: Blog) {
-        showBlogDetails(for: blog, then: .media, userInfo: [
-            BlogDetailsViewController.userInfoShowPickerKey(): true
-        ])
-    }
-
-    func showSiteMonitoring(for blog: Blog, selectedTab: SiteMonitoringTab) {
-        showBlogDetails(for: blog, then: .siteMonitoring, userInfo: [
-            BlogDetailsViewController.userInfoSiteMonitoringTabKey(): selectedTab.rawValue
-        ])
-    }
-
     func showStats(for blog: Blog, source: BlogDetailsNavigationSource? = nil, tab: StatsTabType? = nil, unit: StatsPeriodUnit? = nil, date: Date? = nil) {
         guard JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures() else {
             return showJetpackOverlayForDisabledEntryPoint()
