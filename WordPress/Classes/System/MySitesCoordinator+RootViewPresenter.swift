@@ -16,11 +16,7 @@ extension MySitesCoordinator: RootViewPresenter {
 
     // MARK: Reader
 
-    func showReaderTab() {
-        unsupportedFeatureFallback()
-    }
-
-    func showReader(path: ReaderNavigationPath) {
+    func showReader(path: ReaderNavigationPath?) {
         unsupportedFeatureFallback()
     }
 

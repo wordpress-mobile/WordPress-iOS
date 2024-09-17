@@ -10,20 +10,10 @@ protocol RootViewPresenter: AnyObject {
     // MARK: Sites
 
     func currentlyVisibleBlog() -> Blog?
-    func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection?, userInfo: [AnyHashable: Any])
     func showMySitesTab()
-
-    // MARK: Reader
-
-    func showReaderTab()
-    func showReader(path: ReaderNavigationPath)
-
-    // MARK: Notifications
-
+    func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection?, userInfo: [AnyHashable: Any])
+    func showReader(path: ReaderNavigationPath?)
     func showNotificationsTab(completion: ((NotificationsViewController) -> Void)?)
-
-    // MARK: Me
-
     func showMeScreen(completion: ((MeViewController) -> Void)?)
 }
 
@@ -71,6 +61,12 @@ extension RootViewPresenter {
             userInfo[BlogDetailsViewController.userInfoSourceKey()] = NSNumber(value: source.rawValue)
         }
         showBlogDetails(for: blog, then: .stats)
+    }
+
+    // MARK: Reader
+
+    func showReader() {
+        showReader(path: nil)
     }
 
     // MARK: Notifications

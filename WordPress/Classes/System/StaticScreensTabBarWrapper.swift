@@ -29,12 +29,8 @@ class StaticScreensTabBarWrapper: RootViewPresenter {
 
     // MARK: Reader
 
-    func showReaderTab() {
-        tabBarController.showReaderTab()
-    }
-
-    func showReader(path: ReaderNavigationPath) {
-        // Do nothing
+    func showReader(path: ReaderNavigationPath?) {
+        tabBarController.showReader()
     }
 
     // MARK: My Site

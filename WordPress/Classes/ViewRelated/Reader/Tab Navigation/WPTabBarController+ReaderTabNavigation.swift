@@ -41,8 +41,14 @@ extension WPTabBarController {
 
 // MARK: - Reader Navigation
 extension WPTabBarController {
-    func showReader(path: ReaderNavigationPath) {
-        navigateToReader()
+    func showReader(path: ReaderNavigationPath?) {
+        showReaderTab()
+        if let path {
+            navigate(to: path)
+        }
+    }
+
+    private func navigate(to path: ReaderNavigationPath) {
         switch path {
         case .discover:
             readerTabViewModel.switchToTab(where: ReaderHelpers.topicIsDiscover)
@@ -60,13 +66,6 @@ extension WPTabBarController {
             showReaderDetails(ReaderStreamViewController.controllerWithTagSlug(slug))
         case let .topic(topic):
             showReaderDetails(ReaderStreamViewController.controllerWithTopic(topic))
-        }
-    }
-
-    private func navigateToReader(_ viewController: UIViewController? = nil) {
-        showReaderTab()
-        if let viewController {
-            showReaderDetails(viewController)
         }
     }
 

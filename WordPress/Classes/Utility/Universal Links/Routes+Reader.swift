@@ -67,14 +67,14 @@ extension ReaderRoute: Route {
 extension ReaderRoute: NavigationAction {
     func perform(_ values: [String: String], source: UIViewController? = nil, router: LinkRouter) {
         guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
-            RootViewCoordinator.sharedPresenter.showReaderTab() // Show static reader tab
+            RootViewCoordinator.sharedPresenter.showReader() // Show static reader tab
             return
         }
         let presenter = RootViewCoordinator.sharedPresenter
 
         switch self {
         case .root:
-            presenter.showReaderTab()
+            presenter.showReader()
         case .discover:
             presenter.showReader(path: .discover)
         case .search:

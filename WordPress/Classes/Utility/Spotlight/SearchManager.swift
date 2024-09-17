@@ -330,7 +330,7 @@ fileprivate extension SearchManager {
     // MARK: Reader Tab Navigation
 
     func openReaderTab() -> Bool {
-        RootViewCoordinator.sharedPresenter.showReaderTab()
+        RootViewCoordinator.sharedPresenter.showReader()
         return true
     }
 
