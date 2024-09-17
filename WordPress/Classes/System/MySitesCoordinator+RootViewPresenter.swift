@@ -32,10 +32,6 @@ extension MySitesCoordinator: RootViewPresenter {
         unsupportedFeatureFallback()
     }
 
-    func navigateToReaderSite(_ topic: ReaderSiteTopic) {
-        unsupportedFeatureFallback()
-    }
-
     // MARK: My Site
 
     func showMySitesTab() {

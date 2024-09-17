@@ -98,14 +98,12 @@ extension ReaderRoute: NavigationAction {
                 presenter.showReader(path: .makeWithTagName(tagName))
             }
         case .feed:
-            if let feedIDValue = values["feed_id"],
-                let feedID = Int(feedIDValue) {
-                coordinator.showStream(with: feedID, isFeed: true)
+            if let feedIDValue = values["feed_id"], let feedID = Int(feedIDValue) {
+                presenter.showReaderStream(with: feedID, isFeed: true)
             }
         case .blog:
-            if let blogIDValue = values["blog_id"],
-                let blogID = Int(blogIDValue) {
-                coordinator.showStream(with: blogID, isFeed: false)
+            if let blogIDValue = values["blog_id"], let blogID = Int(blogIDValue) {
+                presenter.showReaderStream(with: blogID, isFeed: false)
             }
         case .feedsPost:
             if let (feedID, postID) = feedAndPostID(from: values) {
@@ -165,5 +163,32 @@ extension ReaderRoute: NavigationAction {
         }
 
         return isYear(year) && isMonth(month) && isDay(day)
+    }
+}
+
+private extension RootViewPresenter {
+    /// - warning: This method performs the navigation asyncronously after
+    /// fetching the information about the stream from the backend.
+    func showReaderStream(with siteID: Int, isFeed: Bool) {
+        getSiteTopic(siteID: NSNumber(value: siteID), isFeed: isFeed) { [weak self] result in
+            guard let topic = try? result.get() else { return }
+            self?.showReader(path: .topic(topic))
+        }
+    }
+
+    private func getSiteTopic(siteID: NSNumber, isFeed: Bool, completion: @escaping (Result<ReaderSiteTopic, Error>) -> Void) {
+        let service = ReaderTopicService(coreDataStack: ContextManager.shared)
+        service.siteTopicForSite(withID: siteID, isFeed: isFeed, success: { objectID, isFollowing in
+            guard let objectID = objectID,
+                  let topic = try? ContextManager.sharedInstance().mainContext.existingObject(with: objectID) as? ReaderSiteTopic else {
+                DDLogError("Reader: Error retriving site topic - invalid Site Id")
+                return
+            }
+            completion(.success(topic))
+        }, failure: { error in
+            let defaultError = NSError(domain: "readerSiteTopicError", code: -1, userInfo: nil)
+            DDLogError("Reader: Error retriving site topic - " + (error?.localizedDescription ?? "unknown failure reason"))
+            completion(.failure(error ?? defaultError))
+        })
     }
 }

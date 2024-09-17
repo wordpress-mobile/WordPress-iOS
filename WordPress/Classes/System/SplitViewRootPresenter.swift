@@ -300,10 +300,6 @@ final class SplitViewRootPresenter: RootViewPresenter {
         fatalError()
     }
 
-    func navigateToReaderSite(_ topic: ReaderSiteTopic) {
-        fatalError()
-    }
-
     // MARK: Notifications
 
     func showNotificationsTab(completion: ((NotificationsViewController) -> Void)?) {

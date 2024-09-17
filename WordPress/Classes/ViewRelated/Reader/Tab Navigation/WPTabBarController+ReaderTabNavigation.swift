@@ -56,12 +56,9 @@ extension WPTabBarController {
             showReaderDetails(ReaderDetailViewController.controllerWithPostURL(url))
         case let .tag(slug):
             showReaderDetails(ReaderStreamViewController.controllerWithTagSlug(slug))
+        case let .topic(topic):
+            showReaderDetails(ReaderStreamViewController.controllerWithTopic(topic))
         }
-    }
-
-    func navigateToReaderSite(_ topic: ReaderSiteTopic) {
-        let contentController = ReaderStreamViewController.controllerWithTopic(topic)
-        navigateToReader(contentController)
     }
 
     private func navigateToReader(_ viewController: UIViewController? = nil) {

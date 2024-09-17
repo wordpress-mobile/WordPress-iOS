@@ -19,7 +19,6 @@ protocol RootViewPresenter: AnyObject {
     func showReader(path: ReaderNavigationPath)
     func switchToTopic(where predicate: (ReaderAbstractTopic) -> Bool)
     func switchToFollowedSites()
-    func navigateToReaderSite(_ topic: ReaderSiteTopic)
 
     // MARK: Notifications
 

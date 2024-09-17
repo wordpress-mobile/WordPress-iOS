@@ -133,6 +133,8 @@ final class ReaderSidebarViewController: UIHostingController<AnyView> {
             showSecondary(ReaderDetailViewController.controllerWithPostID(NSNumber(value: postID), siteID: NSNumber(value: siteID), isFeed: isFeed))
         case let .postURL(url):
             showSecondary(ReaderDetailViewController.controllerWithPostURL(url))
+        case let .topic(topic):
+            showSecondary(ReaderStreamViewController.controllerWithTopic(topic))
         case let .tag(slug):
             showSecondary(ReaderStreamViewController.controllerWithTagSlug(slug))
         }

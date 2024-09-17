@@ -45,10 +45,6 @@ class StaticScreensTabBarWrapper: RootViewPresenter {
         // Do nothing
     }
 
-    func navigateToReaderSite(_ topic: ReaderSiteTopic) {
-        // Do nothing
-    }
-
     // MARK: My Site
 
     func showMySitesTab() {
