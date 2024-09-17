@@ -883,7 +883,6 @@
 		17A28DC52050404C00EA6D9E /* AuthorFilterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A28DC42050404C00EA6D9E /* AuthorFilterButton.swift */; };
 		17A28DCB2052FB5D00EA6D9E /* AuthorFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A28DCA2052FB5D00EA6D9E /* AuthorFilterViewController.swift */; };
 		17A4A36920EE51870071C2CA /* Routes+Reader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A4A36820EE51870071C2CA /* Routes+Reader.swift */; };
-		17A4A36C20EE55320071C2CA /* ReaderCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A4A36B20EE55320071C2CA /* ReaderCoordinator.swift */; };
 		17ABD3522811A48900B1E9CB /* StatsMostPopularTimeInsightsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17ABD3512811A48900B1E9CB /* StatsMostPopularTimeInsightsCell.swift */; };
 		17ABD3532811A48900B1E9CB /* StatsMostPopularTimeInsightsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17ABD3512811A48900B1E9CB /* StatsMostPopularTimeInsightsCell.swift */; };
 		17AD36D51D36C1A60044B10D /* WPStyleGuide+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AD36D41D36C1A60044B10D /* WPStyleGuide+Search.swift */; };
@@ -5037,7 +5036,6 @@
 		FABB23E42602FC2C00C8785C /* ReaderPostService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D3D559618F88C3500782892 /* ReaderPostService.m */; };
 		FABB23E52602FC2C00C8785C /* EditorMediaUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA30DB321ADA20F0092F894 /* EditorMediaUtility.swift */; };
 		FABB23E62602FC2C00C8785C /* ShareMediaFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7430C4481F97F23600E2673E /* ShareMediaFileManager.swift */; };
-		FABB23E82602FC2C00C8785C /* ReaderCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A4A36B20EE55320071C2CA /* ReaderCoordinator.swift */; };
 		FABB23E92602FC2C00C8785C /* RestoreCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB800B125AEE3C600D5D54A /* RestoreCompleteView.swift */; };
 		FABB23EA2602FC2C00C8785C /* NoteBlockImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B532D4ED199D4418006E4DF6 /* NoteBlockImageTableViewCell.swift */; };
 		FABB23EB2602FC2C00C8785C /* PostCategoryService.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FA59DC18D88C1C001446BC /* PostCategoryService.m */; };
@@ -6736,7 +6734,6 @@
 		17A28DC42050404C00EA6D9E /* AuthorFilterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorFilterButton.swift; sourceTree = "<group>"; };
 		17A28DCA2052FB5D00EA6D9E /* AuthorFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorFilterViewController.swift; sourceTree = "<group>"; };
 		17A4A36820EE51870071C2CA /* Routes+Reader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Routes+Reader.swift"; sourceTree = "<group>"; };
-		17A4A36B20EE55320071C2CA /* ReaderCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderCoordinator.swift; sourceTree = "<group>"; };
 		17ABD3512811A48900B1E9CB /* StatsMostPopularTimeInsightsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsMostPopularTimeInsightsCell.swift; sourceTree = "<group>"; };
 		17AD36D41D36C1A60044B10D /* WPStyleGuide+Search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Search.swift"; sourceTree = "<group>"; };
 		17B7C89D20EC1D0D0042E260 /* UniversalLinkRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversalLinkRouter.swift; sourceTree = "<group>"; };
@@ -11203,7 +11200,6 @@
 		17A4A36A20EE551F0071C2CA /* Coordinators */ = {
 			isa = PBXGroup;
 			children = (
-				17A4A36B20EE55320071C2CA /* ReaderCoordinator.swift */,
 				1715179320F4B5CD002C4A38 /* MySitesCoordinator.swift */,
 			);
 			path = Coordinators;
@@ -22530,7 +22526,6 @@
 				C35D4FF1280077F100DB90B5 /* SiteCreationStep.swift in Sources */,
 				7492F78E1F9BD94500B5A04A /* ShareMediaFileManager.swift in Sources */,
 				8379669C299C0C44004A92B9 /* JetpackRemoteInstallTableViewCell.swift in Sources */,
-				17A4A36C20EE55320071C2CA /* ReaderCoordinator.swift in Sources */,
 				FAB800B225AEE3C600D5D54A /* RestoreCompleteView.swift in Sources */,
 				B532D4EE199D4418006E4DF6 /* NoteBlockImageTableViewCell.swift in Sources */,
 				0CD9CCA32AD831590044A33C /* PostSearchViewModel.swift in Sources */,
@@ -25491,7 +25486,6 @@
 				FABB23E42602FC2C00C8785C /* ReaderPostService.m in Sources */,
 				FABB23E52602FC2C00C8785C /* EditorMediaUtility.swift in Sources */,
 				FABB23E62602FC2C00C8785C /* ShareMediaFileManager.swift in Sources */,
-				FABB23E82602FC2C00C8785C /* ReaderCoordinator.swift in Sources */,
 				8332D7462ADF263500EB97EF /* UIConfigurationTextAttributesTransformer+Font.swift in Sources */,
 				FABB23E92602FC2C00C8785C /* RestoreCompleteView.swift in Sources */,
 				FABB23EA2602FC2C00C8785C /* NoteBlockImageTableViewCell.swift in Sources */,

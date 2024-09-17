@@ -70,12 +70,11 @@ extension ReaderRoute: NavigationAction {
             RootViewCoordinator.sharedPresenter.showReaderTab() // Show static reader tab
             return
         }
-        let coordinator = ReaderCoordinator()
         let presenter = RootViewCoordinator.sharedPresenter
 
         switch self {
         case .root:
-            coordinator.showReaderTab()
+            presenter.showReaderTab()
         case .discover:
             presenter.showReader(path: .discover)
         case .search:
