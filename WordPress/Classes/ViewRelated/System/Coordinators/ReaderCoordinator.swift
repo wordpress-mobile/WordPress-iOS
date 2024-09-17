@@ -5,10 +5,6 @@ struct ReaderCoordinator {
         RootViewCoordinator.sharedPresenter.showReaderTab()
     }
 
-    func showReader(path: ReaderNavigationPath) {
-        RootViewCoordinator.sharedPresenter.showReader(path: path)
-    }
-
     func showSearch() {
         RootViewCoordinator.sharedPresenter.navigateToReaderSearch()
     }
@@ -23,10 +19,6 @@ struct ReaderCoordinator {
         RootViewCoordinator.sharedPresenter.switchToTopic(where: { topic in
             return (topic as? ReaderTeamTopic)?.slug == ReaderTeamTopic.p2Slug
         })
-    }
-
-    func showMyLikes() {
-        RootViewCoordinator.sharedPresenter.switchToMyLikes()
     }
 
     func showManageFollowing() {

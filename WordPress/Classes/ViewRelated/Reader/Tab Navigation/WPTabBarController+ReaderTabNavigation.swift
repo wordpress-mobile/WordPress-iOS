@@ -49,6 +49,8 @@ extension WPTabBarController {
         switch path {
         case .discover:
             readerTabViewModel.switchToTab(where: ReaderHelpers.topicIsDiscover)
+        case .likes:
+            readerTabViewModel.switchToTab(where: ReaderHelpers.topicIsLiked)
         }
     }
 
@@ -81,20 +83,6 @@ extension WPTabBarController {
         navigateToReader()
         readerTabViewModel.switchToTab(where: {
             ReaderHelpers.topicIsFollowing($0)
-        })
-    }
-
-    func switchToDiscover() {
-        navigateToReader()
-        readerTabViewModel.switchToTab(where: {
-            ReaderHelpers.topicIsDiscover($0)
-        })
-    }
-
-    func switchToMyLikes() {
-        navigateToReader()
-        readerTabViewModel.switchToTab(where: {
-            ReaderHelpers.topicIsLiked($0)
         })
     }
 

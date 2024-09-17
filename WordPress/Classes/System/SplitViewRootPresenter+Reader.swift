@@ -26,6 +26,8 @@ class ReaderSplitViewContent: SplitViewDisplayable {
         switch path {
         case .discover:
             viewModel.selection = .main(.discover)
+        case .likes:
+            viewModel.selection = .main(.likes)
         }
     }
 }

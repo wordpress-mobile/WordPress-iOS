@@ -71,12 +71,13 @@ extension ReaderRoute: NavigationAction {
             return
         }
         let coordinator = ReaderCoordinator()
+        let presenter = RootViewCoordinator.sharedPresenter
 
         switch self {
         case .root:
             coordinator.showReaderTab()
         case .discover:
-            coordinator.showReader(path: .discover)
+            presenter.showReader(path: .discover)
         case .search:
             coordinator.showSearch()
         case .a8c:
@@ -84,7 +85,7 @@ extension ReaderRoute: NavigationAction {
         case .p2:
             coordinator.showP2()
         case .likes:
-            coordinator.showMyLikes()
+            presenter.showReader(path: .likes)
         case .manageFollowing:
             coordinator.showManageFollowing()
         case .list:

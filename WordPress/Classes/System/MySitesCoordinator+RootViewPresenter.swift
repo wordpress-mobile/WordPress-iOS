@@ -32,10 +32,6 @@ extension MySitesCoordinator: RootViewPresenter {
         unsupportedFeatureFallback()
     }
 
-    func switchToMyLikes() {
-        unsupportedFeatureFallback()
-    }
-
     func switchToFollowedSites() {
         unsupportedFeatureFallback()
     }

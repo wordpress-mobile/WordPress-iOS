@@ -49,10 +49,6 @@ class StaticScreensTabBarWrapper: RootViewPresenter {
         // Do nothing
     }
 
-    func switchToMyLikes() {
-        // Do nothing
-    }
-
     func switchToFollowedSites() {
         // Do nothing
     }

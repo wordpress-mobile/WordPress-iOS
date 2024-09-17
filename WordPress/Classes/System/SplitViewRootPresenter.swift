@@ -304,10 +304,6 @@ final class SplitViewRootPresenter: RootViewPresenter {
         fatalError()
     }
 
-    func switchToMyLikes() {
-        fatalError()
-    }
-
     func switchToFollowedSites() {
         fatalError()
     }
