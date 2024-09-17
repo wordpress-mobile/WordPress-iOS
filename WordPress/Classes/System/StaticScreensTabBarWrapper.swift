@@ -41,10 +41,6 @@ class StaticScreensTabBarWrapper: RootViewPresenter {
         // Do nothing
     }
 
-    func switchToFollowedSites() {
-        // Do nothing
-    }
-
     // MARK: My Site
 
     func showMySitesTab() {

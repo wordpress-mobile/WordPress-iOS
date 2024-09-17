@@ -73,7 +73,7 @@ struct UniversalLinkRouter: LinkRouter {
         ReaderRoute.a8c,
         ReaderRoute.p2,
         ReaderRoute.likes,
-        ReaderRoute.manageFollowing,
+        ReaderRoute.subscriptions,
         ReaderRoute.list,
         ReaderRoute.tag,
         ReaderRoute.feed,

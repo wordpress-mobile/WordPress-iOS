@@ -129,6 +129,8 @@ final class ReaderSidebarViewController: UIHostingController<AnyView> {
             viewModel.selection = .main(.likes)
         case .search:
             viewModel.selection = .main(.search)
+        case .subscriptions:
+            viewModel.selection = .allSubscriptions
         case let .post(postID, siteID, isFeed):
             showSecondary(ReaderDetailViewController.controllerWithPostID(NSNumber(value: postID), siteID: NSNumber(value: siteID), isFeed: isFeed))
         case let .postURL(url):

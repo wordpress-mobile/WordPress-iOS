@@ -17,10 +17,6 @@ struct ReaderCoordinator {
         })
     }
 
-    func showManageFollowing() {
-        RootViewCoordinator.sharedPresenter.switchToFollowedSites()
-    }
-
     func showList(named listName: String, forUser user: String) {
         let context = ContextManager.sharedInstance().mainContext
         guard let topic = ReaderListTopic.named(listName, forUser: user, in: context) else {

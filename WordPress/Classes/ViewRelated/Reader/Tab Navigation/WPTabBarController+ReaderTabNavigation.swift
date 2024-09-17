@@ -50,6 +50,8 @@ extension WPTabBarController {
             readerTabViewModel.switchToTab(where: ReaderHelpers.topicIsLiked)
         case .search:
             showReaderDetails(ReaderSearchViewController.controller())
+        case .subscriptions:
+            ReaderManageScenePresenter().present(on: self, selectedSection: .sites, animated: true, completion: nil)
         case let .post(postID, siteID, isFeed):
             showReaderDetails(ReaderDetailViewController.controllerWithPostID(NSNumber(value: postID), siteID: NSNumber(value: siteID), isFeed: isFeed))
         case let .postURL(url):
@@ -71,13 +73,6 @@ extension WPTabBarController {
     private func showReaderDetails(_ viewController: UIViewController) {
         readerNavigationController?.popToRootViewController(animated: false)
         readerNavigationController?.pushViewController(viewController, animated: true)
-    }
-
-    func switchToFollowedSites() {
-        navigateToReader()
-        readerTabViewModel.switchToTab(where: {
-            ReaderHelpers.topicIsFollowing($0)
-        })
     }
 
     /// switches to a menu item topic that satisfies the given predicate with a topic value

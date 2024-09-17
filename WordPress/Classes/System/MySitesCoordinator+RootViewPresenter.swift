@@ -28,10 +28,6 @@ extension MySitesCoordinator: RootViewPresenter {
         unsupportedFeatureFallback()
     }
 
-    func switchToFollowedSites() {
-        unsupportedFeatureFallback()
-    }
-
     // MARK: My Site
 
     func showMySitesTab() {

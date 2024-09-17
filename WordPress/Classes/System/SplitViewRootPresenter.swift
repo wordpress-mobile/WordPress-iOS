@@ -296,10 +296,6 @@ final class SplitViewRootPresenter: RootViewPresenter {
         fatalError()
     }
 
-    func switchToFollowedSites() {
-        fatalError()
-    }
-
     // MARK: Notifications
 
     func showNotificationsTab(completion: ((NotificationsViewController) -> Void)?) {

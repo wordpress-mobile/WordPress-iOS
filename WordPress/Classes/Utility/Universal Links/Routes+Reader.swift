@@ -87,7 +87,7 @@ extension ReaderRoute: NavigationAction {
         case .likes:
             presenter.showReader(path: .likes)
         case .manageFollowing:
-            coordinator.showManageFollowing()
+            presenter.showReader(path: .subscriptions)
         case .list:
             if let username = values["username"],
                 let listName = values["list_name"] {
