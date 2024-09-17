@@ -30,13 +30,6 @@ struct ReaderCoordinator {
         RootViewCoordinator.sharedPresenter.switchToTopic(where: { $0 == topic })
     }
 
-    func showTag(named tagName: String) {
-        let remote = ReaderTopicServiceRemote(wordPressComRestApi: WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress()))
-        let slug = remote.slug(forTopicName: tagName) ?? tagName.lowercased()
-
-        RootViewCoordinator.sharedPresenter.navigateToReaderTag(slug)
-    }
-
     func showStream(with siteID: Int, isFeed: Bool) {
         getSiteTopic(siteID: NSNumber(value: siteID), isFeed: isFeed) { result in
             guard let topic = try? result.get() else {

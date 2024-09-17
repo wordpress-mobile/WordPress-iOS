@@ -95,7 +95,7 @@ extension ReaderRoute: NavigationAction {
             }
         case .tag:
             if let tagName = values["tag_name"] {
-                coordinator.showTag(named: tagName)
+                presenter.showReader(path: .makeWithTagName(tagName))
             }
         case .feed:
             if let feedIDValue = values["feed_id"],

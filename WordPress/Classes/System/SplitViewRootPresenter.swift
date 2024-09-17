@@ -304,10 +304,6 @@ final class SplitViewRootPresenter: RootViewPresenter {
         fatalError()
     }
 
-    func navigateToReaderTag(_ tagSlug: String) {
-        fatalError()
-    }
-
     // MARK: Notifications
 
     func showNotificationsTab(completion: ((NotificationsViewController) -> Void)?) {

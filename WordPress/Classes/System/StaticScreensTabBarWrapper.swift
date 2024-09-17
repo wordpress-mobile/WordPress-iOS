@@ -49,10 +49,6 @@ class StaticScreensTabBarWrapper: RootViewPresenter {
         // Do nothing
     }
 
-    func navigateToReaderTag(_ tagSlug: String) {
-        // Do nothing
-    }
-
     // MARK: My Site
 
     func showMySitesTab() {
