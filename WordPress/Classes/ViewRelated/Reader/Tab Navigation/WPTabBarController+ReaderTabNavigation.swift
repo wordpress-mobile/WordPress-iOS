@@ -67,7 +67,7 @@ extension WPTabBarController {
         navigateToReader(contentController)
     }
 
-    func navigateToReader(_ viewController: UIViewController? = nil) {
+    private func navigateToReader(_ viewController: UIViewController? = nil) {
         showReaderTab()
         if let viewController {
             showReaderDetails(viewController)

@@ -66,9 +66,4 @@ struct ReaderCoordinator {
             completion(.failure(error ?? defaultError))
         })
     }
-
-    private func showPost(in detailViewController: ReaderDetailViewController) {
-        RootViewCoordinator.sharedPresenter.navigateToReader(detailViewController)
-    }
-
 }

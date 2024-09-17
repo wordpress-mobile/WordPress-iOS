@@ -21,7 +21,6 @@ protocol RootViewPresenter: AnyObject {
     func switchToFollowedSites()
     func navigateToReaderSite(_ topic: ReaderSiteTopic)
     func navigateToReaderTag(_ tagSlug: String)
-    func navigateToReader(_ pushControlller: UIViewController?)
 
     // MARK: Notifications
 

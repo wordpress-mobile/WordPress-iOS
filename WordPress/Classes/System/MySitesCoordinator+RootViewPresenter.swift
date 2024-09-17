@@ -40,10 +40,6 @@ extension MySitesCoordinator: RootViewPresenter {
         unsupportedFeatureFallback()
     }
 
-    func navigateToReader(_ pushControlller: UIViewController?) {
-        unsupportedFeatureFallback()
-    }
-
     // MARK: My Site
 
     func showMySitesTab() {

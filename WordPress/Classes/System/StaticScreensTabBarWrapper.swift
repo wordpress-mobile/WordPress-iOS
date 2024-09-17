@@ -53,15 +53,7 @@ class StaticScreensTabBarWrapper: RootViewPresenter {
         // Do nothing
     }
 
-    func navigateToReader(_ pushControlller: UIViewController?) {
-        // Do nothing
-    }
-
     // MARK: My Site
-
-    var mySitesCoordinator: MySitesCoordinator {
-        return tabBarController.mySitesCoordinator
-    }
 
     func showMySitesTab() {
         tabBarController.showMySitesTab()
