@@ -178,7 +178,7 @@ private extension RootViewPresenter {
     }
 
     func showReaderList(named listName: String, forUser user: String) {
-        let context = ContextManager.sharedInstance().mainContext
+        let context = ContextManager.shared.mainContext
         if let topic = ReaderListTopic.named(listName, forUser: user, in: context) {
             showReader(path: .topic(topic))
         }
@@ -187,25 +187,25 @@ private extension RootViewPresenter {
     /// - warning: This method performs the navigation asyncronously after
     /// fetching the information about the stream from the backend.
     func showReaderStream(with siteID: Int, isFeed: Bool) {
-        getSiteTopic(siteID: NSNumber(value: siteID), isFeed: isFeed) { [weak self] result in
-            guard let topic = try? result.get() else { return }
+        getSiteTopic(siteID: NSNumber(value: siteID), isFeed: isFeed) { [weak self] topic in
+            guard let topic else { return }
             self?.showReader(path: .topic(topic))
         }
     }
 
-    private func getSiteTopic(siteID: NSNumber, isFeed: Bool, completion: @escaping (Result<ReaderSiteTopic, Error>) -> Void) {
+    private func getSiteTopic(siteID: NSNumber, isFeed: Bool, completion: @escaping (ReaderSiteTopic?) -> Void) {
         let service = ReaderTopicService(coreDataStack: ContextManager.shared)
         service.siteTopicForSite(withID: siteID, isFeed: isFeed, success: { objectID, isFollowing in
             guard let objectID = objectID,
-                  let topic = try? ContextManager.sharedInstance().mainContext.existingObject(with: objectID) as? ReaderSiteTopic else {
+                  let topic = try? ContextManager.shared.mainContext.existingObject(with: objectID) as? ReaderSiteTopic else {
                 DDLogError("Reader: Error retriving site topic - invalid Site Id")
+                completion(nil)
                 return
             }
-            completion(.success(topic))
+            completion(topic)
         }, failure: { error in
-            let defaultError = NSError(domain: "readerSiteTopicError", code: -1, userInfo: nil)
             DDLogError("Reader: Error retriving site topic - " + (error?.localizedDescription ?? "unknown failure reason"))
-            completion(.failure(error ?? defaultError))
+            completion(nil)
         })
     }
 }
