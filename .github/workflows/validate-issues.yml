@@ -14,5 +14,6 @@ jobs:
       ]'
       label-error-message: '🚫 Please add a type label (e.g. **[Type] Enhancement**) and a feature label (e.g. **Stats**) to this issue.'
       label-success-message: 'Thanks for reporting! 👍'
+      cancel-running-jobs: false
     secrets:
       github-token: ${{ secrets.DANGERMATTIC_GITHUB_TOKEN }}
