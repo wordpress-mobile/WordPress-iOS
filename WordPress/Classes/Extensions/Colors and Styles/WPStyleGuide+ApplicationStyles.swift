@@ -164,7 +164,7 @@ extension WPStyleGuide {
     @objc
     class func configureTableViewActionCell(_ cell: UITableViewCell?) {
         configureTableViewCell(cell)
-        cell?.textLabel?.textColor = UIAppColor.primary
+        cell?.textLabel?.textColor = UIAppColor.brand
     }
 
     @objc

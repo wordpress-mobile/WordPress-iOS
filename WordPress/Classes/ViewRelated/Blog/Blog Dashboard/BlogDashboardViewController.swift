@@ -208,14 +208,16 @@ extension BlogDashboardViewController {
         let group = NSCollectionLayoutGroup.vertical(layoutSize: itemSize, subitems: [item])
 
         let section = NSCollectionLayoutSection(group: group)
-        let isQuickActionSection = viewModel.isQuickActionsSection(sectionIndex)
-        let isMigrationSuccessCardSection = viewModel.isMigrationSuccessCardSection(sectionIndex)
         let horizontalInset = Constants.horizontalSectionInset
-        let bottomInset = isQuickActionSection || isMigrationSuccessCardSection ? 0 : Constants.bottomSectionInset
-        section.contentInsets = NSDirectionalEdgeInsets(top: Constants.verticalSectionInset,
-                                                        leading: horizontalInset,
-                                                        bottom: bottomInset,
-                                                        trailing: horizontalInset)
+        let isLast = (sectionIndex == collectionView.numberOfSections - 1)
+        // More on .compact to match the FAB.
+        let bottomInset = (isLast && traitCollection.horizontalSizeClass == .compact) ? 86 : 20
+        section.contentInsets = NSDirectionalEdgeInsets(
+            top: Constants.verticalSectionInset,
+            leading: horizontalInset,
+            bottom: CGFloat(bottomInset),
+            trailing: horizontalInset
+        )
 
         section.interGroupSpacing = Constants.cellSpacing
         section.contentInsetsReference = .readableContent
@@ -240,10 +242,6 @@ extension BlogDashboardViewController {
         static let estimatedHeight: CGFloat = 44
         static let horizontalSectionInset: CGFloat = 12
         static let verticalSectionInset: CGFloat = 20
-        static var bottomSectionInset: CGFloat {
-            // Make room for FAB on iPhone
-            WPDeviceIdentification.isiPad() ? verticalSectionInset : 86
-        }
         static let cellSpacing: CGFloat = 20
     }
 }

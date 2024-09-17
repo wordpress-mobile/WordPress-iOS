@@ -80,7 +80,7 @@ final class BlogListViewModel: NSObject, ObservableObject {
         updateDisplayedSites()
     }
 
-    private func updateDisplayedSites() {
+    func updateDisplayedSites() {
         rawSites = getFilteredSites(from: fetchedResultsController)
 
         var sitesByURL: [String: Blog] = [:]

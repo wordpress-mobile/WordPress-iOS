@@ -39,8 +39,7 @@ struct UniversalLinkRouter: LinkRouter {
         readerRoutes +
         statsRoutes +
         mySitesRoutes +
-        appBannerRoutes +
-        startRoutes
+        appBannerRoutes
 
     static let meRoutes: [Route] = [
         MeRoute(),
@@ -103,10 +102,6 @@ struct UniversalLinkRouter: LinkRouter {
 
     static let appBannerRoutes: [Route] = [
         AppBannerRoute()
-    ]
-
-    static let startRoutes: [Route] = [
-        StartRoute()
     ]
 
     static let redirects: [Route] = [

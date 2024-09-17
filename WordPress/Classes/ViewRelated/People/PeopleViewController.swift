@@ -463,17 +463,15 @@ private extension PeopleViewController {
         let accessoryView = isLoading ? NoResultsViewController.loadingAccessoryView() : nil
         noResultsViewController.configure(title: noResultsTitle(), accessoryView: accessoryView)
 
-        // Set the NRV top as the filterBar bottom so the NRV
-        // adjusts correctly when refreshControl is active.
-        let filterBarBottom = filterBar.frame.origin.y + filterBar.frame.size.height
-        noResultsViewController.view.frame.origin.y = filterBarBottom
-
         guard noResultsViewController.parent == nil else {
             noResultsViewController.updateView()
             return
         }
         addChild(noResultsViewController)
         tableView.addSubview(withFadeAnimation: noResultsViewController.view)
+        noResultsViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        view.pinSubviewToSafeArea(noResultsViewController.view)
+
         noResultsViewController.didMove(toParent: self)
     }
 
