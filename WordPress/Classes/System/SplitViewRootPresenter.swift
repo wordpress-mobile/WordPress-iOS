@@ -9,7 +9,7 @@ import WordPressUI
 final class SplitViewRootPresenter: RootViewPresenter {
     private let sidebarViewModel = SidebarViewModel()
     private let splitVC = UISplitViewController(style: .tripleColumn)
-    private let tabBarViewController: WPTabBarController
+    private let tabBarVC: WPTabBarController
     private weak var sitePickerPopoverVC: UIViewController?
     private var cancellables: [AnyCancellable] = []
 
@@ -32,7 +32,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
     /// Is the app displaying tab bar UI instead of the full split view UI (with sidebar).
     private var isDisplayingTabBar: Bool {
         if splitVC.isCollapsed {
-            wpAssert(splitVC.viewController(for: .compact) == tabBarViewController, "Split view is collapsed, but is not displaying the tab bar view controller")
+            wpAssert(splitVC.viewController(for: .compact) == tabBarVC, "Split view is collapsed, but is not displaying the tab bar view controller")
             return true
         }
 
@@ -40,7 +40,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
     }
 
     init() {
-        tabBarViewController = WPTabBarController(staticScreens: false)
+        tabBarVC = WPTabBarController(staticScreens: false)
 
         splitVC.delegate = self
 
@@ -48,7 +48,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
         let navigationVC = makeRootNavigationController(with: sidebarVC)
         splitVC.setViewController(navigationVC, for: .primary)
 
-        splitVC.setViewController(tabBarViewController, for: .compact)
+        splitVC.setViewController(tabBarVC, for: .compact)
 
         NotificationCenter.default.publisher(for: MySiteViewController.didPickSiteNotification).sink { [weak self] in
             guard let site = $0.userInfo?[MySiteViewController.siteUserInfoKey] as? Blog else {
@@ -240,7 +240,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
     func currentlySelectedScreen() -> String {
         if splitVC.isCollapsed {
-            return tabBarViewController.currentlySelectedScreen()
+            return tabBarVC.currentlySelectedScreen()
         } else {
             switch sidebarViewModel.selection {
             case .welcome: return "Welcome"
@@ -261,7 +261,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
     func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection?, userInfo: [AnyHashable: Any]) {
         if splitVC.isCollapsed {
-            tabBarViewController.showBlogDetails(for: blog, then: subsection, userInfo: userInfo)
+            tabBarVC.showBlogDetails(for: blog, then: subsection, userInfo: userInfo)
         } else {
             sidebarViewModel.selection = .blog(TaggedManagedObjectID(blog))
             if let subsection {
@@ -304,7 +304,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
     func showMeScreen(completion: ((MeViewController) -> Void)?) {
         if isDisplayingTabBar {
-            tabBarViewController.showMeScreen(completion: completion)
+            tabBarVC.showMeScreen(completion: completion)
             return
         }
 
