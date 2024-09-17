@@ -52,6 +52,8 @@ extension WPTabBarController {
             showReaderDetails(ReaderSearchViewController.controller())
         case let .post(postID, siteID, isFeed):
             showReaderDetails(ReaderDetailViewController.controllerWithPostID(NSNumber(value: postID), siteID: NSNumber(value: siteID), isFeed: isFeed))
+        case let .postURL(url):
+            showReaderDetails(ReaderDetailViewController.controllerWithPostURL(url))
         }
     }
 

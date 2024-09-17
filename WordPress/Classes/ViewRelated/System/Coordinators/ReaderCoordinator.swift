@@ -67,17 +67,6 @@ struct ReaderCoordinator {
         })
     }
 
-    func showPost(with postID: Int, for feedID: Int, isFeed: Bool) {
-        showPost(in: ReaderDetailViewController
-                    .controllerWithPostID(postID as NSNumber,
-                                          siteID: feedID as NSNumber,
-                                          isFeed: isFeed))
-    }
-
-    func showPost(with url: URL) {
-        showPost(in: ReaderDetailViewController.controllerWithPostURL(url))
-    }
-
     private func showPost(in detailViewController: ReaderDetailViewController) {
         RootViewCoordinator.sharedPresenter.navigateToReader(detailViewController)
     }

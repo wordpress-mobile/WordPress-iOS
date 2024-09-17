@@ -119,8 +119,7 @@ extension ReaderRoute: NavigationAction {
             if let urlString = values[MatchedRouteURLComponentKey.url.rawValue],
                let url = URL(string: urlString),
                isValidWpcomUrl(values) {
-
-                coordinator.showPost(with: url)
+                presenter.showReader(path: .postURL(url))
             }
         }
     }

@@ -5,4 +5,5 @@ enum ReaderNavigationPath: Hashable {
     case likes
     case search
     case post(postID: Int, siteID: Int, isFeed: Bool = false)
+    case postURL(URL)
 }
