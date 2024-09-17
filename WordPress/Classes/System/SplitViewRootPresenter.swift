@@ -290,7 +290,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
         }
     }
 
-    // MARK: Notifications
+    // MARK: RootViewPresenter (Notifications)
 
     func showNotificationsTab(completion: ((NotificationsViewController) -> Void)?) {
         sidebarViewModel.selection = .notifications
@@ -300,7 +300,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
         }
     }
 
-    // MARK: Me
+    // MARK: RootViewPresenter (Me)
 
     func showMeScreen(completion: ((MeViewController) -> Void)?) {
         if isDisplayingTabBar {

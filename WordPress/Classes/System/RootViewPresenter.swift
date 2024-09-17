@@ -1,19 +1,17 @@
 import Foundation
 
 protocol RootViewPresenter: AnyObject {
-
-    // MARK: General
-
     var rootViewController: UIViewController { get }
     func currentlySelectedScreen() -> String
-
-    // MARK: Sites
 
     func currentlyVisibleBlog() -> Blog?
     func showMySitesTab()
     func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection?, userInfo: [AnyHashable: Any])
+
     func showReader(path: ReaderNavigationPath?)
+
     func showNotificationsTab(completion: ((NotificationsViewController) -> Void)?)
+
     func showMeScreen(completion: ((MeViewController) -> Void)?)
 }
 
