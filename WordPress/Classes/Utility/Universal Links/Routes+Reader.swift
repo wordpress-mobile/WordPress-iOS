@@ -109,11 +109,11 @@ extension ReaderRoute: NavigationAction {
             }
         case .feedsPost:
             if let (feedID, postID) = feedAndPostID(from: values) {
-                coordinator.showPost(with: postID, for: feedID, isFeed: true)
+                presenter.showReader(path: .post(postID: postID, siteID: feedID, isFeed: true))
             }
         case .blogsPost:
             if let (blogID, postID) = blogAndPostID(from: values) {
-                coordinator.showPost(with: postID, for: blogID, isFeed: false)
+                presenter.showReader(path: .post(postID: postID, siteID: blogID))
             }
         case .wpcomPost:
             if let urlString = values[MatchedRouteURLComponentKey.url.rawValue],

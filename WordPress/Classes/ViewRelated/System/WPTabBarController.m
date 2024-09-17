@@ -315,25 +315,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     [self setSelectedIndex:WPTabMe];
 }
 
-- (void)showReaderTabForPost:(NSNumber *)postId onBlog:(NSNumber *)blogId
-{
-    [self showReaderTab];
-    UIViewController *topDetailVC = (UIViewController *)self.readerNavigationController.topViewController;
-
-    // TODO: needed?
-    if ([topDetailVC isKindOfClass:[ReaderDetailViewController class]]) {
-        ReaderDetailViewController *readerDetailVC = (ReaderDetailViewController *)topDetailVC;
-        ReaderPost *readerPost = readerDetailVC.post;
-        if ([readerPost.postID isEqual:postId] && [readerPost.siteID isEqual: blogId]) {
-         // The desired reader detail VC is already the top VC for the tab. Move along.
-            return;
-        }
-    }
-    
-    UIViewController *readerPostDetailVC = [ReaderDetailViewController controllerWithPostID:postId siteID:blogId isFeed:NO];
-    [self.readerNavigationController pushFullscreenViewController:readerPostDetailVC animated:YES];
-}
-
 - (void)popNotificationsTabToRoot
 {
     [self.notificationsNavigationController popToRootViewControllerAnimated:NO];

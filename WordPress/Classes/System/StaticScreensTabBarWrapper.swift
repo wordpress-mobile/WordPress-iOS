@@ -37,10 +37,6 @@ class StaticScreensTabBarWrapper: RootViewPresenter {
         // Do nothing
     }
 
-    func showReaderTab(forPost: NSNumber, onBlog: NSNumber) {
-        // Do nothing
-    }
-
     func switchToTopic(where predicate: (ReaderAbstractTopic) -> Bool) {
         // Do nothing
     }

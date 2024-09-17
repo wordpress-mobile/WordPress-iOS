@@ -420,7 +420,7 @@ fileprivate extension SearchManager {
                 onFailure()
                 return
         }
-        RootViewCoordinator.sharedPresenter.showReaderTab(forPost: postID, onBlog: blogID)
+        RootViewCoordinator.sharedPresenter.showReader(path: .post(postID: postID.intValue, siteID: blogID.intValue))
     }
 
     func openReader(for postID: NSNumber, siteID: NSNumber, onFailure: () -> Void) {
@@ -429,7 +429,7 @@ fileprivate extension SearchManager {
             onFailure()
             return
         }
-        RootViewCoordinator.sharedPresenter.showReaderTab(forPost: postID, onBlog: siteID)
+        RootViewCoordinator.sharedPresenter.showReader(path: .post(postID: postID.intValue, siteID: siteID.intValue))
     }
 
     // MARK: - Editor

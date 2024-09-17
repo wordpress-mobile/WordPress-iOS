@@ -50,6 +50,8 @@ extension WPTabBarController {
             readerTabViewModel.switchToTab(where: ReaderHelpers.topicIsLiked)
         case .search:
             showReaderDetails(ReaderSearchViewController.controller())
+        case let .post(postID, siteID, isFeed):
+            showReaderDetails(ReaderDetailViewController.controllerWithPostID(NSNumber(value: postID), siteID: NSNumber(value: siteID), isFeed: isFeed))
         }
     }
 

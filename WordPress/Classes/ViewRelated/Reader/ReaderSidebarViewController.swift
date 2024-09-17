@@ -55,7 +55,6 @@ final class ReaderSidebarViewController: UIHostingController<AnyView> {
             showSecondary(makeViewController(withTopicID: objectID))
         case .organization(let objectID):
             showSecondary(makeViewController(withTopicID: objectID))
-
         }
     }
 
@@ -119,6 +118,19 @@ final class ReaderSidebarViewController: UIHostingController<AnyView> {
             let navigationVC = UINavigationController(rootViewController: interestsVC)
             navigationVC.modalPresentationStyle = .formSheet
             present(navigationVC, animated: true, completion: nil)
+        }
+    }
+
+    func navigate(to path: ReaderNavigationPath) {
+        switch path {
+        case .discover:
+            viewModel.selection = .main(.discover)
+        case .likes:
+            viewModel.selection = .main(.likes)
+        case .search:
+            viewModel.selection = .main(.search)
+        case let .post(postID, siteID, isFeed):
+            showSecondary(ReaderDetailViewController.controllerWithPostID(NSNumber(value: postID), siteID: NSNumber(value: siteID), isFeed: isFeed))
         }
     }
 

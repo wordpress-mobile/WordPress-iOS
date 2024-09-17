@@ -292,10 +292,6 @@ final class SplitViewRootPresenter: RootViewPresenter {
         }
     }
 
-    func showReaderTab(forPost: NSNumber, onBlog: NSNumber) {
-        fatalError()
-    }
-
     func switchToTopic(where predicate: (ReaderAbstractTopic) -> Bool) {
         fatalError()
     }
