@@ -156,6 +156,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 
 + (nonnull NSString *)userInfoShowPickerKey;
 + (nonnull NSString *)userInfoSiteMonitoringTabKey;
++ (nonnull NSString *)userInfoShowManagemenetScreenKey;
 + (nonnull NSString *)userInfoSourceKey;
 
 @end

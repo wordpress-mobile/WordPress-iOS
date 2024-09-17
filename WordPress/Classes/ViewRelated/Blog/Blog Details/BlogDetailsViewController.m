@@ -519,7 +519,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
                 [self.tableView selectRowAtIndexPath:indexPath
                                             animated:NO
                                       scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
-                [self showPlugins];
+                BOOL showManagemnet = userInfo[[BlogDetailsViewController userInfoShowManagemenetScreenKey]] ?: NO;
+                if (showManagemnet) {
+                    [self showManagePluginsScreen];
+                } else {
+                    [self showPlugins];
+                }
             }
             break;
         case BlogDetailsSubsectionSiteMonitoring:
@@ -2157,6 +2162,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
 
 + (NSString *)userInfoSiteMonitoringTabKey {
     return @"site-monitoring-tab";
+}
+
++ (NSString *)userInfoShowManagemenetScreenKey {
+    return @"show-manage-plugins";
 }
 
 + (NSString *)userInfoSourceKey {

@@ -37,6 +37,10 @@ final class SiteMenuViewController: UIViewController {
 
         navigationItem.title = blog.settings?.name ?? (blog.displayURL as String?) ?? ""
     }
+
+    func showSubsection(_ subsection: BlogDetailsSubsection, userInfo: [AnyHashable: Any]) {
+        blogDetailsVC.showDetailView(for: subsection, userInfo: userInfo)
+    }
 }
 
 // Updates the `BlogDetailsViewController` style to match the native sidebar style.

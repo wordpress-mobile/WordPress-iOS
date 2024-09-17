@@ -2,30 +2,30 @@ import Foundation
 import UIKit
 
 class SiteSplitViewContent: SiteMenuViewControllerDelegate, SplitViewDisplayable {
-    let siteMenu: SiteMenuViewController
+    let siteMenuVC: SiteMenuViewController
     let supplementary: UINavigationController
     var secondary: UINavigationController
 
     var blog: Blog {
-        siteMenu.blog
+        siteMenuVC.blog
     }
 
     init(blog: Blog) {
-        siteMenu = SiteMenuViewController(blog: blog)
-        supplementary = UINavigationController(rootViewController: siteMenu)
+        siteMenuVC = SiteMenuViewController(blog: blog)
+        supplementary = UINavigationController(rootViewController: siteMenuVC)
         secondary = UINavigationController()
-        siteMenu.delegate = self
+        siteMenuVC.delegate = self
     }
 
     func displayed(in splitVC: UISplitViewController) {
         RecentSitesService().touch(blog: blog)
 
         // TODO: (wpsidebar) Refactor this (initial .secondary vc managed based on the VC presentation)
-        _ = siteMenu.view
+        _ = siteMenuVC.view
     }
 
     func siteMenuViewController(_ siteMenuViewController: SiteMenuViewController, showDetailsViewController viewController: UIViewController) {
-        guard siteMenu === siteMenuViewController, let splitVC = siteMenuViewController.splitViewController else { return }
+        guard siteMenuVC === siteMenuViewController, let splitVC = siteMenuViewController.splitViewController else { return }
 
         if viewController is UINavigationController ||
             viewController is UISplitViewController {
@@ -35,5 +35,9 @@ class SiteSplitViewContent: SiteMenuViewControllerDelegate, SplitViewDisplayable
             let navigationVC = UINavigationController(rootViewController: viewController)
             splitVC.setViewController(navigationVC, for: .secondary)
         }
+    }
+
+    func showSubsection(_ subsection: BlogDetailsSubsection, userInfo: [AnyHashable: Any]) {
+        siteMenuVC.showSubsection(subsection, userInfo: userInfo)
     }
 }

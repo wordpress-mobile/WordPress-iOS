@@ -40,8 +40,6 @@ final class SplitViewRootPresenter: RootViewPresenter {
     }
 
     init() {
-        // TODO: (wpsidebar) refactor
-        self.mySitesCoordinator = MySitesCoordinator(meScenePresenter: MeScenePresenter(), onBecomeActiveTab: {})
         tabBarViewController = WPTabBarController(staticScreens: false)
 
         splitVC.delegate = self
@@ -59,9 +57,10 @@ final class SplitViewRootPresenter: RootViewPresenter {
             self?.sidebarViewModel.selection = .blog(TaggedManagedObjectID(site))
         }.store(in: &cancellables)
 
-        sidebarViewModel.$selection.compactMap { $0 }.sink { [weak self] in
-            self?.configure(for: $0)
-        }.store(in: &cancellables)
+        sidebarViewModel.$selection.compactMap { $0 }
+            .removeDuplicates()
+            .sink { [weak self] in self?.configure(for: $0) }
+            .store(in: &cancellables)
 
         sidebarViewModel.navigate = { [weak self] in
             self?.navigate(to: $0)
@@ -235,34 +234,49 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
     // MARK: – RootViewPresenter
 
+    // MARK: RootViewPresenter (General)
+
     var rootViewController: UIViewController { splitVC }
 
-    var currentViewController: UIViewController?
-
-    func showBlogDetails(for blog: Blog) {
-        sidebarViewModel.selection = .blog(TaggedManagedObjectID(blog))
-    }
-
-    func getMeScenePresenter() -> any ScenePresenter {
-        fatalError()
-    }
-
     func currentlySelectedScreen() -> String {
-        ""
+        if splitVC.isCollapsed {
+            return tabBarViewController.currentlySelectedScreen()
+        } else {
+            switch sidebarViewModel.selection {
+            case .welcome: return "Welcome"
+            case .blog: return WPTabBarCurrentlySelectedScreenSites
+            case .notifications: return WPTabBarCurrentlySelectedScreenNotifications
+            case .reader: return WPTabBarCurrentlySelectedScreenReader
+            default: return ""
+            }
+        }
     }
 
-    // TODO: (wpsidebar) Can we remove it?
+    // MARK: RootViewPresenter (Sites)
+
     func currentlyVisibleBlog() -> Blog? {
         assert(Thread.isMainThread)
-
         return siteContent?.blog
     }
 
-    var readerTabViewController: ReaderTabViewController?
+    func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection?, userInfo: [AnyHashable: Any]) {
+        if splitVC.isCollapsed {
+            tabBarViewController.showBlogDetails(for: blog, then: subsection, userInfo: userInfo)
+        } else {
+            sidebarViewModel.selection = .blog(TaggedManagedObjectID(blog))
+            if let subsection {
+                wpAssert(siteContent != nil, "failed to open blog subsection")
+                siteContent?.showSubsection(subsection, userInfo: userInfo)
+            }
+        }
+    }
 
-    var readerCoordinator: ReaderCoordinator?
+    func showMySitesTab() {
+        guard let blog = currentlyVisibleBlog() else { return }
+        sidebarViewModel.selection = .blog(TaggedManagedObjectID(blog))
+    }
 
-    var readerNavigationController: UINavigationController?
+    // MARK: RootViewPresenter (Reader)
 
     func showReaderTab() {
         sidebarViewModel.selection = .reader
@@ -304,27 +318,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
         fatalError()
     }
 
-    var mySitesCoordinator: MySitesCoordinator
-
-    func showMySitesTab() {
-        guard let blog = currentlyVisibleBlog() else {
-            // Do nothing.
-            return
-        }
-        sidebarViewModel.selection = .blog(TaggedManagedObjectID(blog))
-    }
-
-    func showPages(for blog: Blog) {
-        fatalError()
-    }
-
-    func showPosts(for blog: Blog) {
-        fatalError()
-    }
-
-    func showMedia(for blog: Blog) {
-        fatalError()
-    }
+    // MARK: Notifications
 
     func showNotificationsTab(completion: ((NotificationsViewController) -> Void)?) {
         sidebarViewModel.selection = .notifications
@@ -334,7 +328,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
         }
     }
 
-    var meViewController: MeViewController?
+    // MARK: Me
 
     func showMeScreen(completion: ((MeViewController) -> Void)?) {
         if isDisplayingTabBar {

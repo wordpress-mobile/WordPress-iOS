@@ -72,8 +72,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         [[self tabBar] setAccessibilityLabel:NSLocalizedString(@"Main Navigation", nil)];
         [WPStyleGuide configureTabBar:[self tabBar]];
 
-        self.meScenePresenter = [[MeScenePresenter alloc] init];
-
         [self setViewControllers:[self tabViewControllers]];
 
         [self setSelectedViewController:self.mySitesCoordinator.rootViewController];
@@ -265,19 +263,13 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 {
     if (!_mySitesCoordinator) {
         __weak __typeof(self) weakSelf = self;
-        
-        _mySitesCoordinator = [[MySitesCoordinator alloc] initWithMeScenePresenter: self.meScenePresenter
-                                                                 onBecomeActiveTab:^{
+
+        _mySitesCoordinator = [[MySitesCoordinator alloc] initOnBecomeActiveTab:^{
             [weakSelf showMySitesTab];
         }];
     }
-    
-    return _mySitesCoordinator;
-}
 
-- (ReaderCoordinator *)readerCoordinator
-{
-    return [[ReaderCoordinator alloc] initWithReaderNavigationController:self.readerNavigationController];
+    return _mySitesCoordinator;
 }
 
 #pragma mark - Navigation Helpers

@@ -80,7 +80,6 @@ extension MySitesRoute: Route {
 
 extension MySitesRoute: NavigationAction {
     func perform(_ values: [String: String], source: UIViewController? = nil, router: LinkRouter) {
-        let coordinator = RootViewCoordinator.sharedPresenter.mySitesCoordinator
         let campaign = AppBannerCampaign.getCampaign(from: values)
 
         guard let blog = blog(from: values) else {
@@ -105,33 +104,37 @@ extension MySitesRoute: NavigationAction {
             return
         }
 
+        let presenter = RootViewCoordinator.sharedPresenter
+
         switch self {
         case .pages:
-            coordinator.showPages(for: blog)
+            presenter.showBlogDetails(for: blog, then: .pages)
         case .posts:
-            coordinator.showPosts(for: blog)
+            presenter.showBlogDetails(for: blog, then: .posts)
         case .media:
             if campaign.flatMap(AppBannerCampaign.init) == .qrCodeMedia {
-                coordinator.showMediaPicker(for: blog)
+                presenter.showMediaPicker(for: blog)
             } else {
-                coordinator.showMedia(for: blog)
+                presenter.showBlogDetails(for: blog, then: .media)
             }
         case .comments:
-            coordinator.showComments(for: blog)
+            presenter.showBlogDetails(for: blog, then: .comments)
         case .sharing:
-            coordinator.showSharing(for: blog)
+            presenter.showBlogDetails(for: blog, then: .sharing)
         case .people:
-            coordinator.showPeople(for: blog)
+            presenter.showBlogDetails(for: blog, then: .people)
         case .plugins:
-            coordinator.showPlugins(for: blog)
+            presenter.showBlogDetails(for: blog, then: .plugins)
         case .managePlugins:
-            coordinator.showManagePlugins(for: blog)
+            presenter.showBlogDetails(for: blog, then: .plugins, userInfo: [
+                BlogDetailsViewController.userInfoShowManagemenetScreenKey(): true
+            ])
         case .siteMonitoring:
-            coordinator.showSiteMonitoring(for: blog, selectedTab: .metrics)
+            presenter.showSiteMonitoring(for: blog, selectedTab: .metrics)
         case .phpLogs:
-            coordinator.showSiteMonitoring(for: blog, selectedTab: .phpLogs)
+            presenter.showSiteMonitoring(for: blog, selectedTab: .phpLogs)
         case .webServerLogs:
-            coordinator.showSiteMonitoring(for: blog, selectedTab: .webServerLogs)
+            presenter.showSiteMonitoring(for: blog, selectedTab: .webServerLogs)
         }
     }
 }

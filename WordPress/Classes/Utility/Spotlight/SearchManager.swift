@@ -337,7 +337,7 @@ fileprivate extension SearchManager {
     // MARK: Me Tab Navigation
 
     func openMeTab() -> Bool {
-        RootViewCoordinator.sharedPresenter.showMeScene()
+        RootViewCoordinator.sharedPresenter.showMeScreen()
         return true
     }
 
@@ -406,9 +406,9 @@ fileprivate extension SearchManager {
     func openListView(for apost: AbstractPost) {
         closePreviewIfNeeded(for: apost)
         if let post = apost as? Post {
-            RootViewCoordinator.sharedPresenter.showPosts(for: post.blog)
+            RootViewCoordinator.sharedPresenter.showBlogDetails(for: post.blog, then: .posts)
         } else if let page = apost as? Page {
-            RootViewCoordinator.sharedPresenter.showPages(for: page.blog)
+            RootViewCoordinator.sharedPresenter.showBlogDetails(for: page.blog, then: .pages)
         }
     }
 

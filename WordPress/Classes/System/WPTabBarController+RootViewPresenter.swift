@@ -10,16 +10,8 @@ extension WPTabBarController: RootViewPresenter {
         return self
     }
 
-    var currentViewController: UIViewController? {
-        return viewControllers?[selectedIndex]
-    }
-
-    func showBlogDetails(for blog: Blog) {
-        mySitesCoordinator.showBlogDetails(for: blog)
-    }
-
-    func getMeScenePresenter() -> ScenePresenter {
-        meScenePresenter
+    func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection?, userInfo: [AnyHashable: Any]) {
+        mySitesCoordinator.showBlogDetails(for: blog, then: subsection, userInfo: userInfo)
     }
 
     func currentlyVisibleBlog() -> Blog? {
@@ -32,20 +24,6 @@ extension WPTabBarController: RootViewPresenter {
     func showNotificationsTab(completion: ((NotificationsViewController) -> Void)?) {
         self.selectedIndex = WPTab.notifications.rawValue
         completion?(self.notificationsViewController!)
-    }
-
-    // MARK: My Site
-
-    func showPages(for blog: Blog) {
-        mySitesCoordinator.showPages(for: blog)
-    }
-
-    func showPosts(for blog: Blog) {
-        mySitesCoordinator.showPosts(for: blog)
-    }
-
-    func showMedia(for blog: Blog) {
-        mySitesCoordinator.showMedia(for: blog)
     }
 
     // MARK: Me

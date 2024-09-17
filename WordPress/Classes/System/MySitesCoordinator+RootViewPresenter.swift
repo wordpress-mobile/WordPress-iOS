@@ -6,14 +6,6 @@ extension MySitesCoordinator: RootViewPresenter {
 
     // MARK: General
 
-    var currentViewController: UIViewController? {
-        return rootViewController
-    }
-
-    func getMeScenePresenter() -> ScenePresenter {
-        meScenePresenter
-    }
-
     func currentlySelectedScreen() -> String {
         return "Blog List"
     }
@@ -23,21 +15,6 @@ extension MySitesCoordinator: RootViewPresenter {
     }
 
     // MARK: Reader
-
-    var readerTabViewController: ReaderTabViewController? {
-        unsupportedFeatureFallback()
-        return nil
-    }
-
-    var readerCoordinator: ReaderCoordinator? {
-        unsupportedFeatureFallback()
-        return nil
-    }
-
-    var readerNavigationController: UINavigationController? {
-        unsupportedFeatureFallback()
-        return nil
-    }
 
     func showReaderTab() {
         unsupportedFeatureFallback()

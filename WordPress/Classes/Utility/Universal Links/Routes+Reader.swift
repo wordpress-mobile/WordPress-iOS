@@ -70,9 +70,7 @@ extension ReaderRoute: NavigationAction {
             RootViewCoordinator.sharedPresenter.showReaderTab() // Show static reader tab
             return
         }
-        guard let coordinator = RootViewCoordinator.sharedPresenter.readerCoordinator else {
-            return
-        }
+        let coordinator = ReaderCoordinator()
 
         switch self {
         case .root:

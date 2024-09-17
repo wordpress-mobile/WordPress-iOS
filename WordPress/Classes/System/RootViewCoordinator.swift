@@ -98,8 +98,7 @@ class RootViewCoordinator {
         case .normal:
             return WPTabBarController(staticScreens: false)
         case .simplified:
-            let meScenePresenter = MeScenePresenter()
-            return MySitesCoordinator(meScenePresenter: meScenePresenter, onBecomeActiveTab: {})
+            return MySitesCoordinator(onBecomeActiveTab: {})
         case .staticScreens:
             return StaticScreensTabBarWrapper()
         }

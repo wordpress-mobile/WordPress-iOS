@@ -268,7 +268,7 @@ extension PushNotificationsManager {
         WPAnalytics.track(.supportReceivedResponseFromSupport)
 
         if applicationState == .background {
-            RootViewCoordinator.sharedPresenter.showMeScene()
+            RootViewCoordinator.sharedPresenter.showMeScreen()
         }
 
         completionHandler?(.newData)

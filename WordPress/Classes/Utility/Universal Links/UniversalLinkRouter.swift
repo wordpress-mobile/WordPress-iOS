@@ -161,7 +161,7 @@ struct UniversalLinkRouter: LinkRouter {
         for matchedRoute in matches {
             if matchedRoute.jetpackPowered && !JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures() {
                 // Display overlay
-                RootViewCoordinator.sharedPresenter.mySitesCoordinator.displayJetpackOverlayForDisabledEntryPoint()
+                RootViewCoordinator.sharedPresenter.showJetpackOverlayForDisabledEntryPoint()
 
                 // Track incorrect access
                 let properties = ["calling_function": "deep_link", TracksPropertyKeys.url: url.absoluteString]

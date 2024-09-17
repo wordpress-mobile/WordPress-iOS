@@ -1,17 +1,6 @@
 import UIKit
 
-@objc
-class ReaderCoordinator: NSObject {
-    let readerNavigationController: UINavigationController
-
-    var failureBlock: (() -> Void)? = nil
-
-    @objc
-    init(readerNavigationController: UINavigationController) {
-        self.readerNavigationController = readerNavigationController
-        super.init()
-    }
-
+struct ReaderCoordinator {
     func showReaderTab() {
         RootViewCoordinator.sharedPresenter.showReaderTab()
     }
@@ -47,7 +36,6 @@ class ReaderCoordinator: NSObject {
     func showList(named listName: String, forUser user: String) {
         let context = ContextManager.sharedInstance().mainContext
         guard let topic = ReaderListTopic.named(listName, forUser: user, in: context) else {
-            failureBlock?()
             return
         }
 
@@ -103,13 +91,6 @@ class ReaderCoordinator: NSObject {
     }
 
     private func showPost(in detailViewController: ReaderDetailViewController) {
-
-        let postLoadFailureBlock = { [weak self, failureBlock] in
-            self?.readerNavigationController.popToRootViewController(animated: false)
-            failureBlock?()
-        }
-
-        detailViewController.postLoadFailureBlock = postLoadFailureBlock
         RootViewCoordinator.sharedPresenter.navigateToReader(detailViewController)
     }
 
