@@ -24,10 +24,6 @@ extension MySitesCoordinator: RootViewPresenter {
         unsupportedFeatureFallback()
     }
 
-    func navigateToReaderSearch() {
-        unsupportedFeatureFallback()
-    }
-
     func switchToTopic(where predicate: (ReaderAbstractTopic) -> Bool) {
         unsupportedFeatureFallback()
     }

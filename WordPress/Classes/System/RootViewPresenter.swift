@@ -18,7 +18,6 @@ protocol RootViewPresenter: AnyObject {
     func showReaderTab()
     func showReader(path: ReaderNavigationPath)
     func showReaderTab(forPost: NSNumber, onBlog: NSNumber)
-    func navigateToReaderSearch()
     func switchToTopic(where predicate: (ReaderAbstractTopic) -> Bool)
     func switchToFollowedSites()
     func navigateToReaderSite(_ topic: ReaderSiteTopic)

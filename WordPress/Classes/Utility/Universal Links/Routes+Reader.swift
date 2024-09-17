@@ -79,7 +79,7 @@ extension ReaderRoute: NavigationAction {
         case .discover:
             presenter.showReader(path: .discover)
         case .search:
-            coordinator.showSearch()
+            presenter.showReader(path: .search)
         case .a8c:
             coordinator.showA8C()
         case .p2:

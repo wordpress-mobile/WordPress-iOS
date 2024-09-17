@@ -296,10 +296,6 @@ final class SplitViewRootPresenter: RootViewPresenter {
         fatalError()
     }
 
-    func navigateToReaderSearch() {
-        fatalError()
-    }
-
     func switchToTopic(where predicate: (ReaderAbstractTopic) -> Bool) {
         fatalError()
     }

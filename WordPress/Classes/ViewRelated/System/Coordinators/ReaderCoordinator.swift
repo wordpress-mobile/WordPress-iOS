@@ -5,10 +5,6 @@ struct ReaderCoordinator {
         RootViewCoordinator.sharedPresenter.showReaderTab()
     }
 
-    func showSearch() {
-        RootViewCoordinator.sharedPresenter.navigateToReaderSearch()
-    }
-
     func showA8C() {
         RootViewCoordinator.sharedPresenter.switchToTopic(where: { topic in
             return (topic as? ReaderTeamTopic)?.slug == ReaderTeamTopic.a8cSlug

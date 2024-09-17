@@ -26,10 +26,7 @@ extension WPTabBarController {
                 }
             },
             searchNavigationFactory: { [weak self] in
-                guard let self else {
-                    return
-                }
-                self.navigateToReaderSearch()
+                self?.showReader(path: .search)
             },
             tabItemsStore: ReaderTabItemsStore(),
             settingsPresenter: ReaderManageScenePresenter()
@@ -51,13 +48,9 @@ extension WPTabBarController {
             readerTabViewModel.switchToTab(where: ReaderHelpers.topicIsDiscover)
         case .likes:
             readerTabViewModel.switchToTab(where: ReaderHelpers.topicIsLiked)
+        case .search:
+            showReaderDetails(ReaderSearchViewController.controller())
         }
-    }
-
-    /// reader navigation methods
-    func navigateToReaderSearch() {
-        let searchController = ReaderSearchViewController.controller()
-        navigateToReader(searchController)
     }
 
     func navigateToReaderSite(_ topic: ReaderSiteTopic) {
@@ -70,13 +63,16 @@ extension WPTabBarController {
         navigateToReader(contentController)
     }
 
-    func navigateToReader(_ pushControlller: UIViewController? = nil) {
+    func navigateToReader(_ viewController: UIViewController? = nil) {
         showReaderTab()
-        readerNavigationController?.popToRootViewController(animated: false)
-        guard let controller = pushControlller else {
-            return
+        if let viewController {
+            showReaderDetails(viewController)
         }
-        readerNavigationController?.pushViewController(controller, animated: true)
+    }
+
+    private func showReaderDetails(_ viewController: UIViewController) {
+        readerNavigationController?.popToRootViewController(animated: false)
+        readerNavigationController?.pushViewController(viewController, animated: true)
     }
 
     func switchToFollowedSites() {

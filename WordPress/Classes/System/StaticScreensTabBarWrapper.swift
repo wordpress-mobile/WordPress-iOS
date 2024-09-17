@@ -41,10 +41,6 @@ class StaticScreensTabBarWrapper: RootViewPresenter {
         // Do nothing
     }
 
-    func navigateToReaderSearch() {
-        // Do nothing
-    }
-
     func switchToTopic(where predicate: (ReaderAbstractTopic) -> Bool) {
         // Do nothing
     }

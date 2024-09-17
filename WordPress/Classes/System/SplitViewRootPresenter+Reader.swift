@@ -28,6 +28,8 @@ class ReaderSplitViewContent: SplitViewDisplayable {
             viewModel.selection = .main(.discover)
         case .likes:
             viewModel.selection = .main(.likes)
+        case .search:
+            viewModel.selection = .main(.search)
         }
     }
 }
