@@ -6,9 +6,10 @@ class ReaderSplitViewContent: SplitViewDisplayable {
     let supplementary: UINavigationController
     var secondary: UINavigationController
 
+    private let viewModel = ReaderSidebarViewModel()
+
     init() {
         secondary = UINavigationController()
-        let viewModel = ReaderSidebarViewModel()
         sidebar = ReaderSidebarViewController(viewModel: viewModel)
         sidebar.navigationItem.largeTitleDisplayMode = .automatic
         supplementary = UINavigationController(rootViewController: sidebar)
@@ -18,6 +19,13 @@ class ReaderSplitViewContent: SplitViewDisplayable {
     func displayed(in splitVC: UISplitViewController) {
         if secondary.viewControllers.isEmpty {
             sidebar.showInitialSelection()
+        }
+    }
+
+    func navigate(to path: ReaderNavigationPath) {
+        switch path {
+        case .discover:
+            viewModel.selection = .main(.discover)
         }
     }
 }

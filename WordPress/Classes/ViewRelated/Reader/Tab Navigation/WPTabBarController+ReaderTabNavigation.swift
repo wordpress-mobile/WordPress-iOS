@@ -44,6 +44,13 @@ extension WPTabBarController {
 
 // MARK: - Reader Navigation
 extension WPTabBarController {
+    func showReader(path: ReaderNavigationPath) {
+        navigateToReader()
+        switch path {
+        case .discover:
+            readerTabViewModel.switchToTab(where: ReaderHelpers.topicIsDiscover)
+        }
+    }
 
     /// reader navigation methods
     func navigateToReaderSearch() {

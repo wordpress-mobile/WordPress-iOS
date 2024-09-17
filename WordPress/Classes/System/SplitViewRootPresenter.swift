@@ -282,11 +282,17 @@ final class SplitViewRootPresenter: RootViewPresenter {
         sidebarViewModel.selection = .reader
     }
 
-    func showReaderTab(forPost: NSNumber, onBlog: NSNumber) {
-        fatalError()
+    func showReader(path: ReaderNavigationPath) {
+        if splitVC.isCollapsed {
+            tabBarViewController.showReader(path: path)
+        } else {
+            sidebarViewModel.selection = .reader
+            wpAssert(readerContent != nil)
+            readerContent?.navigate(to: path)
+        }
     }
 
-    func switchToDiscover() {
+    func showReaderTab(forPost: NSNumber, onBlog: NSNumber) {
         fatalError()
     }
 

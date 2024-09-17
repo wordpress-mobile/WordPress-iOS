@@ -20,7 +20,7 @@ extension MySitesCoordinator: RootViewPresenter {
         unsupportedFeatureFallback()
     }
 
-    func switchToDiscover() {
+    func showReader(path: ReaderNavigationPath) {
         unsupportedFeatureFallback()
     }
 

@@ -33,11 +33,11 @@ class StaticScreensTabBarWrapper: RootViewPresenter {
         tabBarController.showReaderTab()
     }
 
-    func showReaderTab(forPost: NSNumber, onBlog: NSNumber) {
+    func showReader(path: ReaderNavigationPath) {
         // Do nothing
     }
 
-    func switchToDiscover() {
+    func showReaderTab(forPost: NSNumber, onBlog: NSNumber) {
         // Do nothing
     }
 

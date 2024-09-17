@@ -76,7 +76,7 @@ extension ReaderRoute: NavigationAction {
         case .root:
             coordinator.showReaderTab()
         case .discover:
-            coordinator.showDiscover()
+            coordinator.showReader(path: .discover)
         case .search:
             coordinator.showSearch()
         case .a8c:

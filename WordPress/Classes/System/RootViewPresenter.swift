@@ -16,8 +16,8 @@ protocol RootViewPresenter: AnyObject {
     // MARK: Reader
 
     func showReaderTab()
+    func showReader(path: ReaderNavigationPath)
     func showReaderTab(forPost: NSNumber, onBlog: NSNumber)
-    func switchToDiscover()
     func navigateToReaderSearch()
     func switchToTopic(where predicate: (ReaderAbstractTopic) -> Bool)
     func switchToMyLikes()

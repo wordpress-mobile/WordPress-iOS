@@ -5,8 +5,8 @@ struct ReaderCoordinator {
         RootViewCoordinator.sharedPresenter.showReaderTab()
     }
 
-    func showDiscover() {
-        RootViewCoordinator.sharedPresenter.switchToDiscover()
+    func showReader(path: ReaderNavigationPath) {
+        RootViewCoordinator.sharedPresenter.showReader(path: path)
     }
 
     func showSearch() {

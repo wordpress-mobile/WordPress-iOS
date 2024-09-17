@@ -524,7 +524,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
             }
 
             self.navigationController?.popToRootViewController(animated: false)
-            RootViewCoordinator.sharedPresenter.switchToDiscover()
+            RootViewCoordinator.sharedPresenter.showReader(path: .discover)
 
             Notice(title: NSLocalizedString("Comment to start making connections.", comment: "Hint for users to grow their audience by commenting on other blogs.")).post()
         }
