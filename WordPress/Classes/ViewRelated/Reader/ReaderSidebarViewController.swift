@@ -132,12 +132,16 @@ final class ReaderSidebarViewController: UIHostingController<AnyView> {
         case .subscriptions:
             viewModel.selection = .allSubscriptions
         case let .post(postID, siteID, isFeed):
+            viewModel.selection = nil
             showSecondary(ReaderDetailViewController.controllerWithPostID(NSNumber(value: postID), siteID: NSNumber(value: siteID), isFeed: isFeed))
         case let .postURL(url):
+            viewModel.selection = nil
             showSecondary(ReaderDetailViewController.controllerWithPostURL(url))
         case let .topic(topic):
+            viewModel.selection = nil
             showSecondary(ReaderStreamViewController.controllerWithTopic(topic))
         case let .tag(slug):
+            viewModel.selection = nil
             showSecondary(ReaderStreamViewController.controllerWithTagSlug(slug))
         }
     }

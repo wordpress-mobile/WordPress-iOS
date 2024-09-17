@@ -24,10 +24,6 @@ extension MySitesCoordinator: RootViewPresenter {
         unsupportedFeatureFallback()
     }
 
-    func switchToTopic(where predicate: (ReaderAbstractTopic) -> Bool) {
-        unsupportedFeatureFallback()
-    }
-
     // MARK: My Site
 
     func showMySitesTab() {

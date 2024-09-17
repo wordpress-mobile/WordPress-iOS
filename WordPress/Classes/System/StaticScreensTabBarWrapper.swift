@@ -37,10 +37,6 @@ class StaticScreensTabBarWrapper: RootViewPresenter {
         // Do nothing
     }
 
-    func switchToTopic(where predicate: (ReaderAbstractTopic) -> Bool) {
-        // Do nothing
-    }
-
     // MARK: My Site
 
     func showMySitesTab() {

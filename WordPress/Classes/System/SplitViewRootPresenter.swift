@@ -292,10 +292,6 @@ final class SplitViewRootPresenter: RootViewPresenter {
         }
     }
 
-    func switchToTopic(where predicate: (ReaderAbstractTopic) -> Bool) {
-        fatalError()
-    }
-
     // MARK: Notifications
 
     func showNotificationsTab(completion: ((NotificationsViewController) -> Void)?) {

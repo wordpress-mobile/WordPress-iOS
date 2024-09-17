@@ -17,7 +17,6 @@ protocol RootViewPresenter: AnyObject {
 
     func showReaderTab()
     func showReader(path: ReaderNavigationPath)
-    func switchToTopic(where predicate: (ReaderAbstractTopic) -> Bool)
 
     // MARK: Notifications
 

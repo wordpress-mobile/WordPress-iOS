@@ -74,10 +74,4 @@ extension WPTabBarController {
         readerNavigationController?.popToRootViewController(animated: false)
         readerNavigationController?.pushViewController(viewController, animated: true)
     }
-
-    /// switches to a menu item topic that satisfies the given predicate with a topic value
-    func switchToTopic(where predicate: (ReaderAbstractTopic) -> Bool) {
-        navigateToReader()
-        readerTabViewModel.switchToTab(where: predicate)
-    }
 }

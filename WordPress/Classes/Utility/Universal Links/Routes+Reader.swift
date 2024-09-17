@@ -81,17 +81,16 @@ extension ReaderRoute: NavigationAction {
         case .search:
             presenter.showReader(path: .search)
         case .a8c:
-            coordinator.showA8C()
+            presenter.showReaderTeam(named: ReaderTeamTopic.a8cSlug)
         case .p2:
-            coordinator.showP2()
+            presenter.showReaderTeam(named: ReaderTeamTopic.p2Slug)
         case .likes:
             presenter.showReader(path: .likes)
         case .manageFollowing:
             presenter.showReader(path: .subscriptions)
         case .list:
-            if let username = values["username"],
-                let listName = values["list_name"] {
-                coordinator.showList(named: listName, forUser: username)
+            if let username = values["username"], let list = values["list_name"] {
+                presenter.showReaderList(named: list, forUser: username)
             }
         case .tag:
             if let tagName = values["tag_name"] {
@@ -166,7 +165,26 @@ extension ReaderRoute: NavigationAction {
     }
 }
 
+// MARK: - RootViewPresenter (Extensions)
+
 private extension RootViewPresenter {
+    func showReaderTeam(named teamName: String) {
+        let topic = ContextManager.shared.mainContext.firstObject(
+            ofType: ReaderTeamTopic.self,
+            matching: NSPredicate(format: "slug = %@", teamName)
+        )
+        if let topic {
+            showReader(path: .topic(topic))
+        }
+    }
+
+    func showReaderList(named listName: String, forUser user: String) {
+        let context = ContextManager.sharedInstance().mainContext
+        if let topic = ReaderListTopic.named(listName, forUser: user, in: context) {
+            showReader(path: .topic(topic))
+        }
+    }
+
     /// - warning: This method performs the navigation asyncronously after
     /// fetching the information about the stream from the backend.
     func showReaderStream(with siteID: Int, isFeed: Bool) {
