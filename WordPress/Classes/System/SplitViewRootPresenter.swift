@@ -280,7 +280,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
     func showReader(path: ReaderNavigationPath?) {
         if splitVC.isCollapsed {
-            tabBarViewController.showReader(path: path)
+            tabBarVC.showReader(path: path)
         } else {
             sidebarViewModel.selection = .reader
             if let path {
@@ -330,6 +330,24 @@ extension SplitViewRootPresenter: UISplitViewControllerDelegate {
     func splitViewController(_ svc: UISplitViewController, willHide column: UISplitViewController.Column) {
         if column == .primary {
             sitePickerPopoverVC?.presentingViewController?.dismiss(animated: true)
+        }
+    }
+
+    func splitViewControllerDidCollapse(_ svc: UISplitViewController) {
+        switch sidebarViewModel.selection {
+        case .blog(let objectID):
+            guard let blog = try? ContextManager.shared.mainContext.existingObject(with: objectID) else {
+                return
+            }
+            if let navigationVC = svc.viewController(for: .supplementary) as? UINavigationController,
+               let menuVC = navigationVC.viewControllers.first as? SiteMenuViewController,
+               let subsection = menuVC.selectedSubsection, subsection != .home {
+                tabBarVC.showBlogDetails(for: blog, then: subsection, userInfo: [:])
+            } else {
+                tabBarVC.showBlogDetails(for: blog)
+            }
+        default:
+            break
         }
     }
 }

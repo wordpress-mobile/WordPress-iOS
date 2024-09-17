@@ -11,6 +11,12 @@ final class SiteMenuViewController: UIViewController {
 
     weak var delegate: SiteMenuViewControllerDelegate?
 
+    /// - warning: Temporary code. Avoid using it!
+    var selectedSubsection: BlogDetailsSubsection? {
+        let subsection = blogDetailsVC.selectedSubsection
+        return subsection.rawValue == NSNotFound ? nil : subsection
+    }
+
     init(blog: Blog) {
         self.blog = blog
         super.init(nibName: nil, bundle: nil)

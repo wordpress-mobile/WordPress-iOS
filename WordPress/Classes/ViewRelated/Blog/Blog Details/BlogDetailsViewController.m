@@ -195,7 +195,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
         _accessibilityHint = accessibilityHint;
         _showsSelectionState = YES;
         _showsDisclosureIndicator = YES;
+        _subsection = NSNotFound;
     }
+    return self;
+}
+
+- (BlogDetailsRow *)withSubsection:(BlogDetailsSubsection)subsection {
+    _subsection = subsection;
     return self;
 }
 
@@ -640,6 +646,16 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     return _siteIconPickerPresenter;
 }
 
+- (BlogDetailsSubsection)selectedSubsection {
+    NSIndexPath *indexPath = self.tableView.indexPathForSelectedRow;
+    if (!indexPath) {
+        return NSNotFound;
+    }
+    BlogDetailsSection *section = [self.tableSections objectAtIndex:indexPath.section];
+    BlogDetailsRow *row = [section.rows objectAtIndex:indexPath.row];
+    return row.subsection;
+}
+
 #pragma mark - iOS 10 bottom padding
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)sectionNum {
@@ -684,59 +700,59 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
 - (BlogDetailsRow *)postsRow
 {
     __weak __typeof(self) weakSelf = self;
-    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Posts", @"Noun. Title. Links to the blog's Posts screen.")
-                                        accessibilityIdentifier:@"Blog Post Row"
-                                                          image:[[UIImage imageNamed:@"site-menu-posts"] imageFlippedForRightToLeftLayoutDirection]
-                                                       callback:^{
-        [weakSelf showPostListFromSource:BlogDetailsNavigationSourceRow];
-    }];
+    BlogDetailsRow *row = [[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Posts", @"Noun. Title. Links to the blog's Posts screen.")
+                                         accessibilityIdentifier:@"Blog Post Row"
+                                                           image:[[UIImage imageNamed:@"site-menu-posts"] imageFlippedForRightToLeftLayoutDirection]
+                                                        callback:^{
+         [weakSelf showPostListFromSource:BlogDetailsNavigationSourceRow];
+     }] withSubsection:BlogDetailsSubsectionPosts];
     return row;
 }
 
 - (BlogDetailsRow *)pagesRow
 {
     __weak __typeof(self) weakSelf = self;
-    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Pages", @"Noun. Title. Links to the blog's Pages screen.")
-                                        accessibilityIdentifier:@"Site Pages Row"
-                                                          image:[UIImage imageNamed:@"site-menu-pages"]
-                                                       callback:^{
-        [weakSelf showPageListFromSource:BlogDetailsNavigationSourceRow];
-    }];
+    BlogDetailsRow *row = [[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Pages", @"Noun. Title. Links to the blog's Pages screen.")
+                                         accessibilityIdentifier:@"Site Pages Row"
+                                                           image:[UIImage imageNamed:@"site-menu-pages"]
+                                                        callback:^{
+         [weakSelf showPageListFromSource:BlogDetailsNavigationSourceRow];
+    }] withSubsection:BlogDetailsSubsectionPages];
     return row;
 }
 
 - (BlogDetailsRow *)mediaRow
 {
     __weak __typeof(self) weakSelf = self;
-    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Media", @"Noun. Title. Links to the blog's Media library.")
-                                        accessibilityIdentifier:@"Media Row"
-                                                          image:[UIImage imageNamed:@"site-menu-media"]
-                                                       callback:^{
-        [weakSelf showMediaLibraryFromSource:BlogDetailsNavigationSourceRow];
-    }];
+    BlogDetailsRow *row = [[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Media", @"Noun. Title. Links to the blog's Media library.")
+                                         accessibilityIdentifier:@"Media Row"
+                                                           image:[UIImage imageNamed:@"site-menu-media"]
+                                                        callback:^{
+         [weakSelf showMediaLibraryFromSource:BlogDetailsNavigationSourceRow];
+     }] withSubsection:BlogDetailsSubsectionMedia];
     return row;
 }
 
 - (BlogDetailsRow *)commentsRow
 {
     __weak __typeof(self) weakSelf = self;
-    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Comments", @"Noun. Title. Links to the blog's Comments screen.")
-                                                          image:[[UIImage imageNamed:@"site-menu-comments"] imageFlippedForRightToLeftLayoutDirection]
-                                                       callback:^{
-        [weakSelf showCommentsFromSource:BlogDetailsNavigationSourceRow];
-    }];
+    BlogDetailsRow *row = [[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Comments", @"Noun. Title. Links to the blog's Comments screen.")
+                                                           image:[[UIImage imageNamed:@"site-menu-comments"] imageFlippedForRightToLeftLayoutDirection]
+                                                        callback:^{
+         [weakSelf showCommentsFromSource:BlogDetailsNavigationSourceRow];
+     }] withSubsection:BlogDetailsSubsectionComments];
     return row;
 }
 
 - (BlogDetailsRow *)statsRow
 {
     __weak __typeof(self) weakSelf = self;
-    BlogDetailsRow *statsRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Stats", @"Noun. Abbv. of Statistics. Links to a blog's Stats screen.")
-                                             accessibilityIdentifier:@"Stats Row"
-                                                               image:[UIImage imageNamed:@"site-menu-stats"]
-                                                            callback:^{
-        [weakSelf showStatsFromSource:BlogDetailsNavigationSourceRow];
-    }];
+    BlogDetailsRow *statsRow = [[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Stats", @"Noun. Abbv. of Statistics. Links to a blog's Stats screen.")
+                                              accessibilityIdentifier:@"Stats Row"
+                                                                image:[UIImage imageNamed:@"site-menu-stats"]
+                                                             callback:^{
+         [weakSelf showStatsFromSource:BlogDetailsNavigationSourceRow];
+     }] withSubsection:BlogDetailsSubsectionStats];
     return statsRow;
 }
 
@@ -1170,13 +1186,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
     
-    [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Home", @"Noun. Links to a blog's dashboard screen.")
+    [rows addObject:[[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Home", @"Noun. Links to a blog's dashboard screen.")
                                   accessibilityIdentifier:@"Home Row"
                                                     image:[UIImage imageNamed:@"site-menu-home"]
                                                  callback:^{
                                                     [weakSelf showDashboard];
-                                                 }]];
-    
+    }] withSubsection: BlogDetailsSubsectionHome]];
+
     return [[BlogDetailsSection alloc] initWithTitle:nil andRows:rows category:BlogDetailsSectionCategoryHome];
 }
 
