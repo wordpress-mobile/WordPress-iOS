@@ -57,8 +57,8 @@ final class SplitViewRootPresenter: RootViewPresenter {
             self?.sidebarViewModel.selection = .blog(TaggedManagedObjectID(site))
         }.store(in: &cancellables)
 
+        // -warning: List occasionally sets the selection to `nil` when switching items.
         sidebarViewModel.$selection.compactMap { $0 }
-            .removeDuplicates()
             .sink { [weak self] in self?.configure(for: $0) }
             .store(in: &cancellables)
 
@@ -123,6 +123,8 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
         display(content: content)
 
+        // The `main.async` call fixed an issue where sometimes the sidebar doesn't
+        // update the displayed selection in the list after switching to a new item
         DispatchQueue.main.async {
             self.splitVC.hide(.primary)
         }
