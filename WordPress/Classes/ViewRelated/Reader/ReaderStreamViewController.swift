@@ -830,10 +830,6 @@ import AutomatticTracks
         navigationController?.pushViewController(controller, animated: animated)
     }
 
-    private func showFollowing() {
-        RootViewCoordinator.sharedPresenter.switchToFollowedSites()
-    }
-
     // MARK: - Blocking
 
     /// Update the post card when a site is blocked from post details.
@@ -1963,7 +1959,7 @@ extension ReaderStreamViewController: NoResultsViewControllerDelegate {
         }
 
         if ReaderHelpers.topicIsLiked(topic) {
-            showFollowing()
+            RootViewCoordinator.sharedPresenter.showReader(path: .subscriptions)
         }
     }
 }

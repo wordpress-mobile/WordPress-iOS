@@ -16,51 +16,11 @@ extension MySitesCoordinator: RootViewPresenter {
 
     // MARK: Reader
 
-    func showReaderTab() {
-        unsupportedFeatureFallback()
-    }
-
-    func switchToDiscover() {
-        unsupportedFeatureFallback()
-    }
-
-    func navigateToReaderSearch() {
-        unsupportedFeatureFallback()
-    }
-
-    func switchToTopic(where predicate: (ReaderAbstractTopic) -> Bool) {
-        unsupportedFeatureFallback()
-    }
-
-    func switchToMyLikes() {
-        unsupportedFeatureFallback()
-    }
-
-    func switchToFollowedSites() {
-        unsupportedFeatureFallback()
-    }
-
-    func navigateToReaderSite(_ topic: ReaderSiteTopic) {
-        unsupportedFeatureFallback()
-    }
-
-    func navigateToReaderTag(_ tagSlug: String) {
-        unsupportedFeatureFallback()
-    }
-
-    func navigateToReader(_ pushControlller: UIViewController?) {
-        unsupportedFeatureFallback()
-    }
-
-    func showReaderTab(forPost: NSNumber, onBlog: NSNumber) {
+    func showReader(path: ReaderNavigationPath?) {
         unsupportedFeatureFallback()
     }
 
     // MARK: My Site
-
-    var mySitesCoordinator: MySitesCoordinator {
-        return self
-    }
 
     func showMySitesTab() {
         // Do nothing
@@ -77,13 +37,13 @@ extension MySitesCoordinator: RootViewPresenter {
 
     var meViewController: MeViewController? {
         /// On iPhone, the My Sites root view controller is a navigation controller, and Me is pushed onto the stack
-        if let navigationController = mySitesCoordinator.rootViewController as? UINavigationController,
+        if let navigationController = rootViewController as? UINavigationController,
            let controller = navigationController.viewControllers.compactMap({ $0 as? MeViewController }).first {
                return controller
            }
 
         /// On iPad, the My Sites root view controller is a split view controller, and Me is shown in the detail view controller
-        if let splitViewController = mySitesCoordinator.rootViewController as? WPSplitViewController,
+        if let splitViewController = rootViewController as? WPSplitViewController,
            let detailNavigationController = splitViewController.viewControllers.last as? UINavigationController,
            let controller = detailNavigationController.viewControllers.compactMap({ $0 as? MeViewController }).first {
             return controller
@@ -95,10 +55,10 @@ extension MySitesCoordinator: RootViewPresenter {
     func showMeScreen(completion: ((MeViewController) -> Void)?) {
         guard let meViewController else {
             /// In order to show the Me screen, the My Sites screen must be visible (see: MySitesCoordinator.showMe)
-            if let navigationController = mySitesCoordinator.rootViewController as? UINavigationController {
+            if let navigationController = rootViewController as? UINavigationController {
                 navigationController.popToRootViewController(animated: false)
             }
-            if let viewController = mySitesCoordinator.showMe() {
+            if let viewController = showMe() {
                 completion?(viewController)
             }
             return

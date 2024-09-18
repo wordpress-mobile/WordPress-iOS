@@ -278,47 +278,19 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
     // MARK: RootViewPresenter (Reader)
 
-    func showReaderTab() {
-        sidebarViewModel.selection = .reader
+    func showReader(path: ReaderNavigationPath?) {
+        if splitVC.isCollapsed {
+            tabBarViewController.showReader(path: path)
+        } else {
+            sidebarViewModel.selection = .reader
+            if let path {
+                wpAssert(readerContent != nil)
+                readerContent?.navigate(to: path)
+            }
+        }
     }
 
-    func showReaderTab(forPost: NSNumber, onBlog: NSNumber) {
-        fatalError()
-    }
-
-    func switchToDiscover() {
-        fatalError()
-    }
-
-    func navigateToReaderSearch() {
-        fatalError()
-    }
-
-    func switchToTopic(where predicate: (ReaderAbstractTopic) -> Bool) {
-        fatalError()
-    }
-
-    func switchToMyLikes() {
-        fatalError()
-    }
-
-    func switchToFollowedSites() {
-        fatalError()
-    }
-
-    func navigateToReaderSite(_ topic: ReaderSiteTopic) {
-        fatalError()
-    }
-
-    func navigateToReaderTag(_ tagSlug: String) {
-        fatalError()
-    }
-
-    func navigateToReader(_ pushControlller: UIViewController?) {
-        fatalError()
-    }
-
-    // MARK: Notifications
+    // MARK: RootViewPresenter (Notifications)
 
     func showNotificationsTab(completion: ((NotificationsViewController) -> Void)?) {
         sidebarViewModel.selection = .notifications
@@ -328,7 +300,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
         }
     }
 
-    // MARK: Me
+    // MARK: RootViewPresenter (Me)
 
     func showMeScreen(completion: ((MeViewController) -> Void)?) {
         if isDisplayingTabBar {

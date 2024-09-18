@@ -20,4 +20,8 @@ class ReaderSplitViewContent: SplitViewDisplayable {
             sidebar.showInitialSelection()
         }
     }
+
+    func navigate(to path: ReaderNavigationPath) {
+        sidebar.navigate(to: path)
+    }
 }

@@ -73,8 +73,7 @@ import AutomatticTracks
             let postId = params.intValue(of: "postId") else {
             return false
         }
-
-        RootViewCoordinator.sharedPresenter.showReaderTab(forPost: NSNumber(value: postId), onBlog: NSNumber(value: blogId))
+        RootViewCoordinator.sharedPresenter.showReader(path: .post(postID: postId, siteID: blogId))
 
         return true
     }

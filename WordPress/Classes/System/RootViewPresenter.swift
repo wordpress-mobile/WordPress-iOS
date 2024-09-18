@@ -1,36 +1,16 @@
 import Foundation
 
 protocol RootViewPresenter: AnyObject {
-
-    // MARK: General
-
     var rootViewController: UIViewController { get }
     func currentlySelectedScreen() -> String
 
-    // MARK: Sites
-
     func currentlyVisibleBlog() -> Blog?
-    func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection?, userInfo: [AnyHashable: Any])
     func showMySitesTab()
+    func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection?, userInfo: [AnyHashable: Any])
 
-    // MARK: Reader
-
-    func showReaderTab()
-    func showReaderTab(forPost: NSNumber, onBlog: NSNumber)
-    func switchToDiscover()
-    func navigateToReaderSearch()
-    func switchToTopic(where predicate: (ReaderAbstractTopic) -> Bool)
-    func switchToMyLikes()
-    func switchToFollowedSites()
-    func navigateToReaderSite(_ topic: ReaderSiteTopic)
-    func navigateToReaderTag(_ tagSlug: String)
-    func navigateToReader(_ pushControlller: UIViewController?)
-
-    // MARK: Notifications
+    func showReader(path: ReaderNavigationPath?)
 
     func showNotificationsTab(completion: ((NotificationsViewController) -> Void)?)
-
-    // MARK: Me
 
     func showMeScreen(completion: ((MeViewController) -> Void)?)
 }
@@ -47,18 +27,6 @@ extension RootViewPresenter {
 
     func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection) {
         showBlogDetails(for: blog, then: subsection, userInfo: [:])
-    }
-
-    func showMediaPicker(for blog: Blog) {
-        showBlogDetails(for: blog, then: .media, userInfo: [
-            BlogDetailsViewController.userInfoShowPickerKey(): true
-        ])
-    }
-
-    func showSiteMonitoring(for blog: Blog, selectedTab: SiteMonitoringTab) {
-        showBlogDetails(for: blog, then: .siteMonitoring, userInfo: [
-            BlogDetailsViewController.userInfoSiteMonitoringTabKey(): selectedTab.rawValue
-        ])
     }
 
     func showStats(for blog: Blog, source: BlogDetailsNavigationSource? = nil, tab: StatsTabType? = nil, unit: StatsPeriodUnit? = nil, date: Date? = nil) {
@@ -79,6 +47,12 @@ extension RootViewPresenter {
             userInfo[BlogDetailsViewController.userInfoSourceKey()] = NSNumber(value: source.rawValue)
         }
         showBlogDetails(for: blog, then: .stats)
+    }
+
+    // MARK: Reader
+
+    func showReader() {
+        showReader(path: nil)
     }
 
     // MARK: Notifications

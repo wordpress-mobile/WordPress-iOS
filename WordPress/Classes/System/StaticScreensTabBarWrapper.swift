@@ -29,51 +29,11 @@ class StaticScreensTabBarWrapper: RootViewPresenter {
 
     // MARK: Reader
 
-    func showReaderTab() {
-        tabBarController.showReaderTab()
-    }
-
-    func showReaderTab(forPost: NSNumber, onBlog: NSNumber) {
-        // Do nothing
-    }
-
-    func switchToDiscover() {
-        // Do nothing
-    }
-
-    func navigateToReaderSearch() {
-        // Do nothing
-    }
-
-    func switchToTopic(where predicate: (ReaderAbstractTopic) -> Bool) {
-        // Do nothing
-    }
-
-    func switchToMyLikes() {
-        // Do nothing
-    }
-
-    func switchToFollowedSites() {
-        // Do nothing
-    }
-
-    func navigateToReaderSite(_ topic: ReaderSiteTopic) {
-        // Do nothing
-    }
-
-    func navigateToReaderTag(_ tagSlug: String) {
-        // Do nothing
-    }
-
-    func navigateToReader(_ pushControlller: UIViewController?) {
-        // Do nothing
+    func showReader(path: ReaderNavigationPath?) {
+        tabBarController.showReader()
     }
 
     // MARK: My Site
-
-    var mySitesCoordinator: MySitesCoordinator {
-        return tabBarController.mySitesCoordinator
-    }
 
     func showMySitesTab() {
         tabBarController.showMySitesTab()

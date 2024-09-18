@@ -139,6 +139,20 @@ extension MySitesRoute: NavigationAction {
     }
 }
 
+private extension RootViewPresenter {
+    func showMediaPicker(for blog: Blog) {
+        showBlogDetails(for: blog, then: .media, userInfo: [
+            BlogDetailsViewController.userInfoShowPickerKey(): true
+        ])
+    }
+
+    func showSiteMonitoring(for blog: Blog, selectedTab: SiteMonitoringTab) {
+        showBlogDetails(for: blog, then: .siteMonitoring, userInfo: [
+            BlogDetailsViewController.userInfoSiteMonitoringTabKey(): selectedTab.rawValue
+        ])
+    }
+}
+
 private enum Strings {
     static let siteNotFound = NSLocalizedString(
         "universalLink.qrCodeMedia.error.title",

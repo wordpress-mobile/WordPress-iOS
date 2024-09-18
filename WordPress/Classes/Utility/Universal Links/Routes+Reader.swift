@@ -67,59 +67,55 @@ extension ReaderRoute: Route {
 extension ReaderRoute: NavigationAction {
     func perform(_ values: [String: String], source: UIViewController? = nil, router: LinkRouter) {
         guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
-            RootViewCoordinator.sharedPresenter.showReaderTab() // Show static reader tab
+            RootViewCoordinator.sharedPresenter.showReader() // Show static reader tab
             return
         }
-        let coordinator = ReaderCoordinator()
+        let presenter = RootViewCoordinator.sharedPresenter
 
         switch self {
         case .root:
-            coordinator.showReaderTab()
+            presenter.showReader()
         case .discover:
-            coordinator.showDiscover()
+            presenter.showReader(path: .discover)
         case .search:
-            coordinator.showSearch()
+            presenter.showReader(path: .search)
         case .a8c:
-            coordinator.showA8C()
+            presenter.showReaderTeam(named: ReaderTeamTopic.a8cSlug)
         case .p2:
-            coordinator.showP2()
+            presenter.showReaderTeam(named: ReaderTeamTopic.p2Slug)
         case .likes:
-            coordinator.showMyLikes()
+            presenter.showReader(path: .likes)
         case .manageFollowing:
-            coordinator.showManageFollowing()
+            presenter.showReader(path: .subscriptions)
         case .list:
-            if let username = values["username"],
-                let listName = values["list_name"] {
-                coordinator.showList(named: listName, forUser: username)
+            if let username = values["username"], let list = values["list_name"] {
+                presenter.showReaderList(named: list, forUser: username)
             }
         case .tag:
             if let tagName = values["tag_name"] {
-                coordinator.showTag(named: tagName)
+                presenter.showReader(path: .makeWithTagName(tagName))
             }
         case .feed:
-            if let feedIDValue = values["feed_id"],
-                let feedID = Int(feedIDValue) {
-                coordinator.showStream(with: feedID, isFeed: true)
+            if let feedIDValue = values["feed_id"], let feedID = Int(feedIDValue) {
+                presenter.showReaderStream(with: feedID, isFeed: true)
             }
         case .blog:
-            if let blogIDValue = values["blog_id"],
-                let blogID = Int(blogIDValue) {
-                coordinator.showStream(with: blogID, isFeed: false)
+            if let blogIDValue = values["blog_id"], let blogID = Int(blogIDValue) {
+                presenter.showReaderStream(with: blogID, isFeed: false)
             }
         case .feedsPost:
             if let (feedID, postID) = feedAndPostID(from: values) {
-                coordinator.showPost(with: postID, for: feedID, isFeed: true)
+                presenter.showReader(path: .post(postID: postID, siteID: feedID, isFeed: true))
             }
         case .blogsPost:
             if let (blogID, postID) = blogAndPostID(from: values) {
-                coordinator.showPost(with: postID, for: blogID, isFeed: false)
+                presenter.showReader(path: .post(postID: postID, siteID: blogID))
             }
         case .wpcomPost:
             if let urlString = values[MatchedRouteURLComponentKey.url.rawValue],
                let url = URL(string: urlString),
                isValidWpcomUrl(values) {
-
-                coordinator.showPost(with: url)
+                presenter.showReader(path: .postURL(url))
             }
         }
     }
@@ -165,5 +161,51 @@ extension ReaderRoute: NavigationAction {
         }
 
         return isYear(year) && isMonth(month) && isDay(day)
+    }
+}
+
+// MARK: - RootViewPresenter (Extensions)
+
+private extension RootViewPresenter {
+    func showReaderTeam(named teamName: String) {
+        let topic = ContextManager.shared.mainContext.firstObject(
+            ofType: ReaderTeamTopic.self,
+            matching: NSPredicate(format: "slug = %@", teamName)
+        )
+        if let topic {
+            showReader(path: .topic(topic))
+        }
+    }
+
+    func showReaderList(named listName: String, forUser user: String) {
+        let context = ContextManager.shared.mainContext
+        if let topic = ReaderListTopic.named(listName, forUser: user, in: context) {
+            showReader(path: .topic(topic))
+        }
+    }
+
+    /// - warning: This method performs the navigation asyncronously after
+    /// fetching the information about the stream from the backend.
+    func showReaderStream(with siteID: Int, isFeed: Bool) {
+        getSiteTopic(siteID: NSNumber(value: siteID), isFeed: isFeed) { [weak self] topic in
+            guard let topic else { return }
+            self?.showReader(path: .topic(topic))
+        }
+    }
+
+    private func getSiteTopic(siteID: NSNumber, isFeed: Bool, completion: @escaping (ReaderSiteTopic?) -> Void) {
+        let service = ReaderTopicService(coreDataStack: ContextManager.shared)
+        service.siteTopicForSite(withID: siteID, isFeed: isFeed, success: { objectID, isFollowing in
+            guard let objectID = objectID,
+                  let topic = try? ContextManager.shared.mainContext.existingObject(with: objectID) as? ReaderSiteTopic else {
+                DDLogError("Reader: Error retriving site topic - invalid Site Id")
+                completion(nil)
+                return
+            }
+            completion(topic)
+        }, failure: { error in
+            DDLogError("Reader: Error retriving site topic - " + (error?.localizedDescription ?? "unknown failure reason"))
+            completion(nil)
+        })
     }
 }
