@@ -77,11 +77,16 @@ final class SidebarViewModel: ObservableObject {
                 self.account = try? WPAccount.lookupDefaultWordPressComAccount(in: self.contextManager.mainContext)
             }
             .store(in: &cancellables)
+
+        $selection.sink {
+            UserDefaults.standard.isReaderSelected = $0 == .reader
+        }.store(in: &cancellables)
     }
 
     private func resetSelection() {
-        let blog = Blog.lastUsedOrFirst(in: contextManager.mainContext)
-        if let blog {
+        if UserDefaults.standard.isReaderSelected {
+            selection = .reader
+        } else if let blog = Blog.lastUsedOrFirst(in: contextManager.mainContext) {
             selection = .blog(TaggedManagedObjectID(blog))
         } else {
             selection = .welcome
