@@ -7,6 +7,7 @@ final class ReaderSidebarViewController: UIHostingController<AnyView> {
     let viewModel: ReaderSidebarViewModel
 
     private var cancellables: [AnyCancellable] = []
+    private var currentDisplayedSelection: ReaderSidebarItem?
     private var viewContext: NSManagedObjectContext { ContextManager.shared.mainContext }
 
     init(viewModel: ReaderSidebarViewModel) {
@@ -33,15 +34,19 @@ final class ReaderSidebarViewController: UIHostingController<AnyView> {
     func showInitialSelection() {
         cancellables = []
 
-        viewModel.$selection.sink { [weak self] in
+        // List occasionally sets selection to `nil` when switching items.
+        viewModel.$selection.compactMap({ $0 }).sink { [weak self] in
             self?.configure(for: $0)
         }.store(in: &cancellables)
     }
 
-    private func configure(for selection: ReaderSidebarItem?) {
-        guard let selection else {
+    private func configure(for selection: ReaderSidebarItem) {
+        guard currentDisplayedSelection != selection else {
+            (splitViewController?.viewController(for: .secondary) as? UINavigationController)?
+                .popToRootViewController(animated: true)
             return
         }
+        currentDisplayedSelection = selection
         switch selection {
         case .main(let screen):
             showSecondary(makeViewController(for: screen))
