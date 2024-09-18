@@ -9,30 +9,12 @@ extension RootViewPresenter {
         return Blog.lastUsedOrFirst(in: context)
     }
 
-    func showPostTab() {
-        showPostTab(completion: nil)
-    }
-
-    func showPostTab(completion afterDismiss: (() -> Void)?) {
-        let context = ContextManager.shared.mainContext
-        // Ignore taps on the post tab and instead show the modal.
-        if Blog.count(in: context) > 0 {
-            showPostTab(animated: true, completion: afterDismiss)
-        }
-    }
-
-    func showPostTab(for blog: Blog) {
-        let context = ContextManager.shared.mainContext
-        if Blog.count(in: context) > 0 {
-            showPostTab(animated: true, blog: blog)
-        }
-    }
-
-    // TODO: rename
-    func showPostTab(animated: Bool,
-                     post: Post? = nil,
-                     blog: Blog? = nil,
-                     completion afterDismiss: (() -> Void)? = nil) {
+    func showPostEditor(
+        animated: Bool = true,
+        post: Post? = nil,
+        blog: Blog? = nil,
+        completion afterDismiss: (() -> Void)? = nil
+    ) {
         if rootViewController.presentedViewController != nil {
             rootViewController.dismiss(animated: false)
         }
@@ -56,22 +38,19 @@ extension RootViewPresenter {
         rootViewController.present(editor, animated: false)
     }
 
-    func showPageEditor(forBlog: Blog? = nil) {
-        showPageEditor(blog: forBlog)
-    }
-
-    /// Show the page tab
-    /// - Parameter blog: Blog to a add a page to. Uses the current or last blog if not provided
-    func showPageEditor(blog inBlog: Blog? = nil, title: String? = nil, content: String? = nil, source: String = "create_button") {
+    /// - parameter blog: Blog to a add a page to. Uses the current or last blog if not provided
+    func showPageEditor(blog: Blog? = nil, title: String? = nil, content: String? = nil, source: String = "create_button") {
 
         // If we are already showing a view controller, dismiss and show the editor afterward
         guard rootViewController.presentedViewController == nil else {
             rootViewController.dismiss(animated: true) { [weak self] in
-                self?.showPageEditor(blog: inBlog, title: title, content: content, source: source)
+                self?.showPageEditor(blog: blog, title: title, content: content, source: source)
             }
             return
         }
-        guard let blog = inBlog ?? self.currentOrLastBlog() else { return }
+        guard let blog = blog ?? self.currentOrLastBlog() else {
+            return
+        }
         guard content == nil else {
             showEditor(blog: blog, title: title, content: content)
             return

@@ -8,14 +8,11 @@ extension MySiteViewController {
     @objc func makeCreateButtonCoordinator() -> CreateButtonCoordinator {
 
         let newPage = {
-            let presenter = RootViewCoordinator.sharedPresenter
-            let blog = presenter.currentOrLastBlog()
-            presenter.showPageEditor(forBlog: blog)
+            RootViewCoordinator.sharedPresenter.showPageEditor()
         }
 
         let newPost = {
-            let presenter = RootViewCoordinator.sharedPresenter
-            presenter.showPostTab(completion: {})
+            RootViewCoordinator.sharedPresenter.showPostEditor()
         }
 
         let source = "my_site"
@@ -50,7 +47,7 @@ extension MySiteViewController {
                 let presenter = RootViewCoordinator.sharedPresenter
                 let post = blog.createDraftPost()
                 post.voiceContent = transcription
-                presenter.showPostTab(animated: true, post: post)
+                presenter.showPostEditor(post: post)
             }
         }
         let view = VoiceToContentView(viewModel: viewModel)

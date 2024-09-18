@@ -126,7 +126,7 @@ class ReaderTabViewController: UIViewController {
 
         let postAction = PostAction(handler: {
             let presenter = RootViewCoordinator.sharedPresenter
-            presenter.showPostTab()
+            presenter.showPostEditor()
         }, source: source)
 
         return CreateButtonCoordinator(self, actions: [postAction], source: source, blog: blog)
