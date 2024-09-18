@@ -34,13 +34,16 @@ extension UIImageView {
     ///   - email: The user's email
     ///   - gravatarRating: Expected image rating
     ///   - placeholderImage: Image to be used as Placeholder
-    public func downloadGravatar(for email: String, gravatarRating: Rating = .general, placeholderImage: UIImage = .gravatarPlaceholderImage) {
+    public func downloadGravatar(
+        for email: String,
+        gravatarRating: Rating = .general,
+        placeholderImage: UIImage = .gravatarPlaceholderImage
+    ) {
         let avatarURL = AvatarURL.url(for: email, preferredSize: .pixels(gravatarDefaultSize()), gravatarRating: gravatarRating)
-        listenForGravatarChanges(forEmail: email)
-        downloadGravatar(fullURL: avatarURL, placeholder: placeholderImage, animate: false, failure: nil)
+        downloadGravatar(fullURL: avatarURL, placeholder: placeholderImage, animate: false)
     }
 
-    public func downloadGravatar(_ gravatar: AvatarURL?, placeholder: UIImage, animate: Bool, failure: ((Error?) -> ())? = nil) {
+    public func downloadGravatar(_ gravatar: AvatarURL?, placeholder: UIImage, animate: Bool) {
         guard let gravatar = gravatar else {
             self.image = placeholder
             return
@@ -52,33 +55,17 @@ extension UIImageView {
         // Calling `layoutIfNeeded()` forces UIKit to calculate the actual size.
         layoutIfNeeded()
 
-        let size = Int(ceil(frame.width * UIScreen.main.scale))
+        let size = Int(ceil(frame.width * min(2, UIScreen.main.scale)))
         let url = gravatar.replacing(options: .init(preferredSize: .pixels(size)))?.url
-        downloadGravatar(fullURL: url, placeholder: placeholder, animate: animate, failure: failure)
+        downloadGravatar(fullURL: url, placeholder: placeholder, animate: animate)
     }
 
-    private func downloadGravatar(fullURL: URL?, placeholder: UIImage, animate: Bool, failure: ((Error?) -> ())? = nil) {
-        Task {
-            await gravatar.cancelImageDownload()
-            var options: [ImageSettingOption]?
-            if let cache = WordPressUI.ImageCache.shared as? GravatarImageCaching {
-                options = [.imageCache(cache)]
-            }
-            else {
-                // If we don't pass any cache to `gravatar.setImage(...)` it will use its internal in-memory cache.
-                // But in order to make things work consistently with the rest of the app, we should use `WordPressUI.ImageCache.shared` here.
-                // It needs to be fixed if we fail to do that. That's why we put an assertionFailure here.
-                assertionFailure("WordPressUI.ImageCache.shared should conform to GravatarImageCaching.")
-            }
-            do {
-                try await gravatar.setImage(with: fullURL,
-                                            placeholder: placeholder,
-                                            options: options)
-                if animate {
-                    fadeInAnimation()
-                }
-            } catch {
-                failure?(error)
+    private func downloadGravatar(fullURL: URL?, placeholder: UIImage, animate: Bool) {
+        wp.prepareForReuse()
+        if let fullURL {
+            wp.setImage(with: fullURL)
+            if image == nil { // If image wasn't found synchronously in memory cache
+                image = placeholder
             }
         }
     }
