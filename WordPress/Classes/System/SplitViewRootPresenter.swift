@@ -333,10 +333,12 @@ extension SplitViewRootPresenter: UISplitViewControllerDelegate {
         }
     }
 
+    // TODO: refactor this
     func splitViewControllerDidCollapse(_ svc: UISplitViewController) {
+        let mainContext = ContextManager.shared.mainContext
         switch sidebarViewModel.selection {
         case .blog(let objectID):
-            guard let blog = try? ContextManager.shared.mainContext.existingObject(with: objectID) else {
+            guard let blog = try? mainContext.existingObject(with: objectID) else {
                 return
             }
             if let navigationVC = svc.viewController(for: .supplementary) as? UINavigationController,
@@ -346,6 +348,25 @@ extension SplitViewRootPresenter: UISplitViewControllerDelegate {
             } else {
                 tabBarVC.showBlogDetails(for: blog)
             }
+        case .reader:
+            if let selection = readerContent?.sidebar.viewModel.selection {
+                switch selection {
+                case .main(let readerStaticScreen):
+                    switch readerStaticScreen {
+                    case .recent: tabBarVC.showReader(path: .recent)
+                    case .discover: tabBarVC.showReader(path: .discover)
+                    case .saved: tabBarVC.showReader()
+                    case .likes: tabBarVC.showReader(path: .likes)
+                    case .search: tabBarVC.showReader(path: .search)
+                    }
+                case .allSubscriptions:
+                    tabBarVC.showReader(path: .subscriptions)
+                default:
+                    tabBarVC.showReader()
+                }
+            }
+        case .notifications:
+            tabBarVC.showNotificationsTab()
         default:
             break
         }

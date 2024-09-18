@@ -1,6 +1,7 @@
 import Foundation
 
 enum ReaderNavigationPath: Hashable {
+    case recent
     case discover
     case likes
     case search
