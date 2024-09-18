@@ -135,10 +135,6 @@ final class SplitViewRootPresenter: RootViewPresenter {
         return navigationVC
     }
 
-    private func makeErrorViewController() -> UIViewController {
-        UIHostingController(rootView: EmptyStateView(SharedStrings.Error.generic, systemImage: "exclamationmark.circle"))
-    }
-
     private func navigate(to step: SidebarNavigationStep) {
         switch step {
         case .allSites(let sourceRect):
