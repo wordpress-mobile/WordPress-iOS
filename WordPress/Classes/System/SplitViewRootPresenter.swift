@@ -104,7 +104,6 @@ final class SplitViewRootPresenter: RootViewPresenter {
                 }
             }
         case .notifications:
-            // TODO: (wpsidebar) update tab bar item when new notifications arrive
             if let notificationsContent {
                 content = notificationsContent
             } else {
