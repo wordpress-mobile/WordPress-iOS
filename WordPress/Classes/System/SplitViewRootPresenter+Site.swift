@@ -20,7 +20,6 @@ class SiteSplitViewContent: SiteMenuViewControllerDelegate, SplitViewDisplayable
     func displayed(in splitVC: UISplitViewController) {
         RecentSitesService().touch(blog: blog)
 
-        // TODO: (wpsidebar) Refactor this (initial .secondary vc managed based on the VC presentation)
         _ = siteMenuVC.view
     }
 
