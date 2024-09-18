@@ -100,8 +100,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
                     siteContent = SiteSplitViewContent(blog: site)
                     content = siteContent!
                 } catch {
-                    // TODO: (wpsidebar) switch to a different blog?
-                    return
+                    return wpAssertionFailure("selected blog not found")
                 }
             }
         case .notifications:
@@ -135,6 +134,10 @@ final class SplitViewRootPresenter: RootViewPresenter {
         viewController.navigationItem.largeTitleDisplayMode = .automatic
         navigationVC.navigationBar.prefersLargeTitles = true
         return navigationVC
+    }
+
+    private func makeErrorViewController() -> UIViewController {
+        UIHostingController(rootView: EmptyStateView(SharedStrings.Error.generic, systemImage: "exclamationmark.circle"))
     }
 
     private func navigate(to step: SidebarNavigationStep) {
