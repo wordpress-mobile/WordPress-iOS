@@ -27,12 +27,12 @@ class ReaderInterestsStyleGuide {
     // MARK: - View Styles
     public class func applyTitleLabelStyles(label: UILabel) {
         label.font = .preferredFont(forTextStyle: .title1).bold()
-        label.textColor = .text
+        label.textColor = .label
     }
 
     public class func applySubtitleLabelStyles(label: UILabel) {
         label.font = .preferredFont(forTextStyle: .body)
-        label.textColor = .text
+        label.textColor = .label
     }
 
     // MARK: - Collection View Cell Styles
@@ -42,8 +42,8 @@ class ReaderInterestsStyleGuide {
 
     public class func applyCellLabelStyle(label: UILabel, isSelected: Bool) {
         label.font = cellLabelTitleFont
-        label.textColor = isSelected ? .systemBackground : .text
-        label.backgroundColor = isSelected ? .text : .systemBackground
+        label.textColor = isSelected ? UIColor.systemBackground : UIColor.label
+        label.backgroundColor = isSelected ? UIColor.label : UIColor.systemBackground
     }
 
     // MARK: - Compact Collection View Cell Styles
@@ -53,7 +53,7 @@ class ReaderInterestsStyleGuide {
 
     public class func applyCompactCellLabelStyle(label: UILabel) {
         label.font = Self.compactCellLabelTitleFont
-        label.textColor = .text
+        label.textColor = .label
         label.backgroundColor = .clear
     }
 
@@ -70,14 +70,14 @@ class ReaderInterestsStyleGuide {
         button.setTitleColor(.systemBackground, for: .normal)
         button.setTitleColor(.systemBackground, for: .disabled)
         button.setTitleColor(.systemBackground.withAlphaComponent(0.7), for: .highlighted)
-        button.backgroundColor = .text
+        button.backgroundColor = .label
         button.layer.cornerRadius = 5.0
     }
 
     // MARK: - Loading
     public class func applyLoadingLabelStyles(label: UILabel) {
         label.font = .preferredFont(forTextStyle: .body)
-        label.textColor = .textSubtle
+        label.textColor = .secondaryLabel
     }
 
     public class func applyActivityIndicatorStyles(indicator: UIActivityIndicatorView) {

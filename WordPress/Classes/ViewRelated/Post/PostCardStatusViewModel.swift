@@ -36,11 +36,11 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
 
     var statusColor: UIColor {
         if post.isLegacyUnsavedRevision {
-            return .warning
+            return UIAppColor.warning
         }
         switch post.status ?? .draft {
         case .trash:
-            return .error
+            return UIAppColor.error
         default:
             return .secondaryLabel
         }

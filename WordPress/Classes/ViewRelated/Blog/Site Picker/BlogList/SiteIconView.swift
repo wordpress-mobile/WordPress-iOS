@@ -34,9 +34,11 @@ struct SiteIconView: View {
     private var noIconView: some View {
         backgroundColor.overlay {
             if let firstLetter = viewModel.firstLetter {
+                // - warning: important to use `.foregroundColor` and not
+                // `.foregroundStyle` to avoid it changing in sidebar on selection
                 Text(firstLetter.uppercased())
                     .font(.system(size: iconFontSize(for: viewModel.size), weight: .medium, design: .rounded))
-                    .foregroundStyle(.secondary.opacity(0.8))
+                    .foregroundColor(.secondary.opacity(0.8))
             } else {
                 failureStateView
             }
@@ -55,7 +57,7 @@ struct SiteIconView: View {
             Image.DS.icon(named: .vector)
                 .resizable()
                 .frame(width: 18, height: 18)
-                .tint(.DS.Foreground.tertiary)
+                .tint(Color(.tertiaryLabel))
         }
     }
 }

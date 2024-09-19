@@ -15,8 +15,6 @@ class ReaderTabViewController: UIViewController {
         return makeReaderTabView(viewModel)
     }()
 
-    var isSidebarModeEnabled = true
-
     init(viewModel: ReaderTabViewModel, readerTabViewFactory: @escaping (ReaderTabViewModel) -> ReaderTabView) {
         self.viewModel = viewModel
         self.makeReaderTabView = readerTabViewFactory
@@ -93,12 +91,6 @@ class ReaderTabViewController: UIViewController {
         }
 
         ReaderTracker.shared.start(.main)
-    }
-
-    func presentDiscoverTab() {
-        viewModel.shouldShowCommentSpotlight = true
-        viewModel.fetchReaderMenu()
-        viewModel.showTab(at: ReaderTabConstants.discoverIndex)
     }
 
     // MARK: - Reader FAB

@@ -29,7 +29,7 @@ final class DashboardSingleStatView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = AppStyleGuide.prominentFont(textStyle: .title1, weight: .bold)
-        label.textColor = .text
+        label.textColor = .label
         label.isAccessibilityElement = false
         return label
     }()
@@ -38,7 +38,7 @@ final class DashboardSingleStatView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = WPStyleGuide.fontForTextStyle(.subheadline)
-        label.textColor = .textSubtle
+        label.textColor = .secondaryLabel
         label.isAccessibilityElement = false
         return label
     }()

@@ -5,7 +5,7 @@ import Foundation
 ///
 extension MediaHost {
     enum ReaderPostContentProviderError: Swift.Error {
-        case baseInitializerError(error: Error, readerPostContentProvider: ReaderPostContentProvider)
+        case baseInitializerError(error: Error)
     }
 
     init(with readerPostContentProvider: ReaderPostContentProvider, failure: (ReaderPostContentProviderError) -> ()) {
@@ -20,7 +20,8 @@ extension MediaHost {
         let username = account?.username
         let authToken = account?.authToken
 
-        self.init(isAccessibleThroughWPCom: isAccessibleThroughWPCom,
+        self.init(
+            isAccessibleThroughWPCom: isAccessibleThroughWPCom,
             isPrivate: readerPostContentProvider.isPrivate(),
             isAtomic: readerPostContentProvider.isAtomic(),
             siteID: readerPostContentProvider.siteID()?.intValue,
@@ -28,9 +29,8 @@ extension MediaHost {
             authToken: authToken,
             failure: { error in
                 // We just associate a ReaderPostContentProvider with the underlying error for simpler debugging.
-                failure(ReaderPostContentProviderError.baseInitializerError(
-                    error: error,
-                    readerPostContentProvider: readerPostContentProvider))
-        })
+                failure(ReaderPostContentProviderError.baseInitializerError(error: error))
+            }
+        )
     }
 }

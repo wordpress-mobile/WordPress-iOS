@@ -96,7 +96,7 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable, ReaderDetailHeader {
         WPStyleGuide.applyReaderCardBylineLabelStyle(blogURLLabel)
         WPStyleGuide.applyReaderCardTitleLabelStyle(titleLabel)
 
-        titleLabel.backgroundColor = .basicBackground
+        titleLabel.backgroundColor = .systemBackground
         blogNameButton.setTitleColor(WPStyleGuide.readerCardBlogNameLabelTextColor(), for: .normal)
         blogNameButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .bold)
     }
@@ -192,8 +192,8 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable, ReaderDetailHeader {
         followButton.isSelected = post?.isFollowing() ?? false
         iPadFollowButton.isSelected = post?.isFollowing() ?? false
 
-        followButton.setImage(UIImage.gridicon(.readerFollow, size: CGSize(width: 24, height: 24)).imageWithTintColor(.primary), for: .normal)
-        followButton.setImage(UIImage.gridicon(.readerFollowing, size: CGSize(width: 24, height: 24)).imageWithTintColor(.gray(.shade20)), for: .selected)
+        followButton.setImage(UIImage.gridicon(.readerFollow, size: CGSize(width: 24, height: 24)).imageWithTintColor(AppStyleGuide.primary), for: .normal)
+        followButton.setImage(UIImage.gridicon(.readerFollowing, size: CGSize(width: 24, height: 24)).imageWithTintColor(AppStyleGuide.gray(.shade20)), for: .selected)
         WPStyleGuide.applyReaderFollowButtonStyle(iPadFollowButton)
 
         let isCompact = traitCollection.horizontalSizeClass == .compact

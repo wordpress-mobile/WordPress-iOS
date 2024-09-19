@@ -111,6 +111,7 @@ class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController, St
         let controller = InsightsManagementViewController(insightsDelegate: self,
                 insightsManagementDelegate: self, insightsShown: insightsToShow.compactMap { $0.statSection })
         let navigationController = UINavigationController(rootViewController: controller)
+        navigationController.modalPresentationStyle = .formSheet // Has to be set before the delegate
         navigationController.presentationController?.delegate = self
         present(navigationController, animated: true, completion: nil)
     }
@@ -523,10 +524,9 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
             }
 
             self.navigationController?.popToRootViewController(animated: false)
-            RootViewCoordinator.sharedPresenter.showReaderTab()
-            if let vc = RootViewCoordinator.sharedPresenter.readerTabViewController {
-                vc.presentDiscoverTab()
-            }
+            RootViewCoordinator.sharedPresenter.showReader(path: .discover)
+
+            Notice(title: NSLocalizedString("Comment to start making connections.", comment: "Hint for users to grow their audience by commenting on other blogs.")).post()
         }
 
         let nc = UINavigationController(rootViewController: vc)

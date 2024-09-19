@@ -284,20 +284,26 @@ private extension JetpackFullscreenOverlayViewController {
     }
 
     enum Colors {
-        private static let jetpackGreen50 = UIColor.muriel(color: .jetpackGreen, .shade50).lightVariant()
-        private static let jetpackGreen30 = UIColor.muriel(color: .jetpackGreen, .shade30).lightVariant()
-        private static let jetpackGreen90 = UIColor.muriel(color: .jetpackGreen, .shade90).lightVariant()
+        private static let jetpackGreen50 = UIAppColor.jetpackGreen(.shade50)
+        private static let jetpackGreen30 = UIAppColor.jetpackGreen(.shade30)
+        private static let jetpackGreen90 = UIAppColor.jetpackGreen(.shade90)
 
-        static let backgroundColor = UIColor(light: .systemBackground,
-                                             dark: .muriel(color: .jetpackGreen, .shade100))
-        static let footnoteTextColor = UIColor(light: .muriel(color: .gray, .shade50),
-                                               dark: .muriel(color: .gray, .shade5))
-        static let actionInfoTextColor = UIColor.textSubtle
+        static let backgroundColor = UIColor(
+            light: .systemBackground,
+            dark: UIAppColor.jetpackGreen(.shade100)
+        )
+        static let footnoteTextColor = UIColor(
+            light: UIAppColor.gray(.shade50),
+            dark: UIAppColor.gray(.shade5)
+        )
+        static let actionInfoTextColor = UIColor.secondaryLabel
         static let learnMoreButtonTextColor = UIColor(light: jetpackGreen50, dark: jetpackGreen30)
         static let switchButtonBackgroundColor = jetpackGreen50
         static let continueButtonTextColor = UIColor(light: jetpackGreen50, dark: .white)
         static let switchButtonTextColor = UIColor.white
-        static let closeButtonTintColor = UIColor(light: .muriel(color: .gray, .shade5),
-                                                  dark: jetpackGreen90)
+        static let closeButtonTintColor = UIColor(
+            light: UIAppColor.gray(.shade5),
+            dark: jetpackGreen90
+        )
     }
 }

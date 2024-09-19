@@ -5,10 +5,6 @@ protocol ReaderContentViewController: UIViewController {
 
 // MARK: - Reader Factory
 extension WPTabBarController {
-    var readerTabViewController: ReaderTabViewController? {
-        readerNavigationController?.topViewController as? ReaderTabViewController
-    }
-
     @objc func makeReaderTabViewController() -> ReaderTabViewController {
         return ReaderTabViewController(viewModel: readerTabViewModel) { [weak self] viewModel in
             guard let self else {
@@ -20,11 +16,9 @@ extension WPTabBarController {
 
     @objc func makeReaderTabViewModel() -> ReaderTabViewModel {
         let viewModel = ReaderTabViewModel(
-            readerContentFactory: { [weak self] content in
+            readerContentFactory: { content in
                 if content.topicType == .discover, let topic = content.topic {
-                    let controller = ReaderCardsStreamViewController.controller(topic: topic)
-                    controller.shouldShowCommentSpotlight = self?.readerTabViewModel.shouldShowCommentSpotlight ?? false
-                    return controller
+                    return ReaderCardsStreamViewController.controller(topic: topic)
                 } else if let topic = content.topic {
                     return ReaderStreamViewController.controllerWithTopic(topic)
                 } else {
@@ -32,28 +26,12 @@ extension WPTabBarController {
                 }
             },
             searchNavigationFactory: { [weak self] in
-                guard let self else {
-                    return
-                }
-                self.navigateToReaderSearch()
+                self?.showReader(path: .search)
             },
             tabItemsStore: ReaderTabItemsStore(),
             settingsPresenter: ReaderManageScenePresenter()
         )
         return viewModel
-    }
-
-    private func makeReaderContentViewController(with content: ReaderContent) -> ReaderContentViewController {
-
-        if content.topicType == .discover, let topic = content.topic {
-            let controller = ReaderCardsStreamViewController.controller(topic: topic)
-            controller.shouldShowCommentSpotlight = readerTabViewModel.shouldShowCommentSpotlight
-            return controller
-        } else if let topic = content.topic {
-            return ReaderStreamViewController.controllerWithTopic(topic)
-        } else {
-            return ReaderStreamViewController.controllerForContentType(content.type)
-        }
     }
 
     private func makeReaderTabView(_ viewModel: ReaderTabViewModel) -> ReaderTabView {
@@ -63,78 +41,36 @@ extension WPTabBarController {
 
 // MARK: - Reader Navigation
 extension WPTabBarController {
-
-    /// reader navigation methods
-    func navigateToReaderSearch() {
-        let searchController = ReaderSearchViewController.controller()
-        navigateToReader(searchController)
-    }
-
-    func navigateToReaderSearch(withSearchText searchText: String) {
-        let searchController = ReaderSearchViewController.controller(withSearchText: searchText)
-        navigateToReader(searchController)
-    }
-
-    func navigateToReaderSite(_ topic: ReaderSiteTopic) {
-        let contentController = ReaderStreamViewController.controllerWithTopic(topic)
-        navigateToReader(contentController)
-    }
-
-    func navigateToReaderTag(_ tagSlug: String) {
-        let contentController = ReaderStreamViewController.controllerWithTagSlug(tagSlug)
-        navigateToReader(contentController)
-    }
-
-    func navigateToReader(_ pushControlller: UIViewController? = nil) {
+    func showReader(path: ReaderNavigationPath?) {
         showReaderTab()
-        readerNavigationController?.popToRootViewController(animated: false)
-        guard let controller = pushControlller else {
-            return
+        if let path {
+            navigate(to: path)
         }
-        readerNavigationController?.pushViewController(controller, animated: true)
     }
 
-    func resetReaderDiscoverNudgeFlow() {
-        readerTabViewModel.shouldShowCommentSpotlight = false
+    private func navigate(to path: ReaderNavigationPath) {
+        switch path {
+        case .discover:
+            readerTabViewModel.switchToTab(where: ReaderHelpers.topicIsDiscover)
+        case .likes:
+            readerTabViewModel.switchToTab(where: ReaderHelpers.topicIsLiked)
+        case .search:
+            showReaderDetails(ReaderSearchViewController.controller())
+        case .subscriptions:
+            ReaderManageScenePresenter().present(on: self, selectedSection: .sites, animated: true, completion: nil)
+        case let .post(postID, siteID, isFeed):
+            showReaderDetails(ReaderDetailViewController.controllerWithPostID(NSNumber(value: postID), siteID: NSNumber(value: siteID), isFeed: isFeed))
+        case let .postURL(url):
+            showReaderDetails(ReaderDetailViewController.controllerWithPostURL(url))
+        case let .tag(slug):
+            showReaderDetails(ReaderStreamViewController.controllerWithTagSlug(slug))
+        case let .topic(topic):
+            showReaderDetails(ReaderStreamViewController.controllerWithTopic(topic))
+        }
     }
 
-    /// methods to select one of the default Reader tabs
-    @objc func switchToSavedPosts() {
-        let title = NSLocalizedString("Saved", comment: "Title of the Saved Reader Tab")
-        switchToTitle(title)
-    }
-
-    func switchToFollowedSites() {
-        navigateToReader()
-        readerTabViewModel.switchToTab(where: {
-            ReaderHelpers.topicIsFollowing($0)
-        })
-    }
-
-    func switchToDiscover() {
-        navigateToReader()
-        readerTabViewModel.switchToTab(where: {
-            ReaderHelpers.topicIsDiscover($0)
-        })
-    }
-
-    func switchToMyLikes() {
-        navigateToReader()
-        readerTabViewModel.switchToTab(where: {
-            ReaderHelpers.topicIsLiked($0)
-        })
-    }
-
-    /// switches to a menu item topic that satisfies the given predicate with a topic value
-    func switchToTopic(where predicate: (ReaderAbstractTopic) -> Bool) {
-        navigateToReader()
-        readerTabViewModel.switchToTab(where: predicate)
-    }
-    /// switches to a menu item topic whose title matched the passed value
-    func switchToTitle(_ title: String) {
-        navigateToReader()
-        readerTabViewModel.switchToTab(where: {
-            $0 == title
-        })
+    private func showReaderDetails(_ viewController: UIViewController) {
+        readerNavigationController?.popToRootViewController(animated: false)
+        readerNavigationController?.pushViewController(viewController, animated: true)
     }
 }

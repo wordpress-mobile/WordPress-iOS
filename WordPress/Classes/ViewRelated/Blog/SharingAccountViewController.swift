@@ -53,7 +53,7 @@ import WordPressShared
     fileprivate func configureNavbar() {
         let image = UIImage.gridicon(.cross)
         let closeButton = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(SharingAccountViewController.handleCloseTapped(_:)))
-        closeButton.tintColor = .appBarTint
+        closeButton.tintColor = UIAppColor.appBarTint
         navigationItem.leftBarButtonItem = closeButton
     }
 

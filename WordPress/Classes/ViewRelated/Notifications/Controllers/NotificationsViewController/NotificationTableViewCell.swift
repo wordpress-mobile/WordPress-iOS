@@ -21,7 +21,7 @@ final class NotificationTableViewCell: HostingTableViewCell<NotificationsTableVi
         }()
         let description = notification.renderSnippet()?.string
         let inlineAction = inlineAction(viewModel: viewModel, notification: notification, parent: parent)
-        let avatarStyle = AvatarsView<Circle>.Style(urls: notification.allAvatarURLs) ?? .single(notification.iconURL)
+        let avatarStyle = AvatarView<Circle>.Style(urls: notification.allAvatarURLs) ?? .single(notification.iconURL)
         let style = NotificationsTableViewCellContent.Style.regular(
             .init(
                 title: title,
@@ -65,8 +65,10 @@ final class NotificationTableViewCell: HostingTableViewCell<NotificationsTableVi
                 inViewController: parent
             )
         }
-        return .init(
+        return NotificationsTableViewCellContent.InlineAction.Configuration(
             icon: Image.DS.icon(named: .blockShare),
+            accessibilityLabel: Strings.shareButtonAccessibilityLabel,
+            accessibilityHint: Strings.tapToShareThisPost,
             action: action
         )
     }
@@ -91,7 +93,13 @@ final class NotificationTableViewCell: HostingTableViewCell<NotificationsTableVi
             }
         }
         let (image, color) = self.likeInlineActionIcon(filled: notification.liked)
-        return .init(icon: image, color: color, action: action)
+        return NotificationsTableViewCellContent.InlineAction.Configuration(
+            icon: image,
+            color: color,
+            accessibilityLabel: notification.liked ? Strings.postLikeButtonOnAccessibilityLabel : Strings.likeButtonOffAccessibilityLabel,
+            accessibilityHint: notification.liked ? Strings.tapToUnlikeThisPost : Strings.tapToLikeThisPost,
+            action: action
+        )
     }
 
     private func commentLikeInlineAction(viewModel: NotificationsViewModel,
@@ -113,12 +121,74 @@ final class NotificationTableViewCell: HostingTableViewCell<NotificationsTableVi
             }
         }
         let (image, color) = self.likeInlineActionIcon(filled: notification.liked)
-        return .init(icon: image, color: color, action: action)
+        return NotificationsTableViewCellContent.InlineAction.Configuration(
+            icon: image,
+            color: color,
+            accessibilityLabel: notification.liked ? Strings.commentLikeButtonOnAccessibilityLabel : Strings.likeButtonOffAccessibilityLabel,
+            accessibilityHint: notification.liked ? Strings.tapToUnlikeThisComment : Strings.tapToLikeThisComment,
+            action: action
+        )
     }
 
     private func likeInlineActionIcon(filled: Bool) -> (image: Image, color: Color?) {
         let image: Image = Image.DS.icon(named: filled ? .starFill : .starOutline)
-        let color: Color? = filled ? Color.DS.Foreground.brand(isJetpack: true) : nil
+        let color: Color? = filled ? AppColor.brand: nil
         return (image: image, color: color)
+    }
+
+    enum Strings {
+        static let postLikeButtonOnAccessibilityLabel = NSLocalizedString(
+            "notifications.accessibility-post-like-button-on",
+            value: "You've Liked this post",
+            comment: "The user has previously tapped 'Like' on this post"
+        )
+
+        static let commentLikeButtonOnAccessibilityLabel = NSLocalizedString(
+            "notifications.accessibility-comment-like-button-on",
+            value: "You've Liked this comment",
+            comment: "The user has previously tapped 'Like' on this comment"
+        )
+
+        static let likeButtonOffAccessibilityLabel = NSLocalizedString(
+            "notifications.accessibility-like-button-off",
+            value: "Not liked",
+            comment: "The user has not previously tapped 'Like' on this post or comment"
+        )
+
+        static let shareButtonAccessibilityLabel = NSLocalizedString(
+            "notifications.accessibility-share-button",
+            value: "Share",
+            comment: "A label for screenreader users"
+        )
+
+        static let tapToLikeThisPost = NSLocalizedString(
+            "notifications.accessibility-tap-to-like-this-post",
+            value: "Double Tap to Like this Post",
+            comment: "A label for screenreader users"
+        )
+
+        static let tapToUnlikeThisPost = NSLocalizedString(
+            "notifications.accessibility-tap-to-unlike-this-post",
+            value: "Double Tap to Unlike this Post",
+            comment: "A label for screenreader users"
+        )
+
+        static let tapToLikeThisComment = NSLocalizedString(
+            "notifications.accessibility-tap-to-like-this-comment",
+            value: "Double Tap to Like this Comment",
+            comment: "A label for screenreader users"
+        )
+
+        static let tapToUnlikeThisComment = NSLocalizedString(
+            "notifications.accessibility-tap-to-unlike-this-comment",
+            value: "Double Tap to Unlike this Comment",
+            comment: "A label for screenreader users"
+        )
+
+        static let tapToShareThisPost = NSLocalizedString(
+            "notifications.accessibility-tap-to-share-this-post",
+            value: "Double Tap to Share this Post",
+            comment: "A label for screenreader users"
+        )
     }
 }

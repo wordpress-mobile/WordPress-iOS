@@ -80,14 +80,14 @@ extension CommentDetailInfoViewController: UITableViewDataSource {
         let info = viewModel.userDetails[indexPath.item]
 
         cell.selectionStyle = .none
-        cell.tintColor = .primary
+        cell.tintColor = UIAppColor.primary
 
         cell.textLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline)
-        cell.textLabel?.textColor = .textSubtle
+        cell.textLabel?.textColor = .secondaryLabel
         cell.textLabel?.text = info.title
 
         cell.detailTextLabel?.font = WPStyleGuide.fontForTextStyle(.body)
-        cell.detailTextLabel?.textColor = .text
+        cell.detailTextLabel?.textColor = .label
         cell.detailTextLabel?.numberOfLines = 0
         cell.detailTextLabel?.text = info.description.isEmpty ? " " : info.description // prevent the cell from collapsing due to empty label text.
 

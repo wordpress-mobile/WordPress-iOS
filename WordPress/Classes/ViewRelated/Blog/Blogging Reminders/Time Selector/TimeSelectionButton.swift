@@ -10,7 +10,7 @@ class TimeSelectionButton: UIButton {
 
     override var isHighlighted: Bool {
         didSet {
-            backgroundColor = isHighlighted ? .divider : .basicBackground
+            backgroundColor = isHighlighted ? .separator : .systemBackground
             setNeedsDisplay()
         }
     }
@@ -53,7 +53,7 @@ class TimeSelectionButton: UIButton {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage.gridicon(.chevronRight)
-        imageView.tintColor = .divider
+        imageView.tintColor = .separator
         return imageView
     }()
 

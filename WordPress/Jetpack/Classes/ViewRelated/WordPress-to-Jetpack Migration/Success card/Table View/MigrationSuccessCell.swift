@@ -4,6 +4,7 @@ import UIKit
 class MigrationSuccessCell: UITableViewCell {
 
     var onTap: (() -> Void)?
+    var cardView: MigrationSuccessCardView?
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -21,6 +22,11 @@ class MigrationSuccessCell: UITableViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(view)
         contentView.pinSubviewToAllEdges(view)
+        cardView = view
+    }
+
+    @objc func configureForSidebarMode() {
+        cardView?.backgroundColor = .clear
     }
 }
 

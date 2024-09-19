@@ -1,5 +1,4 @@
 import UIKit
-import CocoaLumberjack
 
 @objc protocol WPContentSyncHelperDelegate: NSObjectProtocol {
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?)

@@ -132,9 +132,40 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         self.navigationBarManager = navigationBarManager ?? PostEditorNavigationBarManager()
 
         let networkClient = NewGutenbergNetworkClient(blog: post.blog)
+
+        let selfHostedApiUrl = post.blog.url(withPath: "wp-json/")
+        let isSelfHosted = !post.blog.isHostedAtWPcom && !post.blog.isAtomic()
+        let siteApiRoot = post.blog.isAccessibleThroughWPCom() && !isSelfHosted ? post.blog.wordPressComRestApi()?.baseURL.absoluteString : selfHostedApiUrl
+        let siteId = post.blog.dotComID?.stringValue
+        let authToken = post.blog.authToken ?? ""
+        var authHeader = "Bearer \(authToken)"
+
+        let applicationPassword = try? post.blog.getApplicationToken()
+
+        if let appPassword = applicationPassword, let username = post.blog.username {
+            let credentials = "\(username):\(appPassword)"
+            if let credentialsData = credentials.data(using: .utf8) {
+                let base64Credentials = credentialsData.base64EncodedString()
+                authHeader = "Basic \(base64Credentials)"
+            }
+        }
+
+        let siteApiNamespace = post.blog.dotComID != nil && !isSelfHosted && applicationPassword == nil ? "sites/\(siteId ?? "")" : ""
+        let postType = post is Page ? "page" : "post"
+        let postId: Int? = post.postID?.intValue != -1 ? post.postID?.intValue : nil
+
         self.editorViewController = GutenbergKit.EditorViewController(
+            id: postId,
+            type: postType,
+            title: post.postTitle ?? "",
             content: post.content ?? "",
-            service: GutenbergKit.EditorService(client: networkClient)
+            service: GutenbergKit.EditorService(client: networkClient),
+            themeStyles: FeatureFlag.newGutenbergThemeStyles.enabled,
+            plugins: FeatureFlag.newGutenbergPlugins.enabled && isSelfHosted,
+            siteURL: post.blog.url ?? "",
+            siteApiRoot: siteApiRoot!,
+            siteApiNamespace: siteApiNamespace,
+            authHeader: authHeader
         )
 
         super.init(nibName: nil, bundle: nil)
@@ -182,7 +213,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     }
 
     private func setupEditorView() {
-        view.tintColor = .editorPrimary
+        view.tintColor = UIAppColor.editorPrimary
 
         addChild(editorViewController)
         view.addSubview(editorViewController.view)
@@ -218,7 +249,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 //            let size = CGSize(width: 24, height: 24)
 //            navigationBarManager.siteIconView.imageView.downloadSiteIcon(for: blog, imageSize: size)
 //        } else if blog.isWPForTeams() {
-//            navigationBarManager.siteIconView.imageView.tintColor = UIColor.listIcon
+//            navigationBarManager.siteIconView.imageView.tintColor = UIColor.secondaryLabel
 //            navigationBarManager.siteIconView.imageView.image = UIImage.gridicon(.p2)
 //        } else {
 //            navigationBarManager.siteIconView.imageView.image = UIImage.siteIconPlaceholder

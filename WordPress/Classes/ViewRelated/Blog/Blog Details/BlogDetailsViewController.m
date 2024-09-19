@@ -227,7 +227,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
 
 #pragma mark -
 
-@interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate, WPSplitViewControllerDetailProvider>
+@interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate, WPSplitViewControllerDetailProvider, UIAdaptivePresentationControllerDelegate>
 
 @property (nonatomic, strong) NSArray *headerViewHorizontalConstraints;
 @property (nonatomic, strong) NSArray<BlogDetailsSection *> *tableSections;
@@ -241,6 +241,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
 @property (nonatomic) BlogDetailsSectionCategory selectedSectionCategory;
 
 @property (nonatomic) BOOL hasLoggedDomainCreditPromptShownEvent;
+
+@property (nonatomic, weak) UIViewController *presentedSiteSettingsViewController;
 
 @end
 
@@ -317,6 +319,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     [self observeManagedObjectContextObjectsDidChangeNotification];
 
     [self observeGravatarImageUpdate];
+
+    if (@available(iOS 17.0, *)) {
+        [self registerForTraitChanges:@[[UITraitHorizontalSizeClass self]] withAction:@selector(handleTraitChanges)];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -368,6 +374,15 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
 {
     [super traitCollectionDidChange:previousTraitCollection];
 
+    if (@available(iOS 17.0, *)) {
+        // Do nothing. `handleTraitChanges` is registered using iOS 17 API.
+    } else {
+        [self handleTraitChanges];
+    }
+}
+
+- (void)handleTraitChanges
+{
     // Required to add / remove "Home" section when switching between regular and compact width
     [self configureTableViewData];
 
@@ -478,11 +493,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
             [self showCommentsFromSource:BlogDetailsNavigationSourceLink];
             break;
         case BlogDetailsSubsectionMe:
-            self.restorableSelectedIndexPath = indexPath;
-            [self.tableView selectRowAtIndexPath:indexPath
-                                        animated:NO
-                                  scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
-            [self showMe];
+            [self showDetailViewForMeSubsectionWithUserInfo: userInfo];
             break;
         case BlogDetailsSubsectionSharing:
             if ([self.blog supports:BlogFeatureSharing]) {
@@ -508,7 +519,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
                 [self.tableView selectRowAtIndexPath:indexPath
                                             animated:NO
                                       scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
-                [self showPlugins];
+                BOOL showManagemnet = userInfo[[BlogDetailsViewController userInfoShowManagemenetScreenKey]] ?: NO;
+                if (showManagemnet) {
+                    [self showManagePluginsScreen];
+                } else {
+                    [self showPlugins];
+                }
             }
             break;
         case BlogDetailsSubsectionSiteMonitoring:
@@ -523,6 +539,15 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
             break;
 
     }
+}
+
+- (MeViewController *)showDetailViewForMeSubsectionWithUserInfo:(NSDictionary *)userInfo {
+    NSIndexPath *indexPath = [self indexPathForSubsection:BlogDetailsSubsectionMe];
+    self.restorableSelectedIndexPath = indexPath;
+    [self.tableView selectRowAtIndexPath:indexPath
+                                animated:NO
+                          scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
+    return [self showMe];
 }
 
 // MARK: Todo: this needs to adjust based on the existence of the QSv2 section
@@ -957,7 +982,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
         [marr addNullableObject:[self sotw2023SectionViewModel]];
     }
 
-    if (MigrationSuccessCardView.shouldShowMigrationSuccessCard == YES) {
+    if (MigrationSuccessCardView.shouldShowMigrationSuccessCard == YES && ![Feature enabled:FeatureFlagSidebar]) {
         [marr addNullableObject:[self migrationSuccessSectionViewModel]];
     }
 
@@ -1008,7 +1033,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     self.tableSections = [NSArray arrayWithArray:marr];
 }
 
-// TODO: (wpsidebar) Remove when WPSPlitViewController is removed on iPhone
 - (Boolean)isSplitViewDisplayed {
     if (self.isSidebarModeEnabled) {
         return true;
@@ -1531,12 +1555,15 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
         return cell;
     }
 
-        if (section.category == BlogDetailsSectionCategoryMigrationSuccess) {
+    if (section.category == BlogDetailsSectionCategoryMigrationSuccess) {
         MigrationSuccessCell *cell = [tableView dequeueReusableCellWithIdentifier:BlogDetailsMigrationSuccessCellIdentifier];
+        if (self.isSidebarModeEnabled) {
+            [cell configureForSidebarMode];
+        }
         [cell configureWithViewController:self];
         return cell;
     }
-    
+
     if (section.category == BlogDetailsSectionCategoryJetpackBrandingCard) {
         JetpackBrandingMenuCardCell *cell = [tableView dequeueReusableCellWithIdentifier:BlogDetailsJetpackBrandingCardCellIdentifier];
         [cell configureWithViewController:self];
@@ -1743,10 +1770,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     [self.presentationDelegate presentBlogDetailsViewController:controller];
 }
 
-- (void)showMe
+- (MeViewController *)showMe
 {
-    UIViewController *controller = [[MeViewController alloc] init];
+    MeViewController *controller = [[MeViewController alloc] init];
     [self.presentationDelegate presentBlogDetailsViewController:controller];
+    return controller;
 }
 
 - (void)showPeople
@@ -1776,7 +1804,23 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     [self trackEvent:WPAnalyticsStatOpenedSiteSettings fromSource:source];
     SiteSettingsViewController *controller = [[SiteSettingsViewController alloc] initWithBlog:self.blog];
     controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
-    [self.presentationDelegate presentBlogDetailsViewController:controller];
+    if (self.isSidebarModeEnabled) {
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+        __weak BlogDetailsViewController *weakSelf = self;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-parameter"
+        controller.navigationItem.rightBarButtonItem  = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone primaryAction:[UIAction actionWithHandler:^(__kindof UIAction * _Nonnull action) {
+            [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
+            [weakSelf dismissViewControllerAnimated:YES completion:nil];
+        }]];
+#pragma clang diagnostic pop
+        navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+        [self presentViewController:navigationController animated:YES completion:nil];
+        self.presentedSiteSettingsViewController = navigationController;
+        navigationController.presentationController.delegate = self;
+    } else {
+        [self.presentationDelegate presentBlogDetailsViewController:controller];
+    }
 }
 
 - (void)showDomainsFromSource:(BlogDetailsNavigationSource)source
@@ -2061,6 +2105,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     return nil;
 }
 
+#pragma mark - UIAdaptivePresentationControllerDelegate
+
+- (void)presentationControllerWillDismiss:(UIPresentationController *)presentationController {
+    if (presentationController.presentedViewController == self.presentedSiteSettingsViewController) {
+        [self.tableView deselectSelectedRowWithAnimation:YES];
+    }
+}
+
 #pragma mark - Domain Registration
 
 - (void)updateTableViewAndHeader
@@ -2110,6 +2162,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
 
 + (NSString *)userInfoSiteMonitoringTabKey {
     return @"site-monitoring-tab";
+}
+
++ (NSString *)userInfoShowManagemenetScreenKey {
+    return @"show-manage-plugins";
 }
 
 + (NSString *)userInfoSourceKey {

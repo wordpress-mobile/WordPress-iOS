@@ -174,7 +174,7 @@ private extension UserProfileSheetViewController {
     }
 
     func configureTable() {
-        tableView.backgroundColor = .basicBackground
+        tableView.backgroundColor = .systemBackground
         tableView.separatorStyle = .none
         tableView.isScrollEnabled = false
     }

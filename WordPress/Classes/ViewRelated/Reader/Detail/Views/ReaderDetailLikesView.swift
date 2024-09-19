@@ -19,7 +19,7 @@ class ReaderDetailLikesView: UIView, NibLoadable {
     }
 
     private var preferredBorderColor: UIColor {
-        displaySetting.color == .system ? .basicBackground : displaySetting.color.background
+        displaySetting.color == .system ? .systemBackground : displaySetting.color.background
     }
 
     /// The UIImageView used to display the current user's avatar image. This view is hidden by default.
@@ -200,7 +200,7 @@ private extension ReaderDetailLikesView {
         let lastPart = labelParts.last ?? ""
 
         let foregroundColor = displaySetting.color.secondaryForeground
-        let highlightedColor = displaySetting.color == .system ? .primary : displaySetting.color.foreground
+        let highlightedColor = displaySetting.color == .system ? UIAppColor.primary : displaySetting.color.foreground
 
         let foregroundAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: foregroundColor]
         var highlightedAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: highlightedColor]

@@ -181,7 +181,7 @@ final class PageListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
     private func setupEllipsisButton() {
         ellipsisButton.translatesAutoresizingMaskIntoConstraints = false
         ellipsisButton.setImage(UIImage(named: "more-horizontal-mobile"), for: .normal)
-        ellipsisButton.tintColor = .listIcon
+        ellipsisButton.tintColor = .secondaryLabel
 
         NSLayoutConstraint.activate([
             ellipsisButton.widthAnchor.constraint(equalToConstant: 24)

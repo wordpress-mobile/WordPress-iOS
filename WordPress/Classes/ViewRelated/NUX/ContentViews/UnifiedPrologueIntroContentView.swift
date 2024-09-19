@@ -12,22 +12,26 @@ struct UnifiedPrologueIntroContentView: View {
 
                     ZStack(alignment: .bottomLeading) {
                         PrologueIntroImage(imageName: "introWebsite4", idealHeight: content.size.height * 0.38)
-                        CircledIcon(size: content.size.width * 0.15,
-                                    xOffset: -content.size.width * 0.125,
-                                    yOffset: content.size.height * 0.04,
-                                    iconType: .pages,
-                                    backgroundColor: Color(UIColor.muriel(name: .celadon, .shade30)))
+                        CircledIcon(
+                            size: content.size.width * 0.15,
+                            xOffset: -content.size.width * 0.125,
+                            yOffset: content.size.height * 0.04,
+                            iconType: .pages,
+                            backgroundColor: Color(UIAppColor.celadon(.shade30))
+                        )
                     }
                 }
 
                 VStack {
                     ZStack(alignment: .bottomLeading) {
                         PrologueIntroImage(imageName: "introWebsite2", idealHeight: content.size.height * 0.5)
-                        CircledIcon(size: content.size.width * 0.18,
-                                    xOffset: -content.size.width * 0.115,
-                                    yOffset: -content.size.height * 0.07,
-                                    iconType: .customize,
-                                    backgroundColor: Color(UIColor.muriel(name: .orange, .shade30)))
+                        CircledIcon(
+                            size: content.size.width * 0.18,
+                            xOffset: -content.size.width * 0.115,
+                            yOffset: -content.size.height * 0.07,
+                            iconType: .customize,
+                            backgroundColor: Color(UIAppColor.orange(.shade30))
+                        )
                     }
                     .offset(x: 0, y: -content.size.height * 0.04)
 
@@ -44,11 +48,13 @@ struct UnifiedPrologueIntroContentView: View {
 
                     ZStack(alignment: .topTrailing) {
                         PrologueIntroImage(imageName: "introWebsite7", idealHeight: content.size.height * 0.43)
-                        CircledIcon(size: content.size.width * 0.22,
-                                    xOffset: content.size.width * 0.06,
-                                    yOffset: -content.size.height * 0.19,
-                                    iconType: .create,
-                                    backgroundColor: Color(UIColor.muriel(name: .pink, .shade40)))
+                        CircledIcon(
+                            size: content.size.width * 0.22,
+                            xOffset: content.size.width * 0.06,
+                            yOffset: -content.size.height * 0.19,
+                            iconType: .create,
+                            backgroundColor: Color(UIAppColor.pink(.shade40))
+                        )
                     }
                     .offset(x: 0, y: content.size.height * 0.03)
                 }

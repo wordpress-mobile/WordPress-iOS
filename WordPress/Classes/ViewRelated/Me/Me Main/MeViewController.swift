@@ -1,13 +1,13 @@
 import UIKit
-import CocoaLumberjack
 import WordPressShared
-import Gridicons
 import WordPressAuthenticator
 import AutomatticAbout
 
 class MeViewController: UITableViewController {
     var handler: ImmuTableViewHandler!
     var isSidebarModeEnabled = false
+
+    private lazy var headerView = MeHeaderView()
 
     // MARK: - Table View Controller
 
@@ -31,8 +31,12 @@ class MeViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Preventing MultiTouch Scenarios
-        view.isExclusiveTouch = true
+        if isSidebarModeEnabled {
+            /// We can't use trait collection here because on iPad .form sheet is still
+            /// considered to be ` .compact` size class, so it has to be invoked manually.
+            headerView.configureHorizontalMode()
+        }
+
         ImmuTable.registerRows([
             NavigationItemRow.self,
             IndicatorNavigationItemRow.self,
@@ -49,17 +53,11 @@ class MeViewController: UITableViewController {
         tableView.accessibilityIdentifier = "Me Table"
 
         reloadViewModel()
-
-        if isSidebarModeEnabled {
-            tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .none)
-            if let myProfileViewController {
-                showOrPushController(myProfileViewController)
-            }
-        }
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+
         tableView.layoutHeaderView()
     }
 
@@ -104,7 +102,10 @@ class MeViewController: UITableViewController {
         //
         // My guess is the table view adjusts the height of the first section
         // based on if there's a header or not.
-        tableView.tableHeaderView = account.map { headerViewForAccount($0) }
+        if let account {
+            headerView.update(with: MeHeaderViewModel(account: account))
+        }
+        tableView.tableHeaderView = headerView
 
         // After we've reloaded the view model we should maintain the current
         // table row selection, or if the split view we're in is not compact
@@ -123,23 +124,17 @@ class MeViewController: UITableViewController {
         }
     }
 
-    fileprivate func headerViewForAccount(_ account: WPAccount) -> MeHeaderView {
-        headerView.displayName = account.displayName
-        headerView.username = account.username
-        headerView.gravatarEmail = account.email
-
-        return headerView
-    }
-
     private var appSettingsRow: NavigationItemRow {
         let accessoryType: UITableViewCell.AccessoryType = isPrimaryViewControllerInSplitView() ? .none : .disclosureIndicator
 
         return NavigationItemRow(
             title: RowTitles.appSettings,
-            icon: .gridicon(.phone),
+            icon: UIImage(named: UIDevice.isPad() ? "wpl-tablet" : "wpl-phone")?.withRenderingMode(.alwaysTemplate),
+            tintColor: .label,
             accessoryType: accessoryType,
             action: pushAppSettings(),
-            accessibilityIdentifier: "appSettings")
+            accessibilityIdentifier: "appSettings"
+        )
     }
 
     fileprivate func tableViewModel(with account: WPAccount?) -> ImmuTable {
@@ -149,28 +144,32 @@ class MeViewController: UITableViewController {
 
         let myProfile = NavigationItemRow(
             title: RowTitles.myProfile,
-            icon: .gridicon(.user),
+            icon: UIImage(named: "site-menu-people")?.withRenderingMode(.alwaysTemplate),
+            tintColor: .label,
             accessoryType: accessoryType,
             action: pushMyProfile(),
             accessibilityIdentifier: "myProfile")
 
         let qrLogin = NavigationItemRow(
             title: RowTitles.qrLogin,
-            icon: .gridicon(.camera),
+            icon: UIImage(named: "wpl-capture-photo")?.withRenderingMode(.alwaysTemplate),
+            tintColor: .label,
             accessoryType: accessoryType,
             action: presentQRLogin(),
             accessibilityIdentifier: "qrLogin")
 
         let accountSettings = NavigationItemRow(
             title: RowTitles.accountSettings,
-            icon: .gridicon(.cog),
+            icon: UIImage(named: "wpl-gearshape")?.withRenderingMode(.alwaysTemplate),
+            tintColor: .label,
             accessoryType: accessoryType,
             action: pushAccountSettings(),
             accessibilityIdentifier: "accountSettings")
 
         let helpAndSupportIndicator = IndicatorNavigationItemRow(
             title: RowTitles.support,
-            icon: .gridicon(.help),
+            icon: UIImage(named: "wpl-help")?.withRenderingMode(.alwaysTemplate),
+            tintColor: .label,
             showIndicator: ZendeskUtils.showSupportNotificationIndicator,
             accessoryType: accessoryType,
             action: pushHelp())
@@ -199,38 +198,42 @@ class MeViewController: UITableViewController {
 
                     rows = loggedInRows + rows
                 }
-                return rows
+                return rows + [helpAndSupportIndicator]
             }()),
             // middle section
             ImmuTableSection(rows: {
-                var rows: [ImmuTableRow] = [helpAndSupportIndicator]
+                var rows: [ImmuTableRow] = []
 
-                rows.append(NavigationItemRow(title: Strings.submitFeedback,
-                                              icon: UIImage.gridicon(.pencil),
-                                              accessoryType: accessoryType,
-                                              action: showFeedbackView()))
+                rows.append(ButtonRow(
+                    title: Strings.submitFeedback,
+                    textAlignment: .left,
+                    action: showFeedbackView())
+                )
 
-                rows.append(NavigationItemRow(title: ShareAppContentPresenter.RowConstants.buttonTitle,
-                                              icon: UIImage.gridicon(.shareiOS),
-                                              accessoryType: accessoryType,
-                                              action: displayShareFlow(),
-                                              loading: sharePresenter.isLoading))
+                rows.append(ButtonRow(
+                    title: ShareAppContentPresenter.RowConstants.buttonTitle,
+                    textAlignment: .left,
+                    isLoading: sharePresenter.isLoading,
+                    action: displayShareFlow())
+                )
 
-                rows.append(NavigationItemRow(title: RowTitles.about,
-                                              icon: UIImage.gridicon(AppConfiguration.isJetpack ? .plans : .mySites),
-                                              accessoryType: accessoryType,
-                                              action: pushAbout(),
-                                              accessibilityIdentifier: "About"))
+                rows.append(ButtonRow(
+                    title: RowTitles.about,
+                    textAlignment: .left,
+                    action: pushAbout(),
+                    accessibilityIdentifier: "About")
+                )
                 return rows
             }())
         ]
 
-        #if JETPACK
+        #if IS_JETPACK
         if RemoteFeatureFlag.domainManagement.enabled() && loggedIn && !isSidebarModeEnabled {
             sections.append(.init(rows: [
                 NavigationItemRow(
                     title: AllDomainsListViewController.Strings.title,
-                    icon: UIImage(systemName: "globe"),
+                    icon: UIImage(named: "wpl-globe")?.withRenderingMode(.alwaysTemplate),
+                    tintColor: .label,
                     accessoryType: accessoryType,
                     action: { [weak self] action in
                         self?.showOrPushController(AllDomainsListViewController())
@@ -388,7 +391,7 @@ class MeViewController: UITableViewController {
     /// Selects the All Domains row and pushes the All Domains view controller
     ///
     public func navigateToAllDomains() {
-    #if JETPACK
+    #if IS_JETPACK
         navigateToTarget(for: AllDomainsListViewController.Strings.title)
     #endif
     }
@@ -458,7 +461,7 @@ class MeViewController: UITableViewController {
             completion?()
             return
         } else if let navigationController {
-            navigationController.pushViewController(controller, animated: true, rightBarButton: self.navigationItem.rightBarButtonItem)
+            navigationController.pushViewController(controller, animated: true, rightBarButton: self.isSidebarModeEnabled ? nil : self.navigationItem.rightBarButtonItem)
             navigationController.transitionCoordinator?.animate(alongsideTransition: nil, completion: { _ in
                 completion?()
             })
@@ -551,14 +554,30 @@ class MeViewController: UITableViewController {
 
     // MARK: - Private Properties
 
-    fileprivate lazy var headerView = MeHeaderView()
-
     /// Shows an actionsheet with options to Log In or Create a WordPress site.
     /// This is a temporary stop-gap measure to preserve for users only logged
     /// into a self-hosted site the ability to create a WordPress.com account.
     ///
     fileprivate func promptForLoginOrSignup() {
-        WordPressAuthenticator.showLogin(from: self, animated: true, showCancel: true, restrictToWPCom: true)
+        Task { @MainActor in
+            WPAnalytics.track(.wpcomWebSignIn, properties: ["source": "me", "stage": "start"])
+
+            let token: String
+            do {
+                token = try await WordPressDotComAuthenticator().authenticate(from: self)
+            } catch {
+                WPAnalytics.track(.wpcomWebSignIn, properties: ["source": "me", "stage": "error", "error": "\(error)"])
+                return
+            }
+
+            WPAnalytics.track(.wpcomWebSignIn, properties: ["source": "me", "stage": "success"])
+
+            SVProgressHUD.show()
+            let credentials = WordPressComCredentials(authToken: token, isJetpackLogin: false, multifactor: false)
+            WordPressAuthenticator.shared.delegate!.sync(credentials: .init(wpcom: credentials)) {
+                SVProgressHUD.dismiss()
+            }
+        }
     }
 
     private lazy var sharePresenter: ShareAppContentPresenter = {

@@ -1,8 +1,6 @@
 /// Registration and dequeuing of cells for table views in Reader
 final class ReaderTableConfiguration {
     private let footerViewNibName = "PostListFooterView"
-    private let readerCardCellNibName = "OldReaderPostCardCell"
-    private let oldReaderCardCellReuseIdentifier = "OldReaderCardCellReuseIdentifier"
     private let readerCardCellReuseIdentifier = "ReaderCardCellReuseIdentifier"
     private let readerBlockedCellNibName = "ReaderBlockedSiteCell"
     private let readerBlockedCellReuseIdentifier = "ReaderBlockedCellReuseIdentifier"
@@ -35,10 +33,6 @@ final class ReaderTableConfiguration {
 
     private func setUpCardCell(_ tableView: UITableView) {
         tableView.register(ReaderPostCardCell.self, forCellReuseIdentifier: readerCardCellReuseIdentifier)
-
-        // TODO: Delete when we remove the Reader Improvements v1 (`readerImprovements`) feature flag
-        let nib = UINib(nibName: readerCardCellNibName, bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: oldReaderCardCellReuseIdentifier)
     }
 
     private func setUpBlockerCell(_ tableView: UITableView) {

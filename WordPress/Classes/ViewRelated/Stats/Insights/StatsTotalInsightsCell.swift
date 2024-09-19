@@ -91,11 +91,11 @@ struct StatsTotalInsightsData: Equatable {
 
         let textRange = NSMakeRange(0, formattedString.count)
         attributedString.addAttribute(.font, value: UIFont.preferredFont(forTextStyle: .subheadline), range: textRange)
-        attributedString.addAttribute(.foregroundColor, value: UIColor.text, range: textRange)
+        attributedString.addAttribute(.foregroundColor, value: UIColor.label, range: textRange)
 
         let titlePlaceholderRange = (text as NSString).range(of: "%1$@")
         let titleRange = NSMakeRange(titlePlaceholderRange.location, title.count)
-        attributedString.addAttribute(.foregroundColor, value: UIColor.primary, range: titleRange)
+        attributedString.addAttribute(.foregroundColor, value: UIAppColor.primary, range: titleRange)
 
         let formattedTitleString = String.localizedStringWithFormat(text, title, "%2$@")
         let countPlaceholderRange = (formattedTitleString as NSString).range(of: "%2$@")
@@ -209,7 +209,7 @@ class StatsTotalInsightsCell: StatsBaseCell {
 
     private func configureLabels() {
         countLabel.font = WPStyleGuide.Stats.insightsCountFont
-        countLabel.textColor = .text
+        countLabel.textColor = .label
         countLabel.text = "0"
         countLabel.adjustsFontForContentSizeCategory = true
         countLabel.adjustsFontSizeToFitWidth = true
@@ -218,11 +218,11 @@ class StatsTotalInsightsCell: StatsBaseCell {
         countLabel.maximumContentSizeCategory = .accessibilityLarge
 
         comparisonLabel.font = .preferredFont(forTextStyle: .subheadline)
-        comparisonLabel.textColor = .textSubtle
+        comparisonLabel.textColor = .secondaryLabel
         comparisonLabel.numberOfLines = 0
 
         guideViewLabel.font = .preferredFont(forTextStyle: .subheadline)
-        guideViewLabel.textColor = .text
+        guideViewLabel.textColor = .label
         guideViewLabel.numberOfLines = 0
         guideViewLabel.lineBreakMode = .byWordWrapping
     }
@@ -239,7 +239,7 @@ class StatsTotalInsightsCell: StatsBaseCell {
             graphView.heightAnchor.constraint(equalTo: countLabel.heightAnchor)
         ])
 
-        guideView.pinSubviewToAllEdges(guideViewLabel, insets: UIEdgeInsets(allEdges: 16.0), priority: .required)
+        guideView.pinSubviewToAllEdges(guideViewLabel, insets: UIEdgeInsets(.all, 16), priority: .required)
     }
 
     func configure(dataRow: StatsTotalInsightsData, statSection: StatSection, siteStatsInsightsDelegate: SiteStatsInsightsDelegate?) {
@@ -342,7 +342,7 @@ class StatsTotalInsightsCell: StatsBaseCell {
     }
 
     private func attributedDifferenceString(_ string: String, highlightAttributes: [NSAttributedString.Key: Any]) -> NSAttributedString {
-        let defaultAttributes = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .subheadline), NSAttributedString.Key.foregroundColor: UIColor.textSubtle]
+        let defaultAttributes = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .subheadline), NSAttributedString.Key.foregroundColor: UIColor.secondaryLabel]
 
         guard let range = StatsTotalInsightsCell.rangeOfDifferenceSubstring(string) else {
             return NSAttributedString(string: string, attributes: defaultAttributes)

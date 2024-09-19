@@ -15,6 +15,7 @@ private enum UPRUConstants {
     static let isJPContentImportCompleteKey = "jetpackContentImportComplete"
     static let jetpackContentMigrationStateKey = "jetpackContentMigrationState"
     static let mediaAspectRatioModeEnabledKey = "mediaAspectRatioModeEnabled"
+    static let readerSidebarSelectionKey = "readerSidebarSelectionKey"
 }
 
 protocol UserPersistentRepositoryUtility: AnyObject {
@@ -153,6 +154,18 @@ extension UserPersistentRepositoryUtility {
         }
         set {
             UserPersistentStoreFactory.instance().set(newValue, forKey: UPRUConstants.mediaAspectRatioModeEnabledKey)
+        }
+    }
+
+    var readerSidebarSelection: ReaderStaticScreen? {
+        get {
+            let repository = UserPersistentStoreFactory.instance()
+            return repository.string(forKey: UPRUConstants.readerSidebarSelectionKey)
+                .flatMap(ReaderStaticScreen.init)
+        }
+        set {
+            let repository = UserPersistentStoreFactory.instance()
+            repository.set(newValue?.rawValue, forKey: UPRUConstants.readerSidebarSelectionKey)
         }
     }
 }

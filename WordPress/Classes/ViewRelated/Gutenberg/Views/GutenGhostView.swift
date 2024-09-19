@@ -60,10 +60,7 @@ class GutenGhostView: UIView {
     }
 
     func startAnimation() {
-        let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
-                               beatStartColor: .placeholderElement,
-                               beatEndColor: .beatEndColor)
-        startGhostAnimation(style: style)
+        startGhostAnimation()
     }
 
     private func commonInit() {

@@ -41,7 +41,7 @@ class MessageAnimator: Animator {
     fileprivate let targetView: UIView
     fileprivate let noticeLabel: PaddedLabel = {
         let label = PaddedLabel()
-        label.backgroundColor = .primary(.shade40)
+        label.backgroundColor = UIAppColor.primary(.shade40)
         label.clipsToBounds = true
         label.padding.horizontal = Defaults.padding.horizontal
         label.label.textColor = UIColor.white

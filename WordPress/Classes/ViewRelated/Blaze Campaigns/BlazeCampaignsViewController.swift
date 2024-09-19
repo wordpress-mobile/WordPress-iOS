@@ -170,7 +170,7 @@ final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost, B
     // MARK: - Private
 
     private func setupView() {
-        view.backgroundColor = .DS.Background.primary
+        view.backgroundColor = .systemGroupedBackground
         view.addSubview(tableView)
         view.pinSubviewToAllEdges(tableView)
     }

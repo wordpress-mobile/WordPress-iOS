@@ -23,7 +23,7 @@ class DashboardBadgeCell: UICollectionViewCell, Reusable {
     }
 
     private func setup() {
-        contentView.backgroundColor = .listBackground
+        contentView.backgroundColor = .systemGroupedBackground
         contentView.addSubview(jetpackButton)
         NSLayoutConstraint.activate([
             jetpackButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),

@@ -1,5 +1,10 @@
-Nous avons corrigé trois gros problèmes dans cette version :
-* Certains utilisateurs ne pouvaient pas mettre à jour le contenu de leurs articles.
-* Chez certains utilisateurs, la rotation des images se faisait dans le mauvais sens.
-* Des blocs non pris en charge provoquaient un plantage rare dans l’éditeur.
-Comme toujours, veuillez contacter l’assistance en cas de dysfonctionnement !
+Ce mois-ci, nous avons beaucoup de corrections visuelles et une nouvelle fonctionnalité expérimentale sur laquelle nous aimerions avoir votre avis.
+
+Au niveau visuel, nous avons :
+- mis à jour le sélecteur de site pour qu’il soit plus simple et facile à utiliser, il prend en charge les sites de préproduction, les menus contextuels et les aperçus.
+- réglé un problème qui rendait transparentes les barres de navigation dans l’application.
+- réglé un problème qui empêchait le chargement des icônes de site privé.
+- mis à jour des dizaines d’écrans pour éviter les bugs visuels en simplifiant le code.
+- réglé un problème qui faisait apparaître le tableau des abonnés avec la mauvaise couleur d’arrière-plan.
+
+Dans « Réglages de l’application », vous pouvez désormais essayer les mots de passe d’application – une nouvelle fonctionnalité expérimentale pour les sites auto-hébergés qui les autorise à fonctionner avec les applications s’ils utilisent l’authentification à deux facteurs ou le SSO.

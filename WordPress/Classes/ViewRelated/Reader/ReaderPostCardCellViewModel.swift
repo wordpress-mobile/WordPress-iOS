@@ -195,14 +195,6 @@ struct ReaderPostCardCellViewModel {
         guard let readerPost, let parentViewController else {
             return
         }
-
-        if let indexPath = parentViewController.tableView.indexPath(for: cell),
-           let topic = parentViewController.readerTopic,
-           ReaderHelpers.topicIsDiscover(topic),
-           parentViewController.shouldShowCommentSpotlight {
-            parentViewController.reloadReaderDiscoverNudgeFlow(at: indexPath)
-        }
-
         ReaderCommentAction().execute(post: readerPost, origin: parentViewController, source: .postCard)
     }
 
@@ -233,5 +225,29 @@ struct ReaderPostCardCellViewModel {
         )
         WPAnalytics.trackReader(.postCardMoreTapped)
     }
+}
 
+enum ReaderActionsVisibility: Equatable {
+    case hidden
+    case visible(enabled: Bool)
+
+    static func == (lhs: ReaderActionsVisibility, rhs: ReaderActionsVisibility) -> Bool {
+        switch (lhs, rhs) {
+        case (.hidden, .hidden):
+            return true
+        case (.visible(let lenabled), .visible(let renabled)):
+            return lenabled == renabled
+        default:
+            return false
+        }
+    }
+
+    var isEnabled: Bool {
+        switch self {
+        case .hidden:
+            return false
+        case .visible(let enabled):
+            return enabled
+        }
+    }
 }

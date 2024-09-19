@@ -31,8 +31,6 @@ class ReaderTabView: UIView {
         return viewModel.tabItems.firstIndex(where: { ($0.content.topic as? ReaderTeamTopic)?.organizationID == SiteOrganizationType.p2.rawValue })
     }
 
-    var isSidebarModeEnabled = false
-
     init(viewModel: ReaderTabViewModel) {
         mainStackView = UIStackView()
         containerView = UIView()
@@ -129,46 +127,24 @@ extension ReaderTabView {
         containerView.pinSubviewToAllEdges(childController.view)
 
         self.childController = childController
-
-        if viewModel.shouldShowCommentSpotlight {
-            let title = NSLocalizedString("Comment to start making connections.", comment: "Hint for users to grow their audience by commenting on other blogs.")
-            childController.displayNotice(title: title)
-        }
     }
 
     private func activateConstraints() {
-        if viewModel.isSidebarModeEnabled {
-            mainStackViewTopAnchor = mainStackView.topAnchor.constraint(equalTo: buttonContainer.bottomAnchor)
-            guard let mainStackViewTopAnchor else { return }
-            NSLayoutConstraint.activate([
-                navigationMenu.centerXAnchor.constraint(equalTo: buttonContainer.centerXAnchor),
-                navigationMenu.topAnchor.constraint(equalTo: buttonContainer.topAnchor, constant: 8.0),
-                navigationMenu.bottomAnchor.constraint(equalTo: buttonContainer.bottomAnchor, constant: -8.0),
-                buttonContainer.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-                buttonContainer.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
-                buttonContainer.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
-                mainStackViewTopAnchor,
-                mainStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
-                mainStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
-                mainStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            ])
-        } else {
-            mainStackViewTopAnchor = mainStackView.topAnchor.constraint(equalTo: buttonContainer.bottomAnchor)
-            guard let mainStackViewTopAnchor else { return }
-            NSLayoutConstraint.activate([
-                navigationMenu.leadingAnchor.constraint(equalTo: buttonContainer.leadingAnchor, constant: 12.0),
-                navigationMenu.trailingAnchor.constraint(equalTo: buttonContainer.trailingAnchor, constant: -16.0),
-                navigationMenu.topAnchor.constraint(equalTo: buttonContainer.topAnchor, constant: 8.0),
-                navigationMenu.bottomAnchor.constraint(equalTo: buttonContainer.bottomAnchor, constant: -8.0),
-                buttonContainer.topAnchor.constraint(equalTo: safeTopAnchor),
-                buttonContainer.leadingAnchor.constraint(equalTo: safeLeadingAnchor),
-                buttonContainer.trailingAnchor.constraint(equalTo: safeTrailingAnchor),
-                mainStackViewTopAnchor,
-                mainStackView.trailingAnchor.constraint(equalTo: safeTrailingAnchor),
-                mainStackView.leadingAnchor.constraint(equalTo: safeLeadingAnchor),
-                mainStackView.bottomAnchor.constraint(equalTo: safeBottomAnchor),
-            ])
-        }
+        mainStackViewTopAnchor = mainStackView.topAnchor.constraint(equalTo: buttonContainer.bottomAnchor)
+        guard let mainStackViewTopAnchor else { return }
+        NSLayoutConstraint.activate([
+            navigationMenu.leadingAnchor.constraint(equalTo: buttonContainer.leadingAnchor, constant: 12.0),
+            navigationMenu.trailingAnchor.constraint(equalTo: buttonContainer.trailingAnchor, constant: -16.0),
+            navigationMenu.topAnchor.constraint(equalTo: buttonContainer.topAnchor, constant: 8.0),
+            navigationMenu.bottomAnchor.constraint(equalTo: buttonContainer.bottomAnchor, constant: -8.0),
+            buttonContainer.topAnchor.constraint(equalTo: safeTopAnchor),
+            buttonContainer.leadingAnchor.constraint(equalTo: safeLeadingAnchor),
+            buttonContainer.trailingAnchor.constraint(equalTo: safeTrailingAnchor),
+            mainStackViewTopAnchor,
+            mainStackView.trailingAnchor.constraint(equalTo: safeTrailingAnchor),
+            mainStackView.leadingAnchor.constraint(equalTo: safeLeadingAnchor),
+            mainStackView.bottomAnchor.constraint(equalTo: safeBottomAnchor),
+        ])
     }
 
     func applyFilter(for selectedTopic: ReaderAbstractTopic?) {
@@ -253,7 +229,7 @@ private extension ReaderTabView {
 
     enum Appearance {
         static let barHeight: CGFloat = 48
-        static let dividerColor: UIColor = .divider
+        static let dividerColor: UIColor = .separator
         static let hideShowBarDuration: CGFloat = 0.2
     }
 }

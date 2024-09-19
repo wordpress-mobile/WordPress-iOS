@@ -4,36 +4,55 @@ import WordPressKit
 import WordPressAuthenticator
 
 enum SidebarSelection: Hashable {
-    case empty // No sites
+    case welcome
     case blog(TaggedManagedObjectID<Blog>)
     case notifications
     case reader
 }
 
 enum SidebarNavigationStep {
-    case allSites
+    case allSites(sourceRect: CGRect)
     case addSite(selection: AddSiteMenuViewModel.Selection)
     case domains
     case help
     case profile
+    case signIn
 }
 
 final class SidebarViewModel: ObservableObject {
     @Published var selection: SidebarSelection?
     @Published private(set) var account: WPAccount?
 
+    let blogListViewModel = BlogListViewModel()
+
     var navigate: (SidebarNavigationStep) -> Void = { _ in }
 
     private let contextManager: CoreDataStackSwift
+    private var previousReloadTimestamp: Date?
     private var cancellables: [AnyCancellable] = []
 
     init(contextManager: CoreDataStackSwift = ContextManager.shared) {
         self.contextManager = contextManager
 
-        // TODO: (wpsidebar) can it change during the root presenter lifetime?
         account = try? WPAccount.lookupDefaultWordPressComAccount(in: contextManager.mainContext)
         resetSelection()
         setupObservers()
+    }
+
+    func onAppear() {
+        reloadMenuIfNeeded()
+    }
+
+    private func reloadMenuIfNeeded() {
+        blogListViewModel.updateDisplayedSites()
+
+        if Date.now.timeIntervalSince(previousReloadTimestamp ?? .distantPast) > 60 {
+            previousReloadTimestamp = .now
+
+            Task {
+                try? await blogListViewModel.refresh()
+            }
+        }
     }
 
     private func setupObservers() {
@@ -50,6 +69,14 @@ final class SidebarViewModel: ObservableObject {
             .publisher(for: .init(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification))
             .sink { [weak self] _ in self?.resetSelection() }
             .store(in: &cancellables)
+
+        NotificationCenter.default
+            .publisher(for: .WPAccountDefaultWordPressComAccountChanged)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                self.account = try? WPAccount.lookupDefaultWordPressComAccount(in: self.contextManager.mainContext)
+            }
+            .store(in: &cancellables)
     }
 
     private func resetSelection() {
@@ -57,7 +84,7 @@ final class SidebarViewModel: ObservableObject {
         if let blog {
             selection = .blog(TaggedManagedObjectID(blog))
         } else {
-            selection = .empty
+            selection = .welcome
         }
     }
 }

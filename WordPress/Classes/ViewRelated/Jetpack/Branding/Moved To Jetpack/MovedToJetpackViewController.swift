@@ -82,7 +82,7 @@ final class MovedToJetpackViewController: UIViewController {
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = true
         label.numberOfLines = 0
-        label.textColor = .text
+        label.textColor = .label
         return label
     }()
 
@@ -94,7 +94,7 @@ final class MovedToJetpackViewController: UIViewController {
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = true
         label.numberOfLines = 0
-        label.textColor = .text
+        label.textColor = .label
         return label
     }()
 
@@ -106,7 +106,7 @@ final class MovedToJetpackViewController: UIViewController {
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = true
         label.numberOfLines = 0
-        label.textColor = .textSubtle
+        label.textColor = .secondaryLabel
         return label
     }()
 
@@ -115,8 +115,8 @@ final class MovedToJetpackViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(viewModel.jetpackButtonTitle, for: .normal)
         button.isPrimary = true
-        button.primaryNormalBackgroundColor = .jetpackGreen
-        button.primaryHighlightBackgroundColor = .muriel(color: .jetpackGreen, .shade80)
+        button.primaryNormalBackgroundColor = UIAppColor.jetpackGreen
+        button.primaryHighlightBackgroundColor = UIAppColor.jetpackGreen(.shade80)
         button.addTarget(self, action: #selector(jetpackButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -125,7 +125,7 @@ final class MovedToJetpackViewController: UIViewController {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setAttributedTitle(learnMoreAttributedString(), for: .normal)
-        button.tintColor = .jetpackGreen
+        button.tintColor = UIAppColor.jetpackGreen
         button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .regular)
         button.addTarget(self, action: #selector(learnMoreButtonTapped), for: .touchUpInside)
         return button
@@ -202,7 +202,9 @@ final class MovedToJetpackViewController: UIViewController {
     }
 
     private func learnMoreAttributedString() -> NSAttributedString {
-        let externalAttachment = NSTextAttachment(image: UIImage.gridicon(.external, size: Metrics.externalIconSize).withTintColor(.jetpackGreen))
+        let image = UIImage.gridicon(.external, size: Metrics.externalIconSize)
+            .withTintColor(UIAppColor.jetpackGreen)
+        let externalAttachment = NSTextAttachment(image: image)
         externalAttachment.bounds = Metrics.externalIconBounds
         let attachmentString = NSAttributedString(attachment: externalAttachment)
         let learnMoreText = NSMutableAttributedString(string: "\(viewModel.learnMoreButtonTitle) \u{FEFF}")

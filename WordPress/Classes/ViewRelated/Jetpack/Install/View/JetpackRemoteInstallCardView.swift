@@ -44,7 +44,7 @@ class JetpackRemoteInstallCardView: UIView {
     private lazy var learnMoreButton: UIButton = {
         let button = UIButton()
         button.setTitle(Strings.learnMore, for: .normal)
-        button.setTitleColor(.primary, for: .normal)
+        button.setTitleColor(UIAppColor.primary, for: .normal)
         button.titleLabel?.font = Constants.learnMoreFont
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.contentHorizontalAlignment = .leading

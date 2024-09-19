@@ -6,7 +6,7 @@ import Combine
 
     // MARK: - Properties
     /// tab bar items
-    private let tabItemsStore: ItemsStore
+    private let tabItemsStore: ReaderTabItemsStoreProtocol
     private var subscription: Receipt?
     private let persistentRepository: UserPersistentRepository
     private var onTabBarItemsDidChange: [(([ReaderTabItem], Int) -> Void)] = []
@@ -49,9 +49,6 @@ import Combine
     /// search
     var navigateToSearch: () -> Void
 
-    /// Spotlight
-    var shouldShowCommentSpotlight: Bool = false
-
     /// Settings
     private let settingsPresenter: ScenePresenter
 
@@ -83,11 +80,9 @@ import Combine
     /// When this property is nil, it means the stream is in an unfiltered state.
     @Published var activeStreamFilter: (filterID: FilterProvider.ID, topic: ReaderAbstractTopic)?
 
-    var isSidebarModeEnabled = false
-
     init(readerContentFactory: @escaping (ReaderContent) -> ReaderContentViewController,
          searchNavigationFactory: @escaping () -> Void,
-         tabItemsStore: ItemsStore,
+         tabItemsStore: ReaderTabItemsStoreProtocol,
          settingsPresenter: ScenePresenter,
          persistentRepository: UserPersistentRepository = UserPersistentStoreFactory.instance()) {
         self.makeReaderContentViewController = readerContentFactory

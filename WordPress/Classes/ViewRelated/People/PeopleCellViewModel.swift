@@ -26,24 +26,24 @@ struct PeopleCellViewModel {
     }
 
     var usernameColor: UIColor {
-        return .text
+        .label
     }
 
     var roleBackgroundColor: UIColor {
         switch role?.slug {
         case .some("super-admin"), .some("administrator"):
-            return .DS.Foreground.primary
+            return .systemGroupedBackground
         default:
-            return .DS.Background.secondary
+            return .secondarySystemGroupedBackground
         }
     }
 
     var roleTextColor: UIColor {
         switch role?.slug {
         case .some("super-admin"), .some("administrator"):
-            return .DS.Background.primary
+            return .label
         default:
-            return .DS.Foreground.primary
+            return .label
         }
     }
 
@@ -60,7 +60,7 @@ struct PeopleCellViewModel {
     }
 
     var superAdminBackgroundColor: UIColor {
-        return .DS.Foreground.primary
+        return .secondarySystemGroupedBackground
     }
 
     var superAdminHidden: Bool {

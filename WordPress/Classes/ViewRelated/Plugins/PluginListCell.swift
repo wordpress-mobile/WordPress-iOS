@@ -26,8 +26,8 @@ class PluginListCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        nameLabel.textColor = .text
-        authorLabel.textColor = .textSubtle
+        nameLabel.textColor = .label
+        authorLabel.textColor = .secondaryLabel
     }
 
     override func prepareForReuse() {

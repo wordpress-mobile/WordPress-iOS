@@ -25,39 +25,8 @@
     button.tintColor = [UIColor murielPrimary];
 }
 
-+ (void)applyRestoreSavedPostLabelStyle:(UILabel *)label
-{
-    [WPStyleGuide configureLabel:label textStyle:UIFontTextStyleCallout];
-    label.textColor = [UIColor murielTextSubtle];
-}
-
-+ (void)applyRestoreSavedPostTitleLabelStyle:(UILabel *)label
-{
-    [WPStyleGuide configureLabel:label
-                       textStyle:UIFontTextStyleCallout
-                      fontWeight:UIFontWeightSemibold];
-
-    UIFontDescriptor *descriptor = [label.font fontDescriptor];
-    UIFontDescriptorSymbolicTraits traits = [descriptor symbolicTraits];
-    descriptor = [descriptor fontDescriptorWithSymbolicTraits:traits | UIFontDescriptorTraitItalic];
-    label.font = [UIFont fontWithDescriptor:descriptor size:label.font.pointSize];
-    label.textColor = [UIColor murielTextSubtle];
-}
-
-+ (void)applyRestoreSavedPostButtonStyle:(UIButton *)button
-{
-    [WPStyleGuide configureLabel:button.titleLabel
-                       textStyle:UIFontTextStyleCallout
-                      fontWeight:UIFontWeightSemibold];
-    [button setTitleColor:[UIColor murielPrimary] forState:UIControlStateNormal];
-}
-
 + (UIFont *)regularFont {
     return [WPStyleGuide fontForTextStyle:UIFontTextStyleSubheadline maximumPointSize:[WPStyleGuide maxFontSize]];
-}
-
-+ (UIFont *)smallFont {
-    return [WPStyleGuide fontForTextStyle:UIFontTextStyleCaption1 maximumPointSize:[WPStyleGuide maxFontSize]];
 }
 
 @end

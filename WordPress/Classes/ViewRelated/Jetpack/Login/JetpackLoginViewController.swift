@@ -67,12 +67,12 @@ class JetpackLoginViewController: UIViewController {
         toggleHidingImageView(for: traitCollection)
 
         descriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
-        descriptionLabel.textColor = .text
+        descriptionLabel.textColor = .label
 
         tacButton.titleLabel?.numberOfLines = 0
 
         faqButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .medium)
-        faqButton.setTitleColor(.primary, for: .normal)
+        faqButton.setTitleColor(UIAppColor.primary, for: .normal)
 
         updateMessageAndButton()
     }
@@ -142,7 +142,7 @@ class JetpackLoginViewController: UIViewController {
                                                 lineBreakMode: .byWordWrapping,
                                                 alignment: .center)
         let attributes: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.fontForTextStyle(.footnote),
-                                                         .foregroundColor: UIColor.textSubtle,
+                                                         .foregroundColor: UIColor.secondaryLabel,
                                                          .paragraphStyle: paragraph]
         let attributedTitle = NSMutableAttributedString(string: Constants.Buttons.termsAndConditionsTitle,
                                                         attributes: attributes)

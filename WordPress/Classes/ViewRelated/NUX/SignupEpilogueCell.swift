@@ -90,7 +90,7 @@ class SignupEpilogueCell: UITableViewCell {
         cellType = newCellType
 
         cellLabel.text = labelText
-        cellLabel.textColor = .text
+        cellLabel.textColor = .label
 
         cellField.text = fieldValue
         cellField.placeholder = fieldPlaceholder
@@ -106,13 +106,13 @@ class SignupEpilogueCell: UITableViewCell {
         configureEditable(for: newCellType)
         configureKeyboardReturnKey(for: newCellType)
 
-        addBottomBorder(withColor: .divider, leadingMargin: cellLabelLeadingConstraint.constant)
+        addBottomBorder(withColor: .separator, leadingMargin: cellLabelLeadingConstraint.constant)
 
         // TODO: remove this when `WordPressAuthenticatorStyle:textFieldBackgroundColor` is updated.
         // This background color should be inherited from LoginTextField.
         // However, since the Auth views haven't been updated, the color is incorrect.
         // So for now we'll override it here.
-        cellField.backgroundColor = .basicBackground
+        cellField.backgroundColor = .systemBackground
     }
 
 }
@@ -152,7 +152,7 @@ private extension SignupEpilogueCell {
         cellField.isSecureTextEntry = isPassword
         cellField.showSecureTextEntryToggle = isPassword
         cellField.textAlignment = isPassword ? .left : .right
-        cellField.textColor = isPassword ? .text : .textSubtle
+        cellField.textColor = isPassword ? .label : .secondaryLabel
 
         cellFieldLeadingConstraintWithLabel.isActive = !isPassword
         cellFieldLeadingConstraintWithoutLabel.isActive = isPassword

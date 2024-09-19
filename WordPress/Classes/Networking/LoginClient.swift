@@ -58,7 +58,7 @@ final actor LoginClient {
             site: site,
             appName: appNameValue,
             appId: appId,
-            contextProvider: SelfHostedLoginViewModelAuthenticationContextProvider(anchor: anchor ?? ASPresentationAnchor())
+            contextProvider: WebAuthenticationPresentationAnchorProvider(anchor: anchor ?? ASPresentationAnchor())
         )
 
         let returnValue: Result<WordPressOrgCredentials, LoginClientError>
@@ -117,16 +117,4 @@ final actor LoginClient {
         }
     }
 
-}
-
-private class SelfHostedLoginViewModelAuthenticationContextProvider: NSObject, ASWebAuthenticationPresentationContextProviding {
-    let anchor: ASPresentationAnchor
-
-    init(anchor: ASPresentationAnchor) {
-        self.anchor = anchor
-    }
-
-    func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
-        anchor
-    }
 }

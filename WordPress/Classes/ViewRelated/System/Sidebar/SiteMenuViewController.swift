@@ -6,7 +6,7 @@ protocol SiteMenuViewControllerDelegate: AnyObject {
 
 /// The site menu for the split view navigation.
 final class SiteMenuViewController: UIViewController {
-    private let blog: Blog
+    let blog: Blog
     private let blogDetailsVC = SiteMenuListViewController()
 
     weak var delegate: SiteMenuViewControllerDelegate?
@@ -36,6 +36,10 @@ final class SiteMenuViewController: UIViewController {
         blogDetailsVC.showInitialDetailsForBlog()
 
         navigationItem.title = blog.settings?.name ?? (blog.displayURL as String?) ?? ""
+    }
+
+    func showSubsection(_ subsection: BlogDetailsSubsection, userInfo: [AnyHashable: Any]) {
+        blogDetailsVC.showDetailView(for: subsection, userInfo: userInfo)
     }
 }
 

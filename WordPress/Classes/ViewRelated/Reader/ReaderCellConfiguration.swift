@@ -29,32 +29,6 @@ final class ReaderCellConfiguration {
         cell.setSiteName(post.blogName)
     }
 
-    func configurePostCardCell(_ cell: UITableViewCell,
-                               withPost post: ReaderPost,
-                               topic: ReaderAbstractTopic? = nil,
-                               delegate: ReaderPostCellDelegate?,
-                               loggedInActionVisibility: ReaderActionsVisibility,
-                               topicChipsDelegate: ReaderTopicsChipsDelegate? = nil,
-                               displayTopics: Bool = true) {
-        // To help avoid potential crash: https://github.com/wordpress-mobile/WordPress-iOS/issues/6757
-        guard !post.isDeleted else {
-            return
-        }
-
-        guard let postCell = cell as? OldReaderPostCardCell else {
-            return
-        }
-
-        postCell.delegate = delegate
-        postCell.topicChipsDelegate = topicChipsDelegate
-
-        postCell.loggedInActionVisibility = loggedInActionVisibility
-        postCell.displayTopics = displayTopics
-        postCell.isP2Type = post.isP2Type()
-        postCell.configureCell(post)
-        postCell.layoutIfNeeded()
-    }
-
     func configureGapMarker(_ cell: ReaderGapMarkerCell, filling: Bool) {
         cell.animateActivityView(filling)
     }

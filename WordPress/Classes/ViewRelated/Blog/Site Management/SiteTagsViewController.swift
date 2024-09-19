@@ -91,7 +91,7 @@ final class SiteTagsViewController: UITableViewController {
     private func setupRefreshControl() {
         if refreshControl == nil {
             refreshControl = UIRefreshControl()
-            refreshControl?.backgroundColor = .basicBackground
+            refreshControl?.backgroundColor = .systemBackground
             refreshControl?.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
         }
     }
@@ -393,7 +393,11 @@ private extension SiteTagsViewController {
     }
 
     func showNoSearchResultsView() {
-        stateView = UIHostingView(view: EmptyStateView.search())
+        stateView = UIHostingView(view: VStack {
+            EmptyStateView.search()
+                .padding(.top, 50)
+            Spacer()
+        })
     }
 
     func hideNoResults() {

@@ -1,5 +1,4 @@
 import Foundation
-import CocoaLumberjack
 import WordPressShared
 import WordPressFlux
 import UIKit
@@ -85,7 +84,7 @@ final class PageListViewController: AbstractPostListViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        if traitCollection.horizontalSizeClass == .compact {
+        if traitCollection.horizontalSizeClass == .compact || Feature.enabled(.sidebar) {
             createButtonCoordinator.showCreateButton(for: blog)
         }
     }
@@ -101,7 +100,7 @@ final class PageListViewController: AbstractPostListViewController {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        if traitCollection.horizontalSizeClass == .compact {
+        if traitCollection.horizontalSizeClass == .compact || Feature.enabled(.sidebar) {
             createButtonCoordinator.showCreateButton(for: blog)
         } else {
             createButtonCoordinator.hideCreateButton()

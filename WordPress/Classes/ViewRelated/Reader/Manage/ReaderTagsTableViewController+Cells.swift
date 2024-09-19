@@ -35,7 +35,7 @@ private extension UIButton {
     enum Constants {
         static let size = CGSize(width: 40, height: 40)
         static let image = UIImage.gridicon(.crossSmall)
-        static let tintColor = MurielColor(name: .gray, shade: .shade10)
+        static let tintColor = UIAppColor.gray(.shade10)
         static let insets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: -8) // To better align with the plus sign accessory view
     }
 
@@ -43,7 +43,7 @@ private extension UIButton {
         let button = UIButton(frame: CGRect(origin: .zero, size: Constants.size))
         button.setImage(Constants.image, for: .normal)
         button.imageEdgeInsets = Constants.insets
-        button.imageView?.tintColor = UIColor.muriel(color: Constants.tintColor)
+        button.imageView?.tintColor = Constants.tintColor
         return button
     }
 }

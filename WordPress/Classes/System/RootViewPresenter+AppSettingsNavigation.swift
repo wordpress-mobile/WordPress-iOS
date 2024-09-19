@@ -17,14 +17,7 @@ extension RootViewPresenter {
     /// The "Me" scene's navigation controller is popped to the root in case the "Me" scene was already presented.
     private func navigateToMeScene() -> ViewControllerNavigationAction {
         return .init { [weak self] context, completion in
-            guard let self else {
-                return
-            }
-            CATransaction.perform {
-                self.showMeScreen()
-            } completion: {
-                completion(self.meViewController)
-            }
+            self?.showMeScreen(completion: completion)
         }
     }
 

@@ -164,7 +164,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         updateFeatureFlags()
         updateRemoteConfig()
 
-#if JETPACK
+#if IS_JETPACK
         // JetpackWindowManager is only available in the Jetpack target.
         if let windowManager = windowManager as? JetpackWindowManager {
             windowManager.startMigrationFlowIfNeeded()
@@ -510,7 +510,7 @@ extension WordPressAppDelegate {
             return "Post Editor"
         case is LoginNavigationController:
             return "Login View"
-#if JETPACK
+#if IS_JETPACK
         case is MigrationNavigationController:
             return "Jetpack Migration View"
         case is MigrationLoadWordPressViewController:
@@ -751,11 +751,11 @@ extension WordPressAppDelegate {
 extension WordPressAppDelegate {
     func customizeAppearance() {
         window?.backgroundColor = .black
-        window?.tintColor = .primary
+        window?.tintColor = UIAppColor.primary
 
         WPStyleGuide.configureAppearance()
 
-        SVProgressHUD.setBackgroundColor(UIColor.neutral(.shade70).withAlphaComponent(0.95))
+        SVProgressHUD.setBackgroundColor(UIAppColor.neutral(.shade70).withAlphaComponent(0.95))
         SVProgressHUD.setForegroundColor(.white)
         SVProgressHUD.setErrorImage(UIImage(named: "hud_error")!)
         SVProgressHUD.setSuccessImage(UIImage(named: "hud_success")!)

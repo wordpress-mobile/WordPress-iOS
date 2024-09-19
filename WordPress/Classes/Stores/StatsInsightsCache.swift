@@ -1,6 +1,5 @@
 import Foundation
 import WordPressKit
-import CocoaLumberjack
 
 final class StatsInsightsCache {
     static let shared = StatsInsightsCache()

@@ -42,15 +42,15 @@ final class ReaderSavedPostUndoCell: UITableViewCell {
     private func setupUndoButton() {
         undoButton.setTitle(Strings.undo, for: .normal)
         let icon = UIImage.gridicon(.undo)
-        let tintedIcon = icon.imageWithTintColor(.primary)
+        let tintedIcon = icon.imageWithTintColor(AppStyleGuide.primary)
 
         undoButton.setImage(tintedIcon, for: .normal)
     }
 
     private func applyStyles() {
         backgroundColor = .clear
-        contentView.backgroundColor = .listBackground
-        borderedView.backgroundColor = .listForeground
+        contentView.backgroundColor = .systemGroupedBackground
+        borderedView.backgroundColor = .secondarySystemGroupedBackground
 
         borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
         borderedView.layer.borderWidth = .hairlineBorderWidth

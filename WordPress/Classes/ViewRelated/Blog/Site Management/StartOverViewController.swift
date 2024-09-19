@@ -35,7 +35,7 @@ open class StartOverViewController: UITableViewController, MFMailComposeViewCont
 
         let actionCell = WPTableViewCellDefault(style: .value1, reuseIdentifier: nil)
         actionCell.textLabel?.text = contactTitle
-        actionCell.textLabel?.textColor = .primary
+        actionCell.textLabel?.textColor = UIAppColor.primary
         actionCell.textLabel?.textAlignment = .center
 
         return actionCell

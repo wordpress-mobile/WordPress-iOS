@@ -236,7 +236,7 @@ class DateCell: JTACDayCell {
         static let labelSize: CGFloat = 28
         static let reuseIdentifier = "dateCell"
         static var selectedColor: UIColor {
-            UIColor(light: .primary(.shade5), dark: .primary(.shade90))
+            UIColor(light: UIAppColor.primary(.shade5), dark: UIAppColor.primary(.shade90))
         }
     }
 
@@ -330,7 +330,7 @@ extension DateCell {
         leftPlaceholder.backgroundColor = .clear
         rightPlaceholder.backgroundColor = .clear
         dateLabel.backgroundColor = .clear
-        textColor = .text
+        textColor = .label
         dateLabel.accessibilityTraits = .button
         if state.isSelected {
             dateLabel.accessibilityTraits.insert(.selected)
@@ -338,33 +338,33 @@ extension DateCell {
 
         switch position(for: state.date, startDate: startDate, endDate: endDate) {
         case .middle:
-            textColor = .text
+            textColor = .label
             leftPlaceholder.backgroundColor = Constants.selectedColor
             rightPlaceholder.backgroundColor = Constants.selectedColor
             dateLabel.backgroundColor = .clear
         case .left:
             textColor = .white
-            dateLabel.backgroundColor = .primary
+            dateLabel.backgroundColor = UIAppColor.primary
             rightPlaceholder.backgroundColor = Constants.selectedColor
         case .right:
             textColor = .white
-            dateLabel.backgroundColor = .primary
+            dateLabel.backgroundColor = UIAppColor.primary
             leftPlaceholder.backgroundColor = Constants.selectedColor
         case .full:
-            textColor = .textInverted
+            textColor = .invertedLabel
             leftPlaceholder.backgroundColor = .clear
             rightPlaceholder.backgroundColor = .clear
-            dateLabel.backgroundColor = .primary
+            dateLabel.backgroundColor = UIAppColor.primary
         case .none:
             leftPlaceholder.backgroundColor = .clear
             rightPlaceholder.backgroundColor = .clear
             dateLabel.backgroundColor = .clear
             if state.date > Date() {
-                textColor = .textSubtle
+                textColor = .secondaryLabel
             } else if state.dateBelongsTo == .thisMonth {
-              textColor = .text
+                textColor = .label
             } else {
-              textColor = .textSubtle
+                textColor = .secondaryLabel
             }
         }
 
@@ -425,7 +425,7 @@ class CalendarYearHeaderView: JTACMonthReusableView {
     private enum Constants {
         static let stackViewSpacing: CGFloat = 16
         static let spacingAfterWeekdays: CGFloat = 8
-        static let titleColor = UIColor(light: .gray(.shade70), dark: .textSubtle)
+        static let titleColor = UIColor(light: UIAppColor.gray(.shade70), dark: .secondaryLabel)
     }
 }
 

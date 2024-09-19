@@ -4,6 +4,7 @@
 @class BlogDetailHeaderView;
 @class CreateButtonCoordinator;
 @class IntrinsicTableView;
+@class MeViewController;
 @protocol BlogDetailHeader;
 
 typedef NS_ENUM(NSUInteger, BlogDetailsSectionCategory) {
@@ -141,6 +142,8 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 - (void)reloadTableViewPreservingSelection;
 - (void)configureTableViewData;
 
+- (nonnull MeViewController *)showDetailViewForMeSubsectionWithUserInfo:(nonnull NSDictionary *)userInfo;
+
 - (void)switchToBlog:(nonnull Blog *)blog;
 - (void)showInitialDetailsForBlog;
 - (void)showPostListFromSource:(BlogDetailsNavigationSource)source;
@@ -153,6 +156,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 
 + (nonnull NSString *)userInfoShowPickerKey;
 + (nonnull NSString *)userInfoSiteMonitoringTabKey;
++ (nonnull NSString *)userInfoShowManagemenetScreenKey;
 + (nonnull NSString *)userInfoSourceKey;
 
 @end

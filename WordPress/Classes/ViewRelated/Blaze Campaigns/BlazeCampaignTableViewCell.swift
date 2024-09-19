@@ -55,7 +55,7 @@ final class BlazeCampaignTableViewCell: UITableViewCell, Reusable {
         label.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
         label.numberOfLines = 1
         label.lineBreakMode = .byTruncatingTail
-        label.textColor = .text
+        label.textColor = .label
         return label
     }()
 
@@ -135,7 +135,7 @@ final class BlazeCampaignTableViewCell: UITableViewCell, Reusable {
     }
 
     private func applyStyle() {
-        backgroundColor = .DS.Background.primary
+        backgroundColor = .systemGroupedBackground
     }
 
     private func setupViews() {

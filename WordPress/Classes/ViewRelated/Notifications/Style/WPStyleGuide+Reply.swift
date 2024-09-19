@@ -5,10 +5,10 @@ extension WPStyleGuide {
     public struct Reply {
         // Styles used by ReplyTextView
         //
-        public static let placeholderColor  = UIColor.textPlaceholder
-        public static let textColor         = UIColor.text
-        public static let separatorColor    = UIColor.divider
-        public static let backgroundColor   = UIColor.basicBackground
-        public static let replyButtonColor  = UIColor.primary
+        public static let placeholderColor  = UIColor.tertiaryLabel
+        public static let textColor         = UIColor.label
+        public static let separatorColor    = UIColor.separator
+        public static let backgroundColor   = UIColor.systemBackground
+        public static let replyButtonColor  = UIAppColor.primary
     }
 }

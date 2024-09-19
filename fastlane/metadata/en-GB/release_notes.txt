@@ -1,5 +1,8 @@
-We've fixed three big issues in this release:
-* Some users couldn't update their post's content.
-* Some users had images that were rotated the wrong way.
-* A rare crash in the editor caused by unsupported blocks.
-As always, please reach out to support if anything isn't working right!
+This month we have lots of visual fixes, and one new experimental feature we'd love your feedback on.
+
+Visually, we've:
+– Updated the site picker to be simpler and easier to use – it adds support for context menus and previews.
+– Fixed an issue where some navigation bars in the app were transparent.
+– Updated dozens of screens to avoid visual bugs by simplifying the code.
+
+Under "App Settings", you can now try out Application Passwords – a new experimental feature for self-hosted sites that allows them to work with the apps if they use 2FA or SSO.

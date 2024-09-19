@@ -6,21 +6,26 @@ struct SidebarProfileView: View {
 
     var body: some View {
         HStack {
-            let avatarURL: String? = account.avatarURL
-            AvatarsView<Circle>(style: .single(avatarURL.flatMap(URL.init)))
+            let avatarURL = account.avatarURL.flatMap(URL.init(string:))
+            AvatarView<Circle>(style: .single(avatarURL), diameter: 30)
 
             VStack(alignment: .leading, spacing: 0) {
-                Text(account.displayName)
-                    .font(.callout.weight(.medium))
-                Text("@\(account.username)")
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
+                if let displayName = account.displayName {
+                    Text(displayName)
+                        .font(.subheadline.weight(.medium))
+                }
+                if let username = account.username {
+                    Text("@\(username)")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                }
             }
 
             Spacer()
 
             Image(systemName: "gearshape")
-                .foregroundColor(Color.secondary.opacity(0.7))
+                .font(.title3)
+                .foregroundColor(Color.secondary)
         }
     }
 }

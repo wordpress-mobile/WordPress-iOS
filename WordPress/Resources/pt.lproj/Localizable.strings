@@ -90,6 +90,12 @@
 /* Placeholder text for the title of a site */
 "A title for the site" = "Um título para o site";
 
+/* An error message. */
+"A valid email address is needed to mail an authentication link. Please return to the previous screen and provide a valid email address." = "É necessário um endereço de email válido para onde enviar uma ligação de autenticação. Por favor volte ao ecrã anterior e insira um endereço de email válido.";
+
+/* Shown when a user types a non-number into the two factor field. */
+"A verification code will only contain numbers." = "O código de verificação só deverá conter números.";
+
 /* Label for active Theme browser cell */
 "ACTIVE" = "ACTIVO";
 
@@ -117,6 +123,12 @@
    Whether a plugin is active on a site */
 "Active" = "Activo";
 
+/* The plugin is active on the site and has not enabled automatic updates */
+"Active, Autoupdates off" = "Activo, sem actualizações automáticas";
+
+/* The plugin is active on the site and has enabled automatic updates */
+"Active, Autoupdates on" = "Activo, com actualizações automáticas";
+
 /* Noun. Links to a blog's Activity screen.
    Noun. Name of the Activity Log feature
    Title for the activity list */
@@ -142,12 +154,6 @@
 
 /* No comment provided by engineer. */
 "Add menu item to children" = "Adicionar item de menu a item dependente";
-
-/* Title of button to add a new site. */
-"Add new site" = "Adicionar novo site";
-
-/* Add self-hosted site button */
-"Add self-hosted site" = "Adicionar site alojado em servidor próprio";
 
 /* Placeholder text for tags module in share extension. */
 "Add tags" = "Adicionar etiquetas";
@@ -201,6 +207,15 @@
    Error message when the user tries to visualize a plugin without internet connection */
 "An active internet connection is required to view plugins" = "É necessária uma ligação à Internet para ver os plugins";
 
+/* An error description explaining that a Menu could not be created. */
+"An error occurred creating the Menu." = "Ocorreu um erro ao criar o menu.";
+
+/* An error description explaining that a Menu could not be deleted. */
+"An error occurred deleting the Menu." = "Ocorreu um erro ao eliminar o menu.";
+
+/* An error description explaining that Menus could not be fetched. */
+"An error occurred fetching the Menus." = "Ocorreu um erro ao obter os menus.";
+
 /* Menus text shown when an error occurred loading menus from the server. */
 "An error occurred loading menus, please check your internet connection." = "Ocorreu um erro ao carregar menus, por favor verifique a sua ligação à internet.";
 
@@ -209,6 +224,9 @@
 
 /* The error message displayed when a user is editing a MenuItem and the results cannot be loaded, such as posts, pages, etc. */
 "An error occurred loading the results, please try again in a moment." = "Ocorreu um erro ao carregar os resultados, por favor tente de novo dentro de momentos.";
+
+/* An error description explaining that a Menu could not be updated. */
+"An error occurred updating the Menu." = "Ocorreu um erro ao actualizar o menu.";
 
 /* Error recorded when all of the media associated with a post fail to be attached to the post on the server. */
 "An error occurred when attempting to attach uploaded media to the post." = "Ocorreu um erro ao tentar anexar multimédia carregado ao artigo.";
@@ -325,6 +343,9 @@
 /* Title for a list of different button styles. */
 "Button Style" = "Estilo de botão";
 
+/* Legal disclaimer for signup buttons, the underscores _..._ denote underline */
+"By signing up, you agree to our _Terms of Service_." = "Ao registar-se, concorda com os nossos _Termos de Serviço_.";
+
 /* Label for size of media while it's being calculated. */
 "Calculating..." = "A calcular...";
 
@@ -335,7 +356,7 @@
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
-   Cancel
+   Button title. Tapping it cancels the login flow.
    Cancel a prompt
    Cancel Action
    Cancel action on share extension editor screen.
@@ -346,6 +367,7 @@
    Cancel action title
    Cancel button
    Cancel button for alert
+   Cancel button label
    Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Cancel button.
    Cancel button. Site creation modal popover.
@@ -367,6 +389,7 @@
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
+   Option to cancel the email app selection when logging in with magic links
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
@@ -413,11 +436,11 @@
 /* Center alignment for an image. Should be the same as in core WP. */
 "Center" = "Centro";
 
+/* Popup title for wrong SSL certificate. */
+"Certificate error" = "Erro de certificado";
+
 /* Change Username title. */
 "Change Username" = "Alterar nome de utilizador";
-
-/* Button title to edit visibility of sites. */
-"Change Visibility" = "Alterar visibilidade";
 
 /* Message to show when Publicize globally shared setting failed */
 "Change failed" = "Falhou ao alterar";
@@ -543,9 +566,15 @@
 /* Noun. Title. Title for the list of accounts for third party sharing services. */
 "Connected Accounts" = "Contas ligadas";
 
+/* Title shown when a user logs in with Google but no matching WordPress.com account is found */
+"Connected But…" = "Ligado, mas...";
+
 /* Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name
    Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name. */
 "Connecting %@" = "A ligar %@";
+
+/* No comment provided by engineer. */
+"Connecting to WordPress.com" = "A ligar ao WordPress.com";
 
 /* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connecting..." = "A ligar...";
@@ -574,6 +603,7 @@
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
+   The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
@@ -583,8 +613,20 @@
 /* Menus alert button title to continue making changes. */
 "Continue Working" = "Continuar a trabalhar";
 
+/* Part of a prompt suggesting that there is more content for the user to read. */
+"Continue reading" = "Continuar a ler";
+
 /* Title of an prompt letting the user know there was a problem saving. */
 "Could Not Save Changes" = "Não foi possível guardar alterações";
+
+/* Message shown when site purchases API failed */
+"Could not check site purchases." = "Não foi possível verificar compras no site.";
+
+/* Error message informing the user that there was a problem subscribing to a site or feed. */
+"Could not follow the site at the address specified." = "Não foi possível seguir o site no endereço especificado.";
+
+/* Error message informing the user that there was a problem unsubscribing to a site or feed. */
+"Could not unfollow the site at the address specified." = "Não foi possível deixar de seguir o site no endereço especificado. ";
 
 /* This is the text we display to the user when we ask them for a review and they've indicated they don't like the app */
 "Could you tell us how we could improve?" = "Pode dizer-nos o que podemos melhorar?";
@@ -608,21 +650,17 @@
 /* Register Domain - Address information field Country Code */
 "Country Code" = "Código do país";
 
+/* The button title text for creating a new account. */
+"Create Account" = "Criar uma conta";
+
 /* Button for selecting the current page template.
-   Button title, encourages users to create their first page on their blog.
    Title for button to make a page with the contents of the selected layout */
 "Create Page" = "Criar página";
-
-/* Button title, encourages users to create post on their blog. */
-"Create Post" = "Criar artigo";
 
 /* Button to progress to the next step
    Site creation. Step 1. Screen title
    Title for the button to progress with creating the site with the selected design. */
 "Create Site" = "Criar site";
-
-/* Create WordPress.com site button */
-"Create WordPress.com site" = "Criar site em WordPress.com";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Criar um novo menu irá descartar as alterações efectuadas no menu actual. Tem a certeza que quer continuar?";
@@ -744,7 +782,10 @@
    Title for the Discussion Settings Screen */
 "Discussion" = "Discussão";
 
-/* Dismiss a view. Verb */
+/* Accessibility label for button to dismiss a bottom sheet
+   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+   Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
+   Dismiss a view. Verb */
 "Dismiss" = "Ignorar";
 
 /* Display Name label text.
@@ -771,6 +812,9 @@
    Title for the button that will dismiss this view.
    Title of the Done button on the me page */
 "Done" = "Feito";
+
+/* Voiceover accessibility hint informing the user they can double tap a modal alert to dismiss it */
+"Double tap to dismiss" = "Duplo toque para ignorar";
 
 /* Name for the status of a draft post. */
 "Draft" = "Rascunho";
@@ -818,7 +862,10 @@
 /* Header for a comment author's email address, shown when editing a comment. */
 "Email Address" = "Endereço de email";
 
-/* Describes the email address section in the comment detail screen. */
+/* Accessibility label for the email address text field.
+   Describes the email address section in the comment detail screen.
+   Placeholder for a textfield. The user may enter their email address.
+   Placeholder for the email address textfield. */
 "Email address" = "Endereço de email";
 
 /* Notification Settings Channel */
@@ -830,11 +877,14 @@
 /* Overlay message displayed when export content started */
 "Email sent!" = "Email enviado!";
 
-/* No comment provided by engineer. */
-"Enter a password" = "Insira uma senha";
+/* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
+"Empty URL" = "URL vazio";
 
 /* (placeholder) Help enter WordPress password */
 "Enter password" = "Insira a senha";
+
+/* Instructional text shown when requesting the user's password for login. */
+"Enter the password for your WordPress.com account." = "Insira a senha da sua conta WordPress.com.";
 
 /* (placeholder) Help enter WordPress username */
 "Enter username" = "Insira o nome de utilizador";
@@ -924,6 +974,9 @@
 /* Button title. Follow the comments on a post. */
 "Follow" = "Seguir";
 
+/* User role badge */
+"Follower" = "Seguidor";
+
 /* Label for number of followers. */
 "Followers" = "Seguidores";
 
@@ -945,6 +998,9 @@
 /* Title for the general section in site settings screen */
 "General" = "Geral";
 
+/* Alerts the user that wpcom account information is being retrieved. */
+"Getting account information" = "A obter informações da conta";
+
 /* Cancel */
 "Give Up" = "Desistir";
 
@@ -952,8 +1008,7 @@
    Opens WPiOS Settings.app Section */
 "Go to iOS Settings" = "Abrir definições do iOS";
 
-/* Accessibility label for HTML button on formatting toolbar.
-   HTML Attachment Label */
+/* Accessibility label for HTML button on formatting toolbar. */
 "HTML" = "HTML";
 
 /* Post HTML content */
@@ -1004,11 +1059,8 @@
    Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Help & Support" = "Ajuda e suporte";
 
-/* Hide All */
-"Hide All" = "Esconder tudo";
-
-/* Hide All Sites */
-"Hide All Sites" = "Esconder todos os sites";
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
+"Hidden" = "Invisível";
 
 /* No comment provided by engineer. */
 "Hide keyboard" = "Esconder teclado";
@@ -1054,6 +1106,18 @@
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "Em poucas palavras, explique sobre o que é este site.";
 
+/* The plugin is not active on the site and has not enabled automatic updates */
+"Inactive, Autoupdates off" = "Inactivo, sem actualizações automáticas";
+
+/* The plugin is not active on the site and has enabled automatic updates */
+"Inactive, Autoupdates on" = "Inactivo, com actualizações automáticas";
+
+/* Describes a standard *.wordpress.com site domain */
+"Included with Site" = "Incluído no site";
+
+/* An error message shown when a user signed in with incorrect credentials. */
+"Incorrect username or password. Please try entering your login details again." = "Nome de utilizador ou senha incorrectos. Por favor insira os seus dados de novo.";
+
 /* Default button title used in media picker to insert media (photos / videos) into a post.
    Label action for inserting a link on the editor */
 "Insert" = "Inserir";
@@ -1078,6 +1142,15 @@
 
 /* Install Plugin dialog title. */
 "Install Plugin" = "Instalar plugin";
+
+/* No comment provided by engineer. */
+"Invalid Site Address" = "Endereço de site inválido";
+
+/* No comment provided by engineer. */
+"Invalid Site Title" = "Título de site inválido";
+
+/* No comment provided by engineer. */
+"Invalid username" = "Nome de utilizador inválido";
 
 /* The app successfully sent an invitation */
 "Invitation Sent!" = "Convite enviado!";
@@ -1221,7 +1294,6 @@
 "Loading stream..." = "A carregar emissão...";
 
 /* Loading tags
-   Loading tags.
    Loading. Verb
    Suggestions loading message
    Text displayed in HUD while a media item is being loaded.
@@ -1243,8 +1315,11 @@
 /* No comment provided by engineer. */
 "Log Files By Created Date" = "Ficheiros de relatório por data de criação.";
 
-/* Label for logging in to WordPress.com account
-   Log In 3D Touch Shortcut */
+/* Button title.  Tapping takes the user to the login form.
+   Label for logging in to WordPress.com account
+   Log In 3D Touch Shortcut
+   Log In button label.
+   View title during the log in process. */
 "Log In" = "Iniciar sessão";
 
 /* Button for confirming logging out from WordPress.com account
@@ -1254,6 +1329,9 @@
 /* Title of a button for signing in. */
 "Log in" = "Iniciar sessão";
 
+/* A generic error message for a failed log in. */
+"Log in failed. Please try again." = "Falhou ao iniciar sessão. Por favor tente de novo.";
+
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "Terminar sessão do WordPress?";
 
@@ -1262,6 +1340,9 @@
 
 /* No comment provided by engineer. */
 "Logs" = "Relatórios";
+
+/* Title of a button. */
+"Lost your password?" = "Esqueceu-se da senha?";
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Navegação principal";
@@ -1282,6 +1363,9 @@
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "Gerir site";
 
+/* Describes a domain that was mapped to WordPress.com, but registered elsewhere */
+"Mapped Domain" = "Domínio mapeado";
+
 /* Marks a notification as unread */
 "Mark Read" = "Marcar como lida";
 
@@ -1299,7 +1383,6 @@
 "Me" = "Eu";
 
 /* Noun. Title. Links to the blog's Media library.
-   The menu item to select during a guided tour.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Multimédia";
@@ -1367,12 +1450,11 @@
    Title of My Site tab */
 "My Site" = "O meu site";
 
-/* Title for site picker screen.
-   Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
-"My Sites" = "Os meus sites";
-
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "Necessita de ajuda?";
+
+/* Title of the more help button on alert helping users understand their site address */
+"Need more help?" = "Precisa de mais ajuda?";
 
 /* New Post 3D Touch Shortcut */
 "New Post" = "Novo artigo";
@@ -1387,7 +1469,9 @@
 "Newest first" = "Mais recentes primeiro";
 
 /* Next action on comment moderation snackbar.
-   Next action on share extension editor screen. */
+   Next action on share extension editor screen.
+   Title of a button.
+   Title of a button. The text should be capitalized. */
 "Next" = "Seguinte";
 
 /* Accessibility label for the next notification button */
@@ -1476,7 +1560,6 @@
    Notifications tab bar item accessibility label
    Notifications View Controller title
    Noun. Name of the Notifications feature
-   The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Notificações";
 
@@ -1499,10 +1582,12 @@
    Button title. Acknowledges a prompt.
    Button title. An acknowledgement of the message displayed in a prompt.
    Default action
+   Dismisses the alert
    Marks all notifications as read.
    Menus: button title for finishing editing of a menu item.
    OK
    OK button for alert
+   Ok button for dismissing alert helping users understand their site address
    OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
    Submit button on prompt for user information.
@@ -1548,6 +1633,10 @@
 
 /* Opens iOS's Device Settings for WordPress App */
 "Open Device Settings" = "Abrir definições do dispositivo";
+
+/* The button title text for opening the user's preferred email app.
+   Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
+"Open Mail" = "Abrir Mail";
 
 /* Go to the settings app
    Title of a button that opens the apps settings in the system Settings.app */
@@ -1609,7 +1698,6 @@
 "Page" = "Página";
 
 /* Noun. Title. Links to the blog's Pages screen.
-   The item to select during a guided tour.
    This is the section title
    Title of the screen showing the list of pages for a blog. */
 "Pages" = "Páginas";
@@ -1623,8 +1711,11 @@
    Title for selecting parent category of a category */
 "Parent Category" = "Categoria superior";
 
-/* Label for entering password in password field
-   Label for the password field. Should be the same as WP core.
+/* Accessibility label for the password text field in the self-hosted login page.
+   Label for entering password in password field
+   Login dialog password placeholder
+   Password placeholder
+   Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "Senha";
 
@@ -1663,11 +1754,26 @@
 /* Message displayed on an error alert to prompt the user to contact support */
 "Please contact support for assistance." = "Por favor, contacte o suporte.";
 
+/* No comment provided by engineer. */
+"Please enter a site address." = "Por favor insira o endereço do site.";
+
+/* No comment provided by engineer. */
+"Please enter a username." = "Por favor insira um nome de utilizador.";
+
 /* Title of a prompt. */
 "Please enter a valid URL" = "Por favor, insira um URL válido";
 
+/* Error message displayed when the user attempts use an invalid email address. */
+"Please enter a valid email address." = "Por favor insira um endereço de email válido.";
+
+/* Popup message to ask for user credentials (fields shown below). */
+"Please enter your credentials" = "Insira as suas credenciais";
+
 /* Instructions for alert asking for email. */
 "Please enter your email address." = "Por favor insira um endereço de email.";
+
+/* A short prompt asking the user to properly fill out all login fields. */
+"Please fill out all the fields" = "Por favor preencha todos os campos";
 
 /* Share extension dialog text  - displayed when user is missing a login token. */
 "Please launch the WordPress app, log in to WordPress.com and make sure you have at least one site, then try again." = "Por favor inicie a aplicação WordPress, inicie sessão em WordPress.com, verifique se tem pelo menos um site e tente de novo.";
@@ -1801,7 +1907,6 @@
    The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
-   The menu item to select during a guided tour.
    Title of the 'Reader' tab - used for spotlight indexing on iOS. */
 "Reader" = "Leitor";
 
@@ -1825,15 +1930,16 @@
    Title for the Register domain screen */
 "Register domain" = "Registar domínio";
 
+/* Describes a domain that was registered with WordPress.com */
+"Registered Domain" = "Domínio registado";
+
 /* Label for selecting the related posts options */
 "Related Posts" = "Artigos relacionados";
 
 /* Alert button to confirm a plugin to be removed
-   Button label when removing a blog
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
-   Remove an image/posts/etc
-   Removes a self hosted site from the app */
+   Remove an image/posts/etc */
 "Remove" = "Remover";
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
@@ -1947,6 +2053,9 @@
    User's Role */
 "Role" = "Papel";
 
+/* One Time Code has been sent via SMS */
+"SMS Sent" = "SMS enviado";
+
 /* Menus save button title
    Save Action
    Save button label (saving content, ex: Post, Page, Comment, Category).
@@ -1964,8 +2073,7 @@
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Agendado";
 
-/* Placeholder text for the search bar
-   Title of Stats section that shows search engine referrer traffic.
+/* Title of Stats section that shows search engine referrer traffic.
    Title of the Reader's search feature */
 "Search" = "Procurar";
 
@@ -1981,14 +2089,11 @@
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "Seleccionar país";
 
-/* Blog Picker's Title */
-"Select Site" = "Seleccionar site";
-
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Seleccione o estilo do parágrafo";
 
-/* Blog list page edit mode header label */
-"Select which sites will be shown in the site picker." = "Selecione quais os sítios que serão exibidos no selecionador de sítio.";
+/* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
+"Send Link" = "Enviar ligação";
 
 /* Settings: Sending Pingbacks */
 "Send Pingbacks" = "Enviar pingbacks";
@@ -2035,23 +2140,31 @@
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "Mostrar botão Reblog";
 
-/* Alert title picking theme type to browse */
-"Show themes:" = "Mostrar temas:";
-
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "Mostrado publicamente quando comenta em sites.";
+
+/* When social login fails, this button offers to let them signup for a new WordPress.com account */
+"Sign up" = "Registar";
+
+/* Button title. Tapping begins the process of creating a WordPress.com account. */
+"Sign up for WordPress.com" = "Registar em WordPress.com";
+
+/* Button title. Tapping begins our normal sign up process. */
+"Sign up with Email" = "Registar com email";
 
 /* Title for the Language Picker View */
 "Site Language" = "Idioma do site";
 
+/* Describes a site redirect domain */
+"Site Redirect" = "Redireccionamento de site";
+
 /* Default title for a site
    Label for site title blog setting
-   The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "Título do site";
 
-/* The item to select during a guided tour. */
-"Site URL" = "URL do site";
+/* No comment provided by engineer. */
+"Site address must be at least 4 characters." = "Endereço do site tem de ter pelo menos 4 caracteres.";
 
 /* Overlay message displayed when site successfully deleted */
 "Site deleted" = "Site eliminado";
@@ -2062,8 +2175,7 @@
 /* Image size option title. */
 "Size" = "Tamanho";
 
-/* Button that allows the user to skip the prompt and be brought to the app
-   Continue without making a selection
+/* Continue without making a selection
    Continue without making a selection. */
 "Skip" = "Saltar";
 
@@ -2074,11 +2186,53 @@
    Update User Failed Title */
 "Sorry!" = "Desculpe!";
 
+/* This error message occurs when a user tries to create a username that contains an invalid phrase for WordPress.com. The %@ may include the phrase in question if it was sent down by the API */
+"Sorry, but your username contains an invalid phrase%@." = "Lamentamos, mas o seu nome de utilizador contém uma frase inválida%@.";
+
 /* Error title when updating the account password fails */
 "Sorry, can't log in" = "Não foi possível iniciar a sessão";
 
 /* No comment provided by engineer. */
+"Sorry, site addresses can only contain lowercase letters (a-z) and numbers." = "Desculpe mas o endereço do site pode apenas conter letras minúsculas (a-z) e números.";
+
+/* No comment provided by engineer. */
+"Sorry, site addresses may not contain the character &#8220;_&#8221;!" = "Desculpe mas o endereço do site não pode conter o caracter &#8220;_&#8221;!";
+
+/* No comment provided by engineer. */
+"Sorry, site addresses must have letters too!" = "Desculpe mas o endereço do site também tem de incluir letras!";
+
+/* Error message displayed when the entered email is not available. */
+"Sorry, that email address is already being used!" = "Desculpe mas esse endereço de email já está a ser utilizado!";
+
+/* No comment provided by engineer. */
+"Sorry, that email address is not allowed!" = "Desculpe mas esse endereço de email não é permitido!";
+
+/* No comment provided by engineer. */
+"Sorry, that site already exists!" = "Desculpe mas esse site já existe!";
+
+/* No comment provided by engineer. */
+"Sorry, that site is reserved!" = "Desculpe mas esse site está reservado!";
+
+/* No comment provided by engineer. */
+"Sorry, that username already exists!" = "Desculpe mas esse nome de utilizador já existe!";
+
+/* No comment provided by engineer. */
+"Sorry, that username is unavailable." = "Lamentamos mas o nome de utilizador é inválido.";
+
+/* No comment provided by engineer. */
+"Sorry, usernames can only contain lowercase letters (a-z) and numbers." = "Desculpe mas o nome de utilizador apenas pode conter letras minúsculas (a-z) e números.";
+
+/* No comment provided by engineer. */
+"Sorry, usernames may not contain the character &#8220;_&#8221;!" = "Desculpe mas o nome de utilizador não pode conter o caracter &#8220;_&#8221;!";
+
+/* No comment provided by engineer. */
+"Sorry, usernames must have letters (a-z) too!" = "Desculpe mas o nome de utilizador também tem de incluir letras (a-z)!";
+
+/* No comment provided by engineer. */
 "Sorry, you cannot access this feature. Please check your User Role on this site." = "Pedimos desculpa, mas não tem acesso a esta funcionalidade. Por favor verifique o seu Perfil de Utilizador neste site.";
+
+/* No comment provided by engineer. */
+"Sorry, you may not use that site address." = "Desculpe mas não pode usar esse endereço de site.";
 
 /* Discussion Settings Title
    Settings: Comments Sort Order */
@@ -2105,8 +2259,7 @@
 /* Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
-   Stats window title
-   The item to select during a guided tour. */
+   Stats window title */
 "Stats" = "Estatísticas";
 
 /* User action to stop upload. */
@@ -2131,9 +2284,6 @@
 /* Support button that appears in the Theme Browser Header
    Theme Support action title */
 "Support" = "Suporte";
-
-/* Title for back button that leads to the site picker screen. */
-"Switch Site" = "Mudar de site";
 
 /* Switches the Editor to HTML Mode */
 "Switch to HTML Mode" = "Mudar para modo HTML";
@@ -2177,6 +2327,27 @@
 /* Message of alert when theme activation succeeds */
 "Thanks for choosing %@ by %@" = "Obrigado por escolher o %1$@ de %2$@";
 
+/* Shown when a user pastes a code into the two factor field that contains letters or is the wrong length */
+"That doesn't appear to be a valid verification code." = "Este não parece ser um código de verificação válido.";
+
+/* Message to show to user when he tries to add a self-hosted site that isn't a WordPress site. */
+"That doesn't look like a WordPress site." = "Não parece ser um site WordPress.";
+
+/* No comment provided by engineer. */
+"That email address has already been used. Please check your inbox for an activation email. If you don't activate you can try again in a few days." = "Este endereço de email já foi usado. Por favor verifique a sua caixa de correio com a mensagem de activação. Se não activar poderá tentar novamente dentro de alguns dias.";
+
+/* No comment provided by engineer. */
+"That site address is not allowed." = "Esse endereço de site não é permitido.";
+
+/* No comment provided by engineer. */
+"That site is currently reserved but may be available in a couple days." = "Esse site está de momento reservado mas poderá ficar disponível dentro de alguns dias.";
+
+/* No comment provided by engineer. */
+"That username is currently reserved but may be available in a couple of days." = "Esse nome de utilizador está de momento reservado mas poderá ficar disponível dentro de alguns dias.";
+
+/* No comment provided by engineer. */
+"That username is not allowed." = "Esse nome de utilizador não é permitido.";
+
 /* Error message shown when a media upload fails because the user isn't connected to the Internet.
    Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The Internet connection appears to be offline." = "A ligação à internet parece estar em baixo.";
@@ -2197,7 +2368,19 @@
 "The media could not be added to the Media Library." = "Não foi possível adicionar o item multimédia à biblioteca.";
 
 /* No comment provided by engineer. */
+"The server returned an empty response. This usually means you need to increase the memory limit for your site." = "O servidor devolveu uma resposta em branco. Isto geralmente significa que é preciso aumentar o limite de memória no seu site.";
+
+/* No comment provided by engineer. */
+"The site address must be shorter than 64 characters." = "O endereço do site deve ter menos de 64 caracteres.";
+
+/* No comment provided by engineer. */
 "The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "O site em %1$@ usa WordPress %2$@. Recomendamos que seja actualizado para a versão mais recente, ou pelo menos para a versão %3$@";
+
+/* Message shown when site deletion API failed */
+"The site could not be deleted." = "Não foi possível eliminar o site.";
+
+/* Message shown when site export API failed */
+"The site could not be exported." = "Não foi possível exportar o site.";
 
 /* Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
 "The slug is the URL-friendly version of the post title." = "O URL personalizado para o título do artigo.";
@@ -2228,6 +2411,9 @@
 /* A short error message letting the user know about a problem displaying a post. */
 "There was a problem displaying this post." = "Ocorreu um problema ao mostrar este artigo.";
 
+/* Error message informing the user that there was a problem clearing the block on site preventing its posts from displaying in the reader. */
+"There was a problem removing the block for specified site." = "Ocorreu um problema ao remover o bloco do site especificado.";
+
 /* A short error message shown in a prompt. */
 "There was a problem saving changes to sharing management." = "Ocorreu um erro ao guardar alterações da gestão de partilha.";
 
@@ -2251,6 +2437,9 @@
 
 /* An error message display if the users device does not have a camera input available */
 "This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this." = "WordPress precisa de autorização para aceder à câmara do seu dispositivo para poder adicionar fotos e vídeos aos seus artigos. Por favor, actualize as suas definições de privacidade.";
+
+/* An error message informing the user the email address they entered did not match a WordPress.com account. */
+"This email address is not registered on WordPress.com." = "Este endereço de email não está registado em WordPress.com.";
 
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Este item multimédia foi eliminado.";
@@ -2286,8 +2475,8 @@
 /* Instructions for alert asking for email and name. */
 "To continue please enter your email address and name." = "Para continuar por favor insira um endereço de email e um nome.";
 
-/* Prompt asking user to make sites visible in order to use them in the app (plural) */
-"To manage them here, set them to visible." = "Para os poder gerir, torne-os visíveis.";
+/* Text instructing the user to enter their email address. */
+"To create your new WordPress.com account, please enter your email address." = "Para criar uma nova conta em WordPress.com, por favor insira um endereço de email.";
 
 /* Comments Today Section Header
    Insights 'Today' header
@@ -2316,6 +2505,9 @@
    Title of trashed Comments filter. */
 "Trashed" = "No lixo";
 
+/* Connect when the SSL certificate is invalid */
+"Trust" = "Confiar";
+
 /* Theme Try & Customize action title */
 "Try & Customize" = "Tentar e personalizar";
 
@@ -2332,6 +2524,12 @@
    Re-load the history again. It appears if the loading call fails. */
 "Try again" = "Tentar de novo";
 
+/* When social login fails, this button offers to let the user try again with a differen email address */
+"Try with another email" = "Tente com outro email";
+
+/* When social login fails, this button offers to let them try tp login using a URL */
+"Try with the site address" = "Tente com o endereço do site";
+
 /* Title of button that displays the app's Twitter profile */
 "Twitter" = "Twitter";
 
@@ -2347,6 +2545,9 @@
 /* Menus label for describing which menu the location uses in the header. */
 "USES" = "UTILIZA";
 
+/* Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com */
+"Unable To Connect" = "Não é possível ligar";
+
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "Não foi possível carregar os conteúdos";
 
@@ -2361,6 +2562,9 @@
 
 /* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
 "Unable to save media item." = "Não é possível guardar o item multimédia.";
+
+/* Error message displayed when an error occurred checking for email availability. */
+"Unable to verify the email address. Please try again later." = "Não foi possível verificar o endereço de email. Por favor tente mais tarde.";
 
 /* Error reason to display when the writing of a image to a file fails */
 "Unable to write image to file" = "Não foi possível guardar o ficheiro de imagem";
@@ -2389,15 +2593,14 @@
    Undo action */
 "Undo" = "Anular";
 
-/* Unhides a site from the site picker list */
-"Unhide" = "Mostrar";
-
-/* Label for size of media when it's not possible to calculate it.
-   Unknown Tag Name */
+/* Label for size of media when it's not possible to calculate it. */
 "Unknown" = "Desconhecido";
 
 /* Title for Unknown HTML Editor */
 "Unknown HTML" = "HTML desconhecido";
+
+/* No comment provided by engineer. */
+"Unknown error" = "Erro desconhecido";
 
 /* People: Invitation Error */
 "Unknown error has occurred" = "Ocorreu um erro desconhecido";
@@ -2456,17 +2659,27 @@
 "Use" = "Usar";
 
 /* A placeholder for the twitter username
+   Accessibility label for the username text field in the self-hosted login page.
    Account Settings Username label
    Label for entering username in the username field
+   Login dialog username placeholder
+   Placeholder for the username textfield.
    The header and main title
-   Username label text. */
+   Username label text.
+   Username placeholder */
 "Username" = "Nome de utilizador";
 
 /* Setting: indicates if Mentions will be notified */
 "Username mentions" = "Menções ao nome de utilizador";
 
+/* No comment provided by engineer. */
+"Username must be at least 4 characters." = "O nome de utilizador deve ter pelo menos 4 caracteres.";
+
 /* Blog Users */
 "Users" = "Utilizadores";
+
+/* two factor code placeholder */
+"Verification code" = "Código de verificação";
 
 /* Push Authentication Alert Title */
 "Verify Log In" = "Verificar sessão";
@@ -2504,8 +2717,8 @@
    Label for viewing more stats. */
 "View more" = "Ver mais";
 
-/* Title of a Quick Start Tour */
-"View your site" = "Ver o seu site";
+/* User role badge */
+"Viewer" = "Visitante";
 
 /* Blog Viewers */
 "Viewers" = "Visitantes";
@@ -2548,6 +2761,9 @@
 /* Error message displayed when a refresh failed */
 "We had trouble loading data" = "Ocorreram problemas ao carregar dados";
 
+/* Instructional text for the magic link login flow. */
+"We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" = "Será enviada uma ligação para inicio de sessão automático, sem precisar de senha.";
+
 /* Account Settings Web Address label
    Header for a comment author's web address, shown when editing a comment. */
 "Web Address" = "Endereço web";
@@ -2560,6 +2776,9 @@
 
 /* A message title */
 "Welcome to the Reader" = "Bem-vindo ao Leitor";
+
+/* Title of alert helping users understand their site address */
+"What's my site address?" = "Qual é o endereço do meu site?";
 
 /* Help text when editing email address */
 "Will not be publicly displayed." = "Não será mostrado ao público.";
@@ -2578,6 +2797,9 @@
 
 /* No comment provided by engineer. */
 "WordPress version too old" = "Versão do WordPress demasiado antiga";
+
+/* No comment provided by engineer. */
+"WordPress version too old. The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "A versão do WordPress é muito antiga. O site em %1$@ usa WordPress %2$@. Recomendamos que seja actualizado para a versão mais recente, ou pelo menos para a versão %3$@";
 
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
@@ -2600,9 +2822,6 @@
 /* Asks the user if they would like to clear their search history. */
 "Would you like to clear your search history?" = "Gostaria de limpar o seu histórico de pesquisas?";
 
-/* Message offering to hide all WPCom Sites */
-"Would you like to hide all WordPress.com Sites?" = "Gostaria de esconder todos os seus sites do WordPress.com?";
-
 /* Second line of Remove user/follower/viewer warning in confirmation dialog. */
 "Would you still like to remove this person?" = "Gostaria ainda assim de remover este utilizador?";
 
@@ -2617,9 +2836,6 @@
    Yes */
 "Yes" = "Sim";
 
-/* Phrase displayed to begin a quick start tour that's been suggested. */
-"Yes, show me" = "Sim, mostrar-me";
-
 /* Comments Yesterday Section Header
    Notifications Yesterday Section Header */
 "Yesterday" = "Ontem";
@@ -2630,14 +2846,11 @@
 /* This prompt is displayed when the user attempts to stop media uploads in the post editor. */
 "You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?" = "Está a carregar multimédia. Esta acção cancela o carregamento.\n\nTem a certeza?";
 
+/* No comment provided by engineer. */
+"You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "Não pode usar esse email para se registar, uma vez que esse provedor bloqueia algumas das nossas mensagens. Por favor use outro.";
+
 /* Title displayed when the user doesn't have any media in their media library. Should match Calypso. */
 "You don't have any media." = "Ainda não tem itens multimédia.";
-
-/* Message informing the user that all of their sites are currently hidden (plural) */
-"You have %lu hidden WordPress sites." = "Tem %lu sites WordPress escondidos.";
-
-/* Message informing the user that all of their sites are currently hidden (singular) */
-"You have 1 hidden WordPress site." = "Tem 1 site WordPress escondido.";
 
 /* Warning displayed before logging out. The %d placeholder will contain the number of local posts (SINGULAR!) */
 "You have changes to %d post that hasn't been uploaded to your site. Logging out now will delete those changes. Log out anyway?" = "Tem alterações feitas em %d artigo que ainda não foi carregado para o seu site. Ao terminar a sessão agora estas alterações são eliminadas. Quer terminar sessão na mesma?";
@@ -2651,6 +2864,9 @@
 
 /* Error message informing the user that being logged into a WordPress.com account is required. */
 "You must be signed in to a WordPress.com account to perform this action." = "Tem de iniciar a sessão com uma conta WordPress.com para executar esta acção.";
+
+/* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
+"You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Parece que instalou um plugin para telemóvel de DudaMobile, que está a impedir a aplicação de se ligar ao seu blog.";
 
 /* Displayed in the Notification Settings View */
 "Your Sites" = "Os seus sites";
@@ -2688,6 +2904,12 @@
 /* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
 "ios-widget.tVvJ9c" = "Select Site Intent";
 
+/* Later today */
+"later today" = "mais logo";
+
+/* Used when the response doesn't have a valid url to display */
+"unknown url" = "URL desconhecido";
+
 /* Title of posts label in all time widget */
 "widget.alltime.posts.label" = "Conteúdos";
 
@@ -2708,6 +2930,9 @@
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "irá estar indisponível de futuro.";
+
+/* Label for button to log in using Google. The {G} will be replaced with the Google logo. */
+"{G} Log in with Google." = "{G} Iniciar sessão com o Google.";
 
 /* Item 4 of delete screen section listing things that will be deleted. */
 "• Domains" = "• Domínios";

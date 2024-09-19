@@ -1,7 +1,6 @@
 import Foundation
 import Combine
 import CoreData
-import CocoaLumberjack
 import WordPressShared
 import WordPressAuthenticator
 import Gridicons
@@ -386,7 +385,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
             }
             completionHandler(true)
         })
-        action.backgroundColor = .neutral(.shade50)
+        action.backgroundColor = UIAppColor.neutral(.shade50)
 
         return UISwipeActionsConfiguration(actions: [action])
     }
@@ -838,7 +837,11 @@ extension NotificationsViewController {
         if shouldPushDetailsViewController {
             navigationController?.pushViewController(controller, animated: true)
         } else if isSidebarModeEnabled {
-            splitViewController?.setViewController(controller, for: .secondary)
+            if let splitViewController {
+                splitViewController.setViewController(controller, for: .secondary)
+            } else {
+                navigationController?.pushViewController(controller, animated: true)
+            }
         } else {
             showDetailViewController(controller, sender: nil)
         }
@@ -1632,7 +1635,7 @@ extension NotificationsViewController: NoResultsViewControllerDelegate {
              .follow,
              .like:
             WPAnalytics.track(.notificationsTappedViewReader, withProperties: properties)
-            RootViewCoordinator.sharedPresenter.showReaderTab()
+            RootViewCoordinator.sharedPresenter.showReader()
         case .unread:
             WPAnalytics.track(.notificationsTappedNewPost, withProperties: properties)
             RootViewCoordinator.sharedPresenter.showPostTab()
@@ -1754,7 +1757,7 @@ extension NotificationsViewController: WPSplitViewControllerDetailProvider {
         // The first notification view will be populated by `selectFirstNotificationIfAppropriate`
         // on viewWillAppear, so we'll just return an empty view here.
         let controller = UIViewController()
-        controller.view.backgroundColor = .basicBackground
+        controller.view.backgroundColor = .systemBackground
         return controller
     }
 }

@@ -1,5 +1,4 @@
 import Foundation
-import CocoaLumberjack
 
 /// Type of the local Media directory URL in implementation.
 ///

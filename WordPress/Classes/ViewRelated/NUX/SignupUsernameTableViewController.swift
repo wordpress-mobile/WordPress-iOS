@@ -183,7 +183,7 @@ extension SignupUsernameTableViewController {
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if section == Sections.suggestions.rawValue {
             let footer = UIView()
-            footer.backgroundColor = .neutral(.shade10)
+            footer.backgroundColor = UIAppColor.neutral(.shade10)
             return footer
         }
         return nil
@@ -222,7 +222,7 @@ extension SignupUsernameTableViewController {
         let cell = UITableViewCell()
 
         cell.textLabel?.text = username
-        cell.textLabel?.textColor = .neutral(.shade70)
+        cell.textLabel?.textColor = UIAppColor.neutral(.shade70)
 
         cell.textLabel?.numberOfLines = 0
         cell.textLabel?.lineBreakMode = .byCharWrapping

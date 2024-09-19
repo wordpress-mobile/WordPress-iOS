@@ -4,7 +4,7 @@
 @interface WPAccount ()
 
 @property (nonatomic, strong, readwrite) WordPressComRestApi *wordPressComRestApi;
-
+@property (nonatomic, strong, readwrite) NSString *cachedToken;
 
 @end
 
@@ -23,6 +23,7 @@
 @dynamic avatarURL;
 @dynamic settings;
 @synthesize wordPressComRestApi = _wordPressComRestApi;
+@synthesize cachedToken;
 
 #pragma mark - NSManagedObject subclass methods
 
@@ -42,6 +43,7 @@
 {
     [super didTurnIntoFault];
     _wordPressComRestApi = nil;
+    self.cachedToken = nil;
 }
 
 + (NSString *)entityName
@@ -74,11 +76,19 @@
 
 - (NSString *)authToken
 {
-    return [WPAccount tokenForUsername:self.username];
+    if (self.cachedToken != nil) {
+        return self.cachedToken;
+    }
+
+    NSString *token = [WPAccount tokenForUsername:self.username];
+    self.cachedToken = token;
+    return token;
 }
 
 - (void)setAuthToken:(NSString *)authToken
 {
+    self.cachedToken = nil;
+
     if (authToken) {
         NSError *error = nil;
         [SFHFKeychainUtils storeUsername:self.username
