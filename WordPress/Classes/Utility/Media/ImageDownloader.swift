@@ -16,7 +16,7 @@ struct ImageRequestOptions {
 actor ImageDownloader {
     static let shared = ImageDownloader()
 
-    private let cache: MemoryCacheProtocol
+    private nonisolated let cache: MemoryCacheProtocol
 
     private let urlSession = URLSession {
         $0.urlCache = nil
@@ -86,11 +86,11 @@ actor ImageDownloader {
     ///
     /// - note: Use it to retrieve the image synchronously, which is no not possible
     /// with the async functions.
-    func cachedImage(for imageURL: URL, size: CGSize? = nil) -> UIImage? {
+    nonisolated func cachedImage(for imageURL: URL, size: CGSize? = nil) -> UIImage? {
         cache[makeKey(for: imageURL, size: size)]
     }
 
-    func setCachedImage(_ image: UIImage?, for imageURL: URL, size: CGSize? = nil) {
+    nonisolated func setCachedImage(_ image: UIImage?, for imageURL: URL, size: CGSize? = nil) {
         cache[makeKey(for: imageURL, size: size)] = image
     }
 
