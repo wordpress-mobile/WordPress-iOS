@@ -13,16 +13,19 @@ platform :ios do
   #
   desc 'Executes the initial steps needed during code freeze'
   lane :code_freeze do |options|
-    # Verify that there's nothing in progress in the working copy
     ensure_git_status_clean
 
     # Check out the up-to-date default branch, the designated starting point for the code freeze
     Fastlane::Helper::GitHelper.checkout_and_pull(DEFAULT_BRANCH)
 
+    # Checks if internal dependencies are on a stable version
+    check_pods_references
+
     # Make sure that Gutenberg is configured as expected for a successful code freeze
     gutenberg_dep_check
 
     release_branch_name = compute_release_branch_name(options: options, version: release_version_next)
+    ensure_branch_does_not_exist!(release_branch_name)
 
     # The `release_version_next` is used as the `new internal release version` value because the external and internal
     # release versions are always the same.
@@ -104,30 +107,44 @@ platform :ios do
 
     push_to_git_remote(tags: false)
 
-    attempts = 0
+    # Protect release/* branch
+    copy_branch_protection(
+      repository: GITHUB_REPO,
+      from_branch: DEFAULT_BRANCH,
+      to_branch: release_branch_name
+    )
+
     begin
-      attempts += 1
-      copy_branch_protection(
+      # Move PRs to next milestone
+      moved_prs = update_assigned_milestone(
         repository: GITHUB_REPO,
-        from_branch: DEFAULT_BRANCH,
-        to_branch: release_branch_name,
-        github_token: get_required_env('GITHUB_TOKEN')
+        from_milestone: new_version,
+        to_milestone: release_version_next,
+        comment: "Version `#{new_version}` has now entered code-freeze, so the milestone of this PR has been updated to `#{release_version_next}`."
+      )
+
+      # Add ❄️ marker to milestone title to indicate we entered code-freeze
+      set_milestone_frozen_marker(
+        repository: GITHUB_REPO,
+        milestone: new_version
       )
     rescue StandardError => e
-      if attempts < 2
-        sleep_time = 5
-        UI.message("Failed to set branch protection on GitHub. Retrying in #{sleep_time} seconds in case it was because the API hadn't noticed the new branch yet.")
-        sleep(sleep_time)
-        retry
-      else
-        UI.error("Failed to set branch protection on GitHub after #{attempts} attempts")
-        raise e
-      end
+      moved_prs = []
+
+      report_milestone_error(error_title: "Error freezing milestone `#{new_version}`: #{e.message}")
     end
 
-    set_milestone_frozen_marker(repository: GITHUB_REPO, milestone: new_version)
+    UI.message("Moved the following PRs to milestone #{release_version_next}: #{moved_prs.join(', ')}")
 
-    check_pods_references
+    # Annotate the build with the moved PRs
+    moved_prs_info = if moved_prs.empty?
+                       "👍 No open PRs were targeting `#{new_version}` at the time of code-freeze"
+                     else
+                       "#{moved_prs.count} PRs targeting `#{new_version}` were still open and thus moved to `#{release_version_next}`:\n" \
+                         + moved_prs.map { |pr_num| "[##{pr_num}](https://github.com/#{GITHUB_REPO}/pull/#{pr_num})" }.join(', ')
+                     end
+
+    buildkite_annotate(style: moved_prs.empty? ? 'success' : 'warning', context: 'start-code-freeze', message: moved_prs_info) if is_ci
 
     print_release_notes_reminder
 
@@ -152,9 +169,7 @@ platform :ios do
   #
   desc 'Completes the final steps for the code freeze'
   lane :complete_code_freeze do |skip_confirm: false|
-    ensure_git_branch_is_release_branch
-
-    # Verify that there's nothing in progress in the working copy
+    ensure_git_branch_is_release_branch!
     ensure_git_status_clean
 
     version = release_version_current
@@ -174,12 +189,7 @@ platform :ios do
 
     trigger_beta_build
 
-    pr_url = create_release_management_pull_request(
-      release_version: version,
-      base_branch: DEFAULT_BRANCH,
-      title: "Merge #{version} code freeze"
-    )
-
+    pr_url = create_backmerge_pr
     message = <<~MESSAGE
       Code freeze completed successfully. Next, review and merge the [integration PR](#{pr_url}).
     MESSAGE
@@ -203,7 +213,7 @@ platform :ios do
       UI.user_error!("Release branch for version #{release_version} doesn't exist.")
     end
 
-    ensure_git_branch_is_release_branch # This check is mostly redundant
+    ensure_git_branch_is_release_branch! # This check is mostly redundant
 
     # The `release_version_next` is used as the `new internal release version` value because the external and internal
     # release versions are always the same.
@@ -236,16 +246,7 @@ platform :ios do
 
     trigger_beta_build
 
-    # Create an intermediate branch to avoid conflicts when integrating the changes
-    Fastlane::Helper::GitHelper.create_branch("new_beta/#{release_version}")
-    push_to_git_remote(tags: false)
-
-    pr_url = create_release_management_pull_request(
-      release_version: release_version,
-      base_branch: DEFAULT_BRANCH,
-      title: "Merge changes from #{build_code_current}"
-    )
-
+    pr_url = create_backmerge_pr
     message = <<~MESSAGE
       Beta deployment was successful. Next, review and merge the [integration PR](#{pr_url}).
     MESSAGE
@@ -261,7 +262,7 @@ platform :ios do
       UI.user_error!("Release branch for version #{release_version} doesn't exist.")
     end
 
-    ensure_git_branch_is_release_branch # This check is mostly redundant
+    ensure_git_branch_is_release_branch! # This check is mostly redundant
 
     git_pull
 
@@ -354,19 +355,30 @@ platform :ios do
   # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
   #
   desc 'Performs the final checks and triggers a release build for the hotfix in the current branch'
-  lane :finalize_hotfix_release do |options|
-    ensure_git_branch_is_release_branch
-
-    # Verify that there's nothing in progress in the working copy
+  lane :finalize_hotfix_release do |skip_confirm: false|
+    ensure_git_branch_is_release_branch!
     ensure_git_status_clean
 
-    # Pull the latest hotfix release branch changes
-    git_pull
+    hotfix_version = release_version_current
 
-    UI.important("Triggering hotfix build for version: #{release_version_current}")
-    UI.user_error!('Aborted by user request') unless options[:skip_confirm] || UI.confirm('Do you want to continue?')
+    UI.important("Triggering hotfix build for version: #{hotfix_version}")
+    unless skip_confirm || UI.confirm('Do you want to continue?')
+      UI.user_error!("Terminating as requested. Don't forget to run the remainder of this automation manually.")
+    end
 
-    trigger_release_build(branch_to_build: "release/#{release_version_current}")
+    trigger_release_build(branch_to_build: release_branch_name(version: hotfix_version))
+
+    create_backmerge_pr
+
+    # Close hotfix milestone
+    begin
+      close_milestone(
+        repository: GITHUB_REPO,
+        milestone: hotfix_version
+      )
+    rescue StandardError => e
+      report_milestone_error(error_title: "Error closing milestone `#{hotfix_version}`: #{e.message}")
+    end
   end
 
   # Finalizes a release at the end of a sprint to submit to the App Store
@@ -379,53 +391,88 @@ platform :ios do
   # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
   #
   desc 'Trigger the final release build on CI'
-  lane :finalize_release do |options|
+  lane :finalize_release do |skip_confirm: false|
     UI.user_error!('To finalize a hotfix, please use the finalize_hotfix_release lane instead') if ios_current_branch_is_hotfix
 
-    ensure_git_branch_is_release_branch
-
-    # Verify that there's nothing in progress in the working copy
+    ensure_git_branch_is_release_branch!
     ensure_git_status_clean
 
-    skip_user_confirmation = options[:skip_confirm]
-
     UI.important("Finalizing release: #{release_version_current}")
-    UI.user_error!('Aborted by user request') unless skip_user_confirmation || UI.confirm('Do you want to continue?')
+    UI.user_error!('Aborted by user request') unless skip_confirm || UI.confirm('Do you want to continue?')
 
-    git_pull
-
-    check_all_translations(interactive: skip_user_confirmation == false)
+    check_all_translations(interactive: skip_confirm == false)
 
     download_localized_strings_and_metadata(options)
-    lint_localizations(allow_retry: skip_user_confirmation == false)
+    lint_localizations(allow_retry: skip_confirm == false)
 
     bump_build_codes
 
-    unless skip_user_confirmation || UI.confirm('Ready to push changes to remote and trigger the release build?')
-      UI.message("Terminating as requested. Don't forget to run the remainder of this automation manually.")
-      next
+    unless skip_confirm || UI.confirm('Ready to push changes to remote and trigger the release build?')
+      UI.user_error!("Terminating as requested. Don't forget to run the remainder of this automation manually.")
     end
 
     push_to_git_remote(tags: false)
 
     version = release_version_current
-    remove_branch_protection(repository: GITHUB_REPO, branch: release_branch_name)
-    set_milestone_frozen_marker(repository: GITHUB_REPO, milestone: version, freeze: false)
-    create_new_milestone(repository: GITHUB_REPO)
-    close_milestone(repository: GITHUB_REPO, milestone: version)
 
     trigger_release_build
 
-    pr_url = create_release_management_pull_request(
-      release_version: release_version_next,
-      base_branch: DEFAULT_BRANCH,
-      title: "Merge #{version} release finalization"
-    )
-
+    pr_url = create_backmerge_pr
     message = <<~MESSAGE
       Release successfully finalized. Next, review and merge the [integration PR](#{pr_url}).
     MESSAGE
     buildkite_annotate(context: 'finalization-completed', style: 'success', message: message) if is_ci
+
+    # Close milestone
+    begin
+      set_milestone_frozen_marker(repository: GITHUB_REPO, milestone: version, freeze: false)
+      close_milestone(repository: GITHUB_REPO, milestone: version)
+    rescue StandardError => e
+      report_milestone_error(error_title: "Error closing milestone `#{version}`: #{e.message}")
+    end
+  end
+
+  # This lane publishes a release on GitHub and creates a PR to backmerge the current release branch into the next release/ branch
+  #
+  # @param [Boolean] skip_confirm (default: false) If set, will skip the confirmation prompt before running the rest of the lane
+  #
+  # @example Running the lane
+  #          bundle exec fastlane publish_release skip_confirm:true
+  #
+  lane :publish_release do |skip_confirm: false|
+    ensure_git_status_clean
+    ensure_git_branch_is_release_branch!
+
+    version_number = release_version_current
+
+    current_branch = release_branch_name(version: version_number)
+    next_release_branch = release_branch_name(version: release_version_next)
+
+    UI.important <<~PROMPT
+      Publish the #{version_number} release. This will:
+      - Publish the existing draft `#{version_number}` release on GitHub
+      - Which will also have GitHub create the associated git tag, pointing to the tip of the branch
+      - If the release branch for the next version `#{next_release_branch}` already exists, backmerge `#{current_branch}` into it
+      - If needed, backmerge `#{current_branch}` back into `#{DEFAULT_BRANCH}`
+      - Delete the `#{current_branch}` branch
+    PROMPT
+    unless skip_confirm || UI.confirm('Do you want to continue?')
+      UI.user_error!("Terminating as requested. Don't forget to run the remainder of this automation manually.")
+    end
+
+    UI.important "Publishing release #{version_number} on GitHub"
+
+    publish_github_release(
+      repository: GITHUB_REPO,
+      name: version_number
+    )
+
+    create_backmerge_pr
+
+    # At this point, an intermediate branch has been created by creating a backmerge PR to a hotfix or the next version release branch.
+    # This allows us to safely delete the `release/*` branch.
+    # Note that if a hotfix or new release branches haven't been created, the backmerge PR won't be created as well.
+    delete_remote_git_branch!(current_branch)
   end
 
   # Triggers a beta build on CI
@@ -457,7 +504,7 @@ end
 # @param [Boolean] beta Indicate if we should build a beta or regular release
 #
 def trigger_buildkite_release_build(branch:, beta:)
-  buildkite_trigger_build(
+  build_url = buildkite_trigger_build(
     buildkite_organization: BUILDKITE_ORGANIZATION,
     buildkite_pipeline: BUILDKITE_PIPELINE,
     branch: branch,
@@ -465,6 +512,11 @@ def trigger_buildkite_release_build(branch:, beta:)
     pipeline_file: 'release-builds.yml',
     message: beta ? 'Beta Builds' : 'Release Builds'
   )
+
+  return unless is_ci
+
+  message = "This build triggered a build on `#{branch}`:\n\n- #{build_url}"
+  buildkite_annotate(style: 'info', context: 'trigger-release-build', message: message)
 end
 
 # Checks that the Gutenberg pod is reference by a tag and not a commit
@@ -562,35 +614,67 @@ def commit_version_and_build_files
   )
 end
 
-def create_release_management_pull_request(release_version:, base_branch:, title:)
-  token = ENV.fetch('GITHUB_TOKEN', nil)
+def create_backmerge_pr
+  version = release_version_current
 
-  UI.user_error!('Please export a GitHub API token in the environment as GITHUB_TOKEN') if token.nil?
-
-  pr_url = create_pull_request(
-    api_token: token,
-    repo: 'wordpress-mobile/WordPress-iOS',
-    title: title,
-    head: Fastlane::Helper::GitHelper.current_git_branch,
-    base: base_branch,
-    labels: 'Releases'
-  )
-
-  # Next, set the milestone for the PR
-  #
-  # The create_pull_request action has a 'milestone' parameter, but it expects the milestone id.
-  # We don't know the id of the milestone, but we can use a different action to set it.
-  #
-  # PR URLs are in the format github.com/org/repo/pull/id
-  pr_number = File.basename(pr_url)
-  update_assigned_milestone(
+  pr_url = create_release_backmerge_pull_request(
     repository: GITHUB_REPO,
-    numbers: [pr_number],
-    to_milestone: release_version
+    source_branch: release_branch_name(version: version),
+    labels: ['Releases'],
+    milestone_title: release_version_next
   )
+rescue StandardError => e
+  error_message = <<-MESSAGE
+    Error creating backmerge pull request:
 
-  # Return the PR URL
+    #{e.message}
+
+    If this is not the first time you are running the release task, the backmerge PR for the version `#{version}` might have already been previously created.
+    Please close any previous backmerge PR for `#{version}`, delete the previous merge branch, then run the release task again.
+  MESSAGE
+
+  buildkite_annotate(style: 'error', context: 'error-creating-backmerge', message: error_message) if is_ci
+
+  UI.user_error!(error_message)
+
   pr_url
+end
+
+def ensure_git_branch_is_release_branch!
+  # Verify that the current branch is a release branch. Notice that `ensure_git_branch` expects a RegEx parameter
+  ensure_git_branch(branch: '^release/')
+end
+
+def ensure_branch_does_not_exist!(branch_name)
+  return unless Fastlane::Helper::GitHelper.branch_exists_on_remote?(branch_name: branch_name)
+
+  error_message = "The branch `#{branch_name}` already exists. Please check first if there is an existing Pull Request that needs to be merged or closed first, " \
+                  'or delete the branch to then run again the release task.'
+
+  buildkite_annotate(style: 'error', context: 'error-checking-branch', message: error_message) if is_ci
+
+  UI.user_error!(error_message)
+end
+
+# Delete a branch remotely, after having removed any GitHub branch protection
+#
+def delete_remote_git_branch!(branch_name)
+  remove_branch_protection(repository: GITHUB_REPO, branch: branch_name)
+
+  Git.open(Dir.pwd).push('origin', branch_name, delete: true)
+end
+
+def report_milestone_error(error_title:)
+  error_message = <<-MESSAGE
+    #{error_title}
+
+    - If this is not the first time you are running the release task (e.g. retrying because it failed on first attempt), the milestone might have already been closed and this error is expected.
+    - Otherwise if this is the first you are running the release task for this version, please investigate the error.
+  MESSAGE
+
+  UI.error(error_message)
+
+  buildkite_annotate(style: 'warning', context: 'error-with-milestone', message: error_message) if is_ci
 end
 
 def check_pods_references

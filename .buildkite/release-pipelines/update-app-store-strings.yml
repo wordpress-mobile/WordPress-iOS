@@ -18,3 +18,7 @@ steps:
 
       echo '--- :shipit: Update relaese notes and other App Store metadata'
       bundle exec fastlane update_appstore_strings skip_confirm:true
+    retry:
+      manual:
+        # If those jobs fail, one should always prefer re-triggering a new build from ReleaseV2 rather than retrying the individual job from Buildkite
+        allowed: false
