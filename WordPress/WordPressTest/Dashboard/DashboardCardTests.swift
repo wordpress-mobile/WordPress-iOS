@@ -12,14 +12,14 @@ class DashboardCardTests: CoreDataTestCase {
         contextManager.useAsSharedInstance(untilTestFinished: self)
         blog = BlogBuilder(mainContext).withAnAccount().build()
         blog.isAdmin = true
-        try? featureFlags.override(RemoteFeatureFlag.activityLogDashboardCard, withValue: true)
-        try? featureFlags.override(RemoteFeatureFlag.pagesDashboardCard, withValue: true)
+        featureFlags.override(RemoteFeatureFlag.activityLogDashboardCard, withValue: true)
+        featureFlags.override(RemoteFeatureFlag.pagesDashboardCard, withValue: true)
     }
 
     override func tearDown() {
         blog = nil
-        try? featureFlags.override(RemoteFeatureFlag.activityLogDashboardCard, withValue: RemoteFeatureFlag.activityLogDashboardCard.originalValue)
-        try? featureFlags.override(RemoteFeatureFlag.pagesDashboardCard, withValue: RemoteFeatureFlag.pagesDashboardCard.originalValue)
+        featureFlags.override(RemoteFeatureFlag.activityLogDashboardCard, withValue: RemoteFeatureFlag.activityLogDashboardCard.originalValue)
+        featureFlags.override(RemoteFeatureFlag.pagesDashboardCard, withValue: RemoteFeatureFlag.pagesDashboardCard.originalValue)
         super.tearDown()
     }
 
