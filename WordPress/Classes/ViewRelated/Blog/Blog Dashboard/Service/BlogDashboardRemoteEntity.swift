@@ -2,11 +2,11 @@ import Foundation
 
 struct BlogDashboardRemoteEntity: Decodable, Hashable, Sendable {
 
-    let posts: FailableDecodable<BlogDashboardPosts>?
-    let todaysStats: FailableDecodable<BlogDashboardStats>?
-    let pages: FailableDecodable<[BlogDashboardPage]>?
-    let activity: FailableDecodable<BlogDashboardActivity>?
-    let dynamic: FailableDecodable<[BlogDashboardDynamic]>?
+    var posts: FailableDecodable<BlogDashboardPosts>?
+    var todaysStats: FailableDecodable<BlogDashboardStats>?
+    var pages: FailableDecodable<[BlogDashboardPage]>?
+    var activity: FailableDecodable<BlogDashboardActivity>?
+    var dynamic: FailableDecodable<[BlogDashboardDynamic]>?
 
     struct BlogDashboardPosts: Decodable, Hashable, Sendable {
         var hasPublished: Bool?
