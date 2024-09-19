@@ -21,7 +21,7 @@ steps:
     command: ".buildkite/commands/release-build-jetpack.sh"
     plugins: [$CI_TOOLKIT_PLUGIN]
     notify:
-    - slack: "#build-and-ship"
+      - slack: "#build-and-ship"
     retry:
       manual:
         # If those jobs fail, one should always prefer re-triggering a new build from ReleaseV2 rather than retrying the individual job from Buildkite

@@ -138,7 +138,7 @@ platform :ios do
 
     # Annotate the build with the moved PRs
     moved_prs_info = if moved_prs.empty?
-                       "👍 No open PR were targeting `#{new_version}` at the time of code-freeze"
+                       "👍 No open PRs were targeting `#{new_version}` at the time of code-freeze"
                      else
                        "#{moved_prs.count} PRs targeting `#{new_version}` were still open and thus moved to `#{release_version_next}`:\n" \
                          + moved_prs.map { |pr_num| "[##{pr_num}](https://github.com/#{GITHUB_REPO}/pull/#{pr_num})" }.join(', ')
@@ -423,8 +423,6 @@ platform :ios do
     MESSAGE
     buildkite_annotate(context: 'finalization-completed', style: 'success', message: message) if is_ci
 
-    remove_branch_protection(repository: GITHUB_REPO, branch: release_branch_name)
-
     # Close milestone
     begin
       set_milestone_frozen_marker(repository: GITHUB_REPO, milestone: version, freeze: false)
@@ -515,8 +513,10 @@ def trigger_buildkite_release_build(branch:, beta:)
     message: beta ? 'Beta Builds' : 'Release Builds'
   )
 
-  message = "This build triggered a build on <code>#{branch}</code>:<br>- #{build_url}"
-  buildkite_annotate(style: 'info', context: 'trigger-release-build', message: message) if is_ci
+  return unless is_ci
+  
+  message = "This build triggered a build on `#{branch}`:\n\n- #{build_url}"
+  buildkite_annotate(style: 'info', context: 'trigger-release-build', message: message)
 end
 
 # Checks that the Gutenberg pod is reference by a tag and not a commit
