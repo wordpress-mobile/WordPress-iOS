@@ -123,6 +123,8 @@ final class ReaderSidebarViewController: UIHostingController<AnyView> {
 
     func navigate(to path: ReaderNavigationPath) {
         switch path {
+        case .recent:
+            viewModel.selection = .main(.recent)
         case .discover:
             viewModel.selection = .main(.discover)
         case .likes:
