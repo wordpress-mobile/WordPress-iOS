@@ -49,13 +49,15 @@ extension NSItemProvider {
     ///
     /// - parameter completion: The completion closure that gets called on the main thread.
     static func loadImage(for provider: NSItemProvider, _ completion: @escaping (UIImage?, Error?) -> Void) {
+        let registeredTypeIdentifiers = provider.registeredTypeIdentifiers
+
         if provider.canLoadObject(ofClass: UIImage.self) {
             provider.loadObject(ofClass: UIImage.self) { value, error in
                 DispatchQueue.main.async {
                     if let image = value as? UIImage {
                         completion(image, nil)
                     } else {
-                        DDLogError("Failed to load image for provider with registered types \(provider.registeredTypeIdentifiers) with error \(String(describing: error))")
+                        DDLogError("Failed to load image for provider with registered types \(registeredTypeIdentifiers) with error \(String(describing: error))")
 
                         completion(nil, error)
                     }
@@ -70,13 +72,13 @@ extension NSItemProvider {
                     if let image {
                         completion(image, nil)
                     } else {
-                        DDLogError("Failed to load image for provider with registered types \(provider.registeredTypeIdentifiers) with error \(String(describing: error))")
+                        DDLogError("Failed to load image for provider with registered types \(registeredTypeIdentifiers) with error \(String(describing: error))")
                         completion(nil, error)
                     }
                 }
             }
         } else {
-            DDLogError("No image representation available for provider with registered types: \(provider.registeredTypeIdentifiers)")
+            DDLogError("No image representation available for provider with registered types: \(registeredTypeIdentifiers)")
             DispatchQueue.main.async {
                 completion(nil, nil)
             }
