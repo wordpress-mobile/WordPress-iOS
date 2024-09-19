@@ -1,5 +1,5 @@
 import UIKit
-import WebKit
+@preconcurrency import WebKit
 
 @objc protocol BlazeWebViewControllerDelegate {
     func dismissBlazeWebViewController(_ controller: BlazeWebViewController)

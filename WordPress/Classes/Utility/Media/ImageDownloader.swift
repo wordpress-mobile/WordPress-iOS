@@ -187,7 +187,7 @@ extension ImageDownloader {
 
 // MARK: - AnimatedImage
 
-final class AnimatedImage: UIImage {
+final class AnimatedImage: UIImage, @unchecked Sendable {
     private(set) var gifData: Data?
     var targetSize: CGSize?
 

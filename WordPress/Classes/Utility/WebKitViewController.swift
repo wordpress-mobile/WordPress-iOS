@@ -1,7 +1,7 @@
 import Foundation
 import Gridicons
 import UIKit
-import WebKit
+@preconcurrency import WebKit
 import WordPressShared
 
 protocol WebKitAuthenticatable {

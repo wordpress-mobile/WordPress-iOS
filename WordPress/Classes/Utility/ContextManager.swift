@@ -153,7 +153,7 @@ public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
 
     public func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) throws -> T) async throws -> T {
         try await withCheckedThrowingContinuation { continuation in
-            performAndSave(block, completion: continuation.resume(with:), on: DispatchQueue.global())
+            performAndSave(block, completion: { continuation.resume(with: $0) }, on: DispatchQueue.global())
         }
     }
 
