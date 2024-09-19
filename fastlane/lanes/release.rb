@@ -514,7 +514,7 @@ def trigger_buildkite_release_build(branch:, beta:)
   )
 
   return unless is_ci
-  
+
   message = "This build triggered a build on `#{branch}`:\n\n- #{build_url}"
   buildkite_annotate(style: 'info', context: 'trigger-release-build', message: message)
 end
