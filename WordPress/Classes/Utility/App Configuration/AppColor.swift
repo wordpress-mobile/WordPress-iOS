@@ -91,7 +91,7 @@ struct UIAppColor {
 
 #if IS_JETPACK
     static let tint = UIColor.label
-    static let brand = CSColor.JetpackGreen.base
+    static let brand = UIColor(light: CSColor.JetpackGreen.shade(.shade40), dark: CSColor.JetpackGreen.shade(.shade30))
 #endif
 
 #if IS_WORDPRESS
