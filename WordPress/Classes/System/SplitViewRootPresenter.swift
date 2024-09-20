@@ -57,8 +57,8 @@ final class SplitViewRootPresenter: RootViewPresenter {
             self?.sidebarViewModel.selection = .blog(TaggedManagedObjectID(site))
         }.store(in: &cancellables)
 
+        // -warning: List occasionally sets the selection to `nil` when switching items.
         sidebarViewModel.$selection.compactMap { $0 }
-            .removeDuplicates()
             .sink { [weak self] in self?.configure(for: $0) }
             .store(in: &cancellables)
 
@@ -100,12 +100,10 @@ final class SplitViewRootPresenter: RootViewPresenter {
                     siteContent = SiteSplitViewContent(blog: site)
                     content = siteContent!
                 } catch {
-                    // TODO: (wpsidebar) switch to a different blog?
-                    return
+                    return wpAssertionFailure("selected blog not found")
                 }
             }
         case .notifications:
-            // TODO: (wpsidebar) update tab bar item when new notifications arrive
             if let notificationsContent {
                 content = notificationsContent
             } else {
@@ -123,6 +121,8 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
         display(content: content)
 
+        // The `main.async` call fixed an issue where sometimes the sidebar doesn't
+        // update the displayed selection in the list after switching to a new item
         DispatchQueue.main.async {
             self.splitVC.hide(.primary)
         }

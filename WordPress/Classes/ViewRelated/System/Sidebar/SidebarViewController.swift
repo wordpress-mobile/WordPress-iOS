@@ -46,6 +46,7 @@ private struct SidebarView: View {
             }
         }
         .listStyle(.sidebar)
+        .tint(AppColor.tint)
         .overlay(alignment: .bottom) {
             SidebarProfileContainerView(viewModel: viewModel)
         }

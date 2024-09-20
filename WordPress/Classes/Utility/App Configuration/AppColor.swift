@@ -90,10 +90,12 @@ struct UIAppColor {
     static let accent = CSColor.Pink.base
 
 #if IS_JETPACK
+    static let tint = UIColor.label
     static let brand = CSColor.JetpackGreen.base
 #endif
 
 #if IS_WORDPRESS
+    static let tint = brand
     static let brand = CSColor.WordPressBlue.base
 #endif
 
@@ -128,11 +130,6 @@ struct UIAppColor {
 }
 
 struct AppColor {
-#if IS_JETPACK
-    static let brand = Color(CSColor.JetpackGreen.base)
-#endif
-
-#if IS_WORDPRESS
-    static let brand = Color(CSColor.WordPressBlue.base)
-#endif
+    static let tint = Color(UIAppColor.tint)
+    static let brand = Color(UIAppColor.brand)
 }
