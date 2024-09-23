@@ -52,6 +52,13 @@ final class NotificationsViewControllerTests: XCTestCase {
         postAccountChangeNotification()
 
         // Then
+        // TODO: rework this unit test
+        let expectation = self.expectation(description: "setBadgeCount")
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
+            expectation.fulfill()
+        }
+        wait(for: [expectation])
+
         XCTAssertEqual(UIApplication.shared.applicationIconBadgeNumber, newUnreadCount)
     }
 
