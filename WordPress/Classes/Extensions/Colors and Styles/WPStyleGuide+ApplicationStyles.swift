@@ -37,7 +37,7 @@ extension WPStyleGuide {
         configureSharedSettings(for: scrollEdgeAppearance)
 
         let appearance = UINavigationBar.appearance()
-        appearance.tintColor = UIAppColor.primary // Back button color
+        appearance.tintColor = UIAppColor.tint // Back button color
 
         appearance.standardAppearance = standardAppearance
         appearance.compactAppearance = standardAppearance
@@ -48,7 +48,7 @@ extension WPStyleGuide {
     private class func configureSharedSettings(for appearance: UINavigationBarAppearance) {
         appearance.titleTextAttributes = [
             .font: WPStyleGuide.navigationBarStandardFont,
-            .foregroundColor: UIAppColor.primary
+            .foregroundColor: UIColor.label
         ]
         appearance.largeTitleTextAttributes = [
             .font: AppStyleGuide.navigationBarLargeFont
@@ -65,7 +65,7 @@ extension WPStyleGuide {
     }
 
     @objc class func configureTabBar(_ tabBar: UITabBar) {
-        tabBar.tintColor = UIAppColor.primary
+        tabBar.tintColor = UIAppColor.tint
         tabBar.unselectedItemTintColor = UIColor(named: "TabUnselected")
     }
 

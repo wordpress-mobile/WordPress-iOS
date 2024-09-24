@@ -104,7 +104,8 @@ struct UIAppColor {
     static let gray = CSColor.Gray.base
     static let blue = CSColor.Blue.base
 
-    static let primary = UIColor.label
+    /// - warning: soft-deprecated, use `UIAppColor.tint`.
+    static let primary = brand
 
     static let success = CSColor.Green.base
     static let text = CSColor.Gray.shade(.shade80)
