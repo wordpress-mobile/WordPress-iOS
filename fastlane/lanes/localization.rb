@@ -243,11 +243,7 @@ platform :ios do
 
     push_to_git_remote(tags: false)
 
-    pr_url = create_release_management_pull_request(
-      release_version: release_version,
-      base_branch: compute_release_branch_name(options: options, version: release_version),
-      title: "Merge editorialized release notes in #{release_version}"
-    )
+    pr_url = create_backmerge_pr
 
     message = <<~MESSAGE
       Release notes and metadata localization sources successfully generated. Next, review and merge the [integration PR](#{pr_url}).

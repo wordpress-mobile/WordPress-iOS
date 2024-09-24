@@ -49,7 +49,7 @@ enum FeatureFlag: Int, CaseIterable {
         case .tipKit:
             return BuildConfiguration.current != .appStore
         case .sidebar:
-            return false
+            return true
         case .newGutenberg:
             return false
         case .newGutenbergThemeStyles:

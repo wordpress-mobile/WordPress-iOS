@@ -33,15 +33,18 @@ final class ReaderSidebarViewController: UIHostingController<AnyView> {
     func showInitialSelection() {
         cancellables = []
 
-        viewModel.$selection.sink { [weak self] in
-            self?.configure(for: $0)
-        }.store(in: &cancellables)
+        // -warning: List occasionally sets the selection to `nil` when switching items.
+        viewModel.$selection.compactMap { $0 }
+            .removeDuplicates { [weak self] in
+                guard $0 == $1 else { return false }
+                self?.popSecondaryViewControllerToRoot()
+                return true
+            }
+            .sink { [weak self] in self?.configure(for: $0) }
+            .store(in: &cancellables)
     }
 
-    private func configure(for selection: ReaderSidebarItem?) {
-        guard let selection else {
-            return
-        }
+    private func configure(for selection: ReaderSidebarItem) {
         switch selection {
         case .main(let screen):
             showSecondary(makeViewController(for: screen))
@@ -56,6 +59,11 @@ final class ReaderSidebarViewController: UIHostingController<AnyView> {
         case .organization(let objectID):
             showSecondary(makeViewController(withTopicID: objectID))
         }
+    }
+
+    private func popSecondaryViewControllerToRoot() {
+        let secondaryVC = splitViewController?.viewController(for: .secondary)
+        (secondaryVC as? UINavigationController)?.popToRootViewController(animated: true)
     }
 
     private func makeViewController<T: ReaderAbstractTopic>(withTopicID objectID: TaggedManagedObjectID<T>) -> UIViewController {
@@ -123,6 +131,8 @@ final class ReaderSidebarViewController: UIHostingController<AnyView> {
 
     func navigate(to path: ReaderNavigationPath) {
         switch path {
+        case .recent:
+            viewModel.selection = .main(.recent)
         case .discover:
             viewModel.selection = .main(.discover)
         case .likes:
@@ -198,6 +208,19 @@ private struct ReaderSidebarView: View {
         .navigationTitle(Strings.reader)
         .toolbar {
             EditButton()
+        }
+        .tint(preferredTintColor)
+    }
+
+    private var preferredTintColor: Color {
+        if #available(iOS 18, *) {
+            return AppColor.tint
+        } else {
+            // This is a workaround for an iOS issue where it will not apply the
+            // correrect colors in dark mode when the sidebar is displayed in a
+            // supplementary column. If use use black as a tint color, it
+            // displays white text on white background
+            return Color(UIColor(light: UIAppColor.tint, dark: .secondaryLabel))
         }
     }
 

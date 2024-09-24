@@ -50,6 +50,8 @@ extension WPTabBarController {
 
     private func navigate(to path: ReaderNavigationPath) {
         switch path {
+        case .recent:
+            readerTabViewModel.switchToTab(where: ReaderHelpers.topicIsFollowing)
         case .discover:
             readerTabViewModel.switchToTab(where: ReaderHelpers.topicIsDiscover)
         case .likes:

@@ -11,6 +11,12 @@ final class SiteMenuViewController: UIViewController {
 
     weak var delegate: SiteMenuViewControllerDelegate?
 
+    /// - warning: Temporary code. Avoid using it!
+    var selectedSubsection: BlogDetailsSubsection? {
+        let subsection = blogDetailsVC.selectedSubsection
+        return subsection.rawValue == NSNotFound ? nil : subsection
+    }
+
     init(blog: Blog) {
         self.blog = blog
         super.init(nibName: nil, bundle: nil)
@@ -86,6 +92,8 @@ private final class SiteMenuListViewController: BlogDetailsViewController {
             container.pinSubviewToAllEdges(backgroundView, insets: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16))
             return container
         }()
+        cell.focusStyle = .custom
+        cell.focusEffect = nil
 
         return cell
     }
