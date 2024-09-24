@@ -4,6 +4,8 @@ DEVICE=$1
 
 echo "Running UI tests on $DEVICE. The iOS version will be the latest available in the CI host."
 
+xcrun simctl list --json devices available
+
 # Run this at the start to fail early if value not available
 echo '--- :test-analytics: Configuring Test Analytics'
 if [[ $DEVICE =~ ^iPhone ]]; then
