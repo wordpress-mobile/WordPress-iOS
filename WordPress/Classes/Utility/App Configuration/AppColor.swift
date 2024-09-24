@@ -92,11 +92,19 @@ struct UIAppColor {
 #if IS_JETPACK
     static let tint = UIColor.label
     static let brand = UIColor(light: CSColor.JetpackGreen.shade(.shade40), dark: CSColor.JetpackGreen.shade(.shade30))
+
+    static func brand(_ shade: ColorStudioShade) -> UIColor {
+        CSColor.JetpackGreen.shade(shade)
+    }
 #endif
 
 #if IS_WORDPRESS
     static let tint = brand
     static let brand = CSColor.WordPressBlue.base
+
+    static func brand(_ shade: ColorStudioShade) -> UIColor {
+        CSColor.WordPressBlue.shade(shade)
+    }
 #endif
 
     static let divider = CSColor.Gray.shade(.shade10)
