@@ -87,8 +87,8 @@ private extension ListRow {
 
     enum Constants {
         // difference view
-        static let positiveColor = Color("Green50")
-        static let negativeColor = Color("Red50")
+        static let positiveColor = Color(UIAppColor.jetpackGreen(.shade50))
+        static let negativeColor = Color(UIAppColor.red(.shade50))
         static let neutralColor = Color(UIColor.systemGray)
         static let differenceTextColor = Color.white
 
