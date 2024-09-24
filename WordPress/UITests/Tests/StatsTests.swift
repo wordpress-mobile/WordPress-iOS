@@ -48,9 +48,9 @@ class StatsTests: XCTestCase {
 
         let currentYear = Calendar.current.component(.year, from: Date())
         let yearsChartBars: [String] = [
-            "Views,  \(currentYear): 9148",
-            "Visitors,  \(currentYear): 4216",
-            "Views,  \(currentYear - 1): 1215",
+            "Views,  \(currentYear): 9,148",
+            "Visitors,  \(currentYear): 4,216",
+            "Views,  \(currentYear - 1): 1,215",
             "Visitors,  \(currentYear - 1): 632",
             "Views,  \(currentYear - 2): 788",
             "Visitors,  \(currentYear - 2): 465"
