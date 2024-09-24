@@ -123,7 +123,8 @@ extension MediaExporter {
 
     func export() async throws -> MediaExport {
         try await withUnsafeThrowingContinuation { continuation in
-            export(onCompletion: continuation.resume(returning:), onError: continuation.resume(throwing:))
+            export(onCompletion: { continuation.resume(returning: $0) },
+                   onError: { continuation.resume(throwing: $0) })
         }
     }
 }

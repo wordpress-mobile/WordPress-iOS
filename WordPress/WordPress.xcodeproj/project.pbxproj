@@ -1658,10 +1658,8 @@
 		4AD955BC2C2171F000D0EEFA /* LoginFieldsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD955882C2171F000D0EEFA /* LoginFieldsTests.swift */; };
 		4AD955BD2C2171F000D0EEFA /* LoginFieldsValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD955892C2171F000D0EEFA /* LoginFieldsValidationTests.swift */; };
 		4AD955BE2C2171F000D0EEFA /* WordPressComSiteInfoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD9558A2C2171F000D0EEFA /* WordPressComSiteInfoTests.swift */; };
-		4AD955BF2C2171F000D0EEFA /* NavigateBackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD9558C2C2171F000D0EEFA /* NavigateBackTests.swift */; };
 		4AD955C02C2171F000D0EEFA /* NavigationToEnterAccountTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD9558D2C2171F000D0EEFA /* NavigationToEnterAccountTests.swift */; };
 		4AD955C12C2171F000D0EEFA /* NavigationToEnterSiteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD9558E2C2171F000D0EEFA /* NavigationToEnterSiteTests.swift */; };
-		4AD955C22C2171F000D0EEFA /* NavigationToRootTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD9558F2C2171F000D0EEFA /* NavigationToRootTests.swift */; };
 		4AD955C42C2171F000D0EEFA /* AppleAuthenticatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD955932C2171F000D0EEFA /* AppleAuthenticatorTests.swift */; };
 		4AD955C52C2171F000D0EEFA /* LoginViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD955942C2171F000D0EEFA /* LoginViewControllerTests.swift */; };
 		4AD955C62C2171F000D0EEFA /* SiteAddressViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD955952C2171F000D0EEFA /* SiteAddressViewModelTests.swift */; };
@@ -7490,10 +7488,8 @@
 		4AD955882C2171F000D0EEFA /* LoginFieldsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginFieldsTests.swift; sourceTree = "<group>"; };
 		4AD955892C2171F000D0EEFA /* LoginFieldsValidationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginFieldsValidationTests.swift; sourceTree = "<group>"; };
 		4AD9558A2C2171F000D0EEFA /* WordPressComSiteInfoTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WordPressComSiteInfoTests.swift; sourceTree = "<group>"; };
-		4AD9558C2C2171F000D0EEFA /* NavigateBackTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigateBackTests.swift; sourceTree = "<group>"; };
 		4AD9558D2C2171F000D0EEFA /* NavigationToEnterAccountTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationToEnterAccountTests.swift; sourceTree = "<group>"; };
 		4AD9558E2C2171F000D0EEFA /* NavigationToEnterSiteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationToEnterSiteTests.swift; sourceTree = "<group>"; };
-		4AD9558F2C2171F000D0EEFA /* NavigationToRootTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationToRootTests.swift; sourceTree = "<group>"; };
 		4AD955932C2171F000D0EEFA /* AppleAuthenticatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleAuthenticatorTests.swift; sourceTree = "<group>"; };
 		4AD955942C2171F000D0EEFA /* LoginViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewControllerTests.swift; sourceTree = "<group>"; };
 		4AD955952C2171F000D0EEFA /* SiteAddressViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteAddressViewModelTests.swift; sourceTree = "<group>"; };
@@ -13154,10 +13150,8 @@
 		4AD955902C2171F000D0EEFA /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
-				4AD9558C2C2171F000D0EEFA /* NavigateBackTests.swift */,
 				4AD9558D2C2171F000D0EEFA /* NavigationToEnterAccountTests.swift */,
 				4AD9558E2C2171F000D0EEFA /* NavigationToEnterSiteTests.swift */,
-				4AD9558F2C2171F000D0EEFA /* NavigationToRootTests.swift */,
 			);
 			path = Navigation;
 			sourceTree = "<group>";
@@ -23484,7 +23478,6 @@
 				4AD955B42C2171F000D0EEFA /* URL+GoogleSignInTests.swift in Sources */,
 				4AD955AE2C2171F000D0EEFA /* NewGoogleAuthenticatorTests.swift in Sources */,
 				4AD955A82C2171F000D0EEFA /* GoogleClientIdTests.swift in Sources */,
-				4AD955BF2C2171F000D0EEFA /* NavigateBackTests.swift in Sources */,
 				4AD955C02C2171F000D0EEFA /* NavigationToEnterAccountTests.swift in Sources */,
 				4AD955AD2C2171F000D0EEFA /* JWTokenTests.swift in Sources */,
 				4AD955AB2C2171F000D0EEFA /* IDTokenTests.swift in Sources */,
@@ -23501,7 +23494,6 @@
 				4AD9559C2C2171F000D0EEFA /* WordPressAuthenticator+TestsUtils.swift in Sources */,
 				4AD955C62C2171F000D0EEFA /* SiteAddressViewModelTests.swift in Sources */,
 				4AD955B82C2171F000D0EEFA /* MockNavigationController.swift in Sources */,
-				4AD955C22C2171F000D0EEFA /* NavigationToRootTests.swift in Sources */,
 				4AD955C52C2171F000D0EEFA /* LoginViewControllerTests.swift in Sources */,
 				4AD955C42C2171F000D0EEFA /* AppleAuthenticatorTests.swift in Sources */,
 				4AD9559D2C2171F000D0EEFA /* WordPressAuthenticatorDisplayTextTests.swift in Sources */,
@@ -27122,6 +27114,7 @@
 				);
 				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_PREPROCESS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				JP_SCHEME = jpdebug;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -27190,6 +27183,7 @@
 				);
 				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_PREPROCESS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				JP_SCHEME = jetpack;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -29184,6 +29178,7 @@
 				);
 				INFOPLIST_FILE = "WordPress-Alpha-Info.plist";
 				INFOPLIST_PREPROCESS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				JP_SCHEME = jpalpha;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -29627,6 +29622,7 @@
 				);
 				INFOPLIST_FILE = "WordPress-Internal-Info.plist";
 				INFOPLIST_PREPROCESS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				JP_SCHEME = jpinternal;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

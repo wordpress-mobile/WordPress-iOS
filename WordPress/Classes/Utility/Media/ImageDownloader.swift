@@ -16,7 +16,7 @@ struct ImageRequestOptions {
 actor ImageDownloader {
     static let shared = ImageDownloader()
 
-    private let cache: MemoryCacheProtocol
+    private nonisolated let cache: MemoryCacheProtocol
 
     private let urlSession = URLSession {
         $0.urlCache = nil
@@ -187,7 +187,7 @@ extension ImageDownloader {
 
 // MARK: - AnimatedImage
 
-final class AnimatedImage: UIImage {
+final class AnimatedImage: UIImage, @unchecked Sendable {
     private(set) var gifData: Data?
     var targetSize: CGSize?
 

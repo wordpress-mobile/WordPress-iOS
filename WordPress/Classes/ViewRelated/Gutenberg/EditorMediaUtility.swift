@@ -3,7 +3,7 @@ import Aztec
 import Gridicons
 import WordPressShared
 
-final class AuthenticatedImageDownload: AsyncOperation {
+final class AuthenticatedImageDownload: AsyncOperation, @unchecked Sendable {
     enum DownloadError: Error {
         case blogNotFound
     }

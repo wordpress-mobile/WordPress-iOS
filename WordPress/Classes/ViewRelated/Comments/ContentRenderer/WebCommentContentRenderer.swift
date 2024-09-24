@@ -1,4 +1,4 @@
-import WebKit
+@preconcurrency import WebKit
 import WordPressShared
 
 /// Renders the comment body with a web view. Provides the best visual experience but has the highest performance cost.

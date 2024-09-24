@@ -13,7 +13,7 @@ struct JetpackPrologueStyleGuide {
     )
 
     // Continue with WordPress button colors
-    static let continueFillColor = JetpackPromptsConfiguration.Constants.evenColor ?? .systemBlue // This is just to satisfy the compiler
+    static let continueFillColor = JetpackPromptsConfiguration.Constants.evenColor
     static let continueHighlightedFillColor = continueFillColor.withAlphaComponent(0.9)
     static let continueTextColor = UIColor.white
     static let continueHighlightedTextColor = whiteWithAlpha07

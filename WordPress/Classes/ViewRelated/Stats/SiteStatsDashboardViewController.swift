@@ -289,8 +289,6 @@ struct SiteStatsDashboardPreferences {
 
         let periodKey = lastSelectedStatsTabTypeKey(forSiteID: siteID)
         UserPersistentStoreFactory.instance().set(tabType.rawValue, forKey: periodKey)
-
-        let unitKey = lastSelectedStatsUnitTypeKey(forSiteID: siteID)
     }
 
     static func setSelected(periodUnit: StatsPeriodUnit) {

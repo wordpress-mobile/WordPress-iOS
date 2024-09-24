@@ -6,7 +6,7 @@ import Foundation
 /// precedence over the backend.
 ///
 /// Remote cards should be separately added to RemoteDashboardCard
-enum DashboardCard: String, CaseIterable {
+enum DashboardCard: String, CaseIterable, Sendable {
     case dynamic
     case jetpackInstall
     case bloganuaryNudge = "bloganuary_nudge"

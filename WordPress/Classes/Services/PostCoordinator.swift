@@ -600,7 +600,7 @@ class PostCoordinator: NSObject {
     @MainActor
     private func uploadRemainingResources(for post: AbstractPost) async throws {
         _ = try await withUnsafeThrowingContinuation { continuation in
-            self.prepareToSave(post, then: continuation.resume(with:))
+            self.prepareToSave(post, then: { continuation.resume(with: $0) })
         }
     }
 

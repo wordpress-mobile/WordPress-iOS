@@ -66,7 +66,7 @@ actor WordPressClient {
     }
 }
 
-extension PluginWpOrgDirectorySlug: ExpressibleByStringLiteral {
+extension PluginWpOrgDirectorySlug: @retroactive ExpressibleByStringLiteral {
     public typealias StringLiteralType = String
 
     public init(stringLiteral: String) {

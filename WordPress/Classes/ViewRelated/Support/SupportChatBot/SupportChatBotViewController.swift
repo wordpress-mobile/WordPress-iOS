@@ -1,4 +1,4 @@
-import WebKit
+@preconcurrency import WebKit
 import WordPressFlux
 import SVProgressHUD
 import WordPressShared

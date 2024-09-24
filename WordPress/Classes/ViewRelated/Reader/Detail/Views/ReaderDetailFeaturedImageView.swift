@@ -377,10 +377,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     }
 
     private func applyTransparentNavigationBarAppearance() {
-        guard let navigationItem, !useCompatibilityMode
-        else {
-            return
-        }
+        guard !useCompatibilityMode else { return }
 
         if isLoaded, imageView.image == nil {
             navBarTintColor = style.endTintColor

@@ -3,7 +3,7 @@ import UIKit
 import CoreData
 import WordPressKit
 
-enum DashboardSection: Int, CaseIterable {
+enum DashboardSection: Int, CaseIterable, Sendable {
     case migrationSuccess
     case quickActions
     case cards
@@ -11,7 +11,7 @@ enum DashboardSection: Int, CaseIterable {
 
 typealias BlogID = Int
 
-enum DashboardItem: Hashable {
+enum DashboardItem: Hashable, Sendable {
     case migrationSuccess
     case quickActions(BlogID)
     case cards(DashboardCardModel)

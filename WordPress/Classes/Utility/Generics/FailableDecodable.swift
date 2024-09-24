@@ -27,3 +27,5 @@ extension FailableDecodable: Hashable {
         return lhs.value == rhs.value
     }
 }
+
+extension FailableDecodable: Sendable where T: Sendable {}

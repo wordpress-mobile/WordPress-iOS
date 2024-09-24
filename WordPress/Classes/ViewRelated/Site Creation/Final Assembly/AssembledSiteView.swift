@@ -1,6 +1,6 @@
 
 import UIKit
-import WebKit
+@preconcurrency import WebKit
 
 // MARK: AssembledSiteView
 

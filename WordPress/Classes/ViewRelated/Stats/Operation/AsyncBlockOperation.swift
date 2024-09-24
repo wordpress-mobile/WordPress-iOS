@@ -1,4 +1,4 @@
-class AsyncBlockOperation: AsyncOperation {
+class AsyncBlockOperation: AsyncOperation, @unchecked Sendable {
 
     private let block: (@escaping () -> Void) -> Void
 

@@ -258,7 +258,7 @@ final class WebServerLogsViewModel: ObservableObject {
     }
 }
 
-extension AtomicWebServerLogEntry: Identifiable {
+extension AtomicWebServerLogEntry: @retroactive Identifiable {
     var requestTypeBackgroundColor: UIColor {
         return switch requestType {
         case "GET": UIAppColor.green(.shade5)

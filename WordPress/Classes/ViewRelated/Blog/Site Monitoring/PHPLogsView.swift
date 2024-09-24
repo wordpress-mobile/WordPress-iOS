@@ -218,7 +218,7 @@ final class PHPLogsViewModel: ObservableObject {
     }
 }
 
-extension AtomicErrorLogEntry: Identifiable {
+extension AtomicErrorLogEntry: @retroactive Identifiable {
     var severityBackgroundColor: UIColor {
         let severity = AtomicErrorLogEntry.Severity(rawValue: severity ?? "")!
         return switch severity {
