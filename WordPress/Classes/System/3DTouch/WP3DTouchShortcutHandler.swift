@@ -24,7 +24,7 @@ open class WP3DTouchShortcutHandler: NSObject {
                 return true
             case ShortcutIdentifier.NewPost.type:
                 WPAnalytics.track(.shortcutNewPost)
-                rootViewPresenter.showPostTab(animated: false)
+                rootViewPresenter.showPostEditor(animated: false)
                 return true
             case ShortcutIdentifier.Stats.type:
                 WPAnalytics.track(.shortcutStats)

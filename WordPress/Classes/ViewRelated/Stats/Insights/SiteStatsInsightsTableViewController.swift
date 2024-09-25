@@ -362,7 +362,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     }
 
     func showCreatePost() {
-        RootViewCoordinator.sharedPresenter.showPostTab { [weak self] in
+        RootViewCoordinator.sharedPresenter.showPostEditor { [weak self] in
             self?.refreshInsights()
         }
     }
