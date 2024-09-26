@@ -82,6 +82,13 @@ final class SplitViewRootPresenter: RootViewPresenter {
             splitVC.preferredSupplementaryColumnWidth = UISplitViewController.automaticDimension
         }
 
+        switch selection {
+        case .notifications:
+            splitVC.preferredSplitBehavior = .tile
+        default:
+            splitVC.preferredSplitBehavior = .automatic
+        }
+
         let content: SplitViewDisplayable
         switch selection {
         case .welcome:
