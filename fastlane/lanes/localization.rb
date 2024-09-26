@@ -91,7 +91,7 @@ JETPACK_METADATA_GLOTPRESS_LOCALE_CODES = %w[ar de es fr he id it ja ko nl pt-br
 # See calls to `ios_merge_strings_files` and `ios_extract_keys_from_strings_files` for usage.
 #
 MANUALLY_MAINTAINED_STRINGS_FILES = {
-  File.join('WordPress', 'Resources', 'en.lproj', 'InfoPlist.strings') => 'infoplist.', # For now WordPress and Jetpack share the same InfoPlist.strings
+  File.join('WordPress', 'Resources', 'Locales', 'en.lproj', 'InfoPlist.strings') => 'infoplist.', # For now WordPress and Jetpack share the same InfoPlist.strings
   File.join('WordPress', 'WordPressDraftActionExtension', 'en.lproj', 'InfoPlist.strings') => 'ios-sharesheet.', # CFBundleDisplayName for the "Save as Draft" share action
   File.join('WordPress', 'JetpackDraftActionExtension', 'en.lproj', 'InfoPlist.strings') => 'ios-jetpack-sharesheet.', # CFBundleDisplayName for the "Save to Jetpack" share action
   File.join('WordPress', 'JetpackIntents', 'en.lproj', 'Sites.strings') => 'ios-widget.' # Strings from the `.intentdefinition`, used for configuring the iOS Widget
@@ -115,7 +115,7 @@ UPLOAD_TO_APP_STORE_COMMON_PARAMS = {
   app_rating_config_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'metadata', 'ratings_config.json')
 }.freeze
 
-WORDPRESS_EN_LPROJ = File.join('WordPress', 'Resources', 'en.lproj')
+WORDPRESS_EN_LPROJ = File.join('WordPress', 'Resources', 'Locales', 'en.lproj')
 
 #################################################
 # Lanes
@@ -339,7 +339,7 @@ platform :ios do
   desc 'Downloads localized strings (`.strings`) from GlotPress and commits them'
   lane :download_localized_strings do
     # Download `Localizable.strings` translations used within the app
-    parent_dir_for_lprojs = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources')
+    parent_dir_for_lprojs = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'Locales')
     ios_download_strings_files_from_glotpress(
       project_url: GLOTPRESS_APP_STRINGS_PROJECT_URL,
       locales: GLOTPRESS_TO_LPROJ_APP_LOCALE_CODES,

@@ -544,7 +544,7 @@ end
 
 lane :lint_localizations do |options|
   ios_lint_localizations(
-    input_dir: 'WordPress/Resources',
+    input_dir: 'WordPress/Resources/Locales',
     allow_retry: options.fetch(:allow_retry, true)
   )
 end
