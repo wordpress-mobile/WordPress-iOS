@@ -102,5 +102,11 @@ private final class SiteMenuListViewController: BlogDetailsViewController {
 extension SiteMenuViewController: BlogDetailsPresentationDelegate {
     func presentBlogDetailsViewController(_ viewController: UIViewController) {
         delegate?.siteMenuViewController(self, showDetailsViewController: viewController)
+
+        if let splitVC = splitViewController, splitVC.splitBehavior == .overlay {
+            DispatchQueue.main.async {
+                splitVC.hide(.supplementary)
+            }
+        }
     }
 }

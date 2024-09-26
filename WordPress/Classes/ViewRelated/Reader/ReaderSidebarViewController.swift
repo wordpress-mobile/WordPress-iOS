@@ -59,6 +59,12 @@ final class ReaderSidebarViewController: UIHostingController<AnyView> {
         case .organization(let objectID):
             showSecondary(makeViewController(withTopicID: objectID))
         }
+
+        if let splitVC = splitViewController, splitVC.splitBehavior == .overlay {
+            DispatchQueue.main.async {
+                splitVC.hide(.supplementary)
+            }
+        }
     }
 
     private func popSecondaryViewControllerToRoot() {
