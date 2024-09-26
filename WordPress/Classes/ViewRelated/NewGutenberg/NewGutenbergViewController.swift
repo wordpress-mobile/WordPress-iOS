@@ -300,8 +300,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
         if let title = editorData?.title,
            let content = editorData?.content,
-           title != post.postTitle,
-           content != post.content {
+           title != post.postTitle || content != post.content {
             post.postTitle = title
             post.content = content
             post.managedObjectContext.map(ContextManager.shared.save)
