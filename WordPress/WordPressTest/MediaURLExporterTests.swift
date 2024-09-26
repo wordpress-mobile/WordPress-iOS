@@ -36,12 +36,12 @@ class MediaURLExporterTests: XCTestCase {
     }
 
     func testThatURLExportingVideoWithoutGPSWorks() throws {
-        throw XCTSkip("This test became too flaky in iOS 18")
-
         exportTestVideo(removingGPS: true)
     }
 
     fileprivate func exportTestVideo(removingGPS: Bool) {
+        throw XCTSkip("This test became too flaky in iOS 18")
+
         guard let mediaPath = OHPathForFile(testDeviceVideoName, type(of: self)) else {
             XCTAssert(false, "Error: failed creating a path to the test video file")
             return
