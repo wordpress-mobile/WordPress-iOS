@@ -294,11 +294,15 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     private func getLatestContent() async {
         // TODO: read title as well
         let startTime = CFAbsoluteTimeGetCurrent()
-        let content = try? await editorViewController.getContent()
+        let editorData = try? await editorViewController.getTitleAndContent()
         let duration = CFAbsoluteTimeGetCurrent() - startTime
         print("gutenbergkit-measure_get-latest-content:", duration)
 
-        if content != post.content {
+        if let title = editorData?.title,
+           let content = editorData?.content,
+           title != post.postTitle,
+           content != post.content {
+            post.postTitle = title
             post.content = content
             post.managedObjectContext.map(ContextManager.shared.save)
 
