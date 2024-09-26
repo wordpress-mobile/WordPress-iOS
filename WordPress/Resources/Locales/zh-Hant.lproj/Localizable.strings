@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-08-27 09:54:08+0000 */
+/* Translation-Revision-Date: 2024-09-08 23:26:46+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: zh_TW */
@@ -7964,7 +7964,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "activityList.dismiss.title" = "關閉";
 
 /* Error message shown a URL does not point to an existing site. */
-"addSite.restApiNotAvailable" = "此地址的網站不是 WordPress 網站。 為讓我們進行連結，網站必須使用 WordPress。";
+"addSite.restApiNotAvailable" = "此地址的網站不是 WordPress 網站。 網站必須使用 WordPress，以利連結作業。";
 
 /* Error message shown when an receiving an invalid application-password authentication result from a self-hosted WordPress site */
 "addSite.selfHosted.authenticationFailed" = "無法透過應用程式密碼驗證登入。";
@@ -7979,13 +7979,13 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "addSite.selfHosted.loadingSiteInfoFailure" = "無法載入 WordPress 網站詳細資料";
 
 /* Error message shown when application-password authentication is disabled on a self-hosted WordPress site */
-"addSite.selfHosted.noLoginUrlFound" = "應用程式密碼驗證需要於 WordPress 網站啟用。";
+"addSite.selfHosted.noLoginUrlFound" = "請在 WordPress 網站啟用應用程式密碼驗證。";
 
 /* Error message shown when failing to save a self-hosted site to user's device */
 "addSite.selfHosted.savingSiteFailure" = "無法儲存 WordPress 網站，請稍後再試一次。";
 
 /* Title of the page to add a self-hosted site */
-"addSite.selfHosted.title" = "新增自助託管的網站";
+"addSite.selfHosted.title" = "新增自助託管網站";
 
 /* Error message when an unknown error occurred when adding a self-hosted site */
 "addSite.selfHosted.unknownError" = "發生錯誤。 請再試一次。";
@@ -8055,10 +8055,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "applicationPassword.item.name" = "名稱";
 
 /* Title of section for displaying application password details */
-"applicationPassword.item.section.security" = "安全團隊";
+"applicationPassword.item.section.security" = "安全性";
 
 /* String format of last used time of an application password. There is one argument: the last used time relative to now (i.e. 5 days ago). */
-"applicationPassword.list.item.last-used-format" = "最後使用時間為 %@";
+"applicationPassword.list.item.last-used-format" = "最後使用時間：%@";
 
 /* Last used time of an application password if it's never been used */
 "applicationPassword.list.item.unused" = "尚未使用。";
@@ -8190,7 +8190,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blogHeader.actionVisitSite" = "造訪網站";
 
 /* Badge title in site list */
-"blogList.siteBadge.staging" = "暫存";
+"blogList.siteBadge.staging" = "預備";
 
 /* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
 "bloganuary.dashboard.card.button.learnMore" = "深入瞭解";
@@ -8455,6 +8455,9 @@ Example: Reply to Pamela Nguyen */
 /* Debug Menu section title */
 "debugMenu.section.settings" = "設定";
 
+/* Debug Menu section title */
+"debugMenu.section.tipKit" = "TipKit";
+
 /* Debug Menu action for TipKit */
 "debugMenu.showAllTips" = "顯示所有秘訣";
 
@@ -8618,7 +8621,7 @@ Example: Reply to Pamela Nguyen */
 "emptyStateView.noSearchResult.description" = "嘗試新搜尋";
 
 /* Shared empty state view */
-"emptyStateView.noSearchResult.title" = "沒有任何搜尋結果";
+"emptyStateView.noSearchResult.title" = "沒有結果";
 
 /* Placeholder for the site url textfield.
    Site Address placeholder */
@@ -11305,7 +11308,7 @@ This empty state component is displayed only when the app fails to load posts un
 "these items will be deleted:" = "這些項目將會刪除：";
 
 /* Tip for site picker */
-"tips.sitePickerTip.message" = "點選即可選取不同網站或新增網站";
+"tips.sitePickerTip.message" = "點選即可選取不同網站或建立新網站";
 
 /* Tip for site picker */
 "tips.sitePickerTip.title" = "你的網站";

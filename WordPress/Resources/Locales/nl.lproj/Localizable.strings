@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-08-24 11:22:13+0000 */
+/* Translation-Revision-Date: 2024-09-15 16:24:57+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: nl */
@@ -1745,7 +1745,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Couldn't Connect" = "Kan niet verbinden";
 
 /* Error message shown a URL points to a valid site but not a WordPress site. */
-"Couldn't connect to the WordPress site. There is no valid WordPress site at this address. Check the site address (URL) you entered." = "Kan geen verbinding maken met de WordPress-site. Er is geen geldige WordPress-site op dit adres. Controleer of je het goede websiteadres (URL) hebt opgegeven.";
+"Couldn't connect to the WordPress site. There is no valid WordPress site at this address. Check the site address (URL) you entered." = "Kan geen verbinding maken met de WordPress site. Er is geen geldige WordPress site op dit adres. Controleer of je het goede siteadres (URL) hebt opgegeven.";
 
 /* Message to show to user when he tries to add a self-hosted site with RSD link present, but xmlrpc is missing. */
 "Couldn't connect. Required XML-RPC methods are missing on the server. Please contact your hosting provider to solve this problem." = "Kan geen verbinding maken. Vereiste XML-RPC-methoden ontbreken op de server. Neem contact op met je hostingprovider om het probleem op te lossen.";
@@ -1965,7 +1965,7 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Label for selecting the default post format
    Title for screen to select a default post format for a blog */
-"Default Post Format" = "Standaard post format";
+"Default Post Format" = "Standaard berichtformat";
 
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "Standaardinstellingen voor nieuwe berichten";
@@ -4684,7 +4684,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Please ensure the block editor is enabled on your site. If it is not enabled, it will not load." = "Zorg ervoor dat de blok-editor ingeschakeld is op je site. Indien niet ingeschakeld, zal het niet laden.";
 
 /* Error message shown when a URL is invalid. */
-"Please enter a complete website address, like example.com." = "Vul een compleet website-adres in, zoals voorbeeld.nl.";
+"Please enter a complete website address, like example.com." = "Vul een compleet site-adres in, zoals voorbeeld.nl.";
 
 /* No comment provided by engineer. */
 "Please enter a site address." = "Een site-adres invoeren.";
@@ -4827,7 +4827,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Post Categories" = "Berichtcategorieën";
 
 /* The post formats available for the post. Should be the same as in core WP. */
-"Post Format" = "Bericht format";
+"Post Format" = "Berichtformat";
 
 /* Name of the button to open the post settings
    The title of the Post Settings screen. */
@@ -5492,7 +5492,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Search for a domain" = "Zoek naar een domein";
 
 /* Select domain name. Subtitle */
-"Search for a short and memorable keyword to help people find and visit your website." = "Zoek een korte en eenvoudig te onthouden term om mensen je website te helpen vinden en bezoeken.";
+"Search for a short and memorable keyword to help people find and visit your website." = "Zoek een korte en eenvoudig te onthouden term om mensen je site te helpen vinden en bezoeken.";
 
 /* No comment provided by engineer. */
 "Search input field." = "Zoeken invoerveld.";
@@ -6176,7 +6176,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Take a Video" = "Maak een video";
 
 /* A hint shown to the user in stats telling them how to navigate to the Comments detail view. */
-"Tap \"View more\" to see your top commenters." = "Tik op 'Meer informatie' om je topreageerders te bekijken.";
+"Tap \"View more\" to see your top commenters." = "Tik op 'Meer informatie' om je top reageerders te bekijken.";
 
 /* A hint displayed in the Saved Posts section of the Reader. The '[bookmark-outline]' placeholder will be replaced by an icon at runtime – please leave that string intact. */
 "Tap [bookmark-outline] to save a post to your list." = "Tik op [bookmark-outline] om een bericht op te slaan in je lijst.";
@@ -6258,7 +6258,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tap to view your site" = "Tik om je site te bekijken";
 
 /* Accessibility hint, informing user the button can be used to visit the Gravatar website. */
-"Tap to visit the Gravatar website in an external browser" = "Tik om de website van Gravatar in een externe browser te openen";
+"Tap to visit the Gravatar website in an external browser" = "Tikken om de site van Gravatar in een externe browser te openen";
 
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Taxonomie";
@@ -6601,7 +6601,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "This helps us make recommendations. But you're never locked in -- all sites evolve!" = "Hiermee kunnen aanbevelingen maken. Maar je zit nergens aan vast -- alle sites blijven zich ontwikkelen!";
 
 /* Informational text for the privacy policy link */
-"This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "Deze informatie helpt ons onze producten te verbeteren, marketing relevanter te maken en de WordPress.com-ervaring op je af te stemmen. Je vindt hierover meer informatie in ons privacybeleid.";
+"This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "Deze informatie helpt ons onze producten te verbeteren, marketing relevanter te maken en de WordPress.com ervaring op je af te stemmen. Je vindt hierover meer informatie in ons privacybeleid.";
 
 /* The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text. */
 "This is your reminder to blog today ✍️" = "Dit is je herinnering om vandaag te bloggen ✍️";
@@ -6673,7 +6673,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Blog Writing Settings: Time Format
    Writing Time Format Settings Title */
-"Time Format" = "Tijdformaat";
+"Time Format" = "Tijdnotatie";
 
 /* Label for the timezone setting
    Title for the time zone selector */
@@ -7545,7 +7545,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "What's my site address?" = "Wat is het adres van mijn site?";
 
 /* Select the site's intent. Title */
-"What's your website about?" = "Waar gaat je website over?";
+"What's your website about?" = "Waar gaat je site over?";
 
 /* Post Signup Interstitial Subtitle Text */
 "Whatever you want to create or share, we'll help you do it right here." = "Wat je ook wilt maken of delen, wij helpen je er hier bij.";
@@ -7940,7 +7940,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Your site will no longer send data to WordPress.com and Jetpack features will stop working. You will lose access to the site on the app and you will have to re-add it with the site credentials." = "Je site zal geen gegevens meer versturen naar WordPress.com en Jetpack functies zullen niet meer werken. Je zal geen toegang meer hebben tot de site via de app en je moet deze opnieuw toevoegen met de inloggegevens van de site.";
 
 /* The default Jetpack view message */
-"Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "De inloggegevens voor je website zullen niet worden opgeslagen en worden alleen gebruikt om Jetpack te installeren.";
+"Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "De referenties voor je site zullen niet worden opgeslagen en worden alleen gebruikt om Jetpack te installeren.";
 
 /* Prompt displayed as part of the stats Weekly Roundup push notification. */
 "Your weekly roundup is ready, tap here to see the details!" = "Je wekelijkse overzicht is klaar, tik hier om de details te bekijken!";
@@ -8287,7 +8287,7 @@ Example: Reply to Pamela Nguyen */
 "common.unableToConnect" = "Kan geen verbinding maken";
 
 /* Footnote for the privacy compliance popover. */
-"compliance.analytics.popover.footnote" = "Met deze cookies kunnen wij prestaties optimaliseren door informatie te verzamelen over hoe gebruikers zich gedragen op onze website.";
+"compliance.analytics.popover.footnote" = "Met deze cookies kunnen wij prestaties optimaliseren door informatie te verzamelen over hoe gebruikers zich gedragen op onze sites.";
 
 /* Save Button Title for the privacy compliance popover. */
 "compliance.analytics.popover.save.button" = "Opslaan";
@@ -8296,7 +8296,7 @@ Example: Reply to Pamela Nguyen */
 "compliance.analytics.popover.settings.button" = "Ga naar instellingen";
 
 /* Subtitle for the privacy compliance popover. */
-"compliance.analytics.popover.subtitle" = "We verwerken je persoonlijke gegevens om onze website en marketingactiviteiten te optimaliseren op basis van jouw toestemming en ons legitiem belang.";
+"compliance.analytics.popover.subtitle" = "We verwerken je persoonsgegevens om onze site en marketingactiviteiten te optimaliseren op basis van je toestemming en ons legitiem belang.";
 
 /* Title for the privacy compliance popover. */
 "compliance.analytics.popover.title" = "Privacy beheren";
@@ -8658,7 +8658,7 @@ Example: Reply to Pamela Nguyen */
 "feature.blaze.title" = "Blaze";
 
 /* Description for the Free to Paid plans dashboard card. */
-"freeToPaidPlans.dashboard.card.description" = "Ontvang een gratis domein voor eerste jaar, verwijder advertenties van je website en krijg meer opslagruimte.";
+"freeToPaidPlans.dashboard.card.description" = "Ontvang een gratis domein voor eerste jaar, verwijder advertenties van je site en krijg meer opslagruimte.";
 
 /* Title for a menu action in the context menu on the Free to Paid plans dashboard card. */
 "freeToPaidPlans.dashboard.card.menu.hide" = "Dit verbergen";
@@ -9498,10 +9498,10 @@ Example: Reply to Pamela Nguyen */
 "pageList.badgePrivate" = "Privé";
 
 /* Subtitle of the theme template homepage cell */
-"pages.template.subtitle" = "Jouw homepage gebruikt een themasjabloon en wordt in de webeditor geopend.";
+"pages.template.subtitle" = "Je homepage gebruikt een thema template en wordt in de web editor geopend.";
 
 /* Title of the theme template homepage cell */
-"pages.template.title" = "Startpagina";
+"pages.template.title" = "Homepagina";
 
 /* Message informing the user that their static homepage page was set successfully */
 "pages.updatePage.successTitle" = "Pagina is met succes geüpdatet";
@@ -9936,7 +9936,7 @@ Example: Reply to Pamela Nguyen */
 "postsettings.social.remainingshares.text.part" = " in de komende 30 dagen";
 
 /* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. This text is combined with ' in the next 30 days' if there is no warning displayed. */
-"postsettings.social.shares.text.format" = "%1$d keer delen op social media resterend";
+"postsettings.social.shares.text.format" = "%1$d keer delen op sociale media resterend";
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.categories" = "Categorieën";
@@ -10117,7 +10117,7 @@ Tapping on this row allows the user to edit the sharing message. */
 "reader.blog.search.loading.title" = "Blogs ophalen ...";
 
 /* Message shown when the reader finds no blogs for the specified search phrase. The %@ is a placeholder for the search phrase. */
-"reader.blog.search.no.results.message.format" = "Geen blogs in jouw taal gevonden voor %@.";
+"reader.blog.search.no.results.message.format" = "Geen blogs in je taal gevonden voor %@.";
 
 /* A message title */
 "reader.blog.search.no.results.title" = "Geen blogs gevonden.";
@@ -10780,7 +10780,7 @@ This empty state component is displayed only when the app fails to load posts un
 "site.cration.domain.site.address" = "https:\/\/yoursitename.com";
 
 /* The error message to show in the 'Site Creation > Assembly Step' when the domain checkout fails for unknown reasons. */
-"site.creation.assembly.step.domain.checkout.error.subtitle" = "Je website is aangemaakt, maar er is een probleem opgetreden bij je aangepaste domein voorbereiden op het afrekenen. Probeer het nog eens of neem contact met ons op voor hulp.";
+"site.creation.assembly.step.domain.checkout.error.subtitle" = "Je site is aangemaakt, maar er is een probleem opgetreden bij je aangepaste domein voorbereiden op het afrekenen. Probeer het nog eens of neem contact met ons op voor hulp.";
 
 /* Site name description that sits in the template website view. */
 "site.creation.domain.tooltip.description" = "Een domein helpt mensen, zoals in het voorbeeld hierboven, je site te vinden en bezoeken vanuit hun webbrowser.";
@@ -10801,7 +10801,7 @@ This empty state component is displayed only when the app fails to load posts un
 "site.domains.freeDomainWithPaidPlan.title" = "Krijg jouw domein.";
 
 /* Footer of the primary site section in the Domains Dashboard. */
-"site.domains.primaryDomain" = "Je primaire site-adres is wat je bezoekers zien in hun adresbalk wanneer ze je website bezoeken.";
+"site.domains.primaryDomain" = "Je primaire site-adres is wat je bezoekers zien in hun adresbalk wanneer ze je site bezoeken.";
 
 /* Primary domain label, used in the site address section of the Domains Dashboard. */
 "site.domains.primaryDomain.title" = "Primair domein";
@@ -11203,7 +11203,7 @@ This empty state component is displayed only when the app fails to load posts un
 "support.button.logOut.title" = "Uitloggen";
 
 /* Accessibility hint, informing user the button can be used to visit the support forums website. */
-"support.button.visitForum.accessibilityHint" = "Tik om de website van het communityforum in een externe browser te bezoeken";
+"support.button.visitForum.accessibilityHint" = "Tikken om de site van het community forum in een externe browser te bezoeken";
 
 /* Option in Support view to visit the WordPress.org support forums. */
 "support.button.visitForum.title" = "Ga naar WordPress.org";
@@ -11224,7 +11224,7 @@ This empty state component is displayed only when the app fails to load posts un
 "support.chatBot.inputPlaceholder" = "Een bericht versturen …";
 
 /* An example question shown to a user seeking support */
-"support.chatBot.questionFive" = "Ik ben mijn inloggegevens vergeten";
+"support.chatBot.questionFive" = "Ik ben mijn login informatie vergeten";
 
 /* An example question shown to a user seeking support */
 "support.chatBot.questionFour" = "Waarom kan ik niet inloggen?";
@@ -11311,7 +11311,7 @@ This empty state component is displayed only when the app fails to load posts un
 "support.row.version.title" = "Versie";
 
 /* Support screen footer text explaining the benefits of enabling the Debug feature. */
-"support.sectionFooter.advanced.title" = "Schakel debugging in om aanvullende informatie aan je logboeken toe te volgen. Deze informatie kan je helpen om problemen met de app op te lossen.";
+"support.sectionFooter.advanced.title" = "Schakel debugging in om aanvullende informatie aan je logs toe te volgen. Deze informatie kan je helpen om problemen met de app op te lossen.";
 
 /* WordPress.com sign-out section header title */
 "support.sectionHeader.account.title" = "WordPress.com account";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-30 08:07:33+0000 */
+/* Translation-Revision-Date: 2024-09-02 11:24:45+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: sq_AL */
@@ -753,6 +753,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message shown when Apple authentication fails. */
 "Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "Mirëfilltësimi Apple dështoi.\nJu lutemi, sigurohuni se keni bërë hyrjen te llogaria juaj iCloud me një Apple ID që përdor mirëfilltësim dyfaktorësh.";
+
+/* Noun. Title. Links to the application password management feature. */
+"Application Passwords" = "Fjalëkalime Aplikacionesh";
 
 /* No comment provided by engineer. */
 "Applies the setting" = "Aplikon rregullimin";
@@ -4749,6 +4752,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Please try entering your login details again." = "Ju lutemi, provoni të rijepni hollësitë tuaja për hyrje.";
 
+/* Asks the user to wait until the currently running fetch request completes. */
+"Please wait until the current fetch completes." = "Ju lutemi, prisni sa të plotësohet prurja e tanishme.";
+
 /* Link to a plugin's home page */
 "Plugin Homepage" = "Faqe Hyrëse e Shtojcës";
 
@@ -7945,6 +7951,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Dismiss button title */
 "activityList.dismiss.title" = "Hidhe tej";
 
+/* A message to inform users to type the site address in the text field. */
+"addSite.selfHosted.enterSiteAddress" = "Jepni adresën e sajtit WordPress te i cili do të donit të lidheshit.";
+
+/* Error message when user input is not a WordPress site */
+"addSite.selfHosted.invalidUrl" = "Kjo adresë sajti s’është e vlefshme.";
+
+/* Error message shown when failing to load details from a self-hosted WordPress site */
+"addSite.selfHosted.loadingSiteInfoFailure" = "S’ngarkohen dot hollësi sajti WordPress";
+
+/* Error message shown when application-password authentication is disabled on a self-hosted WordPress site */
+"addSite.selfHosted.noLoginUrlFound" = "Te sajti WordPress lypset të aktivizohet mirëfilltësimi me Fjalëkalim Aplikacioni.";
+
+/* Error message shown when failing to save a self-hosted site to user's device */
+"addSite.selfHosted.savingSiteFailure" = "S’mund të ruhet sajti WordPress, ju lutemi, riprovoni më vonë.";
+
+/* Title of the page to add a self-hosted site */
+"addSite.selfHosted.title" = "Shtoni Sajt të Vetëstrehuar";
+
+/* Error message when an unknown error occurred when adding a self-hosted site */
+"addSite.selfHosted.unknownError" = "Diç shkoi ters. Ju lutemi, riprovoni.";
+
 /* Age between dates equaling one hour. */
 "an hour" = "një orë";
 
@@ -7995,6 +8022,31 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Section title for what's new in the latest update available */
 "appUpdate.whatsNew" = "Ç’ka të Re";
+
+/* The list item of experimental features that users can choose to enable */
+"application-settings.experimental-features" = "Veçori Eksperimentale";
+
+/* Title of row for displaying an application password's creation date */
+"applicationPassword.item.creationDate" = "Datë Krijimi";
+
+/* Title of row for displaying an application password's last used date
+   Title of row for displaying an application password's last used IP address */
+"applicationPassword.item.lastUsed" = "Përdorur Së Fundi Më";
+
+/* Title of row for displaying an application password name */
+"applicationPassword.item.name" = "Emër";
+
+/* Title of section for displaying application password details */
+"applicationPassword.item.section.security" = "Siguri";
+
+/* String format of last used time of an application password. There is one argument: the last used time relative to now (i.e. 5 days ago). */
+"applicationPassword.list.item.last-used-format" = "Përdorur së fundi më %@";
+
+/* Last used time of an application password if it's never been used */
+"applicationPassword.list.item.unused" = "Ende i papërdorur";
+
+/* Title of application passwords list */
+"applicationPassword.list.title" = "Fjalëkalime Aplikacionesh";
 
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "kartelë audio";
@@ -8122,6 +8174,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Context menu button title */
 "blogHeader.actionVisitSite" = "Vizitoni sajtin";
 
+/* Badge title in site list */
+"blogList.siteBadge.staging" = "Provë";
+
 /* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
 "bloganuary.dashboard.card.button.learnMore" = "Mësoni më tepër";
 
@@ -8162,6 +8217,12 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "Hidhe tej";
 
+/* Add self-hosted site button */
+"button.addSelfHostedSite" = "Shtoni sajt të vetëstrehuar";
+
+/* Create WordPress.com site button */
+"button.createDotCoSite" = "Krijo sajt WordPress.com";
+
 /* Used when displaying author of a plugin. */
 "by %@" = "nga %@";
 
@@ -8170,6 +8231,9 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 
 /* Title for the checkout view */
 "checkout.title" = "Përfundim Blerjeje";
+
+/* Post Editor / Button in the 'More' menu */
+"classicEditor.moreMenu.saveDraft" = "Ruaje Skicën";
 
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "koment";
@@ -8333,6 +8397,9 @@ Example: Reply to Pamela Nguyen */
 /* Boolean User Defaults Debug Menu screen title */
 "debugMenu.booleanUserDefaults.title" = "Parazgjedhje Buleane Nga Përdoruesi";
 
+/* Debug Menu action for TipKit */
+"debugMenu.hideAllTips" = "Fshihi Krejt Ndihmëzat";
+
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "debugMenu.readerCellTitle" = "URL CSS-je Lexuesi";
 
@@ -8366,6 +8433,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu section title */
 "debugMenu.section.settings" = "Rregullime";
+
+/* Debug Menu action for TipKit */
+"debugMenu.showAllTips" = "Shfaqi Krejt Ndihmëzat";
 
 /* Title for debug menu screen */
 "debugMenu.title" = "Zhvillues";
@@ -8523,9 +8593,18 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for more button in dashboard quick start card. */
 "ellipsisButton.AccessibilityLabel" = "Më tepër";
 
+/* Shared empty state view */
+"emptyStateView.noSearchResult.description" = "Provoni  një kërkim të ri";
+
+/* Shared empty state view */
+"emptyStateView.noSearchResult.title" = "S’ka Përfundime";
+
 /* Placeholder for the site url textfield.
    Site Address placeholder */
 "example.com" = "example.com";
+
+/* The title for the experimental features list */
+"experimentalFeaturesList.heading" = "Veçori Eksperimentale";
 
 /* Title for confirmation navigation bar button item */
 "externalMediaPicker.add" = "Shtoje";
@@ -8565,6 +8644,15 @@ Example: Reply to Pamela Nguyen */
 
 /* A footer retry button */
 "general.pagingFooterView.retry" = "Riprovoni";
+
+/* Error message format when REST API returns an error response. The first argument is error message. */
+"generic.error.rest-api-error" = "Sajti juaj dërgoi një përgjigje për gabim: %@";
+
+/* A generic title for an error */
+"generic.error.title" = "Gabim";
+
+/* Error message when failing to parse API responses */
+"generic.error.unparsableResponse" = "Sajti juaj dërgoi një përgjigje që aplikacioni s’e përpunoi dot";
 
 /* Title for button that will open up the blogging reminders screen. */
 "growAudienceCell.bloggingReminders.actionButton" = "Ujdisni kujtues blogimi";
@@ -8952,6 +9040,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "iu vu shenjë si i padëshiruar";
+
+/* Me tab menu items */
+"meMenu.submitFeedback" = "Dërgoni Përshtypjet";
 
 /* Title of error prompt shown when a sync fails. */
 "media.syncFailed" = "S’arrihet të njëkohësohet media";
@@ -9485,6 +9576,9 @@ Example: Reply to Pamela Nguyen */
 "postEditor.moreMenu.revisions" = "Rishikime";
 
 /* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.saveDraft" = "Ruani Skicë";
+
+/* Post Editor / Button in the 'More' menu */
 "postEditor.moreMenu.visualEditor" = "Përpunues Pamor";
 
 /* A 'View' action for a snackbar informing the user that some media files requires their attention */
@@ -9515,7 +9609,19 @@ Example: Reply to Pamela Nguyen */
 "postEditor.savingDraftForPreview" = "Po ruhet skica…";
 
 /* Button title */
+"postFromAudio.beginRecording" = "Filloni Incizimin";
+
+/* Button title */
 "postFromAudio.buttonUpgrade" = "Për më tepër kërkesa, përmirësojeni";
+
+/* Button close title (only used as an accessibility identifier) */
+"postFromAudio.close" = "Mbylle";
+
+/* Button title */
+"postFromAudio.done" = "U bë";
+
+/* The screen subtitle in the error state */
+"postFromAudio.errorMessage.generic" = "Diç shkoi ters";
 
 /* Message for 'not eligible' state view */
 "postFromAudio.notEnoughRequestsMessage" = "S’keni aq kërkesa sa duhet për të krijuar një postim që nga audio.";
@@ -9537,6 +9643,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The screen title when recording */
 "postFromAudio.titleRecoding" = "Po regjistrohet…";
+
+/* The value for the `requests available:` field for an unlimited plan */
+"postFromAudio.unlimited" = "Të pakufizuara";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "Nga %@.";
@@ -9606,6 +9715,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for post media upload status view */
 "postMediaUploadStatusView.title" = "Ngarkime Media";
+
+/* Title of notification displayed when either a new or an existing draft is saved */
+"postNotice.draftSaved" = "Skica u Ruajt";
 
 /* A generic error message title */
 "postNotice.errorTitle" = "Ndodhi një gabim";
@@ -10580,6 +10692,45 @@ This empty state component is displayed only when the app fails to load posts un
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "Gabim Gjatë Ndarjes Me të Tjerë";
 
+/* A shared button title used in different contexts */
+"shared.button.add" = "Shtoni";
+
+/* A shared button title used in different contexts */
+"shared.button.cancel" = "Anuloje";
+
+/* A shared button title used in different contexts */
+"shared.button.close" = "Mbylle";
+
+/* A shared button title used in different contexts */
+"shared.button.continue" = "Vazhdo";
+
+/* A shared button title used in different contexts */
+"shared.button.copy" = "Kopjoje";
+
+/* A shared button title used in different contexts */
+"shared.button.copyLink" = "Kopjoji Lidhjen";
+
+/* A shared button title used in different contexts */
+"shared.button.done" = "U bë";
+
+/* A shared button title used in different contexts */
+"shared.button.edit" = "Përpunoni";
+
+/* A shared button title used in different contexts */
+"shared.button.remove" = "Hiqe";
+
+/* A shared button title used in different contexts */
+"shared.button.save" = "Ruaje";
+
+/* A shared button title used in different contexts */
+"shared.button.share" = "Ndajeni me të tjerët";
+
+/* A shared button title used in different contexts */
+"shared.button.view" = "Shiheni";
+
+/* A generic error message */
+"shared.error.geneirc" = "Diç shkoi ters";
+
 /* Template site address for the search bar. */
 "site.cration.domain.site.address" = "https:\/\/emriisajtittuaj.com";
 
@@ -10705,6 +10856,15 @@ This empty state component is displayed only when the app fails to load posts un
 
 /* Title for web server log screen. */
 "siteMonitoring.webServerLogs" = "Regjistra Shërbyesi";
+
+/* All sites section title for site switcher. */
+"sitePicker.allSitesSectionTitle" = "Krejt sajtet";
+
+/* Recents section title for site switcher. */
+"sitePicker.recentSitesSectionTitle" = "Sajte së fundi";
+
+/* Title for site switcher screen */
+"sitePicker.title" = "Sajtet e Mi";
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Privatësi";
@@ -10943,11 +11103,41 @@ This empty state component is displayed only when the app fails to load posts un
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "Kërkoni për të gjetur foto të lira që t’i shtoni te Mediateka juaj!";
 
+/* The button title for the Cancel button in the In-App Feedback screen */
+"submit.feedback.buttonCancel" = "Anuloje";
+
+/* The button title for the Cancel button in the In-App Feedback screen */
+"submit.feedback.buttonOK" = "OK";
+
+/* The section title and or placeholder */
+"submit.feedback.detailsPlaceholder" = "Hollësi";
+
 /* The button title for the Submit button in the In-App Feedback screen */
 "submit.feedback.submit.button" = "Parashtroje";
 
 /* The title for the the In-App Feedback screen */
 "submit.feedback.title" = "Përshtypje";
+
+/* Submit feedback screen failure alert title */
+"submitFeedback.attachmentsStillUploadingAlertTitle" = "Disa bashkëngjitje s’qenë ngarkuar";
+
+/* Submit feedback screen cancellation confirmation alert action */
+"submitFeedback.cancellationAlertContinueEditing" = "Vazhdoni Përpunimin";
+
+/* Submit feedback screen cancellation confirmation alert action */
+"submitFeedback.cancellationAlertDiscardFeedbackButton" = "Hidhi Tej Përshtypjet";
+
+/* Submit feedback screen cancellation confirmation alert title */
+"submitFeedback.cancellationAlertTitle" = "Jeni i sigurt se doni të hidhen tej përshtypjet?";
+
+/* Submit feedback screen failure alert title */
+"submitFeedback.failureAlertTitle" = "S’u arrit të dërgohen përshtypje";
+
+/* Submit feedback screen submit success notice messages */
+"submitFeedback.successNoticeMessage" = "Faleminderit që na ndihmoni të përmirësojmë aplikacionin";
+
+/* Submit feedback screen submit fsuccess notice title */
+"submitFeedback.successNoticeTitle" = "Përshtypjet u dërguan";
 
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "Në këtë bisedë";
@@ -11098,6 +11288,12 @@ This empty state component is displayed only when the app fails to load posts un
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "këto objekte do të fshihen:";
+
+/* Tip for site picker */
+"tips.sitePickerTip.message" = "Prekeni, që të përzgjidhni një sajt tjetër, ose të krijoni një të ri";
+
+/* Tip for site picker */
+"tips.sitePickerTip.title" = "Sajtet Tuaj";
 
 /* The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...' */
 "top tips" = "ndihmëza kryesuese";
@@ -11314,6 +11510,15 @@ This empty state component is displayed only when the app fails to load posts un
 
 /* Title of a button that displays a blog post in a web view. */
 "wp.migration.successCard.learnMore" = "Mësoni më tepër";
+
+/* Managing Zendesk attachments */
+"zendeskAttachmentsSection.addAttachment" = "Shtoni Bashkëngjitje";
+
+/* Managing Zendesk attachments */
+"zendeskAttachmentsSection.removeAttachment" = "Hiqe Bashkëngjitjen";
+
+/* Managing Zendesk attachments */
+"zendeskAttachmentsSection.unsupportedAttachmentErrorMessage" = "Bashkëngjitje e pambuluar";
 
 /* Label for button to log in using Google. The {G} will be replaced with the Google logo. */
 "{G} Log in with Google." = "{G} të Bëni hyrjen me Google.";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-08-26 17:54:08+0000 */
+/* Translation-Revision-Date: 2024-09-03 17:55:59+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: it */
@@ -2211,10 +2211,10 @@ translators: %s: Block name e.g. \"Image block\" */
 "Double tap to select an image" = "Tocca due volte per selezionare un'immagine";
 
 /* No comment provided by engineer. */
-"Double tap to select default font size" = "Tocca due volte per selezionare la dimensione del carattere predefinito";
+"Double tap to select default font size" = "Tocca due volte per selezionare la dimensione del font predefinito";
 
 /* No comment provided by engineer. */
-"Double tap to select font size" = "Tocca due volte per selezionare la dimensione del carattere";
+"Double tap to select font size" = "Tocca due volte per selezionare la dimensione del font";
 
 /* translators: accessibility text (hint for selecting option) */
 "Double tap to select the option" = "Tocca due volte per selezionare l'opzione";
@@ -2780,10 +2780,10 @@ translators: %s: Block name e.g. \"Image block\" */
 "Following this conversation" = "Seguendo questa conversazione";
 
 /* No comment provided by engineer. */
-"Font Size" = "Dimensione carattere";
+"Font Size" = "Dimensione del font";
 
 /* translators: %1$s: Font size name e.g. Small */
-"Font Size, %1$s" = "Dimensione carattere, %1$s";
+"Font Size, %1$s" = "Dimensione font, %1$s";
 
 /* Food site intent topic */
 "Food" = "Cibo";
@@ -6107,25 +6107,25 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Switched to Visual mode" = "Passato alla modalità visuale.";
 
 /* Accessibility Identifier for the H1 Aztec Style */
-"Switches to the Heading 1 font size" = "Passa alla dimensione carattere Heading 1";
+"Switches to the Heading 1 font size" = "Passa alla dimensione font Titolo 1";
 
 /* Accessibility Identifier for the H2 Aztec Style */
-"Switches to the Heading 2 font size" = "Passa alla dimensione carattere Heading 2";
+"Switches to the Heading 2 font size" = "Passa alla dimensione font Titolo 2";
 
 /* Accessibility Identifier for the H3 Aztec Style */
-"Switches to the Heading 3 font size" = "Passa alla dimensione carattere Heading 3";
+"Switches to the Heading 3 font size" = "Passa alla dimensione font Titolo 3";
 
 /* Accessibility Identifier for the H4 Aztec Style */
-"Switches to the Heading 4 font size" = "Passa alla dimensione carattere Heading 4";
+"Switches to the Heading 4 font size" = "Passa alla dimensione font Titolo 4";
 
 /* Accessibility Identifier for the H5 Aztec Style */
-"Switches to the Heading 5 font size" = "Passa alla dimensione carattere Heading 5";
+"Switches to the Heading 5 font size" = "Passa alla dimensione font Titolo 5";
 
 /* Accessibility Identifier for the H6 Aztec Style */
-"Switches to the Heading 6 font size" = "Passa alla dimensione carattere Heading 6";
+"Switches to the Heading 6 font size" = "Passa alla dimensione font Titolo 6";
 
 /* Accessibility Identifier for the Default Font Aztec Style. */
-"Switches to the default Font Size" = "Switches to the default Font Size";
+"Switches to the default Font Size" = "Interruttori per la dimensione del font predefinito";
 
 /* No comment provided by engineer. */
 "Synced patterns" = "Pattern sincronizzati";
@@ -10081,7 +10081,7 @@ Tapping on this row allows the user to edit the sharing message. */
 "reader.announcement.button" = "Fatto";
 
 /* The description part of the feature announcement content for Reading Preferences. */
-"reader.announcement.entry.readingPreferences.description" = "Scegli i colori e i caratteri che più ti si addicono. Mentre leggi un articolo, tocca l'icona AA nella parte superiore dello schermo.";
+"reader.announcement.entry.readingPreferences.description" = "Scegli i colori e i font che più ti si addicono. Mentre leggi un articolo, tocca l'icona AA nella parte superiore dello schermo.";
 
 /* The title part of the feature announcement content for Reading Preferences. */
 "reader.announcement.entry.readingPreferences.title" = "Preferenze di lettura";
@@ -10448,7 +10448,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.preferences.control.doneButton" = "Fatto";
 
 /* Accessibility label describing the list of fonts to be selected from. */
-"reader.preferences.control.fonts.a11y" = "Caratteri";
+"reader.preferences.control.fonts.a11y" = "Font";
 
 /* Describes that the slider is used to customize the text size in the Reader. */
 "reader.preferences.control.sizeSlider.description" = "Dimensione";
@@ -10470,7 +10470,7 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 "reader.preferences.preview.body.feedback.link" = "invia il tuo feedback";
 
 /* Description text for the preview section of Reader Preferences */
-"reader.preferences.preview.body.text" = "Scegli i colori, i caratteri e le dimensioni. Visualizza l'anteprima della tua selezione qui e leggi gli articoli con il tuo stile una volta terminato.";
+"reader.preferences.preview.body.text" = "Scegli i colori, i font e le dimensioni. Visualizza l'anteprima della tua selezione qui e leggi gli articoli con il tuo stile una volta terminato.";
 
 /* Title text for a preview */
 "reader.preferences.preview.header" = "Preferenze di lettura";
@@ -10479,7 +10479,7 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 "reader.preferences.preview.tags.colors" = "colori";
 
 /* Example tag for preview */
-"reader.preferences.preview.tags.fonts" = "caratteri";
+"reader.preferences.preview.tags.fonts" = "font";
 
 /* Example tag for preview */
 "reader.preferences.preview.tags.reading" = "lettura";

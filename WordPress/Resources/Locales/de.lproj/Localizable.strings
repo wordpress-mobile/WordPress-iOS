@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-08-26 15:54:08+0000 */
+/* Translation-Revision-Date: 2024-09-19 02:13:06+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: de */
@@ -2291,7 +2291,7 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Button title. Opens the editor to edit an existing post.
    Opens the editor to edit an existing post. */
-"Edit Post" = "Artikel bearbeiten";
+"Edit Post" = "Beitrag bearbeiten";
 
 /* Accessibility label for button to edit a comment from a notification */
 "Edit comment" = "Kommentar bearbeiten";
@@ -4048,7 +4048,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "New Moderation Word" = "Neues Schlüsselwort für Freischaltung";
 
 /* New Post 3D Touch Shortcut */
-"New Post" = "Neuer Artikel";
+"New Post" = "Neuer Beitrag";
 
 /* Menu item title text used as default when creating a new menu item. */
 "New item" = "Neuer Menupunkt";
@@ -4618,7 +4618,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Pending" = "Ausstehend";
 
 /* Name for the status of a post pending review. */
-"Pending review" = "Ausstehender Review";
+"Pending review" = "Ausstehende Überprüfung";
 
 /* Noun. Title of the people management feature.
    Noun. Title. Links to the people management feature.
@@ -4827,7 +4827,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Post Categories" = "Beitragskategorien";
 
 /* The post formats available for the post. Should be the same as in core WP. */
-"Post Format" = "Artikel-Formatvorlage";
+"Post Format" = "Beitragsformat";
 
 /* Name of the button to open the post settings
    The title of the Post Settings screen. */
@@ -4872,7 +4872,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Noun. Title. Links to the blog's Posts screen.
    Title of a Reader tab showing Posts matching a user's search query
    Title of the screen showing the list of posts for a blog. */
-"Posts" = "Artikel";
+"Posts" = "Beiträge";
 
 /* Title for setting which shows the current page assigned as a site's posts page */
 "Posts Page" = "Beitragsseite";
@@ -7237,13 +7237,13 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
-"View" = "Ansehen";
+"View" = "Anzeigen";
 
 /* Button in the notification presented in Reader when a post is saved for later */
-"View All" = "Alles anzeigen";
+"View All" = "Alle anzeigen";
 
 /* Action title. Opens the user's site in an in-app browser */
-"View Site" = "Seite ansehen";
+"View Site" = "Website anzeigen";
 
 /* Title for button on the post details page to show all comments when tapped. */
 "View all comments" = "Alle Kommentare anzeigen";
@@ -7975,8 +7975,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message shown when an receiving an invalid application-password authentication result from a self-hosted WordPress site */
 "addSite.selfHosted.authenticationFailed" = "Anmeldung mit Anwendungspasswort-Authentifizierung nicht möglich";
 
+/* A message to inform users to type the site address in the text field. */
+"addSite.selfHosted.enterSiteAddress" = "Gib die Adresse der WordPress-Website ein, die du verbinden möchtest.";
+
 /* Error message when user input is not a WordPress site */
 "addSite.selfHosted.invalidUrl" = "Die Website-Adresse ist ungültig.";
+
+/* Error message shown when failing to load details from a self-hosted WordPress site */
+"addSite.selfHosted.loadingSiteInfoFailure" = "Die Details der WordPress-Website konnten nicht geladen werden";
 
 /* Error message shown when application-password authentication is disabled on a self-hosted WordPress site */
 "addSite.selfHosted.noLoginUrlFound" = "Auf der WordPress-Website muss die Anwendungspasswort-Authentifizierung aktiviert werden.";
@@ -8455,6 +8461,9 @@ Example: Reply to Pamela Nguyen */
 /* Debug Menu section title */
 "debugMenu.section.settings" = "Einstellungen";
 
+/* Debug Menu section title */
+"debugMenu.section.tipKit" = "TipKit";
+
 /* Debug Menu action for TipKit */
 "debugMenu.showAllTips" = "Alle Tipps anzeigen";
 
@@ -8668,6 +8677,9 @@ Example: Reply to Pamela Nguyen */
 
 /* A footer retry button */
 "general.pagingFooterView.retry" = "Erneut versuchen";
+
+/* Error message format when REST API returns an error response. The first argument is error message. */
+"generic.error.rest-api-error" = "Deine Website hat eine Fehlerantwort gesendet: %@";
 
 /* A generic title for an error */
 "generic.error.title" = "Fehler";
@@ -9483,7 +9495,7 @@ Example: Reply to Pamela Nguyen */
 "pages.template.subtitle" = "Deine Startseite verwendet ein Theme-Template und wird im Webeditor geöffnet.";
 
 /* Title of the theme template homepage cell */
-"pages.template.title" = "Startseite";
+"pages.template.title" = "Homepage";
 
 /* Message informing the user that their static homepage page was set successfully */
 "pages.updatePage.successTitle" = "Seite wurde erfolgreich aktualisiert";
@@ -11389,7 +11401,7 @@ This empty state component is displayed only when the app fails to load posts un
 "widget.alltime.nosite.view.title" = "Erstelle oder füge eine Website hinzu, um die Gesamtstatistiken anzuzeigen.";
 
 /* Title of posts label in all time widget */
-"widget.alltime.posts.label" = "Artikel";
+"widget.alltime.posts.label" = "Beiträge";
 
 /* Description of all time widget in the preview */
 "widget.alltime.preview.description" = "Bleibe auf dem Laufenden über die Aktivitäten des Gesamtzeitraums auf deiner WordPress-Website.";
