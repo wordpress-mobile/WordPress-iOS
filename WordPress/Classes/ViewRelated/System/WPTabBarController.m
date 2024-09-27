@@ -138,7 +138,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         _readerNavigationController.view.backgroundColor = [UIColor systemBackgroundColor];
 
         _readerNavigationController.tabBarItem.image = [UIImage imageNamed:@"tab-bar-reader"];
-        _readerNavigationController.tabBarItem.accessibilityIdentifier = @"readerTabButton";
+        _readerNavigationController.tabBarItem.accessibilityIdentifier = @"tabbar_reader";
         _readerNavigationController.tabBarItem.title = NSLocalizedString(@"Reader", @"The accessibility value of the Reader tab.");
 
         UITabBarAppearance *scrollEdgeAppearance = [UITabBarAppearance new];
@@ -166,7 +166,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     self.notificationsTabBarImage = [UIImage imageNamed:@"tab-bar-notifications"];
     self.notificationsTabBarImageUnread = [[UIImage imageNamed:@"tab-bar-notifications-unread"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     _notificationsNavigationController.tabBarItem.image = self.notificationsTabBarImage;
-    _notificationsNavigationController.tabBarItem.accessibilityIdentifier = @"notificationsTabButton";
+    _notificationsNavigationController.tabBarItem.accessibilityIdentifier = @"tabbar_notifications";
     _notificationsNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
     _notificationsNavigationController.tabBarItem.title = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
 
@@ -179,7 +179,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         _meNavigationController = [[UINavigationController alloc] initWithRootViewController:self.meViewController];
         [self configureMeTabImageWithPlaceholderImage:[UIImage imageNamed:@"tab-bar-me"]];
         _meNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
-        _meNavigationController.tabBarItem.accessibilityIdentifier = @"meTabButton";
+        _meNavigationController.tabBarItem.accessibilityIdentifier = @"tabbar_me";
         _meNavigationController.tabBarItem.title = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
     }
 
@@ -493,6 +493,8 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    self.view.accessibilityIdentifier = @"root_vc";
     [self startObserversForTabAccessTracking];
 }
 

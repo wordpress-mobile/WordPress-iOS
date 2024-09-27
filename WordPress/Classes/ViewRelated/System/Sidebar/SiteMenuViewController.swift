@@ -42,6 +42,7 @@ final class SiteMenuViewController: UIViewController {
         blogDetailsVC.showInitialDetailsForBlog()
 
         navigationItem.title = blog.settings?.name ?? (blog.displayURL as String?) ?? ""
+
     }
 
     func showSubsection(_ subsection: BlogDetailsSubsection, userInfo: [AnyHashable: Any]) {

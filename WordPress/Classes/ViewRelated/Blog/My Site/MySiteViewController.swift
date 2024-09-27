@@ -243,6 +243,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
     private func setupView() {
         view.backgroundColor = .systemGroupedBackground
+        view.accessibilityIdentifier = "my_site"
     }
 
     /// This method builds a layout with the following view hierarchy:

@@ -9,13 +9,8 @@ final class AppSettingsTests: XCTestCase {
         setUpTestSuite(selectWPComSite: WPUITestCredentials.testWPcomPaidSite)
     }
 
-    override func tearDownWithError() throws {
-        try super.tearDownWithError()
-        takeScreenshotOfFailedTest()
-    }
-
     func testImageOptimizationEnabledByDefault() throws {
-        try TabNavComponent()
+        try makeMainNavigationComponent()
             .goToMeScreen()
             .goToAppSettings()
             .verifyImageOptimizationSwitch(enabled: true)

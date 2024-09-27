@@ -13,6 +13,8 @@ class SiteSplitViewContent: SiteMenuViewControllerDelegate, SplitViewDisplayable
     init(blog: Blog) {
         siteMenuVC = SiteMenuViewController(blog: blog)
         supplementary = UINavigationController(rootViewController: siteMenuVC)
+        supplementary.navigationBar.accessibilityIdentifier = "site_menu_navbar"
+
         secondary = UINavigationController()
         siteMenuVC.delegate = self
     }

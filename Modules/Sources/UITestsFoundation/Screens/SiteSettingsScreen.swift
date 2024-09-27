@@ -38,7 +38,7 @@ public class SiteSettingsScreen: ScreenObject {
 
     @discardableResult
     public func goBackToMySite() throws -> MySiteScreen {
-        if XCUIDevice.isPhone {
+        if XCTestCase.isPhone {
             navigateBack()
         }
         return try MySiteScreen()

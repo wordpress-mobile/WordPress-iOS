@@ -16,10 +16,6 @@ class EditorAztecTests: XCTestCase {
             .dismissNotificationAlertIfNeeded(.accept)
     }
 
-    override func tearDownWithError() throws {
-        takeScreenshotOfFailedTest()
-    }
-
     // TODO: Re-enable Aztec tests but for editing an existing Aztec post.
     // For more information, see Issue: https://github.com/wordpress-mobile/WordPress-iOS/issues/16218
 //    func testTextPostPublish() {

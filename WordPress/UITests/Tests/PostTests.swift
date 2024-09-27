@@ -7,20 +7,13 @@ class PostTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         setUpTestSuite(selectWPComSite: WPUITestCredentials.testWPcomSiteForScheduledPost)
-
-        try TabNavComponent()
-            .goToBlockEditorScreen()
-    }
-
-    override func tearDownWithError() throws {
-        try super.tearDownWithError()
-        takeScreenshotOfFailedTest()
     }
 
     let postTitle = "Scheduled Post"
 
     func testCreateScheduledPost() throws {
-        try BlockEditorScreen()
+        try MySiteScreen()
+            .goToBlockEditorScreen()
             .enterTextInTitle(text: postTitle)
             .publish()
             .updatePublishDateToFutureDate()

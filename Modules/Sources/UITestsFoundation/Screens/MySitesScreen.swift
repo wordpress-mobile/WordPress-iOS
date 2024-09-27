@@ -26,7 +26,7 @@ public class MySitesScreen: ScreenObject {
     var mySitesLabel: XCUIElement { mySitesLabelGetter(app) }
     var addASiteButton: XCUIElement { plusButtonGetter(app) }
 
-    init(app: XCUIApplication = XCUIApplication()) throws {
+    public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [
                 mySitesLabelGetter,

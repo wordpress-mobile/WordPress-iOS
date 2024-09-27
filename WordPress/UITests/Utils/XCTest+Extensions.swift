@@ -1,5 +1,6 @@
 import UITestsFoundation
 import XCTest
+import ScreenObject
 
 extension XCTestCase {
 
@@ -27,17 +28,20 @@ extension XCTestCase {
 
         // To ensure that the test starts with a new simulator launch each time
         app.terminate()
+
         super.setUp()
 
         // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
 
         app.launchArguments = [
-            "-wpcom-api-base-url",
-            WireMock.URL().absoluteString,
-            "-no-animations",
+            "-wpcom-api-base-url", WireMock.URL().absoluteString,
             "-ui-testing",
-            "-logout-at-launch",
+            "-ui-test-disable-prompts",
+            "-ui-test-disable-autofill",
+            "-ui-test-disable-migration",
+            "-ui-test-disable-animations",
+            "-ui-test-reset-everything",
             "-com.apple.TipKit.HideAllTips", "1"
         ]
 
@@ -49,8 +53,6 @@ extension XCTestCase {
             app.launchArguments.append(contentsOf: ["-ui-test-select-wpcom-site", selectWPComSite])
         }
 
-        app.launchArguments.append(contentsOf: ["-ff-override-Sidebar", "false"])
-
         if removeBeforeLaunching {
             removeApp(app)
         }
@@ -60,14 +62,6 @@ extension XCTestCase {
         // Media permissions alert handler
         let alertButtonTitle = "Allow Access to All Photos"
         systemAlertHandler(alertTitle: "“WordPress” Would Like to Access Your Photos", alertButton: alertButtonTitle)
-    }
-
-    public func takeScreenshotOfFailedTest() {
-        guard let failuresCount = testRun?.failureCount, failuresCount > 0 else { return }
-
-        XCTContext.runActivity(named: "Take a screenshot at the end of a failed test") { activity in
-            add(XCTAttachment(screenshot: XCUIApplication().windows.firstMatch.screenshot()))
-        }
     }
 
     public func systemAlertHandler(alertTitle: String, alertButton: String) {
@@ -99,14 +93,6 @@ extension XCTestCase {
         let paragraph = sentenceArray.joined(separator: " ")
 
         return paragraph
-    }
-
-    public func getCategory() -> String {
-        return "Wedding"
-    }
-
-    public func getTag() -> String {
-        return "tag \(Date().toString())"
     }
 
     public struct DataHelper {

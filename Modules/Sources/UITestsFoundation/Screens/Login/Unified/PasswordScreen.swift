@@ -28,17 +28,16 @@ public class PasswordScreen: ScreenObject {
 
     @discardableResult
     public func proceedWithValidPassword() throws -> MySiteScreen {
-        try tryProceed(password: "pw")
+        tryProceed(password: "pw")
         return try MySiteScreen()
     }
 
-    public func proceedWithInvalidPassword() throws -> Self {
-        try tryProceed(password: "invalidPswd")
-
+    public func proceedWithInvalidPassword() -> Self {
+        tryProceed(password: "invalidPswd")
         return self
     }
 
-    public func tryProceed(password: String) throws {
+    public func tryProceed(password: String) {
         // A hack to make tests pass for RtL languages.
         //
         // An unintended side effect of calling passwordTextField.tap() while testing a RtL language is that the

@@ -11,14 +11,12 @@ class PageTests: XCTestCase {
 
     override func tearDown() async throws {
         try await WireMock.resetScenario(scenario: "new_page_flow")
-        takeScreenshotOfFailedTest()
     }
 
     let postTitle = "New Blank Page"
 
     func testCreateBlankPage() throws {
-        try TabNavComponent()
-            .goToMySiteScreen()
+        try MySiteScreen()
             .goToCreateSheet()
             .goToSitePage()
             .createBlankPage()

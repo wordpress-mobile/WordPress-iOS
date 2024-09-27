@@ -79,6 +79,9 @@ private extension JetpackWindowManager {
     ///  2. Or, User is logged in and the migration has started but still in progress. This scenario could happen if the migration flow starts but interrupted mid flow.
     ///
     var shouldStartMigrationFlow: Bool {
+        guard !UITestConfigurator.isEnabled(.disableMigration) else {
+            return false
+        }
         guard isCompatibleWordPressAppPresent else {
             return false
         }

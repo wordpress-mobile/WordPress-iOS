@@ -2,58 +2,20 @@ import ScreenObject
 import XCTest
 
 public class NotificationsScreen: ScreenObject {
+    var notificationsTable: XCUIElement { app.tables["notifications-table"].firstMatch }
+    var notificationsDetailsTable: XCUIElement { app.tables["notifications-details-table"].firstMatch }
 
-    private let replyCommentButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["reply-comment-button"]
-    }
+    var replyCommentButton: XCUIElement { app.buttons["reply-comment-button"].firstMatch }
+    var likeCommentButton: XCUIElement { app.buttons["like-comment-button"].firstMatch }
 
-    private let likeCommentButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["like-comment-button"]
-    }
-
-    private let trashCommentButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells["trash-comment-button"]
-    }
-
-    private let notificationsTableGetter: (XCUIApplication) -> XCUIElement = {
-        $0.tables["notifications-table"]
-    }
-
-    private let notificationsDetailsTableGetter: (XCUIApplication) -> XCUIElement = {
-        $0.tables["notifications-details-table"]
-    }
-
-    private let replyTextViewGetter: (XCUIApplication) -> XCUIElement = {
-        $0.textViews["reply-text-view"]
-    }
-
-    private let replyButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["reply-button"]
-    }
-
-    private let replyIndicatorTextGetter: (XCUIApplication) -> XCUIElement = {
-        $0.staticTexts["reply-indicator-text"]
-    }
-
-    private let replyIndicatorCellGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells["reply-indicator-cell"]
-    }
-
-    var likeCommentButton: XCUIElement { likeCommentButtonGetter(app) }
-    var notificationsDetailsTable: XCUIElement { notificationsDetailsTableGetter(app) }
-    var notificationsTable: XCUIElement { notificationsTableGetter(app) }
-    var replyButton: XCUIElement { replyButtonGetter(app) }
-    var replyCommentButton: XCUIElement { replyCommentButtonGetter(app) }
-    var replyIndicatorCell: XCUIElement { replyIndicatorCellGetter(app) }
-    var replyIndicatorText: XCUIElement { replyIndicatorTextGetter(app) }
-    var replyTextView: XCUIElement { replyTextViewGetter(app) }
-    var trashCommentButton: XCUIElement { trashCommentButtonGetter(app) }
+    var replyIndicatorCell: XCUIElement { app.cells["reply-indicator-cell"].firstMatch }
+    var replyIndicatorText: XCUIElement { app.staticTexts["reply-indicator-text"].firstMatch }
+    var trashCommentButton: XCUIElement { app.cells["trash-comment-button"].firstMatch }
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
-        try super.init(
-            expectedElementGetters: [ notificationsTableGetter ],
-            app: app
-        )
+        try super.init {
+            $0.tables["notifications-table"].firstMatch
+        }
     }
 
     @discardableResult
@@ -68,15 +30,15 @@ public class NotificationsScreen: ScreenObject {
 
         switch type {
         case "Comment":
-            XCTAssertTrue(replyCommentButton.waitForExistence(timeout: 5), file: file, line: line)
-            XCTAssertTrue(likeCommentButton.waitForExistence(timeout: 5), file: file, line: line)
-            XCTAssertTrue(trashCommentButton.waitForExistence(timeout: 5), file: file, line: line)
+            XCTAssertTrue(replyCommentButton.exists)
+            XCTAssertTrue(likeCommentButton.exists)
+            XCTAssertTrue(trashCommentButton.exists)
         default:
-            XCTAssertTrue(notificationsDetailsTable.waitForExistence(timeout: 5), file: file, line: line)
+            XCTAssertTrue(notificationsDetailsTable.exists)
         }
 
         // If on iPhone, tap back to return to notifications list
-        if XCUIDevice.isPhone {
+        if XCTestCase.isPhone {
             navigateBack()
         }
 
@@ -85,13 +47,13 @@ public class NotificationsScreen: ScreenObject {
 
     public func replyToComment(withText text: String) -> Self {
         replyCommentButton.tapUntil(
-            element: replyTextView,
+            element: app.textViews["reply-text-view"].firstMatch,
             matches: .exists,
             failureMessage: "Reply Text View does not exists!"
         )
 
-        replyTextView.typeText(text)
-        replyButton.tap()
+        app.textViews["reply-text-view"].firstMatch.typeText(text)
+        app.buttons["reply-button"].firstMatch.tap()
 
         return self
     }
@@ -107,11 +69,10 @@ public class NotificationsScreen: ScreenObject {
         return self
     }
 
-    public func getNumberOfLikesForNotification() -> (NotificationsScreen, Int)? {
+    public func getNumberOfLikesForNotification() throws -> (NotificationsScreen, Int) {
         guard likeCommentButton.waitForExistence(timeout: 5) else {
-            return nil
+            throw UIElementNotFoundError(message: "likeCommentButton not found")
         }
-
         let totalLikesInString = likeCommentButton.label.prefix(1)
         let totalLikes = Int(totalLikesInString) ?? 0
         return (self, totalLikes)
@@ -121,14 +82,13 @@ public class NotificationsScreen: ScreenObject {
         let isCommentOnTextDisplayed = app.staticTexts["Comment on"].firstMatch.waitForExistence(timeout: 5)
 
         if isCommentOnTextDisplayed {
-            likeCommentButton.tap()
+            app.buttons["like-comment-button"].firstMatch.tap()
         }
-
         return self
     }
 
     @discardableResult
-    public func verifyCommentLiked(expectedLikes: Int, file: StaticString = #file, line: UInt = #line) -> Self {
+    public func verifyCommentLiked(expectedLikes: Int, file: StaticString = #file, line: UInt = #line) throws -> Self {
         var tries = 0
 
         while !likeCommentButton.label.hasSuffix(.commentLikedLabel) && tries < 5 {
@@ -138,7 +98,7 @@ public class NotificationsScreen: ScreenObject {
 
         XCTAssertTrue(likeCommentButton.label.hasSuffix(.commentLikedLabel))
 
-        let (_, currentLikes) = getNumberOfLikesForNotification()!
+        let (_, currentLikes) = try getNumberOfLikesForNotification()
         XCTAssertEqual(currentLikes, expectedLikes, file: file, line: line)
 
         return self

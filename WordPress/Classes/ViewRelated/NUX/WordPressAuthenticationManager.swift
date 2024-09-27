@@ -56,24 +56,27 @@ extension WordPressAuthenticationManager {
         // Ref https://github.com/wordpress-mobile/WordPress-iOS/pull/12332#issuecomment-521994963
         let enableSignInWithApple = !(BuildConfiguration.current ~= [.a8cBranchTest, .a8cPrereleaseTesting])
 
-        return WordPressAuthenticatorConfiguration(wpcomClientId: ApiCredentials.client,
-                                                   wpcomSecret: ApiCredentials.secret,
-                                                   wpcomScheme: WPComScheme,
-                                                   wpcomTermsOfServiceURL: URL(string: WPAutomatticTermsOfServiceURL)!,
-                                                   wpcomBaseURL: WordPressComOAuthClient.WordPressComOAuthDefaultBaseURL,
-                                                   wpcomAPIBaseURL: AppEnvironment.current.wordPressComApiBase,
-                                                   googleLoginClientId: ApiCredentials.googleLoginClientId,
-                                                   googleLoginServerClientId: ApiCredentials.googleLoginServerClientId,
-                                                   googleLoginScheme: ApiCredentials.googleLoginSchemeId,
-                                                   userAgent: WPUserAgent.wordPress(),
-                                                   showLoginOptions: true,
-                                                   enableSignUp: AppConfiguration.allowSignUp,
-                                                   enableSignInWithApple: enableSignInWithApple,
-                                                   enableSignupWithGoogle: AppConfiguration.allowSignUp,
-                                                   enableUnifiedAuth: true,
-                                                   enableUnifiedCarousel: true,
-                                                   enablePasskeys: true,
-                                                   enableSocialLogin: true)
+        return WordPressAuthenticatorConfiguration(
+            wpcomClientId: ApiCredentials.client,
+            wpcomSecret: ApiCredentials.secret,
+            wpcomScheme: WPComScheme,
+            wpcomTermsOfServiceURL: URL(string: WPAutomatticTermsOfServiceURL)!,
+            wpcomBaseURL: WordPressComOAuthClient.WordPressComOAuthDefaultBaseURL,
+            wpcomAPIBaseURL: AppEnvironment.current.wordPressComApiBase,
+            googleLoginClientId: ApiCredentials.googleLoginClientId,
+            googleLoginServerClientId: ApiCredentials.googleLoginServerClientId,
+            googleLoginScheme: ApiCredentials.googleLoginSchemeId,
+            userAgent: WPUserAgent.wordPress(),
+            showLoginOptions: true,
+            enableSignUp: AppConfiguration.allowSignUp,
+            enableSignInWithApple: enableSignInWithApple,
+            enableSignupWithGoogle: AppConfiguration.allowSignUp,
+            enableUnifiedAuth: true,
+            enableUnifiedCarousel: true,
+            enablePasskeys: true,
+            enableSocialLogin: true,
+            disableAutofill: UITestConfigurator.isEnabled(.disableAutofill)
+        )
     }
 
     private func authenticatorStyle() -> WordPressAuthenticatorStyle {
@@ -481,7 +484,8 @@ private extension WordPressAuthenticationManager {
         let windowManager = self.windowManager
 
         guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(),
-              !UserPersistentStoreFactory.instance().onboardingNotificationsPromptDisplayed else {
+              !UserPersistentStoreFactory.instance().onboardingNotificationsPromptDisplayed,
+              !UITestConfigurator.isEnabled(.disablePrompts) else {
             if self.windowManager.isShowingFullscreenSignIn {
                 self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
             } else {

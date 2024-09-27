@@ -3,12 +3,6 @@ import XCTest
 
 // These tests are Jetpack only.
 class DashboardTests: XCTestCase {
-
-    override func tearDownWithError() throws {
-        takeScreenshotOfFailedTest()
-        try super.tearDownWithError()
-    }
-
     @MainActor
     func testFreeToPaidCardNavigation() throws {
         setUpTestSuite(selectWPComSite: WPUITestCredentials.testWPcomFreeSite)
