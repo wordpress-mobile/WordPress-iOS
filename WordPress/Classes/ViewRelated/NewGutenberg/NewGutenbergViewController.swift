@@ -76,11 +76,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         return !changes.isEmpty
     }
 
-    // TODO: this has to be incorrect and/or lagging behind
-    var editorHasContent: Bool {
-        !editorViewController.state.isEmpty
-    }
-
     // TODO: remove (none of these APIs are needed for the new editor)
     var autosaver = Autosaver(action: {})
     func prepopulateMediaItems(_ media: [Media]) {}
