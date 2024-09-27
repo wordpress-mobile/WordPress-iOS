@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-08-29 09:54:08+0000 */
+/* Translation-Revision-Date: 2024-09-27 06:06:13+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: sv_SE */
@@ -89,11 +89,7 @@
 /* Accessibility label for value in billions. Ex: 66.6 billion. */
 "%@ billion" = "%@ miljard";
 
-/* Accessibility label for comments button (singular) */
-"%@ comment" = "Kommentera %@";
-
-/* Accessibility label for comments button (plural)
-   Number of Comments per Page */
+/* Number of Comments per Page */
 "%@ comments" = "%@ kommentarer";
 
 /* Number of days after which comments should autoclose */
@@ -449,9 +445,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Add URL" = "Lägg till URL";
 
-/* The title on the add category screen */
-"Add a Category" = "Lägg till en kategori";
-
 /* Add a profile photo to Me > My Profile */
 "Add a Profile Photo" = "Lägg till profilbild";
 
@@ -460,9 +453,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Add a new block at any time by tapping on the + icon in the toolbar on the bottom left." = "Lägg till ett nytt block när som helst genom att trycka på ikonen + i verktygsfältet nere till vänster.";
-
-/* Title for a button that when tapped starts the add self-hosted site process */
-"Add a self-hosted site" = "Lägg till en webbplats på webbhotell\/egen server";
 
 /* No comment provided by engineer. */
 "Add a shortcode…" = "Lägg till en kortkod …";
@@ -555,9 +545,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Register Domain - Address information field Address line */
 "Address line %@" = "Adressrad %@";
-
-/* Adds a post to My Likes. Spoken Hint. */
-"Adds this post to My Likes" = "Lägg till detta inlägg i Mina gillade";
 
 /* Title for the advanced section in site settings screen */
 "Advanced" = "Avancerat";
@@ -1225,9 +1212,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Menu item label for linking a specific category. */
 "Category" = "Kategori";
 
-/* Error popup title to indicate that there was no category title filled in. */
-"Category title missing." = "Kategorirubrik saknas.";
-
 /* Center alignment for an image. Should be the same as in core WP. */
 "Center" = "Centrerat";
 
@@ -1436,9 +1420,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Close Comments Title */
 "Close commenting" = "Stäng kommentarer";
-
-/* Accessibility hint the  Done button in the Me screen. */
-"Close the Me screen" = "Stäng vyn om mig";
 
 /* Overlay message displayed while closing account */
 "Closing account…" = "Avslutar kontot …";
@@ -1741,9 +1722,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* This is the text we display to the user when we ask them for a review and they've indicated they don't like the app */
 "Could you tell us how we could improve?" = "Vad kan vi förbättra?";
 
-/* No comment provided by engineer. */
-"Couldn't Connect" = "Kunde inte ansluta";
-
 /* Error message shown a URL points to a valid site but not a WordPress site. */
 "Couldn't connect to the WordPress site. There is no valid WordPress site at this address. Check the site address (URL) you entered." = "Det gick inte att ansluta till WordPress-webbplatsen. Det finns ingen giltig WordPress-webbplats på adressen. Kontrollera adressen (URL) du angav.";
 
@@ -1822,9 +1800,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of the button in the placeholder for an empty list of blog tags. */
 "Create a Tag" = "Skapa en etikett";
-
-/* Title for a button that when tapped starts the site creation process */
-"Create a new site" = "Skapa en ny webbplats";
 
 /* Title for the Site Icon Picker */
 "Create a site icon" = "Skapa en ikon för webbplats";
@@ -2110,7 +2085,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Don't have an account? _Sign up_" = "Har du inget konto? _Registrera dig_";
 
 /* A done button
-   Accessibility label for the Done button in the Me screen.
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
@@ -2122,8 +2096,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Tapping a button with this label allows the user to exit the Site Creation flow
    Title for a Done button.
    Title for button that will dismiss this view
-   Title for the button that will dismiss this view.
-   Title of the Done button on the me page */
+   Title for the button that will dismiss this view. */
 "Done" = "Klar";
 
 /* Title for label when there are no threats on the users site */
@@ -3888,7 +3861,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Accessibility label for more button in dashboard quick start card.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
-   Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
    Action button to display more available options */
 "More" = "Mer";
@@ -4293,9 +4265,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Not now button title shown in alert preparing users to grant permission for us to send them push notifications. */
 "Not now" = "Inte nu";
 
-/* Title for a button that when tapped cancels the site creation process */
-"Not right now" = "Inte just nu";
-
 /* Instructions after a Magic Link was sent, but the email can't be found in their inbox. */
 "Not seeing the email? Check your Spam or Junk Mail folder." = "Hittar du inte meddelandet? Kolla i mappen för skräppost eller reklam.";
 
@@ -4489,9 +4458,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* WordPress.com Research Footer Text */
 "Opportunities to participate in WordPress.com research & surveys." = "Möjligheter att delta i WordPress.coms studier och undersökningar.";
 
-/* Placeholder to indicate that filling out the field is optional. */
-"Optional" = "Valfritt";
-
 /* Invite: Message Hint. %1$d is the maximum number of characters allowed. */
 "Optional message up to %1$d characters to be included in the invitation." = "Valfritt meddelande på högst %1$d tecken som skickas tillsammans med inbjudan.";
 
@@ -4585,8 +4551,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Settings: Comments Paging preferences */
 "Paging" = "Paginering";
 
-/* Placeholder to set a parent category for a new category.
-   Title for selecting parent category of a category */
+/* Title for selecting parent category of a category */
 "Parent Category" = "Överordnad kategori";
 
 /* Parenting site intent topic */
@@ -4835,9 +4800,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Window title for Post Stats view. */
 "Post Stats" = "Inläggsstatus";
-
-/* Spoken accessibility label for blog author and name in Reader cell. */
-"Post by %@, from %@" = "Inlägg av %1$@, från %2$@";
 
 /* The footer text appears within the footer displaying when the post has been created. */
 "Post created on %@" = "Inlägget skapat %@";
@@ -5169,9 +5131,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Prompt when removing a featured image from a post */
 "Remove this Featured Image?" = "Ta bort denna utvalda bild?";
 
-/* Accessibility hint for the 'Save Post' button when a post is already saved. */
-"Remove this post from my saved posts." = "Ta bort detta inlägg från mina sparade inlägg.";
-
 /* User action to remove video. */
 "Remove video" = "Ta bort video";
 
@@ -5183,9 +5142,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Explanatory text for removing the location from uploaded media. */
 "Removes location metadata from photos before uploading them to your site." = "Rensar bort metadata om plats från foton innan de laddas upp till din webbplats.";
-
-/* Removes a post from My Likes. Spoken Hint. */
-"Removes this post from My Likes" = "Ta bort detta inlägg från mina gillade";
 
 /* First line of remove follower warning in confirmation dialog. */
 "Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "Borttagning av följare gör att de slutar ta emot uppdateringar från din webbplats. Om de vill, kan de fortfarande besöka din webbplats och följa den igen.";
@@ -5375,7 +5331,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Menus save button title
    Save Action
-   Save button label (saving content, ex: Post, Page, Comment, Category).
    Save button label (saving content, ex: Post, Page, Comment).
    Save draft post action on share extension site picker screen.
    Settings Text save button title
@@ -5404,21 +5359,11 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Text displayed in the share extension's summary view that describes the save draft post action. */
 "Save draft post on:" = "Spara inläggsutkast på:";
 
-/* Accessibility label for the 'Save Post' button. */
-"Save post" = "Spara inlägg";
-
 /* Body text of alert informing users about the Reader Save for Later feature. */
 "Save this post, and come back to read it whenever you'd like. It will only be available on this device — saved posts don't sync to other devices." = "Spara detta inlägg och kom tillbaka och läs det senare när du vill. Det kommer endast att finnas tillgängligt på denna enhet – sparade inlägg synkroniseras inte till andra enheter.";
 
-/* Title of action button for a Reader post that has been saved to read later.
-   Title of the Saved Reader Tab */
+/* Title of action button for a Reader post that has been saved to read later. */
 "Saved" = "Sparat";
-
-/* Accessibility label for the 'Save Post' button when a post has been saved. */
-"Saved Post" = "Sparat inlägg";
-
-/* Accessibility hint for the 'Save Post' button. */
-"Saves this post for later." = "Sparar detta inlägg till senare.";
 
 /* A short message that informs the user a draft page is being saved to the server from the share extension. */
 "Saving page…" = "Sparar sidan …";
@@ -5764,26 +5709,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for a post or comment “like” notification. */
 "Shows all likes." = "Visar alla gillamarkeringar.";
 
-/* Spoken accessibility hint for blog name in Reader cell. */
-"Shows all posts from %@" = "Visa alla inlägg från %@";
-
-/* Spoken accessibility hint for Comments buttons */
-"Shows comments" = "Visa kommentarer";
-
 /* Accessibility hint for a comment notification. */
 "Shows details and moderation actions." = "Visar information och åtgärder för moderator.";
-
-/* Accessibility label for the More button on Reader Cell. */
-"Shows more actions" = "Visa fler åtgärder";
 
 /* Accessibility hint for the More button on Reader's post details */
 "Shows more options." = "Visa fler alternativ.";
 
 /* Accessibility hint for a match/mention on a post notification. */
 "Shows the post" = "Visar inlägget";
-
-/* Accessibility hint for the Reader Cell */
-"Shows the post content" = "Visa inläggets innehåll";
 
 /* View title during the sign up process. */
 "Sign Up" = "Skapa konto";
@@ -6439,9 +6372,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message shown when user attempts to remove the site owner. */
 "The user you are trying to remove is the owner of this site. Please contact support for assistance." = "Användaren du försöker ta bort är ägare till denna webbplats. Kontakta supporten för hjälp.";
 
-/* No comment provided by engineer. */
-"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again." = "Användarnamnet eller lösenordet lagrat i appen kan vara inaktuellt. Ange ditt lösenord igen i inställningarna och försök igen.";
-
 /* Message shown when a video failed to load while trying to add it to the Media library. */
 "The video could not be added to the Media Library." = "Videoklippet kunde inte läggas till i mediabiblioteket.";
 
@@ -6612,12 +6542,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Detta medieobjekt har raderats.";
 
-/* Post is in my likes. Accessibility label */
-"This post is in My Likes" = "Detta inlägg finns bland dina gillade";
-
-/* Post is not in my likes. Accessibility label */
-"This post is not in My Likes" = "Detta inlägg finns inte bland Mina gillade";
-
 /* Error message displayed when unable to close user account due to unresolved chargebacks. */
 "This user account cannot be closed if there are unresolved chargebacks." = "Detta användarkonto kan inte avslutas eftersom det fortfarande finns någon oavslutad chargeback.";
 
@@ -6689,12 +6613,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for list of stats by content title.
    Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
-   Post title
-   Title of the new Category being created. */
+   Post title */
 "Title" = "Rubrik";
-
-/* Error popup message to indicate that there was no category title filled in. */
-"Title for a category is mandatory." = "Rubrik för kategori är obligatoriskt.";
 
 /* Instructions for alert asking for email and name. */
 "To continue please enter your email address and name." = "Skriv in din e-postadress och ditt namn för att fortsätta.";
@@ -7000,7 +6920,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Underline" = "Understrykning";
 
 /* Action button to undo last change
-   Button in the notification presented in Reader when a post removed from saved for later
    Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
@@ -7238,9 +7157,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Visa";
-
-/* Button in the notification presented in Reader when a post is saved for later */
-"View All" = "Visa alla";
 
 /* Action title. Opens the user's site in an in-app browser */
 "View Site" = "Visa webbplats";
@@ -7546,9 +7462,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Select the site's intent. Title */
 "What's your website about?" = "Vad handlar din webbplats om?";
-
-/* Post Signup Interstitial Subtitle Text */
-"Whatever you want to create or share, we'll help you do it right here." = "Vad du än vill skapa eller dela kan vi hjälpa dig med det just här.";
 
 /* Text rendered at the bottom of the Discussion Moderation Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail or IP, it will be held in the moderation queue. You can enter partial words, so \"press\" will match \"WordPress\"." = "När en kommentar innehåller något av dessa ord i innehåll, namn, URL, e-postadress eller IP stannar den i granskningskön Du kan ange delar av ord, så \"press\" kommer att matcha \"Wordpress\".";
@@ -7971,6 +7884,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Dismiss button title */
 "activityList.dismiss.title" = "Avfärda";
+
+/* Screen title */
+"addCategory.navigationTitle" = "Lägg till kategori";
+
+/* Cell title */
+"addCategory.parentCategory" = "Överordnad kategori";
+
+/* Cell placeholder */
+"addCategory.titlePlaceholder" = "Rubrik";
 
 /* Error message shown a URL does not point to an existing site. */
 "addSite.restApiNotAvailable" = "Webbplatsen på denna adress är inte en WordPress-webbplats. För att vi ska kunna ansluta till den måste webbplatsen använda WordPress.";
@@ -8532,9 +8454,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Domain management purchase domain screen title. */
 "domain.management.purchase.title" = "Välj hur du vill använda din domän";
-
-/* The search bar title in All Domains screen. */
-"domain.management.search-bar.title" = "Sök domäner";
 
 /* The empty state description in All Domains screen when the are no domains matching the search criteria */
 "domain.management.search.empty.state.description" = "Vi kunde inte hitta några domäner som matchar din sökning på \"%@\"";
@@ -9359,26 +9278,14 @@ Example: Reply to Pamela Nguyen */
 /* Title of the domain focus card on My Site */
 "mySite.domain.focus.cardView.title" = "Få tillbaka dina Google-domäner";
 
-/* Action sheet button title. Launches the flow to a add self-hosted site. */
-"mySite.noSites.actionSheet.addSelfHostedSite" = "Lägg till webbplats på egen server";
-
-/* Action sheet button title. Launches the flow to create a WordPress.com site. */
-"mySite.noSites.actionSheet.createWPComSite" = "Skapa en webbplats på WordPress.com";
-
 /* Button title. Displays the account and setting screen. */
 "mySite.noSites.button.accountAndSettings" = "Konto och inställningar";
-
-/* Button title. Displays a screen to add a new site when tapped. */
-"mySite.noSites.button.addNewSite" = "Lägg till ny webbplats";
 
 /* Message description for when a user has no sites. */
 "mySite.noSites.description" = "Skapa en ny webbplats för ditt företag, tidskrift eller personliga blogg; eller anslut en befintlig installation av WordPress.";
 
-/* Message title for when a user has no sites. */
-"mySite.noSites.title" = "Du har inga webbplatser";
-
-/* Menu title for the add site option */
-"mySite.siteActions.addSite" = "Lägg till webbplats";
+/* Title description for when a user has no sites. */
+"mySite.noSites.stateViewTitle" = "Skapa din första webbplats";
 
 /* Button that reveals more site actions */
 "mySite.siteActions.button" = "Webbplatsåtgärder";
@@ -9397,9 +9304,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu title for the change site title option */
 "mySite.siteActions.siteTitle" = "Ändra webbplatsrubrik";
-
-/* Menu title for the switch site option */
-"mySite.siteActions.switchSite" = "Byt webbplats";
 
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "Besök webbplats";
@@ -9427,6 +9331,24 @@ Example: Reply to Pamela Nguyen */
 
 /* Error message that informs comment details from a private blog cannot be fetched. */
 "notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage" = "Du har inte behörighet att visa den här privata bloggen.";
+
+/* The user has previously tapped 'Like' on this comment */
+"notifications.accessibility-comment-like-button-on" = "Du gillade denna kommentar";
+
+/* The user has previously tapped 'Like' on this post */
+"notifications.accessibility-post-like-button-on" = "Du gillade detta inlägg";
+
+/* A label for screenreader users */
+"notifications.accessibility-share-button" = "Dela";
+
+/* A label for screenreader users */
+"notifications.accessibility-tap-to-like-this-comment" = "Dubbeltryck för att gilla denna kommentar";
+
+/* A label for screenreader users */
+"notifications.accessibility-tap-to-like-this-post" = "Dubbeltryck för att gilla detta inlägg";
+
+/* A label for screenreader users */
+"notifications.accessibility-tap-to-share-this-post" = "Dubbeltryck för att dela detta inlägg";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
 "notifications.action.subscribe.hint" = "Prenumerera på bloggen.";
@@ -10125,6 +10047,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
 "reader.blog.stream.subscribers" = "%@ prenumeranter";
 
+/* Reader sidebar button title */
+"reader.button.unfollow" = "Sluta följ";
+
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "Visar inlägg från webbplatsen";
 
@@ -10517,6 +10442,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* A short message that informs the user no WordPress.com blogs could be found. */
 "reader.reblog.no.blogs.title" = "Inga tillgängliga WordPress.com-bloggar";
 
+/* Notification title for when saved post is removed */
+"reader.savedPostRemovedNotificationTitle" = "Sparat inlägg borttaget";
+
 /* Title of a Reader tab showing Sites matching a user's search query */
 "reader.search.tab.blogs" = "Bloggar";
 
@@ -10544,6 +10472,42 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Reader select interests title label text */
 "reader.select.tags.title" = "Upptäck och följ bloggar du gillar";
 
+/* Reader sidebar button title */
+"reader.sidebar.allSubscriptions" = "Alla prenumerationer";
+
+/* Reader sidebar menu item */
+"reader.sidebar.discover" = "Upptäck";
+
+/* Reader sidebar title */
+"reader.sidebar.navigationTitle" = "Läsare";
+
+/* Reader sidebar menu item */
+"reader.sidebar.recent" = "Senaste";
+
+/* Reader sidebar menu item */
+"reader.sidebar.saved" = "Sparat";
+
+/* Reader sidebar menu item */
+"reader.sidebar.search" = "Sök";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.lists.title" = "Listor";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.organization.title" = "Organisation";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.subscriptions.tTitle" = "Prenumerationer";
+
+/* Reader sidebar button */
+"reader.sidebar.section.tags.addTag" = "Lägg till etikett";
+
+/* Reader sidebar button */
+"reader.sidebar.section.tags.discoverTags" = "Upptäck fler etiketter";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.tags.title" = "Etiketter";
+
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "Prenumerera";
 
@@ -10555,6 +10519,30 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Verb. Button title. The user is subscribed to a blog. */
 "reader.subscribed.button.title" = "Prenumererad";
+
+/* Short error message */
+"reader.subscription.invalidURLError" = "Ange en giltig URL";
+
+/* Button subtitle */
+"reader.subscriptions.addSubscriptionButtonSubtitle" = "Prenumerera på webbplatser, nyhetsbrev eller RSS-flöden";
+
+/* Button title */
+"reader.subscriptions.addSubscriptionButtonTitle" = "Lägg till prenumeration";
+
+/* Empty state details */
+"reader.subscriptions.emptyStateDetails" = "De webbplatser du upptäcker och prenumererar på kommer visas här";
+
+/* Button title for managing subscription settings */
+"reader.subscriptions.settings" = "﻿Inställningar";
+
+/* Number of subscriptions on a site (plural) */
+"reader.subscriptions.subscriptionsPlural" = "%@ prenumeranter";
+
+/* Number of subscriptions on a site (singular) */
+"reader.subscriptions.subscriptionsSingular" = "%@ prenumerant";
+
+/* Navigation bar title */
+"reader.subscriptions.title" = "Prenumerationer";
 
 /* A suggestion of topics the user might want to subscribe to */
 "reader.suggested.blogs.title" = "Bloggar att prenumerera på";
@@ -10584,6 +10572,15 @@ This empty state component is displayed only when the app fails to load posts un
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag.title" = "Lägg till en etikett";
 
+/* Navigation title */
+"reader.tags.addTag.details" = "Du kan ange vilket godtyckligt etikettnamn som helst";
+
+/* Placeholder for text field */
+"reader.tags.addTag.placeholder" = "Etikett";
+
+/* Navigation title */
+"reader.tags.addTag.title" = "Lägg till etikett";
+
 /* Text for the 'Like' button on the reader tag cell. */
 "reader.tags.button.like" = "Gilla";
 
@@ -10592,6 +10589,9 @@ This empty state component is displayed only when the app fails to load posts un
 
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "Upptäck fler etiketter";
+
+/* Title for an error snackbar */
+"reader.tags.failedToUnfollowErrorTitle" = "Kunde inte ta bort ämne";
 
 /* Verb. Button title. Follows a new tag. */
 "reader.tags.follow.button.title" = "Följ";
@@ -10756,13 +10756,22 @@ This empty state component is displayed only when the app fails to load posts un
 "shared.button.copyLink" = "Kopiera länk";
 
 /* A shared button title used in different contexts */
+"shared.button.delete" = "Ta bort";
+
+/* A shared button title used in different contexts */
 "shared.button.done" = "Klar";
 
 /* A shared button title used in different contexts */
 "shared.button.edit" = "Redigera";
 
 /* A shared button title used in different contexts */
+"shared.button.ok" = "OK";
+
+/* A shared button title used in different contexts */
 "shared.button.remove" = "Ta bort";
+
+/* A shared button title used in different contexts */
+"shared.button.retry" = "Försök igen";
 
 /* A shared button title used in different contexts */
 "shared.button.save" = "Spara";
@@ -10771,10 +10780,43 @@ This empty state component is displayed only when the app fails to load posts un
 "shared.button.share" = "Dela";
 
 /* A shared button title used in different contexts */
+"shared.button.undo" = "Ångra";
+
+/* A shared button title used in different contexts */
 "shared.button.view" = "Visa";
 
 /* A generic error message */
 "shared.error.geneirc" = "Något gick fel";
+
+/* Sidebar button title on iPad */
+"sidebar.addSite" = "Lägg till webbplats";
+
+/* Sidebar button title on iPad */
+"sidebar.allSites" = "Alla webbplatser";
+
+/* Sidebar button title on iPad */
+"sidebar.createSite" = "Skapa webbplats";
+
+/* Sidebar item on iPad */
+"sidebar.domains" = "Domäner";
+
+/* Sidebar item on iPad */
+"sidebar.help" = "Hjälp och support";
+
+/* Sidebar item on iPad */
+"sidebar.me" = "Jag";
+
+/* Sidebar section title on iPad */
+"sidebar.moreSectionTitle" = "Mer";
+
+/* Sidebar section title on iPad */
+"sidebar.mySitesSectionTitle" = "Webbplatser";
+
+/* Sidebar item on iPad */
+"sidebar.notifications" = "Aviseringar";
+
+/* Sidebar item on iPad */
+"sidebar.reader" = "Läsare";
 
 /* Template site address for the search bar. */
 "site.cration.domain.site.address" = "https:\/\/yoursitename.com";
