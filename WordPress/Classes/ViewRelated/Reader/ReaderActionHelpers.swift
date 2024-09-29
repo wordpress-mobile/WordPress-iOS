@@ -8,7 +8,7 @@ struct ReaderActionHelpers {
         do {
             return (try context.existingObject(with: objectID)) as? T
         } catch let error as NSError {
-            DDLogError(error.localizedDescription)
+            DDLogError("\(error.localizedDescription)")
             return nil
         }
     }

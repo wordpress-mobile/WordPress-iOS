@@ -235,7 +235,7 @@ private struct PlanStorage {
         guard let blogInContext = try? context.existingObject(with: blog.objectID) as? Blog else {
             let error = "Tried to update a plan for a non-existing site"
             assertionFailure(error)
-            DDLogError(error)
+            DDLogError("\(error)")
             return
         }
         if blogInContext.hasDomainCredit != hasDomainCredit {

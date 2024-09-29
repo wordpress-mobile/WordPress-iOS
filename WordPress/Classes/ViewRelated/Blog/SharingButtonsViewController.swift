@@ -543,7 +543,7 @@ import WordPressShared
             },
             failure: { [weak self] (error: Error) in
                 let error = error as NSError
-                DDLogError(error.description)
+                DDLogError("\(error.description)")
                 self?.showErrorSyncingMessage(error)
             })
     }
@@ -558,7 +558,7 @@ import WordPressShared
                 self?.reloadButtons()
             },
             failure: { (error: NSError?) in
-                DDLogError((error?.description)!)
+                DDLogError("\(String(describing: error))")
         })
     }
 
@@ -572,7 +572,7 @@ import WordPressShared
             },
             failure: { (error: Error) in
                 let error = error as NSError
-                DDLogError(error.description)
+                DDLogError("\(error.description)")
         })
     }
 
@@ -658,7 +658,7 @@ import WordPressShared
                 }
             },
             failure: { [weak self] (error: NSError?) in
-                DDLogError((error?.description)!)
+                DDLogError("\(String(describing: error))")
                 self?.showErrorSyncingMessage(error)
         })
     }

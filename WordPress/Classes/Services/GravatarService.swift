@@ -44,7 +44,7 @@ public class GravatarService {
             onCompletion(profile)
 
         }, failure: { error in
-            DDLogError(error.debugDescription)
+            DDLogError("\(error.debugDescription)")
             onCompletion(nil)
         })
     }

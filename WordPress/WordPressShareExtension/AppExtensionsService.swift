@@ -473,7 +473,7 @@ fileprivate extension AppExtensionsService {
             if let error = error as NSError? {
                 errorString += ": \(error.localizedDescription)"
             }
-            DDLogError(errorString)
+            DDLogError("\(errorString)")
             self.coreDataStack.updateStatus(.error, forUploadOpWithObjectID: uploadOpObjectID)
             onFailure?()
         })
@@ -496,7 +496,7 @@ fileprivate extension AppExtensionsService {
                 if let error = error as NSError? {
                     errorString += ": \(error.localizedDescription)"
                 }
-                DDLogError(errorString)
+                DDLogError("\(errorString)")
                 syncGroup.leave()
             })
         }
