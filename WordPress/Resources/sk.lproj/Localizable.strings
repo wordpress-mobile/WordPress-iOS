@@ -27,11 +27,7 @@
 /* The number of tags in the writting settings. Plural. %@ is a placeholder for the number */
 "%@ Tags" = "%@ Značky";
 
-/* Accessibility label for comments button (singular) */
-"%@ comment" = "%@ komentár";
-
-/* Accessibility label for comments button (plural)
-   Number of Comments per Page */
+/* Number of Comments per Page */
 "%@ comments" = "%@ komentárov";
 
 /* Number of days after which comments should autoclose */
@@ -197,9 +193,6 @@
 /* Alert option to add document contents into a blog post. */
 "Add Contents to Post" = "Pridať obsah do príspevku";
 
-/* The title on the add category screen */
-"Add a Category" = "Pridať kategóriu";
-
 /* Add a profile photo to Me > My Profile */
 "Add a Profile Photo" = "Pridať Profilovú fotografiu";
 
@@ -224,9 +217,6 @@
 /* Label for url blog setting
    Register Domain - Address information field placeholder for Address line */
 "Address" = "Adresa";
-
-/* Adds a post to My Likes. Spoken Hint. */
-"Adds this post to My Likes" = "Pridať článok k Páči sa mi to";
 
 /* Title for the advanced section in site settings screen */
 "Advanced" = "Pokročilé";
@@ -571,9 +561,6 @@
    Menu item label for linking a specific category. */
 "Category" = "Kategória";
 
-/* Error popup title to indicate that there was no category title filled in. */
-"Category title missing." = "Chýba názov kategórie.";
-
 /* Center alignment for an image. Should be the same as in core WP. */
 "Center" = "Centrovať";
 
@@ -832,9 +819,6 @@
 /* This is the text we display to the user when we ask them for a review and they've indicated they don't like the app */
 "Could you tell us how we could improve?" = "Mohli by ste nám poradiť, v čom sa máme zlepšiť? ";
 
-/* No comment provided by engineer. */
-"Couldn't Connect" = "Nepodarilo sa pripojiť";
-
 /* Error message shown a URL points to a valid site but not a WordPress site. */
 "Couldn't connect to the WordPress site. There is no valid WordPress site at this address. Check the site address (URL) you entered." = "Nepodarilo sa pripojiť k webovej stránke WordPress. Neexistuje žiadna platná webová stránka WordPress na tejto adrese. Skontrolujte adresu webovej stránky (URL), ktorú ste zadali. ";
 
@@ -1028,7 +1012,6 @@
 "Don't have an account? _Sign up_" = "Ešte nemáš účet? _Zaregistruj sa_";
 
 /* A done button
-   Accessibility label for the Done button in the Me screen.
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
@@ -1040,8 +1023,7 @@
    Tapping a button with this label allows the user to exit the Site Creation flow
    Title for a Done button.
    Title for button that will dismiss this view
-   Title for the button that will dismiss this view.
-   Title of the Done button on the me page */
+   Title for the button that will dismiss this view. */
 "Done" = "Dokončené";
 
 /* Voiceover accessibility hint informing the user they can double tap a modal alert to dismiss it */
@@ -1886,7 +1868,6 @@
 /* Accessibility label for more button in dashboard quick start card.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
-   Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
    Action button to display more available options */
 "More" = "Viac";
@@ -2206,9 +2187,6 @@
 /* WordPress.com Research Footer Text */
 "Opportunities to participate in WordPress.com research & surveys." = "Možnosť zapojiť sa do výskumov a ankiet WordPress.com.";
 
-/* Placeholder to indicate that filling out the field is optional. */
-"Optional" = "Voliteľný";
-
 /* Accessibility label for Ordered list button on formatting toolbar. */
 "Ordered List" = "Zoradený zoznam";
 
@@ -2253,8 +2231,7 @@
    Settings: Comments Paging preferences */
 "Paging" = "Stránkovanie";
 
-/* Placeholder to set a parent category for a new category.
-   Title for selecting parent category of a category */
+/* Title for selecting parent category of a category */
 "Parent Category" = "Nadradená kategória";
 
 /* Accessibility label for the password text field in the self-hosted login page.
@@ -2382,9 +2359,6 @@
 
 /* Window title for Post Stats view. */
 "Post Stats" = "Štatistiky článku";
-
-/* Spoken accessibility label for blog author and name in Reader cell. */
-"Post by %@, from %@" = "Článok %1$@, z %2$@";
 
 /* Title of the notification presented in Reader when a post is removed from save for later */
 "Post removed." = "Príspevok bol odstránený.";
@@ -2582,17 +2556,11 @@
 /* Prompt when removing a featured image from a post */
 "Remove this Featured Image?" = "Odstrániť tento prezentačný obrázok?";
 
-/* Accessibility hint for the 'Save Post' button when a post is already saved. */
-"Remove this post from my saved posts." = "Odstrániť tento príspevok z mojich uložených príspevkov.";
-
 /* User action to remove video. */
 "Remove video" = "Odstrániť video";
 
 /* Label indicating a post has been removed from Saved For Later */
 "Removed" = "Odstránený";
-
-/* Removes a post from My Likes. Spoken Hint. */
-"Removes this post from My Likes" = "Odstrániť článok z Páči sa mi to ";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to reply to a comment. */
 "Replies to a comment." = "Odpovedať na komentár.";
@@ -2692,7 +2660,6 @@
 
 /* Menus save button title
    Save Action
-   Save button label (saving content, ex: Post, Page, Comment, Category).
    Save button label (saving content, ex: Post, Page, Comment).
    Save draft post action on share extension site picker screen.
    Settings Text save button title
@@ -2712,21 +2679,11 @@
 /* Text displayed in the share extension's summary view that describes the save draft post action. */
 "Save draft post on:" = "Uložiť koncept článku na:";
 
-/* Accessibility label for the 'Save Post' button. */
-"Save post" = "Uložiť príspevok";
-
 /* Body text of alert informing users about the Reader Save for Later feature. */
 "Save this post, and come back to read it whenever you'd like. It will only be available on this device — saved posts don't sync to other devices." = "Uložte tento článok a vráťte sa k jeho prečítaniu, kedykoľvek budete chcieť. Bude k dispozícii na tomto zariadení - uložené články sa nesynchronizujú s vašimi ďalšími zariadeniami.";
 
-/* Title of action button for a Reader post that has been saved to read later.
-   Title of the Saved Reader Tab */
+/* Title of action button for a Reader post that has been saved to read later. */
 "Saved" = "Uložený";
-
-/* Accessibility label for the 'Save Post' button when a post has been saved. */
-"Saved Post" = "Uložený príspevok";
-
-/* Accessibility hint for the 'Save Post' button. */
-"Saves this post for later." = "Uložiť tento príspevok na neskôr.";
 
 /* A short message that informs the user a draft post is being saved to the server from the share extension. */
 "Saving post…" = "Článok sa ukladá...";
@@ -2881,20 +2838,8 @@
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "Zobraziť verejne keď komentujete blogy.";
 
-/* Spoken accessibility hint for blog name in Reader cell. */
-"Shows all posts from %@" = "Zobraziť všetky komentáre z %@";
-
-/* Spoken accessibility hint for Comments buttons */
-"Shows comments" = "Zobraziť komentáre";
-
-/* Accessibility label for the More button on Reader Cell. */
-"Shows more actions" = "Zobrazuje viac úkonov";
-
 /* Accessibility hint for the More button on Reader's post details */
 "Shows more options." = "Zobraziť viac možností.";
-
-/* Accessibility hint for the Reader Cell */
-"Shows the post content" = "Zobrazuje obsah článku";
 
 /* When social login fails, this button offers to let them signup for a new WordPress.com account */
 "Sign up" = "Registrácia";
@@ -3257,9 +3202,6 @@
 /* Error message shown when user attempts to remove the site owner. */
 "The user you are trying to remove is the owner of this site. Please contact support for assistance." = "Používateľ, ktorého sa pokúšate odstrániť, je vlastníkom tejto stránky. Ak potrebujete pomoc, kontaktujte technickú podporu.";
 
-/* No comment provided by engineer. */
-"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again." = "Používateľské meno alebo heslo v aplikácii už môže byť neaktuálne. Zadajte vaše heslo v nastaveniach a skúste to znova.";
-
 /* Message shown when a video failed to load while trying to add it to the Media library. */
 "The video could not be added to the Media Library." = "Video sa nepodarilo pridať do knižnice.";
 
@@ -3363,12 +3305,6 @@
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Táto mediálna položka bola odstránená.";
 
-/* Post is in my likes. Accessibility label */
-"This post is in My Likes" = "Článok sa nachádza medzi \"Páči sa mi to\" ";
-
-/* Post is not in my likes. Accessibility label */
-"This post is not in My Likes" = "Článok sa nenachádza medzi \"Páči sa mi to\" ";
-
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
 "This will be included in tweets when people share using the Twitter button." = "Toto bude zahrnuté v tweetoch, ktoré budú ľudia zdieľať pomocou Twitter tlačidla.";
@@ -3404,12 +3340,8 @@
    Label for list of stats by content title.
    Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
-   Post title
-   Title of the new Category being created. */
+   Post title */
 "Title" = "Nadpis";
-
-/* Error popup message to indicate that there was no category title filled in. */
-"Title for a category is mandatory." = "Názov kategórie je povinný.";
 
 /* Instructions for alert asking for email and name. */
 "To continue please enter your email address and name." = "Ak chcete pokračovať, zadajte svoju e-mailovú adresu a meno.";
@@ -3566,7 +3498,6 @@
 "Underline" = "Podčiarknuť";
 
 /* Action button to undo last change
-   Button in the notification presented in Reader when a post removed from saved for later
    Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
@@ -3717,9 +3648,6 @@
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Zobraziť";
-
-/* Button in the notification presented in Reader when a post is saved for later */
-"View All" = "Zobraziť všetko";
 
 /* Action title. Opens the user's site in an in-app browser */
 "View Site" = "Zobraziť webovú stránku";

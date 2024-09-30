@@ -111,6 +111,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         InteractiveNotificationsManager.shared.registerForUserNotifications()
         setupPingHub()
         setupBackgroundRefresh(application)
+        setupNoticePresenter()
         UITestConfigurator.prepareApplicationForUITests(application)
         DebugMenuViewController.configure(in: window)
         AppTips.initialize()
@@ -275,7 +276,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         AccountService.loadDefaultAccountCookies()
 
         windowManager.showUI()
-        setupNoticePresenter()
         restoreAppState()
     }
 
