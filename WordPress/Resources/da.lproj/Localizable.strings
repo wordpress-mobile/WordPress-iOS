@@ -32,9 +32,6 @@
 /* No comment provided by engineer. */
 "Activity Logs" = "Aktivitetslogs";
 
-/* The title on the add category screen */
-"Add a Category" = "Tilføj kategori";
-
 /* No comment provided by engineer. */
 "Add alt text" = "Tilføj alternativ tekst";
 
@@ -159,9 +156,6 @@
 /* Label for the categories field. Should be the same as WP core. */
 "Categories" = "Kategorier";
 
-/* Error popup title to indicate that there was no category title filled in. */
-"Category title missing." = "Kategorititel mangler.";
-
 /* Center alignment for an image. Should be the same as in core WP. */
 "Center" = "Center";
 
@@ -234,9 +228,6 @@
 
 /* Title of an prompt letting the user know there was a problem saving. */
 "Could Not Save Changes" = "Ændringer kunne ikke gemmes";
-
-/* No comment provided by engineer. */
-"Couldn't Connect" = "Kunne ikke forbinde";
 
 /* Period Stats 'Countries' header */
 "Countries" = "Lande";
@@ -332,7 +323,6 @@
 "Dismiss" = "Afvis";
 
 /* A done button
-   Accessibility label for the Done button in the Me screen.
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
@@ -344,8 +334,7 @@
    Tapping a button with this label allows the user to exit the Site Creation flow
    Title for a Done button.
    Title for button that will dismiss this view
-   Title for the button that will dismiss this view.
-   Title of the Done button on the me page */
+   Title for the button that will dismiss this view. */
 "Done" = "Færdig";
 
 /* Name for the status of a draft post. */
@@ -650,7 +639,6 @@
 /* Accessibility label for more button in dashboard quick start card.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
-   Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
    Action button to display more available options */
 "More" = "Mere";
@@ -784,9 +772,6 @@
 /* No comment provided by engineer. */
 "Open in Safari" = "Åbn i Safari";
 
-/* Placeholder to indicate that filling out the field is optional. */
-"Optional" = "Valgfri";
-
 /* Accessibility label for Ordered list button on formatting toolbar. */
 "Ordered List" = "Sorteret liste";
 
@@ -808,8 +793,7 @@
    Title of the screen showing the list of pages for a blog. */
 "Pages" = "Sider";
 
-/* Placeholder to set a parent category for a new category.
-   Title for selecting parent category of a category */
+/* Title for selecting parent category of a category */
 "Parent Category" = "Forælderkategori";
 
 /* Accessibility label for the password text field in the self-hosted login page.
@@ -1006,7 +990,6 @@
 
 /* Menus save button title
    Save Action
-   Save button label (saving content, ex: Post, Page, Comment, Category).
    Save button label (saving content, ex: Post, Page, Comment).
    Save draft post action on share extension site picker screen.
    Settings Text save button title
@@ -1182,9 +1165,6 @@
 /* No comment provided by engineer. */
 "The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "Webstedet på %1$@ benytter WordPress %2$@. Vi anbefaler, at du opdaterer til seneste version, eller mindst %3$@";
 
-/* No comment provided by engineer. */
-"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again." = "Brugernavnet eller kodeordet, der er gemt i app'en, er ikke korrekt. Prøv venligst at genindtaste dit kodeord under indstillinger og prøv igen.";
-
 /* Noun. Name of the Themes feature
    Themes option in the blog details
    Title of Themes browser page */
@@ -1203,12 +1183,8 @@
    Label for list of stats by content title.
    Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
-   Post title
-   Title of the new Category being created. */
+   Post title */
 "Title" = "Titel";
-
-/* Error popup message to indicate that there was no category title filled in. */
-"Title for a category is mandatory." = "Titel på en kategori er obligatorisk.";
 
 /* Comments Today Section Header
    Insights 'Today' header
@@ -1306,9 +1282,6 @@
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Vis";
-
-/* Button in the notification presented in Reader when a post is saved for later */
-"View All" = "Vis alle";
 
 /* Action title. Opens the user's site in an in-app browser */
 "View Site" = "Vis websted";

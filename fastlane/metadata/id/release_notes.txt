@@ -1,8 +1,0 @@
-Bulan ini kami telah melakukan banyak perbaikan visual dan ada satu fitur eksperimental baru yang memerlukan umpan balik Anda.
-
-Secara visual, kami telah:
-- Memperbarui pemilih situs agar lebih sederhana dan mudah digunakan sehingga menambah dukungan untuk menu konteks dan pratinjau.
-- Mengatasi masalah beberapa bilah navigasi yang tampak transparan di aplikasi.
-- Memperbarui puluhan layar untuk mencegah bug visual dengan menyederhanakan kode.
-
-Di bawah "Pengaturan Aplikasi", kini Anda dapat mencoba Kata Sandi Aplikasi – Fitur Eksperimental baru untuk situs yang dihosting sendiri agar dapat bekerja dengan aplikasi jika menggunakan 2FA atau SSO.

@@ -1,8 +1,0 @@
-Questo mese abbiamo effettuato molte correzioni visive e aggiunto una funzionalità sperimentale per cui vorremmo il tuo feedback.
-
-A livello visivo, abbiamo:
-- Aggiornato la scelta siti per renderla più semplice da utilizzare. Ora supporta menu contestuali e anteprime.
-- Risolto un problema per cui alcune barre di navigazione nell'app erano trasparenti.
-- Aggiornato decine di schermate per prevenire bug visivi grazie a un codice semplificato.
-
-Sotto "Impostazioni dell'app", ora puoi provare le Password per applicazioni: una nuova funzionalità sperimentale per siti ospitati personalmente che consente loro di interagire con le app se queste utilizzano la 2FA o SSO.

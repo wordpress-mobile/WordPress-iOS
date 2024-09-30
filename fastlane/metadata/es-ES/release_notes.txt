@@ -1,8 +1,0 @@
-Este mes tenemos muchas correcciones visuales y una nueva función experimental sobre la que nos encantaría recibir tus comentarios.
-
-Visualmente, hemos:
-- Actualizado el selector de sitios para que sea más sencillo y fácil de usar: añade soporte para menús contextuales y vistas previas.
-- Arreglado un problema por el que algunas barras de navegación de la aplicación eran transparentes.
-- Hemos actualizado docenas de pantallas para evitar errores visuales simplificando el código.
-
-En «Ajustes de la aplicación», ahora puedes probar «Contraseñas de la aplicación», una nueva característica experimental para sitios autoalojados que permite que funcionen con las aplicaciones si utilizan 2FA o SSO.

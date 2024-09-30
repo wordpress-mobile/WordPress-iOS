@@ -5,11 +5,11 @@ source 'https://rubygems.org'
 gem 'cocoapods', '~> 1.14'
 gem 'danger-dangermattic', '~> 1.1'
 gem 'dotenv'
-# 2.221.0 includes a fix for an ASC-interfacing bug
+# 2.223.1 includes a fix for an ASC-interfacing issue
 #
-# See https://github.com/wordpress-mobile/WordPress-iOS/pull/23118#issuecomment-2173254418
-# and https://github.com/fastlane/fastlane/pull/21995
-gem 'fastlane', '~> 2.221'
+# See failures like https://buildkite.com/automattic/wordpress-ios/builds/24053#019234f2-80a5-40f6-b55e-2f420e6483a8/3840-3915
+# and https://github.com/fastlane/fastlane/pull/22256
+gem 'fastlane', '~> 2.223', '>= 2.223.1'
 gem 'fastlane-plugin-appcenter', '~> 2.1'
 gem 'fastlane-plugin-sentry'
 # This comment avoids typing to switch to a development version for testing.
