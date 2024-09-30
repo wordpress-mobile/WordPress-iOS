@@ -22,7 +22,7 @@ class MediaNoticeNavigationCoordinator {
 
     static func navigateToMediaLibrary(with userInfo: NSDictionary) {
         if let blog = blog(from: userInfo) {
-            RootViewCoordinator.sharedPresenter.showMedia(for: blog)
+            RootViewCoordinator.sharedPresenter.showBlogDetails(for: blog, then: .media)
         }
     }
 

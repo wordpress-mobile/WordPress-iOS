@@ -2,6 +2,7 @@ import UIKit
 import AutomatticTracks
 import SwiftUI
 import WordPressFlux
+import TipKit
 
 struct DebugMenuView: View {
     @StateObject private var viewModel = DebugMenuViewModel()
@@ -12,8 +13,8 @@ struct DebugMenuView: View {
         List {
             Section { main }
             Section(Strings.sectionSettings) { settings }
-            if let blog = viewModel.blog {
-                Section(Strings.sectionQuickStart) { makeQuickStart(with: blog) }
+            if #available(iOS 17, *) {
+                Section(Strings.sectionTipKit) { tipKit }
             }
             Section(Strings.sectionLogging) { logging }
         }
@@ -52,22 +53,20 @@ struct DebugMenuView: View {
         }
     }
 
-    @ViewBuilder private func makeQuickStart(with blog: Blog) -> some View {
-        Button(Strings.quickStartForNewSiteRow) {
-            QuickStartTourGuide.shared.setup(for: blog, type: .newSite)
-            viewModel.objectWillChange.send() // Refresh
+    @available(iOS 17, *)
+    @ViewBuilder private var tipKit: some View {
+        Button(Strings.showAllTips) {
+            Tips.showAllTipsForTesting()
             showSuccessNotice()
         }
-        Button(Strings.quickStartForExistingSiteRow) {
-            QuickStartTourGuide.shared.setup(for: blog, type: .existingSite)
-            viewModel.objectWillChange.send() // Refresh
+        Button(Strings.hideAllTips) {
+            Tips.hideAllTipsForTesting()
             showSuccessNotice()
         }
-        Button(Strings.removeQuickStartRow, role: .destructive) {
-            QuickStartTourGuide.shared.remove(from: blog)
-            viewModel.objectWillChange.send() // Refresh
+        Button(Strings.resetTipKitData, role: .destructive) {
+            try? Tips.resetDatastore()
             showSuccessNotice()
-        }.disabled(blog.quickStartType == .undefined)
+        }
     }
 
     @ViewBuilder private var logging: some View {
@@ -114,10 +113,6 @@ private func showSuccessNotice() {
 }
 
 private final class DebugMenuViewModel: ObservableObject {
-    var blog: Blog? {
-        RootViewCoordinator.sharedPresenter.mySitesCoordinator.currentBlog
-    }
-
     var isForcedCrashLoggingEnabled: Bool {
         get { UserSettings.userHasForcedCrashLoggingEnabled }
         set {
@@ -158,9 +153,10 @@ final class DebugMenuViewController: UIHostingController<DebugMenuView> {
     }
 
     static func configure(in window: UIWindow?) {
-        guard FeatureFlag.debugMenu.enabled else {
+        guard BuildConfiguration.current.isInternal else {
             return
         }
+
         assert(window != nil)
 
         let gesture = UIScreenEdgePanGestureRecognizer(target: DebugMenuViewController.self, action: #selector(showDebugMenu))
@@ -178,10 +174,8 @@ final class DebugMenuViewController: UIHostingController<DebugMenuView> {
         viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(systemItem: .close, primaryAction: .init { [weak topViewController] _ in
             topViewController?.dismiss(animated: true)
         })
-        viewController.configureDefaultNavigationBarAppearance()
 
         let navigation = UINavigationController(rootViewController: viewController)
-        navigation.navigationBar.isTranslucent = true // Reset to default
         topViewController.present(navigation, animated: true)
     }
 }
@@ -207,10 +201,8 @@ private enum Strings {
     static let title = NSLocalizedString("debugMenu.title", value: "Developer", comment: "Title for debug menu screen")
     static let sectionSettings = NSLocalizedString("debugMenu.section.settings", value: "Settings", comment: "Debug Menu section title")
     static let sectionLogging = NSLocalizedString("debugMenu.section.logging", value: "Logging", comment: "Debug Menu section title")
-    static let sectionQuickStart = NSLocalizedString("debugMenu.section.quickStart", value: "Quick Start", comment: "Debug Menu section title")
+    static let sectionTipKit = NSLocalizedString("debugMenu.section.tipKit", value: "TipKit", comment: "Debug Menu section title")
     static let sandboxStoreCookieSecretRow = NSLocalizedString("Sandbox Store", comment: "Title of a row displayed on the debug screen used to configure the sandbox store use in the App.")
-    static let quickStartForNewSiteRow = NSLocalizedString("Enable Quick Start for New Site", comment: "Title of a row displayed on the debug screen used in debug builds of the app")
-    static let quickStartForExistingSiteRow = NSLocalizedString("Enable Quick Start for Existing Site", comment: "Title of a row displayed on the debug screen used in debug builds of the app")
     static let sendTestCrash = NSLocalizedString("Send Test Crash", comment: "Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly")
     static let sendLogMessage = NSLocalizedString("Send Log Message", comment: "Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly")
     static let alwaysSendLogs = NSLocalizedString("Always Send Crash Logs", comment: "Title of a row displayed on the debug screen used to indicate whether crash logs should be forced to send, even if they otherwise wouldn't")
@@ -221,7 +213,10 @@ private enum Strings {
     static let remoteConfigTitle = NSLocalizedString("debugMenu.remoteConfig.title", value: "Remote Config", comment: "Remote Config debug menu title")
     static let analyics = NSLocalizedString("debugMenu.analytics", value: "Analytics", comment: "Debug menu item title")
     static let featureFlags = NSLocalizedString("debugMenu.featureFlags", value: "Feature Flags", comment: "Feature flags menu item")
-    static let removeQuickStartRow = NSLocalizedString("debugMenu.removeQuickStart", value: "Remove Current Tour", comment: "Remove current quick start tour menu item")
     static let weeklyRoundup = NSLocalizedString("debugMenu.weeklyRoundup", value: "Weekly Roundup", comment: "Weekly Roundup debug menu item")
     static let booleanUserDefaults = NSLocalizedString("debugMenu.booleanUserDefaults", value: "Boolean User Defaults", comment: "Boolean User Defaults debug menu item")
+
+    static let showAllTips = NSLocalizedString("debugMenu.showAllTips", value: "Show All Tips", comment: "Debug Menu action for TipKit")
+    static let hideAllTips = NSLocalizedString("debugMenu.hideAllTips", value: "Hide All Tips", comment: "Debug Menu action for TipKit")
+    static let resetTipKitData = NSLocalizedString("debugMenu.resetTipKitData", value: "Reset Data", comment: "Debug Menu action for TipKit")
 }

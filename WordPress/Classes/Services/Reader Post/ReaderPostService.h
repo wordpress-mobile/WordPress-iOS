@@ -5,7 +5,7 @@
 #pragma clang diagnostic ignored "-Wnullability-completeness"
 
 @import WordPressKit;
-@import WordPressShared;
+@import WordPressSharedObjC;
 
 @class ReaderPost;
 @class ReaderAbstractTopic;
@@ -98,6 +98,19 @@ extern NSString * const ReaderPostServiceToggleSiteFollowingState;
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
 - (void)toggleLikedForPost:(ReaderPost *)post
+                   success:(void (^)(void))success
+                   failure:(void (^)(NSError *error))failure;
+
+/**
+ Toggle the liked status of the specified post.
+
+ @param post The reader post to like/unlike.
+ @param source A string that hints the source of where action was performed. Optional.
+ @param success block called on a successful fetch.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)toggleLikedForPost:(ReaderPost *)post
+                    source:(nullable NSString *)source
                    success:(void (^)(void))success
                    failure:(void (^)(NSError *error))failure;
 

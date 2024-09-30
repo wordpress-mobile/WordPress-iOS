@@ -3,9 +3,9 @@
 #import "CoreDataStack.h"
 #import "SourcePostAttribution.h"
 #import "WPAccount.h"
-#import <WordPressShared/NSString+Util.h>
-#import <WordPressShared/NSString+XMLExtensions.h>
 #import "WordPress-Swift.h"
+
+@import WordPressShared;
 
 // These keys are used in the getStoredComment method
 NSString * const ReaderPostStoredCommentIDKey = @"commentID";
@@ -106,7 +106,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     post.blogURL = remotePost.blogURL;
     post.commentCount = remotePost.commentCount;
     post.commentsOpen = remotePost.commentsOpen;
-    post.date_created_gmt = [DateUtils dateFromISOString:remotePost.date_created_gmt];
+    post.date_created_gmt = [NSDate dateFromServerDate:remotePost.date_created_gmt];
     post.featuredImage = remotePost.featuredImage;
     post.feedID = remotePost.feedID;
     post.feedItemID = remotePost.feedItemID;

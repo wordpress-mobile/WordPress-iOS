@@ -13,9 +13,7 @@ func wpAssert(_ closure: @autoclosure () -> Bool, _ message: StaticString = "–
 
     WPAnalytics.track(.assertionFailure, properties: {
         var properties: [String: Any] = [
-            "file": filename,
-            "line": line,
-            "message": "\(filename)–\(line): \(message)"
+            "assertion": "\(filename)–\(line): \(message)"
         ]
         for (key, value) in userInfo ?? [:] {
             properties[key] = value

@@ -64,16 +64,6 @@ class PostCompactCellTests: CoreDataTestCase {
         XCTAssertTrue(postCell.badgesLabel.isHidden)
     }
 
-    func testHideProgressView() {
-        let post = PostBuilder(mainContext)
-            .with(remoteStatus: .sync)
-            .published().build()
-
-        postCell.configure(with: post)
-
-        XCTAssertTrue(postCell.progressView.isHidden)
-    }
-
     private func postCellFromNib() -> PostCompactCell {
         let bundle = Bundle(for: PostCompactCell.self)
         guard let postCell = bundle.loadNibNamed("PostCompactCell", owner: nil)?.first as? PostCompactCell else {

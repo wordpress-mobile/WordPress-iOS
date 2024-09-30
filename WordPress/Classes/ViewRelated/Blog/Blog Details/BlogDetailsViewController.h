@@ -4,12 +4,12 @@
 @class BlogDetailHeaderView;
 @class CreateButtonCoordinator;
 @class IntrinsicTableView;
+@class MeViewController;
 @protocol BlogDetailHeader;
 
 typedef NS_ENUM(NSUInteger, BlogDetailsSectionCategory) {
     BlogDetailsSectionCategoryReminders,
     BlogDetailsSectionCategoryDomainCredit,
-    BlogDetailsSectionCategoryQuickStart,
     BlogDetailsSectionCategoryHome,
     BlogDetailsSectionCategoryGeneral,
     BlogDetailsSectionCategoryJetpack,
@@ -29,7 +29,6 @@ typedef NS_ENUM(NSUInteger, BlogDetailsSectionCategory) {
 typedef NS_ENUM(NSUInteger, BlogDetailsSubsection) {
     BlogDetailsSubsectionReminders,
     BlogDetailsSubsectionDomainCredit,
-    BlogDetailsSubsectionQuickStart,
     BlogDetailsSubsectionStats,
     BlogDetailsSubsectionPosts,
     BlogDetailsSubsectionCustomize,
@@ -50,42 +49,6 @@ typedef NS_ENUM(NSUInteger, BlogDetailsSubsection) {
     BlogDetailsSubsectionSiteMonitoring
 };
 
-typedef NS_ENUM(NSInteger, QuickStartTitleState) {
-    QuickStartTitleStateUndefined = 0,
-    QuickStartTitleStateCustomizeIncomplete = 1,
-    QuickStartTitleStateGrowIncomplete = 2,
-    QuickStartTitleStateCompleted = 3,
-};
-
-typedef NS_ENUM(NSInteger, QuickStartTourElement) {
-    QuickStartTourElementNoSuchElement = 0,
-    QuickStartTourElementTabFlipped = 1,
-    QuickStartTourElementBlogDetailNavigation = 2,
-    QuickStartTourElementViewSite = 3,
-    QuickStartTourElementChecklist = 4,
-    QuickStartTourElementThemes = 5,
-    QuickStartTourElementCustomize = 6,
-    QuickStartTourElementNewpost = 7,
-    QuickStartTourElementSharing = 8,
-    QuickStartTourElementConnections = 9,
-    QuickStartTourElementReaderTab = 10,
-    QuickStartTourElementReaderDiscoverSubscriptions = 12,
-    QuickStartTourElementTourCompleted = 13,
-    QuickStartTourElementCongratulations = 14,
-    QuickStartTourElementSiteIcon = 15,
-    QuickStartTourElementPages = 16,
-    QuickStartTourElementNewPage = 17,
-    QuickStartTourElementStats = 18,
-    QuickStartTourElementPlans = 19,
-    QuickStartTourElementSiteTitle = 20,
-    QuickStartTourElementSiteMenu = 21,
-    QuickStartTourElementNotifications = 22,
-    QuickStartTourElementSetupQuickStart = 23,
-    QuickStartTourElementUpdateQuickStart = 24,
-    QuickStartTourElementMediaScreen = 25,
-    QuickStartTourElementMediaUpload = 26,
-};
-
 typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
     BlogDetailsNavigationSourceButton = 0,
     BlogDetailsNavigationSourceRow = 1,
@@ -104,7 +67,6 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 @property (nonatomic, strong, nonnull, readonly) NSArray *rows;
 @property (nonatomic, strong, nullable, readonly) NSString *footerTitle;
 @property (nonatomic, readonly) BlogDetailsSectionCategory category;
-@property (nonatomic) BOOL showQuickStartMenu;
 
 - (instancetype _Nonnull)initWithTitle:(NSString * __nullable)title andRows:(NSArray * __nonnull)rows category:(BlogDetailsSectionCategory)category;
 - (instancetype _Nonnull)initWithTitle:(NSString * __nullable)title rows:(NSArray * __nonnull)rows footerTitle:(NSString * __nullable)footerTitle category:(BlogDetailsSectionCategory)category;
@@ -126,8 +88,9 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 @property (nonatomic) BOOL forDestructiveAction;
 @property (nonatomic) BOOL showsDisclosureIndicator;
 @property (nonatomic, copy, nullable) void (^callback)(void);
-@property (nonatomic) QuickStartTourElement quickStartIdentifier;
-@property (nonatomic) QuickStartTitleState quickStartTitleState;
+
+/// - warning: This property is not specified for every row.
+@property (nonatomic, readonly) BlogDetailsSubsection subsection;
 
 - (instancetype _Nonnull)initWithTitle:(NSString * __nonnull)title
                             identifier:(NSString * __nonnull)identifier
@@ -155,6 +118,8 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
                          renderingMode:(UIImageRenderingMode)renderingMode
                               callback:(void(^_Nullable)(void))callback;
 
+- (BlogDetailsRow * _Nonnull)withSubsection:(BlogDetailsSubsection)subsection;
+
 @end
 
 @protocol ScenePresenter;
@@ -163,7 +128,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 - (void)presentBlogDetailsViewController:(UIViewController * __nonnull)viewController;
 @end
 
-@interface BlogDetailsViewController : UIViewController <UIViewControllerTransitioningDelegate>
+@interface BlogDetailsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIViewControllerTransitioningDelegate>
 
 @property (nonatomic, strong, nonnull) Blog * blog;
 @property (nonatomic, strong, readonly) CreateButtonCoordinator * _Nullable createButtonCoordinator;
@@ -172,13 +137,20 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 @property (nonatomic, weak, nullable) id<BlogDetailsPresentationDelegate> presentationDelegate;
 @property (nonatomic, strong, nullable) BlogDetailsRow *meRow;
 
+/// A new display mode for the displaying it as part of the site menu.
+@property (nonatomic) BOOL isSidebarModeEnabled;
+
+/// - warning: A temporary solution for restoring selection on iPad – imprecise!
+@property (nonatomic, readonly) BlogDetailsSubsection selectedSubsection;
+
 - (id _Nonnull)init;
 - (void)showDetailViewForSubsection:(BlogDetailsSubsection)section;
 - (void)showDetailViewForSubsection:(BlogDetailsSubsection)section userInfo:(nonnull NSDictionary *)userInfo;
 - (NSIndexPath * _Nonnull)indexPathForSubsection:(BlogDetailsSubsection)subsection;
 - (void)reloadTableViewPreservingSelection;
 - (void)configureTableViewData;
-- (void)scrollToElement:(QuickStartTourElement)element;
+
+- (nonnull MeViewController *)showDetailViewForMeSubsectionWithUserInfo:(nonnull NSDictionary *)userInfo;
 
 - (void)switchToBlog:(nonnull Blog *)blog;
 - (void)showInitialDetailsForBlog;
@@ -192,6 +164,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 
 + (nonnull NSString *)userInfoShowPickerKey;
 + (nonnull NSString *)userInfoSiteMonitoringTabKey;
++ (nonnull NSString *)userInfoShowManagemenetScreenKey;
 + (nonnull NSString *)userInfoSourceKey;
 
 @end

@@ -3,7 +3,8 @@
 #import <CocoaLumberjack/DDFileLogger.h>
 #import "WordPress-Swift.h"
 #import "WPLogger.h"
-#import "WPGUIConstants.h"
+
+@import WordPressShared;
 
 static NSString *const ActivityLogCellIdentifier = @"ActivityLogCell";
 
@@ -19,7 +20,7 @@ static NSString *const ActivityLogCellIdentifier = @"ActivityLogCell";
 
 - (id)init
 {
-    self = [super initWithStyle:UITableViewStyleGrouped];
+    self = [super initWithStyle:UITableViewStyleInsetGrouped];
     if (self) {
         _fileLogger = [WPLogger shared].fileLogger;
 
@@ -98,7 +99,7 @@ static NSString *const ActivityLogCellIdentifier = @"ActivityLogCell";
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
         cell.textLabel.text = NSLocalizedString(@"Clear Old Activity Logs", @"");
-        [WPStyleGuide configureTableViewActionCell:cell];
+        cell.textLabel.textColor = [UIColor systemRedColor];
     }
     return cell;
 }

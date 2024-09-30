@@ -1,11 +1,10 @@
 import Foundation
 import CoreData
 import Gridicons
-import CocoaLumberjack
 import WordPressShared
-import wpxmlrpc
 import WordPressFlux
 import WordPressUI
+import WordPressKit
 import Combine
 
 class AbstractPostListViewController: UIViewController,
@@ -63,11 +62,7 @@ class AbstractPostListViewController: UIViewController,
         return syncHelper
     }()
 
-    lazy var noResultsViewController: NoResultsViewController = {
-        let noResultsViewController = NoResultsViewController.controller()
-        noResultsViewController.delegate = self
-        return noResultsViewController
-    }()
+    lazy var noResultsViewController = NoResultsViewController.controller()
 
     lazy var filterSettings: PostListFilterSettings = {
         return PostListFilterSettings(blog: self.blog, postType: self.postTypeToSync())
@@ -89,9 +84,6 @@ class AbstractPostListViewController: UIViewController,
 
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-
-        edgesForExtendedLayout = .all
-        extendedLayoutIncludesOpaqueBars = true
     }
 
     required init?(coder: NSCoder) {
@@ -109,7 +101,6 @@ class AbstractPostListViewController: UIViewController,
         configureTableView()
         configureSearchController()
         configureAuthorFilter()
-        configureDefaultNavigationBarAppearance()
 
         updateAndPerformFetchRequest()
 
@@ -133,6 +124,7 @@ class AbstractPostListViewController: UIViewController,
         updateSelectedFilter()
 
         refreshResults()
+        automaticallySyncIfAppropriate()
 
         // Show it initially but allow the user to dismiss it by scrolling
         navigationItem.hidesSearchBarWhenScrolling = false
@@ -140,8 +132,6 @@ class AbstractPostListViewController: UIViewController,
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
-        automaticallySyncIfAppropriate()
 
         navigationItem.hidesSearchBarWhenScrolling = true
     }
@@ -178,6 +168,7 @@ class AbstractPostListViewController: UIViewController,
 
     private func configureFilterBar() {
         WPStyleGuide.configureFilterTabBar(filterTabBar)
+        filterTabBar.isAutomaticTabSizingStyleEnabled = true
         filterTabBar.backgroundColor = .clear
         filterTabBar.items = filterSettings.availablePostListFilters()
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
@@ -203,15 +194,12 @@ class AbstractPostListViewController: UIViewController,
     }
 
     private func configureSearchController() {
-        assert(self is InteractivePostViewDelegate, "The subclass has to implement InteractivePostViewDelegate protocol")
+        wpAssert(self is InteractivePostViewDelegate, "The subclass has to implement InteractivePostViewDelegate protocol")
 
         searchResultsViewController.configure(searchController, self as? InteractivePostViewDelegate)
 
         definesPresentationContext = true
         navigationItem.searchController = searchController
-        if #available(iOS 16.0, *) {
-            navigationItem.preferredSearchBarPlacement = .stacked
-        }
     }
 
     func propertiesForAnalytics() -> [String: AnyObject] {
@@ -231,7 +219,7 @@ class AbstractPostListViewController: UIViewController,
 
     @objc private func postCoordinatorDidUpdate(_ notification: Foundation.Notification) {
         guard let updatedObjects = (notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>) else {
-            return assertionFailure("missing NSUpdatedObjectsKey")
+            return wpAssertionFailure("missing NSUpdatedObjectsKey")
         }
         let updatedIndexPaths = (tableView.indexPathsForVisibleRows ?? []).filter {
             let cell = tableView.cellForRow(at: $0) as? AbstractPostListCell
@@ -343,7 +331,7 @@ class AbstractPostListViewController: UIViewController,
     }
 
     func updateAndPerformFetchRequest() {
-        assert(Thread.isMainThread, "AbstractPostListViewController Error: NSFetchedResultsController accessed in BG")
+        wpAssert(Thread.isMainThread, "AbstractPostListViewController Error: NSFetchedResultsController accessed in BG")
 
         var predicate = predicateForFetchRequest()
         let sortDescriptors = sortDescriptorsForFetchRequest()
@@ -467,12 +455,6 @@ class AbstractPostListViewController: UIViewController,
     // MARK: - Syncing
 
     private func automaticallySyncIfAppropriate() {
-        // Only automatically refresh if the view is loaded and visible on the screen
-        if !isViewLoaded || view.window == nil {
-            DDLogVerbose("View is not visible and will not check for auto refresh.")
-            return
-        }
-
         // Do not start auto-sync if connection is down
         let appDelegate = WordPressAppDelegate.shared
 
@@ -488,13 +470,16 @@ class AbstractPostListViewController: UIViewController,
     }
 
     @objc func syncItemsWithUserInteraction(_ userInteraction: Bool) {
+        if !userInteraction {
+            showRefreshingIndicator()
+        }
         syncHelper.syncContentWithUserInteraction(userInteraction)
         refreshResults()
     }
 
     @objc func updateFilter(_ filter: PostListFilter, withSyncedPosts posts: [AbstractPost], hasMore: Bool) {
         guard posts.count > 0 else {
-            assertionFailure("This method should not be called with no posts.")
+            wpAssertionFailure("This method should not be called with no posts.")
             return
         }
         // Reset the filter to only show the latest sync point, based on the oldest post date in the posts just synced.
@@ -600,7 +585,12 @@ class AbstractPostListViewController: UIViewController,
     }
 
     func syncContentEnded(_ syncHelper: WPContentSyncHelper) {
-        refreshControl.endRefreshing()
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(330)) {
+            if self.refreshControl.isRefreshing {
+                self.refreshControl.endRefreshing()
+            }
+        }
+        hideRefreshingIndicator()
         setFooterHidden(true)
         noResultsViewController.removeFromView()
 
@@ -617,12 +607,13 @@ class AbstractPostListViewController: UIViewController,
     }
 
     @objc func handleSyncFailure(_ error: NSError) {
-        if error.domain == WPXMLRPCFaultErrorDomain
-            && error.code == type(of: self).httpErrorCodeForbidden {
+        if error.domain == WordPressOrgXMLRPCApi.errorDomain &&
+            error.code == type(of: self).httpErrorCodeForbidden {
             WordPressAppDelegate.shared?.showPasswordInvalidPrompt(for: blog)
             return
         }
 
+        hideRefreshingIndicator()
         dismissAllNetworkErrorNotices()
 
         // If there is no internet connection, we'll show the specific error message defined in
@@ -639,25 +630,14 @@ class AbstractPostListViewController: UIViewController,
     // MARK: - Actions
 
     func publish(_ post: AbstractPost) {
-        let action = AbstractPostHelper.editorPublishAction(for: post)
-        PrepublishingViewController.show(for: post, action: action, isStandalone: true, from: self) { [weak self] result in
+        WPAnalytics.track(.postListPublishAction, withProperties: propertiesForAnalytics())
+        PrepublishingViewController.show(for: post, isStandalone: true, from: self) { [weak self] result in
             switch result {
-            case .confirmed:
-                self?.didConfirmPublish(for: post)
             case .published:
                 self?.dismiss(animated: true)
             case .cancelled:
                 break
             }
-        }
-    }
-
-    private func didConfirmPublish(for post: AbstractPost) {
-        WPAnalytics.track(.postListPublishAction, withProperties: propertiesForAnalytics())
-        PostCoordinator.shared.publish(post)
-
-        if post is Post {
-            BloggingRemindersFlow.present(from: self, for: post.blog, source: .publishFlow, alwaysShow: false)
         }
     }
 
@@ -683,7 +663,9 @@ class AbstractPostListViewController: UIViewController,
         navigationController?.present(navWrapper, animated: true)
     }
 
-    func _trash(_ post: AbstractPost, completion: @escaping () -> Void) {
+    func trash(_ post: AbstractPost, completion: @escaping () -> Void) {
+        WPAnalytics.track(.postListTrashAction, withProperties: propertiesForAnalytics())
+
         let post = post.original()
 
         func performAction() {
@@ -708,6 +690,8 @@ class AbstractPostListViewController: UIViewController,
     }
 
     func delete(_ post: AbstractPost, completion: @escaping () -> Void) {
+        WPAnalytics.track(.postListDeleteAction, properties: propertiesForAnalytics())
+
         let post = post.original()
 
         let alert = UIAlertController(title: Strings.Delete.actionTitle, message: Strings.Delete.message(for: post.latest()), preferredStyle: .alert)
@@ -717,17 +701,48 @@ class AbstractPostListViewController: UIViewController,
         alert.addDestructiveActionWithTitle(Strings.Delete.actionTitle) { _ in
             completion()
             Task {
-                await PostCoordinator.shared._delete(post)
+                await PostCoordinator.shared.delete(post)
             }
         }
         alert.presentFromRootViewController()
     }
 
-    /// - warning: deprecated (kahu-offline-mode)
-    func deletePost(_ post: AbstractPost) {
-        Task {
-            await PostCoordinator.shared.delete(post)
+    func retry(_ post: AbstractPost) {
+        WPAnalytics.track(.postListRetryAction, properties: propertiesForAnalytics())
+        PostCoordinator.shared.retrySync(for: post.original())
+    }
+
+    func stats(for post: AbstractPost) {
+        viewStatsForPost(post)
+    }
+
+    fileprivate func viewStatsForPost(_ post: AbstractPost) {
+        // Check the blog
+        let blog = post.blog
+
+        guard blog.supports(.stats) else {
+            // Needs Jetpack.
+            return
         }
+
+        WPAnalytics.track(.postListStatsAction, withProperties: propertiesForAnalytics())
+
+        // Push the Post Stats ViewController
+        guard let postID = post.postID as? Int else {
+            return
+        }
+
+        SiteStatsInformation.sharedInstance.siteTimeZone = blog.timeZone
+        SiteStatsInformation.sharedInstance.oauth2Token = blog.authToken
+        SiteStatsInformation.sharedInstance.siteID = blog.dotComID
+
+        guard let postURL = post.permaLink.flatMap(URL.init) else {
+            return wpAssertionFailure("permalink missing or invalid")
+        }
+        let postStatsTableViewController = PostStatsTableViewController.withJPBannerForBlog(postID: postID,
+                                                                                            postTitle: post.titleForDisplay(),
+                                                                                            postURL: postURL)
+        navigationController?.pushViewController(postStatsTableViewController, animated: true)
     }
 
     @objc func copyPostLink(_ post: AbstractPost) {
@@ -803,6 +818,31 @@ class AbstractPostListViewController: UIViewController,
 
     // MARK: - Misc
 
+    private func showRefreshingIndicator() {
+        guard navigationItem.titleView == nil else {
+            return
+        }
+
+        let spinner = UIActivityIndicatorView(style: .medium)
+        spinner.startAnimating()
+        spinner.tintColor = .secondaryLabel
+        spinner.transform = .init(scaleX: 0.8, y: 0.8)
+
+        let titleView = UILabel()
+        titleView.text = Strings.updating + "..."
+        titleView.font = UIFont.preferredFont(forTextStyle: .headline)
+        titleView.textColor = UIColor.secondaryLabel
+
+        let stack = UIStackView(arrangedSubviews: [spinner, titleView])
+        stack.spacing = 8
+
+        navigationItem.titleView = stack
+    }
+
+    private func hideRefreshingIndicator() {
+        navigationItem.titleView = nil
+    }
+
     private func setFooterHidden(_ isHidden: Bool) {
         if isHidden {
             tableView.tableFooterView = nil
@@ -823,23 +863,21 @@ class AbstractPostListViewController: UIViewController,
 
 extension AbstractPostListViewController: NetworkStatusDelegate {
     func networkStatusDidChange(active: Bool) {
+        // Only automatically refresh if the view is loaded and visible on the screen
+        if !isViewLoaded || view.window == nil {
+            DDLogVerbose("View is not visible and will not check for auto refresh.")
+            return
+        }
         automaticallySyncIfAppropriate()
     }
 }
 
 extension AbstractPostListViewController: EditorAnalyticsProperties { }
 
-// MARK: - NoResultsViewControllerDelegate
-
-extension AbstractPostListViewController: NoResultsViewControllerDelegate {
-    func actionButtonPressed() {
-        WPAnalytics.track(.postListNoResultsButtonPressed, withProperties: propertiesForAnalytics())
-        createPost()
-    }
-}
-
 private enum Strings {
     static let cancelText = NSLocalizedString("postList.cancel", value: "Cancel", comment: "Cancels an Action")
+    // TODO: Add namespace (kahu-offline-mode)
+    static let updating = NSLocalizedString("Updating", comment: "Updating label title")
 
     enum Trash {
         static let actionTitle = NSLocalizedString("postList.trash.actionTitle", value: "Move to Trash", comment: "Trash option in the trash post or page confirmation alert.")

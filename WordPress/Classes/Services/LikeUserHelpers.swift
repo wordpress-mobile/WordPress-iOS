@@ -16,7 +16,7 @@ import CoreData
         liker.avatarUrl = remoteUser.avatarURL
         liker.bio = remoteUser.bio ?? ""
         liker.dateLikedString = remoteUser.dateLiked ?? ""
-        liker.dateLiked = DateUtils.date(fromISOString: liker.dateLikedString)
+        liker.dateLiked = Date.dateFromServerDate(liker.dateLikedString) ?? .now
         liker.likedSiteID = remoteUser.likedSiteID?.int64Value ?? 0
         liker.likedPostID = remoteUser.likedPostID?.int64Value ?? 0
         liker.likedCommentID = remoteUser.likedCommentID?.int64Value ?? 0

@@ -28,7 +28,7 @@ class SupportTableViewController: UITableViewController {
 
     // MARK: - Init
 
-    init(configuration: Configuration = .init(), style: UITableView.Style = .grouped) {
+    init(configuration: Configuration = .init(), style: UITableView.Style = .insetGrouped) {
         self.configuration = configuration
         super.init(style: style)
     }
@@ -38,18 +38,19 @@ class SupportTableViewController: UITableViewController {
     }
 
     required convenience init(dismissTapped: (() -> ())?) {
-        self.init(configuration: .init(), style: .grouped)
+        self.init(configuration: .init(), style: .insetGrouped)
         self.dismissTapped = dismissTapped
     }
 
     @objc public convenience init() {
-        self.init(configuration: .init(), style: .grouped)
+        self.init(configuration: .init(), style: .insetGrouped)
     }
 
     // MARK: - View
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         WPAnalytics.track(.openedSupport)
         setupNavBar()
         setupTable()
@@ -152,10 +153,7 @@ private extension SupportTableViewController {
         title = LocalizedText.viewTitle
 
         if isModal() {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(title: LocalizedText.closeButton,
-                                                                style: WPStyleGuide.barButtonStyleForBordered(),
-                                                               target: self,
-                                                               action: #selector(SupportTableViewController.dismissPressed(_:)))
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: LocalizedText.closeButton, style: .plain, target: self, action: #selector(SupportTableViewController.dismissPressed(_:)))
             navigationItem.rightBarButtonItem?.accessibilityIdentifier = "close-button"
         }
     }
@@ -173,8 +171,7 @@ private extension SupportTableViewController {
                                tableView: tableView)
         tableHandler = ImmuTableViewHandler(takeOver: self)
         reloadViewModel()
-        WPStyleGuide.configureColors(view: view, tableView: tableView)
-        tableView.tableFooterView = UIView() // remove empty cells
+
         if let headerConfig = configuration.meHeaderConfiguration {
             let headerView = MeHeaderView()
             headerView.update(with: headerConfig)
@@ -419,7 +416,7 @@ private extension SupportTableViewController {
             let cell = cell as! WPTableViewCellIndicator
             cell.textLabel?.text = title
             WPStyleGuide.configureTableViewCell(cell)
-            cell.textLabel?.textColor = .primary
+            cell.textLabel?.textColor = UIAppColor.primary
             cell.showIndicator = showIndicator
             cell.accessibilityTraits = .button
             cell.accessibilityIdentifier = accessibilityIdentifier
@@ -439,7 +436,7 @@ private extension SupportTableViewController {
             cell.textLabel?.text = title
             cell.detailTextLabel?.text = value
             WPStyleGuide.configureTableViewCell(cell)
-            cell.textLabel?.textColor = .primary
+            cell.textLabel?.textColor = UIAppColor.primary
             cell.accessibilityTraits = .button
             cell.accessibilityHint = accessibilityHint
             cell.accessibilityIdentifier = accessibilityIdentifier
@@ -547,8 +544,8 @@ fileprivate enum SupportTableLayoutSpacing {
 
 class ButtonCell: WPTableViewCellDefault {
 
-    let button: SpotlightableButton = {
-        let button = SpotlightableButton(type: .custom)
+    let button: UIButton = {
+        let button = UIButton(type: .custom)
 
         button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.callout)
         button.titleLabel?.adjustsFontForContentSizeCategory = true
@@ -556,7 +553,7 @@ class ButtonCell: WPTableViewCellDefault {
         button.titleLabel?.lineBreakMode = .byTruncatingTail
         button.contentHorizontalAlignment = .trailing
 
-        button.setTitleColor(.primary, for: .normal)
+        button.setTitleColor(UIAppColor.primary, for: .normal)
 
         button.setImage(UIImage.gridicon(.external,
                                          size: CGSize(width: LayoutSpacing.imageSize, height: LayoutSpacing.imageSize)),

@@ -101,3 +101,22 @@ struct StringRankedSearch {
         return score
     }
 }
+
+extension StringRankedSearch {
+    /// Returns the top matching results for the given items.
+    ///
+    /// - parameter input: Returns the input for the search algorithm to match against.
+    func search<S: Sequence>(
+        in items: S,
+        minScore: Double = 0.7,
+        input: (S.Element) -> String
+    ) -> [S.Element] {
+        items.compactMap { item -> (S.Element, Double)? in
+            let score = score(for: input(item))
+            guard score > minScore else { return nil }
+            return (item, score)
+        }
+        .sorted { $0.1 > $1.1 }
+        .map(\.0)
+    }
+}

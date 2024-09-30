@@ -1,6 +1,6 @@
 /// Encapsulates a command to toggle a post's liked status
 final class ReaderLikeAction {
-    func execute(with post: ReaderPost, completion: (() -> Void)? = nil) {
+    func execute(with post: ReaderPost, source: String? = nil, completion: (() -> Void)? = nil) {
         if !post.isLiked {
             // Consider a like from the list to be enough to push a page view.
             // Solves a long-standing question from folks who ask 'why do I
@@ -9,7 +9,7 @@ final class ReaderLikeAction {
             UINotificationFeedbackGenerator().notificationOccurred(.success)
         }
         let service = ReaderPostService(coreDataStack: ContextManager.shared)
-        service.toggleLiked(for: post, success: {
+        service.toggleLiked(for: post, source: source, success: {
             completion?()
         }, failure: { (error: Error?) in
             if let anError = error {

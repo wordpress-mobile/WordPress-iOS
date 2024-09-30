@@ -1,20 +1,18 @@
 #import "WPTabBarController.h"
-#import <WordPressUI/UIImage+Util.h>
 
 #import "AccountService.h"
 #import "CoreDataStack.h"
 #import "BlogService.h"
 #import "Blog.h"
 
-#import "BlogListViewController.h"
 #import "BlogDetailsViewController.h"
 #import "WPScrollableViewController.h"
-#import <WordPressShared/WPDeviceIdentification.h>
 #import "WPAppAnalytics.h"
 #import "WordPress-Swift.h"
 
 @import Gridicons;
 @import WordPressShared;
+@import WordPressUI;
 
 static NSString * const WPTabBarButtonClassname = @"UITabBarButton";
 static NSString * const WPApplicationIconBadgeNumberKeyPath = @"applicationIconBadgeNumber";
@@ -72,9 +70,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         [self setDelegate:self];
         [[self tabBar] setAccessibilityIdentifier:@"Main Navigation"];
         [[self tabBar] setAccessibilityLabel:NSLocalizedString(@"Main Navigation", nil)];
-        [self setupColors];
-
-        self.meScenePresenter = [[MeScenePresenter alloc] init];
+        [WPStyleGuide configureTabBar:[self tabBar]];
 
         [self setViewControllers:[self tabViewControllers]];
 
@@ -97,7 +93,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(signinDidFinish:)
-                                                     name:WordPressAuthenticator.WPSigninDidFinishNotification
+                                                     name:WPTabBarController.wpSigninDidFinishNotification
                                                    object:nil];
 
         // Watch for application badge number changes
@@ -124,7 +120,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 - (void)dealloc
 {
     [self.tabBar removeObserver:self forKeyPath:WPTabBarFrameKeyPath];
-    [self stopWatchingQuickTours];
     [[UIApplication sharedApplication] removeObserver:self forKeyPath:WPApplicationIconBadgeNumberKeyPath];
 }
 
@@ -140,19 +135,15 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
             rootViewController = self.makeReaderTabViewController;
         }
         _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
-        _readerNavigationController.navigationBar.translucent = NO;
-        _readerNavigationController.view.backgroundColor = [UIColor murielBasicBackground];
+        _readerNavigationController.view.backgroundColor = [UIColor systemBackgroundColor];
 
-        if ([Feature enabled:FeatureFlagNewTabIcons]) {
-            _readerNavigationController.tabBarItem.image = [[UIImage imageNamed:@"tab-bar-reader-unselected"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-            _readerNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"tab-bar-reader-selected"];
-        } else {
-            UIImage *readerTabBarImage = [UIImage imageNamed:@"icon-tab-reader"];
-            _readerNavigationController.tabBarItem.image = readerTabBarImage;
-            _readerNavigationController.tabBarItem.selectedImage = readerTabBarImage;
-        }
+        _readerNavigationController.tabBarItem.image = [UIImage imageNamed:@"tab-bar-reader"];
         _readerNavigationController.tabBarItem.accessibilityIdentifier = @"readerTabButton";
         _readerNavigationController.tabBarItem.title = NSLocalizedString(@"Reader", @"The accessibility value of the Reader tab.");
+
+        UITabBarAppearance *scrollEdgeAppearance = [UITabBarAppearance new];
+        [scrollEdgeAppearance configureWithOpaqueBackground];
+        _readerNavigationController.tabBarItem.scrollEdgeAppearance = scrollEdgeAppearance;
     }
 
     return _readerNavigationController;
@@ -172,20 +163,9 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         rootViewController = self.notificationsViewController;
     }
     _notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
-    _notificationsNavigationController.navigationBar.translucent = NO;
-    if ([Feature enabled:FeatureFlagNewTabIcons]) {
-        self.notificationsTabBarImage = [[UIImage imageNamed:@"tab-bar-notifications-unselected"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        NSString *unreadImageName = [AppConfiguration isJetpack] ? @"tab-bar-notifications-unread-jp" : @"tab-bar-notifications-unread-wp";
-        self.notificationsTabBarImageUnread = [[UIImage imageNamed:unreadImageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        _notificationsNavigationController.tabBarItem.image = self.notificationsTabBarImage;
-        _notificationsNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"tab-bar-notifications-selected"];
-    } else {
-        self.notificationsTabBarImage = [UIImage imageNamed:@"icon-tab-notifications"];
-        NSString *unreadImageName = [AppConfiguration isJetpack] ? @"icon-tab-notifications-unread-jetpack" : @"icon-tab-notifications-unread";
-        self.notificationsTabBarImageUnread = [[UIImage imageNamed:unreadImageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        _notificationsNavigationController.tabBarItem.image = self.notificationsTabBarImage;
-        _notificationsNavigationController.tabBarItem.selectedImage = self.notificationsTabBarImage;
-    }
+    self.notificationsTabBarImage = [UIImage imageNamed:@"tab-bar-notifications"];
+    self.notificationsTabBarImageUnread = [[UIImage imageNamed:@"tab-bar-notifications-unread"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    _notificationsNavigationController.tabBarItem.image = self.notificationsTabBarImage;
     _notificationsNavigationController.tabBarItem.accessibilityIdentifier = @"notificationsTabButton";
     _notificationsNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
     _notificationsNavigationController.tabBarItem.title = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
@@ -197,12 +177,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 {
     if (!_meNavigationController) {
         _meNavigationController = [[UINavigationController alloc] initWithRootViewController:self.meViewController];
-        if ([Feature enabled:FeatureFlagNewTabIcons]) {
-            [self configureMeTabImageWithUnselectedPlaceholderImage:[[UIImage imageNamed:@"tab-bar-me-unselected"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
-                                           selectedPlaceholderImage:[UIImage imageNamed:@"tab-bar-me-selected"]];
-        } else {
-            [self configureMeTabImageWithPlaceholderImage:[UIImage imageNamed:@"icon-tab-me"]];
-        }
+        [self configureMeTabImageWithPlaceholderImage:[UIImage imageNamed:@"tab-bar-me"]];
         _meNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
         _meNavigationController.tabBarItem.accessibilityIdentifier = @"meTabButton";
         _meNavigationController.tabBarItem.title = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
@@ -282,31 +257,19 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     self.selectedIndex = WPTabMySites;
 }
 
-- (void)resetReaderTab
-{
-    _readerNavigationController = nil;
-    [self setViewControllers:[self tabViewControllers]];
-}
-
 #pragma mark - Navigation Coordinators
 
 - (MySitesCoordinator *)mySitesCoordinator
 {
     if (!_mySitesCoordinator) {
         __weak __typeof(self) weakSelf = self;
-        
-        _mySitesCoordinator = [[MySitesCoordinator alloc] initWithMeScenePresenter: self.meScenePresenter
-                                                                 onBecomeActiveTab:^{
+
+        _mySitesCoordinator = [[MySitesCoordinator alloc] initOnBecomeActiveTab:^{
             [weakSelf showMySitesTab];
         }];
     }
-    
-    return _mySitesCoordinator;
-}
 
-- (ReaderCoordinator *)readerCoordinator
-{
-    return [[ReaderCoordinator alloc] initWithReaderNavigationController:self.readerNavigationController];
+    return _mySitesCoordinator;
 }
 
 #pragma mark - Navigation Helpers
@@ -352,25 +315,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     [self setSelectedIndex:WPTabMe];
 }
 
-- (void)showReaderTabForPost:(NSNumber *)postId onBlog:(NSNumber *)blogId
-{
-    [self showReaderTab];
-    UIViewController *topDetailVC = (UIViewController *)self.readerNavigationController.topViewController;
-
-    // TODO: needed?
-    if ([topDetailVC isKindOfClass:[ReaderDetailViewController class]]) {
-        ReaderDetailViewController *readerDetailVC = (ReaderDetailViewController *)topDetailVC;
-        ReaderPost *readerPost = readerDetailVC.post;
-        if ([readerPost.postID isEqual:postId] && [readerPost.siteID isEqual: blogId]) {
-         // The desired reader detail VC is already the top VC for the tab. Move along.
-            return;
-        }
-    }
-    
-    UIViewController *readerPostDetailVC = [ReaderDetailViewController controllerWithPostID:postId siteID:blogId isFeed:NO];
-    [self.readerNavigationController pushFullscreenViewController:readerPostDetailVC animated:YES];
-}
-
 - (void)popNotificationsTabToRoot
 {
     [self.notificationsNavigationController popToRootViewControllerAnimated:NO];
@@ -412,23 +356,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
     // If we're selecting a new tab...
     if (selectedIndex != tabBarController.selectedIndex) {
-        switch (selectedIndex) {
-            case WPTabMySites: {
-                break;
-            }
-            case WPTabReader: {
-                [self alertQuickStartThatReaderWasTapped];
-                break;
-            }
-            case WPTabNotifications: {
-                [self alertQuickStartThatNotificationsWasTapped];
-                break;
-            }
-            default: break;
-        }
-
         [self trackTabAccessForTabIndex:selectedIndex];
-        [self alertQuickStartThatOtherTabWasTapped];
     } else {
         // If the current view controller is selected already and it's at its root then scroll to the top
         if ([viewController isKindOfClass:[UINavigationController class]]) {
@@ -441,12 +369,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     }
 
     return YES;
-}
-
-- (void)showNotificationsTabForNoteWithID:(NSString *)notificationID
-{
-    [self setSelectedIndex:WPTabNotifications];
-    [self.notificationsViewController showDetailsForNotificationWithID:notificationID];
 }
 
 #pragma mark - UITabBarDelegate
@@ -578,7 +500,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 {
     [super viewDidAppear:animated];
     [self updateNotificationBadgeVisibility];
-    [self startWatchingQuickTours];
 
     [self trackTabAccessOnViewDidAppear];
 }

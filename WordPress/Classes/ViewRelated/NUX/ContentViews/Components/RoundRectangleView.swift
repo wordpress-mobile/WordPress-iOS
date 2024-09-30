@@ -4,7 +4,7 @@ import SwiftUI
 struct RoundRectangleView<Content: View>: View {
     private let content: Content
 
-    private let rectangleFillColor = Color(UIColor(light: .white, dark: .gray(.shade90)))
+    private let rectangleFillColor = Color(UIColor(light: .white, dark: UIAppColor.gray(.shade90)))
     private let cornerRadius: CGFloat = 4
     private let shadowRadius: CGFloat = 4
     private let shadowColor = Color.gray.opacity(0.4)

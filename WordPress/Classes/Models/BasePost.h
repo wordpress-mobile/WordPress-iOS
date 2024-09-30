@@ -1,7 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "Blog.h"
 #import "PostContentProvider.h"
-@import WordPressShared;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -28,23 +27,9 @@ NS_ASSUME_NONNULL_BEGIN
  Not part of the post's canoncial data.
  */
 @property (nonatomic, strong, nullable) NSString *pathForDisplayImage;
-/**
- BOOL flag if the feature image was changed.
- */
-@property (nonatomic, assign) BOOL isFeaturedImageChanged;
-
-/**
- BOOL flag set to true if the post is first time published.
-
- - note: Deprecated (kahu-offline-mode)
- */
-@property (nonatomic, assign) BOOL isFirstTimePublish;
 
 //date conversion
 @property (nonatomic, strong, nullable) NSDate * dateCreated;
-
-//comments
-- (void)findComments;
 
 // Returns true if title or content is non empty
 - (BOOL)hasContent;

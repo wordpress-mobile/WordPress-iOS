@@ -36,7 +36,7 @@ class PushNotificationsAuthorizerMock: PushNotificationAuthorizer {
 class BloggingRemindersSchedulerTests: XCTestCase {
 
     func dataFileURL() -> URL {
-        URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true).appendingPathComponent("testBlogReminders_" + UUID().uuidString + ".plist")
+        URL.Helpers.temporaryFile(named: "testBlogReminders_" + UUID().uuidString + ".plist")
     }
 
     func testThatScheduleIsEquatable() {

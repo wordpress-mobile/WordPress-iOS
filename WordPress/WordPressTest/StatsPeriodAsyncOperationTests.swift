@@ -1,6 +1,7 @@
 import XCTest
+import WordPressKit
+
 @testable import WordPress
-@testable import WordPressKit
 
 class StatsPeriodAsyncOperationTests: XCTestCase {
     private let date = Date()

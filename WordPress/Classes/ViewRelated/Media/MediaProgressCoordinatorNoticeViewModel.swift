@@ -13,7 +13,6 @@ struct MediaProgressCoordinatorNoticeViewModel {
 
     // Is the media progress related to a post?
     // Only failed post media should be reported through this view model.
-    // Successful post media uploads should be reported via a PostNoticeViewModel.
     private let isPostMedia: Bool
 
     init?(mediaProgressCoordinator: MediaProgressCoordinator, isPostMedia: Bool = false) {

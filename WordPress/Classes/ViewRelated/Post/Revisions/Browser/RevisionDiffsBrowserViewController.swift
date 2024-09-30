@@ -128,13 +128,13 @@ private extension RevisionDiffsBrowserViewController {
 
     private func setNextPreviousButtons() {
         previousButton.setImage(.gridicon(.chevronLeft), for: .normal)
-        previousButton.tintColor = .neutral(.shade70)
+        previousButton.tintColor = UIAppColor.neutral(.shade70)
         previousButton.on(.touchUpInside) { [weak self] _ in
             self?.showPrevious()
         }
 
         nextButton.setImage(.gridicon(.chevronRight), for: .normal)
-        nextButton.tintColor = .neutral(.shade70)
+        nextButton.tintColor = UIAppColor.neutral(.shade70)
         nextButton.on(.touchUpInside) { [weak self] _ in
             self?.showNext()
         }
@@ -144,8 +144,8 @@ private extension RevisionDiffsBrowserViewController {
         navigationItem.leftBarButtonItems = [doneBarButtonItem]
         navigationItem.rightBarButtonItems = [moreBarButtonItem, loadBarButtonItem]
         navigationItem.title = NSLocalizedString("Revision", comment: "Title of the screen that shows the revisions.")
-        strokeView.backgroundColor = .divider
-        revisionContainer.backgroundColor = .listForeground
+        strokeView.backgroundColor = .separator
+        revisionContainer.backgroundColor = .secondarySystemGroupedBackground
     }
 
     private func updateNextPreviousButtons() {

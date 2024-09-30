@@ -51,7 +51,7 @@ struct PreviewNonceHandler {
         }
 
         // If the post is published, but has changes, add the preview param.
-        if post.hasUnsavedChanges() || post.hasRemoteChanges() {
+        if !post.changes.isEmpty {
             return true
         }
 

@@ -1,8 +1,8 @@
 import WordPressFlux
 import XCTest
+import WordPressKit
 
 @testable import WordPress
-@testable import WordPressKit
 
 class ActivityStoreTests: CoreDataTestCase {
     private var dispatcher: ActionDispatcher!

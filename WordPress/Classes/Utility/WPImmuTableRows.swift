@@ -8,15 +8,17 @@ struct NavigationItemRow: ImmuTableRow {
     let title: String
     let detail: String?
     let icon: UIImage?
+    let tintColor: UIColor?
     let action: ImmuTableAction?
     let accessoryType: UITableViewCell.AccessoryType
     let accessibilityIdentifier: String?
     let loading: Bool
 
-    init(title: String, detail: String? = nil, icon: UIImage? = nil, badgeCount: Int = 0, accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator, action: @escaping ImmuTableAction, accessibilityIdentifier: String? = nil, loading: Bool = false) {
+    init(title: String, detail: String? = nil, icon: UIImage? = nil, tintColor: UIColor? = nil, accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator, action: @escaping ImmuTableAction, accessibilityIdentifier: String? = nil, loading: Bool = false) {
         self.title = title
         self.detail = detail
         self.icon = icon
+        self.tintColor = tintColor
         self.accessoryType = accessoryType
         self.action = action
         self.accessibilityIdentifier = accessibilityIdentifier
@@ -30,8 +32,7 @@ struct NavigationItemRow: ImmuTableRow {
         cell.accessibilityIdentifier = accessibilityIdentifier
 
         if loading {
-            let indicator: UIActivityIndicatorView
-            indicator = UIActivityIndicatorView(style: .medium)
+            let indicator = UIActivityIndicatorView(style: .medium)
             indicator.startAnimating()
             cell.accessoryView = indicator
         } else {
@@ -39,6 +40,8 @@ struct NavigationItemRow: ImmuTableRow {
         }
 
         WPStyleGuide.configureTableViewCell(cell)
+
+        cell.imageView?.tintColor = tintColor ?? .secondaryLabel
     }
 }
 
@@ -47,13 +50,15 @@ struct IndicatorNavigationItemRow: ImmuTableRow {
 
     let title: String
     let icon: UIImage?
+    let tintColor: UIColor?
     let showIndicator: Bool
     let accessoryType: UITableViewCell.AccessoryType
     let action: ImmuTableAction?
 
-    init(title: String, icon: UIImage? = nil, showIndicator: Bool = false, accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator, action: @escaping ImmuTableAction) {
+    init(title: String, icon: UIImage? = nil, tintColor: UIColor?, showIndicator: Bool = false, accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator, action: @escaping ImmuTableAction) {
         self.title = title
         self.icon = icon
+        self.tintColor = tintColor
         self.showIndicator = showIndicator
         self.accessoryType = accessoryType
         self.action = action
@@ -68,6 +73,8 @@ struct IndicatorNavigationItemRow: ImmuTableRow {
         cell.showIndicator = showIndicator
 
         WPStyleGuide.configureTableViewCell(cell)
+
+        cell.imageView?.tintColor = tintColor ?? .secondaryLabel
     }
 }
 
@@ -257,7 +264,7 @@ struct BrandedNavigationRow: ImmuTableRow {
         }
         cell.textLabel?.text = title
         WPStyleGuide.configureTableViewCell(cell)
-        cell.textLabel?.textColor = .primary
+        cell.textLabel?.textColor = UIAppColor.primary
         cell.showIndicator = showIndicator
         cell.accessibilityTraits = .button
         cell.accessibilityIdentifier = accessibilityIdentifier
@@ -268,7 +275,10 @@ struct ButtonRow: ImmuTableRow {
     static let cell = ImmuTableCell.class(WPTableViewCellDefault.self)
 
     let title: String
+    var textAlignment: NSTextAlignment = .center
+    var isLoading = false
     let action: ImmuTableAction?
+    var accessibilityIdentifier: String?
 
     func configureCell(_ cell: UITableViewCell) {
         cell.textLabel?.text = title
@@ -276,7 +286,17 @@ struct ButtonRow: ImmuTableRow {
         cell.textLabel?.lineBreakMode = .byWordWrapping
 
         WPStyleGuide.configureTableViewActionCell(cell)
-        cell.textLabel?.textAlignment = .center
+        cell.textLabel?.textAlignment = textAlignment
+
+        if isLoading {
+            let indicator = UIActivityIndicatorView(style: .medium)
+            indicator.startAnimating()
+            cell.accessoryView = indicator
+        } else {
+            cell.accessoryView = nil
+        }
+
+        cell.accessibilityIdentifier = accessibilityIdentifier
     }
 }
 

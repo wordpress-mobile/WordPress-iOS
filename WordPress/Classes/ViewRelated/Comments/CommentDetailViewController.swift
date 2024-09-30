@@ -1,6 +1,7 @@
 import UIKit
 import CoreData
 import WordPressUI
+import Aztec
 
 // Notification sent when a Comment is permanently deleted so the Notifications list (NotificationsViewController) is immediately updated.
 extension NSNotification.Name {
@@ -84,8 +85,9 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         iconAttachment.image = Style.ReplyIndicator.iconImage
 
         let attributedString = NSMutableAttributedString()
-        attributedString.append(.init(attachment: iconAttachment, attributes: Style.ReplyIndicator.textAttributes))
-        attributedString.append(.init(string: " " + .replyIndicatorLabelText, attributes: Style.ReplyIndicator.textAttributes))
+        attributedString.append(NSAttributedString(attachment: iconAttachment))
+        attributedString.append(.init(string: " " + .replyIndicatorLabelText))
+        attributedString.addAttributes(Style.ReplyIndicator.textAttributes, range: NSMakeRange(0, attributedString.length))
 
         // reverse the attributed strings in RTL direction.
         if view.effectiveUserInterfaceLayoutDirection == .rightToLeft {
@@ -179,14 +181,6 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         return nil
     }
 
-    // transparent navigation bar style with visual blur effect.
-    private lazy var blurredBarAppearance: UINavigationBarAppearance = {
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithTransparentBackground()
-        appearance.backgroundEffect = UIBlurEffect(style: .systemThinMaterial)
-        return appearance
-    }()
-
     // MARK: Nav Bar Buttons
 
     private(set) lazy var editBarButtonItem: UIBarButtonItem = {
@@ -200,7 +194,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
     private(set) lazy var shareBarButtonItem: UIBarButtonItem = {
         let button = UIBarButtonItem(
             image: comment.allowsModeration()
-            ? UIImage(systemName: Style.Content.ellipsisIconImageName)
+            ? UIImage(systemName: "ellipsis")
             : UIImage(systemName: Style.Content.shareIconImageName),
             style: .plain,
             target: self,
@@ -209,6 +203,8 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         button.accessibilityLabel = NSLocalizedString("Share comment", comment: "Accessibility label for button to share a comment from a notification")
         return button
     }()
+
+    @objc var isSidebarModeEnabled = false
 
     // MARK: Initialization
 
@@ -325,7 +321,7 @@ private extension CommentDetailViewController {
         static let tableBottomMargin: CGFloat = 40.0
         static let replyIndicatorVerticalSpacing: CGFloat = 14.0
         static let deleteButtonInsets = UIEdgeInsets(top: 4, left: 20, bottom: 4, right: 20)
-        static let deleteButtonNormalColor = UIColor(light: .error, dark: .muriel(name: .red, .shade40))
+        static let deleteButtonNormalColor = UIColor(light: UIAppColor.error, dark: UIAppColor.red(.shade40))
         static let deleteButtonHighlightColor: UIColor = .white
         static let trashButtonBackgroundColor = UIColor.quaternarySystemFill
         static let trashButtonHighlightColor: UIColor = UIColor.tertiarySystemFill
@@ -348,8 +344,6 @@ private extension CommentDetailViewController {
     }
 
     func configureNavigationBar() {
-        navigationItem.standardAppearance = blurredBarAppearance
-        navigationController?.navigationBar.isTranslucent = true
         configureNavBarButton()
     }
 
@@ -605,7 +599,13 @@ private extension CommentDetailViewController {
         }
 
         let readerViewController = ReaderDetailViewController.controllerWithPostID(NSNumber(value: comment.postID), siteID: siteID, isFeed: false)
-        navigationController?.pushFullscreenViewController(readerViewController, animated: true)
+        if isSidebarModeEnabled {
+            let navigationController = UINavigationController(rootViewController: readerViewController)
+            navigationController.modalPresentationStyle = .pageSheet
+            present(navigationController, animated: true)
+        } else {
+            navigationController?.pushFullscreenViewController(readerViewController, animated: true)
+        }
     }
 
     func openWebView(for url: URL?) {
@@ -633,7 +633,6 @@ private extension CommentDetailViewController {
 
         CommentAnalytics.trackCommentEditorOpened(comment: comment)
         let navigationControllerToPresent = UINavigationController(rootViewController: editCommentTableViewController)
-        navigationControllerToPresent.modalPresentationStyle = .fullScreen
         present(navigationControllerToPresent, animated: true)
     }
 
@@ -713,9 +712,9 @@ private extension CommentDetailViewController {
             isAdmin: comment.allowsModeration()
         )
         let viewController = CommentDetailInfoViewController(viewModel: viewModel)
+        viewController.title = comment.authorForDisplay()
         viewModel.view = viewController
-        let bottomSheet = BottomSheetViewController(childViewController: viewController, customHeaderSpacing: 0)
-        bottomSheet.show(from: self)
+        viewController.show(from: self, sourceView: senderView)
     }
 }
 

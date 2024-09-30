@@ -1,5 +1,4 @@
 import Foundation
-import CocoaLumberjack
 import WordPressShared
 import WordPressFlux
 import UIKit
@@ -57,9 +56,6 @@ final class PageListViewController: AbstractPostListViewController {
     @objc class func controllerWithBlog(_ blog: Blog) -> PageListViewController {
         let vc = PageListViewController()
         vc.blog = blog
-        if QuickStartTourGuide.shared.isCurrentElement(.pages) {
-            vc.filterSettings.setFilterWithPostStatus(BasePost.Status.publish)
-        }
         return vc
     }
 
@@ -67,18 +63,12 @@ final class PageListViewController: AbstractPostListViewController {
         let controller = PageListViewController.controllerWithBlog(blog)
         controller.navigationItem.largeTitleDisplayMode = .never
         sourceController.navigationController?.pushViewController(controller, animated: true)
-
-        QuickStartTourGuide.shared.visited(.pages)
     }
 
     // MARK: - UIViewController
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        if QuickStartTourGuide.shared.isCurrentElement(.newPage) {
-            updateFilterWithPostStatus(.publish)
-        }
 
         super.updateAndPerformFetchRequest()
 
@@ -94,14 +84,13 @@ final class PageListViewController: AbstractPostListViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        if traitCollection.horizontalSizeClass == .compact {
+        if traitCollection.horizontalSizeClass == .compact || Feature.enabled(.sidebar) {
             createButtonCoordinator.showCreateButton(for: blog)
         }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        QuickStartTourGuide.shared.endCurrentTour()
 
         if self.isMovingFromParent {
             fetchAllPagesTask?.cancel()
@@ -111,7 +100,7 @@ final class PageListViewController: AbstractPostListViewController {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        if traitCollection.horizontalSizeClass == .compact {
+        if traitCollection.horizontalSizeClass == .compact || Feature.enabled(.sidebar) {
             createButtonCoordinator.showCreateButton(for: blog)
         } else {
             createButtonCoordinator.hideCreateButton()
@@ -217,7 +206,7 @@ final class PageListViewController: AbstractPostListViewController {
             let pageIDs = pages.map { TaggedManagedObjectID($0) }
 
             do {
-                self.pages = try await buildPageTree(pageIDs: pageIDs)
+                self.pages = try await PostRepository().buildPageTree(pageIDs: pageIDs)
                     .map { pageID, hierarchyIndex in
                         let page = try coreDataStack.mainContext.existingObject(with: pageID)
                         page.hierarchyIndex = hierarchyIndex
@@ -232,29 +221,6 @@ final class PageListViewController: AbstractPostListViewController {
 
         tableView.reloadData()
         refreshResults()
-    }
-
-    /// Build page hierachy in background, which should not take long (less than 2 seconds for 6000+ pages).
-    @MainActor
-    func buildPageTree(pageIDs: [TaggedManagedObjectID<Page>]? = nil, request: NSFetchRequest<Page>? = nil) async throws -> [(pageID: TaggedManagedObjectID<Page>, hierarchyIndex: Int)] {
-        assert(pageIDs != nil || request != nil, "`pageIDs` and `request` can not both be nil")
-
-        let coreDataStack = ContextManager.shared
-        return try await coreDataStack.performQuery { context in
-            var pages = [Page]()
-
-            if let pageIDs {
-                pages = try pageIDs.map(context.existingObject(with:))
-            } else if let request {
-                pages = try context.fetch(request)
-            }
-
-            pages = pages.setHomePageFirst()
-
-            // The `hierarchyIndex` is not a managed property, so it needs to be returend along with the page object id.
-            return PageTree.hierarchyList(of: pages)
-                .map { (TaggedManagedObjectID($0), $0.hierarchyIndex) }
-        }
     }
 
     override func syncContentEnded(_ syncHelper: WPContentSyncHelper) {
@@ -421,47 +387,11 @@ final class PageListViewController: AbstractPostListViewController {
     }
 
     private func createPage(_ starterLayout: PageTemplateLayout?) {
-        let editorViewController = EditPageViewController(blog: blog, postTitle: starterLayout?.title, content: starterLayout?.content, appliedTemplate: starterLayout?.slug)
+        let editorViewController = EditPageViewController(blog: blog, postTitle: starterLayout?.title, content: starterLayout?.content)
         present(editorViewController, animated: false)
-
-        QuickStartTourGuide.shared.visited(.newPage)
     }
 
     // MARK: - Cell Action Handling
-
-    @MainActor
-    func setParentPage(for page: Page) async {
-        let request = NSFetchRequest<Page>(entityName: Page.entityName())
-        let filter = PostListFilter.publishedFilter()
-        request.predicate = filter.predicate(for: blog, author: .everyone)
-        request.sortDescriptors = filter.sortDescriptors
-        do {
-            let context = ContextManager.shared.mainContext
-            var pages = try await buildPageTree(request: request)
-                .map { pageID, hierarchyIndex in
-                    let page = try context.existingObject(with: pageID)
-                    page.hierarchyIndex = hierarchyIndex
-                    return page
-                }
-            if let index = pages.firstIndex(of: page) {
-                pages = pages.remove(from: index)
-            }
-            let viewController = ParentPageSettingsViewController.navigationController(with: pages, selectedPage: page, onClose: { [weak self] in
-                self?.updateAndPerformFetchRequestRefreshingResults()
-            }, onSuccess: { [weak self] in
-                self?.handleSetParentSuccess()
-            } )
-            present(viewController, animated: true)
-        } catch {
-            assertionFailure("Failed to fetch pages: \(error)") // This should never happen
-        }
-    }
-
-    private func handleSetParentSuccess() {
-        let setParentSuccefullyNotice =  NSLocalizedString("Parent page successfully updated.", comment: "Message informing the user that their pages parent has been set successfully")
-        let notice = Notice(title: setParentSuccefullyNotice, feedbackType: .success)
-        ActionDispatcher.global.dispatch(NoticeAction.post(notice))
-    }
 
     func setPageAsHomepage(_ page: Page) {
         guard let homePageID = page.postID?.intValue else { return }
@@ -527,29 +457,20 @@ private extension PageListViewController {
     func handleRefreshNoResultsViewController(_ noResultsViewController: NoResultsViewController) {
 
         guard connectionAvailable() else {
-              noResultsViewController.configure(title: "", noConnectionTitle: NoResultsText.noConnectionTitle, buttonTitle: NoResultsText.buttonTitle, subtitle: nil, noConnectionSubtitle: NoResultsText.noConnectionSubtitle, attributedSubtitle: nil, attributedSubtitleConfiguration: nil, image: nil, subtitleImage: nil, accessoryView: nil)
+              noResultsViewController.configure(title: "", noConnectionTitle: NoResultsText.noConnectionTitle, buttonTitle: nil, subtitle: nil, noConnectionSubtitle: NoResultsText.noConnectionSubtitle, attributedSubtitle: nil, attributedSubtitleConfiguration: nil, image: nil, subtitleImage: nil, accessoryView: nil)
             return
         }
 
         let accessoryView = syncHelper.isSyncing ? NoResultsViewController.loadingAccessoryView() : nil
 
         noResultsViewController.configure(title: noResultsTitle(),
-                                          buttonTitle: noResultsButtonTitle(),
+                                          buttonTitle: nil,
                                           image: noResultsImageName,
                                           accessoryView: accessoryView)
     }
 
     var noResultsImageName: String {
         return "pages-no-results"
-    }
-
-    func noResultsButtonTitle() -> String? {
-        if syncHelper.isSyncing == true {
-            return nil
-        }
-
-        let filterType = filterSettings.currentPostListFilter().filterType
-        return filterType == .trashed ? nil : NoResultsText.buttonTitle
     }
 
     func noResultsTitle() -> String {
@@ -576,7 +497,6 @@ private extension PageListViewController {
     }
 
     struct NoResultsText {
-        static let buttonTitle = NSLocalizedString("Create Page", comment: "Button title, encourages users to create their first page on their blog.")
         static let fetchingTitle = NSLocalizedString("Fetching pages...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new pages.")
         static let noDraftsTitle = NSLocalizedString("You don't have any draft pages", comment: "Displayed when the user views drafts in the pages list and there are no pages")
         static let noScheduledTitle = NSLocalizedString("You don't have any scheduled pages", comment: "Displayed when the user views scheduled pages in the pages list and there are no pages")

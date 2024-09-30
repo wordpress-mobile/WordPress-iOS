@@ -1,5 +1,5 @@
 import Foundation
-import WordPressShared.WPStyleGuide
+import WordPressShared
 
 open class ReaderBlockedSiteCell: UITableViewCell {
     @IBOutlet fileprivate weak var borderedContentView: UIView!
@@ -11,11 +11,11 @@ open class ReaderBlockedSiteCell: UITableViewCell {
     }
 
     fileprivate func applyStyles() {
-        contentView.backgroundColor = .listBackground
+        contentView.backgroundColor = .systemGroupedBackground
         borderedContentView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
         borderedContentView.layer.borderWidth = .hairlineBorderWidth
         label.font = WPStyleGuide.subtitleFont()
-        label.textColor = .textSubtle
+        label.textColor = .secondaryLabel
     }
 
     @objc open func setSiteName(_ name: String) {

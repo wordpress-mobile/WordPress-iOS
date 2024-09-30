@@ -1,4 +1,5 @@
 import UIKit
+import ColorStudio
 
 /// A WKWebView that renders post content with styles applied
 ///
@@ -26,6 +27,8 @@ class ReaderWebView: WKWebView {
         if #available(iOS 16.4, *) {
             isInspectable = true
         }
+
+        configuration.userContentController.add(self, name: "eventHandler")
     }
 
     /// Loads a HTML content into the webview and apply styles
@@ -89,6 +92,25 @@ class ReaderWebView: WKWebView {
                     });
                 }
             })
+            function debounce(fn, timeout) {
+                let timer;
+                return () => {
+                    clearTimeout(timer);
+                    timer = setTimeout(fn, timeout);
+                }
+            }
+            const postEvent = (event) => window.webkit.messageHandlers.eventHandler.postMessage(event);
+            const textHighlighted = debounce(
+                () => postEvent("articleTextHighlighted"),
+                1000
+            );
+            document.addEventListener('selectionchange', function(event) {
+                const selection = document.getSelection().toString();
+                if (selection.length > 0) {
+                    textHighlighted();
+                }
+            });
+            document.addEventListener('copy', event => postEvent("articleTextCopied"));
         </script>
         </html>
         """
@@ -244,27 +266,27 @@ class ReaderWebView: WKWebView {
     ///   - shade: `MurielColorShade` enum.
     ///   - trait: The trait collection for the color.
     /// - Returns: `UIColor`
-    func neutralColor(shade: MurielColorShade, trait: UITraitCollection) -> UIColor {
+    func neutralColor(shade: ColorStudioShade, trait: UITraitCollection) -> UIColor {
         let color: UIColor = {
             switch shade {
             case .shade0:
                 if displaySetting.color == .system {
-                    return .listForegroundUnread
+                    return .tertiarySystemGroupedBackground
                 }
                 return displaySetting.color.foreground.withAlphaComponent(0.1)
             case .shade5:
                 if displaySetting.color == .system {
-                    return .init(light: .muriel(color: .gray, .shade5), dark: .muriel(color: .gray, .shade80))
+                    return UIColor(light: UIAppColor.gray(.shade5), dark: UIAppColor.gray(.shade80))
                 }
                 return displaySetting.color.border
             case .shade10:
                 if displaySetting.color == .system {
-                    return .init(light: .muriel(color: .gray, .shade10), dark: .muriel(color: .gray, .shade30))
+                    return UIColor(light: UIAppColor.gray(.shade10), dark: UIAppColor.gray(.shade30))
                 }
                 return displaySetting.color.border
             case .shade40:
                 if displaySetting.color == .system {
-                    return .init(light: .muriel(color: .gray, .shade40), dark: .muriel(color: .gray, .shade20))
+                    return UIColor(light: UIAppColor.gray(.shade40), dark: UIAppColor.gray(.shade20))
                 }
                 return displaySetting.color.secondaryForeground
             case .shade50:
@@ -278,29 +300,46 @@ class ReaderWebView: WKWebView {
     }
 
     func linkColor(for trait: UITraitCollection) -> UIColor {
-        let color = displaySetting.color == .system ? UIColor.muriel(color: .init(name: .blue)) : displaySetting.color.foreground
+        let color = displaySetting.color == .system ? UIAppColor.blue : displaySetting.color.foreground
         return color.color(for: trait)
     }
 
     func activeLinkColor(for trait: UITraitCollection) -> UIColor {
-        let color = displaySetting.color == .system ? UIColor.muriel(name: .blue, .shade30) : displaySetting.color.secondaryForeground
+        let color = displaySetting.color == .system ? UIAppColor.blue(.shade30) : displaySetting.color.secondaryForeground
         return color.color(for: trait)
     }
 }
 
-private extension UIColor {
-    /// Produces an 8-digit CSS color hex string representation of `UIColor`.
-    /// The last two digits represent the alpha value of the color.
-    var hexStringWithAlpha: String {
-        // A CGColor either has 4 components (r,g,b,a) or 2 components (white, alpha).
-        // Regardless the type of components, the last component is guaranteed to represent the alpha value.
-        guard let hexString = hexString(),
-              let components = cgColor.components,
-              let alphaValue: CGFloat = components.last?.clamp(min: .zero, max: 1.0) else {
-            return String()
-        }
+extension ReaderWebView: WKScriptMessageHandler {
 
-        let alphaValueInHex = String(format: "%02lx", lroundf(Float(alphaValue) * 255))
-        return hexString.appending(alphaValueInHex)
+    enum EventMessage: String {
+        case articleTextHighlighted
+        case articleTextCopied
+
+        // Comment events are located in `richCommentTemplate.html`
+        case commentTextHighlighted
+        case commentTextCopied
+
+        var analyticEvent: WPAnalyticsEvent {
+            switch self {
+            case .articleTextHighlighted:
+                return .readerArticleTextHighlighted
+            case .articleTextCopied:
+                return .readerArticleTextCopied
+            case .commentTextHighlighted:
+                return .readerCommentTextHighlighted
+            case .commentTextCopied:
+                return .readerCommentTextCopied
+            }
+        }
     }
+
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        guard let body = message.body as? String,
+              let event = EventMessage(rawValue: body)?.analyticEvent else {
+            return
+        }
+        WPAnalytics.track(event)
+    }
+
 }

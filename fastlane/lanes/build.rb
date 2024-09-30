@@ -7,7 +7,7 @@ APPCENTER_OWNER_NAME = 'automattic'
 APPCENTER_OWNER_TYPE = 'organization'
 CONCURRENT_SIMULATORS = 2
 
-# Shared options to use when invoking `gym` / `build_app`.
+# Shared options to use when invoking `build_app` (`gym`).
 #
 # - `manageAppVersionAndBuildNumber: false` prevents `xcodebuild` from bumping
 #   the build number when extracting an archive into an IPA file. We want to
@@ -124,6 +124,30 @@ platform :ios do
     trainer(path: lane_context[SharedValues::SCAN_GENERATED_XCRESULT_PATH], fail_build: true)
   end
 
+  # Run tests of given pod in the Pods project
+  #
+  # @option [String] name Shared scheme in the Pods.xcodeproj
+  #
+  # @called_by CI
+  #
+  desc 'Run tests of given pod in the Pods project'
+  lane :test_pod do |options|
+    run_tests(
+      project: 'Pods/Pods.xcodeproj',
+      scheme: options[:name],
+      device: options[:device],
+      deployment_target_version: options[:ios_version],
+      ensure_devices_found: true,
+      output_directory: File.join(PROJECT_ROOT_FOLDER, 'build', 'results'),
+      reset_simulator: true,
+      result_bundle: true,
+      output_types: '',
+      fail_build: false
+    )
+
+    trainer(path: lane_context[SharedValues::SCAN_GENERATED_XCRESULT_PATH], fail_build: true)
+  end
+
   # Builds the WordPress app and uploads it to TestFlight, for beta-testing or final release
   #
   # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
@@ -147,7 +171,7 @@ platform :ios do
 
     appstore_code_signing
 
-    gym(
+    build_app(
       scheme: 'WordPress',
       workspace: WORKSPACE_PATH,
       clean: true,
@@ -185,7 +209,7 @@ platform :ios do
     release_version = release_version_current
 
     version = options[:beta_release] ? build_code : release_version
-    release_url = create_release(
+    release_url = create_github_release(
       repository: GITHUB_REPO,
       version: version,
       release_notes_file_path: WORDPRESS_RELEASE_NOTES_PATH,
@@ -212,7 +236,7 @@ platform :ios do
 
     jetpack_appstore_code_signing
 
-    gym(
+    build_app(
       scheme: 'Jetpack',
       workspace: WORKSPACE_PATH,
       clean: true,
@@ -291,6 +315,17 @@ platform :ios do
     )
   end
 
+  lane :resolve_packages do |derived_data_path: DERIVED_DATA_PATH|
+    sh(
+      'xcodebuild',
+      '-resolvePackageDependencies',
+      '-onlyUsePackageVersionsFromResolvedFile',
+      '-workspace', File.join(PROJECT_ROOT_FOLDER, 'WordPress.xcworkspace'),
+      '-scheme', 'WordPress',
+      '-derivedDataPath', derived_data_path
+    )
+  end
+
   #################################################
   # Helper Functions
   #################################################
@@ -333,7 +368,7 @@ platform :ios do
     new_config.save_as(Pathname.new(version_config_path))
 
     # Build
-    gym(
+    build_app(
       scheme: scheme,
       workspace: WORKSPACE_PATH,
       configuration: configuration,
@@ -434,7 +469,7 @@ platform :ios do
       changelog: File.read(whats_new_path),
       distribute_external: true,
       groups: distribution_groups,
-      # If there is a build waiting for beta review, we want to reject that so the new build can be submitted instead
+      # If there is a build waiting for beta review, we ~~want~~ would like to to reject that so the new build can be submitted instead.
       reject_build_waiting_for_review: true
     )
   end

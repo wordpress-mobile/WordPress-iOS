@@ -7,11 +7,24 @@ extension XCTestCase {
     // which require running on the main thread.
     @MainActor
     public func setUpTestSuite(
-        for app: XCUIApplication = XCUIApplication(),
+        // It doesn't feel right to set app to nil by default, but we cannot set it to XCUIApplication()
+        // because of the main actor isolation requirement:
+        //
+        // > Call to main actor-isolated initializer 'init()' in a synchronous nonisolated context; this is an error in Swift 6
+        //
+        // Requiring every caller to pass an instance would be cumbersome DevEx, so here's the compromise.
+        for inputApp: XCUIApplication? = .none,
         removeBeforeLaunching: Bool = false,
         crashOnCoreDataConcurrencyIssues: Bool = true,
-        selectWPComSite: String? = nil
+        selectWPComSite: String? = .none
     ) {
+        let app: XCUIApplication
+        if inputApp == .none {
+            app = XCUIApplication()
+        } else {
+            app = inputApp!
+        }
+
         // To ensure that the test starts with a new simulator launch each time
         app.terminate()
         super.setUp()
@@ -19,7 +32,14 @@ extension XCTestCase {
         // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
 
-        app.launchArguments = ["-wpcom-api-base-url", WireMock.URL().absoluteString, "-no-animations", "-ui-testing", "-logout-at-launch"]
+        app.launchArguments = [
+            "-wpcom-api-base-url",
+            WireMock.URL().absoluteString,
+            "-no-animations",
+            "-ui-testing",
+            "-logout-at-launch",
+            "-com.apple.TipKit.HideAllTips", "1"
+        ]
 
         if crashOnCoreDataConcurrencyIssues {
             app.launchArguments.append(contentsOf: ["-com.apple.CoreData.ConcurrencyDebug", "1"])
@@ -29,8 +49,7 @@ extension XCTestCase {
             app.launchArguments.append(contentsOf: ["-ui-test-select-wpcom-site", selectWPComSite])
         }
 
-        /// - warning: Work-in-progress (kahu-offline-mode)
-        app.launchArguments.append(contentsOf: ["-ff-override-Synchronous Publishing", "false"])
+        app.launchArguments.append(contentsOf: ["-ff-override-Sidebar", "false"])
 
         if removeBeforeLaunching {
             removeApp(app)
@@ -41,7 +60,6 @@ extension XCTestCase {
         // Media permissions alert handler
         let alertButtonTitle = "Allow Access to All Photos"
         systemAlertHandler(alertTitle: "“WordPress” Would Like to Access Your Photos", alertButton: alertButtonTitle)
-
     }
 
     public func takeScreenshotOfFailedTest() {

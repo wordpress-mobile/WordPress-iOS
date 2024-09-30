@@ -18,7 +18,11 @@ final class AtomicSiteService {
         scrollID: String? = nil
     ) async throws -> AtomicErrorLogsResponse {
         try await withUnsafeThrowingContinuation { continuation in
-            self.remote.getErrorLogs(siteID: siteID, range: range, severity: severity, scrollID: scrollID, success: continuation.resume, failure: continuation.resume)
+            self.remote.getErrorLogs(siteID: siteID, range: range, severity: severity, scrollID: scrollID) {
+                continuation.resume(returning: $0)
+            } failure: {
+                continuation.resume(throwing: $0)
+            }
         }
     }
 
@@ -30,7 +34,11 @@ final class AtomicSiteService {
         scrollID: String? = nil
     ) async throws -> AtomicWebServerLogsResponse {
         try await withUnsafeThrowingContinuation { continuation in
-            self.remote.getWebServerLogs(siteID: siteID, range: range, httpMethod: httpMethod, statusCode: statusCode, scrollID: scrollID, success: continuation.resume, failure: continuation.resume)
+            self.remote.getWebServerLogs(siteID: siteID, range: range, httpMethod: httpMethod, statusCode: statusCode, scrollID: scrollID) {
+                continuation.resume(returning: $0)
+            } failure: {
+                continuation.resume(throwing: $0)
+            }
         }
     }
 }

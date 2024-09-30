@@ -9,8 +9,7 @@
 /* Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title. */
 "%1$@ on %2$@" = "%1$@ за %2$@";
 
-/* Accessibility label for comments button (plural)
-   Number of Comments per Page */
+/* Number of Comments per Page */
 "%@ comments" = "%@ коментара";
 
 /* Number of days after which comments should autoclose */
@@ -115,17 +114,13 @@
 /* The plugin is active on the site and has enabled automatic updates */
 "Active, Autoupdates on" = "Активирано, автоматичните обновления са включени";
 
-/* Add New Stats Card category title
-   Noun. Links to a blog's Activity screen.
+/* Noun. Links to a blog's Activity screen.
    Noun. Name of the Activity Log feature
    Title for the activity list */
 "Activity" = "Дейност";
 
 /* No comment provided by engineer. */
 "Activity Logs" = "История на активността";
-
-/* The title on the add category screen */
-"Add a Category" = "Добавяне на категория";
 
 /* No comment provided by engineer. */
 "Add alt text" = "Добавете описателен текст";
@@ -138,9 +133,6 @@
 
 /* No comment provided by engineer. */
 "Add menu item to children" = "Добавяне на дъщерен елемент в менюто";
-
-/* Add self-hosted site button */
-"Add self-hosted site" = "Добавяне на сайт от друг хостинг";
 
 /* Label for url blog setting
    Register Domain - Address information field placeholder for Address line */
@@ -299,9 +291,6 @@
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Блог";
 
-/* Blog's User Profile. Displayed when the name is empty! */
-"Blog's User" = "Потребител на блога";
-
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "Удебеляване";
@@ -329,12 +318,9 @@
 
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
-   Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
-   Cancel
    Cancel a prompt
    Cancel Action
    Cancel action on share extension editor screen.
@@ -368,7 +354,6 @@
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
@@ -403,17 +388,11 @@
    Menu item label for linking a specific category. */
 "Category" = "Категория";
 
-/* Error popup title to indicate that there was no category title filled in. */
-"Category title missing." = "Липсва заглавие на категорията.";
-
 /* Center alignment for an image. Should be the same as in core WP. */
 "Center" = "Центриране";
 
 /* Popup title for wrong SSL certificate. */
 "Certificate error" = "Грешка със сертификата";
-
-/* Button title to edit visibility of sites. */
-"Change Visibility" = "Промяна на видимостта";
 
 /* Message to show when Publicize globally shared setting failed */
 "Change failed" = "Промяната е неуспешна";
@@ -570,7 +549,6 @@
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
-   Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
@@ -602,9 +580,6 @@
 /* This is the text we display to the user when we ask them for a review and they've indicated they don't like the app */
 "Could you tell us how we could improve?" = "С какво можем да бъдем по-добри?";
 
-/* No comment provided by engineer. */
-"Couldn't Connect" = "Неуспешно свързване";
-
 /* Period Stats 'Countries' header */
 "Countries" = "Държава";
 
@@ -619,9 +594,6 @@
    Site creation. Step 1. Screen title
    Title for the button to progress with creating the site with the selected design. */
 "Create Site" = "Създаване на сайт";
-
-/* Create WordPress.com site button */
-"Create WordPress.com site" = "Създаване на сайт в WordPress.com";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Създаването на ново меню ще отмени промените които сте направили към текущото меню. Сигурни ли сте, че искате да продължите?";
@@ -644,9 +616,6 @@
 
 /* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
 "Dashboard" = "Табло";
-
-/* Title of Days stats filter. */
-"Days" = "Дни";
 
 /* Description of the default paragraph formatting style in the editor.
    Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post. */
@@ -676,8 +645,7 @@
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "Изтриване на менюто";
 
-/* Delete option in the confirmation alert when deleting a post from the trash.
-   Title for button on the comment details page that deletes the comment when tapped. */
+/* Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "Изтриване завинаги";
 
 /* Button label for deleting the current site
@@ -713,7 +681,6 @@
 "Disabled" = "Изключено";
 
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
-   Button shown if there are unsaved changes and the author is trying to move away from the post.
    Menus button title for canceling/discarding changes made. */
 "Discard" = "Премахване";
 
@@ -762,7 +729,6 @@
 "Domains" = "Домейни";
 
 /* A done button
-   Accessibility label for the Done button in the Me screen.
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
@@ -771,13 +737,10 @@
    Label for Done button
    Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
-   Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Text displayed by the right navigation button title
    Title for a Done button.
    Title for button that will dismiss this view
-   Title for the button that will dismiss this view.
-   Title of the Done button on the me page */
+   Title for the button that will dismiss this view. */
 "Done" = "Готово";
 
 /* Name for the status of a draft post. */
@@ -838,11 +801,7 @@
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
 "Empty URL" = "Празен адрес";
 
-/* No comment provided by engineer. */
-"Enter a password" = "Парола";
-
-/* (placeholder) Help enter WordPress password
-   Placeholder of a field to type a password to protect the post. */
+/* (placeholder) Help enter WordPress password */
 "Enter password" = "Въвеждане на парола";
 
 /* (placeholder) Help enter WordPress username */
@@ -864,9 +823,6 @@
 
 /* Title of error dialog when disconnecting jetpack fails. */
 "Error disconnecting Jetpack" = "Грешка при прекратяване на връзката на Jetpack";
-
-/* Text displayed in HUD after attempting to save a draft post and an error occurred. */
-"Error occurred\nduring saving" = "Възникна проблем\nпри запазването";
 
 /* Title of error dialog when removing a site owner fails. */
 "Error removing %@" = "Грешка при премахване на %@";
@@ -930,28 +886,14 @@
    User's First Name */
 "First Name" = "Собствено име";
 
-/* Button title. Follow the comments on a post.
-   Prompt to follow a blog. */
+/* Button title. Follow the comments on a post. */
 "Follow" = "Следване";
 
-/* Displayed in the Notification Settings View
-   Section title for sites the user has followed. */
-"Followed Sites" = "Последвани сайтове";
-
-/* Label for list of followers.
-   User role badge */
+/* User role badge */
 "Follower" = "Последовател";
 
-/* Blog Followers
-   Insights 'Followers' header
-   Label for number of followers. */
+/* Label for number of followers. */
 "Followers" = "Последователи";
-
-/* User is following the blog. */
-"Following" = "Следван";
-
-/* Filters Follows Notifications */
-"Follows" = "Следени";
 
 /* Next web page */
 "Forward" = "Напред";
@@ -962,8 +904,7 @@
 /* Full size image. (default). Should be the same as in core WP. */
 "Full Size" = "Пълен размер";
 
-/* Add New Stats Card category title
-   Title for the general section in site settings screen */
+/* Title for the general section in site settings screen */
 "General" = "Основни";
 
 /* Alerts the user that wpcom account information is being retrieved. */
@@ -979,8 +920,7 @@
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "Страхотно!\nОбичаме отзиви от щастливи потребители\n😁";
 
-/* Accessibility label for HTML button on formatting toolbar.
-   HTML Attachment Label */
+/* Accessibility label for HTML button on formatting toolbar. */
 "HTML" = "HTML";
 
 /* Post HTML content */
@@ -1034,15 +974,8 @@
 /* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "Скрит";
 
-/* Hides a site from the site picker list
-   Title of a button used to collapse a group */
+/* Title of a button used to collapse a group */
 "Hide" = "Скриване";
-
-/* Hide All */
-"Hide All" = "Скриване на всички";
-
-/* Hide All Sites */
-"Hide All Sites" = "Скриване на всички сайтове";
 
 /* No comment provided by engineer. */
 "Hide keyboard" = "Скриване на клавиатурата";
@@ -1077,9 +1010,6 @@
 
 /* Hint for image title on image settings. */
 "Image title" = "Заглавие на изображението";
-
-/* Undated post time label */
-"Immediately" = "Веднага";
 
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "С няколко думи, разкажете за какво е този сайт.";
@@ -1155,8 +1085,6 @@
 "Jetpack" = "Jetpack";
 
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
-   Button shown if there are unsaved changes and the author is trying to move away from the post.
-   Button shown when the author is asked for publishing confirmation.
    Goes back to editing the post. */
 "Keep Editing" = "Ще редактирам още";
 
@@ -1262,11 +1190,9 @@
 "Loading stream..." = "Зареждане на поток...";
 
 /* Loading tags
-   Loading tags.
    Loading. Verb
    Suggestions loading message
    Text displayed in HUD while a media item is being loaded.
-   Text displayed in HUD while a revision post is loading.
    Text displayed while loading time zones */
 "Loading..." = "Зареждане...";
 
@@ -1347,7 +1273,6 @@
 "Me" = "Аз";
 
 /* Noun. Title. Links to the blog's Media library.
-   The menu item to select during a guided tour.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Файлове";
@@ -1374,22 +1299,17 @@
    Label for the share message field on the post settings. */
 "Message" = "Съобщение";
 
-/* Title of Months stats filter. */
-"Months" = "Месеца";
-
 /* Post Stats months and years header. */
 "Months and Years" = "Месеци и години";
 
 /* Accessibility label for more button in dashboard quick start card.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
-   Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
    Action button to display more available options */
 "More" = "Още";
 
 /* Title for button on the comment details page that moves the comment to trash when tapped.
-   Trash option in the trash confirmation alert.
    Trashes the comment */
 "Move to Trash" = "Преместване в кошчето";
 
@@ -1401,10 +1321,6 @@
    The accessibility value of the my site tab.
    Title of My Site tab */
 "My Site" = "Моят сайт";
-
-/* Title for site picker screen.
-   Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
-"My Sites" = "Моите сайтове";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "Помощ?";
@@ -1522,7 +1438,6 @@
    Notifications tab bar item accessibility label
    Notifications View Controller title
    Noun. Name of the Notifications feature
-   The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Известия";
 
@@ -1608,9 +1523,6 @@
 /* WordPress.com Research Footer Text */
 "Opportunities to participate in WordPress.com research & surveys." = "Възможности да участвате във WordPress.com изследвания и проучвания.";
 
-/* Placeholder to indicate that filling out the field is optional. */
-"Optional" = "По избор";
-
 /* Accessibility label for Ordered list button on formatting toolbar. */
 "Ordered List" = "Подреден списък";
 
@@ -1646,7 +1558,6 @@
 "Page" = "Страница";
 
 /* Noun. Title. Links to the blog's Pages screen.
-   The item to select during a guided tour.
    This is the section title
    Title of the screen showing the list of pages for a blog. */
 "Pages" = "Страници";
@@ -1656,21 +1567,16 @@
    Settings: Comments Paging preferences */
 "Paging" = "Страници";
 
-/* Placeholder to set a parent category for a new category.
-   Title for selecting parent category of a category */
+/* Title for selecting parent category of a category */
 "Parent Category" = "Категория родител";
 
 /* Accessibility label for the password text field in the self-hosted login page.
    Label for entering password in password field
-   Label for the password field. Should be the same as WP core.
    Login dialog password placeholder
    Password placeholder
    Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "Парола";
-
-/* Privacy setting for posts set to 'Password protected'. Should be the same as in core WP. */
-"Password protected" = "Защитена с парола";
 
 /* Button title for Pending comment state.
    Status for Media object that is being processed locally.
@@ -1722,9 +1628,6 @@
 /* No comment provided by engineer. */
 "Please try entering your login details again." = "Опитайте да въведете данните си за вход отново.";
 
-/* Asks the usre to wait until the currently running fetch request completes. */
-"Please wait til the current fetch completes." = "Изчакайте докато заявката бъде завършена.";
-
 /* Version of an installed plugin */
 "Plugin version" = "Версия на разширението";
 
@@ -1747,8 +1650,7 @@
 /* Title for selecting categories for a post */
 "Post Categories" = "Категории";
 
-/* For setting the format of a post.
-   The post formats available for the post. Should be the same as in core WP. */
+/* The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Формат";
 
 /* Insights 'Posting Activity' header
@@ -1794,8 +1696,7 @@
 /* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "Поверителност";
 
-/* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
+/* Name for the status of a post that is marked private. */
 "Private" = "Лична";
 
 /* Message for the warning shown to the user when he refuses to re-login when the authToken is missing. */
@@ -1804,14 +1705,9 @@
 /* Menu item label for linking a project page. */
 "Projects" = "Проекти";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
-"Public" = "Публична";
-
-/* Button title. Publishes a post.
-   Label for the publish (verb) button. Tapping publishes a draft post.
+/* Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen
-   Title for the publish settings view */
+   Section title for the publish table section in the blog details screen */
 "Publish" = "Публикуване";
 
 /* A short phrase indicating a post is due to be immedately published. */
@@ -1821,12 +1717,6 @@
    Period Stats 'Published' header
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Публикувано";
-
-/* Published on [date] */
-"Published on" = "Публикувана на";
-
-/* Text displayed in HUD while a post is being published. */
-"Publishing..." = "Публикуване...";
 
 /* Title of screen showing site purchases */
 "Purchases" = "Покупки";
@@ -1842,7 +1732,6 @@
    The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
-   The menu item to select during a guided tour.
    Title of the 'Reader' tab - used for spotlight indexing on iOS. */
 "Reader" = "Четец";
 
@@ -1884,11 +1773,9 @@
 "Related Posts" = "Подобни публикации";
 
 /* Alert button to confirm a plugin to be removed
-   Button label when removing a blog
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
-   Remove an image/posts/etc
-   Removes a self hosted site from the app */
+   Remove an image/posts/etc */
 "Remove" = "Премахване";
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
@@ -1957,10 +1844,8 @@
 /* A prompt to attempt the failed network request again
    A prompt to attempt the failed network request again.
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
-   Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
    Opens the media library .
-   Retries the upload of a user's post.
    Retry updating User's Role
    Retry. Action
    Retry. Verb – retry a failed media upload.
@@ -1991,7 +1876,6 @@
 
 /* Menus save button title
    Save Action
-   Save button label (saving content, ex: Post, Page, Comment, Category).
    Save button label (saving content, ex: Post, Page, Comment).
    Save draft post action on share extension site picker screen.
    Settings Text save button title
@@ -1999,31 +1883,14 @@
    Title of action button to save a Reader post to read later. */
 "Save" = "Запазване";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from the post. */
-"Save Draft" = "Запазване на чернова";
-
-/* Title of button allowing users to change the status of the post they are currently editing to Draft. */
-"Save as Draft" = "Запазване като чернова";
-
-/* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a post is being saved as a draft. */
+/* Menus save button title while it is saving a Menu. */
 "Saving..." = "Запазване...";
-
-/* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
-"Schedule" = "Планиране";
 
 /* Name for the status of a scheduled post
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Насрочена";
 
-/* Scheduled for [date] */
-"Scheduled for" = "Насрочена за";
-
-/* Text displayed in HUD while a post is being scheduled to be published. */
-"Scheduling..." = "Насрочване...";
-
-/* Placeholder text for the search bar
-   Title of Stats section that shows search engine referrer traffic.
+/* Title of Stats section that shows search engine referrer traffic.
    Title of the Reader's search feature */
 "Search" = "Търсене";
 
@@ -2036,14 +1903,8 @@
 /* Label for selecting the Blog Jetpack Security Settings section */
 "Security" = "Сигурност";
 
-/* Blog Picker's Title */
-"Select Site" = "Избор на сайт";
-
 /* Instructional text about the Sharing feature. */
 "Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account." = "Изберете потребителя, който искате да оторизирате. Имайте предвид, че публикациите ви ще бъдат автоматично споделени с този потребител.";
-
-/* Blog list page edit mode header label */
-"Select which sites will be shown in the site picker." = "Изберете които сайтове да се показват в менюто за избор на сайт.";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu location. */
 "Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?" = "Избирането на друга позиция за това меню ще отхвърли промените, които сте направили към текущото меню. Сигурни ли сте, че искате да продължите?";
@@ -2079,7 +1940,6 @@
 "Settings update failed" = "Проблем при обновяване на настройките";
 
 /* Accessibility label for share buttons in nav bars
-   Button label to share a post
    Button label to share a web page
    Shares the comment URL
    Spoken accessibility label
@@ -2109,14 +1969,8 @@
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "Показване на бутон за реблогване";
 
-/* Alert title picking theme type to browse */
-"Show themes:" = "Показване на теми:";
-
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "Показва се публично когато коментирате на някой блог.";
-
-/* Label for time period in list of followers. */
-"Since" = "от";
 
 /* Title for the Language Picker View */
 "Site Language" = "Език на сайта";
@@ -2126,7 +1980,6 @@
 
 /* Default title for a site
    Label for site title blog setting
-   The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "Заглавие на сайта";
 
@@ -2139,14 +1992,10 @@
 /* Overlay message displayed when site successfully deleted */
 "Site deleted" = "Сайтът бе изтрит";
 
-/* Setting: indicates if New Follows will be notified */
-"Site follows" = "Абонирания за сайта";
-
 /* Image size option title. */
 "Size" = "Размер";
 
-/* Button that allows the user to skip the prompt and be brought to the app
-   Continue without making a selection
+/* Continue without making a selection
    Continue without making a selection. */
 "Skip" = "Пропускане";
 
@@ -2224,12 +2073,8 @@
 /* Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
-   Stats window title
-   The item to select during a guided tour. */
+   Stats window title */
 "Stats" = "Статистика";
-
-/* The status of the post. Should be the same as in core WP. */
-"Status" = "Статус";
 
 /* Accessibility label for strikethrough button on formatting toolbar. */
 "Strike Through" = "Зачеркнат";
@@ -2250,9 +2095,6 @@
 /* Support button that appears in the Theme Browser Header
    Theme Support action title */
 "Support" = "Помощ";
-
-/* Title for back button that leads to the site picker screen. */
-"Switch Site" = "Превключване на сайта";
 
 /* Accessibility Identifier for the H1 Aztec Style */
 "Switches to the Heading 1 font size" = "Превключва размера на шрифта на Заглавие 1";
@@ -2375,9 +2217,6 @@
 /* People: Invitation Error */
 "The user already has the specified role. Please, try assigning a different role." = "Потребителят вече има тази роля. Опитайте да назначите друга роля.";
 
-/* No comment provided by engineer. */
-"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again." = "Потребителското име или паролата, запазени в приложението, може да не са актуални. Моля, въведете отново паролата в настройките и опитайте отново.";
-
 /* Title of alert when theme activation succeeds */
 "Theme Activated" = "Темата е активирана";
 
@@ -2455,15 +2294,8 @@
    Label for list of stats by content title.
    Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
-   Post title
-   Title of the new Category being created. */
+   Post title */
 "Title" = "Заглавие";
-
-/* Error popup message to indicate that there was no category title filled in. */
-"Title for a category is mandatory." = "Заглавието на категория е задължително";
-
-/* Prompt asking user to make sites visible in order to use them in the app (plural) */
-"To manage them here, set them to visible." = "За да ги управлявате тук, направете ги видими.";
 
 /* Comments Today Section Header
    Insights 'Today' header
@@ -2478,15 +2310,6 @@
 
 /* Shortened version of the main title to be used in back navigation */
 "Topic" = "Тема";
-
-/* Label for total followers */
-"Total" = "Общо";
-
-/* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "Общо имейл абонати: %@";
-
-/* Label displaying total number of WordPress.com followers. %@ is the total. */
-"Total WordPress.com Followers: %@" = "Общо абонати в WordPress.com: %@";
 
 /* Accessibility label for trash buttons in nav bars
    Trashes a comment
@@ -2546,7 +2369,6 @@
 "Underline" = "Подчертаване";
 
 /* Action button to undo last change
-   Button in the notification presented in Reader when a post removed from saved for later
    Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
@@ -2555,8 +2377,7 @@
    Undo action */
 "Undo" = "Връщане";
 
-/* Label for size of media when it's not possible to calculate it.
-   Unknown Tag Name */
+/* Label for size of media when it's not possible to calculate it. */
 "Unknown" = "Непознат";
 
 /* No comment provided by engineer. */
@@ -2589,14 +2410,10 @@
    Update button label (saving content, ex: Post, Page, Comment). */
 "Update" = "Обновяване";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from an already saved draft. */
-"Update Draft" = "Обновяване";
-
 /* Label action for updating a link on the editor */
 "Update Link" = "Обновяване на връзката";
 
-/* Message displayed on a post's card when the post has failed to upload
-   System notification displayed to the user when media files have failed to upload. */
+/* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Неуспешно качване";
 
 /* Label for the date a media asset (image / video) was uploaded
@@ -2648,14 +2465,10 @@
 /* Period Stats 'Videos' header */
 "Videos" = "Видео клипове";
 
-/* Button title. Displays a summary / sharing screen for a specific post.
-   Opens the post epilogue screen to allow sharing / viewing of a post.
+/* Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Преглед";
-
-/* Button in the notification presented in Reader when a post is saved for later */
-"View All" = "Покажи всички";
 
 /* Action title. Opens the user's site in an in-app browser */
 "View Site" = "Към сайта";
@@ -2681,8 +2494,7 @@
    Today's Stats 'Views' label */
 "Views" = "Преглеждания";
 
-/* The visibility settings of the post. Should be the same as in core WP.
-   Visibility label */
+/* The visibility settings of the post. Should be the same as in core WP. */
 "Visibility" = "Достъпност";
 
 /* An option to visit the site to which a specific post belongs */
@@ -2717,9 +2529,6 @@
 
 /* The title of the option group for editing an image's size, alignment, etc. on the image details screen. */
 "Web Display Settings" = "Визуални настройки";
-
-/* Title of Weeks stats filter. */
-"Weeks" = "Седмици";
 
 /* A message title */
 "Welcome to the Reader" = "Добре дошли в Reader";
@@ -2772,17 +2581,11 @@
 /* Asks the user if they would like to clear their search history. */
 "Would you like to clear your search history?" = "Искате ли да изтриете вашата история на търсене?";
 
-/* Message offering to hide all WPCom Sites */
-"Would you like to hide all WordPress.com Sites?" = "Искате ли да скриете всички WordPress.com сайтове?";
-
 /* Placeholder text for inline compose view */
 "Write a reply…" = "Отговор...";
 
 /* Title for the writing section in site settings screen */
 "Writing" = "Писане";
-
-/* Title of Years stats filter. */
-"Years" = "Години";
 
 /* Button title. Confirms that the user wants to proceed with a pending action.
    Label for a button that clears all old activity logs
@@ -2805,18 +2608,11 @@
 /* No comment provided by engineer. */
 "You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "Не можете да използвате този адрес за регистрация. Имаме проблеми с тях, блокират писмата от нас. Опитайте с друг имейл адрес от различен доставчик.";
 
-/* Message informing the user that all of their sites are currently hidden (plural) */
-"You have %lu hidden WordPress sites." = "Имате %lu скрити WordPress сайта.";
-
-/* Message informing the user that all of their sites are currently hidden (singular) */
-"You have 1 hidden WordPress site." = "Имате 1 скрит WordPress сайт.";
-
 /* Message alert when attempting to delete site with purchases */
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "Имате активни платени услуги на сайта. Моля, отменете ги преди да изтриете сайта си.";
 
 /* Show when clicking cancel on a comment text box and you didn't save your changes.
-   Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment.
-   Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post. */
+   Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment. */
 "You have unsaved changes." = "Имате незапазени промени.";
 
 /* Error message informing the user that being logged into a WordPress.com account is required. */

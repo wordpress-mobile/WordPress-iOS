@@ -14,8 +14,6 @@ import WordPressShared
 
 class WPSplitViewController: UISplitViewController {
 
-    private let quickStartNavigationSettings = QuickStartNavigationSettings()
-
     /// Determines how the split view handles the detail pane when collapsing itself.
     /// If 'Automatic', then the detail pane will be pushed onto the primary navigation stack
     /// if the user has manually changed the selection in the primary pane. Otherwise,
@@ -82,19 +80,6 @@ class WPSplitViewController: UISplitViewController {
 
         delegate = self
         preferredDisplayMode = .oneBesideSecondary
-
-        extendedLayoutIncludesOpaqueBars = true
-    }
-
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return WPStyleGuide.preferredStatusBarStyle
-    }
-
-    override var childForStatusBarStyle: UIViewController? {
-        if let _ = topDetailViewController as? DefinesVariableStatusBarStyle {
-            return topDetailViewController
-        }
-        return nil
     }
 
     @objc var overrideTraitCollection: UITraitCollection? = nil
@@ -154,13 +139,8 @@ class WPSplitViewController: UISplitViewController {
 
     override var viewControllers: [UIViewController] {
         didSet {
-            // Ensure that each top level navigation controller has
-            // `extendedLayoutIncludesOpaqueBars` set to true. Otherwise we
-            // see a large tab bar sized gap underneath each view controller.
             for viewController in viewControllers {
                 if let viewController = viewController as? UINavigationController {
-                    viewController.extendedLayoutIncludesOpaqueBars = true
-
                     // Override traits to pass a compact size class if necessary
                     setOverrideTraitCollection(overriddenTraitCollectionForDetailViewController,
                                                forChild: viewController)
@@ -193,7 +173,7 @@ class WPSplitViewController: UISplitViewController {
 
     fileprivate lazy var dimmingView: UIView = {
         let dimmingView = UIView()
-        dimmingView.backgroundColor = .neutral(.shade60)
+        dimmingView.backgroundColor = UIAppColor.neutral(.shade60)
         return dimmingView
     }()
 
@@ -221,7 +201,7 @@ class WPSplitViewController: UISplitViewController {
             if dimmingView.superview == nil {
                 view.addSubview(dimmingView)
                 updateDimmingViewFrame()
-                dimmingView.alpha = WPAlphaZero
+                dimmingView.alpha = 0
 
                 // Dismiss the keyboard from the detail view controller if active
                 topDetailViewController?.navigationController?.view.endEditing(true)
@@ -231,7 +211,7 @@ class WPSplitViewController: UISplitViewController {
             }
         } else if dimmingView.superview != nil {
             UIView.animate(withDuration: dimmingViewAnimationDuration, animations: {
-                self.dimmingView.alpha = WPAlphaZero
+                self.dimmingView.alpha = 0
                 }, completion: { _ in
                     self.dimmingView.removeFromSuperview()
             })
@@ -338,7 +318,6 @@ class WPSplitViewController: UISplitViewController {
             navigationController = UINavigationController(rootViewController: viewController)
         }
         navigationController.delegate = self
-        navigationController.extendedLayoutIncludesOpaqueBars = true
         WPStyleGuide.configureColors(view: navigationController.view, tableView: nil)
 
         return navigationController
@@ -515,8 +494,6 @@ extension WPSplitViewController: UINavigationControllerDelegate {
         } else if navigationController == viewControllers.last {
             detailNavigationController(navigationController, willShowViewController: viewController, animated: animated)
         }
-
-        quickStartNavigationSettings.updateWith(navigationController: navigationController, andViewController: viewController)
     }
 
     fileprivate func primaryNavigationController(_ navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
@@ -682,10 +659,6 @@ extension UIViewController {
 /// delegate method detects that there are no fullscreen view controllers left
 /// in the stack.
 protocol PrefersFullscreenDisplay: AnyObject {}
-
-/// Used to indicate whether a view controller varies its preferred status bar style.
-///
-protocol DefinesVariableStatusBarStyle: AnyObject {}
 
 // MARK: - WPSplitViewControllerDetailProvider Protocol
 

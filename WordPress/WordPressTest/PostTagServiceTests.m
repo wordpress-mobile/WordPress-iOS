@@ -1,10 +1,11 @@
-#import <OCMock/OCMock.h>
 #import <XCTest/XCTest.h>
 #import "Blog.h"
 #import "PostTag.h"
 #import "PostTagService.h"
-@import WordPressKit;
 #import "WordPressTest-Swift.h"
+
+@import WordPressKit;
+@import OCMock;
 
 @interface PostTagServiceForStubbing : PostTagService
 

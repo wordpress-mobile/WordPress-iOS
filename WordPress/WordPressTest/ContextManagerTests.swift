@@ -5,7 +5,7 @@ import XCTest
 @testable import WordPress
 
 class ContextManagerTests: XCTestCase {
-    let storeURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("ContextManagerTests.sqlite")
+    let storeURL = URL.Helpers.temporaryFile(named: "ContextManagerTests.sqlite")
 
     override func setUpWithError() throws {
         if FileManager.default.fileExistsAtURL(storeURL) {

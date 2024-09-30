@@ -11,7 +11,6 @@ NS_ASSUME_NONNULL_BEGIN
 @class WordPressOrgRestApi;
 @class WordPressOrgXMLRPCApi;
 @class Role;
-@class QuickStartTourState;
 @class UserSuggestion;
 @class SiteSuggestion;
 @class PageTemplateCategory;
@@ -74,6 +73,8 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeatureNoncePreviews,
     /// Does the blog support editing media metadata?
     BlogFeatureMediaMetadataEditing,
+    /// Does the blog support editing media alternative text?
+    BlogFeatureMediaAltEditing,
     /// Does the blog support deleting media?
     BlogFeatureMediaDeletion,
     /// Does the blog support Stock Photos feature (free photos library)
@@ -82,8 +83,6 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeatureTenor,
     /// Does the blog support setting the homepage type and pages?
     BlogFeatureHomepageSettings,
-    /// Does the blog support stories?
-    BlogFeatureStories,
     /// Does the blog support Jetpack contact info block?
     BlogFeatureContactInfo,
     BlogFeatureBlockEditorSettings,
@@ -145,14 +144,10 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite, nullable) NSOrderedSet *menuLocations;
 @property (nonatomic, strong, readwrite, nullable) NSSet<Role *> *roles;
 @property (nonatomic, strong, readwrite, nullable) NSString *currentThemeId;
-@property (nonatomic, assign, readwrite) BOOL isSyncingPosts;
-@property (nonatomic, assign, readwrite) BOOL isSyncingPages;
-@property (nonatomic, assign, readwrite) BOOL isSyncingMedia;
 @property (nonatomic, strong, readwrite, nullable) NSDate *lastPostsSync;
 @property (nonatomic, strong, readwrite, nullable) NSDate *lastPagesSync;
 @property (nonatomic, strong, readwrite, nullable) NSDate *lastCommentsSync;
 @property (nonatomic, strong, readwrite, nullable) NSString *lastUpdateWarning;
-@property (nonatomic, assign, readwrite) BOOL visible;
 @property (nonatomic, weak, readwrite, nullable) NSNumber *isActivated;
 @property (nonatomic, strong, readwrite, nullable) NSDictionary *options;
 @property (nonatomic, strong, readwrite, nullable) NSSet *postTypes;
@@ -171,8 +166,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, assign, readwrite) BOOL hasPaidPlan;
 @property (nonatomic, strong, readwrite, nullable) NSSet *sharingButtons;
 @property (nonatomic, strong, readwrite, nullable) NSDictionary *capabilities;
-@property (nonatomic, strong, readwrite, nullable) NSSet<QuickStartTourState *> *quickStartTours;
-@property (nonatomic, strong, readwrite, nullable) NSNumber *quickStartTypeValue;
 /// The blog's user ID for the current user
 @property (nonatomic, strong, readwrite, nullable) NSNumber *userID;
 /// Disk quota for site, this is only available for WP.com sites

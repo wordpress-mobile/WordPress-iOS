@@ -7,7 +7,7 @@ struct NotificationsTableViewCellContent: View {
             let title: AttributedString?
             let description: String?
             let shouldShowIndicator: Bool
-            let avatarStyle: AvatarsView.Style
+            let avatarStyle: AvatarView<Circle>.Style
             let inlineAction: InlineAction.Configuration?
         }
 
@@ -60,6 +60,8 @@ fileprivate extension NotificationsTableViewCellContent {
             HStack(alignment: rootStackAlignment, spacing: 0) {
                 avatarHStack
                     .saveSize(in: $avatarSize)
+                    .accessibilityHidden(true) // VoiceOver users don't care about the avatar
+
                 textsVStack
                     .offset(
                         x: -info.avatarStyle.leadingOffset * 2,
@@ -67,12 +69,17 @@ fileprivate extension NotificationsTableViewCellContent {
                     )
                     .padding(.leading, .DS.Padding.split)
                     .saveSize(in: $textsSize)
+                    .accessibilitySortPriority(1)
                 Spacer()
                 if let inlineAction = info.inlineAction {
+
                     InlineAction(configuration: inlineAction)
                         .padding(.top, actionIconTopPadding())
+                        .accessibilityLabel(inlineAction.accessibilityLabel)
+                        .accessibilityHint(inlineAction.accessibilityHint)
+                        .accessibilitySortPriority(0) // Screenreaders should see the action button last
                 }
-            }
+            }.accessibilityElement(children: .contain)
             .padding(.trailing, .DS.Padding.double)
         }
 
@@ -81,19 +88,30 @@ fileprivate extension NotificationsTableViewCellContent {
                 if info.shouldShowIndicator {
                     indicator
                         .padding(.horizontal, .DS.Padding.single)
-                    AvatarsView(style: info.avatarStyle)
-                        .offset(x: -info.avatarStyle.leadingOffset)
+                    AvatarView(
+                        style: info.avatarStyle,
+                        placeholderImage: placeholderImage
+                    )
+                    .offset(x: -info.avatarStyle.leadingOffset)
                 } else {
-                    AvatarsView(style: info.avatarStyle)
-                        .offset(x: -info.avatarStyle.leadingOffset)
-                        .padding(.leading, .DS.Padding.medium)
+                    AvatarView(
+                        style: info.avatarStyle,
+                        placeholderImage: placeholderImage
+                    )
+                    .offset(x: -info.avatarStyle.leadingOffset)
+                    .padding(.leading, .DS.Padding.medium)
                 }
             }
         }
 
+        private var placeholderImage: Image {
+            Image("gravatar")
+                .resizable()
+        }
+
         private var indicator: some View {
             Circle()
-                .fill(Color.DS.Background.brand(isJetpack: AppConfiguration.isJetpack))
+                .fill(AppColor.brand)
                 .frame(width: .DS.Padding.single)
         }
 
@@ -102,7 +120,7 @@ fileprivate extension NotificationsTableViewCellContent {
                 if let title = info.title {
                     Text(title)
                         .style(.bodySmall(.regular))
-                        .foregroundStyle(Color.DS.Foreground.primary)
+                        .foregroundStyle(Color.primary)
                         .layoutPriority(1)
                         .lineLimit(2)
                 }
@@ -110,7 +128,7 @@ fileprivate extension NotificationsTableViewCellContent {
                 if let description = info.description {
                     Text(description)
                         .style(.bodySmall(.regular))
-                        .foregroundStyle(Color.DS.Foreground.secondary)
+                        .foregroundStyle(Color.secondary)
                         .layoutPriority(2)
                         .lineLimit(1)
                         .padding(.top, .DS.Padding.half)
@@ -168,7 +186,7 @@ fileprivate extension NotificationsTableViewCellContent {
                 }
             }
             .frame(height: 60)
-            .background(Color.DS.Foreground.error)
+            .background(Color(UIAppColor.error))
         }
     }
 }
@@ -186,9 +204,14 @@ extension NotificationsTableViewCellContent {
 
             let action: () -> Void
 
-            init(icon: SwiftUI.Image, color: Color? = nil, action: @escaping () -> Void) {
+            let accessibilityLabel: LocalizedString
+            let accessibilityHint: LocalizedString
+
+            init(icon: SwiftUI.Image, color: Color? = nil, accessibilityLabel: LocalizedString, accessibilityHint: LocalizedString, action: @escaping () -> Void) {
                 self.icon = icon
                 self.color = color
+                self.accessibilityLabel = accessibilityLabel
+                self.accessibilityHint = accessibilityHint
                 self.action = action
             }
         }
@@ -201,7 +224,7 @@ extension NotificationsTableViewCellContent {
             } label: {
                 configuration.icon
                     .imageScale(.small)
-                    .foregroundStyle(configuration.color ?? Color.DS.Foreground.secondary)
+                    .foregroundStyle(configuration.color ?? Color.secondary)
                     .frame(width: .DS.Padding.medium, height: .DS.Padding.medium)
                     .transaction { transaction in
                         transaction.animation = nil
@@ -260,7 +283,7 @@ private extension View {
                     avatarStyle: .single(
                         URL(string: "https://i.pickadummy.com/index.php?imgsize=40x40")!
                     ),
-                    inlineAction: .init(icon: .DS.icon(named: .ellipsisHorizontal), action: {})
+                    inlineAction: .init(icon: .DS.icon(named: .ellipsisHorizontal), accessibilityLabel: "", accessibilityHint: "", action: {})
                 )
             )
         )
@@ -275,7 +298,7 @@ private extension View {
                         URL(string: "https://i.pickadummy.com/index.php?imgsize=34x34")!,
                         URL(string: "https://i.pickadummy.com/index.php?imgsize=34x34")!
                     ),
-                    inlineAction: .init(icon: .init(systemName: "plus"), action: {})
+                    inlineAction: .init(icon: .init(systemName: "plus"), accessibilityLabel: "", accessibilityHint: "", action: {})
                 )
             )
         )
@@ -290,7 +313,7 @@ private extension View {
                         URL(string: "https://i.pickadummy.com/index.php?imgsize=28x28")!,
                         URL(string: "https://i.pickadummy.com/index.php?imgsize=28x28")!
                     ),
-                    inlineAction: .init(icon: .init(systemName: "square.and.arrow.up"), action: {})
+                    inlineAction: .init(icon: .init(systemName: "square.and.arrow.up"), accessibilityLabel: "", accessibilityHint: "", action: {})
                 )
             )
         )

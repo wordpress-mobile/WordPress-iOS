@@ -11,13 +11,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)updatePost:(AbstractPost *)post withRemotePost:(RemotePost *)remotePost inContext:(NSManagedObjectContext *)managedObjectContext;
 + (void)updatePost:(AbstractPost *)post withRemotePost:(RemotePost *)remotePost inContext:(NSManagedObjectContext *)managedObjectContext overwrite:(BOOL)overwrite;
 
-/**
- Creates a RemotePost from an AbstractPost to be used for API calls.
-
- @param post The AbstractPost used to create the RemotePost
- */
-+ (RemotePost *)remotePostWithPost:(AbstractPost *)post;
-
 + (NSArray *)remoteMetadataForPost:(Post *)post;
 
 + (NSArray *)mergePosts:(NSArray <RemotePost *> *)remotePosts

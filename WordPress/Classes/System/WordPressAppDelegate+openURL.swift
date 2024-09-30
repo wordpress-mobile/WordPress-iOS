@@ -73,8 +73,7 @@ import AutomatticTracks
             let postId = params.intValue(of: "postId") else {
             return false
         }
-
-        RootViewCoordinator.sharedPresenter.showReaderTab(forPost: NSNumber(value: postId), onBlog: NSNumber(value: blogId))
+        RootViewCoordinator.sharedPresenter.showReader(path: .post(postID: postId, siteID: blogId))
 
         return true
     }
@@ -89,7 +88,7 @@ import AutomatticTracks
 
         guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
             // Display overlay
-            RootViewCoordinator.sharedPresenter.mySitesCoordinator.displayJetpackOverlayForDisabledEntryPoint()
+            RootViewCoordinator.sharedPresenter.showJetpackOverlayForDisabledEntryPoint()
 
             // Track incorrect access
             let properties = ["calling_function": "deep_link", "url": url.absoluteString]
@@ -113,7 +112,6 @@ import AutomatticTracks
 
         let navController = UINavigationController(rootViewController: statsViewController)
         navController.modalPresentationStyle = .currentContext
-        navController.navigationBar.isTranslucent = false
 
         RootViewCoordinator.sharedPresenter.rootViewController.present(navController, animated: true, completion: nil)
 

@@ -3,7 +3,6 @@
 #import "Blog.h"
 #import "BlogService.h"
 #import "CoreDataStack.h"
-#import "NSURL+IDN.h"
 #import "PostCategory.h"
 #import "PostCategoryService.h"
 #import "SettingsSelectionViewController.h"
@@ -13,12 +12,15 @@
 #import "SVProgressHUD+Dismiss.h"
 #import "WordPress-Swift.h"
 #import "WPWebViewController.h"
-#import <wpxmlrpc/WPXMLRPC.h>
 #import "AccountService.h"
+
 @import WordPressKit;
+@import WordPressShared;
+@import NSURL_IDN;
 
 NS_ENUM(NSInteger, SiteSettingsAccount) {
     SiteSettingsAccountUsername = 0,
+    // TODO: Hide this row when authenticating using application password.
     SiteSettingsAccountPassword,
     SiteSettingsAccountCount,
 };
@@ -116,12 +118,12 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 {
     DDLogMethod();
     [super viewDidLoad];
+
+    self.tableView.cellLayoutMarginsFollowReadableWidth = YES;
     [self.tableView registerClass:[SettingTableViewCell class] forCellReuseIdentifier:SettingsTableViewCellReuseIdentifier];
     [self.tableView registerNib:MediaQuotaCell.nib forCellReuseIdentifier:MediaQuotaCell.defaultReuseIdentifier];
 
     self.navigationItem.title = NSLocalizedString(@"Settings", @"Title for screen that allows configuration of your blog/site settings.");
-    
-    self.extendedLayoutIncludesOpaqueBars = YES;
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleDataModelChange:)

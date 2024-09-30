@@ -24,9 +24,8 @@ class ShareNoticeNavigationCoordinator {
 
     static func navigateToPostList(with userInfo: NSDictionary) {
         fetchPost(from: userInfo, onSuccess: { post in
-            if let post = post {
-                RootViewCoordinator.sharedPresenter.showPosts(for: post.blog)
-            }
+            guard let post else { return }
+            RootViewCoordinator.sharedPresenter.showBlogDetails(for: post.blog, then: .posts)
         }, onFailure: {
             DDLogError("Could not fetch post from share notification.")
         })

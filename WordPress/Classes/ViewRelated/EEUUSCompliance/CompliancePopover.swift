@@ -31,8 +31,8 @@ struct CompliancePopover: View {
 
     private var analyticsToggle: some View {
         Toggle(Strings.toggleTitle, isOn: $viewModel.isAnalyticsEnabled)
-            .foregroundColor(Color.DS.Foreground.primary)
-            .toggleStyle(SwitchToggleStyle(tint: Color.DS.Background.brand(isJetpack: AppConfiguration.isJetpack)))
+            .foregroundStyle(Color(.label))
+            .toggleStyle(UIAppColor.switchStyle)
             .padding(.vertical, .DS.Padding.single)
     }
 
@@ -55,12 +55,12 @@ struct CompliancePopover: View {
         }) {
             ZStack {
                 RoundedRectangle(cornerRadius: .DS.Padding.single)
-                    .stroke(Color.DS.Background.tertiary, lineWidth: .DS.Border.thin)
+                    .stroke(.gray, lineWidth: .DS.Border.thin)
                 Text(Strings.settingsButtonTitle)
                     .font(.body)
             }
         }
-        .foregroundColor(Color.DS.Background.brand(isJetpack: AppConfiguration.isJetpack))
+        .foregroundColor(AppColor.brand)
         .frame(height: .DS.Hitbox.minTappableLength)
     }
 
@@ -70,7 +70,7 @@ struct CompliancePopover: View {
         }) {
             ZStack {
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(Color.DS.Background.brand(isJetpack: AppConfiguration.isJetpack))
+                    .fill(AppColor.brand)
                 Text(Strings.saveButtonTitle)
                     .font(.body)
             }

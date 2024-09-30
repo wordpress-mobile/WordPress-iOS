@@ -27,7 +27,6 @@ final class StatsPediodCache {
 
     enum Record: Hashable {
         case timeIntervalsSummary
-        case totalsSummary
         case topPostsAndPages
         case topReferrers
         case topClicks
@@ -52,5 +51,6 @@ final class StatsCache: NSObject {
     @objc class func clearCaches() {
         StatsPediodCache.shared.removeAll()
         StatsInsightsCache.shared.removeAll()
+        StatsSubscribersCache.shared.removeAll()
     }
 }

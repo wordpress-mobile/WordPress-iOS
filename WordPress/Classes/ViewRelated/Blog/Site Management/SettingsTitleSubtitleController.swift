@@ -57,9 +57,9 @@ final class SettingsTitleSubtitleController: UITableViewController {
         var height: CGFloat {
             switch self {
             case .name:
-                return WPTableViewDefaultRowHeight
+                return 44
             case .description:
-                return WPTableViewDefaultRowHeight * 3
+                return 44 * 3
             }
         }
 
@@ -91,7 +91,7 @@ final class SettingsTitleSubtitleController: UITableViewController {
     public init(content: SettingsTitleSubtitleController.Content, confirmation: SettingsTitleSubtitleController.Confirmation? = nil) {
         self.content = content
         self.confirmation = confirmation
-        super.init(style: .grouped)
+        super.init(style: .insetGrouped)
     }
 
     /// Closure to be executed when the right bar button item is tapped. If there was a Confirmation passed in this VC's constructor, this closure will be called only after users confirm an alert.
@@ -115,7 +115,11 @@ final class SettingsTitleSubtitleController: UITableViewController {
 
         setupNavigationBar()
         setupTitle()
-        setupTable()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
         nameTextField.becomeFirstResponder()
     }
 
@@ -146,11 +150,6 @@ final class SettingsTitleSubtitleController: UITableViewController {
         navigationItem.title = content.title
     }
 
-    private func setupTable() {
-        WPStyleGuide.configureColors(view: view, tableView: tableView)
-        tableView.tableFooterView = UIView(frame: .zero)
-    }
-
     private func makeCell(content: UIView) -> WPTableViewCell {
         let cell = WPTableViewCell(style: .default, reuseIdentifier: nil)
         cell.selectionStyle = .none
@@ -162,7 +161,7 @@ final class SettingsTitleSubtitleController: UITableViewController {
             content.trailingAnchor.constraint(equalTo: readableGuide.trailingAnchor),
             content.topAnchor.constraint(equalTo: readableGuide.topAnchor),
             content.bottomAnchor.constraint(equalTo: readableGuide.bottomAnchor)
-            ])
+        ])
 
         WPStyleGuide.configureTableViewActionCell(cell)
         return cell
@@ -173,7 +172,7 @@ final class SettingsTitleSubtitleController: UITableViewController {
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.clearButtonMode = .whileEditing
         textField.font = WPStyleGuide.tableviewTextFont()
-        textField.textColor = .text
+        textField.textColor = .label
         textField.delegate = self
         textField.returnKeyType = .done
 
@@ -186,8 +185,8 @@ final class SettingsTitleSubtitleController: UITableViewController {
         let textView = UITextView(frame: .zero, textContainer: nil)
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.font = WPStyleGuide.tableviewTextFont()
-        textView.textColor = .text
-        textView.backgroundColor = .listForeground
+        textView.textColor = .label
+        textView.backgroundColor = .secondarySystemGroupedBackground
         textView.delegate = self
         textView.returnKeyType = .done
 
@@ -284,7 +283,7 @@ extension SettingsTitleSubtitleController {
         let contentSection = Sections.section(for: section)
         if contentSection == .name {
             if let footer = view as? UITableViewHeaderFooterView {
-                footer.textLabel?.textColor = .error
+                footer.textLabel?.textColor = UIAppColor.error
             }
             // By default the footer is hidden, it will be shown if the user leaves the title empty
             view.isHidden = true

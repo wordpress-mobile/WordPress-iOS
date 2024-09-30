@@ -1,5 +1,4 @@
 import Foundation
-import CocoaLumberjack
 import WordPressShared
 
 /// The purpose of this class is to render and modify the Jetpack Settings associated to a site.
@@ -40,7 +39,6 @@ open class JetpackSettingsViewController: UITableViewController {
         super.viewDidLoad()
         WPAnalytics.trackEvent(.jetpackSettingsViewed)
         title = NSLocalizedString("Settings", comment: "Title for the Jetpack Security Settings Screen")
-        extendedLayoutIncludesOpaqueBars = true
         ImmuTable.registerRows([SwitchRow.self], tableView: tableView)
         ImmuTable.registerRows([NavigationItemRow.self], tableView: tableView)
         WPStyleGuide.configureColors(view: view, tableView: tableView)

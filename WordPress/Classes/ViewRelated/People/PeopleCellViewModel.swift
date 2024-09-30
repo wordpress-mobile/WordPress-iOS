@@ -1,5 +1,6 @@
 import Foundation
 import WordPressShared
+import DesignSystem
 
 struct PeopleCellViewModel {
     let displayName: String
@@ -25,19 +26,25 @@ struct PeopleCellViewModel {
     }
 
     var usernameColor: UIColor {
-        return .text
-    }
-
-    var roleBorderColor: UIColor {
-        return role?.color ?? WPStyleGuide.People.otherRoleColor
+        .label
     }
 
     var roleBackgroundColor: UIColor {
-        return role?.color ?? WPStyleGuide.People.otherRoleColor
+        switch role?.slug {
+        case .some("super-admin"), .some("administrator"):
+            return .systemGroupedBackground
+        default:
+            return .secondarySystemGroupedBackground
+        }
     }
 
     var roleTextColor: UIColor {
-        return WPStyleGuide.People.RoleBadge.textColor
+        switch role?.slug {
+        case .some("super-admin"), .some("administrator"):
+            return .label
+        default:
+            return .label
+        }
     }
 
     var roleText: String {
@@ -52,12 +59,8 @@ struct PeopleCellViewModel {
         return NSLocalizedString("Super Admin", comment: "User role badge")
     }
 
-    var superAdminBorderColor: UIColor {
-        return superAdminBackgroundColor
-    }
-
     var superAdminBackgroundColor: UIColor {
-        return WPStyleGuide.People.superAdminColor
+        return .secondarySystemGroupedBackground
     }
 
     var superAdminHidden: Bool {

@@ -29,11 +29,6 @@ extension DashboardCard: BlogDashboardPersonalizable {
             return "activity-log-card-enabled-site-settings"
         case .pages:
             return "pages-card-enabled-site-settings"
-        case .quickStart:
-            // The "Quick Start" cell used to use `BlogDashboardPersonalizationService`.
-            // It no longer does, but it's important to keep the flag around for
-            // users that hidden it using this flag.
-            return "quick-start-card-enabled-site-settings"
         case .dynamic, .jetpackBadge, .jetpackInstall, .jetpackSocial, .failure, .ghost, .personalize, .empty:
             return nil
         }

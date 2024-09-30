@@ -67,7 +67,7 @@ class StatsPeriodHelper {
         }
     }
 
-    func endDate(from intervalStartDate: Date, period: StatsPeriodUnit, offsetBy count: Int = 1) -> Date {
+    func endDate(from intervalStartDate: Date, period: StatsPeriodUnit) -> Date {
         switch period {
         case .day:
             return intervalStartDate.normalizedDate()

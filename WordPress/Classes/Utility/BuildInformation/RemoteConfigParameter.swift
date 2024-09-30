@@ -34,6 +34,9 @@ enum RemoteConfigParameter: CaseIterable, RemoteParameter {
     case blazeFlowCompletedStep
     case wordPressPluginOverlayMaxShown
     case phaseFourOverlayFrequency
+    case wordPressInAppUpdateBlockingVersion
+    case jetpackInAppUpdateBlockingVersion
+    case inAppUpdateFlexibleIntervalInDays
 
     var key: String {
         switch self {
@@ -57,6 +60,12 @@ enum RemoteConfigParameter: CaseIterable, RemoteParameter {
             return "wp_plugin_overlay_max_shown"
         case .phaseFourOverlayFrequency:
             return "phase_four_overlay_frequency_in_days"
+        case .wordPressInAppUpdateBlockingVersion:
+            return "wp_in_app_update_blocking_version_ios"
+        case .jetpackInAppUpdateBlockingVersion:
+            return "jp_in_app_update_blocking_version_ios"
+        case .inAppUpdateFlexibleIntervalInDays:
+            return "in_app_update_flexible_interval_in_days_ios"
         }
     }
 
@@ -82,6 +91,12 @@ enum RemoteConfigParameter: CaseIterable, RemoteParameter {
             return 3
         case .phaseFourOverlayFrequency:
             return -1
+        case .wordPressInAppUpdateBlockingVersion:
+            return nil
+        case .jetpackInAppUpdateBlockingVersion:
+            return nil
+        case .inAppUpdateFlexibleIntervalInDays:
+            return nil
         }
     }
 
@@ -107,6 +122,12 @@ enum RemoteConfigParameter: CaseIterable, RemoteParameter {
             return "WP Plugin Overlay Max Frequency"
         case .phaseFourOverlayFrequency:
             return "Phase Four Overlay Frequency"
+        case .wordPressInAppUpdateBlockingVersion:
+            return "WP In-App Update Blocking Version"
+        case .jetpackInAppUpdateBlockingVersion:
+            return "JP In-App Update Blocking Version"
+        case .inAppUpdateFlexibleIntervalInDays:
+            return "In-App Update Flexible Interval (Days)"
         }
     }
 }

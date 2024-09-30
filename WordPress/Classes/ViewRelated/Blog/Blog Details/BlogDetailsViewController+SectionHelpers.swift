@@ -1,3 +1,7 @@
+import Foundation
+import UIKit
+import SwiftUI
+
 extension Array where Element: BlogDetailsSection {
     fileprivate func findSectionIndex(of category: BlogDetailsSectionCategory) -> Int? {
         return firstIndex(where: { $0.category == category })
@@ -9,8 +13,6 @@ extension BlogDetailsSubsection {
         switch self {
         case .domainCredit:
             return .domainCredit
-        case .quickStart:
-            return .quickStart
         case .activity, .jetpackSettings, .siteMonitoring:
             return .jetpack
         case .stats where blog.shouldShowJetpackSection:
@@ -32,11 +34,6 @@ extension BlogDetailsSubsection {
 }
 
 extension BlogDetailsViewController {
-
-    @objc class func mySitesCoordinator() -> MySitesCoordinator {
-        RootViewCoordinator.sharedPresenter.mySitesCoordinator
-    }
-
     @objc func findSectionIndex(sections: [BlogDetailsSection], category: BlogDetailsSectionCategory) -> Int {
         return sections.findSectionIndex(of: category) ?? NSNotFound
     }
@@ -69,6 +66,7 @@ extension BlogDetailsViewController {
 
         let statsView = StatsViewController()
         statsView.blog = blog
+        statsView.hidesBottomBarWhenPushed = true
         statsView.navigationItem.largeTitleDisplayMode = .never
         return statsView
     }
@@ -95,7 +93,7 @@ extension BlogDetailsViewController {
     }
 
     @objc func shouldAddMeRow() -> Bool {
-        return JetpackFeaturesRemovalCoordinator.currentAppUIType == .simplified
+        JetpackFeaturesRemovalCoordinator.currentAppUIType == .simplified && !isSidebarModeEnabled
     }
 
     @objc func shouldAddSharingRow() -> Bool {
@@ -119,4 +117,44 @@ extension BlogDetailsViewController {
     @objc func shouldAddDomainRegistrationRow() -> Bool {
         return AppConfiguration.allowsDomainRegistration && blog.supports(.domains)
     }
-}
+
+    @objc func shouldShowApplicationPasswordRow() -> Bool {
+        // Only available for application-password authenticated self-hosted sites.
+        return self.blog.account == nil && self.blog.userID != nil && (try? WordPressSite.from(blog: self.blog)) != nil
+    }
+
+    private func createApplicationPasswordService() -> ApplicationPasswordService? {
+        guard let userId = self.blog.userID?.intValue else {
+            return nil
+        }
+
+        do {
+            let site = try WordPressSite.from(blog: self.blog)
+            let client = try WordPressClient.for(site: site, in: .shared)
+            return ApplicationPasswordService(api: client, currentUserId: userId)
+        } catch {
+            DDLogError("Failed to create WordPressClient: \(error)")
+            return nil
+        }
+    }
+
+    @objc func showApplicationPasswordManagement() {
+        guard let presentationDelegate, let service = createApplicationPasswordService() else {
+            return
+        }
+
+        let viewModel = ApplicationTokenListViewModel(dataProvider: service)
+        let viewController = UIHostingController(rootView: ApplicationTokenListView(viewModel: viewModel))
+        presentationDelegate.presentBlogDetailsViewController(viewController)
+    }
+
+    @objc func showManagePluginsScreen() {
+        guard blog.supports(.pluginManagement),
+              let site = JetpackSiteRef(blog: blog) else {
+            return
+        }
+        let query = PluginQuery.all(site: site)
+        let listViewController = PluginListViewController(site: site, query: query)
+        presentationDelegate?.presentBlogDetailsViewController(listViewController)
+    }
+ }

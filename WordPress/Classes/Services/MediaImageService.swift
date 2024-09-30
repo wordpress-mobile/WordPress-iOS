@@ -1,5 +1,6 @@
 import UIKit
 import CoreData
+import WordPressShared
 
 /// A service for retrieval and caching of thumbnails for ``Media`` objects.
 final class MediaImageService {
@@ -223,8 +224,7 @@ final class MediaImageService {
             // where it'll fail to display local images with no path extension.
             //
             // This workaround creates a temporary symlink that has a file extension.
-            let tempDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory())
-                .appendingPathComponent("org.automattic.MediaImageServiceSymlinks", isDirectory: true)
+            let tempDirectoryURL = URL.Helpers.temporaryDirectory(named: "org.automattic.MediaImageServiceSymlinks")
             try? FileManager.default.createDirectory(at: tempDirectoryURL, withIntermediateDirectories: true)
 
             let symlink = tempDirectoryURL

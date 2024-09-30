@@ -3,6 +3,8 @@ AllCops:
     - DerivedData/**/*
     - Pods/**/*
     - vendor/**/*
+    - WordPressAuthenticator/**/*
+    - WordPressKit/**/*
   NewCops: enable
 
 Metrics/BlockLength:

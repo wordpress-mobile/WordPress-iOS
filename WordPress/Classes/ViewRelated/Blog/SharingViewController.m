@@ -4,8 +4,9 @@
 #import "SharingConnectionsViewController.h"
 #import "SVProgressHUD+Dismiss.h"
 #import "WordPress-Swift.h"
-#import <WordPressUI/UIImage+Util.h>
-#import <WordPressShared/WPTableViewCell.h>
+
+@import WordPressUI;
+@import WordPressShared;
 
 typedef NS_ENUM(NSInteger, SharingSectionType) {
     SharingSectionUndefined = 1000,
@@ -58,15 +59,14 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     [super viewDidLoad];
 
     self.navigationItem.title = NSLocalizedString(@"Sharing", @"Title for blog detail sharing screen.");
-    
-    self.extendedLayoutIncludesOpaqueBars = YES;
-    
+        
     if (self.isModal) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                                target:self
                                                                                                action:@selector(doneButtonTapped)];
     }
 
+    self.tableView.cellLayoutMarginsFollowReadableWidth = YES;
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [self.publicizeServicesState addInitialConnections:[self allConnections]];
 
@@ -244,11 +244,6 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
     [WPStyleGuide configureTableViewCell:cell];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    if (indexPath == [NSIndexPath indexPathForRow:0 inSection:0] && [[QuickStartTourGuide shared] isCurrentElement:QuickStartTourElementConnections]) {
-        cell.accessoryView = [QuickStartSpotlightView new];
-    } else {
-        cell.accessoryView = nil;
-    }
 
     SharingSectionType sectionType = [self sectionTypeForIndex:indexPath.section];
     switch (sectionType) {
@@ -340,8 +335,6 @@ static NSString *const CellIdentifier = @"CellIdentifier";
             PublicizeService *publicizer = [self publicizeServiceForIndexPath:indexPath];
             controller = [[SharingConnectionsViewController alloc] initWithBlog:self.blog publicizeService:publicizer];
             [WPAppAnalytics track:WPAnalyticsStatSharingOpenedPublicize withBlog:self.blog];
-
-            [[QuickStartTourGuide shared] visited:QuickStartTourElementConnections];
             break;
         }
 

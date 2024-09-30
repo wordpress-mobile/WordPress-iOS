@@ -21,17 +21,17 @@ struct PostEditorAnalyticsSession {
         contentType = ContentType(post: post).rawValue
     }
 
-    mutating func start(unsupportedBlocks: [String] = [], galleryWithImageBlocks: Bool? = nil) {
+    mutating func start(unsupportedBlocks: [String] = []) {
         assert(!started, "An editor session was attempted to start more than once")
         hasUnsupportedBlocks = !unsupportedBlocks.isEmpty
 
-        let properties = startEventProperties(with: unsupportedBlocks, galleryWithImageBlocks: galleryWithImageBlocks)
+        let properties = startEventProperties(with: unsupportedBlocks)
 
         WPAppAnalytics.track(.editorSessionStart, withProperties: properties)
         started = true
     }
 
-    private func startEventProperties(with unsupportedBlocks: [String], galleryWithImageBlocks: Bool?) -> [String: Any] {
+    private func startEventProperties(with unsupportedBlocks: [String]) -> [String: Any] {
         // On Android, we are tracking this in milliseconds, which seems like a good enough time scale
         // Let's make sure to round the value and send an integer for consistency
         let startupTimeNanoseconds = DispatchTime.now().uptimeNanoseconds - startTime
@@ -44,12 +44,6 @@ struct PostEditorAnalyticsSession {
             properties[Property.unsupportedBlocks] = blocksJSON
         }
 
-        if let galleryWithImageBlocks = galleryWithImageBlocks {
-            properties[Property.unstableGalleryWithImageBlocks] = "\(galleryWithImageBlocks)"
-        } else {
-            properties[Property.unstableGalleryWithImageBlocks] = "unknown"
-        }
-
         properties[Property.entryPoint] = (entryPoint ?? .unknown).rawValue
 
         return properties.merging(commonProperties, uniquingKeysWith: { $1 })
@@ -58,19 +52,6 @@ struct PostEditorAnalyticsSession {
     mutating func `switch`(editor: Editor) {
         currentEditor = editor
         WPAppAnalytics.track(.editorSessionSwitchEditor, withProperties: commonProperties)
-    }
-
-    mutating func forceOutcome(_ newOutcome: Outcome) {
-        // We're allowing an outcome to be force in a few specific cases:
-        // - If a post was published, that should be the outcome no matter what happens later
-        // - If a post is saved, that should be the outcome unless it's published later
-        // - Otherwise, we'll use whatever outcome is set when the session ends
-        switch (outcome, newOutcome) {
-        case (_, .publish), (nil, .save):
-            self.outcome = newOutcome
-        default:
-            break
-        }
     }
 
     func end(outcome endOutcome: Outcome) {
@@ -97,7 +78,6 @@ private extension PostEditorAnalyticsSession {
         static let sessionId = "session_id"
         static let template = "template"
         static let startupTime = "startup_time_ms"
-        static let unstableGalleryWithImageBlocks = "unstable_gallery_with_image_blocks"
         static let entryPoint = "entry_point"
     }
 
@@ -117,7 +97,6 @@ private extension PostEditorAnalyticsSession {
 extension PostEditorAnalyticsSession {
     enum Editor: String {
         case gutenberg
-        case stories
         case classic
         case html
     }

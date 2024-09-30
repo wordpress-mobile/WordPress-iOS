@@ -6,27 +6,24 @@ final class PostRepository {
     enum Error: Swift.Error, LocalizedError {
         case remoteAPIUnavailable
         case hasUnsyncedChanges
-        case patchingUnsyncedPost // Should never happen
+        case missingPostID // Should never happen
 
         var errorDescription: String? {
             switch self {
             case .remoteAPIUnavailable: return Strings.genericErrorMessage
             case .hasUnsyncedChanges: return Strings.errorUnsyncedChangesMessage
-            case .patchingUnsyncedPost: return Strings.genericErrorMessage
+            case .missingPostID: return Strings.genericErrorMessage
             }
         }
     }
 
     private let coreDataStack: CoreDataStackSwift
     private let remoteFactory: PostServiceRemoteFactory
-    private let isSyncPublishingEnabled: Bool
 
     init(coreDataStack: CoreDataStackSwift = ContextManager.shared,
-         remoteFactory: PostServiceRemoteFactory = PostServiceRemoteFactory(),
-         isSyncPublishingEnabled: Bool = RemoteFeatureFlag.syncPublishing.enabled()) {
+         remoteFactory: PostServiceRemoteFactory = PostServiceRemoteFactory()) {
         self.coreDataStack = coreDataStack
         self.remoteFactory = remoteFactory
-        self.isSyncPublishingEnabled = isSyncPublishingEnabled
     }
 
     /// Sync a specific post from the API
@@ -108,18 +105,14 @@ final class PostRepository {
     ///   or its latest revision.
     ///   - overwrite: Set to `true` to overwrite the values on the server and
     ///   ignore the ``PostSaveError/conflict(latest:)`` error.
-    ///
-    /// - warning: Work-in-progress (kahu-offline-mode)
     @MainActor
-    func _save(_ post: AbstractPost, changes: RemotePostUpdateParameters? = nil, overwrite: Bool = false) async throws {
+    func save(_ post: AbstractPost, changes: RemotePostUpdateParameters? = nil, overwrite: Bool = false) async throws {
         try await _sync(post, revision: post.latest(), changes: changes, overwrite: overwrite)
     }
 
     /// Syncs revisions that have unsaved changes (see `isSyncNeeded`).
     ///
     /// - note: This method is designed to be used with drafts.
-    ///
-    /// - warning: Work-in-progress (kahu-offline-mode)
     @MainActor
     func sync(_ post: AbstractPost, revision: AbstractPost? = nil) async throws {
         wpAssert(post.original == nil, "Must be called on an original post")
@@ -158,16 +151,10 @@ final class PostRepository {
         }
 
         if revision.revision == nil {
-            // No more revisions were created during the upload, so it's safe
-            // to fully replace the local version with the remote data
             PostHelper.update(post, with: remotePost, in: context, overwrite: true)
         } else {
-            // We have to keep the local changes to make sure the delta can
-            // still be computed accurately (a smarter algo could merge the changes)
-            post.clone(from: revision)
-            post.postID = remotePost.postID // important!
+            apply(remotePost, to: post, revision: revision)
         }
-
         post.deleteSyncedRevisions(until: revision)
 
         if isCreated {
@@ -179,12 +166,39 @@ final class PostRepository {
         WPAnalytics.track(isCreated ? .postRepositoryPostCreated : .postRepositoryPostUpdated, properties: post.analyticsUserInfo)
     }
 
+    // The app currently computes changes between revision to track what
+    // needs to be uploaded on the server to reduce the risk of overwriting changes.
+    //
+    // The problem arises if you have more than one saved revision. Let's
+    // say you start with revision R1, then save save R2, and, while R2 is
+    // still syncing, save another revision – R3:
+    //
+    // R1 → R2 → R3
+    //
+    // This scenario is problematic for the conflict detection mechanism.
+    // When uploading `post.content`, the server might ever so slightly
+    // change it – e.g. remove redundant spaces in tag attributes. So,
+    // unless the app saves the new `dateModified` and/or saves the
+    // changed `content`, it *will* detect a false-positive data conflict.
+    //
+    // Another caveat is that R1 could be a new draft, and then the app
+    // needs to save the `postID`.
+    private func apply(_ remotePost: RemotePost, to original: AbstractPost, revision: AbstractPost) {
+        // Keep the changes consistent across revisions.
+        original.clone(from: revision)
+
+        // But update the parts that might end up leading to data conflicts.
+        original.postID = remotePost.postID
+        original.content = remotePost.content
+        original.dateModified = remotePost.dateModified
+    }
+
     /// Patches the post.
     ///
     /// - note: This method can be used for quick edits for published posts where
     /// revisions are used only for content.
     @MainActor
-    func _update(_ post: AbstractPost, changes: RemotePostUpdateParameters) async throws {
+    func update(_ post: AbstractPost, changes: RemotePostUpdateParameters) async throws {
         wpAssert(post.isOriginal())
 
         guard post.revision == nil else {
@@ -192,7 +206,7 @@ final class PostRepository {
         }
         guard let postID = post.postID?.intValue, postID > 0 else {
             wpAssertionFailure("Trying to patch a non-existent post")
-            throw PostRepository.Error.patchingUnsyncedPost
+            throw PostRepository.Error.missingPostID
         }
         let uploadedPost = try await _patch(post, postID: postID, changes: changes, overwrite: true)
 
@@ -235,11 +249,11 @@ final class PostRepository {
                 let remotePost = try await service.post(withID: postID)
                 // Check for false positives
                 if changes.content != nil && remotePost.content != changes.content && remotePost.content != original.content {
-                    WPAnalytics.track(.postRepositoryConflictEncountered, properties: ["false-positive": true])
+                    WPAnalytics.track(.postRepositoryConflictEncountered, properties: ["false_positive": false])
                     // The conflict in content can be resolved only manually
                     throw PostSaveError.conflict(latest: remotePost)
                 }
-                WPAnalytics.track(.postRepositoryConflictEncountered, properties: ["false-positive": false])
+                WPAnalytics.track(.postRepositoryConflictEncountered, properties: ["false_positive": true])
 
                 // There is no conflict, so go ahead and overwrite the changes
                 changes.ifNotModifiedSince = nil
@@ -251,9 +265,10 @@ final class PostRepository {
         }
     }
 
-    /// - warning: Work-in-progress (kahu-offline-mode)
+    /// Resolves the conflict by overwriting the changes made locally with the
+    /// selected remote revision.
     @MainActor
-    func _resolveConflict(for post: AbstractPost, pickingRemoteRevision revision: RemotePost) throws {
+    func resolveConflict(for post: AbstractPost, pickingRemoteRevision revision: RemotePost) throws {
         let context = coreDataStack.mainContext
         post.deleteRevision()
         PostHelper.update(post, with: revision, in: context)
@@ -264,7 +279,7 @@ final class PostRepository {
     ///
     /// - warning: This method delets all local revision of the post.
     @MainActor
-    func _trash(_ post: AbstractPost) async throws {
+    func trash(_ post: AbstractPost) async throws {
         wpAssert(post.isOriginal())
 
         let context = coreDataStack.mainContext
@@ -293,149 +308,68 @@ final class PostRepository {
         // If the post is already in trash, do nothing. If the app were to
         // proceed with `/delete`, it would permanently delete the post.
         if remotePost.status != BasePost.Status.trash.rawValue {
-            remotePost = try await remote.trashPost(PostHelper.remotePost(with: post))
+            try await remote.deletePost(withID: postID)
         }
 
-        PostHelper.update(post, with: remotePost, in: context)
+        post.status = .trash
         ContextManager.shared.saveContextAndWait(context)
     }
 
     /// Permanently delete the given post.
     @MainActor
-    func _delete(_ post: AbstractPost) async throws {
+    func delete(_ post: AbstractPost) async throws {
         wpAssert(post.isOriginal())
 
+        let context = coreDataStack.mainContext
         guard let postID = post.postID, postID.intValue > 0 else {
+            // The new sync system makes this situation impossible, but there
+            // might exist posts from the previous versions of the app in this state.
+            post.deleteAllRevisions()
+            context.deleteObject(post)
+            ContextManager.shared.saveContextAndWait(context)
+
             return wpAssertionFailure("Trying to patch a non-existent post")
         }
         try await getRemoteService(for: post.blog).deletePost(withID: postID.intValue)
 
-        let context = coreDataStack.mainContext
         context.deleteObject(post)
         ContextManager.shared.saveContextAndWait(context)
     }
 
     /// Creates an autosave with the changes in the given revision.
     @MainActor
-    func autosave(_ revision: AbstractPost) async throws -> PostServiceRemoteREST.AutosaveResponse {
+    func autosave(_ revision: AbstractPost) async throws -> RemotePostAutosaveResponse {
         assert(revision.isRevision())
         guard let remote = try getRemoteService(for: revision.blog) as? PostServiceRemoteREST else {
             throw Error.remoteAPIUnavailable
         }
-        let post = PostHelper.remotePost(with: revision)
-        return try await remote.createAutosave(with: post)
+        guard let postID = revision.postID?.intValue, postID > 0 else {
+            wpAssertionFailure("missing post ID – programmer error")
+            throw PostRepository.Error.missingPostID
+        }
+        let parameters = RemotePostCreateParameters(post: revision)
+        return try await remote.createAutosave(forPostID: postID, parameters: parameters)
     }
 
-    /// Permanently delete the given post from local database and the post's WordPress site.
-    ///
-    /// - Parameter postID: Object ID of the post
-    func delete<P: AbstractPost>(_ postID: TaggedManagedObjectID<P>) async throws {
-        // Delete the original post instead if presents
-        let original: TaggedManagedObjectID<AbstractPost>? = try await coreDataStack.performQuery { context in
-            let post = try context.existingObject(with: postID)
-            if let original = post.original {
-                return TaggedManagedObjectID(original)
-            }
-            return nil
-        }
-        if let original {
-            DDLogInfo("Delete the original post object instead")
-            try await delete(original)
-            return
-        }
+    @MainActor
+    func buildPageTree(pageIDs: [TaggedManagedObjectID<Page>]? = nil, request: NSFetchRequest<Page>? = nil) async throws -> [(pageID: TaggedManagedObjectID<Page>, hierarchyIndex: Int)] {
+        assert(pageIDs != nil || request != nil, "`pageIDs` and `request` can not both be nil")
 
-        let status = try await coreDataStack.performQuery { try $0.existingObject(with: postID).status }
-        wpAssert(status == .trash, "This function can only be used to delete trashed posts/pages.")
+        let coreDataStack = ContextManager.shared
+        return try await coreDataStack.performQuery { context in
+            var pages = [Page]()
 
-        // First delete the post from local database.
-        let (remote, remotePost) = try await coreDataStack.performAndSave { [remoteFactory] context in
-            let post = try context.existingObject(with: postID)
-            context.deleteObject(post)
-            return (remoteFactory.forBlog(post.blog), PostHelper.remotePost(with: post))
-        }
-
-        // Then delete the post from the server
-        guard let remote, let remotePostID = remotePost.postID, remotePostID.int64Value > 0 else {
-            DDLogInfo("The post does not exist on the server")
-            return
-        }
-
-        try await withCheckedThrowingContinuation { continuation in
-            remote.delete(
-                remotePost,
-                success: { continuation.resume(returning: ()) },
-                failure: { continuation.resume(throwing: $0!) }
-            )
-        }
-    }
-
-    /// Move the given post to the trash bin. The post will not be deleted from local database, unless it's delete on its WordPress site.
-    ///
-    /// - Parameter postID: Object ID of the post
-    ///
-    /// - warning: deprecated (kahu-offline-mode)
-    func trash<P: AbstractPost>(_ postID: TaggedManagedObjectID<P>) async throws {
-        // Trash the original post instead if presents
-        let original: TaggedManagedObjectID<AbstractPost>? = try await coreDataStack.performQuery { context in
-            let post = try context.existingObject(with: postID)
-            if let original = post.original {
-                return TaggedManagedObjectID(original)
-            }
-            return nil
-        }
-        if let original {
-            DDLogInfo("Trash the original post object instead")
-            try await trash(original)
-            return
-        }
-
-        // If the post is already in Trash, delete it.
-        let shouldDelete = try await coreDataStack.performQuery { context in
-            (try context.existingObject(with: postID)).status == .trash
-        }
-        if shouldDelete {
-            DDLogInfo("The post is already trashed, delete it instead")
-            try await delete(postID)
-            return
-        }
-
-        // Update local database and check if we need to call WordPress API.
-        let shouldCallRemote = try await coreDataStack.performAndSave { context in
-            let post = try context.existingObject(with: postID)
-            if post.isRevision() || (post.postID?.int64Value ?? 0) <= 0 {
-                post.status = .trash
-                return false
+            if let pageIDs {
+                pages = try pageIDs.map(context.existingObject(with:))
+            } else if let request {
+                pages = try context.fetch(request)
             }
 
-            // The `status` will be updated when the WordPress API call is successful.
-            return true
-        }
-        guard shouldCallRemote else { return }
+            pages = pages.setHomePageFirst()
 
-        // Make the changes on the server
-        let (remote, remotePost) = try await coreDataStack.performQuery { [remoteFactory] context in
-            let post = try context.existingObject(with: postID)
-            return (remoteFactory.forBlog(post.blog), PostHelper.remotePost(with: post))
-        }
-        guard let remote else { return }
-
-        let updatedRemotePost = try await withCheckedThrowingContinuation { continuation in
-            remote.trashPost(
-                remotePost,
-                success: { continuation.resume(returning: $0) },
-                failure: { continuation.resume(throwing: $0!) }
-            )
-        }
-
-        try? await coreDataStack.performAndSave { context in
-            let post = try context.existingObject(with: postID)
-            if let updatedRemotePost, updatedRemotePost.status != PostStatusDeleted {
-                PostHelper.update(post, with: updatedRemotePost, in: context, overwrite: true)
-                post.latest().statusAfterSync = post.statusAfterSync
-                post.latest().status = post.status
-            } else {
-                context.deleteObject(post)
-            }
+            // The `hierarchyIndex` is not a managed property, so it needs to be returend along with the page object id.
+            return PageTree.hierarchyList(of: pages)
+                .map { (TaggedManagedObjectID($0), $0.hierarchyIndex) }
         }
     }
 }
@@ -660,8 +594,6 @@ extension PostRepository {
                     NSPredicate(format: "postID != NULL AND postID > 0"),
                     // doesn't have local edits
                     NSPredicate(format: "original = NULL AND revision = NULL"),
-                    // doesn't have local status changes
-                    self.isSyncPublishingEnabled ? nil : NSPredicate(format: "remoteStatusNumber = %@", NSNumber(value: AbstractPostRemoteStatus.sync.rawValue)),
                     // is not included in the fetched page lists (i.e. it has been deleted from the site)
                     NSPredicate(format: "NOT (SELF IN %@)", allPages.map { $0.objectID }),
                     // we only need to deal with pages that match the filters passed to this function.
@@ -708,8 +640,9 @@ extension PostRepository {
             throw PostRepository.Error.remoteAPIUnavailable
         }
 
+        let statuses = statuses?.map { $0.rawValue }
         let options = PostRepositoryPostsSerivceRemoteOptions(options: .init(
-            statuses: statuses?.strings,
+            statuses: statuses,
             number: range.count,
             offset: range.lowerBound,
             order: descending ? .descending : .ascending,
@@ -724,7 +657,7 @@ extension PostRepository {
             let updatedPosts = PostHelper.merge(
                 remotePosts,
                 ofType: postType,
-                withStatuses: statuses?.strings,
+                withStatuses: statuses,
                 byAuthor: authorUserID,
                 for: try context.existingObject(with: blogID),
                 purgeExisting: deleteOtherLocalPosts,

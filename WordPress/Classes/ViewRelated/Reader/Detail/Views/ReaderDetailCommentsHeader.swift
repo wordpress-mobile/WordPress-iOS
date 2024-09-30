@@ -62,10 +62,6 @@ class ReaderDetailCommentsHeader: UITableViewHeaderFooterView, NibReusable {
         self.post = post
         configureButton()
     }
-
-    func followButtonMidPoint() -> CGPoint {
-        CGPoint(x: followButton.frame.midX, y: followButton.frame.minY)
-    }
 }
 
 // MARK: - Private Extension
@@ -152,7 +148,7 @@ private extension ReaderDetailCommentsHeader {
     }
 
     var titleTextColor: UIColor {
-        ReaderDisplaySetting.customizationEnabled ? displaySetting.color.foreground : .text
+        ReaderDisplaySetting.customizationEnabled ? displaySetting.color.foreground : .label
     }
 
     var followButtonFont: UIFont {
@@ -163,11 +159,11 @@ private extension ReaderDetailCommentsHeader {
     }
 
     var followButtonColor: UIColor {
-        .primary
+        UIAppColor.primary
     }
 
     var separatorColor: UIColor {
-        ReaderDisplaySetting.customizationEnabled ? displaySetting.color.border : .divider
+        ReaderDisplaySetting.customizationEnabled ? displaySetting.color.border : .separator
     }
 }
 

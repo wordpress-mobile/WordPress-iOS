@@ -1,116 +1,111 @@
 import Foundation
+import UIKit
 import WordPressShared
+import WordPressUI
 
 extension WPStyleGuide {
-    @objc
-    public class var preferredStatusBarStyle: UIStatusBarStyle {
-        .default
+
+    public class func configureAppearance() {
+        WPStyleGuide.configureNavigationAppearance()
+
+        // iOS 14 started rendering backgrounds for stack views, when previous versions
+        // of iOS didn't show them. This is a little hacky, but ensures things keep
+        // looking the same on newer versions of iOS.
+        UIStackView.appearance().backgroundColor = .clear
+
+        UIWindow.appearance().tintColor = UIAppColor.brand
+        UISwitch.appearance().onTintColor = UIAppColor.brand
+
+        UITableView.appearance().sectionHeaderTopPadding = 0
+
+        setupFancyAlertAppearance()
+        setupFancyButtonAppearance()
     }
 
-    @objc
     public class var navigationBarStandardFont: UIFont {
         return AppStyleGuide.navigationBarStandardFont
     }
 
-    @objc
-    public class var navigationBarLargeFont: UIFont {
-        return AppStyleGuide.navigationBarLargeFont
-    }
-
-    class func configureDefaultTint() {
-        UIWindow.appearance().tintColor = .primary
-    }
-
     /// Style the navigation appearance using Muriel colors
-    class func configureNavigationAppearance() {
-        let navigationAppearance = UINavigationBar.appearance()
-        navigationAppearance.isTranslucent = false
-        navigationAppearance.tintColor = .appBarTint
-        navigationAppearance.barTintColor = .appBarBackground
+    private class func configureNavigationAppearance() {
+        let standardAppearance = UINavigationBarAppearance()
+        standardAppearance.configureWithDefaultBackground()
+        configureSharedSettings(for: standardAppearance)
 
-        var textAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.appBarText]
-        let largeTitleTextAttributes: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.navigationBarLargeFont]
+        let scrollEdgeAppearance = UINavigationBarAppearance()
+        scrollEdgeAppearance.configureWithTransparentBackground()
+        configureSharedSettings(for: scrollEdgeAppearance)
 
-        textAttributes[.font] = WPStyleGuide.navigationBarStandardFont
+        let appearance = UINavigationBar.appearance()
+        appearance.tintColor = UIAppColor.tint // Back button color
 
-        navigationAppearance.titleTextAttributes = textAttributes
-        navigationAppearance.largeTitleTextAttributes = largeTitleTextAttributes
-
-        // Required to fix detail navigation controller appearance due to https://stackoverflow.com/q/56615513
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = .appBarBackground
-        appearance.titleTextAttributes = textAttributes
-        appearance.largeTitleTextAttributes = largeTitleTextAttributes
-        appearance.shadowColor = .separator
-
-        let scrollEdgeAppearance = appearance.copy()
-        scrollEdgeAppearance.shadowColor = .clear
-        navigationAppearance.scrollEdgeAppearance = scrollEdgeAppearance
-
-        navigationAppearance.standardAppearance = appearance
-        navigationAppearance.compactAppearance = appearance
-
-        let buttonBarAppearance = UIBarButtonItem.appearance()
-        buttonBarAppearance.tintColor = .appBarTint
+        appearance.standardAppearance = standardAppearance
+        appearance.compactAppearance = standardAppearance
+        appearance.scrollEdgeAppearance = scrollEdgeAppearance
+        appearance.compactScrollEdgeAppearance = scrollEdgeAppearance
     }
 
-    /// Style `UITableView` in the app
-    class func configureTableViewAppearance() {
-        UITableView.appearance().sectionHeaderTopPadding = 0
-    }
-
-    /// Style the tab bar using Muriel colors
-    class func configureTabBarAppearance() {
-        UITabBar.appearance().tintColor = .tabSelected
-        UITabBar.appearance().unselectedItemTintColor = .tabUnselected
-
-        let appearance = UITabBarAppearance()
-        appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = .systemBackground
-
-        UITabBar.appearance().standardAppearance = appearance
-        UITabBar.appearance().scrollEdgeAppearance = appearance
-    }
-
-    /// Style the `LightNavigationController` UINavigationBar and BarButtonItems
-    class func configureLightNavigationBarAppearance() {
-        let separatorColor: UIColor
-        separatorColor = .systemGray4
-
-        let navigationBarAppearanceProxy = UINavigationBar.appearance(whenContainedInInstancesOf: [LightNavigationController.self])
-        navigationBarAppearanceProxy.backgroundColor = .white // Only used on iOS 12 so doesn't need dark mode support
-        navigationBarAppearanceProxy.barStyle = .default
-        navigationBarAppearanceProxy.barTintColor = .white
-
-        navigationBarAppearanceProxy.titleTextAttributes = [
-            NSAttributedString.Key.foregroundColor: UIColor.text
+    private class func configureSharedSettings(for appearance: UINavigationBarAppearance) {
+        appearance.titleTextAttributes = [
+            .font: WPStyleGuide.navigationBarStandardFont,
+            .foregroundColor: UIColor.label
         ]
-
-        let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = .systemBackground
-        appearance.shadowColor = separatorColor
-        navigationBarAppearanceProxy.standardAppearance = appearance
-
-        let tintColor = UIColor.lightAppBarTint
-
-        let buttonBarAppearance = UIBarButtonItem.appearance(whenContainedInInstancesOf: [LightNavigationController.self])
-        buttonBarAppearance.tintColor = tintColor
-        buttonBarAppearance.setTitleTextAttributes([NSAttributedString.Key.font: WPFontManager.systemRegularFont(ofSize: 17.0),
-                                                    NSAttributedString.Key.foregroundColor: tintColor],
-                                                   for: .normal)
-        buttonBarAppearance.setTitleTextAttributes([NSAttributedString.Key.font: WPFontManager.systemRegularFont(ofSize: 17.0),
-                                                    NSAttributedString.Key.foregroundColor: tintColor.withAlphaComponent(0.25)],
-                                                   for: .disabled)
-
+        appearance.largeTitleTextAttributes = [
+            .font: AppStyleGuide.navigationBarLargeFont
+        ]
     }
 
-    class func configureToolbarAppearance() {
-        let appearance = UIToolbarAppearance()
-        appearance.configureWithDefaultBackground()
+    class func disableScrollEdgeAppearance(for viewController: UIViewController) {
+        let standardAppearance = UINavigationBarAppearance()
+        standardAppearance.configureWithDefaultBackground()
+        configureSharedSettings(for: standardAppearance)
 
-        UIToolbar.appearance().standardAppearance = appearance
-        UIToolbar.appearance().scrollEdgeAppearance = appearance
+        viewController.navigationItem.scrollEdgeAppearance = standardAppearance
+        viewController.navigationItem.compactScrollEdgeAppearance = standardAppearance
+    }
+
+    @objc class func configureTabBar(_ tabBar: UITabBar) {
+        tabBar.tintColor = UIAppColor.tint
+        tabBar.unselectedItemTintColor = UIColor(named: "TabUnselected")
+    }
+
+    private static func setupFancyAlertAppearance() {
+        let appearance = FancyAlertView.appearance()
+
+        appearance.titleTextColor = UIAppColor.neutral(.shade70)
+        appearance.titleFont = WPStyleGuide.fontForTextStyle(.title2, fontWeight: .semibold)
+
+        appearance.bodyTextColor = UIAppColor.neutral(.shade70)
+        appearance.bodyFont = WPStyleGuide.fontForTextStyle(.body)
+        appearance.bodyBackgroundColor = UIAppColor.neutral(.shade0)
+
+        appearance.actionFont = WPStyleGuide.fontForTextStyle(.headline)
+        appearance.infoFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
+        appearance.infoTintColor = UIAppColor.primary
+
+        appearance.topDividerColor = UIAppColor.neutral(.shade5)
+        appearance.bottomDividerColor = UIAppColor.neutral(.shade0)
+        appearance.headerBackgroundColor = UIAppColor.neutral(.shade0)
+
+        appearance.bottomBackgroundColor = UIAppColor.neutral(.shade0)
+    }
+
+    private static func setupFancyButtonAppearance() {
+        let appearance = FancyButton.appearance()
+        appearance.titleFont = WPStyleGuide.fontForTextStyle(.headline)
+        appearance.primaryTitleColor = .white
+        appearance.primaryNormalBackgroundColor = UIAppColor.primary
+        appearance.primaryHighlightBackgroundColor = UIAppColor.primary(.shade80)
+
+        appearance.secondaryTitleColor = .label
+        appearance.secondaryNormalBackgroundColor = UIColor(light: .white, dark: .systemGray5)
+        appearance.secondaryNormalBorderColor = .systemGray3
+        appearance.secondaryHighlightBackgroundColor = .systemGray3
+        appearance.secondaryHighlightBorderColor = .systemGray3
+
+        appearance.disabledTitleColor = UIAppColor.neutral(.shade20)
+        appearance.disabledBackgroundColor = UIColor(light: .white, dark: UIAppColor.gray(.shade100))
+        appearance.disabledBorderColor = UIAppColor.neutral(.shade10)
     }
 }
 
@@ -125,7 +120,7 @@ extension WPStyleGuide {
         guard let view = view else {
             return
         }
-        view.backgroundColor = .basicBackground
+        view.backgroundColor = .systemBackground
     }
 
     class func configureTableViewColors(tableView: UITableView?) {
@@ -133,14 +128,14 @@ extension WPStyleGuide {
             return
         }
 
-        tableView.backgroundColor = .listBackground
-        tableView.separatorColor = .neutral(.shade10)
+        tableView.backgroundColor = .systemGroupedBackground
+        tableView.separatorColor = UIAppColor.neutral(.shade10)
     }
 
     class func configureColors(view: UIView, collectionView: UICollectionView) {
         configureTableViewColors(view: view)
         collectionView.backgroundView = nil
-        collectionView.backgroundColor = .listBackground
+        collectionView.backgroundColor = .systemGroupedBackground
     }
 
     @objc
@@ -151,25 +146,25 @@ extension WPStyleGuide {
 
         cell.textLabel?.font = tableviewTextFont()
         cell.textLabel?.sizeToFit()
-        cell.detailTextLabel?.font = tableviewSubtitleFont()
+        cell.detailTextLabel?.font = .preferredFont(forTextStyle: .callout)
         cell.detailTextLabel?.sizeToFit()
 
         // we only set the text subtle color, so that system colors are used otherwise
-        cell.detailTextLabel?.textColor = .textSubtle
-        cell.imageView?.tintColor = .neutral(.shade30)
+        cell.detailTextLabel?.textColor = .secondaryLabel
+        cell.imageView?.tintColor = UIAppColor.neutral(.shade30)
 
     }
 
     class func configureTableViewSmallSubtitleCell(_ cell: UITableViewCell) {
         configureTableViewColors(view: cell)
         cell.detailTextLabel?.font = subtitleFont()
-        cell.detailTextLabel?.textColor = .textSubtle
+        cell.detailTextLabel?.textColor = .secondaryLabel
     }
 
     @objc
     class func configureTableViewActionCell(_ cell: UITableViewCell?) {
         configureTableViewCell(cell)
-        cell?.textLabel?.textColor = .text
+        cell?.textLabel?.textColor = UIAppColor.brand
     }
 
     @objc
@@ -177,26 +172,7 @@ extension WPStyleGuide {
         configureTableViewCell(cell)
 
         cell.textLabel?.textAlignment = .center
-        cell.textLabel?.textColor = UIColor.error
-    }
-
-    @objc
-    class func configureTableViewTextCell(_ cell: WPTextFieldTableViewCell) {
-        configureTableViewCell(cell)
-
-        if cell.textField.isEnabled {
-            cell.detailTextLabel?.textColor = .text
-            cell.textField.textAlignment = .natural
-        } else {
-            cell.detailTextLabel?.textColor = .textSubtle
-            if cell.effectiveUserInterfaceLayoutDirection == .leftToRight {
-                // swiftlint:disable:next inverse_text_alignment
-                cell.textField.textAlignment = .right
-            } else {
-                // swiftlint:disable:next natural_text_alignment
-                cell.textField.textAlignment = .left
-            }
-        }
+        cell.textLabel?.textColor = UIAppColor.error
     }
 
     @objc
@@ -206,8 +182,7 @@ extension WPStyleGuide {
             return
         }
         if textLabel.isUserInteractionEnabled {
-            textLabel.textColor = .primary
+            textLabel.textColor = UIAppColor.primary
         }
     }
-
 }

@@ -9,8 +9,7 @@ final class ImageView: UIView {
 
     private var errorView: UIImageView?
     private var spinner: UIActivityIndicatorView?
-    private let downloader: ImageDownloader = .shared
-    private var task: Task<Void, Never>?
+    private let controller = ImageViewController()
 
     enum LoadingStyle {
         case background
@@ -21,6 +20,8 @@ final class ImageView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+
+        controller.onStateChanged = { [weak self] in self?.setState($0) }
 
         addSubview(imageView)
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -37,13 +38,8 @@ final class ImageView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    deinit {
-        task?.cancel()
-    }
-
     func prepareForReuse() {
-        task?.cancel()
-        task = nil
+        controller.prepareForReuse()
 
         if imageView.isAnimatingGIF {
             imageView.prepareForReuse()
@@ -52,43 +48,11 @@ final class ImageView: UIView {
         }
     }
 
-    // MARK: - Sources
-
     func setImage(with imageURL: URL, host: MediaHost? = nil, size: CGSize? = nil) {
-        task?.cancel()
-
-        if let image = downloader.cachedImage(for: imageURL, size: size) {
-            setState(.success(image))
-        } else {
-            setState(.loading)
-            task = Task { [downloader, weak self] in
-                do {
-                    let options = ImageRequestOptions(size: size)
-                    let image: UIImage
-                    if let host {
-                        image = try await downloader.image(from: imageURL, host: host, options: options)
-                    } else {
-                        image = try await downloader.image(from: imageURL, options: options)
-                    }
-                    guard !Task.isCancelled else { return }
-                    self?.setState(.success(image))
-                } catch {
-                    guard !Task.isCancelled else { return }
-                    self?.setState(.failure)
-                }
-            }
-        }
+        controller.setImage(with: imageURL, host: host, size: size)
     }
 
-    // MARK: - State
-
-    enum State {
-        case loading
-        case success(UIImage)
-        case failure
-    }
-
-    func setState(_ state: State) {
+    private func setState(_ state: ImageViewController.State) {
         imageView.isHidden = true
         errorView?.isHidden = true
         spinner?.stopAnimating()

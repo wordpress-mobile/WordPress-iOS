@@ -7,15 +7,14 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
     private let isSitePostsPage: Bool
     private let isJetpackFeaturesEnabled: Bool
     private let isBlazeFlagEnabled: Bool
-    private let isSyncPublishingEnabled: Bool
 
     var buttonSections: [AbstractPostButtonSection] {
         [
             createPrimarySection(),
-            createSecondarySection(),
-            createBlazeSection(),
             createSetPageAttributesSection(),
-            createTrashSection()
+            createNavigationSection(),
+            createTrashSection(),
+            createUploadStatusSection()
         ]
     }
 
@@ -28,35 +27,21 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
         isSiteHomepage: Bool,
         isSitePostsPage: Bool,
         isJetpackFeaturesEnabled: Bool = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(),
-        isBlazeFlagEnabled: Bool = BlazeHelper.isBlazeFlagEnabled(),
-        isSyncPublishingEnabled: Bool = RemoteFeatureFlag.syncPublishing.enabled()
+        isBlazeFlagEnabled: Bool = BlazeHelper.isBlazeFlagEnabled()
     ) {
         self.page = page
         self.isSiteHomepage = isSiteHomepage
         self.isSitePostsPage = isSitePostsPage
         self.isJetpackFeaturesEnabled = isJetpackFeaturesEnabled
         self.isBlazeFlagEnabled = isBlazeFlagEnabled
-        self.isSyncPublishingEnabled = isSyncPublishingEnabled
     }
 
     private func createPrimarySection() -> AbstractPostButtonSection {
         var buttons = [AbstractPostButton]()
 
-        if isSyncPublishingEnabled {
-            if page.status != .trash {
-                buttons.append(.view)
-            }
-        } else {
-            if !page.isFailed && page.status != .trash {
-                buttons.append(.view)
-            }
+        if page.status != .trash {
+            buttons.append(.view)
         }
-
-        return AbstractPostButtonSection(buttons: buttons)
-    }
-
-    private func createSecondarySection() -> AbstractPostButtonSection {
-        var buttons = [AbstractPostButton]()
 
         if canPublish {
             buttons.append(.publish)
@@ -74,24 +59,15 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
             buttons.append(.share)
         }
 
-        if !isSyncPublishingEnabled {
-            if page.status != .trash && page.isFailed {
-                buttons.append(.retry)
-            }
-        }
-
         return AbstractPostButtonSection(buttons: buttons)
     }
 
     private var canPublish: Bool {
-        guard isSyncPublishingEnabled else {
-            return !page.isFailed && page.status != .publish && page.status != .trash
-        }
         let userCanPublish = page.blog.capabilities != nil ? page.blog.isPublishingPostsAllowed() : true
         return page.isStatus(in: [.draft, .pending]) && userCanPublish
     }
 
-    private func createBlazeSection() -> AbstractPostButtonSection {
+    private func createSetPageAttributesSection() -> AbstractPostButtonSection {
         var buttons = [AbstractPostButton]()
 
         if isBlazeFlagEnabled && page.canBlaze {
@@ -99,17 +75,9 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
             buttons.append(.blaze)
         }
 
-        return AbstractPostButtonSection(buttons: buttons)
-    }
-
-    private func createSetPageAttributesSection() -> AbstractPostButtonSection {
-        var buttons = [AbstractPostButton]()
-
         guard page.status != .trash else {
             return AbstractPostButtonSection(buttons: buttons)
         }
-
-        buttons.append(.setParent)
 
         guard page.status == .publish else {
             return AbstractPostButtonSection(buttons: buttons)
@@ -124,11 +92,18 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
         } else {
             buttons.append(.setRegularPage)
         }
+        return AbstractPostButtonSection(buttons: buttons, submenuButton: .pageAttributes)
+    }
+
+    private func createNavigationSection() -> AbstractPostButtonSection {
+        var buttons = [AbstractPostButton]()
+        if isJetpackFeaturesEnabled, page.status == .publish && page.hasRemote() {
+            buttons.append(.stats)
+        }
         if page.status != .trash {
             buttons.append(.settings)
         }
-
-        return AbstractPostButtonSection(buttons: buttons, submenuButton: .pageAttributes)
+        return AbstractPostButtonSection(buttons: buttons)
     }
 
     private func createTrashSection() -> AbstractPostButtonSection {
@@ -138,5 +113,12 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
 
         let action: AbstractPostButton = page.original().status == .trash ? .delete : .trash
         return AbstractPostButtonSection(buttons: [action])
+    }
+
+    private func createUploadStatusSection() -> AbstractPostButtonSection {
+        guard let error = PostCoordinator.shared.syncError(for: page.original()) else {
+            return AbstractPostButtonSection(buttons: [])
+        }
+        return AbstractPostButtonSection(title: error.localizedDescription, buttons: [.retry])
     }
 }

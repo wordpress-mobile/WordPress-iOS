@@ -7,6 +7,10 @@ class ReaderTabViewController: UIViewController {
 
     private let makeReaderTabView: (ReaderTabViewModel) -> ReaderTabView
 
+    private var createButtonCoordinator: CreateButtonCoordinator?
+
+    private var isFABTracked: Bool = false
+
     private lazy var readerTabView: ReaderTabView = { [unowned viewModel] in
         return makeReaderTabView(viewModel)
     }()
@@ -33,7 +37,6 @@ class ReaderTabViewController: UIViewController {
 
         NotificationCenter.default.addObserver(self, selector: #selector(defaultAccountDidChange(_:)), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-        startObservingQuickStart()
 
         viewModel.fetchReaderMenu()
     }
@@ -52,6 +55,8 @@ class ReaderTabViewController: UIViewController {
         ReaderTracker.shared.start(.main)
         readerTabView.disableScrollsToTop()
 
+        createFABIfNeeded()
+
         if AppConfiguration.showsWhatIsNew {
             RootViewCoordinator.shared.presentWhatIsNew(on: self)
         }
@@ -68,7 +73,8 @@ class ReaderTabViewController: UIViewController {
 
         ReaderTracker.shared.stop(.main)
 
-        QuickStartTourGuide.shared.endCurrentTour()
+        createButtonCoordinator?.removeCreateButton()
+
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
 
@@ -87,24 +93,43 @@ class ReaderTabViewController: UIViewController {
         ReaderTracker.shared.start(.main)
     }
 
-    func presentDiscoverTab() {
-        viewModel.shouldShowCommentSpotlight = true
-        viewModel.fetchReaderMenu()
-        viewModel.showTab(at: ReaderTabConstants.discoverIndex)
-    }
-}
+    // MARK: - Reader FAB
 
-// MARK: Observing Quick Start
-extension ReaderTabViewController {
-    private func startObservingQuickStart() {
-        NotificationCenter.default.addObserver(self, selector: #selector(handleQuickStartTourElementChangedNotification(_:)), name: .QuickStartTourElementChangedNotification, object: nil)
+    private func createFABIfNeeded() {
+        // ensure that the button is truly removed before showing a new one.
+        createButtonCoordinator?.removeCreateButton()
+
+        guard RemoteFeatureFlag.readerFloatingButton.enabled(),
+              let blog = RootViewCoordinator.sharedPresenter.currentOrLastBlog(),
+              let window = UIApplication.shared.mainWindow else {
+            return
+        }
+
+        createButtonCoordinator = makeCreateButtonCoordinator(for: blog)
+        createButtonCoordinator?.add(to: window,
+                                    trailingAnchor: view.safeAreaLayoutGuide.trailingAnchor,
+                                    bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
+
+        if !isFABTracked {
+            // we only need to track this once since it will remain visible everytime Reader is opened
+            // once a user gets the feature. For clickthrough, refer to `create_sheet_shown` with source: `reader`.
+            WPAnalytics.track(.readerFloatingButtonShown)
+            isFABTracked.toggle()
+        }
+
+        // Should we hide when the onboarding is shown?
+        createButtonCoordinator?.showCreateButton(for: blog)
     }
 
-    @objc private func handleQuickStartTourElementChangedNotification(_ notification: Foundation.Notification) {
-        // TODO: Revisit Reader spotlight
-//        if let info = notification.userInfo,
-//           let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
-//        }
+    private func makeCreateButtonCoordinator(for blog: Blog) -> CreateButtonCoordinator {
+        let source = "reader"
+
+        let postAction = PostAction(handler: {
+            let presenter = RootViewCoordinator.sharedPresenter
+            presenter.showPostEditor()
+        }, source: source)
+
+        return CreateButtonCoordinator(self, actions: [postAction], source: source, blog: blog)
     }
 }
 
@@ -134,7 +159,6 @@ extension ReaderTabViewController {
         )
         static let storyBoardInitError = "Storyboard instantiation not supported"
         static let discoverIndex = 0
-        static let spotlightOffset = UIOffset(horizontal: 20, vertical: -10)
         static let settingsButtonContentEdgeInsets = UIEdgeInsets(top: 2, left: 0, bottom: 0, right: 0)
     }
 }

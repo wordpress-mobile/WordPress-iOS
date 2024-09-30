@@ -1,5 +1,4 @@
 import Foundation
-import CocoaLumberjack
 import WordPressKit
 import WordPressShared
 
@@ -42,7 +41,7 @@ class SharePostTypePickerViewController: UITableViewController {
     init(postType: PostType) {
         self.originallySelectedPostType = postType
         self.selectedPostType = postType
-        super.init(nibName: nil, bundle: nil)
+        super.init(style: .insetGrouped)
     }
 
     required init?(coder aDecoder: NSCoder) {

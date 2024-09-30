@@ -14,7 +14,7 @@ class StatsStackViewCell: StatsBaseCell, NibLoadable {
         stackView.removeAllSubviews()
     }
 
-    func insert(view: UIView, animated: Bool = true) {
+    func insert(view: UIView) {
         stackView.addArrangedSubview(view)
     }
 }

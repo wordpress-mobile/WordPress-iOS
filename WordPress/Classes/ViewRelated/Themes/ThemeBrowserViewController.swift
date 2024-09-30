@@ -1,7 +1,5 @@
 import Foundation
-import CocoaLumberjack
-import WordPressShared.WPAnalytics
-import WordPressShared.WPStyleGuide
+import WordPressShared
 
 /**
  *  @brief      Support for filtering themes by purchasability
@@ -202,7 +200,6 @@ public protocol ThemePresenter: AnyObject {
      */
 
     fileprivate enum Section {
-        case search
         case info
         case customThemes
         case themes
@@ -247,6 +244,8 @@ public protocol ThemePresenter: AnyObject {
     private var noResultsShown: Bool {
         return noResultsViewController?.parent != nil
     }
+
+    private var isFirstAppearance = true
 
     /**
      *  @brief      Load theme screenshots at maximum displayed width
@@ -296,15 +295,15 @@ public protocol ThemePresenter: AnyObject {
 
     open override func viewDidLoad() {
         super.viewDidLoad()
+
         collectionView.delegate = self
+        collectionView.backgroundColor = .secondarySystemBackground
 
         title = NSLocalizedString("Themes", comment: "Title of Themes browser page")
 
-        WPStyleGuide.configureColors(view: view, collectionView: collectionView)
-
         fetchThemes()
-        sections = (themeCount == 0 && customThemeCount == 0) ? [.search, .customThemes, .themes] :
-                                                                [.search, .info, .customThemes, .themes]
+        sections = (themeCount == 0 && customThemeCount == 0) ? [.customThemes, .themes] :
+                                                                [.info, .customThemes, .themes]
 
         configureSearchController()
 
@@ -317,32 +316,18 @@ public protocol ThemePresenter: AnyObject {
     }
 
     fileprivate func configureSearchController() {
-        extendedLayoutIncludesOpaqueBars = true
         definesPresentationContext = true
 
         searchController = UISearchController(searchResultsController: nil)
         searchController.obscuresBackgroundDuringPresentation = false
+        navigationItem.searchController = searchController
 
         searchController.delegate = self
         searchController.searchResultsUpdater = self
 
-        collectionView.register(ThemeBrowserSearchHeaderView.self,
-                                     forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-                                     withReuseIdentifier: ThemeBrowserSearchHeaderView.reuseIdentifier)
+        collectionView.register(UINib(nibName: "ThemeBrowserSectionHeaderView", bundle: Bundle(for: ThemeBrowserSectionHeaderView.self)), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ThemeBrowserViewController.reuseIdentifierForThemesHeader)
 
-        collectionView.register(UINib(nibName: "ThemeBrowserSectionHeaderView", bundle: Bundle(for: ThemeBrowserSectionHeaderView.self)),
-                                    forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-                                    withReuseIdentifier: ThemeBrowserViewController.reuseIdentifierForThemesHeader)
-
-        collectionView.register(UINib(nibName: "ThemeBrowserSectionHeaderView", bundle: Bundle(for: ThemeBrowserSectionHeaderView.self)),
-                                forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-                                withReuseIdentifier: ThemeBrowserViewController.reuseIdentifierForCustomThemesHeader)
-
-        WPStyleGuide.configureSearchBar(searchController.searchBar)
-    }
-
-    fileprivate var searchBarHeight: CGFloat {
-        return searchController.searchBar.bounds.height + view.safeAreaInsets.top
+        collectionView.register(UINib(nibName: "ThemeBrowserSectionHeaderView", bundle: Bundle(for: ThemeBrowserSectionHeaderView.self)), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ThemeBrowserViewController.reuseIdentifierForCustomThemesHeader)
     }
 
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -361,6 +346,10 @@ public protocol ThemePresenter: AnyObject {
             suspendedSearch = ""
         }
 
+        if isFirstAppearance {
+            navigationItem.hidesSearchBarWhenScrolling = false
+        }
+
         guard let theme = presentingTheme else {
             return
         }
@@ -371,52 +360,43 @@ public protocol ThemePresenter: AnyObject {
         }
     }
 
-    open override func viewWillDisappear(_ animated: Bool) {
+    open override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
 
-        if searchController.isActive {
-            searchController.isActive = false
+        if isFirstAppearance {
+            navigationItem.hidesSearchBarWhenScrolling = true
+            isFirstAppearance = false
         }
+    }
 
+    open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
         unregisterForKeyboardNotifications()
     }
 
     fileprivate func registerForKeyboardNotifications() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(ThemeBrowserViewController.keyboardDidShow(_:)),
-                                               name: UIResponder.keyboardDidShowNotification,
-                                               object: nil)
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(ThemeBrowserViewController.keyboardWillHide(_:)),
-                                               name: UIResponder.keyboardWillHideNotification,
-                                               object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ThemeBrowserViewController.keyboardDidShow(_:)), name: UIResponder.keyboardDidShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ThemeBrowserViewController.keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
     fileprivate func unregisterForKeyboardNotifications() {
-        NotificationCenter.default.removeObserver(self,
-                                                  name: UIResponder.keyboardDidShowNotification,
-                                                  object: nil)
-        NotificationCenter.default.removeObserver(self,
-                                                  name: UIResponder.keyboardWillHideNotification,
-                                                  object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
     @objc open func keyboardDidShow(_ notification: Foundation.Notification) {
         let keyboardFrame = localKeyboardFrameFromNotification(notification)
         let keyboardHeight = collectionView.frame.maxY - keyboardFrame.origin.y
-
+//
         collectionView.contentInset.bottom = keyboardHeight
-        collectionView.verticalScrollIndicatorInsets.top = searchBarHeight
         collectionView.verticalScrollIndicatorInsets.bottom = keyboardHeight
     }
 
     @objc open func keyboardWillHide(_ notification: Foundation.Notification) {
         let tabBarHeight = tabBarController?.tabBar.bounds.height ?? 0
 
-        collectionView.contentInset.top = view.safeAreaInsets.top
         collectionView.contentInset.bottom = tabBarHeight
-        collectionView.verticalScrollIndicatorInsets.top = searchBarHeight
         collectionView.verticalScrollIndicatorInsets.bottom = tabBarHeight
     }
 
@@ -560,7 +540,7 @@ public protocol ThemePresenter: AnyObject {
 
     open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch sections[section] {
-        case .search, .info:
+        case .info:
             return 0
         case .customThemes:
             return customThemeCount
@@ -586,13 +566,7 @@ public protocol ThemePresenter: AnyObject {
     open func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         switch kind {
         case UICollectionView.elementKindSectionHeader:
-            if sections[indexPath.section] == .search {
-                let searchHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: ThemeBrowserSearchHeaderView.reuseIdentifier, for: indexPath) as! ThemeBrowserSearchHeaderView
-
-                searchHeader.searchBar = searchController.searchBar
-
-                return searchHeader
-            } else if sections[indexPath.section] == .info {
+            if sections[indexPath.section] == .info {
                 let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: ThemeBrowserHeaderView.reuseIdentifier, for: indexPath) as! ThemeBrowserHeaderView
                 header.presenter = self
                 return header
@@ -644,11 +618,9 @@ public protocol ThemePresenter: AnyObject {
                 return CGSize(width: 0, height: ThemeBrowserSectionHeaderView.height)
             }
             return .zero
-        case .search:
-            return CGSize(width: 0, height: searchController.searchBar.bounds.height)
         case .info:
             let horizontallyCompact = traitCollection.horizontalSizeClass == .compact
-            let height = Styles.headerHeight(horizontallyCompact, includingSearchBar: ThemeType.mayPurchase)
+            let height = Styles.headerHeight(horizontallyCompact)
 
             return CGSize(width: 0, height: height)
         }
@@ -677,7 +649,7 @@ public protocol ThemePresenter: AnyObject {
             return Styles.themeMargins
         case .themes:
             return Styles.themeMargins
-        case .info, .search:
+        case .info:
             return Styles.infoMargins
         }
     }
@@ -695,7 +667,7 @@ public protocol ThemePresenter: AnyObject {
 
     open func willPresentSearchController(_ searchController: UISearchController) {
         hideSectionHeaders = true
-        if sections[1] == .info {
+        if sections[0] == .info {
             collectionView?.collectionViewLayout.invalidateLayout()
             setInfoSectionHidden(true)
         }
@@ -712,21 +684,20 @@ public protocol ThemePresenter: AnyObject {
     }
 
     open func didDismissSearchController(_ searchController: UISearchController) {
-        if sections[1] == .themes || sections[1] == .customThemes {
+        if sections[0] == .themes || sections[0] == .customThemes {
             setInfoSectionHidden(false)
         }
-        collectionView.verticalScrollIndicatorInsets.top = view.safeAreaInsets.top
     }
 
     fileprivate func setInfoSectionHidden(_ hidden: Bool) {
         let hide = {
-            self.collectionView?.deleteSections(IndexSet(integer: 1))
-            self.sections = [.search, .customThemes, .themes]
+            self.collectionView?.deleteSections(IndexSet(integer: 0))
+            self.sections = [.customThemes, .themes]
         }
 
         let show = {
-            self.collectionView?.insertSections(IndexSet(integer: 1))
-            self.sections = [.search, .info, .customThemes, .themes]
+            self.collectionView?.insertSections(IndexSet(integer: 0))
+            self.sections = [.info, .customThemes, .themes]
         }
 
         collectionView.performBatchUpdates({
@@ -853,8 +824,6 @@ public protocol ThemePresenter: AnyObject {
 
     @objc open func presentCustomizeForTheme(_ theme: Theme?) {
         WPAppAnalytics.track(.themesCustomizeAccessed, with: self.blog)
-        QuickStartTourGuide.shared.visited(.customize)
-
         presentUrlForTheme(theme, url: theme?.customizeUrl(), activeButton: false, modalStyle: .fullScreen)
     }
 
@@ -957,15 +926,6 @@ private extension ThemeBrowserViewController {
         addChild(noResultsViewController)
         collectionView.addSubview(noResultsViewController.view)
         noResultsViewController.view.frame = collectionView.frame
-
-        // There is a gap between the search bar and the collection view - https://github.com/wordpress-mobile/WordPress-iOS/issues/9730
-        // This makes the No Results View look vertically off-center. Until that is resolved, we'll adjust the NRV according to the search bar.
-        if searchController.isActive {
-            noResultsViewController.view.frame.origin.y = searchController.searchBar.bounds.height
-        } else {
-            noResultsViewController.view.frame.origin.y -= searchBarHeight
-        }
-
         noResultsViewController.didMove(toParent: self)
     }
 
@@ -980,9 +940,8 @@ private extension ThemeBrowserViewController {
         if searchController.isActive {
             collectionView?.reloadData()
         } else {
-            sections = [.search, .info, .customThemes, .themes]
+            sections = [.info, .customThemes, .themes]
             collectionView?.collectionViewLayout.invalidateLayout()
         }
     }
-
 }

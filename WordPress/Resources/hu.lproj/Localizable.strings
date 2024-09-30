@@ -41,12 +41,9 @@
 
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
-   Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
-   Cancel
    Cancel a prompt
    Cancel Action
    Cancel action on share extension editor screen.
@@ -80,7 +77,6 @@
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
@@ -94,9 +90,6 @@
 
 /* Label for the categories field. Should be the same as WP core. */
 "Categories" = "Kategóriák";
-
-/* Error popup title to indicate that there was no category title filled in. */
-"Category title missing." = "Kategória cím hiányzik.";
 
 /* No comment provided by engineer. */
 "Clear Old Activity Logs" = "Régi tevékenységi naplók törlése";
@@ -137,21 +130,12 @@
 /* No comment provided by engineer. */
 "Connecting to WordPress.com" = "Kapcsolódás a WordPress.com-hoz";
 
-/* No comment provided by engineer. */
-"Couldn't Connect" = "Nem sikerült kapcsolódni";
-
 /* Label for list of countries.
    Register Domain - Domain contact information field Country */
 "Country" = "Ország";
 
 /* The button title text for creating a new account. */
 "Create Account" = "Fiók létrehozása";
-
-/* Button title, encourages users to create post on their blog. */
-"Create Post" = "Bejegyzés létrehozása";
-
-/* Create WordPress.com site button */
-"Create WordPress.com site" = "WordPress.com oldal létrehozása";
 
 /* No comment provided by engineer. */
 "Current" = "Jelenlegi";
@@ -173,7 +157,6 @@
 "Disabled" = "Kikapcsolva";
 
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
-   Button shown if there are unsaved changes and the author is trying to move away from the post.
    Menus button title for canceling/discarding changes made. */
 "Discard" = "Elvet";
 
@@ -184,7 +167,6 @@
 "Dismiss" = "Elutasítás";
 
 /* A done button
-   Accessibility label for the Done button in the Me screen.
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
@@ -193,13 +175,10 @@
    Label for Done button
    Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
-   Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Text displayed by the right navigation button title
    Title for a Done button.
    Title for button that will dismiss this view
-   Title for the button that will dismiss this view.
-   Title of the Done button on the me page */
+   Title for the button that will dismiss this view. */
 "Done" = "Kész";
 
 /* Name for the status of a draft post. */
@@ -239,11 +218,7 @@
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
 "Empty URL" = "Üres cím";
 
-/* No comment provided by engineer. */
-"Enter a password" = "Adj meg egy jelszót";
-
-/* (placeholder) Help enter WordPress password
-   Placeholder of a field to type a password to protect the post. */
+/* (placeholder) Help enter WordPress password */
 "Enter password" = "Jelszó megadása";
 
 /* (placeholder) Help enter WordPress username */
@@ -265,17 +240,11 @@
 /* No comment provided by engineer. */
 "Featured Image did not load" = "A kiemelt képet nem lehet betölteni";
 
-/* Button title. Follow the comments on a post.
-   Prompt to follow a blog. */
+/* Button title. Follow the comments on a post. */
 "Follow" = "Követés";
 
-/* Blog Followers
-   Insights 'Followers' header
-   Label for number of followers. */
+/* Label for number of followers. */
 "Followers" = "Követők";
-
-/* User is following the blog. */
-"Following" = "Követve";
 
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "Fiók információk beszerzése";
@@ -289,9 +258,6 @@
 
 /* No comment provided by engineer. */
 "Hide keyboard" = "Billentyűzet elrejtése";
-
-/* Undated post time label */
-"Immediately" = "Azonnal";
 
 /* Default button title used in media picker to insert media (photos / videos) into a post.
    Label action for inserting a link on the editor */
@@ -326,8 +292,6 @@
 "Jetpack Settings" = "Jetpack beállítások";
 
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
-   Button shown if there are unsaved changes and the author is trying to move away from the post.
-   Button shown when the author is asked for publishing confirmation.
    Goes back to editing the post. */
 "Keep Editing" = "Szerkesztés folytatása";
 
@@ -344,11 +308,9 @@
 "Learn more" = "Tovább";
 
 /* Loading tags
-   Loading tags.
    Loading. Verb
    Suggestions loading message
    Text displayed in HUD while a media item is being loaded.
-   Text displayed in HUD while a revision post is loading.
    Text displayed while loading time zones */
 "Loading..." = "Betöltés...";
 
@@ -393,7 +355,6 @@
 "Me" = "Én";
 
 /* Noun. Title. Links to the blog's Media library.
-   The menu item to select during a guided tour.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Média";
@@ -450,7 +411,6 @@
    Notifications tab bar item accessibility label
    Notifications View Controller title
    Noun. Name of the Notifications feature
-   The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Értesítések";
 
@@ -481,9 +441,6 @@
 /* No comment provided by engineer. */
 "Open in Safari" = "Megnyitás Safariban";
 
-/* Placeholder to indicate that filling out the field is optional. */
-"Optional" = "Opcionális";
-
 /* Accessibility label for Ordered list button on formatting toolbar. */
 "Ordered List" = "Rendezett lista";
 
@@ -492,26 +449,20 @@
 "Original" = "Eredeti";
 
 /* Noun. Title. Links to the blog's Pages screen.
-   The item to select during a guided tour.
    This is the section title
    Title of the screen showing the list of pages for a blog. */
 "Pages" = "Oldalak";
 
-/* Placeholder to set a parent category for a new category.
-   Title for selecting parent category of a category */
+/* Title for selecting parent category of a category */
 "Parent Category" = "Szülő kategória";
 
 /* Accessibility label for the password text field in the self-hosted login page.
    Label for entering password in password field
-   Label for the password field. Should be the same as WP core.
    Login dialog password placeholder
    Password placeholder
    Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "Jelszó";
-
-/* Privacy setting for posts set to 'Password protected'. Should be the same as in core WP. */
-"Password protected" = "Jelszóval védett";
 
 /* Button title for Pending comment state.
    Status for Media object that is being processed locally.
@@ -542,8 +493,7 @@
 /* No comment provided by engineer. */
 "Please try entering your login details again." = "Adjuk meg újra a bejelentkezési adatainkat.";
 
-/* For setting the format of a post.
-   The post formats available for the post. Should be the same as in core WP. */
+/* The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Bejegyzés formátum";
 
 /* All Time Stats 'Posts' label
@@ -568,18 +518,12 @@
 /* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "Adatvédelmi irányelvek";
 
-/* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
+/* Name for the status of a post that is marked private. */
 "Private" = "Magánjellegű";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
-"Public" = "Nyilvános";
-
-/* Button title. Publishes a post.
-   Label for the publish (verb) button. Tapping publishes a draft post.
+/* Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen
-   Title for the publish settings view */
+   Section title for the publish table section in the blog details screen */
 "Publish" = "Közzététel";
 
 /* A short phrase indicating a post is due to be immedately published. */
@@ -590,9 +534,6 @@
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Közzétéve";
 
-/* Published on [date] */
-"Published on" = "Közzétéve:";
-
 /* Mobile Push Notifications */
 "Push Notifications" = "Értesítések";
 
@@ -601,7 +542,6 @@
    The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
-   The menu item to select during a guided tour.
    Title of the 'Reader' tab - used for spotlight indexing on iOS. */
 "Reader" = "Olvasó";
 
@@ -612,11 +552,9 @@
 "Referrers" = "Hivatkozó oldalak";
 
 /* Alert button to confirm a plugin to be removed
-   Button label when removing a blog
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
-   Remove an image/posts/etc
-   Removes a self hosted site from the app */
+   Remove an image/posts/etc */
 "Remove" = "Eltávolítás";
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
@@ -637,10 +575,8 @@
 /* A prompt to attempt the failed network request again
    A prompt to attempt the failed network request again.
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
-   Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
    Opens the media library .
-   Retries the upload of a user's post.
    Retry updating User's Role
    Retry. Action
    Retry. Verb – retry a failed media upload.
@@ -654,7 +590,6 @@
 
 /* Menus save button title
    Save Action
-   Save button label (saving content, ex: Post, Page, Comment, Category).
    Save button label (saving content, ex: Post, Page, Comment).
    Save draft post action on share extension site picker screen.
    Settings Text save button title
@@ -662,25 +597,14 @@
    Title of action button to save a Reader post to read later. */
 "Save" = "Ment";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from the post. */
-"Save Draft" = "Vázlat mentése";
-
-/* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a post is being saved as a draft. */
+/* Menus save button title while it is saving a Menu. */
 "Saving..." = "Mentés...";
-
-/* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
-"Schedule" = "Ütemezés";
 
 /* Name for the status of a scheduled post
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Ütemezve";
 
-/* Scheduled for [date] */
-"Scheduled for" = "Ütemezve";
-
-/* Placeholder text for the search bar
-   Title of Stats section that shows search engine referrer traffic.
+/* Title of Stats section that shows search engine referrer traffic.
    Title of the Reader's search feature */
 "Search" = "Keresőmotorok";
 
@@ -691,7 +615,6 @@
 "Settings" = "Beállítások";
 
 /* Accessibility label for share buttons in nav bars
-   Button label to share a post
    Button label to share a web page
    Shares the comment URL
    Spoken accessibility label
@@ -704,18 +627,13 @@
 
 /* Default title for a site
    Label for site title blog setting
-   The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "Honlap neve";
-
-/* The item to select during a guided tour. */
-"Site URL" = "Webhely címe";
 
 /* No comment provided by engineer. */
 "Site address must be at least 4 characters." = "A honlap címnek legalább 4 karakternek kell lennie!";
 
-/* Button that allows the user to skip the prompt and be brought to the app
-   Continue without making a selection
+/* Continue without making a selection
    Continue without making a selection. */
 "Skip" = "Kihagyás";
 
@@ -772,12 +690,8 @@
 /* Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
-   Stats window title
-   The item to select during a guided tour. */
+   Stats window title */
 "Stats" = "Statisztika";
-
-/* The status of the post. Should be the same as in core WP. */
-"Status" = "Állapot";
 
 /* Accessibility label for strikethrough button on formatting toolbar. */
 "Strike Through" = "Áthúzva";
@@ -817,19 +731,12 @@
 /* No comment provided by engineer. */
 "The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "A %1$@ webhelyen WordPress %2$@ van használatban. Azt ajánljuk, hogy frissítsünk a legutóbbi verzióra, vagy legalább erre: %3$@";
 
-/* No comment provided by engineer. */
-"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again." = "Az alkalmazásban tárolt felhasználónév és a jelszó lehetséges, hogy elavult. Adjuk meg újra a jelszót a beállításokban, és próbáljuk újra.";
-
 /* Accessibility label for web page preview title
    Label for list of stats by content title.
    Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
-   Post title
-   Title of the new Category being created. */
+   Post title */
 "Title" = "Cím";
-
-/* Error popup message to indicate that there was no category title filled in. */
-"Title for a category is mandatory." = "Kategória cím megadása kötelező.";
 
 /* Comments Today Section Header
    Insights 'Today' header
@@ -864,11 +771,7 @@
    Update button label (saving content, ex: Post, Page, Comment). */
 "Update" = "Frissítés";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from an already saved draft. */
-"Update Draft" = "Vázlat frissítése";
-
-/* Message displayed on a post's card when the post has failed to upload
-   System notification displayed to the user when media files have failed to upload. */
+/* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Sikertelen feltöltés";
 
 /* Label for the date a media asset (image / video) was uploaded
@@ -899,8 +802,7 @@
 /* Description for the version label in the What's new page. */
 "Version " = "Verzió";
 
-/* Button title. Displays a summary / sharing screen for a specific post.
-   Opens the post epilogue screen to allow sharing / viewing of a post.
+/* Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Megtekintés";
@@ -917,8 +819,7 @@
    Today's Stats 'Views' label */
 "Views" = "Megtekintések";
 
-/* The visibility settings of the post. Should be the same as in core WP.
-   Visibility label */
+/* The visibility settings of the post. Should be the same as in core WP. */
 "Visibility" = "Nyilvánosság";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
@@ -951,8 +852,7 @@
 "You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "Ez az e-mail cím nem használható. Ugyanis, ennél a szolgáltatónál fennakadnak az általunk külödött levelek. Válasszunk másik e-mail szolgáltatót.";
 
 /* Show when clicking cancel on a comment text box and you didn't save your changes.
-   Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment.
-   Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post. */
+   Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment. */
 "You have unsaved changes." = "Nem mentett változtatások vannak.";
 
 /* (placeholder) Help the user enter a URL into the field */

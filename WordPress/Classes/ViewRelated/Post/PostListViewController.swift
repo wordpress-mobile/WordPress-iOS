@@ -1,5 +1,4 @@
 import Foundation
-import CocoaLumberjack
 import WordPressShared
 import Gridicons
 import UIKit
@@ -21,8 +20,6 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
         controller.navigationItem.largeTitleDisplayMode = .never
         controller.initialFilterWithPostStatus = postStatus
         sourceController.navigationController?.pushViewController(controller, animated: true)
-
-        QuickStartTourGuide.shared.visited(.blogDetailNavigation)
     }
 
     // MARK: - UIViewController
@@ -55,7 +52,7 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        if traitCollection.horizontalSizeClass == .compact {
+        if traitCollection.horizontalSizeClass == .compact || Feature.enabled(.sidebar) {
             createButtonCoordinator.showCreateButton(for: blog)
         }
     }
@@ -67,7 +64,7 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
 
     /// Shows/hides the create button based on the trait collection horizontal size class
     @objc private func toggleCreateButton() {
-        if traitCollection.horizontalSizeClass == .compact {
+        if traitCollection.horizontalSizeClass == .compact || Feature.enabled(.sidebar) {
             createButtonCoordinator.showCreateButton(for: blog)
         } else {
             createButtonCoordinator.hideCreateButton()
@@ -161,10 +158,6 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
 
         let post = postAtIndexPath(indexPath)
 
-        guard post.status != .trash else {
-            // No editing posts that are trashed.
-            return
-        }
         WPAnalytics.track(.postListItemSelected, properties: propertiesForAnalytics())
         editPost(post)
     }
@@ -206,37 +199,10 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
     }
 
     private func editDuplicatePost(_ post: AbstractPost) {
-        guard let post = post as? Post else {
-            return
+        guard let post = post.latest() as? Post else {
+            return wpAssertionFailure("unexpected post type")
         }
         PostListEditorPresenter.handleCopy(post: post, in: self)
-    }
-
-    fileprivate func viewStatsForPost(_ post: AbstractPost) {
-        // Check the blog
-        let blog = post.blog
-
-        guard blog.supports(.stats) else {
-            // Needs Jetpack.
-            return
-        }
-
-        WPAnalytics.track(.postListStatsAction, withProperties: propertiesForAnalytics())
-
-        // Push the Post Stats ViewController
-        guard let postID = post.postID as? Int else {
-            return
-        }
-
-        SiteStatsInformation.sharedInstance.siteTimeZone = blog.timeZone
-        SiteStatsInformation.sharedInstance.oauth2Token = blog.authToken
-        SiteStatsInformation.sharedInstance.siteID = blog.dotComID
-
-        let postURL = URL(string: post.permaLink! as String)
-        let postStatsTableViewController = PostStatsTableViewController.withJPBannerForBlog(postID: postID,
-                                                                                            postTitle: post.titleForDisplay(),
-                                                                                            postURL: postURL)
-        navigationController?.pushViewController(postStatsTableViewController, animated: true)
     }
 
     // MARK: - InteractivePostViewDelegate
@@ -249,68 +215,12 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
         viewPost(post)
     }
 
-    func stats(for post: AbstractPost) {
-        viewStatsForPost(post)
-    }
-
     func duplicate(_ post: AbstractPost) {
         editDuplicatePost(post)
     }
 
-    func trash(_ post: AbstractPost, completion: @escaping () -> Void) {
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
-            return trashPost(post, completion: completion)
-        }
-        return super._trash(post, completion: completion)
-    }
-
-    private func trashPost(_ post: AbstractPost, completion: @escaping () -> Void) {
-        if post.status == .draft ||
-            post.status == .scheduled {
-            deletePost(post)
-            completion()
-            return
-        }
-
-        let cancelText: String
-        let deleteText: String
-        let messageText: String
-        let titleText: String
-
-        if post.status == .trash {
-            cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
-            deleteText = NSLocalizedString("Delete Permanently", comment: "Delete option in the confirmation alert when deleting a post from the trash.")
-            titleText = NSLocalizedString("Delete Permanently?", comment: "Title of the confirmation alert when deleting a post from the trash.")
-            messageText = NSLocalizedString("Are you sure you want to permanently delete this post?", comment: "Message of the confirmation alert when deleting a post from the trash.")
-        } else {
-            cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
-            deleteText = NSLocalizedString("Move to Trash", comment: "Trash option in the trash confirmation alert.")
-            titleText = NSLocalizedString("Trash this post?", comment: "Title of the trash confirmation alert.")
-            messageText = NSLocalizedString("Are you sure you want to trash this post?", comment: "Message of the trash confirmation alert.")
-        }
-
-        let alertController = UIAlertController(title: titleText, message: messageText, preferredStyle: .alert)
-
-        alertController.addCancelActionWithTitle(cancelText) { _ in
-            completion()
-        }
-        alertController.addDestructiveActionWithTitle(deleteText) { [weak self] action in
-            self?.deletePost(post)
-            completion()
-        }
-        alertController.presentFromRootViewController()
-    }
-
     func draft(_ post: AbstractPost) {
         moveToDraft(post)
-    }
-
-    func retry(_ post: AbstractPost) {
-        PostCoordinator.shared.save(post)
-    }
-
-    func cancelAutoUpload(_ post: AbstractPost) {
-        PostCoordinator.shared.cancelAutoUploadOf(post)
     }
 
     func share(_ post: AbstractPost, fromView view: UIView) {
@@ -360,29 +270,20 @@ private extension PostListViewController {
     func handleRefreshNoResultsViewController(_ noResultsViewController: NoResultsViewController) {
 
         guard connectionAvailable() else {
-            noResultsViewController.configure(title: "", noConnectionTitle: NoResultsText.noConnectionTitle, buttonTitle: NoResultsText.buttonTitle, subtitle: nil, noConnectionSubtitle: NoResultsText.noConnectionSubtitle, attributedSubtitle: nil, attributedSubtitleConfiguration: nil, image: nil, subtitleImage: nil, accessoryView: nil)
+            noResultsViewController.configure(title: "", noConnectionTitle: NoResultsText.noConnectionTitle, buttonTitle: nil, subtitle: nil, noConnectionSubtitle: NoResultsText.noConnectionSubtitle, attributedSubtitle: nil, attributedSubtitleConfiguration: nil, image: nil, subtitleImage: nil, accessoryView: nil)
             return
         }
 
         let accessoryView = syncHelper.isSyncing ? NoResultsViewController.loadingAccessoryView() : nil
 
         noResultsViewController.configure(title: noResultsTitle(),
-                                          buttonTitle: noResultsButtonTitle(),
+                                          buttonTitle: nil,
                                           image: noResultsImageName,
                                           accessoryView: accessoryView)
     }
 
     var noResultsImageName: String {
         return "posts-no-results"
-    }
-
-    func noResultsButtonTitle() -> String? {
-        if syncHelper.isSyncing == true {
-            return nil
-        }
-
-        let filterType = filterSettings.currentPostListFilter().filterType
-        return filterType == .trashed ? nil : NoResultsText.buttonTitle
     }
 
     func noResultsTitle() -> String {
@@ -409,7 +310,6 @@ private extension PostListViewController {
     }
 
     struct NoResultsText {
-        static let buttonTitle = NSLocalizedString("Create Post", comment: "Button title, encourages users to create post on their blog.")
         static let fetchingTitle = NSLocalizedString("Fetching posts...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.")
         static let noDraftsTitle = NSLocalizedString("You don't have any draft posts", comment: "Displayed when the user views drafts in the posts list and there are no posts")
         static let noScheduledTitle = NSLocalizedString("You don't have any scheduled posts", comment: "Displayed when the user views scheduled posts in the posts list and there are no posts")

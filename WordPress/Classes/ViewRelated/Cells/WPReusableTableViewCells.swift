@@ -104,7 +104,7 @@ class WPTableViewCellBadge: WPTableViewCellDefault {
         label.layer.masksToBounds = true
         label.layer.cornerRadius = WPTableViewCellBadge.badgeCornerRadius
         label.textAlignment = .center
-        label.backgroundColor = WPStyleGuide.newKidOnTheBlockBlue()
+        label.backgroundColor = WPStyleGuide.mediumBlue()
         label.textColor = UIColor.white
         return label
     }()
@@ -131,7 +131,7 @@ class WPTableViewCellIndicator: WPTableViewCellDefault {
         let view = UIView(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 10, height: 10)))
         view.layer.masksToBounds = true
         view.layer.cornerRadius =  view.frame.height / 2
-        view.backgroundColor = .accent
+        view.backgroundColor = UIAppColor.accent
         return view
     }()
 }

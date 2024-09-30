@@ -9,6 +9,6 @@ class RegisterDomainDetailsFooterView: UIView, NibLoadable {
         super.awakeFromNib()
         clipsToBounds = false
         submitButton.isPrimary = true
-        backgroundColor = .basicBackground
+        backgroundColor = .systemBackground
     }
 }

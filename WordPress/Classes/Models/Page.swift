@@ -1,7 +1,7 @@
 import Foundation
 import CoreData
 
-@objc (Page)
+@objc(Page)
 class Page: AbstractPost {
     /// Returns if the Page has a visible parent Page
     @objc var hasVisibleParent: Bool = true
@@ -12,21 +12,6 @@ class Page: AbstractPost {
     /// Returns if the Page is a top level
     @objc var isTopLevelPage: Bool {
         return parentID == nil
-    }
-
-    /// Returns if the Page can display some tag
-    @objc var canDisplayTags: Bool {
-        return hasPrivateState || hasPendingReviewState || hasLocalChanges()
-    }
-
-    /// Returns if the Page has private state
-    @objc var hasPrivateState: Bool {
-        return status == .publishPrivate
-    }
-
-    /// Returns if the Page has Pending Review state
-    @objc var hasPendingReviewState: Bool {
-        return status == .pending
     }
 
     /// Section identifier for the page, using the creation date.
@@ -54,19 +39,6 @@ class Page: AbstractPost {
         default:
             preconditionFailure("Invalid key path for a section identifier")
         }
-    }
-
-    override func additionalContentHashes() -> [Data] {
-        return [
-            hash(for: parentID?.intValue ?? 0)
-        ]
-    }
-
-    override func availableStatusesForEditing() -> [Any] {
-        if isSiteHomepage && isPublished() {
-            return [PostStatusPublish]
-        }
-        return super.availableStatusesForEditing()
     }
 
     // MARK: - Homepage Settings

@@ -23,7 +23,14 @@ struct ResolveConflictView: View {
     var body: some View {
         Form {
             Section {
-                Text(Strings.description)
+                VStack(alignment: .leading, spacing: 12) {
+                    if let title = post.latest().titleForDisplay() {
+                        Text("\"\(title)\"")
+                            .font(.headline)
+                            .lineLimit(2)
+                    }
+                    Text(Strings.description)
+                }
                 ForEach(versions) { version in
                     PostVersionView(version: version, selectedVersion: $selectedVersion)
                 }
@@ -78,7 +85,7 @@ struct ResolveConflictView: View {
     private func handleLocalVersionSelected(for post: AbstractPost) {
         Task { @MainActor in
             do {
-                try await repository._save(post, overwrite: true)
+                try await repository.save(post, overwrite: true)
                 PostCoordinator.shared.didResolveConflict(for: post)
                 dismiss?()
             } catch {
@@ -91,7 +98,7 @@ struct ResolveConflictView: View {
     @MainActor
     private func handleRemoteVersionSelected(for post: AbstractPost, remoteRevision: RemotePost) {
         do {
-            try repository._resolveConflict(for: post, pickingRemoteRevision: remoteRevision)
+            try repository.resolveConflict(for: post, pickingRemoteRevision: remoteRevision)
             PostCoordinator.shared.didResolveConflict(for: post)
             dismiss?()
         } catch {

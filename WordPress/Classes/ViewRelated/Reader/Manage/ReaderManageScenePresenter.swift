@@ -11,7 +11,7 @@ class ReaderManageScenePresenter {
         private func makeViewController() -> UIViewController {
             switch self {
             case .tags:
-                return ReaderTagsTableViewController(style: .grouped)
+                return ReaderTagsTableViewController(style: .plain)
             case .sites:
                 return ReaderFollowedSitesViewController.controller(showsAccessoryFollowButtons: true, showsSectionTitle: false)
             }

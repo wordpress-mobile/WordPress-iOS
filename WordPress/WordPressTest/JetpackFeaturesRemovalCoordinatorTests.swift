@@ -258,7 +258,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
         var flags = generateFlags(phaseOne: false, phaseTwo: false, phaseThree: false, phaseFour: true, phaseNewUsers: false, phaseSelfHosted: false)
         let remote = MockFeatureFlagRemote(flags: flags)
         store.update(using: remote, waitOn: self)
-        let blog = BlogBuilder(mainContext).build()
+        _ = BlogBuilder(mainContext).build()
         try mainContext.save()
         var phase = JetpackFeaturesRemovalCoordinator.siteCreationPhase(featureFlagStore: store)
         // Then
@@ -304,7 +304,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
         var flags = generateFlags(phaseOne: true, phaseTwo: true, phaseThree: true, phaseFour: true, phaseNewUsers: false, phaseSelfHosted: false)
         let remote = MockFeatureFlagRemote(flags: flags)
         store.update(using: remote, waitOn: self)
-        let blog = BlogBuilder(mainContext).build()
+        _ = BlogBuilder(mainContext).build()
         try mainContext.save()
         var phase = JetpackFeaturesRemovalCoordinator.siteCreationPhase(featureFlagStore: store)
 

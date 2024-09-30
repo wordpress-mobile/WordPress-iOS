@@ -83,7 +83,7 @@ private extension AvatarTrainView {
         avatarStackView.arrangedSubviews.forEach { view in
             view.layer.masksToBounds = true
             view.layer.borderWidth = Constants.borderWidth
-            view.layer.borderColor = UIColor.listForeground.cgColor
+            view.layer.borderColor = UIColor.secondarySystemGroupedBackground.cgColor
         }
     }
 

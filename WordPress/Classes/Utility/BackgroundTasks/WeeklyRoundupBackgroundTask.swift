@@ -173,7 +173,7 @@ private class WeeklyRoundupDataProvider {
     ///
     private func filterCandidateSites(_ sites: [Site], result: @escaping (Result<[Site], Error>) -> Void) {
         let administeredSites = sites.filter { site in
-            site.isAdmin && ((FeatureFlag.debugMenu.enabled && debugSettings.isEnabledForA8cP2s) || !site.isAutomatticP2)
+            site.isAdmin && !site.isAutomatticP2
         }
 
         guard administeredSites.count > 0 else {
@@ -203,7 +203,7 @@ private class WeeklyRoundupDataProvider {
     ) -> [Site] {
         return sites.filter { site in
             guard let siteSettings = settings.first(where: { $0.blogManagedObjectID == site.managedObjectID }),
-                  let pushNotificationsStream = siteSettings.streams.first(where: { $0.kind == .Device }),
+                  let pushNotificationsStream = siteSettings.streams.first(where: { $0.kind == .device }),
                   let sitePreferences = pushNotificationsStream.preferences else {
                 return false
             }

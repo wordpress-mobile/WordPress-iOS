@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Google Signup Confirmation View Controller-->
+        <scene sceneID="Xgu-uV-BzP">
+            <objects>
+                <viewController storyboardIdentifier="GoogleSignupConfirmationViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="FHW-Ob-CNF" customClass="GoogleSignupConfirmationViewController" customModule="WordPressAuthenticatorResources" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="faN-C4-7Mo">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SWG-5C-7n1" userLabel="Containing View">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <subviews>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" bounces="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ZWc-xv-8jt">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="742"/>
+                                        <sections/>
+                                        <connections>
+                                            <outlet property="dataSource" destination="FHW-Ob-CNF" id="87y-LX-Hli"/>
+                                            <outlet property="delegate" destination="FHW-Ob-CNF" id="g8W-xJ-NQy"/>
+                                        </connections>
+                                    </tableView>
+                                    <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qzz-Hh-CjL" userLabel="Button background view">
+                                        <rect key="frame" x="0.0" y="742" width="414" height="76"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dym-5Q-67i" userLabel="Primary Button" customClass="NUXButton" customModule="WordPressAuthenticatorResources" customModuleProvider="target">
+                                                <rect key="frame" x="16" y="16" width="382" height="44"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="submitButton"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="44" id="Rli-Ca-yRL"/>
+                                                </constraints>
+                                                <state key="normal" title="Button"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="handleSubmit" destination="FHW-Ob-CNF" eventType="touchUpInside" id="bG7-Ok-Zgd"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="bottomMargin" secondItem="dym-5Q-67i" secondAttribute="bottom" constant="8" id="7xe-sU-u4a"/>
+                                            <constraint firstItem="dym-5Q-67i" firstAttribute="top" secondItem="qzz-Hh-CjL" secondAttribute="topMargin" constant="8" id="MeQ-dV-vHc"/>
+                                        </constraints>
+                                        <viewLayoutGuide key="safeArea" id="FYE-Xz-8tr"/>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <constraints>
+                                    <constraint firstItem="qzz-Hh-CjL" firstAttribute="top" secondItem="ZWc-xv-8jt" secondAttribute="bottom" id="KtR-9p-VJv"/>
+                                    <constraint firstItem="ZWc-xv-8jt" firstAttribute="trailing" secondItem="dym-5Q-67i" secondAttribute="trailing" constant="16" id="N6d-01-WPV"/>
+                                    <constraint firstItem="qzz-Hh-CjL" firstAttribute="bottom" secondItem="SWG-5C-7n1" secondAttribute="bottomMargin" constant="8" id="PsK-5r-0H1"/>
+                                    <constraint firstItem="qzz-Hh-CjL" firstAttribute="leading" secondItem="SWG-5C-7n1" secondAttribute="leading" id="Xi9-bz-sba"/>
+                                    <constraint firstItem="dym-5Q-67i" firstAttribute="leading" secondItem="ZWc-xv-8jt" secondAttribute="leading" constant="16" id="b3B-7z-9p0"/>
+                                    <constraint firstItem="qzz-Hh-CjL" firstAttribute="trailing" secondItem="SWG-5C-7n1" secondAttribute="trailing" id="bc6-d0-fEF"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="ZWc-xv-8jt" firstAttribute="top" secondItem="Qp3-BR-gKF" secondAttribute="top" id="8Gf-kn-zlv"/>
+                            <constraint firstItem="SWG-5C-7n1" firstAttribute="top" secondItem="Qp3-BR-gKF" secondAttribute="top" id="9eM-zq-ABr"/>
+                            <constraint firstItem="Qp3-BR-gKF" firstAttribute="bottom" secondItem="SWG-5C-7n1" secondAttribute="bottom" id="IFj-d3-X0s"/>
+                            <constraint firstItem="SWG-5C-7n1" firstAttribute="trailing" secondItem="faN-C4-7Mo" secondAttribute="trailing" id="P9X-e8-JeC"/>
+                            <constraint firstItem="SWG-5C-7n1" firstAttribute="leading" secondItem="faN-C4-7Mo" secondAttribute="leading" id="Xek-2B-EU5"/>
+                            <constraint firstItem="ZWc-xv-8jt" firstAttribute="leading" secondItem="Qp3-BR-gKF" secondAttribute="leading" id="qsV-MZ-Mch"/>
+                            <constraint firstItem="Qp3-BR-gKF" firstAttribute="trailing" secondItem="ZWc-xv-8jt" secondAttribute="trailing" id="yx6-RZ-tqZ"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Qp3-BR-gKF"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="9jh-WE-43v"/>
+                    <connections>
+                        <outlet property="submitButton" destination="dym-5Q-67i" id="zN7-PD-0HU"/>
+                        <outlet property="tableView" destination="ZWc-xv-8jt" id="pgu-rC-q21"/>
+                        <outlet property="tableViewLeadingConstraint" destination="qsV-MZ-Mch" id="Vo0-tX-jz3"/>
+                        <outlet property="tableViewTrailingConstraint" destination="yx6-RZ-tqZ" id="q7A-OH-Fo5"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="EXH-O5-0Ao" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="904.79999999999995" y="-33.733133433283363"/>
+        </scene>
+    </scenes>
+</document>

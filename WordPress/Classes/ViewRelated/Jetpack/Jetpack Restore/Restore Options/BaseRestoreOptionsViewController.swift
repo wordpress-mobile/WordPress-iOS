@@ -1,5 +1,4 @@
 import Foundation
-import CocoaLumberjack
 import WordPressShared
 
 typealias HighlightedText = (substring: String, string: String)
@@ -64,7 +63,7 @@ class BaseRestoreOptionsViewController: UITableViewController {
         self.site = site
         self.activity = activity
         self.configuration = configuration
-        super.init(style: .grouped)
+        super.init(style: .insetGrouped)
     }
 
     required init?(coder: NSCoder) {
@@ -135,7 +134,16 @@ class BaseRestoreOptionsViewController: UITableViewController {
             self?.detailActionButtonTapped()
         }
 
-        self.tableView.tableHeaderView = headerView
+        let container = UIView()
+        container.addSubview(headerView)
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+        container.pinSubviewToAllEdges(headerView, insets: UIEdgeInsets(top: 8, left: 20, bottom: 8, right: 20))
+
+        headerView.layer.masksToBounds = true
+        headerView.layer.cornerRadius = 12
+        headerView.layer.cornerCurve = .continuous
+
+        self.tableView.tableHeaderView = container
     }
 
     // MARK: - Model

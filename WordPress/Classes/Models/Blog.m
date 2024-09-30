@@ -1,13 +1,13 @@
 #import "Blog.h"
 #import "WPAccount.h"
 #import "AccountService.h"
-#import "NSURL+IDN.h"
 #import "CoreDataStack.h"
 #import "Constants.h"
 #import "WPUserAgent.h"
 #import "WordPress-Swift.h"
 
 @import NSObject_SafeExpectations;
+@import NSURL_IDN;
 
 @class Comment;
 
@@ -72,7 +72,6 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 @dynamic postTypes;
 @dynamic postFormats;
 @dynamic isActivated;
-@dynamic visible;
 @dynamic account;
 @dynamic isAdmin;
 @dynamic isMultiAuthor;
@@ -86,18 +85,13 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 @dynamic hasPaidPlan;
 @dynamic sharingButtons;
 @dynamic capabilities;
-@dynamic quickStartTours;
-@dynamic quickStartTypeValue;
 @dynamic userID;
 @dynamic quotaSpaceAllowed;
 @dynamic quotaSpaceUsed;
 @dynamic pageTemplateCategories;
 @dynamic publicizeInfo;
 
-@synthesize isSyncingPosts;
-@synthesize isSyncingPages;
 @synthesize videoPressEnabled;
-@synthesize isSyncingMedia;
 @synthesize xmlrpcApi = _xmlrpcApi;
 @synthesize selfHostedSiteRestApi = _selfHostedSiteRestApi;
 
@@ -590,13 +584,16 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
         case BlogFeatureNoncePreviews:
             return [self supportsRestApi] && ![self isHostedAtWPcom];
         case BlogFeatureMediaMetadataEditing:
-            return [self supportsRestApi] && [self isAdmin];
+            return [self isAdmin];
+        case BlogFeatureMediaAltEditing:
+            // alt is not supported via XML-RPC API
+            // https://core.trac.wordpress.org/ticket/58582
+            // https://github.com/wordpress-mobile/WordPress-Android/issues/18514#issuecomment-1589752274
+            return [self supportsRestApi];
         case BlogFeatureMediaDeletion:
             return [self isAdmin];
         case BlogFeatureHomepageSettings:
             return [self supportsRestApi] && [self isAdmin];
-        case BlogFeatureStories:
-            return [self supportsStories];
         case BlogFeatureContactInfo:
             return [self supportsContactInfo];
         case BlogFeatureBlockEditorSettings:
@@ -624,10 +621,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
         case BlogFeaturePages:
             return [self isListingPagesAllowed];
         case BlogFeatureSiteMonitoring:
-            if (@available(iOS 16, *)) {
-                return [self isAdmin] && [self isAtomic];
-            }
-            return false;
+            return [self isAdmin] && [self isAtomic];
     }
 }
 
@@ -708,11 +702,6 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
     }
 
     return supports;
-}
-
-- (BOOL)supportsStories
-{
-    return NO;
 }
 
 - (BOOL)supportsContactInfo

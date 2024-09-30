@@ -1,5 +1,4 @@
 import Foundation
-import CocoaLumberjack
 import WordPressShared
 
 /// Defines methods that a delegate should implement for clearing suggestions
@@ -16,7 +15,6 @@ class ReaderSearchSuggestionsViewController: UIViewController {
     @IBOutlet var stackView: UIStackView!
     @IBOutlet var tableView: UITableView!
     @IBOutlet var clearButton: UIButton!
-    @IBOutlet var borderImageView: UIImageView!
     @IBOutlet var stackViewHeightConstraint: NSLayoutConstraint!
 
     @objc var phrase = "" {
@@ -81,10 +79,6 @@ class ReaderSearchSuggestionsViewController: UIViewController {
 
         let buttonTitle = NSLocalizedString("Clear search history", comment: "Title of a button.")
         clearButton.setTitle(buttonTitle, for: UIControl.State())
-        let buttonBackgroundImage = UIImage(color: .listBackground)
-        clearButton.setBackgroundImage(buttonBackgroundImage, for: UIControl.State())
-
-        borderImageView.image = UIImage(color: .neutral(.shade20), havingSize: CGSize(width: stackView.frame.width, height: 1))
 
         updateHeightConstraint()
     }
@@ -174,7 +168,7 @@ extension ReaderSearchSuggestionsViewController: WPTableViewHandlerDelegate {
         }
         let suggestion = suggestions[indexPath.row]
         cell.textLabel?.text = suggestion.searchPhrase
-        cell.textLabel?.textColor = .neutral(.shade70)
+        cell.textLabel?.textColor = UIAppColor.neutral(.shade70)
     }
 
     func tableViewDidChangeContent(_ tableView: UITableView) {

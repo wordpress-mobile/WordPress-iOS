@@ -56,6 +56,7 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
         tableView.dataSource = dataSource
         tableView.delegate = self
         tableView.sectionHeaderTopPadding = 0
+        tableView.cellLayoutMarginsFollowReadableWidth = true
     }
 
     private func bindViewModel() {
@@ -164,7 +165,6 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
 
             switch viewModel.posts[indexPath.row].latest() {
             case let post as Post:
-                guard post.status != .trash else { return }
                 delegate?.edit(post)
             case let page as Page:
                 guard page.status != .trash else { return }

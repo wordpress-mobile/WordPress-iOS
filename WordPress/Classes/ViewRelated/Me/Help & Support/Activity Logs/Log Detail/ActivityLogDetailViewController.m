@@ -34,7 +34,7 @@
     textView.text = self.logText;
     textView.font = [WPStyleGuide subtitleFont];
     textView.textColor = [UIColor murielText];
-    textView.backgroundColor = [UIColor murielListBackground];
+    textView.backgroundColor = [UIColor clearColor];
     textView.textAlignment = NSTextAlignmentLeft; // Logs aren't RTL friendly
     [self.view addSubview:textView];
     textView.translatesAutoresizingMaskIntoConstraints = NO;

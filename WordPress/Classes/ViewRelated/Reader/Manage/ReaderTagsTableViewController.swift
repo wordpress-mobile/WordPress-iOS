@@ -1,3 +1,5 @@
+import UIKit
+
 class ReaderTagsTableViewController: UIViewController {
 
     private let style: UITableView.Style

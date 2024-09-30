@@ -11,19 +11,25 @@ enum StatsRoute {
     case dayCategory
     case annualStats
     case activityLog
+    case subscribers
+    case daySubscribers
 
     var tab: StatsTabType? {
         switch self {
         case .daySite:
-            return .days
+            return .traffic
         case .weekSite:
-            return .weeks
+            return .traffic
         case .monthSite:
-            return .months
+            return .traffic
         case .yearSite:
-            return .years
+            return .traffic
         case .insights:
             return .insights
+        case .subscribers:
+            return .subscribers
+        case .daySubscribers:
+            return .subscribers
         default:
             return nil
         }
@@ -61,6 +67,10 @@ extension StatsRoute: Route {
             return "/stats/annualstats/:domain"
         case .activityLog:
             return "/stats/activity/:domain"
+        case .subscribers:
+            return "/stats/subscribers/:domain"
+        case .daySubscribers:
+            return "/stats/subscribers/day/:domain"
         }
     }
 
@@ -71,69 +81,67 @@ extension StatsRoute: Route {
 
 extension StatsRoute: NavigationAction {
     func perform(_ values: [String: String], source: UIViewController? = nil, router: LinkRouter) {
-        let coordinator = RootViewCoordinator.sharedPresenter.mySitesCoordinator
-
+        let presenter = RootViewCoordinator.sharedPresenter
         switch self {
         case .root:
             if let blog = defaultBlog() {
-                coordinator.showStats(for: blog)
+                presenter.showStats(for: blog)
             }
         case .site:
             if let blog = blog(from: values) {
-                coordinator.showStats(for: blog)
+                presenter.showStats(for: blog)
             } else {
-                showStatsForDefaultBlog(from: values, with: coordinator)
+                showStatsForDefaultBlog(from: values, with: presenter)
             }
         case .daySite:
-            showStatsForBlog(from: values, tab: .days, using: coordinator)
+            showStatsForBlog(from: values, tab: .traffic, unit: .day, using: presenter)
         case .weekSite:
-            showStatsForBlog(from: values, tab: .weeks, using: coordinator)
+            showStatsForBlog(from: values, tab: .traffic, unit: .week, using: presenter)
         case .monthSite:
-            showStatsForBlog(from: values, tab: .months, using: coordinator)
+            showStatsForBlog(from: values, tab: .traffic, unit: .month, using: presenter)
         case .yearSite:
-            showStatsForBlog(from: values, tab: .years, using: coordinator)
+            showStatsForBlog(from: values, tab: .traffic, unit: .year, using: presenter)
         case .insights:
-            showStatsForBlog(from: values, tab: .insights, using: coordinator)
+            showStatsForBlog(from: values, tab: .insights, using: presenter)
         case .dayCategory:
-            showStatsForBlog(from: values, tab: .days, using: coordinator)
+            showStatsForBlog(from: values, tab: .traffic, unit: .day, using: presenter)
         case .annualStats:
-            showStatsForBlog(from: values, tab: .years, using: coordinator)
+            showStatsForBlog(from: values, tab: .traffic, unit: .year, using: presenter)
         case .activityLog:
             if let blog = blog(from: values) {
-                coordinator.showActivityLog(for: blog)
+                presenter.showBlogDetails(for: blog, then: .activity)
             } else {
-                showMySitesAndFailureNotice(using: coordinator,
-                                            values: values)
+                showMySitesAndFailureNotice(values: values)
             }
+        case .subscribers, .daySubscribers:
+            showStatsForBlog(from: values, tab: .subscribers, using: presenter)
         }
     }
 
     private func showStatsForBlog(from values: [String: String],
                                   tab: StatsTabType,
-                                  using coordinator: MySitesCoordinator) {
+                                  unit: StatsPeriodUnit? = nil,
+                                  using presenter: RootViewPresenter) {
         if let blog = blog(from: values) {
-            coordinator.showStats(for: blog,
+            presenter.showStats(for: blog,
                                   source: source(from: values),
-                                  tab: tab)
+                                  tab: tab,
+                                  unit: unit)
         } else {
-            showMySitesAndFailureNotice(using: coordinator,
-                                        values: values)
+            showMySitesAndFailureNotice(values: values)
         }
     }
 
-    private func showMySitesAndFailureNotice(using coordinator: MySitesCoordinator,
-                                             values: [String: String]) {
+    private func showMySitesAndFailureNotice(values: [String: String]) {
         WPAppAnalytics.track(.deepLinkFailed, withProperties: ["route": path])
 
         if failAndBounce(values) == false {
-            coordinator.showRootViewController()
-            postFailureNotice(title: NSLocalizedString("Site not found",
-                                                       comment: "Error notice shown if the app can't find a specific site belonging to the user"))
+            postFailureNotice(title: NSLocalizedString("Site not found", comment: "Error notice shown if the app can't find a specific site belonging to the user"))
         }
     }
 
     private func showStatsForDefaultBlog(from values: [String: String],
-                                         with coordinator: MySitesCoordinator) {
+                                         with presenter: RootViewPresenter) {
         // It's possible that the stats route can come in without a domain
         // as the last component, if the user is viewing stats for "All My Sites" in Calypso.
         // In this case, we'll check whether the last component is actually a
@@ -143,8 +151,7 @@ extension StatsRoute: NavigationAction {
               let blog = defaultBlog() else {
             return
         }
-
-        coordinator.showStats(for: blog, source: source(from: values), tab: timePeriod)
+        presenter.showStats(for: blog, source: source(from: values), tab: timePeriod)
     }
 
     private func source(from values: [String: String]) -> BlogDetailsNavigationSource {

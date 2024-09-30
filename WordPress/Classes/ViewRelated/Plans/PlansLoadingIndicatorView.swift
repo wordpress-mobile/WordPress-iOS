@@ -104,7 +104,7 @@ class PlansLoadingIndicatorView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .neutral(.shade5)
+        backgroundColor = UIAppColor.neutral(.shade5)
         circleView.clipsToBounds = true
         circleView.addSubview(premiumView)
         circleView.addSubview(freeView)

@@ -116,17 +116,6 @@ class SiteStatsTableHeaderView: UIView, NibLoadable, Accessible {
         ].compactMap { $0 }
     }
 
-    func updateDate(with intervalDate: Date) {
-        guard let period = period else {
-            return
-        }
-
-        self.date = StatsPeriodHelper().endDate(from: intervalDate, period: period)
-
-        delegate?.dateChangedTo(self.date)
-        reloadView()
-    }
-
     func animateGhostLayers(_ animate: Bool) {
         if animate {
             isRunningGhostAnimation = true
@@ -143,7 +132,7 @@ class SiteStatsTableHeaderView: UIView, NibLoadable, Accessible {
 private extension SiteStatsTableHeaderView {
 
     func applyStyles() {
-        backgroundColor = .listForeground
+        backgroundColor = .secondarySystemGroupedBackground
 
         Style.configureLabelAsCellRowTitle(dateLabel)
         dateLabel.font = Metrics.dateLabelFont

@@ -1,5 +1,4 @@
 import Foundation
-import CocoaLumberjack
 import WordPressShared
 import WordPressUI
 
@@ -39,8 +38,8 @@ class PostTagPickerViewController: UIViewController {
 
         WPStyleGuide.configureTableViewColors(tableView: tableView)
 
-        view.backgroundColor = .listBackground
-        view.tintColor = .editorPrimary
+        view.backgroundColor = .systemGroupedBackground
+        view.tintColor = UIAppColor.editorPrimary
 
         textView.delegate = self
         // Do any additional setup after loading the view, typically from a nib.
@@ -51,13 +50,13 @@ class PostTagPickerViewController: UIViewController {
         tableView.dataSource = dataSource
         tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: CGFloat.leastNonzeroMagnitude))
         tableView.cellLayoutMarginsFollowReadableWidth = true
-        tableView.separatorColor = .divider
+        tableView.separatorColor = .separator
         reloadTableData()
 
         textView.autocorrectionType = .yes
         textView.autocapitalizationType = .none
         textView.font = WPStyleGuide.tableviewTextFont()
-        textView.textColor = .text
+        textView.textColor = .label
         textView.isScrollEnabled = false
         // Padding already provided by readable margins
         // Don't add extra padding so text aligns with suggestions
@@ -73,7 +72,7 @@ class PostTagPickerViewController: UIViewController {
         descriptionLabel.text = NSLocalizedString("Tags help tell readers what a post is about. Separate different tags with commas.", comment: "Label explaining why users might want to add tags.")
         descriptionLabel.numberOfLines = 0
         WPStyleGuide.configureLabelForRegularFontStyle(descriptionLabel)
-        descriptionLabel.textColor = .textSubtle
+        descriptionLabel.textColor = .secondaryLabel
         view.addSubview(descriptionLabel)
 
         textView.translatesAutoresizingMaskIntoConstraints = false
@@ -101,15 +100,12 @@ class PostTagPickerViewController: UIViewController {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
             ])
 
-        textViewContainer.backgroundColor = .basicBackground
-        textViewContainer.layer.borderColor = UIColor.divider.cgColor
+        textViewContainer.backgroundColor = .systemBackground
+        textViewContainer.layer.borderColor = UIColor.separator.cgColor
         textViewContainer.layer.borderWidth = .hairlineBorderWidth
         textViewContainer.layer.masksToBounds = false
 
         keyboardObserver.tableView = tableView
-
-        let doneButton = UIBarButtonItem(title: NSLocalizedString("Done", comment: "Done button title"), style: .plain, target: self, action: #selector(doneButtonPressed))
-        navigationItem.setRightBarButton(doneButton, animated: false)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -143,11 +139,7 @@ class PostTagPickerViewController: UIViewController {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        textViewContainer.layer.borderColor = UIColor.divider.cgColor
-    }
-
-    @objc func doneButtonPressed() {
-        navigationController?.popViewController(animated: true)
+        textViewContainer.layer.borderColor = UIColor.separator.cgColor
     }
 
     fileprivate func reloadTableData() {
@@ -453,8 +445,8 @@ private class SuggestionsDataSource: NSObject, PostTagPickerDataSource {
 extension WPStyleGuide {
     @objc static func configureTableViewSuggestionCell(_ cell: UITableViewCell) {
         WPStyleGuide.configureTableViewCell(cell)
-        cell.textLabel?.textColor = .text
-        cell.backgroundColor = .listForeground
+        cell.textLabel?.textColor = .label
+        cell.backgroundColor = .secondarySystemGroupedBackground
     }
 }
 

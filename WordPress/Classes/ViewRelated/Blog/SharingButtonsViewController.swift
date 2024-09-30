@@ -1,5 +1,4 @@
 import UIKit
-import CocoaLumberjack
 import WordPressShared
 
 /// Manages which sharing button are displayed, their order, and other settings
@@ -70,8 +69,6 @@ import WordPressShared
 
         navigationItem.title = NSLocalizedString("Manage", comment: "Verb. Title of the screen for managing sharing buttons and settings related to sharing.")
 
-        extendedLayoutIncludesOpaqueBars = true
-
         if isModal() {
             navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done,
                                                                 target: self,
@@ -113,6 +110,7 @@ import WordPressShared
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         tableView.setEditing(true, animated: false)
         tableView.allowsSelectionDuringEditing = true
+        tableView.cellLayoutMarginsFollowReadableWidth = true
     }
 
     /// Sets up the sections for the table view and configures their starting state.
@@ -314,7 +312,7 @@ import WordPressShared
         let row = SortableSharingSwitchRow(buttonID: button.buttonID)
         row.configureCell = {[unowned self] (cell: UITableViewCell) in
             cell.imageView?.image = self.iconForSharingButton(button)
-            cell.imageView?.tintColor = .listIcon
+            cell.imageView?.tintColor = .secondaryLabel
 
             cell.editingAccessoryView = nil
             cell.editingAccessoryType = .none
@@ -385,7 +383,7 @@ import WordPressShared
         cell.editingAccessoryView = cell.accessoryView
         cell.editingAccessoryType = cell.accessoryType
         cell.imageView?.image = self.iconForSharingButton(button)
-        cell.imageView?.tintColor = .listIcon
+        cell.imageView?.tintColor = .secondaryLabel
         cell.textLabel?.text = button.name
     }
 

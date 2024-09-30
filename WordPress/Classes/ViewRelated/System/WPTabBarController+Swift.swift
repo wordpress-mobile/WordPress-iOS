@@ -1,3 +1,4 @@
+import WordPressAuthenticator
 
 // MARK: - Tab Access Tracking
 
@@ -17,6 +18,10 @@ fileprivate extension WPTab {
 }
 
 extension WPTabBarController {
+    @objc public class var wpSigninDidFinishNotification: String {
+        WordPressAuthenticator.WPSigninDidFinishNotification
+    }
+
     private static let tabIndexToStatMap: [WPTab: WPAnalyticsStat] = [.mySites: .mySitesTabAccessed, .reader: .readerAccessed]
 
     private struct AssociatedKeys {
@@ -106,11 +111,6 @@ extension WPTabBarController {
         return true
     }
 
-    /// Set up the tab bar's colors
-    @objc func setupColors() {
-        tabBar.isTranslucent = false
-    }
-
     open override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         guard let selectedViewController else {
             return super.supportedInterfaceOrientations
@@ -142,8 +142,7 @@ extension WPTabBarController {
             return
         }
 
-        // Get the button's image view
-        guard let imageView = button.subviews.lazy.compactMap({ $0 as? UIImageView }).first else {
+        guard let imageView = button.getImageView() else {
             return
         }
 
@@ -152,5 +151,18 @@ extension WPTabBarController {
         bounceAnimation.duration = TimeInterval(0.2)
         bounceAnimation.calculationMode = CAAnimationCalculationMode.cubic
         imageView.layer.add(bounceAnimation, forKey: nil)
+    }
+}
+
+private extension UIView {
+    func getImageView() -> UIImageView? {
+        var views = self.subviews
+        while let view = views.popLast() {
+            if let imageView = view as? UIImageView {
+                return imageView
+            }
+            views += view.subviews
+        }
+        return nil
     }
 }

@@ -8,21 +8,19 @@ private enum UPRUConstants {
     static let notificationPrimerInlineWasAcknowledged = "notificationPrimerInlineWasAcknowledged"
     static let secondNotificationsAlertCount = "secondNotificationsAlertCount"
     static let hasShownCustomAppIconUpgradeAlert = "custom-app-icon-upgrade-alert-shown"
-    static let createButtonTooltipWasDisplayed = "CreateButtonTooltipWasDisplayed"
-    static let createButtonTooltipDisplayCount = "CreateButtonTooltipDisplayCount"
     static let savedPostsPromoWasDisplayed = "SavedPostsV1PromoWasDisplayed"
-    static let storiesIntroWasAcknowledged = "storiesIntroWasAcknowledged"
     static let currentAnnouncementsKey = "currentAnnouncements"
     static let currentAnnouncementsDateKey = "currentAnnouncementsDate"
     static let announcementsVersionDisplayedKey = "announcementsVersionDisplayed"
     static let isJPContentImportCompleteKey = "jetpackContentImportComplete"
     static let jetpackContentMigrationStateKey = "jetpackContentMigrationState"
     static let mediaAspectRatioModeEnabledKey = "mediaAspectRatioModeEnabled"
+    static let readerSidebarSelectionKey = "readerSidebarSelectionKey"
+    static let isReaderSelectedKey = "isReaderSelectedKey"
 }
 
 protocol UserPersistentRepositoryUtility: AnyObject {
     var onboardingNotificationsPromptDisplayed: Bool { get set }
-    var onboardingQuestionSelected: OnboardingOption? { get set }
     var notificationPrimerAlertWasDisplayed: Bool { get set }
 }
 
@@ -33,19 +31,6 @@ extension UserPersistentRepositoryUtility {
         }
         set {
             UserPersistentStoreFactory.instance().set(newValue, forKey: UPRUConstants.promptKey)
-        }
-    }
-
-    var onboardingQuestionSelected: OnboardingOption? {
-        get {
-            if let str = UserPersistentStoreFactory.instance().string(forKey: UPRUConstants.questionKey) {
-                return OnboardingOption(rawValue: str)
-            }
-
-            return nil
-        }
-        set {
-            UserPersistentStoreFactory.instance().set(newValue?.rawValue, forKey: UPRUConstants.questionKey)
         }
     }
 
@@ -99,39 +84,12 @@ extension UserPersistentRepositoryUtility {
         }
     }
 
-    var createButtonTooltipDisplayCount: Int {
-        get {
-            UserPersistentStoreFactory.instance().integer(forKey: UPRUConstants.createButtonTooltipDisplayCount)
-        }
-        set {
-            UserPersistentStoreFactory.instance().set(newValue, forKey: UPRUConstants.createButtonTooltipDisplayCount)
-        }
-    }
-
-    var createButtonTooltipWasDisplayed: Bool {
-        get {
-            UserPersistentStoreFactory.instance().bool(forKey: UPRUConstants.createButtonTooltipWasDisplayed)
-        }
-        set {
-            UserPersistentStoreFactory.instance().set(newValue, forKey: UPRUConstants.createButtonTooltipWasDisplayed)
-        }
-    }
-
     var savedPostsPromoWasDisplayed: Bool {
         get {
             return UserPersistentStoreFactory.instance().bool(forKey: UPRUConstants.savedPostsPromoWasDisplayed)
         }
         set {
             UserPersistentStoreFactory.instance().set(newValue, forKey: UPRUConstants.savedPostsPromoWasDisplayed)
-        }
-    }
-
-    var storiesIntroWasAcknowledged: Bool {
-        get {
-            return UserPersistentStoreFactory.instance().bool(forKey: UPRUConstants.storiesIntroWasAcknowledged)
-        }
-        set {
-            UserPersistentStoreFactory.instance().set(newValue, forKey: UPRUConstants.storiesIntroWasAcknowledged)
         }
     }
 
@@ -197,6 +155,27 @@ extension UserPersistentRepositoryUtility {
         }
         set {
             UserPersistentStoreFactory.instance().set(newValue, forKey: UPRUConstants.mediaAspectRatioModeEnabledKey)
+        }
+    }
+
+    var isReaderSelected: Bool {
+        get {
+            UserPersistentStoreFactory.instance().bool(forKey: UPRUConstants.isReaderSelectedKey)
+        }
+        set {
+            UserPersistentStoreFactory.instance().set(newValue, forKey: UPRUConstants.isReaderSelectedKey)
+        }
+    }
+
+    var readerSidebarSelection: ReaderStaticScreen? {
+        get {
+            let repository = UserPersistentStoreFactory.instance()
+            return repository.string(forKey: UPRUConstants.readerSidebarSelectionKey)
+                .flatMap(ReaderStaticScreen.init)
+        }
+        set {
+            let repository = UserPersistentStoreFactory.instance()
+            repository.set(newValue?.rawValue, forKey: UPRUConstants.readerSidebarSelectionKey)
         }
     }
 }

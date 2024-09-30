@@ -1,6 +1,5 @@
 import Foundation
 import WordPressKit
-import CocoaLumberjack
 
 final class StatsInsightsCache {
     static let shared = StatsInsightsCache()
@@ -47,7 +46,7 @@ final class StatsInsightsCache {
     }
 
     func setLastRefreshDate(_ date: Date, forSiteID siteID: NSNumber) {
-        lastRefreshDates[siteID] = Date()
+        lastRefreshDates[siteID] = date
     }
 
     // MARK: - Helpers

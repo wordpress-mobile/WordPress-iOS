@@ -1,6 +1,5 @@
 import Foundation
 import UIKit
-import CocoaLumberjack
 import WordPressShared
 
 @objc protocol WPRichContentViewDelegate: UITextViewDelegate {
@@ -68,20 +67,22 @@ class WPRichContentView: UITextView {
     }
 
     @objc class func formattedAttributedStringForString(_ string: String) -> NSAttributedString {
-        let style = AttributedStringStyle(textColorHex: UIColor.text.hexString() ?? fallbackTextColorHex,
-                                          blockQuoteColorHex: UIColor.textSubtle.hexString() ?? fallbackTextColorHex,
-                                          linkColorHex: UIColor.primary.hexString() ?? fallbackTextColorHex,
-                                          linkColorActiveHex: UIColor.primaryDark.hexString() ?? fallbackTextColorHex)
-        return formattedAttributedString(for: string, style: style)
+        return formattedAttributedString(for: string, style: AttributedStringStyle(
+            textColorHex: UIColor.label.hexString,
+            blockQuoteColorHex: UIColor.secondaryLabel.hexString,
+            linkColorHex: UIAppColor.primary.hexString,
+            linkColorActiveHex: UIAppColor.primaryDark.hexString
+        ))
     }
 
     class func formattedAttributedString(for string: String, style: UIUserInterfaceStyle) -> NSAttributedString {
         let trait = UITraitCollection(userInterfaceStyle: style)
-        let style = AttributedStringStyle(textColorHex: UIColor.text.color(for: trait).hexString() ?? fallbackTextColorHex,
-                                          blockQuoteColorHex: UIColor.textSubtle.color(for: trait).hexString() ?? fallbackTextColorHex,
-                                          linkColorHex: UIColor.primary.color(for: trait).hexString() ?? fallbackTextColorHex,
-                                          linkColorActiveHex: UIColor.primaryDark.color(for: trait).hexString() ?? fallbackTextColorHex)
-        return formattedAttributedString(for: string, style: style)
+        return formattedAttributedString(for: string, style: AttributedStringStyle(
+            textColorHex: UIColor.label.color(for: trait).hexString,
+            blockQuoteColorHex: UIColor.secondaryLabel.color(for: trait).hexString,
+            linkColorHex: UIAppColor.primary.color(for: trait).hexString,
+            linkColorActiveHex: UIAppColor.primaryDark.color(for: trait).hexString
+        ))
     }
 
     override init(frame: CGRect, textContainer: NSTextContainer?) {
@@ -438,7 +439,7 @@ private extension WPRichContentView {
 @objc fileprivate class BlockquoteBackgroundLayoutManager: NSLayoutManager {
     /// Blockquote's Left Border Color
     ///
-    let blockquoteBorderColor = UIColor.listIcon
+    let blockquoteBorderColor = UIColor.secondaryLabel
 
     /// Blockquote's Left Border width
     ///

@@ -19,7 +19,7 @@ enum UnifiedProloguePageType: CaseIterable {
         case .analytics:
             return NSLocalizedString("Watch your audience grow with in-depth analytics.", comment: "Caption displayed in promotional screens shown during the login flow.")
         case .reader:
-            return NSLocalizedString("Follow your favorite sites and discover new blogs.", comment: "Caption displayed in promotional screens shown during the login flow.")
+            return NSLocalizedString("prologue.title.reader", value: "Subscribe to your favorite sites and discover new blogs.", comment: "Caption displayed in promotional screens shown during the login flow.")
         }
     }
 }
@@ -84,8 +84,6 @@ class UnifiedProloguePageViewController: UIViewController {
             return
         }
 
-        configureTitleFont()
-
         if traitCollection.horizontalSizeClass == .compact {
             deactivateRegularWidthConstraints()
             activateCompactWidthConstraints()
@@ -123,22 +121,13 @@ class UnifiedProloguePageViewController: UIViewController {
     private func configureTitle() {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
 
-        configureTitleFont()
-        titleLabel.textColor = .text
+        titleLabel.font = WPStyleGuide.fontForTextStyle(.title2, fontWeight: .medium)
+        titleLabel.textColor = .label
         titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 0
         titleLabel.adjustsFontSizeToFitWidth = true
 
         titleLabel.text = pageType.title
-    }
-
-    private func configureTitleFont() {
-
-        guard let fontDescriptor = WPStyleGuide.fontForTextStyle(.title1, fontWeight: .regular).fontDescriptor.withDesign(.serif) else {
-            return
-        }
-        let size: CGFloat = traitCollection.horizontalSizeClass == .compact ? 0.0 : 40.0
-        titleLabel.font = UIFontMetrics.default.scaledFont(for: UIFont(descriptor: fontDescriptor, size: size))
     }
 
     private func activateConstraints() {

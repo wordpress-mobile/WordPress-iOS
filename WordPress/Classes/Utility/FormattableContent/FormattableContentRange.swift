@@ -64,7 +64,7 @@ extension LinkContentRange where Self: FormattableContentRange {
     }
 }
 
-public struct FormattableRangeKind: Hashable {
+public struct FormattableRangeKind: Hashable, Sendable {
     let rawValue: String
 
     public init(_ rawValue: String) {

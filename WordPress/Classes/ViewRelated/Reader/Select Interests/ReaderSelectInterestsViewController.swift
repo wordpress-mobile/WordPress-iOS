@@ -11,11 +11,27 @@ struct ReaderSelectInterestsConfiguration {
     let subtitle: String?
     let buttonTitle: (enabled: String, disabled: String)?
     let loading: String
+
+    static let `default` = ReaderSelectInterestsConfiguration(
+        title: NSLocalizedString(
+            "reader.select.interests.follow.title",
+            value: "Follow tags",
+            comment: "Screen title. Reader select interests title label text."
+        ),
+        subtitle: nil,
+        buttonTitle: nil,
+        loading: NSLocalizedString(
+            "reader.select.interests.following",
+            value: "Following new tags...",
+            comment: "Label displayed to the user while loading their selected interests"
+        )
+    )
 }
 
 class ReaderSelectInterestsViewController: UIViewController {
     private struct Constants {
         static let reuseIdentifier = ReaderInterestsCollectionViewCell.classNameWithoutNamespaces()
+        static let defaultCellIdentifier = "DefaultCell"
         static let interestsLabelMargin: CGFloat = 12
 
         static let cellCornerRadius: CGFloat = 5
@@ -49,22 +65,6 @@ class ReaderSelectInterestsViewController: UIViewController {
 
     @IBOutlet weak var bottomSpaceHeightConstraint: NSLayoutConstraint!
 
-    // MARK: - Views
-
-    private let spotlightView: UIView = {
-        let spotlightView = QuickStartSpotlightView()
-        spotlightView.translatesAutoresizingMaskIntoConstraints = false
-        spotlightView.isHidden = true
-        return spotlightView
-    }()
-
-    /// Whether or not to show the spotlight animation to illustrate tapping the icon.
-    var spotlightIsShown: Bool = false {
-        didSet {
-            spotlightView.isHidden = !spotlightIsShown
-        }
-    }
-
     // MARK: - Data
     private lazy var dataSource: ReaderInterestsDataSource = {
         return ReaderInterestsDataSource(topics: topics)
@@ -83,7 +83,7 @@ class ReaderSelectInterestsViewController: UIViewController {
     weak var readerDiscoverFlowDelegate: ReaderDiscoverFlowDelegate?
 
     // MARK: - Init
-    init(configuration: ReaderSelectInterestsConfiguration, topics: [ReaderTagTopic] = []) {
+    init(configuration: ReaderSelectInterestsConfiguration = .default, topics: [ReaderTagTopic] = []) {
         self.configuration = configuration
         self.topics = topics
         super.init(nibName: nil, bundle: nil)
@@ -121,14 +121,6 @@ class ReaderSelectInterestsViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
-        view.addSubview(spotlightView)
-        view.bringSubviewToFront(spotlightView)
-
-        NSLayoutConstraint.activate([
-            collectionView.centerXAnchor.constraint(equalTo: spotlightView.centerXAnchor),
-            collectionView.centerYAnchor.constraint(equalTo: spotlightView.centerYAnchor)
-        ])
 
         WPAnalytics.trackReader(.selectInterestsShown)
     }
@@ -168,6 +160,7 @@ class ReaderSelectInterestsViewController: UIViewController {
     private func configureCollectionView() {
         let nib = UINib(nibName: String(describing: ReaderInterestsCollectionViewCell.self), bundle: nil)
         collectionView.register(nib, forCellWithReuseIdentifier: Constants.reuseIdentifier)
+        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: Constants.defaultCellIdentifier)
 
         guard let layout = collectionView.collectionViewLayout as? ReaderInterestsCollectionViewFlowLayout else {
             return
@@ -325,7 +318,7 @@ extension ReaderSelectInterestsViewController: UICollectionViewDataSource {
         guard let interest = dataSource.interest(for: indexPath.row) else {
             CrashLogging.main.logMessage("ReaderSelectInterestsViewController: Requested for data at invalid row",
                                          properties: ["row": indexPath.row], level: .warning)
-            return .init(frame: .zero)
+            return collectionView.dequeueReusableCell(withReuseIdentifier: Constants.defaultCellIdentifier, for: indexPath)
         }
 
         ReaderInterestsStyleGuide.applyCellLabelStyle(label: cell.label,
@@ -346,10 +339,6 @@ extension ReaderSelectInterestsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let interest = dataSource.interest(for: indexPath.row) else {
             return
-        }
-
-        if spotlightIsShown {
-            spotlightIsShown = false
         }
 
         interest.toggleSelected()

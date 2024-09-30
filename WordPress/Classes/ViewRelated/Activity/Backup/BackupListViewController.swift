@@ -44,8 +44,6 @@ class BackupListViewController: BaseActivityListViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        extendedLayoutIncludesOpaqueBars = true
-
         tableView.accessibilityIdentifier = "jetpack-backup-table"
 
         WPAnalytics.track(.backupListOpened)

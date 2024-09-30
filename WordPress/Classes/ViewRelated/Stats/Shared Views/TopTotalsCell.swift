@@ -7,15 +7,16 @@ import UIKit
 /// If the row has child rows, those child rows are added to the stack view below the selected row.
 ///
 
-class TopTotalsCell: StatsBaseCell, NibLoadable {
+final class TopTotalsCell: StatsRowsCell, NibLoadable {
 
     // MARK: - Properties
 
     @IBOutlet weak var outerStackView: UIStackView!
     @IBOutlet weak var subtitleStackView: UIStackView!
-    @IBOutlet weak var rowsStackView: UIStackView!
     @IBOutlet weak var itemSubtitleLabel: UILabel!
     @IBOutlet weak var dataSubtitleLabel: UILabel!
+    @IBOutlet weak var dataSubtitleLabelWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var secondDataSubtitleLabel: UILabel!
     @IBOutlet weak var topSeparatorLine: UIView!
     @IBOutlet weak var bottomSeparatorLine: UIView!
     private var topAccessoryView: UIView? = nil {
@@ -46,6 +47,7 @@ class TopTotalsCell: StatsBaseCell, NibLoadable {
 
     func configure(itemSubtitle: String? = nil,
                    dataSubtitle: String? = nil,
+                   secondDataSubtitle: String? = nil,
                    dataRows: [StatsTotalRowData],
                    statSection: StatSection? = nil,
                    siteStatsInsightsDelegate: SiteStatsInsightsDelegate? = nil,
@@ -58,6 +60,9 @@ class TopTotalsCell: StatsBaseCell, NibLoadable {
                    forDetails: Bool = false) {
         itemSubtitleLabel.text = itemSubtitle
         dataSubtitleLabel.text = dataSubtitle
+        secondDataSubtitleLabel.text = secondDataSubtitle
+        secondDataSubtitleLabel.isHidden = (secondDataSubtitle ?? "").isEmpty
+        dataSubtitleLabelWidthConstraint?.isActive = !secondDataSubtitleLabel.isHidden
         subtitlesProvided = (itemSubtitle != nil && dataSubtitle != nil)
         self.dataRows = dataRows
         self.statSection = statSection
@@ -71,39 +76,25 @@ class TopTotalsCell: StatsBaseCell, NibLoadable {
         self.forDetails = forDetails
 
         if !forDetails {
-            addRows(dataRows,
-                    toStackView: rowsStackView,
-                    forType: siteStatsPeriodDelegate != nil ? .period : .insights,
+            configureTotalRows(
+                dataRows,
+                inStackView: rowsStackView,
+                forType: siteStatsPeriodDelegate != nil ? .period : .insights,
+                configuration: .init(
                     limitRowsDisplayed: limitRowsDisplayed,
                     rowDelegate: self,
                     referrerDelegate: self,
-                    viewMoreDelegate: self)
-
+                    viewMoreDelegate: self
+                )
+            )
             initChildRows()
+        } else {
+            rowsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         }
 
         setSubtitleVisibility()
         applyStyles()
         prepareForVoiceOver()
-    }
-
-    override func prepareForReuse() {
-        super.prepareForReuse()
-
-        rowsStackView.arrangedSubviews.forEach { subview in
-
-            // Remove granchild rows
-            if let row = subview as? StatsTotalRow {
-                removeChildRowsForRow(row)
-            }
-
-            // Remove child rows
-            if let childView = subview as? StatsChildRowsView {
-                removeRowsFromStackView(childView.rowsStackView)
-            }
-        }
-
-        removeRowsFromStackView(rowsStackView)
     }
 
     private enum Metrics {
@@ -119,6 +110,7 @@ private extension TopTotalsCell {
         Style.configureCell(self)
         Style.configureLabelAsSubtitle(itemSubtitleLabel)
         Style.configureLabelAsSubtitle(dataSubtitleLabel)
+        Style.configureLabelAsSubtitle(secondDataSubtitleLabel)
         Style.configureViewAsSeparator(topSeparatorLine)
         Style.configureViewAsSeparator(bottomSeparatorLine)
     }
@@ -129,8 +121,6 @@ private extension TopTotalsCell {
     /// - Hide the stack view.
     ///
     func setSubtitleVisibility() {
-        subtitleStackView.layoutIfNeeded()
-
         if forDetails {
             bottomSeparatorLine.isHidden = true
 
@@ -371,8 +361,12 @@ extension TopTotalsCell: Accessible {
 
         let itemTitle = itemSubtitleLabel.text
         let dataTitle = dataSubtitleLabel.text
+        let secondDataTitle = secondDataSubtitleLabel.text
 
-        if let itemTitle = itemTitle, let dataTitle = dataTitle {
+        if let itemTitle = itemTitle, let dataTitle = dataTitle, let secondDataTitle = secondDataTitle {
+            let descriptionFormat = NSLocalizedString("stats.topTotalsCell.voiceOverDescription", value: "Table showing %1$@, %2$@, and %3$@", comment: "Accessibility of stats table. Placeholders will be populated with names of data shown in table.")
+            accessibilityLabel = String(format: descriptionFormat, itemTitle, dataTitle, secondDataTitle)
+        } else if let itemTitle = itemTitle, let dataTitle = dataTitle {
             let descriptionFormat = NSLocalizedString("Table showing %@ and %@", comment: "Accessibility of stats table. Placeholders will be populated with names of data shown in table.")
             accessibilityLabel = String(format: descriptionFormat, itemTitle, dataTitle)
         } else {

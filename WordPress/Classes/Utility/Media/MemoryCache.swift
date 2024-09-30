@@ -1,13 +1,13 @@
 import Foundation
 import AlamofireImage
 import WordPressUI
-import protocol Gravatar.ImageCaching
 
 protocol MemoryCacheProtocol: AnyObject {
     subscript(key: String) -> UIImage? { get set }
 }
 
-final class MemoryCache: MemoryCacheProtocol {
+/// - note: The type is thread-safe because it uses thread-safe `NSCache`.
+final class MemoryCache: MemoryCacheProtocol, @unchecked Sendable {
     /// A shared image cache used by the entire system.
     static let shared = MemoryCache()
 
@@ -89,9 +89,7 @@ extension MemoryCache {
     }
 }
 
-public protocol GravatarImageCaching: WordPressUI.ImageCaching, ImageCaching { }
-
-private struct WordpressUICacheAdapter: GravatarImageCaching {
+private struct WordpressUICacheAdapter: WordPressUI.ImageCaching {
     let cache: MemoryCache
 
     func setImage(_ image: UIImage, forKey key: String) {

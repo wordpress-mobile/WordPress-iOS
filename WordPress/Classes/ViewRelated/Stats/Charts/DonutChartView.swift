@@ -57,7 +57,7 @@ class DonutChartView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        backgroundColor = .basicBackground
+        backgroundColor = .clear
 
         configureChartContainer()
         configureTitleViews()

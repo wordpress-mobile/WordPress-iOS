@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "jetpack-firstrun-background.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

@@ -6,8 +6,6 @@
 #import "Blog.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "WordPress-Swift.h"
-#import "WPXMLRPCDecoder.h"
-#import <WordPressShared/WPAnalytics.h>
 
 @import WordPressKit;
 @import WordPressUI;

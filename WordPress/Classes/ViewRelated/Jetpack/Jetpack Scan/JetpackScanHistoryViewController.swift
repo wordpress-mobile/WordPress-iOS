@@ -66,7 +66,7 @@ class JetpackScanHistoryViewController: UIViewController {
     // MARK: - Private: Config
     private func configureFilterTabBar() {
         WPStyleGuide.configureFilterTabBar(filterTabBar)
-        filterTabBar.superview?.backgroundColor = .filterBarBackground
+        filterTabBar.superview?.backgroundColor = .secondarySystemGroupedBackground
 
         filterTabBar.tabSizingStyle = .equalWidths
         filterTabBar.items = coordinator.filterItems

@@ -1,12 +1,14 @@
 import Foundation
-import CoreTelephony
 import WordPressAuthenticator
 import WordPressKit
+import WordPressShared
 import DesignSystem
 
 import SupportSDK
+import SupportProvidersSDK
 import ZendeskCoreSDK
 import AutomatticTracks
+import AutomatticEncryptedLogs
 
 extension NSNotification.Name {
     static let ZendeskPushNotificationReceivedNotification = NSNotification.Name(rawValue: "ZendeskPushNotificationReceivedNotification")
@@ -212,7 +214,6 @@ protocol ZendeskUtilsProtocol {
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.appVersion, value: ZendeskUtils.appVersion))
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.allBlogs, value: ZendeskUtils.getBlogInformation()))
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.deviceFreeSpace, value: ZendeskUtils.getDeviceFreeSpace()))
-        ticketFields.append(CustomField(fieldId: TicketFieldIDs.networkInformation, value: ZendeskUtils.getNetworkInformation()))
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.logs, value: ZendeskUtils.getEncryptedLogUUID()))
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.currentSite, value: ZendeskUtils.getCurrentSiteDescription()))
         ticketFields.append(CustomField(fieldId: TicketFieldIDs.sourcePlatform, value: Constants.sourcePlatform))
@@ -333,6 +334,16 @@ protocol ZendeskUtilsProtocol {
         }
     }
 
+    /// If there is no identity set yet, create an anonymous one.
+    ///
+    /// - warning: This method should only be used for interactions with Zendesk
+    /// that doesn't require a confirmed identity and/or a response from support,
+    /// such as sending feedback about the app.
+    static func createIdentitySilentlyIfNeeded() {
+        if Zendesk.instance?.identity == nil {
+            Zendesk.instance?.setIdentity(Identity.createAnonymous())
+        }
+    }
 }
 
 // MARK: - Create Request
@@ -342,11 +353,28 @@ extension ZendeskUtils {
         createNewRequest(in: viewController, description: description, tags: tags, alertOptions: .withName, completion: completion)
     }
 
+    func uploadAttachment(_ data: Data, contentType: String) async throws -> ZDKUploadResponse {
+        try await withUnsafeThrowingContinuation { continuation in
+            ZDKUploadProvider().uploadAttachment(data, withFilename: "attachment", andContentType: contentType) { response, error in
+                if let response {
+                    continuation.resume(returning: response)
+                } else {
+                    continuation.resume(throwing: error ?? URLError(.unknown))
+                }
+            }
+        }
+    }
+
+    /// - parameter alertOptions: If the value is `nil`, the request will be
+    /// created using the existing identity without prompting to confirm user information.
+    /// In that case, the app is responsible for creating an identity before calling this method.
     func createNewRequest(
         in viewController: UIViewController,
+        subject: String? = nil,
         description: String,
         tags: [String],
-        alertOptions: IdentityAlertOptions,
+        attachments: [ZDKUploadResponse] = [],
+        alertOptions: IdentityAlertOptions?,
         status: ZendeskNewRequestLoadingStatus? = nil,
         completion: @escaping ZendeskNewRequestCompletion
     ) {
@@ -362,8 +390,9 @@ extension ZendeskUtils {
                 request.customFields = requestConfig.customFields
                 request.tags = requestConfig.tags
                 request.ticketFormId = requestConfig.ticketFormID
-                request.subject = requestConfig.subject
+                request.subject = subject ?? requestConfig.subject
                 request.requestDescription = description
+                request.attachments = attachments
 
                 provider.createRequest(request) { response, error in
                     if let error {
@@ -379,6 +408,11 @@ extension ZendeskUtils {
                     }
                 }
             }
+        }
+
+        guard let alertOptions else {
+            createRequest()
+            return // Continue using the previously created identity
         }
 
         status?(.identifyingUser)
@@ -523,7 +557,6 @@ private extension ZendeskUtils {
     }
 
     static func createZendeskIdentity(completion: @escaping (Bool) -> Void) {
-
         guard let userEmail = ZendeskUtils.sharedInstance.userEmail else {
             DDLogInfo("No user email to create Zendesk identity with.")
             let identity = Identity.createAnonymous()
@@ -780,34 +813,6 @@ private extension ZendeskUtils {
         }
 
         return tags
-    }
-
-    static func getNetworkInformation() -> String {
-
-        var networkInformation = [String]()
-
-        let reachibilityStatus = ZDKReachability.forInternetConnection().currentReachabilityStatus()
-
-        let networkType: String = {
-            switch reachibilityStatus {
-            case .reachableViaWiFi:
-                return Constants.networkWiFi
-            case .reachableViaWWAN:
-                return Constants.networkWWAN
-            default:
-                return Constants.unknownValue
-            }
-        }()
-
-        let networkCarrier = CTTelephonyNetworkInfo().serviceSubscriberCellularProviders?.values.first
-        let carrierName = networkCarrier?.carrierName ?? Constants.unknownValue
-        let carrierCountryCode = networkCarrier?.isoCountryCode ?? Constants.unknownValue
-
-        networkInformation.append("\(Constants.networkTypeLabel) \(networkType)")
-        networkInformation.append("\(Constants.networkCarrierLabel) \(carrierName)")
-        networkInformation.append("\(Constants.networkCountryCodeLabel) \(carrierCountryCode)")
-
-        return networkInformation.joined(separator: "\n")
     }
 
     func trackSourceEvent(_ event: WPAnalyticsStat) {
@@ -1101,9 +1106,6 @@ private extension ZendeskUtils {
         static let wpComTag = "wpcom"
         static let networkWiFi = "WiFi"
         static let networkWWAN = "Mobile"
-        static let networkTypeLabel = "Network Type:"
-        static let networkCarrierLabel = "Carrier:"
-        static let networkCountryCodeLabel = "Country Code:"
         static let zendeskProfileUDKey = "wp_zendesk_profile"
         static let profileEmailKey = "email"
         static let profileNameKey = "name"
@@ -1122,7 +1124,6 @@ private extension ZendeskUtils {
         static let appVersion: Int64 = 360000086866
         static let allBlogs: Int64 = 360000087183
         static let deviceFreeSpace: Int64 = 360000089123
-        static let networkInformation: Int64 = 360000086966
         static let logs: Int64 = 22871957
         static let currentSite: Int64 = 360000103103
         static let sourcePlatform: Int64 = 360009311651

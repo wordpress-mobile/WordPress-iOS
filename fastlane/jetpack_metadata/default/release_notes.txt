@@ -1,2 +1,2 @@
-We’ve added reading preferences so you can customize your Reader screen. Pick the color, font, and size you like the most for a reading experience that fits your vibe.
-We also updated the Insights tab to load and scroll better. No flickering, no breaking, no problem.
+
+

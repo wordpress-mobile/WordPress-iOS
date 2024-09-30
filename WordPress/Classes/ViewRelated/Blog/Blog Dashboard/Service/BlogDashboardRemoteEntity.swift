@@ -1,6 +1,6 @@
 import Foundation
 
-struct BlogDashboardRemoteEntity: Decodable, Hashable {
+struct BlogDashboardRemoteEntity: Decodable, Hashable, Sendable {
 
     var posts: FailableDecodable<BlogDashboardPosts>?
     var todaysStats: FailableDecodable<BlogDashboardStats>?
@@ -8,7 +8,7 @@ struct BlogDashboardRemoteEntity: Decodable, Hashable {
     var activity: FailableDecodable<BlogDashboardActivity>?
     var dynamic: FailableDecodable<[BlogDashboardDynamic]>?
 
-    struct BlogDashboardPosts: Decodable, Hashable {
+    struct BlogDashboardPosts: Decodable, Hashable, Sendable {
         var hasPublished: Bool?
         var draft: [BlogDashboardPost]?
         var scheduled: [BlogDashboardPost]?
@@ -21,9 +21,9 @@ struct BlogDashboardRemoteEntity: Decodable, Hashable {
     }
 
     // We don't rely on the data from the API to show posts
-    struct BlogDashboardPost: Decodable, Hashable { }
+    struct BlogDashboardPost: Decodable, Hashable, Sendable { }
 
-    struct BlogDashboardStats: Decodable, Hashable {
+    struct BlogDashboardStats: Decodable, Hashable, Sendable {
         var views: Int?
         var visitors: Int?
         var likes: Int?
@@ -54,7 +54,7 @@ struct BlogDashboardRemoteEntity: Decodable, Hashable {
 
 extension BlogDashboardRemoteEntity {
 
-    struct BlogDashboardDynamic: Decodable, Hashable {
+    struct BlogDashboardDynamic: Decodable, Hashable, Sendable {
 
         let id: String
         let title: String?
@@ -65,18 +65,18 @@ extension BlogDashboardRemoteEntity {
         let order: Order?
         let rows: [Row]?
 
-        enum Order: String, Decodable {
+        enum Order: String, Decodable, Sendable {
             case top
             case bottom
         }
 
-        struct Row: Decodable, Hashable {
+        struct Row: Decodable, Hashable, Sendable {
             let title: String?
             let description: String?
             let icon: String?
         }
 
-        struct ImageSize: Decodable, Hashable {
+        struct ImageSize: Decodable, Hashable, Sendable {
             let width: Int?
             let height: Int?
 
@@ -101,7 +101,7 @@ extension BlogDashboardRemoteEntity {
     }
 }
 
-extension Activity: Hashable {
+extension Activity: @retroactive Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(activityID)
     }

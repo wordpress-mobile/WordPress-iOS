@@ -1,5 +1,6 @@
 import UIKit
 import Combine
+import SwiftUI
 
 /// Displays search results from a reader site search.
 ///
@@ -34,26 +35,17 @@ class ReaderSiteSearchViewController: UITableViewController {
 
     // MARK: Views
 
+    private let blogReuseIdentifier = "blogReuseIdentifier"
     private let statusViewController = NoResultsViewController.controller()
-    fileprivate let headerView = ReaderSiteSearchHeaderView()
+
     fileprivate let footerView = ReaderSiteSearchFooterView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        WPStyleGuide.configureColors(view: self.view, tableView: tableView)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: blogReuseIdentifier)
 
-        tableView.register(WPBlogTableViewCell.self, forCellReuseIdentifier: WPBlogTableViewCell.reuseIdentifier())
-
-        configureTableHeaderView()
         configureTableFooterView()
-
-        view.backgroundColor = .clear
-    }
-
-    private func configureTableHeaderView() {
-        tableView.tableHeaderView = headerView
-        headerView.isHidden = true
     }
 
     private func configureTableFooterView() {
@@ -102,7 +94,6 @@ class ReaderSiteSearchViewController: UITableViewController {
         let noFeeds = feeds.count == 0
 
         footerView.isHidden = noFeeds
-        headerView.isHidden = noFeeds
 
         hideStatusView()
         if noFeeds {
@@ -132,28 +123,12 @@ class ReaderSiteSearchViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: WPBlogTableViewCell.reuseIdentifier(), for: indexPath)
-
-        let feed = feeds[indexPath.row]
-        configureCell(cell, forFeed: feed)
-
-        return cell
-    }
-
-    private func configureCell(_ cell: UITableViewCell, forFeed feed: ReaderFeed) {
-        WPStyleGuide.configureTableViewBlogCell(cell)
-
-        cell.textLabel?.text = feed.title
-        cell.detailTextLabel?.text =  feed.urlForDisplay
-
+        let cell = tableView.dequeueReusableCell(withIdentifier: blogReuseIdentifier, for: indexPath)
+        cell.contentConfiguration = UIHostingConfiguration {
+            ReaderFeedCell(feed: feeds[indexPath.row])
+        }.margins(.vertical, 10)
         cell.accessoryType = .disclosureIndicator
-
-        if let blavatarURL = feed.blavatarURL {
-            cell.imageView?.downloadSiteIcon(at: blavatarURL.absoluteString,
-                                             placeholderImage: .siteIconPlaceholder)
-        } else {
-            cell.imageView?.image = .siteIconPlaceholder
-        }
+        return cell
     }
 
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -254,7 +229,6 @@ private extension ReaderSiteSearchViewController {
             comment: "Message shown when the reader finds no blogs for the specified search phrase. The %@ is a placeholder for the search phrase."
         )
     }
-
 }
 
 // MARK: - WPContentSyncHelperDelegate
@@ -286,54 +260,7 @@ extension ReaderSiteSearchViewController: ReaderSiteSearchFooterViewDelegate {
     }
 }
 
-extension ReaderFeed {
-    /// Strips the protocol and query from the URL.
-    ///
-    var urlForDisplay: String {
-        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
-            let host = components.host else {
-            return url.absoluteString
-        }
-
-        let path = components.path
-        if path.isEmpty && path != "/" {
-            return host + path
-        } else {
-            return host
-        }
-    }
-}
-
-// MARK: - Header / Footer views
-
-private let collapsedHeaderFooterHeight: CGFloat = 9.0
-private let headerFooterDividerHeight: CGFloat = 1.0
-
-class ReaderSiteSearchHeaderView: UIView {
-    private let divider = UIView()
-
-    init() {
-        super.init(frame: .zero)
-
-        backgroundColor = .clear
-        frame.size.height = collapsedHeaderFooterHeight
-
-        divider.translatesAutoresizingMaskIntoConstraints = false
-        divider.backgroundColor = .divider
-        addSubview(divider)
-
-        NSLayoutConstraint.activate([
-            divider.bottomAnchor.constraint(equalTo: bottomAnchor),
-            divider.heightAnchor.constraint(equalToConstant: headerFooterDividerHeight),
-            divider.leadingAnchor.constraint(equalTo: leadingAnchor),
-            divider.trailingAnchor.constraint(equalTo: trailingAnchor)
-            ])
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
+// MARK: - Footer View
 
 /// Simple protocol that reports when the footer view has changed its frame.
 /// The delegate can then use this to re-set and resize the associated
@@ -356,22 +283,14 @@ class ReaderSiteSearchFooterView: UIView {
         backgroundColor = .clear
         frame.size.height = ReaderSiteSearchFooterView.expandedHeight
 
-        divider.translatesAutoresizingMaskIntoConstraints = false
-        divider.backgroundColor = .divider
-        addSubview(divider)
-
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         activityIndicator.hidesWhenStopped = true
         addSubview(activityIndicator)
 
         NSLayoutConstraint.activate([
-            divider.topAnchor.constraint(equalTo: topAnchor),
-            divider.heightAnchor.constraint(equalToConstant: headerFooterDividerHeight),
-            divider.leadingAnchor.constraint(equalTo: leadingAnchor),
-            divider.trailingAnchor.constraint(equalTo: trailingAnchor),
             activityIndicator.centerXAnchor.constraint(equalTo: centerXAnchor),
             activityIndicator.centerYAnchor.constraint(equalTo: centerYAnchor)
-            ])
+        ])
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -385,7 +304,7 @@ class ReaderSiteSearchFooterView: UIView {
             delegate?.readerSiteSearchFooterViewDidChangeFrame(self)
         } else {
             activityIndicator.stopAnimating()
-            frame.size.height = collapsedHeaderFooterHeight
+            frame.size.height = 0
             delegate?.readerSiteSearchFooterViewDidChangeFrame(self)
         }
     }

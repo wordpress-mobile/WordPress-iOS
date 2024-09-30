@@ -39,7 +39,7 @@ private extension LikeUserTableViewCell {
 
     func configureCell() {
         nameLabel.textColor = Style.blockTextColor
-        usernameLabel.textColor = .textSubtle
+        usernameLabel.textColor = .secondaryLabel
         backgroundColor = Style.blockBackgroundColor
         separatorView.backgroundColor = Style.blockSeparatorColor
         separatorHeightConstraint.constant = .hairlineBorderWidth

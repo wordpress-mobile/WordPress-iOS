@@ -145,8 +145,8 @@ class ReaderDetailToolbar: UIView, NibLoadable {
     // MARK: - Styles
 
     private func applyStyles() {
-        backgroundColor = displaySetting == .standard ? .listForeground : displaySetting.color.background
-        dividerView.backgroundColor = displaySetting == .standard ? .divider : displaySetting.color.border
+        backgroundColor = displaySetting == .standard ? .secondarySystemGroupedBackground : displaySetting.color.background
+        dividerView.backgroundColor = displaySetting == .standard ? UIColor.separator : displaySetting.color.border
     }
 
     // MARK: - Configuration
@@ -190,12 +190,12 @@ class ReaderDetailToolbar: UIView, NibLoadable {
     }
 
     private func configureActionButtonStyle(_ button: UIButton) {
-        let standardDisabledColor = UIColor(light: .muriel(color: .gray, .shade10), dark: .textQuaternary)
+        let standardDisabledColor = UIColor(light: UIAppColor.gray(.shade10), dark: .quaternaryLabel)
         let disabledColor = displaySetting == .standard ? standardDisabledColor : displaySetting.color.border
 
         WPStyleGuide.applyReaderActionButtonStyle(button,
-                                                  titleColor: displaySetting == .standard ? .textSubtle : displaySetting.color.secondaryForeground,
-                                                  imageColor: displaySetting == .standard ? .textSubtle : displaySetting.color.secondaryForeground,
+                                                  titleColor: displaySetting == .standard ? .secondaryLabel : displaySetting.color.secondaryForeground,
+                                                  imageColor: displaySetting == .standard ? .secondaryLabel : displaySetting.color.secondaryForeground,
                                                   disabledColor: disabledColor)
 
         var configuration = UIButton.Configuration.plain()

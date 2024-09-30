@@ -9,8 +9,7 @@
 /* Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title. */
 "%1$@ on %2$@" = "%1$@ ar %2$@";
 
-/* Accessibility label for comments button (plural)
-   Number of Comments per Page */
+/* Number of Comments per Page */
 "%@ comments" = "%@ sylw";
 
 /* Number of days after which comments should autoclose */
@@ -100,9 +99,6 @@
 /* No comment provided by engineer. */
 "Activity Logs" = "Cofnodion Gweithgarwch";
 
-/* The title on the add category screen */
-"Add a Category" = "Ychwanegu Categori";
-
 /* No comment provided by engineer. */
 "Add alt text" = "Ychwanegu testun arall";
 
@@ -114,9 +110,6 @@
 
 /* No comment provided by engineer. */
 "Add menu item to children" = "Ychwanegwch eitem dewislen plentyn";
-
-/* Add self-hosted site button */
-"Add self-hosted site" = "Ychwanegu gwefan hunan-letya";
 
 /* Label for url blog setting
    Register Domain - Address information field placeholder for Address line */
@@ -265,9 +258,6 @@
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
 
-/* Blog's User Profile. Displayed when the name is empty! */
-"Blog's User" = "Defnyddiwr y blog";
-
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "Trwm";
@@ -295,12 +285,9 @@
 
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
-   Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
-   Cancel
    Cancel a prompt
    Cancel Action
    Cancel action on share extension editor screen.
@@ -334,7 +321,6 @@
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
@@ -368,9 +354,6 @@
 /* Category menu item in share extension.
    Menu item label for linking a specific category. */
 "Category" = "Categori";
-
-/* Error popup title to indicate that there was no category title filled in. */
-"Category title missing." = "Teitl categori ar goll.";
 
 /* Center alignment for an image. Should be the same as in core WP. */
 "Center" = "Canol";
@@ -552,9 +535,6 @@
 /* This is the text we display to the user when we ask them for a review and they've indicated they don't like the app */
 "Could you tell us how we could improve?" = "Dwedwch wrthym sut y gallwn wella?";
 
-/* No comment provided by engineer. */
-"Couldn't Connect" = "Methu Cysylltu";
-
 /* Period Stats 'Countries' header */
 "Countries" = "Gwledydd";
 
@@ -569,9 +549,6 @@
    Site creation. Step 1. Screen title
    Title for the button to progress with creating the site with the selected design. */
 "Create Site" = "Creu Gwefan";
-
-/* Create WordPress.com site button */
-"Create WordPress.com site" = "Creu gwefan WordPress.com";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Bydd dewis dewislen gwahanol yn dileu'r newidiadau rydych wedi eu gwneud i'r ddewislen gyfredol. A ydych yn siŵr eich bod am barhau?";
@@ -594,9 +571,6 @@
 
 /* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
 "Dashboard" = "Bwrdd Rheoli";
-
-/* Title of Days stats filter. */
-"Days" = "Diwrnod";
 
 /* Label for selecting the default category of a post
    Title for selecting a default category for a post */
@@ -622,8 +596,7 @@
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "Dileu Dewislen";
 
-/* Delete option in the confirmation alert when deleting a post from the trash.
-   Title for button on the comment details page that deletes the comment when tapped. */
+/* Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "Dileu'n Barhol";
 
 /* Button label for deleting the current site
@@ -645,7 +618,6 @@
 "Disabled" = "Anablwyd";
 
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
-   Button shown if there are unsaved changes and the author is trying to move away from the post.
    Menus button title for canceling/discarding changes made. */
 "Discard" = "Hepgor";
 
@@ -694,7 +666,6 @@
 "Domains" = "Parthau";
 
 /* A done button
-   Accessibility label for the Done button in the Me screen.
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
@@ -703,13 +674,10 @@
    Label for Done button
    Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
-   Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Text displayed by the right navigation button title
    Title for a Done button.
    Title for button that will dismiss this view
-   Title for the button that will dismiss this view.
-   Title of the Done button on the me page */
+   Title for the button that will dismiss this view. */
 "Done" = "Gorffen";
 
 /* Name for the status of a draft post. */
@@ -764,11 +732,7 @@
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
 "Empty URL" = "URL gwag";
 
-/* No comment provided by engineer. */
-"Enter a password" = "Rhowch gyfrinair";
-
-/* (placeholder) Help enter WordPress password
-   Placeholder of a field to type a password to protect the post. */
+/* (placeholder) Help enter WordPress password */
 "Enter password" = "Rhowch gyfrinair";
 
 /* (placeholder) Help enter WordPress username */
@@ -787,9 +751,6 @@
 
 /* Menus error title for a menu that received an error while trying to save a menu. */
 "Error Saving Menu" = "Gwall wrth Gadw Dewislen";
-
-/* Text displayed in HUD after attempting to save a draft post and an error occurred. */
-"Error occurred\nduring saving" = "Digwyddodd gwall\/n\nwrth gadw";
 
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "Esboniwch bwrpas y wefan.";
@@ -841,28 +802,14 @@
    User's First Name */
 "First Name" = "Enw Cyntaf";
 
-/* Button title. Follow the comments on a post.
-   Prompt to follow a blog. */
+/* Button title. Follow the comments on a post. */
 "Follow" = "Dilyn";
 
-/* Displayed in the Notification Settings View
-   Section title for sites the user has followed. */
-"Followed Sites" = "Gwefannau Rwy'n eu Dilyn";
-
-/* Label for list of followers.
-   User role badge */
+/* User role badge */
 "Follower" = "Dilynwr";
 
-/* Blog Followers
-   Insights 'Followers' header
-   Label for number of followers. */
+/* Label for number of followers. */
 "Followers" = "Dilynwyr";
-
-/* User is following the blog. */
-"Following" = "Yn dilyn";
-
-/* Filters Follows Notifications */
-"Follows" = "Yn Dilyn";
 
 /* Next web page */
 "Forward" = "Ymlaen";
@@ -873,8 +820,7 @@
 /* Full size image. (default). Should be the same as in core WP. */
 "Full Size" = "Maint Llawn";
 
-/* Add New Stats Card category title
-   Title for the general section in site settings screen */
+/* Title for the general section in site settings screen */
 "General" = "Cyffredinol";
 
 /* Alerts the user that wpcom account information is being retrieved. */
@@ -887,8 +833,7 @@
    Opens WPiOS Settings.app Section */
 "Go to iOS Settings" = "Ewch i osodiadau iOS";
 
-/* Accessibility label for HTML button on formatting toolbar.
-   HTML Attachment Label */
+/* Accessibility label for HTML button on formatting toolbar. */
 "HTML" = "HTML";
 
 /* Post HTML content */
@@ -905,12 +850,6 @@
 
 /* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "Cudd";
-
-/* Hide All */
-"Hide All" = "Cuddio Popeth";
-
-/* Hide All Sites */
-"Hide All Sites" = "Cuddio Pob Gwefan";
 
 /* No comment provided by engineer. */
 "Hide keyboard" = "Cuddio bysellfwrdd";
@@ -936,9 +875,6 @@
 
 /* Hint for image title on image settings. */
 "Image title" = "Teitl delwedd";
-
-/* Undated post time label */
-"Immediately" = "Ar unwaith";
 
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "Esboniwch, mewn ychydig eiriau, bwrpas y wefan.";
@@ -993,8 +929,6 @@
 "Italic" = "Italig";
 
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
-   Button shown if there are unsaved changes and the author is trying to move away from the post.
-   Button shown when the author is asked for publishing confirmation.
    Goes back to editing the post. */
 "Keep Editing" = "Cadw i Olygu";
 
@@ -1094,11 +1028,9 @@
 "Loading stream..." = "Llwytho llif...";
 
 /* Loading tags
-   Loading tags.
    Loading. Verb
    Suggestions loading message
    Text displayed in HUD while a media item is being loaded.
-   Text displayed in HUD while a revision post is loading.
    Text displayed while loading time zones */
 "Loading..." = "Llwytho...";
 
@@ -1164,7 +1096,6 @@
 "Me" = "Fi";
 
 /* Noun. Title. Links to the blog's Media library.
-   The menu item to select during a guided tour.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Cyfrwng";
@@ -1191,32 +1122,23 @@
    Label for the share message field on the post settings. */
 "Message" = "Neges";
 
-/* Title of Months stats filter. */
-"Months" = "Mis";
-
 /* Post Stats months and years header. */
 "Months and Years" = "Misoedd a Blynyddoedd";
 
 /* Accessibility label for more button in dashboard quick start card.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
-   Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
    Action button to display more available options */
 "More" = "Rhagor";
 
 /* Title for button on the comment details page that moves the comment to trash when tapped.
-   Trash option in the trash confirmation alert.
    Trashes the comment */
 "Move to Trash" = "Symud i'r Sbwriel";
 
 /* Link to My Profile section
    My Profile view title */
 "My Profile" = "Fy Mhroffil";
-
-/* Title for site picker screen.
-   Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
-"My Sites" = "Gwefannau";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "Angen Cymorth?";
@@ -1325,7 +1247,6 @@
    Notifications tab bar item accessibility label
    Notifications View Controller title
    Noun. Name of the Notifications feature
-   The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Hysbysiadau";
 
@@ -1411,9 +1332,6 @@
 /* WordPress.com Research Footer Text */
 "Opportunities to participate in WordPress.com research & surveys." = "Cyfleoedd i gymryd rhan mewn ymchwil a holiaduron WordPress.com.";
 
-/* Placeholder to indicate that filling out the field is optional. */
-"Optional" = "Dewisol";
-
 /* Accessibility label for Ordered list button on formatting toolbar. */
 "Ordered List" = "Rhestr Drefnus";
 
@@ -1445,7 +1363,6 @@
 "Page" = "Tudalen";
 
 /* Noun. Title. Links to the blog's Pages screen.
-   The item to select during a guided tour.
    This is the section title
    Title of the screen showing the list of pages for a blog. */
 "Pages" = "Tudalennau";
@@ -1455,21 +1372,16 @@
    Settings: Comments Paging preferences */
 "Paging" = "Tudalennu";
 
-/* Placeholder to set a parent category for a new category.
-   Title for selecting parent category of a category */
+/* Title for selecting parent category of a category */
 "Parent Category" = "Categori Rhiant";
 
 /* Accessibility label for the password text field in the self-hosted login page.
    Label for entering password in password field
-   Label for the password field. Should be the same as WP core.
    Login dialog password placeholder
    Password placeholder
    Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "Cyfrinair";
-
-/* Privacy setting for posts set to 'Password protected'. Should be the same as in core WP. */
-"Password protected" = "Diogelu gyda chyfrinair";
 
 /* Button title for Pending comment state.
    Status for Media object that is being processed locally.
@@ -1518,9 +1430,6 @@
 /* No comment provided by engineer. */
 "Please try entering your login details again." = "Ceisiwch fewngofnodi eto.";
 
-/* Asks the usre to wait until the currently running fetch request completes. */
-"Please wait til the current fetch completes." = "Arhoswch nes bod yr estyn cyfredol yn cwblhau.";
-
 /* Header of section in Plugin Directory showing popular plugins
    Screen title, where users can see the most popular plugins */
 "Popular" = "Poblogaidd";
@@ -1536,8 +1445,7 @@
 /* Title for selecting categories for a post */
 "Post Categories" = "Categoriau Cofnodion";
 
-/* For setting the format of a post.
-   The post formats available for the post. Should be the same as in core WP. */
+/* The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Fformat Cofnod";
 
 /* Insights 'Posting Activity' header
@@ -1583,8 +1491,7 @@
 /* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "Polisi Preifatrwydd";
 
-/* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
+/* Name for the status of a post that is marked private. */
 "Private" = "Preifat";
 
 /* Message for the warning shown to the user when he refuses to re-login when the authToken is missing. */
@@ -1593,14 +1500,9 @@
 /* Menu item label for linking a project page. */
 "Projects" = "Projectau";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
-"Public" = "Cyhoeddus";
-
-/* Button title. Publishes a post.
-   Label for the publish (verb) button. Tapping publishes a draft post.
+/* Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen
-   Title for the publish settings view */
+   Section title for the publish table section in the blog details screen */
 "Publish" = "Cyhoeddi";
 
 /* A short phrase indicating a post is due to be immedately published. */
@@ -1610,12 +1512,6 @@
    Period Stats 'Published' header
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Cyhoeddwyd";
-
-/* Published on [date] */
-"Published on" = "Cyhoeddwyd ar";
-
-/* Text displayed in HUD while a post is being published. */
-"Publishing..." = "Cyhoeddi...";
 
 /* Title of screen showing site purchases */
 "Purchases" = "Wedi eu Prynu";
@@ -1631,7 +1527,6 @@
    The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
-   The menu item to select during a guided tour.
    Title of the 'Reader' tab - used for spotlight indexing on iOS. */
 "Reader" = "Darllennydd";
 
@@ -1673,11 +1568,9 @@
 "Related Posts" = "Cofnodion sy'n Perthyn";
 
 /* Alert button to confirm a plugin to be removed
-   Button label when removing a blog
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
-   Remove an image/posts/etc
-   Removes a self hosted site from the app */
+   Remove an image/posts/etc */
 "Remove" = "Tynnu";
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
@@ -1740,10 +1633,8 @@
 /* A prompt to attempt the failed network request again
    A prompt to attempt the failed network request again.
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
-   Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
    Opens the media library .
-   Retries the upload of a user's post.
    Retry updating User's Role
    Retry. Action
    Retry. Verb – retry a failed media upload.
@@ -1774,7 +1665,6 @@
 
 /* Menus save button title
    Save Action
-   Save button label (saving content, ex: Post, Page, Comment, Category).
    Save button label (saving content, ex: Post, Page, Comment).
    Save draft post action on share extension site picker screen.
    Settings Text save button title
@@ -1782,28 +1672,14 @@
    Title of action button to save a Reader post to read later. */
 "Save" = "Cadw";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from the post. */
-"Save Draft" = "Cadw'r Drafft";
-
-/* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a post is being saved as a draft. */
+/* Menus save button title while it is saving a Menu. */
 "Saving..." = "Wrthi'n Cadw...";
-
-/* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
-"Schedule" = "Amserlennu";
 
 /* Name for the status of a scheduled post
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Amserlenwyd";
 
-/* Scheduled for [date] */
-"Scheduled for" = "Amserlenwyd ar gyfer";
-
-/* Text displayed in HUD while a post is being scheduled to be published. */
-"Scheduling..." = "Amserlennu...";
-
-/* Placeholder text for the search bar
-   Title of Stats section that shows search engine referrer traffic.
+/* Title of Stats section that shows search engine referrer traffic.
    Title of the Reader's search feature */
 "Search" = "Chwilio";
 
@@ -1813,14 +1689,8 @@
 /* Menus search bar placeholder text. */
 "Search..." = "Chwilio...";
 
-/* Blog Picker's Title */
-"Select Site" = "Dewiswch wefan";
-
 /* Instructional text about the Sharing feature. */
 "Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account." = "Dewiswch y cyfrif yr hoffech ei awdurdodi. Sylwch y bydd eich cofnodion yn cael eu rhannu yn awtomatig i'r cyfrif penodol.";
-
-/* Blog list page edit mode header label */
-"Select which sites will be shown in the site picker." = "Dewiswch pa wefannau fydd yn cael eu dangos wrth ddewis gwefan.";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu location. */
 "Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?" = "Bydd dewis dewislen gwahanol yn dileu'r newidiadau rydych wedi eu gwneud i'r ddewislen cyfredol. A ydych yn siŵr eich bod am barhau?";
@@ -1856,7 +1726,6 @@
 "Settings update failed" = "Methodd diweddaru'r gosodiadau";
 
 /* Accessibility label for share buttons in nav bars
-   Button label to share a post
    Button label to share a web page
    Shares the comment URL
    Spoken accessibility label
@@ -1886,14 +1755,8 @@
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "Dangos y botwm Ailflogio";
 
-/* Alert title picking theme type to browse */
-"Show themes:" = "Dangos themâu:";
-
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "Dangos yn gyhoeddus pan fyddwch yn gwneud sylwadau ar flogiau.";
-
-/* Label for time period in list of followers. */
-"Since" = "Ers";
 
 /* Title for the Language Picker View */
 "Site Language" = "Iaith Gwefan";
@@ -1903,7 +1766,6 @@
 
 /* Default title for a site
    Label for site title blog setting
-   The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "Teitl y Wefan";
 
@@ -1916,14 +1778,10 @@
 /* Overlay message displayed when site successfully deleted */
 "Site deleted" = "Gwefan wedi ei dileu";
 
-/* Setting: indicates if New Follows will be notified */
-"Site follows" = "Dilynnwys y wefan";
-
 /* Image size option title. */
 "Size" = "Maint";
 
-/* Button that allows the user to skip the prompt and be brought to the app
-   Continue without making a selection
+/* Continue without making a selection
    Continue without making a selection. */
 "Skip" = "Hepgor";
 
@@ -2004,12 +1862,8 @@
 /* Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
-   Stats window title
-   The item to select during a guided tour. */
+   Stats window title */
 "Stats" = "Ystadegau";
-
-/* The status of the post. Should be the same as in core WP. */
-"Status" = "Statws";
 
 /* Accessibility label for strikethrough button on formatting toolbar. */
 "Strike Through" = "Taro Drwodd";
@@ -2027,9 +1881,6 @@
 /* Support button that appears in the Theme Browser Header
    Theme Support action title */
 "Support" = "Cefnogaeth";
-
-/* Title for back button that leads to the site picker screen. */
-"Switch Site" = "Newid Gwefan";
 
 /* Menu item label for linking a specific tag.
    Section header for tag name in Tag Details View. */
@@ -2131,9 +1982,6 @@
 /* People: Invitation Error */
 "The user already has the specified role. Please, try assigning a different role." = "Mae gan y defnyddiwr rôl sydd eisoes wedi'i bennu. Ceisiwch neilltuo rôl gwahanol.";
 
-/* No comment provided by engineer. */
-"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again." = "Gall fod yr enw defnyddiwr neu gyfrinair sy'n cael ei gadw yn y app yn hen. Rhowch eich cyfrinair eto yn y gosodiadau a cheisio eto.";
-
 /* Title of alert when theme activation succeeds */
 "Theme Activated" = "Thema yn fyw";
 
@@ -2205,12 +2053,8 @@
    Label for list of stats by content title.
    Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
-   Post title
-   Title of the new Category being created. */
+   Post title */
 "Title" = "Teitl";
-
-/* Error popup message to indicate that there was no category title filled in. */
-"Title for a category is mandatory." = "Mae teitl gyfer y categori yn orfodol.";
 
 /* Comments Today Section Header
    Insights 'Today' header
@@ -2225,15 +2069,6 @@
 
 /* Shortened version of the main title to be used in back navigation */
 "Topic" = "Pwnc";
-
-/* Label for total followers */
-"Total" = "Cyfanswm";
-
-/* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "Cyfanswm Dilynwyr E-bost: %@";
-
-/* Label displaying total number of WordPress.com followers. %@ is the total. */
-"Total WordPress.com Followers: %@" = "Cyfanswm Dilynwyr WordPress.com: %@";
 
 /* Accessibility label for trash buttons in nav bars
    Trashes a comment
@@ -2296,7 +2131,6 @@
 "Underline" = "Tanlinellu";
 
 /* Action button to undo last change
-   Button in the notification presented in Reader when a post removed from saved for later
    Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
@@ -2305,8 +2139,7 @@
    Undo action */
 "Undo" = "Dadwneud";
 
-/* Label for size of media when it's not possible to calculate it.
-   Unknown Tag Name */
+/* Label for size of media when it's not possible to calculate it. */
 "Unknown" = "Anhysbys";
 
 /* No comment provided by engineer. */
@@ -2338,9 +2171,6 @@
    Label action for updating a link on the editor
    Update button label (saving content, ex: Post, Page, Comment). */
 "Update" = "Diweddaru";
-
-/* Button shown if there are unsaved changes and the author is trying to move away from an already saved draft. */
-"Update Draft" = "Diweddaru Drafft";
 
 /* Label action for updating a link on the editor */
 "Update Link" = "Diweddaru Dolen";
@@ -2391,14 +2221,10 @@
 /* Period Stats 'Videos' header */
 "Videos" = "Fideos";
 
-/* Button title. Displays a summary / sharing screen for a specific post.
-   Opens the post epilogue screen to allow sharing / viewing of a post.
+/* Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Golwg";
-
-/* Button in the notification presented in Reader when a post is saved for later */
-"View All" = "Gweld y Cyfan";
 
 /* Action title. Opens the user's site in an in-app browser */
 "View Site" = "Gweld y Wefan";
@@ -2424,8 +2250,7 @@
    Today's Stats 'Views' label */
 "Views" = "Golwg";
 
-/* The visibility settings of the post. Should be the same as in core WP.
-   Visibility label */
+/* The visibility settings of the post. Should be the same as in core WP. */
 "Visibility" = "Gwelededd";
 
 /* An option to visit the site to which a specific post belongs */
@@ -2460,9 +2285,6 @@
 
 /* The title of the option group for editing an image's size, alignment, etc. on the image details screen. */
 "Web Display Settings" = "Gosodiadau'r Dangosydd Gwe";
-
-/* Title of Weeks stats filter. */
-"Weeks" = "Wythnos";
 
 /* A message title */
 "Welcome to the Reader" = "Croeso i'r Darllenydd";
@@ -2509,17 +2331,11 @@
 /* Asks the user if they would like to clear their search history. */
 "Would you like to clear your search history?" = "Hoffech chi glirio eich hanes chwilio?";
 
-/* Message offering to hide all WPCom Sites */
-"Would you like to hide all WordPress.com Sites?" = "Hoffech chi guddio pob gwefan WordPress.com?";
-
 /* Placeholder text for inline compose view */
 "Write a reply…" = "Ysgrifennu ateb…";
 
 /* Title for the writing section in site settings screen */
 "Writing" = "Ysgrifennu";
-
-/* Title of Years stats filter. */
-"Years" = "Blwyddyn";
 
 /* Button title. Confirms that the user wants to proceed with a pending action.
    Label for a button that clears all old activity logs
@@ -2546,8 +2362,7 @@
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "Mae gennych uwchraddiadau premiwm gweithredol ar eich gwefan. Diddymwch eich uwchraddiadau cyn dileu eich gwefan.";
 
 /* Show when clicking cancel on a comment text box and you didn't save your changes.
-   Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment.
-   Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post. */
+   Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment. */
 "You have unsaved changes." = "Mae gennych newidiadau heb eu cadw.";
 
 /* Error message informing the user that being logged into a WordPress.com account is required. */

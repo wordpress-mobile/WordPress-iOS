@@ -10,11 +10,9 @@
 @interface PostSettingsViewController : UITableViewController
 
 - (nonnull instancetype)initWithPost:(nonnull AbstractPost *)aPost;
-- (void)endEditingAction:(nullable id)sender;
 
 @property (nonnull, nonatomic, strong, readonly) AbstractPost *apost;
 @property (nonatomic) BOOL isStandalone;
-@property (nonatomic) BOOL isStandaloneEditorDismissingAfterSave;
 @property (nonnull, nonatomic, strong, readonly) NSArray *publicizeConnections;
 @property (nonnull, nonatomic, strong, readonly) NSArray *unsupportedConnections;
 

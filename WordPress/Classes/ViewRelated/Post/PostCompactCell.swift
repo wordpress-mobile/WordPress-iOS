@@ -14,7 +14,6 @@ class PostCompactCell: UITableViewCell {
     @IBOutlet weak var innerView: UIView!
     @IBOutlet weak var contentStackView: UIStackView!
     @IBOutlet weak var ghostView: UIView!
-    @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var separator: UIView!
 
     @IBOutlet weak var trailingContentConstraint: NSLayoutConstraint!
@@ -46,7 +45,6 @@ class PostCompactCell: UITableViewCell {
         configureDate()
         configureStatus()
         configureFeaturedImage()
-        configureProgressView()
         configureMenuInteraction()
     }
 
@@ -70,24 +68,23 @@ class PostCompactCell: UITableViewCell {
     private func applyStyles() {
         WPStyleGuide.configureTableViewCell(self)
         WPStyleGuide.applyPostCardStyle(self)
-        WPStyleGuide.applyPostProgressViewStyle(progressView)
         WPStyleGuide.configureLabel(timestampLabel, textStyle: .subheadline)
         WPStyleGuide.configureLabel(badgesLabel, textStyle: .subheadline)
 
         titleLabel.font = AppStyleGuide.prominentFont(textStyle: .headline, weight: .bold)
         titleLabel.adjustsFontForContentSizeCategory = true
 
-        titleLabel.textColor = .text
-        timestampLabel.textColor = .textSubtle
-        menuButton.tintColor = .textSubtle
+        titleLabel.textColor = .label
+        timestampLabel.textColor = .secondaryLabel
+        menuButton.tintColor = .secondaryLabel
 
         menuButton.setImage(.gridicon(.ellipsis), for: .normal)
 
         featuredImageView.layer.cornerRadius = Constants.imageRadius
 
-        innerView.backgroundColor = .listForeground
-        backgroundColor = .listForeground
-        contentView.backgroundColor = .listForeground
+        innerView.backgroundColor = .secondarySystemGroupedBackground
+        backgroundColor = .secondarySystemGroupedBackground
+        contentView.backgroundColor = .secondarySystemGroupedBackground
     }
 
     private func setupSeparator() {
@@ -145,7 +142,6 @@ class PostCompactCell: UITableViewCell {
         guard let viewModel = viewModel else {
             return
         }
-
         badgesLabel.textColor = viewModel.statusColor
         badgesLabel.text = viewModel.statusAndBadges(separatedBy: Constants.separator)
         if badgesLabel.text?.isEmpty ?? true {
@@ -155,41 +151,9 @@ class PostCompactCell: UITableViewCell {
         }
     }
 
-    private func configureProgressView() {
-        guard let viewModel = viewModel else {
-            return
-        }
-
-        let shouldHide = viewModel.shouldHideProgressView
-
-        progressView.isHidden = shouldHide
-
-        progressView.progress = viewModel.progress
-
-        if !shouldHide && viewModel.progressBlock == nil {
-            viewModel.progressBlock = { [weak self] progress in
-                self?.progressView.setProgress(progress, animated: true)
-                if progress >= 1.0, let post = self?.post {
-                    self?.configure(with: post)
-                }
-            }
-        }
-    }
-
     private func configureMenuInteraction() {
-        guard let viewModel = viewModel else {
-            return
-        }
-
-        let isProgressBarVisible = !viewModel.shouldHideProgressView
-
-        if isProgressBarVisible {
-            menuButton.isEnabled = false
-            menuButton.alpha = 0.3
-        } else {
-            menuButton.isEnabled = true
-            menuButton.alpha = 1.0
-        }
+        menuButton.isEnabled = true
+        menuButton.alpha = 1.0
     }
 
     private func setupAccessibility() {
@@ -216,7 +180,7 @@ extension PostCompactCell: GhostableView {
         menuButton.isGhostableDisabled = true
         separator.isGhostableDisabled = true
         ghostView.isHidden = !visible
-        ghostView.backgroundColor = .listForeground
+        ghostView.backgroundColor = .secondarySystemGroupedBackground
         contentStackView.isHidden = visible
     }
 

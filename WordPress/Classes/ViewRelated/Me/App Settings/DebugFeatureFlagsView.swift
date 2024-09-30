@@ -7,12 +7,19 @@ struct DebugFeatureFlagsView: View {
         List {
             sections
         }
-        .tint(Color(UIColor.jetpackGreen))
-        .listStyle(.grouped)
+        .tint(Color(UIAppColor.jetpackGreen))
+        .listStyle(.plain)
         .searchable(text: $viewModel.filterTerm, placement: .navigationBarDrawer(displayMode: .always))
         .navigationTitle(navigationTitle)
         .navigationBarTitleDisplayMode(.inline)
-        .apply(addToolbarTitleMenu)
+        .toolbarTitleMenu {
+            Picker("Filter", selection: $viewModel.filter) {
+                Text("Feature Flags (All)").tag(DebugFeatureFlagFilter.all)
+                Text("Remote Feature Flags").tag(DebugFeatureFlagFilter.remote)
+                Text("Local Feature Flags").tag(DebugFeatureFlagFilter.local)
+                Text("Overriden Feature Flags").tag(DebugFeatureFlagFilter.overriden)
+            }.pickerStyle(.inline)
+        }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu(content: {
@@ -59,22 +66,6 @@ struct DebugFeatureFlagsView: View {
         }
     }
 
-    @ViewBuilder
-    func addToolbarTitleMenu<T: View>(_ view: T) -> some View {
-        if #available(iOS 16, *) {
-            view.toolbarTitleMenu {
-                Picker("Filter", selection: $viewModel.filter) {
-                    Text("Feature Flags (All)").tag(DebugFeatureFlagFilter.all)
-                    Text("Remote Feature Flags").tag(DebugFeatureFlagFilter.remote)
-                    Text("Local Feature Flags").tag(DebugFeatureFlagFilter.local)
-                    Text("Overriden Feature Flags").tag(DebugFeatureFlagFilter.overriden)
-                }.pickerStyle(.inline)
-            }
-        } else {
-            view
-        }
-    }
-
     private var navigationTitle: String {
         switch viewModel.filter {
         case .all: return "Feature Flags"
@@ -90,7 +81,7 @@ private final class DebugFeatureFlagsViewModel: ObservableObject {
     private let overrideStore = FeatureFlagOverrideStore()
 
     private let allRemoteFlags = RemoteFeatureFlag.allCases.filter(\.canOverride)
-    private let allLocalFlags = FeatureFlag.allCases.filter(\.canOverride)
+    private let allLocalFlags = FeatureFlag.allCases
 
     @Published var filter: DebugFeatureFlagFilter = .all
     @Published var filterTerm = ""
@@ -124,7 +115,7 @@ private final class DebugFeatureFlagsViewModel: ObservableObject {
     }
 
     private func override(_ flag: OverridableFlag, withValue value: Bool) {
-        try? overrideStore.override(flag, withValue: value)
+        overrideStore.override(flag, withValue: value)
         objectWillChange.send()
     }
 
@@ -155,10 +146,10 @@ private final class DebugFeatureFlagsViewModel: ObservableObject {
 
     func enableAllFlags() {
         for flag in RemoteFeatureFlag.allCases where !flag.enabled() {
-            try? overrideStore.override(flag, withValue: true)
+            overrideStore.override(flag, withValue: true)
         }
         for flag in FeatureFlag.allCases where !flag.enabled {
-            try? overrideStore.override(flag, withValue: true)
+            overrideStore.override(flag, withValue: true)
         }
         objectWillChange.send()
     }

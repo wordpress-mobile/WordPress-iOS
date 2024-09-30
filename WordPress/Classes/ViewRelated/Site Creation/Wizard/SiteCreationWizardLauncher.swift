@@ -40,16 +40,6 @@ final class SiteCreationWizardLauncher {
         return wizardContent
     }()
 
-    /// Closure to be executed upon dismissal of the SiteAssemblyWizardContent.
-    ///
-    private let onDismiss: ((Blog, Bool) -> Void)?
-
-    init(
-        onDismiss: ((Blog, Bool) -> Void)? = nil
-    ) {
-        self.onDismiss = onDismiss
-    }
-
     private func initStep(_ step: SiteCreationStep) -> WizardStep {
         switch step {
         case .address:
@@ -68,7 +58,7 @@ final class SiteCreationWizardLauncher {
             return SiteSegmentsStep(creator: self.creator, service: segmentsService)
         case .siteAssembly:
             let siteAssemblyService = EnhancedSiteCreationService(coreDataStack: ContextManager.sharedInstance())
-            return SiteAssemblyStep(creator: self.creator, service: siteAssemblyService, onDismiss: onDismiss)
+            return SiteAssemblyStep(creator: self.creator, service: siteAssemblyService)
         }
     }
 }

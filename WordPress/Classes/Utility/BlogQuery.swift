@@ -36,16 +36,16 @@ struct BlogQuery {
         and(NSPredicate(format: "url = %@", hostname))
     }
 
-    func visible(_ flag: Bool) -> Self {
-        and(NSPredicate(format: "visible = %@", NSNumber(booleanLiteral: flag)))
-    }
-
     func hostedByWPCom(_ flag: Bool) -> Self {
         and(NSPredicate(format: flag ? "account != NULL" : "account == NULL"))
     }
 
     func xmlrpc(matching xmlrpc: String) -> Self {
         and(NSPredicate(format: "xmlrpc = %@", xmlrpc))
+    }
+
+    func apiKey(is string: String) -> Self {
+        and(NSPredicate(format: "apiKey = %@", string))
     }
 
     func count(in context: NSManagedObjectContext) -> Int {

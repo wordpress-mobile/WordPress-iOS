@@ -1,6 +1,8 @@
 import UIKit
 import Combine
 import WordPressShared
+import SwiftUI
+import WordPressAPI
 
 final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITableViewDataSource, UITableViewDelegate {
 
@@ -12,7 +14,7 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.clipsToBounds = true
         tableView.layer.cornerRadius = 10
-        tableView.backgroundColor = .listForeground
+        tableView.backgroundColor = .secondarySystemGroupedBackground
         tableView.register(DashboardQuickActionCell.self, forCellReuseIdentifier: Constants.cellReuseID)
         return tableView
     }()
@@ -25,7 +27,6 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-
         createView()
     }
 
@@ -38,7 +39,10 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
         contentView.pinSubviewToAllEdges(tableView, priority: UILayoutPriority(999))
     }
 
-    func configure(viewModel: DashboardQuickActionsViewModel, viewController: BlogDashboardViewController) {
+    func configure(
+        viewModel: DashboardQuickActionsViewModel,
+        viewController: BlogDashboardViewController
+    ) {
         self.parentViewController = viewController
         self.viewModel = viewModel
 
@@ -76,6 +80,7 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
         cell.backgroundColor = .clear
         cell.accessoryType = .disclosureIndicator
         cell.isSeparatorHidden = indexPath.row == (items.count - 1)
+
         return cell
     }
 
@@ -100,7 +105,6 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
             trackQuickActionsEvent(.openedMediaLibrary, blog: blog)
             let controller = SiteMediaViewController(blog: blog)
             parentViewController.show(controller, sender: nil)
-            QuickStartTourGuide.shared.visited(.mediaScreen)
         case .stats:
             trackQuickActionsEvent(.statsAccessed, blog: blog)
             StatsViewController.show(for: blog, from: parentViewController)
@@ -110,11 +114,6 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
             viewController.tableView.isScrollEnabled = true
             viewController.blog = blog
             viewController.presentationDelegate = self
-            viewController.navigationItem.scrollEdgeAppearance = {
-                let appearance = UINavigationBarAppearance()
-                appearance.configureWithTransparentBackground()
-                return appearance
-            }()
             self.blogDetailsViewController = viewController
             self.parentViewController?.show(viewController, sender: nil)
         }

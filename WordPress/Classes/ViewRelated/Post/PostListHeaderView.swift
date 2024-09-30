@@ -9,11 +9,6 @@ final class PostListHeaderView: UIView {
     private let indicator = UIActivityIndicatorView(style: .medium)
     private let ellipsisButton = UIButton(type: .custom)
 
-    // MARK: - Properties
-
-    private var post: Post?
-    private var viewModel: PostListItemViewModel?
-
     // MARK: - Initializer
 
     override init(frame: CGRect) {
@@ -36,10 +31,6 @@ final class PostListHeaderView: UIView {
     }
 
     func configure(with viewModel: PostSyncStateViewModel) {
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
-            return
-        }
-
         if let iconInfo = viewModel.iconInfo {
             icon.image = iconInfo.image
             icon.tintColor = iconInfo.color
@@ -66,14 +57,9 @@ final class PostListHeaderView: UIView {
         setupIcon()
         setupEllipsisButton()
 
-        let stackView: UIStackView
-        if RemoteFeatureFlag.syncPublishing.enabled() {
-            let innerStackView = UIStackView(arrangedSubviews: [icon, indicator, ellipsisButton])
-            innerStackView.spacing = 4
-            stackView = UIStackView(arrangedSubviews: [textLabel, innerStackView])
-        } else {
-            stackView = UIStackView(arrangedSubviews: [textLabel, ellipsisButton])
-        }
+        let innerStackView = UIStackView(arrangedSubviews: [icon, indicator, ellipsisButton])
+        innerStackView.spacing = 4
+        let stackView = UIStackView(arrangedSubviews: [textLabel, innerStackView])
 
         indicator.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
 
@@ -84,9 +70,6 @@ final class PostListHeaderView: UIView {
     }
 
     private func setupIcon() {
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
-            return
-        }
         NSLayoutConstraint.activate([
             icon.widthAnchor.constraint(equalToConstant: 22),
             icon.heightAnchor.constraint(equalToConstant: 22)
@@ -97,7 +80,7 @@ final class PostListHeaderView: UIView {
     private func setupEllipsisButton() {
         ellipsisButton.translatesAutoresizingMaskIntoConstraints = false
         ellipsisButton.setImage(UIImage(named: "more-horizontal-mobile"), for: .normal)
-        ellipsisButton.tintColor = .listIcon
+        ellipsisButton.tintColor = .secondaryLabel
 
         NSLayoutConstraint.activate([
             ellipsisButton.widthAnchor.constraint(equalToConstant: 24)

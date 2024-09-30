@@ -32,9 +32,6 @@
 /* No comment provided by engineer. */
 "Activity Logs" = "Aktivitetslogs";
 
-/* The title on the add category screen */
-"Add a Category" = "Tilføj kategori";
-
 /* No comment provided by engineer. */
 "Add alt text" = "Tilføj alternativ tekst";
 
@@ -67,9 +64,6 @@
 /* Message asking for confirmation on tag deletion */
 "Are you sure you want to delete this tag?" = "Er du sikker på, at du vil slette dette nøgleord?";
 
-/* Message of the trash confirmation alert. */
-"Are you sure you want to trash this post?" = "Er du sikker på, du vil slette dette indlæg?";
-
 /* An example tag used in the login prologue screens.
    Art site intent topic */
 "Art" = "Kunst";
@@ -96,21 +90,15 @@
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
 
-/* Blog's Follower Profile. Displayed when the name is empty! */
-"Blog's Follower" = "Bloggens Følgere";
-
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "Fed";
 
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
-   Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
-   Cancel
    Cancel a prompt
    Cancel Action
    Cancel action on share extension editor screen.
@@ -144,7 +132,6 @@
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
@@ -168,9 +155,6 @@
 
 /* Label for the categories field. Should be the same as WP core. */
 "Categories" = "Kategorier";
-
-/* Error popup title to indicate that there was no category title filled in. */
-"Category title missing." = "Kategorititel mangler.";
 
 /* Center alignment for an image. Should be the same as in core WP. */
 "Center" = "Center";
@@ -245,9 +229,6 @@
 /* Title of an prompt letting the user know there was a problem saving. */
 "Could Not Save Changes" = "Ændringer kunne ikke gemmes";
 
-/* No comment provided by engineer. */
-"Couldn't Connect" = "Kunne ikke forbinde";
-
 /* Period Stats 'Countries' header */
 "Countries" = "Lande";
 
@@ -259,15 +240,8 @@
 "Create Account" = "Opret konto";
 
 /* Button for selecting the current page template.
-   Button title, encourages users to create their first page on their blog.
    Title for button to make a page with the contents of the selected layout */
 "Create Page" = "Opret side";
-
-/* Button title, encourages users to create post on their blog. */
-"Create Post" = "Opret indlæg";
-
-/* Create WordPress.com site button */
-"Create WordPress.com site" = "Opret websted på WordPress.com";
 
 /* No comment provided by engineer. */
 "Current" = "Nuværende";
@@ -288,9 +262,6 @@
 /* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
 "Dashboard" = "Kontrolpanel";
 
-/* Title of Days stats filter. */
-"Days" = "Dage";
-
 /* Label for selecting the default category of a post
    Title for selecting a default category for a post */
 "Default Category" = "Standardkategori";
@@ -306,8 +277,7 @@
    Title of the trash confirmation alert. */
 "Delete" = "Slet";
 
-/* Delete option in the confirmation alert when deleting a post from the trash.
-   Title for button on the comment details page that deletes the comment when tapped. */
+/* Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "Slet permanent";
 
 /* Text displayed in HUD after successfully deleting a media item */
@@ -332,7 +302,6 @@
 "Disabled" = "Slået fra";
 
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
-   Button shown if there are unsaved changes and the author is trying to move away from the post.
    Menus button title for canceling/discarding changes made. */
 "Discard" = "Kasser";
 
@@ -354,7 +323,6 @@
 "Dismiss" = "Afvis";
 
 /* A done button
-   Accessibility label for the Done button in the Me screen.
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
@@ -363,13 +331,10 @@
    Label for Done button
    Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
-   Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Text displayed by the right navigation button title
    Title for a Done button.
    Title for button that will dismiss this view
-   Title for the button that will dismiss this view.
-   Title of the Done button on the me page */
+   Title for the button that will dismiss this view. */
 "Done" = "Færdig";
 
 /* Name for the status of a draft post. */
@@ -418,11 +383,7 @@
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
 "Empty URL" = "Tom URL";
 
-/* No comment provided by engineer. */
-"Enter a password" = "Indtast et kodeord";
-
-/* (placeholder) Help enter WordPress password
-   Placeholder of a field to type a password to protect the post. */
+/* (placeholder) Help enter WordPress password */
 "Enter password" = "Indtast adgangskode";
 
 /* (placeholder) Help enter WordPress username */
@@ -465,25 +426,14 @@
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "Filtype";
 
-/* Button title. Follow the comments on a post.
-   Prompt to follow a blog. */
+/* Button title. Follow the comments on a post. */
 "Follow" = "Følg";
 
-/* Displayed in the Notification Settings View
-   Section title for sites the user has followed. */
-"Followed Sites" = "Fulgte websteder";
-
-/* Label for list of followers.
-   User role badge */
+/* User role badge */
 "Follower" = "Følger";
 
-/* Blog Followers
-   Insights 'Followers' header
-   Label for number of followers. */
+/* Label for number of followers. */
 "Followers" = "Følgere";
-
-/* User is following the blog. */
-"Following" = "Følgere";
 
 /* Next web page */
 "Forward" = "Viderestil";
@@ -497,8 +447,7 @@
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "Henter kontooplysninger";
 
-/* Accessibility label for HTML button on formatting toolbar.
-   HTML Attachment Label */
+/* Accessibility label for HTML button on formatting toolbar. */
 "HTML" = "HTML";
 
 /* Help button
@@ -527,9 +476,6 @@
 
 /* Title of the screen for choosing an image's size. */
 "Image Size" = "Billedstørrelse";
-
-/* Undated post time label */
-"Immediately" = "Straks";
 
 /* Default button title used in media picker to insert media (photos / videos) into a post.
    Label action for inserting a link on the editor */
@@ -567,8 +513,6 @@
 "Jetpack Settings" = "Jetpack indstillinger";
 
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
-   Button shown if there are unsaved changes and the author is trying to move away from the post.
-   Button shown when the author is asked for publishing confirmation.
    Goes back to editing the post. */
 "Keep Editing" = "Fortsæt redigering";
 
@@ -619,11 +563,9 @@
 "Loading Scan..." = "Indlæser scan...";
 
 /* Loading tags
-   Loading tags.
    Loading. Verb
    Suggestions loading message
    Text displayed in HUD while a media item is being loaded.
-   Text displayed in HUD while a revision post is loading.
    Text displayed while loading time zones */
 "Loading..." = "Henter...";
 
@@ -677,7 +619,6 @@
 "Me" = "Mig";
 
 /* Noun. Title. Links to the blog's Media library.
-   The menu item to select during a guided tour.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Medier";
@@ -692,16 +633,12 @@
 /* Medium image size. Should be the same as in core WP. */
 "Medium" = "Medium";
 
-/* Title of Months stats filter. */
-"Months" = "Måneder";
-
 /* Post Stats months and years header. */
 "Months and Years" = "Måneder og år";
 
 /* Accessibility label for more button in dashboard quick start card.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
-   Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
    Action button to display more available options */
 "More" = "Mere";
@@ -714,10 +651,6 @@
    The accessibility value of the my site tab.
    Title of My Site tab */
 "My Site" = "Mit websted";
-
-/* Title for site picker screen.
-   Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
-"My Sites" = "Mine websteder";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "Brug for hjælp?";
@@ -784,7 +717,6 @@
    Notifications tab bar item accessibility label
    Notifications View Controller title
    Noun. Name of the Notifications feature
-   The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Notifikationer";
 
@@ -840,9 +772,6 @@
 /* No comment provided by engineer. */
 "Open in Safari" = "Åbn i Safari";
 
-/* Placeholder to indicate that filling out the field is optional. */
-"Optional" = "Valgfri";
-
 /* Accessibility label for Ordered list button on formatting toolbar. */
 "Ordered List" = "Sorteret liste";
 
@@ -859,30 +788,21 @@
    Other Sites Notification Settings Title */
 "Other Sites" = "Andre websteder";
 
-/* Title of notification displayed when a page has been successfully updated. */
-"Page updated" = "Side opdateret";
-
 /* Noun. Title. Links to the blog's Pages screen.
-   The item to select during a guided tour.
    This is the section title
    Title of the screen showing the list of pages for a blog. */
 "Pages" = "Sider";
 
-/* Placeholder to set a parent category for a new category.
-   Title for selecting parent category of a category */
+/* Title for selecting parent category of a category */
 "Parent Category" = "Forælderkategori";
 
 /* Accessibility label for the password text field in the self-hosted login page.
    Label for entering password in password field
-   Label for the password field. Should be the same as WP core.
    Login dialog password placeholder
    Password placeholder
    Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "Kodeord";
-
-/* Privacy setting for posts set to 'Password protected'. Should be the same as in core WP. */
-"Password protected" = "Kodeordsbeskyttet";
 
 /* Button title for Pending comment state.
    Status for Media object that is being processed locally.
@@ -928,15 +848,8 @@
 /* Title for selecting categories for a post */
 "Post Categories" = "Indlægskategorier";
 
-/* For setting the format of a post.
-   The post formats available for the post. Should be the same as in core WP. */
+/* The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Indlægsformat";
-
-/* Title of camera permissions screen */
-"Post to WordPress" = "Udgiv på WordPress";
-
-/* Title of notification displayed when a post has been successfully updated. */
-"Post updated" = "Indlæg opdateret";
 
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
@@ -964,18 +877,12 @@
 /* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "Privatlivspolitik";
 
-/* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
+/* Name for the status of a post that is marked private. */
 "Private" = "Privat";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
-"Public" = "Offentlig";
-
-/* Button title. Publishes a post.
-   Label for the publish (verb) button. Tapping publishes a draft post.
+/* Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen
-   Title for the publish settings view */
+   Section title for the publish table section in the blog details screen */
 "Publish" = "Udgiv";
 
 /* A short phrase indicating a post is due to be immedately published. */
@@ -986,9 +893,6 @@
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Udgivet";
 
-/* Published on [date] */
-"Published on" = "Udgivet den";
-
 /* Mobile Push Notifications */
 "Push Notifications" = "Push meddelelser";
 
@@ -997,7 +901,6 @@
    The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
-   The menu item to select during a guided tour.
    Title of the 'Reader' tab - used for spotlight indexing on iOS. */
 "Reader" = "Læser";
 
@@ -1015,11 +918,9 @@
 "Refresh" = "Genindlæs";
 
 /* Alert button to confirm a plugin to be removed
-   Button label when removing a blog
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
-   Remove an image/posts/etc
-   Removes a self hosted site from the app */
+   Remove an image/posts/etc */
 "Remove" = "Fjern";
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
@@ -1068,10 +969,8 @@
 /* A prompt to attempt the failed network request again
    A prompt to attempt the failed network request again.
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
-   Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
    Opens the media library .
-   Retries the upload of a user's post.
    Retry updating User's Role
    Retry. Action
    Retry. Verb – retry a failed media upload.
@@ -1091,7 +990,6 @@
 
 /* Menus save button title
    Save Action
-   Save button label (saving content, ex: Post, Page, Comment, Category).
    Save button label (saving content, ex: Post, Page, Comment).
    Save draft post action on share extension site picker screen.
    Settings Text save button title
@@ -1099,33 +997,19 @@
    Title of action button to save a Reader post to read later. */
 "Save" = "Gem";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from the post. */
-"Save Draft" = "Gem kladde";
-
-/* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a post is being saved as a draft. */
+/* Menus save button title while it is saving a Menu. */
 "Saving..." = "Gemmer...";
-
-/* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
-"Schedule" = "Planlæg";
 
 /* Name for the status of a scheduled post
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Planlagt";
 
-/* Scheduled for [date] */
-"Scheduled for" = "Planlagt til";
-
-/* Placeholder text for the search bar
-   Title of Stats section that shows search engine referrer traffic.
+/* Title of Stats section that shows search engine referrer traffic.
    Title of the Reader's search feature */
 "Search" = "Søg";
 
 /* Period Stats 'Search Terms' header */
 "Search Terms" = "Søgeord";
-
-/* Blog Picker's Title */
-"Select Site" = "Vælg websted";
 
 /* Label for connected service in Publicize stat. */
 "Service" = "Service";
@@ -1137,7 +1021,6 @@
 "Settings" = "Indstillinger";
 
 /* Accessibility label for share buttons in nav bars
-   Button label to share a post
    Button label to share a web page
    Shares the comment URL
    Spoken accessibility label
@@ -1151,20 +1034,13 @@
 /* Button title. Tapping begins the process of creating a WordPress.com account. */
 "Sign up for WordPress.com" = "Registrer dig på WordPress.com";
 
-/* Label for time period in list of followers. */
-"Since" = "Siden";
-
 /* Title for the Language Picker View */
 "Site Language" = "Webstedets sprog";
 
 /* Default title for a site
    Label for site title blog setting
-   The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "Webstedets titel";
-
-/* The item to select during a guided tour. */
-"Site URL" = "Websteds URL";
 
 /* No comment provided by engineer. */
 "Site address must be at least 4 characters." = "Webstedsadresse skal være mindst 4 tegn.";
@@ -1172,8 +1048,7 @@
 /* Image size option title. */
 "Size" = "Størrelse";
 
-/* Button that allows the user to skip the prompt and be brought to the app
-   Continue without making a selection
+/* Continue without making a selection
    Continue without making a selection. */
 "Skip" = "Spring over";
 
@@ -1233,25 +1108,15 @@
 /* Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
-   Stats window title
-   The item to select during a guided tour. */
+   Stats window title */
 "Stats" = "Statistik";
-
-/* The status of the post. Should be the same as in core WP. */
-"Status" = "Status";
 
 /* Accessibility label for strikethrough button on formatting toolbar. */
 "Strike Through" = "Gennemstreg";
 
-/* Text displayed in HUD while a post is being submitted for review. */
-"Submitting for Review..." = "Sender til godkendelse...";
-
 /* Support button that appears in the Theme Browser Header
    Theme Support action title */
 "Support" = "Support";
-
-/* Title for back button that leads to the site picker screen. */
-"Switch Site" = "Skift websted";
 
 /* Label for selecting the blogs tags
    Label for the tags field. Should be the same as WP core.
@@ -1300,9 +1165,6 @@
 /* No comment provided by engineer. */
 "The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "Webstedet på %1$@ benytter WordPress %2$@. Vi anbefaler, at du opdaterer til seneste version, eller mindst %3$@";
 
-/* No comment provided by engineer. */
-"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again." = "Brugernavnet eller kodeordet, der er gemt i app'en, er ikke korrekt. Prøv venligst at genindtaste dit kodeord under indstillinger og prøv igen.";
-
 /* Noun. Name of the Themes feature
    Themes option in the blog details
    Title of Themes browser page */
@@ -1321,12 +1183,8 @@
    Label for list of stats by content title.
    Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
-   Post title
-   Title of the new Category being created. */
+   Post title */
 "Title" = "Titel";
-
-/* Error popup message to indicate that there was no category title filled in. */
-"Title for a category is mandatory." = "Titel på en kategori er obligatorisk.";
 
 /* Comments Today Section Header
    Insights 'Today' header
@@ -1335,12 +1193,6 @@
 
 /* Shortened version of the main title to be used in back navigation */
 "Topic" = "Emne";
-
-/* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "Antal følgere på e-mail: %@";
-
-/* Label displaying total number of WordPress.com followers. %@ is the total. */
-"Total WordPress.com Followers: %@" = "Antal følgere på WordPress.com: %@";
 
 /* Accessibility label for trash buttons in nav bars
    Trashes a comment
@@ -1389,14 +1241,7 @@
    Update button label (saving content, ex: Post, Page, Comment). */
 "Update" = "Opdater";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from an already saved draft. */
-"Update Draft" = "Opdater kladde";
-
-/* Text displayed in HUD while a draft or scheduled post is being updated. */
-"Updating..." = "Opdaterer...";
-
-/* Message displayed on a post's card when the post has failed to upload
-   System notification displayed to the user when media files have failed to upload. */
+/* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Upload fejlede";
 
 /* Label for the date a media asset (image / video) was uploaded
@@ -1406,9 +1251,6 @@
 /* \"Uploading\" Status text
    Status for Media object that is being uploaded. */
 "Uploading" = "Uploader";
-
-/* Message displayed on a post's card while the post is uploading media */
-"Uploading media..." = "Uploader medie...";
 
 /* Label to show while uploading media to server */
 "Uploading..." = "Uploader...";
@@ -1436,17 +1278,10 @@
 /* Period Stats 'Videos' header */
 "Videos" = "Videoer";
 
-/* Button title. Displays a summary / sharing screen for a specific post.
-   Opens the post epilogue screen to allow sharing / viewing of a post.
+/* Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Vis";
-
-/* Button in the notification presented in Reader when a post is saved for later */
-"View All" = "Vis alle";
-
-/* Button label for viewing a post */
-"View Post" = "Se indlæg";
 
 /* Action title. Opens the user's site in an in-app browser */
 "View Site" = "Vis websted";
@@ -1466,8 +1301,7 @@
    Today's Stats 'Views' label */
 "Views" = "Visninger";
 
-/* The visibility settings of the post. Should be the same as in core WP.
-   Visibility label */
+/* The visibility settings of the post. Should be the same as in core WP. */
 "Visibility" = "Synlighed";
 
 /* An option to visit the site to which a specific post belongs */
@@ -1480,9 +1314,6 @@
    Title for Visitors count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Visitors' label */
 "Visitors" = "Besøgende";
-
-/* Title of Weeks stats filter. */
-"Weeks" = "Uger";
 
 /* Post Signup Interstitial Title Text for WordPress iOS */
 "Welcome to WordPress" = "Velkommen til WordPress";
@@ -1508,9 +1339,6 @@
 /* Placeholder text for inline compose view */
 "Write a reply…" = "Skriv et svar...";
 
-/* Title of Years stats filter. */
-"Years" = "År";
-
 /* Button title. Confirms that the user wants to proceed with a pending action.
    Label for a button that clears all old activity logs
    Yes */
@@ -1520,8 +1348,7 @@
 "You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "Du kan ikke bruge den e-mail-adresse ved tilmelding. Vi har problemer med, at de blokerer nogle af vores e-mails. Benyt venligst en anden e-mail-udbyder.";
 
 /* Show when clicking cancel on a comment text box and you didn't save your changes.
-   Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment.
-   Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post. */
+   Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment. */
 "You have unsaved changes." = "Du har ikke gemt dine ændringer";
 
 /* Title for a view milestone push notification */

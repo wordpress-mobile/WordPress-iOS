@@ -68,8 +68,12 @@ public struct NormalNoticeStyle: NoticeStyle {
     public let dismissGesture: NoticeDismissGesture? = nil
 }
 
-public struct QuickStartNoticeStyle: NoticeStyle {
+public struct InAppUpdateNoticeStyle: NoticeStyle {
     public let attributedMessage: NSAttributedString?
+
+    init(attributedMessage: NSAttributedString? = nil) {
+        self.attributedMessage = attributedMessage
+    }
 
     // Return new UIFont instance everytime in order to be responsive to accessibility font size changes
     public var titleLabelFont: UIFont { return WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold) }
@@ -84,26 +88,4 @@ public struct QuickStartNoticeStyle: NoticeStyle {
     public let animationStyle = NoticeAnimationStyle.moveIn
 
     public let dismissGesture: NoticeDismissGesture? = nil
-}
-
-public struct ToolTipNoticeStyle: NoticeStyle {
-    public let attributedMessage: NSAttributedString?
-
-    init(attributedMessage: NSAttributedString? = nil) {
-        self.attributedMessage = attributedMessage
-    }
-
-    // Return new UIFont instance everytime in order to be responsive to accessibility font size changes
-    public var titleLabelFont: UIFont { return WPStyleGuide.fontForTextStyle(.body) }
-    public var actionButtonFont: UIFont? { return WPStyleGuide.fontForTextStyle(.headline) }
-    public var cancelButtonFont: UIFont? { return WPStyleGuide.fontForTextStyle(.body) }
-
-    public let layoutMargins = UIEdgeInsets(top: 13.0, left: 16.0, bottom: 13.0, right: 16.0)
-
-    public let isDismissable = false
-    public let showNextArrow = false
-
-    public let animationStyle = NoticeAnimationStyle.fade
-
-    public let dismissGesture: NoticeDismissGesture? = NoticeDismissGesture.tap
 }

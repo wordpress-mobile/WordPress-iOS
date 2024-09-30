@@ -7,7 +7,7 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
     private let coordinator = MediaCoordinator.shared
 
     private lazy var collectionViewController = SiteMediaCollectionViewController(blog: blog)
-    private lazy var buttonAddMedia = SpotlightableButton(type: .custom)
+    private lazy var buttonAddMedia = UIButton(type: .custom)
     private lazy var buttonAddMediaMenuController = SiteMediaAddMediaMenuController(blog: blog, coordinator: coordinator)
     private var buttonFilter: UIButton?
 
@@ -26,7 +26,6 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
         super.init(nibName: nil, bundle: nil)
 
         hidesBottomBarWhenPushed = true
-        extendedLayoutIncludesOpaqueBars = true
     }
 
     required init?(coder: NSCoder) {
@@ -36,13 +35,10 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        QuickStartTourGuide.shared.visited(.mediaScreen)
-
         collectionViewController.embed(in: self)
         collectionViewController.delegate = self
 
         configureAddMediaButton()
-        configureDefaultNavigationBarAppearance()
         configureNavigationTitle()
         refreshNavigationItems()
     }
@@ -53,7 +49,6 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
         if isFirstAppearance {
             navigationItem.hidesSearchBarWhenScrolling = false
         }
-        buttonAddMedia.shouldShowSpotlight = QuickStartTourGuide.shared.isCurrentElement(.mediaUpload)
 
         if showPicker && blog.userCanUploadMedia {
             buttonAddMediaMenuController.showPhotosPicker(from: self)
@@ -92,7 +87,7 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
 
         let button = UIButton.makeMenu(title: Strings.title, menu: menu)
         self.buttonFilter = button
-        if UIDevice.isPad() {
+        if traitCollection.horizontalSizeClass == .regular {
             navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
         } else {
             navigationItem.titleView = button
@@ -101,15 +96,9 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
 
     private func configureAddMediaButton() {
         let button = self.buttonAddMedia
-
-        button.spotlightOffset = UIOffset(horizontal: 20, vertical: -10)
         let config = UIImage.SymbolConfiguration(textStyle: .body, scale: .large)
         let image = UIImage(systemName: "plus", withConfiguration: config) ?? .gridicon(.plus)
         button.setImage(image, for: .normal)
-        button.addAction(UIAction { [weak self] _ in
-            QuickStartTourGuide.shared.visited(.mediaUpload)
-            self?.buttonAddMedia.shouldShowSpotlight = false
-        }, for: .menuActionTriggered)
         button.menu = buttonAddMediaMenuController.makeMenu(for: self)
         button.showsMenuAsPrimaryAction = true
         button.accessibilityLabel = Strings.addButtonAccessibilityLabel

@@ -74,20 +74,20 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
 
     private func applyStyles() {
         selectionStyle = .none
-        backgroundColor = .listForeground
+        backgroundColor = .secondarySystemGroupedBackground
 
         viewCountLabel.font = WPStyleGuide.fontForTextStyle(.title1)
-        viewCountLabel.textColor = .textSubtle
+        viewCountLabel.textColor = .secondaryLabel
 
         viewCountDescriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
-        viewCountDescriptionLabel.textColor = .textSubtle
+        viewCountDescriptionLabel.textColor = .secondaryLabel
 
         tipLabel.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
-        tipLabel.textColor = .text
+        tipLabel.textColor = .label
         tipLabel.numberOfLines = 0
 
         detailsLabel.font = WPStyleGuide.fontForTextStyle(.subheadline)
-        detailsLabel.textColor = .text
+        detailsLabel.textColor = .label
         detailsLabel.numberOfLines = 0
 
         dismissButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body)
@@ -239,14 +239,14 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
         enum ReaderDiscover {
             static let detailsTitle = NSLocalizedString(
                 "growAudienceCell.readerDiscover.details",
-                value: "Connect with other bloggers by following, liking and commenting on their posts.",
+                value: "Connect with other bloggers by subscribing, liking and commenting on their posts.",
                 comment: "A detailed message to users about growing the audience for their site through reader discover."
             )
 
             static let actionButtonTitle = NSLocalizedString(
                 "growAudienceCell.readerDiscover.actionButton",
-                value: "Discover blogs to follow",
-                comment: "Title for button that will open up the follow topics screen."
+                value: "Discover blogs to subscribe",
+                comment: "Title for button that will open up the subscribe topics screen."
             )
 
             static let completedTipTitle = NSLocalizedString(

@@ -63,7 +63,7 @@ final class SiteSegmentsWizardContent: UIViewController {
     }
 
     private func setupBackground() {
-        view.backgroundColor = .listBackground
+        view.backgroundColor = .systemGroupedBackground
     }
 
     override func viewDidLayoutSubviews() {
@@ -81,11 +81,11 @@ final class SiteSegmentsWizardContent: UIViewController {
     }
 
     private func setupTableBackground() {
-        table.backgroundColor = .listBackground
+        table.backgroundColor = .systemGroupedBackground
     }
 
     private func setupTableSeparator() {
-        table.separatorColor = .divider
+        table.separatorColor = .separator
     }
 
     private func hideSeparators() {

@@ -68,8 +68,8 @@ import Gridicons
 
         guard let url = upscaledImageURL(urlString: siteTopic.siteBlavatar) else {
             if siteTopic.isP2Type {
-                avatarImageView.tintColor = UIColor.listIcon
-                avatarImageView.layer.borderColor = UIColor.divider.cgColor
+                avatarImageView.tintColor = UIColor.secondaryLabel
+                avatarImageView.layer.borderColor = UIColor.separator.cgColor
                 avatarImageView.layer.borderWidth = .hairlineBorderWidth
                 avatarImageView.image = UIImage.gridicon(.p2)
                 return

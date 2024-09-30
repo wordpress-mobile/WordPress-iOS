@@ -3,13 +3,12 @@ import Gridicons
 import DesignSystem
 
 protocol LatestPostSummaryConfigurable {
-    func configure(withInsightData lastPostInsight: StatsLastPostInsight?, chartData: StatsPostDetails?, andDelegate delegate: SiteStatsInsightsDelegate?)
+    func configure(withInsightData lastPostInsight: StatsLastPostInsight?, andDelegate delegate: SiteStatsInsightsDelegate?)
 }
 
 class StatsLatestPostSummaryInsightsCell: StatsBaseCell, LatestPostSummaryConfigurable {
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private typealias Style = WPStyleGuide.Stats
-    private var lastPostInsight: StatsLastPostInsight?
 
     private let outerStackView = UIStackView()
     private let postStackView = UIStackView()
@@ -88,11 +87,11 @@ class StatsLatestPostSummaryInsightsCell: StatsBaseCell, LatestPostSummaryConfig
         postInfoStackView.axis = .vertical
         postInfoStackView.spacing = Metrics.postStackViewVerticalSpacing
 
-        postTitleLabel.textColor = .text
+        postTitleLabel.textColor = .label
         postTitleLabel.numberOfLines = 2
         postTitleLabel.font = .preferredFont(forTextStyle: .headline)
 
-        postTimestampLabel.textColor = .textSubtle
+        postTimestampLabel.textColor = .secondaryLabel
         postTimestampLabel.font = .preferredFont(forTextStyle: .subheadline)
         postTimestampLabel.adjustsFontSizeToFitWidth = true
 
@@ -175,7 +174,7 @@ class StatsLatestPostSummaryInsightsCell: StatsBaseCell, LatestPostSummaryConfig
 
     private func configureNoDataViews() {
         noDataLabel.font = .preferredFont(forTextStyle: .body)
-        noDataLabel.textColor = .textSubtle
+        noDataLabel.textColor = .secondaryLabel
         noDataLabel.numberOfLines = 0
         noDataLabel.text = TextContent.noData
 
@@ -191,7 +190,7 @@ class StatsLatestPostSummaryInsightsCell: StatsBaseCell, LatestPostSummaryConfig
 
     // MARK: - Public Configuration
 
-    func configure(withInsightData lastPostInsight: StatsLastPostInsight?, chartData: StatsPostDetails?, andDelegate delegate: SiteStatsInsightsDelegate?) {
+    func configure(withInsightData lastPostInsight: StatsLastPostInsight?, andDelegate delegate: SiteStatsInsightsDelegate?) {
         siteStatsInsightsDelegate = delegate
         statSection = .insightsLatestPostSummary
 

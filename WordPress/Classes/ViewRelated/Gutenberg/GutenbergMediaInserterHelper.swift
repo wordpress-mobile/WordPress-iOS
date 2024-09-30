@@ -53,7 +53,7 @@ class GutenbergMediaInserterHelper: NSObject {
             // it doesn't need to point anywhere. The placeholder gets displayed
             // as soon as `MediaImportService` generated it (see `MediaState.thumbnailReady`).
             // This way we, dramatically cut CPU and especially memory usage.
-            let previewURL = URL(fileURLWithPath: NSTemporaryDirectory() + "\(media.gutenbergUploadID)")
+            let previewURL = URL.Helpers.temporaryFile(named: "\(media.gutenbergUploadID)")
             return MediaInfo(id: media.gutenbergUploadID, url: previewURL.absoluteString, type: media.mediaTypeString)
         }
         callback(media)
@@ -75,8 +75,8 @@ class GutenbergMediaInserterHelper: NSObject {
         }
         let mediaUploadID = media.gutenbergUploadID
 
-        let filePath = NSTemporaryDirectory() + "\(mediaUploadID).jpg"
-        let url = URL(fileURLWithPath: filePath)
+        let url = URL.Helpers.temporaryFile(named: "\(mediaUploadID).jpg")
+
         do {
             try image.writeJPEGToURL(url)
             callback([MediaInfo(id: mediaUploadID, url: url.absoluteString, type: media.mediaTypeString)])
@@ -112,10 +112,6 @@ class GutenbergMediaInserterHelper: NSObject {
         return mediaCoordinator.isUploadingMedia(for: post)
     }
 
-    func cancelUploadOfAllMedia() {
-        mediaCoordinator.cancelUploadOfAllMedia(for: post)
-    }
-
     func cancelUploadOf(media: Media) {
         mediaCoordinator.cancelUploadAndDeleteMedia(media)
         gutenberg.mediaUploadUpdate(id: media.gutenbergUploadID, state: .reset, progress: 0, url: nil, serverID: nil)
@@ -123,10 +119,6 @@ class GutenbergMediaInserterHelper: NSObject {
 
     func retryFailedMediaUploads(automatedRetry: Bool = false) {
         _ = mediaCoordinator.uploadMedia(for: post, automatedRetry: automatedRetry)
-    }
-
-    func hasFailedMedia() -> Bool {
-        return mediaCoordinator.hasFailedMedia(for: post)
     }
 
     func insert(exportableAsset: ExportableAsset, source: MediaSource) -> Media? {
@@ -174,13 +166,8 @@ class GutenbergMediaInserterHelper: NSObject {
         switch state {
         case .processing:
             gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .uploading, progress: 0, url: nil, serverID: nil)
-        case .thumbnailReady(let url) where ReachabilityUtils.isInternetReachable() && media.remoteStatus == .failed:
-            gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .failed, progress: 0, url: url, serverID: nil)
-        case .thumbnailReady(let url) where !ReachabilityUtils.isInternetReachable() && media.remoteStatus == .failed:
-            // The progress value passed is ignored by the editor, allowing the UI to retain the last known progress before pausing
-            gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .paused, progress: 0, url: url, serverID: nil)
         case .thumbnailReady(let url):
-            gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .uploading, progress: 0.20, url: url, serverID: nil)
+            gutenberg.mediaUploadUpdate(id: mediaUploadID, url: url)
             break
         case .uploading:
             break
@@ -236,6 +223,8 @@ class GutenbergMediaInserterHelper: NSObject {
             }
         case .progress(let value):
             gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .uploading, progress: Float(value), url: nil, serverID: nil)
+        case .cancelled:
+            gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .reset, progress: 0, url: nil, serverID: nil)
         }
     }
 

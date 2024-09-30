@@ -1,5 +1,4 @@
 import Foundation
-import CocoaLumberjack
 import WordPressShared
 
 /// The purpose of this class is to render the Discussion Settings associated to a site, and
@@ -42,6 +41,7 @@ open class DiscussionSettingsViewController: UITableViewController {
     fileprivate func setupTableView() {
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
+        tableView.cellLayoutMarginsFollowReadableWidth = true
 
         // Note: We really want to handle 'Unselect' manually.
         // Reason: we always reload previously selected rows.

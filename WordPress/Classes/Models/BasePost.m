@@ -1,7 +1,7 @@
 #import "BasePost.h"
 #import "Media.h"
-#import "NSMutableDictionary+Helpers.h"
 #import "CoreDataStack.h"
+
 @import WordPressShared;
 
 @implementation BasePost
@@ -21,9 +21,6 @@
 @dynamic suggested_slug;
 @dynamic pathForDisplayImage;
 
-@synthesize isFeaturedImageChanged;
-@synthesize isFirstTimePublish;
-
 - (NSDate *)dateCreated
 {
     return self.date_created_gmt;
@@ -33,11 +30,6 @@
 {
     self.date_created_gmt = localDate;
 }
-
-- (void)findComments
-{
-}
-
 
 #pragma mark - PostContentProvider protocol
 
@@ -91,11 +83,6 @@
         return self.wp_slug;
     }
     return self.suggested_slug;
-}
-
-- (NSString *)statusForDisplay
-{
-    return [self valueForKey:@"status"];
 }
 
 - (BOOL)hasContent

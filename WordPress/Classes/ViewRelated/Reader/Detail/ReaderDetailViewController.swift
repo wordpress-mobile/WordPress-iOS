@@ -1,5 +1,6 @@
 import UIKit
 import WordPressUI
+import AutomatticTracks
 
 typealias RelatedPostsSection = (postType: RemoteReaderSimplePost.PostType, posts: [RemoteReaderSimplePost])
 
@@ -102,14 +103,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// An observer of the content size of the webview
     private var scrollObserver: NSKeyValueObservation?
 
-    private var featureHighlightStore = FeatureHighlightStore()
-    private var lastToggleAnchorVisibility = false
-    private var didShowTooltip = false {
-        didSet {
-            featureHighlightStore.followConversationTooltipCounter += 1
-        }
-    }
-
     /// The coordinator, responsible for the logic
     var coordinator: ReaderDetailCoordinator?
 
@@ -141,10 +134,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         }
     }
 
-    override open var preferredStatusBarStyle: UIStatusBarStyle {
-        return currentPreferredStatusBarStyle
-    }
-
     override var hidesBottomBarWhenPushed: Bool {
         set { }
         get { true }
@@ -156,21 +145,12 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Temporary work around until white headers are shipped app-wide,
     /// allowing Reader Detail to use a blue navbar.
     var useCompatibilityMode: Bool {
-        // Use compatibility mode if not presented within the Reader
-        guard let readerNavigationController = RootViewCoordinator.sharedPresenter.readerNavigationController else {
-            return false
-        }
-
         // This enables ALL Reader Detail screens to use a transparent navigation bar style,
         // so that the display settings can be applied correctly.
         //
         // Plus, it looks like we don't have screens with a blue (legacy) navigation bar anymore,
         // so it may be a good chance to clean up and remove `useCompatibilityMode`.
-        if ReaderDisplaySetting.customizationEnabled {
-            return false
-        }
-
-        return !readerNavigationController.viewControllers.contains(self)
+        !ReaderDisplaySetting.customizationEnabled
     }
 
     /// Used to disable ineffective buttons when a Related post fails to load.
@@ -180,8 +160,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// This may happen if we initialize our coordinator with a postURL that
     /// has a comment anchor fragment.
     private var hasAutomaticallyTriggeredCommentAction = false
-
-    private var tooltipPresenter: TooltipPresenter?
 
     // Reader customization model
     private lazy var displaySettingStore: ReaderDisplaySettingStore = {
@@ -316,63 +294,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         relatedPostsTableView.invalidateIntrinsicContentSize()
     }
 
-    private func tooltipTargetPoint() -> CGPoint {
-        setupFeaturedImage()
-        updateFollowButtonState()
-        guard let followButtonMidPoint = commentsTableViewDelegate.followButtonMidPoint() else {
-            return .zero
-        }
-
-        return CGPoint(
-            x: commentsTableView.frame.minX + followButtonMidPoint.x,
-            y: commentsTableView.frame.minY + followButtonMidPoint.y
-        )
-    }
-
-    private func configureTooltipPresenter(anchorAction: (() -> Void)?) {
-        let tooltip = Tooltip()
-
-        tooltip.title = Strings.tooltipTitle
-        tooltip.message = Strings.tooltipMessage
-        tooltip.primaryButtonTitle = Strings.tooltipButtonTitle
-
-        tooltipPresenter = TooltipPresenter(
-            containerView: scrollView,
-            tooltip: tooltip,
-            target: .point(tooltipTargetPoint),
-            shouldShowSpotlightView: true,
-            primaryTooltipAction: { [weak self] in
-                self?.featureHighlightStore.didDismissTooltip = true
-                WPAnalytics.trackReader(.readerFollowConversationTooltipTapped)
-            }
-        )
-        tooltipPresenter?.tooltipVerticalPosition = .above
-
-        if let anchorAction = anchorAction {
-            tooltipPresenter?.attachAnchor(
-                withTitle: Strings.tooltipAnchorTitle,
-                onView: view,
-                anchorAction: anchorAction
-            )
-        }
-
-        scrollView.delegate = self
-
-        let isCommentsTableViewVisible = isVisibleInScrollView(commentsTableView)
-        if isCommentsTableViewVisible {
-            tooltipPresenter?.showTooltip()
-            didShowTooltip = true
-            scrollView.layoutIfNeeded()
-        }
-
-        tooltipPresenter?.toggleAnchorVisibility(!isCommentsTableViewVisible)
-    }
-
-    private func scrollToTooltip() {
-        scrollView.setContentOffset(CGPoint(x: 0, y: tooltipTargetPoint().y - scrollView.frame.height/2), animated: true)
-        scrollView.layoutIfNeeded()
-    }
-
     private func navigateToCommentIfNecessary() {
         if let post = post,
            let commentID = coordinator?.commentID,
@@ -389,10 +310,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     /// Show ghost cells indicating the content is loading
     func showLoading() {
-        let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
-                               beatStartColor: .placeholderElement,
-                               beatEndColor: .placeholderElementFaded)
-
+        let style = GhostStyle()
         loadingView.startGhostAnimation(style: style)
     }
 
@@ -476,27 +394,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         }
 
         scrollView.layoutIfNeeded()
-
-        // Delay configuration due to the sideeffect in fresh install.
-        // The position calculation is wrong for the first time this VC is opened
-        // regardless of the post. It never happens after that. Although the timing
-        // of this call is accurate, the calculation returns wrong result on that case.
-        // This manually delays the configuration and hacks the issue.
-        // We can remove this once the culprit is out.
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            if self.shouldConfigureTooltipPresenter() {
-                self.configureTooltipPresenter { [weak self] in
-                    self?.scrollToTooltip()
-                    WPAnalytics.trackReader(.readerFollowConversationAnchorTapped)
-                }
-            }
-        }
-    }
-
-    private func shouldConfigureTooltipPresenter() -> Bool {
-        featureHighlightStore.shouldShowTooltip
-        && (post?.canSubscribeComments ?? false)
-        && (!(post?.isSubscribedComments ?? false))
     }
 
     func updateSelfLike(with avatarURLString: String?) {
@@ -530,15 +427,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         // Set the delegate here so the table isn't shown until fetching is complete.
         commentsTableView.delegate = commentsTableViewDelegate
         commentsTableView.dataSource = commentsTableViewDelegate
-        commentsTableViewDelegate.followButtonTappedClosure = { [weak self] in
-            guard let tooltipPresenter = self?.tooltipPresenter else {
-                return
-            }
-
-            self?.featureHighlightStore.didDismissTooltip = true
-            tooltipPresenter.dismissTooltip()
-        }
-
         commentsTableViewDelegate.updateWith(post: post,
                                              comments: approvedComments,
                                              totalComments: totalComments,
@@ -603,9 +491,12 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         featuredImage.displaySetting = displaySetting
 
         // Update Reader Post web view
-        if let post {
+        if let contentForDisplay = post?.contentForDisplay() {
             webView.displaySetting = displaySetting
-            webView.loadHTMLString(post.contentForDisplay())
+            webView.loadHTMLString(contentForDisplay)
+        } else {
+            // It's unexpected for the `post` or `contentForDisplay()` to be nil. Let's keep track of it.
+            CrashLogging.main.logMessage("Expected contentForDisplay() to exist", level: .error)
         }
 
         // Likes view
@@ -859,8 +750,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         }
 
         let navController = UINavigationController(rootViewController: viewController)
-        navController.navigationBar.isTranslucent = true
-
         if let sheet = navController.sheetPresentationController {
             sheet.detents = [.large()]
             sheet.prefersGrabberVisible = false
@@ -1048,15 +937,7 @@ extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate
         guard let controller = ReaderDetailViewController.controllerWithSimplePost(post) else {
             return
         }
-
-        // Related posts should be presented in its own nav stack,
-        // so that a user can return to the original post by dismissing the related posts nav stack.
-        if navigationController?.viewControllers.first is ReaderDetailViewController {
-            navigationController?.pushViewController(controller, animated: true)
-        } else {
-            let nav = UINavigationController(rootViewController: controller)
-            self.present(nav, animated: true)
-        }
+        navigationController?.pushViewController(controller, animated: true)
     }
 
     private func getSectionTitle(for postType: RemoteReaderSimplePost.PostType) -> String? {
@@ -1336,32 +1217,8 @@ extension ReaderDetailViewController {
             value: "More on WordPress.com",
             comment: "Section title for global related posts."
         )
-        static let tooltipTitle = NSLocalizedString(
-            "readerDetail.followConversationTooltipTitle.accessibilityLabel",
-            value: "Follow the conversation",
-            comment: "Title of follow conversations tooltip."
-        )
-        static let tooltipMessage = NSLocalizedString(
-            "readerDetail.followConversationTooltipMessage.accessibilityLabel",
-            value: "Get notified when new comments are added to this post.",
-            comment: "Message for the follow conversations tooltip."
-        )
-        static let tooltipButtonTitle = NSLocalizedString(
-            "readerDetail.followConversationTooltipButton.accessibilityLabel",
-            value: "Got it",
-            comment: "Button title for the follow conversations tooltip."
-        )
-        static let tooltipAnchorTitle = NSLocalizedString(
-            "readerDetail.tooltipAnchorTitle.accessibilityLabel",
-            value: "New",
-            comment: "Title for the tooltip anchor."
-        )
     }
 }
-
-// MARK: - DefinesVariableStatusBarStyle
-// Allows this VC to control the statusbar style dynamically
-extension ReaderDetailViewController: DefinesVariableStatusBarStyle {}
 
 // MARK: - BorderedButtonTableViewCellDelegate
 // For the `View All Comments` button.
@@ -1375,30 +1232,5 @@ extension ReaderDetailViewController: BorderedButtonTableViewCellDelegate {
                                       origin: self,
                                       promptToAddComment: commentsTableViewDelegate.totalComments == 0,
                                       source: .postDetailsComments)
-    }
-}
-
-// MARK: - UIScrollViewDelegate
-extension ReaderDetailViewController: UIScrollViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard didShowTooltip else {
-            if isVisibleInScrollView(commentsTableView) {
-                tooltipPresenter?.showTooltip()
-                didShowTooltip = true
-            }
-            return
-        }
-
-        guard let tooltip = tooltipPresenter?.tooltip else {
-            return
-        }
-
-        let currentToggleVisibility = isVisibleInScrollView(tooltip)
-
-        if lastToggleAnchorVisibility != currentToggleVisibility {
-            tooltipPresenter?.toggleAnchorVisibility(!currentToggleVisibility)
-        }
-
-        lastToggleAnchorVisibility = currentToggleVisibility
     }
 }

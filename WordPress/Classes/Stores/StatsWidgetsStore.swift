@@ -147,7 +147,7 @@ private extension StatsWidgetsStore {
         guard let currentData = T.read() else {
             return nil
         }
-        let updatedSiteList = (try? BlogQuery().visible(true).hostedByWPCom(true).blogs(in: coreDataStack.mainContext)) ?? []
+        let updatedSiteList = (try? BlogQuery().hostedByWPCom(true).blogs(in: coreDataStack.mainContext)) ?? []
 
         let newData = updatedSiteList.reduce(into: [Int: T]()) { sitesList, site in
             guard let blogID = site.dotComID else {
@@ -203,7 +203,7 @@ private extension StatsWidgetsStore {
     }
 
     func initializeHomeWidgetData<T: HomeWidgetData>(type: T.Type) -> [Int: T] {
-        let blogs = (try? BlogQuery().visible(true).hostedByWPCom(true).blogs(in: coreDataStack.mainContext)) ?? []
+        let blogs = (try? BlogQuery().hostedByWPCom(true).blogs(in: coreDataStack.mainContext)) ?? []
         return blogs.reduce(into: [Int: T]()) { result, element in
             if let blogID = element.dotComID,
                let url = element.url,
@@ -344,11 +344,5 @@ private extension StatsWidgetsStore {
 extension StatsViewController {
     @objc func initializeStatsWidgetsIfNeeded() {
         StoreContainer.shared.statsWidgets.initializeStatsWidgetsIfNeeded()
-    }
-}
-
-extension BlogListViewController {
-    @objc func refreshStatsWidgetsSiteList() {
-        StoreContainer.shared.statsWidgets.refreshStatsWidgetsSiteList()
     }
 }

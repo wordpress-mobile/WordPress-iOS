@@ -65,7 +65,7 @@ class TimeSelectionView: UIView {
         self.selectedTime = selectedTime
         super.init(frame: .zero)
 
-        backgroundColor = .basicBackground
+        backgroundColor = .systemBackground
         addSubview(verticalStackView)
         pinSubviewToSafeArea(verticalStackView)
         NSLayoutConstraint.activate([

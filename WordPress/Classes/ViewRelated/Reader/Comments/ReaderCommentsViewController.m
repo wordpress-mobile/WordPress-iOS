@@ -105,6 +105,8 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     [self configureKeyboardGestureRecognizer];
     [self configureViewConstraints];
     [self configureKeyboardManager];
+
+    [self listenForClipboardChanges];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -557,6 +559,21 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     return NO;
 }
 
+- (void)listenForClipboardChanges
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(clipboardChanged:)
+                                                 name:UIPasteboardChangedNotification
+                                               object:nil];
+}
+
+- (void)clipboardChanged:(NSNotification *)notification
+{
+    if (notification.userInfo == nil) {
+        [WPAnalytics trackEvent:WPAnalyticsEventReaderCommentTextCopied];
+    }
+}
+
 #pragma mark - Accessor methods
 
 - (void)setPost:(ReaderPost *)post
@@ -796,16 +813,20 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     [self.tableView performBatchUpdates:nil completion:nil];
 }
 
-
-- (void)refreshTableViewAndNoResultsView
-{
+- (void)refreshTableViewAndNoResultsView:(BOOL)scrollToHighlightedComment {
     [self.tableViewHandler refreshTableView];
     [self refreshNoResultsView];
     [self.managedObjectContext performBlock:^{
         [self updateCachedContent];
     }];
 
-    [self navigateToCommentIDIfNeeded];
+    if (scrollToHighlightedComment) {
+        [self navigateToCommentIDIfNeeded];
+    }
+}
+
+- (void)refreshTableViewAndNoResultsView {
+    [self refreshTableViewAndNoResultsView:YES];
 }
 
 - (void)updateCachedContent
@@ -831,33 +852,40 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 /// method locates that comment and scrolls the tableview to display it.
 - (void)navigateToCommentIDIfNeeded
 {
-    if (self.navigateToCommentID != nil) {
-        // Find the comment if it exists
-        NSArray<Comment *> *comments = [self.tableViewHandler.resultsController fetchedObjects];
-        NSArray<Comment *> *filteredComments = [comments filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"commentID == %@", self.navigateToCommentID]];
-        Comment *comment = [filteredComments firstObject];
+    if (self.navigateToCommentID == nil) {
+        return;
+    }
+    double delayInSeconds = 0.5;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [self scrollToCommentID];
+    });
+}
 
-        if (!comment) {
-            return;
-        }
+- (void)scrollToCommentID
+{
+    // Find the comment if it exists
+    NSArray<Comment *> *comments = [self.tableViewHandler.resultsController fetchedObjects];
+    NSArray<Comment *> *filteredComments = [comments filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"commentID == %@", self.navigateToCommentID]];
+    Comment *comment = [filteredComments firstObject];
 
-        // Force the table view to be laid out first before scrolling to indexPath.
-        // This avoids a case where a cell instance could be orphaned and displayed randomly on top of the other cells.
-        NSIndexPath *indexPath = [self.tableViewHandler.resultsController indexPathForObject:comment];
-        [self.tableView layoutIfNeeded];
+    if (!comment) {
+        return;
+    }
 
-        // Ensure that the indexPath exists before scrolling to it.
-        if (indexPath.section >=0
-            && indexPath.row >=0
-            && indexPath.section < self.tableView.numberOfSections
-            && indexPath.row < [self.tableView numberOfRowsInSection:indexPath.section])
-        {
-            [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-            self.highlightedIndexPath = indexPath;
-        }
+    // Force the table view to be laid out first before scrolling to indexPath.
+    // This avoids a case where a cell instance could be orphaned and displayed randomly on top of the other cells.
+    NSIndexPath *indexPath = [self.tableViewHandler.resultsController indexPathForObject:comment];
+    [self.tableView layoutIfNeeded];
 
-        // Reset the commentID so we don't do this again.
-        self.navigateToCommentID = nil;
+    // Ensure that the indexPath exists before scrolling to it.
+    if (indexPath.section >=0
+        && indexPath.row >=0
+        && indexPath.section < self.tableView.numberOfSections
+        && indexPath.row < [self.tableView numberOfRowsInSection:indexPath.section])
+    {
+        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        self.highlightedIndexPath = indexPath;
     }
 }
 
@@ -895,7 +923,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         // Dispatch is used here to address an issue in iOS 15 where some cells could disappear from the screen after `reloadData`.
         // This seems to be affecting the Simulator environment only since I couldn't reproduce it on the device, but I'm fixing it just in case.
         dispatch_async(dispatch_get_main_queue(), ^{
-            [weakSelf refreshTableViewAndNoResultsView];
+            [weakSelf refreshTableViewAndNoResultsView:NO];
         });
     };
 
@@ -905,7 +933,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         NSString *message = NSLocalizedString(@"There has been an unexpected error while sending your reply", "Reply Failure Message");
         [weakSelf displayNoticeWithTitle:message message:nil];
 
-        [weakSelf refreshTableViewAndNoResultsView];
+        [weakSelf refreshTableViewAndNoResultsView:NO];
     };
 
     CommentService *service = [[CommentService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
@@ -1294,6 +1322,13 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     UIViewController *webViewController = [WebViewControllerFactory controllerWithConfiguration:configuration source:@"reader_comments"];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];
+}
+
+- (void)textViewDidChangeSelection:(UITextView *)textView
+{
+    if (!textView.selectedTextRange.isEmpty) {
+        [WPAnalytics trackEvent:WPAnalyticsEventReaderCommentTextHighlighted];
+    }
 }
 
 #pragma mark - ReaderCommentsFollowPresenterDelegate Methods

@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import <WordPressShared/WPAnalytics.h>
+@import WordPressSharedObjC;
 
 @interface WPAnalyticsTrackerAutomatticTracks : NSObject<WPAnalyticsTracker>
 

@@ -5,11 +5,10 @@
 #import "Constants.h"
 #import "WPError.h"
 #import "WPStyleGuide+WebView.h"
-#import <WordPressShared/UIDevice+Helpers.h>
 #import "WordPress-Swift.h"
 
 @import Gridicons;
-
+@import WordPressShared;
 
 #pragma mark - Constants
 

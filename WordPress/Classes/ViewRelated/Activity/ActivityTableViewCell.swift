@@ -1,6 +1,6 @@
 import Foundation
 import Gridicons
-import WordPressShared.WPTableViewCell
+import WordPressShared
 
 open class ActivityTableViewCell: WPTableViewCell, NibReusable {
 
@@ -32,12 +32,12 @@ open class ActivityTableViewCell: WPTableViewCell, NibReusable {
         summaryLabel.text = activity.summary
         dateLabel.text = activity.published.toMediumString()
         bulletLabel.text = "\u{2022}"
-        contentLabel.text = activity.text
+        contentLabel.text = activity.text.isEmpty ? "–" : activity.text
 
-        summaryLabel.textColor = .textSubtle
-        dateLabel.textColor = .textSubtle
-        bulletLabel.textColor = .textSubtle
-        contentLabel.textColor = .text
+        summaryLabel.textColor = .secondaryLabel
+        dateLabel.textColor = .secondaryLabel
+        bulletLabel.textColor = .secondaryLabel
+        contentLabel.textColor = .label
 
         iconBackgroundImageView.backgroundColor = Style.getColorByActivityStatus(activity)
         if let iconImage = Style.getIconForActivity(activity) {
@@ -50,13 +50,15 @@ open class ActivityTableViewCell: WPTableViewCell, NibReusable {
         contentView.backgroundColor = Style.backgroundColor()
         actionButtonContainer.isHidden  = !activity.isRewindable || displaysDate
         actionButton.setImage(actionGridicon, for: .normal)
-        actionButton.tintColor = .listIcon
+        actionButton.tintColor = .secondaryLabel
         actionButton.accessibilityIdentifier = "activity-cell-action-button"
+
+        separatorInset = UIEdgeInsets(top: 0, left: 60, bottom: 0, right: 0)
     }
 
     private func configureFonts() {
         contentLabel.adjustsFontForContentSizeCategory = true
-        contentLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
+        contentLabel.font = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .medium)
 
         [summaryLabel, bulletLabel, dateLabel].forEach {
             $0.adjustsFontForContentSizeCategory = true
@@ -109,13 +111,13 @@ open class RewindStatusTableViewCell: ActivityTableViewCell {
         contentLabel.text = title
         summaryLabel.text = summary
 
-        iconBackgroundImageView.backgroundColor = .primary
+        iconBackgroundImageView.backgroundColor = UIAppColor.primary
         iconImageView.image = UIImage.gridicon(.noticeOutline).imageWithTintColor(.white)
         iconImageView.isHidden = false
         actionButtonContainer.isHidden = true
 
-        progressView.progressTintColor = .primary
-        progressView.trackTintColor = UIColor(light: (.primary(.shade5)), dark: (.primary(.shade80)))
+        progressView.progressTintColor = UIAppColor.primary
+        progressView.trackTintColor = UIColor(light: (UIAppColor.primary(.shade5)), dark: (UIAppColor.primary(.shade80)))
         progressView.setProgress(progress, animated: true)
     }
 

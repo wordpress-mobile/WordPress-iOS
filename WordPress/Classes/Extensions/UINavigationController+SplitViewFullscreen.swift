@@ -79,7 +79,7 @@ extension UIView {
 
         UIView.animate(withDuration: UIView.blankingSnapshotFadeDuration,
                        animations: {
-                        blankingView.alpha = WPAlphaZero
+                        blankingView.alpha = 0
         }, completion: { _ in
             blankingView.removeFromSuperview()
         })
@@ -88,11 +88,11 @@ extension UIView {
 
 extension UINavigationBar {
     @objc func fadeOutNavigationItems(animated: Bool = true) {
-        fadeNavigationItems(withTintColor: .appBarBackground, textColor: .appBarBackground, animated: animated)
+        fadeNavigationItems(withTintColor: UIAppColor.primary, textColor: .label, animated: animated)
     }
 
     @objc func fadeInNavigationItemsIfNecessary(animated: Bool = true) {
-        fadeNavigationItems(withTintColor: .appBarTint, textColor: .appBarText, animated: animated)
+        fadeNavigationItems(withTintColor: UIAppColor.primary, textColor: .label, animated: animated)
     }
 
     private func fadeNavigationItems(withTintColor tintColor: UIColor, textColor: UIColor, animated: Bool) {
@@ -161,7 +161,7 @@ class WPFullscreenNavigationTransition: NSObject, UIViewControllerAnimatedTransi
         // transitioning to full screen width (but not yet wide enough).
         // This mask view sits behind the navigation bar and hides it.
         let navigationBarMask = UIView()
-        navigationBarMask.backgroundColor = .primary
+        navigationBarMask.backgroundColor = UIAppColor.primary
         containerView.addSubview(navigationBarMask)
         navigationBarMask.frame = model.navigationBarMaskFrame
 
@@ -201,7 +201,7 @@ class WPFullscreenNavigationTransition: NSObject, UIViewControllerAnimatedTransi
             toView.layer.addSublayer(shadowLayer)
             toView.addSubview(dimmingView)
         } else {
-            fromView.alpha = WPAlphaZero
+            fromView.alpha = 0
 
             containerView.insertSubview(toView, at: 0)
 
@@ -318,8 +318,8 @@ private struct WPFullscreenNavigationTransitionViewModel {
 
         let dimmingViewXOffset = (isRTLLayout) ? fromFrame.width : -fromFrame.width
         dimmingViewFrame = CGRect(x: dimmingViewXOffset, y: 0, width: fromFrame.width, height: fromFrame.height)
-        dimmingViewInitialAlpha = (operation == .push) ? WPAlphaZero : WPAlphaFull
-        dimmingViewFinalAlpha =   (operation == .push) ? WPAlphaFull : WPAlphaZero
+        dimmingViewInitialAlpha = (operation == .push) ? 0 : 1
+        dimmingViewFinalAlpha =   (operation == .push) ? 1 : 0
     }
 }
 

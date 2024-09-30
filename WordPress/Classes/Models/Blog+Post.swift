@@ -29,6 +29,18 @@ extension Blog {
         request.predicate = NSPredicate(format: "blog = %@ AND original = NULL AND postID = %ld", self, postID)
         return (try? context.fetch(request))?.first
     }
+
+    /// Lookup a post in the blog.
+    ///
+    /// - Parameter foreignID: The foreign ID associated with the post; used to deduplicate new posts.
+    /// - Returns: The `AbstractPost` associated with the given foreign ID.
+    @objc(lookupPostWithForeignID:inContext:)
+    func lookupPost(withForeignID foreignID: UUID, in context: NSManagedObjectContext) -> AbstractPost? {
+        let request = NSFetchRequest<AbstractPost>(entityName: NSStringFromClass(AbstractPost.self))
+        request.predicate = NSPredicate(format: "blog = %@ AND original = NULL AND \(#keyPath(AbstractPost.foreignID)) == %@", self, foreignID as NSUUID)
+        request.fetchLimit = 1
+        return (try? context.fetch(request))?.first
+    }
 }
 
 // MARK: - Create posts
@@ -45,6 +57,7 @@ extension Blog {
         let post = NSEntityDescription.insertNewObject(forEntityName: NSStringFromClass(Post.self), into: context) as! Post
         post.blog = self
         post.remoteStatus = .sync
+        post.foreignID = UUID()
 
         if let categoryID = settings?.defaultCategoryID,
            categoryID.intValue != PostCategoryUncategorized,
@@ -84,6 +97,7 @@ extension Blog {
         page.blog = self
         page.date_created_gmt = Date()
         page.remoteStatus = .sync
+        page.foreignID = UUID()
 
         if let userID = userID, let author = getAuthorWith(id: userID) {
             page.authorID = author.userID

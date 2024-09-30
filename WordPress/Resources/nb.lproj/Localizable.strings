@@ -26,10 +26,6 @@
    Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Likes" = "%1$d likinger";
 
-/* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available.
-   Format string for displaying the number of completed quickstart tutorials. %1$d is the number completed, %2$d is the total number of tutorials available. */
-"%1$d of %2$d completed" = "%1$d av %2$d fullført";
-
 /* Post Stats label for week date range. Ex: Mar 25 - Mar 31, 2019 */
 "%@ - %@, %@" = "%1$@ - %2$@, %3$@";
 
@@ -45,11 +41,7 @@
 /* Accessibility label for value in billions. Ex: 66.6 billion. */
 "%@ billion" = "%@ milliard";
 
-/* Accessibility label for comments button (singular) */
-"%@ comment" = "%@ kommentar";
-
-/* Accessibility label for comments button (plural)
-   Number of Comments per Page */
+/* Number of Comments per Page */
 "%@ comments" = "%@ kommentarer";
 
 /* Number of days after which comments should autoclose */
@@ -278,7 +270,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Link to Account Settings section */
 "Account Settings" = "Kontoinnstillinger";
 
-/* Title of button that displays the App's acknoledgements */
+/* Title of button that displays the App's acknowledgements */
 "Acknowledgements" = "Takk til";
 
 /* Theme Activate action title */
@@ -298,8 +290,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The plugin is active on the site and has enabled automatic updates */
 "Active, Autoupdates on" = "Aktiv, autooppdatering på";
 
-/* Add New Stats Card category title
-   Noun. Links to a blog's Activity screen.
+/* Noun. Links to a blog's Activity screen.
    Noun. Name of the Activity Log feature
    Title for the activity list */
 "Activity" = "Aktivitet";
@@ -328,14 +319,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Add URL" = "Legg til URL";
 
-/* The title on the add category screen */
-"Add a Category" = "Legg til en kategori";
-
 /* Add a profile photo to Me > My Profile */
 "Add a Profile Photo" = "Legg til et profilbilde";
-
-/* Title for a button that when tapped starts the add self-hosted site process */
-"Add a self-hosted site" = "Legg til et selvbetjent nettsted";
 
 /* No comment provided by engineer. */
 "Add a shortcode…" = "Legg til en korkode...";
@@ -367,17 +352,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Screen reader text for Menus button that adds a new menu to a site. */
 "Add new menu" = "Legg til ny meny";
 
-/* Title of button to add a new site. */
-"Add new site" = "Legg til ny side";
-
 /* Voiceover accessibility label for the tags field in blog post settings. */
 "Add new tags, separated by commas." = "Legg til nye stikkord, separert med komma.";
 
 /* No comment provided by engineer. */
 "Add paragraph block" = "Legg til en avsnittsblokk";
-
-/* Add self-hosted site button */
-"Add self-hosted site" = "Legg til side på webhotell";
 
 /* Button title displayed when the user has removed all Insights from display.
    Label for action to add a new Insight. */
@@ -398,9 +377,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Register Domain - Address information field Address line */
 "Address line %@" = "Addresselinje %@";
-
-/* Adds a post to My Likes. Spoken Hint. */
-"Adds this post to My Likes" = "Legger til dette innlegget i Mine likes";
 
 /* Title for the advanced section in site settings screen */
 "Advanced" = "Avansert";
@@ -558,9 +534,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Menus alert message for alerting the user to unsaved changes while trying back out of Menus. */
 "Are you sure you want to cancel and discard changes?" = "Er du sikker på at du vil avbryte og forkaste endringene?";
 
-/* Title for the remove site confirmation alert, first %@ will be replaced with the blog url, second %@ will be replaced with iPhone/iPad/iPod Touch */
-"Are you sure you want to continue?\n All site data for %@ will be removed from your %@." = "Er du sikker på at du vil fortsette?\nAll sidedata for %1$@ vil bli fjernet fra din %2$@.";
-
 /* Title for the remove site confirmation alert, %@ will be replaced with iPhone/iPad/iPod Touch */
 "Are you sure you want to continue?\n All site data will be removed from your %@." = "Er du sikker på at du vil fortsette?\nAlle sidedata vil bli slettet fra din %@.";
 
@@ -576,35 +549,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "Er du sikker på at du vil slette dette objektet permanent?";
 
-/* Message of the confirmation alert when deleting a post from the trash. */
-"Are you sure you want to permanently delete this post?" = "Er du sikker på at du vil slette dette innlegget permanent?";
-
-/* Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
-"Are you sure you want to publish?" = "Er du sikker på at du vil publisere?";
-
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title. */
 "Are you sure you want to remove %1$@ from %2$@?" = "Er du sikker på at du vil fjerne %1$@ fra %2$@?";
 
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name. */
 "Are you sure you want to remove %1$@?" = "Er du sikker på at du vil fjerne %1$@?";
-
-/* Title of the message shown when the user taps Save as Draft while editing a post.  Options will be Save Now and Keep Editing. */
-"Are you sure you want to save as draft?" = "Er du sikker på at du vil lagre som kladd?";
-
-/* Title of the message shown when the user taps Save while editing a post.  Options will be Save Now and Keep Editing. */
-"Are you sure you want to save?" = "Er du sikker på at du vil lagre?";
-
-/* Title of message shown when the user taps Schedule while editing a post. Options will be Schedule and Keep Editing */
-"Are you sure you want to schedule?" = "Er du sikker på at du vil planlegge?";
-
-/* Title of message shown when user taps submit for review. */
-"Are you sure you want to submit for review?" = "Er du sikker på at du vil sende inn til gjennomgang?";
-
-/* Message of the trash confirmation alert. */
-"Are you sure you want to trash this post?" = "Er du sikker på at du vil slette dette innlegget?";
-
-/* Title of message shown when user taps update. */
-"Are you sure you want to update?" = "Er du sikker på at du vil oppdatere?";
 
 /* An example tag used in the login prologue screens.
    Art site intent topic */
@@ -656,9 +605,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Discussion Settings: Comments Auto-close */
 "Automatically close comments on content after a certain number of days." = "Automatisk lukk kommentarer på innhold etter et visst antall dager.";
-
-/* Description of a Quick Start Tour */
-"Automatically share new posts to your social media accounts." = "Del automatisk nye innlegg til dine sosiale media-konti.";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Automatiske oppdateringer";
@@ -761,15 +707,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Create new Blog Post button title */
 "Blog post" = "Blogginnlegg";
 
-/* Blog's Follower Profile. Displayed when the name is empty! */
-"Blog's Follower" = "Bloggens følger";
-
-/* Blog's User Profile. Displayed when the name is empty! */
-"Blog's User" = "Bloggens bruker";
-
-/* Blog's Viewer Profile. Displayed when the name is empty! */
-"Blog's Viewer" = "Bloggens leser";
-
 /* Label for the blogging reminders setting */
 "Blogging Reminders" = "Bloggepåminnere";
 
@@ -834,12 +771,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
-   Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
-   Cancel
    Cancel a prompt
    Cancel Action
    Cancel action on share extension editor screen.
@@ -873,7 +807,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
@@ -920,9 +853,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Menu item label for linking a specific category. */
 "Category" = "Kategori";
 
-/* Error popup title to indicate that there was no category title filled in. */
-"Category title missing." = "Kategoritittel mangler.";
-
 /* Center alignment for an image. Should be the same as in core WP. */
 "Center" = "Midtstilt";
 
@@ -935,9 +865,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Change Username title. */
 "Change Username" = "Endre brukernavn";
-
-/* Button title to edit visibility of sites. */
-"Change Visibility" = "Endre synlighet";
 
 /* Message to show when Publicize globally shared setting failed */
 "Change failed" = "Endring feilet";
@@ -973,9 +900,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Subtitle for No results full page screen displayed from post list when there is no connection */
 "Check your network connection and try again. Or draft a post." = "Sjekk nettverkstilkoblingen din og prøv igjen. Eller opprett en kladd.";
-
-/* Title of a Quick Start Tour */
-"Check your site stats" = "Sjekk din nettstedstatistikk";
 
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Sjekker kjøp...";
@@ -1059,9 +983,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Close Comments Title */
 "Close commenting" = "Lukk kommentarer";
-
-/* Accessibility hint the  Done button in the Me screen. */
-"Close the Me screen" = "Lukk Meg-skjermen";
 
 /* Accessibility label for selecting code style button on the formatting toolbar. */
 "Code" = "Kode";
@@ -1206,7 +1127,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
-   Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
@@ -1271,9 +1191,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* This is the text we display to the user when we ask them for a review and they've indicated they don't like the app */
 "Could you tell us how we could improve?" = "Kan du si oss hvordan vi kan bli bedre? (på engelsk)";
 
-/* No comment provided by engineer. */
-"Couldn't Connect" = "Kunne ikke koble til";
-
 /* Error message shown a URL points to a valid site but not a WordPress site. */
 "Couldn't connect to the WordPress site. There is no valid WordPress site at this address. Check the site address (URL) you entered." = "Kunne ikke koble til WordPress-nettsiden. Det er ikke en gyldig WordPress-nettside på denne adressen. Sjekk adressen du skrev inn.";
 
@@ -1306,12 +1223,8 @@ translators: %s: Block name e.g. \"Image block\" */
 "Create New" = "Opprett ny";
 
 /* Button for selecting the current page template.
-   Button title, encourages users to create their first page on their blog.
    Title for button to make a page with the contents of the selected layout */
 "Create Page" = "Lag side";
-
-/* Button title, encourages users to create post on their blog. */
-"Create Post" = "Lag innlegg";
 
 /* Button to progress to the next step
    Site creation. Step 1. Screen title
@@ -1321,33 +1234,14 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Button allowing the user to create a site icon by choosing an emoji character */
 "Create With Emoji" = "Skap med emoji";
 
-/* Create WordPress.com site button */
-"Create WordPress.com site" = "Lag WordPress.com-nettsted";
-
 /* Displayed in the Notifications Tab as a button title, when the Unread Filter shows no notifications */
 "Create a Post" = "Lag et innlegg";
 
 /* Title of the button in the placeholder for an empty list of blog tags. */
 "Create a Tag" = "Lag et stikkord";
 
-/* A button title
-   Title for a button that when tapped starts the site creation process */
-"Create a new site" = "Lag et nytt nettsted";
-
-/* Text shown when the account has no sites. */
-"Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "Lag en ny side for din business, ditt magasin, eller din personlige blogg; eller koble til en eksisterende WordPress-installasjon.";
-
-/* Accessibility hint for create floating action button */
-"Create a post or page" = "Lag et innlegg eller en side";
-
 /* Title for the Site Icon Picker */
 "Create a site icon" = "Lag nettstedsikon";
-
-/* Title of a Quick Start Tour */
-"Create your site" = "Lag ditt nettsted";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, or page" = "Oppretter nytt innlegg eller ny side";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Å lage en ny meny vil forkaste endringene du har gjort på den gjeldende menyen. Er du sikker på at du vil fortsette?";
@@ -1380,17 +1274,11 @@ translators: %s: Block name e.g. \"Image block\" */
    Theme Customize action title */
 "Customize" = "Tilpass";
 
-/* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
-"Customize Your Site" = "Tilpass ditt nettsted";
-
 /* Title for the edition of the share message. */
 "Customize the message" = "Tilpass meldingen";
 
 /* Hint displayed when the user is customizing the share message. */
 "Customize the message you want to share.\nIf you don't add your own text here, we'll use the post's title as the message." = "Tilpass meldingen du vil dele.\nHvis du ikke legger til din egen tekst her, vil vi bruke innleggets tittel som melding.";
-
-/* Notification Settings for your followed sites */
-"Customize your followed site settings for New Posts and Comments" = "Tilpass dine innstillinger for fulgte sider for nye innlegg og kommentarer";
 
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Tilpass sideinnstillinger for liker, kommentarer, følgere og mer.";
@@ -1408,15 +1296,9 @@ translators: %s: Block name e.g. \"Image block\" */
    Writing Date Format Settings Title */
 "Date Format" = "Datoformat";
 
-/* Date and Time */
-"Date and Time" = "Dato og tid";
-
 /* Label for selecting the date and time settings section
    Title for the Date and Time Format Settings Screen */
 "Date and Time Format" = "Dato- og tidsformat";
-
-/* Title of Days stats filter. */
-"Days" = "Dager";
 
 /* Navigates to debug menu only available in development builds */
 "Debug" = "Feilsøking";
@@ -1452,12 +1334,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "Slett meny";
 
-/* Delete option in the confirmation alert when deleting a post from the trash.
-   Title for button on the comment details page that deletes the comment when tapped. */
+/* Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "Slett permanent";
-
-/* Title of the confirmation alert when deleting a post from the trash. */
-"Delete Permanently?" = "Slette permanent?";
 
 /* Button label for deleting the current site
    Label for selecting the Delete Site Settings item
@@ -1511,7 +1389,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Disabled" = "Deaktivert";
 
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
-   Button shown if there are unsaved changes and the author is trying to move away from the post.
    Menus button title for canceling/discarding changes made. */
 "Discard" = "Forkast";
 
@@ -1541,12 +1418,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Disconnecting this account means published posts will no longer be automatically shared to %@" = "Å koble fra denne kontoen vil si at publiserte innlegg ikke lenger vil deles automatisk til %@";
 
-/* The menu item to select during a guided tour. */
-"Discover" = "Oppdag";
-
-/* Reader select interests title label text */
-"Discover and follow blogs you love" = "Oppdag og følg blogger du liker";
-
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
 "Discussion" = "Diskusjon";
@@ -1556,9 +1427,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Dismiss a view. Verb */
 "Dismiss" = "Ignorer";
-
-/* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
-"Dismiss %@ Quick Start step" = "Hopp over %@ hurtigstart-trinnet";
 
 /* Display Name label text.
    My Profile display name label
@@ -1578,7 +1446,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Don't have an account? _Sign up_" = "Har du ikke en konto? _Registrer deg_";
 
 /* A done button
-   Accessibility label for the Done button in the Me screen.
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
@@ -1587,13 +1454,10 @@ translators: %s: Block name e.g. \"Image block\" */
    Label for Done button
    Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
-   Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Text displayed by the right navigation button title
    Title for a Done button.
    Title for button that will dismiss this view
-   Title for the button that will dismiss this view.
-   Title of the Done button on the me page */
+   Title for the button that will dismiss this view. */
 "Done" = "Ferdig";
 
 /* No comment provided by engineer. */
@@ -1774,11 +1638,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Enter a custom value */
 "Enter a custom value" = "Skriv inn en egendefinert verdi";
 
-/* No comment provided by engineer. */
-"Enter a password" = "Skriv inn et passord";
-
-/* (placeholder) Help enter WordPress password
-   Placeholder of a field to type a password to protect the post. */
+/* (placeholder) Help enter WordPress password */
 "Enter password" = "Skriv inn passord";
 
 /* Instruction text on the login's site addresss screen.
@@ -1835,21 +1695,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Messaged displayed when fetching plugins failed. */
 "Error loading plugins" = "Feil under lasting av utvidelser.";
-
-/* Text displayed in HUD while a post revision is being loaded. */
-"Error occurred\nduring loading" = "Feil oppstod\nunder lasting";
-
-/* Text displayed in HUD after attempting to save a draft post and an error occurred. */
-"Error occurred\nduring saving" = "Det skjedde en feil\nunder lagring";
-
-/* Text displayed in notice while a post is being published. */
-"Error occurred during publishing" = "Feil oppstod under publisering";
-
-/* Text displayed in notice after attempting to save a draft post and an error occurred. */
-"Error occurred during saving" = "Feil oppstod under lagring";
-
-/* Text displayed in notice while a post is being scheduled to be published. */
-"Error occurred during scheduling" = "Feil oppstod under planlegging";
 
 /* Register Domain - Domain contact information error message shown to indicate an error during fetching domain contact information */
 "Error occurred fetching domain contact information" = "Feil oppstod under henting av kontaktinfor for domenet";
@@ -1989,39 +1834,19 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "Finn nettstedsadressen";
 
-/* Label displayed to the user while loading their selected interests */
-"Finding blogs and stories you’ll love..." = "Leter etter blogger og fortellinger du vil like...";
-
 /* My Profile first name label
    Register Domain - Domain contact information field First name
    User's First Name */
 "First Name" = "Fornavn";
 
-/* Button title. Follow the comments on a post.
-   Prompt to follow a blog. */
+/* Button title. Follow the comments on a post. */
 "Follow" = "Følg";
 
-/* Displayed in the Notification Settings View
-   Section title for sites the user has followed. */
-"Followed Sites" = "Fulgte nettsteder";
-
-/* Label for list of followers.
-   User role badge */
+/* User role badge */
 "Follower" = "Følger";
 
-/* Blog Followers
-   Insights 'Followers' header
-   Label for number of followers. */
+/* Label for number of followers. */
 "Followers" = "Følgere";
-
-/* User is following the blog. */
-"Following" = "Følger";
-
-/* Filters Follows Notifications */
-"Follows" = "Følger";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
-"Follows the blog." = "Følger nettstedet.";
 
 /* An example tag used in the login prologue screens. */
 "Football" = "Fotball";
@@ -2044,12 +1869,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of section that contains plugins' FAQ */
 "Frequently Asked Questions" = "Ofte Stilte Spørsmål";
 
-/* Button title displayed in popup indicating date of change on another device */
-"From another device" = "Fra en annen enhet";
-
-/* Button title displayed in popup indicating date of change on device */
-"From this device" = "Fra denne enheten";
-
 /* Full size image. (default). Should be the same as in core WP. */
 "Full Size" = "Full størrelse";
 
@@ -2062,12 +1881,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* An example tag used in the login prologue screens. */
 "Gardening" = "Hagestell";
 
-/* Add New Stats Card category title
-   Title for the general section in site settings screen */
+/* Title for the general section in site settings screen */
 "General" = "Generelt";
-
-/* Message to indicate progress of generating preview */
-"Generating Preview" = "Genererer forhåndsvisning";
 
 /* View title for initial auth views. */
 "Get Started" = "Komme i gang";
@@ -2078,17 +1893,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "Bli varslet: kommenter på innlegg du har lest.";
 
-/* Description of a Quick Start Tour */
-"Get your site up and running" = "Få ditt nettsted opp og kjøre";
-
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "Få mer informasjon";
 
 /* Cancel */
 "Give Up" = "Gi opp";
-
-/* Description of a Quick Start Tour */
-"Give your site a name that reflects its personality and topic. First impressions count!" = "Gi nettstedet ditt et navn som gjenspeiler personligheten og emne for innholdet. Førsteinntrykk teller!";
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
@@ -2112,32 +1921,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "Supert!\nVi elsker å høre fra glade brukere\n😁";
 
-/* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
-"Grow Your Audience" = "Utvid ditt publikum";
-
-/* This value is used to set the accessibility hint text for creating a new page for the user's site. */
-"Guides you through the process of creating a new page for your site." = "Hjelper deg gjennom prosessen med å opprette en ny side på nettsiden din.";
-
-/* This value is used to set the accessibility hint text for creating the user's site. */
-"Guides you through the process of creating your site." = "Hjelper deg gjennom prosessen med å opprette siden din.";
-
-/* This value is used to set the accessibility hint text for following the sites of other users. */
-"Guides you through the process of following other sites." = "Hjelper deg gjennom prosessen med å følge andre sider.";
-
-/* This value is used to set the accessibility hint text for previewing a user's site. */
-"Guides you through the process of previewing your site." = "Hjelper deg gjennom prosessen med å forhåndsvise siden din.";
-
-/* This value is used to set the accessibility hint text for publishing a new post on the user's site. */
-"Guides you through the process of publishing a new post on your site." = "Hjelper deg gjennom prosessen med å publisere et nytt innlegg på siden din.";
-
-/* This value is used to set the accessibility hint text for viewing Stats on the user's site. */
-"Guides you through the process of reviewing statistics for your site." = "Hjelper deg gjennom prosessen med å se gjennom statistikk for siden din.";
-
-/* This value is used to set the accessibility hint text for uploading a site icon. */
-"Guides you through the process of uploading an icon for your site." = "Hjelper deg gjennom prosessen med å laste opp et ikon til nettsiden din.";
-
-/* Accessibility label for HTML button on formatting toolbar.
-   HTML Attachment Label */
+/* Accessibility label for HTML button on formatting toolbar. */
 "HTML" = "HTML";
 
 /* Post HTML content */
@@ -2194,22 +1978,14 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "Skjult";
 
-/* Hides a site from the site picker list
-   Title of a button used to collapse a group */
+/* Title of a button used to collapse a group */
 "Hide" = "Skjul";
-
-/* Hide All */
-"Hide All" = "Skjul alle";
-
-/* Hide All Sites */
-"Hide All Sites" = "Skjul alle sider";
 
 /* No comment provided by engineer. */
 "Hide keyboard" = "Skjul tastatur";
 
 /* Displays the History screen from the editor's alert sheet
-   Title of a navigation button that opens the scan history view
-   Title of the post history screen */
+   Title of a navigation button that opens the scan history view */
 "History" = "Historikk";
 
 /* Moderation Keys Title
@@ -2268,9 +2044,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Hint for image title on image settings. */
 "Image title" = "Bildetittel";
-
-/* Undated post time label */
-"Immediately" = "Umiddelbart";
 
 /* Footer for the Serve images from our servers setting */
 "Improve your site's speed by only loading images visible on the screen. New images will load just before they scroll into view. This prevents viewers from having to download all the images on a page all at once, even ones they can't see." = "Forbedre sidens hastighet ved å bare laste inn bilder som er synlige på skjermen. Nye bilder vil lastes inn like før de rulles inn på skjermen. Dette forhindrer at brukerne trenger å laste ned alle bildene på siden samtidig, selv de de ikke kan se.";
@@ -2424,13 +2197,8 @@ translators: %s: Block name e.g. \"Image block\" */
 "Join a conversation: comment on posts from blogs you follow." = "Bli med i en samtale: kommenter på innlegg fra blogger du følger.";
 
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
-   Button shown if there are unsaved changes and the author is trying to move away from the post.
-   Button shown when the author is asked for publishing confirmation.
    Goes back to editing the post. */
 "Keep Editing" = "Fortsett å redigere";
-
-/* Description of a Quick Start Tour */
-"Keep up to date on your site’s performance." = "Følg med på nettstedets ytelse.";
 
 /* Autoapprove only from known users */
 "Known Users" = "Kjente brukere";
@@ -2578,9 +2346,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text displayed while loading the scan section for a site */
 "Loading Scan..." = "Laster inn skanning…";
 
-/* Displayed while a call is loading the history. */
-"Loading history..." = "Laster historikk...";
-
 /* Menus label text displayed when a menu is loading. */
 "Loading menu..." = "Laster inn meny...";
 
@@ -2591,11 +2356,9 @@ translators: %s: Block name e.g. \"Image block\" */
 "Loading stream..." = "Laster inn strøm...";
 
 /* Loading tags
-   Loading tags.
    Loading. Verb
    Suggestions loading message
    Text displayed in HUD while a media item is being loaded.
-   Text displayed in HUD while a revision post is loading.
    Text displayed while loading time zones */
 "Loading..." = "Laster...";
 
@@ -2721,7 +2484,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Me" = "Meg";
 
 /* Noun. Title. Links to the blog's Media library.
-   The menu item to select during a guided tour.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Media";
@@ -2785,16 +2547,12 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Jetpack Monitor Settings: Monitor site's uptime */
 "Monitor your site's uptime" = "Overvåk ditt nettsteds oppetid";
 
-/* Title of Months stats filter. */
-"Months" = "Måneder";
-
 /* Post Stats months and years header. */
 "Months and Years" = "Måneder og år";
 
 /* Accessibility label for more button in dashboard quick start card.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
-   Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
    Action button to display more available options */
 "More" = "Mer";
@@ -2805,12 +2563,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Label for the posting activity legend. */
 "More Posts" = "Flere innlegg";
-
-/* No comment provided by engineer. */
-"Move Image Backward" = "Flytt bilde bakover";
-
-/* No comment provided by engineer. */
-"Move Image Forward" = "Flytt bilde forover";
 
 /* No comment provided by engineer. */
 "Move block down" = "Flytt blokk ned";
@@ -2840,7 +2592,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Move down" = "Flytt ned";
 
 /* Title for button on the comment details page that moves the comment to trash when tapped.
-   Trash option in the trash confirmation alert.
    Trashes the comment */
 "Move to Trash" = "Flytt til papirkurv";
 
@@ -2862,10 +2613,6 @@ translators: %s: Block name e.g. \"Image block\" */
    The accessibility value of the my site tab.
    Title of My Site tab */
 "My Site" = "Mitt nettsted";
-
-/* Title for site picker screen.
-   Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
-"My Sites" = "Mine nettsteder";
 
 /* Siri Suggestion to open My Sites */
 "My Sites in WordPress" = "Mine nettsteder i WordPress";
@@ -2935,10 +2682,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Title of a button.
    Title of a button. The text should be capitalized. */
 "Next" = "Neste";
-
-/* Table view title for the quick start section.
-   Title for the Quick Start dashboard card. */
-"Next Steps" = "Neste trinn";
 
 /* Accessibility label for the next notification button */
 "Next notification" = "Neste varsel";
@@ -3014,11 +2757,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Text shown when there is no data to display in the stats list view. */
 "No data yet" = "Ingen data ennå.";
 
-/* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
-"No followers yet" = "Ingen følgere ennå";
-
-/* Displayed when a call is made to load the revisions but there's no result or an error.
-   Title for the view when there aren't any history items to display */
+/* Title for the view when there aren't any history items to display */
 "No history yet" = "Ingen historikk ennå";
 
 /* Title displayed when the user has removed all Insights from display. */
@@ -3079,11 +2818,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Shown when user is searching for specific Menu item options and no items are available, such as posts, pages, etc. */
 "No results. Please try a different search." = "Ingen resultater. Vennligst prøv et annet søk.";
 
-/* Displayed when the user is searching site tags and there are no matches. */
-"No tags matching your search" = "Ingen stikkord matcher ditt søk";
-
-/* Button label for denying our request to re-allow push notifications
-   Button title. When tapped, the quick start checklist will not be shown, and the prompt will be dismissed. */
+/* Button label for denying our request to re-allow push notifications */
 "No thanks" = "Nei takk";
 
 /* Text displayed when theme name search has no matches */
@@ -3109,12 +2844,8 @@ translators: %s: Block name e.g. \"Image block\" */
 "Not enough space to upload" = "Ikke nok lagringsplass for å laste opp";
 
 /* Button label for denying our request to allow push notifications
-   Not now button title shown in alert preparing users to grant permission for us to send them push notifications.
-   Phrase displayed to dismiss a quick start tour suggestion. */
+   Not now button title shown in alert preparing users to grant permission for us to send them push notifications. */
 "Not now" = "Ikke nå";
-
-/* Title for a button that when tapped cancels the site creation process */
-"Not right now" = "Ikke akkurat nå";
 
 /* Shown when user is loading Menu item options and no items are available, such as posts, pages, etc. */
 "Nothing found." = "Ingenting funnet.";
@@ -3134,7 +2865,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Notifications tab bar item accessibility label
    Notifications View Controller title
    Noun. Name of the Notifications feature
-   The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Varslinger";
 
@@ -3256,9 +2986,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* WordPress.com Research Footer Text */
 "Opportunities to participate in WordPress.com research & surveys." = "Muligheter for å være med i WordPress.coms forskning og undersøkelser.";
 
-/* Placeholder to indicate that filling out the field is optional. */
-"Optional" = "Valgfritt";
-
 /* Divider on initial auth view separating auth options. */
 "Or" = "Eller";
 
@@ -3318,26 +3045,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "Sideskilleblokk. %s";
 
-/* Notice that a page with content has been created */
-"Page created" = "Side opprettet";
-
-/* Title of notification displayed when a page has been successfully saved as a draft. */
-"Page draft uploaded" = "Sidekladd lastet opp";
-
-/* Title of notification displayed when a page has failed to upload. */
-"Page failed to upload" = "Side kunne ikke lastes opp";
-
-/* Title of notification displayed when a page has been successfully saved as a draft. */
-"Page pending review" = "Side venter på gjennomgang";
-
-/* Title of notification displayed when a page has been successfully published. */
-"Page published" = "Side publisert";
-
-/* Title of notification displayed when a page has been successfully scheduled. */
-"Page scheduled" = "Side planlagt";
-
 /* Noun. Title. Links to the blog's Pages screen.
-   The item to select during a guided tour.
    This is the section title
    Title of the screen showing the list of pages for a blog. */
 "Pages" = "Sider";
@@ -3347,13 +3055,11 @@ translators: %s: Block name e.g. \"Image block\" */
    Settings: Comments Paging preferences */
 "Paging" = "Sider";
 
-/* Placeholder to set a parent category for a new category.
-   Title for selecting parent category of a category */
+/* Title for selecting parent category of a category */
 "Parent Category" = "Foreldrekategori";
 
 /* Accessibility label for the password text field in the self-hosted login page.
    Label for entering password in password field
-   Label for the password field. Should be the same as WP core.
    Login dialog password placeholder
    Password placeholder
    Placeholder for the password textfield.
@@ -3366,14 +3072,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Loader title displayed by the loading view while the password is changed successfully */
 "Password changed successfully" = "Passord endret med suksess";
 
-/* Privacy setting for posts set to 'Password protected'. Should be the same as in core WP. */
-"Password protected" = "Passordbeskyttet";
-
 /* No comment provided by engineer. */
 "Paste URL" = "Lim inn URL";
-
-/* Paste without Formatting Menu Item */
-"Paste without Formatting" = "Lim inn uten formattering";
 
 /* Button title for Pending comment state.
    Status for Media object that is being processed locally.
@@ -3488,9 +3188,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Please try entering your login details again." = "Vennligst prøv å skrive inn dine innloggingsdetaljer igjen.";
 
-/* Asks the usre to wait until the currently running fetch request completes. */
-"Please wait til the current fetch completes." = "Vennligst vent til den gjeldende hentingen er ferdig.";
-
 /* Link to a plugin's home page */
 "Plugin Homepage" = "Utvidelsens nettside";
 
@@ -3550,8 +3247,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for selecting categories for a post */
 "Post Categories" = "Innleggskategorier";
 
-/* For setting the format of a post.
-   The post formats available for the post. Should be the same as in core WP. */
+/* The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Innleggsformat";
 
 /* Name of the button to open the post settings
@@ -3561,32 +3257,14 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Window title for Post Stats view. */
 "Post Stats" = "Innleggsstatus";
 
-/* Spoken accessibility label for blog author and name in Reader cell. */
-"Post by %@, from %@" = "Innlegg av %1$@, fra %2$@";
-
 /* The footer text appears within the footer displaying when the post has been created. */
 "Post created on %@" = "Innlegg opprettet den %@";
-
-/* Title of notification displayed when a post has been successfully saved as a draft. */
-"Post draft uploaded" = "Innleggskladd lastet opp";
-
-/* Title of notification displayed when a post has failed to upload. */
-"Post failed to upload" = "Innlegg kunne ikke lastes opp";
-
-/* Title of notification displayed when a post has been successfully saved as a draft. */
-"Post pending review" = "Innlegg venter på gjennomgang";
-
-/* Title of notification displayed when a post has been successfully published. */
-"Post published" = "Innlegg publisert";
 
 /* Title of the notification presented in Reader when a post is removed from save for later */
 "Post removed." = "Innlegg fjernet.";
 
 /* Title of the notification presented in Reader when a post is saved for later */
 "Post saved." = "Innlegg lagret.";
-
-/* Title of notification displayed when a post has been successfully scheduled. */
-"Post scheduled" = "Innlegg planlagt";
 
 /* translators: accessibility text. %s: text content of the post title. */
 "Post title. %s" = "Overskrift. %s";
@@ -3617,8 +3295,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for setting which shows the current page assigned as a site's posts page */
 "Posts Page" = "Innleggsside";
 
-/* Add New Stats Card category title
-   Label for comments by posts and pages
+/* Label for comments by posts and pages
    Period Stats 'Posts and Pages' header */
 "Posts and Pages" = "Innlegg og sider";
 
@@ -3685,8 +3362,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Link to the CCPA privacy notice for residents of California. */
 "Privacy notice for California users" = "Personvernnotis for brukere i California";
 
-/* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
+/* Name for the status of a post that is marked private. */
 "Private" = "Privat";
 
 /* Error message title informing the user that reader content could not be loaded. */
@@ -3704,14 +3380,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Menu item label for linking a project page. */
 "Projects" = "Prosjekter";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
-"Public" = "Offentlig";
-
-/* Button title. Publishes a post.
-   Label for the publish (verb) button. Tapping publishes a draft post.
+/* Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen
-   Title for the publish settings view */
+   Section title for the publish table section in the blog details screen */
 "Publish" = "Publiser";
 
 /* Label for the publish date button. */
@@ -3719,9 +3390,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Publiser umiddelbart";
-
-/* Title of a Quick Start Tour */
-"Publish a post" = "Publiser et innlegg";
 
 /* Text displayed in the share extension's summary view. It describes the publish post action. */
 "Publish post on:" = "Publiser innlegg på:";
@@ -3731,17 +3399,8 @@ translators: %s: Block name e.g. \"Image block\" */
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Publisert";
 
-/* Precedes the name of the blog just posted on */
-"Published just now on" = "Publisert akkurat nå på";
-
-/* Published on [date] */
-"Published on" = "Publisert";
-
 /* A short message that informs the user a post is being published to the server from the share extension. */
 "Publishing post..." = "Publiserer innlegg...";
-
-/* Text displayed in HUD while a post is being published. */
-"Publishing..." = "Publiserer...";
 
 /* Title of screen showing site purchases */
 "Purchases" = "Kjøp";
@@ -3769,7 +3428,6 @@ translators: %s: Block name e.g. \"Image block\" */
    The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
-   The menu item to select during a guided tour.
    Title of the 'Reader' tab - used for spotlight indexing on iOS. */
 "Reader" = "Leser";
 
@@ -3837,11 +3495,9 @@ translators: %s: Block name e.g. \"Image block\" */
 "Related Posts" = "Relaterte innlegg";
 
 /* Alert button to confirm a plugin to be removed
-   Button label when removing a blog
    Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
    Remove Action
-   Remove an image/posts/etc
-   Removes a self hosted site from the app */
+   Remove an image/posts/etc */
 "Remove" = "Slett";
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
@@ -3852,9 +3508,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Option to enable the removal of location information/gps from photos and videos */
 "Remove Location From Media" = "Fjern plassering fra medier";
-
-/* Title for action that will remove the next steps/quick start menus. */
-"Remove Next Steps" = "Fjern neste trinn";
 
 /* Button to remove a plugin from a site */
 "Remove Plugin" = "Fjern utvidelse";
@@ -3880,9 +3533,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Prompt when removing a featured image from a post */
 "Remove this Featured Image?" = "Slett dette fremhevede bildet?";
 
-/* Accessibility hint for the 'Save Post' button when a post is already saved. */
-"Remove this post from my saved posts." = "Fjern dette innlegget fra mine lagrede innlegg.";
-
 /* User action to remove video. */
 "Remove video" = "Fjern video";
 
@@ -3894,12 +3544,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Explanatory text for removing the location from uploaded media. */
 "Removes location metadata from photos before uploading them to your site." = "Fjerner plasserings-metadata fra bilder før de lastes opp til siden din.";
-
-/* Removes a post from My Likes. Spoken Hint. */
-"Removes this post from My Likes" = "Fjerner dette innlegget fra Mine likes";
-
-/* Explanation of what will happen if the user confirms this alert. */
-"Removing Next Steps will hide all tours on this site. This action cannot be undone." = "Fjerning av Videre trinn vil skjule alle veiledninger for dette nettstedet. Denne handlingen kan ikke angres.";
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "Erstatt nåværende blokk";
@@ -3970,10 +3614,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* A prompt to attempt the failed network request again
    A prompt to attempt the failed network request again.
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
-   Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
    Opens the media library .
-   Retries the upload of a user's post.
    Retry updating User's Role
    Retry. Action
    Retry. Verb – retry a failed media upload.
@@ -4022,7 +3664,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Menus save button title
    Save Action
-   Save button label (saving content, ex: Post, Page, Comment, Category).
    Save button label (saving content, ex: Post, Page, Comment).
    Save draft post action on share extension site picker screen.
    Settings Text save button title
@@ -4036,59 +3677,29 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post. */
 "Save 1 photo as a draft post on:" = "Lagre 1 bilde som kladd på:";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from the post. */
-"Save Draft" = "Lagre kladd";
-
 /* Title of alert informing users about the Reader Save for Later feature. */
 "Save Posts for Later" = "Lagre innlegg for senere";
-
-/* Title of button allowing users to change the status of the post they are currently editing to Draft. */
-"Save as Draft" = "Lagre kladd";
 
 /* Text displayed in the share extension's summary view that describes the save draft post action. */
 "Save draft post on:" = "Lagre innleggskladd på:";
 
-/* Accessibility label for the 'Save Post' button. */
-"Save post" = "Lagre innlegg";
-
 /* Body text of alert informing users about the Reader Save for Later feature. */
 "Save this post, and come back to read it whenever you'd like. It will only be available on this device — saved posts don't sync to other devices." = "Lagre dette innlegget og kom tilbake for å lese det når det passer. Det vil bare være tilgjengelig på denne enheten — lagrede innlegg synkroniseres ikke til andre enheter.";
 
-/* Title of action button for a Reader post that has been saved to read later.
-   Title of the Saved Reader Tab */
+/* Title of action button for a Reader post that has been saved to read later. */
 "Saved" = "Lagret";
-
-/* Accessibility label for the 'Save Post' button when a post has been saved. */
-"Saved Post" = "Lagret innlegg";
-
-/* Accessibility hint for the 'Save Post' button. */
-"Saves this post for later." = "Lagrer dette innlegget til senere.";
 
 /* A short message that informs the user a draft post is being saved to the server from the share extension. */
 "Saving post…" = "Lagrer innlegg...";
 
-/* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a post is being saved as a draft. */
+/* Menus save button title while it is saving a Menu. */
 "Saving..." = "Lagrer…";
-
-/* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
-"Schedule" = "Planlegg";
 
 /* Name for the status of a scheduled post
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Planlagt";
 
-/* Scheduled for [date] */
-"Scheduled for" = "Planlagt for";
-
-/* Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for. */
-"Scheduled for %@ on" = "Planlagt for %@ på";
-
-/* Text displayed in HUD while a post is being scheduled to be published. */
-"Scheduling..." = "Planlegger...";
-
-/* Placeholder text for the search bar
-   Title of Stats section that shows search engine referrer traffic.
+/* Title of Stats section that shows search engine referrer traffic.
    Title of the Reader's search feature */
 "Search" = "Søk";
 
@@ -4126,29 +3737,8 @@ translators: %s: Block name e.g. \"Image block\" */
    Select action on the app extension post type picker screen. Saves the selected post type for the post. */
 "Select" = "Velg";
 
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to continue" = "Velg %@ for å fortsette";
-
-/* A step in a guided tour for quick start. %@ will be the name of the segmented control item to select on the Site Menu screen. */
-"Select %@ to continue." = "Velg %@ for å fortsette.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to create a new post" = "Trykk %@ for å opprette et nytt innlegg";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to see how your site is performing." = "Trykk %@ for å se hvordan nettstedet opptrer.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to set a new title." = "Velg %@ for å sette en ny tittel.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to upload a new one." = "Trykk %@ for å laste opp en ny.";
-
 /* Register Domain - Domain contact information field placeholder for Country */
 "Select Country" = "Velg land";
-
-/* Blog Picker's Title */
-"Select Site" = "Velg nettsted";
 
 /* Register Domain - Address information field placeholder for State */
 "Select State" = "Velg delstat";
@@ -4156,17 +3746,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Select a color" = "Velg en farge";
 
-/* Reader select interests next button disabled title text */
-"Select a few to continue" = "Velg noen for å fortsette";
-
 /* No comment provided by engineer. */
 "Select a layout" = "Velg et oppsett";
 
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Velg avsnittsstil";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select the %@ to add your social media accounts" = "Trykk på %@ for å legge til dine konti på sosiale medier";
 
 /* Instructional text about the Sharing feature. */
 "Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account." = "Velg kontoen du ønsker å autorisere. Merk at innleggene dine vil deles automatisk med den valgte kontoen.";
@@ -4185,9 +3769,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Voiceover accessibility hint, informing the user they can select an item to show posts written by all users on the site */
 "Select to show everyone's posts." = "Velg for å vise alles innlegg.";
-
-/* Blog list page edit mode header label */
-"Select which sites will be shown in the site picker." = "Velg hvilke nettsteder som skal vises i nettstedsvelgeren.";
 
 /* Screen reader text to represent the selected state of a button */
 "Selected" = "Valgt";
@@ -4237,9 +3818,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Label for connected service in Publicize stat. */
 "Service" = "Tjeneste";
 
-/* Navigation title displayed on the navigation bar */
-"Set Parent" = "Sett forelder";
-
 /* The Jetpack view button title for the success state */
 "Set up" = "Sett opp";
 
@@ -4268,7 +3846,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Settings update failed" = "Oppdatering av innstillinger feilet";
 
 /* Accessibility label for share buttons in nav bars
-   Button label to share a post
    Button label to share a web page
    Shares the comment URL
    Spoken accessibility label
@@ -4317,9 +3894,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Show post content" = "Vis innhold av innlegg";
 
-/* Alert title picking theme type to browse */
-"Show themes:" = "Vis temaer:";
-
 /* Voiceover description for the post list filter which shows posts for all users on a site. */
 "Showing everyone's posts" = "Viser alles innlegg";
 
@@ -4341,26 +3915,14 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Accessibility hint for a post or comment “like” notification. */
 "Shows all likes." = "Viser alle liker.";
 
-/* Spoken accessibility hint for blog name in Reader cell. */
-"Shows all posts from %@" = "Viser alle innlegg fra %@";
-
-/* Spoken accessibility hint for Comments buttons */
-"Shows comments" = "Viser kommentarer";
-
 /* Accessibility hint for a comment notification. */
 "Shows details and moderation actions." = "Viser detaljer og modereringsvalg";
-
-/* Accessibility label for the More button on Reader Cell. */
-"Shows more actions" = "Viser flere handlinger";
 
 /* Accessibility hint for the More button on Reader's post details */
 "Shows more options." = "Viser flere valg.";
 
 /* Accessibility hint for a match/mention on a post notification. */
 "Shows the post" = "Viser innlegget";
-
-/* Accessibility hint for the Reader Cell */
-"Shows the post content" = "Viser innleggets innhold";
 
 /* View title during the sign up process. */
 "Sign Up" = "Registrer deg";
@@ -4373,9 +3935,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Button title. Tapping begins our normal sign up process. */
 "Sign up with Email" = "Registrer deg med epost";
-
-/* Label for time period in list of followers. */
-"Since" = "Siden";
 
 /* Text displayed as a footer of a table view with Activities when user is on a free plan */
 "Since you're on a free plan, you'll see limited events in your Activity Log." = "Siden du har et gratisabonnement, vil hendelsene du ser i aktivitetsloggen være begrenset.";
@@ -4403,12 +3962,8 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Default title for a site
    Label for site title blog setting
-   The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "Nettstedstittel";
-
-/* The item to select during a guided tour. */
-"Site URL" = "Nettsteds-URL";
 
 /* Setting: indicates if Achievements will be notified */
 "Site achievements" = "Sideprestasjoner";
@@ -4421,9 +3976,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Overlay message displayed when site successfully deleted */
 "Site deleted" = "Siden er slettet";
-
-/* Setting: indicates if New Follows will be notified */
-"Site follows" = "Sidefølging";
 
 /* Error notice shown if the app can't find a specific site belonging to the user */
 "Site not found" = "Siden ble ikke funnet";
@@ -4440,21 +3992,18 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Image size option title. */
 "Size" = "Størrelse";
 
-/* Button that allows the user to skip the prompt and be brought to the app
-   Continue without making a selection
+/* Continue without making a selection
    Continue without making a selection. */
 "Skip" = "Hopp over";
 
 /* Label for the slug field. Should be the same as WP core. */
 "Slug" = "Permalenke";
 
-/* Follower Totals label for social media followers
-   Label for social followers
-   The menu item to select during a guided tour.
-   Title of Stats section that shows social followers. */
+/* Label for social followers */
 "Social" = "Sosialt";
 
-/* Title for a label that appears when the scan failed
+/* A generic error message
+   Title for a label that appears when the scan failed
    Title for the error view when the scan start has failed */
 "Something went wrong" = "Noe gikk galt";
 
@@ -4574,15 +4123,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
-   Stats window title
-   The item to select during a guided tour. */
+   Stats window title */
 "Stats" = "Statistikk";
 
 /* The loading view title displayed when an error occurred */
 "Stats not loaded" = "Statistikk ikke lastet inn";
-
-/* The status of the post. Should be the same as in core WP. */
-"Status" = "Status";
 
 /* Title of the first alert preparing users to grant permission for us to send them push notifications. */
 "Stay in the loop" = "Hold deg oppdatert";
@@ -4608,9 +4153,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Submit for review button label (saving content, ex: Post, Page, Comment). */
 "Submit for Review" = "Send inn for gjennomgang";
 
-/* Text displayed in HUD while a post is being submitted for review. */
-"Submitting for Review..." = "Sender inn for gjennomgang...";
-
 /* Notice displayed to the user after clearing the spotlight index in app settings. */
 "Successfully cleared spotlight index" = "Tømte Spotlight-indeks med suksess";
 
@@ -4630,9 +4172,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Support button that appears in the Theme Browser Header
    Theme Support action title */
 "Support" = "Support";
-
-/* Title for back button that leads to the site picker screen. */
-"Switch Site" = "Bytt nettsted";
 
 /* Switches the Editor to HTML Mode */
 "Switch to HTML Mode" = "Bytt til HTML-visning";
@@ -4868,9 +4407,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Error message shown when user attempts to remove the site owner. */
 "The user you are trying to remove is the owner of this site. Please contact support for assistance." = "Brukeren du prøver å fjerne er eieren av siden. Vennligst kontakt kundestøtten for hjelp.";
 
-/* No comment provided by engineer. */
-"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again." = "Brukernavnet eller passordet som er lagret i appen er muligens utløpt. Vennligst skriv inn ditt passord i innstillingene og prøv igjen.";
-
 /* Message shown when a video failed to load while trying to add it to the Media library. */
 "The video could not be added to the Media Library." = "Videoen kunne ikke legges til i Mediebiblioteket.";
 
@@ -4999,18 +4535,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Dette medieobjektet har blitt slettet.";
 
-/* Prompts the user that the page is being uploaded and cannot be edited while that process is ongoing. */
-"This page is currently uploading. It won't take long – try again soon and you'll be able to edit it." = "Denne siden er under opplastning. Det tar ikke lang tid - prøv igjen straks og du vil kunne redigere den.";
-
-/* Prompts the user that the post is being uploaded and cannot be edited while that process is ongoing. */
-"This post is currently uploading. It won't take long – try again soon and you'll be able to edit it." = "Dette innlegget er under opplastning. Det tar ikke lang tid - prøv igjen straks og du vil kunne redigere det.";
-
-/* Post is in my likes. Accessibility label */
-"This post is in My Likes" = "Dette innlegget er i Mine likes";
-
-/* Post is not in my likes. Accessibility label */
-"This post is not in My Likes" = "Dette innlegger er ikke i Mine likes";
-
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
 "This will be included in tweets when people share using the Twitter button." = "Dette vil inkluderes i tweeter når folk deler ved hjelp av Twitter-knappen.";
@@ -5046,12 +4570,8 @@ translators: %s: Block name e.g. \"Image block\" */
    Label for list of stats by content title.
    Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
-   Post title
-   Title of the new Category being created. */
+   Post title */
 "Title" = "Tittel";
-
-/* Error popup message to indicate that there was no category title filled in. */
-"Title for a category is mandatory." = "Tittel for kategori er obligatorisk.";
 
 /* Instructions for alert asking for email and name. */
 "To continue please enter your email address and name." = "For å fortsette, vennligst skriv inn epost-adresse og navn.";
@@ -5064,9 +4584,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Install Plugin dialog text. */
 "To install plugins, you need to have a custom domain associated with your site." = "For å installere utvidelser, må du ha et tilpasset domene knyttet til nettsiden din.";
-
-/* Prompt asking user to make sites visible in order to use them in the app (plural) */
-"To manage them here, set them to visible." = "For å behandle de herfra, sett de til synlige.";
 
 /* Instructional text shown when requesting the user's password for Google login. */
 "To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "For å fortsette med denne Google-kontoen, vennligst logg inn med WordPress.com-passordet ditt først. Du vil kun bli spurt om dette én gang.";
@@ -5101,15 +4618,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Used when a Reader Topic is not found for a specific id */
 "Topic not found for id:" = "Emne ikke funnet for id:";
 
-/* Label for total followers */
-"Total" = "Totalt";
-
 /* 'This Year' label for total number of comments.
    Insights 'Total Comments' header */
 "Total Comments" = "Antall kommentarer";
-
-/* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "Totalt antall e-postfølgere: %@";
 
 /* 'This Year' label for total number of likes.
    Insights 'Total Likes' header */
@@ -5117,9 +4628,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* 'This Year' label for the total number of posts. */
 "Total Posts" = "Antall innlegg";
-
-/* Label displaying total number of WordPress.com followers. %@ is the total. */
-"Total WordPress.com Followers: %@" = "Totalt antall WordPress.com-følgere: %@";
 
 /* 'This Year' label for total number of words. */
 "Total Words" = "Antall ord";
@@ -5137,9 +4645,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Trashes a comment
    Trashes the comment */
 "Trash" = "Slett";
-
-/* Title of the trash confirmation alert. */
-"Trash this post?" = "Kaste dette innlegget søpla?";
 
 /* Name for the status of a trashed post
    Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
@@ -5276,7 +4781,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Underline" = "Understrek";
 
 /* Action button to undo last change
-   Button in the notification presented in Reader when a post removed from saved for later
    Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
@@ -5285,14 +4789,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Undo action */
 "Undo" = "Angre";
 
-/* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
-"Unfollows the blog." = "Avfølger nettstedet.";
-
-/* Unhides a site from the site picker list */
-"Unhide" = "Slutt å skjule";
-
-/* Label for size of media when it's not possible to calculate it.
-   Unknown Tag Name */
+/* Label for size of media when it's not possible to calculate it. */
 "Unknown" = "Ukjent";
 
 /* Title for Unknown HTML Editor */
@@ -5340,17 +4837,8 @@ translators: %s: Block name e.g. \"Image block\" */
    Update button label (saving content, ex: Post, Page, Comment). */
 "Update" = "Oppdater";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from an already saved draft. */
-"Update Draft" = "Oppdater kladd";
-
 /* Label action for updating a link on the editor */
 "Update Link" = "Oppdater lenke";
-
-/* Button shown if there are unsaved changes and the author is trying to move away from an already published page. */
-"Update Page" = "Oppdater side";
-
-/* Button shown if there are unsaved changes and the author is trying to move away from an already published post. */
-"Update Post" = "Oppdater innlegg";
 
 /* Update profile photo in Me > My Profile */
 "Update Profile Photo" = "Oppdater profilbilde";
@@ -5370,17 +4858,14 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Accessibility hint for the Visitors button in Stats Overview. */
 "Updates the bar chart to show visitors." = "Oppdaterer søylediagrammet for å vise besøkende.";
 
-/* Describes a status of a plugin */
+/* Describes a status of a plugin
+   Updating label title */
 "Updating" = "Oppdaterer";
-
-/* Text displayed in HUD while a draft or scheduled post is being updated. */
-"Updating..." = "Oppdaterer...";
 
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "Last opp medier";
 
-/* Message displayed on a post's card when the post has failed to upload
-   System notification displayed to the user when media files have failed to upload. */
+/* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Opplasting feilet";
 
 /* Description to show on post setting for a featured image that failed to upload. */
@@ -5411,15 +4896,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title for alert when trying to save/exit a post before media upload process is complete. */
 "Uploading media" = "Laster opp media";
-
-/* Message displayed on a post's card while the post is uploading media */
-"Uploading media..." = "Laster opp medie...";
-
-/* Title for alert when trying to preview a post before the uploading process is complete. */
-"Uploading post" = "Laster opp innlegg";
-
-/* Message displayed on a post's card when the post has failed to upload */
-"Uploading post..." = "Laster opp innlegg...";
 
 /* Label to show while uploading media to server */
 "Uploading..." = "Laster opp...";
@@ -5487,17 +4963,10 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Period Stats 'Videos' header */
 "Videos" = "Filmer";
 
-/* Button title. Displays a summary / sharing screen for a specific post.
-   Opens the post epilogue screen to allow sharing / viewing of a post.
+/* Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Se";
-
-/* Button in the notification presented in Reader when a post is saved for later */
-"View All" = "Vis alle";
-
-/* Button label for viewing a post */
-"View Post" = "Vis innlegg";
 
 /* Action title. Opens the user's site in an in-app browser */
 "View Site" = "Vis nettsted";
@@ -5514,9 +4983,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Label for viewing more stats. */
 "View more" = "Vis mer";
 
-/* Title of a Quick Start Tour */
-"View your site" = "Vis ditt nettsted";
-
 /* User role badge */
 "Viewer" = "Leser";
 
@@ -5532,8 +4998,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Today's Stats 'Views' label */
 "Views" = "Visninger";
 
-/* The visibility settings of the post. Should be the same as in core WP.
-   Visibility label */
+/* The visibility settings of the post. Should be the same as in core WP. */
 "Visibility" = "Synlighet";
 
 /* An option to visit the site to which a specific post belongs */
@@ -5573,89 +5038,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Error message displayed when a refresh is taking longer than usual. The refresh hasn't failed and it might still succeed */
 "We are having trouble loading data" = "Vi har problemer med å laste inn data";
 
-/* Text displayed in notice after the app fails to upload a page, not new attempt will be made. */
-"We couldn't complete this action, and didn't publish this page." = "Vi kunne ikke fullføre denne handlingen, og publiserte ikke denne siden.";
-
-/* Text displayed in notice after the app fails to upload a post, not new attempt will be made. */
-"We couldn't complete this action, and didn't publish this post." = "Vi kunne ikke fullføre denne handlingen, og publiserte ikke dette innlegget.";
-
-/* Text displayed after the app fails to upload a private page, no new attempt will be made. */
-"We couldn't complete this action, and didn't publish this private page." = "Vi kunne ikke fullføre denne handlingen, og publiserte ikke denne private siden.";
-
-/* Text displayed after the app fails to upload a private post, no new attempt will be made. */
-"We couldn't complete this action, and didn't publish this private post." = "Vi kunne ikke fullføre denne handlingen, og publiserte ikke dette private innlegget.";
-
-/* Text displayed after the app fails to upload a scheduled page, no new attempt will be made. */
-"We couldn't complete this action, and didn't schedule this page." = "Vi kunne ikke fullføre denne handlingen, og planla ikke denne siden.";
-
-/* Text displayed after the app fails to upload a scheduled post, no new attempt will be made. */
-"We couldn't complete this action, and didn't schedule this post." = "Vi kunne ikke fullføre denne handlingen, og planla ikke dette innlegget.";
-
-/* Text displayed in notice after the app fails to upload a page, not new attempt will be made. */
-"We couldn't complete this action, and didn't submit this page for review." = "Vi kunne ikke fullføre denne handlingen, og sendte ikke denne siden til gjennomgang.";
-
-/* Text displayed in notice after the app fails to upload a post, not new attempt will be made. */
-"We couldn't complete this action, and didn't submit this post for review." = "Vi kunne ikke fullføre denne handlingen, og sendte ikke dette innlegget til gjennomgang.";
-
-/* Text displayed after the app fails to upload a page, it will attempt to upload it later.
-   Text displayed after the app fails to upload a post, it will attempt to upload it later. */
-"We couldn't complete this action, but we'll try again later." = "Vi kunne ikke fullføre denne handlingen, men vi vil prøve igjen senere.";
-
-/* Text displayed after the app fails to upload a page, no new attempt will be made.
-   Text displayed after the app fails to upload a post, no new attempt will be made. */
-"We couldn't complete this action." = "Vi kunne ikke fullføre denne handlingen.";
-
-/* Text displayed in notice after the app fails to upload a page, it will attempt to upload it later. */
-"We couldn't publish this page, but we'll try again later." = "Vi kunne ikke publisere denne siden, men vi vil prøve igjen senere.";
-
-/* Text displayed in notice after the app fails to upload a post, it will attempt to upload it later. */
-"We couldn't publish this post, but we'll try again later." = "Vi kunne ikke publisere dette innlegget, men vi vil prøve igjen senere.";
-
-/* Text displayed after the app fails to upload a private page, it will attempt to upload it later. */
-"We couldn't publish this private page, but we'll try again later." = "Vi kunne ikke publisere denne private siden, men vi vil prøve igjen senere.";
-
-/* Text displayed after the app fails to upload a private post, it will attempt to upload it later. */
-"We couldn't publish this private post, but we'll try again later." = "Vi kunne ikke publisere dette private innlegget, men vi vil prøve igjen senere.";
-
-/* Text displayed after the app fails to upload a scheduled page, it will attempt to upload it later. */
-"We couldn't schedule this page, but we'll try again later." = "Vi kunne ikke planlegge denne siden, men vi vil prøve igjen senere.";
-
-/* Text displayed after the app fails to upload a scheduled post, it will attempt to upload it later. */
-"We couldn't schedule this post, but we'll try again later." = "Vi kunne ikke planlegge dette innlegget, men vi vil prøve igjen senere.";
-
-/* Text displayed in notice after the app fails to upload a page, it will attempt to upload it later. */
-"We couldn't submit this page for review, but we'll try again later." = "Vi kunne ikke sende denne siden til gjennomgang, men vi vil prøve igjen senere.";
-
-/* Text displayed in notice after the app fails to upload a post, it will attempt to upload it later. */
-"We couldn't submit this post for review, but we'll try again later." = "Vi kunne ikke sende dette innlegget til gjennomgang, men vi vil prøve igjen senere.";
-
-/* Text displayed if a media couldn't be uploaded for a published page. */
-"We couldn't upload this media, and didn't publish the page." = "Vi kunne ikke laste opp denne mediefilen, og publiserte ikke denne siden.";
-
-/* Text displayed if a media couldn't be uploaded for a published post. */
-"We couldn't upload this media, and didn't publish the post." = "Vi kunne ikke laste opp denne mediefilen, og publiserte ikke dette innlegget.";
-
-/* Text displayed if a media couldn't be uploaded for a private page. */
-"We couldn't upload this media, and didn't publish this private page." = "Vi kunne ikke laste opp denne mediefilen, og publiserte ikke denne private siden.";
-
-/* Text displayed if a media couldn't be uploaded for a private post. */
-"We couldn't upload this media, and didn't publish this private post." = "Vi kunne ikke laste opp denne mediefilen, og publiserte ikke dette private innlegget.";
-
-/* Text displayed if a media couldn't be uploaded for a scheduled page. */
-"We couldn't upload this media, and didn't schedule this page." = "Vi kunne ikke laste opp denne mediefilen, og planla ikke denne siden.";
-
-/* Text displayed if a media couldn't be uploaded for a scheduled post. */
-"We couldn't upload this media, and didn't schedule this post." = "Vi kunne ikke laste opp denne mediefilen, og planla ikke dette innlegget.";
-
-/* Text displayed if a media couldn't be uploaded for a pending page. */
-"We couldn't upload this media, and didn't submit this page for review." = "Vi kunne ikke laste opp denne mediefilen, og sendte ikke denne siden til gjennomgang.";
-
-/* Text displayed if a media couldn't be uploaded for a pending post. */
-"We couldn't upload this media, and didn't submit this post for review." = "Vi kunne ikke laste opp denne mediefilen, og sendte ikke dette innlegget til gjennomgang.";
-
-/* Text displayed if a media couldnt be uploaded. */
-"We couldn't upload this media." = "Vi kunne ikke laste opp denne mediefilen.";
-
 /* Message to show when Keyring connection synchronization failed. %@ is a service name like Facebook or Twitter */
 "We had trouble loading connections for %@" = "Vi hadde problemer med å laste inn tilkoblinger for %@";
 
@@ -5668,22 +5050,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Error message displayed when an error occurred sending the magic link email. */
 "We were unable to send you an email at this time. Please try again later." = "Vi kunne ikke sende deg en epost på det gjeldende tidspunkt. Vennligst prøv igjen senere.";
 
-/* Title for notice displayed on canceling auto-upload published page
-   Title for notice displayed on canceling auto-upload published post */
-"We won't publish these changes." = "Vi vil ikke publisere disse endringene.";
-
-/* Title for notice displayed on canceling auto-upload of a draft page
-   Title for notice displayed on canceling auto-upload of a draft post */
-"We won't save the latest changes to your draft." = "Vi vil ikke lagre de siste endringene på din kladd.";
-
-/* Title for notice displayed on canceling auto-upload of a scheduled page
-   Title for notice displayed on canceling auto-upload of a scheduled post */
-"We won't schedule these changes." = "Vi vil ikke planlegge disse endringene.";
-
-/* Title for notice displayed on canceling auto-upload pending page
-   Title for notice displayed on canceling auto-upload pending post */
-"We won't submit these changes for review." = "Vi vil ikke sende disse endringene til gjennomgang.";
-
 /* Instructional text for the magic link login flow. */
 "We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" = "Vi sender deg en magisk lenke som vil logge deg inn øyeblikkelig, uten behov for passord. Ikke mer bokstav-for-bokstav-skriving!";
 
@@ -5692,33 +5058,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
 "We'll notify you when you get new followers, comments, and likes. Would you like to allow push notifications?" = "Vi vil varsle deg når du får følgere, kommentarer og likes. Vil du tillate push-varslinger?";
-
-/* Text displayed in notice after a page if published while offline. */
-"We'll publish the page when your device is back online." = "Vi vil publisere siden når enheten din er tilbake på nettet.";
-
-/* Text displayed in notice after a post if published while offline. */
-"We'll publish the post when your device is back online." = "Vi vil publisere ditt innlegg når din enhet er tilbake på nettet.";
-
-/* Text displayed in notice after the app fails to upload a private page. */
-"We'll publish your private page when your device is back online." = "Vi vil publisere den private siden din når enheten din er tilbake på nettet.";
-
-/* Text displayed in notice after the app fails to upload a private post. */
-"We'll publish your private post when your device is back online." = "Vi vil publisere ditt private innlegg når din enhet er tilbake på nettet.";
-
-/* Text displayed in notice after the app fails to upload a draft. */
-"We'll save your draft when your device is back online." = "Vi vil lagre din kladd når din enhet er tilbake på nettet.";
-
-/* Text displayed after the app fails to upload a scheduled page. */
-"We'll schedule your page when your device is back online." = "Vi vil planlegge siden din når enheten din er tilbake på nettet.";
-
-/* Text displayed after the app fails to upload a scheduled post. */
-"We'll schedule your post when your device is back online." = "Vi vil planlegge ditt innlegg når din enhet er tilbake på nettet.";
-
-/* Text displayed in notice after the app fails to upload a page], it will attempt to upload it later. */
-"We'll submit your page for review when your device is back online." = "Vi vil sende siden din til gjennomgang når enheten din er tilbake på nettet.";
-
-/* Text displayed in notice after the app fails to upload a post, it will attempt to upload it later. */
-"We'll submit your post for review when your device is back online." = "Vi vil sende ditt innlegg til gjennomgang når din enhet er tilbake på nettet.";
 
 /* Text confirming email address to be used for new account. */
 "We'll use this email address to create your new WordPress.com account." = "Vi bruker denne epostadressen for å opprette din nye WordPress.com-konto.";
@@ -5738,9 +5077,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Blog Writing Settings: Weeks starts on */
 "Week starts on" = "Uken starter med";
-
-/* Title of Weeks stats filter. */
-"Weeks" = "Uker";
 
 /* Post Signup Interstitial Title Text for WordPress iOS */
 "Welcome to WordPress" = "Velkommen til WordPress";
@@ -5772,14 +5108,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "Når en kommentar inneholder noen av disse ordene i innholdet, navnet, URLen, eposten eller IPen vil det bli markert som spam. Du kan skrive inn deler av ord, så \"press\" vil matche \"WordPress\".";
 
-/* Displayed when a call is made to load the history but there's no result or an error. */
-"When you make changes in the editor you'll be able to see the history here" = "Når du gjør endringer i redigeringen vil du kunne se historikken her";
-
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "Når du gjør endringer på nettsiden din, vil du kunne se aktivitetshistorikken din her.";
-
-/* Title displayed in popup when user has the option to load unsaved changes */
-"Which version would you like to edit?" = "Hvilken versjon vil du redigere?";
 
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "Oisann, noe gikk galt og vi klarte ikke å logge det deg på. Vennligst prøv igjen!";
@@ -5859,9 +5189,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Asks the user if they would like to clear their search history. */
 "Would you like to clear your search history?" = "Vil du fjerne søkehistorien din?";
 
-/* Message offering to hide all WPCom Sites */
-"Would you like to hide all WordPress.com Sites?" = "Vil du skjule alle WordPress.com-sidene?";
-
 /* Second line of Remove user/follower/viewer warning in confirmation dialog. */
 "Would you still like to remove this person?" = "Vil du fortsatt fjerne denne personen?";
 
@@ -5881,16 +5208,10 @@ translators: %s: Block name e.g. \"Image block\" */
 /* 'This Year' label for the the year. */
 "Year" = "År";
 
-/* Title of Years stats filter. */
-"Years" = "År";
-
 /* Button title. Confirms that the user wants to proceed with a pending action.
    Label for a button that clears all old activity logs
    Yes */
 "Yes" = "Ja";
-
-/* Phrase displayed to begin a quick start tour that's been suggested. */
-"Yes, show me" = "Ja, vis meg";
 
 /* Comments Yesterday Section Header
    Notifications Yesterday Section Header */
@@ -5941,12 +5262,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Displayed when the user views trashed in the posts list and there are no posts */
 "You don't have any trashed posts" = "Du har ikke noen forkastede innlegg";
 
-/* Message informing the user that all of their sites are currently hidden (plural) */
-"You have %lu hidden WordPress sites." = "Du har %lu skjulte WordPress-sider.";
-
-/* Message informing the user that all of their sites are currently hidden (singular) */
-"You have 1 hidden WordPress site." = "Du har 1 skjult WordPress-side.";
-
 /* Message alert when attempting to delete site with purchases */
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "Du har aktive premiumoppgraderinger på siden din. Vennligst avbryt oppgraderingene dine før du sletter siden.";
 
@@ -5957,8 +5272,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "You have changes to %d posts that haven’t been uploaded to your site. Logging out now will delete those changes. Log out anyway?" = "Du har endringer på %d innlegg som ikke har blitt lastet opp til ditt nettsted. Utlogging vil slette disse endringene. Logge ut likevel?";
 
 /* Show when clicking cancel on a comment text box and you didn't save your changes.
-   Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment.
-   Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post. */
+   Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment. */
 "You have unsaved changes." = "Du har ulagrede endringer.";
 
 /* Displayed when the user views published pages in the pages list and there are no pages */
@@ -5979,10 +5293,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Body of alert prompting users to verify their accounts while attempting to publish */
 "You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "Du må verifisere kontoen din før du kan publisere et innlegg.\nIkke vær redd, innlegget ditt har det trygt og godt, og vil bli lagret som en kladd.";
 
-/* Message displayed in popup when user has the option to load unsaved changes. 
- is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively. */
-"You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "Du gjorde nylig endringer i dette innlegget, men lagret dem ikke. Velg hvilken versjon som skal lastes:\n\nFra denne enheten\nLagret %1$@\n\nFra en annen enhet\nLagret %2$@\n";
-
 /* Informs that the user has replied to this comment.
    Notification text - below a comment notification detail
    Text to look for */
@@ -5996,12 +5306,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "Du er helt oppdatert!";
-
-/* Message displayed on a post's card when the post has unsaved changes */
-"You've made unsaved changes to this post" = "Du har gjort endringer i dette innlegget som ikke er lagret";
-
-/* The item to select during a guided tour. */
-"Your Site Icon" = "Ditt nettstedsikon";
 
 /* Displayed in the Notification Settings View */
 "Your Sites" = "Dine sider";
@@ -6017,9 +5321,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Help text that describes how the password should be. It appears while editing the password */
 "Your password should be at least six characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! \" ? $ % ^ & )." = "Passordet ditt bør være på minst seks tegn. For å gjøre det sterkere, bruk store og små bokstaver, tall og symboler som ! \" ? $ % ^ & ).";
-
-/* This is a notification the user receives if they are trying to preview a post before the upload process is complete. */
-"Your post is currently being uploaded. Please wait until this completes." = "Innlegget ditt blir lastet opp. Vennligst vent til dette er fullført.";
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Dine innlegg, sider og innstillinger vil bli sent til deg på epostadressen %@.";
@@ -6051,9 +5352,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "Brukernavn og passord til siden din blir ikke lagret, og brukes bare for å installere Jetpack.";
 
-/* Comment Attachment Label */
-"[COMMENT]" = "[KOMMENTAR]";
-
 /* Age between dates equaling one day. */
 "a day" = "én dag";
 
@@ -6068,9 +5366,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Used when displaying author of a plugin. */
 "by %@" = "av %@";
-
-/* The menu item to select during a guided tour. */
-"connections" = "tilkoblinger";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "dobbelttrykk for endre enhet";

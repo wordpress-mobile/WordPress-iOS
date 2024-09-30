@@ -37,13 +37,13 @@ class ReaderReblogPresenter {
                        readerPost: ReaderPost,
                        origin: UIViewController) {
         let context = coreDataStack.mainContext
-        let blogCount = BlogQuery().visible(true).hostedByWPCom(true).count(in: context)
+        let blogCount = BlogQuery().hostedByWPCom(true).count(in: context)
 
         switch blogCount {
         case 0:
             presentNoSitesScene(origin: origin)
         case 1:
-            guard let blog = try? BlogQuery().visible(true).hostedByWPCom(true).blog(in: context) else {
+            guard let blog = try? BlogQuery().hostedByWPCom(true).blog(in: context) else {
                 return
             }
             presentEditor(with: readerPost, blog: blog, origin: origin)
@@ -62,26 +62,13 @@ private extension ReaderReblogPresenter {
                            coreDataStack: CoreDataStack,
                            readerPost: ReaderPost) {
 
-        let selectorViewController = BlogSelectorViewController(selectedBlogObjectID: nil,
-                                                                successHandler: nil,
-                                                                dismissHandler: nil)
-
-        selectorViewController.displaysNavigationBarWhenSearching = WPDeviceIdentification.isiPad()
-        selectorViewController.dismissOnCancellation = true
-        selectorViewController.displaysOnlyDefaultAccountSites = true
-
-        let navigationController = getNavigationController(selectorViewController)
-
-        let successHandler: BlogSelectorSuccessHandler = { selectedObjectID in
-            guard let newBlog = coreDataStack.mainContext.object(with: selectedObjectID) as? Blog else {
-                return
-            }
-            navigationController.dismiss(animated: true) {
-                self.presentEditor(with: readerPost, blog: newBlog, origin: origin)
+        let configuration = BlogListConfiguration(shouldHideSelfHostedSites: true)
+        let sitePickerViewController = SitePickerHostingController(configuration: configuration) { seletedBlog in
+            origin.dismiss(animated: true) {
+                self.presentEditor(with: readerPost, blog: seletedBlog, origin: origin)
             }
         }
-        selectorViewController.successHandler = successHandler
-        origin.present(navigationController, animated: true)
+        origin.present(sitePickerViewController, animated: true)
     }
 
     /// returns an AdaptiveNavigationController with preconfigured modal presentation style
@@ -108,7 +95,7 @@ private extension ReaderReblogPresenter {
 
         post.prepareForReblog(with: readerPost, imageSize: photonSize)
         // instantiate & configure editor
-        let editor = EditPostViewController(post: post, loadAutosaveRevision: false)
+        let editor = EditPostViewController(post: post)
         editor.modalPresentationStyle = .fullScreen
         editor.postIsReblogged = true
         // present

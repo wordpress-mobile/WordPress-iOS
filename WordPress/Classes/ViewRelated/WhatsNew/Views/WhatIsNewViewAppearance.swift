@@ -72,8 +72,7 @@ struct WhatIsNewViewAppearance {
         let backButtonTintColor = UIColor.darkGray
         let backButtonInset: CGFloat = 16
         // disclaimer label
-        let disclaimerBackgroundColor = UIColor(light: .muriel(name: .pink, .shade40),
-                                                dark: .muriel(name: .pink, .shade50))
+        let disclaimerBackgroundColor = UIColor(light: UIAppColor.pink(.shade40), dark: UIAppColor.pink(.shade50))
         let disclaimerLabelInsets = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
         let disclaimerFont = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .semibold)
         let disclaimerViewHeight: CGFloat = 24
@@ -131,8 +130,7 @@ struct WhatIsNewViewAppearance {
         let backButtonInset: CGFloat = 16
 
         // disclaimer label
-        let disclaimerBackgroundColor = UIColor(light: .muriel(name: .pink, .shade40),
-                                                dark: .muriel(name: .pink, .shade50))
+        let disclaimerBackgroundColor = UIColor(light: UIAppColor.pink(.shade40), dark: UIAppColor.pink(.shade50))
         let disclaimerLabelInsets = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
         let disclaimerFont = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .semibold)
         let disclaimerViewHeight: CGFloat = 24

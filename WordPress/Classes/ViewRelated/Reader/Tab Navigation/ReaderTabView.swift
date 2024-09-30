@@ -20,6 +20,8 @@ class ReaderTabView: UIView {
 
     private var filteredTabs: [(index: Int, topic: ReaderAbstractTopic)] = []
     private var previouslySelectedIndex: Int = 0
+    private var currentTabItems: [ReaderTabItem] = []
+    private weak var childController: UIViewController?
 
     private var discoverIndex: Int? {
         return viewModel.tabItems.firstIndex(where: { $0.content.topicType == .discover })
@@ -55,7 +57,11 @@ class ReaderTabView: UIView {
         }
 
         viewModel.onTabBarItemsDidChange { [weak self] tabItems, index in
+            if self?.childController != nil && self?.currentTabItems == tabItems {
+                return
+            }
             self?.addContentToContainerView(index: index)
+            self?.currentTabItems = tabItems
         }
 
         setupViewElements()
@@ -63,6 +69,7 @@ class ReaderTabView: UIView {
 
         NotificationCenter.default.addObserver(self, selector: #selector(topicUnfollowed(_:)), name: .ReaderTopicUnfollowed, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(siteFollowed(_:)), name: .ReaderSiteFollowed, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(filterUpdated(_:)), name: .ReaderFilterUpdated, object: nil)
     }
 
     required init?(coder: NSCoder) {
@@ -102,7 +109,7 @@ extension ReaderTabView {
 
     private func addContentToContainerView(index: Int) {
         guard let controller = self.next as? UIViewController,
-            let childController = viewModel.makeChildContentViewController(at: index) else {
+              let childController = viewModel.makeChildContentViewController(at: index) else {
                 return
         }
 
@@ -119,10 +126,7 @@ extension ReaderTabView {
         controller.add(childController)
         containerView.pinSubviewToAllEdges(childController.view)
 
-        if viewModel.shouldShowCommentSpotlight {
-            let title = NSLocalizedString("Comment to start making connections.", comment: "Hint for users to grow their audience by commenting on other blogs.")
-            childController.displayNotice(title: title)
-        }
+        self.childController = childController
     }
 
     private func activateConstraints() {
@@ -207,6 +211,16 @@ private extension ReaderTabView {
         viewModel.fetchReaderMenu()
     }
 
+    @objc func filterUpdated(_ notification: Foundation.Notification) {
+        guard let userInfo = notification.userInfo,
+              let topic = userInfo[ReaderNotificationKeys.topic] as? ReaderTagTopic,
+              let filterProvider = viewModel.streamFilters.first(where: { $0.reuseIdentifier == FilterProvider.ReuseIdentifiers.tags }) else {
+            return
+        }
+        viewModel.setFilterContent(topic: topic)
+        viewModel.activeStreamFilter = (filterProvider.id, topic)
+    }
+
 }
 
 // MARK: - Appearance
@@ -215,7 +229,7 @@ private extension ReaderTabView {
 
     enum Appearance {
         static let barHeight: CGFloat = 48
-        static let dividerColor: UIColor = .divider
+        static let dividerColor: UIColor = .separator
         static let hideShowBarDuration: CGFloat = 0.2
     }
 }

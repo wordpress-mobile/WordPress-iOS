@@ -1,22 +1,28 @@
 import SwiftUI
 
 struct PostVisibilityPicker: View {
-    @State private var selection: PostVisibility = .public
-    @State private var password = ""
-    @State private var isEnteringPassword = false
+    @State private var selection: Selection
+    @State private var previousSelection: Selection
     @State private var isDismissing = false
+    @FocusState private var isPasswordFieldFocused: Bool
 
     struct Selection {
-        var visibility: PostVisibility
-        var password: String?
+        var type: PostVisibility
+        var password = ""
+
+        init(post: AbstractPost) {
+            self.type = PostVisibility(post: post)
+            self.password = post.password ?? ""
+        }
     }
 
     private let onSubmit: (Selection) -> Void
 
     static var title: String { Strings.title }
 
-    init(visibility: PostVisibility, onSubmit: @escaping (Selection) -> Void) {
-        self._selection = State(initialValue: visibility)
+    init(selection: Selection, onSubmit: @escaping (Selection) -> Void) {
+        self._selection = State(initialValue: selection)
+        self._previousSelection = State(initialValue: selection)
         self.onSubmit = onSubmit
     }
 
@@ -27,72 +33,84 @@ struct PostVisibilityPicker: View {
         .disabled(isDismissing)
         .navigationTitle(Strings.title)
         .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(isPasswordFieldFocused)
+        .toolbar {
+            if isPasswordFieldFocused {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button(SharedStrings.Button.cancel) {
+                        withAnimation {
+                            selection = previousSelection
+                        }
+                    }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button(SharedStrings.Button.done) {
+                        buttonSavePasswordTapped()
+                    }
+                    .disabled(selection.password.trimmingCharacters(in: .whitespaces).isEmpty)
+                }
+            }
+        }
     }
 
     @ViewBuilder
     private func makeRow(for visibility: PostVisibility) -> some View {
-        Button(action: {
-            withAnimation {
-                if visibility == .protected {
-                    isEnteringPassword = true
-                } else {
-                    selection = visibility
-                    onSubmit(Selection(visibility: visibility, password: nil))
-                }
-            }
-        }, label: {
+        Button(action: { didSelectVisibility(visibility) }) {
             HStack {
                 VStack(alignment: .leading) {
                     Text(visibility.localizedTitle)
                     Text(visibility.localizedDetails)
                         .font(.footnote)
                         .foregroundStyle(.secondary)
-                        .opacity(isEnteringPassword ? 0.5 : 1)
+                        .opacity(visibility != .protected && isPasswordFieldFocused ? 0.4 : 1)
                 }
                 Spacer()
                 Image(systemName: "checkmark")
-                    .tint(Color(uiColor: .primary))
-                    .opacity((selection == visibility && !isEnteringPassword) ? 1 : 0)
+                    .tint(Color(uiColor: UIAppColor.primary))
+                    .opacity((selection.type == visibility && !isPasswordFieldFocused) ? 1 : 0)
             }
-        })
+        }
         .tint(.primary)
-        .disabled(isEnteringPassword && visibility != .protected)
+        .disabled(isPasswordFieldFocused && visibility != .protected)
 
-        if visibility == .protected, isEnteringPassword {
+        if visibility == .protected, selection.type == .protected {
             enterPasswordRows
+        }
+    }
+
+    private func didSelectVisibility(_ visibility: PostVisibility) {
+        withAnimation {
+            previousSelection = selection
+            selection.type = visibility
+            selection.password = ""
+            if visibility == .protected {
+                isPasswordFieldFocused = true
+            } else {
+                onSubmit(selection)
+            }
         }
     }
 
     @ViewBuilder
     private var enterPasswordRows: some View {
-        PasswordField(password: $password)
-            .onSubmit(savePassword)
-
-        HStack {
-            Button(Strings.cancel) {
-                withAnimation {
-                    password = ""
-                    isEnteringPassword = false
-                }
-            }
-            .keyboardShortcut(.cancelAction)
-            Spacer()
-            Button(Strings.save, action: savePassword)
-                .font(.body.weight(.medium))
-                .disabled(password.isEmpty)
-        }
-        .buttonStyle(.plain)
-        .foregroundStyle(Color(uiColor: .brand))
+        PasswordField(password: $selection.password, isFocused: isPasswordFieldFocused)
+            .focused($isPasswordFieldFocused)
+            .onSubmit(buttonSavePasswordTapped)
     }
 
-    private func savePassword() {
+    private func buttonSavePasswordTapped() {
         withAnimation {
-            selection = .protected
-            isEnteringPassword = false
-            isDismissing = true
-            // Let the keyboard dismiss first to avoid janky animation
-            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(550)) {
-                onSubmit(Selection(visibility: .protected, password: password))
+            isPasswordFieldFocused = false
+            selection.password = selection.password.trimmingCharacters(in: .whitespaces)
+
+            if !selection.password.isEmpty {
+                isDismissing = true
+                // Let the keyboard dismiss first to avoid janky animation
+                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(550)) {
+                    onSubmit(selection)
+                }
+            } else {
+                selection = previousSelection
             }
         }
     }
@@ -101,13 +119,12 @@ struct PostVisibilityPicker: View {
 private struct PasswordField: View {
     @Binding var password: String
     @State var isSecure = true
-    @FocusState private var isFocused: Bool
+    let isFocused: Bool
 
     var body: some View {
         HStack {
             textField
-                .focused($isFocused)
-            if !password.isEmpty {
+            if isFocused && !password.isEmpty {
                 Button(action: { password = "" }) {
                     Image(systemName: "xmark.circle")
                         .foregroundStyle(.secondary)
@@ -119,8 +136,8 @@ private struct PasswordField: View {
             }
         }
         .buttonStyle(.plain)
-        .onAppear { isFocused = true }
     }
+
     @ViewBuilder
     private var textField: some View {
         if isSecure {
@@ -136,8 +153,12 @@ enum PostVisibility: Identifiable, CaseIterable {
     case `private`
     case protected
 
+    init(post: AbstractPost) {
+        self.init(status: post.status ?? .draft, password: post.password)
+    }
+
     init(status: AbstractPost.Status, password: String?) {
-        if password != nil {
+        if let password, !password.isEmpty {
             self = .protected
         } else if status == .publishPrivate {
             self = .private
@@ -163,7 +184,6 @@ enum PostVisibility: Identifiable, CaseIterable {
         case .private: NSLocalizedString("postVisibility.private.details", value: "Only visible to site admins and editors", comment: "Details for a 'Private' privacy setting")
         }
     }
-
 }
 
 private enum Strings {

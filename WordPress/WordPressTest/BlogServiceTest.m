@@ -1,11 +1,12 @@
 #import <XCTest/XCTest.h>
-#import <OCMock/OCMock.h>
 #import "AccountService.h"
 #import "BlogService.h"
 #import "CoreDataStack.h"
 #import "Blog.h"
 #import "WPAccount.h"
 #import "WordPressTest-Swift.h"
+
+@import OCMock;
 
 @interface BlogServiceTest : XCTestCase
 

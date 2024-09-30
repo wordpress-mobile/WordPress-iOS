@@ -18,7 +18,6 @@ class StatsWidgetsStoreTests: CoreDataTestCase {
 
     func testStatsWidgetsDataInitializedAfterSignDidFinish() {
         BlogBuilder(contextManager.mainContext)
-            .with(visible: true)
             .withAnAccount()
             .isHostedAtWPcom()
             .build()
@@ -31,7 +30,6 @@ class StatsWidgetsStoreTests: CoreDataTestCase {
 
     func testStatsWidgetsDeletedAfterDefaultWPAccountRemoved() {
         BlogBuilder(contextManager.mainContext)
-            .with(visible: true)
             .withAnAccount()
             .isHostedAtWPcom()
             .build()

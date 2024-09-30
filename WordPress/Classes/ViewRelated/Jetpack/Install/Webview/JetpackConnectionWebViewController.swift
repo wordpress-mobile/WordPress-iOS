@@ -1,5 +1,5 @@
 import UIKit
-import WebKit
+@preconcurrency import WebKit
 import Gridicons
 import WordPressAuthenticator
 import Combine

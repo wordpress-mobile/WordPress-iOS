@@ -1,5 +1,4 @@
 import Foundation
-import CocoaLumberjack
 import WordPressKit
 import WordPressShared
 
@@ -88,7 +87,7 @@ class ShareCategoriesPickerViewController: UITableViewController {
         }
         self.selectedCategories = selected
         self.originallySelectedCategories = selected
-        super.init(nibName: nil, bundle: nil)
+        super.init(style: .insetGrouped)
     }
 
     required init?(coder aDecoder: NSCoder) {

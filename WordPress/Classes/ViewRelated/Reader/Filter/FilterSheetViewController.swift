@@ -261,12 +261,9 @@ private extension FilterSheetViewController {
     func updateGhostableTableViewOptions(cellClass: UITableViewCell.Type, identifier: String) {
         ghostableTableView.register(cellClass, forCellReuseIdentifier: identifier)
         let ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: identifier, rowsPerSection: [15])
-        let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
-                               beatStartColor: .placeholderElement,
-                               beatEndColor: .placeholderElementFaded)
         ghostableTableView.removeGhostContent()
         ghostableTableView.isHidden = false
-        ghostableTableView.displayGhostContent(options: ghostOptions, style: style)
+        ghostableTableView.displayGhostContent(options: ghostOptions, style: GhostStyle())
     }
 
     @objc

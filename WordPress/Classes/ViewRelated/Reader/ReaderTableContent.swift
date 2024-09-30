@@ -9,6 +9,16 @@ final class ReaderTableContent {
         tableViewHandler?.delegate = delegate
     }
 
+    func resetResultsController() {
+        tableViewHandler?.resetResultsController()
+        tableViewHandler?.tableView.reloadData()
+        tableViewHandler?.tableView.layoutIfNeeded()
+
+        if !isEmpty {
+            tableViewHandler?.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+        }
+    }
+
     /// The fetch request can need a different predicate depending on how the content
     /// being displayed has changed (blocking sites for instance).  Call this method to
     /// update the fetch request predicate and then perform a new fetch.
@@ -16,6 +26,7 @@ final class ReaderTableContent {
     func updateAndPerformFetchRequest(predicate: NSPredicate) {
         assert(Thread.isMainThread, "Reader Error: updating fetch request on a background thread.")
 
+        tableViewHandler?.resetResultsController()
         tableViewHandler?.resultsController?.fetchRequest.predicate = predicate
         do {
             try tableViewHandler?.resultsController?.performFetch()

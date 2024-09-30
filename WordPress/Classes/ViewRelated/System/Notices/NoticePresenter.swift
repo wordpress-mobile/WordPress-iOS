@@ -251,7 +251,6 @@ class NoticePresenter {
         let toState = animator.state(for: noticeContainerView, in: view, withTransition: .onscreen,
                                         bottomOffset: onScreenNoticeContainerBottomConstraintConstant)
         animator.animatePresentation(fromState: fromState, toState: toState, completion: {
-            // Quick Start notices don't get automatically dismissed
             guard notice.style.isDismissable else {
                 return
             }
@@ -291,7 +290,7 @@ class NoticePresenter {
                            initialSpringVelocity: Animations.appearanceSpringVelocity,
                            options: [],
                            animations: {
-                    container.noticeView.alpha = WPAlphaZero
+                    container.noticeView.alpha = 0
             },
                            completion: { _ in
                     container.removeFromSuperview()

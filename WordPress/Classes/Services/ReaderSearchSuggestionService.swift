@@ -1,5 +1,4 @@
 import Foundation
-import CocoaLumberjack
 
 /// Provides functionality for fetching, saving, and deleting search phrases
 /// used to search for content in the reader.

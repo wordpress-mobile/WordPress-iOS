@@ -18,6 +18,7 @@ import WordPressUI
 /// The subtitle is optional and will only show if provided.
 /// If this view is presented as a result of connectivity issue we will override the title, subtitle, image and accessorySubview (if it was set) to default values defined in the NoConnection struct
 ///
+/// - warning: Soft-deprecated
 @objc class NoResultsViewController: UIViewController {
 
     // MARK: - Properties
@@ -273,7 +274,7 @@ import WordPressUI
             .paragraphStyle: paragraphStyle
         ]
 
-        let fullTextRange = attributedString.string.foundationRangeOfEntireString
+        let fullTextRange =  NSRange(location: 0, length: attributedString.string.utf16.count)
         let finalAttributedString = NSMutableAttributedString(attributedString: attributedString)
         finalAttributedString.addAttributes(attributes, range: fullTextRange)
 
@@ -324,7 +325,7 @@ private extension NoResultsViewController {
         labelButtonStackView.spacing = labelButtonStackViewSpacing
 
         titleLabel.text = titleText
-        titleLabel.textColor = .text
+        titleLabel.textColor = .label
 
         if let titleText = titleText {
             titleLabel.attributedText = nil
@@ -335,7 +336,7 @@ private extension NoResultsViewController {
             titleLabel.attributedText = attributedTitleText
         }
 
-        subtitleTextView.textColor = .textSubtle
+        subtitleTextView.textColor = .secondaryLabel
 
         if let subtitleText = subtitleText {
             subtitleTextView.attributedText = nil

@@ -34,6 +34,8 @@ final class AllDomainsListViewController: UIViewController {
     private let refreshControl = UIRefreshControl()
     private let emptyView = AllDomainsListEmptyView()
 
+    private let searchController = UISearchController(searchResultsController: nil)
+
     // MARK: - Properties
 
     private lazy var state: ViewModel.State = viewModel.state
@@ -84,7 +86,6 @@ final class AllDomainsListViewController: UIViewController {
         self.setupTableView()
         self.setupRefreshControl()
         self.setupEmptyView()
-        self.setupNavigationBarAppearance()
     }
 
     private func setupBarButtonItems() {
@@ -96,14 +97,10 @@ final class AllDomainsListViewController: UIViewController {
     }
 
     private func setupSearchBar() {
-        let searchController = UISearchController(searchResultsController: nil)
         searchController.delegate = self
         searchController.searchBar.delegate = self
-        searchController.searchBar.placeholder = Strings.searchBar
-        self.navigationItem.searchController = searchController
-        self.navigationItem.hidesSearchBarWhenScrolling = false
-        self.extendedLayoutIncludesOpaqueBars = true
-        self.edgesForExtendedLayout = .top
+
+        navigationItem.hidesSearchBarWhenScrolling = false
     }
 
     private func setupTableView() {
@@ -131,13 +128,6 @@ final class AllDomainsListViewController: UIViewController {
             self.emptyView.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor, constant: .DS.Padding.double),
             self.emptyView.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor, constant: -.DS.Padding.double)
         ])
-    }
-
-    /// Force the navigation bar separator to be always visible.
-    private func setupNavigationBarAppearance() {
-        let appearance = self.navigationController?.navigationBar.standardAppearance
-        self.navigationItem.scrollEdgeAppearance = appearance
-        self.navigationItem.compactScrollEdgeAppearance = appearance
     }
 
     private func setupRefreshControl() {
@@ -170,6 +160,7 @@ final class AllDomainsListViewController: UIViewController {
                 self.emptyView.update(with: viewModel)
             }
             self.emptyView.isHidden = !tableView.isHidden
+            self.navigationItem.searchController = tableView.isHidden ? nil : self.searchController
         }.store(in: &cancellable)
     }
 
@@ -192,7 +183,7 @@ final class AllDomainsListViewController: UIViewController {
             analyticsSource: Constants.analyticsSource
         )
         destination.configureSandboxStore {
-            navigationController.pushViewController(destination, animated: true)
+            navigationController.present(destination.makeLightNavigationController(), animated: true)
         }
     }
 }
@@ -264,5 +255,15 @@ extension AllDomainsListViewController: UISearchControllerDelegate, UISearchBarD
 
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         WPAnalytics.track(.myDomainsSearchDomainTapped)
+    }
+}
+
+extension AllDomainsListViewController {
+    enum Strings {
+        static let title = NSLocalizedString(
+            "domain.management.title",
+            value: "All Domains",
+            comment: "Domain Management Screen Title"
+        )
     }
 }

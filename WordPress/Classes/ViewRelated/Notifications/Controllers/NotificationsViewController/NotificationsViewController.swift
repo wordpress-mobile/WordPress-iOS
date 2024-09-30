@@ -1,7 +1,6 @@
 import Foundation
 import Combine
 import CoreData
-import CocoaLumberjack
 import WordPressShared
 import WordPressAuthenticator
 import Gridicons
@@ -120,6 +119,8 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
     lazy var viewModel: NotificationsViewModel = {
         NotificationsViewModel(userDefaults: userDefaults)
     }()
+
+    var isSidebarModeEnabled = false
 
     // MARK: - View Lifecycle
 
@@ -384,7 +385,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
             }
             completionHandler(true)
         })
-        action.backgroundColor = .neutral(.shade50)
+        action.backgroundColor = UIAppColor.neutral(.shade50)
 
         return UISwipeActionsConfiguration(actions: [action])
     }
@@ -561,7 +562,7 @@ private extension NotificationsViewController {
     func setupInlinePrompt() {
         precondition(inlinePromptView != nil)
 
-        inlinePromptView.alpha = WPAlphaZero
+        inlinePromptView.alpha = 0
 
         inlinePromptView.isHidden = true
     }
@@ -835,6 +836,12 @@ extension NotificationsViewController {
     private func displayViewController(_ controller: UIViewController) {
         if shouldPushDetailsViewController {
             navigationController?.pushViewController(controller, animated: true)
+        } else if isSidebarModeEnabled {
+            if let splitViewController {
+                splitViewController.setViewController(controller, for: .secondary)
+            } else {
+                navigationController?.pushViewController(controller, animated: true)
+            }
         } else {
             showDetailViewController(controller, sender: nil)
         }
@@ -1483,7 +1490,7 @@ private extension NotificationsViewController {
             return
         }
 
-        UIView.animate(withDuration: WPAnimationDurationDefault, animations: {
+        UIView.animate(withDuration: 0.33, animations: {
             self.filterTabBar.isHidden = false
         })
     }
@@ -1575,7 +1582,7 @@ private extension NotificationsViewController {
         }
 
         if columnWidth == .default {
-            splitViewController.dimDetailViewController(shouldDimDetailViewController, withAlpha: WPAlphaZero)
+            splitViewController.dimDetailViewController(shouldDimDetailViewController, withAlpha: 0)
         }
     }
 
@@ -1628,10 +1635,10 @@ extension NotificationsViewController: NoResultsViewControllerDelegate {
              .follow,
              .like:
             WPAnalytics.track(.notificationsTappedViewReader, withProperties: properties)
-            RootViewCoordinator.sharedPresenter.showReaderTab()
+            RootViewCoordinator.sharedPresenter.showReader()
         case .unread:
             WPAnalytics.track(.notificationsTappedNewPost, withProperties: properties)
-            RootViewCoordinator.sharedPresenter.showPostTab()
+            RootViewCoordinator.sharedPresenter.showPostEditor()
         }
     }
 }
@@ -1640,27 +1647,27 @@ extension NotificationsViewController: NoResultsViewControllerDelegate {
 //
 internal extension NotificationsViewController {
     func showInlinePrompt() {
-        guard inlinePromptView.alpha != WPAlphaFull,
+        guard inlinePromptView.alpha != 1,
             userDefaults.notificationPrimerAlertWasDisplayed,
             userDefaults.notificationsTabAccessCount >= Constants.inlineTabAccessCount else {
             return
         }
 
-        UIView.animate(withDuration: WPAnimationDurationDefault, delay: 0, options: .curveEaseIn, animations: {
+        UIView.animate(withDuration: 0.33, delay: 0, options: .curveEaseIn, animations: {
             self.inlinePromptView.isHidden = false
         })
 
-        UIView.animate(withDuration: WPAnimationDurationDefault * 0.5, delay: WPAnimationDurationDefault * 0.75, options: .curveEaseIn, animations: {
-            self.inlinePromptView.alpha = WPAlphaFull
+        UIView.animate(withDuration: 0.33 * 0.5, delay: 0.33 * 0.75, options: .curveEaseIn, animations: {
+            self.inlinePromptView.alpha = 1
         })
     }
 
     func hideInlinePrompt(delay: TimeInterval) {
-        UIView.animate(withDuration: WPAnimationDurationDefault * 0.75, delay: delay, animations: {
-            self.inlinePromptView.alpha = WPAlphaZero
+        UIView.animate(withDuration: 0.33 * 0.75, delay: delay, animations: {
+            self.inlinePromptView.alpha = 0
         })
 
-        UIView.animate(withDuration: WPAnimationDurationDefault, delay: delay + WPAnimationDurationDefault * 0.5, animations: {
+        UIView.animate(withDuration: 0.33, delay: delay + 0.33 * 0.5, animations: {
             self.inlinePromptView.isHidden = true
         })
     }
@@ -1750,7 +1757,7 @@ extension NotificationsViewController: WPSplitViewControllerDetailProvider {
         // The first notification view will be populated by `selectFirstNotificationIfAppropriate`
         // on viewWillAppear, so we'll just return an empty view here.
         let controller = UIViewController()
-        controller.view.backgroundColor = .basicBackground
+        controller.view.backgroundColor = .systemBackground
         return controller
     }
 }
@@ -1835,7 +1842,7 @@ private extension NotificationsViewController {
             case .none:     return NSLocalizedString("All", comment: "Displays all of the Notifications, unfiltered")
             case .unread:   return NSLocalizedString("Unread", comment: "Filters Unread Notifications")
             case .comment:  return NSLocalizedString("Comments", comment: "Filters Comments Notifications")
-            case .follow:   return NSLocalizedString("Follows", comment: "Filters Follows Notifications")
+            case .follow:   return NSLocalizedString("notifications.filter.subscribers.title", value: "Subscribers", comment: "Filters Subscribers Notifications")
             case .like:     return NSLocalizedString("Likes", comment: "Filters Likes Notifications")
             }
         }
@@ -1855,7 +1862,7 @@ private extension NotificationsViewController {
             case .none:     return ""
             case .unread:   return NSLocalizedString("unread", comment: "Displayed in the confirmation alert when marking unread notifications as read.")
             case .comment:  return NSLocalizedString("comment", comment: "Displayed in the confirmation alert when marking comment notifications as read.")
-            case .follow:   return NSLocalizedString("follow", comment: "Displayed in the confirmation alert when marking follow notifications as read.")
+            case .follow:   return NSLocalizedString("notifications.filter.subscriptions.confirmationMessageTitle", value: "subscribe", comment: "Displayed in the confirmation alert when marking follow notifications as read.")
             case .like:     return NSLocalizedString("like", comment: "Displayed in the confirmation alert when marking like notifications as read.")
             }
         }
@@ -1868,8 +1875,8 @@ private extension NotificationsViewController {
                                                      comment: "Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title")
             case .comment:  return NSLocalizedString("No comments yet",
                                                      comment: "Displayed in the Notifications Tab as a title, when the Comments Filter shows no notifications")
-            case .follow:   return NSLocalizedString("No followers yet",
-                                                     comment: "Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications")
+            case .follow:   return NSLocalizedString("notifications.noresults.subscribers", value: "No subscribers yet",
+                                                     comment: "Displayed in the Notifications Tab as a title, when the Subscriber Filter shows no notifications")
             case .like:     return NSLocalizedString("No likes yet",
                                                      comment: "Displayed in the Notifications Tab as a title, when the Likes Filter shows no notifications")
             }

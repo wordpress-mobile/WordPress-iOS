@@ -1,5 +1,4 @@
 import UIKit
-import CocoaLumberjack
 import SVProgressHUD
 import WordPressShared
 

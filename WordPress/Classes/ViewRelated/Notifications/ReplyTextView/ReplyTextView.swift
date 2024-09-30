@@ -1,5 +1,5 @@
 import Foundation
-import WordPressShared.WPStyleGuide
+import WordPressShared
 import Gridicons
 
 // MARK: - ReplyTextViewDelegate
@@ -281,7 +281,7 @@ import Gridicons
 
         // Fullscreen toggle button
         fullscreenToggleButton.setImage(.gridicon(.chevronUp), for: .normal)
-        fullscreenToggleButton.tintColor = .listIcon
+        fullscreenToggleButton.tintColor = .secondaryLabel
         fullscreenToggleButton.accessibilityLabel = NSLocalizedString("Enter Full Screen",
                                                                       comment: "Accessibility Label for the enter full screen button on the comment reply text view")
 

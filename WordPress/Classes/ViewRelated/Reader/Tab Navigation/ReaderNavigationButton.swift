@@ -12,7 +12,7 @@ struct ReaderNavigationButton: View {
                         menuButton(for: item)
                     }
                     if group == menuItemGroups.last && viewModel.listItems.count > 0 {
-                        if !FeatureFlag.readerTagsFeed.enabled {
+                        if !RemoteFeatureFlag.readerTagsFeed.enabled() {
                             Divider()
                         }
                         listMenuItem
@@ -111,7 +111,7 @@ struct ReaderNavigationButton: View {
 
     struct Colors {
         static let primary: Color = Color(uiColor: .systemBackground)
-        static let background: Color = Color(uiColor: .text)
+        static let background: Color = Color(uiColor: .label)
     }
 
     struct Strings {
@@ -124,7 +124,7 @@ struct ReaderNavigationButton: View {
 
 }
 
-private extension ReaderTabItem {
+extension ReaderTabItem {
 
     var image: Image? {
         if content.type == .saved {

@@ -3,7 +3,7 @@ import UIKit
 import CoreData
 import WordPressKit
 
-enum DashboardSection: Int, CaseIterable {
+enum DashboardSection: Int, CaseIterable, Sendable {
     case migrationSuccess
     case quickActions
     case cards
@@ -11,7 +11,7 @@ enum DashboardSection: Int, CaseIterable {
 
 typealias BlogID = Int
 
-enum DashboardItem: Hashable {
+enum DashboardItem: Hashable, Sendable {
     case migrationSuccess
     case quickActions(BlogID)
     case cards(DashboardCardModel)
@@ -26,6 +26,10 @@ final class BlogDashboardViewModel {
     private let managedObjectContext: NSManagedObjectContext
 
     private var blog: Blog
+
+    private var error: Error?
+
+    private let wordpressClient: WordPressClient?
 
     private var currentCards: [DashboardCardModel] = []
 
@@ -60,6 +64,7 @@ final class BlogDashboardViewModel {
             var cellType: DashboardCollectionViewCell.Type
             var cardType: DashboardCard
             var apiResponse: BlogDashboardRemoteEntity?
+
             switch item {
             case .quickActions:
                 let cellType = DashboardQuickActionsCardCell.self
@@ -88,14 +93,30 @@ final class BlogDashboardViewModel {
     private var quickActionsViewModel: DashboardQuickActionsViewModel
     private var personalizationService: BlogDashboardPersonalizationService
 
-    init(viewController: BlogDashboardViewController, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext, blog: Blog) {
+    init(
+        viewController: BlogDashboardViewController,
+        managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext,
+        blog: Blog
+    ) {
         self.viewController = viewController
         self.managedObjectContext = managedObjectContext
         self.blog = blog
         self.personalizationService = BlogDashboardPersonalizationService(siteID: blog.dotComID?.intValue ?? 0)
         self.blazeViewModel = DashboardBlazeCardCellViewModel(blog: blog)
         self.quickActionsViewModel = DashboardQuickActionsViewModel(blog: blog, personalizationService: personalizationService)
+
+        var _error: Error?
+
+        do {
+            self.wordpressClient = try WordPressClient.for(site: .from(blog: self.blog), in: .shared)
+        } catch {
+            _error = error
+            self.wordpressClient = nil
+        }
+
         registerNotifications()
+
+        self.error = _error
     }
 
     /// Apply the initial configuration when the view loaded
@@ -145,17 +166,6 @@ final class BlogDashboardViewModel {
         let cards = service.fetchLocal(blog: blog)
         updateCurrentCards(cards: cards)
     }
-
-    func isQuickActionsSection(_ sectionIndex: Int) -> Bool {
-        let showMigration = MigrationSuccessCardView.shouldShowMigrationSuccessCard && !WPDeviceIdentification.isiPad()
-        let targetIndex = showMigration ? DashboardSection.quickActions.rawValue : DashboardSection.quickActions.rawValue - 1
-        return sectionIndex == targetIndex
-    }
-
-    func isMigrationSuccessCardSection(_ sectionIndex: Int) -> Bool {
-        let showMigration = MigrationSuccessCardView.shouldShowMigrationSuccessCard && !WPDeviceIdentification.isiPad()
-        return showMigration ? sectionIndex == DashboardSection.migrationSuccess.rawValue : false
-    }
 }
 
 // MARK: - Private methods
@@ -193,14 +203,21 @@ private extension BlogDashboardViewModel {
     }
 
     func createSnapshot(from cards: [DashboardCardModel]) -> DashboardSnapshot {
+        let isShowingQuickActions: Bool = {
+            guard Feature.enabled(.sidebar) else {
+                return !WPDeviceIdentification.isiPad()
+            }
+            return viewController?.traitCollection.horizontalSizeClass == .compact
+        }()
+
         let items = cards.map { DashboardItem.cards($0) }
         let dotComID = blog.dotComID?.intValue ?? 0
         var snapshot = DashboardSnapshot()
-        if MigrationSuccessCardView.shouldShowMigrationSuccessCard, !WPDeviceIdentification.isiPad() {
+        if MigrationSuccessCardView.shouldShowMigrationSuccessCard, isShowingQuickActions {
             snapshot.appendSections([.migrationSuccess])
             snapshot.appendItems([.migrationSuccess], toSection: .migrationSuccess)
         }
-        if !WPDeviceIdentification.isiPad() {
+        if isShowingQuickActions {
             snapshot.appendSections([.quickActions])
             snapshot.appendItems([.quickActions(dotComID)], toSection: .quickActions)
         }

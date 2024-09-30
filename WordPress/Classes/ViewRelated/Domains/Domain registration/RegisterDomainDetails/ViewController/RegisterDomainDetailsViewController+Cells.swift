@@ -32,7 +32,7 @@ extension RegisterDomainDetailsViewController {
 
         func valueColor(row: EditableKeyValueRow) -> UIColor? {
             //we don't want to show red fonts before user taps register button
-            return row.isValid(inContext: .serverSide) ? nil : .error
+            return row.isValid(inContext: .serverSide) ? nil : UIAppColor.error
         }
 
         guard let cell = tableView.dequeueReusableCell(withIdentifier: InlineEditableNameValueCell.defaultReuseID)

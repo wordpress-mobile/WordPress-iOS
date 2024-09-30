@@ -18,3 +18,7 @@ steps:
 
       echo '--- :shipit: Run code freeze'
       bundle exec fastlane code_freeze skip_confirm:true
+    retry:
+      manual:
+        # If those jobs fail, one should always prefer re-triggering a new build from ReleaseV2 rather than retrying the individual job from Buildkite
+        allowed: false

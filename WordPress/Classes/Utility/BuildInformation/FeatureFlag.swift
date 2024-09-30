@@ -4,14 +4,20 @@
 enum FeatureFlag: Int, CaseIterable {
     case bloggingPrompts
     case jetpackDisconnect
-    case debugMenu
     case siteIconCreator
     case betaSiteDesigns
     case commentModerationUpdate
     case compliancePopover
     case googleDomainsCard
-    case newTabIcons
-    case readerTagsFeed
+    case autoSaveDrafts
+    case voiceToContent
+    case authenticateUsingApplicationPassword
+    case tipKit
+    case sidebar
+    case newGutenberg
+    case newGutenbergThemeStyles
+    case newGutenbergPlugins
+    case serif
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -24,8 +30,6 @@ enum FeatureFlag: Int, CaseIterable {
             return AppConfiguration.isJetpack
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
-        case .debugMenu:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         case .siteIconCreator:
             return BuildConfiguration.current != .appStore
         case .betaSiteDesigns:
@@ -36,9 +40,23 @@ enum FeatureFlag: Int, CaseIterable {
             return true
         case .googleDomainsCard:
             return false
-        case .newTabIcons:
+        case .autoSaveDrafts:
+            return false
+        case .voiceToContent:
+            return AppConfiguration.isJetpack && BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+        case .authenticateUsingApplicationPassword:
+            return false
+        case .tipKit:
+            return BuildConfiguration.current != .appStore
+        case .sidebar:
             return true
-        case .readerTagsFeed:
+        case .newGutenberg:
+            return false
+        case .newGutenbergThemeStyles:
+            return false
+        case .newGutenbergPlugins:
+            return false
+        case .serif:
             return false
         }
     }
@@ -61,27 +79,23 @@ class Feature: NSObject {
 extension FeatureFlag {
     /// Descriptions used to display the feature flag override menu in debug builds
     var description: String {
-        switch self {
-        case .bloggingPrompts:
-            return "Blogging Prompts"
-        case .jetpackDisconnect:
-            return "Jetpack disconnect"
-        case .debugMenu:
-            return "Debug menu"
-        case .siteIconCreator:
-            return "Site Icon Creator"
-        case .betaSiteDesigns:
-            return "Fetch Beta Site Designs"
-        case .commentModerationUpdate:
-            return "Comments Moderation Update"
-        case .compliancePopover:
-            return "Compliance Popover"
-        case .googleDomainsCard:
-            return "Google Domains Promotional Card"
-        case .newTabIcons:
-            return "New Tab Icons"
-        case .readerTagsFeed:
-            return "Reader Tags Feed"
+        return switch self {
+        case .bloggingPrompts: "Blogging Prompts"
+        case .jetpackDisconnect: "Jetpack disconnect"
+        case .siteIconCreator: "Site Icon Creator"
+        case .betaSiteDesigns: "Fetch Beta Site Designs"
+        case .commentModerationUpdate: "Comments Moderation Update"
+        case .compliancePopover: "Compliance Popover"
+        case .googleDomainsCard: "Google Domains Promotional Card"
+        case .autoSaveDrafts: "Autosave Drafts"
+        case .voiceToContent: "Voice to Content"
+        case .authenticateUsingApplicationPassword: "Application Passwords for self-hosted sites"
+        case .tipKit: "TipKit"
+        case .sidebar: "Sidebar"
+        case .newGutenberg: "Experimental Block Editor"
+        case .newGutenbergThemeStyles: "Experimental Block Editor Styles"
+        case .newGutenbergPlugins: "Experimental Block Editor Plugins"
+        case .serif: "Serif"
         }
     }
 }
@@ -92,12 +106,18 @@ extension FeatureFlag: OverridableFlag {
         return enabled
     }
 
-    var canOverride: Bool {
-        switch self {
-        case .debugMenu:
-            return false
-        default:
-            return true
-        }
+    var key: String {
+        return "ff-override-\(String(describing: self))"
+    }
+}
+
+extension FeatureFlag: RolloutConfigurableFlag {
+    /// Represents the percentage of users to roll the flag out to.
+    ///
+    /// To set a percentage rollout, return a value between 0.0 and 1.0.
+    /// If a percentage rollout isn't applicable for the flag, return nil.
+    ///
+    var rolloutPercentage: Double? {
+        return nil
     }
 }

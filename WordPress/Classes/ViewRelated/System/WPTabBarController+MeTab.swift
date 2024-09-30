@@ -17,12 +17,7 @@ extension WPTabBarController {
     }
 
     @objc func configureMeTabImage(placeholderImage: UIImage?) {
-        configureMeTabImage(unselectedPlaceholderImage: placeholderImage, selectedPlaceholderImage: placeholderImage)
-    }
-
-    @objc func configureMeTabImage(unselectedPlaceholderImage: UIImage?, selectedPlaceholderImage: UIImage?) {
-        meNavigationController?.tabBarItem.image = unselectedPlaceholderImage
-        meNavigationController?.tabBarItem.selectedImage = selectedPlaceholderImage
+        meNavigationController.tabBarItem.image = placeholderImage
 
         guard let account = defaultAccount(),
               let email = account.email else {
@@ -34,7 +29,7 @@ extension WPTabBarController {
                 return
             }
 
-            self?.meNavigationController?.tabBarItem.configureGravatarImage(image)
+            self?.meNavigationController.tabBarItem.configureGravatarImage(image)
         }
     }
 
@@ -47,17 +42,11 @@ extension WPTabBarController {
         }
 
         ImageCache.shared.setImage(image, forKey: url.absoluteString)
-        meNavigationController?.tabBarItem.configureGravatarImage(image)
+        meNavigationController.tabBarItem.configureGravatarImage(image)
     }
 
     @objc private func accountDidChange() {
-        guard FeatureFlag.newTabIcons.enabled else {
-            configureMeTabImage(placeholderImage: UIImage(named: "icon-tab-me"))
-            return
-        }
-
-        configureMeTabImage(unselectedPlaceholderImage: UIImage(named: "tab-bar-me-unselected"),
-                            selectedPlaceholderImage: UIImage(named: "tab-bar-me-selected"))
+        configureMeTabImage(placeholderImage: UIImage(named: "tab-bar-me"))
     }
 }
 

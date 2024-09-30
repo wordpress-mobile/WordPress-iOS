@@ -136,19 +136,19 @@ struct ReaderDisplaySetting: Codable, Equatable {
         var foreground: UIColor {
             switch self {
             case .system:
-                return .text
+                return .label
             case .soft:
-                return .init(fromHex: 0x2d2e2e)
+                return UIColor(fromHex: 0x2d2e2e)
             case .sepia:
-                return .init(fromHex: 0x27201b)
+                return UIColor(fromHex: 0x27201b)
             case .evening:
-                return .init(fromHex: 0xabaab2)
+                return UIColor(fromHex: 0xabaab2)
             case .oled:
-                return .text.color(for: .init(userInterfaceStyle: .dark))
+                return .label.color(for: .init(userInterfaceStyle: .dark))
             case .hacker:
                 return .green
             case .candy:
-                return .init(fromHex: 0x0066ff)
+                return UIColor(fromHex: 0x0066ff)
             }
         }
 
@@ -166,17 +166,28 @@ struct ReaderDisplaySetting: Codable, Equatable {
             case .system:
                 return .systemBackground
             case .soft:
-                return .init(fromHex: 0xf2f2f2)
+                return UIColor(fromHex: 0xf2f2f2)
             case .sepia:
-                return .init(fromHex: 0xeae0cd)
+                return UIColor(fromHex: 0xeae0cd)
             case .evening:
-                return .init(fromHex: 0x3a3a3c)
+                return UIColor(fromHex: 0x3a3a3c)
             case .oled:
                 return .systemBackground.color(for: .init(userInterfaceStyle: .dark))
             case .hacker:
                 return .systemBackground.color(for: .init(userInterfaceStyle: .dark))
             case .candy:
-                return .init(fromHex: 0xffe8fd)
+                return UIColor(fromHex: 0xffe8fd)
+            }
+        }
+
+        var secondaryBackground: UIColor {
+            switch self {
+            case .system:
+                return .secondarySystemBackground
+            case .evening, .oled, .hacker:
+                return foreground.withAlphaComponent(0.15) // slightly higher contrast for dark themes.
+            default:
+                return foreground.withAlphaComponent(0.1)
             }
         }
 
@@ -336,10 +347,12 @@ class ReaderDisplaySettingStore: NSObject {
             return ReaderDisplaySetting.customizationEnabled ? _setting : .standard
         }
         set {
-            guard ReaderDisplaySetting.customizationEnabled else {
+            guard ReaderDisplaySetting.customizationEnabled,
+                  newValue != _setting else {
                 return
             }
             _setting = newValue
+            broadcastChangeNotification()
         }
     }
 
@@ -352,7 +365,6 @@ class ReaderDisplaySettingStore: NSObject {
                 return
             }
             repository.set(dictionary, forKey: Constants.key)
-            broadcastChangeNotification()
         }
     }
 
@@ -421,4 +433,50 @@ class ReaderDisplaySettingStore: NSObject {
 
 fileprivate extension NSNotification.Name {
     static let readerDisplaySettingStoreDidChange = NSNotification.Name("ReaderDisplaySettingDidChange")
+}
+
+private extension UIColor {
+    /**
+    Whether or not the color brightness is higher than a provided brightness value.
+
+    - parameter brightnessValue: A number that represents the brightness of a color. It ranges from 0.0 (black) to 1.0 (white).
+    - return: YES if brightness is higher than the brightness value provided.
+    */
+    func brighterThan(_ brightnessValue: Double) -> Bool {
+        return Double(YIQBrightness()) / 255 > brightnessValue
+    }
+
+    /// http://en.wikipedia.org/wiki/YIQ
+    private func YIQBrightness() -> Int {
+        let componentInts = calculateRGBComponentIntegers()
+        let red = componentInts.red * 299
+        let green = componentInts.green * 587
+        let blue = componentInts.blue * 114
+        let brightness = (red + green + blue) / 1000
+
+        return brightness
+    }
+
+    /// Calculates the RGB color components of a color as an Integer value, even if it is the grayscale space. Values between 0.0 - 255.0 are in the sRGB gamut range.
+    private func calculateRGBComponentIntegers()  -> (red: Int, green: Int, blue: Int, alpha: Int) {
+        let components = calculateRGBComponents()
+        return (Int(components.red * 255.0), Int(components.green * 255.0), Int(components.blue * 255.0), Int(components.alpha))
+    }
+
+    /// Calculates the RGB color components of a color as a CGFloat value, even if it is the grayscale space. Values for red, green, and blue can be of any range due to API changes. Values between 0.0 - 1.0 are in the sRGB gamut range.
+    private func calculateRGBComponents() -> (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
+        var r: CGFloat = 0
+        var g: CGFloat = 0
+        var b: CGFloat = 0
+        var a: CGFloat = 0
+        var w: CGFloat = 0
+        let convertedToRGBSpace = self.getRed(&r, green: &g, blue: &b, alpha: &a)
+        if !convertedToRGBSpace {
+            getWhite(&w, alpha: &a)
+            r = w
+            g = w
+            b = w
+        }
+        return (r, g, b, a)
+    }
 }

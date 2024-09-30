@@ -36,4 +36,8 @@ enum BuildConfiguration: String {
         BuildConfiguration.testingOverride = nil
     }
     #endif
+
+    var isInternal: Bool {
+        self ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
+    }
 }

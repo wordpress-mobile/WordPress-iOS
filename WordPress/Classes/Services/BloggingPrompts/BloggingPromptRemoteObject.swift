@@ -1,3 +1,5 @@
+import Foundation
+
 /// Encapsulates a single blogging prompt object from the v3 API.
 struct BloggingPromptRemoteObject {
     let promptID: Int
@@ -10,6 +12,11 @@ struct BloggingPromptRemoteObject {
     let answeredLink: URL?
     let answeredLinkText: String
     let bloganuaryId: String?
+
+    /// Used for comparison on import
+    var dateString: String {
+        Self.dateFormatter.string(from: date)
+    }
 }
 
 // MARK: - Decodable

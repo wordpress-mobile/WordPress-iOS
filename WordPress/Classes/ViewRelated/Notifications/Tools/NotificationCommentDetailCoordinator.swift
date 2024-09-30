@@ -88,13 +88,10 @@ private extension NotificationCommentDetailCoordinator {
         notificationDetailsViewController.dataSource = notificationsNavigationDataSource
         notificationDetailsViewController.onSelectedNoteChange = onSelectedNoteChange
 
-        weak var navigationController = viewController.navigationController
-
-        viewController.dismiss(animated: true, completion: {
-            notificationDetailsViewController.navigationItem.largeTitleDisplayMode = .never
-            navigationController?.popViewController(animated: false)
-            navigationController?.pushViewController(notificationDetailsViewController, animated: false)
-        })
+        let navigationController = viewController.navigationController // important to keep reference
+        notificationDetailsViewController.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.popViewController(animated: false)
+        navigationController?.pushViewController(notificationDetailsViewController, animated: false)
     }
 
     func refreshViewControllerWith(_ notification: Notification) {

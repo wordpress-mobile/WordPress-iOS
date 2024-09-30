@@ -99,7 +99,7 @@ class WindowManager: NSObject {
 
         UIView.transition(
             with: window,
-            duration: WPAnimationDurationDefault,
+            duration: 0.33,
             options: .transitionCrossDissolve,
             animations: nil,
             completion: { _ in

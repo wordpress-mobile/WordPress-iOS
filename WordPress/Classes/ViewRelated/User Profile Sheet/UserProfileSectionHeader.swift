@@ -6,8 +6,8 @@ class UserProfileSectionHeader: UITableViewHeaderFooterView, NibReusable {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        titleLabel.textColor = .textSubtle
-        contentView.backgroundColor = .basicBackground
+        titleLabel.textColor = .secondaryLabel
+        contentView.backgroundColor = .systemBackground
     }
 
 }

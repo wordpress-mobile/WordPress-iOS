@@ -56,19 +56,19 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         //
         // At the time of writing, the priority was getting some tests for new code to pass under the important Jetpac user path.
         // As such, here are a bunch of global-state feature flags overrides.
-        try? featureFlags.override(RemoteFeatureFlag.activityLogDashboardCard, withValue: true)
-        try? featureFlags.override(RemoteFeatureFlag.pagesDashboardCard, withValue: true)
-        try? featureFlags.override(FeatureFlag.googleDomainsCard, withValue: false)
-        try? featureFlags.override(RemoteFeatureFlag.dynamicDashboardCards, withValue: true)
+        featureFlags.override(RemoteFeatureFlag.activityLogDashboardCard, withValue: true)
+        featureFlags.override(RemoteFeatureFlag.pagesDashboardCard, withValue: true)
+        featureFlags.override(FeatureFlag.googleDomainsCard, withValue: false)
+        featureFlags.override(RemoteFeatureFlag.dynamicDashboardCards, withValue: true)
     }
 
     override func tearDown() {
         super.tearDown()
         context = nil
 
-        try? featureFlags.override(RemoteFeatureFlag.activityLogDashboardCard, withValue: RemoteFeatureFlag.activityLogDashboardCard.originalValue)
-        try? featureFlags.override(RemoteFeatureFlag.pagesDashboardCard, withValue: RemoteFeatureFlag.pagesDashboardCard.originalValue)
-        try? featureFlags.override(FeatureFlag.googleDomainsCard, withValue: FeatureFlag.googleDomainsCard.originalValue)
+        featureFlags.override(RemoteFeatureFlag.activityLogDashboardCard, withValue: RemoteFeatureFlag.activityLogDashboardCard.originalValue)
+        featureFlags.override(RemoteFeatureFlag.pagesDashboardCard, withValue: RemoteFeatureFlag.pagesDashboardCard.originalValue)
+        featureFlags.override(FeatureFlag.googleDomainsCard, withValue: FeatureFlag.googleDomainsCard.originalValue)
     }
 
     func testCallServiceWithCorrectIDAndCards() {
@@ -434,7 +434,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
     func testCardsAbsenceWhenFeatureFlagIsDisabled() throws {
         let expect = expectation(description: "No dynamic card should be present")
         remoteServiceMock.respondWith = .withMultipleDynamicCards
-        try featureFlags.override(RemoteFeatureFlag.dynamicDashboardCards, withValue: false)
+        featureFlags.override(RemoteFeatureFlag.dynamicDashboardCards, withValue: false)
 
         let blog = newTestBlog(id: wpComID, context: mainContext)
 
@@ -450,7 +450,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
     func testDecodingWithDynamicCards() throws {
         let expect = expectation(description: "Dynamic card should be successfully decoded")
         remoteServiceMock.respondWith = .withOnlyOneDynamicCard
-        try featureFlags.override(RemoteFeatureFlag.dynamicDashboardCards, withValue: true)
+        featureFlags.override(RemoteFeatureFlag.dynamicDashboardCards, withValue: true)
 
         let blog = newTestBlog(id: wpComID, context: mainContext)
 

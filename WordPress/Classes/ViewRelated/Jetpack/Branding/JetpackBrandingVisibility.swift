@@ -17,7 +17,6 @@ enum JetpackBrandingVisibility {
         }
     }
 
-    @available(*, deprecated, message: "Use the isEnabled function to allow injecting the configuration.")
     var enabled: Bool {
         return isEnabled(
             isWordPress: AppConfiguration.isWordPress,

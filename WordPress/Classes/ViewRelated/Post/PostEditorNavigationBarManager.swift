@@ -40,8 +40,8 @@ class PostEditorNavigationBarManager {
 
     /// Dismiss Button
     ///
-    let siteIconView: SiteIconView = {
-        let siteIconView = SiteIconView(frame: .zero)
+    let siteIconView: SiteDetailsSiteIconView = {
+        let siteIconView = SiteDetailsSiteIconView(frame: .zero)
         siteIconView.translatesAutoresizingMaskIntoConstraints = false
         siteIconView.imageView.sizeToFit()
 
@@ -117,7 +117,7 @@ class PostEditorNavigationBarManager {
         return button
     }()
 
-    private lazy var moreButton: UIButton = {
+    lazy var moreButton: UIButton = {
         let image = UIImage(named: "editor-more")
         let button = UIButton(type: .system)
         button.setImage(image, for: .normal)
@@ -131,7 +131,7 @@ class PostEditorNavigationBarManager {
     /// Blog TitleView Label
     lazy var blogTitleViewLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .appBarText
+        label.textColor = UIAppColor.appBarText
         label.font = Fonts.blogTitle
         return label
     }()
@@ -144,7 +144,7 @@ class PostEditorNavigationBarManager {
         button.sizeToFit()
         button.isEnabled = delegate?.isPublishButtonEnabled ?? false
         button.setContentHuggingPriority(.required, for: .horizontal)
-        button.tintColor = .editorActionText
+        button.tintColor = UIColor(light: .black, dark: .white)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 17.0)
         return button
     }()

@@ -12,7 +12,7 @@
 }
 
 + (void)updatePost:(AbstractPost *)post withRemotePost:(RemotePost *)remotePost inContext:(NSManagedObjectContext *)managedObjectContext overwrite:(BOOL)overwrite {
-    if ([RemoteFeature enabled:RemoteFeatureFlagSyncPublishing] && (post.revision != nil && !overwrite)) {
+    if ((post.revision != nil && !overwrite)) {
         return;
     }
 
@@ -63,6 +63,7 @@
     if ([post isKindOfClass:[Page class]]) {
         Page *pagePost = (Page *)post;
         pagePost.parentID = remotePost.parentID;
+        pagePost.foreignID = remotePost.foreignID;
     } else if ([post isKindOfClass:[Post class]]) {
         Post *postPost = (Post *)post;
         postPost.commentCount = remotePost.commentCount;
@@ -92,28 +93,22 @@
             publicizeMessage = [publicizeMessageDictionary stringForKey:@"value"];
             publicizeMessageID = [publicizeMessageDictionary stringForKey:@"id"];
         }
+        postPost.foreignID = remotePost.foreignID;
         postPost.publicID = publicID;
         postPost.publicizeMessage = publicizeMessage;
         postPost.publicizeMessageID = publicizeMessageID;
         postPost.disabledPublicizeConnections = [self disabledPublicizeConnectionsForPost:post andMetadata:remotePost.metadata];
     }
-
-    post.statusAfterSync = post.status;
 }
 
 + (void)updatePost:(Post *)post withRemoteCategories:(NSArray *)remoteCategories inContext:(NSManagedObjectContext *)managedObjectContext {
-    NSManagedObjectID *blogObjectID = post.blog.objectID;
     NSMutableSet *categories = [post mutableSetValueForKey:@"categories"];
     [categories removeAllObjects];
     for (RemotePostCategory *remoteCategory in remoteCategories) {
-        PostCategory *category = [PostCategory lookupWithBlogObjectID:blogObjectID categoryID:remoteCategory.categoryID inContext:managedObjectContext];
-        if (!category) {
-            category = [PostCategory createWithBlogObjectID:blogObjectID inContext:managedObjectContext];
-            category.categoryID = remoteCategory.categoryID;
-            category.categoryName = remoteCategory.name;
-            category.parentID = remoteCategory.parentID;
+        PostCategory *category = [PostHelper createOrUpdateCategoryForRemoteCategory:remoteCategory blog:post.blog context:managedObjectContext];
+        if (category) {
+            [categories addObject:category];
         }
-        [categories addObject:category];
     }
 }
 
@@ -131,74 +126,17 @@
     return [matchingEntries lastObject];
 }
 
-+ (RemotePost *)remotePostWithPost:(AbstractPost *)post
++ (NSArray *)remoteMetadataForPost:(Post *)post
 {
-    RemotePost *remotePost = [RemotePost new];
-    remotePost.postID = post.postID;
-    remotePost.date = post.date_created_gmt;
-    remotePost.dateModified = post.dateModified;
-    remotePost.title = post.postTitle ?: @"";
-    remotePost.content = post.content;
-    remotePost.status = post.status;
-    if (post.featuredImage) {
-        remotePost.postThumbnailID = post.featuredImage.mediaID;
+    NSMutableArray *metadata = [NSMutableArray arrayWithCapacity:5];
+    
+    /// Send UUID as a foreign ID in metadata so we have a way to deduplicate new posts
+    if (post.foreignID) {
+        NSMutableDictionary *uuidDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
+        uuidDictionary[@"key"] = [self foreignIDKey];
+        uuidDictionary[@"value"] = [post.foreignID UUIDString];
+        [metadata addObject:uuidDictionary];
     }
-    remotePost.password = post.password;
-    remotePost.type = @"post";
-    remotePost.authorAvatarURL = post.authorAvatarURL;
-    // If a Post's authorID is 0 (the default Core Data value)
-    // or nil, don't send it to the API.
-    if (post.authorID.integerValue != 0) {
-        remotePost.authorID = post.authorID;
-    }
-    remotePost.excerpt = post.mt_excerpt;
-    remotePost.slug = post.wp_slug;
-
-    if ([post isKindOfClass:[Page class]]) {
-        Page *pagePost = (Page *)post;
-        remotePost.parentID = pagePost.parentID;
-        remotePost.type = @"page";
-    }
-    if ([post isKindOfClass:[Post class]]) {
-        Post *postPost = (Post *)post;
-        remotePost.format = postPost.postFormat;
-        remotePost.tags = [[postPost.tags componentsSeparatedByString:@","] wp_map:^id(NSString *obj) {
-            return [obj stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceCharacterSet];
-        }];
-        remotePost.categories = [self remoteCategoriesForPost:postPost];
-        remotePost.metadata = [self remoteMetadataForPost:postPost];
-
-        // Because we can't get what's the self-hosted non Jetpack site capabilities
-        // only Admin users are allowed to set a post as sticky.
-        // This doesn't affect WPcom sites.
-        //
-        BOOL canMarkPostAsSticky = ([post.blog supports:BlogFeatureWPComRESTAPI] || post.blog.isAdmin);
-        remotePost.isStickyPost = canMarkPostAsSticky ? @(postPost.isStickyPost) : nil;
-    }
-
-    remotePost.isFeaturedImageChanged = post.isFeaturedImageChanged;
-
-    return remotePost;
-}
-
-+ (NSArray *)remoteCategoriesForPost:(Post *)post
-{
-    return [[post.categories allObjects] wp_map:^id(PostCategory *category) {
-        return [self remoteCategoryWithCategory:category];
-    }];
-}
-
-+ (RemotePostCategory *)remoteCategoryWithCategory:(PostCategory *)category
-{
-    RemotePostCategory *remoteCategory = [RemotePostCategory new];
-    remoteCategory.categoryID = category.categoryID;
-    remoteCategory.name = category.categoryName;
-    remoteCategory.parentID = category.parentID;
-    return remoteCategory;
-}
-
-+ (NSArray *)remoteMetadataForPost:(Post *)post {
-    NSMutableArray *metadata = [NSMutableArray arrayWithCapacity:4];
 
     if (post.publicID) {
         NSMutableDictionary *publicDictionary = [NSMutableDictionary dictionaryWithCapacity:1];
@@ -239,6 +177,12 @@
     NSMutableArray *posts = [NSMutableArray arrayWithCapacity:remotePosts.count];
     for (RemotePost *remotePost in remotePosts) {
         AbstractPost *post = [blog lookupPostWithID:remotePost.postID inContext:context];
+        if (post == nil) {
+            NSUUID *foreignID = remotePost.foreignID;
+            if (foreignID != nil) {
+                post = [blog lookupPostWithForeignID:foreignID inContext:context];
+            }
+        }
         if (!post) {
             if ([remotePost.type isEqualToString:PostServiceTypePage]) {
                 // Create a Page entity for posts with a remote type of "page"
@@ -254,12 +198,7 @@
 
     if (purge) {
         // Set up predicate for fetching any posts that could be purged for the sync.
-        NSPredicate *predicate = nil;
-        if ([RemoteFeature enabled:RemoteFeatureFlagSyncPublishing]) {
-            predicate = [NSPredicate predicateWithFormat:@"(postID != NULL) AND (original = NULL) AND (revision = NULL) AND (blog = %@)", blog];
-        } else {
-            predicate = [NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL) AND (original = NULL) AND (revision = NULL) AND (blog = %@)", @(AbstractPostRemoteStatusSync), blog];
-        }
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(postID != NULL) AND (original = NULL) AND (revision = NULL) AND (blog = %@)", blog];
         if ([statuses count] > 0) {
             NSPredicate *statusPredicate = [NSPredicate predicateWithFormat:@"status IN %@", statuses];
             predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, statusPredicate]];

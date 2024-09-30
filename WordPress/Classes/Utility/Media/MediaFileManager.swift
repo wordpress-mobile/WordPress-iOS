@@ -1,5 +1,4 @@
 import Foundation
-import CocoaLumberjack
 
 /// Type of the local Media directory URL in implementation.
 ///
@@ -16,7 +15,7 @@ enum MediaDirectory {
 
     /// Returns the directory URL for the directory type.
     ///
-    fileprivate var url: URL {
+    var url: URL {
         let fileManager = FileManager.default
         // Get a parent directory, based on the type.
         let parentDirectory: URL
@@ -44,14 +43,14 @@ class MediaFileManager: NSObject {
 
     /// The default instance of a MediaFileManager.
     ///
-    @objc (defaultManager)
+    @objc(defaultManager)
     static let `default`: MediaFileManager = {
         return MediaFileManager()
     }()
 
     /// Helper method for getting a MediaFileManager for the .cache directory.
     ///
-    @objc (cacheManager)
+    @objc(cacheManager)
     class var cache: MediaFileManager {
         return MediaFileManager(directory: .cache)
     }

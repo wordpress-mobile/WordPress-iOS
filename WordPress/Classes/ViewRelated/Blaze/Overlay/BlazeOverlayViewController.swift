@@ -71,15 +71,17 @@ final class BlazeOverlayViewController: UIViewController {
         label.font = WPStyleGuide.fontForTextStyle(.title1, fontWeight: .semibold)
         label.numberOfLines = 0
         label.textAlignment = .center
-        label.textColor = .text
+        label.textColor = .label
         return label
     }()
 
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.attributedText = viewModel.bulletedDescription(font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular),
-                                                             textColor: .textSubtle)
+        label.attributedText = viewModel.bulletedDescription(
+            font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular),
+            textColor: .secondaryLabel
+        )
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = true
         label.numberOfLines = 0
@@ -150,14 +152,6 @@ final class BlazeOverlayViewController: UIViewController {
 
     private func setupNavigationBar() {
         navigationItem.rightBarButtonItem = closeButtonItem
-
-        let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = Colors.backgroundColor
-        appearance.shadowColor = .clear
-        navigationItem.standardAppearance = appearance
-        navigationItem.compactAppearance = appearance
-        navigationItem.scrollEdgeAppearance = appearance
-        navigationItem.compactScrollEdgeAppearance = appearance
     }
 
     private func setupView() {

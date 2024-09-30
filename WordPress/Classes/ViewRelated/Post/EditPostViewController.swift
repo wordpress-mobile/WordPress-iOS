@@ -16,9 +16,6 @@ class EditPostViewController: UIViewController {
     /// the entry point for the editor
     var entryPoint: PostEditorEntryPoint = .unknown
 
-    /// - warning: deprecated (kahu-offline-mode)
-    private let loadAutosaveRevision: Bool
-
     @objc fileprivate(set) var post: Post?
     private let prompt: BloggingPrompt?
     fileprivate var hasShownEditor = false
@@ -27,8 +24,6 @@ class EditPostViewController: UIViewController {
 
     @objc var onClose: ((_ changesSaved: Bool) -> ())?
     @objc var afterDismiss: (() -> Void)?
-
-    private var originalPostID: NSManagedObjectID?
 
     override var modalPresentationStyle: UIModalPresentationStyle {
         didSet(newValue) {
@@ -45,8 +40,8 @@ class EditPostViewController: UIViewController {
     /// Initialize as an editor with the provided post
     ///
     /// - Parameter post: post to edit
-    @objc convenience init(post: Post, loadAutosaveRevision: Bool = false) {
-        self.init(post: post, blog: post.blog, loadAutosaveRevision: loadAutosaveRevision)
+    @objc convenience init(post: Post) {
+        self.init(post: post, blog: post.blog)
     }
 
     /// Initialize as an editor to create a new post for the provided blog
@@ -70,10 +65,8 @@ class EditPostViewController: UIViewController {
     ///   - post: the post to edit
     ///   - blog: the blog to create a post for, if post is nil
     /// - Note: it's preferable to use one of the convenience initializers
-    fileprivate init(post: Post?, blog: Blog, loadAutosaveRevision: Bool = false, prompt: BloggingPrompt? = nil) {
+    fileprivate init(post: Post?, blog: Blog, prompt: BloggingPrompt? = nil) {
         self.post = post
-        self.originalPostID = post?.original().objectID
-        self.loadAutosaveRevision = loadAutosaveRevision
         if let post = post {
             if !post.originalIsDraft() {
                 editingExistingPost = true
@@ -86,10 +79,6 @@ class EditPostViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .fullScreen
         modalTransitionStyle = .coverVertical
-
-        if RemoteFeatureFlag.syncPublishing.enabled() {
-            NotificationCenter.default.addObserver(self, selector: #selector(didChangeObjects), name: NSManagedObjectContext.didChangeObjectsNotification, object: blog.managedObjectContext)
-        }
     }
 
     required init?(coder: NSCoder) {
@@ -112,10 +101,6 @@ class EditPostViewController: UIViewController {
         }
     }
 
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        WPStyleGuide.preferredStatusBarStyle
-    }
-
     fileprivate func postToEdit() -> Post {
         if let post = post {
             return post
@@ -127,21 +112,11 @@ class EditPostViewController: UIViewController {
         }
     }
 
-    @objc private func didChangeObjects(_ notification: Foundation.Notification) {
-        guard let userInfo = notification.userInfo else { return }
-
-        let deletedObjects = ((userInfo[NSDeletedObjectsKey] as? Set<NSManagedObject>) ?? [])
-        if deletedObjects.contains(where: { $0.objectID == originalPostID }) {
-            closeEditor()
-        }
-    }
-
     // MARK: - Show editor by settings and post
 
     fileprivate func showEditor() {
         let editor = editorFactory.instantiateEditor(
             for: postToEdit(),
-            loadAutosaveRevision: loadAutosaveRevision,
             replaceEditor: { [weak self] (editor, replacement) in
                 self?.replaceEditor(editor: editor, replacement: replacement)
         })
@@ -168,12 +143,15 @@ class EditPostViewController: UIViewController {
 
         let navController = AztecNavigationController(rootViewController: editor)
         navController.modalPresentationStyle = .fullScreen
+        navController.view.backgroundColor = .systemBackground
 
         let generator = UIImpactFeedbackGenerator(style: .medium)
         generator.prepare()
 
         present(navController, animated: !showImmediately) {
-            generator.impactOccurred()
+            if !(editor is NewGutenbergViewController) {
+                generator.impactOccurred()
+            }
 
             if let insertedMedia = self.insertedMedia {
                 editor.prepopulateMediaItems(insertedMedia)

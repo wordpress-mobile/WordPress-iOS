@@ -79,9 +79,4 @@ extension AppConstants {
     struct Zendesk {
         static let ticketSubject = NSLocalizedString("Jetpack for iOS Support", comment: "Subject of new Zendesk ticket.")
     }
-
-    struct QuickStart {
-        static let getToKnowTheAppTourTitle = NSLocalizedString("Get to know the Jetpack app",
-                                                                comment: "Name of the Quick Start list that guides users through a few tasks to explore the Jetpack app.")
-    }
 }

@@ -5,7 +5,7 @@ import Foundation
 ///
 extension MediaHost {
     enum BlogError: Swift.Error {
-        case baseInitializerError(error: Error, blog: Blog)
+        case baseInitializerError(error: Error)
     }
 
     init(with blog: Blog) {
@@ -21,7 +21,8 @@ extension MediaHost {
     }
 
     init(with blog: Blog, isAtomic: Bool, failure: (BlogError) -> ()) {
-        self.init(isAccessibleThroughWPCom: blog.isAccessibleThroughWPCom(),
+        self.init(
+            isAccessibleThroughWPCom: blog.isAccessibleThroughWPCom(),
             isPrivate: blog.isPrivate(),
             isAtomic: isAtomic,
             siteID: blog.dotComID?.intValue,
@@ -29,9 +30,8 @@ extension MediaHost {
             authToken: blog.authToken,
             failure: { error in
                 // We just associate a blog with the underlying error for simpler debugging.
-                failure(BlogError.baseInitializerError(
-                    error: error,
-                    blog: blog))
-        })
+                failure(BlogError.baseInitializerError(error: error))
+            }
+        )
    }
 }

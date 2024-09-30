@@ -1,7 +1,6 @@
 #import "VerticallyStackedButton.h"
-#import <WordPressShared/WPFontManager.h>
-#import <WordPressShared/WPStyleGuide.h>
 
+@import WordPressShared;
 
 static const CGFloat ImageLabelSeparation = 2.f;
 static const CGFloat LabelFontSize = 11.f;
@@ -12,9 +11,9 @@ static const CGFloat LabelFontSize = 11.f;
     self = [super initWithFrame:frame];
     if (self) {
         [self.titleLabel setLineBreakMode:NSLineBreakByTruncatingTail];
-        [self setTitleColor:[WPStyleGuide newKidOnTheBlockBlue] forState:UIControlStateNormal];
-        [self setTitleColor:[WPStyleGuide midnightBlue] forState:UIControlStateHighlighted];
-        [self setTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
+        [self setTitleColor:[WPStyleGuide mediumBlue] forState:UIControlStateNormal];
+        [self setTitleColor:[WPStyleGuide darkBlue] forState:UIControlStateHighlighted];
+        [self setTintColor:[WPStyleGuide mediumBlue]];
     }
     
     return self;

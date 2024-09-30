@@ -4,38 +4,20 @@ import WordPressFlux
 extension PostEditor {
 
     func displayPostSettings() {
-        let settingsViewController: PostSettingsViewController
-        if post is Page {
-            settingsViewController = PageSettingsViewController(post: post)
-        } else {
-            settingsViewController = PostSettingsViewController(post: post)
-        }
-        settingsViewController.featuredImageDelegate = self as? FeaturedImageDelegate
+        let viewController = PostSettingsViewController.make(for: post)
+        viewController.featuredImageDelegate = self as? FeaturedImageDelegate
         let doneButton = UIBarButtonItem(systemItem: .done, primaryAction: .init(handler: { [weak self] _ in
             self?.editorContentWasUpdated()
             self?.navigationController?.dismiss(animated: true)
         }))
         doneButton.accessibilityIdentifier = "close"
-        settingsViewController.navigationItem.rightBarButtonItem = doneButton
+        viewController.navigationItem.rightBarButtonItem = doneButton
 
-        let navigation = UINavigationController(rootViewController: settingsViewController)
+        let navigation = UINavigationController(rootViewController: viewController)
         self.navigationController?.present(navigation, animated: true)
     }
 
-    private func createPostRevisionBeforePreview(completion: @escaping (() -> Void)) {
-        let context = ContextManager.sharedInstance().mainContext
-        context.performAndWait {
-            post = self.post.createRevision()
-            ContextManager.sharedInstance().save(context)
-            completion()
-        }
-    }
-
     private func savePostBeforePreview(completion: @escaping ((String?, Error?) -> Void)) {
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
-            return _savePostBeforePreview(completion: completion)
-        }
-
         guard !post.changes.isEmpty else {
             completion(nil, nil)
             return
@@ -49,7 +31,7 @@ extension PostEditor {
                     SVProgressHUD.show(withStatus: Strings.savingDraft)
 
                     let original = post.original()
-                    try await coordinator._save(original)
+                    try await coordinator.save(original)
                     self.post = original
                     self.createRevisionOfPost()
 
@@ -66,43 +48,6 @@ extension PostEditor {
         }
     }
 
-    // - warning: deprecated (kahu-offline-mode)
-    private func _savePostBeforePreview(completion: @escaping ((String?, Error?) -> Void)) {
-        let context = ContextManager.sharedInstance().mainContext
-        let postService = PostService(managedObjectContext: context)
-
-        if !post.hasUnsavedChanges() {
-            completion(nil, nil)
-            return
-        }
-
-        SVProgressHUD.setDefaultMaskType(.clear)
-        SVProgressHUD.show(withStatus: NSLocalizedString("Generating Preview", comment: "Message to indicate progress of generating preview"))
-
-        postService.autoSave(post, success: { [weak self] savedPost, previewURL in
-
-            guard let self = self else {
-                return
-            }
-
-            self.post = savedPost
-
-            if self.post.isRevision() {
-                ContextManager.sharedInstance().save(context)
-                completion(previewURL, nil)
-            } else {
-                self.createPostRevisionBeforePreview() {
-                    completion(previewURL, nil)
-                }
-            }
-        }) { error in
-
-            //When failing to save a published post will result in "preview not available"
-            DDLogError("Error while trying to save post before preview: \(String(describing: error))")
-            completion(nil, error)
-        }
-    }
-
     private func displayPreviewNotAvailable(title: String, subtitle: String? = nil) {
         let noResultsController = NoResultsViewController.controllerWith(title: title, subtitle: subtitle)
         noResultsController.hidesBottomBarWhenPushed = true
@@ -113,13 +58,6 @@ extension PostEditor {
         guard !isUploadingMedia else {
             displayMediaIsUploadingAlert()
             return
-        }
-
-        if !RemoteFeatureFlag.syncPublishing.enabled() {
-            guard post.remoteStatus != .pushing else {
-                displayPostIsUploadingAlert()
-                return
-            }
         }
 
         emitPostSaveEvent()
@@ -157,12 +95,8 @@ extension PostEditor {
         }
     }
 
-    func displayHistory() {
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
-            _displayHistory()
-            return
-        }
-        let viewController = RevisionsTableViewController(post: post) { _ in }
+    func displayRevisionsList() {
+        let viewController = RevisionsTableViewController(post: post)
         viewController.onRevisionSelected = { [weak self] revision in
             guard let self else { return }
 
@@ -173,6 +107,12 @@ extension PostEditor {
                 self.post.content = revision.postContent
                 self.post.mt_excerpt = revision.postExcerpt
 
+                // It's important to clear the pending uploads associated with the
+                // post. The assumption is that if the revision on the remote,
+                // its associated media has to be also uploaded.
+                MediaCoordinator.shared.cancelUploadOfAllMedia(for: self.post)
+                self.post.media = []
+
                 self.post = self.post // Reload the ui
 
                 let notice = Notice(title: Strings.revisionLoaded, feedbackType: .success)
@@ -180,37 +120,6 @@ extension PostEditor {
             }
         }
         navigationController?.pushViewController(viewController, animated: true)
-    }
-
-    /// - warning: deprecated (kahu-offline-mode)
-    private func _displayHistory() {
-        let revisionsViewController = RevisionsTableViewController(post: post) { [weak self] revision in
-            guard let post = self?.post.update(from: revision) else {
-                return
-            }
-
-            // show the notice with undo button
-            let notice = Notice(title: "Revision loaded", message: nil, feedbackType: .success, notificationInfo: nil, actionTitle: "Undo", cancelTitle: nil) { (happened) in
-                guard happened else {
-                    return
-                }
-                DispatchQueue.main.async {
-                    guard let original = self?.post.original(),
-                        let clone = self?.post.clone(from: original) else {
-                        return
-                    }
-                    self?.post = clone
-
-                    WPAnalytics.track(.postRevisionsLoadUndone)
-                }
-            }
-            ActionDispatcher.dispatch(NoticeAction.post(notice))
-
-            DispatchQueue.main.async {
-                self?.post = post
-            }
-        }
-        navigationController?.pushViewController(revisionsViewController, animated: true)
     }
 }
 

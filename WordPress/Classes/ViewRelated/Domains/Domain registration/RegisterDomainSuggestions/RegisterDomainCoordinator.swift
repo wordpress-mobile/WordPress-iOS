@@ -1,6 +1,7 @@
 import Foundation
 import AutomatticTracks
 import WordPressKit
+import SwiftUI
 
 class RegisterDomainCoordinator {
 
@@ -101,38 +102,29 @@ class RegisterDomainCoordinator {
     /// Related to the `purchaseFromDomainManagement` Domain selection type.
     /// Adds the selected domain to the cart then presents a site picker view.
     func handleExistingSiteChoice(on viewController: UIViewController) {
-        let config = BlogListConfiguration(
-            shouldShowCancelButton: false,
-            shouldShowNavBarButtons: false,
-            navigationTitle: TextContent.sitePickerNavigationTitle,
-            backButtonTitle: TextContent.sitePickerNavigationTitle,
+        let configuration = BlogListConfiguration(
             shouldHideSelfHostedSites: true,
             shouldHideBlogsNotSupportingDomains: true,
             analyticsSource: analyticsSource
         )
-        let blogListViewController = BlogListViewController(configuration: config, meScenePresenter: nil)
-
-        blogListViewController.blogSelected = { [weak self] controller, selectedBlog in
-            guard let self else {
-                return
-            }
-            controller.showLoading()
+        let sitePickerView = SitePickerView(viewModel: BlogListViewModel(configuration: configuration)) { [weak self] selectedBlog in
+            guard let self else { return }
+            SVProgressHUD.show()
             self.createCart { [weak self] result in
-                guard let self else {
-                    return
-                }
+                guard let self else { return }
                 switch result {
                 case .success(let domain):
                     self.site = selectedBlog
-                    self.domainAddedToCartAndLinkedToSiteCallback?(controller, domain.domainName, selectedBlog)
+                    self.domainAddedToCartAndLinkedToSiteCallback?(viewController, domain.domainName, selectedBlog)
                 case .failure:
-                    controller.displayActionableNotice(title: TextContent.errorTitle, actionTitle: TextContent.errorDismiss)
+                    viewController.displayActionableNotice(title: TextContent.errorTitle, actionTitle: TextContent.errorDismiss)
                 }
-                controller.hideLoading()
+                SVProgressHUD.dismiss()
             }
         }
-
-        viewController.navigationController?.pushViewController(blogListViewController, animated: true)
+        let sitePickerViewController = UIHostingController(rootView: sitePickerView)
+        sitePickerViewController.navigationItem.title =  TextContent.sitePickerNavigationTitle // important to set on `UIViewContoller`
+        viewController.navigationController?.pushViewController(sitePickerViewController, animated: true)
     }
 
     func trackDomainPurchasingCompleted() {

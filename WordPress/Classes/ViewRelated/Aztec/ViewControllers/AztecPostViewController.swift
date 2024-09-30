@@ -2,7 +2,6 @@ import Foundation
 import UIKit
 import PDFKit
 import Aztec
-import CocoaLumberjack
 import Gridicons
 import WordPressShared
 import MobileCoreServices
@@ -60,10 +59,6 @@ class AztecPostViewController: UIViewController, PostEditor {
     let navigationBarManager = PostEditorNavigationBarManager()
 
     let mediaUtility = EditorMediaUtility()
-
-    func cancelUploadOfAllMedia(for post: AbstractPost) {
-        mediaCoordinator.cancelUploadOfAllMedia(for: post)
-    }
 
     var entryPoint: PostEditorEntryPoint = .unknown {
         didSet {
@@ -128,7 +123,7 @@ class AztecPostViewController: UIViewController, PostEditor {
             defaultMissingImage: Assets.defaultMissingImage)
 
         editorView.clipsToBounds = false
-        editorView.htmlStorage.textColor = .text
+        editorView.htmlStorage.textColor = .label
         setupHTMLTextView(editorView.htmlTextView)
         setupRichTextView(editorView.richTextView)
 
@@ -166,9 +161,9 @@ class AztecPostViewController: UIViewController, PostEditor {
         textView.textAttachmentDelegate = self
 
         textView.backgroundColor = Colors.aztecBackground
-        textView.blockquoteBackgroundColor = .neutral(.shade5)
-        textView.blockquoteBorderColors = [.listIcon]
-        textView.preBackgroundColor = .neutral(.shade5)
+        textView.blockquoteBackgroundColor = UIAppColor.neutral(.shade5)
+        textView.blockquoteBorderColors = [.secondaryLabel]
+        textView.preBackgroundColor = UIAppColor.neutral(.shade5)
 
         textView.linkTextAttributes = linkAttributes
 
@@ -250,9 +245,11 @@ class AztecPostViewController: UIViewController, PostEditor {
         let titleParagraphStyle = NSMutableParagraphStyle()
         titleParagraphStyle.alignment = .natural
 
-        let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.text,
-                                                        .font: Fonts.title,
-                                                        .paragraphStyle: titleParagraphStyle]
+        let attributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.label,
+            .font: Fonts.title,
+            .paragraphStyle: titleParagraphStyle
+        ]
 
         let textView =
             UIApplication.shared.isCreatingScreenshots() ? UITextViewWithoutCaret() : UITextView()
@@ -262,7 +259,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         textView.delegate = self
         textView.font = Fonts.title
         textView.returnKeyType = .next
-        textView.textColor = .text
+        textView.textColor = .label
         textView.typingAttributes = attributes
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.textAlignment = .natural
@@ -355,11 +352,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         }
     }
 
-    /// If true, apply autosave content when the editor creates a revision.
-    ///
-    /// - warning: deprecated (kahu-offline-mode)
-    private let loadAutosaveRevision: Bool
-
     /// Active Downloads
     ///
     fileprivate var activeMediaRequests = [ImageDownloaderTask]()
@@ -407,8 +399,8 @@ class AztecPostViewController: UIViewController, PostEditor {
     fileprivate lazy var insertToolbarItem: UIButton = {
         let insertItem = UIButton(type: .custom)
         insertItem.titleLabel?.font = Fonts.mediaPickerInsert
-        insertItem.tintColor = .primary
-        insertItem.setTitleColor(.primary, for: .normal)
+        insertItem.tintColor = UIAppColor.primary
+        insertItem.setTitleColor(UIAppColor.primary, for: .normal)
         insertItem.accessibilityLabel = Constants.mediaPickerInsertAccessibilityLabel
         insertItem.accessibilityIdentifier = "insert_media_button"
 
@@ -453,20 +445,17 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     required init(
         post: AbstractPost,
-        loadAutosaveRevision: Bool = false,
         replaceEditor: @escaping (EditorViewController, EditorViewController) -> (),
         editorSession: PostEditorAnalyticsSession? = nil) {
 
         precondition(post.managedObjectContext != nil)
 
         self.post = post
-        self.loadAutosaveRevision = loadAutosaveRevision
         self.replaceEditor = replaceEditor
         self.editorSession = editorSession ?? PostEditorAnalyticsSession(editor: .classic, post: post)
 
         super.init(nibName: nil, bundle: nil)
 
-        PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
         addObservers(toPost: post)
         registerMediaObserver()
         disableSocialConnectionsIfNecessary()
@@ -498,7 +487,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         WPFontManager.loadNotoFontFamily()
 
         registerAttachmentImageProviders()
-        createRevisionOfPost(loadAutosaveRevision: loadAutosaveRevision)
+        createRevisionOfPost(loadAutosaveRevision: false)
 
         // Setup
         configureNavigationBar()
@@ -732,15 +721,13 @@ class AztecPostViewController: UIViewController, PostEditor {
     private func configureDefaultProperties(for textView: UITextView, accessibilityLabel: String) {
         textView.accessibilityLabel = accessibilityLabel
         textView.keyboardDismissMode = .interactive
-        textView.textColor = .text
+        textView.textColor = .label
         textView.translatesAutoresizingMaskIntoConstraints = false
     }
 
     func configureNavigationBar() {
-        navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.accessibilityIdentifier = "Azctec Editor Navigation Bar"
         navigationItem.leftBarButtonItems = navigationBarManager.leftBarButtonItems
-        navigationItem.rightBarButtonItems = navigationBarManager.rightBarButtonItemsAztec
         navigationItem.titleView = navigationBarManager.blogTitleViewLabel
     }
 
@@ -823,6 +810,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         reloadEditorContents()
         reloadPublishButton()
         refreshTitleViewForMediaUploadIfNeeded()
+        navigationItem.rightBarButtonItems = post.status == .trash ? [] : navigationBarManager.rightBarButtonItemsAztec
     }
 
     func refreshTitleViewForMediaUploadIfNeeded() {
@@ -1070,10 +1058,6 @@ extension AztecPostViewController {
         handlePrimaryActionButtonTap()
     }
 
-    @IBAction func secondaryPublishButtonTapped() {
-        handleSecondaryActionButtonTap()
-    }
-
     @IBAction func closeWasPressed() {
         cancelEditing()
     }
@@ -1163,11 +1147,9 @@ private extension AztecPostViewController {
             alert.title = textCounterTitle
         }
 
-        if postEditorStateContext.isSecondaryPublishButtonShown,
-            let buttonTitle = postEditorStateContext.secondaryPublishButtonText {
-
-            alert.addDefaultActionWithTitle(buttonTitle) { _ in
-                self.secondaryPublishButtonTapped()
+        if post.original().isStatus(in: [.draft, .pending]) && editorHasChanges {
+            alert.addDefaultActionWithTitle(MoreSheetAlert.saveDraft) { _ in
+                self.buttonSaveDraftTapped()
             }
         }
 
@@ -1197,7 +1179,7 @@ private extension AztecPostViewController {
 
         if (post.revisions ?? []).count > 0 {
             alert.addDefaultActionWithTitle(MoreSheetAlert.historyTitle) { [unowned self] _ in
-                self.displayHistory()
+                self.displayRevisionsList()
             }
         }
 
@@ -1242,15 +1224,6 @@ extension AztecPostViewController: PostEditorStateContextDelegate {
         }
 
         switch keyPath {
-        case BasePost.statusKeyPath:
-            if let status = post.status {
-                postEditorStateContext.updated(postStatus: status)
-                editorContentWasUpdated()
-            }
-        case #keyPath(AbstractPost.date_created_gmt):
-            let dateCreated = post.dateCreated ?? Date()
-            postEditorStateContext.updated(publishDate: dateCreated)
-            editorContentWasUpdated()
         case #keyPath(AbstractPost.content):
             editorContentWasUpdated()
         default:
@@ -1267,14 +1240,10 @@ extension AztecPostViewController: PostEditorStateContextDelegate {
     }
 
     internal func addObservers(toPost: AbstractPost) {
-        toPost.addObserver(self, forKeyPath: AbstractPost.statusKeyPath, options: [], context: nil)
-        toPost.addObserver(self, forKeyPath: #keyPath(AbstractPost.date_created_gmt), options: [], context: nil)
         toPost.addObserver(self, forKeyPath: #keyPath(AbstractPost.content), options: [], context: nil)
     }
 
     internal func removeObservers(fromPost: AbstractPost) {
-        fromPost.removeObserver(self, forKeyPath: AbstractPost.statusKeyPath)
-        fromPost.removeObserver(self, forKeyPath: #keyPath(AbstractPost.date_created_gmt))
         fromPost.removeObserver(self, forKeyPath: #keyPath(AbstractPost.content))
     }
 }
@@ -1541,7 +1510,7 @@ extension AztecPostViewController {
         trackFormatBarAnalytics(stat: .editorTappedList)
         let listOptions = Constants.lists.map { listType -> OptionsTableViewOption in
             let attributes: [NSAttributedString.Key: Any] = [
-                .foregroundColor: UIColor.text
+                .foregroundColor: UIColor.label
             ]
 
             let title = NSAttributedString(string: listType.description, attributes: attributes)
@@ -1801,7 +1770,7 @@ extension AztecPostViewController {
         let headerOptions = Constants.headers.map { headerType -> OptionsTableViewOption in
             let attributes: [NSAttributedString.Key: Any] = [
                 .font: UIFont.systemFont(ofSize: CGFloat(headerType.fontSize)),
-                .foregroundColor: UIColor.text
+                .foregroundColor: UIColor.label
             ]
 
             let title = NSAttributedString(string: headerType.description, attributes: attributes)
@@ -1979,7 +1948,7 @@ extension AztecPostViewController {
     func createToolbar() -> Aztec.FormatBar {
         let toolbar = Aztec.FormatBar()
 
-        toolbar.backgroundColor = .filterBarBackground
+        toolbar.backgroundColor = .secondarySystemGroupedBackground
         toolbar.tintColor = WPStyleGuide.aztecFormatBarInactiveColor
         toolbar.highlightedTintColor = WPStyleGuide.aztecFormatBarActiveColor
         toolbar.selectedTintColor = WPStyleGuide.aztecFormatBarActiveColor
@@ -1988,7 +1957,7 @@ extension AztecPostViewController {
         toolbar.overflowToggleIcon = .gridicon(.ellipsis)
 
         let mediaButton = makeToolbarButton(identifier: .media)
-        mediaButton.normalTintColor = .primary
+        mediaButton.normalTintColor = UIAppColor.primary
         toolbar.leadingItem = mediaButton
 
         updateToolbar(toolbar, forMode: .text)
@@ -2179,6 +2148,8 @@ extension AztecPostViewController {
             handleError(error, onAttachment: attachment)
         case .progress(let value):
             handleProgress(value, forMedia: media, onAttachment: attachment)
+        case .cancelled:
+            richTextView.remove(attachmentID: attachment.identifier)
         }
     }
 
@@ -2518,21 +2489,6 @@ extension AztecPostViewController {
         return failedIDs
     }
 
-    var hasFailedMedia: Bool {
-        return !failedMediaIDs.isEmpty
-    }
-
-    func removeFailedMedia() {
-        for mediaID in failedMediaIDs {
-            if let attachment = self.findAttachment(withUploadID: mediaID) {
-                richTextView.remove(attachmentID: attachment.identifier)
-            }
-            if let media = mediaCoordinator.media(withObjectID: mediaID) {
-                mediaCoordinator.delete(media)
-            }
-        }
-    }
-
     fileprivate func retryAllFailedMediaUploads() {
         for mediaID in failedMediaIDs {
             guard let attachment = self.findAttachment(withUploadID: mediaID),
@@ -2701,9 +2657,11 @@ extension AztecPostViewController {
         alertController.popoverPresentationController?.sourceView = richTextView
         alertController.popoverPresentationController?.sourceRect = CGRect(origin: position, size: CGSize(width: 1, height: 1))
         alertController.popoverPresentationController?.permittedArrowDirections = .any
-        present(alertController, animated: true, completion: { () in
-            UIMenuController.shared.hideMenu()
-        })
+        present(alertController, animated: true) {
+            for interaction in self.richTextView.interactions {
+                (interaction as? UIEditMenuInteraction)?.dismissMenu()
+            }
+        }
     }
 
     func displayDetails(forAttachment attachment: ImageAttachment) {
@@ -3180,6 +3138,7 @@ extension AztecPostViewController {
         static let postSettingsTitle = NSLocalizedString("Post Settings", comment: "Name of the button to open the post settings")
         static let pageSettingsTitle = NSLocalizedString("Page Settings", comment: "Name of the button to open the page settings")
         static let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Goes back to editing the post.")
+        static let saveDraft = NSLocalizedString("classicEditor.moreMenu.saveDraft", value: "Save Draft", comment: "Post Editor / Button in the 'More' menu")
         static let accessibilityIdentifier = "MoreSheetAccessibilityIdentifier"
     }
 
@@ -3202,18 +3161,18 @@ extension AztecPostViewController {
     }
 
     struct Colors {
-        static let aztecBackground              = UIColor.basicBackground
-        static let title                        = UIColor.text
-        static let separator                    = UIColor.divider
-        static let placeholder                  = UIColor.textPlaceholder
-        static let progressBackground           = UIColor.primary
+        static let aztecBackground              = UIColor.systemBackground
+        static let title                        = UIColor.label
+        static let separator                    = UIColor.separator
+        static let placeholder                  = UIColor.tertiaryLabel
+        static let progressBackground           = UIAppColor.primary
         static let progressTint                 = UIColor.white
-        static let progressTrack                = UIColor.primary
-        static let mediaProgressOverlay         = UIColor.neutral(.shade70).withAlphaComponent(CGFloat(0.6))
-        static let mediaProgressBarBackground   = UIColor.neutral(.shade0)
-        static let mediaProgressBarTrack        = UIColor.primary
-        static let aztecLinkColor               = UIColor.primary
-        static let mediaOverlayBorderColor      = UIColor.primary
+        static let progressTrack                = UIAppColor.primary
+        static let mediaProgressOverlay         = UIAppColor.neutral(.shade70).withAlphaComponent(CGFloat(0.6))
+        static let mediaProgressBarBackground   = UIAppColor.neutral(.shade0)
+        static let mediaProgressBarTrack        = UIAppColor.primary
+        static let aztecLinkColor               = UIAppColor.primary
+        static let mediaOverlayBorderColor      = UIAppColor.primary
     }
 
     struct Fonts {

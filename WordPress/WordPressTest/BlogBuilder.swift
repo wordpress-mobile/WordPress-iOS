@@ -75,14 +75,16 @@ final class BlogBuilder {
         return self
     }
 
-    func with(siteVisibility: SiteVisibility) -> Self {
-        blog.siteVisibility = siteVisibility
-
+    func with(siteName: String) -> Self {
+        if blog.settings == nil {
+            blog.settings =  NSEntityDescription.insertNewObject(forEntityName: BlogSettings.entityName(), into: context) as! BlogSettings
+        }
+        blog.settings?.name = siteName
         return self
     }
 
-    func with(visible: Bool) -> Self {
-        blog.visible = visible
+    func with(siteVisibility: SiteVisibility) -> Self {
+        blog.siteVisibility = siteVisibility
 
         return self
     }
@@ -165,14 +167,17 @@ final class BlogBuilder {
         return self
     }
 
-    func with(hasMappedDomain: Bool) -> Self {
-        set(blogOption: "unmapped_url", value: "http://domain1.com")
+    func withoutMappedDomain(url: String = "http://domain1.com") -> Self {
+        set(blogOption: "unmapped_url", value: url)
+        set(blogOption: "home_url", value: url)
 
-        if hasMappedDomain {
-            set(blogOption: "home_url", value: "http://domain2.com")
-        } else {
-            set(blogOption: "home_url", value: "http://domain1.com")
-        }
+        return self
+    }
+
+    func withMappedDomain(originalUrl: String = "http://domain1.com", mappedDomainUrl: String = "http://domain2.com") -> Self {
+
+        set(blogOption: "unmapped_url", value: originalUrl)
+        set(blogOption: "home_url", value: mappedDomainUrl)
 
         return self
     }

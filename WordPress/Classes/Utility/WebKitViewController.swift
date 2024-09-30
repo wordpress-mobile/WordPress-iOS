@@ -1,7 +1,7 @@
 import Foundation
 import Gridicons
 import UIKit
-import WebKit
+@preconcurrency import WebKit
 import WordPressShared
 
 protocol WebKitAuthenticatable {
@@ -101,7 +101,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     private var onClose: (() -> Void)?
 
     private var navBarTitleColor: UIColor {
-        .text
+        .label
     }
 
     private struct WebViewErrors {
@@ -173,7 +173,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = UIColor(light: UIColor.muriel(color: .gray, .shade0), dark: .basicBackground)
+        view.backgroundColor = UIColor(light: UIAppColor.gray(.shade0), dark: .systemBackground)
 
         let stackView = UIStackView(arrangedSubviews: [
             progressView,
@@ -224,6 +224,10 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         track(.webKitViewDisplayed)
     }
 
+    override func contentScrollView(for edge: NSDirectionalRectEdge) -> UIScrollView? {
+        webView.scrollView
+    }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         stopWaitingForConnectionRestored()
@@ -272,7 +276,6 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         }
 
         setupCloseButton()
-        styleNavBar()
     }
 
     private func setupRefreshButton() {
@@ -291,28 +294,13 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         titleView.titleLabel.text = NSLocalizedString("Loading...", comment: "Loading. Verb")
 
         titleView.titleLabel.textColor = navBarTitleColor
-        titleView.subtitleLabel.textColor = .neutral(.shade30)
+        titleView.subtitleLabel.textColor = UIAppColor.neutral(.shade30)
 
         if let title = customTitle {
             self.title = title
         } else {
             navigationItem.titleView = titleView
         }
-    }
-
-    private func styleNavBar() {
-        guard let navigationBar = navigationController?.navigationBar else {
-            return
-        }
-        navigationBar.barStyle = .default
-
-        // Remove serif title bar formatting
-        navigationBar.standardAppearance.titleTextAttributes = [:]
-
-        navigationBar.shadowImage = UIImage(color: WPStyleGuide.webViewModalNavigationBarShadow())
-        navigationBar.setBackgroundImage(UIImage(color: WPStyleGuide.webViewModalNavigationBarBackground()), for: .default)
-
-        fixBarButtonsColorForBoldText(on: navigationBar)
     }
 
     // MARK: ToolBar setup
@@ -325,10 +313,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
             stackViewBottomAnchor?.isActive = false
             return
         }
-
-        styleToolBar()
         configureToolbarButtons()
-        styleToolBarButtons()
     }
 
     func configureToolbarButtons() {
@@ -345,25 +330,6 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
             safariButton
         ]
         setToolbarItems(items, animated: false)
-    }
-
-    private func styleToolBar() {
-        guard let toolBar = navigationController?.toolbar else {
-            return
-        }
-
-        let appearance = UIToolbarAppearance()
-        appearance.configureWithDefaultBackground()
-        appearance.backgroundColor = UIColor(light: .white, dark: .appBarBackground)
-
-        toolBar.standardAppearance = appearance
-        toolBar.scrollEdgeAppearance = appearance
-
-        fixBarButtonsColorForBoldText(on: toolBar)
-    }
-
-    private func styleToolBarButtons() {
-        navigationController?.toolbar.items?.forEach(styleToolBarButton)
     }
 
     /// Sets the width of the web preview
@@ -385,18 +351,6 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         } else {
             widthConstraint?.priority = UILayoutPriority.defaultLow
         }
-    }
-
-    // MARK: Helpers
-
-    private func fixBarButtonsColorForBoldText(on bar: UIView) {
-        if UIAccessibility.isBoldTextEnabled {
-            bar.tintColor = .listIcon
-        }
-    }
-
-    private func styleToolBarButton(_ button: UIBarButtonItem) {
-        button.tintColor = .listIcon
     }
 
     // MARK: Reachability Helpers
@@ -653,5 +607,17 @@ extension WebKitViewController: UIPopoverPresentationControllerDelegate {
 extension WebKitViewController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
       return true
+    }
+}
+
+extension WebKitViewController {
+    /// Returns the view controller wrapped in the navigation controller with
+    /// light mode suited for presentation of the web pages not optimized for
+    /// dark mode.
+    func makeLightNavigationController() -> UINavigationController {
+        let navigationController = UINavigationController(rootViewController: self)
+        navigationController.overrideUserInterfaceStyle = .light
+        navigationController.modalPresentationStyle = .formSheet
+        return navigationController
     }
 }

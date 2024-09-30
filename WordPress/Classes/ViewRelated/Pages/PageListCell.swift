@@ -68,12 +68,11 @@ final class PageListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
             featuredImageView.setImage(with: thumbnailURL, host: host)
         }
 
-        separatorInset = UIEdgeInsets(top: 0, left: 16 + CGFloat(indentation) * 32, bottom: 0, right: 0)
         contentStackView.directionalLayoutMargins = NSDirectionalEdgeInsets(
-            top: 12,
-            leading: 16 + CGFloat(max(0, indentation - 1)) * 32,
-            bottom: 12,
-            trailing: 16
+            top: 0,
+            leading: CGFloat(max(0, indentation - 1)) * 32,
+            bottom: 0,
+            trailing: 0
         )
         indentationIconView.isHidden = indentation == 0
         indentationIconView.alpha = isFirstSubdirectory ? 1 : 0 // Still contribute to layout
@@ -83,10 +82,6 @@ final class PageListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
     }
 
     private func configure(with viewModel: PostSyncStateViewModel) {
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
-            return
-        }
-
         contentView.isUserInteractionEnabled = viewModel.isEditable
 
         titleLabel.alpha = viewModel.isEditable ? 1 : 0.5
@@ -117,6 +112,7 @@ final class PageListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
         setupLabels()
         setupFeaturedImageView()
         setupEllipsisButton()
+        setupIcon()
 
         indentationIconView.tintColor = .secondaryLabel
         indentationIconView.image = UIImage(named: "subdirectory")
@@ -135,15 +131,9 @@ final class PageListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
         labelsStackView.spacing = 4
         labelsStackView.axis = .vertical
 
-        if RemoteFeatureFlag.syncPublishing.enabled() {
-            contentStackView.addArrangedSubviews([
-                indentationIconView, labelsStackView, UIView(), icon, indicator, featuredImageView, ellipsisButton
-            ])
-        } else {
-            contentStackView.addArrangedSubviews([
-                indentationIconView, labelsStackView, featuredImageView, ellipsisButton
-            ])
-        }
+        contentStackView.addArrangedSubviews([
+            indentationIconView, labelsStackView, UIView(), icon, indicator, featuredImageView, ellipsisButton
+        ])
         contentStackView.spacing = 8
         contentStackView.alignment = .center
         contentStackView.isLayoutMarginsRelativeArrangement = true
@@ -157,7 +147,7 @@ final class PageListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
 
         contentView.addSubview(contentStackView)
         contentStackView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.pinSubviewToAllEdges(contentStackView)
+        contentView.pinSubviewToAllEdgeMargins(contentStackView)
     }
 
     private func setupLabels() {
@@ -169,9 +159,6 @@ final class PageListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
     }
 
     private func setupIcon() {
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
-            return
-        }
         NSLayoutConstraint.activate([
             icon.widthAnchor.constraint(equalToConstant: 22),
             icon.heightAnchor.constraint(equalToConstant: 22)
@@ -194,7 +181,7 @@ final class PageListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
     private func setupEllipsisButton() {
         ellipsisButton.translatesAutoresizingMaskIntoConstraints = false
         ellipsisButton.setImage(UIImage(named: "more-horizontal-mobile"), for: .normal)
-        ellipsisButton.tintColor = .listIcon
+        ellipsisButton.tintColor = .secondaryLabel
 
         NSLayoutConstraint.activate([
             ellipsisButton.widthAnchor.constraint(equalToConstant: 24)

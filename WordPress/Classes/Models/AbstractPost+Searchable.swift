@@ -10,10 +10,6 @@ extension AbstractPost: SearchableItemConvertable {
             // Don't index trashed posts
             return false
         }
-        guard blog.visible else {
-            // Don't index posts for non-visible sites (not visible in the My Sites list)
-            return false
-        }
         return true
     }
 
@@ -76,9 +72,9 @@ fileprivate extension AbstractPost {
             title = postTitle
         }
 
-        guard status != .publish, let statusTitle = statusTitle else {
+        guard status != .publish, let status else {
             return title
         }
-        return "[\(statusTitle)] \(title)"
+        return "[\(AbstractPost.title(for: status))] \(title)"
     }
 }

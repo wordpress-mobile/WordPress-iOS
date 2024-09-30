@@ -11,7 +11,6 @@ class SiteStatsImmuTableRows {
                                           selectedSegment: StatsSegmentedControlData.Segment,
                                           periodDate: Date,
                                           periodEndDate: Date? = nil,
-                                          statsLineChartViewDelegate: StatsLineChartViewDelegate?,
                                           siteStatsInsightsDelegate: SiteStatsInsightsDelegate?,
                                           viewsAndVisitorsDelegate: StatsInsightsViewsAndVisitorsDelegate?) -> [any StatsHashableImmuTableRow] {
         var tableRows = [any StatsHashableImmuTableRow]()
@@ -22,10 +21,6 @@ class SiteStatsImmuTableRows {
                 segmentPrevData: viewsData.prevCount,
                 difference: viewsData.difference,
                 differenceText: viewsDifferenceText(with: viewsData.count, difference: viewsData.difference),
-                date: periodDate,
-                period: StatsPeriodUnit.week,
-                analyticsStat: .statsOverviewTypeTappedViews,
-                accessibilityHint: StatSection.periodOverviewViews.tabAccessibilityHint,
                 differencePercent: viewsData.percentage)
 
         let visitorsData = SiteStatsInsightsViewModel.intervalData(statsSummaryTimeIntervalData, summaryType: .visitors, periodEndDate: periodEndDate)
@@ -34,10 +29,6 @@ class SiteStatsImmuTableRows {
                 segmentPrevData: visitorsData.prevCount,
                 difference: visitorsData.difference,
                 differenceText: visitorsDifferenceText(with: visitorsData.count, difference: visitorsData.difference),
-                date: periodDate,
-                period: StatsPeriodUnit.week,
-                analyticsStat: .statsOverviewTypeTappedViews,
-                accessibilityHint: StatSection.periodOverviewViews.tabAccessibilityHint,
                 differencePercent: visitorsData.percentage)
 
         var lineChartData = [LineChartDataConvertible]()
@@ -69,7 +60,6 @@ class SiteStatsImmuTableRows {
                 chartData: lineChartData,
                 chartStyling: lineChartStyling,
                 period: StatsPeriodUnit.day,
-                statsLineChartViewDelegate: statsLineChartViewDelegate,
                 siteStatsInsightsDelegate: siteStatsInsightsDelegate,
                 viewsAndVisitorsDelegate: viewsAndVisitorsDelegate,
                 xAxisDates: xAxisDates,

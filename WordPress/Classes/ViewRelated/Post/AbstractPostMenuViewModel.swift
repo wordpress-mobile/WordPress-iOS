@@ -5,17 +5,18 @@ protocol AbstractPostMenuViewModel {
 }
 
 struct AbstractPostButtonSection {
+    let title: String?
     let buttons: [AbstractPostButton]
     let submenuButton: AbstractPostButton?
 
-    init(buttons: [AbstractPostButton], submenuButton: AbstractPostButton? = nil) {
+    init(title: String? = nil, buttons: [AbstractPostButton], submenuButton: AbstractPostButton? = nil) {
+        self.title = title
         self.buttons = buttons
         self.submenuButton = submenuButton
     }
 }
 
 enum AbstractPostButton: Equatable {
-    case retry
     case view
     case publish
     case stats
@@ -23,7 +24,7 @@ enum AbstractPostButton: Equatable {
     case moveToDraft
     case trash
     case delete
-    case cancelAutoUpload
+    case retry
     case share
     case blaze
     case comments
@@ -31,7 +32,6 @@ enum AbstractPostButton: Equatable {
 
     /// Specific to pages
     case pageAttributes
-    case setParent
     case setHomepage
     case setPostsPage
     case setRegularPage

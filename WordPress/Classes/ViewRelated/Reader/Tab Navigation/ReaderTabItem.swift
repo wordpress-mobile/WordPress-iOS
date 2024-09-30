@@ -1,9 +1,10 @@
-struct ReaderTabItem: FilterTabBarItem, Hashable {
+struct ReaderTabItem: FilterTabBarItem, Hashable, Identifiable {
+    var id: ReaderTabItem { self }
 
-    let id = UUID()
     let shouldHideStreamFilters: Bool
     let shouldHideSettingsButton: Bool
     let shouldHideTagFilter: Bool
+    let shouldHideBlogFilter: Bool
 
     let content: ReaderContent
 
@@ -15,18 +16,14 @@ struct ReaderTabItem: FilterTabBarItem, Hashable {
     init(_ content: ReaderContent) {
         self.content = content
         let filterableTopicTypes = [ReaderTopicType.following, .organization]
-        shouldHideStreamFilters = !filterableTopicTypes.contains(content.topicType) && content.type != .selfHostedFollowing
+        shouldHideStreamFilters = !filterableTopicTypes.contains(content.topicType)
+        && content.type != .selfHostedFollowing
+        && content.type != .tags
         shouldHideSettingsButton = content.type == .selfHostedFollowing
-        shouldHideTagFilter = content.topicType == .organization || FeatureFlag.readerTagsFeed.enabled
+        shouldHideTagFilter = content.topicType == .organization || (content.type != .tags && RemoteFeatureFlag.readerTagsFeed.enabled())
+        shouldHideBlogFilter = content.type == .tags
     }
 
-    static func == (lhs: ReaderTabItem, rhs: ReaderTabItem) -> Bool {
-        return lhs.id == rhs.id
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
 }
 
 // MARK: - Localized titles
@@ -88,7 +85,7 @@ enum ReaderContentType {
     case topic
 }
 
-struct ReaderContent {
+struct ReaderContent: Hashable {
 
     private(set) var topic: ReaderAbstractTopic?
     let type: ReaderContentType

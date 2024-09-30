@@ -7,8 +7,6 @@ protocol AbstractPostListCell {
 }
 
 final class PostListCell: UITableViewCell, AbstractPostListCell, PostSearchResultCell, Reusable {
-    var isEnabled = true
-
     // MARK: - Views
 
     private lazy var mainStackView: UIStackView = {
@@ -64,10 +62,17 @@ final class PostListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
     }
 
     func configure(with viewModel: PostListItemViewModel, delegate: InteractivePostViewDelegate? = nil) {
+        UIView.performWithoutAnimation {
+            _configure(with: viewModel, delegate: delegate)
+        }
+    }
+
+    private func _configure(with viewModel: PostListItemViewModel, delegate: InteractivePostViewDelegate? = nil) {
         headerView.configure(with: viewModel, delegate: delegate)
         contentLabel.attributedText = viewModel.content
 
         featuredImageView.isHidden = viewModel.imageURL == nil
+        featuredImageView.layer.opacity = viewModel.syncStateViewModel.isEditable ? 1 : 0.25
         if let imageURL = viewModel.imageURL {
             let host = MediaHost(with: viewModel.post) { error in
                 WordPressAppDelegate.crashLogging?.logError(error)
@@ -87,9 +92,6 @@ final class PostListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
     }
 
     private func configure(with viewModel: PostSyncStateViewModel) {
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
-            return
-        }
         contentView.isUserInteractionEnabled = viewModel.isEditable
         headerView.configure(with: viewModel)
     }
@@ -97,8 +99,6 @@ final class PostListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
     // MARK: - Setup
 
     private func setupViews() {
-        separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
-
         setupContentLabel()
         setupFeaturedImageView()
         setupStatusLabel()
@@ -118,11 +118,8 @@ final class PostListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
             statusLabel
         ])
         mainStackView.spacing = 4
-        mainStackView.isLayoutMarginsRelativeArrangement = true
-        mainStackView.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 12, leading: 16, bottom: 12, trailing: 16)
-
         contentView.addSubview(mainStackView)
-        contentView.pinSubviewToAllEdges(mainStackView)
+        contentView.pinSubviewToAllEdgeMargins(mainStackView)
     }
 
     private func setupContentLabel() {

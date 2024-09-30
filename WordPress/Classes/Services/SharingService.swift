@@ -1,5 +1,4 @@
 import Foundation
-import CocoaLumberjack
 import WordPressShared
 import WordPressKit
 
@@ -35,6 +34,7 @@ import WordPressKit
     @objc func syncPublicizeServicesForBlog(_ blog: Blog, success: (() -> Void)?, failure: ((NSError?) -> Void)?) {
         guard let remote = remoteForBlog(blog),
               let blogID = blog.dotComID else {
+            failure?(nil)
             return
         }
 

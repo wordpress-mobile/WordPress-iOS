@@ -1,6 +1,19 @@
 import UIKit
 import Gifu
 import AVKit
+import SwiftUI
+
+struct SiteMediaPreviewView: UIViewControllerRepresentable {
+    let media: Media
+
+    func makeUIViewController(context: Context) -> SiteMediaPreviewViewController {
+        SiteMediaPreviewViewController(media: media)
+    }
+
+    func updateUIViewController(_ vc: SiteMediaPreviewViewController, context: Context) {
+        // Do nothing
+    }
+}
 
 final class SiteMediaPreviewViewController: UIViewController {
     private let imageView = GIFImageView()
@@ -97,7 +110,7 @@ final class SiteMediaPreviewViewController: UIViewController {
 
         let container = UIStackView(arrangedSubviews: [infoView])
         container.alignment = .center
-        container.layoutMargins = UIEdgeInsets(allEdges: 8)
+        container.layoutMargins = UIEdgeInsets(.all, 8)
         container.isLayoutMarginsRelativeArrangement = true
         container.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(container)

@@ -282,6 +282,7 @@ class MediaCoordinator: NSObject {
     func cancelUploadAndDeleteMedia(_ media: Media) {
         cancelUpload(of: media)
         delete(media: [media])
+        notifyObserversForMedia(media, ofStateChange: .cancelled)
     }
 
     /// Cancels any ongoing upload for the media object
@@ -588,6 +589,8 @@ class MediaCoordinator: NSObject {
         case ended
         case failed(error: NSError)
         case progress(value: Double)
+        /// The upload was cancelled by the user.
+        case cancelled
 
         var debugDescription: String {
             switch self {
@@ -603,6 +606,8 @@ class MediaCoordinator: NSObject {
                 return "Failed: \(error)"
             case .progress(let value):
                 return "Progress: \(value)"
+            case .cancelled:
+                return "Cancelled"
             }
         }
     }
@@ -797,6 +802,26 @@ extension MediaCoordinator {
             WordPressAppDelegate.crashLogging?.logMessage("Deleting a media object that's failed to upload because of a missing local file. \(mediaError)")
 
         }, for: nil)
+    }
+
+    /// Returns `true` if the error can't be resolved by simply retrying and
+    /// requires user interventions, for example, making more room in the
+    /// Media library.
+    static func isTerminalError(_ error: Error) -> Bool {
+        let nsError = error as NSError
+        switch nsError.domain {
+        case MediaServiceErrorDomain:
+            switch nsError.code {
+            case MediaServiceError.fileDoesNotExist.rawValue,
+                MediaServiceError.fileLargerThanMaxFileSize.rawValue,
+                MediaServiceError.fileLargerThanDiskQuotaAvailable.rawValue:
+                return true
+            default:
+                return false
+            }
+        default:
+            return false
+        }
     }
 }
 

@@ -25,12 +25,14 @@ enum RemoteFeatureFlag: Int, CaseIterable {
     case bloganuaryDashboardNudge // pcdRpT-4FE-p2
     case wordPressSotWCard
     case inAppRating
-    case statsTrafficSubscribersTabs
     case siteMonitoring
-    case syncPublishing
     case readerDiscoverEndpoint
     case readingPreferences
     case readingPreferencesFeedback
+    case readerAnnouncementCard
+    case inAppUpdates
+    case readerTagsFeed
+    case readerFloatingButton
 
     var defaultValue: Bool {
         switch self {
@@ -80,18 +82,22 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return true
         case .inAppRating:
             return false
-        case .statsTrafficSubscribersTabs:
-            return false
         case .siteMonitoring:
             return false
-        case .syncPublishing:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .readerDiscoverEndpoint:
             return true
         case .readingPreferences:
             return true
         case .readingPreferencesFeedback:
             return true
+        case .readerAnnouncementCard:
+            return AppConfiguration.isJetpack
+        case .inAppUpdates:
+            return false
+        case .readerTagsFeed:
+            return true
+        case .readerFloatingButton:
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         }
     }
 
@@ -144,19 +150,22 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "wp_sotw_2023_nudge"
         case .inAppRating:
             return "in_app_rating_and_feedback"
-        case .statsTrafficSubscribersTabs:
-            return "stats_traffic_subscribers_tabs"
         case .siteMonitoring:
             return "site_monitoring"
-        case .syncPublishing:
-            /// - warning: Work-in-progress (kahu-offline-mode)
-            return "_sync_publishing"
         case .readerDiscoverEndpoint:
             return "reader_discover_new_endpoint"
         case .readingPreferences:
             return "reading_preferences"
         case .readingPreferencesFeedback:
             return "reading_preferences_feedback"
+        case .readerAnnouncementCard:
+            return "reader_announcement_card"
+        case .inAppUpdates:
+            return "in_app_updates"
+        case .readerTagsFeed:
+            return "reader_tags_feed"
+        case .readerFloatingButton:
+            return "reader_floating_button"
         }
     }
 
@@ -208,18 +217,22 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "SoTW Nudge Card for WordPress App"
         case .inAppRating:
             return "In-App Rating and Feedback"
-        case .statsTrafficSubscribersTabs:
-            return "Stats Traffic and Subscribers Tabs"
         case .siteMonitoring:
             return "Site Monitoring"
-        case .syncPublishing:
-            return "Synchronous Publishing"
         case .readerDiscoverEndpoint:
             return "Reader Discover New Endpoint"
         case .readingPreferences:
             return "Reading Preferences"
         case .readingPreferencesFeedback:
             return "Reading Preferences Feedback"
+        case .readerAnnouncementCard:
+            return "Reader Announcement Card"
+        case .inAppUpdates:
+            return "In-App Updates"
+        case .readerTagsFeed:
+            return "Reader Tags Feed"
+        case .readerFloatingButton:
+            return "Reader Floating Button"
         }
     }
 
@@ -240,6 +253,10 @@ enum RemoteFeatureFlag: Int, CaseIterable {
 }
 
 extension RemoteFeatureFlag: OverridableFlag {
+    var key: String {
+        return "ff-override-\(String(describing: self))"
+    }
+
     var originalValue: Bool {
         return enabled()
     }

@@ -31,8 +31,8 @@ class UserProfileSiteCell: UITableViewCell, NibReusable {
 private extension UserProfileSiteCell {
 
     func configureCell() {
-        siteNameLabel.textColor = .text
-        siteUrlLabel.textColor = .textSubtle
+        siteNameLabel.textColor = .label
+        siteUrlLabel.textColor = .secondaryLabel
     }
 
     func downloadIconWithURL(_ url: String?) {

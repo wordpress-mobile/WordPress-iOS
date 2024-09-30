@@ -1,5 +1,4 @@
 import Foundation
-import CocoaLumberjack
 import WordPressShared
 
 class ShareTagsPickerViewController: UIViewController {
@@ -39,7 +38,7 @@ class ShareTagsPickerViewController: UIViewController {
     @objc fileprivate let keyboardObserver = TableViewKeyboardObserver()
     fileprivate let textView = UITextView()
     fileprivate let textViewContainer = UIView()
-    fileprivate let tableView = UITableView(frame: .zero, style: .grouped)
+    fileprivate let tableView = UITableView(frame: .zero, style: .plain)
     fileprivate var dataSource: PostTagPickerDataSource = LoadingDataSource() {
         didSet {
             tableView.dataSource = dataSource
@@ -113,11 +112,11 @@ class ShareTagsPickerViewController: UIViewController {
         textView.autocorrectionType = .yes
         textView.autocapitalizationType = .none
         textView.font = WPStyleGuide.tableviewTextFont()
-        textView.textColor = .neutral(.shade70)
+        textView.textColor = UIAppColor.neutral(.shade70)
         textView.isScrollEnabled = false
         textView.textContainer.lineFragmentPadding = 0
         textView.textContainerInset = UIEdgeInsets(top: Constants.textViewTopBottomInset, left: 0, bottom: Constants.textViewTopBottomInset, right: 0)
-        textViewContainer.backgroundColor = UIColor(light: .white, dark: .listBackground)
+        textViewContainer.backgroundColor = UIColor(light: .white, dark: .systemGroupedBackground)
         textViewContainer.layer.masksToBounds = false
     }
 
@@ -136,7 +135,7 @@ class ShareTagsPickerViewController: UIViewController {
             textView.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor),
             textView.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor),
 
-            textViewContainer.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
+            textViewContainer.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
             textViewContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.textContainerLeadingConstant),
             textViewContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: Constants.textContainerTrailingConstant),
             textViewContainer.bottomAnchor.constraint(equalTo: tableView.topAnchor),
@@ -144,7 +143,7 @@ class ShareTagsPickerViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-            ])
+        ])
     }
 }
 
@@ -355,7 +354,9 @@ fileprivate extension ShareTagsPickerViewController {
 
     func reloadTableData() {
         tableView.reloadData()
-        textViewContainer.layer.shadowOpacity = tableView.isEmpty ? 0 : 0.5
+
+        textViewContainer.layer.shadowOffset = CGSize(width: 0, height: 2)
+        textViewContainer.layer.shadowOpacity = tableView.isEmpty ? 0 : 0.1
     }
 }
 

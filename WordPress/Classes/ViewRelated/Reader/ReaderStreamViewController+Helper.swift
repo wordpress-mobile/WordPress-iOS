@@ -19,11 +19,16 @@ extension ReaderStreamViewController {
     ///
     /// - Returns: A configured instance of UIView.
     ///
-    func headerForStream(_ topic: ReaderAbstractTopic, isLoggedIn: Bool, container: UITableViewController) -> UIView? {
+    func headerForStream(_ topic: ReaderAbstractTopic?, isLoggedIn: Bool, container: UITableViewController) -> UIView? {
+        if let topic,
+           let header = headerForStream(topic) {
+            configure(header, topic: topic, isLoggedIn: isLoggedIn, delegate: self)
+            return header
+        }
 
-        let header = headerForStream(topic)
-        configure(header, topic: topic, isLoggedIn: isLoggedIn, delegate: self)
-        return header
+        // The announcement header should have the lowest display priority.
+        // Only return the announcement when there's no other header.
+        return makeAnnouncementHeader()
     }
 
     func configure(_ header: ReaderHeader?, topic: ReaderAbstractTopic, isLoggedIn: Bool, delegate: ReaderStreamHeaderDelegate) {
@@ -154,26 +159,63 @@ extension ReaderStreamViewController {
     }
 }
 
-// MARK: - Undo cell for saved posts
+// MARK: - Tags Feed
+
 extension ReaderStreamViewController {
 
-    private enum UndoCell {
-        static let nibName = "ReaderSavedPostUndoCell"
-        static let reuseIdentifier = "ReaderUndoCellReuseIdentifier"
+    var isTagsFeed: Bool {
+        contentType == .tags && readerTopic == nil
     }
 
-    func setupUndoCell(_ tableView: UITableView) {
-        let nib = UINib(nibName: UndoCell.nibName, bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: UndoCell.reuseIdentifier)
+}
+
+// MARK: - Reader Announcement Header
+
+extension ReaderStreamViewController {
+    /// Returns a header view for Reader-related announcements.
+    /// Note that the announcement can also be shown on topicless streams (e.g., Saved, Tags).
+    ///
+    /// - Returns: A configured UIView, or nil if the conditions are not met.
+    func makeAnnouncementHeader() -> UIView? {
+        // don't show the announcement while searching.
+        if let readerTopic,
+           ReaderHelpers.isTopicSearchTopic(readerTopic) {
+            return nil
+        }
+
+        guard readerAnnouncementCoordinator.canShowAnnouncement,
+              tableView.tableHeaderView == nil,
+              !isContentFiltered,
+              !contentIsEmpty() else {
+            return nil
+        }
+
+        return ReaderAnnouncementHeaderView(doneButtonTapped: { [weak self] in
+            // Set the card as dismissed.
+            self?.readerAnnouncementCoordinator.isDismissed = true
+            WPAnalytics.track(.readerAnnouncementDismissed)
+
+            // Animate the header removal so it feels less jarring.
+            UIView.animate(withDuration: 0.3) {
+                self?.tableView.tableHeaderView?.layer.opacity = 0.0
+            } completion: { _ in
+                self?.tableView.performBatchUpdates({
+                    self?.tableView.tableHeaderView = nil
+                })
+            }
+        })
     }
 
-    func undoCell(_ tableView: UITableView) -> ReaderSavedPostUndoCell {
-        return tableView.dequeueReusableCell(withIdentifier: UndoCell.reuseIdentifier) as! ReaderSavedPostUndoCell
-    }
+    // The header may be configured when the content is still empty (i.e., Discover stream).
+    // This method is added to provide a way to inject the announcement card outside of
+    // `configureStreamHeader()`. For example, after syncing completes.
+    func showAnnouncementHeaderIfNeeded(completion: (() -> Void)? = nil) {
+        guard let headerView = makeAnnouncementHeader() else {
+            return
+        }
 
-    func configureUndoCell(_ cell: ReaderSavedPostUndoCell, with post: ReaderPost) {
-        cell.title.text = post.titleForDisplay()
-        cell.delegate = self
+        tableView.tableHeaderView = headerView
+        completion?()
     }
 }
 

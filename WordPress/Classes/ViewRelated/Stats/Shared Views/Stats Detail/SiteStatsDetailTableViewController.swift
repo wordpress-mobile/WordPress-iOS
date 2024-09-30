@@ -20,7 +20,6 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
 
     private typealias Style = WPStyleGuide.Stats
     private var statSection: StatSection?
-    private var statType: StatType = .period
     private var selectedDate = StatsDataHelper.currentDateForSite()
     private var selectedPeriod: StatsPeriodUnit?
 
@@ -47,7 +46,7 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
         super.viewDidLoad()
 
         clearExpandedRows()
-        Style.configureTable(tableView)
+
         refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         tableView.estimatedSectionHeaderHeight = SiteStatsTableHeaderView.estimatedHeight
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
@@ -69,7 +68,6 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
         self.selectedDate = selectedDate ?? StatsDataHelper.currentDateForSite()
         self.selectedPeriod = selectedPeriod
         self.postID = postID
-        statType = StatSection.allInsights.contains(statSection) ? .insights : .period
         title = statSection.detailsTitle
         initViewModel()
     }

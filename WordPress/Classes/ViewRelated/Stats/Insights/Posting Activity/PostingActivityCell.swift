@@ -56,7 +56,7 @@ class PostingActivityCell: StatsBaseCell, NibLoadable, Accessible {
 private extension PostingActivityCell {
 
     func applyStyles() {
-        viewMoreView.backgroundColor = .listForeground
+        viewMoreView.backgroundColor = .secondarySystemGroupedBackground
         viewMoreLabel.text = NSLocalizedString("View more", comment: "Label for viewing more posting activity.")
         viewMoreLabel.textColor = Style.actionTextColor
         Style.configureCell(self)

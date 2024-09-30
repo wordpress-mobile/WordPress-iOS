@@ -2,7 +2,6 @@ import UIKit
 import PhotosUI
 import UniformTypeIdentifiers
 import AVFoundation
-import CocoaLumberjack
 
 /// A convenience API for creating actions for picking media from different
 /// source supported by the app: Photos library, Camera, Media library.

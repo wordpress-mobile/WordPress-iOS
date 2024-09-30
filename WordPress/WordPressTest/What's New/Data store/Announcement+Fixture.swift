@@ -1,4 +1,4 @@
-@testable import WordPressKit // Announcement is defined here
+import WordPressKit // Announcement is defined here
 
 extension Announcement {
 

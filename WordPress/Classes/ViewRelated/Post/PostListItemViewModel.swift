@@ -61,13 +61,13 @@ private func makeAccessibilityLabel(for post: Post, statusViewModel: PostCardSta
 private func makeContentString(for post: Post, syncStateViewModel: PostSyncStateViewModel) -> NSAttributedString {
     let title = post.titleForDisplay()
     let snippet = post.contentPreviewForDisplay()
-    let foregroundColor = syncStateViewModel.isEditable ? UIColor.text : UIColor.textTertiary
+    let foregroundColor = syncStateViewModel.isEditable ? UIColor.label : UIColor.tertiaryLabel
 
     let string = NSMutableAttributedString()
     if !title.isEmpty {
         let attributes: [NSAttributedString.Key: Any] = [
             .font: WPStyleGuide.fontForTextStyle(.callout, fontWeight: .semibold),
-            .foregroundColor: RemoteFeatureFlag.syncPublishing.enabled() ? foregroundColor : UIColor.text
+            .foregroundColor: foregroundColor
         ]
         let titleAttributedString = NSAttributedString(string: title, attributes: attributes)
         string.append(titleAttributedString)
@@ -80,7 +80,7 @@ private func makeContentString(for post: Post, syncStateViewModel: PostSyncState
         }
         let attributes: [NSAttributedString.Key: Any] = [
             .font: WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular),
-            .foregroundColor: RemoteFeatureFlag.syncPublishing.enabled() ? foregroundColor : UIColor.text
+            .foregroundColor: foregroundColor
         ]
         let snippetAttributedString = NSAttributedString(string: adjustedSnippet, attributes: attributes)
         string.append(snippetAttributedString)
@@ -105,7 +105,7 @@ private func makeBadgesString(for post: Post, syncStateViewModel: PostSyncStateV
         badges.append((author, nil))
     }
     if !syncStateViewModel.isEditable {
-        badges = badges.map { ($0.0, UIColor.textTertiary) }
+        badges = badges.map { ($0.0, UIColor.tertiaryLabel) }
     }
     return AbstractPostHelper.makeBadgesString(with: badges)
 }

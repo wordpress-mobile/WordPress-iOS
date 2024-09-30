@@ -1,3 +1,5 @@
+import UIKit
+
 protocol StatsForegroundObservable: AnyObject {
     func addWillEnterForegroundObserver()
     func removeWillEnterForegroundObserver()

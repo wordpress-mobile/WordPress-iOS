@@ -1,4 +1,4 @@
-import WebKit
+@preconcurrency import WebKit
 import WordPressShared
 
 /// Renders the comment body with a web view. Provides the best visual experience but has the highest performance cost.
@@ -44,6 +44,7 @@ class WebCommentContentRenderer: NSObject, CommentContentRenderer {
         webView.scrollView.showsVerticalScrollIndicator = false
         webView.scrollView.backgroundColor = .clear
         webView.configuration.allowsInlineMediaPlayback = true
+        webView.configuration.userContentController.add(self, name: "eventHandler")
     }
 
     func render() -> UIView {
@@ -111,22 +112,36 @@ extension WebCommentContentRenderer: WKNavigationDelegate {
     }
 }
 
+// MARK: - WKScriptMessageHandler
+
+extension WebCommentContentRenderer: WKScriptMessageHandler {
+
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        guard let body = message.body as? String,
+              let event = ReaderWebView.EventMessage(rawValue: body)?.analyticEvent else {
+            return
+        }
+        WPAnalytics.track(event)
+    }
+
+}
+
 // MARK: - Private Methods
 
 private extension WebCommentContentRenderer {
     struct Constants {
         static let emptyElementRegexPattern = "<[a-z]+>(<!-- [a-zA-Z0-9\\/: \"{}\\-\\.,\\?=\\[\\]]+ -->)+<\\/[a-z]+>"
 
-        static let highlightColor = UIColor(light: .primary, dark: .muriel(color: .primary, .shade30))
+        static let highlightColor = UIColor(light: UIAppColor.primary, dark: UIAppColor.primary(.shade30))
 
         static let mentionBackgroundColor: UIColor = {
-            var darkColor = UIColor.muriel(color: .primary, .shade90)
+            var darkColor = UIAppColor.primary(.shade90)
 
             if AppConfiguration.isWordPress {
                 darkColor = darkColor.withAlphaComponent(0.5)
             }
 
-            return UIColor(light: .muriel(color: .primary, .shade0), dark: darkColor)
+            return UIColor(light: UIAppColor.primary(.shade0), dark: darkColor)
         }()
     }
 
@@ -136,31 +151,30 @@ private extension WebCommentContentRenderer {
     }()
 
     var textColor: UIColor {
-        ReaderDisplaySetting.customizationEnabled ? displaySetting.color.foreground : .text
-    }
-
-    var highlightColor: UIColor {
-        ReaderDisplaySetting.customizationEnabled ? Constants.highlightColor : displaySetting.color.foreground
+        ReaderDisplaySetting.customizationEnabled ? displaySetting.color.foreground : .label
     }
 
     var mentionBackgroundColor: UIColor {
-        ReaderDisplaySetting.customizationEnabled ? Constants.mentionBackgroundColor : .clear
+        guard ReaderDisplaySetting.customizationEnabled else {
+            return Constants.mentionBackgroundColor
+        }
+
+        return displaySetting.color == .system ? Constants.mentionBackgroundColor : displaySetting.color.secondaryBackground
     }
 
     var linkColor: UIColor {
         guard ReaderDisplaySetting.customizationEnabled else {
-            return highlightColor
+            return Constants.highlightColor
         }
 
-        return displaySetting.color == .system ? .muriel(color: .init(name: .blue)) : displaySetting.color.foreground
+        return displaySetting.color == .system ? Constants.highlightColor : displaySetting.color.foreground
     }
 
     var secondaryBackgroundColor: UIColor {
-        guard ReaderDisplaySetting.customizationEnabled,
-              displaySetting.color != .system else {
+        guard ReaderDisplaySetting.customizationEnabled else {
             return .secondarySystemBackground
         }
-        return displaySetting.color.border
+        return displaySetting.color.secondaryBackground
     }
 
     /// Cache the HTML template format. We only need read the template once.
@@ -229,8 +243,7 @@ private extension WebCommentContentRenderer {
         return """
         :root {
             --text-color: \(textColor.color(for: trait).cssRGBAString());
-            --text-secondary-color: \(displaySetting.color.secondaryForeground.color(for: trait).cssRGBAString())
-            --primary-color: \(highlightColor.color(for: trait).cssRGBAString());
+            --text-secondary-color: \(displaySetting.color.secondaryForeground.color(for: trait).cssRGBAString());
             --link-color: \(linkColor.color(for: trait).cssRGBAString());
             --mention-background-color: \(mentionBackgroundColor.color(for: trait).cssRGBAString());
             --background-secondary-color: \(secondaryBackgroundColor.color(for: trait).cssRGBAString());

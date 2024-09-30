@@ -4,15 +4,13 @@ struct ActionSheetButton {
     let title: String
     let image: UIImage
     let identifier: String
-    let highlight: Bool
     let badge: UIView?
     let action: () -> Void
 
-    init(title: String, image: UIImage, identifier: String, highlight: Bool = false, badge: UIView? = nil, action: @escaping () -> Void) {
+    init(title: String, image: UIImage, identifier: String, badge: UIView? = nil, action: @escaping () -> Void) {
         self.title = title
         self.image = image
         self.identifier = identifier
-        self.highlight = highlight
         self.badge = badge
         self.action = action
     }
@@ -37,9 +35,9 @@ class ActionSheetViewController: UIViewController {
             static let height: CGFloat = 54
             static let contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 35)
             static let imagePadding: CGFloat = 16
-            static let imageTintColor: UIColor = .neutral(.shade30)
+            static let imageTintColor: UIColor = UIAppColor.neutral(.shade30)
             static let font: UIFont = .preferredFont(forTextStyle: .callout)
-            static let textColor: UIColor = .text
+            static let textColor: UIColor = .label
             static let badgeHorizontalPadding: CGFloat = 10
         }
 
@@ -83,7 +81,7 @@ class ActionSheetViewController: UIViewController {
         view.clipsToBounds = true
         view.layer.cornerRadius = Constants.cornerRadius
         view.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
-        view.backgroundColor = .basicBackground
+        view.backgroundColor = .systemBackground
 
         let headerLabelView = UIView()
         let headerLabel = UILabel()
@@ -169,7 +167,7 @@ class ActionSheetViewController: UIViewController {
             return configuration
         }()
         button.configurationUpdateHandler = { button in
-            button.configuration?.background.backgroundColor = button.isHighlighted ? .divider : .clear
+            button.configuration?.background.backgroundColor = button.isHighlighted ? .separator : .clear
         }
         button.contentHorizontalAlignment = .leading
         button.accessibilityIdentifier = info.identifier
@@ -183,21 +181,7 @@ class ActionSheetViewController: UIViewController {
             ])
         }
 
-        if info.highlight {
-            addSpotlight(to: button)
-        }
         return button
-    }
-
-    private func addSpotlight(to button: UIButton) {
-        let spotlight = QuickStartSpotlightView()
-        spotlight.translatesAutoresizingMaskIntoConstraints = false
-        button.addSubview(spotlight)
-
-        NSLayoutConstraint.activate([
-            spotlight.trailingAnchor.constraint(equalTo: button.trailingAnchor, constant: -Constants.Header.insets.right),
-            spotlight.centerYAnchor.constraint(equalTo: button.centerYAnchor)
-        ])
     }
 
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

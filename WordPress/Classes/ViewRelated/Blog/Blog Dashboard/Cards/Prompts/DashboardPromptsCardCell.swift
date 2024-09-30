@@ -1,4 +1,5 @@
 import UIKit
+import SafariServices
 import WordPressShared
 import WordPressFlux
 
@@ -178,8 +179,20 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
               let promptID = prompt?.promptID else {
             return
         }
-        RootViewCoordinator.sharedPresenter.readerCoordinator?.showTag(named: "\(Constants.dailyPromptTag)-\(promptID)")
+        let tagName = "\(Constants.dailyPromptTag)-\(promptID)"
+        RootViewCoordinator.sharedPresenter.showReader(path: .makeWithTagName(tagName))
         WPAnalytics.track(.promptsOtherAnswersTapped)
+    }
+
+    @IBAction
+    private func didTapAttribution() {
+        guard let targetURL = prompt?.promptAttribution?.externalURL else {
+            return
+        }
+
+        let safariViewController = SFSafariViewController(url: targetURL)
+        safariViewController.modalPresentationStyle = .pageSheet
+        presenterViewController?.present(safariViewController, animated: true)
     }
 
     private var answerInfoView: UIView {
@@ -212,9 +225,16 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         return label
     }()
 
+    private lazy var attributionTrailingImage = UIImageView()
+
     private lazy var attributionStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [attributionIcon, attributionSourceLabel])
+        let stackView = UIStackView(arrangedSubviews: [attributionIcon, attributionSourceLabel, attributionTrailingImage])
+        stackView.setCustomSpacing(Constants.attributionTrailingImageSpacing, after: attributionSourceLabel)
         stackView.alignment = .center
+
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(didTapAttribution))
+        stackView.addGestureRecognizer(recognizer)
+
         return stackView
     }()
 
@@ -411,7 +431,9 @@ private extension DashboardPromptsCardCell {
 
         if let attribution = prompt?.promptAttribution {
             attributionIcon.image = attribution.iconImage
+            attributionTrailingImage.image = attribution.trailingImage
             attributionSourceLabel.attributedText = attribution.attributedText
+
             containerStackView.addArrangedSubview(attributionStackView)
         }
 
@@ -516,7 +538,8 @@ private extension DashboardPromptsCardCell {
 
     func learnMoreTapped() {
         WPAnalytics.track(.promptsDashboardCardMenuLearnMore)
-        guard let presenterViewController = presenterViewController else {
+        guard let presenterViewController = presenterViewController, let blog else {
+            wpAssertionFailure("invalid_state")
             return
         }
         BloggingPromptsIntroductionPresenter(interactionType: .actionable(blog: blog)).present(from: presenterViewController)
@@ -545,7 +568,7 @@ private extension DashboardPromptsCardCell {
     struct Style {
         static var avatarPlaceholderImage: UIImage {
             // this needs to be computed so the color is correct depending on the user interface style.
-            return UIImage(color: .init(light: .quaternarySystemFill, dark: .systemGray4))
+            return UIImage(color: UIColor(light: .quaternarySystemFill, dark: .systemGray4))
         }
     }
 
@@ -553,6 +576,7 @@ private extension DashboardPromptsCardCell {
         static let spacing: CGFloat = 12
         static let answeredButtonsSpacing: CGFloat = 16
         static let answerInfoViewSpacing: CGFloat = 6
+        static let attributionTrailingImageSpacing: CGFloat = 6
         static let containerMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         static let maxAvatarCount = 3
         static let exampleAnswerCount = 19

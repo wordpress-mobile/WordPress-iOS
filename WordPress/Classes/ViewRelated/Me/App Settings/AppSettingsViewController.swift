@@ -6,6 +6,7 @@ import WordPressShared
 import SVProgressHUD
 import WordPressFlux
 import DesignSystem
+import WordPressUI
 
 class AppSettingsViewController: UITableViewController {
     fileprivate var handler: ImmuTableViewHandler!
@@ -39,7 +40,7 @@ class AppSettingsViewController: UITableViewController {
             ImageSizingRow.self,
             SwitchRow.self,
             NavigationItemRow.self
-            ], tableView: self.tableView)
+        ], tableView: self.tableView)
 
         handler = ImmuTableViewHandler(takeOver: self)
         reloadViewModel()
@@ -376,6 +377,20 @@ class AppSettingsViewController: UITableViewController {
             RootViewCoordinator.shared.presentWhatIsNew(on: self)
         }
     }
+
+    private let experimentalFeaturesVM = ExperimentalFeaturesViewModel(dataProvider: ExperimentalFeaturesDataProvider())
+
+    func pushExperimentalFeatures() -> ImmuTableAction {
+        return { [weak self] row in
+            guard let self else {
+                return
+            }
+
+            let vc = ExperimentalFeaturesList.asViewController(viewModel: self.experimentalFeaturesVM)
+            self.tableView.deselectSelectedRowWithAnimation(true)
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
 }
 
 // MARK: - SearchableActivity Conformance
@@ -541,22 +556,30 @@ private extension AppSettingsViewController {
 
         let iconRow = NavigationItemRow(
             title: NSLocalizedString("App Icon", comment: "Navigates to picker screen to change the app's icon"),
+            icon: UIImage(systemName: "app.dashed"),
             action: pushAppIconSwitcher()
+        )
+
+        let experimentalFeaturesRow = NavigationItemRow(
+            title: Strings.experimentalFeatures,
+            icon: UIImage(systemName: "testtube.2"),
+            action: pushExperimentalFeatures()
         )
 
         let settingsRow = NavigationItemRow(
             title: NSLocalizedString("Open Device Settings", comment: "Opens iOS's Device Settings for WordPress App"),
+            icon: UIImage(systemName: "gear"),
             action: openApplicationSettings()
         )
 
-        var rows: [ImmuTableRow] = [settingsRow]
+        var rows: [ImmuTableRow] = [experimentalFeaturesRow, settingsRow]
 
         if AppConfiguration.allowsCustomAppIcons && UIApplication.shared.supportsAlternateIcons {
             // We don't show custom icons for Jetpack
             rows.insert(iconRow, at: 0)
         }
 
-        if FeatureFlag.debugMenu.enabled {
+        if BuildConfiguration.current.isInternal {
             rows.append(debugRow)
             rows.append(designSystem)
         }
@@ -569,7 +592,12 @@ private extension AppSettingsViewController {
             rows.append(whatIsNewRow)
         }
 
-        let appearanceRow = NavigationItemRow(title: NSLocalizedString("Appearance", comment: "The title of the app appearance settings screen"), detail: AppAppearance.current.appearanceDescription, action: pushAppearanceSettings())
+        let appearanceRow = NavigationItemRow(
+            title: NSLocalizedString("Appearance", comment: "The title of the app appearance settings screen"),
+            detail: AppAppearance.current.appearanceDescription,
+            icon: UIImage(systemName: "circle.lefthalf.filled"),
+            action: pushAppearanceSettings()
+        )
 
         rows.insert(appearanceRow, at: 0)
 
@@ -599,5 +627,13 @@ extension AppSettingsViewController {
     @objc private func jetpackButtonTapped() {
         JetpackBrandingCoordinator.presentOverlay(from: self)
         JetpackBrandingAnalyticsHelper.trackJetpackPoweredBadgeTapped(screen: .appSettings)
+    }
+
+    enum Strings {
+        static let experimentalFeatures = NSLocalizedString(
+            "application-settings.experimental-features",
+            value: "Experimental Features",
+            comment: "The list item of experimental features that users can choose to enable"
+        )
     }
 }

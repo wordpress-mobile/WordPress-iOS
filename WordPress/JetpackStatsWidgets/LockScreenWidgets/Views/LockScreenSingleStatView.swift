@@ -1,7 +1,6 @@
 import SwiftUI
 import WidgetKit
 
-@available(iOS 16.0, *)
 struct LockScreenSingleStatView: View {
     @Environment(\.widgetFamily) var family: WidgetFamily
     let viewModel: LockScreenSingleStatViewModel
@@ -26,7 +25,6 @@ struct LockScreenSingleStatView: View {
     }
 }
 
-@available(iOS 16.0, *)
 struct LockScreenSingleStatView_Previews: PreviewProvider {
     static let viewModel = LockScreenSingleStatViewModel(
         siteName: "My WordPress Site",

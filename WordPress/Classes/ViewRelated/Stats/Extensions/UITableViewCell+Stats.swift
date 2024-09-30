@@ -5,6 +5,7 @@ import Foundation
 enum StatType: Int {
     case insights
     case period
+    case subscribers
 }
 
 extension UITableViewCell {
@@ -69,5 +70,4 @@ extension UITableViewCell {
         row.configure(statSection: statSection, delegate: delegate)
         rowsStackView.addArrangedSubview(row)
     }
-
 }

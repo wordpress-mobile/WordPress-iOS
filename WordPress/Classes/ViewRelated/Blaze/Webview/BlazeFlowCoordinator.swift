@@ -7,6 +7,7 @@ import UIKit
     case postsList
     case pagesList
     case campaignList
+    case publishSuccessView
 
     var description: String {
         switch self {
@@ -20,6 +21,8 @@ import UIKit
             return "pages_list"
         case .campaignList:
             return "campaign_list"
+        case .publishSuccessView:
+            return "publish_success_view"
         }
     }
 

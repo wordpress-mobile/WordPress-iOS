@@ -46,6 +46,7 @@ open class SettingsListEditorViewController: UITableViewController {
     fileprivate func setupTableView() {
         tableView.register(WPTableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
         WPStyleGuide.configureColors(view: view, tableView: tableView)
+        tableView.cellLayoutMarginsFollowReadableWidth = true
     }
 
     // MARK: - Button Handlers
@@ -79,7 +80,7 @@ open class SettingsListEditorViewController: UITableViewController {
 
         cell.accessoryType = isEmpty() ? .none : .disclosureIndicator
         cell.textLabel?.text = isEmpty() ? emptyText : stringAtIndexPath(indexPath)
-        cell.textLabel?.textColor = isEmpty() ? .neutral(.shade10) : .neutral(.shade70)
+        cell.textLabel?.textColor = isEmpty() ? UIAppColor.neutral(.shade10) : UIAppColor.neutral(.shade70)
 
         return cell
     }

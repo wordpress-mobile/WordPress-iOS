@@ -1,5 +1,6 @@
 import XCTest
 import OHHTTPStubs
+import OHHTTPStubsSwift
 @testable import WordPress
 
 class ImageDownloaderTests: CoreDataTestCase {
@@ -81,7 +82,8 @@ class ImageDownloaderTests: CoreDataTestCase {
         _ = try await sut.image(from: imageURL, options: options)
 
         // THEN resized image is stored in memory cache
-        XCTAssertEqual(sut.cachedImage(for: imageURL, size: size)?.size, CGSize(width: 386, height: 256))
+        let cachedImage = await sut.cachedImage(for: imageURL, size: size)
+        XCTAssertEqual(cachedImage?.size, CGSize(width: 386, height: 256))
 
         // GIVEN
         HTTPStubs.removeAllStubs()

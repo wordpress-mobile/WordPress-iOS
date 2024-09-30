@@ -39,8 +39,7 @@ struct UniversalLinkRouter: LinkRouter {
         readerRoutes +
         statsRoutes +
         mySitesRoutes +
-        appBannerRoutes +
-        startRoutes
+        appBannerRoutes
 
     static let meRoutes: [Route] = [
         MeRoute(),
@@ -94,17 +93,15 @@ struct UniversalLinkRouter: LinkRouter {
         StatsRoute.insights,
         StatsRoute.dayCategory,
         StatsRoute.annualStats,
-        StatsRoute.activityLog
+        StatsRoute.activityLog,
+        StatsRoute.subscribers,
+        StatsRoute.daySubscribers
     ]
 
     static let mySitesRoutes: [Route] = MySitesRoute.allCases
 
     static let appBannerRoutes: [Route] = [
         AppBannerRoute()
-    ]
-
-    static let startRoutes: [Route] = [
-        StartRoute()
     ]
 
     static let redirects: [Route] = [
@@ -164,7 +161,7 @@ struct UniversalLinkRouter: LinkRouter {
         for matchedRoute in matches {
             if matchedRoute.jetpackPowered && !JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures() {
                 // Display overlay
-                RootViewCoordinator.sharedPresenter.mySitesCoordinator.displayJetpackOverlayForDisabledEntryPoint()
+                RootViewCoordinator.sharedPresenter.showJetpackOverlayForDisabledEntryPoint()
 
                 // Track incorrect access
                 let properties = ["calling_function": "deep_link", TracksPropertyKeys.url: url.absoluteString]

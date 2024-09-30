@@ -1,19 +1,13 @@
 import UIKit
-import CocoaLumberjack
+import CocoaLumberjackSwift
 import Reachability
 import AutomatticTracks
+import AutomatticEncryptedLogs
 import WordPressAuthenticator
 import WordPressShared
-import AlamofireNetworkActivityIndicator
 import AutomatticAbout
 import UIDeviceIdentifier
 import WordPressUI
-
-#if APPCENTER_ENABLED
-import AppCenter
-import AppCenterDistribute
-#endif
-
 import ZendeskCoreSDK
 
 class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
@@ -51,24 +45,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     private var mainContext: NSManagedObjectContext {
         return ContextManager.shared.mainContext
     }
-
-    private lazy var uploadsManager: UploadsManager = {
-
-        // It's not great that we're using singletons here.  This change is a good opportunity to
-        // revisit if we can make the coordinators children to another owning object.
-        //
-        // We're leaving as-is for now to avoid digressing.
-        let uploaders: [Uploader] = [
-            // Ideally we should be able to retry uploads of standalone media to the media library, but the truth is
-            // that uploads started from the MediaCoordinator are currently not updating their parent post references
-            // very well.  For this reason I'm disabling automated upload retries that don't start from PostCoordinator.
-            //
-            // MediaCoordinator.shared,
-            PostCoordinator.shared
-        ]
-
-        return UploadsManager(uploaders: uploaders)
-    }()
 
     private let loggingStack = WPLoggingStack.shared
 
@@ -135,18 +111,16 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         InteractiveNotificationsManager.shared.registerForUserNotifications()
         setupPingHub()
         setupBackgroundRefresh(application)
-        setupComponentsAppearance()
         setupNoticePresenter()
         UITestConfigurator.prepareApplicationForUITests(application)
         DebugMenuViewController.configure(in: window)
+        AppTips.initialize()
 
         // This was necessary to properly load fonts for the Stories editor. I believe external libraries may require this call to access fonts.
         let fonts = Bundle.main.urls(forResourcesWithExtension: "ttf", subdirectory: nil)
         fonts?.forEach({ url in
             CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil)
         })
-
-        PushNotificationsManager.shared.deletePendingLocalNotifications()
 
         startObservingAppleIDCredentialRevoked()
 
@@ -188,11 +162,10 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillEnterForeground(_ application: UIApplication) {
         DDLogInfo("\(self) \(#function)")
 
-        uploadsManager.resume()
         updateFeatureFlags()
         updateRemoteConfig()
 
-#if JETPACK
+#if IS_JETPACK
         // JetpackWindowManager is only available in the Jetpack target.
         if let windowManager = windowManager as? JetpackWindowManager {
             windowManager.startMigrationFlowIfNeeded()
@@ -256,12 +229,10 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         // Local notifications
         addNotificationObservers()
 
-        configureAppCenterSDK()
         configureAppRatingUtility()
 
         let libraryLogger = WordPressLibraryLogger()
         TracksLogging.delegate = libraryLogger
-        WPSharedSetLoggingDelegate(libraryLogger)
         WPKitSetLoggingDelegate(libraryLogger)
         WPAuthenticatorSetLoggingDelegate(libraryLogger)
 
@@ -278,7 +249,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         ZendeskUtils.setup()
 
-        setupNetworkActivityIndicator()
         WPUserAgent.useWordPressInWebViews()
 
         // Push notifications
@@ -292,9 +262,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         DispatchQueue.global(qos: .background).async { [weak self] in
             self?.mergeDuplicateAccountsIfNeeded()
             MediaCoordinator.shared.refreshMediaStatus()
-            PostCoordinator.shared.refreshPostStatus()
             MediaFileManager.clearUnusedMediaUploadFiles(onCompletion: nil, onError: nil)
-            self?.uploadsManager.resume()
         }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
@@ -396,12 +364,6 @@ extension WordPressAppDelegate {
         utility.setVersion(version)
     }
 
-    @objc func configureAppCenterSDK() {
-        #if APPCENTER_ENABLED
-        AppCenter.start(withAppSecret: ApiCredentials.appCenterAppId, services: [Distribute.self])
-        #endif
-    }
-
     func configureReachability() {
         internetReachability = Reachability.forInternetConnection()
 
@@ -496,10 +458,6 @@ extension WordPressAppDelegate {
         }
     }
 
-    @objc func setupNetworkActivityIndicator() {
-        NetworkActivityIndicatorManager.shared.isEnabled = true
-    }
-
     @objc func configureWordPressComApi() {
         if let baseUrl = UserPersistentStoreFactory.instance().string(forKey: "wpcom-api-base-url"), let url = URL(string: baseUrl) {
             AppEnvironment.replaceEnvironment(wordPressComApiBase: url)
@@ -532,61 +490,6 @@ extension WordPressAppDelegate {
     private static let iterableDomain = "links.wp.a8cmail.com"
 }
 
-// MARK: - UIAppearance
-
-extension WordPressAppDelegate {
-
-    /// Sets up all of the shared component(s) Appearance.
-    ///
-    func setupComponentsAppearance() {
-        setupFancyAlertAppearance()
-        setupFancyButtonAppearance()
-    }
-
-    /// Setup: FancyAlertView's Appearance
-    ///
-    private func setupFancyAlertAppearance() {
-        let appearance = FancyAlertView.appearance()
-
-        appearance.titleTextColor = .neutral(.shade70)
-        appearance.titleFont = WPStyleGuide.fontForTextStyle(.title2, fontWeight: .semibold)
-
-        appearance.bodyTextColor = .neutral(.shade70)
-        appearance.bodyFont = WPStyleGuide.fontForTextStyle(.body)
-        appearance.bodyBackgroundColor = .neutral(.shade0)
-
-        appearance.actionFont = WPStyleGuide.fontForTextStyle(.headline)
-        appearance.infoFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
-        appearance.infoTintColor = .primary
-
-        appearance.topDividerColor = .neutral(.shade5)
-        appearance.bottomDividerColor = .neutral(.shade0)
-        appearance.headerBackgroundColor = .neutral(.shade0)
-
-        appearance.bottomBackgroundColor = .neutral(.shade0)
-    }
-
-    /// Setup: FancyButton's Appearance
-    ///
-    private func setupFancyButtonAppearance() {
-        let appearance = FancyButton.appearance()
-        appearance.titleFont = WPStyleGuide.fontForTextStyle(.headline)
-        appearance.primaryTitleColor = .white
-        appearance.primaryNormalBackgroundColor = .primaryButtonBackground
-        appearance.primaryHighlightBackgroundColor = .primaryButtonDownBackground
-
-        appearance.secondaryTitleColor = .text
-        appearance.secondaryNormalBackgroundColor = .secondaryButtonBackground
-        appearance.secondaryNormalBorderColor = .secondaryButtonBorder
-        appearance.secondaryHighlightBackgroundColor = .secondaryButtonDownBackground
-        appearance.secondaryHighlightBorderColor = .secondaryButtonDownBorder
-
-        appearance.disabledTitleColor = .neutral(.shade20)
-        appearance.disabledBackgroundColor = .textInverted
-        appearance.disabledBorderColor = .neutral(.shade10)
-    }
-}
-
 // MARK: - Helpers
 
 extension WordPressAppDelegate {
@@ -607,7 +510,7 @@ extension WordPressAppDelegate {
             return "Post Editor"
         case is LoginNavigationController:
             return "Login View"
-#if JETPACK
+#if IS_JETPACK
         case is MigrationNavigationController:
             return "Jetpack Migration View"
         case is MigrationLoadWordPressViewController:
@@ -638,7 +541,19 @@ extension WordPressAppDelegate {
     }
 
     func updateRemoteConfig() {
-        remoteConfigStore.update()
+        remoteConfigStore.update { [weak self] in
+            self?.checkForAppUpdates()
+        }
+    }
+
+    private func checkForAppUpdates() {
+        guard let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String else {
+            return wpAssertionFailure("No CFBundleShortVersionString found in Info.plist")
+        }
+        let coordinator = AppUpdateCoordinator(currentVersion: version)
+        Task {
+            await coordinator.checkForAppUpdates()
+        }
     }
 }
 
@@ -673,7 +588,7 @@ extension WordPressAppDelegate {
         let architecture = UIDeviceHardware.platform()
         let languages = UserPersistentStoreFactory.instance().array(forKey: "AppleLanguages")
         let currentLanguage = languages?.first ?? unknown
-        let udid = device.wordPressIdentifier() ?? unknown
+        let udid = device.identifierForVendor?.uuidString ?? unknown
 
         DDLogInfo("Device model: \(devicePlatform) (\(architecture))")
         DDLogInfo("OS:        \(device.systemName), \(device.systemVersion)")
@@ -718,7 +633,7 @@ extension WordPressAppDelegate {
 
     @objc class func setLogLevel(_ level: DDLogLevel) {
         SetCocoaLumberjackObjCLogLevel(level.rawValue)
-        CocoaLumberjack.dynamicLogLevel = level
+        CocoaLumberjackSwift.dynamicLogLevel = level
     }
 
     /// Logs the error in Sentry.
@@ -836,46 +751,14 @@ extension WordPressAppDelegate {
 extension WordPressAppDelegate {
     func customizeAppearance() {
         window?.backgroundColor = .black
-        window?.tintColor = .primary
+        window?.tintColor = UIAppColor.primary
 
-        // iOS 14 started rendering backgrounds for stack views, when previous versions
-        // of iOS didn't show them. This is a little hacky, but ensures things keep
-        // looking the same on newer versions of iOS.
-        UIStackView.appearance().backgroundColor = .clear
+        WPStyleGuide.configureAppearance()
 
-        WPStyleGuide.configureTabBarAppearance()
-        WPStyleGuide.configureNavigationAppearance()
-        WPStyleGuide.configureTableViewAppearance()
-        WPStyleGuide.configureDefaultTint()
-        WPStyleGuide.configureLightNavigationBarAppearance()
-        WPStyleGuide.configureToolbarAppearance()
-
-        UISwitch.appearance().onTintColor = .primary
-
-        let navReferenceAppearance = UINavigationBar.appearance(whenContainedInInstancesOf: [UIReferenceLibraryViewController.self])
-        navReferenceAppearance.setBackgroundImage(nil, for: .default)
-        navReferenceAppearance.barTintColor = .primary
-
-        UIToolbar.appearance(whenContainedInInstancesOf: [UIReferenceLibraryViewController.self]).barTintColor = .darkGray
-
-        WPStyleGuide.configureSearchBarAppearance()
-
-        // SVProgressHUD
-        SVProgressHUD.setBackgroundColor(UIColor.neutral(.shade70).withAlphaComponent(0.95))
+        SVProgressHUD.setBackgroundColor(UIAppColor.neutral(.shade70).withAlphaComponent(0.95))
         SVProgressHUD.setForegroundColor(.white)
         SVProgressHUD.setErrorImage(UIImage(named: "hud_error")!)
         SVProgressHUD.setSuccessImage(UIImage(named: "hud_success")!)
-
-        // Post Settings styles
-        UITableView.appearance(whenContainedInInstancesOf: [AztecNavigationController.self]).tintColor = .editorPrimary
-        UISwitch.appearance(whenContainedInInstancesOf: [AztecNavigationController.self]).onTintColor = .editorPrimary
-
-        /// Sets the `tintColor` for parent category selection within the Post Settings screen
-        UIView.appearance(whenContainedInInstancesOf: [PostCategoriesViewController.self]).tintColor = .editorPrimary
-
-        /// It's necessary to target `PostCategoriesViewController` a second time to "reset" the UI element's `tintColor` for use in the app's Site Settings screen.
-        UIView.appearance(whenContainedInInstancesOf: [PostCategoriesViewController.self, WPSplitViewController.self]).tintColor = .primary
-
     }
 }
 

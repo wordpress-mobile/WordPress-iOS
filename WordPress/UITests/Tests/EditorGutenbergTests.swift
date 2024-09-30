@@ -93,7 +93,7 @@ class EditorGutenbergTests: XCTestCase {
             .enterTextInTitle(text: postTitle)
             .addParagraphBlock(withText: postContent)
             .addImageGallery()
-            .verifyContentStructure(blocks: 2, words: postContent.components(separatedBy: " ").count, characters: postContent.count)
+            .verifyContentStructure(blocks: 5, words: postContent.components(separatedBy: " ").count, characters: postContent.count)
     }
 
     func testAddMediaBlocks() throws {

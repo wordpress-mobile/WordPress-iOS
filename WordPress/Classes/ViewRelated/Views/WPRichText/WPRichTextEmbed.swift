@@ -1,5 +1,4 @@
 import Foundation
-import CocoaLumberjack
 import WebKit
 
 class WPRichTextEmbed: UIView, WPRichTextMediaAttachment {

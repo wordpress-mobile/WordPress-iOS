@@ -1,6 +1,7 @@
 import UIKit
 import Combine
 import AutomatticTracks
+import AutomatticEncryptedLogs
 
 /// A wrapper around the logging stack – provides shared initialization and configuration for Tracks Crash and Event Logging
 struct WPLoggingStack {
@@ -54,6 +55,8 @@ struct WPCrashLoggingDataProvider: CrashLoggingDataProvider {
     var shouldEnableAutomaticSessionTracking: Bool {
         return !UserSettings.userHasOptedOutOfCrashLogging
     }
+
+    let performanceTracking: PerformanceTracking = .disabled
 
     var currentUser: TracksUser? {
         return contextManager.performQuery { context -> TracksUser? in

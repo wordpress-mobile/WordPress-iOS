@@ -64,10 +64,6 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
         headerView?.updateFollowButtonState(post: post)
     }
 
-    func followButtonMidPoint() -> CGPoint? {
-        headerView?.followButtonMidPoint()
-    }
-
     // MARK: - Table Methods
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -188,7 +184,7 @@ private extension ReaderDetailCommentsTableViewDelegate {
                            buttonInsets: showCommentsButtonInsets,
                            backgroundColor: .clear)
         } else {
-            cell.configure(buttonTitle: title, borderColor: .textTertiary, buttonInsets: showCommentsButtonInsets)
+            cell.configure(buttonTitle: title, borderColor: .tertiaryLabel, buttonInsets: showCommentsButtonInsets)
         }
 
         cell.delegate = buttonDelegate

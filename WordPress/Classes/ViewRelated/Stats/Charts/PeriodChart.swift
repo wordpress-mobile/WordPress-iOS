@@ -25,17 +25,10 @@ extension StatsPeriodFilterDimension {
 // MARK: - PeriodChart
 
 final class PeriodChart {
-
-    private let rawChartData: StatsSummaryTimeIntervalData
-    private var filterDimension: StatsPeriodFilterDimension
-
     private(set) var barChartData: [BarChartDataConvertible]
     private(set) var barChartStyling: [BarChartStyling]
 
-    init(data: StatsSummaryTimeIntervalData, filterDimension: StatsPeriodFilterDimension = .views) {
-        rawChartData = data
-        self.filterDimension = filterDimension
-
+    init(data: StatsSummaryTimeIntervalData) {
         let (data, styling) = PeriodChartDataTransformer.transform(data: data)
 
         barChartData = data
@@ -170,21 +163,20 @@ private final class PeriodChartDataTransformer {
     }
 
     static func primaryBarColor(forCount count: Int) -> UIColor {
-        return count > 0 ? UIColor(light: .primaryLight, dark: .primary(.shade80)) : .neutral(.shade0)
+        return count > 0 ? UIColor(light: UIAppColor.primaryLight, dark: UIAppColor.primary(.shade80)) : UIAppColor.neutral(.shade0)
     }
 
     static func secondaryBarColor(forCount count: Int) -> UIColor {
-        return count > 0 ? UIColor(light: .primary(.shade60), dark: .primary) : .neutral(.shade0)
+        return count > 0 ? UIColor(light: UIAppColor.primary(.shade60), dark: UIAppColor.primary) : UIAppColor.neutral(.shade0)
     }
 
     static func primaryHighlightColor(forCount count: Int) -> UIColor? {
-        return count > 0 ? .statsPrimaryHighlight : nil
+        return count > 0 ? UIAppColor.statsPrimaryHighlight : nil
     }
 
     static func secondaryHighlightColor(forCount count: Int) -> UIColor? {
-        return count > 0 ? .statsSecondaryHighlight : nil
+        return count > 0 ? UIAppColor.statsSecondaryHighlight : nil
     }
-
 }
 
 // MARK: - ViewsPeriodChartStyling
@@ -194,10 +186,10 @@ private struct ViewsPeriodChartStyling: BarChartStyling {
     let secondaryBarColor: UIColor?
     let primaryHighlightColor: UIColor?
     let secondaryHighlightColor: UIColor?
-    let labelColor: UIColor                         = .neutral(.shade30)
-    let legendColor: UIColor?                       = .primary(.shade60)
+    let labelColor: UIColor                         = UIAppColor.neutral(.shade30)
+    let legendColor: UIColor?                       = UIAppColor.primary(.shade60)
     let legendTitle: String?                        = NSLocalizedString("Visitors", comment: "This appears in the legend of the period chart; Visitors are superimposed over Views in that case.")
-    let lineColor: UIColor                          = .neutral(.shade5)
+    let lineColor: UIColor                          = UIAppColor.neutral(.shade5)
     let xAxisValueFormatter: AxisValueFormatter
     let yAxisValueFormatter: AxisValueFormatter    = VerticalAxisFormatter()
 }
@@ -209,10 +201,10 @@ private struct DefaultPeriodChartStyling: BarChartStyling {
     let secondaryBarColor: UIColor?                 = nil
     let primaryHighlightColor: UIColor?
     let secondaryHighlightColor: UIColor?           = nil
-    let labelColor: UIColor                         = .neutral(.shade30)
+    let labelColor: UIColor                         = UIAppColor.neutral(.shade30)
     let legendColor: UIColor?                       = nil
     let legendTitle: String?                        = nil
-    let lineColor: UIColor                          = .neutral(.shade5)
+    let lineColor: UIColor                          = UIAppColor.neutral(.shade5)
     let xAxisValueFormatter: AxisValueFormatter
     let yAxisValueFormatter: AxisValueFormatter    = VerticalAxisFormatter()
 }

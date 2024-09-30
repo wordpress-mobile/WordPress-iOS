@@ -3,12 +3,12 @@
 #import "Menu+ViewDesign.h"
 #import "Blog.h"
 #import "WPAppAnalytics.h"
-#import <WordPressUI/UIColor+Helpers.h>
-#import <WordPressShared/WPFontManager.h>
-#import <WordPressShared/WPStyleGuide.h>
 #import "WordPress-Swift.h"
 
+@import WordPressShared;
+
 @import Gridicons;
+@import WordPressUI;
 
 static CGFloat const TextfieldDesignIconWidth = 14.0;
 static CGFloat const TextfieldDesignIconHeight = 14.0;
@@ -158,7 +158,7 @@ static NSTimeInterval const TextfieldEditingAnimationDuration = 0.3;
 
         self.doneButton.alpha = 1.0;
         self.textFieldDesignIcon.hidden = YES;
-        self.textFieldDesignView.backgroundColor = [UIColor murielTertiaryBackground];
+        self.textFieldDesignView.backgroundColor = [UIColor tertiarySystemBackgroundColor];
 
     } completion:nil];
 }

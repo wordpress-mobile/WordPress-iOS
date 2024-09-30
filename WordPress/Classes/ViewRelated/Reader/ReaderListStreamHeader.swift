@@ -1,5 +1,5 @@
 import Foundation
-import WordPressShared.WPStyleGuide
+import WordPressShared
 
 @objc open class ReaderListStreamHeader: UIView, ReaderStreamHeader {
     @IBOutlet fileprivate weak var borderedView: UIView!
@@ -18,8 +18,8 @@ import WordPressShared.WPStyleGuide
     }
 
     @objc func applyStyles() {
-        backgroundColor = .listBackground
-        borderedView.backgroundColor = .listForeground
+        backgroundColor = .systemGroupedBackground
+        borderedView.backgroundColor = .secondarySystemGroupedBackground
         borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
         borderedView.layer.borderWidth = .hairlineBorderWidth
         WPStyleGuide.applyReaderStreamHeaderTitleStyle(titleLabel)

@@ -109,7 +109,7 @@ class PagesCardViewModel: NSObject {
             guard let blog = self?.blog else {
                 return
             }
-            let editorViewController = EditPageViewController(blog: blog, postTitle: selectedLayout?.title, content: selectedLayout?.content, appliedTemplate: selectedLayout?.slug)
+            let editorViewController = EditPageViewController(blog: blog, postTitle: selectedLayout?.title, content: selectedLayout?.content)
             viewController.present(editorViewController, animated: false)
         }
         trackCreateSectionTapped()
@@ -162,8 +162,8 @@ private extension PagesCardViewModel {
     private func configureGhostCell(tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: BlogDashboardPostCardGhostCell.defaultReuseID, for: indexPath) as? BlogDashboardPostCardGhostCell
         let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
-                               beatStartColor: .placeholderElement,
-                               beatEndColor: .placeholderElementFaded)
+                               beatStartColor: UIAppColor.placeholderElement,
+                               beatEndColor: UIAppColor.placeholderElementFaded)
         cell?.contentView.stopGhostAnimation()
         cell?.contentView.startGhostAnimation(style: style)
         return cell ?? UITableViewCell()

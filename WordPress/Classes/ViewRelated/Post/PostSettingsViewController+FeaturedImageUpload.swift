@@ -13,7 +13,7 @@ extension PostSettingsViewController: PHPickerViewControllerDelegate, ImagePicke
         let button = UIButton()
         var configuration = UIButton.Configuration.plain()
         configuration.title = Strings.buttonSetFeaturedImage
-        configuration.baseForegroundColor = UIColor.primary
+        configuration.baseForegroundColor = UIAppColor.primary
         button.configuration = configuration
         button.menu = makeSetFeaturedImageMenu()
         button.showsMenuAsPrimaryAction = true
@@ -144,7 +144,7 @@ extension PostSettingsViewController {
             // The Media coordinator shows its own notice about a failed upload. We have a better, more explanatory message for users here
             // so we want to supress the one coming from the coordinator and show ours.
             ActionDispatcher.dispatch(NoticeAction.post(notice))
-        case .progress:
+        case .progress, .cancelled:
             break
         }
     }

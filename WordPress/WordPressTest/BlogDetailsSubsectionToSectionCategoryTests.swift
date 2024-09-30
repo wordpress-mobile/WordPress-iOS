@@ -11,7 +11,6 @@ class BlogDetailsSubsectionToSectionCategoryTests: CoreDataTestCase {
     func testEachSubsectionToSectionCategory() {
         let blogDetailsViewController = BlogDetailsViewController()
         XCTAssertEqual(blogDetailsViewController.sectionCategory(subsection: .domainCredit, blog: blog), .domainCredit)
-        XCTAssertEqual(blogDetailsViewController.sectionCategory(subsection: .quickStart, blog: blog), .quickStart)
         XCTAssertEqual(blogDetailsViewController.sectionCategory(subsection: .stats, blog: blog), .general)
         XCTAssertEqual(blogDetailsViewController.sectionCategory(subsection: .activity, blog: blog), .jetpack)
         XCTAssertEqual(blogDetailsViewController.sectionCategory(subsection: .pages, blog: blog), .content)

@@ -120,6 +120,13 @@ extension MediaExporter {
             return MediaExportSystemError.failedWith(systemError: error)
         }
     }
+
+    func export() async throws -> MediaExport {
+        try await withUnsafeThrowingContinuation { continuation in
+            export(onCompletion: { continuation.resume(returning: $0) },
+                   onError: { continuation.resume(throwing: $0) })
+        }
+    }
 }
 
 /// Protocol of general options available for an export, typically corresponding to a user setting.

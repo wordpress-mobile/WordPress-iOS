@@ -16,7 +16,7 @@ struct ImageRequestOptions {
 actor ImageDownloader {
     static let shared = ImageDownloader()
 
-    private let cache: MemoryCacheProtocol
+    private nonisolated let cache: MemoryCacheProtocol
 
     private let urlSession = URLSession {
         $0.urlCache = nil
@@ -62,13 +62,13 @@ actor ImageDownloader {
     // MARK: - Images (Blog)
 
     /// Returns image for the given URL authenticated for the given host.
-    func image(from imageURL: URL, host: MediaHost, options: ImageRequestOptions) async throws -> UIImage {
+    func image(from imageURL: URL, host: MediaHost, options: ImageRequestOptions = .init()) async throws -> UIImage {
         let request = try await authenticatedRequest(for: imageURL, host: host)
         return try await image(from: request, options: options)
     }
 
     /// Returns data for the given URL authenticated for the given host.
-    func data(from imageURL: URL, host: MediaHost, options: ImageRequestOptions) async throws -> Data {
+    func data(from imageURL: URL, host: MediaHost, options: ImageRequestOptions = .init()) async throws -> Data {
         let request = try await authenticatedRequest(for: imageURL, host: host)
         return try await data(for: request, options: options)
     }
@@ -187,7 +187,7 @@ extension ImageDownloader {
 
 // MARK: - AnimatedImage
 
-final class AnimatedImage: UIImage {
+final class AnimatedImage: UIImage, @unchecked Sendable {
     private(set) var gifData: Data?
     var targetSize: CGSize?
 

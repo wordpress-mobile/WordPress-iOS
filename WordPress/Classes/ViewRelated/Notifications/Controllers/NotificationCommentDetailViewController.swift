@@ -101,8 +101,10 @@ class NotificationCommentDetailViewController: UIViewController, NoResultsViewHo
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         configureNavBar()
-        view.backgroundColor = .basicBackground
+        WPStyleGuide.disableScrollEdgeAppearance(for: self)
+        view.backgroundColor = .systemBackground
         loadComment()
     }
 

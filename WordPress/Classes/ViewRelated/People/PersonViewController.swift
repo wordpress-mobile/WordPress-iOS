@@ -1,6 +1,5 @@
 import Foundation
 import UIKit
-import CocoaLumberjack
 import WordPressShared
 import WordPressUI
 import Gravatar
@@ -23,18 +22,15 @@ final class PersonViewController: UITableViewController {
         case User      = "user"
         case Follower  = "follower"
         case Viewer    = "viewer"
-        case Email     = "email"
 
         var title: String {
             switch self {
             case .User:
-                return NSLocalizedString("Blog's User", comment: "Blog's User Profile. Displayed when the name is empty!")
+                return NSLocalizedString("user.details.title.user", value: "Site's User", comment: "Sites's User Profile. Displayed when the name is empty!")
             case .Follower:
-                return NSLocalizedString("Blog's Follower", comment: "Blog's Follower Profile. Displayed when the name is empty!")
+                return NSLocalizedString("user.details.title.subscriber", value: "Site's Subscriber", comment: "Site's Subscriber Profile. Displayed when the name is empty!")
             case .Viewer:
-                return NSLocalizedString("Blog's Viewer", comment: "Blog's Viewer Profile. Displayed when the name is empty!")
-            case .Email:
-                return NSLocalizedString("Blog's Email Follower", comment: "Blog's Email Follower Profile. Displayed when the name is empty!")
+                return NSLocalizedString("user.details.title.viewer", value: "Site's Viewer", comment: "Site's Viewers Profile. Displayed when the name is empty!")
             }
         }
     }
@@ -73,6 +69,13 @@ final class PersonViewController: UITableViewController {
         super.init(coder: coder)
     }
 
+    class func controllerWithBlog(_ blog: Blog, context: NSManagedObjectContext, person: Person, screenMode: ScreenMode) -> PersonViewController? {
+        let storyboard = UIStoryboard(name: "People", bundle: nil)
+        return storyboard.instantiateViewController(identifier: "PersonViewController") { coder in
+            PersonViewController(coder: coder, blog: blog, context: context, person: person, screenMode: screenMode)
+        }
+    }
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -82,8 +85,6 @@ final class PersonViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = person.fullName.nonEmptyString() ?? screenMode.title
-        WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
     }
 
@@ -230,8 +231,6 @@ private extension PersonViewController {
             case .Viewer:
                 strongSelf.deleteViewer()
                 return
-            case .Email:
-                strongSelf.deleteEmailFollower()
             }
         }
 
@@ -251,9 +250,6 @@ private extension PersonViewController {
         case .Viewer:
             messageFirstLine = NSLocalizedString("If you remove this viewer, he or she will not be able to visit this site.",
                                                  comment: "First line of remove viewer warning in confirmation dialog.")
-        case .Email:
-            messageFirstLine = NSLocalizedString("Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again.",
-                                                 comment: "First line of remove email follower warning in confirmation dialog.")
         }
 
         let messageSecondLineText = NSLocalizedString("Would you still like to remove this person?",
@@ -289,23 +285,6 @@ private extension PersonViewController {
         }
 
         service?.deleteFollower(follower, failure: {[weak self] (error: Error?) -> () in
-            guard let strongSelf = self, let error = error as NSError? else {
-                return
-            }
-
-            strongSelf.handleRemoveViewerOrFollowerError(error)
-        })
-        _ = navigationController?.popViewController(animated: true)
-    }
-
-    func deleteEmailFollower() {
-        guard let emailFollower = emailFollower, isEmailFollower else {
-            DDLogError("Error: Only email followers can be deleted here")
-            assertionFailure()
-            return
-        }
-
-        service?.deleteEmailFollower(emailFollower, failure: { [weak self] error in
             guard let strongSelf = self, let error = error as NSError? else {
                 return
             }
@@ -413,12 +392,12 @@ private extension PersonViewController {
             assertionFailure("Cell should be of class PersonHeaderCell, but it is \(type(of: cell))")
             return
         }
-        headerCell.fullNameLabel.font = WPStyleGuide.tableviewTextFont()
-        headerCell.fullNameLabel.textColor = .text
+        headerCell.fullNameLabel.font = .preferredFont(forTextStyle: .headline)
+        headerCell.fullNameLabel.textColor = .label
         headerCell.fullNameLabel.text = isEmailFollower ? person.displayName : person.fullName
 
-        headerCell.userNameLabel.font = WPStyleGuide.tableviewSectionHeaderFont()
-        headerCell.userNameLabel.textColor = .primary
+        headerCell.userNameLabel.font = .preferredFont(forTextStyle: .subheadline)
+        headerCell.userNameLabel.textColor = .secondaryLabel
         headerCell.userNameLabel.text = person.username.count > 0 ? "@" + person.username : ""
 
         refreshGravatarImage(in: headerCell.gravatarImageView)
@@ -542,8 +521,6 @@ private extension PersonViewController {
             return isFollower == true
         case .Viewer:
             return isViewer == true
-        case .Email:
-            return isEmailFollower
         }
     }
 
@@ -587,8 +564,6 @@ private extension PersonViewController {
             return .viewer
         case .User:
             return try? Role.lookup(withBlogID: blog.objectID, slug: person.role, in: context)?.toUnmanaged()
-        case .Email:
-            return .follower
         }
     }
 }

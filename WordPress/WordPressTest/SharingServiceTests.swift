@@ -1,6 +1,7 @@
 import XCTest
 import WordPressKit
 import OHHTTPStubs
+import OHHTTPStubsSwift
 
 @testable import WordPress
 

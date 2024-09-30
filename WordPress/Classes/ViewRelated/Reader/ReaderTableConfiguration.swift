@@ -1,8 +1,6 @@
 /// Registration and dequeuing of cells for table views in Reader
 final class ReaderTableConfiguration {
     private let footerViewNibName = "PostListFooterView"
-    private let readerCardCellNibName = "OldReaderPostCardCell"
-    private let oldReaderCardCellReuseIdentifier = "OldReaderCardCellReuseIdentifier"
     private let readerCardCellReuseIdentifier = "ReaderCardCellReuseIdentifier"
     private let readerBlockedCellNibName = "ReaderBlockedSiteCell"
     private let readerBlockedCellReuseIdentifier = "ReaderBlockedCellReuseIdentifier"
@@ -10,6 +8,8 @@ final class ReaderTableConfiguration {
     private let readerGapMarkerCellReuseIdentifier = "ReaderGapMarkerCellReuseIdentifier"
     private let readerCrossPostCellNibName = "ReaderCrossPostCell"
     private let readerCrossPostCellReuseIdentifier = "ReaderCrossPostCellReuseIdentifier"
+    private let readerTagCardCellNibName = "ReaderTagCardCell"
+    private let readerTagCardCellReuseIdentifier = "ReaderTagCellReuseIdentifier"
 
     private let rowHeight = CGFloat(415.0)
 
@@ -20,6 +20,7 @@ final class ReaderTableConfiguration {
         setUpBlockerCell(tableView)
         setUpGapMarkerCell(tableView)
         setUpCrossPostCell(tableView)
+        setUpTagCell(tableView)
     }
 
     private func setupAccessibility(_ tableView: UITableView) {
@@ -32,10 +33,6 @@ final class ReaderTableConfiguration {
 
     private func setUpCardCell(_ tableView: UITableView) {
         tableView.register(ReaderPostCardCell.self, forCellReuseIdentifier: readerCardCellReuseIdentifier)
-
-        // TODO: Delete when we remove the Reader Improvements v1 (`readerImprovements`) feature flag
-        let nib = UINib(nibName: readerCardCellNibName, bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: oldReaderCardCellReuseIdentifier)
     }
 
     private func setUpBlockerCell(_ tableView: UITableView) {
@@ -51,6 +48,11 @@ final class ReaderTableConfiguration {
     private func setUpCrossPostCell(_ tableView: UITableView) {
         let nib = UINib(nibName: readerCrossPostCellNibName, bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: readerCrossPostCellReuseIdentifier)
+    }
+
+    private func setUpTagCell(_ tableView: UITableView) {
+        let nib = UINib(nibName: readerTagCardCellNibName, bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: readerTagCardCellReuseIdentifier)
     }
 
     func footer() -> PostListFooterView {
@@ -80,4 +82,9 @@ final class ReaderTableConfiguration {
     func blockedSiteCell(_ tableView: UITableView) -> ReaderBlockedSiteCell {
         return tableView.dequeueReusableCell(withIdentifier: readerBlockedCellReuseIdentifier) as! ReaderBlockedSiteCell
     }
+
+    func tagCell(_ tableView: UITableView) -> ReaderTagCardCell {
+        return tableView.dequeueReusableCell(withIdentifier: readerTagCardCellReuseIdentifier) as! ReaderTagCardCell
+    }
+
 }

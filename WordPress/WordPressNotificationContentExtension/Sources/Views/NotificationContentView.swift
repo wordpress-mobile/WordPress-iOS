@@ -110,7 +110,7 @@ class NotificationContentView: UIView {
         label.numberOfLines = 0
 
         label.attributedText = viewModel.attributedSubject
-        label.textColor = .text
+        label.textColor = .label
         label.sizeToFit()
 
         return label
@@ -124,7 +124,7 @@ class NotificationContentView: UIView {
         label.numberOfLines = 0
 
         label.attributedText = viewModel.attributedBody
-        label.textColor = .textSubtle
+        label.textColor = .secondaryLabel
         label.sizeToFit()
 
         return label
@@ -147,10 +147,10 @@ class NotificationContentView: UIView {
     /// Reload the content when the trait did change
     func reloadContent() {
         subjectLabel.attributedText = viewModel.attributedSubject
-        subjectLabel.textColor = .text
+        subjectLabel.textColor = .label
 
         bodyLabel.attributedText = viewModel.attributedBody
-        bodyLabel.textColor = .textSubtle
+        bodyLabel.textColor = .secondaryLabel
     }
 
     // MARK: Private behavior
