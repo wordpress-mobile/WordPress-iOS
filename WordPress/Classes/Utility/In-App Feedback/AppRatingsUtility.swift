@@ -112,7 +112,7 @@ class AppRatingUtility: NSObject {
     ///
     @objc func declinedToRateCurrentVersion() {
         defaults.set(true, forKey: Key.declinedToRateCurrentVersion)
-        defaults.set(2, forKey: Key.numberOfVersionsToSkipPrompting)
+        defaults.set(3, forKey: Key.numberOfVersionsToSkipPrompting)
     }
 
     /// Indicates that the user decided to give feedback for this version.
@@ -132,7 +132,7 @@ class AppRatingUtility: NSObject {
     @objc func dislikedCurrentVersion() {
         incrementStoredValue(key: Key.userDislikeCount)
         defaults.set(true, forKey: Key.dislikedCurrentVersion)
-        defaults.set(2, forKey: Key.numberOfVersionsToSkipPrompting)
+        defaults.set(4, forKey: Key.numberOfVersionsToSkipPrompting)
     }
 
     /// Indicates the user did like the current version of the app.
