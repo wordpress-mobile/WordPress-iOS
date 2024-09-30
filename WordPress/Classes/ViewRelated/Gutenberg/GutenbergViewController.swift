@@ -881,15 +881,15 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     func gutenbergDidEmitLog(message: String, logLevel: LogLevel) {
         switch logLevel {
         case .trace:
-            DDLogDebug(message)
+            DDLogDebug("\(message)")
         case .info:
-            DDLogInfo(message)
+            DDLogInfo("\(message)")
         case .warn:
-            DDLogWarn(message)
+            DDLogWarn("\(message)")
         case .error, .fatal:
-            DDLogError(message)
+            DDLogError("\(message)")
         @unknown default:
-            fatalError()
+            DDLogInfo("\(message)")
         }
     }
 

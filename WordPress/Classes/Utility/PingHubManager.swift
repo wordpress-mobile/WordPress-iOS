@@ -265,7 +265,7 @@ extension PingHubManager: PinghubClientDelegate {
     }
 
     func pinghub(_ client: PinghubClient, unexpected message: PinghubClient.Unexpected) {
-        DDLogError(message.description)
+        DDLogError("\(message.description)")
     }
 }
 

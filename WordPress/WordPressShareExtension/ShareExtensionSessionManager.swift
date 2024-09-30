@@ -144,7 +144,7 @@ import WordPressFlux
         guard uploadOpObjectIDs.count > 0 else {
             return
         }
-        DDLogError(errorString)
+        DDLogError("\(errorString)")
         for uploadOpObjectID in uploadOpObjectIDs {
             coreDataStack.updateStatus(.error, forUploadOpWithObjectID: uploadOpObjectID)
         }
@@ -273,7 +273,7 @@ import WordPressFlux
                 if let error = error as NSError? {
                     errorString += ": \(error.localizedDescription)"
                 }
-                DDLogError(errorString)
+                DDLogError("\(errorString)")
                 syncGroup.leave()
             })
         }
