@@ -61,15 +61,15 @@ struct UITestFlag: OptionSet {
 
     /// Disable migration from the WordPress app to ensure that it doesn't
     /// interfere with UI tests on local devices when the app happens to be installed.
-    static let disableMigration = UITestFlag(rawValue: 2 << 0)
+    static let disableMigration = UITestFlag(rawValue: 1 << 1)
 
     /// Disable password Autofill, preventing the automated prompts from appearing
     /// during the login to enter any already saved password and after the login
     /// to save a password.
-    static let disableAutofill = UITestFlag(rawValue: 3 << 0)
+    static let disableAutofill = UITestFlag(rawValue: 1 << 2)
 
     /// Disables all animations, including the ones not managed by `UIView`.
-    static let disableAnimations = UITestFlag(rawValue: 4 << 0)
+    static let disableAnimations = UITestFlag(rawValue: 1 << 3)
 
-    static let disableLogging = UITestFlag(rawValue: 5 << 0)
+    static let disableLogging = UITestFlag(rawValue: 1 << 4)
 }
