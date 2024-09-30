@@ -222,9 +222,10 @@ extension BlogDetailHeaderView {
             let button = UIButton(type: .custom)
 
             var configuration = UIButton.Configuration.plain()
-            let font = isSidebarModeEnabled ? AppStyleGuide.navigationBarLargeFont : WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
-            configuration.titleTextAttributesTransformer = .init { attributes in
+            configuration.titleTextAttributesTransformer = .init { [weak self] attributes in
+                guard let self else { return attributes }
                 var attributes = attributes
+                let font = isSidebarModeEnabled ? AppStyleGuide.navigationBarLargeFont : WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
                 attributes.font = font
                 attributes.foregroundColor = UIColor.label
                 return attributes
