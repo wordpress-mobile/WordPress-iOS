@@ -69,7 +69,7 @@
             NSString *dotcomUsername = [blog getOptionValue:@"jetpack_user_login"];
             if (dotcomUsername) {
                 // Search for a matching .com account
-                WPAccount *account = [WPAccount lookupDefaultWordPressComAccountInContext:context];
+                WPAccount *account = [WPAccount lookupWithUsername:dotcomUsername context:context];
                 if (account) {
                     blog.account = account;
                     [WPAppAnalytics track:WPAnalyticsStatSignedInToJetpack withBlog:blog];
