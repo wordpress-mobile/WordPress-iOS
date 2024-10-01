@@ -56,11 +56,10 @@ final class HomeSiteHeaderViewController: UIViewController {
 
         if #available(iOS 17, *) {
             AppTips.SitePickerTip.blogCount = blog.account?.blogs.count ?? 0
-
-            if sitePickerTipObserver == nil {
+            if sitePickerTipObserver == nil, traitCollection.horizontalSizeClass == .compact {
                 sitePickerTipObserver = registerTipPopover(
                     AppTips.SitePickerTip(),
-                    sourceView: blogDetailHeaderView.titleView.siteSwitcherButton,
+                    sourceItem: blogDetailHeaderView.titleView.siteSwitcherButton,
                     arrowDirection: [.up]
                 )
             }
