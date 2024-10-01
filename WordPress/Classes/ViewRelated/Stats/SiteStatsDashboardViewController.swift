@@ -244,18 +244,24 @@ private extension SiteStatsDashboardViewController {
                 pageViewController?.setViewControllers([insightsTableViewController],
                                                        direction: .forward,
                                                        animated: false)
+            } else {
+                insightsTableViewController.refreshInsights()
             }
         case .traffic:
             if oldSelectedTab != .traffic || pageViewControllerIsEmpty {
                 pageViewController?.setViewControllers([trafficTableViewController],
                                                        direction: .forward,
                                                        animated: false)
+            } else {
+                trafficTableViewController.refreshData()
             }
         case .subscribers:
             if oldSelectedTab != .subscribers || pageViewControllerIsEmpty {
                 pageViewController?.setViewControllers([subscribersViewController],
                                                        direction: .forward,
                                                        animated: false)
+            } else {
+                subscribersViewController.refreshData()
             }
         }
     }
