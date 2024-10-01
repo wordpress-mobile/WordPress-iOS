@@ -104,13 +104,13 @@ class SiteStatsDashboardViewController: UIViewController {
         setupFilterBar()
         restoreSelectedDateFromUserDefaults()
         restoreSelectedTabFromUserDefaults()
-        addWillEnterForegroundObserver()
         configureNavBar()
         view.accessibilityIdentifier = "stats-dashboard"
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        addWillEnterForegroundObserver()
         JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: self, source: .stats)
     }
 
