@@ -9,8 +9,7 @@
 /* Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title. */
 "%1$@ on %2$@" = "%1$@ ar %2$@";
 
-/* Accessibility label for comments button (plural)
-   Number of Comments per Page */
+/* Number of Comments per Page */
 "%@ comments" = "%@ sylw";
 
 /* Number of days after which comments should autoclose */
@@ -99,9 +98,6 @@
 
 /* No comment provided by engineer. */
 "Activity Logs" = "Cofnodion Gweithgarwch";
-
-/* The title on the add category screen */
-"Add a Category" = "Ychwanegu Categori";
 
 /* No comment provided by engineer. */
 "Add alt text" = "Ychwanegu testun arall";
@@ -359,9 +355,6 @@
    Menu item label for linking a specific category. */
 "Category" = "Categori";
 
-/* Error popup title to indicate that there was no category title filled in. */
-"Category title missing." = "Teitl categori ar goll.";
-
 /* Center alignment for an image. Should be the same as in core WP. */
 "Center" = "Canol";
 
@@ -542,9 +535,6 @@
 /* This is the text we display to the user when we ask them for a review and they've indicated they don't like the app */
 "Could you tell us how we could improve?" = "Dwedwch wrthym sut y gallwn wella?";
 
-/* No comment provided by engineer. */
-"Couldn't Connect" = "Methu Cysylltu";
-
 /* Period Stats 'Countries' header */
 "Countries" = "Gwledydd";
 
@@ -676,7 +666,6 @@
 "Domains" = "Parthau";
 
 /* A done button
-   Accessibility label for the Done button in the Me screen.
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
@@ -688,8 +677,7 @@
    Tapping a button with this label allows the user to exit the Site Creation flow
    Title for a Done button.
    Title for button that will dismiss this view
-   Title for the button that will dismiss this view.
-   Title of the Done button on the me page */
+   Title for the button that will dismiss this view. */
 "Done" = "Gorffen";
 
 /* Name for the status of a draft post. */
@@ -1140,7 +1128,6 @@
 /* Accessibility label for more button in dashboard quick start card.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
-   Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
    Action button to display more available options */
 "More" = "Rhagor";
@@ -1345,9 +1332,6 @@
 /* WordPress.com Research Footer Text */
 "Opportunities to participate in WordPress.com research & surveys." = "Cyfleoedd i gymryd rhan mewn ymchwil a holiaduron WordPress.com.";
 
-/* Placeholder to indicate that filling out the field is optional. */
-"Optional" = "Dewisol";
-
 /* Accessibility label for Ordered list button on formatting toolbar. */
 "Ordered List" = "Rhestr Drefnus";
 
@@ -1388,8 +1372,7 @@
    Settings: Comments Paging preferences */
 "Paging" = "Tudalennu";
 
-/* Placeholder to set a parent category for a new category.
-   Title for selecting parent category of a category */
+/* Title for selecting parent category of a category */
 "Parent Category" = "Categori Rhiant";
 
 /* Accessibility label for the password text field in the self-hosted login page.
@@ -1682,7 +1665,6 @@
 
 /* Menus save button title
    Save Action
-   Save button label (saving content, ex: Post, Page, Comment, Category).
    Save button label (saving content, ex: Post, Page, Comment).
    Save draft post action on share extension site picker screen.
    Settings Text save button title
@@ -2000,9 +1982,6 @@
 /* People: Invitation Error */
 "The user already has the specified role. Please, try assigning a different role." = "Mae gan y defnyddiwr rôl sydd eisoes wedi'i bennu. Ceisiwch neilltuo rôl gwahanol.";
 
-/* No comment provided by engineer. */
-"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again." = "Gall fod yr enw defnyddiwr neu gyfrinair sy'n cael ei gadw yn y app yn hen. Rhowch eich cyfrinair eto yn y gosodiadau a cheisio eto.";
-
 /* Title of alert when theme activation succeeds */
 "Theme Activated" = "Thema yn fyw";
 
@@ -2074,12 +2053,8 @@
    Label for list of stats by content title.
    Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
-   Post title
-   Title of the new Category being created. */
+   Post title */
 "Title" = "Teitl";
-
-/* Error popup message to indicate that there was no category title filled in. */
-"Title for a category is mandatory." = "Mae teitl gyfer y categori yn orfodol.";
 
 /* Comments Today Section Header
    Insights 'Today' header
@@ -2156,7 +2131,6 @@
 "Underline" = "Tanlinellu";
 
 /* Action button to undo last change
-   Button in the notification presented in Reader when a post removed from saved for later
    Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
@@ -2251,9 +2225,6 @@
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Golwg";
-
-/* Button in the notification presented in Reader when a post is saved for later */
-"View All" = "Gweld y Cyfan";
 
 /* Action title. Opens the user's site in an in-app browser */
 "View Site" = "Gweld y Wefan";

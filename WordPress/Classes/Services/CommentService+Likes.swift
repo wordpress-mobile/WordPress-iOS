@@ -46,7 +46,7 @@ extension CommentService {
                                             success(users, totalLikes.intValue, count)
                                         }
                                     }, failure: { error in
-                                        DDLogError(String(describing: error))
+                                        DDLogError("\(String(describing: error))")
                                         failure(error)
                                     })
     }

@@ -363,7 +363,7 @@ extension ReaderTagTopic {
             }
             completion(.success(topics))
         } catch {
-            DDLogError("There was a problem fetching followed tags." + error.localizedDescription)
+            DDLogError("There was a problem fetching followed tags. \(error.localizedDescription)")
             completion(.failure(error))
         }
     }

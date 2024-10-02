@@ -380,7 +380,7 @@ class BloggingRemindersScheduler {
 
         notificationScheduler.add(request) { (error) in
             if let error = error {
-                DDLogError(error.localizedDescription)
+                DDLogError("\(error)")
             }
         }
 
