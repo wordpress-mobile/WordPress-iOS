@@ -21,8 +21,7 @@
 /* Accessibility label for value in billions. Ex: 66.6 billion. */
 "%@ billion" = "%@ miliard";
 
-/* Accessibility label for comments button (plural)
-   Number of Comments per Page */
+/* Number of Comments per Page */
 "%@ comments" = "%@ komentarzy";
 
 /* Number of days after which comments should autoclose */
@@ -145,9 +144,6 @@
 
 /* No comment provided by engineer. */
 "Add To End" = "Dodaj na końcu";
-
-/* The title on the add category screen */
-"Add a Category" = "Dodaj kategorię";
 
 /* Add a profile photo to Me > My Profile */
 "Add a Profile Photo" = "Dodaj zdjęcie profilowe";
@@ -447,9 +443,6 @@
    Menu item label for linking a specific category. */
 "Category" = "Kategoria";
 
-/* Error popup title to indicate that there was no category title filled in. */
-"Category title missing." = "Brakuje nazwy kategorii.";
-
 /* Center alignment for an image. Should be the same as in core WP. */
 "Center" = "Do środka";
 
@@ -671,9 +664,6 @@
 /* This is the text we display to the user when we ask them for a review and they've indicated they don't like the app */
 "Could you tell us how we could improve?" = "Czy możesz nam powiedzieć, co możemy poprawić?";
 
-/* No comment provided by engineer. */
-"Couldn't Connect" = "Nie można się połączyć";
-
 /* Period Stats 'Countries' header */
 "Countries" = "Państwa";
 
@@ -828,7 +818,6 @@
 "Domains" = "Domeny";
 
 /* A done button
-   Accessibility label for the Done button in the Me screen.
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
@@ -840,8 +829,7 @@
    Tapping a button with this label allows the user to exit the Site Creation flow
    Title for a Done button.
    Title for button that will dismiss this view
-   Title for the button that will dismiss this view.
-   Title of the Done button on the me page */
+   Title for the button that will dismiss this view. */
 "Done" = "Gotowe";
 
 /* translators: accessibility text (hint for moving to color settings) */
@@ -1686,9 +1674,6 @@
    Title of a button that cancels enabling notifications when tapped */
 "Not Now" = "Nie teraz";
 
-/* Title for a button that when tapped cancels the site creation process */
-"Not right now" = "Nie teraz";
-
 /* Shown when user is loading Menu item options and no items are available, such as posts, pages, etc. */
 "Nothing found." = "Niczego nie znaleziono.";
 
@@ -1784,9 +1769,6 @@
 /* No comment provided by engineer. */
 "Open link in a browser" = "Otwórz odnośnik w przeglądarce";
 
-/* Placeholder to indicate that filling out the field is optional. */
-"Optional" = "Opcjonalnie";
-
 /* The button title for a secondary call-to-action button on the password screen. When the user wants to try sending a magic link instead of entering a password. */
 "Or log in with magic link" = "Lub zaloguj się za pomocą magicznego odnośnika";
 
@@ -1822,8 +1804,7 @@
    Title of the screen showing the list of pages for a blog. */
 "Pages" = "Strony";
 
-/* Placeholder to set a parent category for a new category.
-   Title for selecting parent category of a category */
+/* Title for selecting parent category of a category */
 "Parent Category" = "Kategoria nadrzędna";
 
 /* Accessibility label for the password text field in the self-hosted login page.
@@ -2166,7 +2147,6 @@
 
 /* Menus save button title
    Save Action
-   Save button label (saving content, ex: Post, Page, Comment, Category).
    Save button label (saving content, ex: Post, Page, Comment).
    Save draft post action on share extension site picker screen.
    Settings Text save button title
@@ -2284,9 +2264,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "Show post content" = "Pokaż treść wpisu";
-
-/* Accessibility label for the More button on Reader Cell. */
-"Shows more actions" = "Pokaż więcej działań";
 
 /* View title during the sign up process. */
 "Sign Up" = "Zarejestruj się";
@@ -2556,9 +2533,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message shown when site export API failed */
 "The site could not be exported." = "Strona nie może zostać wyeksportowana.";
 
-/* No comment provided by engineer. */
-"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again." = "Nazwa użytkownika lub hasło używane przez aplikację mogą być nieaktualne. Proszę zaktualizować hasło w ustawieniach i spróbować ponownie.";
-
 /* Title of alert when theme activation succeeds */
 "Theme Activated" = "Motyw został włączony";
 
@@ -2610,12 +2584,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for list of stats by content title.
    Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
-   Post title
-   Title of the new Category being created. */
+   Post title */
 "Title" = "Tytuł";
-
-/* Error popup message to indicate that there was no category title filled in. */
-"Title for a category is mandatory." = "Wymagane jest nadanie kategorii nazwy.";
 
 /* Informational text for Report Crashes setting */
 "To help us improve the app’s performance and fix the occasional bug, enable automatic crash reports." = "By pomóc nam w usprawnieniu aplikacji i usunięciu okazjonalnych błędów, aktywuj automatyczne raportowanie o błędach.";

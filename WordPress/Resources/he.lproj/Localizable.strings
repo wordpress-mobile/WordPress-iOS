@@ -89,11 +89,7 @@
 /* Accessibility label for value in billions. Ex: 66.6 billion. */
 "%@ billion" = "%@ מיליארד";
 
-/* Accessibility label for comments button (singular) */
-"%@ comment" = "תגובה %@";
-
-/* Accessibility label for comments button (plural)
-   Number of Comments per Page */
+/* Number of Comments per Page */
 "%@ comments" = "%@ תגובות";
 
 /* Number of days after which comments should autoclose */
@@ -449,9 +445,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Add URL" = "הוספת כתובת URL";
 
-/* The title on the add category screen */
-"Add a Category" = "הוסף קטגוריה";
-
 /* Add a profile photo to Me > My Profile */
 "Add a Profile Photo" = "הוספה של תמונת פרופיל";
 
@@ -460,9 +453,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Add a new block at any time by tapping on the + icon in the toolbar on the bottom left." = "ניתן להוסיף בלוק חדש בכל עת על ידי הקשה על הסמל '+' בסרגל הכלים שנמצא בפינה השמאלית התחתונה.";
-
-/* Title for a button that when tapped starts the add self-hosted site process */
-"Add a self-hosted site" = "להוסיף אתר באחסון עצמי";
 
 /* No comment provided by engineer. */
 "Add a shortcode…" = "להוסיף שורטקוד...";
@@ -555,9 +545,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Register Domain - Address information field Address line */
 "Address line %@" = "שורת כתובת %@";
-
-/* Adds a post to My Likes. Spoken Hint. */
-"Adds this post to My Likes" = "מוסיף את הפוסט הנוכחי לרשימת הלייקים שלי";
 
 /* Title for the advanced section in site settings screen */
 "Advanced" = "אפשרויות מתקדמות";
@@ -1225,9 +1212,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Menu item label for linking a specific category. */
 "Category" = "קטגוריה";
 
-/* Error popup title to indicate that there was no category title filled in. */
-"Category title missing." = "חסרה כותרת לקטגוריה";
-
 /* Center alignment for an image. Should be the same as in core WP. */
 "Center" = "מרכז";
 
@@ -1436,9 +1420,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Close Comments Title */
 "Close commenting" = "סגור לתגובות";
-
-/* Accessibility hint the  Done button in the Me screen. */
-"Close the Me screen" = "לסגור את המסך 'אני'";
 
 /* Overlay message displayed while closing account */
 "Closing account…" = "סוגר את החשבון....";
@@ -1741,9 +1722,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* This is the text we display to the user when we ask them for a review and they've indicated they don't like the app */
 "Could you tell us how we could improve?" = "באפשרותך לומר לנו כיצד נוכל להשתפר?";
 
-/* No comment provided by engineer. */
-"Couldn't Connect" = "לא ניתן להתחבר";
-
 /* Error message shown a URL points to a valid site but not a WordPress site. */
 "Couldn't connect to the WordPress site. There is no valid WordPress site at this address. Check the site address (URL) you entered." = "לא ניתן היה להתחבר לאתר WordPress. אין אתר WordPress תקף בכתובת זו. בדוק את כתובת האתר (URL) שהזנת.";
 
@@ -1822,9 +1800,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of the button in the placeholder for an empty list of blog tags. */
 "Create a Tag" = "יצירת תגית";
-
-/* Title for a button that when tapped starts the site creation process */
-"Create a new site" = "ליצור אתר חדש";
 
 /* Title for the Site Icon Picker */
 "Create a site icon" = "ליצור את סמל האתר";
@@ -2110,7 +2085,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Don't have an account? _Sign up_" = "אין לך חשבון עדיין? _הרשמה_";
 
 /* A done button
-   Accessibility label for the Done button in the Me screen.
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
@@ -2122,8 +2096,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Tapping a button with this label allows the user to exit the Site Creation flow
    Title for a Done button.
    Title for button that will dismiss this view
-   Title for the button that will dismiss this view.
-   Title of the Done button on the me page */
+   Title for the button that will dismiss this view. */
 "Done" = "סיים";
 
 /* Title for label when there are no threats on the users site */
@@ -3888,7 +3861,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Accessibility label for more button in dashboard quick start card.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
-   Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
    Action button to display more available options */
 "More" = "עוד";
@@ -4293,9 +4265,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Not now button title shown in alert preparing users to grant permission for us to send them push notifications. */
 "Not now" = "לא עכשיו";
 
-/* Title for a button that when tapped cancels the site creation process */
-"Not right now" = "לא כרגע";
-
 /* Instructions after a Magic Link was sent, but the email can't be found in their inbox. */
 "Not seeing the email? Check your Spam or Junk Mail folder." = "לא קיבלת את האימייל? בדוק את הספאם או תיקיית הזבל במייל.";
 
@@ -4489,9 +4458,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* WordPress.com Research Footer Text */
 "Opportunities to participate in WordPress.com research & surveys." = "הזדמנויות להשתתף במחקרים וסקרים של WordPress.com.";
 
-/* Placeholder to indicate that filling out the field is optional. */
-"Optional" = "אופציונלי";
-
 /* Invite: Message Hint. %1$d is the maximum number of characters allowed. */
 "Optional message up to %1$d characters to be included in the invitation." = "הודעה אופציונלית של עד ⁦%1$d⁩ תווים שתישלח עם ההזמנה.";
 
@@ -4585,8 +4551,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Settings: Comments Paging preferences */
 "Paging" = "עימוד";
 
-/* Placeholder to set a parent category for a new category.
-   Title for selecting parent category of a category */
+/* Title for selecting parent category of a category */
 "Parent Category" = "קטגוריית אב";
 
 /* Parenting site intent topic */
@@ -4832,9 +4797,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Window title for Post Stats view. */
 "Post Stats" = "נתונים סטטיסטיים של הפוסט";
-
-/* Spoken accessibility label for blog author and name in Reader cell. */
-"Post by %@, from %@" = "פוסט מאת %1$@, מ-%2$@";
 
 /* The footer text appears within the footer displaying when the post has been created. */
 "Post created on %@" = "הפוסט נוצר ב %@";
@@ -5166,9 +5128,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Prompt when removing a featured image from a post */
 "Remove this Featured Image?" = "הסר תמונה ראשית";
 
-/* Accessibility hint for the 'Save Post' button when a post is already saved. */
-"Remove this post from my saved posts." = "הסרת הפוסט הנוכחי מרשימת הפוסטים שנשמרו.";
-
 /* User action to remove video. */
 "Remove video" = "הסר וידאו";
 
@@ -5180,9 +5139,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Explanatory text for removing the location from uploaded media. */
 "Removes location metadata from photos before uploading them to your site." = "הפעולה מסירה מטא-נתונים של מיקום מהתמונות שלך לפני ההעלאה לאתר.";
-
-/* Removes a post from My Likes. Spoken Hint. */
-"Removes this post from My Likes" = "הסרת הפוסט הנוכחי מרשימת הלייקים שלי";
 
 /* First line of remove follower warning in confirmation dialog. */
 "Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "הסרת עוקבים תפסיק את שליחת העדכונים אליהם מהאתר שלך. אם העוקבים יבחרו לעשות זאת, הם עדיין יוכלו לבקר באתר שלך ולעקוב אחריו שוב.";
@@ -5372,7 +5328,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Menus save button title
    Save Action
-   Save button label (saving content, ex: Post, Page, Comment, Category).
    Save button label (saving content, ex: Post, Page, Comment).
    Save draft post action on share extension site picker screen.
    Settings Text save button title
@@ -5401,21 +5356,11 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Text displayed in the share extension's summary view that describes the save draft post action. */
 "Save draft post on:" = "שמירת טיוטה של הפוסט במיקום:";
 
-/* Accessibility label for the 'Save Post' button. */
-"Save post" = "שמירת פוסט";
-
 /* Body text of alert informing users about the Reader Save for Later feature. */
 "Save this post, and come back to read it whenever you'd like. It will only be available on this device — saved posts don't sync to other devices." = "באפשרותך לשמור את הפוסט הנוכחי ולקרוא אותו במועד מאוחר יותר כרצונך. הפוסט יהיה זמין במכשיר זה בלבד - פוסטים שנשמרו לא מסתנכרנים בין מכשירים.";
 
-/* Title of action button for a Reader post that has been saved to read later.
-   Title of the Saved Reader Tab */
+/* Title of action button for a Reader post that has been saved to read later. */
 "Saved" = "נשמר";
-
-/* Accessibility label for the 'Save Post' button when a post has been saved. */
-"Saved Post" = "הפוסט נשמר";
-
-/* Accessibility hint for the 'Save Post' button. */
-"Saves this post for later." = "שומר את הפוסט הנוכחי למועד מאוחר יותר.";
 
 /* A short message that informs the user a draft page is being saved to the server from the share extension. */
 "Saving page…" = "שומר את העמוד...";
@@ -5761,26 +5706,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for a post or comment “like” notification. */
 "Shows all likes." = "מציג את כל הלייקים.";
 
-/* Spoken accessibility hint for blog name in Reader cell. */
-"Shows all posts from %@" = "מציג את כל הפוסטים מאת %@";
-
-/* Spoken accessibility hint for Comments buttons */
-"Shows comments" = "מציג את התגובות";
-
 /* Accessibility hint for a comment notification. */
 "Shows details and moderation actions." = "מציג את הפרטים ואת פעולות הניהול.";
-
-/* Accessibility label for the More button on Reader Cell. */
-"Shows more actions" = "מציג פעולות נוספות";
 
 /* Accessibility hint for the More button on Reader's post details */
 "Shows more options." = "מציג אפשרויות נוספות.";
 
 /* Accessibility hint for a match/mention on a post notification. */
 "Shows the post" = "מציג את הפוסט";
-
-/* Accessibility hint for the Reader Cell */
-"Shows the post content" = "מציג את תוכן הפוסט";
 
 /* View title during the sign up process. */
 "Sign Up" = "הרשמה";
@@ -6436,9 +6369,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message shown when user attempts to remove the site owner. */
 "The user you are trying to remove is the owner of this site. Please contact support for assistance." = "המשתמש שניסית להסיר רשום בתור הבעלים של האתר. כדאי לפנות לתמיכה לעזרה.";
 
-/* No comment provided by engineer. */
-"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again." = "פג תוקפם של שם המשתמש והססמה השמורים באפליקציה. יש להזין מחדש את הססמה בהגדרות ולנסות שנית.";
-
 /* Message shown when a video failed to load while trying to add it to the Media library. */
 "The video could not be added to the Media Library." = "לא ניתן להוסיף את הווידאו לספריית המדיה.";
 
@@ -6609,12 +6539,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "פריט המדיה נמחק.";
 
-/* Post is in my likes. Accessibility label */
-"This post is in My Likes" = "הפוסט הנוכחי נמצא ברשימת הלייקים שלי";
-
-/* Post is not in my likes. Accessibility label */
-"This post is not in My Likes" = "הפוסט הנוכחי לא נמצא ברשימת הלייקים שלי";
-
 /* Error message displayed when unable to close user account due to unresolved chargebacks. */
 "This user account cannot be closed if there are unresolved chargebacks." = "לא ניתן לסגור את חשבון המשתמש כל עוד יש לו חיובים שלא שולמו.";
 
@@ -6686,12 +6610,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for list of stats by content title.
    Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
-   Post title
-   Title of the new Category being created. */
+   Post title */
 "Title" = "כותרת";
-
-/* Error popup message to indicate that there was no category title filled in. */
-"Title for a category is mandatory." = "חובה להזין כותרת לקטגורייה.";
 
 /* Instructions for alert asking for email and name. */
 "To continue please enter your email address and name." = "יש להזין את כתובת האימייל והשם שלך כדי להמשיך.";
@@ -6997,7 +6917,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Underline" = "קו תחתון";
 
 /* Action button to undo last change
-   Button in the notification presented in Reader when a post removed from saved for later
    Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
@@ -7235,9 +7154,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "הצג";
-
-/* Button in the notification presented in Reader when a post is saved for later */
-"View All" = "להציג הכול";
 
 /* Action title. Opens the user's site in an in-app browser */
 "View Site" = "הצג אתר";
@@ -7540,9 +7456,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Select the site's intent. Title */
 "What's your website about?" = "במה עוסק האתר שלך?";
-
-/* Post Signup Interstitial Subtitle Text */
-"Whatever you want to create or share, we'll help you do it right here." = "לא משנה מה ברצונך ליצור או לשתף, אנחנו נעזור לך לעשות זאת כאן.";
 
 /* Text rendered at the bottom of the Discussion Moderation Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail or IP, it will be held in the moderation queue. You can enter partial words, so \"press\" will match \"WordPress\"." = "תגובה שתכיל מילה מהמילים הללו בתוכן שלה, בשם, בכתובת האתר, באימייל או ב-IP תישמר בתור המנהל. אפשר להשתמש גם בחלקי מילים, כך ש-\"press\" תתאים למילה \"WordPress\".";
@@ -8524,9 +8437,6 @@ Example: Reply to Pamela Nguyen */
 /* Domain management purchase domain screen title. */
 "domain.management.purchase.title" = "לבחור את אופן השימוש בדומיין שלך";
 
-/* The search bar title in All Domains screen. */
-"domain.management.search-bar.title" = "לחפש דומיינים";
-
 /* The empty state description in All Domains screen when the are no domains matching the search criteria */
 "domain.management.search.empty.state.description" = "We couldn't find any domains that match your search for '%@'";
 
@@ -9350,26 +9260,11 @@ Example: Reply to Pamela Nguyen */
 /* Title of the domain focus card on My Site */
 "mySite.domain.focus.cardView.title" = "לקבל בעלות על הדומיינים שלך ב-Google Domains";
 
-/* Action sheet button title. Launches the flow to a add self-hosted site. */
-"mySite.noSites.actionSheet.addSelfHostedSite" = "להוסיף אתר באחסון עצמי";
-
-/* Action sheet button title. Launches the flow to create a WordPress.com site. */
-"mySite.noSites.actionSheet.createWPComSite" = "ליצור אתר WordPress.com";
-
 /* Button title. Displays the account and setting screen. */
 "mySite.noSites.button.accountAndSettings" = "חשבון והגדרות";
 
-/* Button title. Displays a screen to add a new site when tapped. */
-"mySite.noSites.button.addNewSite" = "להוסיף אתר חדש";
-
 /* Message description for when a user has no sites. */
 "mySite.noSites.description" = "יצירה של אתר חדש לעסק שלך, מגזין, או בלוג אישי; או חיבור אתר WordPress קיים.";
-
-/* Message title for when a user has no sites. */
-"mySite.noSites.title" = "אין לך עוד אתרים";
-
-/* Menu title for the add site option */
-"mySite.siteActions.addSite" = "הוספת אתר";
 
 /* Button that reveals more site actions */
 "mySite.siteActions.button" = "פעולות באתר";
@@ -9388,9 +9283,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu title for the change site title option */
 "mySite.siteActions.siteTitle" = "לשנות את שם האתר";
-
-/* Menu title for the switch site option */
-"mySite.siteActions.switchSite" = "להחליף אתר";
 
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "לבקר באתר";

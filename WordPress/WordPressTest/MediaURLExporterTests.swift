@@ -31,15 +31,15 @@ class MediaURLExporterTests: XCTestCase {
         waitForExpectations(timeout: 2.0, handler: nil)
     }
 
-    func testThatURLExportingVideoWorks() {
-        exportTestVideo(removingGPS: false)
+    func testThatURLExportingVideoWorks() throws {
+        try exportTestVideo(removingGPS: false)
     }
 
     func testThatURLExportingVideoWithoutGPSWorks() throws {
-        exportTestVideo(removingGPS: true)
+        try exportTestVideo(removingGPS: true)
     }
 
-    fileprivate func exportTestVideo(removingGPS: Bool) {
+    fileprivate func exportTestVideo(removingGPS: Bool) throws {
         throw XCTSkip("This test became too flaky in iOS 18")
 
         guard let mediaPath = OHPathForFile(testDeviceVideoName, type(of: self)) else {

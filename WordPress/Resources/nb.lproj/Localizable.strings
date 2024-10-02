@@ -41,11 +41,7 @@
 /* Accessibility label for value in billions. Ex: 66.6 billion. */
 "%@ billion" = "%@ milliard";
 
-/* Accessibility label for comments button (singular) */
-"%@ comment" = "%@ kommentar";
-
-/* Accessibility label for comments button (plural)
-   Number of Comments per Page */
+/* Number of Comments per Page */
 "%@ comments" = "%@ kommentarer";
 
 /* Number of days after which comments should autoclose */
@@ -323,14 +319,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Add URL" = "Legg til URL";
 
-/* The title on the add category screen */
-"Add a Category" = "Legg til en kategori";
-
 /* Add a profile photo to Me > My Profile */
 "Add a Profile Photo" = "Legg til et profilbilde";
-
-/* Title for a button that when tapped starts the add self-hosted site process */
-"Add a self-hosted site" = "Legg til et selvbetjent nettsted";
 
 /* No comment provided by engineer. */
 "Add a shortcode…" = "Legg til en korkode...";
@@ -387,9 +377,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Register Domain - Address information field Address line */
 "Address line %@" = "Addresselinje %@";
-
-/* Adds a post to My Likes. Spoken Hint. */
-"Adds this post to My Likes" = "Legger til dette innlegget i Mine likes";
 
 /* Title for the advanced section in site settings screen */
 "Advanced" = "Avansert";
@@ -866,9 +853,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Menu item label for linking a specific category. */
 "Category" = "Kategori";
 
-/* Error popup title to indicate that there was no category title filled in. */
-"Category title missing." = "Kategoritittel mangler.";
-
 /* Center alignment for an image. Should be the same as in core WP. */
 "Center" = "Midtstilt";
 
@@ -999,9 +983,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Close Comments Title */
 "Close commenting" = "Lukk kommentarer";
-
-/* Accessibility hint the  Done button in the Me screen. */
-"Close the Me screen" = "Lukk Meg-skjermen";
 
 /* Accessibility label for selecting code style button on the formatting toolbar. */
 "Code" = "Kode";
@@ -1210,9 +1191,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* This is the text we display to the user when we ask them for a review and they've indicated they don't like the app */
 "Could you tell us how we could improve?" = "Kan du si oss hvordan vi kan bli bedre? (på engelsk)";
 
-/* No comment provided by engineer. */
-"Couldn't Connect" = "Kunne ikke koble til";
-
 /* Error message shown a URL points to a valid site but not a WordPress site. */
 "Couldn't connect to the WordPress site. There is no valid WordPress site at this address. Check the site address (URL) you entered." = "Kunne ikke koble til WordPress-nettsiden. Det er ikke en gyldig WordPress-nettside på denne adressen. Sjekk adressen du skrev inn.";
 
@@ -1261,9 +1239,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of the button in the placeholder for an empty list of blog tags. */
 "Create a Tag" = "Lag et stikkord";
-
-/* Title for a button that when tapped starts the site creation process */
-"Create a new site" = "Lag et nytt nettsted";
 
 /* Title for the Site Icon Picker */
 "Create a site icon" = "Lag nettstedsikon";
@@ -1471,7 +1446,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Don't have an account? _Sign up_" = "Har du ikke en konto? _Registrer deg_";
 
 /* A done button
-   Accessibility label for the Done button in the Me screen.
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
@@ -1483,8 +1457,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Tapping a button with this label allows the user to exit the Site Creation flow
    Title for a Done button.
    Title for button that will dismiss this view
-   Title for the button that will dismiss this view.
-   Title of the Done button on the me page */
+   Title for the button that will dismiss this view. */
 "Done" = "Ferdig";
 
 /* No comment provided by engineer. */
@@ -2580,7 +2553,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Accessibility label for more button in dashboard quick start card.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
-   Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
    Action button to display more available options */
 "More" = "Mer";
@@ -2875,9 +2847,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Not now button title shown in alert preparing users to grant permission for us to send them push notifications. */
 "Not now" = "Ikke nå";
 
-/* Title for a button that when tapped cancels the site creation process */
-"Not right now" = "Ikke akkurat nå";
-
 /* Shown when user is loading Menu item options and no items are available, such as posts, pages, etc. */
 "Nothing found." = "Ingenting funnet.";
 
@@ -3017,9 +2986,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* WordPress.com Research Footer Text */
 "Opportunities to participate in WordPress.com research & surveys." = "Muligheter for å være med i WordPress.coms forskning og undersøkelser.";
 
-/* Placeholder to indicate that filling out the field is optional. */
-"Optional" = "Valgfritt";
-
 /* Divider on initial auth view separating auth options. */
 "Or" = "Eller";
 
@@ -3089,8 +3055,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Settings: Comments Paging preferences */
 "Paging" = "Sider";
 
-/* Placeholder to set a parent category for a new category.
-   Title for selecting parent category of a category */
+/* Title for selecting parent category of a category */
 "Parent Category" = "Foreldrekategori";
 
 /* Accessibility label for the password text field in the self-hosted login page.
@@ -3291,9 +3256,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Window title for Post Stats view. */
 "Post Stats" = "Innleggsstatus";
-
-/* Spoken accessibility label for blog author and name in Reader cell. */
-"Post by %@, from %@" = "Innlegg av %1$@, fra %2$@";
 
 /* The footer text appears within the footer displaying when the post has been created. */
 "Post created on %@" = "Innlegg opprettet den %@";
@@ -3571,9 +3533,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Prompt when removing a featured image from a post */
 "Remove this Featured Image?" = "Slett dette fremhevede bildet?";
 
-/* Accessibility hint for the 'Save Post' button when a post is already saved. */
-"Remove this post from my saved posts." = "Fjern dette innlegget fra mine lagrede innlegg.";
-
 /* User action to remove video. */
 "Remove video" = "Fjern video";
 
@@ -3585,9 +3544,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Explanatory text for removing the location from uploaded media. */
 "Removes location metadata from photos before uploading them to your site." = "Fjerner plasserings-metadata fra bilder før de lastes opp til siden din.";
-
-/* Removes a post from My Likes. Spoken Hint. */
-"Removes this post from My Likes" = "Fjerner dette innlegget fra Mine likes";
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "Erstatt nåværende blokk";
@@ -3708,7 +3664,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Menus save button title
    Save Action
-   Save button label (saving content, ex: Post, Page, Comment, Category).
    Save button label (saving content, ex: Post, Page, Comment).
    Save draft post action on share extension site picker screen.
    Settings Text save button title
@@ -3728,21 +3683,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text displayed in the share extension's summary view that describes the save draft post action. */
 "Save draft post on:" = "Lagre innleggskladd på:";
 
-/* Accessibility label for the 'Save Post' button. */
-"Save post" = "Lagre innlegg";
-
 /* Body text of alert informing users about the Reader Save for Later feature. */
 "Save this post, and come back to read it whenever you'd like. It will only be available on this device — saved posts don't sync to other devices." = "Lagre dette innlegget og kom tilbake for å lese det når det passer. Det vil bare være tilgjengelig på denne enheten — lagrede innlegg synkroniseres ikke til andre enheter.";
 
-/* Title of action button for a Reader post that has been saved to read later.
-   Title of the Saved Reader Tab */
+/* Title of action button for a Reader post that has been saved to read later. */
 "Saved" = "Lagret";
-
-/* Accessibility label for the 'Save Post' button when a post has been saved. */
-"Saved Post" = "Lagret innlegg";
-
-/* Accessibility hint for the 'Save Post' button. */
-"Saves this post for later." = "Lagrer dette innlegget til senere.";
 
 /* A short message that informs the user a draft post is being saved to the server from the share extension. */
 "Saving post…" = "Lagrer innlegg...";
@@ -3970,26 +3915,14 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Accessibility hint for a post or comment “like” notification. */
 "Shows all likes." = "Viser alle liker.";
 
-/* Spoken accessibility hint for blog name in Reader cell. */
-"Shows all posts from %@" = "Viser alle innlegg fra %@";
-
-/* Spoken accessibility hint for Comments buttons */
-"Shows comments" = "Viser kommentarer";
-
 /* Accessibility hint for a comment notification. */
 "Shows details and moderation actions." = "Viser detaljer og modereringsvalg";
-
-/* Accessibility label for the More button on Reader Cell. */
-"Shows more actions" = "Viser flere handlinger";
 
 /* Accessibility hint for the More button on Reader's post details */
 "Shows more options." = "Viser flere valg.";
 
 /* Accessibility hint for a match/mention on a post notification. */
 "Shows the post" = "Viser innlegget";
-
-/* Accessibility hint for the Reader Cell */
-"Shows the post content" = "Viser innleggets innhold";
 
 /* View title during the sign up process. */
 "Sign Up" = "Registrer deg";
@@ -4474,9 +4407,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Error message shown when user attempts to remove the site owner. */
 "The user you are trying to remove is the owner of this site. Please contact support for assistance." = "Brukeren du prøver å fjerne er eieren av siden. Vennligst kontakt kundestøtten for hjelp.";
 
-/* No comment provided by engineer. */
-"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again." = "Brukernavnet eller passordet som er lagret i appen er muligens utløpt. Vennligst skriv inn ditt passord i innstillingene og prøv igjen.";
-
 /* Message shown when a video failed to load while trying to add it to the Media library. */
 "The video could not be added to the Media Library." = "Videoen kunne ikke legges til i Mediebiblioteket.";
 
@@ -4605,12 +4535,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Dette medieobjektet har blitt slettet.";
 
-/* Post is in my likes. Accessibility label */
-"This post is in My Likes" = "Dette innlegget er i Mine likes";
-
-/* Post is not in my likes. Accessibility label */
-"This post is not in My Likes" = "Dette innlegger er ikke i Mine likes";
-
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
 "This will be included in tweets when people share using the Twitter button." = "Dette vil inkluderes i tweeter når folk deler ved hjelp av Twitter-knappen.";
@@ -4646,12 +4570,8 @@ translators: %s: Block name e.g. \"Image block\" */
    Label for list of stats by content title.
    Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
-   Post title
-   Title of the new Category being created. */
+   Post title */
 "Title" = "Tittel";
-
-/* Error popup message to indicate that there was no category title filled in. */
-"Title for a category is mandatory." = "Tittel for kategori er obligatorisk.";
 
 /* Instructions for alert asking for email and name. */
 "To continue please enter your email address and name." = "For å fortsette, vennligst skriv inn epost-adresse og navn.";
@@ -4861,7 +4781,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Underline" = "Understrek";
 
 /* Action button to undo last change
-   Button in the notification presented in Reader when a post removed from saved for later
    Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
@@ -5048,9 +4967,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Se";
-
-/* Button in the notification presented in Reader when a post is saved for later */
-"View All" = "Vis alle";
 
 /* Action title. Opens the user's site in an in-app browser */
 "View Site" = "Vis nettsted";
