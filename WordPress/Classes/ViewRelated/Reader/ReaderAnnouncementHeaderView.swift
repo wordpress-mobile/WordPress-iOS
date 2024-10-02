@@ -172,7 +172,8 @@ class ReaderAnnouncementCoordinator {
     let repository: UserPersistentRepository = UserPersistentStoreFactory.instance()
 
     var canShowAnnouncement: Bool {
-        return !isDismissed && RemoteFeatureFlag.readerAnnouncementCard.enabled()
+        false
+        // return !isDismissed && RemoteFeatureFlag.readerAnnouncementCard.enabled()
     }
 
     var isDismissed: Bool {
