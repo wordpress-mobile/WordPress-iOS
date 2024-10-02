@@ -111,21 +111,24 @@
         return;
     }
 
-    [self refreshStatus];
+    __weak __typeof(self) weakSelf = self;
+    [self refreshStatusWithCompletion:^{
+        [weakSelf promptForJetpackCredentials];
+    }];
 }
 
-- (void)refreshStatus
+- (void)refreshStatusWithCompletion:(void (^)(void))completion
 {
     [self.loadingIndicator startAnimating];
     BlogService *blogService = [[BlogService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     __weak __typeof(self) weakSelf = self;
     [blogService syncBlog:self.blog success:^{
-        [self.loadingIndicator stopAnimating];
-        [weakSelf promptForJetpackCredentials];
+        [weakSelf.loadingIndicator stopAnimating];
+        completion();
     } failure:^(NSError * _Nonnull error) {
         DDLogError(@"Error refreshing blog status when loading stats: %@", error);
-        [self.loadingIndicator stopAnimating];
-        [weakSelf promptForJetpackCredentials];
+        [weakSelf.loadingIndicator stopAnimating];
+        completion();
     }];
 }
 
@@ -137,11 +140,14 @@
     self.showingJetpackLogin = YES;
     JetpackLoginViewController *controller = [[JetpackLoginViewController alloc] initWithBlog:self.blog];
     __weak JetpackLoginViewController *safeController = controller;
+    __weak __typeof(self) weakSelf = self;
     [controller setCompletionBlock:^(){
-            [safeController.view removeFromSuperview];
-            [safeController removeFromParentViewController];
-            self.showingJetpackLogin = NO;
-            [self initStats];
+        [safeController.view removeFromSuperview];
+        [safeController removeFromParentViewController];
+        weakSelf.showingJetpackLogin = NO;
+        [weakSelf refreshStatusWithCompletion:^{
+            [weakSelf initStats];
+        }];
     }];
 
     [self addChildViewController:controller];
