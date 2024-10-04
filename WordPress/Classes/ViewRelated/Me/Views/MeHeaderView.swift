@@ -15,7 +15,7 @@ final class MeHeaderView: UIView {
         [iconView, infoStackView]
     )
 
-    private lazy var infoStackView = UIStackView(axis: .vertical, spacing: 2, [titleLabel, detailsLabel])
+    private lazy var infoStackView = UIStackView(axis: .vertical, alignment: .center, spacing: 2, [titleLabel, detailsLabel])
 
     private lazy var iconSizeConstraints = [
         iconView.widthAnchor.constraint(equalToConstant: 0),
@@ -86,6 +86,7 @@ final class MeHeaderView: UIView {
         stackView.axis = .horizontal
         stackView.spacing = 16
         stackView.layoutMargins = UIEdgeInsets(horizontal: 30, vertical: 6)
+        infoStackView.alignment = .leading
         setIconSize(40)
     }
 }
