@@ -13,7 +13,6 @@ enum FeatureFlag: Int, CaseIterable {
     case voiceToContent
     case authenticateUsingApplicationPassword
     case tipKit
-    case sidebar
     case newGutenberg
     case newGutenbergThemeStyles
     case newGutenbergPlugins
@@ -48,8 +47,6 @@ enum FeatureFlag: Int, CaseIterable {
             return false
         case .tipKit:
             return BuildConfiguration.current != .appStore
-        case .sidebar:
-            return true
         case .newGutenberg:
             return false
         case .newGutenbergThemeStyles:
@@ -91,7 +88,6 @@ extension FeatureFlag {
         case .voiceToContent: "Voice to Content"
         case .authenticateUsingApplicationPassword: "Application Passwords for self-hosted sites"
         case .tipKit: "TipKit"
-        case .sidebar: "Sidebar"
         case .newGutenberg: "Experimental Block Editor"
         case .newGutenbergThemeStyles: "Experimental Block Editor Styles"
         case .newGutenbergPlugins: "Experimental Block Editor Plugins"

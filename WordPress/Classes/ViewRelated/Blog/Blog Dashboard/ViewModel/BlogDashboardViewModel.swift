@@ -204,10 +204,7 @@ private extension BlogDashboardViewModel {
 
     func createSnapshot(from cards: [DashboardCardModel]) -> DashboardSnapshot {
         let isShowingQuickActions: Bool = {
-            guard Feature.enabled(.sidebar) else {
-                return !WPDeviceIdentification.isiPad()
-            }
-            return viewController?.traitCollection.horizontalSizeClass == .compact
+            viewController?.traitCollection.horizontalSizeClass == .compact
         }()
 
         let items = cards.map { DashboardItem.cards($0) }

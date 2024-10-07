@@ -20,7 +20,7 @@ class MySiteViewModel {
     func getSection(
         for blog: Blog,
         jetpackFeaturesEnabled: Bool,
-        splitViewControllerIsHorizontallyCompact: Bool,
+        splitViewControllerIsHorizontallyCompact: Bool
     ) -> MySiteViewController.Section {
         let shouldShowDashboard = jetpackFeaturesEnabled
         && blog.isAccessibleThroughWPCom()
