@@ -162,7 +162,7 @@ struct DomainsService {
         guard let blog = try? Blog.lookup(withID: siteID, in: context) else {
             let error = "Tried to obtain a Blog for a non-existing site (ID: \(siteID))"
             assertionFailure(error)
-            DDLogError(error)
+            DDLogError("\(error)")
             return nil
         }
 

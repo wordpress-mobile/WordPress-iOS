@@ -34,6 +34,10 @@ class SiteStatsInsightsDetailsTableViewController: SiteStatsBaseTableViewControl
         refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         tableView.estimatedSectionHeaderHeight = SiteStatsTableHeaderView.estimatedHeight
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         addWillEnterForegroundObserver()
     }
 

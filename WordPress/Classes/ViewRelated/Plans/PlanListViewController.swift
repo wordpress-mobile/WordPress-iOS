@@ -49,7 +49,7 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
             self?.updateViewModel()
 
         }, failure: { error in
-            DDLogInfo(error.debugDescription)
+            DDLogInfo("\(error.debugDescription)")
         })
     }
 

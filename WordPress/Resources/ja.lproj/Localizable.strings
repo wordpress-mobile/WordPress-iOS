@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-08-27 09:54:08+0000 */
+/* Translation-Revision-Date: 2024-10-01 09:54:10+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ja_JP */
@@ -7879,6 +7879,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Dismiss button title */
 "activityList.dismiss.title" = "削除";
 
+/* Screen title */
+"addCategory.navigationTitle" = "カテゴリーを追加";
+
+/* Cell title */
+"addCategory.parentCategory" = "親カテゴリー";
+
+/* Cell placeholder */
+"addCategory.titlePlaceholder" = "タイトル";
+
 /* Error message shown a URL does not point to an existing site. */
 "addSite.restApiNotAvailable" = "このアドレスのサイトは WordPress のサイトではありません。 接続するには、接続先のサイトが WordPress を使用している必要があります。";
 
@@ -9257,6 +9266,9 @@ Example: Reply to Pamela Nguyen */
 /* Message description for when a user has no sites. */
 "mySite.noSites.description" = "ビジネス、マガジン、個人ブログ用の新しいサイトを作成するか、既存の WordPress インストール環境を関連付けてください。";
 
+/* Title description for when a user has no sites. */
+"mySite.noSites.stateViewTitle" = "最初のサイトを作成";
+
 /* Button that reveals more site actions */
 "mySite.siteActions.button" = "サイトのアクション";
 
@@ -9301,6 +9313,33 @@ Example: Reply to Pamela Nguyen */
 
 /* Error message that informs comment details from a private blog cannot be fetched. */
 "notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage" = "この非公開ブログの閲覧権限がありません。";
+
+/* The user has previously tapped 'Like' on this comment */
+"notifications.accessibility-comment-like-button-on" = "このコメントを「いいね」しました";
+
+/* The user has not previously tapped 'Like' on this post or comment */
+"notifications.accessibility-like-button-off" = "「いいね」しませんでした";
+
+/* The user has previously tapped 'Like' on this post */
+"notifications.accessibility-post-like-button-on" = "この投稿を「いいね」しました";
+
+/* A label for screenreader users */
+"notifications.accessibility-share-button" = "共有";
+
+/* A label for screenreader users */
+"notifications.accessibility-tap-to-like-this-comment" = "ダブルタップしてこのコメントを「いいね」";
+
+/* A label for screenreader users */
+"notifications.accessibility-tap-to-like-this-post" = "ダブルタップしてこの投稿を「いいね」";
+
+/* A label for screenreader users */
+"notifications.accessibility-tap-to-share-this-post" = "ダブルタップしてこの投稿を共有";
+
+/* A label for screenreader users */
+"notifications.accessibility-tap-to-unlike-this-comment" = "ダブルタップしてこのコメントの「いいね」を解除";
+
+/* A label for screenreader users */
+"notifications.accessibility-tap-to-unlike-this-post" = "ダブルタップしてこの投稿の「いいね」を解除";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
 "notifications.action.subscribe.hint" = "ブログを購読します。";
@@ -9990,6 +10029,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
 "reader.blog.stream.subscribers" = "%@人の購読者";
 
+/* Reader sidebar button title */
+"reader.button.unfollow" = "フォロー解除";
+
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "サイトからの投稿を表示します";
 
@@ -10373,6 +10415,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* A short message that informs the user no WordPress.com blogs could be found. */
 "reader.reblog.no.blogs.title" = "利用可能な WordPress.com ブログはありません";
 
+/* Notification title for when saved post is removed */
+"reader.savedPostRemovedNotificationTitle" = "保存済みの投稿が削除されました";
+
 /* Title of a Reader tab showing Sites matching a user's search query */
 "reader.search.tab.blogs" = "ブログ";
 
@@ -10400,6 +10445,42 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Reader select interests title label text */
 "reader.select.tags.title" = "お気に入りのブログを探してフォロー";
 
+/* Reader sidebar button title */
+"reader.sidebar.allSubscriptions" = "すべてのサブスクリプション";
+
+/* Reader sidebar menu item */
+"reader.sidebar.discover" = "見つける";
+
+/* Reader sidebar menu item */
+"reader.sidebar.likes" = "いいね";
+
+/* Reader sidebar menu item */
+"reader.sidebar.recent" = "最近";
+
+/* Reader sidebar menu item */
+"reader.sidebar.saved" = "保存済み";
+
+/* Reader sidebar menu item */
+"reader.sidebar.search" = "検索";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.lists.title" = "リスト";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.organization.title" = "団体";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.subscriptions.tTitle" = "サブスクリプション";
+
+/* Reader sidebar button */
+"reader.sidebar.section.tags.addTag" = "タグを追加";
+
+/* Reader sidebar button */
+"reader.sidebar.section.tags.discoverTags" = "その他のタグを見る";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.tags.title" = "タグ";
+
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "フォロー";
 
@@ -10411,6 +10492,30 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Verb. Button title. The user is subscribed to a blog. */
 "reader.subscribed.button.title" = "フォロー済み";
+
+/* Short error message */
+"reader.subscription.invalidURLError" = "有効な URL を入力してください";
+
+/* Button subtitle */
+"reader.subscriptions.addSubscriptionButtonSubtitle" = "サイト、ニュースレター、RSS フィードを購読";
+
+/* Button title */
+"reader.subscriptions.addSubscriptionButtonTitle" = "サブスクリプションを追加";
+
+/* Empty state details */
+"reader.subscriptions.emptyStateDetails" = "発見して購読したサイトはこちらに表示されます";
+
+/* Button title for managing subscription settings */
+"reader.subscriptions.settings" = "設定";
+
+/* Number of subscriptions on a site (plural) */
+"reader.subscriptions.subscriptionsPlural" = "%@人の購読者";
+
+/* Number of subscriptions on a site (singular) */
+"reader.subscriptions.subscriptionsSingular" = "%@人の購読者";
+
+/* Navigation bar title */
+"reader.subscriptions.title" = "サブスクリプション";
 
 /* A suggestion of topics the user might want to subscribe to */
 "reader.suggested.blogs.title" = "購読するブログ";
@@ -10440,6 +10545,15 @@ This empty state component is displayed only when the app fails to load posts un
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag.title" = "タグを追加";
 
+/* Navigation title */
+"reader.tags.addTag.details" = "任意のタグ名を入力できます";
+
+/* Placeholder for text field */
+"reader.tags.addTag.placeholder" = "タグ";
+
+/* Navigation title */
+"reader.tags.addTag.title" = "タグを追加";
+
 /* Text for the 'Like' button on the reader tag cell. */
 "reader.tags.button.like" = "いいね";
 
@@ -10448,6 +10562,9 @@ This empty state component is displayed only when the app fails to load posts un
 
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "その他のタグを見る";
+
+/* Title for an error snackbar */
+"reader.tags.failedToUnfollowErrorTitle" = "トピックを削除できませんでした";
 
 /* Verb. Button title. Follows a new tag. */
 "reader.tags.follow.button.title" = "フォロー";
@@ -10609,6 +10726,9 @@ This empty state component is displayed only when the app fails to load posts un
 "shared.button.copyLink" = "リンクをコピー";
 
 /* A shared button title used in different contexts */
+"shared.button.delete" = "削除";
+
+/* A shared button title used in different contexts */
 "shared.button.done" = "完了";
 
 /* A shared button title used in different contexts */
@@ -10618,16 +10738,49 @@ This empty state component is displayed only when the app fails to load posts un
 "shared.button.remove" = "削除";
 
 /* A shared button title used in different contexts */
+"shared.button.retry" = "再試行";
+
+/* A shared button title used in different contexts */
 "shared.button.save" = "保存";
 
 /* A shared button title used in different contexts */
 "shared.button.share" = "共有";
 
 /* A shared button title used in different contexts */
+"shared.button.undo" = "取り消す";
+
+/* A shared button title used in different contexts */
 "shared.button.view" = "表示";
 
 /* A generic error message */
 "shared.error.geneirc" = "エラーが発生しました";
+
+/* Sidebar button title on iPad */
+"sidebar.addSite" = "サイトを追加";
+
+/* Sidebar button title on iPad */
+"sidebar.allSites" = "すべてのサイト";
+
+/* Sidebar button title on iPad */
+"sidebar.createSite" = "サイトを作成";
+
+/* Sidebar item on iPad */
+"sidebar.domains" = "ドメイン";
+
+/* Sidebar item on iPad */
+"sidebar.help" = "ヘルプとサポート";
+
+/* Sidebar item on iPad */
+"sidebar.me" = "自分";
+
+/* Sidebar section title on iPad */
+"sidebar.moreSectionTitle" = "詳細";
+
+/* Sidebar section title on iPad */
+"sidebar.mySitesSectionTitle" = "サイト";
+
+/* Sidebar item on iPad */
+"sidebar.notifications" = "通知";
 
 /* Template site address for the search bar. */
 "site.cration.domain.site.address" = "https:\/\/yoursitename.com";

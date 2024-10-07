@@ -204,7 +204,7 @@ private extension RootViewPresenter {
             }
             completion(topic)
         }, failure: { error in
-            DDLogError("Reader: Error retriving site topic - " + (error?.localizedDescription ?? "unknown failure reason"))
+            DDLogError("Reader: Error retriving site topic - \(error?.localizedDescription ?? "unknown failure reason")")
             completion(nil)
         })
     }

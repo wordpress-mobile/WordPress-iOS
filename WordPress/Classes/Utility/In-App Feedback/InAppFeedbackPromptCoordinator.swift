@@ -46,8 +46,13 @@ final class InAppFeedbackPromptCoordinator: InAppFeedbackPromptPresenting {
         let no = UIAlertAction(title: Strings.FeedbackAlert.no, style: .default) { _ in
             self.handleNegativeFeedback(in: controller)
         }
-        alert.addAction(no)
+        let notNow = UIAlertAction(title: Strings.FeedbackAlert.notNow, style: .cancel) { [weak self] _ in
+            WPAnalytics.track(.appReviewsDeclinedToRateApp)
+            self?.appRatingUtility.declinedToRateCurrentVersion()
+        }
         alert.addAction(yes)
+        alert.addAction(no)
+        alert.addAction(notNow)
         return alert
     }
 
@@ -118,6 +123,11 @@ extension InAppFeedbackPromptCoordinator {
                 "in-app.feedback.alert.no",
                 value: "Not really",
                 comment: "The 'no' button title for the first feedback alert"
+            )
+            static let notNow = NSLocalizedString(
+                "in-app.feedback.alert.notNow",
+                value: "Not Now",
+                comment: "The 'Not Now' button title for the first feedback alert"
             )
         }
 

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-08-27 09:54:08+0000 */
+/* Translation-Revision-Date: 2024-10-02 16:54:09+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ru */
@@ -7885,6 +7885,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Dismiss button title */
 "activityList.dismiss.title" = "Закрыть";
 
+/* Screen title */
+"addCategory.navigationTitle" = "Добавить рубрику";
+
+/* Cell title */
+"addCategory.parentCategory" = "Родительская рубрика";
+
+/* Cell placeholder */
+"addCategory.titlePlaceholder" = "Заголовок";
+
 /* Error message shown a URL does not point to an existing site. */
 "addSite.restApiNotAvailable" = "Сайт по этому адресу не имеет отношения к WordPress. Для того чтобы мы могли выполнить подключение к сайту, он должен работать на WordPress.";
 
@@ -9272,6 +9281,9 @@ Example: Reply to Pamela Nguyen */
 /* Message description for when a user has no sites. */
 "mySite.noSites.description" = "Создайте новый сайт для бизнеса, журнал или персональный блог; или подключите имеющуюся установку WordPress.";
 
+/* Title description for when a user has no sites. */
+"mySite.noSites.stateViewTitle" = "Создайте свой первый сайт";
+
 /* Button that reveals more site actions */
 "mySite.siteActions.button" = "Действия с сайтом";
 
@@ -9316,6 +9328,33 @@ Example: Reply to Pamela Nguyen */
 
 /* Error message that informs comment details from a private blog cannot be fetched. */
 "notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage" = "У вас нет разрешения на доступ к этому закрытому блогу.";
+
+/* The user has previously tapped 'Like' on this comment */
+"notifications.accessibility-comment-like-button-on" = "Вам понравился этот комментарий";
+
+/* The user has not previously tapped 'Like' on this post or comment */
+"notifications.accessibility-like-button-off" = "Не понравилось";
+
+/* The user has previously tapped 'Like' on this post */
+"notifications.accessibility-post-like-button-on" = "Вам понравилась эта запись";
+
+/* A label for screenreader users */
+"notifications.accessibility-share-button" = "Поделиться";
+
+/* A label for screenreader users */
+"notifications.accessibility-tap-to-like-this-comment" = "Коснитесь дважды, чтобы оставить оценку «Нравится» в этом комментарии";
+
+/* A label for screenreader users */
+"notifications.accessibility-tap-to-like-this-post" = "Коснитесь дважды, чтобы оставить оценку «Нравится» в этой записи";
+
+/* A label for screenreader users */
+"notifications.accessibility-tap-to-share-this-post" = "Коснитесь дважды, чтобы поделиться этой записью";
+
+/* A label for screenreader users */
+"notifications.accessibility-tap-to-unlike-this-comment" = "Коснитесь дважды, чтобы снять отметку «Нравится» в этом комментарии";
+
+/* A label for screenreader users */
+"notifications.accessibility-tap-to-unlike-this-post" = "Коснитесь дважды, чтобы снять отметку «Нравится» в этой записи";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
 "notifications.action.subscribe.hint" = "Подписаться на блог.";
@@ -10014,6 +10053,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
 "reader.blog.stream.subscribers" = "Подписчиков: %@";
 
+/* Reader sidebar button title */
+"reader.button.unfollow" = "Отменить подписку";
+
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "Просмотр записей с сайта";
 
@@ -10406,6 +10448,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* A short message that informs the user no WordPress.com blogs could be found. */
 "reader.reblog.no.blogs.title" = "Нет доступных блогов WordPress.com";
 
+/* Notification title for when saved post is removed */
+"reader.savedPostRemovedNotificationTitle" = "Сохранённая запись удалена";
+
 /* Title of a Reader tab showing Sites matching a user's search query */
 "reader.search.tab.blogs" = "Блоги";
 
@@ -10433,6 +10478,45 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Reader select interests title label text */
 "reader.select.tags.title" = "Найдите блоги, которые вам понравятся, и подпишитесь на них";
 
+/* Reader sidebar button title */
+"reader.sidebar.allSubscriptions" = "Все подписки";
+
+/* Reader sidebar menu item */
+"reader.sidebar.discover" = "Раздел «Поиск»";
+
+/* Reader sidebar menu item */
+"reader.sidebar.likes" = "Отметки «Нравится»";
+
+/* Reader sidebar title */
+"reader.sidebar.navigationTitle" = "Читалка";
+
+/* Reader sidebar menu item */
+"reader.sidebar.recent" = "Недавние";
+
+/* Reader sidebar menu item */
+"reader.sidebar.saved" = "Сохранено";
+
+/* Reader sidebar menu item */
+"reader.sidebar.search" = "Поиск";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.lists.title" = "Списки";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.organization.title" = "Организация";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.subscriptions.tTitle" = "Подписки";
+
+/* Reader sidebar button */
+"reader.sidebar.section.tags.addTag" = "Добавить метку";
+
+/* Reader sidebar button */
+"reader.sidebar.section.tags.discoverTags" = "Другие метки";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.tags.title" = "Метки";
+
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "Подписаться";
 
@@ -10444,6 +10528,30 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Verb. Button title. The user is subscribed to a blog. */
 "reader.subscribed.button.title" = "Подписка оформлена";
+
+/* Short error message */
+"reader.subscription.invalidURLError" = "Введите действительный URL-адрес";
+
+/* Button subtitle */
+"reader.subscriptions.addSubscriptionButtonSubtitle" = "Подписывайтесь на сайты, рассылки и ленты RSS";
+
+/* Button title */
+"reader.subscriptions.addSubscriptionButtonTitle" = "Добавить подписку";
+
+/* Empty state details */
+"reader.subscriptions.emptyStateDetails" = "Сайты, на которые вы подписались, будут отображаться здесь";
+
+/* Button title for managing subscription settings */
+"reader.subscriptions.settings" = "Настройки";
+
+/* Number of subscriptions on a site (plural) */
+"reader.subscriptions.subscriptionsPlural" = "Подписчиков: %@";
+
+/* Number of subscriptions on a site (singular) */
+"reader.subscriptions.subscriptionsSingular" = "%@ подписчик";
+
+/* Navigation bar title */
+"reader.subscriptions.title" = "Подписки";
 
 /* A suggestion of topics the user might want to subscribe to */
 "reader.suggested.blogs.title" = "Блоги, на которые можно подписаться";
@@ -10473,6 +10581,15 @@ This empty state component is displayed only when the app fails to load posts un
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag.title" = "Добавьте тег";
 
+/* Navigation title */
+"reader.tags.addTag.details" = "Вы можете ввести любое имя метки по вашему выбору";
+
+/* Placeholder for text field */
+"reader.tags.addTag.placeholder" = "Метка";
+
+/* Navigation title */
+"reader.tags.addTag.title" = "Добавить метку";
+
 /* Text for the 'Like' button on the reader tag cell. */
 "reader.tags.button.like" = "Оценка «Нравится»";
 
@@ -10481,6 +10598,9 @@ This empty state component is displayed only when the app fails to load posts un
 
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "Другие теги";
+
+/* Title for an error snackbar */
+"reader.tags.failedToUnfollowErrorTitle" = "Не удалось удалить тему";
 
 /* Verb. Button title. Follows a new tag. */
 "reader.tags.follow.button.title" = "Подписаться";
@@ -10645,13 +10765,22 @@ This empty state component is displayed only when the app fails to load posts un
 "shared.button.copyLink" = "Копировать ссылку";
 
 /* A shared button title used in different contexts */
+"shared.button.delete" = "Удалить";
+
+/* A shared button title used in different contexts */
 "shared.button.done" = "Готово";
 
 /* A shared button title used in different contexts */
 "shared.button.edit" = "Редактировать";
 
 /* A shared button title used in different contexts */
+"shared.button.ok" = "ОК";
+
+/* A shared button title used in different contexts */
 "shared.button.remove" = "Удалить";
+
+/* A shared button title used in different contexts */
+"shared.button.retry" = "Повторить попытку";
 
 /* A shared button title used in different contexts */
 "shared.button.save" = "Сохранить";
@@ -10660,10 +10789,43 @@ This empty state component is displayed only when the app fails to load posts un
 "shared.button.share" = "Поделиться";
 
 /* A shared button title used in different contexts */
+"shared.button.undo" = "Отмена";
+
+/* A shared button title used in different contexts */
 "shared.button.view" = "Просмотр";
 
 /* A generic error message */
 "shared.error.geneirc" = "Что-то пошло не так";
+
+/* Sidebar button title on iPad */
+"sidebar.addSite" = "Добавить сайт";
+
+/* Sidebar button title on iPad */
+"sidebar.allSites" = "Все сайты";
+
+/* Sidebar button title on iPad */
+"sidebar.createSite" = "Создать сайт";
+
+/* Sidebar item on iPad */
+"sidebar.domains" = "Домены";
+
+/* Sidebar item on iPad */
+"sidebar.help" = "Помощь и техническая поддержка";
+
+/* Sidebar item on iPad */
+"sidebar.me" = "Я";
+
+/* Sidebar section title on iPad */
+"sidebar.moreSectionTitle" = "Ещё";
+
+/* Sidebar section title on iPad */
+"sidebar.mySitesSectionTitle" = "Сайты";
+
+/* Sidebar item on iPad */
+"sidebar.notifications" = "Уведомления";
+
+/* Sidebar item on iPad */
+"sidebar.reader" = "Читалка";
 
 /* Template site address for the search bar. */
 "site.cration.domain.site.address" = "https:\/\/yoursitename.com";

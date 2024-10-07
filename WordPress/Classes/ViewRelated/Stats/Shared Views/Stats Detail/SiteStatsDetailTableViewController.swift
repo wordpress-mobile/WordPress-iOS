@@ -52,6 +52,10 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
         tableView.register(SiteStatsTableHeaderView.defaultNib,
                            forHeaderFooterViewReuseIdentifier: SiteStatsTableHeaderView.defaultNibName)
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         addWillEnterForegroundObserver()
     }
 

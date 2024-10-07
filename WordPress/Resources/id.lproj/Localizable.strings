@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-08-27 13:54:08+0000 */
+/* Translation-Revision-Date: 2024-10-01 09:54:12+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: id */
@@ -7885,6 +7885,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Dismiss button title */
 "activityList.dismiss.title" = "Tutup";
 
+/* Screen title */
+"addCategory.navigationTitle" = "Tambahkan Kategori";
+
+/* Cell title */
+"addCategory.parentCategory" = "Kategori Induk";
+
+/* Cell placeholder */
+"addCategory.titlePlaceholder" = "Judul";
+
 /* Error message shown a URL does not point to an existing site. */
 "addSite.restApiNotAvailable" = "Situs di alamat ini bukan situs WordPress. Agar kami dapat menghubungkannya, situs harus menggunakan WordPress.";
 
@@ -9263,6 +9272,9 @@ Example: Reply to Pamela Nguyen */
 /* Message description for when a user has no sites. */
 "mySite.noSites.description" = "Buat situs baru untuk bisnis, majalah, atau blog personal Anda; atau hubungkan instalasi WordPress yang sudah ada.";
 
+/* Title description for when a user has no sites. */
+"mySite.noSites.stateViewTitle" = "Buat Situs Pertama Anda";
+
 /* Button that reveals more site actions */
 "mySite.siteActions.button" = "Tindakan di Situs";
 
@@ -9307,6 +9319,15 @@ Example: Reply to Pamela Nguyen */
 
 /* Error message that informs comment details from a private blog cannot be fetched. */
 "notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage" = "Anda tidak memiliki izin untuk melihat blog pribadi ini.";
+
+/* The user has not previously tapped 'Like' on this post or comment */
+"notifications.accessibility-like-button-off" = "Belum disukai";
+
+/* A label for screenreader users */
+"notifications.accessibility-share-button" = "Bagikan";
+
+/* A label for screenreader users */
+"notifications.accessibility-tap-to-unlike-this-post" = "Ketuk Dua Kali untuk Batal Menyukai Pos ini";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
 "notifications.action.subscribe.hint" = "Berlangganan ke blog.";
@@ -10005,6 +10026,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
 "reader.blog.stream.subscribers" = "%@ pelanggan";
 
+/* Reader sidebar button title */
+"reader.button.unfollow" = "Berhenti Mengikuti";
+
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "Melihat pos dari situs";
 
@@ -10397,6 +10421,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* A short message that informs the user no WordPress.com blogs could be found. */
 "reader.reblog.no.blogs.title" = "Tidak ada blog WordPress.com yang tersedia";
 
+/* Notification title for when saved post is removed */
+"reader.savedPostRemovedNotificationTitle" = "Pos tersimpan telah dihapus";
+
 /* Title of a Reader tab showing Sites matching a user's search query */
 "reader.search.tab.blogs" = "Blog";
 
@@ -10424,6 +10451,45 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Reader select interests title label text */
 "reader.select.tags.title" = "Temukan dan ikuti blog yang Anda sukai";
 
+/* Reader sidebar button title */
+"reader.sidebar.allSubscriptions" = "Semua Langganan";
+
+/* Reader sidebar menu item */
+"reader.sidebar.discover" = "Temukan";
+
+/* Reader sidebar menu item */
+"reader.sidebar.likes" = "Suka";
+
+/* Reader sidebar title */
+"reader.sidebar.navigationTitle" = "Pembaca";
+
+/* Reader sidebar menu item */
+"reader.sidebar.recent" = "Terbaru";
+
+/* Reader sidebar menu item */
+"reader.sidebar.saved" = "Disimpan";
+
+/* Reader sidebar menu item */
+"reader.sidebar.search" = "Cari";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.lists.title" = "Daftar";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.organization.title" = "Organisasi";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.subscriptions.tTitle" = "Langganan";
+
+/* Reader sidebar button */
+"reader.sidebar.section.tags.addTag" = "Tambahkan tag";
+
+/* Reader sidebar button */
+"reader.sidebar.section.tags.discoverTags" = "Temukan Tag Selengkapnya";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.tags.title" = "Tag";
+
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "Berlangganan";
 
@@ -10435,6 +10501,30 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Verb. Button title. The user is subscribed to a blog. */
 "reader.subscribed.button.title" = "Telah berlangganan";
+
+/* Short error message */
+"reader.subscription.invalidURLError" = "Masukkan URL yang valid";
+
+/* Button subtitle */
+"reader.subscriptions.addSubscriptionButtonSubtitle" = "Langganan situs, buletin, atau feed RSS";
+
+/* Button title */
+"reader.subscriptions.addSubscriptionButtonTitle" = "Tambah Langganan";
+
+/* Empty state details */
+"reader.subscriptions.emptyStateDetails" = "Situs yang ditemukan dan situs langganan akan muncul di sini";
+
+/* Button title for managing subscription settings */
+"reader.subscriptions.settings" = "Pengaturan";
+
+/* Number of subscriptions on a site (plural) */
+"reader.subscriptions.subscriptionsPlural" = "%@ pelanggan";
+
+/* Number of subscriptions on a site (singular) */
+"reader.subscriptions.subscriptionsSingular" = "%@ pelanggan";
+
+/* Navigation bar title */
+"reader.subscriptions.title" = "Langganan";
 
 /* A suggestion of topics the user might want to subscribe to */
 "reader.suggested.blogs.title" = "Blog untuk dijadikan langganan";
@@ -10464,6 +10554,12 @@ This empty state component is displayed only when the app fails to load posts un
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag.title" = "Tambahkan Tag";
 
+/* Navigation title */
+"reader.tags.addTag.details" = "Masukkan nama tag apa saja, bebas";
+
+/* Navigation title */
+"reader.tags.addTag.title" = "Tambahkan Tag";
+
 /* Text for the 'Like' button on the reader tag cell. */
 "reader.tags.button.like" = "Suka";
 
@@ -10472,6 +10568,9 @@ This empty state component is displayed only when the app fails to load posts un
 
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "Temukan tag selengkapnya";
+
+/* Title for an error snackbar */
+"reader.tags.failedToUnfollowErrorTitle" = "Tidak Dapat Menghapus Topik";
 
 /* Verb. Button title. Follows a new tag. */
 "reader.tags.follow.button.title" = "Ikuti";
@@ -10636,10 +10735,19 @@ This empty state component is displayed only when the app fails to load posts un
 "shared.button.copyLink" = "Salin Tautan";
 
 /* A shared button title used in different contexts */
+"shared.button.delete" = "Hapus";
+
+/* A shared button title used in different contexts */
 "shared.button.done" = "Selesai";
 
 /* A shared button title used in different contexts */
+"shared.button.ok" = "Oke";
+
+/* A shared button title used in different contexts */
 "shared.button.remove" = "Hapus";
+
+/* A shared button title used in different contexts */
+"shared.button.retry" = "Coba lagi";
 
 /* A shared button title used in different contexts */
 "shared.button.save" = "Simpan";
@@ -10648,10 +10756,43 @@ This empty state component is displayed only when the app fails to load posts un
 "shared.button.share" = "Bagikan";
 
 /* A shared button title used in different contexts */
+"shared.button.undo" = "Batal";
+
+/* A shared button title used in different contexts */
 "shared.button.view" = "Lihat";
 
 /* A generic error message */
 "shared.error.geneirc" = "Terjadi kesalahan";
+
+/* Sidebar button title on iPad */
+"sidebar.addSite" = "Tambahkan Situs";
+
+/* Sidebar button title on iPad */
+"sidebar.allSites" = "Semua Situs";
+
+/* Sidebar button title on iPad */
+"sidebar.createSite" = "Buat Situs";
+
+/* Sidebar item on iPad */
+"sidebar.domains" = "Domain";
+
+/* Sidebar item on iPad */
+"sidebar.help" = "Bantuan & Dukungan";
+
+/* Sidebar item on iPad */
+"sidebar.me" = "Saya";
+
+/* Sidebar section title on iPad */
+"sidebar.moreSectionTitle" = "Lainnya";
+
+/* Sidebar section title on iPad */
+"sidebar.mySitesSectionTitle" = "Situs";
+
+/* Sidebar item on iPad */
+"sidebar.notifications" = "Pemberitahuan";
+
+/* Sidebar item on iPad */
+"sidebar.reader" = "Pembaca";
 
 /* Template site address for the search bar. */
 "site.cration.domain.site.address" = "https:\/\/namasitusanda.com";
