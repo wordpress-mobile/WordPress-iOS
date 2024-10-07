@@ -274,7 +274,7 @@ class MeViewController: UITableViewController {
         guard let account = self.defaultAccount() else {
             let error = "Tried to push My Profile without a default account. This shouldn't happen"
             assertionFailure(error)
-            DDLogError(error)
+            DDLogError("\(error)")
             return nil
         }
 
@@ -500,7 +500,7 @@ class MeViewController: UITableViewController {
                 let _ = try await [refreshDetails, refreshSettings]
                 self.reloadViewModel()
             } catch let error {
-                DDLogError(error.localizedDescription)
+                DDLogError("\(error.localizedDescription)")
             }
         }
     }

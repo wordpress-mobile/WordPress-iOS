@@ -161,7 +161,7 @@ struct ReaderPostCardCellViewModel {
                 let request = try await mediaRequestAuthenticator.authenticatedRequest(for: url, host: host)
                 await imageView.downloadImage(usingRequest: request)
             } catch {
-                DDLogError(error)
+                DDLogError("\(error)")
             }
         }
     }
@@ -172,7 +172,7 @@ struct ReaderPostCardCellViewModel {
         }
         let imageSize = featuredImageIdealSize ?? size
         let host = MediaHost(with: contentProvider, failure: { error in
-            DDLogError(error)
+            DDLogError("\(error)")
         })
         imageLoader.loadImage(with: url, from: host, preferredSize: imageSize)
     }

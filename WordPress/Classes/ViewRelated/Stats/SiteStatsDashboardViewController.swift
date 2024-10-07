@@ -104,13 +104,13 @@ class SiteStatsDashboardViewController: UIViewController {
         setupFilterBar()
         restoreSelectedDateFromUserDefaults()
         restoreSelectedTabFromUserDefaults()
-        addWillEnterForegroundObserver()
         configureNavBar()
         view.accessibilityIdentifier = "stats-dashboard"
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        addWillEnterForegroundObserver()
         JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: self, source: .stats)
     }
 
@@ -244,18 +244,24 @@ private extension SiteStatsDashboardViewController {
                 pageViewController?.setViewControllers([insightsTableViewController],
                                                        direction: .forward,
                                                        animated: false)
+            } else {
+                insightsTableViewController.refreshInsights()
             }
         case .traffic:
             if oldSelectedTab != .traffic || pageViewControllerIsEmpty {
                 pageViewController?.setViewControllers([trafficTableViewController],
                                                        direction: .forward,
                                                        animated: false)
+            } else {
+                trafficTableViewController.refreshData()
             }
         case .subscribers:
             if oldSelectedTab != .subscribers || pageViewControllerIsEmpty {
                 pageViewController?.setViewControllers([subscribersViewController],
                                                        direction: .forward,
                                                        animated: false)
+            } else {
+                subscribersViewController.refreshData()
             }
         }
     }

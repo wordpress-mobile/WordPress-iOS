@@ -86,7 +86,7 @@ class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController, St
         viewModel?.removeListeners()
     }
 
-    private func refreshInsights(forceRefresh: Bool = false) {
+    func refreshInsights(forceRefresh: Bool = false) {
         viewModel?.refreshInsights(forceRefresh: forceRefresh)
     }
 

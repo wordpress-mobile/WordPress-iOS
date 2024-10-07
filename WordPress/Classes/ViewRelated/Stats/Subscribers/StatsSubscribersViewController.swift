@@ -58,7 +58,7 @@ final class StatsSubscribersViewController: SiteStatsBaseTableViewController {
         cancellables = []
     }
 
-    @objc private func refreshData() {
+    @objc func refreshData() {
         viewModel.refreshData()
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {

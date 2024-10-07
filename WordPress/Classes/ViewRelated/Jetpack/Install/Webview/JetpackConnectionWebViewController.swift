@@ -349,7 +349,7 @@ private extension JetpackConnectionWebViewController {
             guard enabled else {
                 return
             }
-            DDLogDebug(message)
+            DDLogDebug("\(message)")
         }
     }
 }

@@ -61,7 +61,7 @@ extension GutenbergWebNavigationController: GutenbergWebDelegate {
     }
 
     func webController(controller: GutenbergWebSingleBlockViewController, didLog log: String) {
-        DDLogVerbose(log)
+        DDLogVerbose("\(log)")
     }
 
     private func dismiss(webController: GutenbergWebSingleBlockViewController) {
