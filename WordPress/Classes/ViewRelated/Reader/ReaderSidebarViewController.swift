@@ -8,6 +8,7 @@ final class ReaderSidebarViewController: UIHostingController<AnyView> {
 
     private var cancellables: [AnyCancellable] = []
     private var viewContext: NSManagedObjectContext { ContextManager.shared.mainContext }
+    private var didAppear = false
 
     init(viewModel: ReaderSidebarViewModel) {
         self.viewModel = viewModel
@@ -28,6 +29,12 @@ final class ReaderSidebarViewController: UIHostingController<AnyView> {
         super.viewWillAppear(animated)
 
         viewModel.onAppear()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        didAppear = true
     }
 
     func showInitialSelection() {
@@ -60,7 +67,7 @@ final class ReaderSidebarViewController: UIHostingController<AnyView> {
             showSecondary(makeViewController(withTopicID: objectID))
         }
 
-        if let splitVC = splitViewController, splitVC.splitBehavior == .overlay {
+        if didAppear, let splitVC = splitViewController, splitVC.splitBehavior == .overlay {
             DispatchQueue.main.async {
                 splitVC.hide(.supplementary)
             }
