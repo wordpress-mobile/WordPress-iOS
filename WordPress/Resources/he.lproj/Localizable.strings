@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-08-29 09:54:08+0000 */
+/* Translation-Revision-Date: 2024-10-01 14:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: he_IL */
@@ -7879,6 +7879,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Dismiss button title */
 "activityList.dismiss.title" = "ביטול";
 
+/* Screen title */
+"addCategory.navigationTitle" = "להוסיף קטגוריה";
+
+/* Cell title */
+"addCategory.parentCategory" = "קטגוריית אם";
+
+/* Cell placeholder */
+"addCategory.titlePlaceholder" = "כותרת";
+
 /* Error message shown a URL does not point to an existing site. */
 "addSite.restApiNotAvailable" = "כתובת האתר שהזנת אינה עבור אתר ב-WordPress. כדי שנוכל להתחבר לאתר, האתר חייב להשתמש בפלטפורמה של WordPress.";
 
@@ -9266,6 +9275,9 @@ Example: Reply to Pamela Nguyen */
 /* Message description for when a user has no sites. */
 "mySite.noSites.description" = "יצירה של אתר חדש לעסק שלך, מגזין, או בלוג אישי; או חיבור אתר WordPress קיים.";
 
+/* Title description for when a user has no sites. */
+"mySite.noSites.stateViewTitle" = "ליצור את האתר הראשון שלך";
+
 /* Button that reveals more site actions */
 "mySite.siteActions.button" = "פעולות באתר";
 
@@ -9310,6 +9322,33 @@ Example: Reply to Pamela Nguyen */
 
 /* Error message that informs comment details from a private blog cannot be fetched. */
 "notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage" = "אין לך הרשאה להציג את הבלוג הפרטי הזה.";
+
+/* The user has previously tapped 'Like' on this comment */
+"notifications.accessibility-comment-like-button-on" = "סימנת לייק לתגובה הזאת";
+
+/* The user has not previously tapped 'Like' on this post or comment */
+"notifications.accessibility-like-button-off" = "לא סימנת לייק";
+
+/* The user has previously tapped 'Like' on this post */
+"notifications.accessibility-post-like-button-on" = "סימנת לייק לפוסט הזה";
+
+/* A label for screenreader users */
+"notifications.accessibility-share-button" = "לשתף";
+
+/* A label for screenreader users */
+"notifications.accessibility-tap-to-like-this-comment" = "יש להקיש פעמיים כדי לסמן לייק לתגובה";
+
+/* A label for screenreader users */
+"notifications.accessibility-tap-to-like-this-post" = "יש להקיש פעמיים כדי לסמן לייק לפוסט";
+
+/* A label for screenreader users */
+"notifications.accessibility-tap-to-share-this-post" = "יש להקיש פעמיים כדי לשתף את הפוסט";
+
+/* A label for screenreader users */
+"notifications.accessibility-tap-to-unlike-this-comment" = "יש להקיש פעמיים כדי להסיר את הלייק מהתגובה";
+
+/* A label for screenreader users */
+"notifications.accessibility-tap-to-unlike-this-post" = "יש להקיש פעמיים כדי להסיר את הלייק מהפוסט";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
 "notifications.action.subscribe.hint" = "להירשם לעדכונים מהבלוג.";
@@ -10005,6 +10044,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
 "reader.blog.stream.subscribers" = "%@ מנויים";
 
+/* Reader sidebar button title */
+"reader.button.unfollow" = "להפסיק מעקב";
+
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "מציג פוסטים של האתר";
 
@@ -10391,6 +10433,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* A short message that informs the user no WordPress.com blogs could be found. */
 "reader.reblog.no.blogs.title" = "אין בלוגים זמינים של WordPress.com";
 
+/* Notification title for when saved post is removed */
+"reader.savedPostRemovedNotificationTitle" = "הפוסטים השמורים הוסרו";
+
 /* Title of a Reader tab showing Sites matching a user's search query */
 "reader.search.tab.blogs" = "בלוגים";
 
@@ -10418,6 +10463,42 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Reader select interests title label text */
 "reader.select.tags.title" = "לגלות בלוגים שימצאו חן בעינייך ולעקוב אחריהם";
 
+/* Reader sidebar button title */
+"reader.sidebar.allSubscriptions" = "כל המינויים";
+
+/* Reader sidebar menu item */
+"reader.sidebar.discover" = "היכרות";
+
+/* Reader sidebar menu item */
+"reader.sidebar.likes" = "לייקים";
+
+/* Reader sidebar menu item */
+"reader.sidebar.recent" = "אחרונים";
+
+/* Reader sidebar menu item */
+"reader.sidebar.saved" = "נשמר";
+
+/* Reader sidebar menu item */
+"reader.sidebar.search" = "חיפוש";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.lists.title" = "רשימות";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.organization.title" = "ארגון";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.subscriptions.tTitle" = "מינויים";
+
+/* Reader sidebar button */
+"reader.sidebar.section.tags.addTag" = "להוסיף תגית";
+
+/* Reader sidebar button */
+"reader.sidebar.section.tags.discoverTags" = "לעיין בתגיות נוספות";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.tags.title" = "תגיות";
+
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "להירשם לעדכונים";
 
@@ -10429,6 +10510,30 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Verb. Button title. The user is subscribed to a blog. */
 "reader.subscribed.button.title" = "רשום לעדכונים";
+
+/* Short error message */
+"reader.subscription.invalidURLError" = "יש להזין כתובת URL תקפה";
+
+/* Button subtitle */
+"reader.subscriptions.addSubscriptionButtonSubtitle" = "להירשם לאתרים, לניוזלטרים ולפידים של RSS";
+
+/* Button title */
+"reader.subscriptions.addSubscriptionButtonTitle" = "הוספת מינוי";
+
+/* Empty state details */
+"reader.subscriptions.emptyStateDetails" = "כאן יופיעו האתרים שעניינו אותך ושנרשמת לקבלת עדכונים מהם";
+
+/* Button title for managing subscription settings */
+"reader.subscriptions.settings" = "הגדרות";
+
+/* Number of subscriptions on a site (plural) */
+"reader.subscriptions.subscriptionsPlural" = "%@ מנויים";
+
+/* Number of subscriptions on a site (singular) */
+"reader.subscriptions.subscriptionsSingular" = "מנוי %@";
+
+/* Navigation bar title */
+"reader.subscriptions.title" = "מינויים";
 
 /* A suggestion of topics the user might want to subscribe to */
 "reader.suggested.blogs.title" = "בלוגים שכדאי להירשם לעדכונים מהם";
@@ -10458,6 +10563,15 @@ This empty state component is displayed only when the app fails to load posts un
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag.title" = "להוסיף תגית";
 
+/* Navigation title */
+"reader.tags.addTag.details" = "אפשר להזין כל שם תגית אקראי";
+
+/* Placeholder for text field */
+"reader.tags.addTag.placeholder" = "תגית";
+
+/* Navigation title */
+"reader.tags.addTag.title" = "להוסיף תגית";
+
 /* Text for the 'Like' button on the reader tag cell. */
 "reader.tags.button.like" = "לייק";
 
@@ -10466,6 +10580,9 @@ This empty state component is displayed only when the app fails to load posts un
 
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "לגלות תגיות נוספות";
+
+/* Title for an error snackbar */
+"reader.tags.failedToUnfollowErrorTitle" = "לא היה ניתן להסיר את הנושא";
 
 /* Verb. Button title. Follows a new tag. */
 "reader.tags.follow.button.title" = "לעקוב";
@@ -10630,13 +10747,22 @@ This empty state component is displayed only when the app fails to load posts un
 "shared.button.copyLink" = "להעתיק את הקישור";
 
 /* A shared button title used in different contexts */
+"shared.button.delete" = "למחוק";
+
+/* A shared button title used in different contexts */
 "shared.button.done" = "בוצע";
 
 /* A shared button title used in different contexts */
 "shared.button.edit" = "לערוך";
 
 /* A shared button title used in different contexts */
+"shared.button.ok" = "אישור";
+
+/* A shared button title used in different contexts */
 "shared.button.remove" = "להסיר";
+
+/* A shared button title used in different contexts */
+"shared.button.retry" = "לנסות שוב";
 
 /* A shared button title used in different contexts */
 "shared.button.save" = "לשמור";
@@ -10645,10 +10771,40 @@ This empty state component is displayed only when the app fails to load posts un
 "shared.button.share" = "לשתף";
 
 /* A shared button title used in different contexts */
+"shared.button.undo" = "לבטל פעולה אחרונה";
+
+/* A shared button title used in different contexts */
 "shared.button.view" = "להציג";
 
 /* A generic error message */
 "shared.error.geneirc" = "משהו השתבש";
+
+/* Sidebar button title on iPad */
+"sidebar.addSite" = "להוסיף אתר";
+
+/* Sidebar button title on iPad */
+"sidebar.allSites" = "כל האתרים";
+
+/* Sidebar button title on iPad */
+"sidebar.createSite" = "יצירת אתר";
+
+/* Sidebar item on iPad */
+"sidebar.domains" = "דומיינים";
+
+/* Sidebar item on iPad */
+"sidebar.help" = "עזרה ותמיכה";
+
+/* Sidebar item on iPad */
+"sidebar.me" = "אני";
+
+/* Sidebar section title on iPad */
+"sidebar.moreSectionTitle" = "עוד";
+
+/* Sidebar section title on iPad */
+"sidebar.mySitesSectionTitle" = "אתרים";
+
+/* Sidebar item on iPad */
+"sidebar.notifications" = "הודעות";
 
 /* Template site address for the search bar. */
 "site.cration.domain.site.address" = "https:\/\/yoursitename.com";

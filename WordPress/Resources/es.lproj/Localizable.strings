@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-08-30 15:33:37+0000 */
+/* Translation-Revision-Date: 2024-09-30 10:13:35+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: es */
@@ -7885,6 +7885,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Dismiss button title */
 "activityList.dismiss.title" = "Descartar";
 
+/* Screen title */
+"addCategory.navigationTitle" = "Añadir categoría";
+
+/* Cell title */
+"addCategory.parentCategory" = "Categoría principal";
+
+/* Cell placeholder */
+"addCategory.titlePlaceholder" = "Título";
+
 /* Error message shown a URL does not point to an existing site. */
 "addSite.restApiNotAvailable" = "El sitio que hay en esta dirección no es un sitio WordPress. Para que podamos conectarnos con él, el sitio debe usar WordPress.";
 
@@ -9275,6 +9284,9 @@ Example: Reply to Pamela Nguyen */
 /* Message description for when a user has no sites. */
 "mySite.noSites.description" = "Crea un nuevo sitio para tu negocio, revista o blog personal; o conecta con una instalación de WordPress existente.";
 
+/* Title description for when a user has no sites. */
+"mySite.noSites.stateViewTitle" = "Crea tu primer sitio";
+
 /* Button that reveals more site actions */
 "mySite.siteActions.button" = "Acciones del sitio";
 
@@ -9319,6 +9331,33 @@ Example: Reply to Pamela Nguyen */
 
 /* Error message that informs comment details from a private blog cannot be fetched. */
 "notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage" = "No tienes permiso para ver este blog privado.";
+
+/* The user has previously tapped 'Like' on this comment */
+"notifications.accessibility-comment-like-button-on" = "Te ha gustado este comentario";
+
+/* The user has not previously tapped 'Like' on this post or comment */
+"notifications.accessibility-like-button-off" = "No me gusta";
+
+/* The user has previously tapped 'Like' on this post */
+"notifications.accessibility-post-like-button-on" = "Te ha gustado esta entrada";
+
+/* A label for screenreader users */
+"notifications.accessibility-share-button" = "Compartir";
+
+/* A label for screenreader users */
+"notifications.accessibility-tap-to-like-this-comment" = "Pulsa dos veces para que marcar que te gusta este comentario";
+
+/* A label for screenreader users */
+"notifications.accessibility-tap-to-like-this-post" = "Pulsa dos veces para que marcar que te gusta esta publicación";
+
+/* A label for screenreader users */
+"notifications.accessibility-tap-to-share-this-post" = "Pulsa dos veces para compartir esta entrada";
+
+/* A label for screenreader users */
+"notifications.accessibility-tap-to-unlike-this-comment" = "Pulsa dos veces para que desmarcar que gusta este comentario";
+
+/* A label for screenreader users */
+"notifications.accessibility-tap-to-unlike-this-post" = "Pulsa dos veces para que desmarcar que gusta esta entrada";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
 "notifications.action.subscribe.hint" = "Suscríbete al blog.";
@@ -10017,6 +10056,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
 "reader.blog.stream.subscribers" = "%@ suscriptores";
 
+/* Reader sidebar button title */
+"reader.button.unfollow" = "Dejar de seguir";
+
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "Muestra las entradas del sitio";
 
@@ -10409,6 +10451,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* A short message that informs the user no WordPress.com blogs could be found. */
 "reader.reblog.no.blogs.title" = "No hay blogs de Word.Press.com disponibles";
 
+/* Notification title for when saved post is removed */
+"reader.savedPostRemovedNotificationTitle" = "Eliminado el mensaje guardado";
+
 /* Title of a Reader tab showing Sites matching a user's search query */
 "reader.search.tab.blogs" = "Blogs";
 
@@ -10436,6 +10481,45 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Reader select interests title label text */
 "reader.select.tags.title" = "Descubre y sigue los blogs que te gustan";
 
+/* Reader sidebar button title */
+"reader.sidebar.allSubscriptions" = "Todas las suscripciones";
+
+/* Reader sidebar menu item */
+"reader.sidebar.discover" = "Descubrir";
+
+/* Reader sidebar menu item */
+"reader.sidebar.likes" = "Me gusta";
+
+/* Reader sidebar title */
+"reader.sidebar.navigationTitle" = "Lector";
+
+/* Reader sidebar menu item */
+"reader.sidebar.recent" = "Recientes";
+
+/* Reader sidebar menu item */
+"reader.sidebar.saved" = "Guardado";
+
+/* Reader sidebar menu item */
+"reader.sidebar.search" = "Buscar";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.lists.title" = "Listas";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.organization.title" = "Organización";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.subscriptions.tTitle" = "Suscripciones";
+
+/* Reader sidebar button */
+"reader.sidebar.section.tags.addTag" = "Añadir etiqueta";
+
+/* Reader sidebar button */
+"reader.sidebar.section.tags.discoverTags" = "Descubre más etiquetas";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.tags.title" = "Etiquetas";
+
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "Suscribir";
 
@@ -10447,6 +10531,30 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Verb. Button title. The user is subscribed to a blog. */
 "reader.subscribed.button.title" = "Suscrito";
+
+/* Short error message */
+"reader.subscription.invalidURLError" = "Por favor, introduce una URL válida";
+
+/* Button subtitle */
+"reader.subscriptions.addSubscriptionButtonSubtitle" = "Suscribirse a sitios, boletines o canales RSS";
+
+/* Button title */
+"reader.subscriptions.addSubscriptionButtonTitle" = "Añadir suscripción";
+
+/* Empty state details */
+"reader.subscriptions.emptyStateDetails" = "Los sitios que descubras y a los que te suscribas aparecerán aquí";
+
+/* Button title for managing subscription settings */
+"reader.subscriptions.settings" = "Ajustes";
+
+/* Number of subscriptions on a site (plural) */
+"reader.subscriptions.subscriptionsPlural" = "%@ suscriptores";
+
+/* Number of subscriptions on a site (singular) */
+"reader.subscriptions.subscriptionsSingular" = "%@ suscriptor";
+
+/* Navigation bar title */
+"reader.subscriptions.title" = "Subscripciones";
 
 /* A suggestion of topics the user might want to subscribe to */
 "reader.suggested.blogs.title" = "Blogs a los que suscribirse";
@@ -10476,6 +10584,15 @@ This empty state component is displayed only when the app fails to load posts un
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag.title" = "Añadir una etiqueta";
 
+/* Navigation title */
+"reader.tags.addTag.details" = "Puedes introducir cualquier nombre de etiqueta que quieras";
+
+/* Placeholder for text field */
+"reader.tags.addTag.placeholder" = "Etiqueta";
+
+/* Navigation title */
+"reader.tags.addTag.title" = "Añadir etiqueta";
+
 /* Text for the 'Like' button on the reader tag cell. */
 "reader.tags.button.like" = "Me gusta";
 
@@ -10484,6 +10601,9 @@ This empty state component is displayed only when the app fails to load posts un
 
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "Descubrir más etiquetas";
+
+/* Title for an error snackbar */
+"reader.tags.failedToUnfollowErrorTitle" = "No se pudo eliminar el tema";
 
 /* Verb. Button title. Follows a new tag. */
 "reader.tags.follow.button.title" = "Seguir";
@@ -10648,13 +10768,22 @@ This empty state component is displayed only when the app fails to load posts un
 "shared.button.copyLink" = "Copiar enlace";
 
 /* A shared button title used in different contexts */
+"shared.button.delete" = "Borrar";
+
+/* A shared button title used in different contexts */
 "shared.button.done" = "Hecho";
 
 /* A shared button title used in different contexts */
 "shared.button.edit" = "Editar";
 
 /* A shared button title used in different contexts */
+"shared.button.ok" = "OK";
+
+/* A shared button title used in different contexts */
 "shared.button.remove" = "Quitar";
+
+/* A shared button title used in different contexts */
+"shared.button.retry" = "Reintentar";
 
 /* A shared button title used in different contexts */
 "shared.button.save" = "Guardar";
@@ -10663,10 +10792,43 @@ This empty state component is displayed only when the app fails to load posts un
 "shared.button.share" = "Compartir";
 
 /* A shared button title used in different contexts */
+"shared.button.undo" = "Deshacer";
+
+/* A shared button title used in different contexts */
 "shared.button.view" = "Ver";
 
 /* A generic error message */
 "shared.error.geneirc" = "Algo ha salido mal";
+
+/* Sidebar button title on iPad */
+"sidebar.addSite" = "Añadir un sitio";
+
+/* Sidebar button title on iPad */
+"sidebar.allSites" = "Todos los sitios";
+
+/* Sidebar button title on iPad */
+"sidebar.createSite" = "Crear un sitio";
+
+/* Sidebar item on iPad */
+"sidebar.domains" = "Dominios";
+
+/* Sidebar item on iPad */
+"sidebar.help" = "Ayuda y soporte";
+
+/* Sidebar item on iPad */
+"sidebar.me" = "Yo";
+
+/* Sidebar section title on iPad */
+"sidebar.moreSectionTitle" = "Más";
+
+/* Sidebar section title on iPad */
+"sidebar.mySitesSectionTitle" = "Sitios";
+
+/* Sidebar item on iPad */
+"sidebar.notifications" = "Notificaciones";
+
+/* Sidebar item on iPad */
+"sidebar.reader" = "Lector";
 
 /* Template site address for the search bar. */
 "site.cration.domain.site.address" = "https:\/\/yoursitename.com";
