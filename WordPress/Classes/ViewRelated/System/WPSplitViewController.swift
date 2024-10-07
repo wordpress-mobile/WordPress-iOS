@@ -338,7 +338,7 @@ class WPSplitViewController: UISplitViewController {
         }
 
         if animated {
-            UIView.animate(withDuration: WPFullscreenNavigationTransition.transitionDuration) {
+            UIView.animate(withDuration: 0.33) {
                 updateDisplayMode()
             }
         } else {
@@ -558,26 +558,6 @@ extension WPSplitViewController: UINavigationControllerDelegate {
                 view.fadeOutAndRemoveBlankingSnapshot()
             }
         }
-    }
-
-    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        guard fullscreenDisplayEnabled else { return nil }
-
-        var stack = navigationController.viewControllers
-        if operation == .push {
-            // During a push, the new VC has already been added to the stack
-            stack.removeLast()
-        }
-
-        let hasFullscreenViewControllersInStack = stack.filter({$0 is PrefersFullscreenDisplay}).count > 0
-        let transitionInvolvesFullscreenViewController = toVC is PrefersFullscreenDisplay || fromVC is PrefersFullscreenDisplay
-        let movingFromOrToFullscreen = !hasFullscreenViewControllersInStack && transitionInvolvesFullscreenViewController
-
-        if !hasHorizontallyCompactView() && movingFromOrToFullscreen {
-            return WPFullscreenNavigationTransition(operation: operation)
-        }
-
-        return nil
     }
 
     fileprivate func dimDetailViewControllerIfNecessary() {
