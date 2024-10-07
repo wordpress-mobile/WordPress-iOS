@@ -55,4 +55,8 @@ extension UIViewController {
     public static var topViewController: UIViewController? {
         UIApplication.shared.delegate?.window??.topmostPresentedViewController
     }
+
+    @objc public var splitViewControllerIsHorizontallyCompact: Bool {
+        splitViewController?.hasHorizontallyCompactView() ?? hasHorizontallyCompactView()
+    }
 }
