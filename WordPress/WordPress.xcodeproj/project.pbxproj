@@ -862,7 +862,6 @@
 		177076211EA206C000705A4A /* PlayIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177076201EA206C000705A4A /* PlayIconView.swift */; };
 		1770BD0D267A368100D5F8C0 /* BloggingRemindersPushPromptViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1770BD0C267A368100D5F8C0 /* BloggingRemindersPushPromptViewController.swift */; };
 		1770BD0E267A368100D5F8C0 /* BloggingRemindersPushPromptViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1770BD0C267A368100D5F8C0 /* BloggingRemindersPushPromptViewController.swift */; };
-		177E7DAD1DD0D1E600890467 /* UINavigationController+SplitViewFullscreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177E7DAC1DD0D1E600890467 /* UINavigationController+SplitViewFullscreen.swift */; };
 		1782BE841E70063100A91E7D /* MediaItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1782BE831E70063100A91E7D /* MediaItemViewController.swift */; };
 		17870A702816F2A000D1C627 /* StatsLatestPostSummaryInsightsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17870A6F2816F2A000D1C627 /* StatsLatestPostSummaryInsightsCell.swift */; };
 		17870A712816F2A000D1C627 /* StatsLatestPostSummaryInsightsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17870A6F2816F2A000D1C627 /* StatsLatestPostSummaryInsightsCell.swift */; };
@@ -5097,7 +5096,6 @@
 		FABB242A2602FC2C00C8785C /* Pattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CFC1561E0AC8FF001DF9E9 /* Pattern.swift */; };
 		FABB242B2602FC2C00C8785C /* ShareExtensionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930F09161C7D110E00995926 /* ShareExtensionService.swift */; };
 		FABB242E2602FC2C00C8785C /* OffsetTableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5A738BC244DF75400EDE065 /* OffsetTableViewHandler.swift */; };
-		FABB242F2602FC2C00C8785C /* UINavigationController+SplitViewFullscreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177E7DAC1DD0D1E600890467 /* UINavigationController+SplitViewFullscreen.swift */; };
 		FABB24302602FC2C00C8785C /* ReaderReblogPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5B3EAE23A851330060FF1F /* ReaderReblogPresenter.swift */; };
 		FABB24312602FC2C00C8785C /* BodyContentGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E7A6120E44E6A0075D159 /* BodyContentGroup.swift */; };
 		FABB24322602FC2C00C8785C /* WPStyleGuide+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AD36D41D36C1A60044B10D /* WPStyleGuide+Search.swift */; };
@@ -6714,7 +6712,6 @@
 		177074841FB209F100951A4A /* CircularProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressView.swift; sourceTree = "<group>"; };
 		177076201EA206C000705A4A /* PlayIconView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayIconView.swift; sourceTree = "<group>"; };
 		1770BD0C267A368100D5F8C0 /* BloggingRemindersPushPromptViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloggingRemindersPushPromptViewController.swift; sourceTree = "<group>"; };
-		177E7DAC1DD0D1E600890467 /* UINavigationController+SplitViewFullscreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationController+SplitViewFullscreen.swift"; sourceTree = "<group>"; };
 		1782BE831E70063100A91E7D /* MediaItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaItemViewController.swift; sourceTree = "<group>"; };
 		17870A6F2816F2A000D1C627 /* StatsLatestPostSummaryInsightsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsLatestPostSummaryInsightsCell.swift; sourceTree = "<group>"; };
 		17870A72281847D500D1C627 /* WordPress 139.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 139.xcdatamodel"; sourceTree = "<group>"; };
@@ -16241,7 +16238,6 @@
 				FADC40A72A8BC2A200C19997 /* UIImage+Gravatar.swift */,
 				B5E94D141FE04815000E7C20 /* UIImageView+SiteIcon.swift */,
 				1790A4521E28F0ED00AE54C2 /* UINavigationController+Helpers.swift */,
-				177E7DAC1DD0D1E600890467 /* UINavigationController+SplitViewFullscreen.swift */,
 				7326A4A7221C8F4100B4EB8C /* UIStackView+Subviews.swift */,
 				8BF0B606247D88EB009A7457 /* UITableViewCell+enableDisable.swift */,
 				D829C33A21B12EFE00B09F12 /* UIView+Borders.swift */,
@@ -22618,7 +22614,6 @@
 				C3A1166A29807E3F00B0CB6E /* ReaderBlockUserAction.swift in Sources */,
 				FE06AC8326C3BD0900B69DE4 /* ShareAppContentPresenter.swift in Sources */,
 				F5A738BD244DF75400EDE065 /* OffsetTableViewHandler.swift in Sources */,
-				177E7DAD1DD0D1E600890467 /* UINavigationController+SplitViewFullscreen.swift in Sources */,
 				8B74A9A8268E3C68003511CE /* RewindStatus+multiSite.swift in Sources */,
 				3F5B3EAF23A851330060FF1F /* ReaderReblogPresenter.swift in Sources */,
 				7E3E7A6220E44E6A0075D159 /* BodyContentGroup.swift in Sources */,
@@ -25576,7 +25571,6 @@
 				FABB242B2602FC2C00C8785C /* ShareExtensionService.swift in Sources */,
 				F1C197A72670DDB100DE1FF7 /* BloggingRemindersTracker.swift in Sources */,
 				FABB242E2602FC2C00C8785C /* OffsetTableViewHandler.swift in Sources */,
-				FABB242F2602FC2C00C8785C /* UINavigationController+SplitViewFullscreen.swift in Sources */,
 				246EB6E32C80380000343F28 /* AppStyleGuide.swift in Sources */,
 				803BB99029667BAF00B3F6D6 /* JetpackBrandingTextProvider.swift in Sources */,
 				F48EBF8B2B2F94DD004CD561 /* BlogDashboardAnalyticPropertiesProviding.swift in Sources */,
