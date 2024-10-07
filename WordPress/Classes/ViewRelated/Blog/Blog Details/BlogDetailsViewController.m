@@ -233,7 +233,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
 
 #pragma mark -
 
-@interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate, WPSplitViewControllerDetailProvider, UIAdaptivePresentationControllerDelegate>
+@interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate, UIAdaptivePresentationControllerDelegate>
 
 @property (nonatomic, strong) NSArray *headerViewHorizontalConstraints;
 @property (nonatomic, strong) NSArray<BlogDetailsSection *> *tableSections;
@@ -2092,21 +2092,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIApplicationWillEnterForegroundNotification
                                                   object:nil];
-}
-
-#pragma mark - WPSplitViewControllerDetailProvider
-
-- (UIViewController *)initialDetailViewControllerForSplitView:(WPSplitViewController *)splitView
-{
-    if ([self shouldShowStats]) {
-        StatsViewController *statsView = [StatsViewController new];
-        statsView.blog = self.blog;
-        return statsView;
-    } else {
-        PostListViewController *postsView = [PostListViewController controllerWithBlog:self.blog];
-        postsView.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
-        return postsView;
-    }
 }
 
 #pragma mark - UIViewControllerTransitioningDelegate

@@ -639,14 +639,3 @@ extension UIViewController {
 /// delegate method detects that there are no fullscreen view controllers left
 /// in the stack.
 protocol PrefersFullscreenDisplay: AnyObject {}
-
-// MARK: - WPSplitViewControllerDetailProvider Protocol
-
-@objc
-protocol WPSplitViewControllerDetailProvider {
-    /**
-     * View controllers that implement this method can return a view controller
-     * to automatically populate the detail pane of the split view with.
-     */
-    func initialDetailViewControllerForSplitView(_ splitView: WPSplitViewController) -> UIViewController?
-}

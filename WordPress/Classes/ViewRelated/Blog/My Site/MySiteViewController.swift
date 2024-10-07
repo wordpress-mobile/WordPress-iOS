@@ -859,28 +859,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     }
 }
 
-extension MySiteViewController: WPSplitViewControllerDetailProvider {
-    func initialDetailViewControllerForSplitView(_ splitView: WPSplitViewController) -> UIViewController? {
-        guard let blogDetailsViewController = blogDetailsViewController as? WPSplitViewControllerDetailProvider else {
-            let emptyViewController = UIViewController()
-            WPStyleGuide.configureColors(view: emptyViewController.view, tableView: nil)
-            return emptyViewController
-        }
-
-        return blogDetailsViewController.initialDetailViewControllerForSplitView(splitView)
-    }
-
-    /// Removes all view controllers from the details view controller stack and leaves split view details in an empty state.
-    ///
-    private func hideSplitDetailsView() {
-        if let splitViewController = splitViewController as? WPSplitViewController,
-           splitViewController.viewControllers.count > 1,
-           let detailsNavigationController = splitViewController.viewControllers.last as? UINavigationController {
-            detailsNavigationController.setViewControllers([], animated: false)
-        }
-    }
-}
-
 // MARK: - UIViewControllerTransitioningDelegate
 //
 extension MySiteViewController: UIViewControllerTransitioningDelegate {

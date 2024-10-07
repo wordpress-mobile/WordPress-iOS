@@ -587,19 +587,6 @@ class MeViewController: UITableViewController {
     }()
 }
 
-// MARK: - WPSplitViewControllerDetailProvider Conformance
-
-extension MeViewController: WPSplitViewControllerDetailProvider {
-    func initialDetailViewControllerForSplitView(_ splitView: WPSplitViewController) -> UIViewController? {
-
-        guard let _ = defaultAccount() else {
-            return nil
-        }
-
-        return myProfileViewController
-    }
-}
-
 // MARK: - SearchableActivity Conformance
 
 extension MeViewController: SearchableActivityConvertable {
