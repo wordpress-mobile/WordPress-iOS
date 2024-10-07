@@ -21,11 +21,10 @@ class MySiteViewModel {
         for blog: Blog,
         jetpackFeaturesEnabled: Bool,
         splitViewControllerIsHorizontallyCompact: Bool,
-        isSplitViewEnabled: Bool
     ) -> MySiteViewController.Section {
         let shouldShowDashboard = jetpackFeaturesEnabled
         && blog.isAccessibleThroughWPCom()
-        && (splitViewControllerIsHorizontallyCompact || !isSplitViewEnabled)
+        && splitViewControllerIsHorizontallyCompact
 
         return shouldShowDashboard ? .dashboard : .siteMenu
     }

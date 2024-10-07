@@ -1050,10 +1050,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
 }
 
 - (Boolean)isSplitViewDisplayed {
-    if (self.isSidebarModeEnabled) {
-        return true;
-    }
-    return ![self splitViewControllerIsHorizontallyCompact] && [MySitesCoordinator isSplitViewEnabled];
+    return self.isSidebarModeEnabled;
 }
 
 /// This section is available on Jetpack only.

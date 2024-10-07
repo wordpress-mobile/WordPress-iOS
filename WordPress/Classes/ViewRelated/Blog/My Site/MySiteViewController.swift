@@ -375,8 +375,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         let section = isSidebarModeEnabled ? .dashboard : viewModel.getSection(
             for: blog,
             jetpackFeaturesEnabled: JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(),
-            splitViewControllerIsHorizontallyCompact: splitViewControllerIsHorizontallyCompact,
-            isSplitViewEnabled: MySitesCoordinator.isSplitViewEnabled
+            splitViewControllerIsHorizontallyCompact: splitViewControllerIsHorizontallyCompact
         )
 
         self.currentSection = section
@@ -589,11 +588,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
     func didTapAccountAndSettingsButton() {
         let meViewController = MeViewController()
-        if MySitesCoordinator.isSplitViewEnabled {
-            showDetailViewController(meViewController, sender: self)
-        } else {
-            navigationController?.pushViewController(meViewController, animated: true)
-        }
+        navigationController?.pushViewController(meViewController, animated: true)
     }
 
     private func launchSiteCreationFromNoSites() {
@@ -892,20 +887,11 @@ extension MySiteViewController: BlogDetailsPresentationDelegate {
     // More context: https://github.com/wordpress-mobile/WordPress-iOS/issues/21759
     func presentBlogDetailsViewController(_ viewController: UIViewController) {
         viewController.loadViewIfNeeded()
-        if MySitesCoordinator.isSplitViewEnabled {
-            switch currentSection {
-            case .dashboard:
-                blogDashboardViewController?.showDetailViewController(viewController, sender: blogDashboardViewController)
-            case .siteMenu:
-                blogDetailsViewController?.showDetailViewController(viewController, sender: blogDetailsViewController)
-            }
-        } else {
-            switch currentSection {
-            case .dashboard:
-                blogDashboardViewController?.show(viewController, sender: blogDashboardViewController)
-            case .siteMenu:
-                blogDetailsViewController?.show(viewController, sender: blogDetailsViewController)
-            }
+        switch currentSection {
+        case .dashboard:
+            blogDashboardViewController?.show(viewController, sender: blogDashboardViewController)
+        case .siteMenu:
+            blogDetailsViewController?.show(viewController, sender: blogDetailsViewController)
         }
     }
 }
