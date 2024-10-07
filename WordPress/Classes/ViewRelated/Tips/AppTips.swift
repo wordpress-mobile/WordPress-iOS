@@ -29,11 +29,25 @@ enum AppTips {
             Image(systemName: "rectangle.stack.badge.plus")
         }
 
-        @Parameter(.transient)
-        static var blogCount: Int = 0
+        var options: [any TipOption] {
+            MaxDisplayCount(1)
+        }
+    }
 
-        var rules: [Rule] {
-            #Rule(Self.$blogCount) { $0 > 1 }
+    @available(iOS 17, *)
+    struct SidebarTip: Tip {
+        let id = "sidebar_tip"
+
+        var title: Text {
+            Text(NSLocalizedString("tips.sidebar.title", value: "Sidebar", comment: "Tip for sidebar"))
+        }
+
+        var message: Text? {
+            Text(NSLocalizedString("tips.sidebar.message", value: "Swipe right to access your sites, Reader, notifications, and profile", comment: "Tip for sidebar"))
+        }
+
+        var image: Image? {
+            Image(systemName: "sidebar.left")
         }
 
         var options: [any TipOption] {
@@ -47,7 +61,7 @@ extension UIViewController {
     @available(iOS 17, *)
     func registerTipPopover(
         _ tip: some Tip,
-        sourceView: UIView,
+        sourceItem: any UIPopoverPresentationControllerSourceItem,
         arrowDirection: UIPopoverArrowDirection? = nil,
         actionHandler: ((Tips.Action) -> Void)? = nil
     ) -> TipObserver? {
@@ -57,7 +71,7 @@ extension UIViewController {
         let task = Task { @MainActor [weak self] in
             for await shouldDisplay in tip.shouldDisplayUpdates {
                 if shouldDisplay {
-                    let popoverController = TipUIPopoverViewController(tip, sourceItem: sourceView, actionHandler: actionHandler ?? { _ in })
+                    let popoverController = TipUIPopoverViewController(tip, sourceItem: sourceItem, actionHandler: actionHandler ?? { _ in })
                     popoverController.view.tintColor = .secondaryLabel
                     if let arrowDirection {
                         popoverController.popoverPresentationController?.permittedArrowDirections = arrowDirection
