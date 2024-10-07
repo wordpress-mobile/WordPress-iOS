@@ -29,13 +29,6 @@ enum AppTips {
             Image(systemName: "rectangle.stack.badge.plus")
         }
 
-        @Parameter(.transient)
-        static var blogCount: Int = 0
-
-        var rules: [Rule] {
-            #Rule(Self.$blogCount) { $0 > 1 }
-        }
-
         var options: [any TipOption] {
             MaxDisplayCount(1)
         }
