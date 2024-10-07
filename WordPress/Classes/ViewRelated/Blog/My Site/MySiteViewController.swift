@@ -495,8 +495,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             return
         }
 
-        hideSplitDetailsView()
-
         guard noSitesViewController.view.superview == nil else {
             return
         }

@@ -998,10 +998,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
         [marr addNullableObject:[self sotw2023SectionViewModel]];
     }
 
-    if (MigrationSuccessCardView.shouldShowMigrationSuccessCard == YES && ![Feature enabled:FeatureFlagSidebar]) {
-        [marr addNullableObject:[self migrationSuccessSectionViewModel]];
-    }
-
     if ([self shouldShowJetpackInstallCard]) {
         [marr addNullableObject:[self jetpackInstallSectionViewModel]];
     }
