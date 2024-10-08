@@ -43,8 +43,9 @@ final class ReaderSidebarViewController: UIHostingController<AnyView> {
         // -warning: List occasionally sets the selection to `nil` when switching items.
         viewModel.$selection.compactMap { $0 }
             .removeDuplicates { [weak self] in
+                guard let self, self.splitViewController != nil else { return false }
                 guard $0 == $1 else { return false }
-                self?.popSecondaryViewControllerToRoot()
+                self.popSecondaryViewControllerToRoot()
                 return true
             }
             .sink { [weak self] in self?.configure(for: $0) }
@@ -201,29 +202,17 @@ private struct ReaderSidebarView: View {
     @FetchRequest(sortDescriptors: [SortDescriptor(\.title, order: .forward)])
     private var teams: FetchedResults<ReaderTeamTopic>
 
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+
     var body: some View {
         List(selection: $viewModel.selection) {
-            Section {
-                ForEach(ReaderStaticScreen.allCases) {
-                    Label($0.localizedTitle, systemImage: $0.systemImage)
-                        .tag(ReaderSidebarItem.main($0))
-                        .lineLimit(1)
-                        .accessibilityIdentifier($0.accessibilityIdentifier)
-                }
-            }
-            if !teams.isEmpty {
-                makeSection(Strings.organization, isExpanded: $isSectionOrganizationExpanded) {
-                    ReaderSidebarOrganizationSection(viewModel: viewModel, teams: teams)
-                }
-            }
-            makeSection(Strings.subscriptions, isExpanded: $isSectionSubscriptionsExpanded) {
-                ReaderSidebarSubscriptionsSection(viewModel: viewModel)
-            }
-            makeSection(Strings.lists, isExpanded: $isSectionListsExpanded) {
-                ReaderSidebarListsSection(viewModel: viewModel)
-            }
-            makeSection(Strings.tags, isExpanded: $isSectionTagsExpanded) {
-                ReaderSidebarTagsSection(viewModel: viewModel)
+            if horizontalSizeClass == .compact {
+                content
+                    .listRowBackground(Color.clear)
+                    .listRowSeparator(.hidden)
+                    .listRowInsets(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
+            } else {
+                content
             }
         }
         .listStyle(.sidebar)
@@ -233,6 +222,32 @@ private struct ReaderSidebarView: View {
         }
         .tint(preferredTintColor)
         .accessibilityIdentifier("reader_sidebar")
+    }
+
+    @ViewBuilder
+    private var content: some View {
+        Section {
+            ForEach(ReaderStaticScreen.allCases) {
+                Label($0.localizedTitle, systemImage: $0.systemImage)
+                    .tag(ReaderSidebarItem.main($0))
+                    .lineLimit(1)
+                    .accessibilityIdentifier($0.accessibilityIdentifier)
+            }
+        }
+        if !teams.isEmpty {
+            makeSection(Strings.organization, isExpanded: $isSectionOrganizationExpanded) {
+                ReaderSidebarOrganizationSection(viewModel: viewModel, teams: teams)
+            }
+        }
+        makeSection(Strings.subscriptions, isExpanded: $isSectionSubscriptionsExpanded) {
+            ReaderSidebarSubscriptionsSection(viewModel: viewModel)
+        }
+        makeSection(Strings.lists, isExpanded: $isSectionListsExpanded) {
+            ReaderSidebarListsSection(viewModel: viewModel)
+        }
+        makeSection(Strings.tags, isExpanded: $isSectionTagsExpanded) {
+            ReaderSidebarTagsSection(viewModel: viewModel)
+        }
     }
 
     private var preferredTintColor: Color {
