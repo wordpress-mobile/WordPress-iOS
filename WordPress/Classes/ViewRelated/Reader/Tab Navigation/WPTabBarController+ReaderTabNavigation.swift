@@ -5,16 +5,6 @@ protocol ReaderContentViewController: UIViewController {
 
 // MARK: - Reader Factory
 extension WPTabBarController {
-    @objc func makeReaderViewController() -> UINavigationController {
-        let sidebarViewModel = ReaderSidebarViewModel()
-        let sidebarVC = ReaderSidebarViewController(viewModel: sidebarViewModel)
-
-        let navigationVC = UINavigationController(rootViewController: sidebarVC)
-        // TODO: reimplenet
-//        sidebarVC.showInitialSelection()
-        return navigationVC
-    }
-
     @objc func makeReaderTabViewController() -> ReaderTabViewController {
         return ReaderTabViewController(viewModel: readerTabViewModel) { [weak self] viewModel in
             guard let self else {

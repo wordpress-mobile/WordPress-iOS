@@ -45,6 +45,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 @property (nonatomic, strong) ReaderTabViewModel *readerTabViewModel;
 
 @property (nonatomic, strong, nullable) MySitesCoordinator *mySitesCoordinator;
+@property (nonatomic, strong, nullable) ReaderPresenter *readerPresenter;
 
 @property (nonatomic, strong) UIImage *notificationsTabBarImage;
 @property (nonatomic, strong) UIImage *notificationsTabBarImageUnread;
@@ -130,8 +131,8 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
             UIViewController *rootVC = [[MovedToJetpackViewController alloc] initWithSource:MovedToJetpackSourceReader];
             _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:rootVC];
         } else if ([Feature enabled:FeatureFlagReaderReset]) {
-            // It creates its own navigation controller instance
-            _readerNavigationController = self.makeReaderViewController;
+            _readerPresenter = [[ReaderPresenter alloc] init];
+            _readerNavigationController = [_readerPresenter prepareForTabBarPresentation];
         } else {
             UIViewController *rootVC = self.makeReaderTabViewController;
             _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:rootVC];
@@ -217,6 +218,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (void)reloadTabs
 {
+    _readerPresenter = nil;
     _readerNavigationController = nil;
     _notificationsNavigationController = nil;
     _meNavigationController = nil;

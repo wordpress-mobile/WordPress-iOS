@@ -5,12 +5,16 @@ import Combine
 import WordPressUI
 
 /// Manages top-level Reader navigation.
-final class ReaderPresenter: SplitViewDisplayable {
+final class ReaderPresenter: NSObject, SplitViewDisplayable {
     private let sidebarViewModel = ReaderSidebarViewModel()
 
+    // The view controllers used during split view presentation.
     let sidebar: ReaderSidebarViewController
     let supplementary: UINavigationController
     var secondary: UINavigationController
+
+    /// The navigation controller for the main content when shown using tabs.
+    private let navigationController = UINavigationController()
 
     private var viewContext: NSManagedObjectContext {
         ContextManager.shared.mainContext
@@ -18,14 +22,23 @@ final class ReaderPresenter: SplitViewDisplayable {
 
     private var cancellables: [AnyCancellable] = []
 
-    init() {
+    override init() {
         secondary = UINavigationController()
         sidebar = ReaderSidebarViewController(viewModel: sidebarViewModel)
         sidebar.navigationItem.largeTitleDisplayMode = .automatic
         supplementary = UINavigationController(rootViewController: sidebar)
         supplementary.navigationBar.prefersLargeTitles = true
 
+        super.init()
+
         sidebarViewModel.navigate = { [weak self] in self?.navigate(to: $0) }
+    }
+
+    // TODO: (reader) update to allow seamless transitions between split view and tabs
+    @objc func prepareForTabBarPresentation() -> UINavigationController {
+        navigationController.viewControllers = [sidebar]
+        showInitialSelection()
+        return navigationController
     }
 
     // MARK: - Navigation
@@ -140,12 +153,24 @@ final class ReaderPresenter: SplitViewDisplayable {
         }
     }
 
-    private var splitViewController: UISplitViewController? {
-        sidebar.splitViewController
+    private func makeErrorViewController() -> UIViewController {
+        UIHostingController(rootView: EmptyStateView(SharedStrings.Error.generic, systemImage: "exclamationmark.circle"))
     }
 
-    private var navigationController: UINavigationController? {
-        sidebar.navigationController
+    private func showSecondary(_ viewController: UIViewController, isLargeTitle: Bool = false) {
+        if let splitViewController {
+            let navigationVC = UINavigationController(rootViewController: viewController)
+            if isLargeTitle {
+                navigationVC.navigationBar.prefersLargeTitles = true
+            }
+            splitViewController.setViewController(navigationVC, for: .secondary)
+        } else {
+            navigationController.pushViewController(viewController, animated: true)
+        }
+    }
+
+    private var splitViewController: UISplitViewController? {
+        sidebar.splitViewController
     }
 
     // MARK: - Deep Links (ReaderNavigationPath)
@@ -176,22 +201,6 @@ final class ReaderPresenter: SplitViewDisplayable {
         case let .tag(slug):
             viewModel.selection = nil
             showSecondary(ReaderStreamViewController.controllerWithTagSlug(slug))
-        }
-    }
-
-    private func makeErrorViewController() -> UIViewController {
-        UIHostingController(rootView: EmptyStateView(SharedStrings.Error.generic, systemImage: "exclamationmark.circle"))
-    }
-
-    private func showSecondary(_ viewController: UIViewController, isLargeTitle: Bool = false) {
-        if let splitViewController {
-            let navigationVC = UINavigationController(rootViewController: viewController)
-            if isLargeTitle {
-                navigationVC.navigationBar.prefersLargeTitles = true
-            }
-            splitViewController.setViewController(navigationVC, for: .secondary)
-        } else {
-            navigationController?.pushViewController(viewController, animated: true)
         }
     }
 
