@@ -12,7 +12,7 @@ class ReaderSplitViewContent: SplitViewDisplayable {
         sidebar = ReaderSidebarViewController(viewModel: viewModel)
         sidebar.navigationItem.largeTitleDisplayMode = .automatic
         supplementary = UINavigationController(rootViewController: sidebar)
-        supplementary .navigationBar.prefersLargeTitles = true
+        supplementary.navigationBar.prefersLargeTitles = true
     }
 
     func displayed(in splitVC: UISplitViewController) {

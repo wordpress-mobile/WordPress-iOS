@@ -178,11 +178,15 @@ final class ReaderSidebarViewController: UIHostingController<AnyView> {
     }
 
     private func showSecondary(_ viewController: UIViewController, isLargeTitle: Bool = false) {
-        let navigationVC = UINavigationController(rootViewController: viewController)
-        if isLargeTitle {
-            navigationVC.navigationBar.prefersLargeTitles = true
+        if let splitViewController {
+            let navigationVC = UINavigationController(rootViewController: viewController)
+            if isLargeTitle {
+                navigationVC.navigationBar.prefersLargeTitles = true
+            }
+            splitViewController.setViewController(navigationVC, for: .secondary)
+        } else {
+            navigationController?.pushViewController(viewController, animated: true)
         }
-        splitViewController?.setViewController(navigationVC, for: .secondary)
     }
 }
 

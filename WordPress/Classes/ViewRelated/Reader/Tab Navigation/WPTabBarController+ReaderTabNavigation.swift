@@ -5,10 +5,13 @@ protocol ReaderContentViewController: UIViewController {
 
 // MARK: - Reader Factory
 extension WPTabBarController {
-    @objc func makeReaderViewController() -> UIViewController {
-        let readerVC = UIViewController()
-        readerVC.view.backgroundColor = .red
-        return readerVC
+    @objc func makeReaderViewController() -> UINavigationController {
+        let sidebarViewModel = ReaderSidebarViewModel()
+        let sidebarVC = ReaderSidebarViewController(viewModel: sidebarViewModel)
+
+        let navigationVC = UINavigationController(rootViewController: sidebarVC)
+        sidebarVC.showInitialSelection()
+        return navigationVC
     }
 
     @objc func makeReaderTabViewController() -> ReaderTabViewController {

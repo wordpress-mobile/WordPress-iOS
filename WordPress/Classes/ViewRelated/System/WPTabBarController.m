@@ -126,15 +126,16 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 - (UINavigationController *)readerNavigationController
 {
     if (!_readerNavigationController) {
-        UIViewController *rootViewController;
         if (self.shouldUseStaticScreens) {
-            rootViewController = [[MovedToJetpackViewController alloc] initWithSource:MovedToJetpackSourceReader];
+            UIViewController *rootVC = [[MovedToJetpackViewController alloc] initWithSource:MovedToJetpackSourceReader];
+            _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:rootVC];
         } else if ([Feature enabled:FeatureFlagReaderReset]) {
-            rootViewController = self.makeReaderViewController;
+            // It creates its own navigation controller instance
+            _readerNavigationController = self.makeReaderViewController;
         } else {
-            rootViewController = self.makeReaderTabViewController;
+            UIViewController *rootVC = self.makeReaderTabViewController;
+            _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:rootVC];
         }
-        _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
         _readerNavigationController.view.backgroundColor = [UIColor systemBackgroundColor];
 
         _readerNavigationController.tabBarItem.image = [UIImage imageNamed:@"tab-bar-reader"];
