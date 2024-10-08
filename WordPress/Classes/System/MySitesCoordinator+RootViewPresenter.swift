@@ -36,18 +36,10 @@ extension MySitesCoordinator: RootViewPresenter {
     // MARK: Me
 
     var meViewController: MeViewController? {
-        /// On iPhone, the My Sites root view controller is a navigation controller, and Me is pushed onto the stack
         if let navigationController = rootViewController as? UINavigationController,
            let controller = navigationController.viewControllers.compactMap({ $0 as? MeViewController }).first {
                return controller
            }
-
-        /// On iPad, the My Sites root view controller is a split view controller, and Me is shown in the detail view controller
-        if let splitViewController = rootViewController as? WPSplitViewController,
-           let detailNavigationController = splitViewController.viewControllers.last as? UINavigationController,
-           let controller = detailNavigationController.viewControllers.compactMap({ $0 as? MeViewController }).first {
-            return controller
-        }
 
         return nil
     }

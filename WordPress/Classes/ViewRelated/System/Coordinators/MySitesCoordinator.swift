@@ -30,33 +30,10 @@ class MySitesCoordinator: NSObject {
     ///
     @objc
     var rootViewController: UIViewController {
-        if MySitesCoordinator.isSplitViewEnabled {
-            return splitViewController
-        } else {
-            // `hidesBottomBarWhenPushed` doesn't work with `UISplitViewController`,
-            // so it we have to use `UINavigationController` directly.
-            return navigationController
-        }
+        // `hidesBottomBarWhenPushed` doesn't work with `UISplitViewController`,
+        // so it we have to use `UINavigationController` directly.
+        return navigationController
     }
-
-    @objc class var isSplitViewEnabled: Bool {
-        if Feature.enabled(.sidebar) {
-            return false
-        } else {
-            return UIDevice.current.userInterfaceIdiom == .pad
-        }
-    }
-
-    @objc
-    lazy var splitViewController: WPSplitViewController = {
-        let splitViewController = WPSplitViewController()
-
-        splitViewController.presentsWithGesture = false
-        splitViewController.setInitialPrimaryViewController(navigationController)
-        splitViewController.tabBarItem = navigationController.tabBarItem
-
-        return splitViewController
-    }()
 
     @objc
     lazy var navigationController: UINavigationController = {

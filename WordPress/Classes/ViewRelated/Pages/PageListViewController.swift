@@ -84,9 +84,7 @@ final class PageListViewController: AbstractPostListViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        if traitCollection.horizontalSizeClass == .compact || Feature.enabled(.sidebar) {
-            createButtonCoordinator.showCreateButton(for: blog)
-        }
+        createButtonCoordinator.showCreateButton(for: blog)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -100,11 +98,8 @@ final class PageListViewController: AbstractPostListViewController {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        if traitCollection.horizontalSizeClass == .compact || Feature.enabled(.sidebar) {
-            createButtonCoordinator.showCreateButton(for: blog)
-        } else {
-            createButtonCoordinator.hideCreateButton()
-        }
+
+        createButtonCoordinator.showCreateButton(for: blog)
     }
 
     // MARK: - Configuration

@@ -233,7 +233,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
 
 #pragma mark -
 
-@interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate, WPSplitViewControllerDetailProvider, UIAdaptivePresentationControllerDelegate>
+@interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate, UIAdaptivePresentationControllerDelegate>
 
 @property (nonatomic, strong) NSArray *headerViewHorizontalConstraints;
 @property (nonatomic, strong) NSArray<BlogDetailsSection *> *tableSections;
@@ -998,10 +998,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
         [marr addNullableObject:[self sotw2023SectionViewModel]];
     }
 
-    if (MigrationSuccessCardView.shouldShowMigrationSuccessCard == YES && ![Feature enabled:FeatureFlagSidebar]) {
-        [marr addNullableObject:[self migrationSuccessSectionViewModel]];
-    }
-
     if ([self shouldShowJetpackInstallCard]) {
         [marr addNullableObject:[self jetpackInstallSectionViewModel]];
     }
@@ -1050,10 +1046,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
 }
 
 - (Boolean)isSplitViewDisplayed {
-    if (self.isSidebarModeEnabled) {
-        return true;
-    }
-    return ![self splitViewControllerIsHorizontallyCompact] && [MySitesCoordinator isSplitViewEnabled];
+    return self.isSidebarModeEnabled;
 }
 
 /// This section is available on Jetpack only.
@@ -1501,11 +1494,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     }
 
     self.restorableSelectedIndexPath = nil;
-    
-    if ([self.splitViewController isKindOfClass:[WPSplitViewController class]]) {
-        WPSplitViewController *splitViewController = (WPSplitViewController *)self.splitViewController;
-        splitViewController.isShowingInitialDetail = YES;
-    }
 
     BlogDetailsSubsection subsection = [self defaultSubsection];
     switch (subsection) {
@@ -1616,11 +1604,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([self.splitViewController isKindOfClass:[WPSplitViewController class]]) {
-        WPSplitViewController *splitViewController = (WPSplitViewController *)self.splitViewController;
-        splitViewController.isShowingInitialDetail = NO;
-    }
-
     BlogDetailsSection *section = [self.tableSections objectAtIndex:indexPath.section];
     BlogDetailsRow *row = [section.rows objectAtIndex:indexPath.row];
     row.callback();
@@ -2092,21 +2075,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIApplicationWillEnterForegroundNotification
                                                   object:nil];
-}
-
-#pragma mark - WPSplitViewControllerDetailProvider
-
-- (UIViewController *)initialDetailViewControllerForSplitView:(WPSplitViewController *)splitView
-{
-    if ([self shouldShowStats]) {
-        StatsViewController *statsView = [StatsViewController new];
-        statsView.blog = self.blog;
-        return statsView;
-    } else {
-        PostListViewController *postsView = [PostListViewController controllerWithBlog:self.blog];
-        postsView.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
-        return postsView;
-    }
 }
 
 #pragma mark - UIViewControllerTransitioningDelegate

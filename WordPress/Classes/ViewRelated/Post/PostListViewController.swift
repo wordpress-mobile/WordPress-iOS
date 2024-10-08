@@ -52,9 +52,7 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        if traitCollection.horizontalSizeClass == .compact || Feature.enabled(.sidebar) {
-            createButtonCoordinator.showCreateButton(for: blog)
-        }
+        createButtonCoordinator.showCreateButton(for: blog)
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -64,11 +62,7 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
 
     /// Shows/hides the create button based on the trait collection horizontal size class
     @objc private func toggleCreateButton() {
-        if traitCollection.horizontalSizeClass == .compact || Feature.enabled(.sidebar) {
-            createButtonCoordinator.showCreateButton(for: blog)
-        } else {
-            createButtonCoordinator.hideCreateButton()
-        }
+        createButtonCoordinator.showCreateButton(for: blog)
     }
 
     // MARK: - Configuration

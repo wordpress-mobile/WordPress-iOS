@@ -65,10 +65,7 @@ class MeViewController: UITableViewController {
         super.viewWillAppear(animated)
 
         refreshAccountDetailsAndSettings()
-
-        if splitViewControllerIsHorizontallyCompact {
-            animateDeselectionInteractively()
-        }
+        animateDeselectionInteractively()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -86,12 +83,6 @@ class MeViewController: UITableViewController {
 
     @objc fileprivate func accountDidChange() {
         reloadViewModel()
-
-        // Reload the detail pane if the split view isn't compact
-        if let splitViewController = splitViewController as? WPSplitViewController,
-            let detailViewController = initialDetailViewControllerForSplitView(splitViewController), !splitViewControllerIsHorizontallyCompact {
-            showDetailViewController(detailViewController, sender: self)
-        }
     }
 
     @objc fileprivate func reloadViewModel() {
@@ -107,38 +98,23 @@ class MeViewController: UITableViewController {
         }
         tableView.tableHeaderView = headerView
 
-        // After we've reloaded the view model we should maintain the current
-        // table row selection, or if the split view we're in is not compact
-        // then we'll just select the first item in the table.
-        // First, we'll grab the appropriate index path so we can reselect it
-        // after reloading the table
-        let selectedIndexPath = tableView.indexPathForSelectedRow ?? IndexPath(row: 0, section: 0)
-
         // Then we'll reload the table view model (prompting a table reload)
         handler.viewModel = tableViewModel(with: account)
-
-        let primaryViewController = (splitViewController?.viewControllers.first as? UINavigationController)?.topViewController
-        if !splitViewControllerIsHorizontallyCompact && primaryViewController is MeViewController {
-            // And finally we'll reselect the selected row, if there is one
-            tableView.selectRow(at: selectedIndexPath, animated: false, scrollPosition: .none)
-        }
     }
 
     private var appSettingsRow: NavigationItemRow {
-        let accessoryType: UITableViewCell.AccessoryType = isPrimaryViewControllerInSplitView() ? .none : .disclosureIndicator
-
         return NavigationItemRow(
             title: RowTitles.appSettings,
             icon: UIImage(named: UIDevice.isPad() ? "wpl-tablet" : "wpl-phone")?.withRenderingMode(.alwaysTemplate),
             tintColor: .label,
-            accessoryType: accessoryType,
+            accessoryType: .disclosureIndicator,
             action: pushAppSettings(),
             accessibilityIdentifier: "appSettings"
         )
     }
 
     fileprivate func tableViewModel(with account: WPAccount?) -> ImmuTable {
-        let accessoryType: UITableViewCell.AccessoryType = isPrimaryViewControllerInSplitView() ? .none : .disclosureIndicator
+        let accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator
 
         let loggedIn = account != nil
 
@@ -455,12 +431,7 @@ class MeViewController: UITableViewController {
     }
 
     private func showOrPushController(_ controller: UIViewController, completion: (() -> Void)? = nil) {
-        let shouldShowInDetailViewController = isPrimaryViewControllerInSplitView()
-        if shouldShowInDetailViewController {
-            self.showDetailViewController(controller, sender: self)
-            completion?()
-            return
-        } else if let navigationController {
+        if let navigationController {
             navigationController.pushViewController(controller, animated: true, rightBarButton: self.isSidebarModeEnabled ? nil : self.navigationItem.rightBarButtonItem)
             navigationController.transitionCoordinator?.animate(alongsideTransition: nil, completion: { _ in
                 completion?()
@@ -468,12 +439,6 @@ class MeViewController: UITableViewController {
         } else {
             completion?()
         }
-    }
-
-    private func isPrimaryViewControllerInSplitView() -> Bool {
-        let primaryViewController = (splitViewController?.viewControllers.first as? UINavigationController)?.topViewController
-
-        return MySitesCoordinator.isSplitViewEnabled && primaryViewController is MeViewController
     }
 
     // MARK: - Helpers
@@ -585,19 +550,6 @@ class MeViewController: UITableViewController {
         presenter.delegate = self
         return presenter
     }()
-}
-
-// MARK: - WPSplitViewControllerDetailProvider Conformance
-
-extension MeViewController: WPSplitViewControllerDetailProvider {
-    func initialDetailViewControllerForSplitView(_ splitView: WPSplitViewController) -> UIViewController? {
-
-        guard let _ = defaultAccount() else {
-            return nil
-        }
-
-        return myProfileViewController
-    }
 }
 
 // MARK: - SearchableActivity Conformance
