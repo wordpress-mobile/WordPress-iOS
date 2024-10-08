@@ -1,7 +1,8 @@
 import Foundation
 import UIKit
 
-class ReaderSplitViewContent: SplitViewDisplayable {
+/// Manages top-level Reader navigation.
+final class ReaderPresenter: SplitViewDisplayable {
     let sidebar: ReaderSidebarViewController
     let supplementary: UINavigationController
     var secondary: UINavigationController
@@ -15,11 +16,15 @@ class ReaderSplitViewContent: SplitViewDisplayable {
         supplementary.navigationBar.prefersLargeTitles = true
     }
 
+    // MARK: - SplitViewDisplayable
+
     func displayed(in splitVC: UISplitViewController) {
         if secondary.viewControllers.isEmpty {
             sidebar.showInitialSelection()
         }
     }
+
+    // MARK: - Deep Links
 
     func navigate(to path: ReaderNavigationPath) {
         sidebar.navigate(to: path)

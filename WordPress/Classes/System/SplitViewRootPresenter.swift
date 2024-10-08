@@ -15,7 +15,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
     private var siteContent: SiteSplitViewContent?
     private var notificationsContent: NotificationsSplitViewContent?
-    private var readerContent: ReaderSplitViewContent?
+    private var readerContent: ReaderPresenter?
     private var welcomeContent: WelcomeSplitViewContent?
 
     private var displayingContent: SplitViewDisplayable? {
@@ -122,7 +122,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
             if let readerContent {
                 content = readerContent
             } else {
-                readerContent = ReaderSplitViewContent()
+                readerContent = ReaderPresenter()
                 content = readerContent!
             }
         }
