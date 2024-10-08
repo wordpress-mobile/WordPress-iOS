@@ -19,15 +19,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
     @Lazy private var readerPresenter = ReaderPresenter()
     private var welcomeContent: WelcomeSplitViewContent?
 
-    private var displayingContent: SplitViewDisplayable? {
-        let possibleContent: [SplitViewDisplayable?] = [siteContent, $notificationsContent.value, $readerPresenter.value, welcomeContent]
-        let displaying = possibleContent
-            .compactMap { $0 }
-            .filter { $0.isDisplaying(in: splitVC) }
-        wpAssert(displaying.count <= 1)
-
-        return displaying.first
-    }
+    private weak var displayedContent: SplitViewDisplayable?
 
     /// Is the app displaying tab bar UI instead of the full split view UI (with sidebar).
     private var isDisplayingTabBar: Bool {
@@ -383,7 +375,7 @@ protocol SplitViewDisplayable: AnyObject {
 }
 
 extension SplitViewDisplayable {
-    func isDisplaying(in splitVC: UISplitViewController) -> Bool {
+    private func isDisplaying(in splitVC: UISplitViewController) -> Bool {
         splitVC.viewController(for: .supplementary) === self.supplementary
     }
 
@@ -397,7 +389,8 @@ extension SplitViewDisplayable {
 
 private extension SplitViewRootPresenter {
     func display(content: SplitViewDisplayable) {
-        displayingContent?.refresh(with: splitVC)
+        displayedContent?.refresh(with: splitVC)
+        displayedContent = content
 
         splitVC.setViewController(content.supplementary, for: .supplementary)
         splitVC.setViewController(content.secondary, for: .secondary)
