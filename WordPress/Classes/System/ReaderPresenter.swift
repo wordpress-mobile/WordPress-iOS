@@ -14,7 +14,8 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
     var secondary: UINavigationController
 
     /// The navigation controller for the main content when shown using tabs.
-    private let navigationController = UINavigationController()
+    private let mainNavigationController = UINavigationController()
+    private var latestContentVC: UIViewController?
 
     private var viewContext: NSManagedObjectContext {
         ContextManager.shared.mainContext
@@ -37,12 +38,12 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
     // TODO: (reader) update to allow seamless transitions between split view and tabs
     @objc func prepareForTabBarPresentation() -> UINavigationController {
         sidebarViewModel.isCompactStyleEnabled = true
-        navigationController.viewControllers = [sidebar]
+        mainNavigationController.viewControllers = [sidebar]
         showInitialSelection()
         sidebar.navigationItem.backBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "sidebar.left"), primaryAction: UIAction { [weak self] _ in
-            self?.navigationController.popViewController(animated: true)
+            self?.mainNavigationController.popViewController(animated: true)
         })
-        return navigationController
+        return mainNavigationController
     }
 
     // MARK: - Navigation
@@ -53,9 +54,8 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
         // -warning: List occasionally sets the selection to `nil` when switching items.
         sidebarViewModel.$selection.compactMap { $0 }
             .removeDuplicates { [weak self] in
-                guard let self, self.splitViewController != nil else { return false }
                 guard $0 == $1 else { return false }
-                self.popSecondaryViewControllerToRoot()
+                self?.popMainNavigationController()
                 return true
             }
             .sink { [weak self] in self?.configure(for: $0) }
@@ -79,19 +79,25 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
         }
     }
 
+    private func popMainNavigationController() {
+        if let splitViewController {
+            let secondaryVC = splitViewController.viewController(for: .secondary)
+            (secondaryVC as? UINavigationController)?.popToRootViewController(animated: true)
+            hideSupplementaryColumnIfNeeded()
+        } else {
+            if let latestContentVC {
+                // Return to the previous view controller preserving its state
+                mainNavigationController.pushViewController(latestContentVC, animated: true)
+            }
+        }
+    }
+
     private func hideSupplementaryColumnIfNeeded() {
         if sidebar.didAppear, let splitVC = sidebar.splitViewController, splitVC.splitBehavior == .overlay {
             DispatchQueue.main.async {
                 splitVC.hide(.supplementary)
             }
         }
-    }
-
-    private func popSecondaryViewControllerToRoot() {
-        let secondaryVC = splitViewController?.viewController(for: .secondary)
-        (secondaryVC as? UINavigationController)?.popToRootViewController(animated: true)
-
-        hideSupplementaryColumnIfNeeded()
     }
 
     private func makeViewController<T: ReaderAbstractTopic>(withTopicID objectID: TaggedManagedObjectID<T>) -> UIViewController {
@@ -169,7 +175,8 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
             }
             splitViewController.setViewController(navigationVC, for: .secondary)
         } else {
-            navigationController.pushViewController(viewController, animated: true)
+            latestContentVC = viewController
+            mainNavigationController.pushViewController(viewController, animated: true)
         }
     }
 
