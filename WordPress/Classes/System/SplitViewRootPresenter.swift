@@ -17,9 +17,8 @@ final class SplitViewRootPresenter: RootViewPresenter {
     private var siteContent: SiteSplitViewContent?
     @Lazy private var notificationsContent = NotificationsSplitViewContent()
     @Lazy private var readerPresenter = ReaderPresenter()
-    private var welcomeContent: WelcomeSplitViewContent?
 
-    private weak var displayedContent: SplitViewDisplayable?
+    private var displayedContent: SplitViewDisplayable?
 
     /// Is the app displaying tab bar UI instead of the full split view UI (with sidebar).
     private var isDisplayingTabBar: Bool {
@@ -85,11 +84,8 @@ final class SplitViewRootPresenter: RootViewPresenter {
         let content: SplitViewDisplayable
         switch selection {
         case .welcome:
-            if let welcomeContent {
-                content = welcomeContent
-            } else {
-                welcomeContent = WelcomeSplitViewContent { [weak self] in self?.navigate(to: .addSite(selection: $0)) }
-                content = welcomeContent!
+            content = WelcomeSplitViewContent { [weak self] in
+                self?.navigate(to: .addSite(selection: $0))
             }
         case .blog(let objectID):
             if let siteContent, siteContent.blog.objectID == objectID.objectID {

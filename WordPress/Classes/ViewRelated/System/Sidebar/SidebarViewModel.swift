@@ -91,5 +91,7 @@ final class SidebarViewModel: ObservableObject {
         } else {
             selection = .welcome
         }
+
+        selection = .welcome
     }
 }
