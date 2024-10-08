@@ -39,10 +39,10 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
     @objc func prepareForTabBarPresentation() -> UINavigationController {
         sidebarViewModel.isCompactStyleEnabled = true
         mainNavigationController.viewControllers = [sidebar]
-        showInitialSelection()
         sidebar.navigationItem.backBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "sidebar.left"), primaryAction: UIAction { [weak self] _ in
             self?.mainNavigationController.popViewController(animated: true)
         })
+        showInitialSelection()
         return mainNavigationController
     }
 
