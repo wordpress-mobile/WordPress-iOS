@@ -10,7 +10,8 @@ extension WPTabBarController {
         let sidebarVC = ReaderSidebarViewController(viewModel: sidebarViewModel)
 
         let navigationVC = UINavigationController(rootViewController: sidebarVC)
-        sidebarVC.showInitialSelection()
+        // TODO: reimplenet
+//        sidebarVC.showInitialSelection()
         return navigationVC
     }
 

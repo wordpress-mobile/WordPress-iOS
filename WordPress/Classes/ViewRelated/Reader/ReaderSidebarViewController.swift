@@ -6,9 +6,8 @@ import WordPressUI
 final class ReaderSidebarViewController: UIHostingController<AnyView> {
     let viewModel: ReaderSidebarViewModel
 
-    private var cancellables: [AnyCancellable] = []
     private var viewContext: NSManagedObjectContext { ContextManager.shared.mainContext }
-    private var didAppear = false
+    var didAppear = false
 
     init(viewModel: ReaderSidebarViewModel) {
         self.viewModel = viewModel
@@ -17,8 +16,6 @@ final class ReaderSidebarViewController: UIHostingController<AnyView> {
         let view = ReaderSidebarView(viewModel: viewModel)
             .environment(\.managedObjectContext, ContextManager.shared.mainContext)
         super.init(rootView: AnyView(view))
-
-        viewModel.navigate = { [weak self] in self?.navigate(to: $0) }
     }
 
     required dynamic init?(coder aDecoder: NSCoder) {
@@ -36,159 +33,6 @@ final class ReaderSidebarViewController: UIHostingController<AnyView> {
 
         didAppear = true
     }
-
-    func showInitialSelection() {
-        cancellables = []
-
-        // -warning: List occasionally sets the selection to `nil` when switching items.
-        viewModel.$selection.compactMap { $0 }
-            .removeDuplicates { [weak self] in
-                guard let self, self.splitViewController != nil else { return false }
-                guard $0 == $1 else { return false }
-                self.popSecondaryViewControllerToRoot()
-                return true
-            }
-            .sink { [weak self] in self?.configure(for: $0) }
-            .store(in: &cancellables)
-    }
-
-    private func configure(for selection: ReaderSidebarItem) {
-        switch selection {
-        case .main(let screen):
-            showSecondary(makeViewController(for: screen))
-        case .allSubscriptions:
-            showSecondary(makeAllSubscriptionsViewController(), isLargeTitle: true)
-        case .subscription(let objectID):
-            showSecondary(makeViewController(withTopicID: objectID))
-        case .list(let objectID):
-            showSecondary(makeViewController(withTopicID: objectID))
-        case .tag(let objectID):
-            showSecondary(makeViewController(withTopicID: objectID))
-        case .organization(let objectID):
-            showSecondary(makeViewController(withTopicID: objectID))
-        }
-    }
-
-    private func hideSupplementaryColumnIfNeeded() {
-        if didAppear, let splitVC = splitViewController, splitVC.splitBehavior == .overlay {
-            DispatchQueue.main.async {
-                splitVC.hide(.supplementary)
-            }
-        }
-    }
-
-    private func popSecondaryViewControllerToRoot() {
-        let secondaryVC = splitViewController?.viewController(for: .secondary)
-        (secondaryVC as? UINavigationController)?.popToRootViewController(animated: true)
-
-        hideSupplementaryColumnIfNeeded()
-    }
-
-    private func makeViewController<T: ReaderAbstractTopic>(withTopicID objectID: TaggedManagedObjectID<T>) -> UIViewController {
-        do {
-            let topic = try viewContext.existingObject(with: objectID)
-            return ReaderStreamViewController.controllerWithTopic(topic)
-        } catch {
-            wpAssertionFailure("tag missing", userInfo: ["error": "\(error)"])
-            return makeErrorViewController()
-        }
-    }
-
-    private func makeViewController(for screen: ReaderStaticScreen) -> UIViewController {
-        switch screen {
-        case .recent, .discover, .likes:
-            if let topic = screen.topicType.flatMap(viewModel.getTopic) {
-                if screen == .discover {
-                    return ReaderCardsStreamViewController.controller(topic: topic)
-                } else {
-                    return ReaderStreamViewController.controllerWithTopic(topic)
-                }
-            } else {
-                return makeErrorViewController() // This should never happen
-            }
-        case .saved:
-            return ReaderStreamViewController.controllerForContentType(.saved)
-        case .search:
-            return ReaderSearchViewController.controller(withSearchText: "")
-        }
-    }
-
-    private func makeAllSubscriptionsViewController() -> UIViewController {
-        let view = ReaderSubscriptionsView() { [weak self] selection in
-            guard let self else { return }
-            let navigationVC = self.splitViewController?.viewController(for: .secondary) as? UINavigationController
-            wpAssert(navigationVC != nil)
-            let streamVC = ReaderStreamViewController.controllerWithTopic(selection)
-            navigationVC?.pushViewController(streamVC, animated: true)
-        }.environment(\.managedObjectContext, viewContext)
-        return UIHostingController(rootView: view)
-    }
-
-    private func navigate(to item: ReaderSidebarNavigation) {
-        switch item {
-        case .addTag:
-            let addTagVC = UIHostingController(rootView: ReaderTagsAddTagView())
-            addTagVC.modalPresentationStyle = .formSheet
-            addTagVC.preferredContentSize = CGSize(width: 420, height: 124)
-            present(addTagVC, animated: true, completion: nil)
-        case .discoverTags:
-            let tags = viewContext.allObjects(
-                ofType: ReaderTagTopic.self,
-                matching: ReaderSidebarTagsSection.predicate,
-                sortedBy: [NSSortDescriptor(SortDescriptor<ReaderTagTopic>(\.title, order: .forward))]
-            )
-            let interestsVC = ReaderSelectInterestsViewController(topics: tags)
-            interestsVC.didSaveInterests = { [weak self] _ in
-                self?.dismiss(animated: true)
-            }
-            let navigationVC = UINavigationController(rootViewController: interestsVC)
-            navigationVC.modalPresentationStyle = .formSheet
-            present(navigationVC, animated: true, completion: nil)
-        }
-    }
-
-    func navigate(to path: ReaderNavigationPath) {
-        switch path {
-        case .recent:
-            viewModel.selection = .main(.recent)
-        case .discover:
-            viewModel.selection = .main(.discover)
-        case .likes:
-            viewModel.selection = .main(.likes)
-        case .search:
-            viewModel.selection = .main(.search)
-        case .subscriptions:
-            viewModel.selection = .allSubscriptions
-        case let .post(postID, siteID, isFeed):
-            viewModel.selection = nil
-            showSecondary(ReaderDetailViewController.controllerWithPostID(NSNumber(value: postID), siteID: NSNumber(value: siteID), isFeed: isFeed))
-        case let .postURL(url):
-            viewModel.selection = nil
-            showSecondary(ReaderDetailViewController.controllerWithPostURL(url))
-        case let .topic(topic):
-            viewModel.selection = nil
-            showSecondary(ReaderStreamViewController.controllerWithTopic(topic))
-        case let .tag(slug):
-            viewModel.selection = nil
-            showSecondary(ReaderStreamViewController.controllerWithTagSlug(slug))
-        }
-    }
-
-    private func makeErrorViewController() -> UIViewController {
-        UIHostingController(rootView: EmptyStateView(SharedStrings.Error.generic, systemImage: "exclamationmark.circle"))
-    }
-
-    private func showSecondary(_ viewController: UIViewController, isLargeTitle: Bool = false) {
-        if let splitViewController {
-            let navigationVC = UINavigationController(rootViewController: viewController)
-            if isLargeTitle {
-                navigationVC.navigationBar.prefersLargeTitles = true
-            }
-            splitViewController.setViewController(navigationVC, for: .secondary)
-        } else {
-            navigationController?.pushViewController(viewController, animated: true)
-        }
-    }
 }
 
 private struct ReaderSidebarView: View {
@@ -202,18 +46,9 @@ private struct ReaderSidebarView: View {
     @FetchRequest(sortDescriptors: [SortDescriptor(\.title, order: .forward)])
     private var teams: FetchedResults<ReaderTeamTopic>
 
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
-
     var body: some View {
         List(selection: $viewModel.selection) {
-            if horizontalSizeClass == .compact {
-                content
-                    .listRowBackground(Color.clear)
-                    .listRowSeparator(.hidden)
-                    .listRowInsets(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
-            } else {
-                content
-            }
+            content
         }
         .listStyle(.sidebar)
         .navigationTitle(Strings.reader)
