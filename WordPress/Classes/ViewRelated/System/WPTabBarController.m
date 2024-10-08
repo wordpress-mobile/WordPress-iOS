@@ -129,6 +129,8 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         UIViewController *rootViewController;
         if (self.shouldUseStaticScreens) {
             rootViewController = [[MovedToJetpackViewController alloc] initWithSource:MovedToJetpackSourceReader];
+        } else if ([Feature enabled:FeatureFlagReaderReset]) {
+            rootViewController = self.makeReaderViewController;
         } else {
             rootViewController = self.makeReaderTabViewController;
         }

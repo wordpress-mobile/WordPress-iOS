@@ -5,6 +5,12 @@ protocol ReaderContentViewController: UIViewController {
 
 // MARK: - Reader Factory
 extension WPTabBarController {
+    @objc func makeReaderViewController() -> UIViewController {
+        let readerVC = UIViewController()
+        readerVC.view.backgroundColor = .red
+        return readerVC
+    }
+
     @objc func makeReaderTabViewController() -> ReaderTabViewController {
         return ReaderTabViewController(viewModel: readerTabViewModel) { [weak self] viewModel in
             guard let self else {
