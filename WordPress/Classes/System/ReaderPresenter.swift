@@ -36,6 +36,7 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
 
     // TODO: (reader) update to allow seamless transitions between split view and tabs
     @objc func prepareForTabBarPresentation() -> UINavigationController {
+        sidebarViewModel.isCompactStyleEnabled = true
         navigationController.viewControllers = [sidebar]
         showInitialSelection()
         return navigationController

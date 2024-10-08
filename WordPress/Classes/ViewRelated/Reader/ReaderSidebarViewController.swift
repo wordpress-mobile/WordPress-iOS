@@ -48,7 +48,15 @@ private struct ReaderSidebarView: View {
 
     var body: some View {
         List(selection: $viewModel.selection) {
-            content
+            // On iPhone, .sidebar style is rendered differently, so it
+            // requires a bit more work to get the look we want.
+            if viewModel.isCompactStyleEnabled {
+                content.listRowBackground(Color.clear)
+                    .listRowSeparator(.hidden)
+                    .listRowInsets(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
+            } else {
+                content
+            }
         }
         .listStyle(.sidebar)
         .navigationTitle(Strings.reader)
