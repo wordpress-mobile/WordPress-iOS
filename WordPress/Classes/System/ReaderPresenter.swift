@@ -39,6 +39,9 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
         sidebarViewModel.isCompactStyleEnabled = true
         navigationController.viewControllers = [sidebar]
         showInitialSelection()
+        sidebar.navigationItem.backBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "sidebar.left"), primaryAction: UIAction { [weak self] _ in
+            self?.navigationController.popViewController(animated: true)
+        })
         return navigationController
     }
 
