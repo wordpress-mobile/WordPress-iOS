@@ -37,14 +37,8 @@ public class LoginUsernamePasswordScreen: ScreenObject {
         return try MySiteScreen()
     }
 
-    public func proceedWithSelfHostedSiteAddedFromSitesList(username: String, password: String) throws -> MySitesScreen {
+    public func proceedWithSelfHosted(username: String, password: String) throws {
         fill(username: username, password: password)
-        return try MySitesScreen()
-    }
-
-    public func proceedWithSelfHosted(username: String, password: String) throws -> MySiteScreen {
-        fill(username: username, password: password)
-        return try MySiteScreen()
     }
 
     public static func isLoaded() -> Bool {

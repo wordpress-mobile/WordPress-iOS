@@ -145,7 +145,7 @@ public class MySiteScreen: ScreenObject {
         blogTable.swipeUp(velocity: .fast)
         blogDetailsRemoveSiteButton.doubleTap()
 
-        let removeButton = XCUIDevice.isPad ? removeSiteAlert : removeSiteButton
+        let removeButton = XCTestCase.isPad ? removeSiteAlert : removeSiteButton
         removeButton.tap()
     }
 
@@ -156,8 +156,10 @@ public class MySiteScreen: ScreenObject {
 
     @discardableResult
     public func goToMoreMenu() throws -> MySiteMoreMenuScreen {
-        // On iPad, the menu items are already listed on screen, so we don't need to tap More Menu button
-        if XCUIDevice.isPhone {
+        if XCTestCase.isPad {
+            try SidebarNavComponent()
+                .openSiteMenu()
+        } else {
             moreMenuButton.tap()
         }
 
@@ -279,5 +281,12 @@ public class MySiteScreen: ScreenObject {
         let collectionView = app.collectionViews.firstMatch
         let cardCell = collectionView.cells.containing(.any, identifier: id).firstMatch
         app.scrollDownToElement(element: cardCell)
+    }
+
+    @discardableResult
+    public func goToBlockEditorScreen() throws -> BlockEditorScreen {
+        try goToCreateSheet()
+            .goToBlogPost()
+        return try BlockEditorScreen()
     }
 }

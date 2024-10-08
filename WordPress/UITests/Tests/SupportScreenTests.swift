@@ -8,10 +8,6 @@ class SupportScreenTests: XCTestCase {
         setUpTestSuite()
     }
 
-    override func tearDownWithError() throws {
-        takeScreenshotOfFailedTest()
-    }
-
     func testSupportForumsCanBeLoadedDuringLogin() throws {
         try PrologueScreen()
             .selectContinue()

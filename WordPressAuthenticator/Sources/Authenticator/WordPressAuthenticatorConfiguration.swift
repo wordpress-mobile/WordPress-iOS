@@ -178,6 +178,8 @@ public struct WordPressAuthenticatorConfiguration {
     ///
     let enableSiteCreationGuide: Bool
 
+    let disableAutofill: Bool
+
     /// Designated Initializer
     ///
     public init (wpcomClientId: String,
@@ -215,7 +217,8 @@ public struct WordPressAuthenticatorConfiguration {
                  enableManualErrorHandlingForSiteCredentialLogin: Bool = false,
                  useEnterEmailAddressAsStepValueForGetStartedVC: Bool = false,
                  enableSiteAddressLoginOnlyInPrologue: Bool = false,
-                 enableSiteCreationGuide: Bool = false
+                 enableSiteCreationGuide: Bool = false,
+                 disableAutofill: Bool = false
     ) {
 
         self.wpcomClientId = wpcomClientId
@@ -254,5 +257,6 @@ public struct WordPressAuthenticatorConfiguration {
         self.useEnterEmailAddressAsStepValueForGetStartedVC = useEnterEmailAddressAsStepValueForGetStartedVC
         self.enableSiteAddressLoginOnlyInPrologue = enableSiteAddressLoginOnlyInPrologue
         self.enableSiteCreationGuide = enableSiteCreationGuide
+        self.disableAutofill = disableAutofill
     }
 }

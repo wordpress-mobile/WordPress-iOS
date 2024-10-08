@@ -66,7 +66,11 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Application lifecycle
 
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
-        window = UIWindow(frame: UIScreen.main.bounds)
+        let window = UIWindow(frame: UIScreen.main.bounds)
+        self.window = window
+
+        UITestConfigurator.prepareApplicationForUITests(in: application, window: window)
+
         AppAppearance.overrideAppearance()
         MemoryCache.shared.register()
         MediaImageService.migrateCacheIfNeeded()
@@ -85,7 +89,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         updateFeatureFlags()
         updateRemoteConfig()
 
-        window?.makeKeyAndVisible()
+        window.makeKeyAndVisible()
 
         // Restore a disassociated account prior to fixing tokens.
         AccountService(coreDataStack: ContextManager.sharedInstance()).restoreDisassociatedAccountIfNecessary()
@@ -112,7 +116,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         setupPingHub()
         setupBackgroundRefresh(application)
         setupNoticePresenter()
-        UITestConfigurator.prepareApplicationForUITests(application)
         DebugMenuViewController.configure(in: window)
         AppTips.initialize()
 
@@ -231,21 +234,24 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         configureAppRatingUtility()
 
-        let libraryLogger = WordPressLibraryLogger()
-        TracksLogging.delegate = libraryLogger
-        WPKitSetLoggingDelegate(libraryLogger)
-        WPAuthenticatorSetLoggingDelegate(libraryLogger)
+        if UITestConfigurator.isEnabled(.disableLogging) {
+            WordPressAppDelegate.setLogLevel(.off)
+        } else {
+            let libraryLogger = WordPressLibraryLogger()
+            TracksLogging.delegate = libraryLogger
+            WPKitSetLoggingDelegate(libraryLogger)
+            WPAuthenticatorSetLoggingDelegate(libraryLogger)
+            printDebugLaunchInfoWithLaunchOptions(launchOptions)
+            toggleExtraDebuggingIfNeeded()
+        }
 
-        printDebugLaunchInfoWithLaunchOptions(launchOptions)
-        toggleExtraDebuggingIfNeeded()
-
-        #if DEBUG
+#if DEBUG
         KeychainTools.processKeychainDebugArguments()
 
         // Zendesk Logging
         CoreLogger.enabled = true
         CoreLogger.logLevel = .debug
-        #endif
+#endif
 
         ZendeskUtils.setup()
 

@@ -52,7 +52,9 @@ class InfiniteScrollerView: UIScrollView {
     init(frame: CGRect = .zero, _ viewBuilder: @escaping (() -> UIView)) {
         super.init(frame: frame)
         self.viewBuilder = viewBuilder
-        displayLink = CADisplayLink(target: self, selector: #selector(step))
+        if !UITestConfigurator.isEnabled(.disableAnimations) {
+            displayLink = CADisplayLink(target: self, selector: #selector(step))
+        }
 
         setupScrollView()
         let stackView = setupStackView()

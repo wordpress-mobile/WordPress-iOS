@@ -104,4 +104,15 @@ enum ReaderStaticScreen: String, CaseIterable, Identifiable, Hashable {
         case .search: nil
         }
     }
+
+    // TODO: replace these values ones the sidebar gets integrated on iPhone
+    var accessibilityIdentifier: String {
+        switch self {
+        case .recent: "reader_sidebar_subscriptions"
+        case .discover: "reader_sidebar_discover"
+        case .saved: "reader_sidebar_saved"
+        case .likes: "reader_sidebar_liked"
+        case .search: "reader_sidebar_search"
+        }
+    }
 }

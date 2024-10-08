@@ -16,7 +16,7 @@
 
 ## Testing 
 
-- [UI Tests](../WordPress/UITests)
+- [UI Tests](ui-tests.md)
 
 ## Others 
 

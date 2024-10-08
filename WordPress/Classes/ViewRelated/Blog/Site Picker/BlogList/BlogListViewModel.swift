@@ -142,6 +142,18 @@ final class BlogListViewModel: NSObject, ObservableObject {
 
     private func getFilteredSites(from fetchedResultsController: NSFetchedResultsController<Blog>) -> [Blog] {
         var blogs = fetchedResultsController.fetchedObjects ?? []
+
+        // This a workaround for an issue where site lists reloads and triggers
+        // `Blog.wordPressComRestApi` that subsequently shows the "enter password"
+        // screen on user-initiated logout. The chain of events:
+        // - `removeDefaultWordPressComAccount` calls `WPAccountDefaultWordPressComAccountChangedNotification`
+        // - `NotificationsViewController` calls `resetNotifications` and deletes
+        // all notifications (why this class?) and saves context
+        // - `BlogListViewModel` reloads in the middle of the logout procedure
+        blogs = blogs.filter {
+            !($0.account?.isDeleted == true)
+        }
+
         if configuration.shouldHideSelfHostedSites {
             blogs = blogs.filter { $0.isAccessibleThroughWPCom() }
         }

@@ -108,6 +108,7 @@ extension AddSiteMenuViewModel {
         }
         let item = UIBarButtonItem(systemItem: .add)
         item.setAdaptiveActions(actions.map(\.uiAction))
+        item.accessibilityIdentifier = "add-site-button"
         return item
     }
 }

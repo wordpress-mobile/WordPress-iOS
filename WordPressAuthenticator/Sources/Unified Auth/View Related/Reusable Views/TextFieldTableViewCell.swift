@@ -121,6 +121,9 @@ private extension TextFieldTableViewCell {
             textField.accessibilityLabel = Constants.email
             textField.accessibilityIdentifier = Constants.emailID
         }
+        if WordPressAuthenticator.shared.configuration.disableAutofill {
+            textField.textContentType = nil
+        }
     }
 
     /// Call the handler when the textfield changes.

@@ -2,21 +2,18 @@ import UITestsFoundation
 import XCTest
 
 class ReaderTests: XCTestCase {
-
     @MainActor
     override func setUp() async throws {
         setUpTestSuite(selectWPComSite: WPUITestCredentials.testWPcomPaidSite)
         try await WireMock.setUpScenario(scenario: "reader_subscriptions_flow")
         try await WireMock.setUpScenario(scenario: "reader_like_post_flow")
 
-        try TabNavComponent()
+        _ = try makeMainNavigationComponent()
             .goToReaderScreen()
     }
+}
 
-    override func tearDownWithError() throws {
-        takeScreenshotOfFailedTest()
-    }
-
+class ReaderTests_01: ReaderTests {
     func testViewPost() throws {
         try ReaderScreen()
             .switchToStream(.subscriptions)
@@ -31,6 +28,17 @@ class ReaderTests: XCTestCase {
             .verifyPostContentEquals(.expectedPostContent)
     }
 
+    func testDiscover() throws {
+        try ReaderScreen()
+            .switchToStream(.discover)
+            .selectTag()
+            .verifyTagLoaded()
+            .followTag()
+            .verifyTagFollowed()
+    }
+}
+
+class ReaderTests_02: ReaderTests {
     func testAddCommentToPost() throws {
         try ReaderScreen()
             .switchToStream(.subscriptions)
@@ -40,16 +48,12 @@ class ReaderTests: XCTestCase {
             .verifyCommentSent(.commentContent)
     }
 
-    func testFollowNewTopicOnDiscover() throws {
-        try ReaderScreen()
-            .switchToStream(.discover)
-            .selectTag()
-            .verifyTagLoaded()
-            .followTag()
-            .verifyTagFollowed()
+    func testInteractWithPost() throws {
+        try _testSavePost()
+        try _testLikePost()
     }
 
-    func testSavePost() throws {
+    func _testSavePost() throws {
         // Get saved post label
         let (updatedReaderScreen, savedPostLabel) = try ReaderScreen()
             .switchToStream(.saved)
@@ -63,7 +67,7 @@ class ReaderTests: XCTestCase {
             .verifySavedPosts(state: .withPosts, postLabel: savedPostLabel)
     }
 
-    func testLikePost() throws {
+    func _testLikePost() throws {
         try ReaderScreen()
             .switchToStream(.liked)
             .verifyLikedPosts(state: .withoutPosts)
