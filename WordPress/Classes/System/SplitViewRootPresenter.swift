@@ -15,12 +15,12 @@ final class SplitViewRootPresenter: RootViewPresenter {
     private var cancellables: [AnyCancellable] = []
 
     private var siteContent: SiteSplitViewContent?
-    private var notificationsContent: NotificationsSplitViewContent?
+    @Lazy private var notificationsContent = NotificationsSplitViewContent()
     @Lazy private var readerPresenter = ReaderPresenter()
     private var welcomeContent: WelcomeSplitViewContent?
 
     private var displayingContent: SplitViewDisplayable? {
-        let possibleContent: [SplitViewDisplayable?] = [siteContent, notificationsContent, $readerPresenter.value, welcomeContent]
+        let possibleContent: [SplitViewDisplayable?] = [siteContent, $notificationsContent.value, $readerPresenter.value, welcomeContent]
         let displaying = possibleContent
             .compactMap { $0 }
             .filter { $0.isDisplaying(in: splitVC) }
@@ -112,12 +112,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
                 }
             }
         case .notifications:
-            if let notificationsContent {
-                content = notificationsContent
-            } else {
-                notificationsContent = NotificationsSplitViewContent()
-                content = notificationsContent!
-            }
+            content = notificationsContent
         case .reader:
             content = readerPresenter
         }
@@ -297,10 +292,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
     func showNotificationsTab(completion: ((NotificationsViewController) -> Void)?) {
         sidebarViewModel.selection = .notifications
-
-        if let notifications = self.notificationsContent {
-            completion?(notifications.notificationsViewController)
-        }
+        completion?(notificationsContent.notificationsViewController)
     }
 
     // MARK: RootViewPresenter (Me)
