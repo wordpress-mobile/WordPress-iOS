@@ -20,12 +20,8 @@ class NotificationTests: XCTestCase {
         try await WireMock.setUpScenario(scenario: "comment_flow")
     }
 
-    override func tearDownWithError() throws {
-        takeScreenshotOfFailedTest()
-    }
-
     func testViewNotification() throws {
-        try TabNavComponent()
+        try makeMainNavigationComponent()
             .goToNotificationsScreen()
             .openNotification(withSubstring: .commentNotificationString)
             .verifyNotification(ofType: .comment)
@@ -36,7 +32,7 @@ class NotificationTests: XCTestCase {
     }
 
     func testReplyNotification() throws {
-        try TabNavComponent()
+        try makeMainNavigationComponent()
             .goToNotificationsScreen()
             .openNotification(withSubstring: .commentNotificationString)
             .replyToComment(withText: .commentText)
@@ -45,13 +41,13 @@ class NotificationTests: XCTestCase {
 
     func testLikeNotification() throws {
         // Get number of likes before liking the notification
-        let (updatedNotificationsScreen, initialLikes) = try TabNavComponent()
+        let (updatedNotificationsScreen, initialLikes) = try makeMainNavigationComponent()
             .goToNotificationsScreen()
             .openNotification(withSubstring: .commentNotificationString)
-            .getNumberOfLikesForNotification()!
+            .getNumberOfLikesForNotification()
 
         // Tapping like and verify that like count increased
-        updatedNotificationsScreen
+        try updatedNotificationsScreen
             .likeComment()
             .verifyCommentLiked(expectedLikes: initialLikes + 1)
     }

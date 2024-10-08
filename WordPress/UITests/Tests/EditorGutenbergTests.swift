@@ -2,27 +2,23 @@ import UITestsFoundation
 import XCTest
 
 class EditorGutenbergTests: XCTestCase {
-
     @MainActor
     override func setUp() async throws {
         try await WireMock.setUpScenario(scenario: "new_post_flow")
         setUpTestSuite(selectWPComSite: WPUITestCredentials.testWPcomPaidSite)
 
-        try TabNavComponent()
+        try MySiteScreen()
             .goToBlockEditorScreen()
-    }
-
-    override func tearDownWithError() throws {
-        takeScreenshotOfFailedTest()
     }
 
     let postTitle = "Rich post title"
     let postContent = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam congue efficitur leo eget porta."
     let videoUrlPath = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
     let audioUrlPath = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
+}
 
+class EditorGutenbergTests_01: EditorGutenbergTests {
     func testTextPostPublish() throws {
-
         try BlockEditorScreen()
             .enterTextInTitle(text: postTitle)
             .addParagraphBlock(withText: postContent)
@@ -32,26 +28,7 @@ class EditorGutenbergTests: XCTestCase {
             .tapDone()
     }
 
-    func testBasicPostPublishWithCategoryAndTag() throws {
-
-        let category = getCategory()
-        let tag = getTag()
-        try BlockEditorScreen()
-            .enterTextInTitle(text: postTitle)
-            .addParagraphBlock(withText: postContent)
-            .addImage()
-            .verifyContentStructure(blocks: 2, words: postContent.components(separatedBy: " ").count, characters: postContent.count)
-            .openPostSettings()
-            .selectCategory(name: category)
-            .addTag(name: tag)
-            .closePostSettings()
-            .postAndViewEpilogue(action: .publish)
-            .verifyEpilogueDisplays(postTitle: postTitle, siteAddress: WPUITestCredentials.testWPcomPaidSite)
-            .tapDone()
-    }
-
     func testUndoRedo() throws {
-
         try BlockEditorScreen()
             .verifyUndoIsDisabled()
             .verifyRedoIsDisabled()
@@ -71,9 +48,28 @@ class EditorGutenbergTests: XCTestCase {
             .verifyUndoIsVisible()
             .verifyRedoIsVisible()
     }
+}
 
+// The slowest one are in separate for better parallelization
+class EditorGutenbergTests_02: EditorGutenbergTests {
+    func testBasicPostPublishWithCategoryAndTag() throws {
+        try BlockEditorScreen()
+            .enterTextInTitle(text: postTitle)
+            .addParagraphBlock(withText: postContent)
+            .addImage()
+            .verifyContentStructure(blocks: 2, words: postContent.components(separatedBy: " ").count, characters: postContent.count)
+            .openPostSettings()
+            .selectCategory(name: "Wedding")
+            .addTag(name: "tag \(Date().toString())")
+            .closePostSettings()
+            .postAndViewEpilogue(action: .publish)
+            .verifyEpilogueDisplays(postTitle: postTitle, siteAddress: WPUITestCredentials.testWPcomPaidSite)
+            .tapDone()
+    }
+}
+
+class EditorGutenbergTests_03: EditorGutenbergTests {
     func testAddRemoveFeaturedImage() throws {
-
         try BlockEditorScreen()
             .enterTextInTitle(text: postTitle)
             .addParagraphBlock(withText: postContent)
@@ -87,7 +83,9 @@ class EditorGutenbergTests: XCTestCase {
             .verifyPostSettings(hasImage: true)
             .closePostSettings()
     }
+}
 
+class EditorGutenbergTests_04: EditorGutenbergTests {
     func testAddGalleryBlock() throws {
         try BlockEditorScreen()
             .enterTextInTitle(text: postTitle)

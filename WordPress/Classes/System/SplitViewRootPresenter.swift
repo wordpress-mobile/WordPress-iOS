@@ -43,6 +43,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
         tabBarVC = WPTabBarController(staticScreens: false)
 
         splitVC.delegate = self
+        splitVC.view.accessibilityIdentifier = "root_vc"
 
         let sidebarVC = SidebarViewController(viewModel: sidebarViewModel)
         let navigationVC = makeRootNavigationController(with: sidebarVC)

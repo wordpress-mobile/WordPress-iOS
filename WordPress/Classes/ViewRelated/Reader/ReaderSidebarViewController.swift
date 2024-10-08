@@ -8,6 +8,7 @@ final class ReaderSidebarViewController: UIHostingController<AnyView> {
 
     private var cancellables: [AnyCancellable] = []
     private var viewContext: NSManagedObjectContext { ContextManager.shared.mainContext }
+    private var didAppear = false
 
     init(viewModel: ReaderSidebarViewModel) {
         self.viewModel = viewModel
@@ -28,6 +29,12 @@ final class ReaderSidebarViewController: UIHostingController<AnyView> {
         super.viewWillAppear(animated)
 
         viewModel.onAppear()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        didAppear = true
     }
 
     func showInitialSelection() {
@@ -59,8 +66,10 @@ final class ReaderSidebarViewController: UIHostingController<AnyView> {
         case .organization(let objectID):
             showSecondary(makeViewController(withTopicID: objectID))
         }
+    }
 
-        if let splitVC = splitViewController, splitVC.splitBehavior == .overlay {
+    private func hideSupplementaryColumnIfNeeded() {
+        if didAppear, let splitVC = splitViewController, splitVC.splitBehavior == .overlay {
             DispatchQueue.main.async {
                 splitVC.hide(.supplementary)
             }
@@ -70,6 +79,8 @@ final class ReaderSidebarViewController: UIHostingController<AnyView> {
     private func popSecondaryViewControllerToRoot() {
         let secondaryVC = splitViewController?.viewController(for: .secondary)
         (secondaryVC as? UINavigationController)?.popToRootViewController(animated: true)
+
+        hideSupplementaryColumnIfNeeded()
     }
 
     private func makeViewController<T: ReaderAbstractTopic>(withTopicID objectID: TaggedManagedObjectID<T>) -> UIViewController {
@@ -193,6 +204,7 @@ private struct ReaderSidebarView: View {
                     Label($0.localizedTitle, systemImage: $0.systemImage)
                         .tag(ReaderSidebarItem.main($0))
                         .lineLimit(1)
+                        .accessibilityIdentifier($0.accessibilityIdentifier)
                 }
             }
             if !teams.isEmpty {
@@ -216,6 +228,7 @@ private struct ReaderSidebarView: View {
             EditButton()
         }
         .tint(preferredTintColor)
+        .accessibilityIdentifier("reader_sidebar")
     }
 
     private var preferredTintColor: Color {

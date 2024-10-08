@@ -46,7 +46,7 @@ enum FeatureFlag: Int, CaseIterable {
         case .authenticateUsingApplicationPassword:
             return false
         case .tipKit:
-            return BuildConfiguration.current != .appStore
+            return true
         case .newGutenberg:
             return false
         case .newGutenbergThemeStyles:

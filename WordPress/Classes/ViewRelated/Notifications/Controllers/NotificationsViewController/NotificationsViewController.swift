@@ -212,12 +212,13 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
             return
         }
 
-        if shouldShowPrimeForPush {
-            setupNotificationPrompt()
+        if !UITestConfigurator.isEnabled(.disablePrompts) {
+            if shouldShowPrimeForPush {
+                setupNotificationPrompt()
+            }
+            showNotificationPrimerAlertIfNeeded()
+            showSecondNotificationsAlertIfNeeded()
         }
-
-        showNotificationPrimerAlertIfNeeded()
-        showSecondNotificationsAlertIfNeeded()
     }
 
     override func viewWillDisappear(_ animated: Bool) {

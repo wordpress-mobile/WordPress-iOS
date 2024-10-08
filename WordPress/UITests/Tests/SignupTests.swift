@@ -9,10 +9,6 @@ class SignupTests: XCTestCase {
         setUpTestSuite()
     }
 
-    override func tearDownWithError() throws {
-        takeScreenshotOfFailedTest()
-    }
-
     func testEmailSignup() throws {
         try WelcomeScreen()
             .selectSignup()
@@ -25,7 +21,6 @@ class SignupTests: XCTestCase {
             )
             .setPassword(WPUITestCredentials.signupPassword)
             .continueWithSignup()
-            .dismissNotificationAlertIfNeeded()
             .assertScreenIsLoaded()
     }
 }

@@ -219,7 +219,9 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectSelectedRowWithAnimation:YES];
+    if (!self.isSidebarModeEnabled) {
+        [tableView deselectSelectedRowWithAnimation:YES];
+    }
 
     if (![self indexPathIsValid:indexPath]) {
         return;

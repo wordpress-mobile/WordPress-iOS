@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-09-27 06:06:13+0000 */
+/* Translation-Revision-Date: 2024-10-02 09:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: sv_SE */
@@ -9335,6 +9335,9 @@ Example: Reply to Pamela Nguyen */
 /* The user has previously tapped 'Like' on this comment */
 "notifications.accessibility-comment-like-button-on" = "Du gillade denna kommentar";
 
+/* The user has not previously tapped 'Like' on this post or comment */
+"notifications.accessibility-like-button-off" = "Saknar gillamarkering";
+
 /* The user has previously tapped 'Like' on this post */
 "notifications.accessibility-post-like-button-on" = "Du gillade detta inlägg";
 
@@ -9349,6 +9352,12 @@ Example: Reply to Pamela Nguyen */
 
 /* A label for screenreader users */
 "notifications.accessibility-tap-to-share-this-post" = "Dubbeltryck för att dela detta inlägg";
+
+/* A label for screenreader users */
+"notifications.accessibility-tap-to-unlike-this-comment" = "Dubbeltryck för att sluta gilla den här kommentaren";
+
+/* A label for screenreader users */
+"notifications.accessibility-tap-to-unlike-this-post" = "Dubbeltryck för att sluta gilla det här inlägget";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
 "notifications.action.subscribe.hint" = "Prenumerera på bloggen.";
@@ -10477,6 +10486,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Reader sidebar menu item */
 "reader.sidebar.discover" = "Upptäck";
+
+/* Reader sidebar menu item */
+"reader.sidebar.likes" = "Gillamarkeringar";
 
 /* Reader sidebar title */
 "reader.sidebar.navigationTitle" = "Läsare";

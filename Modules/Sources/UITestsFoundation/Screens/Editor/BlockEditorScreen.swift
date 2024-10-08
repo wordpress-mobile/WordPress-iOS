@@ -426,7 +426,7 @@ public class BlockEditorScreen: ScreenObject {
     public func dismissBloggingRemindersAlertIfNeeded() {
         guard setRemindersButton.waitForExistence(timeout: 5) else { return }
 
-        if XCUIDevice.isPad {
+        if XCTestCase.isPad {
             app.swipeDown(velocity: .fast)
         } else {
             let dismissBloggingRemindersAlertButton = app.buttons.element(boundBy: 0)

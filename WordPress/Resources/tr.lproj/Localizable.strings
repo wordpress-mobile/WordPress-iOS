@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-09-17 10:21:24+0000 */
+/* Translation-Revision-Date: 2024-10-02 09:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: tr */
@@ -7885,6 +7885,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Dismiss button title */
 "activityList.dismiss.title" = "Kapat";
 
+/* Screen title */
+"addCategory.navigationTitle" = "Kategori Ekleyin";
+
+/* Cell title */
+"addCategory.parentCategory" = "Üst Kategori";
+
+/* Cell placeholder */
+"addCategory.titlePlaceholder" = "Başlık";
+
 /* Error message shown a URL does not point to an existing site. */
 "addSite.restApiNotAvailable" = "Bu adresteki site bir WordPress sitesi değil. Siteyle bağlantı kurabilmemiz için sitede WordPress kullanılmalıdır.";
 
@@ -9275,6 +9284,9 @@ Example: Reply to Pamela Nguyen */
 /* Message description for when a user has no sites. */
 "mySite.noSites.description" = "İşletmeniz, derginiz veya kişisel blogunuz için yeni bir site oluşturun ya da var olan bir WordPress kurulumunu bağlayın.";
 
+/* Title description for when a user has no sites. */
+"mySite.noSites.stateViewTitle" = "İlk Sitenizi Oluşturun";
+
 /* Button that reveals more site actions */
 "mySite.siteActions.button" = "Site işlemleri";
 
@@ -9319,6 +9331,33 @@ Example: Reply to Pamela Nguyen */
 
 /* Error message that informs comment details from a private blog cannot be fetched. */
 "notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage" = "Bu özel blogu görüntülemek için izniniz yok.";
+
+/* The user has previously tapped 'Like' on this comment */
+"notifications.accessibility-comment-like-button-on" = "Bu yorumu Beğendiniz";
+
+/* The user has not previously tapped 'Like' on this post or comment */
+"notifications.accessibility-like-button-off" = "Beğenilmedi";
+
+/* The user has previously tapped 'Like' on this post */
+"notifications.accessibility-post-like-button-on" = "Bu gönderiyi Beğendiniz";
+
+/* A label for screenreader users */
+"notifications.accessibility-share-button" = "Paylaş";
+
+/* A label for screenreader users */
+"notifications.accessibility-tap-to-like-this-comment" = "Bu Yorumu Beğenmek İçin Çift Dokunun";
+
+/* A label for screenreader users */
+"notifications.accessibility-tap-to-like-this-post" = "Bu Gönderiyi Beğenmek İçin Çift Dokunun";
+
+/* A label for screenreader users */
+"notifications.accessibility-tap-to-share-this-post" = "Bu Gönderiyi Paylaşmak İçin Çift Dokunun";
+
+/* A label for screenreader users */
+"notifications.accessibility-tap-to-unlike-this-comment" = "Bu Yorumun Beğenisini Kaldırmak İçin Çift Dokunun";
+
+/* A label for screenreader users */
+"notifications.accessibility-tap-to-unlike-this-post" = "Bu Gönderinin Beğenisini Kaldırmak İçin Çift Dokunun";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
 "notifications.action.subscribe.hint" = "Blogu takip edin.";
@@ -10017,6 +10056,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
 "reader.blog.stream.subscribers" = "%@ abone";
 
+/* Reader sidebar button title */
+"reader.button.unfollow" = "Takip etmeyi bırak";
+
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "Sitedeki yazıları görüntüler";
 
@@ -10409,6 +10451,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* A short message that informs the user no WordPress.com blogs could be found. */
 "reader.reblog.no.blogs.title" = "Kullanılabilecek bir WordPress.com blogu yok";
 
+/* Notification title for when saved post is removed */
+"reader.savedPostRemovedNotificationTitle" = "Kaydedilen gönderi kaldırıldı";
+
 /* Title of a Reader tab showing Sites matching a user's search query */
 "reader.search.tab.blogs" = "Bloglar";
 
@@ -10436,6 +10481,45 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Reader select interests title label text */
 "reader.select.tags.title" = "Sevdiğiniz blogları keşfedin ve takip edin";
 
+/* Reader sidebar button title */
+"reader.sidebar.allSubscriptions" = "Tüm Abonelikler";
+
+/* Reader sidebar menu item */
+"reader.sidebar.discover" = "Keşfet";
+
+/* Reader sidebar menu item */
+"reader.sidebar.likes" = "Beğeniler";
+
+/* Reader sidebar title */
+"reader.sidebar.navigationTitle" = "Okuyucu";
+
+/* Reader sidebar menu item */
+"reader.sidebar.recent" = "Son";
+
+/* Reader sidebar menu item */
+"reader.sidebar.saved" = "Kaydedildi";
+
+/* Reader sidebar menu item */
+"reader.sidebar.search" = "Ara";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.lists.title" = "Listeler";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.organization.title" = "Kuruluş";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.subscriptions.tTitle" = "Abonelikler";
+
+/* Reader sidebar button */
+"reader.sidebar.section.tags.addTag" = "Etiket ekle";
+
+/* Reader sidebar button */
+"reader.sidebar.section.tags.discoverTags" = "Daha Fazla Etiket Keşfet";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.tags.title" = "Etiketler";
+
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "Abone ol";
 
@@ -10447,6 +10531,30 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Verb. Button title. The user is subscribed to a blog. */
 "reader.subscribed.button.title" = "Abone olunmuş";
+
+/* Short error message */
+"reader.subscription.invalidURLError" = "Lütfen geçerli bir URL girin";
+
+/* Button subtitle */
+"reader.subscriptions.addSubscriptionButtonSubtitle" = "Sitelere, haber bültenlerine veya RSS akışlarına abone olun";
+
+/* Button title */
+"reader.subscriptions.addSubscriptionButtonTitle" = "Abonelik Ekle";
+
+/* Empty state details */
+"reader.subscriptions.emptyStateDetails" = "Keşfettiğiniz ve abone olduğunuz siteler burada görünür";
+
+/* Button title for managing subscription settings */
+"reader.subscriptions.settings" = "Ayarlar";
+
+/* Number of subscriptions on a site (plural) */
+"reader.subscriptions.subscriptionsPlural" = "%@ abone";
+
+/* Number of subscriptions on a site (singular) */
+"reader.subscriptions.subscriptionsSingular" = "%@ abone";
+
+/* Navigation bar title */
+"reader.subscriptions.title" = "Abonelikler";
 
 /* A suggestion of topics the user might want to subscribe to */
 "reader.suggested.blogs.title" = "Abone olunacak bloglar";
@@ -10476,6 +10584,15 @@ This empty state component is displayed only when the app fails to load posts un
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag.title" = "Etiket ekle";
 
+/* Navigation title */
+"reader.tags.addTag.details" = "Herhangi bir isteğe bağlı etiket adı girebilirsiniz";
+
+/* Placeholder for text field */
+"reader.tags.addTag.placeholder" = "Etiket";
+
+/* Navigation title */
+"reader.tags.addTag.title" = "Etiket ekle";
+
 /* Text for the 'Like' button on the reader tag cell. */
 "reader.tags.button.like" = "Beğen";
 
@@ -10484,6 +10601,9 @@ This empty state component is displayed only when the app fails to load posts un
 
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "Daha fazla etiket keşfet";
+
+/* Title for an error snackbar */
+"reader.tags.failedToUnfollowErrorTitle" = "Konu Kaldırılamadı";
 
 /* Verb. Button title. Follows a new tag. */
 "reader.tags.follow.button.title" = "Takip et";
@@ -10648,13 +10768,22 @@ This empty state component is displayed only when the app fails to load posts un
 "shared.button.copyLink" = "Bağlantıyı kopyala";
 
 /* A shared button title used in different contexts */
+"shared.button.delete" = "Sil";
+
+/* A shared button title used in different contexts */
 "shared.button.done" = "Tamamlandı";
 
 /* A shared button title used in different contexts */
 "shared.button.edit" = "Düzenle";
 
 /* A shared button title used in different contexts */
+"shared.button.ok" = "Tamam";
+
+/* A shared button title used in different contexts */
 "shared.button.remove" = "Kaldır";
+
+/* A shared button title used in different contexts */
+"shared.button.retry" = "Tekrar dene";
 
 /* A shared button title used in different contexts */
 "shared.button.save" = "Kaydet";
@@ -10663,10 +10792,43 @@ This empty state component is displayed only when the app fails to load posts un
 "shared.button.share" = "Paylaş";
 
 /* A shared button title used in different contexts */
+"shared.button.undo" = "Geri Al";
+
+/* A shared button title used in different contexts */
 "shared.button.view" = "Görüntüle";
 
 /* A generic error message */
 "shared.error.geneirc" = "Bir sorun oluştu";
+
+/* Sidebar button title on iPad */
+"sidebar.addSite" = "Site Ekle";
+
+/* Sidebar button title on iPad */
+"sidebar.allSites" = "Tüm Siteler";
+
+/* Sidebar button title on iPad */
+"sidebar.createSite" = "Site Oluştur";
+
+/* Sidebar item on iPad */
+"sidebar.domains" = "Alan adları";
+
+/* Sidebar item on iPad */
+"sidebar.help" = "Yardım ve Destek";
+
+/* Sidebar item on iPad */
+"sidebar.me" = "Ben";
+
+/* Sidebar section title on iPad */
+"sidebar.moreSectionTitle" = "Daha Fazla";
+
+/* Sidebar section title on iPad */
+"sidebar.mySitesSectionTitle" = "Siteler";
+
+/* Sidebar item on iPad */
+"sidebar.notifications" = "Bildirimler";
+
+/* Sidebar item on iPad */
+"sidebar.reader" = "Okuyucu";
 
 /* Template site address for the search bar. */
 "site.cration.domain.site.address" = "https:\/\/sitenizinadi.com";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-08-28 10:54:08+0000 */
+/* Translation-Revision-Date: 2024-10-01 09:54:11+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: zh_CN */
@@ -7885,6 +7885,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Dismiss button title */
 "activityList.dismiss.title" = "忽略";
 
+/* Screen title */
+"addCategory.navigationTitle" = "添加分类";
+
+/* Cell title */
+"addCategory.parentCategory" = "父级分类";
+
+/* Cell placeholder */
+"addCategory.titlePlaceholder" = "标题";
+
 /* Error message shown a URL does not point to an existing site. */
 "addSite.restApiNotAvailable" = "此地址下的站点不是 WordPress 站点。 站点必须使用 WordPress，我们才能建立连接。";
 
@@ -9275,6 +9284,9 @@ Example: Reply to Pamela Nguyen */
 /* Message description for when a user has no sites. */
 "mySite.noSites.description" = "为您的业务、杂志或个人博客创建新站点；或连接现有的 WordPress 站点。";
 
+/* Title description for when a user has no sites. */
+"mySite.noSites.stateViewTitle" = "创建您的首个站点";
+
 /* Button that reveals more site actions */
 "mySite.siteActions.button" = "站点操作";
 
@@ -9319,6 +9331,33 @@ Example: Reply to Pamela Nguyen */
 
 /* Error message that informs comment details from a private blog cannot be fetched. */
 "notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage" = "您无权查看此私人博客。";
+
+/* The user has previously tapped 'Like' on this comment */
+"notifications.accessibility-comment-like-button-on" = "您已点赞此评论";
+
+/* The user has not previously tapped 'Like' on this post or comment */
+"notifications.accessibility-like-button-off" = "未被点赞";
+
+/* The user has previously tapped 'Like' on this post */
+"notifications.accessibility-post-like-button-on" = "您已点赞此文章";
+
+/* A label for screenreader users */
+"notifications.accessibility-share-button" = "共享";
+
+/* A label for screenreader users */
+"notifications.accessibility-tap-to-like-this-comment" = "双击以点赞此评论";
+
+/* A label for screenreader users */
+"notifications.accessibility-tap-to-like-this-post" = "双击以点赞此文章";
+
+/* A label for screenreader users */
+"notifications.accessibility-tap-to-share-this-post" = "双击以共享此文章";
+
+/* A label for screenreader users */
+"notifications.accessibility-tap-to-unlike-this-comment" = "双击以取消点赞此评论";
+
+/* A label for screenreader users */
+"notifications.accessibility-tap-to-unlike-this-post" = "双击以取消点赞此文章";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
 "notifications.action.subscribe.hint" = "订阅此博客。";
@@ -10017,6 +10056,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
 "reader.blog.stream.subscribers" = "%@ 位订阅者";
 
+/* Reader sidebar button title */
+"reader.button.unfollow" = "取消关注";
+
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "查看站点中的文章";
 
@@ -10409,6 +10451,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* A short message that informs the user no WordPress.com blogs could be found. */
 "reader.reblog.no.blogs.title" = "无可用的 WordPress.com 博客";
 
+/* Notification title for when saved post is removed */
+"reader.savedPostRemovedNotificationTitle" = "保存的文章已删除";
+
 /* Title of a Reader tab showing Sites matching a user's search query */
 "reader.search.tab.blogs" = "博客";
 
@@ -10436,6 +10481,45 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Reader select interests title label text */
 "reader.select.tags.title" = "发现并关注您喜欢的博客";
 
+/* Reader sidebar button title */
+"reader.sidebar.allSubscriptions" = "所有订阅";
+
+/* Reader sidebar menu item */
+"reader.sidebar.discover" = "发现";
+
+/* Reader sidebar menu item */
+"reader.sidebar.likes" = "点赞数";
+
+/* Reader sidebar title */
+"reader.sidebar.navigationTitle" = "阅读器";
+
+/* Reader sidebar menu item */
+"reader.sidebar.recent" = "最近";
+
+/* Reader sidebar menu item */
+"reader.sidebar.saved" = "已保存";
+
+/* Reader sidebar menu item */
+"reader.sidebar.search" = "搜索";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.lists.title" = "列表";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.organization.title" = "组织";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.subscriptions.tTitle" = "订阅";
+
+/* Reader sidebar button */
+"reader.sidebar.section.tags.addTag" = "添加标签";
+
+/* Reader sidebar button */
+"reader.sidebar.section.tags.discoverTags" = "发现更多标签";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.tags.title" = "标签";
+
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "订阅";
 
@@ -10447,6 +10531,30 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Verb. Button title. The user is subscribed to a blog. */
 "reader.subscribed.button.title" = "已订阅";
+
+/* Short error message */
+"reader.subscription.invalidURLError" = "请输入有效的 URL";
+
+/* Button subtitle */
+"reader.subscriptions.addSubscriptionButtonSubtitle" = "订阅站点、电子报或 RSS 源";
+
+/* Button title */
+"reader.subscriptions.addSubscriptionButtonTitle" = "添加订阅";
+
+/* Empty state details */
+"reader.subscriptions.emptyStateDetails" = "此处将显示您发现并订阅的站点";
+
+/* Button title for managing subscription settings */
+"reader.subscriptions.settings" = "设置";
+
+/* Number of subscriptions on a site (plural) */
+"reader.subscriptions.subscriptionsPlural" = "%@ 位订阅者";
+
+/* Number of subscriptions on a site (singular) */
+"reader.subscriptions.subscriptionsSingular" = "%@ 位订阅者";
+
+/* Navigation bar title */
+"reader.subscriptions.title" = "订阅";
 
 /* A suggestion of topics the user might want to subscribe to */
 "reader.suggested.blogs.title" = "要订阅的博客";
@@ -10476,6 +10584,15 @@ This empty state component is displayed only when the app fails to load posts un
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag.title" = "添加标签";
 
+/* Navigation title */
+"reader.tags.addTag.details" = "您可以输入任意标签名称";
+
+/* Placeholder for text field */
+"reader.tags.addTag.placeholder" = "标签";
+
+/* Navigation title */
+"reader.tags.addTag.title" = "添加标签";
+
 /* Text for the 'Like' button on the reader tag cell. */
 "reader.tags.button.like" = "点赞";
 
@@ -10484,6 +10601,9 @@ This empty state component is displayed only when the app fails to load posts un
 
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "发现更多标签";
+
+/* Title for an error snackbar */
+"reader.tags.failedToUnfollowErrorTitle" = "无法删除话题";
 
 /* Verb. Button title. Follows a new tag. */
 "reader.tags.follow.button.title" = "关注";
@@ -10648,13 +10768,22 @@ This empty state component is displayed only when the app fails to load posts un
 "shared.button.copyLink" = "复制链接";
 
 /* A shared button title used in different contexts */
+"shared.button.delete" = "删除";
+
+/* A shared button title used in different contexts */
 "shared.button.done" = "完成";
 
 /* A shared button title used in different contexts */
 "shared.button.edit" = "编辑";
 
 /* A shared button title used in different contexts */
+"shared.button.ok" = "确定";
+
+/* A shared button title used in different contexts */
 "shared.button.remove" = "移除";
+
+/* A shared button title used in different contexts */
+"shared.button.retry" = "重试";
 
 /* A shared button title used in different contexts */
 "shared.button.save" = "保存";
@@ -10663,10 +10792,43 @@ This empty state component is displayed only when the app fails to load posts un
 "shared.button.share" = "共享";
 
 /* A shared button title used in different contexts */
+"shared.button.undo" = "撤消";
+
+/* A shared button title used in different contexts */
 "shared.button.view" = "查看";
 
 /* A generic error message */
 "shared.error.geneirc" = "出错了";
+
+/* Sidebar button title on iPad */
+"sidebar.addSite" = "添加站点";
+
+/* Sidebar button title on iPad */
+"sidebar.allSites" = "所有站点";
+
+/* Sidebar button title on iPad */
+"sidebar.createSite" = "创建站点";
+
+/* Sidebar item on iPad */
+"sidebar.domains" = "域名";
+
+/* Sidebar item on iPad */
+"sidebar.help" = "帮助与支持";
+
+/* Sidebar item on iPad */
+"sidebar.me" = "我";
+
+/* Sidebar section title on iPad */
+"sidebar.moreSectionTitle" = "更多";
+
+/* Sidebar section title on iPad */
+"sidebar.mySitesSectionTitle" = "站点";
+
+/* Sidebar item on iPad */
+"sidebar.notifications" = "通知";
+
+/* Sidebar item on iPad */
+"sidebar.reader" = "阅读器";
 
 /* Template site address for the search bar. */
 "site.cration.domain.site.address" = "https:\/\/yoursitename.com";
