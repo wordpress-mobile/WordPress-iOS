@@ -37,12 +37,14 @@ struct ReaderSidebarTagsSection: View {
         } label: {
             Label(Strings.addTag, systemImage: "plus.circle")
         }
+        .listItemTint(AppColor.brand)
 
         Button {
             viewModel.navigate(.discoverTags)
         } label: {
             Label(Strings.discoverTags, systemImage: "sparkle.magnifyingglass")
         }
+        .listItemTint(AppColor.brand)
     }
 
     func delete(at offsets: IndexSet) {
