@@ -514,7 +514,7 @@ import AutomatticTracks
 
         view.addSubview(tableViewController.view)
         tableViewController.view.translatesAutoresizingMaskIntoConstraints = false
-        view.pinSubviewToAllEdges(tableViewController.view)
+        view.pinSubviewToSafeArea(tableViewController.view)
         tableViewController.didMove(toParent: self)
         tableConfiguration.setup(tableView)
         tableView.delegate = self
