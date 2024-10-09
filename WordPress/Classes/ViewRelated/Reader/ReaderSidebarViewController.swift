@@ -49,8 +49,6 @@ private struct ReaderSidebarView: View {
     @FetchRequest(sortDescriptors: [SortDescriptor(\.title, order: .forward)])
     private var teams: FetchedResults<ReaderTeamTopic>
 
-    @State private var searchText = ""
-
     var body: some View {
         list
             .toolbar {
@@ -79,7 +77,6 @@ private struct ReaderSidebarView: View {
             list
                 .listRowBackground(Color(.systemBackground))
                 .scrollContentBackground(.hidden)
-                .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: Strings.searchPlaceholder)
         } else {
             list
         }
@@ -88,8 +85,8 @@ private struct ReaderSidebarView: View {
     @ViewBuilder
     private var content: some View {
         Section {
-            let screens = allStaticScreens
-            ForEach(screens) {
+            let screens = ReaderStaticScreen.allCases
+            ForEach(ReaderStaticScreen.allCases) {
                 makePrimaryNavigationItem($0.localizedTitle, systemImage: $0.systemImage)
                     .tag(ReaderSidebarItem.main($0))
                     .lineLimit(1)
@@ -111,14 +108,6 @@ private struct ReaderSidebarView: View {
         makeSection(Strings.tags, isExpanded: $isSectionTagsExpanded) {
             ReaderSidebarTagsSection(viewModel: viewModel)
         }
-    }
-
-    private var allStaticScreens: [ReaderStaticScreen] {
-        var screens = ReaderStaticScreen.allCases
-        if viewModel.isCompactStyleEnabled, let index = screens.firstIndex(of: .search) {
-            screens.remove(at: index)
-        }
-        return screens
     }
 
     private func makePrimaryNavigationItem(_ title: String, systemImage: String) -> some View {
@@ -165,5 +154,4 @@ private struct Strings {
     static let lists = NSLocalizedString("reader.sidebar.section.lists.title", value: "Lists", comment: "Reader sidebar section title")
     static let tags = NSLocalizedString("reader.sidebar.section.tags.title", value: "Tags", comment: "Reader sidebar section title")
     static let organization = NSLocalizedString("reader.sidebar.section.organization.title", value: "Organization", comment: "Reader sidebar section title")
-    static let searchPlaceholder = NSLocalizedString("reader.sidebar.searchPlaceholder", value: "Blogs, Posts, and More", comment: "Reader sidebar search placeholder")
 }
