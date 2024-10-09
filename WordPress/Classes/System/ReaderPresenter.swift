@@ -40,9 +40,6 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
         sidebarViewModel.isCompactStyleEnabled = true
         mainNavigationController.navigationBar.prefersLargeTitles = true
         mainNavigationController.viewControllers = [sidebar]
-//        sidebar.navigationItem.backBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "sidebar.left"), primaryAction: UIAction { [weak self] _ in
-//            self?.mainNavigationController.popViewController(animated: true)
-//        })
         sidebar.navigationItem.backButtonDisplayMode = .minimal
         showInitialSelection()
         return mainNavigationController
