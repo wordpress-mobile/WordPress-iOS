@@ -136,7 +136,12 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
             let streamVC = ReaderStreamViewController.controllerWithTopic(selection)
             navigationVC?.pushViewController(streamVC, animated: true)
         }.environment(\.managedObjectContext, viewContext)
-        return UIHostingController(rootView: view)
+        let hostVC = UIHostingController(rootView: view)
+        hostVC.title = ReaderSubscriptionsView.navigationTitle
+        if sidebarViewModel.isCompactStyleEnabled {
+            hostVC.navigationItem.largeTitleDisplayMode = .never
+        }
+        return hostVC
     }
 
     private func navigate(to item: ReaderSidebarNavigation) {
