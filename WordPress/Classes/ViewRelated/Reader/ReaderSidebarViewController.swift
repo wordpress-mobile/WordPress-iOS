@@ -63,22 +63,18 @@ private struct ReaderSidebarView: View {
         let list = List(selection: $viewModel.selection) {
             // On iPhone, .sidebar style is rendered differently, so it
             // requires a bit more work to get the look we want.
-            if viewModel.isCompactStyleEnabled {
-                content.listRowBackground(Color.clear)
-                    .listRowSeparator(.hidden)
-                    .listRowInsets(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
+            if viewModel.isCompact {
+                content.listRowSeparator(.hidden)
             } else {
                 content
             }
         }
-        .listStyle(.sidebar)
-
-        if viewModel.isCompactStyleEnabled {
-            list
-                .listRowBackground(Color(.systemBackground))
-                .scrollContentBackground(.hidden)
+        if viewModel.isCompact {
+            list.listStyle(.plain).onAppear {
+                viewModel.selection = nil // Remove the higlight
+            }
         } else {
-            list
+            list.listStyle(.sidebar)
         }
     }
 
@@ -89,8 +85,7 @@ private struct ReaderSidebarView: View {
             ForEach(ReaderStaticScreen.allCases) {
                 makePrimaryNavigationItem($0.localizedTitle, systemImage: $0.systemImage)
                     .tag(ReaderSidebarItem.main($0))
-                    .lineLimit(1)
-                    .listRowSeparator((viewModel.isCompactStyleEnabled && $0 != screens.last) ? .visible : .hidden, edges: .bottom)
+                    .listRowSeparator((viewModel.isCompact && $0 != screens.last) ? .visible : .hidden, edges: .bottom)
                     .accessibilityIdentifier($0.accessibilityIdentifier)
             }
         }
@@ -113,7 +108,8 @@ private struct ReaderSidebarView: View {
     private func makePrimaryNavigationItem(_ title: String, systemImage: String) -> some View {
         HStack {
             Label(title, systemImage: systemImage)
-            if viewModel.isCompactStyleEnabled {
+                .lineLimit(1)
+            if viewModel.isCompact {
                 Spacer()
                 Image(systemName: "chevron.right")
                     .font(.system(size: 14).weight(.medium))
@@ -134,10 +130,41 @@ private struct ReaderSidebarView: View {
         }
     }
 
-    @ViewBuilder
-    private func makeSection<Content: View>(_ title: String, isExpanded: Binding<Bool>, @ViewBuilder content: () -> Content) -> some View {
-        if #available(iOS 17, *) {
-            Section(title, isExpanded: isExpanded) {
+    private func makeSection<Content: View>(_ title: String, isExpanded: Binding<Bool>, @ViewBuilder content: @escaping () -> Content) -> some View {
+        ReaderSidebarSection(title: title, isExpanded: isExpanded, isCompact: viewModel.isCompact, content: content)
+    }
+}
+
+private struct ReaderSidebarSection<Content: View>: View {
+    let title: String
+    @Binding var isExpanded: Bool
+    var isCompact: Bool
+    @ViewBuilder var content: () -> Content
+
+    var body: some View {
+        if isCompact {
+            Button {
+                isExpanded.toggle()
+            } label: {
+                HStack {
+                    Text(title)
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                    Image(systemName: "chevron.down")
+                        .font(.system(size: 14).weight(.semibold))
+                        .foregroundStyle(AppColor.brand)
+                }
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .listRowInsets(EdgeInsets(top: 24, leading: 20, bottom: 6, trailing: 16))
+
+            if isExpanded {
+                content()
+            }
+        } else if #available(iOS 17, *) {
+            Section(title, isExpanded: $isExpanded) {
                 content()
             }
         } else {

@@ -11,7 +11,7 @@ final class ReaderSidebarViewModel: ObservableObject {
     private let contextManager: CoreDataStackSwift
     private var previousReloadTimestamp: Date?
 
-    @Published var isCompactStyleEnabled = false
+    @Published var isCompact = false
 
     var navigate: (ReaderSidebarNavigation) -> Void = { _ in }
 
