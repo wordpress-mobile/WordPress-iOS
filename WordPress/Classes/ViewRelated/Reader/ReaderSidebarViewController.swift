@@ -49,6 +49,10 @@ private struct ReaderSidebarView: View {
     @FetchRequest(sortDescriptors: [SortDescriptor(\.title, order: .forward)])
     private var teams: FetchedResults<ReaderTeamTopic>
 
+    @Environment(\.editMode) var editMode
+
+    var isEditing: Bool { editMode?.wrappedValue.isEditing == true }
+
     var body: some View {
         list
             .toolbar {
@@ -61,8 +65,6 @@ private struct ReaderSidebarView: View {
     @ViewBuilder
     private var list: some View {
         let list = List(selection: $viewModel.selection) {
-            // On iPhone, .sidebar style is rendered differently, so it
-            // requires a bit more work to get the look we want.
             if viewModel.isCompact {
                 content.listRowSeparator(.hidden)
             } else {
@@ -87,14 +89,21 @@ private struct ReaderSidebarView: View {
                     .tag(ReaderSidebarItem.main($0))
                     .listRowSeparator((viewModel.isCompact && $0 != screens.last) ? .visible : .hidden, edges: .bottom)
                     .accessibilityIdentifier($0.accessibilityIdentifier)
+                    .withDisabledSelection(isEditing)
             }
         }
+
         if !teams.isEmpty {
             makeSection(Strings.organization, isExpanded: $isSectionOrganizationExpanded) {
                 ReaderSidebarOrganizationSection(viewModel: viewModel, teams: teams)
             }
         }
         makeSection(Strings.subscriptions, isExpanded: $isSectionSubscriptionsExpanded) {
+            Label(Strings.subscriptions, systemImage: "checkmark.rectangle.stack")
+                .tag(ReaderSidebarItem.allSubscriptions)
+                .listItemTint(AppColor.brand)
+                .withDisabledSelection(isEditing)
+
             ReaderSidebarSubscriptionsSection(viewModel: viewModel)
         }
         makeSection(Strings.lists, isExpanded: $isSectionListsExpanded) {
@@ -171,6 +180,17 @@ private struct ReaderSidebarSection<Content: View>: View {
             Section(title) {
                 content()
             }
+        }
+    }
+}
+
+private extension View {
+    @ViewBuilder func withDisabledSelection(_ isDisabled: Bool) -> some View {
+        if #available(iOS 17, *) {
+            self.opacity(isDisabled ? 0.33 : 1)
+                .selectionDisabled(isDisabled)
+        } else {
+            self
         }
     }
 }
