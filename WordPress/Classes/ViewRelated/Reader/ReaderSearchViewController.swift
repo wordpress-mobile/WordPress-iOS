@@ -125,6 +125,7 @@ import Gridicons
     open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
+        searchBar.becomeFirstResponder()
         bumpStats()
     }
 
@@ -157,7 +158,6 @@ import Gridicons
         let placeholderText = NSLocalizedString("Search WordPress", comment: "Placeholder text for the Reader search feature.")
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderSearchViewController.self]).placeholder = placeholderText
 
-        searchBar.becomeFirstResponder()
         WPStyleGuide.configureSearchBar(searchBar)
         guard JetpackBrandingVisibility.all.enabled else {
             return
