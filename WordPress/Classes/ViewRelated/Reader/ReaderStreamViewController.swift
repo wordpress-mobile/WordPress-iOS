@@ -476,8 +476,6 @@ import AutomatticTracks
     }
 
     /// Fetches a tag topic for the value of the `tagSlug` property
-    ///
-    // TODO: - READERNAV - Remove this when the new reader is released
     private func fetchTagTopic() {
         if isViewLoaded {
             displayLoadingStream()
