@@ -37,12 +37,9 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
 
     // TODO: (reader) update to allow seamless transitions between split view and tabs
     @objc func prepareForTabBarPresentation() -> UINavigationController {
-        sidebarViewModel.isCompactStyleEnabled = true
+        sidebarViewModel.isCompact = true
         mainNavigationController.navigationBar.prefersLargeTitles = true
         mainNavigationController.viewControllers = [sidebar]
-        sidebar.navigationItem.backBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "sidebar.left"), primaryAction: UIAction { [weak self] _ in
-            self?.mainNavigationController.popViewController(animated: true)
-        })
         sidebar.navigationItem.backButtonDisplayMode = .minimal
         showInitialSelection()
         return mainNavigationController
@@ -67,17 +64,17 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
     private func configure(for selection: ReaderSidebarItem) {
         switch selection {
         case .main(let screen):
-            showSecondary(makeViewController(for: screen))
+            show(makeViewController(for: screen))
         case .allSubscriptions:
-            showSecondary(makeAllSubscriptionsViewController(), isLargeTitle: true)
+            show(makeAllSubscriptionsViewController(), isLargeTitle: true)
         case .subscription(let objectID):
-            showSecondary(makeViewController(withTopicID: objectID))
+            show(makeViewController(withTopicID: objectID))
         case .list(let objectID):
-            showSecondary(makeViewController(withTopicID: objectID))
+            show(makeViewController(withTopicID: objectID))
         case .tag(let objectID):
-            showSecondary(makeViewController(withTopicID: objectID))
+            show(makeViewController(withTopicID: objectID))
         case .organization(let objectID):
-            showSecondary(makeViewController(withTopicID: objectID))
+            show(makeViewController(withTopicID: objectID))
         }
     }
 
@@ -133,13 +130,15 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
 
     private func makeAllSubscriptionsViewController() -> UIViewController {
         let view = ReaderSubscriptionsView() { [weak self] selection in
-            guard let self else { return }
-            let navigationVC = self.splitViewController?.viewController(for: .secondary) as? UINavigationController
-            wpAssert(navigationVC != nil)
             let streamVC = ReaderStreamViewController.controllerWithTopic(selection)
-            navigationVC?.pushViewController(streamVC, animated: true)
+            self?.push(streamVC)
         }.environment(\.managedObjectContext, viewContext)
-        return UIHostingController(rootView: view)
+        let hostVC = UIHostingController(rootView: view)
+        hostVC.title = ReaderSubscriptionsView.navigationTitle
+        if sidebarViewModel.isCompact {
+            hostVC.navigationItem.largeTitleDisplayMode = .never
+        }
+        return hostVC
     }
 
     private func navigate(to item: ReaderSidebarNavigation) {
@@ -169,7 +168,9 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
         UIHostingController(rootView: EmptyStateView(SharedStrings.Error.generic, systemImage: "exclamationmark.circle"))
     }
 
-    private func showSecondary(_ viewController: UIViewController, isLargeTitle: Bool = false) {
+    /// Shows the given view controller by either displaying it in the `.secondary`
+    /// column (split view) or pushing to the navigation stack.
+    private func show(_ viewController: UIViewController, isLargeTitle: Bool = false) {
         if let splitViewController {
             let navigationVC = UINavigationController(rootViewController: viewController)
             if isLargeTitle {
@@ -178,6 +179,18 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
             splitViewController.setViewController(navigationVC, for: .secondary)
         } else {
             latestContentVC = viewController
+            mainNavigationController.pushViewController(viewController, animated: true)
+        }
+    }
+
+    /// Pushes the view controller to either the existing navigation stack in
+    /// the `.secondary` column (split view) or to the main navigation stack.
+    private func push(_ viewController: UIViewController) {
+        if let splitViewController {
+            let navigationVC = splitViewController.viewController(for: .secondary) as? UINavigationController
+            wpAssert(navigationVC != nil)
+            navigationVC?.pushViewController(viewController, animated: true)
+        } else {
             mainNavigationController.pushViewController(viewController, animated: true)
         }
     }
@@ -204,16 +217,16 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
             viewModel.selection = .allSubscriptions
         case let .post(postID, siteID, isFeed):
             viewModel.selection = nil
-            showSecondary(ReaderDetailViewController.controllerWithPostID(NSNumber(value: postID), siteID: NSNumber(value: siteID), isFeed: isFeed))
+            show(ReaderDetailViewController.controllerWithPostID(NSNumber(value: postID), siteID: NSNumber(value: siteID), isFeed: isFeed))
         case let .postURL(url):
             viewModel.selection = nil
-            showSecondary(ReaderDetailViewController.controllerWithPostURL(url))
+            show(ReaderDetailViewController.controllerWithPostURL(url))
         case let .topic(topic):
             viewModel.selection = nil
-            showSecondary(ReaderStreamViewController.controllerWithTopic(topic))
+            show(ReaderStreamViewController.controllerWithTopic(topic))
         case let .tag(slug):
             viewModel.selection = nil
-            showSecondary(ReaderStreamViewController.controllerWithTagSlug(slug))
+            show(ReaderStreamViewController.controllerWithTagSlug(slug))
         }
     }
 
