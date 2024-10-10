@@ -11,7 +11,7 @@ final class ReaderSidebarViewModel: ObservableObject {
     private let contextManager: CoreDataStackSwift
     private var previousReloadTimestamp: Date?
 
-    @Published var isCompactStyleEnabled = false
+    @Published var isCompact = false
 
     var navigate: (ReaderSidebarNavigation) -> Void = { _ in }
 
@@ -89,7 +89,7 @@ enum ReaderStaticScreen: String, CaseIterable, Identifiable, Hashable {
 
     var systemImage: String {
         switch self {
-        case .recent: "newspaper"
+        case .recent: "checkmark.circle"
         case .discover: "safari"
         case .saved: "bookmark"
         case .likes: "star"

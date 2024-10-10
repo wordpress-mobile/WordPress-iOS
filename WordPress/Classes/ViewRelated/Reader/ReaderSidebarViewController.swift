@@ -16,6 +16,9 @@ final class ReaderSidebarViewController: UIHostingController<AnyView> {
         let view = ReaderSidebarView(viewModel: viewModel)
             .environment(\.managedObjectContext, ContextManager.shared.mainContext)
         super.init(rootView: AnyView(view))
+
+        // TODO: (reader) fix on ipad
+        title = Strings.reader
     }
 
     required dynamic init?(coder aDecoder: NSCoder) {
@@ -47,33 +50,42 @@ private struct ReaderSidebarView: View {
     private var teams: FetchedResults<ReaderTeamTopic>
 
     var body: some View {
-        List(selection: $viewModel.selection) {
+        list
+            .toolbar {
+                EditButton()
+            }
+            .tint(preferredTintColor)
+            .accessibilityIdentifier("reader_sidebar")
+    }
+
+    @ViewBuilder
+    private var list: some View {
+        let list = List(selection: $viewModel.selection) {
             // On iPhone, .sidebar style is rendered differently, so it
             // requires a bit more work to get the look we want.
-            if viewModel.isCompactStyleEnabled {
-                content.listRowBackground(Color.clear)
-                    .listRowSeparator(.hidden)
-                    .listRowInsets(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
+            if viewModel.isCompact {
+                content.listRowSeparator(.hidden)
             } else {
                 content
             }
         }
-        .listStyle(.sidebar)
-        .navigationTitle(Strings.reader)
-        .toolbar {
-            EditButton()
+        if viewModel.isCompact {
+            list.listStyle(.plain).onAppear {
+                viewModel.selection = nil // Remove the higlight
+            }
+        } else {
+            list.listStyle(.sidebar)
         }
-        .tint(preferredTintColor)
-        .accessibilityIdentifier("reader_sidebar")
     }
 
     @ViewBuilder
     private var content: some View {
         Section {
+            let screens = ReaderStaticScreen.allCases
             ForEach(ReaderStaticScreen.allCases) {
-                Label($0.localizedTitle, systemImage: $0.systemImage)
+                makePrimaryNavigationItem($0.localizedTitle, systemImage: $0.systemImage)
                     .tag(ReaderSidebarItem.main($0))
-                    .lineLimit(1)
+                    .listRowSeparator((viewModel.isCompact && $0 != screens.last) ? .visible : .hidden, edges: .bottom)
                     .accessibilityIdentifier($0.accessibilityIdentifier)
             }
         }
@@ -93,6 +105,19 @@ private struct ReaderSidebarView: View {
         }
     }
 
+    private func makePrimaryNavigationItem(_ title: String, systemImage: String) -> some View {
+        HStack {
+            Label(title, systemImage: systemImage)
+                .lineLimit(1)
+            if viewModel.isCompact {
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 14).weight(.medium))
+                    .foregroundStyle(.secondary.opacity(0.8))
+            }
+        }
+    }
+
     private var preferredTintColor: Color {
         if #available(iOS 18, *) {
             return AppColor.tint
@@ -105,10 +130,41 @@ private struct ReaderSidebarView: View {
         }
     }
 
-    @ViewBuilder
-    private func makeSection<Content: View>(_ title: String, isExpanded: Binding<Bool>, @ViewBuilder content: () -> Content) -> some View {
-        if #available(iOS 17, *) {
-            Section(title, isExpanded: isExpanded) {
+    private func makeSection<Content: View>(_ title: String, isExpanded: Binding<Bool>, @ViewBuilder content: @escaping () -> Content) -> some View {
+        ReaderSidebarSection(title: title, isExpanded: isExpanded, isCompact: viewModel.isCompact, content: content)
+    }
+}
+
+private struct ReaderSidebarSection<Content: View>: View {
+    let title: String
+    @Binding var isExpanded: Bool
+    var isCompact: Bool
+    @ViewBuilder var content: () -> Content
+
+    var body: some View {
+        if isCompact {
+            Button {
+                isExpanded.toggle()
+            } label: {
+                HStack {
+                    Text(title)
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                    Image(systemName: "chevron.down")
+                        .font(.system(size: 14).weight(.semibold))
+                        .foregroundStyle(AppColor.brand)
+                }
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .listRowInsets(EdgeInsets(top: 24, leading: 20, bottom: 6, trailing: 16))
+
+            if isExpanded {
+                content()
+            }
+        } else if #available(iOS 17, *) {
+            Section(title, isExpanded: $isExpanded) {
                 content()
             }
         } else {
@@ -121,7 +177,7 @@ private struct ReaderSidebarView: View {
 
 private struct Strings {
     static let reader = NSLocalizedString("reader.sidebar.navigationTitle", value: "Reader", comment: "Reader sidebar title")
-    static let subscriptions = NSLocalizedString("reader.sidebar.section.subscriptions.tTitle", value: "Subscriptions", comment: "Reader sidebar section title")
+    static let subscriptions = NSLocalizedString("reader.sidebar.section.subscriptions.title", value: "Subscriptions", comment: "Reader sidebar section title")
     static let lists = NSLocalizedString("reader.sidebar.section.lists.title", value: "Lists", comment: "Reader sidebar section title")
     static let tags = NSLocalizedString("reader.sidebar.section.tags.title", value: "Tags", comment: "Reader sidebar section title")
     static let organization = NSLocalizedString("reader.sidebar.section.organization.title", value: "Organization", comment: "Reader sidebar section title")

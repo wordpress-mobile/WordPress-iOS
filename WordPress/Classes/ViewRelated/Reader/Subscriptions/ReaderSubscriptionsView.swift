@@ -15,6 +15,8 @@ struct ReaderSubscriptionsView: View {
 
     @StateObject private var viewModel = ReaderSubscriptionsViewModel()
 
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+
     var isShowingSearchResuts: Bool { !searchText.isEmpty }
 
     var onSelection: (_ subscription: ReaderSiteTopic) -> Void = { _ in }
@@ -129,6 +131,8 @@ struct ReaderSubscriptionsView: View {
         let ranking = StringRankedSearch(searchTerm: searchText)
         searchResults = ranking.search(in: subscriptions) { "\($0.title) \($0.siteURL)" }
     }
+
+    static var navigationTitle: String { Strings.title }
 }
 
 private enum Strings {
