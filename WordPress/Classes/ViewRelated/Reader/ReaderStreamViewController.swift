@@ -218,10 +218,6 @@ import AutomatticTracks
     // We need to ensure that we only fetch the remote data once per tag to avoid the resultsController from refreshing the table view indefinitely.
     private var tagStreamSyncTracker = Set<String>()
 
-    /// Controls whether the Reader announcement card can be displayed.
-    ///
-    let readerAnnouncementCoordinator = ReaderAnnouncementCoordinator()
-
     lazy var selectInterestsViewController: ReaderSelectInterestsViewController = {
         let title = NSLocalizedString(
             "reader.select.tags.title",
@@ -1051,14 +1047,6 @@ import AutomatticTracks
                     }
                     strongSelf.updateLastSyncedForTopic(objectID)
                 }
-
-                // Show the announcement card if possible.
-                // Context: `configureStreamHeader()` may be called while the content is still empty.
-                // Calling it here manually ensures that we know whether the content is actually empty or not.
-                self?.showAnnouncementHeaderIfNeeded { [weak self] in
-                    self?.refreshTableViewHeaderLayout()
-                }
-
                 success?(hasMore)
             }
         }
