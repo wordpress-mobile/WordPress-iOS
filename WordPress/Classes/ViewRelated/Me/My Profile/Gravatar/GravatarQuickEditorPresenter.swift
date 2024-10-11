@@ -21,14 +21,18 @@ struct GravatarQuickEditorPresenter {
             email: Email(email),
             scope: .avatarPicker(AvatarPickerConfiguration(contentLayout: .horizontal())),
             configuration: .init(
-                interfaceStyle: nil
+                interfaceStyle: presentingViewController.traitCollection.userInterfaceStyle
             ),
             token: authToken
         )
-        presenter.present(in: presentingViewController, onAvatarUpdated: {
-            AuthenticatorAnalyticsTracker.shared.track(click: .selectAvatar)
-            NotificationCenter.default.post(name: .GravatarImageUpdateNotification, object: self, userInfo: ["email": email])
-        }, onDismiss: {
-        })
+        presenter.present(
+            in: presentingViewController,
+            onAvatarUpdated: {
+                AuthenticatorAnalyticsTracker.shared.track(click: .selectAvatar)
+                NotificationCenter.default.post(name: .GravatarImageUpdateNotification, object: self, userInfo: ["email": email])
+            }, onDismiss: {
+                // No op.
+            }
+        )
     }
 }
