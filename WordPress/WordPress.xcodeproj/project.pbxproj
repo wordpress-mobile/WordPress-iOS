@@ -2639,9 +2639,9 @@
 		8F228B22E190FF92D05E53DB /* TimeZoneSearchHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F228848D5DEACE6798CE7E2 /* TimeZoneSearchHeaderView.swift */; };
 		8F228F2923045666AE456D2C /* TimeZoneSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2283367263B37B0681F988 /* TimeZoneSelectorViewController.swift */; };
 		91138455228373EB00FB02B7 /* GutenbergVideoUploadProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91138454228373EB00FB02B7 /* GutenbergVideoUploadProcessor.swift */; };
-		9122A38E2CB695B600BF8D03 /* Gravatar in Frameworks */ = {isa = PBXBuildFile; productRef = 9122A38D2CB695B600BF8D03 /* Gravatar */; };
-		9122A3902CB695B600BF8D03 /* GravatarUI in Frameworks */ = {isa = PBXBuildFile; productRef = 9122A38F2CB695B600BF8D03 /* GravatarUI */; };
 		912347762216E27200BD9F97 /* GutenbergViewController+Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912347752216E27200BD9F97 /* GutenbergViewController+Localization.swift */; };
+		91A105792CB9167F006EAD85 /* GravatarQuickEditorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A105782CB9167F006EAD85 /* GravatarQuickEditorPresenter.swift */; };
+		91A1057A2CB9167F006EAD85 /* GravatarQuickEditorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A105782CB9167F006EAD85 /* GravatarQuickEditorPresenter.swift */; };
 		91B0535D2B726F810073455C /* GravatarInfoRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B0535C2B726F810073455C /* GravatarInfoRow.swift */; };
 		91B0535E2B726F810073455C /* GravatarInfoRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B0535C2B726F810073455C /* GravatarInfoRow.swift */; };
 		91BE834E2C48FF0F00BB5B3B /* UIImageView+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91BE834D2C48FF0F00BB5B3B /* UIImageView+Additions.swift */; };
@@ -8166,6 +8166,7 @@
 		91138454228373EB00FB02B7 /* GutenbergVideoUploadProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergVideoUploadProcessor.swift; sourceTree = "<group>"; };
 		912347752216E27200BD9F97 /* GutenbergViewController+Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GutenbergViewController+Localization.swift"; sourceTree = "<group>"; };
 		9149D34BF5182F360C84EDB9 /* Pods-JetpackDraftActionExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JetpackDraftActionExtension.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-JetpackDraftActionExtension/Pods-JetpackDraftActionExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		91A105782CB9167F006EAD85 /* GravatarQuickEditorPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GravatarQuickEditorPresenter.swift; sourceTree = "<group>"; };
 		91B0535C2B726F810073455C /* GravatarInfoRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GravatarInfoRow.swift; sourceTree = "<group>"; };
 		91BE834D2C48FF0F00BB5B3B /* UIImageView+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Additions.swift"; sourceTree = "<group>"; };
 		91D8364021946EFB008340B2 /* GutenbergMediaPickerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergMediaPickerHelper.swift; sourceTree = "<group>"; };
@@ -10066,7 +10067,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9122A38E2CB695B600BF8D03 /* Gravatar in Frameworks */,
 				FABB26202602FC2C00C8785C /* iAd.framework in Frameworks */,
 				FABB26212602FC2C00C8785C /* StoreKit.framework in Frameworks */,
 				FABB26222602FC2C00C8785C /* CoreSpotlight.framework in Frameworks */,
@@ -10081,7 +10081,6 @@
 				FABB262B2602FC2C00C8785C /* CoreGraphics.framework in Frameworks */,
 				FABB262C2602FC2C00C8785C /* UIKit.framework in Frameworks */,
 				FABB262D2602FC2C00C8785C /* QuartzCore.framework in Frameworks */,
-				9122A3902CB695B600BF8D03 /* GravatarUI in Frameworks */,
 				FABB262E2602FC2C00C8785C /* MediaPlayer.framework in Frameworks */,
 				FABB262F2602FC2C00C8785C /* CoreMedia.framework in Frameworks */,
 				FABB26302602FC2C00C8785C /* AVFoundation.framework in Frameworks */,
@@ -11820,6 +11819,7 @@
 				43FF64EE20DAA0840060A69A /* GravatarUploader.swift */,
 				0CA1C8C02A940EE300F691EE /* AvatarMenuController.swift */,
 				91B0535C2B726F810073455C /* GravatarInfoRow.swift */,
+				91A105782CB9167F006EAD85 /* GravatarQuickEditorPresenter.swift */,
 			);
 			path = Gravatar;
 			sourceTree = "<group>";
@@ -19721,8 +19721,6 @@
 			name = Jetpack;
 			packageProductDependencies = (
 				0C6AC61B2C364A6600BF7600 /* XcodeTarget_App */,
-				9122A38D2CB695B600BF8D03 /* Gravatar */,
-				9122A38F2CB695B600BF8D03 /* GravatarUI */,
 			);
 			productName = WordPress;
 			productReference = FABB26522602FC2C00C8785C /* Jetpack.app */;
@@ -19936,7 +19934,6 @@
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			packageReferences = (
-				9122A38C2CB695B600BF8D03 /* XCRemoteSwiftPackageReference "Gravatar-SDK-iOS" */,
 			);
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
@@ -21996,6 +21993,7 @@
 				8350E49611D2C71E00A7B073 /* Media.m in Sources */,
 				D8B9B58F204F4EA1003C6042 /* NetworkAware.swift in Sources */,
 				B54346961C6A707D0010B3AD /* LanguageViewController.swift in Sources */,
+				91A105792CB9167F006EAD85 /* GravatarQuickEditorPresenter.swift in Sources */,
 				FAB9826E2697038700B172A3 /* StatsViewController+JetpackSettings.swift in Sources */,
 				43D74AD020F906EE004AD934 /* InlineEditableNameValueCell.swift in Sources */,
 				0C896DDE2A3A762200D7D4E7 /* SettingsPicker.swift in Sources */,
@@ -24758,6 +24756,7 @@
 				FABB21E22602FC2C00C8785C /* PluginViewModel.swift in Sources */,
 				FABB21E32602FC2C00C8785C /* NSCalendar+Helpers.swift in Sources */,
 				FABB21E42602FC2C00C8785C /* GutenbergCoverUploadProcessor.swift in Sources */,
+				91A1057A2CB9167F006EAD85 /* GravatarQuickEditorPresenter.swift in Sources */,
 				FABB21E52602FC2C00C8785C /* MediaQuotaCell.swift in Sources */,
 				FABB21E72602FC2C00C8785C /* WPRichTextImage.swift in Sources */,
 				17870A75281FBEC100D1C627 /* StatsTotalInsightsCell.swift in Sources */,
@@ -31025,17 +31024,6 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		9122A38C2CB695B600BF8D03 /* XCRemoteSwiftPackageReference "Gravatar-SDK-iOS" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Automattic/Gravatar-SDK-iOS.git";
-			requirement = {
-				kind = revision;
-				revision = 97d11378677ddd7c6901ad9ea7a4a6b9948ae94c;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
 /* Begin XCSwiftPackageProductDependency section */
 		0C2155A52C39A24D00EFE2C0 /* XcodeTarget_UITests */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -31096,16 +31084,6 @@
 		0CFFFECA2C36F5760044709B /* XcodeTarget_WordPressAuthentificatorTests */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = XcodeTarget_WordPressAuthentificatorTests;
-		};
-		9122A38D2CB695B600BF8D03 /* Gravatar */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 9122A38C2CB695B600BF8D03 /* XCRemoteSwiftPackageReference "Gravatar-SDK-iOS" */;
-			productName = Gravatar;
-		};
-		9122A38F2CB695B600BF8D03 /* GravatarUI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 9122A38C2CB695B600BF8D03 /* XCRemoteSwiftPackageReference "Gravatar-SDK-iOS" */;
-			productName = GravatarUI;
 		};
 /* End XCSwiftPackageProductDependency section */
 
