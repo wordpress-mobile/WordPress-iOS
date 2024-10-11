@@ -66,16 +66,24 @@ class EpilogueUserInfoCell: UITableViewCell {
     }
 
     private func setupGravatarButton(viewController: UIViewController) {
-        let menuController = AvatarMenuController(viewController: viewController)
+        /*let menuController = AvatarMenuController(viewController: viewController)
         menuController.onAvatarSelected = { [weak self] in
             self?.uploadGravatarImage($0)
         }
-        self.avatarMenuController = menuController // Just retaining it
-        gravatarButton.menu = menuController.makeMenu()
-        gravatarButton.showsMenuAsPrimaryAction = true
-        gravatarButton.addAction(UIAction { _ in
+        //self.avatarMenuController = menuController // Just retaining it
+        //gravatarButton.menu = menuController.makeMenu()
+        //gravatarButton.showsMenuAsPrimaryAction = true*/
+        /* gravatarButton.addAction(UIAction { _ in
             AuthenticatorAnalyticsTracker.shared.track(click: .selectAvatar)
-        }, for: .menuActionTriggered)
+        }, for: .menuActionTriggered)*/
+        gravatarButton.addTarget(self, action: #selector(gravatarButtonTapped), for: .touchUpInside)
+    }
+
+    @objc private func gravatarButtonTapped() {
+        guard let email,
+              let presenter = GravatarQuickEditorPresenter(email: email),
+              let viewController else { return }
+        presenter.presentQuickEditor(on: viewController)
     }
 
     /// Starts the Activity Indicator Animation, and hides the Username + Fullname labels.
