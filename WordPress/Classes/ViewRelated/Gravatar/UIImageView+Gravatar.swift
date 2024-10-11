@@ -37,13 +37,14 @@ extension UIImageView {
     public func downloadGravatar(
         for email: String,
         gravatarRating: Rating = .general,
-        placeholderImage: UIImage = .gravatarPlaceholderImage
+        placeholderImage: UIImage = .gravatarPlaceholderImage,
+        forceRefresh: Bool = false
     ) {
         let avatarURL = AvatarURL.url(for: email, preferredSize: .pixels(gravatarDefaultSize()), gravatarRating: gravatarRating)
-        downloadGravatar(fullURL: avatarURL, placeholder: placeholderImage, animate: false)
+        downloadGravatar(fullURL: avatarURL, placeholder: placeholderImage, animate: false, forceRefresh: forceRefresh)
     }
 
-    public func downloadGravatar(_ gravatar: AvatarURL?, placeholder: UIImage, animate: Bool) {
+    public func downloadGravatar(_ gravatar: AvatarURL?, placeholder: UIImage, animate: Bool, forceRefresh: Bool = false) {
         guard let gravatar = gravatar else {
             self.image = placeholder
             return
@@ -56,14 +57,27 @@ extension UIImageView {
         layoutIfNeeded()
 
         let size = Int(ceil(frame.width * min(2, UIScreen.main.scale)))
-        let url = gravatar.replacing(options: .init(preferredSize: .pixels(size)))?.url
-        downloadGravatar(fullURL: url, placeholder: placeholder, animate: animate)
+        guard let url = gravatar.replacing(options: .init(preferredSize: .pixels(size)))?.url else { return }
+        downloadGravatar(fullURL: url, placeholder: placeholder, animate: animate, forceRefresh: forceRefresh)
     }
 
-    private func downloadGravatar(fullURL: URL?, placeholder: UIImage, animate: Bool) {
+    private func downloadGravatar(fullURL: URL?, placeholder: UIImage, animate: Bool, forceRefresh: Bool = false) {
         wp.prepareForReuse()
         if let fullURL {
-            wp.setImage(with: fullURL)
+            var urlToDownload = fullURL
+            if forceRefresh {
+                var urlComponents = URLComponents(url: fullURL, resolvingAgainstBaseURL: false)
+                // Gravatar doesn't support "Cache-Control: none" header. So we add a random query parameter to
+                // bypass the backend cache and get the latest image.
+                urlComponents?.queryItems?.append(.init(name: "_", value: "\(NSDate().timeIntervalSince1970)"))
+                urlToDownload = urlComponents?.url ?? fullURL
+            }
+
+            wp.setImage(with: urlToDownload)
+            if forceRefresh {
+                // update the cache for the original url as well
+                ImageDownloader.shared.setCachedImage(image, for: fullURL)
+            }
             if image == nil { // If image wasn't found synchronously in memory cache
                 image = placeholder
             }
