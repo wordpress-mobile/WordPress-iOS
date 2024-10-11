@@ -4,12 +4,12 @@ import Gravatar
 
 extension BlogDetailsViewController {
 
-    @objc func downloadGravatarImage(for row: BlogDetailsRow) {
+    @objc func downloadGravatarImage(for row: BlogDetailsRow, forceRefresh: Bool = false) {
         guard let email = blog.account?.email else {
             return
         }
 
-        ImageDownloader.shared.downloadGravatarImage(with: email) { [weak self] image in
+        ImageDownloader.shared.downloadGravatarImage(with: email, forceRefresh: forceRefresh) { [weak self] image in
             guard let image,
                   let gravatarIcon = image.gravatarIcon(size: Metrics.iconSize) else {
                 return
@@ -25,7 +25,7 @@ extension BlogDetailsViewController {
     }
 
     @objc private func updateGravatarImage(_ notification: Foundation.Notification) {
-        guard let userInfo = notification.userInfo,
+        /*guard let userInfo = notification.userInfo,
             let email = userInfo["email"] as? String,
             let image = userInfo["image"] as? UIImage,
             let url = AvatarURL.url(for: email),
@@ -35,7 +35,9 @@ extension BlogDetailsViewController {
 
         ImageCache.shared.setImage(image, forKey: url.absoluteString)
         meRow?.image = gravatarIcon
-        reloadMeRow()
+        reloadMeRow()*/
+        guard let meRow else { return }
+        downloadGravatarImage(for: meRow, forceRefresh: true)
     }
 
     private func reloadMeRow() {

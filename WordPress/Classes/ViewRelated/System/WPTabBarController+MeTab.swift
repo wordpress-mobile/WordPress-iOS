@@ -18,13 +18,16 @@ extension WPTabBarController {
 
     @objc func configureMeTabImage(placeholderImage: UIImage?) {
         meNavigationController.tabBarItem.image = placeholderImage
+        downloadImage()
+    }
 
+    private func downloadImage(forceRefresh: Bool = false) {
         guard let account = defaultAccount(),
               let email = account.email else {
             return
         }
 
-        ImageDownloader.shared.downloadGravatarImage(with: email) { [weak self] image in
+        ImageDownloader.shared.downloadGravatarImage(with: email, forceRefresh: forceRefresh) { [weak self] image in
             guard let image else {
                 return
             }
@@ -32,17 +35,17 @@ extension WPTabBarController {
             self?.meNavigationController.tabBarItem.configureGravatarImage(image)
         }
     }
-
+    
     @objc private func updateGravatarImage(_ notification: Foundation.Notification) {
-        guard let userInfo = notification.userInfo,
+        /*guard let userInfo = notification.userInfo,
             let email = userInfo["email"] as? String,
             let image = userInfo["image"] as? UIImage,
             let url = AvatarURL.url(for: email) else {
                 return
-        }
-
-        ImageCache.shared.setImage(image, forKey: url.absoluteString)
-        meNavigationController.tabBarItem.configureGravatarImage(image)
+        }*/
+        downloadImage(forceRefresh: true)
+        // ImageCache.shared.setImage(image, forKey: url.absoluteString)
+        // meNavigationController.tabBarItem.configureGravatarImage(image)
     }
 
     @objc private func accountDidChange() {

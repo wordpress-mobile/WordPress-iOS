@@ -5,7 +5,7 @@ class MyProfileHeaderView: UITableViewHeaderFooterView {
     // MARK: - Public Properties and Outlets
     @IBOutlet var gravatarImageView: CircularImageView!
     @IBOutlet var gravatarButton: UIButton!
-
+    weak var presentingViewController: UIViewController?
     // A fake button displayed on top of gravatarImageView.
     let imageViewButton = UIButton(type: .system)
 
@@ -22,11 +22,10 @@ class MyProfileHeaderView: UITableViewHeaderFooterView {
             }
         }
     }
+
     var gravatarEmail: String? = nil {
         didSet {
-            if let email = gravatarEmail {
-                gravatarImageView.downloadGravatar(for: email, gravatarRating: .x)
-            }
+            downloadAvatar(forceRefresh: false)
         }
     }
 
@@ -51,10 +50,17 @@ class MyProfileHeaderView: UITableViewHeaderFooterView {
         configureGravatarButton()
     }
 
+    @objc private func gravatarButtonTapped() {
+        guard let email = gravatarEmail,
+              let presenter = GravatarQuickEditorPresenter(email: email),
+              let presentingViewController else { return }
+        presenter.presentQuickEditor(on: presentingViewController)
+    }
+
     /// Overrides the current Gravatar Image (set via Email) with a given image reference.
     /// Plus, the internal image cache is updated, to prevent undesired glitches upon refresh.
     ///
-    func overrideGravatarImage(_ image: UIImage) {
+    /*func overrideGravatarImage(_ image: UIImage) {
         gravatarImageView.image = image
 
         // Note:
@@ -65,7 +71,7 @@ class MyProfileHeaderView: UITableViewHeaderFooterView {
             gravatarImageView.overrideGravatarImageCache(image, gravatarRating: ObjcGravatarRating.x, email: email)
             gravatarImageView.updateGravatar(image: image, email: email)
         }
-    }
+    }*/
 
     private func configureActivityIndicator() {
         activityIndicator.hidesWhenStopped = true
@@ -81,9 +87,22 @@ class MyProfileHeaderView: UITableViewHeaderFooterView {
         gravatarImageView.addSubview(imageViewButton)
         imageViewButton.translatesAutoresizingMaskIntoConstraints = false
         imageViewButton.pinSubviewToAllEdges(gravatarImageView)
+        imageViewButton.addTarget(self, action: #selector(gravatarButtonTapped), for: .touchUpInside)
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshAvatar), name: .GravatarImageUpdateNotification, object: nil)
+    }
+
+    @objc func refreshAvatar() {
+        downloadAvatar(forceRefresh: true)
+    }
+
+    func downloadAvatar(forceRefresh: Bool) {
+        if let email = gravatarEmail {
+            gravatarImageView.downloadGravatar(for: email, gravatarRating: .x, forceRefresh: forceRefresh)
+        }
     }
 
     private func configureGravatarButton() {
         gravatarButton.tintColor = UIAppColor.primary
+        gravatarButton.addTarget(self, action: #selector(gravatarButtonTapped), for: .touchUpInside)
     }
 }
