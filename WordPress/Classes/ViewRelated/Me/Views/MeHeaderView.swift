@@ -70,7 +70,7 @@ final class MeHeaderView: UIView {
         }
     }
 
-    func overrideGravatarImage(_ image: UIImage) {
+ /*   func overrideGravatarImage(_ image: UIImage) {
         iconView.image = image
 
         // Note:
@@ -80,7 +80,7 @@ final class MeHeaderView: UIView {
             iconView.overrideGravatarImageCache(image, gravatarRating: .x, email: gravatarEmail)
             iconView.updateGravatar(image: image, email: gravatarEmail)
         }
-    }
+    }*/
 
     func configureHorizontalMode() {
         stackView.axis = .horizontal

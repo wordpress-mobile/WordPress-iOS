@@ -15,8 +15,8 @@ func MyProfileViewController(account: WPAccount, service: AccountSettingsService
     let controller = MyProfileController(account: account, service: service, headerView: headerView)
     let viewController = ImmuTableViewController(controller: controller, style: .insetGrouped)
     controller.tableView = viewController.tableView
-
-    let menuController = AvatarMenuController(viewController: viewController)
+    headerView.presentingViewController = viewController
+    /*let menuController = AvatarMenuController(viewController: viewController)
     menuController.onAvatarSelected = { [weak controller, weak viewController] image in
         guard let controller, let viewController else { return }
         controller.uploadGravatarImage(image, presenter: viewController)
@@ -26,7 +26,7 @@ func MyProfileViewController(account: WPAccount, service: AccountSettingsService
     for button in [headerView.imageViewButton, headerView.gravatarButton] as [UIButton] {
         button.menu = menuController.makeMenu()
         button.showsMenuAsPrimaryAction = true
-    }
+    }*/
     viewController.tableView.tableHeaderView = headerView
     return viewController
 }
@@ -174,7 +174,7 @@ private class MyProfileController: SettingsController {
 
     // MARK: - Helpers
 
-    fileprivate func uploadGravatarImage(_ newGravatar: UIImage, presenter: ImmuTableViewController) {
+    /*fileprivate func uploadGravatarImage(_ newGravatar: UIImage, presenter: ImmuTableViewController) {
         guard let account = defaultAccount() else {
             return
         }
@@ -191,7 +191,7 @@ private class MyProfileController: SettingsController {
                 self?.refreshModel()
             })
         }
-    }
+    }*/
 
     fileprivate func visitGravatarWebsiteAction() -> ImmuTableAction {
         return { [weak self] row in
