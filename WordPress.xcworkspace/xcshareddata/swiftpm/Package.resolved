@@ -30,7 +30,7 @@
     {
       "identity" : "automatticabout-swift",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/automattic/AutomatticAbout-swift",
+      "location" : "https://github.com/Automattic/AutomatticAbout-swift",
       "state" : {
         "revision" : "31045d654bcc1f2b56c85dd658f160fad5b50a29",
         "version" : "1.1.4"
@@ -59,8 +59,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Automattic/color-studio",
       "state" : {
-        "branch" : "add/swift-file-output",
-        "revision" : "890728292f60dd1fbf043228e952ef92bd8c7bcf"
+        "branch" : "trunk",
+        "revision" : "bdcf795bc2c191bd45bd6c24734030257becd050"
       }
     },
     {
@@ -164,7 +164,7 @@
     {
       "identity" : "lottie-ios",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/airbnb/lottie-ios.git",
+      "location" : "https://github.com/airbnb/lottie-ios",
       "state" : {
         "revision" : "f522990668c2f9132323a2e68d924c7dcb9130b4",
         "version" : "4.4.0"
