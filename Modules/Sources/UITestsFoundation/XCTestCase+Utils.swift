@@ -30,5 +30,17 @@ public extension XCTestCase {
         waitForExistenceAndTap(Apps.springboard.alerts.buttons["Delete App"])
         waitAndTap(Apps.springboard.alerts.buttons["Delete"])
     }
+}
 
+extension XCTestCase {
+    public static var isPhone: Bool {
+        UIDevice.current.systemName == "iOS"
+    }
+
+    // - warning: `UIDevice.current.userInterfaceIdiom` seems to
+    // always return `.phone` in the test runner that runs outside of the
+    // app process.
+    public static var isPad: Bool {
+        UIDevice.current.systemName == "iPadOS"
+    }
 }

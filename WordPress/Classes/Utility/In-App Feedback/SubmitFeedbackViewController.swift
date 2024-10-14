@@ -117,8 +117,14 @@ private struct SubmitFeedbackView: View {
                 }
                 .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
         }
+        Section {
+            Text(Strings.footer)
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+                .padding(4)
+        }
         ZendeskAttachmentsSection(viewModel: attachmentsViewModel)
-            .listRowSeparator(.hidden)
+            .listRowSeparator(.hidden, edges: .bottom)
     }
 
     private func submit() {
@@ -178,6 +184,7 @@ private enum Strings {
     static let submit = NSLocalizedString("submit.feedback.submit.button", value: "Submit", comment: "The button title for the Submit button in the In-App Feedback screen")
     static let title = NSLocalizedString("submit.feedback.title", value: "Feedback", comment: "The title for the the In-App Feedback screen")
     static let details = NSLocalizedString("submit.feedback.detailsPlaceholder", value: "Details", comment: "The section title and or placeholder")
+    static let footer = NSLocalizedString("submit.feedback.footer", value: "If you need support, please get in touch using the \"Help & Support\" screen", comment: "The footer in the Submit Feedback screen to clarify that it's not support")
 
     static let cancellationAlertTitle = NSLocalizedString("submitFeedback.cancellationAlertTitle", value: "Are you sure you want to discard the feedback", comment: "Submit feedback screen cancellation confirmation alert title")
     static let cancellationAlertContinueEditing = NSLocalizedString("submitFeedback.cancellationAlertContinueEditing", value: "Continue Editing", comment: "Submit feedback screen cancellation confirmation alert action")

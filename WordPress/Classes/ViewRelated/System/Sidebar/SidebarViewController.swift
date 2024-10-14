@@ -46,6 +46,7 @@ private struct SidebarView: View {
             }
         }
         .listStyle(.sidebar)
+        .accessibilityIdentifier("sidebar_list")
         .tint(AppColor.tint)
         .overlay(alignment: .bottom) {
             SidebarProfileContainerView(viewModel: viewModel)
@@ -135,22 +136,28 @@ private struct SidebarView: View {
                 Image(systemName: "bell")
             }
         }
+        .accessibilityIdentifier("sidebar_notifications")
         .tag(SidebarSelection.notifications)
 
         Label(Strings.reader, systemImage: "eyeglasses")
             .tag(SidebarSelection.reader)
+            .accessibilityIdentifier("sidebar_reader")
+
         if RemoteFeatureFlag.domainManagement.enabled() {
             Button(action: { viewModel.navigate(.domains) }) {
                 Label(Strings.domains, systemImage: "network")
             }
+            .accessibilityIdentifier("sidebar_domains")
         }
         Button(action: { viewModel.navigate(.help) }) {
             Label(Strings.help, systemImage: "questionmark.circle")
         }
+        .accessibilityIdentifier("sidebar_help")
 #else
         Button(action: { viewModel.navigate(.help) }) {
             Label(Strings.help, systemImage: "questionmark.circle")
         }
+        .accessibilityIdentifier("sidebar_help")
 #endif
     }
 }
@@ -176,6 +183,7 @@ private struct SidebarProfileContainerView: View {
             }
             .containerShape(Rectangle())
             .buttonStyle(.plain)
+            .accessibilityIdentifier("sidebar_me")
         } else {
             HStack {
                 if AppConfiguration.isJetpack {
@@ -204,6 +212,7 @@ private struct SidebarProfileContainerView: View {
                 }
                 .frame(width: 44, height: 44)
                 .contentShape(Rectangle())
+                .accessibilityIdentifier("sidebar_me")
             }
         }
     }

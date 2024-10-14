@@ -24,7 +24,7 @@ final class ReaderTableConfiguration {
     }
 
     private func setupAccessibility(_ tableView: UITableView) {
-        tableView.accessibilityIdentifier = "Reader"
+        tableView.accessibilityIdentifier = "reader_table_view"
     }
 
     private func setUpSeparator(_ tableView: UITableView) {

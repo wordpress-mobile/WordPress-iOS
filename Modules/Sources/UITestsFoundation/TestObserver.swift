@@ -6,9 +6,10 @@ class TestObserver: NSObject, XCTestObservation {
         XCTestObservationCenter.shared.addTestObserver(self)
     }
 
+    // Code added here will run only once before all the tests
     func testBundleWillStart(_ testBundle: Bundle) {
-        // Code added here will run only once before all the tests
-        executeWithRetries(disableAutoFillPasswords)
+        // - note: Uncomment to clear the password stores on the device.
+        // executeWithRetries(disableAutoFillPasswords)
     }
 
     func testBundleDidFinish(_ testBundle: Bundle) {

@@ -9,17 +9,13 @@ class LoginTests: XCTestCase {
         setUpTestSuite()
     }
 
-    override func tearDownWithError() throws {
-        takeScreenshotOfFailedTest()
-    }
-
     // Unified email login/out
     func testWPcomLoginLogout() throws {
         try PrologueScreen()
             .selectContinue()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .proceedWithValidPassword()
-        try TabNavComponent()
+        try makeMainNavigationComponent()
             .goToMeScreen()
             .logoutToPrologue()
             .assertScreenIsLoaded()
@@ -35,8 +31,8 @@ class LoginTests: XCTestCase {
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .proceedWithLink()
             .openMagicLoginLink()
-            .dismissNotificationAlertIfNeeded()
-        try TabNavComponent()
+
+        try makeMainNavigationComponent()
             .goToMeScreen()
             .logout()
             .assertScreenIsLoaded()
@@ -51,7 +47,14 @@ class LoginTests: XCTestCase {
                 username: WPUITestCredentials.selfHostedUsername,
                 password: WPUITestCredentials.selfHostedPassword
             )
-            .removeSelfHostedSite()
+        if XCTestCase.isPad {
+            try SidebarNavComponent()
+                .openSiteMenu()
+                .removeSelfHostedSite()
+        } else {
+            try MySiteScreen()
+                .removeSelfHostedSite()
+        }
         try PrologueScreen()
             .assertScreenIsLoaded()
     }
@@ -79,14 +82,21 @@ class LoginTests: XCTestCase {
 
             // Then, go through the self-hosted login flow:
             .proceedWith(siteAddress: WPUITestCredentials.selfHostedSiteAddress)
-            .proceedWithSelfHostedSiteAddedFromSitesList(
+            .proceedWithSelfHosted(
                 username: WPUITestCredentials.selfHostedUsername,
                 password: WPUITestCredentials.selfHostedPassword
             )
 
+        if XCTestCase.isPad {
+            try SidebarNavComponent()
+                .openSiteMenu()
+                .removeSelfHostedSite()
+        } else {
             // Login flow returns MySites modal, which needs to be closed.
-            .closeModal()
-            .assertScreenIsLoaded()
-            .removeSelfHostedSite()
+            try MySitesScreen()
+                .closeModal()
+                .assertScreenIsLoaded()
+                .removeSelfHostedSite()
+        }
     }
 }

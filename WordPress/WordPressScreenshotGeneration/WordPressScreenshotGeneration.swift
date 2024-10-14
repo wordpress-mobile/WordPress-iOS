@@ -18,7 +18,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         // The app is already launched so we can set it up for screenshots here
         setupSnapshot(app)
 
-        if XCUIDevice.isPad {
+        if XCTestCase.isPad {
             XCUIDevice.shared.orientation = UIDeviceOrientation.landscapeLeft
         } else {
             XCUIDevice.shared.orientation = UIDeviceOrientation.portrait
@@ -44,7 +44,7 @@ class WordPressScreenshotGeneration: XCTestCase {
 
         let postEditorScreenshot = try postList.selectPost(withSlug: "our-services")
         sleep(imagesWaitTime) // wait for post images to load
-        if XCUIDevice.isPad {
+        if XCTestCase.isPad {
             try BlockEditorScreen()
                 .thenTakeScreenshot(1, named: "Editor")
         } else {
@@ -56,7 +56,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         postEditorScreenshot.close()
 
         // Get a screenshot of the editor with keyboard (iPad only)
-        if XCUIDevice.isPad {
+        if XCTestCase.isPad {
             let ipadScreenshot = try MySiteScreen()
                 .showSiteSwitcher()
                 .switchToSite(withTitle: "weekendbakesblog.wordpress.com")
@@ -82,7 +82,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         sleep(imagesWaitTime) // wait for post images to load
         mySite.thenTakeScreenshot(6, named: "Media")
 
-        if !XCUIDevice.isPad {
+        if !XCTestCase.isPad {
             postList.pop()
         }
 
@@ -103,8 +103,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         // Get Notifications screenshot
         let notificationList = try TabNavComponent()
             .goToNotificationsScreen()
-            .dismissNotificationAlertIfNeeded()
-        if XCUIDevice.isPad {
+        if XCTestCase.isPad {
             notificationList
                 .openNotification(withSubstring: "commented on")
         }

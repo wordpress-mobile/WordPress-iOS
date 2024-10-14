@@ -44,11 +44,11 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
         initViewModel()
         trackAccessEvent()
-        addWillEnterForegroundObserver()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        addWillEnterForegroundObserver()
         JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: self, source: .stats)
     }
 

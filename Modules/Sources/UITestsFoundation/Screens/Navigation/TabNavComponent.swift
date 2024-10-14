@@ -1,42 +1,28 @@
 import ScreenObject
 import XCTest
+import UIKit
 
-public class TabNavComponent: ScreenObject {
-
-    private static let tabBarGetter: (XCUIApplication) -> XCUIElement = {
-        $0.tabBars["Main Navigation"]
+public class TabNavComponent: ScreenObject, MainNavigationComponent {
+    var mySitesTabButton: XCUIElement {
+        app.buttons["tabbar_mysites"].firstMatch
     }
 
-    private let mySitesTabButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.tabBars["Main Navigation"].buttons["mySitesTabButton"]
+    var notificationsTabButton: XCUIElement {
+        app.buttons["tabbar_notifications"].firstMatch
     }
 
-    private let readerTabButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.tabBars["Main Navigation"].buttons["readerTabButton"]
+    var readerTabButton: XCUIElement {
+        app.buttons["tabbar_reader"].firstMatch
     }
 
-    private let notificationsTabButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.tabBars["Main Navigation"].buttons["notificationsTabButton"]
+    var meTabButton: XCUIElement {
+        app.buttons["tabbar_me"].firstMatch
     }
-
-    private let meTabButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.tabBars["Main Navigation"].buttons["meTabButton"]
-    }
-
-    var meTabButton: XCUIElement { meTabButtonGetter(app) }
-    var mySitesTabButton: XCUIElement { mySitesTabButtonGetter(app) }
-    var notificationsTabButton: XCUIElement { notificationsTabButtonGetter(app) }
-    var readerTabButton: XCUIElement { readerTabButtonGetter(app) }
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
-        try super.init(
-            expectedElementGetters: [
-                mySitesTabButtonGetter,
-                notificationsTabButtonGetter,
-                readerTabButtonGetter
-            ],
-            app: app
-        )
+        try super.init {
+            $0.tabBars["Main Navigation"].firstMatch
+        }
     }
 
     public func goToMeScreen() throws -> MeTabScreen {
@@ -76,7 +62,6 @@ public class TabNavComponent: ScreenObject {
 
     public func goToNotificationsScreen() throws -> NotificationsScreen {
         notificationsTabButton.tap()
-        try dismissNotificationAlertIfNeeded()
         return try NotificationsScreen()
     }
 

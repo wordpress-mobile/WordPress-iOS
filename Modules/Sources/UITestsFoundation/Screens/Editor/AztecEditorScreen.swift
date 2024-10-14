@@ -216,7 +216,7 @@ public class AztecEditorScreen: ScreenObject {
             XCTContext.runActivity(named: "Close the More menu if needed") { (activity) in
                 let actionSheet = app.sheets.element(boundBy: 0)
                 if actionSheet.exists {
-                    if XCUIDevice.isPad {
+                    if XCTestCase.isPad {
                         app.otherElements["PopoverDismissRegion"].tap()
                     } else {
                         app.sheets.buttons["Keep Editing"].tap()
@@ -231,7 +231,7 @@ public class AztecEditorScreen: ScreenObject {
             XCTContext.runActivity(named: "Discard any local changes") { (activity) in
 
                 let postHasChangesSheet = app.sheets["post-has-changes-alert"]
-                let discardButton = XCUIDevice.isPad ? postHasChangesSheet.buttons.lastMatch : postHasChangesSheet.buttons.element(boundBy: 1)
+                let discardButton = XCTestCase.isPad ? postHasChangesSheet.buttons.lastMatch : postHasChangesSheet.buttons.element(boundBy: 1)
 
                 if postHasChangesSheet.exists && (discardButton?.exists ?? false) {
                     Logger.log(message: "Discarding unsaved changes", event: .v)

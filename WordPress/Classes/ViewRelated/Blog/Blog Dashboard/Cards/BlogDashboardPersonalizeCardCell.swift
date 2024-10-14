@@ -87,6 +87,6 @@ final class BlogDashboardPersonalizeCardCell: DashboardCollectionViewCell {
 
 private extension BlogDashboardPersonalizeCardCell {
     struct Strings {
-        static let buttonTitle = NSLocalizedString("dasboard.personalizeHomeButtonTitle", value: "Personalize your home tab", comment: "Personialize home tab button title")
+        static let buttonTitle = NSLocalizedString("dasboard.personalizeHomeButton", value: "Personalize your home screen", comment: "Personialize home screen button title")
     }
 }

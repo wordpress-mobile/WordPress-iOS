@@ -64,7 +64,7 @@ private struct BlogDashboardPersonalizationCardCell: View {
 
 private extension BlogDashboardPersonalizationView {
     struct Strings {
-        static let title = NSLocalizedString("personalizeHome.title", value: "Personalize Home Tab", comment: "Page title")
+        static let title = NSLocalizedString("personalizeHome.navigationTitle", value: "Personalize Home Screen", comment: "Page title")
         static let quickActionSectionHeader = NSLocalizedString("personalizeHome.shortcutsSectionHeader", value: "Show or hide shortcuts", comment: "Section header for shortcuts")
         static let cardSectionHeader = NSLocalizedString("personalizeHome.cardsSectionHeader", value: "Show or hide cards", comment: "Section header")
         static let cardSectionFooter = NSLocalizedString("personalizeHome.cardsSectionFooter", value: "Cards may show different content depending on what's happening on your site. We're working on more cards and controls.", comment: "Section footer displayed below the list of toggles")

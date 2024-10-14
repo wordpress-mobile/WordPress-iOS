@@ -79,14 +79,7 @@ class NoticePresenter {
         // however, since the alerts aren't permanently on screen, this isn't
         // often a problem.
         window.windowLevel = .alert
-
-        // Keep the window visible but hide it on the next run loop. If we hide it immediately,
-        // the window is not automatically resized when the device is rotated. This issue
-        // only happens on iPad simulators.
-        window.isHidden = false
-        DispatchQueue.main.async { [weak self] in
-            self?.window.isHidden = true
-        }
+        window.isHidden = true
 
         // Keep the storeReceipt to prevent the `onChange` subscription from being deactivated.
         storeReceipt = store.onChange { [weak self] in
@@ -466,15 +459,7 @@ private extension NoticePresenter {
         }
 
         @objc func updateFrame(notification: Notification) {
-            // Update the `frame` on the next run loop. When this Notification event handler is
-            // called, the `self.parentView` still has the frame from the previous orientation.
-            // Running this routine after the current run loop ensures we have the correct frame.
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else {
-                    return
-                }
-                self.frame = MaskView.calculateFrame(parent: self.parentView, untouchableVC: self.untouchableVC)
-            }
+            setNeedsLayout()
         }
 
         private static func calculateFrame(parent: UIView,
@@ -485,6 +470,11 @@ private extension NoticePresenter {
                 width: parent.bounds.width,
                 height: parent.bounds.height - untouchableVC.offsetOnscreen
             )
+        }
+
+        override func layoutSubviews() {
+            self.frame = MaskView.calculateFrame(parent: self.parentView, untouchableVC: self.untouchableVC)
+            super.layoutSubviews()
         }
     }
 }

@@ -2,8 +2,6 @@ import ScreenObject
 import XCTest
 
 public class ActivityLogScreen: ScreenObject {
-    public let tabBar: TabNavComponent
-
     private let dateRangeButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["Date Range"].firstMatch
     }
@@ -19,8 +17,6 @@ public class ActivityLogScreen: ScreenObject {
     var duration: TimeInterval = 10.0
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
-        tabBar = try TabNavComponent()
-
         try super.init(
             expectedElementGetters: [ dateRangeButtonGetter, activityTypeButtonGetter ],
             app: app

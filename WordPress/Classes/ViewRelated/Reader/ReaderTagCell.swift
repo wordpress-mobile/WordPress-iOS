@@ -101,7 +101,7 @@ private extension ReaderTagCell {
         let imageSize = CGSize(width: featuredImageView.frame.width,
                                    height: featuredImageView.frame.height)
         let host = MediaHost(with: post, failure: { error in
-            DDLogError(error)
+            DDLogError("\(error)")
         })
         imageLoader.loadImage(with: url, from: host, preferredSize: imageSize)
     }

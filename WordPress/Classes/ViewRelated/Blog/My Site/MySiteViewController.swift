@@ -243,6 +243,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
     private func setupView() {
         view.backgroundColor = .systemGroupedBackground
+        view.accessibilityIdentifier = "my_site"
     }
 
     /// This method builds a layout with the following view hierarchy:
@@ -375,8 +376,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         let section = isSidebarModeEnabled ? .dashboard : viewModel.getSection(
             for: blog,
             jetpackFeaturesEnabled: JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(),
-            splitViewControllerIsHorizontallyCompact: splitViewControllerIsHorizontallyCompact,
-            isSplitViewEnabled: MySitesCoordinator.isSplitViewEnabled
+            splitViewControllerIsHorizontallyCompact: splitViewControllerIsHorizontallyCompact
         )
 
         self.currentSection = section
@@ -496,8 +496,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             return
         }
 
-        hideSplitDetailsView()
-
         guard noSitesViewController.view.superview == nil else {
             return
         }
@@ -589,11 +587,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
     func didTapAccountAndSettingsButton() {
         let meViewController = MeViewController()
-        if MySitesCoordinator.isSplitViewEnabled {
-            showDetailViewController(meViewController, sender: self)
-        } else {
-            navigationController?.pushViewController(meViewController, animated: true)
-        }
+        navigationController?.pushViewController(meViewController, animated: true)
     }
 
     private func launchSiteCreationFromNoSites() {
@@ -859,28 +853,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     }
 }
 
-extension MySiteViewController: WPSplitViewControllerDetailProvider {
-    func initialDetailViewControllerForSplitView(_ splitView: WPSplitViewController) -> UIViewController? {
-        guard let blogDetailsViewController = blogDetailsViewController as? WPSplitViewControllerDetailProvider else {
-            let emptyViewController = UIViewController()
-            WPStyleGuide.configureColors(view: emptyViewController.view, tableView: nil)
-            return emptyViewController
-        }
-
-        return blogDetailsViewController.initialDetailViewControllerForSplitView(splitView)
-    }
-
-    /// Removes all view controllers from the details view controller stack and leaves split view details in an empty state.
-    ///
-    private func hideSplitDetailsView() {
-        if let splitViewController = splitViewController as? WPSplitViewController,
-           splitViewController.viewControllers.count > 1,
-           let detailsNavigationController = splitViewController.viewControllers.last as? UINavigationController {
-            detailsNavigationController.setViewControllers([], animated: false)
-        }
-    }
-}
-
 // MARK: - UIViewControllerTransitioningDelegate
 //
 extension MySiteViewController: UIViewControllerTransitioningDelegate {
@@ -914,20 +886,11 @@ extension MySiteViewController: BlogDetailsPresentationDelegate {
     // More context: https://github.com/wordpress-mobile/WordPress-iOS/issues/21759
     func presentBlogDetailsViewController(_ viewController: UIViewController) {
         viewController.loadViewIfNeeded()
-        if MySitesCoordinator.isSplitViewEnabled {
-            switch currentSection {
-            case .dashboard:
-                blogDashboardViewController?.showDetailViewController(viewController, sender: blogDashboardViewController)
-            case .siteMenu:
-                blogDetailsViewController?.showDetailViewController(viewController, sender: blogDetailsViewController)
-            }
-        } else {
-            switch currentSection {
-            case .dashboard:
-                blogDashboardViewController?.show(viewController, sender: blogDashboardViewController)
-            case .siteMenu:
-                blogDetailsViewController?.show(viewController, sender: blogDetailsViewController)
-            }
+        switch currentSection {
+        case .dashboard:
+            blogDashboardViewController?.show(viewController, sender: blogDashboardViewController)
+        case .siteMenu:
+            blogDetailsViewController?.show(viewController, sender: blogDetailsViewController)
         }
     }
 }

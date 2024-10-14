@@ -1702,7 +1702,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             WPAnalytics.trackReader(.readerPostCardTapped, properties: topicPropertyForStats() ?? [:])
         }
 
-        navigationController?.pushFullscreenViewController(controller, animated: true)
+        navigationController?.pushViewController(controller, animated: true)
 
         tableView.deselectRow(at: indexPath, animated: false)
     }

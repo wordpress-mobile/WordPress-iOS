@@ -604,7 +604,7 @@ private extension CommentDetailViewController {
             navigationController.modalPresentationStyle = .pageSheet
             present(navigationController, animated: true)
         } else {
-            navigationController?.pushFullscreenViewController(readerViewController, animated: true)
+            navigationController?.pushViewController(readerViewController, animated: true)
         }
     }
 

@@ -85,13 +85,6 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
     ///
     internal var jetpackLoginViewController: JetpackLoginViewController? = nil
 
-    /// Boolean indicating whether the split view controller is collapsed.
-    /// Default is `true` if the view controller isn't embedded inside a split view controller
-    ///
-    override var splitViewControllerIsHorizontallyCompact: Bool {
-        return splitViewController?.isCollapsed ?? true
-    }
-
     /// Timestamp of the most recent note before updates
     /// Used to count notifications to show the second notifications prompt
     ///
@@ -219,12 +212,13 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
             return
         }
 
-        if shouldShowPrimeForPush {
-            setupNotificationPrompt()
+        if !UITestConfigurator.isEnabled(.disablePrompts) {
+            if shouldShowPrimeForPush {
+                setupNotificationPrompt()
+            }
+            showNotificationPrimerAlertIfNeeded()
+            showSecondNotificationsAlertIfNeeded()
         }
-
-        showNotificationPrimerAlertIfNeeded()
-        showSecondNotificationsAlertIfNeeded()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -1318,16 +1312,6 @@ extension NotificationsViewController {
             self.tableView(tableView, didSelectRowAt: indexPath)
             return
         }
-
-        // If we're not showing the Jetpack prompt or the fullscreen No Results View,
-        // then clear any detail view controller that may be present.
-        // (i.e. don't add an empty detail VC if the primary is full width)
-        if let splitViewController = splitViewController as? WPSplitViewController,
-            splitViewController.wpPrimaryColumnWidth != WPSplitViewControllerPrimaryColumnWidth.full {
-            let controller = UIViewController()
-            controller.navigationItem.largeTitleDisplayMode = .never
-            showDetailViewController(controller, sender: nil)
-        }
     }
 
     @objc func updateUnreadNotificationsForFilterTabChange() {
@@ -1514,7 +1498,6 @@ private extension NotificationsViewController {
 private extension NotificationsViewController {
     func showNoResultsViewIfNeeded() {
         noResultsViewController.removeFromView()
-        updateSplitViewAppearanceForNoResultsView()
         updateNavigationItems()
 
         // Hide the filter header if we're showing the Jetpack prompt
@@ -1566,26 +1549,6 @@ private extension NotificationsViewController {
         ])
     }
 
-    func updateSplitViewAppearanceForNoResultsView() {
-        guard let splitViewController = splitViewController as? WPSplitViewController else {
-            return
-        }
-
-        // Ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/14547
-        // Don't attempt to resize the columns for full width.
-        let columnWidth: WPSplitViewControllerPrimaryColumnWidth = .default
-        // The above line should be replace with the following line when the full width issue is resolved.
-        // let columnWidth: WPSplitViewControllerPrimaryColumnWidth = (shouldDisplayFullscreenNoResultsView || shouldDisplayJetpackPrompt) ? .full : .default
-
-        if splitViewController.wpPrimaryColumnWidth != columnWidth {
-            splitViewController.wpPrimaryColumnWidth = columnWidth
-        }
-
-        if columnWidth == .default {
-            splitViewController.dimDetailViewController(shouldDimDetailViewController, withAlpha: 0)
-        }
-    }
-
     var noConnectionTitleText: String {
         return NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
     }
@@ -1617,11 +1580,6 @@ private extension NotificationsViewController {
     var shouldDisplayFullscreenNoResultsView: Bool {
         return shouldDisplayNoResultsView && filter == .none
     }
-
-    var shouldDimDetailViewController: Bool {
-        return shouldDisplayNoResultsView && filter != .none
-    }
-
 }
 
 // MARK: - NoResultsViewControllerDelegate
@@ -1747,18 +1705,6 @@ private extension NotificationsViewController {
         // These notifications are cleared, so we just need to take Zendesk unread notifications
         // into account when setting the app icon count.
         UIApplication.shared.applicationIconBadgeNumber = ZendeskUtils.unreadNotificationsCount
-    }
-}
-
-// MARK: - WPSplitViewControllerDetailProvider
-//
-extension NotificationsViewController: WPSplitViewControllerDetailProvider {
-    func initialDetailViewControllerForSplitView(_ splitView: WPSplitViewController) -> UIViewController? {
-        // The first notification view will be populated by `selectFirstNotificationIfAppropriate`
-        // on viewWillAppear, so we'll just return an empty view here.
-        let controller = UIViewController()
-        controller.view.backgroundColor = .systemBackground
-        return controller
     }
 }
 

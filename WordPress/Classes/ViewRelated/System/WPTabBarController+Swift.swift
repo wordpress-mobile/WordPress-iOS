@@ -115,12 +115,6 @@ extension WPTabBarController {
         guard let selectedViewController else {
             return super.supportedInterfaceOrientations
         }
-
-        if let splitViewController = selectedViewController as? WPSplitViewController,
-           let topDetailViewController = splitViewController.topDetailViewController {
-            return topDetailViewController.supportedInterfaceOrientations
-        }
-
         return selectedViewController.supportedInterfaceOrientations
     }
 

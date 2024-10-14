@@ -317,6 +317,7 @@ import Foundation
     case postRepositoryPostUpdated
     case postRepositoryPatchStarted
     case postRepositoryConflictEncountered
+    case postRepositoryPostsFetchFailed
 
     // Reader: Filter Sheet
     case readerFilterSheetDisplayed
@@ -1191,6 +1192,8 @@ import Foundation
             return "post_repository_patch_started"
         case .postRepositoryConflictEncountered:
             return "post_repository_conflict_encountered"
+        case .postRepositoryPostsFetchFailed:
+            return "post_repository_posts_fetch_failed"
 
         // Reader: Filter Sheet
         case .readerFilterSheetDisplayed:
