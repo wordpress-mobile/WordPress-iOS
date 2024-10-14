@@ -21,7 +21,7 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
         ContextManager.shared.mainContext
     }
 
-    private var cancellables: [AnyCancellable] = []
+    private var selectionObserver: AnyCancellable?
 
     override init() {
         secondary = UINavigationController()
@@ -48,17 +48,14 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
     // MARK: - Navigation
 
     func showInitialSelection() {
-        cancellables = []
-
         // -warning: List occasionally sets the selection to `nil` when switching items.
-        sidebarViewModel.$selection.compactMap { $0 }
+        selectionObserver = sidebarViewModel.$selection.compactMap { $0 }
             .removeDuplicates { [weak self] in
                 guard $0 == $1 else { return false }
                 self?.popMainNavigationController()
                 return true
             }
             .sink { [weak self] in self?.configure(for: $0) }
-            .store(in: &cancellables)
     }
 
     private func configure(for selection: ReaderSidebarItem) {
