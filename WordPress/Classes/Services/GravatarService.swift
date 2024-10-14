@@ -8,7 +8,7 @@ import Gravatar
 
 public protocol GravatarImageUploader {
     @discardableResult
-    func upload(_ image: UIImage, accessToken: String) async throws -> AvatarType
+    func upload(_ image: UIImage, email: Email, accessToken: String) async throws -> URLResponse
 }
 
 extension AvatarService: GravatarImageUploader { }
@@ -68,7 +68,7 @@ public class GravatarService {
 
         Task {
             do {
-                try await imageUploader.upload(image, accessToken: accountToken)
+                try await imageUploader.upload(image, email: Email(email), accessToken: accountToken)
                 DDLogInfo("GravatarService.uploadImage Success!")
                 completion?(nil)
             } catch {
