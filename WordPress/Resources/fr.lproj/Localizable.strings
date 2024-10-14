@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-10-03 09:54:09+0000 */
+/* Translation-Revision-Date: 2024-10-14 16:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: fr */
@@ -2757,6 +2757,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* An example tag used in the login prologue screens. */
 "Football" = "Football";
+
+/* translators: Recommendation included in a warning related to having blocks deeply nested. */
+"For this reason, we recommend editing the block using your web browser." = "Pour cette raison, nous vous recommandons de modifier le bloc à l’aide de votre navigateur Web.";
 
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "Pour vous faciliter la tâche, nous avons prérempli vos coordonnées WordPress.com. Veuillez vérifier qu'elles correspondent bien aux informations que vous voulez utiliser pour ce domaine.";
@@ -11278,6 +11281,12 @@ This empty state component is displayed only when the app fails to load posts un
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "ces éléments vont être supprimés :";
+
+/* Tip for sidebar */
+"tips.sidebar.message" = "Balayer vers la droite pour accéder à vos sites, au Lecteur, aux notifications et à votre profil";
+
+/* Tip for sidebar */
+"tips.sidebar.title" = "Colonne latérale";
 
 /* Tip for site picker */
 "tips.sitePickerTip.message" = "Appuyer pour sélectionner un site différent ou en créer un nouveau";

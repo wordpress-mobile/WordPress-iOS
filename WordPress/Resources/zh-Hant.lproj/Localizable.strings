@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-10-01 09:54:11+0000 */
+/* Translation-Revision-Date: 2024-10-10 16:27:13+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: zh_TW */
@@ -11360,6 +11360,12 @@ This empty state component is displayed only when the app fails to load posts un
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "這些項目將會刪除：";
+
+/* Tip for sidebar */
+"tips.sidebar.message" = "向右滑動即可存取網站、閱讀器、通知和個人檔案。";
+
+/* Tip for sidebar */
+"tips.sidebar.title" = "側邊欄";
 
 /* Tip for site picker */
 "tips.sitePickerTip.message" = "點選即可選取不同網站或建立新網站";
