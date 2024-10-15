@@ -166,8 +166,24 @@ class JetpackLoginViewController: UIViewController {
     }
 
     fileprivate func signIn() {
-        observeLoginNotifications(true)
-        WordPressAuthenticator.showLoginForJustWPCom(from: self, jetpackLogin: true, connectedEmail: blog.jetpack?.connectedEmail)
+        Task { @MainActor in
+            let token = try await WordPressDotComAuthenticator().authenticate(from: self)
+
+            SVProgressHUD.show()
+            let service = WordPressComSyncService()
+            service.syncWPCom(
+                authToken: token,
+                isJetpackLogin: true,
+                onSuccess: { [weak self] _ in
+                    SVProgressHUD.dismiss()
+                    self?.completionBlock?()
+                },
+                onFailure: { error in
+                    SVProgressHUD.dismiss()
+                    DDLogError("Jetpack login error: \(error)")
+                }
+            )
+        }
     }
 
     fileprivate func trackStat(_ stat: WPAnalyticsStat, blog: Blog? = nil) {
