@@ -85,42 +85,6 @@ final class SiteMenuViewController: UIViewController {
         tipObserver = nil
     }
 
-    private func getTipAnchor() -> UIView {
-        if tipAnchor.superview != nil {
-            return tipAnchor
-        }
-        guard let navigationBar = navigationController?.navigationBar else {
-            return view // fallback
-        }
-        navigationBar.addSubview(tipAnchor)
-        tipAnchor.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            tipAnchor.widthAnchor.constraint(equalToConstant: 0),
-            tipAnchor.heightAnchor.constraint(equalToConstant: 0),
-            tipAnchor.leadingAnchor.constraint(equalTo: navigationBar.safeAreaLayoutGuide.leadingAnchor, constant: 8),
-            tipAnchor.topAnchor.constraint(equalTo: navigationBar.safeAreaLayoutGuide.topAnchor, constant: 40)
-        ])
-        return tipAnchor
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        if #available(iOS 17, *) {
-            if tipObserver == nil {
-                tipObserver = registerTipPopover(AppTips.SidebarTip(), sourceItem: getTipAnchor(), arrowDirection: [.up])
-            }
-        }
-
-        didAppear = true
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        tipObserver = nil
-    }
-
     func showSubsection(_ subsection: BlogDetailsSubsection, userInfo: [AnyHashable: Any]) {
         blogDetailsVC.showDetailView(for: subsection, userInfo: userInfo)
     }
