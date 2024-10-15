@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-10-01 09:54:12+0000 */
+/* Translation-Revision-Date: 2024-10-10 16:20:40+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: id */
@@ -11351,6 +11351,12 @@ This empty state component is displayed only when the app fails to load posts un
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "item berikut akan dihapus:";
+
+/* Tip for sidebar */
+"tips.sidebar.message" = "Geser ke kanan untuk mengakses situs, Pembaca, pemberitahuan, dan profil Anda";
+
+/* Tip for sidebar */
+"tips.sidebar.title" = "Bilah Sisi";
 
 /* Tip for site picker */
 "tips.sitePickerTip.message" = "Ketuk untuk memilih situs lain atau buat situs baru";

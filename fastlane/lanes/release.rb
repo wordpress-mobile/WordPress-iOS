@@ -391,9 +391,7 @@ platform :ios do
   # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
   #
   desc 'Trigger the final release build on CI'
-  lane :finalize_release do |skip_confirm: false|
-    UI.user_error!('To finalize a hotfix, please use the finalize_hotfix_release lane instead') if ios_current_branch_is_hotfix
-
+  lane :finalize_release do |options, skip_confirm: false|
     ensure_git_branch_is_release_branch!
     ensure_git_status_clean
 

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-09-27 14:37:37+0000 */
+/* Translation-Revision-Date: 2024-10-08 11:02:03+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: en_GB */
@@ -11387,6 +11387,12 @@ This empty state component is displayed only when the app fails to load posts un
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "these items will be deleted:";
+
+/* Tip for sidebar */
+"tips.sidebar.message" = "Swipe right to access your sites, Reader, notifications, and profile";
+
+/* Tip for sidebar */
+"tips.sidebar.title" = "Sidebar";
 
 /* Tip for site picker */
 "tips.sitePickerTip.message" = "Tap to select a different site or create a new one";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-10-02 09:54:09+0000 */
+/* Translation-Revision-Date: 2024-10-10 13:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: tr */
@@ -11387,6 +11387,12 @@ This empty state component is displayed only when the app fails to load posts un
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "şu ögeler silinecek:";
+
+/* Tip for sidebar */
+"tips.sidebar.message" = "Sitelerinize, Okuyucunuza, bildirimlerinize ve profilinize erişmek için sağa kaydırın";
+
+/* Tip for sidebar */
+"tips.sidebar.title" = "Kenar Çubuğu";
 
 /* Tip for site picker */
 "tips.sitePickerTip.message" = "Farklı bir site seçmek veya yenisini oluşturmak için dokunun";

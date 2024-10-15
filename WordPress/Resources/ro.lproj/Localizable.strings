@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-09-29 13:24:24+0000 */
+/* Translation-Revision-Date: 2024-10-08 09:28:46+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ro */
@@ -11387,6 +11387,12 @@ This empty state component is displayed only when the app fails to load posts un
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "aceste elemente vor fi șterse:";
+
+/* Tip for sidebar */
+"tips.sidebar.message" = "Trece cu degetul spre dreapta pentru a-ți accesa site-urile, Cititorul, notificările și profilul tău";
+
+/* Tip for sidebar */
+"tips.sidebar.title" = "Bară laterală";
 
 /* Tip for site picker */
 "tips.sitePickerTip.message" = "Atinge pentru a selecta un alt site sau pentru a crea unul nou";
