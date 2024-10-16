@@ -75,7 +75,7 @@ struct ReaderSubscriptionCell: View {
     private var settings: some View {
         if horizontalSizeClass == .compact {
             ReaderSubscriptionNotificationSettingsView(siteID: site.siteID.intValue, isCompact: true)
-            .presentationDetents([.medium, .large])
+                .presentationDetents([.medium, .large])
                 .edgesIgnoringSafeArea(.all)
         } else {
             ReaderSubscriptionNotificationSettingsView(siteID: site.siteID.intValue)

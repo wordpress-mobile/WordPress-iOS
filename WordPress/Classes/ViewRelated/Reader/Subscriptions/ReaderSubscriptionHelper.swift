@@ -3,6 +3,23 @@ import SwiftUI
 struct ReaderSubscriptionHelper {
     let contextManager: CoreDataStackSwift = ContextManager.shared
 
+    // MARK: Subscribe
+
+    func toggleSiteSubscription(forPost post: ReaderPost) {
+        let siteURL = post.blogURL.flatMap(URL.init)
+        ReaderFollowAction().execute(with: post, context: ContextManager.shared.mainContext, completion: { isFollowing in
+            UINotificationFeedbackGenerator().notificationOccurred(.success)
+            if isFollowing, let siteURL {
+                postSiteFollowedNotification(siteURL: siteURL)
+            }
+            ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, follow: isFollowing, success: true)
+        }, failure: { _, _ in
+            UINotificationFeedbackGenerator().notificationOccurred(.error)
+        })
+    }
+
+    // MARK: Subscribe (RSS)
+
     @MainActor
     func followSite(withURL siteURL: String) async throws {
         guard let url = makeURL(fromUserInput: siteURL) else {
@@ -36,6 +53,8 @@ struct ReaderSubscriptionHelper {
             DDLogError("Unable to find topic by siteURL: \(String(describing: error?.localizedDescription))")
         })
     }
+
+    // MARK: Unsubscribe
 
     @MainActor
     func unfollow(_ site: ReaderSiteTopic) {
