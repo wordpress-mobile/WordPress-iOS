@@ -1,6 +1,7 @@
 import AuthenticationServices
 import Foundation
 import UIKit
+import WordPressAuthenticator
 
 import Alamofire
 
@@ -18,6 +19,19 @@ struct WordPressDotComAuthenticator {
     }
 
     func authenticate(from viewController: UIViewController) async throws -> String {
+        WPAnalytics.track(.wpcomWebSignIn, properties: ["stage": "start"])
+
+        do {
+            let value = try await _authenticate(from: viewController)
+            WPAnalytics.track(.wpcomWebSignIn, properties: ["stage": "success"])
+            return value
+        } catch {
+            WPAnalytics.track(.wpcomWebSignIn, properties: ["stage": "error", "error": "\(error)"])
+            throw error
+        }
+    }
+
+    private func _authenticate(from viewController: UIViewController) async throws -> String {
         let clientId = ApiCredentials.client
         let clientSecret = ApiCredentials.secret
         let redirectURI = "x-wordpress-app://oauth2-callback"

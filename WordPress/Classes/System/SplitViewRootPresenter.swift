@@ -181,17 +181,12 @@ final class SplitViewRootPresenter: RootViewPresenter {
     }
 
     @MainActor private func signIn() async {
-        WPAnalytics.track(.wpcomWebSignIn, properties: ["source": "sidebar", "stage": "start"])
-
         let token: String
         do {
             token = try await WordPressDotComAuthenticator().authenticate(from: splitVC)
         } catch {
-            WPAnalytics.track(.wpcomWebSignIn, properties: ["source": "sidebar", "stage": "error", "error": "\(error)"])
             return
         }
-
-        WPAnalytics.track(.wpcomWebSignIn, properties: ["source": "sidebar", "stage": "success"])
 
         SVProgressHUD.show()
         let credentials = WordPressComCredentials(authToken: token, isJetpackLogin: false, multifactor: false)
