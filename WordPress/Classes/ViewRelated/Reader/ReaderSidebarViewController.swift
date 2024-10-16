@@ -6,9 +6,8 @@ import WordPressUI
 final class ReaderSidebarViewController: UIHostingController<AnyView> {
     let viewModel: ReaderSidebarViewModel
 
-    private var cancellables: [AnyCancellable] = []
     private var viewContext: NSManagedObjectContext { ContextManager.shared.mainContext }
-    private var didAppear = false
+    var didAppear = false
 
     init(viewModel: ReaderSidebarViewModel) {
         self.viewModel = viewModel
@@ -18,7 +17,8 @@ final class ReaderSidebarViewController: UIHostingController<AnyView> {
             .environment(\.managedObjectContext, ContextManager.shared.mainContext)
         super.init(rootView: AnyView(view))
 
-        viewModel.navigate = { [weak self] in self?.navigate(to: $0) }
+        // TODO: (reader) fix on ipad
+        title = Strings.reader
     }
 
     required dynamic init?(coder aDecoder: NSCoder) {
@@ -36,154 +36,6 @@ final class ReaderSidebarViewController: UIHostingController<AnyView> {
 
         didAppear = true
     }
-
-    func showInitialSelection() {
-        cancellables = []
-
-        // -warning: List occasionally sets the selection to `nil` when switching items.
-        viewModel.$selection.compactMap { $0 }
-            .removeDuplicates { [weak self] in
-                guard $0 == $1 else { return false }
-                self?.popSecondaryViewControllerToRoot()
-                return true
-            }
-            .sink { [weak self] in self?.configure(for: $0) }
-            .store(in: &cancellables)
-    }
-
-    private func configure(for selection: ReaderSidebarItem) {
-        switch selection {
-        case .main(let screen):
-            showSecondary(makeViewController(for: screen))
-        case .allSubscriptions:
-            showSecondary(makeAllSubscriptionsViewController(), isLargeTitle: true)
-        case .subscription(let objectID):
-            showSecondary(makeViewController(withTopicID: objectID))
-        case .list(let objectID):
-            showSecondary(makeViewController(withTopicID: objectID))
-        case .tag(let objectID):
-            showSecondary(makeViewController(withTopicID: objectID))
-        case .organization(let objectID):
-            showSecondary(makeViewController(withTopicID: objectID))
-        }
-    }
-
-    private func hideSupplementaryColumnIfNeeded() {
-        if didAppear, let splitVC = splitViewController, splitVC.splitBehavior == .overlay {
-            DispatchQueue.main.async {
-                splitVC.hide(.supplementary)
-            }
-        }
-    }
-
-    private func popSecondaryViewControllerToRoot() {
-        let secondaryVC = splitViewController?.viewController(for: .secondary)
-        (secondaryVC as? UINavigationController)?.popToRootViewController(animated: true)
-
-        hideSupplementaryColumnIfNeeded()
-    }
-
-    private func makeViewController<T: ReaderAbstractTopic>(withTopicID objectID: TaggedManagedObjectID<T>) -> UIViewController {
-        do {
-            let topic = try viewContext.existingObject(with: objectID)
-            return ReaderStreamViewController.controllerWithTopic(topic)
-        } catch {
-            wpAssertionFailure("tag missing", userInfo: ["error": "\(error)"])
-            return makeErrorViewController()
-        }
-    }
-
-    private func makeViewController(for screen: ReaderStaticScreen) -> UIViewController {
-        switch screen {
-        case .recent, .discover, .likes:
-            if let topic = screen.topicType.flatMap(viewModel.getTopic) {
-                if screen == .discover {
-                    return ReaderCardsStreamViewController.controller(topic: topic)
-                } else {
-                    return ReaderStreamViewController.controllerWithTopic(topic)
-                }
-            } else {
-                return makeErrorViewController() // This should never happen
-            }
-        case .saved:
-            return ReaderStreamViewController.controllerForContentType(.saved)
-        case .search:
-            return ReaderSearchViewController.controller(withSearchText: "")
-        }
-    }
-
-    private func makeAllSubscriptionsViewController() -> UIViewController {
-        let view = ReaderSubscriptionsView() { [weak self] selection in
-            guard let self else { return }
-            let navigationVC = self.splitViewController?.viewController(for: .secondary) as? UINavigationController
-            wpAssert(navigationVC != nil)
-            let streamVC = ReaderStreamViewController.controllerWithTopic(selection)
-            navigationVC?.pushViewController(streamVC, animated: true)
-        }.environment(\.managedObjectContext, viewContext)
-        return UIHostingController(rootView: view)
-    }
-
-    private func navigate(to item: ReaderSidebarNavigation) {
-        switch item {
-        case .addTag:
-            let addTagVC = UIHostingController(rootView: ReaderTagsAddTagView())
-            addTagVC.modalPresentationStyle = .formSheet
-            addTagVC.preferredContentSize = CGSize(width: 420, height: 124)
-            present(addTagVC, animated: true, completion: nil)
-        case .discoverTags:
-            let tags = viewContext.allObjects(
-                ofType: ReaderTagTopic.self,
-                matching: ReaderSidebarTagsSection.predicate,
-                sortedBy: [NSSortDescriptor(SortDescriptor<ReaderTagTopic>(\.title, order: .forward))]
-            )
-            let interestsVC = ReaderSelectInterestsViewController(topics: tags)
-            interestsVC.didSaveInterests = { [weak self] _ in
-                self?.dismiss(animated: true)
-            }
-            let navigationVC = UINavigationController(rootViewController: interestsVC)
-            navigationVC.modalPresentationStyle = .formSheet
-            present(navigationVC, animated: true, completion: nil)
-        }
-    }
-
-    func navigate(to path: ReaderNavigationPath) {
-        switch path {
-        case .recent:
-            viewModel.selection = .main(.recent)
-        case .discover:
-            viewModel.selection = .main(.discover)
-        case .likes:
-            viewModel.selection = .main(.likes)
-        case .search:
-            viewModel.selection = .main(.search)
-        case .subscriptions:
-            viewModel.selection = .allSubscriptions
-        case let .post(postID, siteID, isFeed):
-            viewModel.selection = nil
-            showSecondary(ReaderDetailViewController.controllerWithPostID(NSNumber(value: postID), siteID: NSNumber(value: siteID), isFeed: isFeed))
-        case let .postURL(url):
-            viewModel.selection = nil
-            showSecondary(ReaderDetailViewController.controllerWithPostURL(url))
-        case let .topic(topic):
-            viewModel.selection = nil
-            showSecondary(ReaderStreamViewController.controllerWithTopic(topic))
-        case let .tag(slug):
-            viewModel.selection = nil
-            showSecondary(ReaderStreamViewController.controllerWithTagSlug(slug))
-        }
-    }
-
-    private func makeErrorViewController() -> UIViewController {
-        UIHostingController(rootView: EmptyStateView(SharedStrings.Error.generic, systemImage: "exclamationmark.circle"))
-    }
-
-    private func showSecondary(_ viewController: UIViewController, isLargeTitle: Bool = false) {
-        let navigationVC = UINavigationController(rootViewController: viewController)
-        if isLargeTitle {
-            navigationVC.navigationBar.prefersLargeTitles = true
-        }
-        splitViewController?.setViewController(navigationVC, for: .secondary)
-    }
 }
 
 private struct ReaderSidebarView: View {
@@ -197,38 +49,82 @@ private struct ReaderSidebarView: View {
     @FetchRequest(sortDescriptors: [SortDescriptor(\.title, order: .forward)])
     private var teams: FetchedResults<ReaderTeamTopic>
 
+    @Environment(\.editMode) var editMode
+
+    var isEditing: Bool { editMode?.wrappedValue.isEditing == true }
+
     var body: some View {
-        List(selection: $viewModel.selection) {
-            Section {
-                ForEach(ReaderStaticScreen.allCases) {
-                    Label($0.localizedTitle, systemImage: $0.systemImage)
-                        .tag(ReaderSidebarItem.main($0))
-                        .lineLimit(1)
-                        .accessibilityIdentifier($0.accessibilityIdentifier)
-                }
+        list
+            .toolbar {
+                EditButton()
             }
-            if !teams.isEmpty {
-                makeSection(Strings.organization, isExpanded: $isSectionOrganizationExpanded) {
-                    ReaderSidebarOrganizationSection(viewModel: viewModel, teams: teams)
-                }
-            }
-            makeSection(Strings.subscriptions, isExpanded: $isSectionSubscriptionsExpanded) {
-                ReaderSidebarSubscriptionsSection(viewModel: viewModel)
-            }
-            makeSection(Strings.lists, isExpanded: $isSectionListsExpanded) {
-                ReaderSidebarListsSection(viewModel: viewModel)
-            }
-            makeSection(Strings.tags, isExpanded: $isSectionTagsExpanded) {
-                ReaderSidebarTagsSection(viewModel: viewModel)
+            .tint(preferredTintColor)
+            .accessibilityIdentifier("reader_sidebar")
+    }
+
+    @ViewBuilder
+    private var list: some View {
+        let list = List(selection: $viewModel.selection) {
+            if viewModel.isCompact {
+                content.listRowSeparator(.hidden)
+            } else {
+                content
             }
         }
-        .listStyle(.sidebar)
-        .navigationTitle(Strings.reader)
-        .toolbar {
-            EditButton()
+        if viewModel.isCompact {
+            list.listStyle(.plain).onAppear {
+                viewModel.selection = nil // Remove the higlight
+            }
+        } else {
+            list.listStyle(.sidebar)
         }
-        .tint(preferredTintColor)
-        .accessibilityIdentifier("reader_sidebar")
+    }
+
+    @ViewBuilder
+    private var content: some View {
+        Section {
+            let screens = ReaderStaticScreen.allCases
+            ForEach(ReaderStaticScreen.allCases) {
+                makePrimaryNavigationItem($0.localizedTitle, systemImage: $0.systemImage)
+                    .tag(ReaderSidebarItem.main($0))
+                    .listRowSeparator((viewModel.isCompact && $0 != screens.last) ? .visible : .hidden, edges: .bottom)
+                    .accessibilityIdentifier($0.accessibilityIdentifier)
+                    .withDisabledSelection(isEditing)
+            }
+        }
+
+        if !teams.isEmpty {
+            makeSection(Strings.organization, isExpanded: $isSectionOrganizationExpanded) {
+                ReaderSidebarOrganizationSection(viewModel: viewModel, teams: teams)
+            }
+        }
+        makeSection(Strings.subscriptions, isExpanded: $isSectionSubscriptionsExpanded) {
+            Label(Strings.subscriptions, systemImage: "checkmark.rectangle.stack")
+                .tag(ReaderSidebarItem.allSubscriptions)
+                .listItemTint(AppColor.brand)
+                .withDisabledSelection(isEditing)
+
+            ReaderSidebarSubscriptionsSection(viewModel: viewModel)
+        }
+        makeSection(Strings.lists, isExpanded: $isSectionListsExpanded) {
+            ReaderSidebarListsSection(viewModel: viewModel)
+        }
+        makeSection(Strings.tags, isExpanded: $isSectionTagsExpanded) {
+            ReaderSidebarTagsSection(viewModel: viewModel)
+        }
+    }
+
+    private func makePrimaryNavigationItem(_ title: String, systemImage: String) -> some View {
+        HStack {
+            Label(title, systemImage: systemImage)
+                .lineLimit(1)
+            if viewModel.isCompact {
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 14).weight(.medium))
+                    .foregroundStyle(.secondary.opacity(0.8))
+            }
+        }
     }
 
     private var preferredTintColor: Color {
@@ -243,10 +139,41 @@ private struct ReaderSidebarView: View {
         }
     }
 
-    @ViewBuilder
-    private func makeSection<Content: View>(_ title: String, isExpanded: Binding<Bool>, @ViewBuilder content: () -> Content) -> some View {
-        if #available(iOS 17, *) {
-            Section(title, isExpanded: isExpanded) {
+    private func makeSection<Content: View>(_ title: String, isExpanded: Binding<Bool>, @ViewBuilder content: @escaping () -> Content) -> some View {
+        ReaderSidebarSection(title: title, isExpanded: isExpanded, isCompact: viewModel.isCompact, content: content)
+    }
+}
+
+private struct ReaderSidebarSection<Content: View>: View {
+    let title: String
+    @Binding var isExpanded: Bool
+    var isCompact: Bool
+    @ViewBuilder var content: () -> Content
+
+    var body: some View {
+        if isCompact {
+            Button {
+                isExpanded.toggle()
+            } label: {
+                HStack {
+                    Text(title)
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                    Image(systemName: "chevron.down")
+                        .font(.system(size: 14).weight(.semibold))
+                        .foregroundStyle(AppColor.brand)
+                }
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .listRowInsets(EdgeInsets(top: 24, leading: 20, bottom: 6, trailing: 16))
+
+            if isExpanded {
+                content()
+            }
+        } else if #available(iOS 17, *) {
+            Section(title, isExpanded: $isExpanded) {
                 content()
             }
         } else {
@@ -257,9 +184,20 @@ private struct ReaderSidebarView: View {
     }
 }
 
+private extension View {
+    @ViewBuilder func withDisabledSelection(_ isDisabled: Bool) -> some View {
+        if #available(iOS 17, *) {
+            self.opacity(isDisabled ? 0.33 : 1)
+                .selectionDisabled(isDisabled)
+        } else {
+            self
+        }
+    }
+}
+
 private struct Strings {
     static let reader = NSLocalizedString("reader.sidebar.navigationTitle", value: "Reader", comment: "Reader sidebar title")
-    static let subscriptions = NSLocalizedString("reader.sidebar.section.subscriptions.tTitle", value: "Subscriptions", comment: "Reader sidebar section title")
+    static let subscriptions = NSLocalizedString("reader.sidebar.section.subscriptions.title", value: "Subscriptions", comment: "Reader sidebar section title")
     static let lists = NSLocalizedString("reader.sidebar.section.lists.title", value: "Lists", comment: "Reader sidebar section title")
     static let tags = NSLocalizedString("reader.sidebar.section.tags.title", value: "Tags", comment: "Reader sidebar section title")
     static let organization = NSLocalizedString("reader.sidebar.section.organization.title", value: "Organization", comment: "Reader sidebar section title")

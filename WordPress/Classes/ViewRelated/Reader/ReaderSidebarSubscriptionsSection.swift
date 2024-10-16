@@ -13,9 +13,6 @@ struct ReaderSidebarSubscriptionsSection: View {
     private var subscriptions: FetchedResults<ReaderSiteTopic>
 
     var body: some View {
-        Label(Strings.allSubscriptions, systemImage: "checkmark.rectangle.stack")
-            .tag(ReaderSidebarItem.allSubscriptions)
-
         ForEach(subscriptions, id: \.self) { site in
             Label {
                 Text(site.title)
@@ -41,8 +38,4 @@ struct ReaderSidebarSubscriptionsSection: View {
             ReaderSubscriptionHelper().unfollow(site)
         }
     }
-}
-
-private struct Strings {
-    static let allSubscriptions = NSLocalizedString("reader.sidebar.allSubscriptions", value: "All Subscriptions", comment: "Reader sidebar button title")
 }
