@@ -22,9 +22,8 @@ extension UIFont {
         return UIFont(descriptor: descriptor, size: 0)
     }
 
-    private func withWeight(_ weight: UIFont.Weight) -> UIFont {
+    func withWeight(_ weight: UIFont.Weight) -> UIFont {
         let descriptor = fontDescriptor.addingAttributes([.traits: [UIFontDescriptor.TraitKey.weight: weight]])
-
         return UIFont(descriptor: descriptor, size: 0)
     }
 }

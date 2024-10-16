@@ -1,8 +1,8 @@
 import Foundation
 import UIKit
 
-// MARK: - UIView Helpers
-//
+// MARK: - UIView (Soft-Deprecated)
+
 extension UIView {
 
     @objc public func pinSubviewAtCenter(_ subview: UIView) {
