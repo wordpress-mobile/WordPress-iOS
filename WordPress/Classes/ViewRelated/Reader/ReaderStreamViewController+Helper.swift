@@ -36,6 +36,10 @@ extension ReaderStreamViewController {
 
     func headerForStream(_ topic: ReaderAbstractTopic) -> ReaderHeader? {
 
+        if FeatureFlag.readerReset.enabled && self is ReaderCardsStreamViewController {
+            return ReaderDiscoverHeaderView()
+        }
+
         if ReaderHelpers.isTopicTag(topic) && !isContentFiltered {
             guard let nibViews = Bundle.main.loadNibNamed("ReaderTagStreamHeader", owner: nil, options: nil) as? [ReaderTagStreamHeader] else {
                 return nil

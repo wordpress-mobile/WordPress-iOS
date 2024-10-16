@@ -433,6 +433,8 @@
 		0C0AD10B2B0CCFA400EC06E6 /* MediaPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0AD1092B0CCFA400EC06E6 /* MediaPreviewController.swift */; };
 		0C0AE7592A8FAD6A007D9D6C /* MediaPickerMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0AE7582A8FAD6A007D9D6C /* MediaPickerMenu.swift */; };
 		0C0AE75A2A8FAD6A007D9D6C /* MediaPickerMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0AE7582A8FAD6A007D9D6C /* MediaPickerMenu.swift */; };
+		0C0BEEEB2CC02D2C0073F4E0 /* ReaderDiscoverHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0BEEEA2CC02D2C0073F4E0 /* ReaderDiscoverHeaderView.swift */; };
+		0C0BEEEC2CC02D2C0073F4E0 /* ReaderDiscoverHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0BEEEA2CC02D2C0073F4E0 /* ReaderDiscoverHeaderView.swift */; };
 		0C0D3B0D2A4C79DE0050A00D /* BlazeCampaignsStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0D3B0C2A4C79DE0050A00D /* BlazeCampaignsStream.swift */; };
 		0C0D3B0E2A4C79DE0050A00D /* BlazeCampaignsStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0D3B0C2A4C79DE0050A00D /* BlazeCampaignsStream.swift */; };
 		0C0DF8942C2DF14600011B7D /* LoginFacadeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C0DF8932C2DF12A00011B7D /* LoginFacadeTests.m */; };
@@ -6441,6 +6443,7 @@
 		0C0AD1052B0C483F00EC06E6 /* ExternalMediaSelectionTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalMediaSelectionTitleView.swift; sourceTree = "<group>"; };
 		0C0AD1092B0CCFA400EC06E6 /* MediaPreviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPreviewController.swift; sourceTree = "<group>"; };
 		0C0AE7582A8FAD6A007D9D6C /* MediaPickerMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerMenu.swift; sourceTree = "<group>"; };
+		0C0BEEEA2CC02D2C0073F4E0 /* ReaderDiscoverHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderDiscoverHeaderView.swift; sourceTree = "<group>"; };
 		0C0D3B0C2A4C79DE0050A00D /* BlazeCampaignsStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeCampaignsStream.swift; sourceTree = "<group>"; };
 		0C0DF8932C2DF12A00011B7D /* LoginFacadeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginFacadeTests.m; sourceTree = "<group>"; };
 		0C0F05522C6290670040390D /* ReaderFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderFeedCell.swift; sourceTree = "<group>"; };
@@ -17885,6 +17888,7 @@
 				E6D2E1641B8AAD7E0000ED14 /* ReaderSiteStreamHeader.swift */,
 				E6D2E15E1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib */,
 				E6D2E16B1B8B423B0000ED14 /* ReaderStreamHeader.swift */,
+				0C0BEEEA2CC02D2C0073F4E0 /* ReaderDiscoverHeaderView.swift */,
 				E6D2E1661B8AAD8C0000ED14 /* ReaderTagStreamHeader.swift */,
 				E6D2E1601B8AA4410000ED14 /* ReaderTagStreamHeader.xib */,
 			);
@@ -22148,6 +22152,7 @@
 				17C1D7DC26735631006C8970 /* EmojiRenderer.swift in Sources */,
 				C81CCD7B243BF7A600A83E27 /* TenorStrings.swift in Sources */,
 				91DCE84621A6A7F50062F134 /* PostEditor+MoreOptions.swift in Sources */,
+				0C0BEEEC2CC02D2C0073F4E0 /* ReaderDiscoverHeaderView.swift in Sources */,
 				3FB1929526C79EC6000F5AA3 /* Date+Formats.swift in Sources */,
 				FA4EBCC12A98F00200BA3DFB /* NoSitesView.swift in Sources */,
 				0C7762232AAFD39700E07A88 /* SiteMediaAddMediaMenuController.swift in Sources */,
@@ -24467,6 +24472,7 @@
 				0C1C083F2B9BF9A000E52F8C /* PostRepository+Helpers.swift in Sources */,
 				FABB21082602FC2C00C8785C /* SiteCreationHeaderData.swift in Sources */,
 				FABB21092602FC2C00C8785C /* WPAuthTokenIssueSolver.m in Sources */,
+				0C0BEEEB2CC02D2C0073F4E0 /* ReaderDiscoverHeaderView.swift in Sources */,
 				FABB210B2602FC2C00C8785C /* ReaderDetailViewController.swift in Sources */,
 				FABB210C2602FC2C00C8785C /* HomeWidgetThisWeekData.swift in Sources */,
 				FABB210D2602FC2C00C8785C /* PersonHeaderCell.swift in Sources */,
