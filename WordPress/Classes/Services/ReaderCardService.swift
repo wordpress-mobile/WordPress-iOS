@@ -1,7 +1,6 @@
 import Foundation
 
 protocol ReaderCardServiceRemote {
-
     func fetchStreamCards(for topics: [String],
                           page: String?,
                           sortingOption: ReaderSortingOption,
@@ -9,13 +8,6 @@ protocol ReaderCardServiceRemote {
                           count: Int?,
                           success: @escaping ([RemoteReaderCard], String?) -> Void,
                           failure: @escaping (Error) -> Void)
-
-    func fetchCards(for topics: [String],
-                    page: String?,
-                    sortingOption: ReaderSortingOption,
-                    refreshCount: Int?,
-                    success: @escaping ([RemoteReaderCard], String?) -> Void,
-                    failure: @escaping (Error) -> Void)
 
 }
 
@@ -114,22 +106,15 @@ class ReaderCardService {
                 failure(error)
             }
 
-            if RemoteFeatureFlag.readerDiscoverEndpoint.enabled() {
-                self.service.fetchStreamCards(for: slugs,
-                                              page: self.pageHandle(isFirstPage: isFirstPage),
-                                              sortingOption: .noSorting,
-                                              refreshCount: refreshCount,
-                                              count: nil,
-                                              success: success,
-                                              failure: failure)
-            } else {
-                self.service.fetchCards(for: slugs,
-                                        page: self.pageHandle(isFirstPage: isFirstPage),
-                                        sortingOption: .noSorting,
-                                        refreshCount: refreshCount,
-                                        success: success,
-                                        failure: failure)
-            }
+            self.service.fetchStreamCards(
+                for: slugs,
+                page: self.pageHandle(isFirstPage: isFirstPage),
+                sortingOption: .noSorting,
+                refreshCount: refreshCount,
+                count: nil,
+                success: success,
+                failure: failure
+            )
         }
     }
 

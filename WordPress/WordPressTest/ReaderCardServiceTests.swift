@@ -115,15 +115,6 @@ final class ReaderPostServiceRemoteMock: ReaderCardServiceRemote {
         mockFetch(success: success, failure: failure)
     }
 
-    func fetchCards(for topics: [String],
-                    page: String?,
-                    sortingOption: WordPressKit.ReaderSortingOption,
-                    refreshCount: Int?,
-                    success: @escaping ([WordPressKit.RemoteReaderCard], String?) -> Void,
-                    failure: @escaping (any Error) -> Void) {
-        mockFetch(success: success, failure: failure)
-    }
-
     func mockFetch(success: @escaping ([WordPressKit.RemoteReaderCard], String?) -> Void,
                    failure: @escaping (any Error) -> Void) {
         guard !shouldCallFailure else {
