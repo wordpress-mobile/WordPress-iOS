@@ -165,7 +165,7 @@ import WordPressKit
     ///   - restrictToWPCom: Whether only WordPress.com login is enabled.
     ///   - onLoginButtonTapped: Called when the login button on the prologue screen is tapped.
     /// - Returns: The root view controller for the login flow.
-    public class func loginUI(showCancel: Bool = false, restrictToWPCom: Bool = false, onLoginButtonTapped: (() -> Void)? = nil) -> UIViewController? {
+    public class func loginUI(showCancel: Bool = false, restrictToWPCom: Bool = false, onLoginButtonTapped: (() -> Void)? = nil, continueWithDotCom: ((UIViewController) -> Bool)? = nil) -> UIViewController? {
         let storyboard = Storyboard.login.instance
         guard let controller = storyboard.instantiateInitialViewController() else {
             assertionFailure("Cannot instantiate initial login controller from Login.storyboard")
@@ -174,6 +174,7 @@ import WordPressKit
 
         if let loginNavController = controller as? LoginNavigationController, let loginPrologueViewController = loginNavController.viewControllers.first as? LoginPrologueViewController {
             loginPrologueViewController.showCancel = showCancel
+            loginPrologueViewController.continueWithDotComOverwrite = continueWithDotCom
         }
 
         controller.modalPresentationStyle = .fullScreen
