@@ -21,7 +21,7 @@ final class ReaderPostCellViewModel {
 
     weak var viewController: ReaderStreamViewController?
 
-    let post: ReaderPost?
+    let post: ReaderPost
     private var faviconTask: Task<Void, Never>?
 
     deinit {
@@ -55,7 +55,7 @@ final class ReaderPostCellViewModel {
         if isP2 {
             self.avatarURL = post.authorAvatarURL.flatMap(URL.init)
         } else if let avatarURL = post.siteIconForDisplay(ofSize: Int(ReaderPostCell.avatarSize)) {
-                self.avatarURL = avatarURL
+            self.avatarURL = avatarURL
         } else if let blogURL = post.blogURL.flatMap(URL.init) {
             if let faviconURL = FaviconService.shared.cachedFavicon(forURL: blogURL) {
                 self.avatarURL = faviconURL
@@ -68,6 +68,7 @@ final class ReaderPostCellViewModel {
     }
 
     private init() {
+        self.post = ReaderPost.init(entity: NSEntityDescription.entity(forEntityName: ReaderPost.entityName(), in: ContextManager.shared.mainContext)!, insertInto: nil)
         self.avatarURL = URL(string: "https://picsum.photos/120/120.jpg")
         self.author = "WordPress Mobile Apps"
         self.time = "9d ago"
@@ -80,7 +81,6 @@ final class ReaderPostCellViewModel {
         self.isCommentsEnabled = true
         self.commentCount = 213
         self.isLiked = true
-        self.post = nil
     }
 
     static func mock() -> ReaderPostCellViewModel {
@@ -90,27 +90,26 @@ final class ReaderPostCellViewModel {
     // MARK: Actions
 
     func showSiteDetails() {
-        guard let post, let viewController else { return }
+        guard let viewController else { return }
         ReaderHeaderAction().execute(post: post, origin: viewController)
     }
 
     func toogleBookmark() {
-        guard let post, let viewController else { return }
+        guard let viewController else { return }
         ReaderSaveForLaterAction().execute(with: post, origin: .otherStream, viewController: viewController)
     }
 
     func reblog() {
-        guard let post, let viewController else { return }
+        guard let viewController else { return }
         ReaderReblogAction().execute(readerPost: post, origin: viewController, reblogSource: .list)
     }
 
     func comment() {
-        guard let post, let viewController else { return }
+        guard let viewController else { return }
         ReaderCommentAction().execute(post: post, origin: viewController, source: .postCard)
     }
 
     func toggleLike() {
-        guard let post else { return }
         ReaderLikeAction().execute(with: post)
     }
 }

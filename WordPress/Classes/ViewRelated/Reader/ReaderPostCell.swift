@@ -99,7 +99,7 @@ private final class ReaderPostCellView: UIView {
     var isCompact: Bool = true {
         didSet {
             guard oldValue != isCompact else { return }
-            update(isCompact: isCompact)
+            configureLayout(isCompact: isCompact)
         }
     }
 
@@ -113,10 +113,10 @@ private final class ReaderPostCellView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        configureStyle()
-        configureLayout()
-        configureActions()
-        configureAccessibility()
+        setupStyle()
+        setupLayout()
+        setupActions()
+        setupAccessibility()
     }
 
     required init?(coder: NSCoder) {
@@ -127,16 +127,15 @@ private final class ReaderPostCellView: UIView {
         cancellables = []
         avatarView.prepareForReuse()
         imageView.prepareForReuse()
-        imageView.isHidden = false
     }
 
-    private func configureStyle() {
-        avatarView.layer.cornerRadius = 14
+    private func setupStyle() {
+        avatarView.layer.cornerRadius = ReaderPostCell.avatarSize / 2
         avatarView.layer.masksToBounds = true
         avatarView.isErrorViewEnabled = false
 
         buttonAuthor.maximumContentSizeCategory = .accessibilityLarge
-        configureTimeLabel(timeLabel)
+        setupTimeLabel(timeLabel)
         timeLabel.setContentCompressionResistancePriority(.init(800), for: .horizontal)
 
         titleLabel.font = .preferredFont(forTextStyle: .headline)
@@ -146,7 +145,7 @@ private final class ReaderPostCellView: UIView {
         detailsLabel.font = .preferredFont(forTextStyle: .subheadline)
         detailsLabel.textColor = .secondaryLabel
         detailsLabel.adjustsFontForContentSizeCategory = true
-        titleLabel.maximumContentSizeCategory = .accessibilityExtraLarge
+        detailsLabel.maximumContentSizeCategory = .accessibilityExtraLarge
 
         imageView.layer.cornerRadius = 8
         imageView.layer.masksToBounds = true
@@ -156,9 +155,9 @@ private final class ReaderPostCellView: UIView {
         buttonMore.configuration?.contentInsets = .init(top: 12, leading: 8, bottom: 12, trailing: 20)
     }
 
-    private func configureLayout() {
+    private func setupLayout() {
         let dot = UILabel()
-        configureTimeLabel(dot)
+        setupTimeLabel(dot)
         dot.text = " · "
 
         // These seems to be an issue with `lineBreakMode` in `UIButton.Configuration`
@@ -196,17 +195,17 @@ private final class ReaderPostCellView: UIView {
             toolbarView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
 
-        update(isCompact: isCompact)
+        configureLayout(isCompact: isCompact)
     }
 
-    private func configureTimeLabel(_ label: UILabel) {
+    private func setupTimeLabel(_ label: UILabel) {
         label.font = .preferredFont(forTextStyle: .footnote)
         label.textColor = .secondaryLabel
         label.adjustsFontForContentSizeCategory = true
         label.maximumContentSizeCategory = .accessibilityMedium
     }
 
-    private func update(isCompact: Bool) {
+    private func configureLayout(isCompact: Bool) {
         titleLabel.numberOfLines = 2
         detailsLabel.numberOfLines = isCompact ? 3 : 5
 
@@ -237,7 +236,7 @@ private final class ReaderPostCellView: UIView {
 
     // MARK: Actions
 
-    private func configureActions() {
+    private func setupActions() {
         buttonAuthor.addTarget(self, action: #selector(buttonAuthorTapped), for: .primaryActionTriggered)
         buttonMore.showsMenuAsPrimaryAction = true
         buttonMore.menu = UIMenu(options: .displayInline, children: [
@@ -272,12 +271,11 @@ private final class ReaderPostCellView: UIView {
     }
 
     private func makeMoreMenu() -> [UIMenuElement] {
-        guard let viewModel, let post = viewModel.post,
-              let viewController = viewModel.viewController else {
+        guard let viewModel, let viewController = viewModel.viewController else {
             return []
         }
         return ReaderPostMenu(
-            post: post,
+            post: viewModel.post,
             topic: viewController.readerTopic,
             button: buttonMore,
             viewController: viewController
@@ -295,10 +293,10 @@ private final class ReaderPostCellView: UIView {
 
         titleLabel.text = viewModel.title
         detailsLabel.text = viewModel.details
+
+        imageView.isHidden = viewModel.imageURL == nil
         if let imageURL = viewModel.imageURL {
             imageView.setImage(with: imageURL)
-        } else {
-            imageView.isHidden = true
         }
 
         buttons.bookmark.configuration = {
@@ -385,13 +383,13 @@ private func makeButton(systemImage: String, font: UIFont = UIFont.preferredFont
 }
 
 private func kFormatted(_ count: Int) -> String {
-    count >= 1000 ? String(format: "%.0fK", Double(count) / 1000) : String(count)
+    count.formatted(.number.notation(.compactName))
 }
 
 // MARK: - ReaderPostCellView (Accessibility)
 
 private extension ReaderPostCellView {
-    func configureAccessibility() {
+    func setupAccessibility() {
         buttonAuthor.accessibilityHint =  NSLocalizedString("reader.post.buttonSite.accessibilityHint", value: "Opens the site details", comment: "Accessibility hint for the site header")
         buttonMore.accessibilityLabel = NSLocalizedString("reader.post.moreMenu.accessibilityLabel", value: "More actions", comment: "Button accessibility label")
 

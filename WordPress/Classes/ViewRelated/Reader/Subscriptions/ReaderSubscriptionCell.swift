@@ -110,6 +110,6 @@ private enum Strings {
     }
 
     private static func kFormatted(_ count: Int) -> String {
-        count >= 1000 ? String(format: "%.0fK", Double(count) / 1000) : String(count)
+        count.formatted(.number.notation(.compactName))
     }
 }

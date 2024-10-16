@@ -95,7 +95,7 @@ private func validate(response: URLResponse) throws {
     guard let response = response as? HTTPURLResponse else {
         return
     }
-    guard (200..<400).contains(response.statusCode) else {
+    guard (200..<300).contains(response.statusCode) else {
         throw FaviconError.unacceptableStatusCode(response.statusCode)
     }
 }
