@@ -36,7 +36,7 @@ extension ReaderStreamViewController {
 
     func headerForStream(_ topic: ReaderAbstractTopic) -> ReaderHeader? {
 
-        if FeatureFlag.readerReset.enabled && self is ReaderCardsStreamViewController {
+        if FeatureFlag.readerReset.enabled && self is ReaderDiscoverViewController {
             return ReaderDiscoverHeaderView()
         }
 

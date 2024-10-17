@@ -1,6 +1,6 @@
 import Foundation
 
-class ReaderCardsStreamViewController: ReaderStreamViewController {
+class ReaderDiscoverViewController: ReaderStreamViewController {
     private let readerCardTopicsIdentifier = "ReaderTopicsCell"
     private let readerCardSitesIdentifier = "ReaderSitesCell"
 
@@ -193,8 +193,8 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
     ///
     /// - Returns: An instance of the controller
     ///
-    class func controller(topic: ReaderAbstractTopic) -> ReaderCardsStreamViewController {
-        let controller = ReaderCardsStreamViewController()
+    class func controller(topic: ReaderAbstractTopic) -> ReaderDiscoverViewController {
+        let controller = ReaderDiscoverViewController()
         controller.readerTopic = topic
         return controller
     }
@@ -236,7 +236,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
 }
 
 // MARK: - Select Interests Display
-private extension ReaderCardsStreamViewController {
+private extension ReaderDiscoverViewController {
     func displaySelectInterestsIfNeeded() {
         selectInterestsViewController.userIsFollowingTopics { [weak self] isFollowing in
             guard let self else {
@@ -253,7 +253,7 @@ private extension ReaderCardsStreamViewController {
 
 // MARK: - ReaderTopicsTableCardCellDelegate
 
-extension ReaderCardsStreamViewController: ReaderTopicsTableCardCellDelegate {
+extension ReaderDiscoverViewController: ReaderTopicsTableCardCellDelegate {
     func didSelect(topic: ReaderAbstractTopic) {
         if topic as? ReaderTagTopic != nil {
             WPAnalytics.trackReader(.readerDiscoverTopicTapped)
@@ -273,7 +273,7 @@ extension ReaderCardsStreamViewController: ReaderTopicsTableCardCellDelegate {
 
 // MARK: - ReaderSitesCardCellDelegate
 
-extension ReaderCardsStreamViewController: ReaderSitesCardCellDelegate {
+extension ReaderDiscoverViewController: ReaderSitesCardCellDelegate {
     func handleFollowActionForTopic(_ topic: ReaderAbstractTopic, for cell: ReaderSitesCardCell) {
         toggleFollowingForTopic(topic) { success in
             cell.didToggleFollowing(topic, with: success)
