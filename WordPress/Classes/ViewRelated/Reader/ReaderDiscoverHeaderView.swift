@@ -1,9 +1,17 @@
 import UIKit
 
+protocol ReaderDiscoverHeaderViewDelegate: AnyObject {
+    func readerDiscoverHeaderView(_ view: ReaderDiscoverHeaderView, didChangeSelection selection: ReaderDiscoverTag)
+}
+
 final class ReaderDiscoverHeaderView: UIView {
     private let titleView = ReaderStreamTitleView()
     private let tagsStackView = UIStackView(spacing: 8, [])
-    private var tagViews: [ReaderTagView] = []
+    private var tagViews: [ReaderDiscoverTagView] = []
+
+    private var selectedTag: ReaderDiscoverTag?
+
+    weak var delegate: ReaderDiscoverHeaderViewDelegate?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -21,16 +29,13 @@ final class ReaderDiscoverHeaderView: UIView {
 
         titleView.titleLabel.text = Strings.title
         titleView.detailsLabel.text = Strings.details
-
-        // TODO: (reader) configure dynamically. where does these come from?
-        configure(tags: ["Recommended", "First posts", "Latest", "Daily prompts", "Food"])
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(tags: [String]) {
+    func configure(tags: [ReaderDiscoverTag]) {
         for view in tagViews {
             view.removeFromSuperview()
         }
@@ -40,31 +45,37 @@ final class ReaderDiscoverHeaderView: UIView {
         }
     }
 
-    private func makeTagView(_ title: String) -> ReaderTagView {
-        let view = ReaderTagView(title: title)
-        view.button.addAction(UIAction { [weak self, weak view] _ in
-            guard let self, let view else { return }
-            self.readerTagViewTapped(view)
+    func setSelectedTag(_ tag: ReaderDiscoverTag) {
+        selectedTag = tag
+        refreshTagViews()
+    }
+
+    private func makeTagView(_ tag: ReaderDiscoverTag) -> ReaderDiscoverTagView {
+        let view = ReaderDiscoverTagView(tag: tag)
+        view.button.addAction(UIAction { [weak self] _ in
+            self?.didSelectTag(tag)
         }, for: .primaryActionTriggered)
         return view
     }
 
-    @objc private func readerTagViewTapped(_ view: ReaderTagView) {
-        didSelectTag(view.title)
+    private func didSelectTag(_ tag: ReaderDiscoverTag) {
+        selectedTag = tag
+        delegate?.readerDiscoverHeaderView(self, didChangeSelection: tag)
+        refreshTagViews()
     }
 
-    private func didSelectTag(_ tag: String) {
-        for view in self.tagViews {
-            view.isSelected = view.title == tag
+    private func refreshTagViews() {
+        for view in tagViews {
+            view.isSelected = view.discoverTag == selectedTag
         }
     }
 }
 
-private final class ReaderTagView: UIView {
+private final class ReaderDiscoverTagView: UIView {
     private let textLabel = UILabel()
     private let backgroundView = UIView()
     let button = UIButton(type: .system)
-    let title: String
+    let discoverTag: ReaderDiscoverTag
 
     var isSelected: Bool = false {
         didSet {
@@ -73,13 +84,13 @@ private final class ReaderTagView: UIView {
         }
     }
 
-    init(title: String) {
-        self.title = title
+    init(tag: ReaderDiscoverTag) {
+        self.discoverTag = tag
 
         super.init(frame: .zero)
 
         textLabel.font = UIFont.preferredFont(forTextStyle: .subheadline).withWeight(.medium)
-        textLabel.text = title
+        textLabel.text = discoverTag.localizedTitle
 
         backgroundView.clipsToBounds = true
 
@@ -112,6 +123,25 @@ private final class ReaderTagView: UIView {
         super.layoutSubviews()
 
         backgroundView.layer.cornerRadius = backgroundView.bounds.height / 2
+    }
+}
+
+enum ReaderDiscoverTag: Hashable {
+    /// The default channel showing your selected tags.
+    case recommended
+
+    // case firstPosts
+
+    /// Latest post from your selected tags.
+    case latest
+
+    var localizedTitle: String {
+        switch self {
+        case .recommended:
+            NSLocalizedString("reader.discover.header.tag.recommended", value: "Recommended", comment: "Header view tag (filter)")
+        case .latest:
+            NSLocalizedString("reader.discover.header.tag.latest", value: "Latest", comment: "Header view tag (filter)")
+        }
     }
 }
 
