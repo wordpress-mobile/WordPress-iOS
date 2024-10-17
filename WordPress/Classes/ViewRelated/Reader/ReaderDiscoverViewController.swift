@@ -1,6 +1,10 @@
 import Foundation
+import UIKit
+import Combine
 
-class ReaderDiscoverViewController: ReaderStreamViewController {
+class ReaderDiscoverViewController: ReaderStreamViewController, ReaderDiscoverHeaderViewDelegate {
+    private let headerView = ReaderDiscoverHeaderView()
+
     private let readerCardTopicsIdentifier = "ReaderTopicsCell"
     private let readerCardSitesIdentifier = "ReaderSitesCell"
 
@@ -14,9 +18,7 @@ class ReaderDiscoverViewController: ReaderStreamViewController {
         content.content as? [ReaderCard]
     }
 
-    lazy var cardsService: ReaderCardService = {
-        return ReaderCardService()
-    }()
+    private lazy var cardsService = ReaderCardService()
 
     /// Whether the current view controller is visible
     private var isVisible: Bool {
@@ -40,7 +42,9 @@ class ReaderDiscoverViewController: ReaderStreamViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         addObservers()
+        setupHeaderView()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -48,11 +52,17 @@ class ReaderDiscoverViewController: ReaderStreamViewController {
         displaySelectInterestsIfNeeded()
     }
 
+    func setupHeaderView() {
+        headerView.configure(tags: [.recommended, .latest])
+        headerView.setSelectedTag(.recommended)
+        headerView.delegate = self
+    }
+
     // MARK: - Header
 
     override func headerForStream(_ topic: ReaderAbstractTopic?, isLoggedIn: Bool, container: UITableViewController) -> UIView? {
         if FeatureFlag.readerReset.enabled {
-            return ReaderDiscoverHeaderView()
+            return headerView
         }
         return nil
     }
@@ -241,6 +251,12 @@ class ReaderDiscoverViewController: ReaderStreamViewController {
 
         super.syncIfAppropriate(forceSync: true)
         tableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.fade)
+    }
+
+    // MARK: - ReaderDiscoverHeaderViewDelegate
+
+    func readerDiscoverHeaderView(_ view: ReaderDiscoverHeaderView, didChangeSelection selection: ReaderDiscoverTag) {
+        print("sel:", selection)
     }
 }
 
