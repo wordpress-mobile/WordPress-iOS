@@ -392,7 +392,7 @@ platform :ios do
   # @param skip_confirm [Boolean] Whether to skip confirmation prompts
   #
   lane :finalize_release do |skip_confirm: false|
-    UI.user_error!('To finalize a hotfix, please use the `finalize_hotfix_release` lane instead') if release_is_hotfix?
+    UI.user_error!('To finalize a hotfix, please use the `finalize_hotfix_release` lane instead') if current_version_hotfix?
 
     ensure_git_branch_is_release_branch!
     ensure_git_status_clean

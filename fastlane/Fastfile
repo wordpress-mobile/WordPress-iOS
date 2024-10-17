@@ -126,7 +126,7 @@ def release_version_next
   VERSION_FORMATTER.release_version(next_calculated_release_version)
 end
 
-def release_is_hotfix?
+def current_version_hotfix?
   # Read the current release version from the .xcconfig file and parse it into an AppVersion object
   current_version = VERSION_FORMATTER.parse(VERSION_FILE.read_release_version)
   # Calculate and return whether the release version is a hotfix
