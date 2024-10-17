@@ -25,22 +25,7 @@ struct WordPressDotComAuthenticator {
             token = try await authenticate(from: viewController)
         } catch {
             if let error = error as? WordPressDotComAuthenticator.Error {
-                // Show an alert for non-cancellation errors.
-                // `.cancelled` error is thrown when user taps the cancel button in the presented Safari view controller.
-                if case .cancelled = error {
-                    // Do nothing
-                } else {
-                    // All other errors are unexpected.
-                    wpAssertionFailure("WP.com web login failed", userInfo: ["error": "\(error)"])
-
-                    let alert = UIAlertController(
-                        title: NSLocalizedString("wpComLogin.error.title", value: "Error", comment: "Error"),
-                        message: SharedStrings.Error.generic,
-                        preferredStyle: .alert
-                    )
-                    alert.addAction(UIAlertAction(title: SharedStrings.Button.close, style: .cancel, handler: nil))
-                    viewController.present(alert, animated: true)
-                }
+                presentSignInError(error, from: viewController)
             } else {
                 wpAssertionFailure("WP.com web login failed", userInfo: ["error": "\(error)"])
             }
@@ -59,6 +44,25 @@ struct WordPressDotComAuthenticator {
                 source: .custom(source: "web-login"),
                 onDismiss: { /* Do nothing */ }
             )
+        }
+    }
+
+    private func presentSignInError(_ error: WordPressDotComAuthenticator.Error, from viewController: UIViewController) {
+        // Show an alert for non-cancellation errors.
+        // `.cancelled` error is thrown when user taps the cancel button in the presented Safari view controller.
+        if case .cancelled = error {
+            // Do nothing
+        } else {
+            // All other errors are unexpected.
+            wpAssertionFailure("WP.com web login failed", userInfo: ["error": "\(error)"])
+
+            let alert = UIAlertController(
+                title: NSLocalizedString("wpComLogin.error.title", value: "Error", comment: "Error"),
+                message: SharedStrings.Error.generic,
+                preferredStyle: .alert
+            )
+            alert.addAction(UIAlertAction(title: SharedStrings.Button.close, style: .cancel, handler: nil))
+            viewController.present(alert, animated: true)
         }
     }
 
