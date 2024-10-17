@@ -27,6 +27,8 @@ class ReaderCardService {
     /// Used only internally to order the cards
     private var pageNumber = 1
 
+    var sorting: ReaderSortingOption = .noSorting
+
     init(service: ReaderCardServiceRemote = ReaderPostServiceRemote.withDefaultApi(),
          coreDataStack: CoreDataStack = ContextManager.shared,
          followedInterestsService: ReaderFollowedInterestsService? = nil,
@@ -109,7 +111,7 @@ class ReaderCardService {
             self.service.fetchStreamCards(
                 for: slugs,
                 page: self.pageHandle(isFirstPage: isFirstPage),
-                sortingOption: .noSorting,
+                sortingOption: self.sorting,
                 refreshCount: refreshCount,
                 count: nil,
                 success: success,
