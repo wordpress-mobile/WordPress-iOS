@@ -544,7 +544,10 @@ import AutomatticTracks
             tableView.tableHeaderView = nil
             return
         }
+        setHeaderView(headerView)
+    }
 
+    func setHeaderView(_ headerView: UIView) {
         if let tableHeaderView = tableView.tableHeaderView {
             headerView.isHidden = tableHeaderView.isHidden
         }
@@ -567,15 +570,6 @@ import AutomatticTracks
 
         tableView.tableHeaderView?.layoutIfNeeded()
         tableView.tableHeaderView = tableView.tableHeaderView
-    }
-
-    func headerForStream(_ topic: ReaderAbstractTopic?, isLoggedIn: Bool, container: UITableViewController) -> UIView? {
-        if let topic,
-           let header = headerForStream(topic) {
-            configure(header, topic: topic, isLoggedIn: isLoggedIn, delegate: self)
-            return header
-        }
-        return nil
     }
 
     /// Updates the content based on the values of `readerTopic` and `contentType`

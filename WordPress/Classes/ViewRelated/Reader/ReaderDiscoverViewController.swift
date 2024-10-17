@@ -2,9 +2,67 @@ import Foundation
 import UIKit
 import Combine
 
-class ReaderDiscoverViewController: ReaderStreamViewController, ReaderDiscoverHeaderViewDelegate {
+class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDelegate, ReaderContentViewController {
     private let headerView = ReaderDiscoverHeaderView()
+    private var selectedTag: ReaderDiscoverTag = .recommended
+    private let topic: ReaderAbstractTopic
+    private var streamVC: ReaderStreamViewController?
 
+    init(topic: ReaderAbstractTopic) {
+        wpAssert(ReaderHelpers.topicIsDiscover(topic))
+        self.topic = topic
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        setupNavigation()
+        setupHeaderView()
+        configureStream(ReaderDiscoverStreamViewController.controller(topic: topic))
+    }
+
+    private func setupNavigation() {
+        navigationItem.largeTitleDisplayMode = .never
+    }
+
+    private func setupHeaderView() {
+        headerView.configure(tags: [.recommended, .latest])
+        headerView.setSelectedTag(selectedTag)
+        headerView.delegate = self
+    }
+
+    private func configureStream(_ streamVC: ReaderStreamViewController) {
+        self.streamVC = streamVC
+
+        addChild(streamVC)
+        view.addSubview(streamVC.view)
+        streamVC.view.pinEdges()
+        streamVC.didMove(toParent: self)
+
+        if FeatureFlag.readerReset.enabled {
+            streamVC.setHeaderView(headerView)
+        }
+    }
+
+    // MARK: - ReaderContentViewController (Deprecated)
+
+    func setContent(_ content: ReaderContent) {
+        streamVC?.setContent(content)
+    }
+
+    // MARK: - ReaderDiscoverHeaderViewDelegate
+
+    func readerDiscoverHeaderView(_ view: ReaderDiscoverHeaderView, didChangeSelection selection: ReaderDiscoverTag) {
+        print("sel:", selection)
+    }
+}
+
+private class ReaderDiscoverStreamViewController: ReaderStreamViewController {
     private let readerCardTopicsIdentifier = "ReaderTopicsCell"
     private let readerCardSitesIdentifier = "ReaderSitesCell"
 
@@ -44,27 +102,11 @@ class ReaderDiscoverViewController: ReaderStreamViewController, ReaderDiscoverHe
         super.viewDidLoad()
 
         addObservers()
-        setupHeaderView()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         displaySelectInterestsIfNeeded()
-    }
-
-    func setupHeaderView() {
-        headerView.configure(tags: [.recommended, .latest])
-        headerView.setSelectedTag(.recommended)
-        headerView.delegate = self
-    }
-
-    // MARK: - Header
-
-    override func headerForStream(_ topic: ReaderAbstractTopic?, isLoggedIn: Bool, container: UITableViewController) -> UIView? {
-        if FeatureFlag.readerReset.enabled {
-            return headerView
-        }
-        return nil
     }
 
     // MARK: - UITableView
@@ -212,8 +254,8 @@ class ReaderDiscoverViewController: ReaderStreamViewController, ReaderDiscoverHe
     ///
     /// - Returns: An instance of the controller
     ///
-    class func controller(topic: ReaderAbstractTopic) -> ReaderDiscoverViewController {
-        let controller = ReaderDiscoverViewController()
+    class func controller(topic: ReaderAbstractTopic) -> ReaderDiscoverStreamViewController {
+        let controller = ReaderDiscoverStreamViewController()
         controller.readerTopic = topic
         return controller
     }
@@ -252,16 +294,10 @@ class ReaderDiscoverViewController: ReaderStreamViewController, ReaderDiscoverHe
         super.syncIfAppropriate(forceSync: true)
         tableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.fade)
     }
-
-    // MARK: - ReaderDiscoverHeaderViewDelegate
-
-    func readerDiscoverHeaderView(_ view: ReaderDiscoverHeaderView, didChangeSelection selection: ReaderDiscoverTag) {
-        print("sel:", selection)
-    }
 }
 
 // MARK: - Select Interests Display
-private extension ReaderDiscoverViewController {
+private extension ReaderDiscoverStreamViewController {
     func displaySelectInterestsIfNeeded() {
         selectInterestsViewController.userIsFollowingTopics { [weak self] isFollowing in
             guard let self else {
@@ -278,7 +314,7 @@ private extension ReaderDiscoverViewController {
 
 // MARK: - ReaderTopicsTableCardCellDelegate
 
-extension ReaderDiscoverViewController: ReaderTopicsTableCardCellDelegate {
+extension ReaderDiscoverStreamViewController: ReaderTopicsTableCardCellDelegate {
     func didSelect(topic: ReaderAbstractTopic) {
         if topic as? ReaderTagTopic != nil {
             WPAnalytics.trackReader(.readerDiscoverTopicTapped)
@@ -298,7 +334,7 @@ extension ReaderDiscoverViewController: ReaderTopicsTableCardCellDelegate {
 
 // MARK: - ReaderSitesCardCellDelegate
 
-extension ReaderDiscoverViewController: ReaderSitesCardCellDelegate {
+extension ReaderDiscoverStreamViewController: ReaderSitesCardCellDelegate {
     func handleFollowActionForTopic(_ topic: ReaderAbstractTopic, for cell: ReaderSitesCardCell) {
         toggleFollowingForTopic(topic) { success in
             cell.didToggleFollowing(topic, with: success)

@@ -111,7 +111,7 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
         case .recent, .discover, .likes:
             if let topic = screen.topicType.flatMap(sidebarViewModel.getTopic) {
                 if screen == .discover {
-                    return ReaderDiscoverViewController.controller(topic: topic)
+                    return ReaderDiscoverViewController(topic: topic)
                 } else {
                     return ReaderStreamViewController.controllerWithTopic(topic)
                 }

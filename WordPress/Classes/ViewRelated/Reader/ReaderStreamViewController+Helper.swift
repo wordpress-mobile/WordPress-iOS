@@ -10,6 +10,15 @@ extension ReaderStreamViewController {
         var message: String
     }
 
+    func headerForStream(_ topic: ReaderAbstractTopic?, isLoggedIn: Bool, container: UITableViewController) -> UIView? {
+        if let topic,
+           let header = headerForStream(topic) {
+            configure(header, topic: topic, isLoggedIn: isLoggedIn, delegate: self)
+            return header
+        }
+        return nil
+    }
+
     func configure(_ header: ReaderHeader?, topic: ReaderAbstractTopic, isLoggedIn: Bool, delegate: ReaderStreamHeaderDelegate) {
         header?.configureHeader(topic)
         header?.enableLoggedInFeatures(isLoggedIn)
