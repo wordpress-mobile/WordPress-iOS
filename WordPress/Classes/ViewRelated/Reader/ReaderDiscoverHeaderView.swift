@@ -1,15 +1,15 @@
 import UIKit
 
 protocol ReaderDiscoverHeaderViewDelegate: AnyObject {
-    func readerDiscoverHeaderView(_ view: ReaderDiscoverHeaderView, didChangeSelection selection: ReaderDiscoverTag)
+    func readerDiscoverHeaderView(_ view: ReaderDiscoverHeaderView, didChangeSelection selection: ReaderDiscoverChannel)
 }
 
 final class ReaderDiscoverHeaderView: UIView {
     private let titleView = ReaderStreamTitleView()
-    private let tagsStackView = UIStackView(spacing: 8, [])
-    private var tagViews: [ReaderDiscoverTagView] = []
+    private let channelsStackView = UIStackView(spacing: 8, [])
+    private var channelViews: [ReaderDiscoverChannelView] = []
 
-    private var selectedTag: ReaderDiscoverTag?
+    private var selectedChannel: ReaderDiscoverChannel?
 
     weak var delegate: ReaderDiscoverHeaderViewDelegate?
 
@@ -17,11 +17,11 @@ final class ReaderDiscoverHeaderView: UIView {
         super.init(frame: frame)
 
         let scrollView = UIScrollView()
-        scrollView.addSubview(tagsStackView)
+        scrollView.addSubview(channelsStackView)
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.clipsToBounds = false
-        tagsStackView.pinEdges()
-        scrollView.heightAnchor.constraint(equalTo: tagsStackView.heightAnchor).isActive = true
+        channelsStackView.pinEdges()
+        scrollView.heightAnchor.constraint(equalTo: channelsStackView.heightAnchor).isActive = true
 
         let stackView = UIStackView(axis: .vertical, spacing: 8, [titleView, scrollView])
         addSubview(stackView)
@@ -35,50 +35,50 @@ final class ReaderDiscoverHeaderView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(tags: [ReaderDiscoverTag]) {
-        for view in tagViews {
+    func configure(channels: [ReaderDiscoverChannel]) {
+        for view in channelViews {
             view.removeFromSuperview()
         }
-        tagViews = tags.map(makeTagView)
-        for view in tagViews {
-            tagsStackView.addArrangedSubview(view)
+        channelViews = channels.map(makeChannelView)
+        for view in channelViews {
+            channelsStackView.addArrangedSubview(view)
         }
     }
 
-    func setSelectedTag(_ tag: ReaderDiscoverTag) {
-        selectedTag = tag
-        refreshTagViews()
+    func setSelectedChannel(_ channel: ReaderDiscoverChannel) {
+        selectedChannel = channel
+        refreshChannelViews()
     }
 
-    private func makeTagView(_ tag: ReaderDiscoverTag) -> ReaderDiscoverTagView {
-        let view = ReaderDiscoverTagView(tag: tag)
+    private func makeChannelView(_ channel: ReaderDiscoverChannel) -> ReaderDiscoverChannelView {
+        let view = ReaderDiscoverChannelView(channel: channel)
         view.button.addAction(UIAction { [weak self] _ in
-            self?.didSelectTag(tag)
+            self?.didSelectChannel(channel)
         }, for: .primaryActionTriggered)
         return view
     }
 
-    private func didSelectTag(_ tag: ReaderDiscoverTag) {
-        guard selectedTag != tag else {
+    private func didSelectChannel(_ channel: ReaderDiscoverChannel) {
+        guard selectedChannel != channel else {
             return
         }
-        selectedTag = tag
-        delegate?.readerDiscoverHeaderView(self, didChangeSelection: tag)
-        refreshTagViews()
+        selectedChannel = channel
+        delegate?.readerDiscoverHeaderView(self, didChangeSelection: channel)
+        refreshChannelViews()
     }
 
-    private func refreshTagViews() {
-        for view in tagViews {
-            view.isSelected = view.discoverTag == selectedTag
+    private func refreshChannelViews() {
+        for view in channelViews {
+            view.isSelected = view.channel == selectedChannel
         }
     }
 }
 
-private final class ReaderDiscoverTagView: UIView {
+private final class ReaderDiscoverChannelView: UIView {
     private let textLabel = UILabel()
     private let backgroundView = UIView()
     let button = UIButton(type: .system)
-    let discoverTag: ReaderDiscoverTag
+    let channel: ReaderDiscoverChannel
 
     var isSelected: Bool = false {
         didSet {
@@ -87,13 +87,13 @@ private final class ReaderDiscoverTagView: UIView {
         }
     }
 
-    init(tag: ReaderDiscoverTag) {
-        self.discoverTag = tag
+    init(channel: ReaderDiscoverChannel) {
+        self.channel = channel
 
         super.init(frame: .zero)
 
         textLabel.font = UIFont.preferredFont(forTextStyle: .subheadline).withWeight(.medium)
-        textLabel.text = discoverTag.localizedTitle
+        textLabel.text = channel.localizedTitle
 
         backgroundView.clipsToBounds = true
 
@@ -129,11 +129,9 @@ private final class ReaderDiscoverTagView: UIView {
     }
 }
 
-enum ReaderDiscoverTag: Hashable {
+enum ReaderDiscoverChannel: Hashable {
     /// The default channel showing your selected tags.
     case recommended
-
-    // case firstPosts
 
     /// Latest post from your selected tags.
     case latest

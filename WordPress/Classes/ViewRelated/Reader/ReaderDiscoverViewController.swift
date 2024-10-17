@@ -4,7 +4,7 @@ import Combine
 
 class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDelegate, ReaderContentViewController {
     private let headerView = ReaderDiscoverHeaderView()
-    private var selectedTag: ReaderDiscoverTag = .recommended
+    private var selectedChannel: ReaderDiscoverChannel = .recommended
     private let topic: ReaderAbstractTopic
     private var streamVC: ReaderStreamViewController?
     private var viewContext: NSManagedObjectContext {
@@ -27,7 +27,7 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
         setupNavigation()
         setupHeaderView()
 
-        configureStream(for: selectedTag)
+        configureStream(for: selectedChannel)
     }
 
     private func setupNavigation() {
@@ -35,10 +35,10 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
     }
 
     private func setupHeaderView() {
-        let tags = fetchTags().map(ReaderDiscoverTag.tag)
+        let tags = fetchTags().map(ReaderDiscoverChannel.tag)
 
-        headerView.configure(tags: [.recommended, .latest] + tags)
-        headerView.setSelectedTag(selectedTag)
+        headerView.configure(channels: [.recommended, .latest] + tags)
+        headerView.setSelectedChannel(selectedChannel)
         headerView.delegate = self
     }
 
@@ -52,12 +52,12 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
 
     // MARK: - Selected Stream
 
-    private func configureStream(for tag: ReaderDiscoverTag) {
-        showStreamViewController(makeViewController(for: tag))
+    private func configureStream(for channel: ReaderDiscoverChannel) {
+        showStreamViewController(makeViewController(for: channel))
     }
 
-    private func makeViewController(for tag: ReaderDiscoverTag) -> ReaderStreamViewController {
-        switch tag {
+    private func makeViewController(for channel: ReaderDiscoverChannel) -> ReaderStreamViewController {
+        switch channel {
         case .recommended:
             ReaderDiscoverStreamViewController(topic: topic)
         case .latest:
@@ -107,8 +107,8 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
 
     // MARK: - ReaderDiscoverHeaderViewDelegate
 
-    func readerDiscoverHeaderView(_ view: ReaderDiscoverHeaderView, didChangeSelection selection: ReaderDiscoverTag) {
-        self.selectedTag = selection
+    func readerDiscoverHeaderView(_ view: ReaderDiscoverHeaderView, didChangeSelection selection: ReaderDiscoverChannel) {
+        self.selectedChannel = selection
         configureStream(for: selection)
     }
 }
