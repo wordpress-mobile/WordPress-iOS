@@ -18,6 +18,50 @@ struct WordPressDotComAuthenticator {
         case unknown(Swift.Error)
     }
 
+    @MainActor
+    func signIn(from viewController: UINavigationController) async {
+        let token: String
+        do {
+            token = try await authenticate(from: viewController)
+        } catch {
+            if let error = error as? WordPressDotComAuthenticator.Error {
+                // Show an alert for non-cancellation errors.
+                // `.cancelled` error is thrown when user taps the cancel button in the presented Safari view controller.
+                if case .cancelled = error {
+                    // Do nothing
+                } else {
+                    // All other errors are unexpected.
+                    wpAssertionFailure("WP.com web login failed", userInfo: ["error": "\(error)"])
+
+                    let alert = UIAlertController(
+                        title: NSLocalizedString("wpComLogin.error.title", value: "Error", comment: "Error"),
+                        message: SharedStrings.Error.generic,
+                        preferredStyle: .alert
+                    )
+                    alert.addAction(UIAlertAction(title: SharedStrings.Button.close, style: .cancel, handler: nil))
+                    viewController.present(alert, animated: true)
+                }
+            } else {
+                wpAssertionFailure("WP.com web login failed", userInfo: ["error": "\(error)"])
+            }
+            return
+        }
+
+        let delegate = WordPressAuthenticator.shared.delegate!
+        let credentials = AuthenticatorCredentials(wpcom: WordPressComCredentials(authToken: token, isJetpackLogin: false, multifactor: false))
+        SVProgressHUD.show()
+        delegate.sync(credentials: credentials) {
+            SVProgressHUD.dismiss()
+
+            delegate.presentLoginEpilogue(
+                in: viewController,
+                for: credentials,
+                source: .custom(source: "web-login"),
+                onDismiss: { /* Do nothing */ }
+            )
+        }
+    }
+
     func authenticate(from viewController: UIViewController) async throws -> String {
         WPAnalytics.track(.wpcomWebSignIn, properties: ["stage": "start"])
 
