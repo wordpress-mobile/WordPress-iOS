@@ -115,28 +115,6 @@ private final class ReaderTagView: UIView {
     }
 }
 
-final class ReaderStreamTitleView: UIView {
-    let titleLabel = UILabel()
-    let detailsLabel = UILabel()
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-
-        titleLabel.font = UIFont.preferredFont(forTextStyle: .largeTitle).withWeight(.bold)
-        detailsLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
-        detailsLabel.textColor = .secondaryLabel
-        detailsLabel.numberOfLines = 0
-
-        let stackView = UIStackView(axis: .vertical, alignment: .leading, [titleLabel, detailsLabel])
-        addSubview(stackView)
-        stackView.pinEdges()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
 private enum Strings {
     static let title = NSLocalizedString("reader.discover.header.title", value: "Discover", comment: "Header view title")
     static let details = NSLocalizedString("reader.discover.header.title", value: "Explore popular blogs that inspire, educate, and entertain.", comment: "Header view details")
