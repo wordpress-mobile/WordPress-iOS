@@ -59,6 +59,9 @@ final class ReaderDiscoverHeaderView: UIView {
     }
 
     private func didSelectTag(_ tag: ReaderDiscoverTag) {
+        guard selectedTag != tag else {
+            return
+        }
         selectedTag = tag
         delegate?.readerDiscoverHeaderView(self, didChangeSelection: tag)
         refreshTagViews()

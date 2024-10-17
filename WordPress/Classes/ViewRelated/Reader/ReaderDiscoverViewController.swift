@@ -23,7 +23,8 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
 
         setupNavigation()
         setupHeaderView()
-        configureStream(ReaderDiscoverStreamViewController.controller(topic: topic))
+
+        configureStream(for: selectedTag)
     }
 
     private func setupNavigation() {
@@ -36,7 +37,30 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
         headerView.delegate = self
     }
 
-    private func configureStream(_ streamVC: ReaderStreamViewController) {
+    // MARK: - Selected Stream
+
+    private func configureStream(for tag: ReaderDiscoverTag) {
+        showStreamViewController(makeViewController(for: tag))
+    }
+
+    private func makeViewController(for tag: ReaderDiscoverTag) -> ReaderStreamViewController {
+        switch tag {
+        case .recommended:
+            ReaderDiscoverStreamViewController(topic: topic)
+        case .latest:
+            ReaderDiscoverStreamViewController(topic: topic, sorting: .date)
+        }
+    }
+
+    private func showStreamViewController(_ streamVC: ReaderStreamViewController) {
+        if let currentVC = self.streamVC {
+            deleteCachedReaderCards()
+
+            currentVC.willMove(toParent: nil)
+            currentVC.view.removeFromSuperview()
+            currentVC.removeFromParent()
+        }
+
         self.streamVC = streamVC
 
         addChild(streamVC)
@@ -49,6 +73,15 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
         }
     }
 
+    /// TODO: (tech-debt) the app currently stores the responses from the `/discover`
+    /// entpoint (cards) in Core Data with no way to distinguish between the
+    /// requests with different parameters like different sort. In order to
+    /// address it, the app currently drops the previously cached responses
+    /// when you change the streams.
+    private func deleteCachedReaderCards() {
+        try? ContextManager.shared.batchDelete(entity: ReaderCard.self)
+    }
+
     // MARK: - ReaderContentViewController (Deprecated)
 
     func setContent(_ content: ReaderContent) {
@@ -58,7 +91,8 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
     // MARK: - ReaderDiscoverHeaderViewDelegate
 
     func readerDiscoverHeaderView(_ view: ReaderDiscoverHeaderView, didChangeSelection selection: ReaderDiscoverTag) {
-        print("sel:", selection)
+        self.selectedTag = selection
+        configureStream(for: selection)
     }
 }
 
@@ -83,8 +117,11 @@ private class ReaderDiscoverStreamViewController: ReaderStreamViewController {
         return isViewLoaded && view.window != nil
     }
 
-    init() {
+    init(topic: ReaderAbstractTopic, sorting: ReaderSortingOption = .noSorting) {
         super.init(nibName: nil, bundle: nil)
+
+        self.readerTopic = topic
+        self.cardsService.sorting = sorting
 
         // register table view cells specific to this controller as early as possible.
         // the superclass might trigger `layoutIfNeeded` from its `viewDidLoad`, and we want to make sure that
@@ -244,20 +281,6 @@ private class ReaderDiscoverStreamViewController: ReaderStreamViewController {
 
     override func predicateForFetchRequest() -> NSPredicate {
         return NSPredicate(format: "post != NULL OR topics.@count != 0 OR sites.@count != 0")
-    }
-
-    /// Convenience method for instantiating an instance of ReaderCardsStreamViewController
-    /// for a existing topic.
-    ///
-    /// - Parameters:
-    ///     - topic: Any subclass of ReaderAbstractTopic
-    ///
-    /// - Returns: An instance of the controller
-    ///
-    class func controller(topic: ReaderAbstractTopic) -> ReaderDiscoverStreamViewController {
-        let controller = ReaderDiscoverStreamViewController()
-        controller.readerTopic = topic
-        return controller
     }
 
     private func addObservers() {

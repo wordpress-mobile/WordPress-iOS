@@ -176,6 +176,13 @@ public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
         }
     }
 
+    func batchDelete<T: NSManagedObject>(entity: T.Type) throws {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: ReaderCard.entityName())
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        let coordinator = persistentContainer.persistentStoreCoordinator
+        try coordinator.execute(deleteRequest, with: mainContext)
+    }
+
     static func migrateDataModelsIfNecessary(storeURL: URL, objectModel: NSManagedObjectModel) throws {
         guard FileManager.default.fileExists(atPath: storeURL.path) else {
             DDLogInfo("No store exists at \(storeURL).  Skipping migration.")
