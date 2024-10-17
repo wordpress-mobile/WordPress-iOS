@@ -48,7 +48,16 @@ class ReaderDiscoverViewController: ReaderStreamViewController {
         displaySelectInterestsIfNeeded()
     }
 
-    // MARK: - TableView Related
+    // MARK: - Header
+
+    override func headerForStream(_ topic: ReaderAbstractTopic?, isLoggedIn: Bool, container: UITableViewController) -> UIView? {
+        if FeatureFlag.readerReset.enabled {
+            return ReaderDiscoverHeaderView()
+        }
+        return nil
+    }
+
+    // MARK: - UITableView
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let card = cards?[indexPath.row] else {

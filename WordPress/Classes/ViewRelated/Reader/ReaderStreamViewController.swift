@@ -569,6 +569,15 @@ import AutomatticTracks
         tableView.tableHeaderView = tableView.tableHeaderView
     }
 
+    func headerForStream(_ topic: ReaderAbstractTopic?, isLoggedIn: Bool, container: UITableViewController) -> UIView? {
+        if let topic,
+           let header = headerForStream(topic) {
+            configure(header, topic: topic, isLoggedIn: isLoggedIn, delegate: self)
+            return header
+        }
+        return nil
+    }
+
     /// Updates the content based on the values of `readerTopic` and `contentType`
     private func updateContent(synchronize: Bool = true) {
         // if the view has not been loaded yet, this will be called in viewDidLoad

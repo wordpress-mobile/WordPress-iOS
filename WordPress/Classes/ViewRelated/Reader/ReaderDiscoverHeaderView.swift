@@ -1,11 +1,9 @@
 import UIKit
 
-final class ReaderDiscoverHeaderView: UIView, ReaderStreamHeader {
+final class ReaderDiscoverHeaderView: UIView {
     private let titleView = ReaderStreamTitleView()
     private let tagsStackView = UIStackView(spacing: 8, [])
     private var tagViews: [ReaderTagView] = []
-
-    weak var delegate: ReaderStreamHeaderDelegate?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -59,16 +57,6 @@ final class ReaderDiscoverHeaderView: UIView, ReaderStreamHeader {
         for view in self.tagViews {
             view.isSelected = view.title == tag
         }
-    }
-
-    // MARK: - ReaderStreamHeader
-
-    func enableLoggedInFeatures(_ enable: Bool) {
-        // Do nothing
-    }
-
-    func configureHeader(_ topic: ReaderAbstractTopic) {
-        // Do nothing
     }
 }
 
