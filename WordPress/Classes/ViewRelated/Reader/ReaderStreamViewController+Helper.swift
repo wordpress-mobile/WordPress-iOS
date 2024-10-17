@@ -10,24 +10,6 @@ extension ReaderStreamViewController {
         var message: String
     }
 
-    /// Returns the ReaderStreamHeader appropriate for a particular ReaderTopic.
-    /// The header is returned already configured
-    ///
-    /// - Parameter topic: A ReaderTopic
-    /// - Parameter isLoggedIn: A boolean flag indicating if the user is logged in
-    /// - Parameter delegate: The header delegate
-    ///
-    /// - Returns: A configured instance of UIView.
-    ///
-    func headerForStream(_ topic: ReaderAbstractTopic?, isLoggedIn: Bool, container: UITableViewController) -> UIView? {
-        if let topic,
-           let header = headerForStream(topic) {
-            configure(header, topic: topic, isLoggedIn: isLoggedIn, delegate: self)
-            return header
-        }
-        return nil
-    }
-
     func configure(_ header: ReaderHeader?, topic: ReaderAbstractTopic, isLoggedIn: Bool, delegate: ReaderStreamHeaderDelegate) {
         header?.configureHeader(topic)
         header?.enableLoggedInFeatures(isLoggedIn)
@@ -35,11 +17,6 @@ extension ReaderStreamViewController {
     }
 
     func headerForStream(_ topic: ReaderAbstractTopic) -> ReaderHeader? {
-
-        if FeatureFlag.readerReset.enabled && self is ReaderDiscoverViewController {
-            return ReaderDiscoverHeaderView()
-        }
-
         if ReaderHelpers.isTopicTag(topic) && !isContentFiltered {
             guard let nibViews = Bundle.main.loadNibNamed("ReaderTagStreamHeader", owner: nil, options: nil) as? [ReaderTagStreamHeader] else {
                 return nil
