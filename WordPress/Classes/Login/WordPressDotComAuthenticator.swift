@@ -11,6 +11,7 @@ import Alamofire
 struct WordPressDotComAuthenticator {
     enum Error: Swift.Error {
         case invalidCallbackURL
+        case loginDenied(message: String)
         case obtainAccessToken
         case urlError(URLError)
         case parsing(DecodingError)
@@ -49,21 +50,29 @@ struct WordPressDotComAuthenticator {
 
     private func presentSignInError(_ error: WordPressDotComAuthenticator.Error, from viewController: UIViewController) {
         // Show an alert for non-cancellation errors.
-        // `.cancelled` error is thrown when user taps the cancel button in the presented Safari view controller.
-        if case .cancelled = error {
-            // Do nothing
-        } else {
-            // All other errors are unexpected.
+        let alertMessage: String
+        switch error {
+        case .cancelled:
+            // `.cancelled` error is thrown when user taps the cancel button in the presented Safari view controller.
+            // No need to show an alert for this error.
+            return
+        case let .loginDenied(message):
+            alertMessage = message
+        case let .urlError(error):
+            alertMessage = error.localizedDescription
+        case .invalidCallbackURL, .obtainAccessToken, .parsing, .unknown:
+            // These errors are unexpected.
             wpAssertionFailure("WP.com web login failed", userInfo: ["error": "\(error)"])
-
-            let alert = UIAlertController(
-                title: NSLocalizedString("wpComLogin.error.title", value: "Error", comment: "Error"),
-                message: SharedStrings.Error.generic,
-                preferredStyle: .alert
-            )
-            alert.addAction(UIAlertAction(title: SharedStrings.Button.close, style: .cancel, handler: nil))
-            viewController.present(alert, animated: true)
+            alertMessage = SharedStrings.Error.generic
         }
+
+        let alert = UIAlertController(
+            title: NSLocalizedString("generic.error.title", value: "Error", comment: "A generic title for an error"),
+            message: alertMessage,
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: SharedStrings.Button.close, style: .cancel, handler: nil))
+        viewController.present(alert, animated: true)
     }
 
     func authenticate(from viewController: UIViewController) async throws -> String {
@@ -117,8 +126,17 @@ struct WordPressDotComAuthenticator {
         clientSecret: String,
         redirectURI: String
     ) async throws -> String {
-        guard let query = URLComponents(url: url, resolvingAgainstBaseURL: true)?.queryItems,
-              let code = query.first(where: { $0.name == "code" })?.value else {
+        guard let query = URLComponents(url: url, resolvingAgainstBaseURL: true)?.queryItems else {
+            throw Error.invalidCallbackURL
+        }
+
+        let queryMap: [String: String] = query.reduce(into: [:]) { $0[$1.name] = $1.value }
+
+        guard let code = queryMap["code"] else {
+            if queryMap["error"] == "access_denied" {
+                let message = NSLocalizedString("wpComLogin.error.accessDenied", value: "Access denied. You need to approve to log in to WordPress.com", comment: "Error message when user denies access to WordPress.com")
+                throw Error.loginDenied(message: message)
+            }
             throw Error.invalidCallbackURL
         }
 
