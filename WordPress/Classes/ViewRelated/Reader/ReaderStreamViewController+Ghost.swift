@@ -11,12 +11,22 @@ extension ReaderStreamViewController {
 
         ghostableTableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(ghostableTableView)
-        NSLayoutConstraint.activate([
-            ghostableTableView.widthAnchor.constraint(equalTo: tableView.widthAnchor, multiplier: 1),
-            ghostableTableView.heightAnchor.constraint(equalTo: tableView.heightAnchor, multiplier: 1),
-            ghostableTableView.centerXAnchor.constraint(equalTo: tableView.centerXAnchor),
-            ghostableTableView.centerYAnchor.constraint(equalTo: tableView.centerYAnchor)
-        ])
+        if isReaderResetDiscoverEnabled {
+            NSLayoutConstraint.activate([
+                ghostableTableView.topAnchor.constraint(equalTo: tableView.tableHeaderView?.bottomAnchor ?? view.topAnchor),
+                ghostableTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                ghostableTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                ghostableTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            ])
+        } else {
+            view.addSubview(ghostableTableView)
+            NSLayoutConstraint.activate([
+                ghostableTableView.widthAnchor.constraint(equalTo: tableView.widthAnchor, multiplier: 1),
+                ghostableTableView.heightAnchor.constraint(equalTo: tableView.heightAnchor, multiplier: 1),
+                ghostableTableView.centerXAnchor.constraint(equalTo: tableView.centerXAnchor),
+                ghostableTableView.centerYAnchor.constraint(equalTo: tableView.centerYAnchor)
+            ])
+        }
 
         ghostableTableView.accessibilityIdentifier = "Reader Ghost Loading"
         ghostableTableView.cellLayoutMarginsFollowReadableWidth = true
