@@ -1,6 +1,6 @@
 25.5
 -----
-
+* [***] Use web-based sign-in flow (hidden under a feature flag) [#23675]
 
 25.4
 -----

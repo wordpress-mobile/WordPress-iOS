@@ -11,6 +11,7 @@ class LoginPrologueViewController: LoginViewController {
     private var buttonViewController: NUXButtonViewController?
     private var stackedButtonsViewController: NUXStackedButtonsViewController?
     var showCancel = false
+    var continueWithDotComOverwrite: ((UIViewController) -> Bool)? = nil
 
     @IBOutlet private weak var buttonContainerView: UIView!
     /// Blur effect on button container view
@@ -526,6 +527,10 @@ class LoginPrologueViewController: LoginViewController {
     /// Unified "Continue with WordPress.com" prologue button action.
     ///
     private func continueWithDotCom() {
+        if let continueWithDotComOverwrite, continueWithDotComOverwrite(self) {
+            return
+        }
+
         guard let vc = GetStartedViewController.instantiate(from: .getStarted) else {
             WPAuthenticatorLogError("Failed to navigate from LoginPrologueViewController to GetStartedViewController")
             return
