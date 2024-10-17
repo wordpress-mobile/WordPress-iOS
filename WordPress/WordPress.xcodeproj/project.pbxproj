@@ -433,6 +433,10 @@
 		0C0AD10B2B0CCFA400EC06E6 /* MediaPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0AD1092B0CCFA400EC06E6 /* MediaPreviewController.swift */; };
 		0C0AE7592A8FAD6A007D9D6C /* MediaPickerMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0AE7582A8FAD6A007D9D6C /* MediaPickerMenu.swift */; };
 		0C0AE75A2A8FAD6A007D9D6C /* MediaPickerMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0AE7582A8FAD6A007D9D6C /* MediaPickerMenu.swift */; };
+		0C0BEEEB2CC02D2C0073F4E0 /* ReaderDiscoverHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0BEEEA2CC02D2C0073F4E0 /* ReaderDiscoverHeaderView.swift */; };
+		0C0BEEEC2CC02D2C0073F4E0 /* ReaderDiscoverHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0BEEEA2CC02D2C0073F4E0 /* ReaderDiscoverHeaderView.swift */; };
+		0C0BEEEE2CC169A60073F4E0 /* ReaderStreamTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0BEEED2CC169A40073F4E0 /* ReaderStreamTitleView.swift */; };
+		0C0BEEEF2CC169A60073F4E0 /* ReaderStreamTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0BEEED2CC169A40073F4E0 /* ReaderStreamTitleView.swift */; };
 		0C0D3B0D2A4C79DE0050A00D /* BlazeCampaignsStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0D3B0C2A4C79DE0050A00D /* BlazeCampaignsStream.swift */; };
 		0C0D3B0E2A4C79DE0050A00D /* BlazeCampaignsStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0D3B0C2A4C79DE0050A00D /* BlazeCampaignsStream.swift */; };
 		0C0DF8942C2DF14600011B7D /* LoginFacadeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C0DF8932C2DF12A00011B7D /* LoginFacadeTests.m */; };
@@ -2594,7 +2598,7 @@
 		8BB185CC24B6058600A4CCE8 /* reader-cards.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BB185CB24B6058600A4CCE8 /* reader-cards.json */; };
 		8BB185CE24B62CE100A4CCE8 /* ReaderCardServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB185CD24B62CE100A4CCE8 /* ReaderCardServiceTests.swift */; };
 		8BB185CF24B62D7600A4CCE8 /* reader-cards.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BB185CB24B6058600A4CCE8 /* reader-cards.json */; };
-		8BB185D224B63D5F00A4CCE8 /* ReaderCardsStreamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB185D024B63D1600A4CCE8 /* ReaderCardsStreamViewController.swift */; };
+		8BB185D224B63D5F00A4CCE8 /* ReaderDiscoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB185D024B63D1600A4CCE8 /* ReaderDiscoverViewController.swift */; };
 		8BB185D524B66FE600A4CCE8 /* ReaderCard+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB185D324B66FE500A4CCE8 /* ReaderCard+CoreDataProperties.swift */; };
 		8BB185D624B66FE600A4CCE8 /* ReaderCard+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB185D424B66FE600A4CCE8 /* ReaderCard+CoreDataClass.swift */; };
 		8BBBCE702717651200B277AC /* JetpackModuleHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBBCE6F2717651200B277AC /* JetpackModuleHelper.swift */; };
@@ -4929,7 +4933,7 @@
 		FABB23572602FC2C00C8785C /* PostTagPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E155EC711E9B7DCE009D7F63 /* PostTagPickerViewController.swift */; };
 		FABB23582602FC2C00C8785C /* SignupEpilogueCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A25BD0203CB25F006A5807 /* SignupEpilogueCell.swift */; };
 		FABB23592602FC2C00C8785C /* NoteBlockActionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57AF5F91ACDC73D0075A7D2 /* NoteBlockActionsTableViewCell.swift */; };
-		FABB235A2602FC2C00C8785C /* ReaderCardsStreamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB185D024B63D1600A4CCE8 /* ReaderCardsStreamViewController.swift */; };
+		FABB235A2602FC2C00C8785C /* ReaderDiscoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB185D024B63D1600A4CCE8 /* ReaderDiscoverViewController.swift */; };
 		FABB235B2602FC2C00C8785C /* DeleteSiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742C79971E5F511C00DB1608 /* DeleteSiteViewController.swift */; };
 		FABB235C2602FC2C00C8785C /* WPAnalyticsTrackerWPCom.m in Sources */ = {isa = PBXBuildFile; fileRef = 85DA8C4318F3F29A0074C8A4 /* WPAnalyticsTrackerWPCom.m */; };
 		FABB235D2602FC2C00C8785C /* AztecAttachmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50C0C5C1EF42A4A00372C65 /* AztecAttachmentViewController.swift */; };
@@ -6441,6 +6445,8 @@
 		0C0AD1052B0C483F00EC06E6 /* ExternalMediaSelectionTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalMediaSelectionTitleView.swift; sourceTree = "<group>"; };
 		0C0AD1092B0CCFA400EC06E6 /* MediaPreviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPreviewController.swift; sourceTree = "<group>"; };
 		0C0AE7582A8FAD6A007D9D6C /* MediaPickerMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerMenu.swift; sourceTree = "<group>"; };
+		0C0BEEEA2CC02D2C0073F4E0 /* ReaderDiscoverHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderDiscoverHeaderView.swift; sourceTree = "<group>"; };
+		0C0BEEED2CC169A40073F4E0 /* ReaderStreamTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderStreamTitleView.swift; sourceTree = "<group>"; };
 		0C0D3B0C2A4C79DE0050A00D /* BlazeCampaignsStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeCampaignsStream.swift; sourceTree = "<group>"; };
 		0C0DF8932C2DF12A00011B7D /* LoginFacadeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginFacadeTests.m; sourceTree = "<group>"; };
 		0C0F05522C6290670040390D /* ReaderFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderFeedCell.swift; sourceTree = "<group>"; };
@@ -8131,7 +8137,7 @@
 		8BB185C524B5FB8500A4CCE8 /* ReaderCardService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderCardService.swift; sourceTree = "<group>"; };
 		8BB185CB24B6058600A4CCE8 /* reader-cards.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "reader-cards.json"; sourceTree = "<group>"; };
 		8BB185CD24B62CE100A4CCE8 /* ReaderCardServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderCardServiceTests.swift; sourceTree = "<group>"; };
-		8BB185D024B63D1600A4CCE8 /* ReaderCardsStreamViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderCardsStreamViewController.swift; sourceTree = "<group>"; };
+		8BB185D024B63D1600A4CCE8 /* ReaderDiscoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderDiscoverViewController.swift; sourceTree = "<group>"; };
 		8BB185D324B66FE500A4CCE8 /* ReaderCard+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ReaderCard+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		8BB185D424B66FE600A4CCE8 /* ReaderCard+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ReaderCard+CoreDataClass.swift"; sourceTree = "<group>"; };
 		8BBBCE6F2717651200B277AC /* JetpackModuleHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackModuleHelper.swift; sourceTree = "<group>"; };
@@ -13342,7 +13348,7 @@
 				0C0F05522C6290670040390D /* ReaderFeedCell.swift */,
 				5D1D04741B7A50B100CDE646 /* ReaderStreamViewController.swift */,
 				8BCB83D024C21063001581BD /* ReaderStreamViewController+Ghost.swift */,
-				8BB185D024B63D1600A4CCE8 /* ReaderCardsStreamViewController.swift */,
+				8BB185D024B63D1600A4CCE8 /* ReaderDiscoverViewController.swift */,
 				3234BB162530DFCA0068DA40 /* ReaderTableCardCell.swift */,
 				8BCF957924C6044000712056 /* ReaderTopicsCardCell.swift */,
 				3234B8E6252FA0930068DA40 /* ReaderSitesCardCell.swift */,
@@ -17879,12 +17885,14 @@
 		E6D2E16A1B8B41AC0000ED14 /* Headers */ = {
 			isa = PBXGroup;
 			children = (
+				0C0BEEED2CC169A40073F4E0 /* ReaderStreamTitleView.swift */,
 				E6D2E1681B8AAD9B0000ED14 /* ReaderListStreamHeader.swift */,
 				E6D2E1621B8AAA340000ED14 /* ReaderListStreamHeader.xib */,
 				83A337A02A9FA525009ED60C /* ReaderSiteHeaderView.swift */,
 				E6D2E1641B8AAD7E0000ED14 /* ReaderSiteStreamHeader.swift */,
 				E6D2E15E1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib */,
 				E6D2E16B1B8B423B0000ED14 /* ReaderStreamHeader.swift */,
+				0C0BEEEA2CC02D2C0073F4E0 /* ReaderDiscoverHeaderView.swift */,
 				E6D2E1661B8AAD8C0000ED14 /* ReaderTagStreamHeader.swift */,
 				E6D2E1601B8AA4410000ED14 /* ReaderTagStreamHeader.xib */,
 			);
@@ -22148,6 +22156,7 @@
 				17C1D7DC26735631006C8970 /* EmojiRenderer.swift in Sources */,
 				C81CCD7B243BF7A600A83E27 /* TenorStrings.swift in Sources */,
 				91DCE84621A6A7F50062F134 /* PostEditor+MoreOptions.swift in Sources */,
+				0C0BEEEC2CC02D2C0073F4E0 /* ReaderDiscoverHeaderView.swift in Sources */,
 				3FB1929526C79EC6000F5AA3 /* Date+Formats.swift in Sources */,
 				FA4EBCC12A98F00200BA3DFB /* NoSitesView.swift in Sources */,
 				0C7762232AAFD39700E07A88 /* SiteMediaAddMediaMenuController.swift in Sources */,
@@ -22332,6 +22341,7 @@
 				FF70A3231FD5840500BC270D /* UIImage+Export.swift in Sources */,
 				D81322B32050F9110067714D /* NotificationName+Names.swift in Sources */,
 				F4BECD1B288EE5220078391A /* SuggestionsViewModelType.swift in Sources */,
+				0C0BEEEE2CC169A60073F4E0 /* ReaderStreamTitleView.swift in Sources */,
 				B5DD04741CD3DAB00003DF89 /* NSFetchedResultsController+Helpers.swift in Sources */,
 				B55F1AA81C10936600FD04D4 /* BlogSettings+Discussion.swift in Sources */,
 				E155EC721E9B7DCE009D7F63 /* PostTagPickerViewController.swift in Sources */,
@@ -22340,7 +22350,7 @@
 				B57AF5FA1ACDC73D0075A7D2 /* NoteBlockActionsTableViewCell.swift in Sources */,
 				8BA125EB27D8F5E4008B779F /* UIView+PinSubviewPriority.swift in Sources */,
 				FEAC916E28001FC4005026E7 /* AvatarTrainView.swift in Sources */,
-				8BB185D224B63D5F00A4CCE8 /* ReaderCardsStreamViewController.swift in Sources */,
+				8BB185D224B63D5F00A4CCE8 /* ReaderDiscoverViewController.swift in Sources */,
 				742C79981E5F511C00DB1608 /* DeleteSiteViewController.swift in Sources */,
 				0C748B4B2A9D71A100809E1A /* SiteMediaCollectionViewController.swift in Sources */,
 				85DA8C4418F3F29A0074C8A4 /* WPAnalyticsTrackerWPCom.m in Sources */,
@@ -24467,6 +24477,7 @@
 				0C1C083F2B9BF9A000E52F8C /* PostRepository+Helpers.swift in Sources */,
 				FABB21082602FC2C00C8785C /* SiteCreationHeaderData.swift in Sources */,
 				FABB21092602FC2C00C8785C /* WPAuthTokenIssueSolver.m in Sources */,
+				0C0BEEEB2CC02D2C0073F4E0 /* ReaderDiscoverHeaderView.swift in Sources */,
 				FABB210B2602FC2C00C8785C /* ReaderDetailViewController.swift in Sources */,
 				FABB210C2602FC2C00C8785C /* HomeWidgetThisWeekData.swift in Sources */,
 				FABB210D2602FC2C00C8785C /* PersonHeaderCell.swift in Sources */,
@@ -25294,7 +25305,7 @@
 				FABB23572602FC2C00C8785C /* PostTagPickerViewController.swift in Sources */,
 				FABB23582602FC2C00C8785C /* SignupEpilogueCell.swift in Sources */,
 				FABB23592602FC2C00C8785C /* NoteBlockActionsTableViewCell.swift in Sources */,
-				FABB235A2602FC2C00C8785C /* ReaderCardsStreamViewController.swift in Sources */,
+				FABB235A2602FC2C00C8785C /* ReaderDiscoverViewController.swift in Sources */,
 				0C14F9722C8A48BA0084E5C0 /* ReaderSubscriptionCell.swift in Sources */,
 				FABB235B2602FC2C00C8785C /* DeleteSiteViewController.swift in Sources */,
 				FABB235C2602FC2C00C8785C /* WPAnalyticsTrackerWPCom.m in Sources */,
@@ -26045,6 +26056,7 @@
 				FABB25772602FC2C00C8785C /* NotificationMediaDownloader.swift in Sources */,
 				FABB25782602FC2C00C8785C /* WizardDelegate.swift in Sources */,
 				0CDDCA092C8F4126005AACA3 /* ReaderTagsAddTagView.swift in Sources */,
+				0C0BEEEF2CC169A60073F4E0 /* ReaderStreamTitleView.swift in Sources */,
 				FABB25792602FC2C00C8785C /* Blog+Files.swift in Sources */,
 				FABB257A2602FC2C00C8785C /* RevisionDiffsBrowserViewController.swift in Sources */,
 				FA4FE0B42BEB6EF700A635D3 /* PostHelper+Metadata.swift in Sources */,
