@@ -138,12 +138,17 @@ enum ReaderDiscoverTag: Hashable {
     /// Latest post from your selected tags.
     case latest
 
+    /// A quick access for your tags.
+    case tag(ReaderTagTopic)
+
     var localizedTitle: String {
         switch self {
         case .recommended:
             NSLocalizedString("reader.discover.header.tag.recommended", value: "Recommended", comment: "Header view tag (filter)")
         case .latest:
             NSLocalizedString("reader.discover.header.tag.latest", value: "Latest", comment: "Header view tag (filter)")
+        case .tag(let tag):
+            tag.title.localizedCapitalized
         }
     }
 }

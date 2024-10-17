@@ -7,6 +7,9 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
     private var selectedTag: ReaderDiscoverTag = .recommended
     private let topic: ReaderAbstractTopic
     private var streamVC: ReaderStreamViewController?
+    private var viewContext: NSManagedObjectContext {
+        ContextManager.shared.mainContext
+    }
 
     init(topic: ReaderAbstractTopic) {
         wpAssert(ReaderHelpers.topicIsDiscover(topic))
@@ -32,9 +35,19 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
     }
 
     private func setupHeaderView() {
-        headerView.configure(tags: [.recommended, .latest])
+        let tags = fetchTags().map(ReaderDiscoverTag.tag)
+
+        headerView.configure(tags: [.recommended, .latest] + tags)
         headerView.setSelectedTag(selectedTag)
         headerView.delegate = self
+    }
+
+    private func fetchTags() -> [ReaderTagTopic] {
+        viewContext.allObjects(
+            ofType: ReaderTagTopic.self,
+            matching: ReaderSidebarTagsSection.predicate,
+            sortedBy: [NSSortDescriptor(key: "title", ascending: true)]
+        )
     }
 
     // MARK: - Selected Stream
@@ -49,6 +62,8 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
             ReaderDiscoverStreamViewController(topic: topic)
         case .latest:
             ReaderDiscoverStreamViewController(topic: topic, sorting: .date)
+        case .tag(let tag):
+            ReaderStreamViewController.controllerWithTopic(tag)
         }
     }
 
