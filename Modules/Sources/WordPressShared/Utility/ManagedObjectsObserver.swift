@@ -7,15 +7,22 @@ public final class ManagedObjectsObserver<T: NSManagedObject>: NSObject, NSFetch
 
     private let controller: NSFetchedResultsController<T>
 
-    public convenience init(predicate: NSPredicate, context: NSManagedObjectContext) {
+    public convenience init(
+        predicate: NSPredicate,
+        sortDescriptors: [SortDescriptor<T>],
+        context: NSManagedObjectContext
+    ) {
         let request = NSFetchRequest<T>(entityName: T.entity().name ?? "")
         request.predicate = predicate
+        request.sortDescriptors = sortDescriptors.map(NSSortDescriptor.init)
         self.init(request: request, context: context)
     }
 
-    public init(request: NSFetchRequest<T>,
-         context: NSManagedObjectContext,
-         cacheName: String? = nil) {
+    public init(
+        request: NSFetchRequest<T>,
+        context: NSManagedObjectContext,
+        cacheName: String? = nil
+    ) {
         self.controller = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: cacheName)
         super.init()
 
