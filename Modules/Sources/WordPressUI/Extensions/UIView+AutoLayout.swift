@@ -7,12 +7,12 @@ extension UIView {
     @discardableResult
     public func pinEdges(
         _ edges: Edge.Set = .all,
-        to container: AutoLayoutItem? = nil,
+        to target: AutoLayoutItem? = nil,
         insets: UIEdgeInsets = .zero,
         relation: AutoLayoutPinEdgesRelation = .equal,
         priority: UILayoutPriority? = nil
     ) -> [NSLayoutConstraint] {
-        guard let container = container ?? superview else {
+        guard let target = target ?? superview else {
             assertionFailure("view has to be installed in the view hierarchy")
             return []
         }
@@ -27,15 +27,15 @@ extension UIView {
 
         switch relation {
         case .equal:
-            pin(.top, topAnchor.constraint(equalTo: container.topAnchor, constant: insets.top))
-            pin(.trailing, trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -insets.right))
-            pin(.bottom, bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -insets.bottom))
-            pin(.leading, leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: insets.left))
+            pin(.top, topAnchor.constraint(equalTo: target.topAnchor, constant: insets.top))
+            pin(.trailing, trailingAnchor.constraint(equalTo: target.trailingAnchor, constant: -insets.right))
+            pin(.bottom, bottomAnchor.constraint(equalTo: target.bottomAnchor, constant: -insets.bottom))
+            pin(.leading, leadingAnchor.constraint(equalTo: target.leadingAnchor, constant: insets.left))
         case .lessThanOrEqual:
-            pin(.top, topAnchor.constraint(greaterThanOrEqualTo: container.topAnchor, constant: insets.top))
-            pin(.trailing, trailingAnchor.constraint(lessThanOrEqualTo: container.trailingAnchor, constant: -insets.right))
-            pin(.bottom, bottomAnchor.constraint(lessThanOrEqualTo: container.bottomAnchor, constant: -insets.bottom))
-            pin(.leading, leadingAnchor.constraint(greaterThanOrEqualTo: container.leadingAnchor, constant: insets.left))
+            pin(.top, topAnchor.constraint(greaterThanOrEqualTo: target.topAnchor, constant: insets.top))
+            pin(.trailing, trailingAnchor.constraint(lessThanOrEqualTo: target.trailingAnchor, constant: -insets.right))
+            pin(.bottom, bottomAnchor.constraint(lessThanOrEqualTo: target.bottomAnchor, constant: -insets.bottom))
+            pin(.leading, leadingAnchor.constraint(greaterThanOrEqualTo: target.leadingAnchor, constant: insets.left))
         }
 
         if let priority {
@@ -52,19 +52,19 @@ extension UIView {
     /// pins to the superview.
     @discardableResult
     public func pinCenter(
-        to container: AutoLayoutItem? = nil,
+        to target: AutoLayoutItem? = nil,
         offset: UIOffset = .zero,
         priority: UILayoutPriority? = nil
     ) -> [NSLayoutConstraint] {
-        guard let container = container ?? superview else {
+        guard let target = target ?? superview else {
             assertionFailure("view has to be installed in the view hierarchy")
             return []
         }
         translatesAutoresizingMaskIntoConstraints = false
 
         let constraints = [
-            centerXAnchor.constraint(equalTo: container.centerXAnchor, constant: offset.horizontal),
-            centerYAnchor.constraint(equalTo: container.centerYAnchor, constant: offset.vertical),
+            centerXAnchor.constraint(equalTo: target.centerXAnchor, constant: offset.horizontal),
+            centerYAnchor.constraint(equalTo: target.centerYAnchor, constant: offset.vertical),
         ]
 
         if let priority {
