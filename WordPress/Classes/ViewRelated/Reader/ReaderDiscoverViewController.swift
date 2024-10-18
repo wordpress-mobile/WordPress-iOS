@@ -38,7 +38,7 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
     private func setupHeaderView() {
         let tags = fetchTags().map(ReaderDiscoverChannel.tag)
 
-        headerView.configure(channels: [.recommended, .latest] + tags)
+        headerView.configure(channels: [.recommended, .firstPosts, .latest] + tags)
         headerView.setSelectedChannel(selectedChannel)
         headerView.delegate = self
     }
@@ -61,6 +61,8 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
         switch channel {
         case .recommended:
             ReaderDiscoverStreamViewController(topic: topic)
+        case .firstPosts:
+            ReaderDiscoverStreamViewController(topic: topic, stream: .firstPosts, sorting: .date)
         case .latest:
             ReaderDiscoverStreamViewController(topic: topic, sorting: .date)
         case .tag(let tag):
