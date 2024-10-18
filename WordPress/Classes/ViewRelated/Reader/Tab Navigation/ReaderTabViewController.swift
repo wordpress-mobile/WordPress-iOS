@@ -22,7 +22,7 @@ class ReaderTabViewController: UIViewController {
 
         title = ReaderTabConstants.title
 
-        ReaderCardService(stream: .discover, sorting: .popularity).clean()
+        ReaderCardService.removeAllCards()
 
         viewModel.filterTapped = { [weak self] (filter, fromView, completion) in
             guard let self = self else {

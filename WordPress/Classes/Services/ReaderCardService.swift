@@ -72,7 +72,7 @@ class ReaderCardService {
                 self.coreDataStack.performAndSave({ context in
                     if isFirstPage {
                         self.pageNumber = 1
-                        self.removeAllCards(in: context)
+                        ReaderCardService.removeAllCards(in: context)
                     } else {
                         self.pageNumber += 1
                     }
@@ -129,12 +129,16 @@ class ReaderCardService {
 
     /// Remove all cards and saves the context
     func clean() {
-        coreDataStack.performAndSave { context in
-            self.removeAllCards(in: context)
+        ReaderCardService.removeAllCards()
+    }
+
+    static func removeAllCards(on stack: CoreDataStackSwift = ContextManager.shared) {
+        stack.performAndSave { context in
+            removeAllCards(in: context)
         }
     }
 
-    private func removeAllCards(in context: NSManagedObjectContext) {
+    private static func removeAllCards(in context: NSManagedObjectContext) {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderCard.classNameWithoutNamespaces())
         fetchRequest.returnsObjectsAsFaults = false
 
