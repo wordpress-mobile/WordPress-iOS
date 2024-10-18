@@ -61,7 +61,7 @@ final class ReaderPostCell: UITableViewCell {
     }
 
     private func updateSeparatorsInsets() {
-        separatorInset = UIEdgeInsets(.leading, isSeparatorHidden ? 9999 : view.insets.left + contentView.readableContentGuide.layoutFrame.minX)
+        separatorInset = UIEdgeInsets(.leading, isSeparatorHidden ? 9999 : view.insets.left + (isCompact ? 0 : contentView.readableContentGuide.layoutFrame.minX))
     }
 
     override func updateConstraints() {

@@ -179,7 +179,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
               let promptID = prompt?.promptID else {
             return
         }
-        let tagName = "\(Constants.dailyPromptTag)-\(promptID)"
+        let tagName = "\(ReaderTagTopic.dailyPromptTag)-\(promptID)"
         RootViewCoordinator.sharedPresenter.showReader(path: .makeWithTagName(tagName))
         WPAnalytics.track(.promptsOtherAnswersTapped)
     }
@@ -582,7 +582,6 @@ private extension DashboardPromptsCardCell {
         static let exampleAnswerCount = 19
         static let cardFrameConstraintPriority = UILayoutPriority(999)
         static let skippedPromptsUDKey = "wp_skipped_blogging_prompts"
-        static let dailyPromptTag = "dailyprompt"
     }
 
     // MARK: Contextual Menu

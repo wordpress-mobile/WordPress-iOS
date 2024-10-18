@@ -58,3 +58,7 @@ import Foundation
         showInMenu = (following || isRecommended)
     }
 }
+
+extension ReaderTagTopic {
+    static let dailyPromptTag = "dailyprompt"
+}
