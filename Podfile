@@ -106,12 +106,16 @@ end
 post_install do |installer|
   gutenberg_post_install(installer: installer)
 
-  # Fix a code signing issue in Xcode 14 beta.
-  # This solution is suggested here: https://github.com/CocoaPods/CocoaPods/issues/11402#issuecomment-1189861270
-  # ====================================
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
+      # Fix a code signing issue in Xcode 14 beta.
+      # This solution is suggested here: https://github.com/CocoaPods/CocoaPods/issues/11402#issuecomment-1189861270
       config.build_settings['CODE_SIGN_IDENTITY'] = ''
+
+      # Let Pods targets inherit deployment target from the app
+      # This solution is suggested here: https://github.com/CocoaPods/CocoaPods/issues/4859
+      pod_ios_deployment_target = Gem::Version.new(config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'])
+      config.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET' if pod_ios_deployment_target <= APP_IOS_DEPLOYMENT_TARGET
     end
   end
 
