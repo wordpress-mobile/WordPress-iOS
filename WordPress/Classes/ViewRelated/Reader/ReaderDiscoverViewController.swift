@@ -103,7 +103,7 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
     /// address it, the app currently drops the previously cached responses
     /// when you change the streams.
     private func deleteCachedReaderCards() {
-        try? ContextManager.shared.batchDelete(entity: ReaderCard.self)
+        ReaderCardService.removeAllCards()
     }
 
     // MARK: - ReaderContentViewController (Deprecated)
