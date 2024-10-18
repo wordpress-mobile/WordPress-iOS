@@ -2,19 +2,26 @@ import Foundation
 import UIKit
 import Combine
 import WordPressKit
+import WordPressShared
 
 class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDelegate, ReaderContentViewController {
     private let headerView = ReaderDiscoverHeaderView()
     private var selectedChannel: ReaderDiscoverChannel = .recommended
     private let topic: ReaderAbstractTopic
     private var streamVC: ReaderStreamViewController?
-    private var viewContext: NSManagedObjectContext {
-        ContextManager.shared.mainContext
-    }
+    private let tags: ManagedObjectsObserver<ReaderTagTopic>
+    private let viewContext: NSManagedObjectContext
+    private var cancellables: [AnyCancellable] = []
 
     init(topic: ReaderAbstractTopic) {
         wpAssert(ReaderHelpers.topicIsDiscover(topic))
+        self.viewContext = ContextManager.shared.mainContext
         self.topic = topic
+        self.tags = ManagedObjectsObserver(
+            predicate: ReaderSidebarTagsSection.predicate,
+            sortDescriptors: [SortDescriptor(\.title, order: .forward)],
+            context: viewContext
+        )
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -36,21 +43,20 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
     }
 
     private func setupHeaderView() {
-        let tags = fetchTags()
-            .filter { $0.slug != ReaderTagTopic.dailyPromptTag }
-            .map(ReaderDiscoverChannel.tag)
+        tags.$objects.sink { [weak self] tags in
+            self?.configureHeader(tags: tags)
+        }.store(in: &cancellables)
 
-        headerView.configure(channels: [.recommended, .firstPosts, .latest, .dailyPrompts] + tags)
-        headerView.setSelectedChannel(selectedChannel)
         headerView.delegate = self
     }
 
-    private func fetchTags() -> [ReaderTagTopic] {
-        viewContext.allObjects(
-            ofType: ReaderTagTopic.self,
-            matching: ReaderSidebarTagsSection.predicate,
-            sortedBy: [NSSortDescriptor(key: "title", ascending: true)]
-        )
+    private func configureHeader(tags: [ReaderTagTopic]) {
+        let channels = tags
+            .filter { $0.slug != ReaderTagTopic.dailyPromptTag }
+            .map(ReaderDiscoverChannel.tag)
+
+        headerView.configure(channels: [.recommended, .firstPosts, .latest, .dailyPrompts] + channels)
+        headerView.setSelectedChannel(selectedChannel)
     }
 
     // MARK: - Selected Stream
