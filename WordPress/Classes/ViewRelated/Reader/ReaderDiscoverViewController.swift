@@ -37,7 +37,7 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
 
     private func setupHeaderView() {
         let tags = fetchTags()
-            .filter { $0.slug != "dailyprompts" }
+            .filter { $0.slug != ReaderTagTopic.dailyPromptTag }
             .map(ReaderDiscoverChannel.tag)
 
         headerView.configure(channels: [.recommended, .firstPosts, .latest, .dailyPrompts] + tags)
@@ -68,7 +68,7 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
         case .latest:
             ReaderDiscoverStreamViewController(topic: topic, sorting: .date)
         case .dailyPrompts:
-            ReaderStreamViewController.controllerWithTagSlug("dailyprompt")
+            ReaderStreamViewController.controllerWithTagSlug(ReaderTagTopic.dailyPromptTag)
         case .tag(let tag):
             ReaderStreamViewController.controllerWithTopic(tag)
         }
