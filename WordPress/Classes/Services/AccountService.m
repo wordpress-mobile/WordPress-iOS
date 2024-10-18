@@ -156,7 +156,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 {
     NSManagedObjectID * __block accountObjectID = nil;
     [self.coreDataStack.mainContext performBlockAndWait:^{
-        accountObjectID = [[WPAccount lookupDefaultWordPressComAccountInContext:self.coreDataStack.mainContext] objectID];
+        accountObjectID = [[WPAccount lookupWithUsername:remoteUser.username context:self.coreDataStack.mainContext] objectID];
     }];
 
     if (accountObjectID) {
