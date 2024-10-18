@@ -1,7 +1,9 @@
 import Foundation
+import WordPressKit
 
 protocol ReaderCardServiceRemote {
-    func fetchStreamCards(for topics: [String],
+    func fetchStreamCards(stream: ReaderStream,
+                          for topics: [String],
                           page: String?,
                           sortingOption: ReaderSortingOption,
                           refreshCount: Int?,
@@ -14,6 +16,8 @@ protocol ReaderCardServiceRemote {
 extension ReaderPostServiceRemote: ReaderCardServiceRemote { }
 
 class ReaderCardService {
+    private let stream: ReaderStream
+    private let sorting: ReaderSortingOption
     private let service: ReaderCardServiceRemote
 
     private let coreDataStack: CoreDataStack
@@ -27,12 +31,14 @@ class ReaderCardService {
     /// Used only internally to order the cards
     private var pageNumber = 1
 
-    var sorting: ReaderSortingOption = .noSorting
-
-    init(service: ReaderCardServiceRemote = ReaderPostServiceRemote.withDefaultApi(),
+    init(stream: ReaderStream,
+         sorting: ReaderSortingOption,
+        service: ReaderCardServiceRemote = ReaderPostServiceRemote.withDefaultApi(),
          coreDataStack: CoreDataStack = ContextManager.shared,
          followedInterestsService: ReaderFollowedInterestsService? = nil,
          siteInfoService: ReaderSiteInfoService? = nil) {
+        self.stream = stream
+        self.sorting = sorting
         self.service = service
         self.coreDataStack = coreDataStack
         self.followedInterestsService = followedInterestsService ?? ReaderTopicService(coreDataStack: coreDataStack)
@@ -109,6 +115,7 @@ class ReaderCardService {
             }
 
             self.service.fetchStreamCards(
+                stream: self.stream,
                 for: slugs,
                 page: self.pageHandle(isFirstPage: isFirstPage),
                 sortingOption: self.sorting,
