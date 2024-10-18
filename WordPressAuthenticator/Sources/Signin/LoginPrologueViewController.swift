@@ -32,11 +32,6 @@ class LoginPrologueViewController: LoginViewController {
     private let configuration = WordPressAuthenticator.shared.configuration
     private let style = WordPressAuthenticator.shared.style
 
-    private lazy var storedCredentialsAuthenticator = StoredCredentialsAuthenticator(onCancel: { [weak self] in
-        // Since the authenticator has its own flow
-        self?.tracker.resetState()
-    })
-
     /// We can't rely on `isMovingToParent` to know if we need to track the `.prologue` step
     /// because for the root view in an App, it's always `false`.  We're relying this variiable
     /// instead, since the `.prologue` step only needs to be tracked once.
@@ -116,11 +111,6 @@ class LoginPrologueViewController: LoginViewController {
         } else {
             tracker.set(step: .prologue)
         }
-
-        // Only enable auto fill if WPCom login is available
-        if configuration.enableSiteAddressLoginOnlyInPrologue == false {
-            showiCloudKeychainLoginFlow()
-        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -141,19 +131,6 @@ class LoginPrologueViewController: LoginViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         setButtonViewMargins(forWidth: size.width)
-    }
-
-    // MARK: - iCloud Keychain Login
-
-    /// Starts the iCloud Keychain login flow if the conditions are given.
-    ///
-    private func showiCloudKeychainLoginFlow() {
-        guard WordPressAuthenticator.shared.configuration.enableUnifiedAuth,
-              let navigationController = navigationController else {
-                  return
-        }
-
-        storedCredentialsAuthenticator.showPicker(from: navigationController)
     }
 
     private func configureButtonVC() {

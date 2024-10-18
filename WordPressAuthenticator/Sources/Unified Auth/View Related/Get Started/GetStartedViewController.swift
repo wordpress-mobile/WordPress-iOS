@@ -88,6 +88,11 @@ class GetStartedViewController: LoginViewController, NUXKeyboardResponder {
 
     private var passwordCoordinator: PasswordCoordinator?
 
+    private lazy var storedCredentialsAuthenticator = StoredCredentialsAuthenticator(onCancel: { [weak self] in
+        // Since the authenticator has its own flow
+        self?.tracker.resetState()
+    })
+
     /// Sign in with site credentials button will be displayed based on the `screenMode`
     ///
     private var screenMode: ScreenMode {
@@ -181,6 +186,21 @@ class GetStartedViewController: LoginViewController, NUXKeyboardResponder {
             registerForKeyboardEvents(keyboardWillShowAction: #selector(handleKeyboardWillShow(_:)),
                                       keyboardWillHideAction: #selector(handleKeyboardWillHide(_:)))
         }
+
+        if screenMode == .signInUsingWordPressComOrSocialAccounts && isMovingToParent {
+            showiCloudKeychainLoginFlow()
+        }
+    }
+
+    /// Starts the iCloud Keychain login flow if the conditions are given.
+    ///
+    private func showiCloudKeychainLoginFlow() {
+        guard WordPressAuthenticator.shared.configuration.enableUnifiedAuth,
+              let navigationController = navigationController else {
+                  return
+        }
+
+        storedCredentialsAuthenticator.showPicker(from: navigationController)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
