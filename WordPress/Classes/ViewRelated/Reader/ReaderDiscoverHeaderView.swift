@@ -133,10 +133,13 @@ enum ReaderDiscoverChannel: Hashable {
     /// The default channel showing your selected tags.
     case recommended
 
+    /// First posts in the selected tags.
     case firstPosts
 
     /// Latest post from your selected tags.
     case latest
+
+    case dailyPrompts
 
     /// A quick access for your tags.
     case tag(ReaderTagTopic)
@@ -144,11 +147,13 @@ enum ReaderDiscoverChannel: Hashable {
     var localizedTitle: String {
         switch self {
         case .recommended:
-            NSLocalizedString("reader.discover.header.tag.recommended", value: "Recommended", comment: "Header view tag (filter)")
+            NSLocalizedString("reader.discover.channel.recommended", value: "Recommended", comment: "Header view channel (filter)")
         case .firstPosts:
-            NSLocalizedString("reader.discover.header.tag.firstPost", value: "First Posts", comment: "Header view tag (filter)")
+            NSLocalizedString("reader.discover.channel.firstPost", value: "First Posts", comment: "Header view channel (filter)")
         case .latest:
-            NSLocalizedString("reader.discover.header.tag.latest", value: "Latest", comment: "Header view tag (filter)")
+            NSLocalizedString("reader.discover.channel.latest", value: "Latest", comment: "Header view channel (filter)")
+        case .dailyPrompts:
+            NSLocalizedString("reader.discover.channel.dailyPrompts", value: "Daily Prompts", comment: "Header view channel (filter)")
         case .tag(let tag):
             tag.title.localizedCapitalized
         }
