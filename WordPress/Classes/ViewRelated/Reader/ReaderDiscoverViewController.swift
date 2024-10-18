@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 import Combine
+import WordPressKit
 
 class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDelegate, ReaderContentViewController {
     private let headerView = ReaderDiscoverHeaderView()
@@ -127,18 +128,19 @@ private class ReaderDiscoverStreamViewController: ReaderStreamViewController {
         content.content as? [ReaderCard]
     }
 
-    private lazy var cardsService = ReaderCardService()
+    private let cardsService: ReaderCardService
 
     /// Whether the current view controller is visible
     private var isVisible: Bool {
         return isViewLoaded && view.window != nil
     }
 
-    init(topic: ReaderAbstractTopic, sorting: ReaderSortingOption = .noSorting) {
+    init(topic: ReaderAbstractTopic, stream: ReaderStream = .discover, sorting: ReaderSortingOption = .noSorting) {
+        self.cardsService = ReaderCardService(stream: stream, sorting: sorting)
+
         super.init(nibName: nil, bundle: nil)
 
         self.readerTopic = topic
-        self.cardsService.sorting = sorting
 
         // register table view cells specific to this controller as early as possible.
         // the superclass might trigger `layoutIfNeeded` from its `viewDidLoad`, and we want to make sure that
