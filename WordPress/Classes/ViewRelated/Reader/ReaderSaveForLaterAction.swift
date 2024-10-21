@@ -15,7 +15,7 @@ final class ReaderSaveForLaterAction {
         self.visibleConfirmation = visibleConfirmation
     }
 
-    func execute(with post: ReaderPost, context: NSManagedObjectContext, origin: ReaderSaveForLaterOrigin, viewController: UIViewController?, completion: (() -> Void)? = nil) {
+    func execute(with post: ReaderPost, context: NSManagedObjectContext = ContextManager.shared.mainContext, origin: ReaderSaveForLaterOrigin, viewController: UIViewController?, completion: (() -> Void)? = nil) {
         /// Preload the post
         if let viewController = viewController, !post.isSavedForLater {
             let offlineReaderWebView = OfflineReaderWebView()
