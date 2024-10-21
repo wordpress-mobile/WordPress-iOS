@@ -2,8 +2,18 @@ import UIKit
 import SwiftUI
 
 extension UIView {
-    /// Pins edges of the view to the edges of the given container. By default,
-    /// pins to the superview.
+    /// Pins edges of the view to the edges of the given target view or layout
+    /// guide. By default, pins to the superview.
+    ///
+    /// The view also gets enabled for Auto Layout by setting
+    /// `translatesAutoresizingMaskIntoConstraints` to `false`.
+    ///
+    /// Example uage:
+    ///
+    /// ```swift
+    /// subview.pinEdges() // to superview
+    /// subview.pinEdges(to: superview.safeAreaLayoutGuide)
+    /// ```
     @discardableResult
     public func pinEdges(
         _ edges: Edge.Set = .all,
