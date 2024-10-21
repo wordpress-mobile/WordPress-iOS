@@ -4,7 +4,7 @@ protocol ReaderDiscoverHeaderViewDelegate: AnyObject {
     func readerDiscoverHeaderView(_ view: ReaderDiscoverHeaderView, didChangeSelection selection: ReaderDiscoverChannel)
 }
 
-final class ReaderDiscoverHeaderView: UIView {
+final class ReaderDiscoverHeaderView: UIView, UITextViewDelegate {
     private let titleView = ReaderStreamTitleView()
     private let channelsStackView = UIStackView(spacing: 8, [])
     private var channelViews: [ReaderDiscoverChannelView] = []
@@ -28,7 +28,17 @@ final class ReaderDiscoverHeaderView: UIView {
         stackView.pinEdges(insets: UIEdgeInsets(top: 16, left: 16, bottom: 8, right: 16))
 
         titleView.titleLabel.text = Strings.title
-        titleView.detailsLabel.text = Strings.details
+        titleView.detailsTextView.attributedText = {
+            guard let details = try? NSMutableAttributedString(markdown: Strings.details) else {
+                return nil
+            }
+            details.addAttributes([
+                .font: UIFont.preferredFont(forTextStyle: .subheadline),
+                .foregroundColor: UIColor.secondaryLabel,
+            ], range: NSRange(location: 0, length: details.length))
+            return details
+        }()
+        titleView.detailsTextView.delegate = self
     }
 
     required init?(coder: NSCoder) {
@@ -71,6 +81,19 @@ final class ReaderDiscoverHeaderView: UIView {
         for view in channelViews {
             view.isSelected = view.channel == selectedChannel
         }
+    }
+
+    // MARK: UITextViewDelegate
+
+    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
+        let tagsVC = ReaderTagsTableViewController(style: .plain)
+        tagsVC.title = Strings.editInterests
+        tagsVC.navigationItem.rightBarButtonItem = UIBarButtonItem(title: SharedStrings.Button.done, primaryAction: UIAction { [weak tagsVC] _ in
+            tagsVC?.presentingViewController?.dismiss(animated: true)
+        })
+        let navVC = UINavigationController(rootViewController: tagsVC)
+        UIViewController.topViewController?.present(navVC, animated: true)
+        return false
     }
 }
 
@@ -162,7 +185,8 @@ enum ReaderDiscoverChannel: Hashable {
 
 private enum Strings {
     static let title = NSLocalizedString("reader.discover.header.title", value: "Discover", comment: "Header view title")
-    static let details = NSLocalizedString("reader.discover.header.title", value: "Explore popular blogs that inspire, educate, and entertain.", comment: "Header view details")
+    static let details = NSLocalizedString("reader.discover.header.title", value: "Explore popular blogs that inspire, educate, and entertain based on your [interests](/interests).", comment: "Reader Discover header view details label. The text has a Markdown URL: [interests](/interests). Only the text in the square brackets needs to be translated: [<translate_this>](/interests).")
+    static let editInterests = NSLocalizedString("reader.editInterests.title", value: "Edit Interests", comment: "Screen title")
 }
 
 @available(iOS 17, *)

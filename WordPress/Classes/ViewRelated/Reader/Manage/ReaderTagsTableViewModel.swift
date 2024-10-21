@@ -54,6 +54,14 @@ extension ReaderTagsTableViewModel: WPTableViewHandlerDelegate {
 
     // MARK: - Discover more topics footer
 
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        nil
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        CGFloat.leastNormalMagnitude
+    }
+
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         guard section == 0 else {
             return CGFloat.leastNormalMagnitude
