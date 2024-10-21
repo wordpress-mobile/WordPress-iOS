@@ -1,19 +1,19 @@
 import UIKit
+import WordPressUI
 
 /// A Reader stream header with a large title and a description.
 final class ReaderStreamTitleView: UIView {
     let titleLabel = UILabel()
-    let detailsLabel = UILabel()
+    let detailsTextView = UITextView.makeLabel()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
 
         titleLabel.font = UIFont.preferredFont(forTextStyle: .largeTitle).withWeight(.bold)
-        detailsLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
-        detailsLabel.textColor = .secondaryLabel
-        detailsLabel.numberOfLines = 0
+        detailsTextView.font = UIFont.preferredFont(forTextStyle: .subheadline)
+        detailsTextView.textColor = .secondaryLabel
 
-        let stackView = UIStackView(axis: .vertical, alignment: .leading, [titleLabel, detailsLabel])
+        let stackView = UIStackView(axis: .vertical, alignment: .leading, [titleLabel, detailsTextView])
         addSubview(stackView)
         stackView.pinEdges()
     }
