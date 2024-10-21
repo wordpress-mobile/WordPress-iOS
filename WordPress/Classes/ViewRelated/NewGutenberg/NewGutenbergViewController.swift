@@ -92,6 +92,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     }
     func setHTML(_ html: String) {}
     func getHTML() -> String { post.content ?? "" }
+    private var authHeader: String = ""
 
     // MARK: - Initializers
     required convenience init(
@@ -133,7 +134,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         let siteApiRoot = post.blog.isAccessibleThroughWPCom() && !isSelfHosted ? post.blog.wordPressComRestApi()?.baseURL.absoluteString : selfHostedApiUrl
         let siteId = post.blog.dotComID?.stringValue
         let authToken = post.blog.authToken ?? ""
-        var authHeader = "Bearer \(authToken)"
+        authHeader = "Bearer \(authToken)"
 
         let applicationPassword = try? post.blog.getApplicationToken()
 
@@ -166,6 +167,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         super.init(nibName: nil, bundle: nil)
 
         self.editorViewController.delegate = self
+        self.editorViewController.requestInterceptorDelegate = self
         self.navigationBarManager.delegate = self
     }
 
@@ -747,5 +749,17 @@ extension NewGutenbergViewController {
                 DDLogError("Error fetching settings: \(err)")
             }
         })
+    }
+}
+
+extension NewGutenbergViewController: GutenbergKit.EditorRequestInterceptorDelegate {
+    func interceptRequest(for request: URLRequest) -> URLRequest {
+        if let host = request.url?.host, host.range(of: "wordpress.com", options: .regularExpression) != nil {
+            var modifiedRequest = request
+            modifiedRequest.setValue(authHeader, forHTTPHeaderField: "Authorization")
+            return modifiedRequest
+        }
+
+        return request
     }
 }
