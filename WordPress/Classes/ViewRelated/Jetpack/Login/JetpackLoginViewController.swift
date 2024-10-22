@@ -11,6 +11,14 @@ class JetpackLoginViewController: UIViewController {
 
     var blog: Blog
 
+    // This variable is used to prevent signing into another WP.com account, if the site is not connected to the already signed-in default account.
+    private var shouldDisableLogin: Bool {
+        guard let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext) else {
+            return false
+        }
+        return defaultAccount.email != blog.jetpack?.connectedEmail
+    }
+
     // MARK: - Properties
 
     // Defaulting to stats because since that one is written in ObcC we don't have access to the enum there.
@@ -118,7 +126,11 @@ class JetpackLoginViewController: UIViewController {
         if jetpack.isSiteConnection {
             message = promptType.connectMessage
         } else if jetpack.isConnected {
-            message = jetpack.isUpdatedToRequiredVersion ? Constants.Jetpack.isUpdated : Constants.Jetpack.updateRequired
+            if let connectedEmail = jetpack.connectedEmail, shouldDisableLogin {
+                message = Constants.Jetpack.connectToDefaultAccount(connectedEmail: connectedEmail)
+            } else {
+                message = jetpack.isUpdatedToRequiredVersion ? Constants.Jetpack.isUpdated : Constants.Jetpack.updateRequired
+            }
         } else {
             message = promptType.installMessage
         }
@@ -136,7 +148,7 @@ class JetpackLoginViewController: UIViewController {
         connectUserButton.contentEdgeInsets = UIEdgeInsets(top: 12, left: 20, bottom: 12, right: 20)
 
         signinButton.setTitle(Constants.Buttons.loginTitle, for: .normal)
-        signinButton.isHidden = !(blog.hasJetpack && !jetpack.isSiteConnection)
+        signinButton.isHidden = shouldDisableLogin || !(blog.hasJetpack && !jetpack.isSiteConnection)
 
         let paragraph = NSMutableParagraphStyle(minLineHeight: WPStyleGuide.fontSizeForTextStyle(.footnote),
                                                 lineBreakMode: .byWordWrapping,
@@ -338,5 +350,11 @@ private enum Constants {
                                                                                               comment: "Message stating the minimum required " +
                                                                                                 "version for Jetpack and asks the user " +
             "if they want to upgrade"), JetpackState.minimumVersionRequired)
+        static func connectToDefaultAccount(connectedEmail: String) -> String {
+            String.localizedStringWithFormat(
+                NSLocalizedString("jetpackSite.connectToDefaultAccount", value: "You need to sign in with %@ to use Stats and Notifications.", comment: "Message stating that the user is unable to use Stats and Notifications because their site is connected to a different WordPress.com account"),
+                connectedEmail
+            )
+        }
     }
 }
