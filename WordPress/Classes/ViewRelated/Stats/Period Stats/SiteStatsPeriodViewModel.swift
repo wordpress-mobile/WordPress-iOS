@@ -567,13 +567,25 @@ private extension SiteStatsPeriodViewModel {
     func authorsDataRows() -> [StatsTotalRowData] {
         let authors = store.getTopAuthors()?.topAuthors.prefix(10) ?? []
 
-        return authors.map { StatsTotalRowData(name: $0.name,
-                                               data: $0.viewsCount.abbreviatedString(),
-                                               dataBarPercent: Float($0.viewsCount) / Float(authors.first!.viewsCount),
-                                               userIconURL: $0.iconURL,
-                                               showDisclosure: true,
-                                               childRows: $0.posts.map { StatsTotalRowData(name: $0.title, data: $0.viewsCount.abbreviatedString()) },
-                                               statSection: .periodAuthors)
+        return authors.map {
+            StatsTotalRowData(
+                name: $0.name,
+                data: $0.viewsCount.abbreviatedString(),
+                dataBarPercent: Float($0.viewsCount) / Float(authors.first!.viewsCount),
+                userIconURL: $0.iconURL,
+                showDisclosure: true,
+                childRows: $0.posts.map {
+                    StatsTotalRowData(
+                        name: $0.title,
+                        data: $0.viewsCount.abbreviatedString(),
+                        postID: $0.postID,
+                        showDisclosure: true,
+                        disclosureURL: $0.postURL,
+                        statSection: .periodAuthors
+                    )
+                },
+                statSection: .periodAuthors
+            )
         }
     }
 
