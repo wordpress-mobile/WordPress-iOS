@@ -318,19 +318,9 @@ extension SplitViewRootPresenter: UISplitViewControllerDelegate {
 
     // TODO: refactor this
     func splitViewControllerDidCollapse(_ svc: UISplitViewController) {
-        let mainContext = ContextManager.shared.mainContext
         switch sidebarViewModel.selection {
-        case .blog(let objectID):
-            guard let blog = try? mainContext.existingObject(with: objectID) else {
-                return
-            }
-            if let navigationVC = svc.viewController(for: .supplementary) as? UINavigationController,
-               let menuVC = navigationVC.viewControllers.first as? SiteMenuViewController,
-               let subsection = menuVC.selectedSubsection, subsection != .home {
-                tabBarVC.showBlogDetails(for: blog, then: subsection, userInfo: [:])
-            } else {
-                tabBarVC.showBlogDetails(for: blog)
-            }
+        case .blog:
+            break
         case .reader:
             if let selection = readerPresenter.sidebar.viewModel.selection {
                 switch selection {
