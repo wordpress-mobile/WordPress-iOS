@@ -6,7 +6,7 @@ import DesignSystem
 
 struct LoginWithUrlView: View {
 
-    private let client: LoginClient
+    private let client: SelfHostedSiteAuthenticator
     private let loginCompleted: (WordPressOrgCredentials) -> Void
 
     // Since the anchor is a window that typically is the window this view is presented in,
@@ -22,7 +22,7 @@ struct LoginWithUrlView: View {
     }
 
     init(
-        client: LoginClient,
+        client: SelfHostedSiteAuthenticator,
         anchor: ASPresentationAnchor,
         loginCompleted: @escaping (WordPressOrgCredentials) -> Void
     ) {
@@ -84,16 +84,21 @@ struct LoginWithUrlView: View {
         errorMessage = nil
         isLoading = true
 
-        Task { @MainActor in
-            let credentials = await client.login(site: urlField, from: anchor)
-            switch credentials {
-            case let .success(credentials):
+        // The Swift compiler isn't happy about placing this do-catch function body inside a Task.
+        // https://github.com/swiftlang/swift/issues/76807
+        func login() async {
+            do {
+                let credentials = try await client.signIn(site: urlField, from: anchor)
                 self.loginCompleted(credentials)
-            case let .failure(error):
+            } catch {
                 errorMessage = error.errorMessage
             }
 
             isLoading = false
+        }
+
+        Task { @MainActor in
+            await login()
         }
     }
 }
@@ -103,7 +108,7 @@ private extension LoginWithUrlView {
     static var enterSiteAddress: String { NSLocalizedString("addSite.selfHosted.enterSiteAddress", value: "Enter the address of the WordPress site you'd like to connect.", comment: "A message to inform users to type the site address in the text field.") }
 }
 
-private extension LoginClient.LoginClientError {
+private extension SelfHostedSiteAuthenticator.SignInError {
 
     var errorMessage: String? {
         switch self {
