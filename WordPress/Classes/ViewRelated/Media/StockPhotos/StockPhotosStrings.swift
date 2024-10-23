@@ -9,6 +9,8 @@ extension String {
         return NSLocalizedString("Other Apps", comment: "Menu option used for adding media from other applications.")
     }
 
+    static let imagePlayground = NSLocalizedString("Image Playground", comment: "Apple's Image Playground tool")
+
     static var cancelMoreOptions: String {
         return NSLocalizedString(
             "stockPhotos.strings.dismiss",
