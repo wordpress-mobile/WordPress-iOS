@@ -163,14 +163,12 @@ class AbstractPostListViewController: UIViewController,
         tableView.estimatedRowHeight = 110
         tableView.rowHeight = UITableView.automaticDimension
         tableView.refreshControl = refreshControl
-        tableView.cellLayoutMarginsFollowReadableWidth = true
         refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
     }
 
     private func configureFilterBar() {
         WPStyleGuide.configureFilterTabBar(filterTabBar)
         filterTabBar.isAutomaticTabSizingStyleEnabled = true
-        filterTabBar.isFollowingReaderGuide = true
         filterTabBar.backgroundColor = .clear
         filterTabBar.items = filterSettings.availablePostListFilters()
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
@@ -548,6 +546,7 @@ class AbstractPostListViewController: UIViewController,
             } catch {
                 guard let self else { return }
 
+                self.logSyncError(error)
                 failure?(error as NSError)
 
                 if userInteraction == true {
@@ -577,6 +576,7 @@ class AbstractPostListViewController: UIViewController,
 
                 success?(filter.hasMore)
             } catch {
+                self?.logSyncError(error)
                 failure?(error as NSError)
             }
         }
@@ -627,6 +627,12 @@ class AbstractPostListViewController: UIViewController,
             let title = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
             WPError.showNetworkingNotice(title: title, error: error)
         }
+    }
+
+    private func logSyncError(_ error: Error) {
+        guard let blog else { return }
+        let userInfo = WPAnalyticsEvent.makeUserInfo(for: error)
+        WPAnalytics.track(.postRepositoryPostsFetchFailed, properties: userInfo, blog: blog)
     }
 
     // MARK: - Actions

@@ -90,28 +90,15 @@ class RootViewCoordinator {
         WordPressAppDelegate.shared?.autoSignInUITestSite()
     }
 
-    func showPostSignUpTabForNoSites() {
-        let appUIType = Self.appUIType(featureFlagStore: featureFlagStore)
-        switch appUIType {
-        case .normal:
-            rootViewPresenter?.showReaderTab()
-        case .simplified:
-            fallthrough
-        case .staticScreens:
-            rootViewPresenter?.showMySitesTab()
-        }
-    }
-
     private func createPresenter(_ appType: AppUIType) -> RootViewPresenter {
-        if UIDevice.isPad() && Feature.enabled(.sidebar) {
+        if UIDevice.isPad() {
             return SplitViewRootPresenter()
         }
         switch appType {
         case .normal:
             return WPTabBarController(staticScreens: false)
         case .simplified:
-            let meScenePresenter = MeScenePresenter()
-            return MySitesCoordinator(meScenePresenter: meScenePresenter, onBecomeActiveTab: {})
+            return MySitesCoordinator(onBecomeActiveTab: {})
         case .staticScreens:
             return StaticScreensTabBarWrapper()
         }

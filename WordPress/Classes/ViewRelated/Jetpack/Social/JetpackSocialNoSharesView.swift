@@ -20,7 +20,7 @@ struct JetpackSocialNoSharesView: View {
                 .padding(.bottom, 5.0)
             Text(Constants.subscribeText)
                 .font(.callout)
-                .foregroundColor(Color(AppColor.primary))
+                .foregroundColor(Color(UIAppColor.primary))
                 .onTapGesture {
                     viewModel.onSubscribeTap()
                 }

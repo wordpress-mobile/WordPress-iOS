@@ -22,6 +22,10 @@ class MockUrlHandler: URLHandler {
     func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey: Any], completionHandler completion: ((Bool) -> Void)?) {
         openUrlExpectation?.fulfill()
     }
+
+    func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey: Any], completionHandler completion: (@MainActor @Sendable (Bool) -> Void)?) {
+        openUrlExpectation?.fulfill()
+    }
 }
 
 class AppSelectorTests: XCTestCase {

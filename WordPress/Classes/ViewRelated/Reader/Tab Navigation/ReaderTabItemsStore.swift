@@ -1,11 +1,11 @@
 import WordPressFlux
 
-protocol ItemsStore: Observable {
+protocol ReaderTabItemsStoreProtocol: Observable {
     var items: [ReaderTabItem] { get }
     func getItems()
 }
 
-class ReaderTabItemsStore: ItemsStore {
+class ReaderTabItemsStore: ReaderTabItemsStoreProtocol {
 
     let changeDispatcher = Dispatcher<Void>()
 
@@ -70,7 +70,7 @@ extension ReaderTabItemsStore {
             let items = ReaderHelpers.rearrange(items: topics.map { ReaderTabItem(ReaderContent(topic: $0)) })
             self.state = .ready(items)
         } catch {
-            DDLogError(ReaderTopicsConstants.fetchRequestError + error.localizedDescription)
+            DDLogError("\(ReaderTopicsConstants.fetchRequestError)\(error.localizedDescription)")
             self.state = .error(error)
         }
     }

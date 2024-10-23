@@ -1,10 +1,5 @@
-This month we have lots of visual fixes, and one new experimental feature we'd love your feedback on.
-
-Visually, we've:
-- Updated the site picker to be simpler and easier to use – it adds support for staging sites, context menus, and previews.
-- Fixed an issue where some navigation bars in the app were transparent.
-- Fixed an issue where private site icons wouldn't load.
-- Updated dozens of screens to avoid visual bugs by simplifying the code.
-- Fixed an issue where the Subscribers chart would show the wrong background color.
-
-Under "App Settings", you now can try out Application Passwords – a new Experimental Feature for self-hosted sites that allows them to work with the apps if they use 2FA or SSO.
+Three things this month:
+1. We've updated the UI for iPadOS 18 – no more tab bar, everything is navigation-based, which should be a better use of the larger screen size.
+2. Some iOS 18 improvements – a few color tweaks, some bugfixes, and most importantly – tintable icons!
+3. We've been hard at work on an experimental new block editor. It's not ready for full-time use, but we'd love your feedback! Check it out in Me > App Settings > Experimental Features.
+If you have feedback on any of these features, we'd love to hear it – reach out to us at mobile-support@automattic.com!

@@ -101,7 +101,7 @@ private extension ReaderTagCell {
         let imageSize = CGSize(width: featuredImageView.frame.width,
                                    height: featuredImageView.frame.height)
         let host = MediaHost(with: post, failure: { error in
-            DDLogError(error)
+            DDLogError("\(error)")
         })
         imageLoader.loadImage(with: url, from: host, preferredSize: imageSize)
     }
@@ -119,7 +119,7 @@ private extension ReaderTagCell {
         let isLiked = post.isLiked
         likeButton.setTitle(isLiked ? Constants.likedText : Constants.likeText, for: .normal)
         likeButton.setImage(isLiked ? Constants.likedButtonImage : Constants.likeButtonImage, for: .normal)
-        likeButton.tintColor = isLiked ? AppColor.jetpackGreen : .secondaryLabel
+        likeButton.tintColor = isLiked ? UIAppColor.jetpackGreen : .secondaryLabel
         likeButton.setTitleColor(likeButton.tintColor, for: .normal)
         likeButton.accessibilityHint = post.isLiked ? AccessibilityConstants.likedButtonHint : AccessibilityConstants.likeButtonHint
     }

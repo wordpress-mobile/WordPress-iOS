@@ -58,7 +58,7 @@ final class StatsSubscribersViewController: SiteStatsBaseTableViewController {
         cancellables = []
     }
 
-    @objc private func refreshData() {
+    @objc func refreshData() {
         viewModel.refreshData()
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
@@ -85,7 +85,7 @@ extension StatsSubscribersViewController: SiteStatsPeriodDelegate {
     func viewMoreSelectedForStatSection(_ statSection: StatSection) {
         switch statSection {
         case .subscribersList:
-            guard let blog = RootViewCoordinator.sharedPresenter.mySitesCoordinator.currentBlog,
+            guard let blog = RootViewCoordinator.sharedPresenter.currentlyVisibleBlog(),
                   let peopleViewController = PeopleViewController.controllerWithBlog(blog, selectedFilter: .followers) else { return }
             navigationController?.pushViewController(peopleViewController, animated: true)
             WPAnalytics.track(.statsSubscribersViewMoreTapped)

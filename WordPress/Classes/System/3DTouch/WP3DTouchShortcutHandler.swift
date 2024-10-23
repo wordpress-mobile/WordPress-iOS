@@ -24,13 +24,13 @@ open class WP3DTouchShortcutHandler: NSObject {
                 return true
             case ShortcutIdentifier.NewPost.type:
                 WPAnalytics.track(.shortcutNewPost)
-                rootViewPresenter.showPostTab(animated: false)
+                rootViewPresenter.showPostEditor(animated: false)
                 return true
             case ShortcutIdentifier.Stats.type:
                 WPAnalytics.track(.shortcutStats)
                 clearCurrentViewController()
                 if let mainBlog = Blog.lastUsedOrFirst(in: ContextManager.sharedInstance().mainContext) {
-                    rootViewPresenter.mySitesCoordinator.showStats(for: mainBlog, source: .shortcut)
+                    rootViewPresenter.showStats(for: mainBlog, source: .shortcut)
                 }
                 return true
             case ShortcutIdentifier.Notifications.type:

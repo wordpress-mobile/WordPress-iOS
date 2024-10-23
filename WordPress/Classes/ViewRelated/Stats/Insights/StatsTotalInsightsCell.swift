@@ -95,7 +95,7 @@ struct StatsTotalInsightsData: Equatable {
 
         let titlePlaceholderRange = (text as NSString).range(of: "%1$@")
         let titleRange = NSMakeRange(titlePlaceholderRange.location, title.count)
-        attributedString.addAttribute(.foregroundColor, value: AppColor.primary, range: titleRange)
+        attributedString.addAttribute(.foregroundColor, value: UIAppColor.primary, range: titleRange)
 
         let formattedTitleString = String.localizedStringWithFormat(text, title, "%2$@")
         let countPlaceholderRange = (formattedTitleString as NSString).range(of: "%2$@")

@@ -30,7 +30,7 @@ class UnifiedPrologueViewController: UIPageViewController {
         })
 
         setViewControllers([pages[0]], direction: .forward, animated: false)
-        view.backgroundColor = AppColor.prologueBackground
+        view.backgroundColor = .secondarySystemBackground
 
         addPageControl()
         let backgroundView = UIView.embedSwiftUIView(UnifiedPrologueBackgroundView())

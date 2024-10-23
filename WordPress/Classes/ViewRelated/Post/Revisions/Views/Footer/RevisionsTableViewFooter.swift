@@ -37,7 +37,7 @@ private extension RevisionsTableViewFooter {
                                             height: frame.height))
         footerLabel.autoresizingMask = .flexibleWidth
         footerLabel.font = UIFont.systemFont(ofSize: 14.0)
-        footerLabel.textColor = AppColor.neutral(.shade40)
+        footerLabel.textColor = UIAppColor.neutral(.shade40)
         footerLabel.textAlignment = .center
         footerLabel.numberOfLines = 2
 

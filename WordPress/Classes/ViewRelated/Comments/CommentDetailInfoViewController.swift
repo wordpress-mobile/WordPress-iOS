@@ -80,7 +80,7 @@ extension CommentDetailInfoViewController: UITableViewDataSource {
         let info = viewModel.userDetails[indexPath.item]
 
         cell.selectionStyle = .none
-        cell.tintColor = AppColor.primary
+        cell.tintColor = UIAppColor.primary
 
         cell.textLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline)
         cell.textLabel?.textColor = .secondaryLabel

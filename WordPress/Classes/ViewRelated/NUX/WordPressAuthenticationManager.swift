@@ -56,24 +56,27 @@ extension WordPressAuthenticationManager {
         // Ref https://github.com/wordpress-mobile/WordPress-iOS/pull/12332#issuecomment-521994963
         let enableSignInWithApple = !(BuildConfiguration.current ~= [.a8cBranchTest, .a8cPrereleaseTesting])
 
-        return WordPressAuthenticatorConfiguration(wpcomClientId: ApiCredentials.client,
-                                                   wpcomSecret: ApiCredentials.secret,
-                                                   wpcomScheme: WPComScheme,
-                                                   wpcomTermsOfServiceURL: URL(string: WPAutomatticTermsOfServiceURL)!,
-                                                   wpcomBaseURL: WordPressComOAuthClient.WordPressComOAuthDefaultBaseURL,
-                                                   wpcomAPIBaseURL: AppEnvironment.current.wordPressComApiBase,
-                                                   googleLoginClientId: ApiCredentials.googleLoginClientId,
-                                                   googleLoginServerClientId: ApiCredentials.googleLoginServerClientId,
-                                                   googleLoginScheme: ApiCredentials.googleLoginSchemeId,
-                                                   userAgent: WPUserAgent.wordPress(),
-                                                   showLoginOptions: true,
-                                                   enableSignUp: AppConfiguration.allowSignUp,
-                                                   enableSignInWithApple: enableSignInWithApple,
-                                                   enableSignupWithGoogle: AppConfiguration.allowSignUp,
-                                                   enableUnifiedAuth: true,
-                                                   enableUnifiedCarousel: true,
-                                                   enablePasskeys: true,
-                                                   enableSocialLogin: true)
+        return WordPressAuthenticatorConfiguration(
+            wpcomClientId: ApiCredentials.client,
+            wpcomSecret: ApiCredentials.secret,
+            wpcomScheme: WPComScheme,
+            wpcomTermsOfServiceURL: URL(string: WPAutomatticTermsOfServiceURL)!,
+            wpcomBaseURL: WordPressComOAuthClient.WordPressComOAuthDefaultBaseURL,
+            wpcomAPIBaseURL: AppEnvironment.current.wordPressComApiBase,
+            googleLoginClientId: ApiCredentials.googleLoginClientId,
+            googleLoginServerClientId: ApiCredentials.googleLoginServerClientId,
+            googleLoginScheme: ApiCredentials.googleLoginSchemeId,
+            userAgent: WPUserAgent.wordPress(),
+            showLoginOptions: true,
+            enableSignUp: AppConfiguration.allowSignUp,
+            enableSignInWithApple: enableSignInWithApple,
+            enableSignupWithGoogle: AppConfiguration.allowSignUp,
+            enableUnifiedAuth: true,
+            enableUnifiedCarousel: true,
+            enablePasskeys: true,
+            enableSocialLogin: true,
+            disableAutofill: UITestConfigurator.isEnabled(.disableAutofill)
+        )
     }
 
     private func authenticatorStyle() -> WordPressAuthenticatorStyle {
@@ -113,22 +116,22 @@ extension WordPressAuthenticationManager {
         }
 
         return WordPressAuthenticatorStyle(
-            primaryNormalBackgroundColor: AppColor.primary,
+            primaryNormalBackgroundColor: UIAppColor.primary,
             primaryNormalBorderColor: nil,
-            primaryHighlightBackgroundColor: AppColor.primary(.shade80),
+            primaryHighlightBackgroundColor: UIAppColor.primary(.shade80),
             primaryHighlightBorderColor: nil,
             secondaryNormalBackgroundColor: UIColor(light: .white, dark: .black),
             secondaryNormalBorderColor: .systemGray3,
             secondaryHighlightBackgroundColor: .systemGray3,
             secondaryHighlightBorderColor: .systemGray3,
-            disabledBackgroundColor: AppColor.gray,
-            disabledBorderColor: AppColor.neutral(.shade10),
+            disabledBackgroundColor: .secondarySystemFill,
+            disabledBorderColor: .secondarySystemFill,
             primaryTitleColor: .white,
             secondaryTitleColor: .label,
-            disabledTitleColor: AppColor.neutral(.shade20),
+            disabledTitleColor: UIAppColor.neutral(.shade20),
             disabledButtonActivityIndicatorColor: .label,
-            textButtonColor: AppColor.primary,
-            textButtonHighlightColor: AppColor.primaryDark,
+            textButtonColor: UIAppColor.primary,
+            textButtonHighlightColor: UIAppColor.primaryDark,
             instructionColor: .label,
             subheadlineColor: .secondaryLabel,
             placeholderColor: .tertiaryLabel,
@@ -137,9 +140,9 @@ extension WordPressAuthenticationManager {
             buttonViewBackgroundColor: UIColor(light: .white, dark: .black),
             buttonViewTopShadowImage: buttonViewTopShadowImage,
             navBarImage: .gridicon(.mySites),
-            navBarBadgeColor: AppColor.accent(.shade20),
+            navBarBadgeColor: UIAppColor.accent(.shade20),
             navBarBackgroundColor: .secondarySystemGroupedBackground,
-            prologueBackgroundColor: AppColor.primary,
+            prologueBackgroundColor: UIAppColor.primary,
             prologueTitleColor: .label.variantInverted,
             prologuePrimaryButtonStyle: prologuePrimaryButtonStyle,
             prologueSecondaryButtonStyle: prologueSecondaryButtonStyle,
@@ -162,11 +165,11 @@ extension WordPressAuthenticationManager {
 
         return WordPressAuthenticatorUnifiedStyle(
             borderColor: .separator,
-            errorColor: AppColor.error,
+            errorColor: UIAppColor.error,
             textColor: .label,
             textSubtleColor: .secondaryLabel,
-            textButtonColor: AppColor.primary,
-            textButtonHighlightColor: AppColor.primaryDark,
+            textButtonColor: UIAppColor.primary,
+            textButtonHighlightColor: UIAppColor.primaryDark,
             viewControllerBackgroundColor: .systemBackground,
             prologueButtonsBackgroundColor: prologueButtonsBackgroundColor,
             prologueViewBackgroundColor: prologueViewBackgroundColor,
@@ -327,7 +330,11 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         let sites = account?.blogs ?? []
 
         guard var selectedBlog = sites.first else {
-            self.presentPostSignUpInterstitial(in: navigationController, onDismiss: onDismiss)
+            if windowManager.isShowingFullscreenSignIn {
+                windowManager.dismissFullscreenSignIn()
+            } else {
+                navigationController.dismiss(animated: true)
+            }
             return
         }
 
@@ -359,14 +366,10 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
                 return
             }
 
-            if PostSignUpInterstitialViewController.shouldDisplay() {
-                self.presentPostSignUpInterstitial(in: navigationController)
+            if self.windowManager.isShowingFullscreenSignIn {
+                self.windowManager.dismissFullscreenSignIn()
             } else {
-                if self.windowManager.isShowingFullscreenSignIn {
-                    self.windowManager.dismissFullscreenSignIn()
-                } else {
-                    navigationController.dismiss(animated: true)
-                }
+                navigationController.dismiss(animated: true)
             }
 
             UserPersistentStoreFactory.instance().set(false, forKey: UserPersistentStoreFactory.instance().welcomeNotificationSeenKey)
@@ -481,7 +484,8 @@ private extension WordPressAuthenticationManager {
         let windowManager = self.windowManager
 
         guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(),
-              !UserPersistentStoreFactory.instance().onboardingNotificationsPromptDisplayed else {
+              !UserPersistentStoreFactory.instance().onboardingNotificationsPromptDisplayed,
+              !UITestConfigurator.isEnabled(.disablePrompts) else {
             if self.windowManager.isShowingFullscreenSignIn {
                 self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
             } else {
@@ -517,44 +521,6 @@ private extension WordPressAuthenticationManager {
 // MARK: - WordPressAuthenticatorManager
 //
 private extension WordPressAuthenticationManager {
-    /// Displays the post sign up interstitial if needed, if it's not displayed
-    private func presentPostSignUpInterstitial(
-        in navigationController: UINavigationController,
-        onDismiss: (() -> Void)? = nil) {
-
-        let viewController = PostSignUpInterstitialViewController()
-        let windowManager = self.windowManager
-
-        viewController.dismiss = { [weak navigationController] dismissAction in
-            guard let navigationController else { return }
-
-            let completion: (() -> Void)?
-
-            switch dismissAction {
-            case .none:
-                completion = nil
-            case .addSelfHosted:
-                completion = {
-                    NotificationCenter.default.post(name: .addSelfHosted, object: nil)
-                }
-            case .createSite:
-                completion = {
-                    NotificationCenter.default.post(name: .createSite, object: nil)
-                }
-            }
-
-            if windowManager.isShowingFullscreenSignIn {
-                windowManager.dismissFullscreenSignIn(completion: completion)
-            } else {
-                navigationController.dismiss(animated: true, completion: completion)
-            }
-
-            onDismiss?()
-        }
-
-        navigationController.pushViewController(viewController, animated: true)
-    }
-
     /// Synchronizes a WordPress.com account with the specified credentials.
     ///
     private func syncWPCom(authToken: String, isJetpackLogin: Bool, onCompletion: @escaping () -> ()) {

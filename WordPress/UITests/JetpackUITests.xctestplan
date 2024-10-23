@@ -17,7 +17,6 @@
       "name" : "Jetpack"
     },
     "testRepetitionMode" : "retryOnFailure",
-    "uiTestingScreenshotsLifetime" : "keepAlways"
   },
   "testTargets" : [
     {

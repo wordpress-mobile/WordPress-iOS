@@ -1,18 +1,16 @@
 import SwiftUI
 import DesignSystem
+import WordPressUI
 
-final class SiteSwitcherViewController: UIHostingController<SiteSwitcherView> {
+final class SiteSwitcherViewController: UIHostingController<SiteSwitcherView>, UIPopoverPresentationControllerDelegate {
     private let viewModel: BlogListViewModel
 
     init(configuration: BlogListConfiguration = .defaultConfig,
          addSiteAction: @escaping ((AddSiteMenuViewModel.Selection) -> Void),
          onSiteSelected: @escaping ((Blog) -> Void)) {
         self.viewModel = BlogListViewModel(configuration: configuration)
-        super.init(rootView: SiteSwitcherView(
-            viewModel: viewModel,
-            addSiteAction: addSiteAction,
-            onSiteSelected: onSiteSelected
-        ))
+        self.viewModel.onAddSiteTapped = addSiteAction
+        super.init(rootView: SiteSwitcherView(viewModel: viewModel, onSiteSelected: onSiteSelected))
     }
 
     required init?(coder: NSCoder) {
@@ -21,6 +19,8 @@ final class SiteSwitcherViewController: UIHostingController<SiteSwitcherView> {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        popoverPresentationController?.delegate = self
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: SharedStrings.Button.close, style: .plain, target: self, action: #selector(buttonCloseTapped))
         navigationItem.leftBarButtonItem?.accessibilityIdentifier = "my-sites-cancel-button"
@@ -45,18 +45,49 @@ final class SiteSwitcherViewController: UIHostingController<SiteSwitcherView> {
 
         WPAnalytics.track(.siteSwitcherDismissed)
     }
+
+    // MARK: UIPopoverPresentationControllerDelegate
+
+    func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
+        navigationItem.leftBarButtonItem = nil
+        navigationItem.rightBarButtonItem = AddSiteMenuViewModel(onSelection: { [weak self] selection in
+            guard let self else { return }
+            self.presentingViewController?.dismiss(animated: true) {
+                self.viewModel.onAddSiteTapped(selection)
+            }
+        }).makeBarButtonItem()
+
+        preferredContentSize = SiteSwitcherViewController.preferredContentSize(for: viewModel)
+        viewModel.isPresentedInPopover = true
+    }
+
+    // There is no good way to determine the exact size of the underling SwiftUI List,
+    // and this is the best approximation to ensure it doesn't look too off when
+    // you have only a few sites.
+    static func preferredContentSize(for viewModel: BlogListViewModel) -> CGSize {
+        CGSize(width: 375, height: {
+            if viewModel.allSites.count <= 5 {
+                return 350
+            } else if viewModel.allSites.count <= 10 {
+                return 520
+            } else {
+                return 750
+            }
+        }())
+    }
 }
 
 struct SiteSwitcherView: View {
     @ObservedObject var viewModel: BlogListViewModel
 
-    let addSiteAction: ((AddSiteMenuViewModel.Selection) -> Void)
     let onSiteSelected: ((Blog) -> Void)
 
     var body: some View {
         BlogListView(viewModel: viewModel, onSiteSelected: onSiteSelected)
             .safeAreaInset(edge: .bottom) {
-                SiteSwitcherToolbarView(addSiteAction: addSiteAction)
+                if !viewModel.isPresentedInPopover {
+                    SiteSwitcherToolbarView(viewModel: viewModel)
+                }
             }
             .searchable(text: $viewModel.searchText, placement: .navigationBarDrawer(displayMode: .always))
             .navigationTitle(Strings.navigationTitle)
@@ -65,7 +96,7 @@ struct SiteSwitcherView: View {
 }
 
 private struct SiteSwitcherToolbarView: View {
-    let addSiteAction: ((AddSiteMenuViewModel.Selection) -> Void)
+    @ObservedObject var viewModel: BlogListViewModel
 
     /// - warning: It has to be defined in a view "below" the .searchable
     @Environment(\.isSearching) var isSearching
@@ -84,7 +115,7 @@ private struct SiteSwitcherToolbarView: View {
 
     @ViewBuilder
     private var button: some View {
-        let viewModel = AddSiteMenuViewModel(onSelection: addSiteAction)
+        let viewModel = AddSiteMenuViewModel(onSelection: viewModel.onAddSiteTapped)
         switch viewModel.actions.count {
         case 0:
             EmptyView()

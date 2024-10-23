@@ -6,14 +6,6 @@ extension MySitesCoordinator: RootViewPresenter {
 
     // MARK: General
 
-    var currentViewController: UIViewController? {
-        return rootViewController
-    }
-
-    func getMeScenePresenter() -> ScenePresenter {
-        meScenePresenter
-    }
-
     func currentlySelectedScreen() -> String {
         return "Blog List"
     }
@@ -24,66 +16,11 @@ extension MySitesCoordinator: RootViewPresenter {
 
     // MARK: Reader
 
-    var readerTabViewController: ReaderTabViewController? {
-        unsupportedFeatureFallback()
-        return nil
-    }
-
-    var readerCoordinator: ReaderCoordinator? {
-        unsupportedFeatureFallback()
-        return nil
-    }
-
-    var readerNavigationController: UINavigationController? {
-        unsupportedFeatureFallback()
-        return nil
-    }
-
-    func showReaderTab() {
-        unsupportedFeatureFallback()
-    }
-
-    func switchToDiscover() {
-        unsupportedFeatureFallback()
-    }
-
-    func navigateToReaderSearch() {
-        unsupportedFeatureFallback()
-    }
-
-    func switchToTopic(where predicate: (ReaderAbstractTopic) -> Bool) {
-        unsupportedFeatureFallback()
-    }
-
-    func switchToMyLikes() {
-        unsupportedFeatureFallback()
-    }
-
-    func switchToFollowedSites() {
-        unsupportedFeatureFallback()
-    }
-
-    func navigateToReaderSite(_ topic: ReaderSiteTopic) {
-        unsupportedFeatureFallback()
-    }
-
-    func navigateToReaderTag(_ tagSlug: String) {
-        unsupportedFeatureFallback()
-    }
-
-    func navigateToReader(_ pushControlller: UIViewController?) {
-        unsupportedFeatureFallback()
-    }
-
-    func showReaderTab(forPost: NSNumber, onBlog: NSNumber) {
+    func showReader(path: ReaderNavigationPath?) {
         unsupportedFeatureFallback()
     }
 
     // MARK: My Site
-
-    var mySitesCoordinator: MySitesCoordinator {
-        return self
-    }
 
     func showMySitesTab() {
         // Do nothing
@@ -92,57 +29,35 @@ extension MySitesCoordinator: RootViewPresenter {
 
     // MARK: Notifications
 
-    var notificationsViewController: NotificationsViewController? {
-        unsupportedFeatureFallback()
-        return nil
-    }
-
-    func showNotificationsTab() {
-        unsupportedFeatureFallback()
-    }
-
-    func switchNotificationsTabToNotificationSettings() {
-        unsupportedFeatureFallback()
-    }
-
-    func showNotificationsTabForNote(withID notificationID: String) {
-        unsupportedFeatureFallback()
-    }
-
-    func popNotificationsTabToRoot() {
+    func showNotificationsTab(completion: ((NotificationsViewController) -> Void)?) {
         unsupportedFeatureFallback()
     }
 
     // MARK: Me
 
     var meViewController: MeViewController? {
-        /// On iPhone, the My Sites root view controller is a navigation controller, and Me is pushed onto the stack
-        if let navigationController = mySitesCoordinator.rootViewController as? UINavigationController,
+        if let navigationController = rootViewController as? UINavigationController,
            let controller = navigationController.viewControllers.compactMap({ $0 as? MeViewController }).first {
                return controller
            }
 
-        /// On iPad, the My Sites root view controller is a split view controller, and Me is shown in the detail view controller
-        if let splitViewController = mySitesCoordinator.rootViewController as? WPSplitViewController,
-           let detailNavigationController = splitViewController.viewControllers.last as? UINavigationController,
-           let controller = detailNavigationController.viewControllers.compactMap({ $0 as? MeViewController }).first {
-            return controller
-        }
-
         return nil
     }
 
-    func showMeScreen() {
+    func showMeScreen(completion: ((MeViewController) -> Void)?) {
         guard let meViewController else {
             /// In order to show the Me screen, the My Sites screen must be visible (see: MySitesCoordinator.showMe)
-            if let navigationController = mySitesCoordinator.rootViewController as? UINavigationController {
+            if let navigationController = rootViewController as? UINavigationController {
                 navigationController.popToRootViewController(animated: false)
             }
-            mySitesCoordinator.showMe()
+            if let viewController = showMe() {
+                completion?(viewController)
+            }
             return
         }
 
         meViewController.navigationController?.popToViewController(meViewController, animated: false)
+        completion?(meViewController)
     }
 
     // MARK: Helpers

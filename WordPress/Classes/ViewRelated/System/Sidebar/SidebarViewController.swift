@@ -6,19 +6,28 @@ import WordPressUI
 
 /// The sidebar for the iPad version of the app.
 final class SidebarViewController: UIHostingController<AnyView> {
+    private let viewModel: SidebarViewModel
+
     init(viewModel: SidebarViewModel) {
-        super.init(rootView: AnyView(SidebarView(viewModel: viewModel)))
+        self.viewModel = viewModel
+        super.init(rootView: AnyView(SidebarView(viewModel: viewModel, blogListViewModel: viewModel.blogListViewModel)))
         self.title = Strings.sectionMySites
     }
 
     required dynamic init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        viewModel.onAppear()
+    }
 }
 
 private struct SidebarView: View {
     @ObservedObject var viewModel: SidebarViewModel
-    @StateObject private var blogListViewModel = BlogListViewModel()
+    @ObservedObject var blogListViewModel: BlogListViewModel
     @StateObject private var notificationsButtonViewModel = NotificationsButtonViewModel()
 
     static let displayedSiteLimit = 4
@@ -29,7 +38,7 @@ private struct SidebarView: View {
                 searchResults
             } else {
                 Section {
-                    makeSiteListSection(with: blogListViewModel)
+                    siteListSectionContent
                 }
                 Section(Strings.moreSection) {
                     more
@@ -37,6 +46,8 @@ private struct SidebarView: View {
             }
         }
         .listStyle(.sidebar)
+        .accessibilityIdentifier("sidebar_list")
+        .tint(AppColor.tint)
         .overlay(alignment: .bottom) {
             SidebarProfileContainerView(viewModel: viewModel)
         }
@@ -59,23 +70,26 @@ private struct SidebarView: View {
     // MARK: - Sites
 
     @ViewBuilder
-    private func makeSiteListSection(with viewModel: BlogListViewModel) -> some View {
-        let topSites = viewModel.topSites
-        if !topSites.isEmpty {
-            makeSiteList(with: topSites)
+    private var siteListSectionContent: some View {
+        let topSites = blogListViewModel.topSites
+        if topSites.isEmpty {
+            Label(Strings.createSite, systemImage: "plus.circle")
+                .tag(SidebarSelection.welcome)
         } else {
-            Text(Strings.noSites)
-        }
-        if viewModel.allSites.count > SidebarView.displayedSiteLimit {
-            Button {
-                self.viewModel.navigate(.allSites)
-            } label: {
-                Label(Strings.allSites, systemImage: "rectangle.stack")
+            makeSiteList(with: topSites)
+            if blogListViewModel.allSites.count > SidebarView.displayedSiteLimit {
+                GeometryReader { proxy in
+                    Button {
+                        viewModel.navigate(.allSites(sourceRect: proxy.frame(in: .global)))
+                    } label: {
+                        Label(Strings.allSites, systemImage: "rectangle.stack")
+                    }
+                    .tint(Color.primary)
+                }
             }
-            .tint(Color.primary)
+            addSiteView
+                .tint(Color.primary)
         }
-        addSiteView
-            .tint(Color.primary)
     }
 
     private func makeSiteList(with sites: [BlogListSiteViewModel]) -> some View {
@@ -92,13 +106,7 @@ private struct SidebarView: View {
         let viewModel = AddSiteMenuViewModel(onSelection: { [weak viewModel] in
             viewModel?.navigate(.addSite(selection: $0))
         })
-        let label = Label {
-            Text(Strings.addSite)
-        } icon: {
-            Image(systemName: "plus.square.fill")
-                .foregroundStyle(Color(AppColor.brand), Color(.secondarySystemFill))
-                .font(.title2)
-        }
+        let label = SidebarAddButtonLabel(title: Strings.addSite)
         switch viewModel.actions.count {
         case 0:
             EmptyView()
@@ -123,24 +131,33 @@ private struct SidebarView: View {
         } icon: {
             if notificationsButtonViewModel.counter > 0 {
                 Image(systemName: "bell.badge")
-                    .foregroundStyle(.red, Color(AppColor.brand))
+                    .foregroundStyle(.red, Color(UIAppColor.brand))
             } else {
                 Image(systemName: "bell")
             }
         }
+        .accessibilityIdentifier("sidebar_notifications")
         .tag(SidebarSelection.notifications)
 
         Label(Strings.reader, systemImage: "eyeglasses")
             .tag(SidebarSelection.reader)
+            .accessibilityIdentifier("sidebar_reader")
+
         if RemoteFeatureFlag.domainManagement.enabled() {
             Button(action: { viewModel.navigate(.domains) }) {
                 Label(Strings.domains, systemImage: "network")
             }
+            .accessibilityIdentifier("sidebar_domains")
         }
+        Button(action: { viewModel.navigate(.help) }) {
+            Label(Strings.help, systemImage: "questionmark.circle")
+        }
+        .accessibilityIdentifier("sidebar_help")
 #else
         Button(action: { viewModel.navigate(.help) }) {
             Label(Strings.help, systemImage: "questionmark.circle")
         }
+        .accessibilityIdentifier("sidebar_help")
 #endif
     }
 }
@@ -162,14 +179,11 @@ private struct SidebarProfileContainerView: View {
     var content: some View {
         if let account = viewModel.account {
             Button(action: { viewModel.navigate(.profile) }) {
-                SidebarProfileView(
-                    username: account.username,
-                    displayName: account.displayName,
-                    avatar: account.avatarURL.flatMap(URL.init(string:))
-                )
+                SidebarProfileView(account: account)
             }
             .containerShape(Rectangle())
             .buttonStyle(.plain)
+            .accessibilityIdentifier("sidebar_me")
         } else {
             HStack {
                 if AppConfiguration.isJetpack {
@@ -186,7 +200,7 @@ private struct SidebarProfileContainerView: View {
                             }
                         }
                     }
-                    .tint(Color(AppColor.brand))
+                    .tint(Color(UIAppColor.brand))
                 }
 
                 Spacer()
@@ -198,6 +212,7 @@ private struct SidebarProfileContainerView: View {
                 }
                 .frame(width: 44, height: 44)
                 .contentShape(Rectangle())
+                .accessibilityIdentifier("sidebar_me")
             }
         }
     }
@@ -221,12 +236,26 @@ private extension BlogListViewModel {
     }
 }
 
+struct SidebarAddButtonLabel: View {
+    let title: String
+
+    var body: some View {
+        Label {
+            Text(title)
+        } icon: {
+            Image(systemName: "plus.square.fill")
+                .foregroundStyle(AppColor.brand, Color(.secondarySystemFill))
+                .font(.title2)
+        }
+    }
+}
+
 private enum Strings {
     static let sectionMySites = NSLocalizedString("sidebar.mySitesSectionTitle", value: "Sites", comment: "Sidebar section title on iPad")
     static let moreSection = NSLocalizedString("sidebar.moreSectionTitle", value: "More", comment: "Sidebar section title on iPad")
     static let allSites = NSLocalizedString("sidebar.allSites", value: "All Sites", comment: "Sidebar button title on iPad")
-    static let noSites = NSLocalizedString("sidebar.noSites", value: "No Sites", comment: "Sidebar empty state title on iPad")
     static let addSite = NSLocalizedString("sidebar.addSite", value: "Add Site", comment: "Sidebar button title on iPad")
+    static let createSite = NSLocalizedString("sidebar.createSite", value: "Create Site", comment: "Sidebar button title on iPad")
     static let notifications = NSLocalizedString("sidebar.notifications", value: "Notifications", comment: "Sidebar item on iPad")
     static let reader = NSLocalizedString("sidebar.reader", value: "Reader", comment: "Sidebar item on iPad")
     static let domains = NSLocalizedString("sidebar.domains", value: "Domains", comment: "Sidebar item on iPad")

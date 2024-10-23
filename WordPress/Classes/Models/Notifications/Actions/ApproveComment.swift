@@ -15,7 +15,7 @@ class ApproveComment: DefaultNotificationActionCommand {
     }
 
     override var actionColor: UIColor {
-        return on ? AppColor.neutral(.shade30) : AppColor.primary
+        return on ? UIAppColor.neutral(.shade30) : UIAppColor.primary
     }
 
     override func execute<ObjectType: FormattableContent>(context: ActionContext<ObjectType>) {

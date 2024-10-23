@@ -45,8 +45,6 @@ import AutomatticTracks
 
     weak var navigationMenuDelegate: ReaderNavigationMenuDelegate?
 
-    var jetpackBannerView: JetpackBannerView?
-
     private var syncHelpers: [ReaderAbstractTopic: WPContentSyncHelper] = [:]
 
     private var syncHelper: WPContentSyncHelper? {
@@ -220,10 +218,6 @@ import AutomatticTracks
     // We need to ensure that we only fetch the remote data once per tag to avoid the resultsController from refreshing the table view indefinitely.
     private var tagStreamSyncTracker = Set<String>()
 
-    /// Controls whether the Reader announcement card can be displayed.
-    ///
-    let readerAnnouncementCoordinator = ReaderAnnouncementCoordinator()
-
     lazy var selectInterestsViewController: ReaderSelectInterestsViewController = {
         let title = NSLocalizedString(
             "reader.select.tags.title",
@@ -263,6 +257,8 @@ import AutomatticTracks
     /// Tracks whether or not we should force sync
     /// This is set to true after the Reader Manage view is dismissed
     var shouldForceRefresh = false
+
+    lazy var isSidebarModeEnabled = splitViewController?.isCollapsed == false
 
     // MARK: - Factory Methods
 
@@ -356,7 +352,7 @@ import AutomatticTracks
         NotificationCenter.default.addObserver(self, selector: #selector(postSeenToggled(_:)), name: .ReaderPostSeenToggled, object: nil)
 
         configureCloseButtonIfNeeded()
-        setupStackView()
+        setupTableView()
         setupFooterView()
         setupContentHandler()
         setupResultsStatusView()
@@ -480,8 +476,6 @@ import AutomatticTracks
     }
 
     /// Fetches a tag topic for the value of the `tagSlug` property
-    ///
-    // TODO: - READERNAV - Remove this when the new reader is released
     private func fetchTagTopic() {
         if isViewLoaded {
             displayLoadingStream()
@@ -509,50 +503,12 @@ import AutomatticTracks
 
     // MARK: - Setup
 
-    private func setupStackView() {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-
-        setupTableView(stackView: stackView)
-        setupJetpackBanner(stackView: stackView)
-
-        view.addSubview(stackView)
-        NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
-    }
-
-    private func setupJetpackBanner(stackView: UIStackView) {
-        /// If being presented in a modal, don't show a Jetpack banner
-        if let nav = navigationController, nav.isModal() {
-            return
-        }
-
-        guard JetpackBrandingVisibility.all.enabled else {
-            return
-        }
-        let textProvider = JetpackBrandingTextProvider(screen: JetpackBannerScreen.reader)
-        let bannerView = JetpackBannerView()
-        bannerView.configure(title: textProvider.brandingText()) { [weak self] in
-            guard let self else {
-                return
-            }
-            JetpackBrandingCoordinator.presentOverlay(from: self)
-            JetpackBrandingAnalyticsHelper.trackJetpackPoweredBannerTapped(screen: .reader)
-        }
-        jetpackBannerView = bannerView
-        addTranslationObserver(bannerView)
-        stackView.addArrangedSubview(bannerView)
-    }
-
-    private func setupTableView(stackView: UIStackView) {
+    private func setupTableView() {
         configureRefreshControl()
 
-        stackView.addArrangedSubview(tableViewController.view)
+        view.addSubview(tableViewController.view)
+        tableViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        view.pinSubviewToSafeArea(tableViewController.view)
         tableViewController.didMove(toParent: self)
         tableConfiguration.setup(tableView)
         tableView.delegate = self
@@ -828,10 +784,6 @@ import AutomatticTracks
         navigationController?.pushViewController(controller, animated: animated)
     }
 
-    private func showFollowing() {
-        RootViewCoordinator.sharedPresenter.switchToFollowedSites()
-    }
-
     // MARK: - Blocking
 
     /// Update the post card when a site is blocked from post details.
@@ -1093,14 +1045,6 @@ import AutomatticTracks
                     }
                     strongSelf.updateLastSyncedForTopic(objectID)
                 }
-
-                // Show the announcement card if possible.
-                // Context: `configureStreamHeader()` may be called while the content is still empty.
-                // Calling it here manually ensures that we know whether the content is actually empty or not.
-                self?.showAnnouncementHeaderIfNeeded { [weak self] in
-                    self?.refreshTableViewHeaderLayout()
-                }
-
                 success?(hasMore)
             }
         }
@@ -1570,6 +1514,10 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         }
 
         let cell = tableConfiguration.postCardCell(tableView)
+        if isSidebarModeEnabled {
+            cell.enableSidebarMode()
+        }
+
         let viewModel = ReaderPostCardCellViewModel(contentProvider: post,
                                                     isLoggedIn: isLoggedIn,
                                                     showsSeparator: showsSeparator,
@@ -1700,7 +1648,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             WPAnalytics.trackReader(.readerPostCardTapped, properties: topicPropertyForStats() ?? [:])
         }
 
-        navigationController?.pushFullscreenViewController(controller, animated: true)
+        navigationController?.pushViewController(controller, animated: true)
 
         tableView.deselectRow(at: indexPath, animated: false)
     }
@@ -1957,7 +1905,7 @@ extension ReaderStreamViewController: NoResultsViewControllerDelegate {
         }
 
         if ReaderHelpers.topicIsLiked(topic) {
-            showFollowing()
+            RootViewCoordinator.sharedPresenter.showReader(path: .subscriptions)
         }
     }
 }

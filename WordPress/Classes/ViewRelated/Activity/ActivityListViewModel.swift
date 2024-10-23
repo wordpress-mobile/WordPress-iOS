@@ -385,7 +385,7 @@ class ActivityListViewModel: Observable {
     }()
 }
 
-extension ActivityGroup: Equatable {
+extension ActivityGroup: @retroactive Equatable {
     public static func == (lhs: ActivityGroup, rhs: ActivityGroup) -> Bool {
         lhs.key == rhs.key
     }

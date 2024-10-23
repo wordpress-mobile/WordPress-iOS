@@ -18,7 +18,7 @@ class JetpackScreenshotGeneration: XCTestCase {
         // The app is already launched so we can set it up for screenshots here
         setupSnapshot(app)
 
-        if XCUIDevice.isPad {
+        if XCTestCase.isPad {
             XCUIDevice.shared.orientation = UIDeviceOrientation.landscapeLeft
         } else {
             XCUIDevice.shared.orientation = UIDeviceOrientation.portrait
@@ -57,7 +57,7 @@ class JetpackScreenshotGeneration: XCTestCase {
         try chooseLayout.closeModal()
 
         // Open Menu to be able to access stats
-        if XCUIDevice.isPhone {
+        if XCTestCase.isPhone {
             try mySite.goToMoreMenu()
         }
 
@@ -70,8 +70,7 @@ class JetpackScreenshotGeneration: XCTestCase {
         // Get Notifications screenshot
         let notificationList = try TabNavComponent()
             .goToNotificationsScreen()
-            .dismissNotificationAlertIfNeeded()
-        if XCUIDevice.isPad {
+        if XCTestCase.isPad {
             notificationList
                 .openNotification(withSubstring: "commented on")
         }

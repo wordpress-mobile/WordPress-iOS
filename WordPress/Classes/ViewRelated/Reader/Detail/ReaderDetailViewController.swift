@@ -145,21 +145,12 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Temporary work around until white headers are shipped app-wide,
     /// allowing Reader Detail to use a blue navbar.
     var useCompatibilityMode: Bool {
-        // Use compatibility mode if not presented within the Reader
-        guard let readerNavigationController = RootViewCoordinator.sharedPresenter.readerNavigationController else {
-            return false
-        }
-
         // This enables ALL Reader Detail screens to use a transparent navigation bar style,
         // so that the display settings can be applied correctly.
         //
         // Plus, it looks like we don't have screens with a blue (legacy) navigation bar anymore,
         // so it may be a good chance to clean up and remove `useCompatibilityMode`.
-        if ReaderDisplaySetting.customizationEnabled {
-            return false
-        }
-
-        return !readerNavigationController.viewControllers.contains(self)
+        !ReaderDisplaySetting.customizationEnabled
     }
 
     /// Used to disable ineffective buttons when a Related post fails to load.

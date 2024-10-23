@@ -13,9 +13,11 @@ enum FeatureFlag: Int, CaseIterable {
     case voiceToContent
     case authenticateUsingApplicationPassword
     case tipKit
-    case sidebar
     case newGutenberg
+    case newGutenbergThemeStyles
+    case newGutenbergPlugins
     case serif
+    case readerReset
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -45,13 +47,17 @@ enum FeatureFlag: Int, CaseIterable {
         case .authenticateUsingApplicationPassword:
             return false
         case .tipKit:
-            return BuildConfiguration.current != .appStore
-        case .sidebar:
-            return false
+            return true
         case .newGutenberg:
+            return false
+        case .newGutenbergThemeStyles:
+            return false
+        case .newGutenbergPlugins:
             return false
         case .serif:
             return false
+        case .readerReset:
+            return BuildConfiguration.current != .appStore
         }
     }
 
@@ -85,9 +91,11 @@ extension FeatureFlag {
         case .voiceToContent: "Voice to Content"
         case .authenticateUsingApplicationPassword: "Application Passwords for self-hosted sites"
         case .tipKit: "TipKit"
-        case .sidebar: "Sidebar"
         case .newGutenberg: "Experimental Block Editor"
+        case .newGutenbergThemeStyles: "Experimental Block Editor Styles"
+        case .newGutenbergPlugins: "Experimental Block Editor Plugins"
         case .serif: "Serif"
+        case .readerReset: "Reader Reset"
         }
     }
 }

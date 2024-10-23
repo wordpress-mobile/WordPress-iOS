@@ -105,7 +105,7 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
     }
 
     override func logError(_ error: String) {
-        DDLogError(error)
+        DDLogError("\(error)")
     }
 
     func processQueries() {

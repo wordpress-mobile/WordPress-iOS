@@ -37,9 +37,9 @@ class CollapsableHeaderCollectionViewCell: UICollectionViewCell {
     var accentColor: UIColor {
         return UIColor { (traitCollection: UITraitCollection) -> UIColor in
             if traitCollection.userInterfaceStyle == .dark {
-                return AppColor.primary(.shade40)
+                return UIAppColor.primary(.shade40)
             } else {
-                return AppColor.primary(.shade50)
+                return UIAppColor.primary(.shade50)
             }
         }
     }

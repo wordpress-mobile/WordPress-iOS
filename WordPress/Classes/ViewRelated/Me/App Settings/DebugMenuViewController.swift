@@ -113,10 +113,6 @@ private func showSuccessNotice() {
 }
 
 private final class DebugMenuViewModel: ObservableObject {
-    var blog: Blog? {
-        RootViewCoordinator.sharedPresenter.mySitesCoordinator.currentBlog
-    }
-
     var isForcedCrashLoggingEnabled: Bool {
         get { UserSettings.userHasForcedCrashLoggingEnabled }
         set {

@@ -1,4 +1,4 @@
-class AsyncOperation: Operation {
+class AsyncOperation: Operation, @unchecked Sendable {
     enum State: String {
         case isReady, isExecuting, isFinished
     }

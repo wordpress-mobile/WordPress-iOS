@@ -59,7 +59,7 @@ private struct ReaderTagCardEmptyCellView: View {
             Image(systemName: "wifi.slash")
                 .resizable()
                 .frame(width: iconLength, height: iconLength)
-                .foregroundStyle(Color.DS.Foreground.secondary)
+                .foregroundStyle(Color.secondary)
 
             // added to double the padding between the Image and the VStack.
             Spacer().frame(height: .hairlineBorderWidth)

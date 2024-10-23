@@ -64,7 +64,7 @@ class ManagedDomain: NSManagedObject {
     }
 }
 
-extension Domain: Equatable {}
+extension Domain: @retroactive Equatable {}
 
 public func ==(lhs: Domain, rhs: Domain) -> Bool {
     return lhs.domainName == rhs.domainName &&

@@ -208,7 +208,7 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
     }
 
     override func logError(_ error: String) {
-        DDLogError(error)
+        DDLogError("\(error)")
     }
 
     func processQueries() {

@@ -138,25 +138,9 @@ extension ReaderTagsTableViewModel {
 
     /// Presents a new view controller for selecting topics to follow.
     private func showSelectInterests() {
-        let configuration = ReaderSelectInterestsConfiguration(
-            title: NSLocalizedString(
-                "reader.select.interests.follow.title",
-                value: "Follow tags",
-                comment: "Screen title. Reader select interests title label text."
-            ),
-            subtitle: nil,
-            buttonTitle: nil,
-            loading: NSLocalizedString(
-                "reader.select.interests.following",
-                value: "Following new tags...",
-                comment: "Label displayed to the user while loading their selected interests"
-            )
-        )
-
         let topics = tableViewHandler.resultsController?.fetchedObjects as? [ReaderTagTopic] ?? []
 
-        let controller = ReaderSelectInterestsViewController(configuration: configuration,
-                                                             topics: topics)
+        let controller = ReaderSelectInterestsViewController(topics: topics)
 
         controller.didSaveInterests = { [weak self] _ in
             self?.dismissModal()

@@ -1,23 +1,45 @@
 import UIKit
 import Combine
+import SwiftUI
 import WordPressAuthenticator
+import WordPressUI
+import WordPressShared
 
 /// The presenter that uses triple-column navigation for `.regular` size classes
 /// and a tab-bar based navigation for `.compact` size class.
 final class SplitViewRootPresenter: RootViewPresenter {
     private let sidebarViewModel = SidebarViewModel()
     private let splitVC = UISplitViewController(style: .tripleColumn)
+    private let tabBarVC: WPTabBarController
+    private weak var sitePickerPopoverVC: UIViewController?
     private var cancellables: [AnyCancellable] = []
 
+    private var siteContent: SiteSplitViewContent?
+    @Lazy private var notificationsContent = NotificationsSplitViewContent()
+    @Lazy private var readerPresenter = ReaderPresenter()
+
+    private var displayedContent: SplitViewDisplayable?
+
+    /// Is the app displaying tab bar UI instead of the full split view UI (with sidebar).
+    private var isDisplayingTabBar: Bool {
+        if splitVC.isCollapsed {
+            wpAssert(splitVC.viewController(for: .compact) == tabBarVC, "Split view is collapsed, but is not displaying the tab bar view controller")
+            return true
+        }
+
+        return false
+    }
+
     init() {
-        // TODO: (wpsidebar) refactor
-        self.mySitesCoordinator = MySitesCoordinator(meScenePresenter: MeScenePresenter(), onBecomeActiveTab: {})
+        tabBarVC = WPTabBarController(staticScreens: false)
+
+        splitVC.delegate = self
+        splitVC.view.accessibilityIdentifier = "root_vc"
 
         let sidebarVC = SidebarViewController(viewModel: sidebarViewModel)
         let navigationVC = makeRootNavigationController(with: sidebarVC)
         splitVC.setViewController(navigationVC, for: .primary)
 
-        let tabBarVC = WPTabBarController(staticScreens: false)
         splitVC.setViewController(tabBarVC, for: .compact)
 
         NotificationCenter.default.publisher(for: MySiteViewController.didPickSiteNotification).sink { [weak self] in
@@ -27,9 +49,10 @@ final class SplitViewRootPresenter: RootViewPresenter {
             self?.sidebarViewModel.selection = .blog(TaggedManagedObjectID(site))
         }.store(in: &cancellables)
 
-        sidebarViewModel.$selection.compactMap { $0 }.sink { [weak self] in
-            self?.configure(for: $0)
-        }.store(in: &cancellables)
+        // -warning: List occasionally sets the selection to `nil` when switching items.
+        sidebarViewModel.$selection.compactMap { $0 }
+            .sink { [weak self] in self?.configure(for: $0) }
+            .store(in: &cancellables)
 
         sidebarViewModel.navigate = { [weak self] in
             self?.navigate(to: $0)
@@ -52,44 +75,43 @@ final class SplitViewRootPresenter: RootViewPresenter {
         }
 
         switch selection {
-        case .empty:
-            // TODO: (wpsidebar) add support for the "no sites" scenario
-            break
+        case .notifications:
+            splitVC.preferredSplitBehavior = .tile
+        default:
+            splitVC.preferredSplitBehavior = .automatic
+        }
+
+        let content: SplitViewDisplayable
+        switch selection {
+        case .welcome:
+            content = WelcomeSplitViewContent { [weak self] in
+                self?.navigate(to: .addSite(selection: $0))
+            }
         case .blog(let objectID):
-            do {
-                let site = try ContextManager.shared.mainContext.existingObject(with: objectID)
-                showDetails(for: site)
-                splitVC.hide(.primary)
-            } catch {
-                // TODO: (wpsidebar) show empty state
+            if let siteContent, siteContent.blog.objectID == objectID.objectID {
+                content = siteContent
+            } else {
+                do {
+                    let site = try ContextManager.shared.mainContext.existingObject(with: objectID)
+                    siteContent = SiteSplitViewContent(blog: site)
+                    content = siteContent!
+                } catch {
+                    return wpAssertionFailure("selected blog not found")
+                }
             }
         case .notifications:
-            // TODO: (wpsidebar) update tab bar item when new notifications arrive
-            let notificationsVC = UIStoryboard(name: "Notifications", bundle: nil).instantiateInitialViewController() as! NotificationsViewController
-            notificationsVC.isSidebarModeEnabled = true
-            let navigationVC = UINavigationController(rootViewController: notificationsVC)
-            splitVC.setViewController(navigationVC, for: .supplementary)
+            content = notificationsContent
         case .reader:
-            let readerVC = ReaderViewController()
-            let readerSidebarVS = ReaderSidebarViewController(viewModel: readerVC.readerTabViewModel)
-            splitVC.setViewController(makeRootNavigationController(with: readerSidebarVS), for: .supplementary)
-            splitVC.setViewController(UINavigationController(rootViewController: readerVC), for: .secondary)
+            content = readerPresenter
         }
-    }
 
-    private func showDetails(for site: Blog) {
-        RecentSitesService().touch(blog: site)
+        display(content: content)
 
-        let siteMenuVC = SiteMenuViewController(blog: site)
-        siteMenuVC.delegate = self
-        let navigationVC = UINavigationController(rootViewController: siteMenuVC)
-        splitVC.setViewController(navigationVC, for: .supplementary)
-
-        // Reset navigation stack
-        splitVC.setViewController(UINavigationController(), for: .secondary)
-
-        // TODO: (wpsidebar) Refactor this (initial .secondary vc managed based on the VC presentation)
-        _ = siteMenuVC.view
+        // The `main.async` call fixed an issue where sometimes the sidebar doesn't
+        // update the displayed selection in the list after switching to a new item
+        DispatchQueue.main.async {
+            self.splitVC.hide(.primary)
+        }
     }
 
     private func makeRootNavigationController(with viewController: UIViewController) -> UINavigationController {
@@ -101,8 +123,8 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
     private func navigate(to step: SidebarNavigationStep) {
         switch step {
-        case .allSites:
-            showSitePicker()
+        case .allSites(let sourceRect):
+            showSitePicker(sourceRect: sourceRect)
         case .addSite(let selection):
             showAddSiteScreen(selection: selection)
         case .domains:
@@ -122,7 +144,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
             navigationVC.modalPresentationStyle = .formSheet
             splitVC.present(navigationVC, animated: true)
         case .profile:
-            showMeScreen()
+            showMeScreen(completion: nil)
         case .signIn:
             Task {
                 await self.signIn()
@@ -130,7 +152,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
         }
     }
 
-    private func showSitePicker() {
+    private func showSitePicker(sourceRect: CGRect) {
         let sitePickerVC = SiteSwitcherViewController(
             configuration: BlogListConfiguration(shouldHideRecentSites: true),
             addSiteAction: { [weak self] in
@@ -143,7 +165,12 @@ final class SplitViewRootPresenter: RootViewPresenter {
             }
         )
         let navigationVC = UINavigationController(rootViewController: sitePickerVC)
-        navigationVC.modalPresentationStyle = .formSheet
+        navigationVC.modalPresentationStyle = .popover
+        navigationVC.popoverPresentationController?.sourceView = splitVC.view
+        navigationVC.popoverPresentationController?.sourceRect = sourceRect
+        // Show no arrow and simply overlay the sidebar
+        navigationVC.popoverPresentationController?.permittedArrowDirections = [.left]
+        sitePickerPopoverVC = navigationVC
         self.splitVC.present(navigationVC, animated: true)
         WPAnalytics.track(.sidebarAllSitesTapped)
     }
@@ -186,129 +213,84 @@ final class SplitViewRootPresenter: RootViewPresenter {
         if let newSite = Blog.lastUsedOrFirst(in: ContextManager.shared.mainContext) {
             self.sidebarViewModel.selection = .blog(TaggedManagedObjectID(newSite))
         } else {
-            self.sidebarViewModel.selection = .empty
+            self.sidebarViewModel.selection = .welcome
             WordPressAppDelegate.shared?.windowManager.showSignInUI()
         }
     }
 
     // MARK: – RootViewPresenter
 
+    // MARK: RootViewPresenter (General)
+
     var rootViewController: UIViewController { splitVC }
 
-    var currentViewController: UIViewController?
+    func currentlySelectedScreen() -> String {
+        if splitVC.isCollapsed {
+            return tabBarVC.currentlySelectedScreen()
+        } else {
+            switch sidebarViewModel.selection {
+            case .welcome: return "Welcome"
+            case .blog: return WPTabBarCurrentlySelectedScreenSites
+            case .notifications: return WPTabBarCurrentlySelectedScreenNotifications
+            case .reader: return WPTabBarCurrentlySelectedScreenReader
+            default: return ""
+            }
+        }
+    }
 
-    func showBlogDetails(for blog: Blog) {
+    // MARK: RootViewPresenter (Sites)
+
+    func currentlyVisibleBlog() -> Blog? {
+        assert(Thread.isMainThread)
+        return siteContent?.blog
+    }
+
+    func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection?, userInfo: [AnyHashable: Any]) {
+        if splitVC.isCollapsed {
+            tabBarVC.showBlogDetails(for: blog, then: subsection, userInfo: userInfo)
+        } else {
+            sidebarViewModel.selection = .blog(TaggedManagedObjectID(blog))
+            if let subsection {
+                wpAssert(siteContent != nil, "failed to open blog subsection")
+                siteContent?.showSubsection(subsection, userInfo: userInfo)
+            }
+        }
+    }
+
+    func showMySitesTab() {
+        guard let blog = currentlyVisibleBlog() else { return }
         sidebarViewModel.selection = .blog(TaggedManagedObjectID(blog))
     }
 
-    func getMeScenePresenter() -> any ScenePresenter {
-        fatalError()
+    // MARK: RootViewPresenter (Reader)
+
+    func showReader(path: ReaderNavigationPath?) {
+        if splitVC.isCollapsed {
+            tabBarVC.showReader(path: path)
+        } else {
+            sidebarViewModel.selection = .reader
+            if let path {
+                wpAssert($readerPresenter.value != nil)
+                readerPresenter.navigate(to: path)
+            }
+        }
     }
 
-    func currentlySelectedScreen() -> String {
-        ""
+    // MARK: RootViewPresenter (Notifications)
+
+    func showNotificationsTab(completion: ((NotificationsViewController) -> Void)?) {
+        sidebarViewModel.selection = .notifications
+        completion?(notificationsContent.notificationsViewController)
     }
 
-    // TODO: (wpsidebar) Can we remove it?
-    func currentlyVisibleBlog() -> Blog? {
-        assert(Thread.isMainThread)
+    // MARK: RootViewPresenter (Me)
 
-        guard case let .blog(id) = sidebarViewModel.selection else {
-            return nil
+    func showMeScreen(completion: ((MeViewController) -> Void)?) {
+        if isDisplayingTabBar {
+            tabBarVC.showMeScreen(completion: completion)
+            return
         }
 
-        return try? ContextManager.shared.mainContext.existingObject(with: id)
-    }
-
-    func willDisplayPostSignupFlow() {
-        fatalError()
-    }
-
-    var readerTabViewController: ReaderTabViewController?
-
-    var readerCoordinator: ReaderCoordinator?
-
-    var readerNavigationController: UINavigationController?
-
-    func showReaderTab() {
-        fatalError()
-    }
-
-    func showReaderTab(forPost: NSNumber, onBlog: NSNumber) {
-        fatalError()
-    }
-
-    func switchToDiscover() {
-        fatalError()
-    }
-
-    func navigateToReaderSearch() {
-        fatalError()
-    }
-
-    func switchToTopic(where predicate: (ReaderAbstractTopic) -> Bool) {
-        fatalError()
-    }
-
-    func switchToMyLikes() {
-        fatalError()
-    }
-
-    func switchToFollowedSites() {
-        fatalError()
-    }
-
-    func navigateToReaderSite(_ topic: ReaderSiteTopic) {
-        fatalError()
-    }
-
-    func navigateToReaderTag(_ tagSlug: String) {
-        fatalError()
-    }
-
-    func navigateToReader(_ pushControlller: UIViewController?) {
-        fatalError()
-    }
-
-    var mySitesCoordinator: MySitesCoordinator
-
-    func showMySitesTab() {
-        fatalError()
-    }
-
-    func showPages(for blog: Blog) {
-        fatalError()
-    }
-
-    func showPosts(for blog: Blog) {
-        fatalError()
-    }
-
-    func showMedia(for blog: Blog) {
-        fatalError()
-    }
-
-    var notificationsViewController: NotificationsViewController?
-
-    func showNotificationsTab() {
-        fatalError()
-    }
-
-    func showNotificationsTabForNote(withID notificationID: String) {
-        fatalError()
-    }
-
-    func switchNotificationsTabToNotificationSettings() {
-        fatalError()
-    }
-
-    func popNotificationsTabToRoot() {
-        fatalError()
-    }
-
-    var meViewController: MeViewController?
-
-    func showMeScreen() {
         let meVC = MeViewController()
         meVC.isSidebarModeEnabled = true
         meVC.navigationItem.rightBarButtonItem = {
@@ -321,19 +303,94 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
         let navigationVC = UINavigationController(rootViewController: meVC)
         navigationVC.modalPresentationStyle = .formSheet
-        splitVC.present(navigationVC, animated: true)
+        splitVC.present(navigationVC, animated: true) {
+            completion?(meVC)
+        }
     }
 }
 
-extension SplitViewRootPresenter: SiteMenuViewControllerDelegate {
-    func siteMenuViewController(_ siteMenuViewController: SiteMenuViewController, showDetailsViewController viewController: UIViewController) {
-        if viewController is UINavigationController ||
-            viewController is UISplitViewController {
-            splitVC.setViewController(viewController, for: .secondary)
-        } else {
-            // Reset previous navigation or split stack
-            let navigationVC = UINavigationController(rootViewController: viewController)
-            splitVC.setViewController(navigationVC, for: .secondary)
+extension SplitViewRootPresenter: UISplitViewControllerDelegate {
+    func splitViewController(_ svc: UISplitViewController, willHide column: UISplitViewController.Column) {
+        if column == .primary {
+            sitePickerPopoverVC?.presentingViewController?.dismiss(animated: true)
         }
+    }
+
+    // TODO: refactor this
+    func splitViewControllerDidCollapse(_ svc: UISplitViewController) {
+        let mainContext = ContextManager.shared.mainContext
+        switch sidebarViewModel.selection {
+        case .blog(let objectID):
+            guard let blog = try? mainContext.existingObject(with: objectID) else {
+                return
+            }
+            if let navigationVC = svc.viewController(for: .supplementary) as? UINavigationController,
+               let menuVC = navigationVC.viewControllers.first as? SiteMenuViewController,
+               let subsection = menuVC.selectedSubsection, subsection != .home {
+                tabBarVC.showBlogDetails(for: blog, then: subsection, userInfo: [:])
+            } else {
+                tabBarVC.showBlogDetails(for: blog)
+            }
+        case .reader:
+            if let selection = readerPresenter.sidebar.viewModel.selection {
+                switch selection {
+                case .main(let readerStaticScreen):
+                    switch readerStaticScreen {
+                    case .recent: tabBarVC.showReader(path: .recent)
+                    case .discover: tabBarVC.showReader(path: .discover)
+                    case .saved: tabBarVC.showReader()
+                    case .likes: tabBarVC.showReader(path: .likes)
+                    case .search: tabBarVC.showReader(path: .search)
+                    }
+                case .allSubscriptions:
+                    tabBarVC.showReader(path: .subscriptions)
+                default:
+                    tabBarVC.showReader()
+                }
+            }
+        case .notifications:
+            tabBarVC.showNotificationsTab()
+        default:
+            break
+        }
+    }
+}
+
+// MARK: - Content displayed within the split view, alongside the sidebar
+
+/// This protocol is an abstraction of the `supplementary` and `secondary` columns in a split view.
+///
+/// When in full-screen mode, `SplitViewRootPresenter` presents a triple-column split view. The sidebar is displayed in
+/// the primary column, which is always accessible. The `supplementary` and `secondary` columns display different
+/// content, depending on what users choose from the sidebar.
+protocol SplitViewDisplayable: AnyObject {
+    var supplementary: UINavigationController { get }
+    var secondary: UINavigationController { get set }
+
+    func displayed(in splitVC: UISplitViewController)
+}
+
+extension SplitViewDisplayable {
+    private func isDisplaying(in splitVC: UISplitViewController) -> Bool {
+        splitVC.viewController(for: .supplementary) === self.supplementary
+    }
+
+    func refresh(with splitVC: UISplitViewController) {
+        guard isDisplaying(in: splitVC) else { return }
+        guard let currentContent = splitVC.viewController(for: .secondary) as? UINavigationController else { return }
+
+        self.secondary = currentContent
+    }
+}
+
+private extension SplitViewRootPresenter {
+    func display(content: SplitViewDisplayable) {
+        displayedContent?.refresh(with: splitVC)
+        displayedContent = content
+
+        splitVC.setViewController(content.supplementary, for: .supplementary)
+        splitVC.setViewController(content.secondary, for: .secondary)
+
+        content.displayed(in: splitVC)
     }
 }

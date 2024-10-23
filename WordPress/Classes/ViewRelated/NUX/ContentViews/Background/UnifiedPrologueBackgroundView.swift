@@ -7,9 +7,9 @@ struct UnifiedPrologueBackgroundView: View {
             let width = content.size.width
             let radius = min(height, width) * 0.16
 
-            let purpleCircleColor = Color(UIColor(light: AppColor.purple(.shade10), dark: AppColor.purple(.shade70)))
-            let greenCircleColor = Color(UIColor(light: AppColor.celadon(.shade5), dark: AppColor.celadon(.shade70)))
-            let blueCircleColor = Color(UIColor(light: AppColor.blue(.shade20), dark: AppColor.blue(.shade80)))
+            let purpleCircleColor = Color(UIColor(light: UIAppColor.purple(.shade10), dark: UIAppColor.purple(.shade70)))
+            let greenCircleColor = Color(UIColor(light: UIAppColor.celadon(.shade5), dark: UIAppColor.celadon(.shade70)))
+            let blueCircleColor = Color(UIColor(light: UIAppColor.blue(.shade20), dark: UIAppColor.blue(.shade80)))
             let circleOpacity: Double = 0.8
 
             VStack {

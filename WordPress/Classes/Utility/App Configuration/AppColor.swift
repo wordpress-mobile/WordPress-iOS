@@ -1,7 +1,8 @@
 import Foundation
 import ColorStudio
+import SwiftUI
 
-struct AppColor {
+struct UIAppColor {
     static func primary(_ shade: ColorStudioShade) -> UIColor {
         CSColor.Blue.shade(shade)
     }
@@ -58,6 +59,10 @@ struct AppColor {
         CSColor.Celadon.shade(shade)
     }
 
+    static func wordPressBlue(_ shade: ColorStudioShade) -> UIColor {
+        CSColor.WordPressBlue.shade(shade)
+    }
+
     static func jetpackGreen(_ shade: ColorStudioShade) -> UIColor {
         CSColor.JetpackGreen.shade(shade)
     }
@@ -84,20 +89,31 @@ struct AppColor {
 
     static let accent = CSColor.Pink.base
 
-    #if IS_JETPACK
-    static let brand = CSColor.JetpackGreen.base
-    #endif
+#if IS_JETPACK
+    static let tint = UIColor.label
+    static let brand = UIColor(light: CSColor.JetpackGreen.shade(.shade40), dark: CSColor.JetpackGreen.shade(.shade30))
 
-    #if IS_WORDPRESS
+    static func brand(_ shade: ColorStudioShade) -> UIColor {
+        CSColor.JetpackGreen.shade(shade)
+    }
+#endif
+
+#if IS_WORDPRESS
+    static let tint = brand
     static let brand = CSColor.WordPressBlue.base
-    #endif
+
+    static func brand(_ shade: ColorStudioShade) -> UIColor {
+        CSColor.WordPressBlue.shade(shade)
+    }
+#endif
 
     static let divider = CSColor.Gray.shade(.shade10)
     static let error = CSColor.Red.base
     static let gray = CSColor.Gray.base
     static let blue = CSColor.Blue.base
 
-    static let primary = UIColor.label
+    /// - warning: soft-deprecated, use `UIAppColor.tint`.
+    static let primary = brand
 
     static let success = CSColor.Green.base
     static let text = CSColor.Gray.shade(.shade80)
@@ -118,4 +134,11 @@ struct AppColor {
     static let placeholderElementFaded: UIColor = UIColor(light: .systemGray6, dark: .systemGray5)
 
     static let prologueBackground = UIColor(light: blue(.shade0), dark: .systemBackground)
+
+    static let switchStyle: SwitchToggleStyle = SwitchToggleStyle(tint: Color(UIAppColor.brand))
+}
+
+struct AppColor {
+    static let tint = Color(UIAppColor.tint)
+    static let brand = Color(UIAppColor.brand)
 }

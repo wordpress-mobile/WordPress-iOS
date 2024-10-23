@@ -8,6 +8,6 @@ extension WPStyleGuide {
     public struct Comments {
 
         static let gravatarPlaceholderImage = UIImage(named: "gravatar") ?? UIImage()
-        static let pendingIndicatorColor = AppColor.yellow(.shade20)
+        static let pendingIndicatorColor = UIAppColor.yellow(.shade20)
     }
 }

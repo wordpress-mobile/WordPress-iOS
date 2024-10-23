@@ -72,7 +72,7 @@ class JetpackLoginViewController: UIViewController {
         tacButton.titleLabel?.numberOfLines = 0
 
         faqButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .medium)
-        faqButton.setTitleColor(AppColor.primary, for: .normal)
+        faqButton.setTitleColor(UIAppColor.primary, for: .normal)
 
         updateMessageAndButton()
     }

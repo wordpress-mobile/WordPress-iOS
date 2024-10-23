@@ -1,4 +1,4 @@
-final class StatsPeriodAsyncOperation<TimeStatsType: StatsTimeIntervalData>: AsyncOperation {
+final class StatsPeriodAsyncOperation<TimeStatsType: StatsTimeIntervalData>: AsyncOperation, @unchecked Sendable {
     typealias StatsPeriodCompletion = (TimeStatsType?, Error?) -> Void
 
     private weak var service: StatsServiceRemoteV2?
@@ -36,7 +36,7 @@ final class StatsPeriodAsyncOperation<TimeStatsType: StatsTimeIntervalData>: Asy
     }
 }
 
-final class StatsPublishedPostsAsyncOperation: AsyncOperation {
+final class StatsPublishedPostsAsyncOperation: AsyncOperation, @unchecked Sendable {
     typealias StatsPeriodCompletion = (StatsPublishedPostsTimeIntervalData?, Error?) -> Void
 
     private weak var service: StatsServiceRemoteV2?
@@ -65,7 +65,7 @@ final class StatsPublishedPostsAsyncOperation: AsyncOperation {
     }
 }
 
-final class StatsPostDetailAsyncOperation: AsyncOperation {
+final class StatsPostDetailAsyncOperation: AsyncOperation, @unchecked Sendable {
     typealias StatsPeriodCompletion = (StatsPostDetails?, Error?) -> Void
 
     private weak var service: StatsServiceRemoteV2?

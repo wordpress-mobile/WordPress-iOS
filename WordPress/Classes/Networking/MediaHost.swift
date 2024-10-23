@@ -2,7 +2,7 @@ import Foundation
 
 /// Defines a media host for request authentication purposes.
 ///
-enum MediaHost: Equatable {
+enum MediaHost: Equatable, Sendable {
     case publicSite
     case publicWPComSite
     case privateSelfHostedSite

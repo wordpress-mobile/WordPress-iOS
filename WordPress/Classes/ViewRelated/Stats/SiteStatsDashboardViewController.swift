@@ -104,13 +104,13 @@ class SiteStatsDashboardViewController: UIViewController {
         setupFilterBar()
         restoreSelectedDateFromUserDefaults()
         restoreSelectedTabFromUserDefaults()
-        addWillEnterForegroundObserver()
         configureNavBar()
         view.accessibilityIdentifier = "stats-dashboard"
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        addWillEnterForegroundObserver()
         JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: self, source: .stats)
     }
 
@@ -187,7 +187,6 @@ private extension SiteStatsDashboardViewController {
     func setupFilterBar() {
         WPStyleGuide.Stats.configureFilterTabBar(filterTabBar)
         filterTabBar.isAutomaticTabSizingStyleEnabled = true
-        filterTabBar.isFollowingReaderGuide = true
         filterTabBar.items = displayedTabs
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
         filterTabBar.accessibilityIdentifier = "site-stats-dashboard-filter-bar"
@@ -245,18 +244,24 @@ private extension SiteStatsDashboardViewController {
                 pageViewController?.setViewControllers([insightsTableViewController],
                                                        direction: .forward,
                                                        animated: false)
+            } else {
+                insightsTableViewController.refreshInsights()
             }
         case .traffic:
             if oldSelectedTab != .traffic || pageViewControllerIsEmpty {
                 pageViewController?.setViewControllers([trafficTableViewController],
                                                        direction: .forward,
                                                        animated: false)
+            } else {
+                trafficTableViewController.refreshData()
             }
         case .subscribers:
             if oldSelectedTab != .subscribers || pageViewControllerIsEmpty {
                 pageViewController?.setViewControllers([subscribersViewController],
                                                        direction: .forward,
                                                        animated: false)
+            } else {
+                subscribersViewController.refreshData()
             }
         }
     }
@@ -290,8 +295,6 @@ struct SiteStatsDashboardPreferences {
 
         let periodKey = lastSelectedStatsTabTypeKey(forSiteID: siteID)
         UserPersistentStoreFactory.instance().set(tabType.rawValue, forKey: periodKey)
-
-        let unitKey = lastSelectedStatsUnitTypeKey(forSiteID: siteID)
     }
 
     static func setSelected(periodUnit: StatsPeriodUnit) {

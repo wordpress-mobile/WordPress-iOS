@@ -14,10 +14,10 @@ struct DomainsStateView: View {
             Text(viewModel.title)
                 .font(Font.DS.heading3)
                 .multilineTextAlignment(.center)
-                .foregroundStyle(Color.DS.Foreground.secondary)
+                .foregroundStyle(Color(.secondaryLabel))
             Text(viewModel.description)
                 .font(Font.DS.Body.medium)
-                .foregroundStyle(Color.DS.Foreground.secondary)
+                .foregroundStyle(Color(.secondaryLabel))
                 .multilineTextAlignment(.center)
             if let button = viewModel.button {
                 Spacer()

@@ -9,6 +9,7 @@ final class BlogListViewModel: NSObject, ObservableObject {
     @Published private(set) var recentSites: [BlogListSiteViewModel] = []
     @Published private(set) var allSites: [BlogListSiteViewModel] = []
     @Published private(set) var searchResults: [BlogListSiteViewModel] = []
+    @Published var isPresentedInPopover = false
 
     private let configuration: BlogListConfiguration
     private var rawSites: [Blog] = []
@@ -18,6 +19,8 @@ final class BlogListViewModel: NSObject, ObservableObject {
     private let eventTracker: EventTracker
     private let recentSitesService: RecentSitesService
     private var syncBlogsTask: Task<Void, Error>?
+
+    var onAddSiteTapped: (AddSiteMenuViewModel.Selection) -> Void = { _ in }
 
     init(configuration: BlogListConfiguration = .defaultConfig,
          contextManager: ContextManager = ContextManager.sharedInstance(),
@@ -77,7 +80,7 @@ final class BlogListViewModel: NSObject, ObservableObject {
         updateDisplayedSites()
     }
 
-    private func updateDisplayedSites() {
+    func updateDisplayedSites() {
         rawSites = getFilteredSites(from: fetchedResultsController)
 
         var sitesByURL: [String: Blog] = [:]
@@ -139,6 +142,18 @@ final class BlogListViewModel: NSObject, ObservableObject {
 
     private func getFilteredSites(from fetchedResultsController: NSFetchedResultsController<Blog>) -> [Blog] {
         var blogs = fetchedResultsController.fetchedObjects ?? []
+
+        // This a workaround for an issue where site lists reloads and triggers
+        // `Blog.wordPressComRestApi` that subsequently shows the "enter password"
+        // screen on user-initiated logout. The chain of events:
+        // - `removeDefaultWordPressComAccount` calls `WPAccountDefaultWordPressComAccountChangedNotification`
+        // - `NotificationsViewController` calls `resetNotifications` and deletes
+        // all notifications (why this class?) and saves context
+        // - `BlogListViewModel` reloads in the middle of the logout procedure
+        blogs = blogs.filter {
+            !($0.account?.isDeleted == true)
+        }
+
         if configuration.shouldHideSelfHostedSites {
             blogs = blogs.filter { $0.isAccessibleThroughWPCom() }
         }

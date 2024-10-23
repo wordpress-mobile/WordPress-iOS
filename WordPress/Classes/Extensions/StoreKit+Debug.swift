@@ -6,7 +6,7 @@ extension SKProduct {
     }
 }
 
-extension SKPaymentTransactionState: CustomStringConvertible {
+extension SKPaymentTransactionState: @retroactive CustomStringConvertible {
     public var description: String {
         switch self {
         case .purchasing:

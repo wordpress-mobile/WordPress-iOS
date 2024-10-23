@@ -135,6 +135,15 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
         }
     }
 
+    func refreshData() {
+        guard viewIsVisible() else {
+            refreshControl.endRefreshing()
+            return
+        }
+        addViewModelListeners()
+        viewModel.refreshTrafficOverviewData(withDate: datePickerViewModel.date, forPeriod: datePickerViewModel.period)
+    }
+
 }
 
 // MARK: - Private Extension
@@ -188,15 +197,6 @@ private extension SiteStatsPeriodTableViewController {
         clearExpandedRows()
         refreshControl.beginRefreshing()
         refreshData()
-    }
-
-    func refreshData() {
-        guard viewIsVisible() else {
-            refreshControl.endRefreshing()
-            return
-        }
-        addViewModelListeners()
-        viewModel.refreshTrafficOverviewData(withDate: datePickerViewModel.date, forPeriod: datePickerViewModel.period)
     }
 
     func applyTableUpdates() {

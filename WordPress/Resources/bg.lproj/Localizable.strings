@@ -9,8 +9,7 @@
 /* Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title. */
 "%1$@ on %2$@" = "%1$@ за %2$@";
 
-/* Accessibility label for comments button (plural)
-   Number of Comments per Page */
+/* Number of Comments per Page */
 "%@ comments" = "%@ коментара";
 
 /* Number of days after which comments should autoclose */
@@ -122,9 +121,6 @@
 
 /* No comment provided by engineer. */
 "Activity Logs" = "История на активността";
-
-/* The title on the add category screen */
-"Add a Category" = "Добавяне на категория";
 
 /* No comment provided by engineer. */
 "Add alt text" = "Добавете описателен текст";
@@ -392,9 +388,6 @@
    Menu item label for linking a specific category. */
 "Category" = "Категория";
 
-/* Error popup title to indicate that there was no category title filled in. */
-"Category title missing." = "Липсва заглавие на категорията.";
-
 /* Center alignment for an image. Should be the same as in core WP. */
 "Center" = "Центриране";
 
@@ -587,9 +580,6 @@
 /* This is the text we display to the user when we ask them for a review and they've indicated they don't like the app */
 "Could you tell us how we could improve?" = "С какво можем да бъдем по-добри?";
 
-/* No comment provided by engineer. */
-"Couldn't Connect" = "Неуспешно свързване";
-
 /* Period Stats 'Countries' header */
 "Countries" = "Държава";
 
@@ -739,7 +729,6 @@
 "Domains" = "Домейни";
 
 /* A done button
-   Accessibility label for the Done button in the Me screen.
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
@@ -751,8 +740,7 @@
    Tapping a button with this label allows the user to exit the Site Creation flow
    Title for a Done button.
    Title for button that will dismiss this view
-   Title for the button that will dismiss this view.
-   Title of the Done button on the me page */
+   Title for the button that will dismiss this view. */
 "Done" = "Готово";
 
 /* Name for the status of a draft post. */
@@ -1317,7 +1305,6 @@
 /* Accessibility label for more button in dashboard quick start card.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
-   Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
    Action button to display more available options */
 "More" = "Още";
@@ -1536,9 +1523,6 @@
 /* WordPress.com Research Footer Text */
 "Opportunities to participate in WordPress.com research & surveys." = "Възможности да участвате във WordPress.com изследвания и проучвания.";
 
-/* Placeholder to indicate that filling out the field is optional. */
-"Optional" = "По избор";
-
 /* Accessibility label for Ordered list button on formatting toolbar. */
 "Ordered List" = "Подреден списък";
 
@@ -1583,8 +1567,7 @@
    Settings: Comments Paging preferences */
 "Paging" = "Страници";
 
-/* Placeholder to set a parent category for a new category.
-   Title for selecting parent category of a category */
+/* Title for selecting parent category of a category */
 "Parent Category" = "Категория родител";
 
 /* Accessibility label for the password text field in the self-hosted login page.
@@ -1893,7 +1876,6 @@
 
 /* Menus save button title
    Save Action
-   Save button label (saving content, ex: Post, Page, Comment, Category).
    Save button label (saving content, ex: Post, Page, Comment).
    Save draft post action on share extension site picker screen.
    Settings Text save button title
@@ -2235,9 +2217,6 @@
 /* People: Invitation Error */
 "The user already has the specified role. Please, try assigning a different role." = "Потребителят вече има тази роля. Опитайте да назначите друга роля.";
 
-/* No comment provided by engineer. */
-"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again." = "Потребителското име или паролата, запазени в приложението, може да не са актуални. Моля, въведете отново паролата в настройките и опитайте отново.";
-
 /* Title of alert when theme activation succeeds */
 "Theme Activated" = "Темата е активирана";
 
@@ -2315,12 +2294,8 @@
    Label for list of stats by content title.
    Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
-   Post title
-   Title of the new Category being created. */
+   Post title */
 "Title" = "Заглавие";
-
-/* Error popup message to indicate that there was no category title filled in. */
-"Title for a category is mandatory." = "Заглавието на категория е задължително";
 
 /* Comments Today Section Header
    Insights 'Today' header
@@ -2394,7 +2369,6 @@
 "Underline" = "Подчертаване";
 
 /* Action button to undo last change
-   Button in the notification presented in Reader when a post removed from saved for later
    Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
@@ -2495,9 +2469,6 @@
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Преглед";
-
-/* Button in the notification presented in Reader when a post is saved for later */
-"View All" = "Покажи всички";
 
 /* Action title. Opens the user's site in an in-app browser */
 "View Site" = "Към сайта";

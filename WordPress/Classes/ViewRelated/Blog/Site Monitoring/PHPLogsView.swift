@@ -218,24 +218,24 @@ final class PHPLogsViewModel: ObservableObject {
     }
 }
 
-extension AtomicErrorLogEntry: Identifiable {
+extension AtomicErrorLogEntry: @retroactive Identifiable {
     var severityBackgroundColor: UIColor {
         let severity = AtomicErrorLogEntry.Severity(rawValue: severity ?? "")!
         return switch severity {
-            case .user: AppColor.gray(.shade5)
-            case .warning: AppColor.yellow(.shade5)
-            case .deprecated: AppColor.blue(.shade5)
-            case .fatalError: AppColor.red(.shade5)
+            case .user: UIAppColor.gray(.shade5)
+            case .warning: UIAppColor.yellow(.shade5)
+            case .deprecated: UIAppColor.blue(.shade5)
+            case .fatalError: UIAppColor.red(.shade5)
         }
     }
 
     var severityTextColor: UIColor {
         let severity = AtomicErrorLogEntry.Severity(rawValue: severity ?? "")!
         return switch severity {
-            case .user: AppColor.gray(.shade80)
-            case .warning: AppColor.yellow(.shade80)
-            case .deprecated: AppColor.blue(.shade80)
-            case .fatalError: AppColor.red(.shade80)
+            case .user: UIAppColor.gray(.shade80)
+            case .warning: UIAppColor.yellow(.shade80)
+            case .deprecated: UIAppColor.blue(.shade80)
+            case .fatalError: UIAppColor.red(.shade80)
         }
     }
 }

@@ -28,7 +28,7 @@ struct UnifiedPrologueStatsContentView: View {
                             xOffset: globeIconSize * 0.62,
                             yOffset: -globeIconSize * 0.125,
                             iconType: .globe,
-                            backgroundColor: Color(AppColor.celadon(.shade30))
+                            backgroundColor: Color(UIAppColor.celadon(.shade30))
                         )
                     }
 
@@ -52,7 +52,7 @@ struct UnifiedPrologueStatsContentView: View {
                             xOffset: -statusIconSize * 0.75,
                             yOffset: -statusIconSize * 1.25,
                             iconType: .status,
-                            backgroundColor: Color(AppColor.purple(.shade50))
+                            backgroundColor: Color(UIAppColor.purple(.shade50))
                         )
 
                         Spacer()
@@ -62,7 +62,7 @@ struct UnifiedPrologueStatsContentView: View {
                             xOffset: usersIconSize * 0.25,
                             yOffset: usersIconSize * 0.875,
                             iconType: .multipleUsers,
-                            backgroundColor: Color(AppColor.blue(.shade50))
+                            backgroundColor: Color(UIAppColor.blue(.shade50))
                         )
                     }
                 }

@@ -153,7 +153,7 @@ public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
 
     public func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) throws -> T) async throws -> T {
         try await withCheckedThrowingContinuation { continuation in
-            performAndSave(block, completion: continuation.resume(with:), on: DispatchQueue.global())
+            performAndSave(block, completion: { continuation.resume(with: $0) }, on: DispatchQueue.global())
         }
     }
 
@@ -310,7 +310,6 @@ private extension ContextManager {
 
         return persistentContainer
     }
-
 }
 
 extension ContextManager {
@@ -328,6 +327,26 @@ extension ContextManager {
 
     static var shared: ContextManager {
         return sharedInstance()
+    }
+}
+
+extension ContextManager {
+    /// - warning: This is designed to be used only for testing purposes.
+    func resetEverything() {
+        let container = persistentContainer.persistentStoreCoordinator
+        assert(container.persistentStores.count == 1)
+        guard let store = container.persistentStores.first, let storeURL = store.url else {
+            return assertionFailure()
+        }
+        do {
+            try container.destroyPersistentStore(at: storeURL, ofType: store.type, options: nil)
+            try FileManager.default.removeItem(at: storeURL)
+            persistentContainer.loadPersistentStores { _, error in
+                assert(error == nil)
+            }
+        } catch {
+            NSLog("failed to reset store: \(error)")
+        }
     }
 }
 

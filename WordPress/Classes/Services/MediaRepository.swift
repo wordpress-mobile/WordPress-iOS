@@ -20,9 +20,11 @@ final class MediaRepository {
     func getMedia(withID mediaID: NSNumber, in blogID: TaggedManagedObjectID<Blog>) async throws -> TaggedManagedObjectID<Media> {
         let remote = try await remote(for: blogID)
         let remoteMedia: RemoteMedia? = try await withCheckedThrowingContinuation { continuation in
-            remote.getMediaWithID(
-                mediaID, success: continuation.resume(returning:),
-                failure: { continuation.resume(throwing: $0 ?? MediaRepository.Error.unknown) })
+            remote.getMediaWithID(mediaID) {
+                continuation.resume(returning: $0)
+            } failure: {
+                continuation.resume(throwing: $0 ?? MediaRepository.Error.unknown)
+            }
         }
         guard let remoteMedia else {
             throw MediaRepository.Error.mediaNotFound
@@ -118,7 +120,7 @@ extension MediaServiceRemote {
         try await withCheckedThrowingContinuation { continuation in
             self.getMediaLibraryCount(
                 forType: type,
-                withSuccess: continuation.resume(returning:),
+                withSuccess: { continuation.resume(returning: $0) },
                 failure: { continuation.resume(throwing: $0!) }
             )
         }

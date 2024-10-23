@@ -1,7 +1,7 @@
 import Gridicons
 
 class RevisionOperation: NSObject {
-    @IBOutlet private (set) var internalView: RevisionOperationView!
+    @IBOutlet private(set) var internalView: RevisionOperationView!
 
     init(_ type: RevisionOperationView.OperationType) {
         super.init()
@@ -35,7 +35,7 @@ class RevisionOperationView: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        numbersLabel.textColor = AppColor.neutral(.shade40)
+        numbersLabel.textColor = UIAppColor.neutral(.shade40)
     }
 
     enum OperationType {
@@ -44,8 +44,8 @@ class RevisionOperationView: UIView {
 
         var color: UIColor {
             switch self {
-            case .add: return AppColor.primary
-            case .del: return AppColor.error
+            case .add: return UIAppColor.primary
+            case .del: return UIAppColor.error
             }
         }
 

@@ -212,7 +212,7 @@ extension JetpackScanThreatDetailsViewController {
 
     private func styleGeneralInfoSection() {
         generalInfoTitleLabel.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
-        generalInfoTitleLabel.textColor = AppColor.error
+        generalInfoTitleLabel.textColor = UIAppColor.error
         generalInfoTitleLabel.numberOfLines = 0
 
         generalInfoDescriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)

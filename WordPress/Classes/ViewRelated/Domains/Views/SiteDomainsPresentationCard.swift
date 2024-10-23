@@ -14,12 +14,12 @@ struct SiteDomainsPresentationCard: View {
                     DashboardDomainsCardSearchView()
                     Text(title)
                         .style(.heading4)
-                        .foregroundColor(.DS.Foreground.primary)
+                        .foregroundStyle(Color(.label))
                 }
 
                 Text(description)
                     .style(.bodyLarge(.regular))
-                    .foregroundColor(.DS.Foreground.secondary)
+                    .foregroundColor(Color.secondary)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.horizontal, .DS.Padding.single)

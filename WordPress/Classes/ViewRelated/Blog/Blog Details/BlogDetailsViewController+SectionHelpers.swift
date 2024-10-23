@@ -35,11 +35,6 @@ extension BlogDetailsSubsection {
 }
 
 extension BlogDetailsViewController {
-
-    @objc class func mySitesCoordinator() -> MySitesCoordinator {
-        RootViewCoordinator.sharedPresenter.mySitesCoordinator
-    }
-
     @objc func findSectionIndex(sections: [BlogDetailsSection], category: BlogDetailsSectionCategory) -> Int {
         return sections.findSectionIndex(of: category) ?? NSNotFound
     }
@@ -99,7 +94,7 @@ extension BlogDetailsViewController {
     }
 
     @objc func shouldAddMeRow() -> Bool {
-        return JetpackFeaturesRemovalCoordinator.currentAppUIType == .simplified
+        JetpackFeaturesRemovalCoordinator.currentAppUIType == .simplified && !isSidebarModeEnabled
     }
 
     @objc func shouldAddSharingRow() -> Bool {
@@ -199,4 +194,14 @@ extension BlogDetailsViewController {
         let userListView = UIHostingController(rootView: UserListView())
         presentationDelegate.presentBlogDetailsViewController(userListView)
     }
-}
+
+    @objc func showManagePluginsScreen() {
+        guard blog.supports(.pluginManagement),
+              let site = JetpackSiteRef(blog: blog) else {
+            return
+        }
+        let query = PluginQuery.all(site: site)
+        let listViewController = PluginListViewController(site: site, query: query)
+        presentationDelegate?.presentBlogDetailsViewController(listViewController)
+    }
+ }

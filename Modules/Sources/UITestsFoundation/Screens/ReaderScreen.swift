@@ -2,106 +2,28 @@ import ScreenObject
 import XCTest
 
 public class ReaderScreen: ScreenObject {
-
-    private let readerNavigationButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["reader-navigation-button"]
-    }
-
-    private let discoverButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Discover"]
-    }
-
-    private let readerTableGetter: (XCUIApplication) -> XCUIElement = {
-        $0.tables["Reader"]
-    }
-
-    private let readerButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Reader"]
-    }
-
-    private let savedButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Saved"]
-    }
-
-    private let firstPostLikeButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["reader-like-button"].firstMatch
-    }
-
-    private let visitButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Visit"]
-    }
-
-    private let backButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Back"]
-    }
-
-    private let dismissButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Dismiss"]
-    }
-
-    private let followButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Follow"]
-    }
-
-    private let followingButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Following"]
-    }
-
-    private let subscriptionsMenuButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Subscriptions"]
-    }
-
-    private let likesTabButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Likes"]
-    }
-
-    private let tagCellButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells["topics-card-cell-button"]
-    }
-
-    private let noResultsViewGetter: (XCUIApplication) -> XCUIElement = {
-        $0.staticTexts["no-results-label-stack-view"]
-    }
-
-    private let moreButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["More"]
-    }
-
-    private let savePostButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Save"]
-    }
-
-    private let ghostLoadingGetter: (XCUIApplication) -> XCUIElement = {
-        $0.tables["Reader Ghost Loading"]
-    }
-
-    var readerNavigationMenuButton: XCUIElement { readerNavigationButtonGetter(app) }
-    var backButton: XCUIElement { backButtonGetter(app) }
-    var discoverButton: XCUIElement { discoverButtonGetter(app) }
-    var dismissButton: XCUIElement { dismissButtonGetter(app) }
-    var firstPostLikeButton: XCUIElement { firstPostLikeButtonGetter(app) }
-    var followButton: XCUIElement { followButtonGetter(app) }
-    var followingButton: XCUIElement { followingButtonGetter(app) }
-    var subscriptionsMenuButton: XCUIElement { subscriptionsMenuButtonGetter(app) }
-    var likesTabButton: XCUIElement { likesTabButtonGetter(app) }
-    var noResultsView: XCUIElement { noResultsViewGetter(app) }
-    var readerButton: XCUIElement { readerButtonGetter(app) }
-    var readerTable: XCUIElement { readerTableGetter(app) }
-    var moreButton: XCUIElement { moreButtonGetter(app) }
-    var savePostButton: XCUIElement { savePostButtonGetter(app) }
-    var savedButton: XCUIElement { savedButtonGetter(app) }
-    var tagCellButton: XCUIElement { tagCellButtonGetter(app) }
-    var visitButton: XCUIElement { visitButtonGetter(app) }
-    var ghostLoading: XCUIElement { ghostLoadingGetter(app) }
+    var readerNavigationMenuButton: XCUIElement { app.buttons["reader-navigation-button"] }
+    var backButton: XCUIElement { app.buttons["Back"] }
+    var dismissButton: XCUIElement { app.buttons["Dismiss"] }
+    var firstPostLikeButton: XCUIElement { app.buttons["reader-like-button"].firstMatch }
+    var followButton: XCUIElement { app.buttons["Follow"] }
+    var followingButton: XCUIElement { app.buttons["Following"] }
+    var subscriptionsMenuButton: XCUIElement { app.buttons["Subscriptions"] }
+    var likesTabButton: XCUIElement { app.buttons["Likes"] }
+    var noResultsView: XCUIElement { app.staticTexts["no-results-label-stack-view"].firstMatch }
+    var readerButton: XCUIElement { app.buttons["Reader"] }
+    var readerTable: XCUIElement { app.tables["reader_table_view"] }
+    var moreButton: XCUIElement {  app.buttons["More"] }
+    var savePostButton: XCUIElement { app.buttons["Save"] }
+    var savedButton: XCUIElement { app.buttons["Saved"] }
+    var tagCellButton: XCUIElement { app.cells["topics-card-cell-button"] }
+    var visitButton: XCUIElement { app.buttons["Visit"] }
+    var ghostLoading: XCUIElement { app.tables["Reader Ghost Loading"] }
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
-        try super.init(
-            expectedElementGetters: [
-                readerTableGetter,
-                discoverButtonGetter
-            ],
-            app: app
-        )
+        try super.init {
+            $0.tables["reader_table_view"].firstMatch
+        }
     }
 
     public func openLastPost() throws -> ReaderScreen {
@@ -117,14 +39,18 @@ public class ReaderScreen: ScreenObject {
 
     public func openLastPostComments() throws -> CommentsScreen {
         let commentButton = try getLastPost().buttons["Comment"]
-        guard commentButton.waitForIsHittable() else { throw UIElementNotFoundError(message: "ReaderScreen.Post: Comments button not loaded") }
+        guard commentButton.waitForIsHittable() else {
+            throw UIElementNotFoundError(message: "ReaderScreen.Post: Comments button not loaded")
+        }
         commentButton.tap()
         return try CommentsScreen()
     }
 
     @discardableResult
     public func getLastPost() throws -> XCUIElement {
-        guard let post = app.cells.lastMatch else { throw UIElementNotFoundError(message: "ReaderScreen: No posts loaded") }
+        guard let post = app.cells.lastMatch else {
+            throw UIElementNotFoundError(message: "ReaderScreen: No posts loaded")
+        }
         scrollDownUntilElementIsFullyVisible(element: post)
         return post
     }
@@ -146,8 +72,10 @@ public class ReaderScreen: ScreenObject {
         return isPostContentEqual
     }
 
-    public func verifyPostContentEquals(_ expected: String, file: StaticString = #file, line: UInt = #line) {
+    @discardableResult
+    public func verifyPostContentEquals(_ expected: String, file: StaticString = #file, line: UInt = #line) -> Self {
         XCTAssertTrue(postContentEquals(expected), file: file, line: line)
+        return self
     }
 
     public func dismissPost() {
@@ -166,9 +94,10 @@ public class ReaderScreen: ScreenObject {
     }
 
     public func verifyTagLoaded(file: StaticString = #file, line: UInt = #line) -> Self {
-        XCTAssertTrue(readerButton.waitForExistence(timeout: 3), file: file, line: line)
-        XCTAssertTrue(followButton.waitForExistence(timeout: 3), file: file, line: line)
-
+        if XCTestCase.isPhone {
+            XCTAssertTrue(readerButton.waitForExistence(timeout: 10), file: file, line: line)
+        }
+        XCTAssertTrue(followButton.waitForExistence(timeout: 10), file: file, line: line)
         return self
     }
 
@@ -191,25 +120,38 @@ public class ReaderScreen: ScreenObject {
         }
 
         func menuButton(_ app: XCUIApplication) -> XCUIElement {
-            return app.buttons[buttonIdentifier].firstMatch
+            if XCTestCase.isPad {
+                return app.staticTexts["reader_sidebar_\(rawValue)"].firstMatch
+            } else {
+                return app.buttons[buttonIdentifier].firstMatch
+            }
         }
     }
 
     private func openNavigationMenu() {
-        readerNavigationMenuButton.tap()
+        if XCTestCase.isPad {
+            // In some scenarios, the sidebar will already be on screen.
+            if !app.collectionViews["reader_sidebar"].firstMatch.isHittable {
+                app.buttons["ToggleSidebar"].tap()
+            }
+        } else {
+            readerNavigationMenuButton.tap()
+        }
+    }
+
+    private func closeNavigationMenu() {
+        // TODO: this should not be needed, but the code that hides the
+        // sidebar appears to be a bit flaky when animations are off
+        if XCTestCase.isPad, !readerTable.isHittable {
+            app.swipeLeft()
+        }
     }
 
     public func switchToStream(_ stream: ReaderStream) -> Self {
         openNavigationMenu()
-
-        let menuButton = stream.menuButton(app)
-        guard menuButton.waitForIsHittable(timeout: 3) else {
-            fatalError("ReaderScreen: Discover menu button not loaded")
-        }
-        menuButton.tap()
-
+        stream.menuButton(app).tap()
+        closeNavigationMenu()
         waitForLoadingToFinish()
-
         return self
     }
 
@@ -230,7 +172,7 @@ public class ReaderScreen: ScreenObject {
     }
 
     public func saveFirstPost() throws -> (ReaderScreen, String) {
-        XCTAssertTrue(readerTable.waitForExistence(timeout: 3))
+        XCTAssertTrue(readerTable.isHittable)
         let postLabel = readerTable.cells.firstMatch.label
         moreButton.firstMatch.tap()
         savePostButton.firstMatch.tap()

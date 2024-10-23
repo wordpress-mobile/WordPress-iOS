@@ -30,9 +30,9 @@ public class LoginCheckMagicLinkScreen: ScreenObject {
         return try LoginPasswordScreen()
     }
 
+    @discardableResult
     public func openMagicLoginLink() throws -> MySiteScreen {
         openMagicLink()
-
         return try MySiteScreen()
     }
 

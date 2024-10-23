@@ -36,8 +36,8 @@ extension UIButton {
 
     private enum Colors {
         static let closeButtonTintColor = UIColor(
-            light: AppColor.gray(.shade5),
-            dark: AppColor.jetpackGreen(.shade90)
+            light: UIAppColor.gray(.shade5),
+            dark: UIAppColor.jetpackGreen(.shade90)
         )
     }
 }

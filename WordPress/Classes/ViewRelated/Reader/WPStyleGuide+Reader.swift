@@ -30,11 +30,11 @@ extension WPStyleGuide {
     }
 
     @objc public class func readerCardCellHighlightedBorderColor() -> UIColor {
-        AppColor.neutral(.shade10)
+        UIAppColor.neutral(.shade10)
     }
 
     public class func readerCardBlogIconBorderColor() -> UIColor {
-        return UIColor(light: AppColor.gray(.shade0), dark: .systemGray5)
+        return UIColor(light: UIAppColor.gray(.shade0), dark: .systemGray5)
     }
 
     // MARK: - Card Attributed Text Attributes
@@ -91,14 +91,14 @@ extension WPStyleGuide {
             return
         }
         WPStyleGuide.configureLabel(titleLabel, textStyle: Cards.buttonTextStyle)
-        button.setTitleColor(AppColor.primary, for: UIControl.State())
-        button.setTitleColor(AppColor.primaryDark, for: .highlighted)
+        button.setTitleColor(UIAppColor.primary, for: UIControl.State())
+        button.setTitleColor(UIAppColor.primaryDark, for: .highlighted)
         button.setTitleColor(.label, for: .disabled)
     }
 
     public class func applyReaderCardAttributionLabelStyle(_ label: UILabel) {
         label.textColor = UIColor(
-            light: AppColor.gray(.shade80),
+            light: UIAppColor.gray(.shade80),
             dark: .secondaryLabel
         )
     }
@@ -142,11 +142,11 @@ extension WPStyleGuide {
     class func applyReaderActionButtonStyle(_ button: UIButton,
                                             titleColor: UIColor = .secondaryLabel,
                                             imageColor: UIColor = .secondaryLabel,
-                                            disabledColor: UIColor = AppColor.neutral(.shade10)) {
+                                            disabledColor: UIColor = UIAppColor.neutral(.shade10)) {
         button.tintColor = imageColor
-        let highlightedColor: UIColor = AppColor.neutral
-        let selectedColor: UIColor = AppColor.primary(.shade40)
-        let bothColor: UIColor = AppColor.primaryLight
+        let highlightedColor: UIColor = UIAppColor.neutral
+        let selectedColor: UIColor = UIAppColor.primary(.shade40)
+        let bothColor: UIColor = UIAppColor.primaryLight
 
         let highlightedImage = button.image(for: .highlighted)
         let selectedImage = button.image(for: .selected)
@@ -303,11 +303,11 @@ extension WPStyleGuide {
     }
 
     @objc public class func gapMarkerButtonBackgroundColor() -> UIColor {
-        return AppColor.neutral(.shade40)
+        return UIAppColor.neutral(.shade40)
     }
 
     @objc public class func gapMarkerButtonBackgroundColorHighlighted() -> UIColor {
-        return AppColor.primaryLight
+        return UIAppColor.primaryLight
     }
 
     // MARK: - Metrics

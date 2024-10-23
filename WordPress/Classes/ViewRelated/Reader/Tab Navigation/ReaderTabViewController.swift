@@ -15,8 +15,6 @@ class ReaderTabViewController: UIViewController {
         return makeReaderTabView(viewModel)
     }()
 
-    var isSidebarModeEnabled = true
-
     init(viewModel: ReaderTabViewModel, readerTabViewFactory: @escaping (ReaderTabViewModel) -> ReaderTabView) {
         self.viewModel = viewModel
         self.makeReaderTabView = readerTabViewFactory
@@ -95,12 +93,6 @@ class ReaderTabViewController: UIViewController {
         ReaderTracker.shared.start(.main)
     }
 
-    func presentDiscoverTab() {
-        viewModel.fetchReaderMenu()
-        viewModel.showTab(at: ReaderTabConstants.discoverIndex)
-        displayNotice(title: NSLocalizedString("Comment to start making connections.", comment: "Hint for users to grow their audience by commenting on other blogs."))
-    }
-
     // MARK: - Reader FAB
 
     private func createFABIfNeeded() {
@@ -134,7 +126,7 @@ class ReaderTabViewController: UIViewController {
 
         let postAction = PostAction(handler: {
             let presenter = RootViewCoordinator.sharedPresenter
-            presenter.showPostTab()
+            presenter.showPostEditor()
         }, source: source)
 
         return CreateButtonCoordinator(self, actions: [postAction], source: source, blog: blog)

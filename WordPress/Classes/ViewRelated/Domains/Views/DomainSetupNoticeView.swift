@@ -10,7 +10,7 @@ struct DomainSetupNoticeView: View {
         HStack() {
             Image(uiImage: .gridicon(.infoOutline))
                 .frame(height: Metrics.iconHeight)
-                .foregroundColor(Color(AppColor.gray))
+                .foregroundColor(Color(UIAppColor.gray))
                 .accessibility(hidden: true)
 
             Spacer().frame(width: Metrics.iconToNoticeSpacing)

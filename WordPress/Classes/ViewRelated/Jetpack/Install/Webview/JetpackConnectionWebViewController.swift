@@ -1,5 +1,5 @@
 import UIKit
-import WebKit
+@preconcurrency import WebKit
 import Gridicons
 import WordPressAuthenticator
 import Combine
@@ -349,7 +349,7 @@ private extension JetpackConnectionWebViewController {
             guard enabled else {
                 return
             }
-            DDLogDebug(message)
+            DDLogDebug("\(message)")
         }
     }
 }

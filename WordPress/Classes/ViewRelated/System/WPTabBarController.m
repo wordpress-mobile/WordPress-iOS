@@ -42,11 +42,10 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 @property (nonatomic, strong) MeViewController *meViewController;
 @property (nonatomic, strong) UINavigationController *meNavigationController;
 
-@property (nonatomic, strong) WPSplitViewController *notificationsSplitViewController;
-@property (nonatomic, strong) WPSplitViewController *meSplitViewController;
 @property (nonatomic, strong) ReaderTabViewModel *readerTabViewModel;
 
 @property (nonatomic, strong, nullable) MySitesCoordinator *mySitesCoordinator;
+@property (nonatomic, strong, nullable) ReaderPresenter *readerPresenter;
 
 @property (nonatomic, strong) UIImage *notificationsTabBarImage;
 @property (nonatomic, strong) UIImage *notificationsTabBarImageUnread;
@@ -71,8 +70,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         [[self tabBar] setAccessibilityIdentifier:@"Main Navigation"];
         [[self tabBar] setAccessibilityLabel:NSLocalizedString(@"Main Navigation", nil)];
         [WPStyleGuide configureTabBar:[self tabBar]];
-
-        self.meScenePresenter = [[MeScenePresenter alloc] init];
 
         [self setViewControllers:[self tabViewControllers]];
 
@@ -130,17 +127,20 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 - (UINavigationController *)readerNavigationController
 {
     if (!_readerNavigationController) {
-        UIViewController *rootViewController;
         if (self.shouldUseStaticScreens) {
-            rootViewController = [[MovedToJetpackViewController alloc] initWithSource:MovedToJetpackSourceReader];
+            UIViewController *rootVC = [[MovedToJetpackViewController alloc] initWithSource:MovedToJetpackSourceReader];
+            _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:rootVC];
+        } else if ([Feature enabled:FeatureFlagReaderReset]) {
+            _readerPresenter = [[ReaderPresenter alloc] init];
+            _readerNavigationController = [_readerPresenter prepareForTabBarPresentation];
         } else {
-            rootViewController = self.makeReaderTabViewController;
+            UIViewController *rootVC = self.makeReaderTabViewController;
+            _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:rootVC];
         }
-        _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
         _readerNavigationController.view.backgroundColor = [UIColor systemBackgroundColor];
 
         _readerNavigationController.tabBarItem.image = [UIImage imageNamed:@"tab-bar-reader"];
-        _readerNavigationController.tabBarItem.accessibilityIdentifier = @"readerTabButton";
+        _readerNavigationController.tabBarItem.accessibilityIdentifier = @"tabbar_reader";
         _readerNavigationController.tabBarItem.title = NSLocalizedString(@"Reader", @"The accessibility value of the Reader tab.");
 
         UITabBarAppearance *scrollEdgeAppearance = [UITabBarAppearance new];
@@ -168,7 +168,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     self.notificationsTabBarImage = [UIImage imageNamed:@"tab-bar-notifications"];
     self.notificationsTabBarImageUnread = [[UIImage imageNamed:@"tab-bar-notifications-unread"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     _notificationsNavigationController.tabBarItem.image = self.notificationsTabBarImage;
-    _notificationsNavigationController.tabBarItem.accessibilityIdentifier = @"notificationsTabButton";
+    _notificationsNavigationController.tabBarItem.accessibilityIdentifier = @"tabbar_notifications";
     _notificationsNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
     _notificationsNavigationController.tabBarItem.title = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
 
@@ -181,7 +181,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         _meNavigationController = [[UINavigationController alloc] initWithRootViewController:self.meViewController];
         [self configureMeTabImageWithPlaceholderImage:[UIImage imageNamed:@"tab-bar-me"]];
         _meNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
-        _meNavigationController.tabBarItem.accessibilityIdentifier = @"meTabButton";
+        _meNavigationController.tabBarItem.accessibilityIdentifier = @"tabbar_me";
         _meNavigationController.tabBarItem.title = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
     }
 
@@ -208,8 +208,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     return UIEdgeInsetsMake(offset, 0, -offset, 0);
 }
 
-#pragma mark - Split View Controllers
-
 - (ReaderTabViewModel *)readerTabViewModel
 {
     if (!_readerTabViewModel) {
@@ -218,41 +216,13 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     return _readerTabViewModel;
 }
 
-- (UISplitViewController *)notificationsSplitViewController
+- (void)reloadTabs
 {
-    if (!_notificationsSplitViewController) {
-        _notificationsSplitViewController = [WPSplitViewController new];
-         [_notificationsSplitViewController setInitialPrimaryViewController:self.notificationsNavigationController];
-        _notificationsSplitViewController.fullscreenDisplayEnabled = NO;
-        _notificationsSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthDefault;
-
-        _notificationsSplitViewController.tabBarItem = self.notificationsNavigationController.tabBarItem;
-    }
-
-    return _notificationsSplitViewController;
-}
-
-- (UISplitViewController *)meSplitViewController
-{
-    if (!_meSplitViewController) {
-        _meSplitViewController = [WPSplitViewController new];
-        [_meSplitViewController setInitialPrimaryViewController:self.meNavigationController];
-        _meSplitViewController.fullscreenDisplayEnabled = NO;
-        _meSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthDefault;
-
-        _meSplitViewController.tabBarItem = self.meNavigationController.tabBarItem;
-    }
-
-    return _meSplitViewController;
-}
-
-- (void)reloadSplitViewControllers
-{
+    _readerPresenter = nil;
     _readerNavigationController = nil;
     _notificationsNavigationController = nil;
-    _notificationsSplitViewController = nil;
-    _meSplitViewController = nil;
-    
+    _meNavigationController = nil;
+
     [self setViewControllers:[self tabViewControllers]];
     
     // Reset the selectedIndex to the default MySites tab.
@@ -265,41 +235,24 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 {
     if (!_mySitesCoordinator) {
         __weak __typeof(self) weakSelf = self;
-        
-        _mySitesCoordinator = [[MySitesCoordinator alloc] initWithMeScenePresenter: self.meScenePresenter
-                                                                 onBecomeActiveTab:^{
+
+        _mySitesCoordinator = [[MySitesCoordinator alloc] initOnBecomeActiveTab:^{
             [weakSelf showMySitesTab];
         }];
     }
-    
-    return _mySitesCoordinator;
-}
 
-- (ReaderCoordinator *)readerCoordinator
-{
-    return [[ReaderCoordinator alloc] initWithReaderNavigationController:self.readerNavigationController];
+    return _mySitesCoordinator;
 }
 
 #pragma mark - Navigation Helpers
 
 - (NSArray<UIViewController *> *)tabViewControllers
 {
-    BOOL isIPad = UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad;
-
-    if (self.shouldUseStaticScreens || !isIPad) {
-        return @[
-            self.mySitesCoordinator.rootViewController,
-            self.readerNavigationController,
-            self.notificationsNavigationController,
-            self.meSplitViewController
-        ];
-    }
-
     return @[
         self.mySitesCoordinator.rootViewController,
         self.readerNavigationController,
-        self.notificationsSplitViewController,
-        self.meSplitViewController
+        self.notificationsNavigationController,
+        self.meNavigationController
     ];
 }
 
@@ -321,25 +274,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 - (void)showMeTab
 {
     [self setSelectedIndex:WPTabMe];
-}
-
-- (void)showReaderTabForPost:(NSNumber *)postId onBlog:(NSNumber *)blogId
-{
-    [self showReaderTab];
-    UIViewController *topDetailVC = (UIViewController *)self.readerNavigationController.topViewController;
-
-    // TODO: needed?
-    if ([topDetailVC isKindOfClass:[ReaderDetailViewController class]]) {
-        ReaderDetailViewController *readerDetailVC = (ReaderDetailViewController *)topDetailVC;
-        ReaderPost *readerPost = readerDetailVC.post;
-        if ([readerPost.postID isEqual:postId] && [readerPost.siteID isEqual: blogId]) {
-         // The desired reader detail VC is already the top VC for the tab. Move along.
-            return;
-        }
-    }
-    
-    UIViewController *readerPostDetailVC = [ReaderDetailViewController controllerWithPostID:postId siteID:blogId isFeed:NO];
-    [self.readerNavigationController pushFullscreenViewController:readerPostDetailVC animated:YES];
 }
 
 - (void)popNotificationsTabToRoot
@@ -389,19 +323,10 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         if ([viewController isKindOfClass:[UINavigationController class]]) {
             UINavigationController *navController = (UINavigationController *)viewController;
             [navController scrollContentToTopAnimated:YES];
-        } else if ([viewController isKindOfClass:[WPSplitViewController class]]) {
-            WPSplitViewController *splitViewController = (WPSplitViewController *)viewController;
-            [splitViewController popToRootViewControllersAnimated:YES];
         }
     }
 
     return YES;
-}
-
-- (void)showNotificationsTabForNoteWithID:(NSString *)notificationID
-{
-    [self setSelectedIndex:WPTabNotifications];
-    [self.notificationsViewController showDetailsForNotificationWithID:notificationID];
 }
 
 #pragma mark - UITabBarDelegate
@@ -435,7 +360,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (void)signinDidFinish:(NSNotification *)notification
 {
-    [self reloadSplitViewControllers];
+    [self reloadTabs];
 }
 
 #pragma mark - Handling Badges
@@ -526,6 +451,8 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    self.view.accessibilityIdentifier = @"root_vc";
     [self startObserversForTabAccessTracking];
 }
 

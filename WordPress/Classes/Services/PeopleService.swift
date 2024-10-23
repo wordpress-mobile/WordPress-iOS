@@ -49,7 +49,7 @@ struct PeopleService {
                 success(users.count, hasMore)
             }, on: .main)
         }, failure: { error in
-            DDLogError(String(describing: error))
+            DDLogError("\(String(describing: error))")
             failure?(error)
         })
     }
@@ -70,7 +70,7 @@ struct PeopleService {
                 success(followers.count, hasMore)
             }, on: .main)
         }, failure: { error in
-            DDLogError(String(describing: error))
+            DDLogError("\(String(describing: error))")
             failure?(error)
         })
     }
@@ -91,7 +91,7 @@ struct PeopleService {
                 success(viewers.count, hasMore)
             }, on: .main)
         }, failure: { error in
-            DDLogError(String(describing: error))
+            DDLogError("\(String(describing: error))")
             failure?(error)
         })
     }

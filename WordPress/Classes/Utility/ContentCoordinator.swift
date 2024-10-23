@@ -35,7 +35,7 @@ struct DefaultContentCoordinator: ContentCoordinator {
         }
 
         let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
-        controller?.navigationController?.pushFullscreenViewController(readerViewController, animated: true)
+        controller?.navigationController?.pushViewController(readerViewController, animated: true)
     }
 
     func displayCommentsWithPostId(_ postID: NSNumber?, siteID: NSNumber?, commentID: NSNumber?, source: ReaderCommentsSource) throws {

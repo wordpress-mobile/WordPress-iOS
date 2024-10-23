@@ -279,14 +279,12 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
     func primaryButtonPressed() {
         SiteCreationAnalyticsHelper.trackSiteCreationSuccessPreviewOkButtonTapped()
 
-        guard let blog = createdBlog, let navigationController = navigationController else {
-            return
-        }
+        guard let blog = createdBlog else { return }
 
         RootViewCoordinator.shared.isSiteCreationActive = false
         RootViewCoordinator.shared.reloadUIIfNeeded(blog: blog)
 
-        dismissTapped(viaDone: true) { [blog, weak self] in
+        dismissTapped(viaDone: true) { [blog] in
             RootViewCoordinator.sharedPresenter.showBlogDetails(for: blog)
         }
     }

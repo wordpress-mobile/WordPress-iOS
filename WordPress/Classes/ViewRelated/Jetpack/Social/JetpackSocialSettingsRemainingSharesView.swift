@@ -16,7 +16,7 @@ struct JetpackSocialSettingsRemainingSharesView: View {
             }
             Text(Constants.subscribeText)
                 .font(.callout)
-                .foregroundColor(Color(AppColor.primary))
+                .foregroundColor(Color(UIAppColor.primary))
                 .onTapGesture {
                     viewModel.onSubscribeTap()
                 }

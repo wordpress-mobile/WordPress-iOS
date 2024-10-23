@@ -90,7 +90,7 @@ extension UIImageView {
                 if case .requestCancelled = error {
                     // Do not log intentionally cancelled requests as errors.
                 } else {
-                    DDLogError(error.localizedDescription)
+                    DDLogError("\(error.localizedDescription)")
                 }
             }
         })
@@ -123,7 +123,7 @@ extension UIImageView {
 
         let host = MediaHost(with: blog) { error in
             // We'll log the error, so we know it's there, but we won't halt execution.
-            DDLogError(error.localizedDescription)
+            DDLogError("\(error.localizedDescription)")
         }
 
         let mediaRequestAuthenticator = MediaRequestAuthenticator()
@@ -133,7 +133,7 @@ extension UIImageView {
             onComplete: { [weak self] request in
                 self?.downloadSiteIcon(with: request, imageSize: imageSize, placeholderImage: placeholderImage)
         }) { error in
-            DDLogError(error.localizedDescription)
+            DDLogError("\(error.localizedDescription)")
         }
     }
 }

@@ -93,6 +93,20 @@ extension WordPressAPIError: TrackableErrorProtocol {
     }
 }
 
+extension WPAnalyticsEvent {
+    static func makeUserInfo(for error: Error) -> [String: String] {
+        if let error = error as? TrackableErrorProtocol, let userInfo = error.getTrackingUserInfo() {
+            return userInfo
+        }
+        let nsError = error as NSError
+        return [
+            "category": "other",
+            "error_code": nsError.code.description,
+            "error_domain": nsError.domain
+        ]
+    }
+}
+
 private func getUserInfo(for error: Error, category: String) -> [String: String] {
     return [
         "category": category,

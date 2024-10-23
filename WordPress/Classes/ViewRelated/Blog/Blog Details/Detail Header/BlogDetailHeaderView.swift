@@ -9,7 +9,7 @@ import SwiftUI
     func siteIconReceivedDroppedImage(_ image: UIImage?)
     func siteIconShouldAllowDroppedImages() -> Bool
     func siteTitleTapped()
-    func siteSwitcherTapped()
+    func siteSwitcherTapped(sourceView: UIView)
     func visitSiteTapped()
 }
 
@@ -100,7 +100,7 @@ class BlogDetailHeaderView: UIView {
 
         if let siteActionsMenu = delegate?.makeSiteActionsMenu() {
             titleView.siteSwitcherButton.menu = siteActionsMenu
-            titleView.siteSwitcherButton.addTarget(self, action: #selector(siteSwitcherTapped), for: .touchUpInside)
+            titleView.siteSwitcherButton.addTarget(self, action: #selector(siteSwitcherTapped), for: .primaryActionTriggered)
             titleView.siteSwitcherButton.addAction(UIAction { _ in
                 WPAnalytics.trackEvent(.mySiteHeaderMoreTapped)
             }, for: .menuActionTriggered)
@@ -145,8 +145,8 @@ class BlogDetailHeaderView: UIView {
     // MARK: - User Action Handlers
 
     @objc
-    private func siteSwitcherTapped() {
-        delegate?.siteSwitcherTapped()
+    private func siteSwitcherTapped(_ sender: UIButton) {
+        delegate?.siteSwitcherTapped(sourceView: sender)
     }
 
     @objc
@@ -222,9 +222,10 @@ extension BlogDetailHeaderView {
             let button = UIButton(type: .custom)
 
             var configuration = UIButton.Configuration.plain()
-            let font = isSidebarModeEnabled ? AppStyleGuide.navigationBarLargeFont : WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
-            configuration.titleTextAttributesTransformer = .init { attributes in
+            configuration.titleTextAttributesTransformer = .init { [weak self] attributes in
+                guard let self else { return attributes }
                 var attributes = attributes
+                let font = isSidebarModeEnabled ? AppStyleGuide.navigationBarLargeFont : WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
                 attributes.font = font
                 attributes.foregroundColor = UIColor.label
                 return attributes

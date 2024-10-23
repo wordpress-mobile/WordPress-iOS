@@ -16,7 +16,7 @@ extension WPStyleGuide {
             var styleGuideColor: UIColor {
                 switch self {
                 case .blue:
-                    return AppColor.primary(.shade40)
+                    return UIAppColor.primary(.shade40)
                 case .grey:
                     return .quaternaryLabel
                 case .darkGrey:
@@ -70,7 +70,7 @@ extension WPStyleGuide {
         }
 
         static func configureLabelAsSubtitle(_ label: UILabel) {
-            label.textColor = .DS.Foreground.secondary
+            label.textColor = .secondaryLabel
             label.font = .DS.font(.footnote)
             label.adjustsFontSizeToFitWidth = true
             label.maximumContentSizeCategory = .extraExtraExtraLarge
@@ -91,12 +91,12 @@ extension WPStyleGuide {
 
         static func configureLabelAsCellValueTitle(_ label: UILabel) {
             label.font = UIFont.DS.font(.footnote)
-            label.textColor = UIColor.DS.Foreground.secondary
+            label.textColor = .secondaryLabel
         }
 
         static func configureLabelAsCellValue(_ label: UILabel) {
             label.font = UIFont.DS.font(.heading2).semibold()
-            label.textColor = UIColor.DS.Foreground.primary
+            label.textColor = .label
         }
 
         static func configureLabelAsData(_ label: UILabel) {
@@ -198,7 +198,7 @@ extension WPStyleGuide {
                 filterTabBar.tintColor = UIColor.label
                 filterTabBar.selectedTitleColor = UIColor.label
                 filterTabBar.backgroundColor = .secondarySystemGroupedBackground
-                filterTabBar.deselectedTabColor = UIColor(light: AppColor.neutral(.shade20), dark: AppColor.neutral(.shade50))
+                filterTabBar.deselectedTabColor = UIColor(light: UIAppColor.neutral(.shade20), dark: UIAppColor.neutral(.shade50))
             }
         }
 
@@ -212,9 +212,9 @@ extension WPStyleGuide {
         static let headerTextColor = UIColor.secondaryLabel
         static let secondaryTextColor = UIColor.secondaryLabel
         static let itemDetailTextColor = UIColor.secondaryLabel
-        static let actionTextColor = AppColor.primary
-        static let summaryTextColor = AppColor.neutral(.shade70)
-        static let iconLoadingBackgroundColor = AppColor.neutral(.shade10)
+        static let actionTextColor = UIAppColor.primary
+        static let summaryTextColor = UIAppColor.neutral(.shade70)
+        static let iconLoadingBackgroundColor = UIAppColor.neutral(.shade10)
 
         static let subTitleFont = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .medium)
         static let summaryFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
@@ -225,7 +225,7 @@ extension WPStyleGuide {
         static let separatorColor = UIColor.separator
         static let dataBarColor = UIColor.tertiaryLabel
         static let separatorHeight: CGFloat = 1.0 / UIScreen.main.scale
-        static let verticalSeparatorColor = UIColor.DS.Foreground.quaternary
+        static let verticalSeparatorColor = UIColor.separator
 
         static let defaultFilterTintColor = UIColor.label
         static let tabbedCardFilterTintColor = UIColor.label
@@ -237,23 +237,23 @@ extension WPStyleGuide {
         static let postTitleFont = WPFontManager.notoBoldFont(ofSize: 17.0)
 
         static let customizeInsightsTitleFont = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
-        static let customizeInsightsButtonTextColor = AppColor.primary
+        static let customizeInsightsButtonTextColor = UIAppColor.primary
         static let customizeInsightsDismissButtonFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         static let customizeInsightsTryButtonFont = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .body).pointSize, weight: .medium)
 
-        static let positiveColor = AppColor.success
-        static let negativeColor = AppColor.error
-        static let neutralColor = AppColor.blue
+        static let positiveColor = UIAppColor.success
+        static let negativeColor = UIAppColor.error
+        static let neutralColor = UIAppColor.blue
 
         static let gridiconSize = CGSize(width: 24, height: 24)
 
         struct PostingActivityColors {
-            static let range1 = UIColor(light: AppColor.neutral(.shade5), dark: AppColor.neutral(.shade10))
-            static let range2 = AppColor.primary(.shade5)
-            static let range3 = AppColor.primaryLight
-            static let range4 = AppColor.primary
-            static let range5 = AppColor.primaryDark
-            static let selectedDay = AppColor.accent
+            static let range1 = UIColor(light: UIAppColor.neutral(.shade5), dark: UIAppColor.neutral(.shade10))
+            static let range2 = UIAppColor.primary(.shade5)
+            static let range3 = UIAppColor.primaryLight
+            static let range4 = UIAppColor.primary
+            static let range5 = UIAppColor.primaryDark
+            static let selectedDay = UIAppColor.accent
         }
 
         static let mapBackground: UIColor = .systemGray4

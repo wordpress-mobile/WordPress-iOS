@@ -85,7 +85,7 @@ extension RemoteFeatureFlagStore {
     }
 }
 
-fileprivate final class FetchRemoteFeatureFlagsOperation: AsyncOperation {
+fileprivate final class FetchRemoteFeatureFlagsOperation: AsyncOperation, @unchecked Sendable {
     private let remote: FeatureFlagRemote
     private let deviceID: String
     private let completion: OperationCompletionHandler
