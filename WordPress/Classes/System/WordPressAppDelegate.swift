@@ -857,7 +857,7 @@ extension WordPressAppDelegate {
         }
 
         let service = WordPressComSyncService()
-        service.syncWPCom(authToken: "valid_token", isJetpackLogin: true, onSuccess: { account in
+        service.syncWPCom(authToken: "valid_token", isJetpackLogin: false, onSuccess: { account in
             if let blog = try? BlogQuery().hostname(containing: wpComSiteAddress).blog(in: ContextManager.shared.mainContext) {
                 self.windowManager.showUI(for: blog)
             } else {
