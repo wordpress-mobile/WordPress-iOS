@@ -16,40 +16,39 @@ platform :ios do
     ensure_git_status_clean
 
     # Check out the up-to-date default branch, the designated starting point for the code freeze
-    # Fastlane::Helper::GitHelper.checkout_and_pull(DEFAULT_BRANCH)
-    Fastlane::Helper::GitHelper.checkout_and_pull('iangmaia/use-trusted-mac-agents-for-releases')
+    Fastlane::Helper::GitHelper.checkout_and_pull(DEFAULT_BRANCH)
 
-    # # Checks if internal dependencies are on a stable version
-    # check_pods_references
+    # Checks if internal dependencies are on a stable version
+    check_pods_references
 
-    # # Make sure that Gutenberg is configured as expected for a successful code freeze
-    # gutenberg_dep_check
+    # Make sure that Gutenberg is configured as expected for a successful code freeze
+    gutenberg_dep_check
 
-    # release_branch_name = compute_release_branch_name(options: options, version: release_version_next)
-    # ensure_branch_does_not_exist!(release_branch_name)
+    release_branch_name = compute_release_branch_name(options: options, version: release_version_next)
+    ensure_branch_does_not_exist!(release_branch_name)
 
-    # # The `release_version_next` is used as the `new internal release version` value because the external and internal
-    # # release versions are always the same.
-    # message = <<~MESSAGE
-    #   Code Freeze:
-    #   • New release branch from #{DEFAULT_BRANCH}: #{release_branch_name}
+    # The `release_version_next` is used as the `new internal release version` value because the external and internal
+    # release versions are always the same.
+    message = <<~MESSAGE
+      Code Freeze:
+      • New release branch from #{DEFAULT_BRANCH}: #{release_branch_name}
 
-    #   • Current release version and build code: #{release_version_current} (#{build_code_current}).
-    #   • New release version and build code: #{release_version_next} (#{build_code_code_freeze}).
+      • Current release version and build code: #{release_version_current} (#{build_code_current}).
+      • New release version and build code: #{release_version_next} (#{build_code_code_freeze}).
 
-    #   • Current internal release version and build code: #{release_version_current_internal} (#{build_code_current_internal})
-    #   • New internal release version and build code: #{release_version_next} (#{build_code_code_freeze_internal})
-    # MESSAGE
+      • Current internal release version and build code: #{release_version_current_internal} (#{build_code_current_internal})
+      • New internal release version and build code: #{release_version_next} (#{build_code_code_freeze_internal})
+    MESSAGE
 
-    # UI.important(message)
+    UI.important(message)
 
-    # skip_user_confirmation = options[:skip_confirm]
+    skip_user_confirmation = options[:skip_confirm]
 
-    # UI.user_error!('Aborted by user request') unless skip_user_confirmation || UI.confirm('Do you want to continue?')
+    UI.user_error!('Aborted by user request') unless skip_user_confirmation || UI.confirm('Do you want to continue?')
 
-    # UI.message 'Creating release branch...'
-    # Fastlane::Helper::GitHelper.create_branch(release_branch_name, from: DEFAULT_BRANCH)
-    # UI.success "Done! New release branch is: #{git_branch}"
+    UI.message 'Creating release branch...'
+    Fastlane::Helper::GitHelper.create_branch(release_branch_name, from: DEFAULT_BRANCH)
+    UI.success "Done! New release branch is: #{git_branch}"
 
     # Bump the release version and build code and write it to the `xcconfig` file
     UI.message 'Bumping release version and build code...'
@@ -71,94 +70,94 @@ platform :ios do
 
     commit_version_and_build_files
 
-    # new_version = release_version_current
+    new_version = release_version_current
 
-    # release_notes_source_path = File.join(PROJECT_ROOT_FOLDER, 'RELEASE-NOTES.txt')
-    # extract_release_notes_for_version(
-    #   version: new_version,
-    #   release_notes_file_path: release_notes_source_path,
-    #   extracted_notes_file_path: extracted_release_notes_file_path(app: :wordpress)
-    # )
-    # # It would be good to update the action so that it can:
-    # #
-    # # - Use a custom commit message, so that we can differentiate between
-    # #   WordPress and Jetpack
-    # # - Have some sort of interactive mode, where the file is extracted and
-    # #   shown to the user and they can either confirm and let the lane commit,
-    # #   or modify it manually first and then run through the
-    # #   show-confirm-commit cycle again
-    # #
-    # # In the meantime, we can make due with a duplicated commit message and the
-    # # `print_release_notes_reminder` at the end of the lane to remember to make
-    # # updates to the files.
-    # extract_release_notes_for_version(
-    #   version: new_version,
-    #   release_notes_file_path: release_notes_source_path,
-    #   extracted_notes_file_path: extracted_release_notes_file_path(app: :jetpack)
-    # )
-    # ios_update_release_notes(
-    #   new_version: new_version,
-    #   release_notes_file_path: release_notes_source_path
-    # )
+    release_notes_source_path = File.join(PROJECT_ROOT_FOLDER, 'RELEASE-NOTES.txt')
+    extract_release_notes_for_version(
+      version: new_version,
+      release_notes_file_path: release_notes_source_path,
+      extracted_notes_file_path: extracted_release_notes_file_path(app: :wordpress)
+    )
+    # It would be good to update the action so that it can:
+    #
+    # - Use a custom commit message, so that we can differentiate between
+    #   WordPress and Jetpack
+    # - Have some sort of interactive mode, where the file is extracted and
+    #   shown to the user and they can either confirm and let the lane commit,
+    #   or modify it manually first and then run through the
+    #   show-confirm-commit cycle again
+    #
+    # In the meantime, we can make due with a duplicated commit message and the
+    # `print_release_notes_reminder` at the end of the lane to remember to make
+    # updates to the files.
+    extract_release_notes_for_version(
+      version: new_version,
+      release_notes_file_path: release_notes_source_path,
+      extracted_notes_file_path: extracted_release_notes_file_path(app: :jetpack)
+    )
+    ios_update_release_notes(
+      new_version: new_version,
+      release_notes_file_path: release_notes_source_path
+    )
 
-    # unless skip_user_confirmation || UI.confirm('Ready to push changes to remote to let the automation configure it on GitHub?')
-    #   UI.message("Terminating as requested. Don't forget to run the remainder of this automation manually.")
-    #   next
-    # end
+    unless skip_user_confirmation || UI.confirm('Ready to push changes to remote to let the automation configure it on GitHub?')
+      UI.message("Terminating as requested. Don't forget to run the remainder of this automation manually.")
+      next
+    end
 
     push_to_git_remote(tags: false)
 
-    # # Protect release/* branch
-    # copy_branch_protection(
-    #   repository: GITHUB_REPO,
-    #   from_branch: DEFAULT_BRANCH,
-    #   to_branch: release_branch_name
-    # )
+    # Protect release/* branch
+    copy_branch_protection(
+      repository: GITHUB_REPO,
+      from_branch: DEFAULT_BRANCH,
+      to_branch: release_branch_name
+    )
 
-    # begin
-    #   # Move PRs to next milestone
-    #   moved_prs = update_assigned_milestone(
-    #     repository: GITHUB_REPO,
-    #     from_milestone: new_version,
-    #     to_milestone: release_version_next,
-    #     comment: "Version `#{new_version}` has now entered code-freeze, so the milestone of this PR has been updated to `#{release_version_next}`."
-    #   )
+    begin
+      # Move PRs to next milestone
+      moved_prs = update_assigned_milestone(
+        repository: GITHUB_REPO,
+        from_milestone: new_version,
+        to_milestone: release_version_next,
+        comment: "Version `#{new_version}` has now entered code-freeze, so the milestone of this PR has been updated to `#{release_version_next}`."
+      )
 
-    #   # Add ❄️ marker to milestone title to indicate we entered code-freeze
-    #   set_milestone_frozen_marker(
-    #     repository: GITHUB_REPO,
-    #     milestone: new_version
-    #   )
-    # rescue StandardError => e
-    #   moved_prs = []
+      # Add ❄️ marker to milestone title to indicate we entered code-freeze
+      set_milestone_frozen_marker(
+        repository: GITHUB_REPO,
+        milestone: new_version
+      )
+    rescue StandardError => e
+      moved_prs = []
 
-    #   report_milestone_error(error_title: "Error freezing milestone `#{new_version}`: #{e.message}")
-    # end
+      report_milestone_error(error_title: "Error freezing milestone `#{new_version}`: #{e.message}")
+    end
 
-    # UI.message("Moved the following PRs to milestone #{release_version_next}: #{moved_prs.join(', ')}")
+    UI.message("Moved the following PRs to milestone #{release_version_next}: #{moved_prs.join(', ')}")
 
-    # # Annotate the build with the moved PRs
-    # moved_prs_info = if moved_prs.empty?
-    #                    "👍 No open PRs were targeting `#{new_version}` at the time of code-freeze"
-    #                  else
-    #                    "#{moved_prs.count} PRs targeting `#{new_version}` were still open and thus moved to `#{release_version_next}`:\n" \
-    #                      + moved_prs.map { |pr_num| "[##{pr_num}](https://github.com/#{GITHUB_REPO}/pull/#{pr_num})" }.join(', ')
-    #                  end
+    # Annotate the build with the moved PRs
+    moved_prs_info = if moved_prs.empty?
+                       "👍 No open PRs were targeting `#{new_version}` at the time of code-freeze"
+                     else
+                       "#{moved_prs.count} PRs targeting `#{new_version}` were still open and thus moved to `#{release_version_next}`:\n" \
+                         + moved_prs.map { |pr_num| "[##{pr_num}](https://github.com/#{GITHUB_REPO}/pull/#{pr_num})" }.join(', ')
+                     end
 
-    # buildkite_annotate(style: moved_prs.empty? ? 'success' : 'warning', context: 'start-code-freeze', message: moved_prs_info) if is_ci
+    buildkite_annotate(style: moved_prs.empty? ? 'success' : 'warning', context: 'start-code-freeze', message: moved_prs_info) if is_ci
 
-    # print_release_notes_reminder
+    print_release_notes_reminder
 
-    # message = <<~MESSAGE
-    #   Code freeze started successfully.
+    message = <<~MESSAGE
+      Code freeze started successfully.
 
-    #   Next steps:
+      Next steps:
 
-    #   - Checkout `#{release_branch_name}` branch locally
-    #   - Update pods and release notes
-    #   - Finalize the code freeze
-    # MESSAGE
-    # buildkite_annotate(context: 'code-freeze-success', style: 'success', message: message) if is_ci
+      - Checkout `#{release_branch_name}` branch locally
+      - Update pods and release notes
+      - Finalize the code freeze
+    MESSAGE
+    buildkite_annotate(context: 'code-freeze-success', style: 'success', message: message) if is_ci
   end
 
   # Executes the final steps for the code freeze
