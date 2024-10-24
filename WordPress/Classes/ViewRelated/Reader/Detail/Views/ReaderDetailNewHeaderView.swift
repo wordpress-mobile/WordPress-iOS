@@ -260,6 +260,7 @@ struct ReaderDetailNewHeaderView: View {
                     .font(Font(viewModel.displaySetting.font(with: .title1, weight: .bold)))
                     .foregroundStyle(Color(primaryTextColor))
                     .lineLimit(nil)
+                    .textSelection(.enabled)
                     .fixedSize(horizontal: false, vertical: true) // prevents the title from being truncated.
             }
             if viewModel.likeCountString != nil || viewModel.commentCountString != nil {
