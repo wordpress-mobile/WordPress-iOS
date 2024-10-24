@@ -86,6 +86,8 @@ final class ReaderDiscoverHeaderView: UIView, UITextViewDelegate {
     // MARK: UITextViewDelegate
 
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
+        WPAnalytics.track(.readerDiscoverEditInterestsTapped)
+
         let tagsVC = ReaderTagsTableViewController(style: .plain)
         tagsVC.title = Strings.editInterests
         tagsVC.navigationItem.rightBarButtonItem = UIBarButtonItem(title: SharedStrings.Button.done, primaryAction: UIAction { [weak tagsVC] _ in

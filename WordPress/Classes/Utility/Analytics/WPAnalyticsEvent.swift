@@ -322,6 +322,7 @@ import Foundation
 
     // Reader: Discover
     case readerDiscoverChannelSelected
+    case readerDiscoverEditInterestsTapped
 
     // Reader: Filter Sheet
     case readerFilterSheetDisplayed
@@ -1204,6 +1205,8 @@ import Foundation
         // Reader: Discover
         case .readerDiscoverChannelSelected:
             return "reader_discover_channel_selected"
+        case .readerDiscoverEditInterestsTapped:
+            return "reader_discover_edit_interests_tapped"
 
         // Reader: Filter Sheet
         case .readerFilterSheetDisplayed:
