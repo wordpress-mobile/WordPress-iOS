@@ -8,7 +8,7 @@ if [[ -z "${RELEASE_NUMBER}" ]]; then
 fi
 
 echo '--- :git: Configure Git for release management'
-.buildkite/commands/configure-git-for-release-management.sh
+source .buildkite/commands/configure-for-release.sh
 
 echo '--- :git: Checkout release branch'
 .buildkite/commands/checkout-release-branch.sh "$RELEASE_NUMBER"
