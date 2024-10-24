@@ -716,6 +716,10 @@ import AutomatticTracks
 
     /// Scrolls to the top of the list of posts.
     @objc func scrollViewToTop() {
+        guard !FeatureFlag.readerReset.enabled else {
+            return
+        }
+
         navigationMenuDelegate?.didScrollToTop()
         guard tableView.numberOfRows(inSection: .zero) > 0 else {
             tableView.setContentOffset(.zero, animated: true)
