@@ -28,6 +28,12 @@ extension UIView {
         }
         translatesAutoresizingMaskIntoConstraints = false
 
+#if DEBUG
+        if let target = target as? UIView {
+            assert(!target.isDescendant(of: self), "The target view can't be a descendant for the view")
+        }
+#endif
+
         var constraints: [NSLayoutConstraint] = []
 
         func pin(_ edge: Edge.Set, _ closure: @autoclosure () -> NSLayoutConstraint) {
