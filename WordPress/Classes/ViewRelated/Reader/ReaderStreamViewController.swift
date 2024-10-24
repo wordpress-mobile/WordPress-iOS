@@ -107,6 +107,7 @@ import AutomatticTracks
     private var indexPathForGapMarker: IndexPath?
     private var didSetupView = false
     private var didBumpStats = false
+    @Lazy private var titleView = ReaderNavigationCustomTitleView()
     internal let scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
 
     /// Content management
@@ -637,6 +638,14 @@ import AutomatticTracks
             title = ""
         } else {
             title = topic.title
+        }
+
+        if FeatureFlag.readerReset.enabled {
+            if ReaderHelpers.topicIsFollowing(topic) {
+                title = ReaderStreamTitleView.followingTitle
+                titleView.textLabel.text = ReaderStreamTitleView.followingTitle
+                navigationItem.titleView = titleView
+            }
         }
     }
 
@@ -2074,6 +2083,8 @@ extension ReaderStreamViewController: UITableViewDelegate, JPScrollViewDelegate 
 
         let velocity = tableView.panGestureRecognizer.velocity(in: tableView)
         navigationMenuDelegate?.scrollViewDidScroll(scrollView, velocity: velocity)
+
+        $titleView.value?.updateAlpha(in: scrollView)
     }
 }
 
