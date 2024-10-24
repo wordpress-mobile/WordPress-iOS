@@ -320,6 +320,10 @@ import Foundation
     case postRepositoryConflictEncountered
     case postRepositoryPostsFetchFailed
 
+    // Reader: Discover
+    case readerDiscoverChannelSelected
+    case readerDiscoverEditInterestsTapped
+
     // Reader: Filter Sheet
     case readerFilterSheetDisplayed
     case readerFilterSheetDismissed
@@ -1197,6 +1201,12 @@ import Foundation
             return "post_repository_conflict_encountered"
         case .postRepositoryPostsFetchFailed:
             return "post_repository_posts_fetch_failed"
+
+        // Reader: Discover
+        case .readerDiscoverChannelSelected:
+            return "reader_discover_channel_selected"
+        case .readerDiscoverEditInterestsTapped:
+            return "reader_discover_edit_interests_tapped"
 
         // Reader: Filter Sheet
         case .readerFilterSheetDisplayed:

@@ -18,7 +18,7 @@ extension WPTabBarController {
         let viewModel = ReaderTabViewModel(
             readerContentFactory: { content in
                 if content.topicType == .discover, let topic = content.topic {
-                    return ReaderCardsStreamViewController.controller(topic: topic)
+                    return ReaderDiscoverViewController(topic: topic)
                 } else if let topic = content.topic {
                     return ReaderStreamViewController.controllerWithTopic(topic)
                 } else {

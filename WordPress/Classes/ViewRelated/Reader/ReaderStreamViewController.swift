@@ -260,6 +260,8 @@ import AutomatticTracks
 
     lazy var isSidebarModeEnabled = splitViewController?.isCollapsed == false
 
+    var isReaderResetDiscoverEnabled = false
+
     // MARK: - Factory Methods
 
     /// Convenience method for instantiating an instance of ReaderStreamViewController
@@ -540,11 +542,17 @@ import AutomatticTracks
     // MARK: - Configuration / Topic Presentation
 
     @objc private func configureStreamHeader() {
+        guard !isReaderResetDiscoverEnabled else {
+            return
+        }
         guard let headerView = headerForStream(readerTopic, isLoggedIn: isLoggedIn, container: tableViewController) else {
             tableView.tableHeaderView = nil
             return
         }
+        setHeaderView(headerView)
+    }
 
+    func setHeaderView(_ headerView: UIView) {
         if let tableHeaderView = tableView.tableHeaderView {
             headerView.isHidden = tableHeaderView.isHidden
         }
@@ -1715,8 +1723,9 @@ extension ReaderStreamViewController {
         if content.contentCount > 0 {
             return
         }
-
-        tableView.tableHeaderView?.isHidden = true
+        if !isReaderResetDiscoverEnabled {
+            tableView.tableHeaderView?.isHidden = true
+        }
         configureResultsStatus(title: ResultsStatusText.fetchingPostsTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
         displayResultsStatus()
         showGhost()
@@ -1736,7 +1745,9 @@ extension ReaderStreamViewController {
             return
         }
 
-        tableView.tableHeaderView?.isHidden = true
+        if !isReaderResetDiscoverEnabled {
+            tableView.tableHeaderView?.isHidden = true
+        }
 
         guard connectionAvailable() else {
             displayNoConnectionView()

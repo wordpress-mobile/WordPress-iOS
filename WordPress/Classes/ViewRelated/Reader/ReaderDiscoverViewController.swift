@@ -1,6 +1,133 @@
 import Foundation
+import UIKit
+import Combine
+import WordPressKit
+import WordPressShared
 
-class ReaderCardsStreamViewController: ReaderStreamViewController {
+class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDelegate, ReaderContentViewController {
+    private let headerView = ReaderDiscoverHeaderView()
+    private var selectedChannel: ReaderDiscoverChannel = .recommended
+    private let topic: ReaderAbstractTopic
+    private var streamVC: ReaderStreamViewController?
+    private let tags: ManagedObjectsObserver<ReaderTagTopic>
+    private let viewContext: NSManagedObjectContext
+    private var cancellables: [AnyCancellable] = []
+
+    init(topic: ReaderAbstractTopic) {
+        wpAssert(ReaderHelpers.topicIsDiscover(topic))
+        self.viewContext = ContextManager.shared.mainContext
+        self.topic = topic
+        self.tags = ManagedObjectsObserver(
+            predicate: ReaderSidebarTagsSection.predicate,
+            sortDescriptors: [SortDescriptor(\.title, order: .forward)],
+            context: viewContext
+        )
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        setupNavigation()
+        setupHeaderView()
+
+        configureStream(for: selectedChannel)
+    }
+
+    private func setupNavigation() {
+        navigationItem.largeTitleDisplayMode = .never
+    }
+
+    private func setupHeaderView() {
+        tags.$objects.sink { [weak self] tags in
+            self?.configureHeader(tags: tags)
+        }.store(in: &cancellables)
+
+        headerView.delegate = self
+    }
+
+    private func configureHeader(tags: [ReaderTagTopic]) {
+        let channels = tags
+            .filter { $0.slug != ReaderTagTopic.dailyPromptTag }
+            .map(ReaderDiscoverChannel.tag)
+
+        headerView.configure(channels: [.recommended, .firstPosts, .latest, .dailyPrompts] + channels)
+        headerView.setSelectedChannel(selectedChannel)
+    }
+
+    // MARK: - Selected Stream
+
+    private func configureStream(for channel: ReaderDiscoverChannel) {
+        showStreamViewController(makeViewController(for: channel))
+    }
+
+    private func makeViewController(for channel: ReaderDiscoverChannel) -> ReaderStreamViewController {
+        switch channel {
+        case .recommended:
+            ReaderDiscoverStreamViewController(topic: topic)
+        case .firstPosts:
+            ReaderDiscoverStreamViewController(topic: topic, stream: .firstPosts, sorting: .date)
+        case .latest:
+            ReaderDiscoverStreamViewController(topic: topic, sorting: .date)
+        case .dailyPrompts:
+            ReaderStreamViewController.controllerWithTagSlug(ReaderTagTopic.dailyPromptTag)
+        case .tag(let tag):
+            ReaderStreamViewController.controllerWithTopic(tag)
+        }
+    }
+
+    private func showStreamViewController(_ streamVC: ReaderStreamViewController) {
+        if let currentVC = self.streamVC {
+            deleteCachedReaderCards()
+
+            currentVC.willMove(toParent: nil)
+            currentVC.view.removeFromSuperview()
+            currentVC.removeFromParent()
+        }
+
+        self.streamVC = streamVC
+
+        if FeatureFlag.readerReset.enabled {
+            // Important to set before `viewDidLoad`
+            streamVC.isReaderResetDiscoverEnabled = true
+            streamVC.setHeaderView(headerView)
+        }
+
+        addChild(streamVC)
+        view.addSubview(streamVC.view)
+        streamVC.view.pinEdges()
+        streamVC.didMove(toParent: self)
+    }
+
+    /// TODO: (tech-debt) the app currently stores the responses from the `/discover`
+    /// entpoint (cards) in Core Data with no way to distinguish between the
+    /// requests with different parameters like different sort. In order to
+    /// address it, the app currently drops the previously cached responses
+    /// when you change the streams.
+    private func deleteCachedReaderCards() {
+        ReaderCardService.removeAllCards()
+    }
+
+    // MARK: - ReaderContentViewController (Deprecated)
+
+    func setContent(_ content: ReaderContent) {
+        streamVC?.setContent(content)
+    }
+
+    // MARK: - ReaderDiscoverHeaderViewDelegate
+
+    func readerDiscoverHeaderView(_ view: ReaderDiscoverHeaderView, didChangeSelection selection: ReaderDiscoverChannel) {
+        self.selectedChannel = selection
+        configureStream(for: selection)
+        WPAnalytics.track(.readerDiscoverChannelSelected, properties: selection.analyticsProperties)
+    }
+}
+
+private class ReaderDiscoverStreamViewController: ReaderStreamViewController {
     private let readerCardTopicsIdentifier = "ReaderTopicsCell"
     private let readerCardSitesIdentifier = "ReaderSitesCell"
 
@@ -14,17 +141,19 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         content.content as? [ReaderCard]
     }
 
-    lazy var cardsService: ReaderCardService = {
-        return ReaderCardService()
-    }()
+    private let cardsService: ReaderCardService
 
     /// Whether the current view controller is visible
     private var isVisible: Bool {
         return isViewLoaded && view.window != nil
     }
 
-    init() {
+    init(topic: ReaderAbstractTopic, stream: ReaderStream = .discover, sorting: ReaderSortingOption = .noSorting) {
+        self.cardsService = ReaderCardService(stream: stream, sorting: sorting)
+
         super.init(nibName: nil, bundle: nil)
+
+        self.readerTopic = topic
 
         // register table view cells specific to this controller as early as possible.
         // the superclass might trigger `layoutIfNeeded` from its `viewDidLoad`, and we want to make sure that
@@ -40,6 +169,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         addObservers()
     }
 
@@ -48,7 +178,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         displaySelectInterestsIfNeeded()
     }
 
-    // MARK: - TableView Related
+    // MARK: - UITableView
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let card = cards?[indexPath.row] else {
@@ -185,20 +315,6 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         return NSPredicate(format: "post != NULL OR topics.@count != 0 OR sites.@count != 0")
     }
 
-    /// Convenience method for instantiating an instance of ReaderCardsStreamViewController
-    /// for a existing topic.
-    ///
-    /// - Parameters:
-    ///     - topic: Any subclass of ReaderAbstractTopic
-    ///
-    /// - Returns: An instance of the controller
-    ///
-    class func controller(topic: ReaderAbstractTopic) -> ReaderCardsStreamViewController {
-        let controller = ReaderCardsStreamViewController()
-        controller.readerTopic = topic
-        return controller
-    }
-
     private func addObservers() {
 
         // Listens for when the reader manage view controller is dismissed
@@ -236,7 +352,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
 }
 
 // MARK: - Select Interests Display
-private extension ReaderCardsStreamViewController {
+private extension ReaderDiscoverStreamViewController {
     func displaySelectInterestsIfNeeded() {
         selectInterestsViewController.userIsFollowingTopics { [weak self] isFollowing in
             guard let self else {
@@ -253,7 +369,7 @@ private extension ReaderCardsStreamViewController {
 
 // MARK: - ReaderTopicsTableCardCellDelegate
 
-extension ReaderCardsStreamViewController: ReaderTopicsTableCardCellDelegate {
+extension ReaderDiscoverStreamViewController: ReaderTopicsTableCardCellDelegate {
     func didSelect(topic: ReaderAbstractTopic) {
         if topic as? ReaderTagTopic != nil {
             WPAnalytics.trackReader(.readerDiscoverTopicTapped)
@@ -273,7 +389,7 @@ extension ReaderCardsStreamViewController: ReaderTopicsTableCardCellDelegate {
 
 // MARK: - ReaderSitesCardCellDelegate
 
-extension ReaderCardsStreamViewController: ReaderSitesCardCellDelegate {
+extension ReaderDiscoverStreamViewController: ReaderSitesCardCellDelegate {
     func handleFollowActionForTopic(_ topic: ReaderAbstractTopic, for cell: ReaderSitesCardCell) {
         toggleFollowingForTopic(topic) { success in
             cell.didToggleFollowing(topic, with: success)

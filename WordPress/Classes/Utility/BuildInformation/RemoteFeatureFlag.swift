@@ -26,7 +26,6 @@ enum RemoteFeatureFlag: Int, CaseIterable {
     case wordPressSotWCard
     case inAppRating
     case siteMonitoring
-    case readerDiscoverEndpoint
     case readingPreferences
     case readingPreferencesFeedback
     case readerAnnouncementCard
@@ -84,8 +83,6 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return false
         case .siteMonitoring:
             return false
-        case .readerDiscoverEndpoint:
-            return true
         case .readingPreferences:
             return true
         case .readingPreferencesFeedback:
@@ -152,8 +149,6 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "in_app_rating_and_feedback"
         case .siteMonitoring:
             return "site_monitoring"
-        case .readerDiscoverEndpoint:
-            return "reader_discover_new_endpoint"
         case .readingPreferences:
             return "reading_preferences"
         case .readingPreferencesFeedback:
@@ -219,8 +214,6 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "In-App Rating and Feedback"
         case .siteMonitoring:
             return "Site Monitoring"
-        case .readerDiscoverEndpoint:
-            return "Reader Discover New Endpoint"
         case .readingPreferences:
             return "Reading Preferences"
         case .readingPreferencesFeedback:
