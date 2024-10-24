@@ -11,6 +11,11 @@ extension ReaderStreamViewController {
     }
 
     func headerForStream(_ topic: ReaderAbstractTopic?, isLoggedIn: Bool, container: UITableViewController) -> UIView? {
+        if FeatureFlag.readerReset.enabled, let topic {
+            if ReaderHelpers.topicIsFollowing(topic) {
+                return ReaderStreamTitleView.makeForFollowing()
+            }
+        }
         if let topic,
            let header = headerForStream(topic) {
             configure(header, topic: topic, isLoggedIn: isLoggedIn, delegate: self)

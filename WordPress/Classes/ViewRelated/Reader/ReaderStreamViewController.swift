@@ -107,6 +107,7 @@ import AutomatticTracks
     private var indexPathForGapMarker: IndexPath?
     private var didSetupView = false
     private var didBumpStats = false
+    @Lazy private var titleView = ReaderNavigationCustomTitleView()
     internal let scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
 
     /// Content management
@@ -638,6 +639,18 @@ import AutomatticTracks
         } else {
             title = topic.title
         }
+
+        if FeatureFlag.readerReset.enabled {
+            configureCustomTitleView(for: topic)
+        }
+    }
+
+    private func configureCustomTitleView(for topic: ReaderAbstractTopic) {
+        if ReaderHelpers.topicIsFollowing(topic) {
+            self.title = SharedStrings.Reader.recent
+            titleView.textLabel.text = SharedStrings.Reader.recent
+            navigationItem.titleView = titleView
+        }
     }
 
     private func configureCloseButtonIfNeeded() {
@@ -707,6 +720,10 @@ import AutomatticTracks
 
     /// Scrolls to the top of the list of posts.
     @objc func scrollViewToTop() {
+        guard !FeatureFlag.readerReset.enabled else {
+            return
+        }
+
         navigationMenuDelegate?.didScrollToTop()
         guard tableView.numberOfRows(inSection: .zero) > 0 else {
             tableView.setContentOffset(.zero, animated: true)
@@ -2074,6 +2091,8 @@ extension ReaderStreamViewController: UITableViewDelegate, JPScrollViewDelegate 
 
         let velocity = tableView.panGestureRecognizer.velocity(in: tableView)
         navigationMenuDelegate?.scrollViewDidScroll(scrollView, velocity: velocity)
+
+        $titleView.value?.updateAlpha(in: scrollView)
     }
 }
 
