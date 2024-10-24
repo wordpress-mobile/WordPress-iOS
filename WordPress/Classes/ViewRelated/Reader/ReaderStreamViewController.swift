@@ -646,15 +646,9 @@ import AutomatticTracks
     }
 
     private func configureCustomTitleView(for topic: ReaderAbstractTopic) {
-        var title: String?
         if ReaderHelpers.topicIsFollowing(topic) {
-            title = SharedStrings.Reader.recent
-        } else if ReaderHelpers.topicIsDiscover(topic) {
-            title = SharedStrings.Reader.discover
-        }
-        if let title {
-            self.title = title
-            titleView.textLabel.text = title
+            self.title = SharedStrings.Reader.recent
+            titleView.textLabel.text = SharedStrings.Reader.recent
             navigationItem.titleView = titleView
         }
     }
