@@ -22,18 +22,16 @@ final class ReaderStreamTitleView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    static let preferredInsets = UIEdgeInsets(top: 16, left: 16, bottom: 8, right: 16)
+    static let preferredInsets = UIEdgeInsets(top: 4, left: 16, bottom: 8, right: 16)
 }
 
 extension ReaderStreamTitleView {
     static func makeForFollowing() -> ReaderStreamTitleView {
         let view = ReaderStreamTitleView()
-        view.titleLabel.text = Strings.followingTitle
+        view.titleLabel.text = SharedStrings.Reader.recent
         view.detailsTextView.text = Strings.followingDetails
         return view
     }
-
-    static var followingTitle: String { Strings.followingTitle }
 }
 
 final class ReaderNavigationCustomTitleView: UIView {
@@ -68,6 +66,5 @@ final class ReaderNavigationCustomTitleView: UIView {
 }
 
 private enum Strings {
-    static let followingTitle = NSLocalizedString("reader.following.header.title", value: "Following", comment: "Screen header title")
     static let followingDetails = NSLocalizedString("reader.following.header.details", value: "Stay current with the blogs you've subscribed to.", comment: "Screen header details")
 }

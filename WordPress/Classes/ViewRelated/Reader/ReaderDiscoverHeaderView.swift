@@ -27,7 +27,7 @@ final class ReaderDiscoverHeaderView: UIView, UITextViewDelegate {
         addSubview(stackView)
         stackView.pinEdges(insets: ReaderStreamTitleView.preferredInsets)
 
-        titleView.titleLabel.text = Strings.title
+        titleView.titleLabel.text = SharedStrings.Reader.discover
         titleView.detailsTextView.attributedText = {
             guard let details = try? NSMutableAttributedString(markdown: Strings.details) else {
                 return nil
@@ -204,7 +204,6 @@ enum ReaderDiscoverChannel: Hashable {
 }
 
 private enum Strings {
-    static let title = NSLocalizedString("reader.discover.header.title", value: "Discover", comment: "Header view title")
     static let details = NSLocalizedString("reader.discover.header.title", value: "Explore popular blogs that inspire, educate, and entertain based on your [interests](/interests).", comment: "Reader Discover header view details label. The text has a Markdown URL: [interests](/interests). Only the text in the square brackets needs to be translated: [<translate_this>](/interests).")
     static let editInterests = NSLocalizedString("reader.editInterests.title", value: "Edit Interests", comment: "Screen title")
 }
