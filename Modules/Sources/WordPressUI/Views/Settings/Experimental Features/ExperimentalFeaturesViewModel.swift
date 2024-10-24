@@ -1,5 +1,6 @@
 import SwiftUI
 
+@MainActor
 public class ExperimentalFeaturesViewModel: ObservableObject {
     public protocol DataProvider {
         func loadItems() async throws -> [Feature]

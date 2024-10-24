@@ -518,6 +518,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
                                       scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
                 [self showPeople];
             }
+
+            if ([self.blog selfHostedSiteRestApi]) {
+                self.restorableSelectedIndexPath = indexPath;
+                [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
+                if (@available(iOS 16.4, *)) {
+                    [self showUsers];
+                }
+            }
             break;
         case BlogDetailsSubsectionPlugins:
             if ([self.blog supports:BlogFeaturePluginManagement]) {
@@ -849,6 +857,20 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     return row;
 }
 
+- (BlogDetailsRow *)usersRow
+{
+    __weak __typeof(self) weakSelf = self;
+    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Users", @"Noun. Title. Links to the user management feature.")
+                                        accessibilityIdentifier:@"User Row"
+                                                          image:[UIImage imageNamed:@"site-menu-people"]
+                                                       callback:^{
+        if (@available(iOS 16.4, *)) {
+            [weakSelf showUsers];
+        }
+    }];
+    return row;
+}
+
 - (BlogDetailsRow *)pluginsRow
 {
     __weak __typeof(self) weakSelf = self;
@@ -1122,6 +1144,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     if ([self shouldAddPeopleRow]) {
         [secondSectionRows addObject:[self peopleRow]];
     }
+
+    if ([self shouldAddUsersRow]) {
+        [secondSectionRows addObject:[self usersRow]];
+    }
+
     if ([self shouldAddPluginsRow]) {
         [secondSectionRows addObject:[self pluginsRow]];
     }

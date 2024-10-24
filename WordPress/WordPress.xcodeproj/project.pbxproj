@@ -956,6 +956,8 @@
 		2422A2C02C5846DB00402A81 /* Blog+RestAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2422A2BF2C5846DB00402A81 /* Blog+RestAPITests.swift */; };
 		2422A2C22C58470600402A81 /* Blog+SelfHosted.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2422A2C12C58470600402A81 /* Blog+SelfHosted.swift */; };
 		2422A2C32C58470600402A81 /* Blog+SelfHosted.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2422A2C12C58470600402A81 /* Blog+SelfHosted.swift */; };
+		242686482C8A356D00690B6D /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242686472C8A356D00690B6D /* UserService.swift */; };
+		242686492C8A356D00690B6D /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242686472C8A356D00690B6D /* UserService.swift */; };
 		24351254264DCA08009BB2B6 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24351253264DCA08009BB2B6 /* Secrets.swift */; };
 		24351255264DCA08009BB2B6 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24351253264DCA08009BB2B6 /* Secrets.swift */; };
 		2448ABAB2C5D4F1200DC0091 /* URL+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0845B8C51E833C56001BA771 /* URL+Helpers.swift */; };
@@ -6794,6 +6796,7 @@
 		2420BEF025D8DAB300966129 /* Blog+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+Lookup.swift"; sourceTree = "<group>"; };
 		2422A2BF2C5846DB00402A81 /* Blog+RestAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+RestAPITests.swift"; sourceTree = "<group>"; };
 		2422A2C12C58470600402A81 /* Blog+SelfHosted.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+SelfHosted.swift"; sourceTree = "<group>"; };
+		242686472C8A356D00690B6D /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		24350E7C264DB76E009BB2B6 /* Jetpack.debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Jetpack.debug.xcconfig; sourceTree = "<group>"; };
 		24351059264DC1E2009BB2B6 /* Jetpack.release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Jetpack.release.xcconfig; sourceTree = "<group>"; };
 		243511A4264DC2D9009BB2B6 /* Jetpack.internal.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Jetpack.internal.xcconfig; sourceTree = "<group>"; };
@@ -15101,6 +15104,7 @@
 			isa = PBXGroup;
 			children = (
 				24DB7C182C5AFC0600A0FE92 /* ApplicationPasswordService.swift */,
+				242686472C8A356D00690B6D /* UserService.swift */,
 				FEF207F02AF287860025CB2C /* BloggingPrompts */,
 				F4B0F4812ADED999003ABC61 /* Domains */,
 				FA6C32B42BEE77EA00BBDDB4 /* AppUpdate */,
@@ -22872,6 +22876,7 @@
 				46183CF4251BD658004F9AFD /* PageTemplateLayout+CoreDataClass.swift in Sources */,
 				982A4C3520227D6700B5518E /* NoResultsViewController.swift in Sources */,
 				57C3D393235DFD8E00FE9CE6 /* ActionDispatcherFacade.swift in Sources */,
+				242686482C8A356D00690B6D /* UserService.swift in Sources */,
 				B03B9236250BC5FD000A40AF /* Suggestion.swift in Sources */,
 				74EA3B88202A0462004F802D /* ShareNoticeConstants.swift in Sources */,
 				17A09B99238FE13B0022AE0D /* FeatureFlagOverrideStore.swift in Sources */,
@@ -25023,6 +25028,7 @@
 				FABB22B72602FC2C00C8785C /* SettingsListEditorViewController.swift in Sources */,
 				80C523A82995D73C00B1C14B /* BlazeCreateCampaignWebViewModel.swift in Sources */,
 				982DDF97263238A6002B3904 /* LikeUserPreferredBlog+CoreDataProperties.swift in Sources */,
+				242686492C8A356D00690B6D /* UserService.swift in Sources */,
 				0C5A17242C74D01900EEF067 /* SidebarViewModel.swift in Sources */,
 				0CED1FEE2B61AAF600E6DD52 /* AtomicSiteService.swift in Sources */,
 				C3234F4F27EB96AB004ADB29 /* IntentCell.swift in Sources */,

@@ -1,4 +1,5 @@
 import Foundation
+import WordPressUI
 import UIKit
 import SwiftUI
 
@@ -110,6 +111,10 @@ extension BlogDetailsViewController {
         return blog.supports(.people)
     }
 
+    @objc func shouldAddUsersRow() -> Bool {
+        blog.isSelfHosted
+    }
+
     @objc func shouldAddPluginsRow() -> Bool {
         return blog.supports(.pluginManagement)
     }
@@ -123,19 +128,31 @@ extension BlogDetailsViewController {
         return self.blog.account == nil && self.blog.userID != nil && (try? WordPressSite.from(blog: self.blog)) != nil
     }
 
+    private func createWordPressClient() -> WordPressClient? {
+        do {
+            let site = try WordPressSite.from(blog: self.blog)
+            return try WordPressClient.for(site: site, in: .shared)
+        }
+        catch {
+           DDLogError("Failed to create WordPressClient: \(error)")
+           return nil
+       }
+    }
+
     private func createApplicationPasswordService() -> ApplicationPasswordService? {
-        guard let userId = self.blog.userID?.intValue else {
+        guard let client = createWordPressClient(), let userId = self.blog.userID?.intValue else {
             return nil
         }
 
-        do {
-            let site = try WordPressSite.from(blog: self.blog)
-            let client = try WordPressClient.for(site: site, in: .shared)
-            return ApplicationPasswordService(api: client, currentUserId: userId)
-        } catch {
-            DDLogError("Failed to create WordPressClient: \(error)")
+        return ApplicationPasswordService(api: client, currentUserId: userId)
+    }
+
+    private func createUserService() -> UserService? {
+        guard let client = createWordPressClient(), let userId = self.blog.userID?.intValue else {
             return nil
         }
+
+        return UserService(api: client, currentUserId: userId)
     }
 
     @objc func showApplicationPasswordManagement() {
@@ -146,6 +163,36 @@ extension BlogDetailsViewController {
         let viewModel = ApplicationTokenListViewModel(dataProvider: service)
         let viewController = UIHostingController(rootView: ApplicationTokenListView(viewModel: viewModel))
         presentationDelegate.presentBlogDetailsViewController(viewController)
+    }
+
+    @available(iOS 16.4, *)
+    @objc func showUsers() {
+        guard self.blog.supportsDotOrgRestApi else {
+            let vc = UIHostingController(rootView: RestApiUpgradePrompt(didTapGetStarted: {
+                debugPrint("Tapped get started")
+            }, didTapLearnMore: {
+                debugPrint("Tapped learn more")
+            }))
+
+            if let sheet = vc.sheetPresentationController {
+                sheet.detents = [.medium()]
+            }
+
+            self.navigationController?.present(vc, animated: true)
+
+            return
+
+        }
+
+        guard let presentationDelegate, let service = createUserService() else {
+            return
+        }
+
+        UserObjectResolver.userProvider = service
+        UserObjectResolver.actionDispatcher = service.actionDispatcher
+
+        let userListView = UIHostingController(rootView: UserListView())
+        presentationDelegate.presentBlogDetailsViewController(userListView)
     }
 
     @objc func showManagePluginsScreen() {

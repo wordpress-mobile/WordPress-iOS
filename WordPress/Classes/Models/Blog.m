@@ -622,6 +622,8 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
             return [self isListingPagesAllowed];
         case BlogFeatureSiteMonitoring:
             return [self isAdmin] && [self isAtomic];
+        case BlogFeatureWPOrgRESTAPI:
+            return [self supportsDotOrgRestApi];
     }
 }
 
