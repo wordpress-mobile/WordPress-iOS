@@ -996,8 +996,8 @@
 		24CED4032C73E267005A1E1D /* ExperimentalFeaturesDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24CED4022C73E266005A1E1D /* ExperimentalFeaturesDataProvider.swift */; };
 		24CED4042C73E267005A1E1D /* ExperimentalFeaturesDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24CED4022C73E266005A1E1D /* ExperimentalFeaturesDataProvider.swift */; };
 		24D0854C2C87B0D7006A215C /* AppStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2538E26116A1600EDAF88 /* AppStyleGuide.swift */; };
-		24DB7C132C5AEF0600A0FE92 /* LoginClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24DB7C122C5AEF0500A0FE92 /* LoginClient.swift */; };
-		24DB7C142C5AEF0600A0FE92 /* LoginClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24DB7C122C5AEF0500A0FE92 /* LoginClient.swift */; };
+		24DB7C132C5AEF0600A0FE92 /* SelfHostedSiteAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24DB7C122C5AEF0500A0FE92 /* SelfHostedSiteAuthenticator.swift */; };
+		24DB7C142C5AEF0600A0FE92 /* SelfHostedSiteAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24DB7C122C5AEF0500A0FE92 /* SelfHostedSiteAuthenticator.swift */; };
 		24DB7C162C5AFA7200A0FE92 /* WordPressClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24DB7C152C5AFA7200A0FE92 /* WordPressClient.swift */; };
 		24DB7C172C5AFA7200A0FE92 /* WordPressClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24DB7C152C5AFA7200A0FE92 /* WordPressClient.swift */; };
 		24DB7C192C5AFC0700A0FE92 /* ApplicationPasswordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24DB7C182C5AFC0600A0FE92 /* ApplicationPasswordService.swift */; };
@@ -6855,7 +6855,7 @@
 		24C69AC12612467C00312D9A /* UserSettingsTestsObjc.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserSettingsTestsObjc.m; sourceTree = "<group>"; };
 		24CDE3402C5863A1005E5E43 /* TestKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestKeychain.swift; sourceTree = "<group>"; };
 		24CED4022C73E266005A1E1D /* ExperimentalFeaturesDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperimentalFeaturesDataProvider.swift; sourceTree = "<group>"; };
-		24DB7C122C5AEF0500A0FE92 /* LoginClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginClient.swift; sourceTree = "<group>"; };
+		24DB7C122C5AEF0500A0FE92 /* SelfHostedSiteAuthenticator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelfHostedSiteAuthenticator.swift; sourceTree = "<group>"; };
 		24DB7C152C5AFA7200A0FE92 /* WordPressClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordPressClient.swift; sourceTree = "<group>"; };
 		24DB7C182C5AFC0600A0FE92 /* ApplicationPasswordService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplicationPasswordService.swift; sourceTree = "<group>"; };
 		24F3789725E6E62100A27BB7 /* NSManagedObject+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Lookup.swift"; sourceTree = "<group>"; };
@@ -13186,6 +13186,7 @@
 			isa = PBXGroup;
 			children = (
 				4ADE3F802C619E8A0046EC8A /* LoginWithUrlView.swift */,
+				24DB7C122C5AEF0500A0FE92 /* SelfHostedSiteAuthenticator.swift */,
 				4A9672AE2C7E84B200337176 /* WordPressDotComAuthenticator.swift */,
 			);
 			path = Login;
@@ -14487,7 +14488,6 @@
 		850BD4531922F95C0032F3AD /* Networking */ = {
 			isa = PBXGroup;
 			children = (
-				24DB7C122C5AEF0500A0FE92 /* LoginClient.swift */,
 				F1450CF42437E1A600A28BFE /* MediaHost.swift */,
 				F11C9F75243B3C5E00921DDC /* MediaHost+AbstractPost.swift */,
 				F11C9F73243B3C3E00921DDC /* MediaHost+Blog.swift */,
@@ -21476,7 +21476,7 @@
 				7E4123CC20F418A500DF8486 /* ActivityActionsParser.swift in Sources */,
 				FAB37D4627ED84BC00CA993C /* DashboardStatsNudgeView.swift in Sources */,
 				17F0E1DA20EBDC0A001E9514 /* Routes+Me.swift in Sources */,
-				24DB7C132C5AEF0600A0FE92 /* LoginClient.swift in Sources */,
+				24DB7C132C5AEF0600A0FE92 /* SelfHostedSiteAuthenticator.swift in Sources */,
 				D83CA3AB20842E5F0060E310 /* StockPhotosResultsPage.swift in Sources */,
 				80EF928A280D28140064A971 /* Atomic.swift in Sources */,
 				8BA77BCF2483415400E1EBBF /* ReaderDetailToolbar.swift in Sources */,
@@ -26209,7 +26209,7 @@
 				FABB25F52602FC2C00C8785C /* FilterableCategoriesViewController.swift in Sources */,
 				0C14F9752C8A48C90084E5C0 /* ReaderSubscriptionsView.swift in Sources */,
 				FABB25F62602FC2C00C8785C /* Post+CoreDataProperties.swift in Sources */,
-				24DB7C142C5AEF0600A0FE92 /* LoginClient.swift in Sources */,
+				24DB7C142C5AEF0600A0FE92 /* SelfHostedSiteAuthenticator.swift in Sources */,
 				FABB25F72602FC2C00C8785C /* BasePost.swift in Sources */,
 				FABB25F82602FC2C00C8785C /* NotificationContentRange.swift in Sources */,
 				FABB25FA2602FC2C00C8785C /* ImmuTable.swift in Sources */,
