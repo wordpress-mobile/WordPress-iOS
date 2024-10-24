@@ -181,6 +181,24 @@ enum ReaderDiscoverChannel: Hashable {
             tag.title.localizedCapitalized
         }
     }
+
+    var analyticsProperties: [String: String] {
+        var properties = ["channel": analyticsID]
+        if case let .tag(tag) = self {
+            properties["tag"] = tag.slug
+        }
+        return properties
+    }
+
+    private var analyticsID: String {
+        switch self {
+        case .recommended: "recommended"
+        case .firstPosts: "first_posts"
+        case .latest: "latest"
+        case .dailyPrompts: "daily_prompts"
+        case .tag: "tag"
+        }
+    }
 }
 
 private enum Strings {
