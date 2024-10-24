@@ -123,6 +123,7 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
     func readerDiscoverHeaderView(_ view: ReaderDiscoverHeaderView, didChangeSelection selection: ReaderDiscoverChannel) {
         self.selectedChannel = selection
         configureStream(for: selection)
+        WPAnalytics.track(.readerDiscoverChannelSelected, properties: selection.analyticsProperties)
     }
 }
 
