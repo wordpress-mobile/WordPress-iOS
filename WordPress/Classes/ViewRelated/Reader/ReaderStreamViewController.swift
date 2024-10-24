@@ -641,11 +641,21 @@ import AutomatticTracks
         }
 
         if FeatureFlag.readerReset.enabled {
-            if ReaderHelpers.topicIsFollowing(topic) {
-                title = ReaderStreamTitleView.followingTitle
-                titleView.textLabel.text = ReaderStreamTitleView.followingTitle
-                navigationItem.titleView = titleView
-            }
+            configureCustomTitleView(for: topic)
+        }
+    }
+
+    private func configureCustomTitleView(for topic: ReaderAbstractTopic) {
+        var title: String?
+        if ReaderHelpers.topicIsFollowing(topic) {
+            title = SharedStrings.Reader.recent
+        } else if ReaderHelpers.topicIsDiscover(topic) {
+            title = SharedStrings.Reader.discover
+        }
+        if let title {
+            self.title = title
+            titleView.textLabel.text = title
+            navigationItem.titleView = titleView
         }
     }
 
