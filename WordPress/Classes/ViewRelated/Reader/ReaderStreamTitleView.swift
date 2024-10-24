@@ -69,5 +69,5 @@ final class ReaderNavigationCustomTitleView: UIView {
 
 private enum Strings {
     static let followingTitle = NSLocalizedString("reader.following.header.title", value: "Following", comment: "Screen header title")
-    static let followingDetails = NSLocalizedString("reader.following.header.details", value: "Stay current with the blogs you've subscribed to", comment: "Screen header details")
+    static let followingDetails = NSLocalizedString("reader.following.header.details", value: "Stay current with the blogs you've subscribed to.", comment: "Screen header details")
 }
