@@ -5,7 +5,7 @@ protocol ReaderDiscoverHeaderViewDelegate: AnyObject {
 }
 
 final class ReaderDiscoverHeaderView: UIView, UITextViewDelegate {
-    private let titleView = ReaderStreamTitleView()
+    private let titleView = ReaderStreamTitleView(insets: nil)
     private let channelsStackView = UIStackView(spacing: 8, [])
     private var channelViews: [ReaderDiscoverChannelView] = []
 
@@ -25,7 +25,7 @@ final class ReaderDiscoverHeaderView: UIView, UITextViewDelegate {
 
         let stackView = UIStackView(axis: .vertical, spacing: 8, [titleView, scrollView])
         addSubview(stackView)
-        stackView.pinEdges(insets: UIEdgeInsets(top: 16, left: 16, bottom: 8, right: 16))
+        stackView.pinEdges(insets: ReaderStreamTitleView.preferredInsets)
 
         titleView.titleLabel.text = Strings.title
         titleView.detailsTextView.attributedText = {
