@@ -89,9 +89,6 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 @property (nonatomic) BOOL showsDisclosureIndicator;
 @property (nonatomic, copy, nullable) void (^callback)(void);
 
-/// - warning: This property is not specified for every row.
-@property (nonatomic, readonly) BlogDetailsSubsection subsection;
-
 - (instancetype _Nonnull)initWithTitle:(NSString * __nonnull)title
                             identifier:(NSString * __nonnull)identifier
                accessibilityIdentifier:(NSString *__nullable)accessibilityIdentifier
@@ -118,8 +115,6 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
                          renderingMode:(UIImageRenderingMode)renderingMode
                               callback:(void(^_Nullable)(void))callback;
 
-- (BlogDetailsRow * _Nonnull)withSubsection:(BlogDetailsSubsection)subsection;
-
 @end
 
 @protocol ScenePresenter;
@@ -139,9 +134,6 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 
 /// A new display mode for the displaying it as part of the site menu.
 @property (nonatomic) BOOL isSidebarModeEnabled;
-
-/// - warning: A temporary solution for restoring selection on iPad – imprecise!
-@property (nonatomic, readonly) BlogDetailsSubsection selectedSubsection;
 
 - (id _Nonnull)init;
 - (void)showDetailViewForSubsection:(BlogDetailsSubsection)section;
