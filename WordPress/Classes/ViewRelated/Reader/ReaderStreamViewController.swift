@@ -651,17 +651,18 @@ import AutomatticTracks
 
     private func configureNavigationTitle(for topic: ReaderAbstractTopic) {
         func setCustomTitleView(_ title: String) {
+            self.title = title
             titleView.textLabel.text = title
             navigationItem.titleView = titleView
         }
         if isEmbeddedInDiscover {
-            title = SharedStrings.Reader.discover
             setCustomTitleView(SharedStrings.Reader.discover)
         } else if ReaderHelpers.topicIsFollowing(topic) {
-            title = SharedStrings.Reader.recent
             setCustomTitleView(SharedStrings.Reader.recent)
         } else if ReaderHelpers.topicIsLiked(topic) {
             title = SharedStrings.Reader.likes
+        } else {
+            setCustomTitleView(topic.title)
         }
     }
 
