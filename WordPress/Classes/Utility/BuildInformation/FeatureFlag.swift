@@ -16,7 +16,6 @@ enum FeatureFlag: Int, CaseIterable {
     case newGutenberg
     case newGutenbergThemeStyles
     case newGutenbergPlugins
-    case serif
     case readerReset
 
     /// Returns a boolean indicating if the feature is enabled
@@ -53,8 +52,6 @@ enum FeatureFlag: Int, CaseIterable {
         case .newGutenbergThemeStyles:
             return false
         case .newGutenbergPlugins:
-            return false
-        case .serif:
             return false
         case .readerReset:
             return BuildConfiguration.current != .appStore
@@ -94,7 +91,6 @@ extension FeatureFlag {
         case .newGutenberg: "Experimental Block Editor"
         case .newGutenbergThemeStyles: "Experimental Block Editor Styles"
         case .newGutenbergPlugins: "Experimental Block Editor Plugins"
-        case .serif: "Serif"
         case .readerReset: "Reader Reset"
         }
     }
