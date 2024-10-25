@@ -41,8 +41,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 @property (nonatomic, strong) MeViewController *meViewController;
 @property (nonatomic, strong) UINavigationController *meNavigationController;
 
-@property (nonatomic, strong) ReaderTabViewModel *readerTabViewModel;
-
 @property (nonatomic, strong, nullable) MySitesCoordinator *mySitesCoordinator;
 @property (nonatomic, strong, nullable) ReaderPresenter *readerPresenter;
 
@@ -202,14 +200,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     }
 
     return UIEdgeInsetsMake(offset, 0, -offset, 0);
-}
-
-- (ReaderTabViewModel *)readerTabViewModel
-{
-    if (!_readerTabViewModel) {
-        _readerTabViewModel = [self makeReaderTabViewModel];
-    }
-    return _readerTabViewModel;
 }
 
 - (void)reloadTabs

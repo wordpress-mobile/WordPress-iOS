@@ -3,33 +3,6 @@ protocol ReaderContentViewController: UIViewController {
     func setContent(_ content: ReaderContent)
 }
 
-// MARK: - Reader Factory
-extension WPTabBarController {
-    @objc func makeReaderTabViewModel() -> ReaderTabViewModel {
-        let viewModel = ReaderTabViewModel(
-            readerContentFactory: { content in
-                if content.topicType == .discover, let topic = content.topic {
-                    return ReaderDiscoverViewController(topic: topic)
-                } else if let topic = content.topic {
-                    return ReaderStreamViewController.controllerWithTopic(topic)
-                } else {
-                    return ReaderStreamViewController.controllerForContentType(content.type)
-                }
-            },
-            searchNavigationFactory: { [weak self] in
-                self?.showReader(path: .search)
-            },
-            tabItemsStore: ReaderTabItemsStore(),
-            settingsPresenter: ReaderManageScenePresenter()
-        )
-        return viewModel
-    }
-
-    private func makeReaderTabView(_ viewModel: ReaderTabViewModel) -> ReaderTabView {
-        return ReaderTabView(viewModel: self.readerTabViewModel)
-    }
-}
-
 // MARK: - Reader Navigation
 extension WPTabBarController {
     func showReader(path: ReaderNavigationPath?) {
@@ -42,11 +15,14 @@ extension WPTabBarController {
     private func navigate(to path: ReaderNavigationPath) {
         switch path {
         case .recent:
-            readerTabViewModel.switchToTab(where: ReaderHelpers.topicIsFollowing)
+            // TODO: (reader) implement
+            break
         case .discover:
-            readerTabViewModel.switchToTab(where: ReaderHelpers.topicIsDiscover)
+            // TODO: (reader) implement
+            break
         case .likes:
-            readerTabViewModel.switchToTab(where: ReaderHelpers.topicIsLiked)
+            // TODO: (reader) implement
+            break
         case .search:
             showReaderDetails(ReaderSearchViewController.controller())
         case .subscriptions:
