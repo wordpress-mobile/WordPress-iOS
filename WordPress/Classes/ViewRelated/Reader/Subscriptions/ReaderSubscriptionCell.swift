@@ -11,7 +11,7 @@ struct ReaderSubscriptionCell: View {
 
     private var details: String {
         let components = [
-            URL(string: site.siteURL)?.host,
+            horizontalSizeClass == .compact ? nil : URL(string: site.siteURL)?.host,
             Strings.numberOfSubscriptions(with: site.subscriberCount.intValue)
         ]
         return components.compactMap { $0 }.joined(separator: " · ")
