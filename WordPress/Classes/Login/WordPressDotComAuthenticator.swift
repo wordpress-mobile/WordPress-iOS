@@ -85,7 +85,7 @@ struct WordPressDotComAuthenticator {
         WPAnalytics.track(.wpcomWebSignIn, properties: ["stage": "start"])
 
         do {
-            let value = try await _authenticate(from: viewController)
+            let value = try await _authenticate()
             WPAnalytics.track(.wpcomWebSignIn, properties: ["stage": "success"])
             return value
         } catch {
@@ -94,7 +94,7 @@ struct WordPressDotComAuthenticator {
         }
     }
 
-    private func _authenticate(from viewController: UIViewController) async throws -> String {
+    private func _authenticate() async throws -> String {
         let clientId = ApiCredentials.client
         let clientSecret = ApiCredentials.secret
         let redirectURI = "x-wordpress-app://oauth2-callback"
