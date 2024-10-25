@@ -627,67 +627,6 @@ struct ReaderPostMenuButtonTitles {
     }
 }
 
-/// Reader tab items
-extension ReaderHelpers {
-
-    static let defaultSavedItemPosition = 2
-
-    /// Sorts the default tabs according to the order [Discover, Subscriptions, Saved, Liked, Your Tags]
-    class func rearrange(items: [ReaderTabItem]) -> [ReaderTabItem] {
-
-        guard !items.isEmpty else {
-                   return items
-               }
-
-        var mutableItems = items
-        mutableItems.sort {
-            guard let leftTopic = $0.content.topic, let rightTopic = $1.content.topic else {
-                return true
-            }
-
-            if topicIsDiscover(leftTopic) {
-                return true
-            }
-            if topicIsDiscover(rightTopic) {
-                return false
-            }
-
-            if topicIsFollowing(leftTopic) {
-                return true
-            }
-            if topicIsFollowing(rightTopic) {
-                return false
-            }
-
-            if topicIsLiked(leftTopic) {
-                return true
-            }
-            if topicIsLiked(rightTopic) {
-                return false
-            }
-
-            // any other items: sort them alphabetically, grouped by topic type
-            if leftTopic.type == rightTopic.type {
-                return leftTopic.title < rightTopic.title
-            }
-
-            return true
-        }
-
-        let savedPosition = min(mutableItems.count, defaultSavedItemPosition)
-        mutableItems.insert(ReaderTabItem(ReaderContent(topic: nil, contentType: .saved)), at: savedPosition)
-
-        // in case of log in with a self hosted site, prepend a 'dummy' Following tab after Discover.
-        if !isLoggedIn() {
-            // to safeguard, ensure that there are items in the array before inserting. Otherwise, insert at index 0.
-            let targetIndex = mutableItems.count > 0 ? 1 : 0
-            mutableItems.insert(ReaderTabItem(ReaderContent(topic: nil, contentType: .selfHostedFollowing)), at: targetIndex)
-        }
-
-        return mutableItems
-    }
-}
-
 /// Typed topic type
 enum ReaderTopicType {
     case discover
