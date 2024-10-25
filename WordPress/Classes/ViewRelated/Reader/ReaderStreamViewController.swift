@@ -1492,10 +1492,6 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         // Check to see if we need to load more.
         syncMoreContentIfNeeded(for: tableView, indexPathForVisibleRow: indexPath)
 
-        if let cell = cell as? ReaderPostCardCell {
-            cell.prepareForDisplay()
-        }
-
         guard cell.isKind(of: ReaderCrossPostCell.self) else {
             return
         }
