@@ -336,10 +336,8 @@ private class ReaderDiscoverStreamViewController: ReaderStreamViewController {
 // MARK: - Select Interests Display
 private extension ReaderDiscoverStreamViewController {
     func displaySelectInterestsIfNeeded() {
-        selectInterestsViewController.userIsFollowingTopics { [weak self] isFollowing in
-            guard let self else {
-                return
-            }
+        selectInterestsVC.userIsFollowingTopics { [weak self] isFollowing in
+            guard let self else { return }
             if isFollowing {
                 self.hideSelectInterestsView()
             } else {
