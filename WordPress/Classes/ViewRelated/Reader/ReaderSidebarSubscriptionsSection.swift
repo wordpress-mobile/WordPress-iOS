@@ -18,7 +18,6 @@ struct ReaderSidebarSubscriptionsSection: View {
                 Text(site.title)
             } icon: {
                 SiteIconView(viewModel: SiteIconViewModel(readerSiteTopic: site, size: .small))
-                    .environment(\.siteIconBackgroundColor, Color(.systemBackground))
                     .frame(width: 28, height: 28)
             }
             .lineLimit(1)
