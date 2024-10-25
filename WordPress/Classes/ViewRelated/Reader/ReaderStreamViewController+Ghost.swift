@@ -11,7 +11,7 @@ extension ReaderStreamViewController {
 
         ghostableTableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(ghostableTableView)
-        if isReaderResetDiscoverEnabled {
+        if isEmbeddedInDiscover {
             NSLayoutConstraint.activate([
                 ghostableTableView.topAnchor.constraint(equalTo: tableView.tableHeaderView?.bottomAnchor ?? view.topAnchor),
                 ghostableTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),

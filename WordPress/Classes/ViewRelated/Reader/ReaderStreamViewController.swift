@@ -261,7 +261,7 @@ import AutomatticTracks
 
     lazy var isSidebarModeEnabled = splitViewController?.isCollapsed == false
 
-    var isReaderResetDiscoverEnabled = false
+    var isEmbeddedInDiscover = false
 
     // MARK: - Factory Methods
 
@@ -543,7 +543,7 @@ import AutomatticTracks
     // MARK: - Configuration / Topic Presentation
 
     @objc private func configureStreamHeader() {
-        guard !isReaderResetDiscoverEnabled else {
+        guard !isEmbeddedInDiscover else {
             return
         }
         guard let headerView = headerForStream(readerTopic, isLoggedIn: isLoggedIn, container: tableViewController) else {
@@ -646,10 +646,16 @@ import AutomatticTracks
     }
 
     private func configureCustomTitleView(for topic: ReaderAbstractTopic) {
-        if ReaderHelpers.topicIsFollowing(topic) {
-            self.title = SharedStrings.Reader.recent
-            titleView.textLabel.text = SharedStrings.Reader.recent
+        func setCustomTitleView(_ title: String) {
+            titleView.textLabel.text = title
             navigationItem.titleView = titleView
+        }
+        if isEmbeddedInDiscover {
+            title = SharedStrings.Reader.discover
+            setCustomTitleView(SharedStrings.Reader.discover)
+        } else if ReaderHelpers.topicIsFollowing(topic) {
+            title = SharedStrings.Reader.recent
+            setCustomTitleView(SharedStrings.Reader.recent)
         }
     }
 
@@ -1740,7 +1746,7 @@ extension ReaderStreamViewController {
         if content.contentCount > 0 {
             return
         }
-        if !isReaderResetDiscoverEnabled {
+        if !isEmbeddedInDiscover {
             tableView.tableHeaderView?.isHidden = true
         }
         configureResultsStatus(title: ResultsStatusText.fetchingPostsTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
@@ -1762,7 +1768,7 @@ extension ReaderStreamViewController {
             return
         }
 
-        if !isReaderResetDiscoverEnabled {
+        if !isEmbeddedInDiscover {
             tableView.tableHeaderView?.isHidden = true
         }
 
