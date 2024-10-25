@@ -42,10 +42,10 @@ import SVProgressHUD
     }
 
     @objc func sharePost(_ title: String?, link: String?, fromView anchorView: UIView, inViewController viewController: UIViewController) {
-        sharePost(title, link: link, fromAnchor: .view(anchorView), inViewController: viewController)
+        sharePost(title, link: link, fromAnchor: anchorView, inViewController: viewController)
     }
 
-    private func sharePost(_ title: String?, link: String?, fromAnchor anchor: PopoverAnchor, inViewController viewController: UIViewController) {
+    private func sharePost(_ title: String?, link: String?, fromAnchor anchor: UIPopoverPresentationControllerSourceItem, inViewController viewController: UIViewController) {
         let controller = shareController(title, link: link)
         if !UIDevice.isPad() {
             viewController.present(controller, animated: true)
@@ -57,13 +57,7 @@ import SVProgressHUD
         viewController.present(controller, animated: true)
         if let presentationController = controller.popoverPresentationController {
             presentationController.permittedArrowDirections = .any
-            switch anchor {
-            case .barButtonItem(let item):
-                presentationController.barButtonItem = item
-            case .view(let anchorView):
-                presentationController.sourceView = anchorView
-                presentationController.sourceRect = anchorView.bounds
-            }
+            presentationController.sourceItem = anchor
         }
     }
 
@@ -91,7 +85,7 @@ import SVProgressHUD
             inViewController: viewController)
     }
 
-    func shareReaderPost(_ post: ReaderPost, fromAnchor anchor: PopoverAnchor, inViewController viewController: UIViewController) {
+    func shareReaderPost(_ post: ReaderPost, fromAnchor anchor: UIPopoverPresentationControllerSourceItem, inViewController viewController: UIViewController) {
         sharePost(
             post.titleForDisplay(),
             link: post.permaLink,
@@ -127,6 +121,4 @@ import SVProgressHUD
         }
 
     }
-
-    typealias PopoverAnchor = UIPopoverPresentationController.PopoverAnchor
 }

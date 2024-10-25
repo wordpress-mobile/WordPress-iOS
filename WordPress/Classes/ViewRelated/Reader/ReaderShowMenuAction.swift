@@ -11,7 +11,7 @@ final class ReaderShowMenuAction {
                  context: NSManagedObjectContext,
                  siteTopic: ReaderSiteTopic? = nil,
                  readerTopic: ReaderAbstractTopic? = nil,
-                 anchor: PopoverAnchor,
+                 anchor: UIPopoverPresentationControllerSourceItem,
                  vc: UIViewController,
                  source: ReaderPostMenuSource,
                  followCommentsService: FollowCommentsService,
@@ -224,13 +224,7 @@ final class ReaderShowMenuAction {
             vc.present(alertController, animated: true)
             if let presentationController = alertController.popoverPresentationController {
                 presentationController.permittedArrowDirections = .any
-                switch anchor {
-                case .barButtonItem(let item):
-                    presentationController.barButtonItem = item
-                case .view(let anchor):
-                    presentationController.sourceView = anchor
-                    presentationController.sourceRect = anchor.bounds
-                }
+                presentationController.sourceItem = anchor
             }
         } else {
             vc.present(alertController, animated: true)
@@ -317,8 +311,4 @@ final class ReaderShowMenuAction {
         let userInfo: [String: Any] = [ReaderNotificationKeys.post: post, ReaderNotificationKeys.result: result]
         center.post(name: .ReaderUserBlockingDidEnd, object: nil, userInfo: userInfo)
     }
-
-    // MARK: - Types
-
-    typealias PopoverAnchor = UIPopoverPresentationController.PopoverAnchor
 }

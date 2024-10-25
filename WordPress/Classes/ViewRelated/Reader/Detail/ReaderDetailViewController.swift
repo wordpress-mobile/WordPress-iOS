@@ -702,11 +702,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Ask the coordinator to present the share sheet
     ///
     @objc func didTapShareButton(_ sender: UIBarButtonItem) {
-        coordinator?.share(fromAnchor: .barButtonItem(sender))
-    }
-
-    @objc func didTapMenuButton(_ sender: UIBarButtonItem) {
-        coordinator?.didTapMenuButton(sender)
+        coordinator?.share(fromAnchor: sender)
     }
 
     @objc func didTapBrowserButton(_ sender: UIBarButtonItem) {
@@ -1108,15 +1104,30 @@ private extension ReaderDetailViewController {
     }
 
     func moreButtonItem(enabled: Bool = true) -> UIBarButtonItem? {
-        guard let icon = UIImage(named: "icon-menu-vertical-ellipsis") else {
-            return nil
-        }
-
-        let button = barButtonItem(with: icon, action: #selector(didTapMenuButton(_:)))
+        let button = UIBarButtonItem(image: UIImage(systemName: "ellipsis"), menu: nil)
+        button.menu = UIMenu(options: .displayInline, children: [
+            UIDeferredMenuElement.uncached { [weak self, weak button] callback in
+                guard let self, let button else {
+                    return callback([])
+                }
+                callback(self.makeMoreMenu(button))
+            }
+        ])
         button.accessibilityLabel = Strings.moreButtonAccessibilityLabel
         button.isEnabled = enabled
-
         return button
+    }
+
+    func makeMoreMenu(_ anchor: UIPopoverPresentationControllerSourceItem) -> [UIMenuElement] {
+        guard let post else {
+            return []
+        }
+        return ReaderPostMenu(
+            post: post,
+            topic: nil,
+            anchor: anchor,
+            viewController: self
+        ).makeMenu()
     }
 
     func shareButtonItem(enabled: Bool = true) -> UIBarButtonItem? {

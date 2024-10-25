@@ -1,10 +1,8 @@
+import UIKit
+
 /// Encapsulates a command share a post
 final class ReaderShareAction {
-    func execute(with post: ReaderPost, context: NSManagedObjectContext, anchor: UIView, vc: UIViewController) {
-        self.execute(with: post, context: context, anchor: .view(anchor), vc: vc)
-    }
-
-    func execute(with post: ReaderPost, context: NSManagedObjectContext, anchor: UIPopoverPresentationController.PopoverAnchor, vc: UIViewController) {
+    func execute(with post: ReaderPost, context: NSManagedObjectContext, anchor: UIPopoverPresentationControllerSourceItem, vc: UIViewController) {
         let postID = post.objectID
         if let post: ReaderPost = ReaderActionHelpers.existingObject(for: postID, in: context) {
             let sharingController = PostSharingController()

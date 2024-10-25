@@ -8,28 +8,7 @@ final class ReaderMenuAction {
     func execute(post: ReaderPost,
                  context: NSManagedObjectContext,
                  readerTopic: ReaderAbstractTopic? = nil,
-                 anchor: UIView,
-                 vc: UIViewController,
-                 source: ReaderPostMenuSource,
-                 followCommentsService: FollowCommentsService,
-                 showAdditionalItems: Bool = false
-    ) {
-        self.execute(
-            post: post,
-            context: context,
-            readerTopic: readerTopic,
-            anchor: .view(anchor),
-            vc: vc,
-            source: source,
-            followCommentsService: followCommentsService,
-            showAdditionalItems: showAdditionalItems
-        )
-    }
-
-    func execute(post: ReaderPost,
-                 context: NSManagedObjectContext,
-                 readerTopic: ReaderAbstractTopic? = nil,
-                 anchor: ReaderShowMenuAction.PopoverAnchor,
+                 anchor: UIPopoverPresentationControllerSourceItem,
                  vc: UIViewController,
                  source: ReaderPostMenuSource,
                  followCommentsService: FollowCommentsService,
