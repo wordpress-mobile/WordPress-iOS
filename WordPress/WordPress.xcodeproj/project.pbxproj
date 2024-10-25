@@ -3201,7 +3201,6 @@
 		C700FAB3258020DB0090938E /* JetpackScanThreatCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C700FAB1258020DB0090938E /* JetpackScanThreatCell.xib */; };
 		C7124E4E2638528F00929318 /* JetpackPrologueViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7124E4C2638528F00929318 /* JetpackPrologueViewController.xib */; };
 		C7124E4F2638528F00929318 /* JetpackPrologueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7124E4D2638528F00929318 /* JetpackPrologueViewController.swift */; };
-		C7192ECF25E8432D00C3020D /* ReaderTopicsCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7192ECE25E8432D00C3020D /* ReaderTopicsCardCell.xib */; };
 		C71BC73F25A652410023D789 /* JetpackScanStatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71BC73E25A652410023D789 /* JetpackScanStatusViewModel.swift */; };
 		C7234A3A2832BA240045C63F /* QRLoginCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7234A392832BA240045C63F /* QRLoginCoordinator.swift */; };
 		C7234A3B2832BA240045C63F /* QRLoginCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7234A392832BA240045C63F /* QRLoginCoordinator.swift */; };
@@ -4316,7 +4315,6 @@
 		FABB20602602FC2C00C8785C /* MediaSizeSliderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E14977191C0DCB6F0057CD60 /* MediaSizeSliderCell.xib */; };
 		FABB20622602FC2C00C8785C /* ReaderBlockedSiteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E65219F81B8D10C2000B1217 /* ReaderBlockedSiteCell.xib */; };
 		FABB20652602FC2C00C8785C /* SiteSegmentsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8C31CC52188490000A33B35 /* SiteSegmentsCell.xib */; };
-		FABB20692602FC2C00C8785C /* ReaderTopicsCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7192ECE25E8432D00C3020D /* ReaderTopicsCardCell.xib */; };
 		FABB206B2602FC2C00C8785C /* richEmbedTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = E61507E12220A0FE00213D33 /* richEmbedTemplate.html */; };
 		FABB206D2602FC2C00C8785C /* NoteBlockUserTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5C66B791ACF074600F68370 /* NoteBlockUserTableViewCell.xib */; };
 		FABB20702602FC2C00C8785C /* ReaderListStreamHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6D2E1621B8AAA340000ED14 /* ReaderListStreamHeader.xib */; };
@@ -5576,8 +5574,8 @@
 		FE003F5F282D61BA006F8D1D /* BloggingPrompt+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE003F5C282D61B9006F8D1D /* BloggingPrompt+CoreDataProperties.swift */; };
 		FE003F60282D61BA006F8D1D /* BloggingPrompt+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE003F5C282D61B9006F8D1D /* BloggingPrompt+CoreDataProperties.swift */; };
 		FE003F62282E73E6006F8D1D /* blogging-prompts-fetch-success.json in Resources */ = {isa = PBXBuildFile; fileRef = FE003F61282E73E6006F8D1D /* blogging-prompts-fetch-success.json */; };
-		FE015BB12ADA002400F50D7F /* ReaderTopicsNewCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE015BB02ADA002400F50D7F /* ReaderTopicsNewCardCell.xib */; };
-		FE015BB22ADA002400F50D7F /* ReaderTopicsNewCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE015BB02ADA002400F50D7F /* ReaderTopicsNewCardCell.xib */; };
+		FE015BB12ADA002400F50D7F /* ReaderTopicsCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE015BB02ADA002400F50D7F /* ReaderTopicsCardCell.xib */; };
+		FE015BB22ADA002400F50D7F /* ReaderTopicsCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE015BB02ADA002400F50D7F /* ReaderTopicsCardCell.xib */; };
 		FE02F95F269DC14A00752A44 /* Comment+Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE02F95E269DC14A00752A44 /* Comment+Interface.swift */; };
 		FE06AC8326C3BD0900B69DE4 /* ShareAppContentPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE06AC8226C3BD0900B69DE4 /* ShareAppContentPresenter.swift */; };
 		FE06AC8526C3C2F800B69DE4 /* ShareAppTextActivityItemSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE06AC8426C3C2F800B69DE4 /* ShareAppTextActivityItemSource.swift */; };
@@ -8680,7 +8678,6 @@
 		C700FAB1258020DB0090938E /* JetpackScanThreatCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JetpackScanThreatCell.xib; sourceTree = "<group>"; };
 		C7124E4C2638528F00929318 /* JetpackPrologueViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JetpackPrologueViewController.xib; sourceTree = "<group>"; };
 		C7124E4D2638528F00929318 /* JetpackPrologueViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackPrologueViewController.swift; sourceTree = "<group>"; };
-		C7192ECE25E8432D00C3020D /* ReaderTopicsCardCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReaderTopicsCardCell.xib; sourceTree = "<group>"; };
 		C71BC73E25A652410023D789 /* JetpackScanStatusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanStatusViewModel.swift; sourceTree = "<group>"; };
 		C7234A392832BA240045C63F /* QRLoginCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRLoginCoordinator.swift; sourceTree = "<group>"; };
 		C7234A402832C2BA0045C63F /* QRLoginScanningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRLoginScanningViewController.swift; sourceTree = "<group>"; };
@@ -9677,7 +9674,7 @@
 		FE003F5B282D61B9006F8D1D /* BloggingPrompt+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BloggingPrompt+CoreDataClass.swift"; sourceTree = "<group>"; };
 		FE003F5C282D61B9006F8D1D /* BloggingPrompt+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BloggingPrompt+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		FE003F61282E73E6006F8D1D /* blogging-prompts-fetch-success.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "blogging-prompts-fetch-success.json"; sourceTree = "<group>"; };
-		FE015BB02ADA002400F50D7F /* ReaderTopicsNewCardCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReaderTopicsNewCardCell.xib; sourceTree = "<group>"; };
+		FE015BB02ADA002400F50D7F /* ReaderTopicsCardCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReaderTopicsCardCell.xib; sourceTree = "<group>"; };
 		FE02F95E269DC14A00752A44 /* Comment+Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment+Interface.swift"; sourceTree = "<group>"; };
 		FE06AC8226C3BD0900B69DE4 /* ShareAppContentPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareAppContentPresenter.swift; sourceTree = "<group>"; };
 		FE06AC8426C3C2F800B69DE4 /* ShareAppTextActivityItemSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareAppTextActivityItemSource.swift; sourceTree = "<group>"; };
@@ -13252,7 +13249,6 @@
 				8BCB83D024C21063001581BD /* ReaderStreamViewController+Ghost.swift */,
 				8BB185D024B63D1600A4CCE8 /* ReaderDiscoverViewController.swift */,
 				3234BB162530DFCA0068DA40 /* ReaderTableCardCell.swift */,
-				8BCF957924C6044000712056 /* ReaderTopicsCardCell.swift */,
 				3234B8E6252FA0930068DA40 /* ReaderSitesCardCell.swift */,
 				E69551F51B8B6AE200CB8E4F /* ReaderStreamViewController+Helper.swift */,
 				7371E6D121FA730700596C0A /* ReaderStreamViewController+Sharing.swift */,
@@ -13261,8 +13257,8 @@
 				5D42A401175E76A1005CFF05 /* WPImageViewController.h */,
 				5D42A402175E76A2005CFF05 /* WPImageViewController.m */,
 				0C749D792B0543D0004CB468 /* WPImageViewController+Swift.swift */,
-				C7192ECE25E8432D00C3020D /* ReaderTopicsCardCell.xib */,
-				FE015BB02ADA002400F50D7F /* ReaderTopicsNewCardCell.xib */,
+				8BCF957924C6044000712056 /* ReaderTopicsCardCell.swift */,
+				FE015BB02ADA002400F50D7F /* ReaderTopicsCardCell.xib */,
 				F4D36AD4298498E600E6B84C /* ReaderPostBlockingController.swift */,
 			);
 			name = Controllers;
@@ -19989,7 +19985,7 @@
 				FEA088032696E81F00193358 /* ListTableHeaderView.xib in Resources */,
 				B59F34A1207678480069992D /* SignupEpilogue.storyboard in Resources */,
 				98FCFC242231DF43006ECDD4 /* PostStatsTitleCell.xib in Resources */,
-				FE015BB12ADA002400F50D7F /* ReaderTopicsNewCardCell.xib in Resources */,
+				FE015BB12ADA002400F50D7F /* ReaderTopicsCardCell.xib in Resources */,
 				8BA77BCD248340CE00E1EBBF /* ReaderDetailToolbar.xib in Resources */,
 				4070D75C20E5F55A007CEBDA /* RewindStatusTableViewCell.xib in Resources */,
 				1761F18D26209AEE000815EF /* hot-pink-icon-app-76x76.png in Resources */,
@@ -20075,7 +20071,6 @@
 				1761F18326209AEE000815EF /* jetpack-green-icon-app-83.5x83.5@2x.png in Resources */,
 				0186358D2A810ABA00915532 /* support_chat_widget.js in Resources */,
 				9801E685274EEC19002FDDB6 /* ReaderDetailCommentsHeader.xib in Resources */,
-				C7192ECF25E8432D00C3020D /* ReaderTopicsCardCell.xib in Resources */,
 				17222D8E261DDDF90047B163 /* black-classic-icon-app-76x76.png in Resources */,
 				E61507E22220A0FE00213D33 /* richEmbedTemplate.html in Resources */,
 				B5C66B7A1ACF074600F68370 /* NoteBlockUserTableViewCell.xib in Resources */,
@@ -20608,7 +20603,6 @@
 				FABB20602602FC2C00C8785C /* MediaSizeSliderCell.xib in Resources */,
 				FABB20622602FC2C00C8785C /* ReaderBlockedSiteCell.xib in Resources */,
 				FABB20652602FC2C00C8785C /* SiteSegmentsCell.xib in Resources */,
-				FABB20692602FC2C00C8785C /* ReaderTopicsCardCell.xib in Resources */,
 				F465980928E66A5B00D5F49A /* white-on-blue-icon-app-76.png in Resources */,
 				FABB206B2602FC2C00C8785C /* richEmbedTemplate.html in Resources */,
 				FABB206D2602FC2C00C8785C /* NoteBlockUserTableViewCell.xib in Resources */,
@@ -20623,7 +20617,7 @@
 				FABB20772602FC2C00C8785C /* world-map.svg in Resources */,
 				FABB20782602FC2C00C8785C /* NoteBlockTextTableViewCell.xib in Resources */,
 				C3234F4D27EB96A5004ADB29 /* IntentCell.xib in Resources */,
-				FE015BB22ADA002400F50D7F /* ReaderTopicsNewCardCell.xib in Resources */,
+				FE015BB22ADA002400F50D7F /* ReaderTopicsCardCell.xib in Resources */,
 				9822A8562624D01800FD8A03 /* UserProfileSiteCell.xib in Resources */,
 				FABB207D2602FC2C00C8785C /* RELEASE-NOTES.txt in Resources */,
 				F46597BD28E6687800D5F49A /* neumorphic-dark-icon-app-76.png in Resources */,
