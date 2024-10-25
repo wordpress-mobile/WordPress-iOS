@@ -1,5 +1,4 @@
 import Foundation
-
 import SVProgressHUD
 import WordPressShared
 import WordPressFlux
@@ -17,7 +16,6 @@ import AutomatticTracks
 ///     - Syncing is performed on a derived (background) context.
 ///   - Row heights are auto-calculated via UITableViewAutomaticDimension and estimated heights
 ///         are cached via willDisplayCell.
-///
 @objc class ReaderStreamViewController: UIViewController, ReaderSiteBlockingControllerDelegate {
     // MARK: - Micro Controllers
 
@@ -35,9 +33,6 @@ import AutomatticTracks
     private lazy var readerPostService = ReaderPostService(coreDataStack: coreDataStack)
 
     // MARK: - Properties
-
-    /// Called if the stream or tag fails to load
-    var streamLoadFailureBlock: (() -> Void)? = nil
 
     var tableView: UITableView! {
         return tableViewController.tableView
@@ -436,7 +431,6 @@ import AutomatticTracks
                         self?.updateContent(synchronize: false)
                     }
                     self?.displayLoadingStreamFailed()
-                    self?.reportStreamLoadFailure()
                     return
                 }
                 self?.readerTopic = topic
@@ -447,7 +441,6 @@ import AutomatticTracks
                     self?.updateContent(synchronize: false)
                 }
                 self?.displayLoadingStreamFailed()
-                self?.reportStreamLoadFailure()
             })
     }
 
@@ -465,7 +458,6 @@ import AutomatticTracks
                 guard let objectID = objectID, let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
                     DDLogError("Reader: Error retriving an existing tag topic by its objectID")
                     self?.displayLoadingStreamFailed()
-                    self?.reportStreamLoadFailure()
                     return
                 }
                 self?.readerTopic = topic
@@ -473,7 +465,6 @@ import AutomatticTracks
             },
             failure: { [weak self] (error: Error?) in
                 self?.displayLoadingStreamFailed()
-                self?.reportStreamLoadFailure()
             })
     }
 
@@ -1329,15 +1320,7 @@ extension ReaderStreamViewController: WPContentSyncHelperDelegate {
         if let count = content.content?.count,
             count == 0 {
             displayLoadingStreamFailed()
-            reportStreamLoadFailure()
         }
-    }
-
-    private func reportStreamLoadFailure() {
-        streamLoadFailureBlock?()
-
-        // We'll nil out the failure block so we don't perform multiple callbacks
-        streamLoadFailureBlock = nil
     }
 }
 
