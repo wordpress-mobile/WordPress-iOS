@@ -7600,7 +7600,6 @@
 		5DB767401588F64D00EBE36C /* postPreview.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = postPreview.html; path = Resources/HTML/postPreview.html; sourceTree = "<group>"; };
 		5DBCD9D318F35D7500B32229 /* ReaderTopicService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderTopicService.h; sourceTree = "<group>"; };
 		5DBCD9D418F35D7500B32229 /* ReaderTopicService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderTopicService.m; sourceTree = "<group>"; };
-		5DBFC8AA1A9C0EEF00E00DE4 /* WPScrollableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WPScrollableViewController.h; sourceTree = "<group>"; };
 		5DE471B71B4C710E00665C44 /* ReaderPostContentProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReaderPostContentProvider.h; sourceTree = "<group>"; };
 		5DE8A0401912D95B00B2FF59 /* ReaderPostServiceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderPostServiceTest.m; sourceTree = "<group>"; };
 		5DED0E161B432E0400431FCD /* SourcePostAttribution.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SourcePostAttribution.h; sourceTree = "<group>"; };
@@ -14693,7 +14692,6 @@
 				1746D7761D2165AE00B11D77 /* ForcePopoverPresenter.swift */,
 				E1DD4CCA1CAE41B800C3863E /* PagedViewController.swift */,
 				E1DD4CCC1CAE41C800C3863E /* PagedViewController.xib */,
-				5DBFC8AA1A9C0EEF00E00DE4 /* WPScrollableViewController.h */,
 				310186691A373B01008F7DF6 /* WPTabBarController.h */,
 				3101866A1A373B01008F7DF6 /* WPTabBarController.m */,
 				17A28DC2205001A900EA6D9E /* FilterTabBar.swift */,

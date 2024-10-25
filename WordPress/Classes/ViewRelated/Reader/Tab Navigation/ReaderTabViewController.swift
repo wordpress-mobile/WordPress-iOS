@@ -163,8 +163,7 @@ extension ReaderTabViewController {
     }
 }
 
-// MARK: - WPScrollableViewController conformance
-extension ReaderTabViewController: WPScrollableViewController {
+extension ReaderTabViewController: ScrollableViewController {
     /// Scrolls the first child VC to the top if it's a `ReaderStreamViewController`.
     func scrollViewToTop() {
         guard let readerStreamVC = children.first as? ReaderStreamViewController else {

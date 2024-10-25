@@ -6,7 +6,6 @@
 #import "Blog.h"
 
 #import "BlogDetailsViewController.h"
-#import "WPScrollableViewController.h"
 #import "WPAppAnalytics.h"
 #import "WordPress-Swift.h"
 
