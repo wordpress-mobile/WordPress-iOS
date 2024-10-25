@@ -318,23 +318,11 @@ private class ReaderDiscoverStreamViewController: ReaderStreamViewController {
     }
 
     private func addObservers() {
-
-        // Listens for when the reader manage view controller is dismissed
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(manageControllerWasDismissed(_:)),
-                                               name: .readerManageControllerWasDismissed,
-                                               object: nil)
-
         // Listens for when a site is blocked
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(siteBlocked(_:)),
                                                name: .ReaderSiteBlocked,
                                                object: nil)
-    }
-
-    @objc private func manageControllerWasDismissed(_ notification: Foundation.Notification) {
-        shouldForceRefresh = true
-        self.displaySelectInterestsIfNeeded()
     }
 
     /// Update the post card when a site is blocked from post details.

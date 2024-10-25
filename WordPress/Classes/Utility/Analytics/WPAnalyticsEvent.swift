@@ -324,10 +324,6 @@ import Foundation
     case readerDiscoverChannelSelected
     case readerDiscoverEditInterestsTapped
 
-    // Reader: Manage
-    case readerManageViewDisplayed
-    case readerManageViewDismissed
-
     // App Settings
     case settingsDidChange
 
@@ -1187,12 +1183,6 @@ import Foundation
             return "reader_discover_channel_selected"
         case .readerDiscoverEditInterestsTapped:
             return "reader_discover_edit_interests_tapped"
-
-        // Reader: Manage View
-        case .readerManageViewDisplayed:
-            return "reader_manage_view_displayed"
-        case .readerManageViewDismissed:
-            return "reader_manage_view_dismissed"
 
         // App Settings
         case .settingsDidChange:
