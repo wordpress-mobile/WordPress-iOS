@@ -108,6 +108,7 @@ private struct ReaderSidebarView: View {
         }
         makeSection(Strings.lists, isExpanded: $isSectionListsExpanded) {
             ReaderSidebarListsSection(viewModel: viewModel)
+                .environment(\.siteIconBackgroundColor, Color(viewModel.isCompact ? .secondarySystemBackground : .systemBackground))
         }
         makeSection(Strings.tags, isExpanded: $isSectionTagsExpanded) {
             ReaderSidebarTagsSection(viewModel: viewModel)
