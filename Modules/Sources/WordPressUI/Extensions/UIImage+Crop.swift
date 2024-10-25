@@ -18,4 +18,20 @@ extension UIImage {
         }
         return self
     }
+
+    /// Crops the image in a perfectly square size. Longer edge is cropped out.
+    /// If the image is already square, then just returns `self`.
+    public func squared() -> UIImage {
+        let currentSizeInPixels: CGSize = .init(width: size.width * scale, height: size.height * scale)
+        guard currentSizeInPixels.width != currentSizeInPixels.height else { return self }
+        let squareEdge = floor(min(currentSizeInPixels.width, currentSizeInPixels.height))
+        let newSize = CGSize(width: squareEdge, height: squareEdge)
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 1
+        let renderer = UIGraphicsImageRenderer(size: newSize, format: format)
+        let squareImage = renderer.image { _ in
+            self.draw(in: CGRect(origin: .zero, size: newSize))
+        }
+        return squareImage
+    }
 }

@@ -103,7 +103,10 @@ class ImageCropViewController: UIViewController, UIScrollViewDelegate {
             return
         }
 
-        let clippedImage = UIImage(cgImage: clippedImageRef, scale: screenScale, orientation: .up)
+        // The `/v3` gravatar upload endpoint expects the image to be a perfect square, otherwise fails.
+        // Thus, we call `.squared()`.
+        // cropping(to: ...) may not always generate a perfect square, edges can be a few pixels uneven.
+        let clippedImage = UIImage(cgImage: clippedImageRef, scale: screenScale, orientation: .up).squared()
         onCompletion?(clippedImage, true)
     }
 
