@@ -630,7 +630,11 @@ import AutomatticTracks
 
     private func configureTitleForTopic() {
         guard let topic = readerTopic else {
-            title = NSLocalizedString("Reader", comment: "The default title of the Reader")
+            if contentType == .saved {
+                title = SharedStrings.Reader.saved
+            } else {
+                title = NSLocalizedString("Reader", comment: "The default title of the Reader")
+            }
             return
         }
 
@@ -641,11 +645,11 @@ import AutomatticTracks
         }
 
         if FeatureFlag.readerReset.enabled {
-            configureCustomTitleView(for: topic)
+            configureNavigationTitle(for: topic)
         }
     }
 
-    private func configureCustomTitleView(for topic: ReaderAbstractTopic) {
+    private func configureNavigationTitle(for topic: ReaderAbstractTopic) {
         func setCustomTitleView(_ title: String) {
             titleView.textLabel.text = title
             navigationItem.titleView = titleView
@@ -656,6 +660,8 @@ import AutomatticTracks
         } else if ReaderHelpers.topicIsFollowing(topic) {
             title = SharedStrings.Reader.recent
             setCustomTitleView(SharedStrings.Reader.recent)
+        } else if ReaderHelpers.topicIsLiked(topic) {
+            title = SharedStrings.Reader.likes
         }
     }
 
