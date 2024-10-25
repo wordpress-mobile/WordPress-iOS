@@ -207,23 +207,7 @@ struct ReaderPostCardCellViewModel {
     }
 
     mutating func showMore(with anchor: UIView) {
-        guard let readerPost,
-              let parentViewController,
-              let followCommentsService = FollowCommentsService(post: readerPost) else {
-            return
-        }
-        self.followCommentsService = followCommentsService
-
-        ReaderMenuAction(logged: actionVisibility.isEnabled).execute(
-            post: readerPost,
-            context: parentViewController.viewContext,
-            readerTopic: parentViewController.readerTopic,
-            anchor: anchor,
-            vc: parentViewController,
-            source: ReaderPostMenuSource.card,
-            followCommentsService: followCommentsService
-        )
-        WPAnalytics.trackReader(.postCardMoreTapped)
+        // Do nothing
     }
 }
 
