@@ -132,6 +132,9 @@ private final class ReaderPostCellView: UIView {
     private func setupStyle() {
         avatarView.layer.cornerRadius = ReaderPostCell.avatarSize / 2
         avatarView.layer.masksToBounds = true
+        avatarView.successBackgroundColor = UIColor.white
+        avatarView.layer.borderWidth = 0.5
+        avatarView.layer.borderColor = UIColor.opaqueSeparator.withAlphaComponent(0.5).cgColor
         avatarView.isErrorViewEnabled = false
 
         buttonAuthor.maximumContentSizeCategory = .accessibilityLarge
