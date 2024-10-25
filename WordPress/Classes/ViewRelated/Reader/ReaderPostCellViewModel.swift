@@ -12,12 +12,7 @@ final class ReaderPostCellViewModel {
     let imageURL: URL?
 
     // Footer (Buttons)
-    let isBookmarked: Bool
-    let isCommentsEnabled: Bool
-    let commentCount: Int
-    let isLikesEnabled: Bool
-    let likeCount: Int
-    let isLiked: Bool
+    let toolbar: ReaderPostToolbarViewModel
 
     weak var viewController: ReaderStreamViewController?
 
@@ -32,7 +27,6 @@ final class ReaderPostCellViewModel {
         self.post = post
 
         let isP2 = (topic as? ReaderSiteTopic)?.isP2Type == true
-
         if isP2 {
             self.author = post.authorDisplayName ?? ""
         } else {
@@ -42,15 +36,7 @@ final class ReaderPostCellViewModel {
         self.title = post.titleForDisplay() ?? ""
         self.details = post.contentPreviewForDisplay() ?? ""
         self.imageURL = post.featuredImageURLForDisplay()
-
-        self.isBookmarked = post.isSavedForLater
-
-        self.isCommentsEnabled = post.isCommentsEnabled
-        self.commentCount = post.commentCount?.intValue ?? 0
-
-        self.isLikesEnabled = post.isLikesEnabled()
-        self.likeCount = post.likeCount?.intValue ?? 0
-        self.isLiked = post.isLiked()
+        self.toolbar = ReaderPostToolbarViewModel.make(post: post)
 
         if isP2 {
             self.avatarURL = post.authorAvatarURL.flatMap(URL.init)
@@ -75,12 +61,14 @@ final class ReaderPostCellViewModel {
         self.title = "Discovering the Wonders of the Wild"
         self.details = "Lorem ipsum dolor sit amet. Non omnis quia et natus voluptatum et eligendi voluptate vel iusto fuga sit repellendus molestiae aut voluptatem blanditiis ad neque sapiente. Id galisum distinctio quo enim aperiam non veritatis vitae et ducimus rerum."
         self.imageURL = URL(string: "https://picsum.photos/1260/630.jpg")
-        self.isBookmarked = false
-        self.isLikesEnabled = true
-        self.likeCount = 9000
-        self.isCommentsEnabled = true
-        self.commentCount = 213
-        self.isLiked = true
+        self.toolbar = ReaderPostToolbarViewModel(
+            isBookmarked: false,
+            isCommentsEnabled: true,
+            commentCount: 9000,
+            isLikesEnabled: true,
+            likeCount: 213,
+            isLiked: true
+        )
     }
 
     static func mock() -> ReaderPostCellViewModel {
@@ -111,5 +99,25 @@ final class ReaderPostCellViewModel {
 
     func toggleLike() {
         ReaderLikeAction().execute(with: post)
+    }
+}
+
+struct ReaderPostToolbarViewModel {
+    let isBookmarked: Bool
+    let isCommentsEnabled: Bool
+    let commentCount: Int
+    let isLikesEnabled: Bool
+    let likeCount: Int
+    let isLiked: Bool
+
+    static func make(post: ReaderPost) -> ReaderPostToolbarViewModel {
+        ReaderPostToolbarViewModel(
+            isBookmarked: post.isSavedForLater,
+            isCommentsEnabled: post.isCommentsEnabled,
+            commentCount: post.commentCount?.intValue ?? 0,
+            isLikesEnabled: post.isLikesEnabled(),
+            likeCount: post.likeCount?.intValue ?? 0,
+            isLiked: post.isLiked()
+        )
     }
 }
