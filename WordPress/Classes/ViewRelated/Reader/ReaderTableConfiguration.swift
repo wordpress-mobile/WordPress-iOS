@@ -9,8 +9,6 @@ final class ReaderTableConfiguration {
     private let readerGapMarkerCellReuseIdentifier = "ReaderGapMarkerCellReuseIdentifier"
     private let readerCrossPostCellNibName = "ReaderCrossPostCell"
     private let readerCrossPostCellReuseIdentifier = "ReaderCrossPostCellReuseIdentifier"
-    private let readerTagCardCellNibName = "ReaderTagCardCell"
-    private let readerTagCardCellReuseIdentifier = "ReaderTagCellReuseIdentifier"
 
     private let rowHeight = CGFloat(415.0)
 
@@ -21,7 +19,6 @@ final class ReaderTableConfiguration {
         setUpBlockerCell(tableView)
         setUpGapMarkerCell(tableView)
         setUpCrossPostCell(tableView)
-        setUpTagCell(tableView)
 
         tableView.register(ReaderPostCell.self, forCellReuseIdentifier: readerPostCellReuseIdentifier)
     }
@@ -55,11 +52,6 @@ final class ReaderTableConfiguration {
         tableView.register(nib, forCellReuseIdentifier: readerCrossPostCellReuseIdentifier)
     }
 
-    private func setUpTagCell(_ tableView: UITableView) {
-        let nib = UINib(nibName: readerTagCardCellNibName, bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: readerTagCardCellReuseIdentifier)
-    }
-
     func footer() -> PostListFooterView {
         guard let footer = Bundle.main.loadNibNamed(footerViewNibName, owner: nil, options: nil)?.first as? PostListFooterView else {
             assertionFailure("Failed to load view from nib named \(footerViewNibName)")
@@ -91,9 +83,4 @@ final class ReaderTableConfiguration {
     func blockedSiteCell(_ tableView: UITableView) -> ReaderBlockedSiteCell {
         return tableView.dequeueReusableCell(withIdentifier: readerBlockedCellReuseIdentifier) as! ReaderBlockedSiteCell
     }
-
-    func tagCell(_ tableView: UITableView) -> ReaderTagCardCell {
-        return tableView.dequeueReusableCell(withIdentifier: readerTagCardCellReuseIdentifier) as! ReaderTagCardCell
-    }
-
 }

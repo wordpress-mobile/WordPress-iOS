@@ -186,9 +186,6 @@ import AutomatticTracks
             if oldValue != .saved, contentType == .saved {
                 updateContent(synchronize: false)
                 trackSavedListAccessed()
-            } else if oldValue != .tags, contentType == .tags {
-                updateContent(synchronize: false)
-                // TODO: Analytics
             }
             showConfirmation = contentType != .saved
         }
@@ -199,7 +196,6 @@ import AutomatticTracks
     enum StatSource: String {
         case reader
         case notif_like_list_user_profile
-        case tagsFeed = "tags_feed"
     }
     var statSource: StatSource = .reader
 
@@ -210,12 +206,6 @@ import AutomatticTracks
     private weak var streamHeader: ReaderStreamHeader?
 
     private var showConfirmation = true
-
-    // NOTE: This is currently a workaround for the 'Your Tags' stream use case.
-    //
-    // The set object flags each tag in the stream so that we know whether or not we've fetched the remote data for the tag.
-    // We need to ensure that we only fetch the remote data once per tag to avoid the resultsController from refreshing the table view indefinitely.
-    private var tagStreamSyncTracker = Set<String>()
 
     lazy var selectInterestsViewController: ReaderSelectInterestsViewController = {
         let title = NSLocalizedString(
@@ -368,7 +358,7 @@ import AutomatticTracks
             return
         }
 
-        if readerTopic != nil || contentType == .saved || contentType == .tags {
+        if readerTopic != nil || contentType == .saved {
             // Do not perform a sync since a sync will be executed in viewWillAppear anyway. This
             // prevents a possible internet connection error being shown twice.
             updateContent(synchronize: false)
@@ -621,8 +611,6 @@ import AutomatticTracks
             displayNoResultsView()
         } else if contentType == .saved, content.isEmpty {
             displayNoResultsView()
-        } else if contentType == .tags, content.isEmpty {
-            showSelectInterestsView()
         }
     }
 
@@ -923,12 +911,6 @@ import AutomatticTracks
         }
 
         guard isViewLoaded, view.window != nil else {
-            return
-        }
-
-        if isTagsFeed {
-            didBumpStats = true
-            WPAnalytics.trackReader(.readerTagsFeedShown)
             return
         }
 
@@ -1870,13 +1852,10 @@ extension ReaderStreamViewController {
     }
 
     func hideSelectInterestsView(showLoadingStream: Bool = true) {
-        let isTagsFeed = contentType == .tags
         guard selectInterestsViewController.parent != nil else {
             if shouldForceRefresh {
                 scrollViewToTop()
-                if !isTagsFeed {
-                    displayLoadingStream()
-                }
+                displayLoadingStream()
                 syncIfAppropriate(forceSync: true)
                 shouldForceRefresh = false
             }
@@ -1885,9 +1864,7 @@ extension ReaderStreamViewController {
         }
 
         scrollViewToTop()
-        if !isTagsFeed {
-            displayLoadingStream()
-        }
+        displayLoadingStream()
         syncIfAppropriate(forceSync: true)
 
         UIView.animate(withDuration: 0.2, animations: {
