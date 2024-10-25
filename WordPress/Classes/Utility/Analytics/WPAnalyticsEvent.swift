@@ -324,12 +324,6 @@ import Foundation
     case readerDiscoverChannelSelected
     case readerDiscoverEditInterestsTapped
 
-    // Reader: Filter Sheet
-    case readerFilterSheetDisplayed
-    case readerFilterSheetDismissed
-    case readerFilterSheetItemSelected
-    case readerFilterSheetCleared
-
     // Reader: Manage
     case readerManageViewDisplayed
     case readerManageViewDismissed
@@ -1198,16 +1192,6 @@ import Foundation
             return "reader_discover_channel_selected"
         case .readerDiscoverEditInterestsTapped:
             return "reader_discover_edit_interests_tapped"
-
-        // Reader: Filter Sheet
-        case .readerFilterSheetDisplayed:
-            return "reader_filter_sheet_displayed"
-        case .readerFilterSheetDismissed:
-            return "reader_filter_sheet_dismissed"
-        case .readerFilterSheetItemSelected:
-            return "reader_filter_sheet_item_selected"
-        case .readerFilterSheetCleared:
-            return "reader_filter_sheet_cleared"
 
         // Reader: Manage View
         case .readerManageViewDisplayed:
