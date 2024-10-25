@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-10-02 09:54:08+0000 */
+/* Translation-Revision-Date: 2024-10-10 21:06:24+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: de */
@@ -7885,6 +7885,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Dismiss button title */
 "activityList.dismiss.title" = "Verwerfen";
 
+/* Screen title */
+"addCategory.navigationTitle" = "Kategorie hinzufügen";
+
+/* Cell title */
+"addCategory.parentCategory" = "Übergeordnete Kategorie";
+
+/* Cell placeholder */
+"addCategory.titlePlaceholder" = "Titel";
+
+/* Error message shown a URL does not point to an existing site. */
+"addSite.restApiNotAvailable" = "Die Website mit dieser Adresse ist keine WordPress-Website. Damit wir uns mit ihr verbinden können, muss die Website WordPress verwenden.";
+
 /* Error message shown when an receiving an invalid application-password authentication result from a self-hosted WordPress site */
 "addSite.selfHosted.authenticationFailed" = "Anmeldung mit Anwendungspasswort-Authentifizierung nicht möglich";
 
@@ -8110,6 +8122,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Context menu button title */
 "blogHeader.actionVisitSite" = "Zur Website";
+
+/* Badge title in site list */
+"blogList.siteBadge.staging" = "Staging";
 
 /* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
 "bloganuary.dashboard.card.button.learnMore" = "Mehr erfahren";
@@ -9269,6 +9284,9 @@ Example: Reply to Pamela Nguyen */
 /* Message description for when a user has no sites. */
 "mySite.noSites.description" = "Erstelle eine neue Website für dein Geschäft, dein Magazin oder deinen persönlichen Blog oder verbinde eine vorhandene WordPress-Installation.";
 
+/* Title description for when a user has no sites. */
+"mySite.noSites.stateViewTitle" = "Deine erste Website erstellen";
+
 /* Button that reveals more site actions */
 "mySite.siteActions.button" = "Website-Aktionen";
 
@@ -9322,6 +9340,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The user has previously tapped 'Like' on this post */
 "notifications.accessibility-post-like-button-on" = "Du hast diesen Beitrag mit einem „Like“ markiert";
+
+/* A label for screenreader users */
+"notifications.accessibility-share-button" = "Teilen";
 
 /* A label for screenreader users */
 "notifications.accessibility-tap-to-like-this-comment" = "Zweimal tippen, um diesen Kommentar mit einem „Like“ zu markieren";
@@ -10035,6 +10056,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
 "reader.blog.stream.subscribers" = "%@ Abonnenten";
 
+/* Reader sidebar button title */
+"reader.button.unfollow" = "Entfolgen";
+
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "Zeigt Beiträge von der Website an";
 
@@ -10189,7 +10213,7 @@ with the filter chip button. */
 "reader.navigation.menu.tags" = "Deine Schlagwörter";
 
 /* Reader search button accessibility label. */
-"reader.navigation.search.button.label" = "Suche";
+"reader.navigation.search.button.label" = "Suchen";
 
 /* Reader settings button accessibility label. */
 "reader.navigation.settings.button.label" = "Reader-Einstellungen";
@@ -10457,11 +10481,44 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Reader select interests title label text */
 "reader.select.tags.title" = "Entdecke Blogs, die dir gefallen, und folge ihnen";
 
+/* Reader sidebar button title */
+"reader.sidebar.allSubscriptions" = "Alle Abonnements";
+
+/* Reader sidebar menu item */
+"reader.sidebar.discover" = "Entdecken";
+
+/* Reader sidebar menu item */
+"reader.sidebar.likes" = "Likes";
+
 /* Reader sidebar title */
 "reader.sidebar.navigationTitle" = "Leser";
 
 /* Reader sidebar menu item */
 "reader.sidebar.recent" = "Neueste";
+
+/* Reader sidebar menu item */
+"reader.sidebar.saved" = "Gespeichert";
+
+/* Reader sidebar menu item */
+"reader.sidebar.search" = "Suche";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.lists.title" = "Listen";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.organization.title" = "Organisation";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.subscriptions.tTitle" = "Abonnements";
+
+/* Reader sidebar button */
+"reader.sidebar.section.tags.addTag" = "Schlagwort hinzufügen";
+
+/* Reader sidebar button */
+"reader.sidebar.section.tags.discoverTags" = "Mehr Schlagwörter entdecken";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.tags.title" = "Schlagwörter";
 
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "Abonnieren";
@@ -10481,14 +10538,23 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Button subtitle */
 "reader.subscriptions.addSubscriptionButtonSubtitle" = "Website, Newsletter oder RSS-Feeds abonnieren";
 
+/* Button title */
+"reader.subscriptions.addSubscriptionButtonTitle" = "Abonnement hinzufügen";
+
 /* Empty state details */
 "reader.subscriptions.emptyStateDetails" = "Die Websites, die du findest und abonnierst, werden hier angezeigt";
+
+/* Button title for managing subscription settings */
+"reader.subscriptions.settings" = "Einstellungen";
 
 /* Number of subscriptions on a site (plural) */
 "reader.subscriptions.subscriptionsPlural" = "%@ Abonnenten";
 
 /* Number of subscriptions on a site (singular) */
 "reader.subscriptions.subscriptionsSingular" = "%@ Abonnent";
+
+/* Navigation bar title */
+"reader.subscriptions.title" = "Abonnements";
 
 /* A suggestion of topics the user might want to subscribe to */
 "reader.suggested.blogs.title" = "Interessante Blogs, die du abonnieren kannst";
@@ -10521,6 +10587,12 @@ This empty state component is displayed only when the app fails to load posts un
 /* Navigation title */
 "reader.tags.addTag.details" = "Du kannst einen beliebigen Schlagwortnamen eingeben";
 
+/* Placeholder for text field */
+"reader.tags.addTag.placeholder" = "Schlagwort";
+
+/* Navigation title */
+"reader.tags.addTag.title" = "Schlagwort hinzufügen";
+
 /* Text for the 'Like' button on the reader tag cell. */
 "reader.tags.button.like" = "Like";
 
@@ -10529,6 +10601,9 @@ This empty state component is displayed only when the app fails to load posts un
 
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "Mehr Schlagwörter entdecken";
+
+/* Title for an error snackbar */
+"reader.tags.failedToUnfollowErrorTitle" = "Thema konnte nicht entfernt werden";
 
 /* Verb. Button title. Follows a new tag. */
 "reader.tags.follow.button.title" = "Folgen";
@@ -10693,13 +10768,22 @@ This empty state component is displayed only when the app fails to load posts un
 "shared.button.copyLink" = "Link kopieren";
 
 /* A shared button title used in different contexts */
+"shared.button.delete" = "Löschen";
+
+/* A shared button title used in different contexts */
 "shared.button.done" = "Fertig";
 
 /* A shared button title used in different contexts */
 "shared.button.edit" = "Bearbeiten";
 
 /* A shared button title used in different contexts */
+"shared.button.ok" = "OK";
+
+/* A shared button title used in different contexts */
 "shared.button.remove" = "Entfernen";
+
+/* A shared button title used in different contexts */
+"shared.button.retry" = "Erneut versuchen";
 
 /* A shared button title used in different contexts */
 "shared.button.save" = "Speichern";
@@ -10708,16 +10792,40 @@ This empty state component is displayed only when the app fails to load posts un
 "shared.button.share" = "Teilen";
 
 /* A shared button title used in different contexts */
+"shared.button.undo" = "Rückgängig";
+
+/* A shared button title used in different contexts */
 "shared.button.view" = "Anzeigen";
 
 /* A generic error message */
 "shared.error.geneirc" = "Es ist ein Fehler aufgetreten";
+
+/* Sidebar button title on iPad */
+"sidebar.addSite" = "Website hinzufügen";
+
+/* Sidebar button title on iPad */
+"sidebar.allSites" = "Alle Websites";
+
+/* Sidebar button title on iPad */
+"sidebar.createSite" = "Website erstellen";
+
+/* Sidebar item on iPad */
+"sidebar.domains" = "Domains";
 
 /* Sidebar item on iPad */
 "sidebar.help" = "Hilfe & Support";
 
 /* Sidebar item on iPad */
 "sidebar.me" = "Ich";
+
+/* Sidebar section title on iPad */
+"sidebar.moreSectionTitle" = "Mehr";
+
+/* Sidebar section title on iPad */
+"sidebar.mySitesSectionTitle" = "Websites";
+
+/* Sidebar item on iPad */
+"sidebar.notifications" = "Benachrichtigungen";
 
 /* Sidebar item on iPad */
 "sidebar.reader" = "Leser";
@@ -10850,6 +10958,9 @@ This empty state component is displayed only when the app fails to load posts un
 
 /* All sites section title for site switcher. */
 "sitePicker.allSitesSectionTitle" = "Alle Websites";
+
+/* Recents section title for site switcher. */
+"sitePicker.recentSitesSectionTitle" = "Kürzlich aufgerufene Websites";
 
 /* Title for site switcher screen */
 "sitePicker.title" = "Meine Websites";
@@ -11276,6 +11387,12 @@ This empty state component is displayed only when the app fails to load posts un
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "Diese Auswahl wird gelöscht:";
+
+/* Tip for sidebar */
+"tips.sidebar.message" = "Wische nach rechts, um auf deine Websites, dein Profil, den Reader und Benachrichtigungen zuzugreifen";
+
+/* Tip for sidebar */
+"tips.sidebar.title" = "Seitenleiste";
 
 /* Tip for site picker */
 "tips.sitePickerTip.message" = "Antippen, um eine andere Website auszuwählen, oder eine neue Website erstellen";

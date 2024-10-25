@@ -45,6 +45,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 @property (nonatomic, strong) ReaderTabViewModel *readerTabViewModel;
 
 @property (nonatomic, strong, nullable) MySitesCoordinator *mySitesCoordinator;
+@property (nonatomic, strong, nullable) ReaderPresenter *readerPresenter;
 
 @property (nonatomic, strong) UIImage *notificationsTabBarImage;
 @property (nonatomic, strong) UIImage *notificationsTabBarImageUnread;
@@ -126,13 +127,16 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 - (UINavigationController *)readerNavigationController
 {
     if (!_readerNavigationController) {
-        UIViewController *rootViewController;
         if (self.shouldUseStaticScreens) {
-            rootViewController = [[MovedToJetpackViewController alloc] initWithSource:MovedToJetpackSourceReader];
+            UIViewController *rootVC = [[MovedToJetpackViewController alloc] initWithSource:MovedToJetpackSourceReader];
+            _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:rootVC];
+        } else if ([Feature enabled:FeatureFlagReaderReset]) {
+            _readerPresenter = [[ReaderPresenter alloc] init];
+            _readerNavigationController = [_readerPresenter prepareForTabBarPresentation];
         } else {
-            rootViewController = self.makeReaderTabViewController;
+            UIViewController *rootVC = self.makeReaderTabViewController;
+            _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:rootVC];
         }
-        _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
         _readerNavigationController.view.backgroundColor = [UIColor systemBackgroundColor];
 
         _readerNavigationController.tabBarItem.image = [UIImage imageNamed:@"tab-bar-reader"];
@@ -214,6 +218,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (void)reloadTabs
 {
+    _readerPresenter = nil;
     _readerNavigationController = nil;
     _notificationsNavigationController = nil;
     _meNavigationController = nil;

@@ -28,7 +28,7 @@ struct ReaderTagsHelper {
     func unfollow(_ tag: ReaderTagTopic) {
         let service = ReaderTopicService(coreDataStack: contextManager)
         service.unfollowTag(tag, withSuccess: {
-            UINotificationFeedbackGenerator().notificationOccurred(.success)
+            // Do nothing
         }, failure: { error in
             DDLogError("Could not unfollow topic \(tag), \(String(describing: error))")
             Notice(title: Strings.failedToUnfollow, message: error?.localizedDescription, feedbackType: .error).post()

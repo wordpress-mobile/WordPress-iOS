@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-10-02 16:54:09+0000 */
+/* Translation-Revision-Date: 2024-10-10 13:54:07+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ru */
@@ -11384,6 +11384,12 @@ This empty state component is displayed only when the app fails to load posts un
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "эти элементы будут удалены:";
+
+/* Tip for sidebar */
+"tips.sidebar.message" = "Смахивайте вправо, чтобы перейти к своим сайтам, «Читалке», уведомлениям и профилю";
+
+/* Tip for sidebar */
+"tips.sidebar.title" = "Боковая панель";
 
 /* Tip for site picker */
 "tips.sitePickerTip.message" = "Нажмите, чтобы выбрать другой сайт или создать новый";

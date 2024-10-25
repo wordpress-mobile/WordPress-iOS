@@ -42,7 +42,7 @@ struct AddSiteController {
         guard let window = viewController.view.window else {
             return wpAssertionFailure("window missing")
         }
-        let client = LoginClient(session: URLSession(configuration: .ephemeral))
+        let client = SelfHostedSiteAuthenticator(session: URLSession(configuration: .ephemeral))
         let view = LoginWithUrlView(client: client, anchor: window) { [weak viewController] credentials in
             viewController?.dismiss(animated: true)
             WordPressAuthenticator.shared.delegate!.sync(credentials: .init(wporg: credentials)) {

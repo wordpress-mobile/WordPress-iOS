@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-10-01 09:54:11+0000 */
+/* Translation-Revision-Date: 2024-10-10 16:23:49+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: zh_CN */
@@ -11387,6 +11387,12 @@ This empty state component is displayed only when the app fails to load posts un
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "即将删除以下项目：";
+
+/* Tip for sidebar */
+"tips.sidebar.message" = "向右滑动即可访问您的站点、阅读器、通知和个人资料";
+
+/* Tip for sidebar */
+"tips.sidebar.title" = "边栏";
 
 /* Tip for site picker */
 "tips.sitePickerTip.message" = "轻点以选择另一个站点或创建一个新站点";

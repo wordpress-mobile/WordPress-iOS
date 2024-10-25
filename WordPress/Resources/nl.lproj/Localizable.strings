@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-09-27 08:50:33+0000 */
+/* Translation-Revision-Date: 2024-10-08 13:40:01+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: nl */
@@ -5218,7 +5218,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Research" = "Onderzoek";
 
 /* Title of secondary button on alert prompting verify their accounts while attempting to publish */
-"Resend" = "Verstuur opnieuw";
+"Resend" = "Opnieuw verzenden";
 
 /* Accessibility label for the reset activity type button */
 "Reset Activity Type filter" = "Herstel activiteit type filter";
@@ -11387,6 +11387,12 @@ This empty state component is displayed only when the app fails to load posts un
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "Deze items worden verwijderd:";
+
+/* Tip for sidebar */
+"tips.sidebar.message" = "Veeg naar rechts om toegang te krijgen tot je sites, reader, meldingen en profiel";
+
+/* Tip for sidebar */
+"tips.sidebar.title" = "Zijbalk";
 
 /* Tip for site picker */
 "tips.sitePickerTip.message" = "Tikken om een andere site te selecteren of een nieuwe te creëren";

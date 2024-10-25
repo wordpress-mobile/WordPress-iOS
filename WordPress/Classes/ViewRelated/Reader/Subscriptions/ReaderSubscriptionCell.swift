@@ -5,6 +5,8 @@ struct ReaderSubscriptionCell: View {
 
     @State private var isShowingSettings = false
 
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+
     var onDelete: (ReaderSiteTopic) -> Void
 
     private var details: String {
@@ -66,7 +68,16 @@ struct ReaderSubscriptionCell: View {
             .frame(width: 44, alignment: .center)
         }
         .buttonStyle(.plain)
-        .popover(isPresented: $isShowingSettings) {
+        .popover(isPresented: $isShowingSettings) { settings }
+    }
+
+    @ViewBuilder
+    private var settings: some View {
+        if horizontalSizeClass == .compact {
+            ReaderSubscriptionNotificationSettingsView(siteID: site.siteID.intValue, isCompact: true)
+            .presentationDetents([.medium, .large])
+                .edgesIgnoringSafeArea(.all)
+        } else {
             ReaderSubscriptionNotificationSettingsView(siteID: site.siteID.intValue)
         }
     }

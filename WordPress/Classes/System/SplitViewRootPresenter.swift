@@ -3,6 +3,7 @@ import Combine
 import SwiftUI
 import WordPressAuthenticator
 import WordPressUI
+import WordPressShared
 
 /// The presenter that uses triple-column navigation for `.regular` size classes
 /// and a tab-bar based navigation for `.compact` size class.
@@ -14,20 +15,10 @@ final class SplitViewRootPresenter: RootViewPresenter {
     private var cancellables: [AnyCancellable] = []
 
     private var siteContent: SiteSplitViewContent?
-    private var notificationsContent: NotificationsSplitViewContent?
-    private var readerContent: ReaderSplitViewContent?
-    private var welcomeContent: WelcomeSplitViewContent?
+    @Lazy private var notificationsContent = NotificationsSplitViewContent()
+    @Lazy private var readerPresenter = ReaderPresenter()
 
-    private var displayingContent: SplitViewDisplayable? {
-        let possibleContent: [SplitViewDisplayable?] = [siteContent, notificationsContent, readerContent, welcomeContent]
-        let displaying = possibleContent
-            .compactMap { $0 }
-            .filter { $0.isDisplaying(in: splitVC) }
-
-        wpAssert(displaying.count <= 1)
-
-        return displaying.first
-    }
+    private var displayedContent: SplitViewDisplayable?
 
     /// Is the app displaying tab bar UI instead of the full split view UI (with sidebar).
     private var isDisplayingTabBar: Bool {
@@ -93,11 +84,8 @@ final class SplitViewRootPresenter: RootViewPresenter {
         let content: SplitViewDisplayable
         switch selection {
         case .welcome:
-            if let welcomeContent {
-                content = welcomeContent
-            } else {
-                welcomeContent = WelcomeSplitViewContent { [weak self] in self?.navigate(to: .addSite(selection: $0)) }
-                content = welcomeContent!
+            content = WelcomeSplitViewContent { [weak self] in
+                self?.navigate(to: .addSite(selection: $0))
             }
         case .blog(let objectID):
             if let siteContent, siteContent.blog.objectID == objectID.objectID {
@@ -112,19 +100,9 @@ final class SplitViewRootPresenter: RootViewPresenter {
                 }
             }
         case .notifications:
-            if let notificationsContent {
-                content = notificationsContent
-            } else {
-                notificationsContent = NotificationsSplitViewContent()
-                content = notificationsContent!
-            }
+            content = notificationsContent
         case .reader:
-            if let readerContent {
-                content = readerContent
-            } else {
-                readerContent = ReaderSplitViewContent()
-                content = readerContent!
-            }
+            content = readerPresenter
         }
 
         display(content: content)
@@ -292,8 +270,8 @@ final class SplitViewRootPresenter: RootViewPresenter {
         } else {
             sidebarViewModel.selection = .reader
             if let path {
-                wpAssert(readerContent != nil)
-                readerContent?.navigate(to: path)
+                wpAssert($readerPresenter.value != nil)
+                readerPresenter.navigate(to: path)
             }
         }
     }
@@ -302,10 +280,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
     func showNotificationsTab(completion: ((NotificationsViewController) -> Void)?) {
         sidebarViewModel.selection = .notifications
-
-        if let notifications = self.notificationsContent {
-            completion?(notifications.notificationsViewController)
-        }
+        completion?(notificationsContent.notificationsViewController)
     }
 
     // MARK: RootViewPresenter (Me)
@@ -357,7 +332,7 @@ extension SplitViewRootPresenter: UISplitViewControllerDelegate {
                 tabBarVC.showBlogDetails(for: blog)
             }
         case .reader:
-            if let selection = readerContent?.sidebar.viewModel.selection {
+            if let selection = readerPresenter.sidebar.viewModel.selection {
                 switch selection {
                 case .main(let readerStaticScreen):
                     switch readerStaticScreen {
@@ -396,7 +371,7 @@ protocol SplitViewDisplayable: AnyObject {
 }
 
 extension SplitViewDisplayable {
-    func isDisplaying(in splitVC: UISplitViewController) -> Bool {
+    private func isDisplaying(in splitVC: UISplitViewController) -> Bool {
         splitVC.viewController(for: .supplementary) === self.supplementary
     }
 
@@ -410,7 +385,8 @@ extension SplitViewDisplayable {
 
 private extension SplitViewRootPresenter {
     func display(content: SplitViewDisplayable) {
-        displayingContent?.refresh(with: splitVC)
+        displayedContent?.refresh(with: splitVC)
+        displayedContent = content
 
         splitVC.setViewController(content.supplementary, for: .supplementary)
         splitVC.setViewController(content.secondary, for: .secondary)

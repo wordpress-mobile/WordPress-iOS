@@ -12,7 +12,12 @@ struct ReaderSubscriptionAddButton: View {
 
     var body: some View {
         button.popover(isPresented: $isShowingPopover) {
-            ReaderSubscriptionAddView()
+            if #available(iOS 16.4, *) {
+                ReaderSubscriptionAddView()
+                    .presentationCompactAdaptation(.popover)
+            } else {
+                ReaderSubscriptionAddView()
+            }
         }
     }
 
@@ -62,7 +67,7 @@ private struct ReaderSubscriptionAddView: View {
         .onChange(of: siteURL) { _ in
             displayedError = nil
         }
-        .frame(width: 420)
+        .frame(idealWidth: 420)
         .interactiveDismissDisabled(!siteURL.isEmpty)
     }
 
