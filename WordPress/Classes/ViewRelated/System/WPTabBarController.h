@@ -15,6 +15,7 @@ extern NSNotificationName const WPTabBarHeightChangedNotification;
 @class MeViewController;
 @class MySitesCoordinator;
 @class NotificationsViewController;
+@class ReaderPresenter;
 @protocol ScenePresenter;
 
 @interface WPTabBarController : UITabBarController <UIViewControllerTransitioningDelegate>
@@ -24,6 +25,7 @@ extern NSNotificationName const WPTabBarHeightChangedNotification;
 @property (nonatomic, strong, readonly, nonnull) MeViewController *meViewController;
 @property (nonatomic, strong, readonly, nonnull) UINavigationController *meNavigationController;
 @property (nonatomic, strong, readonly, nonnull) MySitesCoordinator *mySitesCoordinator;
+@property (nonatomic, strong, readonly, nullable) ReaderPresenter *readerPresenter;
 @property (nonatomic, assign) BOOL shouldUseStaticScreens;
 
 - (instancetype)initWithStaticScreens:(BOOL)shouldUseStaticScreens;

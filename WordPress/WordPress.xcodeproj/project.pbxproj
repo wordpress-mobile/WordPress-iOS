@@ -1194,7 +1194,6 @@
 		3FEC241525D73E8B007AFE63 /* ConfettiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEC241425D73E8B007AFE63 /* ConfettiView.swift */; };
 		3FF15A56291B4EEA00E1B4E5 /* MigrationCenterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF15A55291B4EEA00E1B4E5 /* MigrationCenterView.swift */; };
 		3FF15A5C291ED21100E1B4E5 /* MigrationNotificationsCenterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF15A5B291ED21100E1B4E5 /* MigrationNotificationsCenterView.swift */; };
-		3FF1A853242D5FCB00373F5D /* WPTabBarController+ReaderTabNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF1A852242D5FCB00373F5D /* WPTabBarController+ReaderTabNavigation.swift */; };
 		3FF717FF291F07AB00323614 /* MigrationCenterViewConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF717FE291F07AB00323614 /* MigrationCenterViewConfiguration.swift */; };
 		3FFA5ED22876152E00830E28 /* JetpackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFA5ED12876152E00830E28 /* JetpackButton.swift */; };
 		3FFB3F222AFC72EC00A742B0 /* DeepLinkSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFB3F212AFC72EC00A742B0 /* DeepLinkSourceTests.swift */; };
@@ -4592,7 +4591,6 @@
 		FABB21E92602FC2C00C8785C /* MenuItemSourceHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D978521CD2AF7D0054F19A /* MenuItemSourceHeaderView.m */; };
 		FABB21EA2602FC2C00C8785C /* RestoreWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1A543D25A6E2F60033967D /* RestoreWarningView.swift */; };
 		FABB21EB2602FC2C00C8785C /* GutenbergWebNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4F2E702458AF8500EB73E7 /* GutenbergWebNavigationViewController.swift */; };
-		FABB21ED2602FC2C00C8785C /* WPTabBarController+ReaderTabNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF1A852242D5FCB00373F5D /* WPTabBarController+ReaderTabNavigation.swift */; };
 		FABB21EF2602FC2C00C8785C /* KeyboardDismissHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56695AF1D411EEB007E342F /* KeyboardDismissHelper.swift */; };
 		FABB21F02602FC2C00C8785C /* FancyAlertViewController+CreateButtonAnnouncement.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B9D7EF245BA938002BB2C7 /* FancyAlertViewController+CreateButtonAnnouncement.swift */; };
 		FABB21F12602FC2C00C8785C /* GutenbergSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF54D4631D6F3FA900A0DC4D /* GutenbergSettings.swift */; };
@@ -7007,7 +7005,6 @@
 		3FEC241425D73E8B007AFE63 /* ConfettiView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfettiView.swift; sourceTree = "<group>"; };
 		3FF15A55291B4EEA00E1B4E5 /* MigrationCenterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationCenterView.swift; sourceTree = "<group>"; };
 		3FF15A5B291ED21100E1B4E5 /* MigrationNotificationsCenterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationNotificationsCenterView.swift; sourceTree = "<group>"; };
-		3FF1A852242D5FCB00373F5D /* WPTabBarController+ReaderTabNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPTabBarController+ReaderTabNavigation.swift"; sourceTree = "<group>"; };
 		3FF717FE291F07AB00323614 /* MigrationCenterViewConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationCenterViewConfiguration.swift; sourceTree = "<group>"; };
 		3FFA5ED12876152E00830E28 /* JetpackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackButton.swift; sourceTree = "<group>"; };
 		3FFB3F212AFC72EC00A742B0 /* DeepLinkSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkSourceTests.swift; sourceTree = "<group>"; };
@@ -11649,14 +11646,6 @@
 				3FFDEF7729177D7500B625CE /* MigrationNotificationsViewModel.swift */,
 			);
 			path = "Notifications Permission";
-			sourceTree = "<group>";
-		};
-		3F09CCA62428FE8600D00A8C /* Tab Navigation */ = {
-			isa = PBXGroup;
-			children = (
-				3FF1A852242D5FCB00373F5D /* WPTabBarController+ReaderTabNavigation.swift */,
-			);
-			path = "Tab Navigation";
 			sourceTree = "<group>";
 		};
 		3F170D2A2654615900F6F670 /* Blogging Reminders */ = {
@@ -16988,7 +16977,6 @@
 				32E1BFD824A66801007A08F0 /* Select Interests */,
 				5D98A1491B6C09730085E904 /* Style */,
 				0CAC10922C876E37003AB1BC /* Sidebar */,
-				3F09CCA62428FE8600D00A8C /* Tab Navigation */,
 				0CDB1BAB2C8B4FF500C83860 /* Subscriptions */,
 				0CDDCA062C8F4116005AACA3 /* Tags */,
 				5D08B8FC19647C0300D5B381 /* Views */,
@@ -21694,7 +21682,6 @@
 				FA1A543E25A6E2F60033967D /* RestoreWarningView.swift in Sources */,
 				1E4F2E712458AF8500EB73E7 /* GutenbergWebNavigationViewController.swift in Sources */,
 				98E0829F2637545C00537BF1 /* PostService+Likes.swift in Sources */,
-				3FF1A853242D5FCB00373F5D /* WPTabBarController+ReaderTabNavigation.swift in Sources */,
 				4A526BDF296BE9A50007B5BA /* CoreDataService.m in Sources */,
 				98AA9F2127EA890800B3A98C /* FeatureIntroductionViewController.swift in Sources */,
 				B56695B01D411EEB007E342F /* KeyboardDismissHelper.swift in Sources */,
@@ -24636,7 +24623,6 @@
 				C7D30C652638B07A00A1695B /* JetpackPrologueStyleGuide.swift in Sources */,
 				FABB21EB2602FC2C00C8785C /* GutenbergWebNavigationViewController.swift in Sources */,
 				F4F9D5EC29096CF500502576 /* MigrationHeaderView.swift in Sources */,
-				FABB21ED2602FC2C00C8785C /* WPTabBarController+ReaderTabNavigation.swift in Sources */,
 				FABB21EF2602FC2C00C8785C /* KeyboardDismissHelper.swift in Sources */,
 				FABB21F02602FC2C00C8785C /* FancyAlertViewController+CreateButtonAnnouncement.swift in Sources */,
 				FABB21F12602FC2C00C8785C /* GutenbergSettings.swift in Sources */,
