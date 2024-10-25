@@ -1960,9 +1960,6 @@ private extension ReaderStreamViewController {
 
     var shouldDisplayNoTopicController: Bool {
         switch contentType {
-        case .selfHostedFollowing:
-            displaySelfHostedFollowingController()
-            return true
         case .contentError:
             displayContentErrorController()
             return true
@@ -1970,15 +1967,6 @@ private extension ReaderStreamViewController {
             removeNoTopicController()
             return false
         }
-    }
-
-    func displaySelfHostedFollowingController() {
-        let controller = NoResultsViewController.noFollowedSitesController(showActionButton: isLoggedIn)
-        controller.delegate = self
-
-        addNoTopicController(controller)
-
-        view.isUserInteractionEnabled = true
     }
 
     func displayContentErrorController() {
