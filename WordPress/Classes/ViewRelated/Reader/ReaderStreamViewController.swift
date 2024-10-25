@@ -1246,10 +1246,6 @@ import AutomatticTracks
             NSPredicate(format: "isSavedForLater == YES") :
             NSPredicate(format: "topic = NULL AND SELF in %@", [String]())
 
-        if contentType == .tags {
-            return NSPredicate(format: "following = true")
-        }
-
         guard let topic = readerTopic else {
             return predicateForNilTopic
         }
@@ -1267,10 +1263,7 @@ import AutomatticTracks
     }
 
     func sortDescriptorsForFetchRequest(ascending: Bool = false) -> [NSSortDescriptor] {
-        let sortDescriptor = contentType == .tags ?
-        NSSortDescriptor(key: "title", ascending: true) :
-        NSSortDescriptor(key: "sortRank", ascending: ascending)
-        return [sortDescriptor]
+        [NSSortDescriptor(key: "sortRank", ascending: ascending)]
     }
 
     // MARK: - Helpers for ReaderStreamHeader
@@ -1411,7 +1404,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
     }
 
     func fetchRequest() -> NSFetchRequest<NSFetchRequestResult>? {
-        let entityName = contentType == .tags ? ReaderTagTopic.classNameWithoutNamespaces() : ReaderPost.classNameWithoutNamespaces()
+        let entityName = ReaderPost.classNameWithoutNamespaces()
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         fetchRequest.predicate = predicateForFetchRequest()
         fetchRequest.sortDescriptors = sortDescriptorsForFetchRequest()
@@ -1713,8 +1706,6 @@ extension ReaderStreamViewController {
                 displayNoResultsForSavedPosts()
             } else if contentType == .topic && siteID == ReaderHelpers.discoverSiteID {
                 displayNoResultsViewForDiscover()
-            } else if contentType == .tags {
-                showSelectInterestsView()
             }
             return
         }
