@@ -1413,7 +1413,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             if let post = posts[safe: indexPath.row] {
                 return cell(for: post, at: indexPath)
             } else {
-                logReaderError(.invalidIndexPath(row: indexPath.row, totalRows: posts.count))
+                wpAssertionFailure("invalid_index_path")
                 return .init()
             }
         }
@@ -1471,7 +1471,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         }
 
         guard let post = posts[safe: indexPath.row] else {
-            logReaderError(.invalidIndexPath(row: indexPath.row, totalRows: posts.count))
+            wpAssertionFailure("invalid_index_path")
             return
         }
 
@@ -1517,7 +1517,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         }
 
         guard let apost = posts[safe: indexPath.row] else {
-            logReaderError(.invalidIndexPath(row: indexPath.row, totalRows: posts.count))
+            wpAssertionFailure("invalid_index_path")
             return
         }
 
@@ -1859,26 +1859,6 @@ extension ReaderStreamViewController: UITableViewDelegate, JPScrollViewDelegate 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         processJetpackBannerVisibility(scrollView)
         $titleView.value?.updateAlpha(in: scrollView)
-    }
-}
-
-// MARK: - Custom Errors
-
-extension ReaderStreamViewController {
-
-    enum ReaderStreamError: LocalizedError {
-        case invalidIndexPath(row: Int, totalRows: Int)
-
-        var errorDescription: String? {
-            switch self {
-            case .invalidIndexPath(let row, let totalRows):
-                return "Reader Stream: tried to request index \(row) from \(totalRows) objects"
-            }
-        }
-    }
-
-    func logReaderError(_ error: ReaderStreamError) {
-        CrashLogging.main.logError(error, tags: ["source": "reader_stream"])
     }
 }
 
