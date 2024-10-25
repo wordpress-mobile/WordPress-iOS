@@ -280,7 +280,7 @@ private final class ReaderPostCellView: UIView {
         return ReaderPostMenu(
             post: viewModel.post,
             topic: viewController.readerTopic,
-            button: buttonMore,
+            anchor: buttonMore,
             viewController: viewController
         ).makeMenu()
     }

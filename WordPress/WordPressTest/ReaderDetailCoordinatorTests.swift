@@ -358,10 +358,10 @@ private class ReaderDetailViewMock: UIViewController, ReaderDetailView {
 
 private class PostSharingControllerMock: PostSharingController {
     var didCallShareReaderPostWith: ReaderPost?
-    var didCallShareReaderPostWithView: PostSharingController.PopoverAnchor?
+    var didCallShareReaderPostWithView: UIPopoverPresentationControllerSourceItem?
     var didCallShareReaderPostWithViewController: UIViewController?
 
-    override func shareReaderPost(_ post: ReaderPost, fromAnchor anchor: PostSharingController.PopoverAnchor, inViewController viewController: UIViewController) {
+    override func shareReaderPost(_ post: ReaderPost, fromAnchor anchor: UIPopoverPresentationControllerSourceItem, inViewController viewController: UIViewController) {
         didCallShareReaderPostWith = post
         didCallShareReaderPostWithView = anchor
         didCallShareReaderPostWithViewController = viewController

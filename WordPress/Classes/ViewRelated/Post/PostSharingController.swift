@@ -45,10 +45,10 @@ import SVProgressHUD
     }
 
     @objc func sharePost(_ title: String?, summary: String?, link: String?, fromView anchorView: UIView, inViewController viewController: UIViewController) {
-        sharePost(title, summary: summary, link: link, fromAnchor: .view(anchorView), inViewController: viewController)
+        sharePost(title, summary: summary, link: link, fromAnchor: anchorView, inViewController: viewController)
     }
 
-    private func sharePost(_ title: String?, summary: String?, link: String?, fromAnchor anchor: PopoverAnchor, inViewController viewController: UIViewController) {
+    private func sharePost(_ title: String?, summary: String?, link: String?, fromAnchor anchor: UIPopoverPresentationControllerSourceItem, inViewController viewController: UIViewController) {
         let controller = shareController(
             title,
             summary: summary,
@@ -64,13 +64,7 @@ import SVProgressHUD
         viewController.present(controller, animated: true)
         if let presentationController = controller.popoverPresentationController {
             presentationController.permittedArrowDirections = .any
-            switch anchor {
-            case .barButtonItem(let item):
-                presentationController.barButtonItem = item
-            case .view(let anchorView):
-                presentationController.sourceView = anchorView
-                presentationController.sourceRect = anchorView.bounds
-            }
+            presentationController.sourceItem = anchor
         }
     }
 
@@ -104,7 +98,7 @@ import SVProgressHUD
             inViewController: viewController)
     }
 
-    func shareReaderPost(_ post: ReaderPost, fromAnchor anchor: PopoverAnchor, inViewController viewController: UIViewController) {
+    func shareReaderPost(_ post: ReaderPost, fromAnchor anchor: UIPopoverPresentationControllerSourceItem, inViewController viewController: UIViewController) {
 
         sharePost(
             post.titleForDisplay(),
@@ -144,8 +138,6 @@ import SVProgressHUD
         }
 
     }
-
-    typealias PopoverAnchor = UIPopoverPresentationController.PopoverAnchor
 }
 
 private class CopyLinkActivity: UIActivity {

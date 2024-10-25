@@ -5,7 +5,7 @@ import SafariServices
 struct ReaderPostMenu {
     let post: ReaderPost
     let topic: ReaderAbstractTopic?
-    weak var button: UIButton?
+    weak var anchor: UIPopoverPresentationControllerSourceItem?
     weak var viewController: UIViewController?
     var context = ContextManager.shared.mainContext
 
@@ -54,7 +54,7 @@ struct ReaderPostMenu {
     private var share: UIAction {
         UIAction(Strings.share, systemImage: "square.and.arrow.up") {
             guard let viewController else { return }
-            ReaderShareAction().execute(with: post, context: context, anchor: button ?? viewController.view, vc: viewController)
+            ReaderShareAction().execute(with: post, context: context, anchor: anchor ?? viewController.view, vc: viewController)
             track(.share)
         }
     }
@@ -145,7 +145,7 @@ struct ReaderPostMenu {
     private func manageNotifications(for siteID: Int) -> UIAction {
         UIAction(Strings.manageNotifications, systemImage: "bell") {
             guard let viewController else { return }
-            NotificationSiteSubscriptionViewController.show(forSiteID: siteID, sourceItem: button ?? viewController.view, from: viewController)
+            NotificationSiteSubscriptionViewController.show(forSiteID: siteID, sourceItem: anchor ?? viewController.view, from: viewController)
             track(.manageNotifications)
         }
     }
