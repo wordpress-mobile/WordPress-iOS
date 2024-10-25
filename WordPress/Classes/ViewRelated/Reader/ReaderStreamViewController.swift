@@ -608,19 +608,6 @@ import AutomatticTracks
             }
             return
         }
-
-        if ReaderHelpers.isTopicTag(topic) || ReaderHelpers.isTopicSite(topic) {
-            title = ""
-        } else {
-            title = topic.title
-        }
-
-        if FeatureFlag.readerReset.enabled {
-            configureNavigationTitle(for: topic)
-        }
-    }
-
-    private func configureNavigationTitle(for topic: ReaderAbstractTopic) {
         func setCustomTitleView(_ title: String) {
             self.title = title
             titleView.textLabel.text = title
@@ -1494,7 +1481,6 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
     }
 
     func hideSeparator(for cell: UITableViewCell) {
-        guard FeatureFlag.readerReset.enabled else { return }
         cell.separatorInset = UIEdgeInsets(.leading, 9999)
     }
 
