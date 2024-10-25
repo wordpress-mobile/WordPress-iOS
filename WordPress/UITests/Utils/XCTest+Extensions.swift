@@ -53,8 +53,6 @@ extension XCTestCase {
             app.launchArguments.append(contentsOf: ["-ui-test-select-wpcom-site", selectWPComSite])
         }
 
-        app.launchArguments.append(contentsOf: ["-ff-override-Reader Reset", "false"])
-
         if removeBeforeLaunching {
             removeApp(app)
         }

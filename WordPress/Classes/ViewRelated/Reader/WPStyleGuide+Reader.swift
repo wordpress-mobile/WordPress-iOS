@@ -261,26 +261,6 @@ extension WPStyleGuide {
         }
     }
 
-    /// Applies the filter button style to the button passed as an argument
-    class func applyReaderFilterButtonStyle(_ button: UIButton) {
-        let icon = UIImage.gridicon(.filter)
-
-        button.setImage(icon, for: .normal)
-        applyReaderActionButtonStyle(button, titleColor: UIColor(light: .black, dark: .white))
-    }
-    /// Applies the filter button title to the button passed as an argument
-    class func applyReaderFilterButtonTitle(_ button: UIButton, title: String) {
-        button.setTitle(title, for: .normal)
-        button.setTitle(title, for: .highlighted)
-    }
-    /// Applies the reset filter button style to the button passed as an argument
-    class func applyReaderResetFilterButtonStyle(_ button: UIButton) {
-        let icon = UIImage.gridicon(.crossSmall)
-
-        button.setImage(icon, for: .normal)
-        applyReaderActionButtonStyle(button, imageColor: UIColor(light: .black, dark: .white))
-    }
-
     // MARK: - Gap Marker Styles
 
     @objc public class func applyGapMarkerButtonStyle(_ button: UIButton) {

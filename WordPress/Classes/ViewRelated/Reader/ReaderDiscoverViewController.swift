@@ -91,11 +91,9 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
 
         self.streamVC = streamVC
 
-        if FeatureFlag.readerReset.enabled {
-            // Important to set before `viewDidLoad`
-            streamVC.isEmbeddedInDiscover = true
-            streamVC.setHeaderView(headerView)
-        }
+        // Important to set before `viewDidLoad`
+        streamVC.isEmbeddedInDiscover = true
+        streamVC.setHeaderView(headerView)
 
         addChild(streamVC)
         view.addSubview(streamVC.view)
