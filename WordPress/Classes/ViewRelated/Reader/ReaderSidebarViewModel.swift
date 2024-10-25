@@ -7,7 +7,7 @@ final class ReaderSidebarViewModel: ObservableObject {
         didSet { persistenSelection() }
     }
 
-    private let tabItemsStore: ReaderTabItemsStoreProtocol
+    private let tabItemsStore: ReaderMenuStoreProtocol
     private let contextManager: CoreDataStackSwift
     private var previousReloadTimestamp: Date?
 
@@ -15,9 +15,9 @@ final class ReaderSidebarViewModel: ObservableObject {
 
     var navigate: (ReaderSidebarNavigation) -> Void = { _ in }
 
-    init(tabItemsStore: ReaderTabItemsStoreProtocol = ReaderTabItemsStore(),
+    init(menuStore: ReaderMenuStoreProtocol = ReaderMenuStore(),
          contextManager: CoreDataStackSwift = ContextManager.shared) {
-        self.tabItemsStore = tabItemsStore
+        self.tabItemsStore = menuStore
         self.contextManager = contextManager
         let selection = UserDefaults.standard.readerSidebarSelection
         self.selection = .main(selection ?? .recent)
@@ -37,7 +37,7 @@ final class ReaderSidebarViewModel: ObservableObject {
     private func reloadMenuIfNeeded() {
         if Date.now.timeIntervalSince(previousReloadTimestamp ?? .distantPast) > 60 {
             previousReloadTimestamp = .now
-            tabItemsStore.getItems()
+            tabItemsStore.refreshMenu()
         }
     }
 
