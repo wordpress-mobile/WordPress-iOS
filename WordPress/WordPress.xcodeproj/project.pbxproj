@@ -2471,8 +2471,6 @@
 		83A337A22A9FA525009ED60C /* ReaderSiteHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A337A02A9FA525009ED60C /* ReaderSiteHeaderView.swift */; };
 		83B1D037282C62620061D911 /* BloggingPromptsAttribution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B1D036282C62620061D911 /* BloggingPromptsAttribution.swift */; };
 		83B1D038282C62620061D911 /* BloggingPromptsAttribution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B1D036282C62620061D911 /* BloggingPromptsAttribution.swift */; };
-		83BF48BB2BD6F03000C0E1A1 /* ReaderTagCardCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BF48BA2BD6F03000C0E1A1 /* ReaderTagCardCellViewModel.swift */; };
-		83BF48BC2BD6F03000C0E1A1 /* ReaderTagCardCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BF48BA2BD6F03000C0E1A1 /* ReaderTagCardCellViewModel.swift */; };
 		83BF48BE2BD6FA3000C0E1A1 /* ReaderTagCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BF48BD2BD6FA3000C0E1A1 /* ReaderTagCellViewModel.swift */; };
 		83BF48BF2BD6FA3000C0E1A1 /* ReaderTagCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BF48BD2BD6FA3000C0E1A1 /* ReaderTagCellViewModel.swift */; };
 		83BFAE482A6EBF1F00C7B683 /* DashboardJetpackSocialCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BFAE472A6EBF1F00C7B683 /* DashboardJetpackSocialCardCell.swift */; };
@@ -8007,7 +8005,6 @@
 		839B150A2795DEE0009F5E77 /* UIView+Margins.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Margins.swift"; sourceTree = "<group>"; };
 		83A337A02A9FA525009ED60C /* ReaderSiteHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSiteHeaderView.swift; sourceTree = "<group>"; };
 		83B1D036282C62620061D911 /* BloggingPromptsAttribution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloggingPromptsAttribution.swift; sourceTree = "<group>"; };
-		83BF48BA2BD6F03000C0E1A1 /* ReaderTagCardCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTagCardCellViewModel.swift; sourceTree = "<group>"; };
 		83BF48BD2BD6FA3000C0E1A1 /* ReaderTagCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTagCellViewModel.swift; sourceTree = "<group>"; };
 		83BFAE472A6EBF1F00C7B683 /* DashboardJetpackSocialCardCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardJetpackSocialCardCell.swift; sourceTree = "<group>"; };
 		83BFAE4F2A6EBF9900C7B683 /* DashboardJetpackSocialCardCellTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardJetpackSocialCardCellTests.swift; sourceTree = "<group>"; };
@@ -13353,7 +13350,6 @@
 				83204EDB2ACE098B000C3229 /* ReaderPostCardCellViewModel.swift */,
 				3234BB322530EA980068DA40 /* ReaderRecommendedSiteCardCell.swift */,
 				3234BB332530EA980068DA40 /* ReaderRecommendedSiteCardCell.xib */,
-				83BF48BA2BD6F03000C0E1A1 /* ReaderTagCardCellViewModel.swift */,
 				83317EDB2BC72DB7001AD2F4 /* ReaderTagCell.swift */,
 				83317EDE2BC72DED001AD2F4 /* ReaderTagCell.xib */,
 				83BF48BD2BD6FA3000C0E1A1 /* ReaderTagCellViewModel.swift */,
@@ -22205,7 +22201,6 @@
 				E6F2788121BC1A4A008B4DB5 /* PlanGroup.swift in Sources */,
 				08216FCE1CDBF96000304BA7 /* MenuItemPostsViewController.m in Sources */,
 				4322A20D203E1885004EA740 /* SignupUsernameTableViewController.swift in Sources */,
-				83BF48BB2BD6F03000C0E1A1 /* ReaderTagCardCellViewModel.swift in Sources */,
 				098B8576275E76FE004D299F /* AppLocalizedString.swift in Sources */,
 				7E7BEF7022E1AED8009A880D /* Blog+Editor.swift in Sources */,
 				1756F1DF2822BB6F00CD0915 /* SparklineView.swift in Sources */,
@@ -26035,7 +26030,6 @@
 				FABB25982602FC2C00C8785C /* JetpackRestoreHeaderView.swift in Sources */,
 				FA6C32B32BEE65EF00BBDDB4 /* BlockingUpdateView.swift in Sources */,
 				FABB25992602FC2C00C8785C /* StoryboardLoadable.swift in Sources */,
-				83BF48BC2BD6F03000C0E1A1 /* ReaderTagCardCellViewModel.swift in Sources */,
 				FABB259A2602FC2C00C8785C /* ReaderBlockSiteAction.swift in Sources */,
 				0CDDCA052C8F3F6E005AACA3 /* ReaderSidebarTagsSection.swift in Sources */,
 				FABB259C2602FC2C00C8785C /* ReaderPostService+RelatedPosts.swift in Sources */,
