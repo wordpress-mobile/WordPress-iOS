@@ -26,6 +26,7 @@ extension WPTabBarController {
         case .search:
             showReaderDetails(ReaderSearchViewController.controller())
         case .subscriptions:
+            // TODO: (reader) implement using the new screen
             ReaderManageScenePresenter().present(on: self, selectedSection: .sites, animated: true, completion: nil)
         case let .post(postID, siteID, isFeed):
             showReaderDetails(ReaderDetailViewController.controllerWithPostID(NSNumber(value: postID), siteID: NSNumber(value: siteID), isFeed: isFeed))
