@@ -27,6 +27,7 @@ struct ReaderTagsAddTagView: View {
             }
         }
         .padding()
+        .frame(maxHeight: .infinity, alignment: .top)
         .onAppear {
             isFocused = true
         }

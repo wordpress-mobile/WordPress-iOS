@@ -143,7 +143,11 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
         case .addTag:
             let addTagVC = UIHostingController(rootView: ReaderTagsAddTagView())
             addTagVC.modalPresentationStyle = .formSheet
-            addTagVC.preferredContentSize = CGSize(width: 420, height: 124)
+            let preferredHeight: CGFloat = 124
+            addTagVC.sheetPresentationController?.detents = [.custom(resolver: { _ in
+                preferredHeight
+            })]
+            addTagVC.preferredContentSize = CGSize(width: 420, height: preferredHeight)
             sidebar.present(addTagVC, animated: true, completion: nil)
         case .discoverTags:
             let tags = viewContext.allObjects(
