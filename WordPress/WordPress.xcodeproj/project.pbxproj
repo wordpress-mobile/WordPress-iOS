@@ -3712,10 +3712,8 @@
 		E6C0ED3B231DA23400A08B57 /* AccountService+MergeDuplicates.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C0ED3A231DA23400A08B57 /* AccountService+MergeDuplicates.swift */; };
 		E6C892D61C601D55007AD612 /* SharingButtonsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C892D51C601D55007AD612 /* SharingButtonsViewController.swift */; };
 		E6D170371EF9D8D10046D433 /* SiteInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D170361EF9D8D10046D433 /* SiteInfo.swift */; };
-		E6D2E15F1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6D2E15E1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib */; };
 		E6D2E1611B8AA4410000ED14 /* ReaderTagStreamHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6D2E1601B8AA4410000ED14 /* ReaderTagStreamHeader.xib */; };
 		E6D2E1631B8AAA340000ED14 /* ReaderListStreamHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6D2E1621B8AAA340000ED14 /* ReaderListStreamHeader.xib */; };
-		E6D2E1651B8AAD7E0000ED14 /* ReaderSiteStreamHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D2E1641B8AAD7E0000ED14 /* ReaderSiteStreamHeader.swift */; };
 		E6D2E1671B8AAD8C0000ED14 /* ReaderTagStreamHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D2E1661B8AAD8C0000ED14 /* ReaderTagStreamHeader.swift */; };
 		E6D2E1691B8AAD9B0000ED14 /* ReaderListStreamHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D2E1681B8AAD9B0000ED14 /* ReaderListStreamHeader.swift */; };
 		E6D2E16C1B8B423B0000ED14 /* ReaderStreamHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D2E16B1B8B423B0000ED14 /* ReaderStreamHeader.swift */; };
@@ -4350,7 +4348,6 @@
 		FABB20602602FC2C00C8785C /* MediaSizeSliderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E14977191C0DCB6F0057CD60 /* MediaSizeSliderCell.xib */; };
 		FABB20622602FC2C00C8785C /* ReaderBlockedSiteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E65219F81B8D10C2000B1217 /* ReaderBlockedSiteCell.xib */; };
 		FABB20652602FC2C00C8785C /* SiteSegmentsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8C31CC52188490000A33B35 /* SiteSegmentsCell.xib */; };
-		FABB20662602FC2C00C8785C /* ReaderSiteStreamHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6D2E15E1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib */; };
 		FABB20692602FC2C00C8785C /* ReaderTopicsCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7192ECE25E8432D00C3020D /* ReaderTopicsCardCell.xib */; };
 		FABB206B2602FC2C00C8785C /* richEmbedTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = E61507E12220A0FE00213D33 /* richEmbedTemplate.html */; };
 		FABB206D2602FC2C00C8785C /* NoteBlockUserTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5C66B791ACF074600F68370 /* NoteBlockUserTableViewCell.xib */; };
@@ -4756,7 +4753,6 @@
 		FABB22882602FC2C00C8785C /* UserSuggestion+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B68A9B252FA91E0001B28C /* UserSuggestion+CoreDataProperties.swift */; };
 		FABB228A2602FC2C00C8785C /* ReaderHeaderAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CC620AA85C1008E8AE8 /* ReaderHeaderAction.swift */; };
 		FABB228B2602FC2C00C8785C /* FancyAlerts+VerificationPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 405B53FA1F83C369002E19BF /* FancyAlerts+VerificationPrompt.swift */; };
-		FABB228C2602FC2C00C8785C /* ReaderSiteStreamHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D2E1641B8AAD7E0000ED14 /* ReaderSiteStreamHeader.swift */; };
 		FABB228D2602FC2C00C8785C /* VideoUploadProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F126FDFD20A33BDB0010EB6E /* VideoUploadProcessor.swift */; };
 		FABB228E2602FC2C00C8785C /* PeopleCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E166FA1A1BB0656B00374B5B /* PeopleCellViewModel.swift */; };
 		FABB22902602FC2C00C8785C /* RegisterDomainDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D56192117312700CEAA33 /* RegisterDomainDetailsViewController.swift */; };
@@ -9263,10 +9259,8 @@
 		E6C0ED3A231DA23400A08B57 /* AccountService+MergeDuplicates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountService+MergeDuplicates.swift"; sourceTree = "<group>"; };
 		E6C892D51C601D55007AD612 /* SharingButtonsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharingButtonsViewController.swift; sourceTree = "<group>"; };
 		E6D170361EF9D8D10046D433 /* SiteInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteInfo.swift; sourceTree = "<group>"; };
-		E6D2E15E1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReaderSiteStreamHeader.xib; sourceTree = "<group>"; };
 		E6D2E1601B8AA4410000ED14 /* ReaderTagStreamHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReaderTagStreamHeader.xib; sourceTree = "<group>"; };
 		E6D2E1621B8AAA340000ED14 /* ReaderListStreamHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReaderListStreamHeader.xib; sourceTree = "<group>"; };
-		E6D2E1641B8AAD7E0000ED14 /* ReaderSiteStreamHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderSiteStreamHeader.swift; sourceTree = "<group>"; };
 		E6D2E1661B8AAD8C0000ED14 /* ReaderTagStreamHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderTagStreamHeader.swift; sourceTree = "<group>"; };
 		E6D2E1681B8AAD9B0000ED14 /* ReaderListStreamHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderListStreamHeader.swift; sourceTree = "<group>"; };
 		E6D2E16B1B8B423B0000ED14 /* ReaderStreamHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderStreamHeader.swift; sourceTree = "<group>"; };
@@ -17881,8 +17875,6 @@
 				E6D2E1681B8AAD9B0000ED14 /* ReaderListStreamHeader.swift */,
 				E6D2E1621B8AAA340000ED14 /* ReaderListStreamHeader.xib */,
 				83A337A02A9FA525009ED60C /* ReaderSiteHeaderView.swift */,
-				E6D2E1641B8AAD7E0000ED14 /* ReaderSiteStreamHeader.swift */,
-				E6D2E15E1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib */,
 				E6D2E16B1B8B423B0000ED14 /* ReaderStreamHeader.swift */,
 				0C0BEEEA2CC02D2C0073F4E0 /* ReaderDiscoverHeaderView.swift */,
 				E6D2E1661B8AAD8C0000ED14 /* ReaderTagStreamHeader.swift */,
@@ -20200,7 +20192,6 @@
 				1761F18326209AEE000815EF /* jetpack-green-icon-app-83.5x83.5@2x.png in Resources */,
 				0186358D2A810ABA00915532 /* support_chat_widget.js in Resources */,
 				9801E685274EEC19002FDDB6 /* ReaderDetailCommentsHeader.xib in Resources */,
-				E6D2E15F1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib in Resources */,
 				C7192ECF25E8432D00C3020D /* ReaderTopicsCardCell.xib in Resources */,
 				17222D8E261DDDF90047B163 /* black-classic-icon-app-76x76.png in Resources */,
 				E61507E22220A0FE00213D33 /* richEmbedTemplate.html in Resources */,
@@ -20737,7 +20728,6 @@
 				FABB20602602FC2C00C8785C /* MediaSizeSliderCell.xib in Resources */,
 				FABB20622602FC2C00C8785C /* ReaderBlockedSiteCell.xib in Resources */,
 				FABB20652602FC2C00C8785C /* SiteSegmentsCell.xib in Resources */,
-				FABB20662602FC2C00C8785C /* ReaderSiteStreamHeader.xib in Resources */,
 				FABB20692602FC2C00C8785C /* ReaderTopicsCardCell.xib in Resources */,
 				F465980928E66A5B00D5F49A /* white-on-blue-icon-app-76.png in Resources */,
 				FABB206B2602FC2C00C8785C /* richEmbedTemplate.html in Resources */,
@@ -22061,7 +22051,6 @@
 				D8212CC720AA85C1008E8AE8 /* ReaderHeaderAction.swift in Sources */,
 				405B53FB1F83C369002E19BF /* FancyAlerts+VerificationPrompt.swift in Sources */,
 				83E1E55F2A5CB8BF000B576F /* PostEditor+JetpackSocial.swift in Sources */,
-				E6D2E1651B8AAD7E0000ED14 /* ReaderSiteStreamHeader.swift in Sources */,
 				F126FE0020A33BDB0010EB6E /* VideoUploadProcessor.swift in Sources */,
 				E166FA1B1BB0656B00374B5B /* PeopleCellViewModel.swift in Sources */,
 				436D56292117312700CEAA33 /* RegisterDomainDetailsViewController.swift in Sources */,
@@ -25008,7 +24997,6 @@
 				FABB228A2602FC2C00C8785C /* ReaderHeaderAction.swift in Sources */,
 				FA4FE0B12BEA7FA800A635D3 /* RemotePost+Metadata.swift in Sources */,
 				FABB228B2602FC2C00C8785C /* FancyAlerts+VerificationPrompt.swift in Sources */,
-				FABB228C2602FC2C00C8785C /* ReaderSiteStreamHeader.swift in Sources */,
 				FABB228D2602FC2C00C8785C /* VideoUploadProcessor.swift in Sources */,
 				FE34ACD02B1661EB00108B3C /* DashboardBloganuaryCardCell.swift in Sources */,
 				FABB228E2602FC2C00C8785C /* PeopleCellViewModel.swift in Sources */,

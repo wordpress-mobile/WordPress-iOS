@@ -128,16 +128,6 @@ extension WPStyleGuide {
         label.textColor = .secondaryLabel
     }
 
-    @objc public class func applyReaderSiteStreamDescriptionStyle(_ label: UILabel) {
-        label.font = fontForTextStyle(.body, fontWeight: .regular)
-        label.textColor = .label
-    }
-
-    @objc public class func applyReaderSiteStreamCountStyle(_ label: UILabel) {
-        WPStyleGuide.configureLabel(label, textStyle: Cards.contentTextStyle)
-        label.textColor = .secondaryLabel
-    }
-
     // MARK: - Button Styles and Text
     class func applyReaderActionButtonStyle(_ button: UIButton,
                                             titleColor: UIColor = .secondaryLabel,
