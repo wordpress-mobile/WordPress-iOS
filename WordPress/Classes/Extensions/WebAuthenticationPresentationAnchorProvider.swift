@@ -1,14 +1,13 @@
 import Foundation
 import AuthenticationServices
 
-final class WebAuthenticationPresentationAnchorProvider: NSObject, ASWebAuthenticationPresentationContextProviding {
-    let anchor: ASPresentationAnchor
+final class WebAuthenticationPresentationContextProvider: NSObject, ASWebAuthenticationPresentationContextProviding {
 
-    init(anchor: ASPresentationAnchor) {
-        self.anchor = anchor
+    override init() {
+        super.init()
     }
 
     func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
-        anchor
+        ASPresentationAnchor() // Let the system manage the presentation
     }
 }

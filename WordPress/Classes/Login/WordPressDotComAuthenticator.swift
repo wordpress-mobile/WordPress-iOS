@@ -9,6 +9,9 @@ import Alamofire
 ///
 /// API doc: https://developer.wordpress.com/docs/oauth2/
 struct WordPressDotComAuthenticator {
+
+    private let contextProvider = WebAuthenticationPresentationContextProvider()
+
     enum Error: Swift.Error {
         case invalidCallbackURL
         case loginDenied(message: String)
@@ -103,7 +106,6 @@ struct WordPressDotComAuthenticator {
 
         let callbackURL: URL = try await withCheckedThrowingContinuation { continuation in
             DispatchQueue.main.async {
-                let provider = WebAuthenticationPresentationAnchorProvider(anchor: viewController.view.window ?? UIWindow())
                 let session = ASWebAuthenticationSession(url: authorizeURL, callbackURLScheme: "x-wordpress-app") { url, error in
                     if let url {
                         continuation.resume(returning: url)
@@ -112,7 +114,8 @@ struct WordPressDotComAuthenticator {
                         continuation.resume(throwing: Error.cancelled)
                     }
                 }
-                session.presentationContextProvider = provider
+
+                session.presentationContextProvider = contextProvider
                 session.start()
             }
         }

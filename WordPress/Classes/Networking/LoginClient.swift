@@ -58,7 +58,7 @@ final actor LoginClient {
             site: site,
             appName: appNameValue,
             appId: appId,
-            contextProvider: WebAuthenticationPresentationAnchorProvider(anchor: anchor ?? ASPresentationAnchor())
+            contextProvider: WebAuthenticationPresentationContextProvider()
         )
 
         let returnValue: Result<WordPressOrgCredentials, LoginClientError>
