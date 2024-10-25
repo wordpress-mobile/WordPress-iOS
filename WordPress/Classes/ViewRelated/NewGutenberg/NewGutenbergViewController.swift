@@ -20,6 +20,10 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     private lazy var coordinator: SupportCoordinator = {
         SupportCoordinator(controllerToShowFrom: topmostPresentedViewController, tag: .editorHelp)
     }()
+    
+    lazy var mediaPickerHelper: GutenbergMediaPickerHelper = {
+        return GutenbergMediaPickerHelper(context: self, post: post)
+    }()
 
     // MARK: - PostEditor
 
@@ -334,6 +338,44 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
 
     func editor(_ viewController: GutenbergKit.EditorViewController, performRequest: GutenbergKit.EditorNetworkRequest) async throws -> GutenbergKit.EditorNetworkResponse {
         throw URLError(.unknown)
+    }
+
+    func editor(_ viewController: GutenbergKit.EditorViewController, didRequestMediaFromSiteMediaLibrary config: OpenMediaLibrary) {
+        print("[2] openMediaLibrary: \(config)")
+        let flags = mediaFilterFlags(using: config.allowedTypes)
+        mediaPickerHelper.presentSiteMediaPicker(filter: flags, allowMultipleSelection: config.multiple) { [weak self] assets in
+            guard let self, let media = assets as? [Media] else {
+                self?.editorViewController.receiveMedia(nil)
+                return
+            }
+            let formattedMedia = media.map { item in
+                let mediaInfo = MediaInfo(id: item.mediaID?.int32Value, url: item.remoteURL, type: item.mediaTypeString, caption: item.caption, title: item.filename, alt: item.alt, metadata: [:])
+                return mediaInfo.encodeForJS()
+            }
+            editorViewController.receiveMedia(formattedMedia)
+        }
+    }
+
+    private func mediaFilterFlags(using filterArray: [OpenMediaLibrary.MediaType]) -> WPMediaType {
+        var mediaType: Int = 0
+        for filter in filterArray {
+            switch filter {
+            case .image:
+                mediaType = mediaType | WPMediaType.image.rawValue
+            case .video:
+                mediaType = mediaType | WPMediaType.video.rawValue
+            case .audio:
+                mediaType = mediaType | WPMediaType.audio.rawValue
+            case .other:
+                mediaType = mediaType | WPMediaType.other.rawValue
+            case .any:
+                mediaType = mediaType | WPMediaType.all.rawValue
+            @unknown default:
+                fatalError()
+            }
+        }
+
+        return WPMediaType(rawValue: mediaType)
     }
 }
 
