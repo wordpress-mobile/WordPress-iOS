@@ -120,7 +120,6 @@ enum ReaderStaticScreen: String, CaseIterable, Identifiable, Hashable {
 }
 
 enum ReaderContentType {
-    case selfHostedFollowing
     case contentError
     case saved
     case topic
