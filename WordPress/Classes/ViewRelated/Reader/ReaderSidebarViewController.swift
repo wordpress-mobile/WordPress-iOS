@@ -161,7 +161,7 @@ private struct ReaderSidebarSection<Content: View>: View {
                         .font(.subheadline.weight(.semibold))
                         .foregroundStyle(.secondary)
                     Spacer()
-                    Image(systemName: "chevron.down")
+                    Image(systemName: isExpanded ? "chevron.down" : "chevron.right")
                         .font(.system(size: 14).weight(.semibold))
                         .foregroundStyle(AppColor.brand)
                 }
