@@ -218,16 +218,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         toolbar.viewWillDisappear()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        ReaderTracker.shared.start(.readerPost)
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        ReaderTracker.shared.stop(.readerPost)
-    }
-
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
@@ -354,14 +344,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Shown an error with a button to open the post on the browser
     func showErrorWithWebAction() {
         displayLoadingViewWithWebAction(title: LoadingText.errorLoadingTitle)
-    }
-
-    @objc func willEnterForeground() {
-        guard isViewOnScreen() else {
-            return
-        }
-
-        ReaderTracker.shared.start(.readerPost)
     }
 
     /// Scroll the content to a given #hash
@@ -693,11 +675,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func configureNotifications() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(willEnterForeground),
-                                               name: UIApplication.willEnterForegroundNotification,
-                                               object: nil)
-
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(siteBlocked(_:)),
                                                name: .ReaderSiteBlocked,
