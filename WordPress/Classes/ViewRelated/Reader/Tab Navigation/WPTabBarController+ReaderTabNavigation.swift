@@ -5,15 +5,6 @@ protocol ReaderContentViewController: UIViewController {
 
 // MARK: - Reader Factory
 extension WPTabBarController {
-    @objc func makeReaderTabViewController() -> ReaderTabViewController {
-        return ReaderTabViewController(viewModel: readerTabViewModel) { [weak self] viewModel in
-            guard let self else {
-                return ReaderTabView(viewModel: viewModel)
-            }
-            return self.makeReaderTabView(viewModel)
-        }
-    }
-
     @objc func makeReaderTabViewModel() -> ReaderTabViewModel {
         let viewModel = ReaderTabViewModel(
             readerContentFactory: { content in

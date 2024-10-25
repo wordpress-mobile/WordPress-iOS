@@ -46,9 +46,7 @@ import WordPressUI
         super.init()
 
         // Only fetch the prompt if it is actually needed, i.e. on the FAB that has multiple actions.
-        // Temporarily show the sheet when the FAB is tapped on the Reader tab.
-        // TODO: (dvdchr) clean up once `readerFloatingButton` is removed.
-        if actions.count > 1 || source == Strings.readerSource {
+        if actions.count > 1 {
             fetchBloggingPrompt()
         }
     }
@@ -93,8 +91,7 @@ import WordPressUI
         }
 
         // Temporarily show the sheet when the FAB is tapped on the Reader tab.
-        // TODO: (dvdchr) clean up once `readerFloatingButton` is removed.
-        if actions.count == 1, source != Strings.readerSource {
+        if actions.count == 1 {
             actions.first?.handler()
         } else {
             let actionSheetVC = actionSheetController(with: viewController.traitCollection)

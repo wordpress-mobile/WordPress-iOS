@@ -129,12 +129,9 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         if (self.shouldUseStaticScreens) {
             UIViewController *rootVC = [[MovedToJetpackViewController alloc] initWithSource:MovedToJetpackSourceReader];
             _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:rootVC];
-        } else if ([Feature enabled:FeatureFlagReaderReset]) {
+        } else {
             _readerPresenter = [[ReaderPresenter alloc] init];
             _readerNavigationController = [_readerPresenter prepareForTabBarPresentation];
-        } else {
-            UIViewController *rootVC = self.makeReaderTabViewController;
-            _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:rootVC];
         }
         _readerNavigationController.view.backgroundColor = [UIColor systemBackgroundColor];
 
