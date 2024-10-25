@@ -43,8 +43,6 @@ import AutomatticTracks
         return tableViewController.tableView
     }
 
-    weak var navigationMenuDelegate: ReaderNavigationMenuDelegate?
-
     private var syncHelpers: [ReaderAbstractTopic: WPContentSyncHelper] = [:]
 
     private var syncHelper: WPContentSyncHelper? {
