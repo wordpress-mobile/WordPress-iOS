@@ -59,19 +59,12 @@ import AutomatticTracks
             guard let noFollowedSitesVC = noFollowedSitesViewController else {
                 return noResultsStatusViewController
             }
-
             return noFollowedSitesVC
         }
     }
 
-    private var coreDataStack: CoreDataStack {
-        ContextManager.shared
-    }
-
-    /// An alias for the apps's main context
-    var viewContext: NSManagedObjectContext {
-        coreDataStack.mainContext
-    }
+    private var coreDataStack: CoreDataStack { ContextManager.shared }
+    var viewContext: NSManagedObjectContext { coreDataStack.mainContext }
 
     private(set) lazy var footerView: PostListFooterView = {
         return tableConfiguration.footer()
