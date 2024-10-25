@@ -245,10 +245,8 @@ import AutomatticTracks
     /// - Returns: An instance of the controller
     ///
     @objc class func controllerWithTagSlug(_ tagSlug: String) -> ReaderStreamViewController {
-        let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
-        let controller = storyboard.instantiateViewController(withIdentifier: "ReaderStreamViewController") as! ReaderStreamViewController
+        let controller = ReaderStreamViewController()
         controller.tagSlug = tagSlug
-
         return controller
     }
 
