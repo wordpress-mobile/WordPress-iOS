@@ -151,16 +151,6 @@ extension ReaderStreamViewController {
     }
 }
 
-// MARK: - Tags Feed
-
-extension ReaderStreamViewController {
-
-    var isTagsFeed: Bool {
-        contentType == .tags && readerTopic == nil
-    }
-
-}
-
 // MARK: - Tracks
 extension ReaderStreamViewController {
     func trackSavedListAccessed() {
