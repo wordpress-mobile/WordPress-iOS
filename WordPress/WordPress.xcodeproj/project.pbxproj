@@ -1080,7 +1080,6 @@
 		37022D931981C19000F322B7 /* VerticallyStackedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 37022D901981BF9200F322B7 /* VerticallyStackedButton.m */; };
 		374CB16215B93C0800DD0EBC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 374CB16115B93C0800DD0EBC /* AudioToolbox.framework */; };
 		37EAAF4D1A11799A006D6306 /* CircularImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EAAF4C1A11799A006D6306 /* CircularImageView.swift */; };
-		3F09CCA82428FF3300D00A8C /* ReaderTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F09CCA72428FF3300D00A8C /* ReaderTabViewController.swift */; };
 		3F09CCAE24292EFD00D00A8C /* ReaderTabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F09CCAD24292EFD00D00A8C /* ReaderTabItem.swift */; };
 		3F170E242655917400F6F670 /* UIView+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F170E232655917400F6F670 /* UIView+SwiftUI.swift */; };
 		3F170E252655917400F6F670 /* UIView+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F170E232655917400F6F670 /* UIView+SwiftUI.swift */; };
@@ -4422,7 +4421,6 @@
 		FABB20E52602FC2C00C8785C /* SiteStatsInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9874767221963D320080967F /* SiteStatsInformation.swift */; };
 		FABB20E62602FC2C00C8785C /* TitleSubtitleHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738B9A4B21B85CF20005062B /* TitleSubtitleHeader.swift */; };
 		FABB20E82602FC2C00C8785C /* AppAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C64BD1248E26A200AF09D7 /* AppAppearance.swift */; };
-		FABB20E92602FC2C00C8785C /* ReaderTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F09CCA72428FF3300D00A8C /* ReaderTabViewController.swift */; };
 		FABB20EA2602FC2C00C8785C /* ActivityTypeSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1E62D525758AAF009A0F80 /* ActivityTypeSelectorViewController.swift */; };
 		FABB20EB2602FC2C00C8785C /* ActivityActionsParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4123CB20F418A500DF8486 /* ActivityActionsParser.swift */; };
 		FABB20ED2602FC2C00C8785C /* Routes+Me.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F0E1D920EBDC0A001E9514 /* Routes+Me.swift */; };
@@ -6948,7 +6946,6 @@
 		37022D901981BF9200F322B7 /* VerticallyStackedButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerticallyStackedButton.m; sourceTree = "<group>"; };
 		374CB16115B93C0800DD0EBC /* AudioToolbox.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		37EAAF4C1A11799A006D6306 /* CircularImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularImageView.swift; sourceTree = "<group>"; };
-		3F09CCA72428FF3300D00A8C /* ReaderTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabViewController.swift; sourceTree = "<group>"; };
 		3F09CCAD24292EFD00D00A8C /* ReaderTabItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabItem.swift; sourceTree = "<group>"; };
 		3F170E232655917400F6F670 /* UIView+SwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+SwiftUI.swift"; sourceTree = "<group>"; };
 		3F1B66A223A2F54B0075F09E /* ReaderReblogActionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderReblogActionTests.swift; sourceTree = "<group>"; };
@@ -11726,7 +11723,6 @@
 			children = (
 				3F09CCAD24292EFD00D00A8C /* ReaderTabItem.swift */,
 				3FC8D19A244F43B500495820 /* ReaderTabItemsStore.swift */,
-				3F09CCA72428FF3300D00A8C /* ReaderTabViewController.swift */,
 				3F6975FE242D941E001F1807 /* ReaderTabViewModel.swift */,
 				3FF1A852242D5FCB00373F5D /* WPTabBarController+ReaderTabNavigation.swift */,
 			);
@@ -21452,7 +21448,6 @@
 				738B9A5821B85CF20005062B /* TitleSubtitleHeader.swift in Sources */,
 				FA70024C29DC3B5500E874FD /* DashboardActivityLogCardCell.swift in Sources */,
 				17C64BD2248E26A200AF09D7 /* AppAppearance.swift in Sources */,
-				3F09CCA82428FF3300D00A8C /* ReaderTabViewController.swift in Sources */,
 				8B1E62D625758AAF009A0F80 /* ActivityTypeSelectorViewController.swift in Sources */,
 				7E4123CC20F418A500DF8486 /* ActivityActionsParser.swift in Sources */,
 				FAB37D4627ED84BC00CA993C /* DashboardStatsNudgeView.swift in Sources */,
@@ -24376,7 +24371,6 @@
 				FE7B9A8B2A6BD20200488791 /* PrepublishingSocialAccountsTableFooterView.swift in Sources */,
 				FABB20E62602FC2C00C8785C /* TitleSubtitleHeader.swift in Sources */,
 				FABB20E82602FC2C00C8785C /* AppAppearance.swift in Sources */,
-				FABB20E92602FC2C00C8785C /* ReaderTabViewController.swift in Sources */,
 				FE4DC5A8293A84E6008F322F /* MigrationDeepLinkRouter.swift in Sources */,
 				77DFF0892B68386800FA561D /* BooleanUserDefaultsDebugViewModel.swift in Sources */,
 				80DB57992AF99E0900C728FF /* BlogListConfiguration.swift in Sources */,
