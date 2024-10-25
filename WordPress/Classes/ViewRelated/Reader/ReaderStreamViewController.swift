@@ -190,42 +190,8 @@ import AutomatticTracks
 
     private var showConfirmation = true
 
-    lazy var selectInterestsViewController: ReaderSelectInterestsViewController = {
-        let title = NSLocalizedString(
-            "reader.select.tags.title",
-            value: "Discover and follow blogs you love",
-            comment: "Reader select interests title label text"
-        )
-        let subtitle = NSLocalizedString(
-            "reader.select.tags.subtitle",
-            value: "Choose your tags",
-            comment: "Reader select interests subtitle label text"
-        )
-        let buttonTitleEnabled = NSLocalizedString(
-            "reader.select.tags.done",
-            value: "Done",
-            comment: "Reader select interests next button enabled title text"
-        )
-        let buttonTitleDisabled = NSLocalizedString(
-            "reader.select.tags.continue",
-            value: "Select a few to continue",
-            comment: "Reader select interests next button disabled title text"
-        )
-        let loading = NSLocalizedString(
-            "reader.select.tags.loading",
-            value: "Finding blogs and stories you’ll love...",
-            comment: "Label displayed to the user while loading their selected interests"
-        )
+    lazy var selectInterestsVC = ReaderSelectInterestsViewController(configuration: .discover)
 
-        let configuration = ReaderSelectInterestsConfiguration(
-            title: title,
-            subtitle: subtitle,
-            buttonTitle: (enabled: buttonTitleEnabled, disabled: buttonTitleDisabled),
-            loading: loading
-        )
-
-        return ReaderSelectInterestsViewController(configuration: configuration)
-    }()
     /// Tracks whether or not we should force sync
     /// This is set to true after the Reader Manage view is dismissed
     var shouldForceRefresh = false
@@ -1712,14 +1678,14 @@ extension ReaderStreamViewController {
     }
 
     func showSelectInterestsView() {
-        guard selectInterestsViewController.parent == nil else {
+        guard selectInterestsVC.parent == nil else {
             return
         }
 
-        selectInterestsViewController.view.frame = self.view.bounds
-        self.add(selectInterestsViewController)
+        selectInterestsVC.view.frame = self.view.bounds
+        self.add(selectInterestsVC)
 
-        selectInterestsViewController.didSaveInterests = { [weak self] _ in
+        selectInterestsVC.didSaveInterests = { [weak self] _ in
             guard let self else {
                 return
             }
@@ -1728,7 +1694,7 @@ extension ReaderStreamViewController {
     }
 
     func hideSelectInterestsView(showLoadingStream: Bool = true) {
-        guard selectInterestsViewController.parent != nil else {
+        guard selectInterestsVC.parent != nil else {
             if shouldForceRefresh {
                 scrollViewToTop()
                 displayLoadingStream()
@@ -1744,10 +1710,10 @@ extension ReaderStreamViewController {
         syncIfAppropriate(forceSync: true)
 
         UIView.animate(withDuration: 0.2, animations: {
-            self.selectInterestsViewController.view.alpha = 0
+            self.selectInterestsVC.view.alpha = 0
         }) { _ in
-            self.selectInterestsViewController.remove()
-            self.selectInterestsViewController.view.alpha = 1
+            self.selectInterestsVC.remove()
+            self.selectInterestsVC.view.alpha = 1
         }
     }
 

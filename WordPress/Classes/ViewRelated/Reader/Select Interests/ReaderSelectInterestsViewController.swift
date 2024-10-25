@@ -11,21 +11,6 @@ struct ReaderSelectInterestsConfiguration {
     let subtitle: String?
     let buttonTitle: (enabled: String, disabled: String)?
     let loading: String
-
-    static let `default` = ReaderSelectInterestsConfiguration(
-        title: NSLocalizedString(
-            "reader.select.interests.follow.title",
-            value: "Follow tags",
-            comment: "Screen title. Reader select interests title label text."
-        ),
-        subtitle: nil,
-        buttonTitle: nil,
-        loading: NSLocalizedString(
-            "reader.select.interests.following",
-            value: "Following new tags...",
-            comment: "Label displayed to the user while loading their selected interests"
-        )
-    )
 }
 
 class ReaderSelectInterestsViewController: UIViewController {
@@ -414,5 +399,58 @@ extension ReaderSelectInterestsViewController {
 
     func hideLoadingView() {
         noResultsViewController.removeFromView()
+    }
+}
+
+extension ReaderSelectInterestsConfiguration {
+    static let `default` = ReaderSelectInterestsConfiguration(
+        title: NSLocalizedString(
+            "reader.select.interests.follow.title",
+            value: "Follow tags",
+            comment: "Screen title. Reader select interests title label text."
+        ),
+        subtitle: nil,
+        buttonTitle: nil,
+        loading: NSLocalizedString(
+            "reader.select.interests.following",
+            value: "Following new tags...",
+            comment: "Label displayed to the user while loading their selected interests"
+        )
+    )
+
+    /// Configuration for the "Discover" screen.
+    static var discover: ReaderSelectInterestsConfiguration {
+        let title = NSLocalizedString(
+            "reader.select.tags.title",
+            value: "Discover and follow blogs you love",
+            comment: "Reader select interests title label text"
+        )
+        let subtitle = NSLocalizedString(
+            "reader.select.tags.subtitle",
+            value: "Choose your tags",
+            comment: "Reader select interests subtitle label text"
+        )
+        let buttonTitleEnabled = NSLocalizedString(
+            "reader.select.tags.done",
+            value: "Done",
+            comment: "Reader select interests next button enabled title text"
+        )
+        let buttonTitleDisabled = NSLocalizedString(
+            "reader.select.tags.continue",
+            value: "Select a few to continue",
+            comment: "Reader select interests next button disabled title text"
+        )
+        let loading = NSLocalizedString(
+            "reader.select.tags.loading",
+            value: "Finding blogs and stories you’ll love...",
+            comment: "Label displayed to the user while loading their selected interests"
+        )
+
+        return ReaderSelectInterestsConfiguration(
+            title: title,
+            subtitle: subtitle,
+            buttonTitle: (enabled: buttonTitleEnabled, disabled: buttonTitleDisabled),
+            loading: loading
+        )
     }
 }
