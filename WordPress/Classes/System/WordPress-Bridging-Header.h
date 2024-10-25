@@ -88,7 +88,6 @@
 #import "WPUploadStatusButton.h"
 #import "WPError.h"
 #import "WPImageViewController.h"
-#import "WPScrollableViewController.h"
 #import "WPStyleGuide+Pages.h"
 #import "WPStyleGuide+WebView.h"
 #import "WPTableViewHandler.h"
