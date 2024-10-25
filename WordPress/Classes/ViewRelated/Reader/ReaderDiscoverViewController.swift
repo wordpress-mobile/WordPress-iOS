@@ -93,7 +93,7 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
 
         if FeatureFlag.readerReset.enabled {
             // Important to set before `viewDidLoad`
-            streamVC.isReaderResetDiscoverEnabled = true
+            streamVC.isEmbeddedInDiscover = true
             streamVC.setHeaderView(headerView)
         }
 
@@ -101,6 +101,8 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
         view.addSubview(streamVC.view)
         streamVC.view.pinEdges()
         streamVC.didMove(toParent: self)
+
+        navigationItem.titleView = streamVC.navigationItem.titleView // important
     }
 
     /// TODO: (tech-debt) the app currently stores the responses from the `/discover`
