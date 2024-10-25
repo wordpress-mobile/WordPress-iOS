@@ -19402,6 +19402,7 @@
 				E00F6488DE2D86BDC84FBB0B /* [CP] Check Pods Manifest.lock */,
 				09607CE7281C9CA6002D2E5A /* [Lint] Check AppLocalizedString usage */,
 				825F0EBF1F7EBF7C00321528 /* App Icons: Add Version For Internal Releases */,
+				24E55D502CCC143F008D071D /* Build Acknowledgements Bundle */,
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				F9C5CF0222CD5DB0007CEF56 /* Copy Alternate Internal Icons (if needed) */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
@@ -20927,6 +20928,7 @@
 			);
 			inputPaths = (
 				"$(SRCROOT)/WordPress.xcworkspace/xcshareddata/swiftpm/Package.resolved",
+				"$(SRCROOT)/Scripts/BuildPhases/GenerateAcknowledgementsBundle.sh",
 			);
 			name = "Build Acknowledgements Bundle";
 			outputFileListPaths = (
@@ -20935,8 +20937,29 @@
 				"$(DERIVED_FILE_DIR)/package-list.json",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\n\nif command -v swift-package-list &> /dev/null; then\n    echo \"Running swift-package-list to generate package list\"\n\n    OUTPUT_PATH=\"$DERIVED_FILE_DIR/package-list.json\"\n    PROJECT_ROOT=$(dirname $SRCROOT)\n    echo \"swift-package-list: $PROJECT_ROOT\"\n    \n    WORKSPACE_FILE_PATH=\"$PROJECT_ROOT/WordPress.xcworkspace\"\n\n    echo \"swift-package-list: $WORKSPACE_FILE_PATH\"\n    echo \"swift-package-list: $OUTPUT_PATH\"\n\n    swift-package-list \"$WORKSPACE_FILE_PATH\" --requires-license | tee \"$OUTPUT_PATH\"\n    cp \"$OUTPUT_PATH\" \"${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/package-list.json\"\n    echo \"swift-package-list: ${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/package-list.json\"\n\n    echo \"swift-package-list: Generation Complete\"\nelse\n    echo \"warning: swift-package-list not installed\"\nfi\n";
+			shellPath = /bin/bash;
+			shellScript = "#!/bin/bash\n\nbash ../Scripts/BuildPhases/GenerateAcknowledgementsBundle.sh\n";
+		};
+		24E55D502CCC143F008D071D /* Build Acknowledgements Bundle */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/WordPress.xcworkspace/xcshareddata/swiftpm/Package.resolved",
+				"$(SRCROOT)/Scripts/BuildPhases/GenerateAcknowledgementsBundle.sh",
+			);
+			name = "Build Acknowledgements Bundle";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/package-list.json",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "#!/bin/bash\n\nbash ../Scripts/BuildPhases/GenerateAcknowledgementsBundle.sh\n";
 		};
 		36FB55DCF44141E140E108F8 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
