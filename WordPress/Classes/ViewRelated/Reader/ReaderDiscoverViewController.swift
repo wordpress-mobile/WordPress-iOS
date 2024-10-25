@@ -4,7 +4,7 @@ import Combine
 import WordPressKit
 import WordPressShared
 
-class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDelegate, ReaderContentViewController {
+class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDelegate {
     private let headerView = ReaderDiscoverHeaderView()
     private var selectedChannel: ReaderDiscoverChannel = .recommended
     private let topic: ReaderAbstractTopic
@@ -112,12 +112,6 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
     /// when you change the streams.
     private func deleteCachedReaderCards() {
         ReaderCardService.removeAllCards()
-    }
-
-    // MARK: - ReaderContentViewController (Deprecated)
-
-    func setContent(_ content: ReaderContent) {
-        streamVC?.setContent(content)
     }
 
     // MARK: - ReaderDiscoverHeaderViewDelegate

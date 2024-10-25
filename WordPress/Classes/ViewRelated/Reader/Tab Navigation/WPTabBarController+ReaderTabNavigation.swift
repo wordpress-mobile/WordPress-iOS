@@ -1,7 +1,4 @@
-/// Generic type for the UIViewController in the Reader Content View
-protocol ReaderContentViewController: UIViewController {
-    func setContent(_ content: ReaderContent)
-}
+import UIKit
 
 // MARK: - Reader Navigation
 extension WPTabBarController {
