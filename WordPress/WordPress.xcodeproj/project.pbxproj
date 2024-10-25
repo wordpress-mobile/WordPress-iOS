@@ -1080,7 +1080,6 @@
 		37022D931981C19000F322B7 /* VerticallyStackedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 37022D901981BF9200F322B7 /* VerticallyStackedButton.m */; };
 		374CB16215B93C0800DD0EBC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 374CB16115B93C0800DD0EBC /* AudioToolbox.framework */; };
 		37EAAF4D1A11799A006D6306 /* CircularImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EAAF4C1A11799A006D6306 /* CircularImageView.swift */; };
-		3F09CCAE24292EFD00D00A8C /* ReaderTabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F09CCAD24292EFD00D00A8C /* ReaderTabItem.swift */; };
 		3F170E242655917400F6F670 /* UIView+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F170E232655917400F6F670 /* UIView+SwiftUI.swift */; };
 		3F170E252655917400F6F670 /* UIView+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F170E232655917400F6F670 /* UIView+SwiftUI.swift */; };
 		3F1B66A323A2F54B0075F09E /* ReaderReblogActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1B66A223A2F54B0075F09E /* ReaderReblogActionTests.swift */; };
@@ -5448,7 +5447,6 @@
 		FABB26002602FC2C00C8785C /* GravatarProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FACB1D1EC675E300284AC7 /* GravatarProfile.swift */; };
 		FABB26012602FC2C00C8785C /* ReaderShareAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CB620AA7703008E8AE8 /* ReaderShareAction.swift */; };
 		FABB26022602FC2C00C8785C /* PostingActivityMonth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9826AE8921B5CC7300C851FA /* PostingActivityMonth.swift */; };
-		FABB26042602FC2C00C8785C /* ReaderTabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F09CCAD24292EFD00D00A8C /* ReaderTabItem.swift */; };
 		FABB26072602FC2C00C8785C /* JetpackBackupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8FD6D25AEB23600D5D54A /* JetpackBackupService.swift */; };
 		FABB26082602FC2C00C8785C /* NotificationsViewController+JetpackPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8236EB4F2024ED8C007C7CF9 /* NotificationsViewController+JetpackPrompt.swift */; };
 		FABB26092602FC2C00C8785C /* PostListFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D732F961AE84E3C00CD89E7 /* PostListFooterView.m */; };
@@ -6906,7 +6904,6 @@
 		37022D901981BF9200F322B7 /* VerticallyStackedButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerticallyStackedButton.m; sourceTree = "<group>"; };
 		374CB16115B93C0800DD0EBC /* AudioToolbox.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		37EAAF4C1A11799A006D6306 /* CircularImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularImageView.swift; sourceTree = "<group>"; };
-		3F09CCAD24292EFD00D00A8C /* ReaderTabItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabItem.swift; sourceTree = "<group>"; };
 		3F170E232655917400F6F670 /* UIView+SwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+SwiftUI.swift"; sourceTree = "<group>"; };
 		3F1B66A223A2F54B0075F09E /* ReaderReblogActionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderReblogActionTests.swift; sourceTree = "<group>"; };
 		3F2656A025AF4DFA0073A832 /* AppLocalizedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLocalizedString.swift; sourceTree = "<group>"; };
@@ -11662,7 +11659,6 @@
 		3F09CCA62428FE8600D00A8C /* Tab Navigation */ = {
 			isa = PBXGroup;
 			children = (
-				3F09CCAD24292EFD00D00A8C /* ReaderTabItem.swift */,
 				3FF1A852242D5FCB00373F5D /* WPTabBarController+ReaderTabNavigation.swift */,
 			);
 			path = "Tab Navigation";
@@ -23129,7 +23125,6 @@
 				01C591452BDBD63D0071515C /* StatsGhostTopCell.swift in Sources */,
 				9826AE8A21B5CC7300C851FA /* PostingActivityMonth.swift in Sources */,
 				08F531FE2B7E94F20061BD0E /* CachedAsyncImage.swift in Sources */,
-				3F09CCAE24292EFD00D00A8C /* ReaderTabItem.swift in Sources */,
 				FAB8FD6E25AEB23600D5D54A /* JetpackBackupService.swift in Sources */,
 				17171374265FAA8A00F3A022 /* BloggingRemindersNavigationController.swift in Sources */,
 				8236EB502024ED8C007C7CF9 /* NotificationsViewController+JetpackPrompt.swift in Sources */,
@@ -26084,7 +26079,6 @@
 				08240C2F2AB8A2DD00E7AEA8 /* AllDomainsListCardView.swift in Sources */,
 				FABB26022602FC2C00C8785C /* PostingActivityMonth.swift in Sources */,
 				0107E15D28FFE99300DE87DB /* WidgetConfiguration.swift in Sources */,
-				FABB26042602FC2C00C8785C /* ReaderTabItem.swift in Sources */,
 				FABB26072602FC2C00C8785C /* JetpackBackupService.swift in Sources */,
 				FABB26082602FC2C00C8785C /* NotificationsViewController+JetpackPrompt.swift in Sources */,
 				FABB26092602FC2C00C8785C /* PostListFooterView.m in Sources */,
