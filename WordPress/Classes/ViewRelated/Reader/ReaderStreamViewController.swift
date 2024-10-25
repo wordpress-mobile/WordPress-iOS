@@ -230,8 +230,6 @@ import AutomatticTracks
     /// This is set to true after the Reader Manage view is dismissed
     var shouldForceRefresh = false
 
-    lazy var isSidebarModeEnabled = splitViewController?.isCollapsed == false
-
     var isEmbeddedInDiscover = false
 
     // MARK: - Init
