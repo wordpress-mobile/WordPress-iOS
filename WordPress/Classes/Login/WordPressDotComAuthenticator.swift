@@ -20,6 +20,7 @@ struct WordPressDotComAuthenticator {
         case parsing(DecodingError)
         case cancelled
         case unknown(Swift.Error)
+        case unableToStartLoginSession
     }
 
     @MainActor
@@ -67,6 +68,8 @@ struct WordPressDotComAuthenticator {
             // These errors are unexpected.
             wpAssertionFailure("WP.com web login failed", userInfo: ["error": "\(error)"])
             alertMessage = SharedStrings.Error.generic
+        case .unableToStartLoginSession:
+            alertMessage = Strings.unableToStartLoginSession
         }
 
         let alert = UIAlertController(
@@ -181,5 +184,13 @@ struct WordPressDotComAuthenticator {
             DDLogError("Failed to parse token request response: \(error)")
             throw Error.unknown(error)
         }
+    }
+
+    enum Strings {
+        static let unableToStartLoginSession = NSLocalizedString(
+            "com.wordpress.authenticator.unable-to-start-login",
+            value: "Unable to start login session. Please try again.",
+            comment: "A rare error that occurs when trying to start a login session."
+        )
     }
 }
