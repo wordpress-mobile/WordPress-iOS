@@ -1486,20 +1486,6 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             return cell
         }
 
-        guard FeatureFlag.readerReset.enabled else {
-            let cell = tableConfiguration.postCardCell(tableView)
-            if isSidebarModeEnabled {
-                cell.enableSidebarMode()
-            }
-
-            let viewModel = ReaderPostCardCellViewModel(contentProvider: post,
-                                                        isLoggedIn: isLoggedIn,
-                                                        showsSeparator: showsSeparator,
-                                                        parentViewController: self)
-            cell.configure(with: viewModel)
-            return cell
-        }
-
         let cell = tableConfiguration.postCell(in: tableView, for: indexPath)
         let viewModel = ReaderPostCellViewModel(post: post, topic: readerTopic)
         viewModel.viewController = self
