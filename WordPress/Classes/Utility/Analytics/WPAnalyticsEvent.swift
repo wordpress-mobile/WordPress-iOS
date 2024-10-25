@@ -334,10 +334,6 @@ import Foundation
     case readerManageViewDisplayed
     case readerManageViewDismissed
 
-    // Reader: Navigation menu dropdown
-    case readerDropdownOpened
-    case readerDropdownItemTapped
-
     // Reader: Tags Feed
     case readerTagsFeedShown
     case readerTagsFeedMoreFromTagTapped
@@ -1223,12 +1219,6 @@ import Foundation
             return "reader_manage_view_displayed"
         case .readerManageViewDismissed:
             return "reader_manage_view_dismissed"
-
-        // Reader: Navigation menu dropdown
-        case .readerDropdownOpened:
-            return "reader_dropdown_menu_opened"
-        case .readerDropdownItemTapped:
-            return "reader_dropdown_menu_item_tapped"
 
         case .readerTagsFeedShown:
             return "reader_tags_feed_shown"
