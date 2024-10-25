@@ -94,7 +94,7 @@ struct ReaderSiteHeader: View {
             }
             VStack(alignment: .leading, spacing: 4) {
                 Text(viewModel.title)
-                    .font(Font(WPStyleGuide.serifFontForTextStyle(.title2, fontWeight: .semibold)))
+                    .font(Font(WPStyleGuide.fontForTextStyle(.title1, fontWeight: .semibold)))
                 Text(viewModel.siteUrl)
                     .font(.subheadline)
             }
