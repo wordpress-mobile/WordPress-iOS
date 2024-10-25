@@ -130,9 +130,6 @@ struct UIAppColor {
     static let appBarTint = UIColor.systemOrange
     static let appBarText = UIColor.systemOrange
 
-    static let placeholderElement = UIColor(light: .systemGray5, dark: .systemGray4)
-    static let placeholderElementFaded: UIColor = UIColor(light: .systemGray6, dark: .systemGray5)
-
     static let prologueBackground = UIColor(light: blue(.shade0), dark: .systemBackground)
 
     static let switchStyle: SwitchToggleStyle = SwitchToggleStyle(tint: Color(UIAppColor.brand))

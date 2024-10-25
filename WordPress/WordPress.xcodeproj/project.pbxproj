@@ -2406,10 +2406,6 @@
 		8320BDE5283D9359009DF2DE /* BlogService+BloggingPrompts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8320BDE4283D9359009DF2DE /* BlogService+BloggingPrompts.swift */; };
 		8320BDE6283D9359009DF2DE /* BlogService+BloggingPrompts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8320BDE4283D9359009DF2DE /* BlogService+BloggingPrompts.swift */; };
 		8323789928526E6E003F4443 /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25F9FD2609AA830005E08F /* AppConfiguration.swift */; };
-		83317ED62BC71BA8001AD2F4 /* ReaderTagCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83317ED52BC71BA8001AD2F4 /* ReaderTagCardCell.swift */; };
-		83317ED72BC71BA8001AD2F4 /* ReaderTagCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83317ED52BC71BA8001AD2F4 /* ReaderTagCardCell.swift */; };
-		83317ED92BC71CEB001AD2F4 /* ReaderTagCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83317ED82BC71CEB001AD2F4 /* ReaderTagCardCell.xib */; };
-		83317EDA2BC71CEB001AD2F4 /* ReaderTagCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83317ED82BC71CEB001AD2F4 /* ReaderTagCardCell.xib */; };
 		83317EDC2BC72DB7001AD2F4 /* ReaderTagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83317EDB2BC72DB7001AD2F4 /* ReaderTagCell.swift */; };
 		83317EDD2BC72DB7001AD2F4 /* ReaderTagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83317EDB2BC72DB7001AD2F4 /* ReaderTagCell.swift */; };
 		83317EDF2BC72DED001AD2F4 /* ReaderTagCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83317EDE2BC72DED001AD2F4 /* ReaderTagCell.xib */; };
@@ -7978,8 +7974,6 @@
 		8313B9F92995A03C000AF26E /* JetpackRemoteInstallCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRemoteInstallCardView.swift; sourceTree = "<group>"; };
 		83204EDB2ACE098B000C3229 /* ReaderPostCardCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderPostCardCellViewModel.swift; sourceTree = "<group>"; };
 		8320BDE4283D9359009DF2DE /* BlogService+BloggingPrompts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogService+BloggingPrompts.swift"; sourceTree = "<group>"; };
-		83317ED52BC71BA8001AD2F4 /* ReaderTagCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTagCardCell.swift; sourceTree = "<group>"; };
-		83317ED82BC71CEB001AD2F4 /* ReaderTagCardCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReaderTagCardCell.xib; sourceTree = "<group>"; };
 		83317EDB2BC72DB7001AD2F4 /* ReaderTagCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTagCell.swift; sourceTree = "<group>"; };
 		83317EDE2BC72DED001AD2F4 /* ReaderTagCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReaderTagCell.xib; sourceTree = "<group>"; };
 		8332D7442ADF263400EB97EF /* UIConfigurationTextAttributesTransformer+Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIConfigurationTextAttributesTransformer+Font.swift"; sourceTree = "<group>"; };
@@ -13373,8 +13367,6 @@
 				83204EDB2ACE098B000C3229 /* ReaderPostCardCellViewModel.swift */,
 				3234BB322530EA980068DA40 /* ReaderRecommendedSiteCardCell.swift */,
 				3234BB332530EA980068DA40 /* ReaderRecommendedSiteCardCell.xib */,
-				83317ED52BC71BA8001AD2F4 /* ReaderTagCardCell.swift */,
-				83317ED82BC71CEB001AD2F4 /* ReaderTagCardCell.xib */,
 				83BF48BA2BD6F03000C0E1A1 /* ReaderTagCardCellViewModel.swift */,
 				83317EDB2BC72DB7001AD2F4 /* ReaderTagCell.swift */,
 				83317EDE2BC72DED001AD2F4 /* ReaderTagCell.xib */,
@@ -20229,7 +20221,6 @@
 				E61507E42220A13B00213D33 /* richEmbedScript.js in Resources */,
 				17222D96261DDDF90047B163 /* pink-icon-app-60x60@3x.png in Resources */,
 				1761F18226209AEE000815EF /* jetpack-green-icon-app-60x60@3x.png in Resources */,
-				83317ED92BC71CEB001AD2F4 /* ReaderTagCardCell.xib in Resources */,
 				FE3E83E626A58646008CE851 /* ListSimpleOverlayView.xib in Resources */,
 				B038A81C2BD70FCA00763731 /* StatsSubscribersChartCell.xib in Resources */,
 				401A3D022027DBD80099A127 /* PluginListCell.xib in Resources */,
@@ -20575,7 +20566,6 @@
 				FABB1FE82602FC2C00C8785C /* TitleBadgeDisclosureCell.xib in Resources */,
 				FABB1FE92602FC2C00C8785C /* TextWithAccessoryButtonCell.xib in Resources */,
 				F465976E28E4669200D5F49A /* cool-green-icon-app-76@2x.png in Resources */,
-				83317EDA2BC71CEB001AD2F4 /* ReaderTagCardCell.xib in Resources */,
 				F41E4EC028F22932001880C6 /* spectrum-icon-app-83.5@2x.png in Resources */,
 				FABB1FEA2602FC2C00C8785C /* SiteStatsDetailTableViewController.storyboard in Resources */,
 				FABB1FED2602FC2C00C8785C /* InlineEditableNameValueCell.xib in Resources */,
@@ -22712,7 +22702,6 @@
 				177076211EA206C000705A4A /* PlayIconView.swift in Sources */,
 				57BAD50C225CCE1A006139EC /* WPTabBarController+Swift.swift in Sources */,
 				E1468DE71E794A4D0044D80F /* LanguageSelectorViewController.swift in Sources */,
-				83317ED62BC71BA8001AD2F4 /* ReaderTagCardCell.swift in Sources */,
 				E14694071F3459E2004052C8 /* PluginListViewController.swift in Sources */,
 				FAD3DE812AE2965A00A3B031 /* AbstractPostMenuHelper.swift in Sources */,
 				4A26E9952C90EEBF00C1D5DE /* ReaderPresenter.swift in Sources */,
@@ -26235,7 +26224,6 @@
 				FABB26182602FC2C00C8785C /* RegisterDomainDetailsViewModel+SectionDefinitions.swift in Sources */,
 				C395FB272822148400AE7C11 /* RemoteSiteDesign+Thumbnail.swift in Sources */,
 				0CD382842A4B699E00612173 /* DashboardBlazeCardCellViewModel.swift in Sources */,
-				83317ED72BC71BA8001AD2F4 /* ReaderTagCardCell.swift in Sources */,
 				9815D0B426B49A0600DF7226 /* Comment+CoreDataProperties.swift in Sources */,
 				FABB261A2602FC2C00C8785C /* AppSettingsViewController.swift in Sources */,
 				4A82C43228D321A300486CFF /* Blog+Post.swift in Sources */,

@@ -81,7 +81,6 @@ enum ReaderContentType {
     case selfHostedFollowing
     case contentError
     case saved
-    case tags
     case topic
 }
 

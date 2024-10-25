@@ -328,11 +328,6 @@ import Foundation
     case readerManageViewDisplayed
     case readerManageViewDismissed
 
-    // Reader: Tags Feed
-    case readerTagsFeedShown
-    case readerTagsFeedMoreFromTagTapped
-    case readerTagsFeedHeaderTapped
-
     // App Settings
     case settingsDidChange
 
@@ -1198,13 +1193,6 @@ import Foundation
             return "reader_manage_view_displayed"
         case .readerManageViewDismissed:
             return "reader_manage_view_dismissed"
-
-        case .readerTagsFeedShown:
-            return "reader_tags_feed_shown"
-        case .readerTagsFeedMoreFromTagTapped:
-            return "reader_tags_feed_more_from_tag_tapped"
-        case .readerTagsFeedHeaderTapped:
-            return "reader_tags_feed_header_tapped"
 
         // App Settings
         case .settingsDidChange:
