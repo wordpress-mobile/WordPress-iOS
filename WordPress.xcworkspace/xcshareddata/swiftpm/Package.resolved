@@ -131,7 +131,7 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Automattic/Gravatar-SDK-iOS",
       "state" : {
-        "revision" : "f0f4ebcdaf2fb5ad5e335602ae4e39563884ebee"
+        "revision" : "0a11c9b4b1e386080f160e069716b35f45782d27"
       }
     },
     {
@@ -328,15 +328,6 @@
       "state" : {
         "revision" : "4f9164a0a2c9a6a7ff53a2833d54a5c79c957342",
         "version" : "0.9.1"
-      }
-    },
-    {
-      "identity" : "swiftlintplugins",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/SimplyDanny/SwiftLintPlugins",
-      "state" : {
-        "revision" : "6c3d6c32a37224179dc290f21e03d1238f3d963b",
-        "version" : "0.56.2"
       }
     },
     {
