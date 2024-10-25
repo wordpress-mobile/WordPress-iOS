@@ -677,10 +677,6 @@ extension ReaderHelpers {
         let savedPosition = min(mutableItems.count, defaultSavedItemPosition)
         mutableItems.insert(ReaderTabItem(ReaderContent(topic: nil, contentType: .saved)), at: savedPosition)
 
-        if RemoteFeatureFlag.readerTagsFeed.enabled() {
-            mutableItems.append(ReaderTabItem(ReaderContent(topic: nil, contentType: .tags)))
-        }
-
         // in case of log in with a self hosted site, prepend a 'dummy' Following tab after Discover.
         if !isLoggedIn() {
             // to safeguard, ensure that there are items in the array before inserting. Otherwise, insert at index 0.

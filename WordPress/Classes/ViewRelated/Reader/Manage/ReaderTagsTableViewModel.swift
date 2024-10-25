@@ -1,3 +1,4 @@
+import UIKit
 import WordPressUI
 
 class ReaderTagsTableViewModel: NSObject {
@@ -228,5 +229,16 @@ extension ReaderTagsTableViewModel {
             return
         }
         tableView?.flashRowAtIndexPath(tableViewHandler.adjustedToTable(indexPath: indexPath), scrollPosition: .middle, completion: {})
+    }
+}
+
+extension ReaderTagTopic {
+    static var tagsFetchRequest: NSFetchRequest<NSFetchRequestResult> {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ReaderTagTopic")
+        // Only show following tags, even if the user is logged out
+        fetchRequest.predicate = NSPredicate(format: "following == YES AND showInMenu == YES AND type == 'tag'")
+
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare))]
+        return fetchRequest
     }
 }

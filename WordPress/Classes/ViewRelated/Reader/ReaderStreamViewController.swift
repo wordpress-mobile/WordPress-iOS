@@ -719,11 +719,6 @@ import AutomatticTracks
 
     /// Scrolls to the top of the list of posts.
     @objc func scrollViewToTop() {
-        guard !FeatureFlag.readerReset.enabled else {
-            return
-        }
-
-        navigationMenuDelegate?.didScrollToTop()
         guard tableView.numberOfRows(inSection: .zero) > 0 else {
             tableView.setContentOffset(.zero, animated: true)
             return
@@ -857,12 +852,6 @@ import AutomatticTracks
     /// Handles the user initiated pull to refresh action.
     ///
     @objc func handleRefresh(_ sender: UIRefreshControl) {
-        if contentType == .tags {
-            // NOTE: This is a workaround.
-            // Allow all tags to re-fetch posts.
-            tagStreamSyncTracker.removeAll()
-        }
-
         if !canSync() {
             cleanupAfterSync()
 
@@ -1414,10 +1403,6 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         }
     }
 
-    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        navigationMenuDelegate?.scrollViewWillEndDragging(scrollView, withVelocity: velocity, targetContentOffset: targetContentOffset)
-    }
-
     // MARK: - Fetched Results Related
 
     func managedObjectContext() -> NSManagedObjectContext {
@@ -1907,7 +1892,7 @@ extension ReaderStreamViewController: NoResultsViewControllerDelegate {
         }
 
         if ReaderHelpers.topicIsFollowing(topic) {
-            navigationMenuDelegate?.didTapDiscoverBlogs()
+            // TODO: (reader) reimplement
             return
         }
 
@@ -2055,10 +2040,6 @@ private extension ReaderStreamViewController {
 extension ReaderStreamViewController: UITableViewDelegate, JPScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         processJetpackBannerVisibility(scrollView)
-
-        let velocity = tableView.panGestureRecognizer.velocity(in: tableView)
-        navigationMenuDelegate?.scrollViewDidScroll(scrollView, velocity: velocity)
-
         $titleView.value?.updateAlpha(in: scrollView)
     }
 }
