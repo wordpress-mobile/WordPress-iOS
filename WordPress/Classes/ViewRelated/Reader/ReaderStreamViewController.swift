@@ -349,8 +349,6 @@ import AutomatticTracks
 
         didSetupView = true
 
-        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-
         guard !shouldDisplayNoTopicController else {
             return
         }
@@ -386,8 +384,6 @@ import AutomatticTracks
         super.viewWillDisappear(animated)
 
         dismissNoNetworkAlert()
-
-        ReaderTracker.shared.stop(.filteredList)
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -411,14 +407,6 @@ import AutomatticTracks
         if didSetupView {
             refreshTableViewHeaderLayout()
         }
-    }
-
-    @objc func willEnterForeground() {
-        guard isViewOnScreen() else {
-            return
-        }
-
-        ReaderTracker.shared.start(.filteredList)
     }
 
     // MARK: - Topic acquisition

@@ -21,7 +21,7 @@ extension WPTabBarController {
     func showReader(path: ReaderNavigationPath?) {
         showReaderTab()
         if let path {
-            self.readerPresenter.navigate(to: path)
+            self.readerPresenter?.navigate(to: path)
         }
     }
 
