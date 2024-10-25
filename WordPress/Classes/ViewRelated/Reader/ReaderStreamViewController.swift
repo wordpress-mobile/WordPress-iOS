@@ -78,8 +78,6 @@ import AutomatticTracks
         return refreshControl
     }()
 
-    private var noTopicController: UIViewController?
-
     private let loadMoreThreashold = 4
 
     private let refreshInterval = 300
@@ -236,7 +234,7 @@ import AutomatticTracks
 
     var isEmbeddedInDiscover = false
 
-    // MARK: - Factory Methods
+    // MARK: - Init
 
     /// Convenience method for instantiating an instance of ReaderStreamViewController
     /// for a existing topic.
@@ -336,10 +334,6 @@ import AutomatticTracks
         observeNetworkStatus()
 
         didSetupView = true
-
-        guard !shouldDisplayNoTopicController else {
-            return
-        }
 
         if readerTopic != nil || contentType == .saved {
             // Do not perform a sync since a sync will be executed in viewWillAppear anyway. This
@@ -1856,65 +1850,6 @@ extension ReaderStreamViewController: UIViewControllerTransitioningDelegate {
         }
 
         return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
-    }
-}
-
-// MARK: - View content types without a topic
-private extension ReaderStreamViewController {
-
-    var shouldDisplayNoTopicController: Bool {
-        switch contentType {
-        case .contentError:
-            displayContentErrorController()
-            return true
-        default:
-            removeNoTopicController()
-            return false
-        }
-    }
-
-    func displayContentErrorController() {
-        let controller = noTopicViewController(title: NoTopicConstants.contentErrorTitle,
-                             subtitle: NoTopicConstants.contentErrorSubtitle,
-                             image: NoTopicConstants.contentErrorImage)
-        addNoTopicController(controller)
-
-        view.isUserInteractionEnabled = true
-    }
-
-    func noTopicViewController(title: String,
-                               buttonTitle: String? = nil,
-                               subtitle: String? = nil,
-                               image: String? = nil) -> NoResultsViewController {
-        let controller = NoResultsViewController.controller()
-        controller.configure(title: title,
-                             buttonTitle: buttonTitle,
-                             subtitle: subtitle,
-                             image: image)
-
-        return controller
-    }
-
-    func addNoTopicController(_ controller: NoResultsViewController) {
-        addChild(controller)
-        view.addSubview(controller.view)
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        view.pinSubviewToAllEdges(controller.view)
-        controller.didMove(toParent: self)
-        noTopicController = controller
-    }
-
-    func removeNoTopicController() {
-        if let controller = noTopicController as? NoResultsViewController {
-            controller.removeFromView()
-            noTopicController = nil
-        }
-    }
-
-    enum NoTopicConstants {
-        static let contentErrorTitle = NSLocalizedString("Unable to load this content right now.", comment: "Default title shown for no-results when the device is offline.")
-        static let contentErrorSubtitle = NSLocalizedString("Check your network connection and try again.", comment: "Default subtitle for no-results when there is no connection")
-        static let contentErrorImage = "cloud"
     }
 }
 
