@@ -29,10 +29,6 @@ extension WPStyleGuide {
         .separator
     }
 
-    @objc public class func readerCardCellHighlightedBorderColor() -> UIColor {
-        UIAppColor.neutral(.shade10)
-    }
-
     public class func readerCardBlogIconBorderColor() -> UIColor {
         return UIColor(light: UIAppColor.gray(.shade0), dark: .systemGray5)
     }
@@ -86,30 +82,11 @@ extension WPStyleGuide {
 
     // MARK: - Apply Card Styles
 
-    @objc public class func applyReaderCardSiteButtonStyle(_ button: UIButton) {
-        guard let titleLabel = button.titleLabel else {
-            return
-        }
-        WPStyleGuide.configureLabel(titleLabel, textStyle: Cards.buttonTextStyle)
-        button.setTitleColor(UIAppColor.primary, for: UIControl.State())
-        button.setTitleColor(UIAppColor.primaryDark, for: .highlighted)
-        button.setTitleColor(.label, for: .disabled)
-    }
-
     public class func applyReaderCardAttributionLabelStyle(_ label: UILabel) {
         label.textColor = UIColor(
             light: UIAppColor.gray(.shade80),
             dark: .secondaryLabel
         )
-    }
-
-    @objc public class func applyReaderCardActionButtonStyle(_ button: UIButton) {
-        guard let titleLabel = button.titleLabel else {
-            return
-        }
-        WPStyleGuide.configureLabel(titleLabel, textStyle: Cards.buttonTextStyle)
-
-        WPStyleGuide.applyReaderActionButtonStyle(button)
     }
 
     // MARK: - Apply Stream Header Styles
