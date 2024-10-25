@@ -178,9 +178,6 @@ import AutomatticTracks
         }
     }
 
-    /// Whether the stream is being filtered by a site or tag.
-    var isContentFiltered: Bool = false
-
     var contentType: ReaderContentType = .topic {
         didSet {
             if oldValue != .saved, contentType == .saved {
@@ -1927,31 +1924,6 @@ extension ReaderStreamViewController: UIViewControllerTransitioningDelegate {
         }
 
         return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
-    }
-}
-
-// MARK: - ReaderContentViewController
-extension ReaderStreamViewController: ReaderContentViewController {
-    func setContent(_ content: ReaderContent) {
-        isContentFiltered = content.topicType == .tag || content.topicType == .site
-        readerTopic = content.topicType == .discover ? nil : content.topic
-        contentType = content.type
-        self.content.resetResultsController()
-
-        guard !shouldDisplayNoTopicController else {
-            return
-        }
-
-        siteID = content.topicType == .discover ? ReaderHelpers.discoverSiteID : nil
-        trackFilterTime()
-    }
-
-    func trackFilterTime() {
-        if isContentFiltered {
-            ReaderTracker.shared.start(.filteredList)
-        } else {
-            ReaderTracker.shared.stop(.filteredList)
-        }
     }
 }
 
