@@ -1496,13 +1496,6 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
                 logReaderError(.invalidIndexPath(row: indexPath.row, totalRows: posts.count))
                 return .init()
             }
-        } else if let tags = content.content as? [ReaderTagTopic] {
-            if let tag = tags[safe: indexPath.row] {
-                return cell(for: tag)
-            } else {
-                logReaderError(.invalidIndexPath(row: indexPath.row, totalRows: tags.count))
-                return .init()
-            }
         }
         assertionFailure("Unexpected content type.")
         return UITableViewCell()
@@ -1554,20 +1547,6 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
     func hideSeparator(for cell: UITableViewCell) {
         guard FeatureFlag.readerReset.enabled else { return }
         cell.separatorInset = UIEdgeInsets(.leading, 9999)
-    }
-
-    func cell(for tag: ReaderTagTopic) -> UITableViewCell {
-        let cell = tableConfiguration.tagCell(tableView)
-
-        // check whether we should sync the tag's posts.
-        let shouldSync = !tagStreamSyncTracker.contains(tag.slug)
-        if shouldSync {
-            tagStreamSyncTracker.insert(tag.slug)
-        }
-
-        cell.configure(parent: self, tag: tag, isLoggedIn: isLoggedIn, shouldSyncRemotely: shouldSync)
-        cell.selectionStyle = .none
-        return cell
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
