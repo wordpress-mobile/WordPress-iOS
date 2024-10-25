@@ -124,23 +124,3 @@ enum ReaderContentType {
     case saved
     case topic
 }
-
-struct ReaderContent: Hashable {
-
-    private(set) var topic: ReaderAbstractTopic?
-    let type: ReaderContentType
-    let topicType: ReaderTopicType
-
-    init(topic: ReaderAbstractTopic?, contentType: ReaderContentType = .topic) {
-        self.topicType = ReaderHelpers.topicType(topic)
-
-        if let topic = topic {
-            self.topic = topic
-            // if topic is not nil, contentType must be .topic.
-            self.type = .topic
-            return
-        }
-        // if topic is nil, passing contentType: .topic is invalid -> content will be treated as invalid
-        self.type = (topic == nil && contentType == .topic) ? .contentError : contentType
-    }
-}
