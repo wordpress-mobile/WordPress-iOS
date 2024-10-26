@@ -1754,9 +1754,8 @@ extension ReaderStreamViewController {
     }
 
     var readerEmptyImageName: String {
-      return "wp-illustration-reader-empty"
+        "wp-illustration-reader-empty"
     }
-
 }
 
 // MARK: - NoResultsViewControllerDelegate
