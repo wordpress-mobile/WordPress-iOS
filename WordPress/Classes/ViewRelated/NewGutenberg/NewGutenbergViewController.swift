@@ -345,15 +345,30 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
         let flags = mediaFilterFlags(using: config.allowedTypes)
         mediaPickerHelper.presentSiteMediaPicker(filter: flags, allowMultipleSelection: config.multiple) { [weak self] assets in
             guard let self, let media = assets as? [Media] else {
-                self?.editorViewController.receiveMedia(nil)
+                self?.editorViewController.receiveMedia("[]")
                 return
             }
-            let formattedMedia = media.map { item in
-                let mediaInfo = MediaInfo(id: item.mediaID?.int32Value, url: item.remoteURL, type: item.mediaTypeString, caption: item.caption, title: item.filename, alt: item.alt, metadata: [:])
-                return mediaInfo.encodeForJS()
+            let mediaInfos = media.map { item in
+                return MediaInfo(id: item.mediaID?.int32Value, url: item.remoteURL, type: item.mediaTypeString, caption: item.caption, title: item.filename, alt: item.alt, metadata: [:])
             }
-            editorViewController.receiveMedia(formattedMedia)
+            if let jsonString = convertMediaInfoArrayToJSONString(mediaInfos) {
+                // Escape the string for JavaScript
+                let escapedJsonString = jsonString.replacingOccurrences(of: "'", with: "\\'")
+                editorViewController.receiveMedia(escapedJsonString)
+            }
         }
+    }
+
+    private func convertMediaInfoArrayToJSONString(_ mediaInfoArray: [MediaInfo]) -> String? {
+        do {
+            let jsonData = try JSONEncoder().encode(mediaInfoArray)
+            if let jsonString = String(data: jsonData, encoding: .utf8) {
+                return jsonString
+            }
+        } catch {
+            print("Error encoding MediaInfo array: \(error)")
+        }
+        return nil
     }
 
     private func mediaFilterFlags(using filterArray: [OpenMediaLibrary.MediaType]) -> WPMediaType {
