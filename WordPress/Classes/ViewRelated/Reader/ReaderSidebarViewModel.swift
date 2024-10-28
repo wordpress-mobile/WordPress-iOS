@@ -10,6 +10,7 @@ final class ReaderSidebarViewModel: ObservableObject {
     private let tabItemsStore: ReaderMenuStoreProtocol
     private let contextManager: CoreDataStackSwift
     private var previousReloadTimestamp: Date?
+    private var isRestoringSelection = false
 
     @Published var isCompact = false
 
@@ -19,9 +20,18 @@ final class ReaderSidebarViewModel: ObservableObject {
          contextManager: CoreDataStackSwift = ContextManager.shared) {
         self.tabItemsStore = menuStore
         self.contextManager = contextManager
-        let selection = UserDefaults.standard.readerSidebarSelection
-        self.selection = .main(selection ?? .recent)
+        self.restoreSelection(defaultValue: .main(.recent))
         self.reloadMenuIfNeeded()
+    }
+
+    func restoreSelection(defaultValue: ReaderSidebarItem?) {
+        isRestoringSelection = true // TODO: refactor this
+        defer { isRestoringSelection = false }
+        if let selection = UserDefaults.standard.readerSidebarSelection {
+            self.selection = .main(selection)
+        } else {
+            self.selection = defaultValue
+        }
     }
 
     func getTopic(for topicType: ReaderTopicType) -> ReaderAbstractTopic? {
@@ -42,7 +52,7 @@ final class ReaderSidebarViewModel: ObservableObject {
     }
 
     private func persistenSelection() {
-        if case .main(let screen)? = selection,
+        if !isRestoringSelection, case .main(let screen)? = selection,
            screen == .recent || screen == .discover {
             UserDefaults.standard.readerSidebarSelection = screen
         }
@@ -107,15 +117,8 @@ enum ReaderStaticScreen: String, CaseIterable, Identifiable, Hashable {
         }
     }
 
-    // TODO: replace these values ones the sidebar gets integrated on iPhone
     var accessibilityIdentifier: String {
-        switch self {
-        case .recent: "reader_sidebar_subscriptions"
-        case .discover: "reader_sidebar_discover"
-        case .saved: "reader_sidebar_saved"
-        case .likes: "reader_sidebar_liked"
-        case .search: "reader_sidebar_search"
-        }
+        "reader_sidebar_\(rawValue)"
     }
 }
 
