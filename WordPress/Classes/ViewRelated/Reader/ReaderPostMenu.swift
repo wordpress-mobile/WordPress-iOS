@@ -12,23 +12,15 @@ struct ReaderPostMenu {
     func makeMenu() -> [UIMenuElement] {
         return [
             makePrimaryActions(),
-            makeSecondaryActions(),
             shouldShowReportOrBlockMenu ? makeBlockOrReportActions() : nil
         ].compactMap { $0 }
     }
 
     private func makePrimaryActions() -> UIMenu {
-        let menu = UIMenu(options: [.displayInline], children: [
-            share, comment, like, bookmark, reblog
-        ].compactMap { $0 })
-        menu.preferredElementSize = .medium
-        return menu
-    }
-
-    private func makeSecondaryActions() -> UIMenu {
         UIMenu(options: [.displayInline], children: [
-            viewPostInBrowser,
+            share,
             copyPostLink,
+            viewPostInBrowser,
             makeBlogMenu(),
         ].compactMap { $0 })
     }
@@ -56,41 +48,6 @@ struct ReaderPostMenu {
             guard let viewController else { return }
             ReaderShareAction().execute(with: post, context: context, anchor: anchor ?? viewController.view, vc: viewController)
             track(.share)
-        }
-    }
-
-    private var bookmark: UIAction {
-        let isBookmarked = post.isSavedForLater
-        return UIAction(isBookmarked ? Strings.bookmarked : Strings.bookmark, systemImage: isBookmarked ? "bookmark.fill" : "bookmark") {
-            guard let viewController else { return }
-            ReaderSaveForLaterAction().execute(with: post, origin: .otherStream, viewController: viewController)
-            track(isBookmarked ? .removeBookmark : .bookmark)
-        }
-    }
-
-    private var reblog: UIAction {
-        UIAction(Strings.reblog, systemImage: "arrow.2.squarepath") {
-            guard let viewController else { return }
-            ReaderSaveForLaterAction().execute(with: post, origin: .otherStream, viewController: viewController)
-            track(.reblog)
-        }
-    }
-
-    private var comment: UIAction? {
-        guard post.isCommentsEnabled else { return nil }
-        return UIAction(Strings.comment, systemImage: "message") {
-            guard let viewController else { return }
-            ReaderCommentAction().execute(post: post, origin: viewController, source: .postCard)
-            track(.comment)
-        }
-    }
-
-    private var like: UIAction? {
-        guard post.isLikesEnabled else { return nil }
-        let isLiked = post.isLiked
-        return UIAction(isLiked ? Strings.liked : Strings.like, systemImage: isLiked ? "star.fill" : "star") {
-            ReaderLikeAction().execute(with: post)
-            track(isLiked ? .removeLike : .like)
         }
     }
 
@@ -220,12 +177,6 @@ private extension UIAction {
 
 private enum ReaderPostMenuAnalyticsButton: String {
     case share = "share"
-    case bookmark = "bookmark"
-    case removeBookmark = "remove_bookmark"
-    case like = "like"
-    case removeLike = "remove_like"
-    case comment = "comment"
-    case reblog = "reblog"
     case viewPostInBrowser = "view_in_browser"
     case copyPostLink = "copy_post_link"
     case goToBlog = "blog_open"
@@ -241,12 +192,6 @@ private enum ReaderPostMenuAnalyticsButton: String {
 
 private enum Strings {
     static let share = NSLocalizedString("reader.postContextMenu.share", value: "Share", comment: "Context menu action")
-    static let bookmark = NSLocalizedString("reader.postContextMenu.bookmark", value: "Bookmark", comment: "Context menu action")
-    static let bookmarked = NSLocalizedString("reader.postContextMenu.bookmarked", value: "Bookmarked", comment: "Context menu action")
-    static let reblog = NSLocalizedString("reader.postContextMenu.reblog", value: "Reblog", comment: "Context menu action")
-    static let comment = NSLocalizedString("reader.postContextMenu.comment", value: "Comment", comment: "Context menu action")
-    static let like = NSLocalizedString("reader.postContextMenu.like", value: "Like", comment: "Context menu action")
-    static let liked = NSLocalizedString("reader.postContextMenu.liked", value: "Liked", comment: "Context menu action")
     static let viewInBrowser = NSLocalizedString("reader.postContextMenu.viewInBrowser", value: "View in Browser", comment: "Context menu action")
     static let copyLink = NSLocalizedString("reader.postContextMenu.copyLink", value: "Copy Link", comment: "Context menu action")
     static let blockOrReport = NSLocalizedString("reader.postContextMenu.blockOrReportMenu", value: "Block or Report", comment: "Context menu action")
