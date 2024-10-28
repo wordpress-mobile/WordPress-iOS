@@ -1,15 +1,20 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/buildkite/pipeline-schema/main/schema.json
+---
+
+env:
+  IMAGE_ID: $IMAGE_ID
+
+# The hotfix needs to run on macOS because it uses genstrings under the hood
+agents:
+  queue: mac
+
 steps:
   - label: New Hotfix Deployment
     plugins:
       - $CI_TOOLKIT_PLUGIN
-    # The hotfix needs to run on macOS because it uses genstrings under the hood
-    agents:
-        queue: mac
-    env:
-      IMAGE_ID: $IMAGE_ID
     command: |
-      echo '--- :git: Configure Git for release management'
-      .buildkite/commands/configure-git-for-release-management.sh
+      echo '--- :robot_face: Use bot for Git operations'
+      source use-bot-for-git
 
       echo '--- :ruby: Setup Ruby tools'
       install_gems

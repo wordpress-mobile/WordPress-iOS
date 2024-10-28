@@ -1,12 +1,17 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/buildkite/pipeline-schema/main/schema.json
+---
+
+env:
+  IMAGE_ID: $IMAGE_ID
+
+# The finalization needs to run on macOS because of localization linting
+agents:
+  queue: mac
+
 steps:
-  - label: Finalize Release
+  - label: Finalize Hotfix
     plugins:
       - $CI_TOOLKIT_PLUGIN
-    # The finalization needs to run on macOS because of localization linting
-    agents:
-        queue: mac
-    env:
-      IMAGE_ID: $IMAGE_ID
     command: .buildkite/commands/finalize-hotfix.sh $VERSION
     retry:
       manual:

@@ -1,18 +1,18 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/buildkite/pipeline-schema/main/schema.json
 ---
 
-agents:
-  queue: mac
-
 env:
   IMAGE_ID: $IMAGE_ID
+
+agents:
+  queue: mac
 
 steps:
   - label: Publish Release
     plugins: [$CI_TOOLKIT_PLUGIN]
     command: |
-      echo '--- :git: Configure Git for release management'
-      .buildkite/commands/configure-git-for-release-management.sh
+      echo '--- :robot_face: Use bot for Git operations'
+      source use-bot-for-git
 
       echo '--- :git: Checkout release branch'
       .buildkite/commands/checkout-release-branch.sh $RELEASE_VERSION
