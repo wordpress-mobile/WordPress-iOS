@@ -344,7 +344,7 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
         let flags = mediaFilterFlags(using: config.allowedTypes)
         mediaPickerHelper.presentSiteMediaPicker(filter: flags, allowMultipleSelection: config.multiple) { [weak self] assets in
             guard let self, let media = assets as? [Media] else {
-                self?.editorViewController.receiveMedia(config.id, media: "[]")
+                self?.editorViewController.receiveMedia("[]")
                 return
             }
             let mediaInfos = media.map { item in
@@ -353,7 +353,7 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
             if let jsonString = convertMediaInfoArrayToJSONString(mediaInfos) {
                 // Escape the string for JavaScript
                 let escapedJsonString = jsonString.replacingOccurrences(of: "'", with: "\\'")
-                editorViewController.receiveMedia(config.id, media: escapedJsonString)
+                editorViewController.receiveMedia(escapedJsonString)
             }
         }
     }
