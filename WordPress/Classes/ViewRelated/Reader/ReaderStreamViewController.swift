@@ -1767,7 +1767,7 @@ extension ReaderStreamViewController: NoResultsViewControllerDelegate {
         }
 
         if ReaderHelpers.topicIsFollowing(topic) {
-            // TODO: (reader) reimplement
+            RootViewCoordinator.sharedPresenter.showReader(path: .discover)
             return
         }
 
