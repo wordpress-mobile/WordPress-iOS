@@ -96,11 +96,13 @@ struct ReaderPostMenu {
 
     private var viewPostInBrowser: UIAction? {
         guard let postURL = post.permaLink.flatMap(URL.init) else { return nil }
-        return UIAction(Strings.viewInBrowser, systemImage: "safari") {
+        let action = UIAction(Strings.viewInBrowser, systemImage: "safari") {
             let safariVC = SFSafariViewController(url: postURL)
             viewController?.present(safariVC, animated: true)
             track(.viewPostInBrowser)
         }
+        action.accessibilityIdentifier = "reader-view-post-in-safari"
+        return action
     }
 
     private var copyPostLink: UIAction? {

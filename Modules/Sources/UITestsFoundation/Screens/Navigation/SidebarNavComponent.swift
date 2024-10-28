@@ -12,7 +12,7 @@ public class SidebarNavComponent: ScreenObject, MainNavigationComponent {
         try openSidebar().openMeScreen()
     }
 
-    public func goToReaderScreen() throws -> ReaderScreen {
+    public func goToReaderScreen() throws {
         try openSidebar().openReaderScreen()
     }
 

@@ -2,7 +2,6 @@ import ScreenObject
 import XCTest
 
 public class ReaderScreen: ScreenObject {
-    var readerNavigationMenuButton: XCUIElement { app.buttons["reader-navigation-button"] }
     var backButton: XCUIElement { app.buttons["Back"] }
     var dismissButton: XCUIElement { app.buttons["Dismiss"] }
     var firstPostLikeButton: XCUIElement { app.buttons["reader-like-button"].firstMatch }
@@ -13,8 +12,6 @@ public class ReaderScreen: ScreenObject {
     var noResultsView: XCUIElement { app.staticTexts["no-results-label-stack-view"].firstMatch }
     var readerButton: XCUIElement { app.buttons["Reader"] }
     var readerTable: XCUIElement { app.tables["reader_table_view"] }
-    var moreButton: XCUIElement {  app.buttons["More"] }
-    var savePostButton: XCUIElement { app.buttons["Save"] }
     var savedButton: XCUIElement { app.buttons["Saved"] }
     var tagCellButton: XCUIElement { app.cells["topics-card-cell-button"] }
     var visitButton: XCUIElement { app.buttons["Visit"] }
@@ -32,13 +29,13 @@ public class ReaderScreen: ScreenObject {
     }
 
     public func openLastPostInSafari() throws -> ReaderScreen {
-        try getLastPost().buttons["More"].tap()
-        visitButton.tap()
+        try getLastPost().buttons["reader-more-button"].firstMatch.tap()
+        app.buttons["reader-view-post-in-safari"].firstMatch.tap()
         return self
     }
 
     public func openLastPostComments() throws -> CommentsScreen {
-        let commentButton = try getLastPost().buttons["Comment"]
+        let commentButton = try getLastPost().buttons["reader-comment-button"]
         guard commentButton.waitForIsHittable() else {
             throw UIElementNotFoundError(message: "ReaderScreen.Post: Comments button not loaded")
         }
@@ -109,24 +106,7 @@ public class ReaderScreen: ScreenObject {
 
     // MARK: Stream switching actions
 
-    public enum ReaderStream: String {
-        case discover
-        case subscriptions
-        case saved
-        case liked
-
-        var buttonIdentifier: String {
-            "Reader Navigation Menu Item, \(rawValue.capitalized)"
-        }
-
-        func menuButton(_ app: XCUIApplication) -> XCUIElement {
-            if XCTestCase.isPad {
-                return app.staticTexts["reader_sidebar_\(rawValue)"].firstMatch
-            } else {
-                return app.buttons[buttonIdentifier].firstMatch
-            }
-        }
-    }
+    public typealias ReaderStream = ReaderMenuScreen.ReaderStream
 
     private func openNavigationMenu() {
         if XCTestCase.isPad {
@@ -135,7 +115,7 @@ public class ReaderScreen: ScreenObject {
                 app.buttons["ToggleSidebar"].tap()
             }
         } else {
-            readerNavigationMenuButton.tap()
+            app.navigationBars.firstMatch.buttons.element(boundBy: 0).tap()
         }
     }
 
@@ -147,7 +127,7 @@ public class ReaderScreen: ScreenObject {
         }
     }
 
-    public func switchToStream(_ stream: ReaderStream) -> Self {
+    public func switchToStream(_ stream: ReaderStream) throws -> Self {
         openNavigationMenu()
         stream.menuButton(app).tap()
         closeNavigationMenu()
@@ -173,9 +153,9 @@ public class ReaderScreen: ScreenObject {
 
     public func saveFirstPost() throws -> (ReaderScreen, String) {
         XCTAssertTrue(readerTable.isHittable)
-        let postLabel = readerTable.cells.firstMatch.label
-        moreButton.firstMatch.tap()
-        savePostButton.firstMatch.tap()
+        let cell = readerTable.cells.firstMatch
+        let postLabel = cell.label
+        cell.buttons["reader-bookmark-button"].firstMatch.tap()
 
         // An alert about saved post is displayed the first time a post is saved
         if let alert = try? FancyAlertComponent() {
@@ -197,11 +177,9 @@ public class ReaderScreen: ScreenObject {
         return self
     }
 
-    public func verifyPostLikedOnFollowingTab(file: StaticString = #file, line: UInt = #line) -> Self {
-        XCTAssertTrue(readerTable.cells.firstMatch.waitForExistence(timeout: 3), file: file, line: line)
-        XCTAssertGreaterThan(readerTable.cells.count, 1, .postNotGreaterThanOneError, file: file, line: line)
-        XCTAssertTrue(firstPostLikeButton.label.hasPrefix(.postLiked), file: file, line: line)
-
+    public func verifyFirstPostLiked(file: StaticString = #file, line: UInt = #line) -> Self {
+        let cell = readerTable.cells.firstMatch
+        XCTAssertEqual(cell.buttons["reader-like-button"].staticTexts.firstMatch.label, "35")
         return self
     }
 
@@ -221,7 +199,7 @@ public class ReaderScreen: ScreenObject {
     public func verifyLikedPosts(state: String, file: StaticString = #file, line: UInt = #line) -> Self {
         if state == .withPosts {
             verifyNotEmptyPostList()
-            XCTAssertTrue(firstPostLikeButton.label.hasPrefix(.postLiked), file: file, line: line)
+            _ = verifyFirstPostLiked()
         } else if state == .withoutPosts {
             verifyEmptyPostList()
         }
@@ -242,7 +220,6 @@ public class ReaderScreen: ScreenObject {
 
 private extension String {
     static let emptyListLabel = "Empty list"
-    static let postLiked = "Liked"
     static let postNotEqualOneError = "There should only be 1 post!"
     static let postNotEqualSavedPostError = "Post displayed does not match saved post!"
     static let postNotGreaterThanOneError = "There shouldn't only be 1 post!"
