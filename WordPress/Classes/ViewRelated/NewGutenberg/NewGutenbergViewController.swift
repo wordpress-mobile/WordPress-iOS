@@ -20,7 +20,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     private lazy var coordinator: SupportCoordinator = {
         SupportCoordinator(controllerToShowFrom: topmostPresentedViewController, tag: .editorHelp)
     }()
-    
+
     lazy var mediaPickerHelper: GutenbergMediaPickerHelper = {
         return GutenbergMediaPickerHelper(context: self, post: post)
     }()
