@@ -9,6 +9,8 @@ final class ReaderSidebarViewController: UIHostingController<AnyView> {
     private var viewContext: NSManagedObjectContext { ContextManager.shared.mainContext }
     var didAppear = false
 
+    var onViewDidLoad: (() -> Void)?
+
     init(viewModel: ReaderSidebarViewModel) {
         self.viewModel = viewModel
         // - warning: The `managedObjectContext` has to be set here in order for
@@ -23,6 +25,12 @@ final class ReaderSidebarViewController: UIHostingController<AnyView> {
 
     required dynamic init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        onViewDidLoad?()
     }
 
     override func viewWillAppear(_ animated: Bool) {

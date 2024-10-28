@@ -14,7 +14,7 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
     var secondary: UINavigationController
 
     /// The navigation controller for the main content when shown using tabs.
-    private let mainNavigationController = UINavigationController()
+    private var mainNavigationController = UINavigationController()
     private var latestContentVC: UIViewController?
 
     private var viewContext: NSManagedObjectContext {
@@ -37,12 +37,14 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
 
     // TODO: (reader) update to allow seamless transitions between split view and tabs
     @objc func prepareForTabBarPresentation() -> UINavigationController {
+        sidebar.onViewDidLoad = { [weak self] in
+            self?.showInitialSelection()
+        }
         sidebarViewModel.isCompact = true
         sidebarViewModel.restoreSelection(defaultValue: nil)
         mainNavigationController.navigationBar.prefersLargeTitles = true
-        mainNavigationController.viewControllers = [sidebar]
+        mainNavigationController = UINavigationController(rootViewController: sidebar) // Loads sidebar lazily
         sidebar.navigationItem.backButtonDisplayMode = .minimal
-        showInitialSelection()
         return mainNavigationController
     }
 
