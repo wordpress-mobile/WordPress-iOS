@@ -75,7 +75,7 @@ struct ReaderSubscriptionCell: View {
     private var settings: some View {
         if horizontalSizeClass == .compact {
             ReaderSubscriptionNotificationSettingsView(siteID: site.siteID.intValue, isCompact: true)
-            .presentationDetents([.medium, .large])
+                .presentationDetents([.medium, .large])
                 .edgesIgnoringSafeArea(.all)
         } else {
             ReaderSubscriptionNotificationSettingsView(siteID: site.siteID.intValue)
@@ -110,6 +110,6 @@ private enum Strings {
     }
 
     private static func kFormatted(_ count: Int) -> String {
-        count >= 1000 ? String(format: "%.0fK", Double(count) / 1000) : String(count)
+        count.formatted(.number.notation(.compactName))
     }
 }

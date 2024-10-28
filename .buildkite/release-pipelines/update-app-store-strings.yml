@@ -1,14 +1,19 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/buildkite/pipeline-schema/main/schema.json
+---
+
+env:
+  IMAGE_ID: $IMAGE_ID
+
+agents:
+  queue: mac
+
 steps:
   - label: Update App Store Strings
     plugins:
       - $CI_TOOLKIT_PLUGIN
-    # The first client to implement releases in CI was Android so the automation works in that queue.
-    # We might want to move it to a leaner one in the future.
-    agents:
-        queue: android
     command: |
-      echo '--- :git: Configure Git for release management'
-      .buildkite/commands/configure-git-for-release-management.sh
+      echo '--- :robot_face: Use bot for Git operations'
+      source use-bot-for-git
 
       echo '--- :ruby: Setup Ruby tools'
       install_gems

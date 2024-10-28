@@ -1,6 +1,7 @@
 /// Registration and dequeuing of cells for table views in Reader
 final class ReaderTableConfiguration {
     private let footerViewNibName = "PostListFooterView"
+    private let readerPostCellReuseIdentifier = "ReaderPostCellReuseIdentifier"
     private let readerCardCellReuseIdentifier = "ReaderCardCellReuseIdentifier"
     private let readerBlockedCellNibName = "ReaderBlockedSiteCell"
     private let readerBlockedCellReuseIdentifier = "ReaderBlockedCellReuseIdentifier"
@@ -21,6 +22,8 @@ final class ReaderTableConfiguration {
         setUpGapMarkerCell(tableView)
         setUpCrossPostCell(tableView)
         setUpTagCell(tableView)
+
+        tableView.register(ReaderPostCell.self, forCellReuseIdentifier: readerPostCellReuseIdentifier)
     }
 
     private func setupAccessibility(_ tableView: UITableView) {
@@ -28,7 +31,9 @@ final class ReaderTableConfiguration {
     }
 
     private func setUpSeparator(_ tableView: UITableView) {
-        tableView.separatorStyle = .none
+        if !FeatureFlag.readerReset.enabled {
+            tableView.separatorStyle = .none
+        }
     }
 
     private func setUpCardCell(_ tableView: UITableView) {
@@ -73,6 +78,10 @@ final class ReaderTableConfiguration {
 
     func postCardCell(_ tableView: UITableView) -> ReaderPostCardCell {
         return tableView.dequeueReusableCell(withIdentifier: readerCardCellReuseIdentifier) as! ReaderPostCardCell
+    }
+
+    func postCell(in tableView: UITableView, for indexPath: IndexPath) -> ReaderPostCell {
+        tableView.dequeueReusableCell(withIdentifier: readerPostCellReuseIdentifier, for: indexPath) as! ReaderPostCell
     }
 
     func gapMarkerCell(_ tableView: UITableView) -> ReaderGapMarkerCell {

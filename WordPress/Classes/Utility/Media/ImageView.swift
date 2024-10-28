@@ -16,6 +16,7 @@ final class ImageView: UIView {
         case spinner
     }
 
+    var isErrorViewEnabled = true
     var loadingStyle = LoadingStyle.background
 
     override init(frame: CGRect) {
@@ -70,7 +71,9 @@ final class ImageView: UIView {
             imageView.isHidden = false
             backgroundColor = .clear
         case .failure:
-            makeErrorView().isHidden = false
+            if isErrorViewEnabled {
+                makeErrorView().isHidden = false
+            }
         }
     }
 

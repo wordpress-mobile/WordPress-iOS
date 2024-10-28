@@ -97,6 +97,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: readerCardTopicsIdentifier) as! ReaderTopicsCardCell
         cell.configure(interests)
         cell.delegate = self
+        hideSeparator(for: cell)
         return cell
     }
 
@@ -104,6 +105,7 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: readerCardSitesIdentifier) as! ReaderSitesCardCell
         cell.configure(sites)
         cell.delegate = self
+        hideSeparator(for: cell)
         return cell
     }
 

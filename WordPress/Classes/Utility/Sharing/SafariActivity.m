@@ -6,7 +6,7 @@
 
 - (UIImage *)activityImage
 {
-    return [UIImage imageNamed:@"Safari"];
+    return [UIImage systemImageNamed:@"safari"];
 }
 
 - (NSString *)activityTitle

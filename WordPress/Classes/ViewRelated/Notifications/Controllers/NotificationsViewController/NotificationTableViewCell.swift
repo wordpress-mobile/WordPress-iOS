@@ -59,7 +59,6 @@ final class NotificationTableViewCell: HostingTableViewCell<NotificationsTableVi
             let sharingController = PostSharingController()
             sharingController.sharePost(
                 content.title,
-                summary: nil,
                 link: content.url,
                 fromView: self,
                 inViewController: parent

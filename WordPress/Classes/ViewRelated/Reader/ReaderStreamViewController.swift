@@ -1494,36 +1494,48 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         if post.isKind(of: ReaderGapMarker.self) {
             let cell = tableConfiguration.gapMarkerCell(tableView)
             cellConfiguration.configureGapMarker(cell, filling: syncIsFillingGap)
+            hideSeparator(for: cell)
             return cell
         }
 
         if recentlyBlockedSitePostObjectIDs.contains(post.objectID) {
             let cell = tableConfiguration.blockedSiteCell(tableView)
-            cellConfiguration.configureBlockedCell(cell,
-                                                   withContent: content,
-                                                   atIndexPath: indexPath)
+            cellConfiguration.configureBlockedCell(cell, withContent: content, atIndexPath: indexPath)
+            hideSeparator(for: cell)
             return cell
         }
 
         if post.isCross() {
             let cell = tableConfiguration.crossPostCell(tableView)
-            cellConfiguration.configureCrossPostCell(cell,
-                                                     withContent: content,
-                                                     atIndexPath: indexPath)
+            cellConfiguration.configureCrossPostCell(cell, withContent: content, atIndexPath: indexPath)
+            hideSeparator(for: cell)
             return cell
         }
 
-        let cell = tableConfiguration.postCardCell(tableView)
-        if isSidebarModeEnabled {
-            cell.enableSidebarMode()
+        guard FeatureFlag.readerReset.enabled else {
+            let cell = tableConfiguration.postCardCell(tableView)
+            if isSidebarModeEnabled {
+                cell.enableSidebarMode()
+            }
+
+            let viewModel = ReaderPostCardCellViewModel(contentProvider: post,
+                                                        isLoggedIn: isLoggedIn,
+                                                        showsSeparator: showsSeparator,
+                                                        parentViewController: self)
+            cell.configure(with: viewModel)
+            return cell
         }
 
-        let viewModel = ReaderPostCardCellViewModel(contentProvider: post,
-                                                    isLoggedIn: isLoggedIn,
-                                                    showsSeparator: showsSeparator,
-                                                    parentViewController: self)
-        cell.configure(with: viewModel)
+        let cell = tableConfiguration.postCell(in: tableView, for: indexPath)
+        let viewModel = ReaderPostCellViewModel(post: post, topic: readerTopic)
+        viewModel.viewController = self
+        cell.configure(with: viewModel, isCompact: traitCollection.horizontalSizeClass == .compact, isSeparatorHidden: !showsSeparator)
         return cell
+    }
+
+    func hideSeparator(for cell: UITableViewCell) {
+        guard FeatureFlag.readerReset.enabled else { return }
+        cell.separatorInset = UIEdgeInsets(.leading, 9999)
     }
 
     func cell(for tag: ReaderTagTopic) -> UITableViewCell {

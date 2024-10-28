@@ -6,9 +6,9 @@ import AuthenticationServices
 import WordPressKit
 import WordPressAuthenticator
 
-final actor LoginClient {
+final actor SelfHostedSiteAuthenticator {
 
-    enum LoginClientError: Error {
+    enum SignInError: Error {
         case authentication(WordPressLoginClient.Error)
         case loadingSiteInfoFailure
         case savingSiteFailure
@@ -27,7 +27,7 @@ final actor LoginClient {
         ])
     }
 
-    private func trackTypedError(_ error: LoginClient.LoginClientError, url: String) {
+    private func trackTypedError(_ error: SelfHostedSiteAuthenticator.SignInError, url: String) {
         DDLogError("Unable to login to \(url): \(error.localizedDescription)")
 
         WPAnalytics.track(.applicationPasswordLogin, properties: [
@@ -38,7 +38,19 @@ final actor LoginClient {
     }
 
     @MainActor
-    func login(site: String, from anchor: ASPresentationAnchor?) async -> Result<WordPressOrgCredentials, LoginClientError> {
+    func signIn(site: String, from anchor: ASPresentationAnchor?) async throws(SignInError) -> WordPressOrgCredentials {
+        do {
+            let result = try await _signIn(site: site, from: anchor)
+            await trackSuccess(url: site)
+            return result
+        } catch {
+            await trackTypedError(error, url: site)
+            throw error
+        }
+    }
+
+    @MainActor
+    private func _signIn(site: String, from anchor: ASPresentationAnchor?) async throws(SignInError) -> WordPressOrgCredentials {
         let appId: WpUuid
         let appName: String
 
@@ -61,39 +73,29 @@ final actor LoginClient {
             contextProvider: WebAuthenticationPresentationAnchorProvider(anchor: anchor ?? ASPresentationAnchor())
         )
 
-        let returnValue: Result<WordPressOrgCredentials, LoginClientError>
         switch result {
         case let .failure(error):
-            returnValue = .failure(.authentication(error))
+            throw .authentication(error)
         case let .success(success):
-            returnValue = await handleSuccess(success)
+            return try await handleSuccess(success)
         }
-
-        switch returnValue {
-        case .success:
-            await trackSuccess(url: site)
-        case let .failure(error):
-            await trackTypedError(error, url: site)
-        }
-
-        return returnValue
     }
 
-    func handleSuccess(_ success: WpApiApplicationPasswordDetails) async -> Result<WordPressOrgCredentials, LoginClientError> {
+    func handleSuccess(_ success: WpApiApplicationPasswordDetails) async throws(SignInError) -> WordPressOrgCredentials {
         let xmlrpc: String
         let blogOptions: [AnyHashable: Any]
         do {
             xmlrpc = try success.derivedXMLRPCRoot.absoluteString
             blogOptions = try await loadSiteOptions(details: success)
         } catch {
-            return .failure(.loadingSiteInfoFailure)
+            throw .loadingSiteInfoFailure
         }
 
         // Only store the new site after credentials are validated.
         do {
             let _ = try await Blog.createRestApiBlog(with: success, in: ContextManager.shared)
         } catch {
-            return .failure(.savingSiteFailure)
+            throw .savingSiteFailure
         }
 
         let wporg = WordPressOrgCredentials(
@@ -102,7 +104,7 @@ final actor LoginClient {
             xmlrpc: xmlrpc,
             options: blogOptions
         )
-        return .success(wporg)
+        return wporg
     }
 
     private func loadSiteOptions(details: WpApiApplicationPasswordDetails) async throws -> [AnyHashable: Any] {
