@@ -15,8 +15,6 @@ class WelcomeSplitViewContent: SplitViewDisplayable {
         let noSitesVC = UIHostingController(rootView: noSiteView)
         noSitesVC.view.backgroundColor = .systemBackground
         secondary = UINavigationController(rootViewController: noSitesVC)
-
-        supplementary.isNavigationBarHidden = true
     }
 
     func displayed(in splitVC: UISplitViewController) {
