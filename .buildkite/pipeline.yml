@@ -5,4 +5,7 @@ env:
 
 steps:
   - label: Dummy
-    command: echo "Hello, world!"
+    command: echo "Hello, {{matrix}}!"
+    matrix:
+      - matrix value 1
+      - matrix value 2
