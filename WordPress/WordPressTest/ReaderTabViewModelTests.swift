@@ -67,7 +67,7 @@ class ReaderTabViewModelTests: CoreDataTestCase {
         viewModel.filterTapped = { filter, view, completion in
             filterTappedExpectation.fulfill()
         }
-        let viewController = UIViewController()
+
         // When
         viewModel.didTapStreamFilterButton(with: filter)
         // Then

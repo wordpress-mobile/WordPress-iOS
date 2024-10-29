@@ -33,7 +33,7 @@ class ReaderCardService {
 
     init(stream: ReaderStream = .discover,
          sorting: ReaderSortingOption = .noSorting,
-        service: ReaderCardServiceRemote = ReaderPostServiceRemote.withDefaultApi(),
+         service: ReaderCardServiceRemote = ReaderPostServiceRemote.withDefaultApi(),
          coreDataStack: CoreDataStack = ContextManager.shared,
          followedInterestsService: ReaderFollowedInterestsService? = nil,
          siteInfoService: ReaderSiteInfoService? = nil) {
@@ -129,10 +129,10 @@ class ReaderCardService {
 
     /// Remove all cards and saves the context
     func clean() {
-        ReaderCardService.removeAllCards()
+        ReaderCardService.removeAllCards(on: coreDataStack)
     }
 
-    static func removeAllCards(on stack: CoreDataStackSwift = ContextManager.shared) {
+    static func removeAllCards(on stack: CoreDataStack = ContextManager.shared) {
         stack.performAndSave { context in
             removeAllCards(in: context)
         }
