@@ -47,11 +47,22 @@ final class GutenbergMediaPickerHelper: NSObject {
 
     private func mapMediaIdsToMedia(_ mediaIds: [Int]) -> [Media] {
         let context = ContextManager.shared.mainContext
-        let request: NSFetchRequest = Media.fetchRequest()
-        request.predicate = NSPredicate(format: "mediaID IN %@", mediaIds)
+        let request = NSFetchRequest<NSManagedObject>(entityName: "Media")
+        request.predicate = NSPredicate(format: "mediaID IN %@", mediaIds.map { NSNumber(value: $0) })
 
         do {
-            return try context.fetch(request) as? [Media] ?? []
+            let fetchedMedia = try context.fetch(request) as? [Media] ?? []
+
+            // Create a dictionary for quick lookup
+            let mediaDict = Dictionary(uniqueKeysWithValues: fetchedMedia.compactMap { media -> (Int, Media)? in
+                if let mediaID = media.mediaID?.intValue {
+                    return (mediaID, media)
+                }
+                return nil
+            })
+
+            // Map the original mediaIds to Media objects, preserving order
+            return mediaIds.compactMap { mediaDict[$0] }
         } catch {
             return []
         }
