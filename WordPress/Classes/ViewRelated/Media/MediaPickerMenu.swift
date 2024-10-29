@@ -10,7 +10,6 @@ struct MediaPickerMenu {
     var filter: MediaFilter?
     var isMultipleSelectionEnabled: Bool
     var initialSelection: [Media]
-    var preserveSelection: Bool
 
     enum MediaFilter {
         case images
@@ -26,13 +25,11 @@ struct MediaPickerMenu {
     init(viewController: UIViewController,
          filter: MediaFilter? = nil,
          isMultipleSelectionEnabled: Bool = false,
-         initialSelection: [Media] = [],
-         preserveSelection: Bool = false) {
+         initialSelection: [Media] = []) {
         self.presentingViewController = viewController
         self.filter = filter
         self.isMultipleSelectionEnabled = isMultipleSelectionEnabled
         self.initialSelection = initialSelection
-        self.preserveSelection = preserveSelection
     }
 }
 

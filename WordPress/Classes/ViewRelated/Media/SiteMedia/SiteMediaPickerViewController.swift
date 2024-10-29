@@ -10,7 +10,6 @@ final class SiteMediaPickerViewController: UIViewController, SiteMediaCollection
     private let blog: Blog
     private let allowsMultipleSelection: Bool
     private let initialSelection: [Media]
-    private let preserveSelection: Bool
 
     private let collectionViewController: SiteMediaCollectionViewController
     private let toolbarItemTitle = SiteMediaSelectionTitleView()
@@ -24,11 +23,10 @@ final class SiteMediaPickerViewController: UIViewController, SiteMediaCollection
     ///   - blog: The site that contains the media
     ///   - filter: The types of media to display. By default, `nil` (show everything).
     ///   - allowsMultipleSelection: `false` by default.
-    init(blog: Blog, filter: Set<MediaType>? = nil, allowsMultipleSelection: Bool = false, initialSelection: [Media] = [], preserveSelection: Bool = false) {
+    init(blog: Blog, filter: Set<MediaType>? = nil, allowsMultipleSelection: Bool = false, initialSelection: [Media] = []) {
         self.blog = blog
         self.allowsMultipleSelection = allowsMultipleSelection
         self.initialSelection = initialSelection
-        self.preserveSelection = preserveSelection
         self.collectionViewController = SiteMediaCollectionViewController(blog: blog, filter: filter, isShowingPendingUploads: false)
 
         super.init(nibName: nil, bundle: nil)
