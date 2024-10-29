@@ -1,20 +1,20 @@
 import Foundation
 
-struct StringRankedSearch {
+public struct StringRankedSearch {
     /// By default, `[.caseInsensitive, .diacriticInsensitive]`.
     var options: String.CompareOptions = [.caseInsensitive, .diacriticInsensitive]
 
     private let term: String
     private let terms: [String]
 
-    init(searchTerm: String) {
+    public init(searchTerm: String) {
         self.term = searchTerm.trimmingCharacters(in: .whitespaces)
         self.terms = term.components(separatedBy: .whitespaces).filter { !$0.isEmpty }
     }
 
     /// Returns a score in a `0.0...1.0` range where `1.0` is maximum confidence.
     /// Anything above `0.5` suggests a good probability of a match.
-    func score(for string: String?) -> Double {
+    public func score(for string: String?) -> Double {
         guard let string else {
             return 0
         }
@@ -106,7 +106,7 @@ extension StringRankedSearch {
     /// Returns the top matching results for the given items.
     ///
     /// - parameter input: Returns the input for the search algorithm to match against.
-    func search<S: Sequence>(
+    public func search<S: Sequence>(
         in items: S,
         minScore: Double = 0.7,
         input: (S.Element) -> String

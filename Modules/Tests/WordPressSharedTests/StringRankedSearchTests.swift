@@ -1,6 +1,5 @@
 import XCTest
-
-@testable import WordPress
+import WordPressShared
 
 final class StringRankedSearchTests: XCTestCase {
     func testScoreInRange() {
