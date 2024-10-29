@@ -8,14 +8,13 @@ class DashboardJetpackSocialCardCellTests: CoreDataTestCase {
     override func setUp() {
         super.setUp()
 
-        try? featureFlags.override(RemoteFeatureFlag.jetpackSocialImprovements, withValue: true)
+        featureFlags.override(RemoteFeatureFlag.jetpackSocialImprovements, withValue: true)
     }
 
     override func tearDown() {
         super.tearDown()
 
-        try? featureFlags.override(RemoteFeatureFlag.jetpackSocialImprovements,
-                                   withValue: RemoteFeatureFlag.jetpackSocialImprovements.defaultValue)
+        featureFlags.override(RemoteFeatureFlag.jetpackSocialImprovements, withValue: RemoteFeatureFlag.jetpackSocialImprovements.defaultValue)
     }
 
     // MARK: - `shouldShowCard` tests
@@ -33,7 +32,7 @@ class DashboardJetpackSocialCardCellTests: CoreDataTestCase {
         let blog = createTestBlog()
 
         // When
-        try featureFlags.override(RemoteFeatureFlag.jetpackSocialImprovements, withValue: false)
+        featureFlags.override(RemoteFeatureFlag.jetpackSocialImprovements, withValue: false)
 
         // Then
         XCTAssertFalse(shouldShowCard(for: blog))
