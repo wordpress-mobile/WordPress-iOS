@@ -42,6 +42,7 @@ class PromptRemindersSchedulerTests: XCTestCase {
         dateProvider = MockCurrentDateProvider(currentDate)
         blog = makeBlog()
         accountService = makeAccountService()
+        blog.account = try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext)
         localStore = MockLocalFileStore()
         scheduler = PromptRemindersScheduler(bloggingPromptsServiceFactory: serviceFactory,
                                              notificationScheduler: notificationScheduler,
