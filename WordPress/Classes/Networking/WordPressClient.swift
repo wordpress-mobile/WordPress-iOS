@@ -8,11 +8,11 @@ struct WordPressSite {
         case selfHosted(username: String, authToken: String)
     }
 
-    let baseUrl: String
+    let baseUrl: URL
     let type: WordPressSite.SiteType
 
     init(baseUrl: ParsedUrl, type: WordPressSite.SiteType) {
-        self.baseUrl = baseUrl.url()
+        self.baseUrl = baseUrl.asURL()
         self.type = type
     }
 
@@ -45,8 +45,14 @@ actor WordPressClient {
         self.rootUrl = rootUrl.url()
     }
 
-    init(site: WordPressSite) throws {
-        let parsedUrl = try ParsedUrl.parse(input: site.baseUrl)
+    init(site: WordPressSite) {
+        // `site.barUrl` is a legal HTTP URL, which should be convertable to the `ParsedUrl` type.
+        let parsedUrl: ParsedUrl
+        do {
+            parsedUrl = try ParsedUrl.parse(input: site.baseUrl.absoluteString)
+        } catch {
+            fatalError("Failed to cast URL (\(site.baseUrl.absoluteString)) to ParsedUrl: \(error)")
+        }
 
         // Currently, the app supports both account passwords and application passwords.
         // When a site is initially signed in with an account password, WordPress login cookies are stored

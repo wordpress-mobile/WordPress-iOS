@@ -130,7 +130,7 @@ extension BlogDetailsViewController {
 
         do {
             let site = try WordPressSite(blog: self.blog)
-            let client = try WordPressClient(site: site)
+            let client = WordPressClient(site: site)
             return ApplicationPasswordService(api: client, currentUserId: userId)
         } catch {
             DDLogError("Failed to create WordPressClient: \(error)")
