@@ -175,7 +175,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
         self.allowsMultipleSelection = allowsMultipleSelection
         self.isSelectionOrdered = isSelectionOrdered
 
-        if let selectedMedia = initialSelection {
+        if let selectedMedia = initialSelection, allowsMultipleSelection {
             setInitialSelection(selectedMedia)
         } else {
             deselectAll()
