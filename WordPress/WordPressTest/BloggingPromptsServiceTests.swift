@@ -39,6 +39,7 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
         remote = BloggingPromptsServiceRemoteMock()
         blog = makeBlog()
         accountService = makeAccountService()
+        blog.account = try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext)
         service = BloggingPromptsService(contextManager: contextManager, api: api, remote: remote, blog: blog)
         testPrompts = loadTestPrompts(from: fetchPromptsResponseFileName)
     }
