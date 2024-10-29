@@ -353,7 +353,7 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
             initialSelectionArray = []
         }
 
-        mediaPickerHelper.presentSiteMediaPicker(filter: flags, allowMultipleSelection: config.multiple, initialSelection: initialSelectionArray, preserveSelection: true) { [weak self] assets in
+        mediaPickerHelper.presentSiteMediaPicker(filter: flags, allowMultipleSelection: config.multiple, initialSelection: initialSelectionArray) { [weak self] assets in
             guard let self, let media = assets as? [Media] else {
                 self?.editorViewController.receiveMedia("[]")
                 return

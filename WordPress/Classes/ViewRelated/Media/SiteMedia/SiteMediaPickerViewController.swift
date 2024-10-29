@@ -29,7 +29,7 @@ final class SiteMediaPickerViewController: UIViewController, SiteMediaCollection
         self.allowsMultipleSelection = allowsMultipleSelection
         self.initialSelection = initialSelection
         self.preserveSelection = preserveSelection
-        self.collectionViewController = SiteMediaCollectionViewController(blog: blog, filter: filter, isShowingPendingUploads: false, initialSelection: initialSelection)
+        self.collectionViewController = SiteMediaCollectionViewController(blog: blog, filter: filter, isShowingPendingUploads: false)
 
         super.init(nibName: nil, bundle: nil)
 
@@ -79,7 +79,7 @@ final class SiteMediaPickerViewController: UIViewController, SiteMediaCollection
     // MARK: - Selection
 
     private func startSelection() {
-        collectionViewController.setEditing(true, allowsMultipleSelection: allowsMultipleSelection, isSelectionOrdered: true, preserveSelection: preserveSelection)
+        collectionViewController.setEditing(true, allowsMultipleSelection: allowsMultipleSelection, isSelectionOrdered: true, initialSelection: initialSelection)
 
         if allowsMultipleSelection, toolbarItems == nil {
             var toolbarItems: [UIBarButtonItem] = []

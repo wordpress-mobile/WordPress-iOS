@@ -192,8 +192,7 @@ extension MediaPickerMenu {
             blog: blog,
             filter: filter.map { [$0.mediaType] },
             allowsMultipleSelection: isMultipleSelectionEnabled,
-            initialSelection: initialSelection,
-            preserveSelection: preserveSelection
+            initialSelection: initialSelection
         )
         viewController.delegate = delegate
         let navigation = UINavigationController(rootViewController: viewController)

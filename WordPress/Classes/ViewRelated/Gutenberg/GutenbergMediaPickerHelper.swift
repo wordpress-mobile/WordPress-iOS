@@ -41,7 +41,7 @@ final class GutenbergMediaPickerHelper: NSObject {
     func presentSiteMediaPicker(filter: WPMediaType, allowMultipleSelection: Bool, initialSelection: [Int] = [], preserveSelection: Bool = false, completion: @escaping GutenbergMediaPickerHelperCallback) {
         didPickMediaCallback = completion
         let initialMediaSelection = mapMediaIdsToMedia(initialSelection)
-        MediaPickerMenu(viewController: context, filter: .init(filter), isMultipleSelectionEnabled: allowMultipleSelection, initialSelection: initialMediaSelection, preserveSelection: preserveSelection)
+        MediaPickerMenu(viewController: context, filter: .init(filter), isMultipleSelectionEnabled: allowMultipleSelection, initialSelection: initialMediaSelection)
             .showSiteMediaPicker(blog: post.blog, delegate: self)
     }
 

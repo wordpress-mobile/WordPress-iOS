@@ -62,13 +62,11 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
         return selection
     }
 
-    init(blog: Blog, filter: Set<MediaType>? = nil, isShowingPendingUploads: Bool = true, initialSelection: [Media] = []) {
+    init(blog: Blog, filter: Set<MediaType>? = nil, isShowingPendingUploads: Bool = true) {
         self.blog = blog
         self.filter = filter
         self.isShowingPendingUploads = isShowingPendingUploads
         super.init(nibName: nil, bundle: nil)
-
-        setInitialSelection(initialSelection)
     }
 
     required init?(coder: NSCoder) {
@@ -178,14 +176,16 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
         _ isEditing: Bool,
         allowsMultipleSelection: Bool = true,
         isSelectionOrdered: Bool = false,
-        preserveSelection: Bool = false
+        initialSelection: [Media]? = nil
     ) {
         guard self.isEditing != isEditing else { return }
         self.isEditing = isEditing
         self.allowsMultipleSelection = allowsMultipleSelection
         self.isSelectionOrdered = isSelectionOrdered
 
-        if !preserveSelection {
+        if let selectedMedia = initialSelection {
+            setInitialSelection(selectedMedia)
+        } else {
             deselectAll()
         }
     }
