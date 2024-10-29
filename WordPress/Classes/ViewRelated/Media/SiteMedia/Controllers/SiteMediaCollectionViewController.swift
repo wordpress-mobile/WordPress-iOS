@@ -214,11 +214,9 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
             }
         }
         delegate?.siteMediaViewController(self, didUpdateSelection: selectedMedia)
-        // TODO: Disabled to support preserving initial selection, but this
-        // likely introduces bugs and needs to be reinstated.
-//        if !allowsMultipleSelection {
-//            selection = []
-//        }
+        if !allowsMultipleSelection {
+            selection = []
+        }
     }
 
     func isSelected(_ media: Media) -> Bool {
