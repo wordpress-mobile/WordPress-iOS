@@ -334,6 +334,7 @@ class PromptRemindersSchedulerTests: XCTestCase {
         // Arrange
         let schedule = scheduleForToday
         let controlBlog = makeBlog()
+        controlBlog.account = try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext)
         let controlSiteID = controlBlog.dotComID!.intValue
 
         // first, schedule reminders in the control blog.
