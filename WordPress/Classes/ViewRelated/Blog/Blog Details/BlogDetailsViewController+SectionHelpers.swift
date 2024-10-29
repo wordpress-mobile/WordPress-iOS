@@ -120,7 +120,7 @@ extension BlogDetailsViewController {
 
     @objc func shouldShowApplicationPasswordRow() -> Bool {
         // Only available for application-password authenticated self-hosted sites.
-        return self.blog.account == nil && self.blog.userID != nil && (try? WordPressSite.from(blog: self.blog)) != nil
+        return self.blog.account == nil && self.blog.userID != nil && (try? WordPressSite(blog: self.blog)) != nil
     }
 
     private func createApplicationPasswordService() -> ApplicationPasswordService? {
@@ -129,8 +129,8 @@ extension BlogDetailsViewController {
         }
 
         do {
-            let site = try WordPressSite.from(blog: self.blog)
-            let client = try WordPressClient.for(site: site)
+            let site = try WordPressSite(blog: self.blog)
+            let client = try WordPressClient(site: site)
             return ApplicationPasswordService(api: client, currentUserId: userId)
         } catch {
             DDLogError("Failed to create WordPressClient: \(error)")

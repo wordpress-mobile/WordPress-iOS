@@ -16,12 +16,12 @@ struct WordPressSite {
         self.type = type
     }
 
-    static func from(blog: Blog) throws -> WordPressSite {
+    init(blog: Blog) throws {
         let url = try ParsedUrl.parse(input: blog.getUrlString())
         if let account = blog.account {
-            return WordPressSite(baseUrl: url, type: .dotCom(authToken: account.authToken))
+            self.init(baseUrl: url, type: .dotCom(authToken: account.authToken))
         } else {
-            return WordPressSite(baseUrl: url, type: .selfHosted(
+            self.init(baseUrl: url, type: .selfHosted(
                 username: try blog.getUsername(),
                 authToken: try blog.getApplicationToken())
             )
@@ -45,7 +45,7 @@ actor WordPressClient {
         self.rootUrl = rootUrl.url()
     }
 
-    static func `for`(site: WordPressSite) throws -> WordPressClient {
+    init(site: WordPressSite) throws {
         let parsedUrl = try ParsedUrl.parse(input: site.baseUrl)
 
         // Currently, the app supports both account passwords and application passwords.
@@ -61,10 +61,10 @@ actor WordPressClient {
         switch site.type {
         case let .dotCom(authToken):
             let api = WordPressAPI(urlSession: session, baseUrl: parsedUrl, authenticationStategy: .authorizationHeader(token: authToken))
-            return WordPressClient(api: api, rootUrl: parsedUrl)
+            self.init(api: api, rootUrl: parsedUrl)
         case .selfHosted(let username, let authToken):
             let api = WordPressAPI.init(urlSession: session, baseUrl: parsedUrl, authenticationStategy: .init(username: username, password: authToken))
-            return WordPressClient(api: api, rootUrl: parsedUrl)
+            self.init(api: api, rootUrl: parsedUrl)
         }
     }
 
