@@ -45,8 +45,18 @@ actor WordPressClient {
         self.rootUrl = rootUrl.url()
     }
 
-    static func `for`(site: WordPressSite, in session: URLSession) throws -> WordPressClient {
+    static func `for`(site: WordPressSite) throws -> WordPressClient {
         let parsedUrl = try ParsedUrl.parse(input: site.baseUrl)
+
+        // At the moment, the app supports account password and application password.
+        // When a site is initially signed in with account password, WordPress login cookies are stored
+        // in `URLSession.shared`. After switching the site to application password authentication,
+        // the store cookies may interfere with application-password authentication, which results in 401
+        // errors from REST API.
+        //
+        // To avoid the above issue, we'll use ephemeral URLSession for now (which stores cookies in memory
+        // rather than using the shared one on disk).
+        let session = URLSession(configuration: .ephemeral)
 
         switch site.type {
         case let .dotCom(authToken):
