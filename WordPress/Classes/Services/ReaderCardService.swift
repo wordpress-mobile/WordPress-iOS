@@ -31,8 +31,8 @@ class ReaderCardService {
     /// Used only internally to order the cards
     private var pageNumber = 1
 
-    init(stream: ReaderStream,
-         sorting: ReaderSortingOption,
+    init(stream: ReaderStream = .discover,
+         sorting: ReaderSortingOption = .noSorting,
         service: ReaderCardServiceRemote = ReaderPostServiceRemote.withDefaultApi(),
          coreDataStack: CoreDataStack = ContextManager.shared,
          followedInterestsService: ReaderFollowedInterestsService? = nil,

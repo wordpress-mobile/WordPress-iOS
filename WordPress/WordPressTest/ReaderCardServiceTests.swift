@@ -102,10 +102,10 @@ class ReaderCardServiceTests: CoreDataTestCase {
 }
 
 final class ReaderPostServiceRemoteMock: ReaderCardServiceRemote {
-
     var shouldCallFailure = false
 
-    func fetchStreamCards(for topics: [String],
+    func fetchStreamCards(stream: WordPressKit.ReaderStream,
+                          for topics: [String],
                           page: String?,
                           sortingOption: WordPressKit.ReaderSortingOption,
                           refreshCount: Int?,
