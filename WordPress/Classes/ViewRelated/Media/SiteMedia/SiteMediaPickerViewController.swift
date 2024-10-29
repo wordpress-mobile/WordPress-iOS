@@ -67,7 +67,7 @@ final class SiteMediaPickerViewController: UIViewController, SiteMediaCollection
     // MARK: - Actions
 
     private func buttonCancelTapped() {
-        delegate?.siteMediaPickerViewController(self, didFinishWithSelection: [])
+        delegate?.siteMediaPickerViewController(self, didFinishWithSelection: initialSelection)
     }
 
     @objc private func buttonDoneTapped() {
