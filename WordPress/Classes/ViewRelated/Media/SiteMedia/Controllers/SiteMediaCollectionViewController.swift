@@ -106,14 +106,6 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
 
         syncMedia()
         updateEmptyViewState()
-        applyInitialSelection()
-    }
-
-    private func applyInitialSelection() {
-        for media in selectedMedia {
-            getViewModel(for: media).badge = isSelectionOrdered ? .ordered(index: selection.index(of: media)) : .unordered
-        }
-        delegate?.siteMediaViewController(self, didUpdateSelection: selectedMedia)
     }
 
     override func viewDidLayoutSubviews() {
