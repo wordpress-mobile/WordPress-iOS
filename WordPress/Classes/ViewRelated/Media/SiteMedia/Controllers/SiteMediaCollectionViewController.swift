@@ -62,15 +62,25 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
         return selection
     }
 
-    init(blog: Blog, filter: Set<MediaType>? = nil, isShowingPendingUploads: Bool = true) {
+    init(blog: Blog, filter: Set<MediaType>? = nil, isShowingPendingUploads: Bool = true, initialSelection: [Media] = []) {
         self.blog = blog
         self.filter = filter
         self.isShowingPendingUploads = isShowingPendingUploads
         super.init(nibName: nil, bundle: nil)
+
+        setInitialSelection(initialSelection)
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setInitialSelection(_ media: [Media]) {
+        updateSelection {
+            for item in media {
+                selection.add(item)
+            }
+        }
     }
 
     func embed(in parentViewController: UIViewController) {
@@ -98,6 +108,14 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
 
         syncMedia()
         updateEmptyViewState()
+        applyInitialSelection()
+    }
+
+    private func applyInitialSelection() {
+        for media in selectedMedia {
+            getViewModel(for: media).badge = isSelectionOrdered ? .ordered(index: selection.index(of: media)) : .unordered
+        }
+        delegate?.siteMediaViewController(self, didUpdateSelection: selectedMedia)
     }
 
     override func viewDidLayoutSubviews() {
@@ -159,14 +177,17 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     func setEditing(
         _ isEditing: Bool,
         allowsMultipleSelection: Bool = true,
-        isSelectionOrdered: Bool = false
+        isSelectionOrdered: Bool = false,
+        preserveSelection: Bool = false
     ) {
         guard self.isEditing != isEditing else { return }
         self.isEditing = isEditing
         self.allowsMultipleSelection = allowsMultipleSelection
         self.isSelectionOrdered = isSelectionOrdered
 
-        deselectAll()
+        if !preserveSelection {
+            deselectAll()
+        }
     }
 
     private func updateSelection(_ perform: () -> Void) {
@@ -193,9 +214,11 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
             }
         }
         delegate?.siteMediaViewController(self, didUpdateSelection: selectedMedia)
-        if !allowsMultipleSelection {
-            selection = []
-        }
+        // TODO: Disabled to support preserving initial selection, but this
+        // likely introduces bugs and needs to be reinstated.
+//        if !allowsMultipleSelection {
+//            selection = []
+//        }
     }
 
     func isSelected(_ media: Media) -> Bool {

@@ -9,6 +9,8 @@ protocol SiteMediaPickerViewControllerDelegate: AnyObject {
 final class SiteMediaPickerViewController: UIViewController, SiteMediaCollectionViewControllerDelegate {
     private let blog: Blog
     private let allowsMultipleSelection: Bool
+    private let initialSelection: [Media]
+    private let preserveSelection: Bool
 
     private let collectionViewController: SiteMediaCollectionViewController
     private let toolbarItemTitle = SiteMediaSelectionTitleView()
@@ -22,10 +24,12 @@ final class SiteMediaPickerViewController: UIViewController, SiteMediaCollection
     ///   - blog: The site that contains the media
     ///   - filter: The types of media to display. By default, `nil` (show everything).
     ///   - allowsMultipleSelection: `false` by default.
-    init(blog: Blog, filter: Set<MediaType>? = nil, allowsMultipleSelection: Bool = false) {
+    init(blog: Blog, filter: Set<MediaType>? = nil, allowsMultipleSelection: Bool = false, initialSelection: [Media] = [], preserveSelection: Bool = false) {
         self.blog = blog
         self.allowsMultipleSelection = allowsMultipleSelection
-        self.collectionViewController = SiteMediaCollectionViewController(blog: blog, filter: filter, isShowingPendingUploads: false)
+        self.initialSelection = initialSelection
+        self.preserveSelection = preserveSelection
+        self.collectionViewController = SiteMediaCollectionViewController(blog: blog, filter: filter, isShowingPendingUploads: false, initialSelection: initialSelection)
 
         super.init(nibName: nil, bundle: nil)
 
@@ -75,7 +79,7 @@ final class SiteMediaPickerViewController: UIViewController, SiteMediaCollection
     // MARK: - Selection
 
     private func startSelection() {
-        collectionViewController.setEditing(true, allowsMultipleSelection: allowsMultipleSelection, isSelectionOrdered: true)
+        collectionViewController.setEditing(true, allowsMultipleSelection: allowsMultipleSelection, isSelectionOrdered: true, preserveSelection: preserveSelection)
 
         if allowsMultipleSelection, toolbarItems == nil {
             var toolbarItems: [UIBarButtonItem] = []

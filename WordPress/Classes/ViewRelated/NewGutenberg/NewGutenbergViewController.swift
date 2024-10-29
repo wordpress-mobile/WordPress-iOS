@@ -342,7 +342,18 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
 
     func editor(_ viewController: GutenbergKit.EditorViewController, didRequestMediaFromSiteMediaLibrary config: OpenMediaLibrary) {
         let flags = mediaFilterFlags(using: config.allowedTypes)
-        mediaPickerHelper.presentSiteMediaPicker(filter: flags, allowMultipleSelection: config.multiple) { [weak self] assets in
+
+        let initialSelectionArray: [Int]
+        switch config.value {
+        case .single(let id):
+            initialSelectionArray = [id]
+        case .multiple(let ids):
+            initialSelectionArray = ids
+        case .none:
+            initialSelectionArray = []
+        }
+
+        mediaPickerHelper.presentSiteMediaPicker(filter: flags, allowMultipleSelection: config.multiple, initialSelection: initialSelectionArray, preserveSelection: true) { [weak self] assets in
             guard let self, let media = assets as? [Media] else {
                 self?.editorViewController.receiveMedia("[]")
                 return
