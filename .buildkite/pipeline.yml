@@ -23,3 +23,17 @@ steps:
     notify:
       - github_commit_status:
           context: "Dummy step with $${VALUE_FOR_COMMIT_STATUS}"
+
+  # As seen in https://forum.buildkite.community/t/runtime-interpolation-of-environment-variable-followed-by-underscore/3347/2
+  - label: Dummy with runtime injection – 1/2 Injection
+    env:
+      VALUE_FOR_COMMIT_STATUS: test value from env
+    command: |
+      cat <<- YAML | buildkite-agent pipeline upload
+        steps:
+          - label: "Dummy with runtime injection – 2/2 Execution"
+            command: echo "Hello, world!"
+            notify:
+              - github_commit_status:
+                  context: "Dummy step with $${VALUE_FOR_COMMIT_STATUS}"
+      YAML
