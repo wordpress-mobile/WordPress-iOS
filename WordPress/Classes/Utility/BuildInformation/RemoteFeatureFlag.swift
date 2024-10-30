@@ -32,6 +32,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
     case inAppUpdates
     case readerTagsFeed
     case readerFloatingButton
+    case gravatarQuickEditor
 
     var defaultValue: Bool {
         switch self {
@@ -95,6 +96,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return true
         case .readerFloatingButton:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+        case .gravatarQuickEditor:
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         }
     }
 
@@ -161,6 +164,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "reader_tags_feed"
         case .readerFloatingButton:
             return "reader_floating_button"
+        case .gravatarQuickEditor:
+            return "gravatar_quick_editor"
         }
     }
 
@@ -226,6 +231,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "Reader Tags Feed"
         case .readerFloatingButton:
             return "Reader Floating Button"
+        case .gravatarQuickEditor:
+            return "Gravatar Quick Editor"
         }
     }
 
