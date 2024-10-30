@@ -14,7 +14,7 @@ steps:
       MATRIX_NAME_FOR_COMMIT_STATUS: "{{matrix}}"
     notify:
       - github_commit_status:
-          context: "Dummy step with $$MATRIX_NAME_FOR_COMMIT_STATUS"
+          context: "Dummy step with $${MATRIX_NAME_FOR_COMMIT_STATUS}"
 
   - label: Dummy step for commit status interpolation check
     command: echo "Hello, world!"
@@ -22,4 +22,4 @@ steps:
       VALUE_FOR_COMMIT_STATUS: test value from env
     notify:
       - github_commit_status:
-          context: "Dummy step with $$VALUE_FOR_COMMIT_STATUS"
+          context: "Dummy step with $${VALUE_FOR_COMMIT_STATUS}"
