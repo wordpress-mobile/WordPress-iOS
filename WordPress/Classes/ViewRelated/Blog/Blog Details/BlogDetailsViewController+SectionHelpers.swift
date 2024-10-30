@@ -195,8 +195,7 @@ struct ApplicationPasswordRequiredView<Content: View>: View {
     @MainActor
     private func migrate() async {
         guard let url = try? blog.getUrlString() else {
-            let error = NSLocalizedString("applicationPasswordMigration.error.siteUrlNotFound", value: "Cannot find the current site's url", comment: "Error message when the current site's url cannot be found")
-            Notice(title: error).post()
+            Notice(title: Strings.siteUrlNotFoundError).post()
             return
         }
 
@@ -207,8 +206,7 @@ struct ApplicationPasswordRequiredView<Content: View>: View {
 
             // Ensure the application password belongs to the current signed in user
             if let username = blog.username, success.userLogin != username {
-                let format = NSLocalizedString("applicationPasswordMigration.error.usernameMismatch", value: "You need to sign in with user \"%@\"", comment: "Error message when the username does not match the signed-in user. The first argument is the currently signed in user's user login name")
-                Notice(title: .localizedStringWithFormat(format, username)).post()
+                Notice(title: Strings.userNameMismatch(expected: username)).post()
                 return
             }
 
@@ -222,6 +220,17 @@ struct ApplicationPasswordRequiredView<Content: View>: View {
             }
         } catch {
             Notice(title: SharedStrings.Error.generic).post()
+        }
+    }
+
+    enum Strings {
+        static var siteUrlNotFoundError: String {
+            NSLocalizedString("applicationPasswordMigration.error.siteUrlNotFound", value: "Cannot find the current site's url", comment: "Error message when the current site's url cannot be found")
+        }
+
+        static func userNameMismatch(expected: String) -> String {
+            let format = NSLocalizedString("applicationPasswordMigration.error.usernameMismatch", value: "You need to sign in with user \"%@\"", comment: "Error message when the username does not match the signed-in user. The first argument is the currently signed in user's user login name")
+            return String(format: format, expected)
         }
     }
 }
