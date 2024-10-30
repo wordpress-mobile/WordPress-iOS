@@ -43,7 +43,9 @@ final class MeHeaderView: UIView {
             // tableView.headerView inevitably has to break something
             $0.priority = UILayoutPriority(999)
         }
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshAvatar), name: .GravatarImageUpdateNotification, object: nil)
+        if RemoteFeatureFlag.gravatarQuickEditor.enabled() {
+            NotificationCenter.default.addObserver(self, selector: #selector(refreshAvatar), name: .GravatarImageUpdateNotification, object: nil)
+        }
     }
 
     required init?(coder: NSCoder) {
