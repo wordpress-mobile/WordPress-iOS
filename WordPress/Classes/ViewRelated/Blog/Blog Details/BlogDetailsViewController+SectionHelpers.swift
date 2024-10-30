@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 import SwiftUI
-import WordPressAppUI
+import WordPressUI
 import WordPressAPI
 
 extension Array where Element: BlogDetailsSection {

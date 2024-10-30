@@ -1,5 +1,4 @@
 import SwiftUI
-import DesignSystem
 
 public struct RestApiUpgradePrompt: View {
 
@@ -36,7 +35,7 @@ public struct RestApiUpgradePrompt: View {
                         Spacer()
                         Text(Strings.getStarted)
                             .font(.headline)
-                            .padding(.DS.Padding.half)
+                            .padding(4)
                         Spacer()
                     }
                 }).buttonStyle(.borderedProminent)
