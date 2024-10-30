@@ -112,6 +112,17 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 
     [_xmlrpcApi invalidateAndCancelTasks];
     [_selfHostedSiteRestApi invalidateAndCancelTasks];
+
+    // Remove the self-hosted site cookies from the shared cookie storage.
+    if (self.account == nil && self.url != nil) {
+        NSURL *siteURL = [NSURL URLWithString:self.url];
+        if (siteURL != nil) {
+            NSHTTPCookieStorage *cookieJar = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+            for (NSHTTPCookie *cookie in [cookieJar cookiesForURL:siteURL]) {
+                [cookieJar deleteCookie:cookie];
+            }
+        }
+    }
 }
 
 - (void)didTurnIntoFault
