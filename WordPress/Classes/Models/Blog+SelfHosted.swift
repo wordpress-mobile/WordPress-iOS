@@ -55,6 +55,18 @@ extension Blog {
         try keychainImplementation.getPassword(for: self.getUsername(), serviceName: self.getUrlString())
     }
 
+    /// Delete Application Token
+    ///
+    func deleteApplicationToken(using keychainImplementation: KeychainAccessible = KeychainUtils()) throws {
+        try? keychainImplementation.setPassword(for: self.getUsername(), to: nil, serviceName: self.getUrlString())
+    }
+
+    @available(swift, obsoleted: 1.0)
+    @objc(deleteApplicationToken)
+    func objc_deleteApplicationToken() {
+        _ = try? deleteApplicationToken()
+    }
+
     /// Store Application Tokens
     ///
     func setApplicationToken(

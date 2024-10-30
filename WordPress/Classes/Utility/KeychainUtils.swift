@@ -41,12 +41,16 @@ extension KeychainUtils: KeychainAccessible {
         try self.keychainUtils.getPasswordForUsername(username, andServiceName: serviceName)
     }
 
-    func setPassword(for username: String, to newValue: String, serviceName: String) throws {
-        try keychainUtils.storeUsername(username, andPassword: newValue, forServiceName: serviceName, updateExisting: true)
+    func setPassword(for username: String, to newValue: String?, serviceName: String) throws {
+        if let newValue {
+            try keychainUtils.storeUsername(username, andPassword: newValue, forServiceName: serviceName, updateExisting: true)
+        } else {
+            try keychainUtils.deleteItem(forUsername: username, andServiceName: serviceName)
+        }
     }
 }
 
 protocol KeychainAccessible {
     func getPassword(for username: String, serviceName: String) throws -> String
-    func setPassword(for username: String, to newValue: String, serviceName: String) throws
+    func setPassword(for username: String, to newValue: String?, serviceName: String) throws
 }

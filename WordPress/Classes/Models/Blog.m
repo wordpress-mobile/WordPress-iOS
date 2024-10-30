@@ -106,6 +106,10 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
         self.password = nil;
     }
 
+    if (self.account == nil) {
+        [self deleteApplicationToken];
+    }
+
     [_xmlrpcApi invalidateAndCancelTasks];
     [_selfHostedSiteRestApi invalidateAndCancelTasks];
 }
