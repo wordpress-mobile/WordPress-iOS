@@ -71,6 +71,7 @@ final class MeHeaderView: UIView {
     }
 
     func overrideGravatarImage(_ image: UIImage) {
+        guard !RemoteFeatureFlag.gravatarQuickEditor.enabled() else { return }
         iconView.image = image
 
         // Note:
