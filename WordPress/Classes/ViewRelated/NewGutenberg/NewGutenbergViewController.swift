@@ -355,7 +355,7 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
 
         mediaPickerHelper.presentSiteMediaPicker(filter: flags, allowMultipleSelection: config.multiple, initialSelection: initialSelectionArray) { [weak self] assets in
             guard let self, let media = assets as? [Media] else {
-                self?.editorViewController.receiveMedia("[]")
+                self?.editorViewController.setMediaUploadAttachment("[]")
                 return
             }
             let mediaInfos = media.map { item in
@@ -364,7 +364,7 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
             if let jsonString = convertMediaInfoArrayToJSONString(mediaInfos) {
                 // Escape the string for JavaScript
                 let escapedJsonString = jsonString.replacingOccurrences(of: "'", with: "\\'")
-                editorViewController.receiveMedia(escapedJsonString)
+                editorViewController.setMediaUploadAttachment(escapedJsonString)
             }
         }
     }
