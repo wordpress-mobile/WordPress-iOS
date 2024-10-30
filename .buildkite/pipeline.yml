@@ -9,6 +9,9 @@ steps:
     matrix:
       - matrix value 1
       - matrix value 2
+    env:
+      # Note: When used standalone, {{matrix}} needs to be quoted or the parsing will fail.
+      MATRIX_NAME_FOR_COMMIT_STATUS: "{{matrix}}"
     notify:
       - github_commit_status:
-          context: Dummy step with {{matrix}}
+          context: Dummy step with $$MATRIX_NAME_FOR_COMMIT_STATUS
