@@ -34,16 +34,18 @@ extension UIImageView {
     ///   - email: The user's email
     ///   - gravatarRating: Expected image rating
     ///   - placeholderImage: Image to be used as Placeholder
+    ///   - forceRefresh: Skip the cache and fetch the latest version of the avatar.
     public func downloadGravatar(
         for email: String,
         gravatarRating: Rating = .general,
-        placeholderImage: UIImage = .gravatarPlaceholderImage
+        placeholderImage: UIImage = .gravatarPlaceholderImage,
+        forceRefresh: Bool = false
     ) {
         let avatarURL = AvatarURL.url(for: email, preferredSize: .pixels(gravatarDefaultSize()), gravatarRating: gravatarRating)
-        downloadGravatar(fullURL: avatarURL, placeholder: placeholderImage, animate: false)
+        downloadGravatar(fullURL: avatarURL, placeholder: placeholderImage, animate: false, forceRefresh: forceRefresh)
     }
 
-    public func downloadGravatar(_ gravatar: AvatarURL?, placeholder: UIImage, animate: Bool) {
+    public func downloadGravatar(_ gravatar: AvatarURL?, placeholder: UIImage, animate: Bool, forceRefresh: Bool = false) {
         guard let gravatar = gravatar else {
             self.image = placeholder
             return
@@ -56,14 +58,23 @@ extension UIImageView {
         layoutIfNeeded()
 
         let size = Int(ceil(frame.width * min(2, UIScreen.main.scale)))
-        let url = gravatar.replacing(options: .init(preferredSize: .pixels(size)))?.url
-        downloadGravatar(fullURL: url, placeholder: placeholder, animate: animate)
+        guard let url = gravatar.replacing(options: .init(preferredSize: .pixels(size)))?.url else { return }
+        downloadGravatar(fullURL: url, placeholder: placeholder, animate: animate, forceRefresh: forceRefresh)
     }
 
-    private func downloadGravatar(fullURL: URL?, placeholder: UIImage, animate: Bool) {
+    private func downloadGravatar(fullURL: URL?, placeholder: UIImage, animate: Bool, forceRefresh: Bool = false) {
         wp.prepareForReuse()
         if let fullURL {
-            wp.setImage(with: fullURL)
+            var urlToDownload = fullURL
+            if forceRefresh {
+                urlToDownload = fullURL.appendingGravatarCacheBusterParam()
+            }
+
+            wp.setImage(with: urlToDownload)
+            if forceRefresh {
+                // If this is a `forceRefresh`, the cache for the original url should be updated too.
+                ImageDownloader.shared.setCachedImage(image, for: fullURL)
+            }
             if image == nil { // If image wasn't found synchronously in memory cache
                 image = placeholder
             }
