@@ -2649,6 +2649,8 @@
 		8F2289EDA1886BF77687D72D /* TimeZoneSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2283367263B37B0681F988 /* TimeZoneSelectorViewController.swift */; };
 		8F228B22E190FF92D05E53DB /* TimeZoneSearchHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F228848D5DEACE6798CE7E2 /* TimeZoneSearchHeaderView.swift */; };
 		8F228F2923045666AE456D2C /* TimeZoneSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2283367263B37B0681F988 /* TimeZoneSelectorViewController.swift */; };
+		9109D5C72CD25A4300C7F1B1 /* GravatarQuickEditorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9109D5C62CD25A4300C7F1B1 /* GravatarQuickEditorPresenter.swift */; };
+		9109D5C82CD25A4300C7F1B1 /* GravatarQuickEditorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9109D5C62CD25A4300C7F1B1 /* GravatarQuickEditorPresenter.swift */; };
 		91138455228373EB00FB02B7 /* GutenbergVideoUploadProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91138454228373EB00FB02B7 /* GutenbergVideoUploadProcessor.swift */; };
 		912347762216E27200BD9F97 /* GutenbergViewController+Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912347752216E27200BD9F97 /* GutenbergViewController+Localization.swift */; };
 		91B0535D2B726F810073455C /* GravatarInfoRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B0535C2B726F810073455C /* GravatarInfoRow.swift */; };
@@ -8176,6 +8178,7 @@
 		8F2283367263B37B0681F988 /* TimeZoneSelectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeZoneSelectorViewController.swift; sourceTree = "<group>"; };
 		8F228848D5DEACE6798CE7E2 /* TimeZoneSearchHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeZoneSearchHeaderView.swift; sourceTree = "<group>"; };
 		8F228AE62B771552F0F971BE /* TimeZoneSearchHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimeZoneSearchHeaderView.xib; sourceTree = "<group>"; };
+		9109D5C62CD25A4300C7F1B1 /* GravatarQuickEditorPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GravatarQuickEditorPresenter.swift; sourceTree = "<group>"; };
 		91138454228373EB00FB02B7 /* GutenbergVideoUploadProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergVideoUploadProcessor.swift; sourceTree = "<group>"; };
 		912347752216E27200BD9F97 /* GutenbergViewController+Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GutenbergViewController+Localization.swift"; sourceTree = "<group>"; };
 		9149D34BF5182F360C84EDB9 /* Pods-JetpackDraftActionExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JetpackDraftActionExtension.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-JetpackDraftActionExtension/Pods-JetpackDraftActionExtension.debug.xcconfig"; sourceTree = "<group>"; };
@@ -11831,6 +11834,7 @@
 				43FF64EE20DAA0840060A69A /* GravatarUploader.swift */,
 				0CA1C8C02A940EE300F691EE /* AvatarMenuController.swift */,
 				91B0535C2B726F810073455C /* GravatarInfoRow.swift */,
+				9109D5C62CD25A4300C7F1B1 /* GravatarQuickEditorPresenter.swift */,
 			);
 			path = Gravatar;
 			sourceTree = "<group>";
@@ -22881,6 +22885,7 @@
 				F5D0A64923C8FA1500B20D27 /* LinkBehavior.swift in Sources */,
 				08E6E07B2A4C3E3A00B807B0 /* CompliancePopoverViewController.swift in Sources */,
 				0C75E26E2A9F63CB00B784E5 /* MediaImageService.swift in Sources */,
+				9109D5C82CD25A4300C7F1B1 /* GravatarQuickEditorPresenter.swift in Sources */,
 				80C523A429959DE000B1C14B /* BlazeWebViewController.swift in Sources */,
 				E6DE44671B90D251000FA7EF /* ReaderHelpers.swift in Sources */,
 				C7BB601C2863B3D600748FD9 /* QRLoginCameraPermissionsHandler.swift in Sources */,
@@ -26152,6 +26157,7 @@
 				FABB25AB2602FC2C00C8785C /* FancyAlertViewController+NotificationPrimer.swift in Sources */,
 				24DB7C172C5AFA7200A0FE92 /* WordPressClient.swift in Sources */,
 				FABB25AC2602FC2C00C8785C /* Charts+Support.swift in Sources */,
+				9109D5C72CD25A4300C7F1B1 /* GravatarQuickEditorPresenter.swift in Sources */,
 				FABB25AD2602FC2C00C8785C /* SharingAuthorizationWebViewController.swift in Sources */,
 				80DB57932AF8B59B00C728FF /* RegisterDomainCoordinator.swift in Sources */,
 				3FB1929326C6C57A000F5AA3 /* TimeSelectionView.swift in Sources */,
