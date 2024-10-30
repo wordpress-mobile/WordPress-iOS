@@ -15,17 +15,19 @@ func MyProfileViewController(account: WPAccount, service: AccountSettingsService
     let controller = MyProfileController(account: account, service: service, headerView: headerView)
     let viewController = ImmuTableViewController(controller: controller, style: .insetGrouped)
     controller.tableView = viewController.tableView
+    headerView.presentingViewController = viewController
+    if !RemoteFeatureFlag.gravatarQuickEditor.enabled() {
+        let menuController = AvatarMenuController(viewController: viewController)
+        menuController.onAvatarSelected = { [weak controller, weak viewController] image in
+            guard let controller, let viewController else { return }
+            controller.uploadGravatarImage(image, presenter: viewController)
+        }
+        objc_setAssociatedObject(viewController, &associateObjectKey, menuController, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 
-    let menuController = AvatarMenuController(viewController: viewController)
-    menuController.onAvatarSelected = { [weak controller, weak viewController] image in
-        guard let controller, let viewController else { return }
-        controller.uploadGravatarImage(image, presenter: viewController)
-    }
-    objc_setAssociatedObject(viewController, &associateObjectKey, menuController, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-
-    for button in [headerView.imageViewButton, headerView.gravatarButton] as [UIButton] {
-        button.menu = menuController.makeMenu()
-        button.showsMenuAsPrimaryAction = true
+        for button in [headerView.imageViewButton, headerView.gravatarButton] as [UIButton] {
+            button.menu = menuController.makeMenu()
+            button.showsMenuAsPrimaryAction = true
+        }
     }
     viewController.tableView.tableHeaderView = headerView
     return viewController
