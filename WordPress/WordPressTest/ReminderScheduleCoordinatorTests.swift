@@ -157,11 +157,11 @@ class ReminderScheduleCoordinatorTests: CoreDataTestCase {
 private extension ReminderScheduleCoordinatorTests {
 
     func disableBloggingPrompts() {
-        try! flagOverrideStore.override(FeatureFlag.bloggingPrompts, withValue: false)
+        flagOverrideStore.override(FeatureFlag.bloggingPrompts, withValue: false)
     }
 
     func enableBloggingPrompts(with behavior: MockSchedulerBehavior) {
-        try! flagOverrideStore.override(FeatureFlag.bloggingPrompts, withValue: true)
+        flagOverrideStore.override(FeatureFlag.bloggingPrompts, withValue: true)
         let (hour, minute) = behavior.timeComponents
         makePromptSettings(enabled: true, schedule: behavior.scheduleToReturn, hour: hour, minute: minute)
     }

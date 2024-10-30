@@ -22,8 +22,6 @@ extension NSNotification.Name {
     static let ReaderUserBlockingWillBegin = NSNotification.Name(rawValue: "ReaderUserBlockingWillBegin")
     // Sent when the user blocking request is complete
     static let ReaderUserBlockingDidEnd = NSNotification.Name(rawValue: "ReaderUserBlockingDidEnd")
-    // Sent when the filter from a feed is updated
-    static let ReaderFilterUpdated = NSNotification.Name(rawValue: "ReaderFilterUpdated")
 }
 
 struct ReaderNotificationKeys {
@@ -31,77 +29,6 @@ struct ReaderNotificationKeys {
     static let result = "result"
     static let post = "post"
     static let topic = "topic"
-}
-
-// Used for event tracking properties
-enum ReaderPostMenuSource {
-    case card
-    case details
-    case tagCard
-
-    var description: String {
-        switch self {
-        case .card:
-            return "post_card"
-        case .details:
-            return "post_details"
-        case .tagCard:
-            return "post_tag_card"
-        }
-    }
-}
-
-// Titles for post menu options
-struct ReaderPostMenuButtonTitles {
-    static let cancel = NSLocalizedString("Cancel", comment: "The title of a cancel button.")
-    static let blockSite = NSLocalizedString(
-        "reader.post.menu.block.blog",
-        value: "Block this blog",
-        comment: "The title of a button that triggers blocking a blog from the user's reader."
-    )
-    static let blockUser = NSLocalizedString(
-        "reader.post.menu.block.user",
-        value: "Block this user",
-        comment: "The title of a button that triggers blocking a user from the user's reader."
-    )
-    static let reportPost = NSLocalizedString("Report this post", comment: "The title of a button that triggers reporting of a post from the user's reader.")
-    static let reportPostAuthor = NSLocalizedString(
-        "reader.post.menu.report.user",
-        value: "Report this user",
-        comment: "The title of a button that triggers the reporting of a post's author."
-    )
-    static let share = NSLocalizedString("Share", comment: "Verb. Title of a button. Pressing lets the user share a post to others.")
-    static let visit = NSLocalizedString("Visit", comment: "An option to visit the site to which a specific post belongs")
-    static let unfollow = NSLocalizedString(
-        "reader.post.menu.unsubscribe.blog",
-        value: "Unsubscribe from blog",
-        comment: "Verb. An option to unsubscribe from a blog."
-    )
-    static let follow = NSLocalizedString(
-        "reader.post.menu.subscribe.blog",
-        value: "Subscribe to blog",
-        comment: "Verb. An option to subscribe to a blog."
-    )
-    static let subscribe = NSLocalizedString(
-        "reader.post.menu.notifications.on",
-        value: "Turn on blog notifications",
-        comment: "Verb. An option to switch on blog notifications."
-    )
-    static let unsubscribe = NSLocalizedString(
-        "reader.post.menu.notifications.off",
-        value: "Turn off blog notifications",
-        comment: "Verb. An option to switch off site notifications."
-    )
-    static let markSeen = NSLocalizedString("Mark as seen", comment: "An option to mark a post as seen.")
-    static let markUnseen = NSLocalizedString("Mark as unseen", comment: "An option to mark a post as unseen.")
-    static let followConversation = NSLocalizedString("Follow conversation", comment: "Verb. Button title. Follow the comments on a post.")
-    static let unFollowConversation = NSLocalizedString("Unfollow conversation", comment: "Verb. Button title. The user is following the comments on a post.")
-    static let savePost = NSLocalizedString("reader.post.menu.save.post",
-                                            value: "Save",
-                                            comment: "The title of a button that saves a post.")
-    static let removeSavedPost = NSLocalizedString("reader.post.menu.remove.post",
-                                                   value: "Remove Saved Post",
-                                                   comment: "The title of a button that removes a saved post.")
 }
 
 /// A collection of helper methods used by the Reader.
@@ -223,18 +150,6 @@ struct ReaderPostMenuButtonTitles {
     ///
     @objc open class func topicIsLiked(_ topic: ReaderAbstractTopic) -> Bool {
         return topic.path.hasSuffix("/read/liked")
-    }
-
-    /// Check if the specified topic is for Posts Saved for Later
-    ///
-    /// - Parameters:
-    ///     - topic: A ReaderAbstractTopic
-    ///
-    /// - Returns: True if the topic is for Saved For Later
-    ///
-    @objc open class func topicIsSavedForLater(_ topic: ReaderAbstractTopic) -> Bool {
-        //TODO. Update this logic with the right one. I am not sure how this is going to be modeeled now.
-        return topic.path.hasSuffix("/mock")
     }
 
     // MARK: Analytics Helpers
@@ -387,17 +302,6 @@ struct ReaderPostMenuButtonTitles {
 
     // MARK: ActionDispatcher Notification helper
 
-    class func dispatchToggleSeenMessage(post: ReaderPost, success: Bool) {
-        var notice: Notice {
-            if success {
-                return Notice(title: post.isSeen ? NoticeMessages.seenSuccess : NoticeMessages.unseenSuccess)
-            }
-            return Notice(title: post.isSeen ? NoticeMessages.unseenFail : NoticeMessages.seenFail)
-        }
-
-        dispatchNotice(notice)
-    }
-
     class func dispatchToggleFollowSiteMessage(post: ReaderPost, follow: Bool, success: Bool) {
         guard let siteID = post.siteID else {
             /// This is a workaround to prevent a crash from occurring when trying to pass a `nil` site ID to dispatchToggleFollowSiteMessage.
@@ -540,10 +444,6 @@ struct ReaderPostMenuButtonTitles {
     }
 
     private struct NoticeMessages {
-        static let seenFail = NSLocalizedString("Unable to mark post seen", comment: "Notice title when updating a post's seen status failed.")
-        static let unseenFail = NSLocalizedString("Unable to mark post unseen", comment: "Notice title when updating a post's unseen status failed.")
-        static let seenSuccess = NSLocalizedString("Marked post as seen", comment: "Notice title when updating a post's seen status succeeds.")
-        static let unseenSuccess = NSLocalizedString("Marked post as unseen", comment: "Notice title when updating a post's unseen status succeeds.")
         static let followSuccess = NSLocalizedString(
             "reader.notice.subscribe.success",
             value: "Subscribed to %1$@",
@@ -626,71 +526,6 @@ struct ReaderPostMenuButtonTitles {
                 Example: given a notice format "Following %@" and empty site name, this will be "Following this blog".
                 """
         )
-    }
-}
-
-/// Reader tab items
-extension ReaderHelpers {
-
-    static let defaultSavedItemPosition = 2
-
-    /// Sorts the default tabs according to the order [Discover, Subscriptions, Saved, Liked, Your Tags]
-    class func rearrange(items: [ReaderTabItem]) -> [ReaderTabItem] {
-
-        guard !items.isEmpty else {
-                   return items
-               }
-
-        var mutableItems = items
-        mutableItems.sort {
-            guard let leftTopic = $0.content.topic, let rightTopic = $1.content.topic else {
-                return true
-            }
-
-            if topicIsDiscover(leftTopic) {
-                return true
-            }
-            if topicIsDiscover(rightTopic) {
-                return false
-            }
-
-            if topicIsFollowing(leftTopic) {
-                return true
-            }
-            if topicIsFollowing(rightTopic) {
-                return false
-            }
-
-            if topicIsLiked(leftTopic) {
-                return true
-            }
-            if topicIsLiked(rightTopic) {
-                return false
-            }
-
-            // any other items: sort them alphabetically, grouped by topic type
-            if leftTopic.type == rightTopic.type {
-                return leftTopic.title < rightTopic.title
-            }
-
-            return true
-        }
-
-        let savedPosition = min(mutableItems.count, defaultSavedItemPosition)
-        mutableItems.insert(ReaderTabItem(ReaderContent(topic: nil, contentType: .saved)), at: savedPosition)
-
-        if RemoteFeatureFlag.readerTagsFeed.enabled() {
-            mutableItems.append(ReaderTabItem(ReaderContent(topic: nil, contentType: .tags)))
-        }
-
-        // in case of log in with a self hosted site, prepend a 'dummy' Following tab after Discover.
-        if !isLoggedIn() {
-            // to safeguard, ensure that there are items in the array before inserting. Otherwise, insert at index 0.
-            let targetIndex = mutableItems.count > 0 ? 1 : 0
-            mutableItems.insert(ReaderTabItem(ReaderContent(topic: nil, contentType: .selfHostedFollowing)), at: targetIndex)
-        }
-
-        return mutableItems
     }
 }
 

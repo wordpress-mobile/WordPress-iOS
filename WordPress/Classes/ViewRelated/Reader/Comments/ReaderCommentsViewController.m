@@ -362,8 +362,8 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
                                                                         views:views]];
 
     [NSLayoutConstraint activateConstraints:@[
-        [self.replyTextView.leadingAnchor constraintEqualToAnchor:self.replyTextView.leadingAnchor],
-        [self.replyTextView.trailingAnchor constraintEqualToAnchor:self.replyTextView.trailingAnchor],
+        [self.replyTextView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+        [self.replyTextView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
         [self.view.keyboardLayoutGuide.topAnchor constraintEqualToAnchor:self.replyTextView.bottomAnchor]
     ]];
 

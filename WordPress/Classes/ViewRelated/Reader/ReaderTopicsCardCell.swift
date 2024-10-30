@@ -21,7 +21,7 @@ class ReaderTopicsCardCell: UITableViewCell, NibLoadable {
 
     weak var delegate: ReaderTopicsTableCardCellDelegate?
 
-    static var defaultNibName: String { "ReaderTopicsNewCardCell" }
+    static var defaultNibName: String { "ReaderTopicsCardCell" }
 
     func configure(_ data: [ReaderAbstractTopic]) {
         self.data = data

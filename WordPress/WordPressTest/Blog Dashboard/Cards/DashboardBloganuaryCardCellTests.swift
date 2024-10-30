@@ -11,13 +11,12 @@ final class DashboardBloganuaryCardCellTests: CoreDataTestCase {
 
     override func setUp() {
         super.setUp()
-        try? featureFlags.override(RemoteFeatureFlag.bloganuaryDashboardNudge, withValue: true)
+        featureFlags.override(RemoteFeatureFlag.bloganuaryDashboardNudge, withValue: true)
     }
 
     override func tearDown() {
         super.tearDown()
-        try? featureFlags.override(RemoteFeatureFlag.bloganuaryDashboardNudge,
-                                   withValue: RemoteFeatureFlag.bloganuaryDashboardNudge.defaultValue)
+        featureFlags.override(RemoteFeatureFlag.bloganuaryDashboardNudge, withValue: RemoteFeatureFlag.bloganuaryDashboardNudge.defaultValue)
     }
 
     // MARK: - `shouldShowCard` tests
@@ -27,7 +26,7 @@ final class DashboardBloganuaryCardCellTests: CoreDataTestCase {
         let blog = makeBlog()
         makeBloggingPromptSettings()
         try mainContext.save()
-        try featureFlags.override(RemoteFeatureFlag.bloganuaryDashboardNudge, withValue: false)
+        featureFlags.override(RemoteFeatureFlag.bloganuaryDashboardNudge, withValue: false)
 
         // When
         let result = DashboardBloganuaryCardCell.shouldShowCard(for: blog, date: sometimeInDecember)

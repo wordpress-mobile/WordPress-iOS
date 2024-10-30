@@ -78,7 +78,7 @@ struct WordPressDotComAuthenticator {
         }
 
         do {
-            let urlSession = URLSession(configuration: .default)
+            let urlSession = URLSession.shared
             let (data, _) = try await urlSession.data(for: tokenRequest)
 
             struct Response: Decodable {

@@ -9,6 +9,8 @@ final class ReaderSidebarViewController: UIHostingController<AnyView> {
     private var viewContext: NSManagedObjectContext { ContextManager.shared.mainContext }
     var didAppear = false
 
+    var onViewDidLoad: (() -> Void)?
+
     init(viewModel: ReaderSidebarViewModel) {
         self.viewModel = viewModel
         // - warning: The `managedObjectContext` has to be set here in order for
@@ -23,6 +25,12 @@ final class ReaderSidebarViewController: UIHostingController<AnyView> {
 
     required dynamic init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        onViewDidLoad?()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -108,6 +116,7 @@ private struct ReaderSidebarView: View {
         }
         makeSection(Strings.lists, isExpanded: $isSectionListsExpanded) {
             ReaderSidebarListsSection(viewModel: viewModel)
+                .environment(\.siteIconBackgroundColor, Color(viewModel.isCompact ? .secondarySystemBackground : .systemBackground))
         }
         makeSection(Strings.tags, isExpanded: $isSectionTagsExpanded) {
             ReaderSidebarTagsSection(viewModel: viewModel)
@@ -160,7 +169,7 @@ private struct ReaderSidebarSection<Content: View>: View {
                         .font(.subheadline.weight(.semibold))
                         .foregroundStyle(.secondary)
                     Spacer()
-                    Image(systemName: "chevron.down")
+                    Image(systemName: isExpanded ? "chevron.down" : "chevron.right")
                         .font(.system(size: 14).weight(.semibold))
                         .foregroundStyle(AppColor.brand)
                 }

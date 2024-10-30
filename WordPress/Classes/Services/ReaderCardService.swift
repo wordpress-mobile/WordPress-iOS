@@ -1,8 +1,9 @@
 import Foundation
+import WordPressKit
 
 protocol ReaderCardServiceRemote {
-
-    func fetchStreamCards(for topics: [String],
+    func fetchStreamCards(stream: ReaderStream,
+                          for topics: [String],
                           page: String?,
                           sortingOption: ReaderSortingOption,
                           refreshCount: Int?,
@@ -10,18 +11,13 @@ protocol ReaderCardServiceRemote {
                           success: @escaping ([RemoteReaderCard], String?) -> Void,
                           failure: @escaping (Error) -> Void)
 
-    func fetchCards(for topics: [String],
-                    page: String?,
-                    sortingOption: ReaderSortingOption,
-                    refreshCount: Int?,
-                    success: @escaping ([RemoteReaderCard], String?) -> Void,
-                    failure: @escaping (Error) -> Void)
-
 }
 
 extension ReaderPostServiceRemote: ReaderCardServiceRemote { }
 
 class ReaderCardService {
+    private let stream: ReaderStream
+    private let sorting: ReaderSortingOption
     private let service: ReaderCardServiceRemote
 
     private let coreDataStack: CoreDataStack
@@ -35,10 +31,14 @@ class ReaderCardService {
     /// Used only internally to order the cards
     private var pageNumber = 1
 
-    init(service: ReaderCardServiceRemote = ReaderPostServiceRemote.withDefaultApi(),
+    init(stream: ReaderStream = .discover,
+         sorting: ReaderSortingOption = .noSorting,
+         service: ReaderCardServiceRemote = ReaderPostServiceRemote.withDefaultApi(),
          coreDataStack: CoreDataStack = ContextManager.shared,
          followedInterestsService: ReaderFollowedInterestsService? = nil,
          siteInfoService: ReaderSiteInfoService? = nil) {
+        self.stream = stream
+        self.sorting = sorting
         self.service = service
         self.coreDataStack = coreDataStack
         self.followedInterestsService = followedInterestsService ?? ReaderTopicService(coreDataStack: coreDataStack)
@@ -72,7 +72,7 @@ class ReaderCardService {
                 self.coreDataStack.performAndSave({ context in
                     if isFirstPage {
                         self.pageNumber = 1
-                        self.removeAllCards(in: context)
+                        ReaderCardService.removeAllCards(in: context)
                     } else {
                         self.pageNumber += 1
                     }
@@ -114,33 +114,31 @@ class ReaderCardService {
                 failure(error)
             }
 
-            if RemoteFeatureFlag.readerDiscoverEndpoint.enabled() {
-                self.service.fetchStreamCards(for: slugs,
-                                              page: self.pageHandle(isFirstPage: isFirstPage),
-                                              sortingOption: .noSorting,
-                                              refreshCount: refreshCount,
-                                              count: nil,
-                                              success: success,
-                                              failure: failure)
-            } else {
-                self.service.fetchCards(for: slugs,
-                                        page: self.pageHandle(isFirstPage: isFirstPage),
-                                        sortingOption: .noSorting,
-                                        refreshCount: refreshCount,
-                                        success: success,
-                                        failure: failure)
-            }
+            self.service.fetchStreamCards(
+                stream: self.stream,
+                for: slugs,
+                page: self.pageHandle(isFirstPage: isFirstPage),
+                sortingOption: self.sorting,
+                refreshCount: refreshCount,
+                count: nil,
+                success: success,
+                failure: failure
+            )
         }
     }
 
     /// Remove all cards and saves the context
     func clean() {
-        coreDataStack.performAndSave { context in
-            self.removeAllCards(in: context)
+        ReaderCardService.removeAllCards(on: coreDataStack)
+    }
+
+    static func removeAllCards(on stack: CoreDataStack = ContextManager.shared) {
+        stack.performAndSave { context in
+            removeAllCards(in: context)
         }
     }
 
-    private func removeAllCards(in context: NSManagedObjectContext) {
+    private static func removeAllCards(in context: NSManagedObjectContext) {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderCard.classNameWithoutNamespaces())
         fetchRequest.returnsObjectsAsFaults = false
 

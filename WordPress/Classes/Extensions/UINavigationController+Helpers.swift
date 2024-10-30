@@ -4,7 +4,7 @@ extension UINavigationController {
     @objc func scrollContentToTopAnimated(_ animated: Bool) {
         guard viewControllers.count == 1 else { return }
 
-        if let topViewController = topViewController as? WPScrollableViewController {
+        if let topViewController = topViewController as? ScrollableViewController {
             topViewController.scrollViewToTop()
         } else if let scrollView = topViewController?.view as? UIScrollView {
             // If the view controller's view is a scrollview
@@ -39,4 +39,8 @@ extension UINavigationController {
         viewController.navigationItem.rightBarButtonItem = rightBarButton
         self.pushViewController(viewController, animated: animated)
     }
+}
+
+protocol ScrollableViewController {
+    func scrollViewToTop()
 }

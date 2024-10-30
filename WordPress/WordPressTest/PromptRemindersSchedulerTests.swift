@@ -42,6 +42,7 @@ class PromptRemindersSchedulerTests: XCTestCase {
         dateProvider = MockCurrentDateProvider(currentDate)
         blog = makeBlog()
         accountService = makeAccountService()
+        blog.account = try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext)
         localStore = MockLocalFileStore()
         scheduler = PromptRemindersScheduler(bloggingPromptsServiceFactory: serviceFactory,
                                              notificationScheduler: notificationScheduler,
@@ -333,6 +334,7 @@ class PromptRemindersSchedulerTests: XCTestCase {
         // Arrange
         let schedule = scheduleForToday
         let controlBlog = makeBlog()
+        controlBlog.account = try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext)
         let controlSiteID = controlBlog.dotComID!.intValue
 
         // first, schedule reminders in the control blog.

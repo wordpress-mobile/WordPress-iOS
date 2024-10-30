@@ -8,7 +8,7 @@ import Gravatar
 
 public protocol GravatarImageUploader {
     @discardableResult
-    func upload(_ image: UIImage, email: Email, accessToken: String) async throws -> URLResponse
+    func upload(_ image: UIImage, selectionBehavior: AvatarSelection, accessToken: String) async throws -> AvatarType
 }
 
 extension AvatarService: GravatarImageUploader { }
@@ -68,7 +68,10 @@ public class GravatarService {
 
         Task {
             do {
-                try await imageUploader.upload(image, email: Email(email), accessToken: accountToken)
+                // The `/v3` gravatar upload endpoint expects the image to be a perfect square, otherwise fails.
+                // Thus, we call `.squared()` (which will do nothing if the image is already square).
+                // cropping(to: ...) sometimes generates edges a few pixels uneven. So `.squared()` will compensate.
+                try await imageUploader.upload(image.squared(), selectionBehavior: .selectUploadedImage(for: Email(email)), accessToken: accountToken)
                 DDLogInfo("GravatarService.uploadImage Success!")
                 completion?(nil)
             } catch {

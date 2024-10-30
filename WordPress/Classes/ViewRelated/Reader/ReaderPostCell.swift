@@ -61,7 +61,7 @@ final class ReaderPostCell: UITableViewCell {
     }
 
     private func updateSeparatorsInsets() {
-        separatorInset = UIEdgeInsets(.leading, isSeparatorHidden ? 9999 : view.insets.left + contentView.readableContentGuide.layoutFrame.minX)
+        separatorInset = UIEdgeInsets(.leading, isSeparatorHidden ? 9999 : view.insets.left + (isCompact ? 0 : contentView.readableContentGuide.layoutFrame.minX))
     }
 
     override func updateConstraints() {
@@ -132,6 +132,9 @@ private final class ReaderPostCellView: UIView {
     private func setupStyle() {
         avatarView.layer.cornerRadius = ReaderPostCell.avatarSize / 2
         avatarView.layer.masksToBounds = true
+        avatarView.successBackgroundColor = UIColor.white
+        avatarView.layer.borderWidth = 0.5
+        avatarView.layer.borderColor = UIColor.opaqueSeparator.withAlphaComponent(0.5).cgColor
         avatarView.isErrorViewEnabled = false
 
         buttonAuthor.maximumContentSizeCategory = .accessibilityLarge
@@ -277,7 +280,7 @@ private final class ReaderPostCellView: UIView {
         return ReaderPostMenu(
             post: viewModel.post,
             topic: viewController.readerTopic,
-            button: buttonMore,
+            anchor: buttonMore,
             viewController: viewController
         ).makeMenu()
     }
@@ -299,6 +302,11 @@ private final class ReaderPostCellView: UIView {
             imageView.setImage(with: imageURL)
         }
 
+        configureToolbar(with: viewModel.toolbar)
+        configureToolbarAccessibility(with: viewModel.toolbar)
+    }
+
+    private func configureToolbar(with viewModel: ReaderPostToolbarViewModel) {
         buttons.bookmark.configuration = {
             var configuration = buttons.bookmark.configuration ?? .plain()
             configuration.image = UIImage(systemName: viewModel.isBookmarked ? "bookmark.fill" : "bookmark")
@@ -320,8 +328,6 @@ private final class ReaderPostCellView: UIView {
                 return configuration
             }()
         }
-
-        configureAccessibility(with: viewModel)
     }
 
     private func setAvatar(with viewModel: ReaderPostCellViewModel) {
@@ -401,7 +407,7 @@ private extension ReaderPostCellView {
         buttons.like.accessibilityIdentifier = "reader-like-button"
     }
 
-    func configureAccessibility(with viewModel: ReaderPostCellViewModel) {
+    func configureToolbarAccessibility(with viewModel: ReaderPostToolbarViewModel) {
         buttons.bookmark.accessibilityLabel = viewModel.isBookmarked ? NSLocalizedString("reader.post.buttonRemoveBookmark.accessibilityLint", value: "Remove bookmark", comment: "Button accessibility label") : NSLocalizedString("reader.post.buttonBookmark.accessibilityLabel", value: "Bookmark", comment: "Button accessibility label")
         buttons.reblog.accessibilityLabel = NSLocalizedString("reader.post.buttonReblog.accessibilityLabel", value: "Reblog", comment: "Button accessibility label")
         buttons.comment.accessibilityLabel = {

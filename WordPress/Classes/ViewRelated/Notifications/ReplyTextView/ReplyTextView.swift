@@ -271,13 +271,13 @@ import Gridicons
         textView.contentInset = .zero
         textView.textContainerInset = .zero
         textView.autocorrectionType = .yes
-        textView.textColor = Style.textColor
+        textView.textColor = .label
         textView.textContainer.lineFragmentPadding = 0
         textView.layoutManager.allowsNonContiguousLayout = false
         textView.accessibilityIdentifier = "reply-text-view"
 
         // Placeholder
-        placeholderLabel.textColor = Style.placeholderColor
+        placeholderLabel.textColor = .tertiaryLabel
 
         // Fullscreen toggle button
         fullscreenToggleButton.setImage(.gridicon(.chevronUp), for: .normal)
@@ -286,17 +286,17 @@ import Gridicons
                                                                       comment: "Accessibility Label for the enter full screen button on the comment reply text view")
 
         // Reply button
-        replyButton.setTitleColor(Style.replyButtonColor, for: .normal)
+        replyButton.setTitleColor(UIAppColor.brand, for: .normal)
         replyButton.titleLabel?.text = NSLocalizedString("Reply", comment: "Reply to a comment.")
         replyButton.accessibilityIdentifier = "reply-button"
         replyButton.accessibilityLabel = NSLocalizedString("Reply", comment: "Accessibility label for the reply button")
         refreshReplyButton()
 
         // Background
-        contentView.backgroundColor = Style.backgroundColor
+        contentView.backgroundColor = .systemBackground
 
         // Top Separator
-        topSeparator.backgroundColor = Style.separatorColor
+        topSeparator.backgroundColor = .separator
         topSeparatorHeightConstraint.constant = .hairlineBorderWidth
 
         // Recognizers
@@ -344,7 +344,6 @@ import Gridicons
 
     // MARK: - Private Properties
     fileprivate var bundle: NSArray?
-    private typealias Style = WPStyleGuide.Reply
 
     // MARK: - IBOutlets
     @IBOutlet private weak var contentView: UIView!

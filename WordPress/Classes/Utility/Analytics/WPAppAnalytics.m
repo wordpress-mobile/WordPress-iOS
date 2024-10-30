@@ -204,12 +204,8 @@ NSString * const WPAppAnalyticsValueSiteTypeP2                      = @"p2";
         self.applicationOpenedTime = nil;
     }
 
-    [[ReaderTracker shared] stopAll];
-    [analyticsProperties addEntriesFromDictionary: [[ReaderTracker shared] data]];
-    
     [WPAnalytics track:WPAnalyticsStatApplicationClosed withProperties:analyticsProperties];
     [WPAnalytics endSession];
-    [[ReaderTracker shared] reset];
 }
 
 /**

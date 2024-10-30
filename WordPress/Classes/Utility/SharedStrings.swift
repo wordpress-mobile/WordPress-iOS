@@ -27,5 +27,9 @@ enum SharedStrings {
 
     enum Reader {
         static let unfollow = NSLocalizedString("reader.button.unfollow", value: "Unfollow", comment: "Reader sidebar button title")
+        static let recent = NSLocalizedString("reader.recent.title", value: "Recent", comment: "Used in multiple contexts, usually as a screen title")
+        static let discover = NSLocalizedString("reader.discover.title", value: "Discover", comment: "Used in multiple contexts, usually as a screen title")
+        static let saved = NSLocalizedString("reader.saved.title", value: "Saved", comment: "Used in multiple contexts, usually as a screen title")
+        static let likes = NSLocalizedString("reader.likes.title", value: "Likes", comment: "Used in multiple contexts, usually as a screen title")
     }
 }

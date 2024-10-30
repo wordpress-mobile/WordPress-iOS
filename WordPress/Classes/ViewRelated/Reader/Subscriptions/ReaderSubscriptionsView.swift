@@ -1,5 +1,6 @@
 import SwiftUI
 import WordPressUI
+import WordPressShared
 
 struct ReaderSubscriptionsView: View {
     @FetchRequest(

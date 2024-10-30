@@ -14,7 +14,7 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
     var secondary: UINavigationController
 
     /// The navigation controller for the main content when shown using tabs.
-    private let mainNavigationController = UINavigationController()
+    private var mainNavigationController = UINavigationController()
     private var latestContentVC: UIViewController?
 
     private var viewContext: NSManagedObjectContext {
@@ -37,11 +37,14 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
 
     // TODO: (reader) update to allow seamless transitions between split view and tabs
     @objc func prepareForTabBarPresentation() -> UINavigationController {
+        sidebar.onViewDidLoad = { [weak self] in
+            self?.showInitialSelection()
+        }
         sidebarViewModel.isCompact = true
+        sidebarViewModel.restoreSelection(defaultValue: nil)
         mainNavigationController.navigationBar.prefersLargeTitles = true
-        mainNavigationController.viewControllers = [sidebar]
+        mainNavigationController = UINavigationController(rootViewController: sidebar) // Loads sidebar lazily
         sidebar.navigationItem.backButtonDisplayMode = .minimal
-        showInitialSelection()
         return mainNavigationController
     }
 
@@ -111,7 +114,7 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
         case .recent, .discover, .likes:
             if let topic = screen.topicType.flatMap(sidebarViewModel.getTopic) {
                 if screen == .discover {
-                    return ReaderCardsStreamViewController.controller(topic: topic)
+                    return ReaderDiscoverViewController(topic: topic)
                 } else {
                     return ReaderStreamViewController.controllerWithTopic(topic)
                 }
@@ -143,7 +146,11 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
         case .addTag:
             let addTagVC = UIHostingController(rootView: ReaderTagsAddTagView())
             addTagVC.modalPresentationStyle = .formSheet
-            addTagVC.preferredContentSize = CGSize(width: 420, height: 124)
+            let preferredHeight: CGFloat = 124
+            addTagVC.sheetPresentationController?.detents = [.custom(resolver: { _ in
+                preferredHeight
+            })]
+            addTagVC.preferredContentSize = CGSize(width: 420, height: preferredHeight)
             sidebar.present(addTagVC, animated: true, completion: nil)
         case .discoverTags:
             let tags = viewContext.allObjects(
