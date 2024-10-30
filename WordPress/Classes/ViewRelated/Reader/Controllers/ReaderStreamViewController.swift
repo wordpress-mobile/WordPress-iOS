@@ -198,6 +198,13 @@ import AutomatticTracks
 
     var isEmbeddedInDiscover = false
 
+    private var isCompact = true {
+        didSet {
+            guard oldValue != isCompact else { return }
+            didChangeIsCompact(isCompact)
+        }
+    }
+
     // MARK: - Init
 
     /// Convenience method for instantiating an instance of ReaderStreamViewController
@@ -275,6 +282,8 @@ import AutomatticTracks
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        isCompact = traitCollection.horizontalSizeClass == .compact
+
         // Setup Site Blocking Controller
         self.siteBlockingController.delegate = self
 
@@ -351,6 +360,17 @@ import AutomatticTracks
         if didSetupView {
             refreshTableViewHeaderLayout()
         }
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        isCompact = traitCollection.horizontalSizeClass == .compact
+    }
+
+    private func didChangeIsCompact(_ isCompact: Bool) {
+        (tableView.tableHeaderView as? ReaderBaseHeaderView)?.isCompact = isCompact
+        tableView.reloadData()
     }
 
     // MARK: - Topic acquisition
@@ -471,6 +491,7 @@ import AutomatticTracks
             headerView.isHidden = tableHeaderView.isHidden
         }
 
+        (headerView as? ReaderBaseHeaderView)?.isCompact = isCompact
         tableView.tableHeaderView = headerView
         streamHeader = headerView as? ReaderStreamHeader
 
@@ -1397,8 +1418,6 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             hideSeparator(for: cell)
             return cell
         }
-
-        let isCompact = traitCollection.horizontalSizeClass == .compact
 
         if post.isCross() {
             let cell = tableConfiguration.crossPostCell(tableView)

@@ -4,8 +4,8 @@ protocol ReaderDiscoverHeaderViewDelegate: AnyObject {
     func readerDiscoverHeaderView(_ view: ReaderDiscoverHeaderView, didChangeSelection selection: ReaderDiscoverChannel)
 }
 
-final class ReaderDiscoverHeaderView: UIView, UITextViewDelegate {
-    private let titleView = ReaderStreamTitleView(insets: nil)
+final class ReaderDiscoverHeaderView: ReaderBaseHeaderView, UITextViewDelegate {
+    private let titleView = ReaderTitleView()
     private let channelsStackView = UIStackView(spacing: 8, [])
     private var channelViews: [ReaderDiscoverChannelView] = []
 
@@ -22,10 +22,11 @@ final class ReaderDiscoverHeaderView: UIView, UITextViewDelegate {
         scrollView.clipsToBounds = false
         channelsStackView.pinEdges()
         scrollView.heightAnchor.constraint(equalTo: channelsStackView.heightAnchor).isActive = true
+        scrollView.contentInset = UIEdgeInsets(.leading, -10) // Align the "channels"
 
         let stackView = UIStackView(axis: .vertical, spacing: 8, [titleView, scrollView])
-        addSubview(stackView)
-        stackView.pinEdges(insets: ReaderStreamTitleView.preferredInsets)
+        contentView.addSubview(stackView)
+        stackView.pinEdges()
 
         titleView.titleLabel.text = SharedStrings.Reader.discover
         titleView.detailsTextView.attributedText = {

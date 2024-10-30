@@ -51,12 +51,7 @@ final class ReaderPostCell: ReaderStreamBaseCell {
 
     override func updateConstraints() {
         NSLayoutConstraint.deactivate(contentViewConstraints)
-        contentViewConstraints = [
-            view.leadingAnchor.constraint(equalTo: isCompact ? contentView.leadingAnchor : contentView.readableContentGuide.leadingAnchor),
-            view.trailingAnchor.constraint(equalTo: isCompact ? contentView.trailingAnchor : contentView.readableContentGuide.trailingAnchor)
-        ]
-        NSLayoutConstraint.activate(contentViewConstraints)
-
+        contentViewConstraints = view.pinEdges(.horizontal, to: isCompact ? contentView : contentView.readableContentGuide)
         super.updateConstraints()
     }
 }

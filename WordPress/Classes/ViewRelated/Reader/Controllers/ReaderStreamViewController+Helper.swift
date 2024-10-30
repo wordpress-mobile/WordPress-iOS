@@ -12,7 +12,7 @@ extension ReaderStreamViewController {
 
     func headerForStream(_ topic: ReaderAbstractTopic?, isLoggedIn: Bool, container: UITableViewController) -> UIView? {
         if let topic, ReaderHelpers.topicIsFollowing(topic) {
-            return ReaderStreamTitleView.makeForFollowing()
+            return ReaderHeaderView.makeForFollowing()
         }
         if let topic,
            let header = headerForStream(topic) {
