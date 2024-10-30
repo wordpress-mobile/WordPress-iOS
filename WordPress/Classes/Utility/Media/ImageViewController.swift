@@ -6,7 +6,7 @@ final class ImageViewController {
     var downloader: ImageDownloader = .shared
     var onStateChanged: (State) -> Void = { _ in }
 
-    private var task: Task<Void, Never>?
+    private(set) var task: Task<Void, Never>?
 
     enum State {
         case loading

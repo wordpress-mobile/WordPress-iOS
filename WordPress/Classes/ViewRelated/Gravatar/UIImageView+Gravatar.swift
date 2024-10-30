@@ -71,10 +71,16 @@ extension UIImageView {
             }
 
             wp.setImage(with: urlToDownload)
+
             if forceRefresh {
-                // If this is a `forceRefresh`, the cache for the original url should be updated too.
-                ImageDownloader.shared.setCachedImage(image, for: fullURL)
+                // If this is a `forceRefresh`, the cache for the original URL should be updated too.
+                // Because the cache buster parameter modifies the download URL.
+                Task {
+                    await wp.controller.task?.value // Wait until setting the new image is done.
+                    ImageDownloader.shared.setCachedImage(image, for: fullURL) // Update the cache for the original URL
+                }
             }
+
             if image == nil { // If image wasn't found synchronously in memory cache
                 image = placeholder
             }
