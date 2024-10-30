@@ -137,13 +137,13 @@ class ReaderDetailCoordinatorTests: CoreDataTestCase {
 
         coordinator.share(fromView: button)
 
-        expect(postSharingControllerMock.didCallShareReaderPostWith).to(equal(post))
-        if case let .view(view) = postSharingControllerMock.didCallShareReaderPostWithView {
-            expect(view).to(equal(button))
+        XCTAssertEqual(postSharingControllerMock.didCallShareReaderPostWith, post)
+        if let view = postSharingControllerMock.didCallShareReaderPostWithView as? UIView {
+            XCTAssertEqual(view, button)
         } else {
-            fail("`postSharingControllerMock.didCallShareReaderPostWithView` should equal .view(button)")
+            XCTFail("`postSharingControllerMock.didCallShareReaderPostWithView` should equal .view(button)")
         }
-        expect(postSharingControllerMock.didCallShareReaderPostWithViewController).to(equal(viewMock))
+        XCTAssertEqual(postSharingControllerMock.didCallShareReaderPostWithViewController, viewMock)
     }
 
     /// Present a site preview in the current view stack
