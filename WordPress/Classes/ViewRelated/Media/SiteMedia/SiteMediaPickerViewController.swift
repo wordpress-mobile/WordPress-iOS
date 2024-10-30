@@ -23,6 +23,7 @@ final class SiteMediaPickerViewController: UIViewController, SiteMediaCollection
     ///   - blog: The site that contains the media
     ///   - filter: The types of media to display. By default, `nil` (show everything).
     ///   - allowsMultipleSelection: `false` by default.
+    ///   - initialSelection: `[]` by default.
     init(blog: Blog, filter: Set<MediaType>? = nil, allowsMultipleSelection: Bool = false, initialSelection: [Media] = []) {
         self.blog = blog
         self.allowsMultipleSelection = allowsMultipleSelection

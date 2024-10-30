@@ -22,6 +22,7 @@ struct MediaPickerMenu {
     ///   - viewController: The view controller to use for presentation.
     ///   - filter: By default, `nil` – allow all content types.
     ///   - isMultipleSelectionEnabled: By default, `false`.
+    ///   - initialSelection: By default, `[]`.
     init(viewController: UIViewController,
          filter: MediaFilter? = nil,
          isMultipleSelectionEnabled: Bool = false,
