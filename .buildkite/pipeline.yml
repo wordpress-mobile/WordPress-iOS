@@ -9,3 +9,6 @@ steps:
     matrix:
       - matrix value 1
       - matrix value 2
+    notify:
+      - github_commit_status:
+          context: Dummy step with {{matrix}}
