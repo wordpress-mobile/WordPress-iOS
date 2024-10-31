@@ -57,7 +57,9 @@ class MyProfileHeaderView: UITableViewHeaderFooterView {
         }
     }
 
-    @objc private func refreshAvatar() {
+    @objc private func refreshAvatar(_ notification: Foundation.Notification) {
+        guard let email = gravatarEmail,
+              notification.userInfoHasEmail(email) else { return }
         downloadAvatar(forceRefresh: true)
     }
 
@@ -94,7 +96,7 @@ class MyProfileHeaderView: UITableViewHeaderFooterView {
         imageViewButton.pinSubviewToAllEdges(gravatarImageView)
         if RemoteFeatureFlag.gravatarQuickEditor.enabled() {
             imageViewButton.addTarget(self, action: #selector(gravatarButtonTapped), for: .touchUpInside)
-            NotificationCenter.default.addObserver(self, selector: #selector(refreshAvatar), name: .GravatarImageUpdateNotification, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(refreshAvatar), name: .GravatarQEAvatarUpdateNotification, object: nil)
         }
     }
 

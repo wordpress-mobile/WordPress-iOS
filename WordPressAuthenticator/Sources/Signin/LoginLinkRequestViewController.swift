@@ -43,7 +43,7 @@ class LoginLinkRequestViewController: LoginViewController {
         } else {
             gravatarView?.isHidden = true
         }
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshAvatar), name: .GravatarImageUpdateNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshAvatar), name: .GravatarQEAvatarUpdateNotification, object: nil)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -56,7 +56,8 @@ class LoginLinkRequestViewController: LoginViewController {
         try await gravatarView?.setGravatarImage(with: email, rating: .x, forceRefresh: forceRefresh)
     }
 
-    @objc private func refreshAvatar() {
+    @objc private func refreshAvatar(_ notification: Foundation.Notification) {
+        guard notification.userInfoHasEmail(loginFields.username) else { return }
         Task {
             try await downloadAvatar(forceRefresh: true)
         }

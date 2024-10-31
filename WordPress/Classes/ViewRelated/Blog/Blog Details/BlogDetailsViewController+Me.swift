@@ -21,27 +21,29 @@ extension BlogDetailsViewController {
     }
 
     @objc func observeGravatarImageUpdate() {
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshAvatar(_:)), name: .GravatarQEAvatarUpdateNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateGravatarImage(_:)), name: .GravatarImageUpdateNotification, object: nil)
     }
 
-    @objc private func updateGravatarImage(_ notification: Foundation.Notification) {
-        if RemoteFeatureFlag.gravatarQuickEditor.enabled() {
-            guard let meRow else { return }
-            downloadGravatarImage(for: meRow, forceRefresh: true)
-        }
-        else {
-            guard let userInfo = notification.userInfo,
-                let email = userInfo["email"] as? String,
-                let image = userInfo["image"] as? UIImage,
-                let url = AvatarURL.url(for: email),
-                let gravatarIcon = image.gravatarIcon(size: Metrics.iconSize) else {
-                    return
-            }
+    @objc private func refreshAvatar(_ notification: Foundation.Notification) {
+        guard let meRow,
+              let email = blog.account?.email,
+              notification.userInfoHasEmail(email) else { return }
+        downloadGravatarImage(for: meRow, forceRefresh: true)
+    }
 
-            ImageCache.shared.setImage(image, forKey: url.absoluteString)
-            meRow?.image = gravatarIcon
-            reloadMeRow()
+    @objc private func updateGravatarImage(_ notification: Foundation.Notification) {
+        guard let userInfo = notification.userInfo,
+            let email = userInfo["email"] as? String,
+            let image = userInfo["image"] as? UIImage,
+            let url = AvatarURL.url(for: email),
+            let gravatarIcon = image.gravatarIcon(size: Metrics.iconSize) else {
+                return
         }
+
+        ImageCache.shared.setImage(image, forKey: url.absoluteString)
+        meRow?.image = gravatarIcon
+        reloadMeRow()
     }
 
     private func reloadMeRow() {

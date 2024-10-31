@@ -9,6 +9,8 @@ extension WPTabBarController {
     }
 
     @objc func observeGravatarImageUpdate() {
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshAvatar(_:)), name: .GravatarQEAvatarUpdateNotification, object: nil)
+
         NotificationCenter.default.addObserver(self, selector: #selector(updateGravatarImage(_:)), name: .GravatarImageUpdateNotification, object: nil)
 
         NotificationCenter.default.addObserver(self, selector: #selector(accountDidChange), name: .WPAccountDefaultWordPressComAccountChanged, object: nil)
@@ -36,21 +38,22 @@ extension WPTabBarController {
         }
     }
 
-    @objc private func updateGravatarImage(_ notification: Foundation.Notification) {
-        if RemoteFeatureFlag.gravatarQuickEditor.enabled() {
-            downloadImage(forceRefresh: true)
-        }
-        else {
-            guard let userInfo = notification.userInfo,
-                  let email = userInfo["email"] as? String,
-                  let image = userInfo["image"] as? UIImage,
-                  let url = AvatarURL.url(for: email) else {
-                return
-            }
+    @objc private func refreshAvatar(_ notification: Foundation.Notification) {
+        guard let email = defaultAccount()?.email,
+              notification.userInfoHasEmail(email) else { return }
+        downloadImage(forceRefresh: true)
+    }
 
-            ImageCache.shared.setImage(image, forKey: url.absoluteString)
-            meNavigationController.tabBarItem.configureGravatarImage(image)
+    @objc private func updateGravatarImage(_ notification: Foundation.Notification) {
+        guard let userInfo = notification.userInfo,
+              let email = userInfo["email"] as? String,
+              let image = userInfo["image"] as? UIImage,
+              let url = AvatarURL.url(for: email) else {
+            return
         }
+
+        ImageCache.shared.setImage(image, forKey: url.absoluteString)
+        meNavigationController.tabBarItem.configureGravatarImage(image)
     }
 
     @objc private func accountDidChange() {

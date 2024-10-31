@@ -59,10 +59,11 @@ class GravatarEmailTableViewCell: UITableViewCell {
         containerView.layer.cornerRadius = hasBorders ? 8 : 0
         containerView.layer.borderColor = hasBorders ? UIColor.systemGray3.cgColor : UIColor.clear.cgColor
 
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshAvatar), name: .GravatarImageUpdateNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshAvatar), name: .GravatarQEAvatarUpdateNotification, object: nil)
     }
 
-    @objc private func refreshAvatar() {
+    @objc private func refreshAvatar(_ notification: Foundation.Notification) {
+        guard let email, notification.userInfoHasEmail(email) else { return }
         Task {
             try await downloadAvatar(forceRefresh: true)
         }

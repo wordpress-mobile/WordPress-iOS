@@ -22,9 +22,7 @@ class EpilogueUserInfoCell: UITableViewCell {
         super.awakeFromNib()
         configureImages()
         configureColors()
-        if RemoteFeatureFlag.gravatarQuickEditor.enabled() {
-            NotificationCenter.default.addObserver(self, selector: #selector(refreshAvatar), name: .GravatarImageUpdateNotification, object: nil)
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshAvatar), name: .GravatarQEAvatarUpdateNotification, object: nil)
     }
 
     /// Configures the cell so that the LoginEpilogueUserInfo's payload is displayed
@@ -101,7 +99,8 @@ class EpilogueUserInfoCell: UITableViewCell {
         }
     }
 
-    @objc private func refreshAvatar() {
+    @objc private func refreshAvatar(_ notification: Foundation.Notification) {
+        guard let email, notification.userInfoHasEmail(email) else { return }
         downloadGravatar(forceRefresh: true)
     }
 

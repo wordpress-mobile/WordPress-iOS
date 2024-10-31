@@ -1,5 +1,6 @@
 import Foundation
 import GravatarUI
+import WordPressShared
 import WordPressAuthenticator
 
 @MainActor
@@ -29,7 +30,9 @@ struct GravatarQuickEditorPresenter {
             in: presentingViewController,
             onAvatarUpdated: {
                 AuthenticatorAnalyticsTracker.shared.track(click: .selectAvatar)
-                NotificationCenter.default.post(name: .GravatarImageUpdateNotification, object: self, userInfo: ["email": email])
+                NotificationCenter.default.post(name: .GravatarQEAvatarUpdateNotification,
+                                                object: self,
+                                                userInfo: [GravatarQEAvatarUpdateNotificationKeys.email.rawValue: email])
             }, onDismiss: {
                 // No op.
             }
