@@ -20,14 +20,23 @@ class GravatarServiceTests: CoreDataTestCase {
             }
         }
     }
+    struct AvatarMock: AvatarType {
+        var url: String
+        var id: String
+    }
 
     class ImageServiceMock: GravatarImageUploader {
         var capturedAccountToken: String = ""
         var capturedAccountEmail: String = ""
-        func upload(_ image: UIImage, email: Email, accessToken: String) async throws -> URLResponse {
-            capturedAccountEmail = email.rawValue
+        func upload(_ image: UIImage, selectionBehavior: AvatarSelection, accessToken: String) async throws -> AvatarType {
+            switch selectionBehavior {
+            case .selectUploadedImage(for: let email):
+                capturedAccountEmail = email.rawValue
+            default:
+                break
+            }
             capturedAccountToken = accessToken
-            return URLResponse()
+            return AvatarMock(url: "https://domain.com/avatar", id: "ID")
         }
     }
 

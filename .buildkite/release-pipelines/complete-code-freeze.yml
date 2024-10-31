@@ -1,9 +1,12 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/buildkite/pipeline-schema/main/schema.json
+---
+
 env:
   IMAGE_ID: $IMAGE_ID
 
 # The code freeze completion needs to run on macOS because it uses genstrings under the hood
 agents:
-    queue: mac
+  queue: mac
 
 steps:
   - label: Complete Code Freeze

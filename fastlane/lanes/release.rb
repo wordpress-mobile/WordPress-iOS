@@ -232,7 +232,7 @@ platform :ios do
     UI.user_error!('Aborted by user request') unless skip_user_confirmation || UI.confirm('Do you want to continue?')
 
     generate_strings_file_for_glotpress
-    download_localized_strings_and_metadata(options)
+    download_localized_strings_and_metadata
     lint_localizations(allow_retry: skip_user_confirmation == false)
 
     bump_build_codes
@@ -381,17 +381,19 @@ platform :ios do
     end
   end
 
-  # Finalizes a release at the end of a sprint to submit to the App Store
+  # Finalizes a release at the end of a sprint to submit to the App Store, triggering the final release build on CI
   #
-  #  - Updates store metadata
-  #  - Bumps final version number
-  #  - Removes branch protection and close milestone
-  #  - Triggers the final release on CI
+  # This lane performs the following actions:
+  # - Updates store metadata
+  # - Bumps final version number
+  # - Removes branch protection and closes milestone
+  # - Triggers the final release on CI
   #
-  # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
+  # @param skip_confirm [Boolean] Whether to skip confirmation prompts
   #
-  desc 'Trigger the final release build on CI'
-  lane :finalize_release do |options, skip_confirm: false|
+  lane :finalize_release do |skip_confirm: false|
+    UI.user_error!('To finalize a hotfix, please use the `finalize_hotfix_release` lane instead') if current_version_hotfix?
+
     ensure_git_branch_is_release_branch!
     ensure_git_status_clean
 
@@ -400,7 +402,7 @@ platform :ios do
 
     check_all_translations(interactive: skip_confirm == false)
 
-    download_localized_strings_and_metadata(options)
+    download_localized_strings_and_metadata
     lint_localizations(allow_retry: skip_confirm == false)
 
     bump_build_codes

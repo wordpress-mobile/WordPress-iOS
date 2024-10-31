@@ -137,13 +137,13 @@ class ReaderDetailCoordinatorTests: CoreDataTestCase {
 
         coordinator.share(fromView: button)
 
-        expect(postSharingControllerMock.didCallShareReaderPostWith).to(equal(post))
-        if case let .view(view) = postSharingControllerMock.didCallShareReaderPostWithView {
-            expect(view).to(equal(button))
+        XCTAssertEqual(postSharingControllerMock.didCallShareReaderPostWith, post)
+        if let view = postSharingControllerMock.didCallShareReaderPostWithView as? UIView {
+            XCTAssertEqual(view, button)
         } else {
-            fail("`postSharingControllerMock.didCallShareReaderPostWithView` should equal .view(button)")
+            XCTFail("`postSharingControllerMock.didCallShareReaderPostWithView` should equal .view(button)")
         }
-        expect(postSharingControllerMock.didCallShareReaderPostWithViewController).to(equal(viewMock))
+        XCTAssertEqual(postSharingControllerMock.didCallShareReaderPostWithViewController, viewMock)
     }
 
     /// Present a site preview in the current view stack
@@ -358,10 +358,10 @@ private class ReaderDetailViewMock: UIViewController, ReaderDetailView {
 
 private class PostSharingControllerMock: PostSharingController {
     var didCallShareReaderPostWith: ReaderPost?
-    var didCallShareReaderPostWithView: PostSharingController.PopoverAnchor?
+    var didCallShareReaderPostWithView: UIPopoverPresentationControllerSourceItem?
     var didCallShareReaderPostWithViewController: UIViewController?
 
-    override func shareReaderPost(_ post: ReaderPost, fromAnchor anchor: PostSharingController.PopoverAnchor, inViewController viewController: UIViewController) {
+    override func shareReaderPost(_ post: ReaderPost, fromAnchor anchor: UIPopoverPresentationControllerSourceItem, inViewController viewController: UIViewController) {
         didCallShareReaderPostWith = post
         didCallShareReaderPostWithView = anchor
         didCallShareReaderPostWithViewController = viewController

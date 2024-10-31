@@ -21,7 +21,11 @@ class TestKeychain: KeychainAccessible {
         return keychainItem.password
     }
 
-    func setPassword(for username: String, to newValue: String, serviceName: String) throws {
-        keychain[serviceName] = KeychainItem(username: username, password: newValue)
+    func setPassword(for username: String, to newValue: String?, serviceName: String) throws {
+        if let newValue {
+            keychain[serviceName] = KeychainItem(username: username, password: newValue)
+        } else {
+            keychain[serviceName] = nil
+        }
     }
 }

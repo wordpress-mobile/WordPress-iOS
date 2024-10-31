@@ -1,3 +1,6 @@
+import UIKit
+import WordPressShared
+
 /// Wraps WPTableViewHandler so that we can start abstracting coredata out of some view controllers
 final class ReaderTableContent {
     private var tableViewHandler: WPTableViewHandler?

@@ -683,6 +683,7 @@ extension WordPressAppDelegate {
             removeNotificationExtensionConfiguration()
             windowManager.showFullscreenSignIn()
             stopObservingAppleIDCredentialRevoked()
+            clearReaderStuff()
         }
 
         toggleExtraDebuggingIfNeeded()
@@ -692,6 +693,15 @@ extension WordPressAppDelegate {
 
     @objc fileprivate func handleLowMemoryWarningNotification(_ notification: NSNotification) {
         WPAnalytics.track(.lowMemoryWarning)
+    }
+
+    private func clearReaderStuff() {
+        ReaderPostService(coreDataStack: ContextManager.shared).deletePostsWithNoTopic()
+        ReaderTopicService(coreDataStack: ContextManager.shared).deleteAllTopics()
+        ReaderPostService(coreDataStack: ContextManager.shared).clearInUseFlags()
+        ReaderTopicService(coreDataStack: ContextManager.shared).clearInUseFlags()
+        ReaderPostService(coreDataStack: ContextManager.shared).clearSavedPostFlags()
+        ReaderSearchSuggestionService(coreDataStack: ContextManager.sharedInstance()).deleteAllSuggestions()
     }
 }
 
@@ -857,7 +867,7 @@ extension WordPressAppDelegate {
         }
 
         let service = WordPressComSyncService()
-        service.syncWPCom(authToken: "valid_token", isJetpackLogin: true, onSuccess: { account in
+        service.syncWPCom(authToken: "valid_token", isJetpackLogin: false, onSuccess: { account in
             if let blog = try? BlogQuery().hostname(containing: wpComSiteAddress).blog(in: ContextManager.shared.mainContext) {
                 self.windowManager.showUI(for: blog)
             } else {

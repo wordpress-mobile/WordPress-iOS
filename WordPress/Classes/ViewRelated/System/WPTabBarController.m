@@ -6,7 +6,6 @@
 #import "Blog.h"
 
 #import "BlogDetailsViewController.h"
-#import "WPScrollableViewController.h"
 #import "WPAppAnalytics.h"
 #import "WordPress-Swift.h"
 
@@ -41,8 +40,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 @property (nonatomic, strong) MeViewController *meViewController;
 @property (nonatomic, strong) UINavigationController *meNavigationController;
-
-@property (nonatomic, strong) ReaderTabViewModel *readerTabViewModel;
 
 @property (nonatomic, strong, nullable) MySitesCoordinator *mySitesCoordinator;
 @property (nonatomic, strong, nullable) ReaderPresenter *readerPresenter;
@@ -130,12 +127,9 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         if (self.shouldUseStaticScreens) {
             UIViewController *rootVC = [[MovedToJetpackViewController alloc] initWithSource:MovedToJetpackSourceReader];
             _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:rootVC];
-        } else if ([Feature enabled:FeatureFlagReaderReset]) {
+        } else {
             _readerPresenter = [[ReaderPresenter alloc] init];
             _readerNavigationController = [_readerPresenter prepareForTabBarPresentation];
-        } else {
-            UIViewController *rootVC = self.makeReaderTabViewController;
-            _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:rootVC];
         }
         _readerNavigationController.view.backgroundColor = [UIColor systemBackgroundColor];
 
@@ -206,14 +200,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     }
 
     return UIEdgeInsetsMake(offset, 0, -offset, 0);
-}
-
-- (ReaderTabViewModel *)readerTabViewModel
-{
-    if (!_readerTabViewModel) {
-        _readerTabViewModel = [self makeReaderTabViewModel];
-    }
-    return _readerTabViewModel;
 }
 
 - (void)reloadTabs

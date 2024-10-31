@@ -8,29 +8,37 @@ class ReaderTests: XCTestCase {
         try await WireMock.setUpScenario(scenario: "reader_subscriptions_flow")
         try await WireMock.setUpScenario(scenario: "reader_like_post_flow")
 
-        _ = try makeMainNavigationComponent()
+        try makeMainNavigationComponent()
             .goToReaderScreen()
+    }
+
+    func openStream(_ stream: ReaderMenuScreen.ReaderStream) throws -> ReaderScreen {
+        if XCTestCase.isPad {
+            return try ReaderScreen()
+                .switchToStream(stream)
+        } else {
+            // iPhone starts on the root screen before you make any selection
+            return try ReaderMenuScreen()
+                .open(stream)
+        }
     }
 }
 
 class ReaderTests_01: ReaderTests {
     func testViewPost() throws {
-        try ReaderScreen()
-            .switchToStream(.subscriptions)
+        try openStream(.recent)
             .openLastPost()
             .verifyPostContentEquals(.expectedPostContent)
     }
 
     func testViewPostInSafari() throws {
-        try ReaderScreen()
-            .switchToStream(.subscriptions)
+        try openStream(.recent)
             .openLastPostInSafari()
             .verifyPostContentEquals(.expectedPostContent)
     }
 
     func testDiscover() throws {
-        try ReaderScreen()
-            .switchToStream(.discover)
+        try openStream(.discover)
             .selectTag()
             .verifyTagLoaded()
             .followTag()
@@ -40,41 +48,33 @@ class ReaderTests_01: ReaderTests {
 
 class ReaderTests_02: ReaderTests {
     func testAddCommentToPost() throws {
-        try ReaderScreen()
-            .switchToStream(.subscriptions)
+        try openStream(.recent)
             .openLastPostComments()
             .verifyCommentsListEmpty()
             .replyToPost(.commentContent)
             .verifyCommentSent(.commentContent)
     }
 
-    func testInteractWithPost() throws {
-        try _testSavePost()
-        try _testLikePost()
-    }
-
-    func _testSavePost() throws {
+    func testSavePost() throws {
         // Get saved post label
-        let (updatedReaderScreen, savedPostLabel) = try ReaderScreen()
-            .switchToStream(.saved)
+        let (updatedReaderScreen, savedPostLabel) = try openStream(.saved)
             .verifySavedPosts(state: .withoutPosts)
-            .switchToStream(.subscriptions)
+            .switchToStream(.recent)
             .saveFirstPost()
 
         // Open saved posts tab and validate that the correct saved post is displayed
-        updatedReaderScreen
+        try updatedReaderScreen
             .switchToStream(.saved)
             .verifySavedPosts(state: .withPosts, postLabel: savedPostLabel)
     }
 
-    func _testLikePost() throws {
-        try ReaderScreen()
-            .switchToStream(.liked)
+    func testLikePost() throws {
+        try openStream(.likes)
             .verifyLikedPosts(state: .withoutPosts)
-            .switchToStream(.subscriptions)
+            .switchToStream(.recent)
             .likeFirstPost()
-            .verifyPostLikedOnFollowingTab()
-            .switchToStream(.liked)
+            .verifyFirstPostLiked()
+            .switchToStream(.likes)
             .verifyLikedPosts(state: .withPosts)
     }
 }

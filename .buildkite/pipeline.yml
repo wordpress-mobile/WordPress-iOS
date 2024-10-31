@@ -68,7 +68,7 @@ steps:
   - group: "🔬 UI Tests"
     steps:
       - label: "🔬 :jetpack: UI Tests (iPhone)"
-        command: .buildkite/commands/run-ui-tests.sh 'iPhone 16 (18.0)'
+        command: .buildkite/commands/run-ui-tests.sh 'iPhone 16'
         depends_on: "build_jetpack"
         plugins: [$CI_TOOLKIT_PLUGIN]
         artifact_paths:
@@ -79,7 +79,7 @@ steps:
               context: "UI Tests (iPhone)"
 
       - label: "🔬 :jetpack: UI Tests (iPad)"
-        command: .buildkite/commands/run-ui-tests.sh 'iPad (10th generation) (18.0)'
+        command: .buildkite/commands/run-ui-tests.sh 'iPad (10th generation)'
         depends_on: "build_jetpack"
         plugins: [$CI_TOOLKIT_PLUGIN]
         artifact_paths:

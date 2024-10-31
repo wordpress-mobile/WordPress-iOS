@@ -16,7 +16,11 @@ final class ImageView: UIView {
         case spinner
     }
 
+    var isErrorViewEnabled = true
     var loadingStyle = LoadingStyle.background
+
+    /// The background color to use when the image is loaded.
+    var successBackgroundColor = UIColor.clear
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -68,9 +72,11 @@ final class ImageView: UIView {
         case .success(let image):
             imageView.configure(image: image)
             imageView.isHidden = false
-            backgroundColor = .clear
+            backgroundColor = successBackgroundColor
         case .failure:
-            makeErrorView().isHidden = false
+            if isErrorViewEnabled {
+                makeErrorView().isHidden = false
+            }
         }
     }
 

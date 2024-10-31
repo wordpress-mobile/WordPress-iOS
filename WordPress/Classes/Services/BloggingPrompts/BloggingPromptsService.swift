@@ -207,7 +207,7 @@ class BloggingPromptsService {
             }
 
             // fetch the default account and fall back to default values as needed.
-            guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext) else {
+            guard let account = blogInContext?.account else {
                 return (
                     blogInContext?.dotComID,
                     remote,

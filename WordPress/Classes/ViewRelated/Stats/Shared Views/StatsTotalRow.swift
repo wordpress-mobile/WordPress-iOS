@@ -446,7 +446,7 @@ private extension StatsTotalRow {
 
         if let disclosureURL = rowData?.disclosureURL {
             if let statSection = rowData?.statSection,
-               statSection == .periodPostsAndPages {
+               statSection == .periodPostsAndPages || statSection == .periodAuthors {
                 guard let postID = rowData?.postID else {
                     DDLogInfo("No postID available to show Post Stats.")
                     return

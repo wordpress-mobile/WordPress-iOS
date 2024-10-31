@@ -29,10 +29,6 @@ extension WPStyleGuide {
         .separator
     }
 
-    @objc public class func readerCardCellHighlightedBorderColor() -> UIColor {
-        UIAppColor.neutral(.shade10)
-    }
-
     public class func readerCardBlogIconBorderColor() -> UIColor {
         return UIColor(light: UIAppColor.gray(.shade0), dark: .systemGray5)
     }
@@ -86,30 +82,11 @@ extension WPStyleGuide {
 
     // MARK: - Apply Card Styles
 
-    @objc public class func applyReaderCardSiteButtonStyle(_ button: UIButton) {
-        guard let titleLabel = button.titleLabel else {
-            return
-        }
-        WPStyleGuide.configureLabel(titleLabel, textStyle: Cards.buttonTextStyle)
-        button.setTitleColor(UIAppColor.primary, for: UIControl.State())
-        button.setTitleColor(UIAppColor.primaryDark, for: .highlighted)
-        button.setTitleColor(.label, for: .disabled)
-    }
-
     public class func applyReaderCardAttributionLabelStyle(_ label: UILabel) {
         label.textColor = UIColor(
             light: UIAppColor.gray(.shade80),
             dark: .secondaryLabel
         )
-    }
-
-    @objc public class func applyReaderCardActionButtonStyle(_ button: UIButton) {
-        guard let titleLabel = button.titleLabel else {
-            return
-        }
-        WPStyleGuide.configureLabel(titleLabel, textStyle: Cards.buttonTextStyle)
-
-        WPStyleGuide.applyReaderActionButtonStyle(button)
     }
 
     // MARK: - Apply Stream Header Styles
@@ -125,16 +102,6 @@ extension WPStyleGuide {
 
     @objc public class func applyReaderStreamHeaderDetailStyle(_ label: UILabel) {
         label.font = fontForTextStyle(.subheadline, fontWeight: .regular)
-        label.textColor = .secondaryLabel
-    }
-
-    @objc public class func applyReaderSiteStreamDescriptionStyle(_ label: UILabel) {
-        label.font = fontForTextStyle(.body, fontWeight: .regular)
-        label.textColor = .label
-    }
-
-    @objc public class func applyReaderSiteStreamCountStyle(_ label: UILabel) {
-        WPStyleGuide.configureLabel(label, textStyle: Cards.contentTextStyle)
         label.textColor = .secondaryLabel
     }
 
@@ -269,26 +236,6 @@ extension WPStyleGuide {
         } else {
             return NSLocalizedString("Save", comment: "Title of action button to save a Reader post to read later.")
         }
-    }
-
-    /// Applies the filter button style to the button passed as an argument
-    class func applyReaderFilterButtonStyle(_ button: UIButton) {
-        let icon = UIImage.gridicon(.filter)
-
-        button.setImage(icon, for: .normal)
-        applyReaderActionButtonStyle(button, titleColor: UIColor(light: .black, dark: .white))
-    }
-    /// Applies the filter button title to the button passed as an argument
-    class func applyReaderFilterButtonTitle(_ button: UIButton, title: String) {
-        button.setTitle(title, for: .normal)
-        button.setTitle(title, for: .highlighted)
-    }
-    /// Applies the reset filter button style to the button passed as an argument
-    class func applyReaderResetFilterButtonStyle(_ button: UIButton) {
-        let icon = UIImage.gridicon(.crossSmall)
-
-        button.setImage(icon, for: .normal)
-        applyReaderActionButtonStyle(button, imageColor: UIColor(light: .black, dark: .white))
     }
 
     // MARK: - Gap Marker Styles

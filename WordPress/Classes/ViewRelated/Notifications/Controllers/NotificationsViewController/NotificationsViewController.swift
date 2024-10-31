@@ -1962,7 +1962,7 @@ extension NotificationsViewController: UIViewControllerTransitioningDelegate {
 
 // MARK: - Scrolling
 //
-extension NotificationsViewController: WPScrollableViewController {
+extension NotificationsViewController: ScrollableViewController {
     // Used to scroll view to top when tapping on tab bar item when VC is already visible.
     func scrollViewToTop() {
         if isViewLoaded {

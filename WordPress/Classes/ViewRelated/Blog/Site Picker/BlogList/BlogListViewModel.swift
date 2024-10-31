@@ -1,5 +1,6 @@
 import CoreData
 import SwiftUI
+import WordPressShared
 
 final class BlogListViewModel: NSObject, ObservableObject {
     @Published var searchText = "" {

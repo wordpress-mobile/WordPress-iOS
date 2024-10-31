@@ -21,7 +21,7 @@ let package = Package(
         .package(url: "https://github.com/AliSoftware/OHHTTPStubs", from: "9.1.0"),
         .package(url: "https://github.com/Automattic/Automattic-Tracks-iOS", from: "3.4.2"),
         .package(url: "https://github.com/Automattic/AutomatticAbout-swift", from: "1.1.4"),
-        .package(url: "https://github.com/Automattic/Gravatar-SDK-iOS", from: "2.1.0"),
+        .package(url: "https://github.com/Automattic/Gravatar-SDK-iOS", from: "3.0.0"),
         .package(url: "https://github.com/Automattic/Gridicons-iOS", branch: "develop"),
         .package(url: "https://github.com/Automattic/ScreenObject", from: "0.2.3"),
         .package(url: "https://github.com/Automattic/XCUITestHelpers", from: "0.4.0"),
@@ -43,11 +43,11 @@ let package = Package(
         .package(url: "https://github.com/wordpress-mobile/MediaEditor-iOS", branch: "task/spm-support"),
         .package(url: "https://github.com/wordpress-mobile/NSObject-SafeExpectations", from: "0.0.6"),
         .package(url: "https://github.com/wordpress-mobile/NSURL-IDN", branch: "trunk"),
-        .package(url: "https://github.com/wordpress-mobile/WordPressKit-iOS", branch: "wpios-edition"),
+        .package(url: "https://github.com/wordpress-mobile/WordPressKit-iOS", branch: "task/reader-discover"),
         .package(url: "https://github.com/zendesk/support_sdk_ios", from: "8.0.3"),
         // We can't use wordpress-rs branches nor commits here. Only tags work.
         .package(url: "https://github.com/Automattic/wordpress-rs", revision: "alpha-swift-20240813"),
-        .package(url: "https://github.com/wordpress-mobile/GutenbergKit", revision: "c31879b834ef3ca5ea6b09040c96093ef627e029"),
+        .package(url: "https://github.com/wordpress-mobile/GutenbergKit", revision: "849118af582068f75807bc0f1265edeee4bf1b5e"),
         .package(url: "https://github.com/Automattic/color-studio", branch: "trunk"),
     ],
     targets: XcodeSupport.targets + [

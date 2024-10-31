@@ -11,14 +11,14 @@ struct ReaderSubscriptionCell: View {
 
     private var details: String {
         let components = [
-            URL(string: site.siteURL)?.host,
+            horizontalSizeClass == .compact ? nil : URL(string: site.siteURL)?.host,
             Strings.numberOfSubscriptions(with: site.subscriberCount.intValue)
         ]
         return components.compactMap { $0 }.joined(separator: " · ")
     }
 
     var body: some View {
-        HStack(spacing: 4) {
+        HStack(spacing: 0) {
             HStack(spacing: 16) {
                 let size = SiteIconViewModel.Size.regular
                 SiteIconView(viewModel: .init(readerSiteTopic: site, size: size))
@@ -65,7 +65,8 @@ struct ReaderSubscriptionCell: View {
                 }
             }
             .font(.subheadline)
-            .frame(width: 44, alignment: .center)
+            .frame(width: 34, alignment: .center)
+            .padding(.trailing, 6)
         }
         .buttonStyle(.plain)
         .popover(isPresented: $isShowingSettings) { settings }
@@ -75,7 +76,7 @@ struct ReaderSubscriptionCell: View {
     private var settings: some View {
         if horizontalSizeClass == .compact {
             ReaderSubscriptionNotificationSettingsView(siteID: site.siteID.intValue, isCompact: true)
-            .presentationDetents([.medium, .large])
+                .presentationDetents([.medium, .large])
                 .edgesIgnoringSafeArea(.all)
         } else {
             ReaderSubscriptionNotificationSettingsView(siteID: site.siteID.intValue)
@@ -110,6 +111,6 @@ private enum Strings {
     }
 
     private static func kFormatted(_ count: Int) -> String {
-        count >= 1000 ? String(format: "%.0fK", Double(count) / 1000) : String(count)
+        count.formatted(.number.notation(.compactName))
     }
 }
