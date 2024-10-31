@@ -77,7 +77,9 @@ extension UIImageView {
                 // Because the cache buster parameter modifies the download URL.
                 Task {
                     await wp.controller.task?.value // Wait until setting the new image is done.
-                    ImageDownloader.shared.setCachedImage(image, for: fullURL) // Update the cache for the original URL
+                    if let image {
+                        overrideImageCache(for: fullURL, with: image) // Update the cache for the original URL
+                    }
                 }
             }
 
