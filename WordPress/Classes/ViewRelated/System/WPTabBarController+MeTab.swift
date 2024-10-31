@@ -46,10 +46,10 @@ extension WPTabBarController {
 
     @objc private func updateGravatarImage(_ notification: Foundation.Notification) {
         guard let userInfo = notification.userInfo,
-              let email = userInfo["email"] as? String,
-              let image = userInfo["image"] as? UIImage,
-              let url = AvatarURL.url(for: email) else {
-            return
+            let email = userInfo["email"] as? String,
+            let image = userInfo["image"] as? UIImage,
+            let url = AvatarURL.url(for: email) else {
+                return
         }
 
         ImageCache.shared.setImage(image, forKey: url.absoluteString)
