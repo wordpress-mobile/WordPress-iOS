@@ -153,7 +153,7 @@ private final class ReaderDiscoverChannelView: UIView {
             backgroundView.backgroundColor = UIColor.label
             textLabel.textColor = UIColor.systemBackground
         } else {
-            backgroundView.backgroundColor = UIColor.opaqueSeparator.withAlphaComponent(0.33)
+            backgroundView.backgroundColor = UIColor(light: UIColor.opaqueSeparator.withAlphaComponent(0.33), dark: UIColor.opaqueSeparator)
             textLabel.textColor = UIColor.label
         }
     }
