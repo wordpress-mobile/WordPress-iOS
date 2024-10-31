@@ -152,14 +152,12 @@ class ReaderSiteSearchViewController: UITableViewController {
     }
 
     private func readerStreamViewController(for feed: ReaderFeed) -> ReaderStreamViewController? {
-        if let feedID = feed.feedID, let feedIDValue = Int(feedID) {
-            return ReaderStreamViewController.controllerWithSiteID(feedIDValue as NSNumber,
-                                                                   isFeed: true)
-        } else if let blogID = feed.blogID, let blogIDValue = Int(blogID) {
-            return ReaderStreamViewController.controllerWithSiteID(blogIDValue as NSNumber,
-                                                                   isFeed: false)
+        if let blogID = feed.blogID, let blogIDValue = Int(blogID) {
+            return ReaderStreamViewController.controllerWithSiteID(blogIDValue as NSNumber, isFeed: false)
+        } else if let feedID = feed.feedID, let feedIDValue = Int(feedID) {
+            return ReaderStreamViewController.controllerWithSiteID(feedIDValue as NSNumber, isFeed: true)
         }
-
+        wpAssertionFailure("missing both blogID and feedID")
         return nil
     }
 }
