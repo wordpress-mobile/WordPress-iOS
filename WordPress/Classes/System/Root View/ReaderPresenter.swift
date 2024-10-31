@@ -40,10 +40,11 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
         sidebar.onViewDidLoad = { [weak self] in
             self?.showInitialSelection()
         }
+
         sidebarViewModel.isCompact = true
         sidebarViewModel.restoreSelection(defaultValue: nil)
-        mainNavigationController.navigationBar.prefersLargeTitles = true
         mainNavigationController = UINavigationController(rootViewController: sidebar) // Loads sidebar lazily
+        mainNavigationController.navigationBar.prefersLargeTitles = true
         sidebar.navigationItem.backButtonDisplayMode = .minimal
         return mainNavigationController
     }
