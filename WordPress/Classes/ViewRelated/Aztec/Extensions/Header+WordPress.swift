@@ -16,6 +16,7 @@ extension Header.HeaderType {
         case .h4:   return FormattingIdentifier.header4
         case .h5:   return FormattingIdentifier.header5
         case .h6:   return FormattingIdentifier.header6
+        @unknown default: fatalError()
         }
     }
 
@@ -28,6 +29,7 @@ extension Header.HeaderType {
         case .h4: return AppLocalizedString("Heading 4", comment: "H4 Aztec Style")
         case .h5: return AppLocalizedString("Heading 5", comment: "H5 Aztec Style")
         case .h6: return AppLocalizedString("Heading 6", comment: "H6 Aztec Style")
+        @unknown default: fatalError()
         }
     }
 
@@ -40,6 +42,7 @@ extension Header.HeaderType {
         case .h4: return AppLocalizedString("Switches to the Heading 4 font size", comment: "Accessibility Identifier for the H4 Aztec Style")
         case .h5: return AppLocalizedString("Switches to the Heading 5 font size", comment: "Accessibility Identifier for the H5 Aztec Style")
         case .h6: return AppLocalizedString("Switches to the Heading 6 font size", comment: "Accessibility Identifier for the H6 Aztec Style")
+        @unknown default: fatalError()
         }
     }
 
