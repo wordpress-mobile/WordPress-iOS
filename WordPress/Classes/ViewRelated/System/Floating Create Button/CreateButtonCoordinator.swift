@@ -46,9 +46,7 @@ import WordPressUI
         super.init()
 
         // Only fetch the prompt if it is actually needed, i.e. on the FAB that has multiple actions.
-        // Temporarily show the sheet when the FAB is tapped on the Reader tab.
-        // TODO: (dvdchr) clean up once `readerFloatingButton` is removed.
-        if actions.count > 1 || source == Strings.readerSource {
+        if actions.count > 1 {
             fetchBloggingPrompt()
         }
     }
@@ -93,8 +91,7 @@ import WordPressUI
         }
 
         // Temporarily show the sheet when the FAB is tapped on the Reader tab.
-        // TODO: (dvdchr) clean up once `readerFloatingButton` is removed.
-        if actions.count == 1, source != Strings.readerSource {
+        if actions.count == 1 {
             actions.first?.handler()
         } else {
             let actionSheetVC = actionSheetController(with: viewController.traitCollection)
@@ -205,14 +202,7 @@ private extension CreateButtonCoordinator {
         let promptsHeaderView = BloggingPromptsHeaderView.view(for: prompt)
 
         promptsHeaderView.answerPromptHandler = { [weak self] in
-            let answerPromptEvent: WPAnalyticsEvent = {
-                if self?.source == Strings.readerSource {
-                    return .readerCreateSheetAnswerPromptTapped
-                }
-                return .promptsBottomSheetAnswerPrompt
-            }()
-
-            WPAnalytics.track(answerPromptEvent)
+            WPAnalytics.track(.promptsBottomSheetAnswerPrompt)
             self?.viewController?.dismiss(animated: true) {
                 let editor = EditPostViewController(blog: blog, prompt: prompt)
                 editor.modalPresentationStyle = .fullScreen
@@ -222,14 +212,7 @@ private extension CreateButtonCoordinator {
         }
 
         promptsHeaderView.infoButtonHandler = { [weak self] in
-            let helpEvent: WPAnalyticsEvent = {
-                if self?.source == Strings.readerSource {
-                    return .readerCreateSheetPromptHelpTapped
-                }
-                return .promptsBottomSheetHelp
-            }()
-
-            WPAnalytics.track(helpEvent)
+            WPAnalytics.track(.promptsBottomSheetHelp)
             guard let presentedViewController = self?.viewController?.presentedViewController else {
                 return
             }

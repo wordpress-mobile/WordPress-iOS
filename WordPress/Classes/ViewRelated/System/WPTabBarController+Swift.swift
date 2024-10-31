@@ -18,6 +18,13 @@ fileprivate extension WPTab {
 }
 
 extension WPTabBarController {
+    func showReader(path: ReaderNavigationPath?) {
+        showReaderTab()
+        if let path {
+            self.readerPresenter?.navigate(to: path)
+        }
+    }
+
     @objc public class var wpSigninDidFinishNotification: String {
         WordPressAuthenticator.WPSigninDidFinishNotification
     }

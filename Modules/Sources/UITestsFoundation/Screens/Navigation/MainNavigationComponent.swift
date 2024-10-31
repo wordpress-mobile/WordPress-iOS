@@ -3,7 +3,7 @@ import XCTest
 import UIKit
 
 public protocol MainNavigationComponent {
-    func goToReaderScreen() throws -> ReaderScreen
+    func goToReaderScreen() throws
     func goToNotificationsScreen() throws -> NotificationsScreen
     func goToMeScreen() throws -> MeTabScreen
 }

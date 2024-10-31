@@ -3,7 +3,6 @@ import WordPressUI
 
 protocol ReaderDetailHeaderViewDelegate: AnyObject {
     func didTapBlogName()
-    func didTapMenuButton(_ sender: UIView)
     func didTapHeaderAvatar()
     func didTapFollowButton(completion: @escaping () -> Void)
     func didSelectTopic(_ topic: String)

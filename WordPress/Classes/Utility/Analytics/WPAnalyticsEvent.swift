@@ -324,30 +324,6 @@ import Foundation
     case readerDiscoverChannelSelected
     case readerDiscoverEditInterestsTapped
 
-    // Reader: Filter Sheet
-    case readerFilterSheetDisplayed
-    case readerFilterSheetDismissed
-    case readerFilterSheetItemSelected
-    case readerFilterSheetCleared
-
-    // Reader: Manage
-    case readerManageViewDisplayed
-    case readerManageViewDismissed
-
-    // Reader: Navigation menu dropdown
-    case readerDropdownOpened
-    case readerDropdownItemTapped
-
-    // Reader: Tags Feed
-    case readerTagsFeedShown
-    case readerTagsFeedMoreFromTagTapped
-    case readerTagsFeedHeaderTapped
-
-    // Reader: Floating Button Experiment
-    case readerFloatingButtonShown
-    case readerCreateSheetAnswerPromptTapped
-    case readerCreateSheetPromptHelpTapped
-
     // App Settings
     case settingsDidChange
 
@@ -1207,43 +1183,6 @@ import Foundation
             return "reader_discover_channel_selected"
         case .readerDiscoverEditInterestsTapped:
             return "reader_discover_edit_interests_tapped"
-
-        // Reader: Filter Sheet
-        case .readerFilterSheetDisplayed:
-            return "reader_filter_sheet_displayed"
-        case .readerFilterSheetDismissed:
-            return "reader_filter_sheet_dismissed"
-        case .readerFilterSheetItemSelected:
-            return "reader_filter_sheet_item_selected"
-        case .readerFilterSheetCleared:
-            return "reader_filter_sheet_cleared"
-
-        // Reader: Manage View
-        case .readerManageViewDisplayed:
-            return "reader_manage_view_displayed"
-        case .readerManageViewDismissed:
-            return "reader_manage_view_dismissed"
-
-        // Reader: Navigation menu dropdown
-        case .readerDropdownOpened:
-            return "reader_dropdown_menu_opened"
-        case .readerDropdownItemTapped:
-            return "reader_dropdown_menu_item_tapped"
-
-        case .readerTagsFeedShown:
-            return "reader_tags_feed_shown"
-        case .readerTagsFeedMoreFromTagTapped:
-            return "reader_tags_feed_more_from_tag_tapped"
-        case .readerTagsFeedHeaderTapped:
-            return "reader_tags_feed_header_tapped"
-
-        // Reader: Floating Button Experiment
-        case .readerFloatingButtonShown:
-            return "reader_create_fab_shown"
-        case .readerCreateSheetAnswerPromptTapped:
-            return "my_site_create_sheet_answer_prompt_tapped"
-        case .readerCreateSheetPromptHelpTapped:
-            return "my_site_create_sheet_prompt_help_tapped"
 
         // App Settings
         case .settingsDidChange:

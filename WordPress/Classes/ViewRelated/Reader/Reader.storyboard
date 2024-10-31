@@ -1,34 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Reader-->
-        <scene sceneID="Pcf-kc-h08">
-            <objects>
-                <viewController storyboardIdentifier="ReaderStreamViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="His-O5-Cy6" customClass="ReaderStreamViewController" customModule="WordPress" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Pyc-Kx-lnt"/>
-                        <viewControllerLayoutGuide type="bottom" id="icf-FG-h6u"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="nFH-eq-cvg">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="437"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Reader" id="3YL-eA-YLl">
-                        <barButtonItem key="backBarButtonItem" title=" " id="ZAb-i3-3cA"/>
-                    </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="PGB-4k-ukk" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="687" y="470"/>
-        </scene>
         <!--Reader Followed Sites View Controller-->
         <scene sceneID="17b-6F-HOS">
             <objects>
@@ -103,9 +81,6 @@
                             </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PuG-YC-OIC">
                                 <rect key="frame" x="0.0" y="102" width="375" height="501"/>
-                                <connections>
-                                    <segue destination="His-O5-Cy6" kind="embed" id="xfh-l2-pdU"/>
-                                </connections>
                             </containerView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
