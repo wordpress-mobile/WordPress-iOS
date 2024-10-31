@@ -8,7 +8,7 @@ class ReaderBaseHeaderView: UIView {
     var isCompact: Bool = true {
         didSet {
             guard oldValue != isCompact else { return }
-            setNeedsUpdateConstraints()
+            didUpdateIsCompact(isCompact)
         }
     }
 
@@ -33,6 +33,10 @@ class ReaderBaseHeaderView: UIView {
         contentViewConstraints += contentView.pinEdges(.vertical, insets: insets)
 
         super.updateConstraints()
+    }
+
+    func didUpdateIsCompact(_ isCompact: Bool) {
+        setNeedsUpdateConstraints()
     }
 
     static func makeInsets(isCompact: Bool) -> UIEdgeInsets {

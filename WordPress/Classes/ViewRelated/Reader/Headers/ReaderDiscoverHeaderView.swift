@@ -7,6 +7,7 @@ protocol ReaderDiscoverHeaderViewDelegate: AnyObject {
 final class ReaderDiscoverHeaderView: ReaderBaseHeaderView, UITextViewDelegate {
     private let titleView = ReaderTitleView()
     private let channelsStackView = UIStackView(spacing: 8, [])
+    private let scrollView = UIScrollView()
     private var channelViews: [ReaderDiscoverChannelView] = []
 
     private var selectedChannel: ReaderDiscoverChannel?
@@ -16,13 +17,11 @@ final class ReaderDiscoverHeaderView: ReaderBaseHeaderView, UITextViewDelegate {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        let scrollView = UIScrollView()
         scrollView.addSubview(channelsStackView)
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.clipsToBounds = false
         channelsStackView.pinEdges()
         scrollView.heightAnchor.constraint(equalTo: channelsStackView.heightAnchor).isActive = true
-        scrollView.contentInset = UIEdgeInsets(.leading, -10) // Align the "channels"
 
         let stackView = UIStackView(axis: .vertical, spacing: 8, [titleView, scrollView])
         contentView.addSubview(stackView)
@@ -40,6 +39,8 @@ final class ReaderDiscoverHeaderView: ReaderBaseHeaderView, UITextViewDelegate {
             return details
         }()
         titleView.detailsTextView.delegate = self
+
+        updateStyle()
     }
 
     required init?(coder: NSCoder) {
@@ -60,6 +61,17 @@ final class ReaderDiscoverHeaderView: ReaderBaseHeaderView, UITextViewDelegate {
         selectedChannel = channel
         refreshChannelViews()
     }
+
+    override func didUpdateIsCompact(_ isCompact: Bool) {
+        super.didUpdateIsCompact(isCompact)
+        updateStyle()
+    }
+
+    private func updateStyle() {
+        scrollView.contentInset = UIEdgeInsets(.leading, isCompact ? 0 : -10) // Align the "channels"
+    }
+
+    // MARK: Channels
 
     private func makeChannelView(_ channel: ReaderDiscoverChannel) -> ReaderDiscoverChannelView {
         let view = ReaderDiscoverChannelView(channel: channel)
