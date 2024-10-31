@@ -14,7 +14,10 @@ extension WordPressAuthenticator: WordPressAuthenticatorProtocol {
             }
 
             Task { @MainActor in
-                await WordPressDotComAuthenticator().signIn(from: navigationController)
+                let accountID = await WordPressDotComAuthenticator().signIn(from: navigationController, context: .default)
+                if accountID != nil {
+                    WordPressAppDelegate.shared?.presentDefaultAccountPrimarySite(from: navigationController)
+                }
             }
 
             return true

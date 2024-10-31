@@ -9,46 +9,176 @@ import Alamofire
 ///
 /// API doc: https://developer.wordpress.com/docs/oauth2/
 struct WordPressDotComAuthenticator {
-    enum Error: Swift.Error {
+    enum SignInContext {
+        // Sign in to the app with a WordPress.com account.
+        // Using this context results in automatically reloading the app to display an site in the account.
+        case `default`
+        // Sign in to an existing account.
+        // This is typically used when the app needs to get a new OAuth token because the current one becomes invalid.
+        case reAuthentication(TaggedManagedObjectID<WPAccount>)
+        // Connect a site to Jetpack or sign in to an already connected site.
+        case jetpackSite(accountEmail: String?)
+
+        func accountEmail(in context: NSManagedObjectContext) -> String? {
+            switch self {
+            case .default:
+                return nil
+            case let .reAuthentication(accountID):
+                return (try? context.existingObject(with: accountID))?.email
+            case let .jetpackSite(email):
+                return email
+            }
+        }
+    }
+
+    enum AuthenticationError: Error {
         case invalidCallbackURL
         case loginDenied(message: String)
         case obtainAccessToken
         case urlError(URLError)
         case parsing(DecodingError)
         case cancelled
-        case unknown(Swift.Error)
+        case unknown(Error)
     }
 
+    enum SignInError: Error {
+        case authentication(AuthenticationError)
+        case fetchUser(Error)
+        case mismatchedEmail(expectedEmail: String)
+        case alreadySignedIn(signedInAccountEmail: String)
+        case loadingSites(Error)
+    }
+
+    private let coreDataStack: CoreDataStackSwift
+    private let authenticator: ((URL) throws(AuthenticationError) -> URL)?
+
+    init(
+        coreDataStack: CoreDataStackSwift = ContextManager.shared,
+        authenticator: ((URL) throws(AuthenticationError) -> URL)? = nil
+    ) {
+        self.coreDataStack = coreDataStack
+        self.authenticator = authenticator
+    }
+
+    /// Sign in WP.com account.
+    ///
+    /// - Parameters:
+    ///   - email: When provided, the signed-in account must be the account with the given email address.
     @MainActor
-    func signIn(from viewController: UINavigationController) async {
+    func signIn(from viewController: UIViewController, context: SignInContext) async -> TaggedManagedObjectID<WPAccount>? {
+        WPAnalytics.track(.wpcomWebSignIn, properties: ["stage": "start"])
+        do {
+            let account = try await attemptSignIn(from: viewController, context: context)
+            WPAnalytics.track(.wpcomWebSignIn, properties: ["stage": "success"])
+            return account
+        } catch {
+            present(error, from: viewController)
+            WPAnalytics.track(.wpcomWebSignIn, properties: ["stage": "error", "error": "\(error)"])
+            return nil
+        }
+    }
+
+    /// Sign in WP.com account.
+    ///
+    /// - SeeAlso: `signIn`
+    ///
+    /// - Parameters:
+    ///   - email: When provided, the signed-in account must be the account with the given email address.
+    @MainActor
+    func attemptSignIn(from viewController: UIViewController, context: SignInContext) async throws(SignInError) -> TaggedManagedObjectID<WPAccount> {
+        let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: coreDataStack.mainContext)
+        let hasAlreadySignedIn = defaultAccount != nil
+
         let token: String
         do {
-            token = try await authenticate(from: viewController)
+            token = try await authenticate(from: viewController, prefersEphemeralWebBrowserSession: hasAlreadySignedIn)
         } catch {
-            if let error = error as? WordPressDotComAuthenticator.Error {
-                presentSignInError(error, from: viewController)
-            } else {
-                wpAssertionFailure("WP.com web login failed", userInfo: ["error": "\(error)"])
-            }
-            return
+            throw .authentication(error)
         }
 
-        let delegate = WordPressAuthenticator.shared.delegate!
-        let credentials = AuthenticatorCredentials(wpcom: WordPressComCredentials(authToken: token, isJetpackLogin: false, multifactor: false))
         SVProgressHUD.show()
-        delegate.sync(credentials: credentials) {
+        defer {
             SVProgressHUD.dismiss()
-
-            delegate.presentLoginEpilogue(
-                in: viewController,
-                for: credentials,
-                source: .custom(source: "web-login"),
-                onDismiss: { /* Do nothing */ }
-            )
         }
+
+        // Fetch WP.com account details
+        let user: RemoteUser
+        do {
+            let service = AccountServiceRemoteREST(wordPressComRestApi: .defaultApi(oAuthToken: token, userAgent: WPUserAgent.defaultUserAgent()))
+            user = try await withCheckedThrowingContinuation { continuation in
+                service.getAccountDetails(success: { continuation.resume(returning: $0!) }, failure: { continuation.resume(throwing: $0!) })
+            }
+        } catch {
+            throw .fetchUser(error)
+        }
+
+        // Make sure the signed-in account matches the given `accountEmail` argument.
+        if let email = context.accountEmail(in: coreDataStack.mainContext), user.email != email {
+            throw .mismatchedEmail(expectedEmail: email)
+        }
+
+        if let defaultAccountEmail = defaultAccount?.email, defaultAccountEmail != user.email {
+            throw .alreadySignedIn(signedInAccountEmail: defaultAccountEmail)
+        }
+
+        // Save the signed-in account details (and sites) into Core Data.
+        let accountID: TaggedManagedObjectID<WPAccount>
+        do {
+            let isJetpackLogin: Bool
+            if case .jetpackSite = context {
+                isJetpackLogin = true
+            } else {
+                isJetpackLogin = false
+            }
+
+            let service = WordPressComSyncService(coreDataStack: coreDataStack)
+            accountID = try await service.syncWPCom(remoteUser: user, authToken: token, isJetpackLogin: isJetpackLogin)
+        } catch {
+            DDLogError("Failed to syncing WP.com account: \(error)")
+            throw .loadingSites(error)
+        }
+
+        // Post a notification if the current signed-in account is set as the default account.
+        // This sending notification code exists because that's what the existing login system does. We can consider
+        // removing this notification once WordPressAuthenticator is removed.
+        if case .default = context {
+            let notification = Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification)
+            let newAccount = try? coreDataStack.mainContext.existingObject(with: accountID)
+            NotificationCenter.default.post(name: notification, object: newAccount)
+        }
+
+        return accountID
     }
 
-    private func presentSignInError(_ error: WordPressDotComAuthenticator.Error, from viewController: UIViewController) {
+    func present(_ error: SignInError, from viewController: UIViewController) {
+        // Show an alert for non-cancellation errors.
+        let alertMessage: String
+        switch error {
+        case let .authentication(error):
+            present(error, from: viewController)
+            return
+        case .fetchUser:
+            alertMessage = NSLocalizedString("wpComLogin.error.fetchUser", value: "Failed to load user details", comment: "Error message when failing to load user details during WordPress.com login")
+        case let .mismatchedEmail(expectedEmail):
+            let format = NSLocalizedString("wpComLogin.error.mismatchedEmail", value: "Please sign in with email address %@", comment: "Error message when user signs in with an unexpected email address. The first argument is the expected email address")
+            alertMessage = String(format: format, expectedEmail)
+        case let .alreadySignedIn(signedInAccountEmail):
+            let format = NSLocalizedString("wpComLogin.error.alreadySignedIn", value: "You have already signed in with email address %@. Please sign out try again.", comment: "Error message when user signs in with an different account than the account that's alredy signed in. The first argument is the current signed-in account email address")
+            alertMessage = String(format: format, signedInAccountEmail)
+        case .loadingSites:
+            alertMessage = NSLocalizedString("wpComLogin.error.loadingSites", value: "Your account's sites cannot be loaded. Please try again later.", comment: "Error message when failing to load account's site after signing in")
+        }
+
+        let alert = UIAlertController(
+            title: NSLocalizedString("generic.error.title", value: "Error", comment: "A generic title for an error"),
+            message: alertMessage,
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: SharedStrings.Button.close, style: .cancel, handler: nil))
+        viewController.present(alert, animated: true)
+    }
+
+    func present(_ error: AuthenticationError, from viewController: UIViewController) {
         // Show an alert for non-cancellation errors.
         let alertMessage: String
         switch error {
@@ -75,20 +205,15 @@ struct WordPressDotComAuthenticator {
         viewController.present(alert, animated: true)
     }
 
-    func authenticate(from viewController: UIViewController) async throws -> String {
-        WPAnalytics.track(.wpcomWebSignIn, properties: ["stage": "start"])
-
-        do {
-            let value = try await _authenticate(from: viewController)
-            WPAnalytics.track(.wpcomWebSignIn, properties: ["stage": "success"])
-            return value
-        } catch {
-            WPAnalytics.track(.wpcomWebSignIn, properties: ["stage": "error", "error": "\(error)"])
-            throw error
-        }
-    }
-
-    private func _authenticate(from viewController: UIViewController) async throws -> String {
+    /// Get an OAuth access token from WP.com authentication.
+    ///
+    /// This method does not have any side effect to the app. No data will be stored as a result of successful or failed WP.com sign in.
+    ///
+    /// - SeeAlso `signIn`
+    func authenticate(
+        from viewController: UIViewController,
+        prefersEphemeralWebBrowserSession: Bool
+    ) async throws(AuthenticationError) -> String {
         let clientId = ApiCredentials.client
         let clientSecret = ApiCredentials.secret
         let redirectURI = "x-wordpress-app://oauth2-callback"
@@ -101,23 +226,34 @@ struct WordPressDotComAuthenticator {
                 URLQueryItem(name: "scope", value: "global"),
             ])
 
-        let callbackURL: URL = try await withCheckedThrowingContinuation { continuation in
+        let callbackURL = try await authorize(from: viewController, url: authorizeURL, prefersEphemeralWebBrowserSession: prefersEphemeralWebBrowserSession)
+
+        return try await handleAuthorizeCallbackURL(callbackURL, clientId: clientId, clientSecret: clientSecret, redirectURI: redirectURI)
+    }
+
+    private func authorize(from viewController: UIViewController, url authorizeURL: URL, prefersEphemeralWebBrowserSession: Bool) async throws(AuthenticationError) -> URL {
+        if let authenticator {
+            return try authenticator(authorizeURL)
+        }
+
+        return try await withCheckedTypedThrowingContinuation { continuation in
             DispatchQueue.main.async {
                 let provider = WebAuthenticationPresentationAnchorProvider(anchor: viewController.view.window ?? UIWindow())
                 let session = ASWebAuthenticationSession(url: authorizeURL, callbackURLScheme: "x-wordpress-app") { url, error in
+                    let result: Result<URL, AuthenticationError>
                     if let url {
-                        continuation.resume(returning: url)
+                        result = .success(url)
                     } else {
                         DDLogWarn("Error from authentication session: \(String(describing: error))")
-                        continuation.resume(throwing: Error.cancelled)
+                        result = .failure(.cancelled)
                     }
+                    continuation(result)
                 }
+                session.prefersEphemeralWebBrowserSession = prefersEphemeralWebBrowserSession
                 session.presentationContextProvider = provider
                 session.start()
             }
         }
-
-        return try await handleAuthorizeCallbackURL(callbackURL, clientId: clientId, clientSecret: clientSecret, redirectURI: redirectURI)
     }
 
     private func handleAuthorizeCallbackURL(
@@ -125,9 +261,9 @@ struct WordPressDotComAuthenticator {
         clientId: String,
         clientSecret: String,
         redirectURI: String
-    ) async throws -> String {
+    ) async throws(AuthenticationError) -> String {
         guard let query = URLComponents(url: url, resolvingAgainstBaseURL: true)?.queryItems else {
-            throw Error.invalidCallbackURL
+            throw .invalidCallbackURL
         }
 
         let queryMap: [String: String] = query.reduce(into: [:]) { $0[$1.name] = $1.value }
@@ -135,9 +271,9 @@ struct WordPressDotComAuthenticator {
         guard let code = queryMap["code"] else {
             if queryMap["error"] == "access_denied" {
                 let message = NSLocalizedString("wpComLogin.error.accessDenied", value: "Access denied. You need to approve to log in to WordPress.com", comment: "Error message when user denies access to WordPress.com")
-                throw Error.loginDenied(message: message)
+                throw .loginDenied(message: message)
             }
-            throw Error.invalidCallbackURL
+            throw .invalidCallbackURL
         }
 
         var tokenRequest = URLRequest(url: URL(string: "https://public-api.wordpress.com/oauth2/token")!)
@@ -154,7 +290,7 @@ struct WordPressDotComAuthenticator {
             tokenRequest = try URLEncodedFormParameterEncoder().encode(parameters, into: tokenRequest)
         } catch {
             wpAssertionFailure("Unexpected form encoding error", userInfo: ["error": "\(error)"])
-            throw Error.unknown(error)
+            throw .unknown(error)
         }
 
         do {
@@ -171,12 +307,25 @@ struct WordPressDotComAuthenticator {
 
             return token
         } catch let error as URLError {
-            throw Error.urlError(error)
+            throw .urlError(error)
         } catch let error as DecodingError {
-            throw Error.parsing(error)
+            throw .parsing(error)
         } catch {
             DDLogError("Failed to parse token request response: \(error)")
-            throw Error.unknown(error)
+            throw .unknown(error)
         }
+    }
+}
+
+/// typed-throw version of `withCheckedThrowingContinuation`
+private func withCheckedTypedThrowingContinuation<T, E: Error>(body: (@escaping ((Result<T, E>) -> Void)) -> Void) async throws(E) -> T {
+    do {
+        return try await withCheckedThrowingContinuation { continuation in
+            body {
+                continuation.resume(with: $0)
+            }
+        }
+    } catch {
+        throw (error as! E)
     }
 }

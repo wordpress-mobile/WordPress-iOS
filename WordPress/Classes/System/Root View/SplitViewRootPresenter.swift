@@ -147,7 +147,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
             showMeScreen(completion: nil)
         case .signIn:
             Task {
-                await self.signIn()
+                await WordPressDotComAuthenticator().signIn(from: splitVC, context: .default)
             }
         }
     }
@@ -178,21 +178,6 @@ final class SplitViewRootPresenter: RootViewPresenter {
     private func showAddSiteScreen(selection: AddSiteMenuViewModel.Selection) {
         AddSiteController(viewController: splitVC.presentedViewController ?? splitVC, source: "sidebar")
             .showSiteCreationScreen(selection: selection)
-    }
-
-    @MainActor private func signIn() async {
-        let token: String
-        do {
-            token = try await WordPressDotComAuthenticator().authenticate(from: splitVC)
-        } catch {
-            return
-        }
-
-        SVProgressHUD.show()
-        let credentials = WordPressComCredentials(authToken: token, isJetpackLogin: false, multifactor: false)
-        WordPressAuthenticator.shared.delegate!.sync(credentials: .init(wpcom: credentials)) {
-            SVProgressHUD.dismiss()
-        }
     }
 
     private func handleCoreDataChanges(_ notification: Foundation.Notification) {

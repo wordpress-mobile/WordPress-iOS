@@ -1,6 +1,5 @@
 import UIKit
 import SwiftUI
-import WordPressAuthenticator
 
 extension HomeSiteHeaderViewController {
 
