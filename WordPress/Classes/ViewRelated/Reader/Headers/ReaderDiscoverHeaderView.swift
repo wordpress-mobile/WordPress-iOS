@@ -132,6 +132,8 @@ private final class ReaderDiscoverChannelView: UIView {
 
         textLabel.font = UIFont.preferredFont(forTextStyle: .subheadline).withWeight(.medium)
         textLabel.text = channel.localizedTitle
+        textLabel.adjustsFontForContentSizeCategory = true
+        textLabel.maximumContentSizeCategory = .accessibilityMedium
 
         backgroundView.clipsToBounds = true
 

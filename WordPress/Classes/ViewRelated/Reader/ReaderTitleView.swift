@@ -10,8 +10,11 @@ final class ReaderTitleView: UIView {
         super.init(frame: .zero)
 
         titleLabel.font = UIFont.preferredFont(forTextStyle: .largeTitle).withWeight(.bold)
+        titleLabel.adjustsFontForContentSizeCategory = true
+
         detailsTextView.font = UIFont.preferredFont(forTextStyle: .subheadline)
         detailsTextView.textColor = .secondaryLabel
+        detailsTextView.adjustsFontForContentSizeCategory = true
 
         let stackView = UIStackView(axis: .vertical, alignment: .leading, [titleLabel, detailsTextView])
         addSubview(stackView)
