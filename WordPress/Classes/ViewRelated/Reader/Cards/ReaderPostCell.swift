@@ -2,15 +2,9 @@ import SwiftUI
 import UIKit
 import Combine
 
-final class ReaderPostCell: UITableViewCell {
+final class ReaderPostCell: ReaderStreamBaseCell {
     private let view = ReaderPostCellView()
-    private var isSeparatorHidden = false
-    private var isCompact: Bool = true {
-        didSet {
-            guard oldValue != isCompact else { return }
-            setNeedsUpdateConstraints()
-        }
-    }
+
     private var contentViewConstraints: [NSLayoutConstraint] = []
 
     static let avatarSize: CGFloat = 28
@@ -24,9 +18,12 @@ final class ReaderPostCell: UITableViewCell {
             view.topAnchor.constraint(equalTo: contentView.topAnchor),
             view.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).withPriority(999),
         ])
+    }
 
-        selectedBackgroundView = UIView()
-        selectedBackgroundView?.backgroundColor = UIColor.opaqueSeparator.withAlphaComponent(0.2)
+    static func makeSelectedBackgroundView() -> UIView {
+        let view = UIView()
+        view.backgroundColor = UIColor.opaqueSeparator.withAlphaComponent(0.2)
+        return view
     }
 
     required init?(coder: NSCoder) {
@@ -39,29 +36,17 @@ final class ReaderPostCell: UITableViewCell {
         view.prepareForReuse()
     }
 
-    func configure(
-        with viewModel: ReaderPostCellViewModel,
-        isCompact: Bool,
-        isSeparatorHidden: Bool
-    ) {
-        self.isSeparatorHidden = isSeparatorHidden
+    func configure(with viewModel: ReaderPostCellViewModel, isCompact: Bool) {
         self.isCompact = isCompact
 
         view.isCompact = isCompact
-        updateSeparatorsInsets()
         view.configure(with: viewModel)
 
         accessibilityLabel = "\(viewModel.author). \(viewModel.title). \(viewModel.details)"
     }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
-
-        updateSeparatorsInsets()
-    }
-
-    private func updateSeparatorsInsets() {
-        separatorInset = UIEdgeInsets(.leading, isSeparatorHidden ? 9999 : view.insets.left + (isCompact ? 0 : contentView.readableContentGuide.layoutFrame.minX))
+    override func didUpdateCompact(_ isCompact: Bool) {
+        setNeedsUpdateConstraints()
     }
 
     override func updateConstraints() {
@@ -78,7 +63,7 @@ final class ReaderPostCell: UITableViewCell {
 
 private final class ReaderPostCellView: UIView {
     // Header
-    let avatarView = ImageView()
+    let avatarView = ReaderAvatarView()
     let buttonAuthor = makeAuthorButton()
     let timeLabel = UILabel()
     let buttonMore = makeButton(systemImage: "ellipsis", font: .systemFont(ofSize: 13))
@@ -103,7 +88,7 @@ private final class ReaderPostCellView: UIView {
         }
     }
 
-    let insets = UIEdgeInsets(top: 0, left: 44, bottom: 0, right: 16)
+    let insets = ReaderStreamBaseCell.insets
 
     private var viewModel: ReaderPostCellViewModel? // important: has to retain
     private let coverAspectRatio: CGFloat = 239.0 / 358.0
@@ -130,13 +115,6 @@ private final class ReaderPostCellView: UIView {
     }
 
     private func setupStyle() {
-        avatarView.layer.cornerRadius = ReaderPostCell.avatarSize / 2
-        avatarView.layer.masksToBounds = true
-        avatarView.successBackgroundColor = UIColor.white
-        avatarView.layer.borderWidth = 0.5
-        avatarView.layer.borderColor = UIColor.opaqueSeparator.withAlphaComponent(0.5).cgColor
-        avatarView.isErrorViewEnabled = false
-
         buttonAuthor.maximumContentSizeCategory = .accessibilityLarge
         setupTimeLabel(timeLabel)
         timeLabel.setContentCompressionResistancePriority(.init(800), for: .horizontal)
@@ -331,7 +309,7 @@ private final class ReaderPostCellView: UIView {
     }
 
     private func setAvatar(with viewModel: ReaderPostCellViewModel) {
-        avatarView.imageView.image = UIImage(named: "post-blavatar-placeholder")
+        avatarView.setPlaceholder(UIImage(named: "post-blavatar-placeholder"))
         let avatarSize = CGSize(width: ReaderPostCell.avatarSize, height: ReaderPostCell.avatarSize)
             .scaled(by: UITraitCollection.current.displayScale)
         if let avatarURL = viewModel.avatarURL {

@@ -1,13 +1,14 @@
+import UIKit
+
 /// Registration and dequeuing of cells for table views in Reader
 final class ReaderTableConfiguration {
     private let footerViewNibName = "PostListFooterView"
-    private let readerPostCellReuseIdentifier = "ReaderPostCellReuseIdentifier"
-    private let readerBlockedCellNibName = "ReaderBlockedSiteCell"
-    private let readerBlockedCellReuseIdentifier = "ReaderBlockedCellReuseIdentifier"
-    private let readerGapMarkerCellNibName = "ReaderGapMarkerCell"
-    private let readerGapMarkerCellReuseIdentifier = "ReaderGapMarkerCellReuseIdentifier"
-    private let readerCrossPostCellNibName = "ReaderCrossPostCell"
-    private let readerCrossPostCellReuseIdentifier = "ReaderCrossPostCellReuseIdentifier"
+    private let postCellReuseIdentifier = "ReaderPostCellReuseIdentifier"
+    private let crossPostCellReuseIdentifier = "ReaderCrossPostCellReuseIdentifier"
+    private let blockedCellNibName = "ReaderBlockedSiteCell"
+    private let blockedCellReuseIdentifier = "ReaderBlockedCellReuseIdentifier"
+    private let gapMarkerCellNibName = "ReaderGapMarkerCell"
+    private let gapMarkerCellReuseIdentifier = "ReaderGapMarkerCellReuseIdentifier"
 
     private let rowHeight = CGFloat(415.0)
 
@@ -15,9 +16,9 @@ final class ReaderTableConfiguration {
         setupAccessibility(tableView)
         setUpBlockerCell(tableView)
         setUpGapMarkerCell(tableView)
-        setUpCrossPostCell(tableView)
 
-        tableView.register(ReaderPostCell.self, forCellReuseIdentifier: readerPostCellReuseIdentifier)
+        tableView.register(ReaderPostCell.self, forCellReuseIdentifier: postCellReuseIdentifier)
+        tableView.register(ReaderCrossPostCell.self, forCellReuseIdentifier: crossPostCellReuseIdentifier)
     }
 
     private func setupAccessibility(_ tableView: UITableView) {
@@ -25,18 +26,13 @@ final class ReaderTableConfiguration {
     }
 
     private func setUpBlockerCell(_ tableView: UITableView) {
-        let nib = UINib(nibName: readerBlockedCellNibName, bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: readerBlockedCellReuseIdentifier)
+        let nib = UINib(nibName: blockedCellNibName, bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: blockedCellReuseIdentifier)
     }
 
     private func setUpGapMarkerCell(_ tableView: UITableView) {
-        let nib = UINib(nibName: readerGapMarkerCellNibName, bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: readerGapMarkerCellReuseIdentifier)
-    }
-
-    private func setUpCrossPostCell(_ tableView: UITableView) {
-        let nib = UINib(nibName: readerCrossPostCellNibName, bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: readerCrossPostCellReuseIdentifier)
+        let nib = UINib(nibName: gapMarkerCellNibName, bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: gapMarkerCellReuseIdentifier)
     }
 
     func footer() -> PostListFooterView {
@@ -52,18 +48,18 @@ final class ReaderTableConfiguration {
     }
 
     func crossPostCell(_ tableView: UITableView) -> ReaderCrossPostCell {
-        return tableView.dequeueReusableCell(withIdentifier: readerCrossPostCellReuseIdentifier) as! ReaderCrossPostCell
+        tableView.dequeueReusableCell(withIdentifier: crossPostCellReuseIdentifier) as! ReaderCrossPostCell
     }
 
     func postCell(in tableView: UITableView, for indexPath: IndexPath) -> ReaderPostCell {
-        tableView.dequeueReusableCell(withIdentifier: readerPostCellReuseIdentifier, for: indexPath) as! ReaderPostCell
+        tableView.dequeueReusableCell(withIdentifier: postCellReuseIdentifier, for: indexPath) as! ReaderPostCell
     }
 
     func gapMarkerCell(_ tableView: UITableView) -> ReaderGapMarkerCell {
-        return tableView.dequeueReusableCell(withIdentifier: readerGapMarkerCellReuseIdentifier) as! ReaderGapMarkerCell
+        tableView.dequeueReusableCell(withIdentifier: gapMarkerCellReuseIdentifier) as! ReaderGapMarkerCell
     }
 
     func blockedSiteCell(_ tableView: UITableView) -> ReaderBlockedSiteCell {
-        return tableView.dequeueReusableCell(withIdentifier: readerBlockedCellReuseIdentifier) as! ReaderBlockedSiteCell
+        tableView.dequeueReusableCell(withIdentifier: blockedCellReuseIdentifier) as! ReaderBlockedSiteCell
     }
 }

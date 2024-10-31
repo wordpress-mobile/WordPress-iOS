@@ -78,19 +78,19 @@ private enum ReaderCardDiscoverAttribution: Int {
         textLabel?.backgroundColor = backgroundColor
     }
 
-    @objc open func configureView(_ contentProvider: ReaderPostContentProvider?) {
-        if contentProvider?.sourceAttributionStyle() == SourceAttributionStyle.post {
-            configurePostAttribution(contentProvider!)
-        } else if contentProvider?.sourceAttributionStyle() == SourceAttributionStyle.site {
-            configureSiteAttribution(contentProvider!, verboseAttribution: false)
+    @objc open func configureView(_ post: ReaderPost?) {
+        if post?.sourceAttributionStyle() == SourceAttributionStyle.post {
+            configurePostAttribution(post!)
+        } else if post?.sourceAttributionStyle() == SourceAttributionStyle.site {
+            configureSiteAttribution(post!, verboseAttribution: false)
         } else {
             reset()
         }
     }
 
-    @objc open func configureViewWithVerboseSiteAttribution(_ contentProvider: ReaderPostContentProvider?) {
-        if let contentProvider = contentProvider {
-            configureSiteAttribution(contentProvider, verboseAttribution: true)
+    @objc open func configureViewWithVerboseSiteAttribution(_ post: ReaderPost?) {
+        if let post {
+            configureSiteAttribution(post, verboseAttribution: true)
         } else {
             reset()
         }
@@ -102,26 +102,26 @@ private enum ReaderCardDiscoverAttribution: Int {
         attributionAction = .none
     }
 
-    fileprivate func configurePostAttribution(_ contentProvider: ReaderPostContentProvider) {
-        let url = contentProvider.sourceAvatarURLForDisplay()
+    fileprivate func configurePostAttribution(_ post: ReaderPost) {
+        let url = post.sourceAvatarURLForDisplay()
         let placeholder = UIImage(named: gravatarImageName)
         imageView.downloadImage(from: url, placeholderImage: placeholder)
         imageView.shouldRoundCorners = true
 
-        let str = stringForPostAttribution(contentProvider.sourceAuthorNameForDisplay(),
-                                            blogName: contentProvider.sourceBlogNameForDisplay())
+        let str = stringForPostAttribution(post.sourceAuthorNameForDisplay(),
+                                            blogName: post.sourceBlogNameForDisplay())
         let attributes = originalAttributionParagraphAttributes
         textLabel.attributedText = NSAttributedString(string: str, attributes: attributes)
         attributionAction = .none
     }
 
-    fileprivate func configureSiteAttribution(_ contentProvider: ReaderPostContentProvider, verboseAttribution verbose: Bool) {
-        let url = contentProvider.sourceAvatarURLForDisplay()
+    fileprivate func configureSiteAttribution(_ post: ReaderPost, verboseAttribution verbose: Bool) {
+        let url = post.sourceAvatarURLForDisplay()
         let placeholder = UIImage(named: blavatarImageName)
         imageView.downloadImage(from: url, placeholderImage: placeholder)
         imageView.shouldRoundCorners = false
 
-        let blogName = contentProvider.sourceBlogNameForDisplay()
+        let blogName = post.sourceBlogNameForDisplay()
         let pattern = patternForSiteAttribution(verbose)
         let str = String(format: pattern, blogName!)
 

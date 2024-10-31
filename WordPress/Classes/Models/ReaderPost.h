@@ -1,7 +1,12 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 #import "BasePost.h"
-#import "ReaderPostContentProvider.h"
+
+typedef NS_ENUM(NSUInteger, SourceAttributionStyle) {
+    SourceAttributionStyleNone,
+    SourceAttributionStylePost,
+    SourceAttributionStyleSite,
+};
 
 @class ReaderAbstractTopic;
 @class ReaderCrossPostMeta;
@@ -13,7 +18,7 @@
 extern NSString * const ReaderPostStoredCommentIDKey;
 extern NSString * const ReaderPostStoredCommentTextKey;
 
-@interface ReaderPost : BasePost <ReaderPostContentProvider>
+@interface ReaderPost : BasePost
 
 @property (nonatomic, strong) NSString *authorDisplayName;
 @property (nonatomic, strong) NSString *authorEmail;
@@ -78,10 +83,14 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 + (instancetype)createOrReplaceFromRemotePost:(RemoteReaderPost *)remotePost forTopic:(ReaderAbstractTopic *)topic context:(NSManagedObjectContext *) managedObjectContext;
 
 - (BOOL)isCrossPost;
-- (BOOL)isPrivate;
 - (BOOL)isP2Type;
 - (NSString *)authorString;
 - (BOOL)contentIncludesFeaturedImage;
+- (NSURL *)siteIconForDisplayOfSize:(NSInteger)size;
+- (SourceAttributionStyle)sourceAttributionStyle;
+- (NSString *)sourceAuthorNameForDisplay;
+- (NSURL *)sourceAvatarURLForDisplay;
+- (NSString *)sourceBlogNameForDisplay;
 - (BOOL)isSourceAttributionWPCom;
 - (NSDictionary *)railcarDictionary;
 

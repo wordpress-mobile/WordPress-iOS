@@ -684,7 +684,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 {
     // Create and optimistically save a comment, based on the current wpcom acct
     // post and content provided.
-    BOOL isPrivateSite = post.isPrivate;
+    BOOL isPrivateSite = post.isBlogPrivate;
     [self createHierarchicalCommentWithContent:content withParent:nil postObjectID:post.objectID siteID:post.siteID completion:^(NSManagedObjectID *commentID) {
         if (!commentID) {
             NSError *error = [NSError errorWithDomain:WKErrorDomain code:WKErrorUnknown userInfo:@{NSDebugDescriptionErrorKey: @"Failed to create a comment for a post"}];
@@ -737,7 +737,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 {
     // Create and optimistically save a comment, based on the current wpcom acct
     // post and content provided.
-    BOOL isPrivateSite = post.isPrivate;
+    BOOL isPrivateSite = post.isBlogPrivate;
     [self createHierarchicalCommentWithContent:content withParent:nil postObjectID:post.objectID siteID:post.siteID completion:^(NSManagedObjectID *commentObjectID) {
         if (!commentObjectID) {
             NSError *error = [NSError errorWithDomain:WKErrorDomain code:WKErrorUnknown userInfo:@{NSDebugDescriptionErrorKey: @"Failed to create a comment for a post"}];
@@ -1204,7 +1204,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
         comment.depth = ancestors.count;
         comment.post = post;
-        comment.content = [self sanitizeCommentContent:comment.content isPrivateSite:post.isPrivate];
+        comment.content = [self sanitizeCommentContent:comment.content isPrivateSite:post.isBlogPrivate];
         [commentsToKeep addObject:comment];
     }
 

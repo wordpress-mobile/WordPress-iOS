@@ -34,7 +34,7 @@ extension ReaderPost: SearchableItemConvertable {
 
     var searchDescription: String? {
         guard let readerPostPreview = contentPreviewForDisplay(), !readerPostPreview.isEmpty else {
-            return siteURLForDisplay() ?? contentForDisplay()
+            return blogURL ?? contentForDisplay()
         }
         return readerPostPreview
     }

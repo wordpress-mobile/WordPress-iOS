@@ -4,12 +4,12 @@ import Foundation
 /// initialize it from a given `Blog`.
 ///
 extension MediaHost {
-    enum ReaderPostContentProviderError: Swift.Error {
+    enum ReaderPostError: Swift.Error {
         case baseInitializerError(error: Error)
     }
 
-    init(with readerPostContentProvider: ReaderPostContentProvider, failure: (ReaderPostContentProviderError) -> ()) {
-        let isAccessibleThroughWPCom = readerPostContentProvider.isWPCom() || readerPostContentProvider.isJetpack()
+    init(with post: ReaderPost, failure: (ReaderPostError) -> ()) {
+        let isAccessibleThroughWPCom = post.isWPCom || post.isJetpack
 
         // This is the only way in which we can obtain the username and authToken here.
         // It'd be nice if all data was associated with an account instead, for transparency
@@ -22,14 +22,13 @@ extension MediaHost {
 
         self.init(
             isAccessibleThroughWPCom: isAccessibleThroughWPCom,
-            isPrivate: readerPostContentProvider.isPrivate(),
-            isAtomic: readerPostContentProvider.isAtomic(),
-            siteID: readerPostContentProvider.siteID()?.intValue,
+            isPrivate: post.isBlogPrivate,
+            isAtomic: post.isBlogAtomic,
+            siteID: post.siteID?.intValue,
             username: username,
             authToken: authToken,
             failure: { error in
-                // We just associate a ReaderPostContentProvider with the underlying error for simpler debugging.
-                failure(ReaderPostContentProviderError.baseInitializerError(error: error))
+                failure(ReaderPostError.baseInitializerError(error: error))
             }
         )
     }
