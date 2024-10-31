@@ -179,6 +179,7 @@ class JetpackLoginViewController: UIViewController {
 
     fileprivate func signIn() {
         observeLoginNotifications(true)
+        // TODO: Replace with web login
         WordPressAuthenticator.showLoginForJustWPCom(from: self, jetpackLogin: true, connectedEmail: blog.jetpack?.connectedEmail)
     }
 
