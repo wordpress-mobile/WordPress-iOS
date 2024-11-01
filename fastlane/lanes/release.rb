@@ -18,9 +18,6 @@ platform :ios do
     # Check out the up-to-date default branch, the designated starting point for the code freeze
     Fastlane::Helper::GitHelper.checkout_and_pull(DEFAULT_BRANCH)
 
-    # Checks if internal dependencies are on a stable version
-    check_pods_references
-
     # Make sure that Gutenberg is configured as expected for a successful code freeze
     gutenberg_dep_check
 
@@ -154,7 +151,7 @@ platform :ios do
       Next steps:
 
       - Checkout `#{release_branch_name}` branch locally
-      - Update pods and release notes
+      - Update release notes
       - Finalize the code freeze
     MESSAGE
     buildkite_annotate(context: 'code-freeze-success', style: 'success', message: message) if is_ci
@@ -675,12 +672,4 @@ def report_milestone_error(error_title:)
   UI.error(error_message)
 
   buildkite_annotate(style: 'warning', context: 'error-with-milestone', message: error_message) if is_ci
-end
-
-def check_pods_references
-  result = ios_check_beta_deps(lockfile: File.join(PROJECT_ROOT_FOLDER, 'Podfile.lock'))
-
-  style = result[:pods].nil? || result[:pods].empty? ? 'success' : 'warning'
-  message = "### Checking Internal Dependencies are all on a **stable** version\n\n#{result[:message]}"
-  buildkite_annotate(context: 'pods-check', style: style, message: message) if is_ci
 end

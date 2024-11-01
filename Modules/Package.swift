@@ -49,6 +49,7 @@ let package = Package(
         .package(url: "https://github.com/Automattic/wordpress-rs", revision: "alpha-swift-20240813"),
         .package(url: "https://github.com/wordpress-mobile/GutenbergKit", revision: "849118af582068f75807bc0f1265edeee4bf1b5e"),
         .package(url: "https://github.com/Automattic/color-studio", branch: "trunk"),
+        .package(url: "https://github.com/allenhumphreys/AztecEditor-iOS", branch: "ah/spm"),
     ],
     targets: XcodeSupport.targets + [
         .target(name: "JetpackStatsWidgetsCore"),
@@ -120,6 +121,8 @@ enum XcodeSupport {
             .product(name: "SVProgressHUD", package: "SVProgressHUD"),
             .product(name: "ZIPFoundation", package: "ZIPFoundation"),
             .product(name: "ColorStudio", package: "color-studio"),
+            .product(name: "Aztec", package: "AztecEditor-iOS"),
+            .product(name: "WordPressEditor", package: "AztecEditor-iOS"),
         ]
 
         let testDependencies: [Target.Dependency] = [
@@ -162,6 +165,8 @@ enum XcodeSupport {
                 .product(name: "ZIPFoundation", package: "ZIPFoundation"),
                 .product(name: "WordPressAPI", package: "wordpress-rs"),
                 .product(name: "ColorStudio", package: "color-studio"),
+                .product(name: "Aztec", package: "AztecEditor-iOS"),
+                .product(name: "WordPressEditor", package: "AztecEditor-iOS"),
             ]),
             .xcodeTarget("XcodeTarget_WordPressTests", dependencies: testDependencies + [
                 "WordPressShared",

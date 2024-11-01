@@ -16,15 +16,13 @@ EXPECTED_XCODE_VERSION = File.read('.xcode-version').rstrip
 PROJECT_DIR = __dir__
 abort('Project directory contains one or more spaces – unable to continue.') if PROJECT_DIR.include?(' ')
 
-SWIFTLINT_BIN = File.join(PROJECT_DIR, 'Pods', 'SwiftLint', 'swiftlint')
-
 task default: %w[test]
 
 desc 'Install required dependencies'
 task dependencies: %w[dependencies:check assets:check]
 
 namespace :dependencies do
-  task check: %w[ruby:check bundler:check bundle:check credentials:apply pod:check lint:check]
+  task check: %w[ruby:check bundler:check bundle:check credentials:apply lint:check]
 
   namespace :ruby do
     task :check do
@@ -103,41 +101,12 @@ bundle exec fastlane run configure_apply force:true
     end
   end
 
-  namespace :pod do
-    task :check do
-      unless podfile_locked? && lockfiles_match?
-        dependency_failed('CocoaPods')
-        Rake::Task['dependencies:pod:install'].invoke
-      end
-    end
-
-    task :install do
-      fold('install.cocoapods') do
-        pod %w[install]
-      rescue StandardError
-        puts "`pod install` failed. Will attempt to update the Gutenberg-Mobile XCFramework — a common reason for the failure — then retrying…\n\n"
-        Rake::Task['dependencies:pod:update_gutenberg'].invoke
-        pod %w[install]
-      end
-    end
-
-    task :update_gutenberg do
-      pod %w[update Gutenberg]
-    end
-
-    task :clean do
-      fold('clean.cocoapods') do
-        FileUtils.rm_rf('Pods')
-      end
-    end
-    CLOBBER << 'Pods'
-  end
 
   namespace :lint do
     task :check do
       if swiftlint_needs_install
         dependency_failed('SwiftLint')
-        Rake::Task['dependencies:pod:install'].invoke
+
       end
     end
   end
@@ -646,26 +615,6 @@ end
 # FIXME: This used to add Travis folding formatting, but we no longer use Travis. I'm leaving it here for the moment, but I think we should remove it.
 def fold(_)
   yield
-end
-
-def pod(args)
-  args = %w[bundle exec pod] + args
-  sh(*args)
-end
-
-def lockfile_hash
-  YAML.load_file('Podfile.lock')
-end
-
-def lockfiles_match?
-  File.file?('Pods/Manifest.lock') && FileUtils.compare_file('Podfile.lock', 'Pods/Manifest.lock')
-end
-
-def podfile_locked?
-  podfile_checksum = Digest::SHA1.file('Podfile')
-  lockfile_checksum = lockfile_hash['PODFILE CHECKSUM']
-
-  podfile_checksum == lockfile_checksum
 end
 
 def swiftlint(args)

@@ -113,5 +113,10 @@ WordPress/InfoPlist-alpha.h
 WordPress/InfoPlist-internal.h
 
 
+# Gutenberg Binary Framework
+/WordPress/Frameworks/*.xcframework
+/WordPress/Frameworks/*.tar.gz
+/WordPress/Frameworks/react-native-bundle-source-map
+
 # SwiftLint Remote Config Cache
 .swiftlint/RemoteConfigCache
