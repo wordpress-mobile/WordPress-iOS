@@ -13,6 +13,8 @@ final class ReaderTableConfiguration {
     private let rowHeight = CGFloat(415.0)
 
     func setup(_ tableView: UITableView) {
+        tableView.contentInsetAdjustmentBehavior = .always
+
         setupAccessibility(tableView)
         setUpBlockerCell(tableView)
         setUpGapMarkerCell(tableView)

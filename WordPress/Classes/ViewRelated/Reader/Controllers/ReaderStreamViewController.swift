@@ -442,9 +442,10 @@ import AutomatticTracks
     private func setupTableView() {
         configureRefreshControl()
 
+        tableViewController.willMove(toParent: self)
+        addChild(tableViewController)
         view.addSubview(tableViewController.view)
-        tableViewController.view.translatesAutoresizingMaskIntoConstraints = false
-        view.pinSubviewToSafeArea(tableViewController.view)
+        tableViewController.view.pinEdges()
         tableViewController.didMove(toParent: self)
         tableConfiguration.setup(tableView)
         tableView.delegate = self
