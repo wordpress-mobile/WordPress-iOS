@@ -78,7 +78,7 @@ extension UIImageView {
                 Task {
                     await wp.controller.task?.value // Wait until setting the new image is done.
                     if let image {
-                        overrideImageCache(for: fullURL, with: image) // Update the cache for the original URL
+                        ImageCache.shared.setImage(image, forKey: fullURL.absoluteString) // Update the cache for the original URL
                     }
                 }
             }

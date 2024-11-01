@@ -30,9 +30,14 @@ struct GravatarQuickEditorPresenter {
             in: presentingViewController,
             onAvatarUpdated: {
                 AuthenticatorAnalyticsTracker.shared.track(click: .selectAvatar)
-                NotificationCenter.default.post(name: .GravatarQEAvatarUpdateNotification,
-                                                object: self,
-                                                userInfo: [GravatarQEAvatarUpdateNotificationKeys.email.rawValue: email])
+                Task {
+                    // Purge the cache otherwise the old avatars remain around.
+                    await ImageDownloader.shared.clearURLSessionCache()
+                    await ImageDownloader.shared.clearMemoryCache()
+                    NotificationCenter.default.post(name: .GravatarQEAvatarUpdateNotification,
+                                                    object: self,
+                                                    userInfo: [GravatarQEAvatarUpdateNotificationKeys.email.rawValue: email])
+                }
             }, onDismiss: {
                 // No op.
             }

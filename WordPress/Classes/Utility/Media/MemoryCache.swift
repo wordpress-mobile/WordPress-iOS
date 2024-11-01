@@ -4,10 +4,12 @@ import WordPressUI
 
 protocol MemoryCacheProtocol: AnyObject {
     subscript(key: String) -> UIImage? { get set }
+    func removeAllObjects()
 }
 
 /// - note: The type is thread-safe because it uses thread-safe `NSCache`.
 final class MemoryCache: MemoryCacheProtocol, @unchecked Sendable {
+
     /// A shared image cache used by the entire system.
     static let shared = MemoryCache()
 
@@ -20,6 +22,10 @@ final class MemoryCache: MemoryCacheProtocol, @unchecked Sendable {
     }
 
     @objc private func didReceiveMemoryWarning() {
+        cache.removeAllObjects()
+    }
+
+    func removeAllObjects() {
         cache.removeAllObjects()
     }
 

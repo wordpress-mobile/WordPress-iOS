@@ -102,6 +102,15 @@ actor ImageDownloader {
         return imageURL.absoluteString + (size.map { "?size=\($0)" } ?? "")
     }
 
+    func clearURLSessionCache() {
+        urlSessionWithCache.configuration.urlCache?.removeAllCachedResponses()
+        urlSession.configuration.urlCache?.removeAllCachedResponses()
+    }
+
+    func clearMemoryCache() {
+        self.cache.removeAllObjects()
+    }
+
     // MARK: - Networking
 
     private func data(for request: URLRequest, options: ImageRequestOptions) async throws -> Data {
