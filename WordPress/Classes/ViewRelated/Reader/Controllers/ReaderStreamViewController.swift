@@ -1398,17 +1398,22 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             return cell
         }
 
+        let isCompact = traitCollection.horizontalSizeClass == .compact
+
         if post.isCross() {
             let cell = tableConfiguration.crossPostCell(tableView)
-            cellConfiguration.configureCrossPostCell(cell, withContent: content, atIndexPath: indexPath)
-            hideSeparator(for: cell)
+            cell.isCompact = isCompact
+            cell.isSeparatorHidden = !showsSeparator
+            cell.configure(with: post)
             return cell
         }
 
-        let cell = tableConfiguration.postCell(in: tableView, for: indexPath)
         let viewModel = ReaderPostCellViewModel(post: post, topic: readerTopic)
         viewModel.viewController = self
-        cell.configure(with: viewModel, isCompact: traitCollection.horizontalSizeClass == .compact, isSeparatorHidden: !showsSeparator)
+
+        let cell = tableConfiguration.postCell(in: tableView, for: indexPath)
+        cell.configure(with: viewModel, isCompact: isCompact)
+        cell.isSeparatorHidden = !showsSeparator
         return cell
     }
 

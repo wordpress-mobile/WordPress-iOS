@@ -226,7 +226,7 @@ struct ReaderNotificationKeys {
 
         // If the user is an admin on the post's site do not bump the page view unless
         // the the post is private.
-        if !post.isPrivate() && isUserAdminOnSiteWithID(siteID) {
+        if !post.isBlogPrivate && isUserAdminOnSiteWithID(siteID) {
             return
         }
 

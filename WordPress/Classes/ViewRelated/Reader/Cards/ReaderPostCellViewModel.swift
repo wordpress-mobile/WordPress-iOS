@@ -115,9 +115,9 @@ struct ReaderPostToolbarViewModel {
             isBookmarked: post.isSavedForLater,
             isCommentsEnabled: post.isCommentsEnabled,
             commentCount: post.commentCount?.intValue ?? 0,
-            isLikesEnabled: post.isLikesEnabled(),
+            isLikesEnabled: post.isLikesEnabled,
             likeCount: post.likeCount?.intValue ?? 0,
-            isLiked: post.isLiked()
+            isLiked: post.isLiked
         )
     }
 }

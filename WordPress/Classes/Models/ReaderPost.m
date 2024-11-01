@@ -237,16 +237,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     return self.crossPostMeta != nil;
 }
 
-- (BOOL)isAtomic
-{
-    return self.isBlogAtomic;
-}
-
-- (BOOL)isPrivate
-{
-    return self.isBlogPrivate;
-}
-
 - (BOOL)isP2Type
 {
     NSInteger orgID = [self.organizationID intValue];
@@ -393,14 +383,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     return self.sourceAttribution.authorName;
 }
 
-- (NSURL *)sourceAuthorURLForDisplay
-{
-    if (!self.sourceAttribution) {
-        return nil;
-    }
-    return [NSURL URLWithString:self.sourceAttribution.authorURL];
-}
-
 - (NSURL *)sourceAvatarURLForDisplay
 {
     if (!self.sourceAttribution) {
@@ -414,14 +396,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     return self.sourceAttribution.blogName;
 }
 
-- (NSURL *)sourceBlogURLForDisplay
-{
-    if (!self.sourceAttribution) {
-        return nil;
-    }
-    return [NSURL URLWithString:self.sourceAttribution.blogURL];
-}
-
 - (BOOL)isSourceAttributionWPCom
 {
     return (self.sourceAttribution.blogID) ? YES : NO;
@@ -430,26 +404,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 - (NSURL *)avatarURLForDisplay
 {
     return [NSURL URLWithString:self.authorAvatarURL];
-}
-
-- (NSString *)siteURLForDisplay
-{
-    return self.blogURL;
-}
-
-- (NSString *)siteHostNameForDisplay
-{
-    return self.blogURL.hostname;
-}
-
-- (NSString *)crossPostOriginSiteURLForDisplay
-{
-    return self.crossPostMeta.siteURL;
-}
-
-- (BOOL)isCommentCrossPost
-{
-    return self.crossPostMeta.commentURL.length > 0;
 }
 
 - (NSDictionary *)railcarDictionary
@@ -467,7 +421,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     return nil;
 }
 
-- (void) didSave {
+- (void)didSave {
     [super didSave];
 
     // A ReaderCard can have either a post, or a list of topics, but not both.

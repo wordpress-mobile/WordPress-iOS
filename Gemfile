@@ -9,13 +9,13 @@ gem 'dotenv'
 #
 # See failures like https://buildkite.com/automattic/wordpress-ios/builds/24053#019234f2-80a5-40f6-b55e-2f420e6483a8/3840-3915
 # and https://github.com/fastlane/fastlane/pull/22256
-gem 'fastlane', '~> 2.223', '>= 2.223.1'
+gem 'fastlane', '~> 2.225'
 gem 'fastlane-plugin-appcenter', '~> 2.1'
 gem 'fastlane-plugin-sentry'
 # This comment avoids typing to switch to a development version for testing.
 #
 # gem 'fastlane-plugin-wpmreleasetoolkit', git: 'https://github.com/wordpress-mobile/release-toolkit', ref: ''
-gem 'fastlane-plugin-wpmreleasetoolkit', '~> 12.0'
+gem 'fastlane-plugin-wpmreleasetoolkit', '~> 12.2'
 gem 'rake'
 gem 'rubocop', '~> 1.60'
 gem 'rubocop-rake', '~> 0.6'

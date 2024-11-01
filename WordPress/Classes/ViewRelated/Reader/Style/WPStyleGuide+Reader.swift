@@ -5,7 +5,6 @@ import Gridicons
 /// A WPStyleGuide extension with styles and methods specific to the Reader feature.
 ///
 extension WPStyleGuide {
-
     // MARK: - Original Post/Site Attribution Styles.
 
     @objc public class func originalAttributionParagraphAttributes() -> [NSAttributedString.Key: Any] {
@@ -22,41 +21,6 @@ extension WPStyleGuide {
 
     @objc public class func originalAttributionTextStyle() -> UIFont.TextStyle {
         return Cards.contentTextStyle
-    }
-
-    // MARK: - Custom Colors
-    @objc public class func readerCardCellBorderColor() -> UIColor {
-        .separator
-    }
-
-    public class func readerCardBlogIconBorderColor() -> UIColor {
-        return UIColor(light: UIAppColor.gray(.shade0), dark: .systemGray5)
-    }
-
-    // MARK: - Card Attributed Text Attributes
-
-    @objc public class func readerCrossPostTitleAttributes() -> [NSAttributedString.Key: Any] {
-        let font = UIFont.preferredFont(forTextStyle: .subheadline).semibold()
-        return [
-            .font: font,
-            .foregroundColor: UIColor.label
-        ]
-    }
-
-    @objc public class func readerCrossPostBoldSubtitleAttributes() -> [NSAttributedString.Key: Any] {
-        let font = UIFont.preferredFont(forTextStyle: .footnote).semibold()
-        return [
-            .font: font,
-            .foregroundColor: UIColor.secondaryLabel
-        ]
-    }
-
-    @objc public class func readerCrossPostSubtitleAttributes() -> [NSAttributedString.Key: Any] {
-        let font = UIFont.preferredFont(forTextStyle: .footnote)
-        return [
-            .font: font,
-            .foregroundColor: UIColor.secondaryLabel
-        ]
     }
 
     // MARK: - No Followed Sites Error Text Attributes

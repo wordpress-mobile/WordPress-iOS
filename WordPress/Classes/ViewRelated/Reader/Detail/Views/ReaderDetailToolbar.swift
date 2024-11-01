@@ -259,7 +259,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
             return
         }
 
-        reblogButton.isEnabled = ReaderHelpers.isLoggedIn() && !post.isPrivate()
+        reblogButton.isEnabled = ReaderHelpers.isLoggedIn() && !post.isBlogPrivate
         WPStyleGuide.applyReaderReblogActionButtonStyle(reblogButton, showTitle: false)
 
         configureActionButtonStyle(reblogButton)

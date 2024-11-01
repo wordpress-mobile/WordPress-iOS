@@ -1,211 +1,143 @@
-import AlamofireImage
 import Foundation
 import AutomatticTracks
 import WordPressShared
 
-open class ReaderCrossPostCell: UITableViewCell {
+final class ReaderCrossPostCell: ReaderStreamBaseCell {
+    private let avatarView = ReaderAvatarView()
+    private let iconView = ReaderAvatarView()
+    private let headerLabel = UILabel()
+    private let postTitleLabel = UILabel()
 
-    // MARK: - Properties
+    private let insets = ReaderStreamBaseCell.insets
+    private let avatarSize: CGFloat = 28
+    private let crossPostIconSize: CGFloat = 18
 
-    @IBOutlet private weak var blavatarImageView: UIImageView!
-    @IBOutlet private weak var avatarImageView: UIImageView!
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var label: UILabel!
-    @IBOutlet private weak var borderView: UIView!
-    @IBOutlet private weak var topViewConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var separatorViewHeightConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var imageSpacingConstraint: NSLayoutConstraint!
+    private let postTitleAttributes: [NSAttributedString.Key: Any] = [
+        .font: UIFont.preferredFont(forTextStyle: .subheadline).semibold(),
+        .foregroundColor: UIColor.label
+    ]
 
-    private weak var contentProvider: ReaderPostContentProvider?
+    private let subtitleAttributes: [NSAttributedString.Key: Any] = [
+        .font: UIFont.preferredFont(forTextStyle: .footnote),
+        .foregroundColor: UIColor.secondaryLabel
+    ]
 
-    // MARK: - Accessors
+    private let boldSubtitleAttributes: [NSAttributedString.Key: Any] = [
+        .font: UIFont.preferredFont(forTextStyle: .footnote).semibold(),
+        .foregroundColor: UIColor.secondaryLabel
+    ]
 
-    private lazy var readerCrossPostTitleAttributes: [NSAttributedString.Key: Any] = {
-        return WPStyleGuide.readerCrossPostTitleAttributes()
-    }()
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-    private lazy var readerCrossPostSubtitleAttributes: [NSAttributedString.Key: Any] = {
-        return WPStyleGuide.readerCrossPostSubtitleAttributes()
-    }()
+        setupStyle()
+        setupLayout()
 
-    private lazy var readerCrossPostBoldSubtitleAttributes: [NSAttributedString.Key: Any] = {
-        return WPStyleGuide.readerCrossPostBoldSubtitleAttributes()
-    }()
-
-    @objc open var enableLoggedInFeatures: Bool = true
-
-    open override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        setHighlighted(selected, animated: animated)
+        selectedBackgroundView = ReaderPostCell.makeSelectedBackgroundView()
     }
 
-    open override func setHighlighted(_ highlighted: Bool, animated: Bool) {
-        let previouslyHighlighted = self.isHighlighted
-        super.setHighlighted(highlighted, animated: animated)
+    required init?(coder: NSCoder) {
+        fatalError("Not implemented")
+    }
 
-        if previouslyHighlighted == highlighted {
-            return
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        avatarView.prepareForReuse()
+    }
+
+    // MARK: Setup
+
+    private func setupStyle() {
+        headerLabel.numberOfLines = 2
+        headerLabel.adjustsFontForContentSizeCategory = true
+        headerLabel.maximumContentSizeCategory = .accessibilityExtraLarge
+
+        postTitleLabel.numberOfLines = 2
+        postTitleLabel.adjustsFontForContentSizeCategory = true
+        postTitleLabel.maximumContentSizeCategory = .accessibilityExtraLarge
+
+        iconView.setStaticIcon(crossPostIcon, tintColor: .secondaryLabel)
+    }
+
+    private func setupLayout() {
+        for view in [avatarView, iconView, headerLabel, postTitleLabel] {
+            addSubview(view)
+            view.translatesAutoresizingMaskIntoConstraints = false
         }
-        applyHighlightedEffect(highlighted, animated: animated)
+        NSLayoutConstraint.activate([
+            avatarView.widthAnchor.constraint(equalToConstant: avatarSize),
+            avatarView.heightAnchor.constraint(equalToConstant: avatarSize),
+            avatarView.centerYAnchor.constraint(equalTo: headerLabel.centerYAnchor),
+            avatarView.trailingAnchor.constraint(equalTo: headerLabel.leadingAnchor, constant: -8),
+
+            iconView.widthAnchor.constraint(equalToConstant: crossPostIconSize),
+            iconView.heightAnchor.constraint(equalToConstant: crossPostIconSize),
+            iconView.centerXAnchor.constraint(equalTo: avatarView.centerXAnchor, constant: crossPostIconSize / 2 - 1),
+            iconView.centerYAnchor.constraint(equalTo: avatarView.centerYAnchor, constant: crossPostIconSize / 2 + 3),
+
+            headerLabel.topAnchor.constraint(equalTo: topAnchor, constant: 12),
+            headerLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: insets.left),
+            headerLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor),
+
+            postTitleLabel.topAnchor.constraint(equalTo: headerLabel.bottomAnchor, constant: 6),
+            postTitleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: insets.left),
+            postTitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -insets.right),
+            postTitleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12),
+        ])
     }
 
-    // MARK: - Lifecycle Methods
+    // MARK: Configuration
 
-    open override func awakeFromNib() {
-        super.awakeFromNib()
-        applyStyles()
-    }
+    func configure(with post: ReaderPost) {
+        headerLabel.attributedText = makeHeaderString(for: post)
+        postTitleLabel.attributedText = NSAttributedString(string: post.titleForDisplay() ?? "", attributes: postTitleAttributes)
 
-    // MARK: - Configuration
-
-    @objc open func configureCell(_ contentProvider: ReaderPostContentProvider) {
-        self.contentProvider = contentProvider
-
-        configureTitleLabel()
-        configureLabel()
-        configureBlavatarImage()
-        configureAvatarImageView()
-    }
-
-}
-
-// MARK: - Private Methods
-
-private extension ReaderCrossPostCell {
-
-    struct Constants {
-        static let blavatarPlaceholderImage: UIImage? = UIImage(named: "post-blavatar-placeholder")
-        static let avatarPlaceholderImage: UIImage? = UIImage(named: "gravatar")
-        static let imageBorderWidth: CGFloat = 1
-        static let xPostTitlePrefix = "X-post: "
-        static let commentTemplate = "%@ left a comment on %@, cross-posted to %@"
-        static let siteTemplate = "%@ cross-posted from %@ to %@"
-    }
-
-    // MARK: - Appearance
-
-    func applyStyles() {
-        backgroundColor = .clear
-        contentView.backgroundColor = .systemBackground
-        borderView?.backgroundColor = .systemBackground
-        label?.backgroundColor = .systemBackground
-        titleLabel?.backgroundColor = .systemBackground
-        topViewConstraint.constant = 0.0
-        separatorViewHeightConstraint.constant = 0.5
-        imageSpacingConstraint.priority = .required
-    }
-
-    func applyHighlightedEffect(_ highlighted: Bool, animated: Bool) {
-        func updateBorder() {
-            label.alpha = highlighted ? 0.50 : 1
-            titleLabel.alpha = highlighted ? 0.50 : 1
-        }
-        guard animated else {
-            updateBorder()
-            return
-        }
-        UIView.animate(withDuration: 0.25,
-            delay: 0,
-            options: UIView.AnimationOptions(),
-            animations: updateBorder)
-    }
-
-    // MARK: - Configuration
-
-    func configureBlavatarImage() {
-        configureAvatarBorder(blavatarImageView)
-        let placeholder = Constants.blavatarPlaceholderImage
-        let size = blavatarImageView.frame.size.width * UIScreen.main.scale
-
-        // Always reset
-        blavatarImageView.image = placeholder
-
-        guard let contentProvider = contentProvider,
-            let url = contentProvider.siteIconForDisplay(ofSize: Int(size)) else {
-                return
-        }
-
-        let host = MediaHost(with: contentProvider) { error in
-            WordPressAppDelegate.crashLogging?.logError(error)
-        }
-
-        let mediaAuthenticator = MediaRequestAuthenticator()
-        mediaAuthenticator.authenticatedRequest(for: url, from: host, onComplete: { [weak self] request in
-            self?.blavatarImageView.af.setImage(withURLRequest: request, placeholderImage: placeholder)
-        }) { [weak self] error in
-            WordPressAppDelegate.crashLogging?.logError(error)
-            self?.blavatarImageView.image = placeholder
+        avatarView.setPlaceholder(UIImage(named: "post-blavatar-placeholder"))
+        if let avatarURL = post.avatarURLForDisplay() {
+            let avatarSize = CGSize(width: avatarSize, height: avatarSize)
+                .scaled(by: UITraitCollection.current.displayScale)
+            avatarView.setImage(with: avatarURL, size: avatarSize)
         }
     }
 
-    func configureAvatarImageView() {
-        configureAvatarBorder(avatarImageView)
-        let placeholder = Constants.avatarPlaceholderImage
-
-        // Always reset
-        avatarImageView.image = placeholder
-
-        if let url = contentProvider?.avatarURLForDisplay() {
-            avatarImageView.downloadImage(from: url, placeholderImage: placeholder)
+    private func makeHeaderString(for post: ReaderPost) -> NSAttributedString? {
+        guard let meta = post.crossPostMeta else {
+            return nil
         }
-    }
+        let template = meta.commentURL.isEmpty ? Strings.siteTemplate : Strings.commentTemplate
 
-    func configureAvatarBorder(_ imageView: UIImageView) {
-        imageView.layer.borderColor = WPStyleGuide.readerCardBlogIconBorderColor().cgColor
-        imageView.layer.borderWidth = Constants.imageBorderWidth
-        imageView.layer.masksToBounds = true
-    }
-
-    func configureTitleLabel() {
-         if var title = contentProvider?.titleForDisplay(), !title.isEmpty() {
-            if let prefixRange = title.range(of: Constants.xPostTitlePrefix) {
-                title.removeSubrange(prefixRange)
-            }
-
-            titleLabel.attributedText = NSAttributedString(string: title, attributes: readerCrossPostTitleAttributes)
-            titleLabel.isHidden = false
-        } else {
-            titleLabel.attributedText = nil
-            titleLabel.isHidden = true
-        }
-    }
-
-    func configureLabel() {
-        guard let contentProvider = contentProvider else {
-            return
-        }
-
-        // Compose the subtitle
-        // These templates are deliberately not localized (for now) given the intended audience.
-        let template = contentProvider.isCommentCrossPost() ? Constants.commentTemplate : Constants.siteTemplate
-
-        let authorName: NSString = contentProvider.authorForDisplay() as NSString
-        let siteName = subDomainNameFromPath(contentProvider.siteURLForDisplay())
-        let originName = subDomainNameFromPath(contentProvider.crossPostOriginSiteURLForDisplay())
+        let authorName: NSString = post.authorForDisplay() as NSString
+        let siteName = subdomainNameFromPath(post.blogURL)
+        let originName = subdomainNameFromPath(meta.siteURL)
 
         let subtitle = NSString(format: template as NSString, authorName, originName, siteName) as String
-        let attrSubtitle = NSMutableAttributedString(string: subtitle, attributes: readerCrossPostSubtitleAttributes)
+        let string = NSMutableAttributedString(string: subtitle, attributes: subtitleAttributes)
 
-        attrSubtitle.setAttributes(readerCrossPostBoldSubtitleAttributes, range: NSRange(location: 0, length: authorName.length))
-
+        string.setAttributes(boldSubtitleAttributes, range: NSRange(location: 0, length: authorName.length))
         if let siteRange = subtitle.nsRange(of: siteName) {
-            attrSubtitle.setAttributes(readerCrossPostBoldSubtitleAttributes, range: siteRange)
+            string.setAttributes(boldSubtitleAttributes, range: siteRange)
         }
-
         if let originRange = subtitle.nsRange(of: originName) {
-            attrSubtitle.setAttributes(readerCrossPostBoldSubtitleAttributes, range: originRange)
+            string.setAttributes(boldSubtitleAttributes, range: originRange)
         }
-
-        label.attributedText = attrSubtitle
+        return string
     }
+}
 
-    func subDomainNameFromPath(_ path: String) -> String {
-        guard let url = URL(string: path),
-              let host = url.host else {
-            return ""
-        }
-
-        return host.components(separatedBy: ".").first ?? ""
+private func subdomainNameFromPath(_ path: String) -> String {
+    guard let url = URL(string: path), let host = url.host else {
+        return ""
     }
+    return host.components(separatedBy: ".").first ?? ""
+}
 
+private let crossPostIcon = UIImage(named: "wpl-shuffle")?
+    .resized(to: CGSize(width: 16, height: 16))
+    .withRenderingMode(.alwaysTemplate)
+
+private struct Strings {
+    // TODO: add localization but make sure to update ranges in makeHeaderString!
+    static let commentTemplate = "%1$@ left a comment on %2$@, cross-posted to %3$@"
+    static let siteTemplate = "%1$@ cross-posted from %2$@ to %3$@"
 }
