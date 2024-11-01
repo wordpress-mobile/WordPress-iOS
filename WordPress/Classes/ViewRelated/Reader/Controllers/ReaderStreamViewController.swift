@@ -716,11 +716,6 @@ import AutomatticTracks
         streamHeader.configureHeader(topic)
     }
 
-    func showManageSites(animated: Bool = true) {
-        let controller = ReaderFollowedSitesViewController.controller()
-        navigationController?.pushViewController(controller, animated: animated)
-    }
-
     // MARK: - Blocking
 
     /// Update the post card when a site is blocked from post details.
@@ -1190,8 +1185,8 @@ import AutomatticTracks
             toggleFollowingForTag(topic, completion: completion)
         } else if let topic = topic as? ReaderSiteTopic {
             toggleFollowingForSite(topic, completion: completion)
-        } else if let topic = topic as? ReaderDefaultTopic, ReaderHelpers.topicIsFollowing(topic) {
-            showManageSites()
+        } else {
+            wpAssertionFailure("unexpected topic", userInfo: ["type": String(describing: topic)])
         }
     }
 
