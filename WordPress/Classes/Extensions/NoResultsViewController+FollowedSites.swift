@@ -38,18 +38,7 @@ extension NoResultsViewController {
         controller.labelStackViewSpacing = 8
         controller.labelButtonStackViewSpacing = 18
         controller.loadViewIfNeeded()
-        controller.setupReaderButtonStyles()
 
         return controller
     }
-}
-
-extension NoResultsViewController {
-
-    func setupReaderButtonStyles() {
-        actionButton.primaryNormalBackgroundColor = .label
-        actionButton.primaryTitleColor = .systemBackground
-        actionButton.primaryHighlightBackgroundColor = .label
-    }
-
 }
