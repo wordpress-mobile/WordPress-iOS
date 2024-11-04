@@ -1,12 +1,13 @@
 import Foundation
 import SwiftUI
+import WordPressUI
 import WordPressShared
 
 /// Displays a version of the post stream with a search bar positioned above the
 /// list of posts.  The user supplied search phrase is converted into a ReaderSearchTopic
 /// the results of which are displayed in the embedded ReaderStreamViewController.
 ///
-@objc open class ReaderSearchViewController: UIViewController {
+final class ReaderSearchViewController: UIViewController {
     enum Section: Int, FilterTabBarItem {
         case posts
         case sites
@@ -31,136 +32,89 @@ import WordPressShared
         case searchHistory = "search_history"
     }
 
-    // MARK: - Properties
+    private let filterBar = FilterTabBar()
+    private let contentView = UIView()
+    private let sections: [Section] = [.posts, .sites]
 
-    @IBOutlet fileprivate weak var searchBar: UISearchBar!
-    @IBOutlet fileprivate weak var filterBar: FilterTabBar!
-
-    private var previousSearchTopic: ReaderAbstractTopic?
-
-    fileprivate var didBumpStats = false
-
-    fileprivate let sections: [Section] = [.posts, .sites]
-
+    private let searchController = UISearchController()
     private let suggestionsViewModel = ReaderSearchSuggestionsViewModel()
     private var suggestionsVC: UIViewController?
     private var currentChildVC: UIViewController?
+
+    private var previousSearchTopic: ReaderAbstractTopic?
     private let contextManager = ContextManager.shared
 
-    /// A convenience method for instantiating the controller from the storyboard.
-    ///
-    /// - Returns: An instance of the controller.
-    ///
-    @objc open class func controller() -> ReaderSearchViewController {
-        let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
-        let controller = storyboard.instantiateViewController(withIdentifier: "ReaderSearchViewController") as! ReaderSearchViewController
-        return controller
-    }
-
-    // MARK: Lifecycle methods
-
-    open override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.title = Strings.title
-        navigationItem.largeTitleDisplayMode = .never
+        view.backgroundColor = .systemBackground
 
-        WPStyleGuide.configureColors(view: view, tableView: nil)
-        setupSearchBar()
-        configureFilterBar()
-        configureNavigationBar()
+        setupView()
+        setupNavigationBar()
 
         suggestionsViewModel.onSelection = { [weak self] in
-            self?.searchBar.text = $0
+            self?.searchController.searchBar.text = $0
             self?.performSearch(source: .searchHistory)
         }
+
+        WPAppAnalytics.track(.readerSearchLoaded)
     }
 
-    open override func didMove(toParent parent: UIViewController?) {
+    public override func didMove(toParent parent: UIViewController?) {
         super.didMove(toParent: parent)
-        if let _ = parent {
-            return
+
+        if parent == nil {
+            ReaderTopicService(coreDataStack: ContextManager.shared)
+                .deleteAllSearchTopics()
         }
-        // When the parent is nil then we've been removed from the nav stack.
-        // Clean up any search topics at this point.
-        ReaderTopicService(coreDataStack: ContextManager.shared).deleteAllSearchTopics()
     }
 
-    open override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        searchBar.becomeFirstResponder()
-        bumpStats()
-    }
-
-    open override func viewWillDisappear(_ animated: Bool) {
+    public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        // Dismiss the keyboard if it was visible.
-        endSearch()
-
+        // TODO: fix this
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
-    // MARK: - Analytics
+    // MARK: Setup
 
-    @objc func bumpStats() {
-        if didBumpStats {
-            return
-        }
-
-        WPAppAnalytics.track(.readerSearchLoaded)
-        didBumpStats = true
-    }
-
-    // MARK: - Configuration
-
-    private func setupSearchBar() {
-        // Appearance must be set before the search bar is added to the view hierarchy.
-        let placeholderText = NSLocalizedString("Search WordPress", comment: "Placeholder text for the Reader search feature.")
-        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderSearchViewController.self]).placeholder = placeholderText
-
-        WPStyleGuide.configureSearchBar(searchBar)
-    }
-
-    func configureFilterBar() {
+    private func setupView() {
         WPStyleGuide.configureFilterTabBar(filterBar)
-
         filterBar.tabSizingStyle = .equalWidths
         filterBar.items = sections
+        filterBar.addTarget(self, action: #selector(selectedFilterDidChange), for: .valueChanged)
 
-        filterBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
+        let stackView = UIStackView(axis: .vertical, [filterBar, contentView])
+        view.addSubview(stackView)
+        stackView.pinEdges(to: view.safeAreaLayoutGuide)
     }
 
-    private func configureNavigationBar() {
-        guard isModal() else {
-            return
+    private func setupNavigationBar() {
+        navigationItem.title = Strings.title
+        navigationItem.largeTitleDisplayMode = .never
+
+        navigationItem.searchController = searchController
+        searchController.delegate = self
+        searchController.searchBar.delegate = self
+
+        if isModal() {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneButtonPressed))
         }
-
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done,
-                                                           target: self,
-                                                           action: #selector(doneButtonPressed))
     }
 
-    // MARK: - Actions
+    // MARK: Actions
 
-    @objc func endSearch() {
-        searchBar.resignFirstResponder()
-    }
-
-    /// Constructs a ReaderSearchTopic from the search phrase and sets the
-    /// embedded stream to the topic.
-    ///
     private func performSearch(source: SearchSource = .userInput) {
-        guard let phrase = searchBar.text?.trim(), !phrase.isEmpty else {
+        guard let searchText = searchController.searchBar.text?.trim(),
+                !searchText.isEmpty else {
             return
         }
         ReaderSearchSuggestionService(coreDataStack: contextManager)
-            .createOrUpdateSuggestion(forPhrase: phrase)
+            .createOrUpdateSuggestion(forPhrase: searchText)
 
         let section = sections[filterBar.selectedIndex]
-        showSearch(searchText: phrase, section: section)
+        showSearch(searchText: searchText, section: section)
 
         trackSearchPerformed(source: source)
     }
@@ -189,9 +143,6 @@ import WordPressShared
         let service = ReaderTopicService(coreDataStack: ContextManager.shared)
         service.createSearchTopic(forSearchPhrase: searchText) { topicID in
             assert(Thread.isMainThread)
-            // TODO: needed?
-            self.endSearch()
-
             guard let topicID, let topic = try? ContextManager.shared.mainContext.existingObject(with: topicID) as? ReaderAbstractTopic else {
                 DDLogError("Failed to create a search topic")
                 return
@@ -214,11 +165,10 @@ import WordPressShared
 
     @objc private func selectedFilterDidChange(_ filterBar: FilterTabBar) {
         let section = sections[filterBar.selectedIndex]
-        let searchText = (searchBar.text ?? "").trim()
+        let searchText = (searchController.searchBar.text ?? "").trim()
         showSearch(searchText: searchText, section: section)
     }
 
-    // TODO: needed?
     @objc private func doneButtonPressed() {
         dismiss(animated: true)
     }
@@ -230,20 +180,13 @@ import WordPressShared
             currentChildVC.removeFromParent()
         }
 
-        guard let viewController else {
-            return
-        }
+        guard let viewController else { return }
 
         viewController.willMove(toParent: self)
         addChild(viewController)
-        view.addSubview(viewController.view)
-        viewController.view.pinEdges(.horizontal)
-        NSLayoutConstraint.activate([
-            viewController.view.topAnchor.constraint(equalTo: filterBar.bottomAnchor),
-            viewController.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-        ])
+        contentView.addSubview(viewController.view)
+        viewController.view.pinEdges()
         viewController.didMove(toParent: self)
-
         self.currentChildVC = viewController
     }
 
@@ -262,6 +205,12 @@ import WordPressShared
         suggestionsVC.view.removeFromSuperview()
         suggestionsVC.removeFromParent()
         self.suggestionsVC = nil
+    }
+}
+
+extension ReaderSearchViewController: UISearchControllerDelegate {
+    func didPresentSearchController(_ searchController: UISearchController) {
+        searchController.searchBar.becomeFirstResponder()
     }
 }
 
@@ -284,7 +233,7 @@ extension ReaderSearchViewController: UISearchBarDelegate {
     }
 
     public func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        endSearch()
+        searchBar.resignFirstResponder()
     }
 }
 
