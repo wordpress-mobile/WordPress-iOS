@@ -13,12 +13,8 @@ import WordPressShared
 
         var title: String {
             switch self {
-            case .posts: return NSLocalizedString("Posts", comment: "Title of a Reader tab showing Posts matching a user's search query")
-            case .sites: return NSLocalizedString(
-                "reader.search.tab.blogs",
-                value: "Blogs",
-                comment: "Title of a Reader tab showing Sites matching a user's search query"
-            )
+            case .posts: Strings.posts
+            case .sites: Strings.blogs
             }
         }
 
@@ -44,26 +40,11 @@ import WordPressShared
 
     fileprivate var didBumpStats = false
 
-    private lazy var bannerView: JetpackBannerView = {
-        let textProvider = JetpackBrandingTextProvider(screen: JetpackBannerScreen.readerSearch)
-        let bannerView = JetpackBannerView()
-        bannerView.configure(title: textProvider.brandingText()) { [weak self] in
-            guard let self else {
-                return
-            }
-            JetpackBrandingCoordinator.presentOverlay(from: self)
-            JetpackBrandingAnalyticsHelper.trackJetpackPoweredBannerTapped(screen: .readerSearch)
-        }
-        bannerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: JetpackBannerView.minimumHeight)
-        return bannerView
-    }()
-
-    fileprivate let sections: [Section] = [ .posts, .sites ]
+    fileprivate let sections: [Section] = [.posts, .sites]
 
     private let suggestionsViewModel = ReaderSearchSuggestionsViewModel()
     private var suggestionsVC: UIViewController?
     private var currentChildVC: UIViewController?
-
     private let contextManager = ContextManager.shared
 
     /// A convenience method for instantiating the controller from the storyboard.
@@ -81,7 +62,7 @@ import WordPressShared
     open override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.title = NSLocalizedString("Search", comment: "Title of the Reader's search feature")
+        navigationItem.title = Strings.title
         navigationItem.largeTitleDisplayMode = .never
 
         WPStyleGuide.configureColors(view: view, tableView: nil)
@@ -141,25 +122,6 @@ import WordPressShared
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderSearchViewController.self]).placeholder = placeholderText
 
         WPStyleGuide.configureSearchBar(searchBar)
-        guard JetpackBrandingVisibility.all.enabled else {
-            return
-        }
-        searchBar.inputAccessoryView = bannerView
-        hideBannerViewIfNeeded()
-    }
-
-    /// hides the Jetpack powered banner on iPhone landscape
-    private func hideBannerViewIfNeeded() {
-        guard JetpackBrandingVisibility.all.enabled else {
-            return
-        }
-        // hide the banner on iPhone landscape
-        bannerView.isHidden = traitCollection.verticalSizeClass == .compact
-    }
-
-    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        hideBannerViewIfNeeded()
     }
 
     func configureFilterBar() {
@@ -324,5 +286,10 @@ extension ReaderSearchViewController: UISearchBarDelegate {
     public func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         endSearch()
     }
+}
 
+private enum Strings {
+    static let title = NSLocalizedString("reader.search.title", value: "Search", comment: "Title of the Reader's search feature")
+    static let posts = NSLocalizedString("reader.search.tab.posts", value: "Posts", comment: "Title of a Reader tab showing Posts matching a user's search query")
+    static let blogs = NSLocalizedString("reader.search.tab.blogs", value: "Blogs", comment: "Title of a Reader tab showing Sites matching a user's search query")
 }
