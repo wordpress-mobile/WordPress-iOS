@@ -125,7 +125,7 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
         case .saved:
             return ReaderStreamViewController.controllerForContentType(.saved)
         case .search:
-            return ReaderSearchViewController.controller(withSearchText: "")
+            return ReaderSearchViewController.controller()
         }
     }
 

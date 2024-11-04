@@ -78,14 +78,6 @@ import Gridicons
         return controller
     }
 
-    @objc open class func controller(withSearchText searchText: String) -> ReaderSearchViewController {
-        let controller = controller()
-        controller.loadViewIfNeeded()
-        controller.searchBar.searchTextField.text = searchText
-        controller.performSearch()
-        return controller
-    }
-
     // MARK: Lifecycle methods
 
     open override func awakeAfter(using aDecoder: NSCoder) -> Any? {
