@@ -89,7 +89,7 @@ struct WordPressDotComAuthenticator {
 
         let token: String
         do {
-            token = try await authenticate(from: viewController, prefersEphemeralWebBrowserSession: hasAlreadySignedIn)
+            token = try await authenticate(from: viewController, prefersEphemeralWebBrowserSession: hasAlreadySignedIn, accountEmail: context.accountEmail(in: coreDataStack.mainContext))
         } catch {
             throw .authentication(error)
         }
@@ -167,19 +167,25 @@ struct WordPressDotComAuthenticator {
     /// - SeeAlso `signIn`
     func authenticate(
         from viewController: UIViewController,
-        prefersEphemeralWebBrowserSession: Bool
+        prefersEphemeralWebBrowserSession: Bool,
+        accountEmail: String? = nil
     ) async throws(AuthenticationError) -> String {
         let clientId = ApiCredentials.client
         let clientSecret = ApiCredentials.secret
         let redirectURI = "x-wordpress-app://oauth2-callback"
 
+        var queries =  [
+            URLQueryItem(name: "client_id", value: clientId),
+            URLQueryItem(name: "redirect_uri", value: redirectURI),
+            URLQueryItem(name: "response_type", value: "code"),
+            URLQueryItem(name: "scope", value: "global"),
+        ]
+        if let accountEmail {
+            queries.append(URLQueryItem(name: "user_email", value: accountEmail))
+        }
+
         let authorizeURL = URL(string: "https://public-api.wordpress.com/oauth2/authorize")!
-            .appending(queryItems: [
-                URLQueryItem(name: "client_id", value: clientId),
-                URLQueryItem(name: "redirect_uri", value: redirectURI),
-                URLQueryItem(name: "response_type", value: "code"),
-                URLQueryItem(name: "scope", value: "global"),
-            ])
+            .appending(queryItems: queries)
 
         let callbackURL = try await authorize(from: viewController, url: authorizeURL, prefersEphemeralWebBrowserSession: prefersEphemeralWebBrowserSession)
 
