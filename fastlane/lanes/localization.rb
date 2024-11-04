@@ -222,15 +222,16 @@ platform :ios do
   # Updates the `AppStoreStrings.po` files (WP+JP) with the latest content from the `release_notes.txt` files and the other text sources
   #
   # @option [String] version The current `x.y` version of the app. Optional. Used to derive the `release_notes_xxy` key to use in the `.po` file.
+  # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
   #
   desc 'Updates the AppStoreStrings.po file with the latest data'
   lane :update_appstore_strings do |options|
     ensure_git_status_clean
 
-    release_version = release_version_current
+    version = options.fetch(:version, release_version_current)
 
-    unless Fastlane::Helper::GitHelper.checkout_and_pull(editorial_branch_name(version: release_version))
-      UI.user_error!("Editorialization branch for version #{release_version} doesn't exist.")
+    unless Fastlane::Helper::GitHelper.checkout_and_pull(editorial_branch_name(version: version))
+      UI.user_error!("Editorialization branch for version #{version} doesn't exist.")
     end
 
     update_wordpress_appstore_strings(options)
@@ -243,7 +244,7 @@ platform :ios do
 
     push_to_git_remote(tags: false)
 
-    pr_url = create_backmerge_pr
+    pr_url = create_backmerge_pr(source_branch: git_branch, target_branch: release_branch_name(version: version))
 
     message = <<~MESSAGE
       Release notes and metadata localization sources successfully generated. Next, review and merge the [integration PR](#{pr_url}).
