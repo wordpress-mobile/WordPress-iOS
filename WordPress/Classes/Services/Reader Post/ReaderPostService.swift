@@ -34,7 +34,7 @@ extension ReaderPostService {
             }
             return (
                 date == Date() ? nil : topic.algorithm,
-                URL(string: topic.path),
+                self.getEndpoint(for: topic),
                 self.numberToSync(for: topic)
             )
         }) else {
@@ -61,6 +61,14 @@ extension ReaderPostService {
         } failure: { error in
             failure?(error)
         }
+    }
+
+    private func getEndpoint(for topic: ReaderAbstractTopic) -> URL? {
+        guard let topic = topic as? ReaderSiteTopic, topic.feedID.intValue > 0 else {
+            return URL(string: topic.path)
+        }
+        let path = "read/feed/\(topic.feedID)/posts"
+        return URL(string: WordPressComRESTAPIVersionedPathBuilder.path(forEndpoint: path, withVersion: ._1_2))
     }
 
     private func processFetchedPostsForTopic(
