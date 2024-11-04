@@ -243,10 +243,6 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         [context obtainPermanentIDsForObjects:@[topic] error:nil];
         topicObjectID = topic.objectID;
     } completion:^{
-        // Save / update the search phrase to use it as a suggestion later.
-        ReaderSearchSuggestionService *suggestionService = [[ReaderSearchSuggestionService alloc] initWithCoreDataStack:self.coreDataStack];
-        [suggestionService createOrUpdateSuggestionForPhrase:phrase];
-
         if (completion) {
             completion(topicObjectID);
         }

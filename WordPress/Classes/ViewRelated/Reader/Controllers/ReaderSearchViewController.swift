@@ -1,13 +1,13 @@
 import Foundation
+import SwiftUI
 import WordPressShared
-import Gridicons
 
 /// Displays a version of the post stream with a search bar positioned above the
 /// list of posts.  The user supplied search phrase is converted into a ReaderSearchTopic
 /// the results of which are displayed in the embedded ReaderStreamViewController.
 ///
 @objc open class ReaderSearchViewController: UIViewController {
-    fileprivate enum Section: Int, FilterTabBarItem {
+    enum Section: Int, FilterTabBarItem {
         case posts
         case sites
 
@@ -40,15 +40,8 @@ import Gridicons
     @IBOutlet fileprivate weak var searchBar: UISearchBar!
     @IBOutlet fileprivate weak var filterBar: FilterTabBar!
 
-    fileprivate var streamController: ReaderStreamViewController?
-    fileprivate lazy var jpSiteSearchController = JetpackBannerWrapperViewController(
-        childVC: ReaderSiteSearchViewController(),
-        screen: .readerSearch
-    )
-    fileprivate var siteSearchController: ReaderSiteSearchViewController? {
-        return jpSiteSearchController.childVC as? ReaderSiteSearchViewController
-    }
-    fileprivate var suggestionsController: ReaderSearchSuggestionsViewController?
+    private var previousSearchTopic: ReaderAbstractTopic?
+
     fileprivate var didBumpStats = false
 
     private lazy var bannerView: JetpackBannerView = {
@@ -67,6 +60,12 @@ import Gridicons
 
     fileprivate let sections: [Section] = [ .posts, .sites ]
 
+    private let suggestionsViewModel = ReaderSearchSuggestionsViewModel()
+    private var suggestionsVC: UIViewController?
+    private var currentChildVC: UIViewController?
+
+    private let contextManager = ContextManager.shared
+
     /// A convenience method for instantiating the controller from the storyboard.
     ///
     /// - Returns: An instance of the controller.
@@ -79,14 +78,6 @@ import Gridicons
 
     // MARK: Lifecycle methods
 
-    open override func awakeAfter(using aDecoder: NSCoder) -> Any? {
-        return super.awakeAfter(using: aDecoder)
-    }
-
-    open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        streamController = segue.destination as? ReaderStreamViewController
-    }
-
     open override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -96,8 +87,12 @@ import Gridicons
         WPStyleGuide.configureColors(view: view, tableView: nil)
         setupSearchBar()
         configureFilterBar()
-        configureSiteSearchViewController()
         configureNavigationBar()
+
+        suggestionsViewModel.onSelection = { [weak self] in
+            self?.searchBar.text = $0
+            self?.performSearch(source: .searchHistory)
+        }
     }
 
     open override func didMove(toParent parent: UIViewController?) {
@@ -176,23 +171,6 @@ import Gridicons
         filterBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
     }
 
-    private func configureSiteSearchViewController() {
-        jpSiteSearchController.view.translatesAutoresizingMaskIntoConstraints = false
-
-        addChild(jpSiteSearchController)
-
-        view.addSubview(jpSiteSearchController.view)
-        NSLayoutConstraint.activate([
-            view.leadingAnchor.constraint(equalTo: jpSiteSearchController.view.leadingAnchor),
-            view.trailingAnchor.constraint(equalTo: jpSiteSearchController.view.trailingAnchor),
-            filterBar.bottomAnchor.constraint(equalTo: jpSiteSearchController.view.topAnchor),
-            view.bottomAnchor.constraint(equalTo: jpSiteSearchController.view.bottomAnchor),
-        ])
-
-        jpSiteSearchController.didMove(toParent: self)
-        jpSiteSearchController.view.isHidden = true
-    }
-
     private func configureNavigationBar() {
         guard isModal() else {
             return
@@ -216,9 +194,12 @@ import Gridicons
         guard let phrase = searchBar.text?.trim(), !phrase.isEmpty else {
             return
         }
+        ReaderSearchSuggestionService(coreDataStack: contextManager)
+            .createOrUpdateSuggestion(forPhrase: phrase)
 
-        performPostsSearch(for: phrase)
-        performSitesSearch(for: phrase)
+        let section = sections[filterBar.selectedIndex]
+        showSearch(searchText: phrase, section: section)
+
         trackSearchPerformed(source: source)
     }
 
@@ -228,149 +209,112 @@ import Gridicons
             "source": source.rawValue,
             "type": selectedTab.trackingValue
         ]
-
         WPAppAnalytics.track(.readerSearchPerformed, withProperties: properties)
     }
 
-    private func performPostsSearch(for phrase: String) {
-        guard let streamController = streamController else {
-            return
+    private func showSearch(searchText: String, section: Section) {
+        // TODO: handle empty
+
+        switch section {
+        case .posts:
+            showPostSearch(for: searchText)
+        case .sites:
+            showSiteSearch(for: searchText)
         }
+    }
 
-        let previousTopic = streamController.readerTopic
-
+    private func showPostSearch(for searchText: String) {
         let service = ReaderTopicService(coreDataStack: ContextManager.shared)
-        service.createSearchTopic(forSearchPhrase: phrase) { topicID in
+        service.createSearchTopic(forSearchPhrase: searchText) { topicID in
             assert(Thread.isMainThread)
+            // TODO: needed?
             self.endSearch()
 
             guard let topicID, let topic = try? ContextManager.shared.mainContext.existingObject(with: topicID) as? ReaderAbstractTopic else {
                 DDLogError("Failed to create a search topic")
                 return
             }
-            streamController.readerTopic = topic
+            let postSearchVC = ReaderStreamViewController.controllerWithTopic(topic)
+            self.showChild(postSearchVC)
 
-            if let previousTopic, topic != previousTopic {
+            if let previousTopic = self.previousSearchTopic, topic != previousTopic {
                 service.delete(previousTopic)
             }
+            self.previousSearchTopic = topic
         }
     }
 
-    private func performSitesSearch(for query: String) {
-        siteSearchController?.searchQuery = query
+    private func showSiteSearch(for searchText: String) {
+        let siteSearchVC = ReaderSiteSearchViewController()
+        siteSearchVC.searchQuery = searchText
+        showChild(siteSearchVC)
     }
 
     @objc private func selectedFilterDidChange(_ filterBar: FilterTabBar) {
         let section = sections[filterBar.selectedIndex]
-
-        switch section {
-        case .posts:
-            streamController?.view.isHidden = false
-            jpSiteSearchController.view.isHidden = true
-        case .sites:
-            streamController?.view.isHidden = true
-            jpSiteSearchController.view.isHidden = false
-        }
+        let searchText = (searchBar.text ?? "").trim()
+        showSearch(searchText: searchText, section: section)
     }
 
+    // TODO: needed?
     @objc private func doneButtonPressed() {
         dismiss(animated: true)
     }
 
-    // MARK: - Autocomplete
-
-    /// Display the search suggestions view
-    ///
-    @objc func presentAutoCompleteView() {
-        let controller = ReaderSearchSuggestionsViewController.controller()
-        controller.delegate = self
-        addChild(controller)
-
-        guard let autoView = controller.view, let filterBar else {
-            fatalError("Unexpected")
+    private func showChild(_ viewController: UIViewController?) {
+        if let currentChildVC {
+            currentChildVC.willMove(toParent: nil)
+            currentChildVC.view.removeFromSuperview()
+            currentChildVC.removeFromParent()
         }
 
-        autoView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(autoView)
-
-        let views = [
-            "filterBar": filterBar,
-            "autoView": autoView
-        ]
-
-        // Match the width of the search bar.
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "[autoView(==filterBar)]",
-            options: .alignAllLastBaseline,
-            metrics: nil,
-            views: views))
-        // Pin below the search bar.
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[filterBar][autoView]",
-            options: .alignAllCenterX,
-            metrics: nil,
-            views: views))
-        // Center on the search bar.
-        view.addConstraint(NSLayoutConstraint(
-            item: autoView,
-            attribute: .centerX,
-            relatedBy: .equal,
-            toItem: filterBar,
-            attribute: .centerX,
-            multiplier: 1,
-            constant: 0))
-
-        view.setNeedsUpdateConstraints()
-
-        controller.didMove(toParent: self)
-        suggestionsController = controller
-    }
-
-    /// Remove the search suggestions view.
-    ///
-    @objc func dismissAutoCompleteView() {
-        guard let controller = suggestionsController else {
+        guard let viewController else {
             return
         }
-        controller.willMove(toParent: nil)
-        controller.view.removeFromSuperview()
-        controller.removeFromParent()
-        suggestionsController = nil
+
+        viewController.willMove(toParent: self)
+        addChild(viewController)
+        view.addSubview(viewController.view)
+        viewController.view.pinEdges(.horizontal)
+        NSLayoutConstraint.activate([
+            viewController.view.topAnchor.constraint(equalTo: filterBar.bottomAnchor),
+            viewController.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+        viewController.didMove(toParent: self)
+
+        self.currentChildVC = viewController
     }
 
-}
+    // MARK: Search Suggestions
 
-extension ReaderSearchViewController: UIGestureRecognizerDelegate {
+    private func showSearchSuggestions() {
+        let suggestionsVC = UIHostingController(rootView: ReaderSearchSuggestionsView(viewModel: suggestionsViewModel))
+        self.showChild(suggestionsVC)
+        self.suggestionsVC = suggestionsVC
+    }
 
-    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        guard let suggestionsView = suggestionsController?.view else {
-            return true
-        }
-
-        // The gesture recognizer should not handle touches inside the suggestions view.
-        // We want those taps to be processed normally.
-        let point = touch.location(in: suggestionsView)
-        if suggestionsView.bounds.contains(point) {
-            return false
-        }
-
-        return true
+    // TODO: needed?
+    private func hideSearchSuggestions() {
+        guard let suggestionsVC else { return }
+        suggestionsVC.willMove(toParent: nil)
+        suggestionsVC.view.removeFromSuperview()
+        suggestionsVC.removeFromParent()
+        self.suggestionsVC = nil
     }
 }
 
 extension ReaderSearchViewController: UISearchBarDelegate {
 
     public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        // update the autocomplete suggestions
-        suggestionsController?.phrase = searchText.trim()
+        suggestionsViewModel.searchText = searchText.trim()
     }
 
     public func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        // prepare autocomplete view
-        presentAutoCompleteView()
+        showSearchSuggestions()
     }
 
     public func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        // remove auto complete view
-        dismissAutoCompleteView()
+        hideSearchSuggestions()
     }
 
     public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -379,15 +323,6 @@ extension ReaderSearchViewController: UISearchBarDelegate {
 
     public func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         endSearch()
-    }
-
-}
-
-extension ReaderSearchViewController: ReaderSearchSuggestionsDelegate {
-
-    @objc func searchSuggestionsController(_ controller: ReaderSearchSuggestionsViewController, selectedItem: String) {
-        searchBar.text = selectedItem
-        performSearch(source: .searchHistory)
     }
 
 }
