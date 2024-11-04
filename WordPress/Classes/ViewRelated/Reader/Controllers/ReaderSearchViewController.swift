@@ -40,7 +40,6 @@ import Gridicons
     @IBOutlet fileprivate weak var searchBar: UISearchBar!
     @IBOutlet fileprivate weak var filterBar: FilterTabBar!
 
-    fileprivate var backgroundTapRecognizer: UITapGestureRecognizer!
     fileprivate var streamController: ReaderStreamViewController?
     fileprivate lazy var jpSiteSearchController = JetpackBannerWrapperViewController(
         childVC: ReaderSiteSearchViewController(),
@@ -97,7 +96,6 @@ import Gridicons
         WPStyleGuide.configureColors(view: view, tableView: nil)
         setupSearchBar()
         configureFilterBar()
-        configureBackgroundTapRecognizer()
         configureSiteSearchViewController()
         configureNavigationBar()
     }
@@ -176,14 +174,6 @@ import Gridicons
         filterBar.items = sections
 
         filterBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
-    }
-
-    @objc func configureBackgroundTapRecognizer() {
-        backgroundTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(ReaderSearchViewController.handleBackgroundTap(_:)))
-        backgroundTapRecognizer.cancelsTouchesInView = true
-        backgroundTapRecognizer.isEnabled = false
-        backgroundTapRecognizer.delegate = self
-        view.addGestureRecognizer(backgroundTapRecognizer)
     }
 
     private func configureSiteSearchViewController() {
@@ -268,10 +258,6 @@ import Gridicons
 
     private func performSitesSearch(for query: String) {
         siteSearchController?.searchQuery = query
-    }
-
-    @objc func handleBackgroundTap(_ gesture: UITapGestureRecognizer) {
-        endSearch()
     }
 
     @objc private func selectedFilterDidChange(_ filterBar: FilterTabBar) {
@@ -378,7 +364,6 @@ extension ReaderSearchViewController: UISearchBarDelegate {
     }
 
     public func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        backgroundTapRecognizer.isEnabled = true
         // prepare autocomplete view
         presentAutoCompleteView()
     }
@@ -386,7 +371,6 @@ extension ReaderSearchViewController: UISearchBarDelegate {
     public func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         // remove auto complete view
         dismissAutoCompleteView()
-        backgroundTapRecognizer.isEnabled = false
     }
 
     public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
