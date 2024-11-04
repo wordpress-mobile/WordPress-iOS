@@ -60,7 +60,7 @@ let package = Package(
         .target(name: "WordPressFlux"),
         .target(name: "WordPressSharedObjC", resources: [.process("Resources")]),
         .target(name: "WordPressShared", dependencies: [.target(name: "WordPressSharedObjC")], resources: [.process("Resources")]),
-        .target(name: "WordPressUI", resources: [.process("Resources")]),
+        .target(name: "WordPressUI", dependencies: [.target(name: "WordPressShared")], resources: [.process("Resources")]),
         .testTarget(name: "JetpackStatsWidgetsCoreTests", dependencies: [.target(name: "JetpackStatsWidgetsCore")]),
         .testTarget(name: "DesignSystemTests", dependencies: [.target(name: "DesignSystem")]),
         .testTarget(name: "WordPressFluxTests", dependencies: ["WordPressFlux"]),

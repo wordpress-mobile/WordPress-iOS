@@ -152,6 +152,10 @@ extension Blog {
     func setSiteIdentifier(_ newValue: SiteIdentifier) {
         self.apiKey = newValue
     }
+
+    @objc var isSelfHosted: Bool {
+        self.account == nil
+    }
 }
 
 extension WpApiApplicationPasswordDetails {
