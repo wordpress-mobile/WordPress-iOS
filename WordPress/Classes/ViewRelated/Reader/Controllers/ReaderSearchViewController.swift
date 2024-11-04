@@ -68,8 +68,6 @@ import Gridicons
 
     fileprivate let sections: [Section] = [ .posts, .sites ]
 
-    var onViewWillDisappear: (() -> Void)?
-
     /// A convenience method for instantiating the controller from the storyboard.
     ///
     /// - Returns: An instance of the controller.
@@ -137,7 +135,6 @@ import Gridicons
 
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
-        onViewWillDisappear?()
     }
 
     // MARK: - Analytics
