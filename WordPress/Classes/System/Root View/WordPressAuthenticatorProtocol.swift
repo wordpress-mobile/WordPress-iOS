@@ -28,14 +28,6 @@ extension WordPressAuthenticator: WordPressAuthenticatorProtocol {
             return false
         }
 
-        // TODO: Replce with a remote feature flag.
-        // Enable web-based login for debug builds until the remote feature flag is available.
-        #if DEBUG
-        let webLoginEnabled = true
-        #else
-        let webLoginEnabled = false
-        #endif
-
-        return webLoginEnabled
+        return RemoteFeatureFlag.dotComWebLogin.enabled()
     }
 }
