@@ -81,7 +81,7 @@ msgctxt "app_store_keywords"
 msgid "social,notes,jetpack,writing,geotagging,media,blog,website,blogging,journal"
 msgstr ""
 
-msgctxt "v25.4-whats-new"
+msgctxt "v345345.0-whats-new"
 msgid ""
 "Three things this month:\n"
 "1. We've updated the UI for iPadOS 18 – no more tab bar, everything is navigation-based, which should be a better use of the larger screen size.\n"
