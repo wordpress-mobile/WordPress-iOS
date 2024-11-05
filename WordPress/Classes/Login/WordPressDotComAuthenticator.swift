@@ -15,7 +15,7 @@ struct WordPressDotComAuthenticator {
         case `default`
         // Sign in to an existing account.
         // This is typically used when the app needs to get a new OAuth token because the current one becomes invalid.
-        case reAuthentication(TaggedManagedObjectID<WPAccount>)
+        case reauthentication(accountEmail: String?)
         // Connect a site to Jetpack or sign in to an already connected site.
         case jetpackSite(accountEmail: String?)
 
@@ -23,9 +23,7 @@ struct WordPressDotComAuthenticator {
             switch self {
             case .default:
                 return nil
-            case let .reAuthentication(accountID):
-                return (try? context.existingObject(with: accountID))?.email
-            case let .jetpackSite(email):
+            case let .reauthentication(email), let .jetpackSite(email):
                 return email
             }
         }
