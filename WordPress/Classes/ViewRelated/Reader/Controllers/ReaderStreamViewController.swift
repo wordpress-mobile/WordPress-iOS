@@ -49,19 +49,7 @@ import AutomatticTracks
         return currentHelper
     }
 
-    private var noResultsStatusViewController = NoResultsViewController.controller()
-    private var noFollowedSitesViewController: NoResultsViewController?
-
     private lazy var readerPostStreamService = ReaderPostStreamService(coreDataStack: coreDataStack)
-
-    var resultsStatusView: NoResultsViewController {
-        get {
-            guard let noFollowedSitesVC = noFollowedSitesViewController else {
-                return noResultsStatusViewController
-            }
-            return noFollowedSitesVC
-        }
-    }
 
     private var coreDataStack: CoreDataStack { ContextManager.shared }
     var viewContext: NSManagedObjectContext { coreDataStack.mainContext }
@@ -118,7 +106,7 @@ import AutomatticTracks
     }
 
     private var isShowingResultStatusView: Bool {
-        return resultsStatusView.view?.superview != nil
+        emptyStateView != nil
     }
 
     private var isLoadingDiscover: Bool {
@@ -202,6 +190,19 @@ import AutomatticTracks
         didSet {
             guard oldValue != isCompact else { return }
             didChangeIsCompact(isCompact)
+        }
+    }
+
+    private var emptyStateView: UIView? {
+        didSet {
+            oldValue?.removeFromSuperview()
+            if let emptyStateView {
+                view.addSubview(emptyStateView)
+                emptyStateView.pinEdges(to: view.safeAreaLayoutGuide)
+
+                footerView.isHidden = true
+                hideGhost()
+            }
         }
     }
 
@@ -300,7 +301,6 @@ import AutomatticTracks
         setupTableView()
         setupFooterView()
         setupContentHandler()
-        setupResultsStatusView()
 
         observeNetworkStatus()
 
@@ -337,18 +337,6 @@ import AutomatticTracks
         super.viewWillDisappear(animated)
 
         dismissNoNetworkAlert()
-    }
-
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        coordinator.animate(alongsideTransition: { _ in
-            if self.isShowingResultStatusView {
-                self.resultsStatusView.updateAccessoryViewsVisibility()
-            }
-
-            self.tableView.beginUpdates()
-            self.tableView.endUpdates()
-        })
     }
 
     override func viewDidLayoutSubviews() {
@@ -442,9 +430,10 @@ import AutomatticTracks
     private func setupTableView() {
         configureRefreshControl()
 
+        tableViewController.willMove(toParent: self)
+        addChild(tableViewController)
         view.addSubview(tableViewController.view)
-        tableViewController.view.translatesAutoresizingMaskIntoConstraints = false
-        view.pinSubviewToSafeArea(tableViewController.view)
+        tableViewController.view.pinEdges()
         tableViewController.didMove(toParent: self)
         tableConfiguration.setup(tableView)
         tableView.delegate = self
@@ -458,10 +447,6 @@ import AutomatticTracks
         assert(tableView != nil, "A tableView must be assigned before configuring a handler")
 
         content.initializeContent(tableView: tableView, delegate: self)
-    }
-
-    private func setupResultsStatusView() {
-        resultsStatusView.delegate = self
     }
 
     private func setupFooterView() {
@@ -1584,15 +1569,11 @@ extension ReaderStreamViewController: SearchableActivityConvertable {
 extension ReaderStreamViewController {
 
     func displayLoadingStream() {
-        configureResultsStatus(title: ResultsStatusText.loadingStreamTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
-        displayResultsStatus()
         showGhost()
     }
 
     func displayLoadingStreamFailed() {
-        configureResultsStatus(title: ResultsStatusText.loadingErrorTitle, subtitle: ResultsStatusText.loadingErrorMessage)
-        displayResultsStatus()
-        hideGhost()
+        emptyStateView = makeEmptyStateView(.steamLoadingFailed)
     }
 
     func displayLoadingViewIfNeeded() {
@@ -1602,8 +1583,6 @@ extension ReaderStreamViewController {
         if !isEmbeddedInDiscover {
             tableView.tableHeaderView?.isHidden = true
         }
-        configureResultsStatus(title: ResultsStatusText.fetchingPostsTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
-        displayResultsStatus()
         showGhost()
     }
 
@@ -1612,9 +1591,9 @@ extension ReaderStreamViewController {
         // so make certain its not nil.
         guard let topic = readerTopic else {
             if contentType == .saved {
-                displayNoResultsForSavedPosts()
+                emptyStateView = makeEmptyStateView(.noSavedPosts)
             } else if contentType == .topic && siteID == ReaderHelpers.discoverSiteID {
-                displayNoResultsViewForDiscover()
+                emptyStateView = makeEmptyStateView(.discover)
             }
             return
         }
@@ -1624,79 +1603,18 @@ extension ReaderStreamViewController {
         }
 
         guard connectionAvailable() else {
-            displayNoConnectionView()
+            emptyStateView = makeEmptyStateView(.noConnection)
             return
         }
 
         guard ReaderHelpers.topicIsFollowing(topic) else {
-            let response: NoResultsResponse = ReaderStreamViewController.responseForNoResults(topic)
-
-            let buttonTitle = buttonTitleForTopic(topic)
-
-            configureResultsStatus(title: response.title, subtitle: response.message, buttonTitle: buttonTitle, imageName: readerEmptyImageName)
-            displayResultsStatus()
+            emptyStateView = makeEmptyStateView(for: topic)
             return
         }
 
         view.isUserInteractionEnabled = true
 
-        if noFollowedSitesViewController == nil {
-            let controller = NoResultsViewController.noFollowedSitesController(showActionButton: isLoggedIn)
-            controller.delegate = self
-            noFollowedSitesViewController = controller
-        }
-
-        displayResultsStatus()
-    }
-
-    func displayNoConnectionView() {
-        configureResultsStatus(title: ResultsStatusText.noConnectionTitle, subtitle: noConnectionMessage())
-        displayResultsStatus()
-        hideGhost()
-    }
-
-    /// Removes the no followed sites view controller if it exists
-    func resetNoFollowedSitesViewController() {
-        if let noFollowedSitesVC = noFollowedSitesViewController {
-            noFollowedSitesVC.removeFromView()
-            noFollowedSitesViewController = nil
-        }
-    }
-
-    func configureResultsStatus(title: String,
-                                subtitle: String? = nil,
-                                buttonTitle: String? = nil,
-                                imageName: String? = nil,
-                                accessoryView: UIView? = nil) {
-        resetNoFollowedSitesViewController()
-
-        resultsStatusView.configure(title: title, buttonTitle: buttonTitle, subtitle: subtitle, image: imageName, accessoryView: accessoryView)
-        resultsStatusView.loadViewIfNeeded()
-        resultsStatusView.setupReaderButtonStyles()
-    }
-
-    private func displayNoResultsForSavedPosts() {
-        resetNoFollowedSitesViewController()
-        configureNoResultsViewForSavedPosts()
-        displayResultsStatus()
-    }
-
-    private func displayNoResultsViewForDiscover() {
-        configureResultsStatus(title: ReaderStreamViewController.defaultResponse.title,
-                               subtitle: ReaderStreamViewController.defaultResponse.message,
-                               imageName: readerEmptyImageName)
-        displayResultsStatus()
-    }
-
-    func displayResultsStatus() {
-        resultsStatusView.removeFromView()
-        tableViewController.addChild(resultsStatusView)
-        tableView.insertSubview(resultsStatusView.view, belowSubview: refreshControl)
-        resultsStatusView.view.frame = tableView.frame
-        resultsStatusView.didMove(toParent: tableViewController)
-        resultsStatusView.updateView()
-        footerView.isHidden = true
-        hideGhost()
+        emptyStateView = makeEmptyStateView(.noFollowedSites)
     }
 
     func showSelectInterestsView() {
@@ -1741,63 +1659,16 @@ extension ReaderStreamViewController {
 
     func hideResultsStatus() {
         hideSelectInterestsView()
-        resultsStatusView.removeFromView()
+        emptyStateView = nil
         footerView.isHidden = false
         tableView.tableHeaderView?.isHidden = false
         hideGhost()
     }
 
-    func buttonTitleForTopic(_ topic: ReaderAbstractTopic) -> String? {
-        if ReaderHelpers.topicIsFollowing(topic) {
-            return ResultsStatusText.manageSitesButtonTitle
-        }
-
-        if ReaderHelpers.topicIsLiked(topic) {
-            return ResultsStatusText.followingButtonTitle
-        }
-
-        return nil
-    }
-
     struct ResultsStatusText {
-        static let fetchingPostsTitle = NSLocalizedString("Fetching posts...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.")
-        static let loadingStreamTitle = NSLocalizedString("Loading stream...", comment: "A short message to inform the user the requested stream is being loaded.")
         static let loadingErrorTitle = NSLocalizedString("Problem loading content", comment: "Error message title informing the user that reader content could not be loaded.")
         static let loadingErrorMessage = NSLocalizedString("Sorry. The content could not be loaded.", comment: "A short error message letting the user know the requested reader content could not be loaded.")
-        static let manageSitesButtonTitle = NSLocalizedString(
-            "reader.no.results.manage.blogs",
-            value: "Manage Blogs",
-            comment: "Button title. Tapping lets the user manage the blogs they follow."
-        )
-        static let followingButtonTitle = NSLocalizedString(
-            "reader.no.results.subscriptions.button",
-            value: "Go to Subscriptions",
-            comment: "Button title. Tapping lets the user view the blogs they're subscribed to."
-        )
         static let noConnectionTitle = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
-    }
-
-    var readerEmptyImageName: String {
-        "wp-illustration-reader-empty"
-    }
-}
-
-// MARK: - NoResultsViewControllerDelegate
-
-extension ReaderStreamViewController: NoResultsViewControllerDelegate {
-    func actionButtonPressed() {
-        guard let topic = readerTopic else {
-            return
-        }
-
-        if ReaderHelpers.topicIsFollowing(topic) {
-            RootViewCoordinator.sharedPresenter.showReader(path: .discover)
-            return
-        }
-
-        if ReaderHelpers.topicIsLiked(topic) {
-            RootViewCoordinator.sharedPresenter.showReader(path: .subscriptions)
-        }
     }
 }
 
