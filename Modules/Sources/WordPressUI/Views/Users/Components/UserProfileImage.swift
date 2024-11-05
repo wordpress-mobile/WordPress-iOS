@@ -6,11 +6,6 @@ struct UserProfileImage: View {
 
     private let url: URL
 
-    init(size: CGSize, email: String) {
-        self.size = size
-        self.url = URL(string: "https://gravatar.com/avatar/58fc51586c9a1f9895ac70e3ca60886e?size=256")!
-    }
-
     init(size: CGSize, url: URL) {
         self.size = size
         self.url = url
@@ -33,5 +28,5 @@ struct UserProfileImage: View {
 }
 
 #Preview {
-    UserProfileImage(size: CGSize(width: 64, height: 64), email: "test@example.com")
+    UserProfileImage(size: CGSize(width: 64, height: 64), url: URL(string: "https://gravatar.com/avatar/58fc51586c9a1f9895ac70e3ca60886e?size=256")!)
 }
