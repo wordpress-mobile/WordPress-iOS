@@ -65,8 +65,20 @@ public struct UserListView: View {
     }
 }
 
-#Preview {
+#Preview("Loading") {
     NavigationView {
-        UserListView(userProvider: MockUserProvider(), actionDispatcher: UserManagementActionDispatcher())
+        UserListView(userProvider: MockUserProvider(scenario: .inifitLoading), actionDispatcher: UserManagementActionDispatcher())
+    }
+}
+
+#Preview("Error") {
+    NavigationView {
+        UserListView(userProvider: MockUserProvider(scenario: .error), actionDispatcher: UserManagementActionDispatcher())
+    }
+}
+
+#Preview("List") {
+    NavigationView {
+        UserListView(userProvider: MockUserProvider(scenario: .dummyData), actionDispatcher: UserManagementActionDispatcher())
     }
 }
