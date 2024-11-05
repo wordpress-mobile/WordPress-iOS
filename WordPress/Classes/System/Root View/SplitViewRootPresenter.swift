@@ -64,6 +64,10 @@ final class SplitViewRootPresenter: RootViewPresenter {
                 self?.handleCoreDataChanges($0)
             }
             .store(in: &cancellables)
+
+        NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)
+            .sink { [weak self] _ in self?.applicationDidBecomeActive() }
+            .store(in: &cancellables)
     }
 
     private func configure(for selection: SidebarSelection) {
@@ -112,6 +116,8 @@ final class SplitViewRootPresenter: RootViewPresenter {
         DispatchQueue.main.async {
             self.splitVC.hide(.primary)
         }
+
+        trackAnalytics(for: selection)
     }
 
     private func makeRootNavigationController(with viewController: UIViewController) -> UINavigationController {
@@ -195,6 +201,23 @@ final class SplitViewRootPresenter: RootViewPresenter {
         } else {
             self.sidebarViewModel.selection = .welcome
             WordPressAppDelegate.shared?.windowManager.showSignInUI()
+        }
+    }
+
+    // MARK: Analytics
+
+    private func applicationDidBecomeActive() {
+        guard let selection = sidebarViewModel.selection, splitVC.isViewOnScreen() else {
+            return
+        }
+        trackAnalytics(for: selection)
+    }
+
+    private func trackAnalytics(for selection: SidebarSelection) {
+        switch selection {
+        case .blog: WPAnalytics.track(.mySitesTabAccessed)
+        case .reader: WPAnalytics.track(.readerAccessed)
+        default: break
         }
     }
 
