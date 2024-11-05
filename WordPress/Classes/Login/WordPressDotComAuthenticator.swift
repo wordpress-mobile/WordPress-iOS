@@ -151,50 +151,7 @@ struct WordPressDotComAuthenticator {
     }
 
     func present(_ error: SignInError, from viewController: UIViewController) {
-        // Show an alert for non-cancellation errors.
-        let alertMessage: String
-        switch error {
-        case let .authentication(error):
-            present(error, from: viewController)
-            return
-        case .fetchUser:
-            alertMessage = NSLocalizedString("wpComLogin.error.fetchUser", value: "Failed to load user details", comment: "Error message when failing to load user details during WordPress.com login")
-        case let .mismatchedEmail(expectedEmail):
-            let format = NSLocalizedString("wpComLogin.error.mismatchedEmail", value: "Please sign in with email address %@", comment: "Error message when user signs in with an unexpected email address. The first argument is the expected email address")
-            alertMessage = String(format: format, expectedEmail)
-        case let .alreadySignedIn(signedInAccountEmail):
-            let format = NSLocalizedString("wpComLogin.error.alreadySignedIn", value: "You have already signed in with email address %@. Please sign out try again.", comment: "Error message when user signs in with an different account than the account that's alredy signed in. The first argument is the current signed-in account email address")
-            alertMessage = String(format: format, signedInAccountEmail)
-        case .loadingSites:
-            alertMessage = NSLocalizedString("wpComLogin.error.loadingSites", value: "Your account's sites cannot be loaded. Please try again later.", comment: "Error message when failing to load account's site after signing in")
-        }
-
-        let alert = UIAlertController(
-            title: NSLocalizedString("generic.error.title", value: "Error", comment: "A generic title for an error"),
-            message: alertMessage,
-            preferredStyle: .alert
-        )
-        alert.addAction(UIAlertAction(title: SharedStrings.Button.close, style: .cancel, handler: nil))
-        viewController.present(alert, animated: true)
-    }
-
-    func present(_ error: AuthenticationError, from viewController: UIViewController) {
-        // Show an alert for non-cancellation errors.
-        let alertMessage: String
-        switch error {
-        case .cancelled:
-            // `.cancelled` error is thrown when user taps the cancel button in the presented Safari view controller.
-            // No need to show an alert for this error.
-            return
-        case let .loginDenied(message):
-            alertMessage = message
-        case let .urlError(error):
-            alertMessage = error.localizedDescription
-        case .invalidCallbackURL, .obtainAccessToken, .parsing, .unknown:
-            // These errors are unexpected.
-            wpAssertionFailure("WP.com web login failed", userInfo: ["error": "\(error)"])
-            alertMessage = SharedStrings.Error.generic
-        }
+        guard let alertMessage = error.alertMessage else { return }
 
         let alert = UIAlertController(
             title: NSLocalizedString("generic.error.title", value: "Error", comment: "A generic title for an error"),
@@ -327,5 +284,45 @@ private func withCheckedTypedThrowingContinuation<T, E: Error>(body: (@escaping 
         }
     } catch {
         throw (error as! E)
+    }
+}
+
+private extension WordPressDotComAuthenticator.SignInError {
+    var alertMessage: String? {
+        switch self {
+        case let .authentication(error):
+            return error.alertMessage
+        case .fetchUser:
+            return NSLocalizedString("wpComLogin.error.fetchUser", value: "Failed to load user details", comment: "Error message when failing to load user details during WordPress.com login")
+        case let .mismatchedEmail(expectedEmail):
+            let format = NSLocalizedString("wpComLogin.error.mismatchedEmail", value: "Please sign in with email address %@", comment: "Error message when user signs in with an unexpected email address. The first argument is the expected email address")
+            return String(format: format, expectedEmail)
+        case let .alreadySignedIn(signedInAccountEmail):
+            let format = NSLocalizedString("wpComLogin.error.alreadySignedIn", value: "You have already signed in with email address %@. Please sign out try again.", comment: "Error message when user signs in with an different account than the account that's alredy signed in. The first argument is the current signed-in account email address")
+            return String(format: format, signedInAccountEmail)
+        case .loadingSites:
+            return NSLocalizedString("wpComLogin.error.loadingSites", value: "Your account's sites cannot be loaded. Please try again later.", comment: "Error message when failing to load account's site after signing in")
+        }
+
+    }
+}
+
+private extension WordPressDotComAuthenticator.AuthenticationError {
+    var alertMessage: String? {
+        let alertMessage: String
+        switch self {
+        case .cancelled:
+            // `.cancelled` error is thrown when user taps the cancel button in the presented Safari view controller.
+            // No need to show an alert for this error.
+            return nil
+        case let .loginDenied(message):
+            return message
+        case let .urlError(error):
+            return error.localizedDescription
+        case .invalidCallbackURL, .obtainAccessToken, .parsing, .unknown:
+            // These errors are unexpected.
+            wpAssertionFailure("WP.com web login failed", userInfo: ["error": "\(self)"])
+            return SharedStrings.Error.generic
+        }
     }
 }
