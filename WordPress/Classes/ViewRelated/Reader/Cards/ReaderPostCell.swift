@@ -281,11 +281,9 @@ private final class ReaderPostCellView: UIView {
         configureToolbarAccessibility(with: viewModel.toolbar)
     }
 
-    private lazy var mainWindow = UIApplication.shared.mainWindow
-
     private var preferredCoverSize: CGSize? {
-        guard let mainWindow else { return nil }
-        return Self.preferredCoverSize(in: mainWindow, isCompact: isCompact)
+        guard let window = window ?? UIApplication.shared.mainWindow else { return nil }
+        return Self.preferredCoverSize(in: window, isCompact: isCompact)
     }
 
     static func preferredCoverSize(in window: UIWindow, isCompact: Bool) -> CGSize {
