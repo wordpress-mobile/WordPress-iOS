@@ -46,7 +46,7 @@ struct ReaderPostMenu {
     private var share: UIAction {
         UIAction(Strings.share, systemImage: "square.and.arrow.up") {
             guard let viewController else { return }
-            ReaderShareAction().execute(with: post, context: context, anchor: anchor ?? viewController.view, vc: viewController)
+            ReaderShareAction().execute(with: post, anchor: anchor ?? viewController.view, vc: viewController)
             track(.share)
         }
     }
