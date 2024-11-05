@@ -571,10 +571,7 @@ import AutomatticTracks
 
     private func configureCloseButtonIfNeeded() {
         if isModal() {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark"),
-                                                               style: .plain,
-                                                               target: self,
-                                                               action: #selector(closeButtonTapped))
+            navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(closeButtonTapped))
         }
     }
 
