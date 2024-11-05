@@ -584,21 +584,6 @@ import AutomatticTracks
 
     // MARK: - Instance Methods
 
-    /// Retrieve an instance of the specified post from the main NSManagedObjectContext.
-    ///
-    /// - Parameters:
-    ///     - post: The post to retrieve.
-    ///
-    /// - Returns: The post fetched from the main context or nil if the post does not exist in the context.
-    ///
-    private func postInMainContext(_ post: ReaderPost) -> ReaderPost? {
-        guard let post = (try? ContextManager.sharedInstance().mainContext.existingObject(with: post.objectID)) as? ReaderPost else {
-            DDLogError("Error retrieving an exsting post from the main context by its object ID.")
-            return nil
-        }
-        return post
-    }
-
     /// Scrolls to the top of the list of posts.
     @objc func scrollViewToTop() {
         guard tableView.numberOfRows(inSection: .zero) > 0 else {
@@ -1445,27 +1430,23 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             }
             return
         }
-
-        guard let apost = posts[safe: indexPath.row] else {
+        guard let post = posts[safe: indexPath.row] else {
             wpAssertionFailure("invalid_index_path")
             return
         }
-
-        didSelectPost(apost, at: indexPath)
+        didSelectPost(post, at: indexPath)
     }
 
-    func didSelectPost(_ apost: ReaderPost, at indexPath: IndexPath) {
-        guard let post = postInMainContext(apost) else {
-            return
-        }
+    func didSelectPost(_ post: ReaderPost, at indexPath: IndexPath) {
+        wpAssert(post.managedObjectContext == viewContext)
 
         if post.isKind(of: ReaderGapMarker.self) {
             syncFillingGap(indexPath)
             return
         }
 
-        if recentlyBlockedSitePostObjectIDs.contains(apost.objectID) {
-            unblockSiteForPost(apost)
+        if recentlyBlockedSitePostObjectIDs.contains(post.objectID) {
+            unblockSiteForPost(post)
             return
         }
 
@@ -1473,7 +1454,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             WPAppAnalytics.track(.readerSearchResultTapped)
 
             // We can use `if let` when `ReaderPost` adopts nullability.
-            let railcar = apost.railcarDictionary()
+            let railcar = post.railcarDictionary()
             if railcar != nil {
                 WPAppAnalytics.trackTrainTracksInteraction(.readerSearchResultTapped, withProperties: railcar)
             }
