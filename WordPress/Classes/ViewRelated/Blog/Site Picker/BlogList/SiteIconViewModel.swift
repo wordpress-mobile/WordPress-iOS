@@ -12,11 +12,13 @@ struct SiteIconViewModel {
     enum Size {
         case small
         case regular
+        case large
 
         var width: CGFloat {
             switch self {
             case .small: 28
             case .regular: 40
+            case .large: 72
             }
         }
 

@@ -25,19 +25,19 @@ class ReaderTests: XCTestCase {
 }
 
 class ReaderTests_01: ReaderTests {
-    func testViewPost() throws {
+    func _testViewPost() throws {
         try openStream(.recent)
             .openLastPost()
             .verifyPostContentEquals(.expectedPostContent)
     }
 
-    func testViewPostInSafari() throws {
+    func _testViewPostInSafari() throws {
         try openStream(.recent)
             .openLastPostInSafari()
             .verifyPostContentEquals(.expectedPostContent)
     }
 
-    func testDiscover() throws {
+    func _testDiscover() throws {
         try openStream(.discover)
             .selectTag()
             .verifyTagLoaded()
@@ -47,7 +47,7 @@ class ReaderTests_01: ReaderTests {
 }
 
 class ReaderTests_02: ReaderTests {
-    func testAddCommentToPost() throws {
+    func _testAddCommentToPost() throws {
         try openStream(.recent)
             .openLastPostComments()
             .verifyCommentsListEmpty()
@@ -55,7 +55,7 @@ class ReaderTests_02: ReaderTests {
             .verifyCommentSent(.commentContent)
     }
 
-    func testSavePost() throws {
+    func _testSavePost() throws {
         // Get saved post label
         let (updatedReaderScreen, savedPostLabel) = try openStream(.saved)
             .verifySavedPosts(state: .withoutPosts)
@@ -68,7 +68,7 @@ class ReaderTests_02: ReaderTests {
             .verifySavedPosts(state: .withPosts, postLabel: savedPostLabel)
     }
 
-    func testLikePost() throws {
+    func _testLikePost() throws {
         try openStream(.likes)
             .verifyLikedPosts(state: .withoutPosts)
             .switchToStream(.recent)

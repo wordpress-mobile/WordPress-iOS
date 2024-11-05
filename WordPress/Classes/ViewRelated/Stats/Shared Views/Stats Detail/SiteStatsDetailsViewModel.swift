@@ -726,6 +726,9 @@ private extension SiteStatsDetailsViewModel {
                               showDisclosure: true,
                               childRows: $0.posts.map { StatsTotalRowData(name: $0.title,
                                                                           data: $0.viewsCount.abbreviatedString(),
+                                                                          postID: $0.postID,
+                                                                          showDisclosure: true,
+                                                                          disclosureURL: $0.postURL,
                                                                           statSection: .periodAuthors) },
                               statSection: .periodAuthors)
         }

@@ -196,27 +196,6 @@ import WordPressUI
         displayTitleViewOnly = false
     }
 
-    /// No results for local data, skips the network status check
-    func configureForLocalData(title: String,
-                               buttonTitle: String? = nil,
-                               subtitle: String? = nil,
-                               attributedSubtitle: NSAttributedString? = nil,
-                               attributedSubtitleConfiguration: AttributedSubtitleConfiguration? = nil,
-                               image: String,
-                               subtitleImage: String? = nil) {
-
-        titleText = title
-        subtitleText = subtitle
-        attributedSubtitleText = attributedSubtitle
-
-        configureAttributedSubtitle = attributedSubtitleConfiguration
-        buttonText = buttonTitle
-        imageName = image
-        subtitleImageName = subtitleImage
-        displayTitleViewOnly = false
-        accessorySubview = nil
-    }
-
     /// Public method to show the title specifically formatted for no search results.
     /// When the view is configured, it will display just a label with specific constraints.
     ///

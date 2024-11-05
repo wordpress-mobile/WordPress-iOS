@@ -20,9 +20,7 @@ struct ReaderSubscriptionCell: View {
     var body: some View {
         HStack(spacing: 0) {
             HStack(spacing: 16) {
-                let size = SiteIconViewModel.Size.regular
-                SiteIconView(viewModel: .init(readerSiteTopic: site, size: size))
-                    .frame(width: size.width, height: size.width)
+                ReaderSiteIconView(site: site, size: .regular)
                     .padding(.leading, 4)
 
                 VStack(alignment: .leading, spacing: 3) {

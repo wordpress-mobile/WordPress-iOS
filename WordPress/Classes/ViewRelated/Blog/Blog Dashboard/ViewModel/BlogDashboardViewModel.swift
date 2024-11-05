@@ -108,7 +108,7 @@ final class BlogDashboardViewModel {
         var _error: Error?
 
         do {
-            self.wordpressClient = try WordPressClient.for(site: .from(blog: self.blog), in: .shared)
+            self.wordpressClient = try WordPressClient(site: .init(blog: self.blog))
         } catch {
             _error = error
             self.wordpressClient = nil

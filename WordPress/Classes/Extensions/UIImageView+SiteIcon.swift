@@ -95,47 +95,6 @@ extension UIImageView {
             }
         })
     }
-
-    /// Downloads the SiteIcon Image, associated to a given Blog. This method will attempt to optimize the URL, so that
-    /// the download Image Size matches `imageSize`.
-    ///
-    /// - Parameters:
-    ///     - blog: reference to the source blog
-    ///     - placeholderImage: Yes. It's the "place holder image".
-    ///
-    @objc func downloadSiteIcon(
-        for blog: Blog,
-        imageSize: CGSize = SiteIconDefaults.imageSize,
-        placeholderImage: UIImage? = .siteIconPlaceholder
-    ) {
-        guard let siteIconPath = blog.icon, let siteIconURL = SiteIconViewModel.optimizedURL(for: siteIconPath, imageSize: imageSize, isP2: blog.isAutomatticP2) else {
-
-            if blog.isWPForTeams() && placeholderImage == .siteIconPlaceholder {
-                image = UIImage.gridicon(.p2, size: imageSize)
-                return
-            }
-
-            image = placeholderImage
-            return
-        }
-
-        logURLOptimization(from: siteIconPath, to: siteIconURL, for: blog)
-
-        let host = MediaHost(with: blog) { error in
-            // We'll log the error, so we know it's there, but we won't halt execution.
-            DDLogError("\(error.localizedDescription)")
-        }
-
-        let mediaRequestAuthenticator = MediaRequestAuthenticator()
-        mediaRequestAuthenticator.authenticatedRequest(
-            for: siteIconURL,
-            from: host,
-            onComplete: { [weak self] request in
-                self?.downloadSiteIcon(with: request, imageSize: imageSize, placeholderImage: placeholderImage)
-        }) { error in
-            DDLogError("\(error.localizedDescription)")
-        }
-    }
 }
 
 // MARK: - Logging Support

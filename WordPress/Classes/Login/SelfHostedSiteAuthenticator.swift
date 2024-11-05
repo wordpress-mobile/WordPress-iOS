@@ -51,6 +51,18 @@ final actor SelfHostedSiteAuthenticator {
 
     @MainActor
     private func _signIn(site: String, from anchor: ASPresentationAnchor?) async throws(SignInError) -> WordPressOrgCredentials {
+        let success: WpApiApplicationPasswordDetails
+        do {
+            success = try await authentication(site: site, from: anchor)
+        } catch {
+            throw .authentication(error)
+        }
+
+        return try await handleSuccess(success)
+    }
+
+    @MainActor
+    func authentication(site: String, from anchor: ASPresentationAnchor?) async throws(WordPressLoginClient.Error) -> WpApiApplicationPasswordDetails {
         let appId: WpUuid
         let appName: String
 
@@ -73,15 +85,10 @@ final actor SelfHostedSiteAuthenticator {
             contextProvider: WebAuthenticationPresentationAnchorProvider(anchor: anchor ?? ASPresentationAnchor())
         )
 
-        switch result {
-        case let .failure(error):
-            throw .authentication(error)
-        case let .success(success):
-            return try await handleSuccess(success)
-        }
+        return try result.get()
     }
 
-    func handleSuccess(_ success: WpApiApplicationPasswordDetails) async throws(SignInError) -> WordPressOrgCredentials {
+    private func handleSuccess(_ success: WpApiApplicationPasswordDetails) async throws(SignInError) -> WordPressOrgCredentials {
         let xmlrpc: String
         let blogOptions: [AnyHashable: Any]
         do {

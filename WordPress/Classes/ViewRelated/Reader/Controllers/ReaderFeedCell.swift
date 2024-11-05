@@ -10,7 +10,7 @@ struct ReaderFeedCell: View {
                 .frame(width: 40, height: 40)
 
             VStack(alignment: .leading) {
-                Text(feed.title)
+                Text(feed.title.stringByDecodingXMLCharacters())
                     .font(.body)
                     .lineLimit(1)
 
