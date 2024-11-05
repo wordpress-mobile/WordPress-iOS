@@ -135,7 +135,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
         _readerNavigationController.tabBarItem.image = [UIImage imageNamed:@"tab-bar-reader"];
         _readerNavigationController.tabBarItem.accessibilityIdentifier = @"tabbar_reader";
-        _readerNavigationController.tabBarItem.title = NSLocalizedString(@"Reader", @"The accessibility value of the Reader tab.");
+        _readerNavigationController.tabBarItem.title = [WPTabBarController readerLocalizedTitle];
 
         UITabBarAppearance *scrollEdgeAppearance = [UITabBarAppearance new];
         [scrollEdgeAppearance configureWithOpaqueBackground];
@@ -424,7 +424,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     showMySitesTabCommand.discoverabilityTitle = NSLocalizedString(@"My Site", @"The accessibility value of the my site tab.");
     
     UIKeyCommand *showReaderTabCommand = [UIKeyCommand keyCommandWithInput:@"2" modifierFlags:UIKeyModifierCommand action:@selector(showReaderTab)];
-    showMySitesTabCommand.discoverabilityTitle = NSLocalizedString(@"Reader", @"The accessibility value of the reader tab.");
+    showMySitesTabCommand.discoverabilityTitle = [WPTabBarController readerLocalizedTitle];
     
     UIKeyCommand *showNotificationsTabCommand = [UIKeyCommand keyCommandWithInput:@"4" modifierFlags:UIKeyModifierCommand action:@selector(showNotificationsTab)];
     showMySitesTabCommand.discoverabilityTitle = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");

@@ -550,7 +550,7 @@ import AutomatticTracks
             if contentType == .saved {
                 title = SharedStrings.Reader.saved
             } else {
-                title = NSLocalizedString("Reader", comment: "The default title of the Reader")
+                title = SharedStrings.Reader.title
             }
             return
         }
@@ -1543,7 +1543,7 @@ extension ReaderStreamViewController: SearchableActivityConvertable {
     }
 
     var activityTitle: String {
-        return NSLocalizedString("Reader", comment: "Title of the 'Reader' tab - used for spotlight indexing on iOS.")
+        return SharedStrings.Reader.title
     }
 
     var activityKeywords: Set<String>? {

@@ -18,6 +18,10 @@ fileprivate extension WPTab {
 }
 
 extension WPTabBarController {
+    @objc class func readerLocalizedTitle() -> String {
+        SharedStrings.Reader.title
+    }
+
     func showReader(path: ReaderNavigationPath?) {
         showReaderTab()
         if let path {
