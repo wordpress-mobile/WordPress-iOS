@@ -1,6 +1,8 @@
 import Foundation
 import UIKit
 import SwiftUI
+import WordPressUI
+import WordPressAPI
 
 extension Array where Element: BlogDetailsSection {
     fileprivate func findSectionIndex(of category: BlogDetailsSectionCategory) -> Int? {
@@ -120,7 +122,7 @@ extension BlogDetailsViewController {
 
     @objc func shouldShowApplicationPasswordRow() -> Bool {
         // Only available for application-password authenticated self-hosted sites.
-        return self.blog.account == nil && self.blog.userID != nil && (try? WordPressSite(blog: self.blog)) != nil
+        return self.blog.account == nil && self.blog.userID != nil
     }
 
     private func createApplicationPasswordService() -> ApplicationPasswordService? {
@@ -139,13 +141,17 @@ extension BlogDetailsViewController {
     }
 
     @objc func showApplicationPasswordManagement() {
-        guard let presentationDelegate, let service = createApplicationPasswordService() else {
+        guard let presentationDelegate, let userId = self.blog.userID?.intValue else {
             return
         }
 
-        let viewModel = ApplicationTokenListViewModel(dataProvider: service)
-        let viewController = UIHostingController(rootView: ApplicationTokenListView(viewModel: viewModel))
-        presentationDelegate.presentBlogDetailsViewController(viewController)
+        let feature = NSLocalizedString("applicationPasswordRequired.feature.plugins", value: "Application Passwords Management", comment: "Feature name for managing Application Passwords in the app")
+        let rootView = ApplicationPasswordRequiredView(blog: self.blog, localizedFeatureName: feature) { client in
+            let service = ApplicationPasswordService(api: client, currentUserId: userId)
+            let viewModel = ApplicationTokenListViewModel(dataProvider: service)
+            return ApplicationTokenListView(viewModel: viewModel)
+        }
+        presentationDelegate.presentBlogDetailsViewController(UIHostingController(rootView: rootView))
     }
 
     @objc func showManagePluginsScreen() {
@@ -157,4 +163,74 @@ extension BlogDetailsViewController {
         let listViewController = PluginListViewController(site: site, query: query)
         presentationDelegate?.presentBlogDetailsViewController(listViewController)
     }
- }
+}
+
+struct ApplicationPasswordRequiredView<Content: View>: View {
+    private let blog: Blog
+    private let localizedFeatureName: String
+    @State private var site: WordPressSite?
+    private let builder: (WordPressClient) -> Content
+
+    init(blog: Blog, localizedFeatureName: String, @ViewBuilder content: @escaping (WordPressClient) -> Content) {
+        wpAssert(blog.account == nil, "The Blog argument should be a self-hosted site")
+
+        self.blog = blog
+        self.localizedFeatureName = localizedFeatureName
+        self.site = try? WordPressSite(blog: blog)
+        self.builder = content
+    }
+
+    var body: some View {
+        if let site {
+            builder(WordPressClient(site: site))
+        } else {
+            RestApiUpgradePrompt(localizedFeatureName: localizedFeatureName) {
+                Task {
+                    await self.migrate()
+                }
+            }
+        }
+    }
+
+    @MainActor
+    private func migrate() async {
+        guard let url = try? blog.getUrlString() else {
+            Notice(title: Strings.siteUrlNotFoundError).post()
+            return
+        }
+
+        do {
+            // Get an application password for the given site.
+            let authenticator = SelfHostedSiteAuthenticator(session: .shared)
+            let success = try await authenticator.authentication(site: url, from: nil)
+
+            // Ensure the application password belongs to the current signed in user
+            if let username = blog.username, success.userLogin != username {
+                Notice(title: Strings.userNameMismatch(expected: username)).post()
+                return
+            }
+
+            try blog.setApplicationToken(success.password)
+
+            // Modify the `site` variable to display the intended feature.
+            self.site = try .init(baseUrl: ParsedUrl.parse(input: success.siteUrl), type: .selfHosted(username: success.userLogin, authToken: success.password))
+        } catch let error as WordPressLoginClient.Error {
+            if let message = error.errorMessage {
+                Notice(title: message).post()
+            }
+        } catch {
+            Notice(title: SharedStrings.Error.generic).post()
+        }
+    }
+
+    enum Strings {
+        static var siteUrlNotFoundError: String {
+            NSLocalizedString("applicationPasswordMigration.error.siteUrlNotFound", value: "Cannot find the current site's url", comment: "Error message when the current site's url cannot be found")
+        }
+
+        static func userNameMismatch(expected: String) -> String {
+            let format = NSLocalizedString("applicationPasswordMigration.error.usernameMismatch", value: "You need to sign in with user \"%@\"", comment: "Error message when the username does not match the signed-in user. The first argument is the currently signed in user's user login name")
+            return String(format: format, expected)
+        }
+    }
+}

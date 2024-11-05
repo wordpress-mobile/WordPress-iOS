@@ -64,7 +64,8 @@ struct ReaderSubscriptionHelper {
             // Do nothing
         }, failure: { _, error in
             DDLogError("Could not unfollow site: \(String(describing: error))")
-            Notice(title: ReaderFollowedSitesViewController.Strings.failedToUnfollow, message: error?.localizedDescription, feedbackType: .error).post()
+            let title = NSLocalizedString("reader.notice.blog.unsubscribed.error", value: "Could not unsubscribe from blog", comment: "Title of a prompt.")
+            Notice(title: title, message: error?.localizedDescription, feedbackType: .error).post()
         })
     }
 }

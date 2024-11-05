@@ -30,6 +30,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
     case readingPreferencesFeedback
     case readerAnnouncementCard
     case inAppUpdates
+    case dotComWebLogin
 
     var defaultValue: Bool {
         switch self {
@@ -88,6 +89,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
         case .readerAnnouncementCard:
             return AppConfiguration.isJetpack
         case .inAppUpdates:
+            return false
+        case .dotComWebLogin:
             return false
         }
     }
@@ -151,6 +154,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "reader_announcement_card"
         case .inAppUpdates:
             return "in_app_updates"
+        case .dotComWebLogin:
+            return "jp_wpcom_web_login"
         }
     }
 
@@ -212,6 +217,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "Reader Announcement Card"
         case .inAppUpdates:
             return "In-App Updates"
+        case .dotComWebLogin:
+            return "Log in to WordPress.com from web browser"
         }
     }
 

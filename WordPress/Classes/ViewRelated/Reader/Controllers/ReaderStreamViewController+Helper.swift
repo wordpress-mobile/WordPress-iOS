@@ -1,14 +1,12 @@
 import Foundation
+import SwiftUI
+import WordPressUI
+
+// MARK: - ReaderHeader
 
 extension ReaderStreamViewController {
     // Convenience type for Reader's headers
     typealias ReaderHeader = UIView & ReaderStreamHeader
-
-    // A simple struct defining a title and message for use with a NoResultsViewController
-    public struct NoResultsResponse {
-        var title: String
-        var message: String
-    }
 
     func headerForStream(_ topic: ReaderAbstractTopic?, isLoggedIn: Bool, container: UITableViewController) -> UIView? {
         if let topic, ReaderHelpers.topicIsFollowing(topic) {
@@ -44,19 +42,26 @@ extension ReaderStreamViewController {
         }
         return nil
     }
+}
 
-    static let defaultResponse = NoResultsResponse(
-        title: NSLocalizedString("No recent posts", comment: "A message title"),
-        message: NSLocalizedString("No posts have been made recently", comment: "A default message shown when the reader can find no post to display"))
+// MARK: - EmptyStateView (ReaderAbstractTopic)
 
-    /// Returns a NoResultsResponse instance appropriate for the specified ReaderTopic
-    ///
-    /// - Parameter topic: A ReaderTopic.
-    ///
-    /// - Returns: An NoResultsResponse instance.
-    ///
-    public class func responseForNoResults(_ topic: ReaderAbstractTopic) -> NoResultsResponse {
-        // if following
+extension ReaderStreamViewController {
+    func makeEmptyStateView(for topic: ReaderAbstractTopic) -> UIView {
+        let response = ReaderStreamViewController.responseForNoResults(topic)
+        return UIHostingView(view: EmptyStateView(
+            response.title,
+            image: "wp-illustration-reader-empty",
+            description: response.message
+        ))
+    }
+
+    private struct NoResultsResponse {
+        var title: String
+        var message: String
+    }
+
+    private class func responseForNoResults(_ topic: ReaderAbstractTopic) -> NoResultsResponse {
         if ReaderHelpers.topicIsFollowing(topic) {
             return NoResultsResponse(
                 title: NSLocalizedString("Welcome to the Reader", comment: "A message title"),
@@ -67,24 +72,18 @@ extension ReaderStreamViewController {
                 )
             )
         }
-
-        // if liked
         if ReaderHelpers.topicIsLiked(topic) {
             return NoResultsResponse(
                 title: NSLocalizedString("Nothing liked yet", comment: "A message title"),
                 message: NSLocalizedString("Posts that you like will appear here.", comment: "A message explaining the Posts I Like feature in the reader")
             )
         }
-
-        // if tag
         if ReaderHelpers.isTopicTag(topic) {
             return NoResultsResponse(
                 title: NSLocalizedString("No recent posts", comment: "A message title"),
                 message: NSLocalizedString("No posts have been made recently with this tag.", comment: "Message shown whent the reader finds no posts for the chosen tag")
             )
         }
-
-        // if site (blog)
         if ReaderHelpers.isTopicSite(topic) {
             return NoResultsResponse(
                 title: NSLocalizedString("No posts", comment: "A message title"),
@@ -95,8 +94,6 @@ extension ReaderStreamViewController {
                 )
             )
         }
-
-        // if list
         if ReaderHelpers.isTopicList(topic) {
             return NoResultsResponse(
                 title: NSLocalizedString("No recent posts", comment: "A message title"),
@@ -107,8 +104,6 @@ extension ReaderStreamViewController {
                 )
             )
         }
-
-        // if search topic
         if ReaderHelpers.isTopicSearchTopic(topic) {
             let message = NSLocalizedString("No posts found matching %@ in your language.", comment: "Message shown when the reader finds no posts for the specified search phrase. The %@ is a placeholder for the search phrase.")
             return NoResultsResponse(
@@ -116,33 +111,98 @@ extension ReaderStreamViewController {
                 message: NSString(format: message as NSString, topic.title) as String
             )
         }
-
-        // Default message
         return defaultResponse
+    }
+
+    private static let defaultResponse = NoResultsResponse(
+        title: NSLocalizedString("No recent posts", comment: "A message title"),
+        message: NSLocalizedString("No posts have been made recently", comment: "A default message shown when the reader can find no post to display")
+    )
+}
+
+// MARK: - EmptyStateView (EmptyStateViewType)
+
+extension ReaderStreamViewController {
+    enum EmptyStateViewType {
+        case discover
+        case noSavedPosts
+        case noFollowedSites
+        case noConnection
+        case steamLoadingFailed
+    }
+
+    func makeEmptyStateView(_ type: EmptyStateViewType) -> UIView {
+        UIHostingView(view: _makeEmptyStateView(type))
+    }
+
+    @ViewBuilder
+    private func _makeEmptyStateView(_ type: EmptyStateViewType) -> some View {
+        switch type {
+        case .steamLoadingFailed:
+            EmptyStateView(
+                ResultsStatusText.loadingErrorTitle,
+                systemImage: "exclamationmark.circle",
+                description: ResultsStatusText.loadingErrorMessage
+            )
+        case .noSavedPosts:
+            EmptyStateView(label: {
+                Label(NSLocalizedString("No saved posts", comment: "Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts."), image: "wp-illustration-reader-empty")
+            }, description: {
+                // Had to use UIKit because Text(AttributedString()) won't render the attachment
+                HostedAttributedLabel(text: self.makeSavedPostsEmptyViewDescription())
+                    .fixedSize()
+            }, actions: {
+                EmptyView()
+            })
+        case .discover:
+            EmptyStateView(
+                ReaderStreamViewController.defaultResponse.title,
+                image: "wp-illustration-reader-empty",
+                description: ReaderStreamViewController.defaultResponse.message
+            )
+        case .noConnection:
+            EmptyStateView(
+                ResultsStatusText.noConnectionTitle,
+                systemImage: "network.slash",
+                description: noConnectionMessage()
+            )
+        case .noFollowedSites:
+            EmptyStateView(label: {
+                Label(Strings.noFollowedSitesTitle, systemImage: "checkmark.circle")
+            }, description: {
+                Text(Strings.noFollowedSitesSubtitle)
+            }, actions: {
+                Button(Strings.noFollowedSitesButtonTitle) {
+                    RootViewCoordinator.sharedPresenter.showReader(path: .discover)
+                }
+                .buttonStyle(.primary)
+            })
+        }
+    }
+
+    private func makeSavedPostsEmptyViewDescription() -> NSAttributedString {
+        let details = NSLocalizedString("Tap [bookmark-outline] to save a post to your list.", comment: "A hint displayed in the Saved Posts section of the Reader. The '[bookmark-outline]' placeholder will be replaced by an icon at runtime – please leave that string intact.")
+        let string = NSMutableAttributedString(string: details, attributes: [
+            .font: UIFont.preferredFont(forTextStyle: .subheadline)
+        ])
+        let icon = UIImage.gridicon(.bookmarkOutline, size: CGSize(width: 18, height: 18))
+        string.replace("[bookmark-outline]", with: icon)
+        string.addAttribute(.foregroundColor, value: UIColor.secondaryLabel, range: NSRange(location: 0, length: string.length))
+        return string
     }
 }
 
-// MARK: - No Results for saved posts
-extension ReaderStreamViewController {
+private struct HostedAttributedLabel: UIViewRepresentable {
+    let text: NSAttributedString
 
-    func configureNoResultsViewForSavedPosts() {
+    func makeUIView(context: Context) -> UILabel {
+        let label = UILabel()
+        label.attributedText = text
+        return label
+    }
 
-        let noResultsResponse = NoResultsResponse(title: NSLocalizedString("No saved posts",
-                                                                           comment: "Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts."),
-                                                  message: NSLocalizedString("Tap [bookmark-outline] to save a post to your list.",
-                                                                             comment: "A hint displayed in the Saved Posts section of the Reader. The '[bookmark-outline]' placeholder will be replaced by an icon at runtime – please leave that string intact."))
-
-        var messageText = NSMutableAttributedString(string: noResultsResponse.message)
-
-        // Get attributed string styled for No Results so it gets the correct font attributes added to it.
-        // The font is used by the attributed string `replace(_:with:)` method below to correctly position the icon.
-        let styledText = resultsStatusView.applyMessageStyleTo(attributedString: messageText)
-        messageText = NSMutableAttributedString(attributedString: styledText)
-
-        let icon = UIImage.gridicon(.bookmarkOutline, size: CGSize(width: 18, height: 18))
-        messageText.replace("[bookmark-outline]", with: icon)
-
-        resultsStatusView.configureForLocalData(title: noResultsResponse.title, attributedSubtitle: messageText, image: "wp-illustration-reader-empty")
+    func updateUIView(_ uiView: UILabel, context: Context) {
+        // Do nothing
     }
 }
 
@@ -151,4 +211,22 @@ extension ReaderStreamViewController {
     func trackSavedListAccessed() {
         WPAnalytics.trackReader(.readerSavedListShown, properties: ["source": ReaderSaveForLaterOrigin.readerMenu.viewAllPostsValue])
     }
+}
+
+private struct Strings {
+    static let noFollowedSitesTitle = NSLocalizedString(
+        "reader.no.blogs.title",
+        value: "No blog subscriptions",
+        comment: "Title for the no followed blogs result screen"
+    )
+    static let noFollowedSitesSubtitle = NSLocalizedString(
+        "reader.no.blogs.subtitle",
+        value: "Subscribe to blogs in Discover and you’ll see their latest posts here. Or search for a blog that you like already.",
+        comment: "Subtitle for the no followed blogs result screen"
+    )
+    static let noFollowedSitesButtonTitle = NSLocalizedString(
+        "reader.no.blogs.button",
+        value: "Discover Blogs",
+        comment: "Title for button on the no followed blogs result screen"
+    )
 }

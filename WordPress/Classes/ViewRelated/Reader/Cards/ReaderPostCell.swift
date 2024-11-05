@@ -87,6 +87,7 @@ private final class ReaderPostCellView: UIView {
 
     private var viewModel: ReaderPostCellViewModel? // important: has to retain
     private let coverAspectRatio: CGFloat = 239.0 / 358.0
+    private static let regularCoverWidth: CGFloat = 200
     private var imageViewConstraints: [NSLayoutConstraint] = []
     private var cancellables: [AnyCancellable] = []
 
@@ -202,7 +203,7 @@ private final class ReaderPostCellView: UIView {
         } else {
             imageViewConstraints = [
                 imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: coverAspectRatio),
-                imageView.widthAnchor.constraint(equalToConstant: 200)
+                imageView.widthAnchor.constraint(equalToConstant: Self.regularCoverWidth)
             ]
         }
         NSLayoutConstraint.activate(imageViewConstraints)
@@ -271,12 +272,27 @@ private final class ReaderPostCellView: UIView {
         detailsLabel.text = viewModel.details
 
         imageView.isHidden = viewModel.imageURL == nil
+
         if let imageURL = viewModel.imageURL {
-            imageView.setImage(with: imageURL)
+            imageView.setImage(with: imageURL, size: preferredCoverSize)
         }
 
         configureToolbar(with: viewModel.toolbar)
         configureToolbarAccessibility(with: viewModel.toolbar)
+    }
+
+    private var preferredCoverSize: CGSize? {
+        guard let window = window ?? UIApplication.shared.mainWindow else { return nil }
+        return Self.preferredCoverSize(in: window, isCompact: isCompact)
+    }
+
+    static func preferredCoverSize(in window: UIWindow, isCompact: Bool) -> CGSize {
+        var coverWidth = Self.regularCoverWidth
+        if isCompact {
+            coverWidth = min(window.bounds.width, window.bounds.height) - ReaderStreamBaseCell.insets.left * 2
+        }
+        return CGSize(width: coverWidth, height: coverWidth)
+            .scaled(by: min(2, window.traitCollection.displayScale))
     }
 
     private func configureToolbar(with viewModel: ReaderPostToolbarViewModel) {

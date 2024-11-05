@@ -112,19 +112,30 @@ private extension SelfHostedSiteAuthenticator.SignInError {
 
     var errorMessage: String? {
         switch self {
-        case let .authentication(.invalidSiteAddress(error)):
+        case let .authentication(error):
             return error.errorMessage
-        case .authentication(.missingLoginUrl):
-            return NSLocalizedString("addSite.selfHosted.noLoginUrlFound", value: "Application Password authentication needs to be enabled on the WordPress site.", comment: "Error message shown when application-password authentication is disabled on a self-hosted WordPress site")
-        case .authentication(.cancelled):
-            return nil
-        case .authentication(.authenticationError), .authentication(.invalidApplicationPasswordCallback):
-            return NSLocalizedString("addSite.selfHosted.authenticationFailed", value: "Cannot login using Application Password authentication.", comment: "Error message shown when an receiving an invalid application-password authentication result from a self-hosted WordPress site")
         case .loadingSiteInfoFailure:
             return NSLocalizedString("addSite.selfHosted.loadingSiteInfoFailure", value: "Cannot load the WordPress site details", comment: "Error message shown when failing to load details from a self-hosted WordPress site")
         case .savingSiteFailure:
             return NSLocalizedString("addSite.selfHosted.savingSiteFailure", value: "Cannot save the WordPress site, please try again later.", comment: "Error message shown when failing to save a self-hosted site to user's device")
-        case .authentication(.unknown):
+        }
+    }
+
+}
+
+extension WordPressLoginClient.Error {
+
+    var errorMessage: String? {
+        switch self {
+        case let .invalidSiteAddress(error):
+            return error.errorMessage
+        case .missingLoginUrl:
+            return NSLocalizedString("addSite.selfHosted.noLoginUrlFound", value: "Application Password authentication needs to be enabled on the WordPress site.", comment: "Error message shown when application-password authentication is disabled on a self-hosted WordPress site")
+        case .cancelled:
+            return nil
+        case .authenticationError, .invalidApplicationPasswordCallback:
+            return NSLocalizedString("addSite.selfHosted.authenticationFailed", value: "Cannot login using Application Password authentication.", comment: "Error message shown when an receiving an invalid application-password authentication result from a self-hosted WordPress site")
+        case .unknown:
             return NSLocalizedString("addSite.selfHosted.unknownError", value: "Something went wrong. Please try again.", comment: "Error message when an unknown error occurred when adding a self-hosted site")
         }
     }
