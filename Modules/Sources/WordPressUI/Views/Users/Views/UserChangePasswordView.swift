@@ -52,7 +52,7 @@ struct UserChangePasswordView: View {
 
 struct UserChangePasswordViewPreviews: PreviewProvider {
 
-    static let viewModel = UserChangePasswordViewModel(user: DisplayUser.MockUser)
+    static let viewModel = UserChangePasswordViewModel(user: DisplayUser.MockUser, actionDispatcher: UserManagementActionDispatcher())
 
     static var previews: some View {
         NavigationStack {

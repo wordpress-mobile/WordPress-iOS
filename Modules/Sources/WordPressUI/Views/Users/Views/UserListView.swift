@@ -3,9 +3,15 @@ import SwiftUI
 public struct UserListView: View {
 
     @StateObject
-    var viewModel = UserListViewModel()
+    private var viewModel: UserListViewModel
+    private let userProvider: UserDataProvider
+    private let actionDispatcher: UserManagementActionDispatcher
 
-    public init() {}
+    public init(userProvider: UserDataProvider, actionDispatcher: UserManagementActionDispatcher) {
+        self.userProvider = userProvider
+        self.actionDispatcher = actionDispatcher
+        _viewModel = StateObject(wrappedValue: UserListViewModel(userProvider: userProvider))
+    }
 
     public var body: some View {
         Group {
@@ -23,7 +29,7 @@ public struct UserListView: View {
                                 .listRowBackground(Color.clear)
                         } else {
                             ForEach(section.users) { user in
-                                UserListItem(user: user)
+                                UserListItem(user: user, userProvider: userProvider, actionDispatcher: actionDispatcher)
                             }
                         }
                     }
@@ -61,6 +67,6 @@ public struct UserListView: View {
 
 #Preview {
     NavigationView {
-        UserListView()
+        UserListView(userProvider: MockUserProvider(), actionDispatcher: UserManagementActionDispatcher())
     }
 }

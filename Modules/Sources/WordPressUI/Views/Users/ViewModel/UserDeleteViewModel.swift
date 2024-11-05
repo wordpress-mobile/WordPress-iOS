@@ -21,10 +21,14 @@ public class UserDeleteViewModel: ObservableObject {
     @Published
     var deleteButtonIsDisabled: Bool = true
 
+    private let userProvider: UserDataProvider
+    private let actionDispatcher: UserManagementActionDispatcher
     let user: DisplayUser
 
-    init(user: DisplayUser) {
+    init(user: DisplayUser, userProvider: UserDataProvider, actionDispatcher: UserManagementActionDispatcher) {
         self.user = user
+        self.userProvider = userProvider
+        self.actionDispatcher = actionDispatcher
     }
 
     func fetchOtherUsers() async {
@@ -34,8 +38,7 @@ public class UserDeleteViewModel: ObservableObject {
         }
 
         do {
-            let otherUsers = try await UserObjectResolver.userProvider
-                .fetchUsers { self.didReceiveUsers($0) }
+            let otherUsers = try await userProvider.fetchUsers { self.didReceiveUsers($0) }
 
             self.didReceiveUsers(otherUsers)
         } catch {
@@ -80,7 +83,7 @@ public class UserDeleteViewModel: ObservableObject {
             }
 
             do {
-                try await UserObjectResolver.actionDispatcher.deleteUser(id: user.id, reassigningPostsTo: otherUserId)
+                try await actionDispatcher.deleteUser(id: user.id, reassigningPostsTo: otherUserId)
             } catch {
                 debugPrint(error.localizedDescription)
                 await MainActor.run {

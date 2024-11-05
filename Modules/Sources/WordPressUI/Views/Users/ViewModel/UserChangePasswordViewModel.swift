@@ -28,10 +28,12 @@ public class UserChangePasswordViewModel: ObservableObject {
     @Environment(\.dismiss)
     var dismissAction
 
+    private let actionDispatcher: UserManagementActionDispatcher
     let user: DisplayUser
 
-    init(user: DisplayUser) {
+    init(user: DisplayUser, actionDispatcher: UserManagementActionDispatcher) {
         self.user = user
+        self.actionDispatcher = actionDispatcher
     }
 
     func didTapChangePassword(callback: @escaping () -> Void) {
@@ -55,7 +57,7 @@ public class UserChangePasswordViewModel: ObservableObject {
             }
 
             do {
-                try await UserObjectResolver.actionDispatcher.setNewPassword(id: user.id, newPassword: password)
+                try await actionDispatcher.setNewPassword(id: user.id, newPassword: password)
             } catch {
                 self.error = error
             }

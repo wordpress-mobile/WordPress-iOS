@@ -3,15 +3,19 @@ import SwiftUI
 struct UserDeleteView: View {
 
     @StateObject
-    var viewModel: UserDeleteViewModel
+    private var viewModel: UserDeleteViewModel
+    private let userProvider: UserDataProvider
+    private let actionDispatcher: UserManagementActionDispatcher
 
     @Environment(\.dismiss)
     var dismissAction: DismissAction
 
     var parentDismissAction: DismissAction?
 
-    init(user: DisplayUser, dismiss: DismissAction? = nil) {
-        _viewModel = StateObject(wrappedValue: UserDeleteViewModel(user: user))
+    init(user: DisplayUser, userProvider: UserDataProvider, actionDispatcher: UserManagementActionDispatcher, dismiss: DismissAction? = nil) {
+        self.userProvider = userProvider
+        self.actionDispatcher = actionDispatcher
+        _viewModel = StateObject(wrappedValue: UserDeleteViewModel(user: user, userProvider: userProvider, actionDispatcher: actionDispatcher))
         parentDismissAction = dismiss
     }
 
@@ -61,6 +65,6 @@ struct UserDeleteView: View {
 
 #Preview {
     NavigationStack {
-        UserDeleteView(user: .MockUser)
+        UserDeleteView(user: .MockUser, userProvider: MockUserProvider(), actionDispatcher: UserManagementActionDispatcher())
     }
 }

@@ -10,12 +10,6 @@ public protocol UserDataProvider {
     func invalidateCaches() async throws
 }
 
-@MainActor
-public struct UserObjectResolver {
-    public static var userProvider: UserDataProvider = MockUserProvider()
-    public static var actionDispatcher: UserManagementActionDispatcher = UserManagementActionDispatcher()
-}
-
 /// Subclass this and register it with the SwiftUI `.environmentObject` method
 /// to perform user management actions.
 ///

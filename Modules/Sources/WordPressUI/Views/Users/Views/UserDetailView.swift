@@ -2,13 +2,22 @@ import SwiftUI
 
 struct UserDetailView: View {
 
+    private let userProvider: UserDataProvider
+    private let actionDispatcher: UserManagementActionDispatcher
     let user: DisplayUser
 
     @StateObject
-    var viewModel = UserDetailViewModel()
+    var viewModel: UserDetailViewModel
 
     @Environment(\.dismiss)
     var dismissAction: DismissAction
+
+    init(user: DisplayUser, userProvider: UserDataProvider, actionDispatcher: UserManagementActionDispatcher) {
+        self.user = user
+        self.userProvider = userProvider
+        self.actionDispatcher = actionDispatcher
+        _viewModel = StateObject(wrappedValue: UserDetailViewModel(userProvider: userProvider))
+    }
 
     var body: some View {
         Form {
@@ -46,7 +55,7 @@ struct UserDetailView: View {
 
                     NavigationLink {
                         // Pass this view's dismiss action, because if we delete a user, we want that screen *and* this one gone
-                        UserDeleteView(user: user, dismiss: dismissAction)
+                        UserDeleteView(user: user, userProvider: userProvider, actionDispatcher: actionDispatcher, dismiss: dismissAction)
                     } label: {
                         Text(Strings.deleteUserActionTitle)
                     }
@@ -60,7 +69,7 @@ struct UserDetailView: View {
     }
 
     var passwordChangeViewModel: UserChangePasswordViewModel {
-        UserChangePasswordViewModel(user: user)
+        UserChangePasswordViewModel(user: user, actionDispatcher: actionDispatcher)
     }
 
     enum Strings {
@@ -164,6 +173,6 @@ struct UserDetailView: View {
 
 #Preview {
     NavigationStack {
-        UserDetailView(user: DisplayUser.MockUser)
+        UserDetailView(user: DisplayUser.MockUser, userProvider: MockUserProvider(), actionDispatcher: UserManagementActionDispatcher())
     }
 }

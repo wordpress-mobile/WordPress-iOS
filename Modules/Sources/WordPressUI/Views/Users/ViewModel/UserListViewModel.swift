@@ -12,6 +12,7 @@ class UserListViewModel: ObservableObject {
 
     /// The initial set of users fetched by `fetchItems`
     private var users: [DisplayUser] = []
+    private let userProvider: UserDataProvider
 
     @Published
     var sortedUsers: [Section] = []
@@ -34,13 +35,17 @@ class UserListViewModel: ObservableObject {
         }
     }
 
+    init(userProvider: UserDataProvider) {
+        self.userProvider = userProvider
+    }
+
     func fetchItems() async {
         withAnimation {
             isLoadingItems = true
         }
 
         do {
-            let users = try await UserObjectResolver.userProvider.fetchUsers { cachedResults in
+            let users = try await userProvider.fetchUsers { cachedResults in
                 self.setUsers(cachedResults)
             }
             setUsers(users)
@@ -53,7 +58,7 @@ class UserListViewModel: ObservableObject {
     @Sendable
     func refreshItems() async {
         do {
-            let users = try await UserObjectResolver.userProvider.fetchUsers { cachedResults in
+            let users = try await userProvider.fetchUsers { cachedResults in
                 self.setUsers(cachedResults)
             }
             setUsers(users)

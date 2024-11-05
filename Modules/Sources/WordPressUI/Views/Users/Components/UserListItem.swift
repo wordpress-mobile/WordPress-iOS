@@ -8,11 +8,19 @@ struct UserListItem: View {
     @Environment(\.sizeCategory)
     var sizeCategory
 
-    var user: DisplayUser
+    private let user: DisplayUser
+    private let userProvider: UserDataProvider
+    private let actionDispatcher: UserManagementActionDispatcher
+
+    init(user: DisplayUser, userProvider: UserDataProvider, actionDispatcher: UserManagementActionDispatcher) {
+        self.user = user
+        self.userProvider = userProvider
+        self.actionDispatcher = actionDispatcher
+    }
 
     var body: some View {
         NavigationLink {
-            UserDetailView(user: user)
+            UserDetailView(user: user, userProvider: userProvider, actionDispatcher: actionDispatcher)
         } label: {
             HStack(alignment: .top) {
                 if !sizeCategory.isAccessibilityCategory {
@@ -30,5 +38,5 @@ struct UserListItem: View {
 }
 
 #Preview {
-    UserListItem(user: DisplayUser.MockUser)
+    UserListItem(user: DisplayUser.MockUser, userProvider: MockUserProvider(), actionDispatcher: UserManagementActionDispatcher())
 }
