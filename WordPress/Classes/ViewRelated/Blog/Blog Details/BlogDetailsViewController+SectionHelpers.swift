@@ -113,7 +113,7 @@ extension BlogDetailsViewController {
     }
 
     @objc func shouldAddUsersRow() -> Bool {
-        blog.isSelfHosted
+        FeatureFlag.selfHostedSiteUserManagement.enabled && blog.isSelfHosted
     }
 
     @objc func shouldAddPluginsRow() -> Bool {

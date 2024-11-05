@@ -16,6 +16,7 @@ enum FeatureFlag: Int, CaseIterable {
     case newGutenberg
     case newGutenbergThemeStyles
     case newGutenbergPlugins
+    case selfHostedSiteUserManagement
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -51,6 +52,8 @@ enum FeatureFlag: Int, CaseIterable {
         case .newGutenbergThemeStyles:
             return false
         case .newGutenbergPlugins:
+            return false
+        case .selfHostedSiteUserManagement:
             return false
         }
     }
@@ -88,6 +91,7 @@ extension FeatureFlag {
         case .newGutenberg: "Experimental Block Editor"
         case .newGutenbergThemeStyles: "Experimental Block Editor Styles"
         case .newGutenbergPlugins: "Experimental Block Editor Plugins"
+        case .selfHostedSiteUserManagement: "Self-hosted Site User Management"
         }
     }
 }
