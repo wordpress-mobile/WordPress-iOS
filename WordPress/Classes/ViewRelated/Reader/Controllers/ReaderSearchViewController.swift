@@ -1,14 +1,11 @@
 import Foundation
 import SwiftUI
+import CoreData
 import WordPressUI
 import WordPressShared
 
-/// Displays a version of the post stream with a search bar positioned above the
-/// list of posts.  The user supplied search phrase is converted into a ReaderSearchTopic
-/// the results of which are displayed in the embedded ReaderStreamViewController.
-///
 final class ReaderSearchViewController: UIViewController {
-    enum Section: Int, FilterTabBarItem {
+    private enum Section: Int, FilterTabBarItem {
         case posts
         case sites
 
@@ -21,8 +18,8 @@ final class ReaderSearchViewController: UIViewController {
 
         var trackingValue: String {
             switch self {
-            case .posts: return "posts"
-            case .sites: return "sites"
+            case .posts: "posts"
+            case .sites: "sites"
             }
         }
     }
@@ -38,9 +35,10 @@ final class ReaderSearchViewController: UIViewController {
 
     private let searchController = UISearchController()
     private let suggestionsViewModel = ReaderSearchSuggestionsViewModel()
+    private var postsResulsViewContoller: UIViewController?
+    private var sitesResulsViewContoller: UIViewController?
     private var suggestionsVC: UIViewController?
     private var currentChildVC: UIViewController?
-
     private var previousSearchTopic: ReaderAbstractTopic?
     private let contextManager = ContextManager.shared
 
@@ -56,8 +54,17 @@ final class ReaderSearchViewController: UIViewController {
             self?.searchController.searchBar.text = $0
             self?.performSearch(source: .searchHistory)
         }
+        showSearchSuggestions()
 
         WPAppAnalytics.track(.readerSearchLoaded)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        DispatchQueue.main.async {
+            self.searchController.searchBar.becomeFirstResponder()
+        }
     }
 
     public override func didMove(toParent parent: UIViewController?) {
@@ -67,14 +74,6 @@ final class ReaderSearchViewController: UIViewController {
             ReaderTopicService(coreDataStack: ContextManager.shared)
                 .deleteAllSearchTopics()
         }
-    }
-
-    public override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        // TODO: fix this
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidShowNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
     // MARK: Setup
@@ -95,7 +94,7 @@ final class ReaderSearchViewController: UIViewController {
         navigationItem.largeTitleDisplayMode = .never
 
         navigationItem.searchController = searchController
-        searchController.delegate = self
+        searchController.hidesNavigationBarDuringPresentation = false
         searchController.searchBar.delegate = self
 
         if isModal() {
@@ -110,13 +109,67 @@ final class ReaderSearchViewController: UIViewController {
                 !searchText.isEmpty else {
             return
         }
-        ReaderSearchSuggestionService(coreDataStack: contextManager)
-            .createOrUpdateSuggestion(forPhrase: searchText)
+        searchController.searchBar.resignFirstResponder()
+        if source == .userInput {
+            suggestionsViewModel.saveSearchText(searchText)
+        }
+        trackSearchPerformed(source: source)
+
+        postsResulsViewContoller = nil
+        sitesResulsViewContoller = nil
 
         let section = sections[filterBar.selectedIndex]
-        showSearch(searchText: searchText, section: section)
+        showResults(searchText: searchText, section: section)
+    }
 
-        trackSearchPerformed(source: source)
+    private func showResults(searchText: String, section: Section) {
+        guard !searchText.isEmpty else {
+            return
+        }
+        switch section {
+        case .posts:
+            if let postsResulsViewContoller {
+                showChild(postsResulsViewContoller)
+            } else {
+                showPostSearch(for: searchText)
+            }
+        case .sites:
+            if let sitesResulsViewContoller {
+                showChild(sitesResulsViewContoller)
+            } else {
+                showSiteSearch(for: searchText)
+            }
+        }
+    }
+
+    private func showPostSearch(for searchText: String) {
+        let service = ReaderTopicService(coreDataStack: contextManager)
+        service.createSearchTopic(forSearchPhrase: searchText) {
+            assert(Thread.isMainThread)
+            self.didCreateSearchTopic(withID: $0)
+        }
+    }
+
+    private func didCreateSearchTopic(withID topicID: NSManagedObjectID?) {
+        guard let topicID, let topic = try? contextManager.mainContext.existingObject(with: topicID) as? ReaderAbstractTopic else {
+            wpAssertionFailure("Failed to create a search topic")
+            return
+        }
+        let postSearchVC = ReaderStreamViewController.controllerWithTopic(topic)
+        showChild(postSearchVC)
+        postsResulsViewContoller = postSearchVC
+
+        if let previousTopic = self.previousSearchTopic, topic != previousTopic {
+            ReaderTopicService(coreDataStack: contextManager).delete(previousTopic)
+        }
+        previousSearchTopic = topic
+    }
+
+    private func showSiteSearch(for searchText: String) {
+        let siteSearchVC = ReaderSiteSearchViewController()
+        siteSearchVC.searchQuery = searchText
+        showChild(siteSearchVC)
+        sitesResulsViewContoller = siteSearchVC
     }
 
     private func trackSearchPerformed(source: SearchSource) {
@@ -128,45 +181,10 @@ final class ReaderSearchViewController: UIViewController {
         WPAppAnalytics.track(.readerSearchPerformed, withProperties: properties)
     }
 
-    private func showSearch(searchText: String, section: Section) {
-        // TODO: handle empty
-
-        switch section {
-        case .posts:
-            showPostSearch(for: searchText)
-        case .sites:
-            showSiteSearch(for: searchText)
-        }
-    }
-
-    private func showPostSearch(for searchText: String) {
-        let service = ReaderTopicService(coreDataStack: ContextManager.shared)
-        service.createSearchTopic(forSearchPhrase: searchText) { topicID in
-            assert(Thread.isMainThread)
-            guard let topicID, let topic = try? ContextManager.shared.mainContext.existingObject(with: topicID) as? ReaderAbstractTopic else {
-                DDLogError("Failed to create a search topic")
-                return
-            }
-            let postSearchVC = ReaderStreamViewController.controllerWithTopic(topic)
-            self.showChild(postSearchVC)
-
-            if let previousTopic = self.previousSearchTopic, topic != previousTopic {
-                service.delete(previousTopic)
-            }
-            self.previousSearchTopic = topic
-        }
-    }
-
-    private func showSiteSearch(for searchText: String) {
-        let siteSearchVC = ReaderSiteSearchViewController()
-        siteSearchVC.searchQuery = searchText
-        showChild(siteSearchVC)
-    }
-
     @objc private func selectedFilterDidChange(_ filterBar: FilterTabBar) {
         let section = sections[filterBar.selectedIndex]
         let searchText = (searchController.searchBar.text ?? "").trim()
-        showSearch(searchText: searchText, section: section)
+        showResults(searchText: searchText, section: section)
     }
 
     @objc private func doneButtonPressed() {
@@ -190,27 +208,10 @@ final class ReaderSearchViewController: UIViewController {
         self.currentChildVC = viewController
     }
 
-    // MARK: Search Suggestions
-
     private func showSearchSuggestions() {
         let suggestionsVC = UIHostingController(rootView: ReaderSearchSuggestionsView(viewModel: suggestionsViewModel))
         self.showChild(suggestionsVC)
         self.suggestionsVC = suggestionsVC
-    }
-
-    // TODO: needed?
-    private func hideSearchSuggestions() {
-        guard let suggestionsVC else { return }
-        suggestionsVC.willMove(toParent: nil)
-        suggestionsVC.view.removeFromSuperview()
-        suggestionsVC.removeFromParent()
-        self.suggestionsVC = nil
-    }
-}
-
-extension ReaderSearchViewController: UISearchControllerDelegate {
-    func didPresentSearchController(_ searchController: UISearchController) {
-        searchController.searchBar.becomeFirstResponder()
     }
 }
 
@@ -224,16 +225,13 @@ extension ReaderSearchViewController: UISearchBarDelegate {
         showSearchSuggestions()
     }
 
-    public func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        hideSearchSuggestions()
-    }
-
     public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         performSearch()
     }
 
     public func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
+        showSearchSuggestions()
     }
 }
 

@@ -7,37 +7,45 @@ struct ReaderSearchSuggestionsView: View {
 
     var body: some View {
         List {
-            ForEach(viewModel.suggestions.prefix(5), id: \.self) { suggestion in
-                HStack {
-                    Text(suggestion.searchPhrase)
-                    Spacer()
-                    Button {
-                        viewModel.delete([suggestion])
-                    } label: {
-                        Image(systemName: "xmark")
-                            .font(.footnote)
-                            .foregroundStyle(.secondary)
-                    }
-
-                }
-                .swipeActions(edge: .trailing) {
-                    Button(SharedStrings.Button.delete, role: .destructive) {
-                        viewModel.delete([suggestion])
-                    }.tint(.red)
+            ForEach(viewModel.suggestions.prefix(7), id: \.self) { suggestion  in
+                Button {
+                    viewModel.onSelection?(suggestion.searchPhrase)
+                } label: {
+                    makeItem(for: suggestion)
                 }
             }
             .onDelete(perform: viewModel.delete)
 
-            if !viewModel.allSuggestions.isEmpty {
+            if !viewModel.suggestions.isEmpty {
                 Button {
                     viewModel.buttonClearSearchHistoryTapped()
                 } label: {
                     Text(Strings.clearHistory)
-                        .foregroundStyle(.red)
+                        .foregroundStyle(AppColor.brand)
                 }
             }
         }
         .listStyle(.plain)
+    }
+
+    private func makeItem(for suggestion: ReaderSearchSuggestion) -> some View {
+        HStack {
+            Text(suggestion.searchPhrase)
+            Spacer()
+            Button {
+                viewModel.delete([suggestion])
+            } label: {
+                Image(systemName: "xmark")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+            }
+            .buttonStyle(.plain)
+        }
+        .swipeActions(edge: .trailing) {
+            Button(SharedStrings.Button.delete, role: .destructive) {
+                viewModel.delete([suggestion])
+            }.tint(.red)
+        }
     }
 }
 
@@ -92,6 +100,12 @@ final class ReaderSearchSuggestionsViewModel: ObservableObject {
         allSuggestions = []
         suggestions = []
         WPAnalytics.trackReader(.readerSearchHistoryCleared)
+    }
+
+    func saveSearchText(_ searchText: String) {
+        ReaderSearchSuggestionService(coreDataStack: coreData)
+            .createOrUpdateSuggestion(forPhrase: searchText)
+        reloadSuggestions()
     }
 }
 
