@@ -104,7 +104,7 @@ struct WordPressDotComAuthenticator {
         // Fetch WP.com account details
         let user: RemoteUser
         do {
-            let service = AccountServiceRemoteREST(wordPressComRestApi: .defaultApi(oAuthToken: token, userAgent: WPUserAgent.defaultUserAgent()))
+            let service = AccountServiceRemoteREST(wordPressComRestApi: .defaultApi(oAuthToken: token, userAgent: WPUserAgent.wordPress()))
             user = try await withCheckedThrowingContinuation { continuation in
                 service.getAccountDetails(success: { continuation.resume(returning: $0!) }, failure: { continuation.resume(throwing: $0!) })
             }
