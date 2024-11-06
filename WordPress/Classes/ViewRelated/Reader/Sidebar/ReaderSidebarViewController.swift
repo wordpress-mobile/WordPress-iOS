@@ -172,6 +172,7 @@ private struct ReaderSidebarSection<Content: View>: View {
                     Image(systemName: isExpanded ? "chevron.down" : "chevron.right")
                         .font(.system(size: 14).weight(.semibold))
                         .foregroundStyle(AppColor.brand)
+                        .frame(width: 14)
                 }
                 .contentShape(Rectangle())
             }
