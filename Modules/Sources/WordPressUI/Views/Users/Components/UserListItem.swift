@@ -24,9 +24,7 @@ struct UserListItem: View {
         } label: {
             HStack(alignment: .top) {
                 if !sizeCategory.isAccessibilityCategory {
-                    if let profilePhotoUrl = user.profilePhotoUrl {
-                        UserProfileImage(size: CGSize(width: height, height: height), url: profilePhotoUrl)
-                    }
+                    UserProfileImage(size: height, url: user.profilePhotoUrl)
                 }
                 VStack(alignment: .leading) {
                     Text(user.displayName).font(.headline)
