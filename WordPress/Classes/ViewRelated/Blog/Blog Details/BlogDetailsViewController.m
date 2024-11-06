@@ -846,9 +846,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
                                         accessibilityIdentifier:@"User Row"
                                                           image:[UIImage imageNamed:@"site-menu-people"]
                                                        callback:^{
-        if (@available(iOS 16.4, *)) {
-            [weakSelf showUsers];
-        }
+        [weakSelf showUsers];
     }];
     return row;
 }
