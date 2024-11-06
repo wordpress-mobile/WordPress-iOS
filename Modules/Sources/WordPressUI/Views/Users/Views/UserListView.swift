@@ -46,7 +46,7 @@ public struct UserListView: View {
             }
         }
         .navigationTitle(Strings.usersListTitle)
-        .task { await viewModel.fetchItems() }
+        .task { await viewModel.onAppear() }
     }
 
     enum Strings {

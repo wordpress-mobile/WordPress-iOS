@@ -14,6 +14,8 @@ class UserListViewModel: ObservableObject {
     private var users: [DisplayUser] = []
     private let userProvider: UserDataProvider
 
+    private var initialLoad = false
+
     @Published
     var sortedUsers: [Section] = []
 
@@ -37,6 +39,13 @@ class UserListViewModel: ObservableObject {
 
     init(userProvider: UserDataProvider) {
         self.userProvider = userProvider
+    }
+
+    func onAppear() async {
+        if !initialLoad {
+            initialLoad = true
+            await fetchItems()
+        }
     }
 
     func fetchItems() async {
