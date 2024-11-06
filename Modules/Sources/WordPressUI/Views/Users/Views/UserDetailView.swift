@@ -85,49 +85,49 @@ struct UserDetailView: View {
 
     enum Strings {
         static let accountManagementSectionTitle = NSLocalizedString(
-            "userdetail.account-management-section-title",
+            "userdetail.accountManagementSectionTitle",
             value: "Account Management",
             comment: "The 'Account Management' section of the user profile – matches what's in /wp-admin/profile.php"
         )
 
         static let roleFieldTitle = NSLocalizedString(
-            "userdetail.role-field-title",
+            "userdetail.roleFieldTitle",
             value: "Role",
             comment: "The 'Role' field of the user profile – matches what's in /wp-admin/profile.php"
         )
 
         static let emailAddressFieldTitle = NSLocalizedString(
-            "userdetail.email-address-field-title",
+            "userdetail.emailAddressFieldTitle",
             value: "Email Address",
             comment: "The 'Email' field of the user profile – matches what's in /wp-admin/profile.php"
         )
 
         static let websiteFieldTitle = NSLocalizedString(
-            "userdetail.website-field-title",
+            "userdetail.websiteFieldTitle",
             value: "Website",
             comment: "The 'Website' field of the user profile – matches what's in /wp-admin/profile.php"
         )
 
         static let bioFieldTitle = NSLocalizedString(
-            "userdetail.bio-field-title",
+            "userdetail.bioFieldTitle",
             value: "Biographical Info",
             comment: "The 'Biographical Info' field of the user profile – matches what's in /wp-admin/profile.php"
         )
 
         static let setNewPasswordActionTitle  = NSLocalizedString(
-            "userdetail.set-new-password-action-title",
+            "userdetail.setNewPasswordActionTitle",
             value: "Set New Password",
             comment: "The 'Set New Password' button on the user profile – matches what's in /wp-admin/profile.php"
         )
 
         static let sendPasswordResetEmailActionTitle  = NSLocalizedString(
-            "userdetail.send-password-reset-email-action-title",
+            "userdetail.sendPasswordResetEmailActionTitle",
             value: "Send Password Reset Email",
             comment: "The 'Send Password Reset Email' button on the user profile – matches what's in /wp-admin/profile.php"
         )
 
         static let deleteUserActionTitle  = NSLocalizedString(
-            "userdetail.delete-user-action-title",
+            "userdetail.deleteUserActionTitle",
             value: "Delete User",
             comment: "The 'Delete User' button on the user profile – matches what's in /wp-admin/profile.php"
         )
