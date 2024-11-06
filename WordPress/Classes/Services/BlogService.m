@@ -32,7 +32,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
 
     id<AccountServiceRemote> remote = [self remoteForAccount:account];
     
-    BOOL filterJetpackSites = [AppConfiguration showJetpackSitesOnly];
+    BOOL filterJetpackSites = false;
 
     [remote getBlogs:filterJetpackSites success:^(NSArray *blogs) {
         [[[JetpackCapabilitiesService alloc] init] syncWithBlogs:blogs success:^(NSArray<RemoteBlog *> *blogs) {
@@ -404,7 +404,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
 {
     AccountServiceRemoteREST *remote = [[AccountServiceRemoteREST alloc] initWithWordPressComRestApi:account.wordPressComRestApi];
     
-    BOOL filterJetpackSites = [AppConfiguration showJetpackSitesOnly];
+    BOOL filterJetpackSites = false;
     
     [remote getBlogs:filterJetpackSites success:^(NSArray *remoteBlogs) {
         [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
