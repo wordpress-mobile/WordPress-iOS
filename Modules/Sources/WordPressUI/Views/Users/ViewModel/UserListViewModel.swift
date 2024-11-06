@@ -31,7 +31,7 @@ class UserListViewModel: ObservableObject {
             if searchTerm.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
                 setSearchResults(sortUsers(users))
             } else {
-                let searchResults = users.search(query: searchTerm)
+                let searchResults = users.search(searchTerm, using: \.searchString)
                 setSearchResults([Section(role: "Search Results", users: searchResults)])
             }
         }
