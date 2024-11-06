@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct UserDetailView: View {
+struct UserDetailsView: View {
 
     private let userProvider: UserDataProvider
     private let actionDispatcher: UserManagementActionDispatcher
@@ -142,7 +142,7 @@ private struct UserDetailLabeledContentStyle: LabeledContentStyle {
 
 #Preview {
     NavigationStack {
-        UserDetailView(user: DisplayUser.MockUser, userProvider: MockUserProvider(), actionDispatcher: UserManagementActionDispatcher())
+        UserDetailsView(user: DisplayUser.MockUser, userProvider: MockUserProvider(), actionDispatcher: UserManagementActionDispatcher())
     }
 }
 

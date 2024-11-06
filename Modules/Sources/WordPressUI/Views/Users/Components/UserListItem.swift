@@ -20,7 +20,7 @@ struct UserListItem: View {
 
     var body: some View {
         NavigationLink {
-            UserDetailView(user: user, userProvider: userProvider, actionDispatcher: actionDispatcher)
+            UserDetailsView(user: user, userProvider: userProvider, actionDispatcher: actionDispatcher)
         } label: {
             HStack(alignment: .top) {
                 if !dynamicTypeSize.isAccessibilitySize {
