@@ -36,10 +36,6 @@ import WordPressShared
         WPStyleGuide.applyTagsReaderButtonStyle(followButton)
     }
 
-    @objc open func enableLoggedInFeatures(_ enable: Bool) {
-
-    }
-
     fileprivate func adjustInsetsForTextDirection() {
         followButton.flipInsetsForRightToLeftLayoutDirection()
     }

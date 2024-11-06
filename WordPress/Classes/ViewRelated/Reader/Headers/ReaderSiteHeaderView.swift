@@ -23,10 +23,6 @@ class ReaderSiteHeaderView: UITableViewHeaderFooterView, ReaderStreamHeader {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func enableLoggedInFeatures(_ enable: Bool) {
-        headerViewModel.isFollowHidden = !enable
-    }
-
     func configureHeader(_ topic: ReaderAbstractTopic) {
         guard let siteTopic = topic as? ReaderSiteTopic else {
             assertionFailure("This header should only be used for site topics.")
@@ -96,12 +92,10 @@ struct ReaderSiteHeader: View {
             if viewModel.site?.isExternal == false {
                 countsDisplay
             }
-            if !viewModel.isFollowHidden {
-                ReaderFollowButton(isFollowing: viewModel.isFollowingSite,
-                                   isEnabled: viewModel.isFollowEnabled,
-                                   size: .regular) {
-                    viewModel.updateFollowStatus()
-                }
+            ReaderFollowButton(isFollowing: viewModel.isFollowingSite,
+                               isEnabled: viewModel.isFollowEnabled,
+                               size: .regular) {
+                viewModel.updateFollowStatus()
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
@@ -145,7 +139,6 @@ class ReaderSiteHeaderViewModel: ObservableObject {
     @Published var postCount: String
     @Published var followerCount: String
     @Published var isFollowingSite: Bool
-    @Published var isFollowHidden: Bool
     @Published var isFollowEnabled: Bool
 
     private let onFollowTap: (_ completion: @escaping () -> Void) -> Void
@@ -156,7 +149,6 @@ class ReaderSiteHeaderViewModel: ObservableObject {
          postCount: String = "",
          followerCount: String = "",
          isFollowingSite: Bool = false,
-         isFollowHidden: Bool = false,
          isFollowEnabled: Bool = true,
          onFollowTap: @escaping (_ completion: @escaping () -> Void) -> Void = { _ in }) {
         self.title = title
@@ -165,7 +157,6 @@ class ReaderSiteHeaderViewModel: ObservableObject {
         self.postCount = postCount
         self.followerCount = followerCount
         self.isFollowingSite = isFollowingSite
-        self.isFollowHidden = isFollowHidden
         self.isFollowEnabled = isFollowEnabled
         self.onFollowTap = onFollowTap
     }

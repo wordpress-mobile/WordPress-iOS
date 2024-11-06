@@ -73,7 +73,6 @@ import AutomatticTracks
     private let recentlyBlockedSitePostObjectIDs = NSMutableArray()
     private let heightForFooterView = CGFloat(34.0)
     private let estimatedHeightsCache = NSCache<AnyObject, AnyObject>()
-    private var isLoggedIn = false
     private var isFeed = false
     private var syncIsFillingGap = false
     private var indexPathForGapMarker: IndexPath?
@@ -464,7 +463,7 @@ import AutomatticTracks
         guard !isEmbeddedInDiscover else {
             return
         }
-        guard let headerView = headerForStream(readerTopic, isLoggedIn: isLoggedIn, container: tableViewController) else {
+        guard let headerView = headerForStream(readerTopic, container: tableViewController) else {
             tableView.tableHeaderView = nil
             return
         }
@@ -517,9 +516,6 @@ import AutomatticTracks
         if contentType == .saved {
             tableViewController.refreshControl = nil
         }
-
-        // Rather than repeatedly creating a service to check if the user is logged in, cache it here.
-        isLoggedIn = AccountHelper.isDotcomAvailable()
 
         configureTitleForTopic()
         configureShareButtonIfNeeded()

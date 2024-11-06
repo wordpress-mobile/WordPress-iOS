@@ -8,21 +8,20 @@ extension ReaderStreamViewController {
     // Convenience type for Reader's headers
     typealias ReaderHeader = UIView & ReaderStreamHeader
 
-    func headerForStream(_ topic: ReaderAbstractTopic?, isLoggedIn: Bool, container: UITableViewController) -> UIView? {
+    func headerForStream(_ topic: ReaderAbstractTopic?, container: UITableViewController) -> UIView? {
         if let topic, ReaderHelpers.topicIsFollowing(topic) {
             return ReaderHeaderView.makeForFollowing()
         }
         if let topic,
            let header = headerForStream(topic) {
-            configure(header, topic: topic, isLoggedIn: isLoggedIn, delegate: self)
+            configure(header, topic: topic, delegate: self)
             return header
         }
         return nil
     }
 
-    func configure(_ header: ReaderHeader?, topic: ReaderAbstractTopic, isLoggedIn: Bool, delegate: ReaderStreamHeaderDelegate) {
+    func configure(_ header: ReaderHeader?, topic: ReaderAbstractTopic, delegate: ReaderStreamHeaderDelegate) {
         header?.configureHeader(topic)
-        header?.enableLoggedInFeatures(isLoggedIn)
         header?.delegate = delegate
     }
 
