@@ -12,7 +12,7 @@ final class ReaderSidebarViewModel: ObservableObject {
     private var previousReloadTimestamp: Date?
     private var isRestoringSelection = false
 
-    @Published private(set) var isCompact = false
+    @Published var isCompact = false
 
     var navigate: (ReaderSidebarNavigation) -> Void = { _ in }
 
