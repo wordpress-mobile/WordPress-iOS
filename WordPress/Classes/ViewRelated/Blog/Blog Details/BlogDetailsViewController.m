@@ -1375,6 +1375,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
                                                      }]];
     }
 
+    if ([self shouldAddUsersRow]) {
+        [rows addObject:[self usersRow]];
+    }
+
     if ([self shouldAddPluginsRow]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Plugins", @"Noun. Title. Links to the plugin management feature.")
                                                         image:[UIImage imageNamed:@"site-menu-plugins"]
