@@ -21,27 +21,26 @@ struct UserDetailView: View {
 
     var body: some View {
         Form {
-            Section(Strings.nameSectionTitle) {
-                LabeledContent(Strings.roleFieldTitle, value: user.role)
-                LabeledContent(Strings.firstNameFieldTitle, value: user.firstName)
-                LabeledContent(Strings.lastNameFieldTitle, value: user.lastName)
-                LabeledContent(Strings.nicknameFieldTitle, value: user.handle)
-                LabeledContent(Strings.displayNameFieldTitle, value: user.displayName)
+            VStack {
+                UserProfileImage(size: 96, url: user.profilePhotoUrl)
+                Text(user.displayName)
+                    .font(.title)
+                Text(user.handle)
+                    .font(.title2)
+                    .foregroundStyle(.secondary)
             }
+            .frame(maxWidth: .infinity)
+            .listRowBackground(Color.clear)
+            .listRowInsets(.zero)
 
-            Section(Strings.contactInfoSectionTitle) {
-                LabeledContent(Strings.emailAddressFieldTitle, value: user.emailAddress)
-                if let website = user.websiteUrl {
-                    LabeledContent(Strings.websiteFieldTitle, value: website)
+            Section {
+                makeRow(title: Strings.roleFieldTitle, content: user.role)
+                makeRow(title: Strings.emailAddressFieldTitle, content: user.emailAddress, link: user.emailAddress.asEmail())
+                if let website = user.websiteUrl, !website.isEmpty {
+                    makeRow(title: Strings.websiteFieldTitle, content: website, link: URL(string: website))
                 }
-            }
-
-            Section(Strings.aboutUserSectionTitle) {
-                LabeledContent(Strings.bioFieldTitle, value: user.biography ?? "")
-                if let profilePhotoUrl = user.profilePhotoUrl {
-                    LabeledContent(Strings.profilePictureFieldTitle) {
-                        UserProfileImage(size: CGSize(width: 96, height: 96), url: profilePhotoUrl)
-                    }
+                if let biography = user.biography, !biography.isEmpty {
+                    makeRow(title: Strings.bioFieldTitle, content: biography)
                 }
             }
 
@@ -58,11 +57,11 @@ struct UserDetailView: View {
                         UserDeleteView(user: user, userProvider: userProvider, actionDispatcher: actionDispatcher, dismiss: dismissAction)
                     } label: {
                         Text(Strings.deleteUserActionTitle)
+                            .foregroundStyle(Color.red)
                     }
                 }
             }
         }
-        .navigationTitle(user.displayName)
         .task {
             await viewModel.loadCurrentUserRole()
         }
@@ -72,25 +71,19 @@ struct UserDetailView: View {
         UserChangePasswordViewModel(user: user, actionDispatcher: actionDispatcher)
     }
 
+    func makeRow(title: String, content: String, link: URL? = nil) -> some View {
+        VStack(alignment: .leading) {
+            Text(title)
+                .font(.caption)
+            if let link {
+                Link(content, destination: link)
+            } else {
+                Text(content)
+            }
+        }
+    }
+
     enum Strings {
-        static let nameSectionTitle = NSLocalizedString(
-            "userdetail.name-section-title",
-            value: "Name",
-            comment: "The 'Name' section of the user profile – matches what's in /wp-admin/profile.php"
-        )
-
-        static let contactInfoSectionTitle = NSLocalizedString(
-            "userdetail.contact-info-section-title",
-            value: "Contact Info",
-            comment: "The 'Contact Info' section of the user profile – matches what's in /wp-admin/profile.php"
-        )
-
-        static let aboutUserSectionTitle = NSLocalizedString(
-            "userdetail.about-user-section-title",
-            value: "About the User",
-            comment: "The 'About the user' section of the user profile – matches what's in /wp-admin/profile.php"
-        )
-
         static let accountManagementSectionTitle = NSLocalizedString(
             "userdetail.account-management-section-title",
             value: "Account Management",
@@ -101,30 +94,6 @@ struct UserDetailView: View {
             "userdetail.role-field-title",
             value: "Role",
             comment: "The 'Role' field of the user profile – matches what's in /wp-admin/profile.php"
-        )
-
-        static let firstNameFieldTitle = NSLocalizedString(
-            "userdetail.first-name-field-title",
-            value: "First Name",
-            comment: "The 'First Name' field of the user profile – matches what's in /wp-admin/profile.php"
-        )
-
-        static let lastNameFieldTitle = NSLocalizedString(
-            "userdetail.last-name-field-title",
-            value: "Last Name",
-            comment: "The 'Last Name' field of the user profile – matches what's in /wp-admin/profile.php"
-        )
-
-        static let nicknameFieldTitle = NSLocalizedString(
-            "userdetail.nickname-field-title",
-            value: "Nickname",
-            comment: "The 'Nickname' field of the user profile – matches what's in /wp-admin/profile.php"
-        )
-
-        static let displayNameFieldTitle = NSLocalizedString(
-            "userdetail.displayname-field-title",
-            value: "Display Name",
-            comment: "The 'Display Name publicly as' field of the user profile – matches what's in /wp-admin/profile.php"
         )
 
         static let emailAddressFieldTitle = NSLocalizedString(
@@ -143,12 +112,6 @@ struct UserDetailView: View {
             "userdetail.bio-field-title",
             value: "Biographical Info",
             comment: "The 'Biographical Info' field of the user profile – matches what's in /wp-admin/profile.php"
-        )
-
-        static let profilePictureFieldTitle = NSLocalizedString(
-            "userdetail.profile-picture-field-title",
-            value: "Profile Picture",
-            comment: "The 'Profile Picture' field of the user profile – matches what's in /wp-admin/profile.php"
         )
 
         static let setNewPasswordActionTitle  = NSLocalizedString(
@@ -171,8 +134,27 @@ struct UserDetailView: View {
     }
 }
 
+private struct UserDetailLabeledContentStyle: LabeledContentStyle {
+    func makeBody(configuration: LabeledContentStyleConfiguration) -> some View {
+        LabeledContent(configuration)
+    }
+}
+
 #Preview {
     NavigationStack {
         UserDetailView(user: DisplayUser.MockUser, userProvider: MockUserProvider(), actionDispatcher: UserManagementActionDispatcher())
+    }
+}
+
+private extension String {
+    func asEmail() -> URL? {
+        let str = "mailto:\(self)"
+        let range = NSRange(str.startIndex..<str.endIndex, in: str)
+
+        guard let detector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue),
+              let result = detector.firstMatch(in: str, range: range)
+            else { return nil }
+
+        return result.url
     }
 }

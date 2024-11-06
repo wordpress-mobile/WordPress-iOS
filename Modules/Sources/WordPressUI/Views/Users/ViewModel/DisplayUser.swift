@@ -52,8 +52,8 @@ public struct DisplayUser: Identifiable, Codable {
         profilePhotoUrl: URL(string: "https://gravatar.com/avatar/58fc51586c9a1f9895ac70e3ca60886e?size=256"),
         role: "administrator",
         emailAddress: "john@example.com",
-        websiteUrl: "",
-        biography: ""
+        websiteUrl: "https://example.com",
+        biography: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
     )
 }
 
