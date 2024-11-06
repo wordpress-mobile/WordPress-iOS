@@ -706,6 +706,7 @@ extension WordPressAppDelegate {
         ReaderTopicService(coreDataStack: ContextManager.shared).clearInUseFlags()
         ReaderPostService(coreDataStack: ContextManager.shared).clearSavedPostFlags()
         ReaderSearchSuggestionService(coreDataStack: ContextManager.sharedInstance()).deleteAllSuggestions()
+        UserDefaults.standard.readerSidebarSelection = nil
     }
 }
 
