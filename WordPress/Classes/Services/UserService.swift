@@ -83,7 +83,7 @@ extension UserService: WordPressUI.UserDataProvider {
                  username: $0.username,
                  firstName: $0.firstName,
                  lastName: $0.lastName,
-                 displayName: $0.username,
+                 displayName: $0.name,
                  profilePhotoUrl: profilePhotoUrl(for: $0),
                  role: role,
                  emailAddress: $0.email,
