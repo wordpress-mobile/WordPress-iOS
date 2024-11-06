@@ -17,13 +17,13 @@ class UserListViewModel: ObservableObject {
     private var initialLoad = false
 
     @Published
-    var sortedUsers: [Section] = []
+    private(set) var sortedUsers: [Section] = []
 
     @Published
-    var error: Error? = nil
+    private(set) var error: Error? = nil
 
     @Published
-    var isLoadingItems: Bool = true
+    private(set) var isLoadingItems: Bool = true
 
     @Published
     var searchTerm: String = "" {

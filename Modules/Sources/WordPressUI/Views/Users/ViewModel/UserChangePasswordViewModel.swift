@@ -20,10 +20,10 @@ public class UserChangePasswordViewModel: ObservableObject {
     var password: String = ""
 
     @Published
-    var isChangingPassword: Bool = false
+    private(set) var isChangingPassword: Bool = false
 
     @Published
-    var error: Error? = nil
+    private(set) var error: Error? = nil
 
     @Environment(\.dismiss)
     var dismissAction

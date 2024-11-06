@@ -5,13 +5,13 @@ class UserDetailViewModel: ObservableObject {
     private let userProvider: UserDataProvider
 
     @Published
-    var currentUserCanModifyUsers: Bool = false
+    private(set) var currentUserCanModifyUsers: Bool = false
 
     @Published
-    var isLoadingCurrentUser: Bool = false
+    private(set) var isLoadingCurrentUser: Bool = false
 
     @Published
-    var error: Error? = nil
+    private(set) var error: Error? = nil
 
     init(userProvider: UserDataProvider) {
         self.userProvider = userProvider
