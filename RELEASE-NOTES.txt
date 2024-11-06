@@ -1,6 +1,7 @@
 25.6
 -----
 * [*] [internal] Update Gravatar SDK to 3.0.0 [#23701]
+* [*] [Jetpack-only] Enable pubishing to non-Jetpack sites when sharing content to the Jetpack app. [#23778]
 
 25.5
 -----
