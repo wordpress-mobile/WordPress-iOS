@@ -5,8 +5,8 @@ struct UserListItem: View {
     @ScaledMetric(relativeTo: .headline)
     var height: CGFloat = 48
 
-    @Environment(\.sizeCategory)
-    var sizeCategory
+    @Environment(\.dynamicTypeSize)
+    var dynamicTypeSize
 
     private let user: DisplayUser
     private let userProvider: UserDataProvider
@@ -23,7 +23,7 @@ struct UserListItem: View {
             UserDetailView(user: user, userProvider: userProvider, actionDispatcher: actionDispatcher)
         } label: {
             HStack(alignment: .top) {
-                if !sizeCategory.isAccessibilityCategory {
+                if !dynamicTypeSize.isAccessibilitySize {
                     UserProfileImage(size: height, url: user.profilePhotoUrl)
                 }
                 VStack(alignment: .leading) {
