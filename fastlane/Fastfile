@@ -72,6 +72,7 @@ INTERNAL_VERSION_FILE = Fastlane::Wpmreleasetoolkit::Versioning::IOSVersionFile.
 
 BUILDKITE_ORGANIZATION = 'automattic'
 BUILDKITE_PIPELINE = 'wordpress-ios'
+BUILDKITE_RELEASE_PIPELINE = 'release-builds.yml'
 
 # Use this instead of getting values from ENV directly. It will throw an error if the requested value is missing
 def get_required_env(key)
