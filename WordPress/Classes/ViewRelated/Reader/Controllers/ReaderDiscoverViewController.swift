@@ -127,6 +127,9 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
     // MARK: Select Interests
 
     private func showSelectInterestsIfNeeded() {
+        guard !UserDefaults.standard.readerDidSelectInterestsKey else {
+            return
+        }
         selectInterestsCoordinator.isFollowingInterests { [weak self] isFollowing in
             if !isFollowing {
                 self?.showSelectInterestsScreen()
@@ -147,8 +150,9 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
     }
 
     private func didSaveInterests() {
-        guard selectInterestsVC != nil else { return }
+        UserDefaults.standard.readerDidSelectInterestsKey = true
 
+        guard selectInterestsVC != nil else { return }
         dismiss(animated: true) {
             if let streamVC = self.streamVC {
                 streamVC.scrollViewToTop()
