@@ -177,8 +177,6 @@ import AutomatticTracks
 
     private var showConfirmation = true
 
-    lazy var selectInterestsVC = ReaderSelectInterestsViewController(configuration: .discover)
-
     /// Tracks whether or not we should force sync
     /// This is set to true after the Reader Manage view is dismissed
     var shouldForceRefresh = false
@@ -1550,48 +1548,7 @@ extension ReaderStreamViewController {
         emptyStateView = makeEmptyStateView(.noFollowedSites)
     }
 
-    func showSelectInterestsView() {
-        guard selectInterestsVC.parent == nil else {
-            return
-        }
-
-        selectInterestsVC.view.frame = self.view.bounds
-        self.add(selectInterestsVC)
-
-        selectInterestsVC.didSaveInterests = { [weak self] _ in
-            guard let self else {
-                return
-            }
-            self.hideSelectInterestsView()
-        }
-    }
-
-    func hideSelectInterestsView(showLoadingStream: Bool = true) {
-        guard selectInterestsVC.parent != nil else {
-            if shouldForceRefresh {
-                scrollViewToTop()
-                displayLoadingStream()
-                syncIfAppropriate(forceSync: true)
-                shouldForceRefresh = false
-            }
-
-            return
-        }
-
-        scrollViewToTop()
-        displayLoadingStream()
-        syncIfAppropriate(forceSync: true)
-
-        UIView.animate(withDuration: 0.2, animations: {
-            self.selectInterestsVC.view.alpha = 0
-        }) { _ in
-            self.selectInterestsVC.remove()
-            self.selectInterestsVC.view.alpha = 1
-        }
-    }
-
     func hideResultsStatus() {
-        hideSelectInterestsView()
         emptyStateView = nil
         footerView.isHidden = false
         tableView.tableHeaderView?.isHidden = false

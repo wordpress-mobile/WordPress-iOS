@@ -142,6 +142,8 @@ private class ReaderDiscoverStreamViewController: ReaderStreamViewController {
         return isViewLoaded && view.window != nil
     }
 
+    private lazy var selectInterestsVC = ReaderSelectInterestsViewController(configuration: .discover)
+
     init(topic: ReaderAbstractTopic, stream: ReaderStream = .discover, sorting: ReaderSortingOption = .noSorting) {
         self.cardsService = ReaderCardService(stream: stream, sorting: sorting)
 
@@ -333,7 +335,8 @@ private class ReaderDiscoverStreamViewController: ReaderStreamViewController {
     }
 }
 
-// MARK: - Select Interests Display
+// MARK: - ReaderDiscoverStreamViewController (Select Interests)
+
 private extension ReaderDiscoverStreamViewController {
     func displaySelectInterestsIfNeeded() {
         selectInterestsVC.userIsFollowingTopics { [weak self] isFollowing in
@@ -343,6 +346,46 @@ private extension ReaderDiscoverStreamViewController {
             } else {
                 self.showSelectInterestsView()
             }
+        }
+    }
+
+    func showSelectInterestsView() {
+        guard selectInterestsVC.parent == nil else {
+            return
+        }
+
+        selectInterestsVC.view.frame = self.view.bounds
+        self.add(selectInterestsVC)
+
+        selectInterestsVC.didSaveInterests = { [weak self] _ in
+            guard let self else {
+                return
+            }
+            self.hideSelectInterestsView()
+        }
+    }
+
+    func hideSelectInterestsView(showLoadingStream: Bool = true) {
+        guard selectInterestsVC.parent != nil else {
+            if shouldForceRefresh {
+                scrollViewToTop()
+                displayLoadingStream()
+                syncIfAppropriate(forceSync: true)
+                shouldForceRefresh = false
+            }
+
+            return
+        }
+
+        scrollViewToTop()
+        displayLoadingStream()
+        syncIfAppropriate(forceSync: true)
+
+        UIView.animate(withDuration: 0.2, animations: {
+            self.selectInterestsVC.view.alpha = 0
+        }) { _ in
+            self.selectInterestsVC.remove()
+            self.selectInterestsVC.view.alpha = 1
         }
     }
 }
