@@ -579,9 +579,9 @@ import AutomatticTracks
 
     // MARK: - Instance Methods
 
-    /// Scrolls to the top of the list of posts.
     @objc func scrollViewToTop() {
-        tableView.setContentOffset(.zero, animated: true)
+        // Uses `contentInset.top` to accomodate for the safe area insets
+        tableView.setContentOffset(CGPoint(x: 0, y: tableView.contentInset.top), animated: true)
     }
 
     /// Returns the analytics property dictionary for the current topic.
