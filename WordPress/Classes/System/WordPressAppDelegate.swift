@@ -705,7 +705,6 @@ extension WordPressAppDelegate {
         ReaderPostService(coreDataStack: ContextManager.shared).clearInUseFlags()
         ReaderTopicService(coreDataStack: ContextManager.shared).clearInUseFlags()
         ReaderPostService(coreDataStack: ContextManager.shared).clearSavedPostFlags()
-        ReaderSearchSuggestionService(coreDataStack: ContextManager.sharedInstance()).deleteAllSuggestions()
         UserDefaults.standard.isReaderSelected = false
         UserDefaults.standard.readerSidebarSelection = nil
         UserDefaults.standard.readerSearchHistory = []
