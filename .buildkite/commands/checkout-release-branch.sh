@@ -1,5 +1,7 @@
 #!/bin/bash -eu
 
+echo '--- :git: Checkout release branch'
+
 RELEASE_NUMBER=$1
 
 if [[ -z "${RELEASE_NUMBER}" ]]; then

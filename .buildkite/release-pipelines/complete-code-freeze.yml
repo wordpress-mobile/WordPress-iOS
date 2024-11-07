@@ -12,7 +12,7 @@ steps:
   - label: Complete Code Freeze
     key: complete_code_freeze
     plugins: [$CI_TOOLKIT_PLUGIN]
-    command: .buildkite/commands/complete-code-freeze.sh $RELEASE_VERSION
+    command: .buildkite/commands/complete-code-freeze.sh "$RELEASE_VERSION"
     retry:
       manual:
         # If those jobs fail, one should always prefer re-triggering a new build from ReleaseV2 rather than retrying the individual job from Buildkite
@@ -21,7 +21,7 @@ steps:
   - label: Log Outdated Pods
     depends_on: complete_code_freeze
     plugins: [$CI_TOOLKIT_PLUGIN]
-    command: .buildkite/commands/log-outdated-pods.sh $RELEASE_VERSION
+    command: .buildkite/commands/log-outdated-pods.sh "$RELEASE_VERSION"
     retry:
       manual:
         # If those jobs fail, one should always prefer re-triggering a new build from ReleaseV2 rather than retrying the individual job from Buildkite

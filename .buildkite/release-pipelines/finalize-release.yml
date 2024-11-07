@@ -12,7 +12,7 @@ steps:
   - label: Finalize Release
     plugins:
       - $CI_TOOLKIT_PLUGIN
-    command: .buildkite/commands/finalize-release.sh $RELEASE_VERSION
+    command: .buildkite/commands/finalize-release.sh "$RELEASE_VERSION"
     retry:
       manual:
         # If those jobs fail, one should always prefer re-triggering a new build from ReleaseV2 rather than retrying the individual job from Buildkite
