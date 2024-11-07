@@ -72,7 +72,7 @@ public struct UserListView: View {
 
 #Preview("Loading") {
     NavigationView {
-        UserListView(userProvider: MockUserProvider(scenario: .inifitLoading), actionDispatcher: UserManagementActionDispatcher())
+        UserListView(userProvider: MockUserProvider(scenario: .infinitLoading), actionDispatcher: UserManagementActionDispatcher())
     }
 }
 

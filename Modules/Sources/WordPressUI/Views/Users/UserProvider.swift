@@ -29,7 +29,7 @@ open class UserManagementActionDispatcher: ObservableObject {
 package struct MockUserProvider: UserDataProvider {
 
     enum Scenario {
-        case inifitLoading
+        case infinitLoading
         case dummyData
         case error
     }
@@ -42,7 +42,7 @@ package struct MockUserProvider: UserDataProvider {
 
     package func fetchUsers(cachedResults: CachedUserListCallback? = nil) async throws -> [WordPressUI.DisplayUser] {
         switch scenario {
-        case .inifitLoading:
+        case .infinitLoading:
             try await Task.sleep(for: .seconds(1 * 24 * 60 * 60))
             return []
         case .dummyData:
