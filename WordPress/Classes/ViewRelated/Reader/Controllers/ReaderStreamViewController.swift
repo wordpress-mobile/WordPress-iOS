@@ -177,10 +177,6 @@ import AutomatticTracks
 
     private var showConfirmation = true
 
-    /// Tracks whether or not we should force sync
-    /// This is set to true after the Reader Manage view is dismissed
-    var shouldForceRefresh = false
-
     var isEmbeddedInDiscover = false
 
     private var isCompact = true {

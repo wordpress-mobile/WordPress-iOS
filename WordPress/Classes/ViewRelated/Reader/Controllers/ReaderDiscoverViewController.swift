@@ -310,6 +310,13 @@ private class ReaderDiscoverStreamViewController: ReaderStreamViewController {
         return cards?.count ?? 0
     }
 
+    override func syncIfAppropriate(forceSync: Bool = false) {
+        // Only sync if the tableview is at the top, otherwise this will change tableview's offset
+        if tableView.contentOffset.y <= 0 {
+            super.syncIfAppropriate(forceSync: forceSync)
+        }
+    }
+
     /// Track when the API returned the cards and the user is still on the screen
     /// This is used to create a funnel to check if users are leaving the screen
     /// before the API response
