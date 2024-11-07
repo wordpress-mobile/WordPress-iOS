@@ -80,6 +80,8 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
         case .organization(let objectID):
             show(makeViewController(withTopicID: objectID))
         }
+
+        hideSupplementaryColumnIfNeeded()
     }
 
     private func popMainNavigationController() {

@@ -195,7 +195,11 @@ import AutomatticTracks
             oldValue?.removeFromSuperview()
             if let emptyStateView {
                 view.addSubview(emptyStateView)
-                emptyStateView.pinEdges(to: view.safeAreaLayoutGuide)
+                emptyStateView.pinEdges(.horizontal, to: view.safeAreaLayoutGuide)
+                NSLayoutConstraint.activate([
+                    emptyStateView.topAnchor.constraint(equalTo: tableView.tableHeaderView?.bottomAnchor ?? view.safeAreaLayoutGuide.topAnchor),
+                    emptyStateView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+                ])
 
                 footerView.isHidden = true
                 hideGhost()
@@ -577,14 +581,7 @@ import AutomatticTracks
 
     /// Scrolls to the top of the list of posts.
     @objc func scrollViewToTop() {
-        guard tableView.numberOfRows(inSection: .zero) > 0 else {
-            tableView.setContentOffset(.zero, animated: true)
-            return
-        }
-
-        /// `scrollToRow` somehow works better when the first cell has dynamic height. With `setContentOffset`,
-        /// sometimes it doesn't perfectly scroll to the top, thus making the top cell appear clipped.
-        tableView.scrollToRow(at: IndexPath(row: .zero, section: .zero), at: .top, animated: true)
+        tableView.setContentOffset(.zero, animated: true)
     }
 
     /// Returns the analytics property dictionary for the current topic.
