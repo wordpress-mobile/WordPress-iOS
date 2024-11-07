@@ -11,36 +11,18 @@ public struct RestApiUpgradePrompt: View {
     }
 
     public var body: some View {
-        VStack {
-            let scrollView = ScrollView {
-                VStack(alignment: .leading) {
-                    Text(Strings.title)
-                        .font(.largeTitle)
-                        .fontWeight(.semibold)
-                        .padding(.bottom)
-
-                    Text(Strings.description(localizedFeatureName: localizedFeatureName))
-                        .font(.body)
-                }.padding()
+        EmptyStateView(
+            label: {
+                Text(Strings.title)
+            },
+            description: {
+                Text(Strings.description(localizedFeatureName: localizedFeatureName))
+            },
+            actions: {
+                Button(Strings.getStarted, action: didTapGetStarted)
+                    .buttonStyle(.borderedProminent)
             }
-
-            if #available(iOS 16.4, *) {
-                scrollView.scrollBounceBehavior(.basedOnSize, axes: [.vertical])
-            }
-
-            Spacer()
-            VStack {
-                Button(action: didTapGetStarted, label: {
-                    HStack {
-                        Spacer()
-                        Text(Strings.getStarted)
-                            .font(.headline)
-                            .padding(4)
-                        Spacer()
-                    }
-                }).buttonStyle(.borderedProminent)
-            }.padding()
-        }
+        )
     }
 
     private enum Strings {
