@@ -52,7 +52,10 @@ class ReaderCardService {
                 return
             }
 
-            let slugs = interests.map { $0.slug }
+            var slugs = interests.map { $0.slug }
+            if slugs.isEmpty {
+                slugs = ["dailyprompt", "wordpress"] // Matches wp.com
+            }
             let success: ([RemoteReaderCard], String?) -> Void = { [weak self] cards, pageHandle in
                 guard let self else {
                     return

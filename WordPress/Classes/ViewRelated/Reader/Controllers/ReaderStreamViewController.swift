@@ -525,7 +525,7 @@ import AutomatticTracks
         recentlyBlockedSitePostObjectIDs.removeAllObjects()
         updateAndPerformFetchRequest()
         configureStreamHeader()
-        tableView.setContentOffset(CGPoint.zero, animated: false)
+        tableView.setContentOffset(CGPoint(x: 0, y: -(tableView.adjustedContentInset.top)), animated: false)
         content.refresh()
 
         if synchronize {
@@ -581,7 +581,7 @@ import AutomatticTracks
 
     @objc func scrollViewToTop() {
         // Uses `contentInset.top` to accomodate for the safe area insets
-        tableView.setContentOffset(CGPoint(x: 0, y: tableView.contentInset.top), animated: true)
+        tableView.setContentOffset(CGPoint(x: 0, y: -(tableView.adjustedContentInset.top)), animated: true)
     }
 
     /// Returns the analytics property dictionary for the current topic.
