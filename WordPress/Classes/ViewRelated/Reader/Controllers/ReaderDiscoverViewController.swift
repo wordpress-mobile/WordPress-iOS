@@ -365,7 +365,7 @@ private extension ReaderDiscoverStreamViewController {
         }
     }
 
-    func hideSelectInterestsView(showLoadingStream: Bool = true) {
+    func hideSelectInterestsView() {
         guard selectInterestsVC.parent != nil else {
             if shouldForceRefresh {
                 scrollViewToTop()
