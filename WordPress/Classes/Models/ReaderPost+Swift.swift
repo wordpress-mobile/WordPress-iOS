@@ -2,6 +2,10 @@ import Foundation
 
 extension ReaderPost {
 
+    func getSiteIconURL(size: Int) -> URL? {
+        SiteIconViewModel.makeReaderSiteIconURL(iconURL: siteIconURL, siteID: siteID?.intValue, size: CGSize(width: size, height: size))
+    }
+
     /// Find cached comment with given ID.
     ///
     /// - Parameter id: The comment id

@@ -28,19 +28,19 @@
     ReaderPost *post = [NSEntityDescription insertNewObjectForEntityForName:@"ReaderPost"
                                          inManagedObjectContext:context];
 
-    XCTAssertNil([post siteIconForDisplayOfSize:50]);
+    XCTAssertNil([post getSiteIconURLWithSize:50]);
 
     NSString *iconURL = @"http://example.com/icon.png";
     post.siteIconURL = iconURL;
 
-    NSString *iconForDisplay = [[post siteIconForDisplayOfSize:50] absoluteString];
+    NSString *iconForDisplay = [[post getSiteIconURLWithSize:50] absoluteString];
 
     XCTAssertTrue([iconURL isEqualToString:iconForDisplay]);
 
 
     iconURL = @"http://example.com/blavatar/icon.png";
     post.siteIconURL = iconURL;
-    iconForDisplay = [[post siteIconForDisplayOfSize:50] absoluteString];
+    iconForDisplay = [[post getSiteIconURLWithSize:50] absoluteString];
 
     XCTAssertTrue([@"http://example.com/blavatar/icon.png?s=50&d=404" isEqualToString:iconForDisplay]);
 }

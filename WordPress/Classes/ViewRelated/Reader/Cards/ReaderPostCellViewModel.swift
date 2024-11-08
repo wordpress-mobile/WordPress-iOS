@@ -40,7 +40,7 @@ final class ReaderPostCellViewModel {
 
         if isP2 {
             self.avatarURL = post.authorAvatarURL.flatMap(URL.init)
-        } else if let avatarURL = post.siteIconForDisplay(ofSize: Int(ReaderPostCell.avatarSize)) {
+        } else if let avatarURL = post.getSiteIconURL(size: Int(ReaderPostCell.avatarSize)) {
             self.avatarURL = avatarURL
         } else if let blogURL = post.blogURL.flatMap(URL.init), post.isExternal {
             if let faviconURL = FaviconService.shared.cachedFavicon(forURL: blogURL) {

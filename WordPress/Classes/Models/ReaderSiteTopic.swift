@@ -13,6 +13,7 @@ import Foundation
     @NSManaged open var isVisible: Bool
     @NSManaged open var organizationID: Int
     @NSManaged open var postCount: NSNumber
+    /// - warning: Not guaranteed to be a blavatar icon
     @NSManaged open var siteBlavatar: String
     @NSManaged open var siteDescription: String
     @NSManaged open var siteID: NSNumber

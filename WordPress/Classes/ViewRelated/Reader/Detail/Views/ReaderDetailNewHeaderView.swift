@@ -151,7 +151,7 @@ class ReaderDetailHeaderViewModel: ObservableObject {
 
             self.isFollowingSite = post.isFollowing
 
-            self.siteIconURL = post.siteIconForDisplay(ofSize: Int(ReaderDetailNewHeaderView.Constants.siteIconLength))
+            self.siteIconURL = post.getSiteIconURL(size: Int(ReaderDetailNewHeaderView.Constants.siteIconLength))
             self.authorAvatarURL = post.avatarURLForDisplay() ?? nil
 
             if let authorName = post.authorForDisplay(), !authorName.isEmpty {
