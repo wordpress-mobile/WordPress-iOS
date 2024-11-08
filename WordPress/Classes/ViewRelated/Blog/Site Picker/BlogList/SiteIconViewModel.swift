@@ -120,7 +120,10 @@ extension SiteIconViewModel {
             }
             return nil
         }
-        return optimizedURL(for: iconURL, imageSize: size)
+        if isBlavatarURL(iconURL) {
+            return optimizedBlavatarURL(from: iconURL, imageSize: size)
+        }
+        return URL(string: iconURL)
     }
 
     private static func getHardcodedSiteIconURL(siteID: Int) -> URL? {
