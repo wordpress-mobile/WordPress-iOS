@@ -10,13 +10,16 @@ fi
 echo '--- :robot_face: Use bot for Git operations'
 source use-bot-for-git
 
-.buildkite/commands/checkout-release-branch.sh "$RELEASE_NUMBER"
+# .buildkite/commands/checkout-release-branch.sh "$RELEASE_NUMBER"
+BRANCH_NAME="iangmaia/use-buildkite-pipeline-upload"
+git fetch origin "$BRANCH_NAME"
+git checkout "$BRANCH_NAME"
 
 echo '--- :ruby: Setup Ruby tools'
 install_gems
 
-echo "--- :swift: Set up Swift Packages"
-install_swiftpm_dependencies
+# echo "--- :swift: Set up Swift Packages"
+# install_swiftpm_dependencies
 
 echo '--- :closed_lock_with_key: Access secrets'
 bundle exec fastlane run configure_apply

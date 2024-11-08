@@ -169,7 +169,7 @@ platform :ios do
   #
   desc 'Completes the final steps for the code freeze'
   lane :complete_code_freeze do |skip_confirm: false|
-    ensure_git_branch_is_release_branch!
+    # ensure_git_branch_is_release_branch!
     ensure_git_status_clean
 
     version = release_version_current
@@ -178,22 +178,22 @@ platform :ios do
 
     UI.user_error!('Aborted by user request') unless skip_confirm || UI.confirm('Do you want to continue?')
 
-    generate_strings_file_for_glotpress
+    # generate_strings_file_for_glotpress
 
-    unless skip_confirm || UI.confirm('Ready to push changes to remote and trigger the beta build?')
-      UI.message("Terminating as requested. Don't forget to run the remainder of this automation manually.")
-      next
-    end
+    # unless skip_confirm || UI.confirm('Ready to push changes to remote and trigger the beta build?')
+    #   UI.message("Terminating as requested. Don't forget to run the remainder of this automation manually.")
+    #   next
+    # end
 
-    push_to_git_remote(tags: false)
+    # push_to_git_remote(tags: false)
 
     trigger_beta_build
 
-    pr_url = create_backmerge_pr
-    message = <<~MESSAGE
-      Code freeze completed successfully. Next, review and merge the [integration PR](#{pr_url}).
-    MESSAGE
-    buildkite_annotate(context: 'code-freeze-completed', style: 'success', message: message) if is_ci
+    # pr_url = create_backmerge_pr
+    # message = <<~MESSAGE
+    #   Code freeze completed successfully. Next, review and merge the [integration PR](#{pr_url}).
+    # MESSAGE
+    # buildkite_annotate(context: 'code-freeze-completed', style: 'success', message: message) if is_ci
   end
 
   # Creates a new beta by bumping the app version appropriately then triggering a beta build on CI

@@ -9,24 +9,27 @@ steps:
 
   - label: ":wordpress: :testflight: WordPress Release Build (App Store Connect)"
     command: |
-      .buildkite/commands/checkout-release-branch.sh "$RELEASE_VERSION"
-      .buildkite/commands/release-build-wordpress.sh $IS_BETA_RELEASE
+      git fetch origin "iangmaia/use-buildkite-pipeline-upload"
+      git checkout "iangmaia/use-buildkite-pipeline-upload"
+
+      echo "RELEASE_VERSION: $RELEASE_VERSION"
+      echo "IS_BETA_RELEASE: $IS_BETA_RELEASE"
     plugins: [$CI_TOOLKIT_PLUGIN]
-    notify:
-      - slack: "#build-and-ship"
-    retry:
-      manual:
-        # If those jobs fail, one should always prefer re-triggering a new build from ReleaseV2 rather than retrying the individual job from Buildkite
-        allowed: false
+    # notify:
+    #   - slack: "#build-and-ship"
+    # retry:
+    #   manual:
+    #     # If those jobs fail, one should always prefer re-triggering a new build from ReleaseV2 rather than retrying the individual job from Buildkite
+    #     allowed: false
 
   - label: ":jetpack: :testflight: Jetpack Release Build (App Store Connect)"
     command: |
-      .buildkite/commands/checkout-release-branch.sh "$RELEASE_VERSION"
-      .buildkite/commands/release-build-jetpack.sh
+      echo "RELEASE_VERSION: $RELEASE_VERSION"
+      echo "IS_BETA_RELEASE: $IS_BETA_RELEASE"
     plugins: [$CI_TOOLKIT_PLUGIN]
-    notify:
-      - slack: "#build-and-ship"
-    retry:
-      manual:
-        # If those jobs fail, one should always prefer re-triggering a new build from ReleaseV2 rather than retrying the individual job from Buildkite
-        allowed: false
+    # notify:
+    #   - slack: "#build-and-ship"
+    # retry:
+    #   manual:
+    #     # If those jobs fail, one should always prefer re-triggering a new build from ReleaseV2 rather than retrying the individual job from Buildkite
+    #     allowed: false
