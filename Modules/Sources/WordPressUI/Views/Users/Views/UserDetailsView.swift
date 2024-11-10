@@ -6,6 +6,15 @@ struct UserDetailsView: View {
     private let actionDispatcher: UserManagementActionDispatcher
     let user: DisplayUser
 
+    @State private var presentPasswordAlert: Bool = false {
+        didSet {
+            newPassword = ""
+            newPasswordConfirmation = ""
+        }
+    }
+    @State private var newPassword: String = ""
+    @State private var newPasswordConfirmation: String = ""
+
     @StateObject
     var viewModel: UserDetailViewModel
 
@@ -46,10 +55,8 @@ struct UserDetailsView: View {
 
             if viewModel.currentUserCanModifyUsers {
                 Section(Strings.accountManagementSectionTitle) {
-                    NavigationLink {
-                        UserChangePasswordView(viewModel: passwordChangeViewModel)
-                    } label: {
-                        Text(Strings.setNewPasswordActionTitle)
+                    Button(Strings.setNewPasswordActionTitle) {
+                        presentPasswordAlert = true
                     }
 
                     NavigationLink {
@@ -62,13 +69,32 @@ struct UserDetailsView: View {
                 }
             }
         }
+        .alert(
+            Strings.setNewPasswordActionTitle,
+            isPresented: $presentPasswordAlert,
+            actions: {
+                SecureField(Strings.newPasswordPlaceholder, text: $newPassword)
+                SecureField(Strings.newPasswordConfirmationPlaceholder, text: $newPasswordConfirmation)
+                Button(Strings.updatePasswordButton) {
+                    Task {
+                        try await self.actionDispatcher.setNewPassword(id: user.id, newPassword: newPassword)
+                    }
+                }
+                .disabled(newPassword.isEmpty || newPassword != newPasswordConfirmation)
+                Button(role: .cancel) {
+                    presentPasswordAlert = false
+                } label: {
+                    // TODO: Replace with `SharedStrings.Button.cancel`
+                    Text(NSLocalizedString("shared.button.cancel", value: "Cancel", comment: "A shared button title used in different contexts"))
+                }
+            },
+            message: {
+                Text(Strings.newPasswordAlertMessage)
+            }
+        )
         .task {
             await viewModel.loadCurrentUserRole()
         }
-    }
-
-    var passwordChangeViewModel: UserChangePasswordViewModel {
-        UserChangePasswordViewModel(user: user, actionDispatcher: actionDispatcher)
     }
 
     func makeRow(title: String, content: String, link: URL? = nil) -> some View {
@@ -120,23 +146,35 @@ struct UserDetailsView: View {
             comment: "The 'Set New Password' button on the user profile – matches what's in /wp-admin/profile.php"
         )
 
-        static let sendPasswordResetEmailActionTitle  = NSLocalizedString(
-            "userdetail.sendPasswordResetEmailActionTitle",
-            value: "Send Password Reset Email",
-            comment: "The 'Send Password Reset Email' button on the user profile – matches what's in /wp-admin/profile.php"
-        )
-
         static let deleteUserActionTitle  = NSLocalizedString(
             "userdetail.deleteUserActionTitle",
             value: "Delete User",
             comment: "The 'Delete User' button on the user profile – matches what's in /wp-admin/profile.php"
         )
-    }
-}
 
-private struct UserDetailLabeledContentStyle: LabeledContentStyle {
-    func makeBody(configuration: LabeledContentStyleConfiguration) -> some View {
-        LabeledContent(configuration)
+        static let newPasswordAlertMessage = NSLocalizedString(
+            "userdetail.newPasswordAlertMessage",
+            value: "Enter a new password for this user",
+            comment: "The message in the alert that appears when setting a new password on the user profile"
+        )
+
+        static let newPasswordPlaceholder = NSLocalizedString(
+            "userdetail.textField.placeholder.newPassword",
+            value: "New password",
+            comment: "The placeholder text for the 'New Password' field on the user profile"
+        )
+
+        static let newPasswordConfirmationPlaceholder = NSLocalizedString(
+            "userdetail.textField.placeholder.newPasswordConfirmation",
+            value: "Confirm new password",
+            comment: "The placeholder text for the 'Confirm New Password' field on the user profile"
+        )
+
+        static let updatePasswordButton = NSLocalizedString(
+            "userdetail.button.updatePassword",
+            value: "Update",
+            comment: "The 'Update' button to set a new password on the user profile"
+        )
     }
 }
 
