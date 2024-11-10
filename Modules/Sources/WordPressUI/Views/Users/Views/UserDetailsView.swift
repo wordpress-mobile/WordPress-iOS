@@ -2,8 +2,8 @@ import SwiftUI
 
 struct UserDetailsView: View {
 
-    private let userProvider: UserDataProvider
-    private let actionDispatcher: UserManagementActionDispatcher
+    fileprivate let userProvider: UserDataProvider
+    fileprivate let actionDispatcher: UserManagementActionDispatcher
     let user: DisplayUser
 
     @State private var presentPasswordAlert: Bool = false {
@@ -12,11 +12,18 @@ struct UserDetailsView: View {
             newPasswordConfirmation = ""
         }
     }
-    @State private var newPassword: String = ""
-    @State private var newPasswordConfirmation: String = ""
+    @State fileprivate var newPassword: String = ""
+    @State fileprivate var newPasswordConfirmation: String = ""
+
+    @State fileprivate var presentUserPicker: Bool = false
+    @State fileprivate var selectedUser: DisplayUser? = nil
+    @State fileprivate var presentDeleteConfirmation: Bool = false
+    @State fileprivate var presentDeleteUserError: Bool = false
 
     @StateObject
-    var viewModel: UserDetailViewModel
+    fileprivate var viewModel: UserDetailViewModel
+    @StateObject
+    fileprivate var deleteUserViewModel: UserDeleteViewModel
 
     @Environment(\.dismiss)
     var dismissAction: DismissAction
@@ -26,6 +33,7 @@ struct UserDetailsView: View {
         self.userProvider = userProvider
         self.actionDispatcher = actionDispatcher
         _viewModel = StateObject(wrappedValue: UserDetailViewModel(userProvider: userProvider))
+        _deleteUserViewModel = StateObject(wrappedValue: UserDeleteViewModel(user: user, userProvider: userProvider, actionDispatcher: actionDispatcher))
     }
 
     var body: some View {
@@ -58,14 +66,16 @@ struct UserDetailsView: View {
                     Button(Strings.setNewPasswordActionTitle) {
                         presentPasswordAlert = true
                     }
-
-                    NavigationLink {
-                        // Pass this view's dismiss action, because if we delete a user, we want that screen *and* this one gone
-                        UserDeleteView(user: user, userProvider: userProvider, actionDispatcher: actionDispatcher, dismiss: dismissAction)
+                    Button(role: .destructive) {
+                        presentUserPicker = true
                     } label: {
-                        Text(Strings.deleteUserActionTitle)
-                            .foregroundStyle(Color.red)
+                        Text(
+                            deleteUserViewModel.isDeletingUser ?
+                                Strings.deletingUserActionTitle
+                                : Strings.deleteUserActionTitle
+                        )
                     }
+                    .disabled(deleteUserViewModel.isDeletingUser)
                 }
             }
         }
@@ -92,8 +102,10 @@ struct UserDetailsView: View {
                 Text(Strings.newPasswordAlertMessage)
             }
         )
+        .deleteUser(in: self)
         .task {
             await viewModel.loadCurrentUserRole()
+            await deleteUserViewModel.fetchOtherUsers()
         }
     }
 
@@ -152,6 +164,12 @@ struct UserDetailsView: View {
             comment: "The 'Delete User' button on the user profile – matches what's in /wp-admin/profile.php"
         )
 
+        static let deletingUserActionTitle  = NSLocalizedString(
+            "userdetail.deletingUserActionTitle",
+            value: "Deleting User…",
+            comment: "The 'Deleting User…' button on the user profile"
+        )
+
         static let newPasswordAlertMessage = NSLocalizedString(
             "userDetails.newPasswordAlertMessage",
             value: "Enter a new password for this user",
@@ -175,12 +193,124 @@ struct UserDetailsView: View {
             value: "Update",
             comment: "The 'Update' button to set a new password on the user profile"
         )
+
+        static let deleteUserConfirmationTitle = NSLocalizedString(
+            "userdetail.alert.deleteUserConfirmationTitle",
+            value: "Are you sure?",
+            comment: "The title of the alert that appears when deleting a user"
+        )
+
+        static func deleteUserConfirmationMessage(username: String) -> String {
+            let format = NSLocalizedString(
+                "userdetail.alert.deleteUserConfirmationMessage",
+                value: "Are you sure you want to delete this user and attribute all content to %@?",
+                comment: "The message in the alert that appears when deleting a user. The first argument is the display name of the user to which content will be attributed"
+            )
+            return String(format: format, username)
+        }
+
+        static let deleteUserConfirmButtonTitle = NSLocalizedString(
+            "userdetail.alert.deleteUserConfirmButtonTitle",
+            value: "Yes, delete user",
+            comment: "The title of the confirmation button in the alert that appears when deleting a user"
+        )
     }
 }
 
-#Preview {
-    NavigationStack {
-        UserDetailsView(user: DisplayUser.MockUser, userProvider: MockUserProvider(), actionDispatcher: UserManagementActionDispatcher())
+private extension View {
+    @ViewBuilder
+    func deleteUser(in view: UserDetailsView) -> some View {
+        sheet(
+            isPresented: view.$presentUserPicker,
+            onDismiss: {
+                view.presentUserPicker = false
+            },
+            content: {
+                pickAnotherUser(in: view)
+            }
+        )
+        .alert(
+            UserDetailsView.Strings.deleteUserConfirmationTitle,
+            isPresented: view.$presentDeleteConfirmation,
+            presenting: view.selectedUser,
+            actions: { attribution in
+                Button(role: .destructive) {
+                    Task {
+                        view.deleteUserViewModel.didTapDeleteUser {
+                            view.dismissAction()
+                        }
+                    }
+                } label: {
+                    Text(UserDetailsView.Strings.deleteUserConfirmButtonTitle)
+                }
+            },
+            message: {
+                Text(UserDetailsView.Strings.deleteUserConfirmationMessage(username: $0.displayName))
+            }
+        )
+        .alert(
+            "Error",
+            isPresented: view.$presentDeleteUserError,
+            presenting: view.deleteUserViewModel.error,
+            actions: { _ in
+                Button("OK") {
+                    view.presentDeleteUserError = false
+                }
+            },
+            message: { error in
+                Text("An error occurred while deleting the user.")
+                // TODO: Use appropriate localized error message
+                Text(error.localizedDescription)
+            })
+    }
+
+    @ViewBuilder
+    func pickAnotherUser(in view: UserDetailsView) -> some View {
+        NavigationView {
+            Form {
+                VStack(alignment: .leading) {
+                    Text("You have specified this user for deletion:")
+                    Text("ID #\(view.user.id): \(view.user.username)")
+                }
+                .frame(maxWidth: .infinity)
+                .listRowBackground(Color.clear)
+                .listRowInsets(.zero)
+
+                Section {
+                    if view.deleteUserViewModel.isFetchingOtherUsers {
+                        LabeledContent("Attribute all content to:") {
+                            ProgressView()
+                        }
+                    } else {
+                        Picker("Attribute all content to:", selection: view.$selectedUser) {
+                            ForEach(view.deleteUserViewModel.otherUsers) { user in
+                                Text("\(user.displayName) (\(user.username))").tag(user)
+                            }
+                        }
+                    }
+                }
+            }
+            .navigationTitle("Delete Confirmation")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button(role: .cancel) {
+                        view.presentUserPicker = false
+                    } label: {
+                        Text("Cancel")
+                    }
+                }
+                ToolbarItem(placement: .destructiveAction) {
+                    Button(role: .destructive) {
+                        view.presentDeleteConfirmation = true
+                    } label: {
+                        Text("Delete")
+                    }
+                    .disabled(view.selectedUser == nil)
+                }
+            }
+        }
+        .presentationDetents([.medium])
     }
 }
 
@@ -194,5 +324,11 @@ private extension String {
             else { return nil }
 
         return result.url
+    }
+}
+
+#Preview {
+    NavigationStack {
+        UserDetailsView(user: DisplayUser.MockUser, userProvider: MockUserProvider(), actionDispatcher: UserManagementActionDispatcher())
     }
 }
