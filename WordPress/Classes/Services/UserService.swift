@@ -7,7 +7,6 @@ import WordPressUI
 ///
 class UserService: UserServiceProtocol {
     private let client: WordPressClient
-    private let currentUserId: Int
 
     private let fetchUserslock = NSRecursiveLock()
     private var fetchUsersTask: Task<Void, Error>?
@@ -17,9 +16,10 @@ class UserService: UserServiceProtocol {
         usersSubject.dropFirst().eraseToAnyPublisher()
     }
 
-    init(api: WordPressClient, currentUserId: Int) {
-        self.client = api
-        self.currentUserId = currentUserId
+    private var currentUser: UserWithEditContext?
+
+    init(client: WordPressClient) {
+        self.client = client
     }
 
     deinit {
@@ -58,8 +58,15 @@ class UserService: UserServiceProtocol {
     }
 
     func isCurrentUserCapableOf(_ capability: String) async throws -> Bool {
-        // TODO: Cache the current user?
-        try await client.api.users.retrieveMeWithEditContext().capabilities.keys.contains(capability)
+        let currentUser: UserWithEditContext
+        if let cached = self.currentUser {
+            currentUser = cached
+        } else {
+            currentUser = try await self.client.api.users.retrieveMeWithEditContext()
+            self.currentUser = currentUser
+        }
+
+        return currentUser.capabilities.keys.contains(capability)
     }
 
     func deleteUser(id: Int32, reassigningPostsTo newUserId: Int32) async throws {
