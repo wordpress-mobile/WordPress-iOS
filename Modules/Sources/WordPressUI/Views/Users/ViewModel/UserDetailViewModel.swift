@@ -2,7 +2,7 @@ import SwiftUI
 
 @MainActor
 class UserDetailViewModel: ObservableObject {
-    private let userProvider: UserDataProvider
+    private let userService: UserServiceProtocol
 
     @Published
     private(set) var currentUserCanModifyUsers: Bool = false
@@ -13,30 +13,20 @@ class UserDetailViewModel: ObservableObject {
     @Published
     private(set) var error: Error? = nil
 
-    init(userProvider: UserDataProvider) {
-        self.userProvider = userProvider
+    init(userService: UserServiceProtocol) {
+        self.userService = userService
     }
 
     func loadCurrentUserRole() async {
-        withAnimation {
-            isLoadingCurrentUser = true
-        }
+        error = nil
+
+        isLoadingCurrentUser = true
+        defer { isLoadingCurrentUser = false}
 
         do {
-            let hasPermissions = try await userProvider.fetchCurrentUserCan("edit_users")
-            error = nil
-
-            withAnimation {
-                currentUserCanModifyUsers = hasPermissions
-            }
+            currentUserCanModifyUsers = try await userService.isCurrentUserCapableOf("edit_users")
         } catch {
-            withAnimation {
-                self.error = error
-            }
-        }
-
-        withAnimation {
-            isLoadingCurrentUser = false
+            self.error = error
         }
     }
 }

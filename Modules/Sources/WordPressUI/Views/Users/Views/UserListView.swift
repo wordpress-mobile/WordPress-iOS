@@ -4,13 +4,11 @@ public struct UserListView: View {
 
     @StateObject
     private var viewModel: UserListViewModel
-    private let userProvider: UserDataProvider
-    private let actionDispatcher: UserManagementActionDispatcher
+    private let userService: UserServiceProtocol
 
-    public init(userProvider: UserDataProvider, actionDispatcher: UserManagementActionDispatcher) {
-        self.userProvider = userProvider
-        self.actionDispatcher = actionDispatcher
-        _viewModel = StateObject(wrappedValue: UserListViewModel(userProvider: userProvider))
+    public init(userService: UserServiceProtocol) {
+        self.userService = userService
+        _viewModel = StateObject(wrappedValue: UserListViewModel(userService: userService))
     }
 
     public var body: some View {
@@ -33,7 +31,7 @@ public struct UserListView: View {
                                     .listRowBackground(Color.clear)
                             } else {
                                 ForEach(section.users) { user in
-                                    UserListItem(user: user, userProvider: userProvider, actionDispatcher: actionDispatcher)
+                                    UserListItem(user: user, userService: userService)
                                 }
                             }
                         }
@@ -72,18 +70,18 @@ public struct UserListView: View {
 
 #Preview("Loading") {
     NavigationView {
-        UserListView(userProvider: MockUserProvider(scenario: .infinitLoading), actionDispatcher: UserManagementActionDispatcher())
+        UserListView(userService: MockUserProvider())
     }
 }
 
 #Preview("Error") {
     NavigationView {
-        UserListView(userProvider: MockUserProvider(scenario: .error), actionDispatcher: UserManagementActionDispatcher())
+        UserListView(userService: MockUserProvider(scenario: .error))
     }
 }
 
 #Preview("List") {
     NavigationView {
-        UserListView(userProvider: MockUserProvider(scenario: .dummyData), actionDispatcher: UserManagementActionDispatcher())
+        UserListView(userService: MockUserProvider(scenario: .dummyData))
     }
 }

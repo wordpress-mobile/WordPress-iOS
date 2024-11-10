@@ -2,8 +2,7 @@ import SwiftUI
 
 struct UserDetailsView: View {
 
-    fileprivate let userProvider: UserDataProvider
-    fileprivate let actionDispatcher: UserManagementActionDispatcher
+    fileprivate let userService: UserServiceProtocol
     let user: DisplayUser
 
     @State private var presentPasswordAlert: Bool = false {
@@ -16,7 +15,6 @@ struct UserDetailsView: View {
     @State fileprivate var newPasswordConfirmation: String = ""
 
     @State fileprivate var presentUserPicker: Bool = false
-    @State fileprivate var selectedUser: DisplayUser? = nil
     @State fileprivate var presentDeleteConfirmation: Bool = false
     @State fileprivate var presentDeleteUserError: Bool = false
 
@@ -28,12 +26,11 @@ struct UserDetailsView: View {
     @Environment(\.dismiss)
     var dismissAction: DismissAction
 
-    init(user: DisplayUser, userProvider: UserDataProvider, actionDispatcher: UserManagementActionDispatcher) {
+    init(user: DisplayUser, userService: UserServiceProtocol) {
         self.user = user
-        self.userProvider = userProvider
-        self.actionDispatcher = actionDispatcher
-        _viewModel = StateObject(wrappedValue: UserDetailViewModel(userProvider: userProvider))
-        _deleteUserViewModel = StateObject(wrappedValue: UserDeleteViewModel(user: user, userProvider: userProvider, actionDispatcher: actionDispatcher))
+        self.userService = userService
+        _viewModel = StateObject(wrappedValue: UserDetailViewModel(userService: userService))
+        _deleteUserViewModel = StateObject(wrappedValue: UserDeleteViewModel(user: user, userService: userService))
     }
 
     var body: some View {
@@ -87,7 +84,7 @@ struct UserDetailsView: View {
                 SecureField(Strings.newPasswordConfirmationPlaceholder, text: $newPasswordConfirmation)
                 Button(Strings.updatePasswordButton) {
                     Task {
-                        try await self.actionDispatcher.setNewPassword(id: user.id, newPassword: newPassword)
+                        try await self.userService.setNewPassword(id: user.id, newPassword: newPassword)
                     }
                 }
                 .disabled(newPassword.isEmpty || newPassword != newPasswordConfirmation)
@@ -105,7 +102,7 @@ struct UserDetailsView: View {
         .deleteUser(in: self)
         .task {
             await viewModel.loadCurrentUserRole()
-            await deleteUserViewModel.fetchOtherUsers()
+            deleteUserViewModel.fetchOtherUsers()
         }
     }
 
@@ -283,12 +280,15 @@ private extension View {
         .alert(
             UserDetailsView.Strings.deleteUserConfirmationTitle,
             isPresented: view.$presentDeleteConfirmation,
-            presenting: view.selectedUser,
+            presenting: view.deleteUserViewModel.selectedUser,
             actions: { attribution in
                 Button(role: .destructive) {
-                    Task {
-                        view.deleteUserViewModel.didTapDeleteUser {
+                    Task { @MainActor in
+                        do {
+                            try await view.deleteUserViewModel.deleteUser()
                             view.dismissAction()
+                        } catch {
+                            view.presentDeleteUserError = true
                         }
                     }
                 } label: {
@@ -333,7 +333,7 @@ private extension View {
                             ProgressView()
                         }
                     } else {
-                        Picker(Strings.attributeContentToUserLabel, selection: view.$selectedUser) {
+                        Picker(Strings.attributeContentToUserLabel, selection: view.$deleteUserViewModel.selectedUser) {
                             ForEach(view.deleteUserViewModel.otherUsers) { user in
                                 Text("\(user.displayName) (\(user.username))").tag(user)
                             }
@@ -357,7 +357,7 @@ private extension View {
                     } label: {
                         Text(Strings.attributeContentConfirmationDeleteButton)
                     }
-                    .disabled(view.selectedUser == nil)
+                    .disabled(view.deleteUserViewModel.deleteButtonIsDisabled)
                 }
             }
         }
@@ -380,6 +380,6 @@ private extension String {
 
 #Preview {
     NavigationStack {
-        UserDetailsView(user: DisplayUser.MockUser, userProvider: MockUserProvider(), actionDispatcher: UserManagementActionDispatcher())
+        UserDetailsView(user: DisplayUser.MockUser, userService: MockUserProvider())
     }
 }

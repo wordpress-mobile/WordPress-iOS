@@ -9,18 +9,16 @@ struct UserListItem: View {
     var dynamicTypeSize
 
     private let user: DisplayUser
-    private let userProvider: UserDataProvider
-    private let actionDispatcher: UserManagementActionDispatcher
+    private let userService: UserServiceProtocol
 
-    init(user: DisplayUser, userProvider: UserDataProvider, actionDispatcher: UserManagementActionDispatcher) {
+    init(user: DisplayUser, userService: UserServiceProtocol) {
         self.user = user
-        self.userProvider = userProvider
-        self.actionDispatcher = actionDispatcher
+        self.userService = userService
     }
 
     var body: some View {
         NavigationLink {
-            UserDetailsView(user: user, userProvider: userProvider, actionDispatcher: actionDispatcher)
+            UserDetailsView(user: user, userService: userService)
         } label: {
             HStack(alignment: .top) {
                 if !dynamicTypeSize.isAccessibilitySize {
@@ -36,5 +34,5 @@ struct UserListItem: View {
 }
 
 #Preview {
-    UserListItem(user: DisplayUser.MockUser, userProvider: MockUserProvider(), actionDispatcher: UserManagementActionDispatcher())
+    UserListItem(user: DisplayUser.MockUser, userService: MockUserProvider())
 }

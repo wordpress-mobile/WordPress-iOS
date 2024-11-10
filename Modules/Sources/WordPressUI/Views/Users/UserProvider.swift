@@ -1,32 +1,19 @@
 import Foundation
+import Combine
 
-public protocol UserDataProvider {
+public protocol UserServiceProtocol {
+    var users: AnyPublisher<Result<[DisplayUser], Error>, Never> { get }
 
-    typealias CachedUserListCallback = ([WordPressUI.DisplayUser]) async -> Void
+    func fetchUsers()
 
-    func fetchCurrentUserCan(_ capability: String) async throws -> Bool
-    func fetchUsers(cachedResults: CachedUserListCallback?) async throws -> [WordPressUI.DisplayUser]
+    func isCurrentUserCapableOf(_ capability: String) async throws -> Bool
 
-    func invalidateCaches() async throws
+    func setNewPassword(id: Int32, newPassword: String) async throws
+
+    func deleteUser(id: Int32, reassigningPostsTo newUserId: Int32) async throws
 }
 
-/// Subclass this and register it with the SwiftUI `.environmentObject` method
-/// to perform user management actions.
-///
-/// The default implementation is set up for testing with SwiftUI Previews
-open class UserManagementActionDispatcher: ObservableObject {
-    public init() {}
-
-    open func setNewPassword(id: Int32, newPassword: String) async throws {
-        try await Task.sleep(for: .seconds(2))
-    }
-
-    open func deleteUser(id: Int32, reassigningPostsTo userId: Int32) async throws {
-        try await Task.sleep(for: .seconds(2))
-    }
-}
-
-package struct MockUserProvider: UserDataProvider {
+package class MockUserProvider: UserServiceProtocol {
 
     enum Scenario {
         case infinitLoading
@@ -36,29 +23,46 @@ package struct MockUserProvider: UserDataProvider {
 
     var scenario: Scenario
 
+    private let subject: CurrentValueSubject<Result<[WordPressUI.DisplayUser], any Error>, Never> = .init(.success([]))
+
+    package var users: AnyPublisher<Result<[WordPressUI.DisplayUser], any Error>, Never> {
+        subject.dropFirst().eraseToAnyPublisher()
+    }
+
     init(scenario: Scenario = .dummyData) {
         self.scenario = scenario
     }
 
-    package func fetchUsers(cachedResults: CachedUserListCallback? = nil) async throws -> [WordPressUI.DisplayUser] {
+    package func fetchUsers() {
         switch scenario {
         case .infinitLoading:
-            try await Task.sleep(for: .seconds(1 * 24 * 60 * 60))
-            return []
+            // Do nothing
+            break
         case .dummyData:
-            let dummyDataUrl = URL(string: "https://my.api.mockaroo.com/users.json?key=067c9730")!
-            let response = try await URLSession.shared.data(from: dummyDataUrl)
-            return try JSONDecoder().decode([DisplayUser].self, from: response.0)
+            Task {
+                let dummyDataUrl = URL(string: "https://my.api.mockaroo.com/users.json?key=067c9730")!
+                do {
+                    let response = try await URLSession.shared.data(from: dummyDataUrl)
+                    let users = try JSONDecoder().decode([DisplayUser].self, from: response.0)
+                    subject.send(.success(users))
+                } catch {
+                    subject.send(.failure(error))
+                }
+            }
         case .error:
-            throw URLError(.timedOut)
+            subject.send(.failure(URLError(.timedOut)))
         }
     }
 
-    package func fetchCurrentUserCan(_ capability: String) async throws -> Bool {
+    package func isCurrentUserCapableOf(_ capability: String) async throws -> Bool {
         true
     }
 
-    package func invalidateCaches() async throws {
-        // Do nothing
+    package func setNewPassword(id: Int32, newPassword: String) async throws {
+        // Not used in Preview
+    }
+
+    package func deleteUser(id: Int32, reassigningPostsTo newUserId: Int32) async throws {
+        // Not used in Preview
     }
 }

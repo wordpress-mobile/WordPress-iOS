@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 import WordPressShared
 
 @MainActor
@@ -11,9 +12,13 @@ class UserListViewModel: ObservableObject {
     }
 
     /// The initial set of users fetched by `fetchItems`
-    private var users: [DisplayUser] = []
-    private let userProvider: UserDataProvider
-
+    private var users: [DisplayUser] = [] {
+        didSet {
+            sortedUsers = self.sortUsers(users)
+        }
+    }
+    private let userService: UserServiceProtocol
+    private var cancellables: Set<AnyCancellable> = []
     private var initialLoad = false
 
     @Published
@@ -37,8 +42,15 @@ class UserListViewModel: ObservableObject {
         }
     }
 
-    init(userProvider: UserDataProvider) {
-        self.userProvider = userProvider
+    init(userService: UserServiceProtocol) {
+        self.userService = userService
+
+        userService.users
+            .compactMap { try? $0.get() }
+            .sink { [weak self] in
+                self?.users = $0
+            }
+            .store(in: &cancellables)
     }
 
     func onAppear() async {
@@ -49,31 +61,14 @@ class UserListViewModel: ObservableObject {
     }
 
     func fetchItems() async {
-        withAnimation {
-            isLoadingItems = true
-        }
-
-        do {
-            let users = try await userProvider.fetchUsers { cachedResults in
-                self.setUsers(cachedResults)
-            }
-            setUsers(users)
-        } catch {
-            self.error = error
-            isLoadingItems = false
-        }
+        isLoadingItems = true
+        userService.fetchUsers()
+        userService.users.first().map { _ in false }.assign(to: &$isLoadingItems)
     }
 
     @Sendable
     func refreshItems() async {
-        do {
-            let users = try await userProvider.fetchUsers { cachedResults in
-                self.setUsers(cachedResults)
-            }
-            setUsers(users)
-        } catch {
-            // Do nothing for now – this should probably show a "Toast" notification or something
-        }
+        userService.fetchUsers()
     }
 
     func setUsers(_ newValue: [DisplayUser]) {
