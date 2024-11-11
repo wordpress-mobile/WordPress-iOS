@@ -53,14 +53,14 @@ class UserListViewModel: ObservableObject {
             .store(in: &cancellables)
     }
 
-    func onAppear() async {
+    func onAppear() {
         if !initialLoad {
             initialLoad = true
-            await fetchItems()
+            fetchItems()
         }
     }
 
-    func fetchItems() async {
+    private func fetchItems() {
         isLoadingItems = true
         userService.fetchUsers()
         userService.users.first().map { _ in false }.assign(to: &$isLoadingItems)
