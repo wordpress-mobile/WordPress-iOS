@@ -89,31 +89,6 @@ class JetpackLoginViewController: UIViewController {
         jetpackImage.isHidden = collection.containsTraits(in: UITraitCollection(verticalSizeClass: .compact))
     }
 
-    fileprivate func observeLoginNotifications(_ observe: Bool) {
-        if observe {
-            // Observe `.handleLoginSyncedSites` instead of `WPSigninDidFinishNotification`
-            // `WPSigninDidFinishNotification` will not be dispatched for Jetpack logins.
-            // Switch back to `WPSigninDidFinishNotification` when the WPTabViewController
-            // no longer destroys and recreates its view hierarchy in response to that
-            // notification.
-            NotificationCenter.default.addObserver(self, selector: #selector(self.handleFinishedJetpackLogin), name: .wordpressLoginFinishedJetpackLogin, object: nil)
-            NotificationCenter.default.addObserver(self, selector: #selector(self.handleLoginCancelled), name: .wordpressLoginCancelled, object: nil)
-            return
-        }
-
-        NotificationCenter.default.removeObserver(self, name: .wordpressLoginFinishedJetpackLogin, object: nil)
-        NotificationCenter.default.removeObserver(self, name: .wordpressLoginCancelled, object: nil)
-    }
-
-    @objc fileprivate func handleLoginCancelled() {
-        observeLoginNotifications(false)
-    }
-
-    @objc fileprivate func handleFinishedJetpackLogin() {
-        observeLoginNotifications(false)
-        completionBlock?()
-    }
-
     // MARK: - UI Helpers
 
     func updateMessageAndButton() {
@@ -178,8 +153,15 @@ class JetpackLoginViewController: UIViewController {
     }
 
     fileprivate func signIn() {
-        observeLoginNotifications(true)
-        WordPressAuthenticator.showLoginForJustWPCom(from: self, jetpackLogin: true, connectedEmail: blog.jetpack?.connectedEmail)
+        Task { @MainActor [weak self] in
+            guard let self = self else { return }
+
+            let email = self.blog.jetpack?.connectedEmail
+            let accountID = await WordPressDotComAuthenticator().signIn(from: self, context: .jetpackSite(accountEmail: email))
+            if accountID != nil {
+                self.completionBlock?()
+            }
+        }
     }
 
     fileprivate func trackStat(_ stat: WPAnalyticsStat, blog: Blog? = nil) {

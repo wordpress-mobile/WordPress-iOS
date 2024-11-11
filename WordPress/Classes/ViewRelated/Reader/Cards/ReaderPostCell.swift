@@ -7,7 +7,7 @@ final class ReaderPostCell: ReaderStreamBaseCell {
 
     private var contentViewConstraints: [NSLayoutConstraint] = []
 
-    static let avatarSize: CGFloat = 28
+    static let avatarSize: CGFloat = SiteIconViewModel.Size.small.width
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -51,12 +51,7 @@ final class ReaderPostCell: ReaderStreamBaseCell {
 
     override func updateConstraints() {
         NSLayoutConstraint.deactivate(contentViewConstraints)
-        contentViewConstraints = [
-            view.leadingAnchor.constraint(equalTo: isCompact ? contentView.leadingAnchor : contentView.readableContentGuide.leadingAnchor),
-            view.trailingAnchor.constraint(equalTo: isCompact ? contentView.trailingAnchor : contentView.readableContentGuide.trailingAnchor)
-        ]
-        NSLayoutConstraint.activate(contentViewConstraints)
-
+        contentViewConstraints = view.pinEdges(.horizontal, to: isCompact ? contentView : contentView.readableContentGuide)
         super.updateConstraints()
     }
 }
@@ -92,6 +87,7 @@ private final class ReaderPostCellView: UIView {
 
     private var viewModel: ReaderPostCellViewModel? // important: has to retain
     private let coverAspectRatio: CGFloat = 239.0 / 358.0
+    private static let regularCoverWidth: CGFloat = 200
     private var imageViewConstraints: [NSLayoutConstraint] = []
     private var cancellables: [AnyCancellable] = []
 
@@ -207,7 +203,7 @@ private final class ReaderPostCellView: UIView {
         } else {
             imageViewConstraints = [
                 imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: coverAspectRatio),
-                imageView.widthAnchor.constraint(equalToConstant: 200)
+                imageView.widthAnchor.constraint(equalToConstant: Self.regularCoverWidth)
             ]
         }
         NSLayoutConstraint.activate(imageViewConstraints)
@@ -276,12 +272,27 @@ private final class ReaderPostCellView: UIView {
         detailsLabel.text = viewModel.details
 
         imageView.isHidden = viewModel.imageURL == nil
+
         if let imageURL = viewModel.imageURL {
-            imageView.setImage(with: imageURL)
+            imageView.setImage(with: imageURL, size: preferredCoverSize)
         }
 
         configureToolbar(with: viewModel.toolbar)
         configureToolbarAccessibility(with: viewModel.toolbar)
+    }
+
+    private var preferredCoverSize: CGSize? {
+        guard let window = window ?? UIApplication.shared.mainWindow else { return nil }
+        return Self.preferredCoverSize(in: window, isCompact: isCompact)
+    }
+
+    static func preferredCoverSize(in window: UIWindow, isCompact: Bool) -> CGSize {
+        var coverWidth = Self.regularCoverWidth
+        if isCompact {
+            coverWidth = min(window.bounds.width, window.bounds.height) - ReaderStreamBaseCell.insets.left * 2
+        }
+        return CGSize(width: coverWidth, height: coverWidth)
+            .scaled(by: min(2, window.traitCollection.displayScale))
     }
 
     private func configureToolbar(with viewModel: ReaderPostToolbarViewModel) {

@@ -64,6 +64,10 @@ final class SplitViewRootPresenter: RootViewPresenter {
                 self?.handleCoreDataChanges($0)
             }
             .store(in: &cancellables)
+
+        NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)
+            .sink { [weak self] _ in self?.applicationDidBecomeActive() }
+            .store(in: &cancellables)
     }
 
     private func configure(for selection: SidebarSelection) {
@@ -112,6 +116,8 @@ final class SplitViewRootPresenter: RootViewPresenter {
         DispatchQueue.main.async {
             self.splitVC.hide(.primary)
         }
+
+        trackAnalytics(for: selection)
     }
 
     private func makeRootNavigationController(with viewController: UIViewController) -> UINavigationController {
@@ -147,7 +153,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
             showMeScreen(completion: nil)
         case .signIn:
             Task {
-                await self.signIn()
+                await WordPressDotComAuthenticator().signIn(from: splitVC, context: .default)
             }
         }
     }
@@ -180,26 +186,6 @@ final class SplitViewRootPresenter: RootViewPresenter {
             .showSiteCreationScreen(selection: selection)
     }
 
-    @MainActor private func signIn() async {
-        WPAnalytics.track(.wpcomWebSignIn, properties: ["source": "sidebar", "stage": "start"])
-
-        let token: String
-        do {
-            token = try await WordPressDotComAuthenticator().authenticate(from: splitVC)
-        } catch {
-            WPAnalytics.track(.wpcomWebSignIn, properties: ["source": "sidebar", "stage": "error", "error": "\(error)"])
-            return
-        }
-
-        WPAnalytics.track(.wpcomWebSignIn, properties: ["source": "sidebar", "stage": "success"])
-
-        SVProgressHUD.show()
-        let credentials = WordPressComCredentials(authToken: token, isJetpackLogin: false, multifactor: false)
-        WordPressAuthenticator.shared.delegate!.sync(credentials: .init(wpcom: credentials)) {
-            SVProgressHUD.dismiss()
-        }
-    }
-
     private func handleCoreDataChanges(_ notification: Foundation.Notification) {
         // Automatically switch to a site or show the sign in screen, when the current blog is removed.
 
@@ -215,6 +201,23 @@ final class SplitViewRootPresenter: RootViewPresenter {
         } else {
             self.sidebarViewModel.selection = .welcome
             WordPressAppDelegate.shared?.windowManager.showSignInUI()
+        }
+    }
+
+    // MARK: Analytics
+
+    private func applicationDidBecomeActive() {
+        guard let selection = sidebarViewModel.selection, splitVC.isViewOnScreen() else {
+            return
+        }
+        trackAnalytics(for: selection)
+    }
+
+    private func trackAnalytics(for selection: SidebarSelection) {
+        switch selection {
+        case .blog: WPAnalytics.track(.mySitesTabAccessed)
+        case .reader: WPAnalytics.track(.readerAccessed)
+        default: break
         }
     }
 

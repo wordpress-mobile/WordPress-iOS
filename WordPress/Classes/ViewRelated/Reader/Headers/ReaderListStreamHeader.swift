@@ -36,9 +36,4 @@ import WordPressShared
         titleLabel.text = topic.title
         detailLabel.text = listTopic.owner
     }
-
-    @objc open func enableLoggedInFeatures(_ enable: Bool) {
-        // noop
-    }
-
 }

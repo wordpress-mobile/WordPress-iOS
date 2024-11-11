@@ -136,11 +136,6 @@ class ReaderSelectInterestsViewController: UIViewController {
         saveSelectedInterests()
     }
 
-    // MARK: - Display logic
-    func userIsFollowingTopics(completion: @escaping (Bool) -> Void) {
-        coordinator.isFollowingInterests(completion: completion)
-    }
-
     // MARK: - Private: Configuration
     private func configureCollectionView() {
         let nib = UINib(nibName: String(describing: ReaderInterestsCollectionViewCell.self), bundle: nil)

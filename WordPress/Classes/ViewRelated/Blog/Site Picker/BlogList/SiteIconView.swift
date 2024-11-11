@@ -49,6 +49,7 @@ struct SiteIconView: View {
         switch size {
         case .small: 18
         case .regular: 24
+        case .large: 34
         }
     }
 

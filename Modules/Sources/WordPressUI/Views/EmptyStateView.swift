@@ -4,6 +4,9 @@ public struct EmptyStateView<Label: View, Description: View, Actions: View>: Vie
     @ViewBuilder let label: () -> Label
     @ViewBuilder var description: () -> Description
     @ViewBuilder var actions: () -> Actions
+
+    @ScaledMetric(relativeTo: .title) var maxWidthCompact = 320
+    @ScaledMetric(relativeTo: .title) var maxWidthRegular = 420
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
     public init(
@@ -30,7 +33,8 @@ public struct EmptyStateView<Label: View, Description: View, Actions: View>: Vie
             }
             actions()
         }
-        .frame(maxWidth: horizontalSizeClass == .compact ? 300 : 420)
+        .frame(maxWidth: horizontalSizeClass == .compact ? maxWidthCompact : maxWidthRegular)
+        .padding()
     }
 }
 
@@ -85,6 +89,5 @@ private struct EmptyStateViewLabelStyle: LabelStyle {
             Text("Create Tag")
         }
         .buttonStyle(.borderedProminent)
-
     }
 }

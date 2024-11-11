@@ -26,6 +26,8 @@ enum SharedStrings {
     }
 
     enum Reader {
+        /// - warning: This is the legacy value. It's not compliant with the new format but has the correct translation for different languages.
+        static let title = NSLocalizedString("Reader", comment: "The accessibility value of the Reader tab.")
         static let unfollow = NSLocalizedString("reader.button.unfollow", value: "Unfollow", comment: "Reader sidebar button title")
         static let recent = NSLocalizedString("reader.recent.title", value: "Recent", comment: "Used in multiple contexts, usually as a screen title")
         static let discover = NSLocalizedString("reader.discover.title", value: "Discover", comment: "Used in multiple contexts, usually as a screen title")

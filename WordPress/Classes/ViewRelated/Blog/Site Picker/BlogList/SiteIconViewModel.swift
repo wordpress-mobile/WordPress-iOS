@@ -12,11 +12,13 @@ struct SiteIconViewModel {
     enum Size {
         case small
         case regular
+        case large
 
         var width: CGFloat {
             switch self {
             case .small: 28
             case .regular: 40
+            case .large: 72
             }
         }
 
@@ -38,9 +40,11 @@ struct SiteIconViewModel {
     init(readerSiteTopic: ReaderSiteTopic, size: Size = .regular) {
         self.size = size
         self.firstLetter = readerSiteTopic.title.first
-        self.imageURL = SiteIconViewModel.optimizedBlavatarURL(from: readerSiteTopic.siteBlavatar, imageSize: size.size)
+        self.imageURL = SiteIconViewModel.makeReaderSiteIconURL(iconURL: readerSiteTopic.siteBlavatar, siteID: readerSiteTopic.siteID.intValue, size: size.size)
     }
 }
+
+// MARK: - SiteIconViewModel (Optimized URL)
 
 extension SiteIconViewModel {
     /// Returns the Size Optimized URL for a given Path.
@@ -102,5 +106,32 @@ extension SiteIconViewModel {
         }
 
         return components.url
+    }
+}
+
+// MARK: - SiteIconViewModel (Reader)
+
+extension SiteIconViewModel {
+    /// - parameter isBlavatar: A hint to skip the "is icon blavatar" check.
+    static func makeReaderSiteIconURL(iconURL: String?, isBlavatar: Bool = false, siteID: Int?, size: CGSize) -> URL? {
+        guard let iconURL, !iconURL.isEmpty else {
+            if let siteID {
+                return getHardcodedSiteIconURL(siteID: siteID)
+            }
+            return nil
+        }
+        if isBlavatarURL(iconURL) {
+            return optimizedBlavatarURL(from: iconURL, imageSize: size)
+        }
+        return URL(string: iconURL)
+    }
+
+    private static func getHardcodedSiteIconURL(siteID: Int) -> URL? {
+        switch siteID {
+        case 3584907:
+            return Bundle.main.url(forResource: "wpcom-blog-icon", withExtension: "png")
+        default:
+            return nil
+        }
     }
 }

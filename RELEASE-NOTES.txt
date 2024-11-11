@@ -2,10 +2,13 @@
 -----
 * [*] [internal] Update Gravatar SDK to 3.0.0 [#23701]
 * [*] Use the Gravatar Quick Editor to update the avatar [#23729]
+* [*] (Hidden under a feature flag) User Management for self-hosted sites. [#23768]
 
 25.5
 -----
-
+* [***] Use web-based sign-in flow (hidden under a feature flag) [#23675]
+* [*] Enable navigating to an individual post's stats from within the "view more" screen for author stats. [#23761]
+* [*] [Jetpack-only] Enable pubishing to non-Jetpack sites when sharing content to the Jetpack app. [#23778]
 
 25.4
 -----

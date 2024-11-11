@@ -5,11 +5,9 @@ final class ReaderCommentAction {
                  promptToAddComment: Bool = false,
                  navigateToCommentID: Int? = nil,
                  source: ReaderCommentsSource) {
-        guard let postInMainContext = ReaderActionHelpers.postInMainContext(post),
-              let controller = ReaderCommentsViewController(post: postInMainContext, source: source) else {
-                  return
-              }
-
+        guard let controller = ReaderCommentsViewController(post: post, source: source) else {
+            return
+        }
         controller.navigateToCommentID = navigateToCommentID as NSNumber?
         controller.promptToAddComment = promptToAddComment
         controller.trackCommentsOpened()

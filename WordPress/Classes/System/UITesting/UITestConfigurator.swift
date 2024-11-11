@@ -1,6 +1,10 @@
 import Foundation
 
 struct UITestConfigurator {
+    static func isUITesting() -> Bool {
+        CommandLine.arguments.contains("-ui-testing")
+    }
+
     static func prepareApplicationForUITests(in app: UIApplication, window: UIWindow) {
         let arguments = CommandLine.arguments
         if arguments.contains("-ui-testing") {

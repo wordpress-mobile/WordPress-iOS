@@ -49,19 +49,7 @@ import AutomatticTracks
         return currentHelper
     }
 
-    private var noResultsStatusViewController = NoResultsViewController.controller()
-    private var noFollowedSitesViewController: NoResultsViewController?
-
     private lazy var readerPostStreamService = ReaderPostStreamService(coreDataStack: coreDataStack)
-
-    var resultsStatusView: NoResultsViewController {
-        get {
-            guard let noFollowedSitesVC = noFollowedSitesViewController else {
-                return noResultsStatusViewController
-            }
-            return noFollowedSitesVC
-        }
-    }
 
     private var coreDataStack: CoreDataStack { ContextManager.shared }
     var viewContext: NSManagedObjectContext { coreDataStack.mainContext }
@@ -85,7 +73,6 @@ import AutomatticTracks
     private let recentlyBlockedSitePostObjectIDs = NSMutableArray()
     private let heightForFooterView = CGFloat(34.0)
     private let estimatedHeightsCache = NSCache<AnyObject, AnyObject>()
-    private var isLoggedIn = false
     private var isFeed = false
     private var syncIsFillingGap = false
     private var indexPathForGapMarker: IndexPath?
@@ -118,7 +105,7 @@ import AutomatticTracks
     }
 
     private var isShowingResultStatusView: Bool {
-        return resultsStatusView.view?.superview != nil
+        emptyStateView != nil
     }
 
     private var isLoadingDiscover: Bool {
@@ -190,13 +177,31 @@ import AutomatticTracks
 
     private var showConfirmation = true
 
-    lazy var selectInterestsVC = ReaderSelectInterestsViewController(configuration: .discover)
-
-    /// Tracks whether or not we should force sync
-    /// This is set to true after the Reader Manage view is dismissed
-    var shouldForceRefresh = false
-
     var isEmbeddedInDiscover = false
+
+    private var isCompact = true {
+        didSet {
+            guard oldValue != isCompact else { return }
+            didChangeIsCompact(isCompact)
+        }
+    }
+
+    private var emptyStateView: UIView? {
+        didSet {
+            oldValue?.removeFromSuperview()
+            if let emptyStateView {
+                view.addSubview(emptyStateView)
+                emptyStateView.pinEdges(.horizontal, to: view.safeAreaLayoutGuide)
+                NSLayoutConstraint.activate([
+                    emptyStateView.topAnchor.constraint(equalTo: tableView.tableHeaderView?.bottomAnchor ?? view.safeAreaLayoutGuide.topAnchor),
+                    emptyStateView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+                ])
+
+                footerView.isHidden = true
+                hideGhost()
+            }
+        }
+    }
 
     // MARK: - Init
 
@@ -275,6 +280,8 @@ import AutomatticTracks
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        isCompact = traitCollection.horizontalSizeClass == .compact
+
         // Setup Site Blocking Controller
         self.siteBlockingController.delegate = self
 
@@ -291,7 +298,6 @@ import AutomatticTracks
         setupTableView()
         setupFooterView()
         setupContentHandler()
-        setupResultsStatusView()
 
         observeNetworkStatus()
 
@@ -330,18 +336,6 @@ import AutomatticTracks
         dismissNoNetworkAlert()
     }
 
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        coordinator.animate(alongsideTransition: { _ in
-            if self.isShowingResultStatusView {
-                self.resultsStatusView.updateAccessoryViewsVisibility()
-            }
-
-            self.tableView.beginUpdates()
-            self.tableView.endUpdates()
-        })
-    }
-
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
@@ -349,8 +343,19 @@ import AutomatticTracks
         // the view being fully setup in viewDidLoad.
         // See: https://github.com/wordpress-mobile/WordPress-iOS/issues/4419
         if didSetupView {
-            refreshTableViewHeaderLayout()
+            tableView.sizeToFitHeaderView()
         }
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        isCompact = traitCollection.horizontalSizeClass == .compact
+    }
+
+    private func didChangeIsCompact(_ isCompact: Bool) {
+        (tableView.tableHeaderView as? ReaderBaseHeaderView)?.isCompact = isCompact
+        tableView.reloadData()
     }
 
     // MARK: - Topic acquisition
@@ -422,9 +427,10 @@ import AutomatticTracks
     private func setupTableView() {
         configureRefreshControl()
 
+        tableViewController.willMove(toParent: self)
+        addChild(tableViewController)
         view.addSubview(tableViewController.view)
-        tableViewController.view.translatesAutoresizingMaskIntoConstraints = false
-        view.pinSubviewToSafeArea(tableViewController.view)
+        tableViewController.view.pinEdges()
         tableViewController.didMove(toParent: self)
         tableConfiguration.setup(tableView)
         tableView.delegate = self
@@ -438,10 +444,6 @@ import AutomatticTracks
         assert(tableView != nil, "A tableView must be assigned before configuring a handler")
 
         content.initializeContent(tableView: tableView, delegate: self)
-    }
-
-    private func setupResultsStatusView() {
-        resultsStatusView.delegate = self
     }
 
     private func setupFooterView() {
@@ -459,7 +461,7 @@ import AutomatticTracks
         guard !isEmbeddedInDiscover else {
             return
         }
-        guard let headerView = headerForStream(readerTopic, isLoggedIn: isLoggedIn, container: tableViewController) else {
+        guard let headerView = headerForStream(readerTopic, container: tableViewController) else {
             tableView.tableHeaderView = nil
             return
         }
@@ -471,6 +473,7 @@ import AutomatticTracks
             headerView.isHidden = tableHeaderView.isHidden
         }
 
+        (headerView as? ReaderBaseHeaderView)?.isCompact = isCompact
         tableView.tableHeaderView = headerView
         streamHeader = headerView as? ReaderStreamHeader
 
@@ -512,18 +515,14 @@ import AutomatticTracks
             tableViewController.refreshControl = nil
         }
 
-        // Rather than repeatedly creating a service to check if the user is logged in, cache it here.
-        isLoggedIn = AccountHelper.isDotcomAvailable()
-
         configureTitleForTopic()
         configureShareButtonIfNeeded()
         hideResultsStatus()
         recentlyBlockedSitePostObjectIDs.removeAllObjects()
         updateAndPerformFetchRequest()
         configureStreamHeader()
-        tableView.setContentOffset(CGPoint.zero, animated: false)
+        tableView.setContentOffset(CGPoint(x: 0, y: -(tableView.adjustedContentInset.top)), animated: false)
         content.refresh()
-        refreshTableViewHeaderLayout()
 
         if synchronize {
             syncIfAppropriate()
@@ -544,7 +543,7 @@ import AutomatticTracks
             if contentType == .saved {
                 title = SharedStrings.Reader.saved
             } else {
-                title = NSLocalizedString("Reader", comment: "The default title of the Reader")
+                title = SharedStrings.Reader.title
             }
             return
         }
@@ -566,10 +565,7 @@ import AutomatticTracks
 
     private func configureCloseButtonIfNeeded() {
         if isModal() {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(image: .gridicon(.cross),
-                                                               style: .plain,
-                                                               target: self,
-                                                               action: #selector(closeButtonTapped))
+            navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(closeButtonTapped))
         }
     }
 
@@ -579,66 +575,9 @@ import AutomatticTracks
 
     // MARK: - Instance Methods
 
-    /// Retrieve an instance of the specified post from the main NSManagedObjectContext.
-    ///
-    /// - Parameters:
-    ///     - post: The post to retrieve.
-    ///
-    /// - Returns: The post fetched from the main context or nil if the post does not exist in the context.
-    ///
-    private func postInMainContext(_ post: ReaderPost) -> ReaderPost? {
-        guard let post = (try? ContextManager.sharedInstance().mainContext.existingObject(with: post.objectID)) as? ReaderPost else {
-            DDLogError("Error retrieving an exsting post from the main context by its object ID.")
-            return nil
-        }
-        return post
-    }
-
-    /// Refreshes the layout of the header.  Required for sizing the tableHeaderView according
-    /// to its intrinsic content layout, and after major layout changes on the viewcontroller itself.
-    ///
-    private func refreshTableViewHeaderLayout() {
-        guard let headerView = tableView.tableHeaderView else {
-            return
-        }
-
-        // The tableView may need to layout, run this layout now, if needed.
-        // This ensures the proper margins, such as readable margins, are
-        // inherited and calculated by the headerView.
-        tableView.layoutIfNeeded()
-
-        // Start with the provided UILayoutFittingCompressedSize to let iOS handle its own magic
-        // number for a "compressed" height, meaning we want our fitting size to be the minimal height.
-        var fittingSize = UIView.layoutFittingCompressedSize
-
-        // Set the width to the tableView's width since this is a known width for the headerView.
-        // Otherwise, the layout will try and adopt 'any' width and may break based on the how
-        // the constraints are set up in the nib.
-        fittingSize.width = tableView.frame.size.width
-
-        // Require horizontal fitting since our width is known.
-        // Use the lower fitting size priority as we want to minimize our height consumption
-        // according to the layout's contraints and intrinsic size.
-        let size = headerView.systemLayoutSizeFitting(fittingSize,
-                                                      withHorizontalFittingPriority: .required,
-                                                      verticalFittingPriority: .fittingSizeLevel)
-        // Update the tableHeaderView itself. Classic.
-        var headerFrame = headerView.frame
-        headerFrame.size.height = size.height
-        headerView.frame = headerFrame
-        tableView.tableHeaderView = headerView
-    }
-
-    /// Scrolls to the top of the list of posts.
     @objc func scrollViewToTop() {
-        guard tableView.numberOfRows(inSection: .zero) > 0 else {
-            tableView.setContentOffset(.zero, animated: true)
-            return
-        }
-
-        /// `scrollToRow` somehow works better when the first cell has dynamic height. With `setContentOffset`,
-        /// sometimes it doesn't perfectly scroll to the top, thus making the top cell appear clipped.
-        tableView.scrollToRow(at: IndexPath(row: .zero, section: .zero), at: .top, animated: true)
+        // Uses `contentInset.top` to accomodate for the safe area insets
+        tableView.setContentOffset(CGPoint(x: 0, y: -(tableView.adjustedContentInset.top)), animated: true)
     }
 
     /// Returns the analytics property dictionary for the current topic.
@@ -708,11 +647,6 @@ import AutomatticTracks
             return
         }
         streamHeader.configureHeader(topic)
-    }
-
-    func showManageSites(animated: Bool = true) {
-        let controller = ReaderFollowedSitesViewController.controller()
-        navigationController?.pushViewController(controller, animated: animated)
     }
 
     // MARK: - Blocking
@@ -1184,8 +1118,8 @@ import AutomatticTracks
             toggleFollowingForTag(topic, completion: completion)
         } else if let topic = topic as? ReaderSiteTopic {
             toggleFollowingForSite(topic, completion: completion)
-        } else if let topic = topic as? ReaderDefaultTopic, ReaderHelpers.topicIsFollowing(topic) {
-            showManageSites()
+        } else {
+            wpAssertionFailure("unexpected topic", userInfo: ["type": String(describing: topic)])
         }
     }
 
@@ -1398,8 +1332,6 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             return cell
         }
 
-        let isCompact = traitCollection.horizontalSizeClass == .compact
-
         if post.isCross() {
             let cell = tableConfiguration.crossPostCell(tableView)
             cell.isCompact = isCompact
@@ -1482,27 +1414,23 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             }
             return
         }
-
-        guard let apost = posts[safe: indexPath.row] else {
+        guard let post = posts[safe: indexPath.row] else {
             wpAssertionFailure("invalid_index_path")
             return
         }
-
-        didSelectPost(apost, at: indexPath)
+        didSelectPost(post, at: indexPath)
     }
 
-    func didSelectPost(_ apost: ReaderPost, at indexPath: IndexPath) {
-        guard let post = postInMainContext(apost) else {
-            return
-        }
+    func didSelectPost(_ post: ReaderPost, at indexPath: IndexPath) {
+        wpAssert(post.managedObjectContext == viewContext)
 
         if post.isKind(of: ReaderGapMarker.self) {
             syncFillingGap(indexPath)
             return
         }
 
-        if recentlyBlockedSitePostObjectIDs.contains(apost.objectID) {
-            unblockSiteForPost(apost)
+        if recentlyBlockedSitePostObjectIDs.contains(post.objectID) {
+            unblockSiteForPost(post)
             return
         }
 
@@ -1510,7 +1438,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             WPAppAnalytics.track(.readerSearchResultTapped)
 
             // We can use `if let` when `ReaderPost` adopts nullability.
-            let railcar = apost.railcarDictionary()
+            let railcar = post.railcarDictionary()
             if railcar != nil {
                 WPAppAnalytics.trackTrainTracksInteraction(.readerSearchResultTapped, withProperties: railcar)
             }
@@ -1544,7 +1472,7 @@ extension ReaderStreamViewController: SearchableActivityConvertable {
     }
 
     var activityTitle: String {
-        return NSLocalizedString("Reader", comment: "Title of the 'Reader' tab - used for spotlight indexing on iOS.")
+        return SharedStrings.Reader.title
     }
 
     var activityKeywords: Set<String>? {
@@ -1565,15 +1493,11 @@ extension ReaderStreamViewController: SearchableActivityConvertable {
 extension ReaderStreamViewController {
 
     func displayLoadingStream() {
-        configureResultsStatus(title: ResultsStatusText.loadingStreamTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
-        displayResultsStatus()
         showGhost()
     }
 
     func displayLoadingStreamFailed() {
-        configureResultsStatus(title: ResultsStatusText.loadingErrorTitle, subtitle: ResultsStatusText.loadingErrorMessage)
-        displayResultsStatus()
-        hideGhost()
+        emptyStateView = makeEmptyStateView(.steamLoadingFailed)
     }
 
     func displayLoadingViewIfNeeded() {
@@ -1583,8 +1507,6 @@ extension ReaderStreamViewController {
         if !isEmbeddedInDiscover {
             tableView.tableHeaderView?.isHidden = true
         }
-        configureResultsStatus(title: ResultsStatusText.fetchingPostsTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
-        displayResultsStatus()
         showGhost()
     }
 
@@ -1593,9 +1515,9 @@ extension ReaderStreamViewController {
         // so make certain its not nil.
         guard let topic = readerTopic else {
             if contentType == .saved {
-                displayNoResultsForSavedPosts()
+                emptyStateView = makeEmptyStateView(.noSavedPosts)
             } else if contentType == .topic && siteID == ReaderHelpers.discoverSiteID {
-                displayNoResultsViewForDiscover()
+                emptyStateView = makeEmptyStateView(.discover)
             }
             return
         }
@@ -1605,180 +1527,31 @@ extension ReaderStreamViewController {
         }
 
         guard connectionAvailable() else {
-            displayNoConnectionView()
+            emptyStateView = makeEmptyStateView(.noConnection)
             return
         }
 
         guard ReaderHelpers.topicIsFollowing(topic) else {
-            let response: NoResultsResponse = ReaderStreamViewController.responseForNoResults(topic)
-
-            let buttonTitle = buttonTitleForTopic(topic)
-
-            configureResultsStatus(title: response.title, subtitle: response.message, buttonTitle: buttonTitle, imageName: readerEmptyImageName)
-            displayResultsStatus()
+            emptyStateView = makeEmptyStateView(for: topic)
             return
         }
 
         view.isUserInteractionEnabled = true
 
-        if noFollowedSitesViewController == nil {
-            let controller = NoResultsViewController.noFollowedSitesController(showActionButton: isLoggedIn)
-            controller.delegate = self
-            noFollowedSitesViewController = controller
-        }
-
-        displayResultsStatus()
-    }
-
-    func displayNoConnectionView() {
-        configureResultsStatus(title: ResultsStatusText.noConnectionTitle, subtitle: noConnectionMessage())
-        displayResultsStatus()
-        hideGhost()
-    }
-
-    /// Removes the no followed sites view controller if it exists
-    func resetNoFollowedSitesViewController() {
-        if let noFollowedSitesVC = noFollowedSitesViewController {
-            noFollowedSitesVC.removeFromView()
-            noFollowedSitesViewController = nil
-        }
-    }
-
-    func configureResultsStatus(title: String,
-                                subtitle: String? = nil,
-                                buttonTitle: String? = nil,
-                                imageName: String? = nil,
-                                accessoryView: UIView? = nil) {
-        resetNoFollowedSitesViewController()
-
-        resultsStatusView.configure(title: title, buttonTitle: buttonTitle, subtitle: subtitle, image: imageName, accessoryView: accessoryView)
-        resultsStatusView.loadViewIfNeeded()
-        resultsStatusView.setupReaderButtonStyles()
-    }
-
-    private func displayNoResultsForSavedPosts() {
-        resetNoFollowedSitesViewController()
-        configureNoResultsViewForSavedPosts()
-        displayResultsStatus()
-    }
-
-    private func displayNoResultsViewForDiscover() {
-        configureResultsStatus(title: ReaderStreamViewController.defaultResponse.title,
-                               subtitle: ReaderStreamViewController.defaultResponse.message,
-                               imageName: readerEmptyImageName)
-        displayResultsStatus()
-    }
-
-    func displayResultsStatus() {
-        resultsStatusView.removeFromView()
-        tableViewController.addChild(resultsStatusView)
-        tableView.insertSubview(resultsStatusView.view, belowSubview: refreshControl)
-        resultsStatusView.view.frame = tableView.frame
-        resultsStatusView.didMove(toParent: tableViewController)
-        resultsStatusView.updateView()
-        footerView.isHidden = true
-        hideGhost()
-    }
-
-    func showSelectInterestsView() {
-        guard selectInterestsVC.parent == nil else {
-            return
-        }
-
-        selectInterestsVC.view.frame = self.view.bounds
-        self.add(selectInterestsVC)
-
-        selectInterestsVC.didSaveInterests = { [weak self] _ in
-            guard let self else {
-                return
-            }
-            self.hideSelectInterestsView()
-        }
-    }
-
-    func hideSelectInterestsView(showLoadingStream: Bool = true) {
-        guard selectInterestsVC.parent != nil else {
-            if shouldForceRefresh {
-                scrollViewToTop()
-                displayLoadingStream()
-                syncIfAppropriate(forceSync: true)
-                shouldForceRefresh = false
-            }
-
-            return
-        }
-
-        scrollViewToTop()
-        displayLoadingStream()
-        syncIfAppropriate(forceSync: true)
-
-        UIView.animate(withDuration: 0.2, animations: {
-            self.selectInterestsVC.view.alpha = 0
-        }) { _ in
-            self.selectInterestsVC.remove()
-            self.selectInterestsVC.view.alpha = 1
-        }
+        emptyStateView = makeEmptyStateView(.noFollowedSites)
     }
 
     func hideResultsStatus() {
-        hideSelectInterestsView()
-        resultsStatusView.removeFromView()
+        emptyStateView = nil
         footerView.isHidden = false
         tableView.tableHeaderView?.isHidden = false
         hideGhost()
     }
 
-    func buttonTitleForTopic(_ topic: ReaderAbstractTopic) -> String? {
-        if ReaderHelpers.topicIsFollowing(topic) {
-            return ResultsStatusText.manageSitesButtonTitle
-        }
-
-        if ReaderHelpers.topicIsLiked(topic) {
-            return ResultsStatusText.followingButtonTitle
-        }
-
-        return nil
-    }
-
     struct ResultsStatusText {
-        static let fetchingPostsTitle = NSLocalizedString("Fetching posts...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.")
-        static let loadingStreamTitle = NSLocalizedString("Loading stream...", comment: "A short message to inform the user the requested stream is being loaded.")
         static let loadingErrorTitle = NSLocalizedString("Problem loading content", comment: "Error message title informing the user that reader content could not be loaded.")
         static let loadingErrorMessage = NSLocalizedString("Sorry. The content could not be loaded.", comment: "A short error message letting the user know the requested reader content could not be loaded.")
-        static let manageSitesButtonTitle = NSLocalizedString(
-            "reader.no.results.manage.blogs",
-            value: "Manage Blogs",
-            comment: "Button title. Tapping lets the user manage the blogs they follow."
-        )
-        static let followingButtonTitle = NSLocalizedString(
-            "reader.no.results.subscriptions.button",
-            value: "Go to Subscriptions",
-            comment: "Button title. Tapping lets the user view the blogs they're subscribed to."
-        )
         static let noConnectionTitle = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
-    }
-
-    var readerEmptyImageName: String {
-        "wp-illustration-reader-empty"
-    }
-}
-
-// MARK: - NoResultsViewControllerDelegate
-
-extension ReaderStreamViewController: NoResultsViewControllerDelegate {
-    func actionButtonPressed() {
-        guard let topic = readerTopic else {
-            return
-        }
-
-        if ReaderHelpers.topicIsFollowing(topic) {
-            RootViewCoordinator.sharedPresenter.showReader(path: .discover)
-            return
-        }
-
-        if ReaderHelpers.topicIsLiked(topic) {
-            RootViewCoordinator.sharedPresenter.showReader(path: .subscriptions)
-        }
     }
 }
 

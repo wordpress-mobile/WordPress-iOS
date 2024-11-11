@@ -120,3 +120,14 @@ extension StringRankedSearch {
         .map(\.0)
     }
 }
+
+/// Objects conforming to `StringRankedSearchable` can be searched by calling `search(query:)` on a collection of them
+public protocol StringRankedSearchable {
+    var searchString: String { get }
+}
+
+public extension Collection where Iterator.Element: StringRankedSearchable {
+    func search(query: String, minScore: Double = 0.7) -> [Iterator.Element] {
+        StringRankedSearch(searchTerm: query).search(in: self, minScore: minScore) { $0.searchString }
+    }
+}

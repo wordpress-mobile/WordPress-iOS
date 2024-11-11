@@ -96,10 +96,7 @@ extension AppExtensionsService {
     func fetchSites(onSuccess: @escaping ([RemoteBlog]?) -> (), onFailure: @escaping FailureBlock) {
         let remote = AccountServiceRemoteREST(wordPressComRestApi: simpleRestAPI)
 
-        var filterJetpackSites = false
-        #if IS_JETPACK
-        filterJetpackSites = true
-        #endif
+        let filterJetpackSites = false
 
         remote.getBlogs(filterJetpackSites, success: { blogs in
             guard let blogs = blogs as? [RemoteBlog] else {

@@ -295,20 +295,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     return [[NSURL URLWithString:self.blogURL] host];
 }
 
-- (NSURL *)siteIconForDisplayOfSize:(NSInteger)size
-{
-    NSString *str;
-    if ([self.siteIconURL length] > 0) {
-        if ([self.siteIconURL rangeOfString:@"/blavatar/"].location == NSNotFound) {
-            str = self.siteIconURL;
-        } else {
-            str = [NSString stringWithFormat:@"%@?s=%d&d=404", self.siteIconURL, size];
-        }
-        return [NSURL URLWithString:str];
-    }
-    return nil;
-}
-
 - (NSString *)titleForDisplay
 {
     NSString *title = [[self.postTitle trim] stringByDecodingXMLCharacters];

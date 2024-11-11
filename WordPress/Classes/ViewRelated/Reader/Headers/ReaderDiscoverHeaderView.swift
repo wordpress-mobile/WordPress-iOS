@@ -4,9 +4,10 @@ protocol ReaderDiscoverHeaderViewDelegate: AnyObject {
     func readerDiscoverHeaderView(_ view: ReaderDiscoverHeaderView, didChangeSelection selection: ReaderDiscoverChannel)
 }
 
-final class ReaderDiscoverHeaderView: UIView, UITextViewDelegate {
-    private let titleView = ReaderStreamTitleView(insets: nil)
+final class ReaderDiscoverHeaderView: ReaderBaseHeaderView, UITextViewDelegate {
+    private let titleView = ReaderTitleView()
     private let channelsStackView = UIStackView(spacing: 8, [])
+    private let scrollView = UIScrollView()
     private var channelViews: [ReaderDiscoverChannelView] = []
 
     private var selectedChannel: ReaderDiscoverChannel?
@@ -16,7 +17,6 @@ final class ReaderDiscoverHeaderView: UIView, UITextViewDelegate {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        let scrollView = UIScrollView()
         scrollView.addSubview(channelsStackView)
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.clipsToBounds = false
@@ -24,8 +24,8 @@ final class ReaderDiscoverHeaderView: UIView, UITextViewDelegate {
         scrollView.heightAnchor.constraint(equalTo: channelsStackView.heightAnchor).isActive = true
 
         let stackView = UIStackView(axis: .vertical, spacing: 8, [titleView, scrollView])
-        addSubview(stackView)
-        stackView.pinEdges(insets: ReaderStreamTitleView.preferredInsets)
+        contentView.addSubview(stackView)
+        stackView.pinEdges()
 
         titleView.titleLabel.text = SharedStrings.Reader.discover
         titleView.detailsTextView.attributedText = {
@@ -39,6 +39,8 @@ final class ReaderDiscoverHeaderView: UIView, UITextViewDelegate {
             return details
         }()
         titleView.detailsTextView.delegate = self
+
+        updateStyle()
     }
 
     required init?(coder: NSCoder) {
@@ -59,6 +61,17 @@ final class ReaderDiscoverHeaderView: UIView, UITextViewDelegate {
         selectedChannel = channel
         refreshChannelViews()
     }
+
+    override func didUpdateIsCompact(_ isCompact: Bool) {
+        super.didUpdateIsCompact(isCompact)
+        updateStyle()
+    }
+
+    private func updateStyle() {
+        scrollView.contentInset = UIEdgeInsets(.leading, isCompact ? 0 : -10) // Align the "channels"
+    }
+
+    // MARK: Channels
 
     private func makeChannelView(_ channel: ReaderDiscoverChannel) -> ReaderDiscoverChannelView {
         let view = ReaderDiscoverChannelView(channel: channel)
@@ -119,6 +132,8 @@ private final class ReaderDiscoverChannelView: UIView {
 
         textLabel.font = UIFont.preferredFont(forTextStyle: .subheadline).withWeight(.medium)
         textLabel.text = channel.localizedTitle
+        textLabel.adjustsFontForContentSizeCategory = true
+        textLabel.maximumContentSizeCategory = .accessibilityMedium
 
         backgroundView.clipsToBounds = true
 
@@ -138,7 +153,7 @@ private final class ReaderDiscoverChannelView: UIView {
             backgroundView.backgroundColor = UIColor.label
             textLabel.textColor = UIColor.systemBackground
         } else {
-            backgroundView.backgroundColor = UIColor.opaqueSeparator.withAlphaComponent(0.33)
+            backgroundView.backgroundColor = UIColor(light: UIColor.opaqueSeparator.withAlphaComponent(0.33), dark: UIColor.opaqueSeparator)
             textLabel.textColor = UIColor.label
         }
     }

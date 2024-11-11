@@ -424,6 +424,10 @@ extension WordPressAppDelegate {
         self.authManager = authManager
     }
 
+    func presentDefaultAccountPrimarySite(from navigationController: UINavigationController) {
+        self.authManager?.presentDefaultAccountPrimarySite(from: navigationController)
+    }
+
     func handleWebActivity(_ activity: NSUserActivity) {
         // try to handle unauthenticated routes first.
         if activity.activityType == NSUserActivityTypeBrowsingWeb,
@@ -701,7 +705,10 @@ extension WordPressAppDelegate {
         ReaderPostService(coreDataStack: ContextManager.shared).clearInUseFlags()
         ReaderTopicService(coreDataStack: ContextManager.shared).clearInUseFlags()
         ReaderPostService(coreDataStack: ContextManager.shared).clearSavedPostFlags()
-        ReaderSearchSuggestionService(coreDataStack: ContextManager.sharedInstance()).deleteAllSuggestions()
+        UserDefaults.standard.isReaderSelected = false
+        UserDefaults.standard.readerSidebarSelection = nil
+        UserDefaults.standard.readerSearchHistory = []
+        UserDefaults.standard.readerDidSelectInterestsKey = false
     }
 }
 

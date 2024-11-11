@@ -47,14 +47,15 @@ class ReaderCardService {
 
     func fetch(isFirstPage: Bool, refreshCount: Int = 0, success: @escaping (Int, Bool) -> Void, failure: @escaping (Error?) -> Void) {
         followedInterestsService.fetchFollowedInterestsLocally { [weak self] topics in
-            guard let self,
-                  let interests = topics,
-                  !interests.isEmpty else {
-                failure(Errors.noInterests)
+            guard let self, let interests = topics else {
+                failure(URLError(.unknown)) // Should never happen
                 return
             }
 
-            let slugs = interests.map { $0.slug }
+            var slugs = interests.map { $0.slug }
+            if slugs.isEmpty {
+                slugs = ["dailyprompt", "wordpress"] // Matches wp.com
+            }
             let success: ([RemoteReaderCard], String?) -> Void = { [weak self] cards, pageHandle in
                 guard let self else {
                     return
@@ -155,10 +156,6 @@ class ReaderCardService {
 
     private func pageHandle(isFirstPage: Bool) -> String? {
         isFirstPage ? nil : self.pageHandle
-    }
-
-    enum Errors: Error {
-        case noInterests
     }
 
     private enum Constants {

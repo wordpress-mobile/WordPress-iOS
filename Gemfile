@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-gem 'cocoapods', '~> 1.14'
+gem 'cocoapods', '~> 1.16'
 gem 'danger-dangermattic', '~> 1.1'
 gem 'dotenv'
 # 2.223.1 includes a fix for an ASC-interfacing issue

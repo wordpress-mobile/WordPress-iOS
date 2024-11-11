@@ -1,6 +1,5 @@
 import UIKit
 import SwiftUI
-import WordPressAuthenticator
 
 extension HomeSiteHeaderViewController {
 
@@ -72,7 +71,7 @@ extension HomeSiteHeaderViewController {
     // MARK: - Add site
 
     func addSiteTapped(siteType: AddSiteMenuViewModel.Selection) {
-        WPAnalytics.trackEvent(.mySiteHeaderAddSiteTapped, properties: ["siteType": siteType.rawValue])
+        WPAnalytics.trackEvent(.mySiteHeaderAddSiteTapped, properties: ["site_type": siteType.rawValue])
         AddSiteController(viewController: presentedViewController ?? self, source: "my_site")
             .showSiteCreationScreen(selection: siteType)
     }

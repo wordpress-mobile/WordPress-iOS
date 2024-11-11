@@ -17,8 +17,7 @@ struct ReaderSidebarSubscriptionsSection: View {
             Label {
                 Text(site.title)
             } icon: {
-                SiteIconView(viewModel: SiteIconViewModel(readerSiteTopic: site, size: .small))
-                    .frame(width: 28, height: 28)
+                ReaderSiteIconView(site: site, size: .small)
             }
             .lineLimit(1)
             .tag(ReaderSidebarItem.subscription(TaggedManagedObjectID(site)))

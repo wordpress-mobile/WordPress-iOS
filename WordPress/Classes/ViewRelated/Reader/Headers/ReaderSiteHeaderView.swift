@@ -23,16 +23,12 @@ class ReaderSiteHeaderView: UITableViewHeaderFooterView, ReaderStreamHeader {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func enableLoggedInFeatures(_ enable: Bool) {
-        headerViewModel.isFollowHidden = !enable
-    }
-
     func configureHeader(_ topic: ReaderAbstractTopic) {
         guard let siteTopic = topic as? ReaderSiteTopic else {
             assertionFailure("This header should only be used for site topics.")
             return
         }
-        headerViewModel.imageUrl = siteTopic.siteBlavatar
+        headerViewModel.site = siteTopic
         headerViewModel.title = siteTopic.title
         headerViewModel.siteUrl = URL(string: siteTopic.siteURL)?.host ?? ""
         headerViewModel.siteDetails = siteTopic.siteDescription
@@ -78,19 +74,8 @@ struct ReaderSiteHeader: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            AsyncImage(url: URL(string: viewModel.imageUrl)) { phase in
-                switch phase {
-                case .success(let image):
-                    image
-                        .resizable()
-                        .frame(width: 72.0, height: 72.0)
-                        .clipShape(Circle())
-                default:
-                    Image(Constants.defaultSiteImage)
-                        .resizable()
-                        .frame(width: 72.0, height: 72.0)
-                        .clipShape(Circle())
-                }
+            if let site = viewModel.site {
+                ReaderSiteIconView(site: site, size: .large)
             }
             VStack(alignment: .leading, spacing: 4) {
                 Text(viewModel.title)
@@ -104,13 +89,13 @@ struct ReaderSiteHeader: View {
                     .font(.subheadline)
                     .foregroundColor(.secondary)
             }
-            countsDisplay
-            if !viewModel.isFollowHidden {
-                ReaderFollowButton(isFollowing: viewModel.isFollowingSite,
-                                   isEnabled: viewModel.isFollowEnabled,
-                                   size: .regular) {
-                    viewModel.updateFollowStatus()
-                }
+            if viewModel.site?.isExternal == false {
+                countsDisplay
+            }
+            ReaderFollowButton(isFollowing: viewModel.isFollowingSite,
+                               isEnabled: viewModel.isFollowEnabled,
+                               size: .regular) {
+                viewModel.updateFollowStatus()
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
@@ -134,7 +119,6 @@ struct ReaderSiteHeader: View {
     }
 
     struct Constants {
-        static let defaultSiteImage = "blavatar-default"
         static let countsFormat = NSLocalizedString("reader.blog.header.values",
                                                     value: "%1$@ posts • %2$@ subscribers",
                                                     comment: "The formatted number of posts and followers for a site. " +
@@ -148,37 +132,31 @@ struct ReaderSiteHeader: View {
 // MARK: - ReaderSiteHeaderViewModel
 
 class ReaderSiteHeaderViewModel: ObservableObject {
-
-    @Published var imageUrl: String
+    @Published var site: ReaderSiteTopic?
     @Published var title: String
     @Published var siteUrl: String
     @Published var siteDetails: String
     @Published var postCount: String
     @Published var followerCount: String
     @Published var isFollowingSite: Bool
-    @Published var isFollowHidden: Bool
     @Published var isFollowEnabled: Bool
 
     private let onFollowTap: (_ completion: @escaping () -> Void) -> Void
 
-    init(imageUrl: String = "",
-         title: String = "",
+    init(title: String = "",
          siteUrl: String = "",
          siteDetails: String = "",
          postCount: String = "",
          followerCount: String = "",
          isFollowingSite: Bool = false,
-         isFollowHidden: Bool = false,
          isFollowEnabled: Bool = true,
          onFollowTap: @escaping (_ completion: @escaping () -> Void) -> Void = { _ in }) {
-        self.imageUrl = imageUrl
         self.title = title
         self.siteUrl = siteUrl
         self.siteDetails = siteDetails
         self.postCount = postCount
         self.followerCount = followerCount
         self.isFollowingSite = isFollowingSite
-        self.isFollowHidden = isFollowHidden
         self.isFollowEnabled = isFollowEnabled
         self.onFollowTap = onFollowTap
     }

@@ -86,7 +86,6 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 - (BOOL)isP2Type;
 - (NSString *)authorString;
 - (BOOL)contentIncludesFeaturedImage;
-- (NSURL *)siteIconForDisplayOfSize:(NSInteger)size;
 - (SourceAttributionStyle)sourceAttributionStyle;
 - (NSString *)sourceAuthorNameForDisplay;
 - (NSURL *)sourceAvatarURLForDisplay;

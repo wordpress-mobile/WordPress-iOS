@@ -9,6 +9,8 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
     private var selectedChannel: ReaderDiscoverChannel = .recommended
     private let topic: ReaderAbstractTopic
     private var streamVC: ReaderStreamViewController?
+    private weak var selectInterestsVC: ReaderSelectInterestsViewController?
+    private let selectInterestsCoordinator = ReaderSelectInterestsCoordinator()
     private let tags: ManagedObjectsObserver<ReaderTagTopic>
     private let viewContext: NSManagedObjectContext
     private var cancellables: [AnyCancellable] = []
@@ -36,6 +38,8 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
         setupHeaderView()
 
         configureStream(for: selectedChannel)
+
+        showSelectInterestsIfNeeded()
     }
 
     private func setupNavigation() {
@@ -112,12 +116,50 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
         ReaderCardService.removeAllCards()
     }
 
-    // MARK: - ReaderDiscoverHeaderViewDelegate
+    // MARK: ReaderDiscoverHeaderViewDelegate
 
     func readerDiscoverHeaderView(_ view: ReaderDiscoverHeaderView, didChangeSelection selection: ReaderDiscoverChannel) {
         self.selectedChannel = selection
         configureStream(for: selection)
         WPAnalytics.track(.readerDiscoverChannelSelected, properties: selection.analyticsProperties)
+    }
+
+    // MARK: Select Interests
+
+    private func showSelectInterestsIfNeeded() {
+        guard !UserDefaults.standard.readerDidSelectInterestsKey else {
+            return
+        }
+        selectInterestsCoordinator.isFollowingInterests { [weak self] isFollowing in
+            if !isFollowing {
+                self?.showSelectInterestsScreen()
+            }
+        }
+    }
+
+    private func showSelectInterestsScreen() {
+        guard selectInterestsVC == nil else { return }
+
+        let selectInterestsVC = ReaderSelectInterestsViewController(configuration: .discover)
+        selectInterestsVC.isModalInPresentation = true
+        selectInterestsVC.didSaveInterests = { [weak self] _ in
+            self?.didSaveInterests()
+        }
+        present(selectInterestsVC, animated: true)
+        self.selectInterestsVC = selectInterestsVC
+    }
+
+    private func didSaveInterests() {
+        UserDefaults.standard.readerDidSelectInterestsKey = true
+
+        guard selectInterestsVC != nil else { return }
+        dismiss(animated: true) {
+            if let streamVC = self.streamVC {
+                streamVC.scrollViewToTop()
+                streamVC.displayLoadingStream()
+                streamVC.syncIfAppropriate(forceSync: true)
+            }
+        }
     }
 }
 
@@ -165,11 +207,6 @@ private class ReaderDiscoverStreamViewController: ReaderStreamViewController {
         super.viewDidLoad()
 
         addObservers()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        displaySelectInterestsIfNeeded()
     }
 
     // MARK: - UITableView
@@ -233,10 +270,6 @@ private class ReaderDiscoverStreamViewController: ReaderStreamViewController {
         return cell
     }
 
-    private func isTableViewAtTheTop() -> Bool {
-        return tableView.contentOffset.y == 0
-    }
-
     @objc private func reload(_ notification: Foundation.Notification) {
         tableView.reloadData()
     }
@@ -279,7 +312,7 @@ private class ReaderDiscoverStreamViewController: ReaderStreamViewController {
 
     override func syncIfAppropriate(forceSync: Bool = false) {
         // Only sync if the tableview is at the top, otherwise this will change tableview's offset
-        if isTableViewAtTheTop() {
+        if tableView.contentOffset.y <= 0 {
             super.syncIfAppropriate(forceSync: forceSync)
         }
     }
@@ -330,20 +363,6 @@ private class ReaderDiscoverStreamViewController: ReaderStreamViewController {
 
         super.syncIfAppropriate(forceSync: true)
         tableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.fade)
-    }
-}
-
-// MARK: - Select Interests Display
-private extension ReaderDiscoverStreamViewController {
-    func displaySelectInterestsIfNeeded() {
-        selectInterestsVC.userIsFollowingTopics { [weak self] isFollowing in
-            guard let self else { return }
-            if isFollowing {
-                self.hideSelectInterestsView()
-            } else {
-                self.showSelectInterestsView()
-            }
-        }
     }
 }
 

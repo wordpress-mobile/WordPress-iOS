@@ -18,7 +18,6 @@ class JetpackConnectionWebViewController: UIViewController {
     // Sometimes wp-login doesn't redirect to the expected URL, so we're storing
     // it and redirecting manually
     fileprivate var pendingSiteRedirect: URL?
-    fileprivate var pendingDotComRedirect: URL?
     fileprivate var account: WPAccount?
 
     private var analyticsErrorWasTracked = false
@@ -255,8 +254,18 @@ private extension JetpackConnectionWebViewController {
                     // There could be no account in some cases where user has connected
                     // their site to .com account on webView
                     // without logging into the account in the app
-                    self.startObservingLoginNotifications()
-                    WordPressAuthenticator.showLoginForJustWPCom(from: self, jetpackLogin: true, connectedEmail: self.blog.jetpack?.connectedEmail)
+                    Task { @MainActor in
+                        let email = self.blog.jetpack?.connectedEmail
+                        let accountID = await WordPressDotComAuthenticator().signIn(from: self, context: .jetpackSite(accountEmail: email))
+                        if let accountID {
+                            let account = try ContextManager.shared.mainContext.existingObject(with: accountID)
+                            service.associateSyncedBlogs(
+                                toJetpackAccount: account,
+                                success: success,
+                                failure: failure
+                            )
+                        }
+                    }
 
                     return
                 }
@@ -304,35 +313,14 @@ private extension JetpackConnectionWebViewController {
     }
 
     func presentDotComLogin(redirect: URL) {
-        pendingDotComRedirect = redirect
-        startObservingLoginNotifications()
 
-        WordPressAuthenticator.showLoginForJustWPCom(from: self, jetpackLogin: true, connectedEmail: blog.jetpack?.connectedEmail)
-    }
+        Task { @MainActor in
+            let email = self.blog.jetpack?.connectedEmail
+            guard let _ = await WordPressDotComAuthenticator().signIn(from: self, context: .jetpackSite(accountEmail: email)) else {
+                return
+            }
 
-    func startObservingLoginNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(self.handleFinishedJetpackLogin), name: .wordpressLoginFinishedJetpackLogin, object: nil)
-    }
-
-    func stopObservingLoginNotifications() {
-        NotificationCenter.default.removeObserver(self, name: .wordpressLoginFinishedJetpackLogin, object: nil)
-    }
-
-    @objc func handleLoginCancelled() {
-        stopObservingLoginNotifications()
-        pendingDotComRedirect = nil
-    }
-
-    @objc func handleFinishedJetpackLogin(notification: NSNotification) {
-        stopObservingLoginNotifications()
-        defer {
-            pendingDotComRedirect = nil
-        }
-        account = notification.object as? WPAccount
-        if let redirect = pendingDotComRedirect {
-            performDotComLogin(redirect: redirect)
-        } else {
-            delegate?.jetpackConnectionCompleted()
+            self.performDotComLogin(redirect: redirect)
         }
     }
 

@@ -23,27 +23,6 @@ extension WPStyleGuide {
         return Cards.contentTextStyle
     }
 
-    // MARK: - No Followed Sites Error Text Attributes
-    @objc public class func noFollowedSitesErrorTitleAttributes() -> [NSAttributedString.Key: Any] {
-        let paragraphStyle = NSMutableParagraphStyle()
-
-        return [
-            .paragraphStyle: paragraphStyle,
-            .font: UIFont.preferredFont(forTextStyle: .title3).semibold(),
-        ]
-    }
-
-    @objc public class func noFollowedSitesErrorSubtitleAttributes() -> [NSAttributedString.Key: Any] {
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .center
-
-        return [
-            .paragraphStyle: paragraphStyle,
-            .font: UIFont.preferredFont(forTextStyle: .callout),
-            .foregroundColor: UIColor.secondaryLabel
-        ]
-    }
-
     // MARK: - Apply Card Styles
 
     public class func applyReaderCardAttributionLabelStyle(_ label: UILabel) {

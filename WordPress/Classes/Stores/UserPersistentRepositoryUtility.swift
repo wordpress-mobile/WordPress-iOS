@@ -17,6 +17,8 @@ private enum UPRUConstants {
     static let mediaAspectRatioModeEnabledKey = "mediaAspectRatioModeEnabled"
     static let readerSidebarSelectionKey = "readerSidebarSelectionKey"
     static let isReaderSelectedKey = "isReaderSelectedKey"
+    static let readerSearchHistoryKey = "readerSearchHistoryKey"
+    static let readerDidSelectInterestsKey = "readerDidSelectInterestsKey"
 }
 
 protocol UserPersistentRepositoryUtility: AnyObject {
@@ -176,6 +178,26 @@ extension UserPersistentRepositoryUtility {
         set {
             let repository = UserPersistentStoreFactory.instance()
             repository.set(newValue?.rawValue, forKey: UPRUConstants.readerSidebarSelectionKey)
+        }
+    }
+
+    var readerSearchHistory: [String] {
+        get {
+            UserPersistentStoreFactory.instance()
+                .array(forKey: UPRUConstants.readerSearchHistoryKey) as? [String] ?? []
+        }
+        set {
+            UserPersistentStoreFactory.instance()
+                .set(newValue, forKey: UPRUConstants.readerSearchHistoryKey)
+        }
+    }
+
+    var readerDidSelectInterestsKey: Bool {
+        get {
+            UserPersistentStoreFactory.instance().bool(forKey: UPRUConstants.readerDidSelectInterestsKey)
+        }
+        set {
+            UserPersistentStoreFactory.instance().set(newValue, forKey: UPRUConstants.readerDidSelectInterestsKey)
         }
     }
 }
