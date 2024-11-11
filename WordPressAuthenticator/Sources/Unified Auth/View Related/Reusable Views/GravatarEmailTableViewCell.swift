@@ -24,6 +24,11 @@ class GravatarEmailTableViewCell: UITableViewCell {
     private var gravatarPreferredSize: CGSize = .zero
     private var email: String?
 
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshAvatar), name: .GravatarQEAvatarUpdateNotification, object: nil)
+    }
+
     /// Public Methods
     ///
     public func configure(withEmail email: String?, andPlaceholder placeholderImage: UIImage? = nil, hasBorders: Bool = false) {
@@ -58,8 +63,6 @@ class GravatarEmailTableViewCell: UITableViewCell {
         containerView.layer.borderWidth = hasBorders ? 1 : 0
         containerView.layer.cornerRadius = hasBorders ? 8 : 0
         containerView.layer.borderColor = hasBorders ? UIColor.systemGray3.cgColor : UIColor.clear.cgColor
-
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshAvatar), name: .GravatarQEAvatarUpdateNotification, object: nil)
     }
 
     @objc private func refreshAvatar(_ notification: Foundation.Notification) {
