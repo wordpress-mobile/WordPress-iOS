@@ -46,6 +46,7 @@ final class GutenbergMediaPickerHelper: NSObject {
     }
 
     private func mapMediaIdsToMedia(_ mediaIds: [Int]) -> [Media] {
+        assert(Thread.isMainThread, "mapMediaIdsToMedia should only be called on the main thread")
         let context = ContextManager.shared.mainContext
         let request = NSFetchRequest<NSManagedObject>(entityName: "Media")
         request.predicate = NSPredicate(format: "mediaID IN %@", mediaIds.map { NSNumber(value: $0) })
