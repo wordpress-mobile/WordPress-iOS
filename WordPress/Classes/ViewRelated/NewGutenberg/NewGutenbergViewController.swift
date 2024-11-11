@@ -359,6 +359,10 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
                 return
             }
             let mediaInfos = media.map { item in
+                var metadata: [String: String] = [:]
+                if let videopressGUID = item.videopressGUID {
+                    metadata["videopressGUID"] = videopressGUID
+                }
                 return MediaInfo(id: item.mediaID?.int32Value, url: item.remoteURL, type: item.mediaTypeString, caption: item.caption, title: item.filename, alt: item.alt, metadata: [:])
             }
             if let jsonString = convertMediaInfoArrayToJSONString(mediaInfos) {
