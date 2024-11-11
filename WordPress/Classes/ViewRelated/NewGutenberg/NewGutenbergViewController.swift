@@ -341,7 +341,7 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
     }
 
     func editor(_ viewController: GutenbergKit.EditorViewController, didRequestMediaFromSiteMediaLibrary config: OpenMediaLibraryAction) {
-        let flags = mediaFilterFlags(using: config.allowedTypes)
+        let flags = mediaFilterFlags(using: config.allowedTypes ?? [])
 
         let initialSelectionArray: [Int]
         switch config.value {
