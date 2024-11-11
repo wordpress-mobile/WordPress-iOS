@@ -340,7 +340,7 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
         throw URLError(.unknown)
     }
 
-    func editor(_ viewController: GutenbergKit.EditorViewController, didRequestMediaFromSiteMediaLibrary config: OpenMediaLibrary) {
+    func editor(_ viewController: GutenbergKit.EditorViewController, didRequestMediaFromSiteMediaLibrary config: OpenMediaLibraryAction) {
         let flags = mediaFilterFlags(using: config.allowedTypes)
 
         let initialSelectionArray: [Int]
@@ -381,7 +381,7 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
         return nil
     }
 
-    private func mediaFilterFlags(using filterArray: [OpenMediaLibrary.MediaType]) -> WPMediaType {
+    private func mediaFilterFlags(using filterArray: [OpenMediaLibraryAction.MediaType]) -> WPMediaType {
         var mediaType: Int = 0
         for filter in filterArray {
             switch filter {
