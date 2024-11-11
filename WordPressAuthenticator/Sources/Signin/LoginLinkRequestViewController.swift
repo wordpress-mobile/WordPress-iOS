@@ -30,6 +30,7 @@ class LoginLinkRequestViewController: LoginViewController {
         if !email.isValidEmail() {
             assert(email.isValidEmail(), "The value of loginFields.username was not a valid email address.")
         }
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshAvatar), name: .GravatarQEAvatarUpdateNotification, object: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -43,7 +44,6 @@ class LoginLinkRequestViewController: LoginViewController {
         } else {
             gravatarView?.isHidden = true
         }
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshAvatar), name: .GravatarQEAvatarUpdateNotification, object: nil)
     }
 
     override func viewDidAppear(_ animated: Bool) {
