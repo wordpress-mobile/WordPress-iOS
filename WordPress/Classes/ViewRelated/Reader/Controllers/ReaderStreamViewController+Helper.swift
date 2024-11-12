@@ -27,11 +27,7 @@ extension ReaderStreamViewController {
 
     func headerForStream(_ topic: ReaderAbstractTopic) -> ReaderHeader? {
         if ReaderHelpers.isTopicTag(topic) {
-            guard let nibViews = Bundle.main.loadNibNamed("ReaderTagStreamHeader", owner: nil, options: nil) as? [ReaderTagStreamHeader] else {
-                return nil
-            }
-
-            return nibViews.first
+            return ReaderTagStreamHeader()
         }
         if ReaderHelpers.isTopicList(topic) {
             return Bundle.main.loadNibNamed("ReaderListStreamHeader", owner: nil, options: nil)?.first as? ReaderListStreamHeader
