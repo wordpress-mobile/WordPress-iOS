@@ -113,7 +113,7 @@ private struct ReaderSiteHeader: View {
 
 // MARK: - ReaderSiteHeaderViewModel
 
-class ReaderSiteHeaderViewModel: ObservableObject {
+private final class ReaderSiteHeaderViewModel: ObservableObject {
     @Published var site: ReaderSiteTopic?
     @Published var title: String
     @Published var siteUrl: String
