@@ -457,7 +457,7 @@ import AutomatticTracks
 
     // MARK: - Configuration / Topic Presentation
 
-    @objc private func configureStreamHeader() {
+    private func configureStreamHeader() {
         guard !isEmbeddedInDiscover else {
             return
         }
