@@ -1504,9 +1504,6 @@ extension ReaderStreamViewController {
         if content.contentCount > 0 {
             return
         }
-        if !isEmbeddedInDiscover {
-            tableView.tableHeaderView?.isHidden = true
-        }
         showGhost()
     }
 
@@ -1520,10 +1517,6 @@ extension ReaderStreamViewController {
                 emptyStateView = makeEmptyStateView(.discover)
             }
             return
-        }
-
-        if !isEmbeddedInDiscover {
-            tableView.tableHeaderView?.isHidden = true
         }
 
         guard connectionAvailable() else {
@@ -1544,7 +1537,6 @@ extension ReaderStreamViewController {
     func hideResultsStatus() {
         emptyStateView = nil
         footerView.isHidden = false
-        tableView.tableHeaderView?.isHidden = false
         hideGhost()
     }
 
