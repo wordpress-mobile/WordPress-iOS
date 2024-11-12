@@ -56,14 +56,20 @@ private struct ReaderSiteHeader: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text(viewModel.title)
                     .font(Font(WPStyleGuide.fontForTextStyle(.title1, fontWeight: .semibold)))
-                Text(viewModel.siteUrl)
-                    .font(.subheadline)
+                Group {
+                    if let site = viewModel.site, let url = URL(string: site.siteURL) {
+                        Link(viewModel.siteUrl, destination: url)
+                    } else {
+                        Text(viewModel.siteUrl)
+                    }
+                }
+                .font(.subheadline)
+                .foregroundColor(.secondary)
             }
             if !viewModel.siteDetails.isEmpty {
                 Text(viewModel.siteDetails)
                     .lineLimit(3)
                     .font(.subheadline)
-                    .foregroundColor(.secondary)
             }
             if viewModel.site?.isExternal == false {
                 countsDisplay
