@@ -178,6 +178,7 @@ import AutomatticTracks
     private var showConfirmation = true
 
     var isEmbeddedInDiscover = false
+    var preferredTableHeaderView: UIView?
 
     private var isCompact = true {
         didSet {
@@ -458,7 +459,8 @@ import AutomatticTracks
     // MARK: - Configuration / Topic Presentation
 
     @objc private func configureStreamHeader() {
-        guard !isEmbeddedInDiscover else {
+        if let headerView = preferredTableHeaderView {
+            setHeaderView(headerView) // Important to set _after_ isCompact is set in viewDidLoad
             return
         }
         guard let headerView = headerForStream(readerTopic, container: tableViewController) else {
@@ -476,22 +478,6 @@ import AutomatticTracks
         (headerView as? ReaderBaseHeaderView)?.isCompact = isCompact
         tableView.tableHeaderView = headerView
         streamHeader = headerView as? ReaderStreamHeader
-
-        // This feels somewhat hacky, but it is the only way I found to insert a stack view into the header without breaking the autolayout constraints.
-        let centerConstraint = headerView.centerXAnchor.constraint(equalTo: tableView.centerXAnchor)
-        let topConstraint = headerView.topAnchor.constraint(equalTo: tableView.topAnchor)
-        let headerWidthConstraint = headerView.widthAnchor.constraint(equalTo: tableView.widthAnchor)
-        headerWidthConstraint.priority = UILayoutPriority(999)
-        centerConstraint.priority = UILayoutPriority(999)
-
-        NSLayoutConstraint.activate([
-            centerConstraint,
-            headerWidthConstraint,
-            topConstraint
-        ])
-
-        tableView.tableHeaderView?.layoutIfNeeded()
-        tableView.tableHeaderView = tableView.tableHeaderView
     }
 
     /// Updates the content based on the values of `readerTopic` and `contentType`

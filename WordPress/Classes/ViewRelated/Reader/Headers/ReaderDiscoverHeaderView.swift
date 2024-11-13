@@ -1,4 +1,5 @@
 import UIKit
+import WordPressUI
 
 protocol ReaderDiscoverHeaderViewDelegate: AnyObject {
     func readerDiscoverHeaderView(_ view: ReaderDiscoverHeaderView, didChangeSelection selection: ReaderDiscoverChannel)
@@ -9,6 +10,7 @@ final class ReaderDiscoverHeaderView: ReaderBaseHeaderView, UITextViewDelegate {
     private let channelsStackView = UIStackView(spacing: 8, [])
     private let scrollView = UIScrollView()
     private var channelViews: [ReaderDiscoverChannelView] = []
+    private var previousWidth: CGFloat?
 
     private var selectedChannel: ReaderDiscoverChannel?
 
@@ -23,9 +25,16 @@ final class ReaderDiscoverHeaderView: ReaderBaseHeaderView, UITextViewDelegate {
         channelsStackView.pinEdges()
         scrollView.heightAnchor.constraint(equalTo: channelsStackView.heightAnchor).isActive = true
 
-        let stackView = UIStackView(axis: .vertical, spacing: 8, [titleView, scrollView])
-        contentView.addSubview(stackView)
-        stackView.pinEdges()
+        contentView.addSubview(titleView)
+        addSubview(scrollView) // Gets added directly to the header to enable interactions when scrolled
+
+        NSLayoutConstraint.activate([
+            titleView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            scrollView.topAnchor.constraint(equalTo: titleView.bottomAnchor, constant: 8),
+            scrollView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+        ])
+        titleView.pinEdges(.horizontal)
+        scrollView.pinEdges(.horizontal)
 
         titleView.titleLabel.text = SharedStrings.Reader.discover
         titleView.detailsTextView.attributedText = {
@@ -39,12 +48,25 @@ final class ReaderDiscoverHeaderView: ReaderBaseHeaderView, UITextViewDelegate {
             return details
         }()
         titleView.detailsTextView.delegate = self
-
-        updateStyle()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        if previousWidth != bounds.width {
+            previousWidth = bounds.width
+            updateScrollViewInsets()
+        }
+    }
+
+    private func updateScrollViewInsets() {
+        scrollView.contentInset.left = contentView.frame.minX - (isCompact ? 0 : 10)
+        scrollView.contentInset.right = frame.maxX - contentView.frame.maxX
+        scrollView.contentOffset = CGPoint(x: -scrollView.contentInset.left, y: 0)
     }
 
     func configure(channels: [ReaderDiscoverChannel]) {
@@ -64,11 +86,7 @@ final class ReaderDiscoverHeaderView: ReaderBaseHeaderView, UITextViewDelegate {
 
     override func didUpdateIsCompact(_ isCompact: Bool) {
         super.didUpdateIsCompact(isCompact)
-        updateStyle()
-    }
-
-    private func updateStyle() {
-        scrollView.contentInset = UIEdgeInsets(.leading, isCompact ? 0 : -10) // Align the "channels"
+        updateScrollViewInsets()
     }
 
     // MARK: Channels

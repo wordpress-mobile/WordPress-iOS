@@ -97,7 +97,7 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
 
         // Important to set before `viewDidLoad`
         streamVC.isEmbeddedInDiscover = true
-        streamVC.setHeaderView(headerView)
+        streamVC.preferredTableHeaderView = headerView
 
         addChild(streamVC)
         view.addSubview(streamVC.view)
