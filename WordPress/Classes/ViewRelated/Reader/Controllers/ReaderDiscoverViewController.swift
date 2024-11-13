@@ -384,13 +384,3 @@ extension ReaderDiscoverStreamViewController: ReaderTopicsTableCardCellDelegate 
         }
     }
 }
-
-// MARK: - ReaderSitesCardCellDelegate
-
-extension ReaderDiscoverStreamViewController: ReaderSitesCardCellDelegate {
-    func handleFollowActionForTopic(_ topic: ReaderAbstractTopic, for cell: ReaderSitesCardCell) {
-        toggleFollowingForTopic(topic) { success in
-            cell.didToggleFollowing(topic, with: success)
-        }
-    }
-}
