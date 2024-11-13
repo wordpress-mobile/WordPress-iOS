@@ -3,6 +3,10 @@ import UIKit
 import WordPressUI
 import Combine
 
+protocol ReaderRecommendedSitesCellDelegate: AnyObject {
+    func didSelect(topic: ReaderAbstractTopic)
+}
+
 final class ReaderRecommendedSitesCell: UITableViewCell {
     private let sitesStackView = UIStackView(axis: .vertical, spacing: 16, [])
 
@@ -49,7 +53,7 @@ final class ReaderRecommendedSitesCell: UITableViewCell {
         }())
     }
 
-    func configure(with sites: [ReaderSiteTopic], delegate: ReaderTopicsTableCardCellDelegate) {
+    func configure(with sites: [ReaderSiteTopic], delegate: ReaderRecommendedSitesCellDelegate) {
         for site in sites {
             let siteView = ReaderRecommendedSitesCellView()
             siteView.configure(with: site)
@@ -73,7 +77,7 @@ private final class ReaderRecommendedSitesCellView: UIView {
         return configuration
     }())
 
-    weak var delegate: ReaderTopicsTableCardCellDelegate?
+    weak var delegate: ReaderRecommendedSitesCellDelegate?
 
     private let iconSize: SiteIconViewModel.Size = .regular
     private var site: ReaderSiteTopic?

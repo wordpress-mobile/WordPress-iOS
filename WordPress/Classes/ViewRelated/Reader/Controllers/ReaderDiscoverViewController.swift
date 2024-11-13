@@ -365,9 +365,9 @@ private class ReaderDiscoverStreamViewController: ReaderStreamViewController {
     }
 }
 
-// MARK: - ReaderTopicsTableCardCellDelegate
+// MARK: - ReaderRecommendedSitesCellDelegate
 
-extension ReaderDiscoverStreamViewController: ReaderTopicsTableCardCellDelegate {
+extension ReaderDiscoverStreamViewController: ReaderRecommendedSitesCellDelegate {
     func didSelect(topic: ReaderAbstractTopic) {
         if topic as? ReaderTagTopic != nil {
             WPAnalytics.trackReader(.readerDiscoverTopicTapped)
