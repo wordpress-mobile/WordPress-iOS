@@ -39,11 +39,6 @@ extension WPStyleGuide {
         label.textColor = .label
     }
 
-    @objc public class func applyReaderStreamHeaderDetailStyle(_ label: UILabel) {
-        label.font = fontForTextStyle(.subheadline, fontWeight: .regular)
-        label.textColor = .secondaryLabel
-    }
-
     // MARK: - Button Styles and Text
     class func applyReaderActionButtonStyle(_ button: UIButton,
                                             titleColor: UIColor = .secondaryLabel,

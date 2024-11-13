@@ -30,7 +30,7 @@ extension ReaderStreamViewController {
             return ReaderTagStreamHeader()
         }
         if ReaderHelpers.isTopicList(topic) {
-            return Bundle.main.loadNibNamed("ReaderListStreamHeader", owner: nil, options: nil)?.first as? ReaderListStreamHeader
+            return ReaderListStreamHeader()
         }
         if ReaderHelpers.isTopicSite(topic) {
             return ReaderSiteHeaderView()
