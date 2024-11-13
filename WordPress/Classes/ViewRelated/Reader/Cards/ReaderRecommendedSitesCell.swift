@@ -1,0 +1,130 @@
+import SwiftUI
+import UIKit
+import WordPressUI
+
+final class ReaderRecommendedSitesCell: UITableViewCell {
+    private let sitesStackView = UIStackView(axis: .vertical, spacing: 16, [])
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        setupView()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("Not implemented")
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        for view in sitesStackView.subviews {
+            view.removeFromSuperview()
+        }
+    }
+
+    private func setupView() {
+        selectionStyle = .none
+
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = .secondarySystemBackground
+        backgroundView.layer.cornerRadius = 8
+
+        contentView.addSubview(backgroundView)
+        backgroundView.pinEdges(insets: UIEdgeInsets(horizontal: 16, vertical: 0))
+
+        let titleLabel = UILabel()
+        titleLabel.font = .preferredFont(forTextStyle: .subheadline)
+        titleLabel.textColor = .secondaryLabel
+        titleLabel.text = Strings.title
+
+        let stackView = UIStackView(axis: .vertical, spacing: 16, [titleLabel, sitesStackView])
+
+        backgroundView.addSubview(stackView)
+        stackView.pinEdges(insets: {
+            var insets = UIEdgeInsets(.all, 16)
+            insets.right = 6 // Buttons insets take care of it
+            return insets
+        }())
+    }
+
+    func configure(with sites: [ReaderSiteTopic]) {
+        for site in sites {
+            let siteView = makeSiteView(for: site)
+            sitesStackView.addArrangedSubview(siteView)
+        }
+    }
+
+    private func makeSiteView(for site: ReaderSiteTopic) -> UIView {
+        let view = ReaderRecommendedSitesCellView()
+        view.configure(with: site)
+        return view
+    }
+}
+
+/// Presentation-agnostic view for displaying post cells.
+private final class ReaderRecommendedSitesCellView: UIView {
+    let siteIconView = SiteIconHostingView()
+    let titleLabel = UILabel()
+    let subtitleLabel = UILabel()
+    let buttonSubscribe = UIButton(configuration: {
+        var configuration = UIButton.Configuration.plain()
+        configuration.image = UIImage(systemName: "plus.circle")
+        configuration.baseForegroundColor = UIAppColor.brand
+        configuration.contentInsets = .zero
+        return configuration
+    }())
+
+    private let iconSize: SiteIconViewModel.Size = .regular
+
+    override init(frame: CGRect) {
+        super.init(frame: .zero)
+
+        titleLabel.font = .preferredFont(forTextStyle: .callout).withWeight(.medium)
+        subtitleLabel.font = .preferredFont(forTextStyle: .footnote)
+        subtitleLabel.textColor = .secondaryLabel
+
+        NSLayoutConstraint.activate([
+            siteIconView.widthAnchor.constraint(equalToConstant: iconSize.width),
+            siteIconView.heightAnchor.constraint(equalToConstant: iconSize.width),
+        ])
+
+        NSLayoutConstraint.activate([
+            buttonSubscribe.widthAnchor.constraint(equalToConstant: 40),
+            buttonSubscribe.heightAnchor.constraint(equalToConstant: 40),
+        ])
+
+        buttonSubscribe.setContentCompressionResistancePriority(.required, for: .horizontal)
+
+        let stackView = UIStackView(alignment: .center, spacing: 6, [
+            siteIconView,
+            UIStackView(axis: .vertical, alignment: .leading, spacing: 2, [
+                titleLabel, subtitleLabel,
+            ]),
+            buttonSubscribe
+        ])
+        stackView.setCustomSpacing(14, after: siteIconView)
+        addSubview(stackView)
+        stackView.pinEdges()
+
+        buttonSubscribe.addTarget(self, action: #selector(buttonSubscribeTapped), for: .touchUpInside)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    func configure(with site: ReaderSiteTopic) {
+        siteIconView.setIcon(with: .init(readerSiteTopic: site, size: iconSize))
+        titleLabel.text = site.title
+        subtitleLabel.text = site.siteDescription
+    }
+
+    @objc private func buttonSubscribeTapped() {
+        // TODO: implement
+    }
+}
+
+private enum Strings {
+    static let title = NSLocalizedString("reader.suggested.blogs.title", value: "Blogs to subscribe to", comment: "A suggestion of topics the user might want to subscribe to")
+}

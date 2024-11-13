@@ -196,7 +196,7 @@ private class ReaderDiscoverStreamViewController: ReaderStreamViewController {
         // all the cell types have been registered by that time.
         // see: https://github.com/wordpress-mobile/WordPress-iOS/pull/23368
         tableView.register(ReaderTopicsCardCell.defaultNib, forCellReuseIdentifier: readerCardTopicsIdentifier)
-        tableView.register(ReaderSitesCardCell.self, forCellReuseIdentifier: readerCardSitesIdentifier)
+        tableView.register(ReaderRecommendedSitesCell.self, forCellReuseIdentifier: readerCardSitesIdentifier)
     }
 
     required init?(coder: NSCoder) {
@@ -263,9 +263,10 @@ private class ReaderDiscoverStreamViewController: ReaderStreamViewController {
     }
 
     func cell(for sites: [ReaderSiteTopic]) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: readerCardSitesIdentifier) as! ReaderSitesCardCell
-        cell.configure(sites)
-        cell.delegate = self
+        let cell = tableView.dequeueReusableCell(withIdentifier: readerCardSitesIdentifier) as! ReaderRecommendedSitesCell
+        cell.configure(with: sites)
+        // TODO: implement delegate
+//        cell.delegate = self
         hideSeparator(for: cell)
         return cell
     }
