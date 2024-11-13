@@ -42,7 +42,7 @@ public class UserDeleteViewModel: ObservableObject {
     func fetchOtherUsers() async {
         isFetchingOtherUsers = true
         deleteButtonIsDisabled = true
-        
+
         defer {
             isFetchingOtherUsers = false
             deleteButtonIsDisabled = otherUsers.isEmpty
