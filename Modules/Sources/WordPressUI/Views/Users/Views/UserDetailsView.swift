@@ -165,7 +165,7 @@ struct UserDetailsView: View {
         )
 
         static let deletingUserActionTitle  = NSLocalizedString(
-            "userdetail.deletingUserActionTitle",
+            "userDetails.deletingUserActionTitle",
             value: "Deleting User…",
             comment: "The 'Deleting User…' button on the user profile"
         )
@@ -195,14 +195,14 @@ struct UserDetailsView: View {
         )
 
         static let deleteUserConfirmationTitle = NSLocalizedString(
-            "userdetail.alert.deleteUserConfirmationTitle",
+            "userDetails.alert.deleteUserConfirmationTitle",
             value: "Are you sure?",
             comment: "The title of the alert that appears when deleting a user"
         )
 
         static func deleteUserConfirmationMessage(username: String) -> String {
             let format = NSLocalizedString(
-                "userdetail.alert.deleteUserConfirmationMessage",
+                "userDetails.alert.deleteUserConfirmationMessage",
                 value: "Are you sure you want to delete this user and attribute all content to %@?",
                 comment: "The message in the alert that appears when deleting a user. The first argument is the display name of the user to which content will be attributed"
             )
@@ -210,7 +210,7 @@ struct UserDetailsView: View {
         }
 
         static let deleteUserConfirmButtonTitle = NSLocalizedString(
-            "userdetail.alert.deleteUserConfirmButtonTitle",
+            "userDetails.alert.deleteUserConfirmButtonTitle",
             value: "Yes, delete user",
             comment: "The title of the confirmation button in the alert that appears when deleting a user"
         )
