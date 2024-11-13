@@ -28,23 +28,6 @@ public class UserDeleteViewModel: ObservableObject {
         self.user = user
         self.userService = userService
 
-        // Update `otherUsers` whenever there is a successful fetch of users.
-        userService.users.compactMap { [weak self] in
-            guard let self, let users = try? $0.get() else { return nil }
-
-            return users
-                .filter { $0.id != self.user.id } // Don't allow re-assigning to yourself
-                .sorted(using: KeyPathComparator(\.username))
-        }
-        .assign(to: &$otherUsers)
-
-        // Update `error` whenever there is a failure in fetching users.
-        userService.users.compactMap {
-            if case let .failure(error) = $0 { return error }
-            return nil
-        }
-        .assign(to: &$error)
-
         // Default `selectedUser` to be the first one in `otherUsers`.
         // Using Combine here because `didSet` observers don't work with `@Published` properties.
         //
@@ -56,20 +39,23 @@ public class UserDeleteViewModel: ObservableObject {
 
     }
 
-    func fetchOtherUsers() {
+    func fetchOtherUsers() async {
         isFetchingOtherUsers = true
         deleteButtonIsDisabled = true
+        
+        defer {
+            isFetchingOtherUsers = false
+            deleteButtonIsDisabled = otherUsers.isEmpty
+        }
 
-        userService.fetchUsers()
-
-        let fetched = userService.users.first()
-
-        fetched
-            .map { _ in false }
-            .assign(to: &$isFetchingOtherUsers)
-        fetched
-            .map { (try? $0.get()) == nil }
-            .assign(to: &$deleteButtonIsDisabled)
+        do {
+            let users = try await userService.fetchUsers()
+            self.otherUsers = users
+                .filter { $0.id != self.user.id } // Don't allow re-assigning to yourself
+                .sorted(using: KeyPathComparator(\.username))
+        } catch {
+            self.error = error
+        }
     }
 
     func deleteUser() async throws {

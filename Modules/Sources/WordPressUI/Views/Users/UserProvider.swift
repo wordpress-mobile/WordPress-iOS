@@ -1,10 +1,11 @@
 import Foundation
 import Combine
 
-public protocol UserServiceProtocol {
-    var users: AnyPublisher<Result<[DisplayUser], Error>, Never> { get }
+public protocol UserServiceProtocol: Actor {
+    var users: [DisplayUser]? { get }
+    nonisolated var usersUpdates: AsyncStream<[DisplayUser]> { get }
 
-    func fetchUsers()
+    func fetchUsers() async throws -> [DisplayUser]
 
     func isCurrentUserCapableOf(_ capability: String) async throws -> Bool
 
@@ -13,7 +14,7 @@ public protocol UserServiceProtocol {
     func deleteUser(id: Int32, reassigningPostsTo newUserId: Int32) async throws
 }
 
-package class MockUserProvider: UserServiceProtocol {
+package actor MockUserProvider: UserServiceProtocol {
 
     enum Scenario {
         case infinitLoading
@@ -23,34 +24,36 @@ package class MockUserProvider: UserServiceProtocol {
 
     var scenario: Scenario
 
-    private let subject: CurrentValueSubject<Result<[WordPressUI.DisplayUser], any Error>, Never> = .init(.success([]))
+    package nonisolated let usersUpdates: AsyncStream<[DisplayUser]>
+    private let usersUpdatesContinuation: AsyncStream<[DisplayUser]>.Continuation
 
-    package var users: AnyPublisher<Result<[WordPressUI.DisplayUser], any Error>, Never> {
-        subject.dropFirst().eraseToAnyPublisher()
+    package private(set) var users: [DisplayUser]? {
+        didSet {
+            if let users {
+                usersUpdatesContinuation.yield(users)
+            }
+        }
     }
 
     init(scenario: Scenario = .dummyData) {
         self.scenario = scenario
+        (usersUpdates, usersUpdatesContinuation) = AsyncStream<[DisplayUser]>.makeStream()
     }
 
-    package func fetchUsers() {
+    package func fetchUsers() async throws -> [DisplayUser] {
         switch scenario {
         case .infinitLoading:
             // Do nothing
-            break
+            try await Task.sleep(for: .seconds(24 * 60 * 60))
+            return []
         case .dummyData:
-            Task {
-                let dummyDataUrl = URL(string: "https://my.api.mockaroo.com/users.json?key=067c9730")!
-                do {
-                    let response = try await URLSession.shared.data(from: dummyDataUrl)
-                    let users = try JSONDecoder().decode([DisplayUser].self, from: response.0)
-                    subject.send(.success(users))
-                } catch {
-                    subject.send(.failure(error))
-                }
-            }
+            let dummyDataUrl = URL(string: "https://my.api.mockaroo.com/users.json?key=067c9730")!
+            let response = try await URLSession.shared.data(from: dummyDataUrl)
+            let users = try JSONDecoder().decode([DisplayUser].self, from: response.0)
+            self.users = users
+            return users
         case .error:
-            subject.send(.failure(URLError(.timedOut)))
+            throw URLError(.timedOut)
         }
     }
 

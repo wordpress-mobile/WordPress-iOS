@@ -17,8 +17,8 @@ class UserListViewModel: ObservableObject {
             sortedUsers = self.sortUsers(users)
         }
     }
+    private var updateUsersTask: Task<Void, Never>?
     private let userService: UserServiceProtocol
-    private var cancellables: Set<AnyCancellable> = []
     private var initialLoad = false
 
     @Published
@@ -44,31 +44,39 @@ class UserListViewModel: ObservableObject {
 
     init(userService: UserServiceProtocol) {
         self.userService = userService
-
-        userService.users
-            .compactMap { try? $0.get() }
-            .sink { [weak self] in
-                self?.users = $0
-            }
-            .store(in: &cancellables)
     }
 
-    func onAppear() {
+    deinit {
+        updateUsersTask?.cancel()
+    }
+
+    func onAppear() async {
+        if updateUsersTask == nil {
+            updateUsersTask = Task { @MainActor [weak self, usersUpdates = userService.usersUpdates] in
+                for await users in usersUpdates {
+                    guard let self else { break }
+
+                    self.users = users
+                }
+            }
+        }
+
         if !initialLoad {
             initialLoad = true
-            fetchItems()
+            await fetchItems()
         }
     }
 
-    private func fetchItems() {
+    private func fetchItems() async {
         isLoadingItems = true
-        userService.fetchUsers()
-        userService.users.first().map { _ in false }.assign(to: &$isLoadingItems)
+        defer { isLoadingItems = false }
+
+        _ = try? await userService.fetchUsers()
     }
 
     @Sendable
     func refreshItems() async {
-        userService.fetchUsers()
+        _ = try? await userService.fetchUsers()
     }
 
     func setUsers(_ newValue: [DisplayUser]) {

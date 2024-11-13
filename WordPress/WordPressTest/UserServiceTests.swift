@@ -23,125 +23,59 @@ class UserServiceTests: XCTestCase {
         HTTPStubs.removeAllStubs()
     }
 
-    func testSuccessfulUsersUpdateInTheMainThread() {
+    func testMultipleFetchUsersTriggerOneUpdate() async throws {
         stubSuccessfullUsersFetch()
-        let expectation = XCTestExpectation(description: "Users update in the main thread")
 
-        let cancellable = service.users.sink { _ in
-            if Thread.isMainThread {
+        let expectation = XCTestExpectation(description: "Updated after fetch")
+        let task = Task.detached { [self] in
+            for await _ in self.service.usersUpdates {
                 expectation.fulfill()
             }
         }
 
-        service.fetchUsers()
-
-        wait(for: [expectation], timeout: 0.3)
-    }
-
-    func testSuccessfulUsersUpdateInTheMainThreadWhenFetchFromBackgroundThread() {
-        stubSuccessfullUsersFetch()
-        let expectation = XCTestExpectation(description: "Users update in the main thread")
-
-        let cancellable = service.users.sink { _ in
-            if Thread.isMainThread {
-                expectation.fulfill()
-            }
-        }
-
-        DispatchQueue.global().async {
+        _ = try await [
+            self.service.fetchUsers(),
+            self.service.fetchUsers(),
+            self.service.fetchUsers(),
+            self.service.fetchUsers(),
             self.service.fetchUsers()
-        }
+        ]
 
-        wait(for: [expectation], timeout: 0.3)
+        await fulfillment(of: [expectation], timeout: 0.3)
+        task.cancel()
     }
 
-    func testFailedUsersUpdateInTheMainThread() {
-        stubFailedUsersFetch()
-        let expectation = XCTestExpectation(description: "Users update in the main thread")
-
-        let cancellable = service.users.sink { _ in
-            if Thread.isMainThread {
-                expectation.fulfill()
-            }
-        }
-
-        service.fetchUsers()
-
-        wait(for: [expectation], timeout: 0.3)
-    }
-
-    func testFailedUpdateInTheMainThreadWhenFetchFromBackgroundThread() {
-        stubFailedUsersFetch()
-        let expectation = XCTestExpectation(description: "Users update in the main thread")
-
-        let cancellable = service.users.sink { _ in
-            if Thread.isMainThread {
-                expectation.fulfill()
-            }
-        }
-
-        DispatchQueue.global().async {
-            self.service.fetchUsers()
-        }
-
-        wait(for: [expectation], timeout: 0.3)
-    }
-
-    func testMultipleFetchUsersTriggerOneUpdate() {
+    func testSequentialFetchUsersTriggerOneUpdateForEachFetch() async throws {
         stubSuccessfullUsersFetch()
 
-        let expectation = XCTestExpectation(description: "One update for multiple fetches")
-        let cancellable = service.users.sink { _ in
-            expectation.fulfill()
-        }
-
-        // Only one HTTP request should be sent for all function calls.
-        for _ in 1...10 {
-            service.fetchUsers()
-        }
-
-        wait(for: [expectation], timeout: 0.3)
-    }
-
-    func testSequentialFetchUsersTriggerOneUpdateForEachFetch() {
-        stubSuccessfullUsersFetch()
-
-        for _ in 1...5 {
-            service.fetchUsers()
-
-            let expectation = XCTestExpectation(description: "Updated after fetch")
-            let cancellable = service.users.sink { _ in
+        let expectation = XCTestExpectation(description: "Updated after fetch")
+        expectation.expectedFulfillmentCount = 5
+        let task = Task.detached { [self] in
+            for await _ in self.service.usersUpdates {
                 expectation.fulfill()
             }
-
-            wait(for: [expectation], timeout: 0.3)
         }
+
+        for _ in 1...expectation.expectedFulfillmentCount {
+            _ = try await service.fetchUsers()
+        }
+
+        await fulfillment(of: [expectation], timeout: 0.3)
+
+        task.cancel()
     }
 
     func testDeleteUserTriggersUsersUpdate() async throws {
         stubSuccessfullUsersFetch()
         stubDeleteUser(id: 34)
 
-        var cancellables: Set<AnyCancellable> = []
-
-        var latestUsers: [DisplayUser] = []
-        service.users.sink {
-            if case let .success(users) = $0 {
-                latestUsers = users
-            }
-        }.store(in: &cancellables)
-
-        service.fetchUsers()
-        let expectation = XCTestExpectation(description: "Updated after fetch")
-        let cancellable = service.users.first().sink { _ in
-            expectation.fulfill()
-        }
-        await fulfillment(of: [expectation], timeout: 0.3)
-        XCTAssertTrue(latestUsers.contains { $0.id == 34 })
+        _ = try await service.fetchUsers()
+        let userFetched = await service.users?.contains { $0.id == 34 } == true
+        XCTAssertTrue(userFetched)
 
         try await service.deleteUser(id: 34, reassigningPostsTo: 1)
-
-        XCTAssertFalse(latestUsers.contains { $0.id == 34 })
+        let userDeleted = await service.users?.contains { $0.id == 34 } == false
+        XCTAssertTrue(userDeleted)
     }
 
     private func stubSuccessfullUsersFetch() {

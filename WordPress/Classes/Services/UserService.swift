@@ -5,56 +5,51 @@ import WordPressUI
 
 /// UserService is responsible for fetching user acounts via the .org REST API – it's the replacement for `UsersService` (the XMLRPC-based approach)
 ///
-class UserService: UserServiceProtocol {
+actor UserService: UserServiceProtocol {
     private let client: WordPressClient
 
-    private let fetchUserslock = NSRecursiveLock()
-    private var fetchUsersTask: Task<Void, Error>?
+    private var fetchUsersTask: Task<[DisplayUser], Error>?
 
-    private let usersSubject: CurrentValueSubject<Result<[WordPressUI.DisplayUser], any Error>, Never> = .init(.success([]))
-    var users: AnyPublisher<Result<[WordPressUI.DisplayUser], any Error>, Never> {
-        usersSubject.dropFirst().eraseToAnyPublisher()
+    private(set) var users: [DisplayUser]? {
+        didSet {
+            if let users {
+                usersUpdatesContinuation.yield(users)
+            }
+        }
     }
+    nonisolated let usersUpdates: AsyncStream<[DisplayUser]>
+    private nonisolated let usersUpdatesContinuation: AsyncStream<[DisplayUser]>.Continuation
 
     private var currentUser: UserWithEditContext?
 
     init(client: WordPressClient) {
         self.client = client
+        (usersUpdates, usersUpdatesContinuation) = AsyncStream<[DisplayUser]>.makeStream()
     }
 
     deinit {
         fetchUsersTask?.cancel()
     }
 
-    func fetchUsers() {
-        fetchUserslock.lock()
-        defer { fetchUserslock.unlock() }
-
-        guard fetchUsersTask == nil else { return }
-
-        fetchUsersTask = Task.detached {
-            do {
-                let users: [DisplayUser] = try await self.client
-                    .api
-                    .users
-                    .listWithEditContext(params: UserListParams(perPage: 100))
-                    .compactMap { DisplayUser(user: $0) }
-                self.finishFetchingUsers(.success(users))
-            } catch {
-                self.finishFetchingUsers(.failure(error))
-            }
-        }
+    func fetchUsers() async throws -> [DisplayUser] {
+        let users = try await createFetchUsersTaskIfNeeded().value
+        self.users = users
+        return users
     }
 
-    private func finishFetchingUsers(_ result: Result<[DisplayUser], Error>) {
-        fetchUserslock.lock()
-        defer { fetchUserslock.unlock() }
-
-        fetchUsersTask = nil
-
-        DispatchQueue.main.async {
-            self.usersSubject.send(result)
+    private func createFetchUsersTaskIfNeeded() -> Task<[DisplayUser], Error> {
+        if let fetchUsersTask {
+            return fetchUsersTask
         }
+        let task = Task { [client] in
+            try await client
+                .api
+                .users
+                .listWithEditContext(params: UserListParams(perPage: 100))
+                .compactMap { DisplayUser(user: $0) }
+        }
+        fetchUsersTask = task
+        return task
     }
 
     func isCurrentUserCapableOf(_ capability: String) async throws -> Bool {
@@ -76,13 +71,8 @@ class UserService: UserServiceProtocol {
         )
 
         // Remove the deleted user from the cached users list.
-        if result.deleted {
-            await MainActor.run {
-                if case var .success(fetched) = usersSubject.value, let index = fetched.firstIndex(where: { $0.id == id }) {
-                    fetched.remove(at: index)
-                    usersSubject.send(.success(fetched))
-                }
-            }
+        if result.deleted, let index = users?.firstIndex(where: { $0.id == id }) {
+            users?.remove(at: index)
         }
     }
 

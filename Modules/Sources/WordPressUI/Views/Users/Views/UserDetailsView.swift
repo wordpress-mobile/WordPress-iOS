@@ -102,7 +102,7 @@ struct UserDetailsView: View {
         .deleteUser(in: self)
         .task {
             await viewModel.loadCurrentUserRole()
-            deleteUserViewModel.fetchOtherUsers()
+            await deleteUserViewModel.fetchOtherUsers()
         }
     }
 
