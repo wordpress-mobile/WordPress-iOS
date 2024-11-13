@@ -1,6 +1,7 @@
 import SwiftUI
 import UIKit
 import WordPressUI
+import Combine
 
 final class ReaderRecommendedSitesCell: UITableViewCell {
     private let sitesStackView = UIStackView(axis: .vertical, spacing: 16, [])
@@ -76,6 +77,8 @@ private final class ReaderRecommendedSitesCellView: UIView {
     }())
 
     private let iconSize: SiteIconViewModel.Size = .regular
+    private var site: ReaderSiteTopic?
+    private var cancellable: AnyCancellable?
 
     override init(frame: CGRect) {
         super.init(frame: .zero)
@@ -115,13 +118,35 @@ private final class ReaderRecommendedSitesCellView: UIView {
     }
 
     func configure(with site: ReaderSiteTopic) {
+        self.site = site
+
         siteIconView.setIcon(with: .init(readerSiteTopic: site, size: iconSize))
         titleLabel.text = site.title
         subtitleLabel.text = site.siteDescription
+
+        cancellable = site.publisher(for: \.following, options: [.initial, .new])
+            .sink { [weak self] isFollowing in
+                self?.buttonSubscribe.configuration?.image = UIImage(systemName: isFollowing ? "checkmark.circle.fill" : "plus.circle")
+            }
     }
 
     @objc private func buttonSubscribeTapped() {
-        // TODO: implement
+        guard let site else {
+            return wpAssertionFailure("site missing")
+        }
+
+        var properties = [String: Any]()
+        properties[WPAppAnalyticsKeyFollowAction] = !site.following
+        properties[WPAppAnalyticsKeyBlogID] = site.siteID
+
+        WPAnalytics.trackReader(.readerSuggestedSiteToggleFollow, properties: properties)
+
+        buttonSubscribe.configuration?.showsActivityIndicator = true
+        buttonSubscribe.configuration?.baseForegroundColor = .secondaryLabel
+        ReaderSubscriptionHelper().toggleFollowingForSite(site) { [weak self] _ in
+            self?.buttonSubscribe.configuration?.showsActivityIndicator = false
+            self?.buttonSubscribe.configuration?.baseForegroundColor = UIAppColor.brand
+        }
     }
 }
 

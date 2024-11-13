@@ -1117,7 +1117,7 @@ import AutomatticTracks
         if let topic = topic as? ReaderTagTopic {
             toggleFollowingForTag(topic, completion: completion)
         } else if let topic = topic as? ReaderSiteTopic {
-            toggleFollowingForSite(topic, completion: completion)
+            ReaderSubscriptionHelper().toggleFollowingForSite(topic, completion: completion)
         } else {
             wpAssertionFailure("unexpected topic", userInfo: ["type": String(describing: topic)])
         }
@@ -1136,21 +1136,6 @@ import AutomatticTracks
             completion?(true)
         }, failure: { (error: Error?) in
             generator.notificationOccurred(.error)
-            completion?(false)
-        })
-    }
-
-    private func toggleFollowingForSite(_ topic: ReaderSiteTopic, completion: ((Bool) -> Void)?) {
-        if topic.following {
-            ReaderSubscribingNotificationAction().execute(for: siteID, context: viewContext, subscribe: false)
-        }
-
-        let service = ReaderTopicService(coreDataStack: ContextManager.shared)
-        service.toggleFollowing(forSite: topic, success: { follow in
-            ReaderHelpers.dispatchToggleFollowSiteMessage(site: topic, follow: follow, success: true)
-            completion?(true)
-        }, failure: { (follow, error) in
-            ReaderHelpers.dispatchToggleFollowSiteMessage(site: topic, follow: follow, success: false)
             completion?(false)
         })
     }
