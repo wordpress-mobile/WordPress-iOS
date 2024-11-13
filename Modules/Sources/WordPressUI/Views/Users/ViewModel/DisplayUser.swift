@@ -42,14 +42,6 @@ public struct DisplayUser: Identifiable, Codable, Hashable {
         self.biography = biography
     }
 
-    public static func == (lhs: DisplayUser, rhs: DisplayUser) -> Bool {
-        lhs.id == rhs.id
-    }
-
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-
     static package let MockUser = DisplayUser(
         id: 16,
         handle: "@person",
