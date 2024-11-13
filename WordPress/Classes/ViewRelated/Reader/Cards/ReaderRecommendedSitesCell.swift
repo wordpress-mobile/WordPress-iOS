@@ -36,7 +36,7 @@ final class ReaderRecommendedSitesCell: UITableViewCell {
         backgroundView.layer.cornerRadius = 8
 
         contentView.addSubview(backgroundView)
-        backgroundView.pinEdges(insets: UIEdgeInsets(horizontal: 16, vertical: 0))
+        backgroundView.pinEdges(insets: UIEdgeInsets(.all, 16))
 
         let titleLabel = UILabel()
         titleLabel.font = .preferredFont(forTextStyle: .subheadline)
