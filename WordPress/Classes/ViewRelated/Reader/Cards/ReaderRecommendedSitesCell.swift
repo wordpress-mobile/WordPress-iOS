@@ -49,17 +49,13 @@ final class ReaderRecommendedSitesCell: UITableViewCell {
         }())
     }
 
-    func configure(with sites: [ReaderSiteTopic]) {
+    func configure(with sites: [ReaderSiteTopic], delegate: ReaderTopicsTableCardCellDelegate) {
         for site in sites {
-            let siteView = makeSiteView(for: site)
+            let siteView = ReaderRecommendedSitesCellView()
+            siteView.configure(with: site)
+            siteView.delegate = delegate
             sitesStackView.addArrangedSubview(siteView)
         }
-    }
-
-    private func makeSiteView(for site: ReaderSiteTopic) -> UIView {
-        let view = ReaderRecommendedSitesCellView()
-        view.configure(with: site)
-        return view
     }
 }
 
@@ -68,6 +64,7 @@ private final class ReaderRecommendedSitesCellView: UIView {
     let siteIconView = SiteIconHostingView()
     let titleLabel = UILabel()
     let subtitleLabel = UILabel()
+    let buttonShowDetails = UIButton(type: .system)
     let buttonSubscribe = UIButton(configuration: {
         var configuration = UIButton.Configuration.plain()
         configuration.image = UIImage(systemName: "plus.circle")
@@ -75,6 +72,8 @@ private final class ReaderRecommendedSitesCellView: UIView {
         configuration.contentInsets = .zero
         return configuration
     }())
+
+    weak var delegate: ReaderTopicsTableCardCellDelegate?
 
     private let iconSize: SiteIconViewModel.Size = .regular
     private var site: ReaderSiteTopic?
@@ -110,6 +109,11 @@ private final class ReaderRecommendedSitesCellView: UIView {
         addSubview(stackView)
         stackView.pinEdges()
 
+        stackView.addSubview(buttonShowDetails)
+        buttonShowDetails.pinEdges(insets: UIEdgeInsets(.trailing, 40))
+
+        buttonShowDetails.addTarget(self, action: #selector(buttonShowDetailsTapped), for: .touchUpInside)
+
         buttonSubscribe.addTarget(self, action: #selector(buttonSubscribeTapped), for: .touchUpInside)
     }
 
@@ -128,6 +132,13 @@ private final class ReaderRecommendedSitesCellView: UIView {
             .sink { [weak self] isFollowing in
                 self?.buttonSubscribe.configuration?.image = UIImage(systemName: isFollowing ? "checkmark.circle.fill" : "plus.circle")
             }
+    }
+
+    @objc private func buttonShowDetailsTapped() {
+        guard let site else {
+            return wpAssertionFailure("site missing")
+        }
+        delegate?.didSelect(topic: site)
     }
 
     @objc private func buttonSubscribeTapped() {

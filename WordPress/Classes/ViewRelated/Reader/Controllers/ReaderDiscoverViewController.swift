@@ -264,9 +264,7 @@ private class ReaderDiscoverStreamViewController: ReaderStreamViewController {
 
     func cell(for sites: [ReaderSiteTopic]) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: readerCardSitesIdentifier) as! ReaderRecommendedSitesCell
-        cell.configure(with: sites)
-        // TODO: implement delegate
-//        cell.delegate = self
+        cell.configure(with: sites, delegate: self)
         hideSeparator(for: cell)
         return cell
     }
