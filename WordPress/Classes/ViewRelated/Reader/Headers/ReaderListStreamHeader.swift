@@ -14,7 +14,7 @@ final class ReaderListStreamHeader: ReaderBaseHeaderView, ReaderStreamHeader {
         super.init(frame: frame)
 
         contentView.addSubview(titleView)
-        stackView.pinEdges()
+        titleView.pinEdges()
     }
 
     required init?(coder: NSCoder) {
