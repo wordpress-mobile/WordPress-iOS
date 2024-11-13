@@ -179,7 +179,7 @@ import AutomatticTracks
 
     var isEmbeddedInDiscover = false
 
-    private var isCompact = true {
+    var isCompact = true {
         didSet {
             guard oldValue != isCompact else { return }
             didChangeIsCompact(isCompact)

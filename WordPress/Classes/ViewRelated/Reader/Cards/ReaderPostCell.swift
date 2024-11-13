@@ -8,6 +8,8 @@ final class ReaderPostCell: ReaderStreamBaseCell {
     private var contentViewConstraints: [NSLayoutConstraint] = []
 
     static let avatarSize: CGFloat = SiteIconViewModel.Size.small.width
+    static let coverAspectRatio: CGFloat = 239.0 / 358.0
+    static let regularCoverWidth: CGFloat = 200
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -86,8 +88,7 @@ private final class ReaderPostCellView: UIView {
     let insets = ReaderStreamBaseCell.insets
 
     private var viewModel: ReaderPostCellViewModel? // important: has to retain
-    private let coverAspectRatio: CGFloat = 239.0 / 358.0
-    private static let regularCoverWidth: CGFloat = 200
+
     private var imageViewConstraints: [NSLayoutConstraint] = []
     private var cancellables: [AnyCancellable] = []
 
@@ -196,14 +197,14 @@ private final class ReaderPostCellView: UIView {
         NSLayoutConstraint.deactivate(imageViewConstraints)
         if isCompact {
             imageViewConstraints = [
-                imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: coverAspectRatio),
+                imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: ReaderPostCell.coverAspectRatio),
                 imageView.widthAnchor.constraint(lessThanOrEqualTo: widthAnchor, constant: -(insets.left * 2)),
                 imageView.widthAnchor.constraint(equalTo: widthAnchor).withPriority(150)
             ]
         } else {
             imageViewConstraints = [
-                imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: coverAspectRatio),
-                imageView.widthAnchor.constraint(equalToConstant: Self.regularCoverWidth)
+                imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: ReaderPostCell.coverAspectRatio),
+                imageView.widthAnchor.constraint(equalToConstant: ReaderPostCell.regularCoverWidth)
             ]
         }
         NSLayoutConstraint.activate(imageViewConstraints)
@@ -287,7 +288,7 @@ private final class ReaderPostCellView: UIView {
     }
 
     static func preferredCoverSize(in window: UIWindow, isCompact: Bool) -> CGSize {
-        var coverWidth = Self.regularCoverWidth
+        var coverWidth = ReaderPostCell.regularCoverWidth
         if isCompact {
             coverWidth = min(window.bounds.width, window.bounds.height) - ReaderStreamBaseCell.insets.left * 2
         }
