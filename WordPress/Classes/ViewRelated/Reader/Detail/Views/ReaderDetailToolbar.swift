@@ -53,8 +53,6 @@ class ReaderDetailToolbar: UIView, NibLoadable {
 
         applyStyles()
 
-        adjustInsetsForTextDirection()
-
         prepareActionButtonsForVoiceOver()
     }
 
@@ -374,17 +372,6 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         prepareActionButtonsForVoiceOver()
 
         configureActionButtonStyle(saveForLaterButton)
-    }
-
-    private func adjustInsetsForTextDirection() {
-        let buttonsToAdjust: [UIButton] = [
-            likeButton,
-            commentButton,
-            saveForLaterButton,
-            reblogButton]
-        for button in buttonsToAdjust {
-            button.flipInsetsForRightToLeftLayoutDirection()
-        }
     }
 
     fileprivate func configureButtonTitles() {
