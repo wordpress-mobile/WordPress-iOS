@@ -6,12 +6,8 @@ struct ReaderSubscriptionHelper {
     // MARK: Subscribe
 
     func toggleSiteSubscription(forPost post: ReaderPost) {
-        let siteURL = post.blogURL.flatMap(URL.init)
         ReaderFollowAction().execute(with: post, context: ContextManager.shared.mainContext, completion: { isFollowing in
             UINotificationFeedbackGenerator().notificationOccurred(.success)
-            if isFollowing, let siteURL {
-                postSiteFollowedNotification(siteURL: siteURL)
-            }
             ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, follow: isFollowing, success: true)
         }, failure: { _, _ in
             UINotificationFeedbackGenerator().notificationOccurred(.error)
@@ -33,7 +29,7 @@ struct ReaderSubscriptionHelper {
             let service = ReaderSiteService(coreDataStack: contextManager)
             service.followSite(by: url, success: {
                 ReaderTopicService(coreDataStack: contextManager)
-                    .fetchAllFollowedSites(success: {}, failure: {})
+                    .fetchAllFollowedSites(success: {}, failure: { _ in })
                 generator.notificationOccurred(.success)
                 continuation.resume(returning: ())
             }, failure: { error in
