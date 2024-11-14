@@ -214,10 +214,61 @@ struct UserDetailsView: View {
             value: "Yes, delete user",
             comment: "The title of the confirmation button in the alert that appears when deleting a user"
         )
+
+        static let deleteUserErrorAlertTitle = NSLocalizedString(
+            "userDetails.alert.deleteUserErrorAlertTitle",
+            value: "Error",
+            comment: "The title of the alert that appears when deleting a user"
+        )
+
+        static let deleteUserErrorAlertMessage = NSLocalizedString(
+            "userDetails.alert.deleteUserErrorAlertMessage",
+            value: "There was an error deleting the user.",
+            comment: "The message in the alert that appears when deleting a user"
+        )
+
+        static let deleteUserErrorAlertOkButton = NSLocalizedString(
+            "userDetails.alert.deleteUserErrorAlertOkButton",
+            value: "OK",
+            comment: "The title of the OK button in the alert that appears when deleting a user"
+        )
+
+        static let deleteUserAttributionMessage = NSLocalizedString(
+            "userDetails.alert.deleteUserAttributionMessage",
+            value: "You have specified this user for deletion:",
+            comment: "The message that appears when deleting a user."
+        )
+
+        static let attributeContentToUserLabel = NSLocalizedString(
+            "userDetails.alert.attributeContentToUserLabel",
+            value: "Attribute content to user:",
+            comment: "The label that appears in the alert that appears when deleting a user"
+        )
+
+        static let attributeContentConfirmationTitle = NSLocalizedString(
+            "userDetails.alert.deleteUserConfirmationTitle",
+            value: "Delete Confirmation",
+            comment: "The title of the confirmation alert that appears when deleting a user"
+        )
+
+        static let attributeContentConfirmationCancelButton = NSLocalizedString(
+            "userDetails.alert.deleteUserConfirmationCancelButton",
+            value: "Cancel",
+            comment: "The title of the cancel button in the confirmation alert that appears when deleting a user"
+        )
+
+        static let attributeContentConfirmationDeleteButton = NSLocalizedString(
+            "userDetails.alert.deleteUserConfirmationDeleteButton",
+            value: "Delete",
+            comment: "The title of the delete button in the confirmation alert that appears when deleting a user"
+        )
+
     }
 }
 
 private extension View {
+    typealias Strings = UserDetailsView.Strings
+
     @ViewBuilder
     func deleteUser(in view: UserDetailsView) -> some View {
         sheet(
@@ -249,16 +300,16 @@ private extension View {
             }
         )
         .alert(
-            "Error",
+            Strings.deleteUserErrorAlertTitle,
             isPresented: view.$presentDeleteUserError,
             presenting: view.deleteUserViewModel.error,
             actions: { _ in
-                Button("OK") {
+                Button(Strings.deleteUserErrorAlertOkButton) {
                     view.presentDeleteUserError = false
                 }
             },
             message: { error in
-                Text("An error occurred while deleting the user.")
+                Text(Strings.deleteUserErrorAlertMessage)
                 // TODO: Use appropriate localized error message
                 Text(error.localizedDescription)
             })
@@ -269,7 +320,7 @@ private extension View {
         NavigationView {
             Form {
                 VStack(alignment: .leading) {
-                    Text("You have specified this user for deletion:")
+                    Text(Strings.deleteUserAttributionMessage)
                     Text("ID #\(view.user.id): \(view.user.username)")
                 }
                 .frame(maxWidth: .infinity)
@@ -278,11 +329,11 @@ private extension View {
 
                 Section {
                     if view.deleteUserViewModel.isFetchingOtherUsers {
-                        LabeledContent("Attribute all content to:") {
+                        LabeledContent(Strings.attributeContentToUserLabel) {
                             ProgressView()
                         }
                     } else {
-                        Picker("Attribute all content to:", selection: view.$selectedUser) {
+                        Picker(Strings.attributeContentToUserLabel, selection: view.$selectedUser) {
                             ForEach(view.deleteUserViewModel.otherUsers) { user in
                                 Text("\(user.displayName) (\(user.username))").tag(user)
                             }
@@ -290,21 +341,21 @@ private extension View {
                     }
                 }
             }
-            .navigationTitle("Delete Confirmation")
+            .navigationTitle(Strings.attributeContentConfirmationTitle)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button(role: .cancel) {
                         view.presentUserPicker = false
                     } label: {
-                        Text("Cancel")
+                        Text(Strings.attributeContentConfirmationCancelButton)
                     }
                 }
                 ToolbarItem(placement: .destructiveAction) {
                     Button(role: .destructive) {
                         view.presentDeleteConfirmation = true
                     } label: {
-                        Text("Delete")
+                        Text(Strings.attributeContentConfirmationDeleteButton)
                     }
                     .disabled(view.selectedUser == nil)
                 }
