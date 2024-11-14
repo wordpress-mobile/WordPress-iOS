@@ -42,7 +42,6 @@ protocol ZendeskUtilsProtocol {
 /// as well as displaying views for the Help Center, new tickets, and ticket list.
 ///
 @objc class ZendeskUtils: NSObject, ZendeskUtilsProtocol {
-
     // MARK: - Public Properties
 
     static var sharedInstance: ZendeskUtils = ZendeskUtils(contextManager: ContextManager.shared)
@@ -63,7 +62,15 @@ protocol ZendeskUtilsProtocol {
     private var sourceTag: WordPressSupportSourceTag?
 
     private var userName: String?
-    private var userEmail: String?
+    private var userEmail: String? {
+        set {
+            _userEmail = newValue.map(ZendeskUtils.a8cTestEmail(_:))
+        }
+        get {
+            _userEmail
+        }
+    }
+    private var _userEmail: String?
     private var userNameConfirmed = false
 
     private var deviceID: String?
@@ -1199,5 +1206,28 @@ extension ZendeskUtils {
                 cancel: LocalizedText.alertCancel
             )
         }
+    }
+}
+
+extension ZendeskUtils {
+    static var automatticEmails = ["@automattic.com", "@a8c.com"]
+
+    /// Insert "+testing" to Automattic email address.
+    /// - SeeAlso: https://github.com/wordpress-mobile/WordPress-iOS/issues/23794
+    static func a8cTestEmail(_ email: String) -> String {
+        guard let suffix = ZendeskUtils.automatticEmails.first(where: { email.lowercased().hasSuffix($0) }) else {
+            return email
+        }
+
+        let atSymbolIndex = email.index(email.endIndex, offsetBy: -suffix.count)
+
+        // Do nothing if the email is already an "alias email".
+        if email[email.startIndex..<atSymbolIndex].contains("+") {
+            return email
+        }
+
+        var newEmail = email
+        newEmail.insert(contentsOf: "+testing", at: atSymbolIndex)
+        return newEmail
     }
 }
