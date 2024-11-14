@@ -63,7 +63,7 @@ final class ReaderRecommendedTagsCell: UITableViewCell {
             configuration.title = topic.title
 
             let button = UIButton(configuration: configuration)
-            button.tintColor = .brand
+            button.tintColor = UIAppColor.brand
             button.addAction(.init(handler: { [weak delegate] _ in
                 delegate?.didSelect(topic: topic)
             }), for: .primaryActionTriggered)
