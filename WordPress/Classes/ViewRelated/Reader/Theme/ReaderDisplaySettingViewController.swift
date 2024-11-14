@@ -226,18 +226,6 @@ extension ReaderDisplaySettingSelectionView {
                         .font(Font(viewModel.displaySetting.font(with: .callout)))
                         .foregroundStyle(viewModel.foregroundColor)
 
-                    if let feedbackText {
-                        feedbackText
-                            .font(Font(viewModel.displaySetting.font(with: .callout)))
-                            .foregroundStyle(viewModel.foregroundColor)
-                            .tint(Color(linkTintColor))
-                            .accessibilityAddTraits(.isLink)
-                            .environment(\.openURL, OpenURLAction { url in
-                                WPAnalytics.track(.readingPreferencesFeedbackTapped)
-                                return .systemAction
-                            })
-                    }
-
                     tagsView
 
                     Spacer()
@@ -258,30 +246,6 @@ extension ReaderDisplaySettingSelectionView {
             })
             .background(viewModel.backgroundColor)
             .animation(.easeInOut, value: viewModel.displaySetting)
-        }
-
-        var feedbackText: Text? {
-            guard AppConfiguration.isJetpack,
-                  RemoteFeatureFlag.readingPreferencesFeedback.enabled() else {
-                return nil
-            }
-
-            var linkString = "[\(Strings.feedbackLinkCTA)](\(Constants.feedbackLinkString))"
-            if viewModel.displaySetting.color != .system {
-                // for color themes other than the default, we'll mark it bold.
-                linkString = "**\(linkString)**"
-            }
-
-            let string = String(format: Strings.feedbackLineFormat, linkString)
-            guard var attributedString = try? AttributedString(markdown: string) else {
-                return nil
-            }
-
-            if let rangeOfLink = attributedString.range(of: Strings.feedbackLinkCTA) {
-                attributedString[rangeOfLink].underlineStyle = .single
-            }
-
-            return Text(attributedString)
         }
 
         var linkTintColor: UIColor {
@@ -310,7 +274,6 @@ extension ReaderDisplaySettingSelectionView {
 
         private struct Constants {
             static let gradientMaskHeight = 32.0
-            static let feedbackLinkString = "https://automattic.survey.fm/reader-customization-survey"
         }
 
         private struct Strings {
@@ -324,26 +287,6 @@ extension ReaderDisplaySettingSelectionView {
                 "reader.preferences.preview.body.text",
                 value: "Choose your colors, fonts, and sizes. Preview your selection here, and read posts with your styles once you're done.",
                 comment: "Description text for the preview section of Reader Preferences"
-            )
-
-            static let feedbackLineFormat = NSLocalizedString(
-                "reader.preferences.preview.body.feedback.format",
-                value: "This is a new feature still in development. To help us improve it %1$@.",
-                comment: """
-                Text format for the feedback line text, to be displayed in the preview section.
-                %1$@ is a placeholder for a call-to-action that completes the line, which will be filled programmatically.
-                Example: 'This is a new feature still in development. To help us improve it send your feedback.'
-                """
-            )
-
-            static let feedbackLinkCTA = NSLocalizedString(
-                "reader.preferences.preview.body.feedback.link",
-                value: "send your feedback",
-                comment: """
-                A call-to-action text fragment to ask the user provide feedback for the Reading Preferences feature.
-                Note that the lowercase format is intended, as this will be injected to form a full paragraph.
-                Refer to: `reader.preferences.preview.body.feedback.format`
-                """
             )
 
             static let tags = [
