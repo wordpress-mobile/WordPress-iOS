@@ -100,9 +100,11 @@ struct UserDetailsView: View {
             }
         )
         .deleteUser(in: self)
-        .task {
-            await viewModel.loadCurrentUserRole()
-            await deleteUserViewModel.fetchOtherUsers()
+        .onAppear() {
+            Task {
+                await viewModel.loadCurrentUserRole()
+                await deleteUserViewModel.fetchOtherUsers()
+            }
         }
     }
 
