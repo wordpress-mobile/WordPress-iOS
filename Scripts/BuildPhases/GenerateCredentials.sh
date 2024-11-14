@@ -116,8 +116,8 @@ EXTERNAL_CONTRIBUTOR_MSG="If you are an external contributor, run \`bundle exec 
 
 case $CONFIGURATION in
   Release*)
-    # There are three release configurations: Release, Release-Alpha, and
-    # Release-Internal. Since they all start with "Release" we can use a
+    # There are two release configurations: Release and Release-Alpha.
+    # Since they all start with "Release", we can use a
     # pattern to check for them.
     echo "error: $COULD_NOT_FIND_SECRET_MSG. Cannot continue Release build. $INTERNAL_CONTRIBUTOR_MSG. $EXTERNAL_CONTRIBUTOR_RELEASE_MSG."
     exit 1

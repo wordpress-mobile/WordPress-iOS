@@ -35,9 +35,6 @@ platform :ios do
 
       • Current release version and build code: #{release_version_current} (#{build_code_current}).
       • New release version and build code: #{release_version_next} (#{build_code_code_freeze}).
-
-      • Current internal release version and build code: #{release_version_current_internal} (#{build_code_current_internal})
-      • New internal release version and build code: #{release_version_next} (#{build_code_code_freeze_internal})
     MESSAGE
 
     UI.important(message)
@@ -57,16 +54,6 @@ platform :ios do
       version_long: build_code_code_freeze
     )
     UI.success "Done! New Release Version: #{release_version_current}. New Build Code: #{build_code_current}"
-
-    # Bump the internal release version and build code and write it to the `xcconfig` file
-    UI.message 'Bumping internal release version and build code...'
-    INTERNAL_VERSION_FILE.write(
-      # The external and internal release versions are always the same. Because the external release version was
-      # already bumped, we want to just use the `release_version_current`
-      version_short: release_version_current,
-      version_long: build_code_code_freeze_internal
-    )
-    UI.success "Done! New Internal Release Version: #{release_version_current_internal}. New Internal Build Code: #{build_code_current_internal}"
 
     commit_version_and_build_files
 
@@ -220,9 +207,6 @@ platform :ios do
     message = <<~MESSAGE
       • Current build code: #{build_code_current}
       • New build code: #{build_code_next}
-
-      • Current internal build code: #{build_code_current_internal}
-      • New internal build code: #{build_code_next_internal}
     MESSAGE
 
     UI.important(message)
@@ -235,7 +219,7 @@ platform :ios do
     download_localized_strings_and_metadata
     lint_localizations(allow_retry: skip_user_confirmation == false)
 
-    bump_build_codes
+    bump_build_code
 
     unless skip_user_confirmation || UI.confirm('Ready to push changes to remote and trigger the beta build?')
       UI.message("Terminating as requested. Don't forget to run the remainder of this automation manually.")
@@ -293,7 +277,6 @@ platform :ios do
 
     new_version = options[:version] || UI.input('Version number for the new hotfix?')
     build_code_hotfix = build_code_hotfix(release_version: new_version)
-    build_code_hotfix_internal = build_code_hotfix_internal(release_version: new_version)
 
     # Parse the provided version into an AppVersion object
     parsed_version = VERSION_FORMATTER.parse(new_version)
@@ -305,9 +288,6 @@ platform :ios do
 
       • Current release version and build code: #{release_version_current} (#{build_code_current}).
       • New release version and build code: #{new_version} (#{build_code_hotfix}).
-
-      • Current internal release version and build code: #{release_version_current_internal} (#{build_code_current_internal}).
-      • New internal release version and build code: #{new_version} (#{build_code_hotfix_internal}).
 
       Branching from tag: #{previous_version}
     MESSAGE
@@ -331,14 +311,6 @@ platform :ios do
       version_long: build_code_hotfix
     )
     UI.success "Done! New Release Version: #{release_version_current}. New Build Code: #{build_code_current}"
-
-    # Bump the internal hotfix version and build code and write it to the `xcconfig` file
-    UI.message 'Bumping internal hotfix version and build code...'
-    INTERNAL_VERSION_FILE.write(
-      version_short: new_version,
-      version_long: build_code_hotfix_internal
-    )
-    UI.success "Done! New Internal Release Version: #{release_version_current_internal}. New Internal Build Code: #{build_code_current_internal}"
 
     commit_version_and_build_files
 
@@ -405,7 +377,7 @@ platform :ios do
     download_localized_strings_and_metadata
     lint_localizations(allow_retry: skip_confirm == false)
 
-    bump_build_codes
+    bump_build_code
 
     unless skip_confirm || UI.confirm('Ready to push changes to remote and trigger the release build?')
       UI.user_error!("Terminating as requested. Don't forget to run the remainder of this automation manually.")
@@ -598,9 +570,8 @@ def prompt_for_confirmation(message:, bypass:)
   UI.confirm(message)
 end
 
-def bump_build_codes
+def bump_build_code
   bump_production_build_code
-  bump_internal_build_code
   commit_version_and_build_files
 end
 
@@ -610,15 +581,9 @@ def bump_production_build_code
   UI.success "Done. New Build Code: #{build_code_current}"
 end
 
-def bump_internal_build_code
-  UI.message 'Bumping internal build code...'
-  INTERNAL_VERSION_FILE.write(version_long: build_code_next_internal)
-  UI.success "Done. New Internal Build Code: #{build_code_current_internal}"
-end
-
 def commit_version_and_build_files
   git_commit(
-    path: [PUBLIC_CONFIG_FILE, INTERNAL_CONFIG_FILE],
+    path: PUBLIC_CONFIG_FILE,
     message: 'Bump version number',
     allow_nothing_to_commit: false
   )

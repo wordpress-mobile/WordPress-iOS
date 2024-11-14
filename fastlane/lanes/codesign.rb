@@ -20,7 +20,6 @@ platform :ios do
   #
   lane :update_wordpress_certs_and_profiles do |options|
     alpha_code_signing(options)
-    internal_code_signing(options)
     appstore_code_signing(options)
   end
 
@@ -31,7 +30,6 @@ platform :ios do
   #
   lane :update_jetpack_certs_and_profiles do |options|
     jetpack_alpha_code_signing(options)
-    jetpack_internal_code_signing(options)
     jetpack_appstore_code_signing(options)
   end
 
@@ -47,18 +45,6 @@ platform :ios do
   private_lane :alpha_code_signing do |options|
     update_code_signing_enterprise(
       app_identifiers: ALL_WORDPRESS_BUNDLE_IDENTIFIERS.map { |id| id.sub(WORDPRESS_BUNDLE_IDENTIFIER, 'org.wordpress.alpha') },
-      readonly: options.fetch(:readonly, true)
-    )
-  end
-
-  # Downloads all the required certificates and profiles (using `match``) for the WordPress Internal builds (`org.wordpress.internal`) in the Enterprise account.
-  # Optionally, it can create any new necessary certificate or profile.
-  #
-  # @option [Boolean] readonly (default: true) Whether to only fetch existing certificates and profiles, without generating new ones.
-  #
-  private_lane :internal_code_signing do |options|
-    update_code_signing_enterprise(
-      app_identifiers: ALL_WORDPRESS_BUNDLE_IDENTIFIERS.map { |id| id.sub(WORDPRESS_BUNDLE_IDENTIFIER, 'org.wordpress.internal') },
       readonly: options.fetch(:readonly, true)
     )
   end
@@ -83,18 +69,6 @@ platform :ios do
   private_lane :jetpack_alpha_code_signing do |options|
     update_code_signing_enterprise(
       app_identifiers: ALL_JETPACK_BUNDLE_IDENTIFIERS.map { |id| id.sub(JETPACK_BUNDLE_IDENTIFIER, 'com.jetpack.alpha') },
-      readonly: options.fetch(:readonly, true)
-    )
-  end
-
-  # Downloads all the required certificates and profiles (using `match``) for the Jetpack Internal builds (`com.jetpack.internal`) in the Enterprise account.
-  # Optionally, it can create any new necessary certificate or profile.
-  #
-  # @option [Boolean] readonly (default: true) Whether to only fetch existing certificates and profiles, without generating new ones.
-  #
-  private_lane :jetpack_internal_code_signing do |options|
-    update_code_signing_enterprise(
-      app_identifiers: ALL_JETPACK_BUNDLE_IDENTIFIERS.map { |id| id.sub(JETPACK_BUNDLE_IDENTIFIER, 'com.jetpack.internal') },
       readonly: options.fetch(:readonly, true)
     )
   end
