@@ -53,6 +53,7 @@
 
 - (nullable UISwipeActionsConfiguration *)tableView:(nonnull UITableView *)tableView leadingSwipeActionsConfigurationForRowAtIndexPath:(nonnull NSIndexPath *)indexPath;
 - (nullable UISwipeActionsConfiguration *)tableView:(nonnull UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(nonnull NSIndexPath *)indexPath;
+- (nullable UIContextMenuConfiguration *)tableView:(nonnull UITableView *)tableView contextMenuConfigurationForRowAtIndexPath:(nonnull NSIndexPath *)indexPath point:(CGPoint)point;
 
 #pragma mark - Tracking the removal of views
 

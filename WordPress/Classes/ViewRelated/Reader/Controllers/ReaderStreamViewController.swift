@@ -1139,6 +1139,10 @@ import AutomatticTracks
             completion?(false)
         })
     }
+
+    func getPost(at indexPath: IndexPath) -> ReaderPost? {
+        content.object(at: indexPath)
+    }
 }
 
 // MARK: - ReaderStreamHeaderDelegate
@@ -1447,6 +1451,20 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         // Do nothing
     }
 
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        guard let post = getPost(at: indexPath) else {
+            return nil
+        }
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [weak self] _ in
+            guard let self else { return nil }
+            return UIMenu(children: ReaderPostMenu(
+                post: post,
+                topic: readerTopic,
+                anchor: self.tableView.cellForRow(at: indexPath) ?? self.view,
+                viewController: self
+            ).makeMenu())
+        }
+    }
 }
 
 // MARK: - SearchableActivity Conformance

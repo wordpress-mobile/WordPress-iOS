@@ -314,6 +314,13 @@ static CGFloat const DefaultCellHeight = 44.0;
     [self.delegate tableView:tableView didSelectRowAtIndexPath:indexPath];
 }
 
+- (UIContextMenuConfiguration *)tableView:(UITableView *)tableView contextMenuConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath point:(CGPoint)point {
+    if ([self.delegate respondsToSelector:@selector(tableView:contextMenuConfigurationForRowAtIndexPath:point:)]) {
+        return [self.delegate tableView:tableView contextMenuConfigurationForRowAtIndexPath:indexPath point:point];
+    }
+    return nil;
+}
+
 
 #pragma mark - Optional Delegate Methods
 

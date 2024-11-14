@@ -363,6 +363,13 @@ private class ReaderDiscoverStreamViewController: ReaderStreamViewController {
         super.syncIfAppropriate(forceSync: true)
         tableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.fade)
     }
+
+    override func getPost(at indexPath: IndexPath) -> ReaderPost? {
+        guard let card: ReaderCard = content.object(at: indexPath) else {
+            return nil
+        }
+        return card.post
+    }
 }
 
 // MARK: - ReaderRecommendedSitesCellDelegate
