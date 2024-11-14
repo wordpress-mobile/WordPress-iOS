@@ -385,7 +385,6 @@ private extension CommentContentTableViewCell {
         replyButton?.setTitleColor(Style.reactionButtonTextColor, for: .normal)
         replyButton?.setImage(Style.replyIconImage, for: .normal)
         replyButton?.addTarget(self, action: #selector(replyButtonTapped), for: .touchUpInside)
-        replyButton?.flipInsetsForRightToLeftLayoutDirection()
         replyButton?.adjustsImageSizeForAccessibilityContentSizeCategory = true
         adjustImageAndTitleEdgeInsets(for: replyButton)
         replyButton?.sizeToFit()
@@ -397,7 +396,6 @@ private extension CommentContentTableViewCell {
         likeButton?.titleLabel?.adjustsFontForContentSizeCategory = true
         likeButton?.setTitleColor(Style.reactionButtonTextColor, for: .normal)
         likeButton?.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
-        likeButton?.flipInsetsForRightToLeftLayoutDirection()
         likeButton?.adjustsImageSizeForAccessibilityContentSizeCategory = true
         adjustImageAndTitleEdgeInsets(for: likeButton)
         updateLikeButton(liked: false, numberOfLikes: 0)
