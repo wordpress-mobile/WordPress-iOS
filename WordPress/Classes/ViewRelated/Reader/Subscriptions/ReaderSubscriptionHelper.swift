@@ -122,12 +122,14 @@ enum ReaderSubscriptionNotificationsStatus {
     case none
 
     init?(site: ReaderSiteTopic) {
-        guard let postSubscription = site.postSubscription,
-              let emailSubscription = site.emailSubscription else {
+        guard !site.isExternal else {
             return nil
         }
-        let sendPosts = postSubscription.sendPosts || emailSubscription.sendPosts
-        let sendComments = emailSubscription.sendComments
+        let posts = site.postSubscription
+        let emails = site.emailSubscription
+
+        let sendPosts = (posts?.sendPosts ?? false) || (emails?.sendPosts ?? false)
+        let sendComments = emails?.sendComments ?? false
         if sendPosts && sendComments {
             self = .all
         } else if sendPosts || sendComments {
