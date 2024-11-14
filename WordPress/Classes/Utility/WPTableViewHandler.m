@@ -635,6 +635,9 @@ static CGFloat const DefaultCellHeight = 44.0;
     }
 
     self.indexPathSelectedBeforeUpdates = [self.tableView indexPathForSelectedRow];
+    if (self.disableAnimations) {
+        [UIView setAnimationsEnabled:NO];
+    }
     [self.tableView beginUpdates];
 }
 
@@ -645,6 +648,9 @@ static CGFloat const DefaultCellHeight = 44.0;
     NSError *error;
     [WPException objcTryBlock:^{
         [self.tableView endUpdates];
+        if (self.disableAnimations) {
+            [UIView setAnimationsEnabled:YES];
+        }
     } error:&error];
     
     if (error) {
@@ -697,7 +703,7 @@ static CGFloat const DefaultCellHeight = 44.0;
         // It seems in some cases newIndexPath can be nil for updates
         newIndexPath = indexPath;
     }
-    
+
     switch(type) {
         case NSFetchedResultsChangeInsert:
         {
