@@ -4,7 +4,7 @@ import WordPressUI
 
 final class ReaderRecommendedTagsCell: UITableViewCell {
     private let scrollView = UIScrollView()
-    private let tagsStackView = UIStackView(axis: .horizontal, spacing: 16, insets: UIEdgeInsets(.vertical, 16), [])
+    private let tagsStackView = UIStackView(axis: .horizontal, spacing: 8, insets: UIEdgeInsets(.vertical, 16), [])
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -61,9 +61,16 @@ final class ReaderRecommendedTagsCell: UITableViewCell {
         for topic in topics {
             var configuration = UIButton.Configuration.borderedTinted()
             configuration.title = topic.title
+            configuration.cornerStyle = .capsule
+            configuration.baseForegroundColor = .label
+            configuration.titleTextAttributesTransformer = .init {
+                var container = $0
+                container.font = UIFont.preferredFont(forTextStyle: .subheadline).withWeight(.medium)
+                return container
+            }
+            configuration.baseBackgroundColor = .secondaryLabel
 
             let button = UIButton(configuration: configuration)
-            button.tintColor = UIAppColor.brand
             button.addAction(.init(handler: { [weak delegate] _ in
                 delegate?.didSelect(topic: topic)
             }), for: .primaryActionTriggered)
