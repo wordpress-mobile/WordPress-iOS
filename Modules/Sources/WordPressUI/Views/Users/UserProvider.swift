@@ -28,11 +28,30 @@ open class UserManagementActionDispatcher: ObservableObject {
 
 package struct MockUserProvider: UserDataProvider {
 
-    let dummyDataUrl = URL(string: "https://my.api.mockaroo.com/users.json?key=067c9730")!
+    enum Scenario {
+        case infinitLoading
+        case dummyData
+        case error
+    }
+
+    var scenario: Scenario
+
+    init(scenario: Scenario = .dummyData) {
+        self.scenario = scenario
+    }
 
     package func fetchUsers(cachedResults: CachedUserListCallback? = nil) async throws -> [WordPressUI.DisplayUser] {
-        let response = try await URLSession.shared.data(from: dummyDataUrl)
-        return try JSONDecoder().decode([DisplayUser].self, from: response.0)
+        switch scenario {
+        case .infinitLoading:
+            try await Task.sleep(for: .seconds(1 * 24 * 60 * 60))
+            return []
+        case .dummyData:
+            let dummyDataUrl = URL(string: "https://my.api.mockaroo.com/users.json?key=067c9730")!
+            let response = try await URLSession.shared.data(from: dummyDataUrl)
+            return try JSONDecoder().decode([DisplayUser].self, from: response.0)
+        case .error:
+            throw URLError(.timedOut)
+        }
     }
 
     package func fetchCurrentUserCan(_ capability: String) async throws -> Bool {

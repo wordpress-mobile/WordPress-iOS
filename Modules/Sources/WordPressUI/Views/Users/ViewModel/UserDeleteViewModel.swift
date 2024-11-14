@@ -4,22 +4,22 @@ import SwiftUI
 public class UserDeleteViewModel: ObservableObject {
 
     @Published
-    var isFetchingOtherUsers: Bool = false
+    private(set) var isFetchingOtherUsers: Bool = false
 
     @Published
-    var isDeletingUser: Bool = false
+    private(set) var isDeletingUser: Bool = false
 
     @Published
-    var error: Error? = nil
+    private(set) var error: Error? = nil
 
     @Published
     var otherUserId: Int32 = 0
 
     @Published
-    var otherUsers: [DisplayUser] = []
+    private(set) var otherUsers: [DisplayUser] = []
 
     @Published
-    var deleteButtonIsDisabled: Bool = true
+    private(set) var deleteButtonIsDisabled: Bool = true
 
     private let userProvider: UserDataProvider
     private let actionDispatcher: UserManagementActionDispatcher

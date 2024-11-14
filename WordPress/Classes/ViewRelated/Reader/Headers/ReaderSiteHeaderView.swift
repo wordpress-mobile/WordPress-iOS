@@ -1,6 +1,7 @@
 import SwiftUI
+import WordPressUI
 
-class ReaderSiteHeaderView: UITableViewHeaderFooterView, ReaderStreamHeader {
+class ReaderSiteHeaderView: ReaderBaseHeaderView, ReaderStreamHeader {
 
     weak var delegate: ReaderStreamHeaderDelegate?
 
@@ -13,10 +14,13 @@ class ReaderSiteHeaderView: UITableViewHeaderFooterView, ReaderStreamHeader {
         })
     }()
 
-    init() {
-        super.init(reuseIdentifier: ReaderSiteHeaderView.classNameWithoutNamespaces())
-        applyBackgroundColor(.secondarySystemGroupedBackground)
-        setupHeader()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        let header = ReaderSiteHeader(viewModel: headerViewModel)
+        let view = UIView.embedSwiftUIView(header)
+        contentView.addSubview(view)
+        view.pinEdges()
     }
 
     required init?(coder: NSCoder) {
@@ -36,41 +40,13 @@ class ReaderSiteHeaderView: UITableViewHeaderFooterView, ReaderStreamHeader {
         headerViewModel.followerCount = siteTopic.subscriberCount.doubleValue.abbreviatedString()
         headerViewModel.isFollowingSite = siteTopic.following
     }
-
-    private func setupHeader() {
-        weak var weakSelf = self
-        let header = ReaderSiteHeader(viewModel: weakSelf?.headerViewModel ?? ReaderSiteHeaderViewModel())
-        let view = UIView.embedSwiftUIView(header)
-        addSubview(view)
-        NSLayoutConstraint.activate([
-            view.topAnchor.constraint(equalTo: topAnchor),
-            view.bottomAnchor.constraint(equalTo: bottomAnchor),
-            view.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor),
-            view.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor)
-        ])
-
-        addBottomBorder(withColor: .separator)
-    }
-
-    /// Sets the background color of the container view.
-    ///
-    /// For `UITableViewHeaderFooterView`, we'll need to assign a `UIView` with the desired
-    /// background color to the `backgroundView` property. Setting the `backgroundColor`
-    /// directly will pop a warning in the console.
-    ///
-    /// - Parameter color: The background color
-    private func applyBackgroundColor(_ color: UIColor) {
-        let backgroundView = UIView(frame: bounds)
-        backgroundView.backgroundColor = color
-        self.backgroundView = backgroundView
-    }
 }
 
 // MARK: - ReaderSiteHeader
 
-struct ReaderSiteHeader: View {
+private struct ReaderSiteHeader: View {
 
-    @StateObject var viewModel: ReaderSiteHeaderViewModel
+    @ObservedObject var viewModel: ReaderSiteHeaderViewModel
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -80,14 +56,20 @@ struct ReaderSiteHeader: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text(viewModel.title)
                     .font(Font(WPStyleGuide.fontForTextStyle(.title1, fontWeight: .semibold)))
-                Text(viewModel.siteUrl)
-                    .font(.subheadline)
+                Group {
+                    if let site = viewModel.site, let url = URL(string: site.siteURL) {
+                        Link(viewModel.siteUrl, destination: url)
+                    } else {
+                        Text(viewModel.siteUrl)
+                    }
+                }
+                .font(.subheadline)
+                .foregroundColor(.secondary)
             }
             if !viewModel.siteDetails.isEmpty {
                 Text(viewModel.siteDetails)
                     .lineLimit(3)
                     .font(.subheadline)
-                    .foregroundColor(.secondary)
             }
             if viewModel.site?.isExternal == false {
                 countsDisplay
@@ -131,7 +113,7 @@ struct ReaderSiteHeader: View {
 
 // MARK: - ReaderSiteHeaderViewModel
 
-class ReaderSiteHeaderViewModel: ObservableObject {
+private final class ReaderSiteHeaderViewModel: ObservableObject {
     @Published var site: ReaderSiteTopic?
     @Published var title: String
     @Published var siteUrl: String

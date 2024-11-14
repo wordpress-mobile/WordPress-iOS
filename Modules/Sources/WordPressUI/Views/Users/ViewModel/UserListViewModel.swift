@@ -14,14 +14,16 @@ class UserListViewModel: ObservableObject {
     private var users: [DisplayUser] = []
     private let userProvider: UserDataProvider
 
-    @Published
-    var sortedUsers: [Section] = []
+    private var initialLoad = false
 
     @Published
-    var error: Error? = nil
+    private(set) var sortedUsers: [Section] = []
 
     @Published
-    var isLoadingItems: Bool = true
+    private(set) var error: Error? = nil
+
+    @Published
+    private(set) var isLoadingItems: Bool = true
 
     @Published
     var searchTerm: String = "" {
@@ -29,7 +31,7 @@ class UserListViewModel: ObservableObject {
             if searchTerm.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
                 setSearchResults(sortUsers(users))
             } else {
-                let searchResults = users.search(query: searchTerm)
+                let searchResults = users.search(searchTerm, using: \.searchString)
                 setSearchResults([Section(role: "Search Results", users: searchResults)])
             }
         }
@@ -37,6 +39,13 @@ class UserListViewModel: ObservableObject {
 
     init(userProvider: UserDataProvider) {
         self.userProvider = userProvider
+    }
+
+    func onAppear() async {
+        if !initialLoad {
+            initialLoad = true
+            await fetchItems()
+        }
     }
 
     func fetchItems() async {

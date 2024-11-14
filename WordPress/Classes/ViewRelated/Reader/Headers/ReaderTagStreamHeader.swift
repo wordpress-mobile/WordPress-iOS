@@ -1,26 +1,36 @@
-import Foundation
+import UIKit
 import WordPressShared
+import WordPressUI
 
-@objc open class ReaderTagStreamHeader: UIView, ReaderStreamHeader {
-    @IBOutlet fileprivate weak var titleLabel: UILabel!
-    @IBOutlet fileprivate weak var followButton: UIButton!
+final class ReaderTagStreamHeader: ReaderBaseHeaderView, ReaderStreamHeader {
+    private let titleLabel = UILabel()
+    private let followButton = UIButton()
 
-    open weak var delegate: ReaderStreamHeaderDelegate?
+    public weak var delegate: ReaderStreamHeaderDelegate?
 
     // MARK: - Lifecycle Methods
-    open override func awakeFromNib() {
-        super.awakeFromNib()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        let stackView = UIStackView(axis: .vertical, alignment: .leading, spacing: 12, [
+            titleLabel, followButton
+        ])
+        contentView.addSubview(stackView)
+        stackView.pinEdges()
 
         applyStyles()
-        adjustInsetsForTextDirection()
-        addBottomBorder(withColor: .separator)
     }
 
-    @objc func applyStyles() {
-        WPStyleGuide.applyReaderStreamHeaderTitleStyle(titleLabel, usesNewStyle: true)
+    public required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
-    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    private func applyStyles() {
+        WPStyleGuide.applyReaderStreamHeaderTitleStyle(titleLabel)
+    }
+
+    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
         if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
@@ -30,14 +40,10 @@ import WordPressShared
 
     // MARK: - Configuration
 
-    @objc open func configureHeader(_ topic: ReaderAbstractTopic) {
+    public func configureHeader(_ topic: ReaderAbstractTopic) {
         titleLabel.text = topic.title.split(separator: "-").map { $0.capitalized }.joined(separator: " ")
         followButton.isSelected = topic.following
         WPStyleGuide.applyTagsReaderButtonStyle(followButton)
-    }
-
-    fileprivate func adjustInsetsForTextDirection() {
-        followButton.flipInsetsForRightToLeftLayoutDirection()
     }
 
     // MARK: - Actions

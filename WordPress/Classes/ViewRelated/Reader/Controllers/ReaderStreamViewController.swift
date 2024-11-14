@@ -180,7 +180,7 @@ import AutomatticTracks
     var isEmbeddedInDiscover = false
     var preferredTableHeaderView: UIView?
 
-    private var isCompact = true {
+    var isCompact = true {
         didSet {
             guard oldValue != isCompact else { return }
             didChangeIsCompact(isCompact)
@@ -458,7 +458,7 @@ import AutomatticTracks
 
     // MARK: - Configuration / Topic Presentation
 
-    @objc private func configureStreamHeader() {
+    private func configureStreamHeader() {
         if let headerView = preferredTableHeaderView {
             setHeaderView(headerView) // Important to set _after_ isCompact is set in viewDidLoad
             return
@@ -1490,9 +1490,6 @@ extension ReaderStreamViewController {
         if content.contentCount > 0 {
             return
         }
-        if !isEmbeddedInDiscover {
-            tableView.tableHeaderView?.isHidden = true
-        }
         showGhost()
     }
 
@@ -1506,10 +1503,6 @@ extension ReaderStreamViewController {
                 emptyStateView = makeEmptyStateView(.discover)
             }
             return
-        }
-
-        if !isEmbeddedInDiscover {
-            tableView.tableHeaderView?.isHidden = true
         }
 
         guard connectionAvailable() else {
@@ -1530,7 +1523,6 @@ extension ReaderStreamViewController {
     func hideResultsStatus() {
         emptyStateView = nil
         footerView.isHidden = false
-        tableView.tableHeaderView?.isHidden = false
         hideGhost()
     }
 

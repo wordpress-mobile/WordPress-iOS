@@ -83,7 +83,7 @@ extension UserService: WordPressUI.UserDataProvider {
                  username: $0.username,
                  firstName: $0.firstName,
                  lastName: $0.lastName,
-                 displayName: $0.username,
+                 displayName: $0.name,
                  profilePhotoUrl: profilePhotoUrl(for: $0),
                  role: role,
                  emailAddress: $0.email,
@@ -102,10 +102,13 @@ extension UserService: WordPressUI.UserDataProvider {
     }
 
     func profilePhotoUrl(for user: UserWithEditContext) -> URL? {
-        guard let rawUrl = user.avatarUrls?.first?.value else { // This results in a very low-res avatar
-            return nil
-        }
+        // The key is the size of the avatar. Get the largetst one, which is 96x96px.
+        // https://github.com/WordPress/wordpress-develop/blob/6.6.2/src/wp-includes/rest-api.php#L1253-L1260
+        guard let url = user.avatarUrls?
+            .max(by: { $0.key.compare($1.key, options: .numeric) == .orderedAscending } )?
+            .value
+        else { return nil }
 
-        return URL(string: rawUrl)
+        return URL(string: url)
     }
 }

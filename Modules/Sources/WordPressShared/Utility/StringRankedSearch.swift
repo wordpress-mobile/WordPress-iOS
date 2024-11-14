@@ -121,13 +121,14 @@ extension StringRankedSearch {
     }
 }
 
-/// Objects conforming to `StringRankedSearchable` can be searched by calling `search(query:)` on a collection of them
-public protocol StringRankedSearchable {
-    var searchString: String { get }
-}
+public extension Sequence {
 
-public extension Collection where Iterator.Element: StringRankedSearchable {
-    func search(query: String, minScore: Double = 0.7) -> [Iterator.Element] {
-        StringRankedSearch(searchTerm: query).search(in: self, minScore: minScore) { $0.searchString }
+    func search(_ query: String, minScore: Double = 0.7, using transformer: (Element) -> String) -> [Element] {
+        StringRankedSearch(searchTerm: query).search(in: self, minScore: minScore, input: transformer)
     }
+
+    func search(_ query: String, minScore: Double = 0.7) -> [Element] where Element == String {
+        search(query, minScore: minScore, using: \.self)
+    }
+
 }

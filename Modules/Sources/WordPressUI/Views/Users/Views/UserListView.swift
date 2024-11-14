@@ -14,34 +14,39 @@ public struct UserListView: View {
     }
 
     public var body: some View {
-        Group {
-            if let error = viewModel.error {
-                EmptyStateView(error.localizedDescription, systemImage: "exclamationmark.triangle.fill")
-            } else if viewModel.isLoadingItems {
-                ProgressView()
-            } else {
-                List(viewModel.sortedUsers) { section in
-                    Section(section.role) {
-                        if section.users.isEmpty {
-                            Text(Strings.noUsersFound)
-                                .font(.body)
-                                .foregroundStyle(Color.secondary)
-                                .listRowBackground(Color.clear)
-                        } else {
-                            ForEach(section.users) { user in
-                                UserListItem(user: user, userProvider: userProvider, actionDispatcher: actionDispatcher)
+        ZStack {
+            Color(.systemGroupedBackground)
+                .ignoresSafeArea()
+
+            Group {
+                if let error = viewModel.error {
+                    EmptyStateView(error.localizedDescription, systemImage: "exclamationmark.triangle.fill")
+                } else if viewModel.isLoadingItems {
+                    ProgressView()
+                } else {
+                    List(viewModel.sortedUsers) { section in
+                        Section(section.role) {
+                            if section.users.isEmpty {
+                                Text(Strings.noUsersFound)
+                                    .font(.body)
+                                    .foregroundStyle(Color.secondary)
+                                    .listRowBackground(Color.clear)
+                            } else {
+                                ForEach(section.users) { user in
+                                    UserListItem(user: user, userProvider: userProvider, actionDispatcher: actionDispatcher)
+                                }
                             }
                         }
                     }
+                    .searchable(text: $viewModel.searchTerm, prompt: Text(Strings.searchPrompt))
+                        .disableAutocorrection(true)
+                        .textInputAutocapitalization(.never)
+                    .refreshable(action: viewModel.refreshItems)
                 }
-                .searchable(text: $viewModel.searchTerm, prompt: Text(Strings.searchPrompt))
-                    .disableAutocorrection(true)
-                    .textInputAutocapitalization(.never)
-                .refreshable(action: viewModel.refreshItems)
             }
         }
         .navigationTitle(Strings.usersListTitle)
-        .task { await viewModel.fetchItems() }
+        .task { await viewModel.onAppear() }
     }
 
     enum Strings {
@@ -65,8 +70,20 @@ public struct UserListView: View {
     }
 }
 
-#Preview {
+#Preview("Loading") {
     NavigationView {
-        UserListView(userProvider: MockUserProvider(), actionDispatcher: UserManagementActionDispatcher())
+        UserListView(userProvider: MockUserProvider(scenario: .infinitLoading), actionDispatcher: UserManagementActionDispatcher())
+    }
+}
+
+#Preview("Error") {
+    NavigationView {
+        UserListView(userProvider: MockUserProvider(scenario: .error), actionDispatcher: UserManagementActionDispatcher())
+    }
+}
+
+#Preview("List") {
+    NavigationView {
+        UserListView(userProvider: MockUserProvider(scenario: .dummyData), actionDispatcher: UserManagementActionDispatcher())
     }
 }
