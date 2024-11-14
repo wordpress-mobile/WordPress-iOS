@@ -65,6 +65,29 @@ class UserServiceTests: XCTestCase {
         task.cancel()
     }
 
+    func testStreamTerminates() async throws {
+        stubSuccessfullUsersFetch()
+
+        let termination = XCTestExpectation(description: "Stream has finished")
+        let task = Task.detached { [self] in
+            for await _ in self.service.usersUpdates {
+                // Do nothing
+            }
+            termination.fulfill()
+        }
+
+        _ = try await service.fetchUsers()
+        _ = try await service.fetchUsers()
+        _ = try await service.fetchUsers()
+
+        // Stream should be terminated once `service` is deallocated.
+        service = nil
+
+        await fulfillment(of: [termination], timeout: 0.3)
+
+        task.cancel()
+    }
+
     func testDeleteUserTriggersUsersUpdate() async throws {
         stubSuccessfullUsersFetch()
         stubDeleteUser(id: 34)

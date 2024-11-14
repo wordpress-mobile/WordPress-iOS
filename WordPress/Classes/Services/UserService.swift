@@ -28,6 +28,7 @@ actor UserService: UserServiceProtocol {
     }
 
     deinit {
+        usersUpdatesContinuation.finish()
         fetchUsersTask?.cancel()
     }
 
