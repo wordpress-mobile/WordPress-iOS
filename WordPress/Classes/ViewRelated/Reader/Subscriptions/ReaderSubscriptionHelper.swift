@@ -32,7 +32,8 @@ struct ReaderSubscriptionHelper {
         try await withUnsafeThrowingContinuation { continuation in
             let service = ReaderSiteService(coreDataStack: contextManager)
             service.followSite(by: url, success: {
-                postSiteFollowedNotification(siteURL: url)
+                ReaderTopicService(coreDataStack: contextManager)
+                    .fetchAllFollowedSites(success: {}, failure: {})
                 generator.notificationOccurred(.success)
                 continuation.resume(returning: ())
             }, failure: { error in
@@ -41,17 +42,6 @@ struct ReaderSubscriptionHelper {
                 continuation.resume(throwing: error ?? URLError(.unknown))
             })
         }
-    }
-
-    private func postSiteFollowedNotification(siteURL: URL) {
-        let service = ReaderSiteService(coreDataStack: contextManager)
-        service.topic(withSiteURL: siteURL, success: { topic in
-            if let topic = topic {
-                NotificationCenter.default.post(name: .ReaderSiteFollowed, object: nil, userInfo: [ReaderNotificationKeys.topic: topic])
-            }
-        }, failure: { error in
-            DDLogError("Unable to find topic by siteURL: \(String(describing: error?.localizedDescription))")
-        })
     }
 
     // MARK: Subscribe/Unsubscribe (ReaderSiteTopic)

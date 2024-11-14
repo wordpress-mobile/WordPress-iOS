@@ -160,20 +160,6 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     }];
 }
 
-- (void)topicWithSiteURL:(NSURL *)siteURL success:(void (^)(ReaderSiteTopic *topic))success failure:(void(^)(NSError *error))failure
-{
-    WordPressComRestApi *api = [self apiForRequest];
-    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithWordPressComRestApi:api];
-    
-    [service findSiteIDForURL:siteURL success:^(NSUInteger siteID) {
-        NSNumber *site = [NSNumber numberWithUnsignedLong:siteID];
-        ReaderSiteTopic *topic = [ReaderSiteTopic lookupWithSiteID:site inContext:self.coreDataStack.mainContext];
-        success(topic);
-    } failure:^(NSError *error) {
-        failure(error);
-    }];
-}
-
 #pragma mark - Private Methods
 
 
