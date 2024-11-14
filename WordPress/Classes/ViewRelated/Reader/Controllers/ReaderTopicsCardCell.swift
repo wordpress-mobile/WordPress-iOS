@@ -19,7 +19,7 @@ class ReaderTopicsCardCell: UITableViewCell, NibLoadable {
         }
     }
 
-    weak var delegate: ReaderRecommendedSitesCellDelegate?
+    weak var delegate: ReaderRecommendationsCellDelegate?
 
     static var defaultNibName: String { "ReaderTopicsCardCell" }
 
