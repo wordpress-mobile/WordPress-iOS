@@ -42,6 +42,9 @@ struct ReaderSidebarSubscriptionCell: View {
                 Spacer()
                 Button {
                     site.showInMenu.toggle()
+                    if !site.showInMenu {
+                        WPAnalytics.track(.readerAddSiteToFavoritesTapped)
+                    }
                     try? site.managedObjectContext?.save()
                 } label: {
                     Image(systemName: site.showInMenu ? "star.fill" : "star")

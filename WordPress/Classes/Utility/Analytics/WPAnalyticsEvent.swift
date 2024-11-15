@@ -116,6 +116,7 @@ import Foundation
     case readerCommentTextHighlighted
     case readerCommentTextCopied
     case readerPostContextMenuButtonTapped
+    case readerAddSiteToFavoritesTapped
 
     // Stats - Empty Stats nudges
     case statsPublicizeNudgeShown
@@ -816,6 +817,8 @@ import Foundation
             return "reader_comment_text_copied"
         case .readerPostContextMenuButtonTapped:
             return "reader_post_context_menu_button_tapped"
+        case .readerAddSiteToFavoritesTapped:
+            return "reader_add_site_to_favorites_tapped"
 
         // Stats - Empty Stats nudges
         case .statsPublicizeNudgeShown:
