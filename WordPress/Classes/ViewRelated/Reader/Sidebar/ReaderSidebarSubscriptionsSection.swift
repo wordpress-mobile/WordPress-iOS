@@ -41,11 +41,15 @@ struct ReaderSidebarSubscriptionCell: View {
             if editMode?.wrappedValue.isEditing == true {
                 Spacer()
                 Button {
-                    site.showInMenu.toggle()
                     if !site.showInMenu {
                         WPAnalytics.track(.readerAddSiteToFavoritesTapped)
                     }
-                    try? site.managedObjectContext?.save()
+
+                    let siteObjectID = TaggedManagedObjectID(site)
+                    ContextManager.shared.performAndSave({ managedObjectContext in
+                        let site = try managedObjectContext.existingObject(with: siteObjectID)
+                        site.showInMenu.toggle()
+                    }, completion: nil, on: DispatchQueue.main)
                 } label: {
                     Image(systemName: site.showInMenu ? "star.fill" : "star")
                         .foregroundStyle(site.showInMenu ? .pink : .secondary)
