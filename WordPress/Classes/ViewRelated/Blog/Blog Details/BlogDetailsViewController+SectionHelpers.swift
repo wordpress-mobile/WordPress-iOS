@@ -159,14 +159,15 @@ extension BlogDetailsViewController {
     }
 
     @objc func showUsers() {
-        guard let presentationDelegate else {
+        guard let presentationDelegate, let userId = self.blog.userID?.intValue else {
             return
         }
 
         let feature = NSLocalizedString("applicationPasswordRequired.feature.users", value: "User Management", comment: "Feature name for managing users in the app")
         let rootView = ApplicationPasswordRequiredView(blog: self.blog, localizedFeatureName: feature) { client in
             let service = UserService(client: client)
-            return UserListView(userService: service)
+            let applicationPasswordService = ApplicationPasswordService(api: client, currentUserId: userId)
+            return UserListView(userService: service, applicationTokenListDataProvider: applicationPasswordService)
         }
         presentationDelegate.presentBlogDetailsViewController(UIHostingController(rootView: rootView))
     }

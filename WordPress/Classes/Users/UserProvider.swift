@@ -7,7 +7,9 @@ public protocol UserServiceProtocol: Actor {
 
     func fetchUsers() async throws -> [DisplayUser]
 
-    func isCurrentUserCapableOf(_ capability: String) async throws -> Bool
+    func isCurrentUser(_ user: DisplayUser) async -> Bool
+
+    func isCurrentUserCapableOf(_ capability: String) async -> Bool
 
     func setNewPassword(id: Int32, newPassword: String) async throws
 
@@ -57,7 +59,11 @@ actor MockUserProvider: UserServiceProtocol {
         }
     }
 
-    func isCurrentUserCapableOf(_ capability: String) async throws -> Bool {
+    func isCurrentUser(_ user: DisplayUser) async -> Bool {
+        true
+    }
+
+    func isCurrentUserCapableOf(_ capability: String) async -> Bool {
         true
     }
 

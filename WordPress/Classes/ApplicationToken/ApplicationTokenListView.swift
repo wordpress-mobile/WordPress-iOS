@@ -113,7 +113,7 @@ extension ApplicationTokenListView {
 
 // MARK: - SwiftUI Preview
 
-private class StaticTokenProvider: ApplicationTokenListDataProvider {
+class StaticTokenProvider: ApplicationTokenListDataProvider {
 
     private let result: Result<[ApplicationTokenItem], Error>
 
