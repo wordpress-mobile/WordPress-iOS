@@ -42,7 +42,7 @@ public struct DisplayUser: Identifiable, Codable, Hashable {
         self.biography = biography
     }
 
-    static package let MockUser = DisplayUser(
+    static let MockUser = DisplayUser(
         id: 16,
         handle: "@person",
         username: "example",

@@ -14,7 +14,7 @@ public protocol UserServiceProtocol: Actor {
     func deleteUser(id: Int32, reassigningPostsTo newUserId: Int32) async throws
 }
 
-package actor MockUserProvider: UserServiceProtocol {
+actor MockUserProvider: UserServiceProtocol {
 
     enum Scenario {
         case infinitLoading
@@ -24,10 +24,10 @@ package actor MockUserProvider: UserServiceProtocol {
 
     var scenario: Scenario
 
-    package nonisolated let usersUpdates: AsyncStream<[DisplayUser]>
+    nonisolated let usersUpdates: AsyncStream<[DisplayUser]>
     private let usersUpdatesContinuation: AsyncStream<[DisplayUser]>.Continuation
 
-    package private(set) var users: [DisplayUser]? {
+    private(set) var users: [DisplayUser]? {
         didSet {
             if let users {
                 usersUpdatesContinuation.yield(users)
@@ -40,7 +40,7 @@ package actor MockUserProvider: UserServiceProtocol {
         (usersUpdates, usersUpdatesContinuation) = AsyncStream<[DisplayUser]>.makeStream()
     }
 
-    package func fetchUsers() async throws -> [DisplayUser] {
+    func fetchUsers() async throws -> [DisplayUser] {
         switch scenario {
         case .infinitLoading:
             // Do nothing
@@ -57,15 +57,15 @@ package actor MockUserProvider: UserServiceProtocol {
         }
     }
 
-    package func isCurrentUserCapableOf(_ capability: String) async throws -> Bool {
+    func isCurrentUserCapableOf(_ capability: String) async throws -> Bool {
         true
     }
 
-    package func setNewPassword(id: Int32, newPassword: String) async throws {
+    func setNewPassword(id: Int32, newPassword: String) async throws {
         // Not used in Preview
     }
 
-    package func deleteUser(id: Int32, reassigningPostsTo newUserId: Int32) async throws {
+    func deleteUser(id: Int32, reassigningPostsTo newUserId: Int32) async throws {
         // Not used in Preview
     }
 }
