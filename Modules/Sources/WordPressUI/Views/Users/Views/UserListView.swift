@@ -4,44 +4,47 @@ public struct UserListView: View {
 
     @StateObject
     private var viewModel: UserListViewModel
-    private let userProvider: UserDataProvider
-    private let actionDispatcher: UserManagementActionDispatcher
+    private let userService: UserServiceProtocol
 
-    public init(userProvider: UserDataProvider, actionDispatcher: UserManagementActionDispatcher) {
-        self.userProvider = userProvider
-        self.actionDispatcher = actionDispatcher
-        _viewModel = StateObject(wrappedValue: UserListViewModel(userProvider: userProvider))
+    public init(userService: UserServiceProtocol) {
+        self.userService = userService
+        _viewModel = StateObject(wrappedValue: UserListViewModel(userService: userService))
     }
 
     public var body: some View {
-        Group {
-            if let error = viewModel.error {
-                EmptyStateView(error.localizedDescription, systemImage: "exclamationmark.triangle.fill")
-            } else if viewModel.isLoadingItems {
-                ProgressView()
-            } else {
-                List(viewModel.sortedUsers) { section in
-                    Section(section.role) {
-                        if section.users.isEmpty {
-                            Text(Strings.noUsersFound)
-                                .font(.body)
-                                .foregroundStyle(Color.secondary)
-                                .listRowBackground(Color.clear)
-                        } else {
-                            ForEach(section.users) { user in
-                                UserListItem(user: user, userProvider: userProvider, actionDispatcher: actionDispatcher)
+        ZStack {
+            Color(.systemGroupedBackground)
+                .ignoresSafeArea()
+
+            Group {
+                if let error = viewModel.error {
+                    EmptyStateView(error.localizedDescription, systemImage: "exclamationmark.triangle.fill")
+                } else if viewModel.isLoadingItems {
+                    ProgressView()
+                } else {
+                    List(viewModel.sortedUsers) { section in
+                        Section(section.role) {
+                            if section.users.isEmpty {
+                                Text(Strings.noUsersFound)
+                                    .font(.body)
+                                    .foregroundStyle(Color.secondary)
+                                    .listRowBackground(Color.clear)
+                            } else {
+                                ForEach(section.users) { user in
+                                    UserListItem(user: user, userService: userService)
+                                }
                             }
                         }
                     }
+                    .searchable(text: $viewModel.searchTerm, prompt: Text(Strings.searchPrompt))
+                        .disableAutocorrection(true)
+                        .textInputAutocapitalization(.never)
+                    .refreshable(action: viewModel.refreshItems)
                 }
-                .searchable(text: $viewModel.searchTerm, prompt: Text(Strings.searchPrompt))
-                    .disableAutocorrection(true)
-                    .textInputAutocapitalization(.never)
-                .refreshable(action: viewModel.refreshItems)
             }
         }
         .navigationTitle(Strings.usersListTitle)
-        .task { await viewModel.fetchItems() }
+        .task { await viewModel.onAppear() }
     }
 
     enum Strings {
@@ -65,8 +68,20 @@ public struct UserListView: View {
     }
 }
 
-#Preview {
+#Preview("Loading") {
     NavigationView {
-        UserListView(userProvider: MockUserProvider(), actionDispatcher: UserManagementActionDispatcher())
+        UserListView(userService: MockUserProvider())
+    }
+}
+
+#Preview("Error") {
+    NavigationView {
+        UserListView(userService: MockUserProvider(scenario: .error))
+    }
+}
+
+#Preview("List") {
+    NavigationView {
+        UserListView(userService: MockUserProvider(scenario: .dummyData))
     }
 }

@@ -1,45 +1,71 @@
 import Foundation
+import Combine
 
-public protocol UserDataProvider {
+public protocol UserServiceProtocol: Actor {
+    var users: [DisplayUser]? { get }
+    nonisolated var usersUpdates: AsyncStream<[DisplayUser]> { get }
 
-    typealias CachedUserListCallback = ([WordPressUI.DisplayUser]) async -> Void
+    func fetchUsers() async throws -> [DisplayUser]
 
-    func fetchCurrentUserCan(_ capability: String) async throws -> Bool
-    func fetchUsers(cachedResults: CachedUserListCallback?) async throws -> [WordPressUI.DisplayUser]
+    func isCurrentUserCapableOf(_ capability: String) async throws -> Bool
 
-    func invalidateCaches() async throws
+    func setNewPassword(id: Int32, newPassword: String) async throws
+
+    func deleteUser(id: Int32, reassigningPostsTo newUserId: Int32) async throws
 }
 
-/// Subclass this and register it with the SwiftUI `.environmentObject` method
-/// to perform user management actions.
-///
-/// The default implementation is set up for testing with SwiftUI Previews
-open class UserManagementActionDispatcher: ObservableObject {
-    public init() {}
+package actor MockUserProvider: UserServiceProtocol {
 
-    open func setNewPassword(id: Int32, newPassword: String) async throws {
-        try await Task.sleep(for: .seconds(2))
+    enum Scenario {
+        case infinitLoading
+        case dummyData
+        case error
     }
 
-    open func deleteUser(id: Int32, reassigningPostsTo userId: Int32) async throws {
-        try await Task.sleep(for: .seconds(2))
+    var scenario: Scenario
+
+    package nonisolated let usersUpdates: AsyncStream<[DisplayUser]>
+    private let usersUpdatesContinuation: AsyncStream<[DisplayUser]>.Continuation
+
+    package private(set) var users: [DisplayUser]? {
+        didSet {
+            if let users {
+                usersUpdatesContinuation.yield(users)
+            }
+        }
     }
-}
 
-package struct MockUserProvider: UserDataProvider {
-
-    let dummyDataUrl = URL(string: "https://my.api.mockaroo.com/users.json?key=067c9730")!
-
-    package func fetchUsers(cachedResults: CachedUserListCallback? = nil) async throws -> [WordPressUI.DisplayUser] {
-        let response = try await URLSession.shared.data(from: dummyDataUrl)
-        return try JSONDecoder().decode([DisplayUser].self, from: response.0)
+    init(scenario: Scenario = .dummyData) {
+        self.scenario = scenario
+        (usersUpdates, usersUpdatesContinuation) = AsyncStream<[DisplayUser]>.makeStream()
     }
 
-    package func fetchCurrentUserCan(_ capability: String) async throws -> Bool {
+    package func fetchUsers() async throws -> [DisplayUser] {
+        switch scenario {
+        case .infinitLoading:
+            // Do nothing
+            try await Task.sleep(for: .seconds(24 * 60 * 60))
+            return []
+        case .dummyData:
+            let dummyDataUrl = URL(string: "https://my.api.mockaroo.com/users.json?key=067c9730")!
+            let response = try await URLSession.shared.data(from: dummyDataUrl)
+            let users = try JSONDecoder().decode([DisplayUser].self, from: response.0)
+            self.users = users
+            return users
+        case .error:
+            throw URLError(.timedOut)
+        }
+    }
+
+    package func isCurrentUserCapableOf(_ capability: String) async throws -> Bool {
         true
     }
 
-    package func invalidateCaches() async throws {
-        // Do nothing
+    package func setNewPassword(id: Int32, newPassword: String) async throws {
+        // Not used in Preview
+    }
+
+    package func deleteUser(id: Int32, reassigningPostsTo newUserId: Int32) async throws {
+        // Not used in Preview
     }
 }

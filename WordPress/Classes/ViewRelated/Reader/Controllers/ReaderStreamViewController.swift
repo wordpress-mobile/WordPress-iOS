@@ -179,7 +179,7 @@ import AutomatticTracks
 
     var isEmbeddedInDiscover = false
 
-    private var isCompact = true {
+    var isCompact = true {
         didSet {
             guard oldValue != isCompact else { return }
             didChangeIsCompact(isCompact)
@@ -457,7 +457,7 @@ import AutomatticTracks
 
     // MARK: - Configuration / Topic Presentation
 
-    @objc private func configureStreamHeader() {
+    private func configureStreamHeader() {
         guard !isEmbeddedInDiscover else {
             return
         }
@@ -1117,7 +1117,7 @@ import AutomatticTracks
         if let topic = topic as? ReaderTagTopic {
             toggleFollowingForTag(topic, completion: completion)
         } else if let topic = topic as? ReaderSiteTopic {
-            toggleFollowingForSite(topic, completion: completion)
+            ReaderSubscriptionHelper().toggleFollowingForSite(topic, completion: completion)
         } else {
             wpAssertionFailure("unexpected topic", userInfo: ["type": String(describing: topic)])
         }
@@ -1136,21 +1136,6 @@ import AutomatticTracks
             completion?(true)
         }, failure: { (error: Error?) in
             generator.notificationOccurred(.error)
-            completion?(false)
-        })
-    }
-
-    private func toggleFollowingForSite(_ topic: ReaderSiteTopic, completion: ((Bool) -> Void)?) {
-        if topic.following {
-            ReaderSubscribingNotificationAction().execute(for: siteID, context: viewContext, subscribe: false)
-        }
-
-        let service = ReaderTopicService(coreDataStack: ContextManager.shared)
-        service.toggleFollowing(forSite: topic, success: { follow in
-            ReaderHelpers.dispatchToggleFollowSiteMessage(site: topic, follow: follow, success: true)
-            completion?(true)
-        }, failure: { (follow, error) in
-            ReaderHelpers.dispatchToggleFollowSiteMessage(site: topic, follow: follow, success: false)
             completion?(false)
         })
     }
@@ -1504,9 +1489,6 @@ extension ReaderStreamViewController {
         if content.contentCount > 0 {
             return
         }
-        if !isEmbeddedInDiscover {
-            tableView.tableHeaderView?.isHidden = true
-        }
         showGhost()
     }
 
@@ -1520,10 +1502,6 @@ extension ReaderStreamViewController {
                 emptyStateView = makeEmptyStateView(.discover)
             }
             return
-        }
-
-        if !isEmbeddedInDiscover {
-            tableView.tableHeaderView?.isHidden = true
         }
 
         guard connectionAvailable() else {
@@ -1544,7 +1522,6 @@ extension ReaderStreamViewController {
     func hideResultsStatus() {
         emptyStateView = nil
         footerView.isHidden = false
-        tableView.tableHeaderView?.isHidden = false
         hideGhost()
     }
 

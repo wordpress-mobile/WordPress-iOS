@@ -5,28 +5,24 @@ struct UserListItem: View {
     @ScaledMetric(relativeTo: .headline)
     var height: CGFloat = 48
 
-    @Environment(\.sizeCategory)
-    var sizeCategory
+    @Environment(\.dynamicTypeSize)
+    var dynamicTypeSize
 
     private let user: DisplayUser
-    private let userProvider: UserDataProvider
-    private let actionDispatcher: UserManagementActionDispatcher
+    private let userService: UserServiceProtocol
 
-    init(user: DisplayUser, userProvider: UserDataProvider, actionDispatcher: UserManagementActionDispatcher) {
+    init(user: DisplayUser, userService: UserServiceProtocol) {
         self.user = user
-        self.userProvider = userProvider
-        self.actionDispatcher = actionDispatcher
+        self.userService = userService
     }
 
     var body: some View {
         NavigationLink {
-            UserDetailView(user: user, userProvider: userProvider, actionDispatcher: actionDispatcher)
+            UserDetailsView(user: user, userService: userService)
         } label: {
             HStack(alignment: .top) {
-                if !sizeCategory.isAccessibilityCategory {
-                    if let profilePhotoUrl = user.profilePhotoUrl {
-                        UserProfileImage(size: CGSize(width: height, height: height), url: profilePhotoUrl)
-                    }
+                if !dynamicTypeSize.isAccessibilitySize {
+                    UserProfileImage(size: height, url: user.profilePhotoUrl)
                 }
                 VStack(alignment: .leading) {
                     Text(user.displayName).font(.headline)
@@ -38,5 +34,5 @@ struct UserListItem: View {
 }
 
 #Preview {
-    UserListItem(user: DisplayUser.MockUser, userProvider: MockUserProvider(), actionDispatcher: UserManagementActionDispatcher())
+    UserListItem(user: DisplayUser.MockUser, userService: MockUserProvider())
 }

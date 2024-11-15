@@ -196,7 +196,7 @@ private class ReaderDiscoverStreamViewController: ReaderStreamViewController {
         // all the cell types have been registered by that time.
         // see: https://github.com/wordpress-mobile/WordPress-iOS/pull/23368
         tableView.register(ReaderTopicsCardCell.defaultNib, forCellReuseIdentifier: readerCardTopicsIdentifier)
-        tableView.register(ReaderSitesCardCell.self, forCellReuseIdentifier: readerCardSitesIdentifier)
+        tableView.register(ReaderRecommendedSitesCell.self, forCellReuseIdentifier: readerCardSitesIdentifier)
     }
 
     required init?(coder: NSCoder) {
@@ -263,9 +263,8 @@ private class ReaderDiscoverStreamViewController: ReaderStreamViewController {
     }
 
     func cell(for sites: [ReaderSiteTopic]) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: readerCardSitesIdentifier) as! ReaderSitesCardCell
-        cell.configure(sites)
-        cell.delegate = self
+        let cell = tableView.dequeueReusableCell(withIdentifier: readerCardSitesIdentifier) as! ReaderRecommendedSitesCell
+        cell.configure(with: sites, delegate: self)
         hideSeparator(for: cell)
         return cell
     }
@@ -366,9 +365,9 @@ private class ReaderDiscoverStreamViewController: ReaderStreamViewController {
     }
 }
 
-// MARK: - ReaderTopicsTableCardCellDelegate
+// MARK: - ReaderRecommendedSitesCellDelegate
 
-extension ReaderDiscoverStreamViewController: ReaderTopicsTableCardCellDelegate {
+extension ReaderDiscoverStreamViewController: ReaderRecommendedSitesCellDelegate {
     func didSelect(topic: ReaderAbstractTopic) {
         if topic as? ReaderTagTopic != nil {
             WPAnalytics.trackReader(.readerDiscoverTopicTapped)
@@ -382,16 +381,6 @@ extension ReaderDiscoverStreamViewController: ReaderTopicsTableCardCellDelegate 
 
             let topicStreamViewController = ReaderStreamViewController.controllerWithSiteID(siteTopic.siteID, isFeed: false)
             navigationController?.pushViewController(topicStreamViewController, animated: true)
-        }
-    }
-}
-
-// MARK: - ReaderSitesCardCellDelegate
-
-extension ReaderDiscoverStreamViewController: ReaderSitesCardCellDelegate {
-    func handleFollowActionForTopic(_ topic: ReaderAbstractTopic, for cell: ReaderSitesCardCell) {
-        toggleFollowingForTopic(topic) { success in
-            cell.didToggleFollowing(topic, with: success)
         }
     }
 }

@@ -9,6 +9,7 @@ struct MediaPickerMenu {
     weak var presentingViewController: UIViewController?
     var filter: MediaFilter?
     var isMultipleSelectionEnabled: Bool
+    var initialSelection: [Media]
 
     enum MediaFilter {
         case images
@@ -21,12 +22,15 @@ struct MediaPickerMenu {
     ///   - viewController: The view controller to use for presentation.
     ///   - filter: By default, `nil` – allow all content types.
     ///   - isMultipleSelectionEnabled: By default, `false`.
+    ///   - initialSelection: By default, `[]`.
     init(viewController: UIViewController,
          filter: MediaFilter? = nil,
-         isMultipleSelectionEnabled: Bool = false) {
+         isMultipleSelectionEnabled: Bool = false,
+         initialSelection: [Media] = []) {
         self.presentingViewController = viewController
         self.filter = filter
         self.isMultipleSelectionEnabled = isMultipleSelectionEnabled
+        self.initialSelection = initialSelection
     }
 }
 
@@ -185,7 +189,8 @@ extension MediaPickerMenu {
         let viewController = SiteMediaPickerViewController(
             blog: blog,
             filter: filter.map { [$0.mediaType] },
-            allowsMultipleSelection: isMultipleSelectionEnabled
+            allowsMultipleSelection: isMultipleSelectionEnabled,
+            initialSelection: initialSelection
         )
         viewController.delegate = delegate
         let navigation = UINavigationController(rootViewController: viewController)

@@ -54,7 +54,22 @@ struct ReaderSubscriptionHelper {
         })
     }
 
-    // MARK: Unsubscribe
+    // MARK: Subscribe/Unsubscribe (ReaderSiteTopic)
+
+    func toggleFollowingForSite(_ topic: ReaderSiteTopic, completion: ((Bool) -> Void)? = nil) {
+        if topic.following {
+            ReaderSubscribingNotificationAction().execute(for: topic.siteID, context: contextManager.mainContext, subscribe: false)
+        }
+
+        let service = ReaderTopicService(coreDataStack: contextManager)
+        service.toggleFollowing(forSite: topic, success: { follow in
+            ReaderHelpers.dispatchToggleFollowSiteMessage(site: topic, follow: follow, success: true)
+            completion?(true)
+        }, failure: { (follow, error) in
+            ReaderHelpers.dispatchToggleFollowSiteMessage(site: topic, follow: follow, success: false)
+            completion?(false)
+        })
+    }
 
     @MainActor
     func unfollow(_ site: ReaderSiteTopic) {

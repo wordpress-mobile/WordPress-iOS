@@ -11,18 +11,27 @@ struct ReaderPostMenu {
 
     func makeMenu() -> [UIMenuElement] {
         return [
-            makePrimaryActions(),
+            makePrimaryActionsSection(),
+            makeBlogSection(),
             shouldShowReportOrBlockMenu ? makeBlockOrReportActions() : nil
         ].compactMap { $0 }
     }
 
-    private func makePrimaryActions() -> UIMenu {
+    private func makePrimaryActionsSection() -> UIMenu {
         UIMenu(options: [.displayInline], children: [
             share,
             copyPostLink,
             viewPostInBrowser,
-            makeBlogMenu(),
+
         ].compactMap { $0 })
+    }
+
+    private func makeBlogSection() -> UIMenu {
+        var actions = [makeBlogMenu()]
+        if !post.isFollowing {
+            actions.append(subscribe)
+        }
+        return UIMenu(options: [.displayInline], children: actions)
     }
 
     private func makeBlogMenu() -> UIMenuElement {
@@ -35,8 +44,6 @@ struct ReaderPostMenu {
                 actions.append(manageNotifications(for: siteID))
             }
             actions += [ubsubscribe]
-        } else {
-            actions += [subscribe]
         }
         return UIMenu(title: post.blogNameForDisplay() ?? Strings.blogDetails, children: actions)
     }

@@ -38,10 +38,35 @@ final class GutenbergMediaPickerHelper: NSObject {
         context.present(picker, animated: true)
     }
 
-    func presentSiteMediaPicker(filter: WPMediaType, allowMultipleSelection: Bool, completion: @escaping GutenbergMediaPickerHelperCallback) {
+    func presentSiteMediaPicker(filter: WPMediaType, allowMultipleSelection: Bool, initialSelection: [Int] = [], completion: @escaping GutenbergMediaPickerHelperCallback) {
         didPickMediaCallback = completion
-        MediaPickerMenu(viewController: context, filter: .init(filter), isMultipleSelectionEnabled: allowMultipleSelection)
+        let initialMediaSelection = mapMediaIdsToMedia(initialSelection)
+        MediaPickerMenu(viewController: context, filter: .init(filter), isMultipleSelectionEnabled: allowMultipleSelection, initialSelection: initialMediaSelection)
             .showSiteMediaPicker(blog: post.blog, delegate: self)
+    }
+
+    private func mapMediaIdsToMedia(_ mediaIds: [Int]) -> [Media] {
+        assert(Thread.isMainThread, "mapMediaIdsToMedia should only be called on the main thread")
+        let context = ContextManager.shared.mainContext
+        let request = NSFetchRequest<NSManagedObject>(entityName: "Media")
+        request.predicate = NSPredicate(format: "mediaID IN %@", mediaIds.map { NSNumber(value: $0) })
+
+        do {
+            let fetchedMedia = try context.fetch(request) as? [Media] ?? []
+
+            // Create a dictionary for quick lookup
+            let mediaDict = Dictionary(uniqueKeysWithValues: fetchedMedia.compactMap { media -> (Int, Media)? in
+                if let mediaID = media.mediaID?.intValue {
+                    return (mediaID, media)
+                }
+                return nil
+            })
+
+            // Map the original mediaIds to Media objects, preserving order
+            return mediaIds.compactMap { mediaDict[$0] }
+        } catch {
+            return []
+        }
     }
 
     func presentCameraCaptureFullScreen(animated: Bool,

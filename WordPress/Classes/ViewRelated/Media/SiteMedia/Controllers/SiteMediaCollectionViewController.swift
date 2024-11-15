@@ -73,6 +73,14 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
         fatalError("init(coder:) has not been implemented")
     }
 
+    private func setInitialSelection(_ media: [Media]) {
+        updateSelection {
+            for item in media {
+                selection.add(item)
+            }
+        }
+    }
+
     func embed(in parentViewController: UIViewController) {
         parentViewController.addChild(self)
         parentViewController.view.addSubview(view)
@@ -159,14 +167,19 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     func setEditing(
         _ isEditing: Bool,
         allowsMultipleSelection: Bool = true,
-        isSelectionOrdered: Bool = false
+        isSelectionOrdered: Bool = false,
+        initialSelection: [Media]? = nil
     ) {
         guard self.isEditing != isEditing else { return }
         self.isEditing = isEditing
         self.allowsMultipleSelection = allowsMultipleSelection
         self.isSelectionOrdered = isSelectionOrdered
 
-        deselectAll()
+        if let selectedMedia = initialSelection, allowsMultipleSelection {
+            setInitialSelection(selectedMedia)
+        } else {
+            deselectAll()
+        }
     }
 
     private func updateSelection(_ perform: () -> Void) {

@@ -21,6 +21,10 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         SupportCoordinator(controllerToShowFrom: topmostPresentedViewController, tag: .editorHelp)
     }()
 
+    lazy var mediaPickerHelper: GutenbergMediaPickerHelper = {
+        return GutenbergMediaPickerHelper(context: self, post: post)
+    }()
+
     // MARK: - PostEditor
 
     private(set) lazy var postEditorStateContext: PostEditorStateContext = {
@@ -334,6 +338,73 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
 
     func editor(_ viewController: GutenbergKit.EditorViewController, performRequest: GutenbergKit.EditorNetworkRequest) async throws -> GutenbergKit.EditorNetworkResponse {
         throw URLError(.unknown)
+    }
+
+    func editor(_ viewController: GutenbergKit.EditorViewController, didRequestMediaFromSiteMediaLibrary config: OpenMediaLibraryAction) {
+        let flags = mediaFilterFlags(using: config.allowedTypes ?? [])
+
+        let initialSelectionArray: [Int]
+        switch config.value {
+        case .single(let id):
+            initialSelectionArray = [id]
+        case .multiple(let ids):
+            initialSelectionArray = ids
+        case .none:
+            initialSelectionArray = []
+        }
+
+        mediaPickerHelper.presentSiteMediaPicker(filter: flags, allowMultipleSelection: config.multiple, initialSelection: initialSelectionArray) { [weak self] assets in
+            guard let self, let media = assets as? [Media] else {
+                self?.editorViewController.setMediaUploadAttachment("[]")
+                return
+            }
+            let mediaInfos = media.map { item in
+                var metadata: [String: String] = [:]
+                if let videopressGUID = item.videopressGUID {
+                    metadata["videopressGUID"] = videopressGUID
+                }
+                return MediaInfo(id: item.mediaID?.int32Value, url: item.remoteURL, type: item.mediaTypeString, caption: item.caption, title: item.filename, alt: item.alt, metadata: [:])
+            }
+            if let jsonString = convertMediaInfoArrayToJSONString(mediaInfos) {
+                // Escape the string for JavaScript
+                let escapedJsonString = jsonString.replacingOccurrences(of: "'", with: "\\'")
+                editorViewController.setMediaUploadAttachment(escapedJsonString)
+            }
+        }
+    }
+
+    private func convertMediaInfoArrayToJSONString(_ mediaInfoArray: [MediaInfo]) -> String? {
+        do {
+            let jsonData = try JSONEncoder().encode(mediaInfoArray)
+            if let jsonString = String(data: jsonData, encoding: .utf8) {
+                return jsonString
+            }
+        } catch {
+            print("Error encoding MediaInfo array: \(error)")
+        }
+        return nil
+    }
+
+    private func mediaFilterFlags(using filterArray: [OpenMediaLibraryAction.MediaType]) -> WPMediaType {
+        var mediaType: Int = 0
+        for filter in filterArray {
+            switch filter {
+            case .image:
+                mediaType = mediaType | WPMediaType.image.rawValue
+            case .video:
+                mediaType = mediaType | WPMediaType.video.rawValue
+            case .audio:
+                mediaType = mediaType | WPMediaType.audio.rawValue
+            case .other:
+                mediaType = mediaType | WPMediaType.other.rawValue
+            case .any:
+                mediaType = mediaType | WPMediaType.all.rawValue
+            @unknown default:
+                fatalError()
+            }
+        }
+
+        return WPMediaType(rawValue: mediaType)
     }
 }
 

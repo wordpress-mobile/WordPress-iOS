@@ -8,7 +8,9 @@ env:
 steps:
 
   - label: ":wordpress: :testflight: WordPress Release Build (App Store Connect)"
-    command: ".buildkite/commands/release-build-wordpress.sh $BETA_RELEASE"
+    command: |
+      .buildkite/commands/checkout-release-branch.sh "$RELEASE_VERSION"
+      .buildkite/commands/release-build-wordpress.sh $IS_BETA_RELEASE
     plugins: [$CI_TOOLKIT_PLUGIN]
     notify:
       - slack: "#build-and-ship"
@@ -18,7 +20,9 @@ steps:
         allowed: false
 
   - label: ":jetpack: :testflight: Jetpack Release Build (App Store Connect)"
-    command: ".buildkite/commands/release-build-jetpack.sh"
+    command: |
+      .buildkite/commands/checkout-release-branch.sh "$RELEASE_VERSION"
+      .buildkite/commands/release-build-jetpack.sh
     plugins: [$CI_TOOLKIT_PLUGIN]
     notify:
       - slack: "#build-and-ship"

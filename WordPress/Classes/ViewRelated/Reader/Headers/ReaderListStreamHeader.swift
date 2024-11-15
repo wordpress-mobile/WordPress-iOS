@@ -1,39 +1,35 @@
-import Foundation
+import UIKit
 import WordPressShared
+import WordPressUI
 
-@objc open class ReaderListStreamHeader: UIView, ReaderStreamHeader {
-    @IBOutlet fileprivate weak var borderedView: UIView!
-    @IBOutlet fileprivate weak var titleLabel: UILabel!
-    @IBOutlet fileprivate weak var detailLabel: UILabel!
+final class ReaderListStreamHeader: ReaderBaseHeaderView, ReaderStreamHeader {
+    private let titleView = ReaderTitleView()
 
     // Required by ReaderStreamHeader protocol.
-    open weak var delegate: ReaderStreamHeaderDelegate?
+    public weak var delegate: ReaderStreamHeaderDelegate?
 
     // MARK: - Lifecycle Methods
 
-    open override func awakeFromNib() {
-        super.awakeFromNib()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
 
-        applyStyles()
+        contentView.addSubview(titleView)
+        titleView.pinEdges()
     }
 
-    @objc func applyStyles() {
-        backgroundColor = .systemGroupedBackground
-        borderedView.backgroundColor = .secondarySystemGroupedBackground
-        borderedView.layer.borderColor = UIColor.separator.cgColor
-        borderedView.layer.borderWidth = .hairlineBorderWidth
-        WPStyleGuide.applyReaderStreamHeaderTitleStyle(titleLabel)
-        WPStyleGuide.applyReaderStreamHeaderDetailStyle(detailLabel)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: - Configuration
 
-    @objc open func configureHeader(_ topic: ReaderAbstractTopic) {
-        assert(topic.isKind(of: ReaderListTopic.self))
+    @objc public func configureHeader(_ topic: ReaderAbstractTopic) {
+        wpAssert(topic.isKind(of: ReaderListTopic.self))
 
         let listTopic = topic as! ReaderListTopic
 
-        titleLabel.text = topic.title
-        detailLabel.text = listTopic.owner
+        titleView.titleLabel.text = topic.title
+        titleView.detailsTextView.text = listTopic.owner
+        titleView.detailsTextView.isHidden = listTopic.owner.isEmpty
     }
 }

@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 import WordPressShared
 
 @MainActor
@@ -11,17 +12,23 @@ class UserListViewModel: ObservableObject {
     }
 
     /// The initial set of users fetched by `fetchItems`
-    private var users: [DisplayUser] = []
-    private let userProvider: UserDataProvider
+    private var users: [DisplayUser] = [] {
+        didSet {
+            sortedUsers = self.sortUsers(users)
+        }
+    }
+    private var updateUsersTask: Task<Void, Never>?
+    private let userService: UserServiceProtocol
+    private var initialLoad = false
 
     @Published
-    var sortedUsers: [Section] = []
+    private(set) var sortedUsers: [Section] = []
 
     @Published
-    var error: Error? = nil
+    private(set) var error: Error? = nil
 
     @Published
-    var isLoadingItems: Bool = true
+    private(set) var isLoadingItems: Bool = true
 
     @Published
     var searchTerm: String = "" {
@@ -29,42 +36,47 @@ class UserListViewModel: ObservableObject {
             if searchTerm.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
                 setSearchResults(sortUsers(users))
             } else {
-                let searchResults = users.search(query: searchTerm)
+                let searchResults = users.search(searchTerm, using: \.searchString)
                 setSearchResults([Section(role: "Search Results", users: searchResults)])
             }
         }
     }
 
-    init(userProvider: UserDataProvider) {
-        self.userProvider = userProvider
+    init(userService: UserServiceProtocol) {
+        self.userService = userService
     }
 
-    func fetchItems() async {
-        withAnimation {
-            isLoadingItems = true
+    deinit {
+        updateUsersTask?.cancel()
+    }
+
+    func onAppear() async {
+        if updateUsersTask == nil {
+            updateUsersTask = Task { @MainActor [weak self, usersUpdates = userService.usersUpdates] in
+                for await users in usersUpdates {
+                    guard let self else { break }
+
+                    self.users = users
+                }
+            }
         }
 
-        do {
-            let users = try await userProvider.fetchUsers { cachedResults in
-                self.setUsers(cachedResults)
-            }
-            setUsers(users)
-        } catch {
-            self.error = error
-            isLoadingItems = false
+        if !initialLoad {
+            initialLoad = true
+            await fetchItems()
         }
+    }
+
+    private func fetchItems() async {
+        isLoadingItems = true
+        defer { isLoadingItems = false }
+
+        _ = try? await userService.fetchUsers()
     }
 
     @Sendable
     func refreshItems() async {
-        do {
-            let users = try await userProvider.fetchUsers { cachedResults in
-                self.setUsers(cachedResults)
-            }
-            setUsers(users)
-        } catch {
-            // Do nothing for now – this should probably show a "Toast" notification or something
-        }
+        _ = try? await userService.fetchUsers()
     }
 
     func setUsers(_ newValue: [DisplayUser]) {

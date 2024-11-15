@@ -4,101 +4,66 @@ import SwiftUI
 public class UserDeleteViewModel: ObservableObject {
 
     @Published
-    var isFetchingOtherUsers: Bool = false
+    private(set) var isFetchingOtherUsers: Bool = false
 
     @Published
-    var isDeletingUser: Bool = false
+    private(set) var isDeletingUser: Bool = false
 
     @Published
-    var error: Error? = nil
+    private(set) var error: Error? = nil
 
     @Published
-    var otherUserId: Int32 = 0
+    var selectedUser: DisplayUser? = nil
 
     @Published
-    var otherUsers: [DisplayUser] = []
+    private(set) var otherUsers: [DisplayUser] = []
 
     @Published
-    var deleteButtonIsDisabled: Bool = true
+    private(set) var deleteButtonIsDisabled: Bool = true
 
-    private let userProvider: UserDataProvider
-    private let actionDispatcher: UserManagementActionDispatcher
+    private let userService: UserServiceProtocol
     let user: DisplayUser
 
-    init(user: DisplayUser, userProvider: UserDataProvider, actionDispatcher: UserManagementActionDispatcher) {
+    init(user: DisplayUser, userService: UserServiceProtocol) {
         self.user = user
-        self.userProvider = userProvider
-        self.actionDispatcher = actionDispatcher
+        self.userService = userService
+
+        // Default `selectedUser` to be the first one in `otherUsers`.
+        // Using Combine here because `didSet` observers don't work with `@Published` properties.
+        //
+        // The implementation is equivalent to `if selectedUser == nil { selectedUser = otherUsers.first }`
+        $otherUsers.combineLatest($selectedUser)
+            .filter { _, selectedUser in selectedUser == nil }
+            .map { others, _ in others.first }
+            .assign(to: &$selectedUser)
+
     }
 
     func fetchOtherUsers() async {
-        withAnimation {
-            isFetchingOtherUsers = true
-            deleteButtonIsDisabled = true
+        isFetchingOtherUsers = true
+        deleteButtonIsDisabled = true
+
+        defer {
+            isFetchingOtherUsers = false
+            deleteButtonIsDisabled = otherUsers.isEmpty
         }
 
         do {
-            let otherUsers = try await userProvider.fetchUsers { self.didReceiveUsers($0) }
-
-            self.didReceiveUsers(otherUsers)
-        } catch {
-            withAnimation {
-                self.error = error
-                deleteButtonIsDisabled = true
-            }
-        }
-
-        withAnimation {
-            isFetchingOtherUsers = false
-        }
-    }
-
-    func didReceiveUsers(_ users: [DisplayUser]) {
-        withAnimation {
-            if otherUserId == 0 {
-                otherUserId = otherUsers.first?.id ?? 0
-            }
-
-            otherUsers = users
+            let users = try await userService.fetchUsers()
+            self.otherUsers = users
                 .filter { $0.id != self.user.id } // Don't allow re-assigning to yourself
                 .sorted(using: KeyPathComparator(\.username))
-            error = nil
-            deleteButtonIsDisabled = false
-            isFetchingOtherUsers = false
+        } catch {
+            self.error = error
         }
     }
 
-    func didTapDeleteUser(callback: @escaping () -> Void) {
-        debugPrint("Deleting \(user.username) and re-assigning their content to \(otherUserId)")
+    func deleteUser() async throws {
+        guard let otherUserId = selectedUser?.id, otherUserId != user.id else { return }
 
-        withAnimation {
-            error = nil
-        }
+        isDeletingUser = true
+        defer { isDeletingUser = false }
 
-        Task {
-            await MainActor.run {
-                withAnimation {
-                    isDeletingUser = true
-                }
-            }
-
-            do {
-                try await actionDispatcher.deleteUser(id: user.id, reassigningPostsTo: otherUserId)
-            } catch {
-                debugPrint(error.localizedDescription)
-                await MainActor.run {
-                    withAnimation {
-                        self.error = error
-                    }
-                }
-            }
-
-            await MainActor.run {
-                withAnimation {
-                    isDeletingUser = false
-                    callback()
-                }
-            }
-        }
+        try await userService.deleteUser(id: user.id, reassigningPostsTo: otherUserId)
     }
 }

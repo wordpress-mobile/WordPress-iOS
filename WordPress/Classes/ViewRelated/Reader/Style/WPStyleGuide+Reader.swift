@@ -34,18 +34,9 @@ extension WPStyleGuide {
 
     // MARK: - Apply Stream Header Styles
 
-    @objc public class func applyReaderStreamHeaderTitleStyle(_ label: UILabel, usesNewStyle: Bool = false) {
-        if usesNewStyle {
-            label.font = WPStyleGuide.fontForTextStyle(.title1, fontWeight: .bold)
-        } else {
-            label.font = WPStyleGuide.serifFontForTextStyle(.title2, fontWeight: .bold)
-        }
+    @objc public class func applyReaderStreamHeaderTitleStyle(_ label: UILabel) {
+        label.font = WPStyleGuide.fontForTextStyle(.title1, fontWeight: .bold)
         label.textColor = .label
-    }
-
-    @objc public class func applyReaderStreamHeaderDetailStyle(_ label: UILabel) {
-        label.font = fontForTextStyle(.subheadline, fontWeight: .regular)
-        label.textColor = .secondaryLabel
     }
 
     // MARK: - Button Styles and Text

@@ -333,7 +333,7 @@ private extension SupportTableViewController {
     ///
     func checkForAutomatticEmail() {
         guard let email = ZendeskUtils.userSupportEmail(),
-            (Constants.automatticEmails.first { email.contains($0) }) != nil else {
+              (ZendeskUtils.automatticEmails.first { email.contains($0) }) != nil else {
                 return
         }
 
@@ -526,7 +526,6 @@ private extension SupportTableViewController {
         static let jetpackMigrationFAQURL = URL(string: "https://jetpack.com/support/switch-to-the-jetpack-app/")
 
         static let forumsURL = URL(string: "https://wordpress.org/support/forum/mobile/")
-        static let automatticEmails = ["@automattic.com", "@a8c.com"]
     }
 }
 
