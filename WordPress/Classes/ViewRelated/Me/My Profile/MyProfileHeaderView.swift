@@ -24,7 +24,7 @@ class MyProfileHeaderView: UITableViewHeaderFooterView {
     }
     var gravatarEmail: String? = nil {
         didSet {
-            if let email = gravatarEmail {
+            if gravatarEmail != nil {
                 downloadAvatar()
             }
         }
