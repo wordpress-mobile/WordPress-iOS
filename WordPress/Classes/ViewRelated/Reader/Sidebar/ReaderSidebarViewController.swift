@@ -159,6 +159,8 @@ private struct ReaderSidebarSection<Content: View>: View {
     var isCompact: Bool
     @ViewBuilder var content: () -> Content
 
+    @Environment(\.layoutDirection) var layoutDirection
+
     var body: some View {
         if isCompact {
             Button {
@@ -169,7 +171,7 @@ private struct ReaderSidebarSection<Content: View>: View {
                         .font(.subheadline.weight(.semibold))
                         .foregroundStyle(.secondary)
                     Spacer()
-                    Image(systemName: isExpanded ? "chevron.down" : "chevron.right")
+                    Image(systemName: isExpanded ? "chevron.down" : (layoutDirection == .rightToLeft ? "chevron.left" : "chevron.right"))
                         .font(.system(size: 14).weight(.semibold))
                         .foregroundStyle(AppColor.brand)
                         .frame(width: 14)
