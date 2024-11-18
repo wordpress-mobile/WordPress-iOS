@@ -135,6 +135,8 @@ private struct ReaderSidebarView: View {
                     .foregroundStyle(.secondary.opacity(0.8))
             }
         }
+        .accessibilityElement()
+        .accessibilityLabel(title)
     }
 
     private var preferredTintColor: Color {
