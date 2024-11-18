@@ -57,6 +57,7 @@ private struct ReaderSidebarView: View {
     @FetchRequest(sortDescriptors: [SortDescriptor(\.title, order: .forward)])
     private var teams: FetchedResults<ReaderTeamTopic>
 
+    @Environment(\.layoutDirection) var layoutDirection
     @Environment(\.editMode) var editMode
 
     var isEditing: Bool { editMode?.wrappedValue.isEditing == true }
@@ -129,7 +130,7 @@ private struct ReaderSidebarView: View {
                 .lineLimit(1)
             if viewModel.isCompact {
                 Spacer()
-                Image(systemName: "chevron.right")
+                Image(systemName: layoutDirection == .rightToLeft ? "chevron.left" : "chevron.right")
                     .font(.system(size: 14).weight(.medium))
                     .foregroundStyle(.secondary.opacity(0.8))
             }
