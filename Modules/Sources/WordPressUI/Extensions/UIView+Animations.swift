@@ -70,10 +70,10 @@ extension UIView {
     /// Applies a fade in animation
     ///
     public func fadeInAnimation(_ completion: ((Bool) -> Void)? = nil) {
-        alpha = UIKitConstants.alphaMid
+        alpha = 0.5
 
         UIView.animate(withDuration: Animations.duration, animations: { [weak self] in
-            self?.alpha = UIKitConstants.alphaFull
+            self?.alpha = 1
         }, completion: { success in
             completion?(success)
         })
@@ -83,11 +83,11 @@ extension UIView {
     ///
     public func fadeInWithRotationAnimation(_ completion: ((Bool) -> Void)? = nil) {
         transform = CGAffineTransform.makeRotation(-270, scale: 3)
-        alpha = UIKitConstants.alphaZero
+        alpha = 0
 
         UIView.animate(withDuration: Animations.duration, animations: {
             self.transform = CGAffineTransform.makeRotation(0, scale: 0.75)
-            self.alpha = UIKitConstants.alphaFull
+            self.alpha = 1
         }, completion: { _ in
             UIView.animate(withDuration: Animations.duration, animations: {
                 self.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
@@ -102,7 +102,7 @@ extension UIView {
     public func fadeOutWithRotationAnimation(_ completion: ((Bool) -> Void)? = nil) {
         UIView.animate(withDuration: Animations.duration, animations: {
             self.transform = CGAffineTransform.makeRotation(120, scale: 3)
-            self.alpha = UIKitConstants.alphaZero
+            self.alpha = 0
         }, completion: { success in
             completion?(success)
         })
@@ -113,7 +113,7 @@ extension UIView {
     public func explodeAnimation(_ completion: ((Bool) -> Void)? = nil) {
         UIView.animate(withDuration: Animations.duration, animations: {
             self.transform = CGAffineTransform(scaleX: 3.0, y: 3.0)
-            self.alpha = UIKitConstants.alphaZero
+            self.alpha = 0
         }, completion: { success in
             completion?(success)
         })
@@ -123,10 +123,10 @@ extension UIView {
     ///
     public func implodeAnimation(_ completion: ((Bool) -> Void)? = nil) {
         transform = CGAffineTransform(scaleX: 3.0, y: 3.0)
-        alpha = UIKitConstants.alphaZero
+        alpha = 0
 
         UIView.animate(withDuration: Animations.duration, animations: {
-            self.alpha = UIKitConstants.alphaFull
+            self.alpha = 1
             self.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
         }, completion: { success in
             completion?(success)
@@ -143,7 +143,7 @@ extension UIView {
         }
 
         self.isHidden = false
-        let alpha: CGFloat = isHidden ? UIKitConstants.alphaZero : UIKitConstants.alphaFull
+        let alpha: CGFloat = isHidden ? 0 : 1
         UIView.animate(withDuration: Animations.duration, delay: 0, options: .transitionCrossDissolve, animations: {
             self.alpha = alpha
         }) { success in

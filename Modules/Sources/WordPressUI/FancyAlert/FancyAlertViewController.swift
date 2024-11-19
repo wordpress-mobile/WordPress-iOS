@@ -409,7 +409,7 @@ open class FancyAlertViewController: UIViewController {
 
     @objc func fadeAllViews(visible: Bool, alongside animation: ((FancyAlertViewController) -> Void)? = nil, completion: ((Bool) -> Void)? = nil) {
         UIView.animate(withDuration: Constants.fadeAnimationDuration, animations: {
-            self.alertView.contentViews.forEach { $0.alpha = (visible) ? UIKitConstants.alphaFull : UIKitConstants.alphaZero }
+            self.alertView.contentViews.forEach { $0.alpha = (visible) ? 1 : 0 }
             animation?(self)
         }, completion: completion)
     }

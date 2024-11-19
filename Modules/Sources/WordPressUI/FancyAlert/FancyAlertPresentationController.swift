@@ -11,7 +11,7 @@ open class FancyAlertPresentationController: UIPresentationController, UIViewCon
     private let dimmingView: UIView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.backgroundColor = UIColor(white: 0.0, alpha: Constants.dimmingViewAlpha)
-        $0.alpha = UIKitConstants.alphaZero
+        $0.alpha = 0
         return $0
     }(UIView())
 
@@ -22,12 +22,12 @@ open class FancyAlertPresentationController: UIPresentationController, UIViewCon
         containerView.pinSubviewToAllEdges(dimmingView)
 
         guard let transitionCoordinator = presentingViewController.transitionCoordinator else {
-            dimmingView.alpha = UIKitConstants.alphaFull
+            dimmingView.alpha = 1
             return
         }
 
         transitionCoordinator.animate(alongsideTransition: { _ in
-            self.dimmingView.alpha = UIKitConstants.alphaFull
+            self.dimmingView.alpha = 1
         })
     }
 
@@ -39,13 +39,13 @@ open class FancyAlertPresentationController: UIPresentationController, UIViewCon
 
     override open func dismissalTransitionWillBegin() {
         guard let coordinator = presentedViewController.transitionCoordinator else {
-            dimmingView.alpha = UIKitConstants.alphaZero
+            dimmingView.alpha = 0
             return
         }
 
         coordinator.animate(alongsideTransition: {
             _ in
-            self.dimmingView.alpha = UIKitConstants.alphaZero
+            self.dimmingView.alpha = 0
         })
     }
 
