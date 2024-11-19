@@ -29,6 +29,7 @@ open class DiscussionSettingsViewController: UITableViewController {
 
         tableView.reloadSelectedRow()
         tableView.deselectSelectedRowWithAnimation(true)
+        refreshSettings()
     }
 
     // MARK: - Setup Helpers
@@ -47,6 +48,15 @@ open class DiscussionSettingsViewController: UITableViewController {
     }
 
     // MARK: - Persistance!
+    private func refreshSettings() {
+        let service = BlogService(coreDataStack: ContextManager.shared)
+        service.syncSettings(for: blog, success: { [weak self] in
+            self?.tableView.reloadData()
+            DDLogInfo("Reloaded Settings")
+        }, failure: { (error: Error) in
+            DDLogError("Error while sync'ing blog settings: \(error)")
+        })
+    }
 
     private func setNeedsChangeSettings() {
         isSettingsChangeNeeded = true
