@@ -98,7 +98,7 @@ final class ReaderPostCellViewModel {
     }
 
     func toggleLike() {
-        ReaderLikeAction().execute(with: post)
+        ReaderLikeAction().execute(with: post, isFeedbackNeeded: false)
     }
 }
 
@@ -107,8 +107,8 @@ struct ReaderPostToolbarViewModel {
     let isCommentsEnabled: Bool
     let commentCount: Int
     let isLikesEnabled: Bool
-    let likeCount: Int
-    let isLiked: Bool
+    var likeCount: Int
+    var isLiked: Bool
 
     static func make(post: ReaderPost) -> ReaderPostToolbarViewModel {
         ReaderPostToolbarViewModel(
