@@ -7,6 +7,8 @@ import WordPressShared
 ///
 open class DiscussionSettingsViewController: UITableViewController {
     private let tracksDiscussionSettingsKey = "site_settings_discussion"
+    private var isChangingSettings = false
+    private var isSettingsChangeNeeded = false
 
     // MARK: - Initializers / Deinitializers
     @objc public convenience init(blog: Blog) {
@@ -17,21 +19,16 @@ open class DiscussionSettingsViewController: UITableViewController {
     // MARK: - View Lifecycle
     open override func viewDidLoad() {
         super.viewDidLoad()
+
         setupNavBar()
         setupTableView()
-        setupNotificationListeners()
     }
 
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         tableView.reloadSelectedRow()
         tableView.deselectSelectedRowWithAnimation(true)
-        refreshSettings()
-    }
-
-    open override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        saveSettingsIfNeeded()
     }
 
     // MARK: - Setup Helpers
@@ -49,44 +46,42 @@ open class DiscussionSettingsViewController: UITableViewController {
         clearsSelectionOnViewWillAppear = false
     }
 
-    private func setupNotificationListeners() {
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(DiscussionSettingsViewController.handleContextDidChange(_:)),
-                                       name: NSNotification.Name.NSManagedObjectContextObjectsDidChange,
-                                       object: settings.managedObjectContext)
-    }
-
     // MARK: - Persistance!
-    private func refreshSettings() {
-        let service = BlogService(coreDataStack: ContextManager.shared)
-        service.syncSettings(for: blog, success: { [weak self] in
-            self?.tableView.reloadData()
-            DDLogInfo("Reloaded Settings")
-        }, failure: { (error: Error) in
-            DDLogError("Error while sync'ing blog settings: \(error)")
-        })
+
+    private func setNeedsChangeSettings() {
+        isSettingsChangeNeeded = true
+        saveSettingsIfNeeded()
     }
 
     private func saveSettingsIfNeeded() {
-        if !settings.hasChanges {
+        guard !isChangingSettings && isSettingsChangeNeeded else {
             return
         }
+        isChangingSettings = true
+        isSettingsChangeNeeded = false
+        navigationItem.rightBarButtonItem = .activityIndicator
+
         let service = BlogService(coreDataStack: ContextManager.shared)
-        service.updateSettings(for: blog, success: nil, failure: { (error: Error) -> Void in
-            DDLogError("Error while persisting settings: \(error)")
+        service.updateSettings(for: blog, success: { [weak self] in
+            self?.didFinishChangingSettings(nil)
+        }, failure: { [weak self] error -> Void in
+            self?.didFinishChangingSettings(error)
         })
     }
 
-    @objc open func handleContextDidChange(_ note: Foundation.Notification) {
-        guard let context = note.object as? NSManagedObjectContext else {
-            return
+    private func didFinishChangingSettings(_ error: Error?) {
+        isChangingSettings = false
+        if isSettingsChangeNeeded {
+            saveSettingsIfNeeded()
+        } else {
+            navigationItem.rightBarButtonItem = nil
         }
-
-        if !context.updatedObjects.contains(settings) {
-            return
+        if let error {
+            DDLogError("Error while persisting settings: \(error)")
+            let alert = UIAlertController(title: Strings.errorTitle, message: error.localizedDescription, preferredStyle: .alert)
+            alert.addAction(.init(title: SharedStrings.Button.ok, style: .default, handler: nil))
+            present(alert, animated: true)
         }
-
-        saveSettingsIfNeeded()
     }
 
     // MARK: - UITableViewDataSoutce Methods
@@ -166,7 +161,7 @@ open class DiscussionSettingsViewController: UITableViewController {
         guard let enabled = payload as? Bool else {
             return
         }
-        trackSettingsChange(fieldName: "allow_comments", value: enabled as Any)
+        didChangeSetting("allow_comments", value: enabled as Any)
         settings.commentsAllowed = enabled
     }
 
@@ -174,7 +169,7 @@ open class DiscussionSettingsViewController: UITableViewController {
         guard let enabled = payload as? Bool else {
             return
         }
-        trackSettingsChange(fieldName: "receive_pingbacks", value: enabled as Any)
+        didChangeSetting("receive_pingbacks", value: enabled as Any)
         settings.pingbackInboundEnabled = enabled
     }
 
@@ -182,7 +177,7 @@ open class DiscussionSettingsViewController: UITableViewController {
         guard let enabled = payload as? Bool else {
             return
         }
-        trackSettingsChange(fieldName: "send_pingbacks", value: enabled as Any)
+        didChangeSetting("send_pingbacks", value: enabled as Any)
         settings.pingbackOutboundEnabled = enabled
     }
 
@@ -190,7 +185,7 @@ open class DiscussionSettingsViewController: UITableViewController {
         guard let enabled = payload as? Bool else {
             return
         }
-        trackSettingsChange(fieldName: "require_name_and_email", value: enabled as Any)
+        didChangeSetting("require_name_and_email", value: enabled as Any)
         settings.commentsRequireNameAndEmail = enabled
     }
 
@@ -198,7 +193,7 @@ open class DiscussionSettingsViewController: UITableViewController {
         guard let enabled = payload as? Bool else {
             return
         }
-        trackSettingsChange(fieldName: "require_registration", value: enabled as Any)
+        didChangeSetting("require_registration", value: enabled as Any)
         settings.commentsRequireRegistration = enabled
     }
 
@@ -220,7 +215,7 @@ open class DiscussionSettingsViewController: UITableViewController {
             self?.settings.commentsCloseAutomaticallyAfterDays = newValue as NSNumber
 
             let value: Any = enabled ? newValue : "disabled"
-            self?.trackSettingsChange(fieldName: "close_commenting", value: value)
+            self?.didChangeSetting("close_commenting", value: value)
         }
         navigationController?.pushViewController(pickerViewController, animated: true)
     }
@@ -235,7 +230,7 @@ open class DiscussionSettingsViewController: UITableViewController {
             guard let newSortOrder = CommentsSorting(rawValue: selected as! Int) else {
                 return
             }
-            self?.trackSettingsChange(fieldName: "comments_sort_by", value: selected as Any)
+            self?.didChangeSetting("comments_sort_by", value: selected as Any)
             self?.settings.commentsSorting = newSortOrder
         }
         navigationController?.pushViewController(settingsViewController, animated: true)
@@ -252,7 +247,7 @@ open class DiscussionSettingsViewController: UITableViewController {
                 return
             }
             self?.settings.commentsThreading = newThreadingDepth
-            self?.trackSettingsChange(fieldName: "comments_threading", value: selected as Any)
+            self?.didChangeSetting("comments_threading", value: selected as Any)
         }
         navigationController?.pushViewController(settingsViewController, animated: true)
     }
@@ -273,7 +268,7 @@ open class DiscussionSettingsViewController: UITableViewController {
             self?.settings.commentsPageSize = newValue as NSNumber
 
             let value: Any = enabled ? newValue : "disabled"
-            self?.trackSettingsChange(fieldName: "comments_paging", value: value)
+            self?.didChangeSetting("comments_paging", value: value)
         }
         navigationController?.pushViewController(pickerViewController, animated: true)
     }
@@ -290,7 +285,7 @@ open class DiscussionSettingsViewController: UITableViewController {
                 return
             }
             self?.settings.commentsAutoapproval = newApprovalStatus
-            self?.trackSettingsChange(fieldName: "comments_automatically_approve", value: selected as Any)
+            self?.didChangeSetting("comments_automatically_approve", value: selected as Any)
         }
         navigationController?.pushViewController(settingsViewController, animated: true)
     }
@@ -306,7 +301,7 @@ open class DiscussionSettingsViewController: UITableViewController {
         pickerViewController.pickerSelectedValue = settings.commentsMaximumLinks as? Int
         pickerViewController.onChange = { [weak self] (enabled: Bool, newValue: Int) in
             self?.settings.commentsMaximumLinks = newValue as NSNumber
-            self?.trackSettingsChange(fieldName: "comments_links", value: newValue as Any)
+            self?.didChangeSetting("comments_links", value: newValue as Any)
         }
         navigationController?.pushViewController(pickerViewController, animated: true)
     }
@@ -320,7 +315,7 @@ open class DiscussionSettingsViewController: UITableViewController {
         settingsViewController.footerText = NSLocalizedString("When a comment contains any of these words in its content, name, URL, e-mail or IP, it will be held in the moderation queue. You can enter partial words, so \"press\" will match \"WordPress\".", comment: "Text rendered at the bottom of the Discussion Moderation Keys editor")
         settingsViewController.onChange = { [weak self] (updated: Set<String>) in
             self?.settings.commentsModerationKeys = updated
-            self?.trackSettingsChange(fieldName: "comments_hold_for_moderation", value: updated.count as Any)
+            self?.didChangeSetting("comments_hold_for_moderation", value: updated.count as Any)
         }
         navigationController?.pushViewController(settingsViewController, animated: true)
     }
@@ -334,13 +329,14 @@ open class DiscussionSettingsViewController: UITableViewController {
         settingsViewController.footerText = NSLocalizedString("When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\".", comment: "Text rendered at the bottom of the Discussion Blocklist Keys editor")
         settingsViewController.onChange = { [weak self] (updated: Set<String>) in
             self?.settings.commentsBlocklistKeys = updated
-            self?.trackSettingsChange(fieldName: "comments_block_list", value: updated.count as Any)
+            self?.didChangeSetting("comments_block_list", value: updated.count as Any)
         }
         navigationController?.pushViewController(settingsViewController, animated: true)
     }
 
-    private func trackSettingsChange(fieldName: String, value: Any?) {
+    private func didChangeSetting(_ fieldName: String, value: Any?) {
         WPAnalytics.trackSettingsChange(tracksDiscussionSettingsKey, fieldName: fieldName, value: value)
+        setNeedsChangeSettings()
     }
 
     // MARK: - Computed Properties
@@ -565,4 +561,8 @@ open class DiscussionSettingsViewController: UITableViewController {
     private let commentsLinksMaximumValue = 100
     private let commentsAutocloseMinimumValue = 1
     private let commentsAutocloseMaximumValue = 120
+}
+
+private enum Strings {
+    static let errorTitle = NSLocalizedString("discussionSettings.saveErrorTitle", value: "Failed to save settings", comment: "Error tilte")
 }
