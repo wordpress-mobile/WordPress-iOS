@@ -1,13 +1,16 @@
 import SwiftUI
+import WordPressUI
 
 public struct UserListView: View {
 
     @StateObject
     private var viewModel: UserListViewModel
     private let userService: UserServiceProtocol
+    private let applicationTokenListDataProvider: ApplicationTokenListDataProvider
 
-    public init(userService: UserServiceProtocol) {
+    public init(userService: UserServiceProtocol, applicationTokenListDataProvider: ApplicationTokenListDataProvider) {
         self.userService = userService
+        self.applicationTokenListDataProvider = applicationTokenListDataProvider
         _viewModel = StateObject(wrappedValue: UserListViewModel(userService: userService))
     }
 
@@ -31,7 +34,7 @@ public struct UserListView: View {
                                     .listRowBackground(Color.clear)
                             } else {
                                 ForEach(section.users) { user in
-                                    UserListItem(user: user, userService: userService)
+                                    UserListItem(user: user, userService: userService, applicationTokenListDataProvider: applicationTokenListDataProvider)
                                 }
                             }
                         }
@@ -70,18 +73,18 @@ public struct UserListView: View {
 
 #Preview("Loading") {
     NavigationView {
-        UserListView(userService: MockUserProvider())
+        UserListView(userService: MockUserProvider(), applicationTokenListDataProvider: StaticTokenProvider(tokens: .success(.testTokens)))
     }
 }
 
 #Preview("Error") {
     NavigationView {
-        UserListView(userService: MockUserProvider(scenario: .error))
+        UserListView(userService: MockUserProvider(scenario: .error), applicationTokenListDataProvider: StaticTokenProvider(tokens: .success(.testTokens)))
     }
 }
 
 #Preview("List") {
     NavigationView {
-        UserListView(userService: MockUserProvider(scenario: .dummyData))
+        UserListView(userService: MockUserProvider(scenario: .dummyData), applicationTokenListDataProvider: StaticTokenProvider(tokens: .success(.testTokens)))
     }
 }

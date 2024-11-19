@@ -20,7 +20,15 @@ actor UserService: UserServiceProtocol {
     nonisolated let usersUpdates: AsyncStream<[DisplayUser]>
     private nonisolated let usersUpdatesContinuation: AsyncStream<[DisplayUser]>.Continuation
 
-    private var currentUser: UserWithEditContext?
+    private var _currentUser: UserWithEditContext?
+    private var currentUser: UserWithEditContext? {
+        get async {
+            if _currentUser == nil {
+                _currentUser = try? await self.client.api.users.retrieveMeWithEditContext()
+            }
+            return _currentUser
+        }
+    }
 
     init(client: WordPressClient) {
         self.client = client
@@ -53,16 +61,12 @@ actor UserService: UserServiceProtocol {
         return task
     }
 
-    func isCurrentUserCapableOf(_ capability: String) async throws -> Bool {
-        let currentUser: UserWithEditContext
-        if let cached = self.currentUser {
-            currentUser = cached
-        } else {
-            currentUser = try await self.client.api.users.retrieveMeWithEditContext()
-            self.currentUser = currentUser
-        }
+    func isCurrentUserCapableOf(_ capability: String) async -> Bool {
+        await currentUser?.capabilities.keys.contains(capability) == true
+    }
 
-        return currentUser.capabilities.keys.contains(capability)
+    func isCurrentUser(_ user: DisplayUser) async -> Bool {
+        await currentUser?.id == user.id
     }
 
     func deleteUser(id: Int32, reassigningPostsTo newUserId: Int32) async throws {

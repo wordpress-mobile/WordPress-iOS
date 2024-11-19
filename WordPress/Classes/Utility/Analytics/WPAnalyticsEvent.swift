@@ -598,7 +598,6 @@ import Foundation
 
     // Reading preferences
     case readingPreferencesOpened
-    case readingPreferencesFeedbackTapped
     case readingPreferencesItemTapped
     case readingPreferencesSaved
     case readingPreferencesClosed
@@ -1648,8 +1647,6 @@ import Foundation
         // Reading Preferences
         case .readingPreferencesOpened:
             return "reader_reading_preferences_opened"
-        case .readingPreferencesFeedbackTapped:
-            return "reader_reading_preferences_feedback_tapped"
         case .readingPreferencesItemTapped:
             return "reader_reading_preferences_item_tapped"
         case .readingPreferencesSaved:

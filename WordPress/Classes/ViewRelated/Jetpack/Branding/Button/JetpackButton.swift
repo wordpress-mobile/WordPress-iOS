@@ -78,7 +78,6 @@ class JetpackButton: CircularImageButton {
         imageEdgeInsets = Appearance.iconInsets
         contentEdgeInsets = Appearance.contentInsets
         imageView?.contentMode = .scaleAspectFit
-        flipInsetsForRightToLeftLayoutDirection()
         setImageBackgroundColor(imageBackgroundColor)
     }
 

@@ -3,7 +3,7 @@ import UIKit
 import WordPressUI
 import Combine
 
-protocol ReaderRecommendedSitesCellDelegate: AnyObject {
+protocol ReaderRecommendationsCellDelegate: AnyObject {
     func didSelect(topic: ReaderAbstractTopic)
 }
 
@@ -53,7 +53,7 @@ final class ReaderRecommendedSitesCell: UITableViewCell {
         }())
     }
 
-    func configure(with sites: [ReaderSiteTopic], delegate: ReaderRecommendedSitesCellDelegate) {
+    func configure(with sites: [ReaderSiteTopic], delegate: ReaderRecommendationsCellDelegate) {
         for site in sites {
             let siteView = ReaderRecommendedSitesCellView()
             siteView.configure(with: site)
@@ -77,7 +77,7 @@ private final class ReaderRecommendedSitesCellView: UIView {
         return configuration
     }())
 
-    weak var delegate: ReaderRecommendedSitesCellDelegate?
+    weak var delegate: ReaderRecommendationsCellDelegate?
 
     private let iconSize: SiteIconViewModel.Size = .regular
     private var site: ReaderSiteTopic?

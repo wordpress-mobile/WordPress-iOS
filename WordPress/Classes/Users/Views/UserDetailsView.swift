@@ -21,15 +21,18 @@ struct UserDetailsView: View {
     @StateObject
     fileprivate var viewModel: UserDetailViewModel
     @StateObject
+    fileprivate var applicationTokenListViewModel: ApplicationTokenListViewModel
+    @StateObject
     fileprivate var deleteUserViewModel: UserDeleteViewModel
 
     @Environment(\.dismiss)
     var dismissAction: DismissAction
 
-    init(user: DisplayUser, userService: UserServiceProtocol) {
+    init(user: DisplayUser, userService: UserServiceProtocol, applicationTokenListDataProvider: ApplicationTokenListDataProvider) {
         self.user = user
         self.userService = userService
         _viewModel = StateObject(wrappedValue: UserDetailViewModel(userService: userService))
+        _applicationTokenListViewModel = StateObject(wrappedValue: ApplicationTokenListViewModel(dataProvider: applicationTokenListDataProvider))
         _deleteUserViewModel = StateObject(wrappedValue: UserDeleteViewModel(user: user, userService: userService))
     }
 
@@ -55,6 +58,14 @@ struct UserDetailsView: View {
                 }
                 if let biography = user.biography, !biography.isEmpty {
                     makeRow(title: Strings.bioFieldTitle, content: biography)
+                }
+            }
+
+            if !applicationTokenListViewModel.applicationTokens.isEmpty {
+                Section(ApplicationTokenListView.title) {
+                    ForEach(applicationTokenListViewModel.applicationTokens) { token in
+                        ApplicationTokenListItemView(item: token)
+                    }
                 }
             }
 
@@ -104,6 +115,10 @@ struct UserDetailsView: View {
             Task {
                 await viewModel.loadCurrentUserRole()
                 await deleteUserViewModel.fetchOtherUsers()
+
+                if await userService.isCurrentUser(user) {
+                    await applicationTokenListViewModel.fetchTokens()
+                }
             }
         }
     }
@@ -382,6 +397,6 @@ private extension String {
 
 #Preview {
     NavigationStack {
-        UserDetailsView(user: DisplayUser.MockUser, userService: MockUserProvider())
+        UserDetailsView(user: DisplayUser.MockUser, userService: MockUserProvider(), applicationTokenListDataProvider: StaticTokenProvider(tokens: .success(.testTokens)))
     }
 }

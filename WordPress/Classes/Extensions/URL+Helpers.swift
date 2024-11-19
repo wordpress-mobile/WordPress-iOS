@@ -151,4 +151,15 @@ extension URL {
         components?.queryItems = queryItems
         return components?.url ?? self
     }
+
+    /// Gravatar doesn't support "Cache-Control: none" header. So we add a random query parameter to
+    /// bypass the backend cache and get the latest image.
+    public func appendingGravatarCacheBusterParam() -> URL {
+        var urlComponents = URLComponents(url: self, resolvingAgainstBaseURL: false)
+        if urlComponents?.queryItems == nil {
+            urlComponents?.queryItems = []
+        }
+        urlComponents?.queryItems?.append(.init(name: "_", value: "\(NSDate().timeIntervalSince1970)"))
+        return urlComponents?.url ?? self
+    }
 }

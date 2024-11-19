@@ -20,10 +20,19 @@ class GravatarEmailTableViewCell: UITableViewCell {
     ///
     public static let reuseIdentifier = "GravatarEmailTableViewCell"
     public var onChangeSelectionHandler: ((_ sender: UITextField) -> Void)?
+    private var gravatarPlaceholderImage: UIImage? = nil
+    private var gravatarPreferredSize: CGSize = .zero
+    private var email: String?
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshAvatar), name: .GravatarQEAvatarUpdateNotification, object: nil)
+    }
 
     /// Public Methods
     ///
     public func configure(withEmail email: String?, andPlaceholder placeholderImage: UIImage? = nil, hasBorders: Bool = false) {
+        self.email = email
         gravatarImageView?.tintColor = WordPressAuthenticator.shared.unifiedStyle?.borderColor ?? WordPressAuthenticator.shared.style.primaryNormalBorderColor
         emailLabel?.textColor = WordPressAuthenticator.shared.unifiedStyle?.gravatarEmailTextColor ?? WordPressAuthenticator.shared.unifiedStyle?.textSubtleColor ?? WordPressAuthenticator.shared.style.subheadlineColor
         emailLabel?.font = UIFont.preferredFont(forTextStyle: .body)
@@ -36,9 +45,10 @@ class GravatarEmailTableViewCell: UITableViewCell {
                 gravatarImageView?.image = gridicon
                 return
         }
-
+        self.gravatarPlaceholderImage = placeholderImage ?? gridicon
+        self.gravatarPreferredSize = gridicon.size
         Task {
-            try await gravatarImageView?.setGravatarImage(with: email, placeholder: placeholderImage ?? gridicon, preferredSize: gridicon.size)
+            try await downloadAvatar()
         }
 
         gravatarImageViewSizeConstraints.forEach { constraint in
@@ -53,6 +63,18 @@ class GravatarEmailTableViewCell: UITableViewCell {
         containerView.layer.borderWidth = hasBorders ? 1 : 0
         containerView.layer.cornerRadius = hasBorders ? 8 : 0
         containerView.layer.borderColor = hasBorders ? UIColor.systemGray3.cgColor : UIColor.clear.cgColor
+    }
+
+    @objc private func refreshAvatar(_ notification: Foundation.Notification) {
+        guard let email, notification.userInfoHasEmail(email) else { return }
+        Task {
+            try await downloadAvatar(forceRefresh: true)
+        }
+    }
+
+    private func downloadAvatar(forceRefresh: Bool = false) async throws {
+        guard let email, let gravatarPlaceholderImage else { return }
+        try await gravatarImageView?.setGravatarImage(with: email, placeholder: gravatarPlaceholderImage, preferredSize: gravatarPreferredSize, forceRefresh: forceRefresh)
     }
 
     func updateEmailAddress(_ email: String?) {

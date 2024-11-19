@@ -5,7 +5,7 @@ class MyProfileHeaderView: UITableViewHeaderFooterView {
     // MARK: - Public Properties and Outlets
     @IBOutlet var gravatarImageView: CircularImageView!
     @IBOutlet var gravatarButton: UIButton!
-
+    weak var presentingViewController: UIViewController?
     // A fake button displayed on top of gravatarImageView.
     let imageViewButton = UIButton(type: .system)
 
@@ -24,8 +24,8 @@ class MyProfileHeaderView: UITableViewHeaderFooterView {
     }
     var gravatarEmail: String? = nil {
         didSet {
-            if let email = gravatarEmail {
-                gravatarImageView.downloadGravatar(for: email, gravatarRating: .x)
+            if gravatarEmail != nil {
+                downloadAvatar()
             }
         }
     }
@@ -51,10 +51,23 @@ class MyProfileHeaderView: UITableViewHeaderFooterView {
         configureGravatarButton()
     }
 
+    private func downloadAvatar(forceRefresh: Bool = false) {
+        if let email = gravatarEmail {
+            gravatarImageView.downloadGravatar(for: email, gravatarRating: .x, forceRefresh: forceRefresh)
+        }
+    }
+
+    @objc private func refreshAvatar(_ notification: Foundation.Notification) {
+        guard let email = gravatarEmail,
+              notification.userInfoHasEmail(email) else { return }
+        downloadAvatar(forceRefresh: true)
+    }
+
     /// Overrides the current Gravatar Image (set via Email) with a given image reference.
     /// Plus, the internal image cache is updated, to prevent undesired glitches upon refresh.
     ///
     func overrideGravatarImage(_ image: UIImage) {
+        guard !RemoteFeatureFlag.gravatarQuickEditor.enabled() else { return }
         gravatarImageView.image = image
 
         // Note:
@@ -81,9 +94,23 @@ class MyProfileHeaderView: UITableViewHeaderFooterView {
         gravatarImageView.addSubview(imageViewButton)
         imageViewButton.translatesAutoresizingMaskIntoConstraints = false
         imageViewButton.pinSubviewToAllEdges(gravatarImageView)
+        if RemoteFeatureFlag.gravatarQuickEditor.enabled() {
+            imageViewButton.addTarget(self, action: #selector(gravatarButtonTapped), for: .touchUpInside)
+            NotificationCenter.default.addObserver(self, selector: #selector(refreshAvatar), name: .GravatarQEAvatarUpdateNotification, object: nil)
+        }
     }
 
     private func configureGravatarButton() {
         gravatarButton.tintColor = UIAppColor.primary
+        if RemoteFeatureFlag.gravatarQuickEditor.enabled() {
+            gravatarButton.addTarget(self, action: #selector(gravatarButtonTapped), for: .touchUpInside)
+        }
+    }
+
+    @objc private func gravatarButtonTapped() {
+        guard let email = gravatarEmail,
+              let presenter = GravatarQuickEditorPresenter(email: email),
+              let presentingViewController else { return }
+        presenter.presentQuickEditor(on: presentingViewController)
     }
 }

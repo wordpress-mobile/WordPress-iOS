@@ -178,6 +178,7 @@ import AutomatticTracks
     private var showConfirmation = true
 
     var isEmbeddedInDiscover = false
+    var preferredTableHeaderView: UIView?
 
     var isCompact = true {
         didSet {
@@ -458,7 +459,8 @@ import AutomatticTracks
     // MARK: - Configuration / Topic Presentation
 
     private func configureStreamHeader() {
-        guard !isEmbeddedInDiscover else {
+        if let headerView = preferredTableHeaderView {
+            setHeaderView(headerView) // Important to set _after_ isCompact is set in viewDidLoad
             return
         }
         guard let headerView = headerForStream(readerTopic, container: tableViewController) else {
@@ -476,22 +478,6 @@ import AutomatticTracks
         (headerView as? ReaderBaseHeaderView)?.isCompact = isCompact
         tableView.tableHeaderView = headerView
         streamHeader = headerView as? ReaderStreamHeader
-
-        // This feels somewhat hacky, but it is the only way I found to insert a stack view into the header without breaking the autolayout constraints.
-        let centerConstraint = headerView.centerXAnchor.constraint(equalTo: tableView.centerXAnchor)
-        let topConstraint = headerView.topAnchor.constraint(equalTo: tableView.topAnchor)
-        let headerWidthConstraint = headerView.widthAnchor.constraint(equalTo: tableView.widthAnchor)
-        headerWidthConstraint.priority = UILayoutPriority(999)
-        centerConstraint.priority = UILayoutPriority(999)
-
-        NSLayoutConstraint.activate([
-            centerConstraint,
-            headerWidthConstraint,
-            topConstraint
-        ])
-
-        tableView.tableHeaderView?.layoutIfNeeded()
-        tableView.tableHeaderView = tableView.tableHeaderView
     }
 
     /// Updates the content based on the values of `readerTopic` and `contentType`
@@ -1139,6 +1125,10 @@ import AutomatticTracks
             completion?(false)
         })
     }
+
+    func getPost(at indexPath: IndexPath) -> ReaderPost? {
+        content.object(at: indexPath)
+    }
 }
 
 // MARK: - ReaderStreamHeaderDelegate
@@ -1447,6 +1437,20 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         // Do nothing
     }
 
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        guard let post = getPost(at: indexPath) else {
+            return nil
+        }
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [weak self] _ in
+            guard let self else { return nil }
+            return UIMenu(children: ReaderPostMenu(
+                post: post,
+                topic: readerTopic,
+                anchor: self.tableView.cellForRow(at: indexPath) ?? self.view,
+                viewController: self
+            ).makeMenu())
+        }
+    }
 }
 
 // MARK: - SearchableActivity Conformance

@@ -226,13 +226,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         })
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        // Bar items may change if we're moving single pane to split view
-        self.configureNavigationBar()
-    }
-
     override func accessibilityPerformEscape() -> Bool {
         navigationController?.popViewController(animated: true)
         return true
