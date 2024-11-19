@@ -7,4 +7,6 @@
 XCODE_VERSION=$(sed -E -n 's/^(~> )?(.*)/xcode-\2/p' .xcode-version)
 export IMAGE_ID="$XCODE_VERSION"
 
+# Note: `-v4` suffix was added to use xcode-16.1-v4 image; remember to remove that suffix during the next Xcode update
+export IMAGE_ID="$XCODE_VERSION-v4"
 export CI_TOOLKIT_PLUGIN="automattic/a8c-ci-toolkit#3.3.0"
