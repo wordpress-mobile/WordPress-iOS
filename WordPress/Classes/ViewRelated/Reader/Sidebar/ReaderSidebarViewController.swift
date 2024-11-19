@@ -46,6 +46,14 @@ final class ReaderSidebarViewController: UIHostingController<AnyView> {
     }
 }
 
+extension ReaderSidebarViewController: ScrollableViewController {
+    func scrollViewToTop() {
+        if let scrollView = contentScrollView(for: .top) {
+            scrollView.scrollToTop(animated: true)
+        }
+    }
+}
+
 private struct ReaderSidebarView: View {
     @ObservedObject var viewModel: ReaderSidebarViewModel
 
