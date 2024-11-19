@@ -384,11 +384,7 @@ private extension CommentContentTableViewCell {
         likeButton.configuration = makeReactionButtonConfiguration(systemImage: "star")
         likeButton.tintColor = .label
 
-        // TODO: check if animations work
-        // TODO: check if Dynamic Type works
-
         likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
-//        likeButton?.adjustsImageSizeForAccessibilityContentSizeCategory = true
         likeButton.maximumContentSizeCategory = .accessibilityMedium
         updateLikeButton(liked: false, numberOfLikes: 0)
         likeButton.accessibilityIdentifier = .likeButtonAccessibilityId
@@ -458,11 +454,6 @@ private extension CommentContentTableViewCell {
     func updateLikeButton(liked: Bool, numberOfLikes: Int, animated: Bool = false) {
         isLiked = liked
         likeCount = numberOfLikes
-
-        if isLiked {
-            UINotificationFeedbackGenerator().notificationOccurred(.success)
-        }
-
         likeButton.tintColor = liked ? Style.likedTintColor : .label
         if var configuration = likeButton.configuration {
             configuration.image = UIImage(systemName: liked ? "star.fill" : "star")
@@ -472,6 +463,9 @@ private extension CommentContentTableViewCell {
             wpAssertionFailure("missing configuration")
         }
         likeButton.accessibilityLabel = liked ? String(numberOfLikes) + .commentIsLiked : String(numberOfLikes) + .commentIsNotLiked
+        if liked && animated {
+            likeButton.imageView?.fadeInWithRotationAnimation()
+        }
     }
 
     // MARK: Content Rendering
