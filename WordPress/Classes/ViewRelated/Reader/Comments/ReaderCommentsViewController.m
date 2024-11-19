@@ -974,9 +974,10 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 {
     CommentService *commentService = [[CommentService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
 
-    if (!comment.isLiked) {
-        [[UINotificationFeedbackGenerator new] notificationOccurred:UINotificationFeedbackTypeSuccess];
-    }
+    // TODO: this needed?
+//    if (!comment.isLiked) {
+//        [[UINotificationFeedbackGenerator new] notificationOccurred:UINotificationFeedbackTypeSuccess];
+//    }
 
     __typeof(self) __weak weakSelf = self;
     [commentService toggleLikeStatusForComment:comment siteID:self.post.siteID success:^{

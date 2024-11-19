@@ -36,38 +36,19 @@ extension WPStyleGuide {
             static let dateFont = CommentDetail.tertiaryTextFont
             static let dateTextColor = CommentDetail.secondaryTextColor
 
-            static let reactionButtonFont = WPStyleGuide.fontForTextStyle(.caption1)
-            static let reactionButtonTextColor = UIColor.label
-
             // highlighted state
             static let highlightedBackgroundColor = UIColor(
                 light: UIAppColor.blue(.shade0),
                 dark: UIAppColor.blue(.shade100)
             ).withAlphaComponent(0.5)
             static let highlightedBarBackgroundColor = UIAppColor.blue(.shade40)
-            static let highlightedReplyButtonTintColor = UIAppColor.primary
 
             static let placeholderImage = UIImage.gravatarPlaceholderImage
-
-            private static let reactionIconConfiguration = UIImage.SymbolConfiguration(font: reactionButtonFont, scale: .large)
-            static let unlikedIconImage = UIImage(systemName: "star", withConfiguration: reactionIconConfiguration)
-            static let likedIconImage = UIImage(systemName: "star.fill", withConfiguration: reactionIconConfiguration)
 
             static let accessoryIconConfiguration = UIImage.SymbolConfiguration(font: CommentDetail.tertiaryTextFont, scale: .medium)
             static let shareIconImageName = "square.and.arrow.up"
             static let ellipsisIconImageName = "ellipsis.circle"
             static let infoIconImageName = "info.circle"
-
-            static var replyIconImage: UIImage? {
-                // this symbol is only available in iOS 14 and above. For iOS 13, we need to use the backported image in our assets.
-                let name = "arrowshape.turn.up.backward"
-                let image = UIImage(systemName: name) ?? UIImage(named: name)
-                return image?.withConfiguration(reactionIconConfiguration).imageFlippedForRightToLeftLayoutDirection()
-            }
-
-            static let highlightedReplyIconImage = UIImage(systemName: "arrowshape.turn.up.left.fill", withConfiguration: reactionIconConfiguration)?
-                .withTintColor(highlightedReplyButtonTintColor, renderingMode: .alwaysTemplate)
-                .imageFlippedForRightToLeftLayoutDirection()
         }
 
         public struct ReplyIndicator {
