@@ -9,4 +9,4 @@ CI_TOOLKIT_PLUGIN_VERSION="3.7.1"
 
 # Note: `-v4` suffix was added to use xcode-16.1-v4 image; remember to remove that suffix during the next Xcode update
 export IMAGE_ID="xcode-$XCODE_VERSION-v4"
-export CI_TOOLKIT="automattic/a8c-ci-toolkit#$CI_TOOLKIT_PLUGIN_VERSION"
+export CI_TOOLKIT_PLUGIN="automattic/a8c-ci-toolkit#$CI_TOOLKIT_PLUGIN_VERSION"
