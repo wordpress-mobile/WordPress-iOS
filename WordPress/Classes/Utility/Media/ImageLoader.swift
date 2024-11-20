@@ -40,21 +40,13 @@ import WordPressShared
     private var placeholder: UIImage?
     private var selectedPhotonQuality: UInt = Constants.defaultPhotonQuality
 
-    @objc convenience init(imageView: CachedAnimatedImageView, gifStrategy: GIFStrategy = .mediumGIFs) {
-        self.init(imageView: imageView, gifStrategy: gifStrategy, loadingIndicator: nil)
-    }
-
-    init(imageView: CachedAnimatedImageView, gifStrategy: GIFStrategy = .mediumGIFs, loadingIndicator: ActivityIndicatorType?) {
+    @objc init(imageView: CachedAnimatedImageView, gifStrategy: GIFStrategy = .mediumGIFs) {
         self.imageView = imageView
         imageView.gifStrategy = gifStrategy
 
-        if let loadingIndicator {
-            self.loadingIndicator = loadingIndicator
-        } else {
-            let loadingIndicator = CircularProgressView(style: .primary)
-            loadingIndicator.backgroundColor = .clear
-            self.loadingIndicator = loadingIndicator
-        }
+        let loadingIndicator = CircularProgressView(style: .primary)
+        loadingIndicator.backgroundColor = .clear
+        self.loadingIndicator = loadingIndicator
 
         super.init()
 
