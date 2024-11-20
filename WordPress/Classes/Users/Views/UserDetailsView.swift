@@ -75,16 +75,19 @@ struct UserDetailsView: View {
                         Button(Strings.setNewPasswordActionTitle) {
                             presentPasswordAlert = true
                         }
-                        Button(role: .destructive) {
-                            presentUserPicker = true
-                        } label: {
-                            Text(
-                                deleteUserViewModel.isDeletingUser ?
-                                    Strings.deletingUserActionTitle
-                                    : Strings.deleteUserActionTitle
-                            )
+
+                        if !isCurrentUser {
+                            Button(role: .destructive) {
+                                presentUserPicker = true
+                            } label: {
+                                Text(
+                                    deleteUserViewModel.isDeletingUser ?
+                                        Strings.deletingUserActionTitle
+                                        : Strings.deleteUserActionTitle
+                                )
+                            }
+                            .disabled(deleteUserViewModel.isDeletingUser)
                         }
-                        .disabled(deleteUserViewModel.isDeletingUser)
                     }
                 }
             }
