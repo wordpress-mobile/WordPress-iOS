@@ -6,12 +6,8 @@ struct ReaderSubscriptionHelper {
     // MARK: Subscribe
 
     func toggleSiteSubscription(forPost post: ReaderPost) {
-        let siteURL = post.blogURL.flatMap(URL.init)
         ReaderFollowAction().execute(with: post, context: ContextManager.shared.mainContext, completion: { isFollowing in
             UINotificationFeedbackGenerator().notificationOccurred(.success)
-            if isFollowing, let siteURL {
-                postSiteFollowedNotification(siteURL: siteURL)
-            }
             ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, follow: isFollowing, success: true)
         }, failure: { _, _ in
             UINotificationFeedbackGenerator().notificationOccurred(.error)
@@ -32,7 +28,8 @@ struct ReaderSubscriptionHelper {
         try await withUnsafeThrowingContinuation { continuation in
             let service = ReaderSiteService(coreDataStack: contextManager)
             service.followSite(by: url, success: {
-                postSiteFollowedNotification(siteURL: url)
+                ReaderTopicService(coreDataStack: contextManager)
+                    .fetchAllFollowedSites(success: {}, failure: { _ in })
                 generator.notificationOccurred(.success)
                 continuation.resume(returning: ())
             }, failure: { error in
@@ -43,18 +40,22 @@ struct ReaderSubscriptionHelper {
         }
     }
 
-    private func postSiteFollowedNotification(siteURL: URL) {
-        let service = ReaderSiteService(coreDataStack: contextManager)
-        service.topic(withSiteURL: siteURL, success: { topic in
-            if let topic = topic {
-                NotificationCenter.default.post(name: .ReaderSiteFollowed, object: nil, userInfo: [ReaderNotificationKeys.topic: topic])
-            }
-        }, failure: { error in
-            DDLogError("Unable to find topic by siteURL: \(String(describing: error?.localizedDescription))")
+    // MARK: Subscribe/Unsubscribe (ReaderSiteTopic)
+
+    func toggleFollowingForSite(_ topic: ReaderSiteTopic, completion: ((Bool) -> Void)? = nil) {
+        if topic.following {
+            ReaderSubscribingNotificationAction().execute(for: topic.siteID, context: contextManager.mainContext, subscribe: false)
+        }
+
+        let service = ReaderTopicService(coreDataStack: contextManager)
+        service.toggleFollowing(forSite: topic, success: { follow in
+            ReaderHelpers.dispatchToggleFollowSiteMessage(site: topic, follow: follow, success: true)
+            completion?(true)
+        }, failure: { (follow, error) in
+            ReaderHelpers.dispatchToggleFollowSiteMessage(site: topic, follow: follow, success: false)
+            completion?(false)
         })
     }
-
-    // MARK: Unsubscribe
 
     @MainActor
     func unfollow(_ site: ReaderSiteTopic) {
@@ -107,12 +108,14 @@ enum ReaderSubscriptionNotificationsStatus {
     case none
 
     init?(site: ReaderSiteTopic) {
-        guard let postSubscription = site.postSubscription,
-              let emailSubscription = site.emailSubscription else {
+        guard !site.isExternal else {
             return nil
         }
-        let sendPosts = postSubscription.sendPosts || emailSubscription.sendPosts
-        let sendComments = emailSubscription.sendComments
+        let posts = site.postSubscription
+        let emails = site.emailSubscription
+
+        let sendPosts = (posts?.sendPosts ?? false) || (emails?.sendPosts ?? false)
+        let sendComments = emails?.sendComments ?? false
         if sendPosts && sendComments {
             self = .all
         } else if sendPosts || sendComments {

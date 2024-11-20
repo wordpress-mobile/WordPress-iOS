@@ -43,6 +43,7 @@ final class MeHeaderView: UIView {
             // tableView.headerView inevitably has to break something
             $0.priority = UILayoutPriority(999)
         }
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshAvatar), name: .GravatarQEAvatarUpdateNotification, object: nil)
     }
 
     required init?(coder: NSCoder) {
@@ -63,14 +64,27 @@ final class MeHeaderView: UIView {
         titleLabel.text = viewModel.displayName
         detailsLabel.text = viewModel.username
 
-        if let gravatarEmail = viewModel.gravatarEmail {
-            iconView.downloadGravatar(for: gravatarEmail, gravatarRating: .x)
+        if viewModel.gravatarEmail != nil {
+            downloadAvatar()
         } else {
             iconView.image = nil
         }
     }
 
+    private func downloadAvatar(forceRefresh: Bool = false) {
+        if let email = viewModel?.gravatarEmail {
+            iconView.downloadGravatar(for: email, gravatarRating: .x, forceRefresh: forceRefresh)
+        }
+    }
+
+    @objc private func refreshAvatar(_ notification: Foundation.Notification) {
+        guard let email = viewModel?.gravatarEmail,
+              notification.userInfoHasEmail(email) else { return }
+        downloadAvatar(forceRefresh: true)
+    }
+
     func overrideGravatarImage(_ image: UIImage) {
+        guard !RemoteFeatureFlag.gravatarQuickEditor.enabled() else { return }
         iconView.image = image
 
         // Note:

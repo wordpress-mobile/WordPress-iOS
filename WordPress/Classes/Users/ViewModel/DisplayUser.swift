@@ -1,7 +1,7 @@
 import Foundation
 import WordPressShared
 
-public struct DisplayUser: Identifiable, Codable {
+public struct DisplayUser: Identifiable, Codable, Hashable {
     public let id: Int32
     public let handle: String
     public let username: String
@@ -42,7 +42,7 @@ public struct DisplayUser: Identifiable, Codable {
         self.biography = biography
     }
 
-    static package let MockUser = DisplayUser(
+    static let MockUser = DisplayUser(
         id: 16,
         handle: "@person",
         username: "example",

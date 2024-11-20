@@ -84,7 +84,3 @@ class ReaderInterestsStyleGuide {
         indicator.color = UIColor(light: .black, dark: .white)
     }
 }
-
-class ReaderSuggestedTopicsStyleGuide {
-    public static var topicFont: UIFont = WPStyleGuide.fontForTextStyle(.footnote)
-}

@@ -174,36 +174,12 @@ class MeViewController: UITableViewController {
 
                     rows = loggedInRows + rows
                 }
-                return rows + [helpAndSupportIndicator]
-            }()),
-            // middle section
-            ImmuTableSection(rows: {
-                var rows: [ImmuTableRow] = []
-
-                rows.append(ButtonRow(
-                    title: Strings.submitFeedback,
-                    textAlignment: .left,
-                    action: showFeedbackView())
-                )
-
-                rows.append(ButtonRow(
-                    title: ShareAppContentPresenter.RowConstants.buttonTitle,
-                    textAlignment: .left,
-                    isLoading: sharePresenter.isLoading,
-                    action: displayShareFlow())
-                )
-
-                rows.append(ButtonRow(
-                    title: RowTitles.about,
-                    textAlignment: .left,
-                    action: pushAbout(),
-                    accessibilityIdentifier: "About")
-                )
                 return rows
-            }())
+            }()),
+            ImmuTableSection(rows: [helpAndSupportIndicator]),
         ]
 
-        #if IS_JETPACK
+#if IS_JETPACK
         if RemoteFeatureFlag.domainManagement.enabled() && loggedIn && !isSidebarModeEnabled {
             sections.append(.init(rows: [
                 NavigationItemRow(
@@ -220,7 +196,29 @@ class MeViewController: UITableViewController {
             ])
             )
         }
-        #endif
+#endif
+
+        sections.append(
+            ImmuTableSection(rows: [
+                ButtonRow(
+                    title: ShareAppContentPresenter.RowConstants.buttonTitle,
+                    textAlignment: .left,
+                    isLoading: sharePresenter.isLoading,
+                    action: displayShareFlow()
+                ),
+                ButtonRow(
+                    title: Strings.submitFeedback,
+                    textAlignment: .left,
+                    action: showFeedbackView()
+                ),
+                ButtonRow(
+                    title: RowTitles.about,
+                    textAlignment: .left,
+                    action: pushAbout(),
+                    accessibilityIdentifier: "About"
+                )
+            ])
+        )
 
         // last section
         sections.append(

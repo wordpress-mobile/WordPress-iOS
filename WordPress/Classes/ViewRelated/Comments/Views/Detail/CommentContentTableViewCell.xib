@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -130,32 +130,15 @@
                                 <rect key="frame" x="0.0" y="119" width="288" height="210"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="761" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VoI-YI-Qgc" userLabel="Reply Button">
-                                        <rect key="frame" x="0.0" y="83.5" width="175.5" height="43"/>
+                                        <rect key="frame" x="0.0" y="90" width="208" height="30"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                         <color key="tintColor" systemColor="secondaryLabelColor"/>
-                                        <inset key="contentEdgeInsets" minX="0.0" minY="10" maxX="15" maxY="15"/>
-                                        <inset key="titleEdgeInsets" minX="2" minY="0.0" maxX="-2" maxY="0.0"/>
-                                        <state key="normal" title="Reply">
-                                            <color key="titleColor" systemColor="secondaryLabelColor"/>
-                                            <imageReference key="image" image="icon-reader-comment-reply" symbolScale="default" renderingMode="template"/>
-                                            <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="default">
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                            </preferredSymbolConfiguration>
-                                        </state>
+                                        <inset key="titleEdgeInsets" minX="2" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="762" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X2J-8b-R5F" userLabel="Like Button">
-                                        <rect key="frame" x="175.5" y="83.5" width="62.5" height="43.5"/>
+                                        <rect key="frame" x="208" y="90" width="30" height="30"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                         <color key="tintColor" systemColor="secondaryLabelColor"/>
-                                        <inset key="contentEdgeInsets" minX="0.0" minY="10" maxX="15" maxY="15"/>
-                                        <inset key="titleEdgeInsets" minX="2" minY="0.0" maxX="-2" maxY="0.0"/>
-                                        <state key="normal" title="Like">
-                                            <color key="titleColor" systemColor="secondaryLabelColor"/>
-                                            <imageReference key="image" image="star" catalog="system" symbolScale="medium" renderingMode="template"/>
-                                            <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="small">
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                            </preferredSymbolConfiguration>
-                                        </state>
                                     </button>
                                     <view contentMode="scaleToFill" horizontalHuggingPriority="1" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="8GH-U7-J7H" userLabel="Spacer View">
                                         <rect key="frame" x="238" y="80" width="50" height="50"/>
@@ -207,10 +190,8 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="gravatar" width="85" height="85"/>
-        <image name="icon-reader-comment-reply" width="13" height="12"/>
-        <image name="square.and.arrow.up" catalog="system" width="108" height="128"/>
-        <image name="star" catalog="system" width="128" height="116"/>
+        <image name="gravatar" width="32" height="32"/>
+        <image name="square.and.arrow.up" catalog="system" width="110" height="128"/>
         <namedColor name="Blue50">
             <color red="0.023529411764705882" green="0.45882352941176469" blue="0.7686274509803922" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
@@ -218,13 +199,13 @@
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="secondaryLabelColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray5Color">
-            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

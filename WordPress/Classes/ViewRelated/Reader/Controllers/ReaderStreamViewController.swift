@@ -71,7 +71,7 @@ import AutomatticTracks
     private let refreshInterval = 300
     private var cleanupAndRefreshAfterScrolling = false
     private let recentlyBlockedSitePostObjectIDs = NSMutableArray()
-    private let heightForFooterView = CGFloat(34.0)
+    private let heightForFooterView = CGFloat(44)
     private let estimatedHeightsCache = NSCache<AnyObject, AnyObject>()
     private var isFeed = false
     private var syncIsFillingGap = false
@@ -178,6 +178,7 @@ import AutomatticTracks
     private var showConfirmation = true
 
     var isEmbeddedInDiscover = false
+    var preferredTableHeaderView: UIView?
 
     var isCompact = true {
         didSet {
@@ -458,7 +459,8 @@ import AutomatticTracks
     // MARK: - Configuration / Topic Presentation
 
     private func configureStreamHeader() {
-        guard !isEmbeddedInDiscover else {
+        if let headerView = preferredTableHeaderView {
+            setHeaderView(headerView) // Important to set _after_ isCompact is set in viewDidLoad
             return
         }
         guard let headerView = headerForStream(readerTopic, container: tableViewController) else {
@@ -476,22 +478,6 @@ import AutomatticTracks
         (headerView as? ReaderBaseHeaderView)?.isCompact = isCompact
         tableView.tableHeaderView = headerView
         streamHeader = headerView as? ReaderStreamHeader
-
-        // This feels somewhat hacky, but it is the only way I found to insert a stack view into the header without breaking the autolayout constraints.
-        let centerConstraint = headerView.centerXAnchor.constraint(equalTo: tableView.centerXAnchor)
-        let topConstraint = headerView.topAnchor.constraint(equalTo: tableView.topAnchor)
-        let headerWidthConstraint = headerView.widthAnchor.constraint(equalTo: tableView.widthAnchor)
-        headerWidthConstraint.priority = UILayoutPriority(999)
-        centerConstraint.priority = UILayoutPriority(999)
-
-        NSLayoutConstraint.activate([
-            centerConstraint,
-            headerWidthConstraint,
-            topConstraint
-        ])
-
-        tableView.tableHeaderView?.layoutIfNeeded()
-        tableView.tableHeaderView = tableView.tableHeaderView
     }
 
     /// Updates the content based on the values of `readerTopic` and `contentType`
@@ -1117,7 +1103,7 @@ import AutomatticTracks
         if let topic = topic as? ReaderTagTopic {
             toggleFollowingForTag(topic, completion: completion)
         } else if let topic = topic as? ReaderSiteTopic {
-            toggleFollowingForSite(topic, completion: completion)
+            ReaderSubscriptionHelper().toggleFollowingForSite(topic, completion: completion)
         } else {
             wpAssertionFailure("unexpected topic", userInfo: ["type": String(describing: topic)])
         }
@@ -1140,19 +1126,8 @@ import AutomatticTracks
         })
     }
 
-    private func toggleFollowingForSite(_ topic: ReaderSiteTopic, completion: ((Bool) -> Void)?) {
-        if topic.following {
-            ReaderSubscribingNotificationAction().execute(for: siteID, context: viewContext, subscribe: false)
-        }
-
-        let service = ReaderTopicService(coreDataStack: ContextManager.shared)
-        service.toggleFollowing(forSite: topic, success: { follow in
-            ReaderHelpers.dispatchToggleFollowSiteMessage(site: topic, follow: follow, success: true)
-            completion?(true)
-        }, failure: { (follow, error) in
-            ReaderHelpers.dispatchToggleFollowSiteMessage(site: topic, follow: follow, success: false)
-            completion?(false)
-        })
+    func getPost(at indexPath: IndexPath) -> ReaderPost? {
+        content.object(at: indexPath)
     }
 }
 
@@ -1462,6 +1437,20 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         // Do nothing
     }
 
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        guard let post = getPost(at: indexPath) else {
+            return nil
+        }
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [weak self] _ in
+            guard let self else { return nil }
+            return UIMenu(children: ReaderPostMenu(
+                post: post,
+                topic: readerTopic,
+                anchor: self.tableView.cellForRow(at: indexPath) ?? self.view,
+                viewController: self
+            ).makeMenu())
+        }
+    }
 }
 
 // MARK: - SearchableActivity Conformance

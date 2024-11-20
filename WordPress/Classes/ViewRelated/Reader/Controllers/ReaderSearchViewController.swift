@@ -231,7 +231,7 @@ extension ReaderSearchViewController: UISearchBarDelegate {
 
     public func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
-        suggestionsViewModel.searchText == ""
+        suggestionsViewModel.searchText = ""
         showSearchSuggestions()
     }
 }

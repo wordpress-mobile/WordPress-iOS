@@ -1,6 +1,7 @@
 25.6
 -----
 * [*] [internal] Update Gravatar SDK to 3.0.0 [#23701]
+* [*] Use the Gravatar Quick Editor to update the avatar [#23729]
 * [*] (Hidden under a feature flag) User Management for self-hosted sites. [#23768]
 
 25.5

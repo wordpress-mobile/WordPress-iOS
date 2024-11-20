@@ -116,6 +116,7 @@ import Foundation
     case readerCommentTextHighlighted
     case readerCommentTextCopied
     case readerPostContextMenuButtonTapped
+    case readerAddSiteToFavoritesTapped
 
     // Stats - Empty Stats nudges
     case statsPublicizeNudgeShown
@@ -598,7 +599,6 @@ import Foundation
 
     // Reading preferences
     case readingPreferencesOpened
-    case readingPreferencesFeedbackTapped
     case readingPreferencesItemTapped
     case readingPreferencesSaved
     case readingPreferencesClosed
@@ -817,6 +817,8 @@ import Foundation
             return "reader_comment_text_copied"
         case .readerPostContextMenuButtonTapped:
             return "reader_post_context_menu_button_tapped"
+        case .readerAddSiteToFavoritesTapped:
+            return "reader_add_site_to_favorites_tapped"
 
         // Stats - Empty Stats nudges
         case .statsPublicizeNudgeShown:
@@ -1648,8 +1650,6 @@ import Foundation
         // Reading Preferences
         case .readingPreferencesOpened:
             return "reader_reading_preferences_opened"
-        case .readingPreferencesFeedbackTapped:
-            return "reader_reading_preferences_feedback_tapped"
         case .readingPreferencesItemTapped:
             return "reader_reading_preferences_item_tapped"
         case .readingPreferencesSaved:

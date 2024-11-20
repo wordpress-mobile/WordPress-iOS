@@ -40,7 +40,11 @@ struct SiteIconViewModel {
     init(readerSiteTopic: ReaderSiteTopic, size: Size = .regular) {
         self.size = size
         self.firstLetter = readerSiteTopic.title.first
-        self.imageURL = SiteIconViewModel.makeReaderSiteIconURL(iconURL: readerSiteTopic.siteBlavatar, siteID: readerSiteTopic.siteID.intValue, size: size.size)
+        self.imageURL = SiteIconViewModel.makeReaderSiteIconURL(
+            iconURL: readerSiteTopic.siteBlavatar,
+            siteID: readerSiteTopic.siteID.intValue,
+            size: size.size
+        )
     }
 }
 
@@ -113,6 +117,7 @@ extension SiteIconViewModel {
 
 extension SiteIconViewModel {
     /// - parameter isBlavatar: A hint to skip the "is icon blavatar" check.
+    /// - parameter size: Size in points.
     static func makeReaderSiteIconURL(iconURL: String?, isBlavatar: Bool = false, siteID: Int?, size: CGSize) -> URL? {
         guard let iconURL, !iconURL.isEmpty else {
             if let siteID {

@@ -735,7 +735,6 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     topic.organizationID = [siteInfo.organizationID integerValue];
     topic.path = siteInfo.postsEndpoint;
     topic.postCount = siteInfo.postCount;
-    topic.showInMenu = NO;
     topic.siteBlavatar = siteInfo.siteBlavatar;
     topic.siteDescription = siteInfo.siteDescription;
     topic.siteID = siteInfo.siteID;

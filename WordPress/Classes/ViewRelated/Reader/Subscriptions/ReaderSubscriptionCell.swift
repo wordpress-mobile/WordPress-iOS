@@ -21,7 +21,7 @@ struct ReaderSubscriptionCell: View {
         HStack(spacing: 0) {
             HStack(spacing: 16) {
                 ReaderSiteIconView(site: site, size: .regular)
-                    .padding(.leading, 4)
+                    .padding(.leading, horizontalSizeClass == .compact ? 0 : 4)
 
                 VStack(alignment: .leading, spacing: 3) {
                     HStack(alignment: .firstTextBaseline, spacing: 8) {

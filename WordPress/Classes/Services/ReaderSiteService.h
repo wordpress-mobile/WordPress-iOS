@@ -74,16 +74,4 @@ extern NSString * const ReaderSiteServiceErrorDomain;
  */
 - (void)syncPostsForFollowedSites;
 
-/**
- Returns a ReaderSiteTopic for the given site URL.
- 
- @param siteURL The URL of the site.
- @param success block called on a successful fetch containing the ReaderSiteTopic.
- @param failure block called if there is any error. `error` can be any underlying network error.
- */
-- (void)topicWithSiteURL:(NSURL *)siteURL
-                 success:(void (^)(ReaderSiteTopic *topic))success
-                 failure:(void(^)(NSError *error))failure;
-
-
 @end

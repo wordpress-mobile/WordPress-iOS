@@ -53,6 +53,7 @@
 
 - (nullable UISwipeActionsConfiguration *)tableView:(nonnull UITableView *)tableView leadingSwipeActionsConfigurationForRowAtIndexPath:(nonnull NSIndexPath *)indexPath;
 - (nullable UISwipeActionsConfiguration *)tableView:(nonnull UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(nonnull NSIndexPath *)indexPath;
+- (nullable UIContextMenuConfiguration *)tableView:(nonnull UITableView *)tableView contextMenuConfigurationForRowAtIndexPath:(nonnull NSIndexPath *)indexPath point:(CGPoint)point;
 
 #pragma mark - Tracking the removal of views
 
@@ -106,6 +107,7 @@
 @property (nonatomic) UITableViewRowAnimation moveRowAnimation;
 @property (nonatomic) UITableViewRowAnimation sectionRowAnimation;
 @property (nonatomic) BOOL listensForContentChanges;
+@property (nonatomic) BOOL disableAnimations;
 
 - (nonnull instancetype)initWithTableView:(nonnull UITableView *)tableView;
 - (void)clearCachedRowHeights;

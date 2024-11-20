@@ -9,7 +9,6 @@ enum FeatureFlag: Int, CaseIterable {
     case commentModerationUpdate
     case compliancePopover
     case googleDomainsCard
-    case autoSaveDrafts
     case voiceToContent
     case authenticateUsingApplicationPassword
     case tipKit
@@ -38,8 +37,6 @@ enum FeatureFlag: Int, CaseIterable {
         case .compliancePopover:
             return true
         case .googleDomainsCard:
-            return false
-        case .autoSaveDrafts:
             return false
         case .voiceToContent:
             return AppConfiguration.isJetpack && BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
@@ -84,7 +81,6 @@ extension FeatureFlag {
         case .commentModerationUpdate: "Comments Moderation Update"
         case .compliancePopover: "Compliance Popover"
         case .googleDomainsCard: "Google Domains Promotional Card"
-        case .autoSaveDrafts: "Autosave Drafts"
         case .voiceToContent: "Voice to Content"
         case .authenticateUsingApplicationPassword: "Application Passwords for self-hosted sites"
         case .tipKit: "TipKit"

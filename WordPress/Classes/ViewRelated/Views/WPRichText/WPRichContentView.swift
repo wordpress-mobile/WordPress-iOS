@@ -33,13 +33,13 @@ class WPRichContentView: UITextView {
     }
 
     @objc lazy var linkTapGestureRecognizer: UITapGestureRecognizer = { [unowned self] in
-              let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapRecognized))
-              gestureRecognizer.cancelsTouchesInView = true
-              gestureRecognizer.delaysTouchesBegan = true
-              gestureRecognizer.delaysTouchesEnded = true
-              gestureRecognizer.delegate = self
-              return gestureRecognizer
-          }()
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapRecognized))
+        gestureRecognizer.cancelsTouchesInView = true
+        gestureRecognizer.delaysTouchesBegan = true
+        gestureRecognizer.delaysTouchesEnded = true
+        gestureRecognizer.delegate = self
+        return gestureRecognizer
+    }()
 
     override var textContainerInset: UIEdgeInsets {
         didSet {

@@ -124,40 +124,6 @@ extension BlogDetailsViewController {
         return AppConfiguration.allowsDomainRegistration && blog.supports(.domains)
     }
 
-    @objc func shouldShowApplicationPasswordRow() -> Bool {
-        // Only available for application-password authenticated self-hosted sites.
-        return self.blog.account == nil && self.blog.userID != nil
-    }
-
-    private func createApplicationPasswordService() -> ApplicationPasswordService? {
-        guard let userId = self.blog.userID?.intValue else {
-            return nil
-        }
-
-        do {
-            let site = try WordPressSite(blog: self.blog)
-            let client = WordPressClient(site: site)
-            return ApplicationPasswordService(api: client, currentUserId: userId)
-        } catch {
-            DDLogError("Failed to create WordPressClient: \(error)")
-            return nil
-        }
-    }
-
-    @objc func showApplicationPasswordManagement() {
-        guard let presentationDelegate, let userId = self.blog.userID?.intValue else {
-            return
-        }
-
-        let feature = NSLocalizedString("applicationPasswordRequired.feature.plugins", value: "Application Passwords Management", comment: "Feature name for managing Application Passwords in the app")
-        let rootView = ApplicationPasswordRequiredView(blog: self.blog, localizedFeatureName: feature) { client in
-            let service = ApplicationPasswordService(api: client, currentUserId: userId)
-            let viewModel = ApplicationTokenListViewModel(dataProvider: service)
-            return ApplicationTokenListView(viewModel: viewModel)
-        }
-        presentationDelegate.presentBlogDetailsViewController(UIHostingController(rootView: rootView))
-    }
-
     @objc func showUsers() {
         guard let presentationDelegate, let userId = self.blog.userID?.intValue else {
             return
@@ -165,8 +131,9 @@ extension BlogDetailsViewController {
 
         let feature = NSLocalizedString("applicationPasswordRequired.feature.users", value: "User Management", comment: "Feature name for managing users in the app")
         let rootView = ApplicationPasswordRequiredView(blog: self.blog, localizedFeatureName: feature) { client in
-            let service = UserService(api: client, currentUserId: userId)
-            return UserListView(userProvider: service, actionDispatcher: service.actionDispatcher)
+            let service = UserService(client: client)
+            let applicationPasswordService = ApplicationPasswordService(api: client, currentUserId: userId)
+            return UserListView(userService: service, applicationTokenListDataProvider: applicationPasswordService)
         }
         presentationDelegate.presentBlogDetailsViewController(UIHostingController(rootView: rootView))
     }

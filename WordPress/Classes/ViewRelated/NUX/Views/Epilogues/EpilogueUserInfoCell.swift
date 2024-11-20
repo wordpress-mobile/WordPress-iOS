@@ -16,16 +16,19 @@ class EpilogueUserInfoCell: UITableViewCell {
     private var gravatarStatus: GravatarUploaderStatus = .idle
     private var email: String?
     private var avatarMenuController: AnyObject?
+    private var allowGravatarUploads: Bool = false
 
     override func awakeFromNib() {
         super.awakeFromNib()
         configureImages()
         configureColors()
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshAvatar), name: .GravatarQEAvatarUpdateNotification, object: nil)
     }
 
     /// Configures the cell so that the LoginEpilogueUserInfo's payload is displayed
     ///
     func configure(userInfo: LoginEpilogueUserInfo, showEmail: Bool = false, allowGravatarUploads: Bool = false, viewController: UIViewController) {
+        self.allowGravatarUploads = allowGravatarUploads
         email = userInfo.email
         self.viewController = viewController
 
@@ -59,23 +62,46 @@ class EpilogueUserInfoCell: UITableViewCell {
             if let gravatarUrl = userInfo.gravatarUrl, let url = URL(string: gravatarUrl) {
                 gravatarView.downloadImage(from: url)
             } else {
-                let placeholder: UIImage = allowGravatarUploads ? .gravatarUploadablePlaceholderImage : .gravatarPlaceholderImage
-                gravatarView.downloadGravatar(for: userInfo.email, gravatarRating: .x, placeholderImage: placeholder)
+                downloadGravatar()
             }
         }
     }
 
     private func setupGravatarButton(viewController: UIViewController) {
-        let menuController = AvatarMenuController(viewController: viewController)
-        menuController.onAvatarSelected = { [weak self] in
-            self?.uploadGravatarImage($0)
+        if RemoteFeatureFlag.gravatarQuickEditor.enabled() {
+            gravatarButton.addTarget(self, action: #selector(gravatarButtonTapped), for: .touchUpInside)
         }
-        self.avatarMenuController = menuController // Just retaining it
-        gravatarButton.menu = menuController.makeMenu()
-        gravatarButton.showsMenuAsPrimaryAction = true
-        gravatarButton.addAction(UIAction { _ in
-            AuthenticatorAnalyticsTracker.shared.track(click: .selectAvatar)
-        }, for: .menuActionTriggered)
+        else {
+            let menuController = AvatarMenuController(viewController: viewController)
+            menuController.onAvatarSelected = { [weak self] in
+                self?.uploadGravatarImage($0)
+            }
+            self.avatarMenuController = menuController // Just retaining it
+            gravatarButton.menu = menuController.makeMenu()
+            gravatarButton.showsMenuAsPrimaryAction = true
+            gravatarButton.addAction(UIAction { _ in
+                AuthenticatorAnalyticsTracker.shared.track(click: .selectAvatar)
+            }, for: .menuActionTriggered)
+        }
+    }
+
+    @objc private func gravatarButtonTapped() {
+        guard let email,
+              let presenter = GravatarQuickEditorPresenter(email: email),
+              let viewController else { return }
+        presenter.presentQuickEditor(on: viewController)
+    }
+
+    private func downloadGravatar(forceRefresh: Bool = false) {
+        let placeholder: UIImage = allowGravatarUploads ? .gravatarUploadablePlaceholderImage : .gravatarPlaceholderImage
+        if let email {
+            gravatarView.downloadGravatar(for: email, gravatarRating: .x, placeholderImage: placeholder, forceRefresh: forceRefresh)
+        }
+    }
+
+    @objc private func refreshAvatar(_ notification: Foundation.Notification) {
+        guard let email, notification.userInfoHasEmail(email) else { return }
+        downloadGravatar(forceRefresh: true)
     }
 
     /// Starts the Activity Indicator Animation, and hides the Username + Fullname labels.

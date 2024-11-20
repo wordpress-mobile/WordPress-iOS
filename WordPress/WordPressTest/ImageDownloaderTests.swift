@@ -158,4 +158,8 @@ private final class MockMemoryCache: MemoryCacheProtocol {
         get { cache[key] }
         set { cache[key] = newValue }
     }
+
+    func removeAllObjects() {
+        cache = [:]
+    }
 }

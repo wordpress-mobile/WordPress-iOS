@@ -30,6 +30,7 @@ class LoginLinkRequestViewController: LoginViewController {
         if !email.isValidEmail() {
             assert(email.isValidEmail(), "The value of loginFields.username was not a valid email address.")
         }
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshAvatar), name: .GravatarQEAvatarUpdateNotification, object: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -38,7 +39,7 @@ class LoginLinkRequestViewController: LoginViewController {
         let email = loginFields.username
         if email.isValidEmail() {
             Task {
-                try await gravatarView?.setGravatarImage(with: email, rating: .x)
+                try await downloadAvatar()
             }
         } else {
             gravatarView?.isHidden = true
@@ -48,6 +49,18 @@ class LoginLinkRequestViewController: LoginViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         WordPressAuthenticator.track(.loginMagicLinkRequestFormViewed)
+    }
+
+    private func downloadAvatar(forceRefresh: Bool = false) async throws {
+        let email = loginFields.username
+        try await gravatarView?.setGravatarImage(with: email, rating: .x, forceRefresh: forceRefresh)
+    }
+
+    @objc private func refreshAvatar(_ notification: Foundation.Notification) {
+        guard notification.userInfoHasEmail(loginFields.username) else { return }
+        Task {
+            try await downloadAvatar(forceRefresh: true)
+        }
     }
 
     // MARK: - Configuration
