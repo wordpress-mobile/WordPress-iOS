@@ -78,26 +78,6 @@ import WordPressShared
         }
     }
 
-    /// Load an image from a specific URL. As no source is provided, we can assume
-    /// that this is from a public site. Supports animated images (gifs) as well.
-    ///
-    /// - Parameters:
-    ///   - url: The URL to load the image from.
-    ///   - success: A closure to be called if the image was loaded successfully.
-    ///   - error: A closure to be called if there was an error loading the image.
-    ///
-//    func loadImage(with url: URL, success: ImageLoaderSuccessBlock?, error: ImageLoaderFailureBlock?) {
-//        successHandler = success
-//        errorHandler = error
-//
-//        if url.isGif {
-//            loadGif(with: url, from: .publicSite)
-//        } else {
-//            imageView.clean()
-//            loadStaticImage(with: url, from: .publicSite)
-//        }
-//    }
-
     @objc(loadImageWithURL:fromPost:preferredSize:placeholder:success:error:)
     func loadImage(with url: URL, from post: AbstractPost, preferredSize size: CGSize = .zero, placeholder: UIImage?, success: ImageLoaderSuccessBlock?, error: ImageLoaderFailureBlock?) {
 
