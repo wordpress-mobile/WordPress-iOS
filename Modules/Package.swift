@@ -1,6 +1,8 @@
-// swift-tools-version: 5.9
+// swift-tools-version: 6.0
 
 import PackageDescription
+
+let concurrencyWarning: [SwiftSetting] = [.swiftLanguageMode(.v5), .enableUpcomingFeature("StrictConcurrency")]
 
 let package = Package(
     name: "Modules",
@@ -51,22 +53,22 @@ let package = Package(
         .package(url: "https://github.com/Automattic/color-studio", branch: "trunk"),
     ],
     targets: XcodeSupport.targets + [
-        .target(name: "JetpackStatsWidgetsCore"),
-        .target(name: "DesignSystem"),
+        .target(name: "JetpackStatsWidgetsCore", swiftSettings: concurrencyWarning),
+        .target(name: "DesignSystem", swiftSettings: concurrencyWarning),
         .target(name: "UITestsFoundation", dependencies: [
             .product(name: "ScreenObject", package: "ScreenObject"),
             .product(name: "XCUITestHelpers", package: "XCUITestHelpers"),
-        ]),
-        .target(name: "WordPressFlux"),
-        .target(name: "WordPressSharedObjC", resources: [.process("Resources")]),
-        .target(name: "WordPressShared", dependencies: [.target(name: "WordPressSharedObjC")], resources: [.process("Resources")]),
-        .target(name: "WordPressUI", dependencies: [.target(name: "WordPressShared")], resources: [.process("Resources")]),
-        .testTarget(name: "JetpackStatsWidgetsCoreTests", dependencies: [.target(name: "JetpackStatsWidgetsCore")]),
-        .testTarget(name: "DesignSystemTests", dependencies: [.target(name: "DesignSystem")]),
-        .testTarget(name: "WordPressFluxTests", dependencies: ["WordPressFlux"]),
-        .testTarget(name: "WordPressSharedTests", dependencies: [.target(name: "WordPressShared")]),
-        .testTarget(name: "WordPressSharedObjCTests", dependencies: [.target(name: "WordPressShared")], resources: [.process("Resources")]),
-        .testTarget(name: "WordPressUITests", dependencies: [.target(name: "WordPressUI")]),
+        ], swiftSettings: concurrencyWarning),
+        .target(name: "WordPressFlux", swiftSettings: concurrencyWarning),
+        .target(name: "WordPressSharedObjC", resources: [.process("Resources")], swiftSettings: concurrencyWarning),
+        .target(name: "WordPressShared", dependencies: [.target(name: "WordPressSharedObjC")], resources: [.process("Resources")], swiftSettings: concurrencyWarning),
+        .target(name: "WordPressUI", dependencies: [.target(name: "WordPressShared")], resources: [.process("Resources")], swiftSettings: concurrencyWarning),
+        .testTarget(name: "JetpackStatsWidgetsCoreTests", dependencies: [.target(name: "JetpackStatsWidgetsCore")], swiftSettings: concurrencyWarning),
+        .testTarget(name: "DesignSystemTests", dependencies: [.target(name: "DesignSystem")], swiftSettings: concurrencyWarning),
+        .testTarget(name: "WordPressFluxTests", dependencies: ["WordPressFlux"], swiftSettings: concurrencyWarning),
+        .testTarget(name: "WordPressSharedTests", dependencies: [.target(name: "WordPressShared")], swiftSettings: concurrencyWarning),
+        .testTarget(name: "WordPressSharedObjCTests", dependencies: [.target(name: "WordPressShared")], resources: [.process("Resources")], swiftSettings: concurrencyWarning),
+        .testTarget(name: "WordPressUITests", dependencies: [.target(name: "WordPressUI")], swiftSettings: concurrencyWarning),
     ]
 )
 
@@ -85,20 +87,22 @@ let package = Package(
 /// into every target that depends on it. Make sure to avoid including frameworks
 /// with large resources bundled into multiple targets.
 enum XcodeSupport {
-    static let products: [Product] = [
-        .library(name: "XcodeTarget_App", targets: ["XcodeTarget_App"]),
-        .library(name: "XcodeTarget_WordPressTests", targets: ["XcodeTarget_WordPressTests"]),
-        .library(name: "XcodeTarget_WordPressAuthentificator", targets: ["XcodeTarget_WordPressAuthentificator"]),
-        .library(name: "XcodeTarget_WordPressAuthentificatorTests", targets: ["XcodeTarget_WordPressAuthentificatorTests"]),
-        .library(name: "XcodeTarget_ShareExtension", targets: ["XcodeTarget_ShareExtension"]),
-        .library(name: "XcodeTarget_DraftActionExtension", targets: ["XcodeTarget_DraftActionExtension"]),
-        .library(name: "XcodeTarget_NotificationServiceExtension", targets: ["XcodeTarget_NotificationServiceExtension"]),
-        .library(name: "XcodeTarget_Intents", targets: ["XcodeTarget_Intents"]),
-        .library(name: "XcodeTarget_StatsWidget", targets: ["XcodeTarget_StatsWidget"]),
-        .library(name: "XcodeTarget_UITests", targets: ["XcodeTarget_UITests"]),
-    ]
+    static var products: [Product] {
+        [
+            .library(name: "XcodeTarget_App", targets: ["XcodeTarget_App"]),
+            .library(name: "XcodeTarget_WordPressTests", targets: ["XcodeTarget_WordPressTests"]),
+            .library(name: "XcodeTarget_WordPressAuthentificator", targets: ["XcodeTarget_WordPressAuthentificator"]),
+            .library(name: "XcodeTarget_WordPressAuthentificatorTests", targets: ["XcodeTarget_WordPressAuthentificatorTests"]),
+            .library(name: "XcodeTarget_ShareExtension", targets: ["XcodeTarget_ShareExtension"]),
+            .library(name: "XcodeTarget_DraftActionExtension", targets: ["XcodeTarget_DraftActionExtension"]),
+            .library(name: "XcodeTarget_NotificationServiceExtension", targets: ["XcodeTarget_NotificationServiceExtension"]),
+            .library(name: "XcodeTarget_Intents", targets: ["XcodeTarget_Intents"]),
+            .library(name: "XcodeTarget_StatsWidget", targets: ["XcodeTarget_StatsWidget"]),
+            .library(name: "XcodeTarget_UITests", targets: ["XcodeTarget_UITests"]),
+        ]
+    }
 
-    static let targets: [Target] = {
+    static var targets: [Target] {
         let wordPresAuthentificatorDependencies: [Target.Dependency] = [
             "WordPressShared",
             "WordPressUI",
@@ -193,7 +197,7 @@ enum XcodeSupport {
                 .product(name: "BuildkiteTestCollector", package: "test-collector-swift"),
             ]),
         ]
-    }()
+    }
 }
 
 extension Target {
