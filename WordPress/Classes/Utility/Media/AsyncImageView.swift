@@ -4,7 +4,7 @@ import Gifu
 /// A simple image view that supports rendering both static and animated images
 /// (see ``AnimatedImage``).
 @MainActor
-final class ImageView: UIView {
+final class AsyncImageView: UIView {
     let imageView = GIFImageView()
 
     private var errorView: UIImageView?

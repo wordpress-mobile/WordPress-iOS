@@ -1,3 +1,5 @@
+import UIKit
+
 /// a circular image view with an auto-updating gravatar image
 class GravatarButtonView: CircularImageView {
 
