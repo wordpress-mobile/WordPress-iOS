@@ -77,11 +77,6 @@ struct UserDetailsView: View {
                         }
                         Button(role: .destructive) {
                             presentUserPicker = true
-                            Task {
-                                if deleteUserViewModel.otherUsers.isEmpty {
-                                    await deleteUserViewModel.fetchOtherUsers()
-                                }
-                            }
                         } label: {
                             Text(
                                 deleteUserViewModel.isDeletingUser ?
@@ -249,36 +244,6 @@ struct UserDetailsView: View {
             comment: "The title of the OK button in the alert that appears when deleting a user"
         )
 
-        static let deleteUserAttributionMessage = NSLocalizedString(
-            "userDetails.alert.deleteUserAttributionMessage",
-            value: "You have specified this user for deletion:",
-            comment: "The message that appears when deleting a user."
-        )
-
-        static let attributeContentToUserLabel = NSLocalizedString(
-            "userDetails.alert.attributeContentToUserLabel",
-            value: "Attribute content to user:",
-            comment: "The label that appears in the alert that appears when deleting a user"
-        )
-
-        static let attributeContentConfirmationTitle = NSLocalizedString(
-            "userDetails.alert.deleteUserConfirmationTitle",
-            value: "Delete Confirmation",
-            comment: "The title of the confirmation alert that appears when deleting a user"
-        )
-
-        static let attributeContentConfirmationCancelButton = NSLocalizedString(
-            "userDetails.alert.deleteUserConfirmationCancelButton",
-            value: "Cancel",
-            comment: "The title of the cancel button in the confirmation alert that appears when deleting a user"
-        )
-
-        static let attributeContentConfirmationDeleteButton = NSLocalizedString(
-            "userDetails.alert.deleteUserConfirmationDeleteButton",
-            value: "Delete",
-            comment: "The title of the delete button in the confirmation alert that appears when deleting a user"
-        )
-
     }
 }
 
@@ -293,7 +258,9 @@ private extension View {
                 view.presentUserPicker = false
             },
             content: {
-                pickAnotherUser(in: view)
+                DeleteUserConfirmationSheet(user: view.user, deleteUserViewModel: view.deleteUserViewModel) {
+                    view.presentDeleteConfirmation = true
+                }
             }
         )
         .alert(
@@ -332,55 +299,6 @@ private extension View {
                 // TODO: Use appropriate localized error message
                 Text(error.localizedDescription)
             })
-    }
-
-    @ViewBuilder
-    func pickAnotherUser(in view: UserDetailsView) -> some View {
-        NavigationView {
-            Form {
-                VStack(alignment: .leading) {
-                    Text(Strings.deleteUserAttributionMessage)
-                    Text("ID #\(view.user.id): \(view.user.username)")
-                }
-                .frame(maxWidth: .infinity)
-                .listRowBackground(Color.clear)
-                .listRowInsets(.zero)
-
-                Section {
-                    if view.deleteUserViewModel.isFetchingOtherUsers {
-                        LabeledContent(Strings.attributeContentToUserLabel) {
-                            ProgressView()
-                        }
-                    } else {
-                        Picker(Strings.attributeContentToUserLabel, selection: view.$deleteUserViewModel.selectedUser) {
-                            ForEach(view.deleteUserViewModel.otherUsers) { user in
-                                Text("\(user.displayName) (\(user.username))").tag(user)
-                            }
-                        }
-                    }
-                }
-            }
-            .navigationTitle(Strings.attributeContentConfirmationTitle)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button(role: .cancel) {
-                        view.presentUserPicker = false
-                    } label: {
-                        Text(Strings.attributeContentConfirmationCancelButton)
-                    }
-                }
-                ToolbarItem(placement: .destructiveAction) {
-                    Button(role: .destructive) {
-                        view.presentDeleteConfirmation = true
-                    } label: {
-                        Text(Strings.attributeContentConfirmationDeleteButton)
-                    }
-                    .disabled(view.deleteUserViewModel.deleteButtonIsDisabled)
-                }
-            }
-        }
-        .presentationDetents([.medium])
     }
 }
 
