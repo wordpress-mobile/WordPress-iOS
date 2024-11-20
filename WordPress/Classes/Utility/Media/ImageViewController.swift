@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 
+/// A convenience class for managing image downloads for individual views.
 @MainActor
 final class ImageViewController {
     var downloader: ImageDownloader = .shared
@@ -11,7 +12,7 @@ final class ImageViewController {
     enum State {
         case loading
         case success(UIImage)
-        case failure
+        case failure(Error)
     }
 
     deinit {
@@ -23,7 +24,11 @@ final class ImageViewController {
         task = nil
     }
 
-    func setImage(with imageURL: URL, host: MediaHost? = nil, size: CGSize? = nil) {
+    func setImage(
+        with imageURL: URL,
+        host: MediaHost? = nil,
+        size: CGSize? = nil
+    ) {
         task?.cancel()
 
         if let image = downloader.cachedImage(for: imageURL, size: size) {
@@ -43,7 +48,7 @@ final class ImageViewController {
                     self?.onStateChanged(.success(image))
                 } catch {
                     guard !Task.isCancelled else { return }
-                    self?.onStateChanged(.failure)
+                    self?.onStateChanged(.failure(error))
                 }
             }
         }
