@@ -558,7 +558,7 @@ extension WPRichContentView: UIGestureRecognizerDelegate {
         let point = touch.location(in: self)
         let characterIndex = self.layoutManager.characterIndex(for: point, in: self.textContainer, fractionOfDistanceBetweenInsertionPoints: nil)
         // handle tap on link
-        if let linkAttribute = self.attributedText?.attribute(.link, at: characterIndex, effectiveRange: nil) {
+        if let attributedText, characterIndex >= 0 && characterIndex < attributedText.length, let linkAttribute = attributedText.attribute(.link, at: characterIndex, effectiveRange: nil) {
             return linkAttribute is URL
         }
 
