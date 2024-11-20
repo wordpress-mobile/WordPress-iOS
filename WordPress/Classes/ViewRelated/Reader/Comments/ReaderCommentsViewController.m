@@ -667,6 +667,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     [self.followCommentsService fetchSubscriptionStatusWithSuccess:^(BOOL isSubscribed) {
         // update the ReaderPost button to keep it in-sync.
         weakSelf.post.isSubscribedComments = isSubscribed;
+        [weakSelf refreshFollowButton];
         [ContextManager.sharedInstance saveContext:weakSelf.post.managedObjectContext];
     } failure:^(NSError *error) {
         DDLogError(@"Error fetching subscription status for post: %@", error);
@@ -919,7 +920,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         [weakSelf trackReplyTo:replyToComment];
         [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
         [weakSelf refreshReplyTextViewPlaceholder];
-        [weakSelf refreshFollowButton];
 
         // Dispatch is used here to address an issue in iOS 15 where some cells could disappear from the screen after `reloadData`.
         // This seems to be affecting the Simulator environment only since I couldn't reproduce it on the device, but I'm fixing it just in case.
