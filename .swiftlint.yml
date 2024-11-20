@@ -10,6 +10,7 @@ opt_in_rules:
   - discarded_notification_center_observer
   - duplicate_imports
   - overridden_super_call
+  - shorthand_optional_binding
   - vertical_whitespace
   - weak_delegate
 
