@@ -55,9 +55,12 @@ private extension ReaderDetailLikesListController {
     func displayUserProfile(_ user: LikeUser, from indexPath: IndexPath) {
         let userProfileVC = UserProfileSheetViewController(user: user)
         userProfileVC.blogUrlPreviewedSource = "reader_like_list_user_profile"
-        let bottomSheet = BottomSheetViewController(childViewController: userProfileVC)
-        let sourceView = tableView.cellForRow(at: indexPath) ?? view
-        bottomSheet.show(from: self, sourceView: sourceView)
+        userProfileVC.modalPresentationStyle = .popover
+        userProfileVC.popoverPresentationController?.sourceView = tableView.cellForRow(at: indexPath) ?? view
+        userProfileVC.popoverPresentationController?.adaptiveSheetPresentationController.prefersGrabberVisible = true
+        userProfileVC.popoverPresentationController?.adaptiveSheetPresentationController.detents = [.medium()]
+        present(userProfileVC, animated: true)
+
         WPAnalytics.track(.userProfileSheetShown, properties: ["source": "like_reader_list"])
     }
 

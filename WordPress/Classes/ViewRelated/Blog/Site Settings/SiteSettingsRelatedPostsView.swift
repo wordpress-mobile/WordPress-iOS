@@ -6,6 +6,7 @@ import WordPressShared
 struct RelatedPostsSettingsView: View {
     private let blog: Blog
     @ObservedObject private var settings: BlogSettings
+    @State var isSaving = false
 
     var title: String { Strings.title }
 
@@ -34,6 +35,13 @@ struct RelatedPostsSettingsView: View {
         }
         .navigationTitle(Strings.title)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            if isSaving {
+                ToolbarItem(placement: .topBarTrailing) {
+                    ProgressView()
+                }
+            }
+        }
     }
 
     private var settingsSection: some View {
@@ -90,7 +98,11 @@ struct RelatedPostsSettingsView: View {
 
     private func save(field: String, value: Any) {
         WPAnalytics.trackSettingsChange("related_posts", fieldName: field, value: value)
-        BlogService(coreDataStack: ContextManager.shared).updateSettings(for: blog, success: nil, failure: { _ in
+        isSaving = true
+        BlogService(coreDataStack: ContextManager.shared).updateSettings(for: blog, success: {
+            isSaving = false
+        }, failure: { _ in
+            isSaving = false
             SVProgressHUD.showDismissibleError(withStatus: Strings.saveFailed)
         })
     }
