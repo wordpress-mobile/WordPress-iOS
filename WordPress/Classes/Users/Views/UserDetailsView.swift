@@ -4,6 +4,8 @@ struct UserDetailsView: View {
 
     fileprivate let userService: UserServiceProtocol
     let user: DisplayUser
+    let isCurrentUser: Bool
+    let applicationTokenListDataProvider: ApplicationTokenListDataProvider
 
     @State private var presentPasswordAlert: Bool = false {
         didSet {
@@ -20,19 +22,19 @@ struct UserDetailsView: View {
 
     @StateObject
     fileprivate var viewModel: UserDetailViewModel
-    @StateObject
-    fileprivate var applicationTokenListViewModel: ApplicationTokenListViewModel
+
     @StateObject
     fileprivate var deleteUserViewModel: UserDeleteViewModel
 
     @Environment(\.dismiss)
     var dismissAction: DismissAction
 
-    init(user: DisplayUser, userService: UserServiceProtocol, applicationTokenListDataProvider: ApplicationTokenListDataProvider) {
+    init(user: DisplayUser, isCurrentUser: Bool, userService: UserServiceProtocol, applicationTokenListDataProvider: ApplicationTokenListDataProvider) {
         self.user = user
+        self.isCurrentUser = isCurrentUser
         self.userService = userService
+        self.applicationTokenListDataProvider = applicationTokenListDataProvider
         _viewModel = StateObject(wrappedValue: UserDetailViewModel(userService: userService))
-        _applicationTokenListViewModel = StateObject(wrappedValue: ApplicationTokenListViewModel(dataProvider: applicationTokenListDataProvider))
         _deleteUserViewModel = StateObject(wrappedValue: UserDeleteViewModel(user: user, userService: userService))
     }
 
@@ -61,29 +63,29 @@ struct UserDetailsView: View {
                 }
             }
 
-            if !applicationTokenListViewModel.applicationTokens.isEmpty {
-                Section(ApplicationTokenListView.title) {
-                    ForEach(applicationTokenListViewModel.applicationTokens) { token in
-                        ApplicationTokenListItemView(item: token)
-                    }
-                }
-            }
-
-            if viewModel.currentUserCanModifyUsers {
+            if isCurrentUser || viewModel.currentUserCanModifyUsers {
                 Section(Strings.accountManagementSectionTitle) {
-                    Button(Strings.setNewPasswordActionTitle) {
-                        presentPasswordAlert = true
+                    if isCurrentUser {
+                        NavigationLink(ApplicationTokenListView.title) {
+                            ApplicationTokenListView(dataProvider: applicationTokenListDataProvider)
+                        }
                     }
-                    Button(role: .destructive) {
-                        presentUserPicker = true
-                    } label: {
-                        Text(
-                            deleteUserViewModel.isDeletingUser ?
-                                Strings.deletingUserActionTitle
-                                : Strings.deleteUserActionTitle
-                        )
+
+                    if viewModel.currentUserCanModifyUsers {
+                        Button(Strings.setNewPasswordActionTitle) {
+                            presentPasswordAlert = true
+                        }
+                        Button(role: .destructive) {
+                            presentUserPicker = true
+                        } label: {
+                            Text(
+                                deleteUserViewModel.isDeletingUser ?
+                                    Strings.deletingUserActionTitle
+                                    : Strings.deleteUserActionTitle
+                            )
+                        }
+                        .disabled(deleteUserViewModel.isDeletingUser)
                     }
-                    .disabled(deleteUserViewModel.isDeletingUser)
                 }
             }
         }
@@ -115,10 +117,6 @@ struct UserDetailsView: View {
             Task {
                 await viewModel.loadCurrentUserRole()
                 await deleteUserViewModel.fetchOtherUsers()
-
-                if await userService.isCurrentUser(user) {
-                    await applicationTokenListViewModel.fetchTokens()
-                }
             }
         }
     }
@@ -397,6 +395,6 @@ private extension String {
 
 #Preview {
     NavigationStack {
-        UserDetailsView(user: DisplayUser.MockUser, userService: MockUserProvider(), applicationTokenListDataProvider: StaticTokenProvider(tokens: .success(.testTokens)))
+        UserDetailsView(user: DisplayUser.MockUser, isCurrentUser: true, userService: MockUserProvider(), applicationTokenListDataProvider: StaticTokenProvider(tokens: .success(.testTokens)))
     }
 }

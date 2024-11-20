@@ -5,21 +5,21 @@ import WordPressAPI
 
 struct ApplicationTokenListView: View {
 
-    @ObservedObject
+    @StateObject
     private var viewModel: ApplicationTokenListViewModel
 
     fileprivate init(tokens: [ApplicationTokenItem]) {
         let dataProvider = StaticTokenProvider(tokens: .success(tokens))
-        self.init(viewModel: ApplicationTokenListViewModel(dataProvider: dataProvider))
+        self.init(dataProvider: dataProvider)
     }
 
     fileprivate init(error: Error) {
         let dataProvider = StaticTokenProvider(tokens: .failure(error))
-        self.init(viewModel: ApplicationTokenListViewModel(dataProvider: dataProvider))
+        self.init(dataProvider: dataProvider)
     }
 
-    init(viewModel: ApplicationTokenListViewModel) {
-        self.viewModel = viewModel
+    init(dataProvider: ApplicationTokenListDataProvider) {
+        _viewModel = .init(wrappedValue: ApplicationTokenListViewModel(dataProvider: dataProvider))
     }
 
     var body: some View {
@@ -32,7 +32,7 @@ struct ApplicationTokenListView: View {
                 List(viewModel.applicationTokens) { token in
                     ApplicationTokenListItemView(item: token)
                 }
-                .listStyle(.plain)
+                .listStyle(.insetGrouped)
             }
         }
         .navigationTitle(Self.title)
@@ -47,6 +47,7 @@ struct ApplicationTokenListView: View {
     }
 }
 
+@MainActor
 class ApplicationTokenListViewModel: ObservableObject {
 
     @Published
@@ -58,14 +59,13 @@ class ApplicationTokenListViewModel: ObservableObject {
     @Published
     private(set) var applicationTokens: [ApplicationTokenItem]
 
-    private let dataProvider: ApplicationTokenListDataProvider!
+    let dataProvider: ApplicationTokenListDataProvider!
 
     init(dataProvider: ApplicationTokenListDataProvider) {
         self.dataProvider = dataProvider
         self.applicationTokens = []
     }
 
-    @MainActor
     func fetchTokens() async {
         isLoadingData = true
         defer {

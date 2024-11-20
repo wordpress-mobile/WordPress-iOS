@@ -5,10 +5,12 @@ public struct UserListView: View {
 
     @StateObject
     private var viewModel: UserListViewModel
+    private let currentUserId: Int32
     private let userService: UserServiceProtocol
     private let applicationTokenListDataProvider: ApplicationTokenListDataProvider
 
-    public init(userService: UserServiceProtocol, applicationTokenListDataProvider: ApplicationTokenListDataProvider) {
+    public init(currentUserId: Int32, userService: UserServiceProtocol, applicationTokenListDataProvider: ApplicationTokenListDataProvider) {
+        self.currentUserId = currentUserId
         self.userService = userService
         self.applicationTokenListDataProvider = applicationTokenListDataProvider
         _viewModel = StateObject(wrappedValue: UserListViewModel(userService: userService))
@@ -34,7 +36,7 @@ public struct UserListView: View {
                                     .listRowBackground(Color.clear)
                             } else {
                                 ForEach(section.users) { user in
-                                    UserListItem(user: user, userService: userService, applicationTokenListDataProvider: applicationTokenListDataProvider)
+                                    UserListItem(user: user, isCurrentUser: user.id == currentUserId, userService: userService, applicationTokenListDataProvider: applicationTokenListDataProvider)
                                 }
                             }
                         }
@@ -73,18 +75,18 @@ public struct UserListView: View {
 
 #Preview("Loading") {
     NavigationView {
-        UserListView(userService: MockUserProvider(), applicationTokenListDataProvider: StaticTokenProvider(tokens: .success(.testTokens)))
+        UserListView(currentUserId: 0, userService: MockUserProvider(), applicationTokenListDataProvider: StaticTokenProvider(tokens: .success(.testTokens)))
     }
 }
 
 #Preview("Error") {
     NavigationView {
-        UserListView(userService: MockUserProvider(scenario: .error), applicationTokenListDataProvider: StaticTokenProvider(tokens: .success(.testTokens)))
+        UserListView(currentUserId: 0, userService: MockUserProvider(scenario: .error), applicationTokenListDataProvider: StaticTokenProvider(tokens: .success(.testTokens)))
     }
 }
 
 #Preview("List") {
     NavigationView {
-        UserListView(userService: MockUserProvider(scenario: .dummyData), applicationTokenListDataProvider: StaticTokenProvider(tokens: .success(.testTokens)))
+        UserListView(currentUserId: 0, userService: MockUserProvider(scenario: .dummyData), applicationTokenListDataProvider: StaticTokenProvider(tokens: .success(.testTokens)))
     }
 }

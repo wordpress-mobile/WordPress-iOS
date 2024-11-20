@@ -65,10 +65,6 @@ actor UserService: UserServiceProtocol {
         await currentUser?.capabilities.keys.contains(capability) == true
     }
 
-    func isCurrentUser(_ user: DisplayUser) async -> Bool {
-        await currentUser?.id == user.id
-    }
-
     func deleteUser(id: Int32, reassigningPostsTo newUserId: Int32) async throws {
         let result = try await client.api.users.delete(
             userId: id,
