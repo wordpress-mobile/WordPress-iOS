@@ -7,11 +7,11 @@ excluded:
   - Modules/.build
 
 opt_in_rules:
-  - overridden_super_call
   - discarded_notification_center_observer
-  - weak_delegate
-  - vertical_whitespace
   - duplicate_imports
+  - overridden_super_call
+  - vertical_whitespace
+  - weak_delegate
 
 overridden_super_call:
   severity: error
