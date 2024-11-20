@@ -94,17 +94,17 @@ import WordPressShared
     ///   - success: A closure to be called if the image was loaded successfully.
     ///   - error: A closure to be called if there was an error loading the image.
     ///
-    func loadImage(with url: URL, success: ImageLoaderSuccessBlock?, error: ImageLoaderFailureBlock?) {
-        successHandler = success
-        errorHandler = error
-
-        if url.isGif {
-            loadGif(with: url, from: .publicSite)
-        } else {
-            imageView.clean()
-            loadStaticImage(with: url, from: .publicSite)
-        }
-    }
+//    func loadImage(with url: URL, success: ImageLoaderSuccessBlock?, error: ImageLoaderFailureBlock?) {
+//        successHandler = success
+//        errorHandler = error
+//
+//        if url.isGif {
+//            loadGif(with: url, from: .publicSite)
+//        } else {
+//            imageView.clean()
+//            loadStaticImage(with: url, from: .publicSite)
+//        }
+//    }
 
     @objc(loadImageWithURL:fromPost:preferredSize:placeholder:success:error:)
     func loadImage(with url: URL, from post: AbstractPost, preferredSize size: CGSize = .zero, placeholder: UIImage?, success: ImageLoaderSuccessBlock?, error: ImageLoaderFailureBlock?) {
