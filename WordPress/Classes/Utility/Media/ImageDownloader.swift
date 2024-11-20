@@ -2,6 +2,8 @@ import UIKit
 
 struct ImageRequestOptions {
     /// Resize the thumbnail to the given size. By default, `nil`.
+    ///
+    /// - warning: The size is in pixels.
     var size: CGSize?
 
     /// If enabled, uses ``MemoryCache`` for caching decompressed images.
