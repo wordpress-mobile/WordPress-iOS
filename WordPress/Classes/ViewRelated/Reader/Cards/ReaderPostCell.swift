@@ -245,7 +245,21 @@ private final class ReaderPostCellView: UIView {
     }
 
     @objc private func buttonLikeTapped() {
-        viewModel?.toggleLike()
+        guard let viewModel else {
+            return wpAssertionFailure("missing ViewModel")
+        }
+        if !viewModel.toolbar.isLiked {
+            var toolbar = viewModel.toolbar
+            toolbar.isLiked = true
+            toolbar.likeCount += 1
+            configureToolbar(with: toolbar)
+            UINotificationFeedbackGenerator().notificationOccurred(.success)
+            buttons.like.imageView?.fadeInWithRotationAnimation { _ in
+                viewModel.toggleLike()
+            }
+        } else {
+            viewModel.toggleLike()
+        }
     }
 
     private func makeMoreMenu() -> [UIMenuElement] {
@@ -365,7 +379,7 @@ private func makeAuthorButton() -> UIButton {
 private func makeButton(systemImage: String, font: UIFont = UIFont.preferredFont(forTextStyle: .footnote)) -> UIButton {
     var configuration = UIButton.Configuration.plain()
     configuration.image = UIImage(systemName: systemImage)
-    configuration.imagePadding = 8
+    configuration.imagePadding = 6
     configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(font: font)
     configuration.baseForegroundColor = .secondaryLabel
     configuration.contentInsets = .init(top: 16, leading: 12, bottom: 14, trailing: 12)

@@ -984,6 +984,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     } failure:^(NSError * __unused error) {
         // in case of failure, revert the cell's like state.
         [weakSelf.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [[UINotificationFeedbackGenerator new] notificationOccurred:UINotificationFeedbackTypeError];
     }];
 }
 

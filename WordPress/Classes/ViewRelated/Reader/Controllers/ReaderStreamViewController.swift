@@ -71,7 +71,7 @@ import AutomatticTracks
     private let refreshInterval = 300
     private var cleanupAndRefreshAfterScrolling = false
     private let recentlyBlockedSitePostObjectIDs = NSMutableArray()
-    private let heightForFooterView = CGFloat(34.0)
+    private let heightForFooterView = CGFloat(44)
     private let estimatedHeightsCache = NSCache<AnyObject, AnyObject>()
     private var isFeed = false
     private var syncIsFillingGap = false

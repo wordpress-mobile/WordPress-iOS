@@ -11,6 +11,7 @@ import CoreData
     @NSManaged open var following: Bool
     @NSManaged open var lastSynced: Date?
     @NSManaged open var path: String
+    /// Repurposed for "isFavorite".
     @NSManaged open var showInMenu: Bool
     @NSManaged open var title: String
     @NSManaged open var type: String

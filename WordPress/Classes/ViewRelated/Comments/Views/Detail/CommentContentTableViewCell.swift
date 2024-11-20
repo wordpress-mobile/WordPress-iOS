@@ -81,9 +81,8 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     @objc var isReplyHighlighted: Bool = false {
         didSet {
-            replyButton?.tintColor = isReplyHighlighted ? Style.highlightedReplyButtonTintColor : Style.reactionButtonTextColor
-            replyButton?.setTitleColor(isReplyHighlighted ? Style.highlightedReplyButtonTintColor : Style.reactionButtonTextColor, for: .normal)
-            replyButton?.setImage(isReplyHighlighted ? Style.highlightedReplyIconImage : Style.replyIconImage, for: .normal)
+            replyButton.tintColor = isReplyHighlighted ? UIAppColor.brand : .label
+            replyButton.configuration?.image = UIImage(systemName: isReplyHighlighted ? "arrowshape.turn.up.left.fill" : "arrowshape.turn.up.left")
         }
     }
 
@@ -129,8 +128,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     private var isLiked: Bool = false
 
     private var likeCount: Int = 0
-
-    private var isLikeButtonAnimating: Bool = false
 
     /// Styling configuration based on `ReaderDisplaySetting`. The parameter is optional so that the styling approach
     /// can be scoped by using the "legacy" style when the passed parameter is nil.
@@ -377,34 +374,38 @@ private extension CommentContentTableViewCell {
         accessoryButton?.setImage(accessoryButtonImage, for: .normal)
         accessoryButton?.addTarget(self, action: #selector(accessoryButtonTapped), for: .touchUpInside)
 
-        replyButton?.tintColor = Style.reactionButtonTextColor
-        replyButton?.titleLabel?.font = Style.reactionButtonFont
-        replyButton?.titleLabel?.adjustsFontSizeToFitWidth = true
-        replyButton?.titleLabel?.adjustsFontForContentSizeCategory = true
-        replyButton?.setTitle(.reply, for: .normal)
-        replyButton?.setTitleColor(Style.reactionButtonTextColor, for: .normal)
-        replyButton?.setImage(Style.replyIconImage, for: .normal)
-        replyButton?.addTarget(self, action: #selector(replyButtonTapped), for: .touchUpInside)
-        replyButton?.adjustsImageSizeForAccessibilityContentSizeCategory = true
-        adjustImageAndTitleEdgeInsets(for: replyButton)
-        replyButton?.sizeToFit()
-        replyButton?.accessibilityIdentifier = .replyButtonAccessibilityId
+        replyButton.configuration = makeReactionButtonConfiguration(systemImage: "arrowshape.turn.up.left")
+        replyButton.tintColor = .label
+        replyButton.setTitle(.reply, for: .normal)
+        replyButton.addTarget(self, action: #selector(replyButtonTapped), for: .touchUpInside)
+        replyButton.maximumContentSizeCategory = .accessibilityMedium
+        replyButton.accessibilityIdentifier = .replyButtonAccessibilityId
 
-        likeButton?.tintColor = Style.reactionButtonTextColor
-        likeButton?.titleLabel?.font = Style.reactionButtonFont
-        likeButton?.titleLabel?.adjustsFontSizeToFitWidth = true
-        likeButton?.titleLabel?.adjustsFontForContentSizeCategory = true
-        likeButton?.setTitleColor(Style.reactionButtonTextColor, for: .normal)
-        likeButton?.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
-        likeButton?.adjustsImageSizeForAccessibilityContentSizeCategory = true
-        adjustImageAndTitleEdgeInsets(for: likeButton)
+        likeButton.configuration = makeReactionButtonConfiguration(systemImage: "star")
+        likeButton.tintColor = .label
+
+        likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
+        likeButton.maximumContentSizeCategory = .accessibilityMedium
         updateLikeButton(liked: false, numberOfLikes: 0)
-        likeButton?.sizeToFit()
-        likeButton?.accessibilityIdentifier = .likeButtonAccessibilityId
+        likeButton.accessibilityIdentifier = .likeButtonAccessibilityId
 
         separatorView.layoutMargins = .init(top: 0, left: 20, bottom: 0, right: 0).flippedForRightToLeft
 
         applyStyles()
+    }
+
+    private func makeReactionButtonConfiguration(systemImage: String) -> UIButton.Configuration {
+        var configuration = UIButton.Configuration.plain()
+        configuration.image = UIImage(systemName: systemImage)
+        configuration.imagePlacement = .top
+        configuration.imagePadding = 5
+        configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer {
+            var attributes = $0
+            attributes.font = UIFont.preferredFont(forTextStyle: .footnote)
+            return attributes
+        }
+        configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(font: UIFont.preferredFont(forTextStyle: .caption1))
+        return configuration
     }
 
     /// Applies the `ReaderDisplaySetting` styles
@@ -415,16 +416,6 @@ private extension CommentContentTableViewCell {
         dateLabel?.font = style.dateFont
         dateLabel?.textColor = style.dateTextColor
     }
-
-    private func adjustImageAndTitleEdgeInsets(for button: UIButton) {
-        guard let imageSize = button.imageView?.frame.size, let titleSize = button.titleLabel?.frame.size else {
-            return
-        }
-
-        let spacing: CGFloat = 3
-        button.titleEdgeInsets = .init(top: 0, left: -titleSize.width, bottom: -(imageSize.height + spacing), right: 0)
-        button.imageEdgeInsets = .init(top: -(titleSize.height + spacing), left: imageSize.width/2, bottom: 0, right: 0)
-   }
 
     /// Configures the avatar image view with the provided URL.
     /// If the URL does not contain any image, the default placeholder image will be displayed.
@@ -460,61 +451,20 @@ private extension CommentContentTableViewCell {
     ///   - numberOfLikes: The number of likes to be displayed.
     ///   - animated: Whether the Like button state change should be animated or not. Defaults to false.
     ///   - completion: Completion block called once the animation is completed. Defaults to nil.
-    func updateLikeButton(liked: Bool, numberOfLikes: Int, animated: Bool = false, completion: (() -> Void)? = nil) {
-        guard !isLikeButtonAnimating else {
-            return
-        }
-
+    func updateLikeButton(liked: Bool, numberOfLikes: Int, animated: Bool = false) {
         isLiked = liked
         likeCount = numberOfLikes
-
-        let onAnimationComplete = { [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.likeButton.tintColor = liked ? Style.likedTintColor : Style.reactionButtonTextColor
-            self.likeButton.setImage(liked ? Style.likedIconImage : Style.unlikedIconImage, for: .normal)
-            self.likeButton.setTitle(self.likeButtonTitle, for: .normal)
-            self.adjustImageAndTitleEdgeInsets(for: self.likeButton)
-            self.likeButton.setTitleColor(liked ? Style.likedTintColor : Style.reactionButtonTextColor, for: .normal)
-            self.likeButton.accessibilityLabel = liked ? String(numberOfLikes) + .commentIsLiked : String(numberOfLikes) + .commentIsNotLiked
-            completion?()
+        likeButton.tintColor = liked ? Style.likedTintColor : .label
+        if var configuration = likeButton.configuration {
+            configuration.image = UIImage(systemName: liked ? "star.fill" : "star")
+            configuration.title = likeButtonTitle
+            likeButton.configuration = configuration
+        } else {
+            wpAssertionFailure("missing configuration")
         }
-
-        guard animated else {
-            onAnimationComplete()
-            return
-        }
-
-        isLikeButtonAnimating = true
-
-        if isLiked {
-            UINotificationFeedbackGenerator().notificationOccurred(.success)
-        }
-
-        animateLikeButton {
-            onAnimationComplete()
-            self.isLikeButtonAnimating = false
-        }
-    }
-
-    /// Animates the Like button state change.
-    func animateLikeButton(completion: @escaping () -> Void) {
-        guard let buttonImageView = likeButton.imageView,
-              let overlayImage = Style.likedIconImage?.withTintColor(Style.likedTintColor) else {
-                  completion()
-                  return
-              }
-
-        let overlayImageView = UIImageView(image: overlayImage)
-        overlayImageView.frame = likeButton.convert(buttonImageView.bounds, from: buttonImageView)
-        likeButton.addSubview(overlayImageView)
-
-        let animation = isLiked ? overlayImageView.fadeInWithRotationAnimation : overlayImageView.fadeOutWithRotationAnimation
-        animation { _ in
-            overlayImageView.removeFromSuperview()
-            completion()
+        likeButton.accessibilityLabel = liked ? String(numberOfLikes) + .commentIsLiked : String(numberOfLikes) + .commentIsNotLiked
+        if liked && animated {
+            likeButton.imageView?.fadeInWithRotationAnimation()
         }
     }
 
@@ -579,11 +529,8 @@ private extension CommentContentTableViewCell {
     }
 
     @objc func likeButtonTapped() {
-        ReachabilityUtils.onAvailableInternetConnectionDo {
-            updateLikeButton(liked: !isLiked, numberOfLikes: isLiked ? likeCount - 1 : likeCount + 1, animated: true) {
-                self.likeButtonAction?()
-            }
-        }
+        updateLikeButton(liked: !isLiked, numberOfLikes: isLiked ? likeCount - 1 : likeCount + 1, animated: true)
+        likeButtonAction?()
     }
 }
 
