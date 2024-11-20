@@ -77,6 +77,11 @@ struct UserDetailsView: View {
                         }
                         Button(role: .destructive) {
                             presentUserPicker = true
+                            Task {
+                                if deleteUserViewModel.otherUsers.isEmpty {
+                                    await deleteUserViewModel.fetchOtherUsers()
+                                }
+                            }
                         } label: {
                             Text(
                                 deleteUserViewModel.isDeletingUser ?
@@ -116,7 +121,6 @@ struct UserDetailsView: View {
         .onAppear() {
             Task {
                 await viewModel.loadCurrentUserRole()
-                await deleteUserViewModel.fetchOtherUsers()
             }
         }
     }
