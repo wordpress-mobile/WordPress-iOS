@@ -36,7 +36,7 @@ final class ReaderRecommendedTagsCell: UITableViewCell {
         backgroundView.clipsToBounds = true
 
         contentView.addSubview(backgroundView)
-        backgroundView.pinEdges(insets: UIEdgeInsets(.all, 16))
+        backgroundView.pinEdges(to: contentView.readableContentGuide)
 
         let titleLabel = UILabel()
         titleLabel.font = .preferredFont(forTextStyle: .subheadline)
