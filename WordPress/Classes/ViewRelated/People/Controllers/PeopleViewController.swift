@@ -165,7 +165,7 @@ class PeopleViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
 
-        guard let blog = blog, let blogId = blog.dotComID?.intValue else { return }
+        guard let blog, let blogId = blog.dotComID?.intValue else { return }
 
         switch filter {
         case .users, .viewers:
@@ -323,7 +323,7 @@ private extension PeopleViewController {
     // MARK: Interface Helpers
 
     func filtersAvailableForBlog(_ blog: Blog?) -> [Filter] {
-        guard let blog = blog, blog.siteVisibility == .private else {
+        guard let blog, blog.siteVisibility == .private else {
             return Filter.defaultFilters
         }
 
@@ -364,7 +364,7 @@ private extension PeopleViewController {
     func resetManagedPeople() {
         isInitialLoad = true
 
-        guard let blog = blog, let service = PeopleService(blog: blog, coreDataStack: ContextManager.shared) else {
+        guard let blog, let service = PeopleService(blog: blog, coreDataStack: ContextManager.shared) else {
             return
         }
 
@@ -386,7 +386,7 @@ private extension PeopleViewController {
     }
 
     func loadPeoplePage(_ offset: Int = 0, success: @escaping ((_ retrieved: Int, _ shouldLoadMore: Bool) -> Void)) {
-        guard let blog = blog, let service = PeopleService(blog: blog, coreDataStack: ContextManager.shared) else {
+        guard let blog, let service = PeopleService(blog: blog, coreDataStack: ContextManager.shared) else {
             return
         }
 
@@ -433,7 +433,7 @@ private extension PeopleViewController {
                 self?.handleLoadError(error)
             }
 
-            if let result = result {
+            if let result {
                 success(result.retrieved, result.shouldLoadMore)
             }
         }
@@ -502,7 +502,7 @@ private extension PeopleViewController {
     }
 
     func role(person: Person) -> Role? {
-        guard let blog = blog else {
+        guard let blog else {
             return nil
         }
         return try? Role.lookup(withBlogID: blog.objectID, slug: person.role, in: viewContext)
@@ -565,7 +565,7 @@ extension PeopleViewController {
         let selectedFilter = Filter.allCases[filterBar.selectedIndex]
         filter = selectedFilter
 
-        guard let blog = blog else {
+        guard let blog else {
             return
         }
         WPAnalytics.track(.peopleFilterChanged, properties: [:], blog: blog)

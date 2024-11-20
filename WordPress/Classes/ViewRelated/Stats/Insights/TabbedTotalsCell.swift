@@ -139,7 +139,7 @@ private extension TabbedTotalsCell {
         let showNoResults = tabsData[filterTabBar.selectedIndex].dataRows.isEmpty
         noResultsView.isHidden = !showNoResults
 
-        guard showNoResults, let superview = superview else {
+        guard showNoResults, let superview else {
             return
         }
 

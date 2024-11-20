@@ -63,7 +63,7 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
 
         authorAvatarURL = url
 
-        guard let url = url else {
+        guard let url else {
             authorAvatarImageView.image = .gravatarPlaceholderImage
             return
         }

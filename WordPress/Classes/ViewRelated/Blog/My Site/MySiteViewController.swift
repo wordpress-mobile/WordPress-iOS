@@ -412,14 +412,14 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
     @objc
     private func pulledToRefresh() {
-        guard let blog = blog else {
+        guard let blog else {
             return
         }
         switch currentSection {
         case .siteMenu:
 
             blogDetailsViewController?.pulledToRefresh(with: refreshControl) { [weak self] in
-                guard let self = self else {
+                guard let self else {
                     return
                 }
 
@@ -446,7 +446,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
     private func syncBlogAndAllMetadata(_ blog: Blog) {
         blogService.syncBlogAndAllMetadata(blog) { [weak self] in
-            guard let self = self else {
+            guard let self else {
                 return
             }
 
@@ -577,7 +577,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
                                     trailingAnchor: view.safeAreaLayoutGuide.trailingAnchor,
                                     bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
 
-        if let blog = blog,
+        if let blog,
            noSitesViewController.view.superview == nil {
             createButtonCoordinator?.showCreateButton(for: blog)
         }
@@ -623,7 +623,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     // MARK: - Blog Details UI Logic
 
     private func hideBlogDetails() {
-        guard let blogDetailsViewController = blogDetailsViewController else {
+        guard let blogDetailsViewController else {
             return
         }
 
@@ -650,7 +650,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     }
 
     private func blogDetailsViewController(for blog: Blog) -> BlogDetailsViewController {
-        guard let blogDetailsViewController = blogDetailsViewController else {
+        guard let blogDetailsViewController else {
             let blogDetailsViewController = makeBlogDetailsViewController(for: blog)
             self.blogDetailsViewController = blogDetailsViewController
             return blogDetailsViewController
@@ -730,7 +730,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     // MARK: Dashboard UI Logic
 
     private func hideDashboard() {
-        guard let blogDashboardViewController = blogDashboardViewController else {
+        guard let blogDashboardViewController else {
             return
         }
 
@@ -763,7 +763,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
     @objc
     private func handleDataModelChange(notification: NSNotification) {
-        if let blog = blog {
+        if let blog {
             handlePossibleDeletion(of: blog, notification: notification)
         } else {
             handlePossiblePrimaryBlogCreation(notification: notification)
@@ -831,7 +831,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
     func fetchPrompt(for blog: Blog?) {
         guard FeatureFlag.bloggingPrompts.enabled,
-              let blog = blog,
+              let blog,
               blog.isAccessibleThroughWPCom(),
               let promptsService = BloggingPromptsService(blog: blog),
               let siteID = blog.dotComID?.intValue else {

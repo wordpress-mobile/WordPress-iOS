@@ -63,7 +63,7 @@ class SafariCredentialsService {
                 return
             }
 
-            guard let credentials = credentials, CFArrayGetCount(credentials) > 0 else {
+            guard let credentials, CFArrayGetCount(credentials) > 0 else {
                 // Saved credentials exist but were not selected.
                 DispatchQueue.main.async(execute: {
                     completion(true, nil, nil)

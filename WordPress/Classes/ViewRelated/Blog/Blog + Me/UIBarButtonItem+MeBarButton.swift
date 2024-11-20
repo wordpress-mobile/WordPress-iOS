@@ -49,13 +49,13 @@ fileprivate extension UIBarButtonItem {
         gravatarImageView.isUserInteractionEnabled = action != nil
         gravatarImageView.contentMode = .scaleAspectFill
 
-        if let email = email {
+        if let email {
             gravatarImageView.downloadGravatar(for: email, placeholderImage: GravatarConfiguration.fallBackImage)
         } else {
             gravatarImageView.image = GravatarConfiguration.fallBackImage
         }
 
-        if let action = action {
+        if let action {
             let tapRecognizer = BindableTapGestureRecognizer(action: { _ in action() })
             gravatarImageView.addGestureRecognizer(tapRecognizer)
         }

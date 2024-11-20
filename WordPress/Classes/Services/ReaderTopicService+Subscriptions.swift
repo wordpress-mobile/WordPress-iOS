@@ -87,7 +87,7 @@ extension ReaderTopicService {
     ///   - success: Success block
     ///   - failure: Failure block
     func toggleSubscribingNotifications(for siteId: Int?, subscribe: Bool, _ success: (() -> Void)? = nil, _ failure: ((ReaderTopicServiceError?) -> Void)? = nil) {
-        guard let siteId = siteId else {
+        guard let siteId else {
             failure?(.invalidId)
             return
         }
@@ -143,7 +143,7 @@ extension ReaderTopicService {
     ///   - success: Success block
     ///   - failure: Failure block
     func toggleSubscribingComments(for siteId: Int?, subscribe: Bool, _ success: (() -> Void)? = nil, _ failure: ((ReaderTopicServiceError?) -> Void)? = nil) {
-        guard let siteId = siteId else {
+        guard let siteId else {
             failure?(.invalidId)
             return
         }
@@ -202,7 +202,7 @@ extension ReaderTopicService {
     ///   - success: Success block
     ///   - failure: Failure block
     func toggleSubscribingEmail(for siteId: Int?, subscribe: Bool, _ success: (() -> Void)? = nil, _ failure: ((ReaderTopicServiceError?) -> Void)? = nil) {
-        guard let siteId = siteId else {
+        guard let siteId else {
             failure?(.invalidId)
             return
         }

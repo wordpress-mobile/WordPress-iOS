@@ -193,7 +193,7 @@ fileprivate extension ShareCategoriesPickerViewController {
     }
 
     var rowCountForCategories: Int {
-        guard let allCategories = allCategories else {
+        guard let allCategories else {
             return 0
         }
         return allCategories.count
@@ -216,7 +216,7 @@ fileprivate extension ShareCategoriesPickerViewController {
     }
 
     func categoryForRowAtIndexPath(_ indexPath: IndexPath) -> RemotePostCategory? {
-        guard let sortedCategories = sortedCategories else {
+        guard let sortedCategories else {
             return nil
         }
         return sortedCategories[indexPath.row]

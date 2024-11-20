@@ -96,7 +96,7 @@ open class StartOverViewController: UITableViewController, MFMailComposeViewCont
         WPAppAnalytics.track(.siteSettingsStartOverContactSupportClicked, with: blog)
         if MFMailComposeViewController.canSendMail() {
             showAppleMailComposer()
-        } else if let googleMailURL = googleMailURL,
+        } else if let googleMailURL,
                 UIApplication.shared.canOpenURL(googleMailURL) {
             showGoogleMailComposerForURL(googleMailURL)
         } else {

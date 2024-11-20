@@ -250,7 +250,7 @@ final class PageListViewController: AbstractPostListViewController {
     override func predicateForFetchRequest() -> NSPredicate {
         var predicates = [NSPredicate]()
 
-        if let blog = blog {
+        if let blog {
             let basePredicate = NSPredicate(format: "blog = %@ && revision = nil", blog)
             predicates.append(basePredicate)
         }

@@ -48,14 +48,14 @@ class ExtensionNotificationManager {
         notificationContent.title = title
         notificationContent.body = body
         notificationContent.categoryIdentifier = category
-        if let userInfo = userInfo {
+        if let userInfo {
             notificationContent.userInfo = userInfo
         }
 
         let notificationTrigger = UNTimeIntervalNotificationTrigger(timeInterval: delay, repeats: false)
         let notificationRequest = UNNotificationRequest(identifier: UUID().uuidString, content: notificationContent, trigger: notificationTrigger)
         UNUserNotificationCenter.current().add(notificationRequest, withCompletionHandler: { error in
-            if let error = error {
+            if let error {
                 DDLogError("Unable to add notification request (\(error), \(error.localizedDescription))")
             }
         })

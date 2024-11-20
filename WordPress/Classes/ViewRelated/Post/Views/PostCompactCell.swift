@@ -27,7 +27,7 @@ class PostCompactCell: UITableViewCell {
 
     private var post: Post? {
         didSet {
-            guard let post = post, post != oldValue else {
+            guard let post, post != oldValue else {
                 return
             }
 
@@ -102,7 +102,7 @@ class PostCompactCell: UITableViewCell {
     }
 
     private func configureFeaturedImage() {
-        if let post = post, let url = post.featuredImageURL {
+        if let post, let url = post.featuredImageURL {
             featuredImageView.isHidden = false
 
             let host = MediaHost(with: post, failure: { error in
@@ -121,7 +121,7 @@ class PostCompactCell: UITableViewCell {
     }
 
     private func configureDate() {
-        guard let post = post else {
+        guard let post else {
             return
         }
 
@@ -130,7 +130,7 @@ class PostCompactCell: UITableViewCell {
     }
 
     private func configureExcerpt() {
-        guard let post = post else {
+        guard let post else {
             return
         }
 
@@ -139,7 +139,7 @@ class PostCompactCell: UITableViewCell {
     }
 
     private func configureStatus() {
-        guard let viewModel = viewModel else {
+        guard let viewModel else {
             return
         }
         badgesLabel.textColor = viewModel.statusColor

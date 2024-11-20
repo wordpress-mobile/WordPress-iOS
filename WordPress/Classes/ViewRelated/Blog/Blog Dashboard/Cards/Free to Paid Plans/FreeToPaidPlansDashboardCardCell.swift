@@ -7,7 +7,7 @@ final class FreeToPaidPlansDashboardCardCell: BaseDashboardDomainsCardCell {
 
     private lazy var cardViewModel: DashboardDomainsCardViewModel = {
         let onViewShow: () -> Void = { [weak self] in
-            guard let self = self else {
+            guard let self else {
                 return
             }
 

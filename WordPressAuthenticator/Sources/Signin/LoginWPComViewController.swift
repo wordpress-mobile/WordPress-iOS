@@ -125,7 +125,7 @@ class LoginWPComViewController: LoginViewController, NUXKeyboardResponder {
     }
 
     private func configureForgotPasswordButton() {
-        guard let forgotPasswordButton = forgotPasswordButton else {
+        guard let forgotPasswordButton else {
             return
         }
         WPStyleGuide.configureTextButton(forgotPasswordButton)

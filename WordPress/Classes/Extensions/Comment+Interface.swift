@@ -10,7 +10,7 @@ extension Comment {
     /// as well!
     ///
     @objc func relativeDateSectionIdentifier() -> String? {
-        guard let dateCreated = dateCreated else {
+        guard let dateCreated else {
             return nil
         }
 

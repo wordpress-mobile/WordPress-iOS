@@ -413,7 +413,7 @@ private extension TwoFAViewController {
     }
 
     @objc func applicationBecameActive() {
-        guard let codeField = codeField else {
+        guard let codeField else {
             return
         }
 
@@ -547,7 +547,7 @@ private extension TwoFAViewController {
         cell.configureButton(text: WordPressAuthenticator.shared.displayStrings.textCodeButtonTitle, icon: .phoneIcon)
 
         cell.actionHandler = { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
 
             self.tracker.track(click: .sendCodeWithText)
             self.requestCode()
@@ -562,7 +562,7 @@ private extension TwoFAViewController {
                              accessibilityIdentifier: TextLinkButtonTableViewCell.Constants.passkeysID)
 
         cell.actionHandler = { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
 
             self.tracker.track(click: .enterSecurityKey)
             self.loginWithSecurityKeys()

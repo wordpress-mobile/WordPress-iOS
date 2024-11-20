@@ -12,7 +12,7 @@ class NUXLinkMailViewController: LoginViewController {
     var emailMagicLinkSource: EmailMagicLinkSource?
     override var sourceTag: WordPressSupportSourceTag {
         get {
-            if let emailMagicLinkSource = emailMagicLinkSource,
+            if let emailMagicLinkSource,
                 emailMagicLinkSource == .signup {
                 return .wpComSignupMagicLink
             }
@@ -46,7 +46,7 @@ class NUXLinkMailViewController: LoginViewController {
     // MARK: - Configuration
 
     private func styleUsePasswordButton() {
-        guard let usePasswordButton = usePasswordButton else {
+        guard let usePasswordButton else {
             return
         }
         WPStyleGuide.configureTextButton(usePasswordButton)
@@ -67,7 +67,7 @@ class NUXLinkMailViewController: LoginViewController {
         usePasswordButton?.titleLabel?.numberOfLines = 0
         usePasswordButton?.accessibilityIdentifier = "Use Password"
 
-        guard let emailMagicLinkSource = emailMagicLinkSource else {
+        guard let emailMagicLinkSource else {
             return
         }
 
@@ -87,7 +87,7 @@ class NUXLinkMailViewController: LoginViewController {
 
     @IBAction func handleOpenMailTapped(_ sender: UIButton) {
         defer {
-            if let emailMagicLinkSource = emailMagicLinkSource {
+            if let emailMagicLinkSource {
                 switch emailMagicLinkSource {
                 case .login:
                     WordPressAuthenticator.track(.loginMagicLinkOpenEmailClientViewed)

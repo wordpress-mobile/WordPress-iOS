@@ -306,7 +306,7 @@ private extension CollectionViewContainerRow where Item == PluginDirectoryEntry,
         }
 
         let actionClosure: ImmuTableAction = { [weak presenter] _ in
-            guard let presenter = presenter, let query = listViewQuery else {
+            guard let presenter, let query = listViewQuery else {
                 return
             }
 
@@ -341,7 +341,7 @@ private extension CollectionViewContainerRow where Item == Plugin, CollectionVie
         }
 
         let actionClosure: ImmuTableAction = { [weak presenter] _ in
-            guard let presenter = presenter, let query = listViewQuery else {
+            guard let presenter, let query = listViewQuery else {
                 return
             }
 
@@ -373,7 +373,7 @@ private extension CollectionViewContainerRow where Item == Any, CollectionViewCe
          presenter: PluginPresenter & PluginListPresenter) {
 
         let actionClosure: ImmuTableAction = { [weak presenter] _ in
-            guard let presenter = presenter, let query = listViewQuery else {
+            guard let presenter, let query = listViewQuery else {
                 return
             }
 

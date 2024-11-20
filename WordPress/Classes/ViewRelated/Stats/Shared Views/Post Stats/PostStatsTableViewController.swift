@@ -98,7 +98,7 @@ private extension PostStatsTableViewController {
 
     func initViewModel() {
 
-        guard let postID = postID else {
+        guard let postID else {
             return
         }
 
@@ -153,7 +153,7 @@ private extension PostStatsTableViewController {
     // MARK: - Table Refreshing
 
     func refreshTableView() {
-        guard let viewModel = viewModel else {
+        guard let viewModel else {
             return
         }
 
@@ -171,8 +171,8 @@ private extension PostStatsTableViewController {
     }
 
     func refreshData(forceUpdate: Bool = false) {
-        guard let viewModel = viewModel,
-            let postID = postID else {
+        guard let viewModel,
+            let postID else {
             return
         }
 
@@ -183,7 +183,7 @@ private extension PostStatsTableViewController {
     }
 
     func applyTableUpdates() {
-        guard let viewModel = viewModel else {
+        guard let viewModel else {
             return
         }
 
@@ -238,7 +238,7 @@ extension PostStatsTableViewController: StatsBarChartViewDelegate {
 extension PostStatsTableViewController: SiteStatsTableHeaderDelegate {
 
     func dateChangedTo(_ newDate: Date?) {
-        guard let newDate = newDate else {
+        guard let newDate else {
             return
         }
 

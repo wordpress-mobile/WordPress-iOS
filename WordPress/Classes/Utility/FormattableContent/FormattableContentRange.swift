@@ -57,7 +57,7 @@ public protocol LinkContentRange {
 
 extension LinkContentRange where Self: FormattableContentRange {
     public func applyURLStyles(_ styles: FormattableContentStyles, to string: NSMutableAttributedString, shiftedRange: NSRange) {
-        if let url = url, let linksColor = styles.linksColor {
+        if let url, let linksColor = styles.linksColor {
             string.addAttribute(.link, value: url, range: shiftedRange)
             string.addAttribute(.foregroundColor, value: linksColor, range: shiftedRange)
         }

@@ -6,7 +6,7 @@ import UIKit
 class ShareNoticeNavigationCoordinator {
     static func presentEditor(with userInfo: NSDictionary) {
         fetchPost(from: userInfo, onSuccess: { post in
-            if let post = post {
+            if let post {
                 presentEditor(for: post, source: ShareNoticeConstants.notificationSourceSuccess)
             }
         }, onFailure: {
@@ -33,7 +33,7 @@ class ShareNoticeNavigationCoordinator {
 
     static func navigateToBlogDetails(with userInfo: NSDictionary) {
         fetchBlog(from: userInfo, onSuccess: { blog in
-            if let blog = blog {
+            if let blog {
                 RootViewCoordinator.sharedPresenter.showBlogDetails(for: blog)
             }
         }, onFailure: {

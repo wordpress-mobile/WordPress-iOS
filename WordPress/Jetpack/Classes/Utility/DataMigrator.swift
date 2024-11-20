@@ -144,7 +144,7 @@ private extension DataMigrator {
     }
 
     func populateSharedDefaults() throws {
-        guard let sharedDefaults = sharedDefaults else {
+        guard let sharedDefaults else {
             throw DataMigrationError.sharedUserDefaultsNil
         }
         let data = localDefaults.dictionaryRepresentation()
@@ -156,7 +156,7 @@ private extension DataMigrator {
     }
 
     func populateFromSharedDefaults() throws {
-        guard let sharedDefaults = sharedDefaults,
+        guard let sharedDefaults,
               let temporaryDictionary = sharedDefaults.dictionary(forKey: DefaultsWrapper.dictKey) else {
             throw DataMigrationError.sharedUserDefaultsNil
         }

@@ -32,7 +32,7 @@ class WhatIsNewScenePresenter: ScenePresenter {
     init(store: AnnouncementsStore) {
         self.store = store
         subscription = store.onChange { [weak self] in
-            guard let self = self, !self.store.announcements.isEmpty else {
+            guard let self, !self.store.announcements.isEmpty else {
                 return
             }
             self.startPresenting?()
@@ -46,8 +46,8 @@ class WhatIsNewScenePresenter: ScenePresenter {
         }
 
         startPresenting = { [weak viewController, weak self] in
-            guard let self = self,
-                let viewController = viewController,
+            guard let self,
+                let viewController,
                 viewController.isViewOnScreen(),
                 self.shouldPresentWhatIsNew(on: viewController) else {
                     return

@@ -202,7 +202,7 @@ final class SettingsTitleSubtitleController: UITableViewController {
     }
 
     @objc private func actionButtonTapped() {
-        guard let confirmation = confirmation else {
+        guard let confirmation else {
             executeAction()
             return
         }

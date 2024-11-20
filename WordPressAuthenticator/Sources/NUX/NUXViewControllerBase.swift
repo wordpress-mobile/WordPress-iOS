@@ -323,7 +323,7 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
     /// Displays the support vc.
     ///
     func displaySupportViewController(from source: WordPressSupportSourceTag) {
-        guard let navigationController = navigationController else {
+        guard let navigationController else {
             fatalError()
         }
 

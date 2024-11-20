@@ -209,7 +209,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         var timedOut = false
 
         let completionHandler: (CGSize) -> Void = { [weak self] size in
-            guard let self = self else {
+            guard let self else {
                 return
             }
 
@@ -291,7 +291,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     // MARK: - Private: Tap Gesture
 
     private func addTapGesture() {
-        guard let scrollView = scrollView else {
+        guard let scrollView else {
             return
         }
 

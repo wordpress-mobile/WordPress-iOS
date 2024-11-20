@@ -131,7 +131,7 @@ class CalendarViewController: UIViewController {
     }
 
     private func updateLabels() {
-        guard let startDate = startDate else {
+        guard let startDate else {
             resetLabels()
             return
         }
@@ -140,7 +140,7 @@ class CalendarViewController: UIViewController {
         startDateLabel.textColor = .label
         startDateLabel.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
 
-        if let endDate = endDate {
+        if let endDate {
             endDateLabel.text = formatter.string(from: endDate)
             endDateLabel.textColor = .label
             endDateLabel.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
@@ -212,7 +212,7 @@ class CalendarViewController: UIViewController {
             calendarCollectionView.superview?.layoutIfNeeded()
         }
 
-        if let startDate = startDate {
+        if let startDate {
             calendarCollectionView.scrollToDate(startDate,
                                                 animateScroll: true,
                                                 preferredScrollPosition: .centeredVertically,

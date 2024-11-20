@@ -23,7 +23,7 @@ final class TopTotalsCell: StatsRowsCell, NibLoadable {
         didSet {
             oldValue?.removeFromSuperview()
 
-            if let topAccessoryView = topAccessoryView {
+            if let topAccessoryView {
                 outerStackView.insertArrangedSubview(topAccessoryView, at: 0)
                 topAccessoryView.layoutMargins = subtitleStackView.layoutMargins
                 outerStackView.setCustomSpacing(Metrics.topAccessoryViewSpacing, after: topAccessoryView)
@@ -363,10 +363,10 @@ extension TopTotalsCell: Accessible {
         let dataTitle = dataSubtitleLabel.text
         let secondDataTitle = secondDataSubtitleLabel.text
 
-        if let itemTitle = itemTitle, let dataTitle = dataTitle, let secondDataTitle = secondDataTitle {
+        if let itemTitle, let dataTitle, let secondDataTitle {
             let descriptionFormat = NSLocalizedString("stats.topTotalsCell.voiceOverDescription", value: "Table showing %1$@, %2$@, and %3$@", comment: "Accessibility of stats table. Placeholders will be populated with names of data shown in table.")
             accessibilityLabel = String(format: descriptionFormat, itemTitle, dataTitle, secondDataTitle)
-        } else if let itemTitle = itemTitle, let dataTitle = dataTitle {
+        } else if let itemTitle, let dataTitle {
             let descriptionFormat = NSLocalizedString("Table showing %@ and %@", comment: "Accessibility of stats table. Placeholders will be populated with names of data shown in table.")
             accessibilityLabel = String(format: descriptionFormat, itemTitle, dataTitle)
         } else {

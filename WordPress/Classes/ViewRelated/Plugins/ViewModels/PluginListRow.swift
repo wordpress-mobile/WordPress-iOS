@@ -25,7 +25,7 @@ struct PluginListRow: ImmuTableRow {
         let iconPlaceholder = UIImage.gridicon(.plugins, size: iconSize)
         cell.iconImageView?.cancelImageDownload()
 
-        if let iconURL = iconURL {
+        if let iconURL {
             cell.iconImageView?.downloadResizedImage(from: iconURL, placeholderImage: iconPlaceholder, pointSize: iconSize)
         } else {
             cell.iconImageView?.image = iconPlaceholder

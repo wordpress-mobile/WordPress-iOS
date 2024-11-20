@@ -55,7 +55,7 @@ class JetpackPrologueViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        if let motion = motion, motion.isGyroAvailable {
+        if let motion, motion.isGyroAvailable {
             motion.startDeviceMotionUpdates()
         }
     }

@@ -54,7 +54,7 @@ final class SiteIconPickerPresenter: NSObject {
             let imageCropViewController = ImageCropViewController(image: image)
             imageCropViewController.maskShape = .square
             imageCropViewController.onCompletion = { [weak self] image, modified in
-                guard let self = self else {
+                guard let self else {
                     return
                 }
                 self.onIconSelection?()
@@ -73,7 +73,7 @@ final class SiteIconPickerPresenter: NSObject {
                         receiveUpdate: nil,
                         thumbnailCallback: nil
                     ) { (media, error) in
-                        guard let media = media, error == nil else {
+                        guard let media, error == nil else {
                             WPAnalytics.track(.siteSettingsSiteIconUploadFailed)
                             self.onCompletion?(nil, error)
                             return

@@ -408,7 +408,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
     ///     - sender: The WPRichTextImage that was tapped.
     ///
     @objc func handleImageTapped(_ sender: WPRichTextImage) {
-        guard let delegate = delegate else {
+        guard let delegate else {
             return
         }
         if let url = sender.linkURL,
@@ -463,7 +463,7 @@ private extension WPRichContentView {
     }
 
     func drawBlockquotes(forGlyphRange glyphsToShow: NSRange, at origin: CGPoint) {
-        guard let textStorage = textStorage else {
+        guard let textStorage else {
             return
         }
 

@@ -56,7 +56,7 @@ open class QueryStore<State, Query>: StatefulStore<State>, Unsubscribable {
     override public final var state: State {
         get {
             // If the in-memory State is populated, just return that.
-            if let inMemoryState = inMemoryState {
+            if let inMemoryState {
                 return inMemoryState
             }
 

@@ -71,7 +71,7 @@ extension Array {
         forEach { (element) in
             let value = transforming(element)
             if currentValue != value {
-                if let currentValue = currentValue {
+                if let currentValue {
                     result.append((currentValue, currentGroup))
                 }
                 currentValue = value
@@ -79,7 +79,7 @@ extension Array {
             }
             currentGroup.append(element)
         }
-        if let currentValue = currentValue {
+        if let currentValue {
             result.append((currentValue, currentGroup))
         }
         return result

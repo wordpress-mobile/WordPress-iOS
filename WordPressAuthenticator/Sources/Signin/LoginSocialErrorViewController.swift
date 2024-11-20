@@ -88,7 +88,7 @@ class LoginSocialErrorViewController: NUXTableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard indexPath.section == Sections.buttons.rawValue,
-            let delegate = delegate else {
+            let delegate else {
             return
         }
 

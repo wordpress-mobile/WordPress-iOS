@@ -139,9 +139,9 @@ class ReaderDetailCoordinator {
 
         if post != nil {
             renderPostAndBumpStats()
-        } else if let siteID = siteID, let postID = postID, let isFeed = isFeed {
+        } else if let siteID, let postID, let isFeed {
             fetch(postID: postID, siteID: siteID, isFeed: isFeed)
-        } else if let postURL = postURL {
+        } else if let postURL {
             fetch(postURL)
         }
     }
@@ -223,7 +223,7 @@ class ReaderDetailCoordinator {
     /// Share the current post
     ///
     func share(fromAnchor anchor: UIPopoverPresentationControllerSourceItem) {
-        guard let post = post, let view = viewController else {
+        guard let post, let view = viewController else {
             return
         }
 
@@ -246,7 +246,7 @@ class ReaderDetailCoordinator {
     /// Show more about a specific site in Discovery
     ///
     func showMore() {
-        guard let post = post, post.sourceAttribution != nil else {
+        guard let post, post.sourceAttribution != nil else {
             return
         }
 
@@ -263,7 +263,7 @@ class ReaderDetailCoordinator {
             path = post.sourceAttribution.blogURL
         }
 
-        if let path = path, let linkURL = URL(string: path) {
+        if let path, let linkURL = URL(string: path) {
             presentWebViewController(linkURL)
         }
     }
@@ -309,7 +309,7 @@ class ReaderDetailCoordinator {
     /// - Parameter webView: the webView where the post will be rendered
     /// - Parameter completion: a completion block
     func storeAuthenticationCookies(in webView: WKWebView, completion: @escaping () -> Void) {
-        guard let authenticator = authenticator,
+        guard let authenticator,
             let postURL = permaLinkURL else {
             completion()
             return
@@ -368,7 +368,7 @@ class ReaderDetailCoordinator {
     }
 
     private func renderPostAndBumpStats() {
-        guard let post = post else {
+        guard let post else {
             return
         }
 
@@ -380,7 +380,7 @@ class ReaderDetailCoordinator {
     }
 
     private func markPostAsSeen() {
-        guard let post = post, !post.isSeen else {
+        guard let post, !post.isSeen else {
             return
         }
 
@@ -408,7 +408,7 @@ class ReaderDetailCoordinator {
     /// Shows the current post site posts in a new screen
     ///
     private func previewSite() {
-        guard let post = post else {
+        guard let post else {
             return
         }
 
@@ -427,7 +427,7 @@ class ReaderDetailCoordinator {
     /// Show a list with posts containing this tag
     ///
     private func showTag() {
-        guard let post = post else {
+        guard let post else {
             return
         }
 
@@ -482,7 +482,7 @@ class ReaderDetailCoordinator {
     /// Show the featured image fullscreen
     ///
     private func showFeaturedImage(_ sender: CachedAnimatedImageView) {
-        guard let post = post else {
+        guard let post else {
             return
         }
 
@@ -501,7 +501,7 @@ class ReaderDetailCoordinator {
     }
 
     private func followSite(completion: @escaping () -> Void) {
-        guard let post = post else {
+        guard let post else {
             return
         }
 
@@ -532,7 +532,7 @@ class ReaderDetailCoordinator {
         // Ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/17158
 
         let readerDetail: ReaderDetailViewController = {
-            if let post = post,
+            if let post,
                selectedUrlIsCrossPost(url) {
                 return ReaderDetailViewController.controllerWithPostID(post.crossPostMeta.postID, siteID: post.crossPostMeta.siteID)
             }
@@ -547,7 +547,7 @@ class ReaderDetailCoordinator {
         // Trim trailing slashes to facilitate URL comparison.
         let characterSet = CharacterSet(charactersIn: "/")
 
-        guard let post = post,
+        guard let post,
               post.isCross(),
               let crossPostMeta = post.crossPostMeta,
               let crossPostURL = URL(string: crossPostMeta.postURL.trimmingCharacters(in: characterSet)),
@@ -595,7 +595,7 @@ class ReaderDetailCoordinator {
     }
 
     private func showLikesList() {
-        guard let post = post else {
+        guard let post else {
             return
         }
 
@@ -605,7 +605,7 @@ class ReaderDetailCoordinator {
 
     /// Index the post in Spotlight
     private func indexReaderPostInSpotlight() {
-        guard let post = post else {
+        guard let post else {
             return
         }
 

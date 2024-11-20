@@ -4,7 +4,7 @@ extension NSFetchedResultsController {
     /// Returns whether an indexPath represents the last row in it's section, or not
     ///
     @objc func isLastIndexPathInSection(_ indexPath: IndexPath) -> Bool {
-        guard let sections = sections else {
+        guard let sections else {
             return false
         }
 
@@ -19,7 +19,7 @@ extension NSFetchedResultsController {
     /// Otherwise, null will be returned.
     ///
     @objc func managedObject(atUnsafe indexPath: IndexPath) -> NSManagedObject? {
-        guard let sections = sections else {
+        guard let sections else {
             return nil
         }
 

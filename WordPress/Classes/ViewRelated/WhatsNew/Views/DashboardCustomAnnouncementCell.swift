@@ -93,7 +93,7 @@ private extension DashboardCustomAnnouncementCell {
         label.numberOfLines = 0
         label.font = font
         label.textAlignment = .center
-        if let color = color {
+        if let color {
             label.textColor = color
         }
         return label

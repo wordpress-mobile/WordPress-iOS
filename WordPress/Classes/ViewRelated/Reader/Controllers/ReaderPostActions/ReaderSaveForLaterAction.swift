@@ -17,7 +17,7 @@ final class ReaderSaveForLaterAction {
 
     func execute(with post: ReaderPost, context: NSManagedObjectContext = ContextManager.shared.mainContext, origin: ReaderSaveForLaterOrigin, viewController: UIViewController?, completion: (() -> Void)? = nil) {
         /// Preload the post
-        if let viewController = viewController, !post.isSavedForLater {
+        if let viewController, !post.isSavedForLater {
             let offlineReaderWebView = OfflineReaderWebView()
             offlineReaderWebView.saveForLater(post, viewController: viewController)
         }

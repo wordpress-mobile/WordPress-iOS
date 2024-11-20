@@ -99,7 +99,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
     }
 
     @IBAction func didTapReblog(_ sender: Any) {
-        guard let post = post, let viewController = viewController else {
+        guard let post, let viewController else {
             return
         }
 
@@ -107,7 +107,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
     }
 
     @IBAction func didTapComment(_ sender: Any) {
-        guard let post = post, let viewController = viewController else {
+        guard let post, let viewController else {
             return
         }
 
@@ -115,7 +115,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
     }
 
     @IBAction func didTapLike(_ sender: Any) {
-        guard let post = post else {
+        guard let post else {
             return
         }
 
@@ -232,7 +232,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
     }
 
     private func configureLikeActionButton(_ animated: Bool = false) {
-        guard let post = post else {
+        guard let post else {
             return
         }
 
@@ -253,7 +253,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
 
     /// Uses the configuration in WPStyleGuide for the reblog button
     private func configureReblogButton() {
-        guard let post = post else {
+        guard let post else {
             return
         }
 
@@ -349,7 +349,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         // Show comments if logged in and comments are enabled, or if comments exist.
         // But only if it is from wpcom (jetpack and external is not yet supported).
         // Nesting this conditional cos it seems clearer that way
-        guard let post = post else {
+        guard let post else {
             return false
         }
 
@@ -398,7 +398,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
     // MARK: - Analytics
 
     private func trackArticleDetailsLikedOrUnliked() {
-        guard let post = post else {
+        guard let post else {
             return
         }
 

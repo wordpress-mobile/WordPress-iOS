@@ -196,7 +196,7 @@ struct ReaderNotificationKeys {
             properties[WPAppAnalyticsKeyFeedItemID] = feedItemID
         }
 
-        if let value = value, let key = key {
+        if let value, let key {
             properties[key] = value
         }
 
@@ -262,7 +262,7 @@ struct ReaderNotificationKeys {
 
     // convenience method that returns the topic type
     class func topicType(_ topic: ReaderAbstractTopic?) -> ReaderTopicType {
-        guard let topic = topic else {
+        guard let topic else {
             return .noTopic
         }
         if topicIsDiscover(topic) {

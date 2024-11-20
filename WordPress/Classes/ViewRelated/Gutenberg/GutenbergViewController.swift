@@ -395,13 +395,13 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
     private func setupKeyboardObservers() {
         keyboardShowObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidShowNotification, object: nil, queue: .main) { [weak self] (notification) in
-            if let self = self, let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
+            if let self, let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
                 self.keyboardFrame = keyboardRect
                 self.updateConstraintsToAvoidKeyboard(frame: keyboardRect)
             }
         }
         keyboardHideObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidShowNotification, object: nil, queue: .main) { [weak self] (notification) in
-            if let self = self, let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
+            if let self, let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
                 self.keyboardFrame = keyboardRect
                 self.updateConstraintsToAvoidKeyboard(frame: keyboardRect)
             }
@@ -409,10 +409,10 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
     }
 
     private func tearDownKeyboardObservers() {
-        if let keyboardShowObserver = keyboardShowObserver {
+        if let keyboardShowObserver {
             NotificationCenter.default.removeObserver(keyboardShowObserver)
         }
-        if let keyboardHideObserver = keyboardHideObserver {
+        if let keyboardHideObserver {
             NotificationCenter.default.removeObserver(keyboardHideObserver)
         }
     }
@@ -813,7 +813,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     func editorHasContent(title: String, content: String) -> Bool {
         let hasTitle = !title.isEmpty
         var hasContent = !content.isEmpty
-        if let contentInfo = contentInfo {
+        if let contentInfo {
             let isEmpty = contentInfo.blockCount == 0
             let isOneEmptyParagraph = (contentInfo.blockCount == 1 && contentInfo.paragraphCount == 1 && contentInfo.characterCount == 0)
             hasContent = !(isEmpty || isOneEmptyParagraph)
@@ -937,7 +937,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     func updateConstraintsToAvoidKeyboard(frame: CGRect) {
         keyboardFrame = frame
         let minimumKeyboardHeight = CGFloat(50)
-        guard let suggestionViewBottomConstraint = suggestionViewBottomConstraint else {
+        guard let suggestionViewBottomConstraint else {
             return
         }
 

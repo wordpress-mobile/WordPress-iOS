@@ -34,7 +34,7 @@ extension Blog {
     ///
     var homepageType: HomepageType? {
         get {
-            guard let options = options,
+            guard let options,
                 !options.isEmpty,
                 let type = getOptionString(name: OptionsKeys.homepageType)
                 else {
@@ -55,7 +55,7 @@ extension Blog {
     ///
     var homepagePostsPageID: Int? {
         get {
-            guard let options = options,
+            guard let options,
                 !options.isEmpty,
                 let pageID = getOptionNumeric(name: OptionsKeys.postsPageID)
                 else {
@@ -66,7 +66,7 @@ extension Blog {
         }
         set {
             let number: NSNumber?
-            if let newValue = newValue {
+            if let newValue {
                 number = NSNumber(integerLiteral: newValue)
             } else {
                 number = nil
@@ -80,7 +80,7 @@ extension Blog {
     ///
     var homepagePageID: Int? {
         get {
-            guard let options = options,
+            guard let options,
                 !options.isEmpty,
                 let pageID = getOptionNumeric(name: OptionsKeys.homepageID)
                 else {
@@ -91,7 +91,7 @@ extension Blog {
         }
         set {
             let number: NSNumber?
-            if let newValue = newValue {
+            if let newValue {
                 number = NSNumber(integerLiteral: newValue)
             } else {
                 number = nil

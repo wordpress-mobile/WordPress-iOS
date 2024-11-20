@@ -289,7 +289,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
             styleButtons()
         }
 
-        if let previousTraitCollection = previousTraitCollection, traitCollection.verticalSizeClass != previousTraitCollection.verticalSizeClass {
+        if let previousTraitCollection, traitCollection.verticalSizeClass != previousTraitCollection.verticalSizeClass {
             isUserInitiatedScroll = false
             configureHeaderTitleVisibility()
             layoutHeaderInsets()
@@ -327,7 +327,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         promptView.text = prompt
         primaryActionButton.setTitle(primaryActionTitle, for: .normal)
 
-        if let defaultActionTitle = defaultActionTitle {
+        if let defaultActionTitle {
             defaultActionButton.setTitle(defaultActionTitle, for: .normal)
         } else {
             footerHeightContraint.constant = 0
@@ -336,7 +336,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
             selectedStateButtonsContainer.isHidden = false
         }
 
-        if let secondaryActionTitle = secondaryActionTitle {
+        if let secondaryActionTitle {
             secondaryActionButton.setTitle(secondaryActionTitle, for: .normal)
         } else {
             secondaryActionButton.isHidden = true
@@ -355,7 +355,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     }
 
     private func insertAccessoryView() {
-        guard let accessoryView = accessoryView else {
+        guard let accessoryView else {
             return
         }
 
@@ -620,7 +620,7 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
 
     /// Restores the stashed content offset if it appears as if it's been reset.
     private func restoreContentOffsetIfNeeded(_ scrollView: UIScrollView) {
-        guard var stashedOffset = stashedOffset else {
+        guard var stashedOffset else {
             return
         }
 

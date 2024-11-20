@@ -101,7 +101,7 @@ class PostStatsViewModel: Observable {
     }
 
     func fetchDataHasFailed() -> Bool {
-        if let postID = postID {
+        if let postID {
             return store.fetchingFailed(for: .postStats(postID: postID))
         }
         return true

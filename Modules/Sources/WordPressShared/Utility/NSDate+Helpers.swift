@@ -127,7 +127,7 @@ extension Date {
 
         let absoluteFormatter = DateFormatters.mediumDate
 
-        if let timeZone = timeZone {
+        if let timeZone {
             absoluteFormatter.timeZone = timeZone
         }
 
@@ -145,7 +145,7 @@ extension Date {
     /// - Parameter timeZone: An optional time zone used to adjust the date formatters.
     public func mediumStringWithTime(timeZone: TimeZone? = nil) -> String {
         let formatter = DateFormatters.mediumDateTime
-        if let timeZone = timeZone {
+        if let timeZone {
             formatter.timeZone = timeZone
         }
         return formatter.string(from: self)

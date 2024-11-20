@@ -30,7 +30,7 @@ class InfiniteScrollerView: UIScrollView {
     /// Returns the height of the first view in the stack view, if one exists. Used to compute reset points for vertical scrolling.
     private var singleViewHeight: CGFloat? {
         guard
-            let stackView = stackView,
+            let stackView,
             !stackView.arrangedSubviews.isEmpty
         else {
             return nil
@@ -75,8 +75,8 @@ class InfiniteScrollerView: UIScrollView {
 
     private func addViewsToStackView() {
         guard
-            let viewBuilder = viewBuilder,
-            let stackView = stackView
+            let viewBuilder,
+            let stackView
         else {
             return
         }

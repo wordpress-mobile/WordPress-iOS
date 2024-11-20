@@ -39,7 +39,7 @@ class ExtensionPresentationController: UIPresentationController {
 
     override var frameOfPresentedViewInContainerView: CGRect {
         var frame: CGRect = .zero
-        if let containerView = containerView {
+        if let containerView {
             frame.size = size(forChildContentContainer: presentedViewController, withParentContainerSize: containerView.bounds.size)
             frame.origin.x = (containerView.frame.width - frame.width) / 2.0
             frame.origin.y = (containerView.frame.height - frame.height) / 2.0

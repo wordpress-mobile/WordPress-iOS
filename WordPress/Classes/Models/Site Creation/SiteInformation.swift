@@ -4,7 +4,7 @@ struct SiteInformation {
 
     /// if title is nil, then the corresponding SiteInformation value is nil
     init?(title: String?, tagLine: String?) {
-        guard let title = title else {
+        guard let title else {
             return nil
         }
         self.title = title

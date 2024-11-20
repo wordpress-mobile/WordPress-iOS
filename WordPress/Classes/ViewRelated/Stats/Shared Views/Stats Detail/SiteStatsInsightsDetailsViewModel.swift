@@ -140,7 +140,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
             }
             periodReceipt = periodStore.query(storeQuery)
         case let statSection where StatSection.allPostStats.contains(statSection):
-            guard let postID = postID else {
+            guard let postID else {
                 return
             }
 
@@ -154,7 +154,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
     }
 
     func fetchDataHasFailed() -> Bool {
-        guard let statSection = statSection else {
+        guard let statSection else {
             return true
         }
 
@@ -187,7 +187,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
             }
             return periodStore.fetchingFailed(for: storeQuery)
         default:
-            guard let postID = postID else {
+            guard let postID else {
                 return true
             }
             return periodStore.fetchingFailed(for: .postStats(postID: postID))
@@ -234,7 +234,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
     }
 
     func updateSelectedDate(_ selectedDate: Date) {
-        guard let statSection = statSection else {
+        guard let statSection else {
             return
         }
 
@@ -255,7 +255,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
     // MARK: - Table Model
 
     func tableViewSnapshot() -> ImmuTableDiffableDataSourceSnapshot {
-        guard let statSection = statSection,
+        guard let statSection,
               let _ = detailsDelegate else {
             return ImmuTableDiffableDataSourceSnapshot()
         }
@@ -566,79 +566,79 @@ class SiteStatsInsightsDetailsViewModel: Observable {
     }
 
     func refreshPostsAndPages() {
-        guard let selectedDate = selectedDate,
-              let selectedPeriod = selectedPeriod else {
+        guard let selectedDate,
+              let selectedPeriod else {
             return
         }
         ActionDispatcher.dispatch(PeriodAction.refreshPeriod(query: .allPostsAndPages(date: selectedDate, period: selectedPeriod)))
     }
 
     func refreshSearchTerms() {
-        guard let selectedDate = selectedDate,
-              let selectedPeriod = selectedPeriod else {
+        guard let selectedDate,
+              let selectedPeriod else {
             return
         }
         ActionDispatcher.dispatch(PeriodAction.refreshPeriod(query: .allSearchTerms(date: selectedDate, period: selectedPeriod)))
     }
 
     func refreshVideos() {
-        guard let selectedDate = selectedDate,
-              let selectedPeriod = selectedPeriod else {
+        guard let selectedDate,
+              let selectedPeriod else {
             return
         }
         ActionDispatcher.dispatch(PeriodAction.refreshPeriod(query: .allVideos(date: selectedDate, period: selectedPeriod)))
     }
 
     func refreshClicks() {
-        guard let selectedDate = selectedDate,
-              let selectedPeriod = selectedPeriod else {
+        guard let selectedDate,
+              let selectedPeriod else {
             return
         }
         ActionDispatcher.dispatch(PeriodAction.refreshPeriod(query: .allClicks(date: selectedDate, period: selectedPeriod)))
     }
 
     func refreshAuthors() {
-        guard let selectedDate = selectedDate,
-              let selectedPeriod = selectedPeriod else {
+        guard let selectedDate,
+              let selectedPeriod else {
             return
         }
         ActionDispatcher.dispatch(PeriodAction.refreshPeriod(query: .allAuthors(date: selectedDate, period: selectedPeriod)))
     }
 
     func refreshReferrers() {
-        guard let selectedDate = selectedDate,
-              let selectedPeriod = selectedPeriod else {
+        guard let selectedDate,
+              let selectedPeriod else {
             return
         }
         ActionDispatcher.dispatch(PeriodAction.refreshPeriod(query: .allReferrers(date: selectedDate, period: selectedPeriod)))
     }
 
     func refreshCountries() {
-        guard let selectedDate = selectedDate,
-              let selectedPeriod = selectedPeriod else {
+        guard let selectedDate,
+              let selectedPeriod else {
             return
         }
         ActionDispatcher.dispatch(PeriodAction.refreshPeriod(query: .allCountries(date: selectedDate, period: selectedPeriod)))
     }
 
     func refreshPublished() {
-        guard let selectedDate = selectedDate,
-              let selectedPeriod = selectedPeriod else {
+        guard let selectedDate,
+              let selectedPeriod else {
             return
         }
         ActionDispatcher.dispatch(PeriodAction.refreshPeriod(query: .allPublished(date: selectedDate, period: selectedPeriod)))
     }
 
     func refreshFileDownloads() {
-        guard let selectedDate = selectedDate,
-              let selectedPeriod = selectedPeriod else {
+        guard let selectedDate,
+              let selectedPeriod else {
             return
         }
         ActionDispatcher.dispatch(PeriodAction.refreshPeriod(query: .allFileDownloads(date: selectedDate, period: selectedPeriod)))
     }
 
     func refreshPostStats() {
-        guard let postID = postID else {
+        guard let postID else {
             return
         }
         ActionDispatcher.dispatch(PeriodAction.refreshPeriod(query: .postStats(postID: postID)))
@@ -674,8 +674,8 @@ private extension SiteStatsInsightsDetailsViewModel {
 
     func queryForPeriodStatSection(_ statSection: StatSection) -> PeriodQuery? {
 
-        guard let selectedDate = selectedDate,
-              let selectedPeriod = selectedPeriod else {
+        guard let selectedDate,
+              let selectedPeriod else {
             return nil
         }
 
@@ -806,7 +806,7 @@ private extension SiteStatsInsightsDetailsViewModel {
 
     func annualRowData() -> [StatsTotalRowData] {
 
-        guard let selectedDate = selectedDate else {
+        guard let selectedDate else {
             return []
         }
 
@@ -1351,7 +1351,7 @@ private extension SiteStatsInsightsDetailsViewModel {
 
     // Return the future end of the week date if current period end date is not an end of the week
     func futureEndOfWeekDate(for summary: StatsSummaryTimeIntervalData?) -> Date? {
-        guard let summary = summary else {
+        guard let summary else {
             return nil
         }
 

@@ -32,7 +32,7 @@ enum PlanListViewModel {
             let rows: [ImmuTableRow] = plans.map({ plan in
 
                 var action: ImmuTableAction? = nil
-                if let presenter = presenter {
+                if let presenter {
                     action = presenter.present(self.controllerForPlanDetails(plans, plan: plan, features: features))
                 }
 

@@ -345,7 +345,7 @@ private extension SiteCredentialsViewController {
     func configureForgotPassword(_ cell: TextLinkButtonTableViewCell) {
         cell.configureButton(text: WordPressAuthenticator.shared.displayStrings.resetPasswordButtonTitle, accessibilityTrait: .link)
         cell.actionHandler = { [weak self] in
-            guard let self = self else {
+            guard let self else {
                 return
             }
 
@@ -568,7 +568,7 @@ extension SiteCredentialsViewController {
     func finishedLogin(withUsername username: String, password: String, xmlrpc: String, options: [AnyHashable: Any]) {
         let wporg = WordPressOrgCredentials(username: username, password: password, xmlrpc: xmlrpc, options: options)
         /// If `completionHandler` is available, return early with the credentials.
-        if let completionHandler = completionHandler {
+        if let completionHandler {
             completionHandler(wporg)
         } else {
             syncDataOrPresentWPComLogin(with: wporg)

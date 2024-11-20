@@ -39,7 +39,7 @@ class GutenbergMediaEditorImage: AsyncImage {
      */
     func thumbnail(finishedRetrievingThumbnail: @escaping (UIImage?) -> ()) {
         let task = ImageDownloader.shared.downloadImage(at: originalURL, completion: { image, error in
-            guard let image = image else {
+            guard let image else {
                 finishedRetrievingThumbnail(nil)
                 return
             }

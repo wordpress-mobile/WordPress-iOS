@@ -177,7 +177,7 @@ extension QRLoginVerifyAuthorizationViewController {
         subTitleLabel.text = subTitle
         self.confirmButton.setTitle(confirmButton, for: .normal)
 
-        guard let cancelButton = cancelButton else {
+        guard let cancelButton else {
             self.cancelButton.isHidden = true
             return
         }

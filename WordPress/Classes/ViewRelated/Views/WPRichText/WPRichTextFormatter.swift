@@ -57,7 +57,7 @@ class WPRichTextFormatter {
             .characterEncoding: String.Encoding.utf8.rawValue
             ]
 
-        if let defaultDocumentAttributes = defaultDocumentAttributes {
+        if let defaultDocumentAttributes {
             options[.defaultAttributes] = defaultDocumentAttributes
         }
 
@@ -245,7 +245,7 @@ class WPRichTextFormatter {
                 let (string, attachment) = tag.process(scanner)
                 processedString += string
 
-                if let attachment = attachment {
+                if let attachment {
                     attachments.append(attachment)
                 }
 

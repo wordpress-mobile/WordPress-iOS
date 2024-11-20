@@ -3,7 +3,7 @@ import Foundation
 extension Post {
 
     func prepareForPrompt(_ prompt: BloggingPrompt?) {
-        guard let prompt = prompt else {
+        guard let prompt else {
             return
         }
 

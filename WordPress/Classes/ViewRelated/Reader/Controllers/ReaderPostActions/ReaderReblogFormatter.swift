@@ -62,7 +62,7 @@ extension ReaderReblogFormatter {
 
     private static func quoteWithCitation(text: String, citation: String? = nil) -> String {
         var formattedText = embedInParagraph(html: text)
-        if let citation = citation {
+        if let citation {
             formattedText.append(embedinCitation(html: citation))
         }
         return formattedText

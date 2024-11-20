@@ -15,7 +15,7 @@ class GravatarServiceTests: CoreDataTestCase {
             capturedAccountEmail = accountEmail
             capturedAccountToken = accountToken
 
-            if let completion = completion {
+            if let completion {
                 completion(nil)
             }
         }

@@ -135,7 +135,7 @@ final class SiteAssemblyContentView: UIView {
 
     var isFreeDomain: Bool?
     private func shouldShowDomainPurchase() -> Bool {
-        if let isFreeDomain = isFreeDomain {
+        if let isFreeDomain {
             return !isFreeDomain
         }
         return siteCreator.shouldShowCheckout
@@ -336,7 +336,7 @@ final class SiteAssemblyContentView: UIView {
     }
 
     private func installAssembledSiteView() {
-        guard let siteName = siteName, let siteURLString = siteURLString else {
+        guard let siteName, let siteURLString else {
             return
         }
 
@@ -393,7 +393,7 @@ final class SiteAssemblyContentView: UIView {
     }
 
     private func installButtonContainerView() {
-        guard let buttonContainerView = buttonContainerView else {
+        guard let buttonContainerView else {
             return
         }
 
@@ -424,7 +424,7 @@ final class SiteAssemblyContentView: UIView {
     }
 
     private func installErrorStateView() {
-        guard let errorStateView = errorStateView else {
+        guard let errorStateView else {
             return
         }
 
@@ -449,7 +449,7 @@ final class SiteAssemblyContentView: UIView {
 
     private func layoutInProgress() {
         UIView.animate(withDuration: Parameters.animationDuration, delay: 0, options: .curveEaseOut, animations: { [weak self] in
-            guard let self = self else {
+            guard let self else {
                 return
             }
             self.errorStateView?.alpha = 0
@@ -460,7 +460,7 @@ final class SiteAssemblyContentView: UIView {
 
     private func layoutFailed() {
         UIView.animate(withDuration: Parameters.animationDuration, delay: 0, options: .curveEaseOut, animations: { [weak self] in
-            guard let self = self else {
+            guard let self else {
                 return
             }
 
@@ -479,7 +479,7 @@ final class SiteAssemblyContentView: UIView {
         UIView.animate(withDuration: Parameters.animationDuration, delay: 0, options: .curveEaseOut, animations: { [statusStackView] in
             statusStackView.alpha = 0
             }, completion: { [weak self] completed in
-                guard completed, let self = self else {
+                guard completed, let self else {
                     return
                 }
 
@@ -500,7 +500,7 @@ final class SiteAssemblyContentView: UIView {
                                delay: 0,
                                options: .curveEaseOut,
                                animations: { [weak self] in
-                    guard let self = self else {
+                    guard let self else {
                         return
                     }
 

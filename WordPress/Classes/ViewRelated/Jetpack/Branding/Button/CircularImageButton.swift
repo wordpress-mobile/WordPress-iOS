@@ -15,7 +15,7 @@ class CircularImageButton: UIButton {
     ///   - color: the custom background color
     ///   - ratio: the extent of the background view that lays below the button image view (default: 0.75 of the image view)
     func setImageBackgroundColor(_ color: UIColor, ratio: CGFloat = 0.75) {
-        guard let imageView = imageView else {
+        guard let imageView else {
             return
         }
         imageBackgroundView.backgroundColor = color

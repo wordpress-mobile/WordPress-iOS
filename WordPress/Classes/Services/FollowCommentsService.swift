@@ -95,7 +95,7 @@ class FollowCommentsService: NSObject {
                                           failure: @escaping (Error?) -> Void) {
 
         remote.updateNotificationSettingsForPost(with: postID, siteID: siteID, receiveNotifications: isNotificationsEnabled) { [weak self] in
-            guard let self = self else {
+            guard let self else {
                 failure(nil)
                 return
             }

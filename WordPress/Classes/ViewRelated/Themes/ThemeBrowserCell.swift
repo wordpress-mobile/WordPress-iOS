@@ -137,7 +137,7 @@ open class ThemeBrowserCell: UICollectionViewCell {
     }
 
     fileprivate func refreshGUI() {
-        if let theme = theme {
+        if let theme {
             if let imageUrl = theme.screenshotUrl, !imageUrl.isEmpty {
                 refreshScreenshotImage(imageUrl)
             } else {
@@ -238,7 +238,7 @@ open class ThemeBrowserCell: UICollectionViewCell {
     // MARK: - Actions
 
     @IBAction fileprivate func didTapActionButton(_ sender: UIButton) {
-        guard let theme = theme, let presenter = presenter else {
+        guard let theme, let presenter else {
             return
         }
 

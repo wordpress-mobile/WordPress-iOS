@@ -338,7 +338,7 @@ extension SiteStatsPeriodTableViewController: SiteStatsReferrerDelegate {
 private extension SiteStatsPeriodTableViewController {
 
     func sendScrollEventsToBanner() {
-        if let bannerView = bannerView {
+        if let bannerView {
             analyticsTracker.addTranslationObserver(bannerView)
         }
     }

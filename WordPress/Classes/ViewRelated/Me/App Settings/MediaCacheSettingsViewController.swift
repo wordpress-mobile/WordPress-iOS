@@ -82,7 +82,7 @@ class MediaCacheSettingsViewController: UITableViewController {
     }
 
     fileprivate func setMediaCacheRowDescription(allocatedSize: Int64?) {
-        guard let allocatedSize = allocatedSize else {
+        guard let allocatedSize else {
             setMediaCacheRowDescription(status: .unknown)
             return
         }

@@ -98,7 +98,7 @@ private extension VerifyEmailViewController {
     /// Configure bottom buttons.
     ///
     func configureButtonViewController() {
-        guard let buttonViewController = buttonViewController else {
+        guard let buttonViewController else {
             return
         }
 
@@ -192,7 +192,7 @@ private extension VerifyEmailViewController {
                                             self?.configureViewLoading(false)
 
             }, failure: { [weak self] (error: Error) in
-                guard let self = self else { return }
+                guard let self else { return }
 
                 self.tracker.track(failure: error.localizedDescription)
 

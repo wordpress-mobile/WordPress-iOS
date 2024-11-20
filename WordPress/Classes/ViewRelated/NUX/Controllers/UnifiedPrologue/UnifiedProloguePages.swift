@@ -78,7 +78,7 @@ class UnifiedProloguePageViewController: UIViewController {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
 
-        guard let previousTraitCollection = previousTraitCollection,
+        guard let previousTraitCollection,
               traitCollection.horizontalSizeClass != previousTraitCollection.horizontalSizeClass else {
 
             return

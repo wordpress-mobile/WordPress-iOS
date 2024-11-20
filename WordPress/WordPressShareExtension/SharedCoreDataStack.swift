@@ -266,13 +266,13 @@ extension SharedCoreDataStack {
             return
         }
 
-        if let remoteMediaID = remoteMediaID {
+        if let remoteMediaID {
             mediaUploadOp.remoteMediaID = remoteMediaID
         }
-        if let width = width {
+        if let width {
             mediaUploadOp.width = width
         }
-        if let height = height {
+        if let height {
             mediaUploadOp.height = height
         }
         mediaUploadOp.remoteURL = remoteURL

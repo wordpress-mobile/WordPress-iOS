@@ -64,21 +64,21 @@ class RestoreCompleteView: UIView, NibLoadable {
 
         secondaryButton.setTitle(secondaryButtonTitle, for: .normal)
 
-        if let primaryButtonTitle = primaryButtonTitle {
+        if let primaryButtonTitle {
             primaryButton.setTitle(primaryButtonTitle, for: .normal)
             primaryButton.isHidden = false
         } else {
             primaryButton.isHidden = true
         }
 
-        if let secondaryButtonTitle = secondaryButtonTitle {
+        if let secondaryButtonTitle {
             secondaryButton.setTitle(secondaryButtonTitle, for: .normal)
             secondaryButton.isHidden = false
         } else {
             secondaryButton.isHidden = true
         }
 
-        if let hint = hint {
+        if let hint {
             hintLabel.text = hint
             hintLabel.isHidden = false
         } else {

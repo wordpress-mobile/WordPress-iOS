@@ -1,7 +1,7 @@
 /// Encapsulates a command to toggle subscribing to notifications for a site
 final class ReaderSubscribingNotificationAction {
     func execute(for siteID: NSNumber?, context: NSManagedObjectContext, subscribe: Bool, completion: (() -> Void)? = nil, failure: ((ReaderTopicServiceError?) -> Void)? = nil) {
-        guard let siteID = siteID else {
+        guard let siteID else {
             return
         }
 

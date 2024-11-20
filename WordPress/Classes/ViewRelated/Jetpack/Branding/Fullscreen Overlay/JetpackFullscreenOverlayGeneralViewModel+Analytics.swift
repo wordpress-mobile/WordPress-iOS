@@ -44,7 +44,7 @@ extension JetpackFullscreenOverlayGeneralViewModel {
     func didTapPrimary() {
         // Try to export WordPress data to a shared location before redirecting the user.
         ContentMigrationCoordinator.shared.startAndDo { [weak self] _ in
-            guard let self = self else {
+            guard let self else {
                 return
             }
             JetpackRedirector.redirectToJetpack()

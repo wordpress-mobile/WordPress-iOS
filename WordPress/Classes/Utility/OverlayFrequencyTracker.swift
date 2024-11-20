@@ -14,7 +14,7 @@ class OverlayFrequencyTracker {
     private let persistenceStore: UserPersistentRepository
 
     private var sourceDateKey: String {
-        guard let phaseString = phaseString else {
+        guard let phaseString else {
             return "\(type.rawValue)\(Constants.lastDateKeyPrefix)-\(source.key)"
         }
         return "\(type.rawValue)\(Constants.lastDateKeyPrefix)-\(source.key)-\(phaseString)"
@@ -73,7 +73,7 @@ class OverlayFrequencyTracker {
     }
 
     private func frequenciesPassed() -> Bool {
-        guard let lastSavedGenericDate = lastSavedGenericDate else {
+        guard let lastSavedGenericDate else {
             return true // First overlay ever
         }
         if frequencyConfig.generalInDays < 0 {
@@ -85,7 +85,7 @@ class OverlayFrequencyTracker {
             return false // An overlay was shown recently so we can't show one now
         }
 
-        guard let lastSavedSourceDate = lastSavedSourceDate else {
+        guard let lastSavedSourceDate else {
             return true // This specific overlay was never shown, so we can show it
         }
 

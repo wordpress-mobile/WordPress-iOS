@@ -75,7 +75,7 @@ private extension StatsCellHeader {
 
     func configureManageInsightButton() {
 
-        guard let statSection = statSection,
+        guard let statSection,
             StatSection.allInsights.contains(statSection) else {
                 showManageInsightButton(false)
                 return
@@ -88,7 +88,7 @@ private extension StatsCellHeader {
     // MARK: - Button Action
 
     @IBAction func manageInsightButtonPressed(_ sender: UIButton) {
-        guard let statSection = statSection else {
+        guard let statSection else {
             DDLogDebug("manageInsightButtonPressed: unknown statSection.")
             return
         }

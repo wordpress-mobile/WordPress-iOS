@@ -129,7 +129,7 @@ class CalendarDataSource: JTACMonthViewDataSource {
             let startDate = Calendar.current.date(byAdding: dateComponent, to: Date())
             let endDate = Date().endOfMonth
 
-            if let startDate = startDate, let endDate = endDate {
+            if let startDate, let endDate {
                 return ConfigurationParameters(startDate: startDate, endDate: endDate, calendar: self.calendar)
             }
         }
@@ -168,8 +168,8 @@ extension CalendarDataSource: JTACMonthViewDelegate {
                 return
             }
 
-            if let firstDate = firstDate {
-                if let endDate = endDate {
+            if let firstDate {
+                if let endDate {
                     // When tapping a selected firstDate or endDate reset the rest
                     if date == firstDate || date == endDate {
                         self.firstDate = date
@@ -372,7 +372,7 @@ extension DateCell {
     }
 
     func position(for date: Date, startDate: Date?, endDate: Date?) -> SelectionRangePosition {
-        if let startDate = startDate, let endDate = endDate {
+        if let startDate, let endDate {
             if date == startDate {
                 return .left
             } else if date == endDate {
@@ -380,7 +380,7 @@ extension DateCell {
             } else if date > startDate && date < endDate {
                 return .middle
             }
-        } else if let startDate = startDate {
+        } else if let startDate {
             if date == startDate {
                 return .full
             }
@@ -435,7 +435,7 @@ extension Date {
     }
 
     var endOfMonth: Date? {
-        guard let startOfMonth = startOfMonth else {
+        guard let startOfMonth else {
             return nil
         }
 

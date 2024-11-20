@@ -18,7 +18,7 @@
     ///
     var isConnected: Bool {
         guard isInstalled,
-            let siteID = siteID,
+            let siteID,
             siteID.intValue > 0 else {
                 return false
         }
@@ -37,7 +37,7 @@
     /// - SeeAlso: JetpackVersionMinimumRequired
     ///
     var isUpdatedToRequiredVersion: Bool {
-        guard let version = version else {
+        guard let version else {
             return false
         }
         return version.compare(JetpackState.minimumVersionRequired, options: .numeric) != .orderedAscending

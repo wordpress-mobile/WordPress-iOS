@@ -58,7 +58,7 @@ enum MediaHost: Equatable, Sendable {
             return
         }
 
-        guard let username = username else {
+        guard let username else {
             // This should actually not be possible.  We have no good way to
             // handle this.
             failure(Error.wpComPrivateSiteWithoutUsername)
@@ -73,7 +73,7 @@ enum MediaHost: Equatable, Sendable {
             return
         }
 
-        guard let siteID = siteID else {
+        guard let siteID else {
             // This should actually not be possible.  We have no good way to
             // handle this.
             failure(Error.wpComWithoutSiteID)

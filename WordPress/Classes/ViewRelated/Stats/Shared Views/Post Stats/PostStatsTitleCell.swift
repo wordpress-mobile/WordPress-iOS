@@ -32,7 +32,7 @@ private extension PostStatsTitleCell {
     }
 
     @IBAction func didTapPostTitle(_ sender: UIButton) {
-        guard let postURL = postURL else {
+        guard let postURL else {
             return
         }
         postStatsDelegate?.displayWebViewWithURL?(postURL)

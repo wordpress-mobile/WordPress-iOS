@@ -951,7 +951,7 @@ struct StatsErrorRow: StatsHashableImmuTableRow {
         noDataRow.configure(forType: statType, rowStatus: rowStatus)
         cell.insert(view: noDataRow)
 
-        if let statSection = statSection {
+        if let statSection {
            cell.statSection = statSection
         }
     }

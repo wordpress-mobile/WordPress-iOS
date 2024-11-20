@@ -55,7 +55,7 @@ final class BlogDashboardViewModel {
     }()
 
     private lazy var dataSource: DashboardDataSource? = {
-        guard let viewController = viewController else {
+        guard let viewController else {
             return nil
         }
 

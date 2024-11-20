@@ -3,7 +3,7 @@ import CoreData
 extension BlogService {
 
     @objc func updatePromptSettings(for blog: RemoteBlog?, context: NSManagedObjectContext) {
-        guard let blog = blog,
+        guard let blog,
               let jsonSettings = blog.options["blogging_prompts_settings"] as? [String: Any],
               let settingsValue = jsonSettings["value"] as? [String: Any],
               JSONSerialization.isValidJSONObject(settingsValue),

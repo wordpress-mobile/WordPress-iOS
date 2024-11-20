@@ -107,7 +107,7 @@ struct SiteDesignSectionLoader {
     ///   - vertical: An optional Site Intent vertical.
     /// - Returns: An array of Site Design sections.
     static func assembleSections(categorySections: [SiteDesignSection], remoteDesigns: RemoteSiteDesigns, vertical: SiteIntentVertical?) -> [SiteDesignSection] {
-        if let vertical = vertical, let recommendedVertical = getRecommendedSectionForVertical(vertical, remoteDesigns: remoteDesigns) {
+        if let vertical, let recommendedVertical = getRecommendedSectionForVertical(vertical, remoteDesigns: remoteDesigns) {
             // Recommended designs for the vertical were found
             return [recommendedVertical] + categorySections
         }

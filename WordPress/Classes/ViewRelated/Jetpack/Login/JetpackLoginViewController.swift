@@ -154,7 +154,7 @@ class JetpackLoginViewController: UIViewController {
 
     fileprivate func signIn() {
         Task { @MainActor [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
 
             let email = self.blog.jetpack?.connectedEmail
             let accountID = await WordPressDotComAuthenticator().signIn(from: self, context: .jetpackSite(accountEmail: email))
@@ -173,7 +173,7 @@ class JetpackLoginViewController: UIViewController {
             properties["source"] = "notifications"
         }
 
-        if let blog = blog {
+        if let blog {
             WPAppAnalytics.track(stat, withProperties: properties, with: blog)
         } else {
             WPAnalytics.track(stat, withProperties: properties)

@@ -107,7 +107,7 @@ private extension BloggingPromptsViewController {
     }
 
     func fetchPrompts() {
-        guard let bloggingPromptsService = bloggingPromptsService else {
+        guard let bloggingPromptsService else {
             DDLogError("Failed creating BloggingPromptsService instance.")
             showErrorView()
             return

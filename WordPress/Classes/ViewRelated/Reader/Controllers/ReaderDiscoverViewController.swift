@@ -296,7 +296,7 @@ private class ReaderDiscoverStreamViewController: ReaderStreamViewController {
         cardsService.fetch(isFirstPage: false, success: { _, hasMore in
             success?(hasMore)
         }, failure: { error in
-            guard let error = error else {
+            guard let error else {
                 return
             }
 

@@ -127,7 +127,7 @@ private extension BloggingPromptCoordinator {
 
         // IMPORTANT: Ensure that push authorization is already granted before rescheduling.
         UNUserNotificationCenter.current().getNotificationSettings { [weak self] notificationSettings in
-            guard let self = self,
+            guard let self,
                   notificationSettings.authorizationStatus == .authorized else {
                 completion()
                 return
@@ -158,7 +158,7 @@ private extension BloggingPromptCoordinator {
 
         // Otherwise, try to fetch today's prompt from remote.
         service.fetchTodaysPrompt { prompt in
-            guard let prompt = prompt else {
+            guard let prompt else {
                 completion(.failure(Errors.promptNotFound))
                 return
             }

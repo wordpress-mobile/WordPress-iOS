@@ -76,7 +76,7 @@ class SignupUsernameTableViewController: UITableViewController, SearchTableViewC
     }
 
     func buildHeaderDescription() -> NSAttributedString {
-        guard let currentUsername = currentUsername, let displayName = displayName else {
+        guard let currentUsername, let displayName else {
             return NSAttributedString(string: "")
         }
 
@@ -313,7 +313,7 @@ extension SignupUsernameTableViewController {
         tableView.deselectSelectedRowWithAnimation(true)
 
         // Uncheck the previously selected cell.
-        if let selectedCell = selectedCell {
+        if let selectedCell {
             selectedCell.accessoryType = .none
         }
 

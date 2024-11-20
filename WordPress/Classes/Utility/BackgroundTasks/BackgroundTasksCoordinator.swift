@@ -138,7 +138,7 @@ class BackgroundTasksCoordinator {
         var tasksAndErrors = [String: Error]()
 
         scheduler.getPendingTaskRequests { [weak self] scheduledRequests in
-            guard let self = self else {
+            guard let self else {
                 return
             }
 

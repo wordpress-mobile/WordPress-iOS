@@ -201,7 +201,7 @@ private class AccountSettingsController: SettingsController {
         return { _ in
             return ChangeUsernameViewController(service: service, settings: settings) { [weak self] username in
                 self?.refreshModel()
-                if let username = username {
+                if let username {
                     let notice = Notice(title: String(format: Constants.usernameChanged, username))
                     ActionDispatcher.dispatch(NoticeAction.post(notice))
                 }
@@ -242,7 +242,7 @@ private class AccountSettingsController: SettingsController {
 
     private var closeAccountAction: (ImmuTableRow) -> Void {
         return { [weak self] _ in
-            guard let self = self else { return }
+            guard let self else { return }
             WPAnalytics.track(.accountCloseTapped, properties: ["has_atomic": self.hasAtomicSite])
 
             switch self.hasAtomicSite {
@@ -280,7 +280,7 @@ private class AccountSettingsController: SettingsController {
         SVProgressHUD.show(withStatus: status)
 
         accountSettingsService.closeAccount { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             switch $0 {
             case .success:
                 WPAnalytics.track(.accountCloseCompleted, properties: ["status": "success"])

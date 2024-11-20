@@ -859,7 +859,7 @@ extension ShareExtensionEditorViewController {
         optionsViewController.view.tintColor = ShareColors.aztecFormatBarActiveColor
 
         let selectRow = {
-            guard let index = index else {
+            guard let index else {
                 return
             }
 

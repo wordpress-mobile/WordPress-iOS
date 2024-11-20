@@ -51,7 +51,7 @@ class NotificationMediaDownloader: NSObject {
             group.enter()
 
             downloadImage(url) { (error, image) in
-                guard let image = image else {
+                guard let image else {
                     group.leave()
                     return
                 }
@@ -153,7 +153,7 @@ class NotificationMediaDownloader: NSObject {
         }
 
         imageDownloader.downloadImage(at: url) { (image, error) in
-            guard let image = image else {
+            guard let image else {
                 self.downloadImage(url, retryCount: retryCount + 1, completion: completion)
                 return
             }

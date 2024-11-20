@@ -264,7 +264,7 @@ private extension SupportTableViewController {
 
     func contactUsSelected() -> ImmuTableAction {
         return { [weak self] row in
-            guard let self = self else { return }
+            guard let self else { return }
             self.tableView.deselectSelectedRowWithAnimation(true)
 
             self.coordinator.showSupport(onIdentityUpdated: {  [weak self] in
@@ -275,7 +275,7 @@ private extension SupportTableViewController {
 
     func myTicketsSelected() -> ImmuTableAction {
         return { [weak self] row in
-            guard let self = self else { return }
+            guard let self else { return }
             showTicketView()
         }
     }
@@ -314,14 +314,14 @@ private extension SupportTableViewController {
 
     func visitForumsSelected() -> ImmuTableAction {
         return { [weak self] row in
-            guard let self = self else { return }
+            guard let self else { return }
             self.tableView.deselectSelectedRowWithAnimation(true)
             self.launchForum(url: Constants.forumsURL)
         }
     }
 
     private func launchForum(url: URL?) {
-        guard let url = url else {
+        guard let url else {
             return
         }
         WPAnalytics.track(.supportOpenMobileForumTapped)

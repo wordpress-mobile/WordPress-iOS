@@ -50,7 +50,7 @@ class JetpackRestoreHeaderView: UIView, NibReusable {
         descriptionLabel.text = description
         actionButton.setTitle(buttonTitle, for: .normal)
 
-        if let warningButtonTitle = warningButtonTitle {
+        if let warningButtonTitle {
             let attributedTitle = StringHighlighter.highlightString(warningButtonTitle.substring,
                                                                        inString: warningButtonTitle.string)
             warningButton.setAttributedTitle(attributedTitle, for: .normal)

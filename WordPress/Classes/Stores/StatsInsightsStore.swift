@@ -285,7 +285,7 @@ private extension StatsInsightsStore {
         switch type {
         case .latestPost:
             api.getInsight { (lastPost: StatsLastPostInsight?, error) in
-                if let error = error {
+                if let error {
                     DDLogError("Error fetching last posts insights: \(error.localizedDescription)")
                 }
                 self.actionDispatcher.dispatch(InsightAction.receivedLastPostInsight(lastPost, error))
@@ -293,7 +293,7 @@ private extension StatsInsightsStore {
             }
         case .allTime:
             api.getInsight { (allTimesStats: StatsAllTimesInsight?, error) in
-                if let error = error {
+                if let error {
                     DDLogError("Error fetching all time insights: \(error.localizedDescription)")
                 }
                 self.actionDispatcher.dispatch(InsightAction.receivedAllTimeStats(allTimesStats, error))
@@ -302,7 +302,7 @@ private extension StatsInsightsStore {
 
         case .annualAndMostPopular:
             api.getInsight { (annualAndTime: StatsAnnualAndMostPopularTimeInsight?, error) in
-                if let error = error {
+                if let error {
                     DDLogError("Error fetching annual/most popular time: \(error.localizedDescription)")
                 }
                 self.actionDispatcher.dispatch(InsightAction.receivedAnnualAndMostPopularTimeStats(annualAndTime, error))
@@ -310,7 +310,7 @@ private extension StatsInsightsStore {
             }
         case .tagsAndCategories:
             api.getInsight { (tagsAndCategoriesInsight: StatsTagsAndCategoriesInsight?, error) in
-                if let error = error {
+                if let error {
                     DDLogError("Error fetching tags and categories insight: \(error.localizedDescription)")
                 }
 
@@ -320,7 +320,7 @@ private extension StatsInsightsStore {
 
         case .comments:
             api.getInsight { (commentsInsights: StatsCommentsInsight?, error) in
-                if let error = error {
+                if let error {
                     DDLogError("Error fetching comment insights: \(error.localizedDescription)")
                 }
                 self.actionDispatcher.dispatch(InsightAction.receivedCommentsInsight(commentsInsights, error))
@@ -328,7 +328,7 @@ private extension StatsInsightsStore {
             }
         case .followers:
             api.getInsight { (wpComFollowers: StatsDotComFollowersInsight?, error) in
-                if let error = error {
+                if let error {
                     DDLogError("Error fetching WP.com followers: \(error.localizedDescription)")
                 }
                 self.actionDispatcher.dispatch(InsightAction.receivedDotComFollowers(wpComFollowers, error))
@@ -336,7 +336,7 @@ private extension StatsInsightsStore {
             }
 
             api.getInsight { (emailFollowers: StatsEmailFollowersInsight?, error) in
-                if let error = error {
+                if let error {
                     DDLogError("Error fetching email followers: \(error.localizedDescription)")
                 }
                 self.actionDispatcher.dispatch(InsightAction.receivedEmailFollowers(emailFollowers, error))
@@ -344,7 +344,7 @@ private extension StatsInsightsStore {
             }
         case .today:
             api.getInsight { (todayInsight: StatsTodayInsight?, error) in
-                if let error = error {
+                if let error {
                     DDLogError("Error fetching today's insight: \(error.localizedDescription)")
                 }
 
@@ -353,7 +353,7 @@ private extension StatsInsightsStore {
             }
         case .postingActivity:
             api.getInsight(limit: 5000) { (streak: StatsPostingStreakInsight?, error) in
-                if let error = error {
+                if let error {
                     DDLogError("Error fetching posting activity insight: \(error.localizedDescription)")
                 }
 
@@ -362,7 +362,7 @@ private extension StatsInsightsStore {
             }
         case .publicize:
             api.getInsight { (publicizeInsight: StatsPublicizeInsight?, error) in
-                if let error = error {
+                if let error {
                     DDLogError("Error fetching publicize insights: \(error.localizedDescription)")
                 }
                 self.actionDispatcher.dispatch(InsightAction.receivedPublicize(publicizeInsight, error))
@@ -460,7 +460,7 @@ private extension StatsInsightsStore {
         }
 
         api.getDetails(forPostID: postID) { (postStats: StatsPostDetails?, error: Error?) in
-            if let error = error {
+            if let error {
                 DDLogError("Insights: Error fetching Post Stats: \(error.localizedDescription)")
             }
             DDLogInfo("Stats: Insights - successfully fetched latest post details.")

@@ -41,7 +41,7 @@ final class AvatarTrainView: UIView {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         // redraw border when user interface style changes.
-        if let previousTraitCollection = previousTraitCollection,
+        if let previousTraitCollection,
             previousTraitCollection.userInterfaceStyle != traitCollection.userInterfaceStyle {
             configureAvatarBorders()
         }
@@ -72,7 +72,7 @@ private extension AvatarTrainView {
             imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor)
         ])
 
-        if let avatarURL = avatarURL {
+        if let avatarURL {
             imageView.downloadImage(from: avatarURL, placeholderImage: placeholderImage)
         }
 

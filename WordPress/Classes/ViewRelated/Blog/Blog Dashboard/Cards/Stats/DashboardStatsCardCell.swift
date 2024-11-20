@@ -61,7 +61,7 @@ class DashboardStatsCardCell: UICollectionViewCell, Reusable {
 
 extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
     func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
-        guard let viewController = viewController, let apiResponse = apiResponse else {
+        guard let viewController, let apiResponse else {
             return
         }
 

@@ -24,7 +24,7 @@ class WPCategoryTree: NSObject {
 
     @objc func getAllObjects() -> [PostCategory] {
         var allObjects = [PostCategory]()
-        if let parent = parent {
+        if let parent {
             allObjects.append(parent)
         }
 
@@ -35,7 +35,7 @@ class WPCategoryTree: NSObject {
     }
 
     private func isParentChild(category: PostCategory, parent: PostCategory?) -> Bool {
-        guard let parent = parent else {
+        guard let parent else {
             return category.parentID == 0
         }
 

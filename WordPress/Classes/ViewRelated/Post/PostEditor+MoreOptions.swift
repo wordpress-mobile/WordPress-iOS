@@ -63,7 +63,7 @@ extension PostEditor {
         emitPostSaveEvent()
 
         savePostBeforePreview() { [weak self] previewURLString, error in
-            guard let self = self else {
+            guard let self else {
                 return
             }
 
@@ -76,7 +76,7 @@ extension PostEditor {
             }
 
             let previewController: PreviewWebKitViewController
-            if let previewURLString = previewURLString, let previewURL = URL(string: previewURLString) {
+            if let previewURLString, let previewURL = URL(string: previewURLString) {
                 previewController = PreviewWebKitViewController(post: self.post, previewURL: previewURL, source: "edit_post_more_preview")
             } else {
                 if self.post.permaLink == nil {

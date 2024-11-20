@@ -45,7 +45,7 @@ final class StockPhotosDataLoader {
         }
 
         // Bail out if we are not aware of the pagination status
-        guard let request = request else {
+        guard let request else {
             return
         }
 

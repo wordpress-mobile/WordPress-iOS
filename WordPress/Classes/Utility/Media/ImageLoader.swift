@@ -210,12 +210,12 @@ import WordPressShared
 
     /// Triggers the image dimensions fetcher if the `imageDimensionsHandler` property is set
     private func calculateImageDimensionsIfNeeded(from request: URLRequest) {
-        guard let imageDimensionsHandler = imageDimensionsHandler else {
+        guard let imageDimensionsHandler else {
             return
         }
 
         let fetcher = ImageDimensionsFetcher(request: request, success: { (format, size) in
-            guard let size = size, size != .zero else {
+            guard let size, size != .zero else {
                 return
             }
 
@@ -255,7 +255,7 @@ import WordPressShared
 
         imageView.startLoadingAnimation()
         imageView.af.setImage(withURLRequest: request, completion: { [weak self] dataResponse in
-            guard let self = self else {
+            guard let self else {
                 return
             }
 
@@ -288,14 +288,14 @@ import WordPressShared
     }
 
     private func callErrorHandler(with error: Error?) {
-        if let error = error, (error as NSError).code == NSURLErrorCancelled {
+        if let error, (error as NSError).code == NSURLErrorCancelled {
             return
         }
 
         cancelImageDimensionCalculation()
 
         DispatchQueue.main.async { [weak self] in
-            guard let self = self else {
+            guard let self else {
                 return
             }
 

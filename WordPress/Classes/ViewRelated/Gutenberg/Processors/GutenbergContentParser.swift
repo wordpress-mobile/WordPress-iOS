@@ -147,7 +147,7 @@ public class GutenbergContentParser {
                 currentBlock = block
             // Insert HTML elements into block being processed
             case let element as SwiftSoup.Element:
-                if let currentBlock = currentBlock {
+                if let currentBlock {
                     currentBlock.elements.add(element)
                 }
                 if element.childNodeSize() > 0 {

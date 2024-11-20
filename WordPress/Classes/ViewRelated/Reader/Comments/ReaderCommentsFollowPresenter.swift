@@ -124,7 +124,7 @@ private extension ReaderCommentsFollowPresenter {
             completion?(true)
             self?.informDelegateNotificationComplete(success: true)
 
-            guard let self = self else {
+            guard let self else {
                 return
             }
 

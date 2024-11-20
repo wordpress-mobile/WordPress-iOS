@@ -265,7 +265,7 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
             view.centerXAnchor.constraint(equalTo: centerXAnchor),
             view.centerYAnchor.constraint(equalTo: centerYAnchor)
         ]
-        if let size = size {
+        if let size {
             constraints.append(view.heightAnchor.constraint(equalToConstant: size.height))
             constraints.append(view.widthAnchor.constraint(equalToConstant: size.width))
         }

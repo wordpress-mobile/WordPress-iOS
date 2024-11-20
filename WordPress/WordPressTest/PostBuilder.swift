@@ -139,7 +139,7 @@ class PostBuilder {
         media.blog = post.blog
         media.autoUploadFailureCount = NSNumber(value: autoUploadFailureCount)
 
-        if let status = status {
+        if let status {
             media.remoteStatus = status
         }
 

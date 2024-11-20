@@ -20,7 +20,7 @@ struct ExtractedShare {
         var rawLink = ""
         var readOnText = ""
 
-        if let url = url {
+        if let url {
             rawLink = url.absoluteString.stringWithAnchoredLinks()
             let attributionText = AppLocalizedString("Read on",
                                                     comment: "In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation.")
@@ -162,7 +162,7 @@ private extension ShareExtractor {
     }
 
     func extractText(completion: @escaping (ExtractedItem?) -> Void) {
-        guard let textExtractor = textExtractor else {
+        guard let textExtractor else {
             completion(nil)
             return
         }
@@ -195,7 +195,7 @@ private extension ShareExtractor {
     }
 
     func extractImages(completion: @escaping ([ExtractedImage]) -> Void) {
-        guard let imageExtractor = imageExtractor else {
+        guard let imageExtractor else {
             completion([])
             return
         }
@@ -262,7 +262,7 @@ private extension TypeBasedExtensionContentExtractor {
             provider.loadItem(forTypeIdentifier: acceptedType, options: nil) { (payload, error) in
                 let payload = payload as? Payload
                 let result = payload.flatMap(self.convert(payload:))
-                if let result = result {
+                if let result {
                     results.append(result)
                 }
                 syncGroup.leave()
@@ -468,7 +468,7 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
     private func handleMarkdown(md content: String, item: ExtractedItem? = nil) -> ExtractedItem? {
         var md = content
         var result: ExtractedItem
-        if let item = item {
+        if let item {
             result = item
         } else {
             result = ExtractedItem()

@@ -90,12 +90,12 @@ extension SearchableActivityConvertable where Self: UIViewController {
             activity.expirationDate = oneWeekFromNow
         }
 
-        if let activityUserInfo = activityUserInfo {
+        if let activityUserInfo {
             activity.userInfo = activityUserInfo
             activity.requiredUserInfoKeys = Set([WPActivityUserInfoKeys.siteId.rawValue])
         }
 
-        if let activityDescription = activityDescription {
+        if let activityDescription {
             let contentAttributeSet = CSSearchableItemAttributeSet(itemContentType: UTType.text.identifier)
             contentAttributeSet.contentDescription = activityDescription
             contentAttributeSet.contentCreationDate = nil // Set this to nil so it doesn't display in spotlight

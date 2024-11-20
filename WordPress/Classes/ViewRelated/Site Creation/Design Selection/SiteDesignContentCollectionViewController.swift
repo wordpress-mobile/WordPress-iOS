@@ -182,7 +182,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     }
 
     private func fetchSiteDesigns() {
-        if let sectionAssembler = sectionAssembler {
+        if let sectionAssembler {
             self.sections = sectionAssembler(creator.vertical)
             return
         }
@@ -191,7 +191,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
 
         DispatchQueue.main.async {
             SiteDesignSectionLoader.buildAssembler { [weak self] result in
-                guard let self = self else { return }
+                guard let self else { return }
 
                 switch result {
                 case .success(let assembler):

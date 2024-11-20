@@ -64,7 +64,7 @@ class NotificationTextContent: FormattableTextContent, FormattableMediaContent {
             return .image
         }
 
-        if let meta = meta,
+        if let meta,
            let buttonValue = meta[Constants.MetaKeys.Button] as? Bool,
            buttonValue == true {
             return .button

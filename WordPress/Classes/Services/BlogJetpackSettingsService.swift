@@ -54,8 +54,8 @@ struct BlogJetpackSettingsService {
                                                 })
 
         syncGroup.notify(queue: DispatchQueue.main, execute: {
-            guard let remoteJetpackSettings = remoteJetpackSettings,
-                let remoteJetpackMonitorSettings = remoteJetpackMonitorSettings else {
+            guard let remoteJetpackSettings,
+                let remoteJetpackMonitorSettings else {
                     failure(fetchError)
                     return
             }

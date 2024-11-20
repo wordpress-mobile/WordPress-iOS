@@ -50,7 +50,7 @@ import CoreData
         let request = LikeUser.fetchRequest() as NSFetchRequest<LikeUser>
 
         request.predicate = {
-            if let after = after {
+            if let after {
                 // The date comparison is 'less than' because Likes are in descending order.
                 return NSPredicate(format: "likedSiteID = %@ AND likedCommentID = %@ AND dateLiked < %@", siteID, commentID, after as CVarArg)
             }

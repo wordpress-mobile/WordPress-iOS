@@ -172,7 +172,7 @@ private class StatsGhostTopCellColumn: UIView {
             bottomView.heightAnchor.constraint(equalToConstant: .DS.Padding.double)
         ]
 
-        if let width = width {
+        if let width {
             constraints += [
                 topView.widthAnchor.constraint(equalToConstant: width),
                 bottomView.widthAnchor.constraint(equalToConstant: width)

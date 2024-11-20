@@ -46,7 +46,7 @@ struct TimeZoneSelectorViewModel: Observable {
     }
 
     var filteredGroups: [TimeZoneGroup] {
-        guard let filter = filter else {
+        guard let filter else {
             return groups
         }
 

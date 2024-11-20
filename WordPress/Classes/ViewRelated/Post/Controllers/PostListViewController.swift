@@ -75,7 +75,7 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
     }
 
     private func configureInitialFilterIfNeeded() {
-        guard let initialFilterWithPostStatus = initialFilterWithPostStatus else {
+        guard let initialFilterWithPostStatus else {
             return
         }
 
@@ -114,7 +114,7 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
     override func predicateForFetchRequest() -> NSPredicate {
         var predicates = [NSPredicate]()
 
-        if let blog = blog {
+        if let blog {
             // Show all original posts without a revision & revision posts.
             let basePredicate = NSPredicate(format: "blog = %@ && revision = nil", blog)
             predicates.append(basePredicate)

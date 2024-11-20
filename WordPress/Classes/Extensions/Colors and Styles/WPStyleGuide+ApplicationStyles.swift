@@ -117,14 +117,14 @@ extension WPStyleGuide {
     }
 
     class func configureTableViewColors(view: UIView?) {
-        guard let view = view else {
+        guard let view else {
             return
         }
         view.backgroundColor = .systemBackground
     }
 
     class func configureTableViewColors(tableView: UITableView?) {
-        guard let tableView = tableView else {
+        guard let tableView else {
             return
         }
 
@@ -140,7 +140,7 @@ extension WPStyleGuide {
 
     @objc
     class func configureTableViewCell(_ cell: UITableViewCell?) {
-        guard let cell = cell else {
+        guard let cell else {
             return
         }
 

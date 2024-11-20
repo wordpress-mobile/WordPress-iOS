@@ -489,7 +489,7 @@ private extension CommentDetailViewController {
         }
 
         commentService.getLatestReplyID(for: Int(comment.commentID), siteID: siteID) { [weak self] replyID in
-            guard let self = self else {
+            guard let self else {
                 return
             }
 
@@ -547,7 +547,7 @@ private extension CommentDetailViewController {
             return
         }
 
-        guard let siteID = siteID else {
+        guard let siteID else {
             return
         }
 
@@ -562,8 +562,8 @@ private extension CommentDetailViewController {
 
     // Shows the comment thread with the parent comment highlighted.
     func navigateToParentComment() {
-        guard let parentComment = parentComment,
-              let siteID = siteID,
+        guard let parentComment,
+              let siteID,
               let blog = comment.blog,
               blog.supports(.wpComRESTAPI) else {
             let parentCommentURL = URL(string: parentComment?.link ?? "")
@@ -578,7 +578,7 @@ private extension CommentDetailViewController {
     }
 
     func navigateToReplyComment() {
-        guard let siteID = siteID,
+        guard let siteID,
               isCommentReplied else {
             return
         }
@@ -591,7 +591,7 @@ private extension CommentDetailViewController {
 
     func navigateToPost() {
         guard let blog = comment.blog,
-              let siteID = siteID,
+              let siteID,
               blog.supports(.wpComRESTAPI) else {
             let postPermalinkURL = URL(string: comment.post?.permaLink ?? "")
             openWebView(for: postPermalinkURL)
@@ -609,7 +609,7 @@ private extension CommentDetailViewController {
     }
 
     func openWebView(for url: URL?) {
-        guard let url = url else {
+        guard let url else {
             DDLogError("\(Self.classNameWithoutNamespaces()): Attempted to open an invalid URL [\(url?.absoluteString ?? "")]")
             return
         }
@@ -664,7 +664,7 @@ private extension CommentDetailViewController {
     }
 
     func toggleCommentLike() {
-        guard let siteID = siteID else {
+        guard let siteID else {
             refreshData() // revert the like button state.
             return
         }
@@ -1037,7 +1037,7 @@ private extension CommentDetailViewController {
     }
 
     func setupKeyboardManager() {
-        guard let replyTextView = replyTextView,
+        guard let replyTextView,
               let bottomLayoutConstraint = view.constraints.first(where: { $0.firstAttribute == .bottom }) else {
                   return
               }
@@ -1103,8 +1103,8 @@ private extension CommentDetailViewController {
 
     func configureSuggestionsView() {
         guard shouldShowSuggestions,
-              let siteID = siteID,
-              let replyTextView = replyTextView else {
+              let siteID,
+              let replyTextView else {
                   return
               }
 
@@ -1128,7 +1128,7 @@ private extension CommentDetailViewController {
     }
 
     var shouldShowSuggestions: Bool {
-        guard let siteID = siteID,
+        guard let siteID,
               let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else {
                   return false
               }
@@ -1155,13 +1155,13 @@ extension CommentDetailViewController: ReplyTextViewDelegate {
         let lastSearchText = suggestionsTableView?.viewModel.searchText
         suggestionsTableView?.hideSuggestions()
 
-        if let siteID = siteID {
+        if let siteID {
             controller.enableSuggestions(with: siteID, prominentSuggestionsIds: suggestionsTableView?.prominentSuggestionsIds, searchText: lastSearchText)
         }
     }
 
     func replyTextView(_ replyTextView: ReplyTextView, didExitFullScreen lastSearchText: String?) {
-        guard let lastSearchText = lastSearchText, !lastSearchText.isEmpty else {
+        guard let lastSearchText, !lastSearchText.isEmpty else {
             return
         }
         suggestionsTableView?.viewModel.reloadData()

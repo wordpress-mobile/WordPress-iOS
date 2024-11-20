@@ -119,8 +119,8 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: ReaderDetailCommentsHeader.defaultReuseID) as? ReaderDetailCommentsHeader,
-              let post = post,
-              let presentingViewController = presentingViewController else {
+              let post,
+              let presentingViewController else {
             return nil
         }
 
@@ -194,7 +194,7 @@ private extension ReaderDetailCommentsTableViewDelegate {
     }
 
     @objc func jetpackButtonTapped() {
-        guard let presentingViewController = presentingViewController else {
+        guard let presentingViewController else {
             return
         }
         JetpackBrandingCoordinator.presentOverlay(from: presentingViewController)

@@ -42,7 +42,7 @@ final class MigrationFlowCoordinator: ObservableObject {
 
     func transitionToNextStep() {
         Task { [weak self] in
-            guard let self = self, let nextStep = await Self.nextStep(from: currentStep) else {
+            guard let self, let nextStep = await Self.nextStep(from: currentStep) else {
                 return
             }
             self.currentStep = nextStep

@@ -8,7 +8,7 @@ extension RegisterDomainDetailsViewModel {
     enum ValidationBlock {
 
         static var nonEmpty: RowValidationBlock = { (text) in
-            if let text = text {
+            if let text {
                 return !text.isEmpty
             }
             return false

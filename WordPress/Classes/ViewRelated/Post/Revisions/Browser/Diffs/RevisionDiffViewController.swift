@@ -32,7 +32,7 @@ private extension RevisionDiffViewController {
     }
 
     private func showRevision() {
-        guard let revision = revision else {
+        guard let revision else {
             return
         }
 

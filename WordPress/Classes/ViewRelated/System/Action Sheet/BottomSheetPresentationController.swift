@@ -12,7 +12,7 @@ class BottomSheetPresentationController: FancyAlertPresentationController {
     private weak var panGestureRecognizer: UIPanGestureRecognizer?
 
     override var frameOfPresentedViewInContainerView: CGRect {
-        guard let containerView = containerView else { /// If we don't have a container view we're out of luck
+        guard let containerView else { /// If we don't have a container view we're out of luck
             return .zero
         }
 
@@ -114,7 +114,7 @@ class BottomSheetPresentationController: FancyAlertPresentationController {
 extension BottomSheetPresentationController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         /// Shouldn't happen; should always have container & presented view when tapped
-        guard let containerView = containerView, let presentedView = presentedView else {
+        guard let containerView, let presentedView else {
             return false
         }
 

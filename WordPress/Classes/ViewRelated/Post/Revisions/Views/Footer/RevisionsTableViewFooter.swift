@@ -14,7 +14,7 @@ class RevisionsTableViewFooter: UIView {
     // MARK: Public methods
 
     func setFooterText(_ stringDate: String?) {
-        guard let stringDate = stringDate else {
+        guard let stringDate else {
             footerLabel.text = ""
             return
         }

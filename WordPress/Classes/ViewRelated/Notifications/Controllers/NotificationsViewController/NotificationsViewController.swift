@@ -250,7 +250,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
         if splitViewControllerIsHorizontallyCompact {
             tableView.deselectSelectedRowWithAnimation(true)
         } else {
-            if let selectedNotification = selectedNotification {
+            if let selectedNotification {
                 selectRow(for: selectedNotification, animated: true, scrollPosition: .middle)
             } else {
                 selectFirstNotificationIfAppropriate()
@@ -787,7 +787,7 @@ extension NotificationsViewController {
         view.isUserInteractionEnabled = false
 
         DispatchQueue.main.async { [weak self] in
-            guard let self = self else {
+            guard let self else {
                 return
             }
             self.view.isUserInteractionEnabled = true
@@ -987,7 +987,7 @@ private extension NotificationsViewController {
     }
 
     func syncDeletedNotification(_ notification: Notification?) {
-        guard let notification = notification else {
+        guard let notification else {
             return
         }
 
@@ -1002,7 +1002,7 @@ private extension NotificationsViewController {
         // If the currently selected notification is about to be removed, find the next available and select it.
         // This is only necessary for split view to prevent the details from showing for removed notifications.
         if !splitViewControllerIsHorizontallyCompact,
-           let selectedNotification = selectedNotification,
+           let selectedNotification,
            ignoring.contains(selectedNotification) {
 
             guard let notifications = tableViewHandler.resultsController?.fetchedObjects as? [Notification],
@@ -1409,7 +1409,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         // Update NoResults View
         showNoResultsViewIfNeeded()
 
-        if let selectedNotification = selectedNotification {
+        if let selectedNotification {
             selectRow(for: selectedNotification, animated: false, scrollPosition: .none)
         } else {
             selectFirstNotificationIfAppropriate()
@@ -1655,7 +1655,7 @@ private extension NotificationsViewController {
                 return
             }
 
-            guard let note = note else {
+            guard let note else {
                 DDLogError("Error: Couldn't load Notification [\(noteId)]")
                 return
             }

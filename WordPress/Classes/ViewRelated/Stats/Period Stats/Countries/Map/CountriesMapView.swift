@@ -47,7 +47,7 @@ class CountriesMapView: UIView, NibLoadable {
         setGradientColors()
         setBasicMapColors()
         gradientView.layoutIfNeeded()
-        if let countries = countries {
+        if let countries {
             setData(countries)
         }
     }

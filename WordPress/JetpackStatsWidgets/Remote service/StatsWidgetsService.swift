@@ -48,17 +48,17 @@ class StatsWidgetsService {
                                  completion: @escaping (Result<ResultType, Error>) -> Void) {
 
         getInsight(widgetData: widgetData) { [weak self] (insight: StatsTodayInsight?, error) in
-            guard let self = self else {
+            guard let self else {
                 return
             }
 
-            if let error = error {
+            if let error {
                 completion(.failure(error))
                 self.state = .error
                 return
             }
 
-            guard let insight = insight else {
+            guard let insight else {
                 completion(.failure(StatsWidgetsError.nilStats))
                 self.state = .error
                 return
@@ -87,11 +87,11 @@ class StatsWidgetsService {
 
         getInsight(widgetData: widgetData) { [weak self] (insight: StatsAllTimesInsight?, error) in
 
-            guard let self = self else {
+            guard let self else {
                 return
             }
 
-            if let error = error {
+            if let error {
                 completion(.failure(error))
                 self.state = .error
                 return
@@ -129,11 +129,11 @@ class StatsWidgetsService {
                 endingOn: weekEndingDate,
                 limit: ThisWeekWidgetStats.maxDaysToDisplay + 1) { [weak self] (summary: StatsSummaryTimeIntervalData?, error: Error?) in
 
-            guard let self = self else {
+            guard let self else {
                 return
             }
 
-            if let error = error {
+            if let error {
                 DDLogError("This Week Widget: Error fetching summary: \(String(describing: error.localizedDescription))")
                 completion(.failure(error))
                 self.state = .error

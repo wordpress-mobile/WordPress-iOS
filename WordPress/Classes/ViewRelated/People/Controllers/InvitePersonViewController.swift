@@ -497,12 +497,12 @@ extension InvitePersonViewController {
 private extension InvitePersonViewController {
 
     func validateInvitation() {
-        guard let usernameOrEmail = usernameOrEmail, let service = PeopleService(blog: blog, coreDataStack: ContextManager.shared) else {
+        guard let usernameOrEmail, let service = PeopleService(blog: blog, coreDataStack: ContextManager.shared) else {
             sendActionEnabled = false
             return
         }
 
-        guard let role = role else {
+        guard let role else {
             return
         }
 

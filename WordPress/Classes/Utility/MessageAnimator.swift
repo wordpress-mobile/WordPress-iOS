@@ -130,7 +130,7 @@ class MessageAnimator: Animator {
 
     // MARK: - Helpers
     fileprivate func heightForMessage(_ message: String?) -> CGFloat {
-        guard let message = message else {
+        guard let message else {
             return CGSize.zero.height
         }
 

@@ -10,14 +10,14 @@ extension ReaderPost: SearchableItemConvertable {
     }
 
     var searchIdentifier: String? {
-        guard let postID = postID, postID.intValue > 0 else {
+        guard let postID, postID.intValue > 0 else {
             return nil
         }
         return postID.stringValue
     }
 
     var searchDomain: String? {
-        guard let siteID = siteID, siteID.intValue > 0 else {
+        guard let siteID, siteID.intValue > 0 else {
             return nil
         }
         return siteID.stringValue
@@ -54,7 +54,7 @@ extension ReaderPost: SearchableItemConvertable {
 fileprivate extension ReaderPost {
     func generateKeywordsFromContent() -> [String]? {
         var keywords: [String]? = nil
-        if let postTitle = postTitle {
+        if let postTitle {
             // Try to generate some keywords from the title...
             keywords = postTitle.components(separatedBy: " ").map({ $0.trimmingCharacters(in: .whitespacesAndNewlines) })
         } else if !contentPreviewForDisplay().isEmpty {

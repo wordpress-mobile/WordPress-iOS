@@ -44,7 +44,7 @@ class Page: AbstractPost {
     // MARK: - Homepage Settings
 
     @objc var isSiteHomepage: Bool {
-        guard let postID = postID,
+        guard let postID,
             let homepageID = blog.homepagePageID,
             let homepageType = blog.homepageType,
             homepageType == .page else {
@@ -55,7 +55,7 @@ class Page: AbstractPost {
     }
 
     @objc var isSitePostsPage: Bool {
-        guard let postID = postID,
+        guard let postID,
             let postsPageID = blog.homepagePostsPageID,
             let homepageType = blog.homepageType,
             homepageType == .page else {

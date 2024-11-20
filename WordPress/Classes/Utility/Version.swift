@@ -130,7 +130,7 @@ extension Version: Comparable {
             let rhsNumericPrereleaseIdentifier = Int(rhsPrereleaseIdentifier)
 
             if let lhsNumericPrereleaseIdentifier,
-               let rhsNumericPrereleaseIdentifier = rhsNumericPrereleaseIdentifier {
+               let rhsNumericPrereleaseIdentifier {
                 return lhsNumericPrereleaseIdentifier < rhsNumericPrereleaseIdentifier
             } else if lhsNumericPrereleaseIdentifier != nil {
                 return true // numeric pre-release < non-numeric pre-release

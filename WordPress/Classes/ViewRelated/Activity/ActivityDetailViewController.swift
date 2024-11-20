@@ -72,14 +72,14 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
     }
 
     @IBAction func rewindButtonTapped(sender: UIButton) {
-        guard let activity = activity else {
+        guard let activity else {
             return
         }
         presenter?.presentRestoreFor(activity: activity, from: "\(presentedFrom())/detail")
     }
 
     @IBAction func backupButtonTapped(sender: UIButton) {
-        guard let activity = activity else {
+        guard let activity else {
             return
         }
         presenter?.presentBackupFor(activity: activity, from: "\(presentedFrom())/detail")
@@ -114,7 +114,7 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
     }
 
     private func setupViews() {
-        guard let activity = activity else {
+        guard let activity else {
             return
         }
 
@@ -184,7 +184,7 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
     }
 
     private func setupText() {
-        guard let activity = activity, let site = site else {
+        guard let activity, let site else {
             return
         }
 
@@ -212,7 +212,7 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
     }
 
     private func setupAccesibility() {
-        guard let activity = activity else {
+        guard let activity else {
             return
         }
 

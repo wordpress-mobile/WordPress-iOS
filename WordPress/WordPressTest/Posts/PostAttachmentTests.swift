@@ -49,7 +49,7 @@ class PostAttachmentTests: XCTestCase {
         controller.alt = altValue
         controller.onUpdate = { (_, _, _, alt, _) in
             richTextView.edit(attachment) { updated in
-                if let alt = alt {
+                if let alt {
                     updated.alt = alt
                 }
                 expect.fulfill()
@@ -84,7 +84,7 @@ class PostAttachmentTests: XCTestCase {
         controller.alt = altValue
         controller.onUpdate = { (_, _, _, alt, _) in
             richTextView.edit(attachment) { updated in
-                if let alt = alt {
+                if let alt {
                     updated.alt = alt
                 }
                 expect.fulfill()

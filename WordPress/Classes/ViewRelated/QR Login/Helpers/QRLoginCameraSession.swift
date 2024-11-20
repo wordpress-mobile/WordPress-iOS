@@ -16,7 +16,7 @@ class QRLoginCameraSession: NSObject, QRCodeScanningSession {
     }
 
     var previewLayer: CALayer? {
-        guard let session = session else {
+        guard let session else {
             return nil
         }
 
@@ -76,7 +76,7 @@ private extension QRLoginCameraSession {
     }
 
     func configureCaptureSession() {
-        guard let cameraDevice = cameraDevice, let deviceInput = try? AVCaptureDeviceInput(device: cameraDevice) else {
+        guard let cameraDevice, let deviceInput = try? AVCaptureDeviceInput(device: cameraDevice) else {
             return
         }
 

@@ -139,7 +139,7 @@ open class FlingableViewHandler: NSObject {
         // Check for the view leaving the screen
         pushBehavior.action = { [weak self] in
             guard let strongSelf = self,
-                  let referenceView = referenceView else { return }
+                  let referenceView else { return }
 
             if !view.frame.intersects(referenceView.bounds) {
                 strongSelf.animator.removeAllBehaviors()

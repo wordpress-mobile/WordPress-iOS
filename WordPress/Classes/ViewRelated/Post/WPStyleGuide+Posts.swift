@@ -18,7 +18,7 @@ extension WPStyleGuide {
     // MARK: - Font Styles
 
     static func configureLabelForRegularFontStyle(_ label: UILabel?) {
-        guard let label = label else {
+        guard let label else {
             return
         }
 

@@ -50,7 +50,7 @@ class FormattableContentFormatter {
     /// Stores a specified value within the Dynamic Attributes Cache.
     ///
     func setCacheValue(_ value: AnyObject?, forKey key: String) {
-        guard let value = value else {
+        guard let value else {
             dynamicAttributesCache.removeValue(forKey: key)
             return
         }

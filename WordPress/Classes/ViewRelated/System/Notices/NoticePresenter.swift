@@ -141,7 +141,7 @@ class NoticePresenter {
     private func listenToOrientationChangeEvents() {
         NotificationCenter.default.publisher(for: .WPTabBarHeightChanged)
             .sink { [weak self] _ in
-                guard let self = self,
+                guard let self,
                     let containerView = self.currentNoticePresentation?.containerView else {
                         return
                 }

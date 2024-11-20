@@ -79,14 +79,14 @@ private extension BloggingPromptsIntroductionPresenter {
 
     func showPostCreation() {
         guard let blog = blogToUse(),
-              let presentingViewController = presentingViewController else {
+              let presentingViewController else {
             wpAssertionFailure("invalid_state")
             navigationController.dismiss(animated: true)
             return
         }
 
         fetchPrompt(completion: { [weak self] (prompt) in
-            guard let prompt = prompt else {
+            guard let prompt else {
                 self?.dispatchErrorNotice()
                 self?.navigationController.dismiss(animated: true)
                 return
@@ -105,7 +105,7 @@ private extension BloggingPromptsIntroductionPresenter {
 
     func showRemindersScheduling() {
         guard let blog = blogToUse(),
-        let presentingViewController = presentingViewController else {
+        let presentingViewController else {
             wpAssertionFailure("invalid_state")
             navigationController.dismiss(animated: true)
             return
@@ -133,7 +133,7 @@ private extension BloggingPromptsIntroductionPresenter {
     func fetchPrompt(completion: @escaping ((_ prompt: BloggingPrompt?) -> Void)) {
         // TODO: check for cached prompt first.
 
-        guard let bloggingPromptsService = bloggingPromptsService else {
+        guard let bloggingPromptsService else {
             DDLogError("Feature Introduction: failed creating BloggingPromptsService instance.")
             return
         }

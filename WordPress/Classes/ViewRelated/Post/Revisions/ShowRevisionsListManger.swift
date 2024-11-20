@@ -18,7 +18,7 @@ final class ShowRevisionsListManger {
     }
 
     func getRevisions() {
-        guard let post = post else {
+        guard let post else {
             return
         }
 

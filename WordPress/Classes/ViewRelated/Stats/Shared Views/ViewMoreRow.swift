@@ -50,7 +50,7 @@ private extension ViewMoreRow {
     }
 
     @IBAction func didTapViewMoreButton(_ sender: UIButton) {
-        guard let statSection = statSection else {
+        guard let statSection else {
             return
         }
 

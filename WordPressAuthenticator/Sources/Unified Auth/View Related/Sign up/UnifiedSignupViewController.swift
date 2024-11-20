@@ -227,7 +227,7 @@ extension UnifiedSignupViewController {
             }, failure: { [weak self] (error: Error) in
                 WPAuthenticatorLogError("Request for signup link email failed.")
 
-                guard let self = self else {
+                guard let self else {
                     return
                 }
 

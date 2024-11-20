@@ -44,14 +44,14 @@ class LoginPrologueLoginMethodViewController: NUXViewController {
     }
 
     private func configureButtonVC() {
-        guard let buttonViewController = buttonViewController else {
+        guard let buttonViewController else {
             return
         }
 
         let wordpressTitle = NSLocalizedString("Log in or sign up with WordPress.com", comment: "Button title. Tapping begins our normal log in process.")
         buttonViewController.setupTopButton(title: wordpressTitle, isPrimary: false, accessibilityIdentifier: "Log in with Email Button") { [weak self] in
 
-            guard let self = self else {
+            guard let self else {
                 return
             }
 

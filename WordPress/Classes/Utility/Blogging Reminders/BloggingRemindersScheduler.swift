@@ -299,7 +299,7 @@ class BloggingRemindersScheduler {
         case .none:
             scheduledReminders = .none
         case .weekdays(let days):
-            guard let time = time else {
+            guard let time else {
                 scheduledReminders = .weekdays(scheduled(days, for: blog))
                 break
             }
@@ -379,7 +379,7 @@ class BloggingRemindersScheduler {
         let request = UNNotificationRequest(identifier: uuidString, content: content, trigger: trigger)
 
         notificationScheduler.add(request) { (error) in
-            if let error = error {
+            if let error {
                 DDLogError("\(error)")
             }
         }

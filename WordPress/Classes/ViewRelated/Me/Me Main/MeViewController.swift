@@ -278,7 +278,7 @@ class MeViewController: UITableViewController {
 
     private func presentQRLogin() -> ImmuTableAction {
         return { [weak self] row in
-            guard let self = self else {
+            guard let self else {
                 return
             }
 

@@ -69,7 +69,7 @@ class FilterTabBar: UIControl {
 
     private var tabBarHeightConstraint: NSLayoutConstraint! {
         didSet {
-            if let oldValue = oldValue {
+            if let oldValue {
                 NSLayoutConstraint.deactivate([oldValue])
                 tabBarHeightConstraint.isActive = true
             }
@@ -161,7 +161,7 @@ class FilterTabBar: UIControl {
 
     private var stackViewEdgeConstraints: [NSLayoutConstraint]! {
         didSet {
-            if let oldValue = oldValue {
+            if let oldValue {
                 NSLayoutConstraint.deactivate(oldValue)
             }
         }
@@ -169,7 +169,7 @@ class FilterTabBar: UIControl {
 
     private var stackViewWidthConstraint: NSLayoutConstraint! {
         didSet {
-            if let oldValue = oldValue {
+            if let oldValue {
                 NSLayoutConstraint.deactivate([oldValue])
             }
         }
@@ -338,7 +338,7 @@ class FilterTabBar: UIControl {
 
     private func addColor(_ color: UIColor, toAttributedString attributedString: NSAttributedString?) -> NSAttributedString? {
 
-        guard let attributedString = attributedString else {
+        guard let attributedString else {
             return nil
         }
 

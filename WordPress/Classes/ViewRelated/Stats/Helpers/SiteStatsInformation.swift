@@ -18,7 +18,7 @@ import Foundation
     func updateTimeZone() {
         let context = ContextManager.shared.mainContext
 
-        guard let siteID = siteID, let blog = Blog.lookup(withID: siteID, in: context) else {
+        guard let siteID, let blog = Blog.lookup(withID: siteID, in: context) else {
             return
         }
 

@@ -94,7 +94,7 @@ class AnnouncementsDataStoreTests: XCTestCase {
         store.getAnnouncements()
         // Then
         waitForExpectations(timeout: 4) { error in
-            if let error = error {
+            if let error {
                 XCTFail("waitForExpectationsWithTimeout errored: \(error)")
             }
         }
@@ -119,7 +119,7 @@ class AnnouncementsDataStoreTests: XCTestCase {
         store.getAnnouncements()
         // Then
         waitForExpectations(timeout: 4) { error in
-            if let error = error {
+            if let error {
                 XCTFail("waitForExpectationsWithTimeout errored: \(error)")
             }
         }
@@ -150,7 +150,7 @@ class AnnouncementsDataStoreTests: XCTestCase {
         store.getAnnouncements()
         // Then
         waitForExpectations(timeout: 4) { error in
-            if let error = error {
+            if let error {
                 XCTFail("waitForExpectationsWithTimeout errored: \(error)")
             }
         }
@@ -175,7 +175,7 @@ class AnnouncementsDataStoreTests: XCTestCase {
         store.getAnnouncements()
         // Then
         waitForExpectations(timeout: 4) { error in
-            if let error = error {
+            if let error {
                 XCTFail("waitForExpectationsWithTimeout errored: \(error)")
             }
         }

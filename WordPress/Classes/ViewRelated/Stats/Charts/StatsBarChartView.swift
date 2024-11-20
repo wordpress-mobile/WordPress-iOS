@@ -61,7 +61,7 @@ class StatsBarChartView: BarChartView {
     private var legendView: UIView?
 
     private var isHighlightNeeded: Bool {
-        guard let primaryDataSet = primaryDataSet, primaryDataSet.isHighlightEnabled else {
+        guard let primaryDataSet, primaryDataSet.isHighlightEnabled else {
             return false
         }
         return styling.primaryHighlightColor != nil

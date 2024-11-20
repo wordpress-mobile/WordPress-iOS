@@ -38,14 +38,14 @@ struct SiteAddressViewModel {
         xmlrpcFacade.guessXMLRPCURL(forSite: siteAddress, success: { url in
             // Success! We now know that we have a valid XML-RPC endpoint.
             // At this point, we do NOT know if this is a WP.com site or a self-hosted site.
-            if let url = url {
+            if let url {
                 self.loginFields.meta.xmlrpcURL = url as NSURL
             }
 
             completion(.success)
 
         }, failure: { error in
-            guard let error = error else {
+            guard let error else {
                 return
             }
             // Intentionally log the attempted address on failures.

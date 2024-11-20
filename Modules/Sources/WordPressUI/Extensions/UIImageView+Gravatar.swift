@@ -55,7 +55,7 @@ extension UIImageView {
     ///   - email: associated email of the new gravatar
     @objc public func updateGravatar(image: UIImage, email: String?) {
         self.image = image
-        guard let email = email else {
+        guard let email else {
             return
         }
         NotificationCenter.default.post(name: .GravatarImageUpdateNotification, object: self, userInfo: [Defaults.emailKey: email, Defaults.imageKey: image])

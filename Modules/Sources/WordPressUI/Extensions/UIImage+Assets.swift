@@ -65,7 +65,7 @@ extension UIImage {
 
             cgContext.restoreGState()
 
-            if let border = border {
+            if let border {
                 border.setStroke()
                 path.stroke()
             }

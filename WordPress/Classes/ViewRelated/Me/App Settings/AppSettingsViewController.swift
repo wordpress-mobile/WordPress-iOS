@@ -104,7 +104,7 @@ class AppSettingsViewController: UITableViewController {
     }
 
     fileprivate func setMediaCacheRowDescription(allocatedSize: Int64?) {
-        guard let allocatedSize = allocatedSize else {
+        guard let allocatedSize else {
             setMediaCacheRowDescription(status: .unknown)
             return
         }
@@ -370,7 +370,7 @@ class AppSettingsViewController: UITableViewController {
 
     func presentWhatIsNew() -> ImmuTableAction {
         return { [weak self] row in
-            guard let self = self else {
+            guard let self else {
                 return
             }
             self.tableView.deselectSelectedRowWithAnimation(true)

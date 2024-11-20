@@ -84,7 +84,7 @@ private extension SiteStatsInsightsDetailsTableViewController {
             return
         }
 
-        guard let statSection = statSection else {
+        guard let statSection else {
             return
         }
 
@@ -138,7 +138,7 @@ private extension SiteStatsInsightsDetailsTableViewController {
                                                       periodStore: periodStore,
                                                       revampStore: revampStore)
 
-        guard let statSection = statSection else {
+        guard let statSection else {
             return
         }
 
@@ -184,7 +184,7 @@ private extension SiteStatsInsightsDetailsTableViewController {
     // MARK: - Table Refreshing
 
     func refreshTableView() {
-        guard let viewModel = viewModel else {
+        guard let viewModel else {
             return
         }
 
@@ -199,7 +199,7 @@ private extension SiteStatsInsightsDetailsTableViewController {
     }
 
     @objc func refreshData() {
-        guard let statSection = statSection else {
+        guard let statSection else {
             return
         }
 
@@ -243,7 +243,7 @@ private extension SiteStatsInsightsDetailsTableViewController {
     }
 
     func applyTableUpdates() {
-        guard let viewModel = viewModel else {
+        guard let viewModel else {
             return
         }
 
@@ -373,7 +373,7 @@ extension SiteStatsInsightsDetailsTableViewController: NoResultsViewControllerDe
 extension SiteStatsInsightsDetailsTableViewController: SiteStatsTableHeaderDelegate {
 
     func dateChangedTo(_ newDate: Date?) {
-        guard let newDate = newDate else {
+        guard let newDate else {
             return
         }
 

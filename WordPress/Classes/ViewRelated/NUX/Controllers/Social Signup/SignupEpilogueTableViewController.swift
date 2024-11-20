@@ -101,7 +101,7 @@ class SignupEpilogueTableViewController: UITableViewController {
                 return UITableViewCell()
             }
 
-            if let epilogueUserInfo = epilogueUserInfo {
+            if let epilogueUserInfo {
                 cell.configure(userInfo: epilogueUserInfo, showEmail: true, allowGravatarUploads: true, viewController: self)
             }
             userInfoCell = cell

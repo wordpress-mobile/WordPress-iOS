@@ -11,7 +11,7 @@ public extension NSNotification.Name {
 
 extension Foundation.Notification {
     public func userInfoHasEmail(_ email: String) -> Bool {
-        guard let userInfo = userInfo,
+        guard let userInfo,
               let notificationEmail = userInfo[GravatarQEAvatarUpdateNotificationKeys.email.rawValue] as? String else {
                   return false
               }

@@ -52,7 +52,7 @@ class CategorySectionTableViewCell: UITableViewCell {
             categoryTitle.text = section?.title
             setCaption()
 
-            if let section = section {
+            if let section {
                 collectionViewHeight.constant = section.thumbnailSize.height
                 setNeedsUpdateConstraints()
             }
@@ -177,7 +177,7 @@ extension CategorySectionTableViewCell: UICollectionViewDataSource {
     }
 
     private func thumbnailUrl(forThumbnail thumbnail: Thumbnail) -> String? {
-        guard let delegate = delegate else { return thumbnail.urlDesktop }
+        guard let delegate else { return thumbnail.urlDesktop }
         switch delegate.selectedPreviewDevice {
         case .desktop:
             return thumbnail.urlDesktop
@@ -198,7 +198,7 @@ extension CategorySectionTableViewCell {
 
 class AccessibleCollectionView: UICollectionView {
     override func accessibilityElementCount() -> Int {
-        guard let dataSource = dataSource else {
+        guard let dataSource else {
             return 0
         }
 

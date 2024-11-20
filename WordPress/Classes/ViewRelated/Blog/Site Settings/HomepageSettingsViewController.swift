@@ -180,7 +180,7 @@ import WordPressShared
                                           hiddenPostID: Int?,
                                           isInProgress: (HomepageChange) -> Bool,
                                           changeForPost: @escaping (Int) -> HomepageChange) -> ImmuTableRow {
-        if let inProgressChange = inProgressChange, isInProgress(inProgressChange) {
+        if let inProgressChange, isInProgress(inProgressChange) {
             return ActivityIndicatorRow(title: selectionType.title, animating: true, action: nil)
         } else {
             return NavigationItemRow(title: selectionType.title, detail: detail, action: { [weak self] _ in

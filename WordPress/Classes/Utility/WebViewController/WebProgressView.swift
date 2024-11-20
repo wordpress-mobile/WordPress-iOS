@@ -40,7 +40,7 @@ class WebProgressView: UIProgressView {
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         guard let webView = object as? WKWebView,
-            let keyPath = keyPath else {
+            let keyPath else {
                 return
         }
 

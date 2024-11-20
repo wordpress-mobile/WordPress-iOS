@@ -42,14 +42,14 @@ struct HomepageSettingsService {
             switch type {
             case .page:
                 blog.homepageType = .page
-                if let postsPageID = postsPageID {
+                if let postsPageID {
                     blog.homepagePostsPageID = postsPageID
                     if postsPageID == originalHomePageID {
                         // Don't allow the same page to be set for both values
                         blog.homepagePageID = 0
                     }
                 }
-                if let homePageID = homePageID {
+                if let homePageID {
                     blog.homepagePageID = homePageID
                     if homePageID == originalPostsPageID {
                         // Don't allow the same page to be set for both values

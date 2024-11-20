@@ -10,12 +10,12 @@ extension NSNotification.Name {
 
 @objc public extension ReaderCommentsViewController {
     func shouldShowSuggestions(for siteID: NSNumber?) -> Bool {
-        guard let siteID = siteID, let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else { return false }
+        guard let siteID, let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else { return false }
         return SuggestionService.shared.shouldShowSuggestions(for: blog)
     }
 
     func handleHeaderTapped() {
-        guard let post = post,
+        guard let post,
               allowsPushingPostDetails else {
                   return
               }
@@ -29,7 +29,7 @@ extension NSNotification.Name {
     // MARK: New Comment Threads
 
     func configuredHeaderView(for tableView: UITableView) -> UIView {
-        guard let post = post else {
+        guard let post else {
             return .init()
         }
         let headerView = CommentTableHeaderView(
@@ -104,7 +104,7 @@ extension NSNotification.Name {
             WPAppAnalyticsKeySource: descriptionForSource(source)
         ]
 
-        if let post = post {
+        if let post {
             properties[WPAppAnalyticsKeyPostID] = post.postID
             properties[WPAppAnalyticsKeyBlogID] = post.siteID
         }
@@ -225,7 +225,7 @@ private extension ReaderCommentsViewController {
 
     func moderateComment(_ comment: Comment, status: CommentStatusType) {
         let successBlock: (String) -> Void = { [weak self] noticeText in
-            guard let self = self else {
+            guard let self else {
                 return
             }
 

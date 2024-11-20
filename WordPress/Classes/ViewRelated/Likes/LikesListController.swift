@@ -171,7 +171,7 @@ class LikesListController: NSObject {
         }
 
         fetchLikes(success: { [weak self] users, totalLikes, likesPerPage in
-            guard let self = self else {
+            guard let self else {
                 return
             }
 

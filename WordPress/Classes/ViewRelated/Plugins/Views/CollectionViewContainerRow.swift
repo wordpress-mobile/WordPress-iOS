@@ -132,7 +132,7 @@ class CollectionViewContainerCell: UITableViewCell {
         didSet {
             oldValue?.removeFromView()
 
-            guard let noResultsView = noResultsView else {
+            guard let noResultsView else {
                 return
             }
 

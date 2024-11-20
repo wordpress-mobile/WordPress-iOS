@@ -181,7 +181,7 @@ private class MockShareAppContentServiceRemote: ShareAppContentServiceRemote {
     }
 
     override func getContent(for appName: ShareAppName, completion: @escaping (Result<RemoteShareAppContent, Error>) -> Void) {
-        guard let result = result else {
+        guard let result else {
             return
         }
 

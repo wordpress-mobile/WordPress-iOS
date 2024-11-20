@@ -171,7 +171,7 @@ final class AllDomainsListViewController: UIViewController {
     }
 
     private func navigateToDomainDetails(with viewModel: Domain) {
-        guard let navigationController = navigationController else {
+        guard let navigationController else {
             self.crashLogger.logMessage("Failed to navigate to Domain Details screen from All Domains screen", level: .error)
             return
         }

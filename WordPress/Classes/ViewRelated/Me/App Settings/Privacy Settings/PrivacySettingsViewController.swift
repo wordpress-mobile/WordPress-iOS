@@ -214,7 +214,7 @@ private class InfoCell: WPTableViewCellDefault {
     override func layoutSubviews() {
         super.layoutSubviews()
         guard var imageFrame = imageView?.frame,
-            let textLabel = textLabel,
+            let textLabel,
             let textLabelFont = textLabel.font,
             let text = textLabel.text else {
                 return

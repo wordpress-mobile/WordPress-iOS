@@ -89,11 +89,11 @@ class MediaImageExporter: MediaExporter {
     }
 
     @discardableResult public func export(onCompletion: @escaping OnMediaExport, onError: @escaping (MediaExportError) -> Void) -> Progress {
-        if let image = image {
+        if let image {
             return exportImage(image, fileName: filename, onCompletion: onCompletion, onError: onError)
-        } else if let data = data {
+        } else if let data {
             return exportImage(withData: data, fileName: filename, typeHint: typeHint, onCompletion: onCompletion, onError: onError)
-        } else if let url = url {
+        } else if let url {
             return exportImage(atFile: url, onCompletion: onCompletion, onError: onError)
         }
         return Progress.discreteCompletedProgress()
@@ -316,7 +316,7 @@ class MediaImageExporter: MediaExporter {
                 kCGImageSourceTypeIdentifierHint: sourceUTType,
                 kCGImageSourceCreateThumbnailWithTransform: true ]
 
-            if let maximumSize = maximumSize {
+            if let maximumSize {
                 thumbnailOptions[kCGImageSourceThumbnailMaxPixelSize] = maximumSize
             }
 

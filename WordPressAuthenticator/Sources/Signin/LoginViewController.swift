@@ -113,7 +113,7 @@ open class LoginViewController: NUXViewController, LoginFacadeDelegate {
         errorLabel?.text = message
         errorToPresent = nil
 
-        if moveVoiceOverFocus, let errorLabel = errorLabel {
+        if moveVoiceOverFocus, let errorLabel {
             UIAccessibility.post(notification: .layoutChanged, argument: errorLabel)
         }
     }
@@ -129,7 +129,7 @@ open class LoginViewController: NUXViewController, LoginFacadeDelegate {
     // MARK: - Epilogue
 
     func showSignupEpilogue(for credentials: AuthenticatorCredentials) {
-        guard let navigationController = navigationController else {
+        guard let navigationController else {
             fatalError()
         }
 
@@ -141,7 +141,7 @@ open class LoginViewController: NUXViewController, LoginFacadeDelegate {
     }
 
     func showLoginEpilogue(for credentials: AuthenticatorCredentials) {
-        guard let navigationController = navigationController else {
+        guard let navigationController else {
             fatalError()
         }
 
@@ -259,7 +259,7 @@ extension LoginViewController {
         configureStatusLabel(LocalizedText.gettingAccountInfo)
 
         syncWPCom(credentials: credentials) { [weak self] in
-            guard let self = self else {
+            guard let self else {
                 return
             }
 
@@ -372,8 +372,8 @@ extension LoginViewController {
     /// Used only in unified views.
     ///
     func setTableViewMargins(forWidth viewWidth: CGFloat) {
-        guard let tableViewLeadingConstraint = tableViewLeadingConstraint,
-            let tableViewTrailingConstraint = tableViewTrailingConstraint else {
+        guard let tableViewLeadingConstraint,
+            let tableViewTrailingConstraint else {
                 return
         }
 

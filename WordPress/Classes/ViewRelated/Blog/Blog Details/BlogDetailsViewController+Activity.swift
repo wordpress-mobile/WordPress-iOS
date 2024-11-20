@@ -6,9 +6,9 @@ extension BlogDetailsViewController: SearchableActivityConvertable {
     }
 
     var activityTitle: String {
-        if let siteName = siteName {
+        if let siteName {
             return siteName
-        } else if let displayURL = displayURL {
+        } else if let displayURL {
             return displayURL
         }
 
@@ -19,11 +19,11 @@ extension BlogDetailsViewController: SearchableActivityConvertable {
         let keyWordString = NSLocalizedString("wordpress, sites, site, blogs, blog", comment: "This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab.")
         var keywordArray = keyWordString.arrayOfTags()
 
-        if let siteName = siteName {
+        if let siteName {
             keywordArray.append(siteName)
         }
 
-        if let displayURL = displayURL {
+        if let displayURL {
             keywordArray.append(displayURL)
         }
 
@@ -47,7 +47,7 @@ extension BlogDetailsViewController: SearchableActivityConvertable {
     }
 
     var activityDescription: String? {
-        guard let displayURL = displayURL else {
+        guard let displayURL else {
             return nil
         }
 
@@ -81,7 +81,7 @@ extension BlogDetailsViewController {
     // We need to override this to ensure the userInfo is persisted into the spotlight index.
     //
     override open func updateUserActivityState(_ activity: NSUserActivity) {
-        if let activityUserInfo = activityUserInfo {
+        if let activityUserInfo {
             activity.addUserInfoEntries(from: activityUserInfo)
         }
         super.updateUserActivityState(activity)

@@ -80,7 +80,7 @@ struct NullableUserDefault<T> {
             return UserPersistentStoreFactory.instance().object(forKey: key) as? T
         }
         set {
-            if let newValue = newValue {
+            if let newValue {
                 UserPersistentStoreFactory.instance().set(newValue, forKey: key)
             } else {
                 UserPersistentStoreFactory.instance().removeObject(forKey: key)

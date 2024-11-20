@@ -60,7 +60,7 @@ extension PostService {
         let request = LikeUser.fetchRequest() as NSFetchRequest<LikeUser>
 
         request.predicate = {
-            if let after = after {
+            if let after {
                 // The date comparison is 'less than' because Likes are in descending order.
                 return NSPredicate(format: "likedSiteID = %@ AND likedPostID = %@ AND dateLiked < %@", siteID, postID, after as CVarArg)
             }
@@ -87,7 +87,7 @@ private extension PostService {
                         purgeExisting: Bool,
                         onComplete: @escaping (() -> Void)) {
 
-        guard let remoteLikeUsers = remoteLikeUsers,
+        guard let remoteLikeUsers,
               !remoteLikeUsers.isEmpty else {
             DispatchQueue.main.async {
                 onComplete()

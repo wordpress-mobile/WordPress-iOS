@@ -61,7 +61,7 @@ private extension CommentService {
                         purgeExisting: Bool,
                         onComplete: @escaping (() -> Void)) {
 
-        guard let remoteLikeUsers = remoteLikeUsers,
+        guard let remoteLikeUsers,
               !remoteLikeUsers.isEmpty else {
             DispatchQueue.main.async {
                 onComplete()

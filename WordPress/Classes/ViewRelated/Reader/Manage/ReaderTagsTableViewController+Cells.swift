@@ -2,7 +2,7 @@ import UIKit
 
 extension ReaderTagsTableViewModel {
     func configure(cell: UITableViewCell, for topic: ReaderTagTopic?) {
-        guard let topic = topic else {
+        guard let topic else {
             configureAddTag(cell: cell)
             return
         }

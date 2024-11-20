@@ -135,9 +135,9 @@ private extension NotificationCommentDetailViewController {
             barButtonItems.append(makeNavigationButtons())
         }
 
-        if let comment = comment,
+        if let comment,
            comment.allowsModeration(),
-           let commentDetailViewController = commentDetailViewController {
+           let commentDetailViewController {
             barButtonItems.append(commentDetailViewController.editBarButtonItem)
         }
 
@@ -165,7 +165,7 @@ private extension NotificationCommentDetailViewController {
     }
 
     func updateDisplayedComment() {
-        guard let comment = comment else {
+        guard let comment else {
             return
         }
 
@@ -221,7 +221,7 @@ private extension NotificationCommentDetailViewController {
         showLoadingView()
 
         loadPostIfNeeded(completion: { [weak self] in
-            guard let self = self else {
+            guard let self else {
                 return
             }
 
@@ -231,7 +231,7 @@ private extension NotificationCommentDetailViewController {
                     return
                 }
                 self.fetchComment(self.commentID, completion: { comment in
-                    guard let comment = comment else {
+                    guard let comment else {
                         self.showErrorView(title: NoResults.errorTitle, subtitle: NoResults.errorSubtitle)
                         return
                     }
@@ -286,16 +286,16 @@ private extension NotificationCommentDetailViewController {
     }
 
     func loadCommentFromCache(_ commentID: NSNumber?) -> Comment? {
-        guard let commentID = commentID else {
+        guard let commentID else {
             DDLogError("Notification Comment: unable to load comment due to missing commentID.")
             return nil
         }
 
-        if let blog = blog {
+        if let blog {
             return blog.comment(withID: commentID)
         }
 
-        if let post = post {
+        if let post {
             return post.comment(withID: commentID)
         }
 
@@ -303,13 +303,13 @@ private extension NotificationCommentDetailViewController {
     }
 
     func fetchComment(_ commentID: NSNumber?, completion: @escaping (Comment?) -> Void, failure: @escaping (Error?) -> Void) {
-        guard let commentID = commentID else {
+        guard let commentID else {
             DDLogError("Notification Comment: unable to fetch comment due to missing commentID.")
             failure(nil)
             return
         }
 
-        if let blog = blog {
+        if let blog {
             commentService.loadComment(withID: commentID, for: blog, success: { comment in
                 completion(comment)
             }, failure: { error in
@@ -318,7 +318,7 @@ private extension NotificationCommentDetailViewController {
             return
         }
 
-        if let post = post {
+        if let post {
             commentService.loadComment(withID: commentID, for: post, success: { comment in
                 completion(comment)
             }, failure: { error in
@@ -349,7 +349,7 @@ private extension NotificationCommentDetailViewController {
     // MARK: - No Results Views
 
     func showLoadingView() {
-        if let commentDetailViewController = commentDetailViewController {
+        if let commentDetailViewController {
             commentDetailViewController.showNoResultsView(title: NoResults.loadingTitle,
                                                           accessoryView: NoResultsViewController.loadingAccessoryView())
         } else {
@@ -361,7 +361,7 @@ private extension NotificationCommentDetailViewController {
     }
 
     func showErrorView(title: String, subtitle: String?) {
-        if let commentDetailViewController = commentDetailViewController {
+        if let commentDetailViewController {
             commentDetailViewController.showNoResultsView(title: title,
                                                           subtitle: subtitle,
                                                           imageName: NoResults.imageName)

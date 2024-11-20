@@ -9,7 +9,7 @@ class HostingTableViewCell<Content: View>: UITableViewCell {
     }
 
     func host(_ view: Content, parent: UIViewController) {
-        if let controller = controller {
+        if let controller {
             controller.rootView = view
             controller.view.layoutIfNeeded()
         } else {

@@ -74,7 +74,7 @@ struct SiteIconPickerView: View {
     }
 
     private var previewOverlay: some View {
-        if let currentIcon = currentIcon {
+        if let currentIcon {
             let renderer = EmojiRenderer(emoji: currentIcon, backgroundColor: currentBackgroundColor,
                                          imageSize: CGSize(width: Metrics.previewSize, height: Metrics.previewSize),
                                          insetSize: 0)
@@ -211,7 +211,7 @@ struct SiteIconPickerView: View {
     // MARK: - Actions
 
     private func saveIcon() {
-        if let currentIcon = currentIcon {
+        if let currentIcon {
             let renderer = EmojiRenderer(emoji: currentIcon,
                                          backgroundColor: currentBackgroundColor)
             onCompletion?(renderer.render())

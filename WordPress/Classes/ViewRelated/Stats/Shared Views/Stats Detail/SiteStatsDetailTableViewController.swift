@@ -88,7 +88,7 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 
         // Only show the date bar for Insights Annual details
-        guard let statSection = statSection,
+        guard let statSection,
             statSection == .insightsAnnualSiteStats,
             let allAnnualInsights = insightsStore.getAllAnnual()?.allAnnualInsights,
             let mostRecentYear = allAnnualInsights.last?.year else {
@@ -115,7 +115,7 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         // Only show the date bar for Insights Annual details
-        guard let statSection = statSection,
+        guard let statSection,
             statSection == .insightsAnnualSiteStats,
             let allAnnualInsights = insightsStore.getAllAnnual()?.allAnnualInsights,
             allAnnualInsights.last?.year != nil else {
@@ -144,7 +144,7 @@ private extension SiteStatsDetailTableViewController {
                                               insightsStore: insightsStore,
                                               periodStore: periodStore)
 
-        guard let statSection = statSection else {
+        guard let statSection else {
             return
         }
 
@@ -174,7 +174,7 @@ private extension SiteStatsDetailTableViewController {
     // MARK: - Table Refreshing
 
     func refreshTableView() {
-        guard let viewModel = viewModel else {
+        guard let viewModel else {
             return
         }
 
@@ -189,7 +189,7 @@ private extension SiteStatsDetailTableViewController {
     }
 
     @objc func refreshData() {
-        guard let statSection = statSection else {
+        guard let statSection else {
             return
         }
 
@@ -360,7 +360,7 @@ extension SiteStatsDetailTableViewController: NoResultsViewControllerDelegate {
 extension SiteStatsDetailTableViewController: SiteStatsTableHeaderDelegate {
 
     func dateChangedTo(_ newDate: Date?) {
-        guard let newDate = newDate else {
+        guard let newDate else {
             return
         }
 

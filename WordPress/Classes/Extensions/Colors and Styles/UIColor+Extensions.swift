@@ -15,7 +15,7 @@ extension UIColor {
     }
 
     func color(for trait: UITraitCollection?) -> UIColor {
-        if let trait = trait {
+        if let trait {
             return resolvedColor(with: trait)
         }
         return self

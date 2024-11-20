@@ -127,7 +127,7 @@ import UIKit
     /// ScrollView willBeginDragging Event
     ///
     @objc func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        guard let dismissableControl = dismissableControl, isKeyboardVisible == true else {
+        guard let dismissableControl, isKeyboardVisible == true else {
             return
         }
 

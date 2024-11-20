@@ -16,7 +16,7 @@ open class FancyAlertPresentationController: UIPresentationController, UIViewCon
     }(UIView())
 
     override open func presentationTransitionWillBegin() {
-        guard let containerView = containerView else { return }
+        guard let containerView else { return }
 
         containerView.addSubview(dimmingView)
         containerView.pinSubviewToAllEdges(dimmingView)

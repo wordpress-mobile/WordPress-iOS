@@ -145,12 +145,12 @@ class LoginPrologueViewController: LoginViewController {
             buildUnifiedPrologueButtons()
         }
 
-        if let buttonViewController = buttonViewController {
+        if let buttonViewController {
             buttonViewController.shadowLayoutGuide = view.safeAreaLayoutGuide
             buttonViewController.topButtonStyle = WordPressAuthenticator.shared.style.prologuePrimaryButtonStyle
             buttonViewController.bottomButtonStyle = WordPressAuthenticator.shared.style.prologueSecondaryButtonStyle
             buttonViewController.tertiaryButtonStyle = WordPressAuthenticator.shared.style.prologueSecondaryButtonStyle
-        } else if let stackedButtonsViewController = stackedButtonsViewController {
+        } else if let stackedButtonsViewController {
             stackedButtonsViewController.shadowLayoutGuide = view.safeAreaLayoutGuide
         }
     }
@@ -158,7 +158,7 @@ class LoginPrologueViewController: LoginViewController {
     /// Displays the old UI prologue buttons.
     ///
     private func buildPrologueButtons() {
-        guard let buttonViewController = buttonViewController else {
+        guard let buttonViewController else {
             return
         }
 
@@ -190,7 +190,7 @@ class LoginPrologueViewController: LoginViewController {
     /// Displays the Unified prologue buttons.
     ///
     private func buildUnifiedPrologueButtons() {
-        guard let buttonViewController = buttonViewController else {
+        guard let buttonViewController else {
             return
         }
 
@@ -238,7 +238,7 @@ class LoginPrologueViewController: LoginViewController {
     }
 
     private func buildPrologueButtonsUsingStackedButtonsViewController() {
-        guard let stackedButtonsViewController = stackedButtonsViewController else {
+        guard let stackedButtonsViewController else {
             return
         }
 
@@ -330,7 +330,7 @@ class LoginPrologueViewController: LoginViewController {
 
     private func loginTapCallback() -> NUXButtonViewController.CallBackType {
         return { [weak self] in
-            guard let self = self else {
+            guard let self else {
                 return
             }
 
@@ -341,7 +341,7 @@ class LoginPrologueViewController: LoginViewController {
 
     private func simplifiedLoginSiteCreationCallback() -> NUXButtonViewController.CallBackType {
         { [weak self] in
-            guard let self = self, let navigationController = self.navigationController else { return }
+            guard let self, let navigationController = self.navigationController else { return }
             // triggers the delegate to ask the host app to handle site creation
             WordPressAuthenticator.shared.delegate?.showSiteCreation(in: navigationController)
         }
@@ -408,7 +408,7 @@ class LoginPrologueViewController: LoginViewController {
 
         // Continue with WordPress.com button action
         vc.emailTapped = { [weak self] in
-            guard let self = self else {
+            guard let self else {
                 return
             }
 
@@ -454,7 +454,7 @@ class LoginPrologueViewController: LoginViewController {
         vc.modalPresentationStyle = .custom
 
         vc.emailTapped = { [weak self] in
-            guard let self = self else {
+            guard let self else {
                 return
             }
 
@@ -467,7 +467,7 @@ class LoginPrologueViewController: LoginViewController {
         }
 
         vc.googleTapped = { [weak self] in
-            guard let self = self else {
+            guard let self else {
                 return
             }
 

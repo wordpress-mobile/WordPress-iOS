@@ -193,7 +193,7 @@ fileprivate extension PingHubManager {
     // MARK: reachability
     func setupReachability() {
         let reachabilityChanged: (Reachability?) -> Void = { [weak self] reachability in
-            guard let manager = self, let reachability = reachability else {
+            guard let manager = self, let reachability else {
                 return
             }
             DispatchQueue.main.async {
@@ -242,7 +242,7 @@ extension PingHubManager: PinghubClientDelegate {
     }
 
     func pinghubDidDisconnect(_ client: PinghubClient, error: Error?) {
-        if let error = error {
+        if let error {
             DDLogError("PingHub disconnected: \(error)")
         } else {
             DDLogInfo("PingHub disconnected")

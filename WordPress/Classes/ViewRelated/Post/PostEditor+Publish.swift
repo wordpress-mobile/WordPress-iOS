@@ -53,7 +53,7 @@ extension PublishingEditor {
     // The debouncer will perform this callback every 500ms in order to save the post locally with a delay.
     var debouncerCallback: (() -> Void) {
         return { [weak self] in
-            guard let self = self else {
+            guard let self else {
                 return
             }
             if self.post.hasChanges {
@@ -281,7 +281,7 @@ extension PublishingEditor {
 
         WPAppAnalytics.track(.editorClosed, withProperties: [WPAppAnalyticsKeyEditorSource: analyticsEditorSource], with: post)
 
-        if let onClose = onClose {
+        if let onClose {
             // if this closure exists, the presentation of the Blogging Reminders flow (if needed)
             // needs to happen in the closure.
             onClose(didSave)

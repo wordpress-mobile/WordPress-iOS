@@ -57,7 +57,7 @@ class PagesCardViewModel: NSObject {
     typealias PagesSnapshot = NSDiffableDataSourceSnapshot<Int, NSManagedObjectID>
 
     lazy var diffableDataSource = DataSource(tableView: view!.tableView) { [weak self] (tableView, indexPath, item) -> UITableViewCell? in
-        guard let self = self else {
+        guard let self else {
             return nil
         }
         switch item {

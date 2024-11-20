@@ -114,7 +114,7 @@ class ActionSheetViewController: UIViewController {
         scrollView.addSubview(stackView)
         scrollView.pinSubviewToAllEdges(stackView)
 
-        if let headerView = headerView {
+        if let headerView {
             stackView.addArrangedSubview(headerView)
         }
 
@@ -210,7 +210,7 @@ class ActionSheetViewController: UIViewController {
     }
 
     private func updateScrollViewHeight() {
-        guard let scrollView = scrollView else {
+        guard let scrollView else {
             return
         }
         scrollView.layoutIfNeeded()
