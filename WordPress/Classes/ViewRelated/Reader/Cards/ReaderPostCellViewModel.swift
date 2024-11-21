@@ -12,6 +12,7 @@ final class ReaderPostCellViewModel {
     let imageURL: URL?
 
     // Footer (Buttons)
+    private(set) var isToolbarHidden = false
     let toolbar: ReaderPostToolbarViewModel
 
     weak var viewController: ReaderStreamViewController?
@@ -36,7 +37,11 @@ final class ReaderPostCellViewModel {
         self.title = post.titleForDisplay() ?? ""
         self.details = post.contentPreviewForDisplay() ?? ""
         self.imageURL = post.featuredImageURLForDisplay()
+
         self.toolbar = ReaderPostToolbarViewModel.make(post: post)
+        if isP2 && post.primaryTag == "afk" {
+            self.isToolbarHidden = true
+        }
 
         if isP2 {
             self.avatarURL = post.authorAvatarURL.flatMap(URL.init)

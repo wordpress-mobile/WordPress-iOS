@@ -1,6 +1,7 @@
 import SwiftUI
 import UIKit
 import Combine
+import WordPressShared
 
 final class ReaderPostCell: ReaderStreamBaseCell {
     private let view = ReaderPostCellView()
@@ -71,6 +72,7 @@ private final class ReaderPostCellView: UIView {
     let imageView = ImageView()
 
     // Footer
+    private lazy var toolbarView = UIStackView(buttons.allButtons)
     let buttons = ReaderPostToolbarButtons()
 
     private lazy var postPreview = UIStackView(axis: .vertical, alignment: .leading, spacing: 12, [
@@ -89,6 +91,7 @@ private final class ReaderPostCellView: UIView {
 
     private var viewModel: ReaderPostCellViewModel? // important: has to retain
 
+    private var toolbarViewHeightConstraint: NSLayoutConstraint?
     private var imageViewConstraints: [NSLayoutConstraint] = []
     private var cancellables: [AnyCancellable] = []
 
@@ -106,6 +109,11 @@ private final class ReaderPostCellView: UIView {
     }
 
     func prepareForReuse() {
+        if let constraint = toolbarViewHeightConstraint {
+            constraint.isActive = false
+            toolbarView.isHidden = false
+            toolbarViewHeightConstraint = nil
+        }
         cancellables = []
         avatarView.prepareForReuse()
         imageView.prepareForReuse()
@@ -141,7 +149,6 @@ private final class ReaderPostCellView: UIView {
         // These seems to be an issue with `lineBreakMode` in `UIButton.Configuration`
         // and `.firstLineBaseline`, so reserving to `.center`.
         let headerView = UIStackView(alignment: .center, [buttonAuthor, dot, timeLabel])
-        let toolbarView = UIStackView(buttons.allButtons)
 
         for view in [avatarView, headerView, postPreview, buttonMore, toolbarView] {
             addSubview(view)
@@ -292,8 +299,15 @@ private final class ReaderPostCellView: UIView {
             imageView.setImage(with: imageURL, size: preferredCoverSize)
         }
 
-        configureToolbar(with: viewModel.toolbar)
-        configureToolbarAccessibility(with: viewModel.toolbar)
+        if !viewModel.isToolbarHidden {
+            configureToolbar(with: viewModel.toolbar)
+            configureToolbarAccessibility(with: viewModel.toolbar)
+        } else {
+            let constraint = toolbarView.heightAnchor.constraint(equalToConstant: 12)
+            constraint.isActive = true
+            toolbarView.isHidden = true
+            toolbarViewHeightConstraint = constraint
+        }
     }
 
     private var preferredCoverSize: CGSize? {
