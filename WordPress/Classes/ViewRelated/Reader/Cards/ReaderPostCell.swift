@@ -226,6 +226,8 @@ private final class ReaderPostCellView: UIView {
         buttons.reblog.addTarget(self, action: #selector(buttonReblogTapped), for: .primaryActionTriggered)
         buttons.comment.addTarget(self, action: #selector(buttonCommentTapped), for: .primaryActionTriggered)
         buttons.like.addTarget(self, action: #selector(buttonLikeTapped), for: .primaryActionTriggered)
+
+        avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: buttonAuthorTapped))
     }
 
     @objc private func buttonAuthorTapped() {
