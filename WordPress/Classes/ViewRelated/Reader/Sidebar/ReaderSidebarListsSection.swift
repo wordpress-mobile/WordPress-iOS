@@ -12,15 +12,21 @@ struct ReaderSidebarListsSection: View {
     private var lists: FetchedResults<ReaderListTopic>
 
     var body: some View {
-        ForEach(lists, id: \.self) { list in
-            Label {
-                Text(list.title)
-                    .lineLimit(1)
-            } icon: {
-                Image(systemName: "list.star")
-                    .foregroundStyle(.secondary)
-            }
-            .tag(ReaderSidebarItem.list(TaggedManagedObjectID(list)))
+        ForEach(lists, id: \.self, content: ReaderSidebarListCell.init)
+    }
+}
+
+struct ReaderSidebarListCell: View {
+    let list: ReaderListTopic
+
+    var body: some View {
+        Label {
+            Text(list.title)
+                .lineLimit(1)
+        } icon: {
+            Image(systemName: "list.star")
+                .foregroundStyle(.secondary)
         }
+        .tag(ReaderSidebarItem.list(TaggedManagedObjectID(list)))
     }
 }

@@ -72,6 +72,8 @@ private struct ReaderSidebarView: View {
     )
     private var favorites: FetchedResults<ReaderSiteTopic>
 
+    @State private var searchText = ""
+
     @Environment(\.layoutDirection) var layoutDirection
     @Environment(\.editMode) var editMode
 
@@ -79,6 +81,7 @@ private struct ReaderSidebarView: View {
 
     var body: some View {
         list
+            .searchable(text: $searchText)
             .toolbar {
                 EditButton()
             }
@@ -106,6 +109,15 @@ private struct ReaderSidebarView: View {
 
     @ViewBuilder
     private var content: some View {
+        if !searchText.isEmpty {
+            ReaderSidebarSearchResultsView(searchText: searchText)
+        } else {
+            regularContent
+        }
+    }
+
+    @ViewBuilder
+    private var regularContent: some View {
         Section {
             let screens = ReaderStaticScreen.allCases
             ForEach(ReaderStaticScreen.allCases) {
