@@ -2,7 +2,6 @@ import UIKit
 
 /// Registration and dequeuing of cells for table views in Reader
 final class ReaderTableConfiguration {
-    private let footerViewNibName = "PostListFooterView"
     private let postCellReuseIdentifier = "ReaderPostCellReuseIdentifier"
     private let crossPostCellReuseIdentifier = "ReaderCrossPostCellReuseIdentifier"
     private let blockedCellNibName = "ReaderBlockedSiteCell"
@@ -33,14 +32,6 @@ final class ReaderTableConfiguration {
     private func setUpGapMarkerCell(_ tableView: UITableView) {
         let nib = UINib(nibName: gapMarkerCellNibName, bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: gapMarkerCellReuseIdentifier)
-    }
-
-    func footer() -> PostListFooterView {
-        guard let footer = Bundle.main.loadNibNamed(footerViewNibName, owner: nil, options: nil)?.first as? PostListFooterView else {
-            assertionFailure("Failed to load view from nib named \(footerViewNibName)")
-            return PostListFooterView()
-        }
-        return footer
     }
 
     func estimatedRowHeight() -> CGFloat {

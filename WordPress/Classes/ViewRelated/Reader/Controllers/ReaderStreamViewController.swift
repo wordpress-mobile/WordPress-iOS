@@ -54,9 +54,7 @@ import AutomatticTracks
     private var coreDataStack: CoreDataStack { ContextManager.shared }
     var viewContext: NSManagedObjectContext { coreDataStack.mainContext }
 
-    private(set) lazy var footerView: PostListFooterView = {
-        return tableConfiguration.footer()
-    }()
+    private(set) lazy var footerView = PagingFooterView(state: .loading)
 
     private let tableViewController = UITableViewController(style: .plain)
 
@@ -448,7 +446,6 @@ import AutomatticTracks
     }
 
     private func setupFooterView() {
-        footerView.showSpinner(false)
         var frame = footerView.frame
         frame.size.height = heightForFooterView
         footerView.frame = frame
@@ -984,7 +981,7 @@ import AutomatticTracks
             return
         }
 
-        footerView.showSpinner(true)
+        footerView.isHidden = false
 
         let successBlock = { (count: Int, hasMore: Bool) in
             DispatchQueue.main.async(execute: {
@@ -1045,7 +1042,7 @@ import AutomatticTracks
             content.refreshPreservingOffset()
         }
         refreshControl.endRefreshing()
-        footerView.showSpinner(false)
+        footerView.isHidden = true
     }
 
     // MARK: - Notifications
