@@ -27,18 +27,16 @@ struct ApplicationTokenListView: View {
             Color(.systemGroupedBackground)
                 .ignoresSafeArea()
 
-            Group {
-                VStack {
-                    if viewModel.isLoadingData {
-                        ProgressView()
-                    } else if let error = viewModel.errorMessage {
-                        EmptyStateView(Self.errorTitle, systemImage: "exclamationmark.triangle", description: error)
-                    } else {
-                        List(viewModel.applicationTokens) { token in
-                            ApplicationTokenListItemView(item: token)
-                        }
-                        .listStyle(.insetGrouped)
+            VStack {
+                if viewModel.isLoadingData {
+                    ProgressView()
+                } else if let error = viewModel.errorMessage {
+                    EmptyStateView(Self.errorTitle, systemImage: "exclamationmark.triangle", description: error)
+                } else {
+                    List(viewModel.applicationTokens) { token in
+                        ApplicationTokenListItemView(item: token)
                     }
+                    .listStyle(.insetGrouped)
                 }
             }
         }
