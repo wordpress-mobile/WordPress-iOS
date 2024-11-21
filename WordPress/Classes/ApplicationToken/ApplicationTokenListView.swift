@@ -66,7 +66,7 @@ class ApplicationTokenListViewModel: ObservableObject {
     @Published
     private(set) var applicationTokens: [ApplicationTokenItem]
 
-    let dataProvider: ApplicationTokenListDataProvider!
+    let dataProvider: ApplicationTokenListDataProvider
 
     init(dataProvider: ApplicationTokenListDataProvider) {
         self.dataProvider = dataProvider
