@@ -39,7 +39,7 @@ struct UserDetailsView: View {
     var body: some View {
         Form {
             VStack {
-                UserProfileImage(size: 96, url: user.profilePhotoUrl)
+                AvatarView(style: .single(user.profilePhotoUrl), diameter: 96, placeholderImage: Image("gravatar").resizable())
                 Text(user.displayName)
                     .font(.title)
                 Text(user.handle)

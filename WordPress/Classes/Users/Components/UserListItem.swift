@@ -18,7 +18,7 @@ struct UserListItem: View {
         } label: {
             HStack(alignment: .top) {
                 if !dynamicTypeSize.isAccessibilitySize {
-                    UserProfileImage(size: height, url: user.profilePhotoUrl)
+                    AvatarView(style: .single(user.profilePhotoUrl), placeholderImage: Image("gravatar").resizable())
                 }
                 VStack(alignment: .leading) {
                     Text(user.displayName).font(.headline)
