@@ -1,6 +1,7 @@
 import SwiftUI
 import Combine
 import WordPressShared
+import WordPressAPI
 
 @MainActor
 class UserListViewModel: ObservableObject {
@@ -57,7 +58,7 @@ class UserListViewModel: ObservableObject {
     private(set) var sortedUsers: [Section] = []
 
     @Published
-    private(set) var error: Error? = nil
+    private(set) var error: String? = nil
 
     @Published
     var searchTerm: String = "" {
@@ -101,7 +102,7 @@ class UserListViewModel: ObservableObject {
             case let .success(users):
                 self.sortedUsers = self.sortUsers(users)
             case let .failure(error):
-                self.error = error
+                self.error = (error as? WpApiError)?.errorMessage ?? error.localizedDescription
             }
         }
     }
@@ -115,7 +116,7 @@ class UserListViewModel: ObservableObject {
             do {
                 try await userService.fetchUsers()
             } catch {
-                self.error = error
+                self.error = (error as? WpApiError)?.errorMessage ?? error.localizedDescription
             }
         }
 
