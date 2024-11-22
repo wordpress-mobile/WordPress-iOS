@@ -174,18 +174,21 @@ struct WordPressDotComAuthenticator {
         let clientSecret = ApiCredentials.secret
         let redirectURI = "x-wordpress-app://oauth2-callback"
 
-        var queries =  [
-            URLQueryItem(name: "client_id", value: clientId),
-            URLQueryItem(name: "redirect_uri", value: redirectURI),
-            URLQueryItem(name: "response_type", value: "code"),
-            URLQueryItem(name: "scope", value: "global"),
+        var queries: [String: Any] =  [
+            "client_id": clientId,
+            "redirect_uri": redirectURI,
+            "response_type": "code",
+            "scope": "global",
         ]
         if let accountEmail {
-            queries.append(URLQueryItem(name: "user_email", value: accountEmail))
+            queries["user_email"] =  accountEmail
         }
 
-        let authorizeURL = URL(string: "https://public-api.wordpress.com/oauth2/authorize")!
-            .appending(queryItems: queries)
+        // Using Alamofire instead of URL to encode query string because URL do not encoded "+" (which may present
+        // in user's email) in query. WP.com treat "+" in URL query as a whitespace, which cause the login page to
+        // prepopulate the email address incorrectly, i.e. "foo+bar@baz.com" shows as "foo bar@baz.com"
+        let authorizeURL = try? URLEncoding.queryString.encode(URLRequest(url: URL(string: "https://public-api.wordpress.com/oauth2/authorize")!), with: queries).url
+        guard let authorizeURL else { throw .urlError(URLError(.badURL)) }
 
         let callbackURL = try await authorize(from: viewController, url: authorizeURL, prefersEphemeralWebBrowserSession: prefersEphemeralWebBrowserSession)
 
@@ -313,7 +316,6 @@ private extension WordPressDotComAuthenticator.SignInError {
 
 private extension WordPressDotComAuthenticator.AuthenticationError {
     var alertMessage: String? {
-        let alertMessage: String
         switch self {
         case .cancelled:
             // `.cancelled` error is thrown when user taps the cancel button in the presented Safari view controller.
