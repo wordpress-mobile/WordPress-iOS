@@ -1,13 +1,13 @@
-import Foundation
+import UIKit
 import WordPressFlux
 import WordPressUI
 
-@objc public protocol ReaderCommentsNotificationSheetDelegate: AnyObject {
+public protocol ReaderCommentsNotificationSheetDelegate: AnyObject {
     func didToggleNotificationSwitch(_ isOn: Bool, completion: @escaping (Bool) -> Void)
     func didTapUnfollowConversation()
 }
 
-@objc class ReaderCommentsNotificationSheetViewController: UIViewController {
+final class ReaderCommentsNotificationSheetViewController: UIViewController {
 
     // MARK: Properties
 
@@ -18,7 +18,6 @@ import WordPressUI
             guard oldValue != isNotificationEnabled else {
                 return
             }
-
             updateViews(updatesContentSize: true)
         }
     }
@@ -44,9 +43,8 @@ import WordPressUI
         let stackView = UIStackView(arrangedSubviews: [descriptionLabel, switchContainer, unfollowButton])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
-        stackView.setCustomSpacing(Constants.switchContainerInsets.top, after: descriptionLabel)
-        stackView.setCustomSpacing(Constants.switchContainerInsets.bottom, after: switchContainer)
-
+        stackView.setCustomSpacing(16, after: descriptionLabel)
+        stackView.setCustomSpacing(16, after: switchContainer)
         return stackView
     }()
 
@@ -57,8 +55,7 @@ import WordPressUI
         label.textColor = Style.textColor
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
-        label.setText(.descriptionTextForDisabledNotifications)
-
+        label.setText(Strings.descriptionTextForDisabledNotifications)
         return label
     }()
 
@@ -91,7 +88,7 @@ import WordPressUI
         label.textColor = Style.textColor
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
-        label.setText(.notificationSwitchLabelText)
+        label.setText(Strings.notificationSwitchLabelText)
 
         return label
     }()
@@ -110,7 +107,7 @@ import WordPressUI
     private lazy var unfollowButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle(.unfollowButtonTitle, for: .normal)
+        button.setTitle(Strings.unfollowButtonTitle, for: .normal)
         button.setTitleColor(Style.textColor, for: .normal)
         button.setBackgroundImage(.renderBackgroundImage(fill: .clear, border: Style.buttonBorderColor), for: .normal)
 
@@ -142,40 +139,15 @@ import WordPressUI
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureViews()
 
-        // prevent Notices from being shown while the bottom sheet is displayed in iPhone.
-        toggleNoticeLock(true)
+        title = Strings.title
+        view.backgroundColor = .systemBackground
+        configureViews()
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         updatePreferredContentSize()
-    }
-}
-
-// MARK: - Drawer Presentable
-
-extension ReaderCommentsNotificationSheetViewController: DrawerPresentable {
-    var allowsUserTransition: Bool {
-        return false
-    }
-
-    var collapsedHeight: DrawerHeight {
-        if traitCollection.verticalSizeClass == .compact {
-            return .maxHeight
-        }
-
-        view.layoutIfNeeded()
-        return .intrinsicHeight
-    }
-
-    var scrollableView: UIScrollView? {
-        return scrollView
-    }
-
-    func handleDismiss() {
-        toggleNoticeLock(false)
     }
 }
 
@@ -185,32 +157,15 @@ private extension ReaderCommentsNotificationSheetViewController {
     typealias Style = WPStyleGuide.ReaderCommentsNotificationSheet
 
     struct Constants {
-        /// On iPad, the sheet is displayed without the `gripButton` and the additional top spacing that comes with it.
-        static var contentInsets = UIEdgeInsets(top: WPDeviceIdentification.isiPad() ? 20 : 0, left: 20, bottom: 20, right: 20)
-        static var switchContainerInsets = UIEdgeInsets(top: 15, left: 0, bottom: 21, right: 0)
+        static var contentInsets = UIEdgeInsets(.all, 20)
         static var switchContainerContentSpacing: CGFloat = 4
         static var switchLabelVerticalPadding: CGFloat = 6
         static var switchButtonTrailingPadding: CGFloat = 2
-        static var iPadAdditionalBottomPadding: CGFloat = 5
-    }
-
-    /// Returns the vertical padding outside the intrinsic height of the `containerStackView`, so the component is displayed properly.
-    var verticalPadding: CGFloat {
-        return Constants.contentInsets.top
-            + Constants.contentInsets.bottom
-            + additionalVerticalPadding
-    }
-
-    /// Calculates the default top margin from the `BottomSheetViewController`, plus the bottom safe area inset.
-    /// The 5pt is for an extra bottom padding on iPad, to make it look better.
-    var additionalVerticalPadding: CGFloat {
-        WPDeviceIdentification.isiPad() ? Constants.iPadAdditionalBottomPadding
-            : BottomSheetViewController.Constants.additionalContentTopMargin + view.safeAreaInsets.bottom
     }
 
     func configureViews() {
         view.addSubview(scrollView)
-        view.pinSubviewToAllEdges(scrollView, insets: Constants.contentInsets)
+        scrollView.pinEdges(insets: Constants.contentInsets)
 
         // don't update the content size at this state, because the layout pass has not completed.
         // doing so will cause the height to be incorrectly assigned to the preferredContentSize.
@@ -218,31 +173,18 @@ private extension ReaderCommentsNotificationSheetViewController {
     }
 
     func updateViews(updatesContentSize: Bool) {
-        descriptionLabel.setText(isNotificationEnabled ? .descriptionTextForEnabledNotifications : .descriptionTextForDisabledNotifications)
+        descriptionLabel.setText(isNotificationEnabled ? Strings.descriptionTextForEnabledNotifications : Strings.descriptionTextForDisabledNotifications)
         switchButton.isOn = isNotificationEnabled
 
         if updatesContentSize {
             view.layoutIfNeeded()
             updatePreferredContentSize()
         }
-
-        // readjust drawer height on content size changes.
-        if let drawer = presentedVC {
-            drawer.transition(to: drawer.currentPosition)
-        }
     }
 
-    func updatePreferredContentSize() {
+    private func updatePreferredContentSize() {
+        let verticalPadding = Constants.contentInsets.top + Constants.contentInsets.bottom
         preferredContentSize = CGSize(width: preferredContentSize.width, height: scrollView.contentSize.height + verticalPadding)
-    }
-
-    func toggleNoticeLock(_ locked: Bool) {
-        // only enable locking/unlocking notices on iPhone. Notices should always be shown in iPad since it's displayed in a popover view.
-        guard WPDeviceIdentification.isiPhone() else {
-            return
-        }
-
-        ActionDispatcher.dispatch(locked ? NoticeAction.lock : NoticeAction.unlock)
     }
 
     // MARK: Actions
@@ -250,7 +192,7 @@ private extension ReaderCommentsNotificationSheetViewController {
     func switchValueChanged(_ sender: UISwitch) {
         // nil delegate is most likely an implementation bug. For now, revert the changes on the switch button when this happens.
         guard let delegate = delegate else {
-            DDLogInfo("\(Self.classNameWithoutNamespaces()): delegate instance is nil")
+            wpAssertionFailure("missing delegate")
             isNotificationEnabled = !sender.isOn
             return
         }
@@ -276,30 +218,16 @@ private extension ReaderCommentsNotificationSheetViewController {
     func unfollowButtonTapped(_ sender: UIButton) {
         dismiss(animated: true) {
             self.delegate?.didTapUnfollowConversation()
-
-            // On iPad, the view is displayed with a popover. Since the dismiss is called programmatically, it will not trigger `handleDismiss`
-            // properly, causing the Notice to be forever locked. `handleDismiss` is called here to prevent such event from happening.
-            //
-            // Consecutive calls to the NoticeAction's `lock` or `unlock` does nothing if they're already in the desired state, so calling
-            // `handleDismiss` multiple times should be fine.
-            self.handleDismiss()
         }
     }
 }
 
 // MARK: - Localization
 
-private extension String {
-    static let descriptionTextForDisabledNotifications = NSLocalizedString("You’re following this conversation. "
-                                                                            + "You will receive an email whenever a new comment is made.",
-                                                                           comment: "Describes the expected behavior when the user enables in-app "
-                                                                            + "notifications in Reader Comments.")
-    static let descriptionTextForEnabledNotifications = NSLocalizedString("You’re following this conversation. "
-                                                                            + "You will receive an email and a notification whenever a new comment is made.",
-                                                                          comment: "Describes the expected behavior when the user disables in-app "
-                                                                            + "notifications in Reader Comments.")
-    static let notificationSwitchLabelText = NSLocalizedString("Enable in-app notifications",
-                                                               comment: "Describes a switch component that toggles in-app notifications for a followed post.")
-    static let unfollowButtonTitle = NSLocalizedString("Unfollow Conversation",
-                                                       comment: "Title for a button that unsubscribes the user from the post.")
+private enum Strings {
+    static let title = NSLocalizedString("reader.followConversationSettings.title", value: "Conversation Settings", comment: "Reader screen title for follow conversation settings")
+    static let descriptionTextForDisabledNotifications = NSLocalizedString("You’re following this conversation. You will receive an email whenever a new comment is made.", comment: "Describes the expected behavior when the user enables in-app notifications in Reader Comments.")
+    static let descriptionTextForEnabledNotifications = NSLocalizedString("You’re following this conversation. You will receive an email and a notification whenever a new comment is made.", comment: "Describes the expected behavior when the user disables in-app notifications in Reader Comments.")
+    static let notificationSwitchLabelText = NSLocalizedString("Enable in-app notifications", comment: "Describes a switch component that toggles in-app notifications for a followed post.")
+    static let unfollowButtonTitle = NSLocalizedString("Unfollow Conversation", comment: "Title for a button that unsubscribes the user from the post.")
 }

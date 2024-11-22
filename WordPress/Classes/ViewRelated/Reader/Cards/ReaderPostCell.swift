@@ -68,7 +68,7 @@ private final class ReaderPostCellView: UIView {
     // Content
     let titleLabel = UILabel()
     let detailsLabel = UILabel()
-    let imageView = ImageView()
+    let imageView = AsyncImageView()
 
     // Footer
     let buttons = ReaderPostToolbarButtons()

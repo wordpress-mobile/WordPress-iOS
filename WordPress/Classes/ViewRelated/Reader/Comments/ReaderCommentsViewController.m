@@ -667,6 +667,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     [self.followCommentsService fetchSubscriptionStatusWithSuccess:^(BOOL isSubscribed) {
         // update the ReaderPost button to keep it in-sync.
         weakSelf.post.isSubscribedComments = isSubscribed;
+        [weakSelf refreshFollowButton];
         [ContextManager.sharedInstance saveContext:weakSelf.post.managedObjectContext];
     } failure:^(NSError *error) {
         DDLogError(@"Error fetching subscription status for post: %@", error);

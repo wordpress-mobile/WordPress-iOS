@@ -1,7 +1,7 @@
 import UIKit
 
 final class ReaderAvatarView: UIView {
-    private let asyncImageView = ImageView()
+    private let asyncImageView = AsyncImageView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
