@@ -5,10 +5,40 @@ import WordPressShared
 @MainActor
 class UserListViewModel: ObservableObject {
 
+    enum RoleSection: Hashable, Comparable {
+        case me
+        case role(String)
+        case searchResult
+
+        /// Order in the users list.
+        static func < (lhs: Self, rhs: Self) -> Bool {
+            switch (lhs, rhs) {
+            // The current user section and the search result section always at the top.
+            case (.me, _), (.searchResult, _):
+                return true
+            case (_, .me), (_, .searchResult):
+                return false
+
+            case let (.role(lhs), .role(rhs)):
+                return lhs < rhs
+            }
+        }
+    }
+
     struct Section: Identifiable {
-        var id: String { role }
-        let role: String
+        var id: RoleSection
         let users: [DisplayUser]
+
+        var headerText: String {
+            switch id {
+            case .me:
+                return ""
+            case let .role(role):
+                return role
+            case .searchResult:
+                return NSLocalizedString("userList.searchResults.header", value: "Search Results", comment: "Header text fo the search results section in the users list")
+            }
+        }
     }
 
     /// The initial set of users fetched by `fetchItems`
@@ -19,6 +49,7 @@ class UserListViewModel: ObservableObject {
     }
     private var updateUsersTask: Task<Void, Never>?
     private let userService: UserServiceProtocol
+    private let currentUserId: Int32
     private var initialLoad = false
 
     @Published
@@ -37,13 +68,14 @@ class UserListViewModel: ObservableObject {
                 setSearchResults(sortUsers(users))
             } else {
                 let searchResults = users.search(searchTerm, using: \.searchString)
-                setSearchResults([Section(role: "Search Results", users: searchResults)])
+                setSearchResults([Section(id: .searchResult, users: searchResults)])
             }
         }
     }
 
-    init(userService: UserServiceProtocol) {
+    init(userService: UserServiceProtocol, currentUserId: Int32) {
         self.userService = userService
+        self.currentUserId = currentUserId
     }
 
     deinit {
@@ -94,8 +126,8 @@ class UserListViewModel: ObservableObject {
     }
 
     private func sortUsers(_ users: [DisplayUser]) -> [Section] {
-        Dictionary(grouping: users, by: { $0.role })
-            .map { Section(role: $0.key, users: $0.value.sorted(by: { $0.username < $1.username })) }
-            .sorted { $0.role < $1.role }
+        Dictionary(grouping: users) { $0.id == currentUserId ? RoleSection.me : RoleSection.role($0.role) }
+            .map { Section(id: $0.key, users: $0.value.sorted(by: { $0.username < $1.username })) }
+            .sorted { $0.id < $1.id }
     }
 }
