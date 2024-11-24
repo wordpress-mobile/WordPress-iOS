@@ -29,7 +29,7 @@ struct WordPressSite {
     }
 }
 
-actor WordPressClient {
+final class WordPressClient {
 
     enum ReachabilityStatus {
         case unknown
@@ -45,7 +45,7 @@ actor WordPressClient {
         self.rootUrl = rootUrl.url()
     }
 
-    init(site: WordPressSite) {
+    convenience init(site: WordPressSite) {
         // `site.barUrl` is a legal HTTP URL, which should be convertable to the `ParsedUrl` type.
         let parsedUrl: ParsedUrl
         do {
