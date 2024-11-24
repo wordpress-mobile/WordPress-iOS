@@ -78,7 +78,7 @@ actor WordPressClient {
         try await self.api.plugins.create(params: PluginCreateParams(
             slug: "InstallJetpack",
             status: .active
-        ))
+        )).data
     }
 }
 

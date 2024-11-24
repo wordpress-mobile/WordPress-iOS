@@ -24,7 +24,7 @@ actor UserService: UserServiceProtocol {
     private var currentUser: UserWithEditContext? {
         get async {
             if _currentUser == nil {
-                _currentUser = try? await self.client.api.users.retrieveMeWithEditContext()
+                _currentUser = try? await self.client.api.users.retrieveMeWithEditContext().data
             }
             return _currentUser
         }
@@ -55,6 +55,7 @@ actor UserService: UserServiceProtocol {
                 .api
                 .users
                 .listWithEditContext(params: UserListParams(perPage: 100))
+                .data
                 .compactMap { DisplayUser(user: $0) }
         }
         fetchUsersTask = task
@@ -73,7 +74,7 @@ actor UserService: UserServiceProtocol {
         let result = try await client.api.users.delete(
             userId: id,
             params: UserDeleteParams(reassign: newUserId)
-        )
+        ).data
 
         // Remove the deleted user from the cached users list.
         if result.deleted, let index = users?.firstIndex(where: { $0.id == id }) {
