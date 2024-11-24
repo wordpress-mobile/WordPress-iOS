@@ -15,14 +15,6 @@ struct DeleteUserConfirmationSheet: View {
     var body: some View {
         NavigationView {
             Form {
-                VStack(alignment: .leading) {
-                    Text(Strings.deleteUserAttributionMessage)
-                    Text("ID #\(user.id): \(user.username)")
-                }
-                .frame(maxWidth: .infinity)
-                .listRowBackground(Color.clear)
-                .listRowInsets(.zero)
-
                 Section {
                     if deleteUserViewModel.isFetchingOtherUsers {
                         LabeledContent(Strings.attributeContentToUserLabel) {
@@ -35,6 +27,14 @@ struct DeleteUserConfirmationSheet: View {
                             }
                         }
                     }
+                } header: {
+                    Text(Strings.deleteUserAttributionMessage)
+                        .font(.body)
+                        .textCase(nil)
+                        .foregroundStyle(.primary)
+                        .padding(.bottom, 8)
+                } footer: {
+                    Text(Strings.attributeContentHellpMessage)
                 }
             }
             .navigationTitle(Strings.attributeContentConfirmationTitle)
@@ -70,13 +70,19 @@ struct DeleteUserConfirmationSheet: View {
     enum Strings {
         static let attributeContentToUserLabel = NSLocalizedString(
             "userDetails.alert.attributeContentToUserLabel",
-            value: "Attribute content to user:",
+            value: "Selected user",
             comment: "The label that appears in the alert that appears when deleting a user"
+        )
+
+        static let attributeContentHellpMessage = NSLocalizedString(
+            "userDetails.alert.attributeContentToUserHelpMessage",
+            value: "Pages and posts belonging to the deleted user will have their author changed to the user you select in the provided dropdown.",
+            comment: "The help message for reassigning content to a user after deletion."
         )
 
         static let deleteUserAttributionMessage = NSLocalizedString(
             "userDetails.alert.deleteUserAttributionMessage",
-            value: "You have specified this user for deletion:",
+            value: "Select another user to attribute this content to.",
             comment: "The message that appears when deleting a user."
         )
 
@@ -98,4 +104,8 @@ struct DeleteUserConfirmationSheet: View {
             comment: "The title of the delete button in the confirmation alert that appears when deleting a user"
         )
     }
+}
+
+#Preview {
+    DeleteUserConfirmationSheet(user: .MockUser, deleteUserViewModel: .init(user: .MockUser, userService: MockUserProvider()), didTapDeleteButton: { })
 }
