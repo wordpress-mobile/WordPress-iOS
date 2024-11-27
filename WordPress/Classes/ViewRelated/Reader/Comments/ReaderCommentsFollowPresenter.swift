@@ -154,9 +154,12 @@ private extension ReaderCommentsFollowPresenter {
         guard let presentingViewController else {
             return
         }
-        let sheetViewController = ReaderCommentsNotificationSheetViewController(isNotificationEnabled: post.receivesCommentNotifications, delegate: self)
-        let bottomSheet = BottomSheetViewController(childViewController: sheetViewController)
-        bottomSheet.show(from: presentingViewController, sourceView: sourceView, sourceBarButtonItem: sourceBarButtonItem)
+        let sheetVC = ReaderCommentsNotificationSheetViewController(isNotificationEnabled: post.receivesCommentNotifications, delegate: self)
+        let navigationVC = UINavigationController(rootViewController: sheetVC)
+        navigationVC.modalPresentationStyle = .popover
+        navigationVC.popoverPresentationController?.sourceItem = sourceBarButtonItem ?? sourceView
+        navigationVC.popoverPresentationController?.adaptiveSheetPresentationController.detents = [.medium()]
+        presentingViewController.present(navigationVC, animated: true)
     }
 
     func informDelegateFollowComplete(success: Bool) {

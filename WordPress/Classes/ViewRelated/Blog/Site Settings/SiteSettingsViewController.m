@@ -1091,14 +1091,35 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     if (!self.blog.settings.hasChanges) {
         return;
     }
-    
+
+    [self showActivityIndicator];
     BlogService *blogService = [[BlogService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     [blogService updateSettingsForBlog:self.blog success:^{
+        [self hideActivityIndicator];
         [NSNotificationCenter.defaultCenter postNotificationName:WPBlogSettingsUpdatedNotification object:nil];
     } failure:^(NSError *error) {
+        [self hideActivityIndicator];
         [SVProgressHUD showDismissibleErrorWithStatus:NSLocalizedString(@"Settings update failed", @"Message to show when setting save failed")];
         DDLogError(@"Error while trying to update BlogSettings: %@", error);
     }];
+}
+
+- (void)showActivityIndicator
+{
+    if ([self isModal]) {
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem.activityIndicator;
+    } else {
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem.activityIndicator;
+    }
+}
+
+- (void)hideActivityIndicator
+{
+    if ([self isModal]) {
+        self.navigationItem.leftBarButtonItem = nil;
+    } else {
+        self.navigationItem.rightBarButtonItem = nil;
+    }
 }
 
 - (BOOL)savingWritingDefaultsIsAvailable

@@ -4,7 +4,7 @@ import Gifu
 /// A simple image view that supports rendering both static and animated images
 /// (see ``AnimatedImage``).
 @MainActor
-final class ImageView: UIView {
+final class AsyncImageView: UIView {
     let imageView = GIFImageView()
 
     private var errorView: UIImageView?
@@ -49,8 +49,13 @@ final class ImageView: UIView {
         }
     }
 
-    func setImage(with imageURL: URL, host: MediaHost? = nil, size: CGSize? = nil) {
-        controller.setImage(with: imageURL, host: host, size: size)
+    func setImage(
+        with imageURL: URL,
+        host: MediaHost? = nil,
+        size: CGSize? = nil,
+        completion: (@MainActor (Result<UIImage, Error>) -> Void)? = nil
+    ) {
+        controller.setImage(with: imageURL, host: host, size: size, completion: completion)
     }
 
     private func setState(_ state: ImageViewController.State) {

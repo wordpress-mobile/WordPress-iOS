@@ -23,7 +23,7 @@ final class PostListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
 
     private let headerView = PostListHeaderView()
     private let contentLabel = UILabel()
-    private let featuredImageView = ImageView()
+    private let featuredImageView = AsyncImageView()
     private let statusLabel = UILabel()
 
     // MARK: - Properties

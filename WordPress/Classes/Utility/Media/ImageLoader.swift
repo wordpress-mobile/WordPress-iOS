@@ -40,21 +40,13 @@ import WordPressShared
     private var placeholder: UIImage?
     private var selectedPhotonQuality: UInt = Constants.defaultPhotonQuality
 
-    @objc convenience init(imageView: CachedAnimatedImageView, gifStrategy: GIFStrategy = .mediumGIFs) {
-        self.init(imageView: imageView, gifStrategy: gifStrategy, loadingIndicator: nil)
-    }
-
-    init(imageView: CachedAnimatedImageView, gifStrategy: GIFStrategy = .mediumGIFs, loadingIndicator: ActivityIndicatorType?) {
+    @objc init(imageView: CachedAnimatedImageView, gifStrategy: GIFStrategy = .mediumGIFs) {
         self.imageView = imageView
         imageView.gifStrategy = gifStrategy
 
-        if let loadingIndicator {
-            self.loadingIndicator = loadingIndicator
-        } else {
-            let loadingIndicator = CircularProgressView(style: .primary)
-            loadingIndicator.backgroundColor = .clear
-            self.loadingIndicator = loadingIndicator
-        }
+        let loadingIndicator = CircularProgressView(style: .primary)
+        loadingIndicator.backgroundColor = .clear
+        self.loadingIndicator = loadingIndicator
 
         super.init()
 
@@ -83,26 +75,6 @@ import WordPressShared
         } else {
             imageView.clean()
             loadStaticImage(with: url, from: host, preferredSize: size)
-        }
-    }
-
-    /// Load an image from a specific URL. As no source is provided, we can assume
-    /// that this is from a public site. Supports animated images (gifs) as well.
-    ///
-    /// - Parameters:
-    ///   - url: The URL to load the image from.
-    ///   - success: A closure to be called if the image was loaded successfully.
-    ///   - error: A closure to be called if there was an error loading the image.
-    ///
-    func loadImage(with url: URL, success: ImageLoaderSuccessBlock?, error: ImageLoaderFailureBlock?) {
-        successHandler = success
-        errorHandler = error
-
-        if url.isGif {
-            loadGif(with: url, from: .publicSite)
-        } else {
-            imageView.clean()
-            loadStaticImage(with: url, from: .publicSite)
         }
     }
 

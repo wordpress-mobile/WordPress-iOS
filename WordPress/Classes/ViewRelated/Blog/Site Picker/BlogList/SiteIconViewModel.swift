@@ -135,6 +135,8 @@ extension SiteIconViewModel {
         switch siteID {
         case 3584907:
             return Bundle.main.url(forResource: "wpcom-blog-icon", withExtension: "png")
+        case 14607090:
+            return Bundle.main.url(forResource: "wporg-blog-icon", withExtension: "png")
         default:
             return nil
         }
