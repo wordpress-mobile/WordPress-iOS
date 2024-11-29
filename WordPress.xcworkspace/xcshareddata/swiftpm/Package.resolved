@@ -131,7 +131,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Automattic/Gravatar-SDK-iOS",
       "state" : {
-        "revision" : "815b76fc6375d5b2e09960b269995e9ea3dcb893"
+        "revision" : "dd43db6f2dff66f685262d4450863902bee6eadd",
+        "version" : "3.1.0-rc.1"
       }
     },
     {
