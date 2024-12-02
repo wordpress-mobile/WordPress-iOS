@@ -208,7 +208,7 @@ import WordPressFlux
         coreDataStack.saveContext()
 
         remote.createPost(postUploadOp.remotePost, success: { post in
-            guard let post = post else {
+            guard let post else {
                 return
             }
 
@@ -248,7 +248,7 @@ import WordPressFlux
     }
 
     private func updateMedia(postID: Int64?, siteID: Int64, onComplete: CompletionBlock?) {
-        guard let postID = postID else {
+        guard let postID else {
             return
         }
 
@@ -318,7 +318,7 @@ extension ShareExtensionSessionManager: URLSessionDelegate {
     }
 
     func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
-        if let error = error {
+        if let error {
             DDLogError("Background session invalidated by the system. Session:\(session) Error:\(error).")
 
             // We are only going to send errors to Tracks that are NOT related to the "lite" tracks client
@@ -347,7 +347,7 @@ extension ShareExtensionSessionManager: URLSessionTaskDelegate {
             return
         }
 
-        if let error = error {
+        if let error {
             logError("Background session task completed with error. Session:\(session) Task:\(task.debugDescription) Error:\(error).",
                 uploadOpObjectIDs: uploadOps.map({ $0.objectID }))
             WPAppAnalytics.track(.shareExtensionError, error: error)

@@ -157,7 +157,7 @@ extension FilterableCategoriesViewController: UITableViewDataSource {
 
         cell.layer.masksToBounds = false
         cell.clipsToBounds = false
-        if let selectedItem = selectedItem, containsSelectedItem(selectedItem, atIndexPath: indexPath) {
+        if let selectedItem, containsSelectedItem(selectedItem, atIndexPath: indexPath) {
             cell.selectItemAt(selectedItem.item)
         }
 
@@ -283,7 +283,7 @@ extension FilterableCategoriesViewController: CollapsableHeaderFilterBarDelegate
     }
 
     func removeFilterRow(withIndex index: IndexPath) {
-        guard let filteredSections = filteredSections else { return }
+        guard let filteredSections else { return }
 
         var row: IndexPath? = nil
         let rowSlug = categorySections[index.item].categorySlug

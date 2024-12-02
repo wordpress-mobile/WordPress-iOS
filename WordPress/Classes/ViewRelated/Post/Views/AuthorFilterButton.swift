@@ -38,7 +38,7 @@ final class AuthorFilterButton: UIControl {
                 authorImageView.contentMode = .center
             case .user(let email):
                 authorImageView.contentMode = .scaleAspectFill
-                if let email = email {
+                if let email {
                     authorImageView.downloadGravatar(for: email, placeholderImage: gravatarPlaceholder)
                 } else {
                     authorImageView.image = gravatarPlaceholder

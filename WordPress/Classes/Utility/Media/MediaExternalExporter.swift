@@ -57,7 +57,7 @@ class MediaExternalExporter: MediaExporter {
                                                                                    onCompletion: onCompletion,
                                                                                    onError: onError)
         }, failure: { error in
-            if let error = error {
+            if let error {
                 onError(self.exporterErrorWith(error: error))
             }
         })

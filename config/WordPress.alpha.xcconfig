@@ -1,4 +1,4 @@
-#include "Version.internal.xcconfig"
+#include "Version.public.xcconfig"
 #include "Common.enterprise.xcconfig"
 
 BUILD_SCHEME=WordPress Alpha

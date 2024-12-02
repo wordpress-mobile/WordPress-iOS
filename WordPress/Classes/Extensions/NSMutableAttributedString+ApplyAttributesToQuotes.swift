@@ -8,7 +8,7 @@ extension NSMutableAttributedString {
     ///     - attributes: Collection of attributes to be applied on the matched strings
     ///
     public func applyAttributes(toQuotes attributes: [NSAttributedString.Key: Any]?) {
-        guard let attributes = attributes else {
+        guard let attributes else {
             return
         }
         let rawString = self.string

@@ -179,7 +179,7 @@ private extension NUXStackedButtonsViewController {
 
     func updateShadowViewEdgeConstraints() {
         guard let layoutGuide = shadowLayoutGuide,
-              let shadowView = shadowView else {
+              let shadowView else {
             return
         }
 
@@ -237,7 +237,7 @@ extension NUXStackedButtonsViewController {
 
 private extension NUXButton {
     func configure(withConfig buttonConfig: NUXButtonConfig?, and style: NUXButtonStyle?) {
-        guard let buttonConfig = buttonConfig else {
+        guard let buttonConfig else {
             isHidden = true
             return
         }

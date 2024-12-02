@@ -3,7 +3,7 @@ import WordPressKit
 
 extension RemotePostCategory {
     static func remotePostCategoriesFromString(_ categories: String?) -> [RemotePostCategory]? {
-        guard let categories = categories, !categories.isEmpty else {
+        guard let categories, !categories.isEmpty else {
             return nil
         }
 

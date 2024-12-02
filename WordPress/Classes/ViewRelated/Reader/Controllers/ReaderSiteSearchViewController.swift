@@ -62,7 +62,7 @@ class ReaderSiteSearchViewController: UITableViewController {
                                page: Int,
                                success: ((_ hasMore: Bool) -> Void)?,
                                failure: ((_ error: NSError) -> Void)?) {
-        guard let query = query,
+        guard let query,
             !query.isEmpty else {
                 return
         }

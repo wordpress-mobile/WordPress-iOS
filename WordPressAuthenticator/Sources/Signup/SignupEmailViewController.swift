@@ -152,7 +152,7 @@ class SignupEmailViewController: LoginViewController, NUXKeyboardResponder {
                     return
                 }
 
-                guard let self = self else {
+                guard let self else {
                     return
                 }
 
@@ -163,7 +163,7 @@ class SignupEmailViewController: LoginViewController, NUXKeyboardResponder {
             }
             completion(available)
         }, failure: { error in
-            guard let error = error else {
+            guard let error else {
                 self.displayError(message: ErrorMessage.availabilityCheckFail.description())
                 completion(false)
                 return

@@ -100,7 +100,7 @@ class SharingAuthorizationWebViewController: WPWebViewController {
 
     @IBAction
     override func dismiss() {
-        guard let delegate = delegate else {
+        guard let delegate else {
             super.dismiss()
             return
         }

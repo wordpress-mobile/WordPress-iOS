@@ -91,7 +91,7 @@ extension URL {
     }
 
     var isHostedAtWPCom: Bool {
-        guard let host = host else {
+        guard let host else {
             return false
         }
 

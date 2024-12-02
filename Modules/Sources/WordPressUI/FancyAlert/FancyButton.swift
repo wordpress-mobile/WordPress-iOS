@@ -128,7 +128,7 @@ open class FancyButton: UIButton {
     // wrap appropriately including insets above and below.
     //
     open override var intrinsicContentSize: CGSize {
-        guard let titleLabel = titleLabel else {
+        guard let titleLabel else {
             return super.intrinsicContentSize
         }
 

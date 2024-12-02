@@ -21,7 +21,7 @@ extension WPAnalytics {
         if let usingCredit {
             dict["using_credit"] = usingCredit.stringLiteral
         }
-        if Self.domainPurchasingEnabled, let origin = origin {
+        if Self.domainPurchasingEnabled, let origin {
             dict["origin"] = origin
         }
         if let domainOnly, Self.domainManagementEnabled {

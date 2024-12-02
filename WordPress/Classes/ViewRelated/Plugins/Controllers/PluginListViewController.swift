@@ -132,7 +132,7 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
     }
 
     private func updateRefreshControl() {
-        guard let refreshControl = refreshControl else {
+        guard let refreshControl else {
                 return
         }
 

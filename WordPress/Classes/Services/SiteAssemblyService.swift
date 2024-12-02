@@ -51,7 +51,7 @@ final class EnhancedSiteCreationService: SiteAssemblyService {
     private(set) var currentStatus: SiteAssemblyStatus = .idle {
         didSet {
             DispatchQueue.main.async { [weak self] in
-                guard let self = self else {
+                guard let self else {
                     return
                 }
                 self.statusChangeHandler?(self.currentStatus)

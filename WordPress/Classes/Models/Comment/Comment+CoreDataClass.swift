@@ -21,7 +21,7 @@ public class Comment: NSManagedObject {
     }
 
     @objc func isReadOnly() -> Bool {
-        guard let blog = blog else {
+        guard let blog else {
             return true
         }
 
@@ -32,7 +32,7 @@ public class Comment: NSManagedObject {
     // This can be removed when `unifiedCommentsAndNotificationsList` is permanently enabled
     // as it's replaced by Comment+Interface:relativeDateSectionIdentifier.
     @objc func sectionIdentifier() -> String? {
-        guard let dateCreated = dateCreated else {
+        guard let dateCreated else {
             return nil
         }
 
@@ -94,7 +94,7 @@ public class Comment: NSManagedObject {
             return ReaderHelpers.isLoggedIn()
         }
 
-        guard let blog = blog else {
+        guard let blog else {
             // Disable likes feature for self-hosted sites.
             return false
         }

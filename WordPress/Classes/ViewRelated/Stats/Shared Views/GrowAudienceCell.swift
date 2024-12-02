@@ -96,7 +96,7 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
     }
 
     private func updateView(isCompleted: Bool) {
-        guard let hintType = hintType else {
+        guard let hintType else {
             return
         }
 
@@ -113,14 +113,14 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
     // MARK: - IBAction
 
     @IBAction private func dismissButtonTapped(_ sender: UIButton) {
-        guard let hintType = hintType else {
+        guard let hintType else {
             return
         }
         insightsDelegate?.growAudienceDismissButtonTapped?(hintType)
     }
 
     @IBAction private func actionButtonTapped(_ sender: UIButton) {
-        guard let hintType = hintType else {
+        guard let hintType else {
             return
         }
 

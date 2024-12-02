@@ -25,11 +25,11 @@ final class SupportCoordinator {
     }
 
     func showSupport(onIdentityUpdated: (() -> ())? = nil) {
-        guard let controllerToShowFrom = controllerToShowFrom else { return }
+        guard let controllerToShowFrom else { return }
 
         if AppConfiguration.isJetpack && RemoteFeatureFlag.contactSupportChatbot.enabled() {
             let chatBotViewController = SupportChatBotViewController(viewModel: .init(), delegate: self)
-            if let navigationController = navigationController {
+            if let navigationController {
                 navigationController.pushViewController(chatBotViewController, animated: true)
             } else {
                 let navigationController = UINavigationController(rootViewController: chatBotViewController)
@@ -47,7 +47,7 @@ final class SupportCoordinator {
     }
 
     func showTicketView(onIdentityUpdated: (() -> ())? = nil) {
-        guard let controllerToShowFrom = controllerToShowFrom else { return }
+        guard let controllerToShowFrom else { return }
 
         ZendeskUtils.pushNotificationRead()
         ZendeskUtils.sharedInstance.showTicketListIfPossible(from: controllerToShowFrom, with: tag) { identityUpdated in
@@ -60,7 +60,7 @@ final class SupportCoordinator {
 
 extension SupportCoordinator: SupportChatBotCreatedTicketDelegate {
     func onTicketCreated() {
-        if let navigationController = navigationController {
+        if let navigationController {
             navigationController.popViewController(animated: true)
             showTicketView()
         } else {

@@ -73,7 +73,7 @@ class LinkSettingsViewController: UITableViewController {
     private func titleOfExistingContent() -> String {
         var titleOfPost: String = ""
         let permaLink = linkSettings.url
-        if let blog = blog, !permaLink.isEmpty {
+        if let blog, !permaLink.isEmpty {
             titleOfPost = PostCoordinator.shared.titleOfPost(withPermaLink: linkSettings.url, in: blog) ?? ""
         }
         return titleOfPost
@@ -147,7 +147,7 @@ class LinkSettingsViewController: UITableViewController {
     }
 
     private func selectExistingContent(row: ImmuTableRow) {
-        guard let blog = blog else {
+        guard let blog else {
             return
         }
         let selectPostViewController = SelectPostViewController(blog: blog, isSelectedPost: { [weak self] in $0.permaLink == self?.linkSettings.url }, callback: { [weak self] (post) in

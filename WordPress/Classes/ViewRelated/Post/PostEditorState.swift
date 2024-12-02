@@ -113,7 +113,7 @@ public class PostEditorStateContext {
                   userCanPublish: userCanPublish,
                   delegate: delegate)
 
-        if let action = action {
+        if let action {
             self.action = action
         }
     }

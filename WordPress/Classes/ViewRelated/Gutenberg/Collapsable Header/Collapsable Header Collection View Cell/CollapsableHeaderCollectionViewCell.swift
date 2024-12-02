@@ -143,7 +143,7 @@ class CollapsableHeaderCollectionViewCell: UICollectionViewCell {
     }
 
     func setImage(_ imageURL: String?) {
-        guard let imageURL = imageURL, let url = URL(string: imageURL) else { return }
+        guard let imageURL, let url = URL(string: imageURL) else { return }
         imageView.startGhostAnimation(style: GhostCellStyle.muriel)
         imageView.downloadImage(from: url, success: { [weak self] _ in
             self?.imageView.stopGhostAnimation()
@@ -158,7 +158,7 @@ class CollapsableHeaderCollectionViewCell: UICollectionViewCell {
     func handleError(_ error: Error?, forURL url: String?) {
         guard let error = error as? UIImageView.ImageDownloadError, error == .urlMismatch else { return }
         throttle.throttle { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             guard url != nil, url == self.previewURL else { return }
             self.setImage(url)
         }

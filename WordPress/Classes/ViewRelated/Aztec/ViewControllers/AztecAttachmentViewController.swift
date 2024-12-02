@@ -7,7 +7,7 @@ class AztecAttachmentViewController: UITableViewController {
 
     @objc var attachment: ImageAttachment? {
         didSet {
-            if let attachment = attachment {
+            if let attachment {
                 alignment = attachment.alignment
                 alt = attachment.alt
                 size = attachment.size

@@ -67,7 +67,7 @@ final class PlanSelectionViewController: WebKitViewController {
 
     private func observePlanSelection() {
         webViewURLChangeObservation = webView.observe(\.url, options: .new) { [weak self] _, change in
-            guard let self = self,
+            guard let self,
                   let newURL = change.newValue as? URL else {
                 return
             }

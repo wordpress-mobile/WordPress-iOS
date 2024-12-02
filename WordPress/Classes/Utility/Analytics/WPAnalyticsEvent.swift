@@ -1866,7 +1866,7 @@ extension WPAnalytics {
     @objc static func trackSettingsChange(_ page: String, fieldName: String, value: Any?) {
         var properties: [AnyHashable: Any] = ["page": page, "field_name": fieldName]
 
-        if let value = value {
+        if let value {
             let additionalProperties: [AnyHashable: Any] = ["value": value]
             properties.merge(additionalProperties) { (_, new) in new }
         }

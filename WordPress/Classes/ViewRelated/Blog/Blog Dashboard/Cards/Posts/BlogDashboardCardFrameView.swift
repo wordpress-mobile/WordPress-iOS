@@ -231,7 +231,7 @@ class BlogDashboardCardFrameView: UIView {
     }
 
     @objc private func headerTapped() {
-        if let onHeaderTap = onHeaderTap {
+        if let onHeaderTap {
             onHeaderTap()
         }
         else {
@@ -241,7 +241,7 @@ class BlogDashboardCardFrameView: UIView {
 
     private static func titleAttributedText(title: String, hint: String?, font: UIFont?) -> NSAttributedString {
         let titleString = NSMutableAttributedString(string: title)
-        if let hint = hint, let range = title.nsRange(of: hint) {
+        if let hint, let range = title.nsRange(of: hint) {
             titleString.addAttributes([
                 .foregroundColor: UIAppColor.primary,
                 .font: font as Any

@@ -403,7 +403,7 @@ class RegisterDomainDetailsViewModel {
         let countryCodeRow = phoneSection.rows[CellIndex.PhoneNumber.countryCode.rawValue].editableRow
 
         if let prefix = countryCodePrefix(for: countryCode),
-            let countryCodeRow = countryCodeRow {
+            let countryCodeRow {
             countryCodeRow.value = prefix
         }
     }
@@ -520,7 +520,7 @@ extension RegisterDomainDetailsViewModel {
     }
 
     fileprivate func updateValidationErrors(with messages: ValidateDomainContactInformationResponse.Messages?) {
-        guard let messages = messages else {
+        guard let messages else {
             return
         }
         updateContactInformationValidationErrors(messages: messages)

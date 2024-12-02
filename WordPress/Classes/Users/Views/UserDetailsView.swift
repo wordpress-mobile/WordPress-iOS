@@ -4,6 +4,8 @@ struct UserDetailsView: View {
 
     fileprivate let userService: UserServiceProtocol
     let user: DisplayUser
+    let isCurrentUser: Bool
+    let applicationTokenListDataProvider: ApplicationTokenListDataProvider
 
     @State private var presentPasswordAlert: Bool = false {
         didSet {
@@ -20,26 +22,26 @@ struct UserDetailsView: View {
 
     @StateObject
     fileprivate var viewModel: UserDetailViewModel
-    @StateObject
-    fileprivate var applicationTokenListViewModel: ApplicationTokenListViewModel
+
     @StateObject
     fileprivate var deleteUserViewModel: UserDeleteViewModel
 
     @Environment(\.dismiss)
     var dismissAction: DismissAction
 
-    init(user: DisplayUser, userService: UserServiceProtocol, applicationTokenListDataProvider: ApplicationTokenListDataProvider) {
+    init(user: DisplayUser, isCurrentUser: Bool, userService: UserServiceProtocol, applicationTokenListDataProvider: ApplicationTokenListDataProvider) {
         self.user = user
+        self.isCurrentUser = isCurrentUser
         self.userService = userService
+        self.applicationTokenListDataProvider = applicationTokenListDataProvider
         _viewModel = StateObject(wrappedValue: UserDetailViewModel(userService: userService))
-        _applicationTokenListViewModel = StateObject(wrappedValue: ApplicationTokenListViewModel(dataProvider: applicationTokenListDataProvider))
         _deleteUserViewModel = StateObject(wrappedValue: UserDeleteViewModel(user: user, userService: userService))
     }
 
     var body: some View {
         Form {
             VStack {
-                UserProfileImage(size: 96, url: user.profilePhotoUrl)
+                AvatarView(style: .single(user.profilePhotoUrl), diameter: 96, placeholderImage: Image("gravatar").resizable())
                 Text(user.displayName)
                     .font(.title)
                 Text(user.handle)
@@ -61,29 +63,32 @@ struct UserDetailsView: View {
                 }
             }
 
-            if !applicationTokenListViewModel.applicationTokens.isEmpty {
-                Section(ApplicationTokenListView.title) {
-                    ForEach(applicationTokenListViewModel.applicationTokens) { token in
-                        ApplicationTokenListItemView(item: token)
-                    }
-                }
-            }
-
-            if viewModel.currentUserCanModifyUsers {
+            if isCurrentUser || viewModel.currentUserCanModifyUsers {
                 Section(Strings.accountManagementSectionTitle) {
-                    Button(Strings.setNewPasswordActionTitle) {
-                        presentPasswordAlert = true
+                    if isCurrentUser {
+                        NavigationLink(ApplicationTokenListView.title) {
+                            ApplicationTokenListView(dataProvider: applicationTokenListDataProvider)
+                        }
                     }
-                    Button(role: .destructive) {
-                        presentUserPicker = true
-                    } label: {
-                        Text(
-                            deleteUserViewModel.isDeletingUser ?
-                                Strings.deletingUserActionTitle
-                                : Strings.deleteUserActionTitle
-                        )
+
+                    if viewModel.currentUserCanModifyUsers {
+                        Button(Strings.setNewPasswordActionTitle) {
+                            presentPasswordAlert = true
+                        }
+
+                        if !isCurrentUser {
+                            Button(role: .destructive) {
+                                presentUserPicker = true
+                            } label: {
+                                Text(
+                                    deleteUserViewModel.isDeletingUser ?
+                                        Strings.deletingUserActionTitle
+                                        : Strings.deleteUserActionTitle
+                                )
+                            }
+                            .disabled(deleteUserViewModel.isDeletingUser)
+                        }
                     }
-                    .disabled(deleteUserViewModel.isDeletingUser)
                 }
             }
         }
@@ -114,11 +119,6 @@ struct UserDetailsView: View {
         .onAppear() {
             Task {
                 await viewModel.loadCurrentUserRole()
-                await deleteUserViewModel.fetchOtherUsers()
-
-                if await userService.isCurrentUser(user) {
-                    await applicationTokenListViewModel.fetchTokens()
-                }
             }
         }
     }
@@ -247,36 +247,6 @@ struct UserDetailsView: View {
             comment: "The title of the OK button in the alert that appears when deleting a user"
         )
 
-        static let deleteUserAttributionMessage = NSLocalizedString(
-            "userDetails.alert.deleteUserAttributionMessage",
-            value: "You have specified this user for deletion:",
-            comment: "The message that appears when deleting a user."
-        )
-
-        static let attributeContentToUserLabel = NSLocalizedString(
-            "userDetails.alert.attributeContentToUserLabel",
-            value: "Attribute content to user:",
-            comment: "The label that appears in the alert that appears when deleting a user"
-        )
-
-        static let attributeContentConfirmationTitle = NSLocalizedString(
-            "userDetails.alert.deleteUserConfirmationTitle",
-            value: "Delete Confirmation",
-            comment: "The title of the confirmation alert that appears when deleting a user"
-        )
-
-        static let attributeContentConfirmationCancelButton = NSLocalizedString(
-            "userDetails.alert.deleteUserConfirmationCancelButton",
-            value: "Cancel",
-            comment: "The title of the cancel button in the confirmation alert that appears when deleting a user"
-        )
-
-        static let attributeContentConfirmationDeleteButton = NSLocalizedString(
-            "userDetails.alert.deleteUserConfirmationDeleteButton",
-            value: "Delete",
-            comment: "The title of the delete button in the confirmation alert that appears when deleting a user"
-        )
-
     }
 }
 
@@ -291,7 +261,9 @@ private extension View {
                 view.presentUserPicker = false
             },
             content: {
-                pickAnotherUser(in: view)
+                DeleteUserConfirmationSheet(user: view.user, deleteUserViewModel: view.deleteUserViewModel) {
+                    view.presentDeleteConfirmation = true
+                }
             }
         )
         .alert(
@@ -331,55 +303,6 @@ private extension View {
                 Text(error.localizedDescription)
             })
     }
-
-    @ViewBuilder
-    func pickAnotherUser(in view: UserDetailsView) -> some View {
-        NavigationView {
-            Form {
-                VStack(alignment: .leading) {
-                    Text(Strings.deleteUserAttributionMessage)
-                    Text("ID #\(view.user.id): \(view.user.username)")
-                }
-                .frame(maxWidth: .infinity)
-                .listRowBackground(Color.clear)
-                .listRowInsets(.zero)
-
-                Section {
-                    if view.deleteUserViewModel.isFetchingOtherUsers {
-                        LabeledContent(Strings.attributeContentToUserLabel) {
-                            ProgressView()
-                        }
-                    } else {
-                        Picker(Strings.attributeContentToUserLabel, selection: view.$deleteUserViewModel.selectedUser) {
-                            ForEach(view.deleteUserViewModel.otherUsers) { user in
-                                Text("\(user.displayName) (\(user.username))").tag(user)
-                            }
-                        }
-                    }
-                }
-            }
-            .navigationTitle(Strings.attributeContentConfirmationTitle)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button(role: .cancel) {
-                        view.presentUserPicker = false
-                    } label: {
-                        Text(Strings.attributeContentConfirmationCancelButton)
-                    }
-                }
-                ToolbarItem(placement: .destructiveAction) {
-                    Button(role: .destructive) {
-                        view.presentDeleteConfirmation = true
-                    } label: {
-                        Text(Strings.attributeContentConfirmationDeleteButton)
-                    }
-                    .disabled(view.deleteUserViewModel.deleteButtonIsDisabled)
-                }
-            }
-        }
-        .presentationDetents([.medium])
-    }
 }
 
 private extension String {
@@ -397,6 +320,6 @@ private extension String {
 
 #Preview {
     NavigationStack {
-        UserDetailsView(user: DisplayUser.MockUser, userService: MockUserProvider(), applicationTokenListDataProvider: StaticTokenProvider(tokens: .success(.testTokens)))
+        UserDetailsView(user: DisplayUser.MockUser, isCurrentUser: true, userService: MockUserProvider(), applicationTokenListDataProvider: StaticTokenProvider(tokens: .success(.testTokens)))
     }
 }

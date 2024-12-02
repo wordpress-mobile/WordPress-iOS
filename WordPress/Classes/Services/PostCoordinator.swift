@@ -857,7 +857,7 @@ class PostCoordinator: NSObject {
 
             observerUUIDs.removeValue(forKey: post)
 
-            if let uuid = uuid {
+            if let uuid {
                 mediaCoordinator.removeObserver(withUUID: uuid)
             }
         }

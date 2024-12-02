@@ -19,7 +19,7 @@ extension Blog {
     }
 
     @objc var jetpack: JetpackState? {
-        guard let options = options,
+        guard let options,
             !options.isEmpty else {
                 return nil
         }

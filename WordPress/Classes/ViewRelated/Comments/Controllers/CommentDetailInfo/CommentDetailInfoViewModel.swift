@@ -35,18 +35,18 @@ final class CommentDetailInfoViewModel: CommentDetailInfoViewModelType {
 
         var details: [CommentDetailInfoUserDetails] = []
         // Author URL is publicly visible, but let's hide the row if it's empty or contains invalid URL.
-        if let urlToDisplay = urlToDisplay, !urlToDisplay.isEmpty {
+        if let urlToDisplay, !urlToDisplay.isEmpty {
             details.append(CommentDetailInfoUserDetails(title: Strings.addressLabelText, description: urlToDisplay))
         }
 
         // Email address and IP address fields are only visible for Editor or Administrator roles, i.e. when user is allowed to moderate the comment.
         if isAdmin {
             // If the comment is submitted anonymously, the email field may be empty. In this case, let's hide it. Ref: https://git.io/JzKIt
-            if let email = email, !email.isEmpty {
+            if let email, !email.isEmpty {
                 details.append(CommentDetailInfoUserDetails(title: Strings.emailAddressLabelText, description: email))
             }
 
-            if let ipAddress = ipAddress {
+            if let ipAddress {
                 details.append(CommentDetailInfoUserDetails(title: Strings.ipAddressLabelText, description: ipAddress))
             }
         }
@@ -54,7 +54,7 @@ final class CommentDetailInfoViewModel: CommentDetailInfoViewModelType {
     }
 
     func didSelectItem(at index: Int) {
-        guard userDetails[index].title == Strings.addressLabelText, let url = url else {
+        guard userDetails[index].title == Strings.addressLabelText, let url else {
             return
         }
 

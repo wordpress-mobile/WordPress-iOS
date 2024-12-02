@@ -47,7 +47,7 @@ class SiteStatsInformationTests: XCTestCase {
         SiteStatsInformation.sharedInstance.saveCurrentSiteInsights([.comments], mockUserDefaults)
         // Then
         waitForExpectations(timeout: 4) { error in
-            if let error = error {
+            if let error {
                 XCTFail("waitForExpectationsWithTimeout errored: \(error)")
             }
         }

@@ -194,7 +194,7 @@ class StatsLatestPostSummaryInsightsCell: StatsBaseCell, LatestPostSummaryConfig
         siteStatsInsightsDelegate = delegate
         statSection = .insightsLatestPostSummary
 
-        guard let lastPostInsight = lastPostInsight else {
+        guard let lastPostInsight else {
             toggleNoData(show: true)
             return
         }
@@ -229,7 +229,7 @@ class StatsLatestPostSummaryInsightsCell: StatsBaseCell, LatestPostSummaryConfig
     }
 
     private func configureFeaturedImage(url: URL?) {
-        if let url = url,
+        if let url,
            let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue,
            let blog = try? Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) {
             postImageView.isHidden = false

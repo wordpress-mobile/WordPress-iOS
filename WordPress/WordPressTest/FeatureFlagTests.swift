@@ -110,7 +110,7 @@ enum MockFeatureFlag: OverridableFlag {
     }
 
     var toFeatureFlag: WordPressKit.FeatureFlag? {
-        guard let remoteValue = remoteValue else {
+        guard let remoteValue else {
             return nil
         }
 

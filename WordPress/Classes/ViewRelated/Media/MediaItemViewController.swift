@@ -182,7 +182,7 @@ final class MediaItemViewController: UITableViewController {
 
     private func presentVideoViewControllerForMedia() {
         media.videoAsset { [weak self] asset, error in
-            if let asset = asset,
+            if let asset,
                 let controller = self?.videoViewControllerForAsset(asset) {
 
                 controller.modalTransitionStyle = .crossDissolve

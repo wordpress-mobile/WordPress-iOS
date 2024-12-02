@@ -94,7 +94,7 @@ private extension TwoColumnCell {
     }
 
     @IBAction func didTapViewMore(_ sender: UIButton) {
-        guard let statSection = statSection else {
+        guard let statSection else {
             return
         }
 

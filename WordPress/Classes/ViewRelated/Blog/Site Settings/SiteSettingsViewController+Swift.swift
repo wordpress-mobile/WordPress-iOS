@@ -31,7 +31,7 @@ extension SiteSettingsViewController {
             }
         }
         let view = SiteSettingsPrivacyPicker(blog: blog, selection: blog.siteVisibility) { [weak self] in
-            guard let self = self, self.blog.siteVisibility != $0 else { return }
+            guard let self, self.blog.siteVisibility != $0 else { return }
             self.blog.siteVisibility = $0
             self.saveSettings()
             self.trackSettingsChange(fieldName: "site_settings", value: $0.rawValue)
@@ -353,7 +353,7 @@ extension SiteSettingsViewController {
 
         siteTitleViewController.title = NSLocalizedString("Site Title", comment: "Title for screen that show site title editor")
         siteTitleViewController.onValueChanged = { [weak self] value in
-            guard let self = self,
+            guard let self,
                   let cell = self.tableView.cellForRow(at: indexPath) else {
                 // No need to update anything if the cell doesn't exist.
                 return
@@ -384,7 +384,7 @@ extension SiteSettingsViewController {
 
         siteTaglineViewController.title = NSLocalizedString("Tagline", comment: "Title for screen that show tagline editor")
         siteTaglineViewController.onValueChanged = { [weak self] value in
-            guard let self = self,
+            guard let self,
                   let cell = self.tableView.cellForRow(at: indexPath) else {
                 // No need to update anything if the cell doesn't exist.
                 return

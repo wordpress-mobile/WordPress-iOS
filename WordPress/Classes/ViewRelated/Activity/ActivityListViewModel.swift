@@ -218,11 +218,11 @@ class ActivityListViewModel: Observable {
 
         var formattedDateRanges: [String] = []
 
-        if let after = after {
+        if let after {
             formattedDateRanges.append(dateFormatter.string(from: after))
         }
 
-        if let before = before {
+        if let before {
             formattedDateRanges.append(dateFormatter.string(from: before))
         }
 
@@ -253,7 +253,7 @@ class ActivityListViewModel: Observable {
             comment: "Dismiss button title"
         )
         downloadPromptView.setupNoButton(title: dismissTitle) { [weak self] button in
-            guard let self = self else {
+            guard let self else {
                 return
             }
 
@@ -274,7 +274,7 @@ class ActivityListViewModel: Observable {
     }
 
     private func shouldDisplayFullYear(with firstDate: Date?, and secondDate: Date?) -> Bool {
-        guard let firstDate = firstDate, let secondDate = secondDate else {
+        guard let firstDate, let secondDate else {
             return false
         }
 

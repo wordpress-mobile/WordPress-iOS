@@ -9,7 +9,7 @@ struct TenorPageable: Pageable {
     static let defaultPosition: String? = nil
 
     func next() -> Pageable? {
-        guard let position = position,
+        guard let position,
         let currentPosition = Int(position) else {
             return nil
         }

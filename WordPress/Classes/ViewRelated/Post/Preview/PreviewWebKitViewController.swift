@@ -83,7 +83,7 @@ class PreviewWebKitViewController: WebKitViewController {
     }
 
     func trackOpenEvent() {
-        guard let post = post else { return }
+        guard let post else { return }
 
         let eventProperties: [String: Any] = [
             "post_type": post.analyticsPostType ?? "unsupported",

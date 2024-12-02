@@ -14,7 +14,7 @@ extension AbstractPost: SearchableItemConvertable {
     }
 
     var searchIdentifier: String? {
-        guard let postID = postID, postID.intValue > 0 else {
+        guard let postID, postID.intValue > 0 else {
             return nil
         }
         return postID.stringValue
@@ -55,7 +55,7 @@ extension AbstractPost: SearchableItemConvertable {
 fileprivate extension AbstractPost {
     func generateKeywordsFromContent() -> [String]? {
         var keywords: [String]? = nil
-        if let postTitle = postTitle {
+        if let postTitle {
             // Try to generate some keywords from the title...
             keywords = postTitle.components(separatedBy: " ").map({ $0.trimmingCharacters(in: .whitespacesAndNewlines) })
         } else if !contentPreviewForDisplay().isEmpty {
@@ -68,7 +68,7 @@ fileprivate extension AbstractPost {
     func generateTitle(from postTitle: String?) -> String {
         let noTitleText = NSLocalizedString("No Title", comment: "Label used for posts without a title in spotlight search.")
         var title = "(\(noTitleText))"
-        if let postTitle = postTitle, !postTitle.isEmpty {
+        if let postTitle, !postTitle.isEmpty {
             title = postTitle
         }
 

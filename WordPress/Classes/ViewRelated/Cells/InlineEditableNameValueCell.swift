@@ -78,7 +78,7 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
     }
 
     @objc func textEditingDidEnd(textField: UITextField) {
-        if let valueSanitizer = valueSanitizer {
+        if let valueSanitizer {
             textField.text = valueSanitizer(textField.text)
         }
 

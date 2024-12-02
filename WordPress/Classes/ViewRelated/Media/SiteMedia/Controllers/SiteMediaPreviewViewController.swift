@@ -76,7 +76,7 @@ final class SiteMediaPreviewViewController: UIViewController {
 
     private func configureVideoPreview() {
         media.videoAsset { [weak self] asset, _ in
-            if let asset = asset {
+            if let asset {
                 self?.didLoadVideoAsset(asset)
             }
         }

@@ -65,7 +65,7 @@ extension QRLoginCoordinator {
     func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any]? = nil) {
         var props: [AnyHashable: Any] = ["origin": origin.rawValue]
 
-        guard let properties = properties else {
+        guard let properties else {
             WPAnalytics.track(event, properties: props)
             return
         }

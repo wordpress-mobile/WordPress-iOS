@@ -56,7 +56,7 @@ class NotificationViewController: UIViewController {
 
     /// Responsible for instantiation, installation & configuration of the content view
     private func setupContentView() {
-        guard let viewModel = viewModel else {
+        guard let viewModel else {
             return
         }
 
@@ -106,7 +106,7 @@ private extension NotificationViewController {
     ///
     func markNotificationAsReadIfNeeded() {
         guard let token = readExtensionToken(),
-            let viewModel = viewModel,
+            let viewModel,
             let notificationIdentifier = viewModel.notificationIdentifier,
             let notificationHasBeenRead = viewModel.notificationReadStatus,
             notificationHasBeenRead == false else {
@@ -118,7 +118,7 @@ private extension NotificationViewController {
         notificationService = NotificationSyncServiceRemote(wordPressComRestApi: api)
 
         notificationService?.updateReadStatus(notificationIdentifier, read: true) { [tracks] error in
-            guard let error = error else {
+            guard let error else {
                 return
             }
             tracks.trackFailedToMarkNotificationAsRead(notificationIdentifier: notificationIdentifier, errorDescription: error.localizedDescription)

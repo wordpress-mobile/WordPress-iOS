@@ -40,7 +40,7 @@ class LoginPrologueSignupMethodViewController: NUXViewController {
     }
 
     private func configureButtonVC() {
-        guard let buttonViewController = buttonViewController else {
+        guard let buttonViewController else {
             return
         }
 

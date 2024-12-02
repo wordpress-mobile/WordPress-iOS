@@ -80,7 +80,7 @@ public struct MediaAnalyticsInfo {
     var pausedEvent: WPAnalyticsStat = .editorUploadMediaPaused
 
     func properties(for media: Media) -> [String: Any] {
-        guard let selectionMethod = selectionMethod else {
+        guard let selectionMethod else {
             return WPAppAnalytics.properties(for: media)
         }
 

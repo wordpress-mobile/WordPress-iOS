@@ -58,10 +58,10 @@ import MobileCoreServices
 
     @objc var content: String {
         var content = ""
-        if let title = title {
+        if let title {
             content.append("\(title)\n\n")
         }
-        if let url = url {
+        if let url {
             content.append(url.absoluteString)
         }
         return content
@@ -81,7 +81,7 @@ extension SharePost {
     }
 
     private func encode(coder: NSCoder, string: String?, forKey key: Key) {
-        guard let string = string else {
+        guard let string else {
             return
         }
         coder.encode(string, forKey: key.rawValue)
@@ -96,7 +96,7 @@ extension SharePost {
 
 private extension NSCoder {
     func encode(_ string: String?, forKey key: SharePost.Key) {
-        guard let string = string else {
+        guard let string else {
             return
         }
         encode(string, forKey: key.rawValue)

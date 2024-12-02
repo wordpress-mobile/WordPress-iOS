@@ -36,7 +36,6 @@
 #import "PostCategoryService.h"
 #import "PostContentProvider.h"
 #import "PostHelper.h"
-#import "PostListFooterView.h"
 #import "PostMetaButton.h"
 #import "PostService.h"
 #import "PostServiceOptions.h"

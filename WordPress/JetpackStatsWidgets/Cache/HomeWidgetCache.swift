@@ -14,7 +14,7 @@ struct HomeWidgetCache<T: HomeWidgetData> {
 
     func read() throws -> [Int: T]? {
 
-        guard let fileURL = fileURL,
+        guard let fileURL,
             FileManager.default.fileExists(atPath: fileURL.path) else {
                 return nil
         }
@@ -25,7 +25,7 @@ struct HomeWidgetCache<T: HomeWidgetData> {
 
     func write(items: [Int: T]) throws {
 
-        guard let fileURL = fileURL else {
+        guard let fileURL else {
                 return
         }
 
@@ -43,7 +43,7 @@ struct HomeWidgetCache<T: HomeWidgetData> {
 
     func delete() throws {
 
-        guard let fileURL = fileURL else {
+        guard let fileURL else {
                 return
         }
         try FileManager.default.removeItem(at: fileURL)

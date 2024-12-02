@@ -1,7 +1,7 @@
 import UIKit
 
 final class ExternalMediaPickerCollectionCell: UICollectionViewCell {
-    private let imageView = ImageView()
+    private let imageView = AsyncImageView()
     private var selectionView: SiteMediaCollectionCellSelectionOverlayView?
 
     override init(frame: CGRect) {

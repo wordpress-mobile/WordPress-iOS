@@ -138,7 +138,7 @@ class BloggingRemindersSchedulerTests: XCTestCase {
         }
 
         waitForExpectations(timeout: 1) { error in
-            if let error = error {
+            if let error {
                 XCTFail(error.localizedDescription)
             }
         }

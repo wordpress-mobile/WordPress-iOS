@@ -66,7 +66,7 @@ struct FailureNavigationAction: NavigationAction {
     /// Convenience method to allow us to bounce a URL that hasn't been
     /// matched to a route and converted into a values dictionary.
     func failAndBounce(_ url: URL?) {
-        if let url = url {
+        if let url {
             failAndBounce([MatchedRouteURLComponentKey.url.rawValue: url.absoluteString])
         }
     }

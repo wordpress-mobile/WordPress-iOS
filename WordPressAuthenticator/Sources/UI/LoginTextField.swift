@@ -33,8 +33,8 @@ open class LoginTextField: WPWalkthroughTextField {
 
     override open var placeholder: String? {
         didSet {
-            guard let placeholder = placeholder,
-                let font = font else {
+            guard let placeholder,
+                let font else {
                 return
             }
 

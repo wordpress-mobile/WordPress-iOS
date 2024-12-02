@@ -196,7 +196,7 @@ private extension RootViewPresenter {
     private func getSiteTopic(siteID: NSNumber, isFeed: Bool, completion: @escaping (ReaderSiteTopic?) -> Void) {
         let service = ReaderTopicService(coreDataStack: ContextManager.shared)
         service.siteTopicForSite(withID: siteID, isFeed: isFeed, success: { objectID, isFollowing in
-            guard let objectID = objectID,
+            guard let objectID,
                   let topic = try? ContextManager.shared.mainContext.existingObject(with: objectID) as? ReaderSiteTopic else {
                 DDLogError("Reader: Error retriving site topic - invalid Site Id")
                 completion(nil)

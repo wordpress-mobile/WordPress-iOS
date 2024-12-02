@@ -86,7 +86,7 @@ private extension MagicLinkRequestedViewController {
     /// Configures the primary button using the shared NUXButton style without a Storyboard.
     func setupContinueMailButton() {
         buttonViewController.setupTopButton(title: WordPressAuthenticator.shared.displayStrings.openMailButtonTitle, isPrimary: true, onTap: { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             guard let topButton = self.buttonViewController.topButton else {
                 return
             }

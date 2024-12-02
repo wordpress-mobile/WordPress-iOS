@@ -176,7 +176,7 @@ extension PluginDirectoryViewController: PluginListPresenter {
             listType = nil
         }
 
-        if let listType = listType {
+        if let listType {
             let properties = ["type": listType]
             let siteID: NSNumber? = (site.isSelfHostedWithoutJetpack ? nil : site.siteID) as NSNumber?
 

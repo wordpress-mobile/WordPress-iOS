@@ -143,7 +143,7 @@ private extension ReaderDetailLikesView {
         avatarImageView.cancelImageDownload()
         avatarImageView.image = .gravatarPlaceholderImage
 
-        guard let url = url,
+        guard let url,
               let gravatarURL = URL(string: url) else {
             return
         }

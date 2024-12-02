@@ -275,7 +275,7 @@ struct JetpackScanThreatViewModel {
 
     private static func warningActionTitle(for threat: JetpackScanThreat, hasValidCredentials: Bool?) -> HighlightedText? {
         guard fixActionTitle(for: threat) != nil,
-              let hasValidCredentials = hasValidCredentials,
+              let hasValidCredentials,
               !hasValidCredentials else {
             return nil
         }

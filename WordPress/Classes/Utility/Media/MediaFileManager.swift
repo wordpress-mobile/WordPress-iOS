@@ -92,7 +92,7 @@ class MediaFileManager: NSObject {
     @objc func makeLocalMediaURL(withFilename filename: String, fileExtension: String?, incremented: Bool = true) throws -> URL {
         let baseURL = try directoryURL()
         var url: URL
-        if let fileExtension = fileExtension {
+        if let fileExtension {
             let basename = (filename as NSString).deletingPathExtension.lowercased()
             url = baseURL.appendingPathComponent(basename, isDirectory: false)
             url.appendPathExtension(fileExtension)
@@ -124,7 +124,7 @@ class MediaFileManager: NSObject {
     /// - Note: once we drop ObjC, this should be an optional that would return nil instead of zero.
     ///
     @objc func imageSizeForMediaAt(fileURL: URL?) -> CGSize {
-        guard let fileURL = fileURL else {
+        guard let fileURL else {
             return CGSize.zero
         }
         let fileManager = FileManager.default

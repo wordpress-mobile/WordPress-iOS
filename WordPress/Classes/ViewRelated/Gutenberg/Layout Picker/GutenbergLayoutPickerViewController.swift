@@ -89,7 +89,7 @@ class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
         let popoverContentController = PreviewDeviceSelectionViewController()
         popoverContentController.selectedOption = selectedPreviewDevice
         popoverContentController.onDeviceChange = { [weak self] device in
-            guard let self = self else { return }
+            guard let self else { return }
             LayoutPickerAnalyticsEvent.previewModeChanged(device)
             self.selectedPreviewDevice = device
         }

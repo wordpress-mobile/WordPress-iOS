@@ -32,9 +32,9 @@ final class AuthenticatedImageDownload: AsyncOperation, @unchecked Sendable {
                     self.state = .isFinished
 
                     self.callbackQueue.async {
-                        guard let image = image else {
+                        guard let image else {
                             DDLogError("Unable to download image for attachment with url = \(String(describing: request.url)). Details: \(String(describing: error?.localizedDescription))")
-                            if let error = error {
+                            if let error {
                                 self.onFailure(error)
                             } else {
                                 self.onFailure(NSError(domain: NSURLErrorDomain, code: NSURLErrorUnknown, userInfo: nil))

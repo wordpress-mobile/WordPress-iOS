@@ -112,7 +112,7 @@ extension CategoryTreeNode {
 
 extension RemotePostCategory {
     var safeParentValue: NSNumber {
-        guard let parentID = parentID else {
+        guard let parentID else {
             return NSNumber(value: 0)
         }
         return parentID

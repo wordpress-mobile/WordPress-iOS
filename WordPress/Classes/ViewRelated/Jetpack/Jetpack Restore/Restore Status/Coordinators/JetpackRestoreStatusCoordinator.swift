@@ -58,7 +58,7 @@ class JetpackRestoreStatusCoordinator {
 
     private func refreshRestoreStatus() {
         service.getRewindStatus(for: self.site, success: { [weak self] rewindStatus in
-            guard let self = self, let restoreStatus = rewindStatus.restore else {
+            guard let self, let restoreStatus = rewindStatus.restore else {
                 return
             }
 
@@ -74,7 +74,7 @@ class JetpackRestoreStatusCoordinator {
         }, failure: { [weak self] error in
             DDLogError("Error fetching rewind status object: \(error.localizedDescription)")
 
-            guard let self = self else {
+            guard let self else {
                 return
             }
 

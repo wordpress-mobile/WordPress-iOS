@@ -13,7 +13,7 @@ public extension LoginFacade {
             username: loginFields.username,
             password: loginFields.password,
             success: { [weak self] in
-                guard let self = self else {
+                guard let self else {
                     return
                 }
 
@@ -34,7 +34,7 @@ public extension LoginFacade {
             userID: loginFields.nonceUserID,
             nonce: nonce,
             success: { [weak self] newNonce in
-                guard let self = self else {
+                guard let self else {
                     return
                 }
 
@@ -44,7 +44,7 @@ public extension LoginFacade {
                     WordPressAuthenticator.track(.twoFactorSentSMS)
                 }
         }) { (_, newNonce) in
-            if let newNonce = newNonce {
+            if let newNonce {
                 loginFields.nonceInfo?.nonceSMS = newNonce
             }
             WPAuthenticatorLogError("Failed to request one time code")

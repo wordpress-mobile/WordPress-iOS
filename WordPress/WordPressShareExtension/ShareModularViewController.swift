@@ -253,7 +253,7 @@ extension ShareModularViewController {
 
         let typePicker = SharePostTypePickerViewController(postType: shareData.postType)
         typePicker.onValueChanged = { [weak self] postType in
-            guard let self = self else { return }
+            guard let self else { return }
             self.tracks.trackExtensionPostTypeSelected(postType.rawValue)
             self.shareData.postType = postType
             self.refreshModulesTable()
@@ -272,7 +272,7 @@ extension ShareModularViewController {
         let tagsPicker = ShareTagsPickerViewController(siteID: siteID, tags: shareData.tags)
         tagsPicker.title = Strings.tagsCellTitle
         tagsPicker.onValueChanged = { [weak self] tagString in
-            guard let self = self else { return }
+            guard let self else { return }
             if self.shareData.tags != tagString {
                 self.tracks.trackExtensionTagsSelected(tagString)
                 self.shareData.tags = tagString
@@ -296,7 +296,7 @@ extension ShareModularViewController {
         let categoriesPicker = ShareCategoriesPickerViewController(categoryInfo: categoryInfo)
         categoriesPicker.title = Strings.categoryCellTitle
         categoriesPicker.onValueChanged = { [weak self] categoryInfo in
-            guard let self = self else { return }
+            guard let self else { return }
             self.shareData.allCategoriesForSelectedSite = categoryInfo.allCategories
             self.shareData.userSelectedCategories = categoryInfo.selectedCategories
             self.tracks.trackExtensionCategoriesSelected(self.shareData.selectedCategoriesNameString)
@@ -620,7 +620,7 @@ fileprivate extension ShareModularViewController {
     }
 
     func siteForRowAtIndexPath(_ indexPath: IndexPath) -> RemoteBlog? {
-        guard let sites = sites else {
+        guard let sites else {
             return nil
         }
         return sites[indexPath.row]
@@ -746,7 +746,7 @@ fileprivate extension ShareModularViewController {
         } else {
             let networkService = AppExtensionsService()
             networkService.fetchSettingsForSite(siteID, onSuccess: { settings in
-                guard let settings = settings, let defaultCategoryID = settings.defaultCategoryID else {
+                guard let settings, let defaultCategoryID = settings.defaultCategoryID else {
                     onFailure()
                     return
                 }

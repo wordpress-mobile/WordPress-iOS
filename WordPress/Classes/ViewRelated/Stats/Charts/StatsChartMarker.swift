@@ -227,7 +227,7 @@ class StatsChartMarker: MarkerView {
     }
 
     override func draw(context: CGContext, point: CGPoint) {
-        guard let tooltipLabel = tooltipLabel else {
+        guard let tooltipLabel else {
             return
         }
 

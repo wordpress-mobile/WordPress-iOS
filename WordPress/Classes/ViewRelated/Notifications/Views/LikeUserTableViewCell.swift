@@ -50,7 +50,7 @@ private extension LikeUserTableViewCell {
         gravatarImageView.cancelImageDownload()
         gravatarImageView.image = .gravatarPlaceholderImage
 
-        guard let url = url,
+        guard let url,
               let gravatarURL = URL(string: url) else {
             return
         }

@@ -481,7 +481,7 @@ private extension CommentContentTableViewCell {
         //
         // note that this doesn't apply for `.richContent` method. Always reset the textView instead
         // of reusing it to prevent crash. Ref: http://git.io/Jtl2U
-        if let renderer = renderer,
+        if let renderer,
            renderer.matchesContent(from: comment),
            renderMethod == .web {
             return

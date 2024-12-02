@@ -40,7 +40,7 @@ private extension UserProfileSiteCell {
         siteIconImageView.cancelImageDownload()
         siteIconImageView.image = .siteIconPlaceholderImage
 
-        guard let url = url,
+        guard let url,
               let iconURL = URL(string: url) else {
             return
         }

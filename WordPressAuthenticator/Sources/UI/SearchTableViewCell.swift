@@ -124,7 +124,7 @@ extension SearchTableViewCell: UITextFieldDelegate {
     /// - Precondition: make sure you check if `liveSearch` is enabled before calling this method.
     ///
     private func startLiveSearch() {
-        guard let delegate = delegate,
+        guard let delegate,
               let text = textField.text else {
             return
         }

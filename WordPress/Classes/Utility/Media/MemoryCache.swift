@@ -142,7 +142,7 @@ private struct AlamofireImageCacheAdapter: AlamofireImage.ImageRequestCache {
 
     private func cacheKey(for request: URLRequest, identifier: String?) -> String {
         var key = request.url?.absoluteString ?? ""
-        if let identifier = identifier {
+        if let identifier {
             key += "-\(identifier)"
         }
         return key

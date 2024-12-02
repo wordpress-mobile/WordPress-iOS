@@ -21,7 +21,7 @@ public struct Queue<Element> {
     /// Removes all elements; If `where` is given, only the elements matching the
     /// predicate will be removed.
     mutating func removeAll(where shouldBeRemoved: ((Element) -> Bool)? = nil) {
-        if let shouldBeRemoved = shouldBeRemoved {
+        if let shouldBeRemoved {
             elements.removeAll(where: shouldBeRemoved)
         } else {
             elements.removeAll()

@@ -156,14 +156,14 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
         facade.guessXMLRPCURL(forSite: loginFields.siteAddress, success: { [weak self] (url) in
             // Success! We now know that we have a valid XML-RPC endpoint.
             // At this point, we do NOT know if this is a WP.com site or a self-hosted site.
-            if let url = url {
+            if let url {
                 self?.loginFields.meta.xmlrpcURL = url as NSURL
             }
             // Let's try to grab site info in preparation for the next screen.
             self?.fetchSiteInfo()
 
         }, failure: { [weak self] (error) in
-            guard let error = error, let self = self else {
+            guard let error, let self else {
                 return
             }
             WPAuthenticatorLogError(error.localizedDescription)
@@ -194,7 +194,7 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
         let baseSiteUrl = WordPressAuthenticator.baseSiteURL(string: loginFields.siteAddress)
         let service = WordPressComBlogService()
         let successBlock: (WordPressComSiteInfo) -> Void = { [weak self] siteInfo in
-            guard let self = self else {
+            guard let self else {
                 return
             }
             self.configureViewLoading(false)
@@ -207,7 +207,7 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
         }
         service.fetchUnauthenticatedSiteInfoForAddress(for: baseSiteUrl, success: successBlock, failure: { [weak self] _ in
             self?.configureViewLoading(false)
-            guard let self = self else {
+            guard let self else {
                 return
             }
             self.presentNextControllerIfPossible(siteInfo: nil)

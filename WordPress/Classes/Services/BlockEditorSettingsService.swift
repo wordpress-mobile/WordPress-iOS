@@ -83,7 +83,7 @@ private extension BlockEditorSettingsService {
             return
         }
 
-        guard let editorTheme = editorTheme else {
+        guard let editorTheme else {
             /// The original checksum is different than an empty one so we need to clear the old settings.
             clearCoreData(completion: completion)
             return
@@ -147,7 +147,7 @@ private extension BlockEditorSettingsService {
             return
         }
 
-        guard let remoteSettings = remoteSettings else {
+        guard let remoteSettings else {
             /// The original checksum is different than an empty one so we need to clear the old settings.
             clearCoreData(completion: completion)
             return

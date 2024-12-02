@@ -117,7 +117,7 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
         assert(Thread.isMainThread)
 
         remote.loadHashes(withPageSize: maximumNotes) { error, remoteHashes in
-            guard let remoteHashes = remoteHashes else {
+            guard let remoteHashes else {
                 completion?(error, false)
                 return
             }
@@ -131,7 +131,7 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
                     }
 
                     self.remote.loadNotes(noteIds: outdatedNoteIds) { error, remoteNotes in
-                        guard let remoteNotes = remoteNotes else {
+                        guard let remoteNotes else {
                             completion?(error, false)
                             return
                         }
@@ -158,7 +158,7 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
         assert(Thread.isMainThread)
 
         remote.loadNotes(noteIds: [noteId]) { error, remoteNotes in
-            guard let remoteNotes = remoteNotes else {
+            guard let remoteNotes else {
                 completion?(error, nil)
                 return
             }
@@ -232,7 +232,7 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
         }
 
         remote.updateReadStatusForNotifications(noteIDs, read: read) { error in
-            if let error = error {
+            if let error {
                 DDLogError("Error marking notifications as \(Self.readState(for: read)): \(error)")
                 // Ideally, we'd want to revert to the previous status if this
                 // fails, but if the note is visible, the UI layer will keep
@@ -272,7 +272,7 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
     func markAsReadAndSync(_ noteID: String, completion: ((Error?) -> Void)? = nil) {
         invalidateCacheForNotification(noteID)
         remote.updateReadStatus(noteID, read: true) { error in
-            if let error = error {
+            if let error {
                 DDLogError("Error marking note as read: \(error)")
             }
             self.syncNote(with: noteID) { (_, _) in
@@ -293,7 +293,7 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
         assert(Thread.isMainThread)
 
         remote.updateLastSeen(timestamp) { error in
-            if let error = error {
+            if let error {
                 DDLogError("Error while Updating Last Seen Timestamp: \(error)")
             }
 

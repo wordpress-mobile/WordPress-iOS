@@ -119,7 +119,7 @@ class TemplatePreviewViewController: UIViewController, NoResultsViewHost, UIPopo
         let popoverContentController = PreviewDeviceSelectionViewController()
         popoverContentController.selectedOption = selectedPreviewDevice
         popoverContentController.onDeviceChange = { [weak self] device in
-            guard let self = self else { return }
+            guard let self else { return }
             self.delegate?.deviceModeChanged(device)
             self.selectedPreviewDevice = device
         }

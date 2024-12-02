@@ -81,9 +81,9 @@ class MediaVideoExporter: MediaExporter {
     }
 
     @discardableResult public func export(onCompletion: @escaping OnMediaExport, onError: @escaping (MediaExportError) -> Void) -> Progress {
-        if let url = url {
+        if let url {
             return exportVideo(atURL: url, onCompletion: onCompletion, onError: onError)
-        } else if let session = session {
+        } else if let session {
             return exportVideo(with: session, filename: filename, onCompletion: onCompletion, onError: onError)
         }
         return Progress.discreteCompletedProgress()
@@ -197,7 +197,7 @@ class MediaVideoExporter: MediaExporter {
             return Progress.discreteCompletedProgress()
         }
         let generator = AVAssetImageGenerator(asset: asset)
-        if let imageOptions = imageOptions, let maxSize = imageOptions.maximumImageSize {
+        if let imageOptions, let maxSize = imageOptions.maximumImageSize {
             generator.maximumSize = CGSize(width: maxSize, height: maxSize)
         }
         generator.appliesPreferredTrackTransform = true
@@ -209,13 +209,13 @@ class MediaVideoExporter: MediaExporter {
         generator.generateCGImagesAsynchronously(forTimes: [NSValue(time: CMTimeMake(value: 0, timescale: 1))],
                                                  completionHandler: { (time, cgImage, actualTime, result, error) in
                                                     progress.completedUnitCount = MediaExportProgressUnits.halfDone
-                                                    guard let cgImage = cgImage else {
+                                                    guard let cgImage else {
                                                         onError(VideoExportError.failedGeneratingVideoPreviewImage)
                                                         return
                                                     }
                                                     let image = UIImage(cgImage: cgImage)
                                                     let exporter = MediaImageExporter(image: image, filename: UUID().uuidString)
-                                                    if let imageOptions = imageOptions {
+                                                    if let imageOptions {
                                                         exporter.options = imageOptions
                                                     }
                                                     exporter.mediaDirectoryType = self.mediaDirectoryType

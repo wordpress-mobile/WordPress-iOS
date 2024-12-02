@@ -46,7 +46,7 @@ extension UIImageView {
     }
 
     public func downloadGravatar(_ gravatar: AvatarURL?, placeholder: UIImage, animate: Bool, forceRefresh: Bool = false) {
-        guard let gravatar = gravatar else {
+        guard let gravatar else {
             self.image = placeholder
             return
         }

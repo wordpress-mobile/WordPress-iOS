@@ -112,7 +112,7 @@ class GutenbergSettings {
             return
         }
 
-        if let source = source, blog.isGutenbergEnabled != isEnabled {
+        if let source, blog.isGutenbergEnabled != isEnabled {
             trackSettingChange(to: isEnabled, from: source)
         }
 

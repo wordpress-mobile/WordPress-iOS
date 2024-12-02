@@ -87,7 +87,7 @@ private extension AnnouncementCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
         label.font = font
-        if let color = color {
+        if let color {
             label.textColor = color
         }
         return label

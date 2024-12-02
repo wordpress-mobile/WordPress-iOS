@@ -243,7 +243,7 @@ class BaseActivityListViewController: UIViewController, TableViewContainer, Immu
         activityTypeFilterChip.resetButton.accessibilityLabel = NSLocalizedString("Reset Activity Type filter", comment: "Accessibility label for the reset activity type button")
 
         activityTypeFilterChip.tapped = { [weak self] in
-            guard let self = self else {
+            guard let self else {
                 return
             }
 
@@ -435,7 +435,7 @@ private extension BaseActivityListViewController {
             noResultsViewController = NoResultsViewController.controller()
             noResultsViewController?.delegate = self
 
-            guard let noResultsViewController = noResultsViewController else {
+            guard let noResultsViewController else {
                 return
             }
 
@@ -462,7 +462,7 @@ extension BaseActivityListViewController: JetpackRestoreStatusViewControllerDele
 
     func didFinishViewing(_ controller: JetpackRestoreStatusViewController) {
         controller.dismiss(animated: true, completion: { [weak self] in
-            guard let self = self else {
+            guard let self else {
                 return
             }
             self.store.fetchRewindStatus(site: self.site)
@@ -498,7 +498,7 @@ extension BaseActivityListViewController: CalendarViewControllerDelegate {
     }
 
     private func trackSelectedRange(startDate: Date?, endDate: Date?) {
-        guard let startDate = startDate else {
+        guard let startDate else {
             if viewModel.after != nil || viewModel.before != nil {
                 WPAnalytics.track(configuration.filterbarResetRange)
             }
@@ -509,7 +509,7 @@ extension BaseActivityListViewController: CalendarViewControllerDelegate {
         var duration: Int // Number of selected days
         var distance: Int // Distance from the startDate to today (in days)
 
-        if let endDate = endDate {
+        if let endDate {
             duration = Int((endDate.timeIntervalSinceReferenceDate - startDate.timeIntervalSinceReferenceDate) / Double(24 * 60 * 60)) + 1
         } else {
             duration = 1

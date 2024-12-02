@@ -1,3 +1,4 @@
+import UIKit
 
 extension CircularProgressView: ActivityIndicatorType {
     func startAnimating() {

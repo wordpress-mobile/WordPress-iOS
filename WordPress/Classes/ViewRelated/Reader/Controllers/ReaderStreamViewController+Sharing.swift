@@ -82,7 +82,7 @@ extension ReaderSiteTopic: UIActivityItemSource {
 
     public func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
 
-        guard let activityType = activityType else {
+        guard let activityType else {
             return nil
         }
 

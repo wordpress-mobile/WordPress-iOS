@@ -72,14 +72,14 @@ import CoreData
         switch suggestionType {
         case .mention:
             self.userSuggestionService.suggestions(for: blog) { [weak self] suggestions in
-                guard let self = self else { return }
+                guard let self else { return }
                 self.suggestions = Suggestions.users(suggestions ?? [])
                 self.isLoading = false
                 self.searchSuggestions(withWord: self.searchText)
             }
         case .xpost:
             self.siteSuggestionService.suggestions(for: blog) { [weak self] suggestions in
-                guard let self = self else { return }
+                guard let self else { return }
                 self.suggestions = Suggestions.sites(suggestions ?? [])
                 self.isLoading = false
                 self.searchSuggestions(withWord: self.searchText)
@@ -180,7 +180,7 @@ import CoreData
     }
 
     private static func sectionsFromSearchResult(_ searchResult: SearchResult?) -> [Section] {
-        guard let searchResult = searchResult else { return [] }
+        guard let searchResult else { return [] }
         switch searchResult {
         case .users(let prominent, let regular):
             let shouldShowSectionTitle = !prominent.isEmpty && !regular.isEmpty

@@ -3,6 +3,7 @@ import XCTest
 
 @testable import WordPress
 
+@MainActor
 class ApplicationPasswordsViewModelTests: XCTestCase {
 
     func testOrder() async throws {

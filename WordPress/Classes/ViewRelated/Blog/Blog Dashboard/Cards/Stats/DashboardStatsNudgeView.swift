@@ -48,7 +48,7 @@ final class DashboardStatsNudgeView: UIView {
         let attachmentString = NSAttributedString(attachment: externalAttachment)
 
         let titleString = NSMutableAttributedString(string: "\(title) \u{FEFF}")
-        if let hint = hint,
+        if let hint,
            let subStringRange = title.nsRange(of: hint) {
             titleString.addAttributes([
                 .foregroundColor: UIAppColor.primary,

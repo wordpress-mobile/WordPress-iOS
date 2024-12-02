@@ -48,7 +48,7 @@ public typealias JetpackModuleHelperViewController = JetpackModuleHelperDelegate
             accessoryView: nil
         )
 
-        if let noResultsViewController = noResultsViewController, let viewController = viewController {
+        if let noResultsViewController, let viewController {
             noResultsViewController.delegate = self
 
             viewController.addChild(noResultsViewController)
@@ -65,7 +65,7 @@ extension JetpackModuleHelper: NoResultsViewControllerDelegate {
                                                         module: moduleName,
                                                         active: true,
                                                         success: { [weak self] in
-            guard let self = self else {
+            guard let self else {
                 return
             }
 

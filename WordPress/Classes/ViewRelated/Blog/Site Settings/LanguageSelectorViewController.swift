@@ -70,7 +70,7 @@ class LanguageSelectorViewController: UITableViewController, UISearchResultsUpda
 
     private func modelForSearch(query: String?) -> ImmuTable {
         let filtered: [Language]
-        if let query = query {
+        if let query {
             filtered = database.all.filter({ (language) -> Bool in
                 return language.name.localizedCaseInsensitiveContains(query)
                     || language.description.localizedCaseInsensitiveContains(query)

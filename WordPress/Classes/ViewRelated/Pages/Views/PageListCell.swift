@@ -9,7 +9,7 @@ final class PageListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
     private let titleLabel = UILabel()
     private let badgeIconView = UIImageView()
     private let badgesLabel = UILabel()
-    private let featuredImageView = ImageView()
+    private let featuredImageView = AsyncImageView()
     private let icon = UIImageView()
     private let indicator = UIActivityIndicatorView(style: .medium)
     private let ellipsisButton = UIButton(type: .custom)

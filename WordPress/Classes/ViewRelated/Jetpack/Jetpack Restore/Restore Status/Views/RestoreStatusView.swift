@@ -75,14 +75,14 @@ class RestoreStatusView: UIView, NibLoadable {
         progressValueLabel.text = "\(progress)%"
         progressView.progress = Float(progress) / 100
 
-        if let progressTitle = progressTitle {
+        if let progressTitle {
             progressTitleLabel.text = progressTitle
             progressTitleLabel.isHidden = false
         } else {
             progressTitleLabel.isHidden = true
         }
 
-        if let progressDescription = progressDescription {
+        if let progressDescription {
             progressDescriptionLabel.text = progressDescription
             progressDescriptionLabel.isHidden = false
         } else {

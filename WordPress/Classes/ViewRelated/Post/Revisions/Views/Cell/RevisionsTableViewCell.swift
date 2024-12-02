@@ -41,7 +41,7 @@ class RevisionsTableViewCell: UITableViewCell {
         didSet {
             avatarImageView.image = UIImage(named: "gravatar")
 
-            if let avatarURL = avatarURL,
+            if let avatarURL,
                 let placeholder = UIImage(named: "gravatar") {
                 let url = URL(string: avatarURL)
                 avatarImageView.downloadGravatar(url.flatMap { AvatarURL(url: $0) },

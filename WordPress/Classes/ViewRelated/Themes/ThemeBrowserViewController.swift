@@ -70,7 +70,7 @@ public protocol ThemePresenter: AnyObject {
     }
 
     fileprivate func shouldInvalidateForNewBounds(_ newBounds: CGRect) -> Bool {
-        guard let collectionView = collectionView else { return false }
+        guard let collectionView else { return false }
 
         return (newBounds.width != collectionView.bounds.width || newBounds.height != collectionView.bounds.height)
     }
@@ -458,15 +458,15 @@ public protocol ThemePresenter: AnyObject {
             page: themesSyncingPage,
             sync: page == 1,
             success: {[weak self](themes: [Theme]?, hasMore: Bool, themeCount: NSInteger) in
-                if let success = success {
+                if let success {
                     success(hasMore)
                 }
                 self?.totalThemeCount = themeCount
             },
             failure: { (error) in
                 DDLogError("Error syncing themes: \(String(describing: error?.localizedDescription))")
-                if let failure = failure,
-                    let error = error {
+                if let failure,
+                    let error {
                     failure(error as NSError)
                 }
             })
@@ -476,15 +476,15 @@ public protocol ThemePresenter: AnyObject {
         _ = themeService.getCustomThemes(for: blog,
             sync: true,
             success: {[weak self](themes: [Theme]?, hasMore: Bool, themeCount: NSInteger) in
-                if let success = success {
+                if let success {
                     success(hasMore)
                 }
                 self?.totalCustomThemeCount = themeCount
             },
             failure: { (error) in
                 DDLogError("Error syncing themes: \(String(describing: error?.localizedDescription))")
-                if let failure = failure,
-                    let error = error {
+                if let failure,
+                    let error {
                     failure(error as NSError)
                 }
             })
@@ -765,7 +765,7 @@ public protocol ThemePresenter: AnyObject {
     @objc var onWebkitViewControllerClose: (() -> Void)?
 
     @objc open func activateTheme(_ theme: Theme?) {
-        guard let theme = theme, !theme.isCurrentTheme() else {
+        guard let theme, !theme.isCurrentTheme() else {
             return
         }
 
@@ -830,7 +830,7 @@ public protocol ThemePresenter: AnyObject {
     @objc open func presentPreviewForTheme(_ theme: Theme?) {
         WPAppAnalytics.track(.themesPreviewedSite, with: self.blog)
         // In order to Try & Customize a theme we first need to install it (Jetpack sites)
-        if let theme = theme, self.blog.supports(.customThemes) && !theme.custom {
+        if let theme, self.blog.supports(.customThemes) && !theme.custom {
             installThemeAndPresentCustomizer(theme)
         } else {
             presentUrlForTheme(theme, url: theme?.customizeUrl(), activeButton: !(theme?.isCurrentTheme() ?? true))
@@ -853,7 +853,7 @@ public protocol ThemePresenter: AnyObject {
     }
 
     @objc open func presentUrlForTheme(_ theme: Theme?, url: String?, activeButton: Bool = true, modalStyle: UIModalPresentationStyle = .pageSheet, onClose: (() -> Void)? = nil) {
-        guard let theme = theme, let url = url.flatMap(URL.init(string:)) else {
+        guard let theme, let url = url.flatMap(URL.init(string:)) else {
             return
         }
 
@@ -913,7 +913,7 @@ private extension ThemeBrowserViewController {
             noResultsViewController = NoResultsViewController.controller()
         }
 
-        guard let noResultsViewController = noResultsViewController else {
+        guard let noResultsViewController else {
             return
         }
 

@@ -70,7 +70,7 @@ struct BloggingRemindersScheduleFormatter {
 private extension BloggingRemindersScheduleFormatter {
 
     static func shortScheduleDescription(for days: Int, time: String?) -> NSAttributedString {
-        guard let time = time else {
+        guard let time else {
             return shortScheduleDescription(for: days)
         }
         return shortScheduleDescriptionWithTime(for: days, time: time)

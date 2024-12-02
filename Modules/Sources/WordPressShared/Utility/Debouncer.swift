@@ -18,7 +18,7 @@ public final class Debouncer {
     }
 
     deinit {
-        if let timer = timer, timer.fireDate >= Date() {
+        if let timer, timer.fireDate >= Date() {
             timer.invalidate()
             callback?()
         }

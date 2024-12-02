@@ -318,7 +318,7 @@ extension ContextManager {
     static var overrideInstance: ContextManager?
 
     @objc class func sharedInstance() -> ContextManager {
-        if let overrideInstance = overrideInstance {
+        if let overrideInstance {
             return overrideInstance
         }
 

@@ -54,9 +54,7 @@ import AutomatticTracks
     private var coreDataStack: CoreDataStack { ContextManager.shared }
     var viewContext: NSManagedObjectContext { coreDataStack.mainContext }
 
-    private(set) lazy var footerView: PostListFooterView = {
-        return tableConfiguration.footer()
-    }()
+    private(set) lazy var footerView = PagingFooterView(state: .loading)
 
     private let tableViewController = UITableViewController(style: .plain)
 
@@ -117,7 +115,7 @@ import AutomatticTracks
     /// The topic can be nil while a site or tag topic is being fetched, hence, optional.
     @objc var readerTopic: ReaderAbstractTopic? {
         didSet {
-            if let oldValue = oldValue {
+            if let oldValue {
                 oldValue.inUse = false
                 syncHelpers[oldValue]?.delegate = nil
             }
@@ -132,7 +130,7 @@ import AutomatticTracks
             if readerTopic != nil && readerTopic != oldValue {
                 if didSetupView {
                     updateContent()
-                    if let syncHelper = syncHelper, syncHelper.isSyncing, !isShowingResultStatusView {
+                    if let syncHelper, syncHelper.isSyncing, !isShowingResultStatusView {
                         displayLoadingViewIfNeeded()
                     }
                 }
@@ -364,7 +362,7 @@ import AutomatticTracks
     /// Fetches a site topic for the value of the `siteID` property.
     ///
     private func fetchSiteTopic() {
-        guard let siteID = siteID else {
+        guard let siteID else {
             DDLogError("A siteID is required before fetching a site topic")
             return
         }
@@ -379,7 +377,7 @@ import AutomatticTracks
             success: { [weak self] (objectID: NSManagedObjectID?, isFollowing: Bool) in
 
                 let context = ContextManager.sharedInstance().mainContext
-                guard let objectID = objectID,
+                guard let objectID,
                       let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
                     DDLogError("Reader: Error retriving an existing site topic by its objectID")
                     if self?.isLoadingDiscover ?? false {
@@ -410,7 +408,7 @@ import AutomatticTracks
             success: { [weak self] (objectID: NSManagedObjectID?) in
 
                 let context = ContextManager.sharedInstance().mainContext
-                guard let objectID = objectID, let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
+                guard let objectID, let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
                     DDLogError("Reader: Error retriving an existing tag topic by its objectID")
                     self?.displayLoadingStreamFailed()
                     return
@@ -448,7 +446,6 @@ import AutomatticTracks
     }
 
     private func setupFooterView() {
-        footerView.showSpinner(false)
         var frame = footerView.frame
         frame.size.height = heightForFooterView
         footerView.frame = frame
@@ -517,7 +514,7 @@ import AutomatticTracks
         bumpStats()
 
         // Make sure we're showing the no results view if appropriate
-        if let syncHelper = syncHelper, !syncHelper.isSyncing, content.isEmpty {
+        if let syncHelper, !syncHelper.isSyncing, content.isEmpty {
             displayNoResultsView()
         } else if contentType == .saved, content.isEmpty {
             displayNoResultsView()
@@ -850,7 +847,7 @@ import AutomatticTracks
 
             return
         }
-        if let syncHelper = syncHelper, syncHelper.isSyncing {
+        if let syncHelper, syncHelper.isSyncing {
             let alertTitle = NSLocalizedString("Busy", comment: "Title of a prompt letting the user know that they must wait until the current aciton completes.")
             let alertMessage = NSLocalizedString("Please wait until the current fetch completes.", comment: "Asks the user to wait until the currently running fetch request completes.")
             let cancelTitle = NSLocalizedString("OK", comment: "Title of a button that dismisses a prompt")
@@ -890,7 +887,7 @@ import AutomatticTracks
 
         let failureBlock = { (error: Error?) in
             DispatchQueue.main.async {
-                if let error = error {
+                if let error {
                     failure?(error as NSError)
                 }
             }
@@ -984,7 +981,7 @@ import AutomatticTracks
             return
         }
 
-        footerView.showSpinner(true)
+        footerView.isHidden = false
 
         let successBlock = { (count: Int, hasMore: Bool) in
             DispatchQueue.main.async(execute: {
@@ -993,7 +990,7 @@ import AutomatticTracks
         }
 
         let failureBlock = { (error: Error?) in
-            guard let error = error else {
+            guard let error else {
                 return
             }
 
@@ -1045,7 +1042,7 @@ import AutomatticTracks
             content.refreshPreservingOffset()
         }
         refreshControl.endRefreshing()
-        footerView.showSpinner(false)
+        footerView.isHidden = true
     }
 
     // MARK: - Notifications
@@ -1242,7 +1239,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
     func tableViewHandlerDidRefreshTableViewPreservingOffset(_ tableViewHandler: WPTableViewHandler) {
         hideResultsStatus()
         if tableViewHandler.resultsController?.fetchedObjects?.count == 0 {
-            if let syncHelper = syncHelper, syncHelper.isSyncing {
+            if let syncHelper, syncHelper.isSyncing {
                 return
             }
             displayNoResultsView()
@@ -1361,7 +1358,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
     /// - When there are no ongoing blocking requests.
     private func syncMoreContentIfNeeded(for tableView: UITableView, indexPathForVisibleRow indexPath: IndexPath) {
         let criticalRow = tableView.numberOfRows(inSection: indexPath.section) - loadMoreThreashold
-        guard let syncHelper = syncHelper, (indexPath.section == tableView.numberOfSections - 1) && (indexPath.row >= criticalRow) else {
+        guard let syncHelper, (indexPath.section == tableView.numberOfSections - 1) && (indexPath.row >= criticalRow) else {
             return
         }
         let shouldLoadMoreItems = syncHelper.hasMoreContent

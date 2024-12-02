@@ -48,7 +48,7 @@ class RequestAuthenticator: NSObject {
 
         var authenticationType: DotComAuthenticationType = .regular
 
-        if let blog = blog, let dotComID = blog.dotComID as? Int {
+        if let blog, let dotComID = blog.dotComID as? Int {
 
             if blog.isAtomic() {
                 authenticationType = blog.isPrivate() ? .privateAtomic(blogID: dotComID) : .atomic(loginURL: blog.loginUrl())

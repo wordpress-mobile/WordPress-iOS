@@ -151,7 +151,7 @@ final class MediaItemHeaderView: UIView {
     }
 
     private func setAspectRatio(_ ratio: CGFloat) {
-        if let aspectRatioConstraint = aspectRatioConstraint {
+        if let aspectRatioConstraint {
             imageView.removeConstraint(aspectRatioConstraint)
         }
         aspectRatioConstraint = imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: ratio, constant: 1.0)

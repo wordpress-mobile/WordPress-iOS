@@ -155,7 +155,7 @@ struct DashboardBlazePromoViewModel {
 
     static func make(with blog: Blog, viewController: BlogDashboardViewController?) -> DashboardBlazePromoViewModel {
         DashboardBlazePromoViewModel(onViewTap: { [weak viewController] in
-            guard let viewController = viewController else { return }
+            guard let viewController else { return }
             BlazeEventsTracker.trackEntryPointTapped(for: .dashboardCard)
             BlazeFlowCoordinator.presentBlaze(in: viewController, source: .dashboardCard, blog: blog)
         }, onEllipsisTap: {
@@ -166,7 +166,7 @@ struct DashboardBlazePromoViewModel {
             BlazeEventsTracker.trackHideThisTapped(for: .dashboardCard)
             BlazeHelper.hideBlazeCard(for: blog)
         }, onLearnMoreTap: { [weak viewController] _ in
-            guard let viewController = viewController else { return }
+            guard let viewController else { return }
             BlazeEventsTracker.trackLearnMoreTapped(for: .dashboardCard)
             BlazeFlowCoordinator.presentBlazeOverlay(in: viewController, source: .dashboardCard, blog: blog)
         })

@@ -855,7 +855,7 @@ private extension StatsPeriodStore {
 
     private func fetchPostStats(postID: Int?) {
         guard
-            let postID = postID,
+            let postID,
             let statsRemote = statsRemote() else {
                 return
         }
@@ -1142,14 +1142,14 @@ extension StatsPeriodStore {
     }
 
     func getPostStats(for postId: Int?) -> StatsPostDetails? {
-        guard let postId = postId else {
+        guard let postId else {
             return nil
         }
         return state.postStats[postId] ?? nil
     }
 
     func getMostRecentDate(forPost postId: Int?) -> Date? {
-        guard let postId = postId,
+        guard let postId,
             let postStats = state.postStats[postId],
             let mostRecentDay = postStats?.recentWeeks.last?.endDay else {
                 return nil
@@ -1287,14 +1287,14 @@ extension StatsPeriodStore {
     }
 
     func isFetchingPostStats(for postId: Int?) -> Bool {
-        guard let postId = postId else {
+        guard let postId else {
             return false
         }
         return state.postStatsFetchingStatuses[postId] == .loading
     }
 
     func postStatsFetchingStatuses(for postId: Int?) -> StoreFetchingStatus {
-        guard let postId = postId,
+        guard let postId,
             let status = state.postStatsFetchingStatuses[postId] else {
             return .idle
         }
@@ -1354,7 +1354,7 @@ private extension StatsPeriodStore {
                          hasChildren: Bool,
                          completion: @escaping (Result<Void, Error>) -> Void) {
         statsServiceRemote?.toggleSpamState(for: referrerDomain, currentValue: currentValue, success: { [weak self] in
-            guard let self = self else {
+            guard let self else {
                 return
             }
             self.state.topReferrers?.referrers[referrerIndex].isSpam.toggle()

@@ -49,7 +49,7 @@ final class JetpackBannerWrapperViewController: UIViewController {
     }
 
     private func configureChildVC(_ stackView: UIStackView) {
-        guard let childVC = childVC else { return }
+        guard let childVC else { return }
 
         addChild(childVC)
         stackView.addArrangedSubview(childVC.view)
@@ -64,7 +64,7 @@ final class JetpackBannerWrapperViewController: UIViewController {
         let jetpackBannerView = JetpackBannerView()
         jetpackBannerView.configure(title: textProvider.brandingText()) { [unowned self] in
             JetpackBrandingCoordinator.presentOverlay(from: self)
-            if let screen = screen {
+            if let screen {
                 JetpackBrandingAnalyticsHelper.trackJetpackPoweredBannerTapped(screen: screen)
             }
         }

@@ -487,7 +487,7 @@ private extension PromptRemindersSchedulerTests {
         var saveShouldSucceed = true
 
         var storedReceipts: [Int: [String]]? {
-            guard let savedData = savedData,
+            guard let savedData,
                   let dictionary = try? PropertyListDecoder().decode([Int: [String]].self, from: savedData) else {
                 return nil
             }

@@ -230,7 +230,7 @@ protocol ZendeskUtilsProtocol {
             var tags = ZendeskUtils.getTags()
             switch result {
             case .success(let metadata):
-                guard let metadata = metadata else {
+                guard let metadata else {
                     break
                 }
 
@@ -587,7 +587,7 @@ private extension ZendeskUtils {
         }
 
         ZDKPushProvider(zendesk: zendeskInstance).register(deviceIdentifier: deviceID, locale: appLanguage) { (pushResponse, error) in
-            if let error = error {
+            if let error {
                 DDLogInfo("Zendesk couldn't register device: \(deviceID). Error: \(error)")
             } else {
                 ZendeskUtils.sharedInstance.deviceID = nil
@@ -632,7 +632,7 @@ private extension ZendeskUtils {
         }
 
         service.fetchProfile { userProfile in
-            guard let userProfile = userProfile else {
+            guard let userProfile else {
                 completion()
                 return
             }
@@ -823,7 +823,7 @@ private extension ZendeskUtils {
     }
 
     func trackSourceEvent(_ event: WPAnalyticsStat) {
-        guard let sourceTag = sourceTag else {
+        guard let sourceTag else {
             WPAnalytics.track(event)
             return
         }

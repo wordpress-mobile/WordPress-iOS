@@ -153,6 +153,7 @@ class ReaderWebView: WKWebView {
                 'fb\\\\:post, [class^=fb-]': 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.2',
                 '[class^=tumblr-]': 'https://assets.tumblr.com/post.js',
                 '.embed-reddit': 'https://embed.redditmedia.com/widgets/platform.js',
+                '.embed-tiktok': 'https://www.tiktok.com/embed.js',
             };
 
             Object.keys(embedsToLookFor).forEach((key) => {

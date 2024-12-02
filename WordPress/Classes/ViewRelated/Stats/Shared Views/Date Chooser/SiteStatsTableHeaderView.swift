@@ -79,8 +79,8 @@ class SiteStatsTableHeaderView: UIView, NibLoadable, Accessible {
                    mostRecentDate: Date? = nil) {
 
         self.date = {
-            if let date = date,
-                let mostRecentDate = mostRecentDate,
+            if let date,
+                let mostRecentDate,
                 mostRecentDate < date {
                 return mostRecentDate
             }
@@ -158,7 +158,7 @@ private extension SiteStatsTableHeaderView {
 
         let (fromDate, toDate) = components
 
-        if let toDate = toDate {
+        if let toDate {
             return "\(fromDate) - \(toDate)"
         } else {
             return "\(fromDate)"
@@ -172,7 +172,7 @@ private extension SiteStatsTableHeaderView {
 
         let (fromDate, toDate) = components
 
-        if let toDate = toDate {
+        if let toDate {
             let format = NSLocalizedString("Current period: %@ to %@", comment: "Week Period Accessibility label. Prefix the current selected period. Ex. Current period: Jan 6 to Jan 12.")
             return .localizedStringWithFormat(format, fromDate, toDate)
         } else {
@@ -183,7 +183,7 @@ private extension SiteStatsTableHeaderView {
 
     /// Returns the formatted dates for the current period.
     func displayDateComponents() -> (fromDate: String, toDate: String?)? {
-        guard let date = date, let period = period else {
+        guard let date, let period else {
             return nil
         }
 
@@ -239,7 +239,7 @@ private extension SiteStatsTableHeaderView {
             return
         }
 
-        guard let date = date, let period = period else {
+        guard let date, let period else {
             return
         }
 
@@ -258,7 +258,7 @@ private extension SiteStatsTableHeaderView {
             return
         }
 
-        guard let date = date, let period = period else {
+        guard let date, let period else {
             forwardButton.isEnabled = false
             backButton.isEnabled = false
             updateArrowStates()
@@ -299,7 +299,7 @@ extension SiteStatsTableHeaderView: StatsBarChartViewDelegate {
     func statsBarChartTabSelected(_ tabIndex: Int) {}
 
     func statsBarChartValueSelected(_ statsBarChartView: StatsBarChartView, entryIndex: Int, entryCount: Int) {
-        guard let period = period, entryCount > 0, entryCount <= SiteStatsTableHeaderView.defaultPeriodCount else {
+        guard let period, entryCount > 0, entryCount <= SiteStatsTableHeaderView.defaultPeriodCount else {
             return
         }
 

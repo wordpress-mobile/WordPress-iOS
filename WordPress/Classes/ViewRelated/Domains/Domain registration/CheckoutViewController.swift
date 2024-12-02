@@ -41,7 +41,7 @@ final class CheckoutViewController: WebKitViewController {
 
     private func observePurchase() {
         webViewURLChangeObservation = webView.observe(\.url, options: .new) { [weak self] _, change in
-            guard let self = self,
+            guard let self,
                   let newURL = change.newValue as? URL else {
                 return
             }

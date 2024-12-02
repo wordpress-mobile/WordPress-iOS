@@ -147,7 +147,7 @@ enum DashboardCard: String, CaseIterable, Sendable {
     }
 
     private func shouldShowRemoteCard(apiResponse: BlogDashboardRemoteEntity?) -> Bool {
-        guard let apiResponse = apiResponse else {
+        guard let apiResponse else {
             return false
         }
         switch self {

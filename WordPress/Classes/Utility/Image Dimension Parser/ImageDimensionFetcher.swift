@@ -49,7 +49,7 @@ class ImageDimensionsFetcher: NSObject, URLSessionDataDelegate {
     // MARK: - URLSessionDelegate
     public func urlSession(_ session: URLSession, task dataTask: URLSessionTask, didCompleteWithError error: Error?) {
         // Don't trigger an error if we cancelled the task
-        if let error = error, (error as NSError).code == NSURLErrorCancelled {
+        if let error, (error as NSError).code == NSURLErrorCancelled {
             return
         }
 

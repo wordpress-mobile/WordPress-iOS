@@ -133,7 +133,7 @@ extension BlogDetailsViewController {
         let rootView = ApplicationPasswordRequiredView(blog: self.blog, localizedFeatureName: feature) { client in
             let service = UserService(client: client)
             let applicationPasswordService = ApplicationPasswordService(api: client, currentUserId: userId)
-            return UserListView(userService: service, applicationTokenListDataProvider: applicationPasswordService)
+            return UserListView(currentUserId: Int32(userId), userService: service, applicationTokenListDataProvider: applicationPasswordService)
         }
         presentationDelegate.presentBlogDetailsViewController(UIHostingController(rootView: rootView))
     }

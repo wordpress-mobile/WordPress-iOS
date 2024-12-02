@@ -25,7 +25,7 @@ struct AppAppearance {
             return
         }
 
-        if let style = style {
+        if let style {
             trackEvent(with: style)
             savedStyle = style
         }

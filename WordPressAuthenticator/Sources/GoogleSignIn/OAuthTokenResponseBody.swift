@@ -13,7 +13,7 @@ struct OAuthTokenResponseBody: Codable, Equatable {
     let tokenType: String
 
     var idToken: IDToken? {
-        guard let rawIDToken = rawIDToken else {
+        guard let rawIDToken else {
             return nil
         }
 

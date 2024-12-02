@@ -16,7 +16,7 @@ extension WebKitAuthenticatable {
     }
 
     func authenticatedRequest(for url: URL, with cookieJar: CookieJar, completion: @escaping (URLRequest) -> Void) {
-        guard let authenticator = authenticator else {
+        guard let authenticator else {
             return completion(URLRequest(url: url))
         }
 
@@ -240,7 +240,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         if ReachabilityUtils.alertIsShowing() {
             dismiss(animated: false)
         }
-        guard let url = url else {
+        guard let url else {
             return
         }
 
@@ -279,7 +279,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     }
 
     private func setupRefreshButton() {
-        if let customOptionsButton = customOptionsButton {
+        if let customOptionsButton {
             navigationItem.rightBarButtonItems = [refreshButton, customOptionsButton]
         } else if !secureInteraction {
             navigationItem.rightBarButtonItem = refreshButton
@@ -336,9 +336,9 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     /// - Parameter width: The width value to set the webView to
     /// - Parameter viewWidth: The view width the webView must fit within, used to manage view transitions, e.g. orientation change
     func setWidth(_ width: CGFloat?, viewWidth: CGFloat? = nil) {
-        if let width = width {
+        if let width {
             let horizontalViewBound: CGFloat
-            if let viewWidth = viewWidth {
+            if let viewWidth {
                 horizontalViewBound = viewWidth
             } else if let superViewWidth = view.superview?.frame.width {
                 horizontalViewBound = superViewWidth
@@ -362,7 +362,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     }
 
     private func stopWaitingForConnectionRestored() {
-        guard let reachabilityObserver = reachabilityObserver else {
+        guard let reachabilityObserver else {
             return
         }
 
@@ -434,7 +434,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
 
         guard let object = object as? WKWebView,
             object == webView,
-            let keyPath = keyPath else {
+            let keyPath else {
                 return
         }
 
@@ -533,7 +533,7 @@ extension WebKitViewController: WKNavigationDelegate {
     }
 
     func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
-        guard navigationResponse.isForMainFrame, let authenticator = authenticator, !hasAttemptedAuthRecovery else {
+        guard navigationResponse.isForMainFrame, let authenticator, !hasAttemptedAuthRecovery else {
             decisionHandler(.allow)
             return
         }

@@ -120,7 +120,7 @@ class SignupEpilogueCell: UITableViewCell {
 extension SignupEpilogueCell: UITextFieldDelegate {
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if let cellType = cellType,
+        if let cellType,
             let originalText = textField.text,
             cellType == .displayName || cellType == .password {
             let updatedText = NSString(string: originalText).replacingCharacters(in: range, with: string)
@@ -131,7 +131,7 @@ extension SignupEpilogueCell: UITextFieldDelegate {
     }
 
     func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
-        if let cellType = cellType,
+        if let cellType,
             let updatedText = textField.text {
             delegate?.updated(value: updatedText, forType: cellType)
         }

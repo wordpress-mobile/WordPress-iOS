@@ -54,7 +54,7 @@ class ReaderInterestsDataSource {
     init(topics: [ReaderTagTopic], service: ReaderInterestsService? = nil) {
         self.topics = topics
 
-        guard let service = service else {
+        guard let service else {
             self.interestsService = ReaderTopicService(coreDataStack: ContextManager.shared)
             return
         }
@@ -65,7 +65,7 @@ class ReaderInterestsDataSource {
     /// Fetches the interests from the topic service
     public func reload() {
         interestsService.fetchInterests(success: { [weak self] interests in
-            guard let self = self else {
+            guard let self else {
                 return
             }
 

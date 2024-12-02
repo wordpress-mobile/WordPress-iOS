@@ -58,7 +58,7 @@ import WordPressUI
         if let actionSheetController = viewController?.presentedViewController as? ActionSheetViewController {
             if previousTraitCollection.horizontalSizeClass != newTraitCollection.horizontalSizeClass {
                 viewController?.dismiss(animated: false, completion: { [weak self] in
-                    guard let self = self else {
+                    guard let self else {
                         return
                     }
                     self.setupPresentation(on: actionSheetController, for: newTraitCollection)
@@ -86,7 +86,7 @@ import WordPressUI
     }
 
     @objc func showCreateSheet() {
-        guard let viewController = viewController else {
+        guard let viewController else {
             return
         }
 
@@ -174,7 +174,7 @@ private extension CreateButtonCoordinator {
 
         // TODO: check for cached prompt first.
 
-        guard let bloggingPromptsService = bloggingPromptsService else {
+        guard let bloggingPromptsService else {
             DDLogError("FAB: failed creating BloggingPromptsService instance.")
             prompt = nil
             return
@@ -190,9 +190,9 @@ private extension CreateButtonCoordinator {
 
     private func createPromptHeaderView() -> BloggingPromptsHeaderView? {
         guard FeatureFlag.bloggingPrompts.enabled,
-              let blog = blog,
+              let blog,
               blog.isAccessibleThroughWPCom(),
-              let prompt = prompt,
+              let prompt,
               let siteID = blog.dotComID,
               BlogDashboardPersonalizationService(siteID: siteID.intValue).isEnabled(.prompts),
               !userSkippedPrompt(prompt, for: blog) else {

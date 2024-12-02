@@ -386,7 +386,7 @@ private class QRLoginServiceMock: QRLoginService {
             let data = json.data(using: .utf8) ?? Data()
             let jsonDecoder = JSONDecoder()
             let response = try? jsonDecoder.decode(QRLoginValidationResponse.self, from: data)
-            guard let response = response else {
+            guard let response else {
                 failure(nil, .invalidData)
                 return
             }

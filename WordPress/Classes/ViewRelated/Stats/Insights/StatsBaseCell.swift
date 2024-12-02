@@ -137,7 +137,7 @@ class StatsBaseCell: UITableViewCell {
     }
 
     @objc private func detailsButtonTapped() {
-        guard let statSection = statSection else {
+        guard let statSection else {
             return
         }
 

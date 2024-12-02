@@ -37,7 +37,7 @@ struct StatsSubscribersStore: StatsSubscribersStoreProtocol {
         let cacheKey = StatsSubscribersCache.CacheKey.emailsSummary(quantity: quantity, sortField: sortField.rawValue, sortOrder: sortOrder.rawValue, siteId: siteID)
         let cachedData: StatsEmailsSummaryData? = cache.getValue(key: cacheKey)
 
-        if let cachedData = cachedData {
+        if let cachedData {
             self.emailsSummary.send(.success(cachedData))
         } else {
             emailsSummary.send(.loading)
@@ -65,7 +65,7 @@ struct StatsSubscribersStore: StatsSubscribersStoreProtocol {
         let cacheKey = StatsSubscribersCache.CacheKey.chartSummary(unit: unit.stringValue, siteId: siteID)
         let cachedData: StatsSubscribersSummaryData? = cache.getValue(key: cacheKey)
 
-        if let cachedData = cachedData {
+        if let cachedData {
             self.chartSummary.send(.success(cachedData))
         } else {
             chartSummary.send(.loading)
@@ -73,7 +73,7 @@ struct StatsSubscribersStore: StatsSubscribersStoreProtocol {
 
         statsService.getData(for: unit, endingOn: StatsDataHelper.currentDateForSite(), limit: 30) { (data: StatsSubscribersSummaryData?, error: Error?) in
             DispatchQueue.main.async {
-                if let data = data {
+                if let data {
                     cache.setValue(data, key: cacheKey)
                     self.chartSummary.send(.success(data))
                 }
@@ -92,7 +92,7 @@ struct StatsSubscribersStore: StatsSubscribersStoreProtocol {
         let cacheKey = StatsSubscribersCache.CacheKey.subscribersList(quantity: quantity, siteId: siteID)
         let cachedData: StatsSubscribersData? = cache.getValue(key: cacheKey)
 
-        if let cachedData = cachedData {
+        if let cachedData {
             self.subscribersList.send(.success(cachedData))
         } else {
             subscribersList.send(.loading)

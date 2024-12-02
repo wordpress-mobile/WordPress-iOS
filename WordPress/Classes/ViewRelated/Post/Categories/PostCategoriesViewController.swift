@@ -239,7 +239,7 @@ import SwiftUI
                 category = categories[row - 1]
             }
             // If we're choosing a parent category then we're done.
-            if let category = category {
+            if let category {
                 delegate?.postCategoriesViewController?(self, didSelectCategory: category)
                 navigationController?.popViewController(animated: true)
             } else {
@@ -248,7 +248,7 @@ import SwiftUI
             }
         case .post:
             category = categories[row]
-            if let category = category {
+            if let category {
                 if selectedCategories.contains(category),
                     let index = selectedCategories.firstIndex(of: category) {
                     selectedCategories.remove(at: index)
@@ -263,7 +263,7 @@ import SwiftUI
 
         case .blogDefault:
             category = categories[row]
-            if let category = category {
+            if let category {
                 if selectedCategories.contains(category) {
                     return
                 }

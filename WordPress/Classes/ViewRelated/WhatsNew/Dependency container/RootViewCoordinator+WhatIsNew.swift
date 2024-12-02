@@ -5,7 +5,7 @@ extension RootViewCoordinator {
     @objc func presentWhatIsNew(on viewController: UIViewController) {
 
         DispatchQueue.main.async { [weak viewController] in
-            guard let viewController = viewController else {
+            guard let viewController else {
                 return
             }
             self.whatIsNewScenePresenter.present(on: viewController, animated: true, completion: nil)

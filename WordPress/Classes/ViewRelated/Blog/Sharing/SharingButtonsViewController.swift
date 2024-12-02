@@ -396,14 +396,14 @@ import WordPressShared
 
         let row = SharingSwitchRow()
         row.configureCell = {[weak self] (cell: UITableViewCell) in
-            guard let self = self else { return }
+            guard let self else { return }
             if let switchCell = cell as? SwitchTableViewCell {
                 cell.editingAccessoryView = cell.accessoryView
                 cell.editingAccessoryType = cell.accessoryType
                 switchCell.textLabel?.text = NSLocalizedString("Edit sharing buttons", comment: "Title for the edit sharing buttons section")
                 switchCell.on = self.buttonsSection.editing
                 switchCell.onChange = { [weak self] newValue in
-                    guard let self = self else { return }
+                    guard let self else { return }
                     WPAnalytics.track(.sharingButtonsEditSharingButtonsToggled, properties: ["checked": newValue as Any], blog: self.blog)
                     self.buttonsSection.editing = !self.buttonsSection.editing
                     self.updateButtonOrderAfterEditing()
@@ -441,14 +441,14 @@ import WordPressShared
 
         let row = SharingSwitchRow()
         row.configureCell = {[weak self] (cell: UITableViewCell) in
-            guard let self = self else { return }
+            guard let self else { return }
             if let switchCell = cell as? SwitchTableViewCell {
                 cell.editingAccessoryView = cell.accessoryView
                 cell.editingAccessoryType = cell.accessoryType
                 switchCell.textLabel?.text = NSLocalizedString("Edit \"More\" button", comment: "Title for the edit more button section")
                 switchCell.on = self.moreSection.editing
                 switchCell.onChange = { [weak self] newValue in
-                    guard let self = self else { return }
+                    guard let self else { return }
                     WPAnalytics.track(.sharingButtonsEditMoreButtonToggled, properties: ["checked": newValue as Any], blog: self.blog)
                     self.updateButtonOrderAfterEditing()
                     self.moreSection.editing = !self.moreSection.editing
@@ -671,7 +671,7 @@ import WordPressShared
     private func showErrorSyncingMessage(_ error: NSError?) {
         let title = NSLocalizedString("Could Not Save Changes", comment: "Title of an prompt letting the user know there was a problem saving.")
         var message = NSLocalizedString("There was a problem saving changes to sharing management.", comment: "A short error message shown in a prompt.")
-        if let error = error {
+        if let error {
             message.append(error.localizedDescription)
         }
         let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)

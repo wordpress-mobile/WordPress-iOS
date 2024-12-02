@@ -19,7 +19,7 @@ struct QRLoginCameraPermissionsHandler: QRCameraPermissionsHandler {
             UIApplication.shared.openSettings()
         }
 
-        guard let source = source else {
+        guard let source else {
             alert.presentFromRootViewController()
             return
         }

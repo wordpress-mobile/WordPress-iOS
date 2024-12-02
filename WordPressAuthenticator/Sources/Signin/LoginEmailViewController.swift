@@ -135,7 +135,7 @@ open class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     /// Add the log in with Google button to the view
     ///
     func addGoogleButton() {
-        guard let instructionLabel = instructionLabel,
+        guard let instructionLabel,
             let stackView = inputStack else {
             return
         }
@@ -155,7 +155,7 @@ open class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     /// Add the log in with site address button to the view
     ///
     func addSelfHostedLogInButton() {
-        guard let instructionLabel = instructionLabel,
+        guard let instructionLabel,
             let stackView = inputStack else {
                 return
         }
@@ -177,7 +177,7 @@ open class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     /// Note: This is only used during Jetpack setup, not the normal flows
     ///
     func addSignupButton() {
-        guard let instructionLabel = instructionLabel,
+        guard let instructionLabel,
             let stackView = inputStack else {
                 return
         }
@@ -193,7 +193,7 @@ open class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
                 return
             }
 
-            guard let self = self else { return }
+            guard let self else { return }
 
             vc.loginFields = self.loginFields
             vc.dismissBlock = self.dismissBlock
@@ -211,7 +211,7 @@ open class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
             }
 
             vc.googleTapped = { [weak self] in
-                guard let self = self else {
+                guard let self else {
                     return
                 }
 
@@ -305,7 +305,7 @@ open class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     func handleFetchedWebCredentials(_ found: Bool, username: String?, password: String?) {
         didFindSafariSharedCredentials = found
 
-        guard let username = username, let password = password else {
+        guard let username, let password else {
             return
         }
 

@@ -73,7 +73,7 @@ class StoredCredentialsAuthenticator: NSObject {
         }
 
         picker.show(in: window) { [weak self] result in
-            guard let self = self else {
+            guard let self else {
                 return
             }
 
@@ -203,7 +203,7 @@ extension StoredCredentialsAuthenticator {
             return
         }
 
-        if let loginFields = loginFields {
+        if let loginFields {
             toVC.loginFields = loginFields
         }
         toVC.errorToPresent = error
@@ -221,7 +221,7 @@ extension StoredCredentialsAuthenticator {
             return
         }
 
-        if let loginFields = loginFields {
+        if let loginFields {
             toVC.loginFields = loginFields
         }
 
@@ -230,7 +230,7 @@ extension StoredCredentialsAuthenticator {
     }
 
     private func presentTwoFactorAuthenticationView() {
-        guard let loginFields = loginFields else {
+        guard let loginFields else {
             return
         }
 

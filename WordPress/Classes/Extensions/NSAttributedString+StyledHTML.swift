@@ -33,7 +33,7 @@ extension NSAttributedString {
         // set via CSS). So we'll look for a paragraph style specified for the
         // body of the text, so we can copy it use its text alignment.
         let paragraphStyle = NSMutableParagraphStyle()
-        if let attributes = attributes,
+        if let attributes,
             let bodyAttributes = attributes[.BodyAttribute],
             let pStyle = bodyAttributes[.paragraphStyle] as? NSParagraphStyle {
                 paragraphStyle.setParagraphStyle(pStyle)

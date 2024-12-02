@@ -163,7 +163,7 @@ public struct NUXButtonStyle {
     /// Setup: BackgroundImage
     ///
     private func configureBackgrounds() {
-        guard let buttonStyle = buttonStyle else {
+        guard let buttonStyle else {
             legacyConfigureBackgrounds()
             return
         }
@@ -212,7 +212,7 @@ public struct NUXButtonStyle {
     /// Setup: TitleColor
     ///
     private func configureTitleColors() {
-        guard let buttonStyle = buttonStyle else {
+        guard let buttonStyle else {
             legacyConfigureTitleColors()
             return
         }

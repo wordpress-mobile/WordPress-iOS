@@ -44,7 +44,7 @@ extension BasePost {
     }
 
     @objc var featuredImageURL: URL? {
-        guard let pathForDisplayImage = pathForDisplayImage,
+        guard let pathForDisplayImage,
             let url = URL(string: pathForDisplayImage) else {
             return nil
         }

@@ -356,13 +356,13 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
         }
 
         throttle.debounce { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             self.fetchAddresses(query)
         }
     }
 
     override func primaryActionSelected(_ sender: Any) {
-        guard let selectedDomain = selectedDomain else {
+        guard let selectedDomain else {
             return
         }
 
@@ -850,7 +850,7 @@ private extension DomainSelectionViewController {
 
         let controller = RegisterDomainDetailsViewController()
         controller.viewModel = RegisterDomainDetailsViewModel(siteID: siteID, domain: domain) { [weak self] name in
-            guard let self = self, let coordinator else {
+            guard let self, let coordinator else {
                 return
             }
             coordinator.domainPurchasedCallback?(self, name)

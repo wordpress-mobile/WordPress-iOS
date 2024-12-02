@@ -20,7 +20,7 @@ open class ActivityTableViewCell: WPTableViewCell, NibReusable {
 
     func configureCell(_ formattableActivity: FormattableActivity, displaysDate: Bool = false) {
         activity = formattableActivity.activity
-        guard let activity = activity else {
+        guard let activity else {
             return
         }
 

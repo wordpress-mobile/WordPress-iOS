@@ -233,7 +233,7 @@ class Post: AbstractPost {
             let preview = excerpt.makePlainText()
             PostPreviewCache.shared.excerpt[excerpt] = preview
             return preview
-        } else if let content = content {
+        } else if let content {
             if let preview = PostPreviewCache.shared.content[content] {
                 return preview
             }

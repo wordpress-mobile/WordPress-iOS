@@ -144,7 +144,7 @@ private extension JetpackWindowManager {
         cancellable = container.migrationCoordinator.$currentStep
             .receive(on: DispatchQueue.main)
             .sink { [weak self] step in
-                guard let self = self, step == .dismiss else {
+                guard let self, step == .dismiss else {
                     return
                 }
                 self.switchToAppUI(for: blog)

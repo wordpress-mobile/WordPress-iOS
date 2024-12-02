@@ -28,7 +28,7 @@ struct FullScreenCommentReplyViewModel: FullScreenCommentReplyViewModelType {
     }
 
     func shouldShowSuggestions(with siteID: NSNumber?) -> Bool {
-        guard let siteID = siteID,
+        guard let siteID,
               let blog = Blog.lookup(withID: siteID, in: context) else {
                   return false
               }

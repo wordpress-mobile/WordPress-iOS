@@ -901,7 +901,7 @@ extension NotificationDetailsViewController {
 private extension NotificationDetailsViewController {
 
     func displayURL(_ url: URL?) {
-        guard let url = url else {
+        guard let url else {
             tableView.deselectSelectedRowWithAnimation(true)
             return
         }
@@ -1048,7 +1048,7 @@ private extension NotificationDetailsViewController {
 
         let actionContext = ActionContext(block: block, completion: { [weak self] (request, success) in
             WPAppAnalytics.track(.notificationsCommentFlaggedAsSpam, withBlogID: block.metaSiteID)
-            guard let request = request else {
+            guard let request else {
                 return
             }
             self?.onDeletionRequestCallback?(request)
@@ -1073,7 +1073,7 @@ private extension NotificationDetailsViewController {
 
         let actionContext = ActionContext(block: block, completion: { [weak self] (request, success) in
             WPAppAnalytics.track(.notificationsCommentTrashed, withBlogID: block.metaSiteID)
-            guard let request = request else {
+            guard let request else {
                 return
             }
             self?.onDeletionRequestCallback?(request)
@@ -1211,7 +1211,7 @@ extension NotificationDetailsViewController: ReplyTextViewDelegate {
     }
 
     func replyTextView(_ replyTextView: ReplyTextView, didExitFullScreen lastSearchText: String?) {
-        guard let lastSearchText = lastSearchText, !lastSearchText.isEmpty else {
+        guard let lastSearchText, !lastSearchText.isEmpty else {
             return
         }
         suggestionsTableView?.showSuggestions(forWord: lastSearchText)

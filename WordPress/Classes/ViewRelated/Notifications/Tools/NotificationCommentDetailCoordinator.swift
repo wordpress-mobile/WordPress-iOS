@@ -55,7 +55,7 @@ class NotificationCommentDetailCoordinator: NSObject {
 private extension NotificationCommentDetailCoordinator {
 
     func markNotificationReadIfNeeded() {
-        guard let notification = notification, !notification.read else {
+        guard let notification, !notification.read else {
             return
         }
 
@@ -77,7 +77,7 @@ private extension NotificationCommentDetailCoordinator {
     func showNotificationDetails(with notification: Notification) {
         let storyboard = UIStoryboard(name: Notifications.storyboardName, bundle: nil)
 
-        guard let viewController = viewController,
+        guard let viewController,
               let notificationDetailsViewController = storyboard.instantiateViewController(withIdentifier: Notifications.viewControllerName) as? NotificationDetailsViewController else {
                   DDLogError("NotificationCommentDetailCoordinator: missing view controller.")
                   return
@@ -106,7 +106,7 @@ private extension NotificationCommentDetailCoordinator {
     }
 
     var hasPreviousNotification: Bool {
-        guard let notification = notification else {
+        guard let notification else {
             return false
         }
 
@@ -114,7 +114,7 @@ private extension NotificationCommentDetailCoordinator {
     }
 
     var hasNextNotification: Bool {
-        guard let notification = notification else {
+        guard let notification else {
             return false
         }
         return notificationsNavigationDataSource?.notification(succeeding: notification) != nil
@@ -137,7 +137,7 @@ private extension NotificationCommentDetailCoordinator {
 extension NotificationCommentDetailCoordinator: CommentDetailsNotificationDelegate {
 
     func previousNotificationTapped(current: Notification?) {
-        guard let current = current,
+        guard let current,
               let previousNotification = notificationsNavigationDataSource?.notification(preceding: current) else {
                   return
               }
@@ -147,7 +147,7 @@ extension NotificationCommentDetailCoordinator: CommentDetailsNotificationDelega
     }
 
     func nextNotificationTapped(current: Notification?) {
-        guard let current = current,
+        guard let current,
               let nextNotification = notificationsNavigationDataSource?.notification(succeeding: current) else {
                   return
               }
@@ -157,7 +157,7 @@ extension NotificationCommentDetailCoordinator: CommentDetailsNotificationDelega
     }
 
     func commentWasModerated(for notification: Notification?) {
-        guard let notification = notification,
+        guard let notification,
               !notificationsCommentModerated.contains(notification) else {
                   return
               }

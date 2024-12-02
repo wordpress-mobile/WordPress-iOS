@@ -158,7 +158,7 @@ extension GutenbergSuggestionsViewController: UITextFieldDelegate {
 extension GutenbergSuggestionsViewController: SuggestionsTableViewDelegate {
 
     public func suggestionsTableView(_ suggestionsTableView: SuggestionsTableView, didSelectSuggestion suggestion: String?, forSearchText text: String) {
-        if let suggestion = suggestion {
+        if let suggestion {
             onCompletion?(.success(suggestion))
         }
     }

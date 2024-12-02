@@ -116,7 +116,7 @@ final class InteractiveNotificationsManager: NSObject {
             legacyAnalyticsEvent = .notificationsCommentLiked
             likeCommentWithCommentID(commentID, noteID: noteID, siteID: siteID)
         case .commentReply:
-            if let responseText = responseText {
+            if let responseText {
                 legacyAnalyticsEvent = .notificationsCommentRepliedTo
                 replyToCommentWithCommentID(commentID, noteID: noteID, siteID: siteID, content: responseText)
             } else {
@@ -215,7 +215,7 @@ final class InteractiveNotificationsManager: NSObject {
                 eventTracker.notificationTapped(type: .weeklyRoundup, siteId: siteId)
 
                 if identifier == UNNotificationDefaultActionIdentifier {
-                    guard let targetBlog = targetBlog else {
+                    guard let targetBlog else {
                         DDLogError("Could not obtain the blog from the Weekly Notification thread ID.")
                         break
                     }
@@ -288,7 +288,7 @@ extension InteractiveNotificationsManager {
     }
 
     private func blog(from threadId: String?) -> Blog? {
-        if let threadId = threadId,
+        if let threadId,
            let blogId = Int(threadId) {
             return try? Blog.lookup(withID: blogId, in: ContextManager.shared.mainContext)
         }

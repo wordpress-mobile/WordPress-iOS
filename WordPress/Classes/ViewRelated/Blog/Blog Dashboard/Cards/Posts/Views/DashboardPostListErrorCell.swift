@@ -80,7 +80,7 @@ class DashboardPostListErrorCell: UITableViewCell, Reusable {
     private func showRetry() {
         retryLabel.isHidden = false
         isUserInteractionEnabled = true
-        if let tapGestureRecognizer = tapGestureRecognizer {
+        if let tapGestureRecognizer {
             addGestureRecognizer(tapGestureRecognizer)
         }
     }
@@ -88,7 +88,7 @@ class DashboardPostListErrorCell: UITableViewCell, Reusable {
     private func hideRetry() {
         retryLabel.isHidden = true
         isUserInteractionEnabled = false
-        if let tapGestureRecognizer = tapGestureRecognizer {
+        if let tapGestureRecognizer {
             removeGestureRecognizer(tapGestureRecognizer)
         }
     }

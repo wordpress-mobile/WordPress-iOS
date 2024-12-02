@@ -57,11 +57,11 @@ final class AnimatedImageCache {
 
         let task = session.dataTask(with: urlRequest, completionHandler: { [weak self] (data, response, error) in
             //check if view is still here
-            guard let self = self else {
+            guard let self else {
                 return
             }
             // check if there is an error
-            if let error = error {
+            if let error {
                 let nsError = error as NSError
                 // task.cancel() triggers an error that we don't want to send to the error handler.
                 if nsError.code != NSURLErrorCancelled {
@@ -70,7 +70,7 @@ final class AnimatedImageCache {
                 return
             }
             // check if data is here and is animated gif
-            guard let data = data else {
+            guard let data else {
                 failure?(nil)
                 return
             }

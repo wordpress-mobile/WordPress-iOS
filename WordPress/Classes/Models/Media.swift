@@ -29,7 +29,7 @@ extension Media {
     /// Returns true if media has any associated post
     ///
     func hasAssociatedPost() -> Bool {
-        guard let posts = posts else {
+        guard let posts else {
             return false
         }
 

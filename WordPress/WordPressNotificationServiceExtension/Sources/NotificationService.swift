@@ -113,7 +113,7 @@ class NotificationService: UNNotificationServiceExtension {
         self.notificationService = service
 
         service.loadNotes(noteIds: [noteID]) { [tracks] error, notifications in
-            if let error = error {
+            if let error {
                 tracks.trackNotificationRetrievalFailed(notificationIdentifier: noteID, errorDescription: error.localizedDescription)
                 contentHandler(notificationContent)
                 return
@@ -162,7 +162,7 @@ class NotificationService: UNNotificationServiceExtension {
                 let identifier = UUID().uuidString
 
                 guard
-                    let self = self, let data = data, let fileExtension = fileExtension,
+                    let self, let data, let fileExtension,
                     let fileURL = self.saveMediaAttachment(data: data, fileName: String(format: "%@.%@", identifier, fileExtension))
                 else {
                     return
@@ -173,7 +173,7 @@ class NotificationService: UNNotificationServiceExtension {
                     url: fileURL,
                     options: nil)
 
-                if let imageAttachment = imageAttachment {
+                if let imageAttachment {
                     notificationContent.attachments = [imageAttachment]
                 }
             }
@@ -185,8 +185,8 @@ class NotificationService: UNNotificationServiceExtension {
 
         notificationService?.wordPressComRestApi.invalidateAndCancelTasks()
 
-        if let contentHandler = contentHandler,
-            let bestAttemptContent = bestAttemptContent {
+        if let contentHandler,
+            let bestAttemptContent {
 
             contentHandler(bestAttemptContent)
         }
@@ -212,7 +212,7 @@ private extension NotificationService {
 
         let session = URLSession(configuration: .default)
         let task = session.dataTask(with: request) { data, response, error in
-            guard let data = data, let mimeType = response?.mimeType else {
+            guard let data, let mimeType = response?.mimeType else {
                 completion(nil, nil)
                 return
             }

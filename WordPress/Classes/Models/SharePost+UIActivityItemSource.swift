@@ -21,7 +21,7 @@ extension SharePost: UIActivityItemSource {
     }
 
     func activityViewController(_ activityViewController: UIActivityViewController, dataTypeIdentifierForActivityType activityType: UIActivity.ActivityType?) -> String {
-        guard let activityType = activityType else {
+        guard let activityType else {
             return UTType.url.identifier
         }
         switch activityType {

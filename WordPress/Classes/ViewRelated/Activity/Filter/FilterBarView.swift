@@ -38,7 +38,7 @@ class FilterBarView: UIScrollView {
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
 
-        guard let superview = superview else {
+        guard let superview else {
             return
         }
 

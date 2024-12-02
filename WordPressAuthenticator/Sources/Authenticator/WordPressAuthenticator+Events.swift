@@ -26,7 +26,7 @@ extension WordPressAuthenticator {
     ///
     @objc
     public static func track(_ event: WPAnalyticsStat, error: Error?) {
-        guard let error = error else {
+        guard let error else {
             track(event)
             return
         }

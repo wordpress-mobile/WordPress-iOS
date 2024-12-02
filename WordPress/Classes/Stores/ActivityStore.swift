@@ -334,7 +334,7 @@ private extension ActivityStore {
             before: beforeDate,
             group: group,
             success: { [weak self, actionDispatcher] (activities, hasMore) in
-                guard let self = self else {
+                guard let self else {
                     return
                 }
 

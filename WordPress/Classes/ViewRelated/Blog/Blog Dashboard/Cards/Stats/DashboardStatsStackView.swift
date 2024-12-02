@@ -71,9 +71,9 @@ final class DashboardStatsStackView: UIStackView {
     }
 
     private func updateAccessibility() {
-        guard let views = views,
-              let visitors = visitors,
-              let likes = likes else {
+        guard let views,
+              let visitors,
+              let likes else {
                   self.accessibilityLabel = Strings.errorTitle
                   return
         }

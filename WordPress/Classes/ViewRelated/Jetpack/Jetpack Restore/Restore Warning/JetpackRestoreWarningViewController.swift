@@ -58,7 +58,7 @@ class JetpackRestoreWarningViewController: UIViewController {
         warningView.configure(with: publishedDate)
 
         warningView.confirmHandler = { [weak self] in
-            guard let self = self else {
+            guard let self else {
                 return
             }
 

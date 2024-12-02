@@ -36,7 +36,7 @@ class SiteStatsInsightsViewModel: Observable {
     private let pinnedItemStore: SiteStatsPinnedItemStore?
     private let itemToDisplay: SiteStatsPinnable?
     private var isNudgeCompleted: Bool {
-        guard let pinnedItemStore = pinnedItemStore, let item = itemToDisplay, item is GrowAudienceCell.HintType else {
+        guard let pinnedItemStore, let item = itemToDisplay, item is GrowAudienceCell.HintType else {
             return false
         }
         return !pinnedItemStore.shouldShow(item)
@@ -437,7 +437,7 @@ class SiteStatsInsightsViewModel: Observable {
     }
 
     static func intervalData(_ statsSummaryTimeIntervalData: StatsSummaryTimeIntervalData?, summaryType: StatsSummaryType, periodEndDate: Date? = nil) -> (count: Int, prevCount: Int, difference: Int, percentage: Int) {
-        guard let statsSummaryTimeIntervalData = statsSummaryTimeIntervalData else {
+        guard let statsSummaryTimeIntervalData else {
             return (0, 0, 0, 0)
         }
 
@@ -812,7 +812,7 @@ extension SiteStatsInsightsViewModel: AsyncBlocksLoadable {
 
         var summaryData = statsSummaryTimeIntervalData.summaryData
 
-        if let periodEndDate = periodEndDate {
+        if let periodEndDate {
             summaryData = splitStatsSummaryTimeIntervalDataPadForward(statsSummaryTimeIntervalData, periodEndDate: periodEndDate)
         }
 

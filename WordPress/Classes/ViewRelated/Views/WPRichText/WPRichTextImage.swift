@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 open class WPRichTextImage: UIControl, WPRichTextMediaAttachment {
 

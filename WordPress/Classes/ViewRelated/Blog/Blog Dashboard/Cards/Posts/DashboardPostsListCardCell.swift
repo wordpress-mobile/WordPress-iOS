@@ -156,7 +156,7 @@ extension DashboardPostsListCardCell {
     }
 
     private func presentPostList(with status: BasePost.Status) {
-        guard let blog = blog, let viewController = viewController else {
+        guard let blog, let viewController else {
             return
         }
 
@@ -170,7 +170,7 @@ extension DashboardPostsListCardCell {
 extension DashboardPostsListCardCell: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let post = viewModel?.postAt(indexPath),
-              let viewController = viewController else {
+              let viewController else {
             return
         }
 

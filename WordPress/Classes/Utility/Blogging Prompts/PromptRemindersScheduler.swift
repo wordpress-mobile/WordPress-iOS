@@ -57,7 +57,7 @@ class PromptRemindersScheduler {
         }
 
         pushAuthorizer.requestAuthorization { [weak self] allowed in
-            guard let self = self else {
+            guard let self else {
                 return
             }
 
@@ -162,7 +162,7 @@ private extension PromptRemindersScheduler {
         let reminderTime = Time(from: time) ?? Constants.defaultTime
         let currentDate = currentDateProvider.date()
         promptsService.fetchPrompts(from: currentDate, number: Constants.promptsToFetch) { [weak self] prompts in
-            guard let self = self else {
+            guard let self else {
                 completion(.failure(Errors.unknown))
                 return
             }
@@ -198,7 +198,7 @@ private extension PromptRemindersScheduler {
             // first, check the last reminder date. If there are no prompts scheduled (perhaps due to unavailable prompts),
             // this will schedule local notifications after the current date instead of the last scheduled date.
             let lastReminderDate: Date = {
-                guard let lastScheduledPrompt = lastScheduledPrompt,
+                guard let lastScheduledPrompt,
                       let lastReminderDateComponents = self.reminderDateComponents(for: lastScheduledPrompt, at: reminderTime),
                       let lastReminderDate = Calendar.current.date(from: lastReminderDateComponents) else {
                     return currentDate
@@ -358,7 +358,7 @@ private extension PromptRemindersScheduler {
 
         // schedule the local notification.
         notificationScheduler.add(request) { error in
-            if let error = error {
+            if let error {
                 DDLogError("[PromptRemindersScheduler] Error adding notification request: \(error.localizedDescription)")
             }
         }
@@ -369,7 +369,7 @@ private extension PromptRemindersScheduler {
     func notificationPayload(for siteID: Int, prompt: BloggingPrompt? = nil) -> [AnyHashable: Any] {
         var userInfo: [AnyHashable: Any] = [BloggingPrompt.NotificationKeys.siteID: siteID]
 
-        if let prompt = prompt {
+        if let prompt {
             userInfo[BloggingPrompt.NotificationKeys.promptID] = Int(prompt.promptID)
         }
 
@@ -424,7 +424,7 @@ private extension PromptRemindersScheduler {
         let fileURL = try defaultFileURL()
         var allReceipts = try fetchAllReceipts(from: fileURL)
 
-        if let receipts = receipts, !receipts.isEmpty {
+        if let receipts, !receipts.isEmpty {
             allReceipts[siteID] = receipts
         } else {
             allReceipts.removeValue(forKey: siteID)

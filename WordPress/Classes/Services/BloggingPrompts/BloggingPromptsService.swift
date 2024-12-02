@@ -278,7 +278,7 @@ private extension BloggingPromptsService {
     /// - Parameter date: The date to convert.
     /// - Returns: The UTC date without the time information.
     func utcDateIgnoringTime(from date: Date?) -> Date? {
-        guard let date = date else {
+        guard let date else {
             return nil
         }
         let dateString = Self.localDateFormatter.string(from: date)

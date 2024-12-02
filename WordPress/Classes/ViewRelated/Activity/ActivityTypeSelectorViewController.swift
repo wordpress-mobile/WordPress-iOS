@@ -123,7 +123,7 @@ private extension ActivityTypeSelectorViewController {
             noResultsViewController = NoResultsViewController.controller()
             noResultsViewController?.delegate = self
 
-            guard let noResultsViewController = noResultsViewController else {
+            guard let noResultsViewController else {
                 return
             }
 

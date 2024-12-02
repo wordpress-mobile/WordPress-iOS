@@ -301,7 +301,7 @@ class NotificationSettingsService {
 
     // MARK: - Private Computed Properties
     fileprivate var notificationsServiceRemote: NotificationSettingsServiceRemote? {
-        guard let remoteApi = remoteApi else {
+        guard let remoteApi else {
             return nil
         }
 

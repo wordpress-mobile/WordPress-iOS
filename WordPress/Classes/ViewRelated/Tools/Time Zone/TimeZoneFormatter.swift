@@ -18,7 +18,7 @@ struct TimeZoneFormatter {
         formatter.locale = Locale.autoupdatingCurrent
         formatter.timeStyle = timeStyle
 
-        if let dateFormat = dateFormat {
+        if let dateFormat {
             formatter.dateFormat = dateFormat
         }
     }

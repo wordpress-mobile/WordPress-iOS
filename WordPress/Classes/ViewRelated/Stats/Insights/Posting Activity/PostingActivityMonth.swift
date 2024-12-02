@@ -76,7 +76,7 @@ private extension PostingActivityMonth {
     }
 
     func setMonthLabel() {
-        guard let month = month else {
+        guard let month else {
             monthLabel.text = ""
             return
         }
@@ -88,7 +88,7 @@ private extension PostingActivityMonth {
     }
 
     func addDays() {
-        guard let monthData = monthData,
+        guard let monthData,
         let firstDay = monthData.first,
         let lastDay = monthData.last else {
             return
@@ -190,7 +190,7 @@ private class PostingActivityMonthAccessibilityElement: UIAccessibilityElement {
     func configure(month: Date?, events: [PostingStreakEvent]?) {
         isAccessibilityElement = month != nil
 
-        if let month = month {
+        if let month {
             let formatter = DateFormatter()
             formatter.dateFormat = "MMMM yyyy"
             accessibilityLabel = formatter.string(from: month)

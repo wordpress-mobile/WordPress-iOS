@@ -167,7 +167,7 @@ class PluginListViewModel: Observable {
             action = nil
         }
 
-        if let action = action {
+        if let action {
             ActionDispatcher.dispatch(action)
         }
     }

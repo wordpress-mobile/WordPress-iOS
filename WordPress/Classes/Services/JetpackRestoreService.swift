@@ -23,7 +23,7 @@ import Foundation
                      restoreTypes: JetpackRestoreTypes? = nil,
                      success: @escaping (String, Int) -> Void,
                      failure: @escaping (Error) -> Void) {
-        guard let rewindID = rewindID else {
+        guard let rewindID else {
             return
         }
         serviceV1.restoreSite(site.siteID, rewindID: rewindID, types: restoreTypes, success: success, failure: failure)

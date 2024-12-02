@@ -155,7 +155,7 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell {
 
     private func refreshDetails() {
         var details = timestamp ?? String()
-        if let site = site, !site.isEmpty {
+        if let site, !site.isEmpty {
             details = String(format: "%@ • %@", details, site)
         }
 

@@ -171,7 +171,7 @@ private extension SiteStatsInsightsTableViewController {
     // MARK: - Table Refreshing
 
     func refreshTableView() {
-        guard let viewModel = viewModel else {
+        guard let viewModel else {
             return
         }
 
@@ -197,7 +197,7 @@ private extension SiteStatsInsightsTableViewController {
     }
 
     func applyTableUpdates() {
-        guard let viewModel = viewModel else {
+        guard let viewModel else {
             return
         }
 
@@ -515,7 +515,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         }
         vc.readerDiscoverFlowDelegate = self
         vc.didSaveInterests = { [weak self] interests in
-            guard let self = self else {
+            guard let self else {
                 return
             }
             self.dismiss(animated: true)
@@ -567,7 +567,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
     func scrollToNewCard() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             let lastSection = max(self.tableView.numberOfSections - 1, 0)
 
             // newly added card will be penultimate row, above the 'Add Stats Card' row
@@ -774,7 +774,7 @@ private extension SiteStatsInsightsTableViewController {
 private extension SiteStatsInsightsTableViewController {
 
     func sendScrollEventsToBanner() {
-        if let bannerView = bannerView {
+        if let bannerView {
             analyticsTracker.addTranslationObserver(bannerView)
         }
     }

@@ -162,7 +162,7 @@ class StatsMostPopularTimeInsightsCell: StatsBaseCell {
     func configure(data: StatsMostPopularTimeData?) {
         self.statSection = .insightsMostPopularTime
 
-        guard let data = data else {
+        guard let data else {
             displayNoData(show: true)
             return
         }

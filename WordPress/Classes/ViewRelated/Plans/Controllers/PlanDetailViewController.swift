@@ -148,7 +148,7 @@ extension PlanDetailViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 
         guard noResultsViewModel != nil,
-            let noResultsViewController = noResultsViewController else {
+            let noResultsViewController else {
                 return UITableView.automaticDimension
         }
 
@@ -224,8 +224,8 @@ private extension PlanDetailViewController {
             noResultsViewController?.delegate = self
         }
 
-        guard let noResultsViewController = noResultsViewController,
-            let noResultsViewModel = noResultsViewModel else {
+        guard let noResultsViewController,
+            let noResultsViewModel else {
                 return
         }
 

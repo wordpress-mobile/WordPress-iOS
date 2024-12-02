@@ -76,7 +76,7 @@ import UniformTypeIdentifiers
 
 extension SearchableItemConvertable {
     internal var uniqueIdentifier: String? {
-        guard let searchDomain = searchDomain, let searchIdentifier = searchIdentifier else {
+        guard let searchDomain, let searchIdentifier else {
             return nil
         }
         return SearchIdentifierGenerator.composeUniqueIdentifier(itemType: searchItemType, domain: searchDomain, identifier: searchIdentifier)
@@ -84,9 +84,9 @@ extension SearchableItemConvertable {
 
     internal func indexableItem() -> CSSearchableItem? {
         guard isSearchable == true,
-            let uniqueIdentifier = uniqueIdentifier,
-            let searchTitle = searchTitle,
-            let searchDescription = searchDescription else {
+            let uniqueIdentifier,
+            let searchTitle,
+            let searchDescription else {
             return nil
         }
 

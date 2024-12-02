@@ -20,7 +20,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     @objc
     lazy var windowManager: WindowManager = {
-        guard let window = window else {
+        guard let window else {
             fatalError("The App cannot run without a window.")
         }
 
@@ -157,7 +157,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             }
         })
 
-        if let bgTask = bgTask {
+        if let bgTask {
             DDLogInfo("BackgroundTask: beginBackgroundTask for bgTask = \(bgTask.rawValue)")
         }
     }
@@ -374,7 +374,7 @@ extension WordPressAppDelegate {
         internetReachability = Reachability.forInternetConnection()
 
         let reachabilityBlock: NetworkReachable = { [weak self] reachability in
-            guard let reachability = reachability else {
+            guard let reachability else {
                 return
             }
 
@@ -824,7 +824,7 @@ extension WordPressAppDelegate {
             default:
                 // An error exists only for the notFound state.
                 // notFound is a valid state when logging in with an Apple account for the first time.
-                if let error = error {
+                if let error {
                     DDLogDebug("checkAppleIDCredentialState: Apple ID state not found: \(error.localizedDescription)")
                 }
                 break

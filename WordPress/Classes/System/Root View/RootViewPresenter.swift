@@ -33,13 +33,13 @@ extension RootViewPresenter {
         guard JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures() else {
             return showJetpackOverlayForDisabledEntryPoint()
         }
-        if let date = date {
+        if let date {
             UserPersistentStoreFactory.instance().set(date, forKey: SiteStatsDashboardViewController.lastSelectedStatsDateKey)
         }
-        if let siteID = blog.dotComID?.intValue, let tab = tab {
+        if let siteID = blog.dotComID?.intValue, let tab {
             SiteStatsDashboardPreferences.setSelected(tabType: tab, siteID: siteID)
         }
-        if let unit = unit {
+        if let unit {
             SiteStatsDashboardPreferences.setSelected(periodUnit: unit)
         }
         var userInfo: [AnyHashable: Any] = [:]

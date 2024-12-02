@@ -536,8 +536,8 @@ extension DrawerPresentationController: UIGestureRecognizerDelegate {
 
         /// Shouldn't happen; should always have container & presented view when tapped
         guard
-            let containerView = containerView,
-            let presentedView = presentedView,
+            let containerView,
+            let presentedView,
             currentPosition != .hidden
         else {
             return false

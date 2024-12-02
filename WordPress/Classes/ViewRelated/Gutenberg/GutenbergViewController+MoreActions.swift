@@ -20,7 +20,7 @@ extension GutenbergViewController {
         ActionDispatcher.dispatch(NoticeAction.lock)
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
-        if mode == .richText, let contentInfo = contentInfo {
+        if mode == .richText, let contentInfo {
             // NB : This is a candidate for plurality via .stringsdict, but is limited by https://github.com/wordpress-mobile/WordPress-iOS/issues/6327
             let textCounterTitle = String(format: NSLocalizedString("Content Structure\nBlocks: %li, Words: %li, Characters: %li", comment: "Displays the number of blocks, words and characters in text"), contentInfo.blockCount, contentInfo.wordCount, contentInfo.characterCount)
 
@@ -159,7 +159,7 @@ extension GutenbergViewController {
     }
 
     private func makeContextStructureString() -> String? {
-        guard mode == .richText, let contentInfo = contentInfo else {
+        guard mode == .richText, let contentInfo else {
             return nil
         }
         return String(format: Strings.contentStructure, contentInfo.blockCount, contentInfo.wordCount, contentInfo.characterCount)

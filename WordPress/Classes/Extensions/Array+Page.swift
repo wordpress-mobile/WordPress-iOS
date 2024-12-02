@@ -18,7 +18,7 @@ extension Array where Element == Page {
     /// - Parameter pageId: Page id
     /// - Returns: If the Page exists or not
     func containsPage(for pageId: Int?) -> Bool {
-        guard let pageId = pageId else {
+        guard let pageId else {
             return false
         }
 

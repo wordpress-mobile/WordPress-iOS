@@ -12,7 +12,7 @@ import WordPressAPI
     }
 
     private func fetchTokens(forUserId userId: Int32) async throws -> [ApplicationPasswordWithEditContext] {
-        try await apiClient.api.applicationPasswords.listWithEditContext(userId: userId)
+        try await apiClient.api.applicationPasswords.listWithEditContext(userId: userId).data
     }
 }
 

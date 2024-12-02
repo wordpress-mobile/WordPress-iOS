@@ -9,7 +9,7 @@ private class OneTimeObserver {
     }
 
     func run(_ notification: Foundation.Notification) {
-        if let observer = observer {
+        if let observer {
             NotificationCenter.default.removeObserver(observer)
         }
         action(notification)

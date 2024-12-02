@@ -5,26 +5,17 @@ import WordPressUI
 
 /// UserService is responsible for fetching user acounts via the .org REST API – it's the replacement for `UsersService` (the XMLRPC-based approach)
 ///
-actor UserService: UserServiceProtocol {
+actor UserService: UserServiceProtocol, UserDataStoreProvider {
     private let client: WordPressClient
 
-    private var fetchUsersTask: Task<[DisplayUser], Error>?
-
-    private(set) var users: [DisplayUser]? {
-        didSet {
-            if let users {
-                usersUpdatesContinuation.yield(users)
-            }
-        }
-    }
-    nonisolated let usersUpdates: AsyncStream<[DisplayUser]>
-    private nonisolated let usersUpdatesContinuation: AsyncStream<[DisplayUser]>.Continuation
+    private let _dataStore: InMemoryUserDataStore = .init()
+    var userDataStore: any UserDataStore { _dataStore }
 
     private var _currentUser: UserWithEditContext?
     private var currentUser: UserWithEditContext? {
         get async {
             if _currentUser == nil {
-                _currentUser = try? await self.client.api.users.retrieveMeWithEditContext()
+                _currentUser = try? await self.client.api.users.retrieveMeWithEditContext().data
             }
             return _currentUser
         }
@@ -32,52 +23,35 @@ actor UserService: UserServiceProtocol {
 
     init(client: WordPressClient) {
         self.client = client
-        (usersUpdates, usersUpdatesContinuation) = AsyncStream<[DisplayUser]>.makeStream()
     }
 
-    deinit {
-        usersUpdatesContinuation.finish()
-        fetchUsersTask?.cancel()
-    }
+    func fetchUsers() async throws {
+        let sequence = await client.api.users.sequenceWithEditContext(params: .init(perPage: 100))
+        var started = false
+        for try await users in sequence {
+            if !started {
+                try await _dataStore.delete(query: .all)
+            }
 
-    func fetchUsers() async throws -> [DisplayUser] {
-        let users = try await createFetchUsersTaskIfNeeded().value
-        self.users = users
-        return users
-    }
+            try await _dataStore.store(users.compactMap { DisplayUser(user: $0) })
 
-    private func createFetchUsersTaskIfNeeded() -> Task<[DisplayUser], Error> {
-        if let fetchUsersTask {
-            return fetchUsersTask
+            started = true
         }
-        let task = Task { [client] in
-            try await client
-                .api
-                .users
-                .listWithEditContext(params: UserListParams(perPage: 100))
-                .compactMap { DisplayUser(user: $0) }
-        }
-        fetchUsersTask = task
-        return task
     }
 
     func isCurrentUserCapableOf(_ capability: String) async -> Bool {
         await currentUser?.capabilities.keys.contains(capability) == true
     }
 
-    func isCurrentUser(_ user: DisplayUser) async -> Bool {
-        await currentUser?.id == user.id
-    }
-
     func deleteUser(id: Int32, reassigningPostsTo newUserId: Int32) async throws {
         let result = try await client.api.users.delete(
             userId: id,
             params: UserDeleteParams(reassign: newUserId)
-        )
+        ).data
 
         // Remove the deleted user from the cached users list.
-        if result.deleted, let index = users?.firstIndex(where: { $0.id == id }) {
-            users?.remove(at: index)
+        if result.deleted {
+            try await _dataStore.delete(query: .id([id]))
         }
     }
 

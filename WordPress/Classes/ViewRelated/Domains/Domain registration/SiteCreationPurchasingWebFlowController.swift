@@ -73,7 +73,7 @@ final class SiteCreationPurchasingWebFlowController {
     /// Process the domain purchasing result before handing it over to the caller.
     private func middleware(for completion: CompletionHandler?, domain: DomainSuggestion, site: Blog) -> CompletionHandler {
         return { [weak self] result in
-            if let self = self {
+            if let self {
                 self.handleError(result: result, domain: domain, site: site)
                 self.trackCompletionEvents(result: result, domain: domain, site: site)
             }
@@ -133,7 +133,7 @@ final class SiteCreationPurchasingWebFlowController {
             source: origin?.rawValue ?? ""
         )
         self.webViewURLChangeObservation = webViewController.webView.observe(\.url, options: [.new, .old]) { [weak self] _, change in
-            guard let self = self, let newURL = change.newValue as? URL else {
+            guard let self, let newURL = change.newValue as? URL else {
                 return
             }
             let oldURL = change.oldValue as? URL

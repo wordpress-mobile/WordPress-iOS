@@ -61,7 +61,7 @@ private extension SiteSettingsViewController {
 
     func presentBloggingRemindersFlow(indexPath: IndexPath) {
         BloggingRemindersFlow.present(from: self, for: blog, source: .blogSettings) { [weak self] in
-            guard let self = self,
+            guard let self,
                   let cell = self.tableView.cellForRow(at: indexPath) as? SettingTableViewCell else {
                 return
             }

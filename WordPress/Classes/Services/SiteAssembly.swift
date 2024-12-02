@@ -50,7 +50,7 @@ final class MockSiteAssemblyService: NSObject, SiteAssemblyService {
     private(set) var currentStatus: SiteAssemblyStatus = .idle {
         didSet {
             DispatchQueue.main.async { [weak self] in
-                guard let self = self else {
+                guard let self else {
                     return
                 }
                 self.statusChangeHandler?(self.currentStatus)
@@ -76,7 +76,7 @@ final class MockSiteAssemblyService: NSObject, SiteAssemblyService {
         let contrivedDelay = DispatchTimeInterval.milliseconds(50)
         let dispatchDelay = DispatchTime.now() + contrivedDelay
         DispatchQueue.main.asyncAfter(deadline: dispatchDelay) { [weak self] in
-            guard let self = self else {
+            guard let self else {
                 return
             }
 

@@ -73,7 +73,7 @@ private extension RevisionPreviewViewController {
     }
 
     private func showRevision() {
-        guard let revision = revision else {
+        guard let revision else {
             return
         }
 

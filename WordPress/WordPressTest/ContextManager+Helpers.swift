@@ -38,7 +38,7 @@ extension ContextManager {
         // or indirectly) during the test's `tearDown` would call the real singleton
         // instead of the mock, which isn't ideal and could have unintended side effect.
         testCase.additionalTeardown = { [weak self] in
-            guard let self = self else {
+            guard let self else {
                 return
             }
             self.mainContext.reset()

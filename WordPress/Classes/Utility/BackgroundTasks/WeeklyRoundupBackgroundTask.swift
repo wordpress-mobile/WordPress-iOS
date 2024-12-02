@@ -455,7 +455,7 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
 
                 switch result {
                 case .success(let topSiteStats):
-                    guard let topSiteStats = topSiteStats else {
+                    guard let topSiteStats else {
                         return
                     }
 
@@ -471,7 +471,7 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
         let scheduleNotification = BlockOperation {
             let group = DispatchGroup()
 
-            guard let siteStats = siteStats else {
+            guard let siteStats else {
                 self.cancelExecution()
                 return
             }
@@ -709,7 +709,7 @@ class WeeklyRoundupNotificationScheduler {
         let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
 
         userNotificationCenter.add(request) { error in
-            if let error = error {
+            if let error {
                 completion(.failure(error))
                 return
             }
@@ -741,7 +741,7 @@ class WeeklyRoundupNotificationScheduler {
     }
 
     func notificationTitle(_ siteTitle: String?) -> String {
-        if let siteTitle = siteTitle {
+        if let siteTitle {
             return String(format: TextContent.dynamicNotificationTitle, siteTitle)
         } else {
             return TextContent.staticNotificationTitle

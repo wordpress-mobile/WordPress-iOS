@@ -5,13 +5,15 @@ public struct UserListView: View {
 
     @StateObject
     private var viewModel: UserListViewModel
+    private let currentUserId: Int32
     private let userService: UserServiceProtocol
     private let applicationTokenListDataProvider: ApplicationTokenListDataProvider
 
-    public init(userService: UserServiceProtocol, applicationTokenListDataProvider: ApplicationTokenListDataProvider) {
+    public init(currentUserId: Int32, userService: UserServiceProtocol, applicationTokenListDataProvider: ApplicationTokenListDataProvider) {
+        self.currentUserId = currentUserId
         self.userService = userService
         self.applicationTokenListDataProvider = applicationTokenListDataProvider
-        _viewModel = StateObject(wrappedValue: UserListViewModel(userService: userService))
+        _viewModel = StateObject(wrappedValue: UserListViewModel(userService: userService, currentUserId: currentUserId))
     }
 
     public var body: some View {
@@ -22,11 +24,9 @@ public struct UserListView: View {
             Group {
                 if let error = viewModel.error {
                     EmptyStateView(error.localizedDescription, systemImage: "exclamationmark.triangle.fill")
-                } else if viewModel.isLoadingItems {
-                    ProgressView()
                 } else {
                     List(viewModel.sortedUsers) { section in
-                        Section(section.role) {
+                        Section(section.headerText) {
                             if section.users.isEmpty {
                                 Text(Strings.noUsersFound)
                                     .font(.body)
@@ -34,7 +34,7 @@ public struct UserListView: View {
                                     .listRowBackground(Color.clear)
                             } else {
                                 ForEach(section.users) { user in
-                                    UserListItem(user: user, userService: userService, applicationTokenListDataProvider: applicationTokenListDataProvider)
+                                    UserListItem(user: user, isCurrentUser: user.id == currentUserId, userService: userService, applicationTokenListDataProvider: applicationTokenListDataProvider)
                                 }
                             }
                         }
@@ -47,6 +47,20 @@ public struct UserListView: View {
             }
         }
         .navigationTitle(Strings.usersListTitle)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                HStack {
+                    if viewModel.isRefreshing {
+                        ProgressView()
+                    }
+                    Text(Strings.usersListTitle)
+                        .font(.headline)
+                }
+            }
+        }
+        .task(id: viewModel.mode) {
+            await viewModel.performQuery()
+        }
         .task { await viewModel.onAppear() }
     }
 
@@ -73,18 +87,18 @@ public struct UserListView: View {
 
 #Preview("Loading") {
     NavigationView {
-        UserListView(userService: MockUserProvider(), applicationTokenListDataProvider: StaticTokenProvider(tokens: .success(.testTokens)))
+        UserListView(currentUserId: 0, userService: MockUserProvider(), applicationTokenListDataProvider: StaticTokenProvider(tokens: .success(.testTokens)))
     }
 }
 
 #Preview("Error") {
     NavigationView {
-        UserListView(userService: MockUserProvider(scenario: .error), applicationTokenListDataProvider: StaticTokenProvider(tokens: .success(.testTokens)))
+        UserListView(currentUserId: 0, userService: MockUserProvider(scenario: .error), applicationTokenListDataProvider: StaticTokenProvider(tokens: .success(.testTokens)))
     }
 }
 
 #Preview("List") {
     NavigationView {
-        UserListView(userService: MockUserProvider(scenario: .dummyData), applicationTokenListDataProvider: StaticTokenProvider(tokens: .success(.testTokens)))
+        UserListView(currentUserId: 0, userService: MockUserProvider(scenario: .dummyData), applicationTokenListDataProvider: StaticTokenProvider(tokens: .success(.testTokens)))
     }
 }

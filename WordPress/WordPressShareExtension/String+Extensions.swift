@@ -64,23 +64,23 @@ extension String {
                                    remoteID: Int64? = nil,
                                    height: Int32? = nil,
                                    width: Int32? = nil) -> String {
-        guard let mediaURL = mediaURL, !mediaURL.isEmpty else {
+        guard let mediaURL, !mediaURL.isEmpty else {
             return self
         }
 
         var returnURLString = "<img"
 
-        if let remoteID = remoteID, remoteID > 0 {
+        if let remoteID, remoteID > 0 {
             returnURLString.append(contentsOf: " wp-image-\(remoteID)")
         }
         returnURLString.append(contentsOf: " src='\(mediaURL)' class='size-full'")
 
-        if let uploadID = uploadID {
+        if let uploadID {
             returnURLString.append(contentsOf: " data-wp_upload_id='\(uploadID)'")
         }
 
-        if let height = height, height > 0,
-            let width = width, width > 0 {
+        if let height, height > 0,
+            let width, width > 0 {
             returnURLString.append(contentsOf: " width='\(width)' height='\(height)'")
         }
         returnURLString.append(contentsOf: " />")

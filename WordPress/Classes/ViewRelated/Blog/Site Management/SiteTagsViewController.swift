@@ -238,7 +238,7 @@ extension SiteTagsViewController {
         tagDetailsView.setAction { [weak self] updatedData in
             self?.navigationController?.popViewController(animated: true)
 
-            guard let tag = tag else {
+            guard let tag else {
                 return
             }
 
@@ -246,7 +246,7 @@ extension SiteTagsViewController {
         }
 
         tagDetailsView.setUpdate { [weak self] updatedData in
-            guard let tag = tag else {
+            guard let tag else {
                 self?.addTag(data: updatedData)
                 return
             }

@@ -285,7 +285,7 @@ private class ReaderPostServiceMock: ReaderPostService {
             return
         }
 
-        guard let returnPost = returnPost else {
+        guard let returnPost else {
             return
         }
 

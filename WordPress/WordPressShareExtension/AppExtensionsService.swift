@@ -139,7 +139,7 @@ extension AppExtensionsService {
     private func recentSites(with sites: [RemoteBlog], ignoring excludedSites: [RemoteBlog]? = nil) -> [RemoteBlog] {
         let visibleSites = sites.filter({ $0.visible })
         var filteredVisibleSites: [RemoteBlog]
-        if let excludedSites = excludedSites {
+        if let excludedSites {
             filteredVisibleSites = visibleSites.filter({ site in
                 !excludedSites.contains(site)
             })
@@ -155,7 +155,7 @@ extension AppExtensionsService {
 
     private func remainingSites(with sites: [RemoteBlog], ignoring excludedSites: [RemoteBlog]? = nil) -> [RemoteBlog] {
         let visibleSites = sites.filter({ $0.visible })
-        guard let excludedSites = excludedSites else {
+        guard let excludedSites else {
             return visibleSites
         }
 
@@ -299,7 +299,7 @@ extension AppExtensionsService {
         remote.uploadMedia(allRemoteMedia, requestEnqueued: { taskID in
             uploadMediaOpIDs.forEach({ uploadMediaOpID in
                 self.coreDataStack.updateStatus(.inProgress, forUploadOpWithObjectID: uploadMediaOpID)
-                if let taskID = taskID {
+                if let taskID {
                     self.coreDataStack.updateTaskID(taskID, forUploadOpWithObjectID: uploadMediaOpID)
                 }
             })
@@ -456,7 +456,7 @@ fileprivate extension AppExtensionsService {
         // 15-Nov-2017: Creating a post without media on the PostServiceRemoteREST does not use background uploads
         let remote = PostServiceRemoteREST(wordPressComRestApi: simpleRestAPI, siteID: remotePost.siteID)
         remote.createPost(remotePost, success: { post in
-            if let post = post {
+            if let post {
                 DDLogInfo("Post \(post.postID.stringValue) sucessfully uploaded to site \(post.siteID.stringValue)")
                 if let postID = post.postID {
                     self.coreDataStack.updatePostOperation(with: .complete, remotePostID: postID.int64Value, forPostUploadOpWithObjectID: uploadOpObjectID)

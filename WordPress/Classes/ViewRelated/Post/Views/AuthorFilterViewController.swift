@@ -116,7 +116,7 @@ class AuthorFilterViewController: UITableViewController {
             return
         }
 
-        if let selectedIndexPath = selectedIndexPath {
+        if let selectedIndexPath {
             setRow(at: selectedIndexPath, selected: false)
         }
 
@@ -252,7 +252,7 @@ private class AuthorFilterCell: UITableViewCell {
                 gravatarImageView.contentMode = .scaleAspectFill
 
                 let placeholder = UIImage(named: "comment-author-gravatar")
-                if let email = email {
+                if let email {
                     gravatarImageView.downloadGravatar(for: email, placeholderImage: placeholder ?? UIImage())
                 } else {
                     gravatarImageView.image = placeholder

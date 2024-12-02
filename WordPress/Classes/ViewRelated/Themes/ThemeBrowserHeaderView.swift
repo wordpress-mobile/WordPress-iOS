@@ -29,7 +29,7 @@ final class ThemeBrowserHeaderView: UICollectionReusableView {
             var customTheme = false
             var hasDetailsURL = false
 
-            if let theme = theme {
+            if let theme {
                 customTheme = theme.custom
                 hasDetailsURL = theme.hasDetailsURL()
             }
@@ -47,7 +47,7 @@ final class ThemeBrowserHeaderView: UICollectionReusableView {
 
     weak var presenter: ThemePresenter? {
         didSet {
-            if let presenter = presenter {
+            if let presenter {
                 theme = presenter.currentTheme()
 
                 if ThemeType.mayPurchase {

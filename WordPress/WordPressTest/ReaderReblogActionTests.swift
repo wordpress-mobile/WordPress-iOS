@@ -37,7 +37,7 @@ class ReaderReblogActionTests: ReblogTestCase {
         action.execute(readerPost: readerPost!, origin: controller, reblogSource: .list)
         // Then
         waitForExpectations(timeout: 4) { error in
-            if let error = error {
+            if let error {
                 XCTFail("waitForExpectationsWithTimeout errored: \(error)")
             }
         }
@@ -72,7 +72,7 @@ class ReblogPresenterTests: ReblogTestCase {
         presenter.presentReblog(coreDataStack: contextManager, readerPost: readerPost!, origin: origin)
         // Then
         waitForExpectations(timeout: 4) { error in
-            if let error = error {
+            if let error {
                 XCTFail("waitForExpectationsWithTimeout errored: \(error)")
             }
         }

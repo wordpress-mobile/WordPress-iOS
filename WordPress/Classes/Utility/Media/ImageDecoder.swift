@@ -64,7 +64,7 @@ private extension Data {
             return false
         }
         return zip(numbers.indices, numbers).allSatisfy { index, number in
-            guard let number = number else { return true }
+            guard let number else { return true }
             return self[index] == number
         }
     }

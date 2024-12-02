@@ -84,7 +84,7 @@ class JetpackScanThreatDetailsViewController: UIViewController {
 
         alert.addAction(UIAlertAction(title: Strings.cancel, style: .cancel))
         alert.addAction(UIAlertAction(title: Strings.ok, style: .default, handler: { [weak self] _ in
-            guard let self = self else {
+            guard let self else {
                 return
             }
             self.delegate?.willFixThreat(self.threat, controller: self)
@@ -107,7 +107,7 @@ class JetpackScanThreatDetailsViewController: UIViewController {
 
         alert.addAction(UIAlertAction(title: Strings.cancel, style: .cancel))
         alert.addAction(UIAlertAction(title: Strings.ok, style: .default, handler: { [weak self] _ in
-            guard let self = self else {
+            guard let self else {
                 return
             }
 

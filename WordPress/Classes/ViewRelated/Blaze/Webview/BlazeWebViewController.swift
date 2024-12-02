@@ -125,7 +125,7 @@ class BlazeWebViewController: UIViewController, BlazeWebView {
     }
 
     private func stopWaitingForConnectionRestored() {
-        guard let reachabilityObserver = reachabilityObserver else {
+        guard let reachabilityObserver else {
             return
         }
 

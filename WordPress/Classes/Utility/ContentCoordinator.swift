@@ -30,7 +30,7 @@ struct DefaultContentCoordinator: ContentCoordinator {
     }
 
     func displayReaderWithPostId(_ postID: NSNumber?, siteID: NSNumber?) throws {
-        guard let postID = postID, let siteID = siteID else {
+        guard let postID, let siteID else {
             throw DisplayError.missingParameter
         }
 
@@ -39,8 +39,8 @@ struct DefaultContentCoordinator: ContentCoordinator {
     }
 
     func displayCommentsWithPostId(_ postID: NSNumber?, siteID: NSNumber?, commentID: NSNumber?, source: ReaderCommentsSource) throws {
-        guard let postID = postID,
-              let siteID = siteID,
+        guard let postID,
+              let siteID,
               let commentsViewController = ReaderCommentsViewController(postID: postID, siteID: siteID, source: source) else {
                   throw DisplayError.missingParameter
               }
@@ -51,7 +51,7 @@ struct DefaultContentCoordinator: ContentCoordinator {
     }
 
     func displayStatsWithSiteID(_ siteID: NSNumber?, url: URL? = nil) throws {
-        guard let siteID = siteID,
+        guard let siteID,
               let blog = Blog.lookup(withID: siteID, in: mainContext),
               blog.supports(.stats)
         else {
@@ -59,7 +59,7 @@ struct DefaultContentCoordinator: ContentCoordinator {
         }
 
         // Stats URLs should be of the form /stats/:time_period/:domain
-        if let url = url {
+        if let url {
             setTimePeriodForStatsURLIfPossible(url)
         }
 
@@ -83,7 +83,7 @@ struct DefaultContentCoordinator: ContentCoordinator {
     }
 
     func displayBackupWithSiteID(_ siteID: NSNumber?) throws {
-        guard let siteID = siteID,
+        guard let siteID,
               let blog = Blog.lookup(withID: siteID, in: mainContext),
               let backupListViewController = BackupListViewController.withJPBannerForBlog(blog)
         else {
@@ -94,7 +94,7 @@ struct DefaultContentCoordinator: ContentCoordinator {
     }
 
     func displayScanWithSiteID(_ siteID: NSNumber?) throws {
-        guard let siteID = siteID,
+        guard let siteID,
               let blog = Blog.lookup(withID: siteID, in: mainContext),
               blog.isScanAllowed()
         else {
@@ -106,7 +106,7 @@ struct DefaultContentCoordinator: ContentCoordinator {
     }
 
     func displayFollowersWithSiteID(_ siteID: NSNumber?, expirationTime: TimeInterval) throws {
-        guard let siteID = siteID,
+        guard let siteID,
               let blog = Blog.lookup(withID: siteID, in: mainContext)
         else {
             throw DisplayError.missingParameter
@@ -122,7 +122,7 @@ struct DefaultContentCoordinator: ContentCoordinator {
     }
 
     func displayStreamWithSiteID(_ siteID: NSNumber?) throws {
-        guard let siteID = siteID else {
+        guard let siteID else {
             throw DisplayError.missingParameter
         }
 

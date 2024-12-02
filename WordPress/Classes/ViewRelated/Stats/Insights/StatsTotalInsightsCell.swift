@@ -23,7 +23,7 @@ struct StatsTotalInsightsData: Equatable {
                                                statsSummaryType: StatsSummaryType,
                                                periodEndDate: Date? = nil) -> StatsTotalInsightsData {
 
-        guard let periodSummary = periodSummary else {
+        guard let periodSummary else {
             return StatsTotalInsightsData(count: 0)
         }
 
@@ -262,7 +262,7 @@ class StatsTotalInsightsCell: StatsBaseCell {
     }
 
     private func updateGuideView(withGuideText guideText: NSAttributedString?) {
-        if let guideText = guideText,
+        if let guideText,
             guideText.string.isEmpty == false {
             outerStackView.addArrangedSubview(guideView)
 
@@ -285,7 +285,7 @@ class StatsTotalInsightsCell: StatsBaseCell {
         }
 
         if guideText != nil,
-           let statsSummaryType = statsSummaryType,
+           let statsSummaryType,
            let guideText = StatsTotalInsightsData.makeTotalInsightsGuideText(lastPostInsight: lastPostInsight, statsSummaryType: statsSummaryType) {
             self.guideText = guideText
             updateGuideView(withGuideText: guideText)
@@ -293,8 +293,8 @@ class StatsTotalInsightsCell: StatsBaseCell {
     }
 
     private func updateComparisonLabel(withCount count: Int, difference: Int?, percentage: Int?) {
-        guard let difference = difference,
-              let percentage = percentage,
+        guard let difference,
+              let percentage,
               difference != 0 || count > 0 else {
             comparisonLabel.isHidden = true
             return
@@ -370,11 +370,11 @@ class StatsTotalInsightsCell: StatsBaseCell {
     }
 
     @objc private func guideTapped() {
-        if let guideURL = guideURL {
+        if let guideURL {
             siteStatsInsightsDelegate?.displayWebViewWithURL?(guideURL)
         }
 
-        guard let statSection = statSection else {
+        guard let statSection else {
             return
         }
 

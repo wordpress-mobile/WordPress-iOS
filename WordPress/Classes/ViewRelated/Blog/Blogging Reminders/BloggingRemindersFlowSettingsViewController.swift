@@ -354,7 +354,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         button.isEnabled = false
 
         scheduler.schedule(schedule, for: blog, time: scheduledTime) { [weak self] result in
-            guard let self = self else {
+            guard let self else {
                 return
             }
             switch result {
@@ -612,7 +612,7 @@ private extension BloggingRemindersFlowSettingsViewController {
             dayName: calendar.shortWeekdaySymbols[weekdayIndex].uppercased(),
             isSelected: isSelected) { [weak self] button in
 
-            guard let self = self else {
+            guard let self else {
                 return
             }
 

@@ -42,7 +42,7 @@ private extension PostingActivityDay {
     }
 
     func colorForCount() -> UIColor? {
-        guard let dayData = dayData else {
+        guard let dayData else {
             return .clear
         }
 

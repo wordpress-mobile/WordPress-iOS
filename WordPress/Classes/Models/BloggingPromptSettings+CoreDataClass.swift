@@ -39,7 +39,7 @@ public class BloggingPromptSettings: NSManagedObject {
     }
 
     func reminderTimeDate() -> Date? {
-        guard let reminderTime = reminderTime else {
+        guard let reminderTime else {
             return nil
         }
         let dateFormatter = DateFormatter()

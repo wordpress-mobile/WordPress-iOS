@@ -39,7 +39,7 @@ struct OverviewTabData: FilterTabBarItem, Hashable {
                                       range: NSMakeRange(0, attributedTitle.string.count))
 
         let dataString: String = {
-            if let tabDataStub = tabDataStub {
+            if let tabDataStub {
                 return tabDataStub
             }
             return tabData.abbreviatedString()
@@ -69,8 +69,8 @@ struct OverviewTabData: FilterTabBarItem, Hashable {
     }
 
     var differenceTextColor: UIColor {
-        if let date = date,
-            let period = period,
+        if let date,
+            let period,
             StatsPeriodHelper().dateAvailableAfterDate(date, period: period) == false {
             return UIAppColor.neutral(.shade40)
         }

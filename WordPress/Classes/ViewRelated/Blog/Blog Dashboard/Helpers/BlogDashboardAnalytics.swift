@@ -23,7 +23,7 @@ class BlogDashboardAnalytics {
         if !fired.contains(where: { $0 == (event, properties) }) {
             fired.append((event, properties))
 
-            if let blog = blog {
+            if let blog {
                 WPAnalytics.track(event, properties: properties, blog: blog)
             } else {
                 WPAnalytics.track(event, properties: properties)

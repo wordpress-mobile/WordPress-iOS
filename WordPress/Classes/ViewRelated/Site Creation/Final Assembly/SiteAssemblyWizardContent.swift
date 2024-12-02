@@ -96,7 +96,7 @@ final class SiteAssemblyWizardContent: UIViewController {
         let creationRequest = siteCreator.build()
         let shouldPerformPurchasingStep = siteCreator.shouldShowCheckout
         service.createSite(creationRequest: creationRequest) { [weak self] status in
-            guard let self = self else {
+            guard let self else {
                 return
             }
 
@@ -179,7 +179,7 @@ final class SiteAssemblyWizardContent: UIViewController {
         var configuration = ErrorStateViewConfiguration.configuration(type: type)
 
         configuration.retryActionHandler = { [weak self] in
-            guard let self = self else {
+            guard let self else {
                 return
             }
             self.retryTapped()
@@ -207,7 +207,7 @@ final class SiteAssemblyWizardContent: UIViewController {
 
         if configuration.contactSupportActionHandler == nil {
             configuration.contactSupportActionHandler = { [weak self] in
-                guard let self = self else {
+                guard let self else {
                     return
                 }
                 self.contactSupportTapped()

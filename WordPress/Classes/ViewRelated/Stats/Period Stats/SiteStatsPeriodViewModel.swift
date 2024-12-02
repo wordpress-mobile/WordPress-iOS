@@ -33,7 +33,7 @@ final class SiteStatsPeriodViewModel: Observable {
     private var mostRecentChartData: StatsSummaryTimeIntervalData? {
         didSet {
             if oldValue == nil {
-                guard let mostRecentChartData = mostRecentChartData else {
+                guard let mostRecentChartData else {
                     return
                 }
 
@@ -316,11 +316,11 @@ private extension SiteStatsPeriodViewModel {
 
         if mostRecentChartData == nil {
             mostRecentChartData = periodSummary
-        } else if let mostRecentChartData = mostRecentChartData,
-            let periodSummary = periodSummary,
+        } else if let mostRecentChartData,
+            let periodSummary,
             mostRecentChartData.periodEndDate == periodSummary.periodEndDate {
             self.mostRecentChartData = periodSummary
-        } else if let periodSummary = periodSummary,   // when there is API data that has more recent API period date
+        } else if let periodSummary,   // when there is API data that has more recent API period date
                   let chartData = mostRecentChartData, // than our local chartData
                   periodSummary.periodEndDate > chartData.periodEndDate {
 

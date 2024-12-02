@@ -44,7 +44,7 @@ class NotificationEventTracker {
             Properties.notificationType.rawValue: type.rawValue,
         ]
 
-        if let siteId = siteId {
+        if let siteId {
             properties[Properties.siteId.rawValue] = String(siteId)
         }
 

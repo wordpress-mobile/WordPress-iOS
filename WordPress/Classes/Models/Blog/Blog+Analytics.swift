@@ -8,7 +8,7 @@ extension Blog {
     }
 
     var analyticsType: AnalyticsType {
-        if let dotComID = dotComID, dotComID.intValue > 0 {
+        if let dotComID, dotComID.intValue > 0 {
             if isHostedAtWPcom {
                 return .wpcom
             } else {

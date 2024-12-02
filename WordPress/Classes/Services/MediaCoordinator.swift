@@ -215,7 +215,7 @@ class MediaCoordinator: NSObject {
 
     private func handleMediaImportResult(coordinator: MediaProgressCoordinator, totalProgress: Progress, analyticsInfo: MediaAnalyticsInfo?, media: Media?, error: Error?) -> Void {
         if let error = error as NSError? {
-            if let media = media {
+            if let media {
                 coordinator.attach(error: error as NSError, toMediaID: media.uploadID)
                 fail(error as NSError, media: media)
             } else {
@@ -224,7 +224,7 @@ class MediaCoordinator: NSObject {
             }
             return
         }
-        guard let media = media, !media.isDeleted else {
+        guard let media, !media.isDeleted else {
             return
         }
 

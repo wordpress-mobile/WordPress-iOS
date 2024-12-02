@@ -114,7 +114,7 @@ class Notification: NSManagedObject {
     }
 
     func renderSnippet() -> NSAttributedString? {
-        guard let snippetContent = snippetContent else {
+        guard let snippetContent else {
             return nil
         }
         return formatter.render(content: snippetContent, with: SnippetsContentStyles())
@@ -332,7 +332,7 @@ extension Notification {
             return timestampAsDate
         }
 
-        guard let timestamp = timestamp, let timestampAsDate = Date.dateWithISO8601String(timestamp) else {
+        guard let timestamp, let timestampAsDate = Date.dateWithISO8601String(timestamp) else {
             DDLogError("Error: couldn't parse date [\(String(describing: self.timestamp))] for notification with id [\(notificationId)]")
             return Date()
         }

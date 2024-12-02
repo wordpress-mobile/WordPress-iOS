@@ -32,7 +32,7 @@ class PluginViewModel: Observable {
     }
 
     private var directoryEntry: PluginDirectoryEntry? {
-        if let plugin = plugin {
+        if let plugin {
             return plugin.directoryEntry
         }
 
@@ -180,10 +180,10 @@ class PluginViewModel: Observable {
                            value: version)
         }
 
-        guard let plugin = plugin else {
+        guard let plugin else {
             // This means we have capabilities to update a Plugin, but we're not looking at an already-installed plugin.
             // We're gonna show a "install plugin" button.
-            guard let directoryEntry = directoryEntry else {
+            guard let directoryEntry else {
                 return nil
             }
 

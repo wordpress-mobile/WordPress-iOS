@@ -101,7 +101,7 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
             noResultsViewController?.delegate = self
         }
 
-        guard let noResultsViewController = noResultsViewController else {
+        guard let noResultsViewController else {
             return
         }
 

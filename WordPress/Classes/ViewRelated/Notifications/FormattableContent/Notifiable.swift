@@ -91,7 +91,7 @@ protocol Notifiable {
 
 extension Notifiable {
     var kind: NotificationKind {
-        guard let type = type, let kind = NotificationKind(rawValue: type) else {
+        guard let type, let kind = NotificationKind(rawValue: type) else {
             return .unknown
         }
         return kind

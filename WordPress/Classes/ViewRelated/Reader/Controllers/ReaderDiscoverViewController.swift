@@ -288,7 +288,7 @@ private class ReaderDiscoverStreamViewController: ReaderStreamViewController {
     }
 
     override func loadMoreItems(_ success: ((Bool) -> Void)?, failure: ((NSError) -> Void)?) {
-        footerView.showSpinner(true)
+        footerView.isHidden = false
 
         page += 1
         WPAnalytics.trackReader(.readerDiscoverPaginated, properties: ["page": page])
@@ -296,7 +296,7 @@ private class ReaderDiscoverStreamViewController: ReaderStreamViewController {
         cardsService.fetch(isFirstPage: false, success: { _, hasMore in
             success?(hasMore)
         }, failure: { error in
-            guard let error = error else {
+            guard let error else {
                 return
             }
 

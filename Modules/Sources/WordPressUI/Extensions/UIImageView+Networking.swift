@@ -36,10 +36,10 @@ public extension UIImageView {
     @objc func downloadImage(from url: URL?, placeholderImage: UIImage? = nil, success: ((UIImage) -> Void)? = nil, failure: ((Error?) -> Void)? = nil) {
         // Ideally speaking, this method should *not* receive an Optional URL. But we're doing so, for convenience.
         // If the actual URL was nil, at least we set the Placeholder Image. Capicci?
-        guard let url = url else {
+        guard let url else {
             cancelImageDownload()
 
-            if let placeholderImage = placeholderImage {
+            if let placeholderImage {
                 self.image = placeholderImage
             }
 
@@ -67,7 +67,7 @@ public extension UIImageView {
         }
 
         guard let url = request.url else {
-            if let placeholderImage = placeholderImage {
+            if let placeholderImage {
                 image = placeholderImage
             }
 
@@ -82,12 +82,12 @@ public extension UIImageView {
 
         // Using the placeholder only makes sense if we know we're going to download an image
         // that's not immediately available to us.
-        if let placeholderImage = placeholderImage {
+        if let placeholderImage {
             self.image = placeholderImage
         }
 
         let task = URLSession.shared.dataTask(with: request, completionHandler: { [weak self] data, response, error in
-            guard let data = data, let image = UIImage(data: data, scale: UIScreen.main.scale) else {
+            guard let data, let image = UIImage(data: data, scale: UIScreen.main.scale) else {
                 DispatchQueue.main.async {
                     failure?(error)
                     self?.downloadTask = nil

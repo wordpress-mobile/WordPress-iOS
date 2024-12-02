@@ -4,9 +4,6 @@ import SwiftUI
 public class UserDeleteViewModel: ObservableObject {
 
     @Published
-    private(set) var isFetchingOtherUsers: Bool = false
-
-    @Published
     private(set) var isDeletingUser: Bool = false
 
     @Published
@@ -16,10 +13,13 @@ public class UserDeleteViewModel: ObservableObject {
     var selectedUser: DisplayUser? = nil
 
     @Published
-    private(set) var otherUsers: [DisplayUser] = []
-
-    @Published
-    private(set) var deleteButtonIsDisabled: Bool = true
+    private(set) var otherUsers: [DisplayUser] = [] {
+        didSet {
+            if selectedUser == nil {
+                selectedUser = otherUsers.first
+            }
+        }
+    }
 
     private let userService: UserServiceProtocol
     let user: DisplayUser
@@ -27,30 +27,11 @@ public class UserDeleteViewModel: ObservableObject {
     init(user: DisplayUser, userService: UserServiceProtocol) {
         self.user = user
         self.userService = userService
-
-        // Default `selectedUser` to be the first one in `otherUsers`.
-        // Using Combine here because `didSet` observers don't work with `@Published` properties.
-        //
-        // The implementation is equivalent to `if selectedUser == nil { selectedUser = otherUsers.first }`
-        $otherUsers.combineLatest($selectedUser)
-            .filter { _, selectedUser in selectedUser == nil }
-            .map { others, _ in others.first }
-            .assign(to: &$selectedUser)
-
     }
 
     func fetchOtherUsers() async {
-        isFetchingOtherUsers = true
-        deleteButtonIsDisabled = true
-
-        defer {
-            isFetchingOtherUsers = false
-            deleteButtonIsDisabled = otherUsers.isEmpty
-        }
-
         do {
-            let users = try await userService.fetchUsers()
-            self.otherUsers = users
+            self.otherUsers = try await userService.allUsers()
                 .filter { $0.id != self.user.id } // Don't allow re-assigning to yourself
                 .sorted(using: KeyPathComparator(\.username))
         } catch {

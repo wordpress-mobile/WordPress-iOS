@@ -45,10 +45,10 @@ extension MediaUploadOperation {
         remoteMedia.file = fileName
         remoteMedia.width = NSNumber(value: width)
         remoteMedia.height = NSNumber(value: height)
-        if let remoteURL = remoteURL {
+        if let remoteURL {
             remoteMedia.url = URL(string: remoteURL)
         }
-        if let localURL = localURL {
+        if let localURL {
             remoteMedia.localURL = URL(fileURLWithPath: localURL)
         }
         return remoteMedia

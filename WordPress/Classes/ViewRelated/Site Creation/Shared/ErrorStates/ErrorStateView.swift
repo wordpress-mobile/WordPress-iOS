@@ -192,7 +192,7 @@ final class ErrorStateView: UIView {
             contentStackView.addArrangedSubview(subtitle)
         }
 
-        if let retryButton = retryButton {
+        if let retryButton {
             retryButton.addTarget(self, action: #selector(retryTapped), for: .touchUpInside)
 
             let containerView = UIView(frame: .zero)
@@ -220,7 +220,7 @@ final class ErrorStateView: UIView {
     }
 
     private func configureDismissalViewIfNeeded() {
-        guard let dismissalImageView = dismissalImageView else {
+        guard let dismissalImageView else {
             return
         }
 
@@ -243,7 +243,7 @@ final class ErrorStateView: UIView {
     }
 
     private func configureSupportLabelIfNeeded() {
-        guard let contactSupportLabel = contactSupportLabel else {
+        guard let contactSupportLabel else {
             return
         }
 

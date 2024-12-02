@@ -70,15 +70,14 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     @IBOutlet weak var likesContainerView: UIView!
 
     /// The loading view, which contains all the ghost views
-    @IBOutlet weak var loadingView: UIView!
-
-    /// The loading view, which contains all the ghost views
     @IBOutlet weak var actionStackView: UIStackView!
 
     /// Attribution view for Discovery posts
     @IBOutlet weak var attributionView: ReaderCardDiscoverAttributionView!
 
     @IBOutlet weak var toolbarHeightConstraint: NSLayoutConstraint!
+
+    private let activityIndicator = UIActivityIndicatorView(style: .medium)
 
     /// The actual header
     private let featuredImage: ReaderDetailFeaturedImageView = .loadFromNib()
@@ -278,7 +277,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func navigateToCommentIfNecessary() {
-        if let post = post,
+        if let post,
            let commentID = coordinator?.commentID,
            !hasAutomaticallyTriggeredCommentAction {
             hasAutomaticallyTriggeredCommentAction = true
@@ -291,31 +290,43 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         }
     }
 
-    /// Show ghost cells indicating the content is loading
     func showLoading() {
-        let style = GhostStyle()
-        loadingView.startGhostAnimation(style: style)
+        if activityIndicator.superview == nil {
+            for view in allContentViews {
+                view.alpha = 0
+            }
+            scrollView.addSubview(activityIndicator)
+            activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                activityIndicator.centerXAnchor.constraint(equalTo: webView.centerXAnchor),
+                activityIndicator.topAnchor.constraint(equalTo: webView.topAnchor, constant: 64),
+            ])
+            activityIndicator.startAnimating()
+        }
     }
 
-    /// Hide the ghost cells
     func hideLoading() {
         guard !featuredImage.isLoading, !isLoadingWebView else {
             return
         }
 
-        UIView.animate(withDuration: 0.3, animations: {
-            self.loadingView.alpha = 0.0
-        }) { (_) in
-            self.loadingView.isHidden = true
-            self.loadingView.stopGhostAnimation()
-            self.loadingView.alpha = 1.0
+        activityIndicator.stopAnimating()
+        activityIndicator.removeFromSuperview()
+        UIView.animate(withDuration: 0.25) {
+            for view in self.allContentViews {
+                view.alpha = 1
+            }
         }
 
-        guard let post = post else {
+        guard let post else {
             return
         }
 
         fetchRelatedPostsIfNeeded(for: post)
+    }
+
+    private var allContentViews: [UIView] {
+        [webView, likesContainerView, commentsTableView, relatedPostsTableView, actionStackView]
     }
 
     func fetchRelatedPostsIfNeeded(for post: ReaderPost) {
@@ -390,7 +401,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     func updateComments(_ comments: [Comment], totalComments: Int) {
-        guard let post = post else {
+        guard let post else {
             DDLogError("Missing post when updating Reader post detail comments.")
             return
         }
@@ -412,7 +423,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     func updateFollowButtonState() {
-        guard let post = post else {
+        guard let post else {
             return
         }
 
@@ -552,7 +563,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         featuredImage.delegate = coordinator
 
-        view.insertSubview(featuredImage, belowSubview: loadingView)
+        view.insertSubview(featuredImage, belowSubview: webView)
 
         NSLayoutConstraint.activate([
             featuredImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
@@ -574,7 +585,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func fetchLikes() {
-        guard let post = post else {
+        guard let post else {
             return
         }
 
@@ -603,7 +614,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     @objc private func fetchComments() {
-        guard let post = post else {
+        guard let post else {
             return
         }
 
@@ -1205,7 +1216,7 @@ extension ReaderDetailViewController {
 // For the `View All Comments` button.
 extension ReaderDetailViewController: BorderedButtonTableViewCellDelegate {
     func buttonTapped() {
-        guard let post = post else {
+        guard let post else {
             return
         }
 

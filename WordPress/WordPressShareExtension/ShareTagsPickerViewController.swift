@@ -193,7 +193,7 @@ fileprivate extension ShareTagsPickerViewController {
     }
 
     func tagsFailedLoading(error: Error?) {
-        if let error = error {
+        if let error {
             DDLogError("Error loading tags: \(error)")
         }
         dataSource = FailureDataSource()

@@ -115,7 +115,7 @@ class RevisionDiffsBrowserViewController: UIViewController {
 
 private extension RevisionDiffsBrowserViewController {
     private func showRevision() {
-        guard let revisionState = revisionState else {
+        guard let revisionState else {
             return
         }
 
@@ -149,7 +149,7 @@ private extension RevisionDiffsBrowserViewController {
     }
 
     private func updateNextPreviousButtons() {
-        guard let revisionState = revisionState else {
+        guard let revisionState else {
             return
         }
         previousButton.isHidden = revisionState.currentIndex == 0
@@ -171,8 +171,8 @@ private extension RevisionDiffsBrowserViewController {
     }
 
     private func scroll(_ direction: UIPageViewController.NavigationDirection, animated: Bool = false, completion: ((Bool) -> Void)? = nil) {
-        guard let revisionState = revisionState,
-            let pageManager = pageManager,
+        guard let revisionState,
+            let pageManager,
             !pageManager.viewControllers.isEmpty else {
                 return
         }

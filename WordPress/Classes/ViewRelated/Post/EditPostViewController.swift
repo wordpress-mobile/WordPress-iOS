@@ -67,7 +67,7 @@ class EditPostViewController: UIViewController {
     /// - Note: it's preferable to use one of the convenience initializers
     fileprivate init(post: Post?, blog: Blog, prompt: BloggingPrompt? = nil) {
         self.post = post
-        if let post = post {
+        if let post {
             if !post.originalIsDraft() {
                 editingExistingPost = true
             }
@@ -102,7 +102,7 @@ class EditPostViewController: UIViewController {
     }
 
     fileprivate func postToEdit() -> Post {
-        if let post = post {
+        if let post {
             return post
         } else {
             let newPost = blog.createDraftPost()
@@ -178,7 +178,7 @@ class EditPostViewController: UIViewController {
         let presentingController = self.presentingViewController
         // will dismiss self
         dismiss(animated: animated) { [weak self] in
-            guard let self = self else {
+            guard let self else {
                 return
             }
             self.afterDismiss?()

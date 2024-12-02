@@ -81,7 +81,7 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
 
     /// Description
     private func setupSuggestionsTableViewIfNeeded() {
-        guard let siteID = siteID, shouldShowSuggestions else {
+        guard let siteID, shouldShowSuggestions else {
             return
         }
 
@@ -96,7 +96,7 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
     }
 
     private func showSuggestionsViewIfNeeded() {
-        guard let searchText = searchText, !searchText.isEmpty else {
+        guard let searchText, !searchText.isEmpty else {
             return
         }
         suggestionsTableView?.showSuggestions(forWord: searchText)

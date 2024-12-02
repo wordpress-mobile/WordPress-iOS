@@ -269,7 +269,7 @@ private extension WebCommentContentRenderer {
         }
 
         // otherwise: sanitize the content, cache it, and then return it.
-        guard let htmlTemplateFormat = htmlTemplateFormat else {
+        guard let htmlTemplateFormat else {
             DDLogError("WebCommentContentRenderer: Failed to load HTML template format for comment content.")
             return String()
         }

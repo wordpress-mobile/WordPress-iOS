@@ -29,7 +29,7 @@ class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
 
     // The content width minus the content insets used when calculating rows, and centering
     private var maxContentWidth: CGFloat {
-        guard let collectionView = collectionView else {
+        guard let collectionView else {
             return 0
         }
 
@@ -50,7 +50,7 @@ class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
     }
 
     override func prepare() {
-        guard let collectionView = collectionView else {
+        guard let collectionView else {
             return
         }
 
@@ -148,7 +148,7 @@ class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
     /// - Returns: The width for the cell either from the delegate or the itemSize property
     private func sizeForItem(at indexPath: IndexPath) -> CGSize {
         guard
-            let collectionView = collectionView,
+            let collectionView,
             let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout,
             let size = delegate.collectionView?(collectionView, layout: self, sizeForItemAt: indexPath)
         else {
@@ -160,8 +160,8 @@ class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
 
     private func sizeForOverflowItem(at indexPath: IndexPath, remainingItems: Int? = nil) -> CGSize {
         guard
-            let collectionView = collectionView,
-            let delegate = delegate
+            let collectionView,
+            let delegate
         else {
             return CGSize(width: itemSize.width, height: cellHeight)
         }

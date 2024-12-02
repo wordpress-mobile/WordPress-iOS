@@ -90,7 +90,7 @@ open class NUXButtonViewController: UIViewController {
     }
 
     private func configure(button: NUXButton?, withConfig buttonConfig: NUXButtonConfig?, and style: NUXButtonStyle?) {
-        if let buttonConfig = buttonConfig, let button = button {
+        if let buttonConfig, let button {
 
             if let attributedTitle = buttonConfig.attributedTitle {
                 button.setAttributedTitle(attributedTitle, for: .normal)
@@ -116,7 +116,7 @@ open class NUXButtonViewController: UIViewController {
 
     private func updateShadowViewEdgeConstraints() {
         guard let layoutGuide = shadowLayoutGuide,
-              let shadowView = shadowView else {
+              let shadowView else {
             return
         }
 

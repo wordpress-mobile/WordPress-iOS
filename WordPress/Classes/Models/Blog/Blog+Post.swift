@@ -68,7 +68,7 @@ extension Blog {
         post.postFormat = settings?.defaultPostFormat
         post.postType = Post.typeDefaultIdentifier
 
-        if let userID = userID, let author = getAuthorWith(id: userID) {
+        if let userID, let author = getAuthorWith(id: userID) {
             post.authorID = author.userID
             post.author = author.displayName
         }
@@ -99,7 +99,7 @@ extension Blog {
         page.remoteStatus = .sync
         page.foreignID = UUID()
 
-        if let userID = userID, let author = getAuthorWith(id: userID) {
+        if let userID, let author = getAuthorWith(id: userID) {
             page.authorID = author.userID
             page.author = author.displayName
         }

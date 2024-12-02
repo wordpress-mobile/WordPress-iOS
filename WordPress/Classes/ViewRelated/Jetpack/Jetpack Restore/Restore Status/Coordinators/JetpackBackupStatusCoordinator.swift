@@ -67,7 +67,7 @@ class JetpackBackupStatusCoordinator {
         isLoading = true
 
         service.getBackupStatus(for: self.site, downloadID: downloadID, success: { [weak self] backup in
-            guard let self = self else {
+            guard let self else {
                 return
             }
 
@@ -84,7 +84,7 @@ class JetpackBackupStatusCoordinator {
         }, failure: { [weak self] error in
             DDLogError("Error fetching backup object: \(error.localizedDescription)")
 
-            guard let self = self else {
+            guard let self else {
                 return
             }
 

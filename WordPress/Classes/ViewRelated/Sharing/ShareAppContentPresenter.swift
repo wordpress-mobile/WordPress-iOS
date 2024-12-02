@@ -64,7 +64,7 @@ class ShareAppContentPresenter {
         isLoading = true
 
         remote.getContent(for: appName) { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
 
             switch result {
             case .success(let content):

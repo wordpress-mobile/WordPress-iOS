@@ -218,7 +218,7 @@ class ActivityServiceRemoteMock: ActivityServiceRemote {
         getActivityForSiteCalledWithBeforeDate = before
         getActivityForSiteCalledWithGroup = group
 
-        if let activitiesToReturn = activitiesToReturn {
+        if let activitiesToReturn {
             success(activitiesToReturn, hasMore)
         }
     }
@@ -229,7 +229,7 @@ class ActivityServiceRemoteMock: ActivityServiceRemote {
         getActivityGroupsForSiteCalledWithBeforeDate = before
         getActivityGroupsForSiteCalledTimes += 1
 
-        if let groupsToReturn = groupsToReturn {
+        if let groupsToReturn {
             success(groupsToReturn)
         }
     }
