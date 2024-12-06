@@ -1,4 +1,5 @@
-* [***] Use web-based sign-in flow (hidden under a feature flag) [#23675]
-* [*] Enable navigating to an individual post's stats from within the "view more" screen for author stats. [#23761]
-* [*] [Jetpack-only] Enable pubishing to non-Jetpack sites when sharing content to the Jetpack app. [#23778]
-
+This month, we've:
+- Fixed some crashes in reader, improved search, and made posts load more smoothly.
+- Enabled TikTok embeds in reader.
+- Stability improvements to the experimental editor (you should try it if you haven't already!)
+- Adjusted how users log into WordPress.com – we hope it'll make it easier for folks to get started.
