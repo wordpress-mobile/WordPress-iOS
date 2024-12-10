@@ -7,7 +7,7 @@ extension WpApiError {
     var errorMessage: String {
         switch self {
         case .InvalidHttpStatusCode, .SiteUrlParsingError, .UnknownError:
-            return NSLocalizedString("Something went wrong", comment: "A generic error message")
+            return SharedStrings.Error.generic
         case let .RequestExecutionFailed(_, reason):
             return reason
         case .ResponseParsingError:
