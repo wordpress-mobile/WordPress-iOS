@@ -1,7 +1,7 @@
 import Foundation
 import WordPressAPI
 
-/// `WpApiError` confirms to `LocalizedError`, but with an implementation that's not suitable for displaying on UI.
+/// `WpApiError` conforms to `LocalizedError`, but with an implementation that's not suitable for displaying on UI.
 /// When presenting `WpApiError`, we should use the `errorMessage` function instead of `localizedDescription`.
 extension WpApiError {
     var errorMessage: String {
