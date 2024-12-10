@@ -5,7 +5,6 @@ import WordPressShared
 
 final class ReaderPostCell: ReaderStreamBaseCell {
     private let view = ReaderPostCellView()
-
     private var contentViewConstraints: [NSLayoutConstraint] = []
 
     static let avatarSize: CGFloat = SiteIconViewModel.Size.small.width
@@ -21,12 +20,6 @@ final class ReaderPostCell: ReaderStreamBaseCell {
             view.topAnchor.constraint(equalTo: contentView.topAnchor),
             view.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).withPriority(999),
         ])
-    }
-
-    static func makeSelectedBackgroundView() -> UIView {
-        let view = UIView()
-        view.backgroundColor = UIColor.opaqueSeparator.withAlphaComponent(0.2)
-        return view
     }
 
     required init?(coder: NSCoder) {
