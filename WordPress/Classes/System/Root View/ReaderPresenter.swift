@@ -122,13 +122,17 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
                 if screen == .discover {
                     return ReaderDiscoverViewController(topic: topic)
                 } else {
-                    return ReaderStreamViewController.controllerWithTopic(topic)
+                    let streamVC = ReaderStreamViewController.controllerWithTopic(topic)
+                    streamVC.isNotificationsBarButtonEnabled = true
+                    return streamVC
                 }
             } else {
                 return makeErrorViewController() // This should never happen
             }
         case .saved:
-            return ReaderStreamViewController.controllerForContentType(.saved)
+            let streamVC = ReaderStreamViewController.controllerForContentType(.saved)
+            streamVC.isNotificationsBarButtonEnabled = true
+            return streamVC
         case .search:
             return ReaderSearchViewController()
         }

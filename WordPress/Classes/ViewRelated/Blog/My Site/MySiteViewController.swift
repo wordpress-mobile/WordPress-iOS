@@ -286,33 +286,15 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         navigationController?.navigationBar.accessibilityIdentifier = "my-site-navigation-bar"
 
         if isSidebarModeEnabled {
-            navigationItem.rightBarButtonItems = makeRegularClassSizeNavigationItems()
-
-            notificationsButtonViewModel.$image.dropFirst()
-                .receive(on: DispatchQueue.main) // Skip on hop
-                .sink { [weak self] _ in
-                    guard let self else { return }
-                    self.navigationItem.rightBarButtonItems = self.makeRegularClassSizeNavigationItems()
-                }.store(in: &cancellables)
+            notificationsButtonViewModel.$image.sink { [weak self] in
+                guard let self else { return }
+                self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: $0, style: .plain, target: self, action: #selector(buttonShowNotificationsTapped))
+            }.store(in: &cancellables)
         }
     }
 
-    private func makeRegularClassSizeNavigationItems() -> [UIBarButtonItem] {
-        return [
-            UIBarButtonItem(image: notificationsButtonViewModel.image, style: .plain, target: self, action: #selector(buttonShowNotificationsTapped))
-        ]
-    }
-
     @objc private func buttonShowNotificationsTapped(_ sender: UIBarButtonItem) {
-        let notificationsVC = UIStoryboard(name: "Notifications", bundle: nil).instantiateInitialViewController() as! NotificationsViewController
-        notificationsVC.isSidebarModeEnabled = true
-
-        let navigationVC = UINavigationController(rootViewController: notificationsVC)
-        navigationVC.modalPresentationStyle = .popover
-        navigationVC.preferredContentSize = CGSize(width: 375, height: 800)
-        navigationVC.popoverPresentationController?.sourceItem = sender
-        navigationVC.popoverPresentationController?.permittedArrowDirections = [.up]
-        present(navigationVC, animated: true)
+        NotificationsViewController.showInPopover(from: self, sourceItem: sender)
     }
 
     private func configureNavBarAppearance(animated: Bool) {
