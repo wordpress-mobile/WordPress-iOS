@@ -45,6 +45,10 @@ final class MediaItemViewController: UITableViewController {
         updateViewModel()
         updateNavigationItem()
         updateTitle()
+
+        if let mediaID = media.mediaID, mediaID.intValue > 0 {
+            tableView.tableFooterView = EntityMetadataTableFooterView.make(id: mediaID)
+        }
     }
 
     private func updateTitle() {
@@ -90,6 +94,7 @@ final class MediaItemViewController: UITableViewController {
         // constraint doesn't seem to go into effect until after `viewDidLayoutSubviews`.
         headerMaxHeightConstraint.constant = view.bounds.height * 0.75
         tableView.sizeToFitHeaderView()
+        tableView.sizeToFitFooterView()
     }
 
     private var metadataRows: [ImmuTableRow] {
