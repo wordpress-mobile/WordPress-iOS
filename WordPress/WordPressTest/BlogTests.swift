@@ -289,4 +289,20 @@ final class BlogTests: CoreDataTestCase {
 
         XCTAssertEqual(try blog.wordPressClientParsedUrl().url(), "http://example.com/")
     }
+
+    func testDotComIdShouldBeJetpackSiteID() throws {
+        let blog = BlogBuilder(mainContext, dotComID: nil)
+            .set(blogOption: "jetpack_client_id", value: "123")
+            .build()
+        XCTAssertEqual(blog.jetpack?.siteID?.int64Value, 123)
+
+        try XCTAssertNil(Blog.lookup(withID: 123, in: mainContext))
+        try mainContext.save()
+
+        try XCTAssertNotNil(Blog.lookup(withID: 123, in: mainContext))
+
+        contextManager.performAndSave { context in
+            try? XCTAssertNotNil(Blog.lookup(withID: 123, in: context))
+        }
+    }
 }

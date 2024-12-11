@@ -11,15 +11,18 @@ final class BlogBuilder {
 
     private let context: NSManagedObjectContext
 
-    init(_ context: NSManagedObjectContext) {
+    init(_ context: NSManagedObjectContext, dotComID: NSNumber? = NSNumber(value: arc4random_uniform(999_999))) {
         self.context = context
 
         blog = NSEntityDescription.insertNewObject(forEntityName: Blog.entityName(), into: context) as! Blog
 
+        if let dotComID {
+            blog.dotComID = dotComID
+        }
+
         // Non-null properties in Core Data
-        blog.dotComID = NSNumber(value: arc4random_uniform(999_999))
-        blog.url = "https://\(blog.dotComID!).example.com"
-        blog.xmlrpc = "https://\(blog.dotComID!).example.com/xmlrpc.php"
+        blog.url = "https://\(blog.dotComID?.stringValue ?? "wwww").example.com"
+        blog.xmlrpc = "\(blog.url!)/xmlrpc.php"
     }
 
     func with(atomic: Bool) -> Self {
