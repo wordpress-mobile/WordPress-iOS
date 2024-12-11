@@ -16,7 +16,7 @@ final class TextViewTableCell: UITableViewCell {
 
         titleLabel.setContentCompressionResistancePriority(.init(900), for: .horizontal)
 
-        let stackView = UIStackView(spacing: 3, [titleLabel, UIView(), detailsView])
+        let stackView = UIStackView(alignment: .firstBaseline, spacing: 3, [titleLabel, UIView(), detailsView])
         contentView.addSubview(stackView)
         stackView.pinEdges(to: contentView.layoutMarginsGuide)
     }

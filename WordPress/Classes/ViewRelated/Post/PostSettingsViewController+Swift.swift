@@ -28,9 +28,16 @@ extension PostSettingsViewController {
         apost.original().isStatus(in: [.draft, .pending])
     }
 
-    @objc func setupStandaloneEditor() {
-        guard isStandalone else { return }
+    @objc func onViewDidLoad() {
+        if isStandalone {
+            setupStandaloneEditor()
+        }
+        if let postID = apost.postID, postID.intValue > 0 {
+            tableView.tableFooterView = EntityMetadataTableFooterView.make(id: postID)
+        }
+    }
 
+    private func setupStandaloneEditor() {
         wpAssert(navigationController?.presentationController != nil)
         navigationController?.presentationController?.delegate = self
 
