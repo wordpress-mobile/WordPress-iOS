@@ -82,7 +82,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
         case .notifications:
             splitVC.preferredSplitBehavior = .tile
         default:
-            splitVC.preferredSplitBehavior = .automatic
+            splitVC.preferredSplitBehavior = .displace
         }
 
         let content: SplitViewDisplayable
