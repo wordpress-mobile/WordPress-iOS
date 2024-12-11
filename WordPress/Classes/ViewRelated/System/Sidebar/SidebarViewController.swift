@@ -132,7 +132,7 @@ private struct SidebarView: View {
             } icon: {
                 if notificationsButtonViewModel.counter > 0 {
                     Image(systemName: "bell.badge")
-                        .foregroundStyle(.red, Color(UIAppColor.brand))
+                        .foregroundStyle(.red, .primary)
                 } else {
                     Image(systemName: "bell")
                 }
