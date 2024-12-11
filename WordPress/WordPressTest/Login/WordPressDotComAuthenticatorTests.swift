@@ -119,7 +119,7 @@ class WordPressDotComAuthenticatorTests: CoreDataTestCase {
         // Then `mismatchedEmail` error should be returned
         let authenticator = WordPressDotComAuthenticator(coreDataStack: contextManager, authenticator: fakeAuthenticator(callback: ["code": "random"]))
         do {
-            let _ = try await authenticator.attemptSignIn(from: UIViewController(), context: .reAuthentication(.init(account)))
+            let _ = try await authenticator.attemptSignIn(from: UIViewController(), context: .reauthentication(accountEmail: account.email))
             XCTFail("Unexpected successful result")
         } catch let .mismatchedEmail(expectedEmail) {
             XCTAssertEqual(expectedEmail, "test@example.com")
