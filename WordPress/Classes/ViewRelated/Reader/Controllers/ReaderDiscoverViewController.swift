@@ -58,7 +58,7 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
     private func setupNotificationsBarButtonItem() {
         notificationsButtonCancellable = nil
         if traitCollection.horizontalSizeClass == .regular {
-            notificationsButtonCancellable =         notificationsButtonViewModel.$image.sink { [weak self] in
+            notificationsButtonCancellable = notificationsButtonViewModel.$image.sink { [weak self] in
                 guard let self else { return }
                 self.navigationItem.rightBarButtonItems = [UIBarButtonItem(image: $0, style: .plain, target: self, action: #selector(buttonShowNotificationsTapped))]
             }
