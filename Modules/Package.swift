@@ -2,8 +2,6 @@
 
 import PackageDescription
 
-let concurrencyWarning: [SwiftSetting] = [.swiftLanguageMode(.v5), .enableUpcomingFeature("StrictConcurrency")]
-
 let package = Package(
     name: "Modules",
     platforms: [
@@ -53,22 +51,22 @@ let package = Package(
         .package(url: "https://github.com/Automattic/color-studio", branch: "trunk"),
     ],
     targets: XcodeSupport.targets + [
-        .target(name: "JetpackStatsWidgetsCore", swiftSettings: concurrencyWarning),
-        .target(name: "DesignSystem", swiftSettings: concurrencyWarning),
+        .target(name: "JetpackStatsWidgetsCore", swiftSettings: [.swiftLanguageMode(.v5)]),
+        .target(name: "DesignSystem", swiftSettings: [.swiftLanguageMode(.v5)]),
         .target(name: "UITestsFoundation", dependencies: [
             .product(name: "ScreenObject", package: "ScreenObject"),
             .product(name: "XCUITestHelpers", package: "XCUITestHelpers"),
-        ], swiftSettings: concurrencyWarning),
-        .target(name: "WordPressFlux", swiftSettings: concurrencyWarning),
-        .target(name: "WordPressSharedObjC", resources: [.process("Resources")], swiftSettings: concurrencyWarning),
-        .target(name: "WordPressShared", dependencies: [.target(name: "WordPressSharedObjC")], resources: [.process("Resources")], swiftSettings: concurrencyWarning),
-        .target(name: "WordPressUI", dependencies: [.target(name: "WordPressShared")], resources: [.process("Resources")], swiftSettings: concurrencyWarning),
-        .testTarget(name: "JetpackStatsWidgetsCoreTests", dependencies: [.target(name: "JetpackStatsWidgetsCore")], swiftSettings: concurrencyWarning),
-        .testTarget(name: "DesignSystemTests", dependencies: [.target(name: "DesignSystem")], swiftSettings: concurrencyWarning),
-        .testTarget(name: "WordPressFluxTests", dependencies: ["WordPressFlux"], swiftSettings: concurrencyWarning),
-        .testTarget(name: "WordPressSharedTests", dependencies: [.target(name: "WordPressShared")], swiftSettings: concurrencyWarning),
-        .testTarget(name: "WordPressSharedObjCTests", dependencies: [.target(name: "WordPressShared")], resources: [.process("Resources")], swiftSettings: concurrencyWarning),
-        .testTarget(name: "WordPressUITests", dependencies: [.target(name: "WordPressUI")], swiftSettings: concurrencyWarning),
+        ], swiftSettings: [.swiftLanguageMode(.v5)]),
+        .target(name: "WordPressFlux", swiftSettings: [.swiftLanguageMode(.v5)]),
+        .target(name: "WordPressSharedObjC", resources: [.process("Resources")], swiftSettings: [.swiftLanguageMode(.v5)]),
+        .target(name: "WordPressShared", dependencies: [.target(name: "WordPressSharedObjC")], resources: [.process("Resources")], swiftSettings: [.swiftLanguageMode(.v5)]),
+        .target(name: "WordPressUI", dependencies: [.target(name: "WordPressShared")], resources: [.process("Resources")], swiftSettings: [.swiftLanguageMode(.v5)]),
+        .testTarget(name: "JetpackStatsWidgetsCoreTests", dependencies: [.target(name: "JetpackStatsWidgetsCore")], swiftSettings: [.swiftLanguageMode(.v5)]),
+        .testTarget(name: "DesignSystemTests", dependencies: [.target(name: "DesignSystem")], swiftSettings: [.swiftLanguageMode(.v5)]),
+        .testTarget(name: "WordPressFluxTests", dependencies: ["WordPressFlux"], swiftSettings: [.swiftLanguageMode(.v5)]),
+        .testTarget(name: "WordPressSharedTests", dependencies: [.target(name: "WordPressShared")], swiftSettings: [.swiftLanguageMode(.v5)]),
+        .testTarget(name: "WordPressSharedObjCTests", dependencies: [.target(name: "WordPressShared")], resources: [.process("Resources")], swiftSettings: [.swiftLanguageMode(.v5)]),
+        .testTarget(name: "WordPressUITests", dependencies: [.target(name: "WordPressUI")], swiftSettings: [.swiftLanguageMode(.v5)]),
     ]
 )
 
