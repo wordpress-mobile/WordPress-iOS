@@ -47,8 +47,8 @@ final class BlazePostPreviewView: UIView {
         return label
     }()
 
-    private lazy var featuredImageView: CachedAnimatedImageView = {
-        let imageView = CachedAnimatedImageView()
+    private lazy var featuredImageView: AsyncImageView = {
+        let imageView = AsyncImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
@@ -65,10 +65,6 @@ final class BlazePostPreviewView: UIView {
     // MARK: - Properties
 
     private let post: AbstractPost
-
-    private lazy var imageLoader: ImageLoader = {
-        return ImageLoader(imageView: featuredImageView, gifStrategy: .mediumGIFs)
-    }()
 
     // MARK: - Initializers
 
@@ -95,16 +91,17 @@ final class BlazePostPreviewView: UIView {
     }
 
     private func setupFeaturedImage() {
+        featuredImageView.prepareForReuse()
+
         if let url = post.featuredImageURL {
             featuredImageView.isHidden = false
-
             let host = MediaHost(with: post, failure: { error in
                 // We'll log the error, so we know it's there, but we won't halt execution.
                 WordPressAppDelegate.crashLogging?.logError(error)
             })
-
             let preferredSize = CGSize(width: featuredImageView.frame.width, height: featuredImageView.frame.height)
-            imageLoader.loadImage(with: url, from: host, preferredSize: preferredSize)
+                .scaled(by: UITraitCollection.current.displayScale)
+            featuredImageView.setImage(with: url, host: host, size: preferredSize)
 
         } else {
             featuredImageView.isHidden = true

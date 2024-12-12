@@ -28,7 +28,7 @@ final class ImageRequest {
 }
 
 struct ImageRequestOptions {
-    /// Resize the thumbnail to the given size. By default, `nil`.
+    /// Resize the thumbnail to the given size (in pixels). By default, `nil`.
     var size: CGSize?
 
     /// If enabled, uses ``MemoryCache`` for caching decompressed images.

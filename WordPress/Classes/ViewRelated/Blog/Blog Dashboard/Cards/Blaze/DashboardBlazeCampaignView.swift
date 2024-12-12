@@ -5,15 +5,13 @@ import WordPressKit
 final class DashboardBlazeCampaignView: UIView {
     private let statusView = BlazeCampaignStatusView()
     private let titleLabel = UILabel()
-    private let imageView = CachedAnimatedImageView()
+    private let imageView = AsyncImageView()
 
     private lazy var statsView: UIStackView = {
         let stackView = UIStackView()
         stackView.distribution = .fillEqually
         return stackView
     }()
-
-    private lazy var imageLoader = ImageLoader(imageView: imageView)
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -59,13 +57,15 @@ final class DashboardBlazeCampaignView: UIView {
 
         titleLabel.text = viewModel.title
 
-        imageLoader.prepareForReuse()
+        imageView.prepareForReuse()
         imageView.isHidden = viewModel.imageURL == nil
         if let imageURL = viewModel.imageURL {
             let host = MediaHost(with: blog, failure: { error in
                 WordPressAppDelegate.crashLogging?.logError(error)
             })
-            imageLoader.loadImage(with: imageURL, from: host, preferredSize: Constants.imageSize)
+            let targetSize = Constants.imageSize
+                .scaled(by: UITraitCollection.current.displayScale)
+            imageView.setImage(with: imageURL, host: host, size: targetSize)
         }
 
         statsView.isHidden = !viewModel.isShowingStats
