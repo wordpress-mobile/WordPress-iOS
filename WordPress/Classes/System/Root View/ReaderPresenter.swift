@@ -230,11 +230,9 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
         case .subscriptions:
             viewModel.selection = .allSubscriptions
         case let .post(postID, siteID, isFeed):
-            viewModel.selection = nil
-            show(ReaderDetailViewController.controllerWithPostID(NSNumber(value: postID), siteID: NSNumber(value: siteID), isFeed: isFeed))
+            push(ReaderDetailViewController.controllerWithPostID(NSNumber(value: postID), siteID: NSNumber(value: siteID), isFeed: isFeed))
         case let .postURL(url):
-            viewModel.selection = nil
-            show(ReaderDetailViewController.controllerWithPostURL(url))
+            push(ReaderDetailViewController.controllerWithPostURL(url))
         case let .topic(topic):
             viewModel.selection = nil
             show(ReaderStreamViewController.controllerWithTopic(topic))

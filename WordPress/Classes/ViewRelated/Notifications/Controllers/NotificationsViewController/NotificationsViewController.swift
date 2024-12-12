@@ -777,11 +777,17 @@ extension NotificationsViewController {
         if let postID = note.metaPostID,
             let siteID = note.metaSiteID,
             note.kind == .matcher || note.kind == .newPost {
-            let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
-            readerViewController.navigationItem.largeTitleDisplayMode = .never
-            readerViewController.hidesBottomBarWhenPushed = true
-            readerViewController.coordinator?.notificationID = note.notificationId
-            displayViewController(readerViewController)
+
+            if isSidebarModeEnabled && splitViewController == nil {
+                presentingViewController?.dismiss(animated: true)
+                RootViewCoordinator.sharedPresenter.showReader(path: .post(postID: postID.intValue, siteID: siteID.intValue))
+            } else {
+                let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
+                readerViewController.navigationItem.largeTitleDisplayMode = .never
+                readerViewController.hidesBottomBarWhenPushed = true
+                readerViewController.coordinator?.notificationID = note.notificationId
+                displayViewController(readerViewController)
+            }
             return
         }
 
