@@ -1,5 +1,3 @@
-Three things this month:
-1. We've updated the UI for iPadOS 18 – no more tab bar, everything is navigation-based, which should be a better use of the larger screen size.
-2. Some iOS 18 improvements – a few color tweaks, some bugfixes, and most importantly – tintable icons!
-3. We've been hard at work on an experimental new block editor. It's not ready for full-time use, but we'd love your feedback! Check it out in Me > App Settings > Experimental Features.
-If you have feedback on any of these features, we'd love to hear it – reach out to us at mobile-support@automattic.com!
+This month, we've:
+- Stability improvements to the experimental editor (you should try it if you haven't already!)
+- Adjusted how users log into WordPress.com – we hope it'll make it easier for folks to get started.

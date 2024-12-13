@@ -1,0 +1,3 @@
+Den här månaden har vi:
+- Gjort stabilitetsförbättringar i den experimentella redigeraren (du borde prova den om du inte redan har gjort det).
+- Justerat hur användare loggar in på WordPress.com. Vi hoppas att det ska göra det lättare för folk att komma igång.

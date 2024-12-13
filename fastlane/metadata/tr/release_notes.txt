@@ -1,0 +1,3 @@
+Bu ay şunlar yapıldı:
+- Deneysel düzenleyicide istikrar iyileştirmeleri yapıldı (henüz denemediyseniz denemenizi öneririz!)
+- Kullanıcıların WordPress.com'da oturum açma şekli değiştirildi. Bu değişikliğin, yeni kullanıcıların işini kolaylaştıracağını umuyoruz.

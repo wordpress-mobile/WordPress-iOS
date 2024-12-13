@@ -1,0 +1,3 @@
+Die Bugfixes in diesem Monat:
+- Verbesserungen am experimentellen Editor für mehr Stabilität (unbedingt ausprobieren!)
+- Anmeldung bei WordPress.com wurde angepasst: Benutzer profitieren nun von einem vereinfachten Anmeldeprozess.
