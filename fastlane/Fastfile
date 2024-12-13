@@ -117,7 +117,7 @@ end
 
 def current_version_hotfix?
   # Read the current release version from the .xcconfig file and parse it into an AppVersion object
-  current_version = VERSION_FORMATTER.parse(VERSION_FILE.read_release_version)
+  current_version = VERSION_FORMATTER.parse(PUBLIC_VERSION_FILE.read_release_version)
   # Calculate and return whether the release version is a hotfix
   VERSION_CALCULATOR.release_is_hotfix?(version: current_version)
 end
