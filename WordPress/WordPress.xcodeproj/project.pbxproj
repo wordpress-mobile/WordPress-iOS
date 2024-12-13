@@ -683,10 +683,8 @@
 		570BFD902282418A007859A8 /* PostBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570BFD8F2282418A007859A8 /* PostBuilder.swift */; };
 		572FB401223A806000933C76 /* NoticeStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572FB400223A806000933C76 /* NoticeStoreTests.swift */; };
 		575802132357C41200E4C63C /* MediaCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575802122357C41200E4C63C /* MediaCoordinatorTests.swift */; };
-		575E126322973EBB0041B3EB /* PostCompactCellGhostableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575E126222973EBB0041B3EB /* PostCompactCellGhostableTests.swift */; };
 		57889AB823589DF100DAE56D /* PageBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57889AB723589DF100DAE56D /* PageBuilder.swift */; };
 		57B71D4E230DB5F200789A68 /* BlogBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B71D4D230DB5F200789A68 /* BlogBuilder.swift */; };
-		57D6C83E22945A10003DDC7E /* PostCompactCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D6C83D22945A10003DDC7E /* PostCompactCellTests.swift */; };
 		5948AD111AB73D19006E8882 /* WPAppAnalyticsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5948AD101AB73D19006E8882 /* WPAppAnalyticsTests.m */; };
 		5960967F1CF7959300848496 /* PostTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5960967E1CF7959300848496 /* PostTests.swift */; };
 		5981FE051AB8A89A0009E080 /* WPUserAgentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5981FE041AB8A89A0009E080 /* WPUserAgentTests.m */; };
@@ -2574,10 +2572,8 @@
 		570BFD8F2282418A007859A8 /* PostBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostBuilder.swift; sourceTree = "<group>"; };
 		572FB400223A806000933C76 /* NoticeStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeStoreTests.swift; sourceTree = "<group>"; };
 		575802122357C41200E4C63C /* MediaCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MediaCoordinatorTests.swift; path = Services/MediaCoordinatorTests.swift; sourceTree = "<group>"; };
-		575E126222973EBB0041B3EB /* PostCompactCellGhostableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCompactCellGhostableTests.swift; sourceTree = "<group>"; };
 		57889AB723589DF100DAE56D /* PageBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PageBuilder.swift; path = TestUtilities/PageBuilder.swift; sourceTree = "<group>"; };
 		57B71D4D230DB5F200789A68 /* BlogBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogBuilder.swift; sourceTree = "<group>"; };
-		57D6C83D22945A10003DDC7E /* PostCompactCellTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCompactCellTests.swift; sourceTree = "<group>"; };
 		57E15BC2269B6B7419464B6F /* Pods_Apps_Jetpack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Apps_Jetpack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5948AD101AB73D19006E8882 /* WPAppAnalyticsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WPAppAnalyticsTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		5960967E1CF7959300848496 /* PostTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostTests.swift; sourceTree = "<group>"; };
@@ -6166,8 +6162,6 @@
 				57E3C98223835A57004741DB /* Controllers */,
 				57DF04BF2314895E00CC93D6 /* Views */,
 				E10F3DA01E5C2CE0008FAADA /* PostListFilterTests.swift */,
-				57D6C83D22945A10003DDC7E /* PostCompactCellTests.swift */,
-				575E126222973EBB0041B3EB /* PostCompactCellGhostableTests.swift */,
 			);
 			name = Post;
 			sourceTree = "<group>";
@@ -10174,7 +10168,6 @@
 				8B69F100255C4870006B1CEF /* ActivityStoreTests.swift in Sources */,
 				B5C0CF3F204DB92F00DB0362 /* NotificationReplyStoreTests.swift in Sources */,
 				4A5598852B05AC180083C220 /* PagesListTests.swift in Sources */,
-				575E126322973EBB0041B3EB /* PostCompactCellGhostableTests.swift in Sources */,
 				2481B20C260D8FED00AE59DB /* WPAccount+ObjCLookupTests.m in Sources */,
 				FEFA6AC82A88D5FC004EE5E6 /* Post+JetpackSocialTests.swift in Sources */,
 				40ACCF14224E167900190713 /* FlagsTest.swift in Sources */,
@@ -10323,7 +10316,6 @@
 				805CC0B9296680F7002941DC /* RemoteConfigStoreMock.swift in Sources */,
 				0CD382862A4B6FCF00612173 /* DashboardBlazeCardCellViewModelTest.swift in Sources */,
 				0147D651294B6EA600AA6410 /* StatsRevampStoreTests.swift in Sources */,
-				57D6C83E22945A10003DDC7E /* PostCompactCellTests.swift in Sources */,
 				B030FE0A27EBF0BC000F6F5E /* SiteCreationIntentTracksEventTests.swift in Sources */,
 				3F56F55C2AEA2F67006BDCEA /* ReaderPostBuilder.swift in Sources */,
 				D81C2F5C20F872C2002AE1F1 /* ReplyToCommentActionTests.swift in Sources */,
