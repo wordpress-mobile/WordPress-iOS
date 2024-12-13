@@ -127,8 +127,7 @@ private extension PostsCardViewModel {
 
         let cell = tableView.dequeueReusableCell(withIdentifier: PostCompactCell.defaultReuseID, for: indexPath) as? PostCompactCell
 
-        cell?.accessoryType = .none
-        cell?.configureForDashboard(with: post)
+        cell?.configure(with: post)
 
         return cell ?? UITableViewCell()
     }

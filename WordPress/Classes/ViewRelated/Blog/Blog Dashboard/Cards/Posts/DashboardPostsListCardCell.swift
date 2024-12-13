@@ -23,8 +23,7 @@ class DashboardPostsListCardCell: UICollectionViewCell, Reusable {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.isScrollEnabled = false
         tableView.backgroundColor = nil
-        let postCompactCellNib = PostCompactCell.defaultNib
-        tableView.register(postCompactCellNib, forCellReuseIdentifier: PostCompactCell.defaultReuseID)
+        tableView.register(PostCompactCell.self, forCellReuseIdentifier: PostCompactCell.defaultReuseID)
         let ghostCellNib = BlogDashboardPostCardGhostCell.defaultNib
         tableView.register(ghostCellNib, forCellReuseIdentifier: BlogDashboardPostCardGhostCell.defaultReuseID)
         tableView.register(DashboardPostListErrorCell.self, forCellReuseIdentifier: DashboardPostListErrorCell.defaultReuseID)
