@@ -1,7 +1,7 @@
 import UIKit
 
-public final class ImageRequest {
-    public enum Source {
+public final class ImageRequest: Sendable {
+    public enum Source: Sendable {
         case url(URL, MediaHost?)
         case urlRequest(URLRequest)
 
@@ -27,7 +27,7 @@ public final class ImageRequest {
     }
 }
 
-public struct ImageRequestOptions {
+public struct ImageRequestOptions: Sendable {
     /// Resize the thumbnail to the given size (in pixels). By default, `nil`.
     public var size: CGSize?
 

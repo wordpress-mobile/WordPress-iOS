@@ -50,7 +50,7 @@ import OHHTTPStubsSwift
             isMemoryCacheEnabled: false,
             isDiskCacheEnabled: false
         )
-        let task = Task {
+        let task = Task { [sut] in
             try await sut.image(from: imageURL, options: options)
         }
 
@@ -142,7 +142,7 @@ import OHHTTPStubsSwift
     }
 }
 
-private final class MockMemoryCache: MemoryCacheProtocol {
+private final class MockMemoryCache: MemoryCacheProtocol, @unchecked Sendable {
     var cache: [String: UIImage] = [:]
 
     subscript(key: String) -> UIImage? {

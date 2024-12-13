@@ -4,7 +4,7 @@ public final class AnimatedImage: UIImage, @unchecked Sendable {
     public private(set) var gifData: Data?
     public var targetSize: CGSize?
 
-    public static var maximumAllowedSize = 30_000_000
+    static let maximumAllowedSize = 30_000_000
 
     public convenience init?(gifData: Data) {
         self.init(data: gifData, scale: 1)

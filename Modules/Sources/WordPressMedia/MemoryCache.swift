@@ -1,6 +1,6 @@
 import UIKit
 
-public protocol MemoryCacheProtocol: AnyObject {
+public protocol MemoryCacheProtocol: AnyObject, Sendable {
     subscript(key: String) -> UIImage? { get set }
 
     func removeAllObjects()

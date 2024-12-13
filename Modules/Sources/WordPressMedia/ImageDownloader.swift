@@ -1,7 +1,8 @@
 import UIKit
 
 /// The system that downloads and caches images, and prepares them for display.
-public actor ImageDownloader {
+@ImageDownloaderActor
+public final class ImageDownloader {
     private nonisolated let cache: MemoryCacheProtocol
     private let authenticator: MediaRequestAuthenticatorProtocol?
 
@@ -19,7 +20,7 @@ public actor ImageDownloader {
 
     private var tasks: [String: ImageDataTask] = [:]
 
-    public init(
+    public nonisolated init(
         cache: MemoryCacheProtocol = MemoryCache.shared,
         authenticator: MediaRequestAuthenticatorProtocol?
     ) {
@@ -147,6 +148,7 @@ public actor ImageDownloader {
     }
 }
 
+@ImageDownloaderActor
 private final class ImageDataTask {
     let key: String
     var subscriptions = Set<UUID>()
@@ -161,55 +163,21 @@ private final class ImageDataTask {
     func getData(subscriptionID: UUID) async throws -> Data {
         try await withTaskCancellationHandler {
             try await task.value
-        } onCancel: { [weak self] in
-            guard let self else { return }
-            self.downloader?.unsubscribe(subscriptionID, key: self.key)
+        } onCancel: { [weak downloader, key] in
+            downloader?.unsubscribe(subscriptionID, key: key)
         }
-    }
-}
-
-// MARK: - ImageDownloader (Closures)
-
-extension ImageDownloader {
-    @discardableResult
-    nonisolated public func downloadImage(at url: URL, completion: @escaping (UIImage?, Error?) -> Void) -> ImageDownloaderTask {
-        var request = URLRequest(url: url)
-        request.addValue("image/*", forHTTPHeaderField: "Accept")
-        return downloadImage(for: request, completion: completion)
-    }
-
-    @discardableResult
-    nonisolated public func downloadImage(for request: URLRequest, completion: @escaping (UIImage?, Error?) -> Void) -> ImageDownloaderTask {
-        let task = Task {
-            do {
-                let image = try await self.image(for: ImageRequest(urlRequest: request))
-                completion(image, nil)
-            } catch {
-                completion(nil, error)
-            }
-        }
-        return AnonymousImageDownloadTask(closure: task.cancel)
     }
 }
 
 // MARK: - Helpers
 
-public protocol ImageDownloaderTask {
-    func cancel()
+@globalActor
+public struct ImageDownloaderActor {
+    public actor ImageDownloaderActor { }
+    public static let shared = ImageDownloaderActor()
 }
 
-extension Operation: ImageDownloaderTask {}
-extension URLSessionTask: ImageDownloaderTask {}
-
-private struct AnonymousImageDownloadTask: ImageDownloaderTask {
-    let closure: () -> Void
-
-    func cancel() {
-        closure()
-    }
-}
-
-enum ImageDownloaderError: Error {
+public enum ImageDownloaderError: Error, Sendable {
     case unacceptableStatusCode(_ statusCode: Int?)
 }
 
@@ -221,6 +189,6 @@ private extension URLSession {
     }
 }
 
-public protocol MediaRequestAuthenticatorProtocol {
+public protocol MediaRequestAuthenticatorProtocol: Sendable {
     @MainActor func authenticatedRequest(for url: URL, host: MediaHost) async throws -> URLRequest
 }

@@ -18,7 +18,7 @@ extension URL {
 ///
 /// This also includes regular and photon URLs.
 ///
-class MediaRequestAuthenticator: MediaRequestAuthenticatorProtocol {
+struct MediaRequestAuthenticator: MediaRequestAuthenticatorProtocol {
 
     /// Errors conditions that this class can find.
     ///
