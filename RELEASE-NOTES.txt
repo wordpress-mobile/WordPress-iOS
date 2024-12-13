@@ -7,6 +7,7 @@
 * [*] [internal] Update Gravatar SDK to 3.0.0 [#23701]
 * [*] Use the Gravatar Quick Editor to update the avatar [#23729]
 * [*] (Hidden under a feature flag) User Management for self-hosted sites. [#23768]
+* [*] Add URL and ID to the Media details screen, add IDs for posts [#23887]
 * [*] Enable quick access to notifications from Reader on iPad [#23882]
 * [*] Add support for restricted posts in Reader [#23853]
 * [*] Fix minor appearance issues in the Blaze campaign list [#23891]
