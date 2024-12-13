@@ -1,0 +1,5 @@
+Die Bugfixes in diesem Monat:
+- Probleme mit Abstürzen im Reader wurden behoben, die Suchfunktion wurde verbessert und Beiträge laden nun reibungsloser.
+- TikTok-Einbettungen im Reader wurden aktiviert.
+- Verbesserungen am experimentellen Editor für mehr Stabilität (unbedingt ausprobieren!)
+- Anmeldung bei WordPress.com wurde angepasst: Benutzer profitieren nun von einem vereinfachten Anmeldeprozess.

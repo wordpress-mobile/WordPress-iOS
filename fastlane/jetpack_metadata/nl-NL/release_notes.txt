@@ -1,0 +1,5 @@
+Deze maand hebben we:
+- een aantal crashes in de reader opgelost, zoeken verbeterd en ervoor gezorgd dat berichter soepeler geladen worden.
+- TikTok-insluitingen in de reader mogelijk gemaakt.
+- de stabiliteit verbeterd aan de hand van de experimentele editor (probeer deze eens als je dat nog niet hebt gedaan!)
+- aangepast hoe gebruikers inloggen bij WordPress.com: we hopen dat dit het voor veel mensen veel eenvoudiger maakt om aan de slag te gaan.
