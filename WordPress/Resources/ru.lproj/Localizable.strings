@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-10-10 13:54:07+0000 */
+/* Translation-Revision-Date: 2024-12-11 10:54:09+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ru */
@@ -58,12 +58,6 @@
 
 /* Plural format string for displaying the number of users that answered the blogging prompt. */
 "%1$d answers" = "Ответы: %1$d";
-
-/* Format string for single unseen post count. The %1$d is a placeholder for the count. */
-"%1$d unseen post" = "%1$d непросмотренная запись";
-
-/* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
-"%1$d unseen posts" = "%1$d непросмотренных записей";
 
 /* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
 "%1$s transformed to %2$s" = "Блок %1$s преобразован в %2$s";
@@ -741,9 +735,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message shown when Apple authentication fails. */
 "Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "Ошибка авторизации в Apple.\nУбедитесь что вы вошли в iCloud с Apple ID использующим 2 факторную авторизацию.";
 
-/* Noun. Title. Links to the application password management feature. */
-"Application Passwords" = "Пароли приложений";
-
 /* No comment provided by engineer. */
 "Applies the setting" = "Применить настройку";
 
@@ -1082,9 +1073,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Button to copy post text" = "Кнопка для копирования текста записи";
 
-/* Label for the post author in the post detail. */
-"By " = "Автор: ";
-
 /* Legal disclaimer for logging in. The underscores _..._ denote underline. */
 "By continuing, you agree to our _Terms of Service_." = "Продолжив, вы соглашаетесь с нашими _Правилами пользования_.";
 
@@ -1122,7 +1110,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
-   Button title. Cancels a pending action.
    Button title. Tapping it cancels the login flow.
    Cancel a prompt
    Cancel Action
@@ -1157,7 +1144,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
@@ -1375,9 +1361,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Clear Old Activity Logs" = "Очистить старые журналы активности";
 
-/* Title of an alert prompt. */
-"Clear Search History" = "Очистить историю поиска";
-
 /* Label for button that clears the spotlight index on device. */
 "Clear Spotlight Index" = "Очистить индекс Spotlight";
 
@@ -1386,9 +1369,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Clear search" = "Очистить поиск";
-
-/* Title of a button. */
-"Clear search history" = "Очистить историю поиска";
 
 /* No comment provided by engineer. */
 "Clear selected color" = "Очистить выбранный цвет";
@@ -1948,7 +1928,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Delete
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
-   Title of a delete button
    Title of the trash confirmation alert. */
 "Delete" = "Удалить";
 
@@ -2730,9 +2709,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Button title. Follow the comments on a post. */
 "Follow Conversation" = "Подписаться на беседу";
-
-/* Verb. Button title. Follow the comments on a post. */
-"Follow conversation" = "Подписаться на беседу";
 
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "Подписаться на темы";
@@ -3589,9 +3565,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Displayed while blogging prompts are being loaded. */
 "Loading prompts..." = "Загрузка подсказок...";
 
-/* A short message to inform the user the requested stream is being loaded. */
-"Loading stream..." = "Загрузка потока...";
-
 /* Loading message shown while the Unsupported Block Editor is loading. */
 "Loading the block editor." = "Загружается редактор блоков.";
 
@@ -3690,9 +3663,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "Сделайте содержимое заметным, добавив на свои страницы изображения, GIF-анимацию, видео и встроенные мультимедиа.";
 
 /* Button leading to a screen where users can manage their installed plugins
-   Page title for the screen to manage your list of followed sites.
    Screen title, where users can see all their installed plugins.
-   Title for the Reader Manage screen.
    Verb. Text label. Tapping displays a screen where the user can configure 'share' buttons for third-party services.
    Verb. Title of the screen for managing sharing buttons and settings related to sharing. */
 "Manage" = "Управление";
@@ -3738,23 +3709,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Action title for unmarking referrer as spam */
 "Mark as not spam" = "Отметить как не спам";
 
-/* An option to mark a post as seen. */
-"Mark as seen" = "Отметить как прочитанное";
-
 /* Action title for marking referrer as spam */
 "Mark as spam" = "Пометить как спам";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Mark a comment as spam. */
 "Mark as spam." = "Пометить как спам.";
-
-/* An option to mark a post as unseen. */
-"Mark as unseen" = "Отметить как непрочитанное";
-
-/* Notice title when updating a post's seen status succeeds. */
-"Marked post as seen" = "Запись отмечена как прочитанная";
-
-/* Notice title when updating a post's unseen status succeeds. */
-"Marked post as unseen" = "Запись отмечена как непрочитанная";
 
 /* Jetpack Settings: Match accounts using email */
 "Match accounts using email" = "Сопоставить учётные записи, используя адрес электронной почты";
@@ -3861,7 +3820,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Accessibility label for more button in dashboard quick start card.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
-   Accessibility label for the More button on Reader's post details
    Action button to display more available options */
 "More" = "Еще";
 
@@ -4338,7 +4296,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    A button title.
    Accept Action
    Alert dismissal title
-   Button title. Acknowledges a prompt.
    Button title. An acknowledgement of the message displayed in a prompt.
    Default action
    Dismisses the alert
@@ -4681,9 +4638,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid State" = "Пожалуйста, введите правильный округ\/область";
 
-/* Title of a prompt. */
-"Please enter a valid URL" = "Введите действительный URL-адрес.";
-
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid address" = "Введите правильный адрес";
 
@@ -4698,9 +4652,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Instructional text shown when requesting the user's password for a login initiated via Sign In with Apple */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "Введите пароль учётной записи WordPress.com, чтобы войти с вашим Apple ID.";
-
-/* Instruction text on the two-factor screen. */
-"Please enter the verification code from your authenticator app." = "Введите код подтверждения из приложения-аутентификатора.";
 
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "Пожалуйста, введите ваши учётные данные";
@@ -4819,12 +4770,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "Почтовый индекс";
 
-/* Accessibility label for the blog name in the Reader's post details. Placeholders are blog title, blog URL, author name, published date */
-"Posted in %@, at %@, by %@, %@" = "Опубликовано в %1$@, %2$@, автором %3$@, %4$@";
-
-/* Accessibility label for the blog name in the Reader's post details, without date. Placeholders are blog title, blog URL, author name */
-"Posted in %@, at %@, by %@." = "Опубликовано в %1$@, %2$@, автором %3$@.";
-
 /* Insights 'Posting Activity' header
    Title for stats Posting Activity view. */
 "Posting Activity" = "Частота публикаций";
@@ -4832,7 +4777,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
    Noun. Title. Links to the blog's Posts screen.
-   Title of a Reader tab showing Posts matching a user's search query
    Title of the screen showing the list of posts for a blog. */
 "Posts" = "Записи";
 
@@ -5001,10 +4945,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Name of the Reader feature.
    Noun. Name of the Reader feature
-   The accessibility value of the Reader tab.
-   The accessibility value of the reader tab.
-   The default title of the Reader
-   Title of the 'Reader' tab - used for spotlight indexing on iOS. */
+   The accessibility value of the Reader tab. */
 "Reader" = "Новости";
 
 /* Real Estate site intent topic */
@@ -5134,9 +5075,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* User action to remove video. */
 "Remove video" = "Удалить видеофайл";
 
-/* Label indicating a post has been removed from Saved For Later */
-"Removed" = "Удалено";
-
 /* Notice confirming that an image has been removed as the post's featured image. */
 "Removed as featured image" = "Удалено как изображение записи";
 
@@ -5195,9 +5133,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Placeholder text for replying to a post */
 "Reply to post" = "Ответить на запись";
-
-/* The title of a button that triggers reporting of a post from the user's reader. */
-"Report this post" = "Пожаловаться на запись";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "Включить обязательный этап одобрения для комментариев, которые содержат число ссылок, больше указанного.";
@@ -5408,8 +5343,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Scrollable block menu opened. Select a block." = "Прокручиваемое меню блоков открыто. Выберите блок.";
 
-/* Title of Stats section that shows search engine referrer traffic.
-   Title of the Reader's search feature */
+/* Title of Stats section that shows search engine referrer traffic. */
 "Search" = "Поиск";
 
 /* Label for list of search term */
@@ -5417,9 +5351,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Period Stats 'Search Terms' header */
 "Search Terms" = "Поисковые запросы";
-
-/* Placeholder text for the Reader search feature. */
-"Search WordPress" = "Искать в WordPress";
 
 /* No comment provided by engineer. */
 "Search block label. Current text is" = "Ярлык блока поиска. Сейчас -";
@@ -5429,9 +5360,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Search button. Current button text is" = "Кнопка поиска. Текущий текст кнопки -";
-
-/* Search domain - Title for the Suggested domains screen */
-"Search domains" = "Поиск доменов";
 
 /* title of the button that searches the first domain. */
 "Search for a domain" = "Поиск домена";
@@ -5481,9 +5409,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Select a layout" = "Выберите макет";
-
-/* Register domain - Title for the Choose domain button of Suggested domains screen */
-"Select domain" = "Выберите домен";
 
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Выбрать стиль абзацев";
@@ -5625,8 +5550,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button label to share a web page
    Shares the comment URL
    Spoken accessibility label
-   Title for a button that allows the user to share their answer to the prompt.
-   Verb. Title of a button. Pressing lets the user share a post to others. */
+   Title for a button that allows the user to share their answer to the prompt. */
 "Share" = "Поделиться";
 
 /* Title for a button that recommends the app to others */
@@ -5711,9 +5635,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for a comment notification. */
 "Shows details and moderation actions." = "Показать подробности и действия модерации.";
-
-/* Accessibility hint for the More button on Reader's post details */
-"Shows more options." = "Показывает больше настроек.";
 
 /* Accessibility hint for a match/mention on a post notification. */
 "Shows the post" = "Показать запись.";
@@ -6848,12 +6769,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error shown when the app fails to load a video from the user's media library. */
 "Unable to load video." = "Невозможно загрузить видео.";
 
-/* Notice title when updating a post's seen status failed. */
-"Unable to mark post seen" = "Не удается отметить запись прочитанной";
-
-/* Notice title when updating a post's unseen status failed. */
-"Unable to mark post unseen" = "Не удается отметить запись непрочитанной";
-
 /* Dialog box title for when the user is canceling an upload. */
 "Unable to play video" = "Невозможно вопроизвести видео";
 
@@ -6924,15 +6839,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
    Revert an operation
-   Revert enabling notification after successfully subcribing to the comments for the post.
-   Undo action */
+   Revert enabling notification after successfully subcribing to the comments for the post. */
 "Undo" = "Назад";
 
 /* Title for a button that unsubscribes the user from the post. */
 "Unfollow Conversation" = "Отписаться от беседы";
-
-/* Verb. Button title. The user is following the comments on a post. */
-"Unfollow conversation" = "Отписаться от беседы";
 
 /* No comment provided by engineer. */
 "Ungroup block" = "Разгруппировать блок";
@@ -7110,7 +7021,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Username must be at least 4 characters." = "Имя пользователя должно быть не короче 4 символов.";
 
-/* Blog Users */
+/* Blog Users
+   Noun. Title. Links to the user management feature. */
 "Users" = "Пользователи";
 
 /* two factor code placeholder */
@@ -7199,9 +7111,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The visibility settings of the post. Should be the same as in core WP. */
 "Visibility" = "Видимость";
-
-/* An option to visit the site to which a specific post belongs */
-"Visit" = "Перейти";
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@" = "Перейти на сайт «%@»";
@@ -7580,9 +7489,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "Карта мира с представлением просмотров по странам.";
 
-/* Asks the user if they would like to clear their search history. */
-"Would you like to clear your search history?" = "Хотите очистить историю поиска?";
-
 /* Second line of Remove user/follower/viewer warning in confirmation dialog. */
 "Would you still like to remove this person?" = "Всё равно удалить эту персону?";
 
@@ -7614,8 +7520,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* 'This Year' label for the the year. */
 "Year" = "Год";
 
-/* Button title. Confirms that the user wants to proceed with a pending action.
-   Label for a button that clears all old activity logs
+/* Label for a button that clears all old activity logs
    Yes */
 "Yes" = "Да";
 
@@ -7728,9 +7633,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text rendered at the bottom of the Allowlisted IP Addresses editor, should match Calypso. */
 "You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "Вы можете добавить один или несколько IP-адресов в список разрешенных, чтобы плагин Jetpack их никогда не блокировал. Можно указывать адреса IPv4 и IPv6. Чтобы указать диапазон, введите минимальное и максимальное значения, разделённые тире. Пример: 12.12.12.1-12.12.12.100.";
-
-/* A suggestion of topics the user might like */
-"You might like" = "Вам может понравиться";
 
 /* Error message informing the user that being logged into a WordPress.com account is required. */
 "You must be signed in to a WordPress.com account to perform this action." = "Чтобы выполнить это действие, необходимо войти в учетную запись WordPress.com.";
@@ -7997,6 +7899,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of application passwords list */
 "applicationPassword.list.title" = "Пароли приложений";
 
+/* Error message when the current site's url cannot be found */
+"applicationPasswordMigration.error.siteUrlNotFound" = "Не удалось найти URL-адрес текущего сайта";
+
+/* Error message when the username does not match the signed-in user. The first argument is the currently signed in user's user login name */
+"applicationPasswordMigration.error.usernameMismatch" = "Необходимо выполнить вход по учётным данным пользователя «%@»";
+
+/* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
+"applicationPasswordRequired.description" = "Пароли приложений — это более надёжный способ подключения к автономным сайтам, дающий возможность поддержки таких функций, как %@.";
+
+/* Feature name for managing users in the app */
+"applicationPasswordRequired.feature.users" = "Управление пользователями";
+
+/* Title for the button to authenticate with Application Passwords */
+"applicationPasswordRequired.getStartedButton" = "Начало работы";
+
+/* Title for the prompt to upgrade to Application Passwords */
+"applicationPasswordRequired.title" = "Необходимо ввести пароль от приложения";
+
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "аудио файл";
 
@@ -8256,8 +8176,8 @@ Example: Reply to Pamela Nguyen */
 /* Title for an empty state view when no cards are displayed */
 "dasboard.emptyView.title" = "Нет карточек";
 
-/* Personialize home tab button title */
-"dasboard.personalizeHomeButtonTitle" = "Настроить вкладку «Главная»";
+/* Personialize home screen button title */
+"dasboard.personalizeHomeButton" = "Настроить главный экран";
 
 /* Title for a menu action in the context menu on the Jetpack Social dashboard card. */
 "dashboard.card.social.menu.hide" = "Скрыть это";
@@ -8389,6 +8309,9 @@ Example: Reply to Pamela Nguyen */
 /* Debug Menu section title */
 "debugMenu.section.settings" = "Настройки";
 
+/* Debug Menu section title */
+"debugMenu.section.tipKit" = "TipKit";
+
 /* Debug Menu action for TipKit */
 "debugMenu.showAllTips" = "Показывать все подсказки";
 
@@ -8397,6 +8320,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Weekly Roundup debug menu item */
 "debugMenu.weeklyRoundup" = "За неделю";
+
+/* Error tilte */
+"discussionSettings.saveErrorTitle" = "Не удалось сохранить настройки";
 
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Свернуть";
@@ -8526,9 +8452,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the screen where the user can choose how to use the domain they're end up purchasing. */
 "domains.purchase.choice.title" = "Купить домен";
-
-/* Back button title that navigates back to the search domains screen. */
-"domains.search.backButton.title" = "Поиск";
 
 /* Title of screen where user chooses a site to connect to their selected domain */
 "domains.sitePicker.title" = "Выберите сайт";
@@ -8677,6 +8600,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The 'no' button title for the first feedback alert */
 "in-app.feedback.alert.no" = "Не совсем";
+
+/* The 'Not Now' button title for the first feedback alert */
+"in-app.feedback.alert.notNow" = "Не сейчас";
 
 /* The title for the first feedback alert */
 "in-app.feedback.alert.title" = "Ваш отзыв важен";
@@ -8972,6 +8898,9 @@ Example: Reply to Pamela Nguyen */
 /* Write a blog prompt for the jetpack prologue */
 "jetpack.prologue.prompt.writeBlog" = "Ведение блога";
 
+/* Message stating that the user is unable to use Stats and Notifications because their site is connected to a different WordPress.com account */
+"jetpackSite.connectToDefaultAccount" = "Необходимо выполнить вход с %@, чтобы пользоваться статистикой и уведомлениями.";
+
 /* Title for a call-to-action button on the Jetpack install card. */
 "jetpackinstallcard.button.learn" = "Подробнее";
 
@@ -8992,6 +8921,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Error message that informs likes from a private blog cannot be fetched. */
 "likesListViewController.likesList.privateBlogErrorMessage" = "У вас нет разрешения на доступ к этому закрытому блогу.";
+
+/* Instruction label in the two-factor authorization screen WordPress.com login authentication. Note: it has to mention that it's for a WordPress.com account. */
+"login.twoFactorInstructions.details" = "Введите проверочный код вашей учётной записи WordPress.com из приложения аутентификации.";
 
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "отмечено как спам";
@@ -9473,11 +9405,11 @@ Example: Reply to Pamela Nguyen */
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.todaysStats" = "Статистика за сегодня";
 
+/* Page title */
+"personalizeHome.navigationTitle" = "Настроить главный экран";
+
 /* Section header for shortcuts */
 "personalizeHome.shortcutsSectionHeader" = "Показать или скрыть ярлыки быстрого доступа";
-
-/* Page title */
-"personalizeHome.title" = "Настройте вкладку «Главная»";
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "номер телефона";
@@ -10011,32 +9943,11 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Вход выполнен!";
 
-/* Text for a button that dismisses the announcement card in the Reader. */
-"reader.announcement.button" = "Готово";
-
-/* The description part of the feature announcement content for Reading Preferences. */
-"reader.announcement.entry.readingPreferences.description" = "Выберите цвета и шрифты по своему вкусу. Во время чтения записи нажмите значок АА в верхней части экрана.";
-
-/* The title part of the feature announcement content for Reading Preferences. */
-"reader.announcement.entry.readingPreferences.title" = "Настройки чтения";
-
-/* The description part of the feature announcement content for Tags Stream. */
-"reader.announcement.entry.tagsStream.description" = "Нажмите раскрывающееся меню в верхней части и выберите «Метки», чтобы перейти к лентам записей с метками, на которые вы подписались.";
-
-/* The title part of the feature announcement content for Tags Stream. */
-"reader.announcement.entry.tagsStream.title" = "Ленты записей с метками";
-
-/* Title text for the announcement card component in the Reader. */
-"reader.announcement.title" = "Новое в «Чтиве»";
-
 /* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
 "reader.blocked.blog.message" = "Блог %@ больше не будет отображаться в приложении «Чтиво». Нажмите, чтобы отменить действие.";
 
 /* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the blog post count. '%2$@' is a placeholder for the blog subscriber count. Example: `5,000 posts • 10M subscribers` */
 "reader.blog.header.values" = "Записей: %1$@ • Подписчиков: %2$@";
-
-/* Accessibility hint for the blog name and URL button on Reader's Post Details. */
-"reader.blog.name.accessibility.hint" = "Отображает записи в блоге.";
 
 /* Error message title informing the user that a search for sites in the Reader could not be loaded. */
 "reader.blog.search.loading.error" = "Проблема при загрузке блогов";
@@ -10049,9 +9960,6 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* A message title */
 "reader.blog.search.no.results.title" = "Ни одного блога не найдено";
-
-/* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
-"reader.blog.stream.subscribers" = "Подписчиков: %@";
 
 /* Reader sidebar button title */
 "reader.button.unfollow" = "Отменить подписку";
@@ -10102,121 +10010,50 @@ but tapping on this button will remove their like from the post. */
 /* Accessibility label for the 'Save Post' button when a post has been saved. */
 "reader.detail.toolbar.saved.button.a11y.label" = "Сохраненная запись";
 
+/* Header view channel (filter) */
+"reader.discover.channel.dailyPrompts" = "Ежедневные подсказки";
+
+/* Header view channel (filter) */
+"reader.discover.channel.firstPost" = "Самые ранние записи";
+
+/* Header view channel (filter) */
+"reader.discover.channel.latest" = "Новые";
+
+/* Header view channel (filter) */
+"reader.discover.channel.recommended" = "Рекомендуемые";
+
+/* Reader Discover header view details label. The text has a Markdown URL: [interests](/interests). Only the text in the square brackets needs to be translated: [<translate_this>](/interests). */
+"reader.discover.header.title" = "Просматривайте популярные блоги, подобранные по вашим [интересам] (\/interests), чтобы получать вдохновение, узнавать новое и развлекаться.";
+
+/* Used in multiple contexts, usually as a screen title */
+"reader.discover.title" = "Новое";
+
+/* Screen title */
+"reader.editInterests.title" = "Редактировать интересы";
+
 /* Error message informing the user that they are already following a blog in their reader. */
 "reader.error.already.subscribed.message" = "Вы уже подписаны на этот блог.";
-
-/* Title for a button that allows user to manage their subscribed list from the filter sheet */
-"reader.filterSheet.button.manage" = "Управление";
-
-/* Title for a filter sheet on the Reader to filter the stream by blog */
-"reader.filterSheet.byBlog.title" = "Фильтровать по блогу";
-
-/* Title for a filter sheet on the Reader to filter the stream by tag */
-"reader.filterSheet.byTag.title" = "Фильтровать по тегу";
-
-/* Body text for an empty filter sheet on the Reader for blogs */
-"reader.filterSheet.empty.blogs.body" = "Подписывайтесь на блоги в Discover, и последние записи из них будут отображаться здесь. Или найдите блог, который вам уже понравился.";
-
-/* Search blogs button text for an empty filter sheet on the Reader */
-"reader.filterSheet.empty.blogs.search" = "Искать блог";
-
-/* Title for an empty filter sheet on the Reader for blogs */
-"reader.filterSheet.empty.blogs.title" = "Нет подписок на блоги";
-
-/* Body text for an empty filter sheet on the Reader for tags */
-"reader.filterSheet.empty.tags.body" = "Подпишитесь на тег, и лучшие записи с ним станут отображаться здесь.";
-
-/* Subscribe to a tag button text for an empty filter sheet on the Reader */
-"reader.filterSheet.empty.tags.subscribe" = "Подписаться на тег";
-
-/* Suggested tags button text for an empty filter sheet on the Reader */
-"reader.filterSheet.empty.tags.suggested" = "Рекомендуемые теги";
-
-/* Title for an empty filter sheet on the Reader for tags */
-"reader.filterSheet.empty.tags.title" = "Нет тегов";
-
-/* Label displayed to the user while loading their selected interests */
-"reader.filterSheet.select.tags.following" = "Подписка на новые метки...";
-
-/* Screen title. Reader select interests title label text. */
-"reader.filterSheet.select.tags.title" = "Рекомендуемые теги";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
 "reader.follow.button.accessibility.hint" = "Подписка на метку.";
 
-/* A short message to inform the user data for their followed sites is being fetched.. */
-"reader.followed.blogs.loading" = "Получение блогов…";
+/* Reader screen title for follow conversation settings */
+"reader.followConversationSettings.title" = "Настройки обсуждения";
 
-/* Section title for sites the user has subscribed to. */
-"reader.followedSites.empty" = "Сайты, на которые вы подписаны";
+/* Screen header details */
+"reader.following.header.details" = "Будьте в курсе обновлений в блогах, на которые вы подписаны.";
 
-/* Manage blogs tab title */
-"reader.manage.tab.blogs" = "Блоги";
+/* Used in multiple contexts, usually as a screen title */
+"reader.likes.title" = "Отметки «Нравится»";
 
-/* Manage tags tab title */
-"reader.manage.tab.tags" = "Теги";
+/* Reader logged-out screen details */
+"reader.loggedOut.details" = "Войдите с данными вашей учётной записи WordPress.com, чтобы подписываться на любимые блоги";
 
-/* Plural button title to filter the Reader stream by blog.
-%1$d is a placeholder for the number of blogs. */
-"reader.navigation.filter.blog.plural" = "%1$d блогов";
+/* Reader logged-out screen sign in button */
+"reader.loggedOut.signIn" = "Войти";
 
-/* Singular button title to filter the Reader stream by blog.
-%1$d is a placeholder for the number of blogs. */
-"reader.navigation.filter.blog.singular" = "%1$d блог";
-
-/* Button title to filter the Reader stream by blog.
-This is displayed when we don't know the number of blogs yet. */
-"reader.navigation.filter.blog.unspecified" = "Блоги";
-
-/* Plural button title to filter the Reader stream by tag.
-%1$d is a placeholder for the number of tags. */
-"reader.navigation.filter.tag.plural" = "Метки: %1$d";
-
-/* Singular button title to filter the Reader stream by tag.
-%1$d is a placeholder for the number of tags. */
-"reader.navigation.filter.tag.singular" = "%1$d тег";
-
-/* Button title to filter the Reader stream by tag.
-This is displayed when we don't know the number of tags yet. */
-"reader.navigation.filter.tag.unnumbered" = "Теги";
-
-/* Accessibility label for when the user has an active filter.
-This informs the user that the currently displayed stream is being filtered. */
-"reader.navigation.menu.activeFilter.a11y.label" = "Фильтрация по %1$@";
-
-/* Accessibility hint that informs the user that the filter list will be opened when they interact
-with the filter chip button. */
-"reader.navigation.menu.filter.a11y.hint" = "Открыть список фильтров";
-
-/* Reader navigation menu item for the Liked filter */
-"reader.navigation.menu.liked" = "Понравилось";
-
-/* Reader navigation menu item for the lists menu group */
-"reader.navigation.menu.lists" = "Списки";
-
-/* Accessibility label for the Close icon button, to reset the active filter. */
-"reader.navigation.menu.reset.a11y.label" = "Сброс";
-
-/* Reader navigation menu item for the Saved filter */
-"reader.navigation.menu.saved" = "Сохранено";
-
-/* Accessibility label for the Search icon. */
-"reader.navigation.menu.search.a11y.label" = "Поиск";
-
-/* Reader navigation menu item for the Subscriptions filter */
-"reader.navigation.menu.subscriptions" = "Подписки";
-
-/* Reader navigation menu item for the Tags filter */
-"reader.navigation.menu.tags" = "Ваши теги";
-
-/* Reader search button accessibility label. */
-"reader.navigation.search.button.label" = "Поиск";
-
-/* Reader settings button accessibility label. */
-"reader.navigation.settings.button.label" = "Настройки Чтива";
-
-/* No Tags View Button Label */
-"reader.no.blog.title" = "Добавить блог";
+/* Reader logged-out screen title */
+"reader.loggedOut.title" = "Присоединиться к обсуждению";
 
 /* Title for button on the no followed blogs result screen */
 "reader.no.blogs.button" = "Искать блоги";
@@ -10233,17 +10070,8 @@ with the filter chip button. */
 /* Message shown when the reader finds no posts for the chosen list */
 "reader.no.results.list.response.message" = "В блогах из этого списка за последнее время не было ничего опубликовано.";
 
-/* Button title. Tapping lets the user manage the blogs they follow. */
-"reader.no.results.manage.blogs" = "Управление блогами";
-
 /* A message explaining the Following topic in the reader */
 "reader.no.results.response.message" = "Недавние записи из блогов и с сайтов, на которые вы подписаны, будут отображаться здесь.";
-
-/* Button title. Tapping lets the user view the blogs they're subscribed to. */
-"reader.no.results.subscriptions.button" = "Перейти в подписки";
-
-/* No Tags View Button Label */
-"reader.no.tags.title" = "Добавить тег";
 
 /* Notice title when blocking a blog fails. */
 "reader.notice.blog.blocked.failure" = "Не удалось заблокировать блог";
@@ -10251,17 +10079,8 @@ with the filter chip button. */
 /* Notice title when blocking a site succeeds. */
 "reader.notice.blog.blocked.success" = "Заблокированный блог";
 
-/* User subscribed to a blog. */
-"reader.notice.blog.subscribe.success" = "Оформлена подписка на блог";
-
-/* Title of a prompt. */
-"reader.notice.blog.unsubscribe.error" = "Не удалось отменить подписку на блог";
-
 /* Title of a prompt. */
 "reader.notice.blog.unsubscribed.error" = "Не удалось отменить подписку на блог";
-
-/* User unsubscribed from a blog. */
-"reader.notice.blog.unsubscribed.success" = "Подписка на блог отменена";
 
 /* Notice title when turning blog notifications off fails. */
 "reader.notice.disable.notification.failure" = "Не удалось отключить уведомления блога";
@@ -10297,65 +10116,74 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";
 
-/* Text for the 'Comment' button on the reader post card cell. */
-"reader.post.button.comment" = "Комментировать";
+/* Button accessibility label */
+"reader.post.buttonBookmark.accessibilityLabel" = "Закладка";
 
-/* Accessibility hint for the comment button on the reader post card cell */
-"reader.post.button.comment.accessibility.hint" = "Открыть комментарии к записи.";
+/* Button accessibility label */
+"reader.post.buttonComment.accessibilityLabel" = "Показать комментарии";
 
-/* Text for the 'Like' button on the reader post card cell. */
-"reader.post.button.like" = "Нравится";
+/* Button accessibility label */
+"reader.post.buttonLike.accessibilityLabel" = "Оценка «Нравится»";
 
-/* Accessibility hint for the like button on the reader post card cell */
-"reader.post.button.like.accessibility.hint" = "Отмечает запись как понравившуюся.";
+/* Button accessibility label */
+"reader.post.buttonReblog.accessibilityLabel" = "Перепост";
 
-/* Text for the 'Liked' button on the reader post card cell. */
-"reader.post.button.liked" = "Понравилось";
+/* Button accessibility label */
+"reader.post.buttonRemoveBookmark.accessibilityLint" = "Удалить закладку";
 
-/* Accessibility hint for the liked button on the reader post card cell */
-"reader.post.button.liked.accessibility.hint" = "Снимает отметку \"понравилось\" с записи.";
+/* Button accessibility label */
+"reader.post.buttonRemoveLike.accessibilityLabel" = "Отменить оценку «Нравится»";
 
-/* Accessibility hint for the site header on the reader post card cell */
-"reader.post.button.menu.accessibility.hint" = "Открывает меню с другими действиями.";
+/* Accessibility hint for the site header */
+"reader.post.buttonSite.accessibilityHint" = "Открывает сведения о сайте";
 
-/* Accessibility label for the more menu button on the reader post card cell */
-"reader.post.button.menu.accessibility.label" = "Далее";
+/* Button accessibility label */
+"reader.post.moreMenu.accessibilityLabel" = "Другие действия";
 
-/* Text for the 'Reblog' button on the reader post card cell. */
-"reader.post.button.reblog" = "Реблог";
+/* Accessibility label showing total number of comments */
+"reader.post.numberOfComments.accessibilityLabel" = "Комментарии: %@";
 
-/* Accessibility hint for the reblog button on the reader post card cell */
-"reader.post.button.reblog.accessibility.hint" = "Перепубликовать эту запись";
+/* Accessibility label showing total number of likes */
+"reader.post.numberOfLikes.accessibilityLabel" = "Оценки «Нравится»: %@";
 
-/* Accessibility hint for the site header on the reader post card cell */
-"reader.post.header.accessibility.hint" = "Открыть подробности на сайте для записи.";
+/* Context menu action */
+"reader.postContextMenu.blockOrReportMenu" = "Заблокировать или пожаловаться";
 
-/* The title of a button that triggers blocking a blog from the user's reader. */
-"reader.post.menu.block.blog" = "Заблокировать этот блог";
+/* Context menu action */
+"reader.postContextMenu.blockSite" = "Заблокировать сайт";
 
-/* The title of a button that triggers blocking a user from the user's reader. */
-"reader.post.menu.block.user" = "Заблокировать этого пользователя";
+/* Context menu action */
+"reader.postContextMenu.blockUser" = "Заблокировать пользователя";
 
-/* Verb. An option to switch off site notifications. */
-"reader.post.menu.notifications.off" = "Отключить уведомления блога";
+/* Context menu action (placeholder value when blog name not available – should never happen) */
+"reader.postContextMenu.blogDetails" = "Сведения о блоге";
 
-/* Verb. An option to switch on blog notifications. */
-"reader.post.menu.notifications.on" = "Включить уведомления блога";
+/* Context menu action */
+"reader.postContextMenu.copyLink" = "Копировать ссылку";
 
-/* The title of a button that removes a saved post. */
-"reader.post.menu.remove.post" = "Удалить сохраненную запись";
+/* Context menu action */
+"reader.postContextMenu.manageNotifications" = "Управление уведомлениями";
 
-/* The title of a button that triggers the reporting of a post's author. */
-"reader.post.menu.report.user" = "Пожаловаться на этого пользователя";
+/* Context menu action */
+"reader.postContextMenu.reportPost" = "Пожаловаться на запись";
 
-/* The title of a button that saves a post. */
-"reader.post.menu.save.post" = "Сохранить";
+/* Context menu action */
+"reader.postContextMenu.reportUser" = "Пожаловаться на пользователя";
 
-/* Verb. An option to subscribe to a blog. */
-"reader.post.menu.subscribe.blog" = "Подписаться на блог";
+/* Context menu action */
+"reader.postContextMenu.share" = "Поделиться";
 
-/* Verb. An option to unsubscribe from a blog. */
-"reader.post.menu.unsubscribe.blog" = "Отменить подписку на блог";
+/* Context menu action */
+"reader.postContextMenu.showBlog" = "Перейти в блог";
+
+/* Context menu action */
+"reader.postContextMenu.subscribeT" = "Подписаться";
+
+/* Context menu action */
+"reader.postContextMenu.unsubscribe" = "Отменить подписку";
+
+/* Context menu action */
+"reader.postContextMenu.viewInBrowser" = "Просмотреть в браузере";
 
 /* Name for the Candy color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.candy" = "Карамель";
@@ -10395,16 +10223,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 The enclosing angled brackets ('<' and '>') are decorative and only intended as a flavor.
 Feel free to replace it with other bracket types that you think looks better for the locale. */
 "reader.preferences.navBar.experimental.label" = "<Эксперимент>";
-
-/* Text format for the feedback line text, to be displayed in the preview section.
-%1$@ is a placeholder for a call-to-action that completes the line, which will be filled programmatically.
-Example: 'This is a new feature still in development. To help us improve it send your feedback.' */
-"reader.preferences.preview.body.feedback.format" = "Эта новая функция ещё на стадии разработки. Помогите нам её улучшить: %1$@.";
-
-/* A call-to-action text fragment to ask the user provide feedback for the Reading Preferences feature.
-Note that the lowercase format is intended, as this will be injected to form a full paragraph.
-Refer to: `reader.preferences.preview.body.feedback.format` */
-"reader.preferences.preview.body.feedback.link" = "отправить отзыв";
 
 /* Description text for the preview section of Reader Preferences */
 "reader.preferences.preview.body.text" = "Выберите цвета, шрифты и размеры. Вы можете предварительно просмотреть результаты здесь, а затем, когда сделаете выбор, читать записи в блоге в избранном оформлении.";
@@ -10448,11 +10266,26 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* A short message that informs the user no WordPress.com blogs could be found. */
 "reader.reblog.no.blogs.title" = "Нет доступных блогов WordPress.com";
 
+/* Used in multiple contexts, usually as a screen title */
+"reader.recent.title" = "Недавние";
+
+/* Used in multiple contexts, usually as a screen title */
+"reader.saved.title" = "Сохранено";
+
 /* Notification title for when saved post is removed */
 "reader.savedPostRemovedNotificationTitle" = "Сохранённая запись удалена";
 
+/* Reader Search */
+"reader.search.clearHistory" = "Очистить историю";
+
 /* Title of a Reader tab showing Sites matching a user's search query */
 "reader.search.tab.blogs" = "Блоги";
+
+/* Title of a Reader tab showing Posts matching a user's search query */
+"reader.search.tab.posts" = "Записи";
+
+/* Title of the Reader's search feature */
+"reader.search.title" = "Поиск";
 
 /* Screen title. Reader select interests title label text. */
 "reader.select.interests.follow.title" = "Подписаться на метки";
@@ -10478,17 +10311,11 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Reader select interests title label text */
 "reader.select.tags.title" = "Найдите блоги, которые вам понравятся, и подпишитесь на них";
 
-/* Reader sidebar button title */
-"reader.sidebar.allSubscriptions" = "Все подписки";
-
 /* Reader sidebar menu item */
 "reader.sidebar.discover" = "Раздел «Поиск»";
 
 /* Reader sidebar menu item */
 "reader.sidebar.likes" = "Отметки «Нравится»";
-
-/* Reader sidebar title */
-"reader.sidebar.navigationTitle" = "Читалка";
 
 /* Reader sidebar menu item */
 "reader.sidebar.recent" = "Недавние";
@@ -10500,13 +10327,13 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 "reader.sidebar.search" = "Поиск";
 
 /* Reader sidebar section title */
+"reader.sidebar.section.favorites.title" = "Избранное";
+
+/* Reader sidebar section title */
 "reader.sidebar.section.lists.title" = "Списки";
 
 /* Reader sidebar section title */
 "reader.sidebar.section.organization.title" = "Организация";
-
-/* Reader sidebar section title */
-"reader.sidebar.section.subscriptions.tTitle" = "Подписки";
 
 /* Reader sidebar button */
 "reader.sidebar.section.tags.addTag" = "Добавить метку";
@@ -10519,12 +10346,6 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "Подписаться";
-
-/* The accessibility label for the followed blogs search field */
-"reader.subscribed.blogs.search.accessibility.label" = "URL-адрес блога";
-
-/* Placeholder text prompting the user to type the name of the URL they would like to follow. */
-"reader.subscribed.blogs.search.placeholder" = "Введите URL-адрес блога, на который хотите подписаться";
 
 /* Verb. Button title. The user is subscribed to a blog. */
 "reader.subscribed.button.title" = "Подписка оформлена";
@@ -10556,18 +10377,8 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* A suggestion of topics the user might want to subscribe to */
 "reader.suggested.blogs.title" = "Блоги, на которые можно подписаться";
 
-/* Verb. The button title of an empty state component for one of the tags in the tag stream.
-This empty state component is displayed only when the app fails to load posts under this tag.
-When tapped, the app will try to reload posts under this tag. */
-"reader.tagStream.cards.emptyView.button" = "Повторить";
-
-/* The body text of an empty state component for one of the tags in the tag stream.
-This empty state component is displayed only when the app fails to load posts under this tag. */
-"reader.tagStream.cards.emptyView.error.body" = "Не удалось загрузить записи с этим тегом";
-
-/* The title of an empty state component for one of the tags in the tag stream.
-This empty state component is displayed only when the app fails to load posts under this tag. */
-"reader.tagStream.cards.emptyView.error.title" = "Не удалось загрузить записи";
+/* A suggestion of topics (tags) the user might like */
+"reader.suggested.tags.title" = "Вам может понравиться";
 
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag" = "Добавьте тег";
@@ -10590,12 +10401,6 @@ This empty state component is displayed only when the app fails to load posts un
 /* Navigation title */
 "reader.tags.addTag.title" = "Добавить метку";
 
-/* Text for the 'Like' button on the reader tag cell. */
-"reader.tags.button.like" = "Оценка «Нравится»";
-
-/* Text for the 'Liked' button on the reader tag cell. */
-"reader.tags.button.liked" = "Понравилось";
-
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "Другие теги";
 
@@ -10608,14 +10413,8 @@ This empty state component is displayed only when the app fails to load posts un
 /* Verb. Button title. The user is following a tag. */
 "reader.tags.following.button.title" = "Подписки";
 
-/* Label for an action to open more content from a specified Reader tag. %1$@ is the Reader tag. */
-"reader.tags.footer.more" = "Ещё больше с %1$@";
-
 /* Accessibility label for unsubscribing from a tag */
 "reader.tags.unfollow.accessibility.label" = "Отписаться от %@";
-
-/* Label of the table view cell's delete button, when unsubscribing from a blog. */
-"reader.unsubscribe.button" = "Отменить подписку";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "Назад";
@@ -10722,9 +10521,6 @@ This empty state component is displayed only when the app fails to load posts un
 /* Post revisions list screen title */
 "revisions.title" = "Редакции";
 
-/* Title for the \"Copy Link\" action in Share Sheet. */
-"share.sheet.copy.link.title" = "Копировать ссылку";
-
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "Закрыть";
 
@@ -10823,9 +10619,6 @@ This empty state component is displayed only when the app fails to load posts un
 
 /* Sidebar item on iPad */
 "sidebar.notifications" = "Уведомления";
-
-/* Sidebar item on iPad */
-"sidebar.reader" = "Читалка";
 
 /* Template site address for the search bar. */
 "site.cration.domain.site.address" = "https:\/\/yoursitename.com";
@@ -11208,6 +11001,9 @@ This empty state component is displayed only when the app fails to load posts un
 /* The section title and or placeholder */
 "submit.feedback.detailsPlaceholder" = "Подробности";
 
+/* The footer in the Submit Feedback screen to clarify that it's not support */
+"submit.feedback.footer" = "Если вам требуется поддержка, свяжитесь с нами через экран «Помощь и поддержка»";
+
 /* The button title for the Submit button in the In-App Feedback screen */
 "submit.feedback.submit.button" = "Отправить";
 
@@ -11424,6 +11220,88 @@ This empty state component is displayed only when the app fails to load posts un
 /* Site's Viewers Profile. Displayed when the name is empty! */
 "user.details.title.viewer" = "Посетитель сайта";
 
+/* The 'Account Management' section of the user profile – matches what's in /wp-admin/profile.php */
+"userDetails.accountManagementSectionTitle" = "Управление учётной записью";
+
+/* The help message for reassigning content to a user after deletion. */
+"userDetails.alert.attributeContentToUserHelpMessage" = "Авторство страниц и записей, принадлежавших удалённому пользователю, будет передано другому пользователю, выбранному вами из раскрывающегося списка.";
+
+/* The label that appears in the alert that appears when deleting a user */
+"userDetails.alert.attributeContentToUserLabel" = "Выбранный пользователь";
+
+/* The message that appears when deleting a user. */
+"userDetails.alert.deleteUserAttributionMessage" = "Выбрать другого пользователя для передачи ему контента.";
+
+/* The title of the confirmation button in the alert that appears when deleting a user */
+"userDetails.alert.deleteUserConfirmButtonTitle" = "Да, удалить пользователя";
+
+/* The title of the cancel button in the confirmation alert that appears when deleting a user */
+"userDetails.alert.deleteUserConfirmationCancelButton" = "Отмена";
+
+/* The title of the delete button in the confirmation alert that appears when deleting a user */
+"userDetails.alert.deleteUserConfirmationDeleteButton" = "Удалить";
+
+/* The message in the alert that appears when deleting a user. The first argument is the display name of the user to which content will be attributed */
+"userDetails.alert.deleteUserConfirmationMessage" = "Вы уверены, что хотите удалить этого пользователя и передать весь контент пользователю %@?";
+
+/* The title of the alert that appears when deleting a user
+   The title of the confirmation alert that appears when deleting a user */
+"userDetails.alert.deleteUserConfirmationTitle" = "Подтверждение удаления";
+
+/* The message in the alert that appears when deleting a user */
+"userDetails.alert.deleteUserErrorAlertMessage" = "При удалении пользователя возникла ошибка.";
+
+/* The title of the OK button in the alert that appears when deleting a user */
+"userDetails.alert.deleteUserErrorAlertOkButton" = "ОК";
+
+/* The title of the alert that appears when deleting a user */
+"userDetails.alert.deleteUserErrorAlertTitle" = "Ошибка";
+
+/* The 'Biographical Info' field of the user profile – matches what's in /wp-admin/profile.php */
+"userDetails.bioFieldTitle" = "Биография";
+
+/* The 'Update' button to set a new password on the user profile */
+"userDetails.button.updatePassword" = "Обновить";
+
+/* The 'Delete User' button on the user profile – matches what's in /wp-admin/profile.php */
+"userDetails.deleteUserActionTitle" = "Удалить пользователя";
+
+/* The 'Deleting User…' button on the user profile */
+"userDetails.deletingUserActionTitle" = "Удаление пользователя…";
+
+/* The 'Email' field of the user profile – matches what's in /wp-admin/profile.php */
+"userDetails.emailAddressFieldTitle" = "Адрес электронной почты";
+
+/* The message in the alert that appears when setting a new password on the user profile */
+"userDetails.newPasswordAlertMessage" = "Введите новый пароль этого пользователя";
+
+/* The 'Role' field of the user profile – matches what's in /wp-admin/profile.php */
+"userDetails.roleFieldTitle" = "Роль";
+
+/* The 'Set New Password' button on the user profile – matches what's in /wp-admin/profile.php */
+"userDetails.setNewPasswordActionTitle" = "Задать новый пароль";
+
+/* The placeholder text for the 'New Password' field on the user profile */
+"userDetails.textField.placeholder.newPassword" = "Новый пароль";
+
+/* The placeholder text for the 'Confirm New Password' field on the user profile */
+"userDetails.textField.placeholder.newPasswordConfirmation" = "Подтвердите новый пароль";
+
+/* The 'Website' field of the user profile – matches what's in /wp-admin/profile.php */
+"userDetails.websiteFieldTitle" = "Веб-сайт";
+
+/* Header text fo the search results section in the users list */
+"userList.searchResults.header" = "Результаты поиска";
+
+/* Shown when the user list is empty */
+"userlist.nousersfound" = "Пользователи не найдены";
+
+/* An instruction for the user to tap to start searching */
+"userlist.searchprompt" = "Поиск";
+
+/* The heading at the top of the user list */
+"userlist.title" = "Пользователи";
+
 /* Site Subscribers */
 "users.list.title.subscribers" = "Подписчики";
 
@@ -11612,6 +11490,27 @@ This empty state component is displayed only when the app fails to load posts un
 
 /* Title of a button that displays a blog post in a web view. */
 "wp.migration.successCard.learnMore" = "Подробнее";
+
+/* Error message when user denies access to WordPress.com */
+"wpComLogin.error.accessDenied" = "Доступ запрещён. Для входа в WordPress.com требуется подтверждение";
+
+/* Error message when user signs in with an different account than the account that's alredy signed in. The first argument is the current signed-in account email address */
+"wpComLogin.error.alreadySignedIn" = "Вы уже выполнили вход по адресу электронной почты %@. Выйдите и войдите снова.";
+
+/* Error message when failing to load user details during WordPress.com login */
+"wpComLogin.error.fetchUser" = "Не удалось загрузить данные пользователя";
+
+/* Error message when failing to load account's site after signing in */
+"wpComLogin.error.loadingSites" = "Не удается загрузить сайты, связанные с вашей учётной записью. Повторите попытку позже.";
+
+/* Error message when user signs in with an unexpected email address. The first argument is the expected email address */
+"wpComLogin.error.mismatchedEmail" = "Войдите по адресу электронной почты %@";
+
+/* Message title to be displayed when the user needs to re-authenticate their WordPress.com account. */
+"wpcom.token.fix.signin" = "Войти в WordPress.com";
+
+/* Detailed message to be displayed when the user needs to re-authenticate their WordPress.com account. */
+"wpcom.token.fix.signin.message" = "Чтобы перейти к вашей учётной записи, вам необходимо выполнить вход в WordPress.com.";
 
 /* Managing Zendesk attachments */
 "zendeskAttachmentsSection.addAttachment" = "Добавать вложения";
