@@ -11,6 +11,7 @@
 * [*] Add support for restricted posts in Reader [#23853]
 * [*] Fix minor appearance issues in the Blaze campaign list [#23891]
 * [*] Improve the sidebar animations and layout on some iPad models [#23886]
+* [*] Fix an issue with posts shown embedded in the notifications popover on iPad [#23889]
 
 25.5
 -----
