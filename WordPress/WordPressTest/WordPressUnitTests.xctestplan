@@ -34,6 +34,13 @@
     {
       "target" : {
         "containerPath" : "container:..\/Modules",
+        "identifier" : "WordPressSharedTests",
+        "name" : "WordPressSharedTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..\/Modules",
         "identifier" : "JetpackStatsWidgetsCoreTests",
         "name" : "JetpackStatsWidgetsCoreTests"
       }
@@ -47,16 +54,9 @@
     },
     {
       "target" : {
-        "containerPath" : "container:WordPress.xcodeproj",
-        "identifier" : "4AD953BA2C21451700D0EEFA",
-        "name" : "WordPressAuthenticatorTests"
-      }
-    },
-    {
-      "target" : {
         "containerPath" : "container:..\/Modules",
-        "identifier" : "DesignSystemTests",
-        "name" : "DesignSystemTests"
+        "identifier" : "WordPressMediaTests",
+        "name" : "WordPressMediaTests"
       }
     },
     {
@@ -69,15 +69,22 @@
     {
       "target" : {
         "containerPath" : "container:..\/Modules",
-        "identifier" : "WordPressSharedObjCTests",
-        "name" : "WordPressSharedObjCTests"
+        "identifier" : "DesignSystemTests",
+        "name" : "DesignSystemTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:WordPress.xcodeproj",
+        "identifier" : "4AD953BA2C21451700D0EEFA",
+        "name" : "WordPressAuthenticatorTests"
       }
     },
     {
       "target" : {
         "containerPath" : "container:..\/Modules",
-        "identifier" : "WordPressSharedTests",
-        "name" : "WordPressSharedTests"
+        "identifier" : "WordPressSharedObjCTests",
+        "name" : "WordPressSharedObjCTests"
       }
     }
   ],

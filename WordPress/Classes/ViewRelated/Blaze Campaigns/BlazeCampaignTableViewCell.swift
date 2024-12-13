@@ -1,4 +1,5 @@
 import UIKit
+import WordPressMedia
 
 final class BlazeCampaignTableViewCell: UITableViewCell, Reusable {
 

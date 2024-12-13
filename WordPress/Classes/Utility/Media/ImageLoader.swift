@@ -2,10 +2,12 @@ import MobileCoreServices
 import AlamofireImage
 import AutomatticTracks
 import WordPressShared
+import WordPressMedia
 
 /// Class used together with `CachedAnimatedImageView` to facilitate the loading of both
 /// still images and animated gifs.
 ///
+/// - warning: Deprecated, please use `AsyncImageView` or `.wp` extensions for `UIImageView`.
 @objc class ImageLoader: NSObject {
     typealias ImageLoaderSuccessBlock = () -> Void
     typealias ImageLoaderFailureBlock = (Error?) -> Void

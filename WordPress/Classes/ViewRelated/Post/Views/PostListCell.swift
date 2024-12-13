@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import WordPressMedia
 
 protocol AbstractPostListCell {
     /// A post displayed by the cell.

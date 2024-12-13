@@ -1,6 +1,7 @@
 import UIKit
 import Combine
 import Gifu
+import WordPressMedia
 
 final class SiteMediaCollectionCell: UICollectionViewCell, Reusable {
     private let imageContainerView = UIView()

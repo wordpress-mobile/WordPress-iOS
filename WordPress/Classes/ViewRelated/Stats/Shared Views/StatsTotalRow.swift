@@ -1,4 +1,5 @@
 import UIKit
+import WordPressMedia
 
 struct StatsTotalRowData: Equatable {
     var id: UUID?

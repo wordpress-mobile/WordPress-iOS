@@ -1,7 +1,7 @@
 import UIKit
 
-final class ImageRequest {
-    enum Source {
+public final class ImageRequest {
+    public enum Source {
         case url(URL, MediaHost?)
         case urlRequest(URLRequest)
 
@@ -16,25 +16,35 @@ final class ImageRequest {
     let source: Source
     let options: ImageRequestOptions
 
-    init(url: URL, host: MediaHost? = nil, options: ImageRequestOptions = .init()) {
+    public init(url: URL, host: MediaHost? = nil, options: ImageRequestOptions = .init()) {
         self.source = .url(url, host)
         self.options = options
     }
 
-    init(urlRequest: URLRequest, options: ImageRequestOptions = .init()) {
+    public init(urlRequest: URLRequest, options: ImageRequestOptions = .init()) {
         self.source = .urlRequest(urlRequest)
         self.options = options
     }
 }
 
-struct ImageRequestOptions {
+public struct ImageRequestOptions {
     /// Resize the thumbnail to the given size (in pixels). By default, `nil`.
-    var size: CGSize?
+    public var size: CGSize?
 
     /// If enabled, uses ``MemoryCache`` for caching decompressed images.
-    var isMemoryCacheEnabled = true
+    public var isMemoryCacheEnabled = true
 
     /// If enabled, uses `URLSession` preconfigured with a custom `URLCache`
     /// with a relatively high disk capacity. By default, `true`.
-    var isDiskCacheEnabled = true
+    public var isDiskCacheEnabled = true
+
+    public init(
+        size: CGSize? = nil,
+        isMemoryCacheEnabled: Bool = true,
+        isDiskCacheEnabled: Bool = true
+    ) {
+        self.size = size
+        self.isMemoryCacheEnabled = isMemoryCacheEnabled
+        self.isDiskCacheEnabled = isDiskCacheEnabled
+    }
 }

@@ -2,6 +2,7 @@ import AutomatticTracks
 import Aztec
 import Gridicons
 import WordPressShared
+import WordPressMedia
 
 final class AuthenticatedImageDownload: AsyncOperation, @unchecked Sendable {
     enum DownloadError: Error {

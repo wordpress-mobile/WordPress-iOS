@@ -1,6 +1,7 @@
 import Foundation
 import WordPressUI
 import Gravatar
+import WordPressMedia
 
 extension WPTabBarController {
 

@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import WordPressMedia
 
 /// The purpose of this class is to provide a simple API to download assets from the web.
 /// Assets are downloaded, and resized to fit a maximumWidth, specified in the initial download call.
@@ -11,7 +12,7 @@ class NotificationMediaDownloader: NSObject {
 
     /// Active Download Tasks
     ///
-    private let imageDownloader = ImageDownloader()
+    private let imageDownloader = ImageDownloader.shared
 
     /// Resize OP's will never hit the main thread
     ///

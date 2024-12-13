@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import WordPressMedia
 
 /// A convenience class for managing image downloads for individual views.
 @MainActor

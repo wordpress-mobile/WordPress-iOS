@@ -1,5 +1,6 @@
 import Foundation
 import WordPressUI
+import WordPressMedia
 import Gravatar
 
 extension BlogDetailsViewController {

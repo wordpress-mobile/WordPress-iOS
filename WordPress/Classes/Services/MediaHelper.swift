@@ -1,3 +1,6 @@
+import UIKit
+import WordPressMedia
+
 class MediaHelper: NSObject {
 
     @objc(updateMedia:withRemoteMedia:)

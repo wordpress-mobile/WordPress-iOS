@@ -2,20 +2,20 @@ import Foundation
 
 /// Defines a media host for request authentication purposes.
 ///
-enum MediaHost: Equatable, Sendable {
+public enum MediaHost: Equatable, Sendable {
     case publicSite
     case publicWPComSite
     case privateSelfHostedSite
     case privateWPComSite(authToken: String)
     case privateAtomicWPComSite(siteID: Int, username: String, authToken: String)
 
-    enum Error: Swift.Error {
+    public enum Error: Swift.Error {
         case wpComWithoutSiteID
         case wpComPrivateSiteWithoutAuthToken
         case wpComPrivateSiteWithoutUsername
     }
 
-    init(
+    public init(
         isAccessibleThroughWPCom: Bool,
         isPrivate: Bool,
         isAtomic: Bool,

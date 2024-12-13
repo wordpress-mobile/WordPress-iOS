@@ -1,10 +1,9 @@
 import UIKit
 
 /// The system that downloads and caches images, and prepares them for display.
-actor ImageDownloader {
-    static let shared = ImageDownloader()
-
+public actor ImageDownloader {
     private nonisolated let cache: MemoryCacheProtocol
+    private let authenticator: MediaRequestAuthenticatorProtocol?
 
     private let urlSession = URLSession {
         $0.urlCache = nil
@@ -20,15 +19,19 @@ actor ImageDownloader {
 
     private var tasks: [String: ImageDataTask] = [:]
 
-    init(cache: MemoryCacheProtocol = MemoryCache.shared) {
+    public init(
+        cache: MemoryCacheProtocol = MemoryCache.shared,
+        authenticator: MediaRequestAuthenticatorProtocol?
+    ) {
         self.cache = cache
+        self.authenticator = authenticator
     }
 
-    func image(from url: URL, host: MediaHost? = nil, options: ImageRequestOptions = .init()) async throws -> UIImage {
+    public func image(from url: URL, host: MediaHost? = nil, options: ImageRequestOptions = .init()) async throws -> UIImage {
         try await image(for: ImageRequest(url: url, host: host, options: options))
     }
 
-    func image(for request: ImageRequest) async throws -> UIImage {
+    public func image(for request: ImageRequest) async throws -> UIImage {
         let options = request.options
         let key = makeKey(for: request.source.url, size: options.size)
         if options.isMemoryCacheEnabled, let image = cache[key] {
@@ -42,7 +45,7 @@ actor ImageDownloader {
         return image
     }
 
-    func data(for request: ImageRequest) async throws -> Data {
+    public func data(for request: ImageRequest) async throws -> Data {
         let urlRequest = try await makeURLRequest(for: request)
         return try await _data(for: urlRequest, options: request.options)
     }
@@ -51,9 +54,8 @@ actor ImageDownloader {
         switch request.source {
         case .url(let url, let host):
             var request: URLRequest
-            if let host {
-                request = try await MediaRequestAuthenticator()
-                    .authenticatedRequest(for: url, host: host)
+            if let host, let authenticator {
+                request = try await authenticator.authenticatedRequest(for: url, host: host)
             } else {
                 request = URLRequest(url: url)
             }
@@ -70,11 +72,11 @@ actor ImageDownloader {
     ///
     /// - note: Use it to retrieve the image synchronously, which is no not possible
     /// with the async functions.
-    nonisolated func cachedImage(for imageURL: URL, size: CGSize? = nil) -> UIImage? {
+    nonisolated public func cachedImage(for imageURL: URL, size: CGSize? = nil) -> UIImage? {
         cache[makeKey(for: imageURL, size: size)]
     }
 
-    nonisolated func setCachedImage(_ image: UIImage?, for imageURL: URL, size: CGSize? = nil) {
+    nonisolated public func setCachedImage(_ image: UIImage?, for imageURL: URL, size: CGSize? = nil) {
         cache[makeKey(for: imageURL, size: size)] = image
     }
 
@@ -86,12 +88,12 @@ actor ImageDownloader {
         return imageURL.absoluteString + (size.map { "?size=\($0)" } ?? "")
     }
 
-    func clearURLSessionCache() {
+    public func clearURLSessionCache() {
         urlSessionWithCache.configuration.urlCache?.removeAllCachedResponses()
         urlSession.configuration.urlCache?.removeAllCachedResponses()
     }
 
-    func clearMemoryCache() {
+    public func clearMemoryCache() {
         self.cache.removeAllObjects()
     }
 
@@ -170,14 +172,14 @@ private final class ImageDataTask {
 
 extension ImageDownloader {
     @discardableResult
-    nonisolated func downloadImage(at url: URL, completion: @escaping (UIImage?, Error?) -> Void) -> ImageDownloaderTask {
+    nonisolated public func downloadImage(at url: URL, completion: @escaping (UIImage?, Error?) -> Void) -> ImageDownloaderTask {
         var request = URLRequest(url: url)
         request.addValue("image/*", forHTTPHeaderField: "Accept")
         return downloadImage(for: request, completion: completion)
     }
 
     @discardableResult
-    nonisolated func downloadImage(for request: URLRequest, completion: @escaping (UIImage?, Error?) -> Void) -> ImageDownloaderTask {
+    nonisolated public func downloadImage(for request: URLRequest, completion: @escaping (UIImage?, Error?) -> Void) -> ImageDownloaderTask {
         let task = Task {
             do {
                 let image = try await self.image(for: ImageRequest(urlRequest: request))
@@ -190,31 +192,9 @@ extension ImageDownloader {
     }
 }
 
-// MARK: - AnimatedImage
-
-final class AnimatedImage: UIImage, @unchecked Sendable {
-    private(set) var gifData: Data?
-    var targetSize: CGSize?
-
-    private static let playbackStrategy: GIFPlaybackStrategy = LargeGIFPlaybackStrategy()
-
-    convenience init?(gifData: Data) {
-        self.init(data: gifData, scale: 1)
-
-        // Don't store the gifdata if they're too large
-        // We still allow the the RCTAnimatedImage to be rendered since it will still render
-        // the first frame, but not eat up data
-        guard gifData.count < Self.playbackStrategy.maxSize else {
-            return
-        }
-
-        self.gifData = gifData
-    }
-}
-
 // MARK: - Helpers
 
-protocol ImageDownloaderTask {
+public protocol ImageDownloaderTask {
     func cancel()
 }
 
@@ -239,4 +219,8 @@ private extension URLSession {
         conifgure(configuration)
         self.init(configuration: configuration)
     }
+}
+
+public protocol MediaRequestAuthenticatorProtocol {
+    @MainActor func authenticatedRequest(for url: URL, host: MediaHost) async throws -> URLRequest
 }

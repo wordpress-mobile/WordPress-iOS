@@ -1,4 +1,5 @@
 import UIKit
+import WordPressMedia
 
 extension WPImageViewController {
     @objc func loadOriginalImage(for media: Media, success: @escaping (UIImage) -> Void, failure: @escaping (Error) -> Void) {

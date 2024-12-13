@@ -1,4 +1,5 @@
 import UIKit
+import WordPressMedia
 
 open class WPRichTextImage: UIControl, WPRichTextMediaAttachment {
 

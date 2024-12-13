@@ -1,6 +1,7 @@
 import UIKit
 import Gridicons
 import DesignSystem
+import WordPressMedia
 
 protocol LatestPostSummaryConfigurable {
     func configure(withInsightData lastPostInsight: StatsLastPostInsight?, andDelegate delegate: SiteStatsInsightsDelegate?)

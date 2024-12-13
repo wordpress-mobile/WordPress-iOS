@@ -1,3 +1,6 @@
+import UIKit
+import WordPressMedia
+
 /// Renders the comment body through `WPRichContentView`.
 ///
 class RichCommentContentRenderer: NSObject, CommentContentRenderer {

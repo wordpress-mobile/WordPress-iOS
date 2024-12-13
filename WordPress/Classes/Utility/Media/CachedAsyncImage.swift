@@ -1,5 +1,6 @@
 import SwiftUI
 import DesignSystem
+import WordPressMedia
 
 /// Asynchronous Image View that replicates the public API of `SwiftUI.AsyncImage`.
 /// It uses `ImageDownloader` to fetch and cache the images.

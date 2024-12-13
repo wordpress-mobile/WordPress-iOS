@@ -1,6 +1,7 @@
 import UIKit
 import MobileCoreServices
 import UniformTypeIdentifiers
+import WordPressMedia
 
 @objc
 public extension NSAttributedString {

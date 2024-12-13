@@ -1,4 +1,5 @@
 import Foundation
+import WordPressMedia
 
 /// Extends `MediaRequestAuthenticator.MediaHost` so that we can easily
 /// initialize it from a given `AbstractPost`.

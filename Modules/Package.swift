@@ -11,6 +11,7 @@ let package = Package(
         .library(name: "JetpackStatsWidgetsCore", targets: ["JetpackStatsWidgetsCore"]),
         .library(name: "DesignSystem", targets: ["DesignSystem"]),
         .library(name: "WordPressFlux", targets: ["WordPressFlux"]),
+        .library(name: "WordPressMedia", targets: ["WordPressMedia"]),
         .library(name: "WordPressShared", targets: ["WordPressShared"]),
         .library(name: "WordPressUI", targets: ["WordPressUI"]),
     ],
@@ -58,14 +59,21 @@ let package = Package(
             .product(name: "XCUITestHelpers", package: "XCUITestHelpers"),
         ], swiftSettings: [.swiftLanguageMode(.v5)]),
         .target(name: "WordPressFlux", swiftSettings: [.swiftLanguageMode(.v5)]),
+        .target(name: "WordPressMedia"),
         .target(name: "WordPressSharedObjC", resources: [.process("Resources")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .target(name: "WordPressShared", dependencies: [.target(name: "WordPressSharedObjC")], resources: [.process("Resources")], swiftSettings: [.swiftLanguageMode(.v5)]),
+        .target(name: "WordPressTesting", resources: [.process("Resources")]),
         .target(name: "WordPressUI", dependencies: [.target(name: "WordPressShared")], resources: [.process("Resources")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .testTarget(name: "JetpackStatsWidgetsCoreTests", dependencies: [.target(name: "JetpackStatsWidgetsCore")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .testTarget(name: "DesignSystemTests", dependencies: [.target(name: "DesignSystem")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .testTarget(name: "WordPressFluxTests", dependencies: ["WordPressFlux"], swiftSettings: [.swiftLanguageMode(.v5)]),
+        .testTarget(name: "WordPressMediaTests", dependencies: [
+            .target(name: "WordPressMedia"),
+            .target(name: "WordPressTesting"),
+            .product(name: "OHHTTPStubsSwift", package: "OHHTTPStubs")
+        ]),
         .testTarget(name: "WordPressSharedTests", dependencies: [.target(name: "WordPressShared")], swiftSettings: [.swiftLanguageMode(.v5)]),
-        .testTarget(name: "WordPressSharedObjCTests", dependencies: [.target(name: "WordPressShared")], resources: [.process("Resources")], swiftSettings: [.swiftLanguageMode(.v5)]),
+        .testTarget(name: "WordPressSharedObjCTests", dependencies: [.target(name: "WordPressShared"), .target(name: "WordPressTesting")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .testTarget(name: "WordPressUITests", dependencies: [.target(name: "WordPressUI")], swiftSettings: [.swiftLanguageMode(.v5)]),
     ]
 )
@@ -135,6 +143,7 @@ enum XcodeSupport {
                 "JetpackStatsWidgetsCore",
                 "WordPressFlux",
                 "WordPressShared",
+                "WordPressMedia",
                 "WordPressUI",
                 .product(name: "Alamofire", package: "Alamofire"),
                 .product(name: "AlamofireImage", package: "AlamofireImage"),

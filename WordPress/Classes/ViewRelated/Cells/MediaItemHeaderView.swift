@@ -1,6 +1,7 @@
 import UIKit
 import Gridicons
 import WordPressShared
+import WordPressMedia
 
 final class MediaItemHeaderView: UIView {
     private let imageView = CachedAnimatedImageView()

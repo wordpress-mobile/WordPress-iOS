@@ -1,6 +1,7 @@
 import XCTest
 import OHHTTPStubs
 import OHHTTPStubsSwift
+import WordPressMedia
 @testable import WordPress
 
 class MediaImageServiceTests: CoreDataTestCase {

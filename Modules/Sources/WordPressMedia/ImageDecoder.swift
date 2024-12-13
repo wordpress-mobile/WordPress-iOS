@@ -1,9 +1,9 @@
-import Foundation
+import UIKit
 
-enum ImageDecoder {
+public enum ImageDecoder {
     /// Returns an image created from the given URL. The image is decompressed.
     /// Returns ``AnimatedImage`` the image is a GIF.
-    static func makeImage(from fileURL: URL) async throws -> UIImage {
+    public static func makeImage(from fileURL: URL) async throws -> UIImage {
         let data = try Data(contentsOf: fileURL)
         return try _makeImage(from: data, size: nil)
     }
@@ -12,7 +12,7 @@ enum ImageDecoder {
     /// Returns ``AnimatedImage`` the image is a GIF.
     ///
     /// - parameter size: The desired size of the thumbnail in pixels.
-    static func makeImage(from data: Data, size: CGSize? = nil) async throws -> UIImage {
+    public static func makeImage(from data: Data, size: CGSize? = nil) async throws -> UIImage {
         try _makeImage(from: data, size: size)
     }
 }
@@ -67,5 +67,15 @@ private extension Data {
             guard let number else { return true }
             return self[index] == number
         }
+    }
+}
+
+private extension CGSize {
+    func scaled(by scale: CGFloat) -> CGSize {
+        CGSize(width: width * scale, height: height * scale)
+    }
+
+    func rounded() -> CGSize {
+        CGSize(width: width.rounded(), height: height.rounded())
     }
 }

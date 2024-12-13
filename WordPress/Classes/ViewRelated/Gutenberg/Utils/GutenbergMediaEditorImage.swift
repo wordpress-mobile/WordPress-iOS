@@ -1,5 +1,6 @@
 import Foundation
 import MediaEditor
+import WordPressMedia
 
 /**
  This is a struct to be given to MediaEditor that represent the image.

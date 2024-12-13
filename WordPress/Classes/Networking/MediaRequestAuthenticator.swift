@@ -1,4 +1,5 @@
 import Foundation
+import WordPressMedia
 
 fileprivate let photonHost = "i0.wp.com"
 fileprivate let secureHttpScheme = "https"
@@ -17,7 +18,7 @@ extension URL {
 ///
 /// This also includes regular and photon URLs.
 ///
-class MediaRequestAuthenticator {
+class MediaRequestAuthenticator: MediaRequestAuthenticatorProtocol {
 
     /// Errors conditions that this class can find.
     ///

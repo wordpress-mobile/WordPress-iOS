@@ -1,27 +1,26 @@
-import XCTest
+import UIKit
+import Testing
+import WordPressMedia
+import WordPressTesting
 import OHHTTPStubs
 import OHHTTPStubsSwift
-@testable import WordPress
 
-class ImageDownloaderTests: CoreDataTestCase {
-    private var sut: ImageDownloader!
+/// - warning: This suite has to be `serialized` due to the global HTTP mocks.
+@Suite(.serialized) final class ImageDownloaderTests {
+    private let sut: ImageDownloader
     private let cache = MockMemoryCache()
 
-    override func setUp() {
-        super.setUp()
-
-        sut = ImageDownloader(cache: cache)
+    init() async throws {
+        sut = ImageDownloader(cache: cache, authenticator: nil)
     }
 
-    override func tearDown() {
-        super.tearDown()
-
+    deinit {
         HTTPStubs.removeAllStubs()
     }
 
-    func testLoadResizedThumbnail() async throws {
+    @Test func loadResizedThumbnail() async throws {
         // GIVEN
-        let imageURL = try XCTUnwrap(URL(string: "https://example.files.wordpress.com/2023/09/image.jpg"))
+        let imageURL = try #require(URL(string: "https://example.files.wordpress.com/2023/09/image.jpg"))
 
         // GIVEN remote image is mocked (1024×680 px)
         try mockResponse(withResource: "test-image", fileExtension: "jpg")
@@ -35,12 +34,12 @@ class ImageDownloaderTests: CoreDataTestCase {
         let image = try await sut.image(from: imageURL, options: options)
 
         // THEN
-        XCTAssertEqual(image.size, CGSize(width: 386, height: 256))
+        #expect(image.size == CGSize(width: 386, height: 256))
     }
 
-    func testCancellation() async throws {
+    @Test func cancellation() async throws {
         // GIVEN
-        let imageURL = try XCTUnwrap(URL(string: "https://example.files.wordpress.com/2023/09/image.jpg"))
+        let imageURL = try #require(URL(string: "https://example.files.wordpress.com/2023/09/image.jpg"))
 
         // GIVEN remote image is mocked (1024×680 px)
         try mockResponse(withResource: "test-image", fileExtension: "jpg", delay: 3)
@@ -62,15 +61,15 @@ class ImageDownloaderTests: CoreDataTestCase {
         // THEM
         do {
             let _ = try await task.value
-            XCTFail()
+            Issue.record()
         } catch {
-            XCTAssertEqual((error as? URLError)?.code, .cancelled)
+            #expect((error as? URLError)?.code == .cancelled)
         }
     }
 
-    func testMemoryCache() async throws {
+    @Test func memoryCache() async throws {
         // GIVEN
-        let imageURL = try XCTUnwrap(URL(string: "https://example.files.wordpress.com/2023/09/image.jpg"))
+        let imageURL = try #require(URL(string: "https://example.files.wordpress.com/2023/09/image.jpg"))
         try mockResponse(withResource: "test-image", fileExtension: "jpg")
 
         let size = CGSize(width: 256, height: 256)
@@ -82,8 +81,8 @@ class ImageDownloaderTests: CoreDataTestCase {
         _ = try await sut.image(from: imageURL, options: options)
 
         // THEN resized image is stored in memory cache
-        let cachedImage = await sut.cachedImage(for: imageURL, size: size)
-        XCTAssertEqual(cachedImage?.size, CGSize(width: 386, height: 256))
+        let cachedImage = sut.cachedImage(for: imageURL, size: size)
+        #expect(cachedImage?.size == CGSize(width: 386, height: 256))
 
         // GIVEN
         HTTPStubs.removeAllStubs()
@@ -95,12 +94,12 @@ class ImageDownloaderTests: CoreDataTestCase {
         let image = try await sut.image(from: imageURL, options: options)
 
         // THEN resized image is returned from memory cache
-        XCTAssertEqual(image.size, CGSize(width: 386, height: 256))
+        #expect(image.size == CGSize(width: 386, height: 256))
     }
 
-    func testFailureAndRetry() async throws {
+    @Test func failureAndRetry() async throws {
         // GIVEN
-        let imageURL = try XCTUnwrap(URL(string: "https://example.files.wordpress.com/2023/09/image.jpg"))
+        let imageURL = try #require(URL(string: "https://example.files.wordpress.com/2023/09/image.jpg"))
         stub(condition: { _ in true }, response: { _ in
             HTTPStubsResponse(error: URLError(.unknown))
         })
@@ -108,10 +107,10 @@ class ImageDownloaderTests: CoreDataTestCase {
         // WHEN
         do {
             _ = try await sut.image(from: imageURL)
-            XCTFail("Expected the request to fail")
+            Issue.record("Expected the request to fail")
         } catch {
             // THEN error is returned
-            XCTAssertEqual((error as? URLError)?.code, .unknown)
+            #expect((error as? URLError)?.code == .unknown)
         }
 
         // GIVEN
@@ -122,21 +121,13 @@ class ImageDownloaderTests: CoreDataTestCase {
         let image = try await sut.image(from: imageURL)
 
         // THEN resized image is returned from memory cache
-        XCTAssertEqual(image.size, CGSize(width: 1024, height: 680))
+        #expect(image.size == CGSize(width: 1024, height: 680))
     }
 
     // MARK: - Helpers
 
-    /// `Media` is hardcoded to work with a specific direcoty URL managed by `MediaFileManager`
-    func makeLocalURL(forResource name: String, fileExtension: String) throws -> URL {
-        let sourceURL = try XCTUnwrap(Bundle.test.url(forResource: name, withExtension: fileExtension))
-        let mediaURL = try MediaFileManager.default.makeLocalMediaURL(withFilename: name, fileExtension: fileExtension)
-        try FileManager.default.copyItem(at: sourceURL, to: mediaURL)
-        return mediaURL
-    }
-
     func mockResponse(withResource name: String, fileExtension: String, expectedURL: URL? = nil, delay: TimeInterval = 0) throws {
-        let sourceURL = try XCTUnwrap(Bundle.test.url(forResource: name, withExtension: fileExtension))
+        let sourceURL = try #require(Bundle.test.url(forResource: name, withExtension: fileExtension))
         let data = try Data(contentsOf: sourceURL)
 
         stub(condition: { _ in

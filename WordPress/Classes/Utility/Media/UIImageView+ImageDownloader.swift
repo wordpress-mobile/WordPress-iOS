@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 import Gifu
+import WordPressMedia
 
 extension UIImageView {
     @MainActor

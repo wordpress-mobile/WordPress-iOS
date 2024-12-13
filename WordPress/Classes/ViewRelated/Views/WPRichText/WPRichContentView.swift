@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 import WordPressShared
+import WordPressMedia
 
 @objc protocol WPRichContentViewDelegate: UITextViewDelegate {
     func richContentView(_ richContentView: WPRichContentView, didReceiveImageAction image: WPRichTextImage)

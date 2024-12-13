@@ -1,4 +1,5 @@
 import Aztec
+import WordPressMedia
 
 class AztecAttachmentDelegate: TextViewAttachmentDelegate {
     private let post: AbstractPost

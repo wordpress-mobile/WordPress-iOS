@@ -1,4 +1,5 @@
 import Foundation
+import WordPressMedia
 
 /// Media export handling assets from external sources i.e.: Stock Photos
 ///

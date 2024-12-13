@@ -1,5 +1,6 @@
 import Aztec
 import Gridicons
+import WordPressMedia
 
 class RevisionPreviewTextViewManager: NSObject {
     var post: AbstractPost?
