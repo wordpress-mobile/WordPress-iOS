@@ -17,9 +17,6 @@ class ReaderDetailNewHeaderViewHost: UIView {
         }
     }
 
-    // TODO: Find out if we still need this.
-    var useCompatibilityMode: Bool = false
-
     var displaySetting: ReaderDisplaySetting = .standard {
         didSet {
             viewModel.displaySetting = displaySetting
@@ -271,7 +268,7 @@ struct ReaderDetailNewHeaderView: View {
         }
         // Added an extra 4.0 to top padding to account for a legacy layout issue with featured image.
         // Bottom padding is 0 as there's already padding between the header container and the webView in the storyboard.
-        .padding(EdgeInsets(top: 12.0, leading: 16.0, bottom: 0.0, trailing: 16.0))
+        .padding(EdgeInsets(top: 18.0, leading: 16.0, bottom: 0.0, trailing: 16.0))
         .background {
             GeometryReader { proxy in
                 Color.clear
