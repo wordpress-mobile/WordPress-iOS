@@ -214,7 +214,10 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
             completion()
         }
 
-        // TODO: refactor. This code replaced ImageDimensionsFetcher.
+        // TODO: refactor.
+        // This code replaced ImageDimensionsFetcher. It pretends that the image
+        // the app is about the download perfectly matches the standard expectefd
+        // aspect ratio. `DispatchQueue.main.async` is required for now.
         DispatchQueue.main.async {
             completionHandler(CGSize(width: 1000, height: 1000 * ReaderPostCell.coverAspectRatio))
         }

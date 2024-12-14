@@ -718,7 +718,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         coordinator?.openInBrowser()
     }
 
-    @objc func didTapDisplaySettingButton(_ sender: UIBarButtonItem) {
+    @objc func didTapDisplaySettingButton() {
         let viewController = ReaderDisplaySettingViewController(initialSetting: displaySetting,
                                                                 source: .readerPostNavBar) { [weak self] newSetting in
             // no need to refresh if there are no changes to the display setting.
@@ -1050,8 +1050,7 @@ private extension ReaderDetailViewController {
         let rightItems = [
             moreButtonItem(enabled: enableRightBarButtons),
             shareButtonItem(enabled: enableRightBarButtons),
-            safariButtonItem(),
-            displaySettingButtonItem()
+            safariButtonItem()
         ]
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.rightBarButtonItems = rightItems.compactMap({ $0 })
@@ -1094,17 +1093,6 @@ private extension ReaderDetailViewController {
         dismiss(animated: true)
     }
 
-    func displaySettingButtonItem() -> UIBarButtonItem? {
-        guard ReaderDisplaySetting.customizationEnabled,
-              let icon = UIImage(named: "reader-reading-preferences") else {
-            return nil
-        }
-        let button = barButtonItem(with: icon, action: #selector(didTapDisplaySettingButton(_:)))
-        button.accessibilityLabel = Strings.displaySettingAccessibilityLabel
-
-        return button
-    }
-
     func safariButtonItem() -> UIBarButtonItem? {
         let button = barButtonItem(with: .gridicon(.globe), action: #selector(didTapBrowserButton(_:)))
         button.accessibilityLabel = Strings.safariButtonAccessibilityLabel
@@ -1131,12 +1119,20 @@ private extension ReaderDetailViewController {
         guard let post else {
             return []
         }
-        return ReaderPostMenu(
+        var elements = ReaderPostMenu(
             post: post,
             topic: nil,
             anchor: anchor,
             viewController: self
         ).makeMenu()
+
+        if ReaderDisplaySetting.customizationEnabled {
+            elements.append(UIAction(title: Strings.displaySettingsLabel, image: UIImage(systemName: "textformat.size")) { [weak self] _ in
+                self?.didTapDisplaySettingButton()
+            })
+        }
+
+        return elements
     }
 
     func shareButtonItem(enabled: Bool = true) -> UIBarButtonItem? {
@@ -1185,8 +1181,8 @@ extension ReaderDetailViewController {
             value: "Dismiss",
             comment: "Spoken accessibility label"
         )
-        static let displaySettingAccessibilityLabel = NSLocalizedString(
-            "readerDetail.displaySettingButton.accessibilityLabel",
+        static let displaySettingsLabel = NSLocalizedString(
+            "readerDetail.displaySettingButton.displaySettingsLabel",
             value: "Reading Preferences",
             comment: "Spoken accessibility label for the Reading Preferences menu.")
         static let safariButtonAccessibilityLabel = NSLocalizedString(
