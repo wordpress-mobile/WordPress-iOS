@@ -12,7 +12,7 @@
         <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3ME-FR-9gA" userLabel="Featured Image Container View" customClass="ReaderDetailFeaturedImageView" customModule="WordPress" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="414" height="233"/>
             <subviews>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="g3L-dQ-aNo" customClass="CachedAnimatedImageView" customModule="WordPress" customModuleProvider="target">
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="g3L-dQ-aNo" customClass="AsyncImageView" customModule="WordPress" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="233"/>
                 </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="psH-HG-Bd4">

@@ -1,7 +1,7 @@
 import UIKit
 
 protocol ReaderDetailFeaturedImageViewDelegate: AnyObject {
-    func didTapFeaturedImage(_ sender: CachedAnimatedImageView)
+    func didTapFeaturedImage(_ sender: AsyncImageView)
 }
 
 protocol UpdatableStatusBarStyle: UIViewController {
@@ -38,7 +38,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
 
     // MARK: - Private: IBOutlets
 
-    @IBOutlet private weak var imageView: CachedAnimatedImageView!
+    @IBOutlet private weak var imageView: AsyncImageView!
     @IBOutlet private weak var gradientView: UIView!
     @IBOutlet private weak var heightConstraint: NSLayoutConstraint!
     @IBOutlet private weak var loadingView: UIView!
@@ -93,13 +93,6 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     }
 
     // MARK: - Private: Properties
-
-    /// Image loader for the featured image
-    ///
-    private lazy var imageLoader: ImageLoader = {
-        // Allow for large GIFs to animate on the detail page
-        return ImageLoader(imageView: imageView, gifStrategy: .largeGIFs)
-    }()
 
     /// The reader post that the toolbar interacts with
     private var post: ReaderPost?
@@ -248,19 +241,22 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         })
         dimensionFetcher?.start()
 
-        self.imageLoader.loadImage(with: imageURL, from: post, placeholder: nil, success: { [weak self] in
-            // If we haven't loaded the image size yet
-            // trigger the handler to update the height, etc.
-            if self?.imageSize == nil {
-                if let size = self?.imageView.image?.size {
-                    self?.imageSize = size
-                    completionHandler(size)
+        imageView.setImage(with: imageURL, host: MediaHost(with: post)) { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case .success:
+                // If we haven't loaded the image size yet
+                // trigger the handler to update the height, etc.
+                if self.imageSize == nil {
+                    if let size = self.imageView.image?.size {
+                        self.imageSize = size
+                        completionHandler(size)
+                    }
                 }
+                self.hideLoading()
+            case .failure:
+                failureHandler()
             }
-
-            self?.hideLoading()
-        }) { _ in
-            failureHandler()
         }
     }
 

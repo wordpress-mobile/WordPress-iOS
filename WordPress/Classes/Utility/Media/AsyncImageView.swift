@@ -19,9 +19,24 @@ final class AsyncImageView: UIView {
     var isErrorViewEnabled = true
     var loadingStyle = LoadingStyle.background
 
+    var image: UIImage? {
+        get { imageView.image }
+        set { imageView.image = newValue }
+    }
+
     override init(frame: CGRect) {
         super.init(frame: frame)
 
+        setupView()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+
+        setupView()
+    }
+
+    private func setupView() {
         controller.onStateChanged = { [weak self] in self?.setState($0) }
 
         addSubview(imageView)
@@ -33,10 +48,6 @@ final class AsyncImageView: UIView {
         imageView.accessibilityIgnoresInvertColors = true
 
         backgroundColor = .secondarySystemBackground
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 
     func prepareForReuse() {
