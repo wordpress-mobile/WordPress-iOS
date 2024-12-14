@@ -73,6 +73,8 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         }
     }
 
+    private var dimensionFetcher: ImageDimensionsFetcher?
+
     private var style: Style = .init()
 
     /// Determines whether the navigation bar should shift its colors to the `foreground` color
@@ -236,9 +238,15 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
             failureHandler()
         })
 
-        self.imageLoader.imageDimensionsHandler = { _, size in
-            completionHandler(size)
-        }
+        dimensionFetcher = ImageDimensionsFetcher(request: URLRequest(url: imageURL), success: { _, size in
+            guard let size, size != .zero else {
+                return
+            }
+            DispatchQueue.main.async {
+                completionHandler(size)
+            }
+        })
+        dimensionFetcher?.start()
 
         self.imageLoader.loadImage(with: imageURL, from: post, placeholder: nil, success: { [weak self] in
             // If we haven't loaded the image size yet
