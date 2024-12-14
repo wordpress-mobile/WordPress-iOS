@@ -156,7 +156,7 @@ private final class ReaderPostCellView: UIView {
             avatarView.centerYAnchor.constraint(equalTo: timeLabel.centerYAnchor),
             avatarView.trailingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: -8),
 
-            headerView.topAnchor.constraint(equalTo: topAnchor, constant: 4),
+            headerView.topAnchor.constraint(equalTo: topAnchor, constant: 6),
             headerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: insets.left),
             headerView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -50),
 
@@ -391,7 +391,7 @@ private func makeButton(systemImage: String, font: UIFont = UIFont.preferredFont
     configuration.imagePadding = 6
     configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(font: font)
     configuration.baseForegroundColor = .secondaryLabel
-    configuration.contentInsets = .init(top: 16, leading: 12, bottom: 14, trailing: 12)
+    configuration.contentInsets = .init(top: 16, leading: 12, bottom: 16, trailing: 12)
 
     let button = UIButton(configuration: configuration)
     if #available(iOS 17.0, *) {
