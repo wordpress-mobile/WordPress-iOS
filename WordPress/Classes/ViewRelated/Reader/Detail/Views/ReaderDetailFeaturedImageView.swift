@@ -18,8 +18,6 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
             static let maxPadPortaitHeight: CGFloat = 0.50
             static let maxLandscapeHeight: CGFloat = 0.30
         }
-
-        static let imageLoadingTimeout: TimeInterval = 4
     }
 
     struct Style {
@@ -73,8 +71,6 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         }
     }
 
-    private var dimensionFetcher: ImageDimensionsFetcher?
-
     private var style: Style = .init()
 
     /// Determines whether the navigation bar should shift its colors to the `foreground` color
@@ -123,7 +119,6 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     }
 
     private var imageSize: CGSize?
-    private var timeoutTimer: Timer?
 
     // MARK: - View Methods
 
@@ -201,18 +196,13 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         isLoading = true
         isLoaded = true
 
-        var timedOut = false
-
         let completionHandler: (CGSize) -> Void = { [weak self] size in
             guard let self else {
                 return
             }
 
-            self.timeoutTimer?.invalidate()
-            self.timeoutTimer = nil
-
             self.imageSize = size
-            self.didFinishLoading(timedOut: timedOut)
+            self.didFinishLoading()
             self.isLoading = false
 
             completion()
@@ -224,22 +214,10 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
             completion()
         }
 
-        // Times out if the loading is taking too long
-        // this prevents the user from being stuck on the loading view for too long
-        timeoutTimer = Timer.scheduledTimer(withTimeInterval: Constants.imageLoadingTimeout, repeats: false, block: { _ in
-            timedOut = true
-            failureHandler()
-        })
-
-        dimensionFetcher = ImageDimensionsFetcher(request: URLRequest(url: imageURL), success: { _, size in
-            guard let size, size != .zero else {
-                return
-            }
-            DispatchQueue.main.async {
-                completionHandler(size)
-            }
-        })
-        dimensionFetcher?.start()
+        // TODO: refactor. This code replaced ImageDimensionsFetcher.
+        DispatchQueue.main.async {
+            completionHandler(CGSize(width: 1000, height: 1000 * ReaderPostCell.coverAspectRatio))
+        }
 
         imageView.setImage(with: imageURL, host: MediaHost(with: post)) { [weak self] result in
             guard let self else { return }
@@ -392,10 +370,8 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
 
     // MARK: - Private: Network Helpers
 
-    private func didFinishLoading(timedOut: Bool = false) {
-        // Don't reset the scroll position if we timed out to prevent a jump
-        // if the user has started reading / scrolling
-        updateInitialHeight(resetContentOffset: !timedOut)
+    private func didFinishLoading() {
+        updateInitialHeight(resetContentOffset: true)
         update()
 
         isHidden = false
