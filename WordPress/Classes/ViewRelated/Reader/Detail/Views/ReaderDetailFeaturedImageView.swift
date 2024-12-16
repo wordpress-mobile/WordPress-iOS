@@ -310,10 +310,8 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
             return
         }
 
-        let offsetY = scrollView.contentOffset.y
-
-        updateFeaturedImageHeight(with: offsetY)
-        updateNavigationBar(with: offsetY)
+        updateFeaturedImageHeight(with: scrollView.contentOffset.y)
+        updateNavigationBar(in: scrollView)
     }
 
     private func hideLoading() {
@@ -341,7 +339,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         heightConstraint.constant = max(y, 0)
     }
 
-    private func updateNavigationBar(with offset: CGFloat) {
+    private func updateNavigationBar(in scrollView: UIScrollView) {
         /// Navigation bar is only updated in light color themes, so that the tint color can be reverted
         /// to the original color after scrolling past the featured image.
         ///
@@ -349,16 +347,12 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         guard usesAdaptiveNavigationBar else {
             return
         }
-
-        let fullProgress = (offset / heightConstraint.constant)
-        let progress = fullProgress.clamp(min: 0, max: 1)
-
-        let tintColor = UIColor.interpolate(from: style.startTintColor,
-                                            to: style.endTintColor,
-                                            with: progress)
-
-        currentStatusBarStyle = fullProgress >= 2.5 ? .darkContent : .lightContent
-        navBarTintColor = tintColor
+        let isScrolledTop = scrollView.contentInset.top + scrollView.contentOffset.y > 5.0
+        let barStyle: UIStatusBarStyle = isScrolledTop ? .darkContent : .lightContent
+        if currentStatusBarStyle != barStyle {
+            currentStatusBarStyle = barStyle
+            navBarTintColor = barStyle == .darkContent ? style.endTintColor : style.startTintColor
+        }
     }
 
     private func applyTransparentNavigationBarAppearance() {
