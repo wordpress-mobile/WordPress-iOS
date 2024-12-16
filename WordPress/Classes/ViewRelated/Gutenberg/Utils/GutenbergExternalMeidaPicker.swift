@@ -1,6 +1,7 @@
 import Gutenberg
+import ImagePlayground
 
-class GutenbergExternalMediaPicker {
+class GutenbergExternalMediaPicker: NSObject {
     private var mediaPickerCallback: MediaPickerDidPickMediaCallback?
     private let mediaInserter: GutenbergMediaInserterHelper
     private unowned var gutenberg: Gutenberg
@@ -9,6 +10,16 @@ class GutenbergExternalMediaPicker {
     init(gutenberg: Gutenberg, mediaInserter: GutenbergMediaInserterHelper) {
         self.mediaInserter = mediaInserter
         self.gutenberg = gutenberg
+        super.init()
+    }
+
+    @available(iOS 18.1, *)
+    func presentImagePlayground(origin: UIViewController, post: AbstractPost, callback: @escaping MediaPickerDidPickMediaCallback) {
+        mediaPickerCallback = callback
+        self.multipleSelection = false
+
+        let viewController = ImagePlaygroundViewController()
+        viewController.isModalInPresentation = true
     }
 
     func presentTenorPicker(origin: UIViewController, post: AbstractPost, multipleSelection: Bool, callback: @escaping MediaPickerDidPickMediaCallback) {
@@ -88,5 +99,17 @@ extension GutenbergExternalMediaPicker: ExternalMediaPickerViewDelegate {
                 self.gutenberg.appendMedia(id: media.gutenbergUploadID, url: $0.largeURL, type: .image)
             }
         }
+    }
+}
+
+@available(iOS 18.1, *)
+extension GutenbergExternalMediaPicker: ImagePlaygroundViewController.Delegate {
+    func imagePlaygroundViewController(_ imagePlaygroundViewController: ImagePlaygroundViewController, didCreateImageAt imageURL: URL) {
+        let mediaInfo = MediaInfo(id: nil, url: imageURL.path, type: nil)
+        mediaPickerCallback?([mediaInfo])
+    }
+
+    func imagePlaygroundViewControllerDidCancel(_ imagePlaygroundViewController: ImagePlaygroundViewController) {
+        // TODO
     }
 }

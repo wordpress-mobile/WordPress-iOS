@@ -6,6 +6,7 @@ import WordPressShared
 import React
 import AutomatticTracks
 import Combine
+import ImagePlayground
 
 class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelegate, PublishingEditor {
     let errorDomain: String = "GutenbergViewController.errorDomain"
@@ -613,6 +614,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             externalMediaPicker.presentStockPhotoPicker(origin: self, post: post, multipleSelection: allowMultipleSelection, callback: callback)
         case .tenor:
             externalMediaPicker.presentTenorPicker(origin: self, post: post, multipleSelection: allowMultipleSelection, callback: callback)
+        case .imagePlayGround:
+                if #available(iOS 18.1, *) {
+                    externalMediaPicker.presentImagePlayground(origin: self, post: post, callback: callback)
+                }
         case .otherApps, .allFiles:
             filesAppMediaPicker.presentPicker(origin: self, filters: filter, allowedTypesOnBlog: post.blog.allowedTypeIdentifiers, multipleSelection: allowMultipleSelection, callback: callback)
         default: break
@@ -1136,6 +1141,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
                 post.blog.supports(.tenor) ? .tenor : nil,
                 .otherApps,
                 .allFiles,
+                .imagePlayGround,
             ].compactMap { $0 }
         } ?? []
     }
@@ -1293,6 +1299,7 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
 extension Gutenberg.MediaSource {
     static let stockPhotos = Gutenberg.MediaSource(id: "wpios-stock-photo-library", label: .freePhotosLibrary, types: [.image])
     static let otherApps = Gutenberg.MediaSource(id: "wpios-other-files", label: .otherApps, types: [.image, .video, .audio, .other])
+    static let imagePlayGround = Gutenberg.MediaSource(id: "wpios-image-playground", label: .imagePlayground, types: [.image])
     static let allFiles = Gutenberg.MediaSource(id: "wpios-all-files", label: .otherApps, types: [.any])
     static let tenor = Gutenberg.MediaSource(id: "wpios-tenor", label: .tenor, types: [.image])
 }
