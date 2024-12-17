@@ -31,6 +31,7 @@ extension PostSettingsViewController: PHPickerViewControllerDelegate, ImagePicke
         return UIMenu(children: [
             menu.makePhotosAction(delegate: self),
             menu.makeCameraAction(delegate: self),
+            menu.makeImagePlaygroundAction(delegate: self),
             menu.makeSiteMediaAction(blog: self.apost.blog, delegate: self)
         ])
     }
@@ -63,6 +64,18 @@ extension PostSettingsViewController: SiteMediaPickerViewControllerDelegate {
         WPAnalytics.track(.editorPostFeaturedImageChanged, properties: ["via": "settings", "action": "added"])
         setFeaturedImage(media: media)
         reloadFeaturedImageCell()
+    }
+}
+
+extension PostSettingsViewController: ImagePlaygroundPickerDelegate {
+    func imagePlaygroundViewController(_ viewController: UIViewController, didCreateImageAt imageURL: URL) {
+        dismiss(animated: true)
+
+        if let data = try? Data(contentsOf: imageURL), let image = UIImage(data: data) {
+            setFeaturedImage(with: image)
+        } else {
+            wpAssertionFailure("failed to read the image created by ImagePlayground")
+        }
     }
 }
 
