@@ -181,4 +181,5 @@ enum MediaSource {
     case camera
     case mediaEditor
     case tenor
+    case imagePlayground
 }

@@ -6,6 +6,7 @@ class GutenbergExternalMediaPicker: NSObject {
     private let mediaInserter: GutenbergMediaInserterHelper
     private unowned var gutenberg: Gutenberg
     private var multipleSelection = false
+    private var imagePlaygroundController: GutenbergImagePlaygroundController?
 
     init(gutenberg: Gutenberg, mediaInserter: GutenbergMediaInserterHelper) {
         self.mediaInserter = mediaInserter
@@ -15,11 +16,12 @@ class GutenbergExternalMediaPicker: NSObject {
 
     @available(iOS 18.1, *)
     func presentImagePlayground(origin: UIViewController, post: AbstractPost, callback: @escaping MediaPickerDidPickMediaCallback) {
-        mediaPickerCallback = callback
-        self.multipleSelection = false
+        imagePlaygroundController = GutenbergImagePlaygroundController(mediaInserter: mediaInserter, callback: callback)
 
         let viewController = ImagePlaygroundViewController()
+        viewController.delegate = imagePlaygroundController
         viewController.isModalInPresentation = true
+        origin.present(viewController, animated: true)
     }
 
     func presentTenorPicker(origin: UIViewController, post: AbstractPost, multipleSelection: Bool, callback: @escaping MediaPickerDidPickMediaCallback) {
@@ -102,14 +104,42 @@ extension GutenbergExternalMediaPicker: ExternalMediaPickerViewDelegate {
     }
 }
 
+// Uses the following workaround https://mastodon.social/@_inside/113640137011009924
+private final class GutenbergImagePlaygroundController: NSObject {
+    let callback: MediaPickerDidPickMediaCallback?
+    let mediaInserter: GutenbergMediaInserterHelper
+
+    init(mediaInserter: GutenbergMediaInserterHelper, callback: MediaPickerDidPickMediaCallback?) {
+        self.mediaInserter = mediaInserter
+        self.callback = callback
+    }
+}
+
 @available(iOS 18.1, *)
-extension GutenbergExternalMediaPicker: ImagePlaygroundViewController.Delegate {
+extension GutenbergImagePlaygroundController: ImagePlaygroundViewController.Delegate {
     func imagePlaygroundViewController(_ imagePlaygroundViewController: ImagePlaygroundViewController, didCreateImageAt imageURL: URL) {
-        let mediaInfo = MediaInfo(id: nil, url: imageURL.path, type: nil)
-        mediaPickerCallback?([mediaInfo])
+        if let callback {
+            mediaInserter.insertFromDevice([makeItemProvider(with: imageURL)], callback: callback)
+        }
+        imagePlaygroundViewController.presentingViewController?.dismiss(animated: true)
+    }
+
+    /// ImagePlayground returns heic images that are not supported by many WordPress
+    /// sites. The only exporter that currentyl supports transcoding images is
+    /// ``ItemProviderMediaExporter``, which is why we use it and which is why
+    /// we fallback to "public.heic" (should never happen as these URLs have
+    /// proper extensions).
+    private func makeItemProvider(with imageURL: URL) -> NSItemProvider {
+        let provider = NSItemProvider()
+        let typeIdentifier = imageURL.typeIdentifier ?? "public.heic"
+        provider.registerFileRepresentation(forTypeIdentifier: typeIdentifier, visibility: .all) { completion in
+            completion(imageURL, false, nil)
+            return nil
+        }
+        return provider
     }
 
     func imagePlaygroundViewControllerDidCancel(_ imagePlaygroundViewController: ImagePlaygroundViewController) {
-        // TODO
+        imagePlaygroundViewController.presentingViewController?.dismiss(animated: true)
     }
 }
