@@ -1,5 +1,7 @@
 25.7
 -----
+* [**] Enhance the Gravatar Quick Editor by adding features that allow users to delete and share their avatars. [#23868]
+* [**] Add the capability to create an avatar using Apple Image Playground through the Gravatar Quick Editor. [#23868]
 
 
 25.6
