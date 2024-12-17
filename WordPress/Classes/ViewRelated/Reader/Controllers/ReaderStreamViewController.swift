@@ -78,6 +78,8 @@ import AutomatticTracks
     private var didBumpStats = false
     @Lazy private var titleView = ReaderNavigationCustomTitleView()
     internal let scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
+    private let notificationsButtonViewModel = NotificationsButtonViewModel()
+    private var notificationsButtonCancellable: AnyCancellable?
 
     /// Content management
     let content = ReaderTableContent()
@@ -176,6 +178,7 @@ import AutomatticTracks
     private var showConfirmation = true
 
     var isEmbeddedInDiscover = false
+    var isNotificationsBarButtonEnabled = false
     var preferredTableHeaderView: UIView?
 
     var isCompact = true {
@@ -350,11 +353,26 @@ import AutomatticTracks
         super.traitCollectionDidChange(previousTraitCollection)
 
         isCompact = traitCollection.horizontalSizeClass == .compact
+        setupNotificationsBarButtonItem()
     }
 
     private func didChangeIsCompact(_ isCompact: Bool) {
         (tableView.tableHeaderView as? ReaderBaseHeaderView)?.isCompact = isCompact
         tableView.reloadData()
+    }
+
+    private func setupNotificationsBarButtonItem() {
+        notificationsButtonCancellable = nil
+        if isNotificationsBarButtonEnabled && traitCollection.horizontalSizeClass == .regular {
+            notificationsButtonCancellable = notificationsButtonViewModel.$image.sink { [weak self] in
+                guard let self else { return }
+                self.navigationItem.rightBarButtonItems = [UIBarButtonItem(image: $0, style: .plain, target: self, action: #selector(buttonShowNotificationsTapped))]
+            }
+        }
+    }
+
+    @objc private func buttonShowNotificationsTapped(_ sender: UIBarButtonItem) {
+        NotificationsViewController.showInPopover(from: self, sourceItem: sender)
     }
 
     // MARK: - Topic acquisition

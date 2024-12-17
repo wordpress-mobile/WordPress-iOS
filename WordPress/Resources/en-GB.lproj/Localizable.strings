@@ -59,12 +59,6 @@
 /* Plural format string for displaying the number of users that answered the blogging prompt. */
 "%1$d answers" = "%1$d answers";
 
-/* Format string for single unseen post count. The %1$d is a placeholder for the count. */
-"%1$d unseen post" = "%1$d unseen post";
-
-/* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
-"%1$d unseen posts" = "%1$d unseen posts";
-
 /* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
 "%1$s transformed to %2$s" = "%1$s transformed to %2$s";
 
@@ -741,9 +735,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message shown when Apple authentication fails. */
 "Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication.";
 
-/* Noun. Title. Links to the application password management feature. */
-"Application Passwords" = "Application Passwords";
-
 /* No comment provided by engineer. */
 "Applies the setting" = "Applies the setting";
 
@@ -1082,9 +1073,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Button to copy post text" = "Button to copy post text";
 
-/* Label for the post author in the post detail. */
-"By " = "By ";
-
 /* Legal disclaimer for logging in. The underscores _..._ denote underline. */
 "By continuing, you agree to our _Terms of Service_." = "By continuing, you agree to our _Terms of Service_.";
 
@@ -1122,7 +1110,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
-   Button title. Cancels a pending action.
    Button title. Tapping it cancels the login flow.
    Cancel a prompt
    Cancel Action
@@ -1157,7 +1144,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
@@ -1375,9 +1361,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Clear Old Activity Logs" = "Clear Old Activity Logs";
 
-/* Title of an alert prompt. */
-"Clear Search History" = "Clear Search History";
-
 /* Label for button that clears the spotlight index on device. */
 "Clear Spotlight Index" = "Clear Spotlight Index";
 
@@ -1386,9 +1369,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Clear search" = "Clear search";
-
-/* Title of a button. */
-"Clear search history" = "Clear search history";
 
 /* No comment provided by engineer. */
 "Clear selected color" = "Clear selected colour";
@@ -1948,7 +1928,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Delete
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
-   Title of a delete button
    Title of the trash confirmation alert. */
 "Delete" = "Delete";
 
@@ -2730,9 +2709,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Button title. Follow the comments on a post. */
 "Follow Conversation" = "Follow conversation";
-
-/* Verb. Button title. Follow the comments on a post. */
-"Follow conversation" = "Follow conversation";
 
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "Follow topics";
@@ -3589,9 +3565,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Displayed while blogging prompts are being loaded. */
 "Loading prompts..." = "Loading prompts...";
 
-/* A short message to inform the user the requested stream is being loaded. */
-"Loading stream..." = "Loading stream...";
-
 /* Loading message shown while the Unsupported Block Editor is loading. */
 "Loading the block editor." = "Loading the block editor.";
 
@@ -3690,9 +3663,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "Make your content stand out by adding images, gifs, videos, and embedded media to your pages.";
 
 /* Button leading to a screen where users can manage their installed plugins
-   Page title for the screen to manage your list of followed sites.
    Screen title, where users can see all their installed plugins.
-   Title for the Reader Manage screen.
    Verb. Text label. Tapping displays a screen where the user can configure 'share' buttons for third-party services.
    Verb. Title of the screen for managing sharing buttons and settings related to sharing. */
 "Manage" = "Manage";
@@ -3738,23 +3709,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Action title for unmarking referrer as spam */
 "Mark as not spam" = "Mark as not spam";
 
-/* An option to mark a post as seen. */
-"Mark as seen" = "Mark as seen";
-
 /* Action title for marking referrer as spam */
 "Mark as spam" = "Mark as spam";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Mark a comment as spam. */
 "Mark as spam." = "Mark as spam.";
-
-/* An option to mark a post as unseen. */
-"Mark as unseen" = "Mark as unseen";
-
-/* Notice title when updating a post's seen status succeeds. */
-"Marked post as seen" = "Marked post as seen";
-
-/* Notice title when updating a post's unseen status succeeds. */
-"Marked post as unseen" = "Marked post as unseen";
 
 /* Jetpack Settings: Match accounts using email */
 "Match accounts using email" = "Match accounts using email";
@@ -3861,7 +3820,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Accessibility label for more button in dashboard quick start card.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
-   Accessibility label for the More button on Reader's post details
    Action button to display more available options */
 "More" = "More";
 
@@ -4338,7 +4296,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    A button title.
    Accept Action
    Alert dismissal title
-   Button title. Acknowledges a prompt.
    Button title. An acknowledgement of the message displayed in a prompt.
    Default action
    Dismisses the alert
@@ -4681,9 +4638,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid State" = "Please enter a valid State";
 
-/* Title of a prompt. */
-"Please enter a valid URL" = "Please enter a valid URL";
-
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid address" = "Please enter a valid address";
 
@@ -4698,9 +4652,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Instructional text shown when requesting the user's password for a login initiated via Sign In with Apple */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "Please enter the password for your WordPress.com account to log in with your Apple ID.";
-
-/* Instruction text on the two-factor screen. */
-"Please enter the verification code from your authenticator app." = "Please enter the verification code from your authenticator app.";
 
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "Please enter your credentials";
@@ -4819,12 +4770,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "Postal Code";
 
-/* Accessibility label for the blog name in the Reader's post details. Placeholders are blog title, blog URL, author name, published date */
-"Posted in %@, at %@, by %@, %@" = "Posted in %1$@, at %2$@, by %3$@, %4$@";
-
-/* Accessibility label for the blog name in the Reader's post details, without date. Placeholders are blog title, blog URL, author name */
-"Posted in %@, at %@, by %@." = "Posted in %1$@, at %2$@, by %3$@.";
-
 /* Insights 'Posting Activity' header
    Title for stats Posting Activity view. */
 "Posting Activity" = "Posting Activity";
@@ -4832,7 +4777,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
    Noun. Title. Links to the blog's Posts screen.
-   Title of a Reader tab showing Posts matching a user's search query
    Title of the screen showing the list of posts for a blog. */
 "Posts" = "Posts";
 
@@ -5001,10 +4945,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Name of the Reader feature.
    Noun. Name of the Reader feature
-   The accessibility value of the Reader tab.
-   The accessibility value of the reader tab.
-   The default title of the Reader
-   Title of the 'Reader' tab - used for spotlight indexing on iOS. */
+   The accessibility value of the Reader tab. */
 "Reader" = "Reader";
 
 /* Real Estate site intent topic */
@@ -5134,9 +5075,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* User action to remove video. */
 "Remove video" = "Remove video";
 
-/* Label indicating a post has been removed from Saved For Later */
-"Removed" = "Removed";
-
 /* Notice confirming that an image has been removed as the post's featured image. */
 "Removed as featured image" = "Removed as featured image";
 
@@ -5195,9 +5133,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Placeholder text for replying to a post */
 "Reply to post" = "Reply to post";
-
-/* The title of a button that triggers reporting of a post from the user's reader. */
-"Report this post" = "Report this post";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "Require manual approval for comments that include more than this number of links.";
@@ -5408,8 +5343,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Scrollable block menu opened. Select a block." = "Scrollable block menu opened. Select a block.";
 
-/* Title of Stats section that shows search engine referrer traffic.
-   Title of the Reader's search feature */
+/* Title of Stats section that shows search engine referrer traffic. */
 "Search" = "Search";
 
 /* Label for list of search term */
@@ -5417,9 +5351,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Period Stats 'Search Terms' header */
 "Search Terms" = "Search Terms";
-
-/* Placeholder text for the Reader search feature. */
-"Search WordPress" = "Search WordPress";
 
 /* No comment provided by engineer. */
 "Search block label. Current text is" = "Search block label. Current text is";
@@ -5429,9 +5360,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Search button. Current button text is" = "Search button. Current button text is";
-
-/* Search domain - Title for the Suggested domains screen */
-"Search domains" = "Search domains";
 
 /* title of the button that searches the first domain. */
 "Search for a domain" = "Search for a domain";
@@ -5481,9 +5409,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Select a layout" = "Select a layout";
-
-/* Register domain - Title for the Choose domain button of Suggested domains screen */
-"Select domain" = "Select domain";
 
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Select paragraph style";
@@ -5625,8 +5550,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button label to share a web page
    Shares the comment URL
    Spoken accessibility label
-   Title for a button that allows the user to share their answer to the prompt.
-   Verb. Title of a button. Pressing lets the user share a post to others. */
+   Title for a button that allows the user to share their answer to the prompt. */
 "Share" = "Share";
 
 /* Title for a button that recommends the app to others */
@@ -5711,9 +5635,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for a comment notification. */
 "Shows details and moderation actions." = "Shows details and moderation actions.";
-
-/* Accessibility hint for the More button on Reader's post details */
-"Shows more options." = "Shows more options.";
 
 /* Accessibility hint for a match/mention on a post notification. */
 "Shows the post" = "Shows the post";
@@ -6848,12 +6769,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error shown when the app fails to load a video from the user's media library. */
 "Unable to load video." = "Unable to load video.";
 
-/* Notice title when updating a post's seen status failed. */
-"Unable to mark post seen" = "Unable to mark post seen";
-
-/* Notice title when updating a post's unseen status failed. */
-"Unable to mark post unseen" = "Unable to mark post unseen";
-
 /* Dialog box title for when the user is canceling an upload. */
 "Unable to play video" = "Unable to play video";
 
@@ -6924,15 +6839,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
    Revert an operation
-   Revert enabling notification after successfully subcribing to the comments for the post.
-   Undo action */
+   Revert enabling notification after successfully subcribing to the comments for the post. */
 "Undo" = "Undo";
 
 /* Title for a button that unsubscribes the user from the post. */
 "Unfollow Conversation" = "Unfollow Conversation";
-
-/* Verb. Button title. The user is following the comments on a post. */
-"Unfollow conversation" = "Unfollow conversation";
 
 /* No comment provided by engineer. */
 "Ungroup block" = "Ungroup block";
@@ -7110,7 +7021,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Username must be at least 4 characters." = "Username must be at least 4 characters.";
 
-/* Blog Users */
+/* Blog Users
+   Noun. Title. Links to the user management feature. */
 "Users" = "Users";
 
 /* two factor code placeholder */
@@ -7199,9 +7111,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The visibility settings of the post. Should be the same as in core WP. */
 "Visibility" = "Visibility";
-
-/* An option to visit the site to which a specific post belongs */
-"Visit" = "Visit";
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@" = "Visit %@";
@@ -7580,9 +7489,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "World map showing views by country.";
 
-/* Asks the user if they would like to clear their search history. */
-"Would you like to clear your search history?" = "Would you like to clear your search history?";
-
 /* Second line of Remove user/follower/viewer warning in confirmation dialog. */
 "Would you still like to remove this person?" = "Would you still like to remove this person?";
 
@@ -7614,8 +7520,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* 'This Year' label for the the year. */
 "Year" = "Year";
 
-/* Button title. Confirms that the user wants to proceed with a pending action.
-   Label for a button that clears all old activity logs
+/* Label for a button that clears all old activity logs
    Yes */
 "Yes" = "Yes";
 
@@ -7728,9 +7633,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text rendered at the bottom of the Allowlisted IP Addresses editor, should match Calypso. */
 "You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a hyphen. Example: 12.12.12.1-12.12.12.100.";
-
-/* A suggestion of topics the user might like */
-"You might like" = "You might like";
 
 /* Error message informing the user that being logged into a WordPress.com account is required. */
 "You must be signed in to a WordPress.com account to perform this action." = "You must be signed in to a WordPress.com account to perform this action.";
@@ -8256,9 +8158,6 @@ Example: Reply to Pamela Nguyen */
 /* Title for an empty state view when no cards are displayed */
 "dasboard.emptyView.title" = "No cards to display";
 
-/* Personialize home tab button title */
-"dasboard.personalizeHomeButtonTitle" = "Personalise your home tab";
-
 /* Title for a menu action in the context menu on the Jetpack Social dashboard card. */
 "dashboard.card.social.menu.hide" = "Hide this";
 
@@ -8529,9 +8428,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the screen where the user can choose how to use the domain they're end up purchasing. */
 "domains.purchase.choice.title" = "Purchase Domain";
-
-/* Back button title that navigates back to the search domains screen. */
-"domains.search.backButton.title" = "Search";
 
 /* Title of screen where user chooses a site to connect to their selected domain */
 "domains.sitePicker.title" = "Choose Site";
@@ -9479,9 +9375,6 @@ Example: Reply to Pamela Nguyen */
 /* Section header for shortcuts */
 "personalizeHome.shortcutsSectionHeader" = "Show or hide shortcuts";
 
-/* Page title */
-"personalizeHome.title" = "Personalise Home Tab";
-
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "phone number";
 
@@ -10014,32 +9907,11 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "You're logged in!";
 
-/* Text for a button that dismisses the announcement card in the Reader. */
-"reader.announcement.button" = "Done";
-
-/* The description part of the feature announcement content for Reading Preferences. */
-"reader.announcement.entry.readingPreferences.description" = "Choose colours and fonts that suit you. When you’re reading a post, tap the AA icon at the top of the screen.";
-
-/* The title part of the feature announcement content for Reading Preferences. */
-"reader.announcement.entry.readingPreferences.title" = "Reading Preferences";
-
-/* The description part of the feature announcement content for Tags Stream. */
-"reader.announcement.entry.tagsStream.description" = "Tap the dropdown at the top and select Tags to access streams from your followed tags.";
-
-/* The title part of the feature announcement content for Tags Stream. */
-"reader.announcement.entry.tagsStream.title" = "Tags Stream";
-
-/* Title text for the announcement card component in the Reader. */
-"reader.announcement.title" = "New in Reader";
-
 /* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
 "reader.blocked.blog.message" = "The blog %@ will no longer appear in your reader. Tap to undo.";
 
 /* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the blog post count. '%2$@' is a placeholder for the blog subscriber count. Example: `5,000 posts • 10M subscribers` */
 "reader.blog.header.values" = "%1$@ posts • %2$@ subscribers";
-
-/* Accessibility hint for the blog name and URL button on Reader's Post Details. */
-"reader.blog.name.accessibility.hint" = "Shows the blog's posts.";
 
 /* Error message title informing the user that a search for sites in the Reader could not be loaded. */
 "reader.blog.search.loading.error" = "Problem loading blogs";
@@ -10052,9 +9924,6 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* A message title */
 "reader.blog.search.no.results.title" = "No blogs found";
-
-/* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
-"reader.blog.stream.subscribers" = "%@ subscribers";
 
 /* Reader sidebar button title */
 "reader.button.unfollow" = "Unfollow";
@@ -10108,118 +9977,8 @@ but tapping on this button will remove their like from the post. */
 /* Error message informing the user that they are already following a blog in their reader. */
 "reader.error.already.subscribed.message" = "You are already subscribed to this blog.";
 
-/* Title for a button that allows user to manage their subscribed list from the filter sheet */
-"reader.filterSheet.button.manage" = "Manage";
-
-/* Title for a filter sheet on the Reader to filter the stream by blog */
-"reader.filterSheet.byBlog.title" = "Filter by blog";
-
-/* Title for a filter sheet on the Reader to filter the stream by tag */
-"reader.filterSheet.byTag.title" = "Filter by tag";
-
-/* Body text for an empty filter sheet on the Reader for blogs */
-"reader.filterSheet.empty.blogs.body" = "Subscribe to blogs in Discover and you’ll see their latest posts here. Or search for a blog that you like already.";
-
-/* Search blogs button text for an empty filter sheet on the Reader */
-"reader.filterSheet.empty.blogs.search" = "Search for a blog";
-
-/* Title for an empty filter sheet on the Reader for blogs */
-"reader.filterSheet.empty.blogs.title" = "No blog subscriptions";
-
-/* Body text for an empty filter sheet on the Reader for tags */
-"reader.filterSheet.empty.tags.body" = "Subscribe to a tag and you’ll be able to see the best posts from it here.";
-
-/* Subscribe to a tag button text for an empty filter sheet on the Reader */
-"reader.filterSheet.empty.tags.subscribe" = "Subscribe to a tag";
-
-/* Suggested tags button text for an empty filter sheet on the Reader */
-"reader.filterSheet.empty.tags.suggested" = "Suggested tags";
-
-/* Title for an empty filter sheet on the Reader for tags */
-"reader.filterSheet.empty.tags.title" = "No tags";
-
-/* Label displayed to the user while loading their selected interests */
-"reader.filterSheet.select.tags.following" = "Following new tags...";
-
-/* Screen title. Reader select interests title label text. */
-"reader.filterSheet.select.tags.title" = "Suggested tags";
-
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
 "reader.follow.button.accessibility.hint" = "Follows the tag.";
-
-/* A short message to inform the user data for their followed sites is being fetched.. */
-"reader.followed.blogs.loading" = "Fetching blogs...";
-
-/* Section title for sites the user has subscribed to. */
-"reader.followedSites.empty" = "Subscribed Sites";
-
-/* Manage blogs tab title */
-"reader.manage.tab.blogs" = "Blogs";
-
-/* Manage tags tab title */
-"reader.manage.tab.tags" = "Tags";
-
-/* Plural button title to filter the Reader stream by blog.
-%1$d is a placeholder for the number of blogs. */
-"reader.navigation.filter.blog.plural" = "%1$d Blogs";
-
-/* Singular button title to filter the Reader stream by blog.
-%1$d is a placeholder for the number of blogs. */
-"reader.navigation.filter.blog.singular" = "%1$d Blog";
-
-/* Button title to filter the Reader stream by blog.
-This is displayed when we don't know the number of blogs yet. */
-"reader.navigation.filter.blog.unspecified" = "Blogs";
-
-/* Plural button title to filter the Reader stream by tag.
-%1$d is a placeholder for the number of tags. */
-"reader.navigation.filter.tag.plural" = "%1$d Tags";
-
-/* Singular button title to filter the Reader stream by tag.
-%1$d is a placeholder for the number of tags. */
-"reader.navigation.filter.tag.singular" = "%1$d Tag";
-
-/* Button title to filter the Reader stream by tag.
-This is displayed when we don't know the number of tags yet. */
-"reader.navigation.filter.tag.unnumbered" = "Tags";
-
-/* Accessibility label for when the user has an active filter.
-This informs the user that the currently displayed stream is being filtered. */
-"reader.navigation.menu.activeFilter.a11y.label" = "Filtered by %1$@";
-
-/* Accessibility hint that informs the user that the filter list will be opened when they interact
-with the filter chip button. */
-"reader.navigation.menu.filter.a11y.hint" = "Opens the filter list";
-
-/* Reader navigation menu item for the Liked filter */
-"reader.navigation.menu.liked" = "Liked";
-
-/* Reader navigation menu item for the lists menu group */
-"reader.navigation.menu.lists" = "Lists";
-
-/* Accessibility label for the Close icon button, to reset the active filter. */
-"reader.navigation.menu.reset.a11y.label" = "Reset";
-
-/* Reader navigation menu item for the Saved filter */
-"reader.navigation.menu.saved" = "Saved";
-
-/* Accessibility label for the Search icon. */
-"reader.navigation.menu.search.a11y.label" = "Search";
-
-/* Reader navigation menu item for the Subscriptions filter */
-"reader.navigation.menu.subscriptions" = "Subscriptions";
-
-/* Reader navigation menu item for the Tags filter */
-"reader.navigation.menu.tags" = "Your Tags";
-
-/* Reader search button accessibility label. */
-"reader.navigation.search.button.label" = "Search";
-
-/* Reader settings button accessibility label. */
-"reader.navigation.settings.button.label" = "Reader Settings";
-
-/* No Tags View Button Label */
-"reader.no.blog.title" = "Add a blog";
 
 /* Title for button on the no followed blogs result screen */
 "reader.no.blogs.button" = "Discover Blogs";
@@ -10236,17 +9995,8 @@ with the filter chip button. */
 /* Message shown when the reader finds no posts for the chosen list */
 "reader.no.results.list.response.message" = "The blogs in this list have not posted anything recently.";
 
-/* Button title. Tapping lets the user manage the blogs they follow. */
-"reader.no.results.manage.blogs" = "Manage Blogs";
-
 /* A message explaining the Following topic in the reader */
 "reader.no.results.response.message" = "Recent posts from blogs and sites to which you subscribe will appear here.";
-
-/* Button title. Tapping lets the user view the blogs they're subscribed to. */
-"reader.no.results.subscriptions.button" = "Go to Subscriptions";
-
-/* No Tags View Button Label */
-"reader.no.tags.title" = "Add a tag";
 
 /* Notice title when blocking a blog fails. */
 "reader.notice.blog.blocked.failure" = "Unable to block blog";
@@ -10254,17 +10004,8 @@ with the filter chip button. */
 /* Notice title when blocking a site succeeds. */
 "reader.notice.blog.blocked.success" = "Blocked blog";
 
-/* User subscribed to a blog. */
-"reader.notice.blog.subscribe.success" = "Subscribed to blog";
-
-/* Title of a prompt. */
-"reader.notice.blog.unsubscribe.error" = "Could not unsubscribe from blog";
-
 /* Title of a prompt. */
 "reader.notice.blog.unsubscribed.error" = "Could not unsubscribe from blog";
-
-/* User unsubscribed from a blog. */
-"reader.notice.blog.unsubscribed.success" = "Unsubscribed from blog";
 
 /* Notice title when turning blog notifications off fails. */
 "reader.notice.disable.notification.failure" = "Unable to turn off blog notifications";
@@ -10299,66 +10040,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";
-
-/* Text for the 'Comment' button on the reader post card cell. */
-"reader.post.button.comment" = "Comment";
-
-/* Accessibility hint for the comment button on the reader post card cell */
-"reader.post.button.comment.accessibility.hint" = "Opens the comments for the post.";
-
-/* Text for the 'Like' button on the reader post card cell. */
-"reader.post.button.like" = "Like";
-
-/* Accessibility hint for the like button on the reader post card cell */
-"reader.post.button.like.accessibility.hint" = "Likes the post.";
-
-/* Text for the 'Liked' button on the reader post card cell. */
-"reader.post.button.liked" = "Liked";
-
-/* Accessibility hint for the liked button on the reader post card cell */
-"reader.post.button.liked.accessibility.hint" = "Unlikes the post.";
-
-/* Accessibility hint for the site header on the reader post card cell */
-"reader.post.button.menu.accessibility.hint" = "Opens a menu with more actions.";
-
-/* Accessibility label for the more menu button on the reader post card cell */
-"reader.post.button.menu.accessibility.label" = "More";
-
-/* Text for the 'Reblog' button on the reader post card cell. */
-"reader.post.button.reblog" = "Reblog";
-
-/* Accessibility hint for the reblog button on the reader post card cell */
-"reader.post.button.reblog.accessibility.hint" = "Reblogs the post.";
-
-/* Accessibility hint for the site header on the reader post card cell */
-"reader.post.header.accessibility.hint" = "Opens the site details for the post.";
-
-/* The title of a button that triggers blocking a blog from the user's reader. */
-"reader.post.menu.block.blog" = "Block this blog";
-
-/* The title of a button that triggers blocking a user from the user's reader. */
-"reader.post.menu.block.user" = "Block this user";
-
-/* Verb. An option to switch off site notifications. */
-"reader.post.menu.notifications.off" = "Turn off blog notifications";
-
-/* Verb. An option to switch on blog notifications. */
-"reader.post.menu.notifications.on" = "Turn on blog notifications";
-
-/* The title of a button that removes a saved post. */
-"reader.post.menu.remove.post" = "Remove Saved Post";
-
-/* The title of a button that triggers the reporting of a post's author. */
-"reader.post.menu.report.user" = "Report this user";
-
-/* The title of a button that saves a post. */
-"reader.post.menu.save.post" = "Save";
-
-/* Verb. An option to subscribe to a blog. */
-"reader.post.menu.subscribe.blog" = "Subscribe to blog";
-
-/* Verb. An option to unsubscribe from a blog. */
-"reader.post.menu.unsubscribe.blog" = "Unsubscribe from blog";
 
 /* Name for the Candy color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.candy" = "Candy";
@@ -10398,16 +10079,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 The enclosing angled brackets ('<' and '>') are decorative and only intended as a flavor.
 Feel free to replace it with other bracket types that you think looks better for the locale. */
 "reader.preferences.navBar.experimental.label" = "<Experimental>";
-
-/* Text format for the feedback line text, to be displayed in the preview section.
-%1$@ is a placeholder for a call-to-action that completes the line, which will be filled programmatically.
-Example: 'This is a new feature still in development. To help us improve it send your feedback.' */
-"reader.preferences.preview.body.feedback.format" = "This is a new feature still in development. To help us improve it %1$@.";
-
-/* A call-to-action text fragment to ask the user provide feedback for the Reading Preferences feature.
-Note that the lowercase format is intended, as this will be injected to form a full paragraph.
-Refer to: `reader.preferences.preview.body.feedback.format` */
-"reader.preferences.preview.body.feedback.link" = "send your feedback";
 
 /* Description text for the preview section of Reader Preferences */
 "reader.preferences.preview.body.text" = "Choose your colours, fonts, and sizes. Preview your selection here, and read posts with your styles once you're done.";
@@ -10481,17 +10152,11 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Reader select interests title label text */
 "reader.select.tags.title" = "Discover and follow blogs you love";
 
-/* Reader sidebar button title */
-"reader.sidebar.allSubscriptions" = "All Subscriptions";
-
 /* Reader sidebar menu item */
 "reader.sidebar.discover" = "Discover";
 
 /* Reader sidebar menu item */
 "reader.sidebar.likes" = "Likes";
-
-/* Reader sidebar title */
-"reader.sidebar.navigationTitle" = "Reader";
 
 /* Reader sidebar menu item */
 "reader.sidebar.recent" = "Recent";
@@ -10508,9 +10173,6 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Reader sidebar section title */
 "reader.sidebar.section.organization.title" = "Organisation";
 
-/* Reader sidebar section title */
-"reader.sidebar.section.subscriptions.tTitle" = "Subscriptions";
-
 /* Reader sidebar button */
 "reader.sidebar.section.tags.addTag" = "Add tag";
 
@@ -10522,12 +10184,6 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "Subscribe";
-
-/* The accessibility label for the followed blogs search field */
-"reader.subscribed.blogs.search.accessibility.label" = "Blog URL";
-
-/* Placeholder text prompting the user to type the name of the URL they would like to follow. */
-"reader.subscribed.blogs.search.placeholder" = "Enter the URL of a blog to which to subscribe";
 
 /* Verb. Button title. The user is subscribed to a blog. */
 "reader.subscribed.button.title" = "Subscribed";
@@ -10559,19 +10215,6 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* A suggestion of topics the user might want to subscribe to */
 "reader.suggested.blogs.title" = "Blogs to which to subscribe";
 
-/* Verb. The button title of an empty state component for one of the tags in the tag stream.
-This empty state component is displayed only when the app fails to load posts under this tag.
-When tapped, the app will try to reload posts under this tag. */
-"reader.tagStream.cards.emptyView.button" = "Retry";
-
-/* The body text of an empty state component for one of the tags in the tag stream.
-This empty state component is displayed only when the app fails to load posts under this tag. */
-"reader.tagStream.cards.emptyView.error.body" = "We couldn't load posts from this tag right now";
-
-/* The title of an empty state component for one of the tags in the tag stream.
-This empty state component is displayed only when the app fails to load posts under this tag. */
-"reader.tagStream.cards.emptyView.error.title" = "Posts failed to load";
-
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag" = "Add a Tag";
 
@@ -10593,12 +10236,6 @@ This empty state component is displayed only when the app fails to load posts un
 /* Navigation title */
 "reader.tags.addTag.title" = "Add Tag";
 
-/* Text for the 'Like' button on the reader tag cell. */
-"reader.tags.button.like" = "Like";
-
-/* Text for the 'Liked' button on the reader tag cell. */
-"reader.tags.button.liked" = "Liked";
-
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "Discover more tags";
 
@@ -10611,14 +10248,8 @@ This empty state component is displayed only when the app fails to load posts un
 /* Verb. Button title. The user is following a tag. */
 "reader.tags.following.button.title" = "Following";
 
-/* Label for an action to open more content from a specified Reader tag. %1$@ is the Reader tag. */
-"reader.tags.footer.more" = "More from %1$@";
-
 /* Accessibility label for unsubscribing from a tag */
 "reader.tags.unfollow.accessibility.label" = "Unfollow %@";
-
-/* Label of the table view cell's delete button, when unsubscribing from a blog. */
-"reader.unsubscribe.button" = "Unsubscribe";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "Back";
@@ -10725,9 +10356,6 @@ This empty state component is displayed only when the app fails to load posts un
 /* Post revisions list screen title */
 "revisions.title" = "Revisions";
 
-/* Title for the \"Copy Link\" action in Share Sheet. */
-"share.sheet.copy.link.title" = "Copy Link";
-
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "Dismiss";
 
@@ -10826,9 +10454,6 @@ This empty state component is displayed only when the app fails to load posts un
 
 /* Sidebar item on iPad */
 "sidebar.notifications" = "Notifications";
-
-/* Sidebar item on iPad */
-"sidebar.reader" = "Reader";
 
 /* Template site address for the search bar. */
 "site.cration.domain.site.address" = "https:\/\/yoursitename.com";

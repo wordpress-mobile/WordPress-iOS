@@ -1,0 +1,3 @@
+Questo mese abbiamo:
+- Migliorato la stabilità dell'editore in versione trial (dovresti provarlo, se non l'hai ancora fatto!)
+- Sistemato l'accesso degli utenti a WordPress.com per rendere l'avvio più semplice.

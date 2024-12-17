@@ -1,0 +1,5 @@
+Bu ay şunlar yapıldı:
+- Okuyucudaki bazı çökme sorunları düzeltildi, arama iyileştirildi ve gönderilerin daha sorunsuz şekilde yüklenmesi sağlandı.
+- Okuyucuda TikTok videoları gömme özelliği etkinleştirildi.
+- Deneysel düzenleyicide istikrar iyileştirmeleri yapıldı (henüz denemediyseniz denemenizi öneririz!)
+- Kullanıcıların WordPress.com'da oturum açma şekli değiştirildi. Bu değişikliğin, yeni kullanıcıların işini kolaylaştıracağını umuyoruz.

@@ -113,7 +113,8 @@ extension BlogDetailsViewController {
     }
 
     @objc func shouldAddUsersRow() -> Bool {
-        FeatureFlag.selfHostedSiteUserManagement.enabled && blog.isSelfHosted
+        // Only admin users can list users.
+        FeatureFlag.selfHostedSiteUserManagement.enabled && blog.isSelfHosted && blog.isAdmin
     }
 
     @objc func shouldAddPluginsRow() -> Bool {

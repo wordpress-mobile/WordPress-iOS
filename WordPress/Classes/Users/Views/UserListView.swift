@@ -23,7 +23,7 @@ public struct UserListView: View {
 
             Group {
                 if let error = viewModel.error {
-                    EmptyStateView(error.localizedDescription, systemImage: "exclamationmark.triangle.fill")
+                    EmptyStateView(error, systemImage: "exclamationmark.triangle.fill")
                 } else {
                     List(viewModel.sortedUsers) { section in
                         Section(section.headerText) {
@@ -58,7 +58,7 @@ public struct UserListView: View {
                 }
             }
         }
-        .task(id: viewModel.query) {
+        .task(id: viewModel.mode) {
             await viewModel.performQuery()
         }
         .task { await viewModel.onAppear() }

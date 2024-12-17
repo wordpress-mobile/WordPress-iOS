@@ -59,12 +59,6 @@
 /* Plural format string for displaying the number of users that answered the blogging prompt. */
 "%1$d answers" = "%1$d odpovědí";
 
-/* Format string for single unseen post count. The %1$d is a placeholder for the count. */
-"%1$d unseen post" = "%1$d neviditelný příspěvek";
-
-/* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
-"%1$d unseen posts" = "%1$d neviditelných příspěvků";
-
 /* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
 "%1$s transformed to %2$s" = "%1$s změnit na %2$s";
 
@@ -1019,9 +1013,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Button position" = "Poloha tlačítka";
 
-/* Label for the post author in the post detail. */
-"By " = "od ";
-
 /* Legal disclaimer for logging in. The underscores _..._ denote underline. */
 "By continuing, you agree to our _Terms of Service_." = "Pokračováním vyjadřujete souhlas s našimi _podmínkami služby_.";
 
@@ -1059,7 +1050,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
-   Button title. Cancels a pending action.
    Button title. Tapping it cancels the login flow.
    Cancel a prompt
    Cancel Action
@@ -1094,7 +1084,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
@@ -1312,9 +1301,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Clear Old Activity Logs" = "Vyčistit staré protokoly aktivit";
 
-/* Title of an alert prompt. */
-"Clear Search History" = "Smazat historii hledání";
-
 /* Label for button that clears the spotlight index on device. */
 "Clear Spotlight Index" = "Vymazat index reflektorů";
 
@@ -1323,9 +1309,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Clear search" = "Vymazat vyhledávání";
-
-/* Title of a button. */
-"Clear search history" = "Smazat historii hledání";
 
 /* Label for size of media while it's being cleared. */
 "Clearing..." = "Čištění...";
@@ -1870,7 +1853,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Delete
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
-   Title of a delete button
    Title of the trash confirmation alert. */
 "Delete" = "Smazat";
 
@@ -2631,9 +2613,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Button title. Follow the comments on a post. */
 "Follow Conversation" = "Sledovat konverzaci";
-
-/* Verb. Button title. Follow the comments on a post. */
-"Follow conversation" = "Sledovat konverzaci";
 
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "Sledujte témata";
@@ -3463,9 +3442,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Displayed while blogging prompts are being loaded. */
 "Loading prompts..." = "Načítání výzev...";
 
-/* A short message to inform the user the requested stream is being loaded. */
-"Loading stream..." = "Načítám stream...";
-
 /* Loading message shown while the Unsupported Block Editor is loading. */
 "Loading the block editor." = "Načítání editoru bloků.";
 
@@ -3564,9 +3540,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "Nechte svůj obsah vyniknout přidáním obrázků, gifů, videí a vložených médií na své stránky.";
 
 /* Button leading to a screen where users can manage their installed plugins
-   Page title for the screen to manage your list of followed sites.
    Screen title, where users can see all their installed plugins.
-   Title for the Reader Manage screen.
    Verb. Text label. Tapping displays a screen where the user can configure 'share' buttons for third-party services.
    Verb. Title of the screen for managing sharing buttons and settings related to sharing. */
 "Manage" = "Spravovat";
@@ -3609,23 +3583,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Action title for unmarking referrer as spam */
 "Mark as not spam" = "Označit jako není spam";
 
-/* An option to mark a post as seen. */
-"Mark as seen" = "Označit jako viditelné";
-
 /* Action title for marking referrer as spam */
 "Mark as spam" = "Označit jako spam";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Mark a comment as spam. */
 "Mark as spam." = "Označit jako spam.";
-
-/* An option to mark a post as unseen. */
-"Mark as unseen" = "Označit jako neviditelné";
-
-/* Notice title when updating a post's seen status succeeds. */
-"Marked post as seen" = "Příspěvek byl označeno jako viditelný";
-
-/* Notice title when updating a post's unseen status succeeds. */
-"Marked post as unseen" = "Příspěvek byl označen jako neviditelný";
 
 /* Jetpack Settings: Match accounts using email */
 "Match accounts using email" = "Přiřaďte účty pomocí e-mailu";
@@ -3732,7 +3694,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Accessibility label for more button in dashboard quick start card.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
-   Accessibility label for the More button on Reader's post details
    Action button to display more available options */
 "More" = "Více";
 
@@ -4197,7 +4158,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    A button title.
    Accept Action
    Alert dismissal title
-   Button title. Acknowledges a prompt.
    Button title. An acknowledgement of the message displayed in a prompt.
    Default action
    Dismisses the alert
@@ -4531,9 +4491,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid State" = "Zadejte platný stát";
 
-/* Title of a prompt. */
-"Please enter a valid URL" = "Zadejte prosím správnou URL adresu";
-
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid address" = "Zadejte platnou e-mailovou adresu";
 
@@ -4663,12 +4620,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "PSČ";
 
-/* Accessibility label for the blog name in the Reader's post details. Placeholders are blog title, blog URL, author name, published date */
-"Posted in %@, at %@, by %@, %@" = "Zveřejněno v %1$@, na %2$@, od %3$@, %4$@";
-
-/* Accessibility label for the blog name in the Reader's post details, without date. Placeholders are blog title, blog URL, author name */
-"Posted in %@, at %@, by %@." = "Publikováno v %1$@, na %2$@, od %3$@.";
-
 /* Insights 'Posting Activity' header
    Title for stats Posting Activity view. */
 "Posting Activity" = "Aktivita publikování";
@@ -4676,7 +4627,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
    Noun. Title. Links to the blog's Posts screen.
-   Title of a Reader tab showing Posts matching a user's search query
    Title of the screen showing the list of posts for a blog. */
 "Posts" = "Příspěvky";
 
@@ -4842,10 +4792,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Name of the Reader feature.
    Noun. Name of the Reader feature
-   The accessibility value of the Reader tab.
-   The accessibility value of the reader tab.
-   The default title of the Reader
-   Title of the 'Reader' tab - used for spotlight indexing on iOS. */
+   The accessibility value of the Reader tab. */
 "Reader" = "Čtenář";
 
 /* Real Estate site intent topic */
@@ -4969,9 +4916,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* User action to remove video. */
 "Remove video" = "Odstranit video";
 
-/* Label indicating a post has been removed from Saved For Later */
-"Removed" = "Odstraněno";
-
 /* Notice confirming that an image has been removed as the post's featured image. */
 "Removed as featured image" = "Odstranit náhledový obrázek";
 
@@ -5030,9 +4974,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Placeholder text for replying to a post */
 "Reply to post" = "Odpovědět na příspěvek...";
-
-/* The title of a button that triggers reporting of a post from the user's reader. */
-"Report this post" = "Nahlásit tento příspěvek";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "Vyžadovat schválení pro komentáře, které obsahují více než tento počet odkazů.";
@@ -5240,8 +5181,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Scrollable block menu opened. Select a block." = "Bylo otevřeno rolovací blok menu. Vyberte blok.";
 
-/* Title of Stats section that shows search engine referrer traffic.
-   Title of the Reader's search feature */
+/* Title of Stats section that shows search engine referrer traffic. */
 "Search" = "Hledat";
 
 /* Label for list of search term */
@@ -5249,9 +5189,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Period Stats 'Search Terms' header */
 "Search Terms" = "Hledané výrazy";
-
-/* Placeholder text for the Reader search feature. */
-"Search WordPress" = "Hledat na WordPressu";
 
 /* No comment provided by engineer. */
 "Search block label. Current text is" = "Vyhledat štítek bloku. Aktuální text je";
@@ -5261,9 +5198,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Search button. Current button text is" = "Tlačítko hledat. Aktuální text tlačítka je";
-
-/* Search domain - Title for the Suggested domains screen */
-"Search domains" = "Vyhledat domény";
 
 /* title of the button that searches the first domain. */
 "Search for a domain" = "Vyhledejte doménu";
@@ -5310,9 +5244,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Select a layout" = "Vyberte rozložení";
-
-/* Register domain - Title for the Choose domain button of Suggested domains screen */
-"Select domain" = "Vybrat doménu";
 
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Vyberte styl odstavce";
@@ -5454,8 +5385,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button label to share a web page
    Shares the comment URL
    Spoken accessibility label
-   Title for a button that allows the user to share their answer to the prompt.
-   Verb. Title of a button. Pressing lets the user share a post to others. */
+   Title for a button that allows the user to share their answer to the prompt. */
 "Share" = "Sdílet";
 
 /* Title for a button that recommends the app to others */
@@ -5540,9 +5470,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for a comment notification. */
 "Shows details and moderation actions." = "Zobrazuje podrobnosti a moderační akce.";
-
-/* Accessibility hint for the More button on Reader's post details */
-"Shows more options." = "Zobrazit více možností.";
 
 /* Accessibility hint for a match/mention on a post notification. */
 "Shows the post" = "Zobrazuje příspěvek";
@@ -6647,12 +6574,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error shown when the app fails to load a video from the user's media library. */
 "Unable to load video." = "Nelze načíst video.";
 
-/* Notice title when updating a post's seen status failed. */
-"Unable to mark post seen" = "Příspěvek nelze označit jako viděný";
-
-/* Notice title when updating a post's unseen status failed. */
-"Unable to mark post unseen" = "Příspěvek nelze označit jako neviditelný";
-
 /* Dialog box title for when the user is canceling an upload. */
 "Unable to play video" = "Nelze přehrát video";
 
@@ -6723,15 +6644,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
    Revert an operation
-   Revert enabling notification after successfully subcribing to the comments for the post.
-   Undo action */
+   Revert enabling notification after successfully subcribing to the comments for the post. */
 "Undo" = "Zpět";
 
 /* Title for a button that unsubscribes the user from the post. */
 "Unfollow Conversation" = "Přestat sledovat konverzaci";
-
-/* Verb. Button title. The user is following the comments on a post. */
-"Unfollow conversation" = "Sledujte konverzaci";
 
 /* Label for size of media when it's not possible to calculate it. */
 "Unknown" = "Neznámý";
@@ -6894,7 +6811,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Username must be at least 4 characters." = "Uživatelské jméno musí obsahovat alespoň 4 znaky.";
 
-/* Blog Users */
+/* Blog Users
+   Noun. Title. Links to the user management feature. */
 "Users" = "Uživatelé";
 
 /* two factor code placeholder */
@@ -6983,9 +6901,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The visibility settings of the post. Should be the same as in core WP. */
 "Visibility" = "Viditelnost";
-
-/* An option to visit the site to which a specific post belongs */
-"Visit" = "Návštěva";
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@" = "Zobrazit %@";
@@ -7345,9 +7260,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "Mapa světa zobrazující zobrazení podle země.";
 
-/* Asks the user if they would like to clear their search history. */
-"Would you like to clear your search history?" = "Chcete vymazat historii hledávání?";
-
 /* Second line of Remove user/follower/viewer warning in confirmation dialog. */
 "Would you still like to remove this person?" = "Chcete opravdu odstranit uživatele?";
 
@@ -7379,8 +7291,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* 'This Year' label for the the year. */
 "Year" = "Rok";
 
-/* Button title. Confirms that the user wants to proceed with a pending action.
-   Label for a button that clears all old activity logs
+/* Label for a button that clears all old activity logs
    Yes */
 "Yes" = "Ano";
 
@@ -7481,9 +7392,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text rendered at the bottom of the Allowlisted IP Addresses editor, should match Calypso. */
 "You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "Můžete přidat na seznam povolených IP adresu nebo řadu adres, které zabrání tomu, aby je Jetpack blokoval. IPv4 a IPv6 jsou přijatelné. Chcete-li určit rozsah, zadejte nízkou a vysokou hodnotu oddělenou pomlčkou. Příklad: 12.12.12.1-12.12.12.100.";
-
-/* A suggestion of topics the user might like */
-"You might like" = "Možná se vám bude líbit";
 
 /* Error message informing the user that being logged into a WordPress.com account is required. */
 "You must be signed in to a WordPress.com account to perform this action." = "Musíte být přihlášen k účtu WordPress.com pro provedení této akce.";

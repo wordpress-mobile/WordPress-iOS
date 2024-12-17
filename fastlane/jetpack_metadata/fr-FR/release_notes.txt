@@ -1,0 +1,5 @@
+Ce mois-ci, nous avons :
+- corrigé des incidents dans le lecteur, amélioré la recherche et fait en sorte que les articles se chargent avec plus de fluidité.
+- activé les contenus embarqués TikTok dans le lecteur.
+- amélioré la stabilité dans l’éditeur expérimental (vous devriez l’essayer si ce n’est pas déjà fait !)
+- ajusté la façon dont les utilisateurs se connectent à WordPress.com (on espère que les gens se lanceront plus facilement).

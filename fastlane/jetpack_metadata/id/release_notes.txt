@@ -1,0 +1,5 @@
+Bulan ini, kami telah:
+- Memperbaiki sejumlah crash di pembaca, menyempurnakan pencarian, dan memperlancar pemuatan pos.
+- Mengaktifkan sematan TikTok di pembaca.
+- Meningkatkan stabilitas editor eksperimental (cobalah dan rasakan pengalamannya!)
+- Menyesuaikan cara pengguna login ke WordPress.com – semoga cara ini memudahkan para pengguna untuk memulai.

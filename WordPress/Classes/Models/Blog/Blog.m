@@ -97,6 +97,17 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 
 #pragma mark - NSManagedObject subclass methods
 
+- (void)willSave {
+    [super willSave];
+
+    // The `dotComID` getter has a speicial code to _update_ `blogID` value.
+    // This is a weird patch to make sure `blogID` is set to a correct value.
+    //
+    // It's important that calling `[self dotComID]` repeatedly only updates
+    // `Blog` instance once, which is the case at the moment.
+    [self dotComID];
+}
+
 - (void)prepareForDeletion
 {
     [super prepareForDeletion];

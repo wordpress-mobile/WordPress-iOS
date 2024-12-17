@@ -183,7 +183,8 @@ platform :ios do
 
     upload_build_to_testflight(
       whats_new_path: WORDPRESS_RELEASE_NOTES_PATH,
-      distribution_groups: ['Internal a8c Testers', 'Public Beta Testers']
+      distribution_groups: ['Internal a8c Testers', 'Public Beta Testers'],
+      beta_app_description_path: WORDPRESS_BETA_APP_DESCRIPTION_PATH
     )
 
     sentry_upload_dsym(
@@ -248,7 +249,8 @@ platform :ios do
 
     upload_build_to_testflight(
       whats_new_path: JETPACK_RELEASE_NOTES_PATH,
-      distribution_groups: ['Beta Testers']
+      distribution_groups: ['Beta Testers'],
+      beta_app_description_path: JETPACK_BETA_APP_DESCRIPTION_PATH
     )
 
     sentry_upload_dsym(
@@ -462,10 +464,11 @@ platform :ios do
     ENV.fetch('BUILDKITE', false)
   end
 
-  def upload_build_to_testflight(whats_new_path:, distribution_groups:)
+  def upload_build_to_testflight(whats_new_path:, distribution_groups:, beta_app_description_path:)
     upload_to_testflight(
       team_id: get_required_env('FASTLANE_ITC_TEAM_ID'),
       api_key_path: APP_STORE_CONNECT_KEY_PATH,
+      beta_app_description: File.read(beta_app_description_path),
       changelog: File.read(whats_new_path),
       distribute_external: true,
       groups: distribution_groups,

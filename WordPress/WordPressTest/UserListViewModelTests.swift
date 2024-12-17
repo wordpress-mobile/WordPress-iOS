@@ -30,7 +30,7 @@ class UserListViewModelTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Updated after fetch")
         let task = Task.detached {
-            for await _ in await self.service.dataStore.listStream(query: .all) {
+            for await _ in await self.service.streamAll() {
                 expectation.fulfill()
             }
         }
@@ -53,7 +53,7 @@ class UserListViewModelTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Updated after fetch")
         expectation.expectedFulfillmentCount = 5
         let task = Task.detached {
-            for await _ in await self.service.dataStore.listStream(query: .all) {
+            for await _ in await self.service.streamAll() {
                 expectation.fulfill()
             }
         }
@@ -72,7 +72,7 @@ class UserListViewModelTests: XCTestCase {
 
         let termination = XCTestExpectation(description: "Stream has finished")
         let task = Task.detached { [self] in
-            for await _ in await self.service.dataStore.listStream(query: .all) {
+            for await _ in await self.service.streamAll() {
                 // Do nothing
             }
             termination.fulfill()
@@ -96,12 +96,26 @@ class UserListViewModelTests: XCTestCase {
         stubDeleteUser(id: 34)
 
         _ = await viewModel.refreshItems()
-        let userFetched = try await service.dataStore.list(query: .id([34])).isEmpty == false
-        XCTAssertTrue(userFetched)
+
+        let userExisted = expectation(description: "User 34 exists")
+        let userDeleted = expectation(description: "User 34 is deleted")
+
+        let subscription = Task.detached {
+            for await result in await self.service.streamAll() {
+                let users = try result.get()
+                if users.contains(where: { $0.id == 34 }) {
+                    userExisted.fulfill()
+                } else {
+                    userDeleted.fulfill()
+                }
+            }
+        }
 
         try await service.deleteUser(id: 34, reassigningPostsTo: 1)
-        let userDeleted = try await service.dataStore.list(query: .id([34])).isEmpty
-        XCTAssertTrue(userDeleted)
+
+        await fulfillment(of: [userExisted, userDeleted], timeout: 0.3, enforceOrder: true)
+
+        subscription.cancel()
     }
 
     private func stubSuccessfullUsersFetch() {

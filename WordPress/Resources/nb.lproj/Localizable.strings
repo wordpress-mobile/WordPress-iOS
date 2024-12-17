@@ -738,9 +738,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for a list of different button styles. */
 "Button Style" = "Knappestil";
 
-/* Label for the post author in the post detail. */
-"By " = "Av";
-
 /* Terms of Service link displayed when a user is registering domain. Text inside <a> tags will be highlighted. */
 "By registering this domain you agree to our <a>Terms&nbsp;and&nbsp;Conditions<\/a>." = "Ved å registrere dette domenet godtar du våre <a>regler&nbsp;og&nbsp;vilkår<\/a>.";
 
@@ -772,7 +769,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
-   Button title. Cancels a pending action.
    Button title. Tapping it cancels the login flow.
    Cancel a prompt
    Cancel Action
@@ -807,7 +803,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
@@ -947,17 +942,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Clear Old Activity Logs" = "Slett gamle aktivitetslogger";
 
-/* Title of an alert prompt. */
-"Clear Search History" = "Tøm søkehistorikk";
-
 /* Label for button that clears the spotlight index on device. */
 "Clear Spotlight Index" = "Tøm Spotlight-indeks";
 
 /* No comment provided by engineer. */
 "Clear search" = "Rensk søk";
-
-/* Title of a button. */
-"Clear search history" = "Slett søkehistorikk";
 
 /* Label for size of media while it's being cleared. */
 "Clearing..." = "Tømmer...";
@@ -1327,7 +1316,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Delete
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
-   Title of a delete button
    Title of the trash confirmation alert. */
 "Delete" = "Slett";
 
@@ -2352,9 +2340,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Messaged displayed when fetching plugins. */
 "Loading plugins..." = "Laster utvidelser...";
 
-/* A short message to inform the user the requested stream is being loaded. */
-"Loading stream..." = "Laster inn strøm...";
-
 /* Loading tags
    Loading. Verb
    Suggestions loading message
@@ -2431,9 +2416,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Main Navigation" = "Hovednavigasjon";
 
 /* Button leading to a screen where users can manage their installed plugins
-   Page title for the screen to manage your list of followed sites.
    Screen title, where users can see all their installed plugins.
-   Title for the Reader Manage screen.
    Verb. Text label. Tapping displays a screen where the user can configure 'share' buttons for third-party services.
    Verb. Title of the screen for managing sharing buttons and settings related to sharing. */
 "Manage" = "Håndter";
@@ -2553,7 +2536,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Accessibility label for more button in dashboard quick start card.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
-   Accessibility label for the More button on Reader's post details
    Action button to display more available options */
 "More" = "Mer";
 
@@ -2893,7 +2875,6 @@ translators: %s: Block name e.g. \"Image block\" */
    A button title.
    Accept Action
    Alert dismissal title
-   Button title. Acknowledges a prompt.
    Button title. An acknowledgement of the message displayed in a prompt.
    Default action
    Dismisses the alert
@@ -3149,9 +3130,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid State" = "Vennligst oppgi en gyldig status";
 
-/* Title of a prompt. */
-"Please enter a valid URL" = "Vennligst skriv inn en gyldig URL";
-
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid address" = "Vennligst skriv inn en gyldig adresse";
 
@@ -3275,12 +3253,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "Postnummer";
 
-/* Accessibility label for the blog name in the Reader's post details. Placeholders are blog title, blog URL, author name, published date */
-"Posted in %@, at %@, by %@, %@" = "Publisert i %1$@, den %2$@, av %3$@, %4$@";
-
-/* Accessibility label for the blog name in the Reader's post details, without date. Placeholders are blog title, blog URL, author name */
-"Posted in %@, at %@, by %@." = "Publisert i %1$@, den %2$@, av %3$@.";
-
 /* Insights 'Posting Activity' header
    Title for stats Posting Activity view. */
 "Posting Activity" = "Innleggsaktivitet";
@@ -3288,7 +3260,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
    Noun. Title. Links to the blog's Posts screen.
-   Title of a Reader tab showing Posts matching a user's search query
    Title of the screen showing the list of posts for a blog. */
 "Posts" = "Innlegg";
 
@@ -3425,10 +3396,7 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Name of the Reader feature.
    Noun. Name of the Reader feature
-   The accessibility value of the Reader tab.
-   The accessibility value of the reader tab.
-   The default title of the Reader
-   Title of the 'Reader' tab - used for spotlight indexing on iOS. */
+   The accessibility value of the Reader tab. */
 "Reader" = "Leser";
 
 /* Text for the 'Reblog' button. */
@@ -3535,9 +3503,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* User action to remove video. */
 "Remove video" = "Fjern video";
-
-/* Label indicating a post has been removed from Saved For Later */
-"Removed" = "Fjernet";
 
 /* Notice confirming that an image has been removed as the post's featured image. */
 "Removed as featured image" = "Fjernet som fremhevet bilde";
@@ -3699,8 +3664,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Planlagt";
 
-/* Title of Stats section that shows search engine referrer traffic.
-   Title of the Reader's search feature */
+/* Title of Stats section that shows search engine referrer traffic. */
 "Search" = "Søk";
 
 /* Label for list of search term */
@@ -3708,9 +3672,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Period Stats 'Search Terms' header */
 "Search Terms" = "Søkeord";
-
-/* Placeholder text for the Reader search feature. */
-"Search WordPress" = "Søk WordPress";
 
 /* No comment provided by engineer. */
 "Search blocks" = "Søk blokker";
@@ -3849,8 +3810,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Button label to share a web page
    Shares the comment URL
    Spoken accessibility label
-   Title for a button that allows the user to share their answer to the prompt.
-   Verb. Title of a button. Pressing lets the user share a post to others. */
+   Title for a button that allows the user to share their answer to the prompt. */
 "Share" = "Del";
 
 /* Informational text for Collect Information setting */
@@ -3917,9 +3877,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Accessibility hint for a comment notification. */
 "Shows details and moderation actions." = "Viser detaljer og modereringsvalg";
-
-/* Accessibility hint for the More button on Reader's post details */
-"Shows more options." = "Viser flere valg.";
 
 /* Accessibility hint for a match/mention on a post notification. */
 "Shows the post" = "Viser innlegget";
@@ -4785,8 +4742,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
    Revert an operation
-   Revert enabling notification after successfully subcribing to the comments for the post.
-   Undo action */
+   Revert enabling notification after successfully subcribing to the comments for the post. */
 "Undo" = "Angre";
 
 /* Label for size of media when it's not possible to calculate it. */
@@ -4926,7 +4882,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Username must be at least 4 characters." = "Brukernavn må være minst 4 tegn.";
 
-/* Blog Users */
+/* Blog Users
+   Noun. Title. Links to the user management feature. */
 "Users" = "Brukere";
 
 /* two factor code placeholder */
@@ -5000,9 +4957,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* The visibility settings of the post. Should be the same as in core WP. */
 "Visibility" = "Synlighet";
-
-/* An option to visit the site to which a specific post belongs */
-"Visit" = "Besøk";
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@" = "Besøk %@";
@@ -5186,9 +5140,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "Verdenskart som viser visninger etter land.";
 
-/* Asks the user if they would like to clear their search history. */
-"Would you like to clear your search history?" = "Vil du fjerne søkehistorien din?";
-
 /* Second line of Remove user/follower/viewer warning in confirmation dialog. */
 "Would you still like to remove this person?" = "Vil du fortsatt fjerne denne personen?";
 
@@ -5208,8 +5159,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* 'This Year' label for the the year. */
 "Year" = "År";
 
-/* Button title. Confirms that the user wants to proceed with a pending action.
-   Label for a button that clears all old activity logs
+/* Label for a button that clears all old activity logs
    Yes */
 "Yes" = "Ja";
 
@@ -5283,9 +5233,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Text rendered at the bottom of the Allowlisted IP Addresses editor, should match Calypso. */
 "You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "Du kan legge en IP-adresse eller serier med adresses på tillatlisten for å forhindre at de blir blokkert av Jetpack. IPv4 og IPv6 aksepteres. For å spesifisere et utvalg, skriv inn den laveste og høyeste verdien med bindestrek mellom. Eksemepel: 12.12.12.1-12.12.12.100.";
-
-/* A suggestion of topics the user might like */
-"You might like" = "Du vil kanskje like";
 
 /* Error message informing the user that being logged into a WordPress.com account is required. */
 "You must be signed in to a WordPress.com account to perform this action." = "Du må være logget inn i en WordPress.com-konto for å gjøre dette.";

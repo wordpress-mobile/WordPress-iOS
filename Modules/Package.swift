@@ -1,4 +1,4 @@
-// swift-tools-version: 5.9
+// swift-tools-version: 6.0
 
 import PackageDescription
 
@@ -47,26 +47,26 @@ let package = Package(
         .package(url: "https://github.com/zendesk/support_sdk_ios", from: "8.0.3"),
         // We can't use wordpress-rs branches nor commits here. Only tags work.
         .package(url: "https://github.com/Automattic/wordpress-rs", revision: "alpha-20241116"),
-        .package(url: "https://github.com/wordpress-mobile/GutenbergKit", revision: "6cc307e7fc24910697be5f71b7d70f465a9c0f63"),
+        .package(url: "https://github.com/wordpress-mobile/GutenbergKit", revision: "v0.0.2"),
         .package(url: "https://github.com/Automattic/color-studio", branch: "trunk"),
     ],
     targets: XcodeSupport.targets + [
-        .target(name: "JetpackStatsWidgetsCore"),
-        .target(name: "DesignSystem"),
+        .target(name: "JetpackStatsWidgetsCore", swiftSettings: [.swiftLanguageMode(.v5)]),
+        .target(name: "DesignSystem", swiftSettings: [.swiftLanguageMode(.v5)]),
         .target(name: "UITestsFoundation", dependencies: [
             .product(name: "ScreenObject", package: "ScreenObject"),
             .product(name: "XCUITestHelpers", package: "XCUITestHelpers"),
-        ]),
-        .target(name: "WordPressFlux"),
-        .target(name: "WordPressSharedObjC", resources: [.process("Resources")]),
-        .target(name: "WordPressShared", dependencies: [.target(name: "WordPressSharedObjC")], resources: [.process("Resources")]),
-        .target(name: "WordPressUI", dependencies: [.target(name: "WordPressShared")], resources: [.process("Resources")]),
-        .testTarget(name: "JetpackStatsWidgetsCoreTests", dependencies: [.target(name: "JetpackStatsWidgetsCore")]),
-        .testTarget(name: "DesignSystemTests", dependencies: [.target(name: "DesignSystem")]),
-        .testTarget(name: "WordPressFluxTests", dependencies: ["WordPressFlux"]),
-        .testTarget(name: "WordPressSharedTests", dependencies: [.target(name: "WordPressShared")]),
-        .testTarget(name: "WordPressSharedObjCTests", dependencies: [.target(name: "WordPressShared")], resources: [.process("Resources")]),
-        .testTarget(name: "WordPressUITests", dependencies: [.target(name: "WordPressUI")]),
+        ], swiftSettings: [.swiftLanguageMode(.v5)]),
+        .target(name: "WordPressFlux", swiftSettings: [.swiftLanguageMode(.v5)]),
+        .target(name: "WordPressSharedObjC", resources: [.process("Resources")], swiftSettings: [.swiftLanguageMode(.v5)]),
+        .target(name: "WordPressShared", dependencies: [.target(name: "WordPressSharedObjC")], resources: [.process("Resources")], swiftSettings: [.swiftLanguageMode(.v5)]),
+        .target(name: "WordPressUI", dependencies: [.target(name: "WordPressShared")], resources: [.process("Resources")], swiftSettings: [.swiftLanguageMode(.v5)]),
+        .testTarget(name: "JetpackStatsWidgetsCoreTests", dependencies: [.target(name: "JetpackStatsWidgetsCore")], swiftSettings: [.swiftLanguageMode(.v5)]),
+        .testTarget(name: "DesignSystemTests", dependencies: [.target(name: "DesignSystem")], swiftSettings: [.swiftLanguageMode(.v5)]),
+        .testTarget(name: "WordPressFluxTests", dependencies: ["WordPressFlux"], swiftSettings: [.swiftLanguageMode(.v5)]),
+        .testTarget(name: "WordPressSharedTests", dependencies: [.target(name: "WordPressShared")], swiftSettings: [.swiftLanguageMode(.v5)]),
+        .testTarget(name: "WordPressSharedObjCTests", dependencies: [.target(name: "WordPressShared")], resources: [.process("Resources")], swiftSettings: [.swiftLanguageMode(.v5)]),
+        .testTarget(name: "WordPressUITests", dependencies: [.target(name: "WordPressUI")], swiftSettings: [.swiftLanguageMode(.v5)]),
     ]
 )
 
@@ -85,20 +85,22 @@ let package = Package(
 /// into every target that depends on it. Make sure to avoid including frameworks
 /// with large resources bundled into multiple targets.
 enum XcodeSupport {
-    static let products: [Product] = [
-        .library(name: "XcodeTarget_App", targets: ["XcodeTarget_App"]),
-        .library(name: "XcodeTarget_WordPressTests", targets: ["XcodeTarget_WordPressTests"]),
-        .library(name: "XcodeTarget_WordPressAuthentificator", targets: ["XcodeTarget_WordPressAuthentificator"]),
-        .library(name: "XcodeTarget_WordPressAuthentificatorTests", targets: ["XcodeTarget_WordPressAuthentificatorTests"]),
-        .library(name: "XcodeTarget_ShareExtension", targets: ["XcodeTarget_ShareExtension"]),
-        .library(name: "XcodeTarget_DraftActionExtension", targets: ["XcodeTarget_DraftActionExtension"]),
-        .library(name: "XcodeTarget_NotificationServiceExtension", targets: ["XcodeTarget_NotificationServiceExtension"]),
-        .library(name: "XcodeTarget_Intents", targets: ["XcodeTarget_Intents"]),
-        .library(name: "XcodeTarget_StatsWidget", targets: ["XcodeTarget_StatsWidget"]),
-        .library(name: "XcodeTarget_UITests", targets: ["XcodeTarget_UITests"]),
-    ]
+    static var products: [Product] {
+        [
+            .library(name: "XcodeTarget_App", targets: ["XcodeTarget_App"]),
+            .library(name: "XcodeTarget_WordPressTests", targets: ["XcodeTarget_WordPressTests"]),
+            .library(name: "XcodeTarget_WordPressAuthentificator", targets: ["XcodeTarget_WordPressAuthentificator"]),
+            .library(name: "XcodeTarget_WordPressAuthentificatorTests", targets: ["XcodeTarget_WordPressAuthentificatorTests"]),
+            .library(name: "XcodeTarget_ShareExtension", targets: ["XcodeTarget_ShareExtension"]),
+            .library(name: "XcodeTarget_DraftActionExtension", targets: ["XcodeTarget_DraftActionExtension"]),
+            .library(name: "XcodeTarget_NotificationServiceExtension", targets: ["XcodeTarget_NotificationServiceExtension"]),
+            .library(name: "XcodeTarget_Intents", targets: ["XcodeTarget_Intents"]),
+            .library(name: "XcodeTarget_StatsWidget", targets: ["XcodeTarget_StatsWidget"]),
+            .library(name: "XcodeTarget_UITests", targets: ["XcodeTarget_UITests"]),
+        ]
+    }
 
-    static let targets: [Target] = {
+    static var targets: [Target] {
         let wordPresAuthentificatorDependencies: [Target.Dependency] = [
             "WordPressShared",
             "WordPressUI",
@@ -193,7 +195,7 @@ enum XcodeSupport {
                 .product(name: "BuildkiteTestCollector", package: "test-collector-swift"),
             ]),
         ]
-    }()
+    }
 }
 
 extension Target {

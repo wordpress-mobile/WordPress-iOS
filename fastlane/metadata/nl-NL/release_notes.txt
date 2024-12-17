@@ -1,0 +1,3 @@
+Deze maand hebben we:  
+- Stabiliteitsverbeteringen aan de experimentele editor (je zou het moeten proberen als je dat nog niet hebt gedaan!)  
+- Aangepast hoe gebruikers inloggen op WordPress.com – we hopen dat het het makkelijker maakt voor mensen om te beginnen.

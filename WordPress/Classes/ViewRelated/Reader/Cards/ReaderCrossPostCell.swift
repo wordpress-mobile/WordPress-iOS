@@ -1,8 +1,49 @@
 import Foundation
 import AutomatticTracks
 import WordPressShared
+import WordPressUI
 
 final class ReaderCrossPostCell: ReaderStreamBaseCell {
+    private let view = ReaderCrossPostView()
+    private var contentViewConstraints: [NSLayoutConstraint] = []
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        contentView.addSubview(view)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            view.topAnchor.constraint(equalTo: contentView.topAnchor),
+            view.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).withPriority(999),
+        ])
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("Not implemented")
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        view.prepareForReuse()
+    }
+
+    func configure(with post: ReaderPost) {
+        view.configure(with: post)
+    }
+
+    override func didUpdateCompact(_ isCompact: Bool) {
+        setNeedsUpdateConstraints()
+    }
+
+    override func updateConstraints() {
+        NSLayoutConstraint.deactivate(contentViewConstraints)
+        contentViewConstraints = view.pinEdges(.horizontal, to: isCompact ? contentView : contentView.readableContentGuide)
+        super.updateConstraints()
+    }
+}
+
+private final class ReaderCrossPostView: UIView {
     private let avatarView = ReaderAvatarView()
     private let iconView = ReaderAvatarView()
     private let headerLabel = UILabel()
@@ -27,22 +68,18 @@ final class ReaderCrossPostCell: ReaderStreamBaseCell {
         .foregroundColor: UIColor.secondaryLabel
     ]
 
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
 
         setupStyle()
         setupLayout()
-
-        selectedBackgroundView = ReaderPostCell.makeSelectedBackgroundView()
     }
 
     required init?(coder: NSCoder) {
         fatalError("Not implemented")
     }
 
-    override func prepareForReuse() {
-        super.prepareForReuse()
-
+    func prepareForReuse() {
         avatarView.prepareForReuse()
     }
 

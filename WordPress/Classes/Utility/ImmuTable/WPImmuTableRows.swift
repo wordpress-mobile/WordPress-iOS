@@ -468,3 +468,17 @@ class ExpandableRow: ImmuTableRow {
         cell.urlCallback = onLinkTap
     }
 }
+
+struct TextViewRow: ImmuTableRow {
+    static var cell = ImmuTableCell.class(TextViewTableCell.self)
+
+    let title: String
+    let details: String
+    var action: ImmuTableAction?
+
+    func configureCell(_ cell: UITableViewCell) {
+        let cell = cell as! TextViewTableCell
+        cell.titleLabel.text = title
+        cell.detailsView.text = details
+    }
+}

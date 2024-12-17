@@ -1,4 +1,5 @@
 import SwiftUI
+import WordPressAPI
 
 struct UserDetailsView: View {
 
@@ -107,8 +108,7 @@ struct UserDetailsView: View {
                 Button(role: .cancel) {
                     presentPasswordAlert = false
                 } label: {
-                    // TODO: Replace with `SharedStrings.Button.cancel`
-                    Text(NSLocalizedString("shared.button.cancel", value: "Cancel", comment: "A shared button title used in different contexts"))
+                    Text(SharedStrings.Button.cancel)
                 }
             },
             message: {
@@ -299,8 +299,7 @@ private extension View {
             },
             message: { error in
                 Text(Strings.deleteUserErrorAlertMessage)
-                // TODO: Use appropriate localized error message
-                Text(error.localizedDescription)
+                Text((error as? WpApiError)?.errorMessage ?? error.localizedDescription)
             })
     }
 }

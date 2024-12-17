@@ -348,7 +348,6 @@
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
-   Button title. Cancels a pending action.
    Button title. Tapping it cancels the login flow.
    Cancel a prompt
    Cancel Action
@@ -383,7 +382,6 @@
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
@@ -447,14 +445,8 @@
 /* No comment provided by engineer. */
 "Clear Old Activity Logs" = "Limpar relatórios antigos de actividade";
 
-/* Title of an alert prompt. */
-"Clear Search History" = "Limpar histórico de pesquisas";
-
 /* Label for button that clears the spotlight index on device. */
 "Clear Spotlight Index" = "Limpar o índice do Spotlight";
-
-/* Title of a button. */
-"Clear search history" = "Limpar histórico de pesquisas";
 
 /* Label for size of media while it's being cleared. */
 "Clearing..." = "A limpar...";
@@ -696,7 +688,6 @@
 /* Delete
    Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
-   Title of a delete button
    Title of the trash confirmation alert. */
 "Delete" = "Eliminar";
 
@@ -1275,9 +1266,6 @@
 /* Menus label text displayed when a menu is loading. */
 "Loading menu..." = "A carregar menu...";
 
-/* A short message to inform the user the requested stream is being loaded. */
-"Loading stream..." = "A carregar emissão...";
-
 /* Loading tags
    Loading. Verb
    Suggestions loading message
@@ -1333,9 +1321,7 @@
 "Main Navigation" = "Navegação principal";
 
 /* Button leading to a screen where users can manage their installed plugins
-   Page title for the screen to manage your list of followed sites.
    Screen title, where users can see all their installed plugins.
-   Title for the Reader Manage screen.
    Verb. Text label. Tapping displays a screen where the user can configure 'share' buttons for third-party services.
    Verb. Title of the screen for managing sharing buttons and settings related to sharing. */
 "Manage" = "Gerir";
@@ -1410,7 +1396,6 @@
 /* Accessibility label for more button in dashboard quick start card.
    Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
-   Accessibility label for the More button on Reader's post details
    Action button to display more available options */
 "More" = "Mais";
 
@@ -1563,7 +1548,6 @@
    A button title.
    Accept Action
    Alert dismissal title
-   Button title. Acknowledges a prompt.
    Button title. An acknowledgement of the message displayed in a prompt.
    Default action
    Dismisses the alert
@@ -1740,9 +1724,6 @@
 /* No comment provided by engineer. */
 "Please enter a username." = "Por favor insira um nome de utilizador.";
 
-/* Title of a prompt. */
-"Please enter a valid URL" = "Por favor, insira um URL válido";
-
 /* Error message displayed when the user attempts use an invalid email address. */
 "Please enter a valid email address." = "Por favor insira um endereço de email válido.";
 
@@ -1802,7 +1783,6 @@
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
    Noun. Title. Links to the blog's Posts screen.
-   Title of a Reader tab showing Posts matching a user's search query
    Title of the screen showing the list of posts for a blog. */
 "Posts" = "Conteúdos";
 
@@ -1884,10 +1864,7 @@
 
 /* Name of the Reader feature.
    Noun. Name of the Reader feature
-   The accessibility value of the Reader tab.
-   The accessibility value of the reader tab.
-   The default title of the Reader
-   Title of the 'Reader' tab - used for spotlight indexing on iOS. */
+   The accessibility value of the Reader tab. */
 "Reader" = "Leitor";
 
 /* Text for the 'Reblog' button. */
@@ -2052,8 +2029,7 @@
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Agendado";
 
-/* Title of Stats section that shows search engine referrer traffic.
-   Title of the Reader's search feature */
+/* Title of Stats section that shows search engine referrer traffic. */
 "Search" = "Procurar";
 
 /* Period Stats 'Search Terms' header */
@@ -2093,8 +2069,7 @@
    Button label to share a web page
    Shares the comment URL
    Spoken accessibility label
-   Title for a button that allows the user to share their answer to the prompt.
-   Verb. Title of a button. Pressing lets the user share a post to others. */
+   Title for a button that allows the user to share their answer to the prompt. */
 "Share" = "Partilhar";
 
 /* Aztec's Text Placeholder
@@ -2560,8 +2535,7 @@
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
    Revert an operation
-   Revert enabling notification after successfully subcribing to the comments for the post.
-   Undo action */
+   Revert enabling notification after successfully subcribing to the comments for the post. */
 "Undo" = "Anular";
 
 /* Label for size of media when it's not possible to calculate it. */
@@ -2646,7 +2620,8 @@
 /* No comment provided by engineer. */
 "Username must be at least 4 characters." = "O nome de utilizador deve ter pelo menos 4 caracteres.";
 
-/* Blog Users */
+/* Blog Users
+   Noun. Title. Links to the user management feature. */
 "Users" = "Utilizadores";
 
 /* two factor code placeholder */
@@ -2702,9 +2677,6 @@
 
 /* The visibility settings of the post. Should be the same as in core WP. */
 "Visibility" = "Visibilidade";
-
-/* An option to visit the site to which a specific post belongs */
-"Visit" = "Visitar";
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@" = "Visitar %@";
@@ -2787,9 +2759,6 @@
 /* Link to a WordPress.org page for the plugin */
 "WordPress.org Plugin Page" = "Página do plugin em WordPress.org";
 
-/* Asks the user if they would like to clear their search history. */
-"Would you like to clear your search history?" = "Gostaria de limpar o seu histórico de pesquisas?";
-
 /* Second line of Remove user/follower/viewer warning in confirmation dialog. */
 "Would you still like to remove this person?" = "Gostaria ainda assim de remover este utilizador?";
 
@@ -2799,8 +2768,7 @@
 /* Title for the writing section in site settings screen */
 "Writing" = "A escrever";
 
-/* Button title. Confirms that the user wants to proceed with a pending action.
-   Label for a button that clears all old activity logs
+/* Label for a button that clears all old activity logs
    Yes */
 "Yes" = "Sim";
 

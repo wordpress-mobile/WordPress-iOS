@@ -89,7 +89,7 @@ struct WordPressDotComAuthenticator {
 
         let token: String
         do {
-            token = try await authenticate(from: viewController, prefersEphemeralWebBrowserSession: hasAlreadySignedIn)
+            token = try await authenticate(from: viewController, prefersEphemeralWebBrowserSession: hasAlreadySignedIn, accountEmail: context.accountEmail(in: coreDataStack.mainContext))
         } catch {
             throw .authentication(error)
         }
@@ -167,19 +167,28 @@ struct WordPressDotComAuthenticator {
     /// - SeeAlso `signIn`
     func authenticate(
         from viewController: UIViewController,
-        prefersEphemeralWebBrowserSession: Bool
+        prefersEphemeralWebBrowserSession: Bool,
+        accountEmail: String? = nil
     ) async throws(AuthenticationError) -> String {
         let clientId = ApiCredentials.client
         let clientSecret = ApiCredentials.secret
         let redirectURI = "x-wordpress-app://oauth2-callback"
 
-        let authorizeURL = URL(string: "https://public-api.wordpress.com/oauth2/authorize")!
-            .appending(queryItems: [
-                URLQueryItem(name: "client_id", value: clientId),
-                URLQueryItem(name: "redirect_uri", value: redirectURI),
-                URLQueryItem(name: "response_type", value: "code"),
-                URLQueryItem(name: "scope", value: "global"),
-            ])
+        var queries: [String: Any] =  [
+            "client_id": clientId,
+            "redirect_uri": redirectURI,
+            "response_type": "code",
+            "scope": "global",
+        ]
+        if let accountEmail {
+            queries["user_email"] =  accountEmail
+        }
+
+        // Using Alamofire instead of URL to encode query string because URL do not encoded "+" (which may present
+        // in user's email) in query. WP.com treat "+" in URL query as a whitespace, which cause the login page to
+        // prepopulate the email address incorrectly, i.e. "foo+bar@baz.com" shows as "foo bar@baz.com"
+        let authorizeURL = try? URLEncoding.queryString.encode(URLRequest(url: URL(string: "https://public-api.wordpress.com/oauth2/authorize")!), with: queries).url
+        guard let authorizeURL else { throw .urlError(URLError(.badURL)) }
 
         let callbackURL = try await authorize(from: viewController, url: authorizeURL, prefersEphemeralWebBrowserSession: prefersEphemeralWebBrowserSession)
 
@@ -307,7 +316,6 @@ private extension WordPressDotComAuthenticator.SignInError {
 
 private extension WordPressDotComAuthenticator.AuthenticationError {
     var alertMessage: String? {
-        let alertMessage: String
         switch self {
         case .cancelled:
             // `.cancelled` error is thrown when user taps the cancel button in the presented Safari view controller.

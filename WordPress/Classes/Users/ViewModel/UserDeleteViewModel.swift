@@ -31,8 +31,7 @@ public class UserDeleteViewModel: ObservableObject {
 
     func fetchOtherUsers() async {
         do {
-            let users = try await userService.dataStore.list(query: .all)
-            self.otherUsers = users
+            self.otherUsers = try await userService.allUsers()
                 .filter { $0.id != self.user.id } // Don't allow re-assigning to yourself
                 .sorted(using: KeyPathComparator(\.username))
         } catch {

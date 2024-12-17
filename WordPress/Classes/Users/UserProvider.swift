@@ -11,8 +11,6 @@ public enum UserDataStoreQuery: Equatable {
 }
 
 public protocol UserServiceProtocol: Actor {
-    var dataStore: any UserDataStore { get }
-
     func fetchUsers() async throws
 
     func isCurrentUserCapableOf(_ capability: String) async -> Bool
@@ -20,9 +18,33 @@ public protocol UserServiceProtocol: Actor {
     func setNewPassword(id: Int32, newPassword: String) async throws
 
     func deleteUser(id: Int32, reassigningPostsTo newUserId: Int32) async throws
+
+    func allUsers() async throws -> [DisplayUser]
+
+    func streamSearchResult(input: String) async -> AsyncStream<Result<[DisplayUser], Error>>
+
+    func streamAll() async -> AsyncStream<Result<[DisplayUser], Error>>
 }
 
-actor MockUserProvider: UserServiceProtocol {
+protocol UserDataStoreProvider: Actor {
+    var userDataStore: any UserDataStore { get }
+}
+
+extension UserServiceProtocol where Self: UserDataStoreProvider {
+    func allUsers() async throws -> [DisplayUser] {
+        try await userDataStore.list(query: .all)
+    }
+
+    func streamSearchResult(input: String) async -> AsyncStream<Result<[DisplayUser], Error>> {
+        await userDataStore.listStream(query: .search(input))
+    }
+
+    func streamAll() async -> AsyncStream<Result<[DisplayUser], Error>> {
+        await userDataStore.listStream(query: .all)
+    }
+}
+
+actor MockUserProvider: UserServiceProtocol, UserDataStoreProvider {
 
     enum Scenario {
         case infinitLoading
@@ -33,9 +55,7 @@ actor MockUserProvider: UserServiceProtocol {
     var scenario: Scenario
 
     private let _dataStore: InMemoryUserDataStore = .init()
-    var dataStore: any UserDataStore {
-        _dataStore
-    }
+    var userDataStore: any UserDataStore { _dataStore }
 
     nonisolated let usersUpdates: AsyncStream<[DisplayUser]>
     private let usersUpdatesContinuation: AsyncStream<[DisplayUser]>.Continuation
@@ -62,8 +82,8 @@ actor MockUserProvider: UserServiceProtocol {
             let dummyDataUrl = URL(string: "https://my.api.mockaroo.com/users.json?key=067c9730")!
             let response = try await URLSession.shared.data(from: dummyDataUrl)
             let users = try JSONDecoder().decode([DisplayUser].self, from: response.0)
-            try await _dataStore.delete(query: .all)
-            try await _dataStore.store(users)
+            try await userDataStore.delete(query: .all)
+            try await userDataStore.store(users)
         case .error:
             throw URLError(.timedOut)
         }

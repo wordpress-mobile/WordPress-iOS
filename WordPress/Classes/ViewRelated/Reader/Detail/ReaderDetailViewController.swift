@@ -246,6 +246,12 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         webView.isP2 = post.isP2Type()
 
+        if post.content?.hasSuffix("[…]") == true {
+            let viewMoreView = ReaderReadMoreView(post: post)
+            webView.addSubview(viewMoreView)
+            viewMoreView.pinEdges([.horizontal, .bottom])
+        }
+
         coordinator?.storeAuthenticationCookies(in: webView) { [weak self] in
             self?.webView.loadHTMLString(post.contentForDisplay())
         }

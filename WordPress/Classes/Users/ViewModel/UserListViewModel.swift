@@ -1,9 +1,15 @@
 import SwiftUI
 import Combine
 import WordPressShared
+import WordPressAPI
 
 @MainActor
 class UserListViewModel: ObservableObject {
+
+    enum Mode: Equatable {
+        case allUsers
+        case search(String)
+    }
 
     enum RoleSection: Hashable, Comparable {
         case me
@@ -46,18 +52,19 @@ class UserListViewModel: ObservableObject {
     private var initialLoad = false
 
     @Published
-    private(set) var query: UserDataStoreQuery = .all
+    private(set) var mode: Mode = .allUsers
 
     @Published
     private(set) var sortedUsers: [Section] = []
 
     @Published
-    private(set) var error: Error? = nil
+    private(set) var error: String? = nil
 
     @Published
     var searchTerm: String = "" {
         didSet {
-            self.query = .search(searchTerm)
+            let keyword = searchTerm.trimmingCharacters(in: .whitespacesAndNewlines)
+            self.mode = keyword.isEmpty ? .allUsers : .search(keyword)
         }
     }
 
@@ -82,13 +89,20 @@ class UserListViewModel: ObservableObject {
     }
 
     func performQuery() async {
-        let usersUpdates = await userService.dataStore.listStream(query: query)
+        let usersUpdates: AsyncStream<Result<[DisplayUser], Error>>
+        switch mode {
+        case .allUsers:
+            usersUpdates = await userService.streamAll()
+        case let .search(keyword):
+            usersUpdates = await userService.streamSearchResult(input: keyword)
+        }
+
         for await users in usersUpdates {
             switch users {
             case let .success(users):
                 self.sortedUsers = self.sortUsers(users)
             case let .failure(error):
-                self.error = error
+                self.error = (error as? WpApiError)?.errorMessage ?? error.localizedDescription
             }
         }
     }
@@ -102,7 +116,7 @@ class UserListViewModel: ObservableObject {
             do {
                 try await userService.fetchUsers()
             } catch {
-                self.error = error
+                self.error = (error as? WpApiError)?.errorMessage ?? error.localizedDescription
             }
         }
 

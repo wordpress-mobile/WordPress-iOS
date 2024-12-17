@@ -105,6 +105,28 @@ class WordPressDotComAuthenticatorTests: CoreDataTestCase {
             XCTFail("Unexpected error: \(error)")
         }
     }
+
+    func testReAuthenticationWithUnexpectedAccount() async throws {
+        // Given the app is already signed in with a WP.com account.
+        let account = AccountBuilder(mainContext).with(email: "test@example.com").with(username: "default_account").with(authToken: "token").build()
+        try mainContext.save()
+        AccountService(coreDataStack: contextManager).setDefaultWordPressComAccount(account)
+
+        // When A different account is authenticated via web login
+        stubTokenExchange()
+        stubGetAccountDetails()
+
+        // Then `mismatchedEmail` error should be returned
+        let authenticator = WordPressDotComAuthenticator(coreDataStack: contextManager, authenticator: fakeAuthenticator(callback: ["code": "random"]))
+        do {
+            let _ = try await authenticator.attemptSignIn(from: UIViewController(), context: .reauthentication(accountEmail: account.email))
+            XCTFail("Unexpected successful result")
+        } catch let .mismatchedEmail(expectedEmail) {
+            XCTAssertEqual(expectedEmail, "test@example.com")
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+    }
 }
 
 private extension WordPressDotComAuthenticatorTests {

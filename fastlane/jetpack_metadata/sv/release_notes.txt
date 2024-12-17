@@ -1,0 +1,5 @@
+Den här månaden har vi:
+- Åtgärdat några krascher i läsaren, förbättrat sökfunktionen och gjort så att inlägg laddas in smidigare.
+- Aktiverat TikTok-inbäddningar i läsaren.
+- Gjort stabilitetsförbättringar i den experimentella redigeraren (du borde prova den om du inte redan har gjort det).
+- Justerat hur användare loggar in på WordPress.com. Vi hoppas att det ska göra det lättare för folk att komma igång.

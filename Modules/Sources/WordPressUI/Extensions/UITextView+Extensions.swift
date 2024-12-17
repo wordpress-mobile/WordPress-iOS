@@ -5,6 +5,7 @@ extension UITextView {
     /// but supports interaction and other text view features.
     public static func makeLabel() -> UITextView {
         let textView = UITextView()
+        textView.backgroundColor = .clear
         textView.isScrollEnabled = false
         textView.isEditable = false
         textView.textContainerInset = .zero

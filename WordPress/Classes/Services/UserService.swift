@@ -5,13 +5,11 @@ import WordPressUI
 
 /// UserService is responsible for fetching user acounts via the .org REST API – it's the replacement for `UsersService` (the XMLRPC-based approach)
 ///
-actor UserService: UserServiceProtocol {
+actor UserService: UserServiceProtocol, UserDataStoreProvider {
     private let client: WordPressClient
 
     private let _dataStore: InMemoryUserDataStore = .init()
-    var dataStore: any UserDataStore {
-        _dataStore
-    }
+    var userDataStore: any UserDataStore { _dataStore }
 
     private var _currentUser: UserWithEditContext?
     private var currentUser: UserWithEditContext? {
@@ -32,10 +30,10 @@ actor UserService: UserServiceProtocol {
         var started = false
         for try await users in sequence {
             if !started {
-                try await dataStore.delete(query: .all)
+                try await _dataStore.delete(query: .all)
             }
 
-            try await dataStore.store(users.compactMap { DisplayUser(user: $0) })
+            try await _dataStore.store(users.compactMap { DisplayUser(user: $0) })
 
             started = true
         }
@@ -53,7 +51,7 @@ actor UserService: UserServiceProtocol {
 
         // Remove the deleted user from the cached users list.
         if result.deleted {
-            try await dataStore.delete(query: .id([id]))
+            try await _dataStore.delete(query: .id([id]))
         }
     }
 

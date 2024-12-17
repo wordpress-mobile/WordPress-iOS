@@ -18,6 +18,8 @@ DERIVED_DATA_PATH = File.join(PROJECT_ROOT_FOLDER, 'DerivedData')
 BUILD_PRODUCTS_PATH = File.join(PROJECT_ROOT_FOLDER, 'Artifacts')
 WORDPRESS_RELEASE_NOTES_PATH = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt')
 JETPACK_RELEASE_NOTES_PATH = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Jetpack', 'Resources', 'release_notes.txt')
+WORDPRESS_BETA_APP_DESCRIPTION_PATH = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'beta_app_description.txt')
+JETPACK_BETA_APP_DESCRIPTION_PATH = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Jetpack', 'Resources', 'beta_app_description.txt')
 
 # Env file paths to load
 ENV_FILE_NAME = '.wpios-env.default'
@@ -115,7 +117,7 @@ end
 
 def current_version_hotfix?
   # Read the current release version from the .xcconfig file and parse it into an AppVersion object
-  current_version = VERSION_FORMATTER.parse(VERSION_FILE.read_release_version)
+  current_version = VERSION_FORMATTER.parse(PUBLIC_VERSION_FILE.read_release_version)
   # Calculate and return whether the release version is a hotfix
   VERSION_CALCULATOR.release_is_hotfix?(version: current_version)
 end

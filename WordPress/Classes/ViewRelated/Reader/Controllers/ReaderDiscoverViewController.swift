@@ -14,6 +14,8 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
     private let tags: ManagedObjectsObserver<ReaderTagTopic>
     private let viewContext: NSManagedObjectContext
     private var cancellables: [AnyCancellable] = []
+    private let notificationsButtonViewModel = NotificationsButtonViewModel()
+    private var notificationsButtonCancellable: AnyCancellable?
 
     init(topic: ReaderAbstractTopic) {
         wpAssert(ReaderHelpers.topicIsDiscover(topic))
@@ -42,8 +44,29 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
         showSelectInterestsIfNeeded()
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        setupNotificationsBarButtonItem()
+    }
+
     private func setupNavigation() {
         navigationItem.largeTitleDisplayMode = .never
+        setupNotificationsBarButtonItem()
+    }
+
+    private func setupNotificationsBarButtonItem() {
+        notificationsButtonCancellable = nil
+        if traitCollection.horizontalSizeClass == .regular {
+            notificationsButtonCancellable = notificationsButtonViewModel.$image.sink { [weak self] in
+                guard let self else { return }
+                self.navigationItem.rightBarButtonItems = [UIBarButtonItem(image: $0, style: .plain, target: self, action: #selector(buttonShowNotificationsTapped))]
+            }
+        }
+    }
+
+    @objc private func buttonShowNotificationsTapped(_ sender: UIBarButtonItem) {
+        NotificationsViewController.showInPopover(from: self, sourceItem: sender)
     }
 
     private func setupHeaderView() {

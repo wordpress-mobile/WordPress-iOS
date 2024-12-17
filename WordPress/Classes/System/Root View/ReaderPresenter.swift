@@ -122,13 +122,17 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
                 if screen == .discover {
                     return ReaderDiscoverViewController(topic: topic)
                 } else {
-                    return ReaderStreamViewController.controllerWithTopic(topic)
+                    let streamVC = ReaderStreamViewController.controllerWithTopic(topic)
+                    streamVC.isNotificationsBarButtonEnabled = true
+                    return streamVC
                 }
             } else {
                 return makeErrorViewController() // This should never happen
             }
         case .saved:
-            return ReaderStreamViewController.controllerForContentType(.saved)
+            let streamVC = ReaderStreamViewController.controllerForContentType(.saved)
+            streamVC.isNotificationsBarButtonEnabled = true
+            return streamVC
         case .search:
             return ReaderSearchViewController()
         }
@@ -226,11 +230,9 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
         case .subscriptions:
             viewModel.selection = .allSubscriptions
         case let .post(postID, siteID, isFeed):
-            viewModel.selection = nil
-            show(ReaderDetailViewController.controllerWithPostID(NSNumber(value: postID), siteID: NSNumber(value: siteID), isFeed: isFeed))
+            push(ReaderDetailViewController.controllerWithPostID(NSNumber(value: postID), siteID: NSNumber(value: siteID), isFeed: isFeed))
         case let .postURL(url):
-            viewModel.selection = nil
-            show(ReaderDetailViewController.controllerWithPostURL(url))
+            push(ReaderDetailViewController.controllerWithPostURL(url))
         case let .topic(topic):
             viewModel.selection = nil
             show(ReaderStreamViewController.controllerWithTopic(topic))

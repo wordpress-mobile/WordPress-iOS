@@ -147,7 +147,7 @@ FeaturedImageViewControllerDelegate>
     // reachability callbacks to trigger before such initial setup completes.
     //
     [self setupReachability];
-    [self setupStandaloneEditor];
+    [self onViewDidLoad];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -160,6 +160,12 @@ FeaturedImageViewControllerDelegate>
     [self setupPublicizeConnections]; // Refresh in case the user disconnects from unsupported services.
     [self configureMetaSectionRows];
     [self reloadData];
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+
+    [self.tableView sizeToFitFooterView];
 }
 
 - (void)didReceiveMemoryWarning

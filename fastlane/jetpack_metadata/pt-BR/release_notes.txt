@@ -1,0 +1,5 @@
+Neste mês, nós:
+- Corrigimos algumas falhas no leitor, aprimoramos a pesquisa e melhoramos o carregamento de posts.
+- Permitimos a incorporação de mídia do TikTok no leitor.
+- Melhoramos a estabilidade no editor experimental. Aproveite!
+- Ajustamos o login no WordPress.com. Esperamos que assim fique mais fácil para os usuários começarem essa jornada.
