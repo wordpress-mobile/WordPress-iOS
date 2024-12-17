@@ -40,7 +40,7 @@ extension MediaPickerMenu {
     }
 
     /// ImagePlayground returns heic images that are not supported by many WordPress
-    /// sites. The only exporter that currentyl supports transcoding images is
+    /// sites. The only exporter that currently supports transcoding images is
     /// ``ItemProviderMediaExporter``, which is why we use it and which is why
     /// we fallback to "public.heic" (should never happen as these URLs have
     /// proper extensions).
