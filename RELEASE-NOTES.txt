@@ -13,6 +13,8 @@
 * [*] Fix minor appearance issues in the Blaze campaign list [#23891]
 * [*] Improve the sidebar animations and layout on some iPad models [#23886]
 * [*] Fix an issue with posts shown embedded in the notifications popover on iPad [#23889]
+* [*] The post cover now uses the standard aspect ratio for covers, so there is no jumping. There are also a few minor improvements to the layout and animations of the cover [#23897]
+* [*] Move the "Reading Preferences" button to the "More" menu [#23897]
 
 25.5
 -----
