@@ -1,107 +1,79 @@
 import AutomatticTracks
 import UIKit
-import Gridicons
 import WordPressShared
 import WordPressUI
 
-class PostCompactCell: UITableViewCell {
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var timestampLabel: UILabel!
-    @IBOutlet weak var badgesLabel: UILabel!
-    @IBOutlet weak var menuButton: UIButton!
-    @IBOutlet weak var featuredImageView: CachedAnimatedImageView!
-    @IBOutlet weak var headerStackView: UIStackView!
-    @IBOutlet weak var innerView: UIView!
-    @IBOutlet weak var contentStackView: UIStackView!
-    @IBOutlet weak var ghostView: UIView!
-    @IBOutlet weak var separator: UIView!
-
-    @IBOutlet weak var trailingContentConstraint: NSLayoutConstraint!
-
-    private var iPadReadableLeadingAnchor: NSLayoutConstraint?
-    private var iPadReadableTrailingAnchor: NSLayoutConstraint?
-
-    lazy var imageLoader: ImageLoader = {
-        return ImageLoader(imageView: featuredImageView, gifStrategy: .mediumGIFs)
-    }()
+final class PostCompactCell: UITableViewCell, Reusable {
+    private let titleLabel = UILabel()
+    private let detailsLabel = UILabel()
+    private let featuredImageView = AsyncImageView()
 
     private var post: Post? {
         didSet {
-            guard let post, post != oldValue else {
-                return
-            }
-
+            guard let post, post != oldValue else { return }
             viewModel = PostCardStatusViewModel(post: post)
         }
     }
 
     private var viewModel: PostCardStatusViewModel?
 
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        setupStyles()
+        setupLayout()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     func configure(with post: Post) {
         self.post = post
 
-        resetGhostStyles()
-        configureTitle()
-        configureDate()
-        configureStatus()
+        titleLabel.text = post.titleForDisplay()
+        detailsLabel.text = post.contentPreviewForDisplay()
         configureFeaturedImage()
-        configureMenuInteraction()
     }
 
-    @IBAction func more(_ sender: Any) {
-        // Do nothing. The compact cell is only shown in the dashboard, where the more button is hidden.
-    }
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        applyStyles()
-        setupReadableGuideForiPad()
-        setupSeparator()
-        setupAccessibility()
-    }
-
-    private func resetGhostStyles() {
-        toggleGhost(visible: false)
-        menuButton.layer.opacity = Constants.opacity
-    }
-
-    private func applyStyles() {
+    private func setupStyles() {
         WPStyleGuide.configureTableViewCell(self)
         WPStyleGuide.applyPostCardStyle(self)
-        WPStyleGuide.configureLabel(timestampLabel, textStyle: .subheadline)
-        WPStyleGuide.configureLabel(badgesLabel, textStyle: .subheadline)
 
-        titleLabel.font = AppStyleGuide.prominentFont(textStyle: .headline, weight: .bold)
+        titleLabel.font = .preferredFont(forTextStyle: .headline)
         titleLabel.adjustsFontForContentSizeCategory = true
-
         titleLabel.textColor = .label
-        timestampLabel.textColor = .secondaryLabel
-        menuButton.tintColor = .secondaryLabel
+        titleLabel.numberOfLines = 1
 
-        menuButton.setImage(.gridicon(.ellipsis), for: .normal)
+        detailsLabel.font = .preferredFont(forTextStyle: .subheadline)
+        detailsLabel.textColor = .secondaryLabel
+        detailsLabel.numberOfLines = 1
 
         featuredImageView.layer.cornerRadius = Constants.imageRadius
+        featuredImageView.layer.masksToBounds = true
 
-        innerView.backgroundColor = .secondarySystemGroupedBackground
-        backgroundColor = .secondarySystemGroupedBackground
-        contentView.backgroundColor = .secondarySystemGroupedBackground
+        contentView.backgroundColor = .systemBackground
     }
 
-    private func setupSeparator() {
-        WPStyleGuide.applyBorderStyle(separator)
-    }
+    private func setupLayout() {
+        let stackView = UIStackView(alignment: .top, spacing: 8, [
+            UIStackView(axis: .vertical, alignment: .leading, spacing: 2, [
+                titleLabel, detailsLabel
+            ]),
+            featuredImageView
+        ])
+        contentView.addSubview(stackView)
+        stackView.pinEdges(insets: UIEdgeInsets(horizontal: 16, vertical: 8))
 
-    private func setupReadableGuideForiPad() {
-        guard WPDeviceIdentification.isiPad() else { return }
-
-        iPadReadableLeadingAnchor = innerView.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor)
-        iPadReadableTrailingAnchor = innerView.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor)
-
-        iPadReadableLeadingAnchor?.isActive = true
-        iPadReadableTrailingAnchor?.isActive = true
+        NSLayoutConstraint.activate([
+            featuredImageView.widthAnchor.constraint(equalToConstant: Constants.imageSize.width),
+            featuredImageView.heightAnchor.constraint(equalToConstant: Constants.imageSize.height),
+        ])
     }
 
     private func configureFeaturedImage() {
+        featuredImageView.prepareForReuse()
+
         if let post, let url = post.featuredImageURL {
             featuredImageView.isHidden = false
 
@@ -110,108 +82,15 @@ class PostCompactCell: UITableViewCell {
                 WordPressAppDelegate.crashLogging?.logError(error)
             })
 
-            imageLoader.loadImage(with: url, from: host, preferredSize: CGSize(width: featuredImageView.frame.width, height: featuredImageView.frame.height))
+            let targetSize = Constants.imageSize.scaled(by: traitCollection.displayScale)
+            featuredImageView.setImage(with: url, host: host, size: targetSize)
         } else {
             featuredImageView.isHidden = true
         }
     }
 
-    private func configureTitle() {
-        titleLabel.text = post?.titleForDisplay()
-    }
-
-    private func configureDate() {
-        guard let post else {
-            return
-        }
-
-        timestampLabel.text = post.latest().dateStringForDisplay()
-        timestampLabel.isHidden = false
-    }
-
-    private func configureExcerpt() {
-        guard let post else {
-            return
-        }
-
-        timestampLabel.text = post.contentPreviewForDisplay()
-        timestampLabel.isHidden = false
-    }
-
-    private func configureStatus() {
-        guard let viewModel else {
-            return
-        }
-        badgesLabel.textColor = viewModel.statusColor
-        badgesLabel.text = viewModel.statusAndBadges(separatedBy: Constants.separator)
-        if badgesLabel.text?.isEmpty ?? true {
-            badgesLabel.isHidden = true
-        } else {
-            badgesLabel.isHidden = false
-        }
-    }
-
-    private func configureMenuInteraction() {
-        menuButton.isEnabled = true
-        menuButton.alpha = 1.0
-    }
-
-    private func setupAccessibility() {
-        menuButton.accessibilityLabel =
-            NSLocalizedString("More", comment: "Accessibility label for the More button in Post List (compact view).")
-    }
-
     private enum Constants {
-        static let separator = " · "
-        static let imageRadius: CGFloat = 2
-        static let opacity: Float = 1
-        static let margin: CGFloat = 16
-    }
-}
-
-extension PostCompactCell: GhostableView {
-    func ghostAnimationWillStart() {
-        toggleGhost(visible: true)
-        menuButton.layer.opacity = GhostConstants.opacity
-    }
-
-    private func toggleGhost(visible: Bool) {
-        isUserInteractionEnabled = !visible
-        menuButton.isGhostableDisabled = true
-        separator.isGhostableDisabled = true
-        ghostView.isHidden = !visible
-        ghostView.backgroundColor = .secondarySystemGroupedBackground
-        contentStackView.isHidden = visible
-    }
-
-    private enum GhostConstants {
-        static let opacity: Float = 0.5
-    }
-}
-
-extension PostCompactCell: NibReusable { }
-
-// MARK: - For display on the Posts Card (Dashboard)
-
-extension PostCompactCell {
-    /// Configure the cell to be displayed in the Posts Card
-    /// No "more" button and show a description, instead of a date
-    func configureForDashboard(with post: Post) {
-        configure(with: post)
-        separator.isHidden = true
-        menuButton.isHidden = true
-        trailingContentConstraint.constant = Constants.margin
-        headerStackView.spacing = Constants.margin
-
-        disableiPadReadableMargin()
-
-        if !post.isScheduled() {
-            configureExcerpt()
-        }
-    }
-
-    func disableiPadReadableMargin() {
-        iPadReadableLeadingAnchor?.isActive = false
-        iPadReadableTrailingAnchor?.isActive = false
+        static let imageRadius: CGFloat = 4
+        static let imageSize = CGSize(width: 40, height: 40)
     }
 }

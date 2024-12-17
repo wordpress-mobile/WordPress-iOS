@@ -3124,6 +3124,9 @@ Example: Reply to Pamela Nguyen */
 /* Error message displayed when site credentials aren't configured. */
 "Enter your server credentials" = "Enter your server credentials";
 
+/* A name of the ID field (it's a technical field, has to be short, displayed below everything else) */
+"entityMetadataFooterView.id" = "ID";
+
 /* Generic error alert title
    Generic error.
    Generic popup title for any type of error. */
@@ -7333,6 +7336,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "View in Browser";
 
+/* Reader post details view placeholder when blog name not avail */
+"reader.postDetails.blog" = "blog";
+
+/* Reader post details view */
+"reader.postDetails.viewModeDescription" = "The owner of this site only allows us to show a brief summary of their content. To view the full post, you'll have to visit their site.";
+
+/* Reader post details view */
+"reader.postDetails.viewMoreOn" = "Visit %@ for the full post";
+
 /* Name for the Candy color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.candy" = "Candy";
 
@@ -8592,6 +8604,9 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Accessibility hint for actions when displaying media items. */
 "siteMedia.cellAccessibilityHint" = "Select media.";
 
+/* Title for the URL field */
+"siteMedia.details.url" = "URL";
+
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityHint" = "Tap to view media in full screen";
 
@@ -8764,8 +8779,7 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Title shown on the dashboard when it fails to load */
 "Some data wasn't loaded" = "Some data wasn't loaded";
 
-/* A generic error message
-   Title for a label that appears when the scan failed
+/* Title for a label that appears when the scan failed
    Title for the error view when the scan start has failed */
 "Something went wrong" = "Something went wrong";
 
