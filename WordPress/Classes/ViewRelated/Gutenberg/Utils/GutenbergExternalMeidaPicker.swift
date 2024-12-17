@@ -103,23 +103,9 @@ extension GutenbergExternalMediaPicker: ExternalMediaPickerViewDelegate {
 extension GutenbergExternalMediaPicker: ImagePlaygroundPickerDelegate {
     func imagePlaygroundViewController(_ viewController: UIViewController, didCreateImageAt imageURL: URL) {
         if let callback = mediaPickerCallback {
-            mediaInserter.insertFromDevice([makeItemProvider(with: imageURL)], callback: callback)
+            let itemProvider = MediaPickerMenu.makeItemProvider(with: imageURL)
+            mediaInserter.insertFromDevice([itemProvider], callback: callback)
         }
         viewController.presentingViewController?.dismiss(animated: true)
-    }
-
-    /// ImagePlayground returns heic images that are not supported by many WordPress
-    /// sites. The only exporter that currentyl supports transcoding images is
-    /// ``ItemProviderMediaExporter``, which is why we use it and which is why
-    /// we fallback to "public.heic" (should never happen as these URLs have
-    /// proper extensions).
-    private func makeItemProvider(with imageURL: URL) -> NSItemProvider {
-        let provider = NSItemProvider()
-        let typeIdentifier = imageURL.typeIdentifier ?? "public.heic"
-        provider.registerFileRepresentation(forTypeIdentifier: typeIdentifier, visibility: .all) { completion in
-            completion(imageURL, false, nil)
-            return nil
-        }
-        return provider
     }
 }

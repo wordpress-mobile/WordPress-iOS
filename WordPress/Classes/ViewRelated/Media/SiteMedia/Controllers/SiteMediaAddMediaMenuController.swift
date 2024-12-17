@@ -2,7 +2,7 @@ import UIKit
 import Photos
 import PhotosUI
 
-final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDelegate, ImagePickerControllerDelegate, ExternalMediaPickerViewDelegate, UIDocumentPickerDelegate {
+final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDelegate, ImagePickerControllerDelegate, ExternalMediaPickerViewDelegate, UIDocumentPickerDelegate, ImagePlaygroundPickerDelegate {
     let blog: Blog
     let coordinator: MediaCoordinator
 
@@ -19,6 +19,7 @@ final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDel
             ]),
             UIMenu(options: [.displayInline], children: [
                 menu.makeCameraAction(delegate: self),
+                menu.makeImagePlaygroundAction(delegate: self),
                 makeDocumentPickerAction(from: viewController)
             ])
         ]
@@ -57,6 +58,18 @@ final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDel
             let info = MediaAnalyticsInfo(origin: .mediaLibrary(.deviceLibrary), selectionMethod: .fullScreenPicker)
             coordinator.addMedia(from: result.itemProvider, to: blog, analyticsInfo: info)
         }
+    }
+
+    // MARK: - ImagePlaygroundPickerDelegate
+
+    func imagePlaygroundViewController(_ viewController: UIViewController, didCreateImageAt imageURL: URL) {
+        viewController.presentingViewController?.dismiss(animated: true)
+
+        coordinator.addMedia(
+            from: MediaPickerMenu.makeItemProvider(with: imageURL),
+            to: blog,
+            analyticsInfo: MediaAnalyticsInfo(origin: .mediaLibrary(.imagePlayground), selectionMethod: .fullScreenPicker)
+        )
     }
 
     // MARK: - ImagePickerControllerDelegate

@@ -39,6 +39,21 @@ extension MediaPickerMenu {
         presentingViewController.present(imagePlaygroundVC, animated: true)
     }
 
+    /// ImagePlayground returns heic images that are not supported by many WordPress
+    /// sites. The only exporter that currentyl supports transcoding images is
+    /// ``ItemProviderMediaExporter``, which is why we use it and which is why
+    /// we fallback to "public.heic" (should never happen as these URLs have
+    /// proper extensions).
+    static func makeItemProvider(with imageURL: URL) -> NSItemProvider {
+        let provider = NSItemProvider()
+        let typeIdentifier = imageURL.typeIdentifier ?? "public.heic"
+        provider.registerFileRepresentation(forTypeIdentifier: typeIdentifier, visibility: .all) { completion in
+            completion(imageURL, false, nil)
+            return nil
+        }
+        return provider
+    }
+
     private static var strongDelegateKey: UInt8 = 0
 }
 
