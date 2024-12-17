@@ -1,16 +1,10 @@
 25.7
 -----
+
+25.6
+-----
 * [**] Enhance the Gravatar Quick Editor by adding features that allow users to delete and share their avatars. [#23868]
 * [**] Add the capability to create an avatar using Apple Image Playground through the Gravatar Quick Editor. [#23868]
-
-
-25.6
------
-
-
-25.6
------
-* [*] [internal] Update Gravatar SDK to 3.0.0 [#23701]
 * [*] Use the Gravatar Quick Editor to update the avatar [#23729]
 * [*] (Hidden under a feature flag) User Management for self-hosted sites. [#23768]
 * [*] Add URL and ID to the Media details screen, add IDs for posts [#23887]
@@ -25,6 +19,7 @@
 * [***] Use web-based sign-in flow (hidden under a feature flag) [#23675]
 * [*] Enable navigating to an individual post's stats from within the "view more" screen for author stats. [#23761]
 * [*] [Jetpack-only] Enable pubishing to non-Jetpack sites when sharing content to the Jetpack app. [#23778]
+* [*] Use the Gravatar Quick Editor to update the avatar [#23729]
 
 25.4
 -----
