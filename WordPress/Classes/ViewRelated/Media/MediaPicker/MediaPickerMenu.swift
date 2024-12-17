@@ -2,7 +2,6 @@ import UIKit
 import PhotosUI
 import UniformTypeIdentifiers
 import AVFoundation
-import ImagePlayground
 
 /// A convenience API for creating actions for picking media from different
 /// source supported by the app: Photos library, Camera, Media library.
@@ -266,16 +265,7 @@ extension MediaPickerMenu {
     }
 }
 
-// MARK: - MediaPickerMenu (ImagePlayground)
-
-extension MediaPickerMenu {
-    static var isImagePlaygroundAvailable: Bool {
-        guard #available(iOS 18.1, *) else {
-            return false
-        }
-        return ImagePlaygroundViewController.isAvailable
-    }
-}
+// MARK: - Helpers
 
 extension MediaPickerMenu.MediaFilter {
     init?(_ mediaType: WPMediaType) {
