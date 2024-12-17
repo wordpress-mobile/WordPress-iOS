@@ -26,6 +26,7 @@ extension HomeSiteHeaderViewController {
         var actions = [
             mediaMenu.makePhotosAction(delegate: presenter),
             mediaMenu.makeCameraAction(delegate: presenter),
+            mediaMenu.makeImagePlaygroundAction(delegate: presenter),
             mediaMenu.makeSiteMediaAction(blog: blog, delegate: presenter)
         ]
         if FeatureFlag.siteIconCreator.enabled {

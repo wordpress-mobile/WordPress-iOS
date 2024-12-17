@@ -158,3 +158,14 @@ extension SiteIconPickerPresenter: SiteMediaPickerViewControllerDelegate {
         }
     }
 }
+
+extension SiteIconPickerPresenter: ImagePlaygroundPickerDelegate {
+    func imagePlaygroundViewController(_ picker: UIViewController, didCreateImageAt imageURL: URL) {
+        if let data = try? Data(contentsOf: imageURL), let image = UIImage(data: data) {
+            showImageCropViewController(image, presentingViewController: picker)
+        } else {
+            DDLogError("Failed to load image created by ImagePlayground")
+            showErrorLoadingImageMessage()
+        }
+    }
+}
