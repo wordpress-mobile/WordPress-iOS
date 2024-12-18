@@ -83,7 +83,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     private let featuredImage: ReaderDetailFeaturedImageView = .loadFromNib()
 
     /// The actual header
-    private lazy var header: ReaderDetailNewHeaderViewHost = {
+    private lazy var header: ReaderDetailHeaderHostingView = {
         return .init()
     }()
 
