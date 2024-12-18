@@ -118,11 +118,19 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         guard let post else {
             return
         }
-
         if !post.isLiked {
+            likeButton.setTitle(Constants.likedButtonTitle, for: [])
+            likeButton.isSelected = true
             UINotificationFeedbackGenerator().notificationOccurred(.success)
+            likeButton.imageView?.fadeInWithRotationAnimation { _ in
+                self.toggleLike()
+            }
+        } else {
+            toggleLike()
         }
+    }
 
+    private func toggleLike() {
         let service = ReaderPostService(coreDataStack: ContextManager.shared)
         service.toggleLiked(for: post, success: { [weak self] in
             if let notificationID = self?.delegate?.notificationID {
@@ -240,15 +248,13 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         likeButton.isEnabled = (ReaderHelpers.isLoggedIn() || likeCount > 0) && !post.isExternal
         likeButton.accessibilityHint = selected ? Constants.likedButtonHint : Constants.likeButtonHint
 
-        configureActionButton(likeButton,
-                              title: likeButtonTitle,
-                              image: WPStyleGuide.ReaderDetail.likeToolbarIcon,
-                              highlightedImage: WPStyleGuide.ReaderDetail.likeSelectedToolbarIcon,
-                              selected: selected)
-
-        if animated {
-            playLikeButtonAnimation()
-        }
+        configureActionButton(
+            likeButton,
+            title: likeButtonTitle,
+            image: WPStyleGuide.ReaderDetail.likeToolbarIcon,
+            highlightedImage: WPStyleGuide.ReaderDetail.likeSelectedToolbarIcon,
+            selected: selected
+        )
     }
 
     /// Uses the configuration in WPStyleGuide for the reblog button
@@ -262,75 +268,6 @@ class ReaderDetailToolbar: UIView, NibLoadable {
 
         configureActionButtonStyle(reblogButton)
         prepareReblogForVoiceOver()
-    }
-
-    private func playLikeButtonAnimation() {
-        guard let likeImageView = likeButton.imageView else {
-            return
-        }
-
-        let animationDuration = 0.3
-        let imageView = UIImageView(image: WPStyleGuide.ReaderDetail.likeSelectedToolbarIcon)
-
-        /// When using `UIButton.Configuration`, calling `bringSubviewToFront` somehow does not work.
-        /// To work around this, let's add the faux image to the image view instead, so it can be
-        /// properly placed in front of the masking view.
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        likeImageView.addSubview(imageView)
-        likeImageView.pinSubviewAtCenter(imageView)
-
-        if likeButton.isSelected {
-            // Prep a mask to hide the likeButton's image, since changes to visibility and alpha are ignored
-            let mask = UIView(frame: frame)
-            mask.backgroundColor = backgroundColor
-            likeImageView.addSubview(mask)
-            likeImageView.pinSubviewToAllEdges(mask)
-            mask.translatesAutoresizingMaskIntoConstraints = false
-            likeImageView.bringSubviewToFront(imageView)
-
-            // Configure starting state
-            imageView.alpha = 0.0
-            let angle = (-270.0 * CGFloat.pi) / 180.0
-            let rotate = CGAffineTransform(rotationAngle: angle)
-            let scale = CGAffineTransform(scaleX: 3.0, y: 3.0)
-            imageView.transform = rotate.concatenating(scale)
-
-            // Perform the animations
-            UIView.animate(withDuration: animationDuration,
-                animations: { () in
-                    let angle = (1.0 * CGFloat.pi) / 180.0
-                    let rotate = CGAffineTransform(rotationAngle: angle)
-                    let scale = CGAffineTransform(scaleX: 0.75, y: 0.75)
-                    imageView.transform = rotate.concatenating(scale)
-                    imageView.alpha = 1.0
-                    imageView.center = likeImageView.center // In case the button's imageView shifted position
-                },
-                completion: { (_) in
-                    UIView.animate(withDuration: animationDuration,
-                        animations: { () in
-                            imageView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-                        },
-                        completion: { (_) in
-                            mask.removeFromSuperview()
-                            imageView.removeFromSuperview()
-                    })
-            })
-
-        } else {
-
-            UIView .animate(withDuration: animationDuration,
-                animations: { () -> Void in
-                    let angle = (120.0 * CGFloat.pi) / 180.0
-                    let rotate = CGAffineTransform(rotationAngle: angle)
-                    let scale = CGAffineTransform(scaleX: 3.0, y: 3.0)
-                    imageView.transform = rotate.concatenating(scale)
-                    imageView.alpha = 0
-                },
-                completion: { (_) in
-                    imageView.removeFromSuperview()
-            })
-
-        }
     }
 
     private func configureCommentActionButton() {

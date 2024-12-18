@@ -91,7 +91,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     private let toolbar: ReaderDetailToolbar = .loadFromNib()
 
     /// Likes summary view
-     private let likesSummary: ReaderDetailLikesView = .loadFromNib()
+    private let likesSummary: ReaderDetailLikesView = .loadFromNib()
 
     /// A view that fills the bottom portion outside of the safe area
     @IBOutlet weak var toolbarSafeAreaView: UIView!
