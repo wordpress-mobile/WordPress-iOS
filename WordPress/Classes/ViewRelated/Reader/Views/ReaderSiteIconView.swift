@@ -1,4 +1,5 @@
 import SwiftUI
+import WordPressMedia
 
 struct ReaderSiteIconView: View, Hashable {
     let site: ReaderSiteTopic

@@ -1,4 +1,5 @@
 import Foundation
+import WordPressMedia
 
 final class ReaderPostCellViewModel {
     // Header

@@ -1,8 +1,8 @@
 import UIKit
 
-// Fetches URLs for favicons for sites.
-actor FaviconService {
-    static let shared = FaviconService()
+/// Fetches URLs for favicons for sites.
+public actor FaviconService {
+    public static let shared = FaviconService()
 
     private nonisolated let cache = FaviconCache()
 
@@ -14,12 +14,12 @@ actor FaviconService {
 
     private var tasks: [URL: FaviconTask] = [:]
 
-    nonisolated func cachedFavicon(forURL siteURL: URL) -> URL? {
+    nonisolated public func cachedFavicon(forURL siteURL: URL) -> URL? {
         cache.cachedFavicon(forURL: siteURL)
     }
 
     /// Returns a favicon URL for the given site.
-    func favicon(forURL siteURL: URL) async throws -> URL {
+    public func favicon(forURL siteURL: URL) async throws -> URL {
         if let faviconURL = cache.cachedFavicon(forURL: siteURL) {
             return faviconURL
         }
@@ -57,7 +57,7 @@ actor FaviconService {
     }
 }
 
-enum FaviconError: Error {
+public enum FaviconError: Error, Sendable {
     case unacceptableStatusCode(_ code: Int)
 }
 
@@ -105,7 +105,7 @@ private final class FaviconTask {
     var isCancelled = false
     var task: Task<URL, Error>
 
-    init(_ closure: @escaping () async throws -> URL) {
+    init(_ closure: @escaping @Sendable () async throws -> URL) {
         self.task = Task { try await closure() }
     }
 }
