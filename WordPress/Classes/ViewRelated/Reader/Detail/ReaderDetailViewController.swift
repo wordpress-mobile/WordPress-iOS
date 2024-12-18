@@ -66,6 +66,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Wrapper for the toolbar
     @IBOutlet weak var toolbarContainerView: UIView!
 
+    private lazy var toolbarHidingConstraint = toolbarContainerView.heightAnchor.constraint(equalToConstant: 0)
+
     /// Wrapper for the Likes summary view
     @IBOutlet weak var likesContainerView: UIView!
 
@@ -74,8 +76,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     /// Attribution view for Discovery posts
     @IBOutlet weak var attributionView: ReaderCardDiscoverAttributionView!
-
-    @IBOutlet weak var toolbarHeightConstraint: NSLayoutConstraint!
 
     private let activityIndicator = UIActivityIndicatorView(style: .medium)
 
@@ -89,6 +89,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     /// Bottom toolbar
     private let toolbar: ReaderDetailToolbar = .loadFromNib()
+    private var isToolbarHidden = false
+    private var lastContentOffset: CGFloat = 0
 
     /// Likes summary view
     private let likesSummary: ReaderDetailLikesView = .loadFromNib()
@@ -504,6 +506,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     /// Configure the webview
     private func configureWebView() {
+        scrollView.delegate = self
+
         webView.navigationDelegate = self
     }
 
@@ -657,12 +661,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         }
         toolbar.delegate = coordinator
         toolbarContainerView.addSubview(toolbar)
-        toolbarContainerView.translatesAutoresizingMaskIntoConstraints = false
 
-        toolbarContainerView.pinSubviewToAllEdges(toolbar)
-        toolbarSafeAreaView.backgroundColor = toolbar.backgroundColor
-
-        toolbarHeightConstraint.constant = Constants.preferredToolbarHeight
+        // Unfortunately, this doesn't support self-sizing and dynamic type
+        toolbar.heightAnchor.constraint(equalToConstant: 58).isActive = true
+        toolbar.pinEdges([.top, .horizontal])
+        toolbar.pinEdges(.bottom, to: view.safeAreaLayoutGuide, priority: .init(749)) // Break on hiding
     }
 
     private func configureDiscoverAttribution(_ post: ReaderPost) {
@@ -814,7 +817,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     private enum Constants {
         static let margin: CGFloat = UIDevice.isPad() ? 0 : 8
-        static let preferredToolbarHeight: CGFloat = 58.0
     }
 
     // MARK: - Managed object observer
@@ -838,6 +840,34 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         if updated.contains(post) || refreshed.contains(post) {
             header.configure(for: post)
+        }
+    }
+}
+
+extension ReaderDetailViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard traitCollection.horizontalSizeClass == .compact else { return }
+
+        let currentOffset = scrollView.contentOffset.y
+        // Using `safeAreaLayoutGuide.layoutFrame.height` because it doesn't
+        // change when we extend the scroll view size by hiding the toolbar
+        if (currentOffset + view.safeAreaLayoutGuide.layoutFrame.height) > likesContainerView.frame.minY {
+            setToolbarHidden(false, animated: true) // Reached bottom (controls, comments, etc)
+        } else if currentOffset > lastContentOffset && currentOffset > 0 {
+            setToolbarHidden(true, animated: true) // Scrolling down
+        } else if currentOffset < lastContentOffset {
+            setToolbarHidden(false, animated: false) // Scrolling up
+        }
+        lastContentOffset = currentOffset
+    }
+
+    private func setToolbarHidden(_ isHidden: Bool, animated: Bool) {
+        guard isToolbarHidden != isHidden else { return }
+        self.isToolbarHidden = isHidden
+
+        UIView.animate(withDuration: 0.33, delay: 0.0, options: [.beginFromCurrentState, .allowUserInteraction]) {
+            self.toolbarHidingConstraint.isActive = isHidden
+            self.view.layoutIfNeeded()
         }
     }
 }

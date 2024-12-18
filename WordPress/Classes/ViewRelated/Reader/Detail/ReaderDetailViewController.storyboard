@@ -18,14 +18,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9JA-VQ-zzw">
-                                <rect key="frame" x="0.0" y="48" width="414" height="764"/>
+                                <rect key="frame" x="0.0" y="48" width="414" height="790"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xyq-y6-zPR">
-                                        <rect key="frame" x="0.0" y="0.0" width="446" height="218.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="446" height="244.5"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
                                     <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iSu-TI-yew" customClass="ReaderWebView" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="16" y="234.5" width="414" height="0.0"/>
+                                        <rect key="frame" x="16" y="260.5" width="414" height="0.0"/>
                                         <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="414" placeholder="YES" id="akw-kl-dl7"/>
@@ -38,13 +38,13 @@
                                         </wkWebViewConfiguration>
                                     </wkWebView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qXQ-id-Ffz" userLabel="Likes Container View">
-                                        <rect key="frame" x="16" y="234.5" width="414" height="0.0"/>
+                                        <rect key="frame" x="16" y="260.5" width="414" height="0.0"/>
                                         <constraints>
                                             <constraint firstAttribute="height" placeholder="YES" id="C8J-Hu-daf"/>
                                         </constraints>
                                     </view>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="6yS-ZE-nbR" customClass="IntrinsicTableView" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="16" y="234.5" width="414" height="0.0"/>
+                                        <rect key="frame" x="16" y="260.5" width="414" height="0.0"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" placeholder="YES" id="hNK-J4-GC2"/>
@@ -52,14 +52,14 @@
                                         <sections/>
                                     </tableView>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="CpT-U7-bfv" customClass="IntrinsicTableView" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="16" y="234.5" width="414" height="0.0"/>
+                                        <rect key="frame" x="16" y="260.5" width="414" height="0.0"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" placeholder="YES" id="tci-Li-Egi"/>
                                         </constraints>
                                     </tableView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="O4e-BA-8jp">
-                                        <rect key="frame" x="16" y="234.5" width="414" height="20.5"/>
+                                        <rect key="frame" x="16" y="260.5" width="414" height="20.5"/>
                                         <subviews>
                                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ewc-f7-89P" customClass="ReaderCardDiscoverAttributionView" customModule="WordPress">
                                                 <rect key="frame" x="0.0" y="0.0" width="414" height="20.5"/>
@@ -126,29 +126,21 @@
                                 </connections>
                             </scrollView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qzd-gm-oIu">
-                                <rect key="frame" x="0.0" y="812" width="414" height="50"/>
+                                <rect key="frame" x="0.0" y="838" width="414" height="58"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="jvh-iQ-g9a"/>
+                                    <constraint firstAttribute="height" constant="58" placeholder="YES" id="jvh-iQ-g9a"/>
                                 </constraints>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ERb-e0-U8L">
-                                <rect key="frame" x="0.0" y="862" width="414" height="34"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Tqp-x3-yXv"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="ERb-e0-U8L" firstAttribute="top" secondItem="Qzd-gm-oIu" secondAttribute="bottom" id="AWw-Um-NsT"/>
                             <constraint firstItem="Qzd-gm-oIu" firstAttribute="top" secondItem="9JA-VQ-zzw" secondAttribute="bottom" id="BHA-14-Hde"/>
-                            <constraint firstItem="ERb-e0-U8L" firstAttribute="width" secondItem="Qzd-gm-oIu" secondAttribute="width" id="D8P-Xt-kyR"/>
                             <constraint firstItem="9JA-VQ-zzw" firstAttribute="top" secondItem="Tqp-x3-yXv" secondAttribute="top" id="JMy-49-ddC"/>
                             <constraint firstItem="9JA-VQ-zzw" firstAttribute="leading" secondItem="Tqp-x3-yXv" secondAttribute="leading" id="KOc-Yv-UWy"/>
                             <constraint firstItem="Qzd-gm-oIu" firstAttribute="leading" secondItem="Tqp-x3-yXv" secondAttribute="leading" id="PNw-Cb-AvC"/>
-                            <constraint firstAttribute="bottom" secondItem="ERb-e0-U8L" secondAttribute="bottom" id="fPU-nx-gzV"/>
-                            <constraint firstItem="ERb-e0-U8L" firstAttribute="centerX" secondItem="Qzd-gm-oIu" secondAttribute="centerX" id="kuZ-bk-VtY"/>
-                            <constraint firstItem="Tqp-x3-yXv" firstAttribute="bottom" secondItem="Qzd-gm-oIu" secondAttribute="bottom" id="p2r-l3-0Mh"/>
+                            <constraint firstAttribute="bottom" secondItem="Qzd-gm-oIu" secondAttribute="bottom" id="p2r-l3-0Mh"/>
                             <constraint firstItem="Tqp-x3-yXv" firstAttribute="trailing" secondItem="9JA-VQ-zzw" secondAttribute="trailing" id="u3i-rm-kZv"/>
                             <constraint firstItem="Tqp-x3-yXv" firstAttribute="trailing" secondItem="Qzd-gm-oIu" secondAttribute="trailing" id="zR2-IL-BwU"/>
                         </constraints>
@@ -162,8 +154,6 @@
                         <outlet property="relatedPostsTableView" destination="CpT-U7-bfv" id="Ndh-H4-FlR"/>
                         <outlet property="scrollView" destination="9JA-VQ-zzw" id="lCO-o1-bLB"/>
                         <outlet property="toolbarContainerView" destination="Qzd-gm-oIu" id="Esk-Iq-Wbd"/>
-                        <outlet property="toolbarHeightConstraint" destination="jvh-iQ-g9a" id="y6Q-1h-IBP"/>
-                        <outlet property="toolbarSafeAreaView" destination="ERb-e0-U8L" id="sVN-sI-9e5"/>
                         <outlet property="webView" destination="iSu-TI-yew" id="DQy-Fd-C3y"/>
                         <outlet property="webViewHeight" destination="ywz-kG-xyW" id="q3p-wI-yeb"/>
                     </connections>
