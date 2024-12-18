@@ -197,13 +197,8 @@ import AutomatticTracks
         didSet {
             oldValue?.removeFromSuperview()
             if let emptyStateView {
-                view.addSubview(emptyStateView)
-                emptyStateView.pinEdges(.horizontal, to: view.safeAreaLayoutGuide)
-                NSLayoutConstraint.activate([
-                    emptyStateView.topAnchor.constraint(equalTo: tableView.tableHeaderView?.bottomAnchor ?? view.safeAreaLayoutGuide.topAnchor),
-                    emptyStateView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-                ])
-
+                tableView.addSubview(emptyStateView)
+                layoutEmptyStateView()
                 footerView.isHidden = true
                 hideGhost()
             }
@@ -352,6 +347,8 @@ import AutomatticTracks
         if didSetupView {
             tableView.sizeToFitHeaderView()
         }
+
+        layoutEmptyStateView()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -359,6 +356,28 @@ import AutomatticTracks
 
         isCompact = traitCollection.horizontalSizeClass == .compact
         setupNotificationsBarButtonItem()
+    }
+
+    private func layoutEmptyStateView() {
+        guard let emptyStateView else { return }
+
+        // Calculate visible part of the table view in `self.view` coordinates
+        let y: CGFloat = {
+            if let headerView = tableView.tableHeaderView {
+                return headerView.convert(headerView.frame, to: view).maxY
+            } else {
+                return view.safeAreaInsets.top
+            }
+        }()
+
+        // And convert it to the `tableView` coordinate space since that's where
+        // `emptyStateView` belongs.
+        emptyStateView.frame = tableView.convert(CGRect(
+            x: 0,
+            y: y,
+            width: view.bounds.width,
+            height: view.bounds.height - y - view.safeAreaInsets.bottom
+        ), from: view)
     }
 
     private func didChangeIsCompact(_ isCompact: Bool) {
@@ -1599,6 +1618,7 @@ extension ReaderStreamViewController: UIViewControllerTransitioningDelegate {
 
 extension ReaderStreamViewController: UITableViewDelegate, JPScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        layoutEmptyStateView()
         processJetpackBannerVisibility(scrollView)
         $titleView.value?.updateAlpha(in: scrollView)
     }
