@@ -11,7 +11,6 @@ enum FeatureFlag: Int, CaseIterable {
     case googleDomainsCard
     case voiceToContent
     case authenticateUsingApplicationPassword
-    case tipKit
     case newGutenberg
     case newGutenbergThemeStyles
     case newGutenbergPlugins
@@ -42,8 +41,6 @@ enum FeatureFlag: Int, CaseIterable {
             return AppConfiguration.isJetpack && BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .authenticateUsingApplicationPassword:
             return false
-        case .tipKit:
-            return true
         case .newGutenberg:
             return false
         case .newGutenbergThemeStyles:
@@ -83,7 +80,6 @@ extension FeatureFlag {
         case .googleDomainsCard: "Google Domains Promotional Card"
         case .voiceToContent: "Voice to Content"
         case .authenticateUsingApplicationPassword: "Application Passwords for self-hosted sites"
-        case .tipKit: "TipKit"
         case .newGutenberg: "Experimental Block Editor"
         case .newGutenbergThemeStyles: "Experimental Block Editor Styles"
         case .newGutenbergPlugins: "Experimental Block Editor Plugins"

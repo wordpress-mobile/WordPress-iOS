@@ -5,7 +5,7 @@ import Combine
 
 enum AppTips {
     static func initialize() {
-        guard Feature.enabled(.tipKit), #available(iOS 17, *) else { return }
+        guard #available(iOS 17, *) else { return }
         do {
             try Tips.configure()
         } catch {
@@ -65,9 +65,6 @@ extension UIViewController {
         arrowDirection: UIPopoverArrowDirection? = nil,
         actionHandler: ((Tips.Action) -> Void)? = nil
     ) -> TipObserver? {
-        guard Feature.enabled(.tipKit) else {
-            return nil
-        }
         let task = Task { @MainActor [weak self] in
             for await shouldDisplay in tip.shouldDisplayUpdates {
                 if shouldDisplay {
