@@ -1,7 +1,6 @@
-
+import UIKit
 import MobileCoreServices
 import UniformTypeIdentifiers
-import Gridicons
 
 // MARK: - Functionality related to sharing a blog via the reader.
 
@@ -16,15 +15,21 @@ extension ReaderStreamViewController {
             removeShareButton()
             return
         }
+        let button = UIBarButtonItem(title: nil, image: UIImage(systemName: "square.and.arrow.up"), target: self, action: #selector(shareButtonTapped))
+        button.tag = NavigationItemTag.share.rawValue
+        button.accessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
+        addRightBarButtonItem(button)
+    }
 
-        let image = UIImage.gridicon(.shareiOS).withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height))
-        button.setImage(image, for: .normal)
-        button.addTarget(self, action: #selector(shareButtonTapped(_:)), for: .touchUpInside)
-
-        let shareButton = UIBarButtonItem(customView: button)
-        shareButton.accessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
-        navigationItem.rightBarButtonItem = shareButton
+    func addRightBarButtonItem(_ item: UIBarButtonItem, after afterTag: NavigationItemTag? = nil) {
+        var items = self.navigationItem.rightBarButtonItems ?? []
+        guard !items.contains(where: { $0.tag == item.tag }) else { return }
+        if let afterTag, let index = items.firstIndex(where: { $0.tag == afterTag.rawValue }) {
+            items.insert(item, at: index)
+        } else {
+            items.append(item)
+        }
+        self.navigationItem.rightBarButtonItems = items
     }
 
     // MARK: Private behavior
@@ -33,7 +38,7 @@ extension ReaderStreamViewController {
         navigationItem.rightBarButtonItem = nil
     }
 
-    @objc private func shareButtonTapped(_ sender: UIButton) {
+    @objc private func shareButtonTapped(_ sender: UIBarButtonItem) {
         guard let sitePendingPost = readerTopic as? ReaderSiteTopic else {
             return
         }
@@ -54,8 +59,7 @@ extension ReaderStreamViewController {
 
         if let presentationController = activityViewController.popoverPresentationController {
             presentationController.permittedArrowDirections = .any
-            presentationController.sourceView = sender
-            presentationController.sourceRect = sender.bounds
+            presentationController.sourceItem = sender
         }
 
         present(activityViewController, animated: true)

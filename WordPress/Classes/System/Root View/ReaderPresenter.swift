@@ -122,17 +122,13 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
                 if screen == .discover {
                     return ReaderDiscoverViewController(topic: topic)
                 } else {
-                    let streamVC = ReaderStreamViewController.controllerWithTopic(topic)
-                    streamVC.isNotificationsBarButtonEnabled = true
-                    return streamVC
+                    return ReaderStreamViewController.controllerWithTopic(topic)
                 }
             } else {
                 return makeErrorViewController() // This should never happen
             }
         case .saved:
-            let streamVC = ReaderStreamViewController.controllerForContentType(.saved)
-            streamVC.isNotificationsBarButtonEnabled = true
-            return streamVC
+            return ReaderStreamViewController.controllerForContentType(.saved)
         case .search:
             return ReaderSearchViewController()
         }
@@ -186,6 +182,8 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
     /// column (split view) or pushing to the navigation stack.
     private func show(_ viewController: UIViewController, isLargeTitle: Bool = false) {
         if let splitViewController {
+            (viewController as? ReaderStreamViewController)?.isNotificationsBarButtonEnabled = true
+
             let navigationVC = UINavigationController(rootViewController: viewController)
             if isLargeTitle {
                 navigationVC.navigationBar.prefersLargeTitles = true

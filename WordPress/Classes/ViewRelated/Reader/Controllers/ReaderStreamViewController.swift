@@ -88,6 +88,11 @@ import AutomatticTracks
     /// Configuration of cells
     private let cellConfiguration = ReaderCellConfiguration()
 
+    enum NavigationItemTag: Int {
+        case notifications
+        case share
+    }
+
     private var siteID: NSNumber? {
         didSet {
             if siteID != nil {
@@ -366,7 +371,9 @@ import AutomatticTracks
         if isNotificationsBarButtonEnabled && traitCollection.horizontalSizeClass == .regular {
             notificationsButtonCancellable = notificationsButtonViewModel.$image.sink { [weak self] in
                 guard let self else { return }
-                self.navigationItem.rightBarButtonItems = [UIBarButtonItem(image: $0, style: .plain, target: self, action: #selector(buttonShowNotificationsTapped))]
+                let button = UIBarButtonItem(image: $0, style: .plain, target: self, action: #selector(buttonShowNotificationsTapped))
+                button.tag = NavigationItemTag.notifications.rawValue
+                addRightBarButtonItem(button, after: .share)
             }
         }
     }
