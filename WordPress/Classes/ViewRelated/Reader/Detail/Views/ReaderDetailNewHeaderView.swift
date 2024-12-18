@@ -283,20 +283,7 @@ struct ReaderDetailNewHeaderView: View {
     }
 
     var headerRow: some View {
-        HStack(spacing: 8.0) {
-            authorStack
-            Spacer()
-            ReaderFollowButton(isFollowing: viewModel.isFollowingSite,
-                               isEnabled: viewModel.isFollowButtonInteractive,
-                               size: .compact,
-                               displaySetting: viewModel.displaySetting) {
-                viewModel.didTapFollowButton()
-            }
-        }
-    }
-
-    var authorStack: some View {
-        HStack(spacing: 8.0) {
+        HStack(alignment: .top, spacing: 12) {
             if let siteIconURL = viewModel.siteIconURL,
                let avatarURL = viewModel.authorAvatarURL {
                 avatarView(with: siteIconURL, avatarURL: avatarURL)
@@ -307,6 +294,13 @@ struct ReaderDetailNewHeaderView: View {
                     .foregroundStyle(Color(primaryTextColor))
                     .lineLimit(1)
                 authorAndTimestampView
+                if !viewModel.isFollowingSite || !viewModel.isFollowButtonInteractive {
+                    Button(WPStyleGuide.FollowButton.Text.followStringForDisplay) {
+                        viewModel.didTapFollowButton()
+                    }
+                    .font(.footnote)
+                    .disabled(!viewModel.isFollowButtonInteractive)
+                }
             }
         }
         .accessibilityElement(children: .combine)
