@@ -320,7 +320,7 @@ struct ReaderDetailNewHeaderView: View {
     @ViewBuilder
     func avatarView(with siteIconURL: URL, avatarURL: URL) -> some View {
         ZStack(alignment: .bottomTrailing) {
-            AsyncImage(url: siteIconURL) { image in
+            CachedAsyncImage(url: siteIconURL) { image in
                 image.resizable()
             } placeholder: {
                 Image("post-blavatar-default").resizable()
@@ -334,7 +334,7 @@ struct ReaderDetailNewHeaderView: View {
                     .opacity(innerBorderOpacity)
             }
 
-            AsyncImage(url: avatarURL) { image in
+            CachedAsyncImage(url: avatarURL) { image in
                 image.resizable()
             } placeholder: {
                 Image("blavatar-default").resizable()
