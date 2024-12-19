@@ -18,6 +18,7 @@
 * [*] Reader: The post cover now uses the standard aspect ratio for covers, so there is no jumping. There are also a few minor improvements to the layout and animations of the cover and the header [#23897, #23909]
 * [*] Reader: Move the "Reading Preferences" button to the "More" menu [#23897]
 * [*] Reader: Hide post toolbar when reading an article and fix like button animations [#23909]
+* [*] Reader: Fix off-by-one error in post details like counter when post is liked by you [#23912]
 
 25.5
 -----
