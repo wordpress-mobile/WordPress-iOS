@@ -92,7 +92,7 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
         } else {
             if let latestContentVC {
                 // Return to the previous view controller preserving its state
-                mainNavigationController.pushViewController(latestContentVC, animated: true)
+                mainNavigationController.safePushViewController(latestContentVC, animated: true)
             }
         }
     }
@@ -191,7 +191,7 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
             splitViewController.setViewController(navigationVC, for: .secondary)
         } else {
             latestContentVC = viewController
-            mainNavigationController.pushViewController(viewController, animated: true)
+            mainNavigationController.safePushViewController(viewController, animated: true)
         }
     }
 
@@ -201,9 +201,9 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
         if let splitViewController {
             let navigationVC = splitViewController.viewController(for: .secondary) as? UINavigationController
             wpAssert(navigationVC != nil)
-            navigationVC?.pushViewController(viewController, animated: true)
+            navigationVC?.safePushViewController(viewController, animated: true)
         } else {
-            mainNavigationController.pushViewController(viewController, animated: true)
+            mainNavigationController.safePushViewController(viewController, animated: true)
         }
     }
 
@@ -246,5 +246,16 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
         if secondary.viewControllers.isEmpty {
             showInitialSelection()
         }
+    }
+}
+
+private extension UINavigationController {
+    // TODO: fix when stack trace becomes available
+    // A workaround for https://a8c.sentry.io/issues/3140539221.
+    func safePushViewController(_ viewController: UIViewController, animated: Bool) {
+        guard !children.contains(viewController) else {
+            return wpAssertionFailure("pushing the same view controller more than once", userInfo: ["viewController": "\(viewController)"])
+        }
+        pushViewController(viewController, animated: animated)
     }
 }
