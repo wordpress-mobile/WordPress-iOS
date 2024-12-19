@@ -225,6 +225,8 @@ private extension SiteStatsDetailTableViewController {
             viewModel?.refreshFileDownloads()
         case .postStatsMonthsYears, .postStatsAverageViews:
             viewModel?.refreshPostStats()
+        case .subscribersEmailsSummary:
+            viewModel?.refreshEmailsSummary()
         default:
             refreshControl?.endRefreshing()
         }
