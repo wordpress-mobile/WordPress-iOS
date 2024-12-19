@@ -364,7 +364,7 @@ import AutomatticTracks
         // Calculate visible part of the table view in `self.view` coordinates
         let y: CGFloat = {
             if let headerView = tableView.tableHeaderView {
-                return headerView.convert(headerView.frame, to: view).maxY
+                return tableView.convert(headerView.frame, to: view).maxY
             } else {
                 return view.safeAreaInsets.top
             }
