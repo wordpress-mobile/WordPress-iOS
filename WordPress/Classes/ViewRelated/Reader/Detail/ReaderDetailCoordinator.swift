@@ -166,31 +166,29 @@ class ReaderDetailCoordinator {
 
         // Fetch a full page of Likes but only return the `maxAvatarsDisplayed` number.
         // That way the first page will already be cached if the user displays the full Likes list.
-        postService.getLikesFor(postID: postID,
-                                siteID: post.siteID,
-                                success: { [weak self] users, totalLikes, _ in
-                                    var filteredUsers = users
-                                    var currentLikeUser: LikeUser? = nil
-                                    let totalLikesExcludingSelf = totalLikes - (post.isLiked ? 1 : 0)
+        postService.getLikesFor(postID: postID, siteID: post.siteID, success: { [weak self] users, totalLikes, _ in
+            var filteredUsers = users
+            var currentLikeUser: LikeUser? = nil
+            let totalLikesExcludingSelf = totalLikes - (post.isLiked ? 1 : 0)
 
-                                    // Split off current user's like from the list.
-                                    // Likes from self will always be placed in the last position, regardless of the when the post was liked.
-                                    if let userID = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)?.userID.int64Value,
-                                       let userIndex = filteredUsers.firstIndex(where: { $0.userID == userID }) {
-                                        currentLikeUser = filteredUsers.remove(at: userIndex)
-                                    }
+            // Split off current user's like from the list.
+            // Likes from self will always be placed in the last position, regardless of the when the post was liked.
+            if let userID = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)?.userID.int64Value,
+               let userIndex = filteredUsers.firstIndex(where: { $0.userID == userID }) {
+                currentLikeUser = filteredUsers.remove(at: userIndex)
+            }
 
-                                    self?.totalLikes = totalLikes
-                                    self?.view?.updateLikes(with: filteredUsers.prefix(ReaderDetailLikesView.maxAvatarsDisplayed).map { $0.avatarUrl },
-                                                            totalLikes: totalLikesExcludingSelf)
-                                    // Only pass current user's avatar when we know *for sure* that the post is liked.
-                                    // This is to work around a possible race condition that causes an unliked post to have current user's LikeUser, which
-                                    // would cause a display bug in ReaderDetailLikesView. The race condition issue will be investigated separately.
-                                    self?.view?.updateSelfLike(with: post.isLiked ? currentLikeUser?.avatarUrl : nil)
-                                }, failure: { [weak self] error in
-                                    self?.view?.updateLikes(with: [String](), totalLikes: 0)
-                                    DDLogError("Error fetching Likes for post detail: \(String(describing: error?.localizedDescription))")
-                                })
+            self?.totalLikes = totalLikes
+            self?.view?.updateLikes(with: filteredUsers.prefix(ReaderDetailLikesView.maxAvatarsDisplayed).map { $0.avatarUrl },
+                                    totalLikes: totalLikesExcludingSelf)
+            // Only pass current user's avatar when we know *for sure* that the post is liked.
+            // This is to work around a possible race condition that causes an unliked post to have current user's LikeUser, which
+            // would cause a display bug in ReaderDetailLikesView. The race condition issue will be investigated separately.
+            self?.view?.updateSelfLike(with: post.isLiked ? currentLikeUser?.avatarUrl : nil)
+        }, failure: { [weak self] error in
+            self?.view?.updateLikes(with: [String](), totalLikes: 0)
+            DDLogError("Error fetching Likes for post detail: \(String(describing: error?.localizedDescription))")
+        })
     }
 
     /// Fetch Comments for the current post.
