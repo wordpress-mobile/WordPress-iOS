@@ -1,7 +1,8 @@
 import Foundation
 import WordPressShared
+import Combine
 
-class ReaderDetailCoordinator {
+final class ReaderDetailCoordinator {
 
     /// Key for restoring the VC post
     static let restorablePostObjectURLKey: String = "RestorablePostObjectURLKey"
@@ -42,6 +43,8 @@ class ReaderDetailCoordinator {
 
     /// Called if the view controller's post fails to load
     var postLoadFailureBlock: (() -> Void)? = nil
+
+    private var likesAvatarURLs: [String]?
 
     /// An authenticator to ensure any request made to WP sites is properly authenticated
     lazy var authenticator: RequestAuthenticator? = {
@@ -102,10 +105,7 @@ class ReaderDetailCoordinator {
     }
 
     private var followCommentsService: FollowCommentsService?
-
-    /// The total number of Likes for the post.
-    /// Passed to ReaderDetailLikesListController to display in the view title.
-    private var totalLikes = 0
+    private var likesObserver: AnyCancellable?
 
     /// Initialize the Reader Detail Coordinator
     ///
@@ -156,39 +156,50 @@ class ReaderDetailCoordinator {
         }
     }
 
-    /// Fetch Likes for the current post.
-    /// Returns `ReaderDetailLikesView.maxAvatarsDisplayed` number of Likes.
-    ///
     func fetchLikes(for post: ReaderPost) {
-        guard let postID = post.postID else {
-            return
-        }
+        guard let postID = post.postID else { return }
 
         // Fetch a full page of Likes but only return the `maxAvatarsDisplayed` number.
         // That way the first page will already be cached if the user displays the full Likes list.
         postService.getLikesFor(postID: postID, siteID: post.siteID, success: { [weak self] users, totalLikes, _ in
-            var filteredUsers = users
-            var currentLikeUser: LikeUser? = nil
-            let totalLikesExcludingSelf = totalLikes - (post.isLiked ? 1 : 0)
+            guard let self else { return }
 
-            // Split off current user's like from the list.
-            // Likes from self will always be placed in the last position, regardless of the when the post was liked.
+            var filteredUsers = users
             if let userID = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)?.userID.int64Value,
                let userIndex = filteredUsers.firstIndex(where: { $0.userID == userID }) {
-                currentLikeUser = filteredUsers.remove(at: userIndex)
+                filteredUsers.remove(at: userIndex)
             }
 
-            self?.totalLikes = totalLikes
-            self?.view?.updateLikes(with: filteredUsers.prefix(ReaderDetailLikesView.maxAvatarsDisplayed).map { $0.avatarUrl },
-                                    totalLikes: totalLikesExcludingSelf)
-            // Only pass current user's avatar when we know *for sure* that the post is liked.
-            // This is to work around a possible race condition that causes an unliked post to have current user's LikeUser, which
-            // would cause a display bug in ReaderDetailLikesView. The race condition issue will be investigated separately.
-            self?.view?.updateSelfLike(with: post.isLiked ? currentLikeUser?.avatarUrl : nil)
-        }, failure: { [weak self] error in
-            self?.view?.updateLikes(with: [String](), totalLikes: 0)
+            self.likesAvatarURLs = filteredUsers.prefix(ReaderDetailLikesView.maxAvatarsDisplayed).map(\.avatarUrl)
+            self.updateLikesView()
+            self.startObservingLikes()
+        }, failure: { error in
             DDLogError("Error fetching Likes for post detail: \(String(describing: error?.localizedDescription))")
         })
+    }
+
+    private func startObservingLikes() {
+        guard let post else {
+            return wpAssertionFailure("post missing")
+        }
+
+        likesObserver = Publishers.CombineLatest(
+            post.publisher(for: \.likeCount, options: [.new]).removeDuplicates(),
+            post.publisher(for: \.isLiked, options: [.new]).removeDuplicates()
+        ).sink { [weak self] _, _ in
+            self?.updateLikesView()
+        }
+    }
+
+    private func updateLikesView() {
+        guard let post, let likesAvatarURLs else { return }
+
+        let viewModel = ReaderDetailLikesViewModel(
+            likeCount: post.likeCount.intValue,
+            avatarURLs: likesAvatarURLs,
+            selfLikeAvatarURL: post.isLiked ? try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)?.avatarURL : nil
+        )
+        view?.updateLikesView(with: viewModel)
     }
 
     /// Fetch Comments for the current post.
@@ -588,8 +599,7 @@ class ReaderDetailCoordinator {
         guard let post else {
             return
         }
-
-        let controller = ReaderDetailLikesListController(post: post, totalLikes: totalLikes)
+        let controller = ReaderDetailLikesListController(post: post, totalLikes: post.likeCount.intValue)
         viewController?.navigationController?.pushViewController(controller, animated: true)
     }
 
@@ -710,30 +720,19 @@ extension ReaderDetailCoordinator: ReaderDetailHeaderViewDelegate {
     }
 }
 
-// MARK: - ReaderDetailFeaturedImageViewDelegate
 extension ReaderDetailCoordinator: ReaderDetailFeaturedImageViewDelegate {
     func didTapFeaturedImage(_ sender: AsyncImageView) {
         showFeaturedImage(sender)
     }
 }
 
-// MARK: - ReaderDetailLikesViewDelegate
 extension ReaderDetailCoordinator: ReaderDetailLikesViewDelegate {
     func didTapLikesView() {
         showLikesList()
     }
 }
 
-// MARK: - ReaderDetailToolbarDelegate
-extension ReaderDetailCoordinator: ReaderDetailToolbarDelegate {
-    func didTapLikeButton(isLiked: Bool) {
-        guard let userAvatarURL = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)?.avatarURL else {
-            return
-        }
-
-        self.view?.updateSelfLike(with: isLiked ? userAvatarURL : nil)
-    }
-}
+extension ReaderDetailCoordinator: ReaderDetailToolbarDelegate {}
 
 // MARK: - Private Definitions
 

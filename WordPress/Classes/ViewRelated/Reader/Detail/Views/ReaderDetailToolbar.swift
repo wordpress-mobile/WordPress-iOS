@@ -2,7 +2,6 @@ import UIKit
 import WordPressUI
 
 protocol ReaderDetailToolbarDelegate: AnyObject {
-    func didTapLikeButton(isLiked: Bool)
     var notificationID: String? { get }
 }
 
@@ -460,7 +459,6 @@ private extension ReaderDetailToolbar {
             }
 
             self?.configureLikeActionButton(true)
-            self?.delegate?.didTapLikeButton(isLiked: updatedPost.isLiked)
         }
 
         commentCountObserver = post?.observe(\.commentCount, options: [.old, .new]) { [weak self] _, change in

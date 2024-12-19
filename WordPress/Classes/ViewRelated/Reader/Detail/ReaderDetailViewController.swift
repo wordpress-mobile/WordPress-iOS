@@ -12,20 +12,7 @@ protocol ReaderDetailView: AnyObject {
     func showErrorWithWebAction()
     func scroll(to: String)
     func updateHeader()
-
-    /// Shows likes view containing avatars of users that liked the post.
-    /// The number of avatars displayed is limited to `ReaderDetailView.maxAvatarDisplayed` plus the current user's avatar.
-    /// Note that the current user's avatar is displayed through a different method.
-    ///
-    /// - Seealso: `updateSelfLike(with avatarURLString: String?)`
-    /// - Parameters:
-    ///   - avatarURLStrings: A list of URL strings for the liking users' avatars.
-    ///   - totalLikes: The total number of likes for this post.
-    func updateLikes(with avatarURLStrings: [String], totalLikes: Int)
-
-    /// Updates the likes view to append an additional avatar for the current user, indicating that the post is liked by current user.
-    /// - Parameter avatarURLString: The URL string for the current user's avatar. Optional.
-    func updateSelfLike(with avatarURLString: String?)
+    func updateLikesView(with viewModel: ReaderDetailLikesViewModel)
 
     /// Updates comments table to display the post's comments.
     /// - Parameters:
@@ -374,38 +361,17 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         header.refreshFollowButton()
     }
 
-    func updateLikes(with avatarURLStrings: [String], totalLikes: Int) {
-        // always configure likes summary view first regardless of totalLikes, since it can affected by self likes.
-        likesSummary.configure(with: avatarURLStrings, totalLikes: totalLikes)
-
-        guard totalLikes > 0 else {
+    func updateLikesView(with viewModel: ReaderDetailLikesViewModel) {
+        guard viewModel.likeCount > 0 else {
             hideLikesView()
             return
         }
-
         if likesSummary.superview == nil {
             configureLikesSummary()
         }
-
         scrollView.layoutIfNeeded()
-    }
 
-    func updateSelfLike(with avatarURLString: String?) {
-        // only animate changes when the view is visible.
-        let shouldAnimate = isVisibleInScrollView(likesSummary)
-        guard let someURLString = avatarURLString else {
-            likesSummary.removeSelfAvatar(animated: shouldAnimate)
-            if likesSummary.totalLikesForDisplay == 0 {
-                hideLikesView()
-            }
-            return
-        }
-
-        if likesSummary.superview == nil {
-            configureLikesSummary()
-        }
-
-        likesSummary.addSelfAvatar(with: someURLString, animated: shouldAnimate)
+        likesSummary.configure(with: viewModel)
     }
 
     func updateComments(_ comments: [Comment], totalComments: Int) {
