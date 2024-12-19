@@ -1,4 +1,5 @@
 {
+  "originHash" : "64c885fb0532e44752e1552d7edd4abe6905b0f834a6eb0f22fe020cbbc48d8d",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -382,8 +383,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/wordpress-mobile/WordPressKit-iOS",
       "state" : {
-        "branch" : "task/reader-discover",
-        "revision" : "a5dfe35cd92e4df8bdd971edd162ecf02b7d0a29"
+        "branch" : "wpios-edition",
+        "revision" : "77b3f5e98da1e837e3983615c9fd1b38d66e3084"
       }
     },
     {
@@ -405,5 +406,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

@@ -420,7 +420,7 @@ class SiteStatsDetailsViewModel: Observable {
     }
 
     func refreshEmailsSummary() {
-        subscribersStore.updateEmailsSummary(quantity: 30, sortField: .opens)
+        subscribersStore.updateEmailsSummary(quantity: 30, sortField: .postDate)
     }
 }
 
