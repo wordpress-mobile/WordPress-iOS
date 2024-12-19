@@ -8,6 +8,7 @@
 * [**] Add the capability to create an avatar using Apple Image Playground through the Gravatar Quick Editor. [#23868]
 * [*] [internal] Update Gravatar SDK to 3.0.0 [#23701]
 * [*] (Hidden under a feature flag) User Management for self-hosted sites. [#23768]
+* [*] Fix sorting in Stats Subscriber Emails (latest first) [#23913]
 * [*] Add URL and ID to the Media details screen, add IDs for posts [#23887]
 * [*] Reader: Enable quick access to notifications on iPad [#23882]
 * [*] Add support for restricted posts in Reader [#23853]
