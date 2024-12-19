@@ -2,7 +2,7 @@ import Foundation
 import WordPressShared
 import Combine
 
-final class ReaderDetailCoordinator {
+class ReaderDetailCoordinator {
 
     /// Key for restoring the VC post
     static let restorablePostObjectURLKey: String = "RestorablePostObjectURLKey"
