@@ -71,6 +71,7 @@ private final class ReaderPostCellView: UIView {
     let avatarView = ReaderAvatarView()
     let buttonAuthor = makeAuthorButton()
     let timeLabel = UILabel()
+    let seenCheckmark = UIImageView()
     let buttonMore = makeButton(systemImage: "ellipsis", font: .systemFont(ofSize: 13))
 
     // Content
@@ -100,6 +101,7 @@ private final class ReaderPostCellView: UIView {
 
     private var toolbarViewHeightConstraint: NSLayoutConstraint?
     private var imageViewConstraints: [NSLayoutConstraint] = []
+    private var isSeenCheckmarkConfigured = false
     private var cancellables: [AnyCancellable] = []
 
     override init(frame: CGRect) {
@@ -155,7 +157,8 @@ private final class ReaderPostCellView: UIView {
 
         // These seems to be an issue with `lineBreakMode` in `UIButton.Configuration`
         // and `.firstLineBaseline`, so reserving to `.center`.
-        let headerView = UIStackView(alignment: .center, [buttonAuthor, dot, timeLabel])
+        let headerView = UIStackView(alignment: .center, [buttonAuthor, dot, timeLabel, seenCheckmark])
+        headerView.setCustomSpacing(4, after: timeLabel)
 
         for view in [avatarView, headerView, postPreview, buttonMore, toolbarView] {
             addSubview(view)
@@ -308,6 +311,13 @@ private final class ReaderPostCellView: UIView {
             imageView.setImage(with: imageURL, size: preferredCoverSize)
         }
 
+        if viewModel.isSeen == true {
+            configureSeenCheckmarkIfNeeded()
+            seenCheckmark.isHidden = false
+        } else {
+            seenCheckmark.isHidden = true
+        }
+
         if !viewModel.isToolbarHidden {
             configureToolbar(with: viewModel.toolbar)
             configureToolbarAccessibility(with: viewModel.toolbar)
@@ -358,6 +368,17 @@ private final class ReaderPostCellView: UIView {
                 self?.avatarView.setImage(with: $0, size: avatarSize)
             }.store(in: &cancellables)
         }
+    }
+
+    private func configureSeenCheckmarkIfNeeded() {
+        guard !isSeenCheckmarkConfigured else { return }
+        isSeenCheckmarkConfigured = true
+
+        seenCheckmark.image = UIImage(
+            systemName: "checkmark",
+            withConfiguration: UIImage.SymbolConfiguration(font: .preferredFont(forTextStyle: .caption1).withWeight(.medium))
+        )
+        seenCheckmark.tintColor = .secondaryLabel
     }
 
     private static let authorAttributes = AttributeContainer([
