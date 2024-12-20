@@ -37,6 +37,8 @@
 * [*] Add support for restricted posts in Reader [#23853]
 * [*] Fix minor appearance issues in the Blaze campaign list [#23891]
 * [*] Improve the sidebar animations and layout on some iPad models [#23886]
+* [*] (P2) Reader: Fix an issue with a missing "Mark as Read/Unread" button that was removed in the previous release [#23917]
+* [*] (P2) Reader: Show "read" status for P2 posts in the feeds [#23917]
 * [*] Reader: Fix a couple of rare crashes in Reader [#23907]
 * [*] Reader: Fix an issue with posts shown embedded in the notifications popover on iPad [#23889]
 * [*] Reader: The post cover now uses the standard aspect ratio for covers, so there is no jumping. There are also a few minor improvements to the layout and animations of the cover and the header [#23897, #23909]
