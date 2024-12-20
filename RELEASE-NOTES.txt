@@ -34,6 +34,7 @@
 * [*] [internal] Update Gravatar SDK to 3.0.0 [#23701]
 * [*] (Hidden under a feature flag) User Management for self-hosted sites. [#23768]
 * [*] Fix sorting in Stats Subscriber Emails (latest first) [#23913]
+* [*] Fix some missing or invalid social sharing icons [#23918]
 * [*] Add URL and ID to the Media details screen, add IDs for posts [#23887]
 * [*] Reader: Enable quick access to notifications on iPad [#23882]
 * [*] Add support for restricted posts in Reader [#23853]
