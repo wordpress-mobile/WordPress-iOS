@@ -8,6 +8,7 @@ import WordPressMedia
 struct GravatarQuickEditorPresenter {
     let email: String
     let authToken: String
+    let emailVerificationStatus: WPAccount.VerificationStatus
 
     init?(email: String) {
         let context = ContextManager.sharedInstance().mainContext
@@ -16,9 +17,24 @@ struct GravatarQuickEditorPresenter {
         }
         self.email = email
         self.authToken = account.authToken
+        self.emailVerificationStatus = account.verificationStatus
     }
 
     func presentQuickEditor(on presentingViewController: UIViewController) {
+        guard emailVerificationStatus == .verified else {
+            let alert = UIAlertController(
+                title: nil,
+                message: NSLocalizedString(
+                    "avatar.update.email.verification.required",
+                    value: "To update your avatar, you need to verify your email address first.",
+                    comment: "An error message displayed when attempting to update an avatar while the user's email address is not verified."
+                ),
+                preferredStyle: .alert
+            )
+            alert.addAction(UIAlertAction(title: SharedStrings.Button.ok, style: .default))
+            presentingViewController.present(alert, animated: true)
+            return
+        }
         let presenter = QuickEditorPresenter(
             email: Email(email),
             scope: .avatarPicker(AvatarPickerConfiguration(contentLayout: .horizontal())),
