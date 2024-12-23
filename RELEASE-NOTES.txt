@@ -6,6 +6,7 @@
 * [**] Add Image Playground support (part of Apple Intelligence suite) for adding images to your posts, generated featured image, site icons, and more [#23688]
 * [**] Enhance the Gravatar Quick Editor by adding features that allow users to delete and share their avatars. [#23868]
 * [**] Add the capability to create an avatar using Apple Image Playground through the Gravatar Quick Editor. [#23868]
+* [*] Various bug fixes and improvements in the new experimental editor [#23919]
 * [*] [internal] Update Gravatar SDK to 3.0.0 [#23701]
 * [*] (Hidden under a feature flag) User Management for self-hosted sites. [#23768]
 * [*] Fix sorting in Stats Subscriber Emails (latest first) [#23913]
