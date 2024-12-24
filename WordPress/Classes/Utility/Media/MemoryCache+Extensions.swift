@@ -13,8 +13,6 @@ extension MemoryCache {
         UIImageView.af.sharedImageDownloader = AlamofireImage.ImageDownloader(
             imageCache: AlamofireImageCacheAdapter(cache: .shared)
         )
-
-        // WordPress.AnimatedImageCache uses WordPress.MemoryCache directly
     }
 }
 

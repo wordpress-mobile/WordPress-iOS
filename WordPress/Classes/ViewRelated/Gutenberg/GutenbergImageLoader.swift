@@ -19,12 +19,6 @@ class GutenbergImageLoader: NSObject, RCTImageURLLoader {
     }
 
     func loadImage(for imageURL: URL, size: CGSize, scale: CGFloat, resizeMode: RCTResizeMode, progressHandler: RCTImageLoaderProgressBlock, partialLoadHandler: RCTImageLoaderPartialLoadBlock, completionHandler: @escaping RCTImageLoaderCompletionBlock) -> RCTImageLoaderCancellationBlock? {
-        let cacheKey = getCacheKey(for: imageURL, size: size)
-
-        if let image = AnimatedImageCache.shared.cachedStaticImage(url: cacheKey) {
-            completionHandler(nil, image)
-            return {}
-        }
 
         var finalSize = size
         var finalScale = scale
@@ -36,7 +30,6 @@ class GutenbergImageLoader: NSObject, RCTImageURLLoader {
         }
 
         let task = mediaUtility.downloadImage(from: imageURL, size: finalSize, scale: finalScale, post: post, success: { (image) in
-            AnimatedImageCache.shared.cacheStaticImage(url: cacheKey, image: image)
             completionHandler(nil, image)
         }, onFailure: { (error) in
             completionHandler(error, nil)
@@ -54,17 +47,6 @@ class GutenbergImageLoader: NSObject, RCTImageURLLoader {
             }
         }
         return nil
-    }
-
-    private func getCacheKey(for url: URL, size: CGSize) -> URL? {
-        guard size != CGSize.zero else {
-            return url
-        }
-        var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
-        let queryItems = components?.queryItems
-        let newQueryItems = (queryItems ?? []) + [URLQueryItem(name: "cachekey", value: "\(size)")]
-        components?.queryItems = newQueryItems
-        return components?.url
     }
 
     static func moduleName() -> String! {

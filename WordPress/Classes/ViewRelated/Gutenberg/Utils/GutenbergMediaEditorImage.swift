@@ -32,7 +32,7 @@ class GutenbergMediaEditorImage: AsyncImage {
     init(url: URL, post: AbstractPost) {
         originalURL = url
         self.post = post
-        thumb = AnimatedImageCache.shared.cachedStaticImage(url: originalURL)
+        thumb = ImageDownloader.shared.cachedImage(for: originalURL)
     }
 
     /**

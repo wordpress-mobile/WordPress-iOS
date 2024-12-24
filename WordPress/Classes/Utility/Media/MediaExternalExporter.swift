@@ -46,24 +46,17 @@ class MediaExternalExporter: MediaExporter {
         return Progress.discreteCompletedProgress()
     }
 
-    /// Downloads an external GIF file, or uses one from the AnimatedImageCache.
-    ///
     private func downloadGif(from url: URL, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
-        let request = URLRequest(url: url)
-        let task = AnimatedImageCache.shared.animatedImage(request, placeholderImage: nil,
-                                                           success: { (data, _) in
-                                                            self.gifDataDownloaded(data: data,
-                                                                                   fromURL: url,
-                                                                                   error: nil,
-                                                                                   onCompletion: onCompletion,
-                                                                                   onError: onError)
-        }, failure: { error in
-            if let error {
-                onError(self.exporterErrorWith(error: error))
+        Task {
+            do {
+                let options = ImageRequestOptions(isMemoryCacheEnabled: false)
+                let data = try await ImageDownloader.shared.data(for: ImageRequest(url: url, options: options))
+                self.gifDataDownloaded(data: data, fromURL: url, error: nil, onCompletion: onCompletion, onError: onError)
+            } catch {
+                onError(ExportError.downloadError(error as NSError))
             }
-        })
-
-        return task?.progress ?? Progress.discreteCompletedProgress()
+        }
+        return Progress.discreteCompletedProgress()
     }
 
     /// Saves downloaded GIF data to the filesystem and exports it.
