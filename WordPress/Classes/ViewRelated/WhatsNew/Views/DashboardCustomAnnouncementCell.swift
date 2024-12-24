@@ -65,20 +65,15 @@ class DashboardCustomAnnouncementCell: AnnouncementTableViewCell {
     func configure(feature: WordPressKit.Feature) {
 
         if let url = URL(string: feature.iconUrl) {
-            announcementImageView.af.setImage(withURL: url, completion: { [weak self] response in
-
-                guard let self,
-                      let width = response.value?.size.width,
-                      let height = response.value?.size.height else {
+            announcementImageView.wp.setImage(with: url) { [weak self] result in
+                guard let self, case .success(let image) = result else {
                     return
                 }
-
-                let aspectRatio = width / height
-
+                let aspectRatio = image.size.width / image.size.height
                 NSLayoutConstraint.activate([
                     self.announcementImageView.widthAnchor.constraint(equalTo: self.announcementImageView.heightAnchor, multiplier: aspectRatio)
                 ])
-            })
+            }
         }
         headingLabel.text = feature.subtitle
     }

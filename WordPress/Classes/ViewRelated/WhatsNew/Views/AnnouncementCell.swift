@@ -1,3 +1,4 @@
+import UIKit
 
 class AnnouncementCell: AnnouncementTableViewCell {
 
@@ -59,7 +60,7 @@ class AnnouncementCell: AnnouncementTableViewCell {
         }
 
         else if let url = URL(string: feature.iconUrl) {
-            announcementImageView.af.setImage(withURL: url)
+            announcementImageView.wp.setImage(with: url)
         }
         headingLabel.text = feature.title
         subHeadingLabel.text = feature.subtitle
