@@ -18,7 +18,6 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/airbnb/lottie-ios", from: "4.4.0"),
         .package(url: "https://github.com/Alamofire/Alamofire", from: "5.9.1"),
-        .package(url: "https://github.com/Alamofire/AlamofireImage", from: "4.3.0"),
         .package(url: "https://github.com/AliSoftware/OHHTTPStubs", from: "9.1.0"),
         .package(url: "https://github.com/Automattic/Automattic-Tracks-iOS", from: "3.4.2"),
         .package(url: "https://github.com/Automattic/AutomatticAbout-swift", from: "1.1.4"),
@@ -146,7 +145,6 @@ enum XcodeSupport {
                 "WordPressMedia",
                 "WordPressUI",
                 .product(name: "Alamofire", package: "Alamofire"),
-                .product(name: "AlamofireImage", package: "AlamofireImage"),
                 .product(name: "AutomatticAbout", package: "AutomatticAbout-swift"),
                 .product(name: "AutomatticTracks", package: "Automattic-Tracks-iOS"),
                 .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
