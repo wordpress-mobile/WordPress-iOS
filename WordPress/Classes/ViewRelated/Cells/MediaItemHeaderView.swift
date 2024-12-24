@@ -4,7 +4,7 @@ import WordPressShared
 import WordPressMedia
 
 final class MediaItemHeaderView: UIView {
-    let imageView = CachedAnimatedImageView()
+    let imageView = AsyncImageView()
     private let errorView = UIImageView()
     private let videoIconView = PlayIconView()
     private let loadingIndicator = UIActivityIndicatorView(style: .large)
@@ -103,13 +103,7 @@ final class MediaItemHeaderView: UIView {
             Task {
                 let image = try? await MediaImageService.shared.image(for: media, size: .large)
                 loadingIndicator.stopAnimating()
-
-                if let gif = image as? AnimatedImage, let data = gif.gifData {
-                    imageView.animate(withGIFData: data)
-                } else {
-                    imageView.image = image
-                }
-
+                imageView.image = image
                 errorView.isHidden = image != nil
             }
 

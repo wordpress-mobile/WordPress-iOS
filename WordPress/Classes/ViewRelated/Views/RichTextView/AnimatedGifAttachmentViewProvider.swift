@@ -1,4 +1,5 @@
 import UIKit
+import Gifu
 
 /**
  * This adds custom view rendering for animated Gif images in a UITextView
@@ -7,11 +8,11 @@ import UIKit
  */
 class AnimatedGifAttachmentViewProvider: NSTextAttachmentViewProvider {
     deinit {
-        guard let animatedImageView = view as? CachedAnimatedImageView else {
+        guard let animatedImageView = view as? GIFImageView else {
             return
         }
 
-        animatedImageView.stopAnimating()
+        animatedImageView.prepareForReuse()
     }
 
     override init(textAttachment: NSTextAttachment, parentView: UIView?, textLayoutManager: NSTextLayoutManager?, location: NSTextLocation) {
@@ -20,8 +21,8 @@ class AnimatedGifAttachmentViewProvider: NSTextAttachmentViewProvider {
             return
         }
 
-        let imageView = CachedAnimatedImageView(frame: parentView?.bounds ?? .zero)
-        imageView.setAnimatedImage(contents)
+        let imageView = GIFImageView(frame: parentView?.bounds ?? .zero)
+        imageView.animate(withGIFData: contents)
 
         view = imageView
     }

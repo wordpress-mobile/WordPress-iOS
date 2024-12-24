@@ -1,6 +1,6 @@
 import UIKit
 
-extension CircularProgressView: ActivityIndicatorType {
+extension CircularProgressView {
     func startAnimating() {
         isHidden = false
         state = .indeterminate

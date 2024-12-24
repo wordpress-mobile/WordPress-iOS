@@ -137,20 +137,20 @@ import UniformTypeIdentifiers
 
     // MARK: - Private Methods
     fileprivate func setupSubviews() {
-        gesturesRecognizer                                  = UITapGestureRecognizer()
+        gesturesRecognizer = UITapGestureRecognizer()
         gesturesRecognizer.addTarget(self, action: #selector(RichTextView.handleTextViewTap(_:)))
 
-        textView                                            = UITextView(frame: bounds)
-        textView.backgroundColor                            = backgroundColor
-        textView.contentInset                               = UIEdgeInsets.zero
-        textView.textContainerInset                         = UIEdgeInsets.zero
-        textView.textContainer.lineFragmentPadding          = 0
-        textView.layoutManager.allowsNonContiguousLayout    = false
-        textView.isEditable                                   = editable
-        textView.isScrollEnabled                              = false
-        textView.dataDetectorTypes                          = dataDetectorTypes
-        textView.delegate                                   = self
-        textView.gestureRecognizers                         = [gesturesRecognizer]
+        textView = UITextView(frame: bounds)
+        textView.backgroundColor = backgroundColor
+        textView.contentInset = UIEdgeInsets.zero
+        textView.textContainerInset = UIEdgeInsets.zero
+        textView.textContainer.lineFragmentPadding = 0
+        textView.layoutManager.allowsNonContiguousLayout = false
+        textView.isEditable = editable
+        textView.isScrollEnabled = false
+        textView.dataDetectorTypes = dataDetectorTypes
+        textView.delegate = self
+        textView.gestureRecognizers = [gesturesRecognizer]
         addSubview(textView)
 
         // Setup Layout
@@ -183,8 +183,8 @@ import UniformTypeIdentifiers
                 return
             }
 
-            let unwrappedView           = attachmentView!
-            unwrappedView.frame.origin  = self.textView.frameForTextInRange(range).integral.origin
+            let unwrappedView  = attachmentView!
+            unwrappedView.frame.origin = self.textView.frameForTextInRange(range).integral.origin
             self.textView.addSubview(unwrappedView)
             self.attachmentViews.append(unwrappedView)
         }
@@ -208,14 +208,16 @@ import UniformTypeIdentifiers
         // NOTE: Why do we need this?
         // Because this mechanism allows us to disable DataDetectors, and yet, detect taps on links.
         //
-        let textStorage         = textView.textStorage
-        let layoutManager       = textView.layoutManager
-        let textContainer       = textView.textContainer
+        let textStorage = textView.textStorage
+        let layoutManager = textView.layoutManager
+        let textContainer = textView.textContainer
 
-        let locationInTextView  = recognizer.location(in: textView)
-        let characterIndex      = layoutManager.characterIndex(for: locationInTextView,
-                                                                        in: textContainer,
-                                                                        fractionOfDistanceBetweenInsertionPoints: nil)
+        let locationInTextView = recognizer.location(in: textView)
+        let characterIndex = layoutManager.characterIndex(
+            for: locationInTextView,
+            in: textContainer,
+            fractionOfDistanceBetweenInsertionPoints: nil
+        )
 
         if characterIndex >= textStorage.length {
             return
