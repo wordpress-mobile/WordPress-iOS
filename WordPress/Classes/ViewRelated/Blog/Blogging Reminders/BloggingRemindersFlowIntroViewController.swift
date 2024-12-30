@@ -29,7 +29,7 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
         label.font = WPStyleGuide.serifFontForTextStyle(.title1, fontWeight: .semibold)
         label.numberOfLines = 2
         label.textAlignment = .center
-        label.text = TextContent.introTitle
+        label.text = Strings.introTitle
         return label
     }()
 
@@ -46,7 +46,7 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
     private lazy var getStartedButton: UIButton = {
         let button = FancyButton()
         button.isPrimary = true
-        button.setTitle(TextContent.introButtonTitle, for: .normal)
+        button.setTitle(Strings.introButtonTitle, for: .normal)
         button.addTarget(self, action: #selector(getStartedTapped), for: .touchUpInside)
         return button
     }()
@@ -57,18 +57,6 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
     private let tracker: BloggingRemindersTracker
     private let source: BloggingRemindersTracker.FlowStartSource
     private weak var delegate: BloggingRemindersFlowDelegate?
-
-    private var introDescription: String {
-        switch source {
-        case .publishFlow:
-            return TextContent.postPublishingintroDescription
-        case .blogSettings,
-             .notificationSettings,
-             .statsInsights,
-             .bloggingPromptsFeatureIntroduction:
-            return TextContent.siteSettingsIntroDescription
-        }
-    }
 
     init(for blog: Blog,
          tracker: BloggingRemindersTracker,
@@ -98,7 +86,7 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
 
         configureStackView()
         configureConstraints()
-        promptLabel.text = introDescription
+        promptLabel.text = Strings.introDescription
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -197,18 +185,10 @@ extension BloggingRemindersFlowIntroViewController: ChildDrawerPositionable {
 
 // MARK: - Constants
 
-private enum TextContent {
-    static let introTitle = NSLocalizedString("Set your blogging reminders",
-                                              comment: "Title of the Blogging Reminders Settings screen.")
-
-    static let postPublishingintroDescription = NSLocalizedString("Your post is publishing... in the meantime, set up your blogging reminders on days you want to post.",
-                                                    comment: "Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing.")
-
-    static let siteSettingsIntroDescription = NSLocalizedString("Set up your blogging reminders on days you want to post.",
-                                                            comment: "Description on the first screen of the Blogging Reminders Settings flow called from site settings.")
-
-    static let introButtonTitle = NSLocalizedString("Set reminders",
-                                                    comment: "Title of the set goals button in the Blogging Reminders Settings flow.")
+private enum Strings {
+    static let introTitle = NSLocalizedString("bloggingRemindersPrompt.intro.title", value: "Blogging Reminders", comment: "Title of the Blogging Reminders Settings screen.")
+    static let introDescription = NSLocalizedString("bloggingRemindersPrompt.intro.details", value: "Set up your blogging reminders on days you want to post.", comment: "Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing.")
+    static let introButtonTitle = NSLocalizedString("bloggingRemindersPrompt.intro.continueButton", value: "Set reminders", comment: "Title of the set goals button in the Blogging Reminders Settings flow.")
 }
 
 private enum Images {

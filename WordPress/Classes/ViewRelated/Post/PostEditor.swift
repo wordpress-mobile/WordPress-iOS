@@ -267,7 +267,7 @@ extension PostEditor where Self: UIViewController {
 
         let deletedObjects = ((userInfo[NSDeletedObjectsKey] as? Set<NSManagedObject>) ?? [])
         if deletedObjects.contains(where: { $0.objectID == originalPostID }) {
-            onClose?(false)
+            onClose?()
         }
     }
 }

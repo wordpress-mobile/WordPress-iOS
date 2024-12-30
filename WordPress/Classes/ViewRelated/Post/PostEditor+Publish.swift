@@ -26,7 +26,7 @@ protocol PublishingEditor where Self: UIViewController {
     var alertBarButtonItem: UIBarButtonItem? { get }
 
     /// Closure to be executed when the editor gets closed.
-    var onClose: ((_ changesSaved: Bool) -> Void)? { get set }
+    var onClose: (() -> Void)? { get set }
 
     /// Return the current html in the editor
     func getHTML() -> String
@@ -204,19 +204,18 @@ extension PublishingEditor {
     }
 
     func discardUnsavedChangesAndUpdateGUI() {
-        let postDeleted = discardChanges()
-        dismissOrPopView(didSave: !postDeleted)
+        discardChanges()
+        dismissOrPopView()
     }
 
-    @discardableResult
-    func discardChanges() -> Bool {
+    func discardChanges() {
         guard post.status != .trash else {
-            return true // No revision is created for trashed posts
+            return // No revision is created for trashed posts
         }
 
         guard let context = post.managedObjectContext else {
             wpAssertionFailure("Missing managedObjectContext")
-            return true
+            return
         }
 
         WPAppAnalytics.track(.editorDiscardedChanges, withProperties: [WPAppAnalyticsKeyEditorSource: analyticsEditorSource], with: post)
@@ -233,7 +232,6 @@ extension PublishingEditor {
 
         AbstractPost.deleteLatestRevision(post, in: context)
         ContextManager.shared.saveContextAndWait(context)
-        return true
     }
 
     private func showCloseDraftConfirmationAlert() {
@@ -276,7 +274,7 @@ extension PublishingEditor {
 // MARK: - Publishing
 
 extension PublishingEditor {
-    func dismissOrPopView(didSave: Bool = true, presentBloggingReminders: Bool = false) {
+    func dismissOrPopView(presentBloggingReminders: Bool = false) {
         stopEditing()
 
         WPAppAnalytics.track(.editorClosed, withProperties: [WPAppAnalyticsKeyEditorSource: analyticsEditorSource], with: post)
@@ -284,7 +282,7 @@ extension PublishingEditor {
         if let onClose {
             // if this closure exists, the presentation of the Blogging Reminders flow (if needed)
             // needs to happen in the closure.
-            onClose(didSave)
+            onClose()
         } else if isModal(), let controller = presentingViewController {
             controller.dismiss(animated: true) {
                 if presentBloggingReminders {

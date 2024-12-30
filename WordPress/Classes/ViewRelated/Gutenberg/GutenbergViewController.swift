@@ -91,7 +91,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
     var editorSession: PostEditorAnalyticsSession
 
-    var onClose: ((Bool) -> Void)?
+    var onClose: (() -> Void)?
 
     var postIsReblogged: Bool = false
 

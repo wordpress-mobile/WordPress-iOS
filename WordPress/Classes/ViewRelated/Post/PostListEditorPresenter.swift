@@ -53,7 +53,7 @@ struct PostListEditorPresenter {
         let editor = EditPostViewController(post: post)
         editor.modalPresentationStyle = .fullScreen
         editor.entryPoint = entryPoint
-        editor.onClose = { _ in
+        editor.onClose = {
             NotificationCenter.default.post(name: .postListEditorPresenterDidHideEditor, object: nil)
         }
         postListViewController.present(editor, animated: false)

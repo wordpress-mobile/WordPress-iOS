@@ -34,7 +34,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
     var analyticsEditorSource: String { Analytics.editorSource }
     var editorSession: PostEditorAnalyticsSession
-    var onClose: ((Bool) -> Void)?
+    var onClose: (() -> Void)?
 
     // MARK: - Set content
 
@@ -321,7 +321,7 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
     }
 
     func editor(_ viewContoller: GutenbergKit.EditorViewController, didEncounterCriticalError error: any Error) {
-        onClose?(false)
+        onClose?()
     }
 
     func editor(_ viewController: GutenbergKit.EditorViewController, didUpdateContentWithState state: GutenbergKit.EditorState) {
