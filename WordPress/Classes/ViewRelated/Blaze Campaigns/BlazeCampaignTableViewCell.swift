@@ -110,8 +110,7 @@ final class BlazeCampaignTableViewCell: UITableViewCell, Reusable {
             let host = MediaHost(with: blog, failure: { error in
                 WordPressAppDelegate.crashLogging?.logError(error)
             })
-            let preferredSize = CGSize(width: Metrics.featuredImageSize, height: Metrics.featuredImageSize)
-                .scaled(by: UITraitCollection.current.displayScale)
+            let preferredSize = ImageSize(scaling: CGSize(width: Metrics.featuredImageSize, height: Metrics.featuredImageSize), in: self)
             featuredImageView.setImage(with: imageURL, host: host, size: preferredSize)
         }
 

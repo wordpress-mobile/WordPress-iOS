@@ -79,7 +79,7 @@ final class PostCompactCell: UITableViewCell, Reusable {
             featuredImageView.isHidden = false
 
             let host = MediaHost(post)
-            let targetSize = Constants.imageSize.scaled(by: traitCollection.displayScale)
+            let targetSize = ImageSize(scaling: Constants.imageSize, in: self)
             featuredImageView.setImage(with: url, host: host, size: targetSize)
         } else {
             featuredImageView.isHidden = true

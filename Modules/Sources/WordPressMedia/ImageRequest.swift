@@ -28,8 +28,8 @@ public final class ImageRequest: Sendable {
 }
 
 public struct ImageRequestOptions: Hashable, Sendable {
-    /// Resize the thumbnail to the given size (in pixels). By default, `nil`.
-    public var size: CGSize?
+    /// Resize the thumbnail to the given size. By default, `nil`.
+    public var size: ImageSize?
 
     /// If enabled, uses ``MemoryCache`` for caching decompressed images.
     public var isMemoryCacheEnabled = true
@@ -39,12 +39,46 @@ public struct ImageRequestOptions: Hashable, Sendable {
     public var isDiskCacheEnabled = true
 
     public init(
-        size: CGSize? = nil,
+        size: ImageSize? = nil,
         isMemoryCacheEnabled: Bool = true,
         isDiskCacheEnabled: Bool = true
     ) {
         self.size = size
         self.isMemoryCacheEnabled = isMemoryCacheEnabled
         self.isDiskCacheEnabled = isDiskCacheEnabled
+    }
+}
+
+/// Image size in **pixels**.
+public struct ImageSize: Hashable, Sendable {
+    public let width: CGFloat
+    public let height: CGFloat
+
+    public init(width: CGFloat, height: CGFloat) {
+        self.width = width
+        self.height = height
+    }
+
+    public init(_ size: CGSize) {
+        self.width = size.width
+        self.height = size.height
+    }
+
+    /// Initializes `ImageSize` with the given size scaled for the given view.
+    @MainActor
+    public init(scaling size: CGSize, in view: UIView) {
+        self.init(size.scaled(by: view.traitCollection.displayScale))
+    }
+
+    /// Initializes `ImageSize` with the given size scaled for the current trait
+    /// collection display scale.
+    public init(scaling size: CGSize) {
+        self.init(size.scaled(by: UITraitCollection.current.displayScale))
+    }
+}
+
+extension CGSize {
+    init(_ size: ImageSize) {
+        self.init(width: size.width, height: size.height)
     }
 }

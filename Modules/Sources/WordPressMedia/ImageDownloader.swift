@@ -39,7 +39,7 @@ public final class ImageDownloader {
             return image
         }
         let data = try await data(for: request)
-        let image = try await ImageDecoder.makeImage(from: data, size: options.size)
+        let image = try await ImageDecoder.makeImage(from: data, size: options.size.map(CGSize.init))
         if options.isMemoryCacheEnabled {
             cache[key] = image
         }
@@ -79,20 +79,20 @@ public final class ImageDownloader {
     ///
     /// - note: Use it to retrieve the image synchronously, which is no not possible
     /// with the async functions.
-    nonisolated public func cachedImage(for imageURL: URL, size: CGSize? = nil) -> UIImage? {
+    nonisolated public func cachedImage(for imageURL: URL, size: ImageSize? = nil) -> UIImage? {
         cache[makeKey(for: imageURL, size: size)]
     }
 
-    nonisolated public func setCachedImage(_ image: UIImage?, for imageURL: URL, size: CGSize? = nil) {
+    nonisolated public func setCachedImage(_ image: UIImage?, for imageURL: URL, size: ImageSize? = nil) {
         cache[makeKey(for: imageURL, size: size)] = image
     }
 
-    private nonisolated func makeKey(for imageURL: URL?, size: CGSize?) -> String {
+    private nonisolated func makeKey(for imageURL: URL?, size: ImageSize?) -> String {
         guard let imageURL else {
             assertionFailure("The request.url was nil") // This should never happen
             return ""
         }
-        return imageURL.absoluteString + (size.map { "?size=\($0)" } ?? "")
+        return imageURL.absoluteString + (size.map { "?w=\($0.width),h=\($0.height)" } ?? "")
     }
 
     public func clearURLSessionCache() {

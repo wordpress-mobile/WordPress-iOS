@@ -2,6 +2,7 @@ import SwiftUI
 import UIKit
 import Combine
 import WordPressShared
+import WordPressMedia
 
 final class ReaderPostCell: ReaderStreamBaseCell {
     private let view = ReaderPostCellView()
@@ -51,13 +52,12 @@ final class ReaderPostCell: ReaderStreamBaseCell {
         super.updateConstraints()
     }
 
-    static func preferredCoverSize(in window: UIWindow, isCompact: Bool) -> CGSize {
+    static func preferredCoverSize(in window: UIWindow, isCompact: Bool) -> ImageSize {
         var coverWidth = ReaderPostCell.regularCoverWidth
         if isCompact {
             coverWidth = min(window.bounds.width, window.bounds.height) - ReaderStreamBaseCell.insets.left * 2
         }
-        return CGSize(width: coverWidth, height: coverWidth)
-            .scaled(by: min(2, window.traitCollection.displayScale))
+        return ImageSize(scaling: CGSize(width: coverWidth, height: coverWidth), in: window)
     }
 }
 
@@ -314,7 +314,7 @@ private final class ReaderPostCellView: UIView {
         }
     }
 
-    private var preferredCoverSize: CGSize? {
+    private var preferredCoverSize: ImageSize? {
         guard let window = window ?? UIApplication.shared.mainWindow else { return nil }
         return ReaderPostCell.preferredCoverSize(in: window, isCompact: isCompact)
     }
@@ -345,8 +345,7 @@ private final class ReaderPostCellView: UIView {
 
     private func setAvatar(with viewModel: ReaderPostCellViewModel) {
         avatarView.setPlaceholder(UIImage(named: "post-blavatar-placeholder"))
-        let avatarSize = CGSize(width: ReaderPostCell.avatarSize, height: ReaderPostCell.avatarSize)
-            .scaled(by: UITraitCollection.current.displayScale)
+        let avatarSize = ImageSize(scaling: CGSize(width: ReaderPostCell.avatarSize, height: ReaderPostCell.avatarSize))
         if let avatarURL = viewModel.avatarURL {
             avatarView.setImage(with: avatarURL, size: avatarSize)
         } else {

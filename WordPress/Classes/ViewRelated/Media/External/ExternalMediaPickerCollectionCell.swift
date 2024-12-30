@@ -1,4 +1,5 @@
 import UIKit
+import WordPressMedia
 
 final class ExternalMediaPickerCollectionCell: UICollectionViewCell {
     private let imageView = AsyncImageView()
@@ -22,7 +23,7 @@ final class ExternalMediaPickerCollectionCell: UICollectionViewCell {
         imageView.prepareForReuse()
     }
 
-    func configure(imageURL: URL, size: CGSize) {
+    func configure(imageURL: URL, size: ImageSize) {
         imageView.setImage(with: imageURL, size: size)
     }
 
