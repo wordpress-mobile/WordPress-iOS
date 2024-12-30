@@ -1,6 +1,7 @@
 25.7
 -----
 * [**] Add new lightbox screen for images with modern transitions and enhanced performance [#23922]
+* [*] Add prefetching to Reader streams [#23928]
 
 25.6
 -----
