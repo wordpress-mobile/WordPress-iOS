@@ -70,6 +70,12 @@ public final class ImageDownloader {
     // MARK: - Caching
 
     /// Returns an image from the memory cache.
+    nonisolated public func cachedImage(for request: ImageRequest) -> UIImage? {
+        guard let imageURL = request.source.url else { return nil }
+        return cachedImage(for: imageURL, size: request.options.size)
+    }
+
+    /// Returns an image from the memory cache.
     ///
     /// - note: Use it to retrieve the image synchronously, which is no not possible
     /// with the async functions.

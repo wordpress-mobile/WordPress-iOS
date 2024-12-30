@@ -22,13 +22,12 @@ struct ImageViewExtensions {
         }
     }
 
-    func setImage(
-        with imageURL: URL,
-        host: MediaHost? = nil,
-        size: CGSize? = nil,
-        completion: (@MainActor (Result<UIImage, Error>) -> Void)? = nil
-    ) {
-        controller.setImage(with: imageURL, host: host, size: size, completion: completion)
+    func setImage(with imageURL: URL, host: MediaHost? = nil, size: CGSize? = nil) {
+        setImage(with: ImageRequest(url: imageURL, host: host, options: ImageRequestOptions(size: size)))
+    }
+
+    func setImage(with request: ImageRequest, completion: (@MainActor (Result<UIImage, Error>) -> Void)? = nil) {
+        controller.setImage(with: request, completion: completion)
     }
 
     var controller: ImageLoadingController {

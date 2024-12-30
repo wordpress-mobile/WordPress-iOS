@@ -223,7 +223,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
             completionHandler(CGSize(width: 1000, height: 1000 * ReaderPostCell.coverAspectRatio))
         }
 
-        imageView.setImage(with: imageURL, host: MediaHost(post)) { [weak self] result in
+        imageView.setImage(with: ImageRequest(url: imageURL, host: MediaHost(post))) { [weak self] result in
             guard let self else { return }
             switch result {
             case .success:

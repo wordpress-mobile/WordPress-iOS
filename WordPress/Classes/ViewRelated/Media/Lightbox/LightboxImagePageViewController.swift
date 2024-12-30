@@ -1,5 +1,6 @@
 import UIKit
 import WordPressUI
+import WordPressMedia
 
 final class LightboxImagePageViewController: UIViewController {
     private(set) var scrollView = LightboxImageScrollView()
@@ -51,7 +52,7 @@ final class LightboxImagePageViewController: UIViewController {
         case .image(let image):
             setState(.success(image))
         case .asset(let asset):
-            controller.setImage(with: asset.sourceURL, host: asset.host)
+            controller.setImage(with: ImageRequest(url: asset.sourceURL, host: asset.host))
         case .media(let media):
             controller.setImage(with: media, size: .original)
         }

@@ -84,10 +84,14 @@ final class AsyncImageView: UIView {
     func setImage(
         with imageURL: URL,
         host: MediaHost? = nil,
-        size: CGSize? = nil,
-        completion: (@MainActor (Result<UIImage, Error>) -> Void)? = nil
+        size: CGSize? = nil
     ) {
-        controller.setImage(with: imageURL, host: host, size: size, completion: completion)
+        let request = ImageRequest(url: imageURL, host: host, options: ImageRequestOptions(size: size))
+        controller.setImage(with: request)
+    }
+
+    func setImage(with request: ImageRequest, completion: (@MainActor (Result<UIImage, Error>) -> Void)? = nil) {
+        controller.setImage(with: request, completion: completion)
     }
 
     private func setState(_ state: ImageLoadingController.State) {
