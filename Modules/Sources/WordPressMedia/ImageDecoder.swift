@@ -70,7 +70,7 @@ private extension Data {
     }
 }
 
-private extension CGSize {
+extension CGSize {
     func scaled(by scale: CGFloat) -> CGSize {
         CGSize(width: width * scale, height: height * scale)
     }

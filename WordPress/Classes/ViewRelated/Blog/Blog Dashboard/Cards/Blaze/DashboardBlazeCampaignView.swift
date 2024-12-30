@@ -64,8 +64,7 @@ final class DashboardBlazeCampaignView: UIView {
             let host = MediaHost(with: blog, failure: { error in
                 WordPressAppDelegate.crashLogging?.logError(error)
             })
-            let targetSize = Constants.imageSize
-                .scaled(by: UITraitCollection.current.displayScale)
+            let targetSize = ImageSize(scaling: Constants.imageSize, in: self)
             imageView.setImage(with: imageURL, host: host, size: targetSize)
         }
 

@@ -27,28 +27,17 @@ final class ImageLoadingController {
     }
 
     /// - parameter completion: Gets called on completion _after_ `onStateChanged`.
-    func setImage(
-        with imageURL: URL,
-        host: MediaHost? = nil,
-        size: CGSize? = nil,
-        completion: (@MainActor (Result<UIImage, Error>) -> Void)? = nil
-    ) {
+    func setImage(with request: ImageRequest, completion: (@MainActor (Result<UIImage, Error>) -> Void)? = nil) {
         task?.cancel()
 
-        if let image = downloader.cachedImage(for: imageURL, size: size) {
+        if let image = downloader.cachedImage(for: request) {
             onStateChanged(.success(image))
             completion?(.success(image))
         } else {
             onStateChanged(.loading)
             task = Task { @MainActor [downloader, weak self] in
                 do {
-                    let options = ImageRequestOptions(size: size)
-                    let image: UIImage
-                    if let host {
-                        image = try await downloader.image(from: imageURL, host: host, options: options)
-                    } else {
-                        image = try await downloader.image(from: imageURL, options: options)
-                    }
+                    let image = try await downloader.image(for: request)
                     // This line guarantees that if you cancel on the main thread,
                     // none of the `onStateChanged` callbacks get called.
                     guard !Task.isCancelled else { return }
@@ -63,10 +52,7 @@ final class ImageLoadingController {
         }
     }
 
-    func setImage(
-        with media: Media,
-        size: MediaImageService.ImageSize
-    ) {
+    func setImage(with media: Media, size: MediaImageService.ImageSize) {
         task?.cancel()
 
         if let image = service.getCachedThumbnail(for: .init(media), size: size) {

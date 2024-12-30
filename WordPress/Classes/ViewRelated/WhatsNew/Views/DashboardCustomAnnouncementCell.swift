@@ -1,4 +1,5 @@
 import UIKit
+import WordPressMedia
 
 class DashboardCustomAnnouncementCell: AnnouncementTableViewCell {
 
@@ -65,7 +66,7 @@ class DashboardCustomAnnouncementCell: AnnouncementTableViewCell {
     func configure(feature: WordPressKit.Feature) {
 
         if let url = URL(string: feature.iconUrl) {
-            announcementImageView.wp.setImage(with: url) { [weak self] result in
+            announcementImageView.wp.setImage(with: ImageRequest(url: url)) { [weak self] result in
                 guard let self, case .success(let image) = result else {
                     return
                 }

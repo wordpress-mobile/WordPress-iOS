@@ -2,6 +2,7 @@ import Foundation
 import AutomatticTracks
 import WordPressShared
 import WordPressUI
+import WordPressMedia
 
 final class ReaderCrossPostCell: ReaderStreamBaseCell {
     private let view = ReaderCrossPostView()
@@ -132,8 +133,7 @@ private final class ReaderCrossPostView: UIView {
 
         avatarView.setPlaceholder(UIImage(named: "post-blavatar-placeholder"))
         if let avatarURL = post.avatarURLForDisplay() {
-            let avatarSize = CGSize(width: avatarSize, height: avatarSize)
-                .scaled(by: UITraitCollection.current.displayScale)
+            let avatarSize = ImageSize(scaling: CGSize(width: avatarSize, height: avatarSize))
             avatarView.setImage(with: avatarURL, size: avatarSize)
         }
     }

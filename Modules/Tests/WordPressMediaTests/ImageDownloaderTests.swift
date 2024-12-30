@@ -27,7 +27,7 @@ import OHHTTPStubsSwift
 
         // WHEN
         let options = ImageRequestOptions(
-            size: CGSize(width: 256, height: 256),
+            size: ImageSize(width: 256, height: 256),
             isMemoryCacheEnabled: false,
             isDiskCacheEnabled: false
         )
@@ -46,7 +46,7 @@ import OHHTTPStubsSwift
 
         // WHEN
         let options = ImageRequestOptions(
-            size: CGSize(width: 256, height: 256),
+            size: ImageSize(width: 256, height: 256),
             isMemoryCacheEnabled: false,
             isDiskCacheEnabled: false
         )
@@ -72,7 +72,7 @@ import OHHTTPStubsSwift
         let imageURL = try #require(URL(string: "https://example.files.wordpress.com/2023/09/image.jpg"))
         try mockResponse(withResource: "test-image", fileExtension: "jpg")
 
-        let size = CGSize(width: 256, height: 256)
+        let size = ImageSize(width: 256, height: 256)
         let options = ImageRequestOptions(
             size: size,
             isMemoryCacheEnabled: true,

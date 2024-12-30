@@ -57,7 +57,7 @@ class WPRichTextImage: UIControl, WPRichTextMediaAttachment {
             return
         }
 
-        imageView.setImage(with: contentURL, host: host) { result in
+        imageView.setImage(with: ImageRequest(url: contentURL, host: host)) { result in
             switch result {
             case .success: onSuccess?()
             case .failure(let error): onError?(error)

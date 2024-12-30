@@ -235,8 +235,7 @@ class StatsLatestPostSummaryInsightsCell: StatsBaseCell, LatestPostSummaryConfig
                 DDLogError("Failed to create media host: \(error.localizedDescription)")
             })
             let targetSize = CGSize(width: Metrics.thumbnailSize, height: Metrics.thumbnailSize)
-                .scaled(by: traitCollection.displayScale)
-            postImageView.setImage(with: url, host: host, size: targetSize)
+            postImageView.setImage(with: url, host: host, size: ImageSize(scaling: targetSize, in: self))
         } else {
             postImageView.isHidden = true
         }

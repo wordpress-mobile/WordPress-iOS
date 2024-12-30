@@ -1,4 +1,5 @@
 import UIKit
+import WordPressMedia
 
 final class ReaderAvatarView: UIView {
     private let asyncImageView = AsyncImageView()
@@ -42,7 +43,7 @@ final class ReaderAvatarView: UIView {
         asyncImageView.image = image
     }
 
-    func setImage(with imageURL: URL, size: CGSize? = nil) {
+    func setImage(with imageURL: URL, size: ImageSize? = nil) {
         asyncImageView.setImage(with: imageURL, size: size)
     }
 }
