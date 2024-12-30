@@ -27,7 +27,7 @@ public final class ImageRequest: Sendable {
     }
 }
 
-public struct ImageRequestOptions: Sendable {
+public struct ImageRequestOptions: Hashable, Sendable {
     /// Resize the thumbnail to the given size (in pixels). By default, `nil`.
     public var size: CGSize?
 

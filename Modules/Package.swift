@@ -19,6 +19,7 @@ let package = Package(
         .package(url: "https://github.com/airbnb/lottie-ios", from: "4.4.0"),
         .package(url: "https://github.com/Alamofire/Alamofire", from: "5.9.1"),
         .package(url: "https://github.com/AliSoftware/OHHTTPStubs", from: "9.1.0"),
+        .package(url: "https://github.com/apple/swift-collections", from: "1.0.0"),
         .package(url: "https://github.com/Automattic/Automattic-Tracks-iOS", from: "3.4.2"),
         .package(url: "https://github.com/Automattic/AutomatticAbout-swift", from: "1.1.4"),
         .package(url: "https://github.com/Automattic/Gravatar-SDK-iOS", from: "3.1.0"),
@@ -58,7 +59,9 @@ let package = Package(
             .product(name: "XCUITestHelpers", package: "XCUITestHelpers"),
         ], swiftSettings: [.swiftLanguageMode(.v5)]),
         .target(name: "WordPressFlux", swiftSettings: [.swiftLanguageMode(.v5)]),
-        .target(name: "WordPressMedia"),
+        .target(name: "WordPressMedia", dependencies: [
+            .product(name: "Collections", package: "swift-collections"),
+        ]),
         .target(name: "WordPressSharedObjC", resources: [.process("Resources")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .target(name: "WordPressShared", dependencies: [.target(name: "WordPressSharedObjC")], resources: [.process("Resources")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .target(name: "WordPressTesting", resources: [.process("Resources")]),

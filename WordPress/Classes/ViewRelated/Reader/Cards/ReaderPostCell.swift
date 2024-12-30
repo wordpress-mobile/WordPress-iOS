@@ -50,6 +50,15 @@ final class ReaderPostCell: ReaderStreamBaseCell {
         contentViewConstraints = view.pinEdges(.horizontal, to: isCompact ? contentView : contentView.readableContentGuide)
         super.updateConstraints()
     }
+
+    static func preferredCoverSize(in window: UIWindow, isCompact: Bool) -> CGSize {
+        var coverWidth = ReaderPostCell.regularCoverWidth
+        if isCompact {
+            coverWidth = min(window.bounds.width, window.bounds.height) - ReaderStreamBaseCell.insets.left * 2
+        }
+        return CGSize(width: coverWidth, height: coverWidth)
+            .scaled(by: min(2, window.traitCollection.displayScale))
+    }
 }
 
 private final class ReaderPostCellView: UIView {
@@ -307,16 +316,7 @@ private final class ReaderPostCellView: UIView {
 
     private var preferredCoverSize: CGSize? {
         guard let window = window ?? UIApplication.shared.mainWindow else { return nil }
-        return Self.preferredCoverSize(in: window, isCompact: isCompact)
-    }
-
-    static func preferredCoverSize(in window: UIWindow, isCompact: Bool) -> CGSize {
-        var coverWidth = ReaderPostCell.regularCoverWidth
-        if isCompact {
-            coverWidth = min(window.bounds.width, window.bounds.height) - ReaderStreamBaseCell.insets.left * 2
-        }
-        return CGSize(width: coverWidth, height: coverWidth)
-            .scaled(by: min(2, window.traitCollection.displayScale))
+        return ReaderPostCell.preferredCoverSize(in: window, isCompact: isCompact)
     }
 
     private func configureToolbar(with viewModel: ReaderPostToolbarViewModel) {

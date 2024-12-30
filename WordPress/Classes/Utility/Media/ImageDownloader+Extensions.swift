@@ -5,6 +5,12 @@ extension ImageDownloader {
     nonisolated static let shared = ImageDownloader(authenticator: MediaRequestAuthenticator())
 }
 
+extension ImagePrefetcher {
+    convenience nonisolated init() {
+        self.init(downloader: .shared)
+    }
+}
+
 // MARK: - ImageDownloader (Closures)
 
 extension ImageDownloader {

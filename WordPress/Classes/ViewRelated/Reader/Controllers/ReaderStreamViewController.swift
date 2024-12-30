@@ -2,6 +2,7 @@ import Foundation
 import SVProgressHUD
 import WordPressShared
 import WordPressFlux
+import WordPressMedia
 import UIKit
 import Combine
 import WordPressUI
@@ -87,6 +88,8 @@ import AutomatticTracks
     private let tableConfiguration = ReaderTableConfiguration()
     /// Configuration of cells
     private let cellConfiguration = ReaderCellConfiguration()
+
+    private let prefetcher = ImagePrefetcher()
 
     enum NavigationItemTag: Int {
         case notifications
@@ -477,6 +480,7 @@ import AutomatticTracks
         tableViewController.didMove(toParent: self)
         tableConfiguration.setup(tableView)
         tableView.delegate = self
+        tableView.prefetchDataSource = self
     }
 
     @objc func configureRefreshControl() {
@@ -1490,6 +1494,28 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
                 anchor: self.tableView.cellForRow(at: indexPath) ?? self.view,
                 viewController: self
             ).makeMenu())
+        }
+    }
+}
+
+extension ReaderStreamViewController: UITableViewDataSourcePrefetching {
+    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+        prefetcher.startPrefetching(for: makeImageRequests(for: indexPaths))
+    }
+
+    func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
+        prefetcher.stopPrefetching(for: makeImageRequests(for: indexPaths))
+
+    }
+
+    private func makeImageRequests(for indexPaths: [IndexPath]) -> [ImageRequest] {
+        guard let window = view.window else { return [] }
+        let targetSize = ReaderPostCell.preferredCoverSize(in: window, isCompact: isCompact)
+        return indexPaths.compactMap {
+            guard let imageURL = getPost(at: $0)?.featuredImageURLForDisplay() else {
+                return nil
+            }
+            return ImageRequest(url: imageURL, options: ImageRequestOptions(size: targetSize))
         }
     }
 }
