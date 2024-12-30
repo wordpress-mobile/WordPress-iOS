@@ -255,7 +255,7 @@ extension HomeSiteHeaderViewController {
             onClose: nil
         )
 
-        let navigationController = LightNavigationController(rootViewController: webViewController)
+        let navigationController = UINavigationController(rootViewController: webViewController)
 
         if traitCollection.userInterfaceIdiom == .pad {
             navigationController.modalPresentationStyle = .fullScreen

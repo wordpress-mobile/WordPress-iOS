@@ -5,7 +5,7 @@ protocol ChildDrawerPositionable {
     var preferredDrawerPosition: DrawerPosition { get }
 }
 
-class BloggingRemindersNavigationController: LightNavigationController {
+class BloggingRemindersNavigationController: UINavigationController {
 
     typealias DismissClosure = () -> Void
 

@@ -1939,7 +1939,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
                                                                                source:@"my_site_view_site"
                                                                       withDeviceModes:true
                                                                               onClose:nil];
-    LightNavigationController *navController = [[LightNavigationController alloc] initWithRootViewController:webViewController];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     if (self.traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
         navController.modalPresentationStyle = UIModalPresentationFullScreen;
     }

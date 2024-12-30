@@ -28,7 +28,7 @@ class PostNoticeNavigationCoordinator {
         controller.trackOpenEvent()
         controller.navigationItem.title = NSLocalizedString("View", comment: "Verb. The screen title shown when viewing a post inside the app.")
 
-        let navigationController = LightNavigationController(rootViewController: controller)
+        let navigationController = UINavigationController(rootViewController: controller)
         if presenter.traitCollection.userInterfaceIdiom == .pad {
             navigationController.modalPresentationStyle = .fullScreen
         }

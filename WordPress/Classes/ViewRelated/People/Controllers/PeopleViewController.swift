@@ -188,7 +188,7 @@ class PeopleViewController: UITableViewController {
                 self?.refreshPeople()
             }
             let viewController = WebKitViewController(configuration: configuration)
-            let navWrapper = LightNavigationController(rootViewController: viewController)
+            let navWrapper = UINavigationController(rootViewController: viewController)
             navigationController?.present(navWrapper, animated: true)
         }
     }

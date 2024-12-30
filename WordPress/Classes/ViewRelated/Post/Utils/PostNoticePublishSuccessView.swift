@@ -117,7 +117,7 @@ struct PostNoticePublishSuccessView: View {
         WPAnalytics.track(.postEpilogueView)
         let controller = PreviewWebKitViewController(post: post, source: "edit_post_preview")
         controller.trackOpenEvent()
-        let navWrapper = LightNavigationController(rootViewController: controller)
+        let navWrapper = UINavigationController(rootViewController: controller)
         presenter.present(navWrapper, animated: true)
     }
 
