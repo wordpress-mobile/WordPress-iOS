@@ -23,7 +23,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     /// Closure to be executed when the editor gets closed.
     ///
-    var onClose: ((_ changesSaved: Bool) -> ())?
+    var onClose: (() -> ())?
 
     /// Verification Prompt Helper
     ///
