@@ -1,7 +1,7 @@
 import UIKit
 import WordPressUI
 
-class TimeSelectionViewController: UIViewController {
+final class BloggingRemindersTimeSelectionViewController: UIViewController {
 
     var preferredWidth: CGFloat?
 
@@ -11,8 +11,8 @@ class TimeSelectionViewController: UIViewController {
 
     private var onDismiss: ((Date) -> Void)?
 
-    private lazy var timeSelectionView: TimeSelectionView = {
-        let view = TimeSelectionView(selectedTime: scheduledTime)
+    private lazy var timeSelectionView: BloggingRemindersTimeSelectionView = {
+        let view = BloggingRemindersTimeSelectionView(selectedTime: scheduledTime)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -36,18 +36,6 @@ class TimeSelectionViewController: UIViewController {
         self.view = mainView
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        calculatePreferredSize()
-    }
-
-    private func calculatePreferredSize() {
-        let targetSize = CGSize(width: view.bounds.width,
-          height: UIView.layoutFittingCompressedSize.height)
-        preferredContentSize = view.systemLayoutSizeFitting(targetSize)
-        navigationController?.preferredContentSize = preferredContentSize
-    }
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: false)
@@ -55,6 +43,7 @@ class TimeSelectionViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+
         navigationController?.setNavigationBarHidden(true, animated: false)
         if isMovingFromParent {
             onDismiss?(timeSelectionView.getDate())
@@ -69,18 +58,5 @@ class TimeSelectionViewController: UIViewController {
         if isBeingDismissedDirectlyOrByAncestor() && navigationController?.viewControllers.last == self {
             tracker.flowDismissed(source: .timePicker)
         }
-    }
-}
-
-// MARK: - DrawerPresentable
-extension TimeSelectionViewController: DrawerPresentable {
-    var collapsedHeight: DrawerHeight {
-        return .intrinsicHeight
-    }
-}
-
-extension TimeSelectionViewController: ChildDrawerPositionable {
-    var preferredDrawerPosition: DrawerPosition {
-        return .collapsed
     }
 }

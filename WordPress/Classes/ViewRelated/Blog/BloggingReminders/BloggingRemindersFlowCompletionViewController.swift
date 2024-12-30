@@ -121,20 +121,10 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
 
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        calculatePreferredContentSize()
-    }
-
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
         hintLabel.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-    }
-
-    func calculatePreferredContentSize() {
-        let size = CGSize(width: view.bounds.width, height: UIView.layoutFittingCompressedSize.height)
-        preferredContentSize = view.systemLayoutSizeFitting(size)
     }
 
     // MARK: - View Configuration
@@ -220,20 +210,6 @@ extension BloggingRemindersFlowCompletionViewController: BloggingRemindersAction
 
     @objc private func dismissTapped() {
         dismiss(from: .dismiss, screen: .allSet, tracker: tracker)
-    }
-}
-
-// MARK: - DrawerPresentable
-
-extension BloggingRemindersFlowCompletionViewController: DrawerPresentable {
-    var collapsedHeight: DrawerHeight {
-        return .intrinsicHeight
-    }
-}
-
-extension BloggingRemindersFlowCompletionViewController: ChildDrawerPositionable {
-    var preferredDrawerPosition: DrawerPosition {
-        return .collapsed
     }
 }
 

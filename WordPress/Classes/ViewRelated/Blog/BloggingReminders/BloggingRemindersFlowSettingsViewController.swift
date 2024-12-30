@@ -6,7 +6,7 @@ protocol BloggingRemindersFlowDelegate: AnyObject {
     func didSetUpBloggingReminders()
 }
 
-class BloggingRemindersFlowSettingsViewController: UIViewController {
+final class BloggingRemindersFlowSettingsViewController: UIViewController {
 
     // MARK: - Subviews
 
@@ -110,8 +110,8 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         makeDivider()
     }()
 
-    private lazy var timeSelectionButton: TimeSelectionButton = {
-        let button = TimeSelectionButton(selectedTime: scheduledTime.toLocalTime())
+    private lazy var timeSelectionButton: BloggingRemindersTimeSelectionButton = {
+        let button = BloggingRemindersTimeSelectionButton(selectedTime: scheduledTime.toLocalTime())
         button.isUserInteractionEnabled = true
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(navigateToTimePicker), for: .touchUpInside)
@@ -408,8 +408,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 private extension BloggingRemindersFlowSettingsViewController {
 
     func pushTimeSelectionViewController() {
-        let viewController = TimeSelectionViewController(scheduledTime: scheduler.scheduledTime(for: blog),
-                                                         tracker: tracker) { [weak self] date in
+        let viewController = BloggingRemindersTimeSelectionViewController(scheduledTime: scheduler.scheduledTime(for: blog), tracker: tracker) { [weak self] date in
             self?.scheduledTime = date
             self?.timeSelectionButton.setSelectedTime(date.toLocalTime())
             self?.refreshNextButton()
@@ -650,18 +649,6 @@ extension BloggingRemindersFlowSettingsViewController: BloggingRemindersActions 
 
     @objc private func dismissTapped() {
         dismiss(from: .dismiss, screen: .dayPicker, tracker: tracker)
-    }
-}
-
-extension BloggingRemindersFlowSettingsViewController: DrawerPresentable {
-    var collapsedHeight: DrawerHeight {
-        return .maxHeight
-    }
-}
-
-extension BloggingRemindersFlowSettingsViewController: ChildDrawerPositionable {
-    var preferredDrawerPosition: DrawerPosition {
-        return .expanded
     }
 }
 

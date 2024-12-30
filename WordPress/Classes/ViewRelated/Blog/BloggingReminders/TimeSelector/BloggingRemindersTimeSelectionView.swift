@@ -1,7 +1,7 @@
 import UIKit
 
 /// A view that contains a time picker and a title reporting the selected time
-class TimeSelectionView: UIView {
+final class BloggingRemindersTimeSelectionView: UIView {
 
     private var selectedTime: Date
 
@@ -19,8 +19,8 @@ class TimeSelectionView: UIView {
         titleBar.setSelectedTime(timePicker.date.toLocalTime())
     }
 
-    private lazy var titleBar: TimeSelectionButton = {
-        let button = TimeSelectionButton(selectedTime: selectedTime.toLocalTime(), insets: Self.titleInsets)
+    private lazy var titleBar: BloggingRemindersTimeSelectionButton = {
+        let button = BloggingRemindersTimeSelectionButton(selectedTime: selectedTime.toLocalTime(), insets: Self.titleInsets)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.isUserInteractionEnabled = false
         button.isChevronHidden = true

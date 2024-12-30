@@ -230,20 +230,6 @@ extension BloggingRemindersPushPromptViewController: BloggingRemindersActions {
     }
 }
 
-// MARK: - DrawerPresentable
-
-extension BloggingRemindersPushPromptViewController: DrawerPresentable {
-    var collapsedHeight: DrawerHeight {
-        return .maxHeight
-    }
-}
-
-extension BloggingRemindersPushPromptViewController: ChildDrawerPositionable {
-    var preferredDrawerPosition: DrawerPosition {
-        return .expanded
-    }
-}
-
 // MARK: - Constants
 
 private enum TextContent {

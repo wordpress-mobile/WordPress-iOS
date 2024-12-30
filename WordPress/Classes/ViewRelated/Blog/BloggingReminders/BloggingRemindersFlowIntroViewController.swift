@@ -1,7 +1,7 @@
 import UIKit
 import WordPressUI
 
-class BloggingRemindersFlowIntroViewController: UIViewController {
+final class BloggingRemindersFlowIntroViewController: UIViewController {
 
     // MARK: - Subviews
 
@@ -43,37 +43,33 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
         return label
     }()
 
-    private lazy var getStartedButton: UIButton = {
-        let button = FancyButton()
-        button.isPrimary = true
-        button.setTitle(Strings.introButtonTitle, for: .normal)
-        button.addTarget(self, action: #selector(getStartedTapped), for: .touchUpInside)
-        return button
-    }()
+    private lazy var buttonNext: UIButton = {
+        var configuration = UIButton.Configuration.primary()
+        configuration.title = Strings.introButtonTitle
 
-    // MARK: - Initializers
+        return UIButton(configuration: configuration, primaryAction: .init { [weak self] _ in
+            self?.buttonGetStartedTapped()
+        })
+    }()
 
     private let blog: Blog
     private let tracker: BloggingRemindersTracker
     private let source: BloggingRemindersTracker.FlowStartSource
-    private weak var delegate: BloggingRemindersFlowDelegate?
+    private let onNextTapped: () -> Void
 
     init(for blog: Blog,
          tracker: BloggingRemindersTracker,
          source: BloggingRemindersTracker.FlowStartSource,
-         delegate: BloggingRemindersFlowDelegate? = nil) {
+         onNextTapped: @escaping () -> Void) {
         self.blog = blog
         self.tracker = tracker
         self.source = source
-        self.delegate = delegate
+        self.onNextTapped = onNextTapped
 
         super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder: NSCoder) {
-        // This VC is designed to be instantiated programmatically.  If we ever need to initialize this VC
-        // from a coder, we can implement support for it - but I don't think it's necessary right now.
-        // - diegoreymendez
         fatalError("Use init(tracker:) instead")
     }
 
@@ -105,22 +101,6 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
         }
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        calculatePreferredContentSize()
-    }
-
-    private func calculatePreferredContentSize() {
-        let size = CGSize(width: view.bounds.width, height: UIView.layoutFittingCompressedSize.height)
-        preferredContentSize = view.systemLayoutSizeFitting(size)
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        view.setNeedsLayout()
-    }
-
     // MARK: - View Configuration
 
     private func configureStackView() {
@@ -129,7 +109,7 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
             imageView,
             titleLabel,
             promptLabel,
-            getStartedButton
+            buttonNext
         ])
         stackView.setCustomSpacing(Metrics.afterPromptSpacing, after: promptLabel)
     }
@@ -141,45 +121,20 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
             stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: Metrics.edgeMargins.top),
             stackView.bottomAnchor.constraint(lessThanOrEqualTo: view.safeBottomAnchor, constant: -Metrics.edgeMargins.bottom),
 
-            getStartedButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Metrics.getStartedButtonHeight),
-            getStartedButton.widthAnchor.constraint(equalTo: stackView.widthAnchor),
+            buttonNext.heightAnchor.constraint(greaterThanOrEqualToConstant: Metrics.getStartedButtonHeight),
+            buttonNext.widthAnchor.constraint(equalTo: stackView.widthAnchor),
         ])
     }
 
-    @objc private func getStartedTapped() {
+    private func buttonGetStartedTapped() {
         tracker.buttonPressed(button: .continue, screen: .main)
-
-        do {
-            let flowSettingsViewController = try BloggingRemindersFlowSettingsViewController(for: blog, tracker: tracker, delegate: delegate)
-
-            navigationController?.pushViewController(flowSettingsViewController, animated: true)
-        } catch {
-            DDLogError("Could not instantiate the blogging reminders settings VC: \(error.localizedDescription)")
-            dismiss(animated: true, completion: nil)
-        }
+        onNextTapped()
     }
 }
 
 extension BloggingRemindersFlowIntroViewController: BloggingRemindersActions {
-
     @objc private func dismissTapped() {
         dismiss(from: .dismiss, screen: .main, tracker: tracker)
-    }
-}
-
-// MARK: - DrawerPresentable
-
-extension BloggingRemindersFlowIntroViewController: DrawerPresentable {
-    var collapsedHeight: DrawerHeight {
-        return .intrinsicHeight
-    }
-}
-
-// MARK: - ChildDrawerPositionable
-
-extension BloggingRemindersFlowIntroViewController: ChildDrawerPositionable {
-    var preferredDrawerPosition: DrawerPosition {
-        return .collapsed
     }
 }
 

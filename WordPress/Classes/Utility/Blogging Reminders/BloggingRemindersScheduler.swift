@@ -17,7 +17,7 @@ extension InteractiveNotificationsManager: PushNotificationAuthorizer {
 
 /// Main interface for scheduling blogging reminders
 ///
-class BloggingRemindersScheduler {
+final class BloggingRemindersScheduler {
 
     // MARK: - Convenience Typealiases
 
