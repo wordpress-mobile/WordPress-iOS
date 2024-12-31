@@ -8,7 +8,7 @@ final class BloggingRemindersFlowIntroViewController: UIViewController {
     private let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.spacing = Metrics.stackSpacing
+        stackView.spacing = 20
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.distribution = .equalSpacing
@@ -52,18 +52,11 @@ final class BloggingRemindersFlowIntroViewController: UIViewController {
         })
     }()
 
-    private let blog: Blog
     private let tracker: BloggingRemindersTracker
-    private let source: BloggingRemindersTracker.FlowStartSource
     private let onNextTapped: () -> Void
 
-    init(for blog: Blog,
-         tracker: BloggingRemindersTracker,
-         source: BloggingRemindersTracker.FlowStartSource,
-         onNextTapped: @escaping () -> Void) {
-        self.blog = blog
+    init(tracker: BloggingRemindersTracker, onNextTapped: @escaping () -> Void) {
         self.tracker = tracker
-        self.source = source
         self.onNextTapped = onNextTapped
 
         super.init(nibName: nil, bundle: nil)
@@ -105,23 +98,21 @@ final class BloggingRemindersFlowIntroViewController: UIViewController {
 
     private func configureStackView() {
         view.addSubview(stackView)
+        let spacer = UIView()
         stackView.addArrangedSubviews([
             imageView,
             titleLabel,
             promptLabel,
+            spacer,
             buttonNext
         ])
-        stackView.setCustomSpacing(Metrics.afterPromptSpacing, after: promptLabel)
+        stackView.setCustomSpacing(8, after: titleLabel)
+        stackView.setCustomSpacing(24, after: promptLabel)
     }
 
     private func configureConstraints() {
+        stackView.pinEdges(to: view.safeAreaLayoutGuide, insets: UIEdgeInsets(.all, 24))
         NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Metrics.edgeMargins.left),
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Metrics.edgeMargins.right),
-            stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: Metrics.edgeMargins.top),
-            stackView.bottomAnchor.constraint(lessThanOrEqualTo: view.safeBottomAnchor, constant: -Metrics.edgeMargins.bottom),
-
-            buttonNext.heightAnchor.constraint(greaterThanOrEqualToConstant: Metrics.getStartedButtonHeight),
             buttonNext.widthAnchor.constraint(equalTo: stackView.widthAnchor),
         ])
     }
@@ -138,8 +129,6 @@ extension BloggingRemindersFlowIntroViewController: BloggingRemindersActions {
     }
 }
 
-// MARK: - Constants
-
 private enum Strings {
     static let introTitle = NSLocalizedString("bloggingRemindersPrompt.intro.title", value: "Blogging Reminders", comment: "Title of the Blogging Reminders Settings screen.")
     static let introDescription = NSLocalizedString("bloggingRemindersPrompt.intro.details", value: "Set up your blogging reminders on days you want to post.", comment: "Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing.")
@@ -148,11 +137,4 @@ private enum Strings {
 
 private enum Images {
     static let celebrationImageName = "reminders-celebration"
-}
-
-private enum Metrics {
-    static let edgeMargins = UIEdgeInsets(top: 46, left: 20, bottom: 20, right: 20)
-    static let stackSpacing: CGFloat = 20.0
-    static let afterPromptSpacing: CGFloat = 24.0
-    static let getStartedButtonHeight: CGFloat = 44.0
 }

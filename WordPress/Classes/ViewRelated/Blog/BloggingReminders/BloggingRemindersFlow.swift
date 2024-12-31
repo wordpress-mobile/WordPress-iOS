@@ -40,7 +40,7 @@ final class BloggingRemindersFlow {
         if hasShownWeeklyRemindersFlow(for: blog) {
             showSettings()
         } else {
-            let introVC = BloggingRemindersFlowIntroViewController(for: blog, tracker: tracker, source: source) { [weak presentingViewController] in
+            let introVC = BloggingRemindersFlowIntroViewController(tracker: tracker) { [weak presentingViewController] in
                 presentingViewController?.dismiss(animated: true) {
                     showSettings()
                 }
