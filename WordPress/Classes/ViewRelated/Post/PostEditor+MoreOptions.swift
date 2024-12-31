@@ -87,7 +87,7 @@ extension PostEditor {
                 previewController = PreviewWebKitViewController(post: self.post, source: "edit_post_more_preview")
             }
             previewController.trackOpenEvent()
-            let navWrapper = LightNavigationController(rootViewController: previewController)
+            let navWrapper = UINavigationController(rootViewController: previewController)
             if self.navigationController?.traitCollection.userInterfaceIdiom == .pad {
                 navWrapper.modalPresentationStyle = .fullScreen
             }

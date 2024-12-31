@@ -1,6 +1,6 @@
 import UIKit
 
-class TimeSelectionButton: UIButton {
+final class BloggingRemindersTimeSelectionButton: UIButton {
 
     private(set) var selectedTime: String {
         didSet {

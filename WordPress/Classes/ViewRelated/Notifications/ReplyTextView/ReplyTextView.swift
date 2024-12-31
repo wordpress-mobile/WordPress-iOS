@@ -216,7 +216,7 @@ import Gridicons
 
         self.resignFirstResponder()
 
-        let navController = LightNavigationController(rootViewController: editViewController)
+        let navController = UINavigationController(rootViewController: editViewController)
         rootViewController.present(navController, animated: true)
     }
 

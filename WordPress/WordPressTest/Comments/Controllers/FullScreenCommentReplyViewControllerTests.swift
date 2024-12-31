@@ -136,7 +136,7 @@ class FullScreenCommentReplyViewControllerTests: CoreDataTestCase {
     ///   - inWindow: The window instance you want to load it in
     private func load(_ controller: UIViewController, inWindow: UIWindow) {
         inWindow.addSubview(controller.view)
-        inWindow.rootViewController = LightNavigationController(rootViewController: controller)
+        inWindow.rootViewController = UINavigationController(rootViewController: controller)
         inWindow.makeKeyAndVisible()
         controller.beginAppearanceTransition(true, animated: false)
         RunLoop.current.run(until: Date())

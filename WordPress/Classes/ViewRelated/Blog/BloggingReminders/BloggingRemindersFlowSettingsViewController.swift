@@ -6,7 +6,7 @@ protocol BloggingRemindersFlowDelegate: AnyObject {
     func didSetUpBloggingReminders()
 }
 
-class BloggingRemindersFlowSettingsViewController: UIViewController {
+final class BloggingRemindersFlowSettingsViewController: UIViewController {
 
     // MARK: - Subviews
 
@@ -54,8 +54,8 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     }()
 
     private lazy var button: UIButton = {
-        let button = FancyButton()
-        button.isPrimary = true
+        var configuration = UIButton.Configuration.primary()
+        let button = UIButton(configuration: configuration, primaryAction: nil)
         button.addTarget(self, action: #selector(notifyMeButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -110,8 +110,8 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         makeDivider()
     }()
 
-    private lazy var timeSelectionButton: TimeSelectionButton = {
-        let button = TimeSelectionButton(selectedTime: scheduledTime.toLocalTime())
+    private lazy var timeSelectionButton: BloggingRemindersTimeSelectionButton = {
+        let button = BloggingRemindersTimeSelectionButton(selectedTime: scheduledTime.toLocalTime())
         button.isUserInteractionEnabled = true
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(navigateToTimePicker), for: .touchUpInside)
@@ -279,13 +279,16 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         refreshFrequencyLabel()
 
         showFullUI(shouldShowFullUI)
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .close, primaryAction: .init(handler: { [weak self] _ in
+            self?.presentingViewController?.dismiss(animated: true)
+        }))
     }
 
     override func viewDidAppear(_ animated: Bool) {
-        tracker.screenShown(.dayPicker)
-
         super.viewDidAppear(animated)
-        calculatePreferredContentSize()
+
+        tracker.screenShown(.dayPicker)
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -298,11 +301,6 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         }
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        calculatePreferredContentSize()
-    }
-
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
@@ -311,8 +309,8 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
+
         showFullUI(shouldShowFullUI)
-        calculatePreferredContentSize()
     }
 
     // MARK: - Actions
@@ -408,14 +406,12 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 private extension BloggingRemindersFlowSettingsViewController {
 
     func pushTimeSelectionViewController() {
-        let viewController = TimeSelectionViewController(scheduledTime: scheduler.scheduledTime(for: blog),
-                                                         tracker: tracker) { [weak self] date in
+        let viewController = BloggingRemindersTimeSelectionViewController(scheduledTime: scheduler.scheduledTime(for: blog), tracker: tracker) { [weak self] date in
             self?.scheduledTime = date
             self?.timeSelectionButton.setSelectedTime(date.toLocalTime())
             self?.refreshNextButton()
             self?.refreshFrequencyLabel()
         }
-        viewController.preferredWidth = self.view.frame.width
         navigationController?.pushViewController(viewController, animated: true)
     }
 
@@ -497,11 +493,6 @@ private extension BloggingRemindersFlowSettingsViewController {
 
         frequencyLabel.attributedText = attributedText
         frequencyLabel.sizeToFit()
-    }
-
-    func calculatePreferredContentSize() {
-        let size = CGSize(width: view.bounds.width, height: UIView.layoutFittingCompressedSize.height)
-        preferredContentSize = view.systemLayoutSizeFitting(size)
     }
 
     func configureStackView() {
@@ -650,18 +641,6 @@ extension BloggingRemindersFlowSettingsViewController: BloggingRemindersActions 
 
     @objc private func dismissTapped() {
         dismiss(from: .dismiss, screen: .dayPicker, tracker: tracker)
-    }
-}
-
-extension BloggingRemindersFlowSettingsViewController: DrawerPresentable {
-    var collapsedHeight: DrawerHeight {
-        return .maxHeight
-    }
-}
-
-extension BloggingRemindersFlowSettingsViewController: ChildDrawerPositionable {
-    var preferredDrawerPosition: DrawerPosition {
-        return .expanded
     }
 }
 

@@ -1,3 +1,5 @@
+import UIKit
+
 /// Conform to this protocol to implement common actions for the blogging reminders flow
 protocol BloggingRemindersActions: UIViewController {
     func dismiss(from button: BloggingRemindersTracker.Button,

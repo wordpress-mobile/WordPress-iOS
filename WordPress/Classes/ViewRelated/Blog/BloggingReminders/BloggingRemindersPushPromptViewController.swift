@@ -1,7 +1,7 @@
 import UIKit
 import WordPressUI
 
-class BloggingRemindersPushPromptViewController: UIViewController {
+final class BloggingRemindersPushPromptViewController: UIViewController {
 
     // MARK: - Subviews
 
@@ -58,21 +58,12 @@ class BloggingRemindersPushPromptViewController: UIViewController {
     }()
 
     private lazy var turnOnNotificationsButton: UIButton = {
-        let button = FancyButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.isPrimary = true
-        button.setTitle(TextContent.turnOnButtonTitle, for: .normal)
-        button.addTarget(self, action: #selector(turnOnButtonTapped), for: .touchUpInside)
-        button.titleLabel?.adjustsFontSizeToFitWidth = true
-        return button
-    }()
+        var configuration = UIButton.Configuration.primary()
+        configuration.title = TextContent.turnOnButtonTitle
 
-    private lazy var dismissButton: UIButton = {
-        let button = UIButton(type: .custom)
+        let button = UIButton(configuration: configuration, primaryAction: nil)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(.gridicon(.cross), for: .normal)
-        button.tintColor = .secondaryLabel
-        button.addTarget(self, action: #selector(dismissTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(turnOnButtonTapped), for: .touchUpInside)
         return button
     }()
 
@@ -118,14 +109,11 @@ class BloggingRemindersPushPromptViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        view.addSubview(dismissButton)
 
         configureStackView()
 
         view.addSubview(turnOnNotificationsButton)
         configureConstraints()
-
-        navigationController?.setNavigationBarHidden(true, animated: false)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -145,20 +133,10 @@ class BloggingRemindersPushPromptViewController: UIViewController {
 
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        calculatePreferredContentSize()
-    }
-
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
         hintLabel.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-    }
-
-    private func calculatePreferredContentSize() {
-        let size = CGSize(width: view.bounds.width, height: UIView.layoutFittingCompressedSize.height)
-        preferredContentSize = view.systemLayoutSizeFitting(size)
     }
 
     @objc
@@ -186,13 +164,9 @@ class BloggingRemindersPushPromptViewController: UIViewController {
             stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: Metrics.edgeMargins.top),
 
             turnOnNotificationsButton.topAnchor.constraint(greaterThanOrEqualTo: stackView.bottomAnchor, constant: Metrics.edgeMargins.bottom),
-            turnOnNotificationsButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Metrics.turnOnButtonHeight),
             turnOnNotificationsButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Metrics.edgeMargins.left),
             turnOnNotificationsButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Metrics.edgeMargins.right),
-            turnOnNotificationsButton.bottomAnchor.constraint(equalTo: view.safeBottomAnchor, constant: -Metrics.edgeMargins.bottom),
-
-            dismissButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Metrics.dismissButtonMargin),
-            dismissButton.topAnchor.constraint(equalTo: view.topAnchor, constant: Metrics.dismissButtonMargin)
+            turnOnNotificationsButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -Metrics.edgeMargins.bottom),
         ])
     }
 
@@ -230,20 +204,6 @@ extension BloggingRemindersPushPromptViewController: BloggingRemindersActions {
     }
 }
 
-// MARK: - DrawerPresentable
-
-extension BloggingRemindersPushPromptViewController: DrawerPresentable {
-    var collapsedHeight: DrawerHeight {
-        return .maxHeight
-    }
-}
-
-extension BloggingRemindersPushPromptViewController: ChildDrawerPositionable {
-    var preferredDrawerPosition: DrawerPosition {
-        return .expanded
-    }
-}
-
 // MARK: - Constants
 
 private enum TextContent {
@@ -263,8 +223,6 @@ private enum Images {
 }
 
 private enum Metrics {
-    static let dismissButtonMargin: CGFloat = 20.0
-    static let edgeMargins = UIEdgeInsets(top: 80, left: 28, bottom: 80, right: 28)
+    static let edgeMargins = UIEdgeInsets(top: 80, left: 20, bottom: 20, right: 20)
     static let stackSpacing: CGFloat = 20.0
-    static let turnOnButtonHeight: CGFloat = 44.0
 }
