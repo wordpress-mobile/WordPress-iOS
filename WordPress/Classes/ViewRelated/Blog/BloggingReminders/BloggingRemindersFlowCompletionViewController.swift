@@ -1,7 +1,7 @@
 import UIKit
 import WordPressUI
 
-class BloggingRemindersFlowCompletionViewController: UIViewController {
+final class BloggingRemindersFlowCompletionViewController: UIViewController {
 
     // MARK: - Subviews
 
@@ -57,8 +57,10 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
     }()
 
     private lazy var doneButton: UIButton = {
-        let button = FancyButton()
-        button.isPrimary = true
+        var configuration = UIButton.Configuration.primary()
+        configuration.title = TextContent.doneButtonTitle
+
+        let button = UIButton(configuration: configuration, primaryAction: nil)
         button.setTitle(TextContent.doneButtonTitle, for: .normal)
         button.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         return button
