@@ -12,10 +12,6 @@ public extension CGFloat {
             public static let max: CGFloat = 48
         }
 
-        public enum Hitbox {
-            public static let minTappableLength: CGFloat = 44
-        }
-
         public enum Radius {
             public static let small: CGFloat = 5
             public static let medium: CGFloat = 10

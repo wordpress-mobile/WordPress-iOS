@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 import WordPressUI
 
-class CompliancePopoverViewModel: ObservableObject {
+final class CompliancePopoverViewModel: ObservableObject {
 
     @Published
     var isAnalyticsEnabled: Bool = !WPAppAnalytics.userHasOptedOut()
@@ -45,13 +45,10 @@ class CompliancePopoverViewModel: ObservableObject {
             let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context)
             return (account?.userID, account?.wordPressComRestApi)
         }
-
-        guard let accountID, let restAPI else {
-            return
+        if let accountID, let restAPI {
+            let change = AccountSettingsChange.tracksOptOut(!isAnalyticsEnabled)
+            AccountSettingsService(userID: accountID.intValue, api: restAPI).saveChange(change)
         }
-
-        let change = AccountSettingsChange.tracksOptOut(!isAnalyticsEnabled)
-        AccountSettingsService(userID: accountID.intValue, api: restAPI).saveChange(change)
         coordinator?.dismiss()
         defaults.didShowCompliancePopup = true
         analyticsTracker.trackPrivacyChoicesBannerSaveButtonTapped(analyticsEnabled: isAnalyticsEnabled)
