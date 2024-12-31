@@ -133,20 +133,10 @@ final class BloggingRemindersPushPromptViewController: UIViewController {
 
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        calculatePreferredContentSize()
-    }
-
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
         hintLabel.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-    }
-
-    private func calculatePreferredContentSize() {
-        let size = CGSize(width: view.bounds.width, height: UIView.layoutFittingCompressedSize.height)
-        preferredContentSize = view.systemLayoutSizeFitting(size)
     }
 
     @objc
@@ -174,10 +164,9 @@ final class BloggingRemindersPushPromptViewController: UIViewController {
             stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: Metrics.edgeMargins.top),
 
             turnOnNotificationsButton.topAnchor.constraint(greaterThanOrEqualTo: stackView.bottomAnchor, constant: Metrics.edgeMargins.bottom),
-            turnOnNotificationsButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Metrics.turnOnButtonHeight),
             turnOnNotificationsButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Metrics.edgeMargins.left),
             turnOnNotificationsButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Metrics.edgeMargins.right),
-            turnOnNotificationsButton.bottomAnchor.constraint(equalTo: view.safeBottomAnchor, constant: -Metrics.edgeMargins.bottom),
+            turnOnNotificationsButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -Metrics.edgeMargins.bottom),
         ])
     }
 
@@ -234,7 +223,6 @@ private enum Images {
 }
 
 private enum Metrics {
-    static let edgeMargins = UIEdgeInsets(top: 80, left: 28, bottom: 80, right: 28)
+    static let edgeMargins = UIEdgeInsets(top: 80, left: 20, bottom: 20, right: 20)
     static let stackSpacing: CGFloat = 20.0
-    static let turnOnButtonHeight: CGFloat = 44.0
 }
