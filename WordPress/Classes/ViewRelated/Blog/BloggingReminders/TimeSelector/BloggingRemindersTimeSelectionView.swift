@@ -1,4 +1,5 @@
 import UIKit
+import WordPressUI
 
 /// A view that contains a time picker and a title reporting the selected time
 final class BloggingRemindersTimeSelectionView: UIView {
@@ -65,9 +66,9 @@ final class BloggingRemindersTimeSelectionView: UIView {
         self.selectedTime = selectedTime
         super.init(frame: .zero)
 
-        backgroundColor = .systemBackground
         addSubview(verticalStackView)
-        pinSubviewToSafeArea(verticalStackView)
+        verticalStackView.pinEdges(to: safeAreaLayoutGuide)
+
         NSLayoutConstraint.activate([
             timePicker.centerXAnchor.constraint(equalTo: centerXAnchor),
             titleBar.widthAnchor.constraint(equalTo: widthAnchor),

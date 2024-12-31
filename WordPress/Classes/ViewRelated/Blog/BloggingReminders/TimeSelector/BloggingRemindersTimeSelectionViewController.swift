@@ -2,20 +2,13 @@ import UIKit
 import WordPressUI
 
 final class BloggingRemindersTimeSelectionViewController: UIViewController {
-
-    var preferredWidth: CGFloat?
-
     private let scheduledTime: Date
 
     private let tracker: BloggingRemindersTracker
 
     private var onDismiss: ((Date) -> Void)?
 
-    private lazy var timeSelectionView: BloggingRemindersTimeSelectionView = {
-        let view = BloggingRemindersTimeSelectionView(selectedTime: scheduledTime)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
+    private lazy var timeSelectionView = BloggingRemindersTimeSelectionView(selectedTime: scheduledTime)
 
     init(scheduledTime: Date, tracker: BloggingRemindersTracker, onDismiss: ((Date) -> Void)? = nil) {
         self.scheduledTime = scheduledTime
@@ -28,16 +21,13 @@ final class BloggingRemindersTimeSelectionViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func loadView() {
-        let mainView = timeSelectionView
-        if let width = preferredWidth {
-            mainView.widthAnchor.constraint(equalToConstant: width).isActive = true
-        }
-        self.view = mainView
-    }
+    override func viewDidLoad() {
+        super.viewDidLoad()
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+        view.backgroundColor = .systemBackground
+
+        view.addSubview(timeSelectionView)
+        timeSelectionView.pinEdges([.top, .horizontal])
     }
 
     override func viewWillDisappear(_ animated: Bool) {

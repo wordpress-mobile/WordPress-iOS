@@ -412,7 +412,6 @@ private extension BloggingRemindersFlowSettingsViewController {
             self?.refreshNextButton()
             self?.refreshFrequencyLabel()
         }
-        viewController.preferredWidth = self.view.frame.width
         navigationController?.pushViewController(viewController, animated: true)
     }
 
