@@ -5,18 +5,10 @@ final class BloggingRemindersFlowCompletionViewController: UIViewController {
 
     // MARK: - Subviews
 
-    private let stackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.spacing = Metrics.stackSpacing
-        stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.distribution = .equalSpacing
-        return stackView
-    }()
+    private let scrollView = UIScrollView()
 
     private let imageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: Images.bellImageName))
+        let imageView = UIImageView(image: UIImage(named: "reminders-bell"))
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.tintColor = .systemYellow
         return imageView
@@ -25,7 +17,6 @@ final class BloggingRemindersFlowCompletionViewController: UIViewController {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.adjustsFontForContentSizeCategory = true
-        label.adjustsFontSizeToFitWidth = true
         label.font = WPStyleGuide.serifFontForTextStyle(.title1, fontWeight: .semibold)
         label.numberOfLines = 2
         label.textAlignment = .center
@@ -36,7 +27,6 @@ final class BloggingRemindersFlowCompletionViewController: UIViewController {
     private let promptLabel: UILabel = {
         let label = UILabel()
         label.adjustsFontForContentSizeCategory = true
-        label.adjustsFontSizeToFitWidth = true
         label.font = .preferredFont(forTextStyle: .body)
         label.numberOfLines = 6
         label.textAlignment = .center
@@ -47,7 +37,6 @@ final class BloggingRemindersFlowCompletionViewController: UIViewController {
     private let hintLabel: UILabel = {
         let label = UILabel()
         label.adjustsFontForContentSizeCategory = true
-        label.adjustsFontSizeToFitWidth = true
         label.font = .preferredFont(forTextStyle: .footnote)
         label.text = TextContent.completionUpdateHint
         label.numberOfLines = 3
@@ -65,6 +54,8 @@ final class BloggingRemindersFlowCompletionViewController: UIViewController {
         button.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         return button
     }()
+
+    private let bottomBarView = BottomToolbarView()
 
     // MARK: - Initializers
 
@@ -96,18 +87,22 @@ final class BloggingRemindersFlowCompletionViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         view.backgroundColor = .systemBackground
 
-        configureStackView()
-        configureConstraints()
+        setupView()
+        setupBottomBar()
+
         configurePromptLabel()
         configureTitleLabel()
+
+        navigationController?.setNavigationBarHidden(true, animated: false)
     }
 
     override func viewDidAppear(_ animated: Bool) {
-        tracker.screenShown(.allSet)
-
         super.viewDidAppear(animated)
+
+        tracker.screenShown(.allSet)
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -118,40 +113,39 @@ final class BloggingRemindersFlowCompletionViewController: UIViewController {
         if isBeingDismissedDirectlyOrByAncestor() && navigationController?.viewControllers.last == self {
             tracker.flowCompleted()
         }
-
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        hintLabel.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
     }
 
     // MARK: - View Configuration
 
-    private func configureStackView() {
-        view.addSubview(stackView)
-
-        stackView.addArrangedSubviews([
+    private func setupView() {
+        let stackView = UIStackView(axis: .vertical, alignment: .center, spacing: 8, [
             imageView,
             titleLabel,
             promptLabel,
-            hintLabel,
-            doneButton
+            hintLabel
         ])
-        stackView.setCustomSpacing(Metrics.afterHintSpacing, after: hintLabel)
+        stackView.setCustomSpacing(16, after: titleLabel)
+
+        scrollView.showsVerticalScrollIndicator = false
+        scrollView.alwaysBounceVertical = false
+
+        scrollView.addSubview(stackView)
+        view.addSubview(scrollView)
+
+        var insets = UIEdgeInsets(.all, 20)
+        insets.top = 48
+
+        stackView.pinEdges(insets: insets)
+        stackView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -40).isActive = true
+
+        scrollView.pinEdges()
     }
 
-    private func configureConstraints() {
-        NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Metrics.edgeMargins.left),
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Metrics.edgeMargins.right),
-            stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: Metrics.edgeMargins.top),
-            stackView.bottomAnchor.constraint(lessThanOrEqualTo: view.safeBottomAnchor, constant: -Metrics.edgeMargins.bottom),
+    private func setupBottomBar() {
+        bottomBarView.contentView.addSubview(doneButton)
+        doneButton.pinEdges()
 
-            doneButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Metrics.doneButtonHeight),
-            doneButton.widthAnchor.constraint(equalTo: stackView.widthAnchor),
-        ])
+        bottomBarView.configure(in: self, scrollView: scrollView)
     }
 
     // Populates the prompt label with formatted text detailing the reminders set by the user.
@@ -226,14 +220,6 @@ private enum TextContent {
     static let doneButtonTitle = NSLocalizedString("Done", comment: "Title for a Done button.")
 }
 
-private enum Images {
-    static let bellImageName = "reminders-bell"
-}
-
 private enum Metrics {
-    static let edgeMargins = UIEdgeInsets(top: 46, left: 20, bottom: 20, right: 20)
-    static let stackSpacing: CGFloat = 20.0
-    static let doneButtonHeight: CGFloat = 44.0
-    static let afterHintSpacing: CGFloat = 24.0
     static let promptTextLineSpacing: CGFloat = 1.5
 }
