@@ -3,20 +3,8 @@ import WordPressUI
 
 final class BloggingRemindersFlowIntroViewController: UIViewController {
 
-    // MARK: - Subviews
-
-    private let stackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.spacing = 20
-        stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.distribution = .equalSpacing
-        return stackView
-    }()
-
     private let imageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: Images.celebrationImageName))
+        let imageView = UIImageView(image: UIImage(named: "reminders-celebration"))
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.tintColor = .systemYellow
         return imageView
@@ -73,8 +61,7 @@ final class BloggingRemindersFlowIntroViewController: UIViewController {
 
         view.backgroundColor = .systemBackground
 
-        configureStackView()
-        configureConstraints()
+        setupView()
         promptLabel.text = Strings.introDescription
     }
 
@@ -96,22 +83,23 @@ final class BloggingRemindersFlowIntroViewController: UIViewController {
 
     // MARK: - View Configuration
 
-    private func configureStackView() {
-        view.addSubview(stackView)
-        let spacer = UIView()
-        stackView.addArrangedSubviews([
+    private func setupView() {
+        let stackView = UIStackView(axis: .vertical, alignment: .center, spacing: 20, [
             imageView,
             titleLabel,
             promptLabel,
-            spacer,
+            SpacerView(minHeight: 8),
             buttonNext
         ])
         stackView.setCustomSpacing(8, after: titleLabel)
         stackView.setCustomSpacing(24, after: promptLabel)
-    }
 
-    private func configureConstraints() {
-        stackView.pinEdges(to: view.safeAreaLayoutGuide, insets: UIEdgeInsets(.all, 24))
+        view.addSubview(stackView)
+
+        var insets = UIEdgeInsets(.all, 24)
+        insets.top = 48
+
+        stackView.pinEdges(to: view.safeAreaLayoutGuide, insets: insets)
         NSLayoutConstraint.activate([
             buttonNext.widthAnchor.constraint(equalTo: stackView.widthAnchor),
         ])
@@ -132,9 +120,5 @@ extension BloggingRemindersFlowIntroViewController: BloggingRemindersActions {
 private enum Strings {
     static let introTitle = NSLocalizedString("bloggingRemindersPrompt.intro.title", value: "Blogging Reminders", comment: "Title of the Blogging Reminders Settings screen.")
     static let introDescription = NSLocalizedString("bloggingRemindersPrompt.intro.details", value: "Set up your blogging reminders on days you want to post.", comment: "Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing.")
-    static let introButtonTitle = NSLocalizedString("bloggingRemindersPrompt.intro.continueButton", value: "Set reminders", comment: "Title of the set goals button in the Blogging Reminders Settings flow.")
-}
-
-private enum Images {
-    static let celebrationImageName = "reminders-celebration"
+    static let introButtonTitle = NSLocalizedString("bloggingRemindersPrompt.intro.continueButton", value: "Set Reminders", comment: "Title of the set goals button in the Blogging Reminders Settings flow.")
 }
