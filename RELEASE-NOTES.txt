@@ -3,6 +3,7 @@
 * [**] Add new lightbox screen for images with modern transitions and enhanced performance [#23922]
 * [*] Add prefetching to Reader streams [#23928]
 * [*] Fix an issue with blogging reminders prompt not being shown after publishing a new post [#23930]
+* [*] Fix transitions in Blogging Reminders flow, improve accessibiliy, add close buttons [#23931]
 
 25.6
 -----
