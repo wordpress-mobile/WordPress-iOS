@@ -30,7 +30,7 @@ struct LengthGallery: View {
         ZStack {
             RoundedRectangle(cornerRadius: .DS.Radius.small)
                 .fill(.background)
-                .frame(height: .DS.Hitbox.minTappableLength)
+                .frame(height: 44)
             HStack {
                 Text(name)
                     .offset(x: .DS.Padding.double)

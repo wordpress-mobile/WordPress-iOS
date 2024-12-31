@@ -101,10 +101,10 @@ final class CompliancePopoverCoordinator: CompliancePopoverCoordinatorProtocol {
             contextManager: ContextManager.shared
         )
         complianceViewModel.coordinator = self
-        let complianceViewController = CompliancePopoverViewController(viewModel: complianceViewModel)
-        let bottomSheetViewController = BottomSheetViewController(childViewController: complianceViewController, customHeaderSpacing: 0)
-
-        bottomSheetViewController.show(from: presentingViewController)
+        let complianceVC = CompliancePopoverViewController(viewModel: complianceViewModel)
+        complianceVC.sheetPresentationController?.detents = [.medium(), .large()]
+        complianceVC.isModalInPresentation = true
+        presentingViewController.present(complianceVC, animated: true)
     }
 }
 

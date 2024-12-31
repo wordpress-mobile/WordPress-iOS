@@ -1,21 +1,28 @@
 import SwiftUI
 import JetpackStatsWidgetsCore
-import DesignSystem
 
 struct CompliancePopover: View {
     @StateObject
     var viewModel: CompliancePopoverViewModel
 
     var body: some View {
-        VStack(alignment: .leading, spacing: .DS.Padding.double) {
-            titleText
-            subtitleText
-            analyticsToggle
-            footnote
-            buttonsHStack
+        ScrollView(.vertical) {
+            VStack(alignment: .leading, spacing: 8) {
+                titleText.padding(.top, 16)
+                subtitleText
+                analyticsToggle.padding(.top, 8)
+                footnote
+            }
+            .padding(20)
         }
-        .padding(.DS.Padding.medium)
-        .fixedSize(horizontal: false, vertical: true)
+        .safeAreaInset(edge: .bottom) {
+            HStack(spacing: 8) {
+                settingsButton
+                saveButton
+            }
+            .padding(20)
+            .background(Color(.systemBackground))
+        }
     }
 
     private var titleText: some View {
@@ -33,7 +40,7 @@ struct CompliancePopover: View {
         Toggle(Strings.toggleTitle, isOn: $viewModel.isAnalyticsEnabled)
             .foregroundStyle(Color(.label))
             .toggleStyle(UIAppColor.switchStyle)
-            .padding(.vertical, .DS.Padding.single)
+            .padding(.vertical, 8)
     }
 
     private var footnote: some View {
@@ -42,26 +49,19 @@ struct CompliancePopover: View {
             .foregroundColor(.secondary)
     }
 
-    private var buttonsHStack: some View {
-        HStack(spacing: .DS.Padding.single) {
-            settingsButton
-            saveButton
-        }.padding(.top, .DS.Padding.medium)
-    }
-
     private var settingsButton: some View {
         Button(action: {
             self.viewModel.didTapSettings()
         }) {
             ZStack {
-                RoundedRectangle(cornerRadius: .DS.Padding.single)
-                    .stroke(.gray, lineWidth: .DS.Border.thin)
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(.gray, lineWidth: 0.5)
                 Text(Strings.settingsButtonTitle)
                     .font(.body)
             }
         }
         .foregroundColor(AppColor.brand)
-        .frame(height: .DS.Hitbox.minTappableLength)
+        .frame(height: 44)
     }
 
     private var saveButton: some View {
@@ -76,7 +76,7 @@ struct CompliancePopover: View {
             }
         }
         .foregroundColor(.white)
-        .frame(height: .DS.Hitbox.minTappableLength)
+        .frame(height: 44)
     }
 }
 
