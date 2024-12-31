@@ -1,4 +1,5 @@
 import UIKit
+import WordPressFlux
 import WordPressUI
 
 final class BloggingRemindersFlow {
@@ -27,10 +28,8 @@ final class BloggingRemindersFlow {
             do {
                 let settingsVC = try BloggingRemindersFlowSettingsViewController(for: blog, tracker: tracker, delegate: delegate)
                 let navigationController = BloggingRemindersNavigationController(rootViewController: settingsVC, onDismiss: {
-                    NoticesDispatch.unlock()
                     onDismiss?()
                 })
-                NoticesDispatch.lock()
                 presentingViewController?.present(navigationController, animated: true)
             } catch {
                 wpAssertionFailure("Could not instantiate the blogging reminders settings VC", userInfo: ["error": "\(error)"])
@@ -56,6 +55,7 @@ final class BloggingRemindersFlow {
         }
 
         setHasShownWeeklyRemindersFlow(for: blog)
+        ActionDispatcher.dispatch(NoticeAction.dismiss)
     }
 
     // MARK: - Weekly reminders flow presentation status
