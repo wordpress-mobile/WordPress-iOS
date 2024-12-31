@@ -54,8 +54,8 @@ final class BloggingRemindersFlowSettingsViewController: UIViewController {
     }()
 
     private lazy var button: UIButton = {
-        let button = FancyButton()
-        button.isPrimary = true
+        var configuration = UIButton.Configuration.primary()
+        let button = UIButton(configuration: configuration, primaryAction: nil)
         button.addTarget(self, action: #selector(notifyMeButtonTapped), for: .touchUpInside)
         return button
     }()
