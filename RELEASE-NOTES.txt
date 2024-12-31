@@ -4,6 +4,8 @@
 * [*] Add prefetching to Reader streams [#23928]
 * [*] Fix an issue with blogging reminders prompt not being shown after publishing a new post [#23930]
 * [*] Fix transitions in Blogging Reminders flow, improve accessibility, add close buttons [#23931]
+* [*] Fix an issue with compliance popover not dismissing for self-hosted site [#23932]
+* [*] Fix dynamic type support in the compliance popover [#23932]
 
 25.6
 -----
