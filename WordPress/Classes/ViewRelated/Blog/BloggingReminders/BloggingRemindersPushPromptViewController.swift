@@ -124,8 +124,6 @@ class BloggingRemindersPushPromptViewController: UIViewController {
 
         view.addSubview(turnOnNotificationsButton)
         configureConstraints()
-
-        navigationController?.setNavigationBarHidden(true, animated: false)
     }
 
     override func viewDidAppear(_ animated: Bool) {

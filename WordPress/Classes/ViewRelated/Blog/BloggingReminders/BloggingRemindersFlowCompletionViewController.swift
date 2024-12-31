@@ -100,8 +100,6 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
         configureConstraints()
         configurePromptLabel()
         configureTitleLabel()
-
-        navigationController?.setNavigationBarHidden(true, animated: false)
     }
 
     override func viewDidAppear(_ animated: Bool) {

@@ -279,13 +279,16 @@ final class BloggingRemindersFlowSettingsViewController: UIViewController {
         refreshFrequencyLabel()
 
         showFullUI(shouldShowFullUI)
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .close, primaryAction: .init(handler: { [weak self] _ in
+            self?.presentingViewController?.dismiss(animated: true)
+        }))
     }
 
     override func viewDidAppear(_ animated: Bool) {
-        tracker.screenShown(.dayPicker)
-
         super.viewDidAppear(animated)
-        calculatePreferredContentSize()
+
+        tracker.screenShown(.dayPicker)
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -298,11 +301,6 @@ final class BloggingRemindersFlowSettingsViewController: UIViewController {
         }
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        calculatePreferredContentSize()
-    }
-
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
@@ -311,8 +309,8 @@ final class BloggingRemindersFlowSettingsViewController: UIViewController {
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
+
         showFullUI(shouldShowFullUI)
-        calculatePreferredContentSize()
     }
 
     // MARK: - Actions
@@ -496,11 +494,6 @@ private extension BloggingRemindersFlowSettingsViewController {
 
         frequencyLabel.attributedText = attributedText
         frequencyLabel.sizeToFit()
-    }
-
-    func calculatePreferredContentSize() {
-        let size = CGSize(width: view.bounds.width, height: UIView.layoutFittingCompressedSize.height)
-        preferredContentSize = view.systemLayoutSizeFitting(size)
     }
 
     func configureStackView() {

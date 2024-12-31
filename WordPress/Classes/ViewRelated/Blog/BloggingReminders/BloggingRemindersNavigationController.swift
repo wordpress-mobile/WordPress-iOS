@@ -8,8 +8,6 @@ final class BloggingRemindersNavigationController: UINavigationController {
         self.onDismiss = onDismiss
 
         super.init(rootViewController: rootViewController)
-
-        setNavigationBarHidden(true, animated: false)
     }
 
     required init?(coder aDecoder: NSCoder) {
