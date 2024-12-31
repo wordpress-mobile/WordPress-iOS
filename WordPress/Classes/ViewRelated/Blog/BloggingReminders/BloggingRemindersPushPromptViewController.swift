@@ -67,15 +67,6 @@ final class BloggingRemindersPushPromptViewController: UIViewController {
         return button
     }()
 
-    private lazy var dismissButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(.gridicon(.cross), for: .normal)
-        button.tintColor = .secondaryLabel
-        button.addTarget(self, action: #selector(dismissTapped), for: .touchUpInside)
-        return button
-    }()
-
     // MARK: - Properties
 
     /// Indicates whether push notifications have been disabled or not.
@@ -118,7 +109,6 @@ final class BloggingRemindersPushPromptViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        view.addSubview(dismissButton)
 
         configureStackView()
 
@@ -188,9 +178,6 @@ final class BloggingRemindersPushPromptViewController: UIViewController {
             turnOnNotificationsButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Metrics.edgeMargins.left),
             turnOnNotificationsButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Metrics.edgeMargins.right),
             turnOnNotificationsButton.bottomAnchor.constraint(equalTo: view.safeBottomAnchor, constant: -Metrics.edgeMargins.bottom),
-
-            dismissButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Metrics.dismissButtonMargin),
-            dismissButton.topAnchor.constraint(equalTo: view.topAnchor, constant: Metrics.dismissButtonMargin)
         ])
     }
 
@@ -247,7 +234,6 @@ private enum Images {
 }
 
 private enum Metrics {
-    static let dismissButtonMargin: CGFloat = 20.0
     static let edgeMargins = UIEdgeInsets(top: 80, left: 28, bottom: 80, right: 28)
     static let stackSpacing: CGFloat = 20.0
     static let turnOnButtonHeight: CGFloat = 44.0
