@@ -1,11 +1,11 @@
 import UIKit
-import WordPressUI
+ import WordPressUI
 
 final class BloggingRemindersFlowIntroViewController: UIViewController {
+    private let scrollView = UIScrollView()
 
     private let imageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "reminders-celebration"))
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.tintColor = .systemYellow
         return imageView
     }()
@@ -13,8 +13,7 @@ final class BloggingRemindersFlowIntroViewController: UIViewController {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.adjustsFontForContentSizeCategory = true
-        label.adjustsFontSizeToFitWidth = true
-        label.font = WPStyleGuide.serifFontForTextStyle(.title1, fontWeight: .semibold)
+        label.font = .preferredFont(forTextStyle: .title1).withWeight(.semibold)
         label.numberOfLines = 2
         label.textAlignment = .center
         label.text = Strings.introTitle
@@ -24,7 +23,6 @@ final class BloggingRemindersFlowIntroViewController: UIViewController {
     private let promptLabel: UILabel = {
         let label = UILabel()
         label.adjustsFontForContentSizeCategory = true
-        label.adjustsFontSizeToFitWidth = true
         label.font = .preferredFont(forTextStyle: .body)
         label.numberOfLines = 5
         label.textAlignment = .center
@@ -35,12 +33,17 @@ final class BloggingRemindersFlowIntroViewController: UIViewController {
         var configuration = UIButton.Configuration.primary()
         configuration.title = Strings.introButtonTitle
 
-        return UIButton(configuration: configuration, primaryAction: .init { [weak self] _ in
-            self?.buttonGetStartedTapped()
+        let button = UIButton(configuration: configuration, primaryAction: .init { [weak self] _ in
+            self?.buttonContinueTapped()
         })
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
+        return button
     }()
 
+    private let bottomBarView = BottomToolbarView()
+
     private let tracker: BloggingRemindersTracker
+    private var isOnNextTapped = false
     private let onNextTapped: () -> Void
 
     init(tracker: BloggingRemindersTracker, onNextTapped: @escaping () -> Void) {
@@ -62,7 +65,13 @@ final class BloggingRemindersFlowIntroViewController: UIViewController {
         view.backgroundColor = .systemBackground
 
         setupView()
+        setupBottomBar()
+
         promptLabel.text = Strings.introDescription
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .close, primaryAction: .init(handler: { [weak self] _ in
+            self?.buttonCloseTapped()
+        }))
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -74,9 +83,7 @@ final class BloggingRemindersFlowIntroViewController: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 
-        // If a parent VC is being dismissed, and this is the last view shown in its navigation controller, we'll assume
-        // the flow was interrupted.
-        if isBeingDismissedDirectlyOrByAncestor() && navigationController?.viewControllers.last == self {
+        if !isOnNextTapped {
             tracker.flowDismissed(source: .main)
         }
     }
@@ -87,33 +94,40 @@ final class BloggingRemindersFlowIntroViewController: UIViewController {
         let stackView = UIStackView(axis: .vertical, alignment: .center, spacing: 20, [
             imageView,
             titleLabel,
-            promptLabel,
-            SpacerView(minHeight: 8),
-            buttonNext
+            promptLabel
         ])
         stackView.setCustomSpacing(8, after: titleLabel)
-        stackView.setCustomSpacing(24, after: promptLabel)
 
-        view.addSubview(stackView)
+        scrollView.showsVerticalScrollIndicator = false
+        scrollView.alwaysBounceVertical = false
 
-        var insets = UIEdgeInsets(.all, 24)
-        insets.top = 48
+        scrollView.addSubview(stackView)
+        view.addSubview(scrollView)
 
-        stackView.pinEdges(to: view.safeAreaLayoutGuide, insets: insets)
-        NSLayoutConstraint.activate([
-            buttonNext.widthAnchor.constraint(equalTo: stackView.widthAnchor),
-        ])
+        stackView.pinEdges(insets: UIEdgeInsets(.all, 20))
+        stackView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -40).isActive = true
+
+        scrollView.pinEdges()
     }
 
-    private func buttonGetStartedTapped() {
+    private func setupBottomBar() {
+        bottomBarView.contentView.addSubview(buttonNext)
+        buttonNext.pinEdges()
+
+        bottomBarView.configure(in: self, scrollView: scrollView)
+    }
+
+    // MARK: Actions
+
+    private func buttonContinueTapped() {
         tracker.buttonPressed(button: .continue, screen: .main)
+        isOnNextTapped = true
         onNextTapped()
     }
-}
 
-extension BloggingRemindersFlowIntroViewController: BloggingRemindersActions {
-    @objc private func dismissTapped() {
-        dismiss(from: .dismiss, screen: .main, tracker: tracker)
+    private func buttonCloseTapped() {
+        tracker.buttonPressed(button: .dismiss, screen: .main)
+        presentingViewController?.dismiss(animated: true, completion: nil)
     }
 }
 

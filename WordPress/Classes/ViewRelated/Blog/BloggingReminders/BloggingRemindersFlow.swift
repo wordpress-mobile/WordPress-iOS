@@ -45,8 +45,14 @@ final class BloggingRemindersFlow {
                     showSettings()
                 }
             }
-            introVC.sheetPresentationController?.detents = [.medium()]
-            presentingViewController.present(introVC, animated: true)
+            let navigationVC = UINavigationController(rootViewController: introVC)
+            if presentingViewController.traitCollection.horizontalSizeClass == .regular {
+                navigationVC.preferredContentSize = CGSize(width: 375, height: 420)
+            } else {
+                navigationVC.sheetPresentationController?.detents = [.medium()]
+                navigationVC.sheetPresentationController?.preferredCornerRadius = 16
+            }
+            presentingViewController.present(navigationVC, animated: true)
         }
 
         setHasShownWeeklyRemindersFlow(for: blog)

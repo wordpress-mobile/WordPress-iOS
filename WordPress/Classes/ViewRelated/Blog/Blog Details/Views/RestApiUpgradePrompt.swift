@@ -1,3 +1,5 @@
+import UIKit
+import WordPressUI
 import SwiftUI
 
 public struct RestApiUpgradePrompt: View {
@@ -38,11 +40,5 @@ public struct RestApiUpgradePrompt: View {
         static var getStarted: String {
             NSLocalizedString("applicationPasswordRequired.getStartedButton", value: "Get Started", comment: "Title for the button to authenticate with Application Passwords")
         }
-    }
-}
-
-#Preview {
-    RestApiUpgradePrompt(localizedFeatureName: "User Management") {
-        debugPrint("Tapped Get Started")
     }
 }
