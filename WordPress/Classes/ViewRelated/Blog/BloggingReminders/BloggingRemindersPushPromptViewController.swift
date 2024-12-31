@@ -1,7 +1,7 @@
 import UIKit
 import WordPressUI
 
-class BloggingRemindersPushPromptViewController: UIViewController {
+final class BloggingRemindersPushPromptViewController: UIViewController {
 
     // MARK: - Subviews
 
@@ -58,12 +58,12 @@ class BloggingRemindersPushPromptViewController: UIViewController {
     }()
 
     private lazy var turnOnNotificationsButton: UIButton = {
-        let button = FancyButton()
+        var configuration = UIButton.Configuration.primary()
+        configuration.title = TextContent.turnOnButtonTitle
+
+        let button = UIButton(configuration: configuration, primaryAction: nil)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.isPrimary = true
-        button.setTitle(TextContent.turnOnButtonTitle, for: .normal)
         button.addTarget(self, action: #selector(turnOnButtonTapped), for: .touchUpInside)
-        button.titleLabel?.adjustsFontSizeToFitWidth = true
         return button
     }()
 
