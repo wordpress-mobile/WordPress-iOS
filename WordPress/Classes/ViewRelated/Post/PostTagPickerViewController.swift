@@ -120,8 +120,6 @@ class PostTagPickerViewController: UIViewController {
         loadTags()
 
         tableView.contentInset.bottom += descriptionLabel.frame.height + 20
-
-        updateTableViewBottomInset()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -144,14 +142,6 @@ class PostTagPickerViewController: UIViewController {
 
     fileprivate func reloadTableData() {
         tableView.reloadData()
-    }
-
-    fileprivate func updateTableViewBottomInset() {
-        guard !UIDevice.isPad() else {
-            return
-        }
-
-        tableView.contentInset.bottom += presentedVC?.yPosition ?? 0
     }
 }
 
@@ -447,15 +437,5 @@ extension WPStyleGuide {
         WPStyleGuide.configureTableViewCell(cell)
         cell.textLabel?.textColor = .label
         cell.backgroundColor = .secondarySystemGroupedBackground
-    }
-}
-
-extension PostTagPickerViewController: DrawerPresentable {
-    var collapsedHeight: DrawerHeight {
-        return .contentHeight(300)
-    }
-
-    var scrollableView: UIScrollView? {
-        return tableView
     }
 }

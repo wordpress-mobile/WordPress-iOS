@@ -114,17 +114,6 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
         tableView.tableHeaderView = UIView(frame: .init(x: 0, y: 0, width: 0, height: Constants.tableTopPadding))
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        // when the vertical size class changes, ensure that we are displaying the max drawer height on compact size
-        // or revert to collapsed mode otherwise.
-        if let previousVerticalSizeClass = previousTraitCollection?.verticalSizeClass,
-           previousVerticalSizeClass != traitCollection.verticalSizeClass {
-            presentedVC?.transition(to: traitCollection.verticalSizeClass == .compact ? .expanded : .collapsed)
-        }
-    }
-
     deinit {
         // only call the delegate method if the user has made some changes.
         if hasChanges {
@@ -381,17 +370,6 @@ private extension PrepublishingSocialAccountsViewController {
         )
     }
 
-}
-
-extension PrepublishingSocialAccountsViewController: DrawerPresentable {
-
-    var collapsedHeight: DrawerHeight {
-        .intrinsicHeight
-    }
-
-    var scrollableView: UIScrollView? {
-        tableView
-    }
 }
 
 private extension PrepublishingAutoSharingModel {
