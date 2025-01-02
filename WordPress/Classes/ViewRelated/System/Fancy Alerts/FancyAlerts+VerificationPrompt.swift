@@ -36,7 +36,7 @@ extension FancyAlertViewController {
             })
         }
 
-        let defaultButton = FancyAlertViewController.Config.ButtonConfig(Strings.ok) { controller, _ in
+        let defaultButton = FancyAlertViewController.Config.ButtonConfig(SharedStrings.Button.ok) { controller, _ in
             completion?()
             controller.dismiss(animated: true)
         }
@@ -55,7 +55,7 @@ extension FancyAlertViewController {
     }
 
     private static func successfullySentVerificationEmailConfig() -> FancyAlertViewController.Config {
-        let okButton = FancyAlertViewController.Config.ButtonConfig(Strings.ok) { controller, _ in
+        let okButton = FancyAlertViewController.Config.ButtonConfig(SharedStrings.Button.ok) { controller, _ in
             controller.dismiss(animated: true)
         }
 
@@ -71,7 +71,7 @@ extension FancyAlertViewController {
     }
 
     private static func failureSendingVerificationEmailConfig(with error: VerificationFailureError) -> FancyAlertViewController.Config {
-        let okButton = FancyAlertViewController.Config.ButtonConfig(Strings.ok) { controller, _ in
+        let okButton = FancyAlertViewController.Config.ButtonConfig(SharedStrings.Button.ok) { controller, _ in
             controller.dismiss(animated: true)
         }
 
@@ -102,9 +102,6 @@ extension FancyAlertViewController {
 
         static let resendEmail = NSLocalizedString("Resend",
                                                    comment: "Title of secondary button on alert prompting verify their accounts while attempting to publish")
-
-        static let ok = NSLocalizedString("OK",
-                                          comment: "Title of primary button on alert prompting verify their accounts while attempting to publish")
 
         static let emailSentSuccesfully = NSLocalizedString("Verification email sent, check your inbox.",
                                                  comment: "Message shown when a verification email was re-sent succesfully")

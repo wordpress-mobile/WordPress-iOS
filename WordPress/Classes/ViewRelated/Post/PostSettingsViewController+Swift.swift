@@ -177,7 +177,7 @@ extension PostSettingsViewController {
 
     private func showWarningPostWillBePublishedAlert() {
         let alert = UIAlertController(title: nil, message: Strings.warningPostWillBePublishedAlertMessage, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("postSettings.ok", value: "OK", comment: "Button OK"), style: .default))
+        alert.addAction(UIAlertAction(title: SharedStrings.Button.ok, style: .default))
         present(alert, animated: true)
     }
 }

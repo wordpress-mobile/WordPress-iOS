@@ -62,7 +62,7 @@ public extension SiteSettingsViewController {
                 let errorTitle = NSLocalizedString("Export Content Error", comment: "Title of alert when export content fails")
                 let alertController = UIAlertController(title: errorTitle, message: error.localizedDescription, preferredStyle: .alert)
 
-                let okTitle = NSLocalizedString("OK", comment: "Alert dismissal title")
+                let okTitle = SharedStrings.Button.ok
                 _ = alertController.addDefaultActionWithTitle(okTitle, handler: nil)
 
                 alertController.presentFromRootViewController()
@@ -101,7 +101,7 @@ public extension SiteSettingsViewController {
                 let errorTitle = NSLocalizedString("Check Purchases Error", comment: "Title of alert when getting purchases fails")
                 let alertController = UIAlertController(title: errorTitle, message: error.localizedDescription, preferredStyle: .alert)
 
-                let okTitle = NSLocalizedString("OK", comment: "Alert dismissal title")
+                let okTitle = SharedStrings.Button.ok
                 alertController.addDefaultActionWithTitle(okTitle, handler: nil)
 
                 alertController.presentFromRootViewController()

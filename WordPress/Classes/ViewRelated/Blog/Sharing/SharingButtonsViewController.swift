@@ -675,7 +675,7 @@ import WordPressShared
             message.append(error.localizedDescription)
         }
         let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        controller.addCancelActionWithTitle(NSLocalizedString("OK", comment: "A button title."), handler: nil)
+        controller.addCancelActionWithTitle(SharedStrings.Button.ok, handler: nil)
 
         controller.presentFromRootViewController()
     }

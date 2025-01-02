@@ -2775,7 +2775,7 @@ extension AztecPostViewController {
 
     func displayUnableToPlayVideoAlert() {
         let alertController = UIAlertController(title: MediaUnableToPlayVideoAlert.title, message: MediaUnableToPlayVideoAlert.message, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .`default`, handler: nil))
+        alertController.addAction(UIAlertAction(title: SharedStrings.Button.ok, style: .default, handler: nil))
         present(alertController, animated: true)
         return
     }

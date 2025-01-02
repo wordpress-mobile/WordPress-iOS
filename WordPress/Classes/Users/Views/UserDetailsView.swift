@@ -240,13 +240,6 @@ struct UserDetailsView: View {
             value: "There was an error deleting the user.",
             comment: "The message in the alert that appears when deleting a user"
         )
-
-        static let deleteUserErrorAlertOkButton = NSLocalizedString(
-            "userDetails.alert.deleteUserErrorAlertOkButton",
-            value: "OK",
-            comment: "The title of the OK button in the alert that appears when deleting a user"
-        )
-
     }
 }
 
@@ -293,7 +286,7 @@ private extension View {
             isPresented: view.$presentDeleteUserError,
             presenting: view.deleteUserViewModel.error,
             actions: { _ in
-                Button(Strings.deleteUserErrorAlertOkButton) {
+                Button(SharedStrings.Button.ok) {
                     view.presentDeleteUserError = false
                 }
             },

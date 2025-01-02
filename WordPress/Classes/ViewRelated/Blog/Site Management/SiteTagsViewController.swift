@@ -314,7 +314,7 @@ extension SiteTagsViewController {
                                                        comment: "Message of the alert indicating that a tag with that name already exists. The placeholder is the name of the tag"),
                              tagName)
 
-        let acceptTitle = NSLocalizedString("OK", comment: "Alert dismissal title")
+        let acceptTitle = SharedStrings.Button.ok
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertController.addDefaultActionWithTitle(acceptTitle)
         present(alertController, animated: true)
