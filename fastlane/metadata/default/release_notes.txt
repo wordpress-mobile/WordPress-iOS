@@ -1,3 +1,2 @@
-This month, we've:
-- Stability improvements to the experimental editor (you should try it if you haven't already!)
-- Adjusted how users log into WordPress.com – we hope it'll make it easier for folks to get started.
+
+

@@ -1,3 +1,0 @@
-Este mes, hemos:
-- Mejoras de estabilidad en el editor experimental (¡deberías probarlo si aún no lo has hecho!)
-- Hemos ajustado la forma en que los usuarios se registran en WordPress.com - esperamos que facilite a la gente en los primeros pasos.

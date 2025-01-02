@@ -1,3 +1,0 @@
-Bulan ini, kami telah:
-- Meningkatkan stabilitas editor eksperimental (cobalah dan rasakan pengalamannya!)
-- Menyesuaikan cara pengguna login ke WordPress.com – semoga cara ini memudahkan para pengguna untuk memulai.
