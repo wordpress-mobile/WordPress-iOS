@@ -1,5 +1,0 @@
-Questo mese abbiamo:
-- Sistemato alcuni arresti nel reader, migliorato la ricerca e ottimizzato il caricamento degli articoli.
-- Abilitato gli incorporamenti di TikTok nel reader.
-- Migliorato la stabilità dell'editore in versione trial (dovresti provarlo, se non l'hai ancora fatto!)
-- Sistemato l'accesso degli utenti a WordPress.com per rendere l'avvio più semplice.
