@@ -285,7 +285,7 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
     func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, contextMenuFor media: Media, sourceView: UIView) -> UIMenu? {
         var actions: [UIAction] = []
 
-        actions.append(UIAction(title: Strings.buttonShare, image: UIImage(systemName: "square.and.arrow.up")) { [weak self] _ in
+        actions.append(UIAction(title: SharedStrings.Button.share, image: UIImage(systemName: "square.and.arrow.up")) { [weak self] _ in
             self?.shareSelectedMedia([media], sourceView: sourceView)
         })
         if blog.supports(.mediaDeletion) {
@@ -314,7 +314,6 @@ private enum Strings {
     static let deletionSuccessMessage = NSLocalizedString("mediaLibrary.deletionSuccessMessage", value: "Deleted!", comment: "Text displayed in HUD after successfully deleting a media item")
     static let deletionFailureMessage = NSLocalizedString("mediaLibrary.deletionFailureMessage", value: "Unable to delete all media items.", comment: "Text displayed in HUD if there was an error attempting to delete a group of media items.")
     static let sharingFailureMessage = NSLocalizedString("mediaLibrary.sharingFailureMessage", value: "Unable to share the selected items.", comment: "Text displayed in HUD if there was an error attempting to share a group of media items.")
-    static let buttonShare = NSLocalizedString("mediaLibrary.buttonShare", value: "Share", comment: "Context menu button")
     static let buttonDelete = NSLocalizedString("mediaLibrary.buttonDelete", value: "Delete", comment: "Context menu button")
     static let aspectRatioGrid = NSLocalizedString("mediaLibrary.aspectRatioGrid", value: "Aspect Ratio Grid", comment: "Button name in the more menu")
     static let squareGrid = NSLocalizedString("mediaLibrary.squareGrid", value: "Square Grid", comment: "Button name in the more menu")

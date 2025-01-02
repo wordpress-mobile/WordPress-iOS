@@ -51,7 +51,7 @@ struct ReaderPostMenu {
     // MARK: Actions
 
     private var share: UIAction {
-        UIAction(Strings.share, systemImage: "square.and.arrow.up") {
+        UIAction(SharedStrings.Button.share, systemImage: "square.and.arrow.up") {
             guard let viewController else { return }
             ReaderShareAction().execute(with: post, anchor: anchor ?? viewController.view, vc: viewController)
             track(.share)
@@ -71,7 +71,7 @@ struct ReaderPostMenu {
 
     private var copyPostLink: UIAction? {
         guard let postURL = post.permaLink.flatMap(URL.init) else { return nil }
-        return UIAction(Strings.copyLink, systemImage: "link") {
+        return UIAction(SharedStrings.Button.copyLink, systemImage: "link") {
             UIPasteboard.general.string = postURL.absoluteString
             UINotificationFeedbackGenerator().notificationOccurred(.success)
             track(.copyPostLink)
@@ -198,9 +198,7 @@ private enum ReaderPostMenuAnalyticsButton: String {
 }
 
 private enum Strings {
-    static let share = NSLocalizedString("reader.postContextMenu.share", value: "Share", comment: "Context menu action")
     static let viewInBrowser = NSLocalizedString("reader.postContextMenu.viewInBrowser", value: "View in Browser", comment: "Context menu action")
-    static let copyLink = NSLocalizedString("reader.postContextMenu.copyLink", value: "Copy Link", comment: "Context menu action")
     static let blockOrReport = NSLocalizedString("reader.postContextMenu.blockOrReportMenu", value: "Block or Report", comment: "Context menu action")
     static let goToBlog = NSLocalizedString("reader.postContextMenu.showBlog", value: "Go to Blog", comment: "Context menu action")
     static let subscribe = NSLocalizedString("reader.postContextMenu.subscribeT", value: "Subscribe", comment: "Context menu action")

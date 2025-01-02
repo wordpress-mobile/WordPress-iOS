@@ -9,7 +9,7 @@ struct SiteMonitoringEntryDetailsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ShareLink(item: text.string) {
-                    Label("Share", systemImage: "square.and.arrow.up")
+                    Label(SharedStrings.Button.share, systemImage: "square.and.arrow.up")
                 }
             }
     }

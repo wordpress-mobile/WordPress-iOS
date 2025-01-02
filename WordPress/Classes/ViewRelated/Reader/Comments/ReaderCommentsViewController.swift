@@ -377,7 +377,7 @@ enum ReaderCommentMenu {
         case .edit:
             return NSLocalizedString("Edit", comment: "Edits the comment")
         case .share:
-            return NSLocalizedString("Share", comment: "Shares the comment URL")
+            return SharedStrings.Button.share
         }
     }
 

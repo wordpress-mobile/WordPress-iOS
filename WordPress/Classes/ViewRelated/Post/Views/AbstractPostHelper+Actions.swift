@@ -42,7 +42,7 @@ extension AbstractPostHelper {
         actions.append(trashAction)
 
         if post is Post, post.status == .publish && post.hasRemote() {
-            let shareAction = UIContextualAction(style: .normal, title: Strings.swipeActionShare) { [weak delegate] _, view, completion in
+            let shareAction = UIContextualAction(style: .normal, title: SharedStrings.Button.share) { [weak delegate] _, view, completion in
                 delegate?.share(post, fromView: view)
                 completion(true)
             }
@@ -56,7 +56,6 @@ extension AbstractPostHelper {
 
 private enum Strings {
     static let swipeActionView = NSLocalizedString("postList.swipeActionView", value: "View", comment: "Title for the 'View' post list row swipe action")
-    static let swipeActionShare = NSLocalizedString("postList.swipeActionShare", value: "Share", comment: "Title for the 'Share' post list row swipe action")
     static let swipeActionTrash = NSLocalizedString("postList.swipeActionDelete", value: "Trash", comment: "Title for the 'Trash' post list row swipe action")
     static let swipeActionDeletePermanently = NSLocalizedString("postList.swipeActionDeletePermanently", value: "Delete", comment: "Title for the 'Delete' post list row swipe action")
 }

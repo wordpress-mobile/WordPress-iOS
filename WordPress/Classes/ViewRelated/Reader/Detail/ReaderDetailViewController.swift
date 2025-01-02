@@ -1133,7 +1133,7 @@ private extension ReaderDetailViewController {
 
     func shareButtonItem(enabled: Bool = true) -> UIBarButtonItem? {
         let button = barButtonItem(with: .gridicon(.shareiOS), action: #selector(didTapShareButton(_:)))
-        button.accessibilityLabel = Strings.shareButtonAccessibilityLabel
+        button.accessibilityLabel = SharedStrings.Button.share
         button.isEnabled = enabled
 
         return button
@@ -1186,11 +1186,7 @@ extension ReaderDetailViewController {
             value: "Open in Safari",
             comment: "Spoken accessibility label"
         )
-        static let shareButtonAccessibilityLabel = NSLocalizedString(
-            "readerDetail.shareButton.accessibilityLabel",
-            value: "Share",
-            comment: "Spoken accessibility label"
-        )
+
         static let moreButtonAccessibilityLabel = NSLocalizedString(
             "readerDetail.moreButton.accessibilityLabel",
             value: "More",

@@ -130,7 +130,7 @@ extension AbstractPostButton: AbstractPostMenuAction {
         case .trash: return Strings.trash
         case .delete: return Strings.delete
         case .retry: return Strings.retry
-        case .share: return Strings.share
+        case .share: return SharedStrings.Button.share
         case .blaze: return Strings.blaze
         case .comments: return Strings.comments
         case .settings: return Strings.settings
@@ -191,7 +191,6 @@ extension AbstractPostButton: AbstractPostMenuAction {
         static let view = NSLocalizedString("posts.view.actionTitle", value: "View", comment: "Label for the view post button. Tapping displays the post as it appears on the web.")
         static let preview = NSLocalizedString("posts.preview.actionTitle", value: "Preview", comment: "Label for the preview post button. Tapping displays the post as it appears on the web.")
         static let publish = NSLocalizedString("posts.publish.actionTitle", value: "Publish", comment: "Label for the publish post button.")
-        static let share = NSLocalizedString("posts.share.actionTitle", value: "Share", comment: "Share the post.")
         static let blaze = NSLocalizedString("posts.blaze.actionTitle", value: "Promote with Blaze", comment: "Promote the post with Blaze.")
         static let setHomepage = NSLocalizedString("posts.setHomepage.actionTitle", value: "Set as homepage", comment: "Set the selected page as the homepage.")
         static let setPostsPage = NSLocalizedString("posts.setPostsPage.actionTitle", value: "Set as posts page", comment: "Set the selected page as a posts page.")
