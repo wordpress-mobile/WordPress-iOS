@@ -38,7 +38,7 @@ class PrivacySettingsViewController: UITableViewController {
             PaddedInfoRow.self,
             SwitchRow.self,
             PaddedLinkRow.self
-            ], tableView: self.tableView)
+        ], tableView: self.tableView)
 
         handler = ImmuTableViewHandler(takeOver: self)
         reloadViewModel()
