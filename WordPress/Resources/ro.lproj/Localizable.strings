@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-12-09 14:43:26+0000 */
+/* Translation-Revision-Date: 2024-12-18 08:07:37+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ro */
@@ -5747,8 +5747,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title shown on the dashboard when it fails to load */
 "Some data wasn't loaded" = "Unele date nu au fost încărcate";
 
-/* A generic error message
-   Title for a label that appears when the scan failed
+/* Title for a label that appears when the scan failed
    Title for the error view when the scan start has failed */
 "Something went wrong" = "Ceva nu a mers bine";
 
@@ -8474,6 +8473,9 @@ Example: Reply to Pamela Nguyen */
 /* Shared empty state view */
 "emptyStateView.noSearchResult.title" = "Niciun rezultat";
 
+/* A name of the ID field (it's a technical field, has to be short, displayed below everything else) */
+"entityMetadataFooterView.id" = "ID";
+
 /* Placeholder for the site url textfield.
    Site Address placeholder */
 "example.com" = "exemplu.com";
@@ -10185,6 +10187,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "Vizualizează în navigator";
 
+/* Reader post details view placeholder when blog name not avail */
+"reader.postDetails.blog" = "blog";
+
+/* Reader post details view */
+"reader.postDetails.viewModeDescription" = "Proprietarul acestui site ne permite doar să arătăm un rezumat scurt al conținutului. Pentru a vizualiza articolul complet, va trebui să vizitezi site-ul lor.";
+
+/* Reader post details view */
+"reader.postDetails.viewMoreOn" = "Vizitează %@ pentru a vedea articolul întreg";
+
 /* Name for the Candy color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.candy" = "Candy";
 
@@ -10682,6 +10693,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Accessibility hint for actions when displaying media items. */
 "siteMedia.cellAccessibilityHint" = "Selectează media.";
+
+/* Title for the URL field */
+"siteMedia.details.url" = "URL";
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityHint" = "Atinge pentru a vizualiza elementul media pe ecran complet";

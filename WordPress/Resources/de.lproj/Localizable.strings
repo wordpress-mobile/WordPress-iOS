@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-12-10 13:54:10+0000 */
+/* Translation-Revision-Date: 2024-12-21 23:53:29+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: de */
@@ -5747,8 +5747,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title shown on the dashboard when it fails to load */
 "Some data wasn't loaded" = "Einige Daten wurden nicht geladen";
 
-/* A generic error message
-   Title for a label that appears when the scan failed
+/* Title for a label that appears when the scan failed
    Title for the error view when the scan start has failed */
 "Something went wrong" = "Etwas ist schiefgelaufen";
 
@@ -7908,6 +7907,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "Anwendungspasswörter sind eine noch sicherere Methode, auf deine selbst gehostete Website zuzugreifen und Funktionen wie %@ zu nutzen.";
 
+/* Feature name for managing users in the app */
+"applicationPasswordRequired.feature.users" = "Benutzerverwaltung";
+
 /* Title for the button to authenticate with Application Passwords */
 "applicationPasswordRequired.getStartedButton" = "Los geht’s";
 
@@ -8318,6 +8320,9 @@ Example: Reply to Pamela Nguyen */
 /* Weekly Roundup debug menu item */
 "debugMenu.weeklyRoundup" = "Wöchentliche Zusammenfassung";
 
+/* Error tilte */
+"discussionSettings.saveErrorTitle" = "Einstellungen konnten nicht gespeichert werden";
+
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Ausblenden";
 
@@ -8468,6 +8473,9 @@ Example: Reply to Pamela Nguyen */
 /* Shared empty state view */
 "emptyStateView.noSearchResult.title" = "Keine Ergebnisse";
 
+/* A name of the ID field (it's a technical field, has to be short, displayed below everything else) */
+"entityMetadataFooterView.id" = "ID";
+
 /* Placeholder for the site url textfield.
    Site Address placeholder */
 "example.com" = "example.com";
@@ -8594,6 +8602,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The 'no' button title for the first feedback alert */
 "in-app.feedback.alert.no" = "Nicht wirklich";
+
+/* The 'Not Now' button title for the first feedback alert */
+"in-app.feedback.alert.notNow" = "Nicht jetzt";
 
 /* The title for the first feedback alert */
 "in-app.feedback.alert.title" = "Dein Feedback ist uns wichtig";
@@ -10005,10 +10016,22 @@ but tapping on this button will remove their like from the post. */
 "reader.discover.channel.dailyPrompts" = "Tägliche Anreize";
 
 /* Header view channel (filter) */
+"reader.discover.channel.firstPost" = "Erste Beiträge";
+
+/* Header view channel (filter) */
 "reader.discover.channel.latest" = "Neueste";
+
+/* Header view channel (filter) */
+"reader.discover.channel.recommended" = "Empfohlen";
 
 /* Reader Discover header view details label. The text has a Markdown URL: [interests](/interests). Only the text in the square brackets needs to be translated: [<translate_this>](/interests). */
 "reader.discover.header.title" = "Entdecke beliebte Blogs, von denen wir glauben, dass du sie basierend auf deinen [Interessen](\/interests) inspirierend, informativ und unterhaltsam finden wirst.";
+
+/* Used in multiple contexts, usually as a screen title */
+"reader.discover.title" = "Entdecken";
+
+/* Screen title */
+"reader.editInterests.title" = "Interessen bearbeiten";
 
 /* Error message informing the user that they are already following a blog in their reader. */
 "reader.error.already.subscribed.message" = "Du hast dieses Blog bereits abonniert.";
@@ -10022,8 +10045,14 @@ but tapping on this button will remove their like from the post. */
 /* Screen header details */
 "reader.following.header.details" = "Bleib auf dem Laufenden mit deinen abonnierten Blogs.";
 
+/* Used in multiple contexts, usually as a screen title */
+"reader.likes.title" = "Likes";
+
 /* Reader logged-out screen details */
 "reader.loggedOut.details" = "Melde dich mit einem WordPress.com-Konto an, um deinen Lieblingsblogs zu folgen";
+
+/* Reader logged-out screen sign in button */
+"reader.loggedOut.signIn" = "Anmelden";
 
 /* Reader logged-out screen title */
 "reader.loggedOut.title" = "Der Unterhaltung beitreten";
@@ -10093,6 +10122,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.post.buttonBookmark.accessibilityLabel" = "Als Lesezeichen markieren";
 
 /* Button accessibility label */
+"reader.post.buttonComment.accessibilityLabel" = "Kommentare anzeigen";
+
+/* Button accessibility label */
+"reader.post.buttonLike.accessibilityLabel" = "Like";
+
+/* Button accessibility label */
 "reader.post.buttonReblog.accessibilityLabel" = "Rebloggen";
 
 /* Button accessibility label */
@@ -10103,6 +10138,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Accessibility hint for the site header */
 "reader.post.buttonSite.accessibilityHint" = "Öffnet die Websitedetails";
+
+/* Button accessibility label */
+"reader.post.moreMenu.accessibilityLabel" = "Weitere Aktionen";
 
 /* Accessibility label showing total number of comments */
 "reader.post.numberOfComments.accessibilityLabel" = "%@ Kommentare";
@@ -10123,10 +10161,40 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.postContextMenu.blogDetails" = "Blogdetails";
 
 /* Context menu action */
+"reader.postContextMenu.copyLink" = "Link kopieren";
+
+/* Context menu action */
+"reader.postContextMenu.manageNotifications" = "Benachrichtigungen verwalten";
+
+/* Context menu action */
+"reader.postContextMenu.reportPost" = "Beitrag melden";
+
+/* Context menu action */
+"reader.postContextMenu.reportUser" = "Benutzer melden";
+
+/* Context menu action */
+"reader.postContextMenu.share" = "Teilen";
+
+/* Context menu action */
 "reader.postContextMenu.showBlog" = "Weiter zum Blog";
 
 /* Context menu action */
+"reader.postContextMenu.subscribeT" = "Abonnieren";
+
+/* Context menu action */
 "reader.postContextMenu.unsubscribe" = "Abbestellen";
+
+/* Context menu action */
+"reader.postContextMenu.viewInBrowser" = "Im Browser anzeigen";
+
+/* Reader post details view placeholder when blog name not avail */
+"reader.postDetails.blog" = "Blog";
+
+/* Reader post details view */
+"reader.postDetails.viewModeDescription" = "Der Eigentümer dieser Website erlaubt uns nur, eine kurze Zusammenfassung seiner Inhalte anzuzeigen. Um den gesamten Beitrag anzuzeigen, musst du seine Website besuchen.";
+
+/* Reader post details view */
+"reader.postDetails.viewMoreOn" = "Den vollständigen Beitrag findest du unter %@";
 
 /* Name for the Candy color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.candy" = "Candy";
@@ -10212,6 +10280,9 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Used in multiple contexts, usually as a screen title */
 "reader.recent.title" = "Neueste";
 
+/* Used in multiple contexts, usually as a screen title */
+"reader.saved.title" = "Gespeichert";
+
 /* Notification title for when saved post is removed */
 "reader.savedPostRemovedNotificationTitle" = "Gespeicherter Beitrag entfernt";
 
@@ -10220,6 +10291,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title of a Reader tab showing Sites matching a user's search query */
 "reader.search.tab.blogs" = "Blogs";
+
+/* Title of a Reader tab showing Posts matching a user's search query */
+"reader.search.tab.posts" = "Beiträge";
 
 /* Title of the Reader's search feature */
 "reader.search.title" = "Suche";
@@ -10619,6 +10693,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Accessibility hint for actions when displaying media items. */
 "siteMedia.cellAccessibilityHint" = "Wähle Medien aus.";
+
+/* Title for the URL field */
+"siteMedia.details.url" = "URL";
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityHint" = "Tippen, um Medien im Vollbildmodus anzuzeigen";
@@ -11166,8 +11243,20 @@ Feel free to replace it with other bracket types that you think looks better for
 /* The help message for reassigning content to a user after deletion. */
 "userDetails.alert.attributeContentToUserHelpMessage" = "Der Autor der Seiten und Beiträge, die dem gelöschten Benutzer zugeordnet waren, wird durch den Benutzer ausgetauscht, den du im Dropdown-Menü auswählst.";
 
+/* The label that appears in the alert that appears when deleting a user */
+"userDetails.alert.attributeContentToUserLabel" = "Ausgewählter Benutzer";
+
 /* The message that appears when deleting a user. */
 "userDetails.alert.deleteUserAttributionMessage" = "Wähle einen anderen Benutzer aus, dem du diese Inhalte zuweisen möchtest.";
+
+/* The title of the confirmation button in the alert that appears when deleting a user */
+"userDetails.alert.deleteUserConfirmButtonTitle" = "Ja, Benutzer löschen";
+
+/* The title of the cancel button in the confirmation alert that appears when deleting a user */
+"userDetails.alert.deleteUserConfirmationCancelButton" = "Abbrechen";
+
+/* The title of the delete button in the confirmation alert that appears when deleting a user */
+"userDetails.alert.deleteUserConfirmationDeleteButton" = "Löschen";
 
 /* The message in the alert that appears when deleting a user. The first argument is the display name of the user to which content will be attributed */
 "userDetails.alert.deleteUserConfirmationMessage" = "Bist du sicher, dass du diesen Benutzer löschen und alle Inhalte %@ zuweisen möchtest?";
@@ -11176,17 +11265,59 @@ Feel free to replace it with other bracket types that you think looks better for
    The title of the confirmation alert that appears when deleting a user */
 "userDetails.alert.deleteUserConfirmationTitle" = "Bestätigung des Löschvorgangs";
 
+/* The message in the alert that appears when deleting a user */
+"userDetails.alert.deleteUserErrorAlertMessage" = "Beim Löschen des Benutzers ist ein Fehler aufgetreten.";
+
+/* The title of the OK button in the alert that appears when deleting a user */
+"userDetails.alert.deleteUserErrorAlertOkButton" = "OK";
+
+/* The title of the alert that appears when deleting a user */
+"userDetails.alert.deleteUserErrorAlertTitle" = "Fehler";
+
 /* The 'Biographical Info' field of the user profile – matches what's in /wp-admin/profile.php */
 "userDetails.bioFieldTitle" = "Biographische Angaben";
+
+/* The 'Update' button to set a new password on the user profile */
+"userDetails.button.updatePassword" = "Aktualisieren";
+
+/* The 'Delete User' button on the user profile – matches what's in /wp-admin/profile.php */
+"userDetails.deleteUserActionTitle" = "Benutzer löschen";
+
+/* The 'Deleting User…' button on the user profile */
+"userDetails.deletingUserActionTitle" = "Benutzer wird gelöscht …";
+
+/* The 'Email' field of the user profile – matches what's in /wp-admin/profile.php */
+"userDetails.emailAddressFieldTitle" = "E-Mail-Adresse";
 
 /* The message in the alert that appears when setting a new password on the user profile */
 "userDetails.newPasswordAlertMessage" = "Bitte lege ein neues Passwort für diesen Benutzer fest";
 
+/* The 'Role' field of the user profile – matches what's in /wp-admin/profile.php */
+"userDetails.roleFieldTitle" = "Rolle";
+
 /* The 'Set New Password' button on the user profile – matches what's in /wp-admin/profile.php */
 "userDetails.setNewPasswordActionTitle" = "Passwort festlegen";
 
+/* The placeholder text for the 'New Password' field on the user profile */
+"userDetails.textField.placeholder.newPassword" = "Neues Passwort";
+
+/* The placeholder text for the 'Confirm New Password' field on the user profile */
+"userDetails.textField.placeholder.newPasswordConfirmation" = "Neues Passwort bestätigen";
+
+/* The 'Website' field of the user profile – matches what's in /wp-admin/profile.php */
+"userDetails.websiteFieldTitle" = "Website";
+
+/* Header text fo the search results section in the users list */
+"userList.searchResults.header" = "Suchergebnisse";
+
+/* Shown when the user list is empty */
+"userlist.nousersfound" = "Keine Benutzer gefunden";
+
 /* An instruction for the user to tap to start searching */
 "userlist.searchprompt" = "Suchen";
+
+/* The heading at the top of the user list */
+"userlist.title" = "Benutzer";
 
 /* Site Subscribers */
 "users.list.title.subscribers" = "Abonnenten";
@@ -11391,6 +11522,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Error message when user signs in with an unexpected email address. The first argument is the expected email address */
 "wpComLogin.error.mismatchedEmail" = "Bitte melde dich mit der E-Mail-Adresse %@ an";
+
+/* Message title to be displayed when the user needs to re-authenticate their WordPress.com account. */
+"wpcom.token.fix.signin" = "Bei WordPress.com anmelden";
 
 /* Detailed message to be displayed when the user needs to re-authenticate their WordPress.com account. */
 "wpcom.token.fix.signin.message" = "Du musst dich bei WordPress.com anmelden, um auf dein Konto zuzugreifen.";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-12-10 09:54:11+0000 */
+/* Translation-Revision-Date: 2024-12-18 09:54:10+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: zh_CN */
@@ -5747,8 +5747,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title shown on the dashboard when it fails to load */
 "Some data wasn't loaded" = "有些数据尚未加载";
 
-/* A generic error message
-   Title for a label that appears when the scan failed
+/* Title for a label that appears when the scan failed
    Title for the error view when the scan start has failed */
 "Something went wrong" = "出错了";
 
@@ -10184,6 +10183,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "在浏览器中查看";
+
+/* Reader post details view placeholder when blog name not avail */
+"reader.postDetails.blog" = "博客";
+
+/* Reader post details view */
+"reader.postDetails.viewModeDescription" = "此站点的所有者仅允许我们显示其内容的一段简短摘要。 要查看全文，您必须访问他们的站点。";
+
+/* Reader post details view */
+"reader.postDetails.viewMoreOn" = "访问 %@ 查看全文";
 
 /* Name for the Candy color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.candy" = "糖果";

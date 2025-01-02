@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-12-10 11:54:10+0000 */
+/* Translation-Revision-Date: 2024-12-22 23:38:04+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: fr */
@@ -5738,8 +5738,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title shown on the dashboard when it fails to load */
 "Some data wasn't loaded" = "Certaines données n’ont pas été chargées";
 
-/* A generic error message
-   Title for a label that appears when the scan failed
+/* Title for a label that appears when the scan failed
    Title for the error view when the scan start has failed */
 "Something went wrong" = "Un problème est survenu…";
 
@@ -10115,6 +10114,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "Voir dans le navigateur";
+
+/* Reader post details view */
+"reader.postDetails.viewModeDescription" = "Le propriétaire de ce site nous autorise uniquement à présenter un bref aperçu de son contenu. Pour consulter l’article complet, vous devez visiter son site.";
+
+/* Reader post details view */
+"reader.postDetails.viewMoreOn" = "Visiter %@ pour accéder à l’article complet";
 
 /* Name for the Candy color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.candy" = "Candy";

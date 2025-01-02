@@ -2855,8 +2855,7 @@
 /* Label for the slug field. Should be the same as WP core. */
 "Slug" = "Slug";
 
-/* A generic error message
-   Title for a label that appears when the scan failed
+/* Title for a label that appears when the scan failed
    Title for the error view when the scan start has failed */
 "Something went wrong" = "Niečo sa pokazilo";
 

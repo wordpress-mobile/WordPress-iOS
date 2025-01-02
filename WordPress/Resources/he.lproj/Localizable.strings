@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-12-12 17:45:15+0000 */
+/* Translation-Revision-Date: 2024-12-18 15:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: he_IL */
@@ -5744,8 +5744,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title shown on the dashboard when it fails to load */
 "Some data wasn't loaded" = "חלק מהנתונים לא נטענו";
 
-/* A generic error message
-   Title for a label that appears when the scan failed
+/* Title for a label that appears when the scan failed
    Title for the error view when the scan start has failed */
 "Something went wrong" = "משהו השתבש";
 
@@ -8465,6 +8464,9 @@ Example: Reply to Pamela Nguyen */
 /* Shared empty state view */
 "emptyStateView.noSearchResult.title" = "אין תוצאות";
 
+/* A name of the ID field (it's a technical field, has to be short, displayed below everything else) */
+"entityMetadataFooterView.id" = "מזהה";
+
 /* Placeholder for the site url textfield.
    Site Address placeholder */
 "example.com" = "example.com";
@@ -10173,6 +10175,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "לפתוח בדפדפן";
 
+/* Reader post details view placeholder when blog name not avail */
+"reader.postDetails.blog" = "בלוג";
+
+/* Reader post details view */
+"reader.postDetails.viewModeDescription" = "בעלי אתר זה מרשים לנו להציג רק תמצית מתוכן האתר. הפוסט המלא יוצג רק למבקרים באתר.";
+
+/* Reader post details view */
+"reader.postDetails.viewMoreOn" = "הפוסט המלא מחכה לך ב-%@";
+
 /* Name for the Candy color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.candy" = "מתקתק";
 
@@ -10661,6 +10672,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Accessibility hint for actions when displaying media items. */
 "siteMedia.cellAccessibilityHint" = "יש לבחור מדיה.";
+
+/* Title for the URL field */
+"siteMedia.details.url" = "כתובת URL";
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityHint" = "יש להקיש כדי להציג מדיה במסך מלא";

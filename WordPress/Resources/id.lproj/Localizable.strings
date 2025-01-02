@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-12-10 09:54:11+0000 */
+/* Translation-Revision-Date: 2024-12-23 15:35:25+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: id */
@@ -5747,8 +5747,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title shown on the dashboard when it fails to load */
 "Some data wasn't loaded" = "Sejumlah data belum dimuat";
 
-/* A generic error message
-   Title for a label that appears when the scan failed
+/* Title for a label that appears when the scan failed
    Title for the error view when the scan start has failed */
 "Something went wrong" = "Terjadi kesalahan";
 
@@ -8474,6 +8473,9 @@ Example: Reply to Pamela Nguyen */
 /* Shared empty state view */
 "emptyStateView.noSearchResult.title" = "Tidak ada Hasil";
 
+/* A name of the ID field (it's a technical field, has to be short, displayed below everything else) */
+"entityMetadataFooterView.id" = "ID";
+
 /* Placeholder for the site url textfield.
    Site Address placeholder */
 "example.com" = "contoh.com";
@@ -9283,7 +9285,7 @@ Example: Reply to Pamela Nguyen */
 "notifications.accessibility-tap-to-share-this-post" = "Ketuk Dua Kali untuk Membagikan Pos ini";
 
 /* A label for screenreader users */
-"notifications.accessibility-tap-to-unlike-this-comment" = "Ketuk Dua Kali untuk Batal Menyukai Komentar ini ";
+"notifications.accessibility-tap-to-unlike-this-comment" = "Ketuk Dua Kali untuk Batal Menyukai Komentar ini";
 
 /* A label for screenreader users */
 "notifications.accessibility-tap-to-unlike-this-post" = "Ketuk Dua Kali untuk Batal Menyukai Pos ini";
@@ -10117,10 +10119,16 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.notice.user.blocked" = "pembaca.pemberitahuan.pengguna.blokir.gagal";
 
 /* Button accessibility label */
+"reader.post.buttonBookmark.accessibilityLabel" = "Bookmark";
+
+/* Button accessibility label */
 "reader.post.buttonComment.accessibilityLabel" = "Tampilkan komentar";
 
 /* Button accessibility label */
 "reader.post.buttonLike.accessibilityLabel" = "Suka";
+
+/* Button accessibility label */
+"reader.post.buttonReblog.accessibilityLabel" = "Reblog";
 
 /* Button accessibility label */
 "reader.post.buttonRemoveBookmark.accessibilityLint" = "Hapus bookmark";
@@ -10178,6 +10186,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "Tampilkan di Browser";
+
+/* Reader post details view placeholder when blog name not avail */
+"reader.postDetails.blog" = "blog";
+
+/* Reader post details view */
+"reader.postDetails.viewModeDescription" = "Pemilik situs ini hanya mengizinkan kami menampilkan ringkasan isi situsnya. Untuk melihat pos lengkap, Anda harus mengunjungi situsnya.";
+
+/* Reader post details view */
+"reader.postDetails.viewMoreOn" = "Kunjungi %@ untuk pos lengkap.";
 
 /* Name for the Candy color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.candy" = "Candy";
@@ -10328,6 +10345,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Reader sidebar section title */
 "reader.sidebar.section.organization.title" = "Organisasi";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.subscriptions.title" = "Langganan";
 
 /* Reader sidebar button */
 "reader.sidebar.section.tags.addTag" = "Tambahkan tag";
@@ -10673,6 +10693,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Accessibility hint for actions when displaying media items. */
 "siteMedia.cellAccessibilityHint" = "Pilih media.";
+
+/* Title for the URL field */
+"siteMedia.details.url" = "URL";
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityHint" = "Ketuk untuk melihat media dalam layar penuh";
@@ -11247,6 +11270,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* The title of the OK button in the alert that appears when deleting a user */
 "userDetails.alert.deleteUserErrorAlertOkButton" = "Oke";
+
+/* The title of the alert that appears when deleting a user */
+"userDetails.alert.deleteUserErrorAlertTitle" = "Eror";
 
 /* The 'Biographical Info' field of the user profile – matches what's in /wp-admin/profile.php */
 "userDetails.bioFieldTitle" = "Info Biografi";

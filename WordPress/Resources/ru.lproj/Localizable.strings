@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-12-11 10:54:09+0000 */
+/* Translation-Revision-Date: 2024-12-18 15:54:10+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ru */
@@ -5747,8 +5747,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title shown on the dashboard when it fails to load */
 "Some data wasn't loaded" = "Некоторые данные не загружены";
 
-/* A generic error message
-   Title for a label that appears when the scan failed
+/* Title for a label that appears when the scan failed
    Title for the error view when the scan start has failed */
 "Something went wrong" = "Что-то пошло не так...";
 
@@ -10185,6 +10184,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "Просмотреть в браузере";
 
+/* Reader post details view placeholder when blog name not avail */
+"reader.postDetails.blog" = "блог";
+
+/* Reader post details view */
+"reader.postDetails.viewModeDescription" = "Владелец этого сайта разрешает показывать только краткое содержание. Чтобы просмотреть запись полностью, посетите сайт.";
+
+/* Reader post details view */
+"reader.postDetails.viewMoreOn" = "Читайте запись полностью на веб-сайте %@";
+
 /* Name for the Candy color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.candy" = "Карамель";
 
@@ -10679,6 +10687,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Accessibility hint for actions when displaying media items. */
 "siteMedia.cellAccessibilityHint" = "Выберите медиафайл.";
+
+/* Title for the URL field */
+"siteMedia.details.url" = "URL-адрес";
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityHint" = "Нажмите для просмотра медиафайла на полном экране";

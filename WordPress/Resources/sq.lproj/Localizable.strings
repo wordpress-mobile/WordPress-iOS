@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-12-09 19:09:27+0000 */
+/* Translation-Revision-Date: 2024-12-29 21:52:37+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: sq_AL */
@@ -5732,8 +5732,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title shown on the dashboard when it fails to load */
 "Some data wasn't loaded" = "S’u ngarkuan ca të dhëna";
 
-/* A generic error message
-   Title for a label that appears when the scan failed
+/* Title for a label that appears when the scan failed
    Title for the error view when the scan start has failed */
 "Something went wrong" = "Diç shkoi ters";
 
@@ -8288,6 +8287,9 @@ Example: Reply to Pamela Nguyen */
 /* Debug Menu section title */
 "debugMenu.section.settings" = "Rregullime";
 
+/* Debug Menu section title */
+"debugMenu.section.tipKit" = "TipKit";
+
 /* Debug Menu action for TipKit */
 "debugMenu.showAllTips" = "Shfaqi Krejt Ndihmëzat";
 
@@ -8449,6 +8451,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Shared empty state view */
 "emptyStateView.noSearchResult.title" = "S’ka Përfundime";
+
+/* A name of the ID field (it's a technical field, has to be short, displayed below everything else) */
+"entityMetadataFooterView.id" = "ID";
 
 /* Placeholder for the site url textfield.
    Site Address placeholder */
@@ -10155,6 +10160,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "Shiheni në Shfletues";
 
+/* Reader post details view placeholder when blog name not avail */
+"reader.postDetails.blog" = "blog";
+
+/* Reader post details view */
+"reader.postDetails.viewModeDescription" = "I zoti i këtij sajti na lejon të shfaqim vetëm një përmbledhje të shkurtër të lëndës së tij. Që të shihni postimin e plotë, ju duhet të vizitoni sajtin e tij.";
+
+/* Reader post details view */
+"reader.postDetails.viewMoreOn" = "Për postimin e plotë vizitoni %@";
+
 /* Name for the Candy color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.candy" = "Kallamsheqeri";
 
@@ -10652,6 +10666,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Accessibility hint for actions when displaying media items. */
 "siteMedia.cellAccessibilityHint" = "Përzgjidhni media.";
+
+/* Title for the URL field */
+"siteMedia.details.url" = "URL";
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityHint" = "Prekni që të shihni median sa krejt ekrani";

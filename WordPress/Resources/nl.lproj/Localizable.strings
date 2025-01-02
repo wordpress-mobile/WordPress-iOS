@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-12-07 07:46:59+0000 */
+/* Translation-Revision-Date: 2024-12-16 19:49:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: nl */
@@ -5747,8 +5747,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title shown on the dashboard when it fails to load */
 "Some data wasn't loaded" = "Niet alle gegevens zijn geladen";
 
-/* A generic error message
-   Title for a label that appears when the scan failed
+/* Title for a label that appears when the scan failed
    Title for the error view when the scan start has failed */
 "Something went wrong" = "Er is iets fout gegaan";
 
@@ -8474,6 +8473,9 @@ Example: Reply to Pamela Nguyen */
 /* Shared empty state view */
 "emptyStateView.noSearchResult.title" = "Geen resultaten";
 
+/* A name of the ID field (it's a technical field, has to be short, displayed below everything else) */
+"entityMetadataFooterView.id" = "ID";
+
 /* Placeholder for the site url textfield.
    Site Address placeholder */
 "example.com" = "voorbeeld.nl";
@@ -10185,6 +10187,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "Bekijken in browser";
 
+/* Reader post details view placeholder when blog name not avail */
+"reader.postDetails.blog" = "blog";
+
+/* Reader post details view */
+"reader.postDetails.viewModeDescription" = "We mogen van de eigenaar van deze site alleen een korte samenvatting van zijn of haar content weergeven. Om het volledige bericht te bekijken, moet je zijn of haar site bezoeken.";
+
+/* Reader post details view */
+"reader.postDetails.viewMoreOn" = "Bezoek %@ voor het volledige bericht";
+
 /* Name for the Candy color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.candy" = "Candy";
 
@@ -10682,6 +10693,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Accessibility hint for actions when displaying media items. */
 "siteMedia.cellAccessibilityHint" = "Selecteer media.";
+
+/* Title for the URL field */
+"siteMedia.details.url" = "URL";
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityHint" = "Klik om media op volledig scherm te bekijken";

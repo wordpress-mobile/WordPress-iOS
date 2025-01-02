@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-12-09 17:54:09+0000 */
+/* Translation-Revision-Date: 2024-12-19 09:54:12+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ar */
@@ -5747,8 +5747,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title shown on the dashboard when it fails to load */
 "Some data wasn't loaded" = "لم يتم تحميل بعض البيانات";
 
-/* A generic error message
-   Title for a label that appears when the scan failed
+/* Title for a label that appears when the scan failed
    Title for the error view when the scan start has failed */
 "Something went wrong" = "حدث خطأ ما";
 
@@ -10182,6 +10181,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "عرض في المتصفح";
 
+/* Reader post details view placeholder when blog name not avail */
+"reader.postDetails.blog" = "المدونة";
+
+/* Reader post details view */
+"reader.postDetails.viewModeDescription" = "مالك هذا الموقع هو وحده من يسمح لنا بعرض موجز مختصر عن محتوياته. لعرض التدوينة بالكامل، سيتعين عليك زيارة موقعه.";
+
+/* Reader post details view */
+"reader.postDetails.viewMoreOn" = "تفضل بزيارة %@ للاطلاع على التدوينة الكاملة";
+
 /* Name for the Candy color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.candy" = "حلوى";
 
@@ -10676,6 +10684,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Accessibility hint for actions when displaying media items. */
 "siteMedia.cellAccessibilityHint" = "حدِّد الوسائط.";
+
+/* Title for the URL field */
+"siteMedia.details.url" = "عنوان الموقع";
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityHint" = "النقر لعرض الوسائط في وضع الشاشة الكاملة";

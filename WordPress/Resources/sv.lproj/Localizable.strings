@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-12-11 09:54:14+0000 */
+/* Translation-Revision-Date: 2024-12-18 13:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: sv_SE */
@@ -5747,8 +5747,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title shown on the dashboard when it fails to load */
 "Some data wasn't loaded" = "Viss data kunde inte läsas in";
 
-/* A generic error message
-   Title for a label that appears when the scan failed
+/* Title for a label that appears when the scan failed
    Title for the error view when the scan start has failed */
 "Something went wrong" = "Något gick fel";
 
@@ -10185,6 +10184,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "Visa i webbläsare";
 
+/* Reader post details view placeholder when blog name not avail */
+"reader.postDetails.blog" = "blogg";
+
+/* Reader post details view */
+"reader.postDetails.viewModeDescription" = "Den här webbplatsens ägare tillåter endast att vi visar en kort sammanfattning av innehållet. Visa hela inlägget genom att besöka deras webbplats.";
+
+/* Reader post details view */
+"reader.postDetails.viewMoreOn" = "Besök %@  för det fullständiga inlägget";
+
 /* Name for the Candy color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.candy" = "Godis";
 
@@ -10682,6 +10690,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Accessibility hint for actions when displaying media items. */
 "siteMedia.cellAccessibilityHint" = "Välj media.";
+
+/* Title for the URL field */
+"siteMedia.details.url" = "-URL";
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityHint" = "Tryck för att visa media i helskärm";

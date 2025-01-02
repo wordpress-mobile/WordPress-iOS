@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-12-10 09:54:12+0000 */
+/* Translation-Revision-Date: 2024-12-18 11:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ja_JP */
@@ -5744,8 +5744,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title shown on the dashboard when it fails to load */
 "Some data wasn't loaded" = "一部のデータを読み込めませんでした";
 
-/* A generic error message
-   Title for a label that appears when the scan failed
+/* Title for a label that appears when the scan failed
    Title for the error view when the scan start has failed */
 "Something went wrong" = "問題が発生しました";
 
@@ -8459,6 +8458,9 @@ Example: Reply to Pamela Nguyen */
 /* Shared empty state view */
 "emptyStateView.noSearchResult.title" = "一致する結果がありません";
 
+/* A name of the ID field (it's a technical field, has to be short, displayed below everything else) */
+"entityMetadataFooterView.id" = "ID";
+
 /* Placeholder for the site url textfield.
    Site Address placeholder */
 "example.com" = "example.com";
@@ -10161,6 +10163,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "ブラウザで表示";
 
+/* Reader post details view placeholder when blog name not avail */
+"reader.postDetails.blog" = "ブログ";
+
+/* Reader post details view */
+"reader.postDetails.viewModeDescription" = "このサイトの所有者は、簡単な概要のみを表示するように設定しています。 投稿の全文を読むには、サイトにアクセスしてください。";
+
+/* Reader post details view */
+"reader.postDetails.viewMoreOn" = "投稿の全文を読むには %@ にアクセスしてください";
+
 /* Name for the Candy color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.candy" = "キャンディー";
 
@@ -10643,6 +10654,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Accessibility hint for actions when displaying media items. */
 "siteMedia.cellAccessibilityHint" = "メディアを選択します。";
+
+/* Title for the URL field */
+"siteMedia.details.url" = "URL";
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityHint" = "タップしてメディアをフルスクリーンで表示";
