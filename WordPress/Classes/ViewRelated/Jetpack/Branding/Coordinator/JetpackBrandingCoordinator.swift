@@ -4,7 +4,7 @@ import WordPressUI
 /// A class containing convenience methods for the the Jetpack branding experience
 class JetpackBrandingCoordinator {
 
-    static func presentOverlay(from viewController: UIViewController, redirectAction: (() -> Void)? = nil) {
+    static func presentOverlay(from presentingViewController: UIViewController, redirectAction: (() -> Void)? = nil) {
 
         let action = redirectAction ?? {
             // Try to export WordPress data to a shared location before redirecting the user.
@@ -13,9 +13,9 @@ class JetpackBrandingCoordinator {
             }
         }
 
-        let jetpackOverlayViewController = JetpackOverlayViewController(viewFactory: makeJetpackOverlayView, redirectAction: action)
-        let bottomSheet = BottomSheetViewController(childViewController: jetpackOverlayViewController, customHeaderSpacing: 0)
-        bottomSheet.show(from: viewController)
+        let jetpackOverlayVC = JetpackOverlayViewController(viewFactory: makeJetpackOverlayView, redirectAction: action)
+        jetpackOverlayVC.sheetPresentationController?.detents = [.medium()]
+        presentingViewController.present(jetpackOverlayVC, animated: true)
     }
 
     static func makeJetpackOverlayView(redirectAction: (() -> Void)? = nil) -> UIView {

@@ -1,7 +1,8 @@
 import Lottie
 import UIKit
+import WordPressUI
 
-class JetpackOverlayView: UIView {
+final class JetpackOverlayView: UIView {
 
     private var buttonAction: (() -> Void)?
 
@@ -38,7 +39,7 @@ class JetpackOverlayView: UIView {
     }()
 
     private lazy var stackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [animationContainerView, titleLabel, descriptionLabel, getJetpackButton])
+        let stackView = UIStackView(arrangedSubviews: [animationContainerView, titleLabel, descriptionLabel, SpacerView(minHeight: 8), getJetpackButton])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.alignment = .leading
@@ -85,13 +86,11 @@ class JetpackOverlayView: UIView {
     }()
 
     private lazy var getJetpackButton: UIButton = {
-        let button = UIButton()
-        button.backgroundColor = UIAppColor.jetpackGreen(.shade40)
-        button.setTitle(TextContent.buttonTitle, for: .normal)
-        button.titleLabel?.adjustsFontSizeToFitWidth = true
+        var configuration = UIButton.Configuration.primary()
+        configuration.title = TextContent.buttonTitle
+
+        let button = UIButton(configuration: configuration, primaryAction: nil)
         button.titleLabel?.adjustsFontForContentSizeCategory = true
-        button.layer.cornerRadius = Metrics.tryJetpackButtonCornerRadius
-        button.layer.cornerCurve = .continuous
         return button
     }()
 
@@ -137,24 +136,16 @@ class JetpackOverlayView: UIView {
     private func configureConstraints() {
         animationContainerView.pinSubviewToAllEdges(animationView)
 
-        let stackViewTrailingConstraint = stackView.trailingAnchor.constraint(equalTo: trailingAnchor,
-                                                                              constant: -Metrics.edgeMargins.right)
-        stackViewTrailingConstraint.priority = Metrics.veryHighPriority
-        let stackViewBottomConstraint = stackView.bottomAnchor.constraint(lessThanOrEqualTo: safeBottomAnchor,
-                                                                          constant: -Metrics.edgeMargins.bottom)
-        stackViewBottomConstraint.priority = Metrics.veryHighPriority
-
         NSLayoutConstraint.activate([
             dismissButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Metrics.dismissButtonTrailingPadding),
             dismissButton.topAnchor.constraint(equalTo: topAnchor, constant: Metrics.dismissButtonTopPadding),
             dismissButton.heightAnchor.constraint(equalToConstant: Metrics.dismissButtonSize),
             dismissButton.widthAnchor.constraint(equalToConstant: Metrics.dismissButtonSize),
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Metrics.edgeMargins.left),
-            stackViewTrailingConstraint,
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Metrics.edgeMargins.right).withPriority(999),
             stackView.topAnchor.constraint(equalTo: dismissButton.bottomAnchor),
-            stackViewBottomConstraint,
+            stackView.bottomAnchor.constraint(lessThanOrEqualTo: safeBottomAnchor, constant: -Metrics.edgeMargins.bottom).withPriority(999),
 
-            getJetpackButton.heightAnchor.constraint(equalToConstant: Metrics.tryJetpackButtonHeight),
             getJetpackButton.widthAnchor.constraint(equalTo: stackView.widthAnchor),
         ])
     }
@@ -174,7 +165,7 @@ private extension JetpackOverlayView {
         static let imageToTitleSpacing: CGFloat = 24
         static let titleToDescriptionSpacing: CGFloat = 10
         static let descriptionToButtonSpacing: CGFloat = 40
-        static let edgeMargins = UIEdgeInsets(top: 46, left: 30, bottom: 20, right: 30)
+        static let edgeMargins = UIEdgeInsets(top: 46, left: 20, bottom: 10, right: 20)
         // dismiss button
         static let dismissButtonTopPadding: CGFloat = 10 // takes into account the gripper
         static let dismissButtonTrailingPadding: CGFloat = 20
@@ -202,24 +193,25 @@ private extension JetpackOverlayView {
             let font = UIFont(descriptor: fontDescriptor, size: min(fontDescriptor.pointSize, maximumFontSize))
             return UIFontMetrics.default.scaledFont(for: font, maximumPointSize: maximumFontSize)
         }
-        // "Try Jetpack" button
-        static let tryJetpackButtonHeight: CGFloat = 44
-        static let tryJetpackButtonCornerRadius: CGFloat = 6
-        // constraints
-        static let veryHighPriority = UILayoutPriority(rawValue: 999)
     }
 
     enum TextContent {
-        static let title = NSLocalizedString("jetpack.branding.overlay.title",
-                                             value: "WordPress is better with Jetpack",
-                                             comment: "Title of the Jetpack powered overlay.")
+        static let title = NSLocalizedString(
+            "jetpack.branding.overlay.title",
+            value: "WordPress is better with Jetpack",
+            comment: "Title of the Jetpack powered overlay."
+        )
 
-        static let description = NSLocalizedString("jetpack.branding.overlay.description",
-                                                   value: "The new Jetpack app has Stats, Reader, Notifications, and more that make your WordPress better.",
-                                                   comment: "Description of the Jetpack powered overlay.")
+        static let description = NSLocalizedString(
+            "jetpack.branding.overlay.description",
+            value: "The new Jetpack app has Stats, Reader, Notifications, and more that make your WordPress better.",
+            comment: "Description of the Jetpack powered overlay."
+        )
 
-        static let buttonTitle = NSLocalizedString("jetpack.branding.overlay.button.title",
-                                                   value: "Try the new Jetpack app",
-                                                   comment: "Button title of the Jetpack powered overlay.")
+        static let buttonTitle = NSLocalizedString(
+            "jetpack.branding.overlay.button.title",
+            value: "Try the new Jetpack app",
+            comment: "Button title of the Jetpack powered overlay."
+        )
     }
 }
