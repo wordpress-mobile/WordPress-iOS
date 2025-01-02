@@ -123,13 +123,13 @@ struct WebServerLogsView: View {
             WebServerLogsRowView(entry: entry, width: width)
                 .swipeActions(edge: .trailing) {
                     ShareLink(item: attributedDescription.string) {
-                        Label("Share", systemImage: "square.and.arrow.up")
+                        Label(SharedStrings.Button.share, systemImage: "square.and.arrow.up")
                     }
                     .tint(Color.blue)
                 }
                 .contextMenu {
                     ShareLink(item: attributedDescription.string) {
-                        Label("Share", systemImage: "square.and.arrow.up")
+                        Label(SharedStrings.Button.share, systemImage: "square.and.arrow.up")
                     }
                 } preview: {
                     Text(AttributedString(attributedDescription))

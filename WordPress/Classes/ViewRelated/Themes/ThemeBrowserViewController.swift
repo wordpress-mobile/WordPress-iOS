@@ -782,7 +782,6 @@ public protocol ThemePresenter: AnyObject {
                 let successFormat = NSLocalizedString("Thanks for choosing %@ by %@", comment: "Message of alert when theme activation succeeds")
                 let successMessage = String(format: successFormat, theme?.name ?? "", theme?.author ?? "")
                 let manageTitle = NSLocalizedString("Manage site", comment: "Return to blog screen action when theme activation succeeds")
-                let okTitle = NSLocalizedString("OK", comment: "Alert dismissal title")
 
                 self?.updateActivateButton(isLoading: false)
 
@@ -794,14 +793,13 @@ public protocol ThemePresenter: AnyObject {
                     handler: { [weak self] (action: UIAlertAction) in
                         _ = self?.navigationController?.popViewController(animated: true)
                     })
-                alertController.addDefaultActionWithTitle(okTitle, handler: nil)
+            alertController.addDefaultActionWithTitle(SharedStrings.Button.ok, handler: nil)
                 alertController.presentFromRootViewController()
             },
             failure: { [weak self] (error) in
                 DDLogError("Error activating theme \(String(describing: theme.themeId)): \(String(describing: error?.localizedDescription))")
 
                 let errorTitle = NSLocalizedString("Activation Error", comment: "Title of alert when theme activation fails")
-                let okTitle = NSLocalizedString("OK", comment: "Alert dismissal title")
 
                 self?.activityIndicator.stopAnimating()
                 self?.activateButton?.customView = nil
@@ -809,7 +807,7 @@ public protocol ThemePresenter: AnyObject {
                 let alertController = UIAlertController(title: errorTitle,
                     message: error?.localizedDescription,
                     preferredStyle: .alert)
-                alertController.addDefaultActionWithTitle(okTitle, handler: nil)
+            alertController.addDefaultActionWithTitle(SharedStrings.Button.ok, handler: nil)
                 alertController.presentFromRootViewController()
         })
     }

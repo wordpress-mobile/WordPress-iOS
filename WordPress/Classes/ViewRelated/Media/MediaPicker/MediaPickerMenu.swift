@@ -142,7 +142,7 @@ extension MediaPickerMenu {
 
     private func showAccessRestrictedAlert() {
         let alert = UIAlertController(title: Strings.noCameraAccessTitle, message: Strings.noCameraAccessMessage, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: Strings.buttonOK, style: .cancel))
+        alert.addAction(UIAlertAction(title: SharedStrings.Button.ok, style: .cancel))
         alert.addAction(UIAlertAction(title: Strings.noCameraOpenSettings, style: .default) { _ in
             guard let url = URL(string: UIApplication.openSettingsURLString) else {
                 return assertionFailure("Failed to create Open Settigns URL")
@@ -300,5 +300,4 @@ private enum Strings {
     static let noCameraAccessTitle = NSLocalizedString("mediaPicker.noCameraAccessTitle", value: "Media Capture", comment: "Title for alert when access to camera is not granted")
     static let noCameraAccessMessage = NSLocalizedString("mediaPicker.noCameraAccessMessage", value: "This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this.", comment: "Message for alert when access to camera is not granted")
     static let noCameraOpenSettings = NSLocalizedString("mediaPicker.openSettings", value: "Open Settings", comment: "Button that opens the Settings app")
-    static let buttonOK = NSLocalizedString("OK", value: "OK", comment: "OK")
 }

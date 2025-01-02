@@ -128,10 +128,9 @@ private extension PushAuthenticationManager {
     /// Displays an AlertView indicating that a Login Request has expired.
     ///
     func showLoginExpiredAlert() {
-        let title               = NSLocalizedString("Login Request Expired", comment: "Login Request Expired")
-        let message             = NSLocalizedString("The login request has expired. Log in to WordPress.com to try again.",
-                                                    comment: "WordPress.com Push Authentication Expired message")
-        let acceptButtonTitle   = NSLocalizedString("OK", comment: "OK")
+        let title = NSLocalizedString("Login Request Expired", comment: "Login Request Expired")
+        let message = NSLocalizedString("The login request has expired. Log in to WordPress.com to try again.", comment: "WordPress.com Push Authentication Expired message")
+        let acceptButtonTitle = SharedStrings.Button.ok
 
         alertControllerProxy.show(withTitle: title,
             message: message,
@@ -147,9 +146,9 @@ private extension PushAuthenticationManager {
     ///     - completion: A closure that receives a parameter, indicating whether the login attempt was confirmed or not.
     ///
     func showLoginVerificationAlert(_ message: String, completion: @escaping ((_ approved: Bool) -> ())) {
-        let title               = NSLocalizedString("Verify Log In", comment: "Push Authentication Alert Title")
-        let cancelButtonTitle   = NSLocalizedString("Ignore", comment: "Ignore action. Verb")
-        let acceptButtonTitle   = NSLocalizedString("Approve", comment: "Approve action. Verb")
+        let title = NSLocalizedString("Verify Log In", comment: "Push Authentication Alert Title")
+        let cancelButtonTitle = NSLocalizedString("Ignore", comment: "Ignore action. Verb")
+        let acceptButtonTitle = NSLocalizedString("Approve", comment: "Approve action. Verb")
 
         alertControllerProxy.show(withTitle: title,
                                   message: message,

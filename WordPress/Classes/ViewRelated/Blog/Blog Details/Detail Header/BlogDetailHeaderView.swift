@@ -10,6 +10,7 @@ import SwiftUI
     func siteIconShouldAllowDroppedImages() -> Bool
     func siteTitleTapped()
     func siteSwitcherTapped(sourceView: UIView)
+    func buttonShareSiteTapped()
     func visitSiteTapped()
 }
 
@@ -116,6 +117,7 @@ class BlogDetailHeaderView: UIView {
             self?.delegate?.siteIconReceivedDroppedImage(images.first)
         }
 
+        titleView.subtitleButton.menu = makeSiteLinkMenu()
         titleView.subtitleButton.addTarget(self, action: #selector(subtitleButtonTapped), for: .touchUpInside)
         titleView.titleButton.addTarget(self, action: #selector(titleButtonTapped), for: .touchUpInside)
 
@@ -124,6 +126,20 @@ class BlogDetailHeaderView: UIView {
         addSubview(titleView)
 
         setupConstraintsForChildViews()
+    }
+
+    private func makeSiteLinkMenu() -> UIMenu {
+        UIMenu(children: [
+            UIAction(title: Strings.visitSite, image: UIImage(systemName: "safari"), handler: { [weak self] _ in
+                self?.delegate?.visitSiteTapped()
+            }),
+            UIAction(title: SharedStrings.Button.copyLink, image: UIImage(systemName: "doc.on.doc"), handler: { [weak self] _ in
+                UIPasteboard.general.url = URL(string: (self?.blog?.displayURL ?? "") as String)
+            }),
+            UIAction(title: SharedStrings.Button.share + "…", image: UIImage(systemName: "square.and.arrow.up"), handler: { [weak self] _ in
+                self?.delegate?.buttonShareSiteTapped()
+            })
+        ])
     }
 
     // MARK: - Constraints
@@ -203,16 +219,6 @@ extension BlogDetailHeaderView {
             configuration.contentInsets = isSidebarModeEnabled ? NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 2, trailing: 0) : NSDirectionalEdgeInsets(top: 2, leading: 0, bottom: 1, trailing: 0)
             configuration.titleLineBreakMode = .byTruncatingTail
             button.configuration = configuration
-
-            button.menu = UIMenu(children: [
-                UIAction(title: Strings.visitSite, image: UIImage(systemName: "safari"), handler: { [weak button] _ in
-                    button?.sendActions(for: .touchUpInside)
-                }),
-                UIAction(title: Strings.actionCopyURL, image: UIImage(systemName: "doc.on.doc"), handler: { [weak button] _ in
-                    UIPasteboard.general.url = URL(string: button?.titleLabel?.text ?? "")
-                })
-            ])
-
             button.accessibilityHint = NSLocalizedString("Tap to view your site", comment: "Accessibility hint for button used to view the user's site")
             button.translatesAutoresizingMaskIntoConstraints = false
             return button
@@ -354,7 +360,5 @@ private extension String {
 }
 
 private enum Strings {
-    static let visitSite = NSLocalizedString("blogHeader.actionVisitSite", value: "Visit site", comment: "Context menu button title")
-    static let actionCopyURL = NSLocalizedString("blogHeader.actionCopyURL", value: "Copy URL", comment: "Context menu button title")
-
+    static let visitSite = NSLocalizedString("blogHeader.actionVisitSite", value: "Visit Site", comment: "Context menu button title")
 }

@@ -22,7 +22,7 @@ extension HomeSiteHeaderViewController {
 
     private func makePrimarySection() -> UIMenu {
         let menuItems = [
-            MenuItem.visitSite({ [weak self] in self?.visitSiteTapped() }),
+            MenuItem.visitSite { [weak self] in self?.visitSiteTapped() },
             MenuItem.shareSite { [weak self] in self?.buttonShareSiteTapped() },
         ]
         return UIMenu(options: .displayInline, children: menuItems.map { $0.toAction })
@@ -54,7 +54,7 @@ extension HomeSiteHeaderViewController {
 
     // MARK: - Actions
 
-    private func buttonShareSiteTapped() {
+    func buttonShareSiteTapped() {
         guard let urlString = blog.homeURL as String?,
               let url = URL(string: urlString) else {
             assertionFailure("Site has no URL")
@@ -108,7 +108,7 @@ private enum MenuItem {
     var title: String {
         switch self {
         case .visitSite: return Strings.visitSite
-        case .shareSite: return Strings.shareSite
+        case .shareSite: return SharedStrings.Button.share + "…"
         case .siteTitle: return Strings.siteTitle
         case .personalizeHome: return Strings.personalizeHome
         }
@@ -136,7 +136,6 @@ private enum MenuItem {
 
 private enum Strings {
     static let visitSite = NSLocalizedString("mySite.siteActions.visitSite", value: "Visit site", comment: "Menu title for the visit site option")
-    static let shareSite = NSLocalizedString("mySite.siteActions.shareSite", value: "Share site", comment: "Menu title for the share site option")
     static let siteTitle = NSLocalizedString("mySite.siteActions.siteTitle", value: "Change site title", comment: "Menu title for the change site title option")
     static let siteIcon = NSLocalizedString("mySite.siteActions.siteIcon", value: "Change site icon", comment: "Menu title for the change site icon option")
     static let personalizeHome = NSLocalizedString("mySite.siteActions.personalizeHome", value: "Personalize home", comment: "Menu title for the personalize home option")

@@ -18,7 +18,7 @@ class PostCoordinator: NSObject {
         case maximumRetryTimeIntervalReached
 
         var errorDescription: String? {
-            Strings.genericErrorTitle
+            SharedStrings.Error.generic
         }
 
         var errorUserInfo: [String: Any] {
@@ -177,20 +177,20 @@ class PostCoordinator: NSObject {
             wpAssertionFailure("Failed to show an error alert")
             return
         }
-        let alert = UIAlertController(title: Strings.genericErrorTitle, message: error.localizedDescription, preferredStyle: .alert)
+        let alert = UIAlertController(title: SharedStrings.Error.generic, message: error.localizedDescription, preferredStyle: .alert)
         if let error = error as? PostRepository.PostSaveError {
             switch error {
             case .conflict(let latest):
-                alert.addDefaultActionWithTitle(Strings.buttonOK) { [weak self] _ in
+                alert.addDefaultActionWithTitle(SharedStrings.Button.ok) { [weak self] _ in
                     self?.showResolveConflictView(post: post, remoteRevision: latest, source: .editor)
                 }
             case .deleted:
-                alert.addDefaultActionWithTitle(Strings.buttonOK) { [weak self] _ in
+                alert.addDefaultActionWithTitle(SharedStrings.Button.ok) { [weak self] _ in
                     self?.handlePermanentlyDeleted(post)
                 }
             }
         } else {
-            alert.addDefaultActionWithTitle(Strings.buttonOK, handler: nil)
+            alert.addDefaultActionWithTitle(SharedStrings.Button.ok, handler: nil)
         }
         topViewController.present(alert, animated: true)
     }
@@ -944,9 +944,4 @@ private extension NSManagedObjectID {
         return String(description.suffix(from: index))
             .trimmingCharacters(in: CharacterSet(charactersIn: "/>"))
     }
-}
-
-private enum Strings {
-    static let genericErrorTitle = NSLocalizedString("postNotice.errorTitle", value: "An error occured", comment: "A generic error message title")
-    static let buttonOK = NSLocalizedString("postNotice.ok", value: "OK", comment: "Button OK")
 }

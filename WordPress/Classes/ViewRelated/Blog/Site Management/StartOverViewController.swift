@@ -145,11 +145,8 @@ open class StartOverViewController: UITableViewController, MFMailComposeViewCont
         let title = String(format: NSLocalizedString("Contact us at %@", comment: "Alert title for contact us alert, placeholder for help email address, inserted at run time."), mailRecipient)
         let message = NSLocalizedString("\nPlease send us an email to have your content cleared out.", comment: "Message to ask the user to send us an email to clear their content.")
 
-        let alertController =  UIAlertController(title: title,
-                                                 message: message,
-                                                 preferredStyle: .alert)
-        alertController.addCancelActionWithTitle(NSLocalizedString("OK",
-                                                 comment: "Button title. An acknowledgement of the message displayed in a prompt."))
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alertController.addCancelActionWithTitle(SharedStrings.Button.ok)
         alertController.presentFromRootViewController()
     }
 

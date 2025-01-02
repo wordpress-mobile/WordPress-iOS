@@ -86,7 +86,7 @@ private extension KeyringAccountHelper {
         let alertBodyMessage = NSLocalizedString("The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages.",
                                                  comment: "Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages.")
         let continueActionTitle = NSLocalizedString("Learn more", comment: "A button title.")
-        let cancelActionTitle = NSLocalizedString("OK", comment: "A button title for closing the dialog.")
+        let cancelActionTitle = SharedStrings.Button.ok
 
         return ValidationError(header: alertHeaderMessage,
                                body: alertBodyMessage,

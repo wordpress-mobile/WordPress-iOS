@@ -17,7 +17,7 @@ extension ReaderStreamViewController {
         }
         let button = UIBarButtonItem(title: nil, image: UIImage(systemName: "square.and.arrow.up"), target: self, action: #selector(shareButtonTapped))
         button.tag = NavigationItemTag.share.rawValue
-        button.accessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
+        button.accessibilityLabel = SharedStrings.Button.share
         addRightBarButtonItem(button)
     }
 

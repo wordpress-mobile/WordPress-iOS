@@ -56,7 +56,7 @@ private struct SubmitFeedbackView: View {
         .listStyle(.plain)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
-                Button(Strings.cancel) {
+                Button(SharedStrings.Button.cancel) {
                     if isInputEmpty {
                         dismiss()
                     } else {
@@ -87,7 +87,7 @@ private struct SubmitFeedbackView: View {
             }
         }
         .alert(Strings.attachmentsStillUploadingAlertTitle, isPresented: $isShowingAttachmentsUploadingAlert) {
-            Button(Strings.ok) {}
+            Button(SharedStrings.Button.ok) {}
         }
         .onChange(of: isInputEmpty) {
             presentingViewController?.isModalInPresentation = !$0
@@ -179,8 +179,6 @@ private struct SubmitFeedbackView: View {
 }
 
 private enum Strings {
-    static let ok = NSLocalizedString("submit.feedback.buttonOK", value: "OK", comment: "The button title for the Cancel button in the In-App Feedback screen")
-    static let cancel = NSLocalizedString("submit.feedback.buttonCancel", value: "Cancel", comment: "The button title for the Cancel button in the In-App Feedback screen")
     static let submit = NSLocalizedString("submit.feedback.submit.button", value: "Submit", comment: "The button title for the Submit button in the In-App Feedback screen")
     static let title = NSLocalizedString("submit.feedback.title", value: "Feedback", comment: "The title for the the In-App Feedback screen")
     static let details = NSLocalizedString("submit.feedback.detailsPlaceholder", value: "Details", comment: "The section title and or placeholder")

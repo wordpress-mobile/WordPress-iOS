@@ -147,7 +147,7 @@ extension PublishingEditor {
 
     func displayMediaIsUploadingAlert() {
         let alertController = UIAlertController(title: MediaUploadingAlert.title, message: MediaUploadingAlert.message, preferredStyle: .alert)
-        alertController.addDefaultActionWithTitle(MediaUploadingAlert.acceptTitle)
+        alertController.addDefaultActionWithTitle(SharedStrings.Button.ok)
         present(alertController, animated: true, completion: nil)
     }
 
@@ -359,5 +359,4 @@ private enum Strings {
 private struct MediaUploadingAlert {
     static let title = NSLocalizedString("Uploading media", comment: "Title for alert when trying to save/exit a post before media upload process is complete.")
     static let message = NSLocalizedString("You are currently uploading media. Please wait until this completes.", comment: "This is a notification the user receives if they are trying to save a post (or exit) before the media upload process is complete.")
-    static let acceptTitle  = NSLocalizedString("OK", comment: "Accept Action")
 }

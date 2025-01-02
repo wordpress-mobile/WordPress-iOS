@@ -82,8 +82,8 @@ class JetpackScanThreatDetailsViewController: UIViewController {
                                       message: viewModel.fixDescription,
                                       preferredStyle: .alert)
 
-        alert.addAction(UIAlertAction(title: Strings.cancel, style: .cancel))
-        alert.addAction(UIAlertAction(title: Strings.ok, style: .default, handler: { [weak self] _ in
+        alert.addAction(UIAlertAction(title: SharedStrings.Button.cancel, style: .cancel))
+        alert.addAction(UIAlertAction(title: SharedStrings.Button.ok, style: .default, handler: { [weak self] _ in
             guard let self else {
                 return
             }
@@ -105,8 +105,8 @@ class JetpackScanThreatDetailsViewController: UIViewController {
                                       message: String(format: viewModel.ignoreActionMessage, blogName),
                                       preferredStyle: .alert)
 
-        alert.addAction(UIAlertAction(title: Strings.cancel, style: .cancel))
-        alert.addAction(UIAlertAction(title: Strings.ok, style: .default, handler: { [weak self] _ in
+        alert.addAction(UIAlertAction(title: SharedStrings.Button.cancel, style: .cancel))
+        alert.addAction(UIAlertAction(title: SharedStrings.Button.ok, style: .default, handler: { [weak self] _ in
             guard let self else {
                 return
             }
@@ -274,8 +274,6 @@ extension JetpackScanThreatDetailsViewController {
 
     private enum Strings {
         static let title = NSLocalizedString("Threat details", comment: "Title for the Jetpack Scan Threat Details screen")
-        static let ok = NSLocalizedString("OK", comment: "OK button for alert")
-        static let cancel = NSLocalizedString("Cancel", comment: "Cancel button for alert")
         static let jetpackSettingsNotice = NSLocalizedString("Unable to visit Jetpack settings for site", comment: "Message displayed when visiting the Jetpack settings page fails.")
     }
 }

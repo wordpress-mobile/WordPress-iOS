@@ -1107,15 +1107,6 @@ private extension NotificationsViewController {
             )
         }
 
-        let cancelTitle = NSLocalizedString(
-            "Cancel",
-            comment: "Cancels the mark all as read action."
-        )
-        let markAllTitle = NSLocalizedString(
-            "OK",
-            comment: "Marks all notifications as read."
-        )
-
         let alertController = UIAlertController(
             title: String.localizedStringWithFormat(title, filter.confirmationMessageTitle),
             message: nil,
@@ -1123,9 +1114,9 @@ private extension NotificationsViewController {
         )
         alertController.view.accessibilityIdentifier = "mark-all-as-read-alert"
 
-        alertController.addCancelActionWithTitle(cancelTitle)
+        alertController.addCancelActionWithTitle(SharedStrings.Button.cancel)
 
-        alertController.addActionWithTitle(markAllTitle, style: .default) { [weak self] _ in
+        alertController.addActionWithTitle(SharedStrings.Button.ok, style: .default) { [weak self] _ in
             self?.markAllAsRead()
         }
 

@@ -198,7 +198,7 @@ extension ReaderTagsTableViewModel {
             let title = NSLocalizedString("Could Not Follow Topic", comment: "Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader.")
             let message = error?.localizedDescription
             let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            alert.addCancelActionWithTitle(NSLocalizedString("OK", comment: "Button title. An acknowledgement of the message displayed in a prompt."))
+            alert.addCancelActionWithTitle(SharedStrings.Button.ok)
             alert.presentFromRootViewController()
         }, source: "manage")
     }
@@ -215,7 +215,7 @@ extension ReaderTagsTableViewModel {
             let title = NSLocalizedString("Could Not Remove Topic", comment: "Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader.")
             let message = error?.localizedDescription
             let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            alert.addCancelActionWithTitle(NSLocalizedString("OK", comment: "Button title. An acknowledgement of the message displayed in a prompt."))
+            alert.addCancelActionWithTitle(SharedStrings.Button.ok)
             alert.presentFromRootViewController()
         }
     }

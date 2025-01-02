@@ -215,34 +215,31 @@ open class DeleteSiteViewController: UITableViewController {
         let trackedBlog = blog
         WPAppAnalytics.track(.siteSettingsDeleteSiteRequested, with: trackedBlog)
         let service = SiteManagementService(coreDataStack: ContextManager.sharedInstance())
-        service.deleteSiteForBlog(blog,
-                                  success: { [weak self] in
-                                    WPAppAnalytics.track(.siteSettingsDeleteSiteResponseOK, with: trackedBlog)
-                                    let status = NSLocalizedString("Site deleted", comment: "Overlay message displayed when site successfully deleted")
-                                    SVProgressHUD.showDismissibleSuccess(withStatus: status)
+        service.deleteSiteForBlog(blog, success: { [weak self] in
+            WPAppAnalytics.track(.siteSettingsDeleteSiteResponseOK, with: trackedBlog)
+            let status = NSLocalizedString("Site deleted", comment: "Overlay message displayed when site successfully deleted")
+            SVProgressHUD.showDismissibleSuccess(withStatus: status)
 
-                                    self?.updateNavigationStackAfterSiteDeletion()
+            self?.updateNavigationStackAfterSiteDeletion()
 
-                                    let context = ContextManager.shared.mainContext
-                                    let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context)
-                                    if let account {
-                                        AccountService(coreDataStack: ContextManager.sharedInstance()).updateUserDetails(for: account,
-                                                                                                        success: {},
-                                                                                                        failure: { _ in })
-                                    }
-            },
-                                  failure: { error in
-                                    DDLogError("Error deleting site: \(error.localizedDescription)")
-                                    WPAppAnalytics.track(.siteSettingsDeleteSiteResponseError, with: trackedBlog)
-                                    SVProgressHUD.dismiss()
+            let context = ContextManager.shared.mainContext
+            let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context)
+            if let account {
+                AccountService(coreDataStack: ContextManager.sharedInstance()).updateUserDetails(for: account,
+                                                                                                 success: {},
+                                                                                                 failure: { _ in })
+            }
+        }, failure: { error in
+            DDLogError("Error deleting site: \(error.localizedDescription)")
+            WPAppAnalytics.track(.siteSettingsDeleteSiteResponseError, with: trackedBlog)
+            SVProgressHUD.dismiss()
 
-                                    let errorTitle = NSLocalizedString("Delete Site Error", comment: "Title of alert when site deletion fails")
-                                    let alertController = UIAlertController(title: errorTitle, message: error.localizedDescription, preferredStyle: .alert)
+            let errorTitle = NSLocalizedString("Delete Site Error", comment: "Title of alert when site deletion fails")
+            let alertController = UIAlertController(title: errorTitle, message: error.localizedDescription, preferredStyle: .alert)
 
-                                    let okTitle = NSLocalizedString("OK", comment: "Alert dismissal title")
-                                    alertController.addDefaultActionWithTitle(okTitle, handler: nil)
+            alertController.addDefaultActionWithTitle(SharedStrings.Button.ok, handler: nil)
 
-                                    alertController.presentFromRootViewController()
+            alertController.presentFromRootViewController()
         })
     }
 
