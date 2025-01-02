@@ -13,6 +13,7 @@ public extension UIImage {
         if let cgImage = image.cgImage {
             self.init(cgImage: cgImage, scale: image.scale, orientation: .up)
         } else {
+            assertionFailure("faield to render image with color")
             self.init()
         }
     }
