@@ -6,6 +6,7 @@
 * [*] Fix transitions in Blogging Reminders flow, improve accessibility, add close buttons [#23931]
 * [*] Fix an issue with compliance popover not dismissing for self-hosted site [#23932]
 * [*] Fix dynamic type support in the compliance popover [#23932]
+* [*] Improve transisions and interactive dismiss gestures for sheets [#23933]
 
 25.6
 -----
