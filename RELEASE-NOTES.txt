@@ -12,6 +12,7 @@
 * [*] Fix incorrect chevron icons direction in RTL languages [#23940]
 * [*] Fix an issue with clear navigation bar background in revision browser [#23941]
 * [*] Fix an issue with comments being lost on request failure [#23942]
+* [*] Fix an issue with Referrers in Stats showing invalid icons [#23943]
 
 25.6
 -----

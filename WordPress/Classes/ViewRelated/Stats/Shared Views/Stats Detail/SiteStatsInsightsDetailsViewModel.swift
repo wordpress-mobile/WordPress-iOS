@@ -274,12 +274,16 @@ class SiteStatsInsightsDetailsViewModel: Observable {
 
                     // Views Visitors
                     let weekEnd = futureEndOfWeekDate(for: periodSummary)
-                    rows.append(contentsOf: SiteStatsImmuTableRows.viewVisitorsImmuTableRows(periodSummary,
-                                                                                             selectedSegment: selectedViewsVisitorsSegment,
-                                                                                             periodDate: selectedDate!,
-                                                                                             periodEndDate: weekEnd,
-                                                                                             siteStatsInsightsDelegate: nil,
-                                                                                             viewsAndVisitorsDelegate: viewsAndVisitorsDelegate))
+                    rows.append(
+                        contentsOf: SiteStatsImmuTableRows.viewVisitorsImmuTableRows(
+                            periodSummary,
+                            selectedSegment: selectedViewsVisitorsSegment,
+                            periodDate: selectedDate!,
+                            periodEndDate: weekEnd,
+                            siteStatsInsightsDelegate: nil,
+                            viewsAndVisitorsDelegate: viewsAndVisitorsDelegate
+                        )
+                    )
 
                     // Referrers
                     if let referrers = viewsAndVisitorsData.topReferrers {
@@ -287,13 +291,16 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                         let chartViewModel = StatsReferrersChartViewModel(referrers: referrers)
                         let chartView: UIView? = referrers.totalReferrerViewsCount > 0 ?  chartViewModel.makeReferrersChartView() : nil
 
-                        var referrersRow = TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodReferrers.itemSubtitle,
-                                                                   dataSubtitle: StatSection.periodReferrers.dataSubtitle,
-                                                                   dataRows: referrersData,
-                                                                   statSection: StatSection.periodReferrers,
-                                                                   siteStatsPeriodDelegate: nil, //TODO - look at if I need to be not null
-                                                                   siteStatsReferrerDelegate: nil,
-                                                                   siteStatsInsightsDetailsDelegate: insightsDetailsDelegate)
+                        var referrersRow = TopTotalsPeriodStatsRow(
+                            itemSubtitle: StatSection.periodReferrers.itemSubtitle,
+                            dataSubtitle: StatSection.periodReferrers.dataSubtitle,
+                            dataRows: referrersData,
+                            statSection: StatSection.periodReferrers,
+                            siteStatsPeriodDelegate: nil,
+                            //TODO - look at if I need to be not null
+                            siteStatsReferrerDelegate: nil,
+                            siteStatsInsightsDetailsDelegate: insightsDetailsDelegate
+                        )
                         referrersRow.topAccessoryView = chartView
                         rows.append(referrersRow)
                     }
@@ -304,12 +311,18 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                     if isMapShown {
                         rows.append(CountriesMapRow(countriesMap: map, statSection: .periodCountries))
                     }
-                    rows.append(CountriesStatsRow(itemSubtitle: StatSection.periodCountries.itemSubtitle,
-                                                  dataSubtitle: StatSection.periodCountries.dataSubtitle,
-                                                  statSection: isMapShown ? nil : .periodCountries,
-                                                  dataRows: countriesRowData(topCountries: viewsAndVisitorsData.topCountries),
-                                                  siteStatsPeriodDelegate: nil,
-                                                  siteStatsInsightsDetailsDelegate: insightsDetailsDelegate))
+                    rows.append(
+                        CountriesStatsRow(
+                            itemSubtitle: StatSection.periodCountries.itemSubtitle,
+                            dataSubtitle: StatSection.periodCountries.dataSubtitle,
+                            statSection: isMapShown ? nil : .periodCountries,
+                            dataRows: countriesRowData(
+                                topCountries: viewsAndVisitorsData.topCountries
+                            ),
+                            siteStatsPeriodDelegate: nil,
+                            siteStatsInsightsDetailsDelegate: insightsDetailsDelegate
+                        )
+                    )
                     return rows
                 }
 
@@ -326,29 +339,42 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                 let emailFollowersCount = insightsStore.getEmailFollowers()?.emailFollowersCount ?? 0
 
                 if dotComFollowersCount > 0 || emailFollowersCount > 0 {
-                    let chartViewModel = StatsFollowersChartViewModel(dotComFollowersCount: dotComFollowersCount,
-                                                                      emailFollowersCount: emailFollowersCount)
+                    let chartViewModel = StatsFollowersChartViewModel(
+                        dotComFollowersCount: dotComFollowersCount,
+                        emailFollowersCount: emailFollowersCount
+                    )
 
                     let chartView: UIView = chartViewModel.makeFollowersChartView()
 
-                    var chartRow = TopTotalsPeriodStatsRow(itemSubtitle: "",
-                            dataSubtitle: "",
-                            dataRows: followersRowData(dotComFollowersCount: dotComFollowersCount,
-                                                                             emailFollowersCount: emailFollowersCount,
-                                                                             totalCount: dotComFollowersCount + emailFollowersCount),
-                            statSection: StatSection.insightsFollowersWordPress,
-                            siteStatsPeriodDelegate: nil, //TODO - look at if I need to be not null
-                            siteStatsReferrerDelegate: nil)
+                    var chartRow = TopTotalsPeriodStatsRow(
+                        itemSubtitle: "",
+                        dataSubtitle: "",
+                        dataRows: followersRowData(
+                            dotComFollowersCount: dotComFollowersCount,
+                            emailFollowersCount: emailFollowersCount,
+                            totalCount: dotComFollowersCount + emailFollowersCount
+                        ),
+                        statSection: StatSection.insightsFollowersWordPress,
+                        siteStatsPeriodDelegate: nil,
+                        //TODO - look at if I need to be not null
+                        siteStatsReferrerDelegate: nil
+                    )
                     chartRow.topAccessoryView = chartView
                     rows.append(chartRow)
                 }
 
-                rows.append(TabbedTotalsStatsRow(tabsData: [tabDataForFollowerType(.insightsFollowersWordPress),
-                                                            tabDataForFollowerType(.insightsFollowersEmail)],
+                rows.append(
+                    TabbedTotalsStatsRow(
+                        tabsData: [
+                            tabDataForFollowerType(.insightsFollowersWordPress),
+                            tabDataForFollowerType(.insightsFollowersEmail)
+                        ],
                         statSection: .insightsFollowersWordPress,
                         siteStatsInsightsDelegate: insightsDetailsDelegate,
                         siteStatsDetailsDelegate: detailsDelegate,
-                        showTotalCount: false))
+                        showTotalCount: false
+                    )
+                )
                 return rows
             }
         case .insightsLikesTotals:
@@ -358,21 +384,32 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                 let likesTotalsData = revampStore.getLikesTotalsData()
 
                 if let summary = likesTotalsData.summary {
-                    rows.append(TotalInsightStatsRow(dataRow: createLikesTotalInsightsRow(periodSummary: summary),
-                                                     statSection: statSection,
-                                                     siteStatsInsightsDelegate: nil)
+                    rows.append(
+                        TotalInsightStatsRow(
+                            dataRow: createLikesTotalInsightsRow(
+                                periodSummary: summary
+                            ),
+                            statSection: statSection,
+                            siteStatsInsightsDelegate: nil
+                        )
                     )
                 }
 
                 if let topPostsAndPages = likesTotalsData.topPostsAndPages {
-                    rows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodPostsAndPages.itemSubtitle,
-                                                        dataSubtitle: StatSection.periodPostsAndPages.dataSubtitle,
-                                                        dataRows: postsAndPagesRowData(topPostsAndPages: topPostsAndPages),
-                                                        statSection: StatSection.periodPostsAndPages,
-                                                        siteStatsPeriodDelegate: nil,
-                                                        siteStatsReferrerDelegate: nil,
-                                                        siteStatsInsightsDetailsDelegate: insightsDetailsDelegate,
-                                                        siteStatsDetailsDelegate: detailsDelegate))
+                    rows.append(
+                        TopTotalsPeriodStatsRow(
+                            itemSubtitle: StatSection.periodPostsAndPages.itemSubtitle,
+                            dataSubtitle: StatSection.periodPostsAndPages.dataSubtitle,
+                            dataRows: postsAndPagesRowData(
+                                topPostsAndPages: topPostsAndPages
+                            ),
+                            statSection: StatSection.periodPostsAndPages,
+                            siteStatsPeriodDelegate: nil,
+                            siteStatsReferrerDelegate: nil,
+                            siteStatsInsightsDetailsDelegate: insightsDetailsDelegate,
+                            siteStatsDetailsDelegate: detailsDelegate
+                        )
+                    )
                 }
 
                 return rows

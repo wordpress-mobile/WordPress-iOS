@@ -502,27 +502,19 @@ private extension SiteStatsPeriodViewModel {
         let referrers = store.getTopReferrers()?.referrers.prefix(10) ?? []
 
         func rowDataFromReferrer(referrer: StatsReferrer) -> StatsTotalRowData {
-            var icon: UIImage? = nil
-            var iconURL: URL? = nil
-
-            switch referrer.iconURL?.lastPathComponent {
-            case "search-engine.png":
-                icon = Style.imageForGridiconType(.search)
-            case nil:
-                icon = Style.imageForGridiconType(.globe)
-            default:
-                iconURL = referrer.iconURL
-            }
-
-            return StatsTotalRowData(name: referrer.title,
-                                     data: referrer.viewsCount.abbreviatedString(),
-                                     icon: icon,
-                                     socialIconURL: iconURL,
-                                     showDisclosure: true,
-                                     disclosureURL: referrer.url,
-                                     childRows: referrer.children.map { rowDataFromReferrer(referrer: $0) },
-                                     statSection: .periodReferrers,
-                                     isReferrerSpam: referrer.isSpam)
+            return StatsTotalRowData(
+                name: referrer.title,
+                data: referrer.viewsCount.abbreviatedString(),
+                icon: nil,
+                socialIconURL: nil,
+                showDisclosure: true,
+                disclosureURL: referrer.url,
+                childRows: referrer.children.map {
+                    rowDataFromReferrer(referrer: $0)
+                },
+                statSection: .periodReferrers,
+                isReferrerSpam: referrer.isSpam
+            )
         }
 
         return referrers.map { rowDataFromReferrer(referrer: $0) }
