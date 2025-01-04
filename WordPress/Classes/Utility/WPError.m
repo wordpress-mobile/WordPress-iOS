@@ -131,15 +131,13 @@ NSInteger const SupportButtonIndex = 0;
         [alertController addAction:action];
         
         // Add the 'Need help' button only if internet is accessible (i.e. if the user can actually get help).
-        if (showSupport && ReachabilityUtils.isInternetReachable) {
+        if (showSupport) {
             NSString *supportText = NSLocalizedString(@"Need Help?", @"'Need help?' button label, links off to the WP for iOS FAQ.");
-            UIAlertAction *action = [UIAlertAction actionWithTitle:supportText
-                                                             style:UIAlertActionStyleCancel
-                                                           handler:^(UIAlertAction * _Nonnull __unused action) {
-                                                               SupportTableViewController *supportVC = [[SupportTableViewController alloc] init];
-                                                               [supportVC showFromTabBar];
-                                                               [WPError internalInstance].alertShowing = NO;
-                                                           }];
+            UIAlertAction *action = [UIAlertAction actionWithTitle:supportText style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull __unused action) {
+                SupportTableViewController *supportVC = [[SupportTableViewController alloc] init];
+                [supportVC showFromTabBar];
+                [WPError internalInstance].alertShowing = NO;
+            }];
             [alertController addAction:action];
         }
         [alertController presentFromRootViewController];

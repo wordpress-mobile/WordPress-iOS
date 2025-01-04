@@ -552,12 +552,6 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
 - (void)refreshAndSyncWithInteraction
 {
-    if (!ReachabilityUtils.isInternetReachable) {
-        [self refreshPullToRefresh];
-        [self refreshNoConnectionView];
-        return;
-    }
-
     [self.syncHelper syncContentWithUserInteraction];
 }
 

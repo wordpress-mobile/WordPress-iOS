@@ -1951,11 +1951,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
 
 - (void)showViewAdmin
 {
-    if (![ReachabilityUtils isInternetReachable]) {
-        [ReachabilityUtils showAlertNoInternetConnection];
-        return;
-    }
-
     [WPAppAnalytics track:WPAnalyticsStatOpenedViewAdmin withBlog:self.blog];
 
     NSString *dashboardUrl;
