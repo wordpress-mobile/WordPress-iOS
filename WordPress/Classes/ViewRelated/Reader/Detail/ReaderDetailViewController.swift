@@ -1143,17 +1143,6 @@ private extension ReaderDetailViewController {
         let image = image.withRenderingMode(.alwaysTemplate)
         return UIBarButtonItem(image: image, style: .plain, target: self, action: action)
     }
-
-    /// Checks if the view is visible in the viewport.
-    func isVisibleInScrollView(_ view: UIView) -> Bool {
-        guard view.superview != nil, !view.isHidden else {
-            return false
-        }
-
-        let scrollViewFrame = CGRect(origin: scrollView.contentOffset, size: scrollView.frame.size)
-        let convertedViewFrame = scrollView.convert(view.bounds, from: view)
-        return scrollViewFrame.intersects(convertedViewFrame)
-    }
 }
 
 // MARK: - NoResultsViewControllerDelegate
