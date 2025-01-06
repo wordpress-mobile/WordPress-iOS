@@ -194,20 +194,20 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
  *
  *  @warn       For WordPress.com or Jetpack Managed sites this will be nil. Use usernameForSite instead
  */
-@property (nonatomic, strong, readwrite, nullable) NSString       *username;
-@property (nonatomic, strong, readwrite, nullable) NSString       *password;
+@property (nonatomic, strong, readwrite, nullable) NSString *username;
+@property (nonatomic, strong, readwrite, nullable) NSString *password;
 
 
 // Readonly Properties
-@property (nonatomic,   weak,  readonly, nullable) NSArray *sortedPostFormatNames;
-@property (nonatomic,   weak,  readonly, nullable) NSArray *sortedPostFormats;
-@property (nonatomic,   weak,  readonly, nullable) NSArray *sortedConnections;
+@property (nonatomic, weak, readonly, nullable) NSArray *sortedPostFormatNames;
+@property (nonatomic, weak, readonly, nullable) NSArray *sortedPostFormats;
+@property (nonatomic, weak, readonly, nullable) NSArray *sortedConnections;
 @property (nonatomic, readonly, nullable) NSArray<Role *> *sortedRoles;
-@property (nonatomic, strong,  readonly, nullable) WordPressOrgXMLRPCApi *xmlrpcApi;
-@property (nonatomic, strong,  readonly, nullable) WordPressOrgRestApi *selfHostedSiteRestApi;
-@property (nonatomic,   weak,  readonly, nullable) NSString       *version;
-@property (nonatomic, strong,  readonly, nullable) NSString       *authToken;
-@property (nonatomic, strong,  readonly, nullable) NSSet *allowedFileTypes;
+@property (nonatomic, strong, readonly, nullable) WordPressOrgXMLRPCApi *xmlrpcApi;
+@property (nonatomic, strong, readonly, nullable) WordPressOrgRestApi *selfHostedSiteRestApi;
+@property (nonatomic, weak, readonly, nullable) NSString *version;
+@property (nonatomic, strong, readonly, nullable) NSString *authToken;
+@property (nonatomic, strong, readonly, nullable) NSSet *allowedFileTypes;
 @property (nonatomic, copy, readonly, nullable) NSString *usernameForSite;
 @property (nonatomic, assign, readonly) BOOL canBlaze;
 
