@@ -850,7 +850,13 @@ public protocol ThemePresenter: AnyObject {
         presentUrlForTheme(theme, url: theme?.viewUrl(), onClose: onWebkitViewControllerClose)
     }
 
-    @objc open func presentUrlForTheme(_ theme: Theme?, url: String?, activeButton: Bool = true, modalStyle: UIModalPresentationStyle = .pageSheet, onClose: (() -> Void)? = nil) {
+    @objc open func presentUrlForTheme(
+        _ theme: Theme?,
+        url: String?,
+        activeButton: Bool = true,
+        modalStyle: UIModalPresentationStyle = .pageSheet,
+        onClose: (() -> Void)? = nil
+    ) {
         guard let theme, let url = url.flatMap(URL.init(string:)) else {
             return
         }
@@ -870,8 +876,14 @@ public protocol ThemePresenter: AnyObject {
 
         let webViewController = WebViewControllerFactory.controller(configuration: configuration, source: "theme_browser")
         webViewController.navigationItem.rightBarButtonItem = activateButton
+
         let navigation = UINavigationController(rootViewController: webViewController)
         navigation.modalPresentationStyle = modalStyle
+        if #available(iOS 18, *), let indexPath = collectionView.indexPathsForSelectedItems?.first {
+            navigation.preferredTransition = .zoom(sourceViewProvider: { [weak self] _ in
+                self?.collectionView.cellForItem(at: indexPath)?.contentView
+            })
+        }
 
         if searchController != nil && searchController.isActive {
             searchController.dismiss(animated: true, completion: {
