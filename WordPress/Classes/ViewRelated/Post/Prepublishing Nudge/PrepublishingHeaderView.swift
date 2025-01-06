@@ -1,4 +1,5 @@
 import UIKit
+import WordPressUI
 
 final class PrepublishingHeaderView: UIView {
     private let blogImageView = SiteIconHostingView()

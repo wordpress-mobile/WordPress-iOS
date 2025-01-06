@@ -1,4 +1,5 @@
 import SwiftUI
+import WordPressUI
 import WordPressShared
 
 struct BlogListSiteView: View {

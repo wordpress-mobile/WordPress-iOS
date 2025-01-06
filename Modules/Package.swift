@@ -66,7 +66,15 @@ let package = Package(
         .target(name: "WordPressSharedObjC", resources: [.process("Resources")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .target(name: "WordPressShared", dependencies: [.target(name: "WordPressSharedObjC")], resources: [.process("Resources")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .target(name: "WordPressTesting", resources: [.process("Resources")]),
-        .target(name: "WordPressUI", dependencies: [.target(name: "WordPressShared")], resources: [.process("Resources")], swiftSettings: [.swiftLanguageMode(.v5)]),
+        .target(
+            name: "WordPressUI",
+            dependencies: [
+                "AsyncImageKit",
+                .target(name: "WordPressShared")
+            ],
+            resources: [.process("Resources")],
+            swiftSettings: [.swiftLanguageMode(.v5)]
+        ),
         .testTarget(name: "JetpackStatsWidgetsCoreTests", dependencies: [.target(name: "JetpackStatsWidgetsCore")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .testTarget(name: "DesignSystemTests", dependencies: [.target(name: "DesignSystem")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .testTarget(name: "WordPressFluxTests", dependencies: ["WordPressFlux"], swiftSettings: [.swiftLanguageMode(.v5)]),
@@ -193,6 +201,7 @@ enum XcodeSupport {
             .xcodeTarget("XcodeTarget_StatsWidget", dependencies: [
                 "JetpackStatsWidgetsCore",
                 "WordPressShared",
+                "WordPressUI",
                 .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
                 .product(name: "WordPressAPI", package: "wordpress-rs"),
                 .product(name: "ColorStudio", package: "color-studio"),

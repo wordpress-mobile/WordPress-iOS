@@ -1,6 +1,7 @@
 import SwiftUI
 import UIKit
 import Combine
+import WordPressUI
 import WordPressShared
 import AsyncImageKit
 

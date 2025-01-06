@@ -3,33 +3,12 @@ import SwiftUI
 import WordPressShared
 import WordPressKit
 import AsyncImageKit
+import WordPressUI
 
-struct SiteIconViewModel {
-    var imageURL: URL?
-    var firstLetter: Character?
-    var size: Size
-    var host: MediaHost?
-
-    enum Size {
-        case small
-        case regular
-        case large
-
-        var width: CGFloat {
-            switch self {
-            case .small: 28
-            case .regular: 40
-            case .large: 72
-            }
-        }
-
-        var size: CGSize {
-            CGSize(width: width, height: width)
-        }
-    }
-
+extension SiteIconViewModel {
     init(blog: Blog, size: Size = .regular) {
-        self.size = size
+        self.init(size: size)
+
         self.firstLetter = blog.title?.first
 
         if blog.hasIcon, let icon = blog.icon {
@@ -39,7 +18,8 @@ struct SiteIconViewModel {
     }
 
     init(readerSiteTopic: ReaderSiteTopic, size: Size = .regular) {
-        self.size = size
+        self.init(size: size)
+
         self.firstLetter = readerSiteTopic.title.first
         self.imageURL = SiteIconViewModel.makeReaderSiteIconURL(
             iconURL: readerSiteTopic.siteBlavatar,

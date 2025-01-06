@@ -1,6 +1,8 @@
 import UIKit
+import SwiftUI
 import WordPressKit
 import WordPressShared
+import WordPressUI
 
 class ShareModularViewController: ShareExtensionAbstractViewController {
 
@@ -185,7 +187,7 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
 
     fileprivate func setupSitesTableView() {
         // Register the cells
-        sitesTableView.register(ShareSitesTableViewCell.self, forCellReuseIdentifier: Constants.sitesReuseIdentifier)
+        sitesTableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.sitesReuseIdentifier)
         sitesTableView.estimatedRowHeight = Constants.siteRowHeight
 
         // Hide the separators, whenever the table is empty
@@ -564,34 +566,17 @@ fileprivate extension ShareModularViewController {
             return
         }
 
-        // Site's Details
-        let displayURL = URL(string: site.url)?.host ?? ""
-        if let name = site.name.nonEmptyString() {
-            cell.textLabel?.text = name
-            cell.detailTextLabel?.isEnabled = true
-            cell.detailTextLabel?.text = displayURL
-        } else {
-            cell.textLabel?.text = displayURL
-            cell.detailTextLabel?.isEnabled = false
-            cell.detailTextLabel?.text = nil
-        }
+        cell.selectionStyle = .none
 
-        // Site's Blavatar
-        cell.imageView?.image = WPStyleGuide.Share.blavatarPlaceholderImage
-        if let siteIconPath = site.icon,
-            let siteIconUrl = URL(string: siteIconPath) {
-            cell.imageView?.downloadBlavatar(from: siteIconUrl)
-        } else {
-            cell.imageView?.image = WPStyleGuide.Share.blavatarPlaceholderImage
-        }
+        cell.contentConfiguration = UIHostingConfiguration {
+            ShareSiteCellView(site: site)
+        }.margins(.vertical, 12)
 
         if site.blogID.intValue == shareData.selectedSiteID {
             cell.accessoryType = .checkmark
         } else {
             cell.accessoryType = .none
         }
-
-        WPStyleGuide.Share.configureTableViewSiteCell(cell)
     }
 
     var rowCountForSites: Int {
@@ -599,10 +584,7 @@ fileprivate extension ShareModularViewController {
     }
 
     func selectedSitesTableRowAt(_ indexPath: IndexPath) {
-        sitesTableView.flashRowAtIndexPath(indexPath,
-                                           scrollPosition: .none,
-                                           flashLength: Constants.flashAnimationLength,
-                                           completion: nil)
+        sitesTableView.flashRowAtIndexPath(indexPath, scrollPosition: .none, flashLength: Constants.flashAnimationLength, completion: nil)
 
         guard let cell = sitesTableView.cellForRow(at: indexPath),
             let site = siteForRowAtIndexPath(indexPath),
@@ -981,24 +963,24 @@ fileprivate extension ShareModularViewController {
 
 fileprivate extension ShareModularViewController {
     struct Constants {
-        static let sitesReuseIdentifier    = String(describing: ShareSitesTableViewCell.self)
-        static let modulesReuseIdentifier  = String(describing: ShareModularViewController.self)
-        static let siteRowHeight           = CGFloat(74.0)
-        static let defaultRowHeight        = CGFloat(44.0)
-        static let flashAnimationLength    = 0.2
-        static let unknownDefaultCategoryID     = NSNumber(value: -1)
-        static let unknownDefaultCategoryName   = AppLocalizedString("Default", comment: "Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post.")
+        static let sitesReuseIdentifier = "sitesReuseIdentifier"
+        static let modulesReuseIdentifier = String(describing: ShareModularViewController.self)
+        static let siteRowHeight = CGFloat(74.0)
+        static let defaultRowHeight = CGFloat(44.0)
+        static let flashAnimationLength = 0.2
+        static let unknownDefaultCategoryID = NSNumber(value: -1)
+        static let unknownDefaultCategoryName = AppLocalizedString("Default", comment: "Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post.")
     }
 
     struct SummaryText {
-        static let summaryPostPublishing    = AppLocalizedString("Publish post on:", comment: "Text displayed in the share extension's summary view. It describes the publish post action.")
-        static let summaryDraftPostDefault  = AppLocalizedString("Save draft post on:", comment: "Text displayed in the share extension's summary view that describes the save draft post action.")
+        static let summaryPostPublishing = AppLocalizedString("Publish post on:", comment: "Text displayed in the share extension's summary view. It describes the publish post action.")
+        static let summaryDraftPostDefault = AppLocalizedString("Save draft post on:", comment: "Text displayed in the share extension's summary view that describes the save draft post action.")
         static let summaryDraftPostSingular = AppLocalizedString("Save 1 photo as a draft post on:", comment: "Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post.")
-        static let summaryDraftPostPlural   = AppLocalizedString("Save %ld photos as a draft post on:", comment: "Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft post.")
-        static let summaryPagePublishing    = AppLocalizedString("Publish page on:", comment: "Text displayed in the share extension's summary view. It describes the publish page action.")
-        static let summaryDraftPageDefault  = AppLocalizedString("Save draft page on:", comment: "Text displayed in the share extension's summary view that describes the save draft page action.")
+        static let summaryDraftPostPlural = AppLocalizedString("Save %ld photos as a draft post on:", comment: "Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft post.")
+        static let summaryPagePublishing = AppLocalizedString("Publish page on:", comment: "Text displayed in the share extension's summary view. It describes the publish page action.")
+        static let summaryDraftPageDefault = AppLocalizedString("Save draft page on:", comment: "Text displayed in the share extension's summary view that describes the save draft page action.")
         static let summaryDraftPageSingular = AppLocalizedString("Save 1 photo as a draft page on:", comment: "Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft page.")
-        static let summaryDraftPagePlural   = AppLocalizedString("Save %ld photos as a draft page on:", comment: "Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft page.")
+        static let summaryDraftPagePlural = AppLocalizedString("Save %ld photos as a draft page on:", comment: "Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft page.")
     }
 
     struct StatusText {
@@ -1020,18 +1002,32 @@ private enum Strings {
 
 // MARK: - UITableView Cells
 
-class ShareSitesTableViewCell: WPTableViewCell {
+private struct ShareSiteCellView: View {
+    let site: RemoteBlog
+    let size: SiteIconViewModel.Size = .regular
 
-    // MARK: - Initializers
-    public required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+    var body: some View {
+        HStack(alignment: .center, spacing: 16) {
+            SiteIconView(viewModel: SiteIconViewModel(site: site))
+                .frame(width: size.width, height: size.width)
+            VStack(alignment: .leading) {
+                HStack(alignment: .center) {
+                    Text(site.name)
+                        .font(.callout.weight(.medium))
+                }
+                Text(URL(string: site.url)?.host ?? "")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+            }
+            .lineLimit(1)
+        }
     }
+}
 
-    public required override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
-    }
-
-    public convenience init() {
-        self.init(style: .subtitle, reuseIdentifier: nil)
+private extension SiteIconViewModel {
+    init(site: RemoteBlog) {
+        self.init(size: .regular)
+        self.firstLetter = site.name.first
+        self.imageURL = site.icon.flatMap(URL.init)
     }
 }

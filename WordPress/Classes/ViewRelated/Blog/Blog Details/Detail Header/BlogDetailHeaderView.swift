@@ -2,6 +2,7 @@ import Gridicons
 import UIKit
 import DesignSystem
 import SwiftUI
+import WordPressUI
 
 @objc protocol BlogDetailHeaderViewDelegate {
     func makeSiteIconMenu() -> UIMenu?
