@@ -981,24 +981,24 @@ fileprivate extension ShareModularViewController {
 
 fileprivate extension ShareModularViewController {
     struct Constants {
-        static let sitesReuseIdentifier    = String(describing: ShareSitesTableViewCell.self)
-        static let modulesReuseIdentifier  = String(describing: ShareModularViewController.self)
-        static let siteRowHeight           = CGFloat(74.0)
-        static let defaultRowHeight        = CGFloat(44.0)
-        static let flashAnimationLength    = 0.2
-        static let unknownDefaultCategoryID     = NSNumber(value: -1)
-        static let unknownDefaultCategoryName   = AppLocalizedString("Default", comment: "Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post.")
+        static let sitesReuseIdentifier = String(describing: ShareSitesTableViewCell.self)
+        static let modulesReuseIdentifier = String(describing: ShareModularViewController.self)
+        static let siteRowHeight = CGFloat(74.0)
+        static let defaultRowHeight = CGFloat(44.0)
+        static let flashAnimationLength = 0.2
+        static let unknownDefaultCategoryID = NSNumber(value: -1)
+        static let unknownDefaultCategoryName = AppLocalizedString("Default", comment: "Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post.")
     }
 
     struct SummaryText {
-        static let summaryPostPublishing    = AppLocalizedString("Publish post on:", comment: "Text displayed in the share extension's summary view. It describes the publish post action.")
-        static let summaryDraftPostDefault  = AppLocalizedString("Save draft post on:", comment: "Text displayed in the share extension's summary view that describes the save draft post action.")
+        static let summaryPostPublishing = AppLocalizedString("Publish post on:", comment: "Text displayed in the share extension's summary view. It describes the publish post action.")
+        static let summaryDraftPostDefault = AppLocalizedString("Save draft post on:", comment: "Text displayed in the share extension's summary view that describes the save draft post action.")
         static let summaryDraftPostSingular = AppLocalizedString("Save 1 photo as a draft post on:", comment: "Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post.")
-        static let summaryDraftPostPlural   = AppLocalizedString("Save %ld photos as a draft post on:", comment: "Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft post.")
-        static let summaryPagePublishing    = AppLocalizedString("Publish page on:", comment: "Text displayed in the share extension's summary view. It describes the publish page action.")
-        static let summaryDraftPageDefault  = AppLocalizedString("Save draft page on:", comment: "Text displayed in the share extension's summary view that describes the save draft page action.")
+        static let summaryDraftPostPlural = AppLocalizedString("Save %ld photos as a draft post on:", comment: "Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft post.")
+        static let summaryPagePublishing = AppLocalizedString("Publish page on:", comment: "Text displayed in the share extension's summary view. It describes the publish page action.")
+        static let summaryDraftPageDefault = AppLocalizedString("Save draft page on:", comment: "Text displayed in the share extension's summary view that describes the save draft page action.")
         static let summaryDraftPageSingular = AppLocalizedString("Save 1 photo as a draft page on:", comment: "Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft page.")
-        static let summaryDraftPagePlural   = AppLocalizedString("Save %ld photos as a draft page on:", comment: "Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft page.")
+        static let summaryDraftPagePlural = AppLocalizedString("Save %ld photos as a draft page on:", comment: "Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft page.")
     }
 
     struct StatusText {

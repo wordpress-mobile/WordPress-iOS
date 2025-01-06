@@ -2,7 +2,6 @@ import UIKit
 import SwiftUI
 import AsyncImageKit
 import DesignSystem
-import WordPressShared
 
 struct SiteIconView: View {
     let viewModel: SiteIconViewModel
