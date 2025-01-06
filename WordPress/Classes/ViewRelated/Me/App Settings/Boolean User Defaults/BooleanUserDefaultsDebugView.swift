@@ -32,7 +32,7 @@ struct BooleanUserDefaultsDebugView: View {
         .onAppear {
             viewModel.load()
         }
-        .tint(AppColor.brand)
+        .tint(AppColor.primary)
     }
 }
 

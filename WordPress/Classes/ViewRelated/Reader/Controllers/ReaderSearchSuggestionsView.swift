@@ -21,7 +21,7 @@ struct ReaderSearchSuggestionsView: View {
                     viewModel.buttonClearSearchHistoryTapped()
                 } label: {
                     Text(Strings.clearHistory)
-                        .foregroundStyle(AppColor.brand)
+                        .foregroundStyle(AppColor.primary)
                 }
             }
         }

@@ -72,7 +72,7 @@ private final class ReaderRecommendedSitesCellView: UIView {
     let buttonSubscribe = UIButton(configuration: {
         var configuration = UIButton.Configuration.plain()
         configuration.image = UIImage(systemName: "plus.circle")
-        configuration.baseForegroundColor = UIAppColor.brand
+        configuration.baseForegroundColor = UIAppColor.primary
         configuration.contentInsets = .zero
         return configuration
     }())
@@ -160,7 +160,7 @@ private final class ReaderRecommendedSitesCellView: UIView {
         buttonSubscribe.configuration?.baseForegroundColor = .secondaryLabel
         ReaderSubscriptionHelper().toggleFollowingForSite(site) { [weak self] _ in
             self?.buttonSubscribe.configuration?.showsActivityIndicator = false
-            self?.buttonSubscribe.configuration?.baseForegroundColor = UIAppColor.brand
+            self?.buttonSubscribe.configuration?.baseForegroundColor = UIAppColor.primary
         }
     }
 }

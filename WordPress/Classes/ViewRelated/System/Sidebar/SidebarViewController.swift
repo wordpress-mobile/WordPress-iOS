@@ -203,7 +203,7 @@ private struct SidebarProfileContainerView: View {
                             }
                         }
                     }
-                    .tint(Color(UIAppColor.brand))
+                    .tint(Color(UIAppColor.primary))
                 }
 
                 Spacer()
@@ -247,7 +247,7 @@ struct SidebarAddButtonLabel: View {
             Text(title)
         } icon: {
             Image(systemName: "plus.square.fill")
-                .foregroundStyle(AppColor.brand, Color(.secondarySystemFill))
+                .foregroundStyle(AppColor.primary, Color(.secondarySystemFill))
                 .font(.title2)
         }
     }

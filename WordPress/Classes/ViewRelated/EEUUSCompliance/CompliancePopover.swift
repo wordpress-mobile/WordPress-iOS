@@ -60,7 +60,7 @@ struct CompliancePopover: View {
                     .font(.body)
             }
         }
-        .foregroundColor(AppColor.brand)
+        .foregroundColor(AppColor.primary)
         .frame(height: 44)
     }
 
@@ -70,7 +70,7 @@ struct CompliancePopover: View {
         }) {
             ZStack {
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(AppColor.brand)
+                    .fill(AppColor.primary)
                 Text(Strings.saveButtonTitle)
                     .font(.body)
             }

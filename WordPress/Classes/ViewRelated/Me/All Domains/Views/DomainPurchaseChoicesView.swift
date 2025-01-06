@@ -85,7 +85,7 @@ struct DomainPurchaseChoicesView: View {
                 Image(imageName)
                     .renderingMode(.template)
                     .resizable()
-                    .foregroundStyle(AppColor.brand)
+                    .foregroundStyle(AppColor.primary)
                     .frame(width: Constants.imageLength, height: Constants.imageLength)
                     .padding(.top, .DS.Padding.double)
                 VStack(alignment: .leading, spacing: .DS.Padding.single) {
@@ -95,7 +95,7 @@ struct DomainPurchaseChoicesView: View {
                         .foregroundStyle(.secondary)
                     if let footer {
                         Text(footer)
-                            .foregroundStyle(AppColor.brand)
+                            .foregroundStyle(AppColor.primary)
                             .font(.body.bold())
                     }
                 }
@@ -122,7 +122,7 @@ struct DomainPurchaseChoicesView: View {
             Text(Strings.chooseSiteSubtitle)
                 .foregroundStyle(Color(.secondaryLabel))
             Text(Strings.chooseSiteFooter)
-                .foregroundStyle(AppColor.brand)
+                .foregroundStyle(AppColor.primary)
         }
     }
 

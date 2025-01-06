@@ -323,7 +323,7 @@ private final class ReaderPostCellView: UIView {
         buttons.bookmark.configuration = {
             var configuration = buttons.bookmark.configuration ?? .plain()
             configuration.image = UIImage(systemName: viewModel.isBookmarked ? "bookmark.fill" : "bookmark")
-            configuration.baseForegroundColor = viewModel.isBookmarked ? UIAppColor.brand : .secondaryLabel
+            configuration.baseForegroundColor = viewModel.isBookmarked ? UIAppColor.primary : .secondaryLabel
             return configuration
         }()
 
