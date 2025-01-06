@@ -14,7 +14,7 @@
 * [*] Fix an issue with comments being lost on request failure [#23942]
 * [*] Fix an issue with Referrers in Stats showing invalid icons [#23943]
 * [*] Update site menu style on iPhone [#23944]
-* [*] Integrate zoom transitions in Themes [#23945]
+* [*] Integrate zoom transitions in Themes, Reader [#23945, #23947]
 
 
 25.6
