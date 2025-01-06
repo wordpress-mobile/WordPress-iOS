@@ -127,7 +127,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         self.post = post
 
         self.replaceEditor = replaceEditor
-        self.editorSession = PostEditorAnalyticsSession(editor: .gutenberg, post: post)
+        self.editorSession = PostEditorAnalyticsSession(editor: .gutenbergKit, post: post)
         self.navigationBarManager = navigationBarManager ?? PostEditorNavigationBarManager()
 
         let networkClient = NewGutenbergNetworkClient(blog: post.blog)
