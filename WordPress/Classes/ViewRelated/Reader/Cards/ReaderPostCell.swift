@@ -59,6 +59,10 @@ final class ReaderPostCell: ReaderStreamBaseCell {
         }
         return ImageSize(scaling: CGSize(width: coverWidth, height: coverWidth), in: window)
     }
+
+    func getViewForZoomTransition() -> UIView {
+        view
+    }
 }
 
 private final class ReaderPostCellView: UIView {
