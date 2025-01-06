@@ -201,6 +201,7 @@ enum XcodeSupport {
             .xcodeTarget("XcodeTarget_StatsWidget", dependencies: [
                 "JetpackStatsWidgetsCore",
                 "WordPressShared",
+                "WordPressUI",
                 .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
                 .product(name: "WordPressAPI", package: "wordpress-rs"),
                 .product(name: "ColorStudio", package: "color-studio"),

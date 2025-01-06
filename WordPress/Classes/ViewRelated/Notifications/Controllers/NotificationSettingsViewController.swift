@@ -331,11 +331,15 @@ private extension NotificationSettingsViewController {
         labelView.translatesAutoresizingMaskIntoConstraints = false
 
         let textProvider = JetpackBrandingTextProvider(screen: JetpackBadgeScreen.notificationsSettings)
-        let badgeView = JetpackButton.makeBadgeView(title: textProvider.brandingText(),
-                                                    topPadding: FooterMetrics.jetpackBadgeTopPadding,
-                                                    bottomPadding: FooterMetrics.jetpackBadgeBottomPatting,
-                                                    target: self,
-                                                    selector: #selector(jetpackButtonTapped))
+        let badgeView = JetpackButton.makeBadgeView(
+            title: textProvider.brandingText(),
+            topPadding: FooterMetrics.jetpackBadgeTopPadding,
+            bottomPadding: FooterMetrics.jetpackBadgeBottomPatting,
+            target: self,
+            selector: #selector(
+                jetpackButtonTapped
+            )
+        )
         badgeView.translatesAutoresizingMaskIntoConstraints = false
 
         let stackView = UIStackView(arrangedSubviews: [labelView, badgeView])
