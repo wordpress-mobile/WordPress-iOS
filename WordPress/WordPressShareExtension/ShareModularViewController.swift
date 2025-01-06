@@ -1027,7 +1027,7 @@ private struct ShareSiteCellView: View {
 private extension SiteIconViewModel {
     init(site: RemoteBlog) {
         self.init(size: .regular)
-        self.firstLetter = blog.name.first
+        self.firstLetter = site.name.first
         self.imageURL = site.icon.flatMap(URL.init)
     }
 }
