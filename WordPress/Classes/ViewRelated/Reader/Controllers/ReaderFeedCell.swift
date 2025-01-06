@@ -1,4 +1,5 @@
 import SwiftUI
+import WordPressUI
 import WordPressKit
 
 struct ReaderFeedCell: View {
@@ -25,7 +26,7 @@ struct ReaderFeedCell: View {
 
 extension SiteIconViewModel {
     init(feed: ReaderFeed, size: Size = .regular) {
-        self.size = size
+        self.init(size: size)
         if let iconURL = feed.blavatarURL {
             self.imageURL = SiteIconViewModel.optimizedURL(for: iconURL.absoluteString, imageSize: size.size)
         }

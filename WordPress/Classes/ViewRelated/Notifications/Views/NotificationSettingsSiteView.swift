@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUI
+import WordPressUI
 
 struct NotificationSettingsSiteView: View {
     let viewModel: NotificationSettingsSiteViewModel

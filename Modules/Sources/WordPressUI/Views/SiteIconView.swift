@@ -1,14 +1,17 @@
 import UIKit
 import SwiftUI
 import AsyncImageKit
-import DesignSystem
 
-struct SiteIconView: View {
-    let viewModel: SiteIconViewModel
+public struct SiteIconView: View {
+    public let viewModel: SiteIconViewModel
 
     @Environment(\.siteIconBackgroundColor) private var backgroundColor
 
-    var body: some View {
+    public init(viewModel: SiteIconViewModel) {
+        self.viewModel = viewModel
+    }
+
+    public var body: some View {
         contents
             .clipShape(RoundedRectangle(cornerRadius: 6))
     }
@@ -55,7 +58,7 @@ struct SiteIconView: View {
 
     private var failureStateView: some View {
         backgroundColor.overlay {
-            Image.DS.icon(named: .vector)
+            Image("vector", bundle: .module)
                 .resizable()
                 .frame(width: 18, height: 18)
                 .tint(Color(.tertiaryLabel))
@@ -68,18 +71,52 @@ private struct SiteIconViewBackgroundColorKey: EnvironmentKey {
 }
 
 extension EnvironmentValues {
-    var siteIconBackgroundColor: Color {
+    public var siteIconBackgroundColor: Color {
         get { self[SiteIconViewBackgroundColorKey.self] }
         set { self[SiteIconViewBackgroundColorKey.self] = newValue }
     }
 }
 
+// MARK: - SiteIconViewModel
+
+public struct SiteIconViewModel {
+    public var imageURL: URL?
+    public var firstLetter: Character?
+    public var size: Size
+    public var host: MediaHostProtocol?
+
+    public enum Size {
+        case small
+        case regular
+        case large
+
+        public var width: CGFloat {
+            switch self {
+            case .small: 28
+            case .regular: 40
+            case .large: 72
+            }
+        }
+
+        public var size: CGSize {
+            CGSize(width: width, height: width)
+        }
+    }
+
+    public init(imageURL: URL? = nil, firstLetter: Character? = nil, size: Size = .regular, host: MediaHostProtocol? = nil) {
+        self.imageURL = imageURL
+        self.firstLetter = firstLetter
+        self.size = size
+        self.host = host
+    }
+}
+
 // MARK: - SiteIconHostingView (UIKit)
 
-final class SiteIconHostingView: UIView {
+public final class SiteIconHostingView: UIView {
     private let viewModel = SiteIconHostingViewModel()
 
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
 
         let host = UIHostingController(rootView: _SiteIconHostingView(viewModel: viewModel))
@@ -89,11 +126,11 @@ final class SiteIconHostingView: UIView {
         host.view.pinSubviewToAllEdges(self)
     }
 
-    required init?(coder: NSCoder) {
+    public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func setIcon(with viewModel: SiteIconViewModel) {
+    public func setIcon(with viewModel: SiteIconViewModel) {
         self.viewModel.icon = viewModel
     }
 }
