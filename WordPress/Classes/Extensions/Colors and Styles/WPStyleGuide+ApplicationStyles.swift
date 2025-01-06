@@ -13,8 +13,8 @@ extension WPStyleGuide {
         // looking the same on newer versions of iOS.
         UIStackView.appearance().backgroundColor = .clear
 
-        UIWindow.appearance().tintColor = UIAppColor.brand
-        UISwitch.appearance().onTintColor = UIAppColor.brand
+        UIWindow.appearance().tintColor = UIAppColor.primary
+        UISwitch.appearance().onTintColor = UIAppColor.primary
 
         UITableView.appearance().sectionHeaderTopPadding = 0
 
@@ -164,7 +164,7 @@ extension WPStyleGuide {
     @objc
     class func configureTableViewActionCell(_ cell: UITableViewCell?) {
         configureTableViewCell(cell)
-        cell?.textLabel?.textColor = UIAppColor.brand
+        cell?.textLabel?.textColor = UIAppColor.primary
     }
 
     @objc

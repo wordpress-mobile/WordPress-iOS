@@ -102,7 +102,7 @@ struct UIAppColor {
 #endif
 
 #if IS_WORDPRESS
-    static let tint = brand
+    static let tint = primary
 
     static let brand = CSColor.WordPressBlue.base
 
@@ -142,7 +142,7 @@ struct UIAppColor {
 
     static let prologueBackground = UIColor(light: blue(.shade0), dark: .systemBackground)
 
-    static let switchStyle: SwitchToggleStyle = SwitchToggleStyle(tint: Color(UIAppColor.brand))
+    static let switchStyle: SwitchToggleStyle = SwitchToggleStyle(tint: Color(UIAppColor.primary))
 }
 
 struct AppColor {
