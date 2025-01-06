@@ -812,8 +812,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
 extension ReaderDetailViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard traitCollection.horizontalSizeClass == .compact else { return }
-
         let currentOffset = scrollView.contentOffset.y
         // Using `safeAreaLayoutGuide.layoutFrame.height` because it doesn't
         // change when we extend the scroll view size by hiding the toolbar
