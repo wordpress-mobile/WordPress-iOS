@@ -141,8 +141,11 @@ final class ReaderDetailFeaturedImageView: UIView {
         imageView.pinEdges()
 
         addSubview(gradientView)
-        gradientView.heightAnchor.constraint(equalToConstant: 120).isActive = true
         gradientView.pinEdges([.top, .horizontal])
+        NSLayoutConstraint.activate([
+            gradientView.heightAnchor.constraint(equalToConstant: 120).withPriority(999),
+            gradientView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor) // Make sure it collapses
+        ])
 
         isUserInteractionEnabled = false
 

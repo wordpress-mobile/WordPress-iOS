@@ -67,7 +67,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     private let activityIndicator = UIActivityIndicatorView(style: .medium)
 
     /// The actual header
-    private let featuredImage = ReaderDetailFeaturedImageView()
+    private let featuredImageView = ReaderDetailFeaturedImageView()
 
     /// The actual header
     private lazy var header: ReaderDetailHeaderHostingView = {
@@ -202,7 +202,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             return
         }
 
-        featuredImage.viewWillDisappear()
+        featuredImageView.viewWillDisappear()
         toolbar.viewWillDisappear()
     }
 
@@ -210,7 +210,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         super.viewWillTransition(to: size, with: coordinator)
 
         coordinator.animate(alongsideTransition: { _ in
-            self.featuredImage.deviceDidRotate()
+            self.featuredImageView.deviceDidRotate()
         })
     }
 
@@ -222,7 +222,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     func render(_ post: ReaderPost) {
         configureDiscoverAttribution(post)
 
-        featuredImage.configure(for: post, with: self)
+        featuredImageView.configure(for: post, with: self)
         toolbar.configure(for: post, in: self)
         header.configure(for: post)
         fetchLikes()
@@ -245,12 +245,12 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             self?.webView.loadHTMLString(post.contentForDisplay())
         }
 
-        guard !featuredImage.isLoaded else {
+        guard !featuredImageView.isLoaded else {
             return
         }
 
         // Load the image
-        featuredImage.load { [weak self] in
+        featuredImageView.load { [weak self] in
             self?.hideLoading()
         }
 
@@ -301,7 +301,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     func hideLoading() {
-        guard !featuredImage.isLoading, !isLoadingWebView else {
+        guard !featuredImageView.isLoading, !isLoadingWebView else {
             return
         }
 
@@ -448,7 +448,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         }
 
         // Featured image view
-        featuredImage.displaySetting = displaySetting
+        featuredImageView.displaySetting = displaySetting
 
         // Update Reader Post web view
         if let contentForDisplay = post?.contentForDisplay() {
@@ -507,18 +507,18 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     private func setupFeaturedImage() {
         configureFeaturedImage()
 
-        featuredImage.configure(
+        featuredImageView.configure(
             scrollView: scrollView,
             navigationBar: navigationController?.navigationBar,
             navigationItem: navigationItem
         )
 
-        guard !featuredImage.isLoaded else {
+        guard !featuredImageView.isLoaded else {
             return
         }
 
         // Load the image
-        featuredImage.load { [weak self] in
+        featuredImageView.load { [weak self] in
             guard let self else {
                 return
             }
@@ -527,24 +527,24 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func configureFeaturedImage() {
-        guard featuredImage.superview == nil else {
+        guard featuredImageView.superview == nil else {
             return
         }
 
         if ReaderDisplaySetting.customizationEnabled {
-            featuredImage.displaySetting = displaySetting
+            featuredImageView.displaySetting = displaySetting
         }
 
-        featuredImage.useCompatibilityMode = useCompatibilityMode
+        featuredImageView.useCompatibilityMode = useCompatibilityMode
 
-        featuredImage.delegate = coordinator
+        featuredImageView.delegate = coordinator
 
-        view.insertSubview(featuredImage, belowSubview: webView)
+        view.insertSubview(featuredImageView, belowSubview: webView)
 
         NSLayoutConstraint.activate([
-            featuredImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-            featuredImage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
-            featuredImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 0)
+            featuredImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            featuredImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
+            featuredImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0)
         ])
 
         headerContainerView.translatesAutoresizingMaskIntoConstraints = false
@@ -812,8 +812,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
 extension ReaderDetailViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard traitCollection.horizontalSizeClass == .compact else { return }
-
         let currentOffset = scrollView.contentOffset.y
         // Using `safeAreaLayoutGuide.layoutFrame.height` because it doesn't
         // change when we extend the scroll view size by hiding the toolbar
@@ -1142,17 +1140,6 @@ private extension ReaderDetailViewController {
     func barButtonItem(with image: UIImage, action: Selector) -> UIBarButtonItem {
         let image = image.withRenderingMode(.alwaysTemplate)
         return UIBarButtonItem(image: image, style: .plain, target: self, action: action)
-    }
-
-    /// Checks if the view is visible in the viewport.
-    func isVisibleInScrollView(_ view: UIView) -> Bool {
-        guard view.superview != nil, !view.isHidden else {
-            return false
-        }
-
-        let scrollViewFrame = CGRect(origin: scrollView.contentOffset, size: scrollView.frame.size)
-        let convertedViewFrame = scrollView.convert(view.bounds, from: view)
-        return scrollViewFrame.intersects(convertedViewFrame)
     }
 }
 
