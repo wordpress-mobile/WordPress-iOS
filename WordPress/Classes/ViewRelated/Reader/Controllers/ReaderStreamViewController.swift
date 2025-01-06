@@ -1379,6 +1379,10 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         // Check to see if we need to load more.
         syncMoreContentIfNeeded(for: tableView, indexPathForVisibleRow: indexPath)
 
+        if traitCollection.horizontalSizeClass == .regular, #available(iOS 18, *) {
+            cell.selectionStyle = .none
+        }
+
         guard cell.isKind(of: ReaderCrossPostCell.self) else {
             return
         }
@@ -1469,6 +1473,18 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             trackSavedPostNavigation()
         } else {
             WPAnalytics.trackReader(.readerPostCardTapped, properties: topicPropertyForStats() ?? [:])
+        }
+
+        if traitCollection.horizontalSizeClass == .regular, #available(iOS 18, *) {
+            controller.preferredTransition = .zoom { [weak self] context in
+                guard let self, let cell = self.tableView.cellForRow(at: indexPath) else {
+                    return nil
+                }
+                if let cell = (cell as? ReaderPostCell) {
+                    return cell.getViewForZoomTransition()
+                }
+                return cell.contentView
+            }
         }
 
         navigationController?.pushViewController(controller, animated: true)
