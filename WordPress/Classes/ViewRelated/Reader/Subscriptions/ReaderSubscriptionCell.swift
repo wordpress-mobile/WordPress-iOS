@@ -52,10 +52,10 @@ struct ReaderSubscriptionCell: View {
                 switch status {
                 case .all:
                     Image(systemName: "bell.and.waves.left.and.right")
-                        .foregroundStyle(AppColor.brand)
+                        .foregroundStyle(AppColor.primary)
                 case .personalized:
                     Image(systemName: "bell")
-                        .foregroundStyle(AppColor.brand)
+                        .foregroundStyle(AppColor.primary)
                 case .none:
                     Image(systemName: "bell.slash")
                         .foregroundStyle(.secondary)

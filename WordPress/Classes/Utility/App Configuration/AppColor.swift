@@ -88,13 +88,7 @@ struct UIAppColor {
 #if IS_JETPACK
     static let tint = UIColor.label
 
-    static let brand = UIColor(light: CSColor.JetpackGreen.shade(.shade40), dark: CSColor.JetpackGreen.shade(.shade30))
-
-    static func brand(_ shade: ColorStudioShade) -> UIColor {
-        CSColor.JetpackGreen.shade(shade)
-    }
-
-    static let primary = CSColor.JetpackGreen.base
+    static let primary = UIColor(light: CSColor.JetpackGreen.shade(.shade40), dark: CSColor.JetpackGreen.shade(.shade30))
 
     static func primary(_ shade: ColorStudioShade) -> UIColor {
         CSColor.JetpackGreen.shade(shade)
@@ -104,13 +98,7 @@ struct UIAppColor {
 #if IS_WORDPRESS
     static let tint = primary
 
-    static let brand = CSColor.WordPressBlue.base
-
-    static func brand(_ shade: ColorStudioShade) -> UIColor {
-        CSColor.WordPressBlue.shade(shade)
-    }
-
-    static let primary = CSColor.Blue.base
+    static let primary = UIColor(light: CSColor.Blue.base, dark: primary(.shade40))
 
     static func primary(_ shade: ColorStudioShade) -> UIColor {
         CSColor.Blue.shade(shade)
@@ -147,5 +135,5 @@ struct UIAppColor {
 
 struct AppColor {
     static let tint = Color(UIAppColor.tint)
-    static let brand = Color(UIAppColor.brand)
+    static let primary = Color(UIAppColor.primary)
 }

@@ -142,7 +142,7 @@ private struct ReaderSidebarView: View {
         makeSection(Strings.subscriptions, isExpanded: $isSectionSubscriptionsExpanded) {
             Label(Strings.subscriptions, systemImage: "checkmark.rectangle.stack")
                 .tag(ReaderSidebarItem.allSubscriptions)
-                .listItemTint(AppColor.brand)
+                .listItemTint(AppColor.primary)
                 .withDisabledSelection(isEditing)
 
             ReaderSidebarSubscriptionsSection(viewModel: viewModel)
@@ -206,7 +206,7 @@ private struct ReaderSidebarSection<Content: View>: View {
                     Spacer()
                     Image(systemName: isExpanded ? "chevron.down" : "chevron.forward")
                         .font(.system(size: 14).weight(.semibold))
-                        .foregroundStyle(AppColor.brand)
+                        .foregroundStyle(AppColor.primary)
                         .frame(width: 14)
                 }
                 .contentShape(Rectangle())

@@ -272,7 +272,7 @@ import Gridicons
         // Reply button
         replyButton.configuration = {
             var configuration = UIButton.Configuration.plain()
-            configuration.baseForegroundColor = UIAppColor.brand
+            configuration.baseForegroundColor = UIAppColor.primary
             configuration.title = NSLocalizedString("Reply", comment: "Reply to a comment.")
             return configuration
         }()

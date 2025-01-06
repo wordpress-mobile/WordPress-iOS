@@ -133,7 +133,7 @@ struct MediaUploadProgressView: View {
                 .stroke(Color.secondary.opacity(0.25), lineWidth: 2)
             Circle()
                 .trim(from: 0, to: progress)
-                .stroke(Color(uiColor: UIAppColor.brand), style: StrokeStyle(lineWidth: 2, lineCap: .round))
+                .stroke(Color(uiColor: UIAppColor.primary), style: StrokeStyle(lineWidth: 2, lineCap: .round))
                 .rotationEffect(.degrees(-90))
                 .animation(.easeOut, value: progress)
         }

@@ -111,7 +111,7 @@ fileprivate extension NotificationsTableViewCellContent {
 
         private var indicator: some View {
             Circle()
-                .fill(AppColor.brand)
+                .fill(AppColor.primary)
                 .frame(width: .DS.Padding.single)
         }
 

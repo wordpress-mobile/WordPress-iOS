@@ -81,7 +81,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     @objc var isReplyHighlighted: Bool = false {
         didSet {
-            replyButton.tintColor = isReplyHighlighted ? UIAppColor.brand : .label
+            replyButton.tintColor = isReplyHighlighted ? UIAppColor.primary : .label
             replyButton.configuration?.image = UIImage(systemName: isReplyHighlighted ? "arrowshape.turn.up.left.fill" : "arrowshape.turn.up.left")
         }
     }

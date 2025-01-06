@@ -22,7 +22,7 @@ private struct AudiowaveView: View {
             ForEach(indices, id: \.self) { index in
                 let height = max(10, 80 * normalizePowerLevel(samples[index]))
                 Capsule(style: .continuous)
-                    .fill(Color(uiColor: UIAppColor.brand))
+                    .fill(Color(uiColor: UIAppColor.primary))
                     .frame(width: 10, height: CGFloat(height))
                     .animation(.spring(duration: 0.1), value: height)
             }
