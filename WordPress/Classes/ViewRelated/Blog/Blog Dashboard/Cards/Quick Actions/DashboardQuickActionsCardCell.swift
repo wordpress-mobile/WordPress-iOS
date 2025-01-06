@@ -22,7 +22,6 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
     private var items: [DashboardQuickActionItemViewModel] = []
     private var viewModel: DashboardQuickActionsViewModel?
     private weak var parentViewController: BlogDashboardViewController?
-    private weak var blogDetailsViewController: BlogDetailsViewController?
     private var cancellables: [AnyCancellable] = []
 
     override init(frame: CGRect) {
@@ -109,13 +108,9 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
             trackQuickActionsEvent(.statsAccessed, blog: blog)
             StatsViewController.show(for: blog, from: parentViewController)
         case .more:
-            let viewController = BlogDetailsViewController()
-            viewController.isScrollEnabled = true
-            viewController.tableView.isScrollEnabled = true
-            viewController.blog = blog
-            viewController.presentationDelegate = self
-            self.blogDetailsViewController = viewController
-            self.parentViewController?.show(viewController, sender: nil)
+            let viewController = SiteMenuViewController(blog: blog)
+            viewController.delegate = self
+            parentViewController.show(viewController, sender: nil)
         }
     }
 
@@ -124,15 +119,11 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
     }
 }
 
-// MARK: - DashboardQuickActionsCardCell (BlogDetailsPresentationDelegate)
+// MARK: - DashboardQuickActionsCardCell (SiteMenuViewControllerDelegate)
 
-extension DashboardQuickActionsCardCell: BlogDetailsPresentationDelegate {
-    func showBlogDetailsSubsection(_ subsection: BlogDetailsSubsection) {
-        self.blogDetailsViewController?.showDetailView(for: subsection)
-    }
-
-    func presentBlogDetailsViewController(_ viewController: UIViewController) {
-        self.blogDetailsViewController?.show(viewController, sender: nil)
+extension DashboardQuickActionsCardCell: SiteMenuViewControllerDelegate {
+    func siteMenuViewController(_ siteMenuViewController: SiteMenuViewController, showDetailsViewController viewController: UIViewController) {
+        siteMenuViewController.show(viewController, sender: nil)
     }
 }
 
