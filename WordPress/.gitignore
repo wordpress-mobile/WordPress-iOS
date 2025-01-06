@@ -1,0 +1,4 @@
+# Gutenberg binary framework
+Frameworks/*.xcframework
+Frameworks/*.tar.gz
+Frameworks/react-native-bundle-source-map
