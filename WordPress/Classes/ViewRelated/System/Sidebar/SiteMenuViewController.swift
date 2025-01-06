@@ -37,7 +37,9 @@ final class SiteMenuViewController: UIViewController {
         blogDetailsVC.view.translatesAutoresizingMaskIntoConstraints = false
         view.pinSubviewToAllEdges(blogDetailsVC.view)
 
-        blogDetailsVC.showInitialDetailsForBlog()
+        if splitViewController != nil {
+            blogDetailsVC.showInitialDetailsForBlog()
+        }
 
         navigationItem.title = blog.settings?.name ?? (blog.displayURL as String?) ?? ""
 
@@ -65,7 +67,7 @@ final class SiteMenuViewController: UIViewController {
         super.viewDidAppear(animated)
 
         if #available(iOS 17, *) {
-            if tipObserver == nil {
+            if tipObserver == nil && splitViewController != nil {
                 tipObserver = registerTipPopover(AppTips.SidebarTip(), sourceItem: getTipAnchor(), arrowDirection: [.up])
             }
         }
