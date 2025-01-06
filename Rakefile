@@ -16,15 +16,13 @@ EXPECTED_XCODE_VERSION = File.read('.xcode-version').rstrip
 PROJECT_DIR = __dir__
 abort('Project directory contains one or more spaces – unable to continue.') if PROJECT_DIR.include?(' ')
 
-SWIFTLINT_BIN = File.join(PROJECT_DIR, 'Pods', 'SwiftLint', 'swiftlint')
-
 task default: %w[test]
 
 desc 'Install required dependencies'
 task dependencies: %w[dependencies:check assets:check]
 
 namespace :dependencies do
-  task check: %w[ruby:check bundler:check bundle:check credentials:apply lint:check]
+  task check: %w[ruby:check bundler:check bundle:check credentials:apply]
 
   namespace :ruby do
     task :check do
@@ -102,12 +100,6 @@ bundle exec fastlane run configure_apply force:true
       sh(command)
     end
   end
-
-  namespace :lint do
-    task :check do
-      swiftlint_needs_install if dependency_failed('SwiftLint')
-    end
-  end
 end
 
 namespace :assets do
@@ -161,15 +153,8 @@ task :clean do
 end
 
 desc 'Checks the source for style errors'
-task lint: %w[dependencies:lint:check] do
-  swiftlint %w[lint --quiet]
-end
-
-namespace :lint do
-  desc 'Automatically corrects style errors where possible'
-  task autocorrect: %w[dependencies:lint:check] do
-    swiftlint %w[lint --autocorrect --quiet]
-  end
+task :lint do
+  puts 'No linter configured at the moment.'
 end
 
 namespace :git do
@@ -227,10 +212,8 @@ namespace :git do
 end
 
 namespace :git do
-  task pre_commit: %(dependencies:lint:check) do
-    swiftlint %w[lint --quiet --strict]
-  rescue StandardError
-    exit $CHILD_STATUS.exitstatus
+  task :pre_commit do
+    puts 'No precommit hook configured to run at this time.'
   end
 
   task :post_merge do
@@ -253,7 +236,6 @@ namespace :init do
     install:xcode:check
     dependencies
     install:tools:check_oss
-    install:lint:check
     credentials:setup
   ]
 
@@ -262,7 +244,6 @@ namespace :init do
     install:xcode:check
     dependencies
     install:tools:check_developer
-    install:lint:check
     credentials:setup
     gpg_key:setup
   ]
@@ -423,21 +404,6 @@ namespace :install do
         puts "#{tool} not found.  Installing #{tool}"
         sh "brew install #{tool}"
       end
-    end
-  end
-
-  namespace :lint do
-    task :check do
-      unless git_initialized?
-        puts 'Initializing git repository'
-        sh 'git init', verbose: false
-      end
-
-      Rake::Task['git:install_hooks'].invoke
-    end
-
-    def git_initialized?
-      sh 'git rev-parse --is-inside-work-tree > /dev/null 2>&1', verbose: false
     end
   end
 end
@@ -613,15 +579,6 @@ end
 # FIXME: This used to add Travis folding formatting, but we no longer use Travis. I'm leaving it here for the moment, but I think we should remove it.
 def fold(_)
   yield
-end
-
-def swiftlint(args)
-  args = [SWIFTLINT_BIN] + args
-  sh(*args)
-end
-
-def swiftlint_needs_install
-  File.exist?(SWIFTLINT_BIN) == false
 end
 
 def xcodebuild(*build_cmds)
