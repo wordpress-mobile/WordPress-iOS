@@ -65,8 +65,9 @@ import AutomatticTracks
         return refreshControl
     }()
 
-    private let loadMoreThreashold = 4
+    let titleView = ReaderNavigationCustomTitleView()
 
+    private let loadMoreThreashold = 5
     private let refreshInterval = 300
     private var cleanupAndRefreshAfterScrolling = false
     private let recentlyBlockedSitePostObjectIDs = NSMutableArray()
@@ -77,7 +78,6 @@ import AutomatticTracks
     private var indexPathForGapMarker: IndexPath?
     private var didSetupView = false
     private var didBumpStats = false
-    @Lazy private var titleView = ReaderNavigationCustomTitleView()
     internal let scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
     private let notificationsButtonViewModel = NotificationsButtonViewModel()
     private var notificationsButtonCancellable: AnyCancellable?
@@ -1660,7 +1660,7 @@ extension ReaderStreamViewController: UITableViewDelegate, JPScrollViewDelegate 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         layoutEmptyStateView()
         processJetpackBannerVisibility(scrollView)
-        $titleView.value?.updateAlpha(in: scrollView)
+        titleView.updateAlpha(in: scrollView)
     }
 }
 
