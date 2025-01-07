@@ -1,6 +1,6 @@
 #import "LoginFacade.h"
 #import "WordPressXMLRPCAPIFacade.h"
-#import "WPAuthenticator-Swift.h"
+#import <WordPressAuthenticator/WordPressAuthenticator-Swift.h>
 @import NSURL_IDN;
 @import WordPressKit;
 
