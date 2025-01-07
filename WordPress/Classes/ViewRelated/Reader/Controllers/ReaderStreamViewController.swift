@@ -1670,7 +1670,7 @@ extension ReaderStreamViewController: UITableViewDelegate, JPScrollViewDelegate 
         layoutEmptyStateView()
         processJetpackBannerVisibility(scrollView)
         titleView.updateAlpha(in: scrollView)
-        buttonScrollToTop.setButtonHidden(scrollView.contentOffset.y < bounds.height / 3, animated: true)
+        buttonScrollToTop.setButtonHidden(scrollView.contentOffset.y < view.bounds.height / 3, animated: true)
     }
 }
 

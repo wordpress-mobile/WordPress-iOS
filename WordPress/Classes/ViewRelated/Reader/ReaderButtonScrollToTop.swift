@@ -14,6 +14,7 @@ final class ReaderButtonScrollToTop: UIButton {
 
         return ReaderButtonScrollToTop(configuration: configuration, primaryAction: .init { _ in
             closure()
+            WPAnalytics.track(.readerButtonScrollToTopTapped)
         })
     }
 
