@@ -5,7 +5,6 @@ import Foundation
 
     case createSheetShown
     case createSheetActionTapped
-    case createAnnouncementModalShown
 
     // Media Editor
     case mediaEditorShown
@@ -625,8 +624,6 @@ import Foundation
             return "create_sheet_shown"
         case .createSheetActionTapped:
             return "create_sheet_action_tapped"
-        case .createAnnouncementModalShown:
-            return "create_announcement_modal_shown"
         // Media Editor
         case .mediaEditorShown:
             return "media_editor_shown"
