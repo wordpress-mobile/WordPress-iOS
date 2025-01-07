@@ -7,8 +7,6 @@ rubocop.lint(files: [], force_exclusion: true, inline_comment: true, fail_on_inl
 
 manifest_pr_checker.check_all_manifest_lock_updated
 
-podfile_checker.check_podfile_does_not_have_branch_references
-
 ios_release_checker.check_core_data_model_changed
 ios_release_checker.check_release_notes_and_app_store_strings
 
