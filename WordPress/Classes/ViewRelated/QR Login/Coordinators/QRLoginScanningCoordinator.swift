@@ -4,6 +4,7 @@ class QRLoginScanningCoordinator: NSObject {
     let parentCoordinator: QRLoginParentCoordinator
     let view: QRLoginScanningView
     var cameraSession: QRCodeScanningSession
+    private var didHandleToken = false
 
     init(view: QRLoginScanningView, parentCoordinator: QRLoginParentCoordinator, cameraSession: QRCodeScanningSession = QRLoginCameraSession()) {
         self.view = view
@@ -48,6 +49,9 @@ extension QRLoginScanningCoordinator {
     }
 
     func didScanToken(_ token: QRLoginToken) {
+        guard !didHandleToken else { return }
+        didHandleToken = true // Prevents the subsequent captures.
+
         parentCoordinator.track(.qrLoginScannerScannedCode)
 
         // Give the user a tap to let them know they've successfully scanned the code

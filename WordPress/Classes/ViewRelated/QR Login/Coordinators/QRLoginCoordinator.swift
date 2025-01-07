@@ -18,13 +18,13 @@ struct QRLoginCoordinator: QRLoginParentCoordinator {
 
     static func didHandle(url: URL) -> Bool {
         guard
-            let token = QRLoginURLParser(urlString: url.absoluteString).parse(),
+            let _ = QRLoginURLParser(urlString: url.absoluteString).parse(),
             let source = UIApplication.shared.leafViewController
         else {
             return false
         }
-
-        self.init(origin: .deepLink).showVerifyAuthorization(token: token, from: source)
+        self.init(origin: .deepLink).showCameraScanningView(from: source)
+        Notice(title: Strings.scanFromApp).post()
         return true
     }
 
@@ -34,10 +34,7 @@ struct QRLoginCoordinator: QRLoginParentCoordinator {
 
     func showVerifyAuthorization(token: QRLoginToken, from source: UIViewController? = nil) {
         let controller = QRLoginVerifyAuthorizationViewController()
-        controller.coordinator = QRLoginVerifyCoordinator(token: token,
-                                                          view: controller,
-                                                          parentCoordinator: self)
-
+        controller.coordinator = QRLoginVerifyCoordinator(token: token, view: controller, parentCoordinator: self)
         pushOrPresent(controller, from: source)
     }
 }
@@ -114,4 +111,8 @@ extension QRLoginCoordinator {
     static func present(token: QRLoginToken, from source: UIViewController, origin: QRLoginOrigin) {
         QRLoginCoordinator(origin: origin).showVerifyAuthorization(token: token, from: source)
     }
+}
+
+private enum Strings {
+    static let scanFromApp = NSLocalizedString("qrLogin.codeHasToBeScannedFromTheAppNotice.title", value: "Please scan the code using the app", comment: "Informational notice title. Showed when you scan a code using a camera app outside of the app, which is not allowed.")
 }

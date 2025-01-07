@@ -17,7 +17,7 @@
 * [*] Integrate zoom transitions in Themes, Reader [#23945, #23947]
 * [*] Fix an issue with site icons cropped in share extensions [#23950]
 * [*] Enable fast deceleration for filters on the Discover tab [#23954]
-
+* [*] Disable universal links support for QR code login. You can only scan the codes using the app now. [#23953]
 
 25.6
 -----
