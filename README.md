@@ -35,11 +35,6 @@ The steps above will help you configure the WordPress app to run and compile.  B
 
 We use a few tools to help with development. Running `rake dependencies` will configure or update them for you.
 
-#### CocoaPods
-
-WordPress for iOS uses [CocoaPods](http://cocoapods.org/) to manage third party libraries.
-Third party libraries and resources managed by CocoaPods will be installed by the `rake dependencies` command above.
-
 #### SwiftLint
 
 We use [SwiftLint](https://github.com/realm/SwiftLint) to enforce a common style for Swift code. The app should build and work without it, but if you plan to write code, you are encouraged to install it. No commit should have lint warnings or errors.
