@@ -362,6 +362,16 @@
 		3F56F55C2AEA2F67006BDCEA /* ReaderPostBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F56F55B2AEA2F67006BDCEA /* ReaderPostBuilder.swift */; };
 		3F593FDD2A81DC6D00B29E86 /* NSError+TestInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F593FDC2A81DC6D00B29E86 /* NSError+TestInstance.swift */; };
 		3F5C865D25C9EBEF00BABE64 /* HomeWidgetAllTimeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5C861925C9EA2500BABE64 /* HomeWidgetAllTimeData.swift */; };
+		3F608F7F2D2D1A9E008ACD86 /* Gutenberg.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F60D3902D2C4BA3008ACD86 /* Gutenberg.xcframework */; };
+		3F608F802D2D1A9E008ACD86 /* Gutenberg.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3F60D3902D2C4BA3008ACD86 /* Gutenberg.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3F608F812D2D1A9E008ACD86 /* hermes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F60D3922D2C4BA3008ACD86 /* hermes.xcframework */; };
+		3F608F822D2D1A9E008ACD86 /* hermes.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3F60D3922D2C4BA3008ACD86 /* hermes.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3F608F832D2D1A9E008ACD86 /* React.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F60D38F2D2C4BA3008ACD86 /* React.xcframework */; };
+		3F608F842D2D1A9E008ACD86 /* React.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3F60D38F2D2C4BA3008ACD86 /* React.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3F608F852D2D1A9E008ACD86 /* RNTAztecView.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F60D3912D2C4BA3008ACD86 /* RNTAztecView.xcframework */; };
+		3F608F862D2D1A9E008ACD86 /* RNTAztecView.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3F60D3912D2C4BA3008ACD86 /* RNTAztecView.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3F608F872D2D1A9E008ACD86 /* yoga.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F60D3932D2C4BA4008ACD86 /* yoga.xcframework */; };
+		3F608F882D2D1A9E008ACD86 /* yoga.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3F60D3932D2C4BA4008ACD86 /* yoga.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3F60D3942D2C4BA4008ACD86 /* React.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F60D38F2D2C4BA3008ACD86 /* React.xcframework */; };
 		3F60D3952D2C4BA4008ACD86 /* React.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3F60D38F2D2C4BA3008ACD86 /* React.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3F60D3962D2C4BA4008ACD86 /* Gutenberg.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F60D3902D2C4BA3008ACD86 /* Gutenberg.xcframework */; };
@@ -1862,6 +1872,11 @@
 			dstSubfolderSpec = 10;
 			files = (
 				4AD9555B2C21716A00D0EEFA /* WordPressAuthenticator.framework in Embed Frameworks */,
+				3F608F822D2D1A9E008ACD86 /* hermes.xcframework in Embed Frameworks */,
+				3F608F802D2D1A9E008ACD86 /* Gutenberg.xcframework in Embed Frameworks */,
+				3F608F842D2D1A9E008ACD86 /* React.xcframework in Embed Frameworks */,
+				3F608F862D2D1A9E008ACD86 /* RNTAztecView.xcframework in Embed Frameworks */,
+				3F608F882D2D1A9E008ACD86 /* yoga.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3865,11 +3880,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				FABB26202602FC2C00C8785C /* iAd.framework in Frameworks */,
+				3F608F812D2D1A9E008ACD86 /* hermes.xcframework in Frameworks */,
 				FABB26212602FC2C00C8785C /* StoreKit.framework in Frameworks */,
 				FABB26222602FC2C00C8785C /* CoreSpotlight.framework in Frameworks */,
 				FABB26232602FC2C00C8785C /* QuickLook.framework in Frameworks */,
 				FABB26242602FC2C00C8785C /* CoreText.framework in Frameworks */,
 				FABB26252602FC2C00C8785C /* UserNotifications.framework in Frameworks */,
+				3F608F832D2D1A9E008ACD86 /* React.xcframework in Frameworks */,
 				FABB26262602FC2C00C8785C /* Photos.framework in Frameworks */,
 				FABB26272602FC2C00C8785C /* NotificationCenter.framework in Frameworks */,
 				FABB26282602FC2C00C8785C /* CoreTelephony.framework in Frameworks */,
@@ -3879,10 +3896,13 @@
 				FABB262C2602FC2C00C8785C /* UIKit.framework in Frameworks */,
 				FABB262D2602FC2C00C8785C /* QuartzCore.framework in Frameworks */,
 				FABB262E2602FC2C00C8785C /* MediaPlayer.framework in Frameworks */,
+				3F608F7F2D2D1A9E008ACD86 /* Gutenberg.xcframework in Frameworks */,
 				FABB262F2602FC2C00C8785C /* CoreMedia.framework in Frameworks */,
+				3F608F852D2D1A9E008ACD86 /* RNTAztecView.xcframework in Frameworks */,
 				FABB26302602FC2C00C8785C /* AVFoundation.framework in Frameworks */,
 				FABB26312602FC2C00C8785C /* Foundation.framework in Frameworks */,
 				4AD9555A2C21716A00D0EEFA /* WordPressAuthenticator.framework in Frameworks */,
+				3F608F872D2D1A9E008ACD86 /* yoga.xcframework in Frameworks */,
 				FABB26322602FC2C00C8785C /* Security.framework in Frameworks */,
 				FABB26332602FC2C00C8785C /* MapKit.framework in Frameworks */,
 				FABB26342602FC2C00C8785C /* CoreLocation.framework in Frameworks */,
