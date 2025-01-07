@@ -21,9 +21,6 @@ platform :ios do
     # Checks if internal dependencies are on a stable version
     check_pods_references
 
-    # Make sure that Gutenberg is configured as expected for a successful code freeze
-    gutenberg_dep_check
-
     release_branch_name = compute_release_branch_name(options: options, version: release_version_next)
     ensure_branch_does_not_exist!(release_branch_name)
 
@@ -496,29 +493,6 @@ def trigger_buildkite_release_build(branch:, beta:)
     )
 
     UI.success("Release build triggered on #{branch}: #{build_url}")
-  end
-end
-
-# Checks that the Gutenberg pod is reference by a tag and not a commit
-#
-desc 'Verifies that Gutenberg is referenced by release version and not by commit'
-lane :gutenberg_dep_check do
-  source = gutenberg_config![:ref]
-
-  UI.user_error!('Gutenberg config does not contain expected key :ref') if source.nil?
-
-  case [source[:tag], source[:commit]]
-  when [nil, nil]
-    UI.user_error!('Could not find any Gutenberg version reference.')
-  when [nil, commit = source[:commit]]
-    if UI.confirm("Gutenberg referenced by commit (#{commit}) instead than by tag. Do you want to continue anyway?")
-      UI.message("Gutenberg version: #{commit}")
-    else
-      UI.user_error!('Aborting...')
-    end
-  else
-    # If a tag is present, the commit value is ignored
-    UI.message("Gutenberg version: #{source[:tag]}")
   end
 end
 
