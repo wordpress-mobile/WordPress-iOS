@@ -8,11 +8,9 @@ echo "--- 📦 Downloading Build Artifacts"
 download_artifact build-products-wordpress.tar
 tar -xf build-products-wordpress.tar
 
+# Only the gems are needed here, given we run the tests on a pre-built binary
 echo "--- :rubygems: Setting up Gems"
 install_gems
-
-echo "--- :swift: Setting up Swift Packages"
-install_swiftpm_dependencies
 
 echo "--- 🔬 Testing"
 set +e
