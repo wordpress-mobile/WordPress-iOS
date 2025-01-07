@@ -168,7 +168,7 @@ private final class ReaderPostCellView: UIView {
             avatarView.widthAnchor.constraint(equalToConstant: ReaderPostCell.avatarSize),
             avatarView.heightAnchor.constraint(equalToConstant: ReaderPostCell.avatarSize),
             avatarView.centerYAnchor.constraint(equalTo: timeLabel.centerYAnchor),
-            avatarView.trailingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: -8),
+            avatarView.trailingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: -9),
 
             headerView.topAnchor.constraint(equalTo: topAnchor, constant: 6),
             headerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: insets.left),
