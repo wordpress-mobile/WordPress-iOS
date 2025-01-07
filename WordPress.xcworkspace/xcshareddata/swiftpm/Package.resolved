@@ -29,6 +29,15 @@
       }
     },
     {
+      "identity" : "azteceditor-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/allenhumphreys/AztecEditor-iOS",
+      "state" : {
+        "branch" : "ah/spm",
+        "revision" : "1719ce90f714af51ef46f69bd65decad5c5166c3"
+      }
+    },
+    {
       "identity" : "charts",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChartsOrg/Charts",
