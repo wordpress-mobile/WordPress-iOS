@@ -35,28 +35,6 @@ The steps above will help you configure the WordPress app to run and compile.  B
 
 We use a few tools to help with development. Running `rake dependencies` will configure or update them for you.
 
-#### SwiftLint
-
-We use [SwiftLint](https://github.com/realm/SwiftLint) to enforce a common style for Swift code. The app should build and work without it, but if you plan to write code, you are encouraged to install it. No commit should have lint warnings or errors.
-
-You can set up a Git [pre-commit hook](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks) to run SwiftLint automatically when committing by running:
-
-`rake git:install_hooks`
-
-This is the recommended way to include SwiftLint in your workflow, as it catches lint issues locally before your code makes its way to Github.
-
-Alternately, a SwiftLint scheme is exposed within the project; Xcode will show a warning if you don't have SwiftLint installed.
-
-Finally, you can also run SwiftLint manually from the command line with:
-
-`rake lint`
-
-If your code has any style violations, you can try to automatically correct them by running:
-
-`rake lint:autocorrect`
-
-Otherwise you have to fix them manually.
-
 ### Open Xcode
 
 Launch the workspace by running the following from the command line:
