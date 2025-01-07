@@ -242,22 +242,8 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     }
 
     private func reloadBlogIconView() {
-        let blog = post.blog
-
-//        if blog.hasIcon == true {
-//            let size = CGSize(width: 24, height: 24)
-//            navigationBarManager.siteIconView.imageView.downloadSiteIcon(for: blog, imageSize: size)
-//        } else if blog.isWPForTeams() {
-//            navigationBarManager.siteIconView.imageView.tintColor = UIColor.secondaryLabel
-//            navigationBarManager.siteIconView.imageView.image = UIImage.gridicon(.p2)
-//        } else {
-//            navigationBarManager.siteIconView.imageView.image = UIImage.siteIconPlaceholder
-//        }
-
-        // TODO: implement
-        // Docs: https://wordpress.org/gutenberg-framework/docs/basic-concepts/undo-redo
-        navigationBarManager.undoButton.isHidden = true
-        navigationBarManager.redoButton.isHidden = true
+        let viewModel = SiteIconViewModel(blog: post.blog, size: .small)
+        navigationBarManager.siteIconView.imageView.setIcon(with: viewModel)
     }
 
     // TODO: this should not be called on viewDidLoad
