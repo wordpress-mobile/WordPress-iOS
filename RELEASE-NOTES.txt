@@ -16,6 +16,7 @@
 * [*] Update site menu style on iPhone [#23944]
 * [*] Integrate zoom transitions in Themes, Reader [#23945, #23947]
 * [*] Fix an issue with site icons cropped in share extensions [#23950]
+* [*] Show selected filter in the Discover navigation bar [#23956]
 * [*] Enable fast deceleration for filters on the Discover tab [#23954]
 
 
