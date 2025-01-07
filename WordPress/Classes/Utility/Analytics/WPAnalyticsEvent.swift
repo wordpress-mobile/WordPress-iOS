@@ -5,7 +5,6 @@ import Foundation
 
     case createSheetShown
     case createSheetActionTapped
-    case createAnnouncementModalShown
 
     // Media Editor
     case mediaEditorShown
@@ -117,6 +116,7 @@ import Foundation
     case readerCommentTextCopied
     case readerPostContextMenuButtonTapped
     case readerAddSiteToFavoritesTapped
+    case readerButtonScrollToTopTapped
 
     // Stats - Empty Stats nudges
     case statsPublicizeNudgeShown
@@ -625,8 +625,6 @@ import Foundation
             return "create_sheet_shown"
         case .createSheetActionTapped:
             return "create_sheet_action_tapped"
-        case .createAnnouncementModalShown:
-            return "create_announcement_modal_shown"
         // Media Editor
         case .mediaEditorShown:
             return "media_editor_shown"
@@ -819,6 +817,8 @@ import Foundation
             return "reader_post_context_menu_button_tapped"
         case .readerAddSiteToFavoritesTapped:
             return "reader_add_site_to_favorites_tapped"
+        case .readerButtonScrollToTopTapped:
+            return "reader_button_scroll_to_top_tapped"
 
         // Stats - Empty Stats nudges
         case .statsPublicizeNudgeShown:

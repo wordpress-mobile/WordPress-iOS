@@ -65,13 +65,16 @@ import AutomatticTracks
         return refreshControl
     }()
 
+    private lazy var buttonScrollToTop = ReaderButtonScrollToTop.make { [weak self] in
+        self?.tableView.scrollToTop(animated: true)
+    }
+
     let titleView = ReaderNavigationCustomTitleView()
 
     private let loadMoreThreashold = 5
     private let refreshInterval = 300
     private var cleanupAndRefreshAfterScrolling = false
     private let recentlyBlockedSitePostObjectIDs = NSMutableArray()
-    private let heightForFooterView = CGFloat(44)
     private let estimatedHeightsCache = NSCache<AnyObject, AnyObject>()
     private var isFeed = false
     private var syncIsFillingGap = false
@@ -303,6 +306,7 @@ import AutomatticTracks
         setupTableView()
         setupFooterView()
         setupContentHandler()
+        setupButtonScrollToTop()
 
         observeNetworkStatus()
 
@@ -493,9 +497,14 @@ import AutomatticTracks
         content.initializeContent(tableView: tableView, delegate: self)
     }
 
+    private func setupButtonScrollToTop() {
+        view.addSubview(buttonScrollToTop)
+        buttonScrollToTop.pinEdges([.leading, .bottom], to: view.safeAreaLayoutGuide, insets: isCompact ? UIEdgeInsets(horizontal: 8, vertical: 16) : UIEdgeInsets(.all, 20))
+    }
+
     private func setupFooterView() {
         var frame = footerView.frame
-        frame.size.height = heightForFooterView
+        frame.size.height = 44
         footerView.frame = frame
         tableView.tableFooterView = footerView
         footerView.isHidden = true
@@ -1661,6 +1670,7 @@ extension ReaderStreamViewController: UITableViewDelegate, JPScrollViewDelegate 
         layoutEmptyStateView()
         processJetpackBannerVisibility(scrollView)
         titleView.updateAlpha(in: scrollView)
+        buttonScrollToTop.setButtonHidden(scrollView.contentOffset.y < view.bounds.height / 3, animated: true)
     }
 }
 

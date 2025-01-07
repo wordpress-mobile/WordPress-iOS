@@ -1,7 +1,7 @@
 import UIKit
 
 class ReaderStreamBaseCell: UITableViewCell {
-    static let insets = UIEdgeInsets(top: 0, left: 44, bottom: 0, right: 16)
+    static let insets = UIEdgeInsets(top: 0, left: 46, bottom: 0, right: 16)
 
     var isCompact: Bool = true {
         didSet {
