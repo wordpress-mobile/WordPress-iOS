@@ -1,5 +1,5 @@
 {
-  "originHash" : "e67326cf4e0b967f85976c160b6e3742a401276eabf3e18b25fce8bb219e1350",
+  "originHash" : "69f6228075ada2e7ec8ade65f3d84ae0ce1ca5dcc34cd08df29f99bb0501ea54",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -35,6 +35,15 @@
       "state" : {
         "revision" : "31045d654bcc1f2b56c85dd658f160fad5b50a29",
         "version" : "1.1.4"
+      }
+    },
+    {
+      "identity" : "azteceditor-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/allenhumphreys/AztecEditor-iOS",
+      "state" : {
+        "branch" : "ah/spm",
+        "revision" : "1719ce90f714af51ef46f69bd65decad5c5166c3"
       }
     },
     {
