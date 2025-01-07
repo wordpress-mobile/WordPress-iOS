@@ -2418,7 +2418,6 @@
 		4AD9542D2C2145CB00D0EEFA /* WPNUXMainButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPNUXMainButton.m; sourceTree = "<group>"; };
 		4AD954342C2145CB00D0EEFA /* WPWalkthroughTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPWalkthroughTextField.h; sourceTree = "<group>"; };
 		4AD954352C2145CB00D0EEFA /* WPWalkthroughTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPWalkthroughTextField.m; sourceTree = "<group>"; };
-		4AD954372C2145CB00D0EEFA /* WPAuthenticator-Swift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WPAuthenticator-Swift.h"; sourceTree = "<group>"; };
 		4AD954432C2145CB00D0EEFA /* LoginFacade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginFacade.h; sourceTree = "<group>"; };
 		4AD954442C2145CB00D0EEFA /* LoginFacade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginFacade.m; sourceTree = "<group>"; };
 		4AD954452C2145CB00D0EEFA /* LoginFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginFacade.swift; sourceTree = "<group>"; };
@@ -4997,14 +4996,6 @@
 			path = NUX;
 			sourceTree = "<group>";
 		};
-		4AD954382C2145CB00D0EEFA /* Private */ = {
-			isa = PBXGroup;
-			children = (
-				4AD954372C2145CB00D0EEFA /* WPAuthenticator-Swift.h */,
-			);
-			path = Private;
-			sourceTree = "<group>";
-		};
 		4AD954422C2145CB00D0EEFA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -5224,7 +5215,6 @@
 				4AD954152C2145CB00D0EEFA /* Model */,
 				4AD9541D2C2145CB00D0EEFA /* Navigation */,
 				4AD954362C2145CB00D0EEFA /* NUX */,
-				4AD954382C2145CB00D0EEFA /* Private */,
 				4AD954422C2145CB00D0EEFA /* Resources */,
 				4AD954502C2145CB00D0EEFA /* Services */,
 				4AD954642C2145CB00D0EEFA /* Signin */,
