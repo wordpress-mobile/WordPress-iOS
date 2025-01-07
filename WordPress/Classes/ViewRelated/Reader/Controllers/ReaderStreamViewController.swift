@@ -499,7 +499,7 @@ import AutomatticTracks
 
     private func setupButtonScrollToTop() {
         view.addSubview(buttonScrollToTop)
-        buttonScrollToTop.pinEdges([.leading, .bottom], to: view.safeAreaLayoutGuide, insets: UIEdgeInsets(horizontal: 8, vertical: 16))
+        buttonScrollToTop.pinEdges([.leading, .bottom], to: view.safeAreaLayoutGuide, insets: isCompact ? UIEdgeInsets(horizontal: 8, vertical: 16) : UIEdgeInsets(.all, 20))
     }
 
     private func setupFooterView() {
