@@ -130,12 +130,9 @@ platform :ios do
   # @called_by complete_code_freeze
   #
   lane :generate_strings_file_for_glotpress do |skip_commit: false, derived_data_path: DERIVED_DATA_PATH, gutenberg_absolute_path: nil|
-    # Fetch fresh pods to read the latest localizations from them.
-    # In CI, we expect the pods to be already available and up to date.
-    cocoapods unless is_ci
-
-    # For the same reason, fetch fresh packages.
-    # However, notice we currently need to do this in CI as well.
+    # Fetch fresh packages to read the latest localizations from them.
+    #
+    # Notice we currently need to do this in CI as well as locally.
     # That's because we haven't yet implemented a method to share the derived data folder explicitly between the CI SPM caching logic and this lane.
     #
     # See also:
