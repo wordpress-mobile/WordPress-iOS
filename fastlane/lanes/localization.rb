@@ -189,7 +189,6 @@ platform :ios do
     ios_generate_strings_file_from_code(
       paths: [
         'WordPress/',
-        'Pods/WordPress*/',
         'Modules/Sources/',
         'WordPressAuthenticator/Sources/',
         gutenberg_path,
