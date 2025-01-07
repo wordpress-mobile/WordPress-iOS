@@ -127,7 +127,10 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
         streamVC.view.pinEdges()
         streamVC.didMove(toParent: self)
 
-        navigationItem.titleView = streamVC.navigationItem.titleView // important
+        streamVC.titleView.detailsLabel.text = selectedChannel.localizedTitle
+        streamVC.titleView.detailsLabel.isHidden = false
+
+        navigationItem.titleView = streamVC.titleView // important
     }
 
     /// TODO: (tech-debt) the app currently stores the responses from the `/discover`
