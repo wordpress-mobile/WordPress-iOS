@@ -19,6 +19,8 @@
 * [*] Show selected filter in the Discover navigation bar [#23956]
 * [*] Enable fast deceleration for filters on the Discover tab [#23954]
 * [*] Disable universal links support for QR code login. You can only scan the codes using the app now. [#23953]
+* [*] Add scroll-to-top button to Reader streams [#23957]
+
 
 25.6
 -----
