@@ -36,7 +36,6 @@ $RECYCLE.BIN/
 
 # Project
 /Entitlements.plist
-Pods/
 WordPress.xcworkspace/*.mode1v3
 WordPress.xcworkspace/*.mode2v3
 WordPress.xcworkspace/*.pbxuser

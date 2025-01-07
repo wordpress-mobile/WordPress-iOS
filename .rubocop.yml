@@ -1,7 +1,6 @@
 AllCops:
   Exclude:
     - DerivedData/**/*
-    - Pods/**/*
     - vendor/**/*
     - WordPressAuthenticator/**/*
     - WordPressKit/**/*
