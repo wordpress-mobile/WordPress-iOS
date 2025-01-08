@@ -25,6 +25,7 @@ struct PostSettingsFeaturedImageCell: View {
                 .padding(.trailing, 12)
 
             Text(Strings.uploading)
+                .foregroundStyle(.secondary)
                 .lineLimit(1)
 
             Spacer(minLength: 8)
@@ -47,6 +48,7 @@ final class PostSettingsFeaturedImageViewModel: NSObject, ObservableObject {
 
     let post: AbstractPost
 
+    private var receipt: UUID?
     private let coordinator = MediaCoordinator.shared
 
     @objc init(post: AbstractPost) {
@@ -65,7 +67,23 @@ final class PostSettingsFeaturedImageViewModel: NSObject, ObservableObject {
         guard let media = coordinator.addMedia(from: item.exportableAsset, to: post) else {
             return wpAssertionFailure("failed to add media to post")
         }
+        self.receipt = coordinator.addObserver({ [weak self] _, state in
+            self?.didUpdateUploadState(state)
+        }, for: media)
         self.state = .uploading(media)
+    }
+
+    private func didUpdateUploadState(_ state: MediaCoordinator.MediaState) {
+        switch state {
+        case .ended:
+            // TODO: upload media
+            break
+        case .failed(let error):
+            Notice(title: Strings.uploadFailed, message: error.localizedDescription).post()
+            reset()
+        default:
+            break
+        }
     }
 
     func onCancelTapped() {
@@ -73,6 +91,10 @@ final class PostSettingsFeaturedImageViewModel: NSObject, ObservableObject {
             return
         }
         coordinator.cancelUploadAndDeleteMedia(media)
+        reset()
+    }
+
+    private func reset() {
         state = .empty // TODO: restore previous state
     }
 }
@@ -80,6 +102,6 @@ final class PostSettingsFeaturedImageViewModel: NSObject, ObservableObject {
 private enum Strings {
     static let buttonSetFeaturedImage = NSLocalizedString("postSettings.setFeaturedImageButton", value: "Set Featured Image", comment: "Button in Post Settings")
     static let uploading = NSLocalizedString("postSettings.featuredImage.uploading", value: "Uploading…", comment: "Post Settings")
-    static let retryUpload = NSLocalizedString("postSettings.featuredImage.retryUpload", value: "Retry Upload", comment: "Retry (single) upload button in Post Settings / Featuerd Image cell")
     static let cancelUpload = NSLocalizedString("postSettings.featuredImage.cancelUpload", value: "Cancel Upload", comment: "Cancel (single) upload button in Post Settings / Featuerd Image cell")
+    static let uploadFailed = NSLocalizedString("postSettings.featuredImage.uploadFailed", value: "Failed to upload new featured image", comment: "Snackbar title")
 }
