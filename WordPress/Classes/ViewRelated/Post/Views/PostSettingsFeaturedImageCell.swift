@@ -67,17 +67,16 @@ final class PostSettingsFeaturedImageViewModel: NSObject, ObservableObject {
         guard let media = coordinator.addMedia(from: item.exportableAsset, to: post) else {
             return wpAssertionFailure("failed to add media to post")
         }
-        self.receipt = coordinator.addObserver({ [weak self] _, state in
-            self?.didUpdateUploadState(state)
+        self.receipt = coordinator.addObserver({ [weak self] media, state in
+            self?.didUpdateUploadState(state, media: media)
         }, for: media)
         self.state = .uploading(media)
     }
 
-    private func didUpdateUploadState(_ state: MediaCoordinator.MediaState) {
+    private func didUpdateUploadState(_ state: MediaCoordinator.MediaState, media: Media) {
         switch state {
         case .ended:
-            // TODO: upload media
-            break
+            post.featuredImage = media
         case .failed(let error):
             Notice(title: Strings.uploadFailed, message: error.localizedDescription).post()
             reset()
