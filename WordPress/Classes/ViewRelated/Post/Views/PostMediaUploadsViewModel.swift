@@ -4,7 +4,7 @@ import Combine
 
 /// Manages media upload for the given revision of the post.
 final class PostMediaUploadsViewModel: ObservableObject {
-    private(set) var uploads: [MediaUploadItemViewModel]
+    private(set) var uploads: [PostMediaUploadItemViewModel]
 
     @Published private(set) var totalFileSize: Int64 = 0
     @Published private(set) var fractionCompleted = 0.0
@@ -27,7 +27,7 @@ final class PostMediaUploadsViewModel: ObservableObject {
         self.uploads = Array(post.media).filter(\.isUploadNeeded).sorted {
             ($0.creationDate ?? .now) < ($1.creationDate ?? .now)
         }.map {
-            MediaUploadItemViewModel(media: $0, coordinator: coordinator, isAutoUpdateEnabled: false)
+            PostMediaUploadItemViewModel(media: $0, coordinator: coordinator)
         }
 
         coordinator.uploadMedia(for: post)
@@ -68,7 +68,7 @@ final class PostMediaUploadsViewModel: ObservableObject {
 }
 
 /// Manages individual media upload.
-final class MediaUploadItemViewModel: ObservableObject, Identifiable {
+final class PostMediaUploadItemViewModel: ObservableObject, Identifiable {
     @Published private(set) var state: State = .uploading
 
     let media: Media
@@ -115,8 +115,6 @@ final class MediaUploadItemViewModel: ObservableObject, Identifiable {
         return nil
     }
 
-    private weak var updateTimer: Timer?
-
     enum State {
         case uploading
         case failed(Error)
@@ -124,15 +122,10 @@ final class MediaUploadItemViewModel: ObservableObject, Identifiable {
     }
 
     deinit {
-        updateTimer?.invalidate()
         retryTimer?.invalidate()
     }
 
-    init(
-        media: Media,
-        coordinator: MediaCoordinator,
-        isAutoUpdateEnabled: Bool = true
-    ) {
+    init(media: Media, coordinator: MediaCoordinator) {
         self.media = media
         self.coordinator = coordinator
 
@@ -140,12 +133,6 @@ final class MediaUploadItemViewModel: ObservableObject, Identifiable {
         update()
 
         NotificationCenter.default.addObserver(self, selector: #selector(didUpdateReachability), name: .reachabilityChanged, object: nil)
-
-        if isAutoUpdateEnabled {
-            updateTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
-                self?.update()
-            }
-        }
     }
 
     fileprivate func update() {

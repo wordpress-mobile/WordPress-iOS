@@ -6,74 +6,38 @@ struct PostSettingsFeaturedImageCell: View {
 
     var body: some View {
         switch viewModel.state {
-        case .empty:
-            MediaPicker(filter: .images, onSelection: viewModel.setFeaturedImage) {
-                Label(Strings.buttonSetFeaturedImage, systemImage: "photo.badge.plus")
-                    .frame(maxWidth: .infinity)
-                    .contentShape(Rectangle()) // Make the whole cell tappable
-            }
-        case .uploading(let viewModel):
-            PostSettingsFeaturedImageUploadView(viewModel: viewModel, onCancelTapped: {
-                self.viewModel.didCancelUpload()
-                viewModel.buttonCancelTapped()
-            })
+        case .empty: empty
+        case .uploading: uploading
         }
     }
-}
 
-private struct PostSettingsFeaturedImageUploadView: View {
-    @ObservedObject var viewModel: MediaUploadItemViewModel
+    private var empty: some View {
+        MediaPicker(filter: .images, onSelection: viewModel.setFeaturedImage) {
+            Label(Strings.buttonSetFeaturedImage, systemImage: "photo.badge.plus")
+                .frame(maxWidth: .infinity)
+                .contentShape(Rectangle()) // Make the whole cell tappable
+        }
+    }
 
-    var onCancelTapped: () -> Void
-
-    var body: some View {
+    private var uploading: some View {
         HStack(alignment: .center, spacing: 0) {
             ProgressView()
                 .padding(.trailing, 12)
 
-            VStack(alignment: .leading) {
-                Text(Strings.uploading)
-                    .font(.subheadline)
-                    .lineLimit(1)
-                Text(viewModel.details)
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(3)
-            }
+            Text(Strings.uploading)
+                .lineLimit(1)
 
             Spacer(minLength: 8)
 
-            HStack(alignment: .center, spacing: 8) {
-                switch viewModel.state {
-                case .uploading:
-                    MediaUploadProgressView(progress: viewModel.fractionCompleted)
-                        .padding(.trailing, 4) // To align with the exlamation mark
-                    menu
-                case .failed:
-                    Image(systemName: "exclamationmark.circle.fill")
-                        .foregroundStyle(.red)
-                    menu
-                case .uploaded:
-                    EmptyView() // processing
+            Menu {
+                Button(role: .destructive, action: viewModel.onCancelTapped) {
+                    Label(Strings.cancelUpload, systemImage: "trash")
                 }
+            } label: {
+                Image(systemName: "ellipsis")
+                    .font(.subheadline)
+                    .tint(.secondary)
             }
-        }
-    }
-
-    private var menu: some View {
-        Menu {
-            if viewModel.error != nil {
-                Button(action: viewModel.buttonRetryTapped) {
-                    Label(Strings.retryUpload, systemImage: "arrow.clockwise")
-                }
-            }
-            Button(role: .destructive, action: onCancelTapped) {
-                Label(Strings.cancelUpload, systemImage: "trash")
-            }
-        } label: {
-            Image(systemName: "ellipsis")
-                .font(.subheadline)
-                .tint(.secondary)
         }
     }
 }
@@ -91,7 +55,7 @@ final class PostSettingsFeaturedImageViewModel: NSObject, ObservableObject {
 
     enum State {
         case empty
-        case uploading(MediaUploadItemViewModel)
+        case uploading(Media)
     }
 
     func setFeaturedImage(from items: [MediaPickerSelection]) {
@@ -101,13 +65,15 @@ final class PostSettingsFeaturedImageViewModel: NSObject, ObservableObject {
         guard let media = coordinator.addMedia(from: item.exportableAsset, to: post) else {
             return wpAssertionFailure("failed to add media to post")
         }
-        let viewModel = MediaUploadItemViewModel(media: media, coordinator: coordinator)
-        self.state = .uploading(viewModel)
+        self.state = .uploading(media)
     }
 
-    func didCancelUpload() {
-        // TODO: restore to the previous state
-        state = .empty
+    func onCancelTapped() {
+        guard case .uploading(let media) = state else {
+            return
+        }
+        coordinator.cancelUploadAndDeleteMedia(media)
+        state = .empty // TODO: restore previous state
     }
 }
 
