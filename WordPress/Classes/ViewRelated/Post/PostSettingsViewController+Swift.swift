@@ -255,10 +255,14 @@ extension PostSettingsViewController {
 
 extension PostSettingsViewController {
     @objc func configureFeaturedImageCell(cell: UITableViewCell, viewModel: PostSettingsFeaturedImageViewModel) {
-        cell.contentConfiguration = UIHostingConfiguration {
-            PostSettingsFeaturedImageCell(viewModel: viewModel)
+        var configuration = UIHostingConfiguration {
+            PostSettingsFeaturedImageCell(post: apost, viewModel: viewModel)
                 .environment(\.presentingViewController, self)
         }
+        if viewModel.featuredImageURL != nil {
+            configuration = configuration.margins(.all, 0)
+        }
+        cell.contentConfiguration = configuration
         cell.selectionStyle = .none
     }
 

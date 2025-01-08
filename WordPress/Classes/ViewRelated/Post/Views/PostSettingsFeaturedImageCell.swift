@@ -1,21 +1,23 @@
 import SwiftUI
+import AsyncImageKit
 import WordPressUI
 
 struct PostSettingsFeaturedImageCell: View {
+    @ObservedObject var post: AbstractPost
     @ObservedObject var viewModel: PostSettingsFeaturedImageViewModel
 
     var body: some View {
-        switch viewModel.state {
-        case .empty: empty
-        case .uploading: uploading
-        }
-    }
-
-    private var empty: some View {
-        MediaPicker(filter: .images, onSelection: viewModel.setFeaturedImage) {
-            Label(Strings.buttonSetFeaturedImage, systemImage: "photo.badge.plus")
-                .frame(maxWidth: .infinity)
-                .contentShape(Rectangle()) // Make the whole cell tappable
+        if let imageURL = viewModel.featuredImageURL {
+            FeaturedImageView(imageURL: imageURL, post: viewModel.post)
+                .aspectRatio(1.0 / ReaderPostCell.coverAspectRatio, contentMode: .fit)
+        } else if viewModel.upload != nil {
+            uploading
+        } else {
+            MediaPicker(filter: .images, onSelection: viewModel.setFeaturedImage) {
+                Label(Strings.buttonSetFeaturedImage, systemImage: "photo.badge.plus")
+                    .frame(maxWidth: .infinity)
+                    .contentShape(Rectangle()) // Make the whole cell tappable
+            }
         }
     }
 
@@ -43,8 +45,24 @@ struct PostSettingsFeaturedImageCell: View {
     }
 }
 
+private struct FeaturedImageView: UIViewRepresentable {
+    let imageURL: URL
+    let post: AbstractPost
+
+    func makeUIView(context: Context) -> AsyncImageView {
+        let imageView = AsyncImageView()
+        imageView.configuration.loadingStyle = .spinner
+        imageView.setImage(with: imageURL, host: MediaHost(post))
+        return imageView
+    }
+
+    func updateUIView(_ view: AsyncImageView, context: Context) {
+        // Do nothing
+    }
+}
+
 final class PostSettingsFeaturedImageViewModel: NSObject, ObservableObject {
-    @Published private(set) var state: State = .empty
+    @Published private(set) var upload: Media?
 
     let post: AbstractPost
 
@@ -53,11 +71,6 @@ final class PostSettingsFeaturedImageViewModel: NSObject, ObservableObject {
 
     @objc init(post: AbstractPost) {
         self.post = post
-    }
-
-    enum State {
-        case empty
-        case uploading(Media)
     }
 
     func setFeaturedImage(from items: [MediaPickerSelection]) {
@@ -70,31 +83,30 @@ final class PostSettingsFeaturedImageViewModel: NSObject, ObservableObject {
         self.receipt = coordinator.addObserver({ [weak self] media, state in
             self?.didUpdateUploadState(state, media: media)
         }, for: media)
-        self.state = .uploading(media)
+        self.upload = media
     }
 
     private func didUpdateUploadState(_ state: MediaCoordinator.MediaState, media: Media) {
         switch state {
         case .ended:
+            wpAssert(media.remoteURL != nil)
             post.featuredImage = media
         case .failed(let error):
             Notice(title: Strings.uploadFailed, message: error.localizedDescription).post()
-            reset()
+            upload = nil
         default:
             break
         }
     }
 
     func onCancelTapped() {
-        guard case .uploading(let media) = state else {
-            return
-        }
-        coordinator.cancelUploadAndDeleteMedia(media)
-        reset()
+        guard let upload else { return }
+        coordinator.cancelUploadAndDeleteMedia(upload)
+        self.upload = nil
     }
 
-    private func reset() {
-        state = .empty // TODO: restore previous state
+    var featuredImageURL: URL? {
+        post.featuredImageURL ?? post.featuredImage?.remoteURL.flatMap(URL.init)
     }
 }
 
