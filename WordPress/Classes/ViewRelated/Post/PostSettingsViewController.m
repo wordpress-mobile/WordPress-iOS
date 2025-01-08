@@ -1166,15 +1166,4 @@ PostCategoriesViewControllerDelegate>
     }
 }
 
-#pragma mark - Featured Image
-
-- (void)removeFeaturedImage {
-    [WPAnalytics trackEvent:WPAnalyticsEventEditorPostFeaturedImageChanged properties:@{@"via": @"settings", @"action": @"removed"}];
-    self.featuredImage = nil;
-    [self.apost setFeaturedImage:nil];
-    [self dismissViewControllerAnimated:YES completion:nil];
-    [self.tableView reloadData];
-    [self.featuredImageDelegate gutenbergDidRequestFeaturedImageId:nil];
-}
-
 @end

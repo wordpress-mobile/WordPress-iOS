@@ -59,10 +59,13 @@ private struct FeaturedImageView: UIViewRepresentable {
     let imageURL: URL
     let post: AbstractPost
 
+    @Environment(\.presentingViewController) var presentingViewController
+
     func makeUIView(context: Context) -> AsyncImageView {
         let imageView = AsyncImageView()
         imageView.configuration.loadingStyle = .spinner
         imageView.setImage(with: imageURL, host: MediaHost(post))
+
         return imageView
     }
 
@@ -107,6 +110,7 @@ final class PostSettingsFeaturedImageViewModel: NSObject, ObservableObject {
         case .ended:
             wpAssert(media.remoteURL != nil)
             UIView.performWithoutAnimation {
+                upload = nil
                 post.featuredImage = media
                 tableView?.reloadData()
             }
