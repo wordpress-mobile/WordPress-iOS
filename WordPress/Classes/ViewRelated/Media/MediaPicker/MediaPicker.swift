@@ -1,7 +1,7 @@
 import SwiftUI
+import WordPressUI
 import Photos
 import PhotosUI
-import WordPressUI
 
 /// A media picker menu.
 ///
@@ -12,8 +12,11 @@ struct MediaPicker<Content: View>: View {
     var filter: MediaPickerMenu.MediaFilter?
     var isMultipleSelectionEnabled: Bool = false
     var initialSelection: [Media] = []
+    var onSelection: (([MediaPickerSelection]) -> Void)?
 
     @ViewBuilder var content: () -> Content
+
+    @StateObject private var viewModel = MediaPickerViewModel()
 
     @Environment(\.presentingViewController) var presentingViewController
 
@@ -28,9 +31,9 @@ struct MediaPicker<Content: View>: View {
     @ViewBuilder
     private var actions: some View {
         let menu = MediaPickerMenu(viewController: presentingViewController ?? UIViewController(), filter: filter)
-        let delegate = MediaPickerMenuDelegate()
+        let controller = makeMediaPickerMenuController()
         let actions: [UIAction] = [
-            menu.makePhotosAction(delegate: delegate),
+            menu.makePhotosAction(delegate: controller),
             // TODO: implement
 //            menu.makeCameraAction(delegate: delegate),
 //            menu.makeImagePlaygroundAction(delegate: delegate),
@@ -49,33 +52,24 @@ struct MediaPicker<Content: View>: View {
             }
         }
     }
+
+    private func makeMediaPickerMenuController() -> MediaPickerMenuController {
+        let controller = MediaPickerMenuController()
+        controller.onSelection = onSelection
+        viewModel.controller = controller // Needs to be retained
+        return controller
+    }
+}
+
+private final class MediaPickerViewModel: ObservableObject {
+    var controller: MediaPickerMenuController?
 }
 
 enum MediaPickerSource {
     /// Apple Photos app.
-    case photos
+    case applePhotos
 }
 
-private final class MediaPickerMenuDelegate: NSObject {}
-
-extension MediaPickerMenuDelegate: PHPickerViewControllerDelegate {
-    public func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-        // TODO:
-    }
-
-    func imagePicker(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-        // TODO:
-    }
-}
-
-extension MediaPickerMenuDelegate: SiteMediaPickerViewControllerDelegate {
-    func siteMediaPickerViewController(_ viewController: SiteMediaPickerViewController, didFinishWithSelection selection: [Media]) {
-        // TODO:
-    }
-}
-
-extension MediaPickerMenuDelegate: ImagePlaygroundPickerDelegate {
-    func imagePlaygroundViewController(_ viewController: UIViewController, didCreateImageAt imageURL: URL) {
-        // TODO:
-    }
+enum MediaPickerSelection {
+    case phPickerResult(PHPickerResult)
 }

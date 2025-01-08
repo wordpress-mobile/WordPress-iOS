@@ -5,7 +5,7 @@ struct PostSettingsFeaturedImageCell: View {
     @ObservedObject var viewModel: PostSettingsFeaturedImageViewModel
 
     var body: some View {
-        MediaPicker(filter: .images) {
+        MediaPicker(filter: .images, onSelection: viewModel.setFeaturedImage) {
             Label(Strings.buttonSetFeaturedImage, systemImage: "photo.badge.plus")
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .contentShape(Rectangle()) // Make the whole cell tappable
@@ -26,6 +26,13 @@ final class PostSettingsFeaturedImageViewModel: NSObject, ObservableObject {
         case empty
         // TODO: show PostMediaUploadsView
         case uploading
+    }
+
+    func setFeaturedImage(from items: [MediaPickerSelection]) {
+        guard let item = items.first else {
+            return wpAssertionFailure("selection is empty")
+        }
+
     }
 }
 
