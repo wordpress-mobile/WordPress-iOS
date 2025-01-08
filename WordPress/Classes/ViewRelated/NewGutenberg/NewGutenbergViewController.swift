@@ -610,13 +610,11 @@ extension NewGutenbergViewController: PostEditorNavigationBarManagerDelegate {
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, undoWasPressed sender: UIButton) {
-        // TODO: reimplement
-        // self.gutenberg.onUndoPressed()
+        editorViewController.undo()
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, redoWasPressed sender: UIButton) {
-        // TODO: reimplement
-        // self.gutenberg.onRedoPressed()
+        editorViewController.redo()
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, moreWasPressed sender: UIButton) {
