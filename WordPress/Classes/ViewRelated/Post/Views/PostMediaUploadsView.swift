@@ -52,7 +52,7 @@ struct PostMediaUploadsView: View {
 }
 
 struct PostMediaUploadItemView: View {
-    @ObservedObject var viewModel: PostMediaUploadItemViewModel
+    @ObservedObject var viewModel: MediaUploadItemViewModel
 
     var body: some View {
         HStack(alignment: .center, spacing: 0) {

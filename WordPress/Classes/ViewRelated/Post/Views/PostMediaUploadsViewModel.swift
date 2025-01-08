@@ -4,7 +4,7 @@ import Combine
 
 /// Manages media upload for the given revision of the post.
 final class PostMediaUploadsViewModel: ObservableObject {
-    private(set) var uploads: [PostMediaUploadItemViewModel]
+    private(set) var uploads: [MediaUploadItemViewModel]
 
     @Published private(set) var totalFileSize: Int64 = 0
     @Published private(set) var fractionCompleted = 0.0
@@ -27,7 +27,7 @@ final class PostMediaUploadsViewModel: ObservableObject {
         self.uploads = Array(post.media).filter(\.isUploadNeeded).sorted {
             ($0.creationDate ?? .now) < ($1.creationDate ?? .now)
         }.map {
-            PostMediaUploadItemViewModel(media: $0, coordinator: coordinator, isAutoUpdateEnabled: false)
+            MediaUploadItemViewModel(media: $0, coordinator: coordinator, isAutoUpdateEnabled: false)
         }
 
         coordinator.uploadMedia(for: post)
@@ -68,7 +68,7 @@ final class PostMediaUploadsViewModel: ObservableObject {
 }
 
 /// Manages individual media upload.
-final class PostMediaUploadItemViewModel: ObservableObject, Identifiable {
+final class MediaUploadItemViewModel: ObservableObject, Identifiable {
     @Published private(set) var state: State = .uploading
 
     let media: Media

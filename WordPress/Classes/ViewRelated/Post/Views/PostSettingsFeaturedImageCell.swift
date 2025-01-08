@@ -31,7 +31,7 @@ final class PostSettingsFeaturedImageViewModel: NSObject, ObservableObject {
 
     enum State {
         case empty
-        case uploading(PostMediaUploadItemViewModel)
+        case uploading(MediaUploadItemViewModel)
     }
 
     func setFeaturedImage(from items: [MediaPickerSelection]) {
@@ -41,7 +41,7 @@ final class PostSettingsFeaturedImageViewModel: NSObject, ObservableObject {
         guard let media = coordinator.addMedia(from: item.exportableAsset, to: post) else {
             return wpAssertionFailure("failed to add media to post")
         }
-        let viewModel = PostMediaUploadItemViewModel(media: media, coordinator: coordinator)
+        let viewModel = MediaUploadItemViewModel(media: media, coordinator: coordinator)
         self.state = .uploading(viewModel)
     }
 }
