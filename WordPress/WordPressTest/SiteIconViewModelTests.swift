@@ -1,6 +1,6 @@
 import UIKit
 import XCTest
-
+import WordPressUI
 @testable import WordPress
 
 final class SiteIconViewModelTests: XCTestCase {
