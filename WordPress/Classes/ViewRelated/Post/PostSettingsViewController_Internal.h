@@ -13,9 +13,6 @@ typedef enum {
     PostSettingsSectionPageAttributes
 } PostSettingsSection;
 
-
-@class WPProgressTableViewCell;
-
 @interface PostSettingsViewController ()
 
 @property (nonnull, nonatomic, strong) NSArray *sections;

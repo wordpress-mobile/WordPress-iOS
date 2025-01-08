@@ -5,9 +5,6 @@
 #import "SharingDetailViewController.h"
 #import "CoreDataStack.h"
 #import "MediaService.h"
-#import "WPProgressTableViewCell.h"
-#import <Photos/Photos.h>
-#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 #import "WordPress-Swift.h"
 
 @import Gridicons;
