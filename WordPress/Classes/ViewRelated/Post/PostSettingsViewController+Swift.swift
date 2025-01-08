@@ -259,6 +259,7 @@ extension PostSettingsViewController {
             PostSettingsFeaturedImageCell(viewModel: viewModel)
                 .environment(\.presentingViewController, self)
         }
+        cell.selectionStyle = .none
     }
 
     @objc func showFeaturedImageSelector() {
