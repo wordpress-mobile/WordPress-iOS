@@ -22,7 +22,7 @@ let package = Package(
         .package(url: "https://github.com/AliSoftware/OHHTTPStubs", from: "9.1.0"),
         .package(url: "https://github.com/Automattic/Automattic-Tracks-iOS", from: "3.4.2"),
         .package(url: "https://github.com/Automattic/AutomatticAbout-swift", from: "1.1.4"),
-        .package(url: "https://github.com/Automattic/Gravatar-SDK-iOS", from: "3.1.0"),
+        .package(url: "https://github.com/Automattic/Gravatar-SDK-iOS", from: "3.1.1"),
         .package(url: "https://github.com/Automattic/Gridicons-iOS", branch: "develop"),
         .package(url: "https://github.com/Automattic/ScreenObject", from: "0.2.3"),
         .package(url: "https://github.com/Automattic/XCUITestHelpers", from: "0.4.0"),

@@ -1,5 +1,5 @@
 {
-  "originHash" : "e67326cf4e0b967f85976c160b6e3742a401276eabf3e18b25fce8bb219e1350",
+  "originHash" : "050f4516b852a8d02524960543d183cfa2327095133e9b4c17745fa7a494cc9a",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -132,8 +132,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Automattic/Gravatar-SDK-iOS",
       "state" : {
-        "revision" : "b4f63edd2f81c37025817b23fee83721d034c320",
-        "version" : "3.1.0"
+        "revision" : "e7c6606015bab7258c4de9dde9d87736677ddc73",
+        "version" : "3.1.1"
       }
     },
     {
