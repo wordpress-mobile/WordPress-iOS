@@ -9,10 +9,10 @@ import PhotosUI
 /// presenting view controller. If not provided, the current top view controller
 /// is used.
 struct MediaPicker<Content: View>: View {
+    var sources: [MediaPickerSource] = [.photos, .camera]
     var filter: MediaPickerMenu.MediaFilter?
     var isMultipleSelectionEnabled: Bool = false
-    var initialSelection: [Media] = []
-    var onSelection: (([MediaPickerSelection]) -> Void)?
+    var onSelection: ((MediaPickerSelection) -> Void)?
 
     @ViewBuilder var content: () -> Content
 
@@ -22,24 +22,15 @@ struct MediaPicker<Content: View>: View {
 
     var body: some View {
         Menu {
-            actions
+            menu
         } label: {
             content()
         }
     }
 
     @ViewBuilder
-    private var actions: some View {
-        let menu = MediaPickerMenu(viewController: presentingViewController ?? UIViewController(), filter: filter)
-        let controller = makeMediaPickerMenuController()
-        let actions: [UIAction] = [
-            menu.makePhotosAction(delegate: controller),
-            // TODO: implement
-//            menu.makeCameraAction(delegate: delegate),
-//            menu.makeImagePlaygroundAction(delegate: delegate),
-        //                menu.makeSiteMediaAction(blog: self.apost.blog, delegate: delegate)
-        ]
-        ForEach(actions, id: \.self) { action in
+    private var menu: some View {
+        ForEach(makeActions(), id: \.self) { action in
             Button.init {
                 action.performWithSender(nil, target: nil)
             } label: {
@@ -48,16 +39,31 @@ struct MediaPicker<Content: View>: View {
                 } icon: {
                     action.image.map(Image.init)
                 }
-
             }
         }
     }
 
-    private func makeMediaPickerMenuController() -> MediaPickerMenuController {
+    private func makeActions() -> [UIAction] {
+        let menu = MediaPickerMenu(viewController: presentingViewController ?? UIViewController(), filter: filter)
+
         let controller = MediaPickerMenuController()
         controller.onSelection = onSelection
         viewModel.controller = controller // Needs to be retained
-        return controller
+
+        return sources.map { source in
+            switch source {
+            case .photos: menu.makePhotosAction(delegate: controller)
+            case .camera: menu.makeCameraAction(delegate: controller)
+            }
+        }
+//        let actions: [UIAction] = [
+//            menu.makePhotosAction(delegate: controller),
+//            menu.makeCameraAction(delegate: controller),
+//            // TODO: implement
+//            //
+//            //            menu.makeImagePlaygroundAction(delegate: delegate),
+//            //                menu.makeSiteMediaAction(blog: self.apost.blog, delegate: delegate)
+//        ]
     }
 }
 
@@ -66,17 +72,32 @@ private final class MediaPickerViewModel: ObservableObject {
 }
 
 enum MediaPickerSource {
-    /// Apple Photos app.
-    case applePhotos
+    case photos
+    case camera
+
+    var analyticsValue: String {
+        switch self {
+        case .photos: "apple_photos"
+        case .camera: "camera"
+        }
+    }
 }
 
-enum MediaPickerSelection {
-    case phPickerResult(PHPickerResult)
+struct MediaPickerSelection {
+    var items: [MediaPickerItem]
+    var source: MediaPickerSource
+}
+
+enum MediaPickerItem {
+    case pickerResult(PHPickerResult)
+    case image(UIImage)
 
     var exportableAsset: ExportableAsset {
         switch self {
-        case .phPickerResult(let result):
+        case .pickerResult(let result):
             return result.itemProvider
+        case .image(let image):
+            return image
         }
     }
 }

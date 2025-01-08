@@ -92,8 +92,10 @@ final class PostSettingsFeaturedImageViewModel: NSObject, ObservableObject {
         self.post = post
     }
 
-    func setFeaturedImage(from items: [MediaPickerSelection]) {
-        guard let item = items.first else {
+    func setFeaturedImage(selection: MediaPickerSelection) {
+        WPAnalytics.track(.editorPostFeaturedImageChanged, properties: ["via": "settings", "action": "added", "source": selection.source.analyticsValue])
+
+        guard let item = selection.items.first else {
             return wpAssertionFailure("selection is empty")
         }
         guard let media = coordinator.addMedia(from: item.exportableAsset, to: post) else {
@@ -129,9 +131,7 @@ final class PostSettingsFeaturedImageViewModel: NSObject, ObservableObject {
     }
 
     func buttonRemoveTapped() {
-        WPAnalytics.track(.editorPostFeaturedImageChanged, properties: [
-            "via": "settings", "action": "removed"
-        ])
+        WPAnalytics.track(.editorPostFeaturedImageChanged, properties: ["via": "settings", "action": "removed"])
 
         post.featuredImage = nil
         tableView?.reloadData()

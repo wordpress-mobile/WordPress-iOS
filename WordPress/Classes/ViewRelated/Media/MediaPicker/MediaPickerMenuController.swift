@@ -2,14 +2,29 @@ import Photos
 import PhotosUI
 
 final class MediaPickerMenuController: NSObject {
-    var onSelection: (([MediaPickerSelection]) -> Void)?
+    var onSelection: ((MediaPickerSelection) -> Void)?
+
+    fileprivate func didSelect(_ items: [MediaPickerItem], source: MediaPickerSource) {
+        let selection = MediaPickerSelection(items: items, source: source)
+        onSelection?(selection)
+    }
 }
 
 extension MediaPickerMenuController: PHPickerViewControllerDelegate {
     public func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         picker.presentingViewController?.dismiss(animated: true) {
             if !results.isEmpty {
-                self.onSelection?(results.map { MediaPickerSelection.phPickerResult($0) })
+                self.didSelect(results.map { MediaPickerItem.pickerResult($0) }, source: .photos)
+            }
+        }
+    }
+}
+
+extension MediaPickerMenuController: ImagePickerControllerDelegate {
+    func imagePicker(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        picker.presentingViewController?.dismiss(animated: true) {
+            if let image = info[.originalImage] as? UIImage {
+                self.didSelect([.image(image)], source: .camera)
             }
         }
     }
