@@ -44,9 +44,8 @@ PostCategoriesViewControllerDelegate>
 @property (nonatomic, strong) AbstractPost *apost;
 @property (nonatomic, strong) NSArray *postMetaSectionRows;
 @property (nonatomic, strong) NSArray *formatsList;
+// TODO: (kean) is it used anywhere
 @property (nonatomic, strong) UIImage *featuredImage;
-
-@property (nonatomic, readonly) CGSize featuredImageSize;
 
 @property (nonatomic, strong) NSArray *publicizeConnections;
 @property (nonatomic, strong) NSArray<PublicizeConnection *> *unsupportedConnections;
@@ -1016,20 +1015,6 @@ PostCategoriesViewControllerDelegate>
     [WPAnalytics track:WPAnalyticsStatPostSettingsAddTagsShown];
 
     [self.navigationController pushViewController:tagsPicker animated:YES];
-}
-
-- (CGSize)featuredImageSize
-{
-    CGFloat width = CGRectGetWidth(self.view.frame);
-    CGFloat height = ceilf(width * 0.66);
-    return CGSizeMake(width, height);
-}
-
-- (void)featuredImageFailedLoading:(NSIndexPath *)indexPath withError:(NSError *)error
-{
-    DDLogError(@"Error loading featured image: %@", error);
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    cell.textLabel.text = NSLocalizedString(@"Featured Image did not load", @"");
 }
 
 #pragma mark - Jetpack Social
