@@ -61,6 +61,9 @@ struct MediaPicker<Content: View>: View {
             case .siteMedia(let blog):
                 return menu.makeSiteMediaAction(blog: blog, delegate: controller)
             case .playground:
+                guard MediaPickerMenu.isImagePlaygroundAvailable else {
+                    return nil
+                }
                 return menu.makeImagePlaygroundAction(delegate: controller)
             }
         }
