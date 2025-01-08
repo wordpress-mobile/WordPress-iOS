@@ -254,6 +254,16 @@ extension PostSettingsViewController {
 // MARK: - PostSettingsViewController (Featued Image)
 
 extension PostSettingsViewController {
+    @objc func makeFeaturedImageCell() -> UITableViewCell {
+        // TODO: reuse cell?
+        let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+        cell.contentConfiguration = UIHostingConfiguration {
+            PostSettingsFeaturedImageCell()
+                .environment(\.presentingViewController, self)
+        }
+        return cell
+    }
+
     @objc func showFeaturedImageSelector() {
         guard let featuredImage = apost.featuredImage else {
             return wpAssertionFailure("featured image missing")

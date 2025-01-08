@@ -38,8 +38,6 @@ typedef NS_ENUM(NSInteger, PostSettingsRow) {
     PostSettingsRowParentPage
 };
 
-static CGFloat CellHeight = 44.0f;
-
 static NSString *const PostSettingsAnalyticsTrackingSource = @"post_settings";
 static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCellIdentifier";
 static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCellIdentifier";
@@ -436,14 +434,6 @@ PostCategoriesViewControllerDelegate>
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger sectionId = [[self.sections objectAtIndex:indexPath.section] integerValue];
-
-    if (sectionId == PostSettingsSectionFeaturedImage) {
-        if ([self isUploadingMedia]) {
-            return CellHeight;
-        }
-    }
-
     return UITableViewAutomaticDimension;
 }
 
@@ -644,29 +634,32 @@ PostCategoriesViewControllerDelegate>
 
 - (UITableViewCell *)configureFeaturedImageCellForIndexPath:(NSIndexPath *)indexPath
 {
-    if (!self.apost.featuredImage && !self.isUploadingMedia) {
-        return [self cellForSetFeaturedImage];
+    return [self makeFeaturedImageCell];
 
-    } else if (self.isUploadingMedia || self.apost.featuredImage.remoteStatus == MediaRemoteStatusPushing) {
-        // Is featured Image set on the post and it's being pushed to the server?
-        if (!self.isUploadingMedia) {
-            self.isUploadingMedia = YES;
-            [self setupObservingOfMedia:self.apost.featuredImage];
-        }
-        self.featuredImage = nil;
-        return [self cellForFeaturedImageUploadProgressAtIndexPath:indexPath];
-
-    } else if (self.apost.featuredImage && self.apost.featuredImage.remoteStatus == MediaRemoteStatusFailed) {
-        // Do we have an feature image set and for some reason the upload failed?
-        return [self cellForFeaturedImageError];
-    } else {
-        NSURL *featuredURL = [self urlForFeaturedImage];
-        if (!featuredURL) {
-            return [self cellForSetFeaturedImage];
-        }
-
-        return [self cellForFeaturedImageWithURL:featuredURL atIndexPath:indexPath];
-    }
+    // TODO: remove unused code
+//    if (!self.apost.featuredImage && !self.isUploadingMedia) {
+//        return [self cellForSetFeaturedImage];
+//
+//    } else if (self.isUploadingMedia || self.apost.featuredImage.remoteStatus == MediaRemoteStatusPushing) {
+//        // Is featured Image set on the post and it's being pushed to the server?
+//        if (!self.isUploadingMedia) {
+//            self.isUploadingMedia = YES;
+//            [self setupObservingOfMedia:self.apost.featuredImage];
+//        }
+//        self.featuredImage = nil;
+//        return [self cellForFeaturedImageUploadProgressAtIndexPath:indexPath];
+//
+//    } else if (self.apost.featuredImage && self.apost.featuredImage.remoteStatus == MediaRemoteStatusFailed) {
+//        // Do we have an feature image set and for some reason the upload failed?
+//        return [self cellForFeaturedImageError];
+//    } else {
+//        NSURL *featuredURL = [self urlForFeaturedImage];
+//        if (!featuredURL) {
+//            return [self cellForSetFeaturedImage];
+//        }
+//
+//        return [self cellForFeaturedImageWithURL:featuredURL atIndexPath:indexPath];
+//    }
 }
 
 - (UITableViewCell *)configureStickyPostCellForIndexPath:(NSIndexPath *)indexPath
