@@ -133,6 +133,8 @@ PostCategoriesViewControllerDelegate>
     self.tableView.accessibilityIdentifier = @"SettingsTable";
     self.isUploadingMedia = NO;
 
+    self.featuredImageViewModel.tableView = self.tableView;
+
     _blogService = [[BlogService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
 
     [self setupPostDateFormatter];

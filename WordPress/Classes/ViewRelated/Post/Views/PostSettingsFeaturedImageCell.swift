@@ -10,6 +10,16 @@ struct PostSettingsFeaturedImageCell: View {
         if let imageURL = viewModel.featuredImageURL {
             FeaturedImageView(imageURL: imageURL, post: viewModel.post)
                 .aspectRatio(1.0 / ReaderPostCell.coverAspectRatio, contentMode: .fit)
+                .overlay(alignment: .topTrailing) {
+                    Menu {
+                        Button(SharedStrings.Button.remove, systemImage: "trash", role: .destructive, action: viewModel.buttonRemoveTapped)
+                    } label: {
+                        Image(systemName: "ellipsis.circle.fill")
+                            .foregroundStyle(Color(.label), Color(.secondarySystemBackground))
+                            .font(.title)
+                            .padding(8)
+                    }
+                }
         } else if viewModel.upload != nil {
             uploading
         } else {
@@ -33,7 +43,7 @@ struct PostSettingsFeaturedImageCell: View {
             Spacer(minLength: 8)
 
             Menu {
-                Button(role: .destructive, action: viewModel.onCancelTapped) {
+                Button(role: .destructive, action: viewModel.buttonCancelTapped) {
                     Label(Strings.cancelUpload, systemImage: "trash")
                 }
             } label: {
@@ -66,8 +76,14 @@ final class PostSettingsFeaturedImageViewModel: NSObject, ObservableObject {
 
     let post: AbstractPost
 
+    var featuredImageURL: URL? {
+        post.featuredImage?.remoteURL.flatMap(URL.init)
+    }
+
     private var receipt: UUID?
     private let coordinator = MediaCoordinator.shared
+
+    @objc weak var tableView: UITableView?
 
     @objc init(post: AbstractPost) {
         self.post = post
@@ -90,7 +106,10 @@ final class PostSettingsFeaturedImageViewModel: NSObject, ObservableObject {
         switch state {
         case .ended:
             wpAssert(media.remoteURL != nil)
-            post.featuredImage = media
+            UIView.performWithoutAnimation {
+                post.featuredImage = media
+                tableView?.reloadData()
+            }
         case .failed(let error):
             Notice(title: Strings.uploadFailed, message: error.localizedDescription).post()
             upload = nil
@@ -99,14 +118,19 @@ final class PostSettingsFeaturedImageViewModel: NSObject, ObservableObject {
         }
     }
 
-    func onCancelTapped() {
+    func buttonCancelTapped() {
         guard let upload else { return }
         coordinator.cancelUploadAndDeleteMedia(upload)
         self.upload = nil
     }
 
-    var featuredImageURL: URL? {
-        post.featuredImageURL ?? post.featuredImage?.remoteURL.flatMap(URL.init)
+    func buttonRemoveTapped() {
+        WPAnalytics.track(.editorPostFeaturedImageChanged, properties: [
+            "via": "settings", "action": "removed"
+        ])
+
+        post.featuredImage = nil
+        tableView?.reloadData()
     }
 }
 
