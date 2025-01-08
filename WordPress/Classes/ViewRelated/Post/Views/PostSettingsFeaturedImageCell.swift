@@ -6,7 +6,11 @@ struct PostSettingsFeaturedImageCell: View {
 //    weak var presentingViewController: UIViewController?
 
     var body: some View {
-        MediaPicker<Text>(filter: .images)
+        MediaPicker(filter: .images) {
+            Label(Strings.buttonSetFeaturedImage, systemImage: "photo.badge.plus")
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .contentShape(Rectangle()) // Make the whole cell tappable
+        }
     }
 }
 

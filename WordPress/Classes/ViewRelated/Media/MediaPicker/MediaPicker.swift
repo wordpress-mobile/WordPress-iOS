@@ -13,14 +13,15 @@ struct MediaPicker<Content: View>: View {
     var isMultipleSelectionEnabled: Bool = false
     var initialSelection: [Media] = []
 
+    @ViewBuilder var content: () -> Content
+
     @Environment(\.presentingViewController) var presentingViewController
 
     var body: some View {
         Menu {
             actions
         } label: {
-            // TODO: make customizable
-            Text("Set Image")
+            content()
         }
     }
 
