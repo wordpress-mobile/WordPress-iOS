@@ -97,7 +97,7 @@ final class PostSettingsFeaturedImageViewModel: NSObject, ObservableObject {
     }
 
     func setFeaturedImage(selection: MediaPickerSelection) {
-        WPAnalytics.track(.editorPostFeaturedImageChanged, properties: ["via": "settings", "action": "added", "source": selection.source.analyticsValue])
+        WPAnalytics.track(.editorPostFeaturedImageChanged, properties: ["via": "settings", "action": "added", "source": selection.source])
 
         guard let item = selection.items.first else {
             return wpAssertionFailure("selection is empty")

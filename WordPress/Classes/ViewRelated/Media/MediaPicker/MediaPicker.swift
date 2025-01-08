@@ -61,10 +61,12 @@ struct MediaPicker<Content: View>: View {
             case .siteMedia(let blog):
                 return menu.makeSiteMediaAction(blog: blog, delegate: controller)
             case .playground:
-                guard MediaPickerMenu.isImagePlaygroundAvailable else {
-                    return nil
-                }
                 return menu.makeImagePlaygroundAction(delegate: controller)
+            case .freePhotos(let blog):
+                return menu.makeStockPhotos(blog: blog, delegate: controller)
+            case .freeGIFs(let blog):
+                return menu.makeFreeGIFAction(blog: blog, delegate: controller)
+
             }
         }
     }
@@ -81,30 +83,24 @@ private final class MediaPickerViewModel: ObservableObject {
 }
 
 enum MediaPickerSource {
-    case photos
+    case photos // Apple Photos
     case camera
     case siteMedia(blog: Blog)
-    case playground
-
-    var analyticsValue: String {
-        switch self {
-        case .photos: "apple_photos"
-        case .camera: "camera"
-        case .siteMedia: "site_media"
-        case .playground: "image_playground"
-        }
-    }
+    case playground // Image Playground
+    case freePhotos(blog: Blog) // Pexels
+    case freeGIFs(blog: Blog) // Tenor
 }
 
 struct MediaPickerSelection {
     var items: [MediaPickerItem]
-    var source: MediaPickerSource
+    var source: String
 }
 
 enum MediaPickerItem {
     case pickerResult(PHPickerResult)
     case image(UIImage)
     case media(Media)
+    case external(ExternalMediaAsset)
 
     /// Prepares the item for export and upload to your site media. If the item
     /// is already uploaded, returns `Media`.
@@ -116,6 +112,8 @@ enum MediaPickerItem {
             return .asset(image)
         case .media(let media):
             return .media(media)
+        case .external(let asset):
+            return .asset(asset)
         }
     }
 

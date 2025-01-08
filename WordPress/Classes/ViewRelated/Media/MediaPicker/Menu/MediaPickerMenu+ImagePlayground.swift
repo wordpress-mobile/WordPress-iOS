@@ -13,8 +13,11 @@ extension MediaPickerMenu {
         Strings.imagePlayground
     }
 
-    func makeImagePlaygroundAction(delegate: ImagePlaygroundPickerDelegate) -> UIAction {
-        UIAction(
+    func makeImagePlaygroundAction(delegate: ImagePlaygroundPickerDelegate) -> UIAction? {
+        guard MediaPickerMenu.isImagePlaygroundAvailable else {
+            return nil
+        }
+        return UIAction(
             title: Strings.imagePlayground,
             image: UIImage(systemName: "apple.image.playground"),
             attributes: [],
