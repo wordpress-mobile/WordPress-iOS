@@ -29,7 +29,7 @@ struct MediaPicker<Content: View>: View {
     @ViewBuilder
     private var menu: some View {
         ForEach(makeActions(), id: \.self) { action in
-            Button.init {
+            Button {
                 action.performWithSender(nil, target: nil)
             } label: {
                 Label {
@@ -60,13 +60,10 @@ struct MediaPicker<Content: View>: View {
                 return menu.makeCameraAction(delegate: controller)
             case .siteMedia(let blog):
                 return menu.makeSiteMediaAction(blog: blog, delegate: controller)
+            case .playground:
+                return menu.makeImagePlaygroundAction(delegate: controller)
             }
         }
-//        let actions: [UIAction] = [
-//            // TODO: implement
-//            //
-//            //            menu.makeImagePlaygroundAction(delegate: delegate),
-//        ]
     }
 }
 
@@ -84,12 +81,14 @@ enum MediaPickerSource {
     case photos
     case camera
     case siteMedia(blog: Blog)
+    case playground
 
     var analyticsValue: String {
         switch self {
         case .photos: "apple_photos"
         case .camera: "camera"
         case .siteMedia: "site_media"
+        case .playground: "image_playground"
         }
     }
 }

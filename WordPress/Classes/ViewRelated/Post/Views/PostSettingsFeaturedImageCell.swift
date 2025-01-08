@@ -24,7 +24,7 @@ struct PostSettingsFeaturedImageCell: View {
             uploading
         } else {
             let configuration = MediaPickerConfiguration(
-                sources: [.photos, .camera, .siteMedia(blog: post.blog)],
+                sources: [.photos, .camera, .playground, .siteMedia(blog: post.blog)],
                 filter: .images
             )
             MediaPicker(configuration: configuration, onSelection: viewModel.setFeaturedImage) {

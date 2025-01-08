@@ -41,6 +41,12 @@ extension MediaPickerMenuController: SiteMediaPickerViewControllerDelegate {
 
 extension MediaPickerMenuController: ImagePlaygroundPickerDelegate {
     func imagePlaygroundViewController(_ viewController: UIViewController, didCreateImageAt imageURL: URL) {
-        // TODO:
+
+        viewController.presentingViewController?.dismiss(animated: true)
+        if let data = try? Data(contentsOf: imageURL), let image = UIImage(data: data) {
+            self.didSelect([.image(image)], source: .playground)
+        } else {
+            wpAssertionFailure("failed to read the image created by ImagePlayground")
+        }
     }
 }
