@@ -72,4 +72,11 @@ enum MediaPickerSource {
 
 enum MediaPickerSelection {
     case phPickerResult(PHPickerResult)
+
+    var exportableAsset: ExportableAsset {
+        switch self {
+        case .phPickerResult(let result):
+            return result.itemProvider
+        }
+    }
 }

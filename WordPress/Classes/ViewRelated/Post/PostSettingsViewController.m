@@ -94,7 +94,7 @@ PostCategoriesViewControllerDelegate>
         self.apost = aPost;
         self.unsupportedConnections = @[];
         self.enabledConnections = [NSMutableArray array];
-        self.featuredImageViewModel = [[PostSettingsFeaturedImageViewModel alloc] initWithBlog:aPost.blog];
+        self.featuredImageViewModel = [[PostSettingsFeaturedImageViewModel alloc] initWithPost:aPost];
     }
     return self;
 }

@@ -27,7 +27,7 @@ final class PostMediaUploadsViewModel: ObservableObject {
         self.uploads = Array(post.media).filter(\.isUploadNeeded).sorted {
             ($0.creationDate ?? .now) < ($1.creationDate ?? .now)
         }.map {
-            PostMediaUploadItemViewModel(media: $0, coordinator: coordinator)
+            PostMediaUploadItemViewModel(media: $0, coordinator: coordinator, isAutoUpdateEnabled: false)
         }
 
         coordinator.uploadMedia(for: post)
@@ -115,6 +115,8 @@ final class PostMediaUploadItemViewModel: ObservableObject, Identifiable {
         return nil
     }
 
+    private weak var updateTimer: Timer?
+
     enum State {
         case uploading
         case failed(Error)
@@ -122,10 +124,15 @@ final class PostMediaUploadItemViewModel: ObservableObject, Identifiable {
     }
 
     deinit {
+        updateTimer?.invalidate()
         retryTimer?.invalidate()
     }
 
-    init(media: Media, coordinator: MediaCoordinator) {
+    init(
+        media: Media,
+        coordinator: MediaCoordinator,
+        isAutoUpdateEnabled: Bool = true
+    ) {
         self.media = media
         self.coordinator = coordinator
 
@@ -133,6 +140,12 @@ final class PostMediaUploadItemViewModel: ObservableObject, Identifiable {
         update()
 
         NotificationCenter.default.addObserver(self, selector: #selector(didUpdateReachability), name: .reachabilityChanged, object: nil)
+
+        if isAutoUpdateEnabled {
+            updateTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
+                self?.update()
+            }
+        }
     }
 
     fileprivate func update() {

@@ -51,7 +51,7 @@ struct PostMediaUploadsView: View {
     }
 }
 
-private struct PostMediaUploadItemView: View {
+struct PostMediaUploadItemView: View {
     @ObservedObject var viewModel: PostMediaUploadItemViewModel
 
     var body: some View {

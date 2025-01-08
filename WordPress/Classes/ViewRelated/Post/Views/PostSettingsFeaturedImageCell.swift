@@ -5,34 +5,44 @@ struct PostSettingsFeaturedImageCell: View {
     @ObservedObject var viewModel: PostSettingsFeaturedImageViewModel
 
     var body: some View {
-        MediaPicker(filter: .images, onSelection: viewModel.setFeaturedImage) {
-            Label(Strings.buttonSetFeaturedImage, systemImage: "photo.badge.plus")
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .contentShape(Rectangle()) // Make the whole cell tappable
+        switch viewModel.state {
+        case .empty:
+            MediaPicker(filter: .images, onSelection: viewModel.setFeaturedImage) {
+                Label(Strings.buttonSetFeaturedImage, systemImage: "photo.badge.plus")
+                    .frame(maxWidth: .infinity)
+                    .contentShape(Rectangle()) // Make the whole cell tappable
+            }
+        case .uploading(let viewModel):
+            PostMediaUploadItemView(viewModel: viewModel)
         }
     }
 }
 
 final class PostSettingsFeaturedImageViewModel: NSObject, ObservableObject {
-    @Published private var state: State = .empty
+    @Published private(set) var state: State = .empty
 
-    let blog: Blog
+    let post: AbstractPost
 
-    @objc init(blog: Blog) {
-        self.blog = blog
+    private let coordinator = MediaCoordinator.shared
+
+    @objc init(post: AbstractPost) {
+        self.post = post
     }
 
     enum State {
         case empty
-        // TODO: show PostMediaUploadsView
-        case uploading
+        case uploading(PostMediaUploadItemViewModel)
     }
 
     func setFeaturedImage(from items: [MediaPickerSelection]) {
         guard let item = items.first else {
             return wpAssertionFailure("selection is empty")
         }
-
+        guard let media = coordinator.addMedia(from: item.exportableAsset, to: post) else {
+            return wpAssertionFailure("failed to add media to post")
+        }
+        let viewModel = PostMediaUploadItemViewModel(media: media, coordinator: coordinator)
+        self.state = .uploading(viewModel)
     }
 }
 

@@ -263,7 +263,7 @@ extension PostSettingsViewController {
 
     @objc func showFeaturedImageSelector() {
         guard let featuredImage = apost.featuredImage else {
-            return wpAssertionFailure("featured image missing")
+            return
         }
 
         let lightboxVC = LightboxViewController(media: featuredImage)
