@@ -121,7 +121,7 @@ PostCategoriesViewControllerDelegate>
 
     [self.tableView registerNib:[UINib nibWithNibName:@"WPTableViewActivityCell" bundle:nil] forCellReuseIdentifier:TableViewActivityCellIdentifier];
     [self.tableView registerClass:[WPProgressTableViewCell class] forCellReuseIdentifier:TableViewProgressCellIdentifier];
-    [self.tableView registerClass:[PostFeaturedImageCell class] forCellReuseIdentifier:TableViewFeaturedImageCellIdentifier];
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:TableViewFeaturedImageCellIdentifier];
     [self.tableView registerClass:[SwitchTableViewCell class] forCellReuseIdentifier:TableViewToggleCellIdentifier];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:TableViewGenericCellIdentifier];
 
@@ -451,7 +451,7 @@ PostCategoriesViewControllerDelegate>
     } else if (sec == PostSettingsSectionMeta) {
         cell = [self configureMetaPostMetaCellForIndexPath:indexPath];
     } else if (sec == PostSettingsSectionFeaturedImage) {
-        cell = [self configureFeaturedImageCellForIndexPath:indexPath];
+        cell = [self makeFeaturedImageCellForIndexPath:indexPath];
     } else if (sec == PostSettingsSectionStickyPost) {
         cell = [self configureStickyPostCellForIndexPath:indexPath];
     } else if (sec == PostSettingsSectionShare || sec == PostSettingsSectionDisabledTwitter) {
@@ -635,9 +635,12 @@ PostCategoriesViewControllerDelegate>
     return cell;
 }
 
-- (UITableViewCell *)configureFeaturedImageCellForIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell *)makeFeaturedImageCellForIndexPath:(NSIndexPath *)indexPath
 {
-    return [self makeFeaturedImageCellWithViewModel:self.featuredImageViewModel];
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:TableViewFeaturedImageCellIdentifier forIndexPath:indexPath];
+    [self configureFeaturedImageCellWithCell:cell viewModel:self.featuredImageViewModel];
+    cell.tag = PostSettingsRowFeaturedImage;
+    return cell;
 
     // TODO: remove unused code
 //    if (!self.apost.featuredImage && !self.isUploadingMedia) {
@@ -705,10 +708,13 @@ PostCategoriesViewControllerDelegate>
 
 - (UITableViewCell *)cellForFeaturedImageWithURL:(nonnull NSURL *)featuredURL atIndexPath:(NSIndexPath *)indexPath
 {
-    PostFeaturedImageCell *featuredImageCell = [self.tableView dequeueReusableCellWithIdentifier:TableViewFeaturedImageCellIdentifier forIndexPath:indexPath];
-    [featuredImageCell setImageWithURL:featuredURL post:self.apost];
-    featuredImageCell.tag = PostSettingsRowFeaturedImage;
-    return featuredImageCell;
+    // TODO: remove
+    return [UITableViewCell new];
+
+//    PostFeaturedImageCell *featuredImageCell = [self.tableView dequeueReusableCellWithIdentifier:TableViewFeaturedImageCellIdentifier forIndexPath:indexPath];
+//    [featuredImageCell setImageWithURL:featuredURL post:self.apost];
+//    featuredImageCell.tag = PostSettingsRowFeaturedImage;
+//    return featuredImageCell;
 }
 
 - (nullable NSURL *)urlForFeaturedImage {
