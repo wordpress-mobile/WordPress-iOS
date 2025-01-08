@@ -9,9 +9,7 @@ import PhotosUI
 /// presenting view controller. If not provided, the current top view controller
 /// is used.
 struct MediaPicker<Content: View>: View {
-    var sources: [MediaPickerSource] = [.photos, .camera]
-    var filter: MediaPickerMenu.MediaFilter?
-    var isMultipleSelectionEnabled: Bool = false
+    var configuration = MediaPickerConfiguration()
     var onSelection: ((MediaPickerSelection) -> Void)?
 
     @ViewBuilder var content: () -> Content
@@ -44,27 +42,38 @@ struct MediaPicker<Content: View>: View {
     }
 
     private func makeActions() -> [UIAction] {
-        let menu = MediaPickerMenu(viewController: presentingViewController ?? UIViewController(), filter: filter)
+        let menu = MediaPickerMenu(
+            viewController: presentingViewController ?? UIViewController(),
+            filter: configuration.filter,
+            isMultipleSelectionEnabled: configuration.isMultipleSelectionEnabled
+        )
 
         let controller = MediaPickerMenuController()
         controller.onSelection = onSelection
         viewModel.controller = controller // Needs to be retained
 
-        return sources.map { source in
+        return configuration.sources.compactMap { source in
             switch source {
-            case .photos: menu.makePhotosAction(delegate: controller)
-            case .camera: menu.makeCameraAction(delegate: controller)
+            case .photos:
+                return menu.makePhotosAction(delegate: controller)
+            case .camera:
+                return menu.makeCameraAction(delegate: controller)
+            case .siteMedia(let blog):
+                return menu.makeSiteMediaAction(blog: blog, delegate: controller)
             }
         }
 //        let actions: [UIAction] = [
-//            menu.makePhotosAction(delegate: controller),
-//            menu.makeCameraAction(delegate: controller),
 //            // TODO: implement
 //            //
 //            //            menu.makeImagePlaygroundAction(delegate: delegate),
-//            //                menu.makeSiteMediaAction(blog: self.apost.blog, delegate: delegate)
 //        ]
     }
+}
+
+struct MediaPickerConfiguration {
+    var sources: [MediaPickerSource] = [.photos, .camera]
+    var filter: MediaPickerMenu.MediaFilter?
+    var isMultipleSelectionEnabled = false
 }
 
 private final class MediaPickerViewModel: ObservableObject {
@@ -74,11 +83,13 @@ private final class MediaPickerViewModel: ObservableObject {
 enum MediaPickerSource {
     case photos
     case camera
+    case siteMedia(blog: Blog)
 
     var analyticsValue: String {
         switch self {
         case .photos: "apple_photos"
         case .camera: "camera"
+        case .siteMedia: "site_media"
         }
     }
 }
@@ -91,13 +102,23 @@ struct MediaPickerSelection {
 enum MediaPickerItem {
     case pickerResult(PHPickerResult)
     case image(UIImage)
+    case media(Media)
 
-    var exportableAsset: ExportableAsset {
+    /// Prepares the item for export and upload to your site media. If the item
+    /// is already uploaded, returns `Media`.
+    func exported() -> Exportable {
         switch self {
         case .pickerResult(let result):
-            return result.itemProvider
+            return .asset(result.itemProvider)
         case .image(let image):
-            return image
+            return .asset(image)
+        case .media(let media):
+            return .media(media)
         }
+    }
+
+    enum Exportable {
+        case asset(ExportableAsset)
+        case media(Media)
     }
 }

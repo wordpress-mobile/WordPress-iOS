@@ -23,7 +23,11 @@ struct PostSettingsFeaturedImageCell: View {
         } else if viewModel.upload != nil {
             uploading
         } else {
-            MediaPicker(filter: .images, onSelection: viewModel.setFeaturedImage) {
+            let configuration = MediaPickerConfiguration(
+                sources: [.photos, .camera, .siteMedia(blog: post.blog)],
+                filter: .images
+            )
+            MediaPicker(configuration: configuration, onSelection: viewModel.setFeaturedImage) {
                 Label(Strings.buttonSetFeaturedImage, systemImage: "photo.badge.plus")
                     .frame(maxWidth: .infinity)
                     .contentShape(Rectangle()) // Make the whole cell tappable
@@ -98,24 +102,24 @@ final class PostSettingsFeaturedImageViewModel: NSObject, ObservableObject {
         guard let item = selection.items.first else {
             return wpAssertionFailure("selection is empty")
         }
-        guard let media = coordinator.addMedia(from: item.exportableAsset, to: post) else {
-            return wpAssertionFailure("failed to add media to post")
+        switch item.exported() {
+        case .asset(let exportableAsset):
+            guard let media = coordinator.addMedia(from: exportableAsset, to: post) else {
+                return wpAssertionFailure("failed to add media to post")
+            }
+            self.receipt = coordinator.addObserver({ [weak self] media, state in
+                self?.didUpdateUploadState(state, media: media)
+            }, for: media)
+            self.upload = media
+        case .media(let media):
+            didProcessMedia(media)
         }
-        self.receipt = coordinator.addObserver({ [weak self] media, state in
-            self?.didUpdateUploadState(state, media: media)
-        }, for: media)
-        self.upload = media
     }
 
     private func didUpdateUploadState(_ state: MediaCoordinator.MediaState, media: Media) {
         switch state {
         case .ended:
-            wpAssert(media.remoteURL != nil)
-            UIView.performWithoutAnimation {
-                upload = nil
-                post.featuredImage = media
-                tableView?.reloadData()
-            }
+            didProcessMedia(media)
         case .failed(let error):
             Notice(title: Strings.uploadFailed, message: error.localizedDescription).post()
             upload = nil
@@ -124,6 +128,14 @@ final class PostSettingsFeaturedImageViewModel: NSObject, ObservableObject {
         }
     }
 
+    private func didProcessMedia(_ media: Media) {
+        wpAssert(media.remoteURL != nil)
+        UIView.performWithoutAnimation {
+            upload = nil
+            post.featuredImage = media
+            tableView?.reloadData()
+        }
+    }
     func buttonCancelTapped() {
         guard let upload else { return }
         coordinator.cancelUploadAndDeleteMedia(upload)

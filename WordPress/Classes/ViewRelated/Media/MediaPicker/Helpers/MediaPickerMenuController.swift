@@ -6,33 +6,36 @@ final class MediaPickerMenuController: NSObject {
 
     fileprivate func didSelect(_ items: [MediaPickerItem], source: MediaPickerSource) {
         let selection = MediaPickerSelection(items: items, source: source)
-        onSelection?(selection)
+        DispatchQueue.main.async {
+            self.onSelection?(selection)
+        }
     }
 }
 
 extension MediaPickerMenuController: PHPickerViewControllerDelegate {
     public func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-        picker.presentingViewController?.dismiss(animated: true) {
-            if !results.isEmpty {
-                self.didSelect(results.map { MediaPickerItem.pickerResult($0) }, source: .photos)
-            }
+        picker.presentingViewController?.dismiss(animated: true)
+        if !results.isEmpty {
+            self.didSelect(results.map(MediaPickerItem.pickerResult), source: .photos)
         }
     }
 }
 
 extension MediaPickerMenuController: ImagePickerControllerDelegate {
     func imagePicker(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-        picker.presentingViewController?.dismiss(animated: true) {
-            if let image = info[.originalImage] as? UIImage {
-                self.didSelect([.image(image)], source: .camera)
-            }
+        picker.presentingViewController?.dismiss(animated: true)
+        if let image = info[.originalImage] as? UIImage {
+            self.didSelect([.image(image)], source: .camera)
         }
     }
 }
 
 extension MediaPickerMenuController: SiteMediaPickerViewControllerDelegate {
     func siteMediaPickerViewController(_ viewController: SiteMediaPickerViewController, didFinishWithSelection selection: [Media]) {
-        // TODO:
+        viewController.presentingViewController?.dismiss(animated: true)
+        if !selection.isEmpty {
+            self.didSelect(selection.map(MediaPickerItem.media), source: .siteMedia(blog: viewController.blog))
+        }
     }
 }
 
