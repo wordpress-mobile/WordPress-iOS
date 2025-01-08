@@ -44,8 +44,6 @@ PostCategoriesViewControllerDelegate>
 @property (nonatomic, strong) AbstractPost *apost;
 @property (nonatomic, strong) NSArray *postMetaSectionRows;
 @property (nonatomic, strong) NSArray *formatsList;
-// TODO: (kean) is it used anywhere
-@property (nonatomic, strong) UIImage *featuredImage;
 
 @property (nonatomic, strong) NSArray *publicizeConnections;
 @property (nonatomic, strong) NSArray<PublicizeConnection *> *unsupportedConnections;

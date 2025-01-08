@@ -1,6 +1,7 @@
 #import <UIKit/UIKit.h>
 #import "AbstractPost.h"
 
+// TODO: (kean) figure out if it's still used (presumably yet)
 @protocol FeaturedImageDelegate
 
 - (void)gutenbergDidRequestFeaturedImageId:(nonnull NSNumber *)mediaID;
