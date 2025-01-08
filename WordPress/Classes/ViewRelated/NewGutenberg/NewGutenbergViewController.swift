@@ -127,7 +127,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         self.post = post
 
         self.replaceEditor = replaceEditor
-        self.editorSession = PostEditorAnalyticsSession(editor: .gutenberg, post: post)
+        self.editorSession = PostEditorAnalyticsSession(editor: .gutenbergKit, post: post)
         self.navigationBarManager = navigationBarManager ?? PostEditorNavigationBarManager()
 
         let networkClient = NewGutenbergNetworkClient(blog: post.blog)
@@ -315,6 +315,16 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 }
 
 extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate {
+    func editorDidLoad(_ viewContoller: GutenbergKit.EditorViewController) {
+        if !editorSession.started {
+            // Note that this method is also used to track startup performance
+            // It assumes this is being called when the editor has finished loading
+            // If you need to refactor this, please ensure that the startup_time_ms property
+            // is still reflecting the actual startup time of the editor
+            editorSession.start()
+        }
+    }
+
     func editor(_ viewContoller: GutenbergKit.EditorViewController, didDisplayInitialContent content: String) {
         // Do nothing
     }
