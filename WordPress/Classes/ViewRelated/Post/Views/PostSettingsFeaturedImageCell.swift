@@ -2,8 +2,7 @@ import SwiftUI
 import WordPressUI
 
 struct PostSettingsFeaturedImageCell: View {
-//    @ObservedObject var viewModel: PostSettingsFeaturedImageViewModel
-//    weak var presentingViewController: UIViewController?
+    @ObservedObject var viewModel: PostSettingsFeaturedImageViewModel
 
     var body: some View {
         MediaPicker(filter: .images) {
@@ -14,10 +13,14 @@ struct PostSettingsFeaturedImageCell: View {
     }
 }
 
-final class PostSettingsFeaturedImageViewModel: ObservableObject {
-    @Published var isUploading = false
-
+final class PostSettingsFeaturedImageViewModel: NSObject, ObservableObject {
     @Published private var state: State = .empty
+
+    let blog: Blog
+
+    @objc init(blog: Blog) {
+        self.blog = blog
+    }
 
     enum State {
         case empty

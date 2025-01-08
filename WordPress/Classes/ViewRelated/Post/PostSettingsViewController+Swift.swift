@@ -254,11 +254,11 @@ extension PostSettingsViewController {
 // MARK: - PostSettingsViewController (Featued Image)
 
 extension PostSettingsViewController {
-    @objc func makeFeaturedImageCell() -> UITableViewCell {
+    @objc func makeFeaturedImageCell(viewModel: PostSettingsFeaturedImageViewModel) -> UITableViewCell {
         // TODO: reuse cell?
         let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
         cell.contentConfiguration = UIHostingConfiguration {
-            PostSettingsFeaturedImageCell()
+            PostSettingsFeaturedImageCell(viewModel: viewModel)
                 .environment(\.presentingViewController, self)
         }
         return cell

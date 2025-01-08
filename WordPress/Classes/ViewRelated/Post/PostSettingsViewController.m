@@ -63,6 +63,8 @@ PostCategoriesViewControllerDelegate>
 
 @property (nonatomic, strong) NSDateFormatter *postDateFormatter;
 
+@property (nonatomic, strong) PostSettingsFeaturedImageViewModel *featuredImageViewModel;
+
 #pragma mark - Properties: Services
 
 @property (nonatomic, strong, readonly) BlogService *blogService;
@@ -92,6 +94,7 @@ PostCategoriesViewControllerDelegate>
         self.apost = aPost;
         self.unsupportedConnections = @[];
         self.enabledConnections = [NSMutableArray array];
+        self.featuredImageViewModel = [[PostSettingsFeaturedImageViewModel alloc] initWithBlog:aPost.blog];
     }
     return self;
 }
@@ -634,7 +637,7 @@ PostCategoriesViewControllerDelegate>
 
 - (UITableViewCell *)configureFeaturedImageCellForIndexPath:(NSIndexPath *)indexPath
 {
-    return [self makeFeaturedImageCell];
+    return [self makeFeaturedImageCellWithViewModel:self.featuredImageViewModel];
 
     // TODO: remove unused code
 //    if (!self.apost.featuredImage && !self.isUploadingMedia) {
