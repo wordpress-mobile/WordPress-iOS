@@ -57,7 +57,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
                                style: .plain,
                                target: self,
                                action: #selector(share))
-        button.title = NSLocalizedString(SharedStrings.Button.share, comment: "Button label to share a web page")
+        button.title = NSLocalizedString("webKit.button.share", value: "Share", comment: "Button label to share a web page")
         return button
     }()
     @objc lazy var safariButton: UIBarButtonItem = {
