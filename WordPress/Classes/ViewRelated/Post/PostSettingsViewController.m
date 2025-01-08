@@ -3,7 +3,6 @@
 #import "Media.h"
 #import "SettingsSelectionViewController.h"
 #import "SharingDetailViewController.h"
-#import "WPTableViewActivityCell.h"
 #import "CoreDataStack.h"
 #import "MediaService.h"
 #import "WPProgressTableViewCell.h"
