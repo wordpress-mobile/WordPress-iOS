@@ -28,7 +28,7 @@ extension HomeSiteHeaderViewController {
             mediaMenu.makeCameraAction(delegate: presenter),
             mediaMenu.makeImagePlaygroundAction(delegate: presenter),
             mediaMenu.makeSiteMediaAction(blog: blog, delegate: presenter)
-        ]
+        ].compactMap { $0 }
         if FeatureFlag.siteIconCreator.enabled {
             actions.append(UIAction(
                 title: SiteIconAlertStrings.Actions.createWithEmoji,

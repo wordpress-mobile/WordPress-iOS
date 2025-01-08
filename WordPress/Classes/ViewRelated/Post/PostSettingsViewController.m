@@ -26,9 +26,6 @@ typedef NS_ENUM(NSInteger, PostSettingsRow) {
     PostSettingsRowVisibility,
     PostSettingsRowFormat,
     PostSettingsRowFeaturedImage,
-    PostSettingsRowFeaturedImageAdd,
-    PostSettingsRowFeaturedImageRemove,
-    PostSettingsRowFeaturedLoading,
     PostSettingsRowShareConnection,
     PostSettingsRowShareMessage,
     PostSettingsRowSlug,
@@ -39,8 +36,6 @@ typedef NS_ENUM(NSInteger, PostSettingsRow) {
 };
 
 static NSString *const PostSettingsAnalyticsTrackingSource = @"post_settings";
-static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCellIdentifier";
-static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCellIdentifier";
 static NSString *const TableViewFeaturedImageCellIdentifier = @"TableViewFeaturedImageCellIdentifier";
 static NSString *const TableViewToggleCellIdentifier = @"TableViewToggleCellIdentifier";
 static NSString *const TableViewGenericCellIdentifier = @"TableViewGenericCellIdentifier";
@@ -83,8 +78,6 @@ PostCategoriesViewControllerDelegate>
 - (void)dealloc
 {
     [self.internetReachability stopNotifier];
-
-    [self removeMediaObserver];
 }
 
 - (instancetype)initWithPost:(AbstractPost *)aPost
@@ -119,8 +112,6 @@ PostCategoriesViewControllerDelegate>
     [self setupFormatsList];
     [self setupPublicizeConnections];
 
-    [self.tableView registerNib:[UINib nibWithNibName:@"WPTableViewActivityCell" bundle:nil] forCellReuseIdentifier:TableViewActivityCellIdentifier];
-    [self.tableView registerClass:[WPProgressTableViewCell class] forCellReuseIdentifier:TableViewProgressCellIdentifier];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:TableViewFeaturedImageCellIdentifier];
     [self.tableView registerClass:[SwitchTableViewCell class] forCellReuseIdentifier:TableViewToggleCellIdentifier];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:TableViewGenericCellIdentifier];
@@ -131,7 +122,6 @@ PostCategoriesViewControllerDelegate>
     // Compensate for the first section's height of 1.0f
     self.tableView.contentInset = UIEdgeInsetsMake(-1.0f, 0, 0, 0);
     self.tableView.accessibilityIdentifier = @"SettingsTable";
-    self.isUploadingMedia = NO;
 
     self.featuredImageViewModel.tableView = self.tableView;
 
@@ -490,10 +480,6 @@ PostCategoriesViewControllerDelegate>
         [self showPostFormatSelector];
     } else if (cell.tag == PostSettingsRowFeaturedImage) {
         [self showFeaturedImageSelector];
-    } else if (cell.tag == PostSettingsRowFeaturedImageAdd) {
-        [self showFeaturedImageSelector];
-    } else if (cell.tag == PostSettingsRowFeaturedImageRemove) {
-        [self showFeaturedImageRemoveOrRetryActionAtIndexPath:indexPath];
     } else if (sec == PostSettingsSectionDisabledTwitter) {
         [self showShareDetailForIndexPath:indexPath];
     } else if (cell.tag == PostSettingsRowShareConnection) {
@@ -644,7 +630,7 @@ PostCategoriesViewControllerDelegate>
     cell.tag = PostSettingsRowFeaturedImage;
     return cell;
 
-    // TODO: remove unused code
+    // TODO: (kean) remove unused code
 //    if (!self.apost.featuredImage && !self.isUploadingMedia) {
 //        return [self cellForSetFeaturedImage];
 //
@@ -684,41 +670,7 @@ PostCategoriesViewControllerDelegate>
     return cell;
 }
 
-- (UITableViewCell *)cellForSetFeaturedImage
-{
-    UITableViewCell *cell = [self makeSetFeaturedImageCell];
-    cell.tag = PostSettingsRowFeaturedImageAdd;
-    return cell;
-}
-
-- (UITableViewCell *)cellForFeaturedImageError
-{
-    WPTableViewActivityCell *activityCell = [self getWPTableViewActivityCell];
-    activityCell.textLabel.text = NSLocalizedString(@"Upload failed. Tap for options.", @"Description to show on post setting for a featured image that failed to upload.");
-    activityCell.tag = PostSettingsRowFeaturedImageRemove;
-    return activityCell;
-}
-
-- (UITableViewCell *)cellForFeaturedImageUploadProgressAtIndexPath:(NSIndexPath *)indexPath
-{
-    self.progressCell = [self.tableView dequeueReusableCellWithIdentifier:TableViewProgressCellIdentifier forIndexPath:indexPath];
-    [WPStyleGuide configureTableViewCell:self.progressCell];
-    [self.progressCell setProgress:self.featuredImageProgress];
-    self.progressCell.tag = PostSettingsRowFeaturedLoading;
-    return self.progressCell;
-}
-
-- (UITableViewCell *)cellForFeaturedImageWithURL:(nonnull NSURL *)featuredURL atIndexPath:(NSIndexPath *)indexPath
-{
-    // TODO: remove
-    return [UITableViewCell new];
-
-//    PostFeaturedImageCell *featuredImageCell = [self.tableView dequeueReusableCellWithIdentifier:TableViewFeaturedImageCellIdentifier forIndexPath:indexPath];
-//    [featuredImageCell setImageWithURL:featuredURL post:self.apost];
-//    featuredImageCell.tag = PostSettingsRowFeaturedImage;
-//    return featuredImageCell;
-}
-
+// TODO: (kean) remove
 - (nullable NSURL *)urlForFeaturedImage {
     NSURL *featuredURL = self.apost.featuredImage.absoluteLocalURL;
 
@@ -858,17 +810,6 @@ PostCategoriesViewControllerDelegate>
     }
     cell.accessoryView = nil;
     cell.imageView.image = nil;
-    cell.tag = 0;
-    return cell;
-}
-
-- (WPTableViewActivityCell *)getWPTableViewActivityCell
-{
-    WPTableViewActivityCell *cell = [self.tableView dequeueReusableCellWithIdentifier:TableViewActivityCellIdentifier];
-    cell.accessoryType = UITableViewCellAccessoryNone;
-    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-    [WPStyleGuide configureTableViewActionCell:cell];
-
     cell.tag = 0;
     return cell;
 }

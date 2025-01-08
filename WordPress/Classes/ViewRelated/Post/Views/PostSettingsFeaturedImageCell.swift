@@ -31,6 +31,7 @@ struct PostSettingsFeaturedImageCell: View {
                 Label(Strings.buttonSetFeaturedImage, systemImage: "photo.badge.plus")
                     .frame(maxWidth: .infinity)
                     .contentShape(Rectangle()) // Make the whole cell tappable
+                    .accessibilityIdentifier("SetFeaturedImage")
             }
         }
     }
@@ -130,6 +131,7 @@ final class PostSettingsFeaturedImageViewModel: NSObject, ObservableObject {
 
     private func didProcessMedia(_ media: Media) {
         wpAssert(media.remoteURL != nil)
+        // TODO: (kean) fix animations
         UIView.performWithoutAnimation {
             upload = nil
             post.featuredImage = media
@@ -145,6 +147,7 @@ final class PostSettingsFeaturedImageViewModel: NSObject, ObservableObject {
     func buttonRemoveTapped() {
         WPAnalytics.track(.editorPostFeaturedImageChanged, properties: ["via": "settings", "action": "removed"])
 
+        // TODO: (kean) do we need to call removeMediaObject?
         post.featuredImage = nil
         tableView?.reloadData()
     }
