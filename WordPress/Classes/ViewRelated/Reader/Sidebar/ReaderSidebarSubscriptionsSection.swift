@@ -46,20 +46,8 @@ struct ReaderSidebarSubscriptionCell: View {
             }
             if editMode?.wrappedValue.isEditing == true {
                 Spacer()
-                Button {
-                    if !site.showInMenu {
-                        WPAnalytics.track(.readerAddSiteToFavoritesTapped)
-                    }
-
-                    let siteObjectID = TaggedManagedObjectID(site)
-                    ContextManager.shared.performAndSave({ managedObjectContext in
-                        let site = try managedObjectContext.existingObject(with: siteObjectID)
-                        site.showInMenu.toggle()
-                    }, completion: nil, on: DispatchQueue.main)
-                } label: {
-                    Image(systemName: site.showInMenu ? "star.fill" : "star")
-                        .foregroundStyle(site.showInMenu ? .pink : .secondary)
-                }.buttonStyle(.plain)
+                ReaderSiteFavoriteButton(site: site, source: "edit_mode")
+                    .labelStyle(.iconOnly)
             }
         }
         .lineLimit(1)
@@ -69,5 +57,26 @@ struct ReaderSidebarSubscriptionCell: View {
                 ReaderSubscriptionHelper().unfollow(site)
             }.tint(.red)
         }
+    }
+}
+
+struct ReaderSiteFavoriteButton: View {
+    let site: ReaderSiteTopic
+    let source: String
+
+    var body: some View {
+        Button {
+            if !site.showInMenu {
+                WPAnalytics.track(.readerAddSiteToFavoritesTapped, properties: ["via": source])
+            }
+            let siteObjectID = TaggedManagedObjectID(site)
+            ContextManager.shared.performAndSave({ managedObjectContext in
+                let site = try managedObjectContext.existingObject(with: siteObjectID)
+                site.showInMenu.toggle()
+            }, completion: nil, on: DispatchQueue.main)
+        } label: {
+            Label(site.showInMenu ? SharedStrings.Reader.removeFromFavorites : SharedStrings.Reader.addToFavorites, systemImage: site.showInMenu ? "star.fill" : "star")
+                .foregroundStyle(site.showInMenu ? .pink : .secondary)
+        }.buttonStyle(.plain)
     }
 }

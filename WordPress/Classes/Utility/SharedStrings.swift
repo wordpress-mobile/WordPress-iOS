@@ -29,8 +29,10 @@ enum SharedStrings {
         /// - warning: This is the legacy value. It's not compliant with the new format but has the correct translation for different languages.
         static let title = NSLocalizedString("Reader", comment: "The accessibility value of the Reader tab.")
         static let unfollow = NSLocalizedString("reader.button.unfollow", value: "Unfollow", comment: "Reader sidebar button title")
-        static let subscribe = NSLocalizedString("reader.button.subscribe", value: "Subscribe", comment: "Context menu action")
-        static let unsubscribe = NSLocalizedString("reader.button.unsubscribe", value: "Unsubscribe", comment: "Context menu action")
+        static let subscribe = NSLocalizedString("reader.button.subscribe", value: "Subscribe", comment: "A shared button title for Reader")
+        static let unsubscribe = NSLocalizedString("reader.button.unsubscribe", value: "Unsubscribe", comment: "A shared button title for Reader")
+        static let addToFavorites = NSLocalizedString("reader.button.addToFavorites", value: "Add to Favorites", comment: "A shared button title for Reader")
+        static let removeFromFavorites = NSLocalizedString("reader.button.removeFromFavorites", value: "Remove from Favorites", comment: "A shared button title for Reader")
         static let recent = NSLocalizedString("reader.recent.title", value: "Recent", comment: "Used in multiple contexts, usually as a screen title")
         static let discover = NSLocalizedString("reader.discover.title", value: "Discover", comment: "Used in multiple contexts, usually as a screen title")
         static let saved = NSLocalizedString("reader.saved.title", value: "Saved", comment: "Used in multiple contexts, usually as a screen title")
