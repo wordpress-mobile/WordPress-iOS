@@ -36,6 +36,9 @@
 * [*] (P2) Reader: Fix an issue with a missing "Mark as Read/Unread" button that was removed in the previous release [#23917]
 * [*] (P2) Reader: Show "read" status for P2 posts in the feeds [#23917]
 * [*] Fix some missing or invalid social sharing icons [#23918]
+* [*] Fix small tap area for “More” button in the Subscriptions screen in Reader [#23964]
+* [*] Fix “Notification Settings” for individual posts sometimes being clipped [#23964]
+* [*] Add context menu (long-press) and previews for subscriptions with quick access to “Share”, “Copy Link”, “Add to Favorites”, “Notification Settings”, and “Unsubscribe” buttons in both the Subscriptions view and the Sidebar in Reader [#23964]
 
 25.6
 -----
