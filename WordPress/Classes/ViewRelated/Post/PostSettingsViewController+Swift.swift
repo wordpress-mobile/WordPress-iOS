@@ -266,10 +266,10 @@ extension PostSettingsViewController {
         cell.selectionStyle = .none
     }
 
-    @objc func showFeaturedImageSelector() {
+    @objc func showFeaturedImageSelector(cell: UITableViewCell) {
         guard let featuredImage = apost.featuredImage else { return }
         let lightboxVC = LightboxViewController(media: featuredImage)
-        lightboxVC.configureZoomTransition()
+        lightboxVC.configureZoomTransition(sourceView: cell.contentView)
         present(lightboxVC, animated: true)
     }
 }
