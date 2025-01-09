@@ -158,7 +158,13 @@ private struct ReaderSidebarView: View {
 
     private func makePrimaryNavigationItem(_ title: String, systemImage: String) -> some View {
         HStack {
-            Label(title, systemImage: systemImage)
+            Label {
+                Text(title)
+                    .font(.headline).fontWeight(.medium)
+            } icon: {
+                Image(systemName: systemImage)
+            }
+//            Label(title, systemImage: systemImage)
                 .lineLimit(1)
             if viewModel.isCompact {
                 Spacer()
