@@ -1,5 +1,6 @@
 import UIKit
 import WordPressUI
+import AsyncImageKit
 
 final class PublicizeServiceCell: UITableViewCell {
     let iconView = AsyncImageView()
