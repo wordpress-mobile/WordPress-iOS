@@ -259,7 +259,7 @@ extension PostSettingsViewController {
             PostSettingsFeaturedImageCell(post: apost, viewModel: viewModel)
                 .environment(\.presentingViewController, self)
         }
-        if viewModel.featuredImageURL != nil {
+        if apost.featuredImage != nil {
             configuration = configuration.margins(.all, 0)
         }
         cell.contentConfiguration = configuration
@@ -267,10 +267,7 @@ extension PostSettingsViewController {
     }
 
     @objc func showFeaturedImageSelector() {
-        guard let featuredImage = apost.featuredImage else {
-            return
-        }
-
+        guard let featuredImage = apost.featuredImage else { return }
         let lightboxVC = LightboxViewController(media: featuredImage)
         lightboxVC.configureZoomTransition()
         present(lightboxVC, animated: true)

@@ -7,8 +7,9 @@ struct PostSettingsFeaturedImageCell: View {
     @ObservedObject var viewModel: PostSettingsFeaturedImageViewModel
 
     var body: some View {
-        if let imageURL = viewModel.featuredImageURL {
-            FeaturedImageView(imageURL: imageURL, post: viewModel.post)
+        if let image = post.featuredImage {
+            SiteMediaImage(media: image, size: .large)
+                .loadingStyle(.spinner)
                 .aspectRatio(1.0 / ReaderPostCell.coverAspectRatio, contentMode: .fit)
                 .overlay(alignment: .topTrailing) {
                     Menu {
@@ -60,33 +61,10 @@ struct PostSettingsFeaturedImageCell: View {
     }
 }
 
-private struct FeaturedImageView: UIViewRepresentable {
-    let imageURL: URL
-    let post: AbstractPost
-
-    @Environment(\.presentingViewController) var presentingViewController
-
-    func makeUIView(context: Context) -> AsyncImageView {
-        let imageView = AsyncImageView()
-        imageView.configuration.loadingStyle = .spinner
-        imageView.setImage(with: imageURL, host: MediaHost(post))
-
-        return imageView
-    }
-
-    func updateUIView(_ view: AsyncImageView, context: Context) {
-        // Do nothing
-    }
-}
-
 final class PostSettingsFeaturedImageViewModel: NSObject, ObservableObject {
     @Published private(set) var upload: Media?
 
     let post: AbstractPost
-
-    var featuredImageURL: URL? {
-        post.featuredImage?.remoteURL.flatMap(URL.init)
-    }
 
     private var receipt: UUID?
     private let coordinator = MediaCoordinator.shared
