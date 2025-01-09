@@ -1010,11 +1010,6 @@ PostCategoriesViewControllerDelegate>
     }
 }
 
-- (void)reloadFeaturedImageCell {
-    NSIndexPath *featureImageCellPath = [NSIndexPath indexPathForRow:0 inSection:[self.sections indexOfObject:@(PostSettingsSectionFeaturedImage)]];
-    [self.tableView reloadRowsAtIndexPaths:@[featureImageCellPath] withRowAnimation:UITableViewRowAnimationFade];
-}
-
 // MARK: - Page Attributes
 
 - (UITableViewCell *)configurePageAttributesCellForIndexPath:(NSIndexPath *)indexPath

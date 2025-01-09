@@ -20,6 +20,5 @@
 @property (nonatomic, weak, nullable) id<FeaturedImageDelegate> featuredImageDelegate;
 
 - (void)reloadData;
-- (void)reloadFeaturedImageCell;
 
 @end
