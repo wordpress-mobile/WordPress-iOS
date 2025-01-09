@@ -256,8 +256,10 @@ extension PostSettingsViewController {
 extension PostSettingsViewController {
     @objc func configureFeaturedImageCell(cell: UITableViewCell, viewModel: PostSettingsFeaturedImageViewModel) {
         var configuration = UIHostingConfiguration {
-            PostSettingsFeaturedImageCell(post: apost, viewModel: viewModel)
-                .environment(\.presentingViewController, self)
+            PostSettingsFeaturedImageCell(post: apost, viewModel: viewModel) { [weak self] in
+                self?.showFeaturedImageSelector(cell: cell)
+            }
+            .environment(\.presentingViewController, self)
         }
         if apost.featuredImage != nil {
             configuration = configuration.margins(.all, 0)
@@ -266,7 +268,7 @@ extension PostSettingsViewController {
         cell.selectionStyle = .none
     }
 
-    @objc func showFeaturedImageSelector(cell: UITableViewCell) {
+    private func showFeaturedImageSelector(cell: UITableViewCell) {
         guard let featuredImage = apost.featuredImage else { return }
         let lightboxVC = LightboxViewController(media: featuredImage)
         lightboxVC.configureZoomTransition(sourceView: cell.contentView)

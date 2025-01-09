@@ -6,23 +6,22 @@ struct PostSettingsFeaturedImageCell: View {
     @ObservedObject var post: AbstractPost
     @ObservedObject var viewModel: PostSettingsFeaturedImageViewModel
 
+    var onViewTapped: () -> Void
+
     var body: some View {
         if let image = post.featuredImage {
             SiteMediaImage(media: image, size: .large)
                 .loadingStyle(.spinner)
                 .aspectRatio(1.0 / ReaderPostCell.coverAspectRatio, contentMode: .fit)
                 .overlay {
-                    Menu {
-                        Button(SharedStrings.Button.remove, systemImage: "trash", role: .destructive, action: viewModel.buttonRemoveTapped)
-                    } label: {
-                        Image(systemName: "ellipsis.circle.fill")
-                            .foregroundStyle(Color(.label), Color(.secondarySystemBackground))
-                            .font(.title)
-                            .shadow(color: .black.opacity(0.5), radius: 10)
-                            .padding(8)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
-                    }
+                    menu
                 }
+                .contextMenu {
+                    actions
+                } preview: {
+                    SiteMediaImage(media: image, size: .large)
+                }
+
         } else if viewModel.upload != nil {
             uploading
         } else {
@@ -37,6 +36,25 @@ struct PostSettingsFeaturedImageCell: View {
                     .accessibilityIdentifier("SetFeaturedImage")
             }
         }
+    }
+
+    private var menu: some View {
+        Menu {
+            actions
+        } label: {
+            Image(systemName: "ellipsis.circle.fill")
+                .foregroundStyle(Color(.label), Color(.secondarySystemBackground))
+                .font(.title)
+                .shadow(color: .black.opacity(0.5), radius: 10)
+                .padding(8)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+        }
+    }
+
+    @ViewBuilder
+    private var actions: some View {
+        Button(SharedStrings.Button.view, systemImage: "photo", action: onViewTapped)
+        Button(SharedStrings.Button.remove, systemImage: "trash", role: .destructive, action: viewModel.buttonRemoveTapped)
     }
 
     private var uploading: some View {

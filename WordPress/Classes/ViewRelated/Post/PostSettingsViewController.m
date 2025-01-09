@@ -472,8 +472,6 @@ PostCategoriesViewControllerDelegate>
         [self showPostAuthorSelector];
     } else if (cell.tag == PostSettingsRowFormat) {
         [self showPostFormatSelector];
-    } else if (cell.tag == PostSettingsRowFeaturedImage) {
-        [self showFeaturedImageSelectorWithCell:cell];
     } else if (sec == PostSettingsSectionDisabledTwitter) {
         [self showShareDetailForIndexPath:indexPath];
     } else if (cell.tag == PostSettingsRowShareConnection) {
