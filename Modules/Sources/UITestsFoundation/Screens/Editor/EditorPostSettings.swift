@@ -11,20 +11,8 @@ public class EditorPostSettings: ScreenObject {
         $0.cells["Categories"]
     }
 
-    private let chooseFromMediaButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Choose from Media"]
-    }
-
     private let tagsSectionGetter: (XCUIApplication) -> XCUIElement = {
         $0.cells["Tags"]
-    }
-
-    private let featuredImageButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells["SetFeaturedImage"]
-    }
-
-    private let currentFeaturedImageGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells["CurrentFeaturedImage"]
     }
 
     private let publishDateButtonGetter: (XCUIApplication) -> XCUIElement = {
@@ -56,11 +44,11 @@ public class EditorPostSettings: ScreenObject {
     }
 
     var categoriesSection: XCUIElement { categoriesSectionGetter(app) }
-    var chooseFromMediaButton: XCUIElement { chooseFromMediaButtonGetter(app) }
-    var currentFeaturedImage: XCUIElement { currentFeaturedImageGetter(app) }
+    var chooseFromMediaButton: XCUIElement { app.buttons["Choose from Media"].firstMatch }
     var closeButton: XCUIElement { closeButtonGetter(app) }
     var backButton: XCUIElement? { backButtonGetter(app) }
-    var featuredImageButton: XCUIElement { featuredImageButtonGetter(app) }
+    var featuredImageCell: XCUIElement { app.cells["post_settings_featured_image_cell"].firstMatch }
+    var selectedFeaturedImage: XCUIElement { app.otherElements["featured_image_current_image"].firstMatch }
     var firstCalendarDayButton: XCUIElement { firstCalendarDayButtonGetter(app) }
     var monthLabel: XCUIElement { monthLabelGetter(app) }
     var nextMonthButton: XCUIElement { nextMonthButtonGetter(app) }
@@ -100,16 +88,13 @@ public class EditorPostSettings: ScreenObject {
     }
 
     public func removeFeatureImage() throws -> EditorPostSettings {
-        currentFeaturedImage.tap()
-
-        try FeaturedImageScreen()
-            .tapRemoveFeaturedImageButton()
-
+        featuredImageCell.tap()
+        app.buttons["featured_image_button_remove"].firstMatch.tap()
         return try EditorPostSettings()
     }
 
     public func setFeaturedImage() throws -> EditorPostSettings {
-        featuredImageButton.tap()
+        featuredImageCell.tap()
         chooseFromMediaButton.tap()
         try MediaPickerAlbumScreen()
             .selectImage(atIndex: 0) // Select latest uploaded image
@@ -125,9 +110,9 @@ public class EditorPostSettings: ScreenObject {
             XCTAssertTrue(tagsSection.staticTexts[postTag].exists, "Tag \(postTag) not set")
         }
         if hasImage {
-            XCTAssertTrue(currentFeaturedImage.exists, "Featured image not set")
+            XCTAssertTrue(selectedFeaturedImage.exists, "Featured image not set")
         } else {
-            XCTAssertFalse(currentFeaturedImage.exists, "Featured image is set but should not be")
+            XCTAssertFalse(selectedFeaturedImage.exists, "Featured image is set but should not be")
         }
 
         return try EditorPostSettings()

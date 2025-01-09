@@ -12,6 +12,7 @@ struct PostSettingsFeaturedImageCell: View {
         if let image = post.featuredImage {
             SiteMediaImage(media: image, size: .large)
                 .loadingStyle(.spinner)
+                .accessibilityIdentifier("featured_image_current_image")
                 .aspectRatio(1.0 / ReaderPostCell.coverAspectRatio, contentMode: .fit)
                 .overlay {
                     menu
@@ -19,7 +20,6 @@ struct PostSettingsFeaturedImageCell: View {
                 .contextMenu {
                     actions
                 }
-
         } else {
             if viewModel.upload != nil {
                 // The upload state when no image is selected. For the "Replace"
@@ -30,7 +30,6 @@ struct PostSettingsFeaturedImageCell: View {
                     Label(Strings.buttonSetFeaturedImage, systemImage: "photo.badge.plus")
                         .frame(maxWidth: .infinity)
                         .contentShape(Rectangle()) // Make the whole cell tappable
-                        .accessibilityIdentifier("SetFeaturedImage")
                 }
             }
         }
@@ -63,10 +62,13 @@ struct PostSettingsFeaturedImageCell: View {
     private var actions: some View {
         if viewModel.upload == nil {
             Button(SharedStrings.Button.view, systemImage: "plus.magnifyingglass", action: onViewTapped)
+                .accessibilityIdentifier("featured_image_button_view")
             makeMediaPicker {
                 Button(Strings.replaceImage, systemImage: "photo.badge.plus", action: onViewTapped)
+                    .accessibilityIdentifier("featured_image_button_replace")
             }
             Button(SharedStrings.Button.remove, systemImage: "trash", role: .destructive, action: viewModel.buttonRemoveTapped)
+                .accessibilityIdentifier("featured_image_button_remove")
         } else {
             Button(role: .destructive, action: viewModel.buttonCancelTapped) {
                 Label(Strings.cancelUpload, systemImage: "trash")

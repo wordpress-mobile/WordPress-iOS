@@ -266,6 +266,7 @@ extension PostSettingsViewController {
         }
         cell.contentConfiguration = configuration
         cell.selectionStyle = .none
+        cell.accessibilityIdentifier = "post_settings_featured_image_cell"
     }
 
     private func showFeaturedImageSelector(cell: UITableViewCell) {

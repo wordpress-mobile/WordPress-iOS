@@ -11,6 +11,9 @@ final class BloggingRemindersFlow {
         delegate: BloggingRemindersFlowDelegate? = nil,
         onDismiss: (() -> Void)? = nil
     ) {
+        guard !UITestConfigurator.isEnabled(.disablePrompts) else {
+            return
+        }
         guard blog.areBloggingRemindersAllowed() else {
             return
         }
