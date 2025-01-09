@@ -84,7 +84,7 @@ struct ReaderSubscriptionCell: View {
 
     private var buttonMore: some View {
         Menu {
-            ReaderSubscriptionContextMenu(site: site)
+            ReaderSubscriptionContextMenu(site: site, isShowingSettings: $isShowingSettings)
         } label: {
             Image(systemName: "ellipsis")
                 .foregroundStyle(.secondary)

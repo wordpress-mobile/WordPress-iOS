@@ -32,6 +32,7 @@ enum SharedStrings {
         static let subscribe = NSLocalizedString("reader.button.subscribe", value: "Subscribe", comment: "A shared button title for Reader")
         static let unsubscribe = NSLocalizedString("reader.button.unsubscribe", value: "Unsubscribe", comment: "A shared button title for Reader")
         static let addToFavorites = NSLocalizedString("reader.button.addToFavorites", value: "Add to Favorites", comment: "A shared button title for Reader")
+        static let notificationSettings = NSLocalizedString("reader.button.notificationSettings", value: "Notification Settings", comment: "A shared button title for Reader")
         static let removeFromFavorites = NSLocalizedString("reader.button.removeFromFavorites", value: "Remove from Favorites", comment: "A shared button title for Reader")
         static let recent = NSLocalizedString("reader.recent.title", value: "Recent", comment: "Used in multiple contexts, usually as a screen title")
         static let discover = NSLocalizedString("reader.discover.title", value: "Discover", comment: "Used in multiple contexts, usually as a screen title")

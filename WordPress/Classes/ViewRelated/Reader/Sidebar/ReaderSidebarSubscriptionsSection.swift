@@ -30,6 +30,7 @@ struct ReaderSidebarSubscriptionsSection: View {
 struct ReaderSidebarSubscriptionCell: View {
     @ObservedObject var site: ReaderSiteTopic
     @Environment(\.editMode) var editMode
+    @State private var isShowingSettings = false
 
     var body: some View {
         HStack {
@@ -57,7 +58,10 @@ struct ReaderSidebarSubscriptionCell: View {
             }.tint(.red)
         }
         .contextMenu {
-            ReaderSubscriptionContextMenu(site: site)
+            ReaderSubscriptionContextMenu(site: site, isShowingSettings: $isShowingSettings)
+        }
+        .sheet(isPresented: $isShowingSettings) {
+            ReaderSubscriptionNotificationSettingsView(siteID: site.siteID.intValue)
         }
     }
 }
@@ -65,12 +69,20 @@ struct ReaderSidebarSubscriptionCell: View {
 struct ReaderSubscriptionContextMenu: View {
     let site: ReaderSiteTopic
 
+    @Binding var isShowingSettings: Bool
+
     var body: some View {
         if let siteURL = URL(string: site.siteURL) {
             ShareLink(item: siteURL)
+            Button(SharedStrings.Button.copyLink, systemImage: "doc.on.doc") {
+                UIPasteboard.general.string = siteURL.absoluteString
+            }
         }
         if site.following {
             ReaderSiteToggleFavoriteButton(site: site, source: "context_menu")
+            Button(SharedStrings.Reader.notificationSettings, systemImage: "bell") {
+                isShowingSettings = true
+            }
             Button(SharedStrings.Reader.unsubscribe, systemImage: "minus.circle", role: .destructive) {
                 ReaderSubscriptionHelper().unfollow(site)
             }
