@@ -40,27 +40,49 @@ struct ReaderSidebarSubscriptionCell: View {
             }
             if editMode?.wrappedValue.isEditing == true {
                 Spacer()
-                ReaderSiteFavoriteButton(site: site, source: "edit_mode")
+                ReaderSiteToggleFavoriteButton(site: site, source: "edit_mode")
                     .labelStyle(.iconOnly)
             }
         }
         .lineLimit(1)
         .tag(ReaderSidebarItem.subscription(TaggedManagedObjectID(site)))
+        .swipeActions(edge: .leading) {
+            if let siteURL = URL(string: site.siteURL) {
+                ShareLink(item: siteURL).tint(.blue)
+            }
+        }
         .swipeActions(edge: .trailing) {
             Button(SharedStrings.Reader.unfollow, role: .destructive) {
                 ReaderSubscriptionHelper().unfollow(site)
             }.tint(.red)
         }
         .contextMenu {
-            ReaderSiteFavoriteButton(site: site, source: "context_menu")
+            ReaderSubscriptionContextMenu(site: site)
+        }
+    }
+}
+
+struct ReaderSubscriptionContextMenu: View {
+    let site: ReaderSiteTopic
+
+    var body: some View {
+        if let siteURL = URL(string: site.siteURL) {
+            ShareLink(item: siteURL)
+        }
+        if site.following {
+            ReaderSiteToggleFavoriteButton(site: site, source: "context_menu")
             Button(SharedStrings.Reader.unsubscribe, systemImage: "minus.circle", role: .destructive) {
                 ReaderSubscriptionHelper().unfollow(site)
+            }
+        } else {
+            Button(SharedStrings.Reader.subscribe, systemImage: "plus.circle") {
+                ReaderSubscriptionHelper().toggleFollowingForSite(site)
             }
         }
     }
 }
 
-struct ReaderSiteFavoriteButton: View {
+struct ReaderSiteToggleFavoriteButton: View {
     let site: ReaderSiteTopic
     let source: String
 

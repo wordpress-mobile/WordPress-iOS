@@ -84,14 +84,7 @@ struct ReaderSubscriptionCell: View {
 
     private var buttonMore: some View {
         Menu {
-            if let siteURL = URL(string: site.siteURL) {
-                ShareLink(item: siteURL)
-            }
-            Button(role: .destructive) {
-                onDelete(site)
-            } label: {
-                Label(SharedStrings.Reader.unfollow, systemImage: "trash")
-            }
+            ReaderSubscriptionContextMenu(site: site)
         } label: {
             Image(systemName: "ellipsis")
                 .foregroundStyle(.secondary)
