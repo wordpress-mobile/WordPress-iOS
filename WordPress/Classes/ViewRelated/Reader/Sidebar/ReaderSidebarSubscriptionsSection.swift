@@ -13,14 +13,8 @@ struct ReaderSidebarSubscriptionsSection: View {
     private var subscriptions: FetchedResults<ReaderSiteTopic>
 
     var body: some View {
-        ForEach(subscriptions, id: \.self) { site in
-            ReaderSidebarSubscriptionCell(site: site)
-                .contextMenu {
-                    Button(SharedStrings.Reader.unsubscribe, systemImage: "minus.circle", role: .destructive) {
-                        ReaderSubscriptionHelper().unfollow(site)
-                    }
-                }
-
+        ForEach(subscriptions, id: \.self) {
+            ReaderSidebarSubscriptionCell(site: $0)
         }
         .onDelete(perform: delete)
     }
@@ -56,6 +50,12 @@ struct ReaderSidebarSubscriptionCell: View {
             Button(SharedStrings.Reader.unfollow, role: .destructive) {
                 ReaderSubscriptionHelper().unfollow(site)
             }.tint(.red)
+        }
+        .contextMenu {
+            ReaderSiteFavoriteButton(site: site, source: "context_menu")
+            Button(SharedStrings.Reader.unsubscribe, systemImage: "minus.circle", role: .destructive) {
+                ReaderSubscriptionHelper().unfollow(site)
+            }
         }
     }
 }
