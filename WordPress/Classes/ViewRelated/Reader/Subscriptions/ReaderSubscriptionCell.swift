@@ -73,17 +73,9 @@ struct ReaderSubscriptionCell: View {
             .padding(.trailing, 6)
         }
         .buttonStyle(.plain)
-        .popover(isPresented: $isShowingSettings) { settings }
-    }
-
-    @ViewBuilder
-    private var settings: some View {
-        if horizontalSizeClass == .compact {
-            ReaderSubscriptionNotificationSettingsView(siteID: site.siteID.intValue, isCompact: true)
-                .presentationDetents([.medium, .large])
-                .edgesIgnoringSafeArea(.all)
-        } else {
+        .sheet(isPresented: $isShowingSettings) {
             ReaderSubscriptionNotificationSettingsView(siteID: site.siteID.intValue)
+                .presentationDetents([.medium, .large])
         }
     }
 
@@ -93,6 +85,7 @@ struct ReaderSubscriptionCell: View {
         } label: {
             Image(systemName: "ellipsis")
                 .foregroundStyle(.secondary)
+                .frame(width: 44, height: 44)
         }
         .buttonStyle(.plain)
     }
