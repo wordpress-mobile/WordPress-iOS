@@ -43,6 +43,9 @@ struct ReaderSubscriptionCell: View {
             }
             buttonMore
         }
+        .contextMenu {
+            ReaderSubscriptionContextMenu(site: site, isShowingSettings: $isShowingSettings)
+        }
     }
 
     private func makeButtonNotificationSettings(with status: ReaderSubscriptionNotificationsStatus) -> some View {
