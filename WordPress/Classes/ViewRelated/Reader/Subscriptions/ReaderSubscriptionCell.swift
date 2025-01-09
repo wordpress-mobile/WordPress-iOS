@@ -38,10 +38,13 @@ struct ReaderSubscriptionCell: View {
 
             Spacer()
 
-            if let status = ReaderSubscriptionNotificationsStatus(site: site) {
-                makeButtonNotificationSettings(with: status)
+            HStack(spacing: 0) {
+                if let status = ReaderSubscriptionNotificationsStatus(site: site) {
+                    makeButtonNotificationSettings(with: status)
+                }
+                buttonMore
             }
-            buttonMore
+            .padding(.trailing, -16)
         }
         .contextMenu(menuItems: {
             ReaderSubscriptionContextMenu(site: site, isShowingSettings: $isShowingSettings)
@@ -70,12 +73,13 @@ struct ReaderSubscriptionCell: View {
             }
             .font(.subheadline)
             .frame(width: 34, alignment: .center)
-            .padding(.trailing, 6)
+            .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .sheet(isPresented: $isShowingSettings) {
             ReaderSubscriptionNotificationSettingsView(siteID: site.siteID.intValue)
                 .presentationDetents([.medium, .large])
+                .edgesIgnoringSafeArea(.bottom)
         }
     }
 
@@ -85,7 +89,8 @@ struct ReaderSubscriptionCell: View {
         } label: {
             Image(systemName: "ellipsis")
                 .foregroundStyle(.secondary)
-                .frame(width: 44, height: 44)
+                .frame(width: 40, height: 40)
+                .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
     }

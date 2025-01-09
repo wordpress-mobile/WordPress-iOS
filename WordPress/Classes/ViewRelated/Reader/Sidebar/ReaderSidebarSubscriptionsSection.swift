@@ -65,6 +65,7 @@ struct ReaderSidebarSubscriptionCell: View {
         .sheet(isPresented: $isShowingSettings) {
             ReaderSubscriptionNotificationSettingsView(siteID: site.siteID.intValue)
                 .presentationDetents([.medium, .large])
+                .edgesIgnoringSafeArea(.bottom)
         }
     }
 }
