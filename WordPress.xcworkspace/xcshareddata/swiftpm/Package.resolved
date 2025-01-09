@@ -383,8 +383,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/wordpress-mobile/WordPressKit-iOS",
       "state" : {
-        "branch" : "wpios-edition",
-        "revision" : "77b3f5e98da1e837e3983615c9fd1b38d66e3084"
+        "branch" : "fix/featured-images-reader-posts",
+        "revision" : "87e2a0902e84e03afdc29bb5b52b3a3d6a1e14d9"
       }
     },
     {

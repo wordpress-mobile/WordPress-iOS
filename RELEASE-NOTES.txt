@@ -20,6 +20,7 @@
 * [*] Disable universal links support for QR code login. You can only scan the codes using the app now. [#23953]
 * [*] Add scroll-to-top button to Reader streams [#23957]
 * [*] Add a quick way to replace a featured image for a post [#23962]
+* [*] Fix an issue with posts in Reader sometimes showing incorrect covers [#23914]
 
 25.6
 -----
