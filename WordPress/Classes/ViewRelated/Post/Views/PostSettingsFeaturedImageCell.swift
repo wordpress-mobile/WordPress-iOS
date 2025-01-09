@@ -18,6 +18,7 @@ struct PostSettingsFeaturedImageCell: View {
                         Image(systemName: "ellipsis.circle.fill")
                             .foregroundStyle(Color(.label), Color(.secondarySystemBackground))
                             .font(.title)
+                            .shadow(color: .black.opacity(0.5), radius: 10)
                             .padding(8)
                     }
                 }
