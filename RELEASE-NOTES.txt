@@ -1,5 +1,6 @@
 25.7
 -----
+* [**] Enable history navigation (undo and redo) for the experimental editor. [#23961]
 
 25.6
 -----
