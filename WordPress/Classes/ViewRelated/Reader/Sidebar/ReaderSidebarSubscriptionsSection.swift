@@ -57,9 +57,11 @@ struct ReaderSidebarSubscriptionCell: View {
                 ReaderSubscriptionHelper().unfollow(site)
             }.tint(.red)
         }
-        .contextMenu {
+        .contextMenu(menuItems: {
             ReaderSubscriptionContextMenu(site: site, isShowingSettings: $isShowingSettings)
-        }
+        }, preview: {
+            ReaderTopicPreviewView(topic: site)
+        })
         .sheet(isPresented: $isShowingSettings) {
             ReaderSubscriptionNotificationSettingsView(siteID: site.siteID.intValue)
         }
@@ -91,6 +93,18 @@ struct ReaderSubscriptionContextMenu: View {
                 ReaderSubscriptionHelper().toggleFollowingForSite(site)
             }
         }
+    }
+}
+
+struct ReaderTopicPreviewView: UIViewControllerRepresentable {
+    let topic: ReaderAbstractTopic
+
+    func makeUIViewController(context: Context) -> ReaderStreamViewController {
+        ReaderStreamViewController.controllerWithTopic(topic)
+    }
+
+    func updateUIViewController(_ vc: ReaderStreamViewController, context: Context) {
+        // Do nothing
     }
 }
 
