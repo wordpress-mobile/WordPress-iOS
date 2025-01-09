@@ -18,18 +18,12 @@ struct PostSettingsFeaturedImageCell: View {
                 }
                 .contextMenu {
                     actions
-                } preview: {
-                    SiteMediaImage(media: image, size: .large)
                 }
 
         } else if viewModel.upload != nil {
             uploading
         } else {
-            let configuration = MediaPickerConfiguration(
-                sources: [.photos, .camera, .playground, .siteMedia(blog: post.blog)],
-                filter: .images
-            )
-            MediaPicker(configuration: configuration, onSelection: viewModel.setFeaturedImage) {
+            makeMediaPicker {
                 Label(Strings.buttonSetFeaturedImage, systemImage: "photo.badge.plus")
                     .frame(maxWidth: .infinity)
                     .contentShape(Rectangle()) // Make the whole cell tappable
@@ -53,7 +47,10 @@ struct PostSettingsFeaturedImageCell: View {
 
     @ViewBuilder
     private var actions: some View {
-        Button(SharedStrings.Button.view, systemImage: "photo", action: onViewTapped)
+        Button(SharedStrings.Button.view, systemImage: "plus.magnifyingglass", action: onViewTapped)
+        makeMediaPicker {
+            Button(Strings.replaceImage, systemImage: "photo.badge.plus", action: onViewTapped)
+        }
         Button(SharedStrings.Button.remove, systemImage: "trash", role: .destructive, action: viewModel.buttonRemoveTapped)
     }
 
@@ -77,6 +74,16 @@ struct PostSettingsFeaturedImageCell: View {
                     .font(.subheadline)
                     .tint(.secondary)
             }
+        }
+    }
+
+    private func makeMediaPicker<Content: View>(@ViewBuilder content: @escaping () -> Content) -> some View {
+        let configuration = MediaPickerConfiguration(
+            sources: [.photos, .camera, .playground, .siteMedia(blog: post.blog)],
+            filter: .images
+        )
+        return MediaPicker(configuration: configuration, onSelection: viewModel.setFeaturedImage) {
+            content()
         }
     }
 }
@@ -159,6 +166,7 @@ final class PostSettingsFeaturedImageViewModel: NSObject, ObservableObject {
 private enum Strings {
     static let buttonSetFeaturedImage = NSLocalizedString("postSettings.featuredImage.setFeaturedImageButton", value: "Set Featured Image", comment: "Button in Post Settings")
     static let uploading = NSLocalizedString("postSettings.featuredImage.uploading", value: "Uploading…", comment: "Post Settings")
-    static let cancelUpload = NSLocalizedString("postSettings.featuredImage.cancelUpload", value: "Cancel Upload", comment: "Cancel (single) upload button in Post Settings / Featuerd Image cell")
+    static let cancelUpload = NSLocalizedString("postSettings.featuredImage.cancelUpload", value: "Cancel Upload", comment: "Cancel upload button in Post Settings / Featured Image cell")
+    static let replaceImage = NSLocalizedString("postSettings.featuredImage.replaceImage", value: "Replace", comment: "Replace image upload button in Post Settings / Featured Image cell")
     static let uploadFailed = NSLocalizedString("postSettings.featuredImage.uploadFailed", value: "Failed to upload new featured image", comment: "Snackbar title")
 }
