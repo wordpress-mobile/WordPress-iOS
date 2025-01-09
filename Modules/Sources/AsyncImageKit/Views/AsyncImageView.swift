@@ -184,7 +184,7 @@ extension GIFImageView {
         }
     }
 
-    private func prepareForReuse() {
+    public func prepareForReuse() {
         if isAnimatingGIF {
             prepareForReuse()
         } else {

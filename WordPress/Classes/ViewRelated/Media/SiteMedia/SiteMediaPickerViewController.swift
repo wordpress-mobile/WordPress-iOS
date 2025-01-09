@@ -8,6 +8,7 @@ protocol SiteMediaPickerViewControllerDelegate: AnyObject {
 /// The media picker for your site media.
 final class SiteMediaPickerViewController: UIViewController, SiteMediaCollectionViewControllerDelegate {
     private let blog: Blog
+
     private let allowsMultipleSelection: Bool
     private let initialSelection: [Media]
 

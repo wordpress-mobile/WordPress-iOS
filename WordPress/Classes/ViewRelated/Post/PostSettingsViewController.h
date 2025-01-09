@@ -1,6 +1,7 @@
 #import <UIKit/UIKit.h>
 #import "AbstractPost.h"
 
+// TODO: It can be removed when the new editor is released. It only exists to support the "Featured" badge on featured images in Gutenberg mobile.
 @protocol FeaturedImageDelegate
 
 - (void)gutenbergDidRequestFeaturedImageId:(nonnull NSNumber *)mediaID;
@@ -19,6 +20,5 @@
 @property (nonatomic, weak, nullable) id<FeaturedImageDelegate> featuredImageDelegate;
 
 - (void)reloadData;
-- (void)reloadFeaturedImageCell;
 
 @end

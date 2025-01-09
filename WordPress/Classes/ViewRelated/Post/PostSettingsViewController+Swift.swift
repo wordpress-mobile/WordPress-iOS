@@ -254,42 +254,28 @@ extension PostSettingsViewController {
 // MARK: - PostSettingsViewController (Featued Image)
 
 extension PostSettingsViewController {
-    @objc func showFeaturedImageSelector() {
-        guard let featuredImage = apost.featuredImage else {
-            return wpAssertionFailure("featured image missing")
+    @objc func configureFeaturedImageCell(cell: UITableViewCell, viewModel: PostSettingsFeaturedImageViewModel) {
+        var configuration = UIHostingConfiguration {
+            PostSettingsFeaturedImageCell(post: apost, viewModel: viewModel) { [weak self] in
+                self?.showFeaturedImageSelector(cell: cell)
+            }
+            .environment(\.presentingViewController, self)
         }
-
-        let lightboxVC = LightboxViewController(media: featuredImage)
-        lightboxVC.configuration.backgroundColor = .systemBackground
-        lightboxVC.configuration.showsCloseButton = false
-        lightboxVC.edgesForExtendedLayout = []
-
-        lightboxVC.navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .close, primaryAction: UIAction { [weak self] _ in
-            self?.dismiss(animated: true)
-        })
-
-        lightboxVC.toolbarItems = [
-            UIBarButtonItem(title: SharedStrings.Button.remove, image: UIImage(systemName: "trash"), target: self, action: #selector(buttonRemoveFeaturedImageTapped))
-        ]
-
-        let navigationVC = UINavigationController(rootViewController: lightboxVC)
-        navigationVC.isToolbarHidden = false
-        navigationVC.view.backgroundColor = .systemBackground
-        self.present(navigationVC, animated: true)
+        if apost.featuredImage != nil {
+            configuration = configuration.margins(.all, 0)
+        }
+        cell.contentConfiguration = configuration
+        cell.selectionStyle = .none
     }
 
-    @objc private func buttonRemoveFeaturedImageTapped(_ sender: UIBarButtonItem) {
-        let alert = UIAlertController(title: Strings.confirmFeaturedImageRemoval, message: nil, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: SharedStrings.Button.cancel, style: .cancel))
-        alert.addAction(UIAlertAction(title: SharedStrings.Button.remove, style: .destructive, handler: { [weak self] _ in
-            self?.removeFeaturedImage()
-        }))
-        alert.popoverPresentationController?.sourceItem = sender
-        (presentedViewController ?? self).present(alert, animated: true)
+    private func showFeaturedImageSelector(cell: UITableViewCell) {
+        guard let featuredImage = apost.featuredImage else { return }
+        let lightboxVC = LightboxViewController(media: featuredImage)
+        lightboxVC.configureZoomTransition(sourceView: cell.contentView)
+        present(lightboxVC, animated: true)
     }
 }
 
 private enum Strings {
-    static let confirmFeaturedImageRemoval = NSLocalizedString("postSettings.confirmFeaturedImageRemovalAlert.title", value: "Remove this Featured Image?", comment: "Prompt when removing a featured image from a post")
     static let warningPostWillBePublishedAlertMessage = NSLocalizedString("postSettings.warningPostWillBePublishedAlertMessage", value: "By changing the visibility to 'Private', the post will be published immediately", comment: "An alert message explaning that by changing the visibility to private, the post will be published immediately to your site")
 }

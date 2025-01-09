@@ -21,7 +21,7 @@ final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDel
                 menu.makeCameraAction(delegate: self),
                 menu.makeImagePlaygroundAction(delegate: self),
                 makeDocumentPickerAction(from: viewController)
-            ])
+            ].compactMap { $0 })
         ]
         let freeMediaActions: [UIAction] = [
             menu.makeStockPhotos(blog: blog, delegate: self),
