@@ -1,7 +1,18 @@
 25.7
 -----
+* [**] Add Image Playground support (part of Apple Intelligence suite) for adding images to your posts, generated featured image, site icons, and more [#23688]
 * [**] Add new lightbox screen for images with modern transitions and enhanced performance [#23922]
+* [**] Enhance the Gravatar Quick Editor by adding features that allow users to delete and share their avatars. [#23868]
+* [**] Add the capability to create an avatar using Apple Image Playground through the Gravatar Quick Editor. [#23868]
+* [**] Various bug fixes and improvements in the new experimental editor [#23919]
+* [*] Fix sorting in Stats Subscriber Emails (latest first) [#23913]
+* [*] Reader: Fix a couple of rare crashes in Reader [#23907]
 * [*] Add prefetching to Reader streams [#23928]
+* [*] Reader: The post cover now uses the standard aspect ratio for covers, so there is no jumping. There are also a few minor improvements to the layout and animations of the cover and the header [#23897, #23909]
+* [*] Reader: Move the "Reading Preferences" button to the "More" menu [#23897]
+* [*] Reader: Fix an issue with empty state views being non-scrollable in streams [#23908]
+* [*] Reader: Hide post toolbar when reading an article and fix like button animations [#23909]
+* [*] Reader: Fix off-by-one error in post details like counter when post is liked by you [#23912]
 * [*] Fix an issue with blogging reminders prompt not being shown after publishing a new post [#23930]
 * [*] Fix transitions in Blogging Reminders flow, improve accessibility, add close buttons [#23931]
 * [*] Fix an issue with compliance popover not dismissing for self-hosted site [#23932]
@@ -28,25 +39,15 @@
 
 25.6
 -----
-* [**] Add Image Playground support (part of Apple Intelligence suite) for adding images to your posts, generated featured image, site icons, and more [#23688]
-* [**] Enhance the Gravatar Quick Editor by adding features that allow users to delete and share their avatars. [#23868]
-* [**] Add the capability to create an avatar using Apple Image Playground through the Gravatar Quick Editor. [#23868]
-* [*] Various bug fixes and improvements in the new experimental editor [#23919]
 * [*] [internal] Update Gravatar SDK to 3.0.0 [#23701]
+* [*] Use the Gravatar Quick Editor to update the avatar [#23729]
 * [*] (Hidden under a feature flag) User Management for self-hosted sites. [#23768]
-* [*] Fix sorting in Stats Subscriber Emails (latest first) [#23913]
 * [*] Add URL and ID to the Media details screen, add IDs for posts [#23887]
-* [*] Reader: Enable quick access to notifications on iPad [#23882]
+* [*] Enable quick access to notifications from Reader on iPad [#23882]
 * [*] Add support for restricted posts in Reader [#23853]
 * [*] Fix minor appearance issues in the Blaze campaign list [#23891]
 * [*] Improve the sidebar animations and layout on some iPad models [#23886]
-* [*] Reader: Fix a couple of rare crashes in Reader [#23907]
-* [*] Reader: Fix an issue with posts shown embedded in the notifications popover on iPad [#23889]
-* [*] Reader: The post cover now uses the standard aspect ratio for covers, so there is no jumping. There are also a few minor improvements to the layout and animations of the cover and the header [#23897, #23909]
-* [*] Reader: Move the "Reading Preferences" button to the "More" menu [#23897]
-* [*] Reader: Fix an issue with empty state views being non-scrollable in streams [#23908]
-* [*] Reader: Hide post toolbar when reading an article and fix like button animations [#23909]
-* [*] Reader: Fix off-by-one error in post details like counter when post is liked by you [#23912]
+* [*] Fix an issue with posts shown embedded in the notifications popover on iPad [#23889]
 
 25.5
 -----
