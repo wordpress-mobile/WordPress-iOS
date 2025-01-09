@@ -97,6 +97,7 @@ private extension PostEditorAnalyticsSession {
 extension PostEditorAnalyticsSession {
     enum Editor: String {
         case gutenberg
+        case gutenbergKit = "gutenberg_kit"
         case classic
         case html
     }

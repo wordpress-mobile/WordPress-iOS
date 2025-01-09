@@ -123,8 +123,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Automattic/Gravatar-SDK-iOS",
       "state" : {
-        "revision" : "b4f63edd2f81c37025817b23fee83721d034c320",
-        "version" : "3.1.0"
+        "revision" : "e7c6606015bab7258c4de9dde9d87736677ddc73",
+        "version" : "3.1.1"
       }
     },
     {
@@ -141,8 +141,7 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/wordpress-mobile/GutenbergKit",
       "state" : {
-        "branch" : "v0.0.3",
-        "revision" : "84edec43cc8639d5d8a66a07758902e33f0d2d94"
+        "revision" : "4476d597b271778d001a26c50d74e527b54ebfef"
       }
     },
     {
