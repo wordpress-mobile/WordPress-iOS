@@ -110,15 +110,9 @@ final class PostSettingsFeaturedImageViewModel: NSObject, ObservableObject {
 
     private func didProcessMedia(_ media: Media) {
         wpAssert(media.remoteURL != nil)
-        // TODO: (kean) fix animations
-        UIView.performWithoutAnimation {
-            upload = nil
-            post.featuredImage = media
-            if let mediaID = media.mediaID {
-                delegate?.gutenbergDidRequestFeaturedImageId(mediaID)
-            }
-            tableView?.reloadData()
-        }
+
+        upload = nil
+        setFeaturedImage(media)
     }
     func buttonCancelTapped() {
         guard let upload else { return }
@@ -129,9 +123,16 @@ final class PostSettingsFeaturedImageViewModel: NSObject, ObservableObject {
     func buttonRemoveTapped() {
         WPAnalytics.track(.editorPostFeaturedImageChanged, properties: ["via": "settings", "action": "removed"])
 
-        post.featuredImage = nil
-        delegate?.gutenbergDidRequestFeaturedImageId(GutenbergFeaturedImageHelper.mediaIdNoFeaturedImageSet as NSNumber)
-        tableView?.reloadData()
+        setFeaturedImage(nil)
+    }
+
+    private func setFeaturedImage(_ media: Media?) {
+        upload = nil
+        post.featuredImage = media
+        delegate?.gutenbergDidRequestFeaturedImageId(media?.mediaID ?? GutenbergFeaturedImageHelper.mediaIdNoFeaturedImageSet as NSNumber)
+        UIView.performWithoutAnimation {
+            tableView?.reloadData()
+        }
     }
 }
 
