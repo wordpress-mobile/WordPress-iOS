@@ -1,5 +1,5 @@
 {
-  "originHash" : "d8a7faa1972ab73744be3161f236c4bae7faf7c44f840b7bd0a52b3ee1ee6d6c",
+  "originHash" : "384e396170e1bac4b5b82a62fac1cbc68b97107163c6fd0f73b311483427ab36",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Automattic/AutomatticAbout-swift",
       "state" : {
-        "revision" : "31045d654bcc1f2b56c85dd658f160fad5b50a29",
-        "version" : "1.1.4"
+        "revision" : "606384a7492faa1139d489080dd961b0b57f9fd9",
+        "version" : "1.1.5"
       }
     },
     {
