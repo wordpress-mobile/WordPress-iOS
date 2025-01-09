@@ -20,14 +20,18 @@ struct PostSettingsFeaturedImageCell: View {
                     actions
                 }
 
-        } else if viewModel.upload != nil {
-            uploading
         } else {
-            makeMediaPicker {
-                Label(Strings.buttonSetFeaturedImage, systemImage: "photo.badge.plus")
-                    .frame(maxWidth: .infinity)
-                    .contentShape(Rectangle()) // Make the whole cell tappable
-                    .accessibilityIdentifier("SetFeaturedImage")
+            if viewModel.upload != nil {
+                // The upload state when no image is selected. For the "Replace"
+                // flow, the app shows the upload differently (see `menu`).
+                uploading
+            } else {
+                makeMediaPicker {
+                    Label(Strings.buttonSetFeaturedImage, systemImage: "photo.badge.plus")
+                        .frame(maxWidth: .infinity)
+                        .contentShape(Rectangle()) // Make the whole cell tappable
+                        .accessibilityIdentifier("SetFeaturedImage")
+                }
             }
         }
     }
@@ -36,22 +40,38 @@ struct PostSettingsFeaturedImageCell: View {
         Menu {
             actions
         } label: {
-            Image(systemName: "ellipsis.circle.fill")
-                .foregroundStyle(Color(.label), Color(.secondarySystemBackground))
-                .font(.title)
-                .shadow(color: .black.opacity(0.5), radius: 10)
-                .padding(8)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+            ZStack {
+                Circle()
+                    .foregroundStyle(Color(.secondarySystemBackground))
+                    .frame(width: 30, height: 30)
+                if viewModel.upload != nil {
+                    ProgressView()
+                        .controlSize(.small)
+                } else {
+                    Image(systemName: "ellipsis")
+                        .foregroundStyle(Color(.label))
+                        .font(.system(size: 18))
+                }
+            }
+            .shadow(color: .black.opacity(0.5), radius: 10)
+            .padding(12)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
         }
     }
 
     @ViewBuilder
     private var actions: some View {
-        Button(SharedStrings.Button.view, systemImage: "plus.magnifyingglass", action: onViewTapped)
-        makeMediaPicker {
-            Button(Strings.replaceImage, systemImage: "photo.badge.plus", action: onViewTapped)
+        if viewModel.upload == nil {
+            Button(SharedStrings.Button.view, systemImage: "plus.magnifyingglass", action: onViewTapped)
+            makeMediaPicker {
+                Button(Strings.replaceImage, systemImage: "photo.badge.plus", action: onViewTapped)
+            }
+            Button(SharedStrings.Button.remove, systemImage: "trash", role: .destructive, action: viewModel.buttonRemoveTapped)
+        } else {
+            Button(role: .destructive, action: viewModel.buttonCancelTapped) {
+                Label(Strings.cancelUpload, systemImage: "trash")
+            }
         }
-        Button(SharedStrings.Button.remove, systemImage: "trash", role: .destructive, action: viewModel.buttonRemoveTapped)
     }
 
     private var uploading: some View {
