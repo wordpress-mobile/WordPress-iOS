@@ -21,6 +21,7 @@
 * [*] Add scroll-to-top button to Reader streams [#23957]
 * [*] Add a quick way to replace a featured image for a post [#23962]
 * [*] Fix an issue with posts in Reader sometimes showing incorrect covers [#23914]
+* [*] Fix non-stable order in Posts and Pages section in Stats [#23915]
 
 25.6
 -----
@@ -35,7 +36,6 @@
 * [*] Reader: Enable quick access to notifications on iPad [#23882]
 * [*] Add support for restricted posts in Reader [#23853]
 * [*] Fix minor appearance issues in the Blaze campaign list [#23891]
-* [*] Fix non-stable order in Posts and Pages section in Stats [#23915]
 * [*] Improve the sidebar animations and layout on some iPad models [#23886]
 * [*] Reader: Fix a couple of rare crashes in Reader [#23907]
 * [*] Reader: Fix an issue with posts shown embedded in the notifications popover on iPad [#23889]
