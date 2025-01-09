@@ -24,6 +24,7 @@
 * [*] Fix non-stable order in Posts and Pages section in Stats [#23915]
 * [*] (P2) Reader: Fix an issue with a missing "Mark as Read/Unread" button that was removed in the previous release [#23917]
 * [*] (P2) Reader: Show "read" status for P2 posts in the feeds [#23917]
+* [*] Fix some missing or invalid social sharing icons [#23918]
 
 25.6
 -----

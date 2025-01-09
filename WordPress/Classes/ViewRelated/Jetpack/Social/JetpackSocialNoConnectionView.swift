@@ -40,7 +40,7 @@ struct JetpackSocialNoConnectionView: View {
     }
 
     func iconImage(image: UIImage, url: URL?) -> some View {
-        AsyncImage(url: url) { image in
+        CachedAsyncImage(url: url) { image in
             image
                 .icon(backgroundColor: viewModel.preferredBackgroundColor)
         } placeholder: {

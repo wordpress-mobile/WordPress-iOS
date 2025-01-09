@@ -37,6 +37,7 @@ extension PublicizeService {
         case linkedin
         case instagram = "instagram-business"
         case mastodon
+        case threads
         case unknown
 
         /// Returns the local image for the icon representing the social network.

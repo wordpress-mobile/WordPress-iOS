@@ -66,6 +66,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
                                                                                                action:@selector(doneButtonTapped)];
     }
 
+    [self.tableView registerClass:[PublicizeServiceCell class] forCellReuseIdentifier:PublicizeServiceCell.cellId];
     self.tableView.cellLayoutMarginsFollowReadableWidth = YES;
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [self.publicizeServicesState addInitialConnections:[self allConnections]];
@@ -237,32 +238,16 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    WPTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (!cell) {
-        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
-    }
-
-    [WPStyleGuide configureTableViewCell:cell];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-
     SharingSectionType sectionType = [self sectionTypeForIndex:indexPath.section];
     switch (sectionType) {
         case SharingSectionAvailableServices: // fallthrough
         case SharingSectionUnsupported:
-            [self configurePublicizeCell:cell atIndexPath:indexPath];
-            break;
-
+            return [self makePublicizeCellAtIndexPath:indexPath];
         case SharingSectionSharingButtons:
-            cell.textLabel.text = NSLocalizedString(@"Manage", @"Verb. Text label. Tapping displays a screen where the user can configure 'share' buttons for third-party services.");
-            cell.detailTextLabel.text = nil;
-            cell.imageView.image = nil;
-            break;
-
+            return [self makeManageButtonCell];
         default:
             return [UITableViewCell new];
     }
-
-    return cell;
 }
 
 - (PublicizeService *)publicizeServiceForIndexPath:(NSIndexPath *)indexPath
@@ -278,51 +263,38 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     }
 }
 
-- (void)configurePublicizeCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell *)makePublicizeCellAtIndexPath:(NSIndexPath *)indexPath
 {
+    PublicizeServiceCell *cell = [self.tableView dequeueReusableCellWithIdentifier:PublicizeServiceCell.cellId];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
     PublicizeService *publicizer = [self publicizeServiceForIndexPath:indexPath];
     NSArray *connections = [self connectionsForService:publicizer];
 
     // TODO: Remove?
     if ([publicizer.serviceID isEqualToString:PublicizeService.googlePlusServiceID] && [connections count] == 0) { // Temporarily hiding Google+
         cell.hidden = YES;
-        return;
+        return cell;
     }
 
-    // Configure the image
-    UIImage *image = [WPStyleGuide socialIconFor:publicizer.serviceID];
-    [cell.imageView setImage:image];
+    [cell configureWith:publicizer connections:connections];
+    return cell;
+}
 
-    // Configure the text
-    cell.textLabel.text = publicizer.label;
-
-    // Show the name(s) or number of connections.
-    NSString *str = @"";
-    if ([connections count] > 2) {
-        NSString *format = NSLocalizedString(@"%d accounts", @"The number of connected accounts on a third party sharing service connected to the user's blog. The '%d' is a placeholder for the number of accounts.");
-        str = [NSString stringWithFormat:format, [connections count]];
-    } else {
-        NSMutableArray *names = [NSMutableArray array];
-        for (PublicizeConnection *pubConn in connections) {
-            [names addObject:pubConn.externalDisplay];
-        }
-        str = [names componentsJoinedByString:@", "];
+- (UITableViewCell *)makeManageButtonCell
+{
+    WPTableViewCell *cell = [self.
+                             tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (!cell) {
+        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
     }
 
-    cell.detailTextLabel.text = str;
-
-    if (![publicizer isSupported]) {
-        cell.accessoryView = [WPStyleGuide sharingCellErrorAccessoryImageView];
-        return;
-    }
-
-    // Check if any of the connections are broken.
-    for (PublicizeConnection *pubConn in connections) {
-        if ([pubConn requiresUserAction]) {
-            cell.accessoryView = [WPStyleGuide sharingCellWarningAccessoryImageView];
-            break;
-        }
-    }
+    [WPStyleGuide configureTableViewCell:cell];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.textLabel.text = NSLocalizedString(@"Manage", @"Verb. Text label. Tapping displays a screen where the user can configure 'share' buttons for third-party services.");
+    cell.detailTextLabel.text = nil;
+    cell.imageView.image = nil;
+    return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
