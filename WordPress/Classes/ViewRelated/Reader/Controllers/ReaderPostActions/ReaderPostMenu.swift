@@ -22,7 +22,7 @@ struct ReaderPostMenu {
             share,
             copyPostLink,
             viewPostInBrowser,
-
+            post.isSeenSupported ? toggleSeen : nil
         ].compactMap { $0 })
     }
 
@@ -116,6 +116,17 @@ struct ReaderPostMenu {
         }
     }
 
+    private var toggleSeen: UIAction {
+        UIAction(post.isSeen ? Strings.markUnread : Strings.markRead, systemImage: post.isSeen ? "circle" : "checkmark.circle") {
+            track(post.isSeen ? .markUnread : .markRead)
+            ReaderSeenAction().execute(with: post, context: context, completion: {
+                NotificationCenter.default.post(name: .ReaderPostSeenToggled, object: nil, userInfo: [ReaderNotificationKeys.post: post])
+            }, failure: { _ in
+                UINotificationFeedbackGenerator().notificationOccurred(.error)
+            })
+        }
+    }
+
     // MARK: Block and Report
 
     private func makeBlockOrReportActions() -> UIMenu {
@@ -195,6 +206,8 @@ private enum ReaderPostMenuAnalyticsButton: String {
     case blockUser = "block_user"
     case reportPost = "report_post"
     case reportUser = "report_user"
+    case markRead = "mark_read"
+    case markUnread = "mark_unread"
 }
 
 private enum Strings {
@@ -209,4 +222,6 @@ private enum Strings {
     static let blockUser = NSLocalizedString("reader.postContextMenu.blockUser", value: "Block User", comment: "Context menu action")
     static let reportPost = NSLocalizedString("reader.postContextMenu.reportPost", value: "Report Post", comment: "Context menu action")
     static let reportUser = NSLocalizedString("reader.postContextMenu.reportUser", value: "Report User", comment: "Context menu action")
+    static let markRead = NSLocalizedString("reader.postContextMenu.markRead", value: "Mark as Read", comment: "Context menu action")
+    static let markUnread = NSLocalizedString("reader.postContextMenu.markUnread", value: "Mark as Unread", comment: "Context menu action")
 }

@@ -22,6 +22,8 @@
 * [*] Add a quick way to replace a featured image for a post [#23962]
 * [*] Fix an issue with posts in Reader sometimes showing incorrect covers [#23914]
 * [*] Fix non-stable order in Posts and Pages section in Stats [#23915]
+* [*] (P2) Reader: Fix an issue with a missing "Mark as Read/Unread" button that was removed in the previous release [#23917]
+* [*] (P2) Reader: Show "read" status for P2 posts in the feeds [#23917]
 
 25.6
 -----

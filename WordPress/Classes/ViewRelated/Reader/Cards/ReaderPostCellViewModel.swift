@@ -10,6 +10,7 @@ final class ReaderPostCellViewModel {
     // Content
     let title: String
     let details: String
+    let isSeen: Bool?
     let imageURL: URL?
 
     // Footer (Buttons)
@@ -34,9 +35,10 @@ final class ReaderPostCellViewModel {
         } else {
             self.author = post.blogNameForDisplay() ?? ""
         }
-        self.time = post.dateForDisplay()?.toShortString() ?? "–"
+        self.time = post.dateForDisplay()?.toShortString() ?? ""
         self.title = post.titleForDisplay() ?? ""
         self.details = post.contentPreviewForDisplay() ?? ""
+        self.isSeen = post.isSeenSupported ? post.isSeen : nil
         self.imageURL = post.featuredImageURLForDisplay()
 
         self.toolbar = ReaderPostToolbarViewModel.make(post: post)
@@ -64,6 +66,7 @@ final class ReaderPostCellViewModel {
         self.avatarURL = URL(string: "https://picsum.photos/120/120.jpg")
         self.author = "WordPress Mobile Apps"
         self.time = "9d ago"
+        self.isSeen = nil
         self.title = "Discovering the Wonders of the Wild"
         self.details = "Lorem ipsum dolor sit amet. Non omnis quia et natus voluptatum et eligendi voluptate vel iusto fuga sit repellendus molestiae aut voluptatem blanditiis ad neque sapiente. Id galisum distinctio quo enim aperiam non veritatis vitae et ducimus rerum."
         self.imageURL = URL(string: "https://picsum.photos/1260/630.jpg")
