@@ -94,6 +94,7 @@ final class SiteMediaImageView: UIView {
     private func setState(_ state: ImageLoadingController.State) {
         imageView.isHidden = true
         spinner?.stopAnimating()
+        backgroundColor = .clear
 
         switch state {
         case .loading:
@@ -106,7 +107,6 @@ final class SiteMediaImageView: UIView {
         case .success(let image):
             self.image = image
             imageView.isHidden = false
-            backgroundColor = .clear
         case .failure:
             break
         }
