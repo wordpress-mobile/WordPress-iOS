@@ -164,8 +164,7 @@ private struct ReaderSidebarView: View {
             } icon: {
                 Image(systemName: systemImage)
             }
-//            Label(title, systemImage: systemImage)
-                .lineLimit(1)
+            .lineLimit(1)
             if viewModel.isCompact {
                 Spacer()
                 Image(systemName: "chevron.forward")
