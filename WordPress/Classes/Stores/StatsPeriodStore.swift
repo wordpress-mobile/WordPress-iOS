@@ -895,12 +895,24 @@ private extension StatsPeriodStore {
         }
     }
 
-    private func receivedPostsAndPages(_ postsAndPages: StatsTopPostsTimeIntervalData?, _ error: Error?) {
+    private func receivedPostsAndPages(_ data: StatsTopPostsTimeIntervalData?, _ error: Error?) {
         transaction { state in
             state.topPostsAndPagesStatus = error != nil ? .error : .success
 
-            if postsAndPages != nil {
-                state.topPostsAndPages = postsAndPages
+            if let data {
+                let sortedTopPosts = data.topPosts.sorted { lhs, rhs in
+                    if lhs.viewsCount == rhs.viewsCount {
+                        return lhs.title.localizedCaseInsensitiveCompare(rhs.title) == .orderedAscending
+                    }
+                    return lhs.viewsCount > rhs.viewsCount
+                }
+                state.topPostsAndPages = StatsTopPostsTimeIntervalData(
+                    period: data.period,
+                    periodEndDate: data.periodEndDate,
+                    topPosts: sortedTopPosts,
+                    totalViewsCount: data.totalViewsCount,
+                    otherViewsCount: data.otherViewsCount
+                )
             }
         }
     }
