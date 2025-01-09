@@ -663,20 +663,6 @@ PostCategoriesViewControllerDelegate>
     return cell;
 }
 
-// TODO: (kean) remove
-- (nullable NSURL *)urlForFeaturedImage {
-    NSURL *featuredURL = self.apost.featuredImage.absoluteLocalURL;
-
-    if (!featuredURL || ![featuredURL checkResourceIsReachableAndReturnError:nil]) {
-        featuredURL = [NSURL URLWithString:self.apost.featuredImage.remoteURL];
-    }
-
-    if (!featuredURL) {
-        featuredURL = self.apost.featuredImageURLForDisplay;
-    }
-    return featuredURL;
-}
-
 - (UITableViewCell *)configureSocialCellForIndexPath:(NSIndexPath *)indexPath
                                           connection:(PublicizeConnection *)connection
                                       canEditSharing:(BOOL)canEditSharing
