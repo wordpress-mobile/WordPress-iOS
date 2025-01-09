@@ -11,7 +11,7 @@ struct PostSettingsFeaturedImageCell: View {
             SiteMediaImage(media: image, size: .large)
                 .loadingStyle(.spinner)
                 .aspectRatio(1.0 / ReaderPostCell.coverAspectRatio, contentMode: .fit)
-                .overlay(alignment: .topTrailing) {
+                .overlay {
                     Menu {
                         Button(SharedStrings.Button.remove, systemImage: "trash", role: .destructive, action: viewModel.buttonRemoveTapped)
                     } label: {
@@ -20,6 +20,7 @@ struct PostSettingsFeaturedImageCell: View {
                             .font(.title)
                             .shadow(color: .black.opacity(0.5), radius: 10)
                             .padding(8)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
                     }
                 }
         } else if viewModel.upload != nil {
