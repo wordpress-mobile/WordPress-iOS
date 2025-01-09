@@ -20,6 +20,7 @@
 * [*] Disable universal links support for QR code login. You can only scan the codes using the app now. [#23953]
 * [*] Add scroll-to-top button to Reader streams [#23957]
 * [*] Add a quick way to replace a featured image for a post [#23962]
+* [*] Fix an issue with posts in Reader sometimes showing incorrect covers [#23914]
 
 25.6
 -----
@@ -40,7 +41,6 @@
 * [*] Reader: The post cover now uses the standard aspect ratio for covers, so there is no jumping. There are also a few minor improvements to the layout and animations of the cover and the header [#23897, #23909]
 * [*] Reader: Move the "Reading Preferences" button to the "More" menu [#23897]
 * [*] Reader: Fix an issue with empty state views being non-scrollable in streams [#23908]
-* [*] Reader: Fix an issue with posts sometimes showing incorrect covers [#23914]
 * [*] Reader: Hide post toolbar when reading an article and fix like button animations [#23909]
 * [*] Reader: Fix off-by-one error in post details like counter when post is liked by you [#23912]
 
