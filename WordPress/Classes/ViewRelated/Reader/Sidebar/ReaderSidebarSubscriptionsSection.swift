@@ -13,8 +13,14 @@ struct ReaderSidebarSubscriptionsSection: View {
     private var subscriptions: FetchedResults<ReaderSiteTopic>
 
     var body: some View {
-        ForEach(subscriptions, id: \.self) {
-            ReaderSidebarSubscriptionCell(site: $0)
+        ForEach(subscriptions, id: \.self) { site in
+            ReaderSidebarSubscriptionCell(site: site)
+                .contextMenu {
+                    Button(SharedStrings.Reader.unsubscribe, systemImage: "minus.circle", role: .destructive) {
+                        ReaderSubscriptionHelper().unfollow(site)
+                    }
+                }
+
         }
         .onDelete(perform: delete)
     }
