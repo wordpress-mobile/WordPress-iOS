@@ -323,10 +323,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     if (@available(iOS 17.0, *)) {
         [self registerForTraitChanges:@[[UITraitHorizontalSizeClass self]] withAction:@selector(handleTraitChanges)];
     }
-
-    if (self.isSidebarModeEnabled && ![self isSplitViewDisplayed]) {
-        self.tableView.backgroundColor = [UIColor systemBackgroundColor];
-    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -1042,7 +1038,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
 }
 
 - (Boolean)isSplitViewDisplayed {
-    return self.splitViewController != nil;
+    return self.isSidebarModeEnabled;
 }
 
 /// This section is available on Jetpack only.
@@ -1057,7 +1053,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     [rows addObject:[self mediaRow]];
     [rows addObject:[self commentsRow]];
 
-    NSString *title = [self isSplitViewDisplayed] ? nil : [BlogDetailsViewControllerStrings contentSectionTitle];
+    NSString *title = self.isSidebarModeEnabled ? nil : [BlogDetailsViewControllerStrings contentSectionTitle];
     return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows category:BlogDetailsSectionCategoryContent];
 }
 
@@ -1586,7 +1582,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
         [WPStyleGuide configureTableViewDestructiveActionCell:cell];
     } else {
         if (row.showsDisclosureIndicator) {
-            cell.accessoryType = [self isSidebarModeEnabled] ? UITableViewCellAccessoryNone : UITableViewCellAccessoryDisclosureIndicator;
+            cell.accessoryType = [self isSplitViewDisplayed] ? UITableViewCellAccessoryNone : UITableViewCellAccessoryDisclosureIndicator;
         } else {
             cell.accessoryType = UITableViewCellAccessoryNone;
         }
@@ -1717,7 +1713,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     CommentsViewController *commentsVC = [CommentsViewController controllerWithBlog:self.blog];
     commentsVC.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
 
-    if ([self isSplitViewDisplayed]) {
+    if (self.isSidebarModeEnabled) {
         commentsVC.isSidebarModeEnabled = YES;
 
         UISplitViewController *splitVC = [[UISplitViewController alloc] initWithStyle:UISplitViewControllerStyleDoubleColumn];
@@ -1799,7 +1795,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     [self trackEvent:WPAnalyticsStatOpenedSiteSettings fromSource:source];
     SiteSettingsViewController *controller = [[SiteSettingsViewController alloc] initWithBlog:self.blog];
     controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
-    if ([self isSplitViewDisplayed]) {
+    if (self.isSidebarModeEnabled) {
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
         __weak BlogDetailsViewController *weakSelf = self;
 #pragma clang diagnostic push
@@ -1867,7 +1863,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
 
 - (void)showDashboard
 {
-    if ([self isSplitViewDisplayed]) {
+    if (self.isSidebarModeEnabled) {
         MySiteViewController *controller = [MySiteViewController makeForBlog:self.blog isSidebarModeEnabled:true];
         [self.presentationDelegate presentBlogDetailsViewController:controller];
     } else {
