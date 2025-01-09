@@ -117,6 +117,7 @@ PostCategoriesViewControllerDelegate>
     self.tableView.accessibilityIdentifier = @"SettingsTable";
 
     self.featuredImageViewModel.tableView = self.tableView;
+    self.featuredImageViewModel.delegate = self.featuredImageDelegate;
 
     _blogService = [[BlogService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
 

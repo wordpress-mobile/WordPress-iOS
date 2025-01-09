@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
 #import "AbstractPost.h"
 
-// TODO: (kean) figure out if it's still used (presumably yet)
+// TODO: It can be removed when the new editor is released. It only exists to support the "Featured" badge on featured images in Gutenberg mobile.
 @protocol FeaturedImageDelegate
 
 - (void)gutenbergDidRequestFeaturedImageId:(nonnull NSNumber *)mediaID;

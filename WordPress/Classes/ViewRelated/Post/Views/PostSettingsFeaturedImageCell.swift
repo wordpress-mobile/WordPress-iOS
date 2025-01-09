@@ -70,6 +70,7 @@ final class PostSettingsFeaturedImageViewModel: NSObject, ObservableObject {
     private let coordinator = MediaCoordinator.shared
 
     @objc weak var tableView: UITableView?
+    @objc weak var delegate: FeaturedImageDelegate?
 
     @objc init(post: AbstractPost) {
         self.post = post
@@ -113,6 +114,9 @@ final class PostSettingsFeaturedImageViewModel: NSObject, ObservableObject {
         UIView.performWithoutAnimation {
             upload = nil
             post.featuredImage = media
+            if let mediaID = media.mediaID {
+                delegate?.gutenbergDidRequestFeaturedImageId(mediaID)
+            }
             tableView?.reloadData()
         }
     }
@@ -125,14 +129,14 @@ final class PostSettingsFeaturedImageViewModel: NSObject, ObservableObject {
     func buttonRemoveTapped() {
         WPAnalytics.track(.editorPostFeaturedImageChanged, properties: ["via": "settings", "action": "removed"])
 
-        // TODO: (kean) do we need to call removeMediaObject?
         post.featuredImage = nil
+        delegate?.gutenbergDidRequestFeaturedImageId(GutenbergFeaturedImageHelper.mediaIdNoFeaturedImageSet as NSNumber)
         tableView?.reloadData()
     }
 }
 
 private enum Strings {
-    static let buttonSetFeaturedImage = NSLocalizedString("postSettings.setFeaturedImageButton", value: "Set Featured Image", comment: "Button in Post Settings")
+    static let buttonSetFeaturedImage = NSLocalizedString("postSettings.featuredImage.setFeaturedImageButton", value: "Set Featured Image", comment: "Button in Post Settings")
     static let uploading = NSLocalizedString("postSettings.featuredImage.uploading", value: "Uploading…", comment: "Post Settings")
     static let cancelUpload = NSLocalizedString("postSettings.featuredImage.cancelUpload", value: "Cancel Upload", comment: "Cancel (single) upload button in Post Settings / Featuerd Image cell")
     static let uploadFailed = NSLocalizedString("postSettings.featuredImage.uploadFailed", value: "Failed to upload new featured image", comment: "Snackbar title")
