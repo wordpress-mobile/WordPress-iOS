@@ -71,6 +71,7 @@ open class BlogSettings: NSManagedObject {
 
     /// Jetpack Setting: lazy load images.
     ///
+    @available(*, deprecated)
     @NSManaged var jetpackLazyLoadImages: Bool
 
     // MARK: - Discussion
