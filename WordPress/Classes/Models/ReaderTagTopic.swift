@@ -52,6 +52,10 @@ import Foundation
         return topic
     }
 
+    var formattedTitle: String {
+        title.split(separator: "-").map(\.capitalized).joined(separator: " ")
+    }
+
     /// Convenience method to update the tag's `following` state and also updates `showInMenu`.
     @objc func toggleFollowing(_ isFollowing: Bool) {
         following = isFollowing
