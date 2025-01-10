@@ -24,6 +24,7 @@ open class JetpackSpeedUpSiteSettingsViewController: UITableViewController {
 
     @objc public convenience init(blog: Blog) {
         self.init(style: .insetGrouped)
+
         self.blog = blog
         self.service = BlogJetpackSettingsService(coreDataStack: ContextManager.shared)
     }
@@ -32,6 +33,7 @@ open class JetpackSpeedUpSiteSettingsViewController: UITableViewController {
 
     open override func viewDidLoad() {
         super.viewDidLoad()
+
         title = NSLocalizedString("Speed up your site", comment: "Title for the Speed up your site Settings Screen")
         ImmuTable.registerRows([SwitchRow.self], tableView: tableView)
         WPStyleGuide.configureColors(view: view, tableView: tableView)
@@ -40,6 +42,7 @@ open class JetpackSpeedUpSiteSettingsViewController: UITableViewController {
 
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         reloadViewModel()
         refreshSettings()
     }
@@ -51,34 +54,18 @@ open class JetpackSpeedUpSiteSettingsViewController: UITableViewController {
     }
 
     func tableViewModel() -> ImmuTable {
-
-        let serveImagesFromOurServers = SwitchRow(title: NSLocalizedString("Serve images from our servers",
-                                                                           comment: "Title for the Serve images from our servers setting"),
-                                                  value: self.settings.jetpackServeImagesFromOurServers,
-                                                  onChange: self.serveImagesFromOurServersValueChanged())
-
-        let lazyLoadImages = SwitchRow(title: NSLocalizedString("\"Lazy-load\" images",
-                                                          comment: "Title for the lazy load images setting"),
-                                       value: self.settings.jetpackLazyLoadImages,
-                                       onChange: self.lazyLoadImagesValueChanged())
+        let serveImagesFromOurServers = SwitchRow(
+            title: NSLocalizedString("Serve images from our servers",
+                                     comment: "Title for the Serve images from our servers setting"),
+            value: self.settings.jetpackServeImagesFromOurServers,
+            onChange: self.serveImagesFromOurServersValueChanged())
 
         return ImmuTable(sections: [
             ImmuTableSection(
                 headerText: "",
                 rows: [serveImagesFromOurServers],
-                footerText: NSLocalizedString("Jetpack will optimize your images and serve them from the server " +
-                                              "location nearest to your visitors. Using our global content delivery " +
-                                              "network will boost the loading speed of your site.",
-                                              comment: "Footer for the Serve images from our servers setting")),
-
-            ImmuTableSection(
-                headerText: "",
-                rows: [lazyLoadImages],
-                footerText: NSLocalizedString("Improve your site's speed by only loading images visible on the screen. " +
-                                              "New images will load just before they scroll into view. This prevents " +
-                                              "viewers from having to download all the images on a page all at once, " +
-                                              "even ones they can't see.",
-                                              comment: "Footer for the Serve images from our servers setting")),
+                footerText: NSLocalizedString("Jetpack will optimize your images and serve them from the server location nearest to your visitors. Using our global content delivery network will boost the loading speed of your site.", comment: "Footer for the Serve images from our servers setting")
+            )
         ])
     }
 
@@ -92,36 +79,25 @@ open class JetpackSpeedUpSiteSettingsViewController: UITableViewController {
 
             self.service.updateJetpackServeImagesFromOurServersModuleSettingForBlog(self.blog,
                                                                                     success: {},
-                                                                                    failure: { [weak self] (_) in
+                                                                                    failure: { [weak self] _ in
                                                                                         self?.refreshSettingsAfterSavingError()
                                                                                     })
-        }
-    }
-
-    fileprivate func lazyLoadImagesValueChanged() -> (_ newValue: Bool) -> Void {
-        return { [unowned self] newValue in
-            self.settings.jetpackLazyLoadImages = newValue
-            self.reloadViewModel()
-            WPAnalytics.trackSettingsChange("jetpack_speed_up_site", fieldName: "lazy_load_images", value: newValue as Any)
-            self.service.updateJetpackLazyImagesModuleSettingForBlog(self.blog,
-                                                                     success: {},
-                                                                     failure: { [weak self] (_) in
-                                                                         self?.refreshSettingsAfterSavingError()
-                                                                     })
         }
     }
 
     // MARK: - Persistance
 
     fileprivate func refreshSettings() {
-        service.syncJetpackModulesForBlog(blog,
-                                          success: { [weak self] in
-                                              self?.reloadViewModel()
-                                              DDLogInfo("Reloaded Speed up site settings")
-                                          },
-                                          failure: { (error: Error?) in
-                                              DDLogError("Error while syncing blog Speed up site settings: \(String(describing: error))")
-                                          })
+        service.syncJetpackModulesForBlog(
+            blog,
+            success: { [weak self] in
+                self?.reloadViewModel()
+                DDLogInfo("Reloaded Speed up site settings")
+            },
+            failure: { (error: Error?) in
+                Notice(title: SharedStrings.Error.refreshFailed, message: error?.localizedDescription).post()
+                DDLogError("Error while syncing blog Speed up site settings: \(String(describing: error))")
+        })
     }
 
     fileprivate func refreshSettingsAfterSavingError() {

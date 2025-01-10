@@ -23,6 +23,7 @@ enum SharedStrings {
 
     enum Error {
         static let generic = NSLocalizedString("shared.error.geneirc", value: "Something went wrong", comment: "A generic error message")
+        static let refreshFailed = NSLocalizedString("shared.error.failiedToReloadData", value: "Failed to update data", comment: "A generic error title indicating that a screen failed to fetch the latest data")
     }
 
     enum Reader {
