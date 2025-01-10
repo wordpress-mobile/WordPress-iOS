@@ -24,6 +24,7 @@ open class JetpackSpeedUpSiteSettingsViewController: UITableViewController {
 
     @objc public convenience init(blog: Blog) {
         self.init(style: .insetGrouped)
+
         self.blog = blog
         self.service = BlogJetpackSettingsService(coreDataStack: ContextManager.shared)
     }
@@ -41,6 +42,7 @@ open class JetpackSpeedUpSiteSettingsViewController: UITableViewController {
 
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         reloadViewModel()
         refreshSettings()
     }
@@ -77,7 +79,7 @@ open class JetpackSpeedUpSiteSettingsViewController: UITableViewController {
 
             self.service.updateJetpackServeImagesFromOurServersModuleSettingForBlog(self.blog,
                                                                                     success: {},
-                                                                                    failure: { [weak self] (_) in
+                                                                                    failure: { [weak self] _ in
                                                                                         self?.refreshSettingsAfterSavingError()
                                                                                     })
         }
@@ -86,14 +88,16 @@ open class JetpackSpeedUpSiteSettingsViewController: UITableViewController {
     // MARK: - Persistance
 
     fileprivate func refreshSettings() {
-        service.syncJetpackModulesForBlog(blog,
-                                          success: { [weak self] in
-                                              self?.reloadViewModel()
-                                              DDLogInfo("Reloaded Speed up site settings")
-                                          },
-                                          failure: { (error: Error?) in
-                                              DDLogError("Error while syncing blog Speed up site settings: \(String(describing: error))")
-                                          })
+        service.syncJetpackModulesForBlog(
+            blog,
+            success: { [weak self] in
+                self?.reloadViewModel()
+                DDLogInfo("Reloaded Speed up site settings")
+            },
+            failure: { (error: Error?) in
+                Notice(title: SharedStrings.Error.refreshFailed, message: error?.localizedDescription).post()
+                DDLogError("Error while syncing blog Speed up site settings: \(String(describing: error))")
+        })
     }
 
     fileprivate func refreshSettingsAfterSavingError() {
