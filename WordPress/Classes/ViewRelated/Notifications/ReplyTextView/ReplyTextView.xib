@@ -23,7 +23,7 @@
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" id="iN0-l3-epB">
+        <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" id="iN0-l3-epB">
             <rect key="frame" x="0.0" y="0.0" width="348" height="57"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -35,7 +35,7 @@
                     </constraints>
                 </view>
                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dls-e1-onf">
-                    <rect key="frame" x="15" y="12" width="318" height="33"/>
+                    <rect key="frame" x="16" y="12" width="316" height="33"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OaT-BL-6lY" userLabel="Fullscreen Button View">
                             <rect key="frame" x="0.0" y="0.0" width="33" height="33"/>
@@ -63,16 +63,16 @@
                             </constraints>
                         </view>
                         <view multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="240" horizontalCompressionResistancePriority="740" translatesAutoresizingMaskIntoConstraints="NO" id="t6q-rh-Bzh" userLabel="Text Container View">
-                            <rect key="frame" x="33" y="0.0" width="225" height="33"/>
+                            <rect key="frame" x="33" y="0.0" width="223" height="33"/>
                             <subviews>
                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gfH-NN-dph">
-                                    <rect key="frame" x="0.0" y="5" width="225" height="28"/>
+                                    <rect key="frame" x="0.0" y="5" width="223" height="28"/>
                                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 </textView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Placeholder" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Lf-XI-exE" userLabel="Placeholder">
-                                    <rect key="frame" x="0.0" y="0.0" width="225" height="33"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="223" height="33"/>
                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
@@ -92,7 +92,7 @@
                             <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lA2-1V-bck" userLabel="Reply Button View">
-                            <rect key="frame" x="258" y="0.0" width="60" height="33"/>
+                            <rect key="frame" x="256" y="0.0" width="60" height="33"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="250" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8sg-79-AsR" userLabel="Reply Button">
                                     <rect key="frame" x="0.0" y="0.0" width="60" height="33"/>
@@ -119,9 +119,9 @@
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="dls-e1-onf" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="Grf-Yd-1ll"/>
+                <constraint firstItem="dls-e1-onf" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="Grf-Yd-1ll"/>
                 <constraint firstAttribute="trailing" secondItem="IdZ-UI-Nwf" secondAttribute="trailing" id="Vdg-Rq-CX8"/>
-                <constraint firstAttribute="trailing" secondItem="dls-e1-onf" secondAttribute="trailing" constant="15" id="Zht-SW-LEv"/>
+                <constraint firstAttribute="trailingMargin" secondItem="dls-e1-onf" secondAttribute="trailing" id="Zht-SW-LEv"/>
                 <constraint firstItem="IdZ-UI-Nwf" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="eHd-2o-Jp5"/>
                 <constraint firstItem="dls-e1-onf" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="12" id="wjV-vs-veI"/>
                 <constraint firstItem="IdZ-UI-Nwf" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="xW3-yX-z7r"/>
