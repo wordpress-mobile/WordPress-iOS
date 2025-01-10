@@ -146,7 +146,7 @@ private final class ReaderPostCellView: UIView {
         imageView.layer.masksToBounds = true
         imageView.contentMode = .scaleAspectFill
 
-        buttonMore.configuration?.baseForegroundColor = UIColor.opaqueSeparator
+        buttonMore.configuration?.baseForegroundColor = UIColor.secondaryLabel.withAlphaComponent(0.5)
         buttonMore.configuration?.contentInsets = .init(top: 12, leading: 8, bottom: 12, trailing: 20)
     }
 
