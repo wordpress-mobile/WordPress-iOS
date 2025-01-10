@@ -39,6 +39,7 @@
 * [*] Fix small tap area for “More” button in the Subscriptions screen in Reader [#23964]
 * [*] Fix “Notification Settings” for individual posts sometimes being clipped [#23964]
 * [*] Add context menu (long-press) and previews for subscriptions with quick access to “Share”, “Copy Link”, “Add to Favorites”, “Notification Settings”, and “Unsubscribe” buttons in both the Subscriptions view and the Sidebar in Reader [#23964]
+* [*] Fix an issue with fullscreen button in reply view clipped by the notch [#23965]
 
 25.6
 -----
