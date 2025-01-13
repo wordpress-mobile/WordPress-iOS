@@ -243,22 +243,8 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     }
 
     private func reloadBlogIconView() {
-        let blog = post.blog
-
-//        if blog.hasIcon == true {
-//            let size = CGSize(width: 24, height: 24)
-//            navigationBarManager.siteIconView.imageView.downloadSiteIcon(for: blog, imageSize: size)
-//        } else if blog.isWPForTeams() {
-//            navigationBarManager.siteIconView.imageView.tintColor = UIColor.secondaryLabel
-//            navigationBarManager.siteIconView.imageView.image = UIImage.gridicon(.p2)
-//        } else {
-//            navigationBarManager.siteIconView.imageView.image = UIImage.siteIconPlaceholder
-//        }
-
-        // TODO: implement
-        // Docs: https://wordpress.org/gutenberg-framework/docs/basic-concepts/undo-redo
-        navigationBarManager.undoButton.isHidden = true
-        navigationBarManager.redoButton.isHidden = true
+        let viewModel = SiteIconViewModel(blog: post.blog, size: .small)
+        navigationBarManager.siteIconView.imageView.setIcon(with: viewModel)
     }
 
     // TODO: this should not be called on viewDidLoad
@@ -345,6 +331,11 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
                 self?.performAutoSave()
             }
         }
+    }
+
+    func editor(_ viewController: GutenbergKit.EditorViewController, didUpdateHistoryState state: GutenbergKit.EditorState) {
+        gutenbergDidRequestToggleRedoButton(!state.hasRedo)
+        gutenbergDidRequestToggleUndoButton(!state.hasUndo)
     }
 
     func editor(_ viewController: GutenbergKit.EditorViewController, performRequest: GutenbergKit.EditorNetworkRequest) async throws -> GutenbergKit.EditorNetworkResponse {
@@ -610,13 +601,11 @@ extension NewGutenbergViewController: PostEditorNavigationBarManagerDelegate {
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, undoWasPressed sender: UIButton) {
-        // TODO: reimplement
-        // self.gutenberg.onUndoPressed()
+        editorViewController.undo()
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, redoWasPressed sender: UIButton) {
-        // TODO: reimplement
-        // self.gutenberg.onRedoPressed()
+        editorViewController.redo()
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, moreWasPressed sender: UIButton) {

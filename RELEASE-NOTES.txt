@@ -1,5 +1,9 @@
 25.7
 -----
+* [**] Enable history navigation (undo and redo) for the experimental editor. [#23961]
+
+25.6
+-----
 * [**] Add Image Playground support (part of Apple Intelligence suite) for adding images to your posts, generated featured image, site icons, and more [#23688]
 * [**] Add new lightbox screen for images with modern transitions and enhanced performance [#23922]
 * [**] Enhance the Gravatar Quick Editor by adding features that allow users to delete and share their avatars. [#23868]
