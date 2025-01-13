@@ -131,7 +131,7 @@ class BlogDetailHeaderView: UIView {
 
     private func makeSiteLinkMenu() -> UIMenu {
         UIMenu(children: [
-            UIAction(title: SharedStrings.Button.share + "…", image: UIImage(systemName: "square.and.arrow.up"), handler: { [weak self] _ in
+            UIAction(title: SharedStrings.Button.share, image: UIImage(systemName: "square.and.arrow.up"), handler: { [weak self] _ in
                 self?.delegate?.buttonShareSiteTapped()
             }),
             UIAction(title: Strings.visitSite, image: UIImage(systemName: "safari"), handler: { [weak self] _ in
