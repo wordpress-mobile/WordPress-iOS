@@ -1,4 +1,5 @@
 import UIKit
+import WordPressUI
 
 final class PostListHeaderView: UIView {
 
@@ -7,7 +8,6 @@ final class PostListHeaderView: UIView {
     private let textLabel = UILabel()
     private let icon = UIImageView()
     private let indicator = UIActivityIndicatorView(style: .medium)
-    private let ellipsisButton = UIButton(type: .custom)
 
     // MARK: - Initializer
 
@@ -22,10 +22,7 @@ final class PostListHeaderView: UIView {
 
     // MARK: - Public
 
-    func configure(with viewModel: PostListItemViewModel, delegate: InteractivePostViewDelegate? = nil) {
-        if let delegate {
-            configureEllipsisButton(with: viewModel.post, delegate: delegate)
-        }
+    func configure(with viewModel: PostListItemViewModel) {
         textLabel.attributedText = viewModel.badges
         configure(with: viewModel.syncStateViewModel)
     }
@@ -35,8 +32,6 @@ final class PostListHeaderView: UIView {
             icon.image = iconInfo.image
             icon.tintColor = iconInfo.color
         }
-
-        ellipsisButton.isHidden = !viewModel.isShowingEllipsis
         icon.isHidden = viewModel.iconInfo == nil
         indicator.isHidden = !viewModel.isShowingIndicator
 
@@ -45,21 +40,15 @@ final class PostListHeaderView: UIView {
         }
     }
 
-    private func configureEllipsisButton(with post: Post, delegate: InteractivePostViewDelegate) {
-        let menuHelper = AbstractPostMenuHelper(post)
-        ellipsisButton.showsMenuAsPrimaryAction = true
-        ellipsisButton.menu = menuHelper.makeMenu(presentingView: ellipsisButton, delegate: delegate)
-    }
-
     // MARK: - Setup
 
     private func setupView() {
         setupIcon()
-        setupEllipsisButton()
 
-        let innerStackView = UIStackView(arrangedSubviews: [icon, indicator, ellipsisButton])
-        innerStackView.spacing = 4
-        let stackView = UIStackView(arrangedSubviews: [textLabel, innerStackView])
+        // Trailing spacer to allocate enough space for the "More" button.
+        let accessoriesStackView = UIStackView(arrangedSubviews: [icon, indicator, SpacerView(width: 40)])
+        accessoriesStackView.spacing = 4
+        let stackView = UIStackView(arrangedSubviews: [textLabel, accessoriesStackView])
 
         indicator.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
 
@@ -75,15 +64,5 @@ final class PostListHeaderView: UIView {
             icon.heightAnchor.constraint(equalToConstant: 22)
         ])
         icon.contentMode = .scaleAspectFit
-    }
-
-    private func setupEllipsisButton() {
-        ellipsisButton.translatesAutoresizingMaskIntoConstraints = false
-        ellipsisButton.setImage(UIImage(named: "more-horizontal-mobile"), for: .normal)
-        ellipsisButton.tintColor = .secondaryLabel
-
-        NSLayoutConstraint.activate([
-            ellipsisButton.widthAnchor.constraint(equalToConstant: 24)
-        ])
     }
 }

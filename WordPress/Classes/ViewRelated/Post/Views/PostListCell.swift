@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 import AsyncImageKit
+import WordPressUI
 
 protocol AbstractPostListCell {
     /// A post displayed by the cell.
@@ -23,6 +24,7 @@ final class PostListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
     }()
 
     private let headerView = PostListHeaderView()
+    private let ellipsisButton = UIButton(type: .system)
     private let contentLabel = UILabel()
     private let featuredImageView = AsyncImageView()
     private let statusLabel = UILabel()
@@ -69,7 +71,7 @@ final class PostListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
     }
 
     private func _configure(with viewModel: PostListItemViewModel, delegate: InteractivePostViewDelegate? = nil) {
-        headerView.configure(with: viewModel, delegate: delegate)
+        headerView.configure(with: viewModel)
         contentLabel.attributedText = viewModel.content
 
         featuredImageView.isHidden = viewModel.imageURL == nil
@@ -87,12 +89,22 @@ final class PostListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
         accessibilityLabel = viewModel.accessibilityLabel
 
         configure(with: viewModel.syncStateViewModel)
+        if let delegate {
+            configureEllipsisButton(with: viewModel.post, delegate: delegate)
+        }
         self.viewModel = viewModel
     }
 
     private func configure(with viewModel: PostSyncStateViewModel) {
         contentView.isUserInteractionEnabled = viewModel.isEditable
         headerView.configure(with: viewModel)
+        ellipsisButton.isHidden = !viewModel.isShowingEllipsis
+    }
+
+    private func configureEllipsisButton(with post: Post, delegate: InteractivePostViewDelegate) {
+        let menuHelper = AbstractPostMenuHelper(post)
+        ellipsisButton.showsMenuAsPrimaryAction = true
+        ellipsisButton.menu = menuHelper.makeMenu(presentingView: ellipsisButton, delegate: delegate)
     }
 
     // MARK: - Setup
@@ -102,7 +114,6 @@ final class PostListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
         setupFeaturedImageView()
         setupStatusLabel()
 
-        contentStackView.translatesAutoresizingMaskIntoConstraints = false
         contentStackView.addArrangedSubviews([
             contentLabel,
             featuredImageView
@@ -110,7 +121,6 @@ final class PostListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
         contentStackView.spacing = 16
         contentStackView.alignment = .top
 
-        mainStackView.translatesAutoresizingMaskIntoConstraints = false
         mainStackView.addArrangedSubviews([
             headerView,
             contentStackView,
@@ -118,18 +128,19 @@ final class PostListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
         ])
         mainStackView.spacing = 4
         contentView.addSubview(mainStackView)
-        contentView.pinSubviewToAllEdgeMargins(mainStackView)
+        mainStackView.pinEdges(to: contentView.layoutMarginsGuide)
+
+        // It is added last to ensure it's tappable
+        setupEllipsisButton()
     }
 
     private func setupContentLabel() {
-        contentLabel.translatesAutoresizingMaskIntoConstraints = false
         contentLabel.adjustsFontForContentSizeCategory = true
         contentLabel.numberOfLines = 3
         contentLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
     }
 
     private func setupFeaturedImageView() {
-        featuredImageView.translatesAutoresizingMaskIntoConstraints = false
         featuredImageView.contentMode = .scaleAspectFill
         featuredImageView.layer.masksToBounds = true
         featuredImageView.layer.cornerRadius = 5
@@ -142,10 +153,22 @@ final class PostListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
     }
 
     private func setupStatusLabel() {
-        statusLabel.translatesAutoresizingMaskIntoConstraints = false
         statusLabel.adjustsFontForContentSizeCategory = true
         statusLabel.numberOfLines = 1
         statusLabel.font = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular)
+    }
+
+    private func setupEllipsisButton() {
+        ellipsisButton.setImage(UIImage(named: "more-horizontal-mobile"), for: .normal)
+        ellipsisButton.tintColor = .secondaryLabel
+
+        NSLayoutConstraint.activate([
+            ellipsisButton.heightAnchor.constraint(equalToConstant: 44),
+            ellipsisButton.widthAnchor.constraint(equalToConstant: 54)
+        ])
+
+        contentView.addSubview(ellipsisButton)
+        ellipsisButton.pinEdges([.top, .trailing])
     }
 }
 
