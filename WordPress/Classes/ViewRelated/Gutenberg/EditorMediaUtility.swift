@@ -87,7 +87,7 @@ class EditorMediaUtility {
             callbackQueue.async {
                 failure(error)
             }
-            return MeediaUtilityTask { /* do nothing */ }
+            return MediaUtilityTask { /* do nothing */ }
         case let .success((imageURL, host)):
             let task = Task { @MainActor in
                 do {
@@ -98,7 +98,7 @@ class EditorMediaUtility {
 
                 }
             }
-            return MeediaUtilityTask { task.cancel() }
+            return MediaUtilityTask { task.cancel() }
         }
     }
 
@@ -202,7 +202,7 @@ class EditorMediaUtility {
     }
 }
 
-private struct MeediaUtilityTask: ImageDownloaderTask {
+private struct MediaUtilityTask: ImageDownloaderTask {
     let closure: @Sendable () -> Void
 
     func cancel() {
