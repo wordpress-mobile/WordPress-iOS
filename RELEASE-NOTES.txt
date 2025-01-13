@@ -43,6 +43,7 @@
 * [*] Fix an issue with fullscreen button in reply view clipped by the notch [#23965]
 * [*] Remove "Lazy Images" option that is no longer part of the Jetpack plugin [#23966]
 * [*] Fix an issue with "Speed up your site" section not refreshing (fails silently) [#23966]
+* [*] Fix an issue with small tap area of the ellipsis in the post list [#23973]
 
 25.6
 -----
