@@ -15,7 +15,6 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
 
     /// The navigation controller for the main content when shown using tabs.
     private var mainNavigationController = UINavigationController()
-    private var latestContentVC: UIViewController?
 
     private var viewContext: NSManagedObjectContext {
         ContextManager.shared.mainContext
@@ -58,8 +57,8 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
         // -warning: List occasionally sets the selection to `nil` when switching items.
         selectionObserver = sidebarViewModel.$selection.compactMap { $0 }
             .removeDuplicates { [weak self] in
-                guard $0 == $1 else { return false }
-                self?.popMainNavigationController()
+                guard $0 == $1, let self, let splitViewController else { return false }
+                self.popMainNavigationController(in: splitViewController)
                 return true
             }
             .sink { [weak self] in self?.configure(for: $0) }
@@ -84,17 +83,10 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
         hideSupplementaryColumnIfNeeded()
     }
 
-    private func popMainNavigationController() {
-        if let splitViewController {
-            let secondaryVC = splitViewController.viewController(for: .secondary)
-            (secondaryVC as? UINavigationController)?.popToRootViewController(animated: true)
-            hideSupplementaryColumnIfNeeded()
-        } else {
-            if let latestContentVC {
-                // Return to the previous view controller preserving its state
-                mainNavigationController.safePushViewController(latestContentVC, animated: true)
-            }
-        }
+    private func popMainNavigationController(in splitViewController: UISplitViewController) {
+        let secondaryVC = splitViewController.viewController(for: .secondary)
+        (secondaryVC as? UINavigationController)?.popToRootViewController(animated: true)
+        hideSupplementaryColumnIfNeeded()
     }
 
     private func hideSupplementaryColumnIfNeeded() {
@@ -190,7 +182,6 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
             }
             splitViewController.setViewController(navigationVC, for: .secondary)
         } else {
-            latestContentVC = viewController
             mainNavigationController.safePushViewController(viewController, animated: true)
         }
     }
