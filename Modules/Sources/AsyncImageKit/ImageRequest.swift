@@ -51,8 +51,10 @@ public struct ImageRequestOptions: Hashable, Sendable {
 
 /// Image size in **pixels**.
 public struct ImageSize: Hashable, Sendable {
-    public let width: Int
-    public let height: Int
+    /// Width in **pixels**.
+    public var width: Int
+    /// Height in **pixels**.
+    public var height: Int
 
     /// Initializes the struct with given size in **pixels**.
     public init(width: Int, height: Int) {
