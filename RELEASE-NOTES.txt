@@ -44,6 +44,7 @@
 * [*] Remove "Lazy Images" option that is no longer part of the Jetpack plugin [#23966]
 * [*] Fix an issue with "Speed up your site" section not refreshing (fails silently) [#23966]
 * [*] Fix an issue with small tap area of the ellipsis in the post list [#23973]
+* [*] Avoid unexpectedly marking post content as unsaved. [#23969]
 
 25.6
 -----

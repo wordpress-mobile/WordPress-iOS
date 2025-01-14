@@ -108,7 +108,7 @@ private enum MenuItem {
     var title: String {
         switch self {
         case .visitSite: return Strings.visitSite
-        case .shareSite: return SharedStrings.Button.share + "…"
+        case .shareSite: return SharedStrings.Button.share
         case .siteTitle: return Strings.siteTitle
         case .personalizeHome: return Strings.personalizeHome
         }

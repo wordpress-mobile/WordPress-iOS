@@ -70,18 +70,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     private let editorViewController: GutenbergKit.EditorViewController
     private weak var autosaveTimer: Timer?
 
-    var editorHasChanges: Bool {
-        var changes = post.changes
-        // TODO: cleanup (+ it doesn't handle scenarios like load from a revision)
-        // - warning: it has to compare two version serialized using the same system
-        if editorViewController.initialContent != post.content {
-            changes.content = post.content
-        } else {
-            changes.content = nil // yes, it needs to be set to .none manually
-        }
-        return !changes.isEmpty
-    }
-
     // TODO: remove (none of these APIs are needed for the new editor)
     var autosaver = Autosaver(action: {})
     func prepopulateMediaItems(_ media: [Media]) {}
