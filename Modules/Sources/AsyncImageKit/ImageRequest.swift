@@ -54,26 +54,28 @@ public struct ImageSize: Hashable, Sendable {
     public let width: Int
     public let height: Int
 
+    /// Initializes the struct with given size in **pixels**.
     public init(width: Int, height: Int) {
         self.width = Int(width)
         self.height = Int(height)
     }
 
-    public init(_ size: CGSize) {
+    /// Initializes the struct with given size in **pixels**.
+    public init(pixels size: CGSize) {
         self.width = Int(size.width)
         self.height = Int(size.height)
     }
 
-    /// Initializes `ImageSize` with the given size scaled for the given view.
+    /// Initializes `ImageSize` with the given size in **points** scaled for the given view.
     @MainActor
     public init(scaling size: CGSize, in view: UIView) {
-        self.init(size.scaled(by: view.traitCollection.displayScale))
+        self.init(pixels: size.scaled(by: view.traitCollection.displayScale))
     }
 
-    /// Initializes `ImageSize` with the given size scaled for the current trait
-    /// collection display scale.
+    /// Initializes `ImageSize` with the given size in **points** scaled for the
+    /// current trait collection display scale.
     public init(scaling size: CGSize) {
-        self.init(size.scaled(by: UITraitCollection.current.displayScale))
+        self.init(pixels: size.scaled(by: UITraitCollection.current.displayScale))
     }
 }
 
