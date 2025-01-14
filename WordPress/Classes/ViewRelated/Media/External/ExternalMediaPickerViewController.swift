@@ -236,7 +236,7 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Self.cellReuseID, for: indexPath) as! ExternalMediaPickerCollectionCell
         let item = dataSource.assets[indexPath.item]
-        cell.configure(imageURL: item.thumbnailURL, size: ImageSize(scaling: flowLayout.itemSize))
+        cell.configure(imageURL: item.thumbnailURL, size: ImageSize(scaling: flowLayout.itemSize, in: self.view))
         return cell
     }
 

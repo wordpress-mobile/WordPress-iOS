@@ -360,7 +360,7 @@ private final class ReaderPostCellView: UIView {
 
     private func setAvatar(with viewModel: ReaderPostCellViewModel) {
         avatarView.setPlaceholder(UIImage(named: "post-blavatar-placeholder"))
-        let avatarSize = ImageSize(scaling: CGSize(width: ReaderPostCell.avatarSize, height: ReaderPostCell.avatarSize))
+        let avatarSize = ImageSize(scaling: CGSize(width: ReaderPostCell.avatarSize, height: ReaderPostCell.avatarSize), in: self)
         if let avatarURL = viewModel.avatarURL {
             avatarView.setImage(with: avatarURL, size: avatarSize)
         } else {
