@@ -51,17 +51,17 @@ public struct ImageRequestOptions: Hashable, Sendable {
 
 /// Image size in **pixels**.
 public struct ImageSize: Hashable, Sendable {
-    public let width: CGFloat
-    public let height: CGFloat
+    public let width: Int
+    public let height: Int
 
-    public init(width: CGFloat, height: CGFloat) {
-        self.width = width
-        self.height = height
+    public init(width: Int, height: Int) {
+        self.width = Int(width)
+        self.height = Int(height)
     }
 
     public init(_ size: CGSize) {
-        self.width = size.width
-        self.height = size.height
+        self.width = Int(size.width)
+        self.height = Int(size.height)
     }
 
     /// Initializes `ImageSize` with the given size scaled for the given view.
