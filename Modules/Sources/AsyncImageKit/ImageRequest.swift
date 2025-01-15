@@ -58,8 +58,8 @@ public struct ImageSize: Hashable, Sendable {
 
     /// Initializes the struct with given size in **pixels**.
     public init(width: Int, height: Int) {
-        self.width = Int(width)
-        self.height = Int(height)
+        self.width = width
+        self.height = height
     }
 
     /// Initializes the struct with given size in **pixels**.
