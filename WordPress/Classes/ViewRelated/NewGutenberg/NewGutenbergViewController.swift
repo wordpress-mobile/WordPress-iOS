@@ -288,6 +288,10 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         guard let url = URL(string: "https://wordpress.com/support/wordpress-editor/") else { return }
         present(SFSafariViewController(url: url), animated: true)
     }
+
+    func showFeedbackView() {
+        self.present(SubmitFeedbackViewController(source: "gutenberg_kit"), animated: true)
+    }
 }
 
 extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate {
@@ -706,6 +710,9 @@ extension NewGutenbergViewController {
         actions.append(UIAction(title: helpTitle, image: UIImage(systemName: "questionmark.circle")) { [weak self] _ in
             self?.showEditorHelp()
         })
+        actions.append(UIAction(title: Strings.sendFeedback, image: UIImage(systemName: "envelope")) { [weak self] _ in
+            self?.showFeedbackView()
+        })
         return actions
     }
 
@@ -745,6 +752,7 @@ private enum Strings {
     static let postSettings = NSLocalizedString("postEditor.moreMenu.postSettings", value: "Post Settings", comment: "Post Editor / Button in the 'More' menu")
     static let helpAndSupport = NSLocalizedString("postEditor.moreMenu.helpAndSupport", value: "Help & Support", comment: "Post Editor / Button in the 'More' menu")
     static let help = NSLocalizedString("postEditor.moreMenu.help", value: "Help", comment: "Post Editor / Button in the 'More' menu")
+    static let sendFeedback = NSLocalizedString("postEditor.moreMenu.sendFeedback", value: "Send Feedback", comment: "Post Editor / Button in the 'More' menu")
     static let saveDraft = NSLocalizedString("postEditor.moreMenu.saveDraft", value: "Save Draft", comment: "Post Editor / Button in the 'More' menu")
     static let contentStructure = NSLocalizedString("postEditor.moreMenu.contentStructure", value: "Blocks: %li, Words: %li, Characters: %li", comment: "Post Editor / 'More' menu details labels with 'Blocks', 'Words' and 'Characters' counts as parameters (in that order)")
 }
