@@ -4,9 +4,11 @@ import WordPressShared
 
 final class SubmitFeedbackViewController: UIViewController {
     private var source: String
+    private var feedbackPrefix: String?
 
-    init(source: String) {
+    init(source: String, feedbackPrefix: String? = nil) {
         self.source = source
+        self.feedbackPrefix = feedbackPrefix
         super.init(nibName: nil, bundle: nil)
         self.modalPresentationStyle = .formSheet
     }
@@ -18,7 +20,7 @@ final class SubmitFeedbackViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let viewController = UIHostingController(rootView: SubmitFeedbackView(presentingViewController: self, source: source))
+        let viewController = UIHostingController(rootView: SubmitFeedbackView(presentingViewController: self, source: source, feedbackPrefix: feedbackPrefix))
 
         let navigationController = UINavigationController(rootViewController: viewController)
 
@@ -33,6 +35,7 @@ final class SubmitFeedbackViewController: UIViewController {
 private struct SubmitFeedbackView: View {
     weak var presentingViewController: UIViewController?
     let source: String
+    let feedbackPrefix: String?
 
     @State private var text = ""
     @State private var isSubmitting = false
@@ -141,9 +144,10 @@ private struct SubmitFeedbackView: View {
 
         isSubmitting = true
 
+        let descriptionPrefix = feedbackPrefix.map { "[\($0)] " } ?? ""
         ZendeskUtils.sharedInstance.createNewRequest(
             in: presentingViewController,
-            description: text.trim(),
+            description: descriptionPrefix + text.trim(),
             tags: ["appreview_jetpack", "in_app_feedback"],
             attachments: attachmentsViewModel.attachments.compactMap(\.response),
             alertOptions: nil
@@ -195,6 +199,6 @@ private enum Strings {
 
 #Preview {
     NavigationView {
-        SubmitFeedbackView(source: "preview")
+        SubmitFeedbackView(source: "preview", feedbackPrefix: nil)
     }
 }

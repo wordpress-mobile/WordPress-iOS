@@ -290,7 +290,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     }
 
     func showFeedbackView() {
-        self.present(SubmitFeedbackViewController(source: "gutenberg_kit"), animated: true)
+        self.present(SubmitFeedbackViewController(source: "gutenberg_kit", feedbackPrefix: "Editor"), animated: true)
     }
 }
 
