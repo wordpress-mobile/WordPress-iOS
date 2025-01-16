@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-11-29 00:03:31+0000 */
+/* Translation-Revision-Date: 2025-01-09 17:55:19+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: pt_BR */
@@ -7898,6 +7898,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of application passwords list */
 "applicationPassword.list.title" = "Senhas de aplicativo";
 
+/* Error message when the current site's url cannot be found */
+"applicationPasswordMigration.error.siteUrlNotFound" = "Não foi possível encontrar o URL do site atual";
+
+/* Error message when the username does not match the signed-in user. The first argument is the currently signed in user's user login name */
+"applicationPasswordMigration.error.usernameMismatch" = "Você precisa acessar com o usuário \"%@\"";
+
+/* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
+"applicationPasswordRequired.description" = "As senhas de aplicativos são uma forma mais segura de se conectar ao seu site auto-hospedado e habilitam o suporte a recursos como %@.";
+
+/* Feature name for managing users in the app */
+"applicationPasswordRequired.feature.users" = "Gestão de usuários";
+
+/* Title for the button to authenticate with Application Passwords */
+"applicationPasswordRequired.getStartedButton" = "Iniciar";
+
+/* Title for the prompt to upgrade to Application Passwords */
+"applicationPasswordRequired.title" = "Senha de aplicativo obrigatória";
+
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "arquivo de áudio";
 
@@ -8157,6 +8175,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for an empty state view when no cards are displayed */
 "dasboard.emptyView.title" = "Nenhum cartão para exibir";
 
+/* Personialize home screen button title */
+"dasboard.personalizeHomeButton" = "Personalize sua tela de início";
+
 /* Title for a menu action in the context menu on the Jetpack Social dashboard card. */
 "dashboard.card.social.menu.hide" = "Ocultar isso";
 
@@ -8298,6 +8319,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Weekly Roundup debug menu item */
 "debugMenu.weeklyRoundup" = "Resumo semanal";
+
+/* Error tilte */
+"discussionSettings.saveErrorTitle" = "Falha ao salvar configurações";
 
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Ocultar isso";
@@ -8449,6 +8473,9 @@ Example: Reply to Pamela Nguyen */
 /* Shared empty state view */
 "emptyStateView.noSearchResult.title" = "Nenhum resultado";
 
+/* A name of the ID field (it's a technical field, has to be short, displayed below everything else) */
+"entityMetadataFooterView.id" = "ID";
+
 /* Placeholder for the site url textfield.
    Site Address placeholder */
 "example.com" = "exemplo.com";
@@ -8575,6 +8602,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The 'no' button title for the first feedback alert */
 "in-app.feedback.alert.no" = "Não muito";
+
+/* The 'Not Now' button title for the first feedback alert */
+"in-app.feedback.alert.notNow" = "Agora não";
 
 /* The title for the first feedback alert */
 "in-app.feedback.alert.title" = "Seu feedback é importante";
@@ -8870,6 +8900,9 @@ Example: Reply to Pamela Nguyen */
 /* Write a blog prompt for the jetpack prologue */
 "jetpack.prologue.prompt.writeBlog" = "Escrever em um blog";
 
+/* Message stating that the user is unable to use Stats and Notifications because their site is connected to a different WordPress.com account */
+"jetpackSite.connectToDefaultAccount" = "Você precisa acessar com %@ para usar estatísticas e notificações.";
+
 /* Title for a call-to-action button on the Jetpack install card. */
 "jetpackinstallcard.button.learn" = "Saiba mais";
 
@@ -8890,6 +8923,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Error message that informs likes from a private blog cannot be fetched. */
 "likesListViewController.likesList.privateBlogErrorMessage" = "Você não tem permissão para ver este blog privado.";
+
+/* Instruction label in the two-factor authorization screen WordPress.com login authentication. Note: it has to mention that it's for a WordPress.com account. */
+"login.twoFactorInstructions.details" = "Digite o código de verificação do aplicativo de autenticação para a sua conta do WordPress.com.";
 
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "marcado como spam";
@@ -9370,6 +9406,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.todaysStats" = "Estatísticas de hoje";
+
+/* Page title */
+"personalizeHome.navigationTitle" = "Personalizar página inicial";
 
 /* Section header for shortcuts */
 "personalizeHome.shortcutsSectionHeader" = "Mostrar ou ocultar atalhos";
@@ -9973,11 +10012,50 @@ but tapping on this button will remove their like from the post. */
 /* Accessibility label for the 'Save Post' button when a post has been saved. */
 "reader.detail.toolbar.saved.button.a11y.label" = "Post salvo";
 
+/* Header view channel (filter) */
+"reader.discover.channel.dailyPrompts" = "Sugestões diárias";
+
+/* Header view channel (filter) */
+"reader.discover.channel.firstPost" = "Primeiros posts";
+
+/* Header view channel (filter) */
+"reader.discover.channel.latest" = "Mais recentes";
+
+/* Header view channel (filter) */
+"reader.discover.channel.recommended" = "Recomendado";
+
+/* Reader Discover header view details label. The text has a Markdown URL: [interests](/interests). Only the text in the square brackets needs to be translated: [<translate_this>](/interests). */
+"reader.discover.header.title" = "Conheça blogs populares que inspiram, informam e entretêm baseados em seus [interesses](\/interests).";
+
+/* Used in multiple contexts, usually as a screen title */
+"reader.discover.title" = "Explorar";
+
+/* Screen title */
+"reader.editInterests.title" = "Editar interesses";
+
 /* Error message informing the user that they are already following a blog in their reader. */
 "reader.error.already.subscribed.message" = "Você já assinou este blog.";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
 "reader.follow.button.accessibility.hint" = "Use para seguir a tag.";
+
+/* Reader screen title for follow conversation settings */
+"reader.followConversationSettings.title" = "Configurações de conversa";
+
+/* Screen header details */
+"reader.following.header.details" = "Fique por dentro das atualizações dos blogs que você assinou.";
+
+/* Used in multiple contexts, usually as a screen title */
+"reader.likes.title" = "Curtidas";
+
+/* Reader logged-out screen details */
+"reader.loggedOut.details" = "Acesse com uma conta do WordPress.com para seguir seus blogs favoritos";
+
+/* Reader logged-out screen sign in button */
+"reader.loggedOut.signIn" = "Entrar";
+
+/* Reader logged-out screen title */
+"reader.loggedOut.title" = "Participe da conversa";
 
 /* Title for button on the no followed blogs result screen */
 "reader.no.blogs.button" = "Descobrir blogs";
@@ -10039,6 +10117,84 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";
+
+/* Button accessibility label */
+"reader.post.buttonBookmark.accessibilityLabel" = "Favorito";
+
+/* Button accessibility label */
+"reader.post.buttonComment.accessibilityLabel" = "Exibir comentários";
+
+/* Button accessibility label */
+"reader.post.buttonLike.accessibilityLabel" = "Curtir";
+
+/* Button accessibility label */
+"reader.post.buttonReblog.accessibilityLabel" = "Reblogar";
+
+/* Button accessibility label */
+"reader.post.buttonRemoveBookmark.accessibilityLint" = "Remover favorito";
+
+/* Button accessibility label */
+"reader.post.buttonRemoveLike.accessibilityLabel" = "Remover curtida";
+
+/* Accessibility hint for the site header */
+"reader.post.buttonSite.accessibilityHint" = "Abre os detalhes do site";
+
+/* Button accessibility label */
+"reader.post.moreMenu.accessibilityLabel" = "Mais ações";
+
+/* Accessibility label showing total number of comments */
+"reader.post.numberOfComments.accessibilityLabel" = "%@ comentários";
+
+/* Accessibility label showing total number of likes */
+"reader.post.numberOfLikes.accessibilityLabel" = "%@ curtidas";
+
+/* Context menu action */
+"reader.postContextMenu.blockOrReportMenu" = "Bloquear ou denunciar";
+
+/* Context menu action */
+"reader.postContextMenu.blockSite" = "Bloquear site";
+
+/* Context menu action */
+"reader.postContextMenu.blockUser" = "Bloquear usuário";
+
+/* Context menu action (placeholder value when blog name not available – should never happen) */
+"reader.postContextMenu.blogDetails" = "Detalhes do blog";
+
+/* Context menu action */
+"reader.postContextMenu.copyLink" = "Copiar link";
+
+/* Context menu action */
+"reader.postContextMenu.manageNotifications" = "Gerenciar notificações";
+
+/* Context menu action */
+"reader.postContextMenu.reportPost" = "Denunciar post";
+
+/* Context menu action */
+"reader.postContextMenu.reportUser" = "Denunciar usuário";
+
+/* Context menu action */
+"reader.postContextMenu.share" = "Compartilhar";
+
+/* Context menu action */
+"reader.postContextMenu.showBlog" = "Ir para o blog";
+
+/* Context menu action */
+"reader.postContextMenu.subscribeT" = "Assinar";
+
+/* Context menu action */
+"reader.postContextMenu.unsubscribe" = "Cancelar assinatura";
+
+/* Context menu action */
+"reader.postContextMenu.viewInBrowser" = "Visualizar no navegador";
+
+/* Reader post details view placeholder when blog name not avail */
+"reader.postDetails.blog" = "blog";
+
+/* Reader post details view */
+"reader.postDetails.viewModeDescription" = "O dono deste site permite que mostremos apenas um breve resumo do seu conteúdo. Para visualizar o post completo, você deverá acessar o seu site.";
+
+/* Reader post details view */
+"reader.postDetails.viewMoreOn" = "Acesse %@ para ver o post inteiro";
 
 /* Name for the Candy color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.candy" = "Candy";
@@ -10121,11 +10277,26 @@ Feel free to replace it with other bracket types that you think looks better for
 /* A short message that informs the user no WordPress.com blogs could be found. */
 "reader.reblog.no.blogs.title" = "Nenhum blog do WordPress.com disponível";
 
+/* Used in multiple contexts, usually as a screen title */
+"reader.recent.title" = "Recente";
+
+/* Used in multiple contexts, usually as a screen title */
+"reader.saved.title" = "Salvo";
+
 /* Notification title for when saved post is removed */
 "reader.savedPostRemovedNotificationTitle" = "Post salvo removido";
 
+/* Reader Search */
+"reader.search.clearHistory" = "Limpar histórico";
+
 /* Title of a Reader tab showing Sites matching a user's search query */
 "reader.search.tab.blogs" = "Blogs";
+
+/* Title of a Reader tab showing Posts matching a user's search query */
+"reader.search.tab.posts" = "Posts";
+
+/* Title of the Reader's search feature */
+"reader.search.title" = "Pesquisa";
 
 /* Screen title. Reader select interests title label text. */
 "reader.select.interests.follow.title" = "Seguir tags";
@@ -10167,10 +10338,16 @@ Feel free to replace it with other bracket types that you think looks better for
 "reader.sidebar.search" = "Pesquisar";
 
 /* Reader sidebar section title */
+"reader.sidebar.section.favorites.title" = "Favoritos";
+
+/* Reader sidebar section title */
 "reader.sidebar.section.lists.title" = "Listas";
 
 /* Reader sidebar section title */
 "reader.sidebar.section.organization.title" = "Empresa";
+
+/* Reader sidebar section title */
+"reader.sidebar.section.subscriptions.title" = "Assinaturas";
 
 /* Reader sidebar button */
 "reader.sidebar.section.tags.addTag" = "Adicionar tag";
@@ -10213,6 +10390,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* A suggestion of topics the user might want to subscribe to */
 "reader.suggested.blogs.title" = "Blogs para assinar";
+
+/* A suggestion of topics (tags) the user might like */
+"reader.suggested.tags.title" = "Tópicos que você pode gostar";
 
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag" = "Adicionar uma tag";
@@ -10513,6 +10693,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Accessibility hint for actions when displaying media items. */
 "siteMedia.cellAccessibilityHint" = "Selecione a mídia.";
+
+/* Title for the URL field */
+"siteMedia.details.url" = "URL";
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityHint" = "Toque para visualizar mídia em tela cheia";
@@ -10835,6 +11018,9 @@ Feel free to replace it with other bracket types that you think looks better for
 /* The section title and or placeholder */
 "submit.feedback.detailsPlaceholder" = "Detalhes";
 
+/* The footer in the Submit Feedback screen to clarify that it's not support */
+"submit.feedback.footer" = "Se precisar de auxílio, entre em contato conosco usando a tela Ajuda e suporte";
+
 /* The button title for the Submit button in the In-App Feedback screen */
 "submit.feedback.submit.button" = "Enviar";
 
@@ -11051,6 +11237,88 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Site's Viewers Profile. Displayed when the name is empty! */
 "user.details.title.viewer" = "Visitante do site";
 
+/* The 'Account Management' section of the user profile – matches what's in /wp-admin/profile.php */
+"userDetails.accountManagementSectionTitle" = "Gestão da conta";
+
+/* The help message for reassigning content to a user after deletion. */
+"userDetails.alert.attributeContentToUserHelpMessage" = "O autor das páginas e posts que pertenciam ao usuário excluído será substituído pelo usuário que for selecionado.";
+
+/* The label that appears in the alert that appears when deleting a user */
+"userDetails.alert.attributeContentToUserLabel" = "Usuário selecionado";
+
+/* The message that appears when deleting a user. */
+"userDetails.alert.deleteUserAttributionMessage" = "Selecione outro usuário para atribuir este conteúdo.";
+
+/* The title of the confirmation button in the alert that appears when deleting a user */
+"userDetails.alert.deleteUserConfirmButtonTitle" = "Sim, excluir usuário";
+
+/* The title of the cancel button in the confirmation alert that appears when deleting a user */
+"userDetails.alert.deleteUserConfirmationCancelButton" = "Cancelar";
+
+/* The title of the delete button in the confirmation alert that appears when deleting a user */
+"userDetails.alert.deleteUserConfirmationDeleteButton" = "Excluir";
+
+/* The message in the alert that appears when deleting a user. The first argument is the display name of the user to which content will be attributed */
+"userDetails.alert.deleteUserConfirmationMessage" = "Tem certeza de que deseja excluir este usuário e atribuir todo o conteúdo a %@?";
+
+/* The title of the alert that appears when deleting a user
+   The title of the confirmation alert that appears when deleting a user */
+"userDetails.alert.deleteUserConfirmationTitle" = "Confirmação de exclusão";
+
+/* The message in the alert that appears when deleting a user */
+"userDetails.alert.deleteUserErrorAlertMessage" = "Houve um erro ao excluir o usuário.";
+
+/* The title of the OK button in the alert that appears when deleting a user */
+"userDetails.alert.deleteUserErrorAlertOkButton" = "OK";
+
+/* The title of the alert that appears when deleting a user */
+"userDetails.alert.deleteUserErrorAlertTitle" = "Erro";
+
+/* The 'Biographical Info' field of the user profile – matches what's in /wp-admin/profile.php */
+"userDetails.bioFieldTitle" = "Informações biográficas";
+
+/* The 'Update' button to set a new password on the user profile */
+"userDetails.button.updatePassword" = "Atualizar";
+
+/* The 'Delete User' button on the user profile – matches what's in /wp-admin/profile.php */
+"userDetails.deleteUserActionTitle" = "Excluir usuário";
+
+/* The 'Deleting User…' button on the user profile */
+"userDetails.deletingUserActionTitle" = "Excluindo usuário…";
+
+/* The 'Email' field of the user profile – matches what's in /wp-admin/profile.php */
+"userDetails.emailAddressFieldTitle" = "Endereço de e-mail";
+
+/* The message in the alert that appears when setting a new password on the user profile */
+"userDetails.newPasswordAlertMessage" = "Digite uma nova senha para este usuário";
+
+/* The 'Role' field of the user profile – matches what's in /wp-admin/profile.php */
+"userDetails.roleFieldTitle" = "Função";
+
+/* The 'Set New Password' button on the user profile – matches what's in /wp-admin/profile.php */
+"userDetails.setNewPasswordActionTitle" = "Definir nova senha";
+
+/* The placeholder text for the 'New Password' field on the user profile */
+"userDetails.textField.placeholder.newPassword" = "Nova senha";
+
+/* The placeholder text for the 'Confirm New Password' field on the user profile */
+"userDetails.textField.placeholder.newPasswordConfirmation" = "Confirme a nova senha";
+
+/* The 'Website' field of the user profile – matches what's in /wp-admin/profile.php */
+"userDetails.websiteFieldTitle" = "Site";
+
+/* Header text fo the search results section in the users list */
+"userList.searchResults.header" = "Resultados de pesquisa";
+
+/* Shown when the user list is empty */
+"userlist.nousersfound" = "Nenhum usuário encontrado";
+
+/* An instruction for the user to tap to start searching */
+"userlist.searchprompt" = "Pesquisar";
+
+/* The heading at the top of the user list */
+"userlist.title" = "Usuários";
+
 /* Site Subscribers */
 "users.list.title.subscribers" = "Assinantes";
 
@@ -11239,6 +11507,27 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title of a button that displays a blog post in a web view. */
 "wp.migration.successCard.learnMore" = "Saiba mais";
+
+/* Error message when user denies access to WordPress.com */
+"wpComLogin.error.accessDenied" = "Acesso negado. Você precisa aprovar o acesso ao WordPress.com";
+
+/* Error message when user signs in with an different account than the account that's alredy signed in. The first argument is the current signed-in account email address */
+"wpComLogin.error.alreadySignedIn" = "Você já fez o acesso com o endereço de email %@. Saia da conta e tente novamente.";
+
+/* Error message when failing to load user details during WordPress.com login */
+"wpComLogin.error.fetchUser" = "Falha em carregar os detalhes do usuário";
+
+/* Error message when failing to load account's site after signing in */
+"wpComLogin.error.loadingSites" = "Não foi possível carregar os sites da sua conta. Tente mais tarde.";
+
+/* Error message when user signs in with an unexpected email address. The first argument is the expected email address */
+"wpComLogin.error.mismatchedEmail" = "Acesse com o endereço de email %@";
+
+/* Message title to be displayed when the user needs to re-authenticate their WordPress.com account. */
+"wpcom.token.fix.signin" = "Entrar no WordPress.com";
+
+/* Detailed message to be displayed when the user needs to re-authenticate their WordPress.com account. */
+"wpcom.token.fix.signin.message" = "Você precisa entrar no WordPress.com para ter acesso à sua conta.";
 
 /* Managing Zendesk attachments */
 "zendeskAttachmentsSection.addAttachment" = "Adicionar anexos";

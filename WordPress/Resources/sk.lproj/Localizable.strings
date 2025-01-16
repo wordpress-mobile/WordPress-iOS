@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-03-17 10:29:09+0000 */
+/* Translation-Revision-Date: 2025-01-08 15:01:32+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: sk */
@@ -2299,6 +2299,9 @@
 
 /* No comment provided by engineer. */
 "Please try entering your login details again." = "Skúste zadať vaše prihlasovacie údaje ešte raz.";
+
+/* Asks the user to wait until the currently running fetch request completes. */
+"Please wait until the current fetch completes." = "Počkajte, kým sa dokončí načítavanie.";
 
 /* Link to a plugin's home page */
 "Plugin Homepage" = "Domovská stránka pluginu";
