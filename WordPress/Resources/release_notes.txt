@@ -1,2 +1,5 @@
-
-
+This update:
+- Fixes some UI issues on iPad.
+- Adds the media ID and URL to each media item
+- Uses the new Gravatar Quick Editor to update your avatar.
+- Uses a web-based approach for WordPress.com login. This should be more reliable for most users, but please contact support if you have any trouble!
