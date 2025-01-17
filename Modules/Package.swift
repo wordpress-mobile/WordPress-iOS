@@ -50,7 +50,7 @@ let package = Package(
         .package(url: "https://github.com/Automattic/wordpress-rs", revision: "alpha-20241116"),
         .package(url: "https://github.com/wordpress-mobile/GutenbergKit", revision: "cc52214a50893b41898607ac0bff7f2787b085bb"),
         .package(url: "https://github.com/Automattic/color-studio", branch: "trunk"),
-        .package(url: "https://github.com/allenhumphreys/AztecEditor-iOS", branch: "ah/spm"),
+        .package(url: "https://github.com/wordpress-mobile/AztecEditor-iOS", branch: "test/ah/spm"),
     ],
     targets: XcodeSupport.targets + [
         .target(name: "AsyncImageKit", dependencies: [
