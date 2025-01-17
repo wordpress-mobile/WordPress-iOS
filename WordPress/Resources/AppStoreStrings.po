@@ -45,11 +45,13 @@ msgctxt "app_store_keywords"
 msgid "blogger,writing,blogging,web,maker,online,store,business,make,create,write,blogs"
 msgstr ""
 
-msgctxt "v25.5-whats-new"
+msgctxt "v25.6-whats-new"
 msgid ""
-"This month, we've:\n"
-"- Stability improvements to the experimental editor (you should try it if you haven't already!)\n"
-"- Adjusted how users log into WordPress.com – we hope it'll make it easier for folks to get started.\n"
+"This update:\n"
+"- Fixes some UI issues on iPad.\n"
+"- Adds the media ID and URL to each media item\n"
+"- Uses the new Gravatar Quick Editor to update your avatar.\n"
+"- Uses a web-based approach for WordPress.com login. This should be more reliable for most users, but please contact support if you have any trouble!\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
