@@ -142,29 +142,6 @@ struct BlogJetpackSettingsService {
         )
     }
 
-    func updateJetpackLazyImagesModuleSettingForBlog(_ blog: Blog, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
-        guard let blogSettings = blog.settings else {
-            failure(nil)
-            return
-        }
-
-        let isActive = blogSettings.jetpackLazyLoadImages
-        updateJetpackModuleActiveSettingForBlog(
-            blog,
-            module: BlogJetpackSettingsServiceRemote.Keys.lazyLoadImages,
-            active: isActive,
-            success: {
-                self.coreDataStack.performAndSave({ context in
-                    guard let blogSettingsInContext = Blog.lookup(withObjectID: blog.objectID, in: context)?.settings else {
-                        return
-                    }
-                    blogSettingsInContext.jetpackLazyLoadImages = isActive
-                }, completion: success, on: .main)
-            },
-            failure: failure
-        )
-    }
-
     func updateJetpackServeImagesFromOurServersModuleSettingForBlog(_ blog: Blog, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
         guard let blogSettings = blog.settings else {
             failure(nil)
@@ -235,7 +212,6 @@ private extension BlogJetpackSettingsService {
     }
 
     func updateJetpackModulesSettings(_ settings: BlogSettings, remoteSettings: RemoteBlogJetpackModulesSettings) {
-        settings.jetpackLazyLoadImages = remoteSettings.lazyLoadImages
         settings.jetpackServeImagesFromOurServers = remoteSettings.serveImagesFromOurServers
     }
 

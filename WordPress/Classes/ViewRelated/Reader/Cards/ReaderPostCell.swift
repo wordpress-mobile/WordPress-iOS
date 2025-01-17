@@ -146,7 +146,7 @@ private final class ReaderPostCellView: UIView {
         imageView.layer.masksToBounds = true
         imageView.contentMode = .scaleAspectFill
 
-        buttonMore.configuration?.baseForegroundColor = UIColor.opaqueSeparator
+        buttonMore.configuration?.baseForegroundColor = UIColor.secondaryLabel.withAlphaComponent(0.5)
         buttonMore.configuration?.contentInsets = .init(top: 12, leading: 8, bottom: 12, trailing: 20)
     }
 
@@ -360,7 +360,7 @@ private final class ReaderPostCellView: UIView {
 
     private func setAvatar(with viewModel: ReaderPostCellViewModel) {
         avatarView.setPlaceholder(UIImage(named: "post-blavatar-placeholder"))
-        let avatarSize = ImageSize(scaling: CGSize(width: ReaderPostCell.avatarSize, height: ReaderPostCell.avatarSize))
+        let avatarSize = ImageSize(scaling: CGSize(width: ReaderPostCell.avatarSize, height: ReaderPostCell.avatarSize), in: self)
         if let avatarURL = viewModel.avatarURL {
             avatarView.setImage(with: avatarURL, size: avatarSize)
         } else {

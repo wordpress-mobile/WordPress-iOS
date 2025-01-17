@@ -133,7 +133,7 @@ private final class ReaderCrossPostView: UIView {
 
         avatarView.setPlaceholder(UIImage(named: "post-blavatar-placeholder"))
         if let avatarURL = post.avatarURLForDisplay() {
-            let avatarSize = ImageSize(scaling: CGSize(width: avatarSize, height: avatarSize))
+            let avatarSize = ImageSize(scaling: CGSize(width: avatarSize, height: avatarSize), in: self)
             avatarView.setImage(with: avatarURL, size: avatarSize)
         }
     }

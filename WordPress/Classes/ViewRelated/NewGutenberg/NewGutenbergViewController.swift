@@ -1,4 +1,5 @@
 import UIKit
+import WordPressUI
 import AsyncImageKit
 import AutomatticTracks
 import GutenbergKit
@@ -68,18 +69,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
     private let editorViewController: GutenbergKit.EditorViewController
     private weak var autosaveTimer: Timer?
-
-    var editorHasChanges: Bool {
-        var changes = post.changes
-        // TODO: cleanup (+ it doesn't handle scenarios like load from a revision)
-        // - warning: it has to compare two version serialized using the same system
-        if editorViewController.initialContent != post.content {
-            changes.content = post.content
-        } else {
-            changes.content = nil // yes, it needs to be set to .none manually
-        }
-        return !changes.isEmpty
-    }
 
     // TODO: remove (none of these APIs are needed for the new editor)
     var autosaver = Autosaver(action: {})
@@ -243,22 +232,8 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     }
 
     private func reloadBlogIconView() {
-        let blog = post.blog
-
-//        if blog.hasIcon == true {
-//            let size = CGSize(width: 24, height: 24)
-//            navigationBarManager.siteIconView.imageView.downloadSiteIcon(for: blog, imageSize: size)
-//        } else if blog.isWPForTeams() {
-//            navigationBarManager.siteIconView.imageView.tintColor = UIColor.secondaryLabel
-//            navigationBarManager.siteIconView.imageView.image = UIImage.gridicon(.p2)
-//        } else {
-//            navigationBarManager.siteIconView.imageView.image = UIImage.siteIconPlaceholder
-//        }
-
-        // TODO: implement
-        // Docs: https://wordpress.org/gutenberg-framework/docs/basic-concepts/undo-redo
-        navigationBarManager.undoButton.isHidden = true
-        navigationBarManager.redoButton.isHidden = true
+        let viewModel = SiteIconViewModel(blog: post.blog, size: .small)
+        navigationBarManager.siteIconView.imageView.setIcon(with: viewModel)
     }
 
     // TODO: this should not be called on viewDidLoad
@@ -313,6 +288,10 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         guard let url = URL(string: "https://wordpress.com/support/wordpress-editor/") else { return }
         present(SFSafariViewController(url: url), animated: true)
     }
+
+    func showFeedbackView() {
+        self.present(SubmitFeedbackViewController(source: "gutenberg_kit", feedbackPrefix: "Editor"), animated: true)
+    }
 }
 
 extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate {
@@ -345,6 +324,11 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
                 self?.performAutoSave()
             }
         }
+    }
+
+    func editor(_ viewController: GutenbergKit.EditorViewController, didUpdateHistoryState state: GutenbergKit.EditorState) {
+        gutenbergDidRequestToggleRedoButton(!state.hasRedo)
+        gutenbergDidRequestToggleUndoButton(!state.hasUndo)
     }
 
     func editor(_ viewController: GutenbergKit.EditorViewController, performRequest: GutenbergKit.EditorNetworkRequest) async throws -> GutenbergKit.EditorNetworkResponse {
@@ -610,13 +594,11 @@ extension NewGutenbergViewController: PostEditorNavigationBarManagerDelegate {
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, undoWasPressed sender: UIButton) {
-        // TODO: reimplement
-        // self.gutenberg.onUndoPressed()
+        editorViewController.undo()
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, redoWasPressed sender: UIButton) {
-        // TODO: reimplement
-        // self.gutenberg.onRedoPressed()
+        editorViewController.redo()
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, moreWasPressed sender: UIButton) {
@@ -728,6 +710,9 @@ extension NewGutenbergViewController {
         actions.append(UIAction(title: helpTitle, image: UIImage(systemName: "questionmark.circle")) { [weak self] _ in
             self?.showEditorHelp()
         })
+        actions.append(UIAction(title: Strings.sendFeedback, image: UIImage(systemName: "envelope")) { [weak self] _ in
+            self?.showFeedbackView()
+        })
         return actions
     }
 
@@ -767,6 +752,7 @@ private enum Strings {
     static let postSettings = NSLocalizedString("postEditor.moreMenu.postSettings", value: "Post Settings", comment: "Post Editor / Button in the 'More' menu")
     static let helpAndSupport = NSLocalizedString("postEditor.moreMenu.helpAndSupport", value: "Help & Support", comment: "Post Editor / Button in the 'More' menu")
     static let help = NSLocalizedString("postEditor.moreMenu.help", value: "Help", comment: "Post Editor / Button in the 'More' menu")
+    static let sendFeedback = NSLocalizedString("postEditor.moreMenu.sendFeedback", value: "Send Feedback", comment: "Post Editor / Button in the 'More' menu")
     static let saveDraft = NSLocalizedString("postEditor.moreMenu.saveDraft", value: "Save Draft", comment: "Post Editor / Button in the 'More' menu")
     static let contentStructure = NSLocalizedString("postEditor.moreMenu.contentStructure", value: "Blocks: %li, Words: %li, Characters: %li", comment: "Post Editor / 'More' menu details labels with 'Blocks', 'Words' and 'Characters' counts as parameters (in that order)")
 }

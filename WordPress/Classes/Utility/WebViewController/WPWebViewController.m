@@ -177,6 +177,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 
 - (void)setupWebView
 {
+    self.webView.customUserAgent = [WPUserAgent wordPressUserAgent];
     self.webView.navigationDelegate = self;
 }
 

@@ -30,6 +30,7 @@ public final class AsyncImageView: UIView {
         /// By default, `background`.
         public var loadingStyle = LoadingStyle.background
 
+        // TODO: remove when WPRichTextImage is removed
         public var passTouchesToSuperview = false
 
         public init() {}

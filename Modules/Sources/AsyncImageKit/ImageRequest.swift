@@ -51,29 +51,34 @@ public struct ImageRequestOptions: Hashable, Sendable {
 
 /// Image size in **pixels**.
 public struct ImageSize: Hashable, Sendable {
-    public let width: CGFloat
-    public let height: CGFloat
+    /// Width in **pixels**.
+    public var width: Int
+    /// Height in **pixels**.
+    public var height: Int
 
-    public init(width: CGFloat, height: CGFloat) {
+    /// Initializes the struct with given size in **pixels**.
+    public init(width: Int, height: Int) {
         self.width = width
         self.height = height
     }
 
-    public init(_ size: CGSize) {
-        self.width = size.width
-        self.height = size.height
+    /// Initializes the struct with given size in **pixels**.
+    public init(pixels size: CGSize) {
+        self.width = Int(size.width)
+        self.height = Int(size.height)
     }
 
-    /// Initializes `ImageSize` with the given size scaled for the given view.
+    /// A convenience initializer that creates `ImageSize` with the given size
+    /// in **points** scaled for the given view.
     @MainActor
     public init(scaling size: CGSize, in view: UIView) {
-        self.init(size.scaled(by: view.traitCollection.displayScale))
+        self.init(scaling: size, scale: view.traitCollection.displayScale)
     }
 
-    /// Initializes `ImageSize` with the given size scaled for the current trait
-    /// collection display scale.
-    public init(scaling size: CGSize) {
-        self.init(size.scaled(by: UITraitCollection.current.displayScale))
+    /// Initializes `ImageSize` with the given size in **points** scaled for the
+    /// current trait collection display scale.
+    public init(scaling size: CGSize, scale: CGFloat) {
+        self.init(pixels: size.scaled(by: max(1, scale)))
     }
 }
 

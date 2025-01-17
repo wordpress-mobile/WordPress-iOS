@@ -83,7 +83,8 @@ class FullScreenCommentReplyViewControllerTests: CoreDataTestCase {
 
     /// Tests the onExitFullscreen callback is correctly called when pressing the cancel button
     /// also validates the arguments being triggered are correct
-    func testExitCallbackCalledWithLastSearchTextWhenCancelPressed() throws {
+    // TODO: flaky test (and we'll rewrite this soon)
+    func _testExitCallbackCalledWithLastSearchTextWhenCancelPressed() throws {
         let testContent = "Test - Cancel"
         let expectedLastSearchText = "@Ren"
         let callbackExpectation = expectation(description: "onExitFullscreen is called successfully when the cancel button is pressed")

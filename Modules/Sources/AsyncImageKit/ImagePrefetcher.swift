@@ -89,6 +89,7 @@ public final class ImagePrefetcher {
                 value.task?.cancel()
             }
             queue.removeAll()
+            numberOfActiveTasks = 0
         }
     }
 

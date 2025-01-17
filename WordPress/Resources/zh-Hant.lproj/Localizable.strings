@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-12-18 13:54:09+0000 */
+/* Translation-Revision-Date: 2025-01-15 00:23:01+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: zh_TW */
@@ -4979,10 +4979,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Redo" = "取消復原";
 
 /* Label for link title in Referrers stat. */
-"Referrer" = "訪客連結來源";
+"Referrer" = "參照連結網址";
 
 /* Period Stats 'Referrers' header */
-"Referrers" = "來源網址";
+"Referrers" = "參照連結網址";
 
 /* Button label to refres a web page
    The loading view button title displayed when an error occurred */
@@ -10704,7 +10704,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "siteMonitoring.metadataKeyName" = "名稱";
 
 /* Site Monitoring details screen metadata key */
-"siteMonitoring.metadataKeyReferrer" = "推薦連結";
+"siteMonitoring.metadataKeyReferrer" = "參照連結網址";
 
 /* Site Monitoring details screen metadata key */
 "siteMonitoring.metadataKeyRequestTime" = "申請時間";

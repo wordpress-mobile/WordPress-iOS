@@ -71,7 +71,7 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
         if let gravatar = AvatarURL(url: url) {
             authorAvatarImageView.downloadGravatar(gravatar, placeholder: .gravatarPlaceholderImage, animate: true)
         } else {
-            authorAvatarImageView.wp.setImage(with: url, size: ImageSize(scaling: SiteIconViewModel.Size.regular.size))
+            authorAvatarImageView.wp.setImage(with: url, size: ImageSize(scaling: SiteIconViewModel.Size.regular.size, in: self))
         }
     }
 

@@ -1,8 +1,9 @@
 25.7
 -----
 * [**] Add Image Playground support (part of Apple Intelligence suite) for adding images to your posts, generated featured image, site icons, and more [#23688]
-* [**] Add new lightbox screen for images with modern transitions and enhanced performance [#23922]
+* [**] Enable history navigation (undo and redo) for the experimental editor. [#23961]
 * [**] Enhance the Gravatar Quick Editor by adding features that allow users to delete and share their avatars. [#23868]
+* [**] Add new lightbox screen for images with modern transitions and enhanced performance [#23922]
 * [**] Add the capability to create an avatar using Apple Image Playground through the Gravatar Quick Editor. [#23868]
 * [**] Various bug fixes and improvements in the new experimental editor [#23919]
 * [*] Fix sorting in Stats Subscriber Emails (latest first) [#23913]
@@ -39,6 +40,14 @@
 * [*] Fix small tap area for “More” button in the Subscriptions screen in Reader [#23964]
 * [*] Fix “Notification Settings” for individual posts sometimes being clipped [#23964]
 * [*] Add context menu (long-press) and previews for subscriptions with quick access to “Share”, “Copy Link”, “Add to Favorites”, “Notification Settings”, and “Unsubscribe” buttons in both the Subscriptions view and the Sidebar in Reader [#23964]
+* [*] Fix an issue with fullscreen button in reply view clipped by the notch [#23965]
+* [*] Remove "Lazy Images" option that is no longer part of the Jetpack plugin [#23966]
+* [*] Fix an issue with "Speed up your site" section not refreshing (fails silently) [#23966]
+* [*] Fix an issue with small tap area of the ellipsis in the post list [#23973]
+* [*] Avoid unexpectedly marking post content as unsaved. [#23969]
+* [*] Fix an issue with Mastodon connection not working [#23981]
+* [**] Send feedback from within the experimental editor "more" options menu. [#23980]
+* [**] Support accessing the code editor within the experimental editor. [#23979]
 
 25.6
 -----
@@ -98,7 +107,7 @@
 * [*] [internal] Incorporate a parser to handle Gutenberg blocks more efficiently for improved performance [#22886]
 * [**] Improve performance of Image and Gallery block processors to avoid long delay when saving a post [#22896]
 * [*] Improve performance of File block processor [#22897]
-* [*] [internal] Prompt users to keep the app up to date on their devices, so they can try new features, as well as benefit from performance improvements and bug fixes [#23195, #23216, #23218, #23211] 
+* [*] [internal] Prompt users to keep the app up to date on their devices, so they can try new features, as well as benefit from performance improvements and bug fixes [#23195, #23216, #23218, #23211]
 * [**] [Jetpack-only] Reader: Add a new feed dedicated to tags [#23242]
 
 24.9.1

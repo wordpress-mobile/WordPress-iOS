@@ -232,11 +232,6 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 - (void)handleConnectTapped:(NSIndexPath *)indexPath
 {
-    if (![ReachabilityUtils isInternetReachable]) {
-        [ReachabilityUtils showAlertNoInternetConnection];
-        return;
-    }
-
     if ([UIDevice isPad]) {
         UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
         self.helper.popoverSourceView = cell.textLabel;

@@ -215,7 +215,7 @@ enum ReaderDiscoverChannel: Hashable {
         case .dailyPrompts:
             NSLocalizedString("reader.discover.channel.dailyPrompts", value: "Daily Prompts", comment: "Header view channel (filter)")
         case .tag(let tag):
-            tag.title.localizedCapitalized
+            tag.formattedTitle
         }
     }
 

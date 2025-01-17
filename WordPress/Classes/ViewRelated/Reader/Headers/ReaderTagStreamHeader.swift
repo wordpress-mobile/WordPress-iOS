@@ -41,7 +41,11 @@ final class ReaderTagStreamHeader: ReaderBaseHeaderView, ReaderStreamHeader {
     // MARK: - Configuration
 
     public func configureHeader(_ topic: ReaderAbstractTopic) {
-        titleLabel.text = topic.title.split(separator: "-").map { $0.capitalized }.joined(separator: " ")
+        if let tag = topic as? ReaderTagTopic {
+            titleLabel.text = tag.formattedTitle
+        } else {
+            titleLabel.text = topic.title
+        }
         followButton.isSelected = topic.following
         WPStyleGuide.applyTagsReaderButtonStyle(followButton)
     }
