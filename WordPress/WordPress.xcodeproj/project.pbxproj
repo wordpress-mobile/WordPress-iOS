@@ -7739,6 +7739,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				3FE686092D3C2F2F00862F57 /* PBXTargetDependency */,
 				3FCFFAFE2994A949002840C9 /* PBXTargetDependency */,
 				096A92FD26E2A0AE00448C68 /* PBXTargetDependency */,
 				932225B01C7CE50300443B02 /* PBXTargetDependency */,
@@ -8251,6 +8252,9 @@
 				sk,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
+			packageReferences = (
+				3FE686072D3C2EFC00862F57 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
@@ -10262,6 +10266,10 @@
 			isa = PBXTargetDependency;
 			target = FFA8E22A1F94E3DE0002170F /* SwiftLint */;
 			targetProxy = 3FCFFAFF2994AB25002840C9 /* PBXContainerItemProxy */;
+		};
+		3FE686092D3C2F2F00862F57 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 3FE686082D3C2F2F00862F57 /* SwiftLintBuildToolPlugin */;
 		};
 		4AD953BE2C21451700D0EEFA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -13770,6 +13778,17 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		3FE686072D3C2EFC00862F57 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SimplyDanny/SwiftLintPlugins";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.58.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		0C2155A52C39A24D00EFE2C0 /* XcodeTarget_UITests */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -13830,6 +13849,11 @@
 		0CFFFECA2C36F5760044709B /* XcodeTarget_WordPressAuthentificatorTests */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = XcodeTarget_WordPressAuthentificatorTests;
+		};
+		3FE686082D3C2F2F00862F57 /* SwiftLintBuildToolPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3FE686072D3C2EFC00862F57 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */;
+			productName = "plugin:SwiftLintBuildToolPlugin";
 		};
 /* End XCSwiftPackageProductDependency section */
 
