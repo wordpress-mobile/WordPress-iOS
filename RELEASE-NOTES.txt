@@ -48,6 +48,7 @@
 * [*] Fix an issue with Mastodon connection not working [#23981]
 * [**] Send feedback from within the experimental editor "more" options menu. [#23980]
 * [**] Support accessing the code editor within the experimental editor. [#23979]
+* [**] Add button for dismissing the keyboard within the experimental editor. [#23988]
 
 25.6
 -----
