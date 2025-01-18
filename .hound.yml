@@ -1,7 +1,0 @@
-fail_on_violations: true
-
-rubocop:
-  enabled: false
-  
-swiftlint:
-  config_file: .swiftlint.yml
