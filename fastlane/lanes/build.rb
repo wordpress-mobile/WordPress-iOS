@@ -285,7 +285,7 @@ platform :ios do
   lane :build_and_upload_wordpress_prototype_build do
     sentry_check_cli_installed
 
-    alpha_code_signing
+    update_certs_and_profiles_wordpress_enterprise
 
     build_and_upload_prototype_build(
       scheme: 'WordPress Alpha',

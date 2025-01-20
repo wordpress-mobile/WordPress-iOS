@@ -19,7 +19,7 @@ platform :ios do
   # @option [Boolean] readonly (default: true) Whether to only fetch existing certificates and profiles, without generating new ones.
   #
   lane :update_certs_and_profiles_wordpress do |readonly: true|
-    alpha_code_signing(readonly: readonly)
+    update_certs_and_profiles_wordpress_enterprise(readonly: readonly)
     appstore_code_signing(readonly: readonly)
   end
 
@@ -42,7 +42,7 @@ platform :ios do
   #
   # @option [Boolean] readonly (default: true) Whether to only fetch existing certificates and profiles, without generating new ones.
   #
-  private_lane :alpha_code_signing do |readonly: true|
+  private_lane :update_certs_and_profiles_wordpress_enterprise do |readonly: true|
     update_code_signing_enterprise(
       app_identifiers: ALL_WORDPRESS_BUNDLE_IDENTIFIERS.map { |id| id.sub(WORDPRESS_BUNDLE_IDENTIFIER, 'org.wordpress.alpha') },
       readonly: readonly
