@@ -305,7 +305,7 @@ platform :ios do
   lane :build_and_upload_jetpack_prototype_build do
     sentry_check_cli_installed
 
-    jetpack_alpha_code_signing
+    update_certs_and_profiles_jetpack_enterprise
 
     build_and_upload_prototype_build(
       scheme: 'Jetpack',

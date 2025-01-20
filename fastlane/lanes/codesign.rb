@@ -29,7 +29,7 @@ platform :ios do
   # @option [Boolean] readonly (default: true) Whether to only fetch existing certificates and profiles, without generating new ones.
   #
   lane :update_certs_and_profiles_jetpack do |readonly: true|
-    jetpack_alpha_code_signing(readonly: readonly)
+    update_certs_and_profiles_jetpack_enterprise(readonly: readonly)
     jetpack_appstore_code_signing(readonly: readonly)
   end
 
@@ -66,7 +66,7 @@ platform :ios do
   #
   # @option [Boolean] readonly (default: true) Whether to only fetch existing certificates and profiles, without generating new ones.
   #
-  private_lane :jetpack_alpha_code_signing do |readonly: true|
+  private_lane :update_certs_and_profiles_jetpack_enterprise do |readonly: true|
     update_code_signing_enterprise(
       app_identifiers: ALL_JETPACK_BUNDLE_IDENTIFIERS.map { |id| id.sub(JETPACK_BUNDLE_IDENTIFIER, 'com.jetpack.alpha') },
       readonly: readonly
