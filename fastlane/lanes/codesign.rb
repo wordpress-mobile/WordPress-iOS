@@ -80,6 +80,26 @@ platform :ios do
       readonly: readonly
     )
   end
+
+  # Downloads all the required certificates and profiles (using `match`) for both Jetpack and WordPress App Store variants.
+  # Optionally, it can create any new necessary certificate or profile.
+  #
+  # @option [Boolean] readonly (default: true) Whether to only fetch existing certificates and profiles, without generating new ones.
+  #
+  lane :update_certs_and_profiles_app_store do |readonly: true|
+    update_certs_and_profiles_jetpack_app_store(readonly: readonly)
+    update_certs_and_profiles_wordpress_app_store(readonly: readonly)
+  end
+
+  # Downloads all the required certificates and profiles (using `match`) for both Jetpack and WordPress Enterprise variants.
+  # Optionally, it can create any new necessary certificate or profile.
+  #
+  # @option [Boolean] readonly (default: true) Whether to only fetch existing certificates and profiles, without generating new ones.
+  #
+  lane :update_certs_and_profiles_enterprise do |readonly: true|
+    update_certs_and_profiles_jetpack_enterprise(readonly: readonly)
+    update_certs_and_profiles_wordpress_enterprise(readonly: readonly)
+  end
 end
 
 def update_code_signing_enterprise(readonly:, app_identifiers:)
