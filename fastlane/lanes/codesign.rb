@@ -142,6 +142,7 @@ def update_code_signing(type:, team_id:, readonly:, app_identifiers:, api_key_pa
   match(
     storage_mode: 's3',
     s3_bucket: 'a8c-fastlane-match',
+    s3_region: 'us-east-2',
     type: type,
     team_id: team_id,
     readonly: readonly,
