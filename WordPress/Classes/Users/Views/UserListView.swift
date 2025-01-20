@@ -1,5 +1,6 @@
 import SwiftUI
 import WordPressUI
+import WordPressCore
 
 public struct UserListView: View {
 

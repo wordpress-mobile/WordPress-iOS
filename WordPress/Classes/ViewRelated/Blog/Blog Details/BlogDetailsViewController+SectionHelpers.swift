@@ -3,6 +3,7 @@ import UIKit
 import SwiftUI
 import WordPressUI
 import WordPressAPI
+import WordPressCore
 
 extension Array where Element: BlogDetailsSection {
     fileprivate func findSectionIndex(of category: BlogDetailsSectionCategory) -> Int? {

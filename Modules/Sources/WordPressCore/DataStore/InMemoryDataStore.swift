@@ -1,5 +1,5 @@
 import Foundation
-import Combine
+@preconcurrency import Combine
 
 /// A `DataStore` type that stores data in memory.
 public protocol InMemoryDataStore: DataStore {
@@ -16,11 +16,11 @@ public protocol InMemoryDataStore: DataStore {
 
 public extension InMemoryDataStore {
     func delete(query: Query) async throws {
-        var updated = Set<T.ID>()
         let result = try await list(query: query)
-        result.forEach {
-            if storage.removeValue(forKey: $0.id) != nil {
-                updated.insert($0.id)
+        var updated = Set<T.ID>()
+        for item in result {
+            if storage.removeValue(forKey: item.id) != nil {
+                updated.insert(item.id)
             }
         }
 
@@ -31,9 +31,9 @@ public extension InMemoryDataStore {
 
     func store(_ data: [T]) async throws {
         var updated = Set<T.ID>()
-        data.forEach {
-            updated.insert($0.id)
-            self.storage[$0.id] = $0
+        for item in data {
+            updated.insert(item.id)
+            self.storage[item.id] = item
         }
 
         if !updated.isEmpty {

@@ -1,4 +1,5 @@
 import SwiftUI
+import WordPressCore
 
 @MainActor
 class UserDetailViewModel: ObservableObject {

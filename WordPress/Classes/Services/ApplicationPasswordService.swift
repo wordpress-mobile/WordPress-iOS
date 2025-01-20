@@ -1,5 +1,6 @@
 import Foundation
 import WordPressAPI
+import WordPressCore
 
 @objc class ApplicationPasswordService: NSObject {
 
@@ -11,14 +12,14 @@ import WordPressAPI
         self.currentUserId = currentUserId
     }
 
-    private func fetchTokens(forUserId userId: Int32) async throws -> [ApplicationPasswordWithEditContext] {
+    private func fetchTokens(forUserId userId: UserId) async throws -> [ApplicationPasswordWithEditContext] {
         try await apiClient.api.applicationPasswords.listWithEditContext(userId: userId).data
     }
 }
 
 extension ApplicationPasswordService: ApplicationTokenListDataProvider {
     func loadApplicationTokens() async throws -> [ApplicationTokenItem] {
-        try await fetchTokens(forUserId: Int32(currentUserId))
+        try await fetchTokens(forUserId: UserId(currentUserId))
             .compactMap(ApplicationTokenItem.init)
     }
 }

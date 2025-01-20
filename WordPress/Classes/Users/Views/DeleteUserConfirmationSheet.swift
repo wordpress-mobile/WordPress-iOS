@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUI
+import WordPressCore
 
 struct DeleteUserConfirmationSheet: View {
     let user: DisplayUser
@@ -100,5 +101,5 @@ struct DeleteUserConfirmationSheet: View {
 }
 
 #Preview {
-    DeleteUserConfirmationSheet(user: .MockUser, deleteUserViewModel: .init(user: .MockUser, userService: MockUserProvider()), didTapDeleteButton: { })
+    DeleteUserConfirmationSheet(user: .mockUser, deleteUserViewModel: .init(user: .mockUser, userService: MockUserProvider()), didTapDeleteButton: { })
 }

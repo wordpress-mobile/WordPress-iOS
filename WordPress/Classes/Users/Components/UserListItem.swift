@@ -1,4 +1,5 @@
 import SwiftUI
+import WordPressCore
 
 struct UserListItem: View {
 
@@ -31,5 +32,5 @@ struct UserListItem: View {
 }
 
 #Preview {
-    UserListItem(user: DisplayUser.MockUser, isCurrentUser: true, userService: MockUserProvider(), applicationTokenListDataProvider: StaticTokenProvider(tokens: .success(.testTokens)))
+    UserListItem(user: DisplayUser.mockUser, isCurrentUser: true, userService: MockUserProvider(), applicationTokenListDataProvider: StaticTokenProvider(tokens: .success(.testTokens)))
 }
