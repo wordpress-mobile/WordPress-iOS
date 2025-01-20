@@ -9,8 +9,8 @@ platform :ios do
   # @option [Boolean] readonly (default: true) Whether to only fetch existing certificates and profiles, without generating new ones.
   #
   lane :update_certs_and_profiles do |options|
-    update_wordpress_certs_and_profiles(options)
-    update_jetpack_certs_and_profiles(options)
+    update_certs_and_profiles_wordpress(options)
+    update_certs_and_profiles_jetpack(options)
   end
 
   # Downloads all the required certificates and profiles (using `match`) for all WordPress variants.
@@ -18,7 +18,7 @@ platform :ios do
   #
   # @option [Boolean] readonly (default: true) Whether to only fetch existing certificates and profiles, without generating new ones.
   #
-  lane :update_wordpress_certs_and_profiles do |readonly: true|
+  lane :update_certs_and_profiles_wordpress do |readonly: true|
     alpha_code_signing(readonly: readonly)
     appstore_code_signing(readonly: readonly)
   end
@@ -28,7 +28,7 @@ platform :ios do
   #
   # @option [Boolean] readonly (default: true) Whether to only fetch existing certificates and profiles, without generating new ones.
   #
-  lane :update_jetpack_certs_and_profiles do |readonly: true|
+  lane :update_certs_and_profiles_jetpack do |readonly: true|
     jetpack_alpha_code_signing(readonly: readonly)
     jetpack_appstore_code_signing(readonly: readonly)
   end
