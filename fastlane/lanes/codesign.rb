@@ -33,16 +33,12 @@ platform :ios do
     update_certs_and_profiles_jetpack_app_store(readonly: readonly)
   end
 
-  ########################################################################
-  # Private lanes
-  ########################################################################
-
   # Downloads all the required certificates and profiles (using `match``) for the WordPress Alpha builds (`org.wordpress.alpha`) in the Enterprise account
   # Optionally, it can create any new necessary certificate or profile.
   #
   # @option [Boolean] readonly (default: true) Whether to only fetch existing certificates and profiles, without generating new ones.
   #
-  private_lane :update_certs_and_profiles_wordpress_enterprise do |readonly: true|
+  lane :update_certs_and_profiles_wordpress_enterprise do |readonly: true|
     update_code_signing_enterprise(
       app_identifiers: ALL_WORDPRESS_BUNDLE_IDENTIFIERS.map { |id| id.sub(WORDPRESS_BUNDLE_IDENTIFIER, 'org.wordpress.alpha') },
       readonly: readonly
@@ -54,7 +50,7 @@ platform :ios do
   #
   # @option [Boolean] readonly (default: true) Whether to only fetch existing certificates and profiles, without generating new ones.
   #
-  private_lane :update_certs_and_profiles_wordpress_app_store do |readonly: true|
+  lane :update_certs_and_profiles_wordpress_app_store do |readonly: true|
     update_code_signing_app_store(
       app_identifiers: ALL_WORDPRESS_BUNDLE_IDENTIFIERS,
       readonly: readonly
@@ -66,7 +62,7 @@ platform :ios do
   #
   # @option [Boolean] readonly (default: true) Whether to only fetch existing certificates and profiles, without generating new ones.
   #
-  private_lane :update_certs_and_profiles_jetpack_enterprise do |readonly: true|
+  lane :update_certs_and_profiles_jetpack_enterprise do |readonly: true|
     update_code_signing_enterprise(
       app_identifiers: ALL_JETPACK_BUNDLE_IDENTIFIERS.map { |id| id.sub(JETPACK_BUNDLE_IDENTIFIER, 'com.jetpack.alpha') },
       readonly: readonly
@@ -78,7 +74,7 @@ platform :ios do
   #
   # @option [Boolean] readonly (default: true) Whether to only fetch existing certificates and profiles, without generating new ones.
   #
-  private_lane :update_certs_and_profiles_jetpack_app_store do |readonly: true|
+  lane :update_certs_and_profiles_jetpack_app_store do |readonly: true|
     update_code_signing_app_store(
       app_identifiers: ALL_JETPACK_BUNDLE_IDENTIFIERS,
       readonly: readonly
