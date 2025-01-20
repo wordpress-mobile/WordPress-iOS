@@ -20,7 +20,7 @@ platform :ios do
   #
   lane :update_certs_and_profiles_wordpress do |readonly: true|
     update_certs_and_profiles_wordpress_enterprise(readonly: readonly)
-    appstore_code_signing(readonly: readonly)
+    update_certs_and_profiles_wordpress_app_store(readonly: readonly)
   end
 
   # Downloads all the required certificates and profiles (using `match`) for all Jetpack variants.
@@ -54,7 +54,7 @@ platform :ios do
   #
   # @option [Boolean] readonly (default: true) Whether to only fetch existing certificates and profiles, without generating new ones.
   #
-  private_lane :appstore_code_signing do |readonly: true|
+  private_lane :update_certs_and_profiles_wordpress_app_store do |readonly: true|
     update_code_signing_app_store(
       app_identifiers: ALL_WORDPRESS_BUNDLE_IDENTIFIERS,
       readonly: readonly

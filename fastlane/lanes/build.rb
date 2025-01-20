@@ -169,7 +169,7 @@ platform :ios do
 
     sentry_check_cli_installed
 
-    appstore_code_signing
+    update_certs_and_profiles_wordpress_app_store
 
     build_app(
       scheme: 'WordPress',
