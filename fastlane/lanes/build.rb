@@ -235,7 +235,7 @@ platform :ios do
   lane :build_and_upload_jetpack_for_app_store do
     sentry_check_cli_installed
 
-    jetpack_appstore_code_signing
+    update_certs_and_profiles_jetpack_app_store
 
     build_app(
       scheme: 'Jetpack',
