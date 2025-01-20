@@ -18,9 +18,9 @@ platform :ios do
   #
   # @option [Boolean] readonly (default: true) Whether to only fetch existing certificates and profiles, without generating new ones.
   #
-  lane :update_wordpress_certs_and_profiles do |options|
-    alpha_code_signing(options)
-    appstore_code_signing(options)
+  lane :update_wordpress_certs_and_profiles do |readonly: true|
+    alpha_code_signing(readonly: readonly)
+    appstore_code_signing(readonly: readonly)
   end
 
   # Downloads all the required certificates and profiles (using `match`) for all Jetpack variants.
@@ -28,9 +28,9 @@ platform :ios do
   #
   # @option [Boolean] readonly (default: true) Whether to only fetch existing certificates and profiles, without generating new ones.
   #
-  lane :update_jetpack_certs_and_profiles do |options|
-    jetpack_alpha_code_signing(options)
-    jetpack_appstore_code_signing(options)
+  lane :update_jetpack_certs_and_profiles do |readonly: true|
+    jetpack_alpha_code_signing(readonly: readonly)
+    jetpack_appstore_code_signing(readonly: readonly)
   end
 
   ########################################################################
@@ -42,10 +42,10 @@ platform :ios do
   #
   # @option [Boolean] readonly (default: true) Whether to only fetch existing certificates and profiles, without generating new ones.
   #
-  private_lane :alpha_code_signing do |options|
+  private_lane :alpha_code_signing do |readonly: true|
     update_code_signing_enterprise(
       app_identifiers: ALL_WORDPRESS_BUNDLE_IDENTIFIERS.map { |id| id.sub(WORDPRESS_BUNDLE_IDENTIFIER, 'org.wordpress.alpha') },
-      readonly: options.fetch(:readonly, true)
+      readonly: readonly
     )
   end
 
@@ -54,10 +54,10 @@ platform :ios do
   #
   # @option [Boolean] readonly (default: true) Whether to only fetch existing certificates and profiles, without generating new ones.
   #
-  private_lane :appstore_code_signing do |options|
+  private_lane :appstore_code_signing do |readonly: true|
     update_code_signing_app_store(
-      readonly: options.fetch(:readonly, true),
-      app_identifiers: ALL_WORDPRESS_BUNDLE_IDENTIFIERS
+      app_identifiers: ALL_WORDPRESS_BUNDLE_IDENTIFIERS,
+      readonly: readonly
     )
   end
 
@@ -66,10 +66,10 @@ platform :ios do
   #
   # @option [Boolean] readonly (default: true) Whether to only fetch existing certificates and profiles, without generating new ones.
   #
-  private_lane :jetpack_alpha_code_signing do |options|
+  private_lane :jetpack_alpha_code_signing do |readonly: true|
     update_code_signing_enterprise(
       app_identifiers: ALL_JETPACK_BUNDLE_IDENTIFIERS.map { |id| id.sub(JETPACK_BUNDLE_IDENTIFIER, 'com.jetpack.alpha') },
-      readonly: options.fetch(:readonly, true)
+      readonly: readonly
     )
   end
 
@@ -78,10 +78,10 @@ platform :ios do
   #
   # @option [Boolean] readonly (default: true) Whether to only fetch existing certificates and profiles, without generating new ones.
   #
-  private_lane :jetpack_appstore_code_signing do |options|
+  private_lane :jetpack_appstore_code_signing do |readonly: true|
     update_code_signing_app_store(
-      readonly: options.fetch(:readonly, true),
-      app_identifiers: ALL_JETPACK_BUNDLE_IDENTIFIERS
+      app_identifiers: ALL_JETPACK_BUNDLE_IDENTIFIERS,
+      readonly: readonly
     )
   end
 end
