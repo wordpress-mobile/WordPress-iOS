@@ -265,8 +265,7 @@ extension ShareTagsPickerViewController: UITextViewDelegate {
             range.length == 1 && text == "", // Deleting last character
             range.location > 0, // Not at the beginning
             range.location + range.length == original.length, // At the end
-            original.substring(with: NSRange(location: range.location - 1, length: 1)) == "," // Previous is a comma
-        {
+            original.substring(with: NSRange(location: range.location - 1, length: 1)) == "," { // Previous is a comma
             // Delete the comma as well
             textView.text = original.substring(to: range.location - 1) + original.substring(from: range.location + range.length)
             textView.selectedRange = NSRange(location: range.location - 1, length: 0)
@@ -274,21 +273,18 @@ extension ShareTagsPickerViewController: UITextViewDelegate {
             return false
         } else if range.length == 0, // Inserting
             text == ",", // a comma
-            range.location == original.length // at the end
-        {
+            range.location == original.length { // at the end
             // Append a space
             textView.text = original.replacingCharacters(in: range, with: ", ")
             textViewDidChange(textView)
             return false
         } else if text == "\n", // return
             range.location == original.length, // at the end
-            !partialTag.isEmpty // with some (partial) tag typed
-        {
+            !partialTag.isEmpty { // with some (partial) tag typed
             textView.text = original.replacingCharacters(in: range, with: ", ")
             textViewDidChange(textView)
             return false
-        } else if text == "\n" // return anywhere else
-        {
+        } else if text == "\n" { // return anywhere else
             return false
         }
         return true
