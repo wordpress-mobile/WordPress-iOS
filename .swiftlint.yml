@@ -1,4 +1,4 @@
-swiftlint_version: 0.58.2
+swiftlint_version: 0.58.0
 
 excluded:
   - Modules/.build
