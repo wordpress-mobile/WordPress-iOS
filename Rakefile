@@ -154,7 +154,7 @@ end
 
 desc 'Checks the source for style errors'
 task :lint do
-  puts 'No linter configured at the moment.'
+  sh 'BuildTools/Pods/SwiftLint/swiftlint'
 end
 
 namespace :git do
