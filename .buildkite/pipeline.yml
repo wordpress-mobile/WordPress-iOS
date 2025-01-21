@@ -7,6 +7,12 @@ env:
 # This is the default pipeline – it will build and test the app
 steps:
 
+  - label: "Test Build for SwiftLint time"
+    command: ".buildkite/commands/build-for-testing.sh wordpress"
+    plugins: [$CI_TOOLKIT_PLUGIN]
+    if: "build.pull_request.id != null || build.pull_request.draft"
+    parallelism: 20
+
   #################
   # Create Prototype Builds for WP and JP
   #################
