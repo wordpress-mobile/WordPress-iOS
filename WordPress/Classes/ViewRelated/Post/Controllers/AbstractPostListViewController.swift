@@ -12,8 +12,7 @@ class AbstractPostListViewController: UIViewController,
                                       NSFetchedResultsControllerDelegate,
                                       UITableViewDelegate,
                                       UITableViewDataSource,
-                                      NetworkAwareUI // This protocol is not in an extension so that subclasses can override noConnectionMessage()
-{
+                                      NetworkAwareUI { // This protocol is not in an extension so that subclasses can override noConnectionMessage()
     typealias SyncPostResult = (posts: [AbstractPost], hasMore: Bool)
 
     private static let httpErrorCodeForbidden = 403

@@ -14,8 +14,7 @@ extension URL {
                 let imageSource = CGImageSourceCreateWithURL(self as NSURL, nil),
                 let imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, options as CFDictionary?) as NSDictionary?,
                 let pixelWidth = imageProperties[kCGImagePropertyPixelWidth as NSString] as? Int,
-                let pixelHeight = imageProperties[kCGImagePropertyPixelHeight as NSString] as? Int
-            {
+                let pixelHeight = imageProperties[kCGImagePropertyPixelHeight as NSString] as? Int {
                 return CGSize(width: pixelWidth, height: pixelHeight)
             }
         }
