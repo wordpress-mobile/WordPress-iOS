@@ -154,6 +154,8 @@ end
 
 desc 'Checks the source for style errors'
 task :lint do
+  # FIXME: Use proper Rake
+  sh 'pushd BuildTools; bundle install; bundle exec po install; popd'
   sh 'BuildTools/Pods/SwiftLint/swiftlint'
 end
 
