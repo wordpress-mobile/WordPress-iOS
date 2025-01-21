@@ -1,5 +1,11 @@
 # frozen_string_literal: true
 
+CODE_SIGNING_STORAGE_OPTIONS = {
+  storage_mode: 's3',
+  s3_bucket: 'a8c-fastlane-match',
+  s3_region: 'us-east-2'
+}.freeze
+
 # Lanes related to Code Signing and Provisioning Profiles
 #
 platform :ios do
@@ -140,14 +146,12 @@ def update_code_signing(type:, team_id:, readonly:, app_identifiers:, api_key_pa
   # NOTE: It might be neccessary to add `force: true` alongside `readonly: true` in order to regenerate some provisioning profiles.
   # If this turns out to be a hard requirement, we should consider updating the method with logic to toggle the two setting based on whether we're fetching or renewing.
   match(
-    storage_mode: 's3',
-    s3_bucket: 'a8c-fastlane-match',
-    s3_region: 'us-east-2',
     type: type,
     team_id: team_id,
     readonly: readonly,
     app_identifier: app_identifiers,
-    api_key_path: api_key_path
+    api_key_path: api_key_path,
+    **CODE_SIGNING_STORAGE_OPTIONS
   )
 end
 
