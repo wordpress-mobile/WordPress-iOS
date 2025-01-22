@@ -9,7 +9,7 @@ import WordPressAuthenticator
 final actor SelfHostedSiteAuthenticator {
 
     enum SignInError: Error {
-        case authentication(WordPressLoginClient.Error)
+        case authentication(WordPressLoginClientError)
         case loadingSiteInfoFailure
         case savingSiteFailure
     }
@@ -62,7 +62,7 @@ final actor SelfHostedSiteAuthenticator {
     }
 
     @MainActor
-    func authentication(site: String, from anchor: ASPresentationAnchor?) async throws(WordPressLoginClient.Error) -> WpApiApplicationPasswordDetails {
+    func authentication(site: String, from anchor: ASPresentationAnchor?) async throws(WordPressLoginClientError) -> WpApiApplicationPasswordDetails {
         let appId: WpUuid
         let appName: String
 
@@ -78,14 +78,11 @@ final actor SelfHostedSiteAuthenticator {
         let timestamp = ISO8601DateFormatter.string(from: .now, timeZone: .current, formatOptions: .withInternetDateTime)
         let appNameValue = "\(appName) - \(deviceName) (\(timestamp))"
 
-        let result = await internalClient.login(
+        return try await internalClient.login(
             site: site,
             appName: appNameValue,
-            appId: appId,
-            contextProvider: WebAuthenticationPresentationAnchorProvider(anchor: anchor ?? ASPresentationAnchor())
+            appId: appId
         )
-
-        return try result.get()
     }
 
     private func handleSuccess(_ success: WpApiApplicationPasswordDetails) async throws(SignInError) -> WordPressOrgCredentials {

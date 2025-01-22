@@ -123,7 +123,7 @@ private extension SelfHostedSiteAuthenticator.SignInError {
 
 }
 
-extension WordPressLoginClient.Error {
+extension WordPressLoginClientError {
 
     var errorMessage: String? {
         switch self {

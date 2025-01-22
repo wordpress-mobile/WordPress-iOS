@@ -15,6 +15,8 @@ extension WpApiError {
         case let .WpError(_, errorMessage, _, _):
             let format = NSLocalizedString("generic.error.rest-api-error", value: "Your site sent an error response: %@", comment: "Error message format when REST API returns an error response. The first argument is error message.")
             return String(format: format, errorMessage)
+        case .MediaFileNotFound:
+            return NSLocalizedString("wordpress.api.upload.media.fileNotFound", value: "Can't locate the media file on the device", comment: "Error message when failing to find selected media file on the user's device.")
         }
     }
 }
