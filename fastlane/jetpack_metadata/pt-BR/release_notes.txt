@@ -1,0 +1,5 @@
+Esta atualização:
+- Corrige alguns problemas de IU no iPad.
+- Adiciona a URL e a ID de mídia a cada item de mídia
+- Usa o novo Gravatar Quick Editor para atualizar seu avatar.
+- Usa uma abordagem baseada na web para fazer login no WordPress.com. Isso deve oferecer mais confiabilidade para a maioria dos usuários, mas entre em contato com o suporte se tiver algum problema!
