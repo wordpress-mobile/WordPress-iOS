@@ -44,7 +44,7 @@
 			isa = PBXAggregateTarget;
 			buildConfigurationList = FFA8E22F1F94E3DE0002170F /* Build configuration list for PBXAggregateTarget "SwiftLint" */;
 			buildPhases = (
-				FFA8E2301F94E3EF0002170F /* ShellScript */,
+				FFA8E2301F94E3EF0002170F /* SwiftLint */,
 			);
 			dependencies = (
 			);
@@ -9056,7 +9056,7 @@
 			shellPath = /bin/sh;
 			shellScript = "\"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.sh\"\n";
 		};
-		FFA8E2301F94E3EF0002170F /* ShellScript */ = {
+		FFA8E2301F94E3EF0002170F /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -9064,11 +9064,12 @@
 			);
 			inputPaths = (
 			);
+			name = SwiftLint;
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "rake lint\n";
+			shellScript = "sh \"${SRCROOT}/../Scripts/BuildPhases/SwiftLint.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
