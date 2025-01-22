@@ -112,7 +112,8 @@ UPLOAD_TO_APP_STORE_COMMON_PARAMS = {
   phased_release: true,
   precheck_include_in_app_purchases: false,
   api_key_path: APP_STORE_CONNECT_KEY_PATH,
-  app_rating_config_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'metadata', 'ratings_config.json')
+  app_rating_config_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'metadata', 'ratings_config.json'),
+  copyright: "© #{Time.now.year} Automattic, Inc."
 }.freeze
 
 WORDPRESS_EN_LPROJ = File.join('WordPress', 'Resources', 'en.lproj')
