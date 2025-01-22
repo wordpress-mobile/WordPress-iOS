@@ -331,6 +331,11 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
         gutenbergDidRequestToggleUndoButton(!state.hasUndo)
     }
 
+    func editor(_ viewController: GutenbergKit.EditorViewController, didLogError error: GutenbergKit.EditorError) {
+        // TODO: Log error to application montioring service
+        NSLog(">>>> Gutenberg Error: \(error)")
+    }
+
     func editor(_ viewController: GutenbergKit.EditorViewController, performRequest: GutenbergKit.EditorNetworkRequest) async throws -> GutenbergKit.EditorNetworkResponse {
         throw URLError(.unknown)
     }
