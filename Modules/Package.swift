@@ -195,7 +195,6 @@ enum XcodeSupport {
             .xcodeTarget("XcodeTarget_ShareExtension", dependencies: shareAndDraftExtensionsDependencies),
             .xcodeTarget("XcodeTarget_DraftActionExtension", dependencies: shareAndDraftExtensionsDependencies),
             .xcodeTarget("XcodeTarget_NotificationServiceExtension", dependencies: [
-                "WordPressUI",
                 "WordPressShared",
             ]),
             .xcodeTarget("XcodeTarget_StatsWidget", dependencies: [
