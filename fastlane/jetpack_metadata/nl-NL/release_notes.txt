@@ -1,0 +1,5 @@
+Deze update:
+- lost enkele UI-problemen op voor de iPad.
+- voegt de media-ID en -URL toe aan ieder media-item
+- gebruikt de nieuwe Gravatar Quick Editor om jouw avatar te updaten.
+- gebruikt een webgebaseerde aanpak voor inloggen bij WordPress.com. Dit zou betrouwbaarder moeten zijn voor de meeste gebruikers, maar neem contact op met de ondersteuning als je problemen ervaart!
