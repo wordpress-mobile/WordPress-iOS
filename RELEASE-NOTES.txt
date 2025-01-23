@@ -1,6 +1,6 @@
 25.8
 -----
-
+* [*] Enable dismissing the virtual keyboard in the experimental editor [#23988]
 
 25.7
 -----
