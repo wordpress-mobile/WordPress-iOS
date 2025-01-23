@@ -8,4 +8,16 @@ if [ -n "${CI+x}" ]; then
   exit 0
 fi
 
+# Only run on debug builds.
+# For some reason, running when trying to archive, via CLI, results in a compilation failure.
+#
+# fatal error: module 'WordPressSharedObjC' in AST file '/path/to/DerivedData/ModuleCache.noindex/EQUUY9BHSJ5N/WordPressSharedObjC-5G93B85NZ09I.pcm'
+# (imported by AST file '/Users/gio/Developer/a8c/wpios/DerivedData/WordPress/Build/Intermediates.noindex/ArchiveIntermediates/WordPress Alpha/PrecompiledHeaders/WordPress-Bridging-Header-swift_1L0UBHDEION2G-clang_EQUUY9BHSJ5N.pch')
+# is not defined in any loaded module map file;
+# maybe you need to load '/Users/gio/Developer/a8c/wpios/DerivedData/WordPress/Build/Intermediates.noindex/ArchiveIntermediates/WordPress Alpha/IntermediateBuildFilesPath/GeneratedModuleMaps-iphoneos/WordPressSharedObjC.modulemap'?
+if [ "${CONFIGURATION}" != "Debug" ]; then
+  echo 'Running in a build configuration other than Debug. Skipping SwiftLint in production builds.'
+  exit 0
+fi
+
 rake lint
