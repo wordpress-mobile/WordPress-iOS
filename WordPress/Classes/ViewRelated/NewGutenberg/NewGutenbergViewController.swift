@@ -292,6 +292,12 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     func showFeedbackView() {
         self.present(SubmitFeedbackViewController(source: "gutenberg_kit", feedbackPrefix: "Editor"), animated: true)
     }
+
+    func logException(_ exception: GutenbergJSException, with callback: @escaping () -> Void) {
+        DispatchQueue.main.async {
+            WordPressAppDelegate.crashLogging?.logJavaScriptException(exception, callback: callback)
+        }
+    }
 }
 
 extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate {
@@ -331,9 +337,10 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
         gutenbergDidRequestToggleUndoButton(!state.hasUndo)
     }
 
-    func editor(_ viewController: GutenbergKit.EditorViewController, didLogError error: GutenbergKit.EditorError) {
-        // TODO: Log error to application montioring service
-        NSLog(">>>> Gutenberg Error: \(error)")
+    func editor(_ viewController: GutenbergKit.EditorViewController, didLogException error: GutenbergKit.GutenbergJSException) {
+        logException(error) {
+            // Do nothing
+        }
     }
 
     func editor(_ viewController: GutenbergKit.EditorViewController, performRequest: GutenbergKit.EditorNetworkRequest) async throws -> GutenbergKit.EditorNetworkResponse {
@@ -812,3 +819,7 @@ extension NewGutenbergViewController {
         })
     }
 }
+
+// Extend Gutenberg JavaScript exception struct to conform the protocol defined in the Crash Logging service
+extension GutenbergJSException.StacktraceLine: @retroactive AutomatticTracks.JSStacktraceLine {}
+extension GutenbergJSException: @retroactive AutomatticTracks.JSException {}
