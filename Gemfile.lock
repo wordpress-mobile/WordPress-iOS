@@ -208,7 +208,7 @@ GEM
       xcpretty (~> 0.4.0)
       xcpretty-travis-formatter (>= 0.0.3, < 2.0.0)
     fastlane-plugin-appcenter (2.1.2)
-    fastlane-plugin-sentry (1.25.1)
+    fastlane-plugin-sentry (1.27.1)
       os (~> 1.1, >= 1.1.4)
     fastlane-plugin-wpmreleasetoolkit (12.4.0)
       activesupport (>= 6.1.7.1)
