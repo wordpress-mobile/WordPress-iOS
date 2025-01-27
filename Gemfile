@@ -17,7 +17,7 @@ gem 'fastlane-plugin-sentry'
 # gem 'fastlane-plugin-wpmreleasetoolkit', git: 'https://github.com/wordpress-mobile/release-toolkit', ref: ''
 gem 'fastlane-plugin-wpmreleasetoolkit', '~> 12.4'
 gem 'rake'
-gem 'rubocop', '~> 1.69'
+gem 'rubocop', '~> 1.71'
 gem 'rubocop-rake', '~> 0.6'
 gem 'xcpretty-travis-formatter'
 
