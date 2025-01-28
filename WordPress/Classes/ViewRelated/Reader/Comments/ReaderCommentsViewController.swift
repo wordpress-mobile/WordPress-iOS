@@ -93,6 +93,12 @@ extension NSNotification.Name {
                                                                                  sourceView: cell.accessoryButton) : nil
         let renderMethod: CommentContentTableViewCell.RenderMethod = Feature.enabled(.readerCommentsWebKit) ? .web : .richContent(self.cacheContent(for: comment))
         cell.configure(with: comment, renderMethod: renderMethod, helper: helper) { _ in
+            if handler.tableView.alpha == 0 {
+                UIView.animate(withDuration: 0.2) {
+                    handler.tableView.alpha = 1
+                }
+            }
+
             // don't adjust cell height when it's already scrolled out of viewport.
             guard let visibleIndexPaths = handler.tableView.indexPathsForVisibleRows,
                   visibleIndexPaths.contains(indexPath) else {

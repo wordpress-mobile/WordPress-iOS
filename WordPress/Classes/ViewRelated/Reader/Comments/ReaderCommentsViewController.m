@@ -250,6 +250,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     self.tableView.cellLayoutMarginsFollowReadableWidth = YES;
     self.tableView.preservesSuperviewLayoutMargins = YES;
     self.tableView.backgroundColor = [UIColor murielBasicBackground];
+    self.tableView.alpha = 0.0;
     [self.view addSubview:self.tableView];
 
     // register the content cell
