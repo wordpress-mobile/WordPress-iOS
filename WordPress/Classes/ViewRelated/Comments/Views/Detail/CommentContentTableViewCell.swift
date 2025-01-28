@@ -119,8 +119,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     /// Called when the cell has finished loading and calculating the height of the HTML content. Passes the new content height as parameter.
     private var onContentLoaded: ((CGFloat) -> Void)? = nil
 
-    private var renderer: CommentContentRenderer? = nil
-
     private var comment: Comment?
     private var renderMethod: RenderMethod?
     private var helper: ReaderCommentsHelper?
@@ -490,22 +488,19 @@ private extension CommentContentTableViewCell {
     // MARK: Content Rendering
 
     func configureRendererIfNeeded(for comment: Comment, renderMethod: RenderMethod, helper: ReaderCommentsHelper) {
-        let renderer: CommentContentRenderer = renderer ?? {
-            var renderer: CommentContentRenderer = {
-                switch renderMethod {
-                case .web:
-                    return WebCommentContentRenderer()
-                case .richContent(let attributedText):
-                    let renderer = RichCommentContentRenderer()
-                    renderer.richContentDelegate = self.richContentDelegate
-                    renderer.attributedText = attributedText
-                    return renderer
-                }
-            }()
-            renderer.delegate = self
-            self.renderer = renderer
-            return renderer
+        let renderer: CommentContentRenderer = {
+            switch renderMethod {
+            case .web:
+                return helper.getRenderer(for: comment)
+            case .richContent(let attributedText):
+                let renderer = RichCommentContentRenderer()
+                renderer.richContentDelegate = self.richContentDelegate
+                renderer.attributedText = attributedText
+                return renderer
+            }
         }()
+        renderer.delegate = self
+
         self.renderMethod = renderMethod // we assume the render method can't change
 
         if renderMethod == .web {
@@ -517,7 +512,9 @@ private extension CommentContentTableViewCell {
         }
 
         let contentView = renderer.render(comment: comment)
-        if contentView.superview != contentContainerView {
+        if contentContainerView.subviews.first != contentView {
+            contentContainerView.subviews.forEach { $0.removeFromSuperview() }
+            contentView.removeFromSuperview()
             contentContainerView?.addSubview(contentView)
             contentView.pinEdges()
         }

@@ -1,6 +1,6 @@
 /// Defines methods related to Comment content rendering.
 ///
-protocol CommentContentRenderer {
+protocol CommentContentRenderer: AnyObject {
     var delegate: CommentContentRendererDelegate? { get set }
 
     init()
