@@ -100,7 +100,9 @@ extension NSNotification.Name {
                       return
                   }
 
+            UIView.setAnimationsEnabled(false)
             handler.tableView.performBatchUpdates({})
+            UIView.setAnimationsEnabled(true)
         }
     }
 
