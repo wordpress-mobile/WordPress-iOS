@@ -53,6 +53,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 @property (nonatomic, strong) ReaderCommentsFollowPresenter *readerCommentsFollowPresenter;
 @property (nonatomic, strong) UIBarButtonItem *followBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *subscriptionSettingsBarButtonItem;
+@property (nonatomic, strong) ReaderCommentsHelper *helper;
 
 /// A cached instance for the new comment header view.
 @property (nonatomic, strong) UIView *cachedHeaderView;
@@ -90,8 +91,10 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
     self.view.backgroundColor = [UIColor murielBasicBackground];
     self.commentModified = NO;
+    self.helper = [ReaderCommentsHelper new];
 
     [self checkIfLoggedIn];
 

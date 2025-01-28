@@ -10,6 +10,7 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
     private weak var presentingViewController: UIViewController?
     private weak var buttonDelegate: BorderedButtonTableViewCellDelegate?
     private(set) var headerView: ReaderDetailCommentsHeader?
+    private let helper = ReaderCommentsHelper()
     var followButtonTappedClosure: (() ->Void)?
 
     private var totalRows = 0
@@ -85,7 +86,7 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
             }
 
             cell.displaySetting = displaySetting
-            cell.configureForPostDetails(with: comment) { _ in
+            cell.configureForPostDetails(with: comment, helper: helper) { _ in
                 do {
                     try WPException.objcTry {
                         tableView.performBatchUpdates({})

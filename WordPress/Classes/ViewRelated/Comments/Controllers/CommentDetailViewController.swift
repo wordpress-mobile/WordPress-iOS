@@ -51,6 +51,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         }
     }
     private var notification: Notification?
+    private let helper = ReaderCommentsHelper()
 
     private var isNotificationComment: Bool {
         notification != nil
@@ -441,7 +442,7 @@ private extension CommentDetailViewController {
     }
 
     func configureContentCell(_ cell: CommentContentTableViewCell, comment: Comment) {
-        cell.configure(with: comment) { [weak self] _ in
+        cell.configure(with: comment, helper: helper) { [weak self] _ in
             self?.tableView.performBatchUpdates({})
         }
 

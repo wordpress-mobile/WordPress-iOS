@@ -93,7 +93,7 @@ extension NSNotification.Name {
                                                                                  handler: handler,
                                                                                  sourceView: cell.accessoryButton) : nil
 
-        cell.configure(with: comment, renderMethod: .web) { _ in
+        cell.configure(with: comment, renderMethod: .web, helper: helper) { _ in
             // don't adjust cell height when it's already scrolled out of viewport.
             guard let visibleIndexPaths = handler.tableView.indexPathsForVisibleRows,
                   visibleIndexPaths.contains(indexPath) else {
