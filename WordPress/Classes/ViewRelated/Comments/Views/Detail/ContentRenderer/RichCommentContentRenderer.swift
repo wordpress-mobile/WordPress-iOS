@@ -9,22 +9,15 @@ class RichCommentContentRenderer: NSObject, CommentContentRenderer {
     weak var richContentDelegate: WPRichContentViewDelegate? = nil
     var attributedText: NSAttributedString?
 
-    private let comment: Comment
+    private var comment: Comment?
 
-    required init(comment: Comment) {
-        self.comment = comment
-    }
+    required override init() {}
 
-    func render() -> UIView {
+    func render(comment: Comment) -> UIView {
         let textView = newRichContentView()
         textView.attributedText = attributedText
         textView.delegate = self
-
         return textView
-    }
-
-    func matchesContent(from comment: Comment) -> Bool {
-        return self.comment.content == comment.content
     }
 }
 
@@ -73,6 +66,9 @@ private extension RichCommentContentRenderer {
     }
 
     var mediaHost: MediaHost {
+        guard let comment else {
+            return .publicSite
+        }
         if let blog = comment.blog {
             return MediaHost(blog)
         } else if let post = comment.post as? ReaderPost, post.isBlogPrivate {

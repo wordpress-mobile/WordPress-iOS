@@ -9,27 +9,15 @@ class WebCommentContentRenderer: NSObject, CommentContentRenderer {
 
     weak var delegate: CommentContentRendererDelegate?
 
-    private let comment: Comment
-
     private let webView = WKWebView(frame: .zero)
 
-    /// Used to determine whether the cache is still valid or not.
-    private var commentContentCache: String? = nil
+    private var comment: Comment?
 
-    /// Caches the HTML content, to be reused when the orientation changed.
-    private var htmlContentCache: String? = nil
-
-    private let displaySetting: ReaderDisplaySetting
+    private let displaySetting: ReaderDisplaySetting = .standard
 
     // MARK: Methods
 
-    required convenience init(comment: Comment) {
-        self.init(comment: comment, displaySetting: .standard)
-    }
-
-    required init(comment: Comment, displaySetting: ReaderDisplaySetting) {
-        self.comment = comment
-        self.displaySetting = displaySetting
+    required override init() {
         super.init()
 
         if #available(iOS 16.4, *) {
@@ -49,24 +37,15 @@ class WebCommentContentRenderer: NSObject, CommentContentRenderer {
         webView.configuration.userContentController.add(ReaderWebViewMessageHandler(), name: "eventHandler")
     }
 
-    func render() -> UIView {
-        // Do not reload if the content doesn't change.
-        if let contentCache = commentContentCache, contentCache == comment.content {
-            return webView
+    func render(comment: Comment) -> UIView {
+        guard self.comment != comment else {
+            return webView // Already rendering this comment
         }
+        self.comment = comment
 
         webView.loadHTMLString(formattedHTMLString(for: comment.content), baseURL: Bundle.wordPressSharedBundle.bundleURL)
 
         return webView
-    }
-
-    func matchesContent(from comment: Comment) -> Bool {
-        // if content cache is still nil, then the comment hasn't been rendered yet.
-        guard let contentCache = commentContentCache else {
-            return false
-        }
-
-        return contentCache == comment.content
     }
 }
 
@@ -249,13 +228,6 @@ private extension WebCommentContentRenderer {
     /// - Returns: Formatted HTML string to be displayed in the web view.
     ///
     func formattedHTMLString(for content: String) -> String {
-        // return the previous HTML string if the comment content is unchanged.
-        if let previousCommentContent = commentContentCache,
-           let previousHTMLString = htmlContentCache,
-           previousCommentContent == content {
-            return previousHTMLString
-        }
-
         // otherwise: sanitize the content, cache it, and then return it.
         guard let htmlTemplateFormat else {
             DDLogError("WebCommentContentRenderer: Failed to load HTML template format for comment content.")
@@ -265,13 +237,8 @@ private extension WebCommentContentRenderer {
         // remove empty HTML elements from the `content`, as the content often contains empty paragraph elements which adds unnecessary padding/margin.
         // `rawContent` does not have this problem, but it's not used because `rawContent` gets rid of links (<a> tags) for mentions.
         let htmlContent = String(format: htmlTemplateFormat, content
-                                    .replacingOccurrences(of: Constants.emptyElementRegexPattern, with: String(), options: [.regularExpression])
-                                    .trimmingCharacters(in: .whitespacesAndNewlines))
-
-        // cache the contents.
-        commentContentCache = content
-        htmlContentCache = htmlContent
-
+            .replacingOccurrences(of: Constants.emptyElementRegexPattern, with: String(), options: [.regularExpression])
+            .trimmingCharacters(in: .whitespacesAndNewlines))
         return htmlContent
     }
 }

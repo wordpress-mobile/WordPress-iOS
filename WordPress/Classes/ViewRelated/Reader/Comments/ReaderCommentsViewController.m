@@ -834,9 +834,11 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 - (void)updateCachedContent
 {
-    NSArray *comments = self.tableViewHandler.resultsController.fetchedObjects;
-    for(Comment *comment in comments) {
-        [self cacheContentForComment:comment];
+    if (![Feature enabled:FeatureFlagReaderCommentsWebKit]) {
+        NSArray *comments = self.tableViewHandler.resultsController.fetchedObjects;
+        for(Comment *comment in comments) {
+            [self cacheContentForComment:comment];
+        }
     }
 }
 
@@ -1112,7 +1114,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
     Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     CommentContentTableViewCell *cell = (CommentContentTableViewCell *)aCell;
-    [self configureContentCell:cell comment:comment attributedText:[self cacheContentForComment:comment] indexPath:indexPath handler:self.tableViewHandler];
+    [self configureContentCell:cell comment:comment indexPath:indexPath handler:self.tableViewHandler];
 
     if (self.highlightedIndexPath) {
         cell.isEmphasized = (indexPath == self.highlightedIndexPath);

@@ -3,17 +3,13 @@
 protocol CommentContentRenderer {
     var delegate: CommentContentRendererDelegate? { get set }
 
-    init(comment: Comment)
+    init()
 
     /// Returns a view component that's configured to display the formatted content of the comment.
     ///
     /// Note that the renderer *might* return a view with the wrong sizing at first, but it should update its delegate with the correct height
     /// through the `renderer(_:asyncRenderCompletedWithHeight:)` method.
-    func render() -> UIView
-
-    /// Checks if the provided comment contains the same content as the current one that's processed by the renderer.
-    /// This is used as an optimization strategy by the caller to skip view creations if the rendered content matches the one provided in the parameter.
-    func matchesContent(from comment: Comment) -> Bool
+    func render(comment: Comment) -> UIView
 }
 
 protocol CommentContentRendererDelegate: AnyObject {

@@ -71,7 +71,6 @@ extension NSNotification.Name {
     func configureContentCell(
         _ cell: UITableViewCell,
         comment: Comment,
-        attributedText: NSAttributedString,
         indexPath: IndexPath,
         handler: WPTableViewHandler
     ) {
@@ -92,8 +91,8 @@ extension NSNotification.Name {
                                                                                  indexPath: indexPath,
                                                                                  handler: handler,
                                                                                  sourceView: cell.accessoryButton) : nil
-
-        cell.configure(with: comment, renderMethod: .web, helper: helper) { _ in
+        let renderMethod: CommentContentTableViewCell.RenderMethod = Feature.enabled(.readerCommentsWebKit) ? .web : .richContent(self.cacheContent(for: comment))
+        cell.configure(with: comment, renderMethod: renderMethod, helper: helper) { _ in
             // don't adjust cell height when it's already scrolled out of viewport.
             guard let visibleIndexPaths = handler.tableView.indexPathsForVisibleRows,
                   visibleIndexPaths.contains(indexPath) else {

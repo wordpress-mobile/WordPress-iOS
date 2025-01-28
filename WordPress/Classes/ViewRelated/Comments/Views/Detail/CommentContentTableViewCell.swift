@@ -135,10 +135,10 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     /// can be scoped by using the "legacy" style when the passed parameter is nil.
     private var style: CellStyle = .init(displaySetting: nil)
 
+    // TODO: (kean) remove
     var displaySetting: ReaderDisplaySetting? = nil {
         didSet {
             style = CellStyle(displaySetting: displaySetting)
-            resetRenderedContents()
             applyStyles()
         }
     }
@@ -489,40 +489,24 @@ private extension CommentContentTableViewCell {
 
     // MARK: Content Rendering
 
-    func resetRenderedContents() {
-        renderer = nil
-        contentContainerView.subviews.forEach { $0.removeFromSuperview() }
-    }
-
     func configureRendererIfNeeded(for comment: Comment, renderMethod: RenderMethod, helper: ReaderCommentsHelper) {
-        // skip creating the renderer if the content does not change.
-        // this prevents the cell to jump multiple times due to consecutive reloadData calls.
-        //
-        // note that this doesn't apply for `.richContent` method. Always reset the textView instead
-        // of reusing it to prevent crash. Ref: http://git.io/Jtl2U
-        if let renderer,
-           renderer.matchesContent(from: comment),
-           renderMethod == .web {
-            return
-        }
-
-        // clean out any pre-existing renderer just to be sure.
-        resetRenderedContents()
-
-        var renderer: CommentContentRenderer = {
-            switch renderMethod {
-            case .web:
-                return WebCommentContentRenderer(comment: comment, displaySetting: displaySetting ?? .standard)
-            case .richContent(let attributedText):
-                let renderer = RichCommentContentRenderer(comment: comment)
-                renderer.richContentDelegate = self.richContentDelegate
-                renderer.attributedText = attributedText
-                return renderer
-            }
+        let renderer: CommentContentRenderer = renderer ?? {
+            var renderer: CommentContentRenderer = {
+                switch renderMethod {
+                case .web:
+                    return WebCommentContentRenderer()
+                case .richContent(let attributedText):
+                    let renderer = RichCommentContentRenderer()
+                    renderer.richContentDelegate = self.richContentDelegate
+                    renderer.attributedText = attributedText
+                    return renderer
+                }
+            }()
+            renderer.delegate = self
+            self.renderer = renderer
+            return renderer
         }()
-        renderer.delegate = self
-        self.renderer = renderer
-        self.renderMethod = renderMethod
+        self.renderMethod = renderMethod // we assume the render method can't change
 
         if renderMethod == .web {
             // reset height constraint to handle cases where the new content requires the webview to shrink.
@@ -532,9 +516,11 @@ private extension CommentContentTableViewCell {
             contentContainerHeightConstraint?.isActive = false
         }
 
-        let contentView = renderer.render()
-        contentContainerView?.addSubview(contentView)
-        contentContainerView?.pinSubviewToAllEdges(contentView)
+        let contentView = renderer.render(comment: comment)
+        if contentView.superview != contentContainerView {
+            contentContainerView?.addSubview(contentView)
+            contentView.pinEdges()
+        }
     }
 
     // MARK: Button Actions
