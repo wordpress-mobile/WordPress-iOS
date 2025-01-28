@@ -207,11 +207,6 @@ class MeViewController: UITableViewController {
                     action: displayShareFlow()
                 ),
                 ButtonRow(
-                    title: Strings.submitFeedback,
-                    textAlignment: .left,
-                    action: showFeedbackView()
-                ),
-                ButtonRow(
                     title: RowTitles.about,
                     textAlignment: .left,
                     action: pushAbout(),
@@ -309,15 +304,6 @@ class MeViewController: UITableViewController {
             self.present(controller, animated: true) {
                 self.tableView.deselectSelectedRowWithAnimation(true)
             }
-        }
-    }
-
-    func showFeedbackView() -> ImmuTableAction {
-        return { [weak self] row in
-            defer {
-                self?.tableView.deselectSelectedRowWithAnimation(true)
-            }
-            self?.present(SubmitFeedbackViewController(source: "me_menu"), animated: true)
         }
     }
 
