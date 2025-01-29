@@ -34,29 +34,8 @@
     {
       "target" : {
         "containerPath" : "container:..\/Modules",
-        "identifier" : "WordPressSharedTests",
-        "name" : "WordPressSharedTests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:..\/Modules",
-        "identifier" : "JetpackStatsWidgetsCoreTests",
-        "name" : "JetpackStatsWidgetsCoreTests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:WordPress.xcodeproj",
-        "identifier" : "E16AB92914D978240047A2E5",
-        "name" : "WordPressTest"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:..\/Modules",
-        "identifier" : "WordPressMediaTests",
-        "name" : "WordPressMediaTests"
+        "identifier" : "WordPressCoreTests",
+        "name" : "WordPressCoreTests"
       }
     },
     {
@@ -69,6 +48,20 @@
     {
       "target" : {
         "containerPath" : "container:..\/Modules",
+        "identifier" : "JetpackStatsWidgetsCoreTests",
+        "name" : "JetpackStatsWidgetsCoreTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..\/Modules",
+        "identifier" : "WordPressUITests",
+        "name" : "WordPressUITests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..\/Modules",
         "identifier" : "DesignSystemTests",
         "name" : "DesignSystemTests"
       }
@@ -76,8 +69,8 @@
     {
       "target" : {
         "containerPath" : "container:WordPress.xcodeproj",
-        "identifier" : "4AD953BA2C21451700D0EEFA",
-        "name" : "WordPressAuthenticatorTests"
+        "identifier" : "E16AB92914D978240047A2E5",
+        "name" : "WordPressTest"
       }
     },
     {
@@ -85,6 +78,27 @@
         "containerPath" : "container:..\/Modules",
         "identifier" : "WordPressSharedObjCTests",
         "name" : "WordPressSharedObjCTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..\/Modules",
+        "identifier" : "AsyncImageKitTests",
+        "name" : "AsyncImageKitTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..\/Modules",
+        "identifier" : "WordPressSharedTests",
+        "name" : "WordPressSharedTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:WordPress.xcodeproj",
+        "identifier" : "4AD953BA2C21451700D0EEFA",
+        "name" : "WordPressAuthenticatorTests"
       }
     }
   ],
