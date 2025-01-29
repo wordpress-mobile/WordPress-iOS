@@ -1,5 +1,7 @@
-This update:
-- Fixes some UI issues on iPad.
-- Adds the media ID and URL to each media item
-- Uses the new Gravatar Quick Editor to update your avatar.
-- Uses a web-based approach for WordPress.com login. This should be more reliable for most users, but please contact support if you have any trouble!
+For this month's release, we've:
+- Added support for Image Playgrounds! Use it to add images to your posts, generate a featured image, or site icon.
+- Added undo and redo to the experimental editor (have you tried the editor yet? if not, you should!)
+- Made the Gravatar Quick Editor a bit nicer.
+- Added a shortcut for changing the featured image for a post.
+- Improved how images in your media library are displayed – it should be a little nicer now.
+- Done the usual bug fixes and performance improvements (mostly in the editor)

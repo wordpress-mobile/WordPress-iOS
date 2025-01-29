@@ -1,5 +1,0 @@
-Im Rahmen dieses Update profitierst du von folgenden Verbesserungen:
-- Es wurden einige UI-Fehler auf dem iPad behoben.
-- Medien-ID und -URL werden nun jedem Medienelement hinzugefügt.
-- Der neue Gravatar Quick Editor wird nun verwendet, um deinen Avatar zu aktualisieren.
-- Für die Anmeldung auf WordPress.com wird ab sofort ein webbasierter Ansatz verwendet. Benutzer sollten dank diesem Update von einem zuverlässigeren Erlebnis profitieren. Solltest du Probleme haben, setze dich bitte mit dem Support in Verbindung!
