@@ -87,6 +87,7 @@ let package = Package(
         .testTarget(name: "WordPressSharedTests", dependencies: [.target(name: "WordPressShared")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .testTarget(name: "WordPressSharedObjCTests", dependencies: [.target(name: "WordPressShared"), .target(name: "WordPressTesting")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .testTarget(name: "WordPressUITests", dependencies: [.target(name: "WordPressUI")], swiftSettings: [.swiftLanguageMode(.v5)]),
+        .testTarget(name: "WordPressCoreTests", dependencies: [.target(name: "WordPressCore")]),
     ]
 )
 

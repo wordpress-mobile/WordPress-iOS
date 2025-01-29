@@ -4,6 +4,8 @@ import OHHTTPStubs
 import OHHTTPStubsSwift
 import Combine
 import WordPressUI
+import WordPressAPI
+import WordPressCore
 
 @testable import WordPress
 

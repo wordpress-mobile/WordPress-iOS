@@ -1,7 +1,6 @@
 import Foundation
 import Testing
-
-@testable import WordPress
+import WordPressCore
 
 @Suite(.timeLimit(.minutes(1)))
 struct InMemoryDataStoreTests {
@@ -25,7 +24,7 @@ struct InMemoryDataStoreTests {
 
         Task.detached {
             try await Task.sleep(for: .milliseconds(50))
-            try await store.store([.MockUser])
+            try await store.store([.mockUser])
         }
 
         await confirmation("The stream produces an update", expectedCount: 2) { confirmation in
@@ -38,7 +37,7 @@ struct InMemoryDataStoreTests {
     @Test
     func testUpdatesAfterDelete() async throws {
         let store: InMemoryUserDataStore = InMemoryUserDataStore()
-        try await store.store([.MockUser])
+        try await store.store([.mockUser])
 
         let stream = await store.listStream(query: .all)
 
