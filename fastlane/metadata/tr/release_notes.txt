@@ -1,5 +1,0 @@
-Bu güncelleme:
-- iPad'de bazı kullanıcı arayüzü sorunlarını düzeltir.
-- Her bir ortam ögesine ortam kimliği ve URL'si ekler
-- Avatarınızı güncellemek için Gravatar Hızlı Düzenleyiciyi kullanır.
-- WordPress.com oturum açma için web tabanlı bir yaklaşım kullanır. Bu, çoğu için daha güvenilir olmalıdır ancak lütfen herhangi bir sorunla karşılaşırsanız destek ile iletişime geçin!
