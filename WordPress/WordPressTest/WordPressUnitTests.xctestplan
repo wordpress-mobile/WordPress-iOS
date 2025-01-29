@@ -34,29 +34,8 @@
     {
       "target" : {
         "containerPath" : "container:..\/Modules",
-        "identifier" : "WordPressCoreTests",
-        "name" : "WordPressCoreTests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:..\/Modules",
-        "identifier" : "WordPressFluxTests",
-        "name" : "WordPressFluxTests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:..\/Modules",
-        "identifier" : "JetpackStatsWidgetsCoreTests",
-        "name" : "JetpackStatsWidgetsCoreTests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:..\/Modules",
-        "identifier" : "WordPressUITests",
-        "name" : "WordPressUITests"
+        "identifier" : "AsyncImageKitTests",
+        "name" : "AsyncImageKitTests"
       }
     },
     {
@@ -69,6 +48,13 @@
     {
       "target" : {
         "containerPath" : "container:WordPress.xcodeproj",
+        "identifier" : "4AD953BA2C21451700D0EEFA",
+        "name" : "WordPressAuthenticatorTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:WordPress.xcodeproj",
         "identifier" : "E16AB92914D978240047A2E5",
         "name" : "WordPressTest"
       }
@@ -76,15 +62,15 @@
     {
       "target" : {
         "containerPath" : "container:..\/Modules",
-        "identifier" : "WordPressSharedObjCTests",
-        "name" : "WordPressSharedObjCTests"
+        "identifier" : "WordPressCoreTests",
+        "name" : "WordPressCoreTests"
       }
     },
     {
       "target" : {
         "containerPath" : "container:..\/Modules",
-        "identifier" : "AsyncImageKitTests",
-        "name" : "AsyncImageKitTests"
+        "identifier" : "WordPressUIUnitTests",
+        "name" : "WordPressUIUnitTests"
       }
     },
     {
@@ -96,9 +82,23 @@
     },
     {
       "target" : {
-        "containerPath" : "container:WordPress.xcodeproj",
-        "identifier" : "4AD953BA2C21451700D0EEFA",
-        "name" : "WordPressAuthenticatorTests"
+        "containerPath" : "container:..\/Modules",
+        "identifier" : "JetpackStatsWidgetsCoreTests",
+        "name" : "JetpackStatsWidgetsCoreTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..\/Modules",
+        "identifier" : "WordPressFluxTests",
+        "name" : "WordPressFluxTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..\/Modules",
+        "identifier" : "WordPressSharedObjCTests",
+        "name" : "WordPressSharedObjCTests"
       }
     }
   ],
