@@ -20,7 +20,7 @@ let package = Package(
         .package(url: "https://github.com/Alamofire/Alamofire", from: "5.9.1"),
         .package(url: "https://github.com/AliSoftware/OHHTTPStubs", from: "9.1.0"),
         .package(url: "https://github.com/apple/swift-collections", from: "1.0.0"),
-        .package(url: "https://github.com/Automattic/Automattic-Tracks-iOS", branch: "use-ephemeral-session"),
+        .package(url: "https://github.com/Automattic/Automattic-Tracks-iOS", from: "3.5.2"),
         .package(url: "https://github.com/Automattic/AutomatticAbout-swift", from: "1.1.5"),
         .package(url: "https://github.com/Automattic/Gravatar-SDK-iOS", from: "3.1.1"),
         .package(url: "https://github.com/Automattic/Gridicons-iOS", branch: "develop"),
