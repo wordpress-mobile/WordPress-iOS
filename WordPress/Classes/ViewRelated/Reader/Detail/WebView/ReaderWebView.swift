@@ -28,7 +28,8 @@ class ReaderWebView: WKWebView {
             isInspectable = true
         }
 
-        configuration.userContentController.add(self, name: "eventHandler")
+        // - warning: It retains the handler. It can't be `self`.
+        configuration.userContentController.add(ReaderWebViewMessageHandler(), name: "eventHandler")
     }
 
     /// Loads a HTML content into the webview and apply styles
@@ -311,8 +312,7 @@ class ReaderWebView: WKWebView {
     }
 }
 
-extension ReaderWebView: WKScriptMessageHandler {
-
+final class ReaderWebViewMessageHandler: NSObject, WKScriptMessageHandler {
     enum EventMessage: String {
         case articleTextHighlighted
         case articleTextCopied
@@ -342,5 +342,4 @@ extension ReaderWebView: WKScriptMessageHandler {
         }
         WPAnalytics.track(event)
     }
-
 }

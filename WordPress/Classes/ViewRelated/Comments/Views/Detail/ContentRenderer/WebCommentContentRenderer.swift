@@ -44,7 +44,9 @@ class WebCommentContentRenderer: NSObject, CommentContentRenderer {
         webView.scrollView.showsVerticalScrollIndicator = false
         webView.scrollView.backgroundColor = .clear
         webView.configuration.allowsInlineMediaPlayback = true
-        webView.configuration.userContentController.add(self, name: "eventHandler")
+
+        // - warning: It retains the handler. It can't be `self`.
+        webView.configuration.userContentController.add(ReaderWebViewMessageHandler(), name: "eventHandler")
     }
 
     func render() -> UIView {
@@ -110,20 +112,6 @@ extension WebCommentContentRenderer: WKNavigationDelegate {
             self.delegate?.renderer(self, interactedWithURL: destinationURL)
         }
     }
-}
-
-// MARK: - WKScriptMessageHandler
-
-extension WebCommentContentRenderer: WKScriptMessageHandler {
-
-    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        guard let body = message.body as? String,
-              let event = ReaderWebView.EventMessage(rawValue: body)?.analyticEvent else {
-            return
-        }
-        WPAnalytics.track(event)
-    }
-
 }
 
 // MARK: - Private Methods
