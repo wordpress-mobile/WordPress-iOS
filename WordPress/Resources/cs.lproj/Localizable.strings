@@ -15,9 +15,6 @@
 /* Message of Close Account confirmation alert */
 "\nTo confirm, please re-enter your username before closing.\n\n" = "\nPro potvrzení prosím zadejte před uzavřením znovu své uživatelské jméno.\n\n";
 
-/* Title for the lazy load images setting */
-"\"Lazy-load\" images" = "Postupné načítání obrázků \"Lazy-load\"";
-
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
 "\"More\" Button" = "Tlačítko „Více“";
 
@@ -149,9 +146,6 @@
 
 /* Number of posts displayed in Posting Activity when a day is selected. %d will contain the actual number (plural). */
 "%d Posts" = "%d příspěvků";
-
-/* The number of connected accounts on a third party sharing service connected to the user's blog. The '%d' is a placeholder for the number of accounts. */
-"%d accounts" = "%d účet";
 
 /* Age between dates over one day.
    Number of days */
@@ -316,9 +310,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Instruction text to explain magic link login step. */
 "A WordPress.com account is connected to your store credentials. To continue, we will send a verification link to the email address above." = "Účet WordPress.com je připojen k přihlašovacím údajům vašeho obchodu. Chcete-li pokračovat, zašleme ověřovací odkaz na výše uvedenou e-mailovou adresu.";
-
-/* Label for image that is set as a feature image for post/page */
-"A featured image is set. Tap to change it." = "Vybraný obrázek je nastaven. Klepnutím ho změňte.";
 
 /* Title for a threat */
 "A file contains a malicious code pattern" = "Soubor obsahuje vzor škodlivého kódu";
@@ -1051,7 +1042,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Tapping it cancels the login flow.
-   Cancel a prompt
    Cancel Action
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
@@ -1060,7 +1050,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel action on the app extension tags picker screen.
    Cancel action title
    Cancel button
-   Cancel button for alert
    Cancel button label
    Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Cancel button.
@@ -1068,7 +1057,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
-   Cancel prompt for user information.
    Cancel registering a domain
    Cancel removing a plugin
    Cancel site creation
@@ -1078,7 +1066,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel. Action.
    Cancels an Action
    Cancels an alert.
-   Cancels the mark all as read action.
    Editing GIF alert cancel action button.
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
@@ -1107,9 +1094,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Share extension dialog dismiss button label - displayed when user is missing a login token. */
 "Cancel sharing" = "Zrušit sdílení";
-
-/* The action was canceled */
-"Canceled" = "Zrušeno";
 
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "Rušení...";
@@ -1440,9 +1424,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Community & Non-Profit site intent topic */
 "Community & Non-Profit" = "Komunita a neziskové organizace";
 
-/* The action is completed */
-"Completed" = "Dokončeno";
-
 /* Section title for the configure table section in the blog details screen */
 "Configure" = "Nastavení";
 
@@ -1656,9 +1637,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Content show when the dashboard fails to load */
 "Couldn't update. Check that you're online and refresh." = "Aktualizace se nezdařila. Zkontrolujte, zda jste online, a obnovte stránku.";
-
-/* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
-"Couldn't upload the featured image" = "Nepodařilo se nahrát náhledový obrázek";
 
 /* Error title displayed when unable to close user account. */
 "Couldn’t close account automatically" = "Účet se nepodařilo zavřít automaticky";
@@ -1953,8 +1931,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for the Discussion Settings Screen */
 "Discussion" = "Diskuse";
 
-/* Accessibility label for button to dismiss a bottom sheet
-   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Dismiss a view. Verb */
 "Dismiss" = "Skrýt";
@@ -1987,9 +1964,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Done button title
    Done editing an image
    Done. Action.
-   Label for confirm feature image of a post
    Label for Done button
-   Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
    Title for a Done button.
@@ -2332,7 +2307,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Enter your server credentials" = "Zadejte přihlašovací údaje k serveru";
 
 /* Generic error alert title
-   Generic error.
    Generic popup title for any type of error. */
 "Error" = "Chyba";
 
@@ -2490,8 +2464,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Section title for the external table section in the blog details screen */
 "External" = "Externí";
 
-/* Status for Media object that is failed upload or export.
-   The action failed */
+/* Status for Media object that is failed upload or export. */
 "Failed" = "Selhalo";
 
 /* Message for mark all as read success notice */
@@ -2527,12 +2500,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "Doporučené";
 
-/* Label for the Featured Image area in post settings.
-   Title for the Featured Image view */
+/* Label for the Featured Image area in post settings. */
 "Featured Image" = "Náhledový obrázek";
-
-/* No comment provided by engineer. */
-"Featured Image did not load" = "Doporučené obrázky nenačetl";
 
 /* Text displayed while fetching themes */
 "Fetching Themes..." = "Načítám šablony...";
@@ -2674,12 +2643,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Full size image. (default). Should be the same as in core WP. */
 "Full Size" = "Původní velikost";
 
-/* Accessibility label for when image is shown to user in full screen, with instructions on how to dismiss the screen. Placeholder is the title of the image */
-"Fullscreen view of image %@. Double tap to dismiss" = "Zobrazení obrázku %@ na celou obrazovku. Dvojitým klepnutím zavřete";
-
-/* Accessibility label for when image is shown to user in full screen, with instructions on how to dismiss the screen */
-"Fullscreen view of image. Double tap to dismiss" = "Zobrazení obrázku na celé obrazovce. Dvojitým klepnutím zavřete";
-
 /* Badge title displayed on GIF images in the editor. */
 "GIF" = "GIF";
 
@@ -2756,9 +2719,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Button title on the blogging prompt's feature introduction view to dismiss the view.
    Title for the continue button in the dashboard's custom What's New page. */
 "Got it" = "Rozumím";
-
-/* Okay button title shown in alert announcing new Create Button feature. */
-"Got it!" = "Mám to!";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "Získání adresy URL webových stránek";
@@ -2951,9 +2911,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Hint for image title on image settings. */
 "Image title" = "Nadpis obrázku";
-
-/* Footer for the Serve images from our servers setting */
-"Improve your site's speed by only loading images visible on the screen. New images will load just before they scroll into view. This prevents viewers from having to download all the images on a page all at once, even ones they can't see." = "Zlepšete rychlost vašeho webu pouze načtením obrázků viditelných na obrazovce. Nové obrázky se načtou těsně předtím, než se projdou do zobrazení. To zabraňuje divákům, aby museli stahovat všechny snímky na stránce najednou, dokonce i ty, které nevidí.";
 
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "Několika slovy popište, čím se budete na webu zabývat.";
@@ -3274,8 +3231,7 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* A button title.
    Link to cookie policy
-   Menu title to show the prompts feature introduction modal.
-   Read more button title shown in alert announcing new Create Button feature. */
+   Menu title to show the prompts feature introduction modal. */
 "Learn more" = "Více informací";
 
 /* Writing, Date and Time Settings: Learn more about date and time settings footer text */
@@ -3692,7 +3648,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Months and Years" = "Měsíce a Roky";
 
 /* Accessibility label for more button in dashboard quick start card.
-   Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
    Action button to display more available options */
 "More" = "Více";
@@ -4142,9 +4097,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* The default Jetpack view message for the success state */
 "Now that Jetpack is installed, we just need to get you set up. This will only take a minute." = "Nyní, když je nainstalován Jetpack, musíme vás ho nechat nastavit. Bude to trvat jen minutu.";
 
-/* Body text of alert announcing new Create Button feature. */
-"Now there are fewer and better-organized tabs, posting shortcuts, and more, so you can find what you need fast." = "Nyní existuje méně a lépe uspořádaných karet, zkratky pro zveřejňování příspěvků a další, takže rychle najdete to, co potřebujete.";
-
 /* Register Domain - Address information field Number */
 "Number" = "Číslo";
 
@@ -4154,24 +4106,14 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Discoverability title for numbered list keyboard shortcut. */
 "Numbered List" = "Číslovaný seznam";
 
-/* A button title for closing the dialog.
-   A button title.
-   Accept Action
-   Alert dismissal title
+/* Alert dismissal title
    Button title. An acknowledgement of the message displayed in a prompt.
-   Default action
    Dismisses the alert
-   Marks all notifications as read.
    Menus: button title for finishing editing of a menu item.
-   OK
-   OK button for alert
    Ok button for dismissing alert helping users understand their site address
    OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
-   Submit button on prompt for user information.
-   Title of a button that dismisses a prompt
-   Title of an OK button. Pressing the button acknowledges and dismisses a prompt.
-   Title of primary button on alert prompting verify their accounts while attempting to publish */
+   Title of a button that dismisses a prompt */
 "OK" = "OK";
 
 /* No comment provided by engineer. */
@@ -4658,9 +4600,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for label when the preparing to scan the users site */
 "Preparing to scan" = "Příprava na skenování";
 
-/* Label to show while converting and/or resizing media to send to server */
-"Preparing..." = "Přípravuji...";
-
 /* Displays the Post Preview Interface
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
@@ -4868,17 +4807,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Reminders removed" = "Připomenutí odstraněny!";
 
 /* Alert button to confirm a plugin to be removed
-   Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
-   Remove Action
-   Remove an image/posts/etc */
+   Remove Action */
 "Remove" = "Odstranit";
 
 /* Remove Person Alert Title
    Remove User. Verb */
 "Remove %@" = "Odstranit %@";
-
-/* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
-"Remove Featured Image" = "Odstranit náhledový obrázek";
 
 /* Label action for removing a link from the editor */
 "Remove Link" = "Odstranit odkaz";
@@ -4909,9 +4843,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* User action to remove image. */
 "Remove image" = "Odstranit obrázek";
-
-/* Prompt when removing a featured image from a post */
-"Remove this Featured Image?" = "Odstranit náhledový obrázek?";
 
 /* User action to remove video. */
 "Remove video" = "Odstranit video";
@@ -5345,20 +5276,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice confirming that an image has been set as the post's featured image. */
 "Set as featured image" = "Použít jako náhledový obrázek";
 
-/* Title of the set goals button in the Blogging Reminders Settings flow. */
-"Set reminders" = "Nastavit připomenutí";
-
 /* The Jetpack view button title for the success state */
 "Set up" = "Instalace";
 
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "Nastavte Jetpack";
-
-/* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
-"Set up your blogging reminders on days you want to post." = "Nastavte připomenutí blogů na dny, které chcete zveřejnit.";
-
-/* Title of the Blogging Reminders Settings screen. */
-"Set your blogging reminders" = "Nastavte si připomenutí blogů";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Setting up theme" = "Nastavení šablony";
@@ -5381,11 +5303,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message to show when setting save failed */
 "Settings update failed" = "Aktualizace nastavení selhala";
 
-/* Accessibility label for share buttons in nav bars
-   Button label to share a web page
-   Shares the comment URL
-   Spoken accessibility label
-   Title for a button that allows the user to share their answer to the prompt. */
+/* Spoken accessibility label */
 "Share" = "Sdílet";
 
 /* Title for a button that recommends the app to others */
@@ -5729,9 +5647,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to stop upload. */
 "Stop upload" = "Zastavit nahrání";
 
-/* Title of alert announcing new Create Button feature. */
-"Streamlined navigation" = "Zjednodušená navigace";
-
 /* Accessibility label for strikethrough button on formatting toolbar. */
 "Strike Through" = "Přeškrtnout";
 
@@ -5996,8 +5911,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description shown when a user logs in with Google but no matching WordPress.com account is found */
 "The Google account \"%@\" doesn't match any account on WordPress.com" = "Účet Google \"%@\" neodpovídá žádnému účtu na WordPress.com";
 
-/* Error message shown when a media upload fails because the user isn't connected to the Internet.
-   Message of error prompt shown when a user tries to perform an action without an internet connection. */
+/* Error message shown when a media upload fails because the user isn't connected to the Internet. */
 "The Internet connection appears to be offline." = "Vypadá to, že jste offline.";
 
 /* Message informing the user that the site title can only be changed by an administrator user. */
@@ -6740,9 +6654,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Nahrávání selhalo";
 
-/* Description to show on post setting for a featured image that failed to upload. */
-"Upload failed. Tap for options." = "Nahrávání selhalo. Klepnutím zobrazíte možnosti.";
-
 /* Label for the date a media asset (image / video) was uploaded
    Status for Media object that is uploaded and sync with server. */
 "Uploaded" = "Nahráno";
@@ -6771,9 +6682,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message of an alert informing users that the video they are trying to select is not allowed. */
 "Uploading videos longer than 5 minutes requires a paid plan." = "Nahrávání videí delších než 5 minut vyžaduje placený tarif.";
-
-/* Label to show while uploading media to server */
-"Uploading..." = "Nahrávám...";
 
 /* No comment provided by engineer. */
 "Uploading…" = "Nahrávám...";
@@ -7461,9 +7369,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Help text that describes how the password should be. It appears while editing the password */
 "Your password should be at least six characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! \" ? $ % ^ & )." = "Vaše heslo by mělo mít délku alespoň šesti znaků. Aby bylo silnější, použijte malé a velké písmena, čísla a symboly! \"? $% ^ &).";
 
-/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
-"Your post is publishing... in the meantime, set up your blogging reminders on days you want to post." = "Váš příspěvek se publikuje... mezitím si nastavte připomenutí blogů na dny, kdy chcete přidávat příspěvky.";
-
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Vaše příspěvky, stránky a nastavení budou zaslány na %@.";
 
@@ -8008,18 +7913,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "Telefonní číslo";
 
-/* User action to dismiss featured media options. */
-"postSettings.featuredImageUploadActionSheet.dismiss" = "Odmítnout";
-
-/* User action to remove featured media. */
-"postSettings.featuredImageUploadActionSheet.remove" = "Odstranit";
-
-/* User action to retry featured media upload. */
-"postSettings.featuredImageUploadActionSheet.retryUpload" = "Znovu";
-
-/* Title for action sheet with featured media options. */
-"postSettings.featuredImageUploadActionSheet.title" = "Vybrané možnosti obrázku";
-
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Zobrazit všechny odpovědi";
 
@@ -8049,9 +7942,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Spoken accessibility label */
 "readerDetail.safariButton.accessibilityLabel" = "Otevřít v Safari";
-
-/* Spoken accessibility label */
-"readerDetail.shareButton.accessibilityLabel" = "Sdílet";
 
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "Odmítnout";

@@ -171,7 +171,6 @@
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Tapping it cancels the login flow.
-   Cancel a prompt
    Cancel Action
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
@@ -180,7 +179,6 @@
    Cancel action on the app extension tags picker screen.
    Cancel action title
    Cancel button
-   Cancel button for alert
    Cancel button label
    Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Cancel button.
@@ -188,7 +186,6 @@
    Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
-   Cancel prompt for user information.
    Cancel registering a domain
    Cancel removing a plugin
    Cancel site creation
@@ -198,7 +195,6 @@
    Cancel. Action.
    Cancels an Action
    Cancels an alert.
-   Cancels the mark all as read action.
    Editing GIF alert cancel action button.
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
@@ -290,9 +286,6 @@
 
 /* Setting: WordPress.com Community */
 "Community" = "ชุมชน";
-
-/* The action is completed */
-"Completed" = "เสร็จแล้ว";
 
 /* Section title for the configure table section in the blog details screen */
 "Configure" = "ปรับแต่ง";
@@ -400,8 +393,7 @@
    Title for the Discussion Settings Screen */
 "Discussion" = "การสนทนา";
 
-/* Accessibility label for button to dismiss a bottom sheet
-   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Dismiss a view. Verb */
 "Dismiss" = "ยกเลิก";
@@ -416,9 +408,7 @@
    Done button title
    Done editing an image
    Done. Action.
-   Label for confirm feature image of a post
    Label for Done button
-   Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
    Title for a Done button.
@@ -476,7 +466,6 @@
 "Enter username" = "ใส่ชื่อผู้ใช้";
 
 /* Generic error alert title
-   Generic error.
    Generic popup title for any type of error. */
 "Error" = "ผิดพลาด";
 
@@ -486,16 +475,11 @@
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "อธิบายว่าเว็บนี้เกี่ยวกับอะไร";
 
-/* Status for Media object that is failed upload or export.
-   The action failed */
+/* Status for Media object that is failed upload or export. */
 "Failed" = "ล้มเหลว";
 
-/* Label for the Featured Image area in post settings.
-   Title for the Featured Image view */
+/* Label for the Featured Image area in post settings. */
 "Featured Image" = "รูปภาพพิเศษ";
-
-/* No comment provided by engineer. */
-"Featured Image did not load" = "โหลดรูปพิเศษไม่ได้";
 
 /* Text displayed while fetching themes */
 "Fetching Themes..." = "กำลังดึงธีม...";
@@ -630,8 +614,7 @@
 
 /* A button title.
    Link to cookie policy
-   Menu title to show the prompts feature introduction modal.
-   Read more button title shown in alert announcing new Create Button feature. */
+   Menu title to show the prompts feature introduction modal. */
 "Learn more" = "เรียนรู้เพิ่มเติม";
 
 /* Left alignment for an image. Should be the same as in core WP. */
@@ -750,7 +733,6 @@
 "Months and Years" = "เดือนและปี";
 
 /* Accessibility label for more button in dashboard quick start card.
-   Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
    Action button to display more available options */
 "More" = "เพิ่มเติม";
@@ -849,24 +831,14 @@
 /* Notifications tab bar item accessibility label, unread notifications state */
 "Notifications Unread" = "คำเตือนที่ยังไม่ได้อ่าน";
 
-/* A button title for closing the dialog.
-   A button title.
-   Accept Action
-   Alert dismissal title
+/* Alert dismissal title
    Button title. An acknowledgement of the message displayed in a prompt.
-   Default action
    Dismisses the alert
-   Marks all notifications as read.
    Menus: button title for finishing editing of a menu item.
-   OK
-   OK button for alert
    Ok button for dismissing alert helping users understand their site address
    OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
-   Submit button on prompt for user information.
-   Title of a button that dismisses a prompt
-   Title of an OK button. Pressing the button acknowledges and dismisses a prompt.
-   Title of primary button on alert prompting verify their accounts while attempting to publish */
+   Title of a button that dismisses a prompt */
 "OK" = "ตกลง";
 
 /* Disabled */
@@ -1014,9 +986,6 @@
 /* Browse premium themes selection title */
 "Premium" = "พรีเมี่ยม";
 
-/* Label to show while converting and/or resizing media to send to server */
-"Preparing..." = "กำลังเตรียม...";
-
 /* Displays the Post Preview Interface
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
@@ -1086,22 +1055,14 @@
 "Related Posts" = "เรื่องที่เกี่ยวข้อง";
 
 /* Alert button to confirm a plugin to be removed
-   Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
-   Remove Action
-   Remove an image/posts/etc */
+   Remove Action */
 "Remove" = "ลบ";
-
-/* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
-"Remove Featured Image" = "ลบรูปภาพพิเศษ";
 
 /* Label action for removing a link from the editor */
 "Remove Link" = "ลบลิงก์";
 
 /* Button to remove a site from the app */
 "Remove Site" = "ลบเว็บ";
-
-/* Prompt when removing a featured image from a post */
-"Remove this Featured Image?" = "ลบรูปภาพพิเศษนี้";
 
 /* Setting: indicates if Replies to Comments will be notified */
 "Replies to your comments" = "ข้อความตอบกลับมาที่ความเห็นของคุณ";
@@ -1204,11 +1165,7 @@
 /* Message to show when setting save failed */
 "Settings update failed" = "อัปเดตการตั้งค่าล้มเหลว";
 
-/* Accessibility label for share buttons in nav bars
-   Button label to share a web page
-   Shares the comment URL
-   Spoken accessibility label
-   Title for a button that allows the user to share their answer to the prompt. */
+/* Spoken accessibility label */
 "Share" = "แบ่งปัน";
 
 /* Aztec's Text Placeholder
@@ -1360,8 +1317,7 @@
 /* No comment provided by engineer. */
 "That username is not allowed." = "ชื่อผู้ใช้นั้นไม่อนุญาตให้ใช้งาน";
 
-/* Error message shown when a media upload fails because the user isn't connected to the Internet.
-   Message of error prompt shown when a user tries to perform an action without an internet connection. */
+/* Error message shown when a media upload fails because the user isn't connected to the Internet. */
 "The Internet connection appears to be offline." = "ดูเหมือนว่าไม่มีการเชื่อมต่ออินเตอร์เนต";
 
 /* Error message describing a problem with a URL. */
@@ -1538,9 +1494,6 @@
 
 /* Title for alert when trying to save/exit a post before media upload process is complete. */
 "Uploading media" = "การอัปโหลดไฟล์สื่อ";
-
-/* Label to show while uploading media to server */
-"Uploading..." = "กำลังอัปโหลด...";
 
 /* A placeholder for the twitter username
    Accessibility label for the username text field in the self-hosted login page.

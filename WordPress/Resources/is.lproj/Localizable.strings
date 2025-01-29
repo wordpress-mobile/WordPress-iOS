@@ -28,9 +28,6 @@
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "%@ var tengt aftur.";
 
-/* The number of connected accounts on a third party sharing service connected to the user's blog. The '%d' is a placeholder for the number of accounts. */
-"%d accounts" = "%d aðgangar";
-
 /* Age between dates over one day.
    Number of days */
 "%d days" = "%d dagar";
@@ -293,7 +290,6 @@
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Tapping it cancels the login flow.
-   Cancel a prompt
    Cancel Action
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
@@ -302,7 +298,6 @@
    Cancel action on the app extension tags picker screen.
    Cancel action title
    Cancel button
-   Cancel button for alert
    Cancel button label
    Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Cancel button.
@@ -310,7 +305,6 @@
    Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
-   Cancel prompt for user information.
    Cancel registering a domain
    Cancel removing a plugin
    Cancel site creation
@@ -320,7 +314,6 @@
    Cancel. Action.
    Cancels an Action
    Cancels an alert.
-   Cancels the mark all as read action.
    Editing GIF alert cancel action button.
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
@@ -445,9 +438,6 @@
 
 /* Setting: WordPress.com Community */
 "Community" = "Samfélag";
-
-/* The action is completed */
-"Completed" = "Lokið";
 
 /* Section title for the configure table section in the blog details screen */
 "Configure" = "Stilla";
@@ -671,8 +661,7 @@
    Title for the Discussion Settings Screen */
 "Discussion" = "Umræða";
 
-/* Accessibility label for button to dismiss a bottom sheet
-   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Dismiss a view. Verb */
 "Dismiss" = "Loka";
@@ -690,9 +679,7 @@
    Done button title
    Done editing an image
    Done. Action.
-   Label for confirm feature image of a post
    Label for Done button
-   Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
    Title for a Done button.
@@ -763,7 +750,6 @@
 "Enter username" = "Sláðu inn notandanafn";
 
 /* Generic error alert title
-   Generic error.
    Generic popup title for any type of error. */
 "Error" = "Villa";
 
@@ -804,8 +790,7 @@
 /* Section title for the external table section in the blog details screen */
 "External" = "Útvært";
 
-/* Status for Media object that is failed upload or export.
-   The action failed */
+/* Status for Media object that is failed upload or export. */
 "Failed" = "Tókst ekki";
 
 /* Error message to show to use when media insertion on a post fails */
@@ -814,12 +799,8 @@
 /* Error message to show when wrong URL format is used to access the REST API */
 "Failed to serialize request to the REST API." = "Gat ekki breytt fyrirspurn á REST API í strengjaform.";
 
-/* Label for the Featured Image area in post settings.
-   Title for the Featured Image view */
+/* Label for the Featured Image area in post settings. */
 "Featured Image" = "Sérkennis Mynd";
-
-/* No comment provided by engineer. */
-"Featured Image did not load" = "Einkennismynd hlóðst ekki inn";
 
 /* Text displayed while fetching themes */
 "Fetching Themes..." = "Sæki þemu...";
@@ -1046,8 +1027,7 @@
 
 /* A button title.
    Link to cookie policy
-   Menu title to show the prompts feature introduction modal.
-   Read more button title shown in alert announcing new Create Button feature. */
+   Menu title to show the prompts feature introduction modal. */
 "Learn more" = "Lesa meira";
 
 /* Left alignment for an image. Should be the same as in core WP. */
@@ -1225,7 +1205,6 @@
 "Months and Years" = "Máðuðir og ár";
 
 /* Accessibility label for more button in dashboard quick start card.
-   Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
    Action button to display more available options */
 "More" = "Meira";
@@ -1367,24 +1346,14 @@
 /* Discoverability title for numbered list keyboard shortcut. */
 "Numbered List" = "Númeraður listi";
 
-/* A button title for closing the dialog.
-   A button title.
-   Accept Action
-   Alert dismissal title
+/* Alert dismissal title
    Button title. An acknowledgement of the message displayed in a prompt.
-   Default action
    Dismisses the alert
-   Marks all notifications as read.
    Menus: button title for finishing editing of a menu item.
-   OK
-   OK button for alert
    Ok button for dismissing alert helping users understand their site address
    OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
-   Submit button on prompt for user information.
-   Title of a button that dismisses a prompt
-   Title of an OK button. Pressing the button acknowledges and dismisses a prompt.
-   Title of primary button on alert prompting verify their accounts while attempting to publish */
+   Title of a button that dismisses a prompt */
 "OK" = "Í lagi";
 
 /* Disabled */
@@ -1574,9 +1543,6 @@
 /* Title of alert when attempting to delete site with purchases */
 "Premium Upgrades" = "Uppfærslur fyrir sérfræðinga";
 
-/* Label to show while converting and/or resizing media to send to server */
-"Preparing..." = "Undirbý…";
-
 /* Displays the Post Preview Interface
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
@@ -1671,13 +1637,8 @@
 "Related Posts" = "Tengdar greinar";
 
 /* Alert button to confirm a plugin to be removed
-   Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
-   Remove Action
-   Remove an image/posts/etc */
+   Remove Action */
 "Remove" = "Fjarlægja";
-
-/* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
-"Remove Featured Image" = "Fjarlægja einkennismynd";
 
 /* Label action for removing a link from the editor */
 "Remove Link" = "Fjarlægja tengil";
@@ -1687,9 +1648,6 @@
 
 /* Button to remove a site from the app */
 "Remove Site" = "Fjarlægja vef";
-
-/* Prompt when removing a featured image from a post */
-"Remove this Featured Image?" = "Fjarlægja þessa einkennismynd?";
 
 /* Setting: indicates if Replies to Comments will be notified */
 "Replies to your comments" = "Svör við athugasemdum þínum";
@@ -1836,11 +1794,7 @@
 /* Message to show when setting save failed */
 "Settings update failed" = "Uppfærsla á stillingum mistókst";
 
-/* Accessibility label for share buttons in nav bars
-   Button label to share a web page
-   Shares the comment URL
-   Spoken accessibility label
-   Title for a button that allows the user to share their answer to the prompt. */
+/* Spoken accessibility label */
 "Share" = "Deila";
 
 /* Aztec's Text Placeholder
@@ -2057,8 +2011,7 @@
 /* No comment provided by engineer. */
 "That username is not allowed." = "Þetta notandanafn er ekki leyfilegt.";
 
-/* Error message shown when a media upload fails because the user isn't connected to the Internet.
-   Message of error prompt shown when a user tries to perform an action without an internet connection. */
+/* Error message shown when a media upload fails because the user isn't connected to the Internet. */
 "The Internet connection appears to be offline." = "Ekkert samband virðist vera við internetið.";
 
 /* Error message describing a problem with a URL. */
@@ -2326,9 +2279,6 @@
 
 /* Title for alert when trying to save/exit a post before media upload process is complete. */
 "Uploading media" = "Hala upp skrá";
-
-/* Label to show while uploading media to server */
-"Uploading..." = "Hala upp…";
 
 /* Use the current image */
 "Use" = "Nota";

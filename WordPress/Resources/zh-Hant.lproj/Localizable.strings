@@ -15,9 +15,6 @@
 /* Message of Close Account confirmation alert */
 "\nTo confirm, please re-enter your username before closing.\n\n" = "\n為進行確認，請在關閉前重新輸入你的使用者名稱。\n\n";
 
-/* Title for the lazy load images setting */
-"\"Lazy-load\" images" = "「延遲載入」圖片";
-
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
 "\"More\" Button" = "「更多」按鈕";
 
@@ -149,9 +146,6 @@
 
 /* Number of posts displayed in Posting Activity when a day is selected. %d will contain the actual number (plural). */
 "%d Posts" = "%d 篇文章";
-
-/* The number of connected accounts on a third party sharing service connected to the user's blog. The '%d' is a placeholder for the number of accounts. */
-"%d accounts" = "%d 個帳號";
 
 /* Age between dates over one day.
    Number of days */
@@ -322,9 +316,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Instruction text to explain magic link login step. */
 "A WordPress.com account is connected to your store credentials. To continue, we will send a verification link to the email address above." = "WordPress.com 帳號已連結至你的商店憑證。 若要繼續操作，我們會傳送驗證連結到上方電子郵件地址。";
-
-/* Label for image that is set as a feature image for post/page */
-"A featured image is set. Tap to change it." = "精選圖片已設定。點選即可變更。";
 
 /* Title for a threat */
 "A file contains a malicious code pattern" = "檔案包含惡意程式碼模式";
@@ -1111,7 +1102,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Tapping it cancels the login flow.
-   Cancel a prompt
    Cancel Action
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
@@ -1120,7 +1110,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel action on the app extension tags picker screen.
    Cancel action title
    Cancel button
-   Cancel button for alert
    Cancel button label
    Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Cancel button.
@@ -1128,7 +1117,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
-   Cancel prompt for user information.
    Cancel registering a domain
    Cancel removing a plugin
    Cancel site creation
@@ -1138,7 +1126,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel. Action.
    Cancels an Action
    Cancels an alert.
-   Cancels the mark all as read action.
    Editing GIF alert cancel action button.
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
@@ -1167,9 +1154,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Share extension dialog dismiss button label - displayed when user is missing a login token. */
 "Cancel sharing" = "取消分享";
-
-/* The action was canceled */
-"Canceled" = "已取消";
 
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "正在取消…";
@@ -1503,9 +1487,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Community & Non-Profit site intent topic */
 "Community & Non-Profit" = "社群和非營利";
 
-/* The action is completed */
-"Completed" = "已完成";
-
 /* Section title for the configure table section in the blog details screen */
 "Configure" = "設定";
 
@@ -1728,9 +1709,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Content show when the dashboard fails to load */
 "Couldn't update. Check that you're online and refresh." = "無法更新。 請確認你為上線狀態並重新整理。";
-
-/* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
-"Couldn't upload the featured image" = "無法上傳特色圖片";
 
 /* Error title displayed when unable to close user account. */
 "Couldn’t close account automatically" = "無法自動關閉帳號";
@@ -2034,8 +2012,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for the Discussion Settings Screen */
 "Discussion" = "討論";
 
-/* Accessibility label for button to dismiss a bottom sheet
-   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Dismiss a view. Verb */
 "Dismiss" = "關閉";
@@ -2068,9 +2045,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Done button title
    Done editing an image
    Done. Action.
-   Label for confirm feature image of a post
    Label for Done button
-   Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
    Title for a Done button.
@@ -2419,7 +2394,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Enter your server credentials" = "輸入伺服器憑證";
 
 /* Generic error alert title
-   Generic error.
    Generic popup title for any type of error. */
 "Error" = "錯誤";
 
@@ -2580,8 +2554,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Section title for the external table section in the blog details screen */
 "External" = "外部";
 
-/* Status for Media object that is failed upload or export.
-   The action failed */
+/* Status for Media object that is failed upload or export. */
 "Failed" = "失敗";
 
 /* Message for mark all as read success notice */
@@ -2617,12 +2590,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "精選";
 
-/* Label for the Featured Image area in post settings.
-   Title for the Featured Image view */
+/* Label for the Featured Image area in post settings. */
 "Featured Image" = "精選圖片";
-
-/* No comment provided by engineer. */
-"Featured Image did not load" = "精選圖片未載入";
 
 /* Text displayed while fetching themes */
 "Fetching Themes..." = "正在擷取佈景主題...";
@@ -2776,12 +2745,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Full size image. (default). Should be the same as in core WP. */
 "Full Size" = "完整大小";
 
-/* Accessibility label for when image is shown to user in full screen, with instructions on how to dismiss the screen. Placeholder is the title of the image */
-"Fullscreen view of image %@. Double tap to dismiss" = "全螢幕檢視圖片 %@。 點選兩下以關閉";
-
-/* Accessibility label for when image is shown to user in full screen, with instructions on how to dismiss the screen */
-"Fullscreen view of image. Double tap to dismiss" = "全螢幕檢視圖片。 點選兩下以關閉";
-
 /* Badge title displayed on GIF images in the editor. */
 "GIF" = "GIF";
 
@@ -2858,9 +2821,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Button title on the blogging prompt's feature introduction view to dismiss the view.
    Title for the continue button in the dashboard's custom What's New page. */
 "Got it" = "完全了解";
-
-/* Okay button title shown in alert announcing new Create Button feature. */
-"Got it!" = "瞭解！";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "擷取網站 URL";
@@ -3053,9 +3013,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Hint for image title on image settings. */
 "Image title" = "圖片標題";
-
-/* Footer for the Serve images from our servers setting */
-"Improve your site's speed by only loading images visible on the screen. New images will load just before they scroll into view. This prevents viewers from having to download all the images on a page all at once, even ones they can't see." = "只會載入畫面中可見的圖片，以提升網站速度。新圖片會在其進入畫面的前一刻載入。這可避免瀏覽者必須一次下載頁面中的所有圖片，包括他們看不見的圖片。";
 
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "請用簡單幾字描述此網站的內容。";
@@ -3394,8 +3351,7 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* A button title.
    Link to cookie policy
-   Menu title to show the prompts feature introduction modal.
-   Read more button title shown in alert announcing new Create Button feature. */
+   Menu title to show the prompts feature introduction modal. */
 "Learn more" = "瞭解更多";
 
 /* Writing, Date and Time Settings: Learn more about date and time settings footer text */
@@ -3815,7 +3771,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Months and Years" = "月份與年份";
 
 /* Accessibility label for more button in dashboard quick start card.
-   Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
    Action button to display more available options */
 "More" = "更多";
@@ -4277,9 +4232,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* The default Jetpack view message for the success state */
 "Now that Jetpack is installed, we just need to get you set up. This will only take a minute." = "現在 Jetpack 已安裝完成，我們只需要協助你完成設定即可。這只需要一分鐘左右。";
 
-/* Body text of alert announcing new Create Button feature. */
-"Now there are fewer and better-organized tabs, posting shortcuts, and more, so you can find what you need fast." = "我們現已減少分頁數量並進行系統化整理，也推出文章發表捷徑和其他功能，讓你能快速找到所需內容。";
-
 /* Register Domain - Address information field Number */
 "Number" = "號";
 
@@ -4289,24 +4241,14 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Discoverability title for numbered list keyboard shortcut. */
 "Numbered List" = "編號清單";
 
-/* A button title for closing the dialog.
-   A button title.
-   Accept Action
-   Alert dismissal title
+/* Alert dismissal title
    Button title. An acknowledgement of the message displayed in a prompt.
-   Default action
    Dismisses the alert
-   Marks all notifications as read.
    Menus: button title for finishing editing of a menu item.
-   OK
-   OK button for alert
    Ok button for dismissing alert helping users understand their site address
    OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
-   Submit button on prompt for user information.
-   Title of a button that dismisses a prompt
-   Title of an OK button. Pressing the button acknowledges and dismisses a prompt.
-   Title of primary button on alert prompting verify their accounts while attempting to publish */
+   Title of a button that dismisses a prompt */
 "OK" = "OK";
 
 /* No comment provided by engineer. */
@@ -4802,9 +4744,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for label when the preparing to scan the users site */
 "Preparing to scan" = "正在準備掃瞄";
 
-/* Label to show while converting and/or resizing media to send to server */
-"Preparing..." = "準備中...";
-
 /* Displays the Post Preview Interface
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
@@ -5018,17 +4957,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Reminders removed" = "提醒已移除";
 
 /* Alert button to confirm a plugin to be removed
-   Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
-   Remove Action
-   Remove an image/posts/etc */
+   Remove Action */
 "Remove" = "移除";
 
 /* Remove Person Alert Title
    Remove User. Verb */
 "Remove %@" = "移除 %@";
-
-/* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
-"Remove Featured Image" = "移除精選圖片";
 
 /* Label action for removing a link from the editor */
 "Remove Link" = "移除連結";
@@ -5062,9 +4996,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* User action to remove image. */
 "Remove image" = "移除圖片";
-
-/* Prompt when removing a featured image from a post */
-"Remove this Featured Image?" = "移除特色圖片？";
 
 /* User action to remove video. */
 "Remove video" = "移除影片";
@@ -5504,20 +5435,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice confirming that an image has been set as the post's featured image. */
 "Set as featured image" = "設為特色圖片";
 
-/* Title of the set goals button in the Blogging Reminders Settings flow. */
-"Set reminders" = "設定提醒";
-
 /* The Jetpack view button title for the success state */
 "Set up" = "設定";
 
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "設定 Jetpack";
-
-/* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
-"Set up your blogging reminders on days you want to post." = "在你想張貼文章的日期設定網誌提醒。";
-
-/* Title of the Blogging Reminders Settings screen. */
-"Set your blogging reminders" = "設定你的網誌提醒";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Setting up theme" = "設定佈景主題";
@@ -5540,11 +5462,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message to show when setting save failed */
 "Settings update failed" = "設定更新失敗";
 
-/* Accessibility label for share buttons in nav bars
-   Button label to share a web page
-   Shares the comment URL
-   Spoken accessibility label
-   Title for a button that allows the user to share their answer to the prompt. */
+/* Spoken accessibility label */
 "Share" = "分享";
 
 /* Title for a button that recommends the app to others */
@@ -5888,9 +5806,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to stop upload. */
 "Stop upload" = "停止上傳";
 
-/* Title of alert announcing new Create Button feature. */
-"Streamlined navigation" = "簡化瀏覽體驗";
-
 /* Accessibility label for strikethrough button on formatting toolbar. */
 "Strike Through" = "刪除線";
 
@@ -6173,8 +6088,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description shown when a user logs in with Google but no matching WordPress.com account is found */
 "The Google account \"%@\" doesn't match any account on WordPress.com" = "沒有任何與 Google 帳號「%@」匹配的 WordPress.com 帳號";
 
-/* Error message shown when a media upload fails because the user isn't connected to the Internet.
-   Message of error prompt shown when a user tries to perform an action without an internet connection. */
+/* Error message shown when a media upload fails because the user isn't connected to the Internet. */
 "The Internet connection appears to be offline." = "看來網際網路連線狀態為離線。";
 
 /* Message informing the user that the site title can only be changed by an administrator user. */
@@ -6941,9 +6855,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "上傳失敗";
 
-/* Description to show on post setting for a featured image that failed to upload. */
-"Upload failed. Tap for options." = "上傳失敗。點選以顯示選項。";
-
 /* Label for the date a media asset (image / video) was uploaded
    Status for Media object that is uploaded and sync with server. */
 "Uploaded" = "已上傳";
@@ -6972,9 +6883,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message of an alert informing users that the video they are trying to select is not allowed. */
 "Uploading videos longer than 5 minutes requires a paid plan." = "須購買付費方案才能上傳長度超過 5 分鐘的影片。";
-
-/* Label to show while uploading media to server */
-"Uploading..." = "上傳中…";
 
 /* No comment provided by engineer. */
 "Uploading…" = "上傳中…";
@@ -7696,9 +7604,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Help text that describes how the password should be. It appears while editing the password */
 "Your password should be at least six characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! \" ? $ % ^ & )." = "密碼必須至少包含 6 個字元。若要提升密碼強度，可使用大小寫字母、數字，以及 ! \" ? $ % ^ & ) 等符號。";
 
-/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
-"Your post is publishing... in the meantime, set up your blogging reminders on days you want to post." = "正在發表你的文章…在此同時，請為你想張貼文章的日期設定網誌提醒。";
-
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "我們會將你的文章、網頁與設定透過電子郵件傳送至 %@。";
 
@@ -8023,12 +7928,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "關閉";
-
-/* Context menu button title */
-"blogHeader.actionCopyURL" = "複製網址";
-
-/* Context menu button title */
-"blogHeader.actionVisitSite" = "造訪網站";
 
 /* Badge title in site list */
 "blogList.siteBadge.staging" = "預備";
@@ -8945,9 +8844,6 @@ Example: Reply to Pamela Nguyen */
 /* Media screen navigation bar button Select title */
 "mediaLibrary.buttonSelect" = "選取";
 
-/* Context menu button */
-"mediaLibrary.buttonShare" = "分享";
-
 /* Verb. Button title. Tapping cancels an action. */
 "mediaLibrary.deleteConfirmationCancel" = "取消";
 
@@ -9212,9 +9108,6 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the personalize home option */
 "mySite.siteActions.personalizeHome" = "打造個人版首頁";
 
-/* Menu title for the share site option */
-"mySite.siteActions.shareSite" = "分享網站";
-
 /* Menu title for the change site icon option */
 "mySite.siteActions.siteIcon" = "變更網站圖示";
 
@@ -9256,9 +9149,6 @@ Example: Reply to Pamela Nguyen */
 
 /* The user has previously tapped 'Like' on this post */
 "notifications.accessibility-post-like-button-on" = "你已對此文章按讚";
-
-/* A label for screenreader users */
-"notifications.accessibility-share-button" = "分享";
 
 /* A label for screenreader users */
 "notifications.accessibility-tap-to-like-this-comment" = "點選兩次對此留言按讚";
@@ -9519,9 +9409,6 @@ Example: Reply to Pamela Nguyen */
 "postFromAudio.notEnoughRequestsMessage" = "由於要求數不足，故無法根據音訊產生文章";
 
 /* Button title */
-"postFromAudio.ok" = "確定";
-
-/* Button title */
 "postFromAudio.retry" = "重試";
 
 /* The screen subtitle */
@@ -9578,9 +9465,6 @@ Example: Reply to Pamela Nguyen */
 /* Title for the 'Delete' post list row swipe action */
 "postList.swipeActionDeletePermanently" = "刪除";
 
-/* Title for the 'Share' post list row swipe action */
-"postList.swipeActionShare" = "分享";
-
 /* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "檢視";
 
@@ -9610,12 +9494,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of notification displayed when either a new or an existing draft is saved */
 "postNotice.draftSaved" = "草稿已儲存";
-
-/* A generic error message title */
-"postNotice.errorTitle" = "發生錯誤";
-
-/* Button OK */
-"postNotice.ok" = "確定";
 
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "postNotice.pagePending" = "頁面待審中";
@@ -9653,21 +9531,6 @@ Example: Reply to Pamela Nguyen */
 /* A default value for an post without a title */
 "postSaveErrorMessage.postUntitled" = "無標題";
 
-/* User action to dismiss featured media options. */
-"postSettings.featuredImageUploadActionSheet.dismiss" = "關閉";
-
-/* User action to remove featured media. */
-"postSettings.featuredImageUploadActionSheet.remove" = "移除";
-
-/* User action to retry featured media upload. */
-"postSettings.featuredImageUploadActionSheet.retryUpload" = "重試";
-
-/* Title for action sheet with featured media options. */
-"postSettings.featuredImageUploadActionSheet.title" = "精選圖片選項";
-
-/* Button OK */
-"postSettings.ok" = "確定";
-
 /* The 'Parent Page' setting of the post */
 "postSettings.parentPage" = "上層頁面";
 
@@ -9679,9 +9542,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Section title for Page Attributes */
 "postSettings.section.pageAttributes" = "頁面屬性";
-
-/* Button in Post Settings */
-"postSettings.setFeaturedImageButton" = "設定精選圖片";
 
 /* An alert message explaning that by changing the visibility to private, the post will be published immediately to your site */
 "postSettings.warningPostWillBePublishedAlertMessage" = "在你將可見度變更為「私密」後，系統就會立刻發表文章";
@@ -9757,9 +9617,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for post settings option. Tapping displays settings for a post. */
 "posts.settings.actionTitle" = "設定";
-
-/* Share the post. */
-"posts.share.actionTitle" = "分享";
 
 /* Label for post stats option. Tapping displays statistics for a post. */
 "posts.stats.actionTitle" = "統計資料";
@@ -9954,10 +9811,7 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
 "reader.detail.likes.plural" = "_%1$d 個讚_";
 
-/* Describes that the current user is the only one liking a post. */
-"reader.detail.likes.self" = "你說這個讚。";
-
-/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
+/* Describes that only one user likes a post. The underscores denote underline and is not displayed. */
 "reader.detail.likes.single" = "_1 個讚_";
 
 /* Title for the Comment button on the Reader Detail toolbar.
@@ -10143,9 +9997,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.postContextMenu.blogDetails" = "網誌詳細資料";
 
 /* Context menu action */
-"reader.postContextMenu.copyLink" = "複製連結";
-
-/* Context menu action */
 "reader.postContextMenu.manageNotifications" = "管理通知";
 
 /* Context menu action */
@@ -10155,16 +10006,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.postContextMenu.reportUser" = "檢舉使用者";
 
 /* Context menu action */
-"reader.postContextMenu.share" = "分享";
-
-/* Context menu action */
 "reader.postContextMenu.showBlog" = "前往「網誌」";
-
-/* Context menu action */
-"reader.postContextMenu.subscribeT" = "訂閱";
-
-/* Context menu action */
-"reader.postContextMenu.unsubscribe" = "取消訂閱";
 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "在瀏覽器中檢視";
@@ -10406,9 +10248,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Spoken accessibility label */
 "readerDetail.dismissButton.accessibilityLabel" = "關閉";
 
-/* Spoken accessibility label for the Reading Preferences menu. */
-"readerDetail.displaySettingButton.accessibilityLabel" = "閱讀喜好";
-
 /* Section title for global related posts. */
 "readerDetail.globalPostsSection.accessibilityLabel" = "在 WordPress.com 瀏覽更多內容";
 
@@ -10420,9 +10259,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Spoken accessibility label */
 "readerDetail.safariButton.accessibilityLabel" = "在 Safari 中開啟";
-
-/* Spoken accessibility label */
-"readerDetail.shareButton.accessibilityLabel" = "分享";
 
 /* Error message that informs reader detail from a private blog cannot be fetched. */
 "readerDetailCoordinator.readerDetail.privateBlogErrorMessage" = "你沒有檢視此私人網誌的權限。";
@@ -10973,12 +10809,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "搜尋免費相片以新增至你的媒體庫！";
 
-/* The button title for the Cancel button in the In-App Feedback screen */
-"submit.feedback.buttonCancel" = "取消";
-
-/* The button title for the Cancel button in the In-App Feedback screen */
-"submit.feedback.buttonOK" = "確定";
-
 /* The section title and or placeholder */
 "submit.feedback.detailsPlaceholder" = "詳細資料";
 
@@ -11231,9 +11061,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* The message in the alert that appears when deleting a user */
 "userDetails.alert.deleteUserErrorAlertMessage" = "刪除使用者時發生錯誤。";
-
-/* The title of the OK button in the alert that appears when deleting a user */
-"userDetails.alert.deleteUserErrorAlertOkButton" = "確定";
 
 /* The title of the alert that appears when deleting a user */
 "userDetails.alert.deleteUserErrorAlertTitle" = "錯誤";

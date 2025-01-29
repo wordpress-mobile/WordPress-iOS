@@ -9,9 +9,6 @@
 /* Message of Delete Site confirmation alert; substitution is site's host. */
 "\nTo confirm, please re-enter your site's address before deleting.\n\n" = "\nFor å bekrefte, skriv inn nettstedets adresse før sletting\n\n";
 
-/* Title for the lazy load images setting */
-"\"Lazy-load\" images" = "\"Lazy-load\" bilder";
-
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
 "\"More\" Button" = "\"Mer\"-knapp";
 
@@ -107,9 +104,6 @@
 
 /* Number of posts displayed in Posting Activity when a day is selected. %d will contain the actual number (plural). */
 "%d Posts" = "%d innlegg";
-
-/* The number of connected accounts on a third party sharing service connected to the user's blog. The '%d' is a placeholder for the number of accounts. */
-"%d accounts" = "%d kontoer";
 
 /* Age between dates over one day.
    Number of days */
@@ -226,9 +220,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* A short description of what the 'More' button is and how it works. */
 "A \"more\" button contains a dropdown which displays sharing buttons" = "En \"mer\"-knapp inneholder en nedtrekksmeny som viser deleknapper";
-
-/* Label for image that is set as a feature image for post/page */
-"A featured image is set. Tap to change it." = "Ett fremhevet bilde er bestemt. Trykk for å endre det.";
 
 /* Message of the alert indicating that a tag with that name already exists. The placeholder is the name of the tag */
 "A tag named '%@' already exists." = "Et stikkord med navn '%@' eksisterer allerede.";
@@ -770,7 +761,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Tapping it cancels the login flow.
-   Cancel a prompt
    Cancel Action
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
@@ -779,7 +769,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel action on the app extension tags picker screen.
    Cancel action title
    Cancel button
-   Cancel button for alert
    Cancel button label
    Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Cancel button.
@@ -787,7 +776,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
-   Cancel prompt for user information.
    Cancel registering a domain
    Cancel removing a plugin
    Cancel site creation
@@ -797,7 +785,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel. Action.
    Cancels an Action
    Cancels an alert.
-   Cancels the mark all as read action.
    Editing GIF alert cancel action button.
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
@@ -826,9 +813,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Share extension dialog dismiss button label - displayed when user is missing a login token. */
 "Cancel sharing" = "Avbryt deling";
-
-/* The action was canceled */
-"Canceled" = "Avbrutt";
 
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "Avbryter...";
@@ -1032,9 +1016,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Setting: WordPress.com Community */
 "Community" = "Samfunn";
 
-/* The action is completed */
-"Completed" = "Fullført";
-
 /* Section title for the configure table section in the blog details screen */
 "Configure" = "Konfigurer";
 
@@ -1188,9 +1169,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Error message when tag loading failed */
 "Couldn't load tags. Tap to retry." = "Kunne ikke laste inn stikkord. Trykk for å prøve igjen.";
-
-/* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
-"Couldn't upload the featured image" = "Kunne ikke laste opp fremhevet bilde";
 
 /* Period Stats 'Countries' header */
 "Countries" = "Land";
@@ -1410,8 +1388,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for the Discussion Settings Screen */
 "Discussion" = "Diskusjon";
 
-/* Accessibility label for button to dismiss a bottom sheet
-   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Dismiss a view. Verb */
 "Dismiss" = "Ignorer";
@@ -1438,9 +1415,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Done button title
    Done editing an image
    Done. Action.
-   Label for confirm feature image of a post
    Label for Done button
-   Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
    Title for a Done button.
@@ -1647,7 +1622,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Enter your password instead." = "Skriv inn passordet i stedet.";
 
 /* Generic error alert title
-   Generic error.
    Generic popup title for any type of error. */
 "Error" = "Feil";
 
@@ -1760,8 +1734,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Section title for the external table section in the blog details screen */
 "External" = "Eksterne";
 
-/* Status for Media object that is failed upload or export.
-   The action failed */
+/* Status for Media object that is failed upload or export. */
 "Failed" = "Mislyktes";
 
 /* Error message to show to use when media insertion on a post fails */
@@ -1776,12 +1749,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "Anbefalte";
 
-/* Label for the Featured Image area in post settings.
-   Title for the Featured Image view */
+/* Label for the Featured Image area in post settings. */
 "Featured Image" = "Fremhevet bilde";
-
-/* No comment provided by engineer. */
-"Featured Image did not load" = "Fremhevet bilde ble ikke lastet";
 
 /* Text displayed while fetching themes */
 "Fetching Themes..." = "Henter temaer...";
@@ -1899,9 +1868,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message shown on screen after the Google sign up process failed. */
 "Google sign up failed." = "Registrering med Google feilet.";
-
-/* Okay button title shown in alert announcing new Create Button feature. */
-"Got it!" = "Har det!";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "Henter nettstedets URL";
@@ -2032,9 +1998,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Hint for image title on image settings. */
 "Image title" = "Bildetittel";
-
-/* Footer for the Serve images from our servers setting */
-"Improve your site's speed by only loading images visible on the screen. New images will load just before they scroll into view. This prevents viewers from having to download all the images on a page all at once, even ones they can't see." = "Forbedre sidens hastighet ved å bare laste inn bilder som er synlige på skjermen. Nye bilder vil lastes inn like før de rulles inn på skjermen. Dette forhindrer at brukerne trenger å laste ned alle bildene på siden samtidig, selv de de ikke kan se.";
 
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "Forklar hva siden er om med noen få ord.";
@@ -2218,8 +2181,7 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* A button title.
    Link to cookie policy
-   Menu title to show the prompts feature introduction modal.
-   Read more button title shown in alert announcing new Create Button feature. */
+   Menu title to show the prompts feature introduction modal. */
 "Learn more" = "Lær mer";
 
 /* Writing, Date and Time Settings: Learn more about date and time settings footer text */
@@ -2534,7 +2496,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Months and Years" = "Måneder og år";
 
 /* Accessibility label for more button in dashboard quick start card.
-   Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
    Action button to display more available options */
 "More" = "Mer";
@@ -2871,24 +2832,14 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Discoverability title for numbered list keyboard shortcut. */
 "Numbered List" = "Nummerert liste";
 
-/* A button title for closing the dialog.
-   A button title.
-   Accept Action
-   Alert dismissal title
+/* Alert dismissal title
    Button title. An acknowledgement of the message displayed in a prompt.
-   Default action
    Dismisses the alert
-   Marks all notifications as read.
    Menus: button title for finishing editing of a menu item.
-   OK
-   OK button for alert
    Ok button for dismissing alert helping users understand their site address
    OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
-   Submit button on prompt for user information.
-   Title of a button that dismisses a prompt
-   Title of an OK button. Pressing the button acknowledges and dismisses a prompt.
-   Title of primary button on alert prompting verify their accounts while attempting to publish */
+   Title of a button that dismisses a prompt */
 "OK" = "OK";
 
 /* No comment provided by engineer. */
@@ -3285,9 +3236,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of alert when attempting to delete site with purchases */
 "Premium Upgrades" = "Premium-oppgraderinger";
 
-/* Label to show while converting and/or resizing media to send to server */
-"Preparing..." = "Forbereder...";
-
 /* Displays the Post Preview Interface
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
@@ -3463,13 +3411,8 @@ translators: %s: Block name e.g. \"Image block\" */
 "Related Posts" = "Relaterte innlegg";
 
 /* Alert button to confirm a plugin to be removed
-   Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
-   Remove Action
-   Remove an image/posts/etc */
+   Remove Action */
 "Remove" = "Slett";
-
-/* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
-"Remove Featured Image" = "Slett fremhevet bilde";
 
 /* Label action for removing a link from the editor */
 "Remove Link" = "Fjern lenke";
@@ -3497,9 +3440,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* User action to remove image. */
 "Remove image" = "Fjern bilde";
-
-/* Prompt when removing a featured image from a post */
-"Remove this Featured Image?" = "Slett dette fremhevede bildet?";
 
 /* User action to remove video. */
 "Remove video" = "Fjern video";
@@ -3806,11 +3746,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message to show when setting save failed */
 "Settings update failed" = "Oppdatering av innstillinger feilet";
 
-/* Accessibility label for share buttons in nav bars
-   Button label to share a web page
-   Shares the comment URL
-   Spoken accessibility label
-   Title for a button that allows the user to share their answer to the prompt. */
+/* Spoken accessibility label */
 "Share" = "Del";
 
 /* Informational text for Collect Information setting */
@@ -4292,8 +4228,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Description shown when a user logs in with Google but no matching WordPress.com account is found */
 "The Google account \"%@\" doesn't match any account on WordPress.com" = "Google-kontoen \"%@\" matcher ikke en WordPress.com-konto";
 
-/* Error message shown when a media upload fails because the user isn't connected to the Internet.
-   Message of error prompt shown when a user tries to perform an action without an internet connection. */
+/* Error message shown when a media upload fails because the user isn't connected to the Internet. */
 "The Internet connection appears to be offline." = "Internettilkoblingen ser ikke ut til å virke.";
 
 /* Message informing the user that the site title can only be changed by an administrator user. */
@@ -4823,9 +4758,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Opplasting feilet";
 
-/* Description to show on post setting for a featured image that failed to upload. */
-"Upload failed. Tap for options." = "Opplastning feilet. Trykk for valg.";
-
 /* Label for the date a media asset (image / video) was uploaded
    Status for Media object that is uploaded and sync with server. */
 "Uploaded" = "Lastet opp";
@@ -4851,9 +4783,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title for alert when trying to save/exit a post before media upload process is complete. */
 "Uploading media" = "Laster opp media";
-
-/* Label to show while uploading media to server */
-"Uploading..." = "Laster opp...";
 
 /* Use the current image */
 "Use" = "Bruk";

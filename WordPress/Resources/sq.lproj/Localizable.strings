@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-12-29 21:52:37+0000 */
+/* Translation-Revision-Date: 2025-01-23 16:45:11+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: sq_AL */
@@ -14,9 +14,6 @@
 
 /* Message of Close Account confirmation alert */
 "\nTo confirm, please re-enter your username before closing.\n\n" = "\nQë ta ripohoni, ju lutemi, rijepni emrin tuaj të përdoruesit para mbylljes.\n\n";
-
-/* Title for the lazy load images setting */
-"\"Lazy-load\" images" = "Figura “Lazy-load”";
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
 "\"More\" Button" = "Buton “Më tepër”";
@@ -149,9 +146,6 @@
 
 /* Number of posts displayed in Posting Activity when a day is selected. %d will contain the actual number (plural). */
 "%d Posts" = "%d Postime";
-
-/* The number of connected accounts on a third party sharing service connected to the user's blog. The '%d' is a placeholder for the number of accounts. */
-"%d accounts" = "%d llogari";
 
 /* Age between dates over one day.
    Number of days */
@@ -322,9 +316,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Instruction text to explain magic link login step. */
 "A WordPress.com account is connected to your store credentials. To continue, we will send a verification link to the email address above." = "Me kredencialet tuaja për shitoren ka të përshoqëruar një llogari WordPress.com. Që të vazhdohet, do të dërgojmë një lidhje verifikimi te adresa email më sipër.";
-
-/* Label for image that is set as a feature image for post/page */
-"A featured image is set. Tap to change it." = "U caktua një figurë e zgjedhur. Prekeni që ta ndryshoni.";
 
 /* Title for a threat */
 "A file contains a malicious code pattern" = "Një kartelë përmban rregullsi kodi dashakeq";
@@ -1108,7 +1099,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Tapping it cancels the login flow.
-   Cancel a prompt
    Cancel Action
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
@@ -1117,7 +1107,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel action on the app extension tags picker screen.
    Cancel action title
    Cancel button
-   Cancel button for alert
    Cancel button label
    Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Cancel button.
@@ -1125,7 +1114,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
-   Cancel prompt for user information.
    Cancel registering a domain
    Cancel removing a plugin
    Cancel site creation
@@ -1135,7 +1123,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel. Action.
    Cancels an Action
    Cancels an alert.
-   Cancels the mark all as read action.
    Editing GIF alert cancel action button.
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
@@ -1164,9 +1151,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Share extension dialog dismiss button label - displayed when user is missing a login token. */
 "Cancel sharing" = "Anuloje ndarjen me të tjerët";
-
-/* The action was canceled */
-"Canceled" = "E anuluar";
 
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "Po anulohet …";
@@ -1500,9 +1484,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Community & Non-Profit site intent topic */
 "Community & Non-Profit" = "Bashkësi & Jofitimprurëse";
 
-/* The action is completed */
-"Completed" = "I përfunduar";
-
 /* Section title for the configure table section in the blog details screen */
 "Configure" = "Formësojeni";
 
@@ -1725,9 +1706,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Content show when the dashboard fails to load */
 "Couldn't update. Check that you're online and refresh." = "S’u përditësua dot. Kontrolloni nëse jeni në linjë dhe rifreksojeni.";
-
-/* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
-"Couldn't upload the featured image" = "S’u ngarkua figurë e zgjedhur";
 
 /* Error title displayed when unable to close user account. */
 "Couldn’t close account automatically" = "Llogaria s’u mbyll dot automatikisht";
@@ -2028,8 +2006,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for the Discussion Settings Screen */
 "Discussion" = "Diskutim";
 
-/* Accessibility label for button to dismiss a bottom sheet
-   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Dismiss a view. Verb */
 "Dismiss" = "Hidhe tej";
@@ -2062,9 +2039,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Done button title
    Done editing an image
    Done. Action.
-   Label for confirm feature image of a post
    Label for Done button
-   Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
    Title for a Done button.
@@ -2416,7 +2391,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Enter your server credentials" = "Jepni kredencialet tuaja për në shërbyes";
 
 /* Generic error alert title
-   Generic error.
    Generic popup title for any type of error. */
 "Error" = "Gabim";
 
@@ -2577,8 +2551,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Section title for the external table section in the blog details screen */
 "External" = "E jashtme";
 
-/* Status for Media object that is failed upload or export.
-   The action failed */
+/* Status for Media object that is failed upload or export. */
 "Failed" = "Dështoi";
 
 /* Message for mark all as read success notice */
@@ -2614,12 +2587,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "Të zgjedhura";
 
-/* Label for the Featured Image area in post settings.
-   Title for the Featured Image view */
+/* Label for the Featured Image area in post settings. */
 "Featured Image" = "Figurë e Zgjedhur";
-
-/* No comment provided by engineer. */
-"Featured Image did not load" = "Figura e Zgjedhur s’u ngarkua";
 
 /* Text displayed while fetching themes */
 "Fetching Themes..." = "Po sillen Temat…";
@@ -2770,12 +2739,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Full size image. (default). Should be the same as in core WP. */
 "Full Size" = "Madhësi e Plotë";
 
-/* Accessibility label for when image is shown to user in full screen, with instructions on how to dismiss the screen. Placeholder is the title of the image */
-"Fullscreen view of image %@. Double tap to dismiss" = "Pamje sa krejt ekrani e figurës %@. Prekeni dy herë që të hidhet tej";
-
-/* Accessibility label for when image is shown to user in full screen, with instructions on how to dismiss the screen */
-"Fullscreen view of image. Double tap to dismiss" = "Pamje e figurës sa krejt ekrani. Prekeni dy herë që të hidhet tej";
-
 /* Badge title displayed on GIF images in the editor. */
 "GIF" = "GIF";
 
@@ -2852,9 +2815,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Button title on the blogging prompt's feature introduction view to dismiss the view.
    Title for the continue button in the dashboard's custom What's New page. */
 "Got it" = "E kuptova";
-
-/* Okay button title shown in alert announcing new Create Button feature. */
-"Got it!" = "E mora vesh!";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "Marrje URL-je sajti";
@@ -3047,9 +3007,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Hint for image title on image settings. */
 "Image title" = "Titull figure";
-
-/* Footer for the Serve images from our servers setting */
-"Improve your site's speed by only loading images visible on the screen. New images will load just before they scroll into view. This prevents viewers from having to download all the images on a page all at once, even ones they can't see." = "Përmirësoni shpejtësinë e sajtit tuaj duke ngarkuar vetëm figurat e dukshme në ekran. Figurat e reja do të ngarkohen një grimë para se të shfaqen. Kjo i lehtëson shikuesit nga shkarkimi i krejt figurave njëherësh për një një faqe, edhe të atyre që s’i shohin në një çast të dhënë.";
 
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "Shpjegoni, me pak fjalë, se për çfarë është ky sajt.";
@@ -3388,8 +3345,7 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* A button title.
    Link to cookie policy
-   Menu title to show the prompts feature introduction modal.
-   Read more button title shown in alert announcing new Create Button feature. */
+   Menu title to show the prompts feature introduction modal. */
 "Learn more" = "Mësoni më tepër";
 
 /* Writing, Date and Time Settings: Learn more about date and time settings footer text */
@@ -3809,7 +3765,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Months and Years" = "Muaj dhe Vite";
 
 /* Accessibility label for more button in dashboard quick start card.
-   Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
    Action button to display more available options */
 "More" = "Më tepër";
@@ -4271,9 +4226,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* The default Jetpack view message for the success state */
 "Now that Jetpack is installed, we just need to get you set up. This will only take a minute." = "Tani që Jetpack-u është i instaluar, na duhet vetëm t’ju vëmë në udhë. Kjo do të zgjasë vetëm një minutë.";
 
-/* Body text of alert announcing new Create Button feature. */
-"Now there are fewer and better-organized tabs, posting shortcuts, and more, so you can find what you need fast." = "Tani ka më pak skeda dhe të sistemuara më mirë, shkurtore postimi, etj, që të gjeni më shpejt ç’ju duhet.";
-
 /* Register Domain - Address information field Number */
 "Number" = "Numër";
 
@@ -4283,24 +4235,14 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Discoverability title for numbered list keyboard shortcut. */
 "Numbered List" = "Listë Me Numra";
 
-/* A button title for closing the dialog.
-   A button title.
-   Accept Action
-   Alert dismissal title
+/* Alert dismissal title
    Button title. An acknowledgement of the message displayed in a prompt.
-   Default action
    Dismisses the alert
-   Marks all notifications as read.
    Menus: button title for finishing editing of a menu item.
-   OK
-   OK button for alert
    Ok button for dismissing alert helping users understand their site address
    OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
-   Submit button on prompt for user information.
-   Title of a button that dismisses a prompt
-   Title of an OK button. Pressing the button acknowledges and dismisses a prompt.
-   Title of primary button on alert prompting verify their accounts while attempting to publish */
+   Title of a button that dismisses a prompt */
 "OK" = "OK";
 
 /* No comment provided by engineer. */
@@ -4796,9 +4738,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for label when the preparing to scan the users site */
 "Preparing to scan" = "Po përgatitet të skanojë";
 
-/* Label to show while converting and/or resizing media to send to server */
-"Preparing..." = "Po përgatitet…";
-
 /* Displays the Post Preview Interface
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
@@ -5012,17 +4951,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Reminders removed" = "Kujtuesit u hoqën";
 
 /* Alert button to confirm a plugin to be removed
-   Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
-   Remove Action
-   Remove an image/posts/etc */
+   Remove Action */
 "Remove" = "Hiqe";
 
 /* Remove Person Alert Title
    Remove User. Verb */
 "Remove %@" = "Hiqe %@";
-
-/* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
-"Remove Featured Image" = "Hiqe Figurën e Zgjedhur";
 
 /* Label action for removing a link from the editor */
 "Remove Link" = "Hiqe Lidhjen";
@@ -5056,9 +4990,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* User action to remove image. */
 "Remove image" = "Hiqe figurën";
-
-/* Prompt when removing a featured image from a post */
-"Remove this Featured Image?" = "Të hiqet kjo Figurë e Zgjedhur?";
 
 /* User action to remove video. */
 "Remove video" = "Hiqni videon";
@@ -5498,20 +5429,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice confirming that an image has been set as the post's featured image. */
 "Set as featured image" = "Vëre si figurë të zgjedhur";
 
-/* Title of the set goals button in the Blogging Reminders Settings flow. */
-"Set reminders" = "Ujdisni kujtues";
-
 /* The Jetpack view button title for the success state */
 "Set up" = "U ujdis";
 
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "Rregulloni Jetpack-un";
-
-/* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
-"Set up your blogging reminders on days you want to post." = "Ujdisni kujtues blogimi për ditë kur doni të postoni.";
-
-/* Title of the Blogging Reminders Settings screen. */
-"Set your blogging reminders" = "Ujdisni kujtuesit tuaj për blogimin";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Setting up theme" = "Ujdisje teme";
@@ -5534,11 +5456,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message to show when setting save failed */
 "Settings update failed" = "Përditësimi i rregullimeve dështoi";
 
-/* Accessibility label for share buttons in nav bars
-   Button label to share a web page
-   Shares the comment URL
-   Spoken accessibility label
-   Title for a button that allows the user to share their answer to the prompt. */
+/* Spoken accessibility label */
 "Share" = "Ndajeni me të tjerët";
 
 /* Title for a button that recommends the app to others */
@@ -5879,9 +5797,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to stop upload. */
 "Stop upload" = "Ndale ngarkimin";
 
-/* Title of alert announcing new Create Button feature. */
-"Streamlined navigation" = "Lëvizje e thjeshtuar";
-
 /* Accessibility label for strikethrough button on formatting toolbar. */
 "Strike Through" = "Hequrvije";
 
@@ -6164,8 +6079,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description shown when a user logs in with Google but no matching WordPress.com account is found */
 "The Google account \"%@\" doesn't match any account on WordPress.com" = "Llogaria Google \"%@\" s’ka përputhje me ndonjë llogari te WordPress.com";
 
-/* Error message shown when a media upload fails because the user isn't connected to the Internet.
-   Message of error prompt shown when a user tries to perform an action without an internet connection. */
+/* Error message shown when a media upload fails because the user isn't connected to the Internet. */
 "The Internet connection appears to be offline." = "Lidhja Internet duket se është jashtë linje.";
 
 /* Message informing the user that the site title can only be changed by an administrator user. */
@@ -6932,9 +6846,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Ngarkimi dështoi";
 
-/* Description to show on post setting for a featured image that failed to upload. */
-"Upload failed. Tap for options." = "Përditësimi dështoi. Prekeni për mundësi.";
-
 /* Label for the date a media asset (image / video) was uploaded
    Status for Media object that is uploaded and sync with server. */
 "Uploaded" = "U ngarkua";
@@ -6963,9 +6874,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message of an alert informing users that the video they are trying to select is not allowed. */
 "Uploading videos longer than 5 minutes requires a paid plan." = "Ngarkimi i videove më të gjata se 5 minuta lyp një plan me pagesë.";
-
-/* Label to show while uploading media to server */
-"Uploading..." = "Po ngarkohet…";
 
 /* No comment provided by engineer. */
 "Uploading…" = "Po ngarkohet…";
@@ -7690,9 +7598,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Help text that describes how the password should be. It appears while editing the password */
 "Your password should be at least six characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! \" ? $ % ^ & )." = "Fjalëkalimi juaj duhet të jetë të paktën gjashtë shenja i gjatë. Për ta bërë më të fortë, përdorni shkronja me të mëdha dhe me të vogla, numra, dhe simbole të tillë si ! \" ? $ % ^ & ).";
 
-/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
-"Your post is publishing... in the meantime, set up your blogging reminders on days you want to post." = "Postimi juaj po botohet… ndërkohë, mund të ujdisni kujtues blogimi për ditë kur doni të postoni.";
-
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Postimet, faqet dhe rregullimet tuaja do t’ju dërgohen me email te %@.";
 
@@ -7916,6 +7821,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* An alert suggesting to load autosaved revision for a published post */
 "autosaveAlert.viewChanges" = "Shihini Ndryshimet";
 
+/* An error message displayed when attempting to update an avatar while the user's email address is not verified. */
+"avatar.update.email.verification.required" = "Që të përditësoni avatarin tuaj, lypset të verifikohet adresa juaj email së pari.";
+
 /* Alert message when something goes wrong with the selected image. */
 "avatarMenu.failedToSetAvatarAlertMessage" = "S’arrihet të ngarkohet figura. Ju lutemi, zgjidhni një tjetër, ose riprovoni më vonë.";
 
@@ -8022,10 +7930,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blogDashboard.dismiss" = "Hidhe tej";
 
 /* Context menu button title */
-"blogHeader.actionCopyURL" = "Kopjoji URL-në";
-
-/* Context menu button title */
-"blogHeader.actionVisitSite" = "Vizitoni sajtin";
+"blogHeader.actionVisitSite" = "Vizitoni Sajtin";
 
 /* Badge title in site list */
 "blogList.siteBadge.staging" = "Provë";
@@ -8069,6 +7974,15 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "Hidhe tej";
+
+/* Title of the set goals button in the Blogging Reminders Settings flow. */
+"bloggingRemindersPrompt.intro.continueButton" = "Ujdisni Kujtues";
+
+/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
+"bloggingRemindersPrompt.intro.details" = "Ujdisni kujtues blogimi për ditë kur doni të postoni.";
+
+/* Title of the Blogging Reminders Settings screen. */
+"bloggingRemindersPrompt.intro.title" = "Kujtues Blogimi";
 
 /* Add self-hosted site button */
 "button.addSelfHostedSite" = "Shtoni sajt të vetëstrehuar";
@@ -8280,6 +8194,9 @@ Example: Reply to Pamela Nguyen */
 /* Remote Config Debug Menu screen title
    Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "Formësim Së Largëti";
+
+/* Debug Menu action for TipKit */
+"debugMenu.resetTipKitData" = "Ktheji të Dhënat te Parazgjedhjet";
 
 /* Debug Menu section title */
 "debugMenu.section.logging" = "Regjistrim";
@@ -8936,9 +8853,6 @@ Example: Reply to Pamela Nguyen */
 /* Media screen navigation bar button Select title */
 "mediaLibrary.buttonSelect" = "Përzgjidhni";
 
-/* Context menu button */
-"mediaLibrary.buttonShare" = "Ndaje";
-
 /* Verb. Button title. Tapping cancels an action. */
 "mediaLibrary.deleteConfirmationCancel" = "Anuloje";
 
@@ -9203,9 +9117,6 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the personalize home option */
 "mySite.siteActions.personalizeHome" = "Personalizoni kreun";
 
-/* Menu title for the share site option */
-"mySite.siteActions.shareSite" = "Ndajeni sajtin me të tjerë";
-
 /* Menu title for the change site icon option */
 "mySite.siteActions.siteIcon" = "Ndryshoni ikonë sajti";
 
@@ -9247,9 +9158,6 @@ Example: Reply to Pamela Nguyen */
 
 /* The user has previously tapped 'Like' on this post */
 "notifications.accessibility-post-like-button-on" = "E Pëlqyet këtë postim";
-
-/* A label for screenreader users */
-"notifications.accessibility-share-button" = "Ndajeni me të tjerët";
 
 /* A label for screenreader users */
 "notifications.accessibility-tap-to-like-this-comment" = "Që të Shtohet Pëlqim i këtij Komenti, prekeni dy herë";
@@ -9456,6 +9364,9 @@ Example: Reply to Pamela Nguyen */
 "postEditor.moreMenu.saveDraft" = "Ruani Skicë";
 
 /* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.sendFeedback" = "Dërgoji Përshtypjet";
+
+/* Post Editor / Button in the 'More' menu */
 "postEditor.moreMenu.visualEditor" = "Përpunues Pamor";
 
 /* A 'View' action for a snackbar informing the user that some media files requires their attention */
@@ -9505,9 +9416,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Message for 'not eligible' state view */
 "postFromAudio.notEnoughRequestsMessage" = "S’keni aq kërkesa sa duhet për të krijuar një postim që nga audio.";
-
-/* Button title */
-"postFromAudio.ok" = "OK";
 
 /* Button title */
 "postFromAudio.retry" = "Riprovoni";
@@ -9566,9 +9474,6 @@ Example: Reply to Pamela Nguyen */
 /* Title for the 'Delete' post list row swipe action */
 "postList.swipeActionDeletePermanently" = "Fshije";
 
-/* Title for the 'Share' post list row swipe action */
-"postList.swipeActionShare" = "Ndajeni";
-
 /* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "Shiheni";
 
@@ -9598,12 +9503,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of notification displayed when either a new or an existing draft is saved */
 "postNotice.draftSaved" = "Skica u Ruajt";
-
-/* A generic error message title */
-"postNotice.errorTitle" = "Ndodhi një gabim";
-
-/* Button OK */
-"postNotice.ok" = "OK";
 
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "postNotice.pagePending" = "Faqe në pritje të shqyrtimit";
@@ -9641,20 +9540,20 @@ Example: Reply to Pamela Nguyen */
 /* A default value for an post without a title */
 "postSaveErrorMessage.postUntitled" = "Pa titull";
 
-/* User action to dismiss featured media options. */
-"postSettings.featuredImageUploadActionSheet.dismiss" = "Hidhe tej";
+/* Cancel upload button in Post Settings / Featured Image cell */
+"postSettings.featuredImage.cancelUpload" = "Anuloje Ngarkimin";
 
-/* User action to remove featured media. */
-"postSettings.featuredImageUploadActionSheet.remove" = "Hiqe";
+/* Replace image upload button in Post Settings / Featured Image cell */
+"postSettings.featuredImage.replaceImage" = "Zëvendësoje";
 
-/* User action to retry featured media upload. */
-"postSettings.featuredImageUploadActionSheet.retryUpload" = "Riprovo";
+/* Button in Post Settings */
+"postSettings.featuredImage.setFeaturedImageButton" = "Vëre Si Figurë të Zgjedhur";
 
-/* Title for action sheet with featured media options. */
-"postSettings.featuredImageUploadActionSheet.title" = "Mundësi Figure të Zgjedhur";
+/* Snackbar title */
+"postSettings.featuredImage.uploadFailed" = "S’u arrit të ngarkohet figurë e zgjedhur e re";
 
-/* Button OK */
-"postSettings.ok" = "OK";
+/* Post Settings */
+"postSettings.featuredImage.uploading" = "Po ngarkohet…";
 
 /* The 'Parent Page' setting of the post */
 "postSettings.parentPage" = "Faqe mëmë";
@@ -9667,9 +9566,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Section title for Page Attributes */
 "postSettings.section.pageAttributes" = "Atribute Faqeje";
-
-/* Button in Post Settings */
-"postSettings.setFeaturedImageButton" = "Caktoni Figurë të Zgjedhur";
 
 /* An alert message explaning that by changing the visibility to private, the post will be published immediately to your site */
 "postSettings.warningPostWillBePublishedAlertMessage" = "Duke ndryshuar dukshmërinë në “Private”, postimi do të botohet menjëherë";
@@ -9745,9 +9641,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for post settings option. Tapping displays settings for a post. */
 "posts.settings.actionTitle" = "Rregullime";
-
-/* Share the post. */
-"posts.share.actionTitle" = "Ndajeni";
 
 /* Label for post stats option. Tapping displays statistics for a post. */
 "posts.stats.actionTitle" = "Statistika";
@@ -9909,6 +9802,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Post publish success view: button 'View post' */
 "publishSuccessView.view" = "Shihni postimin";
 
+/* Informational notice title. Showed when you scan a code using a camera app outside of the app, which is not allowed. */
+"qrLogin.codeHasToBeScannedFromTheAppNotice.title" = "Ju lutemi, skanojeni kodin duke përdorur aplikacionin";
+
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Hidhe tej";
 
@@ -9936,8 +9832,23 @@ Tapping on this row allows the user to edit the sharing message. */
 /* A message title */
 "reader.blog.search.no.results.title" = "S’u gjetën blogje";
 
+/* A shared button title for Reader */
+"reader.button.addToFavorites" = "Shtojeni te të Parapëlqyerat";
+
+/* A shared button title for Reader */
+"reader.button.notificationSettings" = "Rregullime Njoftimesh";
+
+/* A shared button title for Reader */
+"reader.button.removeFromFavorites" = "Hiqe prej të Parapëlqyerave";
+
+/* A shared button title for Reader */
+"reader.button.subscribe" = "Pajtohuni";
+
 /* Reader sidebar button title */
 "reader.button.unfollow" = "Resht së ndjekuri";
+
+/* A shared button title for Reader */
+"reader.button.unsubscribe" = "Shpajtohuni";
 
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "Shihni postime nga sajti";
@@ -9945,10 +9856,7 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
 "reader.detail.likes.plural" = "_%1$d pëlqime_";
 
-/* Describes that the current user is the only one liking a post. */
-"reader.detail.likes.self" = "Ju pëlqen kjo.";
-
-/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
+/* Describes that only one user likes a post. The underscores denote underline and is not displayed. */
 "reader.detail.likes.single" = "_1 pëlqim_";
 
 /* Title for the Comment button on the Reader Detail toolbar.
@@ -10134,10 +10042,13 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.postContextMenu.blogDetails" = "Hollësi Blogu";
 
 /* Context menu action */
-"reader.postContextMenu.copyLink" = "Kopjoji Lidhjen";
+"reader.postContextMenu.manageNotifications" = "Administroni Njoftime";
 
 /* Context menu action */
-"reader.postContextMenu.manageNotifications" = "Administroni Njoftime";
+"reader.postContextMenu.markRead" = "Vëri Shenjë si të Lexuar";
+
+/* Context menu action */
+"reader.postContextMenu.markUnread" = "Vëri Shenjë si të Palexuar";
 
 /* Context menu action */
 "reader.postContextMenu.reportPost" = "Raportoni Postim";
@@ -10146,16 +10057,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.postContextMenu.reportUser" = "Raportoni Përdorues";
 
 /* Context menu action */
-"reader.postContextMenu.share" = "Ndajeni";
-
-/* Context menu action */
 "reader.postContextMenu.showBlog" = "Shkoni te Blogu";
-
-/* Context menu action */
-"reader.postContextMenu.subscribeT" = "Pajtohuni";
-
-/* Context menu action */
-"reader.postContextMenu.unsubscribe" = "Shpajtohuni";
 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "Shiheni në Shfletues";
@@ -10410,7 +10312,7 @@ Feel free to replace it with other bracket types that you think looks better for
 "readerDetail.dismissButton.accessibilityLabel" = "Hidhe tej";
 
 /* Spoken accessibility label for the Reading Preferences menu. */
-"readerDetail.displaySettingButton.accessibilityLabel" = "Parapëlqime Leximi";
+"readerDetail.displaySettingButton.displaySettingsLabel" = "Parapëlqime Leximi";
 
 /* Section title for global related posts. */
 "readerDetail.globalPostsSection.accessibilityLabel" = "Më tepër mbi WordPress.com";
@@ -10423,9 +10325,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Spoken accessibility label */
 "readerDetail.safariButton.accessibilityLabel" = "Hape në Safari";
-
-/* Spoken accessibility label */
-"readerDetail.shareButton.accessibilityLabel" = "Ndajeni";
 
 /* Error message that informs reader detail from a private blog cannot be fetched. */
 "readerDetailCoordinator.readerDetail.privateBlogErrorMessage" = "S’keni leje të shihni këtë blog privat.";
@@ -10576,6 +10475,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* A shared button title used in different contexts */
 "shared.button.view" = "Shiheni";
+
+/* A generic error title indicating that a screen failed to fetch the latest data */
+"shared.error.failiedToReloadData" = "S’u arrit të përditësohen të dhëna.";
 
 /* A generic error message */
 "shared.error.geneirc" = "Diç shkoi ters";
@@ -10808,6 +10710,9 @@ Feel free to replace it with other bracket types that you think looks better for
 /* A smallprint that hints the reason behind why Twitter is deprecated. */
 "social.twitterDeprecation.text" = "Ndarja e automatizuar me të tjerë që nga Twitter s’mund të përdoret më, për shkak ndryshimesh në kushte dhe çmime nga ana e Twitter-it.";
 
+/* The number of connected accounts on a third party sharing service connected to the user's blog. The '%d' is a placeholder for the number of accounts. */
+"socialSharing.connectionDetails.nAccount" = "%d llogari";
+
 /* Title of Subscribers stats tab. */
 "stats.dashboard.tab.subscribers" = "Pajtimtarë";
 
@@ -10981,12 +10886,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "Kërkoni për të gjetur foto të lira që t’i shtoni te Mediateka juaj!";
-
-/* The button title for the Cancel button in the In-App Feedback screen */
-"submit.feedback.buttonCancel" = "Anuloje";
-
-/* The button title for the Cancel button in the In-App Feedback screen */
-"submit.feedback.buttonOK" = "OK";
 
 /* The section title and or placeholder */
 "submit.feedback.detailsPlaceholder" = "Hollësi";
@@ -11240,9 +11139,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* The message in the alert that appears when deleting a user */
 "userDetails.alert.deleteUserErrorAlertMessage" = "Pati një gabim në fshirjen e përdoruesit";
-
-/* The title of the OK button in the alert that appears when deleting a user */
-"userDetails.alert.deleteUserErrorAlertOkButton" = "OK";
 
 /* The title of the alert that appears when deleting a user */
 "userDetails.alert.deleteUserErrorAlertTitle" = "Gabim";

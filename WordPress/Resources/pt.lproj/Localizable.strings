@@ -22,9 +22,6 @@
 /* Number of Links */
 "%@ links" = "%@ ligações";
 
-/* The number of connected accounts on a third party sharing service connected to the user's blog. The '%d' is a placeholder for the number of accounts. */
-"%d accounts" = "%d contas";
-
 /* Age between dates over one day.
    Number of days */
 "%d days" = "%d dias";
@@ -349,7 +346,6 @@
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Tapping it cancels the login flow.
-   Cancel a prompt
    Cancel Action
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
@@ -358,7 +354,6 @@
    Cancel action on the app extension tags picker screen.
    Cancel action title
    Cancel button
-   Cancel button for alert
    Cancel button label
    Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Cancel button.
@@ -366,7 +361,6 @@
    Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
-   Cancel prompt for user information.
    Cancel registering a domain
    Cancel removing a plugin
    Cancel site creation
@@ -376,7 +370,6 @@
    Cancel. Action.
    Cancels an Action
    Cancels an alert.
-   Cancels the mark all as read action.
    Editing GIF alert cancel action button.
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
@@ -402,9 +395,6 @@
 
 /* Share extension dialog dismiss button label - displayed when user is missing a login token. */
 "Cancel sharing" = "Cancelar partilha";
-
-/* The action was canceled */
-"Canceled" = "Cancelado";
 
 /* Image caption field label (for editing)
    Noun. Label for the caption for a media asset (image / video) */
@@ -514,9 +504,6 @@
 /* Setting: WordPress.com Community */
 "Community" = "Comunidade";
 
-/* The action is completed */
-"Completed" = "Concluído";
-
 /* Section title for the configure table section in the blog details screen */
 "Configure" = "Configurar";
 
@@ -615,9 +602,6 @@
 
 /* Error message when tag loading failed */
 "Couldn't load tags. Tap to retry." = "Não foi possível carregar as etiquetas. Toque para tentar de novo.";
-
-/* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
-"Couldn't upload the featured image" = "Não foi possível carregar a imagem de destaque";
 
 /* Period Stats 'Countries' header */
 "Countries" = "Países";
@@ -760,8 +744,7 @@
    Title for the Discussion Settings Screen */
 "Discussion" = "Discussão";
 
-/* Accessibility label for button to dismiss a bottom sheet
-   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Dismiss a view. Verb */
 "Dismiss" = "Ignorar";
@@ -779,9 +762,7 @@
    Done button title
    Done editing an image
    Done. Action.
-   Label for confirm feature image of a post
    Label for Done button
-   Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
    Title for a Done button.
@@ -866,7 +847,6 @@
 "Enter username" = "Insira o nome de utilizador";
 
 /* Generic error alert title
-   Generic error.
    Generic popup title for any type of error. */
 "Error" = "Erro";
 
@@ -907,16 +887,11 @@
 /* Overlay message displayed while starting content export */
 "Exporting content…" = "A exportar conteúdo...";
 
-/* Status for Media object that is failed upload or export.
-   The action failed */
+/* Status for Media object that is failed upload or export. */
 "Failed" = "Falhou";
 
-/* Label for the Featured Image area in post settings.
-   Title for the Featured Image view */
+/* Label for the Featured Image area in post settings. */
 "Featured Image" = "Imagem de destaque";
-
-/* No comment provided by engineer. */
-"Featured Image did not load" = "Imagem de destaque não foi carregada";
 
 /* Text displayed while fetching themes */
 "Fetching Themes..." = "A obter temas...";
@@ -1183,8 +1158,7 @@
 
 /* A button title.
    Link to cookie policy
-   Menu title to show the prompts feature introduction modal.
-   Read more button title shown in alert announcing new Create Button feature. */
+   Menu title to show the prompts feature introduction modal. */
 "Learn more" = "Ver mais";
 
 /* Writing, Date and Time Settings: Learn more about date and time settings footer text */
@@ -1394,7 +1368,6 @@
 "Months and Years" = "Meses e anos";
 
 /* Accessibility label for more button in dashboard quick start card.
-   Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
    Action button to display more available options */
 "More" = "Mais";
@@ -1544,24 +1517,14 @@
 /* Discoverability title for numbered list keyboard shortcut. */
 "Numbered List" = "Lista numerada";
 
-/* A button title for closing the dialog.
-   A button title.
-   Accept Action
-   Alert dismissal title
+/* Alert dismissal title
    Button title. An acknowledgement of the message displayed in a prompt.
-   Default action
    Dismisses the alert
-   Marks all notifications as read.
    Menus: button title for finishing editing of a menu item.
-   OK
-   OK button for alert
    Ok button for dismissing alert helping users understand their site address
    OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
-   Submit button on prompt for user information.
-   Title of a button that dismisses a prompt
-   Title of an OK button. Pressing the button acknowledges and dismisses a prompt.
-   Title of primary button on alert prompting verify their accounts while attempting to publish */
+   Title of a button that dismisses a prompt */
 "OK" = "OK";
 
 /* Disabled */
@@ -1801,9 +1764,6 @@
 /* Title of alert when attempting to delete site with purchases */
 "Premium Upgrades" = "Actualizações premium";
 
-/* Label to show while converting and/or resizing media to send to server */
-"Preparing..." = "A preparar…";
-
 /* Displays the Post Preview Interface
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
@@ -1894,13 +1854,8 @@
 "Related Posts" = "Artigos relacionados";
 
 /* Alert button to confirm a plugin to be removed
-   Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
-   Remove Action
-   Remove an image/posts/etc */
+   Remove Action */
 "Remove" = "Remover";
-
-/* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
-"Remove Featured Image" = "Remover imagem de destaque";
 
 /* Label action for removing a link from the editor */
 "Remove Link" = "Remover ligação";
@@ -1922,9 +1877,6 @@
 
 /* User action to remove image. */
 "Remove image" = "Remover imagem";
-
-/* Prompt when removing a featured image from a post */
-"Remove this Featured Image?" = "Remover esta imagem de destaque?";
 
 /* User action to remove video. */
 "Remove video" = "Remover vídeo";
@@ -2065,11 +2017,7 @@
 /* Message to show when setting save failed */
 "Settings update failed" = "Falhou ao actualizar opções";
 
-/* Accessibility label for share buttons in nav bars
-   Button label to share a web page
-   Shares the comment URL
-   Spoken accessibility label
-   Title for a button that allows the user to share their answer to the prompt. */
+/* Spoken accessibility label */
 "Share" = "Partilhar";
 
 /* Aztec's Text Placeholder
@@ -2302,8 +2250,7 @@
 /* No comment provided by engineer. */
 "That username is not allowed." = "Esse nome de utilizador não é permitido.";
 
-/* Error message shown when a media upload fails because the user isn't connected to the Internet.
-   Message of error prompt shown when a user tries to perform an action without an internet connection. */
+/* Error message shown when a media upload fails because the user isn't connected to the Internet. */
 "The Internet connection appears to be offline." = "A ligação à internet parece estar em baixo.";
 
 /* Message shown when an image failed to load while trying to add it to the Media library. */
@@ -2596,9 +2543,6 @@
 
 /* Title for alert when trying to save/exit a post before media upload process is complete. */
 "Uploading media" = "A carregar multimédia";
-
-/* Label to show while uploading media to server */
-"Uploading..." = "A carregar...";
 
 /* Use the current image */
 "Use" = "Usar";
