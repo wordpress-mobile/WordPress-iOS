@@ -251,6 +251,9 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     self.tableView.preservesSuperviewLayoutMargins = YES;
     self.tableView.backgroundColor = [UIColor murielBasicBackground];
     if ([Feature enabled:FeatureFlagReaderCommentsWebKit]) {
+        // We use this to mask the initial WebKit warmup that takes a bit of time
+        // the first time you initialize a web view. It renders asyncronously, and
+        // we don't want to show cells with empty messages.
         self.tableView.alpha = 0.0;
     }
     [self.view addSubview:self.tableView];
