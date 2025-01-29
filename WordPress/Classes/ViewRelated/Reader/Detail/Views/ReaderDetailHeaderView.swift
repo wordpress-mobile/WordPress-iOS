@@ -1,6 +1,7 @@
 import SwiftUI
 import AsyncImageKit
 import WordPressUI
+import WordPressReader
 
 protocol ReaderDetailHeaderViewDelegate: AnyObject {
     func didTapBlogName()

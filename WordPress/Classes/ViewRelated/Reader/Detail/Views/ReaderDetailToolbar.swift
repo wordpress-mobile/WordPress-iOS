@@ -1,5 +1,6 @@
 import UIKit
 import WordPressUI
+import WordPressReader
 
 protocol ReaderDetailToolbarDelegate: AnyObject {
     var notificationID: String? { get }

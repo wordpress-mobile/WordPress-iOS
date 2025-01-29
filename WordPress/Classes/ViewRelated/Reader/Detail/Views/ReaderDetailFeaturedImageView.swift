@@ -1,6 +1,7 @@
 import UIKit
 import AsyncImageKit
 import WordPressUI
+import WordPressReader
 
 protocol ReaderDetailFeaturedImageViewDelegate: AnyObject {
     func didTapFeaturedImage(_ sender: AsyncImageView)

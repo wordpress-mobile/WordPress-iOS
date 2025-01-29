@@ -3388,7 +3388,6 @@
 				Utility/SFHFKeychainUtils.m = "-fno-objc-arc";
 			};
 			membershipExceptions = (
-				"Extensions/Colors and Styles/UIColor+Extensions.swift",
 				"Extensions/Colors and Styles/WPStyleGuide+ApplicationStyles.swift",
 				"Extensions/Colors and Styles/WPStyleGuide+Gridicon.swift",
 				"Extensions/NSAttributedStringKey+Conversion.swift",
@@ -3427,7 +3426,6 @@
 				Utility/SFHFKeychainUtils.m = "-fno-objc-arc";
 			};
 			membershipExceptions = (
-				"Extensions/Colors and Styles/UIColor+Extensions.swift",
 				"Extensions/Colors and Styles/WPStyleGuide+ApplicationStyles.swift",
 				"Extensions/Colors and Styles/WPStyleGuide+Gridicon.swift",
 				"Extensions/NSAttributedStringKey+Conversion.swift",
@@ -3466,7 +3464,6 @@
 				Utility/SFHFKeychainUtils.m = "-fno-objc-arc";
 			};
 			membershipExceptions = (
-				"Extensions/Colors and Styles/UIColor+Extensions.swift",
 				Services/KeyValueDatabase.swift,
 				System/Constants/Constants.m,
 				"Utility/App Configuration/AppConfiguration.swift",
@@ -3559,7 +3556,6 @@
 				Utility/SFHFKeychainUtils.m = "-fno-objc-arc";
 			};
 			membershipExceptions = (
-				"Extensions/Colors and Styles/UIColor+Extensions.swift",
 				"Extensions/Colors and Styles/WPStyleGuide+ApplicationStyles.swift",
 				"Extensions/Colors and Styles/WPStyleGuide+Gridicon.swift",
 				"Extensions/NSAttributedStringKey+Conversion.swift",
@@ -3596,7 +3592,6 @@
 				Utility/SFHFKeychainUtils.m = "-fno-objc-arc";
 			};
 			membershipExceptions = (
-				"Extensions/Colors and Styles/UIColor+Extensions.swift",
 				"Extensions/Colors and Styles/WPStyleGuide+ApplicationStyles.swift",
 				"Extensions/Colors and Styles/WPStyleGuide+Gridicon.swift",
 				"Extensions/NSAttributedStringKey+Conversion.swift",

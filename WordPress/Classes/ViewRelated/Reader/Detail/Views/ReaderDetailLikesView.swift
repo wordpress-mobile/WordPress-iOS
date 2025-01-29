@@ -1,4 +1,5 @@
 import UIKit
+import WordPressReader
 
 protocol ReaderDetailLikesViewDelegate: AnyObject {
     func didTapLikesView()

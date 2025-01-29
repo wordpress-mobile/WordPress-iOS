@@ -1,5 +1,6 @@
 import UIKit
 import ColorStudio
+import WordPressReader
 
 /// A WKWebView that renders post content with styles applied
 ///
@@ -16,6 +17,10 @@ class ReaderWebView: WKWebView {
     var isP2 = false
 
     var displaySetting: ReaderDisplaySetting = .standard
+
+    deinit {
+        print("here")
+    }
 
     /// Make the webview transparent
     ///

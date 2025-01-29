@@ -1,6 +1,8 @@
 import Foundation
+import WordPressReader
 
 /// A collection of utilities for managing rendering for comments.
+@MainActor
 @objc class ReaderCommentsHelper: NSObject {
     private var contentHeights: [TaggedManagedObjectID<Comment>: CGFloat] = [:]
     private let renderers = NSCache<Comment, WebCommentContentRenderer>()

@@ -1,5 +1,6 @@
 import UIKit
 import WordPressUI
+import WordPressReader
 import Gravatar
 
 class CommentContentTableViewCell: UITableViewCell, NibReusable {
@@ -279,7 +280,7 @@ extension CommentContentTableViewCell: CommentContentRendererDelegate {
                 if height != constraint.constant {
                     constraint.constant = height
                     helper?.setCachedContentHeight(height, for: .init(comment))
-                    onContentLoaded?(height)
+                    onContentLoaded?(height) // We had the right size from the get-go
                 }
             } else {
                 wpAssertionFailure("constraint missing")
@@ -496,6 +497,7 @@ private extension CommentContentTableViewCell {
                 let renderer = RichCommentContentRenderer()
                 renderer.richContentDelegate = self.richContentDelegate
                 renderer.attributedText = attributedText
+                renderer.comment = comment
                 return renderer
             }
         }()
@@ -511,7 +513,7 @@ private extension CommentContentTableViewCell {
             contentContainerHeightConstraint?.isActive = false
         }
 
-        let contentView = renderer.render(comment: comment)
+        let contentView = renderer.render(comment: comment.content)
         if contentContainerView.subviews.first != contentView {
             contentContainerView.subviews.forEach { $0.removeFromSuperview() }
             contentView.removeFromSuperview()

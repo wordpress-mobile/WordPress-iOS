@@ -1,6 +1,8 @@
+import UIKit
+
 /// Defines methods related to Comment content rendering.
-///
-protocol CommentContentRenderer: AnyObject {
+@MainActor
+public protocol CommentContentRenderer: AnyObject {
     var delegate: CommentContentRendererDelegate? { get set }
 
     init()
@@ -9,10 +11,10 @@ protocol CommentContentRenderer: AnyObject {
     ///
     /// Note that the renderer *might* return a view with the wrong sizing at first, but it should update its delegate with the correct height
     /// through the `renderer(_:asyncRenderCompletedWithHeight:)` method.
-    func render(comment: Comment) -> UIView
+    func render(comment: String) -> UIView
 }
 
-protocol CommentContentRendererDelegate: AnyObject {
+public protocol CommentContentRendererDelegate: AnyObject {
     /// Called when the rendering process completes. Note that this method is only called when using complex rendering methods that involves
     /// asynchronous operations, so the container can readjust its size at a later time.
     func renderer(_ renderer: CommentContentRenderer, asyncRenderCompletedWithHeight height: CGFloat)

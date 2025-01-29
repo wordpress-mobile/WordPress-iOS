@@ -51,7 +51,7 @@ enum FeatureFlag: Int, CaseIterable {
         case .selfHostedSiteUserManagement:
             return false
         case .readerCommentsWebKit:
-            return BuildConfiguration.current != .appStore
+            return true // BuildConfiguration.current != .appStore
         }
     }
 

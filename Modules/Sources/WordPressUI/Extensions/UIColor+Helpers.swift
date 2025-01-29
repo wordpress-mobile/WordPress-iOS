@@ -14,6 +14,16 @@ public extension UIColor {
         }
     }
 
+    convenience init(color: UIColor) {
+        var r: CGFloat = 0
+        var g: CGFloat = 0
+        var b: CGFloat = 0
+        var a: CGFloat = 0
+
+        color.getRed(&r, green: &g, blue: &b, alpha: &a)
+        self.init(red: r, green: g, blue: b, alpha: a)
+    }
+
     /// Creates a color based on a hexString. If the string is not a valid hexColor it return nil
     /// Example of colors: #FF0000, #00FF0000
     ///
@@ -116,5 +126,27 @@ public extension UIColor {
         }
 
         preconditionFailure("Color can't be represented in hexadecimal form")
+    }
+
+    // MARK: - Traits
+
+    func color(for trait: UITraitCollection?) -> UIColor {
+        if let trait {
+            return resolvedColor(with: trait)
+        }
+        return self
+    }
+
+    func lightVariant() -> UIColor {
+        return color(for: UITraitCollection(userInterfaceStyle: .light))
+    }
+
+    func darkVariant() -> UIColor {
+        return color(for: UITraitCollection(userInterfaceStyle: .dark))
+    }
+
+    /// The same color with the dark and light variants swapped
+    var variantInverted: UIColor {
+        UIColor(light: darkVariant(), dark: lightVariant())
     }
 }

@@ -1,6 +1,7 @@
 import UIKit
 import WordPressUI
 import AutomatticTracks
+import WordPressReader
 
 typealias RelatedPostsSection = (postType: RemoteReaderSimplePost.PostType, posts: [RemoteReaderSimplePost])
 

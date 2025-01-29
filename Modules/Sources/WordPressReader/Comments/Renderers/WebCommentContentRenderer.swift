@@ -1,23 +1,32 @@
-@preconcurrency import WebKit
+import WebKit
 import WordPressShared
+import WordPressUI
 
 /// Renders the comment body with a web view. Provides the best visual experience but has the highest performance cost.
-///
-class WebCommentContentRenderer: NSObject, CommentContentRenderer {
+@MainActor
+public final class WebCommentContentRenderer: NSObject, CommentContentRenderer, WKScriptMessageHandler {
+
+    deinit {
+        print("here")
+    }
+
+    public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        print("here")
+    }
 
     // MARK: Properties
 
-    weak var delegate: CommentContentRendererDelegate?
+    public weak var delegate: CommentContentRendererDelegate?
 
     private let webView = WKWebView(frame: .zero)
 
-    private var comment: Comment?
+    private var comment: String?
 
-    private let displaySetting: ReaderDisplaySetting = .standard
+    private var displaySetting = ReaderDisplaySetting.standard
 
     // MARK: Methods
 
-    required override init() {
+    public required override init() {
         super.init()
 
         if #available(iOS 16.4, *) {
@@ -37,13 +46,13 @@ class WebCommentContentRenderer: NSObject, CommentContentRenderer {
         webView.configuration.userContentController.add(ReaderWebViewMessageHandler(), name: "eventHandler")
     }
 
-    func render(comment: Comment) -> UIView {
+    public func render(comment: String) -> UIView {
         guard self.comment != comment else {
             return webView // Already rendering this comment
         }
         self.comment = comment
 
-        webView.loadHTMLString(formattedHTMLString(for: comment.content), baseURL: Bundle.wordPressSharedBundle.bundleURL)
+        webView.loadHTMLString(formattedHTMLString(for: comment), baseURL: Bundle.wordPressSharedBundle.bundleURL)
 
         return webView
     }
@@ -52,7 +61,7 @@ class WebCommentContentRenderer: NSObject, CommentContentRenderer {
 // MARK: - WKNavigationDelegate
 
 extension WebCommentContentRenderer: WKNavigationDelegate {
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+    public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         // Wait until the HTML document finished loading.
         // This also waits for all of resources within the HTML (images, video thumbnail images) to be fully loaded.
         webView.evaluateJavaScript("document.readyState") { complete, _ in
@@ -77,18 +86,17 @@ extension WebCommentContentRenderer: WKNavigationDelegate {
         }
     }
 
-    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+    public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction) async -> WKNavigationActionPolicy {
         switch navigationAction.navigationType {
         case .other:
             // allow local file requests.
-            decisionHandler(.allow)
+            return .allow
         default:
-            decisionHandler(.cancel)
             guard let destinationURL = navigationAction.request.url else {
-                return
+                return .allow
             }
-
             self.delegate?.renderer(self, interactedWithURL: destinationURL)
+            return .cancel
         }
     }
 }
@@ -98,18 +106,6 @@ extension WebCommentContentRenderer: WKNavigationDelegate {
 private extension WebCommentContentRenderer {
     struct Constants {
         static let emptyElementRegexPattern = "<[a-z]+>(<!-- [a-zA-Z0-9\\/: \"{}\\-\\.,\\?=\\[\\]]+ -->)+<\\/[a-z]+>"
-
-        static let highlightColor = UIColor(light: UIAppColor.primary, dark: UIAppColor.primary(.shade30))
-
-        static let mentionBackgroundColor: UIColor = {
-            var darkColor = UIAppColor.primary(.shade90)
-
-            if AppConfiguration.isWordPress {
-                darkColor = darkColor.withAlphaComponent(0.5)
-            }
-
-            return UIColor(light: UIAppColor.primary(.shade0), dark: darkColor)
-        }()
     }
 
     /// Used for the web view's `baseURL`, to reference any local files (i.e. CSS) linked from the HTML.
@@ -118,23 +114,18 @@ private extension WebCommentContentRenderer {
     }()
 
     var textColor: UIColor {
-        ReaderDisplaySetting.customizationEnabled ? displaySetting.color.foreground : .label
+        displaySetting.color.foreground
     }
 
+    // TODO: (kean) do we want  displaySetting.color == .system?
     var mentionBackgroundColor: UIColor {
-        guard ReaderDisplaySetting.customizationEnabled else {
-            return Constants.mentionBackgroundColor
-        }
-
-        return displaySetting.color == .system ? Constants.mentionBackgroundColor : displaySetting.color.secondaryBackground
+//        displaySetting.color == .system ? Constants.mentionBackgroundColor :
+        displaySetting.color.secondaryBackground
     }
 
     var linkColor: UIColor {
-        guard ReaderDisplaySetting.customizationEnabled else {
-            return Constants.highlightColor
-        }
-
-        return displaySetting.color == .system ? Constants.highlightColor : displaySetting.color.foreground
+//        displaySetting.color == .system ? Constants.highlightColor :
+        displaySetting.color.foreground
     }
 
     var secondaryBackgroundColor: UIColor {
@@ -209,12 +200,12 @@ private extension WebCommentContentRenderer {
 
         return """
         :root {
-            --text-color: \(textColor.color(for: trait).cssRGBAString());
-            --text-secondary-color: \(displaySetting.color.secondaryForeground.color(for: trait).cssRGBAString());
-            --link-color: \(linkColor.color(for: trait).cssRGBAString());
-            --mention-background-color: \(mentionBackgroundColor.color(for: trait).cssRGBAString());
-            --background-secondary-color: \(secondaryBackgroundColor.color(for: trait).cssRGBAString());
-            --border-color: \(displaySetting.color.border.color(for: trait).cssRGBAString());
+            --text-color: \(textColor.color(for: trait).cssHex);
+            --text-secondary-color: \(displaySetting.color.secondaryForeground.color(for: trait).cssHex);
+            --link-color: \(linkColor.color(for: trait).cssHex);
+            --mention-background-color: \(mentionBackgroundColor.color(for: trait).cssHex);
+            --background-secondary-color: \(secondaryBackgroundColor.color(for: trait).cssHex);
+            --border-color: \(displaySetting.color.border.color(for: trait).cssHex);
         }
         """
     }
@@ -230,7 +221,7 @@ private extension WebCommentContentRenderer {
     func formattedHTMLString(for content: String) -> String {
         // otherwise: sanitize the content, cache it, and then return it.
         guard let htmlTemplateFormat else {
-            DDLogError("WebCommentContentRenderer: Failed to load HTML template format for comment content.")
+            assertionFailure("WebCommentContentRenderer: Failed to load HTML template format for comment content.")
             return String()
         }
 
@@ -244,17 +235,7 @@ private extension WebCommentContentRenderer {
 }
 
 private extension UIColor {
-    func cssRGBAString(customAlpha: CGFloat? = nil) -> String {
-        let red = Int(rgbaComponents.red * 255)
-        let green = Int(rgbaComponents.green * 255)
-        let blue = Int(rgbaComponents.blue * 255)
-        let alpha = {
-            guard let customAlpha, customAlpha <= 1.0 else {
-                return rgbaComponents.alpha
-            }
-            return customAlpha
-        }()
-
-        return "rgba(\(red), \(green), \(blue), \(alpha))"
+    var cssHex: String {
+        "#\(hexStringWithAlpha)"
     }
 }

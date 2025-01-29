@@ -1,4 +1,6 @@
 import UIKit
+import WordPressReader
+
 /// Table View delegate to handle the Comments table displayed in Reader Post details.
 ///
 class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UITableViewDelegate {
