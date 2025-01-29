@@ -1,7 +1,7 @@
 For this month's release, we've:
 - Added support for Image Playgrounds! Use it to add images to your posts, generate a featured image, or site icon.
-- Added undo and redo to the experimental editor (have you tried it yet?)
+- Added undo and redo to the experimental editor (have you tried the editor yet? if not, you should!)
 - Made the Gravatar Quick Editor a bit nicer.
-- Replacing the featured image for a post is faster now.
-- Viewing images in your media library is a little nicer now.
-- We did the usual bug fixes and performance improvements (mostly in the editor)
+- Added a shortcut for changing the featured image for a post.
+- Improved how images in your media library are displayed – it should be a little nicer now.
+- Done the usual bug fixes and performance improvements (mostly in the editor)
