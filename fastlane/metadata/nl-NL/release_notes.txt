@@ -1,0 +1,7 @@
+Voor de release van deze maand hebben we:
+- Ondersteuning toegevoegd voor Image Playgrounds! Gebruik het om afbeeldingen aan je berichten toe te voegen, een uitgelichte afbeelding of site-icoon te genereren.
+- Ongedaan maken en opnieuw uitvoeren toegevoegd aan de experimentele editor (heb je de editor al geprobeerd? Zo niet, dan moet je dat zeker doen!)
+- De Gravatar Quick Editor een beetje mooier gemaakt.
+- Een snelkoppeling toegevoegd voor het wijzigen van de uitgelichte afbeelding voor een bericht.
+- Verbeterd hoe afbeeldingen in je mediabibliotheek worden weergegeven - het zou nu een beetje mooier moeten zijn.
+- De gebruikelijke bugfixes en prestatieverbeteringen uitgevoerd (voornamelijk in de editor)
