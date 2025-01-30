@@ -109,17 +109,12 @@ private extension WebCommentContentRenderer {
         displaySetting.color.foreground
     }
 
-    // TODO: (kean) do we want  displaySetting.color == .system?
     var mentionBackgroundColor: UIColor {
-//        displaySetting.color == .system ? Constants.mentionBackgroundColor :
         webView.tintColor.withAlphaComponent(0.1)
     }
 
     var linkColor: UIColor {
         webView.tintColor
-
-//        displaySetting.color == .system ? Constants.highlightColor :
-//        displaySetting.color.foreground
     }
 
     var secondaryBackgroundColor: UIColor {

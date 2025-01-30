@@ -28,7 +28,7 @@ final class CommentWebView: UIView, CommentContentRendererDelegate {
     // MARK: CommentContentRendererDelegate
 
     func renderer(_ renderer: any CommentContentRenderer, interactedWithURL url: URL) {
-        // Do nothing
+        print("interact:", url)
     }
 
     func renderer(_ renderer: any CommentContentRenderer, asyncRenderCompletedWithHeight height: CGFloat) {
