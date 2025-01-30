@@ -7,7 +7,7 @@ struct ReaderFollowButton: View {
     let isEnabled: Bool
     let size: ButtonSize
     var color: ButtonColor = .init()
-    var displaySetting: ReaderDisplaySetting?
+    var displaySetting: ReaderDisplaySettings?
 
     let action: () -> Void
 
@@ -49,7 +49,7 @@ struct ReaderFollowButton: View {
          isEnabled: Bool,
          size: ButtonSize,
          color: ButtonColor? = nil,
-         displaySetting: ReaderDisplaySetting? = nil,
+         displaySetting: ReaderDisplaySettings? = nil,
          action: @escaping () -> Void) {
         self.isFollowing = isFollowing
         self.isEnabled = isEnabled

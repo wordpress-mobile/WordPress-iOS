@@ -20,7 +20,7 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
 
     /// It can't be changed at the moment, but this capability was included from the
     /// start, and this implementation continues supporting it.
-    private var displaySetting = ReaderDisplaySetting.standard
+    private var displaySetting = ReaderDisplaySettings.standard
 
     var tintColor: UIColor {
         get { webView.tintColor }

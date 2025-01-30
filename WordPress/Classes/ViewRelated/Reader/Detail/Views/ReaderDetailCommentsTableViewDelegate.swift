@@ -18,7 +18,7 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
     private var totalRows = 0
     private var hideButton = true
 
-    var displaySetting: ReaderDisplaySetting
+    var displaySetting: ReaderDisplaySettings
 
     private var comments: [Comment] = [] {
         didSet {
@@ -45,7 +45,7 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
 
     // MARK: - Public Methods
 
-    init(displaySetting: ReaderDisplaySetting = .standard) {
+    init(displaySetting: ReaderDisplaySettings = .standard) {
         self.displaySetting = displaySetting
     }
 
@@ -112,7 +112,7 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
         cell.backgroundColor = .clear
         cell.contentView.backgroundColor = .clear
 
-        if ReaderDisplaySetting.customizationEnabled {
+        if ReaderDisplaySettings.customizationEnabled {
             cell.titleLabel.font = displaySetting.font(with: .body)
             cell.titleLabel.textColor = displaySetting.color.secondaryForeground
         }
@@ -178,7 +178,7 @@ private extension ReaderDetailCommentsTableViewDelegate {
         let cell = BorderedButtonTableViewCell()
         let title = totalComments == 0 ? Constants.leaveCommentButtonTitle : Constants.viewAllButtonTitle
 
-        if ReaderDisplaySetting.customizationEnabled {
+        if ReaderDisplaySettings.customizationEnabled {
             cell.configure(buttonTitle: title,
                            titleFont: displaySetting.font(with: .body, weight: .semibold),
                            normalColor: displaySetting.color.foreground,

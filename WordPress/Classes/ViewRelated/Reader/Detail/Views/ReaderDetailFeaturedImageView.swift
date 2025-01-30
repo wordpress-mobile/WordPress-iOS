@@ -32,7 +32,7 @@ final class ReaderDetailFeaturedImageView: UIView {
             self.endTintColor = endTintColor
         }
 
-        init(displaySetting: ReaderDisplaySetting) {
+        init(displaySetting: ReaderDisplaySettings) {
             self.init(endTintColor: displaySetting.color.foreground)
         }
     }
@@ -61,7 +61,7 @@ final class ReaderDetailFeaturedImageView: UIView {
         }
     }
 
-    var displaySetting: ReaderDisplaySetting = .standard {
+    var displaySetting: ReaderDisplaySettings = .standard {
         didSet {
             style = .init(displaySetting: displaySetting)
 

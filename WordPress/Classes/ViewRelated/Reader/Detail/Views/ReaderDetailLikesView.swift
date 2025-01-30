@@ -10,7 +10,7 @@ final class ReaderDetailLikesView: UIView, NibLoadable {
     @IBOutlet private weak var summaryLabel: UILabel!
     @IBOutlet private weak var selfAvatarImageView: CircularImageView!
 
-    var displaySetting: ReaderDisplaySetting = .standard {
+    var displaySetting: ReaderDisplaySettings = .standard {
         didSet {
             applyStyles()
             if let viewModel {

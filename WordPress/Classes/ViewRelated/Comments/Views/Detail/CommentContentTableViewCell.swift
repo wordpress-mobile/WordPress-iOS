@@ -135,7 +135,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     private var style: CellStyle = .init(displaySetting: nil)
 
     // TODO: (kean) remove
-    var displaySetting: ReaderDisplaySetting? = nil {
+    var displaySetting: ReaderDisplaySettings? = nil {
         didSet {
             style = CellStyle(displaySetting: displaySetting)
             applyStyles()
@@ -301,11 +301,11 @@ private extension CommentContentTableViewCell {
     /// A structure to override the cell styling based on `ReaderDisplaySetting`.
     /// This doesn't cover all aspects of the cell, and iks currently scoped only for Reader Detail.
     struct CellStyle {
-        let displaySetting: ReaderDisplaySetting?
+        let displaySetting: ReaderDisplaySettings?
 
         /// NOTE: Remove when the `readerCustomization` flag is removed.
         var customizationEnabled: Bool {
-            ReaderDisplaySetting.customizationEnabled
+            ReaderDisplaySettings.customizationEnabled
         }
 
         // Name Label

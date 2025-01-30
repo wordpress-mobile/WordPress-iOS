@@ -19,7 +19,7 @@ final class ReaderDetailHeaderHostingView: UIView {
         }
     }
 
-    var displaySetting: ReaderDisplaySetting = .standard {
+    var displaySetting: ReaderDisplaySettings = .standard {
         didSet {
             viewModel.displaySetting = displaySetting
             Task { @MainActor in

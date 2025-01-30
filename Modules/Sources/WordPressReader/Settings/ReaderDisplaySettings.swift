@@ -1,14 +1,14 @@
 import UIKit
 import WordPressShared
 
-public struct ReaderDisplaySetting: Codable, Equatable, Hashable, Sendable {
+public struct ReaderDisplaySettings: Codable, Equatable, Hashable, Sendable {
 
     public static var customizationEnabled: Bool { true }
 
     // MARK: Properties
 
     // The default display setting.
-    public static let standard = ReaderDisplaySetting(color: .system, font: .sans, size: .normal)
+    public static let standard = ReaderDisplaySettings(color: .system, font: .sans, size: .normal)
 
     public var color: Color
     public var font: Font

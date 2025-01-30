@@ -10,8 +10,8 @@ enum ReaderDisplaySettingViewSource: String {
 }
 
 class ReaderDisplaySettingViewController: UIViewController {
-    private let initialSetting: ReaderDisplaySetting
-    private let completion: ((ReaderDisplaySetting) -> Void)?
+    private let initialSetting: ReaderDisplaySettings
+    private let completion: ((ReaderDisplaySettings) -> Void)?
     private let trackingSource: ReaderDisplaySettingViewSource
     private var viewModel: ReaderDisplaySettingSelectionViewModel? = nil
 
@@ -19,9 +19,9 @@ class ReaderDisplaySettingViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    init(initialSetting: ReaderDisplaySetting,
+    init(initialSetting: ReaderDisplaySettings,
          source: ReaderDisplaySettingViewSource = .unspecified,
-         completion: ((ReaderDisplaySetting) -> Void)?) {
+         completion: ((ReaderDisplaySettings) -> Void)?) {
         self.initialSetting = initialSetting
         self.completion = completion
         self.trackingSource = source
@@ -84,7 +84,7 @@ class ReaderDisplaySettingViewController: UIViewController {
     }
 
     @MainActor
-    private func updateNavigationBar(with setting: ReaderDisplaySetting) {
+    private func updateNavigationBar(with setting: ReaderDisplaySettings) {
         navigationController?.navigationBar.overrideUserInterfaceStyle = setting.hasLightBackground ? .light : .dark
 
         // update the experimental label style
@@ -119,14 +119,14 @@ class ReaderDisplaySettingViewController: UIViewController {
 class ReaderDisplaySettingSelectionViewModel: NSObject, ObservableObject {
     private typealias TrackingKeys = ReaderDisplaySettingSelectionView.TrackingKeys
 
-    @Published var displaySetting: ReaderDisplaySetting
+    @Published var displaySetting: ReaderDisplaySettings
 
     /// Called when the user selects a new option.
     var didSelectItem: (() -> Void)? = nil
 
-    private let completion: ((ReaderDisplaySetting) -> Void)?
+    private let completion: ((ReaderDisplaySettings) -> Void)?
 
-    init(displaySetting: ReaderDisplaySetting, completion: ((ReaderDisplaySetting) -> Void)?) {
+    init(displaySetting: ReaderDisplaySettings, completion: ((ReaderDisplaySettings) -> Void)?) {
         self.displaySetting = displaySetting
         self.completion = completion
     }

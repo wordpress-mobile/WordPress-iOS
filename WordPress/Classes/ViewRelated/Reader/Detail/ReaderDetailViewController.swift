@@ -158,7 +158,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }()
 
     // Convenient access to the underlying structure
-    private var displaySetting: ReaderDisplaySetting {
+    private var displaySetting: ReaderDisplaySettings {
         displaySettingStore.setting
     }
 

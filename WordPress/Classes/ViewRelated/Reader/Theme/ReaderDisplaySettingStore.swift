@@ -19,7 +19,7 @@ class ReaderDisplaySettingStore: NSObject {
 
     /// A public facade to simplify the flag checking dance for the `ReaderDisplaySetting` object.
     /// When the flag is disabled, this will always return the `standard` object, and the setter does nothing.
-    var setting: ReaderDisplaySetting {
+    var setting: ReaderDisplaySettings {
         get {
             return ReaderDisplaySetting.customizationEnabled ? _setting : .standard
         }
@@ -35,7 +35,7 @@ class ReaderDisplaySettingStore: NSObject {
 
     /// The actual instance variable that holds the setting object.
     /// This is intentionally set to private so that it's only controllable by `ReaderDisplaySettingStore`.
-    private var _setting: ReaderDisplaySetting = .standard {
+    private var _setting: ReaderDisplaySettings = .standard {
         didSet {
             guard oldValue != _setting,
                   let dictionary = try? setting.toDictionary() else {
@@ -93,7 +93,7 @@ class ReaderDisplaySettingStore: NSObject {
     /// Fetches the stored value of `ReaderDisplaySetting`.
     ///
     /// - Returns: `ReaderDisplaySetting`
-    private func fetchSetting() throws -> ReaderDisplaySetting? {
+    private func fetchSetting() throws -> ReaderDisplaySettings? {
         guard let dictionary = repository.dictionary(forKey: Constants.key) else {
             return nil
         }

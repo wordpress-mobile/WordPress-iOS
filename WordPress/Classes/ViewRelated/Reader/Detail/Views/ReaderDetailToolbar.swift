@@ -30,7 +30,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
 
     weak var delegate: ReaderDetailToolbarDelegate? = nil
 
-    var displaySetting: ReaderDisplaySetting = .standard {
+    var displaySetting: ReaderDisplaySettings = .standard {
         didSet {
             applyStyles()
             configureActionButtons()

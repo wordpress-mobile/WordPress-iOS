@@ -2,7 +2,7 @@ import UIKit
 
 // MARK: - ReaderDisplaySetting (CSS)
 
-extension ReaderDisplaySetting {
+extension ReaderDisplaySettings {
     /// Creates a set of CSS styles that could be applied to a HTML file with
     /// Gutenberg blocks to render them in a nice app that fits with the design
     /// of the app.
