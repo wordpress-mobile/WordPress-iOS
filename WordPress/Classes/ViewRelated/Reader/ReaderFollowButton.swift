@@ -31,7 +31,7 @@ struct ReaderFollowButton: View {
             self.unfollowedBackground = unfollowedBackground
         }
 
-        init(displaySetting: ReaderDisplaySetting) {
+        init(displaySetting: ReaderDisplaySettings) {
             followedText = Color(displaySetting.color.secondaryForeground)
             followedBackground = .clear
             followedStroke = followedText

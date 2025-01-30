@@ -22,7 +22,8 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
     /// start, and this implementation continues supporting it.
     private var displaySetting = ReaderDisplaySettings.standard
 
-    var tintColor: UIColor {
+    /// - warning: This has to be configured _before_ you render.
+    public var tintColor: UIColor {
         get { webView.tintColor }
         set {
             webView.tintColor = newValue
