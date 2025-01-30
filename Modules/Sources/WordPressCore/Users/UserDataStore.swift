@@ -1,5 +1,15 @@
 import Foundation
-import Combine
+@preconcurrency import Combine
+import WordPressShared
+
+public protocol UserDataStore: DataStore where T == DisplayUser, Query == UserDataStoreQuery {
+}
+
+public enum UserDataStoreQuery: Equatable, Sendable {
+    case all
+    case id(Set<DisplayUser.ID>)
+    case search(String)
+}
 
 public actor InMemoryUserDataStore: UserDataStore, InMemoryDataStore {
     public typealias T = DisplayUser
@@ -10,6 +20,8 @@ public actor InMemoryUserDataStore: UserDataStore, InMemoryDataStore {
     deinit {
         updates.send(completion: .finished)
     }
+
+    public init() {}
 
     public func list(query: Query) throws -> [T] {
         switch query {

@@ -1,6 +1,6 @@
 import Foundation
 import WordPressAPI
-import Network
+import WordPressCore
 
 struct WordPressSite {
     enum SiteType {
@@ -29,21 +29,7 @@ struct WordPressSite {
     }
 }
 
-actor WordPressClient {
-
-    enum ReachabilityStatus {
-        case unknown
-        case available(path: NWPath)
-        case unavailable(reason: NWPath.UnsatisfiedReason)
-    }
-
-    let api: WordPressAPI
-    private let rootUrl: String
-
-    init(api: WordPressAPI, rootUrl: ParsedUrl) {
-        self.api = api
-        self.rootUrl = rootUrl.url()
-    }
+extension WordPressClient {
 
     init(site: WordPressSite) {
         // `site.barUrl` is a legal HTTP URL, which should be convertable to the `ParsedUrl` type.

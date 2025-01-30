@@ -2,6 +2,7 @@ import SwiftUI
 import Combine
 import WordPressShared
 import WordPressAPI
+import WordPressCore
 
 @MainActor
 class UserListViewModel: ObservableObject {

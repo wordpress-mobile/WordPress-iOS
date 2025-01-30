@@ -2,6 +2,7 @@ import Foundation
 import UIKit
 import CoreData
 import WordPressKit
+import WordPressCore
 
 enum DashboardSection: Int, CaseIterable, Sendable {
     case migrationSuccess

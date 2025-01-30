@@ -11,7 +11,7 @@ import OHHTTPStubsSwift
     private let cache = MockMemoryCache()
 
     init() async throws {
-        sut = ImageDownloader(cache: cache, authenticator: nil)
+        sut = ImageDownloader(cache: cache)
     }
 
     deinit {

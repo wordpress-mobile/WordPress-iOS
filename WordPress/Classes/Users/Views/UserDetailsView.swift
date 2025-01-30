@@ -1,5 +1,6 @@
 import SwiftUI
 import WordPressAPI
+import WordPressCore
 
 struct UserDetailsView: View {
 
@@ -312,6 +313,6 @@ private extension String {
 
 #Preview {
     NavigationStack {
-        UserDetailsView(user: DisplayUser.MockUser, isCurrentUser: true, userService: MockUserProvider(), applicationTokenListDataProvider: StaticTokenProvider(tokens: .success(.testTokens)))
+        UserDetailsView(user: .mockUser, isCurrentUser: true, userService: MockUserProvider(), applicationTokenListDataProvider: StaticTokenProvider(tokens: .success(.testTokens)))
     }
 }

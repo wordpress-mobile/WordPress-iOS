@@ -47,8 +47,8 @@ let package = Package(
         .package(url: "https://github.com/wordpress-mobile/WordPressKit-iOS", branch: "wpios-edition"),
         .package(url: "https://github.com/zendesk/support_sdk_ios", from: "8.0.3"),
         // We can't use wordpress-rs branches nor commits here. Only tags work.
-        .package(url: "https://github.com/Automattic/wordpress-rs", revision: "alpha-20241116"),
-        .package(url: "https://github.com/wordpress-mobile/GutenbergKit", revision: "f8c5c417c789c8d052093838e622828ae4ec076f"),
+        .package(url: "https://github.com/Automattic/wordpress-rs", revision: "alpha-20250127"),
+        .package(url: "https://github.com/wordpress-mobile/GutenbergKit", revision: "fb31301ea6a94376237947afb4242f75c074f43c"),
         .package(url: "https://github.com/Automattic/color-studio", branch: "trunk"),
     ],
     targets: XcodeSupport.targets + [
@@ -63,6 +63,7 @@ let package = Package(
             .product(name: "XCUITestHelpers", package: "XCUITestHelpers"),
         ], swiftSettings: [.swiftLanguageMode(.v5)]),
         .target(name: "WordPressFlux", swiftSettings: [.swiftLanguageMode(.v5)]),
+        .target(name: "WordPressCore", dependencies: [.target(name: "WordPressShared"), .product(name: "WordPressAPI", package: "wordpress-rs")]),
         .target(name: "WordPressSharedObjC", resources: [.process("Resources")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .target(name: "WordPressShared", dependencies: [.target(name: "WordPressSharedObjC")], resources: [.process("Resources")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .target(name: "WordPressTesting", resources: [.process("Resources")]),
@@ -85,7 +86,8 @@ let package = Package(
         ]),
         .testTarget(name: "WordPressSharedTests", dependencies: [.target(name: "WordPressShared")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .testTarget(name: "WordPressSharedObjCTests", dependencies: [.target(name: "WordPressShared"), .target(name: "WordPressTesting")], swiftSettings: [.swiftLanguageMode(.v5)]),
-        .testTarget(name: "WordPressUITests", dependencies: [.target(name: "WordPressUI")], swiftSettings: [.swiftLanguageMode(.v5)]),
+        .testTarget(name: "WordPressUIUnitTests", dependencies: [.target(name: "WordPressUI")], swiftSettings: [.swiftLanguageMode(.v5)]),
+        .testTarget(name: "WordPressCoreTests", dependencies: [.target(name: "WordPressCore")]),
     ]
 )
 
@@ -156,6 +158,7 @@ enum XcodeSupport {
                 "WordPressShared",
                 "AsyncImageKit",
                 "WordPressUI",
+                "WordPressCore",
                 .product(name: "Alamofire", package: "Alamofire"),
                 .product(name: "AutomatticAbout", package: "AutomatticAbout-swift"),
                 .product(name: "AutomatticTracks", package: "Automattic-Tracks-iOS"),

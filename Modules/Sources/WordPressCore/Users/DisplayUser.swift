@@ -1,8 +1,7 @@
 import Foundation
-import WordPressShared
 
-public struct DisplayUser: Identifiable, Codable, Hashable {
-    public let id: Int32
+public struct DisplayUser: Identifiable, Codable, Hashable, Sendable {
+    public let id: Int64
     public let handle: String
     public let username: String
     public let firstName: String
@@ -17,7 +16,7 @@ public struct DisplayUser: Identifiable, Codable, Hashable {
     public let biography: String?
 
     public init(
-        id: Int32,
+        id: Int64,
         handle: String,
         username: String,
         firstName: String,
@@ -42,7 +41,7 @@ public struct DisplayUser: Identifiable, Codable, Hashable {
         self.biography = biography
     }
 
-    static let MockUser = DisplayUser(
+    public static let mockUser = DisplayUser(
         id: 16,
         handle: "@person",
         username: "example",

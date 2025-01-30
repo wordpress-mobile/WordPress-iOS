@@ -1,50 +1,7 @@
-import Foundation
-import Combine
+import WordPressAPI
+import WordPressCore
 
-public protocol UserDataStore: DataStore where T == DisplayUser, Query == UserDataStoreQuery {
-}
-
-public enum UserDataStoreQuery: Equatable {
-    case all
-    case id(Set<DisplayUser.ID>)
-    case search(String)
-}
-
-public protocol UserServiceProtocol: Actor {
-    func fetchUsers() async throws
-
-    func isCurrentUserCapableOf(_ capability: String) async -> Bool
-
-    func setNewPassword(id: Int32, newPassword: String) async throws
-
-    func deleteUser(id: Int32, reassigningPostsTo newUserId: Int32) async throws
-
-    func allUsers() async throws -> [DisplayUser]
-
-    func streamSearchResult(input: String) async -> AsyncStream<Result<[DisplayUser], Error>>
-
-    func streamAll() async -> AsyncStream<Result<[DisplayUser], Error>>
-}
-
-protocol UserDataStoreProvider: Actor {
-    var userDataStore: any UserDataStore { get }
-}
-
-extension UserServiceProtocol where Self: UserDataStoreProvider {
-    func allUsers() async throws -> [DisplayUser] {
-        try await userDataStore.list(query: .all)
-    }
-
-    func streamSearchResult(input: String) async -> AsyncStream<Result<[DisplayUser], Error>> {
-        await userDataStore.listStream(query: .search(input))
-    }
-
-    func streamAll() async -> AsyncStream<Result<[DisplayUser], Error>> {
-        await userDataStore.listStream(query: .all)
-    }
-}
-
-actor MockUserProvider: UserServiceProtocol, UserDataStoreProvider {
+actor MockUserProvider: UserServiceProtocol {
 
     enum Scenario {
         case infinitLoading
@@ -54,8 +11,7 @@ actor MockUserProvider: UserServiceProtocol, UserDataStoreProvider {
 
     var scenario: Scenario
 
-    private let _dataStore: InMemoryUserDataStore = .init()
-    var userDataStore: any UserDataStore { _dataStore }
+    private let userDataStore: InMemoryUserDataStore = .init()
 
     nonisolated let usersUpdates: AsyncStream<[DisplayUser]>
     private let usersUpdatesContinuation: AsyncStream<[DisplayUser]>.Continuation
@@ -89,15 +45,27 @@ actor MockUserProvider: UserServiceProtocol, UserDataStoreProvider {
         }
     }
 
+    func allUsers() async throws -> [DisplayUser] {
+        try await userDataStore.list(query: .all)
+    }
+
+    func streamSearchResult(input: String) async -> AsyncStream<Result<[DisplayUser], Error>> {
+        await userDataStore.listStream(query: .search(input))
+    }
+
+    func streamAll() async -> AsyncStream<Result<[DisplayUser], Error>> {
+        await userDataStore.listStream(query: .all)
+    }
+
     func isCurrentUserCapableOf(_ capability: String) async -> Bool {
         true
     }
 
-    func setNewPassword(id: Int32, newPassword: String) async throws {
+    func setNewPassword(id: UserId, newPassword: String) async throws {
         // Not used in Preview
     }
 
-    func deleteUser(id: Int32, reassigningPostsTo newUserId: Int32) async throws {
+    func deleteUser(id: UserId, reassigningPostsTo newUserId: UserId) async throws {
         // Not used in Preview
     }
 }

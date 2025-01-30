@@ -1,6 +1,8 @@
 25.8
 -----
 * [*] Enable dismissing the virtual keyboard in the experimental editor [#23988]
+* [*] Remove Submit Feedback form from the Me menu [#24020]
+
 
 25.7
 -----
