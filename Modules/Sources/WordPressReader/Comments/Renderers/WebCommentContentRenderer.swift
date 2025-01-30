@@ -4,16 +4,7 @@ import WordPressUI
 
 /// Renders the comment body with a web view. Provides the best visual experience but has the highest performance cost.
 @MainActor
-public final class WebCommentContentRenderer: NSObject, CommentContentRenderer, WKScriptMessageHandler {
-
-    deinit {
-        print("here")
-    }
-
-    public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        print("here")
-    }
-
+public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
     // MARK: Properties
 
     public weak var delegate: CommentContentRendererDelegate?
@@ -41,9 +32,6 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer, 
         webView.scrollView.showsVerticalScrollIndicator = false
         webView.scrollView.backgroundColor = .clear
         webView.configuration.allowsInlineMediaPlayback = true
-
-        // - warning: It retains the handler. It can't be `self`.
-        webView.configuration.userContentController.add(ReaderWebViewMessageHandler(), name: "eventHandler")
     }
 
     public func render(comment: String) -> UIView {
