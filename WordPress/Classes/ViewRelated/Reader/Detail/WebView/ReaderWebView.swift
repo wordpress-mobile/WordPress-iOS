@@ -16,7 +16,7 @@ class ReaderWebView: WKWebView {
 
     var isP2 = false
 
-    var displaySetting: ReaderDisplaySetting = .standard
+    var displaySetting: ReaderDisplaySettings = .standard
 
     deinit {
         print("here")

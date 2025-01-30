@@ -119,7 +119,7 @@ class ReaderDetailHeaderViewModel: ObservableObject {
 
     @Published var showsAuthorName: Bool = true
 
-    @Published var displaySetting: ReaderDisplaySetting
+    @Published var displaySetting: ReaderDisplaySettings
 
     var likeCountString: String? {
         guard let count = likeCount, count > 0 else {
@@ -135,7 +135,7 @@ class ReaderDetailHeaderViewModel: ObservableObject {
         return WPStyleGuide.commentCountForDisplay(count)
     }
 
-    init(displaySetting: ReaderDisplaySetting, coreDataStack: CoreDataStackSwift = ContextManager.shared) {
+    init(displaySetting: ReaderDisplaySettings, coreDataStack: CoreDataStackSwift = ContextManager.shared) {
         self.displaySetting = displaySetting
         self.coreDataStack = coreDataStack
     }
@@ -445,10 +445,10 @@ fileprivate extension ReaderDetailHeaderView {
 
 fileprivate struct ReaderDetailTagsWrapperView: UIViewRepresentable {
     private let topics: [String]
-    private let displaySetting: ReaderDisplaySetting
+    private let displaySetting: ReaderDisplaySettings
     private weak var delegate: ReaderTopicCollectionViewCoordinatorDelegate?
 
-    init(topics: [String], displaySetting: ReaderDisplaySetting, delegate: ReaderTopicCollectionViewCoordinatorDelegate?) {
+    init(topics: [String], displaySetting: ReaderDisplaySettings, delegate: ReaderTopicCollectionViewCoordinatorDelegate?) {
         self.topics = topics
         self.displaySetting = displaySetting
         self.delegate = delegate
@@ -459,7 +459,7 @@ fileprivate struct ReaderDetailTagsWrapperView: UIViewRepresentable {
         view.topics = topics
         view.topicDelegate = delegate
 
-        if ReaderDisplaySetting.customizationEnabled {
+        if ReaderDisplaySettings.customizationEnabled {
             view.coordinator?.displaySetting = displaySetting
         }
 
@@ -471,7 +471,7 @@ fileprivate struct ReaderDetailTagsWrapperView: UIViewRepresentable {
 
     func updateUIView(_ uiView: UICollectionView, context: Context) {
         if let view = uiView as? TopicsCollectionView,
-           ReaderDisplaySetting.customizationEnabled {
+           ReaderDisplaySettings.customizationEnabled {
             view.coordinator?.displaySetting = displaySetting
         }
 

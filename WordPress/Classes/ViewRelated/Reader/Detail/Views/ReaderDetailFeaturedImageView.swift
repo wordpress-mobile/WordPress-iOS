@@ -189,7 +189,7 @@ final class ReaderDetailFeaturedImageView: UIView {
 
         // Re-apply the styles after a potential orientation change.
         // This fixes a case where the navbar tint would revert after changing orientation.
-        if ReaderDisplaySetting.customizationEnabled {
+        if ReaderDisplaySettings.customizationEnabled {
             resetNavigationBarTintColor()
             resetStatusBarStyle()
         }

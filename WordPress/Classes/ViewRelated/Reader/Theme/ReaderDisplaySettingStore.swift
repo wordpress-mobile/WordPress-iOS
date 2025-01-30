@@ -21,10 +21,10 @@ class ReaderDisplaySettingStore: NSObject {
     /// When the flag is disabled, this will always return the `standard` object, and the setter does nothing.
     var setting: ReaderDisplaySettings {
         get {
-            return ReaderDisplaySetting.customizationEnabled ? _setting : .standard
+            return ReaderDisplaySettings.customizationEnabled ? _setting : .standard
         }
         set {
-            guard ReaderDisplaySetting.customizationEnabled,
+            guard ReaderDisplaySettings.customizationEnabled,
                   newValue != _setting else {
                 return
             }
@@ -52,7 +52,7 @@ class ReaderDisplaySettingStore: NSObject {
         self._setting = {
             guard let dictionary = repository.dictionary(forKey: Constants.key),
                   let data = try? JSONSerialization.data(withJSONObject: dictionary),
-                  let setting = try? JSONDecoder().decode(ReaderDisplaySetting.self, from: data) else {
+                  let setting = try? JSONDecoder().decode(ReaderDisplaySettings.self, from: data) else {
                 return .standard
             }
             return setting
@@ -99,7 +99,7 @@ class ReaderDisplaySettingStore: NSObject {
         }
 
         let data = try JSONSerialization.data(withJSONObject: dictionary)
-        let setting = try JSONDecoder().decode(ReaderDisplaySetting.self, from: data)
+        let setting = try JSONDecoder().decode(ReaderDisplaySettings.self, from: data)
         return setting
     }
 

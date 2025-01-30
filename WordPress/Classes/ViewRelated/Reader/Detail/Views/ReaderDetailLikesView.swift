@@ -97,7 +97,7 @@ private extension ReaderDetailLikesView {
     }
 }
 
-private func makeHighlightedText(_ text: String, displaySetting: ReaderDisplaySetting) -> NSAttributedString {
+private func makeHighlightedText(_ text: String, displaySetting: ReaderDisplaySettings) -> NSAttributedString {
     let labelParts = text.components(separatedBy: "_")
 
     let firstPart = labelParts.first ?? ""

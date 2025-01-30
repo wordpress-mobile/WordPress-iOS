@@ -139,7 +139,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         //
         // Plus, it looks like we don't have screens with a blue (legacy) navigation bar anymore,
         // so it may be a good chance to clean up and remove `useCompatibilityMode`.
-        !ReaderDisplaySetting.customizationEnabled
+        !ReaderDisplaySettings.customizationEnabled
     }
 
     /// Used to disable ineffective buttons when a Related post fails to load.
@@ -532,7 +532,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             return
         }
 
-        if ReaderDisplaySetting.customizationEnabled {
+        if ReaderDisplaySettings.customizationEnabled {
             featuredImageView.displaySetting = displaySetting
         }
 
@@ -623,7 +623,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func configureToolbar() {
-        if ReaderDisplaySetting.customizationEnabled {
+        if ReaderDisplaySettings.customizationEnabled {
             toolbar.displaySetting = displaySetting
         }
         toolbar.delegate = coordinator
@@ -868,7 +868,7 @@ extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate
         // Additional style overrides
         cell.backgroundColor = .clear
 
-        if ReaderDisplaySetting.customizationEnabled {
+        if ReaderDisplaySettings.customizationEnabled {
             cell.titleLabel.font = displaySetting.font(with: .body, weight: .semibold)
             cell.titleLabel.textColor = displaySetting.color.foreground
 
@@ -894,7 +894,7 @@ extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate
         // Additional style overrides
         header.backgroundColorView.backgroundColor = .clear
 
-        if ReaderDisplaySetting.customizationEnabled {
+        if ReaderDisplaySettings.customizationEnabled {
             header.titleLabel.font = displaySetting.font(with: .footnote, weight: .semibold)
             header.titleLabel.textColor = displaySetting.color.foreground
         }
@@ -1121,7 +1121,7 @@ private extension ReaderDetailViewController {
             viewController: self
         ).makeMenu()
 
-        if ReaderDisplaySetting.customizationEnabled {
+        if ReaderDisplaySettings.customizationEnabled {
             elements.append(UIAction(title: Strings.displaySettingsLabel, image: UIImage(systemName: "textformat.size")) { [weak self] _ in
                 self?.didTapDisplaySettingButton()
             })
