@@ -37,8 +37,15 @@ final class CommentWebView: UIView, CommentContentRendererDelegate {
 }
 
 @available(iOS 17, *)
-#Preview("Plain Text, Single Line") {
+#Preview("Plain Text") {
     makeView(comment: "<p>Thank you so much! You should see it now &#8211; people are losing their minds!</p>\n")
+}
+
+@available(iOS 17, *)
+#Preview("Gutenberg") {
+    makeView(comment: """
+    <p>Thank you for putting this together, I’m in support of all proposed improvements, we know that the current experience is less-than-ideal. </p><blockquote class=\"wp-block-quote is-layout-flow wp-block-quote-is-layout-flow\"><p><strong>Get rid of This.</strong> We’re moving everything to That anyway, and this is our last remaining This instance in Jetpack. It’s not performing great, so let’s remove it.</p></blockquote><p><a href=\"https://tset.wordpress.com/mentions/test/\" class=\"__p2-hovercard mention\" data-type=\"fragment-mention\" data-username=\"tester\"><span class=\"mentions-prefix\">@</span>tester</a>‘s most recent review found <a href=\"https:://wordpress.com/" rel=\"nofollow ugc\">it failed to provide a valid response in more than half of interactions</a>.</p>
+    """)
 }
 
 @MainActor
