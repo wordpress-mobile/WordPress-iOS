@@ -1,9 +1,12 @@
 import UIKit
 
+// MARK: - ReaderDisplaySetting (CSS)
+
 extension ReaderDisplaySetting {
     /// Creates a set of CSS styles that could be applied to a HTML file with
     /// Gutenberg blocks to render them in a nice app that fits with the design
     /// of the app.
+    @MainActor
     func makeStyles(tintColor: UIColor) -> String {
         Self.baseStylesheet.appending(makeStyleOverrides(tintColor: tintColor))
     }

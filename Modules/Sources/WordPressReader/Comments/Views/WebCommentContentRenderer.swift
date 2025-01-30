@@ -18,12 +18,19 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
 
     private var comment: String?
 
+    /// It can't be changed at the moment, but this capability was included from the
+    /// start, and this implementation continues supporting it.
     private var displaySetting = ReaderDisplaySetting.standard
 
     var tintColor: UIColor {
         get { webView.tintColor }
-        set { webView.tintColor = newValue }
+        set {
+            webView.tintColor = newValue
+            cachedHead = nil
+        }
     }
+
+    private var cachedHead: String?
 
     // MARK: Methods
 
@@ -50,7 +57,6 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
 
         // - important: `wordPressSharedBundle` contains custom fonts
         webView.loadHTMLString(formattedHTMLString(for: comment), baseURL: Bundle.wordPressSharedBundle.bundleURL)
-
         return webView
     }
 }
@@ -107,22 +113,41 @@ private extension WebCommentContentRenderer {
     /// - Returns: Formatted HTML string to be displayed in the web view.
     ///
     func formattedHTMLString(for comment: String) -> String {
-        let meta = "width=device-width,initial-scale=\(displaySetting.size.scale),maximum-scale=\(displaySetting.size.scale),user-scalable=no,shrink-to-fit=no"
-        let styles = displaySetting.makeStyles(tintColor: webView.tintColor)
-
         // remove empty HTML elements from the `content`, as the content often contains empty paragraph elements which adds unnecessary padding/margin.
         // `rawContent` does not have this problem, but it's not used because `rawContent` gets rid of links (<a> tags) for mentions.
         let comment = comment
             .replacingOccurrences(of: Self.emptyElementRegexPattern, with: "", options: [.regularExpression])
             .trimmingCharacters(in: .whitespacesAndNewlines)
-
-        return String(format: Self.htmlTemplate, meta, styles, comment)
+        return """
+        <html dir="auto">
+        \(makeHead())
+        <body>
+            \(comment)
+        </body>
+        </html>
+        """
     }
 
     static let emptyElementRegexPattern = "<[a-z]+>(<!-- [a-zA-Z0-9\\/: \"{}\\-\\.,\\?=\\[\\]]+ -->)+<\\/[a-z]+>"
 
-    static let htmlTemplate: String = {
-        guard let fileURL = Bundle.module.url(forResource: "richCommentTemplate", withExtension: "html"),
+    /// Returns HTML page <head> with the preconfigured styles and scripts.
+    private func makeHead() -> String {
+        if let cachedHead {
+            return cachedHead
+        }
+        let head = actuallyMakeHead()
+        cachedHead = head
+        return head
+    }
+
+    private func actuallyMakeHead() -> String {
+        let meta = "width=device-width,initial-scale=\(displaySetting.size.scale),maximum-scale=\(displaySetting.size.scale),user-scalable=no,shrink-to-fit=no"
+        let styles = displaySetting.makeStyles(tintColor: webView.tintColor)
+        return String(format: Self.headTemplate, meta, styles)
+    }
+
+    private static let headTemplate: String = {
+        guard let fileURL = Bundle.module.url(forResource: "gutenbergCommentHeadTemplate", withExtension: "html"),
               let string = try? String(contentsOf: fileURL) else {
             assertionFailure("template missing")
             return ""
