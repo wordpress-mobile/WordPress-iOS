@@ -108,7 +108,7 @@ private extension WebCommentContentRenderer {
     ///
     func formattedHTMLString(for comment: String) -> String {
         let meta = "width=device-width,initial-scale=\(displaySetting.size.scale),maximum-scale=\(displaySetting.size.scale),user-scalable=no,shrink-to-fit=no"
-        let styles = Self.baseStylesheet.appending(overridenStyles)
+        let styles = displaySetting.makeStyles(tintColor: webView.tintColor)
 
         // remove empty HTML elements from the `content`, as the content often contains empty paragraph elements which adds unnecessary padding/margin.
         // `rawContent` does not have this problem, but it's not used because `rawContent` gets rid of links (<a> tags) for mentions.
@@ -129,55 +129,4 @@ private extension WebCommentContentRenderer {
         }
         return string
     }()
-
-    static let baseStylesheet: String = {
-        guard let fileURL = Bundle.module.url(forResource: "richCommentStyle", withExtension: "css"),
-              let string = try? String(contentsOf: fileURL) else {
-            assertionFailure("css missing")
-            return ""
-        }
-        return string
-    }()
-
-    /// Additional styles based on system or custom theme.
-    var overridenStyles: String {
-        """
-        :root {
-            --text-font: \(displaySetting.font.cssString);
-            --link-font-weight: \(displaySetting.color == .system ? "inherit" : "600");
-            --link-text-decoration: \(displaySetting.color == .system ? "inherit" : "underline");
-        }
-
-        @media(prefers-color-scheme: light) {
-            \(cssColors(interfaceStyle: .light))
-        }
-
-        @media(prefers-color-scheme: dark) {
-            \(cssColors(interfaceStyle: .dark))
-        }
-        """
-    }
-
-    /// CSS color definitions that matches the current color theme.
-    /// - Parameter interfaceStyle: The current `UIUserInterfaceStyle` value.
-    /// - Returns: A string of CSS colors to be injected.
-    func cssColors(interfaceStyle: UIUserInterfaceStyle) -> String {
-        let trait = UITraitCollection(userInterfaceStyle: interfaceStyle)
-        return """
-        :root {
-            --text-color: \(displaySetting.color.foreground.color(for: trait).cssHex);
-            --text-secondary-color: \(displaySetting.color.secondaryForeground.color(for: trait).cssHex);
-            --link-color: \(webView.tintColor.color(for: trait).cssHex);
-            --mention-background-color: \(webView.tintColor.withAlphaComponent(0.1).color(for: trait).cssHex);
-            --background-secondary-color: \( displaySetting.color.secondaryBackground.color(for: trait).cssHex);
-            --border-color: \(displaySetting.color.border.color(for: trait).cssHex);
-        }
-        """
-    }
-}
-
-private extension UIColor {
-    var cssHex: String {
-        "#\(hexStringWithAlpha)"
-    }
 }
