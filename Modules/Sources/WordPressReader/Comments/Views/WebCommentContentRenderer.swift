@@ -142,21 +142,16 @@ private extension WebCommentContentRenderer {
     /// Additional styles based on system or custom theme.
     var overridenStyles: String {
         """
-        /* Basic style variables */
         :root {
             --text-font: \(displaySetting.font.cssString);
-
-            /* link styling */
             --link-font-weight: \(displaySetting.color == .system ? "inherit" : "600");
             --link-text-decoration: \(displaySetting.color == .system ? "inherit" : "underline");
         }
 
-        /* Color overrides for light mode */
         @media(prefers-color-scheme: light) {
             \(cssColors(interfaceStyle: .light))
         }
 
-        /* Color overrides for dark mode */
         @media(prefers-color-scheme: dark) {
             \(cssColors(interfaceStyle: .dark))
         }
@@ -170,33 +165,14 @@ private extension WebCommentContentRenderer {
         let trait = UITraitCollection(userInterfaceStyle: interfaceStyle)
         return """
         :root {
-            --text-color: \(textColor.color(for: trait).cssHex);
+            --text-color: \(displaySetting.color.foreground.color(for: trait).cssHex);
             --text-secondary-color: \(displaySetting.color.secondaryForeground.color(for: trait).cssHex);
-            --link-color: \(linkColor.color(for: trait).cssHex);
-            --mention-background-color: \(mentionBackgroundColor.color(for: trait).cssHex);
-            --background-secondary-color: \(secondaryBackgroundColor.color(for: trait).cssHex);
+            --link-color: \(webView.tintColor.color(for: trait).cssHex);
+            --mention-background-color: \(webView.tintColor.withAlphaComponent(0.1).color(for: trait).cssHex);
+            --background-secondary-color: \( displaySetting.color.secondaryBackground.color(for: trait).cssHex);
             --border-color: \(displaySetting.color.border.color(for: trait).cssHex);
         }
         """
-    }
-
-    var textColor: UIColor {
-        displaySetting.color.foreground
-    }
-
-    var mentionBackgroundColor: UIColor {
-        webView.tintColor.withAlphaComponent(0.1)
-    }
-
-    var linkColor: UIColor {
-        webView.tintColor
-    }
-
-    var secondaryBackgroundColor: UIColor {
-        guard ReaderDisplaySetting.customizationEnabled else {
-            return .secondarySystemBackground
-        }
-        return displaySetting.color.secondaryBackground
     }
 }
 

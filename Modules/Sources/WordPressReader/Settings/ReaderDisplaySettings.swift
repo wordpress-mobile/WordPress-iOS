@@ -1,7 +1,7 @@
 import UIKit
 import WordPressShared
 
-public struct ReaderDisplaySetting: Codable, Equatable, Sendable {
+public struct ReaderDisplaySetting: Codable, Equatable, Hashable, Sendable {
 
     public static var customizationEnabled: Bool { true }
 
@@ -77,7 +77,7 @@ public struct ReaderDisplaySetting: Codable, Equatable, Sendable {
 
     // MARK: Types
 
-    public enum Color: String, Codable, CaseIterable, Sendable {
+    public enum Color: String, Codable, CaseIterable, Sendable, Hashable {
         case system
         case soft
         case sepia
