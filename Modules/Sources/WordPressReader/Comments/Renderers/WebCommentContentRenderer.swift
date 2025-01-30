@@ -238,5 +238,12 @@ private extension UIColor {
 
 @MainActor
 private func makeWebView(comment: String) -> UIView {
-    WebCommentContentRenderer(isPreview: true).render(comment: comment)
+    let renderer = WebCommentContentRenderer(isPreview: true)
+    let webView = renderer.render(comment: comment)
+    let container = UIView()
+    container.addSubview(webView)
+    webView.pinEdges(insets: UIEdgeInsets(.all, 16))
+    webView.layer.borderColor = UIColor.opaqueSeparator.cgColor
+    webView.layer.borderWidth = 0.5
+    return container
 }
