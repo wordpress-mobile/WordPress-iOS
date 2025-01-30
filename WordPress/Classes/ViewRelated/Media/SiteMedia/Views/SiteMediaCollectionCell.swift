@@ -68,7 +68,7 @@ final class SiteMediaCollectionCell: UICollectionViewCell, Reusable {
         viewModel?.onDisappear()
         viewModel = nil
 
-        imageView.prepareForReuse()
+        imageView.reset()
         imageView.image = nil
         imageView.alpha = 0
 

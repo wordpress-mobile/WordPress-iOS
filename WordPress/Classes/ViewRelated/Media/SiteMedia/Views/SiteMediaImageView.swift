@@ -53,7 +53,7 @@ final class SiteMediaImageView: UIView {
             if let image {
                 imageView.configure(image: image)
             } else {
-                imageView.prepareForReuse()
+                imageView.reset()
             }
         }
     }
