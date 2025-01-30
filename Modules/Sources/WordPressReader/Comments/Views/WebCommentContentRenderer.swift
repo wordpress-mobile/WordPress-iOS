@@ -15,6 +15,11 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
 
     private var displaySetting = ReaderDisplaySetting.standard
 
+    var tintColor: UIColor {
+        get { webView.tintColor }
+        set { webView.tintColor = newValue }
+    }
+
     // MARK: Methods
 
     public required override init() {
@@ -23,7 +28,6 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
         if #available(iOS 16.4, *) {
             webView.isInspectable = true
         }
-
         webView.backgroundColor = .clear
         webView.isOpaque = false // gets rid of the white flash upon content load in dark mode.
         webView.translatesAutoresizingMaskIntoConstraints = false
@@ -40,6 +44,7 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
         }
         self.comment = comment
 
+        // - important: `wordPressSharedBundle` contains custom fonts
         webView.loadHTMLString(formattedHTMLString(for: comment), baseURL: Bundle.wordPressSharedBundle.bundleURL)
 
         return webView
@@ -60,8 +65,7 @@ extension WebCommentContentRenderer: WKNavigationDelegate {
             // To capture the content height, the methods to use is either `document.body.scrollHeight` or `document.documentElement.scrollHeight`.
             // `document.body` does not capture margins on <body> tag, so we'll use `document.documentElement` instead.
             webView.evaluateJavaScript("document.documentElement.scrollHeight") { [weak self] height, _ in
-                guard let self,
-                      let height = height as? CGFloat else {
+                guard let self, let height = height as? CGFloat else {
                     return
                 }
 
@@ -108,12 +112,14 @@ private extension WebCommentContentRenderer {
     // TODO: (kean) do we want  displaySetting.color == .system?
     var mentionBackgroundColor: UIColor {
 //        displaySetting.color == .system ? Constants.mentionBackgroundColor :
-        displaySetting.color.secondaryBackground
+        webView.tintColor.withAlphaComponent(0.1)
     }
 
     var linkColor: UIColor {
+        webView.tintColor
+
 //        displaySetting.color == .system ? Constants.highlightColor :
-        displaySetting.color.foreground
+//        displaySetting.color.foreground
     }
 
     var secondaryBackgroundColor: UIColor {

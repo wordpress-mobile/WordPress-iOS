@@ -16,6 +16,7 @@ import WordPressReader
             return renderer
         }
         let renderer = WebCommentContentRenderer()
+        renderer.tintColor = UIAppColor.primary
         renderers.setObject(renderer, forKey: comment)
         return renderer
     }

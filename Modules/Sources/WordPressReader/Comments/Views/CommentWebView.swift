@@ -51,11 +51,12 @@ final class CommentWebView: UIView, CommentContentRendererDelegate {
 @MainActor
 private func makeView(comment: String) -> UIView {
     let webView = CommentWebView(comment: comment)
-    webView.layer.borderColor = UIColor.opaqueSeparator.cgColor
+    webView.layer.borderColor = UIColor.opaqueSeparator.withAlphaComponent(0.66).cgColor
     webView.layer.borderWidth = 0.5
 
     let container = UIView()
     container.addSubview(webView)
     webView.pinEdges(insets: UIEdgeInsets(.all, 16))
+
     return container
 }
