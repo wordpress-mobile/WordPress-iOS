@@ -17,11 +17,7 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
 
     // MARK: Methods
 
-    public required convenience override init() {
-        self.init(isPreview: false)
-    }
-
-    init(isPreview: Bool) {
+    public required override init() {
         super.init()
 
         if #available(iOS 16.4, *) {
@@ -31,10 +27,7 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
         webView.backgroundColor = .clear
         webView.isOpaque = false // gets rid of the white flash upon content load in dark mode.
         webView.translatesAutoresizingMaskIntoConstraints = false
-        if !isPreview {
-            // TODO: Figure out why it is not compatible with previews
-            webView.navigationDelegate = self
-        }
+        webView.navigationDelegate = self
         webView.scrollView.bounces = false
         webView.scrollView.showsVerticalScrollIndicator = false
         webView.scrollView.backgroundColor = .clear
@@ -82,7 +75,6 @@ extension WebCommentContentRenderer: WKNavigationDelegate {
     }
 
     public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction) async -> WKNavigationActionPolicy {
-        print(navigationAction.navigationType)
         switch navigationAction.navigationType {
         case .other:
             // allow local file requests.
@@ -229,21 +221,4 @@ private extension UIColor {
     var cssHex: String {
         "#\(hexStringWithAlpha)"
     }
-}
-
-@available(iOS 17, *)
-#Preview("Plain Text, Single Line") {
-    makeWebView(comment: "<p>Thank you so much! You should see it now &#8211; people are losing their minds!</p>\n")
-}
-
-@MainActor
-private func makeWebView(comment: String) -> UIView {
-    let renderer = WebCommentContentRenderer(isPreview: true)
-    let webView = renderer.render(comment: comment)
-    let container = UIView()
-    container.addSubview(webView)
-    webView.pinEdges(insets: UIEdgeInsets(.all, 16))
-    webView.layer.borderColor = UIColor.opaqueSeparator.cgColor
-    webView.layer.borderWidth = 0.5
-    return container
 }

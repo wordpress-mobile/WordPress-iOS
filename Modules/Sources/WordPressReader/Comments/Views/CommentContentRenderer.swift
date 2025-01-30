@@ -14,6 +14,7 @@ public protocol CommentContentRenderer: AnyObject {
     func render(comment: String) -> UIView
 }
 
+@MainActor
 public protocol CommentContentRendererDelegate: AnyObject {
     /// Called when the rendering process completes. Note that this method is only called when using complex rendering methods that involves
     /// asynchronous operations, so the container can readjust its size at a later time.
