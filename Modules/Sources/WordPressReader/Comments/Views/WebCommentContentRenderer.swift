@@ -9,7 +9,12 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
 
     public weak var delegate: CommentContentRendererDelegate?
 
-    private let webView = WKWebView(frame: .zero)
+    private let webView = WKWebView(frame: .zero, configuration: {
+        let configuration = WKWebViewConfiguration()
+        configuration.allowsInlineMediaPlayback = true
+        configuration.defaultWebpagePreferences.allowsContentJavaScript = false
+        return configuration
+    }())
 
     private var comment: String?
 
@@ -35,7 +40,6 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
         webView.scrollView.bounces = false
         webView.scrollView.showsVerticalScrollIndicator = false
         webView.scrollView.backgroundColor = .clear
-        webView.configuration.allowsInlineMediaPlayback = true
     }
 
     public func render(comment: String) -> UIView {
