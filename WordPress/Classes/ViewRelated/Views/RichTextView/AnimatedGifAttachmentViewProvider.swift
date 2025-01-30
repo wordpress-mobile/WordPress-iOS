@@ -11,8 +11,7 @@ class AnimatedGifAttachmentViewProvider: NSTextAttachmentViewProvider {
         guard let animatedImageView = view as? GIFImageView else {
             return
         }
-
-        animatedImageView.prepareForReuse()
+        animatedImageView.reset()
     }
 
     override init(textAttachment: NSTextAttachment, parentView: UIView?, textLayoutManager: NSTextLayoutManager?, location: NSTextLocation) {

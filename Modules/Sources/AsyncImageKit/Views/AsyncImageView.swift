@@ -47,7 +47,7 @@ public final class AsyncImageView: UIView {
             if let image {
                 imageView.configure(image: image)
             } else {
-                imageView.prepareForReuse()
+                imageView.reset()
             }
         }
     }
@@ -185,7 +185,7 @@ extension GIFImageView {
         }
     }
 
-    public func prepareForReuse() {
+    public func reset() {
         if isAnimatingGIF {
             prepareForReuse()
         } else {
