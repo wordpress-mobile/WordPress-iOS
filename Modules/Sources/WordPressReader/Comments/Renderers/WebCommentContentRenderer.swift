@@ -17,7 +17,11 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
 
     // MARK: Methods
 
-    public required override init() {
+    public required convenience override init() {
+        self.init(isPreview: false)
+    }
+
+    init(isPreview: Bool) {
         super.init()
 
         if #available(iOS 16.4, *) {
@@ -27,7 +31,10 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
         webView.backgroundColor = .clear
         webView.isOpaque = false // gets rid of the white flash upon content load in dark mode.
         webView.translatesAutoresizingMaskIntoConstraints = false
-        webView.navigationDelegate = self
+        if !isPreview {
+            // TODO: Figure out why it is not compatible with previews
+            webView.navigationDelegate = self
+        }
         webView.scrollView.bounces = false
         webView.scrollView.showsVerticalScrollIndicator = false
         webView.scrollView.backgroundColor = .clear
@@ -75,6 +82,7 @@ extension WebCommentContentRenderer: WKNavigationDelegate {
     }
 
     public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction) async -> WKNavigationActionPolicy {
+        print(navigationAction.navigationType)
         switch navigationAction.navigationType {
         case .other:
             // allow local file requests.
@@ -130,7 +138,6 @@ private extension WebCommentContentRenderer {
             assertionFailure("template missing")
             return ""
         }
-
         return String(format: templateStringFormat,
                       metaContents.joined(separator: ", "),
                       cssStyles,
@@ -226,5 +233,10 @@ private extension UIColor {
 
 @available(iOS 17, *)
 #Preview("Plain Text, Single Line") {
-    WebCommentContentRenderer().render(comment: "<p>Thank you so much! You should see it now &#8211; people are losing their minds!</p>\n")
+    makeWebView(comment: "<p>Thank you so much! You should see it now &#8211; people are losing their minds!</p>\n")
+}
+
+@MainActor
+private func makeWebView(comment: String) -> UIView {
+    WebCommentContentRenderer(isPreview: true).render(comment: comment)
 }
