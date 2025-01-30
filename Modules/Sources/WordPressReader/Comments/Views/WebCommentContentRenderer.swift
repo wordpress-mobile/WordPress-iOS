@@ -97,73 +97,50 @@ extension WebCommentContentRenderer: WKNavigationDelegate {
     }
 }
 
-// MARK: - Private Methods
-
 private extension WebCommentContentRenderer {
-    struct Constants {
-        static let emptyElementRegexPattern = "<[a-z]+>(<!-- [a-zA-Z0-9\\/: \"{}\\-\\.,\\?=\\[\\]]+ -->)+<\\/[a-z]+>"
+    /// Returns a formatted HTML string by loading the template for rich comment.
+    ///
+    /// The method will try to return cached content if possible, by detecting whether the content matches the previous content.
+    /// If it's different (e.g. due to edits), it will reprocess the HTML string.
+    ///
+    /// - Parameter content: The content value from the `Comment` object.
+    /// - Returns: Formatted HTML string to be displayed in the web view.
+    ///
+    func formattedHTMLString(for comment: String) -> String {
+        let meta = "width=device-width,initial-scale=\(displaySetting.size.scale),maximum-scale=\(displaySetting.size.scale),user-scalable=no,shrink-to-fit=no"
+        let styles = Self.baseStylesheet.appending(overridenStyles)
+
+        // remove empty HTML elements from the `content`, as the content often contains empty paragraph elements which adds unnecessary padding/margin.
+        // `rawContent` does not have this problem, but it's not used because `rawContent` gets rid of links (<a> tags) for mentions.
+        let comment = comment
+            .replacingOccurrences(of: Self.emptyElementRegexPattern, with: "", options: [.regularExpression])
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+
+        return String(format: Self.htmlTemplate, meta, styles, comment)
     }
 
-    /// Used for the web view's `baseURL`, to reference any local files (i.e. CSS) linked from the HTML.
-    static let resourceURL: URL? = {
-        Bundle.wordPressSharedBundle.bundleURL
-    }()
+    static let emptyElementRegexPattern = "<[a-z]+>(<!-- [a-zA-Z0-9\\/: \"{}\\-\\.,\\?=\\[\\]]+ -->)+<\\/[a-z]+>"
 
-    var textColor: UIColor {
-        displaySetting.color.foreground
-    }
-
-    var mentionBackgroundColor: UIColor {
-        webView.tintColor.withAlphaComponent(0.1)
-    }
-
-    var linkColor: UIColor {
-        webView.tintColor
-    }
-
-    var secondaryBackgroundColor: UIColor {
-        guard ReaderDisplaySetting.customizationEnabled else {
-            return .secondarySystemBackground
-        }
-        return displaySetting.color.secondaryBackground
-    }
-
-    /// Cache the HTML template format. We only need read the template once.
-    var htmlTemplateFormat: String {
-        guard let templatePath = Bundle.module.path(forResource: "richCommentTemplate", ofType: "html"),
-              let templateStringFormat = try? String(contentsOfFile: templatePath) else {
+    static let htmlTemplate: String = {
+        guard let fileURL = Bundle.module.url(forResource: "richCommentTemplate", withExtension: "html"),
+              let string = try? String(contentsOf: fileURL) else {
             assertionFailure("template missing")
             return ""
         }
-        return String(format: templateStringFormat,
-                      metaContents.joined(separator: ", "),
-                      cssStyles,
-                      "%@")
-    }
+        return string
+    }()
 
-    var metaContents: [String] {
-        [
-            "width=device-width",
-            "initial-scale=\(displaySetting.size.scale)",
-            "maximum-scale=\(displaySetting.size.scale)",
-            "user-scalable=no",
-            "shrink-to-fit=no"
-        ]
-    }
-
-    /// We'll need to load `richCommentStyle.css` from the main bundle and inject it as a string,
-    /// because the web view needs to be loaded with the WordPressShared bundle to gain access to custom fonts.
-    var cssStyles: String {
-        guard let cssURL = Bundle.module.url(forResource: "richCommentStyle", withExtension: "css"),
-              let cssContent = try? String(contentsOf: cssURL) else {
+    static let baseStylesheet: String = {
+        guard let fileURL = Bundle.module.url(forResource: "richCommentStyle", withExtension: "css"),
+              let string = try? String(contentsOf: fileURL) else {
             assertionFailure("css missing")
             return ""
         }
-        return cssContent.appending(overrideStyles)
-    }
+        return string
+    }()
 
     /// Additional styles based on system or custom theme.
-    var overrideStyles: String {
+    var overridenStyles: String {
         """
         /* Basic style variables */
         :root {
@@ -189,9 +166,8 @@ private extension WebCommentContentRenderer {
     /// CSS color definitions that matches the current color theme.
     /// - Parameter interfaceStyle: The current `UIUserInterfaceStyle` value.
     /// - Returns: A string of CSS colors to be injected.
-    private func cssColors(interfaceStyle: UIUserInterfaceStyle) -> String {
+    func cssColors(interfaceStyle: UIUserInterfaceStyle) -> String {
         let trait = UITraitCollection(userInterfaceStyle: interfaceStyle)
-
         return """
         :root {
             --text-color: \(textColor.color(for: trait).cssHex);
@@ -204,21 +180,23 @@ private extension WebCommentContentRenderer {
         """
     }
 
-    /// Returns a formatted HTML string by loading the template for rich comment.
-    ///
-    /// The method will try to return cached content if possible, by detecting whether the content matches the previous content.
-    /// If it's different (e.g. due to edits), it will reprocess the HTML string.
-    ///
-    /// - Parameter content: The content value from the `Comment` object.
-    /// - Returns: Formatted HTML string to be displayed in the web view.
-    ///
-    func formattedHTMLString(for content: String) -> String {
-        // remove empty HTML elements from the `content`, as the content often contains empty paragraph elements which adds unnecessary padding/margin.
-        // `rawContent` does not have this problem, but it's not used because `rawContent` gets rid of links (<a> tags) for mentions.
-        let htmlContent = String(format: htmlTemplateFormat, content
-            .replacingOccurrences(of: Constants.emptyElementRegexPattern, with: String(), options: [.regularExpression])
-            .trimmingCharacters(in: .whitespacesAndNewlines))
-        return htmlContent
+    var textColor: UIColor {
+        displaySetting.color.foreground
+    }
+
+    var mentionBackgroundColor: UIColor {
+        webView.tintColor.withAlphaComponent(0.1)
+    }
+
+    var linkColor: UIColor {
+        webView.tintColor
+    }
+
+    var secondaryBackgroundColor: UIColor {
+        guard ReaderDisplaySetting.customizationEnabled else {
+            return .secondarySystemBackground
+        }
+        return displaySetting.color.secondaryBackground
     }
 }
 
