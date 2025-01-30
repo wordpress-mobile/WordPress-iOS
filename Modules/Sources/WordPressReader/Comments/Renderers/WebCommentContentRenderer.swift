@@ -124,10 +124,11 @@ private extension WebCommentContentRenderer {
     }
 
     /// Cache the HTML template format. We only need read the template once.
-    var htmlTemplateFormat: String? {
-        guard let templatePath = Bundle.main.path(forResource: "richCommentTemplate", ofType: "html"),
+    var htmlTemplateFormat: String {
+        guard let templatePath = Bundle.module.path(forResource: "richCommentTemplate", ofType: "html"),
               let templateStringFormat = try? String(contentsOfFile: templatePath) else {
-            return nil
+            assertionFailure("template missing")
+            return ""
         }
 
         return String(format: templateStringFormat,
@@ -149,9 +150,10 @@ private extension WebCommentContentRenderer {
     /// We'll need to load `richCommentStyle.css` from the main bundle and inject it as a string,
     /// because the web view needs to be loaded with the WordPressShared bundle to gain access to custom fonts.
     var cssStyles: String {
-        guard let cssURL = Bundle.main.url(forResource: "richCommentStyle", withExtension: "css"),
+        guard let cssURL = Bundle.module.url(forResource: "richCommentStyle", withExtension: "css"),
               let cssContent = try? String(contentsOf: cssURL) else {
-            return String()
+            assertionFailure("css missing")
+            return ""
         }
         return cssContent.appending(overrideStyles)
     }
@@ -207,12 +209,6 @@ private extension WebCommentContentRenderer {
     /// - Returns: Formatted HTML string to be displayed in the web view.
     ///
     func formattedHTMLString(for content: String) -> String {
-        // otherwise: sanitize the content, cache it, and then return it.
-        guard let htmlTemplateFormat else {
-            assertionFailure("WebCommentContentRenderer: Failed to load HTML template format for comment content.")
-            return String()
-        }
-
         // remove empty HTML elements from the `content`, as the content often contains empty paragraph elements which adds unnecessary padding/margin.
         // `rawContent` does not have this problem, but it's not used because `rawContent` gets rid of links (<a> tags) for mentions.
         let htmlContent = String(format: htmlTemplateFormat, content
@@ -226,4 +222,9 @@ private extension UIColor {
     var cssHex: String {
         "#\(hexStringWithAlpha)"
     }
+}
+
+@available(iOS 17, *)
+#Preview("Plain Text, Single Line") {
+    WebCommentContentRenderer().render(comment: "<p>Thank you so much! You should see it now &#8211; people are losing their minds!</p>\n")
 }

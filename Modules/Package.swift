@@ -76,7 +76,8 @@ let package = Package(
         ),
         .target(
             name: "WordPressReader",
-            dependencies: ["AsyncImageKit", "WordPressUI", "WordPressShared"]
+            dependencies: ["AsyncImageKit", "WordPressUI", "WordPressShared"],
+            resources: [.process("Resources")]
         ),
         .testTarget(name: "JetpackStatsWidgetsCoreTests", dependencies: [.target(name: "JetpackStatsWidgetsCore")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .testTarget(name: "DesignSystemTests", dependencies: [.target(name: "DesignSystem")], swiftSettings: [.swiftLanguageMode(.v5)]),
