@@ -48,7 +48,7 @@ class ExperimentalFeaturesDataProvider: ExperimentalFeaturesViewModel.DataProvid
 
     private func presentViewController(_ viewController: UIViewController) {
         DispatchQueue.main.async {
-            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+            if let windowScene = UIViewController.topViewController?.view.window?.windowScene,
                let topController = windowScene.windows.first?.rootViewController {
                 topController.present(viewController, animated: true, completion: nil)
             }
