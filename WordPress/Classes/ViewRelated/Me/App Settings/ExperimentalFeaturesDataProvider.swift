@@ -56,9 +56,9 @@ class ExperimentalFeaturesDataProvider: ExperimentalFeaturesViewModel.DataProvid
     }
 
     enum Strings {
-        static let editorFeedbackTitle = NSLocalizedString("Share Feedback", comment: "Title for the alert asking for feedback")
-        static let editorFeedbackMessage = NSLocalizedString("Are you willing to share feedback on the experimental editor?", comment: "Message for the alert asking for feedback on the experimental editor")
-        static let editorFeedbackDecline = NSLocalizedString("Not now", comment: "Dismiss button title for the alert asking for feedback")
-        static let editorFeedbackAccept = NSLocalizedString("Send feedback", comment: "Accept button title for the alert asking for feedback")
+        static let editorFeedbackTitle = NSLocalizedString("experimentalFeatures.editorFeedbackTitle", value: "Share Feedback", comment: "Title for the alert asking for feedback")
+        static let editorFeedbackMessage = NSLocalizedString("experimentalFeatures.editorFeedbackMessage", value: "Are you willing to share feedback on the experimental editor?", comment: "Message for the alert asking for feedback on the experimental editor")
+        static let editorFeedbackDecline = NSLocalizedString("experimentalFeatures.editorFeedbackDecline", value: "Not now", comment: "Dismiss button title for the alert asking for feedback")
+        static let editorFeedbackAccept = NSLocalizedString("experimentalFeatures.editorFeedbackAccept", value: "Send feedback", comment: "Accept button title for the alert asking for feedback")
     }
 }
