@@ -27,10 +27,7 @@ struct InstalledPluginsListView: View {
                         ForEach(viewModel.plugins, id: \.self) { plugin in
                             PluginListItemView(
                                 plugin: plugin,
-                                iconResolver: PluginIconResolver(
-                                    slug: plugin.possibleWpOrgDirectorySlug,
-                                    service: viewModel.service
-                                )
+                                service: viewModel.service
                             )
                         }
                     }

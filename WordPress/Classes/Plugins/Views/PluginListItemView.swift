@@ -1,40 +1,34 @@
 import Foundation
 import SwiftUI
 import AsyncImageKit
+import WordPressAPI
 import WordPressCore
 
 struct PluginListItemView: View {
 
-    private static let iconSize: CGFloat = 44
-
     @ScaledMetric(relativeTo: .body) var descriptionFontSize: CGFloat = 14
 
+    private var slug: PluginWpOrgDirectorySlug?
     private var iconURL: URL?
     private var name: String
     private var version: String
     private var author: String
     private var shortDescription: String
-    private var iconResolver: PluginIconResolver
+    private var service: PluginServiceProtocol
 
-    init(plugin: InstalledPlugin, iconResolver: PluginIconResolver) {
+    init(plugin: InstalledPlugin, service: PluginServiceProtocol) {
+        self.slug = plugin.possibleWpOrgDirectorySlug
         self.iconURL = plugin.iconURL
         self.name = plugin.name
         self.version = plugin.version
         self.author = plugin.author
         self.shortDescription = plugin.shortDescription
-        self.iconResolver = iconResolver
+        self.service = service
     }
 
     var body: some View {
         HStack(alignment: .top) {
-            CachedAsyncImage(urlResolver: iconResolver) { image in
-                image.resizable()
-            } placeholder: {
-                Image("site-menu-plugins")
-                    .resizable()
-            }
-            .frame(width: Self.iconSize, height: Self.iconSize)
-            .padding(.all, 4)
+            PluginIconView(slug: slug, service: service)
 
             VStack(alignment: .leading, spacing: 0) {
                 Text(name)
