@@ -1,4 +1,5 @@
 import UIKit
+import WordPressReader
 
 class ReaderDetailCommentsHeader: UITableViewHeaderFooterView, NibReusable {
 
@@ -28,7 +29,7 @@ class ReaderDetailCommentsHeader: UITableViewHeaderFooterView, NibReusable {
         return post?.isSubscribedComments ?? false
     }
 
-    var displaySetting: ReaderDisplaySetting = .standard
+    var displaySetting: ReaderDisplaySettings = .standard
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -141,18 +142,18 @@ private extension ReaderDetailCommentsHeader {
     // MARK: Customizable Colors
 
     var titleFont: UIFont {
-        guard ReaderDisplaySetting.customizationEnabled else {
+        guard ReaderDisplaySettings.customizationEnabled else {
             return WPStyleGuide.serifFontForTextStyle(.title3, fontWeight: .semibold)
         }
         return displaySetting.font(with: .title3, weight: .semibold)
     }
 
     var titleTextColor: UIColor {
-        ReaderDisplaySetting.customizationEnabled ? displaySetting.color.foreground : .label
+        ReaderDisplaySettings.customizationEnabled ? displaySetting.color.foreground : .label
     }
 
     var followButtonFont: UIFont {
-        guard ReaderDisplaySetting.customizationEnabled else {
+        guard ReaderDisplaySettings.customizationEnabled else {
             return WPStyleGuide.fontForTextStyle(.footnote)
         }
         return displaySetting.font(with: .footnote)
@@ -163,7 +164,7 @@ private extension ReaderDetailCommentsHeader {
     }
 
     var separatorColor: UIColor {
-        ReaderDisplaySetting.customizationEnabled ? displaySetting.color.border : .separator
+        ReaderDisplaySettings.customizationEnabled ? displaySetting.color.border : .separator
     }
 }
 

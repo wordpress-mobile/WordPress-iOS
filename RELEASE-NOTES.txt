@@ -54,6 +54,7 @@
 * [*] Fix an issue with Mastodon connection not working [#23981]
 * [**] Send feedback from within the experimental editor "more" options menu. [#23980]
 * [**] Support accessing the code editor within the experimental editor. [#23979]
+* [*] Fix WKWebView retain cycle in Reader [#24028]
 
 25.6
 -----

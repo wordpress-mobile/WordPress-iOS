@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-12-19 09:54:10+0000 */
+/* Translation-Revision-Date: 2025-01-28 09:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: tr */
@@ -14,9 +14,6 @@
 
 /* Message of Close Account confirmation alert */
 "\nTo confirm, please re-enter your username before closing.\n\n" = "\nOnaylamak için lütfen kapatmadan önce kullanıcı adınızı yeniden yazın.\n\n";
-
-/* Title for the lazy load images setting */
-"\"Lazy-load\" images" = "Görseller gecikmeli yüklensin";
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
 "\"More\" Button" = "\"Diğer\" düğmesi";
@@ -149,9 +146,6 @@
 
 /* Number of posts displayed in Posting Activity when a day is selected. %d will contain the actual number (plural). */
 "%d Posts" = "%d yazı";
-
-/* The number of connected accounts on a third party sharing service connected to the user's blog. The '%d' is a placeholder for the number of accounts. */
-"%d accounts" = "%d hesap";
 
 /* Age between dates over one day.
    Number of days */
@@ -322,9 +316,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Instruction text to explain magic link login step. */
 "A WordPress.com account is connected to your store credentials. To continue, we will send a verification link to the email address above." = "Bir WordPress.com hesabı mağaza kimlik bilgilerinizle ilişkilendirildi. İlerlemek için yukarıdaki e-posta adresine bir doğrulama bağlantısı göndereceğiz.";
-
-/* Label for image that is set as a feature image for post/page */
-"A featured image is set. Tap to change it." = "Öne çıkarılmış bir görsel ayarlanmış. Değiştirmek için dokunun.";
 
 /* Title for a threat */
 "A file contains a malicious code pattern" = "Bir dosyada kötü amaçlı bir kod modeli var";
@@ -1111,7 +1102,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Tapping it cancels the login flow.
-   Cancel a prompt
    Cancel Action
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
@@ -1120,7 +1110,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel action on the app extension tags picker screen.
    Cancel action title
    Cancel button
-   Cancel button for alert
    Cancel button label
    Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Cancel button.
@@ -1128,7 +1117,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
-   Cancel prompt for user information.
    Cancel registering a domain
    Cancel removing a plugin
    Cancel site creation
@@ -1138,7 +1126,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel. Action.
    Cancels an Action
    Cancels an alert.
-   Cancels the mark all as read action.
    Editing GIF alert cancel action button.
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
@@ -1167,9 +1154,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Share extension dialog dismiss button label - displayed when user is missing a login token. */
 "Cancel sharing" = "Paylaşımı iptal et";
-
-/* The action was canceled */
-"Canceled" = "İptal edildi";
 
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "İptal ediliyor...";
@@ -1503,9 +1487,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Community & Non-Profit site intent topic */
 "Community & Non-Profit" = "Topluluk ve kâr amacı gütmeyen kuruluş";
 
-/* The action is completed */
-"Completed" = "Tamamlandı";
-
 /* Section title for the configure table section in the blog details screen */
 "Configure" = "Yapılandır";
 
@@ -1728,9 +1709,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Content show when the dashboard fails to load */
 "Couldn't update. Check that you're online and refresh." = "Güncellenemedi. Çevrim içi olup olmadığınızı denetleyip yenileyin.";
-
-/* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
-"Couldn't upload the featured image" = "Öne çıkarılmış görsel yüklenemedi";
 
 /* Error title displayed when unable to close user account. */
 "Couldn’t close account automatically" = "Hesap otomatik olarak kapatılamadı";
@@ -2034,8 +2012,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for the Discussion Settings Screen */
 "Discussion" = "Tartışma";
 
-/* Accessibility label for button to dismiss a bottom sheet
-   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Dismiss a view. Verb */
 "Dismiss" = "Yok say";
@@ -2068,9 +2045,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Done button title
    Done editing an image
    Done. Action.
-   Label for confirm feature image of a post
    Label for Done button
-   Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
    Title for a Done button.
@@ -2422,7 +2397,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Enter your server credentials" = "Sunucu kimlik doğrulama bilgilerinizi yazın";
 
 /* Generic error alert title
-   Generic error.
    Generic popup title for any type of error. */
 "Error" = "Hata";
 
@@ -2583,8 +2557,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Section title for the external table section in the blog details screen */
 "External" = "Dış";
 
-/* Status for Media object that is failed upload or export.
-   The action failed */
+/* Status for Media object that is failed upload or export. */
 "Failed" = "Tamamlanamadı";
 
 /* Message for mark all as read success notice */
@@ -2620,12 +2593,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "Öne çıkarılmış";
 
-/* Label for the Featured Image area in post settings.
-   Title for the Featured Image view */
+/* Label for the Featured Image area in post settings. */
 "Featured Image" = "Öne çıkarılmış görsel";
-
-/* No comment provided by engineer. */
-"Featured Image did not load" = "Öne çıkarılmış görsel yüklenmedi";
 
 /* Text displayed while fetching themes */
 "Fetching Themes..." = "Temalar alınıyor...";
@@ -2779,12 +2748,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Full size image. (default). Should be the same as in core WP. */
 "Full Size" = "Tam boyut";
 
-/* Accessibility label for when image is shown to user in full screen, with instructions on how to dismiss the screen. Placeholder is the title of the image */
-"Fullscreen view of image %@. Double tap to dismiss" = "%@ görselinin tam ekran görünümü. Kapatmak için çift dokunun";
-
-/* Accessibility label for when image is shown to user in full screen, with instructions on how to dismiss the screen */
-"Fullscreen view of image. Double tap to dismiss" = "Görselin tam ekran görünümü. Kapatmak için çift dokunun";
-
 /* Badge title displayed on GIF images in the editor. */
 "GIF" = "GIF";
 
@@ -2861,9 +2824,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Button title on the blogging prompt's feature introduction view to dismiss the view.
    Title for the continue button in the dashboard's custom What's New page. */
 "Got it" = "Anladım";
-
-/* Okay button title shown in alert announcing new Create Button feature. */
-"Got it!" = "Anladım!";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "Site adresi alınıyor";
@@ -3056,9 +3016,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Hint for image title on image settings. */
 "Image title" = "Görsel başlığı";
-
-/* Footer for the Serve images from our servers setting */
-"Improve your site's speed by only loading images visible on the screen. New images will load just before they scroll into view. This prevents viewers from having to download all the images on a page all at once, even ones they can't see." = "Yalnızca o anda ekranda görtülenecek görselleri yükleyerek sitenizin hızını artırın. Yeni görseller görünümün kaydırılmasından hemen önce yüklenir. Böylece sitenizi görüntüleyenler, baktıkları sayfada görüş açısında olmayan tüm görselleri tek seferde indirmek zorunda kalmaz.";
 
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "Bir kaç sözcük ile bu sitenin ne ile ilgili olduğunu anlatın.";
@@ -3397,8 +3354,7 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* A button title.
    Link to cookie policy
-   Menu title to show the prompts feature introduction modal.
-   Read more button title shown in alert announcing new Create Button feature. */
+   Menu title to show the prompts feature introduction modal. */
 "Learn more" = "Ayrıntılı bilgi alın";
 
 /* Writing, Date and Time Settings: Learn more about date and time settings footer text */
@@ -3818,7 +3774,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Months and Years" = "Aylar ve yıllar";
 
 /* Accessibility label for more button in dashboard quick start card.
-   Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
    Action button to display more available options */
 "More" = "Diğer";
@@ -4280,9 +4235,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* The default Jetpack view message for the success state */
 "Now that Jetpack is installed, we just need to get you set up. This will only take a minute." = "Jetpack yüklendiğine göre artık ayarlarınızı tamamlamanız yeterli. Bu işlem yalnızca bir dakika sürer.";
 
-/* Body text of alert announcing new Create Button feature. */
-"Now there are fewer and better-organized tabs, posting shortcuts, and more, so you can find what you need fast." = "Artık daha az ve daha iyi düzenlenmiş sekmeler, yazı kısayolları ve diğer özellikler var. Böylece gerek duyduğunuz şeyi hızlı bir şekilde bulabilirsiniz.";
-
 /* Register Domain - Address information field Number */
 "Number" = "Numara";
 
@@ -4292,24 +4244,14 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Discoverability title for numbered list keyboard shortcut. */
 "Numbered List" = "Numaralı liste";
 
-/* A button title for closing the dialog.
-   A button title.
-   Accept Action
-   Alert dismissal title
+/* Alert dismissal title
    Button title. An acknowledgement of the message displayed in a prompt.
-   Default action
    Dismisses the alert
-   Marks all notifications as read.
    Menus: button title for finishing editing of a menu item.
-   OK
-   OK button for alert
    Ok button for dismissing alert helping users understand their site address
    OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
-   Submit button on prompt for user information.
-   Title of a button that dismisses a prompt
-   Title of an OK button. Pressing the button acknowledges and dismisses a prompt.
-   Title of primary button on alert prompting verify their accounts while attempting to publish */
+   Title of a button that dismisses a prompt */
 "OK" = "Tamam";
 
 /* No comment provided by engineer. */
@@ -4808,9 +4750,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for label when the preparing to scan the users site */
 "Preparing to scan" = "Taramaya hazırlanılıyor";
 
-/* Label to show while converting and/or resizing media to send to server */
-"Preparing..." = "Hazırlanıyor...";
-
 /* Displays the Post Preview Interface
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
@@ -5024,17 +4963,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Reminders removed" = "Hatırlatıcılar kaldırıldı";
 
 /* Alert button to confirm a plugin to be removed
-   Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
-   Remove Action
-   Remove an image/posts/etc */
+   Remove Action */
 "Remove" = "Kaldır";
 
 /* Remove Person Alert Title
    Remove User. Verb */
 "Remove %@" = "%@ kaldır";
-
-/* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
-"Remove Featured Image" = "Öne çıkarılmış görseli kaldır";
 
 /* Label action for removing a link from the editor */
 "Remove Link" = "Bağlantıyı kaldır";
@@ -5068,9 +5002,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* User action to remove image. */
 "Remove image" = "Görseli kaldır";
-
-/* Prompt when removing a featured image from a post */
-"Remove this Featured Image?" = "Öne çıkarılmış görsel kaldırılsın mı?";
 
 /* User action to remove video. */
 "Remove video" = "Videoyu kaldır";
@@ -5510,20 +5441,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice confirming that an image has been set as the post's featured image. */
 "Set as featured image" = "Öne çıkarılmış görsel olarak ayarla";
 
-/* Title of the set goals button in the Blogging Reminders Settings flow. */
-"Set reminders" = "Hatırlatıcıları ayarla";
-
 /* The Jetpack view button title for the success state */
 "Set up" = "Kurulum";
 
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "Jetpack kurulumu";
-
-/* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
-"Set up your blogging reminders on days you want to post." = "Yazı yazmak istediğiniz günler için blog hatırlatıcılarınızı ayarlayın.";
-
-/* Title of the Blogging Reminders Settings screen. */
-"Set your blogging reminders" = "Blog hatırlatıcılarınızı ayarlayın";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Setting up theme" = "Tema ayarlanıyor";
@@ -5546,11 +5468,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message to show when setting save failed */
 "Settings update failed" = "Ayarlar güncellenemedi";
 
-/* Accessibility label for share buttons in nav bars
-   Button label to share a web page
-   Shares the comment URL
-   Spoken accessibility label
-   Title for a button that allows the user to share their answer to the prompt. */
+/* Spoken accessibility label */
 "Share" = "Paylaş";
 
 /* Title for a button that recommends the app to others */
@@ -5894,9 +5812,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to stop upload. */
 "Stop upload" = "Yüklemeyi durdur";
 
-/* Title of alert announcing new Create Button feature. */
-"Streamlined navigation" = "Kolaylaştırılmış gezinme";
-
 /* Accessibility label for strikethrough button on formatting toolbar. */
 "Strike Through" = "Üstü çizili";
 
@@ -6179,8 +6094,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description shown when a user logs in with Google but no matching WordPress.com account is found */
 "The Google account \"%@\" doesn't match any account on WordPress.com" = "\"%@\" Google hesabı, WordPress.com üzerindeki bir hesapla eşleşmiyor";
 
-/* Error message shown when a media upload fails because the user isn't connected to the Internet.
-   Message of error prompt shown when a user tries to perform an action without an internet connection. */
+/* Error message shown when a media upload fails because the user isn't connected to the Internet. */
 "The Internet connection appears to be offline." = "Internet bağlantınız çevrim dışı görünüyor.";
 
 /* Message informing the user that the site title can only be changed by an administrator user. */
@@ -6947,9 +6861,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Yüklenemedi";
 
-/* Description to show on post setting for a featured image that failed to upload. */
-"Upload failed. Tap for options." = "Yüklenemedi. Seçenekler için dokunun.";
-
 /* Label for the date a media asset (image / video) was uploaded
    Status for Media object that is uploaded and sync with server. */
 "Uploaded" = "Yüklendi";
@@ -6978,9 +6889,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message of an alert informing users that the video they are trying to select is not allowed. */
 "Uploading videos longer than 5 minutes requires a paid plan." = "5 dakikadan uzun videolar yüklemek için ücretli bir paket gereklidir.";
-
-/* Label to show while uploading media to server */
-"Uploading..." = "Yükleniyor...";
 
 /* No comment provided by engineer. */
 "Uploading…" = "Yükleniyor…";
@@ -7705,9 +7613,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Help text that describes how the password should be. It appears while editing the password */
 "Your password should be at least six characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! \" ? $ % ^ & )." = "Parolanız en az altı karakter uzunluğunda olmalıdır. Zorlaştırmak için, büyük harf, küçük harf, sayı ve ! \"? $% ^ &) gibi karakterler kullanın.";
 
-/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
-"Your post is publishing... in the meantime, set up your blogging reminders on days you want to post." = "Yazınız yayınlanıyor… Bu arada, yazı yayınlamak istediğiniz günler için blog hatırlatıcıları ayarlayabilirsiniz.";
-
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Yazılarınız, sayfalarınız ve ayarlarınız %@ adresine e-posta ile gönderilecek.";
 
@@ -7931,6 +7836,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* An alert suggesting to load autosaved revision for a published post */
 "autosaveAlert.viewChanges" = "Değişiklikleri Görüntüleyin";
 
+/* An error message displayed when attempting to update an avatar while the user's email address is not verified. */
+"avatar.update.email.verification.required" = "Avatarınızı güncellemek için öncelikle e-posta adresinizi doğrulamanız gerekir.";
+
 /* Alert message when something goes wrong with the selected image. */
 "avatarMenu.failedToSetAvatarAlertMessage" = "Görsel yüklenemedi. Lütfen başka bir tane seçin ya da daha sonra yeniden deneyin.";
 
@@ -8037,10 +7945,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blogDashboard.dismiss" = "Kapat";
 
 /* Context menu button title */
-"blogHeader.actionCopyURL" = "Adresi kopyala";
-
-/* Context menu button title */
-"blogHeader.actionVisitSite" = "Siteye git";
+"blogHeader.actionVisitSite" = "Siteyi Görüntüle";
 
 /* Badge title in site list */
 "blogList.siteBadge.staging" = "Aşamalandırma";
@@ -8084,6 +7989,15 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "Kapat";
+
+/* Title of the set goals button in the Blogging Reminders Settings flow. */
+"bloggingRemindersPrompt.intro.continueButton" = "Hatırlatıcı Ayarla";
+
+/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
+"bloggingRemindersPrompt.intro.details" = "Gönderi paylaşmak istediğiniz günler için blog hatırlatıcılarınızı ayarlayın.";
+
+/* Title of the Blogging Reminders Settings screen. */
+"bloggingRemindersPrompt.intro.title" = "Blog Hatırlatıcıları";
 
 /* Add self-hosted site button */
 "button.addSelfHostedSite" = "Kullanıcı tarafından barındırılan site ekle";
@@ -8960,9 +8874,6 @@ Example: Reply to Pamela Nguyen */
 /* Media screen navigation bar button Select title */
 "mediaLibrary.buttonSelect" = "Seçin";
 
-/* Context menu button */
-"mediaLibrary.buttonShare" = "Paylaş";
-
 /* Verb. Button title. Tapping cancels an action. */
 "mediaLibrary.deleteConfirmationCancel" = "İptal";
 
@@ -9034,6 +8945,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Bottom toolbar title in the selection mode */
 "mediaLibrary.toolbarSelectItemsPrompt" = "Ögeleri seçin";
+
+/* A name of the action in the context menu */
+"mediaPicker.imagePlayground" = "Görsel Oyun Alanı";
 
 /* Message for alert when access to camera is not granted */
 "mediaPicker.noCameraAccessMessage" = "Bu uygulama yeni görsel yakalamak için kameraya erişme izni istiyor, İzin vermek istiyorsanız lütfen gizlilik ayarlarını değiştirin.";
@@ -9227,9 +9141,6 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the personalize home option */
 "mySite.siteActions.personalizeHome" = "Giriş sayfasını kişiselleştir";
 
-/* Menu title for the share site option */
-"mySite.siteActions.shareSite" = "Siteyi paylaş";
-
 /* Menu title for the change site icon option */
 "mySite.siteActions.siteIcon" = "Site simgesini değiştir";
 
@@ -9271,9 +9182,6 @@ Example: Reply to Pamela Nguyen */
 
 /* The user has previously tapped 'Like' on this post */
 "notifications.accessibility-post-like-button-on" = "Bu gönderiyi Beğendiniz";
-
-/* A label for screenreader users */
-"notifications.accessibility-share-button" = "Paylaş";
 
 /* A label for screenreader users */
 "notifications.accessibility-tap-to-like-this-comment" = "Bu Yorumu Beğenmek İçin Çift Dokunun";
@@ -9483,6 +9391,9 @@ Example: Reply to Pamela Nguyen */
 "postEditor.moreMenu.saveDraft" = "Taslağı Kaydet";
 
 /* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.sendFeedback" = "Geri Bildirim Gönder";
+
+/* Post Editor / Button in the 'More' menu */
 "postEditor.moreMenu.visualEditor" = "Görsel Düzenleyici";
 
 /* A 'View' action for a snackbar informing the user that some media files requires their attention */
@@ -9532,9 +9443,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Message for 'not eligible' state view */
 "postFromAudio.notEnoughRequestsMessage" = "Sesten gönderi oluşturmak için yeterli isteğiniz yok.";
-
-/* Button title */
-"postFromAudio.ok" = "Tamam";
 
 /* Button title */
 "postFromAudio.retry" = "Tekrar dene";
@@ -9593,9 +9501,6 @@ Example: Reply to Pamela Nguyen */
 /* Title for the 'Delete' post list row swipe action */
 "postList.swipeActionDeletePermanently" = "Sil";
 
-/* Title for the 'Share' post list row swipe action */
-"postList.swipeActionShare" = "Paylaş";
-
 /* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "Görüntüle";
 
@@ -9625,12 +9530,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of notification displayed when either a new or an existing draft is saved */
 "postNotice.draftSaved" = "Taslak kaydedildi";
-
-/* A generic error message title */
-"postNotice.errorTitle" = "Bir hata oluştu";
-
-/* Button OK */
-"postNotice.ok" = "Tamam";
 
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "postNotice.pagePending" = "Sayfa incelenmeyi bekliyor";
@@ -9668,20 +9567,20 @@ Example: Reply to Pamela Nguyen */
 /* A default value for an post without a title */
 "postSaveErrorMessage.postUntitled" = "Başlıksız";
 
-/* User action to dismiss featured media options. */
-"postSettings.featuredImageUploadActionSheet.dismiss" = "Kapat";
+/* Cancel upload button in Post Settings / Featured Image cell */
+"postSettings.featuredImage.cancelUpload" = "Yüklemeyi İptal Et";
 
-/* User action to remove featured media. */
-"postSettings.featuredImageUploadActionSheet.remove" = "Kaldır";
+/* Replace image upload button in Post Settings / Featured Image cell */
+"postSettings.featuredImage.replaceImage" = "Değiştir";
 
-/* User action to retry featured media upload. */
-"postSettings.featuredImageUploadActionSheet.retryUpload" = "Yeniden dene";
+/* Button in Post Settings */
+"postSettings.featuredImage.setFeaturedImageButton" = "Öne Çıkan Görseli Ayarla";
 
-/* Title for action sheet with featured media options. */
-"postSettings.featuredImageUploadActionSheet.title" = "Öne çıkarılmış görsel seçenekleri";
+/* Snackbar title */
+"postSettings.featuredImage.uploadFailed" = "Yeni öne çıkan görsel yüklenemedi";
 
-/* Button OK */
-"postSettings.ok" = "Tamam";
+/* Post Settings */
+"postSettings.featuredImage.uploading" = "Yükleniyor…";
 
 /* The 'Parent Page' setting of the post */
 "postSettings.parentPage" = "Üst sayfa";
@@ -9694,9 +9593,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Section title for Page Attributes */
 "postSettings.section.pageAttributes" = "Sayfa Nitelikleri";
-
-/* Button in Post Settings */
-"postSettings.setFeaturedImageButton" = "Öne çıkarılmış görseli ayarla";
 
 /* An alert message explaning that by changing the visibility to private, the post will be published immediately to your site */
 "postSettings.warningPostWillBePublishedAlertMessage" = "Görünürlüğü \"Özel\" olarak değiştirdiğinizde gönderi hemen yayımlanır";
@@ -9772,9 +9668,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for post settings option. Tapping displays settings for a post. */
 "posts.settings.actionTitle" = "Ayarlar";
-
-/* Share the post. */
-"posts.share.actionTitle" = "Paylaş";
 
 /* Label for post stats option. Tapping displays statistics for a post. */
 "posts.stats.actionTitle" = "İstatistikler";
@@ -9936,6 +9829,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Post publish success view: button 'View post' */
 "publishSuccessView.view" = "Gönderiyi görüntüle";
 
+/* Informational notice title. Showed when you scan a code using a camera app outside of the app, which is not allowed. */
+"qrLogin.codeHasToBeScannedFromTheAppNotice.title" = "Lütfen uygulamayı kullanarak kodu tarayın";
+
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Kapat";
 
@@ -9963,8 +9859,23 @@ Tapping on this row allows the user to edit the sharing message. */
 /* A message title */
 "reader.blog.search.no.results.title" = "Herhangi bir blog bulunamadı";
 
+/* A shared button title for Reader */
+"reader.button.addToFavorites" = "Favorilere Ekle";
+
+/* A shared button title for Reader */
+"reader.button.notificationSettings" = "Bildirim Ayarları";
+
+/* A shared button title for Reader */
+"reader.button.removeFromFavorites" = "Favorilerden Kaldır";
+
+/* A shared button title for Reader */
+"reader.button.subscribe" = "Abone Ol";
+
 /* Reader sidebar button title */
 "reader.button.unfollow" = "Takip etmeyi bırak";
+
+/* A shared button title for Reader */
+"reader.button.unsubscribe" = "Takip Etmeyi Bırak";
 
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "Sitedeki yazıları görüntüler";
@@ -9972,10 +9883,7 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
 "reader.detail.likes.plural" = "_%1$d beğeni_";
 
-/* Describes that the current user is the only one liking a post. */
-"reader.detail.likes.self" = "Bunu beğendiniz.";
-
-/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
+/* Describes that only one user likes a post. The underscores denote underline and is not displayed. */
 "reader.detail.likes.single" = "_1 beğeni_";
 
 /* Title for the Comment button on the Reader Detail toolbar.
@@ -10161,10 +10069,13 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.postContextMenu.blogDetails" = "Blog Ayrıntıları";
 
 /* Context menu action */
-"reader.postContextMenu.copyLink" = "Bağlantıyı Kopyala";
+"reader.postContextMenu.manageNotifications" = "Bildirimleri Yönet";
 
 /* Context menu action */
-"reader.postContextMenu.manageNotifications" = "Bildirimleri Yönet";
+"reader.postContextMenu.markRead" = "Okundu Olarak İşaretle";
+
+/* Context menu action */
+"reader.postContextMenu.markUnread" = "Okunmadı Olarak İşaretle";
 
 /* Context menu action */
 "reader.postContextMenu.reportPost" = "Gönderiyi Bildir";
@@ -10173,16 +10084,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.postContextMenu.reportUser" = "Kullanıcıyı Bildir";
 
 /* Context menu action */
-"reader.postContextMenu.share" = "Paylaş";
-
-/* Context menu action */
 "reader.postContextMenu.showBlog" = "Blog'a Git";
-
-/* Context menu action */
-"reader.postContextMenu.subscribeT" = "Abone Ol";
-
-/* Context menu action */
-"reader.postContextMenu.unsubscribe" = "Takip Etmeyi Bırak";
 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "Tarayıcıda Görüntüle";
@@ -10433,9 +10335,6 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Spoken accessibility label */
 "readerDetail.dismissButton.accessibilityLabel" = "Kapat";
 
-/* Spoken accessibility label for the Reading Preferences menu. */
-"readerDetail.displaySettingButton.accessibilityLabel" = "Okuma Tercihleri";
-
 /* Section title for global related posts. */
 "readerDetail.globalPostsSection.accessibilityLabel" = "WordPress.com üzerinden daha fazlası";
 
@@ -10447,9 +10346,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Spoken accessibility label */
 "readerDetail.safariButton.accessibilityLabel" = "Safari ile aç";
-
-/* Spoken accessibility label */
-"readerDetail.shareButton.accessibilityLabel" = "Paylaş";
 
 /* Error message that informs reader detail from a private blog cannot be fetched. */
 "readerDetailCoordinator.readerDetail.privateBlogErrorMessage" = "Bu özel blogu görüntülemek için izniniz yok.";
@@ -10600,6 +10496,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* A shared button title used in different contexts */
 "shared.button.view" = "Görüntüle";
+
+/* A generic error title indicating that a screen failed to fetch the latest data */
+"shared.error.failiedToReloadData" = "Veriler güncellenemedi";
 
 /* A generic error message */
 "shared.error.geneirc" = "Bir sorun oluştu";
@@ -10832,6 +10731,9 @@ Feel free to replace it with other bracket types that you think looks better for
 /* A smallprint that hints the reason behind why Twitter is deprecated. */
 "social.twitterDeprecation.text" = "X otomatik paylaşım özelliği, X koşullarındaki ve fiyatlarındaki değişiklikler nedeniyle artık kullanılmıyor.";
 
+/* The number of connected accounts on a third party sharing service connected to the user's blog. The '%d' is a placeholder for the number of accounts. */
+"socialSharing.connectionDetails.nAccount" = "%d hesap";
+
 /* Title of Subscribers stats tab. */
 "stats.dashboard.tab.subscribers" = "Aboneler";
 
@@ -11005,12 +10907,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "Ortam kitaplığınıza eklemek için ücretsiz fotoğraflar arayın!";
-
-/* The button title for the Cancel button in the In-App Feedback screen */
-"submit.feedback.buttonCancel" = "İptal";
-
-/* The button title for the Cancel button in the In-App Feedback screen */
-"submit.feedback.buttonOK" = "Tamam";
 
 /* The section title and or placeholder */
 "submit.feedback.detailsPlaceholder" = "Ayrıntılar";
@@ -11265,9 +11161,6 @@ Feel free to replace it with other bracket types that you think looks better for
 /* The message in the alert that appears when deleting a user */
 "userDetails.alert.deleteUserErrorAlertMessage" = "Kullanıcı silinirken bir hata oluştu.";
 
-/* The title of the OK button in the alert that appears when deleting a user */
-"userDetails.alert.deleteUserErrorAlertOkButton" = "Tamam";
-
 /* The title of the alert that appears when deleting a user */
 "userDetails.alert.deleteUserErrorAlertTitle" = "Hata";
 
@@ -11324,6 +11217,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Verb. Dismiss the web view screen. */
 "webKit.button.dismiss" = "Kapat";
+
+/* Button label to share a web page */
+"webKit.button.share" = "Paylaş";
 
 /* A title for the filter on the PHP logs screen */
 "webServerLogs.filterEndDate" = "Bitiş tarihi";

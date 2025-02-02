@@ -1,4 +1,6 @@
 import UIKit
+import WordPressReader
+
 /// Table View delegate to handle the Comments table displayed in Reader Post details.
 ///
 class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UITableViewDelegate {
@@ -10,12 +12,13 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
     private weak var presentingViewController: UIViewController?
     private weak var buttonDelegate: BorderedButtonTableViewCellDelegate?
     private(set) var headerView: ReaderDetailCommentsHeader?
+    private let helper = ReaderCommentsHelper()
     var followButtonTappedClosure: (() ->Void)?
 
     private var totalRows = 0
     private var hideButton = true
 
-    var displaySetting: ReaderDisplaySetting
+    var displaySetting: ReaderDisplaySettings
 
     private var comments: [Comment] = [] {
         didSet {
@@ -42,7 +45,7 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
 
     // MARK: - Public Methods
 
-    init(displaySetting: ReaderDisplaySetting = .standard) {
+    init(displaySetting: ReaderDisplaySettings = .standard) {
         self.displaySetting = displaySetting
     }
 
@@ -85,7 +88,7 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
             }
 
             cell.displaySetting = displaySetting
-            cell.configureForPostDetails(with: comment) { _ in
+            cell.configureForPostDetails(with: comment, helper: helper) { _ in
                 do {
                     try WPException.objcTry {
                         tableView.performBatchUpdates({})
@@ -109,7 +112,7 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
         cell.backgroundColor = .clear
         cell.contentView.backgroundColor = .clear
 
-        if ReaderDisplaySetting.customizationEnabled {
+        if ReaderDisplaySettings.customizationEnabled {
             cell.titleLabel.font = displaySetting.font(with: .body)
             cell.titleLabel.textColor = displaySetting.color.secondaryForeground
         }
@@ -175,7 +178,7 @@ private extension ReaderDetailCommentsTableViewDelegate {
         let cell = BorderedButtonTableViewCell()
         let title = totalComments == 0 ? Constants.leaveCommentButtonTitle : Constants.viewAllButtonTitle
 
-        if ReaderDisplaySetting.customizationEnabled {
+        if ReaderDisplaySettings.customizationEnabled {
             cell.configure(buttonTitle: title,
                            titleFont: displaySetting.font(with: .body, weight: .semibold),
                            normalColor: displaySetting.color.foreground,

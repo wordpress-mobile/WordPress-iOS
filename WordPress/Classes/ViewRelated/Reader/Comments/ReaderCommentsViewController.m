@@ -53,6 +53,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 @property (nonatomic, strong) ReaderCommentsFollowPresenter *readerCommentsFollowPresenter;
 @property (nonatomic, strong) UIBarButtonItem *followBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *subscriptionSettingsBarButtonItem;
+@property (nonatomic, strong) ReaderCommentsHelper *helper;
 
 /// A cached instance for the new comment header view.
 @property (nonatomic, strong) UIView *cachedHeaderView;
@@ -90,8 +91,10 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
     self.view.backgroundColor = [UIColor murielBasicBackground];
     self.commentModified = NO;
+    self.helper = [ReaderCommentsHelper new];
 
     [self checkIfLoggedIn];
 
@@ -247,6 +250,12 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     self.tableView.cellLayoutMarginsFollowReadableWidth = YES;
     self.tableView.preservesSuperviewLayoutMargins = YES;
     self.tableView.backgroundColor = [UIColor murielBasicBackground];
+    if ([Feature enabled:FeatureFlagReaderCommentsWebKit]) {
+        // We use this to mask the initial WebKit warmup that takes a bit of time
+        // the first time you initialize a web view. It renders asyncronously, and
+        // we don't want to show cells with empty messages.
+        self.tableView.alpha = 0.0;
+    }
     [self.view addSubview:self.tableView];
 
     // register the content cell
@@ -831,9 +840,11 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 - (void)updateCachedContent
 {
-    NSArray *comments = self.tableViewHandler.resultsController.fetchedObjects;
-    for(Comment *comment in comments) {
-        [self cacheContentForComment:comment];
+    if (![Feature enabled:FeatureFlagReaderCommentsWebKit]) {
+        NSArray *comments = self.tableViewHandler.resultsController.fetchedObjects;
+        for(Comment *comment in comments) {
+            [self cacheContentForComment:comment];
+        }
     }
 }
 
@@ -1109,7 +1120,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
     Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     CommentContentTableViewCell *cell = (CommentContentTableViewCell *)aCell;
-    [self configureContentCell:cell comment:comment attributedText:[self cacheContentForComment:comment] indexPath:indexPath handler:self.tableViewHandler];
+    [self configureContentCell:cell comment:comment indexPath:indexPath handler:self.tableViewHandler];
 
     if (self.highlightedIndexPath) {
         cell.isEmphasized = (indexPath == self.highlightedIndexPath);

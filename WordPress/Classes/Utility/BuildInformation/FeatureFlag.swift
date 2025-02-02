@@ -15,6 +15,7 @@ enum FeatureFlag: Int, CaseIterable {
     case newGutenbergThemeStyles
     case newGutenbergPlugins
     case selfHostedSiteUserManagement
+    case readerCommentsWebKit
     case pluginManagementOverhaul
 
     /// Returns a boolean indicating if the feature is enabled
@@ -49,6 +50,8 @@ enum FeatureFlag: Int, CaseIterable {
         case .newGutenbergPlugins:
             return false
         case .selfHostedSiteUserManagement:
+            return false
+        case .readerCommentsWebKit:
             return false
         case .pluginManagementOverhaul:
             return false
@@ -87,6 +90,7 @@ extension FeatureFlag {
         case .newGutenbergThemeStyles: "Experimental Block Editor Styles"
         case .newGutenbergPlugins: "Experimental Block Editor Plugins"
         case .selfHostedSiteUserManagement: "Self-hosted Site User Management"
+        case .readerCommentsWebKit: "Render Comments using WebKit"
         case .pluginManagementOverhaul: "Plugin Management Overhaul"
         }
     }

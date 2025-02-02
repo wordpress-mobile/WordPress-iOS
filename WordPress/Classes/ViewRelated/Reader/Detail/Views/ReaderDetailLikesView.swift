@@ -1,4 +1,5 @@
 import UIKit
+import WordPressReader
 
 protocol ReaderDetailLikesViewDelegate: AnyObject {
     func didTapLikesView()
@@ -9,7 +10,7 @@ final class ReaderDetailLikesView: UIView, NibLoadable {
     @IBOutlet private weak var summaryLabel: UILabel!
     @IBOutlet private weak var selfAvatarImageView: CircularImageView!
 
-    var displaySetting: ReaderDisplaySetting = .standard {
+    var displaySetting: ReaderDisplaySettings = .standard {
         didSet {
             applyStyles()
             if let viewModel {
@@ -96,7 +97,7 @@ private extension ReaderDetailLikesView {
     }
 }
 
-private func makeHighlightedText(_ text: String, displaySetting: ReaderDisplaySetting) -> NSAttributedString {
+private func makeHighlightedText(_ text: String, displaySetting: ReaderDisplaySettings) -> NSAttributedString {
     let labelParts = text.components(separatedBy: "_")
 
     let firstPart = labelParts.first ?? ""

@@ -1,5 +1,6 @@
 import UIKit
 import AsyncImageKit
+import WordPressReader
 
 /// Renders the comment body through `WPRichContentView`.
 ///
@@ -8,23 +9,15 @@ class RichCommentContentRenderer: NSObject, CommentContentRenderer {
 
     weak var richContentDelegate: WPRichContentViewDelegate? = nil
     var attributedText: NSAttributedString?
+    var comment: Comment?
 
-    private let comment: Comment
+    required override init() {}
 
-    required init(comment: Comment) {
-        self.comment = comment
-    }
-
-    func render() -> UIView {
+    func render(comment: String) -> UIView {
         let textView = newRichContentView()
         textView.attributedText = attributedText
         textView.delegate = self
-
         return textView
-    }
-
-    func matchesContent(from comment: Comment) -> Bool {
-        return self.comment.content == comment.content
     }
 }
 
@@ -73,6 +66,9 @@ private extension RichCommentContentRenderer {
     }
 
     var mediaHost: MediaHost {
+        guard let comment else {
+            return .publicSite
+        }
         if let blog = comment.blog {
             return MediaHost(blog)
         } else if let post = comment.post as? ReaderPost, post.isBlogPrivate {

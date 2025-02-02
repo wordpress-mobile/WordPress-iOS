@@ -1,5 +1,5 @@
 {
-  "originHash" : "1bb18e6f566af95793ebbf960c90096ab410bb43035e5037d42057ec6deb1f00",
+  "originHash" : "6b3c7bab8241a2a687e3889dbb08f2b2b5f2035adf279e8a8b88fd75f8c545e4",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Automattic/Automattic-Tracks-iOS",
       "state" : {
-        "revision" : "948c7642009237c74ef30dad59f03835416873eb",
-        "version" : "3.4.2"
+        "revision" : "437f586a62c07c6ceec9baf043237b2afe7ea1ac",
+        "version" : "3.5.2"
       }
     },
     {
@@ -265,8 +265,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/getsentry/sentry-cocoa",
       "state" : {
-        "revision" : "08862789e1cbba7a9561bed69832a9306f339cd3",
-        "version" : "8.29.1"
+        "revision" : "f45e9c62d7a4d9258ac3cf35a3acf9dbab4481d1",
+        "version" : "8.43.0"
       }
     },
     {
@@ -383,7 +383,7 @@
       "location" : "https://github.com/wordpress-mobile/WordPressKit-iOS",
       "state" : {
         "branch" : "wpios-edition",
-        "revision" : "a9a057ea6fba8080c146497336951dc805409771"
+        "revision" : "cd1458be33c9715a293b6b5ea1dea851dfb64d05"
       }
     },
     {

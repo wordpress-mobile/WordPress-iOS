@@ -1,4 +1,5 @@
 import SwiftUI
+import WordPressReader
 
 struct ReaderFollowButton: View {
 
@@ -6,7 +7,7 @@ struct ReaderFollowButton: View {
     let isEnabled: Bool
     let size: ButtonSize
     var color: ButtonColor = .init()
-    var displaySetting: ReaderDisplaySetting?
+    var displaySetting: ReaderDisplaySettings?
 
     let action: () -> Void
 
@@ -30,7 +31,7 @@ struct ReaderFollowButton: View {
             self.unfollowedBackground = unfollowedBackground
         }
 
-        init(displaySetting: ReaderDisplaySetting) {
+        init(displaySetting: ReaderDisplaySettings) {
             followedText = Color(displaySetting.color.secondaryForeground)
             followedBackground = .clear
             followedStroke = followedText
@@ -48,7 +49,7 @@ struct ReaderFollowButton: View {
          isEnabled: Bool,
          size: ButtonSize,
          color: ButtonColor? = nil,
-         displaySetting: ReaderDisplaySetting? = nil,
+         displaySetting: ReaderDisplaySettings? = nil,
          action: @escaping () -> Void) {
         self.isFollowing = isFollowing
         self.isEnabled = isEnabled

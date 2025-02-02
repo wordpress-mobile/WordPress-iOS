@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-12-18 11:54:09+0000 */
+/* Translation-Revision-Date: 2025-01-28 09:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ja_JP */
@@ -14,9 +14,6 @@
 
 /* Message of Close Account confirmation alert */
 "\nTo confirm, please re-enter your username before closing.\n\n" = "\n確認するには、閉鎖する前のユーザーアカウントをもう一度入力してください。\n\n";
-
-/* Title for the lazy load images setting */
-"\"Lazy-load\" images" = "画像の「遅延読み込み」";
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
 "\"More\" Button" = "「その他」ボタン";
@@ -149,9 +146,6 @@
 
 /* Number of posts displayed in Posting Activity when a day is selected. %d will contain the actual number (plural). */
 "%d Posts" = "%d件の投稿";
-
-/* The number of connected accounts on a third party sharing service connected to the user's blog. The '%d' is a placeholder for the number of accounts. */
-"%d accounts" = "%d件のアカウント";
 
 /* Age between dates over one day.
    Number of days */
@@ -322,9 +316,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Instruction text to explain magic link login step. */
 "A WordPress.com account is connected to your store credentials. To continue, we will send a verification link to the email address above." = "WordPress.com アカウントはストアのログイン情報に連携されています。 続行する場合は、上のメールアドレスに認証リンクが届きます。";
-
-/* Label for image that is set as a feature image for post/page */
-"A featured image is set. Tap to change it." = "アイキャッチ画像が設定されました。変更するにはタップしてください。";
 
 /* Title for a threat */
 "A file contains a malicious code pattern" = "ファイルには、悪意のあるコードが含まれています";
@@ -1111,7 +1102,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Tapping it cancels the login flow.
-   Cancel a prompt
    Cancel Action
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
@@ -1120,7 +1110,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel action on the app extension tags picker screen.
    Cancel action title
    Cancel button
-   Cancel button for alert
    Cancel button label
    Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Cancel button.
@@ -1128,7 +1117,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
-   Cancel prompt for user information.
    Cancel registering a domain
    Cancel removing a plugin
    Cancel site creation
@@ -1138,7 +1126,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel. Action.
    Cancels an Action
    Cancels an alert.
-   Cancels the mark all as read action.
    Editing GIF alert cancel action button.
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
@@ -1167,9 +1154,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Share extension dialog dismiss button label - displayed when user is missing a login token. */
 "Cancel sharing" = "共有をキャンセル";
-
-/* The action was canceled */
-"Canceled" = "キャンセル済み";
 
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "キャンセル中...";
@@ -1503,9 +1487,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Community & Non-Profit site intent topic */
 "Community & Non-Profit" = "コミュニティ & 非営利";
 
-/* The action is completed */
-"Completed" = "完了";
-
 /* Section title for the configure table section in the blog details screen */
 "Configure" = "設定";
 
@@ -1728,9 +1709,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Content show when the dashboard fails to load */
 "Couldn't update. Check that you're online and refresh." = "更新できませんでした。 オンラインであることを確認して更新してください。";
-
-/* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
-"Couldn't upload the featured image" = "アイキャッチ画像をアップロードできませんでした";
 
 /* Error title displayed when unable to close user account. */
 "Couldn’t close account automatically" = "アカウントを自動的にクローズできませんでした";
@@ -2034,8 +2012,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for the Discussion Settings Screen */
 "Discussion" = "ディスカッション";
 
-/* Accessibility label for button to dismiss a bottom sheet
-   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Dismiss a view. Verb */
 "Dismiss" = "非表示にする";
@@ -2068,9 +2045,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Done button title
    Done editing an image
    Done. Action.
-   Label for confirm feature image of a post
    Label for Done button
-   Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
    Title for a Done button.
@@ -2422,7 +2397,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Enter your server credentials" = "サーバーの認証情報を入力";
 
 /* Generic error alert title
-   Generic error.
    Generic popup title for any type of error. */
 "Error" = "エラー";
 
@@ -2583,8 +2557,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Section title for the external table section in the blog details screen */
 "External" = "外部";
 
-/* Status for Media object that is failed upload or export.
-   The action failed */
+/* Status for Media object that is failed upload or export. */
 "Failed" = "失敗しました";
 
 /* Message for mark all as read success notice */
@@ -2620,12 +2593,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "おすすめ";
 
-/* Label for the Featured Image area in post settings.
-   Title for the Featured Image view */
+/* Label for the Featured Image area in post settings. */
 "Featured Image" = "アイキャッチ画像";
-
-/* No comment provided by engineer. */
-"Featured Image did not load" = "アイキャッチ画像を読み込めませんでした";
 
 /* Text displayed while fetching themes */
 "Fetching Themes..." = "テーマを取得中…";
@@ -2779,12 +2748,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Full size image. (default). Should be the same as in core WP. */
 "Full Size" = "フルサイズ";
 
-/* Accessibility label for when image is shown to user in full screen, with instructions on how to dismiss the screen. Placeholder is the title of the image */
-"Fullscreen view of image %@. Double tap to dismiss" = "画像 %@ のフルスクリーン表示 ダブルタップして非表示";
-
-/* Accessibility label for when image is shown to user in full screen, with instructions on how to dismiss the screen */
-"Fullscreen view of image. Double tap to dismiss" = "画像のフルスクリーン表示 ダブルタップして非表示";
-
 /* Badge title displayed on GIF images in the editor. */
 "GIF" = "GIF";
 
@@ -2861,9 +2824,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Button title on the blogging prompt's feature introduction view to dismiss the view.
    Title for the continue button in the dashboard's custom What's New page. */
 "Got it" = "理解しました";
-
-/* Okay button title shown in alert announcing new Create Button feature. */
-"Got it!" = "承知しました !";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "サイト URL を取得";
@@ -3056,9 +3016,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Hint for image title on image settings. */
 "Image title" = "画像タイトル";
-
-/* Footer for the Serve images from our servers setting */
-"Improve your site's speed by only loading images visible on the screen. New images will load just before they scroll into view. This prevents viewers from having to download all the images on a page all at once, even ones they can't see." = "画面に表示できる画像だけを読み込んで、サイトを高速化します。新しい画像は、閲覧者がビューにスクロールする直前に読み込まれます。これにより、表示できない画像を含め、閲覧者がすべての画像を一度にまとめてページにダウンロードする必要がなくなります。";
 
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "このサイトを短い文章で説明してください。";
@@ -3397,8 +3354,7 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* A button title.
    Link to cookie policy
-   Menu title to show the prompts feature introduction modal.
-   Read more button title shown in alert announcing new Create Button feature. */
+   Menu title to show the prompts feature introduction modal. */
 "Learn more" = "さらに詳しく";
 
 /* Writing, Date and Time Settings: Learn more about date and time settings footer text */
@@ -3818,7 +3774,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Months and Years" = "月・年ごと";
 
 /* Accessibility label for more button in dashboard quick start card.
-   Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
    Action button to display more available options */
 "More" = "続き";
@@ -4280,9 +4235,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* The default Jetpack view message for the success state */
 "Now that Jetpack is installed, we just need to get you set up. This will only take a minute." = "Jetpack がインストールされたので、あとはセットアップするだけです。ほんの1分ほどで済みます。";
 
-/* Body text of alert announcing new Create Button feature. */
-"Now there are fewer and better-organized tabs, posting shortcuts, and more, so you can find what you need fast." = "タブやショートカットの投稿などが少なくなり、きれいに整理されたため、必要なものをすばやく見つけられるようになりました。";
-
 /* Register Domain - Address information field Number */
 "Number" = "番地";
 
@@ -4292,24 +4244,14 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Discoverability title for numbered list keyboard shortcut. */
 "Numbered List" = "番号付きリスト";
 
-/* A button title for closing the dialog.
-   A button title.
-   Accept Action
-   Alert dismissal title
+/* Alert dismissal title
    Button title. An acknowledgement of the message displayed in a prompt.
-   Default action
    Dismisses the alert
-   Marks all notifications as read.
    Menus: button title for finishing editing of a menu item.
-   OK
-   OK button for alert
    Ok button for dismissing alert helping users understand their site address
    OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
-   Submit button on prompt for user information.
-   Title of a button that dismisses a prompt
-   Title of an OK button. Pressing the button acknowledges and dismisses a prompt.
-   Title of primary button on alert prompting verify their accounts while attempting to publish */
+   Title of a button that dismisses a prompt */
 "OK" = "OK";
 
 /* No comment provided by engineer. */
@@ -4805,9 +4747,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for label when the preparing to scan the users site */
 "Preparing to scan" = "スキャンを準備しています";
 
-/* Label to show while converting and/or resizing media to send to server */
-"Preparing..." = "準備中…";
-
 /* Displays the Post Preview Interface
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
@@ -5021,17 +4960,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Reminders removed" = "リマインダーを削除しました";
 
 /* Alert button to confirm a plugin to be removed
-   Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
-   Remove Action
-   Remove an image/posts/etc */
+   Remove Action */
 "Remove" = "削除";
 
 /* Remove Person Alert Title
    Remove User. Verb */
 "Remove %@" = "%@ を削除";
-
-/* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
-"Remove Featured Image" = "アイキャッチ画像を削除";
 
 /* Label action for removing a link from the editor */
 "Remove Link" = "リンクを削除";
@@ -5065,9 +4999,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* User action to remove image. */
 "Remove image" = "画像を削除";
-
-/* Prompt when removing a featured image from a post */
-"Remove this Featured Image?" = "アイキャッチ画像を削除しますか ?";
 
 /* User action to remove video. */
 "Remove video" = "動画を削除";
@@ -5507,20 +5438,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice confirming that an image has been set as the post's featured image. */
 "Set as featured image" = "アイキャッチ画像として設定";
 
-/* Title of the set goals button in the Blogging Reminders Settings flow. */
-"Set reminders" = "リマインダーを設定";
-
 /* The Jetpack view button title for the success state */
 "Set up" = "セットアップ";
 
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "Jetpack のセットアップ";
-
-/* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
-"Set up your blogging reminders on days you want to post." = "投稿する予定の日にブログ投稿のリマインダーを設定します。";
-
-/* Title of the Blogging Reminders Settings screen. */
-"Set your blogging reminders" = "ブログ投稿のリマインダーを設定";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Setting up theme" = "テーマを設定する";
@@ -5543,11 +5465,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message to show when setting save failed */
 "Settings update failed" = "設定更新に失敗";
 
-/* Accessibility label for share buttons in nav bars
-   Button label to share a web page
-   Shares the comment URL
-   Spoken accessibility label
-   Title for a button that allows the user to share their answer to the prompt. */
+/* Spoken accessibility label */
 "Share" = "共有";
 
 /* Title for a button that recommends the app to others */
@@ -5891,9 +5809,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to stop upload. */
 "Stop upload" = "アップロードを停止";
 
-/* Title of alert announcing new Create Button feature. */
-"Streamlined navigation" = "ナビゲーションの効率化";
-
 /* Accessibility label for strikethrough button on formatting toolbar. */
 "Strike Through" = "取り消し線";
 
@@ -6176,8 +6091,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description shown when a user logs in with Google but no matching WordPress.com account is found */
 "The Google account \"%@\" doesn't match any account on WordPress.com" = "Google アカウント「%@」が WordPress.com のアカウントと一致しません";
 
-/* Error message shown when a media upload fails because the user isn't connected to the Internet.
-   Message of error prompt shown when a user tries to perform an action without an internet connection. */
+/* Error message shown when a media upload fails because the user isn't connected to the Internet. */
 "The Internet connection appears to be offline." = "インターネットに接続していないようです。";
 
 /* Message informing the user that the site title can only be changed by an administrator user. */
@@ -6944,9 +6858,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "アップロードに失敗しました";
 
-/* Description to show on post setting for a featured image that failed to upload. */
-"Upload failed. Tap for options." = "アップロードに失敗しました。オプションを表示するにはタップしてください。";
-
 /* Label for the date a media asset (image / video) was uploaded
    Status for Media object that is uploaded and sync with server. */
 "Uploaded" = "アップロード完了";
@@ -6975,9 +6886,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message of an alert informing users that the video they are trying to select is not allowed. */
 "Uploading videos longer than 5 minutes requires a paid plan." = "5分以上の動画ファイルのアップロードには、有料プランのご利用が必要です。";
-
-/* Label to show while uploading media to server */
-"Uploading..." = "アップロード中…";
 
 /* No comment provided by engineer. */
 "Uploading…" = "アップロード中…";
@@ -7699,9 +7607,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Help text that describes how the password should be. It appears while editing the password */
 "Your password should be at least six characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! \" ? $ % ^ & )." = "パスワードは6文字以上にする必要があります。さらに強力なパスワードを作成するには、大文字小文字、数字、! \" ? $ % ^ & ) などの記号を使用してください。";
 
-/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
-"Your post is publishing... in the meantime, set up your blogging reminders on days you want to post." = "投稿を掲載しています...その間に、投稿する予定の日にブログ投稿のリマインダーを設定しましょう。";
-
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "投稿、ページ、および設定は %@ にメールで送信されます。";
 
@@ -7925,6 +7830,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* An alert suggesting to load autosaved revision for a published post */
 "autosaveAlert.viewChanges" = "変更を表示";
 
+/* An error message displayed when attempting to update an avatar while the user's email address is not verified. */
+"avatar.update.email.verification.required" = "アバターを更新するには、まずメールアドレスを確認する必要があります。";
+
 /* Alert message when something goes wrong with the selected image. */
 "avatarMenu.failedToSetAvatarAlertMessage" = "画像をアップロードできません。 別の画像を選択するか、後でもう一度お試しください。";
 
@@ -8027,12 +7935,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "削除";
 
-/* Context menu button title */
-"blogHeader.actionCopyURL" = "URL をコピー";
-
-/* Context menu button title */
-"blogHeader.actionVisitSite" = "サイトを表示";
-
 /* Badge title in site list */
 "blogList.siteBadge.staging" = "ステージング";
 
@@ -8072,6 +7974,15 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "削除";
+
+/* Title of the set goals button in the Blogging Reminders Settings flow. */
+"bloggingRemindersPrompt.intro.continueButton" = "リマインダーを設定";
+
+/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
+"bloggingRemindersPrompt.intro.details" = "投稿する予定の日にブログ投稿のリマインダーを設定します。";
+
+/* Title of the Blogging Reminders Settings screen. */
+"bloggingRemindersPrompt.intro.title" = "ブログ投稿のリマインダー";
 
 /* Add self-hosted site button */
 "button.addSelfHostedSite" = "インストール型サイトを追加";
@@ -8945,9 +8856,6 @@ Example: Reply to Pamela Nguyen */
 /* Media screen navigation bar button Select title */
 "mediaLibrary.buttonSelect" = "選択";
 
-/* Context menu button */
-"mediaLibrary.buttonShare" = "共有";
-
 /* Verb. Button title. Tapping cancels an action. */
 "mediaLibrary.deleteConfirmationCancel" = "キャンセル";
 
@@ -9019,6 +8927,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Bottom toolbar title in the selection mode */
 "mediaLibrary.toolbarSelectItemsPrompt" = "アイテムを選択する";
+
+/* A name of the action in the context menu */
+"mediaPicker.imagePlayground" = "画像の Playground";
 
 /* Message for alert when access to camera is not granted */
 "mediaPicker.noCameraAccessMessage" = "このアプリが新しいメディアをキャプチャするためカメラにアクセスするには許可が必要です。許可するには、プライバシー設定を変更してください。";
@@ -9212,9 +9123,6 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the personalize home option */
 "mySite.siteActions.personalizeHome" = "ホームをパーソナライズ";
 
-/* Menu title for the share site option */
-"mySite.siteActions.shareSite" = "サイトを共有する";
-
 /* Menu title for the change site icon option */
 "mySite.siteActions.siteIcon" = "サイトアイコンを変更";
 
@@ -9256,9 +9164,6 @@ Example: Reply to Pamela Nguyen */
 
 /* The user has previously tapped 'Like' on this post */
 "notifications.accessibility-post-like-button-on" = "この投稿を「いいね」しました";
-
-/* A label for screenreader users */
-"notifications.accessibility-share-button" = "共有";
 
 /* A label for screenreader users */
 "notifications.accessibility-tap-to-like-this-comment" = "ダブルタップしてこのコメントを「いいね」";
@@ -9468,6 +9373,9 @@ Example: Reply to Pamela Nguyen */
 "postEditor.moreMenu.saveDraft" = "下書きを保存";
 
 /* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.sendFeedback" = "フィードバックを送る";
+
+/* Post Editor / Button in the 'More' menu */
 "postEditor.moreMenu.visualEditor" = "ビジュアルエディター";
 
 /* A 'View' action for a snackbar informing the user that some media files requires their attention */
@@ -9517,9 +9425,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Message for 'not eligible' state view */
 "postFromAudio.notEnoughRequestsMessage" = "音声ファイルから投稿を作成するためのリクエストが足りません。";
-
-/* Button title */
-"postFromAudio.ok" = "OK";
 
 /* Button title */
 "postFromAudio.retry" = "再試行";
@@ -9578,9 +9483,6 @@ Example: Reply to Pamela Nguyen */
 /* Title for the 'Delete' post list row swipe action */
 "postList.swipeActionDeletePermanently" = "削除";
 
-/* Title for the 'Share' post list row swipe action */
-"postList.swipeActionShare" = "共有";
-
 /* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "表示";
 
@@ -9610,9 +9512,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of notification displayed when either a new or an existing draft is saved */
 "postNotice.draftSaved" = "下書きを保存しました";
-
-/* A generic error message title */
-"postNotice.errorTitle" = "エラーが発生しました";
 
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "postNotice.pagePending" = "ページはレビュー待ちです";
@@ -9650,17 +9549,20 @@ Example: Reply to Pamela Nguyen */
 /* A default value for an post without a title */
 "postSaveErrorMessage.postUntitled" = "無題";
 
-/* User action to dismiss featured media options. */
-"postSettings.featuredImageUploadActionSheet.dismiss" = "閉じる";
+/* Cancel upload button in Post Settings / Featured Image cell */
+"postSettings.featuredImage.cancelUpload" = "アップロードをキャンセル";
 
-/* User action to remove featured media. */
-"postSettings.featuredImageUploadActionSheet.remove" = "削除";
+/* Replace image upload button in Post Settings / Featured Image cell */
+"postSettings.featuredImage.replaceImage" = "置換";
 
-/* User action to retry featured media upload. */
-"postSettings.featuredImageUploadActionSheet.retryUpload" = "再試行";
+/* Button in Post Settings */
+"postSettings.featuredImage.setFeaturedImageButton" = "アイキャッチ画像を設定";
 
-/* Title for action sheet with featured media options. */
-"postSettings.featuredImageUploadActionSheet.title" = "アイキャッチ画像のオプション";
+/* Snackbar title */
+"postSettings.featuredImage.uploadFailed" = "新しいアイキャッチ画像のアップロードに失敗しました";
+
+/* Post Settings */
+"postSettings.featuredImage.uploading" = "アップロード中…";
 
 /* The 'Parent Page' setting of the post */
 "postSettings.parentPage" = "親ページ";
@@ -9673,9 +9575,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Section title for Page Attributes */
 "postSettings.section.pageAttributes" = "ページ属性";
-
-/* Button in Post Settings */
-"postSettings.setFeaturedImageButton" = "アイキャッチ画像を設定";
 
 /* An alert message explaning that by changing the visibility to private, the post will be published immediately to your site */
 "postSettings.warningPostWillBePublishedAlertMessage" = "表示状態を「非公開」に変更すると、投稿はすぐに投稿されます";
@@ -9751,9 +9650,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for post settings option. Tapping displays settings for a post. */
 "posts.settings.actionTitle" = "設定";
-
-/* Share the post. */
-"posts.share.actionTitle" = "共有";
 
 /* Label for post stats option. Tapping displays statistics for a post. */
 "posts.stats.actionTitle" = "統計情報";
@@ -9912,6 +9808,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Post publish success view: button 'View post' */
 "publishSuccessView.view" = "投稿を表示";
 
+/* Informational notice title. Showed when you scan a code using a camera app outside of the app, which is not allowed. */
+"qrLogin.codeHasToBeScannedFromTheAppNotice.title" = "アプリを使用してコードをスキャンしてください";
+
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "閉じる";
 
@@ -9939,8 +9838,23 @@ Tapping on this row allows the user to edit the sharing message. */
 /* A message title */
 "reader.blog.search.no.results.title" = "ブログは見つかりませんでした";
 
+/* A shared button title for Reader */
+"reader.button.addToFavorites" = "お気に入りに追加";
+
+/* A shared button title for Reader */
+"reader.button.notificationSettings" = "通知設定";
+
+/* A shared button title for Reader */
+"reader.button.removeFromFavorites" = "お気に入りから削除";
+
+/* A shared button title for Reader */
+"reader.button.subscribe" = "購読";
+
 /* Reader sidebar button title */
 "reader.button.unfollow" = "フォロー解除";
+
+/* A shared button title for Reader */
+"reader.button.unsubscribe" = "購読解除";
 
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "サイトからの投稿を表示します";
@@ -9948,10 +9862,7 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
 "reader.detail.likes.plural" = "_%1$d件の「いいね」_";
 
-/* Describes that the current user is the only one liking a post. */
-"reader.detail.likes.self" = "あなたが「いいね」をつけています。";
-
-/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
+/* Describes that only one user likes a post. The underscores denote underline and is not displayed. */
 "reader.detail.likes.single" = "_1件の「いいね」_";
 
 /* Title for the Comment button on the Reader Detail toolbar.
@@ -10137,10 +10048,13 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.postContextMenu.blogDetails" = "ブログの詳細";
 
 /* Context menu action */
-"reader.postContextMenu.copyLink" = "リンクをコピー";
+"reader.postContextMenu.manageNotifications" = "通知を管理";
 
 /* Context menu action */
-"reader.postContextMenu.manageNotifications" = "通知を管理";
+"reader.postContextMenu.markRead" = "既読にする";
+
+/* Context menu action */
+"reader.postContextMenu.markUnread" = "未読にする";
 
 /* Context menu action */
 "reader.postContextMenu.reportPost" = "投稿を報告";
@@ -10149,16 +10063,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.postContextMenu.reportUser" = "ユーザーを報告";
 
 /* Context menu action */
-"reader.postContextMenu.share" = "共有";
-
-/* Context menu action */
 "reader.postContextMenu.showBlog" = "「ブログ」に移動";
-
-/* Context menu action */
-"reader.postContextMenu.subscribeT" = "購読";
-
-/* Context menu action */
-"reader.postContextMenu.unsubscribe" = "フォロー解除";
 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "ブラウザで表示";
@@ -10403,9 +10308,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Spoken accessibility label */
 "readerDetail.dismissButton.accessibilityLabel" = "閉じる";
 
-/* Spoken accessibility label for the Reading Preferences menu. */
-"readerDetail.displaySettingButton.accessibilityLabel" = "閲覧の設定";
-
 /* Section title for global related posts. */
 "readerDetail.globalPostsSection.accessibilityLabel" = "WordPress.com の詳細";
 
@@ -10417,9 +10319,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Spoken accessibility label */
 "readerDetail.safariButton.accessibilityLabel" = "Safari で開く";
-
-/* Spoken accessibility label */
-"readerDetail.shareButton.accessibilityLabel" = "共有";
 
 /* Error message that informs reader detail from a private blog cannot be fetched. */
 "readerDetailCoordinator.readerDetail.privateBlogErrorMessage" = "この非公開ブログの閲覧権限がありません。";
@@ -10564,6 +10463,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* A shared button title used in different contexts */
 "shared.button.view" = "表示";
+
+/* A generic error title indicating that a screen failed to fetch the latest data */
+"shared.error.failiedToReloadData" = "データの更新に失敗しました";
 
 /* A generic error message */
 "shared.error.geneirc" = "エラーが発生しました";
@@ -10796,6 +10698,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A smallprint that hints the reason behind why Twitter is deprecated. */
 "social.twitterDeprecation.text" = "Twitter の自動共有機能は Twitter の規約と価格に変更があったため利用できなくなりました。";
 
+/* The number of connected accounts on a third party sharing service connected to the user's blog. The '%d' is a placeholder for the number of accounts. */
+"socialSharing.connectionDetails.nAccount" = "%d件のアカウント";
+
 /* Title of Subscribers stats tab. */
 "stats.dashboard.tab.subscribers" = "購読者";
 
@@ -10966,9 +10871,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "無料の写真を検索して、メディアライブラリに追加してください。";
-
-/* The button title for the Cancel button in the In-App Feedback screen */
-"submit.feedback.buttonCancel" = "キャンセル";
 
 /* The section title and or placeholder */
 "submit.feedback.detailsPlaceholder" = "詳細";
@@ -11279,6 +11181,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Verb. Dismiss the web view screen. */
 "webKit.button.dismiss" = "削除";
+
+/* Button label to share a web page */
+"webKit.button.share" = "共有";
 
 /* A title for the filter on the PHP logs screen */
 "webServerLogs.filterEndDate" = "終了日";

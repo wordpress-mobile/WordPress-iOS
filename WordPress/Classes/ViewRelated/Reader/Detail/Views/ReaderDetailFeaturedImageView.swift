@@ -1,6 +1,7 @@
 import UIKit
 import AsyncImageKit
 import WordPressUI
+import WordPressReader
 
 protocol ReaderDetailFeaturedImageViewDelegate: AnyObject {
     func didTapFeaturedImage(_ sender: AsyncImageView)
@@ -31,7 +32,7 @@ final class ReaderDetailFeaturedImageView: UIView {
             self.endTintColor = endTintColor
         }
 
-        init(displaySetting: ReaderDisplaySetting) {
+        init(displaySetting: ReaderDisplaySettings) {
             self.init(endTintColor: displaySetting.color.foreground)
         }
     }
@@ -60,7 +61,7 @@ final class ReaderDetailFeaturedImageView: UIView {
         }
     }
 
-    var displaySetting: ReaderDisplaySetting = .standard {
+    var displaySetting: ReaderDisplaySettings = .standard {
         didSet {
             style = .init(displaySetting: displaySetting)
 
@@ -188,7 +189,7 @@ final class ReaderDetailFeaturedImageView: UIView {
 
         // Re-apply the styles after a potential orientation change.
         // This fixes a case where the navbar tint would revert after changing orientation.
-        if ReaderDisplaySetting.customizationEnabled {
+        if ReaderDisplaySettings.customizationEnabled {
             resetNavigationBarTintColor()
             resetStatusBarStyle()
         }

@@ -52,9 +52,6 @@
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "Połączony ponownie: %@.";
 
-/* The number of connected accounts on a third party sharing service connected to the user's blog. The '%d' is a placeholder for the number of accounts. */
-"%d accounts" = "%d konta";
-
 /* Age between dates over one day.
    Number of days */
 "%d days" = "%d dni";
@@ -97,9 +94,6 @@
 
 /* Instruction text to explain magic link login step. */
 "A WordPress.com account is connected to your store credentials. To continue, we will send a verification link to the email address above." = "Konto WordPress.com jest połączone z poświadczeniami twojego sklepu. Aby kontynuować, wyślemy odnośnik weryfikacyjny na powyższy adres e-mail.";
-
-/* Label for image that is set as a feature image for post/page */
-"A featured image is set. Tap to change it." = "Ustawiono obrazek wyróżniający. Stuknij, aby go zmienić.";
 
 /* Message of the alert indicating that a tag with that name already exists. The placeholder is the name of the tag */
 "A tag named '%@' already exists." = "Tag '%@' już istnieje.";
@@ -374,7 +368,6 @@
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Tapping it cancels the login flow.
-   Cancel a prompt
    Cancel Action
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
@@ -383,7 +376,6 @@
    Cancel action on the app extension tags picker screen.
    Cancel action title
    Cancel button
-   Cancel button for alert
    Cancel button label
    Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Cancel button.
@@ -391,7 +383,6 @@
    Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
-   Cancel prompt for user information.
    Cancel registering a domain
    Cancel removing a plugin
    Cancel site creation
@@ -401,7 +392,6 @@
    Cancel. Action.
    Cancels an Action
    Cancels an alert.
-   Cancels the mark all as read action.
    Editing GIF alert cancel action button.
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
@@ -419,9 +409,6 @@
 
 /* Share extension dialog dismiss button label - displayed when user is missing a login token. */
 "Cancel sharing" = "Anuluj udostępnianie";
-
-/* The action was canceled */
-"Canceled" = "Anulowane";
 
 /* Error message shown when the input URL does not point to an existing site. */
 "Cannot access the site at this address. Please double-check and try again." = "Nie można uzyskać dostępu do witryny pod tym adresem. Sprawdź dokładnie i spróbuj ponownie.";
@@ -797,8 +784,7 @@
    Title for the Discussion Settings Screen */
 "Discussion" = "Dyskusja";
 
-/* Accessibility label for button to dismiss a bottom sheet
-   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Dismiss a view. Verb */
 "Dismiss" = "Odrzuć";
@@ -816,9 +802,7 @@
    Done button title
    Done editing an image
    Done. Action.
-   Label for confirm feature image of a post
    Label for Done button
-   Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
    Title for a Done button.
@@ -961,7 +945,6 @@
 "Enter your account information for %@." = "Wprowadź dane swojego konta dla %@.";
 
 /* Generic error alert title
-   Generic error.
    Generic popup title for any type of error. */
 "Error" = "Błąd";
 
@@ -993,8 +976,7 @@
 /* Overlay message displayed while starting content export */
 "Exporting content…" = "Eksportowanie zawartości…";
 
-/* Status for Media object that is failed upload or export.
-   The action failed */
+/* Status for Media object that is failed upload or export. */
 "Failed" = "Niepowodzenie";
 
 /* Fashion site intent topic */
@@ -1002,9 +984,6 @@
 
 /* Option to select the Fastmail app when logging in with magic links */
 "Fastmail" = "Fastmail";
-
-/* No comment provided by engineer. */
-"Featured Image did not load" = "Obrazek wyróżniający nie został załadowany";
 
 /* Text displayed while fetching themes */
 "Fetching Themes..." = "Pobieranie motywów…";
@@ -1108,9 +1087,6 @@
 /* Button title on the blogging prompt's feature introduction view to dismiss the view.
    Title for the continue button in the dashboard's custom What's New page. */
 "Got it" = "Rozumiem";
-
-/* Okay button title shown in alert announcing new Create Button feature. */
-"Got it!" = "Rozumiem!";
 
 /* No comment provided by engineer. */
 "Gradient Type" = "Typ gradientu";
@@ -1355,8 +1331,7 @@
 
 /* A button title.
    Link to cookie policy
-   Menu title to show the prompts feature introduction modal.
-   Read more button title shown in alert announcing new Create Button feature. */
+   Menu title to show the prompts feature introduction modal. */
 "Learn more" = "Dowiedz się więcej";
 
 /* Left alignment for an image. Should be the same as in core WP. */
@@ -1678,30 +1653,17 @@
 /* Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications. */
 "Notify me" = "Powiadom mnie";
 
-/* Body text of alert announcing new Create Button feature. */
-"Now there are fewer and better-organized tabs, posting shortcuts, and more, so you can find what you need fast." = "Mamy teraz mniej kart, za to uporządkowanych, skrótów służących do publikowania wpisów i wiele innych, aby  szybko znaleźć, to czego potrzeba.";
-
 /* No comment provided by engineer. */
 "Number of columns" = "Liczba kolumn";
 
-/* A button title for closing the dialog.
-   A button title.
-   Accept Action
-   Alert dismissal title
+/* Alert dismissal title
    Button title. An acknowledgement of the message displayed in a prompt.
-   Default action
    Dismisses the alert
-   Marks all notifications as read.
    Menus: button title for finishing editing of a menu item.
-   OK
-   OK button for alert
    Ok button for dismissing alert helping users understand their site address
    OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
-   Submit button on prompt for user information.
-   Title of a button that dismisses a prompt
-   Title of an OK button. Pressing the button acknowledges and dismisses a prompt.
-   Title of primary button on alert prompting verify their accounts while attempting to publish */
+   Title of a button that dismisses a prompt */
 "OK" = "OK";
 
 /* Disabled */
@@ -1918,9 +1880,6 @@
 /* Browse premium themes selection title */
 "Premium" = "Premium";
 
-/* Label to show while converting and/or resizing media to send to server */
-"Preparing..." = "Przygotowuję…";
-
 /* Displays the Post Preview Interface
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
@@ -2033,13 +1992,8 @@
 "Reminders removed" = "Przypomnienia zostały usunięte";
 
 /* Alert button to confirm a plugin to be removed
-   Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
-   Remove Action
-   Remove an image/posts/etc */
+   Remove Action */
 "Remove" = "Usuń";
-
-/* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
-"Remove Featured Image" = "Usuń obrazek wyróżniający";
 
 /* Label action for removing a link from the editor */
 "Remove Link" = "Usuń odnośnik";
@@ -2052,9 +2006,6 @@
 
 /* No comment provided by engineer. */
 "Remove block" = "Usuń blok";
-
-/* Prompt when removing a featured image from a post */
-"Remove this Featured Image?" = "Czy usunąć obrazek wyróżniający?";
 
 /* User action to remove video. */
 "Remove video" = "Usuń film";
@@ -2188,20 +2139,13 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title. Sends a email verification link (Magin link) for signing in. */
 "Send email verification link" = "Wyślij wiadomość e-mail z odnośnikiem weryfikacyjnym";
 
-/* Title of the set goals button in the Blogging Reminders Settings flow. */
-"Set reminders" = "Ustaw przypomnienia";
-
 /* Link to plugin's Settings
    Section title
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Ustawienia";
 
-/* Accessibility label for share buttons in nav bars
-   Button label to share a web page
-   Shares the comment URL
-   Spoken accessibility label
-   Title for a button that allows the user to share their answer to the prompt. */
+/* Spoken accessibility label */
 "Share" = "Podziel się";
 
 /* Title for a button that recommends the app to others */
@@ -2386,9 +2330,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to stop upload. */
 "Stop upload" = "Przerwij wgrywanie";
 
-/* Title of alert announcing new Create Button feature. */
-"Streamlined navigation" = "Usprawniona nawigacja";
-
 /* Accessibility label for strikethrough button on formatting toolbar. */
 "Strike Through" = "Przekreślenie";
 
@@ -2468,8 +2409,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "That username is not allowed." = "Wybrana nazwa użytkownika jest niedozwolona.";
 
-/* Error message shown when a media upload fails because the user isn't connected to the Internet.
-   Message of error prompt shown when a user tries to perform an action without an internet connection. */
+/* Error message shown when a media upload fails because the user isn't connected to the Internet. */
 "The Internet connection appears to be offline." = "Prawdopodobnie utracono połączenie z internetem.";
 
 /* Message informing the user that the site title can only be changed by an administrator user. */
@@ -2700,9 +2640,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for alert when trying to save/exit a post before media upload process is complete. */
 "Uploading media" = "Przesyłanie multimediów";
-
-/* Label to show while uploading media to server */
-"Uploading..." = "Przesyłanie…";
 
 /* Use the current image */
 "Use" = "Użyj";
@@ -3308,21 +3245,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The value for the `requests available:` field for an unlimited plan */
 "postFromAudio.unlimited" = "Nieograniczone";
 
-/* User action to dismiss featured media options. */
-"postSettings.featuredImageUploadActionSheet.dismiss" = "Odrzuć";
-
-/* User action to remove featured media. */
-"postSettings.featuredImageUploadActionSheet.remove" = "Usuń";
-
-/* User action to retry featured media upload. */
-"postSettings.featuredImageUploadActionSheet.retryUpload" = "Ponów";
-
-/* Title for action sheet with featured media options. */
-"postSettings.featuredImageUploadActionSheet.title" = "Opcje obrazka wyróżniającego";
-
-/* Button OK */
-"postSettings.ok" = "OK";
-
 /* The 'Parent Page' setting of the post */
 "postSettings.parentPage" = "Strona nadrzędna";
 
@@ -3367,9 +3289,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Spoken accessibility label */
 "readerDetail.safariButton.accessibilityLabel" = "Otwórz w Safari";
-
-/* Spoken accessibility label */
-"readerDetail.shareButton.accessibilityLabel" = "Udostępnij";
 
 /* A version of the post on another device. */
 "resolveConflict.anotherDevice" = "Inne urządzenie";

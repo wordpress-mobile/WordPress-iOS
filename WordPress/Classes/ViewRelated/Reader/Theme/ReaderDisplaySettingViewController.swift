@@ -1,5 +1,6 @@
 import SwiftUI
 import DesignSystem
+import WordPressReader
 
 /// The tracking source values for the customization sheet.
 /// The values are kept in sync with Android.
@@ -9,8 +10,8 @@ enum ReaderDisplaySettingViewSource: String {
 }
 
 class ReaderDisplaySettingViewController: UIViewController {
-    private let initialSetting: ReaderDisplaySetting
-    private let completion: ((ReaderDisplaySetting) -> Void)?
+    private let initialSetting: ReaderDisplaySettings
+    private let completion: ((ReaderDisplaySettings) -> Void)?
     private let trackingSource: ReaderDisplaySettingViewSource
     private var viewModel: ReaderDisplaySettingSelectionViewModel? = nil
 
@@ -18,9 +19,9 @@ class ReaderDisplaySettingViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    init(initialSetting: ReaderDisplaySetting,
+    init(initialSetting: ReaderDisplaySettings,
          source: ReaderDisplaySettingViewSource = .unspecified,
-         completion: ((ReaderDisplaySetting) -> Void)?) {
+         completion: ((ReaderDisplaySettings) -> Void)?) {
         self.initialSetting = initialSetting
         self.completion = completion
         self.trackingSource = source
@@ -83,7 +84,7 @@ class ReaderDisplaySettingViewController: UIViewController {
     }
 
     @MainActor
-    private func updateNavigationBar(with setting: ReaderDisplaySetting) {
+    private func updateNavigationBar(with setting: ReaderDisplaySettings) {
         navigationController?.navigationBar.overrideUserInterfaceStyle = setting.hasLightBackground ? .light : .dark
 
         // update the experimental label style
@@ -118,14 +119,14 @@ class ReaderDisplaySettingViewController: UIViewController {
 class ReaderDisplaySettingSelectionViewModel: NSObject, ObservableObject {
     private typealias TrackingKeys = ReaderDisplaySettingSelectionView.TrackingKeys
 
-    @Published var displaySetting: ReaderDisplaySetting
+    @Published var displaySetting: ReaderDisplaySettings
 
     /// Called when the user selects a new option.
     var didSelectItem: (() -> Void)? = nil
 
-    private let completion: ((ReaderDisplaySetting) -> Void)?
+    private let completion: ((ReaderDisplaySettings) -> Void)?
 
-    init(displaySetting: ReaderDisplaySetting, completion: ((ReaderDisplaySetting) -> Void)?) {
+    init(displaySetting: ReaderDisplaySettings, completion: ((ReaderDisplaySettings) -> Void)?) {
         self.displaySetting = displaySetting
         self.completion = completion
     }
@@ -338,7 +339,7 @@ extension ReaderDisplaySettingSelectionView {
         var colorSelectionView: some View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: .DS.Padding.half) {
-                    ForEach(ReaderDisplaySetting.Color.allCases, id: \.rawValue) { color in
+                    ForEach(ReaderDisplaySettings.Color.allCases, id: \.rawValue) { color in
                         Button {
                             viewModel.displaySetting.color = color
                             viewModel.didSelectItem?() // notify the view controller to update.
@@ -374,7 +375,7 @@ extension ReaderDisplaySettingSelectionView {
         var fontSelectionView: some View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: .DS.Padding.half) {
-                    ForEach(ReaderDisplaySetting.Font.allCases, id: \.rawValue) { font in
+                    ForEach(ReaderDisplaySettings.Font.allCases, id: \.rawValue) { font in
                         Button {
                             viewModel.displaySetting.font = font
                             viewModel.didSelectItem?() // notify the view controller to update.
@@ -384,7 +385,7 @@ extension ReaderDisplaySettingSelectionView {
                         } label: {
                             VStack(spacing: .DS.Padding.half) {
                                 Text("Aa")
-                                    .font(Font(ReaderDisplaySetting.font(with: font, textStyle: .largeTitle)).bold())
+                                    .font(Font(ReaderDisplaySettings.font(with: font, textStyle: .largeTitle)).bold())
                                     .foregroundStyle(Color(.label))
                                 Text(font.rawValue.capitalized)
                                     .font(.footnote)
@@ -409,19 +410,19 @@ extension ReaderDisplaySettingSelectionView {
 
         var sizeSelectionView: some View {
             Slider(value: $sliderValue,
-                   in: Double(ReaderDisplaySetting.Size.extraSmall.rawValue)...Double(ReaderDisplaySetting.Size.extraLarge.rawValue),
+                   in: Double(ReaderDisplaySettings.Size.extraSmall.rawValue)...Double(ReaderDisplaySettings.Size.extraLarge.rawValue),
                    step: 1) {
                 Text(Strings.sizeSliderLabel)
             } minimumValueLabel: {
                 Text("A")
-                    .font(Font(ReaderDisplaySetting.font(with: .sans, size: .extraSmall, textStyle: .body)))
+                    .font(Font(ReaderDisplaySettings.font(with: .sans, size: .extraSmall, textStyle: .body)))
                     .accessibilityHidden(true)
             } maximumValueLabel: {
                 Text("A")
-                    .font(Font(ReaderDisplaySetting.font(with: .sans, size: .extraLarge, textStyle: .body)))
+                    .font(Font(ReaderDisplaySettings.font(with: .sans, size: .extraLarge, textStyle: .body)))
                     .accessibilityHidden(true)
             } onEditingChanged: { _ in
-                let size = ReaderDisplaySetting.Size(rawValue: Int(sliderValue)) ?? .normal
+                let size = ReaderDisplaySettings.Size(rawValue: Int(sliderValue)) ?? .normal
                 viewModel.displaySetting.size = size
                 viewModel.didSelectItem?() // notify the view controller to update.
                 WPAnalytics.track(.readingPreferencesItemTapped,

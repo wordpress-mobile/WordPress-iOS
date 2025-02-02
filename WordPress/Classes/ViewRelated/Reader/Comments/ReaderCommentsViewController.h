@@ -13,14 +13,16 @@ typedef NS_ENUM(NSUInteger, ReaderCommentsSource) {
     ReaderCommentsSourcePostsList
 };
 
-
+@class Comment;
 @class ReaderPost;
+@class ReaderCommentsHelper;
 
 @interface ReaderCommentsViewController : UIViewController
 
 @property (nonatomic, strong, readonly) ReaderPost *post;
 @property (nonatomic, assign, readwrite) BOOL allowsPushingPostDetails;
 @property (nonatomic, assign, readwrite) ReaderCommentsSource source;
+@property (nonatomic, strong, readonly) ReaderCommentsHelper *helper;
 
 - (void)setupWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID;
 
@@ -36,5 +38,6 @@ typedef NS_ENUM(NSUInteger, ReaderCommentsSource) {
 // Comment moderation support.
 @property (nonatomic, assign, readwrite) BOOL commentModified;
 - (void)refreshAfterCommentModeration;
+- (NSAttributedString *)cacheContentForComment:(Comment *)comment;
 
 @end

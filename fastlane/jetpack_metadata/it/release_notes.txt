@@ -1,5 +1,0 @@
-Questo aggiornamento:
-- Risolve alcuni problemi dell'interfaccia utente su iPad.
-- Aggiunge l'URL e l'ID del media a ogni elemento multimediale
-- Utilizza il nuovo Gravatar Quick Editor per aggiornare il tuo avatar.
-- Utilizza un approccio basato sul web per il login a WordPress.com. In questo modo dovrebbe essere più affidabile per la maggior parte degli utenti, ma ti invitiamo a contattare l'assistenza in caso di problemi.

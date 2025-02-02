@@ -1529,10 +1529,6 @@
 		FD3D6D2C1349F5D30061136A /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD3D6D2B1349F5D30061136A /* ImageIO.framework */; };
 		FE003F62282E73E6006F8D1D /* blogging-prompts-fetch-success.json in Resources */ = {isa = PBXBuildFile; fileRef = FE003F61282E73E6006F8D1D /* blogging-prompts-fetch-success.json */; };
 		FE1E201E2A49D59400CE7C90 /* JetpackSocialServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE1E201D2A49D59400CE7C90 /* JetpackSocialServiceTests.swift */; };
-		FE23EB4926E7C91F005A1698 /* richCommentTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = FE23EB4726E7C91F005A1698 /* richCommentTemplate.html */; };
-		FE23EB4A26E7C91F005A1698 /* richCommentTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = FE23EB4726E7C91F005A1698 /* richCommentTemplate.html */; };
-		FE23EB4B26E7C91F005A1698 /* richCommentStyle.css in Resources */ = {isa = PBXBuildFile; fileRef = FE23EB4826E7C91F005A1698 /* richCommentStyle.css */; };
-		FE23EB4C26E7C91F005A1698 /* richCommentStyle.css in Resources */ = {isa = PBXBuildFile; fileRef = FE23EB4826E7C91F005A1698 /* richCommentStyle.css */; };
 		FE2E3729281C839C00A1E82A /* BloggingPromptsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE2E3728281C839C00A1E82A /* BloggingPromptsServiceTests.swift */; };
 		FE320CC5294705990046899B /* ReaderPostBackupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE320CC4294705990046899B /* ReaderPostBackupTests.swift */; };
 		FE32E7F12844971000744D80 /* ReminderScheduleCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE32E7F02844971000744D80 /* ReminderScheduleCoordinatorTests.swift */; };
@@ -3312,8 +3308,6 @@
 		FDCB9A89134B75B900E5C776 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
 		FE003F61282E73E6006F8D1D /* blogging-prompts-fetch-success.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "blogging-prompts-fetch-success.json"; sourceTree = "<group>"; };
 		FE1E201D2A49D59400CE7C90 /* JetpackSocialServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackSocialServiceTests.swift; sourceTree = "<group>"; };
-		FE23EB4726E7C91F005A1698 /* richCommentTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = richCommentTemplate.html; path = Resources/HTML/richCommentTemplate.html; sourceTree = "<group>"; };
-		FE23EB4826E7C91F005A1698 /* richCommentStyle.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = richCommentStyle.css; path = Resources/HTML/richCommentStyle.css; sourceTree = "<group>"; };
 		FE2E3728281C839C00A1E82A /* BloggingPromptsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloggingPromptsServiceTests.swift; sourceTree = "<group>"; };
 		FE320CC4294705990046899B /* ReaderPostBackupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderPostBackupTests.swift; sourceTree = "<group>"; };
 		FE32E7F02844971000744D80 /* ReminderScheduleCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderScheduleCoordinatorTests.swift; sourceTree = "<group>"; };
@@ -3388,7 +3382,6 @@
 				Utility/SFHFKeychainUtils.m = "-fno-objc-arc";
 			};
 			membershipExceptions = (
-				"Extensions/Colors and Styles/UIColor+Extensions.swift",
 				"Extensions/Colors and Styles/WPStyleGuide+ApplicationStyles.swift",
 				"Extensions/Colors and Styles/WPStyleGuide+Gridicon.swift",
 				"Extensions/NSAttributedStringKey+Conversion.swift",
@@ -3427,7 +3420,6 @@
 				Utility/SFHFKeychainUtils.m = "-fno-objc-arc";
 			};
 			membershipExceptions = (
-				"Extensions/Colors and Styles/UIColor+Extensions.swift",
 				"Extensions/Colors and Styles/WPStyleGuide+ApplicationStyles.swift",
 				"Extensions/Colors and Styles/WPStyleGuide+Gridicon.swift",
 				"Extensions/NSAttributedStringKey+Conversion.swift",
@@ -3466,7 +3458,6 @@
 				Utility/SFHFKeychainUtils.m = "-fno-objc-arc";
 			};
 			membershipExceptions = (
-				"Extensions/Colors and Styles/UIColor+Extensions.swift",
 				Services/KeyValueDatabase.swift,
 				System/Constants/Constants.m,
 				"Utility/App Configuration/AppConfiguration.swift",
@@ -3559,7 +3550,6 @@
 				Utility/SFHFKeychainUtils.m = "-fno-objc-arc";
 			};
 			membershipExceptions = (
-				"Extensions/Colors and Styles/UIColor+Extensions.swift",
 				"Extensions/Colors and Styles/WPStyleGuide+ApplicationStyles.swift",
 				"Extensions/Colors and Styles/WPStyleGuide+Gridicon.swift",
 				"Extensions/NSAttributedStringKey+Conversion.swift",
@@ -3596,7 +3586,6 @@
 				Utility/SFHFKeychainUtils.m = "-fno-objc-arc";
 			};
 			membershipExceptions = (
-				"Extensions/Colors and Styles/UIColor+Extensions.swift",
 				"Extensions/Colors and Styles/WPStyleGuide+ApplicationStyles.swift",
 				"Extensions/Colors and Styles/WPStyleGuide+Gridicon.swift",
 				"Extensions/NSAttributedStringKey+Conversion.swift",
@@ -6724,8 +6713,6 @@
 				2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */,
 				E61507E12220A0FE00213D33 /* richEmbedTemplate.html */,
 				E61507E32220A13B00213D33 /* richEmbedScript.js */,
-				FE23EB4826E7C91F005A1698 /* richCommentStyle.css */,
-				FE23EB4726E7C91F005A1698 /* richCommentTemplate.html */,
 			);
 			name = HTML;
 			sourceTree = "<group>";
@@ -8400,7 +8387,6 @@
 				17222D81261DDDF90047B163 /* celadon-classic-icon-app-76x76@2x.png in Resources */,
 				931DF4D618D09A2F00540BDD /* InfoPlist.strings in Resources */,
 				801D9511291AB3CF0051993E /* JetpackStatsLogoAnimation_ltr.json in Resources */,
-				FE23EB4926E7C91F005A1698 /* richCommentTemplate.html in Resources */,
 				1761F18826209AEE000815EF /* pride-icon-app-76x76.png in Resources */,
 				17222D8A261DDDF90047B163 /* black-classic-icon-app-76x76@2x.png in Resources */,
 				1761F17F26209AEE000815EF /* open-source-icon-app-76x76@2x.png in Resources */,
@@ -8475,7 +8461,6 @@
 				4A690C152BA791B100A8E0C5 /* PrivacyInfo.xcprivacy in Resources */,
 				1761F17526209AEE000815EF /* open-source-dark-icon-app-76x76@2x.png in Resources */,
 				1761F18A26209AEE000815EF /* hot-pink-icon-app-60x60@2x.png in Resources */,
-				FE23EB4B26E7C91F005A1698 /* richCommentStyle.css in Resources */,
 				1761F18526209AEE000815EF /* pride-icon-app-60x60@3x.png in Resources */,
 				0CD542CA2CEFAE5F00666F44 /* wporg-blog-icon.png in Resources */,
 				17222DB0261DDDF90047B163 /* spectrum-classic-icon-app-83.5x83.5@2x.png in Resources */,
@@ -8764,7 +8749,6 @@
 				F465980828E66A5B00D5F49A /* white-on-blue-icon-app-76@2x.png in Resources */,
 				F46597BE28E6687800D5F49A /* neumorphic-dark-icon-app-60@3x.png in Resources */,
 				F41E4ECB28F23E00001880C6 /* green-on-white-icon-app-60@3x.png in Resources */,
-				FE23EB4C26E7C91F005A1698 /* richCommentStyle.css in Resources */,
 				F41E4EE428F24623001880C6 /* 3d-icon-app-60@2x.png in Resources */,
 				F46597F328E669D400D5F49A /* spectrum-on-white-icon-app-83.5@2x.png in Resources */,
 				F41E4EEF28F247D3001880C6 /* white-on-green-icon-app-60@2x.png in Resources */,
@@ -8814,7 +8798,6 @@
 				FABB203D2602FC2C00C8785C /* Localizable.strings in Resources */,
 				FABB28472603067C00C8785C /* Launch Screen.storyboard in Resources */,
 				F465978F28E65F8A00D5F49A /* celadon-on-white-icon-app-60@2x.png in Resources */,
-				FE23EB4A26E7C91F005A1698 /* richCommentTemplate.html in Resources */,
 				F41E4EAA28F20DF9001880C6 /* stroke-light-icon-app-76.png in Resources */,
 				F46597FE28E66A1100D5F49A /* white-on-black-icon-app-76.png in Resources */,
 				F41E4ED628F2424B001880C6 /* dark-glow-icon-app-83.5@2x.png in Resources */,

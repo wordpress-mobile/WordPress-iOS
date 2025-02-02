@@ -1,5 +1,0 @@
-Den här uppdateringen:
-- Åtgärdar vissa gränssnittsproblem på iPad.
-- Lägger till media-ID och URL till varje mediaobjekt
-- Använder den nya Gravatar-snabbredigeraren för att uppdatera din profilbild.
-- Använder en webbaserad metod för WordPress.com-inloggning. Detta bör öka tillförlitligheten för de flesta användare, men kontakta supporten om du stöter på problem.

@@ -1,4 +1,5 @@
 import UIKit
+import WordPressReader
 
 enum ReaderTopicCollectionViewState {
     case collapsed
@@ -43,7 +44,7 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
     }
 
     /// For custom styling. When nil, the cell will be configured with default styling.
-    var displaySetting: ReaderDisplaySetting? = nil
+    var displaySetting: ReaderDisplaySettings? = nil
 
     init(collectionView: UICollectionView, topics: [String]) {
         self.collectionView = collectionView

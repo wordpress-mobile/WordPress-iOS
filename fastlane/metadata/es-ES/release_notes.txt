@@ -1,5 +1,7 @@
-Esta actualización
-:- Corrige algunos problemas de la interfaz de usuario en iPad.
-- Añade el ID del medio y la URL a cada elemento de medios.
-- Utiliza el nuevo Gravatar Quick Editor para actualizar tu avatar.
-- Utiliza un sistema basado en web para acceder a WordPress.com. Debería ser más fiable para la mayoría de los usuarios, pero si tienes problemas, ponte en contacto con el servicio de asistencia.
+Para la versión de este mes, hemos:
+- ¡Añadido soporte para Image Playgrounds! Úsalo para añadir imágenes a tus entradas, generar una imagen destacada o un icono del sitio.
+- Añadido deshacer y rehacer al editor experimental (¿has probado ya el editor? si no... ¡deberías!)
+- Se ha mejorado el Editor Rápido de Gravatar.
+- Añadido un acceso directo para cambiar la imagen destacada de una entrada.
+- Mejorado el modo en que se muestran las imágenes de tu biblioteca multimedia: ahora debería ser un poco más agradable.
+- Se han corregido los errores habituales y se ha mejorado el rendimiento (sobre todo en el editor).

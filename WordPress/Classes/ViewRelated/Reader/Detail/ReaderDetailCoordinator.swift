@@ -1,5 +1,6 @@
 import Foundation
 import WordPressShared
+import WordPressReader
 import AsyncImageKit
 import Combine
 
@@ -641,7 +642,7 @@ class ReaderDetailCoordinator {
         }
 
         // Additional properties for Reading Preferences
-        if ReaderDisplaySetting.customizationEnabled {
+        if ReaderDisplaySettings.customizationEnabled {
             let setting = ReaderDisplaySettingStore().setting
             properties[DetailAnalyticsConstants.ReadingPreferences.isDefaultKey] = setting.isDefaultSetting
             properties[DetailAnalyticsConstants.ReadingPreferences.colorSchemeKey] = setting.color.valueForTracks

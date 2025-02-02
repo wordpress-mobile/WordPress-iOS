@@ -14,13 +14,14 @@ let package = Package(
         .library(name: "WordPressFlux", targets: ["WordPressFlux"]),
         .library(name: "WordPressShared", targets: ["WordPressShared"]),
         .library(name: "WordPressUI", targets: ["WordPressUI"]),
+        .library(name: "WordPressReader", targets: ["WordPressReader"]),
     ],
     dependencies: [
         .package(url: "https://github.com/airbnb/lottie-ios", from: "4.4.0"),
         .package(url: "https://github.com/Alamofire/Alamofire", from: "5.9.1"),
         .package(url: "https://github.com/AliSoftware/OHHTTPStubs", from: "9.1.0"),
         .package(url: "https://github.com/apple/swift-collections", from: "1.0.0"),
-        .package(url: "https://github.com/Automattic/Automattic-Tracks-iOS", from: "3.4.2"),
+        .package(url: "https://github.com/Automattic/Automattic-Tracks-iOS", from: "3.5.2"),
         .package(url: "https://github.com/Automattic/AutomatticAbout-swift", from: "1.1.5"),
         .package(url: "https://github.com/Automattic/Gravatar-SDK-iOS", from: "3.1.1"),
         .package(url: "https://github.com/Automattic/Gridicons-iOS", branch: "develop"),
@@ -69,12 +70,14 @@ let package = Package(
         .target(name: "WordPressTesting", resources: [.process("Resources")]),
         .target(
             name: "WordPressUI",
-            dependencies: [
-                "AsyncImageKit",
-                .target(name: "WordPressShared")
-            ],
+            dependencies: ["AsyncImageKit", "WordPressShared"],
             resources: [.process("Resources")],
             swiftSettings: [.swiftLanguageMode(.v5)]
+        ),
+        .target(
+            name: "WordPressReader",
+            dependencies: ["AsyncImageKit", "WordPressUI", "WordPressShared"],
+            resources: [.process("Resources")]
         ),
         .testTarget(name: "JetpackStatsWidgetsCoreTests", dependencies: [.target(name: "JetpackStatsWidgetsCore")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .testTarget(name: "DesignSystemTests", dependencies: [.target(name: "DesignSystem")], swiftSettings: [.swiftLanguageMode(.v5)]),
@@ -156,6 +159,7 @@ enum XcodeSupport {
                 "JetpackStatsWidgetsCore",
                 "WordPressFlux",
                 "WordPressShared",
+                "WordPressReader",
                 "AsyncImageKit",
                 "WordPressUI",
                 "WordPressCore",

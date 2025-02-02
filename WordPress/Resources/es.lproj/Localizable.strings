@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-12-17 06:55:12+0000 */
+/* Translation-Revision-Date: 2025-01-23 19:28:57+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: es */
@@ -14,9 +14,6 @@
 
 /* Message of Close Account confirmation alert */
 "\nTo confirm, please re-enter your username before closing.\n\n" = "\nPara confirmar, por favor, vuelve a introducir tu nombre de usuario antes de cerrarlo.\n";
-
-/* Title for the lazy load images setting */
-"\"Lazy-load\" images" = "«Carga perezosa» de imágenes";
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
 "\"More\" Button" = "Botón «Más»";
@@ -149,9 +146,6 @@
 
 /* Number of posts displayed in Posting Activity when a day is selected. %d will contain the actual number (plural). */
 "%d Posts" = "%d entradas";
-
-/* The number of connected accounts on a third party sharing service connected to the user's blog. The '%d' is a placeholder for the number of accounts. */
-"%d accounts" = "%d cuentas";
 
 /* Age between dates over one day.
    Number of days */
@@ -322,9 +316,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Instruction text to explain magic link login step. */
 "A WordPress.com account is connected to your store credentials. To continue, we will send a verification link to the email address above." = "Una cuenta WordPress.com está conectada a tus credenciales de tienda. Para continuar, te enviaremos un enlace de verificación a la dirección de correo electrónico de arriba.";
-
-/* Label for image that is set as a feature image for post/page */
-"A featured image is set. Tap to change it." = "Está establecida una imagen destacada. Toca para cambiarla.";
 
 /* Title for a threat */
 "A file contains a malicious code pattern" = "Un archivo contiene un patrón de código malicioso";
@@ -1111,7 +1102,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Tapping it cancels the login flow.
-   Cancel a prompt
    Cancel Action
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
@@ -1120,7 +1110,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel action on the app extension tags picker screen.
    Cancel action title
    Cancel button
-   Cancel button for alert
    Cancel button label
    Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Cancel button.
@@ -1128,7 +1117,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel copying link to comment button title
    Cancel editing an image
    Cancel Insight management action sheet.
-   Cancel prompt for user information.
    Cancel registering a domain
    Cancel removing a plugin
    Cancel site creation
@@ -1138,7 +1126,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel. Action.
    Cancels an Action
    Cancels an alert.
-   Cancels the mark all as read action.
    Editing GIF alert cancel action button.
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
@@ -1167,9 +1154,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Share extension dialog dismiss button label - displayed when user is missing a login token. */
 "Cancel sharing" = "Cancelar compartir";
-
-/* The action was canceled */
-"Canceled" = "Cancelado";
 
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "Cancelando…";
@@ -1503,9 +1487,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Community & Non-Profit site intent topic */
 "Community & Non-Profit" = "Comunitario y ONG";
 
-/* The action is completed */
-"Completed" = "Completado";
-
 /* Section title for the configure table section in the blog details screen */
 "Configure" = "Configurar";
 
@@ -1728,9 +1709,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Content show when the dashboard fails to load */
 "Couldn't update. Check that you're online and refresh." = "No se ha podido actualizar. Comprueba que tienes conexión y actualiza la página.";
-
-/* The title for an alert that says to the user that the featured image he selected couldn't be uploaded. */
-"Couldn't upload the featured image" = "No se ha podido subir la imagen destacada";
 
 /* Error title displayed when unable to close user account. */
 "Couldn’t close account automatically" = "No se ha podido cerrar la cuenta automáticamente";
@@ -2034,8 +2012,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for the Discussion Settings Screen */
 "Discussion" = "Comentarios";
 
-/* Accessibility label for button to dismiss a bottom sheet
-   Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Dismiss a view. Verb */
 "Dismiss" = "Descartar";
@@ -2068,9 +2045,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Done button title
    Done editing an image
    Done. Action.
-   Label for confirm feature image of a post
    Label for Done button
-   Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
    Title for a Done button.
@@ -2422,7 +2397,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Enter your server credentials" = "Introduce las credenciales de tu servidor";
 
 /* Generic error alert title
-   Generic error.
    Generic popup title for any type of error. */
 "Error" = "Error";
 
@@ -2583,8 +2557,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Section title for the external table section in the blog details screen */
 "External" = "Externo";
 
-/* Status for Media object that is failed upload or export.
-   The action failed */
+/* Status for Media object that is failed upload or export. */
 "Failed" = "Fallado";
 
 /* Message for mark all as read success notice */
@@ -2620,12 +2593,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "Destacados";
 
-/* Label for the Featured Image area in post settings.
-   Title for the Featured Image view */
+/* Label for the Featured Image area in post settings. */
 "Featured Image" = "Imagen destacada";
-
-/* No comment provided by engineer. */
-"Featured Image did not load" = "No se pudo cargar la imagen destacada";
 
 /* Text displayed while fetching themes */
 "Fetching Themes..." = "Obteniendo temas...";
@@ -2779,12 +2748,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Full size image. (default). Should be the same as in core WP. */
 "Full Size" = "Tamaño completo";
 
-/* Accessibility label for when image is shown to user in full screen, with instructions on how to dismiss the screen. Placeholder is the title of the image */
-"Fullscreen view of image %@. Double tap to dismiss" = "Vista a pantalla completa de la imagen %@. Toca dos veces para descartar";
-
-/* Accessibility label for when image is shown to user in full screen, with instructions on how to dismiss the screen */
-"Fullscreen view of image. Double tap to dismiss" = "Vista a pantalla completa de la imagen. Toca dos veces para descartar";
-
 /* Badge title displayed on GIF images in the editor. */
 "GIF" = "GIF";
 
@@ -2861,9 +2824,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Button title on the blogging prompt's feature introduction view to dismiss the view.
    Title for the continue button in the dashboard's custom What's New page. */
 "Got it" = "Entendido";
-
-/* Okay button title shown in alert announcing new Create Button feature. */
-"Got it!" = "¡Entendido!";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "Obteniendo la URL del sitio";
@@ -3056,9 +3016,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Hint for image title on image settings. */
 "Image title" = "Título de la imagen";
-
-/* Footer for the Serve images from our servers setting */
-"Improve your site's speed by only loading images visible on the screen. New images will load just before they scroll into view. This prevents viewers from having to download all the images on a page all at once, even ones they can't see." = "Mejora la velocidad de tu sitio cargando solo las imágenes visibles en pantalla. Las nuevas imágenes se cargarán justo antes de hacer scroll para verlas. Esto evita que los navegadores tengan que cargar todas las imágenes de una página todas a la vez, incluso las que no ves.";
 
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "En pocas palabras, explica de qué trata este sitio.";
@@ -3397,8 +3354,7 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* A button title.
    Link to cookie policy
-   Menu title to show the prompts feature introduction modal.
-   Read more button title shown in alert announcing new Create Button feature. */
+   Menu title to show the prompts feature introduction modal. */
 "Learn more" = "Saber más";
 
 /* Writing, Date and Time Settings: Learn more about date and time settings footer text */
@@ -3818,7 +3774,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Months and Years" = "Meses y años";
 
 /* Accessibility label for more button in dashboard quick start card.
-   Accessibility label for the More button in Post List (compact view).
    Accessibility label for the More button on formatting toolbar.
    Action button to display more available options */
 "More" = "Más";
@@ -4280,9 +4235,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* The default Jetpack view message for the success state */
 "Now that Jetpack is installed, we just need to get you set up. This will only take a minute." = "Ahora que Jetpack está instalado, solo necesitamos empezar a configurarlo. Esto solo llevará un minuto.";
 
-/* Body text of alert announcing new Create Button feature. */
-"Now there are fewer and better-organized tabs, posting shortcuts, and more, so you can find what you need fast." = "Ahora hay menos etiquetas y mejor organizadas, atajos de publicación y más, para que puedas encontrar más rápido lo que necesitas.";
-
 /* Register Domain - Address information field Number */
 "Number" = "Número";
 
@@ -4292,24 +4244,14 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Discoverability title for numbered list keyboard shortcut. */
 "Numbered List" = "Lista numerada";
 
-/* A button title for closing the dialog.
-   A button title.
-   Accept Action
-   Alert dismissal title
+/* Alert dismissal title
    Button title. An acknowledgement of the message displayed in a prompt.
-   Default action
    Dismisses the alert
-   Marks all notifications as read.
    Menus: button title for finishing editing of a menu item.
-   OK
-   OK button for alert
    Ok button for dismissing alert helping users understand their site address
    OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
-   Submit button on prompt for user information.
-   Title of a button that dismisses a prompt
-   Title of an OK button. Pressing the button acknowledges and dismisses a prompt.
-   Title of primary button on alert prompting verify their accounts while attempting to publish */
+   Title of a button that dismisses a prompt */
 "OK" = "Aceptar";
 
 /* No comment provided by engineer. */
@@ -4808,9 +4750,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for label when the preparing to scan the users site */
 "Preparing to scan" = "Preparando el análisis";
 
-/* Label to show while converting and/or resizing media to send to server */
-"Preparing..." = "Preparándose";
-
 /* Displays the Post Preview Interface
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
@@ -5024,17 +4963,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Reminders removed" = "Recordatorios eliminados";
 
 /* Alert button to confirm a plugin to be removed
-   Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.
-   Remove Action
-   Remove an image/posts/etc */
+   Remove Action */
 "Remove" = "Eliminar";
 
 /* Remove Person Alert Title
    Remove User. Verb */
 "Remove %@" = "Eliminar @%@";
-
-/* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
-"Remove Featured Image" = "Quitar imagen destacada";
 
 /* Label action for removing a link from the editor */
 "Remove Link" = "Borrar enlace";
@@ -5068,9 +5002,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* User action to remove image. */
 "Remove image" = "Eliminar imagen";
-
-/* Prompt when removing a featured image from a post */
-"Remove this Featured Image?" = "¿Quitar esta imagen destacada?";
 
 /* User action to remove video. */
 "Remove video" = "Eliminar vídeo";
@@ -5510,20 +5441,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice confirming that an image has been set as the post's featured image. */
 "Set as featured image" = "Establecer como imagen destacada";
 
-/* Title of the set goals button in the Blogging Reminders Settings flow. */
-"Set reminders" = "Configurar recordatorios";
-
 /* The Jetpack view button title for the success state */
 "Set up" = "Configuración";
 
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "Configurar Jetpack";
-
-/* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
-"Set up your blogging reminders on days you want to post." = "Configura recordatorios de blogueo los días que quieras publicar.";
-
-/* Title of the Blogging Reminders Settings screen. */
-"Set your blogging reminders" = "Configura tus recordatorios de blogueo";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Setting up theme" = "Configurar el tema";
@@ -5546,11 +5468,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message to show when setting save failed */
 "Settings update failed" = "Ha habido un error durante la actualización de la configuración";
 
-/* Accessibility label for share buttons in nav bars
-   Button label to share a web page
-   Shares the comment URL
-   Spoken accessibility label
-   Title for a button that allows the user to share their answer to the prompt. */
+/* Spoken accessibility label */
 "Share" = "Compartir";
 
 /* Title for a button that recommends the app to others */
@@ -5894,9 +5812,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to stop upload. */
 "Stop upload" = "Detener subida";
 
-/* Title of alert announcing new Create Button feature. */
-"Streamlined navigation" = "Navegación simplificada";
-
 /* Accessibility label for strikethrough button on formatting toolbar. */
 "Strike Through" = "Tachado";
 
@@ -6179,8 +6094,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description shown when a user logs in with Google but no matching WordPress.com account is found */
 "The Google account \"%@\" doesn't match any account on WordPress.com" = "La cuenta de Google «%@» no coincide con ninguna cuenta de WordPress.com";
 
-/* Error message shown when a media upload fails because the user isn't connected to the Internet.
-   Message of error prompt shown when a user tries to perform an action without an internet connection. */
+/* Error message shown when a media upload fails because the user isn't connected to the Internet. */
 "The Internet connection appears to be offline." = "No estás conectado a internet.";
 
 /* Message informing the user that the site title can only be changed by an administrator user. */
@@ -6947,9 +6861,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Carga fallida";
 
-/* Description to show on post setting for a featured image that failed to upload. */
-"Upload failed. Tap for options." = "La subida ha fallado. Toca para opciones.";
-
 /* Label for the date a media asset (image / video) was uploaded
    Status for Media object that is uploaded and sync with server. */
 "Uploaded" = "Subido";
@@ -6978,9 +6889,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message of an alert informing users that the video they are trying to select is not allowed. */
 "Uploading videos longer than 5 minutes requires a paid plan." = "Subir vídeos de más de 5 minutos requiere un plan de pago.";
-
-/* Label to show while uploading media to server */
-"Uploading..." = "Subiendo...";
 
 /* No comment provided by engineer. */
 "Uploading…" = "Subiendo…";
@@ -7705,9 +7613,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Help text that describes how the password should be. It appears while editing the password */
 "Your password should be at least six characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! \" ? $ % ^ & )." = "Tu contraseña debería tener al menos seis caracteres. Para hacerla más fuerte utiliza mayúsculas y minúsculas, números y símbolos como ! \" ? $ % ^ & ).";
 
-/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
-"Your post is publishing... in the meantime, set up your blogging reminders on days you want to post." = "Tu entrada se está publicando … mientras tanto puedes configurar recordatorios de blogueo los días que quieras publicar.";
-
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Recibirás tus entradas, páginas y ajustes por correo electrónico a %@.";
 
@@ -7931,6 +7836,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* An alert suggesting to load autosaved revision for a published post */
 "autosaveAlert.viewChanges" = "Ver cambios";
 
+/* An error message displayed when attempting to update an avatar while the user's email address is not verified. */
+"avatar.update.email.verification.required" = "Para actualizar tu avatar, primero tienes que verificar tu dirección de correo electrónico.";
+
 /* Alert message when something goes wrong with the selected image. */
 "avatarMenu.failedToSetAvatarAlertMessage" = "No ha sido posible subir la imagen. Por favor, elige una distinta o inténtalo de nuevo más tarde.";
 
@@ -8037,9 +7945,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blogDashboard.dismiss" = "Descartar";
 
 /* Context menu button title */
-"blogHeader.actionCopyURL" = "Copiar URL";
-
-/* Context menu button title */
 "blogHeader.actionVisitSite" = "Visitar sitio";
 
 /* Badge title in site list */
@@ -8084,6 +7989,15 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "Descartar";
+
+/* Title of the set goals button in the Blogging Reminders Settings flow. */
+"bloggingRemindersPrompt.intro.continueButton" = "Establecer recordatorios";
+
+/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
+"bloggingRemindersPrompt.intro.details" = "Configura recordatorios de blogueo los días que quieras publicar.";
+
+/* Title of the Blogging Reminders Settings screen. */
+"bloggingRemindersPrompt.intro.title" = "Recordatorios de blogueo";
 
 /* Add self-hosted site button */
 "button.addSelfHostedSite" = "Añadir un sitio autoalojado";
@@ -8960,9 +8874,6 @@ Example: Reply to Pamela Nguyen */
 /* Media screen navigation bar button Select title */
 "mediaLibrary.buttonSelect" = "Seleccionar";
 
-/* Context menu button */
-"mediaLibrary.buttonShare" = "Compartir";
-
 /* Verb. Button title. Tapping cancels an action. */
 "mediaLibrary.deleteConfirmationCancel" = "Cancelar";
 
@@ -9034,6 +8945,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Bottom toolbar title in the selection mode */
 "mediaLibrary.toolbarSelectItemsPrompt" = "Seleccionar elementos";
+
+/* A name of the action in the context menu */
+"mediaPicker.imagePlayground" = "Campo de juegos de imágenes";
 
 /* Message for alert when access to camera is not granted */
 "mediaPicker.noCameraAccessMessage" = "Esta aplicación necesita permiso para acceder a la cámara con el fin de capturar nuevos elementos multimedia; cambia la configuración de privacidad si deseas permitir esta acción.";
@@ -9227,9 +9141,6 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the personalize home option */
 "mySite.siteActions.personalizeHome" = "Personalizar Inicio";
 
-/* Menu title for the share site option */
-"mySite.siteActions.shareSite" = "Compartir sitio";
-
 /* Menu title for the change site icon option */
 "mySite.siteActions.siteIcon" = "Cambiar icono del sitio";
 
@@ -9271,9 +9182,6 @@ Example: Reply to Pamela Nguyen */
 
 /* The user has previously tapped 'Like' on this post */
 "notifications.accessibility-post-like-button-on" = "Te ha gustado esta entrada";
-
-/* A label for screenreader users */
-"notifications.accessibility-share-button" = "Compartir";
 
 /* A label for screenreader users */
 "notifications.accessibility-tap-to-like-this-comment" = "Pulsa dos veces para que marcar que te gusta este comentario";
@@ -9483,6 +9391,9 @@ Example: Reply to Pamela Nguyen */
 "postEditor.moreMenu.saveDraft" = "Guardar borrador";
 
 /* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.sendFeedback" = "Envía tu opinión";
+
+/* Post Editor / Button in the 'More' menu */
 "postEditor.moreMenu.visualEditor" = "Editor visual";
 
 /* A 'View' action for a snackbar informing the user that some media files requires their attention */
@@ -9532,9 +9443,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Message for 'not eligible' state view */
 "postFromAudio.notEnoughRequestsMessage" = "No tienes bastantes solicitudes disponibles para crear una entrada desde audio.";
-
-/* Button title */
-"postFromAudio.ok" = "Aceptar";
 
 /* Button title */
 "postFromAudio.retry" = "Reintentar";
@@ -9593,9 +9501,6 @@ Example: Reply to Pamela Nguyen */
 /* Title for the 'Delete' post list row swipe action */
 "postList.swipeActionDeletePermanently" = "Borrar";
 
-/* Title for the 'Share' post list row swipe action */
-"postList.swipeActionShare" = "Compartir";
-
 /* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "Ver";
 
@@ -9625,12 +9530,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of notification displayed when either a new or an existing draft is saved */
 "postNotice.draftSaved" = "Borrador guardado";
-
-/* A generic error message title */
-"postNotice.errorTitle" = "Ha ocurrido un error";
-
-/* Button OK */
-"postNotice.ok" = "OK";
 
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "postNotice.pagePending" = "Página pendiente de revisión";
@@ -9668,20 +9567,20 @@ Example: Reply to Pamela Nguyen */
 /* A default value for an post without a title */
 "postSaveErrorMessage.postUntitled" = "Sin título";
 
-/* User action to dismiss featured media options. */
-"postSettings.featuredImageUploadActionSheet.dismiss" = "Descartar";
+/* Cancel upload button in Post Settings / Featured Image cell */
+"postSettings.featuredImage.cancelUpload" = "Cancelar la subida";
 
-/* User action to remove featured media. */
-"postSettings.featuredImageUploadActionSheet.remove" = "Eliminar";
+/* Replace image upload button in Post Settings / Featured Image cell */
+"postSettings.featuredImage.replaceImage" = "Sustituir";
 
-/* User action to retry featured media upload. */
-"postSettings.featuredImageUploadActionSheet.retryUpload" = "Reintentar";
+/* Button in Post Settings */
+"postSettings.featuredImage.setFeaturedImageButton" = "Establecer imagen destacada";
 
-/* Title for action sheet with featured media options. */
-"postSettings.featuredImageUploadActionSheet.title" = "Opciones de imagen destacada";
+/* Snackbar title */
+"postSettings.featuredImage.uploadFailed" = "No se ha podido subir la nueva imagen destacada";
 
-/* Button OK */
-"postSettings.ok" = "Aceptar";
+/* Post Settings */
+"postSettings.featuredImage.uploading" = "Subiendo…";
 
 /* The 'Parent Page' setting of the post */
 "postSettings.parentPage" = "Página superior";
@@ -9694,9 +9593,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Section title for Page Attributes */
 "postSettings.section.pageAttributes" = "Atributos de página";
-
-/* Button in Post Settings */
-"postSettings.setFeaturedImageButton" = "Establecer la imagen destacada";
 
 /* An alert message explaning that by changing the visibility to private, the post will be published immediately to your site */
 "postSettings.warningPostWillBePublishedAlertMessage" = "Cambiando la visibilidad a «Privado», el post se publicará inmediatamente";
@@ -9772,9 +9668,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for post settings option. Tapping displays settings for a post. */
 "posts.settings.actionTitle" = "Ajustes";
-
-/* Share the post. */
-"posts.share.actionTitle" = "Compartir";
 
 /* Label for post stats option. Tapping displays statistics for a post. */
 "posts.stats.actionTitle" = "Estadísticas";
@@ -9936,6 +9829,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Post publish success view: button 'View post' */
 "publishSuccessView.view" = "Ver la entrada";
 
+/* Informational notice title. Showed when you scan a code using a camera app outside of the app, which is not allowed. */
+"qrLogin.codeHasToBeScannedFromTheAppNotice.title" = "Por favor, escanea el código con la aplicación";
+
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Descartar";
 
@@ -9963,8 +9859,23 @@ Tapping on this row allows the user to edit the sharing message. */
 /* A message title */
 "reader.blog.search.no.results.title" = "No se han encontrado blogs";
 
+/* A shared button title for Reader */
+"reader.button.addToFavorites" = "Añadir a favoritos";
+
+/* A shared button title for Reader */
+"reader.button.notificationSettings" = "Ajustes de avisos";
+
+/* A shared button title for Reader */
+"reader.button.removeFromFavorites" = "Eliminar de favoritos";
+
+/* A shared button title for Reader */
+"reader.button.subscribe" = "Suscripción";
+
 /* Reader sidebar button title */
 "reader.button.unfollow" = "Dejar de seguir";
+
+/* A shared button title for Reader */
+"reader.button.unsubscribe" = "Cancelar la suscripción";
 
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "Muestra las entradas del sitio";
@@ -9972,10 +9883,7 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
 "reader.detail.likes.plural" = "_%1$d me gustas_";
 
-/* Describes that the current user is the only one liking a post. */
-"reader.detail.likes.self" = "Te gusta esto.";
-
-/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
+/* Describes that only one user likes a post. The underscores denote underline and is not displayed. */
 "reader.detail.likes.single" = "_1 me gusta_";
 
 /* Title for the Comment button on the Reader Detail toolbar.
@@ -10161,10 +10069,13 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.postContextMenu.blogDetails" = "Detalles del blog";
 
 /* Context menu action */
-"reader.postContextMenu.copyLink" = "Copiar enlace";
+"reader.postContextMenu.manageNotifications" = "Gestionar notificaciones";
 
 /* Context menu action */
-"reader.postContextMenu.manageNotifications" = "Gestionar notificaciones";
+"reader.postContextMenu.markRead" = "Marcar como leído";
+
+/* Context menu action */
+"reader.postContextMenu.markUnread" = "Marcar como no leído";
 
 /* Context menu action */
 "reader.postContextMenu.reportPost" = "Denunciar entrada";
@@ -10173,16 +10084,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.postContextMenu.reportUser" = "Denunciar usuario";
 
 /* Context menu action */
-"reader.postContextMenu.share" = "Compartir";
-
-/* Context menu action */
 "reader.postContextMenu.showBlog" = "Ir al blog";
-
-/* Context menu action */
-"reader.postContextMenu.subscribeT" = "Suscribirse";
-
-/* Context menu action */
-"reader.postContextMenu.unsubscribe" = "Cancelar suscripción";
 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "Ver en navegador";
@@ -10437,7 +10339,7 @@ Feel free to replace it with other bracket types that you think looks better for
 "readerDetail.dismissButton.accessibilityLabel" = "Descartar";
 
 /* Spoken accessibility label for the Reading Preferences menu. */
-"readerDetail.displaySettingButton.accessibilityLabel" = "Preferencias de lectura";
+"readerDetail.displaySettingButton.displaySettingsLabel" = "Preferencias de lectura";
 
 /* Section title for global related posts. */
 "readerDetail.globalPostsSection.accessibilityLabel" = "Más en WordPress.com";
@@ -10450,9 +10352,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Spoken accessibility label */
 "readerDetail.safariButton.accessibilityLabel" = "Abrir en Safari";
-
-/* Spoken accessibility label */
-"readerDetail.shareButton.accessibilityLabel" = "Compartir";
 
 /* Error message that informs reader detail from a private blog cannot be fetched. */
 "readerDetailCoordinator.readerDetail.privateBlogErrorMessage" = "No tienes permiso para ver este blog privado.";
@@ -10603,6 +10502,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* A shared button title used in different contexts */
 "shared.button.view" = "Ver";
+
+/* A generic error title indicating that a screen failed to fetch the latest data */
+"shared.error.failiedToReloadData" = "Error al actualizar los datos";
 
 /* A generic error message */
 "shared.error.geneirc" = "Algo ha salido mal";
@@ -10835,6 +10737,9 @@ Feel free to replace it with other bracket types that you think looks better for
 /* A smallprint that hints the reason behind why Twitter is deprecated. */
 "social.twitterDeprecation.text" = "La opción de compartir automáticamente en Twitter ya no está disponible por los cambios que ha habido en esta red social en lo que respecta a términos y precios.";
 
+/* The number of connected accounts on a third party sharing service connected to the user's blog. The '%d' is a placeholder for the number of accounts. */
+"socialSharing.connectionDetails.nAccount" = "%d cuentas";
+
 /* Title of Subscribers stats tab. */
 "stats.dashboard.tab.subscribers" = "Suscriptores";
 
@@ -11008,12 +10913,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "¡Busca fotos gratuitas que añadir a tu biblioteca de medios!";
-
-/* The button title for the Cancel button in the In-App Feedback screen */
-"submit.feedback.buttonCancel" = "Cancelar";
-
-/* The button title for the Cancel button in the In-App Feedback screen */
-"submit.feedback.buttonOK" = "Aceptar";
 
 /* The section title and or placeholder */
 "submit.feedback.detailsPlaceholder" = "Detalles";
@@ -11268,9 +11167,6 @@ Feel free to replace it with other bracket types that you think looks better for
 /* The message in the alert that appears when deleting a user */
 "userDetails.alert.deleteUserErrorAlertMessage" = "Se ha producido un error al eliminar al usuario.";
 
-/* The title of the OK button in the alert that appears when deleting a user */
-"userDetails.alert.deleteUserErrorAlertOkButton" = "Aceptar";
-
 /* The title of the alert that appears when deleting a user */
 "userDetails.alert.deleteUserErrorAlertTitle" = "Error";
 
@@ -11327,6 +11223,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Verb. Dismiss the web view screen. */
 "webKit.button.dismiss" = "Descartar";
+
+/* Button label to share a web page */
+"webKit.button.share" = "Compartir";
 
 /* A title for the filter on the PHP logs screen */
 "webServerLogs.filterEndDate" = "Fecha de fin";

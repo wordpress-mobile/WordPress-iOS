@@ -1,5 +1,6 @@
 import UIKit
 import WordPressUI
+import WordPressReader
 import Gravatar
 
 class CommentContentTableViewCell: UITableViewCell, NibReusable {
@@ -119,9 +120,9 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     /// Called when the cell has finished loading and calculating the height of the HTML content. Passes the new content height as parameter.
     private var onContentLoaded: ((CGFloat) -> Void)? = nil
 
-    private var renderer: CommentContentRenderer? = nil
-
+    private var comment: Comment?
     private var renderMethod: RenderMethod?
+    private var helper: ReaderCommentsHelper?
 
     // MARK: Like Button State
 
@@ -133,10 +134,10 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     /// can be scoped by using the "legacy" style when the passed parameter is nil.
     private var style: CellStyle = .init(displaySetting: nil)
 
-    var displaySetting: ReaderDisplaySetting? = nil {
+    // TODO: (kean) remove
+    var displaySetting: ReaderDisplaySettings? = nil {
         didSet {
             style = CellStyle(displaySetting: displaySetting)
-            resetRenderedContents()
             applyStyles()
         }
     }
@@ -198,7 +199,15 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     ///   - comment: The `Comment` object to display.
     ///   - renderMethod: Specifies how to display the comment body. See `RenderMethod`.
     ///   - onContentLoaded: Callback to be called once the content has been loaded. Provides the new content height as parameter.
-    func configure(with comment: Comment, renderMethod: RenderMethod = .web, onContentLoaded: ((CGFloat) -> Void)?) {
+    func configure(
+        with comment: Comment,
+        renderMethod: RenderMethod = .web,
+        helper: ReaderCommentsHelper,
+        onContentLoaded: ((CGFloat) -> Void)?
+    ) {
+        self.comment = comment
+        self.helper = helper
+
         nameLabel?.setText(comment.authorForDisplay())
         dateLabel?.setText(comment.dateForDisplay()?.toMediumString() ?? String())
 
@@ -229,7 +238,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
         // Configure content renderer.
         self.onContentLoaded = onContentLoaded
-        configureRendererIfNeeded(for: comment, renderMethod: renderMethod)
+        configureRendererIfNeeded(for: comment, renderMethod: renderMethod, helper: helper)
     }
 
     /// Configures the cell with a `Comment` object, to be displayed in the post details view.
@@ -237,8 +246,8 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     /// - Parameters:
     ///   - comment: The `Comment` object to display.
     ///   - onContentLoaded: Callback to be called once the content has been loaded. Provides the new content height as parameter.
-    func configureForPostDetails(with comment: Comment, onContentLoaded: ((CGFloat) -> Void)?) {
-        configure(with: comment, onContentLoaded: onContentLoaded)
+    func configureForPostDetails(with comment: Comment, helper: ReaderCommentsHelper, onContentLoaded: ((CGFloat) -> Void)?) {
+        configure(with: comment, helper: helper, onContentLoaded: onContentLoaded)
 
         isCommentLikesEnabled = false
         isCommentReplyEnabled = false
@@ -267,9 +276,18 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 extension CommentContentTableViewCell: CommentContentRendererDelegate {
     func renderer(_ renderer: CommentContentRenderer, asyncRenderCompletedWithHeight height: CGFloat) {
         if renderMethod == .web {
-            contentContainerHeightConstraint?.constant = height
+            if let constraint = contentContainerHeightConstraint, let comment {
+                if height != constraint.constant {
+                    constraint.constant = height
+                    helper?.setCachedContentHeight(height, for: .init(comment))
+                    onContentLoaded?(height) // We had the right size from the get-go
+                }
+            } else {
+                wpAssertionFailure("constraint missing")
+            }
+        } else {
+            onContentLoaded?(height)
         }
-        onContentLoaded?(height)
     }
 
     func renderer(_ renderer: CommentContentRenderer, interactedWithURL url: URL) {
@@ -283,11 +301,11 @@ private extension CommentContentTableViewCell {
     /// A structure to override the cell styling based on `ReaderDisplaySetting`.
     /// This doesn't cover all aspects of the cell, and iks currently scoped only for Reader Detail.
     struct CellStyle {
-        let displaySetting: ReaderDisplaySetting?
+        let displaySetting: ReaderDisplaySettings?
 
         /// NOTE: Remove when the `readerCustomization` flag is removed.
         var customizationEnabled: Bool {
-            ReaderDisplaySetting.customizationEnabled
+            ReaderDisplaySettings.customizationEnabled
         }
 
         // Name Label
@@ -470,52 +488,38 @@ private extension CommentContentTableViewCell {
 
     // MARK: Content Rendering
 
-    func resetRenderedContents() {
-        renderer = nil
-        contentContainerView.subviews.forEach { $0.removeFromSuperview() }
-    }
-
-    func configureRendererIfNeeded(for comment: Comment, renderMethod: RenderMethod) {
-        // skip creating the renderer if the content does not change.
-        // this prevents the cell to jump multiple times due to consecutive reloadData calls.
-        //
-        // note that this doesn't apply for `.richContent` method. Always reset the textView instead
-        // of reusing it to prevent crash. Ref: http://git.io/Jtl2U
-        if let renderer,
-           renderer.matchesContent(from: comment),
-           renderMethod == .web {
-            return
-        }
-
-        // clean out any pre-existing renderer just to be sure.
-        resetRenderedContents()
-
-        var renderer: CommentContentRenderer = {
+    func configureRendererIfNeeded(for comment: Comment, renderMethod: RenderMethod, helper: ReaderCommentsHelper) {
+        let renderer: CommentContentRenderer = {
             switch renderMethod {
             case .web:
-                return WebCommentContentRenderer(comment: comment, displaySetting: displaySetting ?? .standard)
+                return helper.getRenderer(for: comment)
             case .richContent(let attributedText):
-                let renderer = RichCommentContentRenderer(comment: comment)
+                let renderer = RichCommentContentRenderer()
                 renderer.richContentDelegate = self.richContentDelegate
                 renderer.attributedText = attributedText
+                renderer.comment = comment
                 return renderer
             }
         }()
         renderer.delegate = self
-        self.renderer = renderer
-        self.renderMethod = renderMethod
+
+        self.renderMethod = renderMethod // we assume the render method can't change
 
         if renderMethod == .web {
             // reset height constraint to handle cases where the new content requires the webview to shrink.
             contentContainerHeightConstraint?.isActive = true
-            contentContainerHeightConstraint?.constant = 1
+            contentContainerHeightConstraint?.constant = helper.getCachedContentHeight(for: TaggedManagedObjectID(comment)) ?? 20
         } else {
             contentContainerHeightConstraint?.isActive = false
         }
 
-        let contentView = renderer.render()
-        contentContainerView?.addSubview(contentView)
-        contentContainerView?.pinSubviewToAllEdges(contentView)
+        let contentView = renderer.render(comment: comment.content)
+        if contentContainerView.subviews.first != contentView {
+            contentContainerView.subviews.forEach { $0.removeFromSuperview() }
+            contentView.removeFromSuperview()
+            contentContainerView?.addSubview(contentView)
+            contentView.pinEdges()
+        }
     }
 
     // MARK: Button Actions

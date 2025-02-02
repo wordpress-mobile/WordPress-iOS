@@ -14,7 +14,7 @@ public struct ImageViewExtensions {
         controller.prepareForReuse()
 
         if let gifView = imageView as? GIFImageView, gifView.isAnimatingGIF {
-            gifView.prepareForReuse()
+            gifView.reset()
         } else {
             imageView.image = nil
         }

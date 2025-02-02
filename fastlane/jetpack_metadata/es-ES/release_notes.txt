@@ -1,5 +1,0 @@
-Esta actualización
-:- Corrige algunos problemas de la interfaz de usuario en iPad.
-- Añade el ID del medio y la URL a cada elemento de medios
-- Utiliza el nuevo Gravatar Quick Editor para actualizar tu avatar.
-- Utiliza un sistema basado en web para acceder a WordPress.com. Debería ser más fiable para la mayoría de los usuarios, pero si tienes problemas, ponte en contacto con el servicio de asistencia.
