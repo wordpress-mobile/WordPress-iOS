@@ -5,7 +5,7 @@ public protocol PluginServiceProtocol: Actor {
 
     func fetchInstalledPlugins() async throws
 
-    func streamInstalledPlugins() async -> AsyncStream<Result<[InstalledPlugin], Error>>
+    func installedPluginsUpdates() async -> AsyncStream<Result<[InstalledPlugin], Error>>
 
     func resolveIconURL(of slug: PluginWpOrgDirectorySlug) async -> URL?
 

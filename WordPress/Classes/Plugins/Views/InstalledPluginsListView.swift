@@ -86,7 +86,7 @@ final class InstalledPluginsListViewModel: ObservableObject {
     }
 
     func performQuery() async {
-        for await update in await self.service.streamInstalledPlugins() {
+        for await update in await self.service.installedPluginsUpdates() {
             switch update {
             case let .success(plugins):
                 self.plugins = plugins

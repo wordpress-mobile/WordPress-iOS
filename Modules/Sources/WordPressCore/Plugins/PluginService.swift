@@ -20,7 +20,7 @@ public actor PluginService: PluginServiceProtocol {
         try await installedPluginDataStore.store(plugins)
     }
 
-    public func streamInstalledPlugins() async -> AsyncStream<Result<[InstalledPlugin], Error>> {
+    public func installedPluginsUpdates() async -> AsyncStream<Result<[InstalledPlugin], Error>> {
         await installedPluginDataStore.listStream(query: .all)
     }
 
