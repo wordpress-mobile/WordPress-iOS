@@ -53,18 +53,18 @@ struct PluginListItemView: View {
             Menu {
                 Section {
                     if plugin.isActive {
-                        Button("Deactivate", systemImage: "bolt.slash") {
+                        Button(Strings.deactivate, systemImage: "bolt.slash") {
                             Task {
                                 await viewModel.toggle(slug: plugin.slug)
                             }
                         }
                     } else {
-                        Button("Activate", systemImage: "bolt") {
+                        Button(Strings.activate, systemImage: "bolt") {
                             Task {
                                 await viewModel.toggle(slug: plugin.slug)
                             }
                         }
-                        Button("Delete", systemImage: "trash") {
+                        Button(Strings.delete, systemImage: "trash") {
                             Task {
                                 await viewModel.uninstall(slug: plugin.slug)
                             }
@@ -73,12 +73,12 @@ struct PluginListItemView: View {
                 }
                 .disabled(isUpdating)
 
-                if let url = wpOrgURL {
+                if wpOrgURL != nil {
                     Section {
                         Button {
                             showingSafariView = true
                         } label: {
-                            Label("View on WordPress.org", systemImage: "safari")
+                            Label(Strings.viewOnWordPressOrg, systemImage: "safari")
                         }
                     }
                 }
@@ -144,6 +144,11 @@ struct PluginListItemView: View {
         }
 
         static let noDescriptionAvailable: String = NSLocalizedString("site.plugins.list.item.noDescriptionAvailable", value: "The plugin author did not provide a description for this plugin.", comment: "The message displayed when a plugin has no description")
+
+        static let activate: String = NSLocalizedString("site.plugins.list.item.action.activate", value: "Activate", comment: "Button to activate a plugin")
+        static let deactivate: String = NSLocalizedString("site.plugins.list.item.action.deactivate", value: "Deactivate", comment: "Button to deactivate a plugin")
+        static let delete: String = NSLocalizedString("site.plugins.list.item.action.delete", value: "Delete", comment: "Button to delete a plugin")
+        static let viewOnWordPressOrg: String = NSLocalizedString("site.plugins.list.item.action.viewOnWordPressOrg", value: "View on WordPress.org", comment: "Button to view the plugin on WordPress.org website")
     }
 }
 
