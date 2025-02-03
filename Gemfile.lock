@@ -338,7 +338,7 @@ GEM
       uber (< 0.2.0)
     retriable (3.1.2)
     rexml (3.4.0)
-    rmagick (6.1.0)
+    rmagick (6.1.1)
       observer (~> 0.1)
       pkg-config (~> 1.4)
     rouge (3.28.0)
@@ -413,7 +413,7 @@ DEPENDENCIES
   fastlane-plugin-sentry
   fastlane-plugin-wpmreleasetoolkit (~> 12.4)
   rake
-  rmagick (~> 6.1.0)
+  rmagick (~> 6.1.1)
   rubocop (~> 1.71)
   rubocop-rake (~> 0.6)
   xcpretty-travis-formatter

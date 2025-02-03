@@ -22,5 +22,5 @@ gem 'rubocop-rake', '~> 0.6'
 gem 'xcpretty-travis-formatter'
 
 group :screenshots, optional: true do
-  gem 'rmagick', '~> 6.1.0'
+  gem 'rmagick', '~> 6.1.1'
 end
