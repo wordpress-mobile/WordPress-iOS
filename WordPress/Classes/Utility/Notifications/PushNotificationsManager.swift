@@ -138,6 +138,7 @@ final public class PushNotificationsManager: NSObject {
     /// Unregister the device from WordPress.com notifications
     ///
     @objc func unregisterDeviceToken() {
+        wpAssert(Thread.isMainThread)
 
         // It's possible for the unregister server call to fail, so always unregister the device locally
         // to fix https://github.com/wordpress-mobile/WordPress-iOS/issues/11779.
@@ -151,7 +152,14 @@ final public class PushNotificationsManager: NSObject {
 
         ZendeskUtils.unregisterDevice()
 
-        let noteService = NotificationSettingsService(coreDataStack: ContextManager.sharedInstance())
+        /// - warning: It's important to use a separate WordPressComRestApi not
+        /// managed by `WPAccount` to ensure it can complete its tasks without
+        /// the session getting invalidated on logout.
+        /// - issue: https://github.com/wordpress-mobile/WordPress-iOS/issues/24040
+        let noteService = NotificationSettingsService(
+            coreDataStack: ContextManager.sharedInstance(),
+            wordPressComRestApi: WordPressComRestApi.defaultV2Api(in: ContextManager.shared.mainContext)
+        )
 
         noteService.unregisterDeviceForPushNotifications(knownDeviceId, success: {
             DDLogInfo("Successfully unregistered Device ID \(knownDeviceId) for Push Notifications!")
