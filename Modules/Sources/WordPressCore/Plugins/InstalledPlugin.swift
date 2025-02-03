@@ -8,14 +8,16 @@ public struct InstalledPlugin: Equatable, Hashable, Identifiable, Sendable {
     public var version: String
     public var author: String
     public var shortDescription: String
+    public var isActive: Bool
 
-    public init(slug: PluginSlug, iconURL: URL?, name: String, version: String, author: String, shortDescription: String) {
+    public init(slug: PluginSlug, iconURL: URL?, name: String, version: String, author: String, shortDescription: String, isActive: Bool) {
         self.slug = slug
         self.iconURL = iconURL
         self.name = name
         self.version = version
         self.author = author
         self.shortDescription = shortDescription
+        self.isActive = isActive
     }
 
     public init(plugin: PluginWithViewContext) {
@@ -25,6 +27,7 @@ public struct InstalledPlugin: Equatable, Hashable, Identifiable, Sendable {
         version = plugin.version
         author = plugin.author
         shortDescription = plugin.description.raw
+        isActive = plugin.status == .active || plugin.status == .networkActive
     }
 
     public var id: String {

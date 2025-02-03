@@ -8,63 +8,52 @@ struct PluginListItemView: View {
 
     @ScaledMetric(relativeTo: .body) var descriptionFontSize: CGFloat = 14
 
-    private var slug: PluginWpOrgDirectorySlug?
-    private var iconURL: URL?
-    private var name: String
-    private var version: String
-    private var author: String
-    private var shortDescription: String
-    private var service: PluginServiceProtocol
-
-    init(plugin: InstalledPlugin, service: PluginServiceProtocol) {
-        self.slug = plugin.possibleWpOrgDirectorySlug
-        self.iconURL = plugin.iconURL
-        self.name = plugin.name
-        self.version = plugin.version
-        self.author = plugin.author
-        self.shortDescription = plugin.shortDescription
-        self.service = service
-    }
+    var plugin: InstalledPlugin
+    var service: PluginServiceProtocol
 
     var body: some View {
         HStack(alignment: .top) {
-            PluginIconView(slug: slug, service: service)
+            PluginIconView(slug: plugin.possibleWpOrgDirectorySlug, service: service)
 
             VStack(alignment: .leading, spacing: 0) {
-                Text(name)
+                Text(plugin.name)
                     .lineLimit(1)
                     .font(.headline)
                     .foregroundStyle(.primary)
 
-                if !author.isEmpty {
-                    Text(Strings.author(author))
+                if !plugin.author.isEmpty {
+                    Text(Strings.author(plugin.author))
                         .lineLimit(1)
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
 
                 Group {
-                    if shortDescription.isEmpty {
+                    if plugin.shortDescription.isEmpty {
                         Text(Strings.noDescriptionAvailable)
                             .font(.system(size: descriptionFontSize).italic())
                     } else if let html = renderedDescription() {
                         Text(html)
                     } else {
-                        Text(shortDescription)
+                        Text(plugin.shortDescription)
                             .font(.system(size: descriptionFontSize))
                     }
                 }
+                .lineLimit(2)
                 .padding(.vertical, 4)
 
-                Text(Strings.version(version))
+                Text(Strings.version(plugin.version))
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
         }
     }
 
+    // TODO: Use `WebCommentContentRenderer` instead.
+    // There are potential crash and performance issues in NSAttributedString's HTML support.
+    // http://www.openradar.me/20978452
     func renderedDescription() -> AttributedString? {
-        guard var data = shortDescription.data(using: .utf8) else {
+        guard var data = plugin.shortDescription.data(using: .utf8) else {
             return nil
         }
 
