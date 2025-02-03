@@ -39,6 +39,30 @@ struct PluginListItemView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
+
+            Spacer()
+        }
+        .overlay(alignment: .bottomTrailing) {
+            Menu {
+                Section {
+                    if plugin.isActive {
+                        Button("Deactivate", systemImage: "bolt.slash") {}
+                    } else {
+                        Button("Activate", systemImage: "bolt") {}
+                    }
+
+                    Button("Delete", systemImage: "trash") {}
+                }
+                Section {
+                    Button("View on WordPress.org", systemImage: "safari") {}
+                }
+            } label: {
+                Image(systemName: "ellipsis")
+                    .padding(4)
+                    .frame(width: 44, height: 44, alignment: .bottomTrailing)
+                    .contentShape(Rectangle())
+            }
+            .foregroundStyle(.secondary)
         }
     }
 
