@@ -21,13 +21,6 @@ struct PluginListItemView: View {
                     .font(.headline)
                     .foregroundStyle(.primary)
 
-                if !plugin.author.isEmpty {
-                    Text(Strings.author(plugin.author))
-                        .lineLimit(1)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-
                 Group {
                     if plugin.shortDescription.isEmpty {
                         Text(Strings.noDescriptionAvailable)
