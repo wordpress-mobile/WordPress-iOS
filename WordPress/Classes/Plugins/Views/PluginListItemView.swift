@@ -3,10 +3,12 @@ import SwiftUI
 import AsyncImageKit
 import WordPressAPI
 import WordPressCore
+import SafariServices
 
 struct PluginListItemView: View {
 
     @ScaledMetric(relativeTo: .body) var descriptionFontSize: CGFloat = 14
+    @State private var showingSafariView = false
 
     let plugin: InstalledPlugin
     let viewModel: InstalledPluginsListViewModel
@@ -71,8 +73,14 @@ struct PluginListItemView: View {
                 }
                 .disabled(isUpdating)
 
-                Section {
-                    Button("View on WordPress.org", systemImage: "safari") {}
+                if let url = wpOrgURL {
+                    Section {
+                        Button {
+                            showingSafariView = true
+                        } label: {
+                            Label("View on WordPress.org", systemImage: "safari")
+                        }
+                    }
                 }
             } label: {
                 Image(systemName: "ellipsis")
@@ -81,6 +89,11 @@ struct PluginListItemView: View {
                     .contentShape(Rectangle())
             }
             .foregroundStyle(.secondary)
+        }
+        .sheet(isPresented: $showingSafariView) {
+            if let url = wpOrgURL {
+                SafariView(url: url)
+            }
         }
     }
 
@@ -114,6 +127,11 @@ struct PluginListItemView: View {
         }
     }
 
+    private var wpOrgURL: URL? {
+        guard let slug = plugin.possibleWpOrgDirectorySlug else { return nil }
+        return URL(string: "https://wordpress.org/plugins/\(slug.slug)/")
+    }
+
     private enum Strings {
         static func author(_ author: String) -> String {
             let format = NSLocalizedString("site.plugins.list.item.author", value: "By %@", comment: "The plugin author displayed in the plugins list. The first argument is plugin author name")
@@ -126,5 +144,16 @@ struct PluginListItemView: View {
         }
 
         static let noDescriptionAvailable: String = NSLocalizedString("site.plugins.list.item.noDescriptionAvailable", value: "The plugin author did not provide a description for this plugin.", comment: "The message displayed when a plugin has no description")
+    }
+}
+
+private struct SafariView: UIViewControllerRepresentable {
+    let url: URL
+
+    func makeUIViewController(context: Context) -> SFSafariViewController {
+        SFSafariViewController(url: url)
+    }
+
+    func updateUIViewController(_ controller: SFSafariViewController, context: Context) {
     }
 }
