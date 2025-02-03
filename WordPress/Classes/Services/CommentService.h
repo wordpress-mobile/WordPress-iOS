@@ -201,7 +201,6 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
  */
 - (CommentServiceRemoteREST *_Nullable)restRemoteForSite:(NSNumber *_Nonnull)siteID;
 
-
 @end
 
 NS_ASSUME_NONNULL_END

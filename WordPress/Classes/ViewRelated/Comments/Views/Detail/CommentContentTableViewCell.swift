@@ -80,13 +80,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         }
     }
 
-    @objc var isReplyHighlighted: Bool = false {
-        didSet {
-            replyButton.tintColor = isReplyHighlighted ? UIAppColor.primary : .label
-            replyButton.configuration?.image = UIImage(systemName: isReplyHighlighted ? "arrowshape.turn.up.left.fill" : "arrowshape.turn.up.left")
-        }
-    }
-
     // MARK: Constants
 
     private let contentButtonsTopSpacing: CGFloat = 15
@@ -175,7 +168,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
         // reset all highlight states.
         isEmphasized = false
-        isReplyHighlighted = false
 
         // reset all button actions.
         accessoryButtonAction = nil

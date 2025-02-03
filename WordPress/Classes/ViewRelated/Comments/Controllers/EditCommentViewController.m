@@ -83,9 +83,9 @@
 {
     [super viewWillAppear:animated];
 
-    self.textView.text  = self.content;
-    self.pristineText   = self.content;
-    
+    self.textView.text = self.content;
+    self.pristineText = self.content;
+
     [self.textView becomeFirstResponder];
     [self enableSaveIfNeeded];
 }

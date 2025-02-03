@@ -275,11 +275,12 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
            !hasAutomaticallyTriggeredCommentAction {
             hasAutomaticallyTriggeredCommentAction = true
 
-            ReaderCommentAction().execute(post: post,
-                                          origin: self,
-                                          promptToAddComment: false,
-                                          navigateToCommentID: commentID,
-                                          source: .postDetails)
+            ReaderCommentAction().execute(
+                post: post,
+                origin: self,
+                navigateToCommentID: commentID,
+                source: .postDetails
+            )
         }
     }
 
@@ -1197,9 +1198,10 @@ extension ReaderDetailViewController: BorderedButtonTableViewCellDelegate {
             return
         }
 
-        ReaderCommentAction().execute(post: post,
-                                      origin: self,
-                                      promptToAddComment: commentsTableViewDelegate.totalComments == 0,
-                                      source: .postDetailsComments)
+        ReaderCommentAction().execute(
+            post: post,
+            origin: self,
+            source: .postDetailsComments
+        )
     }
 }

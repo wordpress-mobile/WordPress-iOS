@@ -1080,6 +1080,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     NSError *error;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:NSStringFromClass([ReaderPost class])];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"postID = %@ AND siteID = %@", postID, siteID];
+    fetchRequest.fetchLimit = 1;
     NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
     if (error) {
         DDLogError(@"Error fetching post with id %@ and site %@. %@", postID, siteID, error);

@@ -4,12 +4,13 @@ import XCTest
 
 class FullScreenCommentReplyViewModelTests: CoreDataTestCase {
     private var suggestionsServiceMock: SuggestionServiceMock!
-    private var sut: FullScreenCommentReplyViewModel!
+    private var sut: CommentComposerViewModel!
 
     override func setUp() {
         super.setUp()
+
         suggestionsServiceMock = SuggestionServiceMock(context: mainContext)
-        sut = FullScreenCommentReplyViewModel(suggestionsService: suggestionsServiceMock, context: mainContext)
+        sut = CommentComposerViewModel(suggestionsService: suggestionsServiceMock, context: mainContext)
     }
 
     /// Test SuggestionsTableView setup.

@@ -9,18 +9,26 @@ extension NSNotification.Name {
 }
 
 @objc extension ReaderCommentsViewController {
-    func shouldShowSuggestions(for siteID: NSNumber?) -> Bool {
-        guard let siteID, let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else { return false }
-        return SuggestionService.shared.shouldShowSuggestions(for: blog)
+    func makeReplyTextView() -> UIView {
+        let textView = ReplyTextView()
+        textView.onTapped = { [weak self] in
+            guard let self else { return }
+            self.showCommentComposer(parameters: .init(post: self.post))
+        }
+        return textView
+    }
+
+    func didTapReply(comment: Comment) {
+        guard let parameters = CommentComposerParameters(comment: comment) else {
+            return wpAssertionFailure("invalid context")
+        }
+        showCommentComposer(parameters: parameters)
     }
 
     func handleHeaderTapped() {
-        guard let post,
-              allowsPushingPostDetails else {
-                  return
-              }
-
-        // Note: Let's manually hide the comments button, in order to prevent recursion in the flow
+        guard let post, allowsPushingPostDetails else {
+            return
+        }
         let controller = ReaderDetailViewController.controllerWithPost(post)
         controller.shouldHideComments = true
         navigationController?.pushViewController(controller, animated: true)
@@ -160,7 +168,15 @@ extension NSNotification.Name {
     @objc func postCommentModifiedNotification() {
         NotificationCenter.default.post(name: .ReaderCommentModifiedNotification, object: nil)
     }
+}
 
+extension ReaderCommentsViewController {
+    func showCommentComposer(parameters: CommentComposerParameters) {
+        let viewModel = CommentComposerViewModel(parameters: parameters)
+        let composerVC = CommentComposerViewController(viewModel: viewModel)
+        let navigationVC = UINavigationController(rootViewController: composerVC)
+        present(navigationVC, animated: true)
+    }
 }
 
 // MARK: - Popover Presentation Delegate

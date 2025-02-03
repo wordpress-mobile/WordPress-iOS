@@ -74,6 +74,38 @@ extension CommentService {
             self.coreDataStack.save(context, completion: completion, on: .main)
         }
     }
+
+    enum CommentTarget {
+        case postID(NSNumber)
+        case commentID(NSNumber)
+    }
+
+    func createComment(content: String, target: CommentTarget, siteID: NSNumber) async throws {
+        guard let remote = self.restRemote(forSite: siteID) else {
+            wpAssertionFailure("invalid siteID")
+            throw URLError(.unknown) // This should never happen
+        }
+        _ = try await createComment(content: content, target: target, remote: remote)
+    }
+
+    private func createComment(content: String, target: CommentTarget, remote: CommentServiceRemoteREST) async throws -> RemoteComment? {
+        try await withUnsafeThrowingContinuation { continuation in
+            switch target {
+            case .postID(let postID):
+                remote.replyToPost(withID: postID, content: content) { comment in
+                    continuation.resume(returning: comment)
+                } failure: {
+                    continuation.resume(throwing: $0 ?? URLError(.unknown))
+                }
+            case .commentID(let commentID):
+                remote.replyToComment(withID: commentID, content: content) { comment in
+                    continuation.resume(returning: comment)
+                } failure: {
+                    continuation.resume(throwing: $0 ?? URLError(.unknown))
+                }
+            }
+        }
+    }
 }
 
 private extension CommentService {
