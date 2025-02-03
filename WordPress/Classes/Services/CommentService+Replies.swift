@@ -80,6 +80,7 @@ extension CommentService {
         case commentID(NSNumber)
     }
 
+    @MainActor
     func createComment(content: String, target: CommentTarget, siteID: NSNumber) async throws {
         guard let remote = self.restRemote(forSite: siteID) else {
             wpAssertionFailure("invalid siteID")
