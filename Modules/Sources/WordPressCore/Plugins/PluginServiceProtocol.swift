@@ -9,6 +9,10 @@ public protocol PluginServiceProtocol: Actor {
 
     func resolveIconURL(of slug: PluginWpOrgDirectorySlug) async -> URL?
 
+    func togglePluginActivation(slug: PluginSlug) async throws
+
+    func uninstalledPlugin(slug: PluginSlug) async throws
+
 }
 
 extension PluginServiceProtocol {

@@ -30,6 +30,16 @@ public struct InstalledPlugin: Equatable, Hashable, Identifiable, Sendable {
         isActive = plugin.status == .active || plugin.status == .networkActive
     }
 
+    public init(plugin: PluginWithEditContext) {
+        self.slug = plugin.plugin
+        iconURL = nil
+        name = plugin.name
+        version = plugin.version
+        author = plugin.author
+        shortDescription = plugin.description.raw
+        isActive = plugin.status == .active || plugin.status == .networkActive
+    }
+
     public var id: String {
         slug.slug
     }

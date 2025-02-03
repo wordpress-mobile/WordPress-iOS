@@ -8,12 +8,17 @@ struct PluginListItemView: View {
 
     @ScaledMetric(relativeTo: .body) var descriptionFontSize: CGFloat = 14
 
-    var plugin: InstalledPlugin
-    var service: PluginServiceProtocol
+    let plugin: InstalledPlugin
+    let viewModel: InstalledPluginsListViewModel
+
+    // Add this computed property to avoid direct state access in the view body
+    private var isUpdating: Bool {
+        viewModel.updating.contains(plugin.slug)
+    }
 
     var body: some View {
         HStack(alignment: .top) {
-            PluginIconView(slug: plugin.possibleWpOrgDirectorySlug, service: service)
+            PluginIconView(slug: plugin.possibleWpOrgDirectorySlug, service: viewModel.service)
 
             VStack(alignment: .leading, spacing: 0) {
                 Text(plugin.name)
@@ -46,13 +51,26 @@ struct PluginListItemView: View {
             Menu {
                 Section {
                     if plugin.isActive {
-                        Button("Deactivate", systemImage: "bolt.slash") {}
+                        Button("Deactivate", systemImage: "bolt.slash") {
+                            Task {
+                                await viewModel.toggle(slug: plugin.slug)
+                            }
+                        }
                     } else {
-                        Button("Activate", systemImage: "bolt") {}
+                        Button("Activate", systemImage: "bolt") {
+                            Task {
+                                await viewModel.toggle(slug: plugin.slug)
+                            }
+                        }
+                        Button("Delete", systemImage: "trash") {
+                            Task {
+                                await viewModel.uninstall(slug: plugin.slug)
+                            }
+                        }
                     }
-
-                    Button("Delete", systemImage: "trash") {}
                 }
+                .disabled(isUpdating)
+
                 Section {
                     Button("View on WordPress.org", systemImage: "safari") {}
                 }

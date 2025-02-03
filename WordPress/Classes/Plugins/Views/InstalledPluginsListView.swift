@@ -25,10 +25,7 @@ struct InstalledPluginsListView: View {
                 List {
                     Section {
                         ForEach(viewModel.displayingPlugins, id: \.self) { plugin in
-                            PluginListItemView(
-                                plugin: plugin,
-                                service: viewModel.service
-                            )
+                            PluginListItemView(plugin: plugin, viewModel: viewModel)
                         }
                     }
                     .listSectionSeparator(.hidden, edges: .top)
@@ -81,6 +78,8 @@ final class InstalledPluginsListViewModel: ObservableObject {
     @Published var displayingPlugins: [InstalledPlugin] = []
     @Published var error: String? = nil
 
+    @Published var updating: Set<PluginSlug> = []
+
     init(service: PluginServiceProtocol) {
         self.service = service
     }
@@ -113,5 +112,28 @@ final class InstalledPluginsListViewModel: ObservableObject {
                 self.error = (error as? WpApiError)?.errorMessage ?? error.localizedDescription
             }
         }
+    }
+
+    func toggle(slug: PluginSlug) async {
+        self.updating.insert(slug)
+        defer { self.updating.remove(slug) }
+
+        do {
+            try await self.service.togglePluginActivation(slug: slug)
+        } catch {
+            DDLogError("Failed to update plugin: \(error)")
+        }
+    }
+
+    func uninstall(slug: PluginSlug) async {
+        self.updating.insert(slug)
+        defer { self.updating.remove(slug) }
+
+        do {
+            try await self.service.uninstalledPlugin(slug: slug)
+        } catch {
+            DDLogError("Failed to uninstall plugin: \(error)")
+        }
+
     }
 }
