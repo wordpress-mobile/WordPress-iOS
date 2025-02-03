@@ -83,9 +83,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Likes summary view
     private let likesSummary: ReaderDetailLikesView = .loadFromNib()
 
-    /// A view that fills the bottom portion outside of the safe area
-    @IBOutlet weak var toolbarSafeAreaView: UIView!
-
     /// View used to show errors
     private let noResultsViewController = NoResultsViewController.controller()
 
@@ -445,7 +442,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
             // Toolbar
             toolbar.displaySetting = displaySetting
-            toolbarSafeAreaView.backgroundColor = toolbar.backgroundColor
         }
 
         // Featured image view
