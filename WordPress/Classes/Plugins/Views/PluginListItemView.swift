@@ -134,21 +134,21 @@ struct PluginListItemView: View {
 
     private enum Strings {
         static func author(_ author: String) -> String {
-            let format = NSLocalizedString("site.plugins.list.item.author", value: "By %@", comment: "The plugin author displayed in the plugins list. The first argument is plugin author name")
+            let format = NSLocalizedString("sitePluginsList.item.author", value: "By %@", comment: "The plugin author displayed in the plugins list. The first argument is plugin author name")
             return String(format: format, author)
         }
 
         static func version(_ version: String) -> String {
-            let format = NSLocalizedString("site.plugins.list.item.author", value: "Version: %@", comment: "The plugin version displayed in the plugins list. The first argument is plugin version")
+            let format = NSLocalizedString("sitePluginsList.item.author", value: "Version: %@", comment: "The plugin version displayed in the plugins list. The first argument is plugin version")
             return String(format: format, version)
         }
 
-        static let noDescriptionAvailable: String = NSLocalizedString("site.plugins.list.item.noDescriptionAvailable", value: "The plugin author did not provide a description for this plugin.", comment: "The message displayed when a plugin has no description")
+        static let noDescriptionAvailable: String = NSLocalizedString("sitePluginsList.item.noDescriptionAvailable", value: "The plugin author did not provide a description for this plugin.", comment: "The message displayed when a plugin has no description")
 
-        static let activate: String = NSLocalizedString("site.plugins.list.item.action.activate", value: "Activate", comment: "Button to activate a plugin")
-        static let deactivate: String = NSLocalizedString("site.plugins.list.item.action.deactivate", value: "Deactivate", comment: "Button to deactivate a plugin")
-        static let delete: String = NSLocalizedString("site.plugins.list.item.action.delete", value: "Delete", comment: "Button to delete a plugin")
-        static let viewOnWordPressOrg: String = NSLocalizedString("site.plugins.list.item.action.viewOnWordPressOrg", value: "View on WordPress.org", comment: "Button to view the plugin on WordPress.org website")
+        static let activate: String = NSLocalizedString("sitePluginsList.itemAction.activate", value: "Activate", comment: "Button to activate a plugin")
+        static let deactivate: String = NSLocalizedString("sitePluginsList.itemAction.deactivate", value: "Deactivate", comment: "Button to deactivate a plugin")
+        static let delete: String = NSLocalizedString("sitePluginsList.itemAction.delete", value: "Delete", comment: "Button to delete a plugin")
+        static let viewOnWordPressOrg: String = NSLocalizedString("sitePluginsList.itemAction.viewOnWordPressOrg", value: "View on WordPress.org", comment: "Button to view the plugin on WordPress.org website")
     }
 }
 
