@@ -40,39 +40,12 @@ struct PluginListItemView: View {
 
             Spacer()
         }
+        .contextMenu(menuItems: {
+            menuItems
+        })
         .overlay(alignment: .bottomTrailing) {
             Menu {
-                Section {
-                    if plugin.isActive {
-                        Button(Strings.deactivate, systemImage: "bolt.slash") {
-                            Task {
-                                await viewModel.toggle(slug: plugin.slug)
-                            }
-                        }
-                    } else {
-                        Button(Strings.activate, systemImage: "bolt") {
-                            Task {
-                                await viewModel.toggle(slug: plugin.slug)
-                            }
-                        }
-                        Button(Strings.delete, systemImage: "trash") {
-                            Task {
-                                await viewModel.uninstall(slug: plugin.slug)
-                            }
-                        }
-                    }
-                }
-                .disabled(isUpdating)
-
-                if wpOrgURL != nil {
-                    Section {
-                        Button {
-                            showingSafariView = true
-                        } label: {
-                            Label(Strings.viewOnWordPressOrg, systemImage: "safari")
-                        }
-                    }
-                }
+                menuItems
             } label: {
                 Image(systemName: "ellipsis")
                     .padding(4)
@@ -84,6 +57,41 @@ struct PluginListItemView: View {
         .sheet(isPresented: $showingSafariView) {
             if let url = wpOrgURL {
                 SafariView(url: url)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var menuItems: some View {
+        Section {
+            if plugin.isActive {
+                Button(Strings.deactivate, systemImage: "bolt.slash") {
+                    Task {
+                        await viewModel.toggle(slug: plugin.slug)
+                    }
+                }
+            } else {
+                Button(Strings.activate, systemImage: "bolt") {
+                    Task {
+                        await viewModel.toggle(slug: plugin.slug)
+                    }
+                }
+                Button(Strings.delete, systemImage: "trash") {
+                    Task {
+                        await viewModel.uninstall(slug: plugin.slug)
+                    }
+                }
+            }
+        }
+        .disabled(isUpdating)
+
+        if wpOrgURL != nil {
+            Section {
+                Button {
+                    showingSafariView = true
+                } label: {
+                    Label(Strings.viewOnWordPressOrg, systemImage: "safari")
+                }
             }
         }
     }
