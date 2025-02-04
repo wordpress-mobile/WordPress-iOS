@@ -77,7 +77,7 @@ final class CommentComposerViewController: UIViewController {
         placeholderLabel.pinEdges([.leading, .top], insets: UIEdgeInsets(.all, 16))
 
         view.addSubview(textView)
-        textView.pinEdges([.top, .horizontal])
+        textView.pinEdges([.top, .horizontal], to: view.safeAreaLayoutGuide)
         textView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor).isActive = true
     }
 
