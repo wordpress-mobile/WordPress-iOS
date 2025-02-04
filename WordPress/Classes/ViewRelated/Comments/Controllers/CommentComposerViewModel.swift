@@ -9,11 +9,15 @@ final class CommentComposerViewModel {
 
     /// Send a top-level comment to the given post.
     convenience init(post: ReaderPost) {
-        self.init(parameters: .init(
+        let parameters = CommentComposerParameters(
             siteID: post.siteID,
             context: .post(post)
-        ))
-        self.suggestionsViewModel?.enableProminentSuggestions(postAuthorID: post.authorID)
+        )
+
+        let suggestionsViewModel = SuggestionsListViewModel.make(siteID: post.siteID)
+        suggestionsViewModel?.enableProminentSuggestions(postAuthorID: post.authorID)
+
+        self.init(parameters: parameters, suggestionsViewModel: suggestionsViewModel)
     }
 
     /// Reply to the given comment.
@@ -26,15 +30,22 @@ final class CommentComposerViewModel {
         } else {
             return nil
         }
-        self.init(parameters: .init(
+
+        let parameters = CommentComposerParameters(
             siteID: siteID,
             context: .comment(.init(commentID: comment.commentID as NSNumber))
-        ))
-        self.suggestionsViewModel?.enableProminentSuggestions(
+        )
+
+        let suggestionsViewModel = SuggestionsListViewModel.make(siteID: siteID)
+        suggestionsViewModel?.enableProminentSuggestions(
             postAuthorID: comment.post?.authorID,
             commentAuthorID: comment.commentID as NSNumber
         )
+
+        self.init(parameters: parameters, suggestionsViewModel: suggestionsViewModel)
     }
+
+    // TODO: (kean) add invalidateCacheAndForceSyncNotification
 
     /// Reply to the comment from the given notification.
     convenience init?(notification: Notification) {
@@ -42,20 +53,26 @@ final class CommentComposerViewModel {
               let commentID = notification.metaCommentID else {
             return nil
         }
-        self.init(parameters: .init(
+
+        let parameters = CommentComposerParameters(
             siteID: siteID,
             context: .comment(.init(commentID: commentID))
-        ))
-        self.suggestionsViewModel?.enableProminentSuggestions(postAuthorID: nil, commentAuthorID: notification.metaCommentAuthorID)
+        )
+
+        let suggestionsViewModel = SuggestionsListViewModel.make(siteID: siteID)
+        suggestionsViewModel?.enableProminentSuggestions(postAuthorID: nil, commentAuthorID: notification.metaCommentAuthorID)
+
+        self.init(parameters: parameters, suggestionsViewModel: suggestionsViewModel)
     }
 
     init(
         parameters: CommentComposerParameters,
+        suggestionsViewModel: SuggestionsListViewModel?,
         context: NSManagedObjectContext = ContextManager.shared.mainContext
     ) {
         self.parameters = parameters
+        self.suggestionsViewModel = suggestionsViewModel
         self.context = context
-        self.suggestionsViewModel = SuggestionsListViewModel.make(siteID: parameters.siteID)
     }
 
     var navigationTitle: String {
