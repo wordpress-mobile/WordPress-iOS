@@ -422,11 +422,9 @@ extension NotificationDetailsViewController {
     }
 
     func showCommentComposer() {
-        guard let parameters = CommentComposerParameters(notification: note) else {
-            wpAssertionFailure("missing required comment parameters")
-            return
+        guard let viewModel = CommentComposerViewModel(notification: note) else {
+            return wpAssertionFailure("missing required parameters")
         }
-        let viewModel = CommentComposerViewModel(parameters: parameters)
         let composerVC = CommentComposerViewController(viewModel: viewModel)
         let navigationVC = UINavigationController(rootViewController: composerVC)
         present(navigationVC, animated: true)

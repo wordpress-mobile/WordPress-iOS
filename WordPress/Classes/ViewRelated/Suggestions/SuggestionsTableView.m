@@ -54,12 +54,6 @@ CGFloat const STVSeparatorHeight = 1.f;
 
 #pragma mark - Custom Setters
 
-- (void)setProminentSuggestionsIds:(NSArray<NSNumber *> *)prominentSuggestionsIds
-{
-    _prominentSuggestionsIds = prominentSuggestionsIds;
-    self.viewModel.prominentSuggestionsIds = prominentSuggestionsIds;
-}
-
 - (void)setUseTransparentHeader:(BOOL)useTransparentHeader
 {
     _useTransparentHeader = useTransparentHeader;

@@ -13,16 +13,16 @@ extension NSNotification.Name {
         let textView = ReplyTextView()
         textView.onTapped = { [weak self] in
             guard let self else { return }
-            self.showCommentComposer(parameters: .init(post: self.post))
+            self.showCommentComposer(viewModel: .init(post: self.post))
         }
         return textView
     }
 
     func didTapReply(comment: Comment) {
-        guard let parameters = CommentComposerParameters(comment: comment) else {
+        guard let viewModel = CommentComposerViewModel(comment: comment) else {
             return wpAssertionFailure("invalid context")
         }
-        showCommentComposer(parameters: parameters)
+        showCommentComposer(viewModel: viewModel)
     }
 
     func handleHeaderTapped() {
@@ -171,8 +171,7 @@ extension NSNotification.Name {
 }
 
 extension ReaderCommentsViewController {
-    func showCommentComposer(parameters: CommentComposerParameters) {
-        let viewModel = CommentComposerViewModel(parameters: parameters)
+    func showCommentComposer(viewModel: CommentComposerViewModel) {
         let composerVC = CommentComposerViewController(viewModel: viewModel)
         let navigationVC = UINavigationController(rootViewController: composerVC)
         present(navigationVC, animated: true)

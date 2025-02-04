@@ -187,35 +187,6 @@ class SuggestionsListViewModelTests: CoreDataTestCase {
         XCTAssertTrue(result)
     }
 
-    // MARK: - Test prominentSuggestions(fromPostAuthorId:commentAuthorId:defaultAccountId:)
-
-    /// Tests that a prominent suggestions array is created with a post author id and comment author id
-    func testProminentSuggestionsWithPostAuthorAndCommentAuthor() {
-        // Given
-        let postAuthorId = NSNumber(value: 1)
-        let commentAuthorId = NSNumber(value: 2)
-
-        // When
-        let result = SuggestionsTableView.prominentSuggestions(fromPostAuthorId: postAuthorId, commentAuthorId: commentAuthorId, defaultAccountId: nil)
-
-        // Then
-        XCTAssertEqual(result, [1, 2])
-    }
-
-    /// Tests that a default account is excluded from the prominent suggestions array
-    func testDefaultAccountExcludedFromProminentSuggestions() {
-        // Given
-        let postAuthorId = NSNumber(value: 1)
-        let commentAuthorId = NSNumber(value: 2)
-        let accountId = NSNumber(value: 1)
-
-        // When
-        let result = SuggestionsTableView.prominentSuggestions(fromPostAuthorId: postAuthorId, commentAuthorId: commentAuthorId, defaultAccountId: accountId)
-
-        // Then
-        XCTAssertEqual(result, [2])
-    }
-
     // MARK: - Helpers
 
     private func suggestionsList(fromProminentIds prominentIds: [Int], regularIds: [Int]) -> [SuggestionsListSection] {

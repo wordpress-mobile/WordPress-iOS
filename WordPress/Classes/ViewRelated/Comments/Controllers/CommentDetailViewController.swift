@@ -1018,11 +1018,9 @@ private extension CommentDetailViewController {
     }
 
     func showCommentComposer() {
-        guard let parameters = CommentComposerParameters(comment: comment) else {
-            wpAssertionFailure("missing required comment parameters")
-            return
+        guard let viewModel = CommentComposerViewModel(comment: comment) else {
+            return wpAssertionFailure("missing required parameters")
         }
-        let viewModel = CommentComposerViewModel(parameters: parameters)
         let composerVC = CommentComposerViewController(viewModel: viewModel)
         let navigationVC = UINavigationController(rootViewController: composerVC)
         present(navigationVC, animated: true)

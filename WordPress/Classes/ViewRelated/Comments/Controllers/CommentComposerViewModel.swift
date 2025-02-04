@@ -8,6 +8,48 @@ final class CommentComposerViewModel {
     private var suggestionsService: SuggestionService
     private var context: NSManagedObjectContext
 
+    /// Send a top-level comment to the given post.
+    convenience init(post: ReaderPost) {
+        self.init(parameters: .init(
+            siteID: post.siteID,
+            context: .post(post)
+        ))
+        self.suggestionsViewModel?.enableProminentSuggestions(postAuthorID: post.authorID)
+    }
+
+    /// Reply to the given comment.
+    convenience init?(comment: Comment) {
+        let siteID: NSNumber
+        if let post = comment.post as? ReaderPost {
+            siteID = post.siteID
+        } else if let blogID = comment.blog?.dotComID {
+            siteID = blogID
+        } else {
+            return nil
+        }
+        self.init(parameters: .init(
+            siteID: siteID,
+            context: .comment(.init(commentID: comment.commentID as NSNumber))
+        ))
+        self.suggestionsViewModel?.enableProminentSuggestions(
+            postAuthorID: comment.post?.authorID,
+            commentAuthorID: comment.commentID as NSNumber
+        )
+    }
+
+    /// Reply to the comment from the given notification.
+    convenience init?(notification: Notification) {
+        guard let siteID = notification.metaSiteID,
+              let commentID = notification.metaCommentID else {
+            return nil
+        }
+        self.init(parameters: .init(
+            siteID: siteID,
+            context: .comment(.init(commentID: commentID))
+        ))
+        self.suggestionsViewModel?.enableProminentSuggestions(postAuthorID: nil, commentAuthorID: notification.metaCommentAuthorID)
+    }
+
     init(
         parameters: CommentComposerParameters,
         suggestionsService: SuggestionService = SuggestionService.shared,
@@ -16,22 +58,7 @@ final class CommentComposerViewModel {
         self.parameters = parameters
         self.suggestionsService = suggestionsService
         self.context = context
-
-        if let blog = Blog.lookup(withID: parameters.siteID, in: context),
-           suggestionsService.shouldShowSuggestions(for: blog) {
-            let viewModel = SuggestionsListViewModel(blog: blog)
-            viewModel.userSuggestionService = suggestionsService
-            viewModel.suggestionType = .mention
-            self.suggestionsViewModel = viewModel
-            // TODO: (kean) reimplement prominent suggestions and remove from SuggestionsTableView
-//            viewModel.prominentSuggestionsIds = SuggestionsTableView.prominentSuggestions(
-//                fromPostAuthorId: comment.post?.authorID,
-//                commentAuthorId: NSNumber(value: comment.authorID),
-//                defaultAccountId: try? WPAccount.lookupDefaultWordPressComAccount(in: self.managedObjectContext)?.userID
-//            )
-        } else {
-            self.suggestionsViewModel = nil
-        }
+        self.suggestionsViewModel = SuggestionsListViewModel.make(siteID: parameters.siteID)
     }
 
     var navigationTitle: String {
@@ -82,7 +109,6 @@ final class CommentComposerViewModel {
         case .comment:
             properties[WPAppAnalyticsKeyReplyingTo] = "comment"
         }
-        // TODO: check if this is always the correct event
         WPAnalytics.trackReaderStat(.readerArticleCommentedOn, properties: properties)
     }
 }
@@ -108,36 +134,6 @@ struct CommentComposerParameters {
         case .post(let post): return .postID(post.postID ?? 0)
         case .comment(let comment): return .commentID(comment.commentID)
         }
-    }
-}
-
-extension CommentComposerParameters {
-    /// Send a top-level comment to the given post.
-    init(post: ReaderPost) {
-        self.siteID = post.siteID
-        self.context = .post(post)
-    }
-
-    /// Reply to the given comment.
-    init?(comment: Comment) {
-        if let post = comment.post as? ReaderPost {
-            self.siteID = post.siteID
-        } else if let siteID = comment.blog?.dotComID {
-            self.siteID = siteID
-        } else {
-            return nil
-        }
-        self.context = .comment(.init(commentID: comment.commentID as NSNumber))
-    }
-
-    /// Reply to the comment from the given notification.
-    init?(notification: Notification) {
-        guard let siteID = notification.metaSiteID,
-              let commentID = notification.metaCommentID else {
-            return nil
-        }
-        self.siteID = siteID
-        self.context = .comment(.init(commentID: commentID))
     }
 }
 
