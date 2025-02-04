@@ -76,7 +76,7 @@ struct PluginListItemView: View {
                         await viewModel.toggle(slug: plugin.slug)
                     }
                 }
-                Button(Strings.delete, systemImage: "trash") {
+                Button(Strings.delete, systemImage: "trash", role: .destructive) {
                     Task {
                         await viewModel.uninstall(slug: plugin.slug)
                     }
