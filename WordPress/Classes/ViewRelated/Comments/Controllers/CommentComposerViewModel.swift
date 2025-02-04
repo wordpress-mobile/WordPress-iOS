@@ -5,7 +5,6 @@ final class CommentComposerViewModel {
     let suggestionsViewModel: SuggestionsListViewModel?
 
     private let parameters: CommentComposerParameters
-    private var suggestionsService: SuggestionService
     private var context: NSManagedObjectContext
 
     /// Send a top-level comment to the given post.
@@ -52,11 +51,9 @@ final class CommentComposerViewModel {
 
     init(
         parameters: CommentComposerParameters,
-        suggestionsService: SuggestionService = SuggestionService.shared,
         context: NSManagedObjectContext = ContextManager.shared.mainContext
     ) {
         self.parameters = parameters
-        self.suggestionsService = suggestionsService
         self.context = context
         self.suggestionsViewModel = SuggestionsListViewModel.make(siteID: parameters.siteID)
     }
