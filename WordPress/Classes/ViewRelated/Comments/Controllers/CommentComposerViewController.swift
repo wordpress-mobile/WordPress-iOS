@@ -17,19 +17,14 @@ final class CommentComposerViewController: UIViewController {
 
     private let textView = UITextView()
     private let placeholderLabel = UILabel()
-
-    // Suggestions
-    private var siteID: NSNumber?
-    private var prominentSuggestionsIds: [NSNumber]?
-    private var suggestionsTableView: SuggestionsTableView?
-    private var searchText: String?
+    private var suggestionsView: SuggestionsTableView?
 
     private let viewModel: CommentComposerViewModel
 
     // Static margin between the suggestions view and the text cursor position
     private let suggestionViewMargin: CGFloat = 5
     private var initialSuggestionsPosition: SuggestionsPosition = .hidden
-    private var suggestionsTop: NSLayoutConstraint!
+    private var suggestionsTopAnchorConstraint: NSLayoutConstraint?
     private var didChangeText: Bool = false
 
     init(viewModel: CommentComposerViewModel) {
@@ -58,7 +53,6 @@ final class CommentComposerViewController: UIViewController {
 
         textView.becomeFirstResponder()
         setupSuggestionsTableViewIfNeeded()
-        showSuggestionsViewIfNeeded()
 
         WPAnalytics.track(.commentFullScreenEntered)
     }
@@ -83,34 +77,16 @@ final class CommentComposerViewController: UIViewController {
 
     // MARK: - Suggestions
 
-    /// Enables the @ mention suggestions while editing
-    /// - Parameter siteID: The ID of the site to determine if suggestions are enabled or not
-    /// - Parameter prominentSuggestionsIds: The suggestions ids to display at the top of the suggestions list.
-    /// - Parameter searchText: The last search text used to show the suggestions list.
-    @objc func enableSuggestions(with siteID: NSNumber, prominentSuggestionsIds: [NSNumber]?, searchText: String?) {
-        self.siteID = siteID
-        self.prominentSuggestionsIds = prominentSuggestionsIds
-        self.searchText = searchText
-    }
-
     private func setupSuggestionsTableViewIfNeeded() {
-        guard let siteID, shouldShowSuggestions else {
+        guard let viewModel = viewModel.suggestionsViewModel else {
             return
         }
-        suggestionsTableView = viewModel.suggestionsTableView(
-            with: siteID,
-            useTransparentHeader: true,
-            prominentSuggestionsIds: prominentSuggestionsIds,
-            delegate: self
-        )
-        attachSuggestionsViewIfNeeded()
-    }
+        let suggestionsView = SuggestionsTableView(viewModel: viewModel, delegate: self)
+        suggestionsView.useTransparentHeader = true
+        suggestionsView.translatesAutoresizingMaskIntoConstraints = false
+        self.suggestionsView = suggestionsView
 
-    private func showSuggestionsViewIfNeeded() {
-        guard let searchText, !searchText.isEmpty else {
-            return
-        }
-        suggestionsTableView?.showSuggestions(forWord: searchText)
+        attachSuggestionsViewIfNeeded()
     }
 
     // MARK: - Actions
@@ -200,37 +176,26 @@ extension CommentComposerViewController: UITextViewDelegate {
 
     func textViewDidChangeSelection(_ textView: UITextView) {
         if didChangeText {
-            //If the didChangeText flag is true, reset it here
             didChangeText = false
             return
         }
-
-        //If the user just changes the selection, then hide the suggestions
-        suggestionsTableView?.hideSuggestions()
+        suggestionsView?.hideSuggestions()
     }
 
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        guard shouldShowSuggestions else {
+        guard suggestionsView != nil else {
             return true
         }
-
         let textViewText: NSString = textView.text as NSString
         let prerange = NSMakeRange(0, range.location)
         let pretext = textViewText.substring(with: prerange) + text
         let words = pretext.components(separatedBy: CharacterSet.whitespacesAndNewlines)
         let lastWord: NSString = words.last! as NSString
 
-        didTypeWord(lastWord as String)
-
+        suggestionsView?.showSuggestions(forWord: lastWord as String)
         didChangeText = true
-        return true
-    }
 
-    private func didTypeWord(_ word: String) {
-        guard let tableView = suggestionsTableView else {
-            return
-        }
-        tableView.showSuggestions(forWord: word)
+        return true
     }
 }
 
@@ -267,76 +232,64 @@ private extension CommentComposerViewController {
     }
 
     func repositionSuggestions() {
-        // TODO: (kean) reimplement
-//        guard let suggestions = suggestionsTableView else {
-//            return
-//        }
-//
-//        let caretRect = absoluteTextCursorRect
-//        let margin = suggestionViewMargin
-//        let suggestionsHeight = suggestions.frame.height
-//
-//        // Calculates the height of the view minus the keyboard if its visible
-//        let calculatedViewHeight = (view.frame.height - keyboardFrame.height)
-//
-//        var position: SuggestionsPosition = .bottom
-//
-//        // Calculates the direction the suggestions view should appear
-//        // And the global position
-//
-//        // If the estimated position of the suggestion will appear below the bottom of the view
-//        // then display it in the top position
-//        if (caretRect.maxY + suggestionsHeight) > calculatedViewHeight {
-//            position = .top
-//        }
-//
-//        // If the user is typing we don't want to change the position of the suggestions view
-//        if position == initialSuggestionsPosition || initialSuggestionsPosition == .hidden {
-//            initialSuggestionsPosition = position
-//        }
-//
-//        var constant: CGFloat = 0
-//
-//        switch initialSuggestionsPosition {
-//        case .top:
-//            constant = (caretRect.minY - suggestionsHeight - margin)
-//
-//        case .bottom:
-//            constant = caretRect.maxY + margin
-//
-//        case .hidden:
-//            constant = 0
-//        }
-//
-//        suggestionsTop.constant = constant
+        guard let suggestions = suggestionsView else {
+            return
+        }
+
+        let caretRect = absoluteTextCursorRect
+        let margin = suggestionViewMargin
+        let suggestionsHeight = suggestions.frame.height
+
+        // Calculates the height of the view minus the keyboard if its visible
+        let calculatedViewHeight = textView.bounds.height
+
+        var position: SuggestionsPosition = .bottom
+
+        // Calculates the direction the suggestions view should appear
+        // And the global position
+
+        // If the estimated position of the suggestion will appear below the bottom of the view
+        // then display it in the top position
+        if (caretRect.maxY + suggestionsHeight) > calculatedViewHeight {
+            position = .top
+        }
+
+        // If the user is typing we don't want to change the position of the suggestions view
+        if position == initialSuggestionsPosition || initialSuggestionsPosition == .hidden {
+            initialSuggestionsPosition = position
+        }
+
+        var constant: CGFloat = 0
+
+        switch initialSuggestionsPosition {
+        case .top:
+            constant = (caretRect.minY - suggestionsHeight - margin)
+
+        case .bottom:
+            constant = caretRect.maxY + margin
+
+        case .hidden:
+            constant = 0
+        }
+
+        suggestionsTopAnchorConstraint?.constant = constant
     }
 
     func attachSuggestionsViewIfNeeded() {
-        guard let tableView = suggestionsTableView else {
+        guard let suggestionsView else {
             return
         }
-
-        guard shouldShowSuggestions else {
-            tableView.removeFromSuperview()
-            return
-        }
-
         // We're adding directly to the navigation controller view to allow the suggestions to appear
         // above the nav bar, this only happens on smaller screens when the keyboard is open
-        navigationController?.view.addSubview(tableView)
+        navigationController?.view.addSubview(suggestionsView)
 
-        suggestionsTop = tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0)
+        suggestionsTopAnchorConstraint = suggestionsView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0)
 
         NSLayoutConstraint.activate([
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            suggestionsTop,
+            suggestionsView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            suggestionsView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            suggestionsTopAnchorConstraint!,
         ])
-    }
-
-    /// Determine if suggestions are enabled and visible for this site
-    var shouldShowSuggestions: Bool {
-        return viewModel.shouldShowSuggestions(with: siteID)
     }
 
     // This should be moved elsewhere
@@ -348,7 +301,6 @@ private extension CommentComposerViewController {
               let newRange = textView.textRange(from: newPosition, to: selectedRange.start) else {
             return
         }
-
         textView.replace(newRange, withText: replacementText)
     }
 }

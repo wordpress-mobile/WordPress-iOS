@@ -2,9 +2,11 @@ import Foundation
 import CoreData
 
 final class CommentComposerViewModel {
-    let parameters: CommentComposerParameters
-    var suggestionsService: SuggestionService
-    var context: NSManagedObjectContext
+    let suggestionsViewModel: SuggestionsListViewModel?
+
+    private let parameters: CommentComposerParameters
+    private var suggestionsService: SuggestionService
+    private var context: NSManagedObjectContext
 
     init(
         parameters: CommentComposerParameters,
@@ -14,6 +16,22 @@ final class CommentComposerViewModel {
         self.parameters = parameters
         self.suggestionsService = suggestionsService
         self.context = context
+
+        if let blog = Blog.lookup(withID: parameters.siteID, in: context),
+           suggestionsService.shouldShowSuggestions(for: blog) {
+            let viewModel = SuggestionsListViewModel(blog: blog)
+            viewModel.userSuggestionService = suggestionsService
+            viewModel.suggestionType = .mention
+            self.suggestionsViewModel = viewModel
+            // TODO: (kean) reimplement prominent suggestions and remove from SuggestionsTableView
+//            viewModel.prominentSuggestionsIds = SuggestionsTableView.prominentSuggestions(
+//                fromPostAuthorId: comment.post?.authorID,
+//                commentAuthorId: NSNumber(value: comment.authorID),
+//                defaultAccountId: try? WPAccount.lookupDefaultWordPressComAccount(in: self.managedObjectContext)?.userID
+//            )
+        } else {
+            self.suggestionsViewModel = nil
+        }
     }
 
     var navigationTitle: String {
@@ -34,25 +52,7 @@ final class CommentComposerViewModel {
         Strings.leaveComment
     }
 
-    // MARK: Suggestions
-
-    func suggestionsTableView(with siteID: NSNumber, useTransparentHeader: Bool, prominentSuggestionsIds: [NSNumber]?, delegate: SuggestionsTableViewDelegate) -> SuggestionsTableView {
-        let suggestionListViewModel = SuggestionsListViewModel(siteID: siteID, context: context)
-        suggestionListViewModel.userSuggestionService = suggestionsService
-        suggestionListViewModel.suggestionType = .mention
-        let tableView = SuggestionsTableView(viewModel: suggestionListViewModel, delegate: delegate)
-        tableView.useTransparentHeader = useTransparentHeader
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.prominentSuggestionsIds = prominentSuggestionsIds
-        return tableView
-    }
-
-    func shouldShowSuggestions(with siteID: NSNumber?) -> Bool {
-        guard let siteID, let blog = Blog.lookup(withID: siteID, in: context) else {
-            return false
-        }
-        return suggestionsService.shouldShowSuggestions(for: blog)
-    }
+    // MARK: Actions
 
     @MainActor
     func send(comment: String) async throws {
