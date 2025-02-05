@@ -54,6 +54,8 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 @property (nonatomic, strong) NSIndexPath *highlightedIndexPath;
 
+@property (nonatomic, strong) ReaderCommentsTableViewController *tableViewController;
+
 @end
 
 
@@ -83,14 +85,19 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 {
     [super viewDidLoad];
 
-    self.view.backgroundColor = [UIColor murielBasicBackground];
+    self.estimatedRowHeights = [[NSCache alloc] init];
+    self.cachedAttributedStrings = [[NSCache alloc] init];
+
+    self.tableViewController = [ReaderCommentsTableViewController new];
+    [self configureTableViewController:self.tableViewController];
+
+    self.view.backgroundColor = [UIColor systemBackgroundColor];
     self.commentModified = NO;
     self.helper = [ReaderCommentsHelper new];
 
     [self checkIfLoggedIn];
 
     [self configureNavbar];
-    [self configureTableView];
     [self configureTableViewHandler];
     [self configureNoResultsView];
     [self configureCommentButton];
@@ -200,38 +207,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     [self refreshFollowButton];
 }
 
-- (void)configureTableView
-{
-    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
-    self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.tableView.cellLayoutMarginsFollowReadableWidth = YES;
-    self.tableView.preservesSuperviewLayoutMargins = YES;
-    self.tableView.backgroundColor = [UIColor murielBasicBackground];
-    if ([Feature enabled:FeatureFlagReaderCommentsWebKit]) {
-        // We use this to mask the initial WebKit warmup that takes a bit of time
-        // the first time you initialize a web view. It renders asyncronously, and
-        // we don't want to show cells with empty messages.
-        self.tableView.alpha = 0.0;
-    }
-    [self.view addSubview:self.tableView];
-
-    // register the content cell
-    UINib *nib = [UINib nibWithNibName:[CommentContentTableViewCell classNameWithoutNamespaces] bundle:nil];
-    [self.tableView registerNib:nib forCellReuseIdentifier:CommentContentCellIdentifier];
-
-    // configure table view separator
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-    self.tableView.separatorInsetReference = UITableViewSeparatorInsetFromAutomaticInsets;
-
-    // hide cell separator for the last row
-    self.tableView.tableFooterView = [self tableFooterViewForHiddenSeparators];
-
-    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
-
-    self.estimatedRowHeights = [[NSCache alloc] init];
-    self.cachedAttributedStrings = [[NSCache alloc] init];
-}
-
 - (void)configureTableViewHandler
 {
     self.tableViewHandler = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
@@ -315,11 +290,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 - (void)checkIfLoggedIn
 {
     self.isLoggedIn = [AccountHelper isDotcomAvailable];
-}
-
-- (UIView *)tableFooterViewForHiddenSeparators
-{
-    return [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 0)];
 }
 
 - (void)setHighlightedIndexPath:(NSIndexPath *)highlightedIndexPath

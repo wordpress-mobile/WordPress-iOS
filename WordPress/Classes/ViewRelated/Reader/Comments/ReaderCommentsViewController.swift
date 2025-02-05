@@ -9,6 +9,13 @@ extension NSNotification.Name {
 }
 
 @objc extension ReaderCommentsViewController {
+    func configureTableViewController(_ vc: ReaderCommentsTableViewController) {
+        addChild(vc)
+        view.addSubview(vc.view)
+        vc.view.pinEdges()
+        vc.didMove(toParent: self)
+    }
+
     func makeCommentButton() -> UIView {
         let button = CommentLargeButton()
         button.addTarget(self, action: #selector(buttonAddCommentTapped), for: .primaryActionTriggered)
