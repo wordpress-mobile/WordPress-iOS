@@ -5,7 +5,6 @@
 #import "ReaderPost.h"
 #import "ReaderPostService.h"
 #import "UIView+Subviews.h"
-#import "WPTableViewHandler.h"
 #import "WordPress-Swift.h"
 #import "WPAppAnalytics.h"
 
@@ -84,7 +83,6 @@
     [self checkIfLoggedIn];
 
     [self configureNavbar];
-    [self configureTableViewHandler];
     [self configureNoResultsView];
     [self configureCommentButton];
     [self configureViewConstraints];
@@ -408,12 +406,12 @@
 {
     [self.noResultsViewController removeFromView];
 
-    BOOL isTableViewEmpty = (self.tableViewHandler.resultsController.fetchedObjects.count == 0);
-    if (!isTableViewEmpty) {
-        return;
-    }
-
     // TODO: (kean) reimplement
+//    BOOL isTableViewEmpty = (self.tableViewHandler.resultsController.fetchedObjects.count == 0);
+//    if (!isTableViewEmpty) {
+//        return;
+//    }
+
     return ;
 
     NSString *image = nil;
@@ -513,8 +511,10 @@
     if (!indexPath || !self.canComment) {
         return;
     }
-    Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    [self didTapReplyWithComment:comment];
+    Comment *comment = [self.tableViewController commentAtIndexPath:indexPath];
+    if (comment) {
+        [self didTapReplyWithComment:comment];
+    }
 }
 
 - (void)didTapLikeForComment:(Comment *)comment atIndexPath:(NSIndexPath *)indexPath
@@ -568,11 +568,6 @@
 - (void)syncContentEnded:(WPContentSyncHelper *)syncHelper
 {
     [self.tableViewController setLoadingFooterHidden:YES];
-    if ([self.tableViewHandler isScrolling]) {
-        self.needsRefreshTableViewAfterScrolling = YES;
-        return;
-    }
-
     [self refreshTableViewAndNoResultsView];
 }
 
@@ -680,11 +675,6 @@
 
 - (BOOL)richContentViewShouldUpdateLayoutForAttachments:(WPRichContentView *)richContentView
 {
-    if (self.tableViewHandler.isScrolling) {
-        self.needsUpdateAttachmentsAfterScrolling = YES;
-        return NO;
-    }
-
     return YES;
 }
 
