@@ -101,7 +101,7 @@ final class CommentComposerViewController: UIViewController {
     private func sendComment() async {
         do {
             setLoading(true)
-            try await viewModel.send(comment: textView.text ?? "")
+            try await viewModel.save(textView.text ?? "")
             UINotificationFeedbackGenerator().notificationOccurred(.success)
             presentingViewController?.dismiss(animated: true)
         } catch {

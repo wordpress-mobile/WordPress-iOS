@@ -404,17 +404,10 @@ extension NotificationDetailsViewController {
         replyTextView.accessibilityIdentifier = .replyTextViewAccessibilityId
         replyTextView.accessibilityLabel = NSLocalizedString("Reply Text", comment: "Notifications Reply Accessibility Identifier")
 
-        // TODO: (kean) reimplement
-//        replyTextView.onReply = { [weak self, weak replyTextView] content in
-//            guard let self, let replyTextView else {
-//                return
-//            }
-//            let group = self.note.contentGroup(ofKind: .comment)
-//            guard let block: FormattableCommentContent = group?.blockOfKind(.comment) else {
-//                return
-//            }
-//            self.replyCommentWithBlock(block, content: content, textView: replyTextView)
-//        }
+        replyTextView.onTapped = {
+            // TODO: (kean) remove the remaining .comment-related code
+            wpAssertionFailure("Notifications have been using NotificationCommentDetailViewController since 2023")
+        }
 
         replyTextView.setContentCompressionResistancePriority(.required, for: .vertical)
 
@@ -1017,30 +1010,6 @@ private extension NotificationDetailsViewController {
 
         // We're thru
         _ = navigationController?.popToRootViewController(animated: true)
-    }
-
-    // TODO: (kean) remove
-    func replyCommentWithBlock(_ block: FormattableCommentContent, content: String, textView: ReplyTextView) {
-        guard let replyAction = block.action(id: ReplyToCommentAction.actionIdentifier()) else {
-            return
-        }
-
-        let generator = UINotificationFeedbackGenerator()
-        generator.prepare()
-
-        let actionContext = ActionContext(block: block, content: content) { [weak self] (request, success) in
-            if success {
-                generator.notificationOccurred(.success)
-                WPAppAnalytics.track(.notificationsCommentRepliedTo)
-                let message = NSLocalizedString("Reply Sent!", comment: "The app successfully sent a comment")
-                self?.displayNotice(title: message)
-            } else {
-                generator.notificationOccurred(.error)
-                textView.becomeFirstResponder()
-            }
-        }
-
-//        replyAction.execute(context: actionContext)
     }
 
     func updateCommentWithBlock(_ block: FormattableCommentContent, content: String) {

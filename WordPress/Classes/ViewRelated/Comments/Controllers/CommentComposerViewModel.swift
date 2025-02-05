@@ -49,24 +49,6 @@ final class CommentComposerViewModel {
         self.init(parameters: parameters, suggestionsViewModel: suggestionsViewModel)
     }
 
-    /// Reply to the comment from the given notification.
-    convenience init?(notification: Notification) {
-        guard let siteID = notification.metaSiteID,
-              let commentID = notification.metaCommentID else {
-            return nil
-        }
-
-        let parameters = CommentComposerParameters(
-            siteID: siteID,
-            context: .comment(.init(commentID: commentID))
-        )
-
-        let suggestionsViewModel = SuggestionsListViewModel.make(siteID: siteID)
-        suggestionsViewModel?.enableProminentSuggestions(postAuthorID: nil, commentAuthorID: notification.metaCommentAuthorID)
-
-        self.init(parameters: parameters, suggestionsViewModel: suggestionsViewModel)
-    }
-
     init(
         parameters: CommentComposerParameters,
         suggestionsViewModel: SuggestionsListViewModel?,
@@ -93,14 +75,6 @@ final class CommentComposerViewModel {
 
     static var leaveCommentLocalizedPlaceholder: String {
         Strings.leaveComment
-    }
-
-    // MARK: Actions
-
-    @MainActor
-    func send(comment: String) async throws {
-        // TODO: (kean) move
-        try await save(comment)
     }
 }
 
