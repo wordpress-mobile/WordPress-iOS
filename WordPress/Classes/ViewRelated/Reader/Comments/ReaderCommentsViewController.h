@@ -42,5 +42,6 @@ typedef NS_ENUM(NSUInteger, ReaderCommentsSource) {
 - (void)configureCell:(CommentContentTableViewCell *)cell comment:(Comment *)comment indexPath:(NSIndexPath *)indexPath;
 - (UIView *)cachedHeaderView;
 - (void)loadMore;
+- (void)highlightCommentAtIndexPath:(NSIndexPath *)indexPath;
 
 @end

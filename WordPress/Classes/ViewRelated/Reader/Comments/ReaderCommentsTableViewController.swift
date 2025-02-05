@@ -72,6 +72,31 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
         tableView.delegate = self
     }
 
+    // MARK: - Actions
+
+    @objc func scrollToComment(withID commentID: NSNumber) {
+        let comments = fetchResultsController.fetchedObjects ?? []
+        guard let comment = comments.first(where: { $0.commentID == commentID }) else {
+            return
+        }
+
+        // Force the table view to be laid out first before scrolling to indexPath.
+        // This avoids a case where a cell instance could be orphaned and displayed randomly on top of the other cells.
+        guard let indexPath = fetchResultsController.indexPath(forObject: comment) else {
+            return
+        }
+        tableView.layoutIfNeeded()
+
+        // Ensure that the indexPath exists before scrolling to it.
+        if indexPath.section >= 0,
+           indexPath.row >= 0,
+           indexPath.section < tableView.numberOfSections,
+           indexPath.row < tableView.numberOfRows(inSection: indexPath.section) {
+            tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+            containerViewController?.highlightComment(at: indexPath)
+        }
+    }
+
     @objc func setBottomInset(_ inset: CGFloat) {
         tableView.contentInset.bottom = inset
     }
