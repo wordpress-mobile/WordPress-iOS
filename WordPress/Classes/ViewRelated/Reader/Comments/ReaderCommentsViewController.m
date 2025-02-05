@@ -11,11 +11,6 @@
 
 @class Comment;
 
-// NOTE: We want the cells to have a rather large estimated height.  This avoids a peculiar
-// crash in certain circumstances when the tableView lays out its visible cells,
-// and those cells contain WPRichTextEmbeds. -- Aerych, 2016.11.30
-static CGFloat const EstimatedCommentRowHeight = 300.0;
-
 @interface ReaderCommentsViewController () <NSFetchedResultsControllerDelegate,
                                             WPRichContentViewDelegate, // TODO: Remove once we switch to the `.web` rendering method.
                                             WPContentSyncHelperDelegate,
@@ -29,7 +24,6 @@ static CGFloat const EstimatedCommentRowHeight = 300.0;
 @property (nonatomic, strong) NoResultsViewController *noResultsViewController;
 @property (nonatomic, strong) UIView *buttonComment;
 @property (nonatomic, strong) NSLayoutConstraint *replyTextViewHeightConstraint;
-@property (nonatomic, strong) NSCache *estimatedRowHeights;
 @property (nonatomic) BOOL isLoggedIn;
 @property (nonatomic) BOOL needsUpdateAttachmentsAfterScrolling;
 @property (nonatomic) BOOL needsRefreshTableViewAfterScrolling;
@@ -81,7 +75,6 @@ static CGFloat const EstimatedCommentRowHeight = 300.0;
 {
     [super viewDidLoad];
 
-    self.estimatedRowHeights = [[NSCache alloc] init];
     self.cachedAttributedStrings = [[NSCache alloc] init];
 
     self.tableViewController = [[ReaderCommentsTableViewController alloc] initWithPost:self.post];
@@ -765,18 +758,6 @@ static CGFloat const EstimatedCommentRowHeight = 300.0;
     cell.contentLinkTapAction = ^(NSURL * _Nonnull url) {
         [weakSelf interactWithURL:url];
     };
-}
-
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // NOTE: When using a `CommentContentTableViewCell` with `.web` rendering method, this method needs to return `UITableViewAutomaticDimension`.
-    // Using cached estimated heights could get some cells to keep reloading their HTMLs indefinitely, causing the app to hang!
-
-    NSNumber *cachedHeight = [self.estimatedRowHeights objectForKey:indexPath];
-    if (cachedHeight.doubleValue) {
-        return cachedHeight.doubleValue;
-    }
-    return EstimatedCommentRowHeight;
 }
 
 - (void)loadMore
