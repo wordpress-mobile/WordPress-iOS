@@ -21,7 +21,8 @@ extension NSNotification.Name {
         let button = CommentLargeButton()
         button.addTarget(self, action: #selector(buttonAddCommentTapped), for: .primaryActionTriggered)
         view.addSubview(button)
-        button.pinEdges([.horizontal, .bottom])
+        button.pinEdges(.horizontal)
+        button.pinEdges(.bottom, to: view.safeAreaLayoutGuide)
         return button
     }
 
