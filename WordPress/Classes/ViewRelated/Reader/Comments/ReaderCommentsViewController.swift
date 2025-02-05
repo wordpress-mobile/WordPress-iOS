@@ -103,10 +103,7 @@ extension NSNotification.Name {
         // if the comment can be moderated, show the context menu when tapping the accessory button.
         // Note that accessoryButtonAction will be ignored when the menu is assigned.
         cell.accessoryButton.showsMenuAsPrimaryAction = isModerationMenuEnabled(for: comment)
-        cell.accessoryButton.menu = isModerationMenuEnabled(for: comment) ? menu(for: comment,
-                                                                                 indexPath: indexPath,
-                                                                                 handler: handler,
-                                                                                 sourceView: cell.accessoryButton) : nil
+        cell.accessoryButton.menu = isModerationMenuEnabled(for: comment) ? menu(for: comment, indexPath: indexPath, handler: handler, sourceView: cell.accessoryButton) : nil
         let renderMethod: CommentContentTableViewCell.RenderMethod = Feature.enabled(.readerCommentsWebKit) ? .web : .richContent(self.cacheContent(for: comment))
         cell.configure(with: comment, renderMethod: renderMethod, helper: helper) { _ in
             if handler.tableView.alpha == 0 {
