@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 import WordPressShared
+import WordPressUI
 
 // Notification sent when a comment is moderated/edited to allow views that display Comments to update if necessary.
 // Specifically, the Comments snippet on ReaderDetailViewController.
@@ -19,6 +20,8 @@ extension NSNotification.Name {
     func makeCommentButton() -> UIView {
         let button = CommentLargeButton()
         button.addTarget(self, action: #selector(buttonAddCommentTapped), for: .primaryActionTriggered)
+        view.addSubview(button)
+        button.pinEdges([.horizontal, .bottom])
         return button
     }
 

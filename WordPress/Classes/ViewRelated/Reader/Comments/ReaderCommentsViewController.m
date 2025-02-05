@@ -130,7 +130,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 {
     [super viewDidLayoutSubviews];
 
-    self.tableViewController.tableView.contentInset.bottom = self.buttonComment.frame.size.height;
+    [self.tableViewController setBottomInset:self.buttonComment.frame.size.height];
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
@@ -205,12 +205,12 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 - (void)configureTableViewHandler
 {
+    self.tableView = [UITableView new];
     self.tableViewHandler = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
     self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationNone;
     self.tableViewHandler.insertRowAnimation = UITableViewRowAnimationNone;
     self.tableViewHandler.moveRowAnimation = UITableViewRowAnimationNone;
     self.tableViewHandler.deleteRowAnimation = UITableViewRowAnimationNone;
-    self.tableViewHandler.delegate = self;
     [self.tableViewHandler setListensForContentChanges:NO];
 }
 
@@ -222,8 +222,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 - (void)configureCommentButton
 {
     self.buttonComment = [self makeCommentButton];
-    [self.view addSubview:self.buttonComment];
-    [self.view bringSubviewToFront:self.buttonComment];
 }
 
 #pragma mark - Autolayout Helpers
@@ -231,24 +229,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 - (void)configureViewConstraints
 {
     self.buttonComment.translatesAutoresizingMaskIntoConstraints = false;
-
-    NSMutableDictionary *views = [[NSMutableDictionary alloc] initWithDictionary:@{
-        @"tableView": self.tableView,
-        @"replyTextView": self.buttonComment
-    }];
-
-    NSString *verticalVisualFormatString = @"V:|[tableView][replyTextView]";
-
-    // TableView Contraints
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:verticalVisualFormatString options:0 metrics:nil views:views]];
-
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[tableView]|" options:0 metrics:nil views:views]];
-
-    [NSLayoutConstraint activateConstraints:@[
-        [self.buttonComment.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
-        [self.buttonComment.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
-        [self.view.keyboardLayoutGuide.topAnchor constraintEqualToAnchor:self.buttonComment.bottomAnchor]
-    ]];
 
     // TODO:
     // This LayoutConstraint is just a helper, meant to hide / display the ReplyTextView, as needed.
@@ -727,7 +707,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         [self refreshTableViewAndNoResultsView];
     }];
 }
-
 
 #pragma mark - UITableView Delegate Methods
 

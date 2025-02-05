@@ -2,8 +2,8 @@ import UIKit
 import WordPressUI
 
 final class ReaderCommentsTableViewController: UIViewController {
-    let tableView = UITableView(frame: .zero, style: .plain)
-    let padingFooterView = PagingFooterView(state: .loading)
+    private let tableView = UITableView(frame: .zero, style: .plain)
+    private let padingFooterView = PagingFooterView(state: .loading)
 
     private let commentCellReuseID = "commentCellReuseID"
 
@@ -35,10 +35,14 @@ final class ReaderCommentsTableViewController: UIViewController {
         // Hide cell separator for the last row
         tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 0))
 
-        setTableLoadingFooterHidden(true)
+        setLoadingFooterHidden(true)
 
         view.addSubview(tableView)
         tableView.pinEdges()
+    }
+
+    @objc func setBottomInset(_ inset: CGFloat) {
+        tableView.contentInset.bottom = inset
     }
 
     @objc func setLoadingFooterHidden(_ isHidden: Bool) {
