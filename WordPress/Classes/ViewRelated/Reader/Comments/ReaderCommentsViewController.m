@@ -726,7 +726,7 @@
         return;
     }
 
-    [self configureContentCell:cell comment:comment indexPath:indexPath handler:self.tableViewHandler];
+    [self configureContentCell:cell comment:comment indexPath:indexPath tableView:self.tableViewController.tableView];
 
     if (self.highlightedIndexPath) {
         cell.isEmphasized = (indexPath == self.highlightedIndexPath);

@@ -96,15 +96,11 @@ extension NSNotification.Name {
     }
 
     func configureContentCell(
-        _ cell: UITableViewCell,
+        _ cell: CommentContentTableViewCell,
         comment: Comment,
         indexPath: IndexPath,
-        handler: WPTableViewHandler
+        tableView: UITableView
     ) {
-        guard let cell = cell as? CommentContentTableViewCell else {
-            return
-        }
-
         cell.badgeTitle = comment.isFromPostAuthor() ? .authorBadgeText : nil
         cell.indentationWidth = Constants.indentationWidth
         cell.indentationLevel = min(Constants.maxIndentationLevel, Int(comment.depth))
@@ -114,24 +110,22 @@ extension NSNotification.Name {
         // if the comment can be moderated, show the context menu when tapping the accessory button.
         // Note that accessoryButtonAction will be ignored when the menu is assigned.
         cell.accessoryButton.showsMenuAsPrimaryAction = isModerationMenuEnabled(for: comment)
-        cell.accessoryButton.menu = isModerationMenuEnabled(for: comment) ? menu(for: comment, indexPath: indexPath, handler: handler, sourceView: cell.accessoryButton) : nil
+        cell.accessoryButton.menu = isModerationMenuEnabled(for: comment) ? menu(for: comment, indexPath: indexPath, tableView: tableView, sourceView: cell.accessoryButton) : nil
         let renderMethod: CommentContentTableViewCell.RenderMethod = Feature.enabled(.readerCommentsWebKit) ? .web : .richContent(self.cacheContent(for: comment))
-        cell.configure(with: comment, renderMethod: renderMethod, helper: helper) { _ in
-            if handler.tableView.alpha == 0 {
+        cell.configure(with: comment, renderMethod: renderMethod, helper: helper) { [weak tableView] _ in
+            guard let tableView else { return }
+
+            if tableView.alpha == 0 {
                 UIView.animate(withDuration: 0.2) {
-                    handler.tableView.alpha = 1
+                    tableView.alpha = 1
                 }
             }
-
-            // don't adjust cell height when it's already scrolled out of viewport.
-            guard let visibleIndexPaths = handler.tableView.indexPathsForVisibleRows,
-                  visibleIndexPaths.contains(indexPath) else {
-                      return
-                  }
-
-            UIView.setAnimationsEnabled(false)
-            handler.tableView.performBatchUpdates({})
-            UIView.setAnimationsEnabled(true)
+            // don't adjust cell height when it's out of the viewport.
+            if (tableView.indexPathsForVisibleRows ?? []).contains(indexPath) {
+                UIView.setAnimationsEnabled(false)
+                tableView.performBatchUpdates({})
+                UIView.setAnimationsEnabled(true)
+            }
         }
     }
 
@@ -251,8 +245,8 @@ private extension ReaderCommentsViewController {
     ///    | Baz   •|
     ///     --------
     ///
-    func menu(for comment: Comment, indexPath: IndexPath, handler: WPTableViewHandler, sourceView: UIView?) -> UIMenu {
-        let commentMenus = commentMenu(for: comment, indexPath: indexPath, handler: handler, sourceView: sourceView)
+    func menu(for comment: Comment, indexPath: IndexPath, tableView: UITableView, sourceView: UIView?) -> UIMenu {
+        let commentMenus = commentMenu(for: comment, indexPath: indexPath, tableView: tableView, sourceView: sourceView)
         return UIMenu(title: "", options: .displayInline, children: commentMenus.map {
             UIMenu(title: "", options: .displayInline, children: $0.map({ menu in menu.toAction }))
         })
@@ -261,7 +255,7 @@ private extension ReaderCommentsViewController {
     /// Returns a list of array that each contains a menu item. Separators will be shown between each array. Note that
     /// the order of comment menu will determine the order of appearance for the corresponding menu element.
     ///
-    func commentMenu(for comment: Comment, indexPath: IndexPath, handler: WPTableViewHandler, sourceView: UIView?) -> [[ReaderCommentMenu]] {
+    func commentMenu(for comment: Comment, indexPath: IndexPath, tableView: UITableView, sourceView: UIView?) -> [[ReaderCommentMenu]] {
         return [
             [
                 .unapprove { [weak self] in
@@ -275,8 +269,9 @@ private extension ReaderCommentsViewController {
                 }
             ],
             [
-                .edit { [weak self] in
-                    self?.editMenuTapped(for: comment, indexPath: indexPath, tableView: handler.tableView)
+                .edit { [weak self, weak tableView] in
+                    guard let tableView else { return }
+                    self?.editMenuTapped(for: comment, indexPath: indexPath, tableView: tableView)
                 },
                 .share { [weak self] in
                     self?.shareComment(comment, sourceView: sourceView)

@@ -3,7 +3,7 @@ import CoreData
 import WordPressUI
 
 final class ReaderCommentsTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
-    private let tableView = UITableView(frame: .zero, style: .plain)
+    @objc let tableView = UITableView(frame: .zero, style: .plain)
     private let padingFooterView = PagingFooterView(state: .loading)
     private lazy var fetchResultsController = makeFetchResultsController()
 
