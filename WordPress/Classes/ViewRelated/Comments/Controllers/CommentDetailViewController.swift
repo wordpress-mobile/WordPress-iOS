@@ -1040,7 +1040,7 @@ private extension CommentDetailViewController {
                 self.commentService.uploadComment(reply, success: { [weak self] in
                     self?.refreshCommentReplyIfNeeded()
                     continuation.resume()
-                }, failure: { [weak self] error in
+                }, failure: { error in
                     DDLogError("Failed uploading comment reply: \(String(describing: error))")
                     continuation.resume(throwing: error ?? URLError(.unknown))
                 })
@@ -1060,7 +1060,7 @@ private extension CommentDetailViewController {
                                                       success: { [weak self] in
                 self?.refreshCommentReplyIfNeeded()
                 continuation.resume()
-            }, failure: { [weak self] error in
+            }, failure: { error in
                 DDLogError("Failed creating post comment reply: \(String(describing: error))")
                 continuation.resume(throwing: error ?? URLError(.unknown))
             })

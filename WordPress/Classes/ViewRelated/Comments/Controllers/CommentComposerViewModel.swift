@@ -13,10 +13,7 @@ final class CommentComposerViewModel {
 
     /// Send a top-level comment to the given post.
     convenience init(post: ReaderPost) {
-        let parameters = CommentComposerParameters(
-            siteID: post.siteID,
-            context: .post(post)
-        )
+        let parameters = CommentComposerParameters(siteID: post.siteID, context: .post)
 
         let suggestionsViewModel = SuggestionsListViewModel.make(siteID: post.siteID)
         suggestionsViewModel?.enableProminentSuggestions(postAuthorID: post.authorID)
@@ -35,10 +32,7 @@ final class CommentComposerViewModel {
             return nil
         }
 
-        let parameters = CommentComposerParameters(
-            siteID: siteID,
-            context: .comment(.init(commentID: comment.commentID as NSNumber))
-        )
+        let parameters = CommentComposerParameters(siteID: siteID, context: .comment)
 
         let suggestionsViewModel = SuggestionsListViewModel.make(siteID: siteID)
         suggestionsViewModel?.enableProminentSuggestions(
@@ -82,17 +76,12 @@ struct CommentComposerParameters {
     var siteID: NSNumber
     var context: Context
 
-    // TODO: (kean) simplify this
     enum Context {
         /// Send a top-level comment to the given post.
-        case post(ReaderPost)
+        case post
 
         /// Send a reply to the given comment.
-        case comment(CommentDetails)
-    }
-
-    struct CommentDetails {
-        var commentID: NSNumber
+        case comment
     }
 }
 

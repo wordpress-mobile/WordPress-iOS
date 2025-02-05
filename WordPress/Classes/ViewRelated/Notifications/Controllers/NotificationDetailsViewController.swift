@@ -682,7 +682,7 @@ private extension NotificationDetailsViewController {
         cell.isApproveOn = commentBlock.isActionOn(id: ApproveCommentAction.actionIdentifier())
 
         // Setup: Callbacks
-        cell.onReplyClick = { [weak self] _ in
+        cell.onReplyClick = { _ in
             wpAssertionFailure("no longer used")
         }
 
