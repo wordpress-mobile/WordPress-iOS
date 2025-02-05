@@ -127,7 +127,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     /// can be scoped by using the "legacy" style when the passed parameter is nil.
     private var style: CellStyle = .init(displaySetting: nil)
 
-    // TODO: (kean) remove
     var displaySetting: ReaderDisplaySettings? = nil {
         didSet {
             style = CellStyle(displaySetting: displaySetting)

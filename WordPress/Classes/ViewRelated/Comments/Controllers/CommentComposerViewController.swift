@@ -136,9 +136,10 @@ final class CommentComposerViewController: UIViewController {
         alert.addDestructiveActionWithTitle(Strings.closeConfirmationAlertDelete) { [weak self] _ in
             self?.presentingViewController?.dismiss(animated: true)
         }
-        alert.addActionWithTitle(Strings.closeConfirmationAlertSaveDraft, style: .default) { _ in
-            // TODO: (kean) implement draft saving
-        }
+        // TODO: (kean) implement draft saving
+//        alert.addActionWithTitle(Strings.closeConfirmationAlertSaveDraft, style: .default) { _ in
+//
+//        }
         alert.popoverPresentationController?.barButtonItem = navigationItem.leftBarButtonItem
         present(alert, animated: true, completion: nil)
     }
