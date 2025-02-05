@@ -12,6 +12,7 @@ XCODE_WORKSPACE = 'WordPress.xcworkspace'
 XCODE_SCHEME = 'WordPress'
 XCODE_CONFIGURATION = 'Debug'
 EXPECTED_XCODE_VERSION = File.read('.xcode-version').rstrip
+GUTENBERG_VERSION = 'v1.121.0'
 
 PROJECT_DIR = __dir__
 abort('Project directory contains one or more spaces – unable to continue.') if PROJECT_DIR.include?(' ')
@@ -19,7 +20,7 @@ abort('Project directory contains one or more spaces – unable to continue.') i
 task default: %w[test]
 
 desc 'Install required dependencies'
-task dependencies: %w[dependencies:check assets:check]
+task dependencies: %w[dependencies:check assets:check dependencies:gutenberg_xcframeworks]
 
 namespace :dependencies do
   task check: %w[ruby:check bundler:check bundle:check credentials:apply]
@@ -99,6 +100,27 @@ bundle exec fastlane run configure_apply force:true
 
       sh(command)
     end
+  end
+
+  desc 'Download and extract Gutenberg xcframeworks'
+  task :gutenberg_xcframeworks do
+    puts 'Setting up Gutenberg xcframeworks...'
+
+    frameworks_dir = 'WordPress/Frameworks'
+    gutenberg_tar_gz_download_path = "#{frameworks_dir}/Gutenberg.tar.gz"
+
+    sh "mkdir -p #{frameworks_dir}"
+    sh "curl https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-#{GUTENBERG_VERSION}.tar.gz --output #{gutenberg_tar_gz_download_path} -C -"
+    sh "tar -xf #{gutenberg_tar_gz_download_path} -C #{frameworks_dir}/ -k"
+    sh "mv -n #{frameworks_dir}/Frameworks/*.xcframework #{frameworks_dir}/"
+    sh "rm -rf #{frameworks_dir}/Frameworks #{frameworks_dir}/dummy.txt"
+
+    FileUtils.mkdir_p [
+      "#{frameworks_dir}/hermes.xcframework/ios-arm64/dSYMs",
+      "#{frameworks_dir}/hermes.xcframework/ios-arm64_x86_64-simulator/dSYMs"
+    ]
+
+    puts 'Gutenberg xcframeworks setup complete'
   end
 end
 
