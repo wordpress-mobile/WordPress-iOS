@@ -15,8 +15,6 @@
 // crash in certain circumstances when the tableView lays out its visible cells,
 // and those cells contain WPRichTextEmbeds. -- Aerych, 2016.11.30
 static CGFloat const EstimatedCommentRowHeight = 300.0;
-static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
-
 
 @interface ReaderCommentsViewController () <NSFetchedResultsControllerDelegate,
                                             WPRichContentViewDelegate, // TODO: Remove once we switch to the `.web` rendering method.
@@ -86,7 +84,8 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     self.estimatedRowHeights = [[NSCache alloc] init];
     self.cachedAttributedStrings = [[NSCache alloc] init];
 
-    self.tableViewController = [ReaderCommentsTableViewController new];
+    self.tableViewController = [[ReaderCommentsTableViewController alloc] initWithPost:self.post];
+    self.tableViewController.containerViewController = self;
     [self configureTableViewController:self.tableViewController];
 
     self.view.backgroundColor = [UIColor systemBackgroundColor];
@@ -483,6 +482,9 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         return;
     }
 
+    // TODO: (kean) reimplement
+    return ;
+
     NSString *image = nil;
     NSString *subtitle = nil;
     if (self.fetchCommentsError != nil) {
@@ -690,7 +692,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 - (void)setupWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID
 {
-    ReaderPostService *service      = [[ReaderPostService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
+    ReaderPostService *service = [[ReaderPostService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     __weak __typeof(self) weakSelf  = self;
     
     self.postSiteID = siteID;
@@ -715,24 +717,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     return [[ContextManager sharedInstance] mainContext];
 }
 
-- (NSFetchRequest *)fetchRequest
-{
-    if (!self.post) {
-        return nil;
-    }
-
-    // Moderated comments could still be cached, so filter out non-approved comments.
-    NSString *approvedStatus = [Comment descriptionFor:CommentStatusTypeApproved];
-
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:NSStringFromClass([Comment class])];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"post = %@ AND status = %@ AND visibleOnReader = %@", self.post, approvedStatus, @YES];
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"hierarchy" ascending:YES];
-    [fetchRequest setSortDescriptors:@[sortDescriptor]];
-
-    return fetchRequest;
-}
-
-- (void)configureCell:(UITableViewCell *)aCell atIndexPath:(NSIndexPath *)indexPath
+- (void)configureCell:(CommentContentTableViewCell *)cell comment:(Comment *)comment indexPath:(NSIndexPath *)indexPath
 {
     // When backgrounding, the app takes a snapshot, which triggers a layout pass,
     // which refreshes the cells, and for some reason triggers an assertion failure
@@ -748,8 +733,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         return;
     }
 
-    Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    CommentContentTableViewCell *cell = (CommentContentTableViewCell *)aCell;
     [self configureContentCell:cell comment:comment indexPath:indexPath handler:self.tableViewHandler];
 
     if (self.highlightedIndexPath) {
@@ -804,14 +787,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     return self.cachedHeaderView;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSString *cellIdentifier = CommentContentCellIdentifier;
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
-    [self configureCell:cell atIndexPath:indexPath];
-    return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

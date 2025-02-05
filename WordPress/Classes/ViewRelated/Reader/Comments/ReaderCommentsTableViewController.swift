@@ -1,33 +1,62 @@
 import UIKit
+import CoreData
 import WordPressUI
 
-final class ReaderCommentsTableViewController: UIViewController {
+final class ReaderCommentsTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
     private let tableView = UITableView(frame: .zero, style: .plain)
     private let padingFooterView = PagingFooterView(state: .loading)
+    private lazy var fetchResultsController = makeFetchResultsController()
 
+    private let post: ReaderPost
     private let commentCellReuseID = "commentCellReuseID"
+    private let moc = ContextManager.shared.mainContext
+
+    /// - note: Temporary code.
+    @objc weak var containerViewController: ReaderCommentsViewController?
+
+    @objc init(post: ReaderPost) {
+        self.post = post
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = .systemBackground
 
+        // Setup view
         setupTableView()
+
+        // Setup fetch
+        do {
+            try fetchResultsController.performFetch()
+            tableView.reloadData()
+            fetchResultsController.delegate = self
+        } catch {
+            wpAssertionFailure("fetch failed", userInfo: ["error": "\(error)"])
+        }
     }
 
     private func setupTableView() {
         tableView.cellLayoutMarginsFollowReadableWidth = true
         tableView.preservesSuperviewLayoutMargins = true
 
-        if Feature.enabled(.readerCommentsWebKit) {
-            // We use this to mask the initial WebKit warmup that takes a bit of time
-            // the first time you initialize a web view. It renders asynchronously, and
-            // we don't want to show cells with empty messages.
-            tableView.alpha = 0.0
-        }
+        // TODO: re-implement
+//        if Feature.enabled(.readerCommentsWebKit) {
+//            // We use this to mask the initial WebKit warmup that takes a bit of time
+//            // the first time you initialize a web view. It renders asynchronously, and
+//            // we don't want to show cells with empty messages.
+//            tableView.alpha = 0.0
+//        }
 
         let nib = UINib(nibName: CommentContentTableViewCell.classNameWithoutNamespaces(), bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: commentCellReuseID)
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 200
 
         tableView.separatorStyle = .singleLine
         tableView.separatorInsetReference = .fromAutomaticInsets
@@ -39,6 +68,9 @@ final class ReaderCommentsTableViewController: UIViewController {
 
         view.addSubview(tableView)
         tableView.pinEdges()
+
+        tableView.dataSource = self
+        tableView.delegate = self
     }
 
     @objc func setBottomInset(_ inset: CGFloat) {
@@ -54,7 +86,63 @@ final class ReaderCommentsTableViewController: UIViewController {
             tableView.sizeToFitFooterView()
         }
     }
-}
 
-// TODO: (kean)
-// - Remove estimatedRowHeights
+    // MARK: - NSFetchedResultsController
+
+    private func makeFetchResultsController() -> NSFetchedResultsController<Comment> {
+        let request = NSFetchRequest<Comment>(entityName: Comment.entityName())
+        request.predicate = NSPredicate(format: "post = %@ AND status = %@ AND visibleOnReader = YES", post, CommentStatusType.approved.description)
+        request.sortDescriptors = [
+            NSSortDescriptor(keyPath: \Comment.hierarchy, ascending: true)
+        ]
+        request.fetchBatchSize = 40
+        return NSFetchedResultsController(fetchRequest: request, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
+    }
+
+    // MARK: - NSFetchedResultsControllerDelegate
+
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<any NSFetchRequestResult>) {
+        tableView.beginUpdates()
+    }
+
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch type {
+        case .insert:
+            guard let newIndexPath else { return }
+            tableView.insertRows(at: [newIndexPath], with: .automatic)
+        case .delete:
+            guard let indexPath else { return }
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        case .update:
+            // The cells are responsible for updating themselves
+            break
+        case .move:
+            guard let indexPath, let newIndexPath else { return }
+            tableView.moveRow(at: indexPath, to: newIndexPath)
+        @unknown default:
+            break
+        }
+    }
+
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<any NSFetchRequestResult>) {
+        tableView.endUpdates()
+    }
+
+    // MARK: - UITableViewDataSource
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        fetchResultsController.fetchedObjects?.count ?? 0
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: commentCellReuseID, for: indexPath) as! CommentContentTableViewCell
+        // TODO: configure cell
+        let comment = fetchResultsController.object(at: indexPath)
+        containerViewController?.configureCell(cell, comment: comment, indexPath: indexPath)
+        return cell
+    }
+
+    // MARK: - UITableViewDataSource
+
+    // TODO: add delegate
+}
