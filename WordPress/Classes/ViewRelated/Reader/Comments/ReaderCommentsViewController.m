@@ -20,7 +20,7 @@
 @property (nonatomic, strong) WPContentSyncHelper *syncHelper;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NoResultsViewController *noResultsViewController;
-@property (nonatomic, strong) UIView *buttonComment;
+@property (nonatomic, strong) UIView *buttonAddComment;
 @property (nonatomic, strong) NSLayoutConstraint *replyTextViewHeightConstraint;
 @property (nonatomic) BOOL isLoggedIn;
 @property (nonatomic) BOOL needsUpdateAttachmentsAfterScrolling;
@@ -116,7 +116,7 @@
 {
     [super viewDidLayoutSubviews];
 
-    [self.tableViewController setBottomInset:self.buttonComment.frame.size.height];
+    [self.tableViewController setBottomInset:self.buttonAddComment.frame.size.height];
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
@@ -196,19 +196,19 @@
 
 - (void)configureCommentButton
 {
-    self.buttonComment = [self makeCommentButton];
+    self.buttonAddComment = [self makeCommentButton];
 }
 
 #pragma mark - Autolayout Helpers
 
 - (void)configureViewConstraints
 {
-    self.buttonComment.translatesAutoresizingMaskIntoConstraints = false;
+    self.buttonAddComment.translatesAutoresizingMaskIntoConstraints = false;
 
     // TODO:
     // This LayoutConstraint is just a helper, meant to hide / display the ReplyTextView, as needed.
     // Whenever iOS 8 is set as the deployment target, let's always attach this one, and enable / disable it as needed!
-    self.replyTextViewHeightConstraint = [NSLayoutConstraint constraintWithItem:self.buttonComment attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:0 multiplier:1 constant:0];
+    self.replyTextViewHeightConstraint = [NSLayoutConstraint constraintWithItem:self.buttonAddComment attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:0 multiplier:1 constant:0];
 }
 
 #pragma mark - Helpers
@@ -388,7 +388,7 @@
 - (void)refreshReplyTextView
 {
     BOOL showsReplyTextView = self.shouldDisplayReplyTextView;
-    self.buttonComment.hidden = !showsReplyTextView;
+    self.buttonAddComment.hidden = !showsReplyTextView;
     
     if (showsReplyTextView) {
         [self.view removeConstraint:self.replyTextViewHeightConstraint];
@@ -447,7 +447,7 @@
         self.noResultsViewController.view.frame = self.tableView.frame;
     }
 
-    [self.view insertSubview:self.noResultsViewController.view belowSubview:self.buttonComment];
+    [self.view insertSubview:self.noResultsViewController.view belowSubview:self.buttonAddComment];
     [self.noResultsViewController didMoveToParentViewController:self];
 }
 
@@ -511,7 +511,7 @@
     if (!indexPath || !self.canComment) {
         return;
     }
-    Comment *comment = [self.tableViewController commentAtIndexPath:indexPath];
+    Comment *comment = [self.tableViewController commentAt:indexPath];
     if (comment) {
         [self didTapReplyWithComment:comment];
     }
