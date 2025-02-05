@@ -45,16 +45,10 @@ public class NotificationsScreen: ScreenObject {
         return self
     }
 
-    public func replyToComment(withText text: String) -> Self {
-        replyCommentButton.tapUntil(
-            element: app.textViews["reply-text-view"].firstMatch,
-            matches: .exists,
-            failureMessage: "Reply Text View does not exists!"
-        )
-
-        app.textViews["reply-text-view"].firstMatch.typeText(text)
-        app.buttons["reply-button"].firstMatch.tap()
-
+    public func replyToComment(withText text: String) throws -> Self {
+        replyCommentButton.tap()
+        try CommentComposerScreen()
+            .sendComment(text)
         return self
     }
 

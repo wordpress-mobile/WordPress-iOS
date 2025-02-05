@@ -9,15 +9,13 @@ extension NSNotification.Name {
 }
 
 @objc extension ReaderCommentsViewController {
-    func makeReplyTextView() -> UIView {
-        let textView = ReplyTextView()
-        textView.onTapped = { [weak self] in
-            self?.didTapAddComment()
-        }
-        return textView
+    func makeCommentButton() -> UIView {
+        let button = CommentLargeButton()
+        button.addTarget(self, action: #selector(buttonAddCommentTapped), for: .primaryActionTriggered)
+        return button
     }
 
-    func didTapAddComment() {
+    func buttonAddCommentTapped() {
         let viewModel = CommentComposerViewModel(post: post)
         viewModel.save = { [weak self] in
             try await self?.sendComment($0)

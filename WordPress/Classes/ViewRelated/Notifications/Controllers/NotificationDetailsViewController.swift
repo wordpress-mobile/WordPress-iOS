@@ -50,7 +50,7 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
 
     /// RelpyTextView
     ///
-    @IBOutlet var replyTextView: ReplyTextView!
+    @IBOutlet var replyTextView: CommentLargeButton!
 
     /// Embedded Media Downloader
     ///
@@ -397,16 +397,15 @@ extension NotificationDetailsViewController {
     }
 
     func setupReplyTextView() {
-        let replyTextView = ReplyTextView(width: view.frame.width)
+        let replyTextView = CommentLargeButton()
 
         replyTextView.placeholder = NSLocalizedString("Write a reply", comment: "Placeholder text for inline compose view")
-        replyTextView.accessibilityIdentifier = .replyTextViewAccessibilityId
         replyTextView.accessibilityLabel = NSLocalizedString("Reply Text", comment: "Notifications Reply Accessibility Identifier")
 
-        replyTextView.onTapped = {
+        replyTextView.addAction(UIAction { _ in
             // TODO: (kean) remove the remaining .comment-related code
             wpAssertionFailure("Notifications have been using NotificationCommentDetailViewController since 2023")
-        }
+        }, for: .primaryActionTriggered)
 
         replyTextView.setContentCompressionResistancePriority(.required, for: .vertical)
 

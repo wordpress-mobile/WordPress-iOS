@@ -31,7 +31,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) WPTableViewHandler *tableViewHandler;
 @property (nonatomic, strong) NoResultsViewController *noResultsViewController;
-@property (nonatomic, strong) UIView *replyTextView;
+@property (nonatomic, strong) UIView *buttonComment;
 @property (nonatomic, strong) NSLayoutConstraint *replyTextViewHeightConstraint;
 @property (nonatomic, strong) NSCache *estimatedRowHeights;
 @property (nonatomic) BOOL isLoggedIn;
@@ -93,7 +93,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     [self configureTableView];
     [self configureTableViewHandler];
     [self configureNoResultsView];
-    [self configureReplyTextView];
+    [self configureCommentButton];
     [self configureViewConstraints];
 
     [self listenForClipboardChanges];
@@ -248,11 +248,11 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     self.noResultsViewController = [NoResultsViewController controller];
 }
 
-- (void)configureReplyTextView
+- (void)configureCommentButton
 {
-    self.replyTextView = [self makeReplyTextView];
-    [self.view addSubview:self.replyTextView];
-    [self.view bringSubviewToFront:self.replyTextView];
+    self.buttonComment = [self makeCommentButton];
+    [self.view addSubview:self.buttonComment];
+    [self.view bringSubviewToFront:self.buttonComment];
 }
 
 #pragma mark - Autolayout Helpers
@@ -260,11 +260,11 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 - (void)configureViewConstraints
 {
     self.tableView.translatesAutoresizingMaskIntoConstraints = false;
-    self.replyTextView.translatesAutoresizingMaskIntoConstraints = false;
+    self.buttonComment.translatesAutoresizingMaskIntoConstraints = false;
 
     NSMutableDictionary *views = [[NSMutableDictionary alloc] initWithDictionary:@{
         @"tableView": self.tableView,
-        @"replyTextView": self.replyTextView
+        @"replyTextView": self.buttonComment
     }];
 
     NSString *verticalVisualFormatString = @"V:|[tableView][replyTextView]";
@@ -275,15 +275,15 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[tableView]|" options:0 metrics:nil views:views]];
 
     [NSLayoutConstraint activateConstraints:@[
-        [self.replyTextView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
-        [self.replyTextView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
-        [self.view.keyboardLayoutGuide.topAnchor constraintEqualToAnchor:self.replyTextView.bottomAnchor]
+        [self.buttonComment.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+        [self.buttonComment.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
+        [self.view.keyboardLayoutGuide.topAnchor constraintEqualToAnchor:self.buttonComment.bottomAnchor]
     ]];
 
     // TODO:
     // This LayoutConstraint is just a helper, meant to hide / display the ReplyTextView, as needed.
     // Whenever iOS 8 is set as the deployment target, let's always attach this one, and enable / disable it as needed!
-    self.replyTextViewHeightConstraint = [NSLayoutConstraint constraintWithItem:self.replyTextView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:0 multiplier:1 constant:0];
+    self.replyTextViewHeightConstraint = [NSLayoutConstraint constraintWithItem:self.buttonComment attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:0 multiplier:1 constant:0];
 }
 
 
@@ -531,7 +531,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 - (void)refreshReplyTextView
 {
     BOOL showsReplyTextView = self.shouldDisplayReplyTextView;
-    self.replyTextView.hidden = !showsReplyTextView;
+    self.buttonComment.hidden = !showsReplyTextView;
     
     if (showsReplyTextView) {
         [self.view removeConstraint:self.replyTextViewHeightConstraint];
@@ -601,7 +601,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         self.noResultsViewController.view.frame = self.tableView.frame;
     }
 
-    [self.view insertSubview:self.noResultsViewController.view belowSubview:self.replyTextView];
+    [self.view insertSubview:self.noResultsViewController.view belowSubview:self.buttonComment];
     [self.noResultsViewController didMoveToParentViewController:self];
 }
 

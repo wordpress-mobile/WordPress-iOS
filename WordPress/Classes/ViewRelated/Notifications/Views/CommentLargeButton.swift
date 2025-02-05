@@ -2,15 +2,10 @@ import UIKit
 import WordPressUI
 import WordPressShared
 
-final class ReplyTextView: UIView {
+final class CommentLargeButton: UIButton {
     private let iconView = MyProfileIconView(hidesWhenEmpty: true)
     private var containerView = UIView()
     private let placeholderLabel = UILabel()
-
-    convenience init(width: CGFloat) {
-        let frame = CGRect(x: 0, y: 0, width: width, height: 0)
-        self.init(frame: frame)
-    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -34,9 +29,10 @@ final class ReplyTextView: UIView {
         get { placeholderLabel.text }
     }
 
-    var onTapped: (() -> Void)?
-
     private func setupView() {
+        accessibilityIdentifier = "button_add_comment_large"
+        accessibilityLabel = NSLocalizedString("addCommentButton.accessibilityIdentifity", value: "Add Comment", comment: "Accessibility identifier for an 'Add Comment' button")
+
         placeholderLabel.textColor = .tertiaryLabel
 
         placeholderLabel.text = CommentComposerViewModel.leaveCommentLocalizedPlaceholder
@@ -52,11 +48,5 @@ final class ReplyTextView: UIView {
         let divider = SeparatorView.horizontal()
         addSubview(divider)
         divider.pinEdges([.top, .horizontal])
-
-        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapRecognized)))
-    }
-
-    @objc private func tapRecognized() {
-        onTapped?()
     }
 }

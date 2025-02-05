@@ -21,7 +21,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
     private let tableView = UITableView(frame: .zero, style: .plain)
 
     // Reply properties
-    private var replyTextView: ReplyTextView?
+    private var addCommentButton: CommentLargeButton?
 
     @objc weak var commentDelegate: CommentDetailsDelegate?
     private weak var notificationDelegate: CommentDetailsNotificationDelegate?
@@ -261,7 +261,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
     @objc func displayComment(_ comment: Comment, isLastInList: Bool = true) {
         self.comment = comment
         self.isLastInList = isLastInList
-        replyTextView?.placeholder = String(format: .replyPlaceholderFormat, comment.authorForDisplay())
+        addCommentButton?.placeholder = String(format: .replyPlaceholderFormat, comment.authorForDisplay())
         refreshData()
         refreshCommentReplyIfNeeded()
     }
@@ -449,7 +449,7 @@ private extension CommentDetailViewController {
         }
 
         cell.replyButtonAction = { [weak self] in
-            self?.showCommentComposer()
+            self?.buttonAddCommentTapped()
         }
     }
 
@@ -715,7 +715,6 @@ private extension String {
     static let moderationCellIdentifier = "moderationCell"
     static let trashButtonAccessibilityId = "trash-comment-button"
     static let deleteButtonAccessibilityId = "delete-comment-button"
-    static let replyViewAccessibilityId = "reply-comment-view"
 
     // MARK: Localization
     static let replyPlaceholderFormat = NSLocalizedString("Reply to %1$@", comment: "Placeholder text for the reply text field."
@@ -999,20 +998,17 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
 private extension CommentDetailViewController {
 
     func configureReplyView() {
-        let replyView = ReplyTextView(width: view.frame.width)
+        let button = CommentLargeButton()
 
-        replyView.placeholder = String(format: .replyPlaceholderFormat, comment.authorForDisplay())
-        replyView.accessibilityIdentifier = .replyViewAccessibilityId
-        replyView.accessibilityHint = NSLocalizedString("Reply Text", comment: "Notifications Reply Accessibility Identifier")
-        replyView.onTapped = { [weak self] in
-            self?.showCommentComposer()
-        }
-        replyView.isHidden = true
-        containerStackView.addArrangedSubview(replyView)
-        replyTextView = replyView
+        button.placeholder = String(format: .replyPlaceholderFormat, comment.authorForDisplay())
+        button.accessibilityHint = NSLocalizedString("Reply Text", comment: "Notifications Reply Accessibility Identifier")
+        button.addTarget(self, action: #selector(buttonAddCommentTapped), for: .primaryActionTriggered)
+        button.isHidden = true
+        containerStackView.addArrangedSubview(button)
+        addCommentButton = button
     }
 
-    func showCommentComposer() {
+    @objc func buttonAddCommentTapped() {
         guard let viewModel = CommentComposerViewModel(comment: comment) else {
             return wpAssertionFailure("missing required parameters")
         }

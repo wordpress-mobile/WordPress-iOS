@@ -44,6 +44,7 @@ final class CommentComposerViewController: UIViewController {
 
         setupTextView()
         setupNavigationBar()
+        setupAccessibility()
 
         updateInterface()
     }
@@ -73,6 +74,11 @@ final class CommentComposerViewController: UIViewController {
         view.addSubview(textView)
         textView.pinEdges([.top, .horizontal], to: view.safeAreaLayoutGuide)
         textView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor).isActive = true
+    }
+
+    private func setupAccessibility() {
+        textView.accessibilityIdentifier = "edit_comment_text_view"
+        navigationItem.rightBarButtonItem?.accessibilityIdentifier = "button_send_comment"
     }
 
     // MARK: - Suggestions
