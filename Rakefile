@@ -147,7 +147,11 @@ bundle exec fastlane run configure_apply force:true
     ]
 
     # Cleanup
-    FileUtils.rm_rf(["#{frameworks_dir}/Frameworks", "#{frameworks_dir}/dummy.txt"])
+    FileUtils.rm_rf [
+      gutenberg_tar_gz_download_path,
+      "#{frameworks_dir}/Frameworks",
+      "#{frameworks_dir}/dummy.txt"
+    ]
 
     puts 'Gutenberg xcframeworks setup complete'
   end
