@@ -397,7 +397,6 @@ extension NotificationDetailsViewController {
     }
 
     func setupReplyTextView() {
-        let previousReply = NotificationReplyStore.shared.loadReply(for: note.notificationId)
         let replyTextView = ReplyTextView(width: view.frame.width)
 
         replyTextView.placeholder = NSLocalizedString("Write a reply", comment: "Placeholder text for inline compose view")
@@ -412,15 +411,6 @@ extension NotificationDetailsViewController {
         replyTextView.setContentCompressionResistancePriority(.required, for: .vertical)
 
         self.replyTextView = replyTextView
-    }
-
-    func showCommentComposer() {
-        guard let viewModel = CommentComposerViewModel(notification: note) else {
-            return wpAssertionFailure("missing required parameters")
-        }
-        let composerVC = CommentComposerViewController(viewModel: viewModel)
-        let navigationVC = UINavigationController(rootViewController: composerVC)
-        present(navigationVC, animated: true)
     }
 
     func setupNotificationListeners() {
@@ -693,7 +683,7 @@ private extension NotificationDetailsViewController {
 
         // Setup: Callbacks
         cell.onReplyClick = { [weak self] _ in
-            self?.showCommentComposer()
+            wpAssertionFailure("no longer used")
         }
 
         cell.onLikeClick = { [weak self] _ in

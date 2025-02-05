@@ -1007,11 +1007,6 @@ private extension CommentDetailViewController {
         replyView.onTapped = { [weak self] in
             self?.showCommentComposer()
         }
-        // TODO: (kean) reimplement
-//        replyView.onReply = { [weak self] content in
-//            self?.createReply(content: content)
-//        }
-
         replyView.isHidden = true
         containerStackView.addArrangedSubview(replyView)
         replyTextView = replyView
@@ -1021,44 +1016,55 @@ private extension CommentDetailViewController {
         guard let viewModel = CommentComposerViewModel(comment: comment) else {
             return wpAssertionFailure("missing required parameters")
         }
+        viewModel.save = { [weak self] in
+            try await self?.createReply(content: $0)
+        }
         let composerVC = CommentComposerViewController(viewModel: viewModel)
         let navigationVC = UINavigationController(rootViewController: composerVC)
         present(navigationVC, animated: true)
     }
 
-    // TODO: (kean) remove
-    @objc func createReply(content: String) {
+    @MainActor
+    func createReply(content: String) async throws {
         isNotificationComment ? WPAppAnalytics.track(.notificationsCommentRepliedTo) :
                                 CommentAnalytics.trackCommentRepliedTo(comment: comment)
 
         // If there is no Blog, try with the Post.
         guard comment.blog != nil else {
-            createPostCommentReply(content: content)
+            try await createPostCommentReply(content: content)
             return
         }
 
-        commentService.createReply(for: comment, content: content) { reply in
-            self.commentService.uploadComment(reply, success: { [weak self] in
-                self?.refreshCommentReplyIfNeeded()
-            }, failure: { [weak self] error in
-                DDLogError("Failed uploading comment reply: \(String(describing: error))")
-            })
+        try await withUnsafeThrowingContinuation { continuation in
+            commentService.createReply(for: comment, content: content) { reply in
+                self.commentService.uploadComment(reply, success: { [weak self] in
+                    self?.refreshCommentReplyIfNeeded()
+                    continuation.resume()
+                }, failure: { [weak self] error in
+                    DDLogError("Failed uploading comment reply: \(String(describing: error))")
+                    continuation.resume(throwing: error ?? URLError(.unknown))
+                })
+            }
         }
     }
 
-    func createPostCommentReply(content: String) {
+    @MainActor
+    func createPostCommentReply(content: String) async throws {
         guard let post = comment.post as? ReaderPost else {
             return
         }
-
-        commentService.replyToHierarchicalComment(withID: NSNumber(value: comment.commentID),
-                                                  post: post,
-                                                  content: content,
-                                                  success: { [weak self] in
-            self?.refreshCommentReplyIfNeeded()
-        }, failure: { [weak self] error in
-            DDLogError("Failed creating post comment reply: \(String(describing: error))")
-        })
+        try await withUnsafeThrowingContinuation { continuation in
+            commentService.replyToHierarchicalComment(withID: NSNumber(value: comment.commentID),
+                                                      post: post,
+                                                      content: content,
+                                                      success: { [weak self] in
+                self?.refreshCommentReplyIfNeeded()
+                continuation.resume()
+            }, failure: { [weak self] error in
+                DDLogError("Failed creating post comment reply: \(String(describing: error))")
+                continuation.resume(throwing: error ?? URLError(.unknown))
+            })
+        }
     }
 }
 
