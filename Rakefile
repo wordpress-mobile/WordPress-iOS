@@ -6,6 +6,9 @@ require 'tmpdir'
 require 'rake/clean'
 require 'yaml'
 require 'digest'
+require 'open-uri'
+require 'rubygems/package'
+require 'zlib'
 
 RUBY_REPO_VERSION = File.read('./.ruby-version').rstrip
 XCODE_WORKSPACE = 'WordPress.xcworkspace'
@@ -107,18 +110,44 @@ bundle exec fastlane run configure_apply force:true
     puts 'Setting up Gutenberg xcframeworks...'
 
     frameworks_dir = 'WordPress/Frameworks'
+
+    # Clean the slate
+    FileUtils.rm_rf(frameworks_dir)
+    FileUtils.mkdir_p(frameworks_dir)
+
     gutenberg_tar_gz_download_path = "#{frameworks_dir}/Gutenberg.tar.gz"
 
-    sh "mkdir -p #{frameworks_dir}"
-    sh "curl https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-#{GUTENBERG_VERSION}.tar.gz --output #{gutenberg_tar_gz_download_path} -C -"
-    sh "tar -xf #{gutenberg_tar_gz_download_path} -C #{frameworks_dir}/ -k"
-    sh "mv -n #{frameworks_dir}/Frameworks/*.xcframework #{frameworks_dir}/"
-    sh "rm -rf #{frameworks_dir}/Frameworks #{frameworks_dir}/dummy.txt"
+    URI.open("https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-#{GUTENBERG_VERSION}.tar.gz") do |remote_file|
+      File.binwrite(gutenberg_tar_gz_download_path, remote_file.read)
+    end
 
+    # Extract the archive
+    Zlib::GzipReader.open(gutenberg_tar_gz_download_path) do |gz|
+      Gem::Package::TarReader.new(gz) do |tar|
+        tar.each do |entry|
+          next unless entry.file?
+
+          dest_path = File.join(frameworks_dir, entry.full_name)
+          FileUtils.mkdir_p(File.dirname(dest_path))
+
+          File.binwrite(dest_path, entry.read)
+        end
+      end
+    end
+
+    # Move xcframeworks to the correct location
+    Dir.glob("#{frameworks_dir}/Frameworks/*.xcframework").each do |framework|
+      FileUtils.mv(framework, frameworks_dir, force: false)
+    end
+
+    # Create dSYMs directories
     FileUtils.mkdir_p [
       "#{frameworks_dir}/hermes.xcframework/ios-arm64/dSYMs",
       "#{frameworks_dir}/hermes.xcframework/ios-arm64_x86_64-simulator/dSYMs"
     ]
+
+    # Cleanup
+    FileUtils.rm_rf(["#{frameworks_dir}/Frameworks", "#{frameworks_dir}/dummy.txt"])
 
     puts 'Gutenberg xcframeworks setup complete'
   end
