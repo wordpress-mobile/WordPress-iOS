@@ -33,6 +33,8 @@ final class CommentLargeButton: UIButton {
         accessibilityIdentifier = "button_add_comment_large"
         accessibilityLabel = NSLocalizedString("addCommentButton.accessibilityIdentifity", value: "Add Comment", comment: "Accessibility identifier for an 'Add Comment' button")
 
+        backgroundColor = .systemBackground
+
         placeholderLabel.textColor = .tertiaryLabel
 
         placeholderLabel.text = CommentComposerViewModel.leaveCommentLocalizedPlaceholder
@@ -43,7 +45,7 @@ final class CommentLargeButton: UIButton {
 
         let stackView = UIStackView(alignment: .center, spacing: 8, [iconView, containerView])
         addSubview(stackView)
-        stackView.pinEdges(insets: UIEdgeInsets.init(top: 14, left: 20, bottom: 8, right: 20))
+        stackView.pinEdges(to: safeAreaLayoutGuide, insets: UIEdgeInsets.init(top: 14, left: 20, bottom: 8, right: 20))
 
         let divider = SeparatorView.horizontal()
         addSubview(divider)

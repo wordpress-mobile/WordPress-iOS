@@ -58,8 +58,7 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 200
 
-        tableView.separatorStyle = .singleLine
-        tableView.separatorInsetReference = .fromAutomaticInsets
+        tableView.separatorStyle = .none
 
         // Hide cell separator for the last row
         tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 0))
