@@ -3,6 +3,7 @@ import WordPressUI
 
 final class ReaderCommentsTableViewController: UIViewController {
     let tableView = UITableView(frame: .zero, style: .plain)
+    let padingFooterView = PagingFooterView(state: .loading)
 
     private let commentCellReuseID = "commentCellReuseID"
 
@@ -15,7 +16,6 @@ final class ReaderCommentsTableViewController: UIViewController {
     }
 
     private func setupTableView() {
-        tableView = UITableView(frame: view.bounds, style: .plain)
         tableView.cellLayoutMarginsFollowReadableWidth = true
         tableView.preservesSuperviewLayoutMargins = true
 
@@ -41,7 +41,7 @@ final class ReaderCommentsTableViewController: UIViewController {
         tableView.pinEdges()
     }
 
-    func setTableLoadingFooterHidden(_ isHidden: Bool) {
+    @objc func setLoadingFooterHidden(_ isHidden: Bool) {
         if isHidden {
             // Hide cell separator for the last row
             tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 0))
@@ -51,7 +51,6 @@ final class ReaderCommentsTableViewController: UIViewController {
         }
     }
 }
-
 
 // TODO: (kean)
 // - Remove estimatedRowHeights

@@ -21,12 +21,10 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 @interface ReaderCommentsViewController () <NSFetchedResultsControllerDelegate,
                                             WPRichContentViewDelegate, // TODO: Remove once we switch to the `.web` rendering method.
                                             WPContentSyncHelperDelegate,
-                                            WPTableViewHandlerDelegate,
                                             ReaderCommentsFollowPresenterDelegate>
 
 @property (nonatomic, strong, readwrite) ReaderPost *post;
 @property (nonatomic, strong) NSNumber *postSiteID;
-@property (nonatomic, strong) UIActivityIndicatorView *activityFooter;
 @property (nonatomic, strong) WPContentSyncHelper *syncHelper;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) WPTableViewHandler *tableViewHandler;
@@ -110,18 +108,9 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 {
     [super viewWillAppear:animated];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(handleApplicationDidBecomeActive:)
-                                                 name:UIApplicationDidBecomeActiveNotification
-                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 
     [self refreshAndSync];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    [self.tableView reloadData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -135,6 +124,13 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     }
 
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+
+    self.tableViewController.tableView.contentInset.bottom = self.buttonComment.frame.size.height;
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
@@ -234,7 +230,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 - (void)configureViewConstraints
 {
-    self.tableView.translatesAutoresizingMaskIntoConstraints = false;
     self.buttonComment.translatesAutoresizingMaskIntoConstraints = false;
 
     NSMutableDictionary *views = [[NSMutableDictionary alloc] initWithDictionary:@{
@@ -260,7 +255,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     // Whenever iOS 8 is set as the deployment target, let's always attach this one, and enable / disable it as needed!
     self.replyTextViewHeightConstraint = [NSLayoutConstraint constraintWithItem:self.buttonComment attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:0 multiplier:1 constant:0];
 }
-
 
 #pragma mark - Helpers
 
@@ -429,21 +423,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     return self.post.siteID ?: self.postSiteID;
 }
 
-- (UIActivityIndicatorView *)activityFooter
-{
-    if (_activityFooter) {
-        return _activityFooter;
-    }
-
-    _activityFooter = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleMedium];
-    _activityFooter.activityIndicatorViewStyle = UIActivityIndicatorViewStyleMedium;
-    _activityFooter.hidesWhenStopped = YES;
-    _activityFooter.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-    [_activityFooter stopAnimating];
-
-    return _activityFooter;
-}
-
 - (BOOL)isLoadingPost
 {
     return self.post == nil;
@@ -512,21 +491,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 - (void)refreshInfiniteScroll
 {
-    if (self.syncHelper.hasMoreContent) {
-        CGFloat width = CGRectGetWidth(self.tableView.bounds);
-        UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, 50.0f)];
-        footerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        CGRect rect = self.activityFooter.frame;
-        rect.origin.x = (width - rect.size.width) / 2.0;
-        self.activityFooter.frame = rect;
-
-        [footerView addSubview:self.activityFooter];
-        self.tableView.tableFooterView = footerView;
-        
-    } else {
-        self.tableView.tableFooterView = [self tableFooterViewForHiddenSeparators];
-        self.activityFooter = nil;
-    }
+    [self.tableViewController setLoadingFooterHidden:YES];
 }
 
 - (void)refreshNoResultsView
@@ -712,7 +677,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
     self.fetchCommentsError = nil;
-    [self.activityFooter startAnimating];
+    [self.tableViewController setLoadingFooterHidden:NO];
 
     CommentService *service = [[CommentService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     NSInteger page = [service numberOfHierarchicalPagesSyncedforPost:self.post] + 1;
@@ -725,7 +690,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 - (void)syncContentEnded:(WPContentSyncHelper *)syncHelper
 {
-    [self.activityFooter stopAnimating];
+    [self.tableViewController setLoadingFooterHidden:YES];
     if ([self.tableViewHandler isScrolling]) {
         self.needsRefreshTableViewAfterScrolling = YES;
         return;
@@ -737,7 +702,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 - (void)syncContentFailed:(WPContentSyncHelper *)syncHelper
 {
     self.fetchCommentsError = [NSError errorWithDomain:@"" code:0 userInfo:nil];
-    [self.activityFooter stopAnimating];
+    [self.tableViewController setLoadingFooterHidden:YES];
     [self refreshTableViewAndNoResultsView];
 }
 
@@ -758,7 +723,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     } failure:^(NSError *error) {
         DDLogError(@"[RestAPI] %@", error);
         self.fetchCommentsError = error;
-        [self.activityFooter stopAnimating];
+        [self.tableViewController setLoadingFooterHidden:YES];
         [self refreshTableViewAndNoResultsView];
     }];
 }
