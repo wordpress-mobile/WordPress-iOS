@@ -714,33 +714,6 @@
     }
 }
 
-#pragma mark - UIScrollView Delegate Methods
-
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
-    [self.tableView deselectSelectedRowWithAnimation:YES];
-
-    if (self.needsRefreshTableViewAfterScrolling) {
-        self.needsRefreshTableViewAfterScrolling = NO;
-        [self refreshTableViewAndNoResultsView];
-
-        // If we reloaded the tableView we also updated cell heights
-        // so there is no need to update for attachments.
-        self.needsUpdateAttachmentsAfterScrolling = NO;
-    }
-
-    if (self.needsUpdateAttachmentsAfterScrolling) {
-        self.needsUpdateAttachmentsAfterScrolling = NO;
-
-        for (UITableViewCell *cell in [self.tableView visibleCells]) {
-            if ([cell isKindOfClass:[CommentContentTableViewCell class]]) {
-                [(CommentContentTableViewCell *)cell ensureRichContentTextViewLayout];
-            }
-        }
-        [self updateTableViewForAttachments];
-    }
-}
-
 #pragma mark - WPRichContentDelegate Methods
 
 - (void)richContentView:(WPRichContentView *)richContentView didReceiveImageAction:(WPRichTextImage *)image
