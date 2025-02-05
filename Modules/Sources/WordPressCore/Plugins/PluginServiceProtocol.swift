@@ -1,11 +1,14 @@
 import Foundation
 import WordPressAPI
+import WordPressAPIInternal
 
 public protocol PluginServiceProtocol: Actor {
 
     func fetchInstalledPlugins() async throws
+    func fetchPluginInformation(slug: PluginWpOrgDirectorySlug) async throws
 
     func installedPluginsUpdates(query: PluginDataStoreQuery) async -> AsyncStream<Result<[InstalledPlugin], Error>>
+    func pluginInformationUpdates(query: PluginDirectoryDataStoreQuery) async -> AsyncStream<Result<[PluginInformation], Error>>
 
     func resolveIconURL(of slug: PluginWpOrgDirectorySlug) async -> URL?
 

@@ -38,7 +38,7 @@ else
 fi
 
 if [[ "$CONFIGURATION" = *Debug* && ! "$PLATFORM_NAME" == *simulator ]]; then
-  IP=$(ipconfig getifaddr en0)
+  IP=$(ipconfig getifaddr en0 || echo "")
   if [ -z "$IP" ]; then
     IP=$(ifconfig | grep 'inet ' | grep -v ' 127.' | cut -d\   -f2  | awk 'NR==1{print $1}')
   fi

@@ -25,7 +25,18 @@ struct InstalledPluginsListView: View {
                 List {
                     Section {
                         ForEach(viewModel.displayingPlugins, id: \.self) { plugin in
-                            PluginListItemView(plugin: plugin, viewModel: viewModel)
+                            ZStack {
+                                PluginListItemView(plugin: plugin, viewModel: viewModel)
+                                if let slug = plugin.possibleWpOrgDirectorySlug {
+                                    // Using `PluginListItemView` as `NavigationLink`'s content would show an disclosure
+                                    // indicator on the list cell, which looks a bit off with the ellipsis button on the
+                                    // list cell.
+                                    // Here we use an empty transparent `NavigationLink` as a workaround to hide the
+                                    // disclosure indicator.
+                                    NavigationLink { PluginDetailsView(slug: slug, plugin: plugin, service: viewModel.service) } label: { EmptyView() }
+                                        .opacity(0.0)
+                                }
+                            }
                         }
                     }
                     .listSectionSeparator(.hidden, edges: .top)
