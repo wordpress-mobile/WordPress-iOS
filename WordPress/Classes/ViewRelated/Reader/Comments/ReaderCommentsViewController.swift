@@ -19,7 +19,9 @@ extension NSNotification.Name {
 
     func makeCommentButton() -> UIView {
         let button = CommentLargeButton()
-        button.addTarget(self, action: #selector(buttonAddCommentTapped), for: .primaryActionTriggered)
+        button.onTap = { [weak self] in
+            self?.buttonAddCommentTapped()
+        }
         view.addSubview(button)
         button.pinEdges([.horizontal, .bottom])
         return button

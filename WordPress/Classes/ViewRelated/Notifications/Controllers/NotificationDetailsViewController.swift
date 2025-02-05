@@ -402,10 +402,10 @@ extension NotificationDetailsViewController {
         replyTextView.placeholder = NSLocalizedString("Write a reply", comment: "Placeholder text for inline compose view")
         replyTextView.accessibilityLabel = NSLocalizedString("Reply Text", comment: "Notifications Reply Accessibility Identifier")
 
-        replyTextView.addAction(UIAction { _ in
+        replyTextView.onTap = {
             // TODO: (kean) remove the remaining .comment-related code
             wpAssertionFailure("Notifications have been using NotificationCommentDetailViewController since 2023")
-        }, for: .primaryActionTriggered)
+        }
 
         replyTextView.setContentCompressionResistancePriority(.required, for: .vertical)
 

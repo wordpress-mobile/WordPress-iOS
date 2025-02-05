@@ -2,10 +2,13 @@ import UIKit
 import WordPressUI
 import WordPressShared
 
-final class CommentLargeButton: UIButton {
+final class CommentLargeButton: UIView {
     private let iconView = MyProfileIconView(hidesWhenEmpty: true)
-    private var containerView = CommentFieldContainerView()
+    private var containerView = UIView()
     private let placeholderLabel = UILabel()
+    private let button = UIButton()
+
+    var onTap: (() -> Void)?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -15,6 +18,13 @@ final class CommentLargeButton: UIButton {
     required init(coder: NSCoder) {
         super.init(coder: coder)!
         setupView()
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        containerView.layer.cornerRadius = containerView.bounds.height / 2
+        containerView.layer.masksToBounds = true
     }
 
     var placeholder: String? {
@@ -43,15 +53,12 @@ final class CommentLargeButton: UIButton {
         let divider = SeparatorView.horizontal()
         addSubview(divider)
         divider.pinEdges([.top, .horizontal])
-    }
-}
 
-private final class CommentFieldContainerView: UIView {
-    // LayoutSubviews in UIButton subclasses seems to get called too early
-    override func layoutSubviews() {
-        super.layoutSubviews()
-
-        layer.cornerRadius = bounds.height / 2
-        layer.masksToBounds = true
+        addSubview(button)
+        button.pinEdges() // Make sure it covers everything
     }
-}
+
+    @objc private func buttonTapped() {
+        onTap?()
+    }
+ }
