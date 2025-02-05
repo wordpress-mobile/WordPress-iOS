@@ -14,7 +14,6 @@ BUNDLE_FILE="$DEST/main.jsbundle"
 BUNDLE_ASSETS="$DEST/assets/"
 
 if [[ -d $XCFRAMEWORK_BUNDLE_ROOT ]]; then
-  set +x
   cp "$XCFRAMEWORK_BUNDLE_ROOT/App.js" "$BUNDLE_FILE"
   # It appears we don't need to copy the assets when working with the XCFramework
 elif [[ -d $LOCAL_BUNDLE ]]; then
