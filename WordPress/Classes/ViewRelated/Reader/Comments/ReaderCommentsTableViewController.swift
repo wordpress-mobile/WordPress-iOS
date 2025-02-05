@@ -115,16 +115,6 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
         }
     }
 
-    // MARK: - EmptyStateView
-
-    func showEmptyStateView(imageName: String, title: String) {
-
-    }
-
-    func hideEmptyStateView() {
-        
-    }
-
     // MARK: - NSFetchedResultsController
 
     private func makeFetchResultsController() -> NSFetchedResultsController<Comment> {

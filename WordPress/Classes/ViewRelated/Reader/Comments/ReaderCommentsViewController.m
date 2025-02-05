@@ -410,7 +410,7 @@
 {
     [self.noResultsViewController removeFromView];
 
-    // TODO: (kean) reimplement
+    // TODO: (kean) reimplement empty state view
 //    BOOL isTableViewEmpty = (self.tableViewHandler.resultsController.fetchedObjects.count == 0);
 //    if (!isTableViewEmpty) {
 //        return;
