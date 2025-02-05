@@ -779,49 +779,11 @@ static CGFloat const EstimatedCommentRowHeight = 300.0;
     return EstimatedCommentRowHeight;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)loadMore
 {
-    return UITableViewAutomaticDimension;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    return self.cachedHeaderView;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
-}
-
-- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return NO;
-}
-
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [self.estimatedRowHeights setObject:@(cell.frame.size.height) forKey:indexPath];
-
-    // Are we approaching the end of the table?
-    if ((indexPath.section + 1 == [self.tableViewHandler numberOfSectionsInTableView:tableView]) &&
-        (indexPath.row + 4 >= [self.tableViewHandler tableView:tableView numberOfRowsInSection:indexPath.section])) {
-
-        // Only 3 rows till the end of table
-        if (self.syncHelper.hasMoreContent) {
-            [self.syncHelper syncMoreContent];
-        }
+    if (self.syncHelper.hasMoreContent) {
+        [self.syncHelper syncMoreContent];
     }
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return UITableViewAutomaticDimension;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return 0;
 }
 
 #pragma mark - UIScrollView Delegate Methods

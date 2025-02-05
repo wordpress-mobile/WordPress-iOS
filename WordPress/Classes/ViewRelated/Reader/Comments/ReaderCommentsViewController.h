@@ -40,5 +40,7 @@ typedef NS_ENUM(NSUInteger, ReaderCommentsSource) {
 - (NSAttributedString *)cacheContentForComment:(Comment *)comment;
 - (void)trackReplyTo:(BOOL)replyTarget;
 - (void)configureCell:(CommentContentTableViewCell *)cell comment:(Comment *)comment indexPath:(NSIndexPath *)indexPath;
+- (UIView *)cachedHeaderView;
+- (void)loadMore;
 
 @end

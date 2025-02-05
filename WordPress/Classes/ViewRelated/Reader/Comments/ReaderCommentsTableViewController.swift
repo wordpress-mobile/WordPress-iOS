@@ -136,13 +136,23 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: commentCellReuseID, for: indexPath) as! CommentContentTableViewCell
-        // TODO: configure cell
+        cell.selectionStyle = .none
         let comment = fetchResultsController.object(at: indexPath)
         containerViewController?.configureCell(cell, comment: comment, indexPath: indexPath)
         return cell
     }
 
-    // MARK: - UITableViewDataSource
+    // MARK: - UITableViewDataDelegate
 
-    // TODO: add delegate
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        containerViewController?.cachedHeaderView()
+    }
+
+    // MARK: - UIScrollViewDelegate
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y + scrollView.frame.size.height > scrollView.contentSize.height - 500 {
+            containerViewController?.loadMore()
+        }
+    }
 }
