@@ -4,6 +4,10 @@ import CoreData
 final class CommentComposerViewModel {
     let suggestionsViewModel: SuggestionsListViewModel?
 
+    var save: (String) async throws -> Void = { _ in
+        wpAssertionFailure("must be specified")
+    }
+
     private let parameters: CommentComposerParameters
     private var context: NSManagedObjectContext
 
@@ -44,8 +48,6 @@ final class CommentComposerViewModel {
 
         self.init(parameters: parameters, suggestionsViewModel: suggestionsViewModel)
     }
-
-    // TODO: (kean) add invalidateCacheAndForceSyncNotification
 
     /// Reply to the comment from the given notification.
     convenience init?(notification: Notification) {
@@ -97,33 +99,8 @@ final class CommentComposerViewModel {
 
     @MainActor
     func send(comment: String) async throws {
-        let service = CommentService(coreDataStack: ContextManager.shared)
-        try await service.createComment(content: comment, target: parameters.target, siteID: parameters.siteID)
-        trackCommentSent()
-    }
-
-    // MARK: Analytics
-
-    private func trackCommentSent() {
-        var properties: [AnyHashable: Any] = [:]
-        switch parameters.context {
-        case .post(let post):
-            properties[WPAppAnalyticsKeyReplyingTo] = "post"
-            if let siteID = post.siteID {
-                properties[WPAppAnalyticsKeyBlogID] = siteID
-            }
-            if let postID = post.postID {
-                properties[WPAppAnalyticsKeyPostID] = postID
-            }
-            if let feedID = post.feedID, let feedItemID = post.feedItemID {
-                properties[WPAppAnalyticsKeyFeedID] = feedID
-                properties[WPAppAnalyticsKeyFeedItemID] = feedItemID
-            }
-            properties[WPAppAnalyticsKeyIsJetpack] = NSNumber(value: post.isJetpack)
-        case .comment:
-            properties[WPAppAnalyticsKeyReplyingTo] = "comment"
-        }
-        WPAnalytics.trackReaderStat(.readerArticleCommentedOn, properties: properties)
+        // TODO: (kean) move
+        try await save(comment)
     }
 }
 
@@ -131,6 +108,7 @@ struct CommentComposerParameters {
     var siteID: NSNumber
     var context: Context
 
+    // TODO: (kean) simplify this
     enum Context {
         /// Send a top-level comment to the given post.
         case post(ReaderPost)
@@ -141,13 +119,6 @@ struct CommentComposerParameters {
 
     struct CommentDetails {
         var commentID: NSNumber
-    }
-
-    var target: CommentService.CommentTarget {
-        switch context {
-        case .post(let post): return .postID(post.postID ?? 0)
-        case .comment(let comment): return .commentID(comment.commentID)
-        }
     }
 }
 

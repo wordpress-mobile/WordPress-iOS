@@ -168,6 +168,24 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     [WPAnalytics trackReaderStat:stat properties:properties];
 }
 
+- (void)trackReplyTo:(BOOL)replyTarget {
+    ReaderPost *post = self.post;
+    NSDictionary *railcar = post.railcarDictionary;
+    NSMutableDictionary *properties = [NSMutableDictionary dictionary];
+    properties[WPAppAnalyticsKeyBlogID] = post.siteID;
+    properties[WPAppAnalyticsKeyPostID] = post.postID;
+    properties[WPAppAnalyticsKeyIsJetpack] = @(post.isJetpack);
+    properties[WPAppAnalyticsKeyReplyingTo] = replyTarget ? @"comment" : @"post";
+    if (post.feedID && post.feedItemID) {
+        properties[WPAppAnalyticsKeyFeedID] = post.feedID;
+        properties[WPAppAnalyticsKeyFeedItemID] = post.feedItemID;
+    }
+    [WPAnalytics trackReaderStat:WPAnalyticsStatReaderArticleCommentedOn properties:properties];
+    if (railcar) {
+        [WPAppAnalytics trackTrainTracksInteraction:WPAnalyticsStatTrainTracksInteract withProperties:railcar];
+    }
+}
+
 #pragma mark - Configuration
 
 - (void)configureNavbar

@@ -12,15 +12,25 @@ extension NSNotification.Name {
     func makeReplyTextView() -> UIView {
         let textView = ReplyTextView()
         textView.onTapped = { [weak self] in
-            guard let self else { return }
-            self.showCommentComposer(viewModel: .init(post: self.post))
+            self?.didTapAddComment()
         }
         return textView
+    }
+
+    func didTapAddComment() {
+        let viewModel = CommentComposerViewModel(post: post)
+        viewModel.save = { [weak self] in
+            try await self?.sendComment($0)
+        }
+        showCommentComposer(viewModel: viewModel)
     }
 
     func didTapReply(comment: Comment) {
         guard let viewModel = CommentComposerViewModel(comment: comment) else {
             return wpAssertionFailure("invalid context")
+        }
+        viewModel.save = { [weak self] in
+            try await self?.sendComment($0, comment: comment)
         }
         showCommentComposer(viewModel: viewModel)
     }
@@ -175,6 +185,31 @@ extension ReaderCommentsViewController {
         let composerVC = CommentComposerViewController(viewModel: viewModel)
         let navigationVC = UINavigationController(rootViewController: composerVC)
         present(navigationVC, animated: true)
+    }
+
+    @MainActor
+    func sendComment(_ content: String, comment: Comment? = nil) async throws {
+        guard let post = self.post else {
+            throw URLError(.unknown)
+        }
+        return try await withUnsafeThrowingContinuation { [weak self] continuation in
+            let service = CommentService(coreDataStack: ContextManager.shared)
+            if let comment {
+                service.replyToHierarchicalComment(withID: comment.commentID as NSNumber, post: post, content: content) {
+                    self?.trackReply(to: true)
+                    continuation.resume()
+                } failure: {
+                    continuation.resume(throwing: $0 ?? URLError(.unknown))
+                }
+            } else {
+                service.reply(to: post, content: content) {
+                    self?.trackReply(to: false)
+                    continuation.resume()
+                } failure: {
+                    continuation.resume(throwing: $0 ?? URLError(.unknown))
+                }
+            }
+        }
     }
 }
 
