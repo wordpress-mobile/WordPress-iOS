@@ -128,6 +128,10 @@
     [self refreshTableViewAndNoResultsView];
 }
 
+- (UITableView *)tableView {
+    self.tableViewController.tableView;
+}
+
 #pragma mark - Split View Support
 
 /**
