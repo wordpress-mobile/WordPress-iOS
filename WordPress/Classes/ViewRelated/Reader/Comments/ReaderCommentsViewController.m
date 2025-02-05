@@ -20,7 +20,6 @@
 @property (nonatomic, strong) NSNumber *postSiteID;
 @property (nonatomic, strong) WPContentSyncHelper *syncHelper;
 @property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) WPTableViewHandler *tableViewHandler;
 @property (nonatomic, strong) NoResultsViewController *noResultsViewController;
 @property (nonatomic, strong) UIView *buttonComment;
 @property (nonatomic, strong) NSLayoutConstraint *replyTextViewHeightConstraint;
@@ -190,17 +189,6 @@
     self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
 
     [self refreshFollowButton];
-}
-
-- (void)configureTableViewHandler
-{
-    self.tableView = [UITableView new];
-    self.tableViewHandler = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
-    self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationNone;
-    self.tableViewHandler.insertRowAnimation = UITableViewRowAnimationNone;
-    self.tableViewHandler.moveRowAnimation = UITableViewRowAnimationNone;
-    self.tableViewHandler.deleteRowAnimation = UITableViewRowAnimationNone;
-    [self.tableViewHandler setListensForContentChanges:NO];
 }
 
 - (void)configureNoResultsView
@@ -467,7 +455,7 @@
 
 - (void)refreshAfterCommentModeration
 {
-    [self.tableViewHandler refreshTableView];
+    [self.tableViewController.tableView reloadData];
     [self refreshNoResultsView];
 }
 
@@ -477,11 +465,9 @@
 }
 
 - (void)refreshTableViewAndNoResultsView:(BOOL)scrollToHighlightedComment {
-    [self.tableViewHandler refreshTableView];
+    // TODO: remove
+    [self.tableViewController.tableView reloadData];
     [self refreshNoResultsView];
-    [self.managedObjectContext performBlock:^{
-        [self updateCachedContent];
-    }];
 
     if (scrollToHighlightedComment) {
         [self navigateToCommentIDIfNeeded];
@@ -491,17 +477,6 @@
 - (void)refreshTableViewAndNoResultsView {
     [self refreshTableViewAndNoResultsView:YES];
 }
-
-- (void)updateCachedContent
-{
-    if (![Feature enabled:FeatureFlagReaderCommentsWebKit]) {
-        NSArray *comments = self.tableViewHandler.resultsController.fetchedObjects;
-        for(Comment *comment in comments) {
-            [self cacheContentForComment:comment];
-        }
-    }
-}
-
 
 - (NSAttributedString *)cacheContentForComment:(Comment *)comment
 {
