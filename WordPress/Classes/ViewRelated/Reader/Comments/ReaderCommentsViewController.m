@@ -72,10 +72,6 @@
 
     self.cachedAttributedStrings = [[NSCache alloc] init];
 
-    self.tableViewController = [[ReaderCommentsTableViewController alloc] initWithPost:self.post];
-    self.tableViewController.containerViewController = self;
-    [self configureTableViewController:self.tableViewController];
-
     self.view.backgroundColor = [UIColor systemBackgroundColor];
     self.commentModified = NO;
     self.helper = [ReaderCommentsHelper new];
@@ -128,8 +124,9 @@
     [self refreshTableViewAndNoResultsView];
 }
 
-- (UITableView *)tableView {
-    self.tableViewController.tableView;
+- (UITableView *)tableView
+{
+    return self.tableViewController.tableView;
 }
 
 #pragma mark - Split View Support
@@ -321,6 +318,10 @@
     _post = post;
 
     if (_post.isWPCom || _post.isJetpack) {
+        self.tableViewController = [[ReaderCommentsTableViewController alloc] initWithPost:self.post];
+        self.tableViewController.containerViewController = self;
+        [self configureTableViewController:self.tableViewController];
+
         self.syncHelper = [[WPContentSyncHelper alloc] init];
         self.syncHelper.delegate = self;
     }
@@ -410,13 +411,10 @@
 {
     [self.noResultsViewController removeFromView];
 
-    // TODO: (kean) reimplement empty state view
-//    BOOL isTableViewEmpty = (self.tableViewHandler.resultsController.fetchedObjects.count == 0);
-//    if (!isTableViewEmpty) {
-//        return;
-//    }
-
-    return ;
+    BOOL isTableViewEmpty = self.tableViewController.isEmpty;
+    if (!isTableViewEmpty) {
+        return;
+    }
 
     NSString *image = nil;
     NSString *subtitle = nil;

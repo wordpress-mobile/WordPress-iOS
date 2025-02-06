@@ -4,7 +4,6 @@ import WordPressUI
 
 final class ReaderCommentsTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
     @objc let tableView = UITableView(frame: .zero, style: .plain)
-    private var emptyStateView: UIView?
     private let padingFooterView = PagingFooterView(state: .loading)
     private lazy var fetchResultsController = makeFetchResultsController()
 
@@ -14,6 +13,8 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
 
     /// - note: Temporary code.
     @objc weak var containerViewController: ReaderCommentsViewController?
+
+    @objc var isEmpty: Bool { fetchResultsController.isEmpty() }
 
     @objc init(post: ReaderPost) {
         self.post = post
@@ -115,24 +116,6 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
         }
     }
 
-    @objc func showEmptyStateView(title: String) {
-        emptyStateView?.removeFromSuperview()
-        let stateView = UIHostingView(view: EmptyStateView(tilte, systemImage: "message"))
-        tableView.addSubview(stateView)
-        emptyStateView = stateView
-        layoutEmptyStateView()
-    }
-
-    @objc func hideEmptyStateView() {
-        emptyStateView?.removeFromSuperview()
-        emptyStateView = nil
-    }
-
-    private func layoutEmptyStateView() {
-        guard let emptyStateView else { return }
-        tableView.layoutEmptyStateView(emptyStateView, in: self)
-    }
-
     // MARK: - NSFetchedResultsController
 
     private func makeFetchResultsController() -> NSFetchedResultsController<Comment> {
@@ -197,8 +180,6 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
     // MARK: - UIScrollViewDelegate
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        layoutEmptyStateView()
-
         if scrollView.contentOffset.y + scrollView.frame.size.height > scrollView.contentSize.height - 500 {
             containerViewController?.loadMore()
         }
