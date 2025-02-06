@@ -50,9 +50,9 @@ struct InstalledPluginsListView: View {
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {
                     Picker(Strings.filterTitle, selection: $viewModel.filter) {
-                        Text(Strings.filterOptionAll).tag(PluginDataStoreQuery.all)
-                        Text(Strings.filterOptionActive).tag(PluginDataStoreQuery.active)
-                        Text(Strings.filterOptionInactive).tag(PluginDataStoreQuery.inactive)
+                        Text(Strings.filterOptionAll).tag(InstalledPluginsListViewModel.PluginFilter.all)
+                        Text(Strings.filterOptionActive).tag(InstalledPluginsListViewModel.PluginFilter.active)
+                        Text(Strings.filterOptionInactive).tag(InstalledPluginsListViewModel.PluginFilter.inactive)
                     }
                 } label: {
                     Image(systemName: "ellipsis.circle")
@@ -84,8 +84,25 @@ final class InstalledPluginsListViewModel: ObservableObject {
     let service: PluginServiceProtocol
     private var initialLoad = false
 
+    enum PluginFilter: Hashable {
+        case all
+        case active
+        case inactive
+
+        var query: PluginDataStoreQuery {
+            switch self {
+            case .all:
+                return .all
+            case .active:
+                return .active
+            case .inactive:
+                return .inactive
+            }
+        }
+    }
+
     @Published var isRefreshing: Bool = false
-    @Published var filter: PluginDataStoreQuery = .all
+    @Published var filter: PluginFilter = .all
     @Published var displayingPlugins: [InstalledPlugin] = []
     @Published var error: String? = nil
 
@@ -115,7 +132,7 @@ final class InstalledPluginsListViewModel: ObservableObject {
     }
 
     func performQuery() async {
-        for await update in await self.service.installedPluginsUpdates(query: filter) {
+        for await update in await self.service.installedPluginsUpdates(query: filter.query) {
             switch update {
             case let .success(plugins):
                 self.displayingPlugins = plugins

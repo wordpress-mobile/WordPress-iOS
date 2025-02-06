@@ -2,20 +2,42 @@ import Foundation
 @preconcurrency import Combine
 
 /// A `DataStore` type that stores data in memory.
-public protocol InMemoryDataStore: DataStore {
+public actor InMemoryDataStore<T: Sendable & Identifiable>: DataStore {
+
+    public struct Query: Sendable {
+        // TODO: Replace this with `Predicate` once iOS 17 becomes the minimal deployment target.
+        let filter: @Sendable (T) -> Bool
+        let sortBy: any SortComparator<T>
+
+        public init(sortBy: any SortComparator<T>, filter: @escaping @Sendable (T) -> Bool) {
+            self.sortBy = sortBy
+            self.filter = filter
+        }
+    }
+
     /// A `Dictionary` to store the data in memory.
-    var storage: [T.ID: T] { get set }
+    private var storage: [T.ID: T] = [:]
 
     /// A publisher for sending and subscribing data changes.
     ///
     /// The publisher emits events when data changes, with identifiers of changed models.
     ///
     /// The publisher does not complete as long as the `InMemoryDataStore` remains alive and valid.
-    var updates: PassthroughSubject<Set<T.ID>, Never> { get }
-}
+    private let updates: PassthroughSubject<Set<T.ID>, Never> = .init()
 
-public extension InMemoryDataStore {
-    func delete(query: Query) async throws {
+    public init() {}
+
+    deinit {
+        updates.send(completion: .finished)
+    }
+
+    public func list(query: Query) async throws -> [T] {
+        storage.values
+            .filter(query.filter)
+            .sorted(using: query.sortBy)
+    }
+
+    public func delete(query: Query) async throws {
         let result = try await list(query: query)
         var updated = Set<T.ID>()
         for item in result {
@@ -29,7 +51,7 @@ public extension InMemoryDataStore {
         }
     }
 
-    func store(_ data: [T]) async throws {
+    public func store(_ data: [T]) async throws {
         var updated = Set<T.ID>()
         for item in data {
             updated.insert(item.id)
@@ -41,7 +63,7 @@ public extension InMemoryDataStore {
         }
     }
 
-    func listStream(query: Query) -> AsyncStream<Result<[T], Error>> {
+    public func listStream(query: Query) -> AsyncStream<Result<[T], Error>> {
         let stream = AsyncStream<Result<[T], Error>>.makeStream()
 
         let updatingTask = Task { [weak self] in

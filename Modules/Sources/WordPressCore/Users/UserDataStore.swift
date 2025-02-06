@@ -1,44 +1,28 @@
 import Foundation
-@preconcurrency import Combine
 import WordPressShared
 
-public protocol UserDataStore: DataStore where T == DisplayUser, Query == UserDataStoreQuery {
-}
+public typealias UserDataStoreQuery = InMemoryDataStore<DisplayUser>.Query
+public typealias InMemoryUserDataStore = InMemoryDataStore<DisplayUser>
 
-public enum UserDataStoreQuery: Equatable, Sendable {
-    case all
-    case id(Set<DisplayUser.ID>)
-    case search(String)
-}
-
-public actor InMemoryUserDataStore: UserDataStore, InMemoryDataStore {
-    public typealias T = DisplayUser
-
-    public var storage: [T.ID: T] = [:]
-    public let updates: PassthroughSubject<Set<T.ID>, Never> = .init()
-
-    deinit {
-        updates.send(completion: .finished)
+extension UserDataStoreQuery {
+    public static var all: UserDataStoreQuery {
+        .init(sortBy: KeyPathComparator(\.username)) { _ in true }
     }
 
-    public init() {}
+    public static func id(_ id: T.ID) -> UserDataStoreQuery {
+        .init(sortBy: KeyPathComparator(\.username)) { $0.id == id }
+    }
 
-    public func list(query: Query) throws -> [T] {
-        switch query {
-        case .all:
-            return Array(storage.values)
-        case let .id(ids):
-            return storage.reduce(into: []) {
-                if ids.contains($1.key) {
-                    $0.append($1.value)
-                }
-            }
-        case let .search(keyword):
+    public static func search(_ keyword: String) -> UserDataStoreQuery {
+        .init(sortBy: KeyPathComparator(\.username)) { user in
             let theKeyword = keyword.trimmingCharacters(in: .whitespacesAndNewlines)
             if theKeyword.isEmpty {
-                return Array(storage.values)
+                return true
             } else {
-                return storage.values.search(theKeyword, using: \.searchString)
+                let search = StringRankedSearch(searchTerm: keyword)
+                let score = search.score(for: user.searchString)
+                guard score > 0.7 else { return false }
+                return true
             }
         }
     }
