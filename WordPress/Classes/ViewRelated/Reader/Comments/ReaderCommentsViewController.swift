@@ -12,7 +12,7 @@ extension NSNotification.Name {
 @objc extension ReaderCommentsViewController {
     func configureTableViewController(_ vc: ReaderCommentsTableViewController) {
         addChild(vc)
-        view.addSubview(vc.view)
+        view.insertSubview(vc.view, belowSubview: buttonAddComment)
         vc.view.pinEdges()
         vc.didMove(toParent: self)
     }

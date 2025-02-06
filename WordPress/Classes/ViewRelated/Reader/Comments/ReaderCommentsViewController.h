@@ -24,6 +24,7 @@ typedef NS_ENUM(NSUInteger, ReaderCommentsSource) {
 @property (nonatomic, assign, readwrite) BOOL allowsPushingPostDetails;
 @property (nonatomic, assign, readwrite) ReaderCommentsSource source;
 @property (nonatomic, strong, readonly) ReaderCommentsHelper *helper;
+@property (nonatomic, strong, readonly) UIView *buttonAddComment;
 
 - (void)setupWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID;
 

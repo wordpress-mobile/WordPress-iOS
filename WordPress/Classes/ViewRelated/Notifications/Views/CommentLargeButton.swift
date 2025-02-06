@@ -4,7 +4,7 @@ import WordPressShared
 
 final class CommentLargeButton: UIView {
     private let iconView = MyProfileIconView(hidesWhenEmpty: true)
-    private var containerView = UIView()
+    private var containerView = CommentLargeButtonContainerView()
     private let placeholderLabel = UILabel()
     private let button = UIButton()
 
@@ -18,13 +18,6 @@ final class CommentLargeButton: UIView {
     required init(coder: NSCoder) {
         super.init(coder: coder)!
         setupView()
-    }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-
-        containerView.layer.cornerRadius = containerView.bounds.height / 2
-        containerView.layer.masksToBounds = true
     }
 
     var placeholder: String? {
@@ -55,10 +48,20 @@ final class CommentLargeButton: UIView {
         divider.pinEdges([.top, .horizontal])
 
         addSubview(button)
+        button.addTarget(self, action: #selector(buttonTapped), for: .primaryActionTriggered)
         button.pinEdges() // Make sure it covers everything
     }
 
     @objc private func buttonTapped() {
         onTap?()
     }
- }
+}
+
+private final class CommentLargeButtonContainerView: UIView {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        layer.cornerRadius = bounds.height / 2
+        layer.masksToBounds = true
+    }
+}
