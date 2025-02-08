@@ -495,8 +495,7 @@ private extension CommentContentTableViewCell {
         func makeRenderer() -> CommentContentRenderer {
             switch renderMethod {
             case .web:
-                let renderer = WebCommentContentRenderer()
-                renderer.tintColor = UIAppColor.primary
+                let renderer = helper.makeWebRenderer()
                 renderer.delegate = self
                 return renderer
             case .richContent(let attributedText):

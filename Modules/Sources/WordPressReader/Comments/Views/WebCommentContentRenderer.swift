@@ -35,10 +35,25 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
 
     private var cachedHead: String?
 
+    /// A shared web view context with resources that can be reused across
+    /// mutliple web view instances.
+    @MainActor
+    public final class Context {
+        let processPool = WKProcessPool()
+
+        public init() {}
+    }
+
     // MARK: Methods
 
-    public required override init() {
+    public required override convenience init() {
+        self.init(context: .init())
+    }
+
+    public init(context: Context) {
         super.init()
+
+        webView.configuration.processPool = context.processPool
 
         if #available(iOS 16.4, *) {
             webView.isInspectable = true
