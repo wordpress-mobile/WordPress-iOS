@@ -455,7 +455,6 @@
 
 - (void)refreshAfterCommentModeration
 {
-    [self.tableViewController.tableView reloadData];
     [self refreshNoResultsView];
 }
 
@@ -465,8 +464,6 @@
 }
 
 - (void)refreshTableViewAndNoResultsView:(BOOL)scrollToHighlightedComment {
-    // TODO: remove
-    [self.tableViewController.tableView reloadData];
     [self refreshNoResultsView];
 
     if (scrollToHighlightedComment) {
