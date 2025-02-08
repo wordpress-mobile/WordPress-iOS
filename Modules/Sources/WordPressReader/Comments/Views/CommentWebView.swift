@@ -28,7 +28,7 @@ final class CommentWebView: UIView, CommentContentRendererDelegate {
         print("interact:", url)
     }
 
-    func renderer(_ renderer: any CommentContentRenderer, asyncRenderCompletedWithHeight height: CGFloat) {
+    func renderer(_ renderer: any CommentContentRenderer, asyncRenderCompletedWithHeight height: CGFloat, comment: String) {
         heightConstraint.constant = height
     }
 }

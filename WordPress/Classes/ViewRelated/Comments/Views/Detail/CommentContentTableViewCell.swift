@@ -266,12 +266,12 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 // MARK: - CommentContentRendererDelegate
 
 extension CommentContentTableViewCell: CommentContentRendererDelegate {
-    func renderer(_ renderer: CommentContentRenderer, asyncRenderCompletedWithHeight height: CGFloat) {
+    func renderer(_ renderer: CommentContentRenderer, asyncRenderCompletedWithHeight height: CGFloat, comment: String) {
         if renderMethod == .web {
-            if let constraint = contentContainerHeightConstraint, let comment {
+            if let constraint = contentContainerHeightConstraint {
                 if height != constraint.constant {
                     constraint.constant = height
-                    helper?.setCachedContentHeight(height, for: .init(comment))
+                    helper?.setCachedContentHeight(height, for: comment)
                     onContentLoaded?(height) // We had the right size from the get-go
                 }
             } else {
@@ -511,7 +511,7 @@ private extension CommentContentTableViewCell {
         if renderMethod == .web {
             // reset height constraint to handle cases where the new content requires the webview to shrink.
             contentContainerHeightConstraint?.isActive = true
-            contentContainerHeightConstraint?.constant = helper.getCachedContentHeight(for: TaggedManagedObjectID(comment)) ?? 20
+            contentContainerHeightConstraint?.constant = helper.getCachedContentHeight(for: comment.content) ?? 20
         } else {
             contentContainerHeightConstraint?.isActive = false
         }
