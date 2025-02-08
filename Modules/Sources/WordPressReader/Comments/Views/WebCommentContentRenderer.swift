@@ -18,8 +18,6 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
         return configuration
     }())
 
-    private var comment: String?
-
     /// It can't be changed at the moment, but this capability was included from the
     /// start, and this implementation continues supporting it.
     private var displaySetting = ReaderDisplaySettings.standard
@@ -68,11 +66,6 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
     }
 
     public func render(comment: String) {
-        guard self.comment != comment else {
-            return // Already rendering this comment
-        }
-        self.comment = comment
-
         // - important: `wordPressSharedBundle` contains custom fonts
         webView.loadHTMLString(formattedHTMLString(for: comment), baseURL: Bundle.wordPressSharedBundle.bundleURL)
     }
