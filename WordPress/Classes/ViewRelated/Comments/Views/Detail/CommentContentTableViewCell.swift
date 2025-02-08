@@ -114,6 +114,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     private var onContentLoaded: ((CGFloat) -> Void)? = nil
 
     private var comment: Comment?
+    private var renderer: CommentContentRenderer?
     private var renderMethod: RenderMethod?
     private var helper: ReaderCommentsHelper?
 
@@ -480,21 +481,33 @@ private extension CommentContentTableViewCell {
     // MARK: Content Rendering
 
     func configureRendererIfNeeded(for comment: Comment, renderMethod: RenderMethod, helper: ReaderCommentsHelper) {
-        let renderer: CommentContentRenderer = {
+        if self.renderMethod != renderMethod {
+            self.renderer = nil
+        }
+        self.renderMethod = renderMethod
+
+        let renderer = self.renderer ?? {
+            let renderer = makeRenderer()
+            self.renderer = renderer
+            return renderer
+        }()
+
+        func makeRenderer() -> CommentContentRenderer {
             switch renderMethod {
             case .web:
-                return helper.getRenderer(for: comment)
+                let renderer = WebCommentContentRenderer()
+                renderer.tintColor = UIAppColor.primary
+                renderer.delegate = self
+                return renderer
             case .richContent(let attributedText):
                 let renderer = RichCommentContentRenderer()
                 renderer.richContentDelegate = self.richContentDelegate
                 renderer.attributedText = attributedText
                 renderer.comment = comment
+                renderer.delegate = self
                 return renderer
             }
-        }()
-        renderer.delegate = self
-
-        self.renderMethod = renderMethod // we assume the render method can't change
+        }
 
         if renderMethod == .web {
             // reset height constraint to handle cases where the new content requires the webview to shrink.
