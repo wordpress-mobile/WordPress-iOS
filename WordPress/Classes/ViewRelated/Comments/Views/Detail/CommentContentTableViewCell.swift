@@ -166,6 +166,8 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     override func prepareForReuse() {
         super.prepareForReuse()
 
+        renderer?.prepareForReuse()
+
         // reset all highlight states.
         isEmphasized = false
 

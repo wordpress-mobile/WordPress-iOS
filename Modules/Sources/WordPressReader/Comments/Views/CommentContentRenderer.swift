@@ -14,6 +14,8 @@ public protocol CommentContentRenderer: AnyObject {
     /// but it should update its delegate with the correct height through the
     ///  `renderer(_:asyncRenderCompletedWithHeight:)` method.
     func render(comment: String)
+
+    func prepareForReuse()
 }
 
 @MainActor
