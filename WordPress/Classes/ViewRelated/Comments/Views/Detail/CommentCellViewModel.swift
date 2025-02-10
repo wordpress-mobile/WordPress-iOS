@@ -29,12 +29,16 @@ final class CommentCellViewModel: NSObject {
         var dateCreated: Date?
         var isLiked: Bool
         var likeCount: Int
+        var isLikeEnabled: Bool
+        var isReplyEnabled: Bool
 
         init(comment: Comment) {
             self.title = comment.authorForDisplay()
             self.dateCreated = comment.dateCreated
             self.isLiked = comment.isLiked
             self.likeCount = Int(comment.likeCount)
+            self.isLikeEnabled = comment.canLike()
+            self.isReplyEnabled = comment.canReply()
         }
     }
 

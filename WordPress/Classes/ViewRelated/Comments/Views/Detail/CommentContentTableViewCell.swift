@@ -134,18 +134,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     // MARK: Visibility Control
 
-    private var isCommentReplyEnabled: Bool = false {
-        didSet {
-            replyButton.isHidden = !isCommentReplyEnabled
-        }
-    }
-
-    private var isCommentLikesEnabled: Bool = false {
-        didSet {
-            likeButton.isHidden = !isCommentLikesEnabled
-        }
-    }
-
     private var isAccessoryButtonEnabled: Bool = false {
         didSet {
             accessoryButton.isHidden = !isAccessoryButtonEnabled
@@ -212,8 +200,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         }.store(in: &cancellables)
 
         // Configure feature availability.
-        isCommentReplyEnabled = comment.canReply()
-        isCommentLikesEnabled = comment.canLike()
         isAccessoryButtonEnabled = comment.isApproved()
 
         // When reaction bar is hidden, add some space between the webview and the moderation bar.
@@ -232,8 +218,9 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     func configureForPostDetails(with comment: Comment, helper: ReaderCommentsHelper, onContentLoaded: ((CGFloat) -> Void)?) {
         configure(viewModel: CommentCellViewModel(comment: comment), helper: helper, onContentLoaded: onContentLoaded)
 
-        isCommentLikesEnabled = false
-        isCommentReplyEnabled = false
+        replyButton.isHidden = true
+        likeButton.isHidden = true
+
         isAccessoryButtonEnabled = false
 
         shouldHideSeparator = true
@@ -256,6 +243,10 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     private func configure(with state: CommentCellViewModel.State) {
         nameLabel.text = state.title
         dateLabel.text = state.dateCreated?.toMediumString()
+
+        replyButton.isHidden = !state.isReplyEnabled
+        likeButton.isHidden = !state.isLikeEnabled
+
         updateLikeButton(isLiked: state.isLiked, likeCount: state.likeCount)
     }
 }

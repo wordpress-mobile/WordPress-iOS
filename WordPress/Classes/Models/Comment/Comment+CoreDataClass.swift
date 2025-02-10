@@ -20,7 +20,7 @@ public class Comment: NSManagedObject {
         return status.isEqual(to: CommentStatusType.approved.description)
     }
 
-    @objc func isReadOnly() -> Bool {
+    private func isReadOnly() -> Bool {
         guard let blog else {
             return true
         }
@@ -77,8 +77,8 @@ public class Comment: NSManagedObject {
     }
 
     func canReply() -> Bool {
-        if let readerPost = post as? ReaderPost {
-            return readerPost.commentsOpen
+        if let post = post as? ReaderPost {
+            return post.commentsOpen
         }
         return !isReadOnly()
     }
