@@ -2,6 +2,7 @@ import UIKit
 import WordPressUI
 import WordPressReader
 import Gravatar
+import Combine
 
 class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
@@ -116,12 +117,9 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     private var renderMethod: RenderMethod?
     private var helper: ReaderCommentsHelper?
     private var viewModel: CommentCellViewModel?
+    private var cancellables: [AnyCancellable] = []
 
     // MARK: Like Button State
-
-    private var isLiked: Bool = false
-
-    private var likeCount: Int = 0
 
     /// Styling configuration based on `ReaderDisplaySetting`. The parameter is optional so that the styling approach
     /// can be scoped by using the "legacy" style when the passed parameter is nil.
@@ -166,6 +164,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         super.prepareForReuse()
 
         viewModel = nil
+        cancellables = []
         renderer?.prepareForReuse()
 
         // reset all highlight states.
@@ -206,6 +205,10 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         nameLabel?.setText(comment.authorForDisplay())
         dateLabel?.setText(comment.dateForDisplay()?.toMediumString() ?? String())
 
+        viewModel.$state.sink { [weak self] in
+            self?.configure(with: $0)
+        }.store(in: &cancellables)
+
         // Always cancel ongoing image downloads, just in case. This is to prevent comment cells being displayed with the wrong avatar image,
         // likely resulting from previous download operation before the cell is reused.
         //
@@ -220,8 +223,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         } else {
             configureImageWithGravatarEmail(comment.gravatarEmailForDisplay())
         }
-
-        updateLikeButton(liked: comment.isLiked, numberOfLikes: comment.numberOfLikes())
 
         // Configure feature availability.
         isCommentReplyEnabled = comment.canReply()
@@ -263,6 +264,10 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         default:
             return
         }
+    }
+
+    private func configure(with state: CommentCellViewModel.State) {
+        updateLikeButton(isLiked: state.isLiked, likeCount: state.likeCount)
     }
 }
 
@@ -353,17 +358,6 @@ private extension CommentContentTableViewCell {
         }
     }
 
-    var likeButtonTitle: String {
-        switch likeCount {
-        case .zero:
-            return .noLikes
-        case 1:
-            return String(format: .singularLikeFormat, likeCount)
-        default:
-            return String(format: .pluralLikesFormat, likeCount)
-        }
-    }
-
     // assign base styles for all the cell components.
     func configureViews() {
         // Store default margin for use in content layout.
@@ -399,7 +393,6 @@ private extension CommentContentTableViewCell {
 
         likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
         likeButton.maximumContentSizeCategory = .accessibilityMedium
-        updateLikeButton(liked: false, numberOfLikes: 0)
         likeButton.accessibilityIdentifier = .likeButtonAccessibilityId
 
         separatorView.layoutMargins = .init(top: 0, left: 20, bottom: 0, right: 0).flippedForRightToLeft
@@ -458,27 +451,22 @@ private extension CommentContentTableViewCell {
         containerStackLeadingConstraint?.constant = (indentationWidth * CGFloat(indentationLevel)) + defaultLeadingMargin
     }
 
-    /// Updates the style and text of the Like button.
-    /// - Parameters:
-    ///   - liked: Represents the target state – true if the comment is liked, or should be false otherwise.
-    ///   - numberOfLikes: The number of likes to be displayed.
-    ///   - animated: Whether the Like button state change should be animated or not. Defaults to false.
-    ///   - completion: Completion block called once the animation is completed. Defaults to nil.
-    func updateLikeButton(liked: Bool, numberOfLikes: Int, animated: Bool = false) {
-        isLiked = liked
-        likeCount = numberOfLikes
-        likeButton.tintColor = liked ? Style.likedTintColor : .label
+    func updateLikeButton(isLiked: Bool, likeCount: Int) {
+        likeButton.tintColor = isLiked ? UIAppColor.primary : .label
         if var configuration = likeButton.configuration {
-            configuration.image = UIImage(systemName: liked ? "star.fill" : "star")
-            configuration.title = likeButtonTitle
+            configuration.image = UIImage(systemName: isLiked ? "star.fill" : "star")
+            configuration.title = {
+                switch likeCount {
+                case .zero: .noLikes
+                case 1: String(format: .singularLikeFormat, likeCount)
+                default: String(format: .pluralLikesFormat, likeCount)
+                }
+            }()
             likeButton.configuration = configuration
         } else {
             wpAssertionFailure("missing configuration")
         }
-        likeButton.accessibilityLabel = liked ? String(numberOfLikes) + .commentIsLiked : String(numberOfLikes) + .commentIsNotLiked
-        if liked && animated {
-            likeButton.imageView?.fadeInWithRotationAnimation()
-        }
+        likeButton.accessibilityLabel = isLiked ? String(likeCount) + .commentIsLiked : String(likeCount) + .commentIsNotLiked
     }
 
     // MARK: Content Rendering
@@ -540,8 +528,18 @@ private extension CommentContentTableViewCell {
     }
 
     @objc func likeButtonTapped() {
-        updateLikeButton(liked: !isLiked, numberOfLikes: isLiked ? likeCount - 1 : likeCount + 1, animated: true)
-        viewModel?.buttonLikeTapped()
+        guard let viewModel else {
+            return wpAssertionFailure("ViewModel missing")
+        }
+        if !viewModel.state.isLiked, let imageView = likeButton.imageView {
+            // Animate the changes and then update the model to avoid animation interruptions
+            updateLikeButton(isLiked: true, likeCount: viewModel.state.likeCount + 1)
+            imageView.fadeInWithRotationAnimation { _ in
+                viewModel.buttonLikeTapped()
+            }
+        } else {
+            viewModel.buttonLikeTapped()
+        }
     }
 }
 
@@ -554,8 +552,6 @@ private extension String {
     static let likeButtonAccessibilityId = "like-comment-button"
     static let reply = NSLocalizedString("Reply", comment: "Reply to a comment.")
     static let noLikes = NSLocalizedString("Like", comment: "Button title to Like a comment.")
-    static let singularLikeFormat = NSLocalizedString("%1$d Like", comment: "Singular button title to Like a comment. "
-                                                        + "%1$d is a placeholder for the number of Likes.")
-    static let pluralLikesFormat = NSLocalizedString("%1$d Likes", comment: "Plural button title to Like a comment. "
-                                                + "%1$d is a placeholder for the number of Likes.")
+    static let singularLikeFormat = NSLocalizedString("%1$d Like", comment: "Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.")
+    static let pluralLikesFormat = NSLocalizedString("%1$d Likes", comment: "Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.")
 }

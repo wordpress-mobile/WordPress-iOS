@@ -54,10 +54,6 @@ public class Comment: NSManagedObject {
         return status.isEqual(to: Comment.descriptionFor(.spam)) || status.isEqual(to: Comment.descriptionFor(.unapproved))
     }
 
-    func numberOfLikes() -> Int {
-        return Int(likeCount)
-    }
-
     func canEditAuthorData() -> Bool {
         // If the authorID is zero, the user is unregistered. Therefore, the data can be edited.
         return authorID == 0
