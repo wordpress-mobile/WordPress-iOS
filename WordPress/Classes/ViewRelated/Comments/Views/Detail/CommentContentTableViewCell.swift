@@ -28,8 +28,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     @objc var replyButtonAction: (() -> Void)? = nil
 
-    @objc var likeButtonAction: (() -> Void)? = nil
-
     @objc var contentLinkTapAction: ((URL) -> Void)? = nil
 
     @objc weak var richContentDelegate: WPRichContentViewDelegate? = nil
@@ -176,7 +174,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         // reset all button actions.
         accessoryButtonAction = nil
         replyButtonAction = nil
-        likeButtonAction = nil
         contentLinkTapAction = nil
 
         onContentLoaded = nil
@@ -544,7 +541,7 @@ private extension CommentContentTableViewCell {
 
     @objc func likeButtonTapped() {
         updateLikeButton(liked: !isLiked, numberOfLikes: isLiked ? likeCount - 1 : likeCount + 1, animated: true)
-        likeButtonAction?()
+        viewModel?.buttonLikeTapped()
     }
 }
 

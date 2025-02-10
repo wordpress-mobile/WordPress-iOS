@@ -429,7 +429,8 @@ private extension CommentDetailViewController {
     }
 
     func configureContentCell(_ cell: CommentContentTableViewCell, comment: Comment) {
-        let viewModel = CommentCellViewModel(comment: comment)
+        let viewModel = CommentCellViewModel(comment: comment, notification: notification)
+
         cell.configure(viewModel: viewModel, helper: helper) { [weak self] _ in
             self?.tableView.performBatchUpdates({})
         }
@@ -443,10 +444,6 @@ private extension CommentDetailViewController {
         cell.accessoryButtonType = .info
         cell.accessoryButtonAction = { [weak self] senderView in
             self?.presentUserInfoSheet(senderView)
-        }
-
-        cell.likeButtonAction = { [weak self] in
-            self?.toggleCommentLike()
         }
 
         cell.replyButtonAction = { [weak self] in
@@ -650,33 +647,6 @@ private extension CommentDetailViewController {
                                                                         comment: "Error displayed if a comment fails to get updated")
                                         self?.displayNotice(title: message)
                                      })
-    }
-
-    func toggleCommentLike() {
-        guard let siteID else {
-            refreshData() // revert the like button state.
-            return
-        }
-
-        if comment.isLiked {
-            isNotificationComment ? WPAppAnalytics.track(.notificationsCommentUnliked, withBlogID: notification?.metaSiteID) :
-                                    CommentAnalytics.trackCommentUnLiked(comment: comment)
-        } else {
-            isNotificationComment ? WPAppAnalytics.track(.notificationsCommentLiked, withBlogID: notification?.metaSiteID) :
-                                    CommentAnalytics.trackCommentLiked(comment: comment)
-        }
-
-        commentService.toggleLikeStatus(for: comment, siteID: siteID, success: { [weak self] in
-            guard let self, let notification = self.notification else {
-                return
-            }
-            let mediator = NotificationSyncMediator()
-            mediator?.invalidateCacheForNotification(notification.notificationId, completion: {
-                mediator?.syncNote(with: notification.notificationId)
-            })
-        }, failure: { _ in
-            self.refreshData() // revert the like button state.
-        })
     }
 
     @objc func shareCommentURL(_ barButtonItem: UIBarButtonItem) {
