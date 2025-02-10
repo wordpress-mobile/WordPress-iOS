@@ -7,12 +7,16 @@ final class CommentCellViewModel: NSObject {
     private let notification: Notification?
     private let coreDataStack = ContextManager.shared
 
+    @Published private(set) var avatar: Avatar?
     @Published private(set) var state: State
 
     init(comment: Comment, notification: Notification? = nil) {
         self.comment = comment
         self.notification = notification
+
         self.state = State(comment: comment)
+        self.avatar = Avatar(comment: comment)
+
         super.init()
 
         NotificationCenter.default.addObserver(self, selector: #selector(objectDidChange), name: .NSManagedObjectContextObjectsDidChange, object: comment.managedObjectContext)
@@ -21,8 +25,8 @@ final class CommentCellViewModel: NSObject {
     // MARK: State
 
     struct State: Hashable {
-        let title: String
-        let dateCreated: Date?
+        var title: String
+        var dateCreated: Date?
         var isLiked: Bool
         var likeCount: Int
 
@@ -34,6 +38,23 @@ final class CommentCellViewModel: NSObject {
         }
     }
 
+    enum Avatar: Hashable {
+        case url(URL)
+        case email(String)
+
+        init?(comment: Comment) {
+            if let imageURL = comment.avatarURLForDisplay() {
+                self = .url(imageURL)
+            }
+            let email = comment.gravatarEmailForDisplay()
+            guard !email.isEmpty else {
+                return nil
+            }
+            self = .email(email)
+        }
+    }
+
+    /// This method emits changes only when something actually changes in the object.
     @objc private func objectDidChange(_ notification: Foundation.Notification) {
         wpAssert(Thread.isMainThread)
 
@@ -47,6 +68,11 @@ final class CommentCellViewModel: NSObject {
         let state = State(comment: comment)
         if state != self.state {
             self.state = state
+        }
+
+        let avatar = Avatar(comment: comment)
+        if avatar != self.avatar {
+            self.avatar = avatar
         }
     }
 

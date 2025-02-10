@@ -165,6 +165,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
         viewModel = nil
         cancellables = []
+        avatarImageView.wp.prepareForReuse()
         renderer?.prepareForReuse()
 
         // reset all highlight states.
@@ -206,20 +207,9 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
             self?.configure(with: $0)
         }.store(in: &cancellables)
 
-        // Always cancel ongoing image downloads, just in case. This is to prevent comment cells being displayed with the wrong avatar image,
-        // likely resulting from previous download operation before the cell is reused.
-        //
-        // Note that when downloading an image, any ongoing operation will be cancelled in UIImageView+Networking.
-        // This is more of a preventative step where the cancellation is made to happen as early as possible.
-        //
-        // Ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/17972
-        avatarImageView.cancelImageDownload()
-
-        if let avatarURL = URL(string: comment.authorAvatarURL) {
-            configureImage(with: avatarURL)
-        } else {
-            configureImageWithGravatarEmail(comment.gravatarEmailForDisplay())
-        }
+        viewModel.$avatar.sink { [weak self] in
+            self?.configureAvatar(with: $0)
+        }.store(in: &cancellables)
 
         // Configure feature availability.
         isCommentReplyEnabled = comment.canReply()
@@ -266,7 +256,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     private func configure(with state: CommentCellViewModel.State) {
         nameLabel.text = state.title
         dateLabel.text = state.dateCreated?.toMediumString()
-
         updateLikeButton(isLiked: state.isLiked, likeCount: state.likeCount)
     }
 }
@@ -423,28 +412,22 @@ private extension CommentContentTableViewCell {
         dateLabel?.textColor = style.dateTextColor
     }
 
-    /// Configures the avatar image view with the provided URL.
-    /// If the URL does not contain any image, the default placeholder image will be displayed.
-    /// - Parameter url: The URL containing the image.
-    func configureImage(with url: URL?) {
-        if let someURL = url, let gravatar = AvatarURL(url: someURL) {
-            avatarImageView.downloadGravatar(gravatar, placeholder: Style.placeholderImage, animate: true)
+    private func configureAvatar(with avatar: CommentCellViewModel.Avatar?) {
+        guard let avatar else {
+            avatarImageView.wp.prepareForReuse()
             return
         }
-
-        // handle non-gravatar images
-        avatarImageView.downloadImage(from: url, placeholderImage: Style.placeholderImage)
-    }
-
-    /// Configures the avatar image view from Gravatar based on provided email.
-    /// If the Gravatar image for the provided email doesn't exist, the default placeholder image will be displayed.
-    /// - Parameter gravatarEmail: The email to be used for querying the Gravatar image.
-    func configureImageWithGravatarEmail(_ email: String?) {
-        guard let someEmail = email else {
-            return
+        switch avatar {
+        case .url(let imageURL):
+            if let gravatar = AvatarURL(url: imageURL) {
+                avatarImageView.downloadGravatar(gravatar, placeholder: Style.placeholderImage, animate: false)
+            } else {
+                avatarImageView.image = Style.placeholderImage
+                avatarImageView.wp.setImage(with: imageURL)
+            }
+        case .email(let email):
+            avatarImageView.downloadGravatar(for: email, placeholderImage: Style.placeholderImage)
         }
-
-        avatarImageView.downloadGravatar(for: someEmail, placeholderImage: Style.placeholderImage)
     }
 
     func updateContainerLeadingConstraint() {
