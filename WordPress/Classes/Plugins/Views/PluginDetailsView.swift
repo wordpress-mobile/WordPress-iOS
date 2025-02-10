@@ -46,8 +46,7 @@ struct PluginDetailsView: View {
 
                     Spacer()
 
-                    Button(plugin.isActive ? "Activated" : "Activate") {
-                        // TODO: to be implemented
+                    Button(plugin.isActive ? Strings.activatedButton : Strings.activateButton) {
                         Task {
                             await viewModel.activate(plugin)
                         }
@@ -97,7 +96,7 @@ struct PluginDetailsView: View {
                     Button(role: .destructive) {
                         showDeleteConfirmation = true
                     } label: {
-                        Label("Uninstall", systemImage: "trash")
+                        Label(Strings.deleteButton, systemImage: "trash")
                     }
 
                     if let url = plugin.possibleWpOrgDirectoryURL {
@@ -106,7 +105,7 @@ struct PluginDetailsView: View {
                             Button {
                                 showingSafariView = true
                             } label: {
-                                Label("View on WordPress.org", systemImage: "safari")
+                                Label(Strings.viewOnWordPressOrgButton, systemImage: "safari")
                             }
                         }
                     }
@@ -115,7 +114,7 @@ struct PluginDetailsView: View {
                 }
             }
         }
-        .alert("Delete Plugin?", isPresented: $showDeleteConfirmation) {
+        .alert(Strings.deletePluginTitle, isPresented: $showDeleteConfirmation) {
             Button(SharedStrings.Button.cancel, role: .cancel) { }
             Button(SharedStrings.Button.delete, role: .destructive) {
                 Task { @MainActor in
@@ -124,7 +123,7 @@ struct PluginDetailsView: View {
                 }
             }
         } message: {
-            Text("Are you sure you want to delete \(plugin.name.makePlainText())?")
+            Text(Strings.deletePluginMessage(plugin.name.makePlainText()))
         }
         .sheet(isPresented: $showingSafariView) {
             if let url = plugin.possibleWpOrgDirectoryURL {
@@ -511,4 +510,43 @@ private enum Strings {
         )
         return String(format: format, author)
     }
+
+    static let deletePluginTitle = NSLocalizedString(
+        "pluginDetails.delete.confirmationTitle",
+        value: "Delete Plugin?",
+        comment: "Title of the confirmation alert when deleting a plugin"
+    )
+
+    static let deletePluginMessage = { (name: String) in
+        let format = NSLocalizedString(
+            "pluginDetails.delete.confirmationMessage",
+            value: "Are you sure you want to delete %@?",
+            comment: "Message of the confirmation alert when deleting a plugin. The placeholder is the plugin name"
+        )
+        return String(format: format, name)
+    }
+
+    static let deleteButton = NSLocalizedString(
+        "pluginDetails.delete.button",
+        value: "Delete",
+        comment: "Button label to delete a plugin"
+    )
+
+    static let viewOnWordPressOrgButton = NSLocalizedString(
+        "pluginDetails.viewOnWordPressOrg.button",
+        value: "View on WordPress.org",
+        comment: "Button label to view plugin on WordPress.org"
+    )
+
+    static let activateButton = NSLocalizedString(
+        "pluginDetails.activate.button",
+        value: "Activate",
+        comment: "Button label to activate a plugin"
+    )
+
+    static let activatedButton = NSLocalizedString(
+        "pluginDetails.activated.button",
+        value: "Activated",
+        comment: "Button label showing plugin is activated"
+    )
 }
