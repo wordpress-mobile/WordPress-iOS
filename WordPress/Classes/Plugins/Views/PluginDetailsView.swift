@@ -13,6 +13,10 @@ struct PluginDetailsView: View {
     @State var newVersion: UpdateCheckPluginInfo? = nil
     @State private var tappedScreenshot: Screenshot? = nil
     @StateObject var viewModel: WordPressPluginDetailViewModel
+    @State var showingSafariView = false
+    @State private var showDeleteConfirmation = false
+
+    @Environment(\.dismiss) var dismiss
 
     init(slug: PluginWpOrgDirectorySlug, plugin: InstalledPlugin, service: PluginServiceProtocol) {
         self.slug = slug
@@ -30,21 +34,28 @@ struct PluginDetailsView: View {
                     PluginIconView(slug: slug, service: service)
 
                     VStack(alignment: .leading) {
-                        HStack(alignment: .firstTextBaseline) {
-                            Text(plugin.name.makePlainText())
-                                .font(.title2)
-                                .fontWeight(.bold)
-                                .lineLimit(3, reservesSpace: false)
-                            Spacer()
-                            Text(plugin.version)
-                                .font(.callout)
-                                .foregroundStyle(.secondary)
-                        }
-
+                        Text(plugin.name.makePlainText())
+                            .font(.headline)
+                            .fontWeight(.bold)
+                            .lineLimit(3, reservesSpace: false)
                         Text(Strings.author(plugin.author))
+                            .lineLimit(1)
                             .foregroundStyle(.secondary)
                             .font(.caption)
                     }
+
+                    Spacer()
+
+                    Button(plugin.isActive ? "Activated" : "Activate") {
+                        // TODO: to be implemented
+                        Task {
+                            await viewModel.activate(plugin)
+                        }
+                    }
+                    .font(plugin.isActive ? .callout : .callout.bold())
+                    .buttonStyle(.borderedProminent)
+                    .buttonBorderShape(.capsule)
+                    .disabled(plugin.isActive || viewModel.isUninstalling)
                 }
                 .listRowSeparator(.hidden)
 
@@ -54,7 +65,9 @@ struct PluginDetailsView: View {
             }
             .listSectionSeparator(.hidden)
 
-            if let newVersion {
+            if viewModel.isUninstalling {
+                uninstalling()
+            } else if let newVersion {
                 updateAvailableView(newVersion)
             }
 
@@ -77,6 +90,46 @@ struct PluginDetailsView: View {
         }
         .task(id: slug) {
             await viewModel.performQuery()
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Menu {
+                    Button(role: .destructive) {
+                        showDeleteConfirmation = true
+                    } label: {
+                        Label("Uninstall", systemImage: "trash")
+                    }
+
+                    if let url = plugin.possibleWpOrgDirectoryURL {
+                        Section {
+                            ShareLink(item: url)
+                            Button {
+                                showingSafariView = true
+                            } label: {
+                                Label("View on WordPress.org", systemImage: "safari")
+                            }
+                        }
+                    }
+                } label: {
+                    Image(systemName: "ellipsis.circle")
+                }
+            }
+        }
+        .alert("Delete Plugin?", isPresented: $showDeleteConfirmation) {
+            Button(SharedStrings.Button.cancel, role: .cancel) { }
+            Button(SharedStrings.Button.delete, role: .destructive) {
+                Task { @MainActor in
+                    await viewModel.uninstall(plugin)
+                    dismiss()
+                }
+            }
+        } message: {
+            Text("Are you sure you want to delete \(plugin.name.makePlainText())?")
+        }
+        .sheet(isPresented: $showingSafariView) {
+            if let url = plugin.possibleWpOrgDirectoryURL {
+                SafariView(url: url)
+            }
         }
     }
 
@@ -119,6 +172,28 @@ struct PluginDetailsView: View {
         }
         .padding()
         .background(Color(.systemGray6))
+        .clipShape(RoundedRectangle(cornerRadius: 8))
+        .listRowSeparator(.hidden)
+        .listRowInsets(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
+    }
+
+    @ViewBuilder
+    private func uninstalling() -> some View {
+        HStack {
+            ProgressView()
+
+            VStack(alignment: .leading) {
+                Text("Uninstalling Plugin")
+                    .font(.headline)
+                Text("Please wait while the plugin is being removed...")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            }
+
+            Spacer()
+        }
+        .padding()
+        .background(Color.red.opacity(0.2))
         .clipShape(RoundedRectangle(cornerRadius: 8))
         .listRowSeparator(.hidden)
         .listRowInsets(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
@@ -245,9 +320,10 @@ final class WordPressPluginDetailViewModel: ObservableObject {
     let service: PluginServiceProtocol
 
     @Published private(set) var isLoading: Bool = false
+    @Published private(set) var isUninstalling: Bool = false
     @Published private(set) var plugin: PluginInformation?
     @Published private(set) var error: String?
-    @Published private var updating: Set<PluginSlug> = []
+    @Published private(set) var isActivating: Bool = false
 
     private var initialLoad = false
 
@@ -284,8 +360,30 @@ final class WordPressPluginDetailViewModel: ObservableObject {
         }
     }
 
-    func isUpdating(slug: PluginSlug) -> Bool {
-        updating.contains(slug)
+    func activate(_ plugin: InstalledPlugin) async {
+        isActivating = true
+        defer {
+            isActivating = false
+        }
+
+        do {
+            try await service.togglePluginActivation(slug: plugin.slug)
+        } catch {
+            // TODO: Show an error notice
+        }
+    }
+
+    func uninstall(_ plugin: InstalledPlugin) async {
+        isUninstalling = true
+        defer {
+            isUninstalling = false
+        }
+
+        do {
+            try await service.uninstalledPlugin(slug: plugin.slug)
+        } catch {
+            // TODO: Show an error notice
+        }
     }
 }
 

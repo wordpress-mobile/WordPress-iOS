@@ -48,4 +48,9 @@ public struct InstalledPlugin: Equatable, Hashable, Identifiable, Sendable {
         guard let maybeWpOrgSlug = slug.slug.split(separator: "/").first else { return nil }
         return .init(slug: String(maybeWpOrgSlug))
     }
+
+    public var possibleWpOrgDirectoryURL: URL? {
+        guard let slug = possibleWpOrgDirectorySlug else { return nil }
+        return URL(string: "https://wordpress.org/plugins/\(slug.slug)/")
+    }
 }

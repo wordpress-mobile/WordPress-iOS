@@ -20,7 +20,6 @@ struct PluginIconView: View {
                 .resizable()
         }
         .frame(width: Self.iconSize, height: Self.iconSize)
-        .padding(.all, 4)
         .task(id: slug?.slug) {
             guard let slug else { return }
             iconURL = await service.resolveIconURL(of: slug)
