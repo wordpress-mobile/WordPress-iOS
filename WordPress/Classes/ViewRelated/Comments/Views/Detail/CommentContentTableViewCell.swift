@@ -207,7 +207,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
         // Configure content renderer.
         self.onContentLoaded = onContentLoaded
-        configureRendererIfNeeded(for: comment, renderMethod: renderMethod, helper: helper)
+        configureRenderer(for: comment, renderMethod: renderMethod, helper: helper)
     }
 
     /// Configures the cell with a `Comment` object, to be displayed in the post details view.
@@ -445,7 +445,7 @@ private extension CommentContentTableViewCell {
 
     // MARK: Content Rendering
 
-    func configureRendererIfNeeded(for comment: Comment, renderMethod: RenderMethod, helper: ReaderCommentsHelper) {
+    func configureRenderer(for comment: Comment, renderMethod: RenderMethod, helper: ReaderCommentsHelper) {
         if self.renderMethod != renderMethod {
             self.renderer = nil
         }
