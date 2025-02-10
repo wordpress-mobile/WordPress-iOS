@@ -202,9 +202,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         self.viewModel = viewModel
         self.helper = helper
 
-        nameLabel?.setText(comment.authorForDisplay())
-        dateLabel?.setText(comment.dateForDisplay()?.toMediumString() ?? String())
-
         viewModel.$state.sink { [weak self] in
             self?.configure(with: $0)
         }.store(in: &cancellables)
@@ -267,6 +264,9 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     }
 
     private func configure(with state: CommentCellViewModel.State) {
+        nameLabel.text = state.title
+        dateLabel.text = state.dateCreated?.toMediumString()
+
         updateLikeButton(isLiked: state.isLiked, likeCount: state.likeCount)
     }
 }

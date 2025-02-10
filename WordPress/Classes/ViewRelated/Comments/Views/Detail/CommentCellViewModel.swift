@@ -21,10 +21,14 @@ final class CommentCellViewModel: NSObject {
     // MARK: State
 
     struct State: Hashable {
+        let title: String
+        let dateCreated: Date?
         var isLiked: Bool
         var likeCount: Int
 
         init(comment: Comment) {
+            self.title = comment.authorForDisplay()
+            self.dateCreated = comment.dateCreated
             self.isLiked = comment.isLiked
             self.likeCount = Int(comment.likeCount)
         }
