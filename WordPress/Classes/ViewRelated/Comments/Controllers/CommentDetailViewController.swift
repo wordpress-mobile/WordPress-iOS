@@ -429,7 +429,8 @@ private extension CommentDetailViewController {
     }
 
     func configureContentCell(_ cell: CommentContentTableViewCell, comment: Comment) {
-        cell.configure(with: comment, helper: helper) { [weak self] _ in
+        let viewModel = CommentCellViewModel(comment: comment)
+        cell.configure(viewModel: viewModel, helper: helper) { [weak self] _ in
             self?.tableView.performBatchUpdates({})
         }
 

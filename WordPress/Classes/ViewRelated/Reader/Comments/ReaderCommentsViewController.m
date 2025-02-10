@@ -606,7 +606,7 @@
     return [[ContextManager sharedInstance] mainContext];
 }
 
-- (void)configureCell:(CommentContentTableViewCell *)cell comment:(Comment *)comment indexPath:(NSIndexPath *)indexPath
+- (void)configureCell:(CommentContentTableViewCell *)cell viewModel:(CommentCellViewModel *)viewModel indexPath:(NSIndexPath *)indexPath
 {
     // When backgrounding, the app takes a snapshot, which triggers a layout pass,
     // which refreshes the cells, and for some reason triggers an assertion failure
@@ -622,7 +622,9 @@
         return;
     }
 
-    [self configureContentCell:cell comment:comment indexPath:indexPath tableView:self.tableViewController.tableView];
+    Comment *comment = viewModel.comment;
+
+    [self configureContentCell:cell viewModel:viewModel indexPath:indexPath tableView:self.tableViewController.tableView];
 
     if (self.highlightedIndexPath) {
         cell.isEmphasized = (indexPath == self.highlightedIndexPath);

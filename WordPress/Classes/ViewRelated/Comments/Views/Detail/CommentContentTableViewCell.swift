@@ -117,6 +117,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     private var renderer: CommentContentRenderer?
     private var renderMethod: RenderMethod?
     private var helper: ReaderCommentsHelper?
+    private var viewModel: CommentCellViewModel?
 
     // MARK: Like Button State
 
@@ -166,6 +167,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     override func prepareForReuse() {
         super.prepareForReuse()
 
+        viewModel = nil
         renderer?.prepareForReuse()
 
         // reset all highlight states.
@@ -194,12 +196,14 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     ///   - renderMethod: Specifies how to display the comment body. See `RenderMethod`.
     ///   - onContentLoaded: Callback to be called once the content has been loaded. Provides the new content height as parameter.
     func configure(
-        with comment: Comment,
+        viewModel: CommentCellViewModel,
         renderMethod: RenderMethod = .web,
         helper: ReaderCommentsHelper,
         onContentLoaded: ((CGFloat) -> Void)?
     ) {
+        let comment = viewModel.comment
         self.comment = comment
+        self.viewModel = viewModel
         self.helper = helper
 
         nameLabel?.setText(comment.authorForDisplay())
@@ -241,7 +245,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     ///   - comment: The `Comment` object to display.
     ///   - onContentLoaded: Callback to be called once the content has been loaded. Provides the new content height as parameter.
     func configureForPostDetails(with comment: Comment, helper: ReaderCommentsHelper, onContentLoaded: ((CGFloat) -> Void)?) {
-        configure(with: comment, helper: helper, onContentLoaded: onContentLoaded)
+        configure(viewModel: CommentCellViewModel(comment: comment), helper: helper, onContentLoaded: onContentLoaded)
 
         isCommentLikesEnabled = false
         isCommentReplyEnabled = false
