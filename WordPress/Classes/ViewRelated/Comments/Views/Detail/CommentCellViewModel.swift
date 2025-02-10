@@ -7,6 +7,7 @@ final class CommentCellViewModel: NSObject {
     private let notification: Notification?
     private let coreDataStack = ContextManager.shared
 
+    @Published private(set) var content: String?
     @Published private(set) var avatar: Avatar?
     @Published private(set) var state: State
 
@@ -14,6 +15,7 @@ final class CommentCellViewModel: NSObject {
         self.comment = comment
         self.notification = notification
 
+        self.content = comment.content
         self.state = State(comment: comment)
         self.avatar = Avatar(comment: comment)
 
@@ -77,6 +79,10 @@ final class CommentCellViewModel: NSObject {
         let avatar = Avatar(comment: comment)
         if avatar != self.avatar {
             self.avatar = avatar
+        }
+
+        if comment.content != self.content {
+            self.content = comment.content
         }
     }
 

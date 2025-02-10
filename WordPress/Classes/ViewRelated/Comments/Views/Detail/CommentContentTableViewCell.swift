@@ -190,6 +190,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         self.comment = comment
         self.viewModel = viewModel
         self.helper = helper
+        self.onContentLoaded = onContentLoaded
 
         viewModel.$state.sink { [weak self] in
             self?.configure(with: $0)
@@ -199,15 +200,15 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
             self?.configureAvatar(with: $0)
         }.store(in: &cancellables)
 
+        viewModel.$content.sink { [weak self] in
+            self?.configureContent($0 ?? "", renderMethod: renderMethod, helper: helper)
+        }.store(in: &cancellables)
+
         // Configure feature availability.
         isAccessoryButtonEnabled = comment.isApproved()
 
         // When reaction bar is hidden, add some space between the webview and the moderation bar.
         containerStackView.setCustomSpacing(contentButtonsTopSpacing, after: contentContainerView)
-
-        // Configure content renderer.
-        self.onContentLoaded = onContentLoaded
-        configureRenderer(for: comment, renderMethod: renderMethod, helper: helper)
     }
 
     /// Configures the cell with a `Comment` object, to be displayed in the post details view.
@@ -445,7 +446,7 @@ private extension CommentContentTableViewCell {
 
     // MARK: Content Rendering
 
-    func configureRenderer(for comment: Comment, renderMethod: RenderMethod, helper: ReaderCommentsHelper) {
+    func configureContent(_ content: String, renderMethod: RenderMethod, helper: ReaderCommentsHelper) {
         if self.renderMethod != renderMethod {
             self.renderer = nil
         }
@@ -467,7 +468,7 @@ private extension CommentContentTableViewCell {
                 let renderer = RichCommentContentRenderer()
                 renderer.richContentDelegate = self.richContentDelegate
                 renderer.attributedText = attributedText
-                renderer.comment = comment
+                renderer.comment = viewModel?.comment
                 renderer.delegate = self
                 return renderer
             }
@@ -476,7 +477,7 @@ private extension CommentContentTableViewCell {
         if renderMethod == .web {
             // reset height constraint to handle cases where the new content requires the webview to shrink.
             contentContainerHeightConstraint?.isActive = true
-            contentContainerHeightConstraint?.constant = helper.getCachedContentHeight(for: comment.content) ?? 20
+            contentContainerHeightConstraint?.constant = helper.getCachedContentHeight(for: content) ?? 20
         } else {
             contentContainerHeightConstraint?.isActive = false
         }
@@ -488,7 +489,7 @@ private extension CommentContentTableViewCell {
             contentContainerView?.addSubview(contentView)
             contentView.pinEdges()
         }
-        renderer.render(comment: comment.content)
+        renderer.render(comment: content)
     }
 
     // MARK: Button Actions
