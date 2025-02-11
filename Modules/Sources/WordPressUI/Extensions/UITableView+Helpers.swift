@@ -87,4 +87,29 @@ extension UITableView {
         }
         return true
     }
+
+    /// Updates the layout of the given state view inside the table view to
+    /// achieve a nice parallax effect and ensure the state view covers the
+    /// visible scroll view area.
+    public func layoutEmptyStateView(_ stateView: UIView, in viewController: UIViewController) {
+        let view: UIView = viewController.view
+
+        // Calculate visible part of the table view in `self.view` coordinates
+        let y: CGFloat = {
+            if let headerView = self.tableHeaderView {
+                return self.convert(headerView.frame, to: view).maxY
+            } else {
+                return view.safeAreaInsets.top
+            }
+        }()
+
+        // And convert it to the `tableView` coordinate space since that's where
+        // `emptyStateView` belongs.
+        stateView.frame = self.convert(CGRect(
+            x: 0,
+            y: y,
+            width: view.bounds.width,
+            height: view.bounds.height - y - view.safeAreaInsets.bottom
+        ), from: view)
+    }
 }

@@ -5,35 +5,23 @@
 #import "ReaderPost.h"
 #import "ReaderPostService.h"
 #import "UIView+Subviews.h"
-#import "WPTableViewHandler.h"
 #import "WordPress-Swift.h"
 #import "WPAppAnalytics.h"
 
 @class Comment;
 
-// NOTE: We want the cells to have a rather large estimated height.  This avoids a peculiar
-// crash in certain circumstances when the tableView lays out its visible cells,
-// and those cells contain WPRichTextEmbeds. -- Aerych, 2016.11.30
-static CGFloat const EstimatedCommentRowHeight = 300.0;
-static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
-
-
 @interface ReaderCommentsViewController () <NSFetchedResultsControllerDelegate,
                                             WPRichContentViewDelegate, // TODO: Remove once we switch to the `.web` rendering method.
                                             WPContentSyncHelperDelegate,
-                                            WPTableViewHandlerDelegate,
                                             ReaderCommentsFollowPresenterDelegate>
 
 @property (nonatomic, strong, readwrite) ReaderPost *post;
 @property (nonatomic, strong) NSNumber *postSiteID;
-@property (nonatomic, strong) UIActivityIndicatorView *activityFooter;
 @property (nonatomic, strong) WPContentSyncHelper *syncHelper;
 @property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) WPTableViewHandler *tableViewHandler;
 @property (nonatomic, strong) NoResultsViewController *noResultsViewController;
-@property (nonatomic, strong) UIView *buttonComment;
+@property (nonatomic, strong) UIView *buttonAddComment;
 @property (nonatomic, strong) NSLayoutConstraint *replyTextViewHeightConstraint;
-@property (nonatomic, strong) NSCache *estimatedRowHeights;
 @property (nonatomic) BOOL isLoggedIn;
 @property (nonatomic) BOOL needsUpdateAttachmentsAfterScrolling;
 @property (nonatomic) BOOL needsRefreshTableViewAfterScrolling;
@@ -49,10 +37,9 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 /// A cached instance for the new comment header view.
 @property (nonatomic, strong) UIView *cachedHeaderView;
 
-/// Convenience computed variable that returns a separator inset that "hides" the separator by pushing it off the screen.
-@property (nonatomic, assign) UIEdgeInsets hiddenSeparatorInsets;
-
 @property (nonatomic, strong) NSIndexPath *highlightedIndexPath;
+
+@property (nonatomic, strong) ReaderCommentsTableViewController *tableViewController;
 
 @end
 
@@ -83,15 +70,15 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 {
     [super viewDidLoad];
 
-    self.view.backgroundColor = [UIColor murielBasicBackground];
+    self.cachedAttributedStrings = [[NSCache alloc] init];
+
+    self.view.backgroundColor = [UIColor systemBackgroundColor];
     self.commentModified = NO;
     self.helper = [ReaderCommentsHelper new];
 
     [self checkIfLoggedIn];
 
     [self configureNavbar];
-    [self configureTableView];
-    [self configureTableViewHandler];
     [self configureNoResultsView];
     [self configureCommentButton];
     [self configureViewConstraints];
@@ -103,18 +90,9 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 {
     [super viewWillAppear:animated];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(handleApplicationDidBecomeActive:)
-                                                 name:UIApplicationDidBecomeActiveNotification
-                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 
     [self refreshAndSync];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    [self.tableView reloadData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -130,6 +108,13 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+
+    [self.tableViewController setBottomInset:self.buttonAddComment.frame.size.height];
+}
+
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
 {
     [super traitCollectionDidChange:previousTraitCollection];
@@ -137,6 +122,11 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     // Update cached attributed strings when toggling light/dark mode.
     self.userInterfaceStyleChanged = self.traitCollection.userInterfaceStyle != previousTraitCollection.userInterfaceStyle;
     [self refreshTableViewAndNoResultsView];
+}
+
+- (UITableView *)tableView
+{
+    return self.tableViewController.tableView;
 }
 
 #pragma mark - Split View Support
@@ -200,49 +190,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     [self refreshFollowButton];
 }
 
-- (void)configureTableView
-{
-    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
-    self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.tableView.cellLayoutMarginsFollowReadableWidth = YES;
-    self.tableView.preservesSuperviewLayoutMargins = YES;
-    self.tableView.backgroundColor = [UIColor murielBasicBackground];
-    if ([Feature enabled:FeatureFlagReaderCommentsWebKit]) {
-        // We use this to mask the initial WebKit warmup that takes a bit of time
-        // the first time you initialize a web view. It renders asyncronously, and
-        // we don't want to show cells with empty messages.
-        self.tableView.alpha = 0.0;
-    }
-    [self.view addSubview:self.tableView];
-
-    // register the content cell
-    UINib *nib = [UINib nibWithNibName:[CommentContentTableViewCell classNameWithoutNamespaces] bundle:nil];
-    [self.tableView registerNib:nib forCellReuseIdentifier:CommentContentCellIdentifier];
-
-    // configure table view separator
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-    self.tableView.separatorInsetReference = UITableViewSeparatorInsetFromAutomaticInsets;
-
-    // hide cell separator for the last row
-    self.tableView.tableFooterView = [self tableFooterViewForHiddenSeparators];
-
-    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
-
-    self.estimatedRowHeights = [[NSCache alloc] init];
-    self.cachedAttributedStrings = [[NSCache alloc] init];
-}
-
-- (void)configureTableViewHandler
-{
-    self.tableViewHandler = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
-    self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationNone;
-    self.tableViewHandler.insertRowAnimation = UITableViewRowAnimationNone;
-    self.tableViewHandler.moveRowAnimation = UITableViewRowAnimationNone;
-    self.tableViewHandler.deleteRowAnimation = UITableViewRowAnimationNone;
-    self.tableViewHandler.delegate = self;
-    [self.tableViewHandler setListensForContentChanges:NO];
-}
-
 - (void)configureNoResultsView
 {
     self.noResultsViewController = [NoResultsViewController controller];
@@ -250,42 +197,20 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 - (void)configureCommentButton
 {
-    self.buttonComment = [self makeCommentButton];
-    [self.view addSubview:self.buttonComment];
-    [self.view bringSubviewToFront:self.buttonComment];
+    self.buttonAddComment = [self makeCommentButton];
 }
 
 #pragma mark - Autolayout Helpers
 
 - (void)configureViewConstraints
 {
-    self.tableView.translatesAutoresizingMaskIntoConstraints = false;
-    self.buttonComment.translatesAutoresizingMaskIntoConstraints = false;
-
-    NSMutableDictionary *views = [[NSMutableDictionary alloc] initWithDictionary:@{
-        @"tableView": self.tableView,
-        @"replyTextView": self.buttonComment
-    }];
-
-    NSString *verticalVisualFormatString = @"V:|[tableView][replyTextView]";
-
-    // TableView Contraints
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:verticalVisualFormatString options:0 metrics:nil views:views]];
-
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[tableView]|" options:0 metrics:nil views:views]];
-
-    [NSLayoutConstraint activateConstraints:@[
-        [self.buttonComment.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
-        [self.buttonComment.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
-        [self.view.keyboardLayoutGuide.topAnchor constraintEqualToAnchor:self.buttonComment.bottomAnchor]
-    ]];
+    self.buttonAddComment.translatesAutoresizingMaskIntoConstraints = false;
 
     // TODO:
     // This LayoutConstraint is just a helper, meant to hide / display the ReplyTextView, as needed.
     // Whenever iOS 8 is set as the deployment target, let's always attach this one, and enable / disable it as needed!
-    self.replyTextViewHeightConstraint = [NSLayoutConstraint constraintWithItem:self.buttonComment attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:0 multiplier:1 constant:0];
+    self.replyTextViewHeightConstraint = [NSLayoutConstraint constraintWithItem:self.buttonAddComment attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:0 multiplier:1 constant:0];
 }
-
 
 #pragma mark - Helpers
 
@@ -315,11 +240,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 - (void)checkIfLoggedIn
 {
     self.isLoggedIn = [AccountHelper isDotcomAvailable];
-}
-
-- (UIView *)tableFooterViewForHiddenSeparators
-{
-    return [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 0)];
 }
 
 - (void)setHighlightedIndexPath:(NSIndexPath *)highlightedIndexPath
@@ -372,53 +292,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     return _subscriptionSettingsBarButtonItem;
 }
 
-/// NOTE: In order for the inset to work across orientations, the tableView should use `UITableViewSeparatorInsetFromAutomaticInsets` to
-/// base the separator insets on the cell layout margins instead of the edges.
-///
-/// With the default inset reference (i.e. `UITableViewSeparatorInsetFromCellEdges`), sometimes the cell configuration is called before the
-/// orientation animation is completed – and this caused the computed separator insets to intermittently return the wrong table view size.
-///
-- (UIEdgeInsets)hiddenSeparatorInsets {
-    CGFloat rightInset = CGRectGetWidth(self.tableView.frame);
-
-    // Add an extra inset for landscape iPad (without a split view) where the separator does reach the trailing edge.
-    // Otherwise, after orientation the inset may not be enough to hide the separator.
-    if (self.view.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) {
-        rightInset -= self.tableView.separatorInset.left;
-    }
-
-    // Note: no need to flip the insets manually for RTL layout. The system will automatically take care of this.
-    return UIEdgeInsetsMake(0, -self.tableView.separatorInset.left, 0, rightInset);
-}
-
-/// Determines whether a separator should be drawn for the provided index path.
-/// The method returns YES if the index path represent a comment that is placed before a top-level comment.
-///
-/// Example:
-///
-/// - comment 1
-///     - comment 2
-///         - comment 3      --> returns YES.
-/// - comment 4
-///     - comment 5
-///         - comment 6
-///             - comment 7
-///         - comment 8      --> returns YES.
-/// - comment 9
-///
-- (BOOL)shouldShowSeparatorForIndexPath:(NSIndexPath *)indexPath
-{
-    NSIndexPath *nextIndexPath = [NSIndexPath indexPathForRow:indexPath.row + 1 inSection:indexPath.section];
-    NSArray<id<NSFetchedResultsSectionInfo>> *sections = self.tableViewHandler.resultsController.sections;
-
-    if (sections && sections[indexPath.section] && nextIndexPath.row < sections[indexPath.section].numberOfObjects) {
-        Comment *nextComment = [self.tableViewHandler.resultsController objectAtIndexPath:nextIndexPath];
-        return [nextComment isTopLevelComment];
-    }
-
-    return NO;
-}
-
 - (void)listenForClipboardChanges
 {
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -445,6 +318,10 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     _post = post;
 
     if (_post.isWPCom || _post.isJetpack) {
+        self.tableViewController = [[ReaderCommentsTableViewController alloc] initWithPost:self.post];
+        self.tableViewController.containerViewController = self;
+        [self configureTableViewController:self.tableViewController];
+
         self.syncHelper = [[WPContentSyncHelper alloc] init];
         self.syncHelper.delegate = self;
     }
@@ -457,21 +334,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 {
     // If the post isn't loaded yet, maybe we're asynchronously retrieving it?
     return self.post.siteID ?: self.postSiteID;
-}
-
-- (UIActivityIndicatorView *)activityFooter
-{
-    if (_activityFooter) {
-        return _activityFooter;
-    }
-
-    _activityFooter = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleMedium];
-    _activityFooter.activityIndicatorViewStyle = UIActivityIndicatorViewStyleMedium;
-    _activityFooter.hidesWhenStopped = YES;
-    _activityFooter.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-    [_activityFooter stopAnimating];
-
-    return _activityFooter;
 }
 
 - (BOOL)isLoadingPost
@@ -531,7 +393,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 - (void)refreshReplyTextView
 {
     BOOL showsReplyTextView = self.shouldDisplayReplyTextView;
-    self.buttonComment.hidden = !showsReplyTextView;
+    self.buttonAddComment.hidden = !showsReplyTextView;
     
     if (showsReplyTextView) {
         [self.view removeConstraint:self.replyTextViewHeightConstraint];
@@ -542,28 +404,14 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 - (void)refreshInfiniteScroll
 {
-    if (self.syncHelper.hasMoreContent) {
-        CGFloat width = CGRectGetWidth(self.tableView.bounds);
-        UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, 50.0f)];
-        footerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        CGRect rect = self.activityFooter.frame;
-        rect.origin.x = (width - rect.size.width) / 2.0;
-        self.activityFooter.frame = rect;
-
-        [footerView addSubview:self.activityFooter];
-        self.tableView.tableFooterView = footerView;
-        
-    } else {
-        self.tableView.tableFooterView = [self tableFooterViewForHiddenSeparators];
-        self.activityFooter = nil;
-    }
+    [self.tableViewController setLoadingFooterHidden:YES];
 }
 
 - (void)refreshNoResultsView
 {
     [self.noResultsViewController removeFromView];
 
-    BOOL isTableViewEmpty = (self.tableViewHandler.resultsController.fetchedObjects.count == 0);
+    BOOL isTableViewEmpty = self.tableViewController.isEmpty;
     if (!isTableViewEmpty) {
         return;
     }
@@ -601,13 +449,13 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         self.noResultsViewController.view.frame = self.tableView.frame;
     }
 
-    [self.view insertSubview:self.noResultsViewController.view belowSubview:self.buttonComment];
+    [self.view insertSubview:self.noResultsViewController.view belowSubview:self.buttonAddComment];
     [self.noResultsViewController didMoveToParentViewController:self];
 }
 
 - (void)refreshAfterCommentModeration
 {
-    [self.tableViewHandler refreshTableView];
+    [self.tableViewController.tableView reloadData];
     [self refreshNoResultsView];
 }
 
@@ -617,11 +465,9 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 }
 
 - (void)refreshTableViewAndNoResultsView:(BOOL)scrollToHighlightedComment {
-    [self.tableViewHandler refreshTableView];
+    // TODO: remove
+    [self.tableViewController.tableView reloadData];
     [self refreshNoResultsView];
-    [self.managedObjectContext performBlock:^{
-        [self updateCachedContent];
-    }];
 
     if (scrollToHighlightedComment) {
         [self navigateToCommentIDIfNeeded];
@@ -631,17 +477,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 - (void)refreshTableViewAndNoResultsView {
     [self refreshTableViewAndNoResultsView:YES];
 }
-
-- (void)updateCachedContent
-{
-    if (![Feature enabled:FeatureFlagReaderCommentsWebKit]) {
-        NSArray *comments = self.tableViewHandler.resultsController.fetchedObjects;
-        for(Comment *comment in comments) {
-            [self cacheContentForComment:comment];
-        }
-    }
-}
-
 
 - (NSAttributedString *)cacheContentForComment:(Comment *)comment
 {
@@ -663,35 +498,12 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     double delayInSeconds = 0.5;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [self scrollToCommentID];
+        [self.tableViewController scrollToCommentWithID:self.navigateToCommentID];
     });
 }
 
-- (void)scrollToCommentID
-{
-    // Find the comment if it exists
-    NSArray<Comment *> *comments = [self.tableViewHandler.resultsController fetchedObjects];
-    NSArray<Comment *> *filteredComments = [comments filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"commentID == %@", self.navigateToCommentID]];
-    Comment *comment = [filteredComments firstObject];
-
-    if (!comment) {
-        return;
-    }
-
-    // Force the table view to be laid out first before scrolling to indexPath.
-    // This avoids a case where a cell instance could be orphaned and displayed randomly on top of the other cells.
-    NSIndexPath *indexPath = [self.tableViewHandler.resultsController indexPathForObject:comment];
-    [self.tableView layoutIfNeeded];
-
-    // Ensure that the indexPath exists before scrolling to it.
-    if (indexPath.section >=0
-        && indexPath.row >=0
-        && indexPath.section < self.tableView.numberOfSections
-        && indexPath.row < [self.tableView numberOfRowsInSection:indexPath.section])
-    {
-        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-        self.highlightedIndexPath = indexPath;
-    }
+- (void)highlightCommentAtIndexPath:(NSIndexPath *)indexPath {
+    self.highlightedIndexPath = indexPath;
 }
 
 #pragma mark - Actions
@@ -701,8 +513,10 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     if (!indexPath || !self.canComment) {
         return;
     }
-    Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    [self didTapReplyWithComment:comment];
+    Comment *comment = [self.tableViewController commentAt:indexPath];
+    if (comment) {
+        [self didTapReplyWithComment:comment];
+    }
 }
 
 - (void)didTapLikeForComment:(Comment *)comment atIndexPath:(NSIndexPath *)indexPath
@@ -742,7 +556,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
     self.fetchCommentsError = nil;
-    [self.activityFooter startAnimating];
+    [self.tableViewController setLoadingFooterHidden:NO];
 
     CommentService *service = [[CommentService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     NSInteger page = [service numberOfHierarchicalPagesSyncedforPost:self.post] + 1;
@@ -755,19 +569,14 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 - (void)syncContentEnded:(WPContentSyncHelper *)syncHelper
 {
-    [self.activityFooter stopAnimating];
-    if ([self.tableViewHandler isScrolling]) {
-        self.needsRefreshTableViewAfterScrolling = YES;
-        return;
-    }
-
+    [self.tableViewController setLoadingFooterHidden:YES];
     [self refreshTableViewAndNoResultsView];
 }
 
 - (void)syncContentFailed:(WPContentSyncHelper *)syncHelper
 {
     self.fetchCommentsError = [NSError errorWithDomain:@"" code:0 userInfo:nil];
-    [self.activityFooter stopAnimating];
+    [self.tableViewController setLoadingFooterHidden:YES];
     [self refreshTableViewAndNoResultsView];
 }
 
@@ -775,7 +584,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 - (void)setupWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID
 {
-    ReaderPostService *service      = [[ReaderPostService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
+    ReaderPostService *service = [[ReaderPostService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     __weak __typeof(self) weakSelf  = self;
     
     self.postSiteID = siteID;
@@ -788,11 +597,10 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     } failure:^(NSError *error) {
         DDLogError(@"[RestAPI] %@", error);
         self.fetchCommentsError = error;
-        [self.activityFooter stopAnimating];
+        [self.tableViewController setLoadingFooterHidden:YES];
         [self refreshTableViewAndNoResultsView];
     }];
 }
-
 
 #pragma mark - UITableView Delegate Methods
 
@@ -801,24 +609,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     return [[ContextManager sharedInstance] mainContext];
 }
 
-- (NSFetchRequest *)fetchRequest
-{
-    if (!self.post) {
-        return nil;
-    }
-
-    // Moderated comments could still be cached, so filter out non-approved comments.
-    NSString *approvedStatus = [Comment descriptionFor:CommentStatusTypeApproved];
-
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:NSStringFromClass([Comment class])];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"post = %@ AND status = %@ AND visibleOnReader = %@", self.post, approvedStatus, @YES];
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"hierarchy" ascending:YES];
-    [fetchRequest setSortDescriptors:@[sortDescriptor]];
-
-    return fetchRequest;
-}
-
-- (void)configureCell:(UITableViewCell *)aCell atIndexPath:(NSIndexPath *)indexPath
+- (void)configureCell:(CommentContentTableViewCell *)cell comment:(Comment *)comment indexPath:(NSIndexPath *)indexPath
 {
     // When backgrounding, the app takes a snapshot, which triggers a layout pass,
     // which refreshes the cells, and for some reason triggers an assertion failure
@@ -834,9 +625,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         return;
     }
 
-    Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    CommentContentTableViewCell *cell = (CommentContentTableViewCell *)aCell;
-    [self configureContentCell:cell comment:comment indexPath:indexPath handler:self.tableViewHandler];
+    [self configureContentCell:cell comment:comment indexPath:indexPath tableView:self.tableViewController.tableView];
 
     if (self.highlightedIndexPath) {
         cell.isEmphasized = (indexPath == self.highlightedIndexPath);
@@ -844,9 +633,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
     // support for legacy content rendering method.
     cell.richContentDelegate = self;
-
-    // show separator when the comment is the "last leaf" of its top-level comment.
-    cell.separatorInset = [self shouldShowSeparatorForIndexPath:indexPath] ? UIEdgeInsetsZero : self.hiddenSeparatorInsets;
 
     // configure button actions.
     __weak __typeof(self) weakSelf = self;
@@ -870,95 +656,10 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     };
 }
 
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)loadMore
 {
-    // NOTE: When using a `CommentContentTableViewCell` with `.web` rendering method, this method needs to return `UITableViewAutomaticDimension`.
-    // Using cached estimated heights could get some cells to keep reloading their HTMLs indefinitely, causing the app to hang!
-
-    NSNumber *cachedHeight = [self.estimatedRowHeights objectForKey:indexPath];
-    if (cachedHeight.doubleValue) {
-        return cachedHeight.doubleValue;
-    }
-    return EstimatedCommentRowHeight;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return UITableViewAutomaticDimension;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    return self.cachedHeaderView;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSString *cellIdentifier = CommentContentCellIdentifier;
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
-    [self configureCell:cell atIndexPath:indexPath];
-    return cell;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
-}
-
-- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return NO;
-}
-
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [self.estimatedRowHeights setObject:@(cell.frame.size.height) forKey:indexPath];
-
-    // Are we approaching the end of the table?
-    if ((indexPath.section + 1 == [self.tableViewHandler numberOfSectionsInTableView:tableView]) &&
-        (indexPath.row + 4 >= [self.tableViewHandler tableView:tableView numberOfRowsInSection:indexPath.section])) {
-
-        // Only 3 rows till the end of table
-        if (self.syncHelper.hasMoreContent) {
-            [self.syncHelper syncMoreContent];
-        }
-    }
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return UITableViewAutomaticDimension;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return 0;
-}
-
-#pragma mark - UIScrollView Delegate Methods
-
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
-    [self.tableView deselectSelectedRowWithAnimation:YES];
-
-    if (self.needsRefreshTableViewAfterScrolling) {
-        self.needsRefreshTableViewAfterScrolling = NO;
-        [self refreshTableViewAndNoResultsView];
-
-        // If we reloaded the tableView we also updated cell heights
-        // so there is no need to update for attachments.
-        self.needsUpdateAttachmentsAfterScrolling = NO;
-    }
-
-    if (self.needsUpdateAttachmentsAfterScrolling) {
-        self.needsUpdateAttachmentsAfterScrolling = NO;
-
-        for (UITableViewCell *cell in [self.tableView visibleCells]) {
-            if ([cell isKindOfClass:[CommentContentTableViewCell class]]) {
-                [(CommentContentTableViewCell *)cell ensureRichContentTextViewLayout];
-            }
-        }
-        [self updateTableViewForAttachments];
+    if (self.syncHelper.hasMoreContent) {
+        [self.syncHelper syncMoreContent];
     }
 }
 
@@ -976,11 +677,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 - (BOOL)richContentViewShouldUpdateLayoutForAttachments:(WPRichContentView *)richContentView
 {
-    if (self.tableViewHandler.isScrolling) {
-        self.needsUpdateAttachmentsAfterScrolling = YES;
-        return NO;
-    }
-
     return YES;
 }
 

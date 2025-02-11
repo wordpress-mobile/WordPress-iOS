@@ -14,6 +14,7 @@ typedef NS_ENUM(NSUInteger, ReaderCommentsSource) {
 };
 
 @class Comment;
+@class CommentContentTableViewCell;
 @class ReaderPost;
 @class ReaderCommentsHelper;
 
@@ -23,6 +24,7 @@ typedef NS_ENUM(NSUInteger, ReaderCommentsSource) {
 @property (nonatomic, assign, readwrite) BOOL allowsPushingPostDetails;
 @property (nonatomic, assign, readwrite) ReaderCommentsSource source;
 @property (nonatomic, strong, readonly) ReaderCommentsHelper *helper;
+@property (nonatomic, strong, readonly) UIView *buttonAddComment;
 
 - (void)setupWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID;
 
@@ -38,5 +40,9 @@ typedef NS_ENUM(NSUInteger, ReaderCommentsSource) {
 - (void)refreshAfterCommentModeration;
 - (NSAttributedString *)cacheContentForComment:(Comment *)comment;
 - (void)trackReplyTo:(BOOL)replyTarget;
+- (void)configureCell:(CommentContentTableViewCell *)cell comment:(Comment *)comment indexPath:(NSIndexPath *)indexPath;
+- (UIView *)cachedHeaderView;
+- (void)loadMore;
+- (void)highlightCommentAtIndexPath:(NSIndexPath *)indexPath;
 
 @end

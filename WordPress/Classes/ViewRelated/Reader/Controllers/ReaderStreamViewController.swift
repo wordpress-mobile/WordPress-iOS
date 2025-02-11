@@ -367,24 +367,7 @@ import AutomatticTracks
 
     private func layoutEmptyStateView() {
         guard let emptyStateView else { return }
-
-        // Calculate visible part of the table view in `self.view` coordinates
-        let y: CGFloat = {
-            if let headerView = tableView.tableHeaderView {
-                return tableView.convert(headerView.frame, to: view).maxY
-            } else {
-                return view.safeAreaInsets.top
-            }
-        }()
-
-        // And convert it to the `tableView` coordinate space since that's where
-        // `emptyStateView` belongs.
-        emptyStateView.frame = tableView.convert(CGRect(
-            x: 0,
-            y: y,
-            width: view.bounds.width,
-            height: view.bounds.height - y - view.safeAreaInsets.bottom
-        ), from: view)
+        tableView.layoutEmptyStateView(emptyStateView, in: self)
     }
 
     private func didChangeIsCompact(_ isCompact: Bool) {

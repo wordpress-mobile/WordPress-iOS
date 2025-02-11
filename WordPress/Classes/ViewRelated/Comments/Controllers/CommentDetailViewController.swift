@@ -1002,7 +1002,9 @@ private extension CommentDetailViewController {
 
         button.placeholder = String(format: .replyPlaceholderFormat, comment.authorForDisplay())
         button.accessibilityHint = NSLocalizedString("Reply Text", comment: "Notifications Reply Accessibility Identifier")
-        button.addTarget(self, action: #selector(buttonAddCommentTapped), for: .primaryActionTriggered)
+        button.onTap = { [weak self] in
+            self?.buttonAddCommentTapped()
+        }
         button.isHidden = true
         containerStackView.addArrangedSubview(button)
         addCommentButton = button
