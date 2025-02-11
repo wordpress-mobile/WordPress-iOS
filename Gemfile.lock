@@ -236,7 +236,7 @@ GEM
       concurrent-ruby (~> 1.0)
     java-properties (0.3.0)
     jmespath (1.6.2)
-    json (2.9.1)
+    json (2.10.1)
     jwt (2.9.3)
       base64
     kramdown (2.5.1)
@@ -267,7 +267,7 @@ GEM
     optparse (0.6.0)
     os (1.1.4)
     parallel (1.26.3)
-    parser (3.3.7.0)
+    parser (3.3.7.1)
       ast (~> 2.4.1)
       racc
     pkg-config (1.5.9)
@@ -294,7 +294,7 @@ GEM
       observer (~> 0.1)
       pkg-config (~> 1.4)
     rouge (3.28.0)
-    rubocop (1.71.1)
+    rubocop (1.71.2)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
