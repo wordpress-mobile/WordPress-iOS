@@ -139,10 +139,10 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
         switch type {
         case .insert:
             guard let newIndexPath else { return }
-            tableView.insertRows(at: [newIndexPath], with: .automatic)
+            tableView.insertRows(at: [newIndexPath], with: .none)
         case .delete:
             guard let indexPath else { return }
-            tableView.deleteRows(at: [indexPath], with: .automatic)
+            tableView.deleteRows(at: [indexPath], with: .none)
         case .update:
             // The cells are responsible for updating themselves
             break
@@ -155,7 +155,9 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
     }
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<any NSFetchRequestResult>) {
-        tableView.endUpdates()
+        UIView.performWithoutAnimation {
+            tableView.endUpdates()
+        }
     }
 
     // MARK: - UITableViewDataSource
