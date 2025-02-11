@@ -118,10 +118,7 @@ final class CommentComposerViewController: UIViewController {
     }
 
     private func setLoading(_ isLoading: Bool) {
-        buttonSend.configuration?.showsActivityIndicator = isLoading
-        buttonSend.configuration?.title = isLoading ? nil : Strings.send
-        buttonSend.isEnabled = isLoading
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: buttonSend) // Update layout
+        navigationItem.rightBarButtonItem = isLoading ? .activityIndicator : UIBarButtonItem(customView: buttonSend)
         navigationItem.leftBarButtonItem?.isEnabled = !isLoading
         textView.resignFirstResponder()
         textView.alpha = isLoading ? 0.5 : 1.0
@@ -157,7 +154,6 @@ final class CommentComposerViewController: UIViewController {
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: SharedStrings.Button.cancel, style: .plain, target: self, action: #selector(buttonCancelTapped))
 
-        buttonSend.heightAnchor.constraint(equalToConstant: 36).isActive = true
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: buttonSend)
         buttonSend.addTarget(self, action: #selector(buttonSendTapped), for: .primaryActionTriggered)
     }
