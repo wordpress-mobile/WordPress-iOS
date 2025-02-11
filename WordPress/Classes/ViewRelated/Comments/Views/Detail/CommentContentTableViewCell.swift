@@ -79,10 +79,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         }
     }
 
-    // MARK: Constants
-
-    private let contentButtonsTopSpacing: CGFloat = 15
-
     // MARK: Outlets
 
     @IBOutlet private weak var containerStackView: UIStackView!
@@ -197,9 +193,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
         // Configure feature availability.
         isAccessoryButtonEnabled = comment.isApproved()
-
-        // When reaction bar is hidden, add some space between the webview and the moderation bar.
-        containerStackView.setCustomSpacing(contentButtonsTopSpacing, after: contentContainerView)
     }
 
     /// Configures the cell with a `Comment` object, to be displayed in the post details view.
@@ -214,8 +207,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         likeButton.isHidden = true
 
         isAccessoryButtonEnabled = false
-
-        shouldHideSeparator = true
 
         containerStackLeadingConstraint.constant = 0
         containerStackTrailingConstraint.constant = 0
@@ -354,6 +345,7 @@ private extension CommentContentTableViewCell {
         accessoryButton?.addTarget(self, action: #selector(accessoryButtonTapped), for: .touchUpInside)
 
         replyButton.configuration = makeReactionButtonConfiguration(systemImage: "arrowshape.turn.up.left")
+        replyButton.configuration?.contentInsets.leading = 0
         replyButton.tintColor = .secondaryLabel
         replyButton.setTitle(.reply, for: .normal)
         replyButton.addTarget(self, action: #selector(replyButtonTapped), for: .touchUpInside)
@@ -366,8 +358,6 @@ private extension CommentContentTableViewCell {
         likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
         likeButton.maximumContentSizeCategory = .accessibilityMedium
         likeButton.accessibilityIdentifier = .likeButtonAccessibilityId
-
-        separatorView.layoutMargins = .init(top: 0, left: 20, bottom: 0, right: 0).flippedForRightToLeft
 
         applyStyles()
     }
@@ -383,6 +373,7 @@ private extension CommentContentTableViewCell {
             attributes.font = font
             return attributes
         }
+        configuration.contentInsets = .init(top: 12, leading: 8, bottom: 12, trailing: 8)
         configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(font: font)
         return configuration
     }
