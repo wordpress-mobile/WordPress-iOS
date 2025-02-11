@@ -358,19 +358,19 @@ private extension CommentContentTableViewCell {
         dateLabel?.font = style.dateFont
         dateLabel?.textColor = style.dateTextColor
 
-        accessoryButton?.tintColor = Style.buttonTintColor
+        accessoryButton?.tintColor = .secondaryLabel
         accessoryButton?.setImage(accessoryButtonImage, for: .normal)
         accessoryButton?.addTarget(self, action: #selector(accessoryButtonTapped), for: .touchUpInside)
 
         replyButton.configuration = makeReactionButtonConfiguration(systemImage: "arrowshape.turn.up.left")
-        replyButton.tintColor = .label
+        replyButton.tintColor = .secondaryLabel
         replyButton.setTitle(.reply, for: .normal)
         replyButton.addTarget(self, action: #selector(replyButtonTapped), for: .touchUpInside)
         replyButton.maximumContentSizeCategory = .accessibilityMedium
         replyButton.accessibilityIdentifier = .replyButtonAccessibilityId
 
         likeButton.configuration = makeReactionButtonConfiguration(systemImage: "star")
-        likeButton.tintColor = .label
+        likeButton.tintColor = .secondaryLabel
 
         likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
         likeButton.maximumContentSizeCategory = .accessibilityMedium
@@ -383,15 +383,16 @@ private extension CommentContentTableViewCell {
 
     private func makeReactionButtonConfiguration(systemImage: String) -> UIButton.Configuration {
         var configuration = UIButton.Configuration.plain()
+        let font = UIFont.preferredFont(forTextStyle: .footnote)
         configuration.image = UIImage(systemName: systemImage)
-        configuration.imagePlacement = .top
-        configuration.imagePadding = 5
+        configuration.imagePlacement = .leading
+        configuration.imagePadding = 6
         configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer {
             var attributes = $0
-            attributes.font = UIFont.preferredFont(forTextStyle: .footnote)
+            attributes.font = font
             return attributes
         }
-        configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(font: UIFont.preferredFont(forTextStyle: .caption1))
+        configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(font: font)
         return configuration
     }
 
@@ -427,10 +428,11 @@ private extension CommentContentTableViewCell {
     }
 
     func updateLikeButton(isLiked: Bool, likeCount: Int) {
-        likeButton.tintColor = isLiked ? UIAppColor.primary : .label
+        likeButton.tintColor = isLiked ? UIAppColor.primary : .secondaryLabel
         if var configuration = likeButton.configuration {
             configuration.image = UIImage(systemName: isLiked ? "star.fill" : "star")
-            configuration.title = {
+            configuration.title = likeCount > 0 ? "\(likeCount)" : nil
+            likeButton.accessibilityLabel = {
                 switch likeCount {
                 case .zero: .noLikes
                 case 1: String(format: .singularLikeFormat, likeCount)
