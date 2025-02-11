@@ -1,5 +1,5 @@
 {
-  "originHash" : "c4941d7482967920771618e3e241b71dc261453493b5515f9ee6c3ea2b2088fb",
+  "originHash" : "33178852300005bef26a5e5156a5d80a02416132cc12ea8f9f2fe53a05ff8b43",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -26,6 +26,15 @@
       "state" : {
         "revision" : "606384a7492faa1139d489080dd961b0b57f9fd9",
         "version" : "1.1.5"
+      }
+    },
+    {
+      "identity" : "azteceditor-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/wordpress-mobile/AztecEditor-iOS",
+      "state" : {
+        "revision" : "f20f4102aab2dd9a14dffe5d42af069dcb08538f",
+        "version" : "1.20.0"
       }
     },
     {

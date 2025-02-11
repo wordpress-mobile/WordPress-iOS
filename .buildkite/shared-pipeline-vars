@@ -5,7 +5,7 @@
 
 # The ~> modifier is not currently used, but we check for it just in case
 XCODE_VERSION=$(sed -E 's/^~> ?//' .xcode-version)
-CI_TOOLKIT_PLUGIN_VERSION="3.9.1"
+CI_TOOLKIT_PLUGIN_VERSION="3.8.0"
 
 export IMAGE_ID="xcode-$XCODE_VERSION-macos-14.7.1-v1"
 export CI_TOOLKIT_PLUGIN="automattic/a8c-ci-toolkit#$CI_TOOLKIT_PLUGIN_VERSION"

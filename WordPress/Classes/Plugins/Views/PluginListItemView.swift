@@ -22,7 +22,7 @@ struct PluginListItemView: View {
         HStack(alignment: .top) {
             PluginIconView(slug: plugin.possibleWpOrgDirectorySlug, service: viewModel.service)
 
-            VStack(alignment: .leading, spacing: 0) {
+            VStack(alignment: .leading, spacing: 4) {
                 Text(plugin.name.makePlainText())
                     .lineLimit(1)
                     .font(.headline)
@@ -43,13 +43,13 @@ struct PluginListItemView: View {
         .contextMenu(menuItems: {
             menuItems
         })
-        .overlay(alignment: .bottomTrailing) {
+        .overlay(alignment: .topTrailing) {
             Menu {
                 menuItems
             } label: {
                 Image(systemName: "ellipsis")
                     .padding(4)
-                    .frame(width: 44, height: 44, alignment: .bottomTrailing)
+                    .frame(width: 44, height: 44, alignment: .topTrailing)
                     .contentShape(Rectangle())
             }
             .foregroundStyle(.secondary)

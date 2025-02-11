@@ -7,6 +7,7 @@ public actor PluginService: PluginServiceProtocol {
     private let client: WordPressClient
     private let wpOrgClient: WordPressOrgApiClient
     private let installedPluginDataStore = InMemoryInstalledPluginDataStore()
+    private let pluginDirectoryDataStore = InMemoryPluginDirectoryDataStore()
     private let urlSession: URLSession
 
     public init(client: WordPressClient) {
@@ -21,8 +22,23 @@ public actor PluginService: PluginServiceProtocol {
         try await installedPluginDataStore.store(plugins)
     }
 
+    public func fetchPluginInformation(slug: PluginWpOrgDirectorySlug) async throws {
+        // Considering fetched plugin info are stored in memory at the moment, it's okay to not re-fetch plugin info
+        // if it's already fetched.
+        if try await pluginDirectoryDataStore.get(slug) != nil {
+            return
+        }
+
+        let plugin = try await wpOrgClient.pluginInformation(slug: slug)
+        try await pluginDirectoryDataStore.store([plugin])
+    }
+
     public func installedPluginsUpdates(query: PluginDataStoreQuery) async -> AsyncStream<Result<[InstalledPlugin], Error>> {
         await installedPluginDataStore.listStream(query: query)
+    }
+
+    public func pluginInformationUpdates(query: PluginDirectoryDataStoreQuery) async -> AsyncStream<Result<[PluginInformation], Error>> {
+        await pluginDirectoryDataStore.listStream(query: query)
     }
 
     public func resolveIconURL(of slug: PluginWpOrgDirectorySlug) async -> URL? {
@@ -55,7 +71,22 @@ public actor PluginService: PluginServiceProtocol {
 
 private extension PluginService {
     func findIconFromPluginDirectory(slug: PluginWpOrgDirectorySlug) async -> URL? {
-        guard let pluginInfo = try? await wpOrgClient.pluginInformation(slug: slug) else { return nil }
+        let pluginInfo: PluginInformation
+
+        do {
+            if try await pluginDirectoryDataStore.get(slug) == nil {
+                try await fetchPluginInformation(slug: slug)
+            }
+
+            if let info = try await pluginDirectoryDataStore.get(slug) {
+                pluginInfo = info
+            } else {
+                return nil
+            }
+        } catch {
+            return nil
+        }
+
         guard let icons = pluginInfo.icons else { return nil }
 
         let supportedFormat: Set<String> = ["png", "jpg", "jpeg", "gif"]
