@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -127,21 +127,21 @@
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="QT8-DO-J30" userLabel="Reaction Stack View">
-                                <rect key="frame" x="0.0" y="119" width="288" height="210"/>
+                                <rect key="frame" x="0.0" y="119" width="288" height="211"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="761" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VoI-YI-Qgc" userLabel="Reply Button">
-                                        <rect key="frame" x="0.0" y="90" width="208" height="30"/>
+                                        <rect key="frame" x="0.0" y="90.5" width="208" height="30"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                         <color key="tintColor" systemColor="secondaryLabelColor"/>
                                         <inset key="titleEdgeInsets" minX="2" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="762" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X2J-8b-R5F" userLabel="Like Button">
-                                        <rect key="frame" x="208" y="90" width="30" height="30"/>
+                                        <rect key="frame" x="208" y="90.5" width="30" height="30"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                         <color key="tintColor" systemColor="secondaryLabelColor"/>
                                     </button>
                                     <view contentMode="scaleToFill" horizontalHuggingPriority="1" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="8GH-U7-J7H" userLabel="Spacer View">
-                                        <rect key="frame" x="238" y="80" width="50" height="50"/>
+                                        <rect key="frame" x="238" y="80.5" width="50" height="50"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="50" placeholder="YES" id="4wt-Z8-Xp5"/>
@@ -149,13 +149,6 @@
                                     </view>
                                 </subviews>
                             </stackView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qId-Th-B9r">
-                                <rect key="frame" x="0.0" y="329" width="288" height="1"/>
-                                <color key="backgroundColor" systemColor="systemGray5Color"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="1" id="HnG-UL-I2f"/>
-                                </constraints>
-                            </view>
                         </subviews>
                     </stackView>
                 </subviews>
@@ -184,13 +177,12 @@
                 <outlet property="likeButton" destination="X2J-8b-R5F" id="6w2-io-GXb"/>
                 <outlet property="nameLabel" destination="HpE-B7-6wr" id="MLa-k9-IlC"/>
                 <outlet property="replyButton" destination="VoI-YI-Qgc" id="Z9J-Tp-bur"/>
-                <outlet property="separatorView" destination="qId-Th-B9r" id="VEc-Bb-Zi6"/>
             </connections>
             <point key="canvasLocation" x="153.62318840579712" y="329.46428571428572"/>
         </tableViewCell>
     </objects>
     <resources>
-        <image name="gravatar" width="32" height="32"/>
+        <image name="gravatar" width="85" height="85"/>
         <image name="square.and.arrow.up" catalog="system" width="110" height="128"/>
         <namedColor name="Blue50">
             <color red="0.023529411764705882" green="0.45882352941176469" blue="0.7686274509803922" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -199,13 +191,10 @@
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="secondaryLabelColor">
-            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemGray5Color">
-            <color red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

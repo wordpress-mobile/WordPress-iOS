@@ -86,8 +86,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     // MARK: Outlets
 
     @IBOutlet private weak var containerStackView: UIStackView!
-    @IBOutlet private weak var containerStackBottomConstraint: NSLayoutConstraint!
-
     @IBOutlet private weak var containerStackLeadingConstraint: NSLayoutConstraint!
     @IBOutlet private weak var containerStackTrailingConstraint: NSLayoutConstraint!
     private var defaultLeadingMargin: CGFloat = 0
@@ -105,7 +103,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     @IBOutlet private weak var likeButton: UIButton!
 
     @IBOutlet private weak var highlightBarView: UIView!
-    @IBOutlet private weak var separatorView: UIView!
 
     // MARK: Private Properties
 
@@ -137,12 +134,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     private var isAccessoryButtonEnabled: Bool = false {
         didSet {
             accessoryButton.isHidden = !isAccessoryButtonEnabled
-        }
-    }
-
-    var shouldHideSeparator = false {
-        didSet {
-            separatorView.isHidden = shouldHideSeparator
         }
     }
 
