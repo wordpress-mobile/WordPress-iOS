@@ -552,7 +552,7 @@
     // reason: 'unexpected start state'
     // This seems like a framework bug, so to avoid it skip configuring cells
     // while the app is backgrounded.
-    if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground) {
+    if (![Feature enabled:FeatureFlagReaderCommentsWebKit] && [[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground) {
         return;
     }
 
