@@ -18,8 +18,6 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
         return configuration
     }())
 
-    private var comment: String?
-
     /// It can't be changed at the moment, but this capability was included from the
     /// start, and this implementation continues supporting it.
     private var displaySetting = ReaderDisplaySettings.standard
@@ -34,11 +32,27 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
     }
 
     private var cachedHead: String?
+    private var comment: String?
+
+    /// A shared web view context with resources that can be reused across
+    /// mutliple web view instances.
+    @MainActor
+    public final class Context {
+        let processPool = WKProcessPool()
+
+        public init() {}
+    }
 
     // MARK: Methods
 
-    public required override init() {
+    public required override convenience init() {
+        self.init(context: .init())
+    }
+
+    public init(context: Context) {
         super.init()
+
+        webView.configuration.processPool = context.processPool
 
         if #available(iOS 16.4, *) {
             webView.isInspectable = true
@@ -53,13 +67,15 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
     }
 
     public func render(comment: String) {
-        guard self.comment != comment else {
-            return // Already rendering this comment
-        }
         self.comment = comment
 
         // - important: `wordPressSharedBundle` contains custom fonts
         webView.loadHTMLString(formattedHTMLString(for: comment), baseURL: Bundle.wordPressSharedBundle.bundleURL)
+    }
+
+    public func prepareForReuse() {
+        comment = nil
+        webView.stopLoading()
     }
 }
 
@@ -67,10 +83,13 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
 
 extension WebCommentContentRenderer: WKNavigationDelegate {
     public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        guard let comment else {
+            return
+        }
         // Wait until the HTML document finished loading.
         // This also waits for all of resources within the HTML (images, video thumbnail images) to be fully loaded.
         webView.evaluateJavaScript("document.readyState") { complete, _ in
-            guard complete != nil else {
+            guard complete != nil, self.comment == comment else {
                 return
             }
 
@@ -85,7 +104,7 @@ extension WebCommentContentRenderer: WKNavigationDelegate {
                 /// in the meta tag. The `scrollHeight` value seems to return the height as if it's at 1.0 scale,
                 /// so we'll need to add the custom scale into account.
                 let actualHeight = round(height * self.displaySetting.size.scale)
-                self.delegate?.renderer(self, asyncRenderCompletedWithHeight: actualHeight)
+                self.delegate?.renderer(self, asyncRenderCompletedWithHeight: actualHeight, comment: comment)
             }
         }
     }

@@ -114,6 +114,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     private var onContentLoaded: ((CGFloat) -> Void)? = nil
 
     private var comment: Comment?
+    private var renderer: CommentContentRenderer?
     private var renderMethod: RenderMethod?
     private var helper: ReaderCommentsHelper?
 
@@ -164,6 +165,8 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     override func prepareForReuse() {
         super.prepareForReuse()
+
+        renderer?.prepareForReuse()
 
         // reset all highlight states.
         isEmphasized = false
@@ -265,12 +268,12 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 // MARK: - CommentContentRendererDelegate
 
 extension CommentContentTableViewCell: CommentContentRendererDelegate {
-    func renderer(_ renderer: CommentContentRenderer, asyncRenderCompletedWithHeight height: CGFloat) {
+    func renderer(_ renderer: CommentContentRenderer, asyncRenderCompletedWithHeight height: CGFloat, comment: String) {
         if renderMethod == .web {
-            if let constraint = contentContainerHeightConstraint, let comment {
+            if let constraint = contentContainerHeightConstraint {
                 if height != constraint.constant {
                     constraint.constant = height
-                    helper?.setCachedContentHeight(height, for: .init(comment))
+                    helper?.setCachedContentHeight(height, for: comment)
                     onContentLoaded?(height) // We had the right size from the get-go
                 }
             } else {
@@ -480,26 +483,37 @@ private extension CommentContentTableViewCell {
     // MARK: Content Rendering
 
     func configureRendererIfNeeded(for comment: Comment, renderMethod: RenderMethod, helper: ReaderCommentsHelper) {
-        let renderer: CommentContentRenderer = {
+        if self.renderMethod != renderMethod {
+            self.renderer = nil
+        }
+        self.renderMethod = renderMethod
+
+        let renderer = self.renderer ?? {
+            let renderer = makeRenderer()
+            self.renderer = renderer
+            return renderer
+        }()
+
+        func makeRenderer() -> CommentContentRenderer {
             switch renderMethod {
             case .web:
-                return helper.getRenderer(for: comment)
+                let renderer = helper.makeWebRenderer()
+                renderer.delegate = self
+                return renderer
             case .richContent(let attributedText):
                 let renderer = RichCommentContentRenderer()
                 renderer.richContentDelegate = self.richContentDelegate
                 renderer.attributedText = attributedText
                 renderer.comment = comment
+                renderer.delegate = self
                 return renderer
             }
-        }()
-        renderer.delegate = self
-
-        self.renderMethod = renderMethod // we assume the render method can't change
+        }
 
         if renderMethod == .web {
             // reset height constraint to handle cases where the new content requires the webview to shrink.
             contentContainerHeightConstraint?.isActive = true
-            contentContainerHeightConstraint?.constant = helper.getCachedContentHeight(for: TaggedManagedObjectID(comment)) ?? 20
+            contentContainerHeightConstraint?.constant = helper.getCachedContentHeight(for: comment.content) ?? 20
         } else {
             contentContainerHeightConstraint?.isActive = false
         }

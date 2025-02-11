@@ -21,6 +21,10 @@ class RichCommentContentRenderer: NSObject, CommentContentRenderer {
         textView.attributedText = attributedText
         textView.delegate = self
     }
+
+    func prepareForReuse() {
+        // Do nothing
+    }
 }
 
 // MARK: - WPRichContentViewDelegate
