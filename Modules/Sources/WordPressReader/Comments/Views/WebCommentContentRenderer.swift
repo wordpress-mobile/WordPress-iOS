@@ -69,8 +69,7 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
     public func render(comment: String) {
         self.comment = comment
 
-        // - important: `wordPressSharedBundle` contains custom fonts
-        webView.loadHTMLString(formattedHTMLString(for: comment), baseURL: Bundle.wordPressSharedBundle.bundleURL)
+        webView.loadHTMLString(formattedHTMLString(for: comment), baseURL: nil)
     }
 
     public func prepareForReuse() {
