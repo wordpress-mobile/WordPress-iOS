@@ -80,13 +80,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         }
     }
 
-    @objc var isReplyHighlighted: Bool = false {
-        didSet {
-            replyButton.tintColor = isReplyHighlighted ? UIAppColor.primary : .label
-            replyButton.configuration?.image = UIImage(systemName: isReplyHighlighted ? "arrowshape.turn.up.left.fill" : "arrowshape.turn.up.left")
-        }
-    }
-
     // MARK: Constants
 
     private let contentButtonsTopSpacing: CGFloat = 15
@@ -134,7 +127,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     /// can be scoped by using the "legacy" style when the passed parameter is nil.
     private var style: CellStyle = .init(displaySetting: nil)
 
-    // TODO: (kean) remove
     var displaySetting: ReaderDisplaySettings? = nil {
         didSet {
             style = CellStyle(displaySetting: displaySetting)
@@ -175,7 +167,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
         // reset all highlight states.
         isEmphasized = false
-        isReplyHighlighted = false
 
         // reset all button actions.
         accessoryButtonAction = nil

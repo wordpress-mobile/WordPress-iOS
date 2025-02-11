@@ -12,7 +12,6 @@ typedef NS_CLOSED_ENUM(NSUInteger, SuggestionType) {
 
 @property (nonatomic, nonnull, strong, readonly) id <SuggestionsListViewModelType> viewModel;
 @property (nonatomic, nullable, weak) id <SuggestionsTableViewDelegate> suggestionsDelegate;
-@property (nonatomic, nullable, strong) NSArray<NSNumber *> *prominentSuggestionsIds;
 @property (nonatomic) BOOL useTransparentHeader;
 @property (nonatomic) BOOL animateWithKeyboard;
 @property (nonatomic) BOOL showLoading;

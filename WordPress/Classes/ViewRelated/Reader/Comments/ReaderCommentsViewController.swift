@@ -9,18 +9,34 @@ extension NSNotification.Name {
 }
 
 @objc extension ReaderCommentsViewController {
-    func shouldShowSuggestions(for siteID: NSNumber?) -> Bool {
-        guard let siteID, let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else { return false }
-        return SuggestionService.shared.shouldShowSuggestions(for: blog)
+    func makeCommentButton() -> UIView {
+        let button = CommentLargeButton()
+        button.addTarget(self, action: #selector(buttonAddCommentTapped), for: .primaryActionTriggered)
+        return button
+    }
+
+    func buttonAddCommentTapped() {
+        let viewModel = CommentComposerViewModel(post: post)
+        viewModel.save = { [weak self] in
+            try await self?.sendComment($0)
+        }
+        showCommentComposer(viewModel: viewModel)
+    }
+
+    func didTapReply(comment: Comment) {
+        guard let viewModel = CommentComposerViewModel(comment: comment) else {
+            return wpAssertionFailure("invalid context")
+        }
+        viewModel.save = { [weak self] in
+            try await self?.sendComment($0, comment: comment)
+        }
+        showCommentComposer(viewModel: viewModel)
     }
 
     func handleHeaderTapped() {
-        guard let post,
-              allowsPushingPostDetails else {
-                  return
-              }
-
-        // Note: Let's manually hide the comments button, in order to prevent recursion in the flow
+        guard let post, allowsPushingPostDetails else {
+            return
+        }
         let controller = ReaderDetailViewController.controllerWithPost(post)
         controller.shouldHideComments = true
         navigationController?.pushViewController(controller, animated: true)
@@ -160,7 +176,39 @@ extension NSNotification.Name {
     @objc func postCommentModifiedNotification() {
         NotificationCenter.default.post(name: .ReaderCommentModifiedNotification, object: nil)
     }
+}
 
+extension ReaderCommentsViewController {
+    func showCommentComposer(viewModel: CommentComposerViewModel) {
+        let composerVC = CommentComposerViewController(viewModel: viewModel)
+        let navigationVC = UINavigationController(rootViewController: composerVC)
+        present(navigationVC, animated: true)
+    }
+
+    @MainActor
+    func sendComment(_ content: String, comment: Comment? = nil) async throws {
+        guard let post = self.post else {
+            throw URLError(.unknown)
+        }
+        return try await withUnsafeThrowingContinuation { [weak self] continuation in
+            let service = CommentService(coreDataStack: ContextManager.shared)
+            if let comment {
+                service.replyToHierarchicalComment(withID: comment.commentID as NSNumber, post: post, content: content) {
+                    self?.trackReply(to: true)
+                    continuation.resume()
+                } failure: {
+                    continuation.resume(throwing: $0 ?? URLError(.unknown))
+                }
+            } else {
+                service.reply(to: post, content: content) {
+                    self?.trackReply(to: false)
+                    continuation.resume()
+                } failure: {
+                    continuation.resume(throwing: $0 ?? URLError(.unknown))
+                }
+            }
+        }
+    }
 }
 
 // MARK: - Popover Presentation Delegate

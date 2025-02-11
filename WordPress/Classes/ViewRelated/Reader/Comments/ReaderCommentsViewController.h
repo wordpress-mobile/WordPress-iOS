@@ -29,8 +29,6 @@ typedef NS_ENUM(NSUInteger, ReaderCommentsSource) {
 + (instancetype)controllerWithPost:(ReaderPost *)post source:(ReaderCommentsSource)source;
 + (instancetype)controllerWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID source:(ReaderCommentsSource)source;
 
-/// Opens the Add Comment when the view appears
-@property (nonatomic) BOOL promptToAddComment;
 /// Navigates to the specified comment when the view appears
 @property (nonatomic, strong) NSNumber *navigateToCommentID;
 
@@ -39,5 +37,6 @@ typedef NS_ENUM(NSUInteger, ReaderCommentsSource) {
 @property (nonatomic, assign, readwrite) BOOL commentModified;
 - (void)refreshAfterCommentModeration;
 - (NSAttributedString *)cacheContentForComment:(Comment *)comment;
+- (void)trackReplyTo:(BOOL)replyTarget;
 
 @end

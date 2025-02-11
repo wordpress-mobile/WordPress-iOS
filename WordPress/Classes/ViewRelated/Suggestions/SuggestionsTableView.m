@@ -54,12 +54,6 @@ CGFloat const STVSeparatorHeight = 1.f;
 
 #pragma mark - Custom Setters
 
-- (void)setProminentSuggestionsIds:(NSArray<NSNumber *> *)prominentSuggestionsIds
-{
-    _prominentSuggestionsIds = prominentSuggestionsIds;
-    self.viewModel.prominentSuggestionsIds = prominentSuggestionsIds;
-}
-
 - (void)setUseTransparentHeader:(BOOL)useTransparentHeader
 {
     _useTransparentHeader = useTransparentHeader;
@@ -81,7 +75,7 @@ CGFloat const STVSeparatorHeight = 1.f;
 {
     if (_useTransparentHeader) {
         [self.headerView setBackgroundColor: [UIColor clearColor]];
-        [self.separatorView setBackgroundColor: [WPStyleGuide suggestionsSeparatorSmoke]];
+        [self.separatorView setBackgroundColor: [UIColor clearColor]];
     } else {
         [self.headerView setBackgroundColor: [WPStyleGuide suggestionsHeaderSmoke]];
         [self.separatorView setBackgroundColor: [WPStyleGuide suggestionsHeaderSmoke]];

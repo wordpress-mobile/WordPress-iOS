@@ -21,10 +21,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
     private let tableView = UITableView(frame: .zero, style: .plain)
 
     // Reply properties
-    private var replyTextView: ReplyTextView?
-    private var suggestionsTableView: SuggestionsTableView?
-    private var keyboardManager: KeyboardDismissHelper?
-    private var dismissKeyboardTapGesture = UITapGestureRecognizer()
+    private var addCommentButton: CommentLargeButton?
 
     @objc weak var commentDelegate: CommentDetailsDelegate?
     private weak var notificationDelegate: CommentDetailsNotificationDelegate?
@@ -216,6 +213,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         self.commentStatus = CommentStatusType.typeForStatus(comment.status)
         self.isLastInList = isLastInList
         self.managedObjectContext = managedObjectContext
+
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -228,6 +226,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         self.notification = notification
         self.notificationDelegate = notificationDelegate
         self.managedObjectContext = managedObjectContext
+
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -239,24 +238,13 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         configureView()
         configureReplyView()
-        setupKeyboardManager()
-        configureSuggestionsView()
         configureNavigationBar()
         configureTable()
         configureSections()
         refreshCommentReplyIfNeeded()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        keyboardManager?.startListeningToKeyboardNotifications()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        keyboardManager?.stopListeningToKeyboardNotifications()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -266,7 +254,6 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         guard let contentRowIndex = rows.firstIndex(of: .content) else {
             return
         }
-
         tableView.reloadRows(at: [.init(row: contentRowIndex, section: .zero)], with: .fade)
     }
 
@@ -274,7 +261,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
     @objc func displayComment(_ comment: Comment, isLastInList: Bool = true) {
         self.comment = comment
         self.isLastInList = isLastInList
-        replyTextView?.placeholder = String(format: .replyPlaceholderFormat, comment.authorForDisplay())
+        addCommentButton?.placeholder = String(format: .replyPlaceholderFormat, comment.authorForDisplay())
         refreshData()
         refreshCommentReplyIfNeeded()
     }
@@ -462,7 +449,7 @@ private extension CommentDetailViewController {
         }
 
         cell.replyButtonAction = { [weak self] in
-            self?.showReplyView()
+            self?.buttonAddCommentTapped()
         }
     }
 
@@ -728,7 +715,6 @@ private extension String {
     static let moderationCellIdentifier = "moderationCell"
     static let trashButtonAccessibilityId = "trash-comment-button"
     static let deleteButtonAccessibilityId = "delete-comment-button"
-    static let replyViewAccessibilityId = "reply-comment-view"
 
     // MARK: Localization
     static let replyPlaceholderFormat = NSLocalizedString("Reply to %1$@", comment: "Placeholder text for the reply text field."
@@ -1012,185 +998,70 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
 private extension CommentDetailViewController {
 
     func configureReplyView() {
-        let replyView = ReplyTextView(width: view.frame.width)
+        let button = CommentLargeButton()
 
-        replyView.placeholder = String(format: .replyPlaceholderFormat, comment.authorForDisplay())
-        replyView.accessibilityIdentifier = .replyViewAccessibilityId
-        replyView.accessibilityHint = NSLocalizedString("Reply Text", comment: "Notifications Reply Accessibility Identifier")
-        replyView.delegate = self
-        replyView.onReply = { [weak self] content in
-            self?.createReply(content: content)
+        button.placeholder = String(format: .replyPlaceholderFormat, comment.authorForDisplay())
+        button.accessibilityHint = NSLocalizedString("Reply Text", comment: "Notifications Reply Accessibility Identifier")
+        button.addTarget(self, action: #selector(buttonAddCommentTapped), for: .primaryActionTriggered)
+        button.isHidden = true
+        containerStackView.addArrangedSubview(button)
+        addCommentButton = button
+    }
+
+    @objc func buttonAddCommentTapped() {
+        guard let viewModel = CommentComposerViewModel(comment: comment) else {
+            return wpAssertionFailure("missing required parameters")
         }
-
-        replyView.isHidden = true
-        containerStackView.addArrangedSubview(replyView)
-        replyTextView = replyView
-    }
-
-    func showReplyView() {
-        guard replyTextView?.isFirstResponder == false else {
-            return
+        viewModel.save = { [weak self] in
+            try await self?.createReply(content: $0)
         }
-
-        replyTextView?.isHidden = false
-        replyTextView?.becomeFirstResponder()
-        addDismissKeyboardTapGesture()
+        let composerVC = CommentComposerViewController(viewModel: viewModel)
+        let navigationVC = UINavigationController(rootViewController: composerVC)
+        present(navigationVC, animated: true)
     }
 
-    func setupKeyboardManager() {
-        guard let replyTextView,
-              let bottomLayoutConstraint = view.constraints.first(where: { $0.firstAttribute == .bottom }) else {
-                  return
-              }
-
-        keyboardManager = KeyboardDismissHelper(parentView: view,
-                                                scrollView: tableView,
-                                                dismissableControl: replyTextView,
-                                                bottomLayoutConstraint: bottomLayoutConstraint)
-    }
-
-    func addDismissKeyboardTapGesture() {
-        dismissKeyboardTapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        tableView.addGestureRecognizer(dismissKeyboardTapGesture)
-    }
-
-    @objc func dismissKeyboard() {
-        view.endEditing(true)
-        tableView.removeGestureRecognizer(dismissKeyboardTapGesture)
-    }
-
-    @objc func createReply(content: String) {
+    @MainActor
+    func createReply(content: String) async throws {
         isNotificationComment ? WPAppAnalytics.track(.notificationsCommentRepliedTo) :
                                 CommentAnalytics.trackCommentRepliedTo(comment: comment)
 
         // If there is no Blog, try with the Post.
         guard comment.blog != nil else {
-            createPostCommentReply(content: content)
+            try await createPostCommentReply(content: content)
             return
         }
 
-        replyTextView?.setShowingLoadingIndicator(true)
-
-        commentService.createReply(for: comment, content: content) { reply in
-            self.commentService.uploadComment(reply, success: { [weak self] in
-                self?.didSendReply(success: true)
-                self?.refreshCommentReplyIfNeeded()
-            }, failure: { [weak self] error in
-                DDLogError("Failed uploading comment reply: \(String(describing: error))")
-                self?.didSendReply(success: false, error: error)
-            })
+        try await withUnsafeThrowingContinuation { continuation in
+            commentService.createReply(for: comment, content: content) { reply in
+                self.commentService.uploadComment(reply, success: { [weak self] in
+                    self?.refreshCommentReplyIfNeeded()
+                    continuation.resume()
+                }, failure: { error in
+                    DDLogError("Failed uploading comment reply: \(String(describing: error))")
+                    continuation.resume(throwing: error ?? URLError(.unknown))
+                })
+            }
         }
     }
 
-    func createPostCommentReply(content: String) {
+    @MainActor
+    func createPostCommentReply(content: String) async throws {
         guard let post = comment.post as? ReaderPost else {
             return
         }
-
-        replyTextView?.setShowingLoadingIndicator(true)
-
-        commentService.replyToHierarchicalComment(withID: NSNumber(value: comment.commentID),
-                                                  post: post,
-                                                  content: content,
-                                                  success: { [weak self] in
-            self?.didSendReply(success: true)
-            self?.refreshCommentReplyIfNeeded()
-        }, failure: { [weak self] error in
-            DDLogError("Failed creating post comment reply: \(String(describing: error))")
-            self?.didSendReply(success: false, error: error)
-        })
-    }
-
-    func didSendReply(success: Bool, error: Error? = nil) {
-        replyTextView?.setShowingLoadingIndicator(false)
-        if success {
-            replyTextView?.text = ""
-        } else {
-            replyTextView?.becomeFirstResponder()
-        }
-
-        let message = success ? ReplyMessages.successMessage : ReplyMessages.failureMessage
-        displayNotice(title: message, message: error?.localizedDescription)
-    }
-
-    func configureSuggestionsView() {
-        guard shouldShowSuggestions,
-              let siteID,
-              let replyTextView else {
-                  return
-              }
-
-        let suggestionsView = SuggestionsTableView(siteID: siteID, suggestionType: .mention, delegate: self)
-        suggestionsView.translatesAutoresizingMaskIntoConstraints = false
-        suggestionsView.prominentSuggestionsIds = SuggestionsTableView.prominentSuggestions(
-            fromPostAuthorId: comment.post?.authorID,
-            commentAuthorId: NSNumber(value: comment.authorID),
-            defaultAccountId: try? WPAccount.lookupDefaultWordPressComAccount(in: self.managedObjectContext)?.userID
-        )
-        view.addSubview(suggestionsView)
-
-        NSLayoutConstraint.activate([
-            suggestionsView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            suggestionsView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            suggestionsView.topAnchor.constraint(equalTo: view.topAnchor),
-            suggestionsView.bottomAnchor.constraint(equalTo: replyTextView.topAnchor)
-        ])
-
-        suggestionsTableView = suggestionsView
-    }
-
-    var shouldShowSuggestions: Bool {
-        guard let siteID,
-              let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else {
-                  return false
-              }
-
-        return SuggestionService.shared.shouldShowSuggestions(for: blog)
-    }
-
-    struct ReplyMessages {
-        static let successMessage = NSLocalizedString("Reply Sent!", comment: "The app successfully sent a comment")
-        static let failureMessage = NSLocalizedString("There has been an unexpected error while sending your reply", comment: "Reply Failure Message")
-    }
-
-}
-
-// MARK: - ReplyTextViewDelegate
-
-extension CommentDetailViewController: ReplyTextViewDelegate {
-
-    func textView(_ textView: UITextView, didTypeWord word: String) {
-        suggestionsTableView?.showSuggestions(forWord: word)
-    }
-
-    func replyTextView(_ replyTextView: ReplyTextView, willEnterFullScreen controller: FullScreenCommentReplyViewController) {
-        let lastSearchText = suggestionsTableView?.viewModel.searchText
-        suggestionsTableView?.hideSuggestions()
-
-        if let siteID {
-            controller.enableSuggestions(with: siteID, prominentSuggestionsIds: suggestionsTableView?.prominentSuggestionsIds, searchText: lastSearchText)
+        try await withUnsafeThrowingContinuation { continuation in
+            commentService.replyToHierarchicalComment(withID: NSNumber(value: comment.commentID),
+                                                      post: post,
+                                                      content: content,
+                                                      success: { [weak self] in
+                self?.refreshCommentReplyIfNeeded()
+                continuation.resume()
+            }, failure: { error in
+                DDLogError("Failed creating post comment reply: \(String(describing: error))")
+                continuation.resume(throwing: error ?? URLError(.unknown))
+            })
         }
     }
-
-    func replyTextView(_ replyTextView: ReplyTextView, didExitFullScreen lastSearchText: String?) {
-        guard let lastSearchText, !lastSearchText.isEmpty else {
-            return
-        }
-        suggestionsTableView?.viewModel.reloadData()
-        suggestionsTableView?.showSuggestions(forWord: lastSearchText)
-    }
-
-}
-
-// MARK: - SuggestionsTableViewDelegate
-
-extension CommentDetailViewController: SuggestionsTableViewDelegate {
-
-    func suggestionsTableView(_ suggestionsTableView: SuggestionsTableView, didSelectSuggestion suggestion: String?, forSearchText text: String) {
-        replyTextView?.replaceTextAtCaret(text as NSString?, withText: suggestion)
-        suggestionsTableView.hideSuggestions()
-    }
-
 }
 
 // MARK: - BorderedButtonTableViewCellDelegate
@@ -1204,5 +1075,4 @@ extension CommentDetailViewController: BorderedButtonTableViewCellDelegate {
             commentStatus = .unapproved
         }
     }
-
 }
