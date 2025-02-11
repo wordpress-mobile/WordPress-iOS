@@ -477,6 +477,9 @@ private extension CommentContentTableViewCell {
         if renderMethod == .web {
             // reset height constraint to handle cases where the new content requires the webview to shrink.
             contentContainerHeightConstraint?.isActive = true
+            // - warning: It's important to set height to the minimum supported
+            // value because `WKWebView` can only increase the content height and
+            // never decreases it when the content changes.
             contentContainerHeightConstraint?.constant = helper.getCachedContentHeight(for: content) ?? 20
         } else {
             contentContainerHeightConstraint?.isActive = false

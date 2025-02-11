@@ -74,6 +74,23 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
         tableView.delegate = self
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        guard let previous = previousTraitCollection else {
+            return
+        }
+        let current = traitCollection
+
+        guard previous.horizontalSizeClass != current.horizontalSizeClass ||
+                previous.preferredContentSizeCategory != current.preferredContentSizeCategory else {
+            return
+        }
+
+        containerViewController?.helper.resetCachedContentHeights() // important
+        tableView.reloadData()
+    }
+
     // MARK: - Actions
 
     @objc func comment(at indexPath: IndexPath) -> Comment? {

@@ -20,4 +20,8 @@ import WordPressReader
     func setCachedContentHeight(_ height: CGFloat, for comment: String) {
         contentHeights[comment] = height
     }
+
+    func resetCachedContentHeights() {
+        contentHeights.removeAll()
+    }
 }
