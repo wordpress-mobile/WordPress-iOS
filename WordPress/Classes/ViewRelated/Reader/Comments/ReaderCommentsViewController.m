@@ -19,7 +19,6 @@
 @property (nonatomic, strong) NSNumber *postSiteID;
 @property (nonatomic, strong) WPContentSyncHelper *syncHelper;
 @property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) NoResultsViewController *noResultsViewController;
 @property (nonatomic, strong) UIView *buttonAddComment;
 @property (nonatomic, strong) NSLayoutConstraint *replyTextViewHeightConstraint;
 @property (nonatomic) BOOL isLoggedIn;
@@ -36,6 +35,8 @@
 
 /// A cached instance for the new comment header view.
 @property (nonatomic, strong) UIView *cachedHeaderView;
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
+@property (nonatomic, strong) UIView *emptyStateView;
 
 @property (nonatomic, strong) NSIndexPath *highlightedIndexPath;
 
@@ -79,9 +80,9 @@
     [self checkIfLoggedIn];
 
     [self configureNavbar];
-    [self configureNoResultsView];
     [self configureCommentButton];
     [self configureViewConstraints];
+    self.activityIndicator = [self makeActivityIndicator];
 
     [self listenForClipboardChanges];
 }
@@ -175,11 +176,6 @@
     [self refreshFollowButton];
 }
 
-- (void)configureNoResultsView
-{
-    self.noResultsViewController = [NoResultsViewController controller];
-}
-
 - (void)configureCommentButton
 {
     self.buttonAddComment = [self makeCommentButton];
@@ -204,22 +200,9 @@
     // If we couldn't fetch the comments lets let the user know
     if (self.fetchCommentsError != nil) {
         return NSLocalizedString(@"There has been an unexpected error while loading the comments.", @"Message shown when comments for a post can not be loaded.");
-    }
-    // Let's just display the same message, for consistency's sake
-    else if (self.isLoadingPost || self.syncHelper.isSyncing) {
-        return NSLocalizedString(@"Fetching comments...", @"A brief prompt shown when the comment list is empty, letting the user know the app is currently fetching new comments.");
     } else {
         return NSLocalizedString(@"Be the first to leave a comment.", @"Message shown encouraging the user to leave a comment on a post in the reader.");
     }
-}
-
-- (UIView *)noResultsAccessoryView
-{
-    UIView *loadingAccessoryView = nil;
-    if ((self.isLoadingPost || self.syncHelper.isSyncing) && self.fetchCommentsError == nil) {
-        loadingAccessoryView = [NoResultsViewController loadingAccessoryView];
-    }
-    return loadingAccessoryView;
 }
 
 - (void)checkIfLoggedIn
@@ -392,55 +375,39 @@
     [self.tableViewController setLoadingFooterHidden:YES];
 }
 
-- (void)refreshNoResultsView
+- (void)refreshEmptyStateView
 {
-    [self.noResultsViewController removeFromView];
+    [self.activityIndicator stopAnimating];
+    [self.emptyStateView removeFromSuperview];
+    self.emptyStateView = nil;
 
     BOOL isTableViewEmpty = self.tableViewController.isEmpty;
     if (!isTableViewEmpty) {
         return;
     }
 
-    NSString *image = nil;
-    NSString *subtitle = nil;
-    if (self.fetchCommentsError != nil) {
-        image = @"wp-illustration-reader-empty";
-        NSError *error = self.fetchCommentsError;
-        if (error && [error.domain isEqualToString:WordPressComRestApiErrorDomain] && error.code == WordPressComRestApiErrorCodeAuthorizationRequired) {
-            subtitle = NSLocalizedString(@"You don't have permission to view this private blog.",
-                                          @"Error message that informs reader comments from a private blog cannot be fetched.");
-
-        }
-    }
-    [self.noResultsViewController configureWithTitle:self.noResultsTitleText
-                                     attributedTitle:nil
-                                   noConnectionTitle:nil
-                                         buttonTitle:nil
-                                            subtitle:subtitle
-                                noConnectionSubtitle:nil
-                                  attributedSubtitle:nil
-                     attributedSubtitleConfiguration:nil
-                                               image:image
-                                       subtitleImage:nil
-                                       accessoryView:[self noResultsAccessoryView]];
-
-    [self.noResultsViewController hideImageView:NO];
-    [self addChildViewController:self.noResultsViewController];
-
-    // when the table view is not yet properly initialized, use the view's frame instead to prevent wrong frame values.
-    if (self.tableView.window == nil) {
-        self.noResultsViewController.view.frame = self.view.frame;
+    if (self.isLoadingPost || self.syncHelper.isSyncing) {
+        [self.activityIndicator startAnimating];
     } else {
-        self.noResultsViewController.view.frame = self.tableView.frame;
-    }
+        NSString *subtitle = nil;
+        if (self.fetchCommentsError != nil) {
+            NSError *error = self.fetchCommentsError;
+            if (error && [error.domain isEqualToString:WordPressComRestApiErrorDomain] && error.code == WordPressComRestApiErrorCodeAuthorizationRequired) {
+                subtitle = NSLocalizedString(@"You don't have permission to view this private blog.",
+                                             @"Error message that informs reader comments from a private blog cannot be fetched.");
 
-    [self.view insertSubview:self.noResultsViewController.view belowSubview:self.buttonAddComment];
-    [self.noResultsViewController didMoveToParentViewController:self];
+            }
+        }
+        self.emptyStateView = [self makeEmptyStateViewWithTitle:self.noResultsTitleText imageName:@"wp-illustration-reader-empty" description:subtitle];
+        [self.view addSubview:self.emptyStateView];
+        self.emptyStateView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.view pinSubviewToAllEdges:self.emptyStateView];
+    }
 }
 
 - (void)refreshAfterCommentModeration
 {
-    [self refreshNoResultsView];
+    [self refreshEmptyStateView];
 }
 
 - (void)updateTableViewForAttachments
@@ -449,7 +416,7 @@
 }
 
 - (void)refreshTableViewAndNoResultsView:(BOOL)scrollToHighlightedComment {
-    [self refreshNoResultsView];
+    [self refreshEmptyStateView];
 
     if (scrollToHighlightedComment) {
         [self navigateToCommentIDIfNeeded];
@@ -514,7 +481,7 @@
         }
     } failure:failure];
 
-    [self refreshNoResultsView];
+    [self refreshEmptyStateView];
 }
 
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
