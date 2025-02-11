@@ -9,6 +9,7 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
 
     private let post: ReaderPost
     private let commentCellReuseID = "commentCellReuseID"
+    private var viewModels: [NSManagedObjectID: CommentCellViewModel] = [:]
     private let moc = ContextManager.shared.mainContext
 
     /// - note: Temporary code.
@@ -167,8 +168,18 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
         let cell = tableView.dequeueReusableCell(withIdentifier: commentCellReuseID, for: indexPath) as! CommentContentTableViewCell
         cell.selectionStyle = .none
         let comment = fetchResultsController.object(at: indexPath)
-        containerViewController?.configureCell(cell, comment: comment, indexPath: indexPath)
+        let viewModel = makeCellViewModel(comment: comment)
+        containerViewController?.configureCell(cell, viewModel: viewModel, indexPath: indexPath)
         return cell
+    }
+
+    private func makeCellViewModel(comment: Comment) -> CommentCellViewModel {
+        if let viewModel = viewModels[comment.objectID] {
+            return viewModel
+        }
+        let viewModel = CommentCellViewModel(comment: comment)
+        viewModels[comment.objectID] = viewModel
+        return viewModel
     }
 
     // MARK: - UITableViewDataDelegate

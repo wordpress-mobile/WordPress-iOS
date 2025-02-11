@@ -20,7 +20,7 @@ public class Comment: NSManagedObject {
         return status.isEqual(to: CommentStatusType.approved.description)
     }
 
-    @objc func isReadOnly() -> Bool {
+    private func isReadOnly() -> Bool {
         guard let blog else {
             return true
         }
@@ -54,10 +54,6 @@ public class Comment: NSManagedObject {
         return status.isEqual(to: Comment.descriptionFor(.spam)) || status.isEqual(to: Comment.descriptionFor(.unapproved))
     }
 
-    func numberOfLikes() -> Int {
-        return Int(likeCount)
-    }
-
     func canEditAuthorData() -> Bool {
         // If the authorID is zero, the user is unregistered. Therefore, the data can be edited.
         return authorID == 0
@@ -81,24 +77,21 @@ public class Comment: NSManagedObject {
     }
 
     func canReply() -> Bool {
-        if let readerPost = post as? ReaderPost {
-            return readerPost.commentsOpen && ReaderHelpers.isLoggedIn()
+        if let post = post as? ReaderPost {
+            return post.commentsOpen
         }
-
         return !isReadOnly()
     }
 
     // NOTE: Comment Likes could be disabled, but the API doesn't have that info yet. Let's update this once it's available.
     func canLike() -> Bool {
-        if let _ = post as? ReaderPost {
-            return ReaderHelpers.isLoggedIn()
+        if (post as? ReaderPost) != nil {
+            return true
         }
-
         guard let blog else {
             // Disable likes feature for self-hosted sites.
             return false
         }
-
         return !isReadOnly() && blog.supports(.commentLikes)
     }
 

@@ -143,21 +143,6 @@
 
 #pragma mark - Tracking methods
 
-- (void)trackCommentLikedOrUnliked:(Comment *) comment {
-    ReaderPost *post = self.post;
-    WPAnalyticsStat stat;
-    if (comment.isLiked) {
-        stat = WPAnalyticsStatReaderArticleCommentLiked;
-    } else {
-        stat = WPAnalyticsStatReaderArticleCommentUnliked;
-    }
-
-    NSMutableDictionary *properties = [NSMutableDictionary dictionary];
-    properties[WPAppAnalyticsKeyPostID] = post.postID;
-    properties[WPAppAnalyticsKeyBlogID] = post.siteID;
-    [WPAnalytics trackReaderStat:stat properties:properties];
-}
-
 - (void)trackReplyTo:(BOOL)replyTarget {
     ReaderPost *post = self.post;
     NSDictionary *railcar = post.railcarDictionary;
@@ -516,24 +501,6 @@
     }
 }
 
-- (void)didTapLikeForComment:(Comment *)comment atIndexPath:(NSIndexPath *)indexPath
-{
-    CommentService *commentService = [[CommentService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
-
-    if (!comment.isLiked) {
-        [[UINotificationFeedbackGenerator new] notificationOccurred:UINotificationFeedbackTypeSuccess];
-    }
-
-    __typeof(self) __weak weakSelf = self;
-    [commentService toggleLikeStatusForComment:comment siteID:self.post.siteID success:^{
-        [weakSelf trackCommentLikedOrUnliked:comment];
-    } failure:^(NSError * __unused error) {
-        // in case of failure, revert the cell's like state.
-        [weakSelf.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-        [[UINotificationFeedbackGenerator new] notificationOccurred:UINotificationFeedbackTypeError];
-    }];
-}
-
 #pragma mark - Sync methods
 
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
@@ -606,7 +573,7 @@
     return [[ContextManager sharedInstance] mainContext];
 }
 
-- (void)configureCell:(CommentContentTableViewCell *)cell comment:(Comment *)comment indexPath:(NSIndexPath *)indexPath
+- (void)configureCell:(CommentContentTableViewCell *)cell viewModel:(CommentCellViewModel *)viewModel indexPath:(NSIndexPath *)indexPath
 {
     // When backgrounding, the app takes a snapshot, which triggers a layout pass,
     // which refreshes the cells, and for some reason triggers an assertion failure
@@ -622,7 +589,9 @@
         return;
     }
 
-    [self configureContentCell:cell comment:comment indexPath:indexPath tableView:self.tableViewController.tableView];
+    Comment *comment = viewModel.comment;
+
+    [self configureContentCell:cell viewModel:viewModel indexPath:indexPath tableView:self.tableViewController.tableView];
 
     if (self.highlightedIndexPath) {
         cell.isEmphasized = (indexPath == self.highlightedIndexPath);
@@ -642,10 +611,6 @@
 
     cell.replyButtonAction = ^{
         [weakSelf didTapReplyAtIndexPath:indexPath];
-    };
-
-    cell.likeButtonAction = ^{
-        [weakSelf didTapLikeForComment:comment atIndexPath:indexPath];
     };
 
     cell.contentLinkTapAction = ^(NSURL * _Nonnull url) {

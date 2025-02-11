@@ -98,10 +98,11 @@ extension NSNotification.Name {
 
     func configureContentCell(
         _ cell: CommentContentTableViewCell,
-        comment: Comment,
+        viewModel: CommentCellViewModel,
         indexPath: IndexPath,
         tableView: UITableView
     ) {
+        let comment = viewModel.comment
         cell.badgeTitle = comment.isFromPostAuthor() ? .authorBadgeText : nil
         cell.indentationWidth = Constants.indentationWidth
         cell.indentationLevel = min(Constants.maxIndentationLevel, Int(comment.depth))
@@ -113,7 +114,7 @@ extension NSNotification.Name {
         cell.accessoryButton.showsMenuAsPrimaryAction = isModerationMenuEnabled(for: comment)
         cell.accessoryButton.menu = isModerationMenuEnabled(for: comment) ? menu(for: comment, indexPath: indexPath, tableView: tableView, sourceView: cell.accessoryButton) : nil
         let renderMethod: CommentContentTableViewCell.RenderMethod = Feature.enabled(.readerCommentsWebKit) ? .web : .richContent(self.cacheContent(for: comment))
-        cell.configure(with: comment, renderMethod: renderMethod, helper: helper) { [weak tableView] _ in
+        cell.configure(viewModel: viewModel, renderMethod: renderMethod, helper: helper) { [weak tableView] _ in
             guard let tableView else { return }
 
             if tableView.alpha == 0 {
