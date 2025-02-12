@@ -13,7 +13,7 @@ struct PluginDetailsView: View {
     @State var newVersion: UpdateCheckPluginInfo? = nil
     @State private var tappedScreenshot: Screenshot? = nil
     @StateObject var viewModel: WordPressPluginDetailViewModel
-    @State var showingSafariView = false
+    @State var isShowingSafariView = false
     @State private var showDeleteConfirmation = false
 
     @Environment(\.dismiss) var dismiss
@@ -65,7 +65,7 @@ struct PluginDetailsView: View {
             .listSectionSeparator(.hidden)
 
             if viewModel.isUninstalling {
-                uninstalling()
+                uninstallingView()
             } else if let newVersion {
                 updateAvailableView(newVersion)
             }
@@ -103,7 +103,7 @@ struct PluginDetailsView: View {
                         Section {
                             ShareLink(item: url)
                             Button {
-                                showingSafariView = true
+                                isShowingSafariView = true
                             } label: {
                                 Label(Strings.viewOnWordPressOrgButton, systemImage: "safari")
                             }
@@ -125,7 +125,7 @@ struct PluginDetailsView: View {
         } message: {
             Text(Strings.deletePluginMessage(plugin.name.makePlainText()))
         }
-        .sheet(isPresented: $showingSafariView) {
+        .sheet(isPresented: $isShowingSafariView) {
             if let url = plugin.possibleWpOrgDirectoryURL {
                 SafariView(url: url)
             }
@@ -177,14 +177,14 @@ struct PluginDetailsView: View {
     }
 
     @ViewBuilder
-    private func uninstalling() -> some View {
+    private func uninstallingView() -> some View {
         HStack {
             ProgressView()
 
             VStack(alignment: .leading) {
-                Text("Uninstalling Plugin")
+                Text(Strings.uninstallingTitle)
                     .font(.headline)
-                Text("Please wait while the plugin is being removed...")
+                Text(Strings.uninstallingMessage)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
@@ -318,11 +318,11 @@ final class WordPressPluginDetailViewModel: ObservableObject {
     let slug: PluginWpOrgDirectorySlug
     let service: PluginServiceProtocol
 
-    @Published private(set) var isLoading: Bool = false
-    @Published private(set) var isUninstalling: Bool = false
+    @Published private(set) var isLoading = false
+    @Published private(set) var isUninstalling = false
     @Published private(set) var plugin: PluginInformation?
     @Published private(set) var error: String?
-    @Published private(set) var isActivating: Bool = false
+    @Published private(set) var isActivating = false
 
     private var initialLoad = false
 
@@ -548,5 +548,17 @@ private enum Strings {
         "pluginDetails.activated.button",
         value: "Activated",
         comment: "Button label showing plugin is activated"
+    )
+
+    static let uninstallingTitle = NSLocalizedString(
+        "pluginDetails.uninstalling.title",
+        value: "Uninstalling Plugin",
+        comment: "Title shown while a plugin is being uninstalled"
+    )
+
+    static let uninstallingMessage = NSLocalizedString(
+        "pluginDetails.uninstalling.message",
+        value: "Please wait while the plugin is being removed...",
+        comment: "Message shown while a plugin is being uninstalled"
     )
 }

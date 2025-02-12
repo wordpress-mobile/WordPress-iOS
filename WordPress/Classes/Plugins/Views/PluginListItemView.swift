@@ -8,7 +8,7 @@ import SafariServices
 
 struct PluginListItemView: View {
 
-    @State private var showingSafariView = false
+    @State private var isShowingSafariView = false
 
     let plugin: InstalledPlugin
     let viewModel: InstalledPluginsListViewModel
@@ -54,7 +54,7 @@ struct PluginListItemView: View {
             }
             .foregroundStyle(.secondary)
         }
-        .sheet(isPresented: $showingSafariView) {
+        .sheet(isPresented: $isShowingSafariView) {
             if let url = plugin.possibleWpOrgDirectoryURL {
                 SafariView(url: url)
             }
@@ -88,7 +88,7 @@ struct PluginListItemView: View {
         if plugin.possibleWpOrgDirectoryURL != nil {
             Section {
                 Button {
-                    showingSafariView = true
+                    isShowingSafariView = true
                 } label: {
                     Label(Strings.viewOnWordPressOrg, systemImage: "safari")
                 }
