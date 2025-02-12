@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import SwiftUI
 import WordPressShared
 import WordPressUI
 
@@ -25,6 +26,29 @@ extension NSNotification.Name {
         view.addSubview(button)
         button.pinEdges([.horizontal, .bottom])
         return button
+    }
+
+    func makeActivityIndicator() -> UIActivityIndicatorView {
+        let spinner = UIActivityIndicatorView()
+        view.addSubview(spinner)
+        spinner.pinCenter()
+        return spinner
+    }
+
+    func makeEmptyStateView(title: String, imageName: String?, description: String?) -> UIView {
+        UIHostingView(view: EmptyStateView(label: {
+            if let imageName {
+                Label(title, image: imageName)
+            } else {
+                Text(title)
+            }
+        }, description: {
+            if let description {
+                Text(description)
+            }
+        }, actions: {
+            EmptyView()
+        }))
     }
 
     func buttonAddCommentTapped() {
@@ -107,7 +131,6 @@ extension NSNotification.Name {
         cell.indentationWidth = Constants.indentationWidth
         cell.indentationLevel = min(Constants.maxIndentationLevel, Int(comment.depth))
         cell.accessoryButtonType = isModerationMenuEnabled(for: comment) ? .ellipsis : .share
-        cell.shouldHideSeparator = true
 
         // if the comment can be moderated, show the context menu when tapping the accessory button.
         // Note that accessoryButtonAction will be ignored when the menu is assigned.

@@ -51,12 +51,13 @@ final class CommentCellViewModel: NSObject {
         init?(comment: Comment) {
             if let imageURL = comment.avatarURLForDisplay() {
                 self = .url(imageURL)
+            } else {
+                let email = comment.gravatarEmailForDisplay()
+                guard !email.isEmpty else {
+                    return nil
+                }
+                self = .email(email)
             }
-            let email = comment.gravatarEmailForDisplay()
-            guard !email.isEmpty else {
-                return nil
-            }
-            self = .email(email)
         }
     }
 

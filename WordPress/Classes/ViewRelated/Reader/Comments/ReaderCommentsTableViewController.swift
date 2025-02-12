@@ -74,6 +74,23 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
         tableView.delegate = self
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        guard let previous = previousTraitCollection else {
+            return
+        }
+        let current = traitCollection
+
+        guard previous.horizontalSizeClass != current.horizontalSizeClass ||
+                previous.preferredContentSizeCategory != current.preferredContentSizeCategory else {
+            return
+        }
+
+        containerViewController?.helper.resetCachedContentHeights() // important
+        tableView.reloadData()
+    }
+
     // MARK: - Actions
 
     @objc func comment(at indexPath: IndexPath) -> Comment? {
@@ -139,10 +156,10 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
         switch type {
         case .insert:
             guard let newIndexPath else { return }
-            tableView.insertRows(at: [newIndexPath], with: .automatic)
+            tableView.insertRows(at: [newIndexPath], with: .none)
         case .delete:
             guard let indexPath else { return }
-            tableView.deleteRows(at: [indexPath], with: .automatic)
+            tableView.deleteRows(at: [indexPath], with: .none)
         case .update:
             // The cells are responsible for updating themselves
             break
@@ -155,7 +172,9 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
     }
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<any NSFetchRequestResult>) {
-        tableView.endUpdates()
+        UIView.performWithoutAnimation {
+            tableView.endUpdates()
+        }
     }
 
     // MARK: - UITableViewDataSource

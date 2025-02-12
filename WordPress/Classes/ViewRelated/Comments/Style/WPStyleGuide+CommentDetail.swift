@@ -23,8 +23,6 @@ extension WPStyleGuide {
         }
 
         public struct Content {
-            static let buttonTintColor: UIColor = .secondaryLabel
-
             static let nameFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
             static let nameTextColor = CommentDetail.textColor
 

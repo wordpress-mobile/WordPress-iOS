@@ -79,15 +79,9 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         }
     }
 
-    // MARK: Constants
-
-    private let contentButtonsTopSpacing: CGFloat = 15
-
     // MARK: Outlets
 
     @IBOutlet private weak var containerStackView: UIStackView!
-    @IBOutlet private weak var containerStackBottomConstraint: NSLayoutConstraint!
-
     @IBOutlet private weak var containerStackLeadingConstraint: NSLayoutConstraint!
     @IBOutlet private weak var containerStackTrailingConstraint: NSLayoutConstraint!
     private var defaultLeadingMargin: CGFloat = 0
@@ -105,7 +99,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     @IBOutlet private weak var likeButton: UIButton!
 
     @IBOutlet private weak var highlightBarView: UIView!
-    @IBOutlet private weak var separatorView: UIView!
 
     // MARK: Private Properties
 
@@ -137,12 +130,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     private var isAccessoryButtonEnabled: Bool = false {
         didSet {
             accessoryButton.isHidden = !isAccessoryButtonEnabled
-        }
-    }
-
-    var shouldHideSeparator = false {
-        didSet {
-            separatorView.isHidden = shouldHideSeparator
         }
     }
 
@@ -206,9 +193,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
         // Configure feature availability.
         isAccessoryButtonEnabled = comment.isApproved()
-
-        // When reaction bar is hidden, add some space between the webview and the moderation bar.
-        containerStackView.setCustomSpacing(contentButtonsTopSpacing, after: contentContainerView)
     }
 
     /// Configures the cell with a `Comment` object, to be displayed in the post details view.
@@ -223,8 +207,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         likeButton.isHidden = true
 
         isAccessoryButtonEnabled = false
-
-        shouldHideSeparator = true
 
         containerStackLeadingConstraint.constant = 0
         containerStackTrailingConstraint.constant = 0
@@ -358,40 +340,41 @@ private extension CommentContentTableViewCell {
         dateLabel?.font = style.dateFont
         dateLabel?.textColor = style.dateTextColor
 
-        accessoryButton?.tintColor = Style.buttonTintColor
+        accessoryButton?.tintColor = .secondaryLabel
         accessoryButton?.setImage(accessoryButtonImage, for: .normal)
         accessoryButton?.addTarget(self, action: #selector(accessoryButtonTapped), for: .touchUpInside)
 
         replyButton.configuration = makeReactionButtonConfiguration(systemImage: "arrowshape.turn.up.left")
-        replyButton.tintColor = .label
+        replyButton.configuration?.contentInsets.leading = 0
+        replyButton.tintColor = .secondaryLabel
         replyButton.setTitle(.reply, for: .normal)
         replyButton.addTarget(self, action: #selector(replyButtonTapped), for: .touchUpInside)
         replyButton.maximumContentSizeCategory = .accessibilityMedium
         replyButton.accessibilityIdentifier = .replyButtonAccessibilityId
 
         likeButton.configuration = makeReactionButtonConfiguration(systemImage: "star")
-        likeButton.tintColor = .label
+        likeButton.tintColor = .secondaryLabel
 
         likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
         likeButton.maximumContentSizeCategory = .accessibilityMedium
         likeButton.accessibilityIdentifier = .likeButtonAccessibilityId
-
-        separatorView.layoutMargins = .init(top: 0, left: 20, bottom: 0, right: 0).flippedForRightToLeft
 
         applyStyles()
     }
 
     private func makeReactionButtonConfiguration(systemImage: String) -> UIButton.Configuration {
         var configuration = UIButton.Configuration.plain()
+        let font = UIFont.preferredFont(forTextStyle: .footnote)
         configuration.image = UIImage(systemName: systemImage)
-        configuration.imagePlacement = .top
-        configuration.imagePadding = 5
+        configuration.imagePlacement = .leading
+        configuration.imagePadding = 6
         configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer {
             var attributes = $0
-            attributes.font = UIFont.preferredFont(forTextStyle: .footnote)
+            attributes.font = font
             return attributes
         }
-        configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(font: UIFont.preferredFont(forTextStyle: .caption1))
+        configuration.contentInsets = .init(top: 12, leading: 8, bottom: 12, trailing: 8)
+        configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(font: font)
         return configuration
     }
 
@@ -427,10 +410,11 @@ private extension CommentContentTableViewCell {
     }
 
     func updateLikeButton(isLiked: Bool, likeCount: Int) {
-        likeButton.tintColor = isLiked ? UIAppColor.primary : .label
+        likeButton.tintColor = isLiked ? UIAppColor.primary : .secondaryLabel
         if var configuration = likeButton.configuration {
             configuration.image = UIImage(systemName: isLiked ? "star.fill" : "star")
-            configuration.title = {
+            configuration.title = likeCount > 0 ? "\(likeCount)" : nil
+            likeButton.accessibilityLabel = {
                 switch likeCount {
                 case .zero: .noLikes
                 case 1: String(format: .singularLikeFormat, likeCount)
@@ -477,6 +461,9 @@ private extension CommentContentTableViewCell {
         if renderMethod == .web {
             // reset height constraint to handle cases where the new content requires the webview to shrink.
             contentContainerHeightConstraint?.isActive = true
+            // - warning: It's important to set height to the minimum supported
+            // value because `WKWebView` can only increase the content height and
+            // never decreases it when the content changes.
             contentContainerHeightConstraint?.constant = helper.getCachedContentHeight(for: content) ?? 20
         } else {
             contentContainerHeightConstraint?.isActive = false

@@ -1,27 +1,3 @@
-@font-face {
-    font-family: 'Noto Serif';
-    src: local('NotoSerif-Regular'), url('NotoSerif-Regular.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Noto Serif';
-    src: local('NotoSerif-Bold'), url('NotoSerif-Bold.ttf') format('truetype');
-    font-weight: bold;
-}
-
-@font-face {
-    font-family: 'Noto Serif';
-    src: local('NotoSerif-Italic'), url('NotoSerif-Italic.ttf') format('truetype');
-    font-style: italic;
-}
-
-@font-face {
-    font-family: 'Noto Serif';
-    src: local('NotoSerif-BoldItalic'), url('NotoSerif-BoldItalic.ttf') format('truetype');
-    font-weight: bold;
-    font-style: italic;
-}
-
 :root {
     /* informs WebKit that this template supports both appearance modes. */
     color-scheme: light dark;
