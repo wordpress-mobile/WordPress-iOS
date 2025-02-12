@@ -399,7 +399,7 @@
             }
         }
         self.emptyStateView = [self makeEmptyStateViewWithTitle:self.noResultsTitleText imageName:@"wp-illustration-reader-empty" description:subtitle];
-        [self.view addSubview:self.emptyStateView];
+        [self.view insertSubview:self.emptyStateView belowSubview:self.buttonAddComment];
         self.emptyStateView.translatesAutoresizingMaskIntoConstraints = NO;
         [self.view pinSubviewToAllEdges:self.emptyStateView];
     }
