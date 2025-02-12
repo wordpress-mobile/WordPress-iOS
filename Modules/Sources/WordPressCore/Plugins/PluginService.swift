@@ -8,7 +8,7 @@ public actor PluginService: PluginServiceProtocol {
     private let wpOrgClient: WordPressOrgApiClient
     private let installedPluginDataStore = InMemoryInstalledPluginDataStore()
     private let pluginDirectoryDataStore = InMemoryPluginDirectoryDataStore()
-    private let pluginDirectoryBrowserDataStore = CategorizedPluginInfomrationDataStore()
+    private let pluginDirectoryBrowserDataStore = CategorizedPluginInformationDataStore()
     private let urlSession: URLSession
 
     public init(client: WordPressClient) {
@@ -76,10 +76,10 @@ public actor PluginService: PluginServiceProtocol {
         // Hard-code the pagination parameters for now. We can suface these parameters when the app needs pagination.
         let plugins = try await wpOrgClient.browsePlugins(category: category, page: 1, pageSize: 10).plugins
         try await pluginDirectoryBrowserDataStore.delete(query: .category(category))
-        try await pluginDirectoryBrowserDataStore.store([CategorizedPluginInfomration(category: category, plugins: plugins)])
+        try await pluginDirectoryBrowserDataStore.store([CategorizedPluginInformation(category: category, plugins: plugins)])
     }
 
-    public func pluginDirectoryUpdates(query: CategorizedPluginInfomrationDataStoreQuery) async -> AsyncStream<Result<[CategorizedPluginInfomration], Error>> {
+    public func pluginDirectoryUpdates(query: CategorizedPluginInformationDataStoreQuery) async -> AsyncStream<Result<[CategorizedPluginInformation], Error>> {
         await pluginDirectoryBrowserDataStore.listStream(query: query)
     }
 

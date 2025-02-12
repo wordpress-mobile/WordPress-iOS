@@ -27,22 +27,22 @@ extension InMemoryPluginDirectoryDataStore {
 
 // MARK: - DataStore for plugin browser (featured, recommended plugins), which contains shortened `PluginInformation`
 
-public typealias CategorizedPluginInfomrationDataStoreQuery = InMemoryDataStore<CategorizedPluginInfomration>.Query
-public typealias CategorizedPluginInfomrationDataStore = InMemoryDataStore<CategorizedPluginInfomration>
+public typealias CategorizedPluginInformationDataStoreQuery = InMemoryDataStore<CategorizedPluginInformation>.Query
+public typealias CategorizedPluginInformationDataStore = InMemoryDataStore<CategorizedPluginInformation>
 
-public struct CategorizedPluginInfomration: Identifiable, Sendable {
+public struct CategorizedPluginInformation: Identifiable, Sendable {
     public var category: WordPressOrgApiPluginDirectoryCategory
     public var plugins: [PluginInformation]
 
     public var id: WordPressOrgApiPluginDirectoryCategory { category }
 }
 
-extension CategorizedPluginInfomrationDataStore.Query {
-    public static func category(_ category: WordPressOrgApiPluginDirectoryCategory) -> CategorizedPluginInfomrationDataStore.Query {
+extension CategorizedPluginInformationDataStore.Query {
+    public static func category(_ category: WordPressOrgApiPluginDirectoryCategory) -> CategorizedPluginInformationDataStore.Query {
         .init(sortBy: nil) { $0.category == category }
     }
 
-    public static func category(_ categories: Set<WordPressOrgApiPluginDirectoryCategory>) -> CategorizedPluginInfomrationDataStore.Query {
+    public static func category(_ categories: Set<WordPressOrgApiPluginDirectoryCategory>) -> CategorizedPluginInformationDataStore.Query {
         .init(sortBy: nil) { categories.contains($0.category) }
     }
 }

@@ -291,7 +291,7 @@ private class AddNewPluginViewModel: ObservableObject {
         }
     }
 
-    func section(for category: Category, plugins: CategorizedPluginInfomration?) -> ListSection {
+    func section(for category: Category, plugins: CategorizedPluginInformation?) -> ListSection {
         if self.loadingStates[category] == nil {
             return .plugins(category: category, rows: [.loading])
         } else if case let .failure(error)? = self.loadingStates[category] {

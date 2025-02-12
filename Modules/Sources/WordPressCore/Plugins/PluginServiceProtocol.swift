@@ -17,7 +17,7 @@ public protocol PluginServiceProtocol: Actor {
     func uninstalledPlugin(slug: PluginSlug) async throws
 
     func fetchPluginsDirectory(category: WordPressOrgApiPluginDirectoryCategory) async throws
-    func pluginDirectoryUpdates(query: CategorizedPluginInfomrationDataStoreQuery) async -> AsyncStream<Result<[CategorizedPluginInfomration], Error>>
+    func pluginDirectoryUpdates(query: CategorizedPluginInformationDataStoreQuery) async -> AsyncStream<Result<[CategorizedPluginInformation], Error>>
 
     func searchPluginsDirectory(input: String) async throws -> [PluginInformation]
 
