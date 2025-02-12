@@ -1,43 +1,23 @@
 import Foundation
-@preconcurrency import Combine
-import WordPressShared
 import WordPressAPI
 
-public protocol InstalledPluginDataStore: DataStore where T == InstalledPlugin, Query == PluginDataStoreQuery {
-}
+public typealias PluginDataStoreQuery = InMemoryDataStore<InstalledPlugin>.Query
+public typealias InMemoryInstalledPluginDataStore = InMemoryDataStore<InstalledPlugin>
 
-public enum PluginDataStoreQuery: Hashable, Sendable {
-    case all
-    case active
-    case inactive
-    case slug(PluginSlug)
-}
-
-public actor InMemoryInstalledPluginDataStore: InstalledPluginDataStore, InMemoryDataStore {
-    public typealias T = InstalledPlugin
-
-    public var storage: [T.ID: T] = [:]
-    public let updates: PassthroughSubject<Set<T.ID>, Never> = .init()
-
-    deinit {
-        updates.send(completion: .finished)
+extension PluginDataStoreQuery {
+    public static var all: PluginDataStoreQuery {
+        .init(sortBy: KeyPathComparator(\.name)) { _ in true }
     }
 
-    public init() {}
+    public static var active: PluginDataStoreQuery {
+        .init(sortBy: KeyPathComparator(\.name)) { $0.isActive }
+    }
 
-    public func list(query: Query) throws -> [T] {
-        let plugins: any Sequence<T>
-        switch query {
-        case .all:
-            plugins = storage.values
-        case .active:
-            plugins = storage.values.filter { $0.isActive }
-        case .inactive:
-            plugins = storage.values.filter { !$0.isActive }
-        case let .slug(slug):
-            plugins = storage.values.first { $0.slug == slug }.flatMap { [$0] } ?? []
-        }
+    public static var inactive: PluginDataStoreQuery {
+        .init(sortBy: KeyPathComparator(\.name)) { !$0.isActive }
+    }
 
-        return plugins.sorted(using: KeyPathComparator(\.slug.slug))
+    public static func slug(_ slug: PluginSlug) -> PluginDataStoreQuery {
+        .init(sortBy: KeyPathComparator(\.name)) { $0.slug == slug }
     }
 }

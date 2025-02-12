@@ -4,6 +4,9 @@
 # Constants
 #################################################
 
+# See WordPress/Makefile
+GUTENBERG_TAG = 'v1.121.0'
+
 # URL of the GlotPress project containing the app's strings
 GLOTPRESS_APP_STRINGS_PROJECT_URL = 'https://translate.wordpress.org/projects/apps/ios/dev/'
 
@@ -130,12 +133,9 @@ platform :ios do
   # @called_by complete_code_freeze
   #
   lane :generate_strings_file_for_glotpress do |skip_commit: false, derived_data_path: DERIVED_DATA_PATH, gutenberg_absolute_path: nil|
-    # Fetch fresh pods to read the latest localizations from them.
-    # In CI, we expect the pods to be already available and up to date.
-    cocoapods unless is_ci
-
-    # For the same reason, fetch fresh packages.
-    # However, notice we currently need to do this in CI as well.
+    # Fetch fresh packages to read the latest localizations from them.
+    #
+    # Notice we currently need to do this in CI as well as locally.
     # That's because we haven't yet implemented a method to share the derived data folder explicitly between the CI SPM caching logic and this lane.
     #
     # See also:
@@ -155,39 +155,21 @@ platform :ios do
       UI.message("Using Gutenberg from #{gutenberg_absolute_path} instead of cloning it...")
       generate_strings_file(gutenberg_path: gutenberg_absolute_path, derived_data_path: derived_data_path)
     else
-      # On top of fetching the latest Pods, we also need to fetch the source for the Gutenberg code.
+      # On top of fetching the latest dependencies, we also need to fetch the source for the Gutenberg code.
       # To get it, we need to manually clone the repo, since Gutenberg is distributed via XCFramework.
       # XCFrameworks are binary targets and cannot extract strings via genstrings from there.
-      config = gutenberg_config!
-
-      ref_node = config[:ref]
-      UI.user_error!('Could not find Gutenberg ref to clone the repository in order to access its strings.') if ref_node.nil?
-
-      ref = ref_node[:tag] || ref_node[:commit]
-      UI.user_error!('The ref to clone Gutenberg in order to access its strings has neither tag nor commit values.') if ref.nil?
-
-      github_org = config[:github_org]
-      UI.user_error!('Could not find GitHub organization name to clone Gutenberg in order to access its strings.') if github_org.nil?
-
-      repo_name = config[:repo_name]
-      UI.user_error!('Could not find GitHub repository name to clone Gutenberg in order to access its strings.') if repo_name.nil?
 
       # Create a temporary directory to clone Gutenberg into.
       Dir.mktmpdir do |tempdir|
         gutenberg_clone_name = 'Gutenberg-Strings-Clone'
         gutenberg_path = File.join(tempdir, gutenberg_clone_name)
-        repo_url = "https://github.com/#{github_org}/#{repo_name}"
+        repo_url = 'https://github.com/wordpress-mobile/gutenberg-mobile'
         UI.message("Cloning Gutenberg from #{repo_url} into #{gutenberg_clone_name}. This might take a few minutes…")
         sh('git', 'clone', '--depth', '1', repo_url, gutenberg_path)
 
         Dir.chdir(gutenberg_path) do
-          if ref_node[:tag]
-            sh('git', 'fetch', 'origin', "refs/tags/#{ref}:refs/tags/#{ref}")
-            sh('git', 'checkout', "refs/tags/#{ref}")
-          else
-            sh('git', 'fetch', 'origin', ref)
-            sh('git', 'checkout', ref)
-          end
+          sh('git', 'fetch', 'origin', "refs/tags/#{GUTENBERG_TAG}:refs/tags/#{GUTENBERG_TAG}")
+          sh('git', 'checkout', "refs/tags/#{GUTENBERG_TAG}")
         end
 
         generate_strings_file(gutenberg_path: gutenberg_path, derived_data_path: derived_data_path)
@@ -208,7 +190,6 @@ platform :ios do
     ios_generate_strings_file_from_code(
       paths: [
         'WordPress/',
-        'Pods/WordPress*/',
         'Modules/Sources/',
         'WordPressAuthenticator/Sources/',
         gutenberg_path,

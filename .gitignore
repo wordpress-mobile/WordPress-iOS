@@ -36,7 +36,6 @@ $RECYCLE.BIN/
 
 # Project
 /Entitlements.plist
-Pods/
 WordPress.xcworkspace/*.mode1v3
 WordPress.xcworkspace/*.mode2v3
 WordPress.xcworkspace/*.pbxuser
@@ -112,6 +111,14 @@ WordPress/InfoPlist.h
 WordPress/InfoPlist-alpha.h
 WordPress/InfoPlist-internal.h
 
-
 # SwiftLint Remote Config Cache
 .swiftlint/RemoteConfigCache
+
+# The project used CocoaPods for dependency management prior to early 2025.
+#
+# To simplify switching branches on dev machines that have older copies, let's
+# ignore the possible leftover Pods folder from that setup.
+#
+# Up to the discretion of the dev team when in the future to remove this rule
+# and assume no local copy would have generated the Pods.
+Pods/

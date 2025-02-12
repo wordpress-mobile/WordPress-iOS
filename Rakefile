@@ -6,25 +6,27 @@ require 'tmpdir'
 require 'rake/clean'
 require 'yaml'
 require 'digest'
+require 'open-uri'
+require 'rubygems/package'
+require 'zlib'
 
 RUBY_REPO_VERSION = File.read('./.ruby-version').rstrip
 XCODE_WORKSPACE = 'WordPress.xcworkspace'
 XCODE_SCHEME = 'WordPress'
 XCODE_CONFIGURATION = 'Debug'
 EXPECTED_XCODE_VERSION = File.read('.xcode-version').rstrip
+GUTENBERG_VERSION = 'v1.121.0'
 
 PROJECT_DIR = __dir__
 abort('Project directory contains one or more spaces – unable to continue.') if PROJECT_DIR.include?(' ')
 
-SWIFTLINT_BIN = File.join(PROJECT_DIR, 'Pods', 'SwiftLint', 'swiftlint')
-
 task default: %w[test]
 
 desc 'Install required dependencies'
-task dependencies: %w[dependencies:check assets:check]
+task dependencies: %w[dependencies:check assets:check dependencies:gutenberg_xcframeworks]
 
 namespace :dependencies do
-  task check: %w[ruby:check bundler:check bundle:check credentials:apply pod:check lint:check]
+  task check: %w[ruby:check bundler:check bundle:check credentials:apply]
 
   namespace :ruby do
     task :check do
@@ -103,43 +105,55 @@ bundle exec fastlane run configure_apply force:true
     end
   end
 
-  namespace :pod do
-    task :check do
-      unless podfile_locked? && lockfiles_match?
-        dependency_failed('CocoaPods')
-        Rake::Task['dependencies:pod:install'].invoke
+  desc 'Download and extract Gutenberg xcframeworks'
+  task :gutenberg_xcframeworks do
+    puts 'Setting up Gutenberg xcframeworks...'
+
+    frameworks_dir = 'WordPress/Frameworks'
+
+    # Clean the slate
+    FileUtils.rm_rf(frameworks_dir)
+    FileUtils.mkdir_p(frameworks_dir)
+
+    gutenberg_tar_gz_download_path = "#{frameworks_dir}/Gutenberg.tar.gz"
+
+    URI.open("https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-#{GUTENBERG_VERSION}.tar.gz") do |remote_file|
+      File.binwrite(gutenberg_tar_gz_download_path, remote_file.read)
+    end
+
+    # Extract the archive
+    Zlib::GzipReader.open(gutenberg_tar_gz_download_path) do |gz|
+      Gem::Package::TarReader.new(gz) do |tar|
+        tar.each do |entry|
+          next unless entry.file?
+
+          dest_path = File.join(frameworks_dir, entry.full_name)
+          FileUtils.mkdir_p(File.dirname(dest_path))
+
+          File.binwrite(dest_path, entry.read)
+        end
       end
     end
 
-    task :install do
-      fold('install.cocoapods') do
-        pod %w[install]
-      rescue StandardError
-        puts "`pod install` failed. Will attempt to update the Gutenberg-Mobile XCFramework — a common reason for the failure — then retrying…\n\n"
-        Rake::Task['dependencies:pod:update_gutenberg'].invoke
-        pod %w[install]
-      end
+    # Move xcframeworks to the correct location
+    Dir.glob("#{frameworks_dir}/Frameworks/*.xcframework").each do |framework|
+      FileUtils.mv(framework, frameworks_dir, force: false)
     end
 
-    task :update_gutenberg do
-      pod %w[update Gutenberg]
-    end
+    # Create dSYMs directories
+    FileUtils.mkdir_p [
+      "#{frameworks_dir}/hermes.xcframework/ios-arm64/dSYMs",
+      "#{frameworks_dir}/hermes.xcframework/ios-arm64_x86_64-simulator/dSYMs"
+    ]
 
-    task :clean do
-      fold('clean.cocoapods') do
-        FileUtils.rm_rf('Pods')
-      end
-    end
-    CLOBBER << 'Pods'
-  end
+    # Cleanup
+    FileUtils.rm_rf [
+      gutenberg_tar_gz_download_path,
+      "#{frameworks_dir}/Frameworks",
+      "#{frameworks_dir}/dummy.txt"
+    ]
 
-  namespace :lint do
-    task :check do
-      if swiftlint_needs_install
-        dependency_failed('SwiftLint')
-        Rake::Task['dependencies:pod:install'].invoke
-      end
-    end
+    puts 'Gutenberg xcframeworks setup complete'
   end
 end
 
@@ -194,15 +208,8 @@ task :clean do
 end
 
 desc 'Checks the source for style errors'
-task lint: %w[dependencies:lint:check] do
-  swiftlint %w[lint --quiet]
-end
-
-namespace :lint do
-  desc 'Automatically corrects style errors where possible'
-  task autocorrect: %w[dependencies:lint:check] do
-    swiftlint %w[lint --autocorrect --quiet]
-  end
+task :lint do
+  puts 'No linter configured at the moment.'
 end
 
 namespace :git do
@@ -260,10 +267,8 @@ namespace :git do
 end
 
 namespace :git do
-  task pre_commit: %(dependencies:lint:check) do
-    swiftlint %w[lint --quiet --strict]
-  rescue StandardError
-    exit $CHILD_STATUS.exitstatus
+  task :pre_commit do
+    puts 'No precommit hook configured to run at this time.'
   end
 
   task :post_merge do
@@ -286,7 +291,6 @@ namespace :init do
     install:xcode:check
     dependencies
     install:tools:check_oss
-    install:lint:check
     credentials:setup
   ]
 
@@ -295,7 +299,6 @@ namespace :init do
     install:xcode:check
     dependencies
     install:tools:check_developer
-    install:lint:check
     credentials:setup
     gpg_key:setup
   ]
@@ -456,21 +459,6 @@ namespace :install do
         puts "#{tool} not found.  Installing #{tool}"
         sh "brew install #{tool}"
       end
-    end
-  end
-
-  namespace :lint do
-    task :check do
-      unless git_initialized?
-        puts 'Initializing git repository'
-        sh 'git init', verbose: false
-      end
-
-      Rake::Task['git:install_hooks'].invoke
-    end
-
-    def git_initialized?
-      sh 'git rev-parse --is-inside-work-tree > /dev/null 2>&1', verbose: false
     end
   end
 end
@@ -646,35 +634,6 @@ end
 # FIXME: This used to add Travis folding formatting, but we no longer use Travis. I'm leaving it here for the moment, but I think we should remove it.
 def fold(_)
   yield
-end
-
-def pod(args)
-  args = %w[bundle exec pod] + args
-  sh(*args)
-end
-
-def lockfile_hash
-  YAML.load_file('Podfile.lock')
-end
-
-def lockfiles_match?
-  File.file?('Pods/Manifest.lock') && FileUtils.compare_file('Podfile.lock', 'Pods/Manifest.lock')
-end
-
-def podfile_locked?
-  podfile_checksum = Digest::SHA1.file('Podfile')
-  lockfile_checksum = lockfile_hash['PODFILE CHECKSUM']
-
-  podfile_checksum == lockfile_checksum
-end
-
-def swiftlint(args)
-  args = [SWIFTLINT_BIN] + args
-  sh(*args)
-end
-
-def swiftlint_needs_install
-  File.exist?(SWIFTLINT_BIN) == false
 end
 
 def xcodebuild(*build_cmds)

@@ -11,11 +11,7 @@ echo "--- :beer: Installing Homebrew Dependencies"
 brew tap FelixHerrmann/tap
 brew install swift-package-list
 
-echo "--- :rubygems: Setting up Gems"
-install_gems
-
-echo "--- :cocoapods: Setting up Pods"
-install_cocoapods
+"$(dirname "${BASH_SOURCE[0]}")/shared-set-up.sh"
 
 echo "--- :writing_hand: Copy Files"
 mkdir -pv ~/.configure/wordpress-ios/secrets
@@ -23,9 +19,6 @@ cp -v fastlane/env/project.env-example ~/.configure/wordpress-ios/secrets/projec
 
 echo "--- :closed_lock_with_key: Installing Secrets"
 bundle exec fastlane run configure_apply
-
-echo "--- :swift: Setting up Swift Packages"
-install_swiftpm_dependencies
 
 echo "--- :hammer_and_wrench: Building"
 bundle exec fastlane build_${APP}_for_testing

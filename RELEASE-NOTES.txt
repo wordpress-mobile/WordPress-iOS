@@ -3,6 +3,7 @@
 * [*] Enable dismissing the virtual keyboard in the experimental editor [#23988]
 * [*] Remove Submit Feedback form from the Me menu [#24020]
 * [*] Fix unselectable group blocks in the experimental editor [https://github.com/wordpress-mobile/GutenbergKit/pull/68]
+* [*] Prevent a intermittent crash when opening the experimental editor's "more" menu [#24065]
 
 25.7
 -----

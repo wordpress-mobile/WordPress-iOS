@@ -48,7 +48,7 @@ public actor UserService: UserServiceProtocol {
 
         // Remove the deleted user from the cached users list.
         if result.deleted {
-            try await userDataStore.delete(query: .id([id]))
+            try await userDataStore.delete(query: .id(id))
         }
     }
 

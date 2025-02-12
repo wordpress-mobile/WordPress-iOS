@@ -1,5 +1,5 @@
 {
-  "originHash" : "b69b813e011fe3d425883f747b699d2cc8928b55a1b911562a67a86a78ef619f",
+  "originHash" : "33178852300005bef26a5e5156a5d80a02416132cc12ea8f9f2fe53a05ff8b43",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -26,6 +26,15 @@
       "state" : {
         "revision" : "606384a7492faa1139d489080dd961b0b57f9fd9",
         "version" : "1.1.5"
+      }
+    },
+    {
+      "identity" : "azteceditor-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/wordpress-mobile/AztecEditor-iOS",
+      "state" : {
+        "revision" : "f20f4102aab2dd9a14dffe5d42af069dcb08538f",
+        "version" : "1.20.0"
       }
     },
     {
@@ -123,8 +132,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Automattic/Gravatar-SDK-iOS",
       "state" : {
-        "revision" : "693616b9fb95432ac25ebb1fc3194767c1bd3904",
-        "version" : "3.2.0"
+        "revision" : "e7c6606015bab7258c4de9dde9d87736677ddc73",
+        "version" : "3.1.1"
       }
     },
     {

@@ -124,30 +124,6 @@ platform :ios do
     trainer(path: lane_context[SharedValues::SCAN_GENERATED_XCRESULT_PATH], fail_build: true)
   end
 
-  # Run tests of given pod in the Pods project
-  #
-  # @option [String] name Shared scheme in the Pods.xcodeproj
-  #
-  # @called_by CI
-  #
-  desc 'Run tests of given pod in the Pods project'
-  lane :test_pod do |options|
-    run_tests(
-      project: 'Pods/Pods.xcodeproj',
-      scheme: options[:name],
-      device: options[:device],
-      deployment_target_version: options[:ios_version],
-      ensure_devices_found: true,
-      output_directory: File.join(PROJECT_ROOT_FOLDER, 'build', 'results'),
-      reset_simulator: true,
-      result_bundle: true,
-      output_types: '',
-      fail_build: false
-    )
-
-    trainer(path: lane_context[SharedValues::SCAN_GENERATED_XCRESULT_PATH], fail_build: true)
-  end
-
   # Builds the WordPress app and uploads it to TestFlight, for beta-testing or final release
   #
   # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
@@ -514,7 +490,7 @@ platform :ios do
   end
 
   def upload_gutenberg_sourcemaps(sentry_project_slug:, release_version:, build_version:, app_identifier:)
-    gutenberg_bundle_source_map_folder = File.join(PROJECT_ROOT_FOLDER, 'Pods', 'Gutenberg', 'react-native-bundle-source-map')
+    gutenberg_bundle_source_map_folder = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Frameworks', 'react-native-bundle-source-map')
 
     # To generate the full release version string to attach the source maps, we need to specify:
     # - App identifier
