@@ -12,6 +12,8 @@ final class CommentComposerViewController: UIViewController {
         var configuration = UIButton.Configuration.borderedProminent()
         configuration.title = Strings.send
         configuration.cornerStyle = .capsule
+        configuration.baseBackgroundColor = UIColor.label
+        configuration.baseForegroundColor = UIColor.systemBackground
         return configuration
     }())
 
