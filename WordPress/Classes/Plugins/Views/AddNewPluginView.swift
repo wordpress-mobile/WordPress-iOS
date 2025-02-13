@@ -42,6 +42,17 @@ struct AddNewPluginView: View {
         .task(id: 0) {
             await viewModel.onAppear()
         }
+        .task(id: 1) {
+            for await result in await viewModel.service.installedPluginsUpdates(query: .all) {
+                guard case let .success(plugins) = result else { continue }
+
+                viewModel.installedPlugins = plugins.reduce(into: Set()) {
+                    if let slug = $1.possibleWpOrgDirectorySlug {
+                        $0.insert(slug)
+                    }
+                }
+            }
+        }
         .task(id: viewModel.mode) {
             await viewModel.performQuery()
         }
@@ -82,9 +93,9 @@ struct AddNewPluginView: View {
             .frame(maxWidth: .infinity, alignment: .center)
         } else if case .error = row {
             Text("Failed to load plugins. Tap here to retry")
-        } else if case let .plugin(plugin) = row {
+        } else if case let .plugin(plugin, isInstalled) = row {
             NavigationLink(destination: PluginDetailsView(plugin: plugin, service: viewModel.service)) {
-                HStack(alignment: .top) {
+                HStack(alignment: .center) {
                     PluginIconView(plugin: plugin, service: viewModel.service)
 
                     VStack(alignment: .leading, spacing: 4) {
@@ -101,6 +112,22 @@ struct AddNewPluginView: View {
                     }
 
                     Spacer()
+
+                    if isInstalled {
+                        Label {
+                            Text(Strings.installed)
+                        } icon: {
+                            Image(systemName: "checkmark")
+                                .imageScale(.small)
+                        }
+                        .font(.caption.bold())
+                        .foregroundStyle(.green)
+                        .labelStyle(.titleAndIcon)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(Color.green.opacity(0.15))
+                        .clipShape(Capsule())
+                    }
                 }
             }
         } else if case .empty = row {
@@ -152,7 +179,7 @@ private enum ListSection: Identifiable, Hashable {
 
 private enum ListRow: Identifiable, Hashable {
     case loading
-    case plugin(PluginInformation)
+    case plugin(PluginInformation, isInstalled: Bool)
     case empty
     case error(String)
 
@@ -160,7 +187,7 @@ private enum ListRow: Identifiable, Hashable {
         switch self {
         case .loading:
             return "loading"
-        case .plugin(let plugin):
+        case .plugin(let plugin, _):
             return plugin.slug
         case .empty:
             return "empty"
@@ -200,6 +227,7 @@ private class AddNewPluginViewModel: ObservableObject {
     private(set) var mode: Mode = .browser
 
     @Published var loadingStates: [Category: Result<Void, Error>] = [:]
+    @Published var installedPlugins: Set<PluginWpOrgDirectorySlug> = []
 
     @Published var searchInput: String = "" {
         didSet {
@@ -279,7 +307,7 @@ private class AddNewPluginViewModel: ObservableObject {
             if plugins.isEmpty {
                 sections = [.searchResult(rows: [.empty])]
             } else {
-                sections = [.searchResult(rows: plugins.map { .plugin($0) })]
+                sections = [.searchResult(rows: plugins.map { .plugin($0, isInstalled: installedPlugins.contains(PluginWpOrgDirectorySlug(slug: $0.slug))) })]
             }
             update(to: sections, ifStillIn: expectedMode)
         } catch {
@@ -305,7 +333,15 @@ private class AddNewPluginViewModel: ObservableObject {
         if plugins.plugins.isEmpty {
             return .plugins(category: category, rows: [.empty])
         } else {
-            return .plugins(category: category, rows: plugins.plugins.map { .plugin($0) })
+            return .plugins(category: category, rows: plugins.plugins.map { .plugin($0, isInstalled: installedPlugins.contains(PluginWpOrgDirectorySlug(slug: $0.slug))) })
         }
     }
+}
+
+private enum Strings {
+    static let installed = NSLocalizedString(
+        "site.plugins.add.installed.tag",
+        value: "Installed",
+        comment: "Tag shown next to plugins that are already installed"
+    )
 }
