@@ -5,10 +5,22 @@ import WordPressCore
 import WordPressAPIInternal
 
 struct PluginDetailsView: View {
+    private struct BasicPluginInfo {
+        var name: String
+        var author: String
+        var shortDescription: String
+
+        init(name: String, author: String, shortDescription: String) {
+            self.name = name.makePlainText()
+            self.author = author.makePlainText()
+            self.shortDescription = shortDescription.makePlainText()
+        }
+    }
+
     let slug: PluginWpOrgDirectorySlug
-    // TODO: This should be optional, to support installing a new plugin
-    let plugin: InstalledPlugin
     let service: PluginServiceProtocol
+
+    private let pluginInfo: BasicPluginInfo
 
     @State var newVersion: UpdateCheckPluginInfo? = nil
     @State private var tappedScreenshot: Screenshot? = nil
@@ -18,11 +30,38 @@ struct PluginDetailsView: View {
 
     @Environment(\.dismiss) var dismiss
 
+    var wpOrgURL: URL? {
+        URL(string: "https://wordpress.org/plugins/\(slug.slug)/")
+    }
+
+    var actionButton: ActionButton {
+        if let plugin = viewModel.installed {
+            return plugin.isActive
+                ? .activated(plugin: plugin)
+                : .activate(plugin: plugin) {
+                    // TODO
+                }
+        } else {
+            return .install(slug: slug) {
+                // TODO
+            }
+        }
+    }
+
+    init(plugin: PluginInformation, service: PluginServiceProtocol) {
+        let slug = PluginWpOrgDirectorySlug(slug: plugin.slug)
+        self.slug = slug
+        // TODO: Use `shortDescription`
+        self.pluginInfo = .init(name: plugin.name, author: plugin.author, shortDescription: plugin.author)
+        self.service = service
+        _viewModel = StateObject(wrappedValue: .init(slug: slug, plugin: plugin, installed: nil, service: service))
+    }
+
     init(slug: PluginWpOrgDirectorySlug, plugin: InstalledPlugin, service: PluginServiceProtocol) {
         self.slug = slug
-        self.plugin = plugin
+        self.pluginInfo = .init(name: plugin.name, author: plugin.author, shortDescription: plugin.shortDescription)
         self.service = service
-        _viewModel = StateObject(wrappedValue: .init(slug: slug, service: service))
+        _viewModel = StateObject(wrappedValue: .init(slug: slug, plugin: nil, installed: plugin, service: service))
     }
 
     var body: some View {
@@ -34,11 +73,11 @@ struct PluginDetailsView: View {
                     PluginIconView(slug: slug, service: service)
 
                     VStack(alignment: .leading) {
-                        Text(plugin.name.makePlainText())
+                        Text(pluginInfo.name)
                             .font(.headline)
                             .fontWeight(.bold)
                             .lineLimit(3, reservesSpace: false)
-                        Text(Strings.author(plugin.author))
+                        Text(Strings.author(pluginInfo.author))
                             .lineLimit(1)
                             .foregroundStyle(.secondary)
                             .font(.caption)
@@ -46,19 +85,13 @@ struct PluginDetailsView: View {
 
                     Spacer()
 
-                    Button(plugin.isActive ? Strings.activatedButton : Strings.activateButton) {
-                        Task {
-                            await viewModel.activate(plugin)
-                        }
-                    }
-                    .font(plugin.isActive ? .callout : .callout.bold())
-                    .buttonStyle(.borderedProminent)
-                    .buttonBorderShape(.capsule)
-                    .disabled(plugin.isActive || viewModel.isUninstalling)
+                    actionButton
+                        .view
+                        .disabled(viewModel.isLoading || viewModel.isActivating || viewModel.isUninstalling)
                 }
                 .listRowSeparator(.hidden)
 
-                Text(plugin.shortDescription.makePlainText())
+                Text(pluginInfo.shortDescription)
                     .font(.body)
                     .listRowSeparator(.hidden)
             }
@@ -93,13 +126,15 @@ struct PluginDetailsView: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {
-                    Button(role: .destructive) {
-                        showDeleteConfirmation = true
-                    } label: {
-                        Label(Strings.deleteButton, systemImage: "trash")
+                    if viewModel.installed != nil {
+                        Button(role: .destructive) {
+                            showDeleteConfirmation = true
+                        } label: {
+                            Label(Strings.deleteButton, systemImage: "trash")
+                        }
                     }
 
-                    if let url = plugin.possibleWpOrgDirectoryURL {
+                    if let url = wpOrgURL {
                         Section {
                             ShareLink(item: url)
                             Button {
@@ -118,15 +153,17 @@ struct PluginDetailsView: View {
             Button(SharedStrings.Button.cancel, role: .cancel) { }
             Button(SharedStrings.Button.delete, role: .destructive) {
                 Task { @MainActor in
-                    await viewModel.uninstall(plugin)
-                    dismiss()
+                    if let plugin = viewModel.installed {
+                        await viewModel.uninstall(plugin)
+                        dismiss()
+                    }
                 }
             }
         } message: {
-            Text(Strings.deletePluginMessage(plugin.name.makePlainText()))
+            Text(Strings.deletePluginMessage(pluginInfo.name))
         }
         .sheet(isPresented: $isShowingSafariView) {
-            if let url = plugin.possibleWpOrgDirectoryURL {
+            if let url = wpOrgURL {
                 SafariView(url: url)
             }
         }
@@ -313,6 +350,32 @@ private struct RatingView: View {
     }
 }
 
+enum ActionButton {
+    case install(slug: PluginWpOrgDirectorySlug, action: () -> Void)
+    case activate(plugin: InstalledPlugin, action: () -> Void)
+    case activated(plugin: InstalledPlugin)
+
+    var view: some View {
+        let button: AnyView
+        switch self {
+        case let .install(_, action):
+            button = AnyView(Button("Install", action: action)
+                    .font(.callout.bold()))
+        case let .activate(_, action):
+            button = AnyView(Button(Strings.activateButton, action: action)
+                    .font(.callout.bold()))
+        case .activated(_):
+            button = AnyView(Button(Strings.activatedButton, action: { })
+                .font(.callout)
+                .disabled(true))
+        }
+
+        return button
+            .buttonStyle(.borderedProminent)
+            .buttonBorderShape(.capsule)
+    }
+}
+
 @MainActor
 final class WordPressPluginDetailViewModel: ObservableObject {
     let slug: PluginWpOrgDirectorySlug
@@ -321,12 +384,13 @@ final class WordPressPluginDetailViewModel: ObservableObject {
     @Published private(set) var isLoading = false
     @Published private(set) var isUninstalling = false
     @Published private(set) var plugin: PluginInformation?
+    @Published private(set) var installed: InstalledPlugin?
     @Published private(set) var error: String?
     @Published private(set) var isActivating = false
 
     private var initialLoad = false
 
-    init(slug: PluginWpOrgDirectorySlug, service: PluginServiceProtocol) {
+    init(slug: PluginWpOrgDirectorySlug, plugin: PluginInformation?, installed: InstalledPlugin?, service: PluginServiceProtocol) {
         self.slug = slug
         self.service = service
     }
@@ -342,7 +406,12 @@ final class WordPressPluginDetailViewModel: ObservableObject {
         }
 
         do {
+            self.installed = try await service.findInstalledPluginsUpdates(slug: slug)
             try await service.fetchPluginInformation(slug: slug)
+
+            // Re-fetch installed plugins to ensure a more accurate check of whether the plugin is already installed
+            try await service.fetchInstalledPlugins()
+            self.installed = try await service.findInstalledPluginsUpdates(slug: slug)
         } catch {
             self.error = (error as? WpApiError)?.errorMessage ?? error.localizedDescription
         }

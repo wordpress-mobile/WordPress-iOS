@@ -83,23 +83,25 @@ struct AddNewPluginView: View {
         } else if case .error = row {
             Text("Failed to load plugins. Tap here to retry")
         } else if case let .plugin(plugin) = row {
-            HStack(alignment: .top) {
-                PluginIconView(plugin: plugin, service: viewModel.service)
+            NavigationLink(destination: PluginDetailsView(plugin: plugin, service: viewModel.service)) {
+                HStack(alignment: .top) {
+                    PluginIconView(plugin: plugin, service: viewModel.service)
 
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(plugin.name.makePlainText())
-                        .lineLimit(1)
-                        .font(.headline)
-                        .foregroundStyle(.primary)
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(plugin.name.makePlainText())
+                            .lineLimit(1)
+                            .font(.headline)
+                            .foregroundStyle(.primary)
 
-                    // TODO: use `shortDescription` instead.
-                    Text(plugin.author.makePlainText())
-                        .lineLimit(2)
-                        .font(.body)
-                        .foregroundStyle(.primary)
+                        // TODO: use `shortDescription` instead.
+                        Text(plugin.author.makePlainText())
+                            .lineLimit(2)
+                            .font(.body)
+                            .foregroundStyle(.primary)
+                    }
+
+                    Spacer()
                 }
-
-                Spacer()
             }
         } else if case .empty = row {
             Text("No plugins found")

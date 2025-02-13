@@ -20,4 +20,8 @@ extension PluginDataStoreQuery {
     public static func slug(_ slug: PluginSlug) -> PluginDataStoreQuery {
         .init(sortBy: KeyPathComparator(\.name)) { $0.slug == slug }
     }
+
+    public static func slug(_ slug: PluginWpOrgDirectorySlug) -> PluginDataStoreQuery {
+        .init(sortBy: KeyPathComparator(\.name)) { $0.possibleWpOrgDirectorySlug == slug }
+    }
 }
