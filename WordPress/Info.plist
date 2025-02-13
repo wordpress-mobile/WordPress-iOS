@@ -546,7 +546,6 @@
 	<key>UIAppFonts</key>
 	<array>
 		<string>Noticons.ttf</string>
-		<string>EBGaramond-Regular.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
