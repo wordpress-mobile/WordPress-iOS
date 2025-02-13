@@ -11,6 +11,7 @@ final class CommentComposerViewController: UIViewController {
         return configuration
     }())
 
+    private let contentView = UIStackView(axis: .vertical, [])
     private var editor: CommentEditor?
     private let viewModel: CommentComposerViewModel
 
@@ -29,7 +30,7 @@ final class CommentComposerViewController: UIViewController {
 
         view.backgroundColor = .systemBackground
 
-        setupEditor()
+        setupView()
         setupNavigationBar()
         setupAccessibility()
 
@@ -40,6 +41,22 @@ final class CommentComposerViewController: UIViewController {
         super.viewDidAppear(animated)
 
         WPAnalytics.track(.commentFullScreenEntered)
+    }
+
+    private func setupView() {
+        view.addSubview(contentView)
+        contentView.pinEdges([.top, .horizontal], to: view.safeAreaLayoutGuide)
+        contentView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor).isActive = true
+
+        if let comment = viewModel.comment {
+            let preview = CommentComposerReplyCommentView(comment: comment)
+            contentView.addArrangedSubview(preview)
+
+            let separator = SeparatorView.horizontal()
+            contentView.addArrangedSubview(separator)
+        }
+
+        setupEditor()
     }
 
     private func setupEditor() {
@@ -57,10 +74,7 @@ final class CommentComposerViewController: UIViewController {
         editorVC.delegate = self
 
         addChild(editorVC)
-        view.addSubview(editorVC.view)
-        editorVC.view.pinEdges([.top, .horizontal], to: view.safeAreaLayoutGuide)
-        editorVC.view.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor).isActive = true
-
+        contentView.addArrangedSubview(editorVC.view)
         editorVC.didMove(toParent: self)
 
         self.editor = editorVC
@@ -71,8 +85,7 @@ final class CommentComposerViewController: UIViewController {
         editorVC.delegate = self
 
         addChild(editorVC)
-        view.addSubview(editorVC.view)
-        editorVC.view.pinEdges()
+        contentView.addArrangedSubview(editorVC.view)
         editorVC.didMove(toParent: self)
 
         self.editor = editorVC

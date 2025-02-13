@@ -203,13 +203,16 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     func configureForPostDetails(with comment: Comment, helper: ReaderCommentsHelper, onContentLoaded: ((CGFloat) -> Void)?) {
         configure(viewModel: CommentCellViewModel(comment: comment), helper: helper, onContentLoaded: onContentLoaded)
 
-        replyButton.isHidden = true
-        likeButton.isHidden = true
-
-        isAccessoryButtonEnabled = false
+        hideActions()
 
         containerStackLeadingConstraint.constant = 0
         containerStackTrailingConstraint.constant = 0
+    }
+
+    func hideActions() {
+        replyButton.isHidden = true
+        likeButton.isHidden = true
+        isAccessoryButtonEnabled = false
     }
 
     @objc func ensureRichContentTextViewLayout() {

@@ -8,6 +8,9 @@ final class CommentComposerViewModel {
         wpAssertionFailure("must be specified")
     }
 
+    /// Comment you are replying it.
+    var comment: Comment?
+
     private let parameters: CommentComposerParameters
     private var context: NSManagedObjectContext
 
@@ -45,6 +48,7 @@ final class CommentComposerViewModel {
         )
 
         self.init(parameters: parameters, suggestionsViewModel: suggestionsViewModel)
+        self.comment = comment
     }
 
     init(
