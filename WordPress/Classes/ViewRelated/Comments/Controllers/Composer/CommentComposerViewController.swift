@@ -60,17 +60,20 @@ final class CommentComposerViewController: UIViewController {
     }
 
     private func setupEditor() {
+        let content = viewModel.restoreDraft() ?? ""
+
         if viewModel.isGutenbergEnabled {
-            setupGutenbergEditor()
+            setupGutenbergEditor(content: content)
         } else {
-            setupPlainTextEditor()
+            setupPlainTextEditor(content: content)
         }
     }
 
-    private func setupPlainTextEditor() {
+    private func setupPlainTextEditor(content: String) {
         let editorVC = CommentPlainTextEditorViewController()
         editorVC.suggestionsViewModel = viewModel.suggestionsViewModel
         editorVC.placeholder = viewModel.placeholder
+        editorVC.text = content
         editorVC.delegate = self
 
         addChild(editorVC)
@@ -80,9 +83,10 @@ final class CommentComposerViewController: UIViewController {
         self.editor = editorVC
     }
 
-    private func setupGutenbergEditor() {
+    private func setupGutenbergEditor(content: String) {
         let editorVC = CommentGutenbergEditorViewController()
         editorVC.delegate = self
+        editorVC.initialContent = content
 
         addChild(editorVC)
         contentView.addArrangedSubview(editorVC.view)
@@ -127,20 +131,26 @@ final class CommentComposerViewController: UIViewController {
         if text.isEmpty {
             presentingViewController?.dismiss(animated: true)
         } else {
-            showCloseDraftConfirmationAlert()
+            showCloseDraftConfirmationAlert(content: text)
         }
     }
 
-    private func showCloseDraftConfirmationAlert() {
+    private func showCloseDraftConfirmationAlert(content: String) {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alert.addCancelActionWithTitle(Strings.closeConfirmationAlertCancel)
         alert.addDestructiveActionWithTitle(Strings.closeConfirmationAlertDelete) { [weak self] _ in
+            self?.viewModel.deleteDraft()
             self?.presentingViewController?.dismiss(animated: true)
         }
-        // TODO: (kean) implement draft saving
-//        alert.addActionWithTitle(Strings.closeConfirmationAlertSaveDraft, style: .default) { _ in
-//
-//        }
+        if viewModel.canSaveDraft {
+            alert.addActionWithTitle(Strings.closeConfirmationAlertSaveDraft, style: .default) { [weak self] _ in
+                self?.viewModel.saveDraft(content)
+                self?.presentingViewController?.dismiss(animated: true) {
+                    UINotificationFeedbackGenerator().notificationOccurred(.success)
+                    Notice(title: Strings.draftSaved).post()
+                }
+            }
+        }
         alert.popoverPresentationController?.barButtonItem = navigationItem.leftBarButtonItem
         present(alert, animated: true, completion: nil)
     }
@@ -180,4 +190,5 @@ private enum Strings {
     static let closeConfirmationAlertCancel = NSLocalizedString("commentComposer.closeConfirmationAlert.keepEditing", value: "Keep Editing", comment: "Button to keep the changes in an alert confirming discaring changes")
     static let closeConfirmationAlertDelete = NSLocalizedString("commentComposer.closeConfirmationAlert.deleteDraft", value: "Delete Draft", comment: "Button in an alert confirming discaring a new draft")
     static let closeConfirmationAlertSaveDraft = NSLocalizedString("commentComposer.closeConfirmationAlert.saveDraft", value: "Save Draft", comment: "Button in an alert confirming saving a new draft")
+    static let draftSaved = NSLocalizedString("commentComposer.draftSaved", value: "Draft Saved", comment: "Cofirmation snackbar title")
 }
