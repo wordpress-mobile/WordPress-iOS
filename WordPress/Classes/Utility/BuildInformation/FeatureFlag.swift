@@ -15,7 +15,6 @@ enum FeatureFlag: Int, CaseIterable {
     case newGutenbergThemeStyles
     case newGutenbergPlugins
     case selfHostedSiteUserManagement
-    case readerCommentsWebKit
     case readerGutenbergCommentComposer
     case pluginManagementOverhaul
 
@@ -52,8 +51,6 @@ enum FeatureFlag: Int, CaseIterable {
             return false
         case .selfHostedSiteUserManagement:
             return false
-        case .readerCommentsWebKit:
-            return BuildConfiguration.current != .appStore
         case .readerGutenbergCommentComposer:
             return false
         case .pluginManagementOverhaul:
@@ -93,7 +90,6 @@ extension FeatureFlag {
         case .newGutenbergThemeStyles: "Experimental Block Editor Styles"
         case .newGutenbergPlugins: "Experimental Block Editor Plugins"
         case .selfHostedSiteUserManagement: "Self-hosted Site User Management"
-        case .readerCommentsWebKit: "Render Comments using WebKit"
         case .pluginManagementOverhaul: "Plugin Management Overhaul"
         case .readerGutenbergCommentComposer: "Gutenberg Comment Composer"
         }

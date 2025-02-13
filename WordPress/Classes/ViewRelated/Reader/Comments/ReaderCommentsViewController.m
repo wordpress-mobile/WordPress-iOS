@@ -11,7 +11,6 @@
 @class Comment;
 
 @interface ReaderCommentsViewController () <NSFetchedResultsControllerDelegate,
-                                            WPRichContentViewDelegate, // TODO: Remove once we switch to the `.web` rendering method.
                                             WPContentSyncHelperDelegate,
                                             ReaderCommentsFollowPresenterDelegate>
 
@@ -26,7 +25,6 @@
 @property (nonatomic) BOOL needsRefreshTableViewAfterScrolling;
 @property (nonatomic, strong) NSError *fetchCommentsError;
 @property (nonatomic) BOOL userInterfaceStyleChanged;
-@property (nonatomic, strong) NSCache *cachedAttributedStrings;
 @property (nonatomic, strong) FollowCommentsService *followCommentsService;
 @property (nonatomic, strong) ReaderCommentsFollowPresenter *readerCommentsFollowPresenter;
 @property (nonatomic, strong) UIBarButtonItem *followBarButtonItem;
@@ -71,8 +69,6 @@
 {
     [super viewDidLoad];
 
-    self.cachedAttributedStrings = [[NSCache alloc] init];
-
     self.view.backgroundColor = [UIColor systemBackgroundColor];
     self.commentModified = NO;
     self.helper = [ReaderCommentsHelper new];
@@ -91,8 +87,6 @@
 {
     [super viewWillAppear:animated];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
-
     [self refreshAndSync];
 }
 
@@ -105,8 +99,6 @@
         // Don't post the notification until the view is being dismissed to avoid purging cached comments prematurely.
         [self postCommentModifiedNotification];
     }
-
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)viewDidLayoutSubviews
@@ -128,18 +120,6 @@
 - (UITableView *)tableView
 {
     return self.tableViewController.tableView;
-}
-
-#pragma mark - Split View Support
-
-/**
- We need to refresh media layout when the app's size changes due the the user adjusting
- the split view grip. Respond to the UIApplicationDidBecomeActiveNotification notification
- dispatched when the grip is changed and refresh media layout.
- */
-- (void)handleApplicationDidBecomeActive:(NSNotification *)notification
-{
-    [self.view layoutIfNeeded];
 }
 
 #pragma mark - Tracking methods
@@ -410,11 +390,6 @@
     [self refreshEmptyStateView];
 }
 
-- (void)updateTableViewForAttachments
-{
-    [self.tableView performBatchUpdates:nil completion:nil];
-}
-
 - (void)refreshTableViewAndNoResultsView:(BOOL)scrollToHighlightedComment {
     [self refreshEmptyStateView];
 
@@ -425,16 +400,6 @@
 
 - (void)refreshTableViewAndNoResultsView {
     [self refreshTableViewAndNoResultsView:YES];
-}
-
-- (NSAttributedString *)cacheContentForComment:(Comment *)comment
-{
-    NSAttributedString *attrStr = [self.cachedAttributedStrings objectForKey:[NSNumber numberWithInt:comment.commentID]];
-    if (!attrStr || self.userInterfaceStyleChanged == YES) {
-        attrStr = [WPRichContentView formattedAttributedStringForString: comment.content];
-        [self.cachedAttributedStrings setObject:attrStr forKey:[NSNumber numberWithInt:comment.commentID]];
-    }
-    return attrStr;
 }
 
 /// If we've been provided with a comment ID on initialization, then this
@@ -542,20 +507,6 @@
 
 - (void)configureCell:(CommentContentTableViewCell *)cell viewModel:(CommentCellViewModel *)viewModel indexPath:(NSIndexPath *)indexPath
 {
-    // When backgrounding, the app takes a snapshot, which triggers a layout pass,
-    // which refreshes the cells, and for some reason triggers an assertion failure
-    // in NSMutableAttributedString(data:,options:,documentAttributes:) when
-    // the NSDocumentTypeDocumentAttribute option is NSHTMLTextDocumentType.
-    // *** Assertion failure in void _prepareForCAFlush(UIApplication *__strong)(),
-    // /BuildRoot/Library/Caches/com.apple.xbs/Sources/UIKit_Sim/UIKit-3600.6.21/UIApplication.m:2377
-    // *** Terminating app due to uncaught exception 'NSInternalInconsistencyException',
-    // reason: 'unexpected start state'
-    // This seems like a framework bug, so to avoid it skip configuring cells
-    // while the app is backgrounded.
-    if (![Feature enabled:FeatureFlagReaderCommentsWebKit] && [[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground) {
-        return;
-    }
-
     Comment *comment = viewModel.comment;
 
     [self configureContentCell:cell viewModel:viewModel indexPath:indexPath tableView:self.tableViewController.tableView];
@@ -563,9 +514,6 @@
     if (self.highlightedIndexPath) {
         cell.isEmphasized = (indexPath == self.highlightedIndexPath);
     }
-
-    // support for legacy content rendering method.
-    cell.richContentDelegate = self;
 
     // configure button actions.
     __weak __typeof(self) weakSelf = self;
@@ -581,7 +529,7 @@
     };
 
     cell.contentLinkTapAction = ^(NSURL * _Nonnull url) {
-        [weakSelf interactWithURL:url];
+        [weakSelf presentWebViewControllerWith:url];
     };
 }
 
@@ -589,35 +537,6 @@
 {
     if (self.syncHelper.hasMoreContent) {
         [self.syncHelper syncMoreContent];
-    }
-}
-
-#pragma mark - WPRichContentDelegate Methods
-
-- (void)richContentView:(WPRichContentView *)richContentView didReceiveImageAction:(WPRichTextImage *)image
-{
-    [self showFullScreenImage:image from:richContentView];
-}
-
-- (void)interactWithURL:(NSURL *)URL
-{
-    [self presentWebViewControllerWith:URL];
-}
-
-- (BOOL)richContentViewShouldUpdateLayoutForAttachments:(WPRichContentView *)richContentView
-{
-    return YES;
-}
-
-- (void)richContentViewDidUpdateLayoutForAttachments:(WPRichContentView *)richContentView
-{
-    [self updateTableViewForAttachments];
-}
-
-- (void)textViewDidChangeSelection:(UITextView *)textView
-{
-    if (!textView.selectedTextRange.isEmpty) {
-        [WPAnalytics trackEvent:WPAnalyticsEventReaderCommentTextHighlighted];
     }
 }
 

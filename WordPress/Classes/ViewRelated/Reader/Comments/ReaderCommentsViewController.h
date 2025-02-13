@@ -39,7 +39,6 @@ typedef NS_ENUM(NSUInteger, ReaderCommentsSource) {
 // Comment moderation support.
 @property (nonatomic, assign, readwrite) BOOL commentModified;
 - (void)refreshAfterCommentModeration;
-- (NSAttributedString *)cacheContentForComment:(Comment *)comment;
 - (void)trackReplyTo:(BOOL)replyTarget;
 - (void)configureCell:(CommentContentTableViewCell *)cell viewModel:(CommentCellViewModel *)viewModel indexPath:(NSIndexPath *)indexPath;
 - (UIView *)cachedHeaderView;

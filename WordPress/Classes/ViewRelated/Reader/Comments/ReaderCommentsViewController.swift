@@ -78,16 +78,6 @@ extension NSNotification.Name {
         navigationController?.pushViewController(controller, animated: true)
     }
 
-    @objc func showFullScreenImage(_ image: WPRichTextImage, from contentView: WPRichContentView) {
-        if let contentURL = image.contentURL {
-            let lightboxVC = LightboxViewController(sourceURL: contentURL)
-            lightboxVC.configureZoomTransition()
-            present(lightboxVC, animated: true)
-        } else if let linkURL = image.linkURL {
-            presentWebViewController(with: linkURL)
-        }
-    }
-
     @objc func presentWebViewController(with url: URL) {
         var linkURL = url
         if let components = URLComponents(string: url.absoluteString), components.host == nil {
@@ -136,8 +126,7 @@ extension NSNotification.Name {
         // Note that accessoryButtonAction will be ignored when the menu is assigned.
         cell.accessoryButton.showsMenuAsPrimaryAction = isModerationMenuEnabled(for: comment)
         cell.accessoryButton.menu = isModerationMenuEnabled(for: comment) ? menu(for: comment, indexPath: indexPath, tableView: tableView, sourceView: cell.accessoryButton) : nil
-        let renderMethod: CommentContentTableViewCell.RenderMethod = Feature.enabled(.readerCommentsWebKit) ? .web : .richContent(self.cacheContent(for: comment))
-        cell.configure(viewModel: viewModel, renderMethod: renderMethod, helper: helper) { [weak tableView] _ in
+        cell.configure(viewModel: viewModel, helper: helper) { [weak tableView] _ in
             guard let tableView else { return }
 
             if tableView.alpha == 0 {
