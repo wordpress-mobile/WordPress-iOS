@@ -40,58 +40,9 @@ struct PluginListItemView: View {
 
             Spacer()
         }
-        .contextMenu(menuItems: {
-            menuItems
-        })
-        .overlay(alignment: .topTrailing) {
-            Menu {
-                menuItems
-            } label: {
-                Image(systemName: "ellipsis")
-                    .padding(4)
-                    .frame(width: 44, height: 44, alignment: .topTrailing)
-                    .contentShape(Rectangle())
-            }
-            .foregroundStyle(.secondary)
-        }
         .sheet(isPresented: $isShowingSafariView) {
             if let url = plugin.possibleWpOrgDirectoryURL {
                 SafariView(url: url)
-            }
-        }
-    }
-
-    @ViewBuilder
-    private var menuItems: some View {
-        Section {
-            if plugin.isActive {
-                Button(Strings.deactivate, systemImage: "bolt.slash") {
-                    Task {
-                        await viewModel.toggle(slug: plugin.slug)
-                    }
-                }
-            } else {
-                Button(Strings.activate, systemImage: "bolt") {
-                    Task {
-                        await viewModel.toggle(slug: plugin.slug)
-                    }
-                }
-                Button(Strings.delete, systemImage: "trash", role: .destructive) {
-                    Task {
-                        await viewModel.uninstall(slug: plugin.slug)
-                    }
-                }
-            }
-        }
-        .disabled(isUpdating)
-
-        if plugin.possibleWpOrgDirectoryURL != nil {
-            Section {
-                Button {
-                    isShowingSafariView = true
-                } label: {
-                    Label(Strings.viewOnWordPressOrg, systemImage: "safari")
-                }
             }
         }
     }

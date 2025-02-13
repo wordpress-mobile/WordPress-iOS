@@ -64,16 +64,24 @@ public actor PluginService: PluginServiceProtocol {
         return nil
     }
 
-    public func togglePluginActivation(slug: PluginSlug) async throws {
-        let plugin = try await client.api.plugins.retrieveWithViewContext(pluginSlug: slug)
-        let newStatus: PluginStatus = plugin.data.status == .inactive ? (plugin.data.networkOnly ? .networkActive : .active) : .inactive
-        let newPlugin = try await client.api.plugins.update(pluginSlug: slug, params: .init(status: newStatus))
-        try await installedPluginDataStore.store([.init(plugin: newPlugin.data)])
+    public func updatePluginStatus(plugin: InstalledPlugin, activated: Bool) async throws -> InstalledPlugin {
+        let newStatus: PluginStatus = plugin.status == .inactive ? (plugin.networkOnly ? .networkActive : .active) : .inactive
+        let newPlugin = try await client.api.plugins.update(pluginSlug: plugin.slug, params: .init(status: newStatus))
+        let plugin = InstalledPlugin(plugin: newPlugin.data)
+        try await installedPluginDataStore.store([plugin])
+        return plugin
     }
 
     public func uninstalledPlugin(slug: PluginSlug) async throws {
         let _ = try await client.api.plugins.delete(pluginSlug: slug)
         try await installedPluginDataStore.delete(query: .slug(slug))
+    }
+
+    public func installPlugin(slug: PluginWpOrgDirectorySlug) async throws -> InstalledPlugin {
+        let plugin = try await client.api.plugins.create(params: .init(slug: slug, status: .inactive)).data
+        let installed = InstalledPlugin(plugin: plugin)
+        try await installedPluginDataStore.store([installed])
+        return installed
     }
 
     public func fetchPluginsDirectory(category: WordPressOrgApiPluginDirectoryCategory) async throws {

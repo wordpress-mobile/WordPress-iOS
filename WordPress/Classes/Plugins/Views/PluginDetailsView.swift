@@ -39,11 +39,11 @@ struct PluginDetailsView: View {
             return plugin.isActive
                 ? .activated(plugin: plugin)
                 : .activate(plugin: plugin) {
-                    // TODO
+                    Task { await viewModel.updatePluginStatus(plugin, activated: true) }
                 }
         } else {
             return .install(slug: slug) {
-                // TODO
+                Task { await viewModel.install() }
             }
         }
     }
@@ -87,7 +87,7 @@ struct PluginDetailsView: View {
 
                     actionButton
                         .view
-                        .disabled(viewModel.isLoading || viewModel.isActivating || viewModel.isUninstalling)
+                        .disabled(viewModel.isLoading || viewModel.isActivating || viewModel.isDeactivating || viewModel.isUninstalling || viewModel.isInstalling)
                 }
                 .listRowSeparator(.hidden)
 
@@ -98,7 +98,13 @@ struct PluginDetailsView: View {
             .listSectionSeparator(.hidden)
 
             if viewModel.isUninstalling {
-                uninstallingView()
+                inlineProgressView(title: Strings.uninstallingTitle, message: Strings.uninstallingMessage)
+            } else if viewModel.isInstalling {
+                inlineProgressView(title: Strings.installingTitle, message: Strings.installingMessage)
+            } else if viewModel.isActivating {
+                inlineProgressView(title: Strings.activatingTitle, message: Strings.activatingMessage)
+            } else if viewModel.isDeactivating {
+                inlineProgressView(title: Strings.deactivatingTitle, message: Strings.deactivatingMessage)
             } else if let newVersion {
                 updateAvailableView(newVersion)
             }
@@ -131,6 +137,14 @@ struct PluginDetailsView: View {
                             showDeleteConfirmation = true
                         } label: {
                             Label(Strings.deleteButton, systemImage: "trash")
+                        }
+                    }
+
+                    if let installed = viewModel.installed, installed.isActive {
+                        Button {
+                            Task { await viewModel.updatePluginStatus(installed, activated: false) }
+                        } label: {
+                            Label(Strings.deactivateButton, systemImage: "circle.slash")
                         }
                     }
 
@@ -214,14 +228,14 @@ struct PluginDetailsView: View {
     }
 
     @ViewBuilder
-    private func uninstallingView() -> some View {
+    private func inlineProgressView(title: String, message: String) -> some View {
         HStack {
             ProgressView()
 
             VStack(alignment: .leading) {
-                Text(Strings.uninstallingTitle)
+                Text(title)
                     .font(.headline)
-                Text(Strings.uninstallingMessage)
+                Text(message)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
@@ -383,10 +397,12 @@ final class WordPressPluginDetailViewModel: ObservableObject {
 
     @Published private(set) var isLoading = false
     @Published private(set) var isUninstalling = false
+    @Published private(set) var isInstalling = false
     @Published private(set) var plugin: PluginInformation?
     @Published private(set) var installed: InstalledPlugin?
     @Published private(set) var error: String?
     @Published private(set) var isActivating = false
+    @Published private(set) var isDeactivating = false
 
     private var initialLoad = false
 
@@ -428,14 +444,15 @@ final class WordPressPluginDetailViewModel: ObservableObject {
         }
     }
 
-    func activate(_ plugin: InstalledPlugin) async {
-        isActivating = true
+    func updatePluginStatus(_ plugin: InstalledPlugin, activated: Bool) async {
+        let keyPath: ReferenceWritableKeyPath<WordPressPluginDetailViewModel, Bool> = activated ? \.isActivating : \.isDeactivating
+        self[keyPath: keyPath] = true
         defer {
-            isActivating = false
+            self[keyPath: keyPath] = false
         }
 
         do {
-            try await service.togglePluginActivation(slug: plugin.slug)
+            self.installed = try await service.updatePluginStatus(plugin: plugin, activated: false)
         } catch {
             // TODO: Show an error notice
         }
@@ -449,6 +466,19 @@ final class WordPressPluginDetailViewModel: ObservableObject {
 
         do {
             try await service.uninstalledPlugin(slug: plugin.slug)
+        } catch {
+            // TODO: Show an error notice
+        }
+    }
+
+    func install() async {
+        isInstalling = true
+        defer {
+            isInstalling = false
+        }
+
+        do {
+            self.installed = try await service.installPlugin(slug: slug)
         } catch {
             // TODO: Show an error notice
         }
@@ -619,6 +649,12 @@ private enum Strings {
         comment: "Button label to activate a plugin"
     )
 
+    static let deactivateButton = NSLocalizedString(
+        "pluginDetails.deactivate.button",
+        value: "Deactivate",
+        comment: "Button label to deactivate a plugin"
+    )
+
     static let activatedButton = NSLocalizedString(
         "pluginDetails.activated.button",
         value: "Activated",
@@ -635,5 +671,41 @@ private enum Strings {
         "pluginDetails.uninstalling.message",
         value: "Please wait while the plugin is being removed...",
         comment: "Message shown while a plugin is being uninstalled"
+    )
+
+    static let installingTitle = NSLocalizedString(
+        "pluginDetails.install.title",
+        value: "Install Plugin",
+        comment: "Title shown while a plugin is being installed"
+    )
+
+    static let installingMessage = NSLocalizedString(
+        "pluginDetails.install.message",
+        value: "Please wait while the plugin is being installed...",
+        comment: "Message shown while a plugin is being installed"
+    )
+
+    static let activatingTitle = NSLocalizedString(
+        "pluginDetails.activating.title",
+        value: "Activating Plugin",
+        comment: "Title shown while a plugin is being activated"
+    )
+
+    static let activatingMessage = NSLocalizedString(
+        "pluginDetails.activating.message",
+        value: "Please wait while the plugin is being activated...",
+        comment: "Message shown while a plugin is being activated"
+    )
+
+    static let deactivatingTitle = NSLocalizedString(
+        "pluginDetails.deactivating.title",
+        value: "Deactivating Plugin",
+        comment: "Title shown while a plugin is being deactivated"
+    )
+
+    static let deactivatingMessage = NSLocalizedString(
+        "pluginDetails.deactivating.message",
+        value: "Please wait while the plugin is being deactivated...",
+        comment: "Message shown while a plugin is being deactivated"
     )
 }

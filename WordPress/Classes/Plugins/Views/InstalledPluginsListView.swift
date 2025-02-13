@@ -156,17 +156,6 @@ final class InstalledPluginsListViewModel: ObservableObject {
         }
     }
 
-    func toggle(slug: PluginSlug) async {
-        self.updating.insert(slug)
-        defer { self.updating.remove(slug) }
-
-        do {
-            try await self.service.togglePluginActivation(slug: slug)
-        } catch {
-            DDLogError("Failed to update plugin: \(error)")
-        }
-    }
-
     func uninstall(slug: PluginSlug) async {
         self.updating.insert(slug)
         defer { self.updating.remove(slug) }

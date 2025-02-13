@@ -14,9 +14,10 @@ public protocol PluginServiceProtocol: Actor {
 
     func resolveIconURL(of slug: PluginWpOrgDirectorySlug, plugin: PluginInformation?) async -> URL?
 
-    func togglePluginActivation(slug: PluginSlug) async throws
+    func updatePluginStatus(plugin: InstalledPlugin, activated: Bool) async throws -> InstalledPlugin
 
     func uninstalledPlugin(slug: PluginSlug) async throws
+    func installPlugin(slug: PluginWpOrgDirectorySlug) async throws -> InstalledPlugin
 
     func fetchPluginsDirectory(category: WordPressOrgApiPluginDirectoryCategory) async throws
     func pluginDirectoryUpdates(query: CategorizedPluginInformationDataStoreQuery) async -> AsyncStream<Result<[CategorizedPluginInformation], Error>>

@@ -1,47 +1,42 @@
 import Foundation
 import WordPressAPI
+import WordPressAPIInternal
 
 public struct InstalledPlugin: Equatable, Hashable, Identifiable, Sendable {
     public var slug: PluginSlug
-    public var iconURL: URL?
     public var name: String
     public var version: String
     public var author: String
     public var shortDescription: String
-    public var isActive: Bool
+    public var status: PluginStatus
+    public var networkOnly: Bool
 
-    public init(slug: PluginSlug, iconURL: URL?, name: String, version: String, author: String, shortDescription: String, isActive: Bool) {
-        self.slug = slug
-        self.iconURL = iconURL
-        self.name = name
-        self.version = version
-        self.author = author
-        self.shortDescription = shortDescription
-        self.isActive = isActive
-    }
-
-    public init(plugin: PluginWithViewContext) {
-        self.slug = plugin.plugin
-        iconURL = nil
-        name = plugin.name
-        version = plugin.version
-        author = plugin.author
-        shortDescription = plugin.description.raw
-        isActive = plugin.status == .active || plugin.status == .networkActive
-    }
-
-    public init(plugin: PluginWithEditContext) {
-        self.slug = plugin.plugin
-        iconURL = nil
-        name = plugin.name
-        version = plugin.version
-        author = plugin.author
-        shortDescription = plugin.description.raw
-        isActive = plugin.status == .active || plugin.status == .networkActive
+    public var isActive: Bool {
+        status == .active || status == .networkActive
     }
 
     public var id: String {
         slug.slug
+    }
+
+    init(plugin: PluginWithEditContext) {
+        self.slug = plugin.plugin
+        self.name = plugin.name
+        self.version = plugin.version
+        self.author = plugin.author
+        self.shortDescription = plugin.description.raw
+        self.status = plugin.status
+        self.networkOnly = plugin.networkOnly
+    }
+
+    init(plugin: PluginWithViewContext) {
+        self.slug = plugin.plugin
+        self.name = plugin.name
+        self.version = plugin.version
+        self.author = plugin.author
+        self.shortDescription = plugin.description.raw
+        self.status = plugin.status
+        self.networkOnly = plugin.networkOnly
     }
 
     public var possibleWpOrgDirectorySlug: PluginWpOrgDirectorySlug? {
