@@ -364,7 +364,7 @@ enum ActionButton {
         case let .activate(_, action):
             button = AnyView(Button(Strings.activateButton, action: action)
                     .font(.callout.bold()))
-        case .activated(_):
+        case .activated:
             button = AnyView(Button(Strings.activatedButton, action: { })
                 .font(.callout)
                 .disabled(true))
