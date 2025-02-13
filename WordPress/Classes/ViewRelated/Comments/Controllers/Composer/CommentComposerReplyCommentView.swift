@@ -22,11 +22,11 @@ final class CommentComposerReplyCommentView: UIView, UITableViewDataSource {
         tableView.dataSource = self
         heightConstraints.isActive = true
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         1
     }
