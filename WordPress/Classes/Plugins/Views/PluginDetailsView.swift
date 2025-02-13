@@ -359,7 +359,7 @@ enum ActionButton {
         let button: AnyView
         switch self {
         case let .install(_, action):
-            button = AnyView(Button("Install", action: action)
+            button = AnyView(Button(Strings.installButton, action: action)
                     .font(.callout.bold()))
         case let .activate(_, action):
             button = AnyView(Button(Strings.activateButton, action: action)
@@ -605,6 +605,12 @@ private enum Strings {
         "pluginDetails.viewOnWordPressOrg.button",
         value: "View on WordPress.org",
         comment: "Button label to view plugin on WordPress.org"
+    )
+
+    static let installButton = NSLocalizedString(
+        "pluginDetails.install.button",
+        value: "Install",
+        comment: "Button label to install a plugin"
     )
 
     static let activateButton = NSLocalizedString(
