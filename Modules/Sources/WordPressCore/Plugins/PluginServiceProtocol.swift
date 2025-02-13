@@ -10,7 +10,7 @@ public protocol PluginServiceProtocol: Actor {
     func installedPluginsUpdates(query: PluginDataStoreQuery) async -> AsyncStream<Result<[InstalledPlugin], Error>>
     func pluginInformationUpdates(query: PluginDirectoryDataStoreQuery) async -> AsyncStream<Result<[PluginInformation], Error>>
 
-    func findInstalledPluginsUpdates(slug: PluginWpOrgDirectorySlug) async throws -> InstalledPlugin?
+    func findInstalledPlugin(slug: PluginWpOrgDirectorySlug) async throws -> InstalledPlugin?
 
     func resolveIconURL(of slug: PluginWpOrgDirectorySlug, plugin: PluginInformation?) async -> URL?
 

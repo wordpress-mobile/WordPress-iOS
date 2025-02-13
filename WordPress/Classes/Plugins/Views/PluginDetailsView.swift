@@ -406,12 +406,12 @@ final class WordPressPluginDetailViewModel: ObservableObject {
         }
 
         do {
-            self.installed = try await service.findInstalledPluginsUpdates(slug: slug)
+            self.installed = try await service.findInstalledPlugin(slug: slug)
             try await service.fetchPluginInformation(slug: slug)
 
             // Re-fetch installed plugins to ensure a more accurate check of whether the plugin is already installed
             try await service.fetchInstalledPlugins()
-            self.installed = try await service.findInstalledPluginsUpdates(slug: slug)
+            self.installed = try await service.findInstalledPlugin(slug: slug)
         } catch {
             self.error = (error as? WpApiError)?.errorMessage ?? error.localizedDescription
         }
