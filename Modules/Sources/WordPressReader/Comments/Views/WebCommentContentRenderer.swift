@@ -143,7 +143,6 @@ extension WebCommentContentRenderer: WKNavigationDelegate {
     }
 
     public func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
-        NSLog("webViewWebContentProcessDidTerminate")
         isReloadNeeded = true
         if UIApplication.shared.applicationState == .active {
             reloadIfNeeded()
