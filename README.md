@@ -8,7 +8,7 @@ Please refer to the sections below for more detailed information. The instructio
 
 1. [Download](https://developer.apple.com/downloads/index.action) and install Xcode. Refer to the [.xcode-version](./.xcode-version) file for the minimum required version.
 1. [Clone this repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) in the folder of your preference.
-1. Run `cd WordPress; rake dependencies; cd ..`
+1. Run `rake dependencies`.
 
 #### Create WordPress.com API Credentials
 
