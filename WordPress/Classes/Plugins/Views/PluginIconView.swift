@@ -30,8 +30,7 @@ struct PluginIconView: View {
         CachedAsyncImage(url: iconURL) { image in
             image.resizable()
         } placeholder: {
-            Image("site-menu-plugins")
-                .resizable()
+            Image(systemName: "puzzlepiece.extension")
         }
         .frame(width: Self.iconSize, height: Self.iconSize)
         .clipShape(RoundedRectangle(cornerRadius: 4))
