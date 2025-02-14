@@ -39,7 +39,8 @@ final class PostCompactCell: UITableViewCell, Reusable {
 
     private func setupStyles() {
         WPStyleGuide.configureTableViewCell(self)
-        WPStyleGuide.applyPostCardStyle(self)
+
+        backgroundColor = .clear
 
         titleLabel.font = .preferredFont(forTextStyle: .headline)
         titleLabel.adjustsFontForContentSizeCategory = true
@@ -52,8 +53,6 @@ final class PostCompactCell: UITableViewCell, Reusable {
 
         featuredImageView.layer.cornerRadius = Constants.imageRadius
         featuredImageView.layer.masksToBounds = true
-
-        contentView.backgroundColor = .systemBackground
     }
 
     private func setupLayout() {

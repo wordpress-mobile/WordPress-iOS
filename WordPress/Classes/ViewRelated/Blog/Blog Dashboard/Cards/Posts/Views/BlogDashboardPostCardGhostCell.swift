@@ -8,6 +8,7 @@ class BlogDashboardPostCardGhostCell: UITableViewCell, NibReusable {
         super.awakeFromNib()
 
         WPStyleGuide.configureTableViewCell(self)
-        WPStyleGuide.applyPostCardStyle(self)
+
+        backgroundColor = .clear
     }
 }
