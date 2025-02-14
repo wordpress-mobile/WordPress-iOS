@@ -8,6 +8,9 @@ final class CommentComposerViewModel {
         wpAssertionFailure("must be specified")
     }
 
+    /// Comment you are replying it.
+    var comment: Comment?
+
     private let parameters: CommentComposerParameters
     private var context: NSManagedObjectContext
 
@@ -45,6 +48,7 @@ final class CommentComposerViewModel {
         )
 
         self.init(parameters: parameters, suggestionsViewModel: suggestionsViewModel)
+        self.comment = comment
     }
 
     init(
@@ -74,6 +78,34 @@ final class CommentComposerViewModel {
     static var leaveCommentLocalizedPlaceholder: String {
         Strings.leaveComment
     }
+
+    // MARK: Drafts
+
+    func restoreDraft() -> String? {
+        guard let key = makeDraftKey() else { return nil }
+        return UserDefaults.standard.string(forKey: key)
+    }
+
+    var canSaveDraft: Bool {
+        makeDraftKey() != nil
+    }
+
+    func saveDraft(_ content: String) {
+        guard let key = makeDraftKey() else { return }
+        return UserDefaults.standard.set(content, forKey: key)
+    }
+
+    func deleteDraft() {
+        guard let key = makeDraftKey() else { return }
+        UserDefaults.standard.removeObject(forKey: key)
+    }
+
+    private func makeDraftKey() -> String? {
+        guard let userID = (try? WPAccount.lookupDefaultWordPressComAccount(in: context))?.userID else {
+            return nil
+        }
+        return "CommentDraft-\(userID),\(parameters.siteID),\(comment?.commentID ?? 0)"
+    }
 }
 
 struct CommentComposerParameters {
@@ -87,6 +119,12 @@ struct CommentComposerParameters {
         /// Send a reply to the given comment.
         case comment
     }
+}
+
+private struct CommentID {
+    let userID: NSNumber
+    let siteID: NSNumber
+    let commentID: NSNumber?
 }
 
 private enum Strings {

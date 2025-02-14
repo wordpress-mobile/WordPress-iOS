@@ -8,6 +8,8 @@ final class CommentGutenbergEditorViewController: UIViewController, CommentEdito
 
     weak var delegate: CommentEditorDelegate?
 
+    var initialContent: String?
+
     var text: String {
         set {
             wpAssertionFailure("not supported")
@@ -43,6 +45,7 @@ final class CommentGutenbergEditorViewController: UIViewController, CommentEdito
         super.viewDidLoad()
 
         let editorVC = GutenbergKit.EditorViewController(
+            content: initialContent ?? "",
             service: EditorService(client: EmptyNetworkClient())
         )
         editorVC.delegate = self
