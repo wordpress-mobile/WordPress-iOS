@@ -91,25 +91,25 @@ struct PluginDetailsView: View {
                 }
                 .listRowSeparator(.hidden)
 
+                if viewModel.isUninstalling {
+                    inlineProgressView(title: Strings.uninstallingTitle, message: Strings.uninstallingMessage)
+                } else if viewModel.isInstalling {
+                    inlineProgressView(title: Strings.installingTitle, message: Strings.installingMessage)
+                } else if viewModel.isActivating {
+                    inlineProgressView(title: Strings.activatingTitle, message: Strings.activatingMessage)
+                } else if viewModel.isDeactivating {
+                    inlineProgressView(title: Strings.deactivatingTitle, message: Strings.deactivatingMessage)
+                } else if let error = viewModel.operation?.errorMessage {
+                    errorView(title: SharedStrings.Error.generic, message: error)
+                } else if let newVersion {
+                    updateAvailableView(newVersion)
+                }
+
                 Text(pluginInfo.shortDescription)
                     .font(.body)
                     .listRowSeparator(.hidden)
             }
             .listSectionSeparator(.hidden)
-
-            if viewModel.isUninstalling {
-                inlineProgressView(title: Strings.uninstallingTitle, message: Strings.uninstallingMessage)
-            } else if viewModel.isInstalling {
-                inlineProgressView(title: Strings.installingTitle, message: Strings.installingMessage)
-            } else if viewModel.isActivating {
-                inlineProgressView(title: Strings.activatingTitle, message: Strings.activatingMessage)
-            } else if viewModel.isDeactivating {
-                inlineProgressView(title: Strings.deactivatingTitle, message: Strings.deactivatingMessage)
-            } else if let error = viewModel.operation?.errorMessage {
-                errorView(title: SharedStrings.Error.generic, message: error)
-            } else if let newVersion {
-                updateAvailableView(newVersion)
-            }
 
             if viewModel.isLoading {
                 ProgressView(Strings.loadingPluginInformation)
