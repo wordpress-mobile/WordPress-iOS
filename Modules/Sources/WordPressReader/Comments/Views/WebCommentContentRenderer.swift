@@ -33,6 +33,8 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
 
     private var cachedHead: String?
     private var comment: String?
+    private var lastReloadDate: Date?
+    private var isReloadNeeded = false
 
     /// A shared web view context with resources that can be reused across
     /// mutliple web view instances.
@@ -64,17 +66,35 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
         webView.scrollView.bounces = false
         webView.scrollView.showsVerticalScrollIndicator = false
         webView.scrollView.backgroundColor = .clear
+
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationWillEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
 
     public func render(comment: String) {
         self.comment = comment
+        actuallyRender(comment: comment)
+    }
 
+    private func actuallyRender(comment: String) {
         webView.loadHTMLString(formattedHTMLString(for: comment), baseURL: nil)
     }
 
     public func prepareForReuse() {
         comment = nil
         webView.stopLoading()
+    }
+
+    @objc private func applicationWillEnterForeground() {
+        reloadIfNeeded()
+    }
+
+    private func reloadIfNeeded() {
+        guard isReloadNeeded, Date.now.timeIntervalSince((lastReloadDate ?? .distantPast)) > 8, let comment else {
+            return
+        }
+        isReloadNeeded = false
+        lastReloadDate = Date()
+        actuallyRender(comment: comment)
     }
 }
 
@@ -119,6 +139,14 @@ extension WebCommentContentRenderer: WKNavigationDelegate {
             }
             self.delegate?.renderer(self, interactedWithURL: destinationURL)
             return .cancel
+        }
+    }
+
+    public func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
+        NSLog("webViewWebContentProcessDidTerminate")
+        isReloadNeeded = true
+        if UIApplication.shared.applicationState == .active {
+            reloadIfNeeded()
         }
     }
 }
