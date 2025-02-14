@@ -1,5 +1,5 @@
 {
-  "originHash" : "c8e333455787ec6ecc29bd2503e25276e1141dac81e8a071d424decabb011a51",
+  "originHash" : "5a91af0e2a9dc66a26916726e64a596a7c13a2366dfd9aeb0217c275b93e17c8",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -257,8 +257,7 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Automattic/ScreenObject",
       "state" : {
-        "revision" : "328db56c62aab91440ec5e07cc9f7eef6e26a26e",
-        "version" : "0.2.3"
+        "revision" : "2a3fb0bfc7426858ed907d08c1921660201a8f79"
       }
     },
     {
@@ -394,15 +393,6 @@
       "state" : {
         "branch" : "wpios-edition",
         "revision" : "cd1458be33c9715a293b6b5ea1dea851dfb64d05"
-      }
-    },
-    {
-      "identity" : "xcuitesthelpers",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Automattic/XCUITestHelpers",
-      "state" : {
-        "revision" : "5179cb69d58b90761cc713bdee7740c4889d3295",
-        "version" : "0.4.0"
       }
     },
     {
