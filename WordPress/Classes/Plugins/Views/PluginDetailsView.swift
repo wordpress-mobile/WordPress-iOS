@@ -300,6 +300,7 @@ struct PluginDetailsView: View {
                     }
                     .padding(.horizontal)
                 }
+                .pagingIfAvailable()
             }
             .padding(.vertical)
             .listRowInsets(.zero)
@@ -773,4 +774,15 @@ private enum Strings {
         value: "Please wait while the plugin is being deactivated...",
         comment: "Message shown while a plugin is being deactivated"
     )
+}
+
+private extension View {
+
+    @ViewBuilder
+    func pagingIfAvailable() -> some View {
+        if #available(iOS 17.0, *) {
+            scrollTargetBehavior(.paging)
+        }
+    }
+
 }
