@@ -130,7 +130,7 @@ extension NSNotification.Name {
             guard let tableView else { return }
 
             if tableView.alpha == 0 {
-                UIView.animate(withDuration: 0.2) {
+                UIView.animate(withDuration: 0.2, delay: 0.1) { // Add 100 ms to let other cells a chance to render
                     tableView.alpha = 1
                 }
             }
