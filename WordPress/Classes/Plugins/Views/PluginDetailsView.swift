@@ -54,14 +54,14 @@ struct PluginDetailsView: View {
         // TODO: Use `shortDescription`
         self.pluginInfo = .init(name: plugin.name, author: plugin.author, shortDescription: plugin.author)
         self.service = service
-        _viewModel = StateObject(wrappedValue: .init(slug: slug, plugin: plugin, installed: nil, service: service))
+        _viewModel = StateObject(wrappedValue: .init(slug: slug, service: service))
     }
 
     init(slug: PluginWpOrgDirectorySlug, plugin: InstalledPlugin, service: PluginServiceProtocol) {
         self.slug = slug
         self.pluginInfo = .init(name: plugin.name, author: plugin.author, shortDescription: plugin.shortDescription)
         self.service = service
-        _viewModel = StateObject(wrappedValue: .init(slug: slug, plugin: nil, installed: plugin, service: service))
+        _viewModel = StateObject(wrappedValue: .init(slug: slug, service: service))
     }
 
     var body: some View {
@@ -390,7 +390,7 @@ final class WordPressPluginDetailViewModel: ObservableObject {
 
     private var initialLoad = false
 
-    init(slug: PluginWpOrgDirectorySlug, plugin: PluginInformation?, installed: InstalledPlugin?, service: PluginServiceProtocol) {
+    init(slug: PluginWpOrgDirectorySlug, service: PluginServiceProtocol) {
         self.slug = slug
         self.service = service
     }
