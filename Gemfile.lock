@@ -244,6 +244,7 @@ GEM
     kramdown-parser-gfm (1.1.0)
       kramdown (~> 2.0)
     language_server-protocol (3.17.0.4)
+    lint_roller (1.1.0)
     logger (1.6.3)
     mini_magick (4.13.2)
     mini_mime (1.1.5)
@@ -294,9 +295,10 @@ GEM
       observer (~> 0.1)
       pkg-config (~> 1.4)
     rouge (3.28.0)
-    rubocop (1.71.2)
+    rubocop (1.72.2)
       json (~> 2.3)
-      language_server-protocol (>= 3.17.0)
+      language_server-protocol (~> 3.17.0.2)
+      lint_roller (~> 1.1.0)
       parallel (~> 1.10)
       parser (>= 3.3.0.2)
       rainbow (>= 2.2.2, < 4.0)
@@ -362,7 +364,7 @@ DEPENDENCIES
   fastlane-plugin-wpmreleasetoolkit (~> 12.4)
   rake
   rmagick (~> 6.1.1)
-  rubocop (~> 1.71)
+  rubocop (~> 1.72)
   rubocop-rake (~> 0.6)
   xcpretty-travis-formatter
 
