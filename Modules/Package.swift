@@ -25,7 +25,7 @@ let package = Package(
         .package(url: "https://github.com/Automattic/AutomatticAbout-swift", from: "1.1.5"),
         .package(url: "https://github.com/Automattic/Gravatar-SDK-iOS", from: "3.2.0"),
         .package(url: "https://github.com/Automattic/Gridicons-iOS", branch: "develop"),
-        .package(url: "https://github.com/Automattic/ScreenObject", revision: "2a3fb0bfc7426858ed907d08c1921660201a8f79"),
+        .package(url: "https://github.com/Automattic/ScreenObject", from: "0.3.0"),
         .package(url: "https://github.com/buildkite/test-collector-swift", from: "0.3.0"),
         .package(url: "https://github.com/ChartsOrg/Charts", from: "5.0.0"),
         .package(url: "https://github.com/CocoaLumberjack/CocoaLumberjack", from: "3.8.5"),
