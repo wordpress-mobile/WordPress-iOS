@@ -6,7 +6,7 @@ public typealias InMemoryUserDataStore = InMemoryDataStore<DisplayUser>
 
 extension UserDataStoreQuery {
     public static var all: UserDataStoreQuery {
-        .init(sortBy: KeyPathComparator(\.username)) { _ in true }
+        .init(sortBy: KeyPathComparator(\.username))
     }
 
     public static func id(_ id: T.ID) -> UserDataStoreQuery {

@@ -2,16 +2,13 @@ import SwiftUI
 import AsyncImageKit
 import WordPressUI
 import WordPressAPI
+import WordPressAPIInternal
 import WordPressCore
 
 struct InstalledPluginsListView: View {
     @StateObject private var viewModel: InstalledPluginsListViewModel
 
     @State private var presentAddNewPlugin = false
-
-    init(client: WordPressClient) {
-        self.init(service: PluginService(client: client))
-    }
 
     init(service: PluginServiceProtocol) {
         _viewModel = StateObject(wrappedValue: .init(service: service))
@@ -28,7 +25,7 @@ struct InstalledPluginsListView: View {
                     Section {
                         ForEach(viewModel.displayingPlugins, id: \.self) { plugin in
                             ZStack {
-                                PluginListItemView(plugin: plugin, viewModel: viewModel)
+                                PluginListItemView(plugin: plugin, updateAvailable: viewModel.updateAvailable.index(forKey: plugin.slug) != nil, service: viewModel.service)
                                 if let slug = plugin.possibleWpOrgDirectorySlug {
                                     // Using `PluginListItemView` as `NavigationLink`'s content would show an disclosure
                                     // indicator on the list cell, which looks a bit off with the ellipsis button on the
@@ -76,6 +73,9 @@ struct InstalledPluginsListView: View {
         .task {
             await viewModel.onAppear()
         }
+        .task(id: 1) {
+            await viewModel.versionUpdate()
+        }
         .task(id: viewModel.filter) {
             await viewModel.performQuery()
         }
@@ -118,6 +118,7 @@ final class InstalledPluginsListViewModel: ObservableObject {
     @Published var isRefreshing: Bool = false
     @Published var filter: PluginFilter = .all
     @Published var displayingPlugins: [InstalledPlugin] = []
+    @Published var updateAvailable: [PluginSlug: UpdateCheckPluginInfo] = [:]
     @Published var error: String? = nil
 
     @Published var updating: Set<PluginSlug> = []
@@ -152,6 +153,15 @@ final class InstalledPluginsListViewModel: ObservableObject {
                 self.displayingPlugins = plugins
             case let .failure(error):
                 self.error = (error as? WpApiError)?.errorMessage ?? error.localizedDescription
+            }
+        }
+    }
+
+    func versionUpdate() async {
+        for await update in await self.service.newVersionUpdates(query: .all) {
+            guard let updates = try? update.get() else { continue }
+            self.updateAvailable = updates.reduce(into: [:]) {
+                $0[$1.plugin] = $1
             }
         }
     }

@@ -146,11 +146,13 @@ extension BlogDetailsViewController {
             return
         }
 
+        let wordpressCoreVersion = blog.version as? String
+
         let viewController: UIViewController
         if Feature.enabled(.pluginManagementOverhaul) {
             let feature = NSLocalizedString("applicationPasswordRequired.feature.plugins", value: "Plugin Management", comment: "Feature name for managing plugins in the app")
             let rootView = ApplicationPasswordRequiredView(blog: self.blog, localizedFeatureName: feature) { client in
-                let service = PluginService(client: client)
+                let service = PluginService(client: client, wordpressCoreVersion: wordpressCoreVersion)
                 InstalledPluginsListView(service: service)
             }
             viewController = UIHostingController(rootView: rootView)

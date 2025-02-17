@@ -22,7 +22,6 @@ struct PluginDetailsView: View {
 
     private let pluginInfo: BasicPluginInfo
 
-    @State var newVersion: UpdateCheckPluginInfo? = nil
     @State private var tappedScreenshot: Screenshot? = nil
     @StateObject var viewModel: WordPressPluginDetailViewModel
     @State var isShowingSafariView = false
@@ -104,7 +103,7 @@ struct PluginDetailsView: View {
                     }
                 } else if let error = viewModel.operation?.errorMessage {
                     errorView(title: SharedStrings.Error.generic, message: error)
-                } else if let newVersion {
+                } else if let newVersion = viewModel.newVersion {
                     updateAvailableView(newVersion)
                 }
 
@@ -130,6 +129,9 @@ struct PluginDetailsView: View {
         .listStyle(.plain)
         .task {
             await viewModel.onAppear()
+        }
+        .task(id: viewModel.installed?.slug) {
+            await viewModel.versionUpdate()
         }
         .task(id: slug) {
             await viewModel.performQuery()
@@ -217,12 +219,6 @@ struct PluginDetailsView: View {
             }
 
             Spacer()
-
-            Button(Strings.updateNow) {
-                // TODO: Handle update action
-            }
-            .buttonStyle(.bordered)
-            .tint(.blue)
         }
         .padding()
         .background(Color(.systemGray6))
@@ -448,6 +444,7 @@ final class WordPressPluginDetailViewModel: ObservableObject {
     @Published private(set) var isLoading = false
     @Published private(set) var plugin: PluginInformation?
     @Published private(set) var installed: InstalledPlugin?
+    @Published var newVersion: UpdateCheckPluginInfo?
     @Published private(set) var error: String?
 
     @Published private(set) fileprivate var operation: PluginOperationStatus?
@@ -489,6 +486,16 @@ final class WordPressPluginDetailViewModel: ObservableObject {
             case let .failure(error):
                 self.error = (error as? WpApiError)?.errorMessage ?? error.localizedDescription
             }
+        }
+    }
+
+    func versionUpdate() async {
+        if let slug = installed?.slug {
+            for await update in await service.newVersionUpdates(query: .slug(slug)) {
+                newVersion = (try? update.get().first)
+            }
+        } else {
+            newVersion = nil
         }
     }
 
@@ -640,7 +647,7 @@ private enum Strings {
     static func versionAvailable(_ version: String) -> String {
         let format = NSLocalizedString(
             "pluginDetails.update.versionAvailable",
-            value: "Version %@ is available",
+            value: "Version %@ is available. Please update it from your WordPress site dashboard.",
             comment: "Message shown when a plugin update is available. The placeholder is the new version number"
         )
         return String(format: format, version)

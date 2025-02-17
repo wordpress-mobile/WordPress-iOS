@@ -5,14 +5,17 @@ import WordPressAPI
 
 public actor PluginService: PluginServiceProtocol {
     private let client: WordPressClient
+    private let wordpressCoreVersion: String?
     private let wpOrgClient: WordPressOrgApiClient
     private let installedPluginDataStore = InMemoryInstalledPluginDataStore()
     private let pluginDirectoryDataStore = InMemoryPluginDirectoryDataStore()
     private let pluginDirectoryBrowserDataStore = CategorizedPluginInformationDataStore()
+    private let updateChecksDataStore = PluginUpdateChecksDataStore()
     private let urlSession: URLSession
 
-    public init(client: WordPressClient) {
+    public init(client: WordPressClient, wordpressCoreVersion: String?) {
         self.client = client
+        self.wordpressCoreVersion = wordpressCoreVersion
         self.urlSession = URLSession(configuration: .ephemeral)
         wpOrgClient = WordPressOrgApiClient(requestExecutor: urlSession)
     }
@@ -21,6 +24,14 @@ public actor PluginService: PluginServiceProtocol {
         let response = try await self.client.api.plugins.listWithViewContext(params: .init())
         let plugins = response.data.map(InstalledPlugin.init(plugin:))
         try await installedPluginDataStore.store(plugins)
+
+        // Check for plugin updates in the background. No need to block the current task from completion.
+        // We could move this call out and make the UI invoke it explicitly. However, currently the `checkPluginUpdates`
+        // function takes a REST API response type, which is not exposed as a public API of `PluginService`.
+        // We could refactor this API if we need to call `checkPluginUpdates` directly.
+        Task.detached {
+            try await self.checkPluginUpdates(plugins: response.data)
+        }
     }
 
     public func fetchPluginInformation(slug: PluginWpOrgDirectorySlug) async throws {
@@ -44,6 +55,10 @@ public actor PluginService: PluginServiceProtocol {
 
     public func pluginInformationUpdates(query: PluginDirectoryDataStoreQuery) async -> AsyncStream<Result<[PluginInformation], Error>> {
         await pluginDirectoryDataStore.listStream(query: query)
+    }
+
+    public func newVersionUpdates(query: PluginUpdateChecksDataStoreQuery) async -> AsyncStream<Result<[UpdateCheckPluginInfo], Error>> {
+        await updateChecksDataStore.listStream(query: query)
     }
 
     public func resolveIconURL(of slug: PluginWpOrgDirectorySlug, plugin: PluginInformation?) async -> URL? {
@@ -159,5 +174,20 @@ private extension PluginService {
         }
 
         return nil
+    }
+
+    func checkPluginUpdates(plugins: [PluginWithViewContext]) async throws {
+        let updateCheck = try await wpOrgClient.checkPluginUpdates(
+            // Use a fairely recent version if the actual version is unknown.
+            wordpressCoreVersion: wordpressCoreVersion ?? "6.6",
+            siteUrl: ParsedUrl.parse(input: client.rootUrl),
+            plugins: plugins
+        )
+        let updateAvailable = updateCheck.plugins
+
+//        let updateAvailable = ["jetpack/jetpack": UpdateCheckPluginInfo(id: "w.org/plugins/jetpack", slug: PluginWpOrgDirectorySlug(slug: "jetpack"), plugin: PluginSlug(slug: "jetpack/jetpack"), newVersion: "14.3", url: "https://wordpress.org/plugins/jetpack/", package: "https://downloads.wordpress.org/plugin/jetpack.14.3.zip", icons: nil, banners: Banners(low: "", high: ""), bannersRtl: Banners(low: "", high: ""), requires: "6.6", tested: "6.7.2", requiresPhp: "7.2")]
+
+        try await updateChecksDataStore.delete(query: .all)
+        try await updateChecksDataStore.store(updateAvailable.values)
     }
 }
