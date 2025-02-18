@@ -120,8 +120,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         self.editorSession = PostEditorAnalyticsSession(editor: .gutenbergKit, post: post)
         self.navigationBarManager = navigationBarManager ?? PostEditorNavigationBarManager()
 
-        let networkClient = NewGutenbergNetworkClient(blog: post.blog)
-
         let selfHostedApiUrl = post.blog.url(withPath: "wp-json/")
         let isSelfHosted = !post.blog.isHostedAtWPcom && !post.blog.isAtomic()
         let siteApiRoot = post.blog.isAccessibleThroughWPCom() && !isSelfHosted ? post.blog.wordPressComRestApi()?.baseURL.absoluteString : selfHostedApiUrl
@@ -140,22 +138,23 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         }
 
         let siteApiNamespace = post.blog.dotComID != nil && !isSelfHosted && applicationPassword == nil ? "sites/\(siteId ?? "")" : ""
-        let postType = post is Page ? "page" : "post"
-        let postId: Int? = post.postID?.intValue != -1 ? post.postID?.intValue : nil
 
-        self.editorViewController = GutenbergKit.EditorViewController(
-            id: postId,
-            type: postType,
+        var conf = EditorConfiguration(
             title: post.postTitle ?? "",
-            content: post.content ?? "",
-            service: GutenbergKit.EditorService(client: networkClient),
-            themeStyles: FeatureFlag.newGutenbergThemeStyles.enabled,
-            plugins: FeatureFlag.newGutenbergPlugins.enabled && isSelfHosted,
-            siteURL: post.blog.url ?? "",
-            siteApiRoot: siteApiRoot!,
-            siteApiNamespace: siteApiNamespace,
-            authHeader: authHeader
+            content: post.content ?? ""
         )
+        conf.postID = post.postID?.intValue != -1 ? post.postID?.intValue : nil
+        conf.postType = post is Page ? "page" : "post"
+
+        conf.siteURL = post.blog.url ?? ""
+        conf.siteApiRoot = siteApiRoot ?? ""
+        conf.siteApiNamespace = siteApiNamespace
+        conf.authHeader = authHeader
+
+        conf.themeStyles = FeatureFlag.newGutenbergThemeStyles.enabled
+        conf.plugins = FeatureFlag.newGutenbergPlugins.enabled && isSelfHosted
+
+        self.editorViewController = GutenbergKit.EditorViewController(configuration: conf)
 
         super.init(nibName: nil, bundle: nil)
 
@@ -412,28 +411,6 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
         }
 
         return WPMediaType(rawValue: mediaType)
-    }
-}
-
-private struct NewGutenbergNetworkClient: GutenbergKit.EditorNetworkingClient {
-    private let api: WordPressOrgRestApi?
-
-    init(blog: Blog) {
-        self.api = WordPressOrgRestApi(blog: blog)
-    }
-
-    func send(_ request: GutenbergKit.EditorNetworkRequest) async throws -> GutenbergKit.EditorNetworkResponse {
-        guard let api else {
-            throw URLError(.unknown) // Should never happen
-        }
-        // TODO: Add support for other requests
-        var path = request.url.absoluteString
-        guard path.hasPrefix("./wp-json") else {
-            throw URLError(.unknown) // Currently unsupported
-        }
-        path.removePrefix("./wp-json")
-
-        throw URLError(.unknown) // Should never happen
     }
 }
 

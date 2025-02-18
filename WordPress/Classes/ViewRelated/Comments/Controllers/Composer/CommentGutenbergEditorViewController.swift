@@ -44,10 +44,10 @@ final class CommentGutenbergEditorViewController: UIViewController, CommentEdito
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let editorVC = GutenbergKit.EditorViewController(
-            content: initialContent ?? "",
-            service: EditorService(client: EmptyNetworkClient())
-        )
+        var configuration = EditorConfiguration(content: initialContent ?? "")
+        configuration.hideTitle = true
+
+        let editorVC = GutenbergKit.EditorViewController(configuration: configuration)
         editorVC.delegate = self
 
         view.addSubview(editorVC.view)
@@ -103,11 +103,5 @@ extension CommentGutenbergEditorViewController: GutenbergKit.EditorViewControlle
 
     func editor(_ viewController: GutenbergKit.EditorViewController, didRequestMediaFromSiteMediaLibrary config: GutenbergKit.OpenMediaLibraryAction) {
         // Do nothing
-    }
-}
-
-private final class EmptyNetworkClient: GutenbergKit.EditorNetworkingClient {
-    func send(_ request: EditorNetworkRequest) async throws -> EditorNetworkResponse {
-        throw URLError(.unknown)
     }
 }
