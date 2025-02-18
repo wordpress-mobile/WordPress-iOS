@@ -57,7 +57,6 @@ WordPress/Derived Sources/
 # coverage.py
 */CoverageData/*
 WordPress/Images.xcassets/AppIcon-Internal.appiconset
-Modules/Package.resolved
 
 # Dependencies
 vendor
@@ -113,6 +112,10 @@ WordPress/InfoPlist-internal.h
 
 # SwiftLint Remote Config Cache
 .swiftlint/RemoteConfigCache
+
+# Modules — Where the Swift packages that make up the modular app live
+Modules/.build
+Modules/Package.resolved
 
 # The project used CocoaPods for dependency management prior to early 2025.
 #
