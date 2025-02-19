@@ -37,7 +37,7 @@ struct UserDetailsView: View {
         self.userService = userService
         self.applicationTokenListDataProvider = applicationTokenListDataProvider
         _viewModel = StateObject(wrappedValue: UserDetailViewModel(userService: userService))
-        _deleteUserViewModel = StateObject(wrappedValue: UserDeleteViewModel(user: user, userService: userService))
+        _deleteUserViewModel = StateObject(wrappedValue: UserDeleteViewModel(userService: userService))
     }
 
     var body: some View {
@@ -268,7 +268,7 @@ private extension View {
                 Button(role: .destructive) {
                     Task { @MainActor in
                         do {
-                            try await view.deleteUserViewModel.deleteUser()
+                            try await view.deleteUserViewModel.delete(user: view.user)
                             view.dismissAction()
                         } catch {
                             view.presentDeleteUserError = true
