@@ -3,29 +3,29 @@ import GutenbergKit
 import WordPressUI
 import Combine
 
-final class CommentGutenbergEditorViewController: UIViewController, CommentEditor {
+protocol CommentGutenbergEditorViewControllerDelegate: AnyObject {
+    func commentGutenbergEditorViewController(_ viewController: CommentGutenbergEditorViewController, didChangeText text: String)
+}
+
+final class CommentGutenbergEditorViewController: UIViewController {
     private var editorVC: GutenbergKit.EditorViewController?
 
-    weak var delegate: CommentEditorDelegate?
+    weak var delegate: CommentGutenbergEditorViewControllerDelegate?
 
     var initialContent: String?
 
-    private(set) var text = ""
-
-    var isEnabled: Bool = true {
-        didSet {
-            // TODO: implement
-//            if !isEnabled {
-//                textView.resignFirstResponder()
-//            }
-            editorVC?.view.alpha = isEnabled ? 1.0 : 0.5
-            editorVC?.view.isUserInteractionEnabled = isEnabled
-        }
-    }
-
-    var placeholder: String? {
-        didSet {
-            // TODO: implement placeholder
+    var text: String {
+        get async {
+            guard let editorVC else {
+                wpAssertionFailure("editor missing")
+                return ""
+            }
+            do {
+                return try await editorVC.getContent()
+            } catch {
+                wpAssertionFailure("failed to refresh content", userInfo: ["error": "\(error)"])
+                return ""
+            }
         }
     }
 
@@ -47,24 +47,14 @@ final class CommentGutenbergEditorViewController: UIViewController, CommentEdito
 
         editorDidUpdate
             .throttle(for: 1.0, scheduler: DispatchQueue.main, latest: true)
-            .sink { [weak self] in
-                Task {
-                    await self?.refresh()
-                }
-            }
+            .sink { [weak self] in self?.refresh() }
             .store(in: &cancellables)
     }
 
-    func refresh() async {
-        do {
-            guard let editorVC else { return }
-            let text = try await editorVC.getContent()
-            if text != self.text {
-                self.text = text
-                self.delegate?.commentEditor(self, didUpateText: text)
-            }
-        } catch {
-            wpAssertionFailure("failed to refresh content", userInfo: ["error": "\(error)"])
+    private func refresh() {
+        Task { @MainActor in
+            let text = await self.text
+            self.delegate?.commentGutenbergEditorViewController(self, didChangeText: text)
         }
     }
 }

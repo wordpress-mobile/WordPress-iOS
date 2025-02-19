@@ -33,7 +33,7 @@ final class CommentLargeButton: UIView {
 
         placeholderLabel.textColor = .tertiaryLabel
 
-        placeholderLabel.text = CommentComposerViewModel.leaveCommentLocalizedPlaceholder
+        placeholderLabel.text = CommentCreateViewModel.leaveCommentLocalizedPlaceholder
 
         containerView.addSubview(placeholderLabel)
         containerView.backgroundColor = .secondarySystemBackground

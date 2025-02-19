@@ -1,44 +1,18 @@
 import UIKit
 import WordPressUI
 
-@MainActor
-protocol CommentEditor {
-    /// - warning: The latest cached text can be a bit behind. Use `refresh()`
-    /// to ensure the editor has the latest content.
-    var text: String { get }
-    var isEnabled: Bool { get set }
-
-    func refresh() async
+protocol CommentPlainTextEditorViewControllerDelegate: AnyObject {
+    func commentPlainTextEditorViewController(_ viewController: CommentPlainTextEditorViewController, didChangeText text: String)
 }
 
-extension CommentEditor {
-    func refresh() async {
-        // Do nothing
-    }
-}
-
-protocol CommentEditorDelegate: AnyObject {
-    func commentEditor(_ viewController: UIViewController, didUpateText text: String)
-}
-
-final class CommentPlainTextEditorViewController: UIViewController, CommentEditor {
+final class CommentPlainTextEditorViewController: UIViewController {
     var suggestionsViewModel: SuggestionsListViewModel?
 
-    weak var delegate: CommentEditorDelegate?
+    weak var delegate: CommentPlainTextEditorViewControllerDelegate?
 
     var text: String {
         set { textView.text = newValue }
         get { textView.text }
-    }
-
-    var isEnabled: Bool = true {
-        didSet {
-            if !isEnabled {
-                textView.resignFirstResponder()
-            }
-            textView.alpha = isEnabled ? 1.0 : 0.5
-            textView.isUserInteractionEnabled = isEnabled
-        }
     }
 
     var placeholder: String? {
@@ -107,7 +81,7 @@ final class CommentPlainTextEditorViewController: UIViewController, CommentEdito
 extension CommentPlainTextEditorViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         placeholderLabel.isHidden = !textView.text.isEmpty
-        delegate?.commentEditor(self, didUpateText: textView.text)
+        delegate?.commentPlainTextEditorViewController(self, didChangeText: textView.text)
     }
 
     func textViewDidChangeSelection(_ textView: UITextView) {

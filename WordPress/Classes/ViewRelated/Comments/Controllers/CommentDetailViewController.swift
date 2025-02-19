@@ -982,11 +982,11 @@ private extension CommentDetailViewController {
     }
 
     @objc func buttonAddCommentTapped() {
-        let viewModel = CommentComposerViewModel.create(replyingTo: comment)
+        let viewModel = CommentCreateViewModel(replyingTo: comment)
         viewModel.save = { [weak self] in
             try await self?.createReply(content: $0)
         }
-        let composerVC = CommentComposerViewController(viewModel: viewModel)
+        let composerVC = CommentCreateViewController(viewModel: viewModel)
         let navigationVC = UINavigationController(rootViewController: composerVC)
         present(navigationVC, animated: true)
     }

@@ -52,7 +52,7 @@ extension NSNotification.Name {
     }
 
     func buttonAddCommentTapped() {
-        let viewModel = CommentComposerViewModel.create(post: post)
+        let viewModel = CommentCreateViewModel(post: post)
         viewModel.save = { [weak self] in
             try await self?.sendComment($0)
         }
@@ -60,7 +60,7 @@ extension NSNotification.Name {
     }
 
     func didTapReply(comment: Comment) {
-        let viewModel = CommentComposerViewModel.create(replyingTo: comment)
+        let viewModel = CommentCreateViewModel(replyingTo: comment)
         viewModel.save = { [weak self] in
             try await self?.sendComment($0, comment: comment)
         }
@@ -193,8 +193,8 @@ extension NSNotification.Name {
 }
 
 extension ReaderCommentsViewController {
-    func showCommentComposer(viewModel: CommentComposerViewModel) {
-        let composerVC = CommentComposerViewController(viewModel: viewModel)
+    func showCommentComposer(viewModel: CommentCreateViewModel) {
+        let composerVC = CommentCreateViewController(viewModel: viewModel)
         let navigationVC = UINavigationController(rootViewController: composerVC)
         present(navigationVC, animated: true)
     }
@@ -293,10 +293,11 @@ private extension ReaderCommentsViewController {
     }
 
     func editMenuTapped(for comment: Comment, indexPath: IndexPath, tableView: UITableView) {
-        let viewModel = CommentComposerViewModel.edit(comment: comment)
-        let composerVC = CommentComposerViewController(viewModel: viewModel)
-        let navigationVC = UINavigationController(rootViewController: composerVC)
-        present(navigationVC, animated: true)
+        // TODO: (kean) reiplement
+//        let viewModel = CommentCreateViewModel(comment: comment)
+//        let composerVC = CommentCreateViewController(viewModel: viewModel)
+//        let navigationVC = UINavigationController(rootViewController: composerVC)
+//        present(navigationVC, animated: true)
     }
 
     func moderateComment(_ comment: Comment, status: CommentStatusType) {

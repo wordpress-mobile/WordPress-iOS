@@ -76,4 +76,20 @@ extension Comment {
             }
         }
     }
+
+    // MARK: Helpers
+
+    /// Returns an associated site ID.
+    ///
+    /// - note: The `Comment` class can be used in two different contexts:
+    /// Reader and Site, and this property works accordingly.
+    var associatedSiteID: NSNumber? {
+        if let post = post as? ReaderPost {
+            return post.siteID
+        } else if let blogID = blog?.dotComID {
+            return blogID
+        } else {
+            return nil
+        }
+    }
 }
