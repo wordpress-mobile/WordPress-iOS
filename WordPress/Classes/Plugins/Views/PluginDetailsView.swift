@@ -87,18 +87,21 @@ struct PluginDetailsView: View {
 
                     actionButton
                         .view
-                        .disabled(viewModel.isLoading || viewModel.isActivating || viewModel.isDeactivating || viewModel.isUninstalling || viewModel.isInstalling)
+                        .disabled(viewModel.isLoading || (viewModel.operation?.isCompleted == false))
                 }
                 .listRowSeparator(.hidden)
 
-                if viewModel.isUninstalling {
-                    inlineProgressView(title: Strings.uninstallingTitle, message: Strings.uninstallingMessage)
-                } else if viewModel.isInstalling {
-                    inlineProgressView(title: Strings.installingTitle, message: Strings.installingMessage)
-                } else if viewModel.isActivating {
-                    inlineProgressView(title: Strings.activatingTitle, message: Strings.activatingMessage)
-                } else if viewModel.isDeactivating {
-                    inlineProgressView(title: Strings.deactivatingTitle, message: Strings.deactivatingMessage)
+                if let operation = viewModel.operation, !operation.isCompleted {
+                    switch operation.operation {
+                    case .install:
+                        inlineProgressView(title: Strings.installingTitle, message: Strings.installingMessage)
+                    case .uninstall:
+                        inlineProgressView(title: Strings.uninstallingTitle, message: Strings.uninstallingMessage)
+                    case .activate:
+                        inlineProgressView(title: Strings.activatingTitle, message: Strings.activatingMessage)
+                    case .deactivate:
+                        inlineProgressView(title: Strings.deactivatingTitle, message: Strings.deactivatingMessage)
+                    }
                 } else if let error = viewModel.operation?.errorMessage {
                     errorView(title: SharedStrings.Error.generic, message: error)
                 } else if let newVersion {
@@ -448,18 +451,6 @@ final class WordPressPluginDetailViewModel: ObservableObject {
     @Published private(set) var error: String?
 
     @Published private(set) fileprivate var operation: PluginOperationStatus?
-    var isUninstalling: Bool {
-        operation?.operation == .uninstall && operation?.isCompleted == false
-    }
-    var isInstalling: Bool {
-        operation?.operation == .install && operation?.isCompleted == false
-    }
-    var isActivating: Bool {
-        operation?.operation == .activate && operation?.isCompleted == false
-    }
-    var isDeactivating: Bool {
-        operation?.operation == .deactivate && operation?.isCompleted == false
-    }
 
     private var initialLoad = false
 
