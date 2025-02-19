@@ -10,7 +10,7 @@ fi
 
 # Do not run when archiving (ACTION = install).
 #
-# For some reason, running when trying to archive, via CLI, results in a compilation failure.
+# For some reason, running when trying to archive, via CLI, results in a compilation failure at times.
 #
 # fatal error: module 'WordPressSharedObjC' in AST file '/path/to/DerivedData/ModuleCache.noindex/EQUUY9BHSJ5N/WordPressSharedObjC-5G93B85NZ09I.pcm'
 # (imported by AST file '/Users/gio/Developer/a8c/wpios/DerivedData/WordPress/Build/Intermediates.noindex/ArchiveIntermediates/WordPress Alpha/PrecompiledHeaders/WordPress-Bridging-Header-swift_1L0UBHDEION2G-clang_EQUUY9BHSJ5N.pch')
