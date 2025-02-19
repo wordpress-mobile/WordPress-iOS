@@ -42,7 +42,7 @@ struct PluginDetailsView: View {
                 }
         } else {
             return .install(slug: slug) {
-                Task { await viewModel.install() }
+                Task { await viewModel.install(slug) }
             }
         }
     }
@@ -53,14 +53,14 @@ struct PluginDetailsView: View {
         // TODO: Use `shortDescription`
         self.pluginInfo = .init(name: plugin.name, author: plugin.author, shortDescription: plugin.author)
         self.service = service
-        _viewModel = StateObject(wrappedValue: .init(slug: slug, service: service))
+        _viewModel = StateObject(wrappedValue: .init(service: service))
     }
 
     init(slug: PluginWpOrgDirectorySlug, plugin: InstalledPlugin, service: PluginServiceProtocol) {
         self.slug = slug
         self.pluginInfo = .init(name: plugin.name, author: plugin.author, shortDescription: plugin.shortDescription)
         self.service = service
-        _viewModel = StateObject(wrappedValue: .init(slug: slug, service: service))
+        _viewModel = StateObject(wrappedValue: .init(service: service))
     }
 
     var body: some View {
@@ -127,14 +127,14 @@ struct PluginDetailsView: View {
             }
         }
         .listStyle(.plain)
-        .task {
-            await viewModel.onAppear()
+        .task(id: slug) {
+            await viewModel.loadData(slug)
         }
         .task(id: viewModel.installed?.slug) {
             await viewModel.versionUpdate()
         }
         .task(id: slug) {
-            await viewModel.performQuery()
+            await viewModel.performQuery(slug)
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -438,7 +438,6 @@ private struct PluginOperationStatus {
 
 @MainActor
 final class WordPressPluginDetailViewModel: ObservableObject {
-    let slug: PluginWpOrgDirectorySlug
     let service: PluginServiceProtocol
 
     @Published private(set) var isLoading = false
@@ -449,17 +448,15 @@ final class WordPressPluginDetailViewModel: ObservableObject {
 
     @Published private(set) fileprivate var operation: PluginOperationStatus?
 
-    private var initialLoad = false
+    var previouslyLoadedSlug: PluginWpOrgDirectorySlug?
 
-    init(slug: PluginWpOrgDirectorySlug, service: PluginServiceProtocol) {
-        self.slug = slug
+    init(service: PluginServiceProtocol) {
         self.service = service
     }
 
-    func onAppear() async {
-        guard !initialLoad else { return }
-
-        initialLoad = true
+    func loadData(_ slug: PluginWpOrgDirectorySlug) async {
+        guard previouslyLoadedSlug != slug else { return }
+        previouslyLoadedSlug = slug
 
         isLoading = true
         defer {
@@ -478,7 +475,7 @@ final class WordPressPluginDetailViewModel: ObservableObject {
         }
     }
 
-    func performQuery() async {
+    func performQuery(_ slug: PluginWpOrgDirectorySlug) async {
         for await update in await self.service.pluginInformationUpdates(query: .slug(slug)) {
             switch update {
             case let .success(plugin):
@@ -533,7 +530,7 @@ final class WordPressPluginDetailViewModel: ObservableObject {
         }
     }
 
-    func install() async {
+    func install(_ slug: PluginWpOrgDirectorySlug) async {
         if let operation, !operation.isCompleted {
             DDLogWarn("Can't install plugin at the moment, because there is another operation in progress: \(operation)")
             return
