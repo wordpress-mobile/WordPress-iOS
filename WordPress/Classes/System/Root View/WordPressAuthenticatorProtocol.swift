@@ -32,7 +32,7 @@ extension WordPressAuthenticator: WordPressAuthenticatorProtocol {
                 guard let window = viewController.view.window, let navigationController = viewController.navigationController else { return false }
 
                 let client = SelfHostedSiteAuthenticator(session: URLSession(configuration: .ephemeral))
-                let view = LoginWithUrlView(client: client, anchor: viewController.view.window!) { [weak viewController] credentials in
+                let view = LoginWithUrlView(client: client, anchor: window) { [weak viewController] credentials in
                     viewController?.dismiss(animated: true)
 
                     SVProgressHUD.show()
