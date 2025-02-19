@@ -39,10 +39,10 @@ struct AddNewPluginView: View {
                 }
             }
         }
-        .task(id: 0) {
+        .task {
             await viewModel.onAppear()
         }
-        .task(id: 1) {
+        .task {
             for await result in await viewModel.service.installedPluginsUpdates(query: .all) {
                 guard case let .success(plugins) = result else { continue }
 

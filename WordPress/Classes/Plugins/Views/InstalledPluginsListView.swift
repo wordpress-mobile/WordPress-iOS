@@ -73,7 +73,7 @@ struct InstalledPluginsListView: View {
                 AddNewPluginView(service: viewModel.service)
             }
         }
-        .task(id: 0) {
+        .task {
             await viewModel.onAppear()
         }
         .task(id: viewModel.filter) {

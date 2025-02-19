@@ -125,7 +125,7 @@ struct PluginDetailsView: View {
             }
         }
         .listStyle(.plain)
-        .task(id: 0) {
+        .task {
             await viewModel.onAppear()
         }
         .task(id: slug) {
