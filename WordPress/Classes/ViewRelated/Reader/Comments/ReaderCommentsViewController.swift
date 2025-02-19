@@ -293,30 +293,10 @@ private extension ReaderCommentsViewController {
     }
 
     func editMenuTapped(for comment: Comment, indexPath: IndexPath, tableView: UITableView) {
-        let editCommentTableViewController = EditCommentTableViewController(comment: comment) { [weak self] comment, commentChanged in
-            guard commentChanged else {
-                return
-            }
-
-            // optimistically update the comment in the thread with local changes.
-            tableView.reloadRows(at: [indexPath], with: .automatic)
-
-            // track user's intent to edit the comment.
-            CommentAnalytics.trackCommentEdited(comment: comment)
-
-            self?.commentService.uploadComment(comment, success: {
-                self?.commentModified = true
-
-                // update the thread again in case the approval status changed.
-                tableView.reloadRows(at: [indexPath], with: .automatic)
-            }, failure: { _ in
-                self?.displayNotice(title: .editCommentFailureNoticeText)
-            })
-        }
-
-        let navigationControllerToPresent = UINavigationController(rootViewController: editCommentTableViewController)
-        navigationControllerToPresent.modalPresentationStyle = .fullScreen
-        present(navigationControllerToPresent, animated: true)
+        let viewModel = CommentComposerViewModel.edit(comment: comment)
+        let composerVC = CommentComposerViewController(viewModel: viewModel)
+        let navigationVC = UINavigationController(rootViewController: composerVC)
+        present(navigationVC, animated: true)
     }
 
     func moderateComment(_ comment: Comment, status: CommentStatusType) {
@@ -411,8 +391,6 @@ private extension ReaderCommentsViewController {
 private extension String {
     static let authorBadgeText = NSLocalizedString("Author", comment: "Title for a badge displayed beside the comment writer's name. "
                                                    + "Shown when the comment is written by the post author.")
-    static let editCommentFailureNoticeText = NSLocalizedString("There has been an unexpected error while editing the comment",
-                                                                comment: "Error displayed if a comment fails to get updated")
     static let undoActionTitle = NSLocalizedString("Undo", comment: "Button title. Reverts a comment moderation action.")
 
     // moderation messages

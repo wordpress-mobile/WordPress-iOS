@@ -30,6 +30,8 @@ final class CommentComposerViewModel {
         return comment
     }
 
+    /// - note: It's a temporary solution until the respective save logic
+    /// can be moved from the view controllers.
     var save: (String) async throws -> Void = { _ in
         wpAssertionFailure("must be specified")
     }
@@ -54,7 +56,7 @@ final class CommentComposerViewModel {
     }
 
     /// Create a reply to the given comment.
-    static func create(replyingTo comment: Comment) -> CommentComposerViewModel? {
+    static func create(replyingTo comment: Comment) -> CommentComposerViewModel {
         let siteID = getSiteID(for: comment)
         let parameters = CommentComposerParameters(siteID: siteID, context: .reply(comment))
         let suggestionsViewModel = makeSuggestionsViewModel(for: comment)
@@ -70,36 +72,9 @@ final class CommentComposerViewModel {
 
         let viewModel = CommentComposerViewModel(parameters: parameters, suggestionsViewModel: suggestionsViewModel)
         viewModel.save = {
-            
+            try await CommentComposerViewModel.save(content: $0, comment: comment)
         }
         return viewModel
-    }
-
-    private static func getSiteID(for comment: Comment) -> NSNumber? {
-        if let post = comment.post as? ReaderPost {
-            return post.siteID
-        } else if let blogID = comment.blog?.dotComID {
-            return blogID
-        } else {
-            wpAssertionFailure("missing siteID")
-            return -1 // Should not happen
-        }
-    }
-
-    private static func makeSuggestionsViewModel(for comment: Comment) -> SuggestionsListViewModel? {
-        let siteID = Self.getSiteID(for: comment)
-        let viewModel = SuggestionsListViewModel.make(siteID: siteID)
-        viewModel?.enableProminentSuggestions(
-            postAuthorID: comment.post?.authorID,
-            commentAuthorID: comment.commentID as NSNumber
-        )
-        return viewModel
-    }
-
-    // TODO: finish this
-    private static func save(comment: Comment) async throws {
-        let service = CommentService(coreDataStack: ContextManager.shared.mainContext)
-        service.uploadComment(<#T##Comment#>, success: <#T##(() -> Void)?#>, failure: <#T##((Error?) -> Void)?#>)
     }
 
     private init(
@@ -118,7 +93,16 @@ final class CommentComposerViewModel {
 
     // MARK: Drafts
 
-    func restoreDraft() -> String? {
+    func getInitialContent() -> String? {
+        switch parameters.context {
+        case .create, .reply:
+            return restoreDraft()
+        case .edit(let comment):
+            return comment.rawContent
+        }
+    }
+
+    private func restoreDraft() -> String? {
         guard let key = makeDraftKey() else { return nil }
         return UserDefaults.standard.string(forKey: key)
     }
@@ -146,9 +130,55 @@ final class CommentComposerViewModel {
         }
         return "CommentDraft-\(userID),\(parameters.siteID),\(replyToComment?.commentID ?? 0)"
     }
+
+    // MARK: Helpers
+
+    private static func getSiteID(for comment: Comment) -> NSNumber {
+        if let post = comment.post as? ReaderPost {
+            return post.siteID
+        } else if let blogID = comment.blog?.dotComID {
+            return blogID
+        } else {
+            wpAssertionFailure("missing siteID")
+            return -1 // Should not happen
+        }
+    }
+
+    private static func makeSuggestionsViewModel(for comment: Comment) -> SuggestionsListViewModel? {
+        let siteID = Self.getSiteID(for: comment)
+        let viewModel = SuggestionsListViewModel.make(siteID: siteID)
+        viewModel?.enableProminentSuggestions(
+            postAuthorID: comment.post?.authorID,
+            commentAuthorID: comment.commentID as NSNumber
+        )
+        return viewModel
+    }
+
+    @MainActor
+    private static func save(content: String, comment: Comment) async throws {
+        let commentID = comment.commentID as NSNumber
+        let siteID = getSiteID(for: comment)
+
+        try await withUnsafeThrowingContinuation { continuation in
+            let service = CommentService(coreDataStack: ContextManager.shared)
+            service.updateComment(withID: commentID, siteID: siteID, content: content, success: {
+                continuation.resume(returning: ())
+            }, failure: { error in
+                continuation.resume(throwing: error ?? URLError(.unknown))
+            })
+        }
+
+        let objectID = TaggedManagedObjectID(comment)
+        try await ContextManager.shared.performAndSave { context in
+            let comment = try context.existingObject(with: objectID)
+            comment.content = content
+        }
+
+        CommentAnalytics.trackCommentEdited(comment: comment)
+    }
 }
 
-struct CommentComposerParameters {
+private struct CommentComposerParameters {
     var siteID: NSNumber
     var context: Context
 

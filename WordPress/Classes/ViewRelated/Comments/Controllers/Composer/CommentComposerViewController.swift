@@ -2,7 +2,7 @@ import UIKit
 import WordPressUI
 
 final class CommentComposerViewController: UIViewController {
-    private let buttonSend = UIButton(configuration: {
+    private lazy var buttonSend = UIButton(configuration: {
         var configuration = UIButton.Configuration.borderedProminent()
         configuration.title = viewModel.buttonSaveTitle
         configuration.cornerStyle = .capsule
@@ -60,7 +60,7 @@ final class CommentComposerViewController: UIViewController {
     }
 
     private func setupEditor() {
-        let content = viewModel.restoreDraft() ?? ""
+        let content = viewModel.getInitialContent() ?? ""
 
         if viewModel.isGutenbergEnabled {
             setupGutenbergEditor(content: content)
