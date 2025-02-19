@@ -52,7 +52,7 @@ extension NSNotification.Name {
     }
 
     func buttonAddCommentTapped() {
-        let viewModel = CommentComposerViewModel(post: post)
+        let viewModel = CommentComposerViewModel.create(post: post)
         viewModel.save = { [weak self] in
             try await self?.sendComment($0)
         }
@@ -60,9 +60,7 @@ extension NSNotification.Name {
     }
 
     func didTapReply(comment: Comment) {
-        guard let viewModel = CommentComposerViewModel(comment: comment) else {
-            return wpAssertionFailure("invalid context")
-        }
+        let viewModel = CommentComposerViewModel.create(replyingTo: comment)
         viewModel.save = { [weak self] in
             try await self?.sendComment($0, comment: comment)
         }

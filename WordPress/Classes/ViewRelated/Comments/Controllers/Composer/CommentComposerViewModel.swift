@@ -2,14 +2,39 @@ import Foundation
 import CoreData
 
 final class CommentComposerViewModel {
-    let suggestionsViewModel: SuggestionsListViewModel?
+    var navigationTitle: String? {
+        switch parameters.context {
+        case .create: return Strings.comment
+        case .reply: return Strings.reply
+        case .edit: return Strings.edit
+        }
+    }
+
+    var buttonSaveTitle: String {
+        switch parameters.context {
+        case .create, .reply: return Strings.send
+        case .edit: return SharedStrings.Button.save
+        }
+    }
+
+    var placeholder: String {
+        switch parameters.context {
+        case .create, .edit: return Strings.leaveComment
+        case .reply: return Strings.leaveReply
+        }
+    }
+
+    /// Comment you are replying it.
+    var replyToComment: Comment? {
+        guard case .reply(let comment) = parameters.context else { return nil }
+        return comment
+    }
 
     var save: (String) async throws -> Void = { _ in
         wpAssertionFailure("must be specified")
     }
 
-    /// Comment you are replying it.
-    var comment: Comment?
+    let suggestionsViewModel: SuggestionsListViewModel?
 
     private let parameters: CommentComposerParameters
     private var context: NSManagedObjectContext
@@ -18,40 +43,66 @@ final class CommentComposerViewModel {
         FeatureFlag.readerGutenbergCommentComposer.enabled
     }
 
-    /// Send a top-level comment to the given post.
-    convenience init(post: ReaderPost) {
-        let parameters = CommentComposerParameters(siteID: post.siteID, context: .post)
+    /// Create a new top-level comment to the given post.
+    static func create(post: ReaderPost) -> CommentComposerViewModel {
+        let parameters = CommentComposerParameters(siteID: post.siteID, context: .create)
 
         let suggestionsViewModel = SuggestionsListViewModel.make(siteID: post.siteID)
         suggestionsViewModel?.enableProminentSuggestions(postAuthorID: post.authorID)
 
-        self.init(parameters: parameters, suggestionsViewModel: suggestionsViewModel)
+        return CommentComposerViewModel(parameters: parameters, suggestionsViewModel: suggestionsViewModel)
     }
 
-    /// Reply to the given comment.
-    convenience init?(comment: Comment) {
-        let siteID: NSNumber
-        if let post = comment.post as? ReaderPost {
-            siteID = post.siteID
-        } else if let blogID = comment.blog?.dotComID {
-            siteID = blogID
-        } else {
-            return nil
+    /// Create a reply to the given comment.
+    static func create(replyingTo comment: Comment) -> CommentComposerViewModel? {
+        let siteID = getSiteID(for: comment)
+        let parameters = CommentComposerParameters(siteID: siteID, context: .reply(comment))
+        let suggestionsViewModel = makeSuggestionsViewModel(for: comment)
+
+        return CommentComposerViewModel(parameters: parameters, suggestionsViewModel: suggestionsViewModel)
+    }
+
+    /// Edit an existing comment.
+    static func edit(comment: Comment) -> CommentComposerViewModel {
+        let siteID = getSiteID(for: comment)
+        let parameters = CommentComposerParameters(siteID: siteID, context: .edit(comment))
+        let suggestionsViewModel = makeSuggestionsViewModel(for: comment)
+
+        let viewModel = CommentComposerViewModel(parameters: parameters, suggestionsViewModel: suggestionsViewModel)
+        viewModel.save = {
+            
         }
+        return viewModel
+    }
 
-        let parameters = CommentComposerParameters(siteID: siteID, context: .comment)
+    private static func getSiteID(for comment: Comment) -> NSNumber? {
+        if let post = comment.post as? ReaderPost {
+            return post.siteID
+        } else if let blogID = comment.blog?.dotComID {
+            return blogID
+        } else {
+            wpAssertionFailure("missing siteID")
+            return -1 // Should not happen
+        }
+    }
 
-        let suggestionsViewModel = SuggestionsListViewModel.make(siteID: siteID)
-        suggestionsViewModel?.enableProminentSuggestions(
+    private static func makeSuggestionsViewModel(for comment: Comment) -> SuggestionsListViewModel? {
+        let siteID = Self.getSiteID(for: comment)
+        let viewModel = SuggestionsListViewModel.make(siteID: siteID)
+        viewModel?.enableProminentSuggestions(
             postAuthorID: comment.post?.authorID,
             commentAuthorID: comment.commentID as NSNumber
         )
-
-        self.init(parameters: parameters, suggestionsViewModel: suggestionsViewModel)
-        self.comment = comment
+        return viewModel
     }
 
-    init(
+    // TODO: finish this
+    private static func save(comment: Comment) async throws {
+        let service = CommentService(coreDataStack: ContextManager.shared.mainContext)
+        service.uploadComment(<#T##Comment#>, success: <#T##(() -> Void)?#>, failure: <#T##((Error?) -> Void)?#>)
+    }
+
+    private init(
         parameters: CommentComposerParameters,
         suggestionsViewModel: SuggestionsListViewModel?,
         context: NSManagedObjectContext = ContextManager.shared.mainContext
@@ -59,20 +110,6 @@ final class CommentComposerViewModel {
         self.parameters = parameters
         self.suggestionsViewModel = suggestionsViewModel
         self.context = context
-    }
-
-    var navigationTitle: String {
-        switch parameters.context {
-        case .post: return Strings.comment
-        case .comment: return Strings.reply
-        }
-    }
-
-    var placeholder: String {
-        switch parameters.context {
-        case .post: return Strings.leaveComment
-        case .comment: return Strings.leaveReply
-        }
     }
 
     static var leaveCommentLocalizedPlaceholder: String {
@@ -87,7 +124,10 @@ final class CommentComposerViewModel {
     }
 
     var canSaveDraft: Bool {
-        makeDraftKey() != nil
+        if case .edit = parameters.context {
+            return false
+        }
+        return makeDraftKey() != nil
     }
 
     func saveDraft(_ content: String) {
@@ -104,7 +144,7 @@ final class CommentComposerViewModel {
         guard let userID = (try? WPAccount.lookupDefaultWordPressComAccount(in: context))?.userID else {
             return nil
         }
-        return "CommentDraft-\(userID),\(parameters.siteID),\(comment?.commentID ?? 0)"
+        return "CommentDraft-\(userID),\(parameters.siteID),\(replyToComment?.commentID ?? 0)"
     }
 }
 
@@ -113,23 +153,22 @@ struct CommentComposerParameters {
     var context: Context
 
     enum Context {
-        /// Send a top-level comment to the given post.
-        case post
+        /// Create a top-level comment to the given post.
+        case create
 
-        /// Send a reply to the given comment.
-        case comment
+        /// Create a reply to the given comment.
+        case reply(Comment)
+
+        /// Edit an existing comment/
+        case edit(Comment)
     }
 }
 
-private struct CommentID {
-    let userID: NSNumber
-    let siteID: NSNumber
-    let commentID: NSNumber?
-}
-
 private enum Strings {
+    static let send = NSLocalizedString("commentComposer.send", value: "Send", comment: "Navigation bar button title")
     static let reply = NSLocalizedString("commentComposer.navigationTitleReply", value: "Reply", comment: "Navigation bar title when leaving a reply to a comment")
     static let comment = NSLocalizedString("commentComposer.navigationTitleComment", value: "Comment", comment: "Navigation bar title when leaving a reply to a comment")
+    static let edit = NSLocalizedString("commentComposer.navigationTitleEdit", value: "Edit Comment", comment: "Navigation bar title when leaving a editing an existing comment")
     static let leaveReply = NSLocalizedString("commentComposer.placeholderLeaveReply", value: "Leave a reply…", comment: "Navigation bar title when leaving a reply to a comment")
     static let leaveComment = NSLocalizedString("commentComposer.placeholderLeaveComment", value: "Leave a comment…", comment: "Navigation bar title when leaving a reply to a comment")
 }

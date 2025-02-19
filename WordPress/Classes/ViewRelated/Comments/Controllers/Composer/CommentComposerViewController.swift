@@ -4,7 +4,7 @@ import WordPressUI
 final class CommentComposerViewController: UIViewController {
     private let buttonSend = UIButton(configuration: {
         var configuration = UIButton.Configuration.borderedProminent()
-        configuration.title = Strings.send
+        configuration.title = viewModel.buttonSaveTitle
         configuration.cornerStyle = .capsule
         configuration.baseBackgroundColor = UIColor.label
         configuration.baseForegroundColor = UIColor.systemBackground
@@ -48,7 +48,7 @@ final class CommentComposerViewController: UIViewController {
         contentView.pinEdges([.top, .horizontal], to: view.safeAreaLayoutGuide)
         contentView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor).isActive = true
 
-        if let comment = viewModel.comment {
+        if let comment = viewModel.replyToComment {
             let preview = CommentComposerReplyCommentView(comment: comment)
             contentView.addArrangedSubview(preview)
 
@@ -185,7 +185,6 @@ extension CommentComposerViewController: CommentEditorDelegate {
 }
 
 private enum Strings {
-    static let send = NSLocalizedString("commentComposer.send", value: "Send", comment: "Navigation bar button title")
     static let failedToSend = NSLocalizedString("commentComposer.failedToSentComment", value: "Failed to send comment", comment: "Error title")
     static let closeConfirmationAlertCancel = NSLocalizedString("commentComposer.closeConfirmationAlert.keepEditing", value: "Keep Editing", comment: "Button to keep the changes in an alert confirming discaring changes")
     static let closeConfirmationAlertDelete = NSLocalizedString("commentComposer.closeConfirmationAlert.deleteDraft", value: "Delete Draft", comment: "Button in an alert confirming discaring a new draft")
