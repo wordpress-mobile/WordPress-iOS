@@ -60,8 +60,7 @@ final class CommentComposerViewController: UIViewController {
     }
 
     private func setupEditor() {
-        let content = viewModel.getInitialContent() ?? ""
-
+        let content = viewModel.getInitialContent()
         if viewModel.isGutenbergEnabled {
             setupGutenbergEditor(content: content)
         } else {
@@ -133,7 +132,7 @@ final class CommentComposerViewController: UIViewController {
         Task { @MainActor in
             await editor?.refresh()
             navigationItem.leftBarButtonItem?.isEnabled = true
-            if text.isEmpty {
+            if text == viewModel.getInitialContent() {
                 presentingViewController?.dismiss(animated: true)
             } else {
                 showCloseDraftConfirmationAlert(content: text)

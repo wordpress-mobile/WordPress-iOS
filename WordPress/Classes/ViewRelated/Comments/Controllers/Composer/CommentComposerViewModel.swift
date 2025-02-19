@@ -93,10 +93,11 @@ final class CommentComposerViewModel {
 
     // MARK: Drafts
 
-    func getInitialContent() -> String? {
+    // TODO: delete draft after sending a comment
+    func getInitialContent() -> String {
         switch parameters.context {
         case .create, .reply:
-            return restoreDraft()
+            return restoreDraft() ?? ""
         case .edit(let comment):
             return comment.rawContent
         }
