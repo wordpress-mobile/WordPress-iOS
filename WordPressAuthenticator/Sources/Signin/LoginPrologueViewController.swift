@@ -12,6 +12,7 @@ class LoginPrologueViewController: LoginViewController {
     private var stackedButtonsViewController: NUXStackedButtonsViewController?
     var showCancel = false
     var continueWithDotComOverwrite: ((UIViewController) -> Bool)? = nil
+    var selfHostedSiteLoginOverwrite: ((UIViewController) -> Bool)? = nil
 
     @IBOutlet private weak var buttonContainerView: UIView!
     /// Blur effect on button container view
@@ -521,6 +522,10 @@ class LoginPrologueViewController: LoginViewController {
     ///
     private func siteAddressTapped() {
         tracker.track(click: .loginWithSiteAddress)
+
+        if let selfHostedSiteLoginOverwrite, selfHostedSiteLoginOverwrite(self) {
+            return
+        }
 
         loginToSelfHostedSite()
     }
