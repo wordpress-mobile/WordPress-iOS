@@ -10,16 +10,7 @@ final class CommentGutenbergEditorViewController: UIViewController, CommentEdito
 
     var initialContent: String?
 
-    var text: String {
-        set {
-            wpAssertionFailure("not supported")
-        }
-        get {
-            currentText
-        }
-    }
-
-    private var currentText = ""
+    private(set) var text = ""
 
     var isEnabled: Bool = true {
         didSet {
@@ -56,22 +47,24 @@ final class CommentGutenbergEditorViewController: UIViewController, CommentEdito
 
         editorDidUpdate
             .throttle(for: 1.0, scheduler: DispatchQueue.main, latest: true)
-            .sink { [weak self] in self?.refreshText() }
+            .sink { [weak self] in
+                Task {
+                    await self?.refresh()
+                }
+            }
             .store(in: &cancellables)
     }
 
-    private func refreshText() {
-        guard let editorVC else { return }
-        Task { @MainActor in
-            do {
-                let text = try await editorVC.getContent()
-                if text != self.currentText {
-                    self.currentText = text
-                    self.delegate?.commentEditor(self, didUpateText: text)
-                }
-            } catch {
-                // TODO: handle errors
+    func refresh() async {
+        do {
+            guard let editorVC else { return }
+            let text = try await editorVC.getContent()
+            if text != self.text {
+                self.text = text
+                self.delegate?.commentEditor(self, didUpateText: text)
             }
+        } catch {
+            wpAssertionFailure("failed to refresh content", userInfo: ["error": "\(error)"])
         }
     }
 }

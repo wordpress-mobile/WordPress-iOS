@@ -1,9 +1,20 @@
 import UIKit
 import WordPressUI
 
+@MainActor
 protocol CommentEditor {
-    var text: String { get set }
+    /// - warning: The latest cached text can be a bit behind. Use `refresh()`
+    /// to ensure the editor has the latest content.
+    var text: String { get }
     var isEnabled: Bool { get set }
+
+    func refresh() async
+}
+
+extension CommentEditor {
+    func refresh() async {
+        // Do nothing
+    }
 }
 
 protocol CommentEditorDelegate: AnyObject {

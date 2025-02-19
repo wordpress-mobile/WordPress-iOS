@@ -111,6 +111,7 @@ final class CommentComposerViewController: UIViewController {
     private func sendComment() async {
         do {
             setLoading(true)
+            await editor?.refresh()
             try await viewModel.save(text)
             UINotificationFeedbackGenerator().notificationOccurred(.success)
             presentingViewController?.dismiss(animated: true)
@@ -128,10 +129,15 @@ final class CommentComposerViewController: UIViewController {
     }
 
     @objc private func buttonCancelTapped() {
-        if text.isEmpty {
-            presentingViewController?.dismiss(animated: true)
-        } else {
-            showCloseDraftConfirmationAlert(content: text)
+        navigationItem.leftBarButtonItem?.isEnabled = false
+        Task { @MainActor in
+            await editor?.refresh()
+            navigationItem.leftBarButtonItem?.isEnabled = true
+            if text.isEmpty {
+                presentingViewController?.dismiss(animated: true)
+            } else {
+                showCloseDraftConfirmationAlert(content: text)
+            }
         }
     }
 
