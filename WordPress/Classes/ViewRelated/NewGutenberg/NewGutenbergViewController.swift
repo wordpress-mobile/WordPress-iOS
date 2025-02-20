@@ -266,7 +266,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     }
 
     private func getLatestContent() async {
-        // TODO: read title as well
         let startTime = CFAbsoluteTimeGetCurrent()
         let editorData = try? await editorViewController.getTitleAndContent()
         let duration = CFAbsoluteTimeGetCurrent() - startTime
