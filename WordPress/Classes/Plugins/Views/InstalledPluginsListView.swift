@@ -21,34 +21,60 @@ struct InstalledPluginsListView: View {
             } else if viewModel.isRefreshing && viewModel.sections.isEmpty {
                 Label { Text(Strings.loading) } icon: { ProgressView() }
             } else {
-                List {
-                    ForEach(viewModel.sections, id: \.self) { section in
-                        Section {
-                            ForEach(section.plugins, id: \.self) { plugin in
-                                NavigationLink {
-                                    if let slug = plugin.possibleWpOrgDirectorySlug {
-                                        PluginDetailsView(slug: slug, plugin: plugin, service: viewModel.service)
-                                    }
-                                } label: {
-                                    PluginListItemView(
-                                        plugin: plugin,
-                                        updateAvailable: viewModel.updateAvailable.index(forKey: plugin.slug) != nil,
-                                        service: viewModel.service
-                                    )
-                                }
+                if viewModel.showNoPluginsView {
+                    EmptyStateView {
+                        Image(systemName: "puzzlepiece.extension")
+                    } description: {
+                        Group {
+                            switch viewModel.filter {
+                            case .all:
+                                Text(Strings.noPluginInstalled)
+                            case .active:
+                                Text(Strings.noPluginsActive)
+                            case .inactive:
+                                Text(Strings.noPluginsInactive)
                             }
-                        } header: {
-                            Text(section.filter.title)
-                                .textCase(nil)
-                                .font(.headline)
-                                .foregroundStyle(.primary)
                         }
-                        .listSectionSeparator(.hidden, edges: .all)
+                        .font(.body)
+                        .foregroundStyle(.primary)
+                    } actions: {
+                        if viewModel.filter == .all {
+                            Button(Strings.addPluginButton, systemImage: "plus") {
+                                presentAddNewPlugin = true
+                            }
+                            .buttonStyle(.borderedProminent)
+                        }
                     }
+                } else {
+                    List {
+                        ForEach(viewModel.sections, id: \.self) { section in
+                            Section {
+                                ForEach(section.plugins, id: \.self) { plugin in
+                                    NavigationLink {
+                                        if let slug = plugin.possibleWpOrgDirectorySlug {
+                                            PluginDetailsView(slug: slug, plugin: plugin, service: viewModel.service)
+                                        }
+                                    } label: {
+                                        PluginListItemView(
+                                            plugin: plugin,
+                                            updateAvailable: viewModel.updateAvailable.index(forKey: plugin.slug) != nil,
+                                            service: viewModel.service
+                                        )
+                                    }
+                                }
+                            } header: {
+                                Text(section.filter.title)
+                                    .textCase(nil)
+                                    .font(.headline)
+                                    .foregroundStyle(.primary)
+                            }
+                            .listSectionSeparator(.hidden, edges: .all)
+                        }
+                    }
+                    .listStyle(.grouped)
+                    .scrollContentBackground(.hidden)
+                    .refreshable(action: viewModel.refreshItems)
                 }
-                .listStyle(.grouped)
-                .scrollContentBackground(.hidden)
-                .refreshable(action: viewModel.refreshItems)
             }
         }
         .navigationTitle(Strings.title)
@@ -93,6 +119,9 @@ private enum Strings {
     static let title: String = NSLocalizedString("site.plugins.title", value: "Plugins", comment: "Installed plugins list title")
     static let loading: String = NSLocalizedString("site.plugins.loading", value: "Loading installed plugins…", comment: "Message displayed when fetching installed plugins from the site")
     static let noPluginInstalled: String = NSLocalizedString("site.plugins.noInstalledPlugins", value: "You haven't installed any plugins yet", comment: "No installed plugins message")
+    static let noPluginsActive = NSLocalizedString("site.plugins.empty.active", value: "No active plugins", comment: "Message shown when there are no active plugins on the site")
+    static let noPluginsInactive = NSLocalizedString("site.plugins.empty.inactive", value: "No inactive plugins", comment: "Message shown when there are no inactive plugins on the site")
+    static let addPluginButton = NSLocalizedString("site.plugins.empty.addButton", value: "Add Plugin", comment: "Button label to add a new plugin when no plugins are installed")
     static let filterTitle: String = NSLocalizedString("site.plugins.filter.title", value: "Filter", comment: "Title of the plugin filter picker")
     static let filterOptionAll: String = NSLocalizedString("site.plugins.filter.option.all", value: "All", comment: "The plugin fillter option for displaying all plugins")
     static let filterOptionActive: String = NSLocalizedString("site.plugins.filter.option.all", value: "Active", comment: "The plugin fillter option for displaying active plugins")
@@ -141,8 +170,19 @@ private final class InstalledPluginsListViewModel: ObservableObject {
     let service: PluginServiceProtocol
     private var initialLoad = false
 
-    @Published var isRefreshing: Bool = false
-    @Published var filter: PluginFilter = .all
+    @Published var isRefreshing: Bool = false {
+        didSet {
+            Task { await self.updateListContent() }
+        }
+    }
+    @Published var showNoPluginsView: Bool = false
+    @Published var filter: PluginFilter = .all {
+        didSet {
+            // Hide "No Plugins" view when switching filters. The property will be updated to the correct value
+            // in the `performQuery` function.
+            self.showNoPluginsView = false
+        }
+    }
     @Published var sections = [ListSection]()
     @Published var updateAvailable: [PluginSlug: UpdateCheckPluginInfo] = [:]
     @Published var error: String? = nil
@@ -165,6 +205,8 @@ private final class InstalledPluginsListViewModel: ObservableObject {
         isRefreshing = true
         defer { isRefreshing = false }
 
+        self.showNoPluginsView = false
+
         do {
             try await self.service.fetchInstalledPlugins()
         } catch {
@@ -172,22 +214,37 @@ private final class InstalledPluginsListViewModel: ObservableObject {
         }
     }
 
+    func updateListContent() async {
+        do {
+            let plugins = try await self.service.installedPlugins(query: filter.query)
+            updateList(with: .success(plugins))
+        } catch {
+            updateList(with: .failure(error))
+        }
+    }
+
     func performQuery() async {
-        for await update in await self.service.installedPluginsUpdates(query: filter.query) {
-            switch update {
-            case let .success(plugins):
-                self.sections = plugins
-                    .reduce(into: [PluginFilter: [InstalledPlugin]]()) { result, plugin in
-                        let filter: PluginFilter = plugin.isActive ? .active : .inactive
-                        result[filter, default: []].append(plugin)
-                    }
-                    .map { filter, plugins in
-                        ListSection(plugins: plugins, filter: filter)
-                    }
-                    .sorted(using: KeyPathComparator(\ListSection.filter.rawValue))
-            case let .failure(error):
-                self.error = (error as? WpApiError)?.errorMessage ?? error.localizedDescription
-            }
+        for await plugins in await self.service.installedPluginsUpdates(query: filter.query) {
+            updateList(with: plugins)
+        }
+    }
+
+    func updateList(with plugins: Result<[InstalledPlugin], Error>) {
+        switch plugins {
+        case let .success(plugins):
+            self.showNoPluginsView = !self.isRefreshing && plugins.isEmpty
+            self.sections = plugins
+                .reduce(into: [PluginFilter: [InstalledPlugin]]()) { result, plugin in
+                    let filter: PluginFilter = plugin.isActive ? .active : .inactive
+                    result[filter, default: []].append(plugin)
+                }
+                .map { filter, plugins in
+                    ListSection(plugins: plugins, filter: filter)
+                }
+                .sorted(using: KeyPathComparator(\ListSection.filter.rawValue))
+        case let .failure(error):
+            self.showNoPluginsView = false
+            self.error = (error as? WpApiError)?.errorMessage ?? error.localizedDescription
         }
     }
 
