@@ -49,6 +49,10 @@ public actor PluginService: PluginServiceProtocol {
         try await installedPluginDataStore.list(query: .slug(slug)).first
     }
 
+    public func installedPlugins(query: PluginDataStoreQuery) async throws -> [InstalledPlugin] {
+        try await installedPluginDataStore.list(query: query)
+    }
+
     public func installedPluginsUpdates(query: PluginDataStoreQuery) async -> AsyncStream<Result<[InstalledPlugin], Error>> {
         await installedPluginDataStore.listStream(query: query)
     }
