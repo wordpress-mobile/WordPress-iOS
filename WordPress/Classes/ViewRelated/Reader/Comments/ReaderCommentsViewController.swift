@@ -291,11 +291,9 @@ private extension ReaderCommentsViewController {
     }
 
     func editMenuTapped(for comment: Comment, indexPath: IndexPath, tableView: UITableView) {
-        // TODO: (kean) reiplement
-//        let viewModel = CommentCreateViewModel(comment: comment)
-//        let composerVC = CommentCreateViewController(viewModel: viewModel)
-//        let navigationVC = UINavigationController(rootViewController: composerVC)
-//        present(navigationVC, animated: true)
+        let composerVC = CommentEditViewController(viewModel: CommentEditViewModel(comment: comment))
+        let navigationVC = UINavigationController(rootViewController: composerVC)
+        present(navigationVC, animated: true)
     }
 
     func moderateComment(_ comment: Comment, status: CommentStatusType) {

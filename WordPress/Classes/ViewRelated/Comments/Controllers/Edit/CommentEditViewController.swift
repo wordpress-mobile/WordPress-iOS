@@ -1,200 +1,118 @@
-//import UIKit
-//import WordPressUI
-//
-// @MainActor
-//final class CommentEditViewController: UIViewController {
-//    private let buttonSend = UIButton(configuration: {
-//        var configuration = UIButton.Configuration.borderedProminent()
-//        configuration.title = SharedStrings.Button.save
-//        configuration.cornerStyle = .capsule
-//        configuration.baseBackgroundColor = UIColor.label
-//        configuration.baseForegroundColor = UIColor.systemBackground
-//        return configuration
-//    }())
-//
-//    private let contentView = UIStackView(axis: .vertical, [])
-//    private var editor: CommentEditor?
-//    private let viewModel: CommentCreateViewModel
-//
-//    init(viewModel: CommentCreateViewModel) {
-//        self.viewModel = viewModel
-//
-//        super.init(nibName: nil, bundle: nil)
-//    }
-//
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-//
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//
-//        view.backgroundColor = .systemBackground
-//
-//        setupView()
-//        setupNavigationBar()
-//        setupAccessibility()
-//
-//        updateInterface()
-//    }
-//
-//    override func viewDidAppear(_ animated: Bool) {
-//        super.viewDidAppear(animated)
-//
-//        WPAnalytics.track(.commentFullScreenEntered)
-//    }
-//
-//    private func setupView() {
-//        view.addSubview(contentView)
-//        contentView.pinEdges([.top, .horizontal], to: view.safeAreaLayoutGuide)
-//        contentView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor).isActive = true
-//
-//        if let comment = viewModel.replyToComment {
-//            let preview = CommentComposerReplyCommentView(comment: comment)
-//            contentView.addArrangedSubview(preview)
-//
-//            let separator = SeparatorView.horizontal()
-//            contentView.addArrangedSubview(separator)
-//        }
-//
-//        setupEditor()
-//    }
-//
-//    private func setupEditor() {
-//        let content = viewModel.restoreDraft()
-//        if viewModel.isGutenbergEnabled {
-//            setupGutenbergEditor(content: content)
-//        } else {
-//            setupPlainTextEditor(content: content)
-//        }
-//    }
-//
-//    private func setupPlainTextEditor(content: String) {
-//        let editorVC = CommentPlainTextEditorViewController()
-//        editorVC.suggestionsViewModel = viewModel.suggestionsViewModel
-//        editorVC.placeholder = viewModel.placeholder
-//        editorVC.text = content
-//        editorVC.delegate = self
-//
-//        addChild(editorVC)
-//        contentView.addArrangedSubview(editorVC.view)
-//        editorVC.didMove(toParent: self)
-//
-//        self.editor = editorVC
-//    }
-//
-//    private func setupGutenbergEditor(content: String) {
-//        let editorVC = CommentGutenbergEditorViewController()
-//        editorVC.delegate = self
-//        editorVC.initialContent = content
-//
-//        addChild(editorVC)
-//        contentView.addArrangedSubview(editorVC.view)
-//        editorVC.didMove(toParent: self)
-//
-//        self.editor = editorVC
-//    }
-//
-//    private func setupAccessibility() {
-//        navigationItem.rightBarButtonItem?.accessibilityIdentifier = "button_send_comment"
-//    }
-//
-//    // MARK: - Actions
-//
-//    @objc private func buttonSendTapped() {
-//        Task {
-//            await sendComment()
-//        }
-//    }
-//
-//    @MainActor
-//    private func sendComment() async {
-//        do {
-//            setLoading(true)
-//            await editor?.refresh()
-//            try await viewModel.save(text)
-//            UINotificationFeedbackGenerator().notificationOccurred(.success)
-//            presentingViewController?.dismiss(animated: true)
-//        } catch {
-//            setLoading(false)
-//            UINotificationFeedbackGenerator().notificationOccurred(.error)
-//            Notice(title: Strings.failedToSend, message: error.localizedDescription.stringByDecodingXMLCharacters()).post()
-//        }
-//    }
-//
-//    private func setLoading(_ isLoading: Bool) {
-//        navigationItem.rightBarButtonItem = isLoading ? .activityIndicator : UIBarButtonItem(customView: buttonSend)
-//        navigationItem.leftBarButtonItem?.isEnabled = !isLoading
-//        editor?.isEnabled = !isLoading
-//    }
-//
-//    @objc private func buttonCancelTapped() {
-//        navigationItem.leftBarButtonItem?.isEnabled = false
-//        Task { @MainActor in
-//            await editor?.refresh()
-//            navigationItem.leftBarButtonItem?.isEnabled = true
-//            if text == viewModel.getInitialContent() {
-//                presentingViewController?.dismiss(animated: true)
-//            } else {
-//                showCloseDraftConfirmationAlert(content: text)
-//            }
-//        }
-//    }
-//
-//    private func showCloseDraftConfirmationAlert(content: String) {
-//        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-//        alert.addCancelActionWithTitle(Strings.closeConfirmationAlertCancel)
-//        alert.addDestructiveActionWithTitle(Strings.closeConfirmationAlertDelete) { [weak self] _ in
-//            self?.viewModel.deleteDraft()
-//            self?.presentingViewController?.dismiss(animated: true)
-//        }
-//        if viewModel.canSaveDraft {
-//            alert.addActionWithTitle(Strings.closeConfirmationAlertSaveDraft, style: .default) { [weak self] _ in
-//                self?.viewModel.saveDraft(content)
-//                self?.presentingViewController?.dismiss(animated: true) {
-//                    UINotificationFeedbackGenerator().notificationOccurred(.success)
-//                    Notice(title: Strings.draftSaved).post()
-//                }
-//            }
-//        }
-//        alert.popoverPresentationController?.barButtonItem = navigationItem.leftBarButtonItem
-//        present(alert, animated: true, completion: nil)
-//    }
-//
-//    // MARK: - Private
-//
-//    private func setupNavigationBar() {
-//        title = viewModel.navigationTitle
-//
-//        navigationItem.leftBarButtonItem = UIBarButtonItem(title: SharedStrings.Button.cancel, style: .plain, target: self, action: #selector(buttonCancelTapped))
-//
-//        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: buttonSend)
-//        buttonSend.addTarget(self, action: #selector(buttonSendTapped), for: .primaryActionTriggered)
-//    }
-//
-//    /// Changes the `refreshButton` enabled state
-//    private func updateInterface() {
-//        let isEmpty = text.isEmpty
-//        buttonSend.isEnabled = !isEmpty
-//        isModalInPresentation = !isEmpty
-//    }
-//
-//    private var text: String {
-//        editor?.text.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-//    }
-//}
-//
-//extension CommentEditViewController: CommentEditorDelegate {
-//    func commentEditor(_ viewController: UIViewController, didUpateText text: String) {
-//        updateInterface()
-//    }
-//}
-//
-//private enum Strings {
-//    static let title = NSLocalizedString("commentEdit.navigationTitle", value: "Edit Comment", comment: "Navigation bar title when leaving a editing an existing comment")
-//    static let failedToSend = NSLocalizedString("commentEdit.failedToSentComment", value: "Failed to send comment", comment: "Error title")
-//    static let closeConfirmationAlertCancel = NSLocalizedString("commentEdit.closeConfirmationAlert.keepEditing", value: "Keep Editing", comment: "Button to keep the changes in an alert confirming discaring changes")
-//    static let closeConfirmationAlertDelete = NSLocalizedString("commentEdit.closeConfirmationAlert.deleteDraft", value: "Delete Draft", comment: "Button in an alert confirming discaring a new draft")
-//    static let closeConfirmationAlertSaveDraft = NSLocalizedString("commentEdit.closeConfirmationAlert.saveDraft", value: "Save Draft", comment: "Button in an alert confirming saving a new draft")
-//    static let draftSaved = NSLocalizedString("commentEdit.draftSaved", value: "Draft Saved", comment: "Cofirmation snackbar title")
-//}
+import UIKit
+import WordPressUI
+
+final class CommentEditViewController: UIViewController {
+    private lazy var buttonSave = UIBarButtonItem(title: SharedStrings.Button.save, style: .done, target: self, action: #selector(buttonSaveTapped))
+    private let editorVC = CommentEditorViewController()
+    private let viewModel: CommentEditViewModel
+
+    init(viewModel: CommentEditViewModel) {
+        self.viewModel = viewModel
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        view.backgroundColor = .systemBackground
+
+        setupView()
+        setupNavigationBar()
+
+        buttonSave.isEnabled = false
+        isModalInPresentation = false
+    }
+
+    private func setupView() {
+        editorVC.initialContent = viewModel.originalContent
+        editorVC.isGutenbergEnabled = viewModel.isGutenbergEnabled
+        editorVC.suggestionsViewModel = viewModel.suggestionsViewModel
+        editorVC.delegate = self
+
+        addChild(editorVC)
+        view.addSubview(editorVC.view)
+        editorVC.view.pinEdges()
+        editorVC.didMove(toParent: self)
+    }
+
+    // MARK: - Actions
+
+    @objc private func buttonSaveTapped() {
+        setLoading(true)
+        Task { @MainActor in
+            do {
+                let text = await editorVC.text
+                try await viewModel.save(content: text)
+                UINotificationFeedbackGenerator().notificationOccurred(.success)
+                presentingViewController?.dismiss(animated: true)
+            } catch {
+                setLoading(false)
+                UINotificationFeedbackGenerator().notificationOccurred(.error)
+                Notice(error: error, title: Strings.failedToSave).post()
+            }
+        }
+    }
+
+    private func setLoading(_ isLoading: Bool) {
+        navigationItem.rightBarButtonItem = isLoading ? .activityIndicator : buttonSave
+        navigationItem.leftBarButtonItem?.isEnabled = !isLoading
+        editorVC.isEnabled = !isLoading
+    }
+
+    @objc private func buttonCancelTapped() {
+        navigationItem.leftBarButtonItem?.isEnabled = false
+        Task { @MainActor in
+            let text = await editorVC.text
+            navigationItem.leftBarButtonItem?.isEnabled = true
+            if text == viewModel.originalContent {
+                presentingViewController?.dismiss(animated: true)
+            } else {
+                showCloseConfirmationAlert()
+            }
+        }
+    }
+
+    private func showCloseConfirmationAlert() {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alert.addCancelActionWithTitle(Strings.closeConfirmationAlertCancel)
+        alert.addDestructiveActionWithTitle(Strings.closeConfirmationAlertDiscardChanges) { [weak self] _ in
+            self?.presentingViewController?.dismiss(animated: true)
+        }
+        alert.popoverPresentationController?.barButtonItem = navigationItem.leftBarButtonItem
+        present(alert, animated: true, completion: nil)
+    }
+
+    // MARK: - Private
+
+    private func setupNavigationBar() {
+        title = Strings.title
+
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: SharedStrings.Button.cancel, style: .plain, target: self, action: #selector(buttonCancelTapped))
+
+        navigationItem.rightBarButtonItem = buttonSave
+    }
+
+    private func didChangeText(_ text: String) {
+        let hasChanges = text != viewModel.originalContent
+        buttonSave.isEnabled = hasChanges
+        isModalInPresentation = hasChanges
+    }
+}
+
+extension CommentEditViewController: CommentEditorViewControllerDelegate {
+    func commentEditor(_ viewController: CommentEditorViewController, didChangeText text: String) {
+        didChangeText(text)
+    }
+}
+
+private enum Strings {
+    static let title = NSLocalizedString("commentEdit.navigationTitle", value: "Edit Comment", comment: "Navigation bar title when leaving a editing an existing comment")
+    static let failedToSave = NSLocalizedString("commentEdit.failedToSaveComment", value: "Failed to save comment", comment: "Error title")
+    static let closeConfirmationAlertCancel = NSLocalizedString("commentEdit.closeConfirmationAlert.keepEditing", value: "Keep Editing", comment: "Button to keep the changes in an alert confirming discaring changes")
+    static let closeConfirmationAlertDiscardChanges = NSLocalizedString("commentEdit.closeConfirmationAlert.deleteDraft", value: "Discard Changes", comment: "Button in an alert confirming discaring a new draft")
+}

@@ -1,7 +1,6 @@
 import Foundation
 import CoreData
 
-@MainActor
 final class CommentEditViewModel {
     let suggestionsViewModel: SuggestionsListViewModel?
 
@@ -26,7 +25,12 @@ final class CommentEditViewModel {
         )
     }
 
-    func save(content: String, comment: Comment) async throws {
+    var originalContent: String {
+        comment.rawContent
+    }
+
+    @MainActor
+    func save(content: String) async throws {
         let commentID = comment.commentID as NSNumber
 
         try await withUnsafeThrowingContinuation { continuation in

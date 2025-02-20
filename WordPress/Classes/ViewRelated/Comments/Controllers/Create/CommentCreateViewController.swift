@@ -99,12 +99,12 @@ final class CommentCreateViewController: UIViewController {
             if text.isEmpty {
                 presentingViewController?.dismiss(animated: true)
             } else {
-                showCloseDraftConfirmationAlert(content: text)
+                showCloseConfirmationAlert(content: text)
             }
         }
     }
 
-    private func showCloseDraftConfirmationAlert(content: String) {
+    private func showCloseConfirmationAlert(content: String) {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alert.addCancelActionWithTitle(Strings.closeConfirmationAlertCancel)
         alert.addDestructiveActionWithTitle(Strings.closeConfirmationAlertDelete) { [weak self] _ in
@@ -132,7 +132,6 @@ final class CommentCreateViewController: UIViewController {
         buttonSend.addTarget(self, action: #selector(buttonSendTapped), for: .primaryActionTriggered)
     }
 
-    /// Changes the `refreshButton` enabled state
     private func didChangeText(_ text: String) {
         let text = text.trimmingCharacters(in: .whitespacesAndNewlines)
         let isEnabled = !text.isEmpty
