@@ -13,37 +13,37 @@ final class CommentCreateViewModel {
     /// Comment you are replying it.
     private(set) var replyToComment: Comment?
 
-    /// - note: It's a temporary solution until the respective save logic
-    /// can be moved from the view controllers.
-    var save: (String) async throws -> Void = { _ in
-        wpAssertionFailure("must be specified")
-    }
-
     let suggestionsViewModel: SuggestionsListViewModel?
 
     private let siteID: NSNumber
     private let context = ContextManager.shared.mainContext
+
+    /// - note: It's a temporary solution until the respective save logic
+    /// can be moved from the view controllers.
+    private let _save: (String) async throws -> Void
 
     var isGutenbergEnabled: Bool {
         FeatureFlag.readerGutenbergCommentComposer.enabled
     }
 
     /// Create a new top-level comment to the given post.
-    init(post: ReaderPost) {
+    init(post: ReaderPost, save: @escaping (String) async throws -> Void) {
         self.siteID = post.siteID ?? 0
         wpAssert(siteID != 0, "missing required parameter siteID")
+        self._save = save
 
         self.suggestionsViewModel = SuggestionsListViewModel.make(siteID: post.siteID)
         self.suggestionsViewModel?.enableProminentSuggestions(postAuthorID: post.authorID)
     }
 
     /// Create a reply to the given comment.
-    init(replyingTo comment: Comment) {
+    init(replyingTo comment: Comment, save: @escaping (String) async throws -> Void) {
         let siteID = comment.associatedSiteID ?? 0
         wpAssert(siteID != 0, "missing required parameter siteID")
 
         self.siteID = siteID
         self.replyToComment = comment
+        self._save = save
 
         self.suggestionsViewModel = SuggestionsListViewModel.make(siteID: siteID)
         self.suggestionsViewModel?.enableProminentSuggestions(
@@ -54,6 +54,12 @@ final class CommentCreateViewModel {
 
     static var leaveCommentLocalizedPlaceholder: String {
         Strings.leaveComment
+    }
+
+    @MainActor
+    func save(content: String) async throws {
+        try await _save(content)
+        deleteDraft()
     }
 
     // MARK: Drafts

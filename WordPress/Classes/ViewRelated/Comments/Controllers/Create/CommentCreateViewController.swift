@@ -74,7 +74,7 @@ final class CommentCreateViewController: UIViewController {
         Task { @MainActor in
             do {
                 let text = await editorVC.text
-                try await viewModel.save(text)
+                try await viewModel.save(content: text)
                 UINotificationFeedbackGenerator().notificationOccurred(.success)
                 presentingViewController?.dismiss(animated: true)
             } catch {

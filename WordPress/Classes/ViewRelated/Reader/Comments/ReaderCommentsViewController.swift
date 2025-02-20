@@ -52,16 +52,14 @@ extension NSNotification.Name {
     }
 
     func buttonAddCommentTapped() {
-        let viewModel = CommentCreateViewModel(post: post)
-        viewModel.save = { [weak self] in
+        let viewModel = CommentCreateViewModel(post: post) { [weak self] in
             try await self?.sendComment($0)
         }
         showCommentComposer(viewModel: viewModel)
     }
 
     func didTapReply(comment: Comment) {
-        let viewModel = CommentCreateViewModel(replyingTo: comment)
-        viewModel.save = { [weak self] in
+        let viewModel = CommentCreateViewModel(replyingTo: comment) { [weak self] in
             try await self?.sendComment($0, comment: comment)
         }
         showCommentComposer(viewModel: viewModel)
