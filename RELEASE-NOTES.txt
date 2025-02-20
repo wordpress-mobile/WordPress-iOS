@@ -15,6 +15,7 @@
 * [*] Fix Notifications: quote blocks in the Reply screen are not styled correctly [#13971]
 * [*] Fix Notifications pointing to large threads sometimes break the app [#23993]
 * [*] Fix Reader: Opening comments is slow [#21887]
+* [*] Fix unexpected "unsaved changes" notice when closing an un-edited post containing media in the experimental editor [#24102]
 
 25.7
 -----
