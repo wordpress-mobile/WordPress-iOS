@@ -21,14 +21,13 @@ final class CommentEditorViewController: UIViewController {
 
     var isEnabled = true {
         didSet {
-            // TODO: (kean) resignFirstResponder
             view.alpha = isEnabled ? 1.0 : 0.5
             view.isUserInteractionEnabled = isEnabled
         }
     }
 
     /// - note: The method is asynchronous because Gutenberg requires a relatively
-    /// expensive deserialization that doesn't happen interactively.
+    /// expensive deserialization that doesn't happen interactively.
     var text: String {
         get async {
             if let editorVC = editorVC as? CommentPlainTextEditorViewController {
