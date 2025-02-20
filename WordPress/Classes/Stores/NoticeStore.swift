@@ -1,5 +1,6 @@
 import Foundation
 import WordPressFlux
+import WordPressShared
 
 /// Notice represents a small notification that that can be displayed within
 /// the app, much like Android toasts or snackbars.
@@ -65,7 +66,6 @@ struct Notice {
         self.actionHandler = actionHandler
         self.style = style
     }
-
 }
 
 extension Notice: Equatable {
@@ -75,6 +75,14 @@ extension Notice: Equatable {
 }
 
 extension Notice {
+    /// Creates a notice with a localized description of the given error.
+    init(error: Error, title: String? = nil) {
+        self.init(
+            title: title ?? SharedStrings.Error.generic,
+            message: error.localizedDescription.stringByDecodingXMLCharacters()
+        )
+    }
+
     func post() {
         ActionDispatcher.dispatch(NoticeAction.post(self))
     }

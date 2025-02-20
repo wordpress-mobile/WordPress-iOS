@@ -1,3 +1,5 @@
+import UIKit
+
 public enum NoticeAnimationStyle {
     case moveIn
     case fade

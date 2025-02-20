@@ -49,6 +49,8 @@ final class CommentEditorViewController: UIViewController {
         contentView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor).isActive = true
 
         setupEditor()
+
+        WPAnalytics.track(.commentFullScreenEntered)
     }
 
     private func setupEditor() {

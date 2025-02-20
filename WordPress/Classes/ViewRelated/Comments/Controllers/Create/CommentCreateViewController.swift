@@ -38,12 +38,6 @@ final class CommentCreateViewController: UIViewController {
         didChangeText(editorVC.initialContent ?? "")
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        WPAnalytics.track(.commentFullScreenEntered)
-    }
-
     private func setupView() {
         view.addSubview(contentView)
         contentView.pinEdges([.top, .horizontal], to: view.safeAreaLayoutGuide)
@@ -92,7 +86,7 @@ final class CommentCreateViewController: UIViewController {
         } catch {
             setLoading(false)
             UINotificationFeedbackGenerator().notificationOccurred(.error)
-            Notice(title: Strings.failedToSend, message: error.localizedDescription.stringByDecodingXMLCharacters()).post()
+            Notice(error: error, title: Strings.failedToSend).post()
         }
     }
 
