@@ -1,5 +1,4 @@
 import UIKit
-import WordPressAuthenticator
 import SwiftUI
 
 enum DomainSelectionType: Int, Identifiable {

@@ -1,5 +1,3 @@
-import WordPressAuthenticator
-
 protocol JetpackRemoteInstallStateViewDelegate: AnyObject {
     func mainButtonDidTouch()
     func customerSupportButtonDidTouch()
@@ -106,7 +104,7 @@ private extension JetpackRemoteInstallStateView {
         }
     }
 
-    @IBAction func mainButtonAction(_ sender: NUXButton) {
+    @IBAction func mainButtonAction(_ sender: UIButton) {
         delegate?.mainButtonDidTouch()
     }
 

@@ -1,5 +1,4 @@
 import UIKit
-import WordPressAuthenticator
 
 class RegisterDomainDetailsErrorSectionFooter: UITableViewHeaderFooterView, NibReusable {
 

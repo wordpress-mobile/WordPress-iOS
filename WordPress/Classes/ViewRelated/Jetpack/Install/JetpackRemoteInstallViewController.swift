@@ -1,5 +1,3 @@
-import WordPressAuthenticator
-
 protocol JetpackRemoteInstallDelegate: AnyObject {
     func jetpackRemoteInstallCompleted()
     func jetpackRemoteInstallCanceled()

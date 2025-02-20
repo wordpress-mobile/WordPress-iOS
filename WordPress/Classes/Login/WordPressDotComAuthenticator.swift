@@ -1,7 +1,6 @@
 import AuthenticationServices
 import Foundation
 import UIKit
-import WordPressAuthenticator
 
 import Alamofire
 

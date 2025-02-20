@@ -1,5 +1,3 @@
-import WordPressAuthenticator
-
 // MARK: - Tab Access Tracking
 
 fileprivate extension WPTab {

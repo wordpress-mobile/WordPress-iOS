@@ -1,7 +1,6 @@
 import Foundation
 import Combine
 import WordPressKit
-import WordPressAuthenticator
 
 enum SidebarSelection: Hashable {
     case welcome

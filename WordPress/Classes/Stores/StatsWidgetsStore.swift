@@ -1,6 +1,5 @@
 import JetpackStatsWidgetsCore
 import WidgetKit
-import WordPressAuthenticator
 
 class StatsWidgetsStore {
     private let coreDataStack: CoreDataStack

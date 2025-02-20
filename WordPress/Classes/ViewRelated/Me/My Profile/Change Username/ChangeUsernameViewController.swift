@@ -1,5 +1,4 @@
 import Combine
-import WordPressAuthenticator
 
 class ChangeUsernameViewController: SignupUsernameTableViewController {
     typealias CompletionBlock = (String?) -> Void

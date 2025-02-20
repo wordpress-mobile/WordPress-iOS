@@ -1,4 +1,3 @@
-import WordPressAuthenticator
 import XCTest
 
 @testable import WordPress

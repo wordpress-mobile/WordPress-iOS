@@ -1,5 +1,4 @@
 import UIKit
-import WordPressAuthenticator
 
 @objc
 class MySitesCoordinator: NSObject {

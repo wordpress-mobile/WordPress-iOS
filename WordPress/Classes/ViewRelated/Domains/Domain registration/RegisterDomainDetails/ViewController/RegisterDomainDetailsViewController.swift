@@ -1,5 +1,4 @@
 import UIKit
-import WordPressAuthenticator
 import WordPressEditor
 
 class RegisterDomainDetailsViewController: UITableViewController {

@@ -1,7 +1,6 @@
 import UIKit
 @preconcurrency import WebKit
 import Gridicons
-import WordPressAuthenticator
 import Combine
 
 protocol JetpackConnectionWebDelegate: AnyObject {

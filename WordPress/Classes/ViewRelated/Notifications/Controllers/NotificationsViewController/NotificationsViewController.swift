@@ -2,7 +2,6 @@ import Foundation
 import Combine
 import CoreData
 import WordPressShared
-import WordPressAuthenticator
 import Gridicons
 import UIKit
 import WordPressUI

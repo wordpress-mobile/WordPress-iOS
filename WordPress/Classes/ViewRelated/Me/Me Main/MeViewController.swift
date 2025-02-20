@@ -1,6 +1,5 @@
 import UIKit
 import WordPressShared
-import WordPressAuthenticator
 import AutomatticAbout
 
 class MeViewController: UITableViewController {
