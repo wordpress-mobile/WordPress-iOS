@@ -1,7 +1,6 @@
 import UIKit
 import WordPressUI
 
-@MainActor
 final class CommentCreateViewController: UIViewController {
     private let buttonSend = UIButton(configuration: {
         var configuration = UIButton.Configuration.borderedProminent()
@@ -70,23 +69,19 @@ final class CommentCreateViewController: UIViewController {
     // MARK: - Actions
 
     @objc private func buttonSendTapped() {
-        Task {
-            await sendComment()
-        }
-    }
+        setLoading(true)
 
-    @MainActor
-    private func sendComment() async {
-        do {
-            setLoading(true)
-            let text = await editorVC.text
-            try await viewModel.save(text)
-            UINotificationFeedbackGenerator().notificationOccurred(.success)
-            presentingViewController?.dismiss(animated: true)
-        } catch {
-            setLoading(false)
-            UINotificationFeedbackGenerator().notificationOccurred(.error)
-            Notice(error: error, title: Strings.failedToSend).post()
+        Task { @MainActor in
+            do {
+                let text = await editorVC.text
+                try await viewModel.save(text)
+                UINotificationFeedbackGenerator().notificationOccurred(.success)
+                presentingViewController?.dismiss(animated: true)
+            } catch {
+                setLoading(false)
+                UINotificationFeedbackGenerator().notificationOccurred(.error)
+                Notice(error: error, title: Strings.failedToSend).post()
+            }
         }
     }
 
@@ -128,10 +123,8 @@ final class CommentCreateViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
 
-    // MARK: - Private
-
     private func setupNavigationBar() {
-        title = viewModel.navigationTitle
+        title = viewModel.title
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: SharedStrings.Button.cancel, style: .plain, target: self, action: #selector(buttonCancelTapped))
 
