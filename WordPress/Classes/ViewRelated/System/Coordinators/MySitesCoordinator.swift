@@ -93,7 +93,7 @@ class MySitesCoordinator: NSObject {
     // MARK: Notifications Handling
 
     private func addSignInObserver() {
-        let notificationName = NSNotification.Name(WordPressAuthenticator.WPSigninDidFinishNotification)
+        let notificationName = NSNotification.Name(WordPressAuthenticationManager.WPSigninDidFinishNotification)
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(signinDidFinish),
                                                name: notificationName,

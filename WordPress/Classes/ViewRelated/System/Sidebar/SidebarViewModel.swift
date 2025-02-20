@@ -66,7 +66,7 @@ final class SidebarViewModel: ObservableObject {
             }.store(in: &cancellables)
 
         NotificationCenter.default
-            .publisher(for: .init(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification))
+            .publisher(for: .init(rawValue: WordPressAuthenticationManager.WPSigninDidFinishNotification))
             .sink { [weak self] _ in self?.resetSelection() }
             .store(in: &cancellables)
 

@@ -7,6 +7,8 @@ import UIKit
 //
 @objc
 class WordPressAuthenticationManager: NSObject {
+    static let WPSigninDidFinishNotification = WordPressAuthenticator.WPSigninDidFinishNotification
+
     static var isPresentingSignIn = false
     private let windowManager: WindowManager
 
@@ -565,7 +567,7 @@ private extension WordPressAuthenticationManager {
             /// HACK: An alternative notification to LoginFinished. Observe this instead of `WPSigninDidFinishNotification` for Jetpack logins.
             /// When WPTabViewController no longer destroy's and rebuilds the view hierarchy this alternate notification can be removed.
             ///
-            let notification = isJetpackLogin == true ? .wordpressLoginFinishedJetpackLogin : Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification)
+            let notification = isJetpackLogin == true ? .wordpressLoginFinishedJetpackLogin : Foundation.Notification.Name(rawValue: WordPressAuthenticationManager.WPSigninDidFinishNotification)
             NotificationCenter.default.post(name: notification, object: account)
 
             syncGroup.leave()

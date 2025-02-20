@@ -30,7 +30,7 @@ extension WPTabBarController {
     }
 
     @objc public class var wpSigninDidFinishNotification: String {
-        WordPressAuthenticator.WPSigninDidFinishNotification
+        WordPressAuthenticationManager.WPSigninDidFinishNotification
     }
 
     private static let tabIndexToStatMap: [WPTab: WPAnalyticsStat] = [.mySites: .mySitesTabAccessed, .reader: .readerAccessed]
