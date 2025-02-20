@@ -87,7 +87,7 @@ class NotificationActionsService: CoreDataService {
         block.textOverride = content
 
         // Hit the backend
-        commentService.updateComment(withID: commentID, siteID: siteID, content: content, success: {
+        commentService.updateComment(withID: commentID, siteID: siteID, content: content, success: { _ in
             DDLogInfo("Successfully updated to comment \(siteID).\(commentID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)

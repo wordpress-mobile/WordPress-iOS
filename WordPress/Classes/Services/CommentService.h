@@ -124,7 +124,7 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
 - (void)updateCommentWithID:(NSNumber *)commentID
                      siteID:(NSNumber *)siteID
                     content:(NSString *)content
-                    success:(void (^ _Nullable)(void))success
+                    success:(void (^ _Nullable)(RemoteComment * _Nullable comment))success
                     failure:(void (^ _Nullable)(NSError * _Nullable error))failure;
 
 // Replies
