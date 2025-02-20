@@ -394,22 +394,25 @@ enum ActionButton {
 
     @ViewBuilder
     var view: some View {
-        Group {
-            switch self {
-            case let .install(_, action):
-                Button(Strings.installButton, action: action)
-                    .font(.callout.bold())
-            case let .activate(_, action):
-                Button(Strings.activateButton, action: action)
-                    .font(.callout.bold())
-            case .activated:
-                Button(Strings.activatedButton, action: { })
-                    .font(.callout)
-                    .disabled(true)
-            }
+        button
+            .buttonStyle(.borderedProminent)
+            .buttonBorderShape(.capsule)
+    }
+
+    @ViewBuilder
+    private var button: some View {
+        switch self {
+        case let .install(_, action):
+            Button(Strings.installButton, action: action)
+                .font(.callout.bold())
+        case let .activate(_, action):
+            Button(Strings.activateButton, action: action)
+                .font(.callout.bold())
+        case .activated:
+            Button(Strings.activatedButton, action: { })
+                .font(.callout)
+                .disabled(true)
         }
-        .buttonStyle(.borderedProminent)
-        .buttonBorderShape(.capsule)
     }
 }
 
