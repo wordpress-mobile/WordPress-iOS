@@ -1,10 +1,20 @@
 25.8
 -----
+* [**] The comments are now displayed using the same styles across the app and with better support for rich comments, especially for P2 sites [#24055]
+* [**] The comment composer now opens fullscreen, shows previews of the comment you are replying to, supports savings drafts, and clearly communicates the upload state and errors [#24075]
 * [*] Enable dismissing the virtual keyboard in the experimental editor [#23988]
 * [*] Remove Submit Feedback form from the Me menu [#24020]
 * [*] Fix unselectable group blocks in the experimental editor [https://github.com/wordpress-mobile/GutenbergKit/pull/68]
 * [*] Prevent a intermittent crash when opening the experimental editor's "more" menu [#24065]
 * [*] Fix incorrect background color for draft post cells on dashboard [#24080]
+* [*] Fix an issue with comments sometimes displaying black text on black background in dark mode [#23536]
+* [*] Fix incorrect sizing of images and other attachments in comments [#19943]
+* [*] Fix P2 Comments: Empty list item appears after embedded lists [#18690]
+* [*] Fix Reader Comments: Reply button is hidden when pasting long text (the ap now uses a sheet) [#17964]
+* [*] Fix Reader Comments: Cells could sometimes be displayed overlapping another cell [#17653]
+* [*] Fix Notifications: quote blocks in the Reply screen are not styled correctly [#13971]
+* [*] Fix Notifications pointing to large threads sometimes break the app [#23993]
+* [*] Fix Reader: Opening comments is slow [#21887]
 
 25.7
 -----
