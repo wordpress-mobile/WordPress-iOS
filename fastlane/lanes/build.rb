@@ -103,7 +103,7 @@ platform :ios do
     # At the time of writing, we need to explicitly set this value despite using test plans that configure parallelism.
     parallel_testing_value = options[:name].include?('Jetpack')
 
-    run_tests(
+    tests_result = run_tests(
       workspace: WORKSPACE_PATH,
       scheme: scheme,
       device: options[:device],
@@ -122,6 +122,12 @@ platform :ios do
     )
 
     trainer(path: lane_context[SharedValues::SCAN_GENERATED_XCRESULT_PATH], fail_build: true)
+
+    # `trainer`, which we use to parse test results, sometimes fails to detect errors.
+    # This mean we might pass the `trainer` call above even if some tests have failed.
+    # To avoid false positives, we check the test results and fail the build if `run_tests` detected failures.
+    failed_tests = tests_result[:number_of_failures_excluding_retries]
+    UI.user_error!("Tests failed with #{failed_tests} failures.") if failed_tests.positive?
   end
 
   # Builds the WordPress app and uploads it to TestFlight, for beta-testing or final release
