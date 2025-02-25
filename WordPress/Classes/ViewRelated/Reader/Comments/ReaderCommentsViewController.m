@@ -206,6 +206,9 @@
 }
 
 - (UIView *)cachedHeaderView {
+    if (!self.allowsPushingPostDetails) {
+        return nil;
+    }
     if (!_cachedHeaderView) {
         _cachedHeaderView = [self configuredHeaderViewFor:self.tableView];
     }
