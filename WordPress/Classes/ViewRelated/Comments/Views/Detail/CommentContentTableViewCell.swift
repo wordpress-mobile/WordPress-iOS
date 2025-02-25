@@ -30,20 +30,11 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
         }
     }
 
-    /// When supplied with a non-empty string, the cell will show a badge label beside the name label.
-    /// Note that the badge will be hidden when the title is nil or empty.
     var badgeTitle: String? = nil {
         didSet {
-            let title: String = {
-                if let title = badgeTitle {
-                    return title.localizedUppercase
-                }
-                return String()
-            }()
-
-            badgeLabel.setText(title)
+            let title = badgeTitle?.localizedUppercase ?? ""
+            badgeLabel.text = title
             badgeLabel.isHidden = title.isEmpty
-            badgeLabel.updateConstraintsIfNeeded()
         }
     }
 
