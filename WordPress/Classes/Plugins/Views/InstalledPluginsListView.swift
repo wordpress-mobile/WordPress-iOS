@@ -22,58 +22,9 @@ struct InstalledPluginsListView: View {
                 Label { Text(Strings.loading) } icon: { ProgressView() }
             } else {
                 if viewModel.showNoPluginsView {
-                    EmptyStateView {
-                        Image(systemName: "puzzlepiece.extension")
-                    } description: {
-                        Group {
-                            switch viewModel.filter {
-                            case .all:
-                                Text(Strings.noPluginInstalled)
-                            case .active:
-                                Text(Strings.noPluginsActive)
-                            case .inactive:
-                                Text(Strings.noPluginsInactive)
-                            }
-                        }
-                        .font(.body)
-                        .foregroundStyle(.primary)
-                    } actions: {
-                        if viewModel.filter == .all {
-                            Button(Strings.addPluginButton, systemImage: "plus") {
-                                presentAddNewPlugin = true
-                            }
-                            .buttonStyle(.borderedProminent)
-                        }
-                    }
+                    noPluginsView
                 } else {
-                    List {
-                        ForEach(viewModel.sections, id: \.self) { section in
-                            Section {
-                                ForEach(section.plugins, id: \.self) { plugin in
-                                    NavigationLink {
-                                        if let slug = plugin.possibleWpOrgDirectorySlug {
-                                            PluginDetailsView(slug: slug, plugin: plugin, service: viewModel.service)
-                                        }
-                                    } label: {
-                                        PluginListItemView(
-                                            plugin: plugin,
-                                            updateAvailable: viewModel.updateAvailable.index(forKey: plugin.slug) != nil,
-                                            service: viewModel.service
-                                        )
-                                    }
-                                }
-                            } header: {
-                                Text(section.filter.title)
-                                    .textCase(nil)
-                                    .font(.headline)
-                                    .foregroundStyle(.primary)
-                            }
-                            .listSectionSeparator(.hidden, edges: .all)
-                        }
-                    }
-                    .listStyle(.grouped)
-                    .scrollContentBackground(.hidden)
-                    .refreshable(action: viewModel.refreshItems)
+                    pluginsList
                 }
             }
         }
@@ -112,6 +63,56 @@ struct InstalledPluginsListView: View {
         .task(id: viewModel.filter) {
             await viewModel.performQuery()
         }
+    }
+
+    @ViewBuilder
+    var noPluginsView: some View {
+        EmptyStateView {
+            Image(systemName: "puzzlepiece.extension")
+        } description: {
+            Text(viewModel.localizedFilterTitle)
+                .font(.body)
+                .foregroundStyle(.primary)
+        } actions: {
+            if viewModel.filter == .all {
+                Button(Strings.addPluginButton, systemImage: "plus") {
+                    presentAddNewPlugin = true
+                }
+                .buttonStyle(.borderedProminent)
+            }
+        }
+    }
+
+    @ViewBuilder
+    var pluginsList: some View {
+        List {
+            ForEach(viewModel.sections, id: \.self) { section in
+                Section {
+                    ForEach(section.plugins, id: \.self) { plugin in
+                        NavigationLink {
+                            if let slug = plugin.possibleWpOrgDirectorySlug {
+                                PluginDetailsView(slug: slug, plugin: plugin, service: viewModel.service)
+                            }
+                        } label: {
+                            PluginListItemView(
+                                plugin: plugin,
+                                updateAvailable: viewModel.updateAvailable.index(forKey: plugin.slug) != nil,
+                                service: viewModel.service
+                            )
+                        }
+                    }
+                } header: {
+                    Text(section.filter.title)
+                        .textCase(nil)
+                        .font(.headline)
+                        .foregroundStyle(.primary)
+                }
+                .listSectionSeparator(.hidden, edges: .all)
+            }
+        }
+        .listStyle(.grouped)
+        .scrollContentBackground(.hidden)
+        .refreshable(action: viewModel.refreshItems)
     }
 }
 
@@ -188,6 +189,17 @@ private final class InstalledPluginsListViewModel: ObservableObject {
     @Published var error: String? = nil
 
     @Published var updating: Set<PluginSlug> = []
+
+    var localizedFilterTitle: String {
+        switch filter {
+        case .all:
+            Strings.noPluginInstalled
+        case .active:
+            Strings.noPluginsActive
+        case .inactive:
+            Strings.noPluginsInactive
+        }
+    }
 
     init(service: PluginServiceProtocol) {
         self.service = service
