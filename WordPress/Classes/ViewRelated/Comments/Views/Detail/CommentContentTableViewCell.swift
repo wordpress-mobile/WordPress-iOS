@@ -63,6 +63,7 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
     /// Cell selection for this cell is disabled, and highlight style may be disabled based on the table view settings.
     @objc var isEmphasized: Bool = false {
         didSet {
+            guard oldValue != isEmphasized else { return }
             backgroundColor = isEmphasized ? Style.highlightedBackgroundColor : nil
             highlightBarView.backgroundColor = isEmphasized ? Style.highlightedBarBackgroundColor : .clear
         }
