@@ -4,8 +4,7 @@ import WordPressReader
 import Gravatar
 import Combine
 
-class CommentContentTableViewCell: UITableViewCell, NibReusable {
-
+final class CommentContentTableViewCell: UITableViewCell, NibReusable {
     // all the available images for the accessory button.
     enum AccessoryButtonType {
         case share
@@ -48,15 +47,15 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         }
     }
 
-    override var indentationWidth: CGFloat {
-        didSet {
-            updateContainerLeadingConstraint()
-        }
+    var depth: Int {
+        get { effectiveDepth }
+        set { effectiveDepth = min(4, newValue) }
     }
 
-    override var indentationLevel: Int {
+    private var effectiveDepth: Int = 0 {
         didSet {
-            updateContainerLeadingConstraint()
+            guard oldValue != effectiveDepth else { return }
+            containerStackLeadingConstraint?.constant = (16 * CGFloat(effectiveDepth)) + 16
         }
     }
 
@@ -74,7 +73,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     @IBOutlet private weak var containerStackView: UIStackView!
     @IBOutlet private weak var containerStackLeadingConstraint: NSLayoutConstraint!
     @IBOutlet private weak var containerStackTrailingConstraint: NSLayoutConstraint!
-    private var defaultLeadingMargin: CGFloat = 0
 
     @IBOutlet private weak var avatarImageView: CircularImageView!
     @IBOutlet private weak var nameLabel: UILabel!
@@ -132,10 +130,9 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         avatarImageView.wp.prepareForReuse()
         renderer?.prepareForReuse()
 
-        // reset all highlight states.
         isEmphasized = false
+        depth = 0
 
-        // reset all button actions.
         accessoryButtonAction = nil
         replyButtonAction = nil
         contentLinkTapAction = nil
@@ -298,9 +295,6 @@ private extension CommentContentTableViewCell {
 
     // assign base styles for all the cell components.
     func configureViews() {
-        // Store default margin for use in content layout.
-        defaultLeadingMargin = containerStackLeadingConstraint.constant
-
         selectionStyle = .none
 
         nameLabel?.font = style.nameFont
@@ -378,10 +372,6 @@ private extension CommentContentTableViewCell {
         case .email(let email):
             avatarImageView.downloadGravatar(for: email, placeholderImage: Style.placeholderImage)
         }
-    }
-
-    func updateContainerLeadingConstraint() {
-        containerStackLeadingConstraint?.constant = (indentationWidth * CGFloat(indentationLevel)) + defaultLeadingMargin
     }
 
     func updateLikeButton(isLiked: Bool, likeCount: Int) {
