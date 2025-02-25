@@ -49,15 +49,21 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     var depth: Int {
         get { effectiveDepth }
-        set { effectiveDepth = min(4, newValue) }
+        set { effectiveDepth = min(Self.maxDepth, newValue) }
     }
+
+    private static let maxDepth = 4
+    private static let depthInset: CGFloat = 12
 
     private var effectiveDepth: Int = 0 {
         didSet {
             guard oldValue != effectiveDepth else { return }
-            containerStackLeadingConstraint?.constant = (16 * CGFloat(effectiveDepth)) + 16
+            containerStackLeadingConstraint?.constant = (Self.depthInset * CGFloat(effectiveDepth)) + 16
+            configureDepthSeparators(depth: effectiveDepth)
         }
     }
+
+    private var depthSeparators: [UIView?] = .init(repeating: nil, count: CommentContentTableViewCell.maxDepth)
 
     /// A custom highlight style for the cell that is more controllable than `isHighlighted`.
     /// Cell selection for this cell is disabled, and highlight style may be disabled based on the table view settings.
@@ -208,6 +214,24 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
         likeButton.isHidden = !state.isLikeEnabled
 
         updateLikeButton(isLiked: state.isLiked, likeCount: state.likeCount)
+    }
+
+    private func configureDepthSeparators(depth: Int) {
+        for depthSeparator in depthSeparators {
+            depthSeparator?.isHidden = true
+        }
+        for level in 0..<depth {
+            let separatorView = depthSeparators[level] ?? {
+                let separatorView = SeparatorView.vertical()
+                depthSeparators[level] = separatorView
+                contentView.addSubview(separatorView)
+                separatorView.pinEdges([.top, .bottom])
+                let inset = -Self.depthInset * CGFloat(level + 1)
+                separatorView.trailingAnchor.constraint(equalTo: containerStackView.leadingAnchor, constant: inset).isActive = true
+                return separatorView
+            }()
+            separatorView.isHidden = false
+        }
     }
 }
 
