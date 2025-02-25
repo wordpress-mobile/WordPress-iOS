@@ -367,7 +367,7 @@ private extension CommentContentTableViewCell {
             attributes.font = font
             return attributes
         }
-        configuration.contentInsets = .init(top: 12, leading: 8, bottom: 12, trailing: 8)
+        configuration.contentInsets = .init(top: 10, leading: 8, bottom: 12, trailing: 8)
         configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(font: font)
         return configuration
     }
@@ -403,7 +403,7 @@ private extension CommentContentTableViewCell {
         likeButton.tintColor = isLiked ? UIAppColor.primary : .secondaryLabel
         if var configuration = likeButton.configuration {
             configuration.image = UIImage(systemName: isLiked ? "star.fill" : "star")
-            configuration.title = likeCount > 0 ? "\(likeCount)" : nil
+            configuration.title = likeCount > 0 ? "\(likeCount)" : String.noLikes
             likeButton.accessibilityLabel = {
                 switch likeCount {
                 case .zero: .noLikes
