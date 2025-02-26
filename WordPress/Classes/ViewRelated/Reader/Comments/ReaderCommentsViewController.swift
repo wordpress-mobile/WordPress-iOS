@@ -130,12 +130,9 @@ extension NSNotification.Name {
                     tableView.alpha = 1
                 }
             }
-            // don't adjust cell height when it's out of the viewport.
-            if (tableView.indexPathsForVisibleRows ?? []).contains(indexPath) {
-                UIView.setAnimationsEnabled(false)
-                tableView.performBatchUpdates({})
-                UIView.setAnimationsEnabled(true)
-            }
+            UIView.setAnimationsEnabled(false)
+            tableView.performBatchUpdates({})
+            UIView.setAnimationsEnabled(true)
         }
     }
 
