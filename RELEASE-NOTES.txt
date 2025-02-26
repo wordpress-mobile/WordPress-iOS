@@ -15,6 +15,7 @@
 * [*] Fix Reader Comments: Cells could sometimes be displayed overlapping another cell [#17653]
 * [*] Fix Notifications: quote blocks in the Reply screen are not styled correctly [#13971]
 * [*] Fix Notifications pointing to large threads sometimes break the app [#23993]
+* [*] Fix an issue with search results disappearing after returning from site details [#24121]
 * [*] Fix Reader: Opening comments is slow [#21887]
 * [*] Fix unexpected "unsaved changes" notice when closing an un-edited post containing media in the experimental editor [#24102]
 
