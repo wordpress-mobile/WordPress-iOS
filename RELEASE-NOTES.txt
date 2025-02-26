@@ -8,6 +8,7 @@
 * [*] Prevent a intermittent crash when opening the experimental editor's "more" menu [#24065]
 * [*] Fix incorrect background color for draft post cells on dashboard [#24080]
 * [*] Fix an issue with comments sometimes displaying black text on black background in dark mode [#23536]
+* [*] Fix broken header view visible when post is loading [#24123]
 * [*] Fix incorrect sizing of images and other attachments in comments [#19943]
 * [*] Fix P2 Comments: Empty list item appears after embedded lists [#18690]
 * [*] Fix Reader Comments: Reply button is hidden when pasting long text (the ap now uses a sheet) [#17964]
