@@ -92,13 +92,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// The coordinator, responsible for the logic
     var coordinator: ReaderDetailCoordinator?
 
-    /// Hide the comments button in the toolbar
-    @objc var shouldHideComments: Bool = false {
-        didSet {
-            toolbar.shouldHideComments = shouldHideComments
-        }
-    }
-
     /// The post being shown
     @objc var post: ReaderPost? {
         return coordinator?.post
