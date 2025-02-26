@@ -41,6 +41,7 @@ final class ReaderSearchViewController: UIViewController {
     private var currentChildVC: UIViewController?
     private var previousSearchTopic: ReaderAbstractTopic?
     private let contextManager = ContextManager.shared
+    private var isFirstAppearance = false
 
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,8 +63,11 @@ final class ReaderSearchViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        DispatchQueue.main.async {
-            self.searchController.searchBar.becomeFirstResponder()
+        if isFirstAppearance {
+            isFirstAppearance = false
+            DispatchQueue.main.async {
+                self.searchController.searchBar.becomeFirstResponder()
+            }
         }
     }
 
@@ -222,7 +226,9 @@ extension ReaderSearchViewController: UISearchBarDelegate {
     }
 
     public func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        showSearchSuggestions()
+        if (searchBar.text ?? "").isEmpty {
+            showSearchSuggestions()
+        }
     }
 
     public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
