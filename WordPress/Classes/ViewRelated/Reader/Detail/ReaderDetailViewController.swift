@@ -295,10 +295,17 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             }
             scrollView.addSubview(activityIndicator)
             activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-            ])
+            if post == nil {
+                NSLayoutConstraint.activate([
+                    activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                    activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+                ])
+            } else {
+                NSLayoutConstraint.activate([
+                    activityIndicator.centerXAnchor.constraint(equalTo: webView.centerXAnchor),
+                    activityIndicator.topAnchor.constraint(equalTo: webView.topAnchor, constant: 64),
+                ])
+            }
             activityIndicator.startAnimating()
         }
     }
