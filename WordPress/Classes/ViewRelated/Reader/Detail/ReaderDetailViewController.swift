@@ -187,6 +187,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         updateLeftBarButtonItem()
         setupFeaturedImage()
         updateFollowButtonState()
@@ -286,6 +287,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     func showLoading() {
         if activityIndicator.superview == nil {
+            if post == nil {
+                header.alpha = 0
+            }
             for view in allContentViews {
                 view.alpha = 0
             }
@@ -307,6 +311,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         activityIndicator.stopAnimating()
         activityIndicator.removeFromSuperview()
         UIView.animate(withDuration: 0.25) {
+            self.header.alpha = 1
             for view in self.allContentViews {
                 view.alpha = 1
             }
