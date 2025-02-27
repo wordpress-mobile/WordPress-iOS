@@ -72,7 +72,7 @@ private final class ReaderPostCellView: UIView {
     let buttonAuthor = makeAuthorButton()
     let timeLabel = UILabel()
     let seenCheckmark = UIImageView()
-    let buttonMore = makeButton(image: UIImage(systemName:"ellipsis"), font: .systemFont(ofSize: 13))
+    let buttonMore = makeButton(image: UIImage(systemName: "ellipsis"), font: .systemFont(ofSize: 13))
 
     // Content
     let titleLabel = UILabel()
@@ -342,17 +342,25 @@ private final class ReaderPostCellView: UIView {
             return configuration
         }()
 
+        let font = UIFont.preferredFont(forTextStyle: .footnote).withWeight(.medium)
+
         buttons.comment.isHidden = !viewModel.isCommentsEnabled
         if viewModel.isCommentsEnabled {
-            buttons.comment.configuration?.attributedTitle = AttributedString(kFormatted(viewModel.commentCount), attributes: Self.toolbarAttributes)
+            buttons.comment.configuration?.attributedTitle = AttributedString(kFormatted(viewModel.commentCount), attributes: AttributeContainer([
+                .font: font,
+                .foregroundColor: UIColor.secondaryLabel
+            ]))
         }
         buttons.like.isHidden = !viewModel.isLikesEnabled
         if viewModel.isLikesEnabled {
             buttons.like.configuration = {
                 var configuration = buttons.like.configuration ?? .plain()
-                configuration.attributedTitle = AttributedString(kFormatted(viewModel.likeCount), attributes: Self.toolbarAttributes)
+                configuration.attributedTitle = AttributedString(kFormatted(viewModel.likeCount), attributes: AttributeContainer([
+                    .font: font,
+                    .foregroundColor: viewModel.isLiked ? UIAppColor.primary : UIColor.secondaryLabel
+                ]))
                 configuration.image = viewModel.isLiked ? WPStyleGuide.ReaderDetail.likeSelectedToolbarIcon : WPStyleGuide.ReaderDetail.likeToolbarIcon
-                configuration.baseForegroundColor = viewModel.isLiked ? .systemYellow : .secondaryLabel
+                configuration.baseForegroundColor = viewModel.isLiked ? UIAppColor.primary : .secondaryLabel
                 return configuration
             }()
         }
@@ -416,7 +424,7 @@ private func makeButton(image: UIImage? = nil, font: UIFont = UIFont.preferredFo
     configuration.imagePadding = 6
     configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(font: font)
     configuration.baseForegroundColor = .secondaryLabel
-    configuration.contentInsets = .init(top: 16, leading: 12, bottom: 16, trailing: 12)
+    configuration.contentInsets = .init(top: 12, leading: 12, bottom: 16, trailing: 12)
 
     let button = UIButton(configuration: configuration)
     if #available(iOS 17.0, *) {
