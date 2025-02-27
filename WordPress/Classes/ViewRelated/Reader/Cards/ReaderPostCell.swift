@@ -72,7 +72,7 @@ private final class ReaderPostCellView: UIView {
     let buttonAuthor = makeAuthorButton()
     let timeLabel = UILabel()
     let seenCheckmark = UIImageView()
-    let buttonMore = makeButton(systemImage: "ellipsis", font: .systemFont(ofSize: 13))
+    let buttonMore = makeButton(image: UIImage(systemName:"ellipsis"), font: .systemFont(ofSize: 13))
 
     // Content
     let titleLabel = UILabel()
@@ -337,7 +337,7 @@ private final class ReaderPostCellView: UIView {
     private func configureToolbar(with viewModel: ReaderPostToolbarViewModel) {
         buttons.bookmark.configuration = {
             var configuration = buttons.bookmark.configuration ?? .plain()
-            configuration.image = UIImage(systemName: viewModel.isBookmarked ? "bookmark.fill" : "bookmark")
+            configuration.image = viewModel.isBookmarked ? WPStyleGuide.ReaderDetail.saveSelectedToolbarIcon : WPStyleGuide.ReaderDetail.saveToolbarIcon
             configuration.baseForegroundColor = viewModel.isBookmarked ? UIAppColor.primary : .secondaryLabel
             return configuration
         }()
@@ -351,7 +351,7 @@ private final class ReaderPostCellView: UIView {
             buttons.like.configuration = {
                 var configuration = buttons.like.configuration ?? .plain()
                 configuration.attributedTitle = AttributedString(kFormatted(viewModel.likeCount), attributes: Self.toolbarAttributes)
-                configuration.image = UIImage(systemName: viewModel.isLiked ? "star.fill" : "star")
+                configuration.image = viewModel.isLiked ? WPStyleGuide.ReaderDetail.likeSelectedToolbarIcon : WPStyleGuide.ReaderDetail.likeToolbarIcon
                 configuration.baseForegroundColor = viewModel.isLiked ? .systemYellow : .secondaryLabel
                 return configuration
             }()
@@ -395,10 +395,10 @@ private final class ReaderPostCellView: UIView {
 // MARK: - Helpers
 
 private struct ReaderPostToolbarButtons {
-    let bookmark = makeButton(systemImage: "bookmark")
-    let reblog = makeButton(systemImage: "arrow.2.squarepath")
-    let comment = makeButton(systemImage: "message")
-    let like = makeButton(systemImage: "star")
+    let bookmark = makeButton()
+    let reblog = makeButton(image: WPStyleGuide.ReaderDetail.reblogToolbarIcon)
+    let comment = makeButton(image: WPStyleGuide.ReaderDetail.commentToolbarIcon)
+    let like = makeButton()
 
     var allButtons: [UIButton] { [bookmark, reblog, comment, like] }
 }
@@ -410,9 +410,9 @@ private func makeAuthorButton() -> UIButton {
     return UIButton(configuration: configuration)
 }
 
-private func makeButton(systemImage: String, font: UIFont = UIFont.preferredFont(forTextStyle: .footnote)) -> UIButton {
+private func makeButton(image: UIImage? = nil, font: UIFont = UIFont.preferredFont(forTextStyle: .footnote)) -> UIButton {
     var configuration = UIButton.Configuration.plain()
-    configuration.image = UIImage(systemName: systemImage)
+    configuration.image = image
     configuration.imagePadding = 6
     configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(font: font)
     configuration.baseForegroundColor = .secondaryLabel
