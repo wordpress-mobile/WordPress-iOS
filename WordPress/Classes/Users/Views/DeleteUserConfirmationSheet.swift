@@ -53,7 +53,7 @@ struct DeleteUserConfirmationSheet: View {
             .onAppear {
                 Task {
                     if deleteUserViewModel.otherUsers.isEmpty {
-                        await deleteUserViewModel.fetchOtherUsers()
+                        await deleteUserViewModel.fetchOtherUsers(excluding: user)
                     }
                 }
             }
@@ -101,5 +101,5 @@ struct DeleteUserConfirmationSheet: View {
 }
 
 #Preview {
-    DeleteUserConfirmationSheet(user: .mockUser, deleteUserViewModel: .init(user: .mockUser, userService: MockUserProvider()), didTapDeleteButton: { })
+    DeleteUserConfirmationSheet(user: .mockUser, deleteUserViewModel: .init(userService: MockUserProvider()), didTapDeleteButton: { })
 }

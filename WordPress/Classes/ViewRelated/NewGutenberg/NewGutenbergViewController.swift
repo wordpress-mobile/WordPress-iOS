@@ -68,10 +68,12 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     // MARK: - GutenbergKit
 
     private let editorViewController: GutenbergKit.EditorViewController
-    private weak var autosaveTimer: Timer?
+
+    lazy var autosaver = Autosaver() {
+        self.performAutoSave()
+    }
 
     // TODO: remove (none of these APIs are needed for the new editor)
-    var autosaver = Autosaver(action: {})
     func prepopulateMediaItems(_ media: [Media]) {}
     var debouncer = WordPressShared.Debouncer(delay: 10)
     var replaceEditor: (EditorViewController, EditorViewController) -> ()
@@ -164,10 +166,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
     required init?(coder aDecoder: NSCoder) {
         fatalError()
-    }
-
-    deinit {
-        autosaveTimer?.invalidate()
     }
 
     // MARK: - Lifecycle methods
@@ -266,7 +264,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     }
 
     private func getLatestContent() async {
-        // TODO: read title as well
         let startTime = CFAbsoluteTimeGetCurrent()
         let editorData = try? await editorViewController.getTitleAndContent()
         let duration = CFAbsoluteTimeGetCurrent() - startTime
@@ -274,7 +271,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
         if let title = editorData?.title,
            let content = editorData?.content,
-           title != post.postTitle || content != post.content {
+           editorData?.changed == true {
             post.postTitle = title
             post.content = content
             post.managedObjectContext.map(ContextManager.shared.save)
@@ -320,15 +317,7 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
 
     func editor(_ viewController: GutenbergKit.EditorViewController, didUpdateContentWithState state: GutenbergKit.EditorState) {
         editorContentWasUpdated()
-
-        // Save the changes on disk (crash protection). Throttle to ensure
-        // it doesn't happen too often.
-        if autosaveTimer == nil {
-            autosaveTimer = .scheduledTimer(withTimeInterval: 7, repeats: false) { [weak self] _ in
-                self?.autosaveTimer = nil
-                self?.performAutoSave()
-            }
-        }
+        autosaver.contentDidChange()
     }
 
     func editor(_ viewController: GutenbergKit.EditorViewController, didUpdateHistoryState state: GutenbergKit.EditorState) {

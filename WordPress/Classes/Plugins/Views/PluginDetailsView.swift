@@ -22,7 +22,6 @@ struct PluginDetailsView: View {
 
     private let pluginInfo: BasicPluginInfo
 
-    @State var newVersion: UpdateCheckPluginInfo? = nil
     @State private var tappedScreenshot: Screenshot? = nil
     @StateObject var viewModel: WordPressPluginDetailViewModel
     @State var isShowingSafariView = false
@@ -43,7 +42,7 @@ struct PluginDetailsView: View {
                 }
         } else {
             return .install(slug: slug) {
-                Task { await viewModel.install() }
+                Task { await viewModel.install(slug) }
             }
         }
     }
@@ -54,14 +53,14 @@ struct PluginDetailsView: View {
         // TODO: Use `shortDescription`
         self.pluginInfo = .init(name: plugin.name, author: plugin.author, shortDescription: plugin.author)
         self.service = service
-        _viewModel = StateObject(wrappedValue: .init(slug: slug, service: service))
+        _viewModel = StateObject(wrappedValue: .init(service: service))
     }
 
     init(slug: PluginWpOrgDirectorySlug, plugin: InstalledPlugin, service: PluginServiceProtocol) {
         self.slug = slug
         self.pluginInfo = .init(name: plugin.name, author: plugin.author, shortDescription: plugin.shortDescription)
         self.service = service
-        _viewModel = StateObject(wrappedValue: .init(slug: slug, service: service))
+        _viewModel = StateObject(wrappedValue: .init(service: service))
     }
 
     var body: some View {
@@ -104,7 +103,7 @@ struct PluginDetailsView: View {
                     }
                 } else if let error = viewModel.operation?.errorMessage {
                     errorView(title: SharedStrings.Error.generic, message: error)
-                } else if let newVersion {
+                } else if let newVersion = viewModel.newVersion {
                     updateAvailableView(newVersion)
                 }
 
@@ -128,11 +127,14 @@ struct PluginDetailsView: View {
             }
         }
         .listStyle(.plain)
-        .task {
-            await viewModel.onAppear()
+        .task(id: slug) {
+            await viewModel.loadData(slug)
+        }
+        .task(id: viewModel.installed?.slug) {
+            await viewModel.versionUpdate()
         }
         .task(id: slug) {
-            await viewModel.performQuery()
+            await viewModel.performQuery(slug)
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -217,12 +219,6 @@ struct PluginDetailsView: View {
             }
 
             Spacer()
-
-            Button(Strings.updateNow) {
-                // TODO: Handle update action
-            }
-            .buttonStyle(.bordered)
-            .tint(.blue)
         }
         .padding()
         .background(Color(.systemGray6))
@@ -442,27 +438,25 @@ private struct PluginOperationStatus {
 
 @MainActor
 final class WordPressPluginDetailViewModel: ObservableObject {
-    let slug: PluginWpOrgDirectorySlug
     let service: PluginServiceProtocol
 
     @Published private(set) var isLoading = false
     @Published private(set) var plugin: PluginInformation?
     @Published private(set) var installed: InstalledPlugin?
+    @Published var newVersion: UpdateCheckPluginInfo?
     @Published private(set) var error: String?
 
     @Published private(set) fileprivate var operation: PluginOperationStatus?
 
-    private var initialLoad = false
+    var previouslyLoadedSlug: PluginWpOrgDirectorySlug?
 
-    init(slug: PluginWpOrgDirectorySlug, service: PluginServiceProtocol) {
-        self.slug = slug
+    init(service: PluginServiceProtocol) {
         self.service = service
     }
 
-    func onAppear() async {
-        guard !initialLoad else { return }
-
-        initialLoad = true
+    func loadData(_ slug: PluginWpOrgDirectorySlug) async {
+        guard previouslyLoadedSlug != slug else { return }
+        previouslyLoadedSlug = slug
 
         isLoading = true
         defer {
@@ -481,7 +475,7 @@ final class WordPressPluginDetailViewModel: ObservableObject {
         }
     }
 
-    func performQuery() async {
+    func performQuery(_ slug: PluginWpOrgDirectorySlug) async {
         for await update in await self.service.pluginInformationUpdates(query: .slug(slug)) {
             switch update {
             case let .success(plugin):
@@ -489,6 +483,16 @@ final class WordPressPluginDetailViewModel: ObservableObject {
             case let .failure(error):
                 self.error = (error as? WpApiError)?.errorMessage ?? error.localizedDescription
             }
+        }
+    }
+
+    func versionUpdate() async {
+        if let slug = installed?.slug {
+            for await update in await service.newVersionUpdates(query: .slug(slug)) {
+                newVersion = (try? update.get().first)
+            }
+        } else {
+            newVersion = nil
         }
     }
 
@@ -526,7 +530,7 @@ final class WordPressPluginDetailViewModel: ObservableObject {
         }
     }
 
-    func install() async {
+    func install(_ slug: PluginWpOrgDirectorySlug) async {
         if let operation, !operation.isCompleted {
             DDLogWarn("Can't install plugin at the moment, because there is another operation in progress: \(operation)")
             return
@@ -640,7 +644,7 @@ private enum Strings {
     static func versionAvailable(_ version: String) -> String {
         let format = NSLocalizedString(
             "pluginDetails.update.versionAvailable",
-            value: "Version %@ is available",
+            value: "Version %@ is available. Please update it from your WordPress site dashboard.",
             comment: "Message shown when a plugin update is available. The placeholder is the new version number"
         )
         return String(format: format, version)

@@ -37,11 +37,11 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         }
     }
 
-    private var likeButtonTitle: String {
-        guard let post else {
-            return likeLabel(count: likeCount)
+    private func likeButtonTitle(likeCount: Int) -> String {
+        if likeCount > 0 {
+            return likeCount.formatted(.number.notation(.compactName))
         }
-        return post.isLiked ? Constants.likedButtonTitle : Constants.likeButtonTitle
+        return Constants.likeButtonTitle
     }
 
     private var likeCount: Int {
@@ -119,7 +119,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
             return
         }
         if !post.isLiked {
-            likeButton.setTitle(Constants.likedButtonTitle, for: [])
+            likeButton.setTitle(likeButtonTitle(likeCount: likeCount + 1), for: [])
             likeButton.isSelected = true
             UINotificationFeedbackGenerator().notificationOccurred(.success)
             likeButton.imageView?.fadeInWithRotationAnimation { _ in
@@ -250,7 +250,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
 
         configureActionButton(
             likeButton,
-            title: likeButtonTitle,
+            title: likeButtonTitle(likeCount: likeCount),
             image: WPStyleGuide.ReaderDetail.likeToolbarIcon,
             highlightedImage: WPStyleGuide.ReaderDetail.likeSelectedToolbarIcon,
             selected: selected
@@ -271,6 +271,11 @@ class ReaderDetailToolbar: UIView, NibLoadable {
     }
 
     private func configureCommentActionButton() {
+        commentButton.setTitle({
+            let count = post?.commentCount.intValue ?? 0
+            return count == 0 ? Constants.commentButtonTitle : count.formatted(.number.notation(.compactName))
+        }(), for: [])
+
         commentButton.isEnabled = shouldShowCommentActionButton
 
         commentButton.setImage(WPStyleGuide.ReaderDetail.commentToolbarIcon, for: .normal)
@@ -312,24 +317,8 @@ class ReaderDetailToolbar: UIView, NibLoadable {
     }
 
     fileprivate func configureButtonTitles() {
-        let commentTitle = Constants.commentButtonTitle
-
-        likeButton.setTitle(likeButtonTitle, for: .normal)
-        likeButton.setTitle(likeButtonTitle, for: .highlighted)
-
-        commentButton.setTitle(commentTitle, for: .normal)
-        commentButton.setTitle(commentTitle, for: .highlighted)
-
         WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton, showTitle: true)
         WPStyleGuide.applyReaderReblogActionButtonTitle(reblogButton, showTitle: true)
-    }
-
-    private func likeLabel(count: Int) -> String {
-        if traitCollection.horizontalSizeClass == .compact {
-            return count > 0 ? String(count) : ""
-        } else {
-            return WPStyleGuide.likeCountForDisplay(count)
-        }
     }
 
     // MARK: - Analytics

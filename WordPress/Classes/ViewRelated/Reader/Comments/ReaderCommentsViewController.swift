@@ -115,12 +115,10 @@ extension NSNotification.Name {
         let comment = viewModel.comment
         cell.badgeTitle = comment.isFromPostAuthor() ? .authorBadgeText : nil
         cell.depth = Int(comment.depth)
-        cell.accessoryButtonType = isModerationMenuEnabled(for: comment) ? .ellipsis : .share
 
-        // if the comment can be moderated, show the context menu when tapping the accessory button.
-        // Note that accessoryButtonAction will be ignored when the menu is assigned.
-        cell.accessoryButton.showsMenuAsPrimaryAction = isModerationMenuEnabled(for: comment)
-        cell.accessoryButton.menu = isModerationMenuEnabled(for: comment) ? menu(for: comment, indexPath: indexPath, tableView: tableView, sourceView: cell.accessoryButton) : nil
+        let isModerationEnabled = isModerationMenuEnabled(for: comment)
+        cell.accessoryButton.showsMenuAsPrimaryAction = isModerationEnabled
+        cell.accessoryButton.menu = isModerationEnabled ? menu(for: comment, indexPath: indexPath, tableView: tableView, sourceView: cell.accessoryButton) : nil
         cell.configure(viewModel: viewModel, helper: helper) { [weak tableView] _ in
             guard let tableView else { return }
 
@@ -129,12 +127,9 @@ extension NSNotification.Name {
                     tableView.alpha = 1
                 }
             }
-            // don't adjust cell height when it's out of the viewport.
-            if (tableView.indexPathsForVisibleRows ?? []).contains(indexPath) {
-                UIView.setAnimationsEnabled(false)
-                tableView.performBatchUpdates({})
-                UIView.setAnimationsEnabled(true)
-            }
+            UIView.setAnimationsEnabled(false)
+            tableView.performBatchUpdates({})
+            UIView.setAnimationsEnabled(true)
         }
     }
 

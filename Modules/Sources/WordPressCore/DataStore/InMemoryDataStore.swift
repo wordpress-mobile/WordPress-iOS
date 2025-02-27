@@ -2,16 +2,37 @@ import Foundation
 @preconcurrency import Combine
 
 /// A `DataStore` type that stores data in memory.
-public actor InMemoryDataStore<T: Sendable & Identifiable>: DataStore {
+public actor InMemoryDataStore<T: Sendable & Identifiable>: DataStore where T.ID: Sendable {
 
     public struct Query: Sendable {
+        enum Filter: Sendable {
+            case all
+            case id([T.ID])
+            case multi(@Sendable (T) -> Bool)
+        }
+
         // TODO: Replace this with `Predicate` once iOS 17 becomes the minimal deployment target.
-        let filter: @Sendable (T) -> Bool
+        let filter: Filter
         let sortBy: (any SortComparator<T>)?
 
-        public init(sortBy: (any SortComparator<T>)?, filter: @escaping @Sendable (T) -> Bool) {
+        init(sortBy: (any SortComparator<T>)?) {
             self.sortBy = sortBy
-            self.filter = filter
+            self.filter = .all
+        }
+
+        init(sortBy: (any SortComparator<T>)?, filter: @escaping @Sendable (T) -> Bool) {
+            self.sortBy = sortBy
+            self.filter = .multi(filter)
+        }
+
+        init(id: T.ID) {
+            self.sortBy = nil
+            self.filter = .id([id])
+        }
+
+        init(sortBy: (any SortComparator<T>)?, ids: [T.ID]) {
+            self.sortBy = nil
+            self.filter = .id(ids)
         }
     }
 
@@ -32,7 +53,16 @@ public actor InMemoryDataStore<T: Sendable & Identifiable>: DataStore {
     }
 
     public func list(query: Query) async throws -> [T] {
-        let result = storage.values.filter(query.filter)
+        let result: [T]
+
+        switch query.filter {
+        case .all:
+            result = Array(storage.values)
+        case let .id(id):
+            result = id.compactMap { storage[$0] }
+        case let .multi(filter):
+            result = storage.values.filter(filter)
+        }
 
         if let sortBy = query.sortBy {
             return result.sorted(using: sortBy)
@@ -55,7 +85,7 @@ public actor InMemoryDataStore<T: Sendable & Identifiable>: DataStore {
         }
     }
 
-    public func store(_ data: [T]) async throws {
+    public func store<S: Sequence>(_ data: S) async throws where S.Element == T {
         var updated = Set<T.ID>()
         for item in data {
             updated.insert(item.id)

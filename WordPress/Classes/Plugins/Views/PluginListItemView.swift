@@ -11,16 +11,12 @@ struct PluginListItemView: View {
     @State private var isShowingSafariView = false
 
     let plugin: InstalledPlugin
-    let viewModel: InstalledPluginsListViewModel
-
-    // Add this computed property to avoid direct state access in the view body
-    private var isUpdating: Bool {
-        viewModel.updating.contains(plugin.slug)
-    }
+    let updateAvailable: Bool
+    let service: PluginServiceProtocol
 
     var body: some View {
         HStack(alignment: .top) {
-            PluginIconView(slug: plugin.possibleWpOrgDirectorySlug, service: viewModel.service)
+            PluginIconView(slug: plugin.possibleWpOrgDirectorySlug, service: service)
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(plugin.name.makePlainText())
@@ -33,9 +29,27 @@ struct PluginListItemView: View {
                     .font(.body)
                     .foregroundStyle(.primary)
 
-                Text(Strings.version(plugin.version))
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                HStack(alignment: .center) {
+                    Text(Strings.version(plugin.version))
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+
+                    if updateAvailable {
+                        Label {
+                            Text("Update available")
+                        } icon: {
+                            Image(systemName: "arrow.triangle.2.circlepath")
+                                .imageScale(.small)
+                        }
+                        .font(.caption.bold())
+                        .foregroundStyle(.orange)
+                        .labelStyle(.titleAndIcon)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(Color.orange.opacity(0.15))
+                        .clipShape(Capsule())
+                    }
+                }
             }
 
             Spacer()

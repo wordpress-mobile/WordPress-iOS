@@ -193,7 +193,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         let button = UIBarButtonItem(
             image: comment.allowsModeration()
             ? UIImage(systemName: "ellipsis")
-            : UIImage(systemName: Style.Content.shareIconImageName),
+            : UIImage(systemName: "square.and.arrow.up"),
             style: .plain,
             target: self,
             action: #selector(shareCommentURL)

@@ -11,16 +11,31 @@ struct ReaderFeedCell: View {
                 .frame(width: 40, height: 40)
 
             VStack(alignment: .leading) {
-                Text(feed.title.stringByDecodingXMLCharacters())
+                Text(title)
                     .font(.body)
                     .lineLimit(1)
 
-                Text(feed.urlForDisplay)
+                Text(subtitle)
                     .font(.footnote)
                     .foregroundStyle(.secondary)
-                    .lineLimit(1)
+                    .lineLimit(2)
             }
         }
+    }
+
+    var title: String {
+        let title = feed.title.stringByDecodingXMLCharacters()
+        if !title.isEmpty {
+            return title
+        }
+        return feed.urlForDisplay
+    }
+
+    var subtitle: String {
+        if let description = feed.feedDescription, !description.isEmpty {
+            return description.stringByDecodingXMLCharacters()
+        }
+        return feed.urlForDisplay
     }
 }
 

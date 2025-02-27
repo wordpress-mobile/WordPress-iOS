@@ -146,9 +146,7 @@
 
 - (void)configureNavbar
 {
-    // Don't show 'Reader' in the next-view back button
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
-    self.navigationItem.backBarButtonItem = backButton;
+    self.navigationItem.backButtonTitle = @"";
 
     self.title = NSLocalizedString(@"Comments", @"Title of the reader's comments screen");
     self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
@@ -206,6 +204,9 @@
 }
 
 - (UIView *)cachedHeaderView {
+    if (!self.allowsPushingPostDetails) {
+        return nil;
+    }
     if (!_cachedHeaderView) {
         _cachedHeaderView = [self configuredHeaderViewFor:self.tableView];
     }

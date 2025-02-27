@@ -7,7 +7,6 @@ import Combine
 final class CommentContentTableViewCell: UITableViewCell, NibReusable {
     // all the available images for the accessory button.
     enum AccessoryButtonType {
-        case share
         case ellipsis
         case info
     }
@@ -22,9 +21,7 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     @objc var contentLinkTapAction: ((URL) -> Void)? = nil
 
-    /// Encapsulate the accessory button image assignment through an enum, to apply a standardized image configuration.
-    /// See `accessoryIconConfiguration` in `WPStyleGuide+CommentDetail`.
-    var accessoryButtonType: AccessoryButtonType = .share {
+    var accessoryButtonType: AccessoryButtonType = .ellipsis {
         didSet {
             accessoryButton.setImage(accessoryButtonImage, for: .normal)
         }
@@ -300,12 +297,10 @@ private extension CommentContentTableViewCell {
 
     var accessoryButtonImage: UIImage? {
         switch accessoryButtonType {
-        case .share:
-            return .init(systemName: Style.shareIconImageName, withConfiguration: Style.accessoryIconConfiguration)
         case .ellipsis:
-            return .init(systemName: Style.ellipsisIconImageName, withConfiguration: Style.accessoryIconConfiguration)
+            return .init(systemName: "ellipsis", withConfiguration: UIImage.SymbolConfiguration(font: .preferredFont(forTextStyle: .footnote)))?.withTintColor(.secondaryLabel)
         case .info:
-            return .init(systemName: Style.infoIconImageName, withConfiguration: Style.accessoryIconConfiguration)
+            return .init(systemName: "info.circle", withConfiguration: UIImage.SymbolConfiguration(font: .preferredFont(forTextStyle: .footnote)))
         }
     }
 

@@ -23,24 +23,22 @@ public class UserDeleteViewModel: ObservableObject {
     }
 
     private let userService: UserServiceProtocol
-    let user: DisplayUser
 
-    init(user: DisplayUser, userService: UserServiceProtocol) {
-        self.user = user
+    init(userService: UserServiceProtocol) {
         self.userService = userService
     }
 
-    func fetchOtherUsers() async {
+    func fetchOtherUsers(excluding user: DisplayUser) async {
         do {
             self.otherUsers = try await userService.allUsers()
-                .filter { $0.id != self.user.id } // Don't allow re-assigning to yourself
+                .filter { $0.id != user.id } // Don't allow re-assigning to yourself
                 .sorted(using: KeyPathComparator(\.username))
         } catch {
             self.error = error
         }
     }
 
-    func deleteUser() async throws {
+    func delete(user: DisplayUser) async throws {
         guard let otherUserId = selectedUser?.id, otherUserId != user.id else { return }
 
         isDeletingUser = true
