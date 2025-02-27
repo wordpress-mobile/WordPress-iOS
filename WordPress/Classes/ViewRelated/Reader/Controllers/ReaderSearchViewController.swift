@@ -41,7 +41,7 @@ final class ReaderSearchViewController: UIViewController {
     private var currentChildVC: UIViewController?
     private var previousSearchTopic: ReaderAbstractTopic?
     private let contextManager = ContextManager.shared
-    private var isFirstAppearance = false
+    private var isFirstAppearance = true
 
     public override func viewDidLoad() {
         super.viewDidLoad()
