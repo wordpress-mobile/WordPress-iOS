@@ -102,7 +102,9 @@ struct ReaderTopicPreviewView: UIViewControllerRepresentable {
     let topic: ReaderAbstractTopic
 
     func makeUIViewController(context: Context) -> ReaderStreamViewController {
-        ReaderStreamViewController.controllerWithTopic(topic)
+        let vc = ReaderStreamViewController.controllerWithTopic(topic)
+        vc.additionalSafeAreaInsets.top = 12
+        return vc
     }
 
     func updateUIViewController(_ vc: ReaderStreamViewController, context: Context) {
