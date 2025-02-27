@@ -20,6 +20,8 @@ final class ReaderTagStreamHeader: ReaderBaseHeaderView, ReaderStreamHeader {
         stackView.pinEdges()
 
         applyStyles()
+
+        followButton.addTarget(self, action: #selector(didTapFollowButton), for: .primaryActionTriggered)
     }
 
     public required init?(coder: NSCoder) {
@@ -52,7 +54,7 @@ final class ReaderTagStreamHeader: ReaderBaseHeaderView, ReaderStreamHeader {
 
     // MARK: - Actions
 
-    @IBAction func didTapFollowButton(_ sender: UIButton) {
+    @objc private func didTapFollowButton(_ sender: UIButton) {
         followButton.isUserInteractionEnabled = false
 
         delegate?.handleFollowActionForHeader(self, completion: { [weak self] in
