@@ -205,6 +205,10 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
         containerViewController?.cachedHeaderView()
     }
 
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        containerViewController?.cachedHeaderView() == nil ? 0 : UITableView.automaticDimension
+    }
+
     // MARK: - UIScrollViewDelegate
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

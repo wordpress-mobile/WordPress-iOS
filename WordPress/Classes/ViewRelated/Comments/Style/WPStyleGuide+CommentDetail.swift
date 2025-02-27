@@ -41,11 +41,6 @@ extension WPStyleGuide {
             static let highlightedBarBackgroundColor = UIAppColor.blue(.shade40)
 
             static let placeholderImage = UIImage.gravatarPlaceholderImage
-
-            static let accessoryIconConfiguration = UIImage.SymbolConfiguration(font: CommentDetail.tertiaryTextFont, scale: .medium)
-            static let shareIconImageName = "square.and.arrow.up"
-            static let ellipsisIconImageName = "ellipsis.circle"
-            static let infoIconImageName = "info.circle"
         }
 
         public struct ReplyIndicator {

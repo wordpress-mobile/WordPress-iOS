@@ -16,6 +16,7 @@
 * [*] Fix Notifications pointing to large threads sometimes break the app [#23993]
 * [*] Fix Reader: Opening comments is slow [#21887]
 * [*] Fix an issue with comments button being disabled when shown from Comments or Notifications [#24120]
+* [*] Fix unexpected "unsaved changes" notice when closing an un-edited post containing media in the experimental editor [#24102]
 
 25.7
 -----

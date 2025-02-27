@@ -8,12 +8,21 @@ final class ReaderCommentAction {
         navigateToCommentID: Int? = nil,
         source: ReaderCommentsSource
     ) {
-        guard let controller = ReaderCommentsViewController(post: post, source: source) else {
+        guard let commentsVC = ReaderCommentsViewController(post: post, source: source) else {
             return
         }
-        controller.navigateToCommentID = navigateToCommentID as NSNumber?
-        controller.trackCommentsOpened()
-        controller.hidesBottomBarWhenPushed = true
-        origin.navigationController?.pushViewController(controller, animated: true)
+        commentsVC.navigateToCommentID = navigateToCommentID as NSNumber?
+        commentsVC.trackCommentsOpened()
+        commentsVC.hidesBottomBarWhenPushed = true
+
+        if origin.traitCollection.horizontalSizeClass == .compact {
+            let navigationVC = UINavigationController(rootViewController: commentsVC)
+            commentsVC.navigationItem.leftBarButtonItem = UIBarButtonItem(title: SharedStrings.Button.close, primaryAction: UIAction { [weak origin] _ in
+                origin?.dismiss(animated: true)
+            })
+            origin.present(navigationVC, animated: true)
+        } else {
+            origin.navigationController?.pushViewController(commentsVC, animated: true)
+        }
     }
 }

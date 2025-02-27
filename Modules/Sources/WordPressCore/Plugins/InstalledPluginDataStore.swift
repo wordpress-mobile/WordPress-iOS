@@ -6,7 +6,7 @@ public typealias InMemoryInstalledPluginDataStore = InMemoryDataStore<InstalledP
 
 extension PluginDataStoreQuery {
     public static var all: PluginDataStoreQuery {
-        .init(sortBy: KeyPathComparator(\.name)) { _ in true }
+        .init(sortBy: KeyPathComparator(\.name))
     }
 
     public static var active: PluginDataStoreQuery {
