@@ -424,7 +424,7 @@ private func makeButton(image: UIImage? = nil, font: UIFont = UIFont.preferredFo
     configuration.imagePadding = 6
     configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(font: font)
     configuration.baseForegroundColor = .secondaryLabel
-    configuration.contentInsets = .init(top: 12, leading: 12, bottom: 16, trailing: 12)
+    configuration.contentInsets = .init(top: 12, leading: 12, bottom: 14, trailing: 12)
 
     let button = UIButton(configuration: configuration)
     if #available(iOS 17.0, *) {
