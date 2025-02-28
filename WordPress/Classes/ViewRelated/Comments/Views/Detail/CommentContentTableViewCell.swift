@@ -353,7 +353,7 @@ private extension CommentContentTableViewCell {
             attributes.font = font.withWeight(.medium)
             return attributes
         }
-        configuration.contentInsets = .init(top: 8, leading: 8, bottom: 12, trailing: 8)
+        configuration.contentInsets = .init(top: 8, leading: 8, bottom: 8, trailing: 8)
         configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(font: font)
         return configuration
     }
@@ -388,13 +388,8 @@ private extension CommentContentTableViewCell {
     func updateLikeButton(isLiked: Bool, likeCount: Int) {
         likeButton.tintColor = isLiked ? UIAppColor.primary : .secondaryLabel
         if var configuration = likeButton.configuration {
-<<<<<<< HEAD
-            configuration.image = UIImage(systemName: isLiked ? "star.fill" : "star")
-            configuration.title = likeCount > 0 ? "\(likeCount)" : String.noLikes
-=======
             configuration.image = isLiked ? WPStyleGuide.ReaderDetail.likeSelectedToolbarIcon : WPStyleGuide.ReaderDetail.likeToolbarIcon
-            configuration.title = likeCount > 0 ? "\(likeCount)" : nil
->>>>>>> 7e85ddcd5b (Update icon in comments)
+            configuration.title = likeCount > 0 ? "\(likeCount)" : String.noLikes
             likeButton.accessibilityLabel = {
                 switch likeCount {
                 case .zero: .noLikes

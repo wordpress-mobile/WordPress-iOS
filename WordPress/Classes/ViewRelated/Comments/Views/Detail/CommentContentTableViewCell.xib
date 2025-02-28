@@ -28,7 +28,7 @@
                         </constraints>
                     </view>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="hcN-S7-sLG" userLabel="Container Stack View">
-                        <rect key="frame" x="16" y="0.0" width="288" height="336"/>
+                        <rect key="frame" x="16" y="4" width="288" height="336"/>
                         <subviews>
                             <view contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="f2E-yC-BJS" userLabel="Header View">
                                 <rect key="frame" x="0.0" y="0.0" width="288" height="53"/>
@@ -155,10 +155,10 @@
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="hcN-S7-sLG" secondAttribute="trailing" constant="16" id="2zy-oR-X5O"/>
-                    <constraint firstAttribute="bottom" secondItem="hcN-S7-sLG" secondAttribute="bottom" priority="999" constant="4" id="FxL-ee-fbZ"/>
+                    <constraint firstAttribute="bottom" secondItem="hcN-S7-sLG" secondAttribute="bottom" priority="999" id="FxL-ee-fbZ"/>
                     <constraint firstItem="mNJ-fg-sKO" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="II8-F0-CBs"/>
                     <constraint firstItem="mNJ-fg-sKO" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="eId-Od-5wj"/>
-                    <constraint firstItem="hcN-S7-sLG" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="esQ-oB-yxJ"/>
+                    <constraint firstItem="hcN-S7-sLG" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="4" id="esQ-oB-yxJ"/>
                     <constraint firstAttribute="bottom" secondItem="mNJ-fg-sKO" secondAttribute="bottom" id="izD-cW-YFx"/>
                     <constraint firstItem="hcN-S7-sLG" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="uFL-PF-ffo"/>
                 </constraints>
