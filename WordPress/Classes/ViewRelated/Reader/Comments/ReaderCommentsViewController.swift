@@ -70,7 +70,6 @@ extension NSNotification.Name {
             return
         }
         let controller = ReaderDetailViewController.controllerWithPost(post)
-        controller.shouldHideComments = true
         navigationController?.pushViewController(controller, animated: true)
     }
 

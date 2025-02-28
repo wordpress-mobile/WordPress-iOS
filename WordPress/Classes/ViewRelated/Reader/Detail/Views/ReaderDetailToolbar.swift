@@ -25,9 +25,6 @@ class ReaderDetailToolbar: UIView, NibLoadable {
     /// An observer of the number of likes of the post
     private var commentCountObserver: NSKeyValueObservation?
 
-    /// If we should hide the comments button
-    var shouldHideComments = false
-
     weak var delegate: ReaderDetailToolbarDelegate? = nil
 
     var displaySetting: ReaderDisplaySettings = .standard {
@@ -295,7 +292,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
             return false
         }
 
-        if (post.isWPCom || post.isJetpack) && !shouldHideComments {
+        if post.isWPCom || post.isJetpack {
             let commentCount = post.commentCount?.intValue ?? 0
             if (ReaderHelpers.isLoggedIn() && post.commentsOpen) || commentCount > 0 {
                 return true
