@@ -1046,8 +1046,7 @@ private extension ReaderDetailViewController {
         // If a Related post fails to load, disable the More and Share buttons as they won't do anything.
         let rightItems = [
             moreButtonItem(enabled: enableRightBarButtons),
-            shareButtonItem(enabled: enableRightBarButtons),
-            safariButtonItem()
+            shareButtonItem(enabled: enableRightBarButtons)
         ]
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.rightBarButtonItems = rightItems.compactMap({ $0 })
@@ -1088,13 +1087,6 @@ private extension ReaderDetailViewController {
 
     @objc func didTapDismissButton(_ sender: UIButton) {
         dismiss(animated: true)
-    }
-
-    func safariButtonItem() -> UIBarButtonItem? {
-        let button = barButtonItem(with: .gridicon(.globe), action: #selector(didTapBrowserButton(_:)))
-        button.accessibilityLabel = Strings.safariButtonAccessibilityLabel
-
-        return button
     }
 
     func moreButtonItem(enabled: Bool = true) -> UIBarButtonItem? {
