@@ -190,6 +190,9 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     // assign the topic last.
     post.topic = topic;
 
+    // auto-suggested image, but NOT an explcitly specified featured image
+    post.pathForDisplayImage = remotePost.autoSuggestedFeaturedImage;
+
     return post;
 }
 
