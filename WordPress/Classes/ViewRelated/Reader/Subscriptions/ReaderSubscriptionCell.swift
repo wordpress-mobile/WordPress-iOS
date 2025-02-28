@@ -39,8 +39,8 @@ struct ReaderSubscriptionCell: View {
             Spacer()
 
             HStack(spacing: 0) {
-                if let status = ReaderSubscriptionNotificationsStatus(site: site) {
-                    ReaderSubscriptionNotificationSettingsButton(site: site, status: status)
+                if site.canManageNotifications {
+                    ReaderSubscriptionNotificationSettingsButton(site: site)
                 }
                 buttonMore
             }

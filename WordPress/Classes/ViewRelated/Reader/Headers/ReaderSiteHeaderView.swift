@@ -79,8 +79,14 @@ private struct ReaderSiteHeader: View {
                                    size: .regular) {
                     viewModel.updateFollowStatus()
                 }
-                if let site = viewModel.site, site.following {
-                    ReaderSiteHeaderNotificationSettings(site: site)
+                if let site = viewModel.site, site.canManageNotifications {
+                    ReaderSubscriptionNotificationSettingsButton(site: site)
+                        .padding(.horizontal, 2)
+                        .padding(.vertical, 8)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 5)
+                                .stroke(Color(.separator), lineWidth: 1)
+                        )
                 }
             }
         }
@@ -110,22 +116,6 @@ private struct ReaderSiteHeader: View {
                                                     "'%1$@' is a placeholder for the blog post count. " +
                                                     "'%2$@' is a placeholder for the blog subscriber count. " +
                                                     "Example: `5,000 posts • 10M subscribers`")
-    }
-}
-
-private struct ReaderSiteHeaderNotificationSettings: View {
-    @ObservedObject var site: ReaderSiteTopic
-
-    var body: some View {
-        if let status = ReaderSubscriptionNotificationsStatus(site: site) {
-            ReaderSubscriptionNotificationSettingsButton(site: site, status: status)
-                .padding(.horizontal, 2)
-                .padding(.vertical, 8)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 5)
-                        .stroke(Color(.separator), lineWidth: 1)
-                )
-        }
     }
 }
 

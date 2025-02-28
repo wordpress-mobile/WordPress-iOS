@@ -1,9 +1,10 @@
 import SwiftUI
 
 struct ReaderSubscriptionNotificationSettingsButton: View {
-    let site: ReaderSiteTopic
-    let status: ReaderSubscriptionNotificationsStatus
-    @State var isShowingSettings = false
+    @ObservedObject var site: ReaderSiteTopic
+
+    @State private var isShowingSettings = false
+    @State private var status: ReaderSubscriptionNotificationsStatus = .none
 
     var body: some View {
         Button {
@@ -32,6 +33,41 @@ struct ReaderSubscriptionNotificationSettingsButton: View {
             ReaderSubscriptionNotificationSettingsView(siteID: site.siteID.intValue)
                 .presentationDetents([.medium, .large])
                 .edgesIgnoringSafeArea(.bottom)
+        }
+        .onReceive(site.emailSubscription?.objectWillChange ?? .init()) {
+            refresh()
+        }
+        .onReceive(site.postSubscription?.objectWillChange ?? .init()) {
+            refresh()
+        }
+        .onAppear { refresh() }
+    }
+
+    private func refresh() {
+        status = ReaderSubscriptionNotificationsStatus(site: site)
+    }
+}
+
+private enum ReaderSubscriptionNotificationsStatus {
+    /// Receives both posts and notifications
+    case all
+    /// Receives some notifications
+    case personalized
+    /// Receives none
+    case none
+
+    init(site: ReaderSiteTopic) {
+        let posts = site.postSubscription
+        let emails = site.emailSubscription
+
+        let sendPosts = (posts?.sendPosts ?? false) || (emails?.sendPosts ?? false)
+        let sendComments = emails?.sendComments ?? false
+        if sendPosts && sendComments {
+            self = .all
+        } else if sendPosts || sendComments {
+            self = .personalized
+        } else {
+            self = .none
         }
     }
 }
