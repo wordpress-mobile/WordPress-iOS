@@ -324,7 +324,7 @@ private extension CommentContentTableViewCell {
         accessoryButton?.setImage(accessoryButtonImage, for: .normal)
         accessoryButton?.addTarget(self, action: #selector(accessoryButtonTapped), for: .touchUpInside)
 
-        replyButton.configuration = makeReactionButtonConfiguration(systemImage: "arrowshape.turn.up.left")
+        replyButton.configuration = makeReactionButtonConfiguration(image: UIImage(named: "icon-reader-comment-reply"))
         replyButton.configuration?.contentInsets.leading = 0
         replyButton.tintColor = .secondaryLabel
         replyButton.setTitle(.reply, for: .normal)
@@ -332,7 +332,7 @@ private extension CommentContentTableViewCell {
         replyButton.maximumContentSizeCategory = .accessibilityMedium
         replyButton.accessibilityIdentifier = .replyButtonAccessibilityId
 
-        likeButton.configuration = makeReactionButtonConfiguration(systemImage: "star")
+        likeButton.configuration = makeReactionButtonConfiguration(image: WPStyleGuide.ReaderDetail.likeToolbarIcon)
         likeButton.tintColor = .secondaryLabel
 
         likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
@@ -342,18 +342,18 @@ private extension CommentContentTableViewCell {
         applyStyles()
     }
 
-    private func makeReactionButtonConfiguration(systemImage: String) -> UIButton.Configuration {
+    private func makeReactionButtonConfiguration(image: UIImage? = nil) -> UIButton.Configuration {
         var configuration = UIButton.Configuration.plain()
         let font = UIFont.preferredFont(forTextStyle: .footnote)
-        configuration.image = UIImage(systemName: systemImage)
+        configuration.image = image
         configuration.imagePlacement = .leading
         configuration.imagePadding = 6
         configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer {
             var attributes = $0
-            attributes.font = font
+            attributes.font = font.withWeight(.medium)
             return attributes
         }
-        configuration.contentInsets = .init(top: 10, leading: 8, bottom: 12, trailing: 8)
+        configuration.contentInsets = .init(top: 8, leading: 8, bottom: 12, trailing: 8)
         configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(font: font)
         return configuration
     }
@@ -388,8 +388,13 @@ private extension CommentContentTableViewCell {
     func updateLikeButton(isLiked: Bool, likeCount: Int) {
         likeButton.tintColor = isLiked ? UIAppColor.primary : .secondaryLabel
         if var configuration = likeButton.configuration {
+<<<<<<< HEAD
             configuration.image = UIImage(systemName: isLiked ? "star.fill" : "star")
             configuration.title = likeCount > 0 ? "\(likeCount)" : String.noLikes
+=======
+            configuration.image = isLiked ? WPStyleGuide.ReaderDetail.likeSelectedToolbarIcon : WPStyleGuide.ReaderDetail.likeToolbarIcon
+            configuration.title = likeCount > 0 ? "\(likeCount)" : nil
+>>>>>>> 7e85ddcd5b (Update icon in comments)
             likeButton.accessibilityLabel = {
                 switch likeCount {
                 case .zero: .noLikes
