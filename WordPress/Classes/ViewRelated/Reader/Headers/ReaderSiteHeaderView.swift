@@ -45,7 +45,6 @@ class ReaderSiteHeaderView: ReaderBaseHeaderView, ReaderStreamHeader {
 // MARK: - ReaderSiteHeader
 
 private struct ReaderSiteHeader: View {
-
     @ObservedObject var viewModel: ReaderSiteHeaderViewModel
 
     var body: some View {
@@ -74,10 +73,15 @@ private struct ReaderSiteHeader: View {
             if viewModel.site?.isExternal == false {
                 countsDisplay
             }
-            ReaderFollowButton(isFollowing: viewModel.isFollowingSite,
-                               isEnabled: viewModel.isFollowEnabled,
-                               size: .regular) {
-                viewModel.updateFollowStatus()
+            HStack {
+                ReaderFollowButton(isFollowing: viewModel.isFollowingSite,
+                                   isEnabled: viewModel.isFollowEnabled,
+                                   size: .regular) {
+                    viewModel.updateFollowStatus()
+                }
+                if let site = viewModel.site, site.following {
+                    ReaderSiteHeaderNotificationSettings(site: site)
+                }
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
@@ -107,7 +111,22 @@ private struct ReaderSiteHeader: View {
                                                     "'%2$@' is a placeholder for the blog subscriber count. " +
                                                     "Example: `5,000 posts • 10M subscribers`")
     }
+}
 
+private struct ReaderSiteHeaderNotificationSettings: View {
+    @ObservedObject var site: ReaderSiteTopic
+
+    var body: some View {
+        if let status = ReaderSubscriptionNotificationsStatus(site: site) {
+            ReaderSubscriptionNotificationSettingsButton(site: site, status: status)
+                .padding(.horizontal, 2)
+                .padding(.vertical, 8)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 5)
+                        .stroke(Color(.separator), lineWidth: 1)
+                )
+        }
+    }
 }
 
 // MARK: - ReaderSiteHeaderViewModel
@@ -148,5 +167,4 @@ private final class ReaderSiteHeaderViewModel: ObservableObject {
             self?.isFollowEnabled = true
         }
     }
-
 }
