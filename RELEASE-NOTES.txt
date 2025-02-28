@@ -5,6 +5,7 @@
 * [*] Add depth indicators for comment threads to make them easier to follow [#24117]
 * [*] Enable dismissing the virtual keyboard in the experimental editor [#23988]
 * [*] Remove Submit Feedback form from the Me menu [#24020]
+* [*] Update iconography in Reader to match WordPress design system [#24132]
 * [*] Fix unselectable group blocks in the experimental editor [https://github.com/wordpress-mobile/GutenbergKit/pull/68]
 * [*] Prevent a intermittent crash when opening the experimental editor's "more" menu [#24065]
 * [*] Fix an issue with follow/unfollow buttons not working for tags [#24130]
