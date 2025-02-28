@@ -133,7 +133,7 @@ private final class ReaderPostCellView: UIView {
         setupTimeLabel(timeLabel)
         timeLabel.setContentCompressionResistancePriority(.init(800), for: .horizontal)
 
-        titleLabel.font = .preferredFont(forTextStyle: .headline)
+        titleLabel.font = UIFontMetrics.default.scaledFont(for: UIFont.systemFont(ofSize: 18, weight: .semibold))
         titleLabel.adjustsFontForContentSizeCategory = true
         titleLabel.maximumContentSizeCategory = .accessibilityExtraLarge
 
