@@ -20,6 +20,9 @@ final class ReaderTagStreamHeader: ReaderBaseHeaderView, ReaderStreamHeader {
         stackView.pinEdges()
 
         applyStyles()
+
+        followButton.addTarget(self, action: #selector(didTapFollowButton), for: .primaryActionTriggered)
+        followButton.alpha = 0 // don't know the state before topic is loaded
     }
 
     public required init?(coder: NSCoder) {
@@ -34,13 +37,14 @@ final class ReaderTagStreamHeader: ReaderBaseHeaderView, ReaderStreamHeader {
         super.traitCollectionDidChange(previousTraitCollection)
 
         if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
-            WPStyleGuide.applyReaderFollowButtonStyle(followButton)
+            WPStyleGuide.applyTagsReaderButtonStyle(followButton)
         }
     }
 
     // MARK: - Configuration
 
     public func configureHeader(_ topic: ReaderAbstractTopic) {
+        followButton.alpha = 1
         if let tag = topic as? ReaderTagTopic {
             titleLabel.text = tag.formattedTitle
         } else {
@@ -52,7 +56,7 @@ final class ReaderTagStreamHeader: ReaderBaseHeaderView, ReaderStreamHeader {
 
     // MARK: - Actions
 
-    @IBAction func didTapFollowButton(_ sender: UIButton) {
+    @objc private func didTapFollowButton(_ sender: UIButton) {
         followButton.isUserInteractionEnabled = false
 
         delegate?.handleFollowActionForHeader(self, completion: { [weak self] in

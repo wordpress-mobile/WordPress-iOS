@@ -113,8 +113,7 @@ extension NSNotification.Name {
     ) {
         let comment = viewModel.comment
         cell.badgeTitle = comment.isFromPostAuthor() ? .authorBadgeText : nil
-        cell.indentationWidth = Constants.indentationWidth
-        cell.indentationLevel = min(Constants.maxIndentationLevel, Int(comment.depth))
+        cell.depth = Int(comment.depth)
 
         let isModerationEnabled = isModerationMenuEnabled(for: comment)
         cell.accessoryButton.showsMenuAsPrimaryAction = isModerationEnabled
@@ -229,11 +228,6 @@ extension ReaderCommentsViewController: UIPopoverPresentationControllerDelegate 
 // MARK: - Private Helpers
 
 private extension ReaderCommentsViewController {
-    struct Constants {
-        static let indentationWidth: CGFloat = 15.0
-        static let maxIndentationLevel: Int = 4
-    }
-
     var commentService: CommentService {
         return CommentService(coreDataStack: ContextManager.shared)
     }

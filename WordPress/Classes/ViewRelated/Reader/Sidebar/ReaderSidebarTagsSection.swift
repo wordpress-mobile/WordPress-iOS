@@ -29,6 +29,13 @@ struct ReaderSidebarTagsSection: View {
                     ReaderTagsHelper().unfollow(tag)
                 }.tint(.red)
             }
+            .contextMenu(menuItems: {
+                Button(SharedStrings.Reader.unfollow, systemImage: "trash", role: .destructive) {
+                    ReaderTagsHelper().unfollow(tag)
+                }
+            }, preview: {
+                ReaderTopicPreviewView(topic: tag)
+            })
         }
         .onDelete(perform: delete)
 

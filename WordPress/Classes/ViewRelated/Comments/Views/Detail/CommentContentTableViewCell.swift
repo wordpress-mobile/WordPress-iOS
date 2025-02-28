@@ -4,8 +4,7 @@ import WordPressReader
 import Gravatar
 import Combine
 
-class CommentContentTableViewCell: UITableViewCell, NibReusable {
-
+final class CommentContentTableViewCell: UITableViewCell, NibReusable {
     // all the available images for the accessory button.
     enum AccessoryButtonType {
         case ellipsis
@@ -28,39 +27,37 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         }
     }
 
-    /// When supplied with a non-empty string, the cell will show a badge label beside the name label.
-    /// Note that the badge will be hidden when the title is nil or empty.
     var badgeTitle: String? = nil {
         didSet {
-            let title: String = {
-                if let title = badgeTitle {
-                    return title.localizedUppercase
-                }
-                return String()
-            }()
-
-            badgeLabel.setText(title)
+            let title = badgeTitle?.localizedUppercase ?? ""
+            badgeLabel.text = title
             badgeLabel.isHidden = title.isEmpty
-            badgeLabel.updateConstraintsIfNeeded()
         }
     }
 
-    override var indentationWidth: CGFloat {
+    var depth: Int {
+        get { effectiveDepth }
+        set { effectiveDepth = min(Self.maxDepth, newValue) }
+    }
+
+    private static let maxDepth = 4
+    private static let depthInset: CGFloat = 12
+
+    private var effectiveDepth: Int = 0 {
         didSet {
-            updateContainerLeadingConstraint()
+            guard oldValue != effectiveDepth else { return }
+            containerStackLeadingConstraint?.constant = (Self.depthInset * CGFloat(effectiveDepth)) + 16
+            configureDepthSeparators(depth: effectiveDepth)
         }
     }
 
-    override var indentationLevel: Int {
-        didSet {
-            updateContainerLeadingConstraint()
-        }
-    }
+    private var depthSeparators: [UIView?] = .init(repeating: nil, count: CommentContentTableViewCell.maxDepth)
 
     /// A custom highlight style for the cell that is more controllable than `isHighlighted`.
     /// Cell selection for this cell is disabled, and highlight style may be disabled based on the table view settings.
     @objc var isEmphasized: Bool = false {
         didSet {
+            guard oldValue != isEmphasized else { return }
             backgroundColor = isEmphasized ? Style.highlightedBackgroundColor : nil
             highlightBarView.backgroundColor = isEmphasized ? Style.highlightedBarBackgroundColor : .clear
         }
@@ -71,7 +68,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     @IBOutlet private weak var containerStackView: UIStackView!
     @IBOutlet private weak var containerStackLeadingConstraint: NSLayoutConstraint!
     @IBOutlet private weak var containerStackTrailingConstraint: NSLayoutConstraint!
-    private var defaultLeadingMargin: CGFloat = 0
 
     @IBOutlet private weak var avatarImageView: CircularImageView!
     @IBOutlet private weak var nameLabel: UILabel!
@@ -129,10 +125,9 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         avatarImageView.wp.prepareForReuse()
         renderer?.prepareForReuse()
 
-        // reset all highlight states.
         isEmphasized = false
+        depth = 0
 
-        // reset all button actions.
         accessoryButtonAction = nil
         replyButtonAction = nil
         contentLinkTapAction = nil
@@ -207,6 +202,24 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         likeButton.isHidden = !state.isLikeEnabled
 
         updateLikeButton(isLiked: state.isLiked, likeCount: state.likeCount)
+    }
+
+    private func configureDepthSeparators(depth: Int) {
+        for depthSeparator in depthSeparators {
+            depthSeparator?.isHidden = true
+        }
+        for level in 0..<depth {
+            let separatorView = depthSeparators[level] ?? {
+                let separatorView = SeparatorView.vertical()
+                depthSeparators[level] = separatorView
+                contentView.addSubview(separatorView)
+                separatorView.pinEdges([.top, .bottom])
+                let inset = -Self.depthInset * CGFloat(level + 1)
+                separatorView.trailingAnchor.constraint(equalTo: containerStackView.leadingAnchor, constant: inset).isActive = true
+                return separatorView
+            }()
+            separatorView.isHidden = false
+        }
     }
 }
 
@@ -293,9 +306,6 @@ private extension CommentContentTableViewCell {
 
     // assign base styles for all the cell components.
     func configureViews() {
-        // Store default margin for use in content layout.
-        defaultLeadingMargin = containerStackLeadingConstraint.constant
-
         selectionStyle = .none
 
         nameLabel?.font = style.nameFont
@@ -343,7 +353,7 @@ private extension CommentContentTableViewCell {
             attributes.font = font
             return attributes
         }
-        configuration.contentInsets = .init(top: 12, leading: 8, bottom: 12, trailing: 8)
+        configuration.contentInsets = .init(top: 10, leading: 8, bottom: 12, trailing: 8)
         configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(font: font)
         return configuration
     }
@@ -375,15 +385,11 @@ private extension CommentContentTableViewCell {
         }
     }
 
-    func updateContainerLeadingConstraint() {
-        containerStackLeadingConstraint?.constant = (indentationWidth * CGFloat(indentationLevel)) + defaultLeadingMargin
-    }
-
     func updateLikeButton(isLiked: Bool, likeCount: Int) {
         likeButton.tintColor = isLiked ? UIAppColor.primary : .secondaryLabel
         if var configuration = likeButton.configuration {
             configuration.image = UIImage(systemName: isLiked ? "star.fill" : "star")
-            configuration.title = likeCount > 0 ? "\(likeCount)" : nil
+            configuration.title = likeCount > 0 ? "\(likeCount)" : String.noLikes
             likeButton.accessibilityLabel = {
                 switch likeCount {
                 case .zero: .noLikes
