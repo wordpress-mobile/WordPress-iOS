@@ -12,7 +12,7 @@ struct ReaderSubscriptionNotificationSettingsButton: View {
         } label: {
             Group {
                 switch status {
-                case .all:
+                case .notify:
                     Image(systemName: "bell.and.waves.left.and.right")
                         .foregroundStyle(AppColor.primary)
                 case .personalized:
@@ -49,22 +49,23 @@ struct ReaderSubscriptionNotificationSettingsButton: View {
 }
 
 private enum ReaderSubscriptionNotificationsStatus {
-    /// Receives both posts and notifications
-    case all
-    /// Receives some notifications
+    /// Receive push notifications.
+    case notify
+    /// Receives emails notifications.
     case personalized
-    /// Receives none
+    /// Receives none.
     case none
 
     init(site: ReaderSiteTopic) {
-        let posts = site.postSubscription
+        let notifications = site.postSubscription
         let emails = site.emailSubscription
 
-        let sendPosts = (posts?.sendPosts ?? false) || (emails?.sendPosts ?? false)
-        let sendComments = emails?.sendComments ?? false
-        if sendPosts && sendComments {
-            self = .all
-        } else if sendPosts || sendComments {
+        let sendNotifications = notifications?.sendPosts ?? false
+        let sendEmails = (emails?.sendPosts ?? false) || (emails?.sendComments ?? false)
+
+        if sendNotifications {
+            self = .notify
+        } else if sendEmails {
             self = .personalized
         } else {
             self = .none
