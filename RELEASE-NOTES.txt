@@ -23,6 +23,9 @@
 * [*] Fix Reader: Opening comments is slow [#21887]
 * [*] Fix an issue with comments button being disabled when shown from Comments or Notifications [#24120]
 * [*] Fix unexpected "unsaved changes" notice when closing an un-edited post containing media in the experimental editor [#24102]
+* [*] Add "Notification Settings" bell to the "Site Details" screen [#24134]
+* [*] Fix an issue where the "Notifications Settings" bell for site subscriptions was not updated after the changes [#24134]
+* [*] Update the logic behind the bell. It now show the "bell with waves" when push notifications are enabled [#24134]
 
 25.7
 -----
