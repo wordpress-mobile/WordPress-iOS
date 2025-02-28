@@ -97,13 +97,13 @@ enum ReaderStaticScreen: String, CaseIterable, Identifiable, Hashable {
         }
     }
 
-    var systemImage: String {
+    var imageName: String {
         switch self {
-        case .recent: "checkmark.circle"
-        case .discover: "safari"
-        case .saved: "bookmark"
-        case .likes: "star"
-        case .search: "magnifyingglass"
+        case .recent: "reader-menu-home"
+        case .discover: "reader-menu-explorer"
+        case .saved: "reader-menu-bookmark"
+        case .likes: "reader-menu-star"
+        case .search: "reader-menu-search"
         }
     }
 

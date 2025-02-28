@@ -20,7 +20,7 @@ struct ReaderSidebarTagsSection: View {
                 Text(tag.title)
                     .lineLimit(1)
             } icon: {
-                Image(systemName: "tag")
+                ReaderSidebarImage(name: "reader-menu-tag")
                     .foregroundStyle(.secondary)
             }
             .tag(ReaderSidebarItem.tag(TaggedManagedObjectID(tag)))
@@ -42,14 +42,22 @@ struct ReaderSidebarTagsSection: View {
         Button {
             viewModel.navigate(.addTag)
         } label: {
-            Label(Strings.addTag, systemImage: "plus.circle")
+            Label {
+                Text(Strings.addTag)
+            } icon: {
+                ReaderSidebarImage(name: "reader-menu-plus")
+            }
         }
         .listItemTint(AppColor.primary)
 
         Button {
             viewModel.navigate(.discoverTags)
         } label: {
-            Label(Strings.discoverTags, systemImage: "sparkle.magnifyingglass")
+            Label {
+                Text(Strings.discoverTags)
+            } icon: {
+                ReaderSidebarImage(name: "reader-menu-explorer")
+            }
         }
         .listItemTint(AppColor.primary)
     }
