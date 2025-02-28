@@ -15,7 +15,7 @@ extension ReaderStreamViewController {
             removeShareButton()
             return
         }
-        let button = UIBarButtonItem(title: nil, image: UIImage(systemName: "square.and.arrow.up"), target: self, action: #selector(shareButtonTapped))
+        let button = UIBarButtonItem(title: nil, image: UIImage(named: "wpl-share"), target: self, action: #selector(shareButtonTapped))
         button.tag = NavigationItemTag.share.rawValue
         button.accessibilityLabel = SharedStrings.Button.share
         addRightBarButtonItem(button)

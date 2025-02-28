@@ -1133,7 +1133,7 @@ private extension ReaderDetailViewController {
     }
 
     func shareButtonItem(enabled: Bool = true) -> UIBarButtonItem? {
-        let button = barButtonItem(with: .gridicon(.shareiOS), action: #selector(didTapShareButton(_:)))
+        let button = barButtonItem(with: UIImage(named: "wpl-share") ?? UIImage(), action: #selector(didTapShareButton(_:)))
         button.accessibilityLabel = SharedStrings.Button.share
         button.isEnabled = enabled
 
