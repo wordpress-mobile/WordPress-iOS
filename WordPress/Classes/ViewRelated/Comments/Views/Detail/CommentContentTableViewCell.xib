@@ -174,6 +174,7 @@
                 <outlet property="contentContainerHeightConstraint" destination="t5W-a4-bo7" id="2ox-vW-Kuh"/>
                 <outlet property="contentContainerView" destination="M0y-BK-TEh" id="bC5-Hn-XRQ"/>
                 <outlet property="dateLabel" destination="ghT-Xy-q8c" id="ffa-qV-3tn"/>
+                <outlet property="headerView" destination="f2E-yC-BJS" id="d5t-k4-d2B"/>
                 <outlet property="highlightBarView" destination="mNJ-fg-sKO" id="fjf-gA-HoE"/>
                 <outlet property="likeButton" destination="X2J-8b-R5F" id="6w2-io-GXb"/>
                 <outlet property="nameLabel" destination="HpE-B7-6wr" id="MLa-k9-IlC"/>

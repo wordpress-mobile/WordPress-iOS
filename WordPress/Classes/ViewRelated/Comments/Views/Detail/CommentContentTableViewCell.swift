@@ -3,6 +3,7 @@ import WordPressUI
 import WordPressReader
 import Gravatar
 import Combine
+import SwiftUI
 
 final class CommentContentTableViewCell: UITableViewCell, NibReusable {
     // all the available images for the accessory button.
@@ -64,6 +65,7 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
     }
 
     // MARK: Outlets
+    @IBOutlet private weak var headerView: UIView!
 
     @IBOutlet private weak var containerStackView: UIStackView!
     @IBOutlet private weak var containerStackLeadingConstraint: NSLayoutConstraint!
@@ -137,6 +139,7 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+
         configureViews()
     }
 
@@ -308,6 +311,8 @@ private extension CommentContentTableViewCell {
     func configureViews() {
         selectionStyle = .none
 
+        headerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(headerTapped)))
+
         nameLabel?.font = style.nameFont
         nameLabel?.textColor = style.nameTextColor
 
@@ -432,6 +437,20 @@ private extension CommentContentTableViewCell {
     }
 
     // MARK: Button Actions
+
+    @objc private func headerTapped() {
+        guard let comment = viewModel?.comment else {
+            return
+        }
+        let viewModel = ReaderUserProfileViewModel(comment: comment)
+        let profileVC = UIHostingController(rootView: ReaderUserProfileView(viewModel: viewModel))
+        let navigationVC = UINavigationController(rootViewController: profileVC)
+        profileVC.navigationItem.leftBarButtonItem = UIBarButtonItem(systemItem: .close, primaryAction: .init { [weak profileVC] _ in
+            profileVC?.presentingViewController?.dismiss(animated: true)
+        })
+        navigationVC.sheetPresentationController?.detents = [.medium()]
+        UIViewController.topViewController?.present(navigationVC, animated: true)
+    }
 
     @objc func accessoryButtonTapped() {
         accessoryButtonAction?(accessoryButton)
