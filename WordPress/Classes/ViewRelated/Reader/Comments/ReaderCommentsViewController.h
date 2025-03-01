@@ -16,6 +16,7 @@ typedef NS_ENUM(NSUInteger, ReaderCommentsSource) {
 @class Comment;
 @class CommentCellViewModel;
 @class CommentContentTableViewCell;
+@class CommentLargeButton;
 @class ReaderPost;
 @class ReaderCommentsHelper;
 
@@ -25,7 +26,7 @@ typedef NS_ENUM(NSUInteger, ReaderCommentsSource) {
 @property (nonatomic, assign, readwrite) BOOL allowsPushingPostDetails;
 @property (nonatomic, assign, readwrite) ReaderCommentsSource source;
 @property (nonatomic, strong, readonly) ReaderCommentsHelper *helper;
-@property (nonatomic, strong, readonly) UIView *buttonAddComment;
+@property (nonatomic, strong, readonly) CommentLargeButton *buttonAddComment;
 
 - (void)setupWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID;
 

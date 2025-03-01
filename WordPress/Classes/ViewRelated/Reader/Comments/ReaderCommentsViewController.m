@@ -18,9 +18,7 @@
 @property (nonatomic, strong) NSNumber *postSiteID;
 @property (nonatomic, strong) WPContentSyncHelper *syncHelper;
 @property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) UIView *buttonAddComment;
-@property (nonatomic, strong) NSLayoutConstraint *replyTextViewHeightConstraint;
-@property (nonatomic) BOOL isLoggedIn;
+@property (nonatomic, strong) CommentLargeButton *buttonAddComment;
 @property (nonatomic) BOOL needsUpdateAttachmentsAfterScrolling;
 @property (nonatomic) BOOL needsRefreshTableViewAfterScrolling;
 @property (nonatomic, strong) NSError *fetchCommentsError;
@@ -73,11 +71,8 @@
     self.commentModified = NO;
     self.helper = [ReaderCommentsHelper new];
 
-    [self checkIfLoggedIn];
-
     [self configureNavbar];
     [self configureCommentButton];
-    [self configureViewConstraints];
     self.activityIndicator = [self makeActivityIndicator];
 
     [self listenForClipboardChanges];
@@ -159,18 +154,6 @@
     self.buttonAddComment = [self makeCommentButton];
 }
 
-#pragma mark - Autolayout Helpers
-
-- (void)configureViewConstraints
-{
-    self.buttonAddComment.translatesAutoresizingMaskIntoConstraints = false;
-
-    // TODO:
-    // This LayoutConstraint is just a helper, meant to hide / display the ReplyTextView, as needed.
-    // Whenever iOS 8 is set as the deployment target, let's always attach this one, and enable / disable it as needed!
-    self.replyTextViewHeightConstraint = [NSLayoutConstraint constraintWithItem:self.buttonAddComment attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:0 multiplier:1 constant:0];
-}
-
 #pragma mark - Helpers
 
 - (NSString *)noResultsTitleText
@@ -181,11 +164,6 @@
     } else {
         return NSLocalizedString(@"Be the first to leave a comment.", @"Message shown encouraging the user to leave a comment on a post in the reader.");
     }
-}
-
-- (void)checkIfLoggedIn
-{
-    self.isLoggedIn = [AccountHelper isDotcomAvailable];
 }
 
 - (void)setHighlightedIndexPath:(NSIndexPath *)highlightedIndexPath
@@ -290,19 +268,9 @@
     return self.post == nil;
 }
 
-- (BOOL)canComment
-{
-    return self.post.commentsOpen && self.isLoggedIn;
-}
-
 - (BOOL)canFollowConversation
 {
     return [self.followCommentsService canFollowConversation];
-}
-
-- (BOOL)shouldDisplayReplyTextView
-{
-    return self.canComment;
 }
 
 #pragma mark - View Refresh Helpers
@@ -341,14 +309,7 @@
 
 - (void)refreshReplyTextView
 {
-    BOOL showsReplyTextView = self.shouldDisplayReplyTextView;
-    self.buttonAddComment.hidden = !showsReplyTextView;
-    
-    if (showsReplyTextView) {
-        [self.view removeConstraint:self.replyTextViewHeightConstraint];
-    } else {
-        [self.view addConstraint:self.replyTextViewHeightConstraint];
-    }
+    self.buttonAddComment.isCommentingClosed = !self.post.commentsOpen;
 }
 
 - (void)refreshInfiniteScroll
@@ -425,7 +386,7 @@
 
 - (void)didTapReplyAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (!indexPath || !self.canComment) {
+    if (!indexPath) {
         return;
     }
     Comment *comment = [self.tableViewController commentAt:indexPath];

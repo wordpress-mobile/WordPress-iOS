@@ -18,7 +18,7 @@ extension NSNotification.Name {
         vc.didMove(toParent: self)
     }
 
-    func makeCommentButton() -> UIView {
+    func makeCommentButton() -> CommentLargeButton {
         let button = CommentLargeButton()
         button.onTap = { [weak self] in
             self?.buttonAddCommentTapped()
