@@ -203,6 +203,7 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
         replyButton.isHidden = !state.isReplyEnabled
         likeButton.isHidden = !state.isLikeEnabled
+        likeButton?.configuration?.contentInsets.leading = state.isReplyEnabled ? 8 : 0
 
         updateLikeButton(isLiked: state.isLiked, likeCount: state.likeCount)
     }

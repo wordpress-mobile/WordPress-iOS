@@ -44,7 +44,7 @@ final class CommentComposerReplyCommentView: UIView, UITableViewDataSource {
     private func didUpdateHeight(_ cell: CommentContentTableViewCell) {
         UIView.performWithoutAnimation {
             tableView.performBatchUpdates({})
-            heightConstraints.constant = min(130, cell.systemLayoutSizeFitting(bounds.size)
+            heightConstraints.constant = min(145, cell.systemLayoutSizeFitting(bounds.size)
                 .height + 8) // bottom padding
         }
     }
