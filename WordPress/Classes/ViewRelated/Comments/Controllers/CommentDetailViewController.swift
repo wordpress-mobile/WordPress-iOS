@@ -426,6 +426,7 @@ private extension CommentDetailViewController {
 
         // otherwise, if this is a comment to a post, show the post title instead.
         headerCell.configure(for: .post, subtitle: comment.titleForDisplay())
+        headerCell.contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 54).isActive = true
     }
 
     func configureContentCell(_ cell: CommentContentTableViewCell, comment: Comment) {
@@ -435,6 +436,8 @@ private extension CommentDetailViewController {
             self?.tableView.performBatchUpdates({})
         }
 
+        cell.configureForCommentDetails()
+
         cell.contentLinkTapAction = { [weak self] url in
             // open all tapped links in web view.
             // TODO: Explore reusing URL handling logic from ReaderDetailCoordinator.
@@ -442,6 +445,7 @@ private extension CommentDetailViewController {
         }
 
         cell.accessoryButtonType = .info
+        cell.isAccessoryButtonEnabled = true
         cell.accessoryButtonAction = { [weak self] senderView in
             self?.presentUserInfoSheet(senderView)
         }

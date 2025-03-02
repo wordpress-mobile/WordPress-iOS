@@ -111,7 +111,7 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     // MARK: Visibility Control
 
-    private var isAccessoryButtonEnabled: Bool = false {
+    var isAccessoryButtonEnabled: Bool = false {
         didSet {
             accessoryButton.isHidden = !isAccessoryButtonEnabled
         }
@@ -195,6 +195,11 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
         replyButton.isHidden = true
         likeButton.isHidden = true
         isAccessoryButtonEnabled = false
+    }
+
+    func configureForCommentDetails() {
+        containerStackView.isLayoutMarginsRelativeArrangement = true
+        containerStackView.layoutMargins = UIEdgeInsets(.vertical, 4)
     }
 
     private func configure(with state: CommentCellViewModel.State) {
