@@ -309,7 +309,9 @@
 
 - (void)refreshReplyTextView
 {
-    self.buttonAddComment.isCommentingClosed = !self.post.commentsOpen;
+    if (self.post) {
+        self.buttonAddComment.isCommentingClosed = !self.post.commentsOpen;
+    }
 }
 
 - (void)refreshInfiniteScroll
