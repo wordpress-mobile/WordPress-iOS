@@ -1,5 +1,5 @@
 {
-  "originHash" : "3cb369ca4b4bd32a3ee27b6222f4e6cf739585d921cdabf5666b246b87cdf1af",
+  "originHash" : "b048f2348f14b6f12b4a4b8588355abe499af3f8f4e91cacc054e98187a7746c",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -391,8 +391,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/wordpress-mobile/WordPressKit-iOS",
       "state" : {
-        "branch" : "task/add-featured-image-auto",
-        "revision" : "30563e2b5e3fc1b009467a92b8282cbff30f79be"
+        "branch" : "wpios-edition",
+        "revision" : "ba542bae62a1d9b80b0baee44d610bfac55936ea"
       }
     },
     {
