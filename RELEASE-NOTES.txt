@@ -29,6 +29,10 @@
 * [*] Add "Notification Settings" bell to the "Site Details" screen [#24134]
 * [*] Fix an issue where the "Notifications Settings" bell for site subscriptions was not updated after the changes [#24134]
 * [*] Update the logic behind the bell. It now show the "bell with waves" when push notifications are enabled [#24134]
+* [*] Add a user profile view that shows when you tap on a comment author. [#24139]
+* [*] Add a "Comments Closed" view and disable the "Add Comment" button instead of hiding it in case the comments are closed [#24139]
+* [*] Fix an issue with subscribers fully reloading after closing details making the screen unusable. [#24139]
+* [*] Fix an issue with “Info” button on comments not available until your approve the comment, defeating the purpose [#24139]
 
 25.7
 -----
