@@ -83,7 +83,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
 
     /// JetpackLoginVC being presented.
     ///
-    internal var jetpackLoginViewController: JetpackLoginViewController? = nil
+    internal var jetpackLoginViewController: ConnectJetpackViewController? = nil
 
     /// Timestamp of the most recent note before updates
     /// Used to count notifications to show the second notifications prompt

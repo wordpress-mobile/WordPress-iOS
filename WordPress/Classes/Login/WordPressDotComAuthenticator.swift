@@ -68,6 +68,7 @@ struct WordPressDotComAuthenticator {
 
     let redirectURIScheme: String
     private let coreDataStack: CoreDataStackSwift
+    private let showProgressHUD: Bool
     private let authenticator: ((URL) throws(AuthenticationError) -> URL)?
 
     private let clientId: String
@@ -75,12 +76,14 @@ struct WordPressDotComAuthenticator {
 
     init(
         coreDataStack: CoreDataStackSwift = ContextManager.shared,
+        showProgressHUD: Bool = true,
         authenticator: ((URL) throws(AuthenticationError) -> URL)? = nil,
         redirectURIScheme: String = BuildSettings.current.appURLScheme,
         clientId: String = BuildSettings.current.secrets.oauth.client,
         clientSecret: String = BuildSettings.current.secrets.oauth.secret
     ) {
         self.coreDataStack = coreDataStack
+        self.showProgressHUD = showProgressHUD
         self.authenticator = authenticator
         self.redirectURIScheme = redirectURIScheme
         self.clientId = clientId
@@ -123,9 +126,13 @@ struct WordPressDotComAuthenticator {
             throw .authentication(error)
         }
 
-        SVProgressHUD.show()
+        if showProgressHUD {
+            SVProgressHUD.show()
+        }
         defer {
-            SVProgressHUD.dismiss()
+            if showProgressHUD {
+                SVProgressHUD.dismiss()
+            }
         }
 
         // Fetch WP.com account details

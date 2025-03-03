@@ -138,19 +138,12 @@
         return;
     }
     self.showingJetpackLogin = YES;
-    JetpackLoginViewController *controller = [[JetpackLoginViewController alloc] initWithBlog:self.blog];
-    __weak JetpackLoginViewController *safeController = controller;
-    [controller setCompletionBlock:^(){
-            [safeController.view removeFromSuperview];
-            [safeController removeFromParentViewController];
-            self.showingJetpackLogin = NO;
-            [self initStats];
-    }];
 
-    [self addChildViewController:controller];
-    [self.view addSubview:controller.view];
-    controller.view.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view pinSubviewToAllEdges:controller.view];
+    __weak __typeof(self) weakSelf = self;
+    [self showJetpackConnectionViewWithCompletion:^{
+        weakSelf.showingJetpackLogin = NO;
+        [weakSelf initStats];
+    }];
 }
 
 - (IBAction)doneButtonTapped:(id)sender
