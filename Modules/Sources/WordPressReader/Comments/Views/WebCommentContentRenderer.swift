@@ -35,6 +35,10 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
     private var comment: String?
     private var lastReloadDate: Date?
     private var isReloadNeeded = false
+    private var isLoading = false
+
+    private var activityIndicator = UIActivityIndicatorView(style: .medium)
+    private var showIndicatorWorkItem: DispatchWorkItem?
 
     /// A shared web view context with resources that can be reused across
     /// mutliple web view instances.
@@ -68,11 +72,24 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
         webView.scrollView.backgroundColor = .clear
 
         NotificationCenter.default.addObserver(self, selector: #selector(applicationWillEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+
+        webView.addSubview(activityIndicator)
+        activityIndicator.pinCenter()
     }
 
     public func render(comment: String) {
         self.comment = comment
+
+        webView.alpha = 0
+        isLoading = true
         actuallyRender(comment: comment)
+
+        let dispatchItem = DispatchWorkItem { [weak self] in
+            guard let self, self.isLoading else { return }
+            self.activityIndicator.startAnimating()
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500), execute: dispatchItem)
+        showIndicatorWorkItem = dispatchItem
     }
 
     private func actuallyRender(comment: String) {
@@ -81,6 +98,9 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
 
     public func prepareForReuse() {
         comment = nil
+        isLoading = false
+        showIndicatorWorkItem?.cancel()
+        showIndicatorWorkItem = nil
         webView.stopLoading()
     }
 
@@ -105,19 +125,24 @@ extension WebCommentContentRenderer: WKNavigationDelegate {
         guard let comment else {
             return
         }
+
         // Wait until the HTML document finished loading.
         // This also waits for all of resources within the HTML (images, video thumbnail images) to be fully loaded.
         webView.evaluateJavaScript("document.readyState") { complete, _ in
-            guard complete != nil, self.comment == comment else {
+            guard complete != nil else {
                 return
             }
 
             // To capture the content height, the methods to use is either `document.body.scrollHeight` or `document.documentElement.scrollHeight`.
             // `document.body` does not capture margins on <body> tag, so we'll use `document.documentElement` instead.
             webView.evaluateJavaScript("document.documentElement.scrollHeight") { [weak self] height, _ in
-                guard let self, let height = height as? CGFloat else {
+                guard let self, self.comment == comment, let height = height as? CGFloat else {
                     return
                 }
+
+                self.webView.alpha = 1
+                self.isLoading = false
+                self.activityIndicator.stopAnimating()
 
                 /// The display setting's custom size is applied through the HTML's initial-scale property
                 /// in the meta tag. The `scrollHeight` value seems to return the height as if it's at 1.0 scale,

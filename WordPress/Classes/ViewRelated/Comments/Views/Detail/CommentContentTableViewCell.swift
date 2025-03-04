@@ -321,6 +321,7 @@ private extension CommentContentTableViewCell {
 
         nameLabel?.font = style.nameFont
         nameLabel?.textColor = style.nameTextColor
+        nameLabel?.numberOfLines = 1
 
         badgeLabel?.font = Style.badgeFont
         badgeLabel?.textColor = Style.badgeTextColor
