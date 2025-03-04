@@ -95,16 +95,16 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
         fetchResultsController.object(at: indexPath)
     }
 
-    @objc func scrollToComment(withID commentID: NSNumber) {
+    @objc func scrollToComment(withID commentID: NSNumber) -> Bool {
         let comments = fetchResultsController.fetchedObjects ?? []
         guard let comment = comments.first(where: { $0.commentID == commentID.int32Value }) else {
-            return
+            return false
         }
 
         // Force the table view to be laid out first before scrolling to indexPath.
         // This avoids a case where a cell instance could be orphaned and displayed randomly on top of the other cells.
         guard let indexPath = fetchResultsController.indexPath(forObject: comment) else {
-            return
+            return false
         }
         tableView.layoutIfNeeded()
 
@@ -114,8 +114,10 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
            indexPath.section < tableView.numberOfSections,
            indexPath.row < tableView.numberOfRows(inSection: indexPath.section) {
             tableView.scrollToRow(at: indexPath, at: .top, animated: true)
-            containerViewController?.highlightComment(at: indexPath)
+            containerViewController?.highlightCommentCell(at: indexPath)
         }
+
+        return true
     }
 
     @objc func setBottomInset(_ inset: CGFloat) {
@@ -186,7 +188,7 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
         cell.selectionStyle = .none
         let comment = fetchResultsController.object(at: indexPath)
         let viewModel = makeCellViewModel(comment: comment)
-        containerViewController?.configureCell(cell, viewModel: viewModel, indexPath: indexPath)
+        containerViewController?.configureContentCell(cell, viewModel: viewModel, indexPath: indexPath, tableView: tableView)
         return cell
     }
 
@@ -202,11 +204,11 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
     // MARK: - UITableViewDataDelegate
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        containerViewController?.cachedHeaderView()
+        containerViewController?.getHeaderView()
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        containerViewController?.cachedHeaderView() == nil ? 0 : UITableView.automaticDimension
+        containerViewController?.getHeaderView() == nil ? 0 : UITableView.automaticDimension
     }
 
     // MARK: - UIScrollViewDelegate
