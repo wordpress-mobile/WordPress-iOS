@@ -123,8 +123,8 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         self.navigationBarManager = navigationBarManager ?? PostEditorNavigationBarManager()
 
         let selfHostedApiUrl = post.blog.url(withPath: "wp-json/")
-        let isSelfHosted = !post.blog.isHostedAtWPcom && !post.blog.isAtomic()
-        let siteApiRoot = post.blog.isAccessibleThroughWPCom() && !isSelfHosted ? post.blog.wordPressComRestApi?.baseURL.absoluteString : selfHostedApiUrl
+        let isWPComSite = post.blog.isHostedAtWPcom || post.blog.isAtomic()
+        let siteApiRoot = post.blog.isAccessibleThroughWPCom() && isWPComSite ? post.blog.wordPressComRestApi?.baseURL.absoluteString : selfHostedApiUrl
         let siteId = post.blog.dotComID?.stringValue
         let authToken = post.blog.authToken ?? ""
         var authHeader = "Bearer \(authToken)"
@@ -154,7 +154,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         conf.authHeader = authHeader
 
         conf.themeStyles = FeatureFlag.newGutenbergThemeStyles.enabled
-        conf.plugins = FeatureFlag.newGutenbergPlugins.enabled && isSelfHosted
+        conf.plugins = FeatureFlag.newGutenbergPlugins.enabled && isWPComSite
 
         self.editorViewController = GutenbergKit.EditorViewController(configuration: conf)
 
