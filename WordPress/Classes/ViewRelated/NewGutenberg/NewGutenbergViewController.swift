@@ -159,6 +159,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         conf.siteURL = post.blog.url ?? ""
         conf.siteApiRoot = siteApiRoot ?? ""
         conf.siteApiNamespace = siteApiNamespace
+        conf.namespaceExcludedPaths = ["/wpcom/v2/following/recommendations", "/wpcom/v2/following/mine"]
         conf.authHeader = authHeader
 
         conf.themeStyles = FeatureFlag.newGutenbergThemeStyles.enabled
