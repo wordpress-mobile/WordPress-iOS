@@ -359,10 +359,10 @@ private extension CommentContentTableViewCell {
         let font = UIFont.preferredFont(forTextStyle: .footnote)
         configuration.image = image
         configuration.imagePlacement = .leading
-        configuration.imagePadding = 6
+        configuration.imagePadding = 2
         configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer {
             var attributes = $0
-            attributes.font = font.withWeight(.medium)
+            attributes.font = font
             return attributes
         }
         configuration.contentInsets = .init(top: 8, leading: 8, bottom: 8, trailing: 8)
