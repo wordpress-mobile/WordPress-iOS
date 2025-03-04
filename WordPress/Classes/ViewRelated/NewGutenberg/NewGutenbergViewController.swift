@@ -126,6 +126,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         let isWPComSite = post.blog.isHostedAtWPcom || post.blog.isAtomic()
         let siteApiRoot = post.blog.isAccessibleThroughWPCom() && isWPComSite ? post.blog.wordPressComRestApi?.baseURL.absoluteString : selfHostedApiUrl
         let siteId = post.blog.dotComID?.stringValue
+        let siteDomain = post.blog.primaryDomainAddress
         let authToken = post.blog.authToken ?? ""
         var authHeader = "Bearer \(authToken)"
 
@@ -139,7 +140,14 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
             }
         }
 
-        let siteApiNamespace = post.blog.dotComID != nil && !isSelfHosted && applicationPassword == nil ? "sites/\(siteId ?? "")" : ""
+        // Must provide both namespace forms to detect usages of both forms in third-party code
+        var siteApiNamespace: [String] = []
+        if isWPComSite {
+            if let siteId {
+                siteApiNamespace.append("sites/\(siteId)")
+            }
+            siteApiNamespace.append("sites/\(siteDomain)")
+        }
 
         var conf = EditorConfiguration(
             title: post.postTitle ?? "",
