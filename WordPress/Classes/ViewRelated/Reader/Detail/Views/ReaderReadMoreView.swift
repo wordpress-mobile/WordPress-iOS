@@ -103,13 +103,23 @@ private final class GradientAlphaMaskView: UIView {
         super.init(frame: frame)
 
         gradientLayer.frame = bounds
-        gradientLayer.colors = [UIColor.white.withAlphaComponent(0.33).cgColor, UIColor.white.cgColor]
         gradientLayer.locations = [0.0, 1.0]
+        refreshColors()
 
         gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
         gradientLayer.endPoint = CGPoint(x: 0.5, y: 0.5)
 
         self.layer.addSublayer(gradientLayer)
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        refreshColors()
+    }
+
+    private func refreshColors() {
+        gradientLayer.colors = [UIColor.systemBackground.withAlphaComponent(0).cgColor, UIColor.systemBackground.cgColor]
     }
 
     required init?(coder: NSCoder) {
