@@ -154,8 +154,10 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
         }
 
         let service = ReaderPostService(coreDataStack: ContextManager.shared)
+        buttonAddComment.isHidden = true
         service.fetchPost(postID.uintValue, forSite: siteID.uintValue, isFeed: false, success: { [weak self] post in
             if let post {
+                self?.buttonAddComment.isHidden = false
                 self?.configure(with: post)
                 self?.refreshAndSync()
             }
@@ -208,20 +210,22 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
         emptyStateView?.removeFromSuperview()
         emptyStateView = nil
 
-        if let tableVC, tableVC.isEmpty {
-            if (post == nil) || (syncHelper?.isSyncing ?? false) {
-                activityIndicator.startAnimating()
-            } else {
-                let title = fetchCommentsError == nil ? Strings.emptyStateViewTitle : Strings.errorStateViewTitle
-                var subtitle: String?
-                if let error = fetchCommentsError, error.domain == WordPressComRestApiErrorDomain && error.code == WordPressComRestApiErrorCode.authorizationRequired.rawValue {
-                    subtitle = Strings.noPermission
-                }
-                let emptyStateView = makeEmptyStateView(title: title, imageName: "wp-illustration-reader-empty", description: subtitle)
-                view.insertSubview(emptyStateView, belowSubview: buttonAddComment)
-                emptyStateView.pinEdges()
-                self.emptyStateView = emptyStateView
+        guard tableVC?.isEmpty == true || post == nil else {
+            return
+        }
+
+        if (post == nil) || (syncHelper?.isSyncing ?? false) {
+            activityIndicator.startAnimating()
+        } else {
+            let title = fetchCommentsError == nil ? Strings.emptyStateViewTitle : Strings.errorStateViewTitle
+            var subtitle: String?
+            if let error = fetchCommentsError, error.domain == WordPressComRestApiErrorDomain && error.code == WordPressComRestApiErrorCode.authorizationRequired.rawValue {
+                subtitle = Strings.noPermission
             }
+            let emptyStateView = makeEmptyStateView(title: title, imageName: "wp-illustration-reader-empty", description: subtitle)
+            view.insertSubview(emptyStateView, belowSubview: buttonAddComment)
+            emptyStateView.pinEdges()
+            self.emptyStateView = emptyStateView
         }
     }
 
