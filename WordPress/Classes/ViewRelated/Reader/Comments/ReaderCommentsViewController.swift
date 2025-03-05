@@ -32,11 +32,9 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
 
     private lazy var barButtonItemFollowConversation = UIBarButtonItem(title: Strings.follow, style: .plain, target: self, action: #selector(buttonFollowConversationTapped))
     private lazy var barButtonItemFollowingSettings = UIBarButtonItem(image: UIImage(systemName: "bell"), style: .plain, target: self, action: #selector(buttonEditNotificationSettingsTapped))
-    private var cachedHeaderView: UIView?
     private let activityIndicator = UIActivityIndicatorView()
     private var emptyStateView: UIView?
     private let buttonAddComment = CommentLargeButton()
-
     private var tableVC: ReaderCommentsTableViewController?
 
     private var fetchCommentsError: NSError?
@@ -46,6 +44,7 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
     private var syncHelper: WPContentSyncHelper?
     private var followCommentsService: FollowCommentsService?
     private var readerCommentsFollowPresenter: ReaderCommentsFollowPresenter?
+
     let helper = ReaderCommentsHelper()
 
     init(post: ReaderPost) {
@@ -133,17 +132,17 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
         }))
     }
 
-    // TODO: (kean) move to list?
     func getHeaderView() -> UIView? {
-        guard allowsPushingPostDetails, let tableView = tableVC?.tableView else {
+        guard allowsPushingPostDetails, let post else {
             return nil
         }
-        if let cachedHeaderView {
-            return cachedHeaderView
+        return CommentTableHeaderView(
+            title: post.titleForDisplay(),
+            subtitle: .commentThread,
+            showsDisclosureIndicator: allowsPushingPostDetails
+        ) { [weak self] in
+            self?.handleHeaderTapped()
         }
-        let headerView = configuredHeaderView(for: tableView)
-        self.cachedHeaderView = headerView
-        return headerView
     }
 
     // MARK: - Fetch Post
@@ -355,20 +354,6 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
     }
 
     // MARK: - Configure
-
-    func configuredHeaderView(for tableView: UITableView) -> UIView {
-        guard let post else {
-            return .init()
-        }
-        let headerView = CommentTableHeaderView(
-            title: post.titleForDisplay(),
-            subtitle: .commentThread,
-            showsDisclosureIndicator: allowsPushingPostDetails
-        ) { [weak self] in
-            self?.handleHeaderTapped()
-        }
-        return headerView
-    }
 
     func configureContentCell(
         _ cell: CommentContentTableViewCell,
