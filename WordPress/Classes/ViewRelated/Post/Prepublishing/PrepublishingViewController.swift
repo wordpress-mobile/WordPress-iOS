@@ -1,7 +1,8 @@
 import UIKit
 import Combine
-import WordPressUI
 import SwiftUI
+import WordPressData
+import WordPressUI
 
 enum PrepublishingSheetResult {
     /// The sheet published the post (new behavior)

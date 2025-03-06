@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 import WordPressShared
 
 /// Manages which sharing button are displayed, their order, and other settings

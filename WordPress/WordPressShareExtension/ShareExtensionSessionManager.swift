@@ -1,6 +1,7 @@
 import Aztec
-import Foundation
 import CoreData
+import Foundation
+import WordPressData
 import WordPressFlux
 
 /// Manages URLSessions initiated by the share extension

@@ -1,8 +1,8 @@
+import Alamofire
 import AuthenticationServices
 import Foundation
 import UIKit
-
-import Alamofire
+import WordPressData
 
 /// Log in or sign up a WordPress.com account via web.
 ///

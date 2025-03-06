@@ -1,5 +1,6 @@
 import Foundation
 import Reachability
+import WordPressData
 import WordPressKit
 
 extension NSNotification.Name {

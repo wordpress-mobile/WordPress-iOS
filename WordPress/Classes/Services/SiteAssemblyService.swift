@@ -1,5 +1,5 @@
-
 import Foundation
+import WordPressData
 
 /// Site Creation Notification
 ///

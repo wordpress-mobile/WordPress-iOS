@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 import WordPressKit
 
 class BlockEditorSettingsService {
