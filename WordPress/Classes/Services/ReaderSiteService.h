@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
-#import "CoreDataService.h"
 #import "ReaderTopicService.h"
+@import WordPressDataObjC;
 
 typedef NS_ENUM(NSUInteger, ReaderSiteServiceError) {
     ReaderSiteServiceErrorNotLoggedIn,

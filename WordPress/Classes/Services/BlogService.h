@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
-#import "CoreDataService.h"
 #import "Blog.h"
+@import WordPressDataObjC;
 
 NS_ASSUME_NONNULL_BEGIN
 
