@@ -1,5 +1,4 @@
 #import "PostService.h"
-#import "Coordinate.h"
 #import "PostCategory.h"
 #import "PostCategoryService.h"
 #import "CoreDataStack.h"
