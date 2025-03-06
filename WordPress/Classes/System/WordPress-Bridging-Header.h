@@ -14,7 +14,6 @@
 #import "CommentsViewController+Network.h"
 #import "Constants.h"
 #import "CoreDataStack.h"
-#import "Coordinate.h"
 
 #import "EditCommentViewController.h"
 
