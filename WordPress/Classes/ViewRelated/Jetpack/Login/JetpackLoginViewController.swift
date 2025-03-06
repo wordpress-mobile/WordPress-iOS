@@ -6,7 +6,7 @@ import WordPressUI
 import WordPressAPIInternal
 
 protocol JetpackConnectionSupport: AnyObject {
-    init(blog: Blog)
+    init?(blog: Blog)
 
     var blog: Blog { get set }
 
@@ -21,11 +21,9 @@ typealias ConnectJetpackViewController = UIViewController & JetpackConnectionSup
 
 extension UIViewController {
     static func jetpackConnection(blog: Blog) -> ConnectJetpackViewController {
-        if RESTAPIJetpackLoginViewController.support(blog: blog) {
-            return RESTAPIJetpackLoginViewController(blog: blog)
-        }
-
-        return JetpackLoginViewController(blog: blog)
+        // `RESTAPIJetpackLoginViewController` use REST API to connect sites to Jetpack, which provides a much better
+        // UX than `JetpackLoginViewController` which connects sites via web-views.
+        return RESTAPIJetpackLoginViewController(blog: blog) ?? JetpackLoginViewController(blog: blog)
     }
 }
 

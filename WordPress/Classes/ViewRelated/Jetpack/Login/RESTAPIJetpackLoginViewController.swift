@@ -2,18 +2,25 @@ import Foundation
 import UIKit
 import SwiftUI
 import WordPressCore
+import WordPressShared
 import WordPressAPIInternal
 
 class RESTAPIJetpackLoginViewController: UIViewController, JetpackConnectionSupport {
 
-    required init(blog: Blog) {
+    required init?(blog: Blog) {
+        guard let service = JetpackConnectionService(blog: blog) else { return nil }
+
         self.blog = blog
+        self.service = service
+
         super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    private let service: JetpackConnectionService
 
     var blog: Blog
 
@@ -24,9 +31,9 @@ class RESTAPIJetpackLoginViewController: UIViewController, JetpackConnectionSupp
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let viewModel = JetpackConnectionViewModel(blog: blog, presentingViewController: self, completionHandler: { [weak self] in
+        let viewModel = JetpackConnectionViewModel(blog: blog, presentingViewController: self, connectionService: service) { [weak self] in
             self?.completionBlock?()
-        })
+        }
         let jetpackView = JetpackConnectionView(promptType: promptType, viewModel: viewModel)
 
         let hostingController = UIHostingController(rootView: jetpackView)
@@ -69,8 +76,8 @@ private enum StepContext {
     case initial
     case loggedIn(account: TaggedManagedObjectID<WPAccount>)
     case installed(account: TaggedManagedObjectID<WPAccount>)
-    case activated(account: TaggedManagedObjectID<WPAccount>)
-    case connected(account: TaggedManagedObjectID<WPAccount>)
+    case siteConnected(account: TaggedManagedObjectID<WPAccount>)
+    case userConnected(account: TaggedManagedObjectID<WPAccount>)
     case finalized
 }
 
@@ -301,17 +308,35 @@ private enum JetpackConnectionError: LocalizedError {
 }
 
 private class JetpackConnectionService {
-    private let blog: Blog
     private let client: WordPressClient
     private let jetpackConnectionClient: JetpackConnectionClient
 
-    init(blog: Blog) {
-        self.blog = blog
-        self.client = try! .init(site: WordPressSite(blog: blog))
+    init?(blog: Blog) {
+        // Requirements:
+        // - Self-hosted site, and
+        // - The site is authenticated with application password, and
+        // - Jetpack is not installed, or the installed jetpack version is 14.2 or above.
+
+        guard blog.account == nil else { return nil }
+
+        guard (try? blog.getApplicationToken()) != nil else { return nil }
+
+        if let jetpack = blog.jetpack, jetpack.isInstalled, let version = jetpack.version,
+           version.compare("14.2", options: .numeric) == .orderedAscending {
+            return nil
+        }
+
+        guard let site = try? WordPressSite(blog: blog),
+              case let .selfHosted(apiRootURL, username, password) = site
+        else {
+            return nil
+        }
+
+        self.client = .init(site: site)
         self.jetpackConnectionClient = .init(
-            siteUrl: try! .parse(input: blog.url!),
+            apiRootUrl: apiRootURL,
             urlSession: .init(configuration: .ephemeral),
-            authentication: .init(username: try! blog.getUsername(), password: try! blog.getApplicationToken())
+            authentication: .init(username: username, password: password)
         )
     }
 
@@ -400,11 +425,11 @@ private class JetpackConnectionViewModel: ObservableObject {
     private let connectionService: JetpackConnectionService
     private var stepContext: StepContext = .initial
 
-    init(blog: Blog, presentingViewController: UIViewController, completionHandler: @escaping () -> Void) {
+    init(blog: Blog, presentingViewController: UIViewController, connectionService: JetpackConnectionService, completionHandler: @escaping () -> Void) {
         self.blogID = TaggedManagedObjectID(blog)
         self.presentingViewController = presentingViewController
+        self.connectionService = connectionService
         self.completionHandler = completionHandler
-        self.connectionService = JetpackConnectionService(blog: blog)
 
         for step in steps {
             stepStages[step] = .pending
@@ -475,20 +500,20 @@ private class JetpackConnectionViewModel: ObservableObject {
         }
 
         try await connectionService.performSiteConnection(account: account)
-        stepContext = .activated(account: account)
+        stepContext = .siteConnected(account: account)
     }
 
     private func performUserConnection() async throws {
-        guard case .activated(let account) = stepContext else {
+        guard case .siteConnected(let account) = stepContext else {
             throw JetpackConnectionError.unexpectedContext
         }
 
         try await connectionService.performUserConnection(account: account)
-        stepContext = .connected(account: account)
+        stepContext = .userConnected(account: account)
     }
 
     private func performFinalization() async throws {
-        guard case .connected(let account) = stepContext else {
+        guard case .userConnected(let account) = stepContext else {
             throw JetpackConnectionError.unexpectedContext
         }
 
