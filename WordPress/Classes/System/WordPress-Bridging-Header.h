@@ -46,6 +46,7 @@
 
 #import "ReachabilityUtils.h"
 #import "ReaderCommentsViewController.h"
+#import "ReaderGapMarker.h"
 #import "ReaderPost.h"
 #import "ReaderPostService.h"
 #import "ReaderSiteService.h"

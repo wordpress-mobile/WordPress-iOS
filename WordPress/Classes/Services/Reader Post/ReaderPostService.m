@@ -2,6 +2,7 @@
 
 #import "AccountService.h"
 #import "CoreDataStack.h"
+#import "ReaderGapMarker.h"
 #import "ReaderPost.h"
 #import "ReaderSiteService.h"
 #import "SourcePostAttribution.h"
