@@ -2,7 +2,7 @@
 #import "Blog.h"
 #import "WPAccount.h"
 #import "AccountService.h"
-#import "CoreDataStack.h"
+@import WordPressDataObjC;
 #import "WPError.h"
 #import "Media.h"
 #import "PostCategoryService.h"

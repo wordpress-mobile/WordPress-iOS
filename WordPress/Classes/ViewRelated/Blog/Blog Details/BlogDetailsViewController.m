@@ -3,7 +3,7 @@
 #import "AccountService.h"
 #import "BlogService.h"
 #import "CommentsViewController.h"
-#import "CoreDataStack.h"
+@import WordPressDataObjC;
 #import "ReachabilityUtils.h"
 #import "SiteSettingsViewController.h"
 #import "SharingViewController.h"

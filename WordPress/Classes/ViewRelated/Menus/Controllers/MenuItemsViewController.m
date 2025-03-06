@@ -5,7 +5,7 @@
 #import "MenuItemView.h"
 #import "MenuItemInsertionView.h"
 #import "MenuItemsVisualOrderingView.h"
-#import "CoreDataStack.h"
+@import WordPressDataObjC;
 #import "Menu+ViewDesign.h"
 #import "WordPress-Swift.h"
 
