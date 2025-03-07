@@ -1,14 +1,3 @@
-* [**] The comments are now displayed using the same styles across the app and with better support for rich comments [#24055]
-* [**] The comment composer now opens fullscreen, shows previews of the comment you are replying to, supports savings drafts, and clearly communicates the upload state and errors [#24075]
-* [*] Add depth indicators for comment threads to make them easier to follow [#24117]
-* [*] Enable dismissing the virtual keyboard in the experimental editor [#23988]
-* [*] Fix unselectable group blocks in the experimental editor [https://github.com/wordpress-mobile/GutenbergKit/pull/68]
-* [*] Prevent a intermittent crash when opening the experimental editor's "more" menu [#24065]
-* [*] Fix incorrect background color for draft post cells on dashboard [#24080]
-* [*] Fix an issue with comments sometimes displaying black text on black background in dark mode [#23536]
-* [*] Fix broken header view visible when post is loading [#24123]
-* [*] Fix incorrect sizing of images and other attachments in comments [#19943]
-* [*] Fix an issue with search results disappearing after returning from site details [#24121]
-* [*] Fix an issue with comments button being disabled when shown from Comments [#24120]
-* [*] Fix unexpected "unsaved changes" notice when closing an un-edited post containing media in the experimental editor [#24102]
-* [*] Add a "Comments Closed" view and disable the "Add Comment" button instead of hiding it in case the comments are closed [#24139]
+What’s New for this month?
+- Better Comments: Updated design, depth indicators for threads, improved rich content support, and a fullscreen composer with draft saving.
+- Bug Fixes & Stability & Performance Improvements.
