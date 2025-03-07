@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import WordPressData
 
 struct ReaderTagsHelper {
     let contextManager: CoreDataStackSwift = ContextManager.shared

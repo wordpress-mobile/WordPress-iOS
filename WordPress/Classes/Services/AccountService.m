@@ -1,6 +1,6 @@
 #import "AccountService.h"
 #import "WPAccount.h"
-#import "CoreDataStack.h"
+@import WordPressDataObjC;
 #import "Blog.h"
 #import "BlogService.h"
 

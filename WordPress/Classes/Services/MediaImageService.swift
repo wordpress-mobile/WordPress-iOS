@@ -1,7 +1,8 @@
-import UIKit
-import CoreData
-import WordPressShared
 import AsyncImageKit
+import CoreData
+import UIKit
+import WordPressData
+import WordPressShared
 
 /// A service for retrieval and caching of thumbnails for ``Media`` objects.
 final class MediaImageService {

@@ -3,25 +3,8 @@ import Foundation
 extension ValueTransformer {
     @objc
     static func registerCustomTransformers() {
-        CoordinateValueTransformer.register()
         NSErrorValueTransformer.register()
         SetValueTransformer.register()
-    }
-}
-
-@objc
-final class CoordinateValueTransformer: NSSecureUnarchiveFromDataTransformer {
-
-    static let name = NSValueTransformerName(rawValue: String(describing: CoordinateValueTransformer.self))
-
-    override static var allowedTopLevelClasses: [AnyClass] {
-        return [Coordinate.self]
-    }
-
-    @objc
-    public static func register() {
-        let transformer = CoordinateValueTransformer()
-        ValueTransformer.setValueTransformer(transformer, forName: name)
     }
 }
 

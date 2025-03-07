@@ -9,7 +9,7 @@
 #import "MenuItemsViewController.h"
 #import "MenuItemEditingViewController.h"
 #import "Menu+ViewDesign.h"
-#import "CoreDataStack.h"
+@import WordPressDataObjC;
 #import "WPAppAnalytics.h"
 #import "WordPress-Swift.h"
 

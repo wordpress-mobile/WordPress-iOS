@@ -4,11 +4,18 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol CoreDataStack
+
 @property (nonatomic, readonly, strong) NSManagedObjectContext *mainContext;
+
 - (NSManagedObjectContext *const)newDerivedContext DEPRECATED_MSG_ATTRIBUTE("Use `performAndSave` instead");
+
 - (void)saveContextAndWait:(NSManagedObjectContext *)context;
+
 - (void)saveContext:(NSManagedObjectContext *)context;
-- (void)saveContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^ _Nullable)(void))completionBlock onQueue:(dispatch_queue_t)queue NS_SWIFT_NAME(save(_:completion:on:));
+
+- (void)saveContext:(NSManagedObjectContext *)context
+withCompletionBlock:(void (^ _Nullable)(void))completionBlock
+            onQueue:(dispatch_queue_t)queue NS_SWIFT_NAME(save(_:completion:on:));
 
 /// Execute the given block with a background context and save the changes.
 ///
@@ -27,7 +34,8 @@ NS_ASSUME_NONNULL_BEGIN
 ///   - aBlock: A block which uses the given `NSManagedObjectContext` to make Core Data model changes.
 ///   - completion: A block which is called after the changes made by the `block` are saved.
 ///   - queue: A queue on which to execute the `completion` block.
-- (void)performAndSaveUsingBlock:(void (^)(NSManagedObjectContext *context))aBlock completion:(void (^ _Nullable)(void))completion onQueue:(dispatch_queue_t)queue;
+- (void)performAndSaveUsingBlock:(void (^)(NSManagedObjectContext *context))aBlock
+                      completion:(void (^ _Nullable)(void))completion onQueue:(dispatch_queue_t)queue;
 
 @end
 

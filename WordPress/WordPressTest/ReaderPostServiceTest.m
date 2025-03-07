@@ -1,4 +1,4 @@
-#import "CoreDataStack.h"
+@import WordPressDataObjC;
 
 #import <XCTest/XCTest.h>
 

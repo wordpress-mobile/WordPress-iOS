@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 
 protocol NotificationScheduler {
     func add(_ request: UNNotificationRequest, withCompletionHandler completionHandler: ((Error?) -> Void)?)

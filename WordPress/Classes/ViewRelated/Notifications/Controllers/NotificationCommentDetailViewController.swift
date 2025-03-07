@@ -199,22 +199,20 @@ private extension NotificationCommentDetailViewController {
         let blogSupportsWpcomRestAPI: Bool = {
             return blog?.supports(.wpComRESTAPI) ?? true
         }()
-        guard !comment.allowsModeration(),
-              blogSupportsWpcomRestAPI,
-              let siteID = notification.metaSiteID,
-              let readerComments = ReaderCommentsViewController(postID: NSNumber(value: comment.postID), siteID: siteID, source: .commentNotification)
-        else {
-            let viewController = CommentDetailViewController(
+        guard !comment.allowsModeration(), blogSupportsWpcomRestAPI, let siteID = notification.metaSiteID else {
+            let commentDetailsVC = CommentDetailViewController(
                 comment: comment,
                 notification: notification,
                 notificationDelegate: notificationDelegate,
                 managedObjectContext: managedObjectContext
             )
-            return .commentDetails(viewController)
+            return .commentDetails(commentDetailsVC)
         }
-        readerComments.navigateToCommentID = commentID
-        readerComments.allowsPushingPostDetails = true
-        return .readerComments(readerComments)
+        let commentsVC = ReaderCommentsViewController(postID: NSNumber(value: comment.postID), siteID: siteID)
+        commentsVC.source = .commentNotification
+        commentsVC.navigateToCommentID = commentID
+        commentsVC.allowsPushingPostDetails = true
+        return .readerComments(commentsVC)
     }
 
     func loadComment() {

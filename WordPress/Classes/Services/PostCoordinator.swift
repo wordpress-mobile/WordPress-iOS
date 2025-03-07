@@ -1,9 +1,10 @@
+import AutomatticTracks
 import Aztec
+import Combine
 import Foundation
+import WordPressData
 import WordPressKit
 import WordPressFlux
-import Combine
-import AutomatticTracks
 
 protocol PostCoordinatorDelegate: AnyObject {
     func postCoordinator(_ postCoordinator: PostCoordinator, promptForPasswordForBlog blog: Blog)

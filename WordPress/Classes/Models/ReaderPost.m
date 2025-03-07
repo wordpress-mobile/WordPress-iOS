@@ -1,6 +1,6 @@
 #import "ReaderPost.h"
 #import "AccountService.h"
-#import "CoreDataStack.h"
+@import WordPressDataObjC;
 #import "SourcePostAttribution.h"
 #import "WPAccount.h"
 #import "WordPress-Swift.h"
