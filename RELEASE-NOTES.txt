@@ -1,3 +1,7 @@
+25.9
+-----
+
+
 25.8
 -----
 * [**] The comments are now displayed using the same styles across the app and with better support for rich comments, especially for P2 sites [#24055]
