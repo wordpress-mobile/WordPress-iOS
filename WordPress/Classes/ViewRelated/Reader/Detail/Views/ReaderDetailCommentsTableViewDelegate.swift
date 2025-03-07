@@ -1,6 +1,6 @@
 import UIKit
 import WordPressReader
-import WordPressSharedObjC
+import WordPressShared
 
 /// Table View delegate to handle the Comments table displayed in Reader Post details.
 ///
