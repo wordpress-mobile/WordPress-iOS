@@ -1,5 +1,6 @@
 import Foundation
 import CoreData
+import WordPressData
 
 /// CoreDataIterativeMigrator: Migrates through a series of models to allow for users to skip app versions without risk.
 ///
@@ -271,7 +272,7 @@ private extension CoreDataIterativeMigrator {
 
     static func models(for names: [String]) throws -> [NSManagedObjectModel] {
         let models = try names.map { (name) -> NSManagedObjectModel in
-            guard let url = urlForModel(name: name, in: nil),
+            guard let url = WordPressData.urlForModel(name: name, in: nil),
                 let model = NSManagedObjectModel(contentsOf: url) else {
                     let description = "No model found for \(name)"
                     throw error(with: .noModelFound, description: description)
@@ -281,25 +282,6 @@ private extension CoreDataIterativeMigrator {
         }
 
         return models
-    }
-
-    static func urlForModel(name: String, in directory: String?) -> URL? {
-        let bundle = Bundle(for: ContextManager.self)
-        var url = bundle.url(forResource: name, withExtension: "mom", subdirectory: directory)
-
-        if url != nil {
-            return url
-        }
-
-        let momdPaths = bundle.paths(forResourcesOfType: "momd", inDirectory: directory)
-        momdPaths.forEach { (path) in
-            if url != nil {
-                return
-            }
-            url = bundle.url(forResource: name, withExtension: "mom", subdirectory: URL(fileURLWithPath: path).lastPathComponent)
-        }
-
-        return url
     }
 }
 

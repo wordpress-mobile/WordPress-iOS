@@ -154,12 +154,7 @@ public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
 
         DDLogWarn("Migration required for persistent store.")
 
-        let dbBundle = Bundle.main
-        guard let modelFileURL = dbBundle.url(forResource: "WordPress", withExtension: "momd") else {
-            fatalError("Can't find WordPress.momd")
-        }
-
-        guard let versionInfo = NSDictionary(contentsOf: modelFileURL.appendingPathComponent("VersionInfo.plist")) else {
+        guard let versionInfo = NSDictionary(contentsOf: WordPressData.modelURL.appendingPathComponent("VersionInfo.plist")) else {
             fatalError("Can't get the object model's version info")
         }
 
@@ -222,9 +217,7 @@ private extension ContextManager {
 
 private extension ContextManager {
     static func createPersistentContainer(storeURL: URL, modelName: String) -> NSPersistentContainer {
-        guard var modelFileURL = Bundle.main.url(forResource: "WordPress", withExtension: "momd") else {
-            fatalError("Can't find WordPress.momd")
-        }
+        var modelFileURL = WordPressData.modelURL
 
         if modelName != ContextManagerModelNameCurrent {
             modelFileURL = modelFileURL.appendingPathComponent(modelName).appendingPathExtension("mom")

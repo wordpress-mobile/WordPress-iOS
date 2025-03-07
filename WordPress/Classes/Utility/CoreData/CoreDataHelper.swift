@@ -1,5 +1,6 @@
 import Foundation
 import CoreData
+import WordPressData
 import WordPressShared
 
 // MARK: - NSManagedObject Default entityName Helper
@@ -357,8 +358,7 @@ extension CoreDataStack {
     }
 
     private func migrateDatabaseIfNecessary(at databaseLocation: URL) throws {
-        guard let modelFileURL = Bundle.main.url(forResource: "WordPress", withExtension: "momd"),
-              let objectModel = NSManagedObjectModel(contentsOf: modelFileURL) else {
+        guard let objectModel = NSManagedObjectModel(contentsOf: WordPressData.modelURL) else {
             return
         }
         try ContextManager.migrateDataModelsIfNecessary(storeURL: databaseLocation, objectModel: objectModel)
