@@ -16,7 +16,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
     enum RequestHTMLReason {
         case publish
         case close
-        case more
         case autoSave
     }
 
@@ -375,7 +374,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
         // Required to work around an issue present in iOS 14 beta 2
         // https://github.com/wordpress-mobile/WordPress-iOS/issues/14460
-        if presentedViewController?.view.accessibilityIdentifier == MoreSheetAlert.accessibilityIdentifier {
+        if presentedViewController?.view.accessibilityIdentifier == "MoreSheetAccessibilityIdentifier" {
             dismiss(animated: true)
         }
     }
@@ -437,10 +436,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
         navigationBarManager.moreButton.menu = makeMoreMenu()
         navigationBarManager.moreButton.showsMenuAsPrimaryAction = true
-    }
-
-    @objc private func buttonMoreTapped() {
-        displayMoreSheet()
     }
 
     private func reloadBlogIconView() {
@@ -847,8 +842,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             case .close:
                 isEditorClosing = true
                 cancelEditing()
-            case .more:
-                displayMoreSheet()
             case .autoSave:
                 break
             }
@@ -1272,7 +1265,7 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, moreWasPressed sender: UIButton) {
-        requestHTML(for: .more)
+        // No longer used. The menu is now shown as `UIMenu`.
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, publishButtonWasPressed sender: UIButton) {
@@ -1341,6 +1334,10 @@ extension GutenbergViewController {
                 DDLogError("Error fetching settings: \(err)")
             }
         })
+    }
+
+    private enum ErrorCode: Int {
+        case managedObjectContextMissing = 2
     }
 }
 
