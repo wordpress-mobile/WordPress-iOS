@@ -165,6 +165,13 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         conf.themeStyles = FeatureFlag.newGutenbergThemeStyles.enabled
         conf.plugins = FeatureFlag.newGutenbergPlugins.enabled && isWPComSite
 
+        if !post.blog.isSelfHosted {
+            let siteType: String = post.blog.isHostedAtWPcom ? "simple" : "atomic"
+            conf.webViewGlobals = [
+                WebViewGlobal(name: "_currentSiteType", value: .string(siteType))
+            ]
+        }
+
         self.editorViewController = GutenbergKit.EditorViewController(configuration: conf)
 
         super.init(nibName: nil, bundle: nil)
