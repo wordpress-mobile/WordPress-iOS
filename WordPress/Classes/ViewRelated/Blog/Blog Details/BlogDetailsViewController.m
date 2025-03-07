@@ -1202,19 +1202,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
         [rows addObject:[self blazeRow]];
     }
 
-// Temporarily disabled
-//    if ([self.blog supports:BlogFeaturePlans] && ![self.blog isWPForTeams]) {
-//        BlogDetailsRow *plansRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Plans", @"Action title. Noun. Links to a blog's Plans screen.")
-//                                                         identifier:BlogDetailsPlanCellIdentifier
-//                                                              image:[UIImage gridiconOfType:GridiconTypePlans]
-//                                                           callback:^{
-//                                                               [weakSelf showPlansFromSource:BlogDetailsNavigationSourceRow];
-//                                                           }];
-//
-//        plansRow.detail = self.blog.planTitle;
-//        [rows addObject:plansRow];
-//    }
-
     if (rows.count == 0) {
         return nil;
     }
@@ -1784,14 +1771,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     }
 
     PluginDirectoryViewController *controller = [self makePluginDirectoryViewControllerWithBlog:self.blog];
-    controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
-    [self.presentationDelegate presentBlogDetailsViewController:controller];
-}
-
-- (void)showPlansFromSource:(BlogDetailsNavigationSource)source
-{
-    [self trackEvent:WPAnalyticsStatOpenedPlans fromSource:source];
-    PlanListViewController *controller = [[PlanListViewController alloc] initWithStyle:UITableViewStyleGrouped];
     controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self.presentationDelegate presentBlogDetailsViewController:controller];
 }
