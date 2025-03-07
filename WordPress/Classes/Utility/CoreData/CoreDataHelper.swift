@@ -1,5 +1,6 @@
 import Foundation
 import CoreData
+import WordPressShared
 
 // MARK: - NSManagedObject Default entityName Helper
 //
