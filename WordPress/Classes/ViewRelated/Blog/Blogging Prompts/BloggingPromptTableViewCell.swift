@@ -1,3 +1,5 @@
+import WordPressData
+
 class BloggingPromptTableViewCell: UITableViewCell, NibReusable {
 
     // MARK: - Properties

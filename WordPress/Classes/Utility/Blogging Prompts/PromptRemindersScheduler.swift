@@ -1,5 +1,6 @@
 import Foundation
 import UserNotifications
+import WordPressData
 
 /// Encapsulates the local notification scheduling logic for Blogging Prompts.
 ///

@@ -1,5 +1,6 @@
 import UIKit
 import SafariServices
+import WordPressData
 import WordPressShared
 import WordPressFlux
 

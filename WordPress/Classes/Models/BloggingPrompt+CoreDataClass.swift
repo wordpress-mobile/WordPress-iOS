@@ -1,25 +1,9 @@
 import Foundation
 import CoreData
+import WordPressData
 import WordPressKit
 
-public class BloggingPrompt: NSManagedObject {
-
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<BloggingPrompt> {
-        return NSFetchRequest<BloggingPrompt>(entityName: Self.classNameWithoutNamespaces())
-    }
-
-    @nonobjc public class func newObject(in context: NSManagedObjectContext) -> BloggingPrompt? {
-        return NSEntityDescription.insertNewObject(forEntityName: Self.classNameWithoutNamespaces(), into: context) as? BloggingPrompt
-    }
-
-    public override func awakeFromInsert() {
-        self.date = .init(timeIntervalSince1970: 0)
-        self.displayAvatarURLs = []
-    }
-
-    var promptAttribution: BloggingPromptsAttribution? {
-        BloggingPromptsAttribution(rawValue: attribution.lowercased())
-    }
+extension BloggingPrompt {
 
     /// Convenience method to map properties from `BloggingPromptRemoteObject`.
     ///
@@ -40,6 +24,10 @@ public class BloggingPrompt: NSManagedObject {
         if let brandContext = BrandContext(with: remotePrompt) {
             brandContext.configure(self)
         }
+    }
+
+    var promptAttribution: BloggingPromptsAttribution? {
+        BloggingPromptsAttribution(rawValue: attribution.lowercased())
     }
 
     func textForDisplay() -> String {

@@ -1,3 +1,4 @@
+import WordPressData
 
 /// Encapsulates logic related to Blogging Prompts in RootViewCoordinator.
 ///
