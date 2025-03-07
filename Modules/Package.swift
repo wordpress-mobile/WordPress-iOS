@@ -65,7 +65,13 @@ let package = Package(
             .product(name: "XCUITestHelpers", package: "ScreenObject"),
         ], swiftSettings: [.swiftLanguageMode(.v5)]),
         .target(name: "WordPressDataObjC"),
-        .target(name: "WordPressData", dependencies: [.target(name: "WordPressDataObjC")]),
+        .target(
+            name: "WordPressData",
+            dependencies: [
+                .target(name: "WordPressDataObjC"),
+                .target(name: "WordPressSharedObjC")
+            ]
+        ),
         .target(name: "WordPressFlux", swiftSettings: [.swiftLanguageMode(.v5)]),
         .target(name: "WordPressCore", dependencies: [.target(name: "WordPressShared"), .product(name: "WordPressAPI", package: "wordpress-rs")]),
         .target(name: "WordPressSharedObjC", resources: [.process("Resources")], swiftSettings: [.swiftLanguageMode(.v5)]),
