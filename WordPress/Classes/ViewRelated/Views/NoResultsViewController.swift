@@ -90,7 +90,6 @@ import WordPressUI
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         reachability?.stopNotifier()
-        stopAnimatingIfNeeded()
     }
 
     override func didMove(toParent parent: UIViewController?) {

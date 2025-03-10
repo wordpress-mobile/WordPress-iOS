@@ -3382,7 +3382,6 @@
 				ViewRelated/Tools/TableViewKeyboardObserver.swift,
 				ViewRelated/Views/NoResults.storyboard,
 				ViewRelated/Views/NoResultsViewController.swift,
-				ViewRelated/Views/WPAnimatedBox.m,
 			);
 			target = 932225A61C7CE50300443B02 /* WordPressShareExtension */;
 		};
@@ -3420,7 +3419,6 @@
 				ViewRelated/Tools/TableViewKeyboardObserver.swift,
 				ViewRelated/Views/NoResults.storyboard,
 				ViewRelated/Views/NoResultsViewController.swift,
-				ViewRelated/Views/WPAnimatedBox.m,
 			);
 			target = 74576671202B558C00F42E40 /* WordPressDraftActionExtension */;
 		};
@@ -3548,7 +3546,6 @@
 				ViewRelated/Tools/TableViewKeyboardObserver.swift,
 				ViewRelated/Views/NoResults.storyboard,
 				ViewRelated/Views/NoResultsViewController.swift,
-				ViewRelated/Views/WPAnimatedBox.m,
 			);
 			target = 809620CF28E540D700940A5D /* JetpackShareExtension */;
 		};
@@ -3584,7 +3581,6 @@
 				ViewRelated/Tools/TableViewKeyboardObserver.swift,
 				ViewRelated/Views/NoResults.storyboard,
 				ViewRelated/Views/NoResultsViewController.swift,
-				ViewRelated/Views/WPAnimatedBox.m,
 			);
 			target = 8096213028E55C9400940A5D /* JetpackDraftActionExtension */;
 		};
