@@ -408,7 +408,6 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         dispatch_async(dispatch_get_main_queue(), ^{
             [ShareExtensionService removeShareExtensionConfiguration];
 
-            [NotificationSupportService deleteContentExtensionToken];
             [NotificationSupportService deleteServiceExtensionToken];
         });
     } else {
@@ -419,15 +418,11 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
             [ShareExtensionService configureShareExtensionToken:defaultAccount.authToken];
             [ShareExtensionService configureShareExtensionUsername:defaultAccount.username];
 
-            [NotificationSupportService insertContentExtensionToken:defaultAccount.authToken];
-            [NotificationSupportService insertContentExtensionUsername:defaultAccount.username];
-
             [NotificationSupportService insertServiceExtensionToken:defaultAccount.authToken];
             [NotificationSupportService insertServiceExtensionUsername:defaultAccount.username];
             [NotificationSupportService insertServiceExtensionUserID:defaultAccount.userID.stringValue];
         });
     }
-
 }
 
 - (void)purgeAccountIfUnused:(WPAccount *)account

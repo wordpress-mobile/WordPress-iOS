@@ -754,9 +754,6 @@ extension WordPressAppDelegate {
     func configureNotificationExtension() {
 
         if let account = try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext), let authToken = account.authToken {
-            NotificationSupportService.insertContentExtensionToken(authToken)
-            NotificationSupportService.insertContentExtensionUsername(account.username)
-
             NotificationSupportService.insertServiceExtensionToken(authToken)
             NotificationSupportService.insertServiceExtensionUsername(account.username)
             NotificationSupportService.insertServiceExtensionUserID(account.userID.stringValue)
@@ -764,9 +761,6 @@ extension WordPressAppDelegate {
     }
 
     func removeNotificationExtensionConfiguration() {
-        NotificationSupportService.deleteContentExtensionToken()
-        NotificationSupportService.deleteContentExtensionUsername()
-
         NotificationSupportService.deleteServiceExtensionToken()
         NotificationSupportService.deleteServiceExtensionUsername()
         NotificationSupportService.deleteServiceExtensionUserID()
