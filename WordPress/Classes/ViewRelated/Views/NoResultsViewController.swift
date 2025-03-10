@@ -85,7 +85,6 @@ import WordPressUI
         super.viewWillAppear(animated)
         reachability?.startNotifier()
         configureView()
-        startAnimatingIfNeeded()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -260,12 +259,10 @@ import WordPressUI
         return finalAttributedString
     }
 
-    /// Public class method to get an animated box to show while loading.
-    /// NB : the current implementation vends a WPAnimatedBox instance, which should be stopped via suspendAnimation.
-    ///
     @objc class func loadingAccessoryView() -> UIView {
-        let boxView = WPAnimatedBox()
-        return boxView
+        let indicator = UIActivityIndicatorView()
+        indicator.startAnimating()
+        return indicator
     }
 
     /// Public method to hide/show the image view.
@@ -277,9 +274,7 @@ import WordPressUI
     /// Public method to expose the private configure view method
     ///
     func updateView() {
-        stopAnimatingIfNeeded()
         configureView()
-        startAnimatingIfNeeded()
     }
 
     /// Public method to reset the button text
@@ -357,10 +352,14 @@ private extension NoResultsViewController {
 
         if let accessorySubview {
             accessoryView.subviews.forEach { view in
-                stopAnimatingViewIfNeeded(view)
                 view.removeFromSuperview()
             }
             accessoryView.addSubview(accessorySubview)
+            /// - note: `is` added to avoid introducing breaking changes. In
+            /// reality, this view has to add _some_ contraints.
+            if accessorySubview is UIActivityIndicatorView {
+                accessorySubview.pinCenter()
+            }
         }
 
         if let imageName {
@@ -527,26 +526,6 @@ private extension NoResultsViewController {
     func accessibilityIdentifier(for string: String) -> String {
         let buttonIdFormat = AppLocalizedString("%@ Button", comment: "Accessibility identifier for buttons.")
         return String(format: buttonIdFormat, string)
-    }
-
-    // MARK: - `WPAnimatedBox` resource management
-
-    func startAnimatingIfNeeded() {
-        guard let animatedBox = accessorySubview as? WPAnimatedBox else {
-            return
-        }
-        animatedBox.animate(afterDelay: 0.1)
-    }
-
-    func stopAnimatingViewIfNeeded(_ view: UIView?) {
-        guard let animatedBox = view as? WPAnimatedBox else {
-            return
-        }
-        animatedBox.suspendAnimation()
-    }
-
-    func stopAnimatingIfNeeded() {
-        stopAnimatingViewIfNeeded(accessorySubview)
     }
 
     struct NoConnection {
