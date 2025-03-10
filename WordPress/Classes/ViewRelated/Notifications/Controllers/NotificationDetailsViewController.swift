@@ -710,7 +710,7 @@ private extension NotificationDetailsViewController {
         }
 
         cell.onEditClick = { [weak self] _ in
-            self?.displayCommentEditorWithBlock(commentBlock)
+            wpAssertionFailure("unused")
         }
     }
 
@@ -1030,27 +1030,6 @@ private extension NotificationDetailsViewController {
 
     func updateComment(with commentContent: FormattableCommentContent, content: String) {
             self.updateCommentWithBlock(commentContent, content: content)
-    }
-
-    func displayCommentEditorWithBlock(_ block: FormattableCommentContent) {
-        let editViewController = EditCommentViewController.newEdit()
-        editViewController?.content = block.text
-        editViewController?.onCompletion = { (hasNewContent, newContent) in
-            self.dismiss(animated: true, completion: {
-                guard hasNewContent else {
-                    return
-                }
-                let newContent = newContent ?? ""
-                self.updateComment(with: block, content: newContent)
-            })
-        }
-
-        let navController = UINavigationController(rootViewController: editViewController!)
-        navController.modalPresentationStyle = .formSheet
-        navController.modalTransitionStyle = .coverVertical
-
-        CommentAnalytics.trackCommentEditorOpened(block: block)
-        present(navController, animated: true)
     }
 
     func displayCommentUpdateErrorWithBlock(_ block: FormattableCommentContent, content: String) {
