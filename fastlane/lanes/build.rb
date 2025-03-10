@@ -126,22 +126,19 @@ platform :ios do
 
   # Builds the WordPress app and uploads it to TestFlight, for beta-testing or final release
   #
-  # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
-  # @option [Boolean] skip_prechecks (default: false) If true, don't run the prechecks and ios_build_preflight
-  # @option [Boolean] create_release If true, creates a GitHub Release draft after the upload, with zipped xcarchive as artefact
-  # @option [Boolean] beta_release If true, the GitHub release will be marked as being a pre-release
+  # @param [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
+  # @param [Boolean] skip_prechecks (default: false) If true, don't run the prechecks and ios_build_preflight
+  # @param [Boolean] create_release If true, creates a GitHub Release draft after the upload, with zipped xcarchive as artefact
+  # @param [Boolean] beta_release If true, the GitHub release will be marked as being a pre-release
   #
-  # @called_by CI
-  #
-  desc 'Builds and uploads for distribution to App Store Connect'
-  lane :build_and_upload_app_store_connect do |options|
-    unless options[:skip_prechecks]
+  lane :build_and_upload_app_store_connect do |skip_confirm: false, skip_prechecks: false, create_release: false, beta_release: false|
+    unless skip_prechecks
       ensure_git_status_clean unless is_ci
       ios_build_preflight
     end
 
     UI.important("Building version #{release_version_current} (#{build_code_current}) and uploading to TestFlight")
-    UI.user_error!('Aborted by user request') unless options[:skip_confirm] || UI.confirm('Do you want to continue?')
+    UI.user_error!('Aborted by user request') unless skip_confirm || UI.confirm('Do you want to continue?')
 
     sentry_check_cli_installed
 
@@ -177,7 +174,7 @@ platform :ios do
       app_identifier: WORDPRESS_BUNDLE_IDENTIFIER
     )
 
-    next unless options[:create_release]
+    next unless create_release
 
     archive_zip_path = File.join(PROJECT_ROOT_FOLDER, 'WordPress.xarchive.zip')
     zip(path: lane_context[SharedValues::XCODEBUILD_ARCHIVE], output_path: archive_zip_path)
@@ -185,13 +182,14 @@ platform :ios do
     build_code = build_code_current
     release_version = release_version_current
 
-    version = options[:beta_release] ? build_code : release_version
+    version = beta_release ? build_code : release_version
     release_url = create_github_release(
       repository: GITHUB_REPO,
       version: version,
       release_notes_file_path: WORDPRESS_RELEASE_NOTES_PATH,
       release_assets: archive_zip_path.to_s,
-      prerelease: options[:beta_release]
+      prerelease: beta_release, # Beta = prerelease, Final = normal Release
+      is_draft: !beta_release # Beta = publish immediately, Final = Draft (only publish after Apple approval)
     )
 
     send_slack_message(
