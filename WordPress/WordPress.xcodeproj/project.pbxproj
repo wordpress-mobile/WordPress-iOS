@@ -713,7 +713,6 @@
 		733F36042126197800988727 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E185474D1DED8D8800D875D7 /* UserNotifications.framework */; };
 		733F36062126197800988727 /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 733F36052126197800988727 /* UserNotificationsUI.framework */; };
 		7358E6BF210BD318002323EB /* WordPressNotificationServiceExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7358E6B8210BD318002323EB /* WordPressNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		736584EB2137533A0029C9A4 /* NotificationContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736584E82137533A0029C9A4 /* NotificationContentView.swift */; };
 		73768B6B212B4E4F005136A1 /* UNNotificationContent+RemoteNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73768B6A212B4E4F005136A1 /* UNNotificationContent+RemoteNotification.swift */; };
 		7396FE66210F730600496D0D /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7396FE65210F730600496D0D /* NotificationService.swift */; };
 		73B05D2621374B960073ECAA /* Tracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FA22821C99F6180016CA7C /* Tracks.swift */; };
@@ -2583,7 +2582,6 @@
 		7347407E2114C5EF007FDDFF /* WordPressNotificationServiceExtension-Internal.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = "WordPressNotificationServiceExtension-Internal.entitlements"; sourceTree = "<group>"; };
 		7347407F2114C5F0007FDDFF /* WordPressNotificationServiceExtension-Alpha.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = "WordPressNotificationServiceExtension-Alpha.entitlements"; sourceTree = "<group>"; };
 		7358E6B8210BD318002323EB /* WordPressNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WordPressNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		736584E82137533A0029C9A4 /* NotificationContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationContentView.swift; sourceTree = "<group>"; };
 		73768B6A212B4E4F005136A1 /* UNNotificationContent+RemoteNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UNNotificationContent+RemoteNotification.swift"; sourceTree = "<group>"; };
 		7396FE65210F730600496D0D /* NotificationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		73ACDF9F2118B03700233AD4 /* WordPressNotificationServiceExtension-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WordPressNotificationServiceExtension-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -5518,21 +5516,6 @@
 			path = WordPressNotificationServiceExtension;
 			sourceTree = "<group>";
 		};
-		736584E72137533A0029C9A4 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				736584E82137533A0029C9A4 /* NotificationContentView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		736584E92137533A0029C9A4 /* Tracks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Tracks;
-			sourceTree = "<group>";
-		};
 		73768B69212B4DE8005136A1 /* NotificationContent */ = {
 			isa = PBXGroup;
 			children = (
@@ -5570,8 +5553,6 @@
 		73D5AC5B212622B200ADDDD2 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				736584E92137533A0029C9A4 /* Tracks */,
-				736584E72137533A0029C9A4 /* Views */,
 				73B05D2A21374FE50073ECAA /* WordPressNotificationContentExtension-Bridging-Header.h */,
 			);
 			path = Sources;
@@ -9368,7 +9349,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				433ADC1B223B2A7E00ED9DE1 /* TextBundleWrapper.m in Sources */,
-				736584EB2137533A0029C9A4 /* NotificationContentView.swift in Sources */,
 				01CE500F290A88C100A9C2E0 /* TracksConfiguration.swift in Sources */,
 				73F6DD44212C714F00CE447D /* RichNotificationViewModel.swift in Sources */,
 				73B05D2621374B960073ECAA /* Tracks.swift in Sources */,
