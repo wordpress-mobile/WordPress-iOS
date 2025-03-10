@@ -392,24 +392,27 @@ enum ActionButton {
     case activate(plugin: InstalledPlugin, action: () -> Void)
     case activated(plugin: InstalledPlugin)
 
+    @ViewBuilder
     var view: some View {
-        let button: AnyView
-        switch self {
-        case let .install(_, action):
-            button = AnyView(Button(Strings.installButton, action: action)
-                    .font(.callout.bold()))
-        case let .activate(_, action):
-            button = AnyView(Button(Strings.activateButton, action: action)
-                    .font(.callout.bold()))
-        case .activated:
-            button = AnyView(Button(Strings.activatedButton, action: { })
-                .font(.callout)
-                .disabled(true))
-        }
-
-        return button
+        button
             .buttonStyle(.borderedProminent)
             .buttonBorderShape(.capsule)
+    }
+
+    @ViewBuilder
+    private var button: some View {
+        switch self {
+        case let .install(_, action):
+            Button(Strings.installButton, action: action)
+                .font(.callout.bold())
+        case let .activate(_, action):
+            Button(Strings.activateButton, action: action)
+                .font(.callout.bold())
+        case .activated:
+            Button(Strings.activatedButton, action: { })
+                .font(.callout)
+                .disabled(true)
+        }
     }
 }
 

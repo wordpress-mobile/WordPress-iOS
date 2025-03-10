@@ -35,7 +35,7 @@ class FollowCommentsService: NSObject {
     /// Returns a Bool indicating whether or not the comments on the post can be followed.
     ///
     @objc var canFollowConversation: Bool {
-        return post.canSubscribeComments
+        return post.canActuallySubscribeToComments
     }
 
     /// Fetches the subscription status of the specified post for the current user.

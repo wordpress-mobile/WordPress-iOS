@@ -183,10 +183,6 @@ class PeopleViewController: UITableViewController {
             let configuration = WebViewControllerConfiguration(url: url)
             configuration.authenticateWithDefaultAccount()
             configuration.secureInteraction = true
-            configuration.onClose = { [weak self] in
-                self?.resetManagedPeople()
-                self?.refreshPeople()
-            }
             let viewController = WebKitViewController(configuration: configuration)
             let navWrapper = UINavigationController(rootViewController: viewController)
             navigationController?.present(navWrapper, animated: true)

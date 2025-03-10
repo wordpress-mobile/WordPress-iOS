@@ -133,7 +133,7 @@ private final class ReaderPostCellView: UIView {
         setupTimeLabel(timeLabel)
         timeLabel.setContentCompressionResistancePriority(.init(800), for: .horizontal)
 
-        titleLabel.font = .preferredFont(forTextStyle: .headline)
+        titleLabel.font = UIFontMetrics.default.scaledFont(for: UIFont.systemFont(ofSize: 18, weight: .semibold))
         titleLabel.adjustsFontForContentSizeCategory = true
         titleLabel.maximumContentSizeCategory = .accessibilityExtraLarge
 
@@ -342,7 +342,7 @@ private final class ReaderPostCellView: UIView {
             return configuration
         }()
 
-        let font = UIFont.preferredFont(forTextStyle: .footnote).withWeight(.medium)
+        let font = UIFont.preferredFont(forTextStyle: .footnote)
 
         buttons.comment.isHidden = !viewModel.isCommentsEnabled
         if viewModel.isCommentsEnabled {
@@ -421,7 +421,7 @@ private func makeAuthorButton() -> UIButton {
 private func makeButton(image: UIImage? = nil, font: UIFont = UIFont.preferredFont(forTextStyle: .footnote)) -> UIButton {
     var configuration = UIButton.Configuration.plain()
     configuration.image = image
-    configuration.imagePadding = 6
+    configuration.imagePadding = 2
     configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(font: font)
     configuration.baseForegroundColor = .secondaryLabel
     configuration.contentInsets = .init(top: 12, leading: 12, bottom: 14, trailing: 12)

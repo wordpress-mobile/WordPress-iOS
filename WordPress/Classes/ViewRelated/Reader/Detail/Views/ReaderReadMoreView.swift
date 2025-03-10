@@ -23,20 +23,13 @@ final class ReaderReadMoreView: UIView, UIAdaptivePresentationControllerDelegate
 
         textView.adjustsFontForContentSizeCategory = true
 
-        let string = NSMutableAttributedString(string: Strings.viewForMore, attributes: [
-            .font: UIFont.preferredFont(forTextStyle: .body),
-            .foregroundColor: UIColor.label
+        let string = NSMutableAttributedString(string: Strings.viewFullPost, attributes: [
+            .font: UIFont.preferredFont(forTextStyle: .body)
         ])
-        let range = string.mutableString.range(of: "%@")
-        if range.location != NSNotFound {
-            let replacement = NSMutableString(string: post.blogNameForDisplay() ?? Strings.blog)
-            string.replaceCharacters(in: range, with: String(replacement))
-            if let postURL = post.permaLink.flatMap(URL.init) {
-                string.addAttribute(.link, value: postURL, range: NSRange(location: range.location, length: replacement.length))
-                self.postURL = postURL
-            }
+        if let postURL = post.permaLink.flatMap(URL.init) {
+            string.addAttribute(.link, value: postURL, range: NSRange(location: 0, length: string.length))
+            self.postURL = postURL
         }
-
         textView.attributedText = string
 
         infoIconView.tintColor = .secondaryLabel
@@ -103,13 +96,23 @@ private final class GradientAlphaMaskView: UIView {
         super.init(frame: frame)
 
         gradientLayer.frame = bounds
-        gradientLayer.colors = [UIColor.white.withAlphaComponent(0.33).cgColor, UIColor.white.cgColor]
         gradientLayer.locations = [0.0, 1.0]
+        refreshColors()
 
         gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
         gradientLayer.endPoint = CGPoint(x: 0.5, y: 0.5)
 
         self.layer.addSublayer(gradientLayer)
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        refreshColors()
+    }
+
+    private func refreshColors() {
+        gradientLayer.colors = [UIColor.systemBackground.withAlphaComponent(0).cgColor, UIColor.systemBackground.cgColor]
     }
 
     required init?(coder: NSCoder) {
@@ -124,7 +127,7 @@ private final class GradientAlphaMaskView: UIView {
 }
 
 private enum Strings {
-    static let viewForMore = NSLocalizedString("reader.postDetails.viewMoreOn", value: "Visit %@ for the full post", comment: "Reader post details view")
+    static let viewFullPost = NSLocalizedString("reader.postDetails.viewFullPost", value: "View full post", comment: "Button title")
     static let blog = NSLocalizedString("reader.postDetails.blog", value: "blog", comment: "Reader post details view placeholder when blog name not avail")
     static let details = NSLocalizedString("reader.postDetails.viewModeDescription", value: "The owner of this site only allows us to show a brief summary of their content. To view the full post, you'll have to visit their site.", comment: "Reader post details view")
 }

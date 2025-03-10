@@ -543,6 +543,9 @@
 /* Cell placeholder */
 "addCategory.titlePlaceholder" = "Title";
 
+/* Accessibility identifier for an 'Add Comment' button */
+"addCommentButton.accessibilityIdentifity" = "Add Comment";
+
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "Adding site features";
 
@@ -817,6 +820,9 @@
 
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "Application passwords are a more secure way to connect to your self-hosted site, and enable support for features like %@.";
+
+/* Feature name for managing plugins in the app */
+"applicationPasswordRequired.feature.plugins" = "Plugin Management";
 
 /* Feature name for managing users in the app */
 "applicationPasswordRequired.feature.users" = "User Management";
@@ -1807,6 +1813,45 @@ Example: Comment on \n My First Post */
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "Reply to %1$@";
 
+/* Button in an alert confirming discaring a new draft */
+"commentCreate.closeConfirmationAlert.deleteDraft" = "Delete Draft";
+
+/* Button to keep the changes in an alert confirming discaring changes */
+"commentCreate.closeConfirmationAlert.keepEditing" = "Keep Editing";
+
+/* Button in an alert confirming saving a new draft */
+"commentCreate.closeConfirmationAlert.saveDraft" = "Save Draft";
+
+/* Error title */
+"commentCreate.failedToSentComment" = "Failed to send comment";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.navigationTitleComment" = "Comment";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.navigationTitleReply" = "Reply";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.placeholderLeaveComment" = "Leave a comment…";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.placeholderLeaveReply" = "Leave a reply…";
+
+/* Navigation bar button title */
+"commentCreate.send" = "Send";
+
+/* Button in an alert confirming discaring a new draft */
+"commentEdit.closeConfirmationAlert.deleteDraft" = "Discard Changes";
+
+/* Button to keep the changes in an alert confirming discaring changes */
+"commentEdit.closeConfirmationAlert.keepEditing" = "Keep Editing";
+
+/* Error title */
+"commentEdit.failedToSaveComment" = "Failed to save comment";
+
+/* Navigation bar title when leaving a editing an existing comment */
+"commentEdit.navigationTitle" = "Edit Comment";
+
 /* A tip displayed to the user in the stats section to help them gain more followers. */
 "Commenting on other blogs is a great way to build attention and followers for your new site." = "Commenting on other blogs is a great way to build attention and followers for your new site.";
 
@@ -1837,6 +1882,9 @@ Example: Reply to Pamela Nguyen */
 
 /* A label title. */
 "Comments per page" = "Comments per page";
+
+/* Error title */
+"comments.failedToLike" = "Failed to like comment";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.";
@@ -3076,9 +3124,6 @@ Example: Reply to Pamela Nguyen */
 /* Enter a custom value */
 "Enter a custom value" = "Enter a custom value";
 
-/* Accessibility Label for the enter full screen button on the comment reply text view */
-"Enter Full Screen" = "Enter Full Screen";
-
 /* (placeholder) Help enter WordPress password */
 "Enter password" = "Enter password";
 
@@ -3236,9 +3281,6 @@ Example: Reply to Pamela Nguyen */
 /* Downloadable/Restorable items: content section footer text */
 "Excludes themes, plugins, and uploads" = "Excludes themes, plugins, and uploads";
 
-/* Accessibility Label for the exit full screen button on the full screen comment reply mode */
-"Exit Full Screen" = "Exit Full Screen";
-
 /* Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "Expanded";
 
@@ -3250,6 +3292,18 @@ Example: Reply to Pamela Nguyen */
 
 /* Screen reader hint (non-imperative) about what does the site menu area selector button do. */
 "Expands to select a different menu area" = "Expands to select a different menu area";
+
+/* Accept button title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackAccept" = "Send feedback";
+
+/* Dismiss button title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackDecline" = "Not now";
+
+/* Message for the alert asking for feedback on the experimental editor */
+"experimentalFeatures.editorFeedbackMessage" = "Are you willing to share feedback on the experimental editor?";
+
+/* Title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackTitle" = "Share Feedback";
 
 /* The title for the experimental features list */
 "experimentalFeaturesList.heading" = "Experimental Features";
@@ -6301,6 +6355,90 @@ Please install the %3$@ to use the app with this site.";
 /* Version of an installed plugin */
 "Plugin version" = "Plugin version";
 
+/* Button label to activate a plugin */
+"pluginDetails.activate.button" = "Activate";
+
+/* Button label showing plugin is activated */
+"pluginDetails.activated.button" = "Activated";
+
+/* Message shown while a plugin is being activated */
+"pluginDetails.activating.message" = "Please wait while the plugin is being activated...";
+
+/* Title shown while a plugin is being activated */
+"pluginDetails.activating.title" = "Activating Plugin";
+
+/* Plugin author information. The placeholder is the author name */
+"pluginDetails.author" = "By %@";
+
+/* Button label to deactivate a plugin */
+"pluginDetails.deactivate.button" = "Deactivate";
+
+/* Message shown while a plugin is being deactivated */
+"pluginDetails.deactivating.message" = "Please wait while the plugin is being deactivated...";
+
+/* Title shown while a plugin is being deactivated */
+"pluginDetails.deactivating.title" = "Deactivating Plugin";
+
+/* Button label to delete a plugin */
+"pluginDetails.delete.button" = "Delete";
+
+/* Message of the confirmation alert when deleting a plugin. The placeholder is the plugin name */
+"pluginDetails.delete.confirmationMessage" = "Are you sure you want to delete %@?";
+
+/* Title of the confirmation alert when deleting a plugin */
+"pluginDetails.delete.confirmationTitle" = "Delete Plugin?";
+
+/* Button label to install a plugin */
+"pluginDetails.install.button" = "Install";
+
+/* Message shown while a plugin is being installed */
+"pluginDetails.install.message" = "Please wait while the plugin is being installed...";
+
+/* Title shown while a plugin is being installed */
+"pluginDetails.install.title" = "Install Plugin";
+
+/* Message shown while loading plugin details */
+"pluginDetails.loading" = "Loading plugin information...";
+
+/* Title of the changelog section in plugin details */
+"pluginDetails.section.changelog" = "Changelog";
+
+/* Title of the description section in plugin details */
+"pluginDetails.section.description" = "Description";
+
+/* Title of the details section in plugin details */
+"pluginDetails.section.details" = "Details";
+
+/* Title of the FAQ section in plugin details */
+"pluginDetails.section.faq" = "FAQ";
+
+/* Title of the installation section in plugin details */
+"pluginDetails.section.installation" = "Installation";
+
+/* Title of the reviews section in plugin details */
+"pluginDetails.section.reviews" = "Reviews";
+
+/* Title of the screenshots section in plugin details */
+"pluginDetails.section.screenshots" = "Screenshots";
+
+/* Message shown while a plugin is being uninstalled */
+"pluginDetails.uninstalling.message" = "Please wait while the plugin is being removed...";
+
+/* Title shown while a plugin is being uninstalled */
+"pluginDetails.uninstalling.title" = "Uninstalling Plugin";
+
+/* Button title to update a plugin */
+"pluginDetails.update.action" = "Update Now";
+
+/* Title shown when a plugin update is available */
+"pluginDetails.update.title" = "Update Available";
+
+/* Message shown when a plugin update is available. The placeholder is the new version number */
+"pluginDetails.update.versionAvailable" = "Version %@ is available. Please update it from your WordPress site dashboard.";
+
+/* Button label to view plugin on WordPress.org */
+"pluginDetails.viewOnWordPressOrg.button" = "View on WordPress.org";
+
 /* Noun. Title. Links to the plugin management feature.
    Title for the plugin directory */
 "Plugins" = "Plugins";
@@ -7060,6 +7198,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* A shared button title for Reader */
 "reader.button.unsubscribe" = "Unsubscribe";
 
+/* Informational message, should be short. */
+"reader.comments.commentsClosed" = "Comments Closed";
+
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "Views posts from the site";
 
@@ -7275,11 +7416,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Reader post details view placeholder when blog name not avail */
 "reader.postDetails.blog" = "blog";
 
-/* Reader post details view */
-"reader.postDetails.viewModeDescription" = "The owner of this site only allows us to show a brief summary of their content. To view the full post, you'll have to visit their site.";
+/* Button title */
+"reader.postDetails.viewFullPost" = "View full post";
 
 /* Reader post details view */
-"reader.postDetails.viewMoreOn" = "Visit %@ for the full post";
+"reader.postDetails.viewModeDescription" = "The owner of this site only allows us to show a brief summary of their content. To view the full post, you'll have to visit their site.";
 
 /* Name for the Candy color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.candy" = "Candy";
@@ -7515,6 +7656,9 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Accessibility label for unsubscribing from a tag */
 "reader.tags.unfollow.accessibility.label" = "Unfollow %@";
 
+/* Field title */
+"reader.userProfile.site" = "Site";
+
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "Back";
 
@@ -7745,14 +7889,10 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Setting: indicates if Replies to Comments will be notified */
 "Replies to your comments" = "Replies to your comments";
 
-/* Accessibility label for the reply button
-   Reply to a comment (verb)
+/* Reply to a comment (verb)
    Reply to a comment.
    Verb. Button title. Reply to a comment. */
 "Reply" = "Reply";
-
-/* The app successfully sent a comment */
-"Reply Sent!" = "Reply Sent!";
 
 /* Notifications Reply Accessibility Identifier */
 "Reply Text" = "Reply Text";
@@ -7761,9 +7901,6 @@ Feel free to replace it with other bracket types that you think looks better for
    Placeholder text for the reply text field.%1$@ is a placeholder for the comment author.Example: Reply to Pamela Nguyen
    Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
 "Reply to %1$@" = "Reply to %1$@";
-
-/* Placeholder text for replying to a post */
-"Reply to post" = "Reply to post";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "Require manual approval for comments that include more than this number of links.";
@@ -8495,6 +8632,59 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Title for a button that opens plan and domain purchasing flow. */
 "site.domains.purchaseWithPlan.buttons.title" = "Upgrade to a plan";
 
+/* Title for the featured plugins section */
+"site.plugins.add.category.featured" = "Featured";
+
+/* Title for the popular plugins section */
+"site.plugins.add.category.popular" = "Popular";
+
+/* Title for the recommended plugins section */
+"site.plugins.add.category.recommended" = "Recommended";
+
+/* Title for the search results section */
+"site.plugins.add.category.searchResults" = "Search Results";
+
+/* Message shown when no plugins are found in the list */
+"site.plugins.add.empty" = "No plugins found";
+
+/* Tag shown next to plugins that are already installed */
+"site.plugins.add.installed.tag" = "Installed";
+
+/* Error message shown when plugins failed to load, with retry option */
+"site.plugins.add.loadError" = "Failed to load plugins. Tap here to retry";
+
+/* Message shown while loading plugins in the list */
+"site.plugins.add.loading" = "Loading plugins...";
+
+/* Navigation title for the add new plugin screen */
+"site.plugins.add.title" = "Add New Plugin";
+
+/* Message shown when there are no active plugins on the site */
+"site.plugins.empty.active" = "No active plugins";
+
+/* Button label to add a new plugin when no plugins are installed */
+"site.plugins.empty.addButton" = "Add Plugin";
+
+/* Message shown when there are no inactive plugins on the site */
+"site.plugins.empty.inactive" = "No inactive plugins";
+
+/* The plugin fillter option for displaying active plugins
+   The plugin fillter option for displaying all plugins
+   The plugin fillter option for displaying inactive plugins */
+"site.plugins.filter.option.all" = "All";
+
+/* Title of the plugin filter picker */
+"site.plugins.filter.title" = "Filter";
+
+/* Message displayed when fetching installed plugins from the site */
+"site.plugins.loading" = "Loading installed plugins…";
+
+/* No installed plugins message */
+"site.plugins.noInstalledPlugins" = "You haven't installed any plugins yet";
+
+/* Installed plugins list title */
+"site.plugins.title" = "Plugins";
+
 /* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
 "siteCreation.domain.backButton.title" = "Domains";
 
@@ -8596,6 +8786,25 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for site switcher screen */
 "sitePicker.title" = "My Sites";
+
+/* The plugin author displayed in the plugins list. The first argument is plugin author name
+   The plugin version displayed in the plugins list. The first argument is plugin version */
+"sitePluginsList.item.author" = "By %@";
+
+/* The message displayed when a plugin has no description */
+"sitePluginsList.item.noDescriptionAvailable" = "The plugin author did not provide a description for this plugin.";
+
+/* Button to activate a plugin */
+"sitePluginsList.itemAction.activate" = "Activate";
+
+/* Button to deactivate a plugin */
+"sitePluginsList.itemAction.deactivate" = "Deactivate";
+
+/* Button to delete a plugin */
+"sitePluginsList.itemAction.delete" = "Delete";
+
+/* Button to view the plugin on WordPress.org website */
+"sitePluginsList.itemAction.viewOnWordPressOrg" = "View on WordPress.org";
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Privacy";
@@ -9610,9 +9819,6 @@ Feel free to replace it with other bracket types that you think looks better for
 "There has been a problem while loading your Notification Settings" = "There has been a problem while loading your Notification Settings";
 
 /* Error displayed if a comment fails to get updated */
-"There has been an unexpected error while editing the comment" = "There has been an unexpected error while editing the comment";
-
-/* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "There has been an unexpected error while editing your comment";
 
 /* Message shown when comments for a post can not be loaded. */
@@ -9623,9 +9829,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Invite Failed Message */
 "There has been an unexpected error while sending your Invitation" = "There has been an unexpected error while sending your Invitation";
-
-/* Reply Failure Message */
-"There has been an unexpected error while sending your reply" = "There has been an unexpected error while sending your reply";
 
 /* Displayed whenever a Comment Update Fails */
 "There has been an unexpected error while updating your comment" = "There has been an unexpected error while updating your comment";
@@ -11028,6 +11231,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Error message that describes an unknown error had occured */
 "wordpress-api.error.unknown" = "Something went wrong, please try again later.";
+
+/* Error message when failing to find selected media file on the user's device. */
+"wordpress.api.upload.media.fileNotFound" = "Can't locate the media file on the device";
 
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";

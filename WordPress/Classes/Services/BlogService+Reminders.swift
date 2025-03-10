@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 
 extension BlogService {
     @objc func unscheduleBloggingReminders(for blog: Blog) {

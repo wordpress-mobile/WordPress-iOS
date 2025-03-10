@@ -1,5 +1,6 @@
-import SwiftUI
 import Combine
+import SwiftUI
+import WordPressData
 
 final class BooleanUserDefaultsDebugViewModel: ObservableObject {
 

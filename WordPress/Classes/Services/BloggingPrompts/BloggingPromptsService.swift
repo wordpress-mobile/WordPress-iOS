@@ -1,4 +1,5 @@
 import CoreData
+import WordPressData
 import WordPressKit
 
 class BloggingPromptsService {

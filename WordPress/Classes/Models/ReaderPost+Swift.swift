@@ -3,6 +3,21 @@ import WordPressUI
 
 extension ReaderPost {
 
+    /// - note: this is a workaround for https://github.com/wordpress-mobile/WordPress-iOS/issues/18975 and
+    /// https://github.com/wordpress-mobile/WordPress-iOS/issues/20953. This code
+    /// makes sure that you see the "Follow Conversation" button on P2s
+    /// but not if you have "Emails me all comments" option enabled, which
+    /// matches the behavior on the web.
+    var canActuallySubscribeToComments: Bool {
+        if canSubscribeComments {
+            return true
+        }
+        if isP2Type() {
+            return !((topic as? ReaderSiteTopic)?.emailSubscription?.sendComments ?? false)
+        }
+        return false
+    }
+
     func getSiteIconURL(size: Int) -> URL? {
         SiteIconViewModel.makeReaderSiteIconURL(iconURL: siteIconURL, siteID: siteID?.intValue, size: CGSize(width: size, height: size))
     }

@@ -120,7 +120,7 @@ private struct ReaderSidebarView: View {
         Section {
             let screens = ReaderStaticScreen.allCases
             ForEach(ReaderStaticScreen.allCases) {
-                makePrimaryNavigationItem($0.localizedTitle, systemImage: $0.systemImage)
+                makePrimaryNavigationItem($0.localizedTitle, imageName: $0.imageName)
                     .tag(ReaderSidebarItem.main($0))
                     .listRowSeparator((viewModel.isCompact && $0 != screens.last) ? .visible : .hidden, edges: .bottom)
                     .accessibilityIdentifier($0.accessibilityIdentifier)
@@ -140,7 +140,11 @@ private struct ReaderSidebarView: View {
             }
         }
         makeSection(Strings.subscriptions, isExpanded: $isSectionSubscriptionsExpanded) {
-            Label(Strings.subscriptions, systemImage: "checkmark.rectangle.stack")
+            Label {
+                Text(Strings.subscriptions)
+            } icon: {
+                ReaderSidebarImage(name: "reader-menu-subscriptions")
+            }
                 .tag(ReaderSidebarItem.allSubscriptions)
                 .listItemTint(AppColor.primary)
                 .withDisabledSelection(isEditing)
@@ -156,13 +160,13 @@ private struct ReaderSidebarView: View {
         }
     }
 
-    private func makePrimaryNavigationItem(_ title: String, systemImage: String) -> some View {
+    private func makePrimaryNavigationItem(_ title: String, imageName: String) -> some View {
         HStack {
             Label {
                 Text(title)
                     .font(.headline).fontWeight(.medium)
             } icon: {
-                Image(systemName: systemImage)
+                ScaledImage(imageName, height: 24, relativeTo: .headline)
             }
             .lineLimit(1)
             if viewModel.isCompact {
@@ -231,6 +235,14 @@ private struct ReaderSidebarSection<Content: View>: View {
                 content()
             }
         }
+    }
+}
+
+struct ReaderSidebarImage: View {
+    let name: String
+
+    var body: some View {
+        ScaledImage(name, height: 24, relativeTo: .body)
     }
 }
 

@@ -29,7 +29,7 @@ struct AddNewPluginView: View {
         }
         .listStyle(.grouped)
         .scrollContentBackground(.hidden)
-        .navigationTitle("Add New Plugin")
+        .navigationTitle(Strings.navigationTitle)
         .navigationBarTitleDisplayMode(.inline)
         .searchable(text: $viewModel.searchInput)
         .toolbar {
@@ -84,16 +84,21 @@ struct AddNewPluginView: View {
 
     @ViewBuilder
     private func rowContent(_ row: ListRow) -> some View {
-        if case .loading = row {
+        switch row {
+        case .loading:
             Label {
-                Text("Loading plugins...")
-            } icon: { ProgressView() }
+                Text(Strings.loadingPlugins)
+            } icon: {
+                ProgressView()
+            }
             .font(.callout)
             .foregroundColor(.secondary)
             .frame(maxWidth: .infinity, alignment: .center)
-        } else if case .error = row {
-            Text("Failed to load plugins. Tap here to retry")
-        } else if case let .plugin(plugin, isInstalled) = row {
+
+        case .error(let errorMessage):
+            Text(Strings.loadError)
+
+        case let .plugin(plugin, isInstalled):
             NavigationLink(destination: PluginDetailsView(plugin: plugin, service: viewModel.service)) {
                 HStack(alignment: .center) {
                     PluginIconView(plugin: plugin, service: viewModel.service)
@@ -130,10 +135,10 @@ struct AddNewPluginView: View {
                     }
                 }
             }
-        } else if case .empty = row {
-            Text("No plugins found")
-        } else {
-            Text("Impossible to reach here")
+
+        case .empty:
+            Text(Strings.noPluginsFound)
+
         }
     }
 }
@@ -165,14 +170,14 @@ private enum ListSection: Identifiable, Hashable {
         case let .plugins(category, _):
             switch category {
             case .featured:
-                return "Featured"
+                return Strings.featured
             case .popular:
-                return "Popular"
+                return Strings.popular
             case .recommended:
-                return "Recommended"
+                return Strings.recommended
             }
         case .searchResult:
-            return "Search Results"
+            return Strings.searchResults
         }
     }
 }
@@ -343,5 +348,53 @@ private enum Strings {
         "site.plugins.add.installed.tag",
         value: "Installed",
         comment: "Tag shown next to plugins that are already installed"
+    )
+
+    static let navigationTitle = NSLocalizedString(
+        "site.plugins.add.title",
+        value: "Add New Plugin",
+        comment: "Navigation title for the add new plugin screen"
+    )
+
+    static let loadingPlugins = NSLocalizedString(
+        "site.plugins.add.loading",
+        value: "Loading plugins...",
+        comment: "Message shown while loading plugins in the list"
+    )
+
+    static let loadError = NSLocalizedString(
+        "site.plugins.add.loadError",
+        value: "Failed to load plugins. Tap here to retry",
+        comment: "Error message shown when plugins failed to load, with retry option"
+    )
+
+    static let noPluginsFound = NSLocalizedString(
+        "site.plugins.add.empty",
+        value: "No plugins found",
+        comment: "Message shown when no plugins are found in the list"
+    )
+
+    static let featured = NSLocalizedString(
+        "site.plugins.add.category.featured",
+        value: "Featured",
+        comment: "Title for the featured plugins section"
+    )
+
+    static let popular = NSLocalizedString(
+        "site.plugins.add.category.popular",
+        value: "Popular",
+        comment: "Title for the popular plugins section"
+    )
+
+    static let recommended = NSLocalizedString(
+        "site.plugins.add.category.recommended",
+        value: "Recommended",
+        comment: "Title for the recommended plugins section"
+    )
+
+    static let searchResults = NSLocalizedString(
+        "site.plugins.add.category.searchResults",
+        value: "Search Results",
+        comment: "Title for the search results section"
     )
 }

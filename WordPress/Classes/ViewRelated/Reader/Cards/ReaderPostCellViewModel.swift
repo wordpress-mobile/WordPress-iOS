@@ -39,7 +39,7 @@ final class ReaderPostCellViewModel {
         self.title = post.titleForDisplay() ?? ""
         self.details = post.contentPreviewForDisplay() ?? ""
         self.isSeen = post.isSeenSupported ? post.isSeen : nil
-        self.imageURL = post.featuredImageURLForDisplay()
+        self.imageURL = post.featuredImageURLForDisplay() ?? post.pathForDisplayImage.flatMap(URL.init)
 
         self.toolbar = ReaderPostToolbarViewModel.make(post: post)
         if isP2 && post.primaryTag == "afk" {

@@ -1046,8 +1046,7 @@ private extension ReaderDetailViewController {
         // If a Related post fails to load, disable the More and Share buttons as they won't do anything.
         let rightItems = [
             moreButtonItem(enabled: enableRightBarButtons),
-            shareButtonItem(enabled: enableRightBarButtons),
-            safariButtonItem()
+            shareButtonItem(enabled: enableRightBarButtons)
         ]
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.rightBarButtonItems = rightItems.compactMap({ $0 })
@@ -1090,13 +1089,6 @@ private extension ReaderDetailViewController {
         dismiss(animated: true)
     }
 
-    func safariButtonItem() -> UIBarButtonItem? {
-        let button = barButtonItem(with: .gridicon(.globe), action: #selector(didTapBrowserButton(_:)))
-        button.accessibilityLabel = Strings.safariButtonAccessibilityLabel
-
-        return button
-    }
-
     func moreButtonItem(enabled: Bool = true) -> UIBarButtonItem? {
         let button = UIBarButtonItem(image: UIImage(systemName: "ellipsis"), menu: nil)
         button.menu = UIMenu(options: .displayInline, children: [
@@ -1133,7 +1125,7 @@ private extension ReaderDetailViewController {
     }
 
     func shareButtonItem(enabled: Bool = true) -> UIBarButtonItem? {
-        let button = barButtonItem(with: .gridicon(.shareiOS), action: #selector(didTapShareButton(_:)))
+        let button = barButtonItem(with: UIImage(named: "wpl-share") ?? UIImage(), action: #selector(didTapShareButton(_:)))
         button.accessibilityLabel = SharedStrings.Button.share
         button.isEnabled = enabled
 

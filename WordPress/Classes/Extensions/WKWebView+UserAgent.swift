@@ -1,5 +1,6 @@
 import AutomatticTracks
 import WebKit
+import WordPressReader
 
 /// This extension provides a mechanism to request the UserAgent for WKWebViews
 ///
@@ -28,5 +29,17 @@ extension WKWebView {
     @objc
     static func userAgent() -> String {
         return WKWebView().userAgent()
+    }
+
+    /// It makes the first render of the next `WKWebView` x2-3 times faster.
+    static func warmup() {
+        let renderer = WebCommentContentRenderer()
+        renderer.render(comment: "Hello, world")
+        let view = renderer.view
+
+        // Retain for 5 seconds and let it prefetch stuff
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5)) {
+            _ = view
+        }
     }
 }

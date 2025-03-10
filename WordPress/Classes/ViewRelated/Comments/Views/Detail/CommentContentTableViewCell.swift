@@ -3,6 +3,7 @@ import WordPressUI
 import WordPressReader
 import Gravatar
 import Combine
+import SwiftUI
 
 final class CommentContentTableViewCell: UITableViewCell, NibReusable {
     // all the available images for the accessory button.
@@ -64,6 +65,7 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
     }
 
     // MARK: Outlets
+    @IBOutlet private weak var headerView: UIView!
 
     @IBOutlet private weak var containerStackView: UIStackView!
     @IBOutlet private weak var containerStackLeadingConstraint: NSLayoutConstraint!
@@ -109,7 +111,7 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     // MARK: Visibility Control
 
-    private var isAccessoryButtonEnabled: Bool = false {
+    var isAccessoryButtonEnabled: Bool = false {
         didSet {
             accessoryButton.isHidden = !isAccessoryButtonEnabled
         }
@@ -137,6 +139,7 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+
         configureViews()
     }
 
@@ -194,12 +197,18 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
         isAccessoryButtonEnabled = false
     }
 
+    func configureForCommentDetails() {
+        containerStackView.isLayoutMarginsRelativeArrangement = true
+        containerStackView.layoutMargins = UIEdgeInsets(.vertical, 4)
+    }
+
     private func configure(with state: CommentCellViewModel.State) {
         nameLabel.text = state.title
         dateLabel.text = state.dateCreated?.toMediumString()
 
         replyButton.isHidden = !state.isReplyEnabled
         likeButton.isHidden = !state.isLikeEnabled
+        likeButton?.configuration?.contentInsets.leading = state.isReplyEnabled ? 8 : 0
 
         updateLikeButton(isLiked: state.isLiked, likeCount: state.likeCount)
     }
@@ -308,8 +317,11 @@ private extension CommentContentTableViewCell {
     func configureViews() {
         selectionStyle = .none
 
+        headerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(headerTapped)))
+
         nameLabel?.font = style.nameFont
         nameLabel?.textColor = style.nameTextColor
+        nameLabel?.numberOfLines = 1
 
         badgeLabel?.font = Style.badgeFont
         badgeLabel?.textColor = Style.badgeTextColor
@@ -324,7 +336,7 @@ private extension CommentContentTableViewCell {
         accessoryButton?.setImage(accessoryButtonImage, for: .normal)
         accessoryButton?.addTarget(self, action: #selector(accessoryButtonTapped), for: .touchUpInside)
 
-        replyButton.configuration = makeReactionButtonConfiguration(systemImage: "arrowshape.turn.up.left")
+        replyButton.configuration = makeReactionButtonConfiguration(image: UIImage(named: "icon-reader-comment-reply"))
         replyButton.configuration?.contentInsets.leading = 0
         replyButton.tintColor = .secondaryLabel
         replyButton.setTitle(.reply, for: .normal)
@@ -332,7 +344,7 @@ private extension CommentContentTableViewCell {
         replyButton.maximumContentSizeCategory = .accessibilityMedium
         replyButton.accessibilityIdentifier = .replyButtonAccessibilityId
 
-        likeButton.configuration = makeReactionButtonConfiguration(systemImage: "star")
+        likeButton.configuration = makeReactionButtonConfiguration(image: WPStyleGuide.ReaderDetail.likeToolbarIcon)
         likeButton.tintColor = .secondaryLabel
 
         likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
@@ -342,18 +354,18 @@ private extension CommentContentTableViewCell {
         applyStyles()
     }
 
-    private func makeReactionButtonConfiguration(systemImage: String) -> UIButton.Configuration {
+    private func makeReactionButtonConfiguration(image: UIImage? = nil) -> UIButton.Configuration {
         var configuration = UIButton.Configuration.plain()
         let font = UIFont.preferredFont(forTextStyle: .footnote)
-        configuration.image = UIImage(systemName: systemImage)
+        configuration.image = image
         configuration.imagePlacement = .leading
-        configuration.imagePadding = 6
+        configuration.imagePadding = 2
         configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer {
             var attributes = $0
             attributes.font = font
             return attributes
         }
-        configuration.contentInsets = .init(top: 10, leading: 8, bottom: 12, trailing: 8)
+        configuration.contentInsets = .init(top: 8, leading: 8, bottom: 8, trailing: 8)
         configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(font: font)
         return configuration
     }
@@ -388,7 +400,7 @@ private extension CommentContentTableViewCell {
     func updateLikeButton(isLiked: Bool, likeCount: Int) {
         likeButton.tintColor = isLiked ? UIAppColor.primary : .secondaryLabel
         if var configuration = likeButton.configuration {
-            configuration.image = UIImage(systemName: isLiked ? "star.fill" : "star")
+            configuration.image = isLiked ? WPStyleGuide.ReaderDetail.likeSelectedToolbarIcon : WPStyleGuide.ReaderDetail.likeToolbarIcon
             configuration.title = likeCount > 0 ? "\(likeCount)" : String.noLikes
             likeButton.accessibilityLabel = {
                 switch likeCount {
@@ -432,6 +444,20 @@ private extension CommentContentTableViewCell {
     }
 
     // MARK: Button Actions
+
+    @objc private func headerTapped() {
+        guard let comment = viewModel?.comment else {
+            return
+        }
+        let viewModel = ReaderUserProfileViewModel(comment: comment)
+        let profileVC = UIHostingController(rootView: ReaderUserProfileView(viewModel: viewModel))
+        let navigationVC = UINavigationController(rootViewController: profileVC)
+        profileVC.navigationItem.leftBarButtonItem = UIBarButtonItem(systemItem: .close, primaryAction: .init { [weak profileVC] _ in
+            profileVC?.presentingViewController?.dismiss(animated: true)
+        })
+        navigationVC.sheetPresentationController?.detents = [.medium()]
+        UIViewController.topViewController?.present(navigationVC, animated: true)
+    }
 
     @objc func accessoryButtonTapped() {
         accessoryButtonAction?(accessoryButton)

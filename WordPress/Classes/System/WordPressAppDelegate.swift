@@ -129,6 +129,9 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         startObservingAppleIDCredentialRevoked()
 
         NotificationCenter.default.post(name: .applicationLaunchCompleted, object: nil)
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
+            WKWebView.warmup()
+        }
 
         return true
     }

@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 import WordPressKit
 
 enum PeopleServiceError: Error {

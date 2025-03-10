@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 
 final class MediaRepository {
 

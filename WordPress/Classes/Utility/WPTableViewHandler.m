@@ -4,6 +4,7 @@
 @import CoreData;
 @import NSObject_SafeExpectations;
 @import WordPressShared;
+@import WordPressSharedObjC;
 
 static NSString * const DefaultCellIdentifier = @"DefaultCellIdentifier";
 static CGFloat const DefaultCellHeight = 44.0;

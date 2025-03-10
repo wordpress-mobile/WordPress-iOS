@@ -13,8 +13,14 @@ struct ReaderSidebarOrganizationSection: View {
                 Text(list.title)
                     .lineLimit(1)
             } icon: {
-                // TODO: update icon
-                Image(systemName: "list.star")
+                let imageName = {
+                    switch list.slug {
+                    case "a8c": "reader-menu-a8c"
+                    case "p2": "reader-menu-pin"
+                    default: "reader-menu-list"
+                    }
+                }()
+                ScaledImage(imageName, height: 24, relativeTo: .body)
                     .foregroundStyle(.secondary)
             }
             .tag(ReaderSidebarItem.organization(TaggedManagedObjectID(list)))

@@ -132,6 +132,9 @@ class NotificationSiteSubscriptionViewController: UITableViewController {
         // Hide the separators, whenever the table is empty
         tableView.tableFooterView = UIView()
 
+        tableView.tableHeaderView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 0.0, height: 8))
+        tableView.sectionHeaderHeight = 12
+
         // Style!
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)

@@ -2,7 +2,7 @@
 
 #import "Blog.h"
 #import "BlogService.h"
-#import "CoreDataStack.h"
+@import WordPressDataObjC;
 #import "PostCategory.h"
 #import "PostCategoryService.h"
 #import "SettingsSelectionViewController.h"

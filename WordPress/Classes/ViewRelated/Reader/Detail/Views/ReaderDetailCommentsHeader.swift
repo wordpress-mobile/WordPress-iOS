@@ -46,7 +46,7 @@ class ReaderDetailCommentsHeader: UITableViewHeaderFooterView, NibReusable {
     ) {
         self.post = post
         self.totalComments = totalComments
-        self.followConversationEnabled = post.commentsOpen && post.canSubscribeComments
+        self.followConversationEnabled = post.commentsOpen && post.canActuallySubscribeToComments
         self.followButtonTappedClosure = followButtonTappedClosure
 
         configureTitle()

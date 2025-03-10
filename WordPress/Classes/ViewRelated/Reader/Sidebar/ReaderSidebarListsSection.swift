@@ -24,7 +24,7 @@ struct ReaderSidebarListCell: View {
             Text(list.title)
                 .lineLimit(1)
         } icon: {
-            Image(systemName: "list.star")
+            ReaderSidebarImage(name: "reader-menu-list")
                 .foregroundStyle(.secondary)
         }
         .tag(ReaderSidebarItem.list(TaggedManagedObjectID(list)))

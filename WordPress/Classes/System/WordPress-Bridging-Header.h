@@ -13,8 +13,6 @@
 #import "CommentService.h"
 #import "CommentsViewController+Network.h"
 #import "Constants.h"
-#import "CoreDataStack.h"
-#import "Coordinate.h"
 
 #import "EditCommentViewController.h"
 
@@ -45,7 +43,6 @@
 #import "PostTagService.h"
 
 #import "ReachabilityUtils.h"
-#import "ReaderCommentsViewController.h"
 #import "ReaderGapMarker.h"
 #import "ReaderPost.h"
 #import "ReaderPostService.h"

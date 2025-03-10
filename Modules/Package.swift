@@ -11,6 +11,7 @@ let package = Package(
         .library(name: "AsyncImageKit", targets: ["AsyncImageKit"]),
         .library(name: "DesignSystem", targets: ["DesignSystem"]),
         .library(name: "JetpackStatsWidgetsCore", targets: ["JetpackStatsWidgetsCore"]),
+        .library(name: "WordPressData", targets: ["WordPressData"]),
         .library(name: "WordPressFlux", targets: ["WordPressFlux"]),
         .library(name: "WordPressShared", targets: ["WordPressShared"]),
         .library(name: "WordPressUI", targets: ["WordPressUI"]),
@@ -44,7 +45,7 @@ let package = Package(
         .package(url: "https://github.com/wordpress-mobile/MediaEditor-iOS", branch: "task/spm-support"),
         .package(url: "https://github.com/wordpress-mobile/NSObject-SafeExpectations", from: "0.0.6"),
         .package(url: "https://github.com/wordpress-mobile/NSURL-IDN", branch: "trunk"),
-        .package(url: "https://github.com/wordpress-mobile/WordPressKit-iOS", branch: "task/add-remote-comment-update-comment"),
+        .package(url: "https://github.com/wordpress-mobile/WordPressKit-iOS", branch: "wpios-edition"),
         .package(url: "https://github.com/zendesk/support_sdk_ios", from: "8.0.3"),
         // We can't use wordpress-rs branches nor commits here. Only tags work.
         .package(url: "https://github.com/Automattic/wordpress-rs", revision: "alpha-20250127"),
@@ -63,6 +64,14 @@ let package = Package(
             .product(name: "ScreenObject", package: "ScreenObject"),
             .product(name: "XCUITestHelpers", package: "ScreenObject"),
         ], swiftSettings: [.swiftLanguageMode(.v5)]),
+        .target(name: "WordPressDataObjC"),
+        .target(
+            name: "WordPressData",
+            dependencies: [
+                .target(name: "WordPressDataObjC"),
+                .target(name: "WordPressSharedObjC")
+            ]
+        ),
         .target(name: "WordPressFlux", swiftSettings: [.swiftLanguageMode(.v5)]),
         .target(name: "WordPressCore", dependencies: [.target(name: "WordPressShared"), .product(name: "WordPressAPI", package: "wordpress-rs")]),
         .target(name: "WordPressSharedObjC", resources: [.process("Resources")], swiftSettings: [.swiftLanguageMode(.v5)]),
@@ -105,7 +114,7 @@ let package = Package(
 ///
 /// ## Known Issues
 ///
-///   - SwiftPM copies resource bundles from a target, including dynamic frameworks,
+///   - SwiftPM copies resource bundles from a target, including dynamic frameworks,
 /// into every target that depends on it. Make sure to avoid including frameworks
 /// with large resources bundled into multiple targets.
 enum XcodeSupport {
@@ -159,6 +168,7 @@ enum XcodeSupport {
             .xcodeTarget("XcodeTarget_App", dependencies: [
                 "DesignSystem",
                 "JetpackStatsWidgetsCore",
+                "WordPressData",
                 "WordPressFlux",
                 "WordPressShared",
                 "WordPressReader",

@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 import WordPressKit
 
 /// WordPressComSyncService encapsulates all of the logic related to Logging into a WordPress.com account, and syncing the

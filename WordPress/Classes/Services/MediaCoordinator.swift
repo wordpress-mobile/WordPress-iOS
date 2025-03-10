@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 import WordPressFlux
 
 import class AutomatticTracks.CrashLogging
