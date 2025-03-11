@@ -1,4 +1,4 @@
-class AsyncBlockOperation: AsyncOperation, @unchecked Sendable {
+public class AsyncBlockOperation: AsyncOperation, @unchecked Sendable {
 
     private let block: (@escaping () -> Void) -> Void
 
@@ -6,7 +6,7 @@ class AsyncBlockOperation: AsyncOperation, @unchecked Sendable {
         self.block = block
     }
 
-    override func main() {
+    public override func main() {
         self.block { [weak self] in
             self?.state = .isFinished
         }
