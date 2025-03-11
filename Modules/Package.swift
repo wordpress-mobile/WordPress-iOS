@@ -96,7 +96,8 @@ let package = Package(
         .testTarget(name: "DesignSystemTests", dependencies: [.target(name: "DesignSystem")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .testTarget(
             name: "WordPressDataTests",
-            dependencies: ["WordPressData"]
+            dependencies: ["WordPressData"],
+            swiftSettings: [.swiftLanguageMode(.v5)]
         ),
         .testTarget(name: "WordPressFluxTests", dependencies: ["WordPressFlux"], swiftSettings: [.swiftLanguageMode(.v5)]),
         .testTarget(name: "AsyncImageKitTests", dependencies: [
