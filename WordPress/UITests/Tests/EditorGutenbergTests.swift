@@ -53,11 +53,6 @@ class EditorGutenbergTests_01: EditorGutenbergTests {
 // The slowest one are in separate for better parallelization
 class EditorGutenbergTests_02: EditorGutenbergTests {
     func testBasicPostPublishWithCategoryAndTag() throws {
-        /// Workaround for the black loading screen on iOS 18.
-        /// The screen shows up only on the first app launch, after 20-30 seconds.
-        /// Adding the delay here as this is the first test to run in CI on Clone 2.
-        allowForLoadingScreenInCI()
-
         try BlockEditorScreen()
             .enterTextInTitle(text: postTitle)
             .addParagraphBlock(withText: postContent)

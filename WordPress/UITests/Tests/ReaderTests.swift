@@ -38,11 +38,6 @@ class ReaderTests_01: ReaderTests {
     }
 
     func testDiscover() throws {
-        /// Workaround for the black loading screen on iOS 18.
-        /// The screen shows up only on the first app launch, after 20-30 seconds.
-        /// Adding the delay here as this is the first test to run in CI on Clone 1.
-        allowForLoadingScreenInCI()
-
         try openStream(.discover)
             .selectTag()
             .verifyTagLoaded()

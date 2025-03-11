@@ -95,14 +95,6 @@ extension XCTestCase {
         return paragraph
     }
 
-    /// Workaround for the black loading screen on iOS 18.
-    /// The screen shows up only on the first app launch, after 20-30 seconds.
-    public func allowForLoadingScreenInCI(_ app: XCUIApplication = XCUIApplication()) {
-        if ProcessInfo.processInfo.environment.keys.contains("BUILDKITE_BUILD_NUMBER") {
-            sleep(30)
-        }
-    }
-
     public struct DataHelper {
         static let words = ["Lorem", "Ipsum", "Dolor", "Sit", "Amet", "Consectetur", "Adipiscing", "Elit"]
         static let sentences = ["Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "Nam ornare accumsan ante, sollicitudin bibendum erat bibendum nec.", "Nam congue efficitur leo eget porta.", "Proin dictum non ligula aliquam varius.", "Aenean vehicula nunc in sapien rutrum, nec vehicula enim iaculis."]
