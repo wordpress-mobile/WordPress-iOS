@@ -1,6 +1,7 @@
 import CoreData
 
-extension NSManagedObject {
+// TODO: How to we test this?
+public extension NSManagedObject {
 
     /// Lookup an object by its NSManagedObjectID
     ///
