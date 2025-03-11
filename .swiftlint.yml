@@ -42,6 +42,8 @@ only_rules:
   # the declaration.
   - opening_brace
 
+  - operator_usage_whitespace
+
   - overridden_super_call
 
   - shorthand_optional_binding
