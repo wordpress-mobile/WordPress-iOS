@@ -12,7 +12,7 @@ extension NSManagedObject {
     ///
     /// Note: entity().name returns nil as per iOS 10, in Unit Testing Targets. Awesome.
     ///
-    @objc public class func entityName() -> String {
+    @objc open class func entityName() -> String {
         return entity().name ?? classNameWithoutNamespaces()
     }
 
