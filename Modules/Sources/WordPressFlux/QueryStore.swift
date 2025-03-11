@@ -143,7 +143,7 @@ open class QueryStore<State, Query>: StatefulStore<State>, Unsubscribable {
 
 private extension QueryStore {
     private static func persistenceURL() throws -> URL {
-        let filename =  "\(String(describing: self)).json"
+        let filename = "\(String(describing: self)).json"
         let documentsPath = try FileManager.default.url(for: .cachesDirectory,
                                                         in: .userDomainMask,
                                                         appropriateFor: nil,

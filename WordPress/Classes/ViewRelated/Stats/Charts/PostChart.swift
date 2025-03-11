@@ -145,5 +145,5 @@ private struct PostChartStyling: BarChartStyling {
     let legendTitle: String?                        = nil
     let lineColor: UIColor                          = UIAppColor.neutral(.shade5)
     let xAxisValueFormatter: AxisValueFormatter
-    let yAxisValueFormatter: AxisValueFormatter    = VerticalAxisFormatter()
+    let yAxisValueFormatter: AxisValueFormatter = VerticalAxisFormatter()
 }

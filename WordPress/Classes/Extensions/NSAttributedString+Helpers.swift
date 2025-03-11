@@ -48,7 +48,7 @@ public extension NSAttributedString {
             correctedRange.location += rangeDelta
 
             // Bounds Safety
-            let lastPosition        = correctedRange.location + correctedRange.length
+            let lastPosition = correctedRange.location + correctedRange.length
             if lastPosition <= theString.length {
                 theString.replaceCharacters(in: correctedRange, with: attachmentString)
             }

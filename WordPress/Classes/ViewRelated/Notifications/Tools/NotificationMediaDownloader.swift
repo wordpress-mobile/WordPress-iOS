@@ -243,7 +243,7 @@ class NotificationMediaDownloader: NSObject {
 private extension NotificationMediaDownloader {
 
     struct Constants {
-        static let maximumRetryCount   = 3
+        static let maximumRetryCount = 3
     }
 }
 

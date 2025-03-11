@@ -48,7 +48,7 @@ open class ActivityTableViewCell: WPTableViewCell, NibReusable {
         }
 
         contentView.backgroundColor = Style.backgroundColor()
-        actionButtonContainer.isHidden  = !activity.isRewindable || displaysDate
+        actionButtonContainer.isHidden = !activity.isRewindable || displaysDate
         actionButton.setImage(actionGridicon, for: .normal)
         actionButton.tintColor = .secondaryLabel
         actionButton.accessibilityIdentifier = "activity-cell-action-button"

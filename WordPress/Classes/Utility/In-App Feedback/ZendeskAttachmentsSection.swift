@@ -248,7 +248,7 @@ private enum Constants {
 
     static let attachmentSizeLimit: Int64 = 32_000_000
 
-    static let imageExportOptions: MediaImageExporter.Options =  {
+    static let imageExportOptions: MediaImageExporter.Options = {
         var options = MediaImageExporter.Options()
         options.maximumImageSize = 1024
         options.imageCompressionQuality = 0.7

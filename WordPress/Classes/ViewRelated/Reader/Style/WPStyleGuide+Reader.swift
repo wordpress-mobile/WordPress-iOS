@@ -240,7 +240,7 @@ extension WPStyleGuide {
                 value: "Follows the tag.",
                 comment: "VoiceOver accessibility hint, informing the user the button can be used to follow a tag."
             )
-            static let followStringForDisplay =  NSLocalizedString(
+            static let followStringForDisplay = NSLocalizedString(
                 "reader.subscribe.button.title",
                 value: "Subscribe",
                 comment: "Verb. Button title. Subscribes to a new blog."

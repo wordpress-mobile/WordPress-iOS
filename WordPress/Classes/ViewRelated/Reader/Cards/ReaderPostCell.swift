@@ -442,7 +442,7 @@ private func kFormatted(_ count: Int) -> String {
 
 private extension ReaderPostCellView {
     func setupAccessibility() {
-        buttonAuthor.accessibilityHint =  NSLocalizedString("reader.post.buttonSite.accessibilityHint", value: "Opens the site details", comment: "Accessibility hint for the site header")
+        buttonAuthor.accessibilityHint = NSLocalizedString("reader.post.buttonSite.accessibilityHint", value: "Opens the site details", comment: "Accessibility hint for the site header")
         buttonMore.accessibilityLabel = NSLocalizedString("reader.post.moreMenu.accessibilityLabel", value: "More actions", comment: "Button accessibility label")
 
         buttonAuthor.accessibilityIdentifier = "reader-author-button"

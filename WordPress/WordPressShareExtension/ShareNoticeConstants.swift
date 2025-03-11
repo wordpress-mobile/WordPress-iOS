@@ -15,7 +15,7 @@ enum ShareNoticeUserInfoKey {
 }
 
 struct ShareNoticeText {
-    static let actionEditPost       = AppLocalizedString("Edit Post", comment: "Button title. Opens the editor to edit an existing post.")
+    static let actionEditPost = AppLocalizedString("Edit Post", comment: "Button title. Opens the editor to edit an existing post.")
 
     static let successDraftTitleDefault = AppLocalizedString("1 draft post uploaded", comment: "Local notification displayed to the user when a single draft post has been successfully uploaded.")
     static let successTitleDefault  = AppLocalizedString("1 post uploaded", comment: "Alert displayed to the user when a single post has been successfully uploaded.")

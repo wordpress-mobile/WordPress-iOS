@@ -254,7 +254,7 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
 
     func refreshTitlePosition() {
         let referenceView: UITextView = richTextView
-        titleTopConstraint.constant = -(referenceView.contentOffset.y+referenceView.contentInset.top)
+        titleTopConstraint.constant = -(referenceView.contentOffset.y + referenceView.contentInset.top)
 
         updateContentInset(for: referenceView)
 
@@ -1216,7 +1216,7 @@ private extension ShareExtensionEditorViewController {
         let referenceView: UIScrollView = richTextView
         let bottomInset = (view.frame.maxY - (keyboardFrame.minY + self.view.layoutMargins.bottom) + Constants.insetBottomPadding)
         let scrollInsets = UIEdgeInsets(top: referenceView.verticalScrollIndicatorInsets.top, left: 0, bottom: bottomInset, right: 0)
-        let contentInsets  = UIEdgeInsets(top: referenceView.contentInset.top, left: 0, bottom: bottomInset, right: 0)
+        let contentInsets = UIEdgeInsets(top: referenceView.contentInset.top, left: 0, bottom: bottomInset, right: 0)
 
         richTextView.scrollIndicatorInsets = scrollInsets
         richTextView.contentInset = contentInsets
@@ -1285,7 +1285,7 @@ private extension ShareExtensionEditorViewController {
 
 fileprivate extension ShareExtensionEditorViewController {
     struct Assets {
-        static let defaultMissingImage          = UIImage.gridicon(.image)
+        static let defaultMissingImage = UIImage.gridicon(.image)
     }
 
     struct Constants {

@@ -21,7 +21,7 @@ open class Tracks {
     // MARK: - Public Methods
     open func track(_ eventName: String, properties: [String: Any]? = nil) {
         let prefixedEventName = "\(TracksConfiguration.eventNamePrefix)_\(eventName)"
-        let payload  = payloadWithEventName(prefixedEventName, properties: properties)
+        let payload = payloadWithEventName(prefixedEventName, properties: properties)
         uploader.send(payload)
 
         logInfo("🔵 Tracked: \(prefixedEventName), \(properties ?? [:])")
@@ -43,9 +43,9 @@ open class Tracks {
             "_ts": timestamp,
             "_via_ua": Tracks.userAgent as Any,
             "_rt": timestamp,
-            "device_info_app_name": appName as Any?       ?? "WordPress" as Any,
-            "device_info_app_version": appVersion as Any?    ?? "Unknown",
-            "device_info_app_version_code": appCode       ?? "Unknown",
+            "device_info_app_name": appName as Any? ?? "WordPress" as Any,
+            "device_info_app_version": appVersion as Any? ?? "Unknown",
+            "device_info_app_version_code": appCode ?? "Unknown",
             "device_info_os": device.systemName,
             "device_info_os_version": device.systemVersion
         ] as [String: Any]

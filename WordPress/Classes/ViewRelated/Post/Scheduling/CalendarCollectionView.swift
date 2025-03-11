@@ -263,7 +263,7 @@ class DateCell: JTACDayCell {
 
         // Show circle behind text for selected day
         dateLabel.clipsToBounds = true
-        dateLabel.layer.cornerRadius = Constants.labelSize/2
+        dateLabel.layer.cornerRadius = Constants.labelSize / 2
 
         addSubview(dateLabel)
 

@@ -543,7 +543,7 @@ private extension NotificationsViewController {
         tableView.register(TableViewCell.self, forCellReuseIdentifier: TableViewCell.reuseIdentifier)
 
         // UITableView
-        tableView.accessibilityIdentifier  = "notifications-table"
+        tableView.accessibilityIdentifier = "notifications-table"
         tableView.cellLayoutMarginsFollowReadableWidth = false
         tableView.estimatedSectionHeaderHeight = UITableView.automaticDimension
         tableView.backgroundColor = .systemBackground

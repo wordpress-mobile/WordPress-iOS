@@ -663,7 +663,7 @@ extension NewGutenbergViewController {
     private func makeMoreMenuActions() -> [UIAction] {
         var actions: [UIAction] = []
 
-        let toggleModeTitle = editorViewController.isCodeEditorEnabled ? Strings.visualEditor: Strings.codeEditor
+        let toggleModeTitle = editorViewController.isCodeEditorEnabled ? Strings.visualEditor : Strings.codeEditor
         let toggleModeIconName = editorViewController.isCodeEditorEnabled ? "doc.richtext" : "curlybraces"
         actions.append(UIAction(title: toggleModeTitle, image: UIImage(systemName: toggleModeIconName)) { [weak self] _ in
             self?.toggleEditingMode()

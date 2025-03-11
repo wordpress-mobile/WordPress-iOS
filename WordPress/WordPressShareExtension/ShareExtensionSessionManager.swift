@@ -379,7 +379,7 @@ extension ShareExtensionSessionManager: URLSessionDataDelegate {
 
         media.forEach { mediaDict in
             // We need the filename here because multiple media files can be bundled into a single task
-            guard let remoteFilenameString  = mediaDict["file"] as? String, !remoteFilenameString.isEmpty else {
+            guard let remoteFilenameString = mediaDict["file"] as? String, !remoteFilenameString.isEmpty else {
                 return
             }
 
@@ -390,7 +390,7 @@ extension ShareExtensionSessionManager: URLSessionDataDelegate {
             if let remoteMediaID = mediaDict["ID"] as? NSNumber {
                 mediaID = remoteMediaID.int64Value
             }
-            if let remoteMediaUrlString  = mediaDict["URL"] as? String, !remoteMediaUrlString.isEmpty {
+            if let remoteMediaUrlString = mediaDict["URL"] as? String, !remoteMediaUrlString.isEmpty {
                 urlString = remoteMediaUrlString
             }
             if let remoteMediaWidth = mediaDict["width"] as? NSNumber {

@@ -27,7 +27,7 @@ enum LinkAction {
 
 class LinkSettingsViewController: UITableViewController {
 
-    private var linkSettings =  LinkSettings()
+    private var linkSettings = LinkSettings()
     private var viewModel: ImmuTable!
     private var viewHandler: ImmuTableViewHandler!
 
@@ -124,7 +124,7 @@ class LinkSettingsViewController: UITableViewController {
         let editableRow = row as! EditableTextRow
         pushSettingsController(for: editableRow, hint: nil,
                                onValueChanged: { [weak self] value in
-                                self?.linkSettings.url  = value
+                                self?.linkSettings.url = value
                                 self?.reloadViewModel()
         }, mode: .URL)
     }
@@ -133,7 +133,7 @@ class LinkSettingsViewController: UITableViewController {
         let editableRow = row as! EditableTextRow
         pushSettingsController(for: editableRow, hint: nil,
                                onValueChanged: { [weak self] value in
-                                self?.linkSettings.text  = value
+                                self?.linkSettings.text = value
                                 self?.reloadViewModel()
         })
     }

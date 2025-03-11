@@ -240,22 +240,22 @@ extension WPStyleGuide {
         //
 
         // ParagraphStyle's
-        fileprivate static let subjectParagraph         = NSMutableParagraphStyle(
+        fileprivate static let subjectParagraph = NSMutableParagraphStyle(
             minLineHeight: subjectLineSize, lineBreakMode: .byWordWrapping, alignment: .natural
         )
-        fileprivate static let snippetParagraph         = NSMutableParagraphStyle(
+        fileprivate static let snippetParagraph = NSMutableParagraphStyle(
             minLineHeight: snippetLineSize, lineBreakMode: .byWordWrapping, alignment: .natural
         )
-        fileprivate static let snippetHeaderParagraph   = NSMutableParagraphStyle(
+        fileprivate static let snippetHeaderParagraph = NSMutableParagraphStyle(
             minLineHeight: snippetLineSize, lineBreakMode: .byTruncatingTail, alignment: .natural
         )
-        fileprivate static let blockParagraph           = NSMutableParagraphStyle(
+        fileprivate static let blockParagraph = NSMutableParagraphStyle(
             minLineHeight: blockLineSize, lineBreakMode: .byWordWrapping, alignment: .natural
         )
-        fileprivate static let contentBlockParagraph    = NSMutableParagraphStyle(
+        fileprivate static let contentBlockParagraph = NSMutableParagraphStyle(
             minLineHeight: contentBlockLineSize, lineBreakMode: .byWordWrapping, alignment: .natural
         )
-        fileprivate static let badgeParagraph           = NSMutableParagraphStyle(
+        fileprivate static let badgeParagraph = NSMutableParagraphStyle(
             minLineHeight: blockLineSize, lineBreakMode: .byWordWrapping, alignment: .center
         )
 

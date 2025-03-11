@@ -189,7 +189,7 @@ fileprivate extension ShareCategoriesPickerViewController {
         guard let node = categoryTree?.tree.search(category) else {
             return 0
         }
-        return (node.depth-1) * Constants.indentationMultiplier
+        return (node.depth - 1) * Constants.indentationMultiplier
     }
 
     var rowCountForCategories: Int {

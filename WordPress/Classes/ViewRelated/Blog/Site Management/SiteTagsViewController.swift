@@ -307,7 +307,7 @@ extension SiteTagsViewController {
     }
 
     fileprivate func displayAlertForExistingTag(_ tag: PostTag) {
-        let title =  NSLocalizedString("Tag already exists",
+        let title = NSLocalizedString("Tag already exists",
                                        comment: "Title of the alert indicating that a tag with that name already exists.")
         let tagName = tag.name ?? ""
         let message = String(format: NSLocalizedString("A tag named '%@' already exists.",

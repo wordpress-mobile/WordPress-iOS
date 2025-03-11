@@ -150,7 +150,7 @@ class GutenbergMediaInserterHelper: NSObject {
     }
 
     private func registerMediaObserver() {
-        mediaObserverReceipt =  mediaCoordinator.addObserver({ [weak self](media, state) in
+        mediaObserverReceipt = mediaCoordinator.addObserver({ [weak self](media, state) in
             self?.mediaObserver(media: media, state: state)
             }, forMediaFor: post)
     }

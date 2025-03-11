@@ -228,7 +228,7 @@ public struct WordPressAuthenticatorConfiguration {
         self.wpcomBaseURL = wpcomBaseURL
         self.wpcomAPIBaseURL = wpcomAPIBaseURL
         self.whatIsWPComURL = whatIsWPComURL
-        self.googleLoginClientId =  googleLoginClientId
+        self.googleLoginClientId = googleLoginClientId
         self.googleLoginServerClientId = googleLoginServerClientId
         self.googleLoginScheme = googleLoginScheme
         self.userAgent = userAgent

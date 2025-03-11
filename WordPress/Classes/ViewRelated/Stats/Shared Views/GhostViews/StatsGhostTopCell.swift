@@ -65,7 +65,7 @@ final class StatsGhostTopCell: StatsGhostBaseCell, NibLoadable {
 
     private func updateHeaders(count: Int) {
         valueHeaders.removeAllSubviews()
-        let headers = Array(repeating: UIView(), count: count-1)
+        let headers = Array(repeating: UIView(), count: count - 1)
         headers.forEach { header in
             configureHeader(header)
             valueHeaders.addArrangedSubview(header)
@@ -129,7 +129,7 @@ final class StatsGhostTopCellRow: UIView {
         columnsStackView.removeAllSubviews()
         mainColumn.isHidden = count <= 1
 
-        let columns = Array(repeating: StatsGhostTopCellColumn(width: StatsGhostTopCell.Constants.columnWidth), count: count-1)
+        let columns = Array(repeating: StatsGhostTopCellColumn(width: StatsGhostTopCell.Constants.columnWidth), count: count - 1)
         columns.forEach(columnsStackView.addArrangedSubview)
     }
 }

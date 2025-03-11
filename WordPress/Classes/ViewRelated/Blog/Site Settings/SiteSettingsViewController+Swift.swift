@@ -132,7 +132,7 @@ extension SiteSettingsViewController {
         } else {
             pickerViewController.pickerMaximumValue = maxNumberOfPostPerPage
         }
-        pickerViewController.onChange           = { [weak self] (enabled: Bool, newValue: Int) in
+        pickerViewController.onChange = { [weak self] (enabled: Bool, newValue: Int) in
             self?.blog.settings?.postsPerPage = newValue as NSNumber?
             self?.saveSettings()
             self?.trackSettingsChange(fieldName: "posts_per_page", value: newValue as Any)
@@ -182,7 +182,7 @@ extension SiteSettingsViewController {
     }
 
     @objc fileprivate func handleAMPFooterTap(_ sender: UITapGestureRecognizer) {
-        guard let url =  URL(string: self.ampSupportURL) else {
+        guard let url = URL(string: self.ampSupportURL) else {
             return
         }
         let webViewController = WebViewControllerFactory.controller(url: url, source: "site_settings_amp_footer")

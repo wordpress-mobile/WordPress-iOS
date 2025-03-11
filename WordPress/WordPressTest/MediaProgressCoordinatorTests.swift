@@ -165,7 +165,7 @@ class MediaProgressCoordinatorTests: CoreDataTestCase {
         // Fail all the requests
         mediaProgressCoordinator.mediaInProgress.values.enumerated().forEach({ index, progress in
             progress.completedUnitCount = 0
-            mediaProgressCoordinator.attach(error: .testInstance(), toMediaID: "\(index+1)")
+            mediaProgressCoordinator.attach(error: .testInstance(), toMediaID: "\(index + 1)")
         })
 
         XCTAssertTrue(mediaProgressCoordinator.mediaGlobalProgress!.completedUnitCount == 0)

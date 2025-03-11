@@ -191,7 +191,7 @@ private struct ViewsPeriodChartStyling: BarChartStyling {
     let legendTitle: String?                        = NSLocalizedString("Visitors", comment: "This appears in the legend of the period chart; Visitors are superimposed over Views in that case.")
     let lineColor: UIColor                          = UIAppColor.neutral(.shade5)
     let xAxisValueFormatter: AxisValueFormatter
-    let yAxisValueFormatter: AxisValueFormatter    = VerticalAxisFormatter()
+    let yAxisValueFormatter: AxisValueFormatter = VerticalAxisFormatter()
 }
 
 // MARK: - DefaultPeriodChartStyling
@@ -206,5 +206,5 @@ private struct DefaultPeriodChartStyling: BarChartStyling {
     let legendTitle: String?                        = nil
     let lineColor: UIColor                          = UIAppColor.neutral(.shade5)
     let xAxisValueFormatter: AxisValueFormatter
-    let yAxisValueFormatter: AxisValueFormatter    = VerticalAxisFormatter()
+    let yAxisValueFormatter: AxisValueFormatter = VerticalAxisFormatter()
 }

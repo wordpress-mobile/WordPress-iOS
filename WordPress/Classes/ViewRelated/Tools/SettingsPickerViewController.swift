@@ -43,10 +43,10 @@ open class SettingsPickerViewController: UITableViewController {
 
     // MARK: - View Lifecycle
     open override func viewDidLoad() {
-        assert(selectionText     != nil)
+        assert(selectionText != nil)
         assert(pickerSelectedValue != nil)
-        assert(pickerMinimumValue  != nil)
-        assert(pickerMaximumValue  != nil)
+        assert(pickerMinimumValue != nil)
+        assert(pickerMaximumValue != nil)
 
         super.viewDidLoad()
         setupTableView()

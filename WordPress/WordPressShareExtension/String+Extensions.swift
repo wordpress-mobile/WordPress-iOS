@@ -38,7 +38,7 @@ extension String {
                 niceURL = rawURL
             }
 
-            let anchoredURL     = "<a href=\"\(rawURL)\">\(niceURL)</a>"
+            let anchoredURL = "<a href=\"\(rawURL)\">\(niceURL)</a>"
 
             output.replaceCharacters(in: rangeWithOffset, with: anchoredURL)
             offset += anchoredURL.count - rawURL.count

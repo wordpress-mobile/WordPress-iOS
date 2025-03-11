@@ -207,7 +207,7 @@ extension ReaderTopicCollectionViewCoordinator: UICollectionViewDelegateFlowLayo
 
         WPAnalytics.trackReader(.readerChipsMoreToggled)
 
-        delegate?.coordinator(self, didChangeState: layout.isExpanded ? .expanded: .collapsed)
+        delegate?.coordinator(self, didChangeState: layout.isExpanded ? .expanded : .collapsed)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

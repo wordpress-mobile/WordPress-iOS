@@ -15,7 +15,7 @@ import Foundation
         guard let sharedContainerRootURL = fileManager.containerURL(forSecurityApplicationGroupIdentifier: WPAppGroupName) else {
             return nil
         }
-        let mediaDirectoryURL =  sharedContainerRootURL.appendingPathComponent(mediaDirectoryName, isDirectory: true)
+        let mediaDirectoryURL = sharedContainerRootURL.appendingPathComponent(mediaDirectoryName, isDirectory: true)
 
         // Check whether or not the file path exists for the Media directory. If the filepath does not exist, or
         // if the filepath does exist but it is not a directory, try creating the directory.

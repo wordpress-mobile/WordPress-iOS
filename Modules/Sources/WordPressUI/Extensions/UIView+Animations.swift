@@ -50,11 +50,11 @@ extension UIView {
         let scaleInitial    = CGFloat(0.0)
         let scaleFinal      = CGFloat(1.0)
 
-        isHidden              = false
-        transform           = CGAffineTransform(scaleX: scaleInitial, y: scaleInitial)
+        isHidden = false
+        transform = CGAffineTransform(scaleX: scaleInitial, y: scaleInitial)
 
         let animations = {
-            self.transform  = CGAffineTransform(scaleX: scaleFinal, y: scaleFinal)
+            self.transform = CGAffineTransform(scaleX: scaleFinal, y: scaleFinal)
         }
 
         UIView.animate(withDuration: duration,

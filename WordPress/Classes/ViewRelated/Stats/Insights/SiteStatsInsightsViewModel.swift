@@ -597,7 +597,7 @@ private extension SiteStatsInsightsViewModel {
     }
 
     func createFollowerTotalInsightsRow() -> StatsTotalInsightsData {
-        var data =  StatsTotalInsightsData.followersCount(insightsStore: insightsStore)
+        var data = StatsTotalInsightsData.followersCount(insightsStore: insightsStore)
         if data.count < Constants.followersGuideLimit {
             let guideText = NSLocalizedString("Commenting on other blogs is a great way to build attention and followers for your new site.",
                                               comment: "A tip displayed to the user in the stats section to help them gain more followers.")
@@ -850,7 +850,7 @@ extension SiteStatsInsightsViewModel: AsyncBlocksLoadable {
             return createStatsSummaryTimeIntervalDataAsAWeeks(summaryData: Array(summaryData[0..<Constants.fourteenDays]))
         case let count where count > Constants.fourteenDays:
             // when more than 14 rows we take the last 14 rows for most recent data
-            return createStatsSummaryTimeIntervalDataAsAWeeks(summaryData: Array(summaryData[count-Constants.fourteenDays..<count]))
+            return createStatsSummaryTimeIntervalDataAsAWeeks(summaryData: Array(summaryData[count - Constants.fourteenDays..<count]))
         case let count where count < Constants.fourteenDays:
             // when 0 to 14 rows presume the user could be new / doesn't have enough data.  Pad 0's to prev week
             summaryData.reverse()

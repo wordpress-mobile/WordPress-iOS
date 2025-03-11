@@ -8,7 +8,7 @@ import OHHTTPStubsSwift
 // MARK: - NotificationSettingsServiceTests
 //
 class NotificationSettingsServiceTests: CoreDataTestCase {
-    typealias StreamKind    = NotificationSettings.Stream.Kind
+    typealias StreamKind = NotificationSettings.Stream.Kind
 
     // MARK: - Properties
     var remoteApi: WordPressComRestApi!

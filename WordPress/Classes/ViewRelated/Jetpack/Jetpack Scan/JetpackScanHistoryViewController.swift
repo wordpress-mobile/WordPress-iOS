@@ -110,7 +110,7 @@ extension JetpackScanHistoryViewController: JetpackScanHistoryView {
     }
 
     func showGenericError() {
-        let model =  NoResultsViewController.Model(title: NoResultsText.error.title,
+        let model = NoResultsViewController.Model(title: NoResultsText.error.title,
                                                    subtitle: NoResultsText.error.subtitle,
                                                    buttonText: NoResultsText.error.buttonText)
 
@@ -118,7 +118,7 @@ extension JetpackScanHistoryViewController: JetpackScanHistoryView {
     }
 
     func showNoConnectionError() {
-        let model =  NoResultsViewController.Model(title: NoResultsText.noConnection.title,
+        let model = NoResultsViewController.Model(title: NoResultsText.noConnection.title,
                                                    subtitle: NoResultsText.noConnection.subtitle,
                                                    buttonText: NoResultsText.tryAgainButtonText)
 
@@ -131,14 +131,14 @@ extension JetpackScanHistoryViewController: JetpackScanHistoryView {
     }
 
     func showNoIgnoredThreats() {
-        let model =  NoResultsViewController.Model(title: NoResultsText.noIgnoredThreats.title,
+        let model = NoResultsViewController.Model(title: NoResultsText.noIgnoredThreats.title,
                                                    subtitle: NoResultsText.noIgnoredThreats.subtitle)
 
         updateNoResults(model)
     }
 
     func showNoFixedThreats() {
-        let model =  NoResultsViewController.Model(title: NoResultsText.noFixedThreats.title,
+        let model = NoResultsViewController.Model(title: NoResultsText.noFixedThreats.title,
                                                    subtitle: NoResultsText.noFixedThreats.subtitle)
 
         updateNoResults(model)

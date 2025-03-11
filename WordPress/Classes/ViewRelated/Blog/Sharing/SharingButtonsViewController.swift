@@ -902,7 +902,7 @@ extension SharingButtonsViewController {
     override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         let sourceSection = sections[sourceIndexPath.section]
 
-        let diff =  destinationIndexPath.row - sourceIndexPath.row
+        let diff = destinationIndexPath.row - sourceIndexPath.row
         let movedRow = sourceSection.rows[sourceIndexPath.row] as! SortableSharingSwitchRow
 
         let movedButton = buttons.filter { (button) -> Bool in

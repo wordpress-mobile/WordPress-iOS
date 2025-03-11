@@ -926,7 +926,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     fileprivate func refreshInsets(forKeyboardFrame keyboardFrame: CGRect) {
         let referenceView = editorView.activeView
 
-        let contentInsets  = UIEdgeInsets(top: referenceView.contentInset.top, left: 0, bottom: view.frame.maxY - (keyboardFrame.minY + self.view.layoutMargins.bottom), right: 0)
+        let contentInsets = UIEdgeInsets(top: referenceView.contentInset.top, left: 0, bottom: view.frame.maxY - (keyboardFrame.minY + self.view.layoutMargins.bottom), right: 0)
 
         htmlTextView.contentInset = contentInsets
         richTextView.contentInset = contentInsets
@@ -2120,7 +2120,7 @@ extension AztecPostViewController {
 extension AztecPostViewController {
 
     func registerMediaObserver() {
-        mediaObserverReceipt =  mediaCoordinator.addObserver({ [weak self](media, state) in
+        mediaObserverReceipt = mediaCoordinator.addObserver({ [weak self](media, state) in
             self?.mediaObserver(media: media, state: state)
             }, forMediaFor: post)
     }
@@ -3083,7 +3083,7 @@ extension AztecPostViewController: ExternalMediaPickerViewDelegate {
 extension AztecPostViewController {
 
     struct Analytics {
-        static let editorSource             = "aztec"
+        static let editorSource = "aztec"
         static let headerStyleValues = ["none", "h1", "h2", "h3", "h4", "h5", "h6"]
     }
 

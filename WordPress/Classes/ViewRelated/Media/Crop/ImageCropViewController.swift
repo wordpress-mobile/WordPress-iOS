@@ -114,7 +114,7 @@ class ImageCropViewController: UIViewController, UIScrollViewDelegate {
     private let overlayColor = UIColor.systemBackground.withAlphaComponent(0.78)
 
     // MARK: - Private Constants
-    private let maximumScaleFactor  = CGFloat(3)
+    private let maximumScaleFactor = CGFloat(3)
 
     // MARK: - Private Properties
     private var rawImage: UIImage!

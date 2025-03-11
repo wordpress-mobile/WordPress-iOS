@@ -42,7 +42,7 @@ public class GradientView: UIView {
     }
 
     @IBInspectable
-    public var toColor: UIColor =  Defaults.clearColor {
+    public var toColor: UIColor = Defaults.clearColor {
         didSet {
             updateGradientColors()
         }

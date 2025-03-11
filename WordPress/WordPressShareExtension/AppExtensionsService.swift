@@ -146,7 +146,7 @@ extension AppExtensionsService {
         } else {
             filteredVisibleSites = visibleSites
         }
-        let recentSiteURLs  = ShareExtensionService.retrieveShareExtensionRecentSites() ?? [String()]
+        let recentSiteURLs = ShareExtensionService.retrieveShareExtensionRecentSites() ?? [String()]
 
         return recentSiteURLs.compactMap({ url in
             return filteredVisibleSites.first(where: { $0.url == url })

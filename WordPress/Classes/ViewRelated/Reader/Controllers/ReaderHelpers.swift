@@ -241,7 +241,7 @@ struct ReaderNotificationKeys {
         ]
 
         let userAgent = WPUserAgent.wordPress()
-        let path  = NSString(format: "%@?%@", pixel, params.componentsJoined(by: "&")) as String
+        let path = NSString(format: "%@?%@", pixel, params.componentsJoined(by: "&")) as String
 
         guard let url = URL(string: path) else {
             return

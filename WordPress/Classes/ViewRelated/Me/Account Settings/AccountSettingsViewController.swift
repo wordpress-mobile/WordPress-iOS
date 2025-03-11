@@ -161,7 +161,7 @@ private class AccountSettingsController: SettingsController {
         return { row in
             let editableRow = row as! EditableTextRow
             let hint = NSLocalizedString("Will not be publicly displayed.", comment: "Help text when editing email address")
-            let settingsViewController =  self.controllerForEditableText(editableRow,
+            let settingsViewController = self.controllerForEditableText(editableRow,
                                                                          changeType: AccountSettingsChange.email,
                                                                          hint: hint,
                                                                          service: service)

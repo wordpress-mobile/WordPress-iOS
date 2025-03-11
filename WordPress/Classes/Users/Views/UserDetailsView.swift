@@ -167,19 +167,19 @@ struct UserDetailsView: View {
             comment: "The 'Biographical Info' field of the user profile – matches what's in /wp-admin/profile.php"
         )
 
-        static let setNewPasswordActionTitle  = NSLocalizedString(
+        static let setNewPasswordActionTitle = NSLocalizedString(
             "userDetails.setNewPasswordActionTitle",
             value: "Set New Password",
             comment: "The 'Set New Password' button on the user profile – matches what's in /wp-admin/profile.php"
         )
 
-        static let deleteUserActionTitle  = NSLocalizedString(
+        static let deleteUserActionTitle = NSLocalizedString(
             "userDetails.deleteUserActionTitle",
             value: "Delete User",
             comment: "The 'Delete User' button on the user profile – matches what's in /wp-admin/profile.php"
         )
 
-        static let deletingUserActionTitle  = NSLocalizedString(
+        static let deletingUserActionTitle = NSLocalizedString(
             "userDetails.deletingUserActionTitle",
             value: "Deleting User…",
             comment: "The 'Deleting User…' button on the user profile"

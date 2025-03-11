@@ -36,7 +36,7 @@ struct PageEditorPresenter {
     }
 
     private static func showSitePostPageUneditableNotice() {
-        let sitePostPageUneditableNotice =  NSLocalizedString("The content of your latest posts page is automatically generated and cannot be edited.", comment: "Message informing the user that posts page cannot be edited")
+        let sitePostPageUneditableNotice = NSLocalizedString("The content of your latest posts page is automatically generated and cannot be edited.", comment: "Message informing the user that posts page cannot be edited")
         let notice = Notice(title: sitePostPageUneditableNotice, feedbackType: .warning)
         ActionDispatcher.global.dispatch(NoticeAction.post(notice))
     }
