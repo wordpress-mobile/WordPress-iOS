@@ -289,7 +289,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                     if let referrers = viewsAndVisitorsData.topReferrers {
                         let referrersData = referrersRowData(topReferrers: referrers)
                         let chartViewModel = StatsReferrersChartViewModel(referrers: referrers)
-                        let chartView: UIView? = referrers.totalReferrerViewsCount > 0 ?  chartViewModel.makeReferrersChartView() : nil
+                        let chartView: UIView? = referrers.totalReferrerViewsCount > 0 ? chartViewModel.makeReferrersChartView() : nil
 
                         var referrersRow = TopTotalsPeriodStatsRow(
                             itemSubtitle: StatSection.periodReferrers.itemSubtitle,
@@ -1152,7 +1152,7 @@ private extension SiteStatsInsightsDetailsViewModel {
         var detailDataRows = [DetailDataRow]()
 
         for (idx, rowData) in rowsData.enumerated() {
-            let isLastRow = idx == rowsData.endIndex-1 && status != .loading
+            let isLastRow = idx == rowsData.endIndex - 1 && status != .loading
             detailDataRows.append(DetailDataRow(rowData: rowData,
                     detailsDelegate: detailsDelegate,
                     hideIndentedSeparator: isLastRow,
@@ -1179,7 +1179,7 @@ private extension SiteStatsInsightsDetailsViewModel {
                 return false
             }()
 
-            let isLastRow = idx == rowsData.endIndex-1 && status != .loading
+            let isLastRow = idx == rowsData.endIndex - 1 && status != .loading
 
             // Toggle the indented separator line based on expanded states.
             // If the current row is expanded, hide the separator.
@@ -1199,7 +1199,7 @@ private extension SiteStatsInsightsDetailsViewModel {
 
             // Add child rows
             for (idx, childRowData) in childRowsData.enumerated() {
-                let isLastRow = idx == childRowsData.endIndex-1
+                let isLastRow = idx == childRowsData.endIndex - 1
 
                 // If this is the last child row, toggle the full separator based on
                 // next parent's expanded state to prevent duplicate lines.
@@ -1246,7 +1246,7 @@ private extension SiteStatsInsightsDetailsViewModel {
 
                     // If this is the last grandchild row, toggle the full separator based on
                     // next child's expanded state to prevent duplicate lines.
-                    let hideFullSeparator = (idx == grandChildRowsData.endIndex-1) ? nextChildExpanded : true
+                    let hideFullSeparator = (idx == grandChildRowsData.endIndex - 1) ? nextChildExpanded : true
 
                     detailDataRows.append(childRow(rowData: grandChildRowData,
                             hideFullSeparator: hideFullSeparator,

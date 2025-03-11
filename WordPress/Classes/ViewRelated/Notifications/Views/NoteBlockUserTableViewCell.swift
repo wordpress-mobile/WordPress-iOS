@@ -34,7 +34,7 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
 
     @objc var name: String? {
         set {
-            nameLabel.text  = newValue
+            nameLabel.text = newValue
         }
         get {
             return nameLabel.text
@@ -42,7 +42,7 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
     }
     @objc var blogTitle: String? {
         set {
-            blogLabel.text  = newValue
+            blogLabel.text = newValue
         }
         get {
             return blogLabel.text

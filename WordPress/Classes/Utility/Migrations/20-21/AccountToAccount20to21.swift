@@ -6,8 +6,8 @@ import Foundation
 ///
 class AccountToAccount20to21: NSEntityMigrationPolicy {
 
-    fileprivate let defaultDotcomUsernameKey    = "defaultDotcomUsernameKey"
-    fileprivate let defaultDotcomKey            = "AccountDefaultDotcom"
+    fileprivate let defaultDotcomUsernameKey = "defaultDotcomUsernameKey"
+    fileprivate let defaultDotcomKey = "AccountDefaultDotcom"
 
     override func begin(_ mapping: NSEntityMapping, with manager: NSMigrationManager) throws {
         // Note:

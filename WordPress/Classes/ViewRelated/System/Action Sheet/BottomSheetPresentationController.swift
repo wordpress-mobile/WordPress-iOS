@@ -76,7 +76,7 @@ class BottomSheetPresentationController: FancyAlertPresentationController {
         guard let gestureView = gesture.view else { return }
 
         let translate = gesture.translation(in: gestureView)
-        let percent   = translate.y / gestureView.bounds.size.height
+        let percent = translate.y / gestureView.bounds.size.height
 
         switch gesture.state {
         case .began:

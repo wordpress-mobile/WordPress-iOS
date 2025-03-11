@@ -6,14 +6,14 @@ import UniformTypeIdentifiers
 /// Custom NSUSerActivity types for the WPiOS. Primarily used for navigation points.
 ///
 enum WPActivityType: String {
-    case siteList               = "org.wordpress.mysites"
-    case siteDetails            = "org.wordpress.mysites.details"
-    case reader                 = "org.wordpress.reader"
-    case me                     = "org.wordpress.me"
-    case appSettings            = "org.wordpress.me.appsettings"
-    case notificationSettings   = "org.wordpress.me.notificationsettings"
-    case support                = "org.wordpress.me.support"
-    case notifications          = "org.wordpress.notifications"
+    case siteList = "org.wordpress.mysites"
+    case siteDetails = "org.wordpress.mysites.details"
+    case reader = "org.wordpress.reader"
+    case me = "org.wordpress.me"
+    case appSettings = "org.wordpress.me.appsettings"
+    case notificationSettings = "org.wordpress.me.notificationsettings"
+    case support = "org.wordpress.me.support"
+    case notifications = "org.wordpress.notifications"
 }
 
 extension WPActivityType {

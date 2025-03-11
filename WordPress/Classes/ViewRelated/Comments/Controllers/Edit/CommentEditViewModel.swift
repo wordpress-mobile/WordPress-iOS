@@ -6,7 +6,7 @@ final class CommentEditViewModel {
 
     private let comment: Comment
     private let siteID: NSNumber
-    private let context =  ContextManager.shared.mainContext
+    private let context = ContextManager.shared.mainContext
 
     var isGutenbergEnabled: Bool {
         FeatureFlag.readerGutenbergCommentComposer.enabled

@@ -8,9 +8,9 @@ import WordPressShared
 ///
 class AccountToAccount22to23: NSEntityMigrationPolicy {
 
-    fileprivate let defaultDotcomUsernameKey    = "AccountDefaultUsername"
-    fileprivate let defaultDotcomKey            = "AccountDefaultDotcom"
-    fileprivate let defaultDotcomUUIDKey        = "AccountDefaultDotcomUUID"
+    fileprivate let defaultDotcomUsernameKey = "AccountDefaultUsername"
+    fileprivate let defaultDotcomKey = "AccountDefaultDotcom"
+    fileprivate let defaultDotcomUUIDKey = "AccountDefaultDotcomUUID"
 
     override func begin(_ mapping: NSEntityMapping, with manager: NSMigrationManager) throws {
         // Note:
@@ -156,8 +156,8 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
         DDLogInfo(">> Proceeding with Default Account Fix")
 
         // Load all of the WPAccount instances
-        let request         = NSFetchRequest<NSFetchRequestResult>(entityName: "Account")
-        request.predicate   = NSPredicate(format: "isWpcom == true")
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Account")
+        request.predicate = NSPredicate(format: "isWpcom == true")
 
         var results: [NSManagedObject]
 

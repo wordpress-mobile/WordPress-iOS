@@ -75,11 +75,11 @@ class ImageCropViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Action Handlers
     @IBAction func cropWasPressed() {
         // Calculations!
-        let screenScale     = UIScreen.main.scale
-        let zoomScale       = scrollView.zoomScale
-        let oldSize         = rawImage.size
-        let resizeRect      = CGRect(x: 0, y: 0, width: oldSize.width * zoomScale, height: oldSize.height * zoomScale)
-        let clippingRect    = CGRect(x: scrollView.contentOffset.x * screenScale,
+        let screenScale = UIScreen.main.scale
+        let zoomScale = scrollView.zoomScale
+        let oldSize = rawImage.size
+        let resizeRect = CGRect(x: 0, y: 0, width: oldSize.width * zoomScale, height: oldSize.height * zoomScale)
+        let clippingRect = CGRect(x: scrollView.contentOffset.x * screenScale,
                                      y: scrollView.contentOffset.y * screenScale,
                                      width: scrollView.frame.width * screenScale,
                                      height: scrollView.frame.height * screenScale)
@@ -114,7 +114,7 @@ class ImageCropViewController: UIViewController, UIScrollViewDelegate {
     private let overlayColor = UIColor.systemBackground.withAlphaComponent(0.78)
 
     // MARK: - Private Constants
-    private let maximumScaleFactor  = CGFloat(3)
+    private let maximumScaleFactor = CGFloat(3)
 
     // MARK: - Private Properties
     private var rawImage: UIImage!

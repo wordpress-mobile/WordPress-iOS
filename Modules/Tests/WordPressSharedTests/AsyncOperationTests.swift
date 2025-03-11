@@ -1,5 +1,5 @@
 import XCTest
-@testable import WordPress
+import WordPressShared
 
 class AsyncOperationTests: XCTestCase {
     let operation = AsyncOperation()

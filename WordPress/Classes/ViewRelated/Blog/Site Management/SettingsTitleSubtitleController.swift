@@ -207,7 +207,7 @@ final class SettingsTitleSubtitleController: UITableViewController {
             return
         }
 
-        let title =  confirmation.title
+        let title = confirmation.title
         let message = confirmation.subtitle
         let actionTitle = confirmation.actionTitle
         let cancelTitle = confirmation.cancelTitle

@@ -55,11 +55,11 @@ extension Comment {
     // MARK: - Private Helpers
 
     private enum Sections: String {
-        case Months     = "0"
-        case Weeks      = "2"
-        case Days       = "4"
-        case Yesterday  = "5"
-        case Today      = "6"
+        case Months = "0"
+        case Weeks = "2"
+        case Days = "4"
+        case Yesterday = "5"
+        case Today = "6"
 
         var description: String {
             switch self {

@@ -22,7 +22,7 @@ public struct ExperimentalFeaturesList: View {
     public static func asViewController(
         viewModel: ExperimentalFeaturesViewModel
     ) -> UIHostingController<Self> {
-        let rootView  = ExperimentalFeaturesList(viewModel: viewModel)
+        let rootView = ExperimentalFeaturesList(viewModel: viewModel)
 
         let vc = UIHostingController(rootView: rootView)
         vc.title = Strings.pageTitle

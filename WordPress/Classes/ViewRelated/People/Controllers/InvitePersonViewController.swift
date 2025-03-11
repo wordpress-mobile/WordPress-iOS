@@ -363,9 +363,9 @@ class InvitePersonViewController: UITableViewController {
     // MARK: - Private Enums
 
     private enum SegueIdentifier: String {
-        case Username   = "username"
-        case Role       = "role"
-        case Message    = "message"
+        case Username = "username"
+        case Role = "role"
+        case Message = "message"
         case InviteRole = "inviteRole"
     }
 
@@ -605,7 +605,7 @@ private extension InvitePersonViewController {
         let image = UIImage.gridicon(.shareiOS)
         let attachment = NSTextAttachment(image: image)
         attachment.bounds = CGRect(x: 0,
-                                   y: (font.capHeight - image.size.height)/2,
+                                   y: (font.capHeight - image.size.height) / 2,
                                    width: image.size.width,
                                    height: image.size.height)
         let textStr = NSAttributedString(string: NSLocalizedString("Share invite link", comment: "Title. A call to action to share an invite link."), attributes: textAttributes)

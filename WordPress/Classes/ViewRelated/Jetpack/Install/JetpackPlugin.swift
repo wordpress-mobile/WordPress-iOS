@@ -1,10 +1,10 @@
 enum JetpackPlugin: String {
-    case search     = "jetpack-search"
-    case backup     = "jetpack-backup"
-    case protect    = "jetpack-protect"
+    case search = "jetpack-search"
+    case backup = "jetpack-backup"
+    case protect = "jetpack-protect"
     case videoPress = "jetpack-videopress"
-    case social     = "jetpack-social"
-    case boost      = "jetpack-boost"
+    case social = "jetpack-social"
+    case boost = "jetpack-boost"
     case multiple
 
     init?(from rawValues: [String]?) {

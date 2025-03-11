@@ -93,17 +93,17 @@ class AppAboutScreenConfiguration: AboutScreenConfiguration {
     }
 
     private enum TextContent {
-        static let rateUs             = NSLocalizedString("Rate Us", comment: "Title for button allowing users to rate the app in the App Store")
-        static let share              = NSLocalizedString("Share with Friends", comment: "Title for button allowing users to share information about the app with friends, such as via Messages")
-        static let twitter            = NSLocalizedString("Twitter", comment: "Title of button that displays the app's Twitter profile")
-        static let legalAndMore       = NSLocalizedString("Legal and More", comment: "Title of button which shows a list of legal documentation such as privacy policy and acknowledgements")
-        static let automatticFamily   = NSLocalizedString("Automattic Family", comment: "Title of button that displays information about the other apps available from Automattic")
+        static let rateUs = NSLocalizedString("Rate Us", comment: "Title for button allowing users to rate the app in the App Store")
+        static let share = NSLocalizedString("Share with Friends", comment: "Title for button allowing users to share information about the app with friends, such as via Messages")
+        static let twitter = NSLocalizedString("Twitter", comment: "Title of button that displays the app's Twitter profile")
+        static let legalAndMore = NSLocalizedString("Legal and More", comment: "Title of button which shows a list of legal documentation such as privacy policy and acknowledgements")
+        static let automatticFamily = NSLocalizedString("Automattic Family", comment: "Title of button that displays information about the other apps available from Automattic")
         static var workWithUsSubtitle = AppConfiguration.isJetpack ? NSLocalizedString("Join From Anywhere", comment: "Subtitle for button displaying the Automattic Work With Us web page, indicating that Automattic employees can work from anywhere in the world") : nil
     }
 
     private enum Links {
-        static let twitter    = URL(string: AppConstants.productTwitterURL)!
-        static let blog       = URL(string: AppConstants.productBlogURL)!
+        static let twitter = URL(string: AppConstants.productTwitterURL)!
+        static let blog = URL(string: AppConstants.productBlogURL)!
         static let workWithUs = URL(string: AppConstants.AboutScreen.workWithUsURL)!
         static let automattic = URL(string: "https://automattic.com")!
     }
@@ -154,10 +154,10 @@ class LegalAndMoreSubmenuConfiguration: AboutScreenConfiguration {
     }
 
     private enum Titles {
-        static let termsOfService     = NSLocalizedString("Terms of Service", comment: "Title of button that displays the App's terms of service")
-        static let privacyPolicy      = NSLocalizedString("Privacy Policy", comment: "Title of button that displays the App's privacy policy")
-        static let sourceCode         = NSLocalizedString("Source Code", comment: "Title of button that displays the App's source code information")
-        static let acknowledgements   = NSLocalizedString("Acknowledgements", comment: "Title of button that displays the App's acknowledgements")
+        static let termsOfService = NSLocalizedString("Terms of Service", comment: "Title of button that displays the App's terms of service")
+        static let privacyPolicy = NSLocalizedString("Privacy Policy", comment: "Title of button that displays the App's privacy policy")
+        static let sourceCode = NSLocalizedString("Source Code", comment: "Title of button that displays the App's source code information")
+        static let acknowledgements = NSLocalizedString("Acknowledgements", comment: "Title of button that displays the App's acknowledgements")
     }
 
     private enum Links {

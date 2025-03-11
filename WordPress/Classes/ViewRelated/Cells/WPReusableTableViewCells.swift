@@ -130,7 +130,7 @@ class WPTableViewCellIndicator: WPTableViewCellDefault {
     fileprivate lazy var indicatorView: UIView = {
         let view = UIView(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 10, height: 10)))
         view.layer.masksToBounds = true
-        view.layer.cornerRadius =  view.frame.height / 2
+        view.layer.cornerRadius = view.frame.height / 2
         view.backgroundColor = UIAppColor.accent
         return view
     }()

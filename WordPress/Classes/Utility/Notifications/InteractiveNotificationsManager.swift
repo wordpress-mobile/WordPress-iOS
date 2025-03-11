@@ -389,20 +389,20 @@ extension InteractiveNotificationsManager {
     /// a Push Notification event.
     ///
     enum NoteCategoryDefinition: String {
-        case commentApprove         = "approve-comment"
-        case commentLike            = "like-comment"
-        case commentReply           = "replyto-comment"
-        case commentReplyWithLike   = "replyto-like-comment"
-        case mediaUploadSuccess     = "media-upload-success"
-        case mediaUploadFailure     = "media-upload-failure"
-        case postUploadSuccess      = "post-upload-success"
-        case postUploadFailure      = "post-upload-failure"
-        case shareUploadSuccess     = "share-upload-success"
-        case shareUploadFailure     = "share-upload-failure"
-        case login                  = "push_auth"
+        case commentApprove = "approve-comment"
+        case commentLike = "like-comment"
+        case commentReply = "replyto-comment"
+        case commentReplyWithLike = "replyto-like-comment"
+        case mediaUploadSuccess = "media-upload-success"
+        case mediaUploadFailure = "media-upload-failure"
+        case postUploadSuccess = "post-upload-success"
+        case postUploadFailure = "post-upload-failure"
+        case shareUploadSuccess = "share-upload-success"
+        case shareUploadFailure = "share-upload-failure"
+        case login = "push_auth"
         case bloggingReminderWeekly = "blogging-reminder-weekly"
-        case weeklyRoundup          = "weekly-roundup"
-        case bloggingPrompt         = "blogging-prompt"
+        case weeklyRoundup = "weekly-roundup"
+        case bloggingPrompt = "blogging-prompt"
 
         var actions: [NoteActionDefinition] {
             switch self {
@@ -469,17 +469,17 @@ extension InteractiveNotificationsManager {
     /// Describes the custom actions that WPiOS can perform in response to a Push notification.
     ///
     enum NoteActionDefinition: String {
-        case commentApprove   = "COMMENT_MODERATE_APPROVE"
-        case commentLike      = "COMMENT_LIKE"
-        case commentReply     = "COMMENT_REPLY"
-        case mediaWritePost   = "MEDIA_WRITE_POST"
-        case mediaRetry       = "MEDIA_RETRY"
-        case postView         = "POST_VIEW"
-        case shareEditPost    = "SHARE_EDIT_POST"
-        case approveLogin     = "APPROVE_LOGIN_ATTEMPT"
-        case denyLogin        = "DENY_LOGIN_ATTEMPT"
-        case answerPrompt     = "ANSWER_BLOGGING_PROMPT"
-        case dismissPrompt    = "DISMISS_BLOGGING_PROMPT"
+        case commentApprove = "COMMENT_MODERATE_APPROVE"
+        case commentLike = "COMMENT_LIKE"
+        case commentReply = "COMMENT_REPLY"
+        case mediaWritePost = "MEDIA_WRITE_POST"
+        case mediaRetry = "MEDIA_RETRY"
+        case postView = "POST_VIEW"
+        case shareEditPost = "SHARE_EDIT_POST"
+        case approveLogin = "APPROVE_LOGIN_ATTEMPT"
+        case denyLogin = "DENY_LOGIN_ATTEMPT"
+        case answerPrompt = "ANSWER_BLOGGING_PROMPT"
+        case dismissPrompt = "DISMISS_BLOGGING_PROMPT"
 
         var description: String {
             switch self {

@@ -341,11 +341,11 @@ extension NotificationDetailsViewController {
     }
 
     func setupTableView() {
-        tableView.separatorStyle            = .none
-        tableView.keyboardDismissMode       = .interactive
-        tableView.accessibilityIdentifier   = .notificationDetailsTableAccessibilityId
-        tableView.accessibilityLabel        = NSLocalizedString("Notification Details Table", comment: "Notifications Details Accessibility Identifier")
-        tableView.backgroundColor           = .systemBackground
+        tableView.separatorStyle = .none
+        tableView.keyboardDismissMode = .interactive
+        tableView.accessibilityIdentifier = .notificationDetailsTableAccessibilityId
+        tableView.accessibilityLabel = NSLocalizedString("Notification Details Table", comment: "Notifications Details Accessibility Identifier")
+        tableView.backgroundColor = .systemBackground
     }
 
     func setupTableViewCells() {

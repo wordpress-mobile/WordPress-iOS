@@ -21,9 +21,9 @@ class MessageAnimator: Animator {
 
     // MARK: - Private Constants
     fileprivate struct Defaults {
-        static let animationDuration   = 0.3
-        static let padding             = UIOffset(horizontal: 15, vertical: 20)
-        static let labelFont           = WPStyleGuide.regularTextFont()
+        static let animationDuration = 0.3
+        static let padding = UIOffset(horizontal: 15, vertical: 20)
+        static let labelFont = WPStyleGuide.regularTextFont()
     }
 
     // MARK: - Private properties

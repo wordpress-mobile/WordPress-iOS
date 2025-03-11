@@ -51,10 +51,10 @@ extension FormattableUserContent: Equatable {
 
 private enum Constants {
     fileprivate enum MetaKeys {
-        static let Ids          = "ids"
-        static let Site         = "site"
-        static let Titles       = "titles"
-        static let Home         = "home"
-        static let Links        = "links"
+        static let Ids = "ids"
+        static let Site = "site"
+        static let Titles = "titles"
+        static let Home = "home"
+        static let Links = "links"
     }
 }

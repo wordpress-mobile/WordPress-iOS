@@ -81,10 +81,10 @@ private final class PeriodChartDataTransformer {
         let totalLikes = summaryData.compactMap({$0.likesCount}).reduce(0, +)
         let totalComments = summaryData.compactMap({$0.commentsCount}).reduce(0, +)
 
-        var viewEntries     = [BarChartDataEntry]()
-        var visitorEntries  = [BarChartDataEntry]()
-        var likeEntries     = [BarChartDataEntry]()
-        var commentEntries  = [BarChartDataEntry]()
+        var viewEntries = [BarChartDataEntry]()
+        var visitorEntries = [BarChartDataEntry]()
+        var likeEntries = [BarChartDataEntry]()
+        var commentEntries = [BarChartDataEntry]()
 
         for datum in summaryData {
             let dateInterval = datum.periodStartDate.timeIntervalSince1970
@@ -186,25 +186,25 @@ private struct ViewsPeriodChartStyling: BarChartStyling {
     let secondaryBarColor: UIColor?
     let primaryHighlightColor: UIColor?
     let secondaryHighlightColor: UIColor?
-    let labelColor: UIColor                         = UIAppColor.neutral(.shade30)
-    let legendColor: UIColor?                       = UIAppColor.primary(.shade60)
-    let legendTitle: String?                        = NSLocalizedString("Visitors", comment: "This appears in the legend of the period chart; Visitors are superimposed over Views in that case.")
-    let lineColor: UIColor                          = UIAppColor.neutral(.shade5)
+    let labelColor: UIColor = UIAppColor.neutral(.shade30)
+    let legendColor: UIColor? = UIAppColor.primary(.shade60)
+    let legendTitle: String? = NSLocalizedString("Visitors", comment: "This appears in the legend of the period chart; Visitors are superimposed over Views in that case.")
+    let lineColor: UIColor = UIAppColor.neutral(.shade5)
     let xAxisValueFormatter: AxisValueFormatter
-    let yAxisValueFormatter: AxisValueFormatter    = VerticalAxisFormatter()
+    let yAxisValueFormatter: AxisValueFormatter = VerticalAxisFormatter()
 }
 
 // MARK: - DefaultPeriodChartStyling
 
 private struct DefaultPeriodChartStyling: BarChartStyling {
     let primaryBarColor: UIColor
-    let secondaryBarColor: UIColor?                 = nil
+    let secondaryBarColor: UIColor? = nil
     let primaryHighlightColor: UIColor?
-    let secondaryHighlightColor: UIColor?           = nil
-    let labelColor: UIColor                         = UIAppColor.neutral(.shade30)
-    let legendColor: UIColor?                       = nil
-    let legendTitle: String?                        = nil
-    let lineColor: UIColor                          = UIAppColor.neutral(.shade5)
+    let secondaryHighlightColor: UIColor? = nil
+    let labelColor: UIColor = UIAppColor.neutral(.shade30)
+    let legendColor: UIColor? = nil
+    let legendTitle: String? = nil
+    let lineColor: UIColor = UIAppColor.neutral(.shade5)
     let xAxisValueFormatter: AxisValueFormatter
-    let yAxisValueFormatter: AxisValueFormatter    = VerticalAxisFormatter()
+    let yAxisValueFormatter: AxisValueFormatter = VerticalAxisFormatter()
 }

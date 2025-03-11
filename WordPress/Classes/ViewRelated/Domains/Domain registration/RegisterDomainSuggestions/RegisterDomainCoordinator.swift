@@ -123,7 +123,7 @@ class RegisterDomainCoordinator {
             }
         }
         let sitePickerViewController = UIHostingController(rootView: sitePickerView)
-        sitePickerViewController.navigationItem.title =  TextContent.sitePickerNavigationTitle // important to set on `UIViewContoller`
+        sitePickerViewController.navigationItem.title = TextContent.sitePickerNavigationTitle // important to set on `UIViewContoller`
         viewController.navigationController?.pushViewController(sitePickerViewController, animated: true)
     }
 

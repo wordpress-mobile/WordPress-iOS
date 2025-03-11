@@ -130,7 +130,7 @@ class InsightsLineChart {
 
 private extension InsightsLineChart {
     enum Constants {
-        static let primaryHighlightColor: UIColor = UIColor(red: 209.0/255.0, green: 209.0/255.0, blue: 214.0/255.0, alpha: 1.0)
+        static let primaryHighlightColor: UIColor = UIColor(red: 209.0 / 255.0, green: 209.0 / 255.0, blue: 214.0 / 255.0, alpha: 1.0)
         static let secondaryLineColor: UIColor = UIColor(light: .quaternaryLabel, dark: .tertiaryLabel)
         static let primaryLineColorViews: UIColor = UIAppColor.blue(.shade50)
         static let primaryLineColorVisitors: UIColor = UIAppColor.purple(.shade50)
@@ -150,10 +150,10 @@ private struct ViewsInsightsLineChartStyling: LineChartStyling {
     let primaryLineColor: UIColor
     let secondaryLineColor: UIColor?
     let primaryHighlightColor: UIColor?
-    let labelColor: UIColor                         = UIColor(light: .secondaryLabel, dark: .tertiaryLabel)
-    let legendTitle: String?                        = NSLocalizedString("Views", comment: "Title for Views count in the legend of the Stats Insights views and visitors line chart")
-    let lineColor: UIColor                          = UIAppColor.neutral(.shade5)
-    let yAxisValueFormatter: AxisValueFormatter    = VerticalAxisFormatter()
+    let labelColor: UIColor = UIColor(light: .secondaryLabel, dark: .tertiaryLabel)
+    let legendTitle: String? = NSLocalizedString("Views", comment: "Title for Views count in the legend of the Stats Insights views and visitors line chart")
+    let lineColor: UIColor = UIAppColor.neutral(.shade5)
+    let yAxisValueFormatter: AxisValueFormatter = VerticalAxisFormatter()
 }
 
 // MARK: - VisitorsInsightsLineChartStyling
@@ -162,9 +162,9 @@ private struct VisitorsInsightsLineChartStyling: LineChartStyling {
     let primaryLineColor: UIColor
     let secondaryLineColor: UIColor?
     let primaryHighlightColor: UIColor?
-    let labelColor: UIColor                         = UIColor(light: .secondaryLabel, dark: .tertiaryLabel)
-    let legendColor: UIColor?                       = UIAppColor.primary(.shade60)
-    let legendTitle: String?                        = NSLocalizedString("Visitors", comment: "Title for Visitors count in the legend of the Stats Insights views and visitors line chart")
-    let lineColor: UIColor                          = UIAppColor.neutral(.shade5)
-    let yAxisValueFormatter: AxisValueFormatter    = VerticalAxisFormatter()
+    let labelColor: UIColor = UIColor(light: .secondaryLabel, dark: .tertiaryLabel)
+    let legendColor: UIColor? = UIAppColor.primary(.shade60)
+    let legendTitle: String? = NSLocalizedString("Visitors", comment: "Title for Visitors count in the legend of the Stats Insights views and visitors line chart")
+    let lineColor: UIColor = UIAppColor.neutral(.shade5)
+    let yAxisValueFormatter: AxisValueFormatter = VerticalAxisFormatter()
 }

@@ -42,17 +42,17 @@ class NSDateHelperTest: XCTestCase {
 
         XCTAssertEqual(date.toMediumString(), "now")
 
-        XCTAssertEqual(date.addingTimeInterval(-60*5).toMediumString(), "5 minutes ago")
-        XCTAssertEqual(date.addingTimeInterval(1).addingTimeInterval(60*5).toMediumString(), "in 5 minutes")
+        XCTAssertEqual(date.addingTimeInterval(-60 * 5).toMediumString(), "5 minutes ago")
+        XCTAssertEqual(date.addingTimeInterval(1).addingTimeInterval(60 * 5).toMediumString(), "in 5 minutes")
 
-        XCTAssertEqual(date.addingTimeInterval(-60*60*2).toMediumString(), "2 hours ago")
-        XCTAssertEqual(date.addingTimeInterval(1).addingTimeInterval(60*60*2).toMediumString(), "in 2 hours")
+        XCTAssertEqual(date.addingTimeInterval(-60 * 60 * 2).toMediumString(), "2 hours ago")
+        XCTAssertEqual(date.addingTimeInterval(1).addingTimeInterval(60 * 60 * 2).toMediumString(), "in 2 hours")
 
-        XCTAssertEqual(date.addingTimeInterval(-60*60*24).toMediumString(), "yesterday")
-        XCTAssertEqual(date.addingTimeInterval(1).addingTimeInterval(60*60*24).toMediumString(), "tomorrow")
+        XCTAssertEqual(date.addingTimeInterval(-60 * 60 * 24).toMediumString(), "yesterday")
+        XCTAssertEqual(date.addingTimeInterval(1).addingTimeInterval(60 * 60 * 24).toMediumString(), "tomorrow")
 
-        XCTAssertEqual(date.addingTimeInterval(-60*60*24*6).toMediumString(), "6 days ago")
-        XCTAssertEqual(date.addingTimeInterval(1).addingTimeInterval(60*60*24*6).toMediumString(), "in 6 days")
+        XCTAssertEqual(date.addingTimeInterval(-60 * 60 * 24 * 6).toMediumString(), "6 days ago")
+        XCTAssertEqual(date.addingTimeInterval(1).addingTimeInterval(60 * 60 * 24 * 6).toMediumString(), "in 6 days")
     }
 
     /// Verifies that  `mediumStringWithTime` takes into account the time zone adjustment

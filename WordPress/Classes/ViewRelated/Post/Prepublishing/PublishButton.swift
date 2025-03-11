@@ -30,7 +30,7 @@ struct PublishButton: View {
             ProgressView()
                 .tint(Color.secondary)
         case let .uploading(title, details, progress, onInfoTapped):
-            let content =  HStack(spacing: 10) {
+            let content = HStack(spacing: 10) {
                 if let progress {
                     MediaUploadProgressView(progress: progress)
                         .frame(width: Constants.accessoryViewWidth)

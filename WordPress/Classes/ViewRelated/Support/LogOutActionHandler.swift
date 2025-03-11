@@ -9,7 +9,7 @@ struct LogOutActionHandler {
     }
 
     func logOut(with viewController: UIViewController) {
-        let alert  = UIAlertController(title: logOutAlertTitle, message: nil, preferredStyle: .alert)
+        let alert = UIAlertController(title: logOutAlertTitle, message: nil, preferredStyle: .alert)
         alert.addActionWithTitle(Strings.alertCancelAction, style: .cancel)
         alert.addActionWithTitle(Strings.alertLogoutAction, style: .destructive) { [weak viewController] _ in
             viewController?.dismiss(animated: true) {

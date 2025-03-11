@@ -41,8 +41,8 @@ extension FormattableCommentContent: Equatable {
 
 private enum Constants {
     fileprivate enum MetaKeys {
-        static let Ids          = "ids"
-        static let Site         = "site"
-        static let Comment      = "comment"
+        static let Ids = "ids"
+        static let Site = "site"
+        static let Comment = "comment"
     }
 }

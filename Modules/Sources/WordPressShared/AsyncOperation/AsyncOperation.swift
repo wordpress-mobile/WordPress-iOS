@@ -1,13 +1,13 @@
-class AsyncOperation: Operation, @unchecked Sendable {
-    enum State: String {
+open class AsyncOperation: Operation, @unchecked Sendable {
+    public enum State: String {
         case isReady, isExecuting, isFinished
     }
 
-    override var isAsynchronous: Bool {
+    public override var isAsynchronous: Bool {
         return true
     }
 
-    var state = State.isReady {
+    public var state = State.isReady {
         willSet {
             willChangeValue(forKey: state.rawValue)
             willChangeValue(forKey: newValue.rawValue)
@@ -18,15 +18,15 @@ class AsyncOperation: Operation, @unchecked Sendable {
         }
     }
 
-    override var isExecuting: Bool {
+    public override var isExecuting: Bool {
         return state == .isExecuting
     }
 
-    override var isFinished: Bool {
+    public override var isFinished: Bool {
         return state == .isFinished
     }
 
-    override func start() {
+    public override func start() {
         if isCancelled {
             state = .isFinished
             return

@@ -137,13 +137,13 @@ private final class PostChartDataTransformer {
 
 private struct PostChartStyling: BarChartStyling {
     let primaryBarColor: UIColor
-    let secondaryBarColor: UIColor?                 = nil
+    let secondaryBarColor: UIColor? = nil
     let primaryHighlightColor: UIColor?
-    let secondaryHighlightColor: UIColor?           = nil
-    let labelColor: UIColor                         = UIAppColor.neutral(.shade30)
-    let legendColor: UIColor?                       = nil
-    let legendTitle: String?                        = nil
-    let lineColor: UIColor                          = UIAppColor.neutral(.shade5)
+    let secondaryHighlightColor: UIColor? = nil
+    let labelColor: UIColor = UIAppColor.neutral(.shade30)
+    let legendColor: UIColor? = nil
+    let legendTitle: String? = nil
+    let lineColor: UIColor = UIAppColor.neutral(.shade5)
     let xAxisValueFormatter: AxisValueFormatter
-    let yAxisValueFormatter: AxisValueFormatter    = VerticalAxisFormatter()
+    let yAxisValueFormatter: AxisValueFormatter = VerticalAxisFormatter()
 }

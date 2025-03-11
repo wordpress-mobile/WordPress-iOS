@@ -93,18 +93,18 @@ extension WPStyleGuide {
         }
 
         // Badges
-        public static let badgeBackgroundColor      = UIColor.clear
-        public static let badgeLinkColor            = blockLinkColor
-        public static let badgeTextColor            = blockTextColor
-        public static let badgeQuotedColor          = blockQuotedColor
+        public static let badgeBackgroundColor = UIColor.clear
+        public static let badgeLinkColor = blockLinkColor
+        public static let badgeTextColor = blockTextColor
+        public static let badgeQuotedColor = blockQuotedColor
 
-        public static let badgeRegularFont          = UIFont.preferredFont(forTextStyle: .body)
-        public static let badgeBoldFont             = badgeRegularFont.semibold()
-        public static let badgeItalicsFont          = badgeRegularFont.italic()
+        public static let badgeRegularFont = UIFont.preferredFont(forTextStyle: .body)
+        public static let badgeBoldFont = badgeRegularFont.semibold()
+        public static let badgeItalicsFont = badgeRegularFont.italic()
 
-        public static let badgeTitleFont            = WPStyleGuide.serifFontForTextStyle(.title1)
-        public static let badgeTitleBoldFont        = badgeTitleFont.semibold()
-        public static let badgeTitleItalicsFont     = badgeTitleFont.italic()
+        public static let badgeTitleFont = WPStyleGuide.serifFontForTextStyle(.title1)
+        public static let badgeTitleBoldFont = badgeTitleFont.semibold()
+        public static let badgeTitleItalicsFont = badgeTitleFont.italic()
 
         public static var badgeRegularStyle: [NSAttributedString.Key: Any] {
             badgeStyle(withFont: badgeRegularFont)
@@ -229,43 +229,43 @@ extension WPStyleGuide {
         // MARK: - Constants
         //
 
-        public static let subjectNoticonSize        = UIDevice.isPad() ? CGFloat(15) : CGFloat(14)
-        public static let subjectLineSize           = UIDevice.isPad() ? CGFloat(24) : CGFloat(18)
-        public static let snippetLineSize           = subjectLineSize
-        public static let blockFontSize             = UIDevice.isPad() ? CGFloat(16) : CGFloat(14)
-        public static let blockLineSize             = UIDevice.isPad() ? CGFloat(24) : CGFloat(20)
-        public static let contentBlockLineSize      = UIDevice.isPad() ? CGFloat(24) : CGFloat(21)
+        public static let subjectNoticonSize = UIDevice.isPad() ? CGFloat(15) : CGFloat(14)
+        public static let subjectLineSize = UIDevice.isPad() ? CGFloat(24) : CGFloat(18)
+        public static let snippetLineSize = subjectLineSize
+        public static let blockFontSize = UIDevice.isPad() ? CGFloat(16) : CGFloat(14)
+        public static let blockLineSize = UIDevice.isPad() ? CGFloat(24) : CGFloat(20)
+        public static let contentBlockLineSize = UIDevice.isPad() ? CGFloat(24) : CGFloat(21)
 
         // MARK: - Private Propreties
         //
 
         // ParagraphStyle's
-        fileprivate static let subjectParagraph         = NSMutableParagraphStyle(
+        fileprivate static let subjectParagraph = NSMutableParagraphStyle(
             minLineHeight: subjectLineSize, lineBreakMode: .byWordWrapping, alignment: .natural
         )
-        fileprivate static let snippetParagraph         = NSMutableParagraphStyle(
+        fileprivate static let snippetParagraph = NSMutableParagraphStyle(
             minLineHeight: snippetLineSize, lineBreakMode: .byWordWrapping, alignment: .natural
         )
-        fileprivate static let snippetHeaderParagraph   = NSMutableParagraphStyle(
+        fileprivate static let snippetHeaderParagraph = NSMutableParagraphStyle(
             minLineHeight: snippetLineSize, lineBreakMode: .byTruncatingTail, alignment: .natural
         )
-        fileprivate static let blockParagraph           = NSMutableParagraphStyle(
+        fileprivate static let blockParagraph = NSMutableParagraphStyle(
             minLineHeight: blockLineSize, lineBreakMode: .byWordWrapping, alignment: .natural
         )
-        fileprivate static let contentBlockParagraph    = NSMutableParagraphStyle(
+        fileprivate static let contentBlockParagraph = NSMutableParagraphStyle(
             minLineHeight: contentBlockLineSize, lineBreakMode: .byWordWrapping, alignment: .natural
         )
-        fileprivate static let badgeParagraph           = NSMutableParagraphStyle(
+        fileprivate static let badgeParagraph = NSMutableParagraphStyle(
             minLineHeight: blockLineSize, lineBreakMode: .byWordWrapping, alignment: .center
         )
 
         // Colors
-        fileprivate static let subjectTextColor         = UIColor.label
-        fileprivate static let subjectNoticonColor      = noticonReadColor
-        fileprivate static let footerTextColor          = UIColor.secondaryLabel
-        fileprivate static let blockNoticonColor        = UIAppColor.neutral
-        fileprivate static let snippetColor             = UIAppColor.neutral
-        fileprivate static let headerTitleContextColor  = UIAppColor.primary
+        fileprivate static let subjectTextColor = UIColor.label
+        fileprivate static let subjectNoticonColor = noticonReadColor
+        fileprivate static let footerTextColor = UIColor.secondaryLabel
+        fileprivate static let blockNoticonColor = UIAppColor.neutral
+        fileprivate static let snippetColor = UIAppColor.neutral
+        fileprivate static let headerTitleContextColor = UIAppColor.primary
 
         // Fonts
         fileprivate static var subjectRegularFont: UIFont {
@@ -278,10 +278,10 @@ extension WPStyleGuide {
             return  WPStyleGuide.fontForTextStyle(.subheadline, symbolicTraits: .traitItalic)
         }
 
-        fileprivate static let subjectNoticonFont       = UIFont(name: "Noticons", size: subjectNoticonSize)!
-        fileprivate static let headerTitleRegularFont   = blockRegularFont
-        fileprivate static let headerTitleItalicsFont   = blockItalicsFont
-        fileprivate static let blockItalicsFont         = WPFontManager.systemItalicFont(ofSize: blockFontSize)
-        fileprivate static let blockNoticonFont         = subjectNoticonFont
+        fileprivate static let subjectNoticonFont = UIFont(name: "Noticons", size: subjectNoticonSize)!
+        fileprivate static let headerTitleRegularFont = blockRegularFont
+        fileprivate static let headerTitleItalicsFont = blockItalicsFont
+        fileprivate static let blockItalicsFont = WPFontManager.systemItalicFont(ofSize: blockFontSize)
+        fileprivate static let blockNoticonFont = subjectNoticonFont
     }
 }

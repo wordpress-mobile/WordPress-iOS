@@ -79,7 +79,7 @@ struct UnifiedPrologueReaderContentView: View {
                         CircledIcon(
                             size: smallIconSize,
                             xOffset: -smallIconSize * 0.5,
-                            yOffset: -smallIconSize  * 0.7,
+                            yOffset: -smallIconSize * 0.7,
                             iconType: .star,
                             backgroundColor: Color(UIAppColor.yellow(.shade20))
                         )

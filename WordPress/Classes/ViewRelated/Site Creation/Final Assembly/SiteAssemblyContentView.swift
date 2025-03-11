@@ -13,13 +13,13 @@ final class SiteAssemblyContentView: UIView {
 
     /// A collection of parameters uses for animation & layout of the view.
     private struct Parameters {
-        static let animationDuration                        = TimeInterval(0.5)
-        static let buttonContainerScaleFactor               = CGFloat(2)
-        static let horizontalMargin                         = CGFloat(30)
-        static let verticalSpacing                          = CGFloat(30)
-        static let statusStackViewSpacing                   = CGFloat(16)
-        static let checkmarkImageSize                       = CGSize(width: 18, height: 18)
-        static let checkmarkImageColor                      = UIAppColor.success(.shade20)
+        static let animationDuration = TimeInterval(0.5)
+        static let buttonContainerScaleFactor = CGFloat(2)
+        static let horizontalMargin = CGFloat(30)
+        static let verticalSpacing = CGFloat(30)
+        static let statusStackViewSpacing = CGFloat(16)
+        static let checkmarkImageSize = CGSize(width: 18, height: 18)
+        static let checkmarkImageColor = UIAppColor.success(.shade20)
     }
 
     /// This influences the top of the completion label as it animates into place.

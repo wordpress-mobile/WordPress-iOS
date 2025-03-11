@@ -2,8 +2,8 @@ import Foundation
 import WordPressKit
 
 enum PostStatus: String {
-    case draft    = "draft"
-    case publish  = "publish"
+    case draft = "draft"
+    case publish = "publish"
 }
 
 enum PostType: String, CaseIterable {

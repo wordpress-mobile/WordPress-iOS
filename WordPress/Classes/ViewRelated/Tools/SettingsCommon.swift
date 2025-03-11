@@ -25,7 +25,7 @@ extension SettingsController {
     func editEmailAddress(_ changeType: @escaping AccountSettingsChangeWithString, hint: String? = nil, service: AccountSettingsService) -> (ImmuTableRow) -> SettingsTextViewController {
         return { row in
             let editableRow = row as! EditableTextRow
-            let settingsViewController =  self.controllerForEditableText(editableRow, changeType: changeType, hint: hint, service: service)
+            let settingsViewController = self.controllerForEditableText(editableRow, changeType: changeType, hint: hint, service: service)
             settingsViewController.mode = .email
 
             return settingsViewController

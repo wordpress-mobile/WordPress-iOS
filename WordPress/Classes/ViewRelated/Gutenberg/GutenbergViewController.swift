@@ -426,7 +426,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         // Add bottom border line
         let screenScale = UIScreen.main.scale
         let borderWidth: CGFloat = 1.0 / screenScale
-        let borderColor = UIColor(red: 60/255, green: 60/255, blue: 67/255, alpha: 0.36).cgColor
+        let borderColor = UIColor(red: 60 / 255, green: 60 / 255, blue: 67 / 255, alpha: 0.36).cgColor
 
         let borderBottom = UIView()
         borderBottom.backgroundColor = UIColor(cgColor: borderColor)

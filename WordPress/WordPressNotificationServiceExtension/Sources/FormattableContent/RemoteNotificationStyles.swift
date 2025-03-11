@@ -14,11 +14,11 @@ class RemoteNotificationStyles: FormattableContentStyles {
     private lazy var paragraphStyle: NSParagraphStyle = {
         let style = NSMutableParagraphStyle()
 
-        style.alignment          = .natural
-        style.lineBreakMode      = .byWordWrapping
+        style.alignment = .natural
+        style.lineBreakMode = .byWordWrapping
 
         let prevailingLineHeight = UIDevice.current.userInterfaceIdiom == .pad ? CGFloat(16) : CGFloat(12)
-        style.minimumLineHeight  = prevailingLineHeight
+        style.minimumLineHeight = prevailingLineHeight
 
         return style
     }()

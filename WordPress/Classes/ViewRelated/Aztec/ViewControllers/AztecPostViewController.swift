@@ -926,7 +926,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     fileprivate func refreshInsets(forKeyboardFrame keyboardFrame: CGRect) {
         let referenceView = editorView.activeView
 
-        let contentInsets  = UIEdgeInsets(top: referenceView.contentInset.top, left: 0, bottom: view.frame.maxY - (keyboardFrame.minY + self.view.layoutMargins.bottom), right: 0)
+        let contentInsets = UIEdgeInsets(top: referenceView.contentInset.top, left: 0, bottom: view.frame.maxY - (keyboardFrame.minY + self.view.layoutMargins.bottom), right: 0)
 
         htmlTextView.contentInset = contentInsets
         richTextView.contentInset = contentInsets
@@ -2120,7 +2120,7 @@ extension AztecPostViewController {
 extension AztecPostViewController {
 
     func registerMediaObserver() {
-        mediaObserverReceipt =  mediaCoordinator.addObserver({ [weak self](media, state) in
+        mediaObserverReceipt = mediaCoordinator.addObserver({ [weak self](media, state) in
             self?.mediaObserver(media: media, state: state)
             }, forMediaFor: post)
     }
@@ -3083,7 +3083,7 @@ extension AztecPostViewController: ExternalMediaPickerViewDelegate {
 extension AztecPostViewController {
 
     struct Analytics {
-        static let editorSource             = "aztec"
+        static let editorSource = "aztec"
         static let headerStyleValues = ["none", "h1", "h2", "h3", "h4", "h5", "h6"]
     }
 
@@ -3095,20 +3095,20 @@ extension AztecPostViewController {
     }
 
     struct Constants {
-        static let uploadingButtonSize      = CGSize(width: 150, height: 30)
-        static let moreAttachmentText       = "more"
-        static let placeholderPadding       = UIEdgeInsets(top: 8, left: 5, bottom: 0, right: 0)
-        static let headers                  = [Header.HeaderType.none, .h1, .h2, .h3, .h4, .h5, .h6]
-        static let lists                    = [TextList.Style.unordered, .ordered]
-        static let toolbarHeight            = CGFloat(44.0)
+        static let uploadingButtonSize = CGSize(width: 150, height: 30)
+        static let moreAttachmentText = "more"
+        static let placeholderPadding = UIEdgeInsets(top: 8, left: 5, bottom: 0, right: 0)
+        static let headers = [Header.HeaderType.none, .h1, .h2, .h3, .h4, .h5, .h6]
+        static let lists = [TextList.Style.unordered, .ordered]
+        static let toolbarHeight = CGFloat(44.0)
         static let mediaPickerInsertTextDefault = NSLocalizedString("Insert", comment: "Default button title used in media picker to insert media (photos / videos) into a post.")
-        static let mediaPickerInsertText    = NSLocalizedString("Insert %@", comment: "Button title used in media picker to insert media (photos / videos) into a post. Placeholder will be the number of items that will be inserted.")
+        static let mediaPickerInsertText = NSLocalizedString("Insert %@", comment: "Button title used in media picker to insert media (photos / videos) into a post. Placeholder will be the number of items that will be inserted.")
         static let mediaPickerInsertAccessibilityLabel = NSLocalizedString("Insert selected", comment: "Default accessibility label for the media picker insert button.")
-        static let mediaPickerKeyboardHeightRatioPortrait   = CGFloat(0.20)
-        static let mediaPickerKeyboardHeightRatioLandscape  = CGFloat(0.30)
-        static let mediaOverlayBorderWidth  = CGFloat(3.0)
-        static let mediaOverlayIconSize     = CGSize(width: 32, height: 32)
-        static let mediaGIFBadgeTitle       = NSLocalizedString("GIF", comment: "Badge title displayed on GIF images in the editor.")
+        static let mediaPickerKeyboardHeightRatioPortrait = CGFloat(0.20)
+        static let mediaPickerKeyboardHeightRatioLandscape = CGFloat(0.30)
+        static let mediaOverlayBorderWidth = CGFloat(3.0)
+        static let mediaOverlayIconSize = CGSize(width: 32, height: 32)
+        static let mediaGIFBadgeTitle = NSLocalizedString("GIF", comment: "Badge title displayed on GIF images in the editor.")
         static let mediaPlaceholderImageSize = CGSize(width: 128, height: 128)
         static let mediaMessageAttributes: [NSAttributedString.Key: Any] = {
             let paragraphStyle = NSMutableParagraphStyle()
@@ -3162,33 +3162,33 @@ extension AztecPostViewController {
     }
 
     struct Colors {
-        static let aztecBackground              = UIColor.systemBackground
-        static let title                        = UIColor.label
-        static let separator                    = UIColor.separator
-        static let placeholder                  = UIColor.tertiaryLabel
-        static let progressBackground           = UIAppColor.primary
-        static let progressTint                 = UIColor.white
-        static let progressTrack                = UIAppColor.primary
-        static let mediaProgressOverlay         = UIAppColor.neutral(.shade70).withAlphaComponent(CGFloat(0.6))
-        static let mediaProgressBarBackground   = UIAppColor.neutral(.shade0)
-        static let mediaProgressBarTrack        = UIAppColor.primary
-        static let aztecLinkColor               = UIAppColor.primary
-        static let mediaOverlayBorderColor      = UIAppColor.primary
+        static let aztecBackground = UIColor.systemBackground
+        static let title = UIColor.label
+        static let separator = UIColor.separator
+        static let placeholder = UIColor.tertiaryLabel
+        static let progressBackground = UIAppColor.primary
+        static let progressTint = UIColor.white
+        static let progressTrack = UIAppColor.primary
+        static let mediaProgressOverlay = UIAppColor.neutral(.shade70).withAlphaComponent(CGFloat(0.6))
+        static let mediaProgressBarBackground = UIAppColor.neutral(.shade0)
+        static let mediaProgressBarTrack = UIAppColor.primary
+        static let aztecLinkColor = UIAppColor.primary
+        static let mediaOverlayBorderColor = UIAppColor.primary
     }
 
     struct Fonts {
-        static let regular                  = WPFontManager.notoRegularFont(ofSize: 16)
-        static let title                    = WPFontManager.notoBoldFont(ofSize: 24.0)
-        static let mediaPickerInsert        = WPFontManager.systemMediumFont(ofSize: 15.0)
-        static let mediaOverlay             = WPFontManager.systemSemiBoldFont(ofSize: 15.0)
-        static let monospace                = UIFont(name: "Menlo-Regular", size: 16.0)!
+        static let regular = WPFontManager.notoRegularFont(ofSize: 16)
+        static let title = WPFontManager.notoBoldFont(ofSize: 24.0)
+        static let mediaPickerInsert = WPFontManager.systemMediumFont(ofSize: 15.0)
+        static let mediaOverlay = WPFontManager.systemSemiBoldFont(ofSize: 15.0)
+        static let monospace = UIFont(name: "Menlo-Regular", size: 16.0)!
     }
 
     struct MediaUploadingCancelAlert {
         static let title = NSLocalizedString("Cancel media uploads", comment: "Dialog box title for when the user is canceling an upload.")
         static let message = NSLocalizedString("You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?", comment: "This prompt is displayed when the user attempts to stop media uploads in the post editor.")
-        static let acceptTitle  = NSLocalizedString("Yes", comment: "Yes")
-        static let cancelTitle  = NSLocalizedString("Not Now", comment: "Nicer dialog answer for \"No\".")
+        static let acceptTitle = NSLocalizedString("Yes", comment: "Yes")
+        static let cancelTitle = NSLocalizedString("Not Now", comment: "Nicer dialog answer for \"No\".")
     }
 
     struct MediaUnableToPlayVideoAlert {

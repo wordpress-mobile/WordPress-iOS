@@ -458,15 +458,15 @@ fileprivate extension ShareModularViewController {
                 cell.detailTextLabel?.text = tags
                 cell.detailTextLabel?.textColor = UIAppColor.neutral(.shade70)
             } else {
-                cell.detailTextLabel?.text =  AppLocalizedString("Add tags", comment: "Placeholder text for tags module in share extension.")
+                cell.detailTextLabel?.text = AppLocalizedString("Add tags", comment: "Placeholder text for tags module in share extension.")
                 cell.detailTextLabel?.textColor = UIAppColor.neutral(.shade30)
             }
         case .summary:
             // Summary section
-            cell.textLabel?.text            = summaryRowText()
-            cell.textLabel?.textAlignment   = .natural
-            cell.accessoryType              = .none
-            cell.isUserInteractionEnabled   = false
+            cell.textLabel?.text = summaryRowText()
+            cell.textLabel?.textAlignment = .natural
+            cell.accessoryType = .none
+            cell.isUserInteractionEnabled = false
             WPStyleGuide.Share.configureTableViewSummaryCell(cell)
         }
     }

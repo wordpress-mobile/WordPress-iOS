@@ -5,26 +5,26 @@ extension Date {
     ///
     fileprivate struct DateFormatters {
         static let iso8601: DateFormatter = {
-            let formatter           = DateFormatter()
-            formatter.locale        = Locale(identifier: "en_US_POSIX")
-            formatter.dateFormat    = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
-            formatter.timeZone      = TimeZone(secondsFromGMT: 0)
+            let formatter = DateFormatter()
+            formatter.locale = Locale(identifier: "en_US_POSIX")
+            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
+            formatter.timeZone = TimeZone(secondsFromGMT: 0)
             return formatter
         }()
 
         static let iso8601WithMilliseconds: DateFormatter = {
-            let formatter           = DateFormatter()
-            formatter.locale        = Locale(identifier: "en_US_POSIX")
-            formatter.dateFormat    = "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX"
-            formatter.timeZone      = TimeZone(secondsFromGMT: 0)
+            let formatter = DateFormatter()
+            formatter.locale = Locale(identifier: "en_US_POSIX")
+            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX"
+            formatter.timeZone = TimeZone(secondsFromGMT: 0)
             return formatter
         }()
 
         static let rfc1123: DateFormatter = {
-            let formatter           = DateFormatter()
-            formatter.locale        = Locale(identifier: "en_US_POSIX")
-            formatter.dateFormat    = "EEE, dd MMM yyyy HH:mm:ss z"
-            formatter.timeZone      = TimeZone(secondsFromGMT: 0)
+            let formatter = DateFormatter()
+            formatter.locale = Locale(identifier: "en_US_POSIX")
+            formatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss z"
+            formatter.timeZone = TimeZone(secondsFromGMT: 0)
             return formatter
         }()
 
@@ -84,18 +84,18 @@ extension Date {
     ///
     public func normalizedDate() -> Date {
 
-        var calendar        = Calendar.current
-        calendar.timeZone   = TimeZone.autoupdatingCurrent
+        var calendar = Calendar.current
+        calendar.timeZone = TimeZone.autoupdatingCurrent
 
         let flags: NSCalendar.Unit = [.day, .weekOfYear, .month, .year]
 
-        let components      = (calendar as NSCalendar).components(flags, from: self)
+        let components = (calendar as NSCalendar).components(flags, from: self)
 
-        var normalized      = DateComponents()
-        normalized.year     = components.year
-        normalized.month    = components.month
-        normalized.weekday  = components.weekday
-        normalized.day      = components.day
+        var normalized = DateComponents()
+        normalized.year = components.year
+        normalized.month = components.month
+        normalized.weekday = components.weekday
+        normalized.day = components.day
 
         return calendar.date(from: normalized) ?? self
     }

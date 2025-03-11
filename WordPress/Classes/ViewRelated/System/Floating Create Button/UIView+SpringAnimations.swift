@@ -56,7 +56,7 @@ extension FloatingActionButton {
         isHidden = false
 
         let animator = UIViewPropertyAnimator(duration: duration, dampingRatio: damping) {
-            self.transform  = CGAffineTransform(scaleX: scaleFinal, y: scaleFinal)
+            self.transform = CGAffineTransform(scaleX: scaleFinal, y: scaleFinal)
         }
 
         animator.addCompletion { (position) in

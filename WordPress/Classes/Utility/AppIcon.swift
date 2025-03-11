@@ -88,13 +88,13 @@ struct AppIcon {
     }
 
     private enum Constants {
-        static let infoPlistBundleIconsKey    = "CFBundleIcons"
-        static let infoPlistPrimaryIconKey    = "CFBundlePrimaryIcon"
+        static let infoPlistBundleIconsKey = "CFBundleIcons"
+        static let infoPlistPrimaryIconKey = "CFBundlePrimaryIcon"
         static let infoPlistAlternateIconsKey = "CFBundleAlternateIcons"
-        static let infoPlistIconFilesKey      = "CFBundleIconFiles"
+        static let infoPlistIconFilesKey = "CFBundleIconFiles"
         static let infoPlistRequiresBorderKey = "WPRequiresBorder"
-        static let infoPlistLegacyIconKey     = "WPLegacyIcon"
-        static let imageBaseName              = AppConfiguration.isWordPress ? "icon-app-60x60" : "icon-app-60"
+        static let infoPlistLegacyIconKey = "WPLegacyIcon"
+        static let imageBaseName = AppConfiguration.isWordPress ? "icon-app-60x60" : "icon-app-60"
     }
 
     static let defaultIconName = AppConfiguration.isJetpack ? "Cool Green" : "Cool Blue"
