@@ -298,7 +298,7 @@ final class MediaItemViewController: UITableViewController {
     private func saveChanges() {
         mediaMetadata.update(media)
 
-        let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let service = MediaService(managedObjectContext: ContextManager.shared.mainContext)
         service.update(media, success: { [weak self] in
             WPAppAnalytics.track(.mediaLibraryEditedItemMetadata, with: self?.media.blog)
         }, failure: { _ in

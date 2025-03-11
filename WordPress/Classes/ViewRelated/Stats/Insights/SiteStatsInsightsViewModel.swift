@@ -491,7 +491,7 @@ class SiteStatsInsightsViewModel: Observable {
                                                                loading: NSLocalizedString("Following new topics...", comment: "Label displayed to the user while loading their selected interests")
         )
 
-        let context = ContextManager.sharedInstance().mainContext
+        let context = ContextManager.shared.mainContext
         let topics: [ReaderTagTopic]
         if let fetchRequest = ReaderTagTopic.tagsFetchRequest as? NSFetchRequest<ReaderTagTopic>,
            let fetchedTopics = try? context.fetch(fetchRequest) {

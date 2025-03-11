@@ -196,7 +196,7 @@ private extension SignupEpilogueViewController {
             return
         }
 
-        let context = ContextManager.sharedInstance().mainContext
+        let context = ContextManager.shared.mainContext
 
         guard
             let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context),
@@ -219,7 +219,7 @@ private extension SignupEpilogueViewController {
     }
 
     func changeDisplayName(to newDisplayName: String, finished: @escaping (() -> Void)) {
-        let context = ContextManager.sharedInstance().mainContext
+        let context = ContextManager.shared.mainContext
         guard let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: context),
             let restApi = defaultAccount.wordPressComRestApi else {
                 finished()
@@ -238,7 +238,7 @@ private extension SignupEpilogueViewController {
 
     func changePassword(to newPassword: String, finished: @escaping (_ success: Bool, _ error: Error?) -> Void) {
 
-        let context = ContextManager.sharedInstance().mainContext
+        let context = ContextManager.shared.mainContext
 
         do {
             let defaultAccount = try WPAccount.lookupDefaultWordPressComAccount(in: context)
@@ -281,13 +281,13 @@ private extension SignupEpilogueViewController {
     }
 
     func refreshAccountDetails(finished: @escaping () -> Void) {
-        let context = ContextManager.sharedInstance().mainContext
+        let context = ContextManager.shared.mainContext
 
         guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context) else {
             self.dismissEpilogue()
             return
         }
-        AccountService(coreDataStack: ContextManager.sharedInstance()).updateUserDetails(for: account, success: { () in
+        AccountService(coreDataStack: ContextManager.shared).updateUserDetails(for: account, success: { () in
             finished()
         }, failure: { _ in
             finished()

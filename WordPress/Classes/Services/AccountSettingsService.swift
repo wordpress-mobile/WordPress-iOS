@@ -64,7 +64,7 @@ class AccountSettingsService {
         self.init(userID: userID, remote: remote)
     }
 
-    init(userID: Int, remote: AccountSettingsRemoteInterface, coreDataStack: CoreDataStackSwift = ContextManager.sharedInstance()) {
+    init(userID: Int, remote: AccountSettingsRemoteInterface, coreDataStack: CoreDataStackSwift = ContextManager.shared) {
         self.userID = userID
         self.remote = remote
         self.coreDataStack = coreDataStack

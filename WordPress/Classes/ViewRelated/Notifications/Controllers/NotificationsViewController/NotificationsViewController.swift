@@ -1335,7 +1335,7 @@ extension NotificationsViewController {
 //
 extension NotificationsViewController: WPTableViewHandlerDelegate {
     func managedObjectContext() -> NSManagedObjectContext {
-        return ContextManager.sharedInstance().mainContext
+        return ContextManager.shared.mainContext
     }
 
     func fetchRequest() -> NSFetchRequest<NSFetchRequestResult>? {
@@ -1756,7 +1756,7 @@ extension NotificationsViewController: SearchableActivityConvertable {
 //
 private extension NotificationsViewController {
     var mainContext: NSManagedObjectContext {
-        return ContextManager.sharedInstance().mainContext
+        return ContextManager.shared.mainContext
     }
 
     var userDefaults: UserPersistentRepository {

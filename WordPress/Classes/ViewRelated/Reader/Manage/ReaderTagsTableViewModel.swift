@@ -10,7 +10,7 @@ class ReaderTagsTableViewModel: NSObject {
 
     init(tableView: UITableView,
          presenting viewController: UIViewController,
-         context: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
+         context: NSManagedObjectContext = ContextManager.shared.mainContext) {
         let handler = OffsetTableViewHandler(tableView: tableView)
         tableViewHandler = handler
         presentingViewController = viewController

@@ -169,7 +169,7 @@ struct MediaProgressCoordinatorNoticeViewModel {
                 return nil
         }
 
-        let context = ContextManager.sharedInstance().mainContext
+        let context = ContextManager.shared.mainContext
         var blog: Blog? = nil
 
         context.performAndWait {

@@ -15,7 +15,7 @@ class DefaultNotificationActionCommand: FormattableContentActionCommand {
     }
 
     private(set) lazy var mainContext: NSManagedObjectContext? = {
-        return ContextManager.sharedInstance().mainContext
+        return ContextManager.shared.mainContext
     }()
 
     private(set) lazy var actionsService: NotificationActionsService? = {

@@ -106,7 +106,7 @@ extension Blog {
         guard let pageID = homepageType == .page ? homepagePageID
                 : homepageType == .posts ? homepagePostsPageID
                 : nil else { return nil }
-        let context = ContextManager.sharedInstance().mainContext
+        let context = ContextManager.shared.mainContext
         return lookupPost(withID: Int64(pageID), in: context) as? Page
     }
 }

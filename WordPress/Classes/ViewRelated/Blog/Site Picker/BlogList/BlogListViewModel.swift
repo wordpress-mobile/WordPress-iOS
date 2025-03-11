@@ -24,7 +24,7 @@ final class BlogListViewModel: NSObject, ObservableObject {
     var onAddSiteTapped: (AddSiteMenuViewModel.Selection) -> Void = { _ in }
 
     init(configuration: BlogListConfiguration = .defaultConfig,
-         contextManager: ContextManager = ContextManager.sharedInstance(),
+         contextManager: ContextManager = ContextManager.shared,
          recentSitesService: RecentSitesService = RecentSitesService(),
          eventTracker: EventTracker = DefaultEventTracker()) {
         self.configuration = configuration

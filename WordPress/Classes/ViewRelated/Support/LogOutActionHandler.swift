@@ -21,7 +21,7 @@ struct LogOutActionHandler {
     }
 
     private var logOutAlertTitle: String {
-        let context = ContextManager.sharedInstance().mainContext
+        let context = ContextManager.shared.mainContext
         let count = AbstractPost.countLocalPosts(in: context)
 
         guard count > 0 else {

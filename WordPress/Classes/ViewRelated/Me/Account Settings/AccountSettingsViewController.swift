@@ -52,7 +52,7 @@ private class AccountSettingsController: SettingsController {
     private let alertHelper = DestructiveAlertHelper()
 
     init(accountSettingsService: AccountSettingsService,
-         accountService: AccountService = AccountService(coreDataStack: ContextManager.sharedInstance())) {
+         accountService: AccountService = AccountService(coreDataStack: ContextManager.shared)) {
         self.accountSettingsService = accountSettingsService
         self.accountService = accountService
         let notificationCenter = NotificationCenter.default
@@ -109,7 +109,7 @@ private class AccountSettingsController: SettingsController {
 
         // If the primary site has no Site Title, then show the displayURL.
         if primarySiteName.isEmpty {
-            let account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.sharedInstance().mainContext)
+            let account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
             primarySiteName = account?.defaultBlog?.displayURL as String? ?? ""
         }
 

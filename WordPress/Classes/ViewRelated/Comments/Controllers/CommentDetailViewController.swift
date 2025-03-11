@@ -208,7 +208,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
 
     @objc init(comment: Comment,
                isLastInList: Bool,
-               managedObjectContext: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
+               managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext) {
         self.comment = comment
         self.commentStatus = CommentStatusType.typeForStatus(comment.status)
         self.isLastInList = isLastInList
@@ -220,7 +220,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
     init(comment: Comment,
          notification: Notification,
          notificationDelegate: CommentDetailsNotificationDelegate?,
-         managedObjectContext: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
+         managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext) {
         self.comment = comment
         self.commentStatus = CommentStatusType.typeForStatus(comment.status)
         self.notification = notification
@@ -488,9 +488,9 @@ private extension CommentDetailViewController {
                 return
             }
 
-            let context = self.comment.managedObjectContext ?? ContextManager.sharedInstance().mainContext
+            let context = self.comment.managedObjectContext ?? ContextManager.shared.mainContext
             self.comment.replyID = Int32(replyID)
-            ContextManager.sharedInstance().saveContextAndWait(context)
+            ContextManager.shared.saveContextAndWait(context)
 
             self.updateReplyIndicator()
 

@@ -15,7 +15,7 @@ class InvitePersonViewController: UITableViewController {
 
     /// Core Data Context
     ///
-    @objc let context = ContextManager.sharedInstance().mainContext
+    @objc let context = ContextManager.shared.mainContext
 
     // MARK: - Private Properties
 

@@ -25,7 +25,7 @@ class SiteStatsInsightsDetailsTableViewController: SiteStatsBaseTableViewControl
     private var postID: Int?
 
     private lazy var mainContext: NSManagedObjectContext = {
-        return ContextManager.sharedInstance().mainContext
+        return ContextManager.shared.mainContext
     }()
 
     override func viewDidLoad() {

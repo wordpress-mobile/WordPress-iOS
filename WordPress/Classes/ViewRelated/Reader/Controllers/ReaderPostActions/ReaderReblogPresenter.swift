@@ -26,7 +26,7 @@ class ReaderReblogPresenter {
 
         // fallback for self.postService
         func makePostService() -> PostService {
-            let context = ContextManager.sharedInstance().mainContext
+            let context = ContextManager.shared.mainContext
             return PostService(managedObjectContext: context)
         }
         self.postService = postService ?? makePostService()

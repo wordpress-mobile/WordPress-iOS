@@ -20,7 +20,7 @@ final class InteractiveNotificationsManager: NSObject {
     /// Returns the Core Data main context.
     ///
     @objc var context: NSManagedObjectContext {
-        return ContextManager.sharedInstance().mainContext
+        return ContextManager.shared.mainContext
     }
 
     /// Returns a CommentService instance.

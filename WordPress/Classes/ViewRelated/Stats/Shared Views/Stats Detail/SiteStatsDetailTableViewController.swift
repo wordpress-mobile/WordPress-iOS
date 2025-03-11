@@ -37,7 +37,7 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
     private var postID: Int?
 
     private lazy var mainContext: NSManagedObjectContext = {
-        return ContextManager.sharedInstance().mainContext
+        return ContextManager.shared.mainContext
     }()
 
     // MARK: - View

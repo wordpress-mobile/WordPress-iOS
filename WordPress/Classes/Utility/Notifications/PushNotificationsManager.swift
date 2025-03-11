@@ -116,7 +116,7 @@ final public class PushNotificationsManager: NSObject {
         deviceToken = newToken
 
         // Register against WordPress.com
-        let noteService = NotificationSettingsService(coreDataStack: ContextManager.sharedInstance())
+        let noteService = NotificationSettingsService(coreDataStack: ContextManager.shared)
 
         noteService.registerDeviceForPushNotifications(newToken, success: { deviceId in
             DDLogVerbose("Successfully registered Device ID \(deviceId) for Push Notifications")
@@ -157,7 +157,7 @@ final public class PushNotificationsManager: NSObject {
         /// the session getting invalidated on logout.
         /// - issue: https://github.com/wordpress-mobile/WordPress-iOS/issues/24040
         let noteService = NotificationSettingsService(
-            coreDataStack: ContextManager.sharedInstance(),
+            coreDataStack: ContextManager.shared,
             wordPressComRestApi: WordPressComRestApi.defaultV2Api(in: ContextManager.shared.mainContext)
         )
 

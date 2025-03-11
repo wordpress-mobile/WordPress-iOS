@@ -265,7 +265,7 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
             router = nil
             return
         }
-        let coordinator = DefaultContentCoordinator(controller: self, context: ContextManager.sharedInstance().mainContext)
+        let coordinator = DefaultContentCoordinator(controller: self, context: ContextManager.shared.mainContext)
         router = ActivityContentRouter(
             activity: activity,
             coordinator: coordinator)

@@ -11,7 +11,7 @@ struct GravatarQuickEditorPresenter {
     let emailVerificationStatus: WPAccount.VerificationStatus
 
     init?(email: String) {
-        let context = ContextManager.sharedInstance().mainContext
+        let context = ContextManager.shared.mainContext
         guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context) else {
             return nil
         }

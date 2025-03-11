@@ -214,7 +214,7 @@ open class DeleteSiteViewController: UITableViewController {
 
         let trackedBlog = blog
         WPAppAnalytics.track(.siteSettingsDeleteSiteRequested, with: trackedBlog)
-        let service = SiteManagementService(coreDataStack: ContextManager.sharedInstance())
+        let service = SiteManagementService(coreDataStack: ContextManager.shared)
         service.deleteSiteForBlog(blog, success: { [weak self] in
             WPAppAnalytics.track(.siteSettingsDeleteSiteResponseOK, with: trackedBlog)
             let status = NSLocalizedString("Site deleted", comment: "Overlay message displayed when site successfully deleted")
@@ -225,7 +225,7 @@ open class DeleteSiteViewController: UITableViewController {
             let context = ContextManager.shared.mainContext
             let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context)
             if let account {
-                AccountService(coreDataStack: ContextManager.sharedInstance()).updateUserDetails(for: account,
+                AccountService(coreDataStack: ContextManager.shared).updateUserDetails(for: account,
                                                                                                  success: {},
                                                                                                  failure: { _ in })
             }

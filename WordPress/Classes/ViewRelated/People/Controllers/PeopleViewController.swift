@@ -81,7 +81,7 @@ class PeopleViewController: UITableViewController {
     }
 
     private var viewContext: NSManagedObjectContext {
-        ContextManager.sharedInstance().mainContext
+        ContextManager.shared.mainContext
     }
 
     /// Core Data FRC

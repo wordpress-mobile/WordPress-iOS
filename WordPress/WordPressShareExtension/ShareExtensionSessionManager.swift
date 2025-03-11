@@ -90,7 +90,7 @@ import WordPressFlux
                 uploadedMediaCount = 0
             }
 
-            let context = ContextManager.sharedInstance().mainContext
+            let context = ContextManager.shared.mainContext
 
             guard let blog = try? Blog.lookup(withID: postUploadOp.siteID, in: context) else {
                 return

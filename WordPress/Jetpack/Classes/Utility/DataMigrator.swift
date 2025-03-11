@@ -24,7 +24,7 @@ final class DataMigrator {
     private let sharedDefaults: UserPersistentRepository?
     private let crashLogger: CrashLogging
 
-    init(coreDataStack: CoreDataStack = ContextManager.sharedInstance(),
+    init(coreDataStack: CoreDataStack = ContextManager.shared,
          backupLocation: URL? = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: WPAppGroupName)?.appendingPathComponent("WordPress.sqlite"),
          keychainUtils: KeychainUtils = KeychainUtils(),
          localDefaults: UserPersistentRepository = UserDefaults.standard,

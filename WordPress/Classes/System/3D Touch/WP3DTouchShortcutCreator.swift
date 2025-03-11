@@ -19,7 +19,7 @@ open class WP3DTouchShortcutCreator: NSObject {
     }
 
     var shortcutsProvider: ApplicationShortcutsProvider
-    @objc let mainContext = ContextManager.sharedInstance().mainContext
+    @objc let mainContext = ContextManager.shared.mainContext
 
     fileprivate let logInShortcutIconImageName = "icon-shortcut-signin"
     fileprivate let notificationsShortcutIconImageName = "icon-shortcut-notifications"

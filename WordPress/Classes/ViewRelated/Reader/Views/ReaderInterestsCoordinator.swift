@@ -11,7 +11,7 @@ class ReaderSelectInterestsCoordinator {
     init(service: ReaderFollowedInterestsService? = nil,
          store: KeyValueDatabase = UserPersistentStoreFactory.instance(),
          userId: NSNumber? = nil,
-         context: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
+         context: NSManagedObjectContext = ContextManager.shared.mainContext) {
 
         self.interestsService = service ?? ReaderTopicService(coreDataStack: ContextManager.shared)
         self.userId = userId ?? {

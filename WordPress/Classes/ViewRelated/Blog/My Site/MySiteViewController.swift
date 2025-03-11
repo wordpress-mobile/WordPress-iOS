@@ -798,7 +798,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             return
         }
 
-        guard let blog = Blog.lastUsedOrFirst(in: ContextManager.sharedInstance().mainContext) else {
+        guard let blog = Blog.lastUsedOrFirst(in: ContextManager.shared.mainContext) else {
             return
         }
 

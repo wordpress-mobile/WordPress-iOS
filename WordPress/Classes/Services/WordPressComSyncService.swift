@@ -65,7 +65,7 @@ class WordPressComSyncService {
     ///   - onFailure: Failure block
     ///
     func syncOrAssociateBlogs(account: WPAccount, isJetpackLogin: Bool, onSuccess: @escaping (WPAccount) -> Void, onFailure: @escaping (Error) -> Void) {
-        let accountService = AccountService(coreDataStack: ContextManager.sharedInstance())
+        let accountService = AccountService(coreDataStack: ContextManager.shared)
 
         let onFailureInternal = { (error: Error) in
             /// At this point the user is authed and there is a valid account in core data. Make a note of the error and just dismiss

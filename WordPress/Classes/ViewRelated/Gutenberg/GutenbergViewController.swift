@@ -262,7 +262,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
     internal private(set) var contentInfo: ContentInfo?
     lazy var editorSettingsService: BlockEditorSettingsService? = {
-        BlockEditorSettingsService(blog: post.blog, coreDataStack: ContextManager.sharedInstance())
+        BlockEditorSettingsService(blog: post.blog, coreDataStack: ContextManager.shared)
     }()
 
     private let htmlDidChange = PassthroughSubject<Void, Never>()

@@ -438,7 +438,7 @@ class MeViewController: UITableViewController {
             return
         }
 
-        let accountService = AccountService(coreDataStack: ContextManager.sharedInstance())
+        let accountService = AccountService(coreDataStack: ContextManager.shared)
         let accountSettingsService = AccountSettingsService(userID: account.userID.intValue, api: api)
 
         Task {
@@ -489,7 +489,7 @@ class MeViewController: UITableViewController {
     }
 
     private var logOutAlertTitle: String {
-        let context = ContextManager.sharedInstance().mainContext
+        let context = ContextManager.shared.mainContext
         let count = AbstractPost.countLocalPosts(in: context)
 
         guard count > 0 else {

@@ -44,7 +44,7 @@ import WordPressShared
     /// Core Data Context
     ///
     var viewContext: NSManagedObjectContext {
-        ContextManager.sharedInstance().mainContext
+        ContextManager.shared.mainContext
     }
 
     struct SharingCellIdentifiers {
@@ -628,8 +628,8 @@ import WordPressShared
     /// - Parameter refreshAfterSync: If true buttons are reloaded when the sync completes.
     ///
     private func saveButtonChanges(_ refreshAfterSync: Bool) {
-        let context = ContextManager.sharedInstance().mainContext
-        ContextManager.sharedInstance().save(context, completion: { [weak self] in
+        let context = ContextManager.shared.mainContext
+        ContextManager.shared.save(context, completion: { [weak self] in
             self?.reloadButtons()
             self?.syncButtonChangesToBlog(refreshAfterSync)
         }, on: .main)

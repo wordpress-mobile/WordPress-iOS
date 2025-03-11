@@ -62,7 +62,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     // TODO: reimplemet
 //    internal private(set) var contentInfo: ContentInfo?
     lazy var editorSettingsService: BlockEditorSettingsService? = {
-        BlockEditorSettingsService(blog: post.blog, coreDataStack: ContextManager.sharedInstance())
+        BlockEditorSettingsService(blog: post.blog, coreDataStack: ContextManager.shared)
     }()
 
     // MARK: - GutenbergKit

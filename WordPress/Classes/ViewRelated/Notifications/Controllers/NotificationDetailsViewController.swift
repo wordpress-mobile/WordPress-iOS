@@ -847,7 +847,7 @@ extension NotificationDetailsViewController: LikesListControllerDelegate {
 //
 private extension NotificationDetailsViewController {
     var mainContext: NSManagedObjectContext {
-        return ContextManager.sharedInstance().mainContext
+        return ContextManager.shared.mainContext
     }
 
     var actionsService: NotificationActionsService {

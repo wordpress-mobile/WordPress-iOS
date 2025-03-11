@@ -10,7 +10,7 @@ class UserProfileSheetViewController: UITableViewController {
     var blogUrlPreviewedSource: String?
 
     private lazy var mainContext = {
-        return ContextManager.sharedInstance().mainContext
+        return ContextManager.shared.mainContext
     }()
 
     private lazy var contentCoordinator: ContentCoordinator = {

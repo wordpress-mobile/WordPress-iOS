@@ -12,7 +12,7 @@ protocol ShoppingCartServiceProtocol {
 
 final class ShoppingCartService: ShoppingCartServiceProtocol {
     private lazy var context = {
-        ContextManager.sharedInstance().mainContext
+        ContextManager.shared.mainContext
     }()
 
     private lazy var restApi: WordPressComRestApi = {
