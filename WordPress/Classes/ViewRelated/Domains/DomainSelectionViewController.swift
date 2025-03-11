@@ -17,9 +17,9 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
 
     // MARK: Properties
     private struct Metrics {
-        static let maxLabelWidth            = CGFloat(290)
-        static let noResultsTopInset        = CGFloat(64)
-        static let sitePromptTopMargin      = CGFloat(4)
+        static let maxLabelWidth = CGFloat(290)
+        static let noResultsTopInset = CGFloat(64)
+        static let sitePromptTopMargin = CGFloat(4)
     }
 
     override var separatorStyle: SeparatorStyle {

@@ -9,8 +9,8 @@ class StringExtensionsTests: XCTestCase {
     fileprivate let links = ["http://www.google.com", "http://www.automattic.com", "http://wordpress.com?some=random", "http://wordpress.com/path/to/nowhere", "http://wordpress.com/", "https://www.wordpress.blog"]
     fileprivate let linkText = ["www.google.com", "www.automattic.com", "wordpress.com", "wordpress.com/path/to/nowhere", "wordpress.com/", "www.wordpress.blog"]
 
-    fileprivate let text    = " Lorem Ipsum Matarem Les Idiotum Sarasum Zorrentum Modus Operandum "
-    fileprivate let anchor  = "<a href=\"%@\">%@</a>"
+    fileprivate let text = " Lorem Ipsum Matarem Les Idiotum Sarasum Zorrentum Modus Operandum "
+    fileprivate let anchor = "<a href=\"%@\">%@</a>"
 
     func testLinkifyingPlainLinks() {
         var count = 0
@@ -22,8 +22,8 @@ class StringExtensionsTests: XCTestCase {
     }
 
     func testLinkifyingLinksWithinText() {
-        var plain       = String()
-        var linkified   = String()
+        var plain = String()
+        var linkified = String()
 
         var count = 0
         for link in links {

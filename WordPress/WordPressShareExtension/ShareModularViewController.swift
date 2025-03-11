@@ -463,10 +463,10 @@ fileprivate extension ShareModularViewController {
             }
         case .summary:
             // Summary section
-            cell.textLabel?.text            = summaryRowText()
-            cell.textLabel?.textAlignment   = .natural
-            cell.accessoryType              = .none
-            cell.isUserInteractionEnabled   = false
+            cell.textLabel?.text = summaryRowText()
+            cell.textLabel?.textAlignment = .natural
+            cell.accessoryType = .none
+            cell.isUserInteractionEnabled = false
             WPStyleGuide.Share.configureTableViewSummaryCell(cell)
         }
     }

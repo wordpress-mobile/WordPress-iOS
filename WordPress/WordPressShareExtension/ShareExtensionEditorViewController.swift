@@ -1289,29 +1289,29 @@ fileprivate extension ShareExtensionEditorViewController {
     }
 
     struct Constants {
-        static let placeholderPadding           = UIEdgeInsets(top: 8, left: 5, bottom: 0, right: 0)
-        static let insetBottomPadding           = CGFloat(50.0)
-        static let editorBottomInset            = CGFloat(18.0)
-        static let headers                      = [Header.HeaderType.none, .h1, .h2, .h3, .h4, .h5, .h6]
-        static let lists                        = [TextList.Style.unordered, .ordered]
-        static let toolbarHeight                = CGFloat(44.0)
-        static let mediaOverlayBorderWidth      = CGFloat(3.0)
-        static let mediaPlaceholderImageSize    = CGSize(width: 128, height: 128)
+        static let placeholderPadding = UIEdgeInsets(top: 8, left: 5, bottom: 0, right: 0)
+        static let insetBottomPadding = CGFloat(50.0)
+        static let editorBottomInset = CGFloat(18.0)
+        static let headers = [Header.HeaderType.none, .h1, .h2, .h3, .h4, .h5, .h6]
+        static let lists = [TextList.Style.unordered, .ordered]
+        static let toolbarHeight = CGFloat(44.0)
+        static let mediaOverlayBorderWidth = CGFloat(3.0)
+        static let mediaPlaceholderImageSize = CGSize(width: 128, height: 128)
     }
 
     struct ShareColors {
-        static let title                          = UIColor.label
-        static let separator                      = UIColor.separator
-        static let placeholder                    = UIColor.tertiaryLabel
-        static let mediaProgressOverlay           = UIAppColor.neutral(.shade70).withAlphaComponent(CGFloat(0.6))
-        static let mediaOverlayBorderColor        = UIAppColor.primary
-        static let aztecBackground                = UIColor.systemBackground
-        static let aztecLinkColor                 = UIAppColor.primary
-        static let aztecFormatBarDisabledColor    = UIAppColor.neutral(.shade10)
-        static let aztecFormatBarDividerColor     = UIColor.separator
-        static let aztecCursorColor               = UIAppColor.primary
-        static let aztecFormatBarInactiveColor    = UIColor.secondaryLabel
-        static let aztecFormatBarActiveColor      = UIAppColor.primary
+        static let title = UIColor.label
+        static let separator = UIColor.separator
+        static let placeholder = UIColor.tertiaryLabel
+        static let mediaProgressOverlay = UIAppColor.neutral(.shade70).withAlphaComponent(CGFloat(0.6))
+        static let mediaOverlayBorderColor = UIAppColor.primary
+        static let aztecBackground = UIColor.systemBackground
+        static let aztecLinkColor = UIAppColor.primary
+        static let aztecFormatBarDisabledColor = UIAppColor.neutral(.shade10)
+        static let aztecFormatBarDividerColor = UIColor.separator
+        static let aztecCursorColor = UIAppColor.primary
+        static let aztecFormatBarInactiveColor = UIColor.secondaryLabel
+        static let aztecFormatBarActiveColor = UIAppColor.primary
 
         static var aztecFormatPickerSelectedCellBackgroundColor: UIColor {
             get {
@@ -1327,8 +1327,8 @@ fileprivate extension ShareExtensionEditorViewController {
     }
 
     struct ShareFonts {
-        static let regular      = WPFontManager.notoRegularFont(ofSize: 16)
-        static let title        = WPFontManager.notoBoldFont(ofSize: 24.0)
+        static let regular = WPFontManager.notoRegularFont(ofSize: 16)
+        static let title = WPFontManager.notoBoldFont(ofSize: 24.0)
         static let mediaOverlay = WPFontManager.systemSemiBoldFont(ofSize: 15.0)
     }
 }

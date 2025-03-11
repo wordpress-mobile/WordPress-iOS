@@ -186,8 +186,8 @@ extension SharePostTypePickerViewController {
 
 fileprivate extension SharePostTypePickerViewController {
     struct Constants {
-        static let cellReuseIdentifier  = String(describing: SharePostTypePickerViewController.self)
-        static let defaultRowHeight     = CGFloat(44.0)
+        static let cellReuseIdentifier = String(describing: SharePostTypePickerViewController.self)
+        static let defaultRowHeight = CGFloat(44.0)
         static let flashAnimationLength = 0.2
         static let indentationMultiplier = 3
     }

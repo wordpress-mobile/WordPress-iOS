@@ -11,18 +11,18 @@ class StatsLineChartView: LineChartView {
     // MARK: Properties
 
     private struct Constants {
-        static let intrinsicHeight          = CGFloat(190)
-        static let highlightLineWidth       = 1.0
+        static let intrinsicHeight = CGFloat(190)
+        static let highlightLineWidth = 1.0
         static let highlightLineDashLengths = 4.4
         static let horizontalAxisLabelCount = 3
-        static let rotationDelay            = TimeInterval(0.35)
-        static let topOffset                = CGFloat(16)
-        static let trailingOffset           = CGFloat(8)
-        static let verticalAxisLabelCount   = 5
-        static let xAxisWidth               = 4.0
-        static let xAxisTickWidth           = 2.0
-        static let lineWidth                = 2.0
-        static let numberOfXAxisTicks       = 7
+        static let rotationDelay = TimeInterval(0.35)
+        static let topOffset = CGFloat(16)
+        static let trailingOffset = CGFloat(8)
+        static let verticalAxisLabelCount = 5
+        static let xAxisWidth = 4.0
+        static let xAxisTickWidth = 2.0
+        static let lineWidth = 2.0
+        static let numberOfXAxisTicks = 7
     }
 
     /// The type of stat shown on the chart i.e. subscribers, views & visitors, etc.

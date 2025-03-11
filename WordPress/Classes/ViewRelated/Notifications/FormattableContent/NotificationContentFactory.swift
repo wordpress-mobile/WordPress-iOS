@@ -1,8 +1,8 @@
 
 private enum Constants {
-    static let Actions      = "actions"
-    static let RawType      = "type"
-    static let Ranges       = "ranges"
+    static let Actions = "actions"
+    static let RawType = "type"
+    static let Ranges = "ranges"
 }
 
 extension Notification {

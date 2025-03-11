@@ -12,16 +12,16 @@ final class AssembledSiteView: UIView {
 
     /// A collection of parameters uses for animation & layout of the view.
     private struct Parameters {
-        static let iPadWidthPortrait        = CGFloat(512)
-        static let iPadWidthLandscape       = CGFloat(704)
-        static let iPhoneWidthScaleFactor   = CGFloat(0.79)
+        static let iPadWidthPortrait = CGFloat(512)
+        static let iPadWidthLandscape = CGFloat(704)
+        static let iPhoneWidthScaleFactor = CGFloat(0.79)
         static let minimumHeightScaleFactor = CGFloat(0.79)
-        static let shadowOffset             = CGSize(width: 0, height: 5)
-        static let shadowOpacity            = Float(0.2)
-        static let shadowRadius             = CGFloat(8)
-        static let textFieldCornerRadius    = CGFloat(8)
-        static let textFieldEdgeInset       = CGFloat(8)
-        static let textFieldHeight          = CGFloat(36)
+        static let shadowOffset = CGSize(width: 0, height: 5)
+        static let shadowOpacity = Float(0.2)
+        static let shadowRadius = CGFloat(8)
+        static let textFieldCornerRadius = CGFloat(8)
+        static let textFieldEdgeInset = CGFloat(8)
+        static let textFieldHeight = CGFloat(36)
     }
 
     /// This value displays in the address bar.

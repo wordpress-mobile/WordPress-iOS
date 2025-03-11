@@ -5,8 +5,8 @@ import WordPressKit
 ///
 class NotificationSettingsService {
     // MARK: - Aliases
-    public typealias Channel    = NotificationSettings.Channel
-    public typealias Stream     = NotificationSettings.Stream
+    public typealias Channel = NotificationSettings.Channel
+    public typealias Stream = NotificationSettings.Stream
 
     /// Designated Initializer
     ///
@@ -217,8 +217,8 @@ class NotificationSettingsService {
         var parsed = Array<NotificationSettings.Stream>()
 
         for remoteStream in remote {
-            let kind    = remoteStream.kind.rawValue
-            let stream  = NotificationSettings.Stream(kind: kind, preferences: remoteStream.preferences)
+            let kind = remoteStream.kind.rawValue
+            let stream = NotificationSettings.Stream(kind: kind, preferences: remoteStream.preferences)
             parsed.append(stream)
         }
 

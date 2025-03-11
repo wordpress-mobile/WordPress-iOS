@@ -14,13 +14,13 @@ final class ErrorStateView: UIView {
 
     /// A collection of parameters uses for animation & layout of the view.
     private struct Parameters {
-        static let dismissalDimension           = CGFloat(16)
-        static let dismissalInsetScaleFactor    = CGFloat(0.05)
-        static let iPadWidth                    = CGFloat(512)
-        static let iPhoneWidthScaleFactor       = CGFloat(0.79)
-        static let retryTopPadding              = CGFloat(6)
-        static let stackViewSpacing             = CGFloat(10)
-        static let supportTopInset              = CGFloat(26)
+        static let dismissalDimension = CGFloat(16)
+        static let dismissalInsetScaleFactor = CGFloat(0.05)
+        static let iPadWidth = CGFloat(512)
+        static let iPhoneWidthScaleFactor = CGFloat(0.79)
+        static let retryTopPadding = CGFloat(6)
+        static let stackViewSpacing = CGFloat(10)
+        static let supportTopInset = CGFloat(26)
     }
 
     /// This informs constraints applied to the view.

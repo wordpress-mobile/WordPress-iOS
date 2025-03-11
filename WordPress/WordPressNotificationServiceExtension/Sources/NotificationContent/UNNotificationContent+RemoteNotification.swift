@@ -4,8 +4,8 @@ import UserNotifications
 // MARK: - Describes userInfo keys within the APNS payload
 
 private extension CodingUserInfoKey {
-    static let alert    = CodingUserInfoKey(rawValue: "alert")!
-    static let aps      = CodingUserInfoKey(rawValue: "aps")!
+    static let alert = CodingUserInfoKey(rawValue: "alert")!
+    static let aps = CodingUserInfoKey(rawValue: "aps")!
 }
 
 // MARK: - Supports standard APNS notification content
@@ -25,8 +25,8 @@ extension UNNotificationContent {
 // MARK: - Describes userInfo keys used to exchange data between extension types
 
 private extension CodingUserInfoKey {
-    static let noteIdentifier   = CodingUserInfoKey(rawValue: "note_id")!
-    static let type             = CodingUserInfoKey(rawValue: "type")!
+    static let noteIdentifier = CodingUserInfoKey(rawValue: "note_id")!
+    static let type = CodingUserInfoKey(rawValue: "type")!
 }
 
 // MARK: - Supports APNS notification related to `RemoteNotification`

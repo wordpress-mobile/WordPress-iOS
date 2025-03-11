@@ -20,8 +20,8 @@ extension String {
             return self
         }
 
-        let range   = NSMakeRange(0, count)
-        var offset  = 0
+        let range = NSMakeRange(0, count)
+        var offset = 0
 
         detector.enumerateMatches(in: self, options: [], range: range) { (result, flags, stop) in
             guard let range = result?.range else {

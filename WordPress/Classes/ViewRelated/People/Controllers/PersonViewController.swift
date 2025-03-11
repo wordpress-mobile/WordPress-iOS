@@ -19,9 +19,9 @@ final class PersonViewController: UITableViewController {
     /// PersonViewController operation modes
     ///
     enum ScreenMode: String {
-        case User      = "user"
-        case Follower  = "follower"
-        case Viewer    = "viewer"
+        case User = "user"
+        case Follower = "follower"
+        case Viewer = "viewer"
 
         var title: String {
             switch self {
@@ -164,17 +164,17 @@ final class PersonViewController: UITableViewController {
     }
 
     // MARK: - Constants
-    private let sectionHeaderHeight      = CGFloat(20)
-    private let roleSegueIdentifier      = "editRole"
-    private let userInfoCellIdentifier   = "userInfoCellIdentifier"
-    private let actionCellIdentifier     = "actionCellIdentifier"
+    private let sectionHeaderHeight = CGFloat(20)
+    private let roleSegueIdentifier = "editRole"
+    private let userInfoCellIdentifier = "userInfoCellIdentifier"
+    private let actionCellIdentifier = "actionCellIdentifier"
 
-    private let headerIndexPath      = IndexPath(row: 0, section: TableSection.header.rawValue)
-    private let roleIndexPath        = IndexPath(row: 0, section: TableSection.userDetails.rawValue)
-    private let firstNameIndexPath   = IndexPath(row: 1, section: TableSection.userDetails.rawValue)
-    private let lastNameIndexPath    = IndexPath(row: 2, section: TableSection.userDetails.rawValue)
+    private let headerIndexPath = IndexPath(row: 0, section: TableSection.header.rawValue)
+    private let roleIndexPath = IndexPath(row: 0, section: TableSection.userDetails.rawValue)
+    private let firstNameIndexPath = IndexPath(row: 1, section: TableSection.userDetails.rawValue)
+    private let lastNameIndexPath = IndexPath(row: 2, section: TableSection.userDetails.rawValue)
     private let displayNameIndexPath = IndexPath(row: 3, section: TableSection.userDetails.rawValue)
-    private let removeIndexPath      = IndexPath(row: 0, section: TableSection.action.rawValue)
+    private let removeIndexPath = IndexPath(row: 0, section: TableSection.action.rawValue)
 
     /// The structure in sections and cells of the table
     ///
@@ -358,11 +358,11 @@ private extension PersonViewController {
     }
 
     func retryUpdatingRole(_ newRole: String) {
-        let retryTitle          = NSLocalizedString("Retry", comment: "Retry updating User's Role")
-        let cancelTitle         = NSLocalizedString("Cancel", comment: "Cancel updating User's Role")
-        let title               = NSLocalizedString("Sorry!", comment: "Update User Failed Title")
-        let localizedError      = NSLocalizedString("There was an error updating @%@", comment: "Updating Role failed error message")
-        let messageText         = String(format: localizedError, person.username)
+        let retryTitle = NSLocalizedString("Retry", comment: "Retry updating User's Role")
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel updating User's Role")
+        let title = NSLocalizedString("Sorry!", comment: "Update User Failed Title")
+        let localizedError = NSLocalizedString("There was an error updating @%@", comment: "Updating Role failed error message")
+        let messageText = String(format: localizedError, person.username)
 
         let alertController = UIAlertController(title: title, message: messageText, preferredStyle: .alert)
 
@@ -422,39 +422,39 @@ private extension PersonViewController {
 
     func configureRemoveCell(_ cell: UITableViewCell) {
         WPStyleGuide.configureTableViewDestructiveActionCell(cell)
-        let removeFormat     = NSLocalizedString("Remove %@", comment: "Remove User. Verb")
-        let removeText       = String(format: removeFormat, isEmailFollower ? person.displayName : "@" + person.username)
+        let removeFormat = NSLocalizedString("Remove %@", comment: "Remove User. Verb")
+        let removeText = String(format: removeFormat, isEmailFollower ? person.displayName : "@" + person.username)
         cell.textLabel?.text = removeText as String
-        cell.isHidden        = !isRemoveEnabled
+        cell.isHidden = !isRemoveEnabled
     }
 
     func configureFirstNameCell(_ cell: UITableViewCell) {
-        cell.textLabel?.text       = NSLocalizedString("First Name", comment: "User's First Name")
+        cell.textLabel?.text = NSLocalizedString("First Name", comment: "User's First Name")
         cell.detailTextLabel?.text = person.firstName
-        cell.isHidden              = isFullnamePrivate
+        cell.isHidden = isFullnamePrivate
         cell.isUserInteractionEnabled = false
     }
 
     func configureLastNameCell(_ cell: UITableViewCell) {
-        cell.textLabel?.text       = NSLocalizedString("Last Name", comment: "User's Last Name")
+        cell.textLabel?.text = NSLocalizedString("Last Name", comment: "User's Last Name")
         cell.detailTextLabel?.text = person.lastName
-        cell.isHidden              = isFullnamePrivate
+        cell.isHidden = isFullnamePrivate
         cell.isUserInteractionEnabled = false
     }
 
     func configureDisplayNameCell(_ cell: UITableViewCell) {
-        cell.textLabel?.text       = NSLocalizedString("Display Name", comment: "User's Display Name")
+        cell.textLabel?.text = NSLocalizedString("Display Name", comment: "User's Display Name")
         cell.detailTextLabel?.text = person.displayName
         cell.isUserInteractionEnabled = false
     }
 
     func configureRoleCell(_ cell: UITableViewCell) {
-        cell.textLabel?.text          = NSLocalizedString("Role", comment: "User's Role")
-        cell.detailTextLabel?.text    = role?.name
+        cell.textLabel?.text = NSLocalizedString("Role", comment: "User's Role")
+        cell.detailTextLabel?.text = role?.name
 
-        let enabled                   = isPromoteEnabled
-        cell.accessoryType            = enabled ? .disclosureIndicator : .none
-        cell.selectionStyle           = enabled ? .gray : .none
+        let enabled = isPromoteEnabled
+        cell.accessoryType = enabled ? .disclosureIndicator : .none
+        cell.selectionStyle = enabled ? .gray : .none
         cell.isUserInteractionEnabled = enabled
     }
 

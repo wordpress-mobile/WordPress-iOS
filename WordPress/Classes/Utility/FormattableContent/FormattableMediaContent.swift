@@ -60,17 +60,17 @@ public extension FormattableMediaItem {
     /// Known kinds of Media Entities
     ///
     enum Kind: String {
-        case image              = "image"
-        case badge              = "badge"
+        case image = "image"
+        case badge = "badge"
     }
 
     /// Parsing Keys
     ///
     fileprivate enum MediaKeys {
-        static let RawType      = "type"
-        static let URL          = "url"
-        static let Indices      = "indices"
-        static let Width        = "width"
-        static let Height       = "height"
+        static let RawType = "type"
+        static let URL = "url"
+        static let Indices = "indices"
+        static let Width = "width"
+        static let Height = "height"
     }
 }

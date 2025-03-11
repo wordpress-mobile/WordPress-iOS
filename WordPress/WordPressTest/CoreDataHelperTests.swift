@@ -222,7 +222,7 @@ class DummyStack {
         keyAttribute.name = "key"
         keyAttribute.attributeType = .stringAttributeType
 
-        let valueAttribute  = NSAttributeDescription()
+        let valueAttribute = NSAttributeDescription()
         valueAttribute.name = "value"
         valueAttribute.attributeType = .integer64AttributeType
 

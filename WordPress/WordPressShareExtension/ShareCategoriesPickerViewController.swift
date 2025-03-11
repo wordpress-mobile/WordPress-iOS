@@ -243,8 +243,8 @@ extension ShareCategoriesPickerViewController {
 
 fileprivate extension ShareCategoriesPickerViewController {
     struct Constants {
-        static let cellReuseIdentifier  = String(describing: ShareCategoriesPickerViewController.self)
-        static let defaultRowHeight     = CGFloat(44.0)
+        static let cellReuseIdentifier = String(describing: ShareCategoriesPickerViewController.self)
+        static let defaultRowHeight = CGFloat(44.0)
         static let flashAnimationLength = 0.2
         static let indentationMultiplier = 3
     }

@@ -112,6 +112,6 @@ open class PickerTableViewCell: WPTableViewCell, UIPickerViewDelegate, UIPickerV
     }
 
     // MARK: - Private Properties
-    fileprivate let picker                      = UIPickerView()
-    fileprivate let numberOfComponentsInPicker  = 1
+    fileprivate let picker = UIPickerView()
+    fileprivate let numberOfComponentsInPicker = 1
 }

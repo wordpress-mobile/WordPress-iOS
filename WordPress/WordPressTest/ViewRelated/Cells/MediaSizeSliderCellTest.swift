@@ -16,7 +16,7 @@ class MediaSizeSliderCellTest: XCTestCase {
         model.value = 150
         XCTAssertEqual(model.value, 150)
 
-        model.step  = 60
+        model.step = 60
 
         model.value = 80
         XCTAssertEqual(model.value, 100)

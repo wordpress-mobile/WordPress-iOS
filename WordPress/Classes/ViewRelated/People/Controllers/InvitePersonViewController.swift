@@ -363,9 +363,9 @@ class InvitePersonViewController: UITableViewController {
     // MARK: - Private Enums
 
     private enum SegueIdentifier: String {
-        case Username   = "username"
-        case Role       = "role"
-        case Message    = "message"
+        case Username = "username"
+        case Role = "role"
+        case Message = "message"
         case InviteRole = "inviteRole"
     }
 

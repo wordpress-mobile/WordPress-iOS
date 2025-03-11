@@ -7,9 +7,9 @@ extension BlogSettings {
     /// Enumerates all of the Comments AutoApproval settings
     ///
     enum CommentsAutoapproval: Int {
-        case disabled       = 0
+        case disabled = 0
         case fromKnownUsers = 1
-        case everything     = 2
+        case everything = 2
 
         /// Returns the localized description of the current enum value
         ///
@@ -55,7 +55,7 @@ extension BlogSettings {
     /// Enumerates all of the valid Comment Sort Order options
     ///
     enum CommentsSorting: Int {
-        case ascending  = 0
+        case ascending = 0
         case descending = 1
 
         /// Returns the localized description of the current enum value
@@ -145,8 +145,8 @@ extension BlogSettings {
         // MARK: - Private Properties
 
         fileprivate static let disabledValue = 0
-        fileprivate static let minimumValue  = 2
-        fileprivate static let maximumValue  = 10
+        fileprivate static let minimumValue = 2
+        fileprivate static let maximumValue = 10
 
         fileprivate static var descriptionMap: [Int: String] {
             let descriptionFormat = NSLocalizedString("%@ levels", comment: "Comments Threading Levels")
@@ -178,8 +178,8 @@ extension BlogSettings {
             return .everything
         }
         set {
-            commentsRequireManualModeration     = newValue == .disabled
-            commentsFromKnownUsersAllowlisted   = newValue == .fromKnownUsers
+            commentsRequireManualModeration = newValue == .disabled
+            commentsFromKnownUsersAllowlisted = newValue == .fromKnownUsers
         }
     }
 

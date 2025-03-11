@@ -60,15 +60,15 @@ extension Tracks {
     // MARK: - Private Enums
 
     fileprivate enum ExtensionEvents: String {
-        case launched       = "draft_extension_launched"
-        case posted         = "draft_extension_posted"
-        case tagsOpened     = "draft_extension_tags_opened"
-        case tagsSelected   = "draft_extension_tags_selected"
-        case canceled       = "draft_extension_canceled"
-        case error          = "draft_extension_error"
-        case categoriesOpened   = "draft_extension_categories_opened"
+        case launched = "draft_extension_launched"
+        case posted = "draft_extension_posted"
+        case tagsOpened = "draft_extension_tags_opened"
+        case tagsSelected = "draft_extension_tags_selected"
+        case canceled = "draft_extension_canceled"
+        case error = "draft_extension_error"
+        case categoriesOpened = "draft_extension_categories_opened"
         case categoriesSelected = "draft_extension_categories_selected"
-        case postTypeOpened   = "draft_extension_post_type_opened"
+        case postTypeOpened = "draft_extension_post_type_opened"
         case postTypeSelected = "draft_extension_post_type_selected"
     }
 }
