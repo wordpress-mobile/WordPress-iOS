@@ -72,7 +72,9 @@ let package = Package(
                 .target(name: "WordPressSharedObjC"),
                 .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
                 .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack")
-            ]
+            ],
+            // Avoid supporting Sendable and concurrency for the time being...
+            swiftSettings: [.swiftLanguageMode(.v5)]
         ),
         .target(name: "WordPressFlux", swiftSettings: [.swiftLanguageMode(.v5)]),
         .target(name: "WordPressCore", dependencies: [.target(name: "WordPressShared"), .product(name: "WordPressAPI", package: "wordpress-rs")]),
