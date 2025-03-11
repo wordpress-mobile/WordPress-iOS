@@ -974,19 +974,19 @@ private extension NotificationDetailsViewController {
     }
 
     enum ContentMedia {
-        static let richBlockTypes           = Set(arrayLiteral: FormattableContentKind.text, FormattableContentKind.comment)
-        static let duration                 = TimeInterval(0.25)
-        static let delay                    = TimeInterval(0)
+        static let richBlockTypes = Set(arrayLiteral: FormattableContentKind.text, FormattableContentKind.comment)
+        static let duration = TimeInterval(0.25)
+        static let delay = TimeInterval(0)
         static let options: UIView.AnimationOptions = [.overrideInheritedDuration, .beginFromCurrentState]
     }
 
     enum Settings {
-        static let numberOfSections         = 1
-        static let estimatedRowHeight       = CGFloat(44)
+        static let numberOfSections = 1
+        static let estimatedRowHeight = CGFloat(44)
     }
 
     enum Assets {
-        static let confettiBackground       = "notifications-confetti-background"
+        static let confettiBackground = "notifications-confetti-background"
     }
 }
 

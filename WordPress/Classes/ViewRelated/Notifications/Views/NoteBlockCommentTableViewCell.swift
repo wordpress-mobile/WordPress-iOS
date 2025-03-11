@@ -163,29 +163,8 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell {
     }
 
     private func refreshApprovalColors() {
-        titleLabel.textColor = Style.blockTitleColorForComment(isApproved: isApproved)
         detailsLabel.textColor = Style.blockDetailsColorForComment(isApproved: isApproved)
         linkColor = Style.blockLinkColorForComment(isApproved: isApproved)
         attributedText = isApproved ? attributedCommentText : attributedCommentUnapprovedText
-    }
-
-    private var attributedCommentUnapprovedText: NSAttributedString? {
-        guard let commentText = attributedCommentText?.mutableCopy() as? NSMutableAttributedString else {
-            return nil
-        }
-
-        let range = NSRange(location: 0, length: commentText.length)
-        let textColor = Style.blockUnapprovedTextColor
-        commentText.addAttribute(.foregroundColor, value: textColor, range: range)
-
-        return commentText
-    }
-
-    @IBAction func titleWasPressed() {
-        onUserClick?()
-    }
-
-    @IBAction func detailsWasPressed() {
-        onUserClick?()
     }
 }

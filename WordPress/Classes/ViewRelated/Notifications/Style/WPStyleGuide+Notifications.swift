@@ -13,13 +13,13 @@ extension WPStyleGuide {
         public static let unreadIndicatorColor = UIAppColor.primaryLight
 
         // Notification cells
-        public static let noticonFont               = UIFont(name: "Noticons", size: 16)
-        public static let noticonReadColor          = UIColor.systemGray
+        public static let noticonFont = UIFont(name: "Noticons", size: 16)
+        public static let noticonReadColor = UIColor.systemGray
 
         // Notification undo overlay
-        public static let noteUndoBackgroundColor   = UIAppColor.error
-        public static let noteUndoTextColor         = UIColor.white
-        public static let noteUndoTextFont          = subjectRegularFont
+        public static let noteUndoBackgroundColor = UIAppColor.error
+        public static let noteUndoTextColor = UIColor.white
+        public static let noteUndoTextFont = subjectRegularFont
 
         // Subject Text
         public static var subjectRegularStyle: [NSAttributedString.Key: Any] {
@@ -64,11 +64,11 @@ extension WPStyleGuide {
         //
 
         // Header
-        public static let headerTitleColor          = blockTextColor
-        public static let headerTitleBoldFont       = blockBoldFont
+        public static let headerTitleColor = blockTextColor
+        public static let headerTitleBoldFont = blockBoldFont
 
-        public static let headerDetailsColor        = UIAppColor.primary
-        public static let headerDetailsRegularFont  = blockRegularFont
+        public static let headerDetailsColor = UIAppColor.primary
+        public static let headerDetailsRegularFont = blockRegularFont
 
         public static var headerTitleRegularStyle: [NSAttributedString.Key: Any] {
             return [.font: headerTitleRegularFont,
@@ -132,27 +132,17 @@ extension WPStyleGuide {
         }
 
         // Blocks
-        public static let contentBlockRegularFont   = WPFontManager.notoRegularFont(ofSize: blockFontSize)
-        public static let contentBlockBoldFont      = WPFontManager.notoBoldFont(ofSize: blockFontSize)
-        public static let contentBlockItalicFont    = WPFontManager.notoItalicFont(ofSize: blockFontSize)
-        public static let blockRegularFont          = WPFontManager.systemRegularFont(ofSize: blockFontSize)
-        public static let blockBoldFont             = WPFontManager.systemSemiBoldFont(ofSize: blockFontSize)
+        public static let contentBlockRegularFont = WPFontManager.notoRegularFont(ofSize: blockFontSize)
+        public static let contentBlockBoldFont = WPFontManager.notoBoldFont(ofSize: blockFontSize)
+        public static let contentBlockItalicFont = WPFontManager.notoItalicFont(ofSize: blockFontSize)
+        public static let blockRegularFont = WPFontManager.systemRegularFont(ofSize: blockFontSize)
+        public static let blockBoldFont = WPFontManager.systemSemiBoldFont(ofSize: blockFontSize)
 
-        public static let blockTextColor            = UIColor.label
-        public static let blockQuotedColor          = UIAppColor.neutral
-        public static let blockBackgroundColor      = UIColor.secondarySystemGroupedBackground
-        public static let blockLinkColor            = UIAppColor.primary
-        public static let blockSeparatorColor       = UIColor.separator
-
-        public static let blockApprovedBgColor      = UIColor.clear
-
-        public static let blockUnapprovedSideColor  = UIAppColor.warning(.shade60)
-        public static let blockUnapprovedBgColor    = UIColor(
-            light: UIAppColor.warning(.shade0),
-            dark: UIAppColor.warning(.shade90)
-        )
-        public static let blockUnapprovedTextColor  = UIColor.label
-        public static let blockUnapprovedLinkColor  = UIAppColor.primary
+        public static let blockTextColor = UIColor.label
+        public static let blockQuotedColor = UIAppColor.neutral
+        public static let blockBackgroundColor = UIColor.secondarySystemGroupedBackground
+        public static let blockLinkColor = UIAppColor.primary
+        public static let blockSeparatorColor = UIColor.separator
 
         public static var contentBlockRegularStyle: [NSAttributedString.Key: Any] {
             return  [.paragraphStyle: contentBlockParagraph,
@@ -193,31 +183,6 @@ extension WPStyleGuide {
         // RichText Helpers
         public static func blockBackgroundColorForRichText(_ isBadge: Bool) -> UIColor {
             return isBadge ? badgeBackgroundColor : blockBackgroundColor
-        }
-
-        // Comment Helpers
-        public static func blockGravatarPlaceholderImage(isApproved approved: Bool) -> UIImage {
-            return approved ? .gravatarPlaceholderImage : .gravatarUnapprovedImage
-        }
-
-        public static func blockSeparatorColorForComment(isApproved approved: Bool) -> UIColor {
-            return (approved ? blockSeparatorColor : blockUnapprovedSideColor)
-        }
-
-        public static func blockBackgroundColorForComment(isApproved approved: Bool) -> UIColor {
-            return approved ? blockApprovedBgColor : blockUnapprovedBgColor
-        }
-
-        public static func blockTitleColorForComment(isApproved approved: Bool) -> UIColor {
-            return (approved ? blockTextColor : blockUnapprovedTextColor)
-        }
-
-        public static func blockDetailsColorForComment(isApproved approved: Bool) -> UIColor {
-            return approved ? blockQuotedColor : blockUnapprovedSideColor
-        }
-
-        public static func blockLinkColorForComment(isApproved approved: Bool) -> UIColor {
-            return (approved ? blockLinkColor : blockUnapprovedLinkColor)
         }
 
         // User Cell Helpers
