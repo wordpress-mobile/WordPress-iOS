@@ -283,8 +283,9 @@ private extension ContextManager {
 
 extension ContextManager {
     private static let internalSharedInstance = ContextManager()
+
     /// Tests purpose only
-    static var overrideInstance: ContextManager?
+    nonisolated(unsafe) static var overrideInstance: ContextManager?
 
     @objc class func sharedInstance() -> ContextManager {
         if let overrideInstance {
