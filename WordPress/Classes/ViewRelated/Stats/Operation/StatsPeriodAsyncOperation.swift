@@ -1,3 +1,5 @@
+import WordPressShared
+
 final class StatsPeriodAsyncOperation<TimeStatsType: StatsTimeIntervalData>: AsyncOperation, @unchecked Sendable {
     typealias StatsPeriodCompletion = (TimeStatsType?, Error?) -> Void
 
