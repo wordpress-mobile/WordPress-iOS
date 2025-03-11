@@ -190,10 +190,6 @@ extension WPStyleGuide {
                      .foregroundColor: blockNoticonColor ]
         }
 
-        // Action Buttons
-        public static let blockActionDisabledColor  = UIColor.secondaryLabel
-        public static let blockActionEnabledColor   = UIAppColor.primary
-
         // RichText Helpers
         public static func blockBackgroundColorForRichText(_ isBadge: Bool) -> UIColor {
             return isBadge ? badgeBackgroundColor : blockBackgroundColor
