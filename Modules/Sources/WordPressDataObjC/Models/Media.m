@@ -1,6 +1,7 @@
+@import CocoaLumberjack;
 #import "Media.h"
 @import WordPressDataObjC;
-#import "WordPress-Swift.h"
+//#import "WordPress-Swift.h"
 
 @implementation Media
 
@@ -159,9 +160,9 @@
     NSError *error;
     NSURL *mediaDirectory = nil;
     if (cacheDirectory) {
-        mediaDirectory = [[MediaFileManager cacheManager] directoryURLAndReturnError:&error];
+//        mediaDirectory = [[MediaFileManager cacheManager] directoryURLAndReturnError:&error];
     } else {
-        mediaDirectory = [MediaFileManager uploadsDirectoryURLAndReturnError:&error];
+//        mediaDirectory = [MediaFileManager uploadsDirectoryURLAndReturnError:&error];
     }
     if (error) {
         DDLogInfo(@"Error resolving Media directory: %@", error);
@@ -193,13 +194,13 @@
 {
     [self.managedObjectContext performBlockAndWait:^{
         [self.managedObjectContext deleteObject:self];
-        [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
+//        [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
     }];
 }
 
 - (void)save
 {
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+//    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
 - (BOOL)hasRemote {

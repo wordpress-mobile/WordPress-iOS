@@ -1,9 +1,10 @@
 #import "WPAccount.h"
-#import "WordPress-Swift.h"
+//#import "WordPress-Swift.h"
+@import CocoaLumberjack;
 
 @interface WPAccount ()
 
-@property (nonatomic, strong, readwrite) WordPressComRestApi *wordPressComRestApi;
+//@property (nonatomic, strong, readwrite) WordPressComRestApi *wordPressComRestApi;
 @property (nonatomic, strong, readwrite) NSString *cachedToken;
 
 @end
@@ -34,15 +35,15 @@
         return;
     }
 
-    [_wordPressComRestApi invalidateAndCancelTasks];
-    _wordPressComRestApi = nil;
+//    [_wordPressComRestApi invalidateAndCancelTasks];
+//    _wordPressComRestApi = nil;
     self.authToken = nil;
 }
 
 - (void)didTurnIntoFault
 {
     [super didTurnIntoFault];
-    _wordPressComRestApi = nil;
+//    _wordPressComRestApi = nil;
     self.cachedToken = nil;
 }
 
@@ -91,12 +92,12 @@
 
     if (authToken) {
         NSError *error = nil;
-        [SFHFKeychainUtils storeUsername:self.username
-                             andPassword:authToken
-                          forServiceName:[WPAccount authKeychainServiceName]
-                             accessGroup:nil
-                          updateExisting:YES
-                                   error:&error];
+//        [SFHFKeychainUtils storeUsername:self.username
+//                             andPassword:authToken
+//                          forServiceName:[WPAccount authKeychainServiceName]
+//                             accessGroup:nil
+//                          updateExisting:YES
+//                                   error:&error];
 
         if (error) {
             DDLogError(@"Error while updating WordPressComOAuthKeychainServiceName token: %@", error);
@@ -104,10 +105,10 @@
 
     } else {
         NSError *error = nil;
-        [SFHFKeychainUtils deleteItemForUsername:self.username
-                                  andServiceName:[WPAccount authKeychainServiceName]
-                                     accessGroup:nil
-                                           error:&error];
+//        [SFHFKeychainUtils deleteItemForUsername:self.username
+//                                  andServiceName:[WPAccount authKeychainServiceName]
+//                                     accessGroup:nil
+//                                           error:&error];
         if (error) {
             DDLogError(@"Error while deleting WordPressComOAuthKeychainServiceName token: %@", error);
         }
@@ -146,50 +147,50 @@
 + (void)migrateAuthKeyForUsername:(NSString *)username
 {
     static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        if ([AppConfiguration isJetpack]) {
-            SharedDataIssueSolver *sharedDataIssueSolver = [SharedDataIssueSolver instance];
-            [sharedDataIssueSolver migrateAuthKeyFor:username];
-        }
+//    dispatch_once(&onceToken, ^{
+//        if ([AppConfiguration isJetpack]) {
+//            SharedDataIssueSolver *sharedDataIssueSolver = [SharedDataIssueSolver instance];
+//            [sharedDataIssueSolver migrateAuthKeyFor:username];
+//        }
     });
 }
 
-+ (NSString *)authKeychainServiceName
-{
-    return [AppConstants authKeychainServiceName];
-}
+//+ (NSString *)authKeychainServiceName
+//{
+//    return [AppConstants authKeychainServiceName];
+//}
 
 #pragma mark - API Helpers
 
-- (WordPressComRestApi *)wordPressComRestApi
-{
-    if (!_wordPressComRestApi) {
-        if (self.authToken.length > 0) {
-            __weak __typeof(self) weakSelf = self;
-            _wordPressComRestApi = [WordPressComRestApi defaultApiWithOAuthToken:self.authToken
-                                                                       userAgent:[WPUserAgent wordPressUserAgent]
-                                                                       localeKey:[WordPressComRestApi LocaleKeyDefault]];
-            [_wordPressComRestApi setInvalidTokenHandler:^{
-                [weakSelf setAuthToken:nil];
-                [WordPressAuthenticationManager showSigninForWPComFixingAuthToken];
-                if (weakSelf.isDefaultWordPressComAccount) {
-                    // At the time of writing, there is an implicit assumption on what the object parameter value means.
-                    // For example, the WordPressAppDelegate.handleDefaultAccountChangedNotification(_:) subscriber inspects the object parameter to decide whether the notification was sent as a result of a login.
-                    // If the object is non-nil, then the method considers the source a login.
-                    //
-                    // The code path in which we are is that of an invalid token, and that's neither a login nor a logout, it's more appropriate to consider it a logout.
-                    // That's because if the token is invalid the app will soon received errors from the API and it's therefore better to force the user to login again.
-                    [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
-                }
-            }];
-        } else {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [WordPressAuthenticationManager showSigninForWPComFixingAuthToken];
-            });
-        }
-    }
-    return _wordPressComRestApi;
-
-}
+//- (WordPressComRestApi *)wordPressComRestApi
+//{
+//    if (!_wordPressComRestApi) {
+//        if (self.authToken.length > 0) {
+//            __weak __typeof(self) weakSelf = self;
+//            _wordPressComRestApi = [WordPressComRestApi defaultApiWithOAuthToken:self.authToken
+//                                                                       userAgent:[WPUserAgent wordPressUserAgent]
+//                                                                       localeKey:[WordPressComRestApi LocaleKeyDefault]];
+//            [_wordPressComRestApi setInvalidTokenHandler:^{
+//                [weakSelf setAuthToken:nil];
+//                [WordPressAuthenticationManager showSigninForWPComFixingAuthToken];
+//                if (weakSelf.isDefaultWordPressComAccount) {
+//                    // At the time of writing, there is an implicit assumption on what the object parameter value means.
+//                    // For example, the WordPressAppDelegate.handleDefaultAccountChangedNotification(_:) subscriber inspects the object parameter to decide whether the notification was sent as a result of a login.
+//                    // If the object is non-nil, then the method considers the source a login.
+//                    //
+//                    // The code path in which we are is that of an invalid token, and that's neither a login nor a logout, it's more appropriate to consider it a logout.
+//                    // That's because if the token is invalid the app will soon received errors from the API and it's therefore better to force the user to login again.
+//                    [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
+//                }
+//            }];
+//        } else {
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                [WordPressAuthenticationManager showSigninForWPComFixingAuthToken];
+//            });
+//        }
+//    }
+//    return _wordPressComRestApi;
+//
+//}
 
 @end
