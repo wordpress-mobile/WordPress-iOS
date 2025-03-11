@@ -1,6 +1,7 @@
 import Foundation
 import WordPressData
 import WordPressKit
+import WordPressShared
 
 /// Notes:
 ///

@@ -1,5 +1,5 @@
-public class AsyncOperation: Operation, @unchecked Sendable {
-    enum State: String {
+open class AsyncOperation: Operation, @unchecked Sendable {
+    public enum State: String {
         case isReady, isExecuting, isFinished
     }
 
@@ -7,7 +7,7 @@ public class AsyncOperation: Operation, @unchecked Sendable {
         return true
     }
 
-    var state = State.isReady {
+    public var state = State.isReady {
         willSet {
             willChangeValue(forKey: state.rawValue)
             willChangeValue(forKey: newValue.rawValue)
