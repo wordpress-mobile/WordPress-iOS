@@ -2,6 +2,7 @@ import UIKit
 import Combine
 import AutomatticTracks
 import AutomatticEncryptedLogs
+import WordPressData
 
 /// A wrapper around the logging stack – provides shared initialization and configuration for Tracks Crash and Event Logging
 struct WPLoggingStack {
@@ -38,9 +39,9 @@ struct WPLoggingStack {
 }
 
 struct WPCrashLoggingDataProvider: CrashLoggingDataProvider {
-    private let contextManager: ContextManager
+    private let contextManager: CoreDataStackSwift
 
-    init(contextManager: ContextManager = .shared) {
+    init(contextManager: CoreDataStackSwift = ContextManager.shared) {
         self.contextManager = contextManager
     }
 

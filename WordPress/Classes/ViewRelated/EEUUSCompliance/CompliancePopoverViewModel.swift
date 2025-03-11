@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import WordPressData
 import WordPressUI
 
 class CompliancePopoverViewModel: ObservableObject {
@@ -13,12 +14,12 @@ class CompliancePopoverViewModel: ObservableObject {
 
     private let analyticsTracker: PrivacySettingsAnalyticsTracking
     private let defaults: UserDefaults
-    private let contextManager: ContextManager
+    private let contextManager: CoreDataStackSwift
 
     // MARK: - Init
 
     init(defaults: UserDefaults,
-         contextManager: ContextManager,
+         contextManager: CoreDataStackSwift,
          analyticsTracker: PrivacySettingsAnalyticsTracking = PrivacySettingsAnalyticsTracker()) {
         self.defaults = defaults
         self.analyticsTracker = analyticsTracker

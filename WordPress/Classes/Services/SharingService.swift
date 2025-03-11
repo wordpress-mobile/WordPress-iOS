@@ -12,11 +12,12 @@ import WordPressKit
     private let coreDataStack: CoreDataStackSwift
 
     /// The initialiser for Objective-C code.
-    ///
-    /// Using `ContextManager` as the argument becuase `CoreDataStackSwift` is not accessible from Objective-C code.
     @objc
-    init(contextManager: ContextManager) {
-        self.coreDataStack = contextManager
+    init(contextManager: CoreDataStack) {
+        guard let typeCastStack = contextManager as? CoreDataStackSwift else {
+            fatalError("Expected a CoreDataStackSwift-conforming type even though this initializer is marked @objc.")
+        }
+        self.coreDataStack = typeCastStack
     }
 
     init(coreDataStack: CoreDataStackSwift) {

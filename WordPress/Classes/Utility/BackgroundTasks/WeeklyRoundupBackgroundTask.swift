@@ -330,14 +330,14 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
     private let eventTracker: NotificationEventTracker
     let runDateComponents: DateComponents
     let notificationScheduler: WeeklyRoundupNotificationScheduler
-    let coreDataStack: ContextManager
+    let coreDataStack: CoreDataStackSwift
 
     init(
         eventTracker: NotificationEventTracker = NotificationEventTracker(),
         runDateComponents: DateComponents? = nil,
         staticNotificationDateComponents: DateComponents? = nil,
         store: Store = Store(),
-        coreDataStack: ContextManager = .shared
+        coreDataStack: CoreDataStackSwift = ContextManager.shared
     ) {
         self.coreDataStack = coreDataStack
         self.eventTracker = eventTracker

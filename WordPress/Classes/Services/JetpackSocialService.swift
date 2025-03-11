@@ -19,8 +19,11 @@ import WordPressKit
 
     /// Init method for Objective-C.
     ///
-    @objc init(contextManager: ContextManager) {
-        self.coreDataStack = contextManager
+    @objc init(contextManager: CoreDataStack) {
+        guard let typeCastStack = contextManager as? CoreDataStackSwift else {
+            fatalError("Expected a CoreDataStackSwift-conforming type even though this initializer is marked @objc.")
+        }
+        self.coreDataStack = typeCastStack
     }
 
     init(coreDataStack: CoreDataStackSwift = ContextManager.shared) {

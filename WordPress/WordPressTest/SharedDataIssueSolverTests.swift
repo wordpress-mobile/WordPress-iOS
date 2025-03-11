@@ -129,9 +129,14 @@ private extension SharedDataIssueSolverTests {
 final class CoreDataStackMock: CoreDataStack {
     private(set) var mainContext: NSManagedObjectContext
 
+    private static var shared: CoreDataStack?
+
     init(mainContext: NSManagedObjectContext) {
         self.mainContext = mainContext
+        CoreDataStackMock.shared = self
     }
+
+    static func sharedInstance() -> any CoreDataStack { CoreDataStackMock.shared! }
 
     func newDerivedContext() -> NSManagedObjectContext {
         return mainContext

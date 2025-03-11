@@ -37,7 +37,9 @@ struct UITestConfigurator {
 
     private static func resetEverything() {
         // Remove CoreData DB
-        ContextManager.shared.resetEverything()
+        //
+        // We can afford to force cast here because we are in a test-specific code
+        (ContextManager.shared as! ContextManager).resetEverything()
 
         // Clear user defaults.
         for key in UserDefaults.standard.dictionaryRepresentation().keys {

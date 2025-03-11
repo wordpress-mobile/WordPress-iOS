@@ -7,6 +7,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, readonly, strong) NSManagedObjectContext *mainContext;
 
++ (id<CoreDataStack>)sharedInstance;
+
 - (NSManagedObjectContext *const)newDerivedContext DEPRECATED_MSG_ATTRIBUTE("Use `performAndSave` instead");
 
 - (void)saveContextAndWait:(NSManagedObjectContext *)context;

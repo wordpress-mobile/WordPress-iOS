@@ -18,7 +18,7 @@ extension Blog {
 
     static func createRestApiBlog(
         with details: WpApiApplicationPasswordDetails,
-        in contextManager: ContextManager,
+        in contextManager: CoreDataStackSwift,
         using keychainImplementation: KeychainAccessible = KeychainUtils()
     ) async throws -> String {
         try await contextManager.performAndSave { context in

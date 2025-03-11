@@ -1,6 +1,7 @@
 import UIKit
 import SwiftUI
 import WordPressAuthenticator
+import WordPressData
 
 /// Manages the site creation flows.
 struct AddSiteController {
@@ -80,7 +81,7 @@ struct AddSiteMenuViewModel {
         }
     }
 
-    init(context: ContextManager = .shared, onSelection: @escaping (Selection) -> Void) {
+    init(context: CoreDataStackSwift = ContextManager.shared, onSelection: @escaping (Selection) -> Void) {
         let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: context.mainContext)
         let canAddSelfHostedSite = AppConfiguration.showAddSelfHostedSiteButton
 

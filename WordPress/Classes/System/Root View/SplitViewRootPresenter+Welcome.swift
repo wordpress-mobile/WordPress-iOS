@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 import SwiftUI
+import WordPressData
 
 class WelcomeSplitViewContent: SplitViewDisplayable {
     let supplementary: UINavigationController
@@ -9,7 +10,7 @@ class WelcomeSplitViewContent: SplitViewDisplayable {
     init(addSite: @escaping (AddSiteMenuViewModel.Selection) -> Void) {
         supplementary = UINavigationController(rootViewController: UnifiedPrologueViewController())
 
-        let addSiteViewModel = AddSiteMenuViewModel(context: .shared, onSelection: addSite)
+        let addSiteViewModel = AddSiteMenuViewModel(context: ContextManager.shared, onSelection: addSite)
         let noSitesViewModel = NoSitesViewModel(appUIType: JetpackFeaturesRemovalCoordinator.currentAppUIType, account: nil)
         let noSiteView = NoSitesView(addSiteViewModel: addSiteViewModel, viewModel: noSitesViewModel)
         let noSitesVC = UIHostingController(rootView: noSiteView)

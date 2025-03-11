@@ -288,7 +288,7 @@ extension ContextManager {
     /// Tests purpose only
     nonisolated(unsafe) static var overrideInstance: ContextManager?
 
-    @objc class func sharedInstance() -> ContextManager {
+    @objc public class func sharedInstance() -> CoreDataStack {
         if let overrideInstance {
             return overrideInstance
         }
@@ -296,8 +296,8 @@ extension ContextManager {
         return ContextManager.internalSharedInstance
     }
 
-    public static var shared: ContextManager {
-        return sharedInstance()
+    static var shared: CoreDataStackSwift {
+        return sharedInstance() as! CoreDataStackSwift
     }
 }
 

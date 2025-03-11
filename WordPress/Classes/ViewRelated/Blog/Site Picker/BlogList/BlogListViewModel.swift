@@ -1,5 +1,6 @@
 import CoreData
 import SwiftUI
+import WordPressData
 import WordPressShared
 
 final class BlogListViewModel: NSObject, ObservableObject {
@@ -15,7 +16,7 @@ final class BlogListViewModel: NSObject, ObservableObject {
     private let configuration: BlogListConfiguration
     private var rawSites: [Blog] = []
     private let fetchedResultsController: NSFetchedResultsController<Blog>
-    private let contextManager: ContextManager
+    private let contextManager: CoreDataStackSwift
     private let blogService: BlogService
     private let eventTracker: EventTracker
     private let recentSitesService: RecentSitesService
@@ -24,7 +25,7 @@ final class BlogListViewModel: NSObject, ObservableObject {
     var onAddSiteTapped: (AddSiteMenuViewModel.Selection) -> Void = { _ in }
 
     init(configuration: BlogListConfiguration = .defaultConfig,
-         contextManager: ContextManager = ContextManager.shared,
+         contextManager: CoreDataStackSwift = ContextManager.shared,
          recentSitesService: RecentSitesService = RecentSitesService(),
          eventTracker: EventTracker = DefaultEventTracker()) {
         self.configuration = configuration
