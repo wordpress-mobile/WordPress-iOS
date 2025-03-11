@@ -64,7 +64,13 @@ let package = Package(
             .product(name: "ScreenObject", package: "ScreenObject"),
             .product(name: "XCUITestHelpers", package: "ScreenObject"),
         ], swiftSettings: [.swiftLanguageMode(.v5)]),
-        .target(name: "WordPressDataObjC"),
+        .target(
+            name: "WordPressDataObjC",
+            dependencies: [
+                .target(name: "WordPressShared"),
+                .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
+            ]
+        ),
         .target(
             name: "WordPressData",
             dependencies: [
