@@ -69,7 +69,9 @@ let package = Package(
             name: "WordPressData",
             dependencies: [
                 .target(name: "WordPressDataObjC"),
-                .target(name: "WordPressSharedObjC")
+                .target(name: "WordPressSharedObjC"),
+                .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
+                .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack")
             ]
         ),
         .target(name: "WordPressFlux", swiftSettings: [.swiftLanguageMode(.v5)]),
