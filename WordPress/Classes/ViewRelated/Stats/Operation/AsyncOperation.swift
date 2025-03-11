@@ -1,9 +1,9 @@
-class AsyncOperation: Operation, @unchecked Sendable {
+public class AsyncOperation: Operation, @unchecked Sendable {
     enum State: String {
         case isReady, isExecuting, isFinished
     }
 
-    override var isAsynchronous: Bool {
+    public override var isAsynchronous: Bool {
         return true
     }
 
@@ -18,15 +18,15 @@ class AsyncOperation: Operation, @unchecked Sendable {
         }
     }
 
-    override var isExecuting: Bool {
+    public override var isExecuting: Bool {
         return state == .isExecuting
     }
 
-    override var isFinished: Bool {
+    public override var isFinished: Bool {
         return state == .isFinished
     }
 
-    override func start() {
+    public override func start() {
         if isCancelled {
             state = .isFinished
             return
