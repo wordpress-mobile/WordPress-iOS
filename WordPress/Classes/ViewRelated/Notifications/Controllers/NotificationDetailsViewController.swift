@@ -855,56 +855,6 @@ private extension NotificationDetailsViewController {
         actionsService.unfollowSiteWithBlock(block)
         WPAppAnalytics.track(.notificationsSiteUnfollowAction, withBlogID: block.metaSiteID)
     }
-
-    func updateCommentWithBlock(_ block: FormattableCommentContent, content: String) {
-        guard let editCommentAction = block.action(id: EditCommentAction.actionIdentifier()) else {
-            return
-        }
-
-        let generator = UINotificationFeedbackGenerator()
-        generator.prepare()
-        generator.notificationOccurred(.success)
-
-        let actionContext = ActionContext(block: block, content: content) { [weak self] (request, success) in
-            guard success == false else {
-                CommentAnalytics.trackCommentEdited(block: block)
-                return
-            }
-
-            generator.notificationOccurred(.error)
-            self?.displayCommentUpdateErrorWithBlock(block, content: content)
-        }
-
-        editCommentAction.execute(context: actionContext)
-    }
-}
-
-// MARK: - Editing Comments
-//
-private extension NotificationDetailsViewController {
-
-    func updateComment(with commentContent: FormattableCommentContent, content: String) {
-        self.updateCommentWithBlock(commentContent, content: content)
-    }
-
-    func displayCommentUpdateErrorWithBlock(_ block: FormattableCommentContent, content: String) {
-        let message     = NSLocalizedString("There has been an unexpected error while updating your comment",
-                                            comment: "Displayed whenever a Comment Update Fails")
-        let cancelTitle = NSLocalizedString("Give Up", comment: "Cancel")
-        let retryTitle  = NSLocalizedString("Try Again", comment: "Retry")
-
-        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        alertController.addCancelActionWithTitle(cancelTitle) { action in
-            block.textOverride = nil
-            self.refreshInterface()
-        }
-        alertController.addDefaultActionWithTitle(retryTitle) { action in
-            self.updateComment(with: block, content: content)
-        }
-
-        // Note: This viewController might not be visible anymore
-        alertController.presentFromRootViewController()
-    }
 }
 
 // MARK: - Milestone notifications
