@@ -358,7 +358,6 @@ extension NotificationDetailsViewController {
         let cellClassNames: [NoteBlockTableViewCell.Type] = [
             NoteBlockHeaderTableViewCell.self,
             NoteBlockTextTableViewCell.self,
-            NoteBlockCommentTableViewCell.self,
             NoteBlockImageTableViewCell.self,
             NoteBlockUserTableViewCell.self,
             NoteBlockButtonTableViewCell.self
@@ -479,8 +478,6 @@ private extension NotificationDetailsViewController {
             fallthrough
         case .text:
             return NoteBlockTextTableViewCell.reuseIdentifier()
-        case .comment:
-            return NoteBlockCommentTableViewCell.reuseIdentifier()
         case .image:
             return NoteBlockImageTableViewCell.reuseIdentifier()
         case .user:
@@ -488,7 +485,7 @@ private extension NotificationDetailsViewController {
         case .button:
             return NoteBlockButtonTableViewCell.reuseIdentifier()
         default:
-            assertionFailure("Unmanaged group kind: \(blockGroup.kind)")
+            wpAssertionFailure("Unmanaged group kind", userInfo: ["kind": "\(blockGroup.kind)"])
             return NoteBlockTextTableViewCell.reuseIdentifier()
         }
     }
@@ -512,8 +509,6 @@ private extension NotificationDetailsViewController {
             setupFooterCell(cell, blockGroup: blockGroup)
         case let cell as NoteBlockUserTableViewCell:
             setupUserCell(cell, blockGroup: blockGroup)
-        case let cell as NoteBlockCommentTableViewCell:
-            setupCommentCell(cell, blockGroup: blockGroup, at: indexPath)
         case let cell as NoteBlockImageTableViewCell:
             setupImageCell(cell, blockGroup: blockGroup)
         case let cell as NoteBlockTextTableViewCell:
@@ -580,76 +575,6 @@ private extension NotificationDetailsViewController {
 
         cell.onUnfollowClick = { [weak self] in
             self?.unfollowSiteWithBlock(userBlock)
-        }
-
-        // Download the Gravatar
-        let mediaURL = userBlock.media.first?.mediaURL
-        cell.downloadGravatarWithURL(mediaURL)
-    }
-
-    func setupCommentCell(_ cell: NoteBlockCommentTableViewCell, blockGroup: FormattableContentGroup, at indexPath: IndexPath) {
-        // Note:
-        // The main reason why it's a very good idea *not* to reuse NoteBlockHeaderTableViewCell, just to display the
-        // gravatar, is because we're implementing a custom behavior whenever the user approves/ unapproves the comment.
-        //
-        //  -   Font colors are updated.
-        //  -   A left separator is displayed.
-        //
-        guard let commentBlock: FormattableCommentContent = blockGroup.blockOfKind(.comment) else {
-            assertionFailure("Missing Comment Block for Notification [\(note.notificationId)]")
-            return
-        }
-
-        guard let userBlock: FormattableUserContent = blockGroup.blockOfKind(.user) else {
-            assertionFailure("Missing User Block for Notification [\(note.notificationId)]")
-            return
-        }
-
-        // Merge the Attachments with their ranges: [NSRange: UIImage]
-        let mediaMap = mediaDownloader.imagesForUrls(commentBlock.imageUrls)
-        let mediaRanges = commentBlock.buildRangesToImagesMap(mediaMap)
-
-        let styles = RichTextContentStyles(key: "RichText-\(indexPath)")
-        let text = formatter.render(content: commentBlock, with: styles).stringByEmbeddingImageAttachments(mediaRanges)
-
-        // Setup: Properties
-        cell.name                   = userBlock.text
-        cell.timestamp              = (note.timestampAsDate as NSDate).mediumString()
-        cell.site                   = userBlock.metaTitlesHome ?? userBlock.metaLinksHome?.host
-        cell.attributedCommentText  = text.trimNewlines()
-        cell.isApproved             = commentBlock.isCommentApproved
-
-        // Add comment author's name to Reply placeholder.
-        let placeholderFormat = NSLocalizedString("Reply to %1$@",
-                                                  comment: "Placeholder text for replying to a comment. %1$@ is a placeholder for the comment author's name.")
-        replyTextView.placeholder = String(format: placeholderFormat, cell.name ?? String())
-
-        // Setup: Callbacks
-        cell.onUserClick = { [weak self] in
-            guard let homeURL = userBlock.metaLinksHome else {
-                return
-            }
-
-            self?.displayURL(homeURL)
-        }
-
-        cell.onUrlClick = { [weak self] url in
-            self?.displayURL(url as URL)
-        }
-
-        cell.onAttachmentClick = { [weak self] attachment in
-            guard let image = attachment.image else {
-                return
-            }
-            self?.router.routeTo(image)
-        }
-
-        cell.onTimeStampLongPress = { [weak self] in
-            guard let urlString = self?.note.url,
-            let url = URL(string: urlString) else {
-                return
-            }
-            UIAlertController.presentAlertAndCopyCommentURLToClipboard(url: url)
         }
 
         // Download the Gravatar
