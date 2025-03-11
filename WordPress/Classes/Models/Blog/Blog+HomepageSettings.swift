@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 
 enum HomepageType: String {
     case page

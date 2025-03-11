@@ -1,6 +1,6 @@
-import Foundation
 import CoreData
-import WordPressData
+import CocoaLumberjackSwift
+import Foundation
 
 /// CoreDataIterativeMigrator: Migrates through a series of models to allow for users to skip app versions without risk.
 ///

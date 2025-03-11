@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 
 /// An extension dedicated to looking up and returning blog objects
 public extension Blog {

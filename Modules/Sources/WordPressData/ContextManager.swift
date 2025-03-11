@@ -1,6 +1,6 @@
+import CocoaLumberjackSwift
 import CoreData
 import Foundation
-import WordPressData
 import WordPressShared
 
 /// A constant representing the current version of the data model.
@@ -57,13 +57,18 @@ public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
         super.init()
 
         mainContext.automaticallyMergesChangesFromParent = true
-        mainContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-        NullBlogPropertySanitizer(context: mainContext).sanitize()
+        // FIXME: Temporary disabled to move on with migration. Gives error:
+        // Reference to var 'NSMergeByPropertyObjectTrumpMergePolicy' is not concurrency-safe because it involves shared mutable state
+        // mainContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        // FIXME: We still need to migrate this. Too many dependencies on the models
+        // NullBlogPropertySanitizer(context: mainContext).sanitize()
     }
 
     public func newDerivedContext() -> NSManagedObjectContext {
         let context = persistentContainer.newBackgroundContext()
-        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        // FIXME: Temporary disabled to move on with migration. Gives error:
+        // Reference to var 'NSMergeByPropertyObjectTrumpMergePolicy' is not concurrency-safe because it involves shared mutable state
+        // context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         return context
     }
 
@@ -228,13 +233,15 @@ private extension ContextManager {
             fatalError("Can't create object model named \(modelName) at \(modelFileURL)")
         }
 
-        let startupEvent = SentryStartupEvent()
+        // FIXME: Discarding Sentry in the context of this migration 1/5
+        // let startupEvent = SentryStartupEvent()
 
         do {
             try migrateDataModelsIfNecessary(storeURL: storeURL, objectModel: objectModel)
         } catch {
             DDLogError("Unable to migrate store: \(error)")
-            startupEvent.add(error: error as NSError)
+            // FIXME: Discarding Sentry in the context of this migration 2/5
+            // startupEvent.add(error: error as NSError)
         }
 
         let storeDescription = NSPersistentStoreDescription(url: storeURL)
@@ -248,16 +255,19 @@ private extension ContextManager {
             }
 
             DDLogError("Error opening the database. \(error)\nDeleting the file and trying again")
-            startupEvent.add(error: error)
+            // FIXME: Discarding Sentry in the context of this migration 3/5
+            // startupEvent.add(error: error)
 
             // make a backup of the old database
             do {
                 try CoreDataIterativeMigrator.backupDatabase(at: storeURL)
             } catch {
-                startupEvent.add(error: error)
+                // FIXME: Discarding Sentry in the context of this migration 4/5
+                // startupEvent.add(error: error)
             }
 
-            startupEvent.send(title: "Can't initialize Core Data stack")
+            // FIXME: Discarding Sentry in the context of this migration 5/5
+            // startupEvent.send(title: "Can't initialize Core Data stack")
             objc_exception_throw(
                 NSException(
                     name: NSExceptionName(rawValue: "Can't initialize Core Data stack"),
@@ -284,7 +294,7 @@ extension ContextManager {
         return ContextManager.internalSharedInstance
     }
 
-    static var shared: ContextManager {
+    public static var shared: ContextManager {
         return sharedInstance()
     }
 }

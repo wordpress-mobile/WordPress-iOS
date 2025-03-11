@@ -1,6 +1,6 @@
 import Foundation
 import CoreData
-import WordPressData
+import CocoaLumberjackSwift
 import WordPressShared
 
 // MARK: - NSManagedObject Default entityName Helper
@@ -12,7 +12,7 @@ extension NSManagedObject {
     ///
     /// Note: entity().name returns nil as per iOS 10, in Unit Testing Targets. Awesome.
     ///
-    @objc class func entityName() -> String {
+    @objc public class func entityName() -> String {
         return entity().name ?? classNameWithoutNamespaces()
     }
 
@@ -89,7 +89,8 @@ extension NSManagedObjectContext {
     ///
     /// - Parameter predicate: Defines the conditions that any given object should meet.
     ///
-    func firstObject<T: NSManagedObject>(ofType type: T.Type, matching predicate: NSPredicate) -> T? {
+    // FIXME: Might be able to return internal after Role is migrated
+    public func firstObject<T: NSManagedObject>(ofType type: T.Type, matching predicate: NSPredicate) -> T? {
         let request = T.safeFetchRequest()
         request.predicate = predicate
         request.fetchLimit = 1
@@ -141,7 +142,8 @@ extension NSManagedObjectContext {
             objects = try fetch(request) as? [T]
         } catch {
             DDLogError("Error loading Objects [\(String(describing: T.entityName))")
-            wpAssertionFailure("CoreData.loadObjects failed", userInfo: ["error": "\(error)"])
+            // FIXME: Enabling this will require adding dependencies such as Tracks through the chain...
+            // wpAssertionFailure("CoreData.loadObjects failed", userInfo: ["error": "\(error)"])
         }
 
         return objects ?? []
@@ -192,7 +194,7 @@ extension ContextManager.ContextManagerError: LocalizedError, CustomDebugStringC
     }
 }
 
-extension CoreDataStack {
+public extension CoreDataStack {
     /// Perform a query using the `mainContext` and return the result.
     ///
     /// - Warning: Do not return `NSManagedObject` instances from the closure.

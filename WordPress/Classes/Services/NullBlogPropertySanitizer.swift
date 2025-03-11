@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 
 /// Delete invalid rows in the database whose required blog properties are NULL
 ///

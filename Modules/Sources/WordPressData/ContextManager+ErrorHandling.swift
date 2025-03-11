@@ -1,4 +1,5 @@
 import CoreData
+import CocoaLumberjackSwift
 
 // Imported from CoreData.CoreDataErrors
 private let coreDataKnownErrorCodes = [
