@@ -47,10 +47,6 @@ extension AppConstants {
         static let prompt = NSLocalizedString("appRatings.wordpress.prompt", value: "What do you think about WordPress?", comment: "This is the string we display when prompting the user to review the WordPress app")
     }
 
-    struct PostSignUpInterstitial {
-        static let welcomeTitleText = NSLocalizedString("Welcome to WordPress", comment: "Post Signup Interstitial Title Text for WordPress iOS")
-    }
-
     struct Settings {
         static let aboutTitle: String = NSLocalizedString("About WordPress", comment: "Link to About screen for WordPress for iOS")
         static let shareButtonTitle = NSLocalizedString("Share WordPress with a friend", comment: "Title for a button that recommends the app to others")
