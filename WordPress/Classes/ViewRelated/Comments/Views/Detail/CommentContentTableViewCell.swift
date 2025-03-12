@@ -47,6 +47,7 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
     private var effectiveDepth: Int = 0 {
         didSet {
             guard oldValue != effectiveDepth else { return }
+            highlightBarLeadingSpacingConstraint.constant = effectiveDepth == 0 ? 0 : (Self.depthInset * CGFloat(effectiveDepth))
             containerStackLeadingConstraint?.constant = (Self.depthInset * CGFloat(effectiveDepth)) + 16
             configureDepthSeparators(depth: effectiveDepth)
         }
@@ -59,7 +60,7 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
     @objc var isEmphasized: Bool = false {
         didSet {
             guard oldValue != isEmphasized else { return }
-            backgroundColor = isEmphasized ? Style.highlightedBackgroundColor : nil
+            setHighlightedBackgroundViewHidden(!isEmphasized)
             highlightBarView.backgroundColor = isEmphasized ? Style.highlightedBarBackgroundColor : .clear
         }
     }
@@ -84,6 +85,9 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
     @IBOutlet private weak var likeButton: UIButton!
 
     @IBOutlet private weak var highlightBarView: UIView!
+    @IBOutlet private weak var highlightBarLeadingSpacingConstraint: NSLayoutConstraint!
+
+    private var highlightedBackgroundView: UIView?
 
     // MARK: Private Properties
 
@@ -228,6 +232,23 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
                 return separatorView
             }()
             separatorView.isHidden = false
+        }
+    }
+
+    private func setHighlightedBackgroundViewHidden(_ isHidden: Bool) {
+        if isHidden {
+            highlightedBackgroundView?.isHidden = true
+        } else {
+            if let view = highlightedBackgroundView {
+                view.isHidden = false
+            } else {
+                let backgroundView = UIView()
+                backgroundView.backgroundColor = Style.highlightedBackgroundColor
+                contentView.insertSubview(backgroundView, belowSubview: containerStackView)
+                backgroundView.pinEdges([.vertical, .trailing], to: contentView)
+                backgroundView.leadingAnchor.constraint(equalTo: containerStackView.leadingAnchor, constant: -16).isActive = true
+                highlightedBackgroundView = backgroundView
+            }
         }
     }
 }
