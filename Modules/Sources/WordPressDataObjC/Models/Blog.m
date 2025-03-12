@@ -3,9 +3,9 @@
 #import "AccountService.h"
 @import WordPressDataObjC;
 // FIXME: These imports break the compilation and we've reached the point where they're so many it's time to address them, or at least try...
-#import "Constants.h"
-#import "WPUserAgent.h"
-#import "WordPress-Swift.h"
+//#import "Constants.h"
+//#import "WPUserAgent.h"
+//#import "WordPress-Swift.h"
 @import SFHFKeychainUtils;
 
 @import NSObject_SafeExpectations;
@@ -123,8 +123,9 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
         [self deleteApplicationToken];
     }
 
-    [_xmlrpcApi invalidateAndCancelTasks];
-    [_selfHostedSiteRestApi invalidateAndCancelTasks];
+    // FIXME:
+//    [_xmlrpcApi invalidateAndCancelTasks];
+//    [_selfHostedSiteRestApi invalidateAndCancelTasks];
 
     // Remove the self-hosted site cookies from the shared cookie storage.
     if (self.account == nil && self.url != nil) {
@@ -574,9 +575,9 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
             return [self supportsSharing];
         case BlogFeatureOAuth2Login:
             return [self isHostedAtWPcom];
-        case BlogFeatureMentions:
+        case BlogFeatureMentions: // TODO: is this used?
             return [self isAccessibleThroughWPCom];
-        case BlogFeatureXposts:
+        case BlogFeatureXposts: // TODO: is this used?
             return [self isAccessibleThroughWPCom];
         case BlogFeatureReblog:
         case BlogFeaturePlans:
@@ -898,36 +899,39 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 
 #pragma mark - api accessor
 
-- (WordPressOrgXMLRPCApi *)xmlrpcApi
-{
-    NSURL *xmlRPCEndpoint = [NSURL URLWithString:self.xmlrpc];
-    if (_xmlrpcApi == nil) {
-        if (xmlRPCEndpoint != nil) {
-        _xmlrpcApi = [[WordPressOrgXMLRPCApi alloc] initWithEndpoint:xmlRPCEndpoint
-                                                                   userAgent:[WPUserAgent wordPressUserAgent]];
-        }
-    }
-    return _xmlrpcApi;
-}
-
-- (WordPressOrgRestApi *)selfHostedSiteRestApi
-{
-    if (_selfHostedSiteRestApi == nil) {
-        _selfHostedSiteRestApi = self.account == nil ? [[WordPressOrgRestApi alloc] initWithBlog:self] : nil;
-    }
-    return _selfHostedSiteRestApi;
-}
-
-- (WordPressComRestApi *)wordPressComRestApi
-{
-    if (self.account) {
-        return self.account.wordPressComRestApi;
-    }
-    return nil;
-}
+// FIXME:
+//- (WordPressOrgXMLRPCApi *)xmlrpcApi
+//{
+//    NSURL *xmlRPCEndpoint = [NSURL URLWithString:self.xmlrpc];
+//    if (_xmlrpcApi == nil) {
+//        if (xmlRPCEndpoint != nil) {
+//        _xmlrpcApi = [[WordPressOrgXMLRPCApi alloc] initWithEndpoint:xmlRPCEndpoint
+//                                                                   userAgent:[WPUserAgent wordPressUserAgent]];
+//        }
+//    }
+//    return _xmlrpcApi;
+//}
+//
+//- (WordPressOrgRestApi *)selfHostedSiteRestApi
+//{
+//    if (_selfHostedSiteRestApi == nil) {
+//        _selfHostedSiteRestApi = self.account == nil ? [[WordPressOrgRestApi alloc] initWithBlog:self] : nil;
+//    }
+//    return _selfHostedSiteRestApi;
+//}
+//
+//- (WordPressComRestApi *)wordPressComRestApi
+//{
+//    if (self.account) {
+//        return self.account.wordPressComRestApi;
+//    }
+//    return nil;
+//}
 
 - (BOOL)isAccessibleThroughWPCom {
-    return self.wordPressComRestApi != nil;
+    // FIXME:
+    // return self.wordPressComRestApi != nil;
+    return YES;
 }
 
 - (BOOL)supportsRestApi {
