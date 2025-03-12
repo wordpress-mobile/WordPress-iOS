@@ -67,6 +67,7 @@ let package = Package(
             name: "SFHFKeychainUtils",
             cSettings: [.unsafeFlags(["-fno-objc-arc"])]
         ),
+        .target(name: "TextBundle"),
         .target(name: "UITestsFoundation", dependencies: [
             .product(name: "ScreenObject", package: "ScreenObject"),
             .product(name: "XCUITestHelpers", package: "ScreenObject"),

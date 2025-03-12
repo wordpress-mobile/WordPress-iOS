@@ -418,12 +418,9 @@
 		433840C722C2BA5B00CB13F8 /* AppImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 433840C622C2BA5B00CB13F8 /* AppImages.xcassets */; };
 		433840C822C2BA6300CB13F8 /* AppImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 433840C622C2BA5B00CB13F8 /* AppImages.xcassets */; };
 		433840C922C2BA6400CB13F8 /* AppImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 433840C622C2BA5B00CB13F8 /* AppImages.xcassets */; };
-		433ADC19223B2A0200ED9DE1 /* TextBundleWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 43EE90EE223B1028006A33E9 /* TextBundleWrapper.m */; };
-		433ADC1A223B2A7D00ED9DE1 /* TextBundleWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 43EE90EE223B1028006A33E9 /* TextBundleWrapper.m */; };
 		436D55F02115CB6800CEAA33 /* RegisterDomainDetailsSectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D55EF2115CB6800CEAA33 /* RegisterDomainDetailsSectionTests.swift */; };
 		436D55F5211632B700CEAA33 /* RegisterDomainDetailsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D55F4211632B700CEAA33 /* RegisterDomainDetailsViewModelTests.swift */; };
 		436D5655212209D600CEAA33 /* RegisterDomainDetailsServiceProxyMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D5654212209D600CEAA33 /* RegisterDomainDetailsServiceProxyMock.swift */; };
-		43EE90EF223B1029006A33E9 /* TextBundleWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 43EE90EE223B1028006A33E9 /* TextBundleWrapper.m */; };
 		4629E4232440C8160002E15C /* GutenbergCoverUploadProcessorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4629E4222440C8160002E15C /* GutenbergCoverUploadProcessorTests.swift */; };
 		465F89F7263B690C00F4C950 /* wp-block-editor-v1-settings-success-NotThemeJSON.json in Resources */ = {isa = PBXBuildFile; fileRef = 465F89F6263B690C00F4C950 /* wp-block-editor-v1-settings-success-NotThemeJSON.json */; };
 		465F8A0A263B692600F4C950 /* wp-block-editor-v1-settings-success-ThemeJSON.json in Resources */ = {isa = PBXBuildFile; fileRef = 465F8A09263B692600F4C950 /* wp-block-editor-v1-settings-success-ThemeJSON.json */; };
@@ -847,7 +844,6 @@
 		806E53E427E01CFE0064315E /* DashboardStatsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E53E327E01CFE0064315E /* DashboardStatsViewModelTests.swift */; };
 		8070EB3E28D807CB005C6513 /* InMemoryUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8070EB3D28D807CB005C6513 /* InMemoryUserDefaults.swift */; };
 		809620D228E540D700940A5D /* UploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741E22441FC0CC55007967AB /* UploadOperation.swift */; };
-		809620D328E540D700940A5D /* TextBundleWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 43EE90EE223B1028006A33E9 /* TextBundleWrapper.m */; };
 		809620D428E540D700940A5D /* ShareNoticeConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EA3B87202A0462004F802D /* ShareNoticeConstants.swift */; };
 		809620D528E540D700940A5D /* WPStyleGuide+Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50248AE1C96FF6200AFBDED /* WPStyleGuide+Share.swift */; };
 		809620D628E540D700940A5D /* ShareExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CE41641E8D101A000CF5A4 /* ShareExtractor.swift */; };
@@ -885,7 +881,6 @@
 		8096211828E540D700940A5D /* WordPressShare.js in Resources */ = {isa = PBXBuildFile; fileRef = E1AFA8C21E8E34230004A323 /* WordPressShare.js */; };
 		8096211928E540D700940A5D /* ShareExtension.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 74F5CD371FE0646F00764E7C /* ShareExtension.storyboard */; };
 		8096212528E5411400940A5D /* JetpackShareExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 8096212328E540D700940A5D /* JetpackShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		8096213428E55C9400940A5D /* TextBundleWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 43EE90EE223B1028006A33E9 /* TextBundleWrapper.m */; };
 		8096213528E55C9400940A5D /* UINavigationController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AC1DA0200D0CC300973CAD /* UINavigationController+Extensions.swift */; };
 		8096213728E55C9400940A5D /* ShareTagsPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 747F88C0203778E000523C7C /* ShareTagsPickerViewController.swift */; };
 		8096213828E55C9400940A5D /* ShareCategoriesPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7414A140203CBADF005A7D9B /* ShareCategoriesPickerViewController.swift */; };
@@ -934,7 +929,6 @@
 		80C523AB29AE6C2200B1C14B /* BlazeCreateCampaignWebViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C523AA29AE6C2200B1C14B /* BlazeCreateCampaignWebViewModelTests.swift */; };
 		80EF9284280CFEB60064A971 /* DashboardPostsSyncManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF9283280CFEB60064A971 /* DashboardPostsSyncManagerTests.swift */; };
 		80F6D02328EE866A00953C1A /* RemoteNotificationActionParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7335AC5F21220D550012EF2D /* RemoteNotificationActionParser.swift */; };
-		80F6D03628EE866A00953C1A /* TextBundleWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 43EE90EE223B1028006A33E9 /* TextBundleWrapper.m */; };
 		80F6D03828EE866A00953C1A /* RichNotificationContentFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F6DD41212BA54700CE447D /* RichNotificationContentFormatter.swift */; };
 		80F6D03C28EE866A00953C1A /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7396FE65210F730600496D0D /* NotificationService.swift */; };
 		80F6D03D28EE866A00953C1A /* Tracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FA22821C99F6180016CA7C /* Tracks.swift */; };
@@ -2260,8 +2254,6 @@
 		436D55EF2115CB6800CEAA33 /* RegisterDomainDetailsSectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterDomainDetailsSectionTests.swift; sourceTree = "<group>"; };
 		436D55F4211632B700CEAA33 /* RegisterDomainDetailsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterDomainDetailsViewModelTests.swift; sourceTree = "<group>"; };
 		436D5654212209D600CEAA33 /* RegisterDomainDetailsServiceProxyMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterDomainDetailsServiceProxyMock.swift; sourceTree = "<group>"; };
-		43EE90ED223B1028006A33E9 /* TextBundleWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextBundleWrapper.h; sourceTree = "<group>"; };
-		43EE90EE223B1028006A33E9 /* TextBundleWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextBundleWrapper.m; sourceTree = "<group>"; };
 		4629E4222440C8160002E15C /* GutenbergCoverUploadProcessorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergCoverUploadProcessorTests.swift; sourceTree = "<group>"; };
 		465F89F6263B690C00F4C950 /* wp-block-editor-v1-settings-success-NotThemeJSON.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "wp-block-editor-v1-settings-success-NotThemeJSON.json"; sourceTree = "<group>"; };
 		465F8A09263B692600F4C950 /* wp-block-editor-v1-settings-success-ThemeJSON.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "wp-block-editor-v1-settings-success-ThemeJSON.json"; sourceTree = "<group>"; };
@@ -5958,8 +5950,6 @@
 		B542DEBB1D119683004CA6AE /* Tools */ = {
 			isa = PBXGroup;
 			children = (
-				43EE90ED223B1028006A33E9 /* TextBundleWrapper.h */,
-				43EE90EE223B1028006A33E9 /* TextBundleWrapper.m */,
 				E1CE41641E8D101A000CF5A4 /* ShareExtractor.swift */,
 				7430C4481F97F23600E2673E /* ShareMediaFileManager.swift */,
 				74CEF0761F9AA0F700B729CA /* ShareExtensionSessionManager.swift */,
@@ -9160,7 +9150,6 @@
 			files = (
 				7335AC6021220D550012EF2D /* RemoteNotificationActionParser.swift in Sources */,
 				01CE500E290A88C100A9C2E0 /* TracksConfiguration.swift in Sources */,
-				433ADC1A223B2A7D00ED9DE1 /* TextBundleWrapper.m in Sources */,
 				73F6DD42212BA54700CE447D /* RichNotificationContentFormatter.swift in Sources */,
 				7396FE66210F730600496D0D /* NotificationService.swift in Sources */,
 				73E40D8921238BF50012ABA6 /* Tracks.swift in Sources */,
@@ -9175,7 +9164,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				433ADC19223B2A0200ED9DE1 /* TextBundleWrapper.m in Sources */,
 				74021A07202E1307006CC39F /* UINavigationController+Extensions.swift in Sources */,
 				747F88C2203778E000523C7C /* ShareTagsPickerViewController.swift in Sources */,
 				7414A142203CD066005A7D9B /* ShareCategoriesPickerViewController.swift in Sources */,
@@ -9219,7 +9207,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				809620D228E540D700940A5D /* UploadOperation.swift in Sources */,
-				809620D328E540D700940A5D /* TextBundleWrapper.m in Sources */,
 				809620D428E540D700940A5D /* ShareNoticeConstants.swift in Sources */,
 				809620D528E540D700940A5D /* WPStyleGuide+Share.swift in Sources */,
 				809620D628E540D700940A5D /* ShareExtractor.swift in Sources */,
@@ -9263,7 +9250,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8096213428E55C9400940A5D /* TextBundleWrapper.m in Sources */,
 				8096213528E55C9400940A5D /* UINavigationController+Extensions.swift in Sources */,
 				8096213728E55C9400940A5D /* ShareTagsPickerViewController.swift in Sources */,
 				8096213828E55C9400940A5D /* ShareCategoriesPickerViewController.swift in Sources */,
@@ -9312,7 +9298,6 @@
 				80F6D02328EE866A00953C1A /* RemoteNotificationActionParser.swift in Sources */,
 				0107E11428FD7FE300DE87DB /* AppConfiguration.swift in Sources */,
 				01CE5013290A890E00A9C2E0 /* TracksConfiguration.swift in Sources */,
-				80F6D03628EE866A00953C1A /* TextBundleWrapper.m in Sources */,
 				80F6D03828EE866A00953C1A /* RichNotificationContentFormatter.swift in Sources */,
 				80F6D03C28EE866A00953C1A /* NotificationService.swift in Sources */,
 				80F6D03D28EE866A00953C1A /* Tracks.swift in Sources */,
@@ -9342,7 +9327,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				741E224B1FC0E5C0007967AB /* UploadOperation.swift in Sources */,
-				43EE90EF223B1029006A33E9 /* TextBundleWrapper.m in Sources */,
 				74EA3B89202A0462004F802D /* ShareNoticeConstants.swift in Sources */,
 				B50248AF1C96FF6200AFBDED /* WPStyleGuide+Share.swift in Sources */,
 				E1CE41661E8D1026000CF5A4 /* ShareExtractor.swift in Sources */,
