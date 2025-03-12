@@ -157,6 +157,7 @@ enum XcodeSupport {
             "SFHFKeychainUtils",
             "WordPressShared",
             "WordPressUI",
+            "TextBundle",
             .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
             .product(name: "Down", package: "Down"),
             .product(name: "Gridicons", package: "Gridicons-iOS"),

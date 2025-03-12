@@ -5,6 +5,7 @@ import UIKit
 import ZIPFoundation
 import Down
 import Aztec
+import TextBundle
 
 /// A type that represents the information we can extract from an extension context
 ///
