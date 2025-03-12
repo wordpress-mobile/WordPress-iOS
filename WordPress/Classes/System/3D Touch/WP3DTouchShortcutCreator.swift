@@ -115,9 +115,7 @@ open class WP3DTouchShortcutCreator: NSObject {
                 visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.stats.rawValue])
             }
 
-            if AppConfiguration.allowsNewPostShortcut {
-                visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.newPost.rawValue])
-            }
+            visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.newPost.rawValue])
 
             strongSelf.shortcutsProvider.shortcutItems = visibleShortcutArray
         }
