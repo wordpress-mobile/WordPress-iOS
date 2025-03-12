@@ -209,27 +209,6 @@ class DataMigratorTests: XCTestCase {
     }
 }
 
-// MARK: - CoreDataStackMock
-
-private final class CoreDataStackMock: CoreDataStack {
-    var mainContext: NSManagedObjectContext
-
-    init(mainContext: NSManagedObjectContext) {
-        self.mainContext = mainContext
-    }
-
-    func newDerivedContext() -> NSManagedObjectContext {
-        return mainContext
-    }
-
-    func saveContextAndWait(_ context: NSManagedObjectContext) {}
-    func save(_ context: NSManagedObjectContext) {}
-    func save(_ context: NSManagedObjectContext, completion completionBlock: (() -> Void)?, on queue: DispatchQueue) {}
-
-    func performAndSave(_ aBlock: @escaping (NSManagedObjectContext) -> Void) {}
-    func performAndSave(_ aBlock: @escaping (NSManagedObjectContext) -> Void, completion: (() -> Void)?, on queue: DispatchQueue) {}
-}
-
 // MARK: - KeychainUtilsMock
 
 private final class KeychainUtilsMock: KeychainUtils {

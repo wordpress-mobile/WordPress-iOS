@@ -126,8 +126,8 @@ private extension SharedDataIssueSolverTests {
 
 // MARK: - CoreDataStackMock
 
-private final class CoreDataStackMock: CoreDataStack {
-    var mainContext: NSManagedObjectContext
+final class CoreDataStackMock: CoreDataStack {
+    private(set) var mainContext: NSManagedObjectContext
 
     init(mainContext: NSManagedObjectContext) {
         self.mainContext = mainContext
