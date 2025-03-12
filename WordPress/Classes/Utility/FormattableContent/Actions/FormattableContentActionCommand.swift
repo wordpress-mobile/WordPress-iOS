@@ -1,3 +1,5 @@
+import UIKit
+
 /// Abstracts the logic behind contextual actions that can be applied to FormattableContent.
 ///
 protocol FormattableContentActionCommand: CustomStringConvertible {

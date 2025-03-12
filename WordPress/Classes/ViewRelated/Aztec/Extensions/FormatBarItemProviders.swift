@@ -1,6 +1,7 @@
 import Foundation
 import Gridicons
 import Aztec
+import UIKit
 
 protocol FormatBarItemProvider {
     var iconImage: UIImage { get }

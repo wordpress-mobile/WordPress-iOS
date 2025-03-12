@@ -1,5 +1,5 @@
-
 import Foundation
+import UIKit
 
 extension FormattableContentKind {
     static let image = FormattableContentKind("image")
