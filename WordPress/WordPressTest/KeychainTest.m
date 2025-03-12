@@ -1,6 +1,7 @@
+// TODO: Port to yet to create SFHFKeychainUtils test package
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
-#import "SFHFKeychainUtils.h"
+@import SFHFKeychainUtils;
 
 @interface KeychainTest : XCTestCase
 {

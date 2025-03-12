@@ -3,6 +3,7 @@
 #import "WordPress-Swift.h"
 
 @import NSObject_SafeExpectations;
+@import SFHFKeychainUtils;
 
 static NSString * const BlogJetpackKeychainPrefix = @"jetpackblog-";
 

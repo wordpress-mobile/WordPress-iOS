@@ -5,6 +5,7 @@
 
 @import NSObject_SafeExpectations;
 @import NSURL_IDN;
+@import SFHFKeychainUtils;
 
 @implementation BlogToAccount {
     NSString *_defaultWpcomUsername;

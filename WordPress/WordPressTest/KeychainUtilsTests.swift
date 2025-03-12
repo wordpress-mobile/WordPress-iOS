@@ -1,3 +1,5 @@
+// TODO: Port to yet to create SFHFKeychainUtils test package
+import SFHFKeychainUtils
 import XCTest
 @testable import WordPress
 

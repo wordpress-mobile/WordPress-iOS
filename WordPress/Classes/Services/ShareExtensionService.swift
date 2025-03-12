@@ -1,4 +1,5 @@
 import Foundation
+import SFHFKeychainUtils
 
 @objc
 open class ShareExtensionService: NSObject {

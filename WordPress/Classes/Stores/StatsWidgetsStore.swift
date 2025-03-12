@@ -1,4 +1,5 @@
 import JetpackStatsWidgetsCore
+import SFHFKeychainUtils
 import WidgetKit
 
 class StatsWidgetsStore {
