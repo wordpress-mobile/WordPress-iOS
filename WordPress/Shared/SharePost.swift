@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 import MobileCoreServices
 
 /// A simple shared model to represent a Site

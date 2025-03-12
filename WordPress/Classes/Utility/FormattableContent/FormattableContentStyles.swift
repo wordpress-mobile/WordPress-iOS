@@ -1,3 +1,4 @@
+import UIKit
 
 /// Styles definition to be applied to a single FormattableContent entity.
 public protocol FormattableContentStyles {
