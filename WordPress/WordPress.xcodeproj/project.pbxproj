@@ -788,7 +788,6 @@
 		74CEF0781F9AA10100B729CA /* ShareExtensionSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74CEF0761F9AA0F700B729CA /* ShareExtensionSessionManager.swift */; };
 		74E44AD52031E83C00556205 /* ExtensionNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F89406202A1965008610FA /* ExtensionNotificationManager.swift */; };
 		74E44AD62031E85A00556205 /* ShareNoticeConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EA3B87202A0462004F802D /* ShareNoticeConstants.swift */; };
-		74E44AD92031ED2300556205 /* WordPressDraft-Lumberjack.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E44AD72031ED2300556205 /* WordPressDraft-Lumberjack.m */; };
 		74EA3B88202A0462004F802D /* ShareNoticeConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EA3B87202A0462004F802D /* ShareNoticeConstants.swift */; };
 		74EA3B89202A0462004F802D /* ShareNoticeConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EA3B87202A0462004F802D /* ShareNoticeConstants.swift */; };
 		74F5CD381FE0646F00764E7C /* ShareExtension.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 74F5CD371FE0646F00764E7C /* ShareExtension.storyboard */; };
@@ -857,7 +856,6 @@
 		809620DA28E540D700940A5D /* ShareCategoriesPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7414A140203CBADF005A7D9B /* ShareCategoriesPickerViewController.swift */; };
 		809620DC28E540D700940A5D /* ShareExtensionEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F5CD391FE0653500764E7C /* ShareExtensionEditorViewController.swift */; };
 		809620DD28E540D700940A5D /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FA868A1D10A41600AB5F7E /* UIImage+Extensions.swift */; };
-		809620DE28E540D700940A5D /* WordPressShare-Lumberjack.m in Sources */ = {isa = PBXBuildFile; fileRef = B50248BC1C96FFCC00AFBDED /* WordPressShare-Lumberjack.m */; };
 		809620DF28E540D700940A5D /* Extensions.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 74FA4BE31FBFA0660031EAAD /* Extensions.xcdatamodeld */; };
 		809620E228E540D700940A5D /* AppExtensionsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74FA2EE3200E8A6C001DDC13 /* AppExtensionsService.swift */; };
 		809620E328E540D700940A5D /* ExtensionNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F89406202A1965008610FA /* ExtensionNotificationManager.swift */; };
@@ -911,7 +909,6 @@
 		8096215728E55C9400940A5D /* RemotePost+ShareData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF6201226E8FB520061A1F8 /* RemotePost+ShareData.swift */; };
 		8096215928E55C9400940A5D /* RemoteBlog+Capabilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE39E17120CB117B00CABA05 /* RemoteBlog+Capabilities.swift */; };
 		8096215A28E55C9400940A5D /* ExtensionTransitioningManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74402F2B2005337D00A1D4A2 /* ExtensionTransitioningManager.swift */; };
-		8096215B28E55C9400940A5D /* WordPressDraft-Lumberjack.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E44AD72031ED2300556205 /* WordPressDraft-Lumberjack.m */; };
 		8096215C28E55C9400940A5D /* Tracks+DraftAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741AF3A4202F3E2A00C771A5 /* Tracks+DraftAction.swift */; };
 		8096215E28E55C9400940A5D /* WPStyleGuide+Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50248AE1C96FF6200AFBDED /* WPStyleGuide+Share.swift */; };
 		8096216128E55C9400940A5D /* ShareData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745EAF4920040B220066F415 /* ShareData.swift */; };
@@ -1037,7 +1034,6 @@
 		B030FE0A27EBF0BC000F6F5E /* SiteCreationIntentTracksEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B030FE0927EBF0BC000F6F5E /* SiteCreationIntentTracksEventTests.swift */; };
 		B09879792B5730BC0048256D /* StatsTrafficDatePickerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09879782B5730BC0048256D /* StatsTrafficDatePickerViewModelTests.swift */; };
 		B50248AF1C96FF6200AFBDED /* WPStyleGuide+Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50248AE1C96FF6200AFBDED /* WPStyleGuide+Share.swift */; };
-		B50248C21C96FFCC00AFBDED /* WordPressShare-Lumberjack.m in Sources */ = {isa = PBXBuildFile; fileRef = B50248BC1C96FFCC00AFBDED /* WordPressShare-Lumberjack.m */; };
 		B504F5F51C9C2BD000F8B1C6 /* Tracks+ShareExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B504F5F41C9C2BD000F8B1C6 /* Tracks+ShareExtension.swift */; };
 		B51535D41BBB16AA0029B84B /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B51535D31BBB16AA0029B84B /* Launch Screen.storyboard */; };
 		B532ACCF1DC3AB8E00FFFA57 /* NotificationSyncMediatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B532ACCE1DC3AB8E00FFFA57 /* NotificationSyncMediatorTests.swift */; };
@@ -2611,7 +2607,6 @@
 		74D6DA90202B651300A0E1FE /* WordPressDraftActionExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WordPressDraftActionExtension.entitlements; sourceTree = "<group>"; };
 		74D6DA91202B669100A0E1FE /* WordPressDraftActionExtension-Internal.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = "WordPressDraftActionExtension-Internal.entitlements"; sourceTree = "<group>"; };
 		74D6DA92202B669100A0E1FE /* WordPressDraftActionExtension-Alpha.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = "WordPressDraftActionExtension-Alpha.entitlements"; sourceTree = "<group>"; };
-		74E44AD72031ED2300556205 /* WordPressDraft-Lumberjack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WordPressDraft-Lumberjack.m"; sourceTree = "<group>"; };
 		74E44AD82031ED2300556205 /* WordPressDraftPrefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressDraftPrefix.pch; sourceTree = "<group>"; };
 		74EA3B87202A0462004F802D /* ShareNoticeConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareNoticeConstants.swift; sourceTree = "<group>"; };
 		74F5CD371FE0646F00764E7C /* ShareExtension.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ShareExtension.storyboard; sourceTree = "<group>"; };
@@ -2818,7 +2813,6 @@
 		B50248B91C96FFCC00AFBDED /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = WordPressShareExtension/Info.plist; sourceTree = SOURCE_ROOT; };
 		B50248BA1C96FFCC00AFBDED /* WordPressShare-Alpha.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "WordPressShare-Alpha.entitlements"; path = "WordPressShareExtension/WordPressShare-Alpha.entitlements"; sourceTree = SOURCE_ROOT; };
 		B50248BB1C96FFCC00AFBDED /* WordPressShare-Internal.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "WordPressShare-Internal.entitlements"; path = "WordPressShareExtension/WordPressShare-Internal.entitlements"; sourceTree = SOURCE_ROOT; };
-		B50248BC1C96FFCC00AFBDED /* WordPressShare-Lumberjack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "WordPressShare-Lumberjack.m"; path = "WordPressShareExtension/WordPressShare-Lumberjack.m"; sourceTree = SOURCE_ROOT; };
 		B50248BD1C96FFCC00AFBDED /* WordPressShare.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = WordPressShare.entitlements; path = WordPressShareExtension/WordPressShare.entitlements; sourceTree = SOURCE_ROOT; };
 		B50248BE1C96FFCC00AFBDED /* WordPressSharePrefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WordPressSharePrefix.pch; path = WordPressShareExtension/WordPressSharePrefix.pch; sourceTree = SOURCE_ROOT; };
 		B504F5F41C9C2BD000F8B1C6 /* Tracks+ShareExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Tracks+ShareExtension.swift"; sourceTree = SOURCE_ROOT; };
@@ -5500,7 +5494,6 @@
 				74D6DA90202B651300A0E1FE /* WordPressDraftActionExtension.entitlements */,
 				74D6DA92202B669100A0E1FE /* WordPressDraftActionExtension-Alpha.entitlements */,
 				74D6DA91202B669100A0E1FE /* WordPressDraftActionExtension-Internal.entitlements */,
-				74E44AD72031ED2300556205 /* WordPressDraft-Lumberjack.m */,
 				74E44AD82031ED2300556205 /* WordPressDraftPrefix.pch */,
 				4A690C172BA794C300A8E0C5 /* PrivacyInfo.xcprivacy */,
 			);
@@ -6100,7 +6093,6 @@
 				B50248BD1C96FFCC00AFBDED /* WordPressShare.entitlements */,
 				B50248BA1C96FFCC00AFBDED /* WordPressShare-Alpha.entitlements */,
 				B50248BB1C96FFCC00AFBDED /* WordPressShare-Internal.entitlements */,
-				B50248BC1C96FFCC00AFBDED /* WordPressShare-Lumberjack.m */,
 				B50248BE1C96FFCC00AFBDED /* WordPressSharePrefix.pch */,
 				4A690C202BA7974E00A8E0C5 /* PrivacyInfo.xcprivacy */,
 			);
@@ -9210,7 +9202,6 @@
 				CE39E17320CB117B00CABA05 /* RemoteBlog+Capabilities.swift in Sources */,
 				74021A0F202E1370006CC39F /* ExtensionTransitioningManager.swift in Sources */,
 				01CE5008290A88BD00A9C2E0 /* TracksConfiguration.swift in Sources */,
-				74E44AD92031ED2300556205 /* WordPressDraft-Lumberjack.m in Sources */,
 				741AF3A5202F3E2A00C771A5 /* Tracks+DraftAction.swift in Sources */,
 				74021A0B202E1330006CC39F /* WPStyleGuide+Share.swift in Sources */,
 				74021A16202E139A006CC39F /* ShareData.swift in Sources */,
@@ -9239,7 +9230,6 @@
 				809620DA28E540D700940A5D /* ShareCategoriesPickerViewController.swift in Sources */,
 				809620DC28E540D700940A5D /* ShareExtensionEditorViewController.swift in Sources */,
 				809620DD28E540D700940A5D /* UIImage+Extensions.swift in Sources */,
-				809620DE28E540D700940A5D /* WordPressShare-Lumberjack.m in Sources */,
 				809620DF28E540D700940A5D /* Extensions.xcdatamodeld in Sources */,
 				809620E228E540D700940A5D /* AppExtensionsService.swift in Sources */,
 				809620E328E540D700940A5D /* ExtensionNotificationManager.swift in Sources */,
@@ -9299,7 +9289,6 @@
 				8096215728E55C9400940A5D /* RemotePost+ShareData.swift in Sources */,
 				8096215928E55C9400940A5D /* RemoteBlog+Capabilities.swift in Sources */,
 				8096215A28E55C9400940A5D /* ExtensionTransitioningManager.swift in Sources */,
-				8096215B28E55C9400940A5D /* WordPressDraft-Lumberjack.m in Sources */,
 				8031F347292FF46200E8F95E /* ExtensionConfiguration.swift in Sources */,
 				01CE5014290A890E00A9C2E0 /* TracksConfiguration.swift in Sources */,
 				8096215C28E55C9400940A5D /* Tracks+DraftAction.swift in Sources */,
@@ -9364,7 +9353,6 @@
 				7414A141203CBAE0005A7D9B /* ShareCategoriesPickerViewController.swift in Sources */,
 				74F5CD3A1FE0653500764E7C /* ShareExtensionEditorViewController.swift in Sources */,
 				B5FA868C1D10A4C400AB5F7E /* UIImage+Extensions.swift in Sources */,
-				B50248C21C96FFCC00AFBDED /* WordPressShare-Lumberjack.m in Sources */,
 				74FA4BE61FBFA0660031EAAD /* Extensions.xcdatamodeld in Sources */,
 				74FA2EE4200E8A6C001DDC13 /* AppExtensionsService.swift in Sources */,
 				74F89407202A1965008610FA /* ExtensionNotificationManager.swift in Sources */,
