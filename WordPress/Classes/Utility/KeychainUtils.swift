@@ -1,3 +1,5 @@
+import SFHFKeychainUtils
+
 @objcMembers
 class KeychainUtils: NSObject {
 

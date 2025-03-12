@@ -1,3 +1,4 @@
+@import SFHFKeychainUtils;
 #import "WPAccount.h"
 #import "WordPress-Swift.h"
 

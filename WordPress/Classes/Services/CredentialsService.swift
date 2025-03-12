@@ -1,3 +1,5 @@
+import SFHFKeychainUtils
+
 protocol CredentialsProvider {
     func getPassword(username: String, service: String) -> String?
 }

@@ -1,3 +1,4 @@
+import SFHFKeychainUtils
 import WordPressKit
 import JetpackStatsWidgetsCore
 import WordPressShared

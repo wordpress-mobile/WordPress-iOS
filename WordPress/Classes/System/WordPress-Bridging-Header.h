@@ -1,5 +1,3 @@
-#import "SFHFKeychainUtils.h"
-
 // WordPress Module
 
 #import "ActivityLogViewController.h"
@@ -55,7 +53,6 @@
 #import "SettingTableViewCell.h"
 #import "SettingsTextViewController.h"
 #import "SharingViewController.h"
-#import "SFHFKeychainUtils.h"
 #import "SiteSettingsViewController.h"
 #import "SourcePostAttribution.h"
 #import "StatsViewController.h"

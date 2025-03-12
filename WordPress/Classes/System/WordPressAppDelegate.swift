@@ -1,3 +1,4 @@
+import SFHFKeychainUtils
 import UIKit
 import CocoaLumberjackSwift
 import Reachability

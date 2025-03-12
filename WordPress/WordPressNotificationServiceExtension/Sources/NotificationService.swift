@@ -1,3 +1,4 @@
+import SFHFKeychainUtils
 import UserNotifications
 
 import WordPressKit

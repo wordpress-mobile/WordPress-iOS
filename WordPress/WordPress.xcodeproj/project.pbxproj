@@ -3297,9 +3297,6 @@
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
 		24CE68AE2CD3375300C7B37D /* Exceptions for "Classes" folder in "WordPress" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			additionalCompilerFlagsByRelativePath = {
-				Utility/SFHFKeychainUtils.m = "-fno-objc-arc";
-			};
 			membershipExceptions = (
 				"Utility/Migrations/20-21/SafeReaderTopicToReaderTopic.m",
 				"ViewRelated/Me/All Domains/Coordinators/AllDomainsAddDomainCoordinator.swift",
@@ -3314,9 +3311,6 @@
 		};
 		24CE68AF2CD3375300C7B37D /* Exceptions for "Classes" folder in "WordPressShareExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			additionalCompilerFlagsByRelativePath = {
-				Utility/SFHFKeychainUtils.m = "-fno-objc-arc";
-			};
 			membershipExceptions = (
 				"Extensions/Colors and Styles/WPStyleGuide+ApplicationStyles.swift",
 				"Extensions/Colors and Styles/WPStyleGuide+Gridicon.swift",
@@ -3337,7 +3331,6 @@
 				Utility/BuildInformation/FeatureFlagRolloutStore.swift,
 				Utility/KeychainUtils.swift,
 				Utility/Logging/CocoaLumberjack.swift,
-				Utility/SFHFKeychainUtils.m,
 				ViewRelated/Aztec/Extensions/FormatBarItemProviders.swift,
 				"ViewRelated/Aztec/Extensions/Header+WordPress.swift",
 				"ViewRelated/Aztec/Extensions/TextList+WordPress.swift",
@@ -3351,9 +3344,6 @@
 		};
 		24CE68B02CD3375300C7B37D /* Exceptions for "Classes" folder in "WordPressDraftActionExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			additionalCompilerFlagsByRelativePath = {
-				Utility/SFHFKeychainUtils.m = "-fno-objc-arc";
-			};
 			membershipExceptions = (
 				"Extensions/Colors and Styles/WPStyleGuide+ApplicationStyles.swift",
 				"Extensions/Colors and Styles/WPStyleGuide+Gridicon.swift",
@@ -3374,7 +3364,6 @@
 				Utility/BuildInformation/FeatureFlagRolloutStore.swift,
 				Utility/KeychainUtils.swift,
 				Utility/Logging/CocoaLumberjack.swift,
-				Utility/SFHFKeychainUtils.m,
 				ViewRelated/Aztec/Extensions/FormatBarItemProviders.swift,
 				"ViewRelated/Aztec/Extensions/Header+WordPress.swift",
 				"ViewRelated/Aztec/Extensions/TextList+WordPress.swift",
@@ -3388,9 +3377,6 @@
 		};
 		24CE68B22CD3375300C7B37D /* Exceptions for "Classes" folder in "WordPressNotificationServiceExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			additionalCompilerFlagsByRelativePath = {
-				Utility/SFHFKeychainUtils.m = "-fno-objc-arc";
-			};
 			membershipExceptions = (
 				"Extensions/String+Helpers.swift",
 				"Extensions/UIImage+Extensions.swift",
@@ -3416,7 +3402,6 @@
 				Utility/FormattableContent/FormattableRangesFactory.swift,
 				Utility/FormattableContent/FormattableTextContent.swift,
 				Utility/KeychainUtils.swift,
-				Utility/SFHFKeychainUtils.m,
 				ViewRelated/Notifications/FormattableContent/FormattableCommentContent.swift,
 				ViewRelated/Notifications/FormattableContent/FormattableUserContent.swift,
 				ViewRelated/Notifications/FormattableContent/Notifiable.swift,
@@ -3446,9 +3431,6 @@
 		};
 		24CE68B52CD3375300C7B37D /* Exceptions for "Classes" folder in "Jetpack" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			additionalCompilerFlagsByRelativePath = {
-				Utility/SFHFKeychainUtils.m = "-fno-objc-arc";
-			};
 			membershipExceptions = (
 				"Utility/App Configuration/AppConfiguration.swift",
 				"Utility/App Configuration/AppConstants.swift",
@@ -3460,9 +3442,6 @@
 		};
 		24CE68B62CD3375300C7B37D /* Exceptions for "Classes" folder in "JetpackShareExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			additionalCompilerFlagsByRelativePath = {
-				Utility/SFHFKeychainUtils.m = "-fno-objc-arc";
-			};
 			membershipExceptions = (
 				"Extensions/Colors and Styles/WPStyleGuide+ApplicationStyles.swift",
 				"Extensions/Colors and Styles/WPStyleGuide+Gridicon.swift",
@@ -3481,7 +3460,6 @@
 				Utility/BuildInformation/FeatureFlagRolloutStore.swift,
 				Utility/KeychainUtils.swift,
 				Utility/Logging/CocoaLumberjack.swift,
-				Utility/SFHFKeychainUtils.m,
 				ViewRelated/Aztec/Extensions/FormatBarItemProviders.swift,
 				"ViewRelated/Aztec/Extensions/Header+WordPress.swift",
 				"ViewRelated/Aztec/Extensions/TextList+WordPress.swift",
@@ -3495,9 +3473,6 @@
 		};
 		24CE68B72CD3375300C7B37D /* Exceptions for "Classes" folder in "JetpackDraftActionExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			additionalCompilerFlagsByRelativePath = {
-				Utility/SFHFKeychainUtils.m = "-fno-objc-arc";
-			};
 			membershipExceptions = (
 				"Extensions/Colors and Styles/WPStyleGuide+ApplicationStyles.swift",
 				"Extensions/Colors and Styles/WPStyleGuide+Gridicon.swift",
@@ -3516,7 +3491,6 @@
 				Utility/BuildInformation/FeatureFlagRolloutStore.swift,
 				Utility/KeychainUtils.swift,
 				Utility/Logging/CocoaLumberjack.swift,
-				Utility/SFHFKeychainUtils.m,
 				ViewRelated/Aztec/Extensions/FormatBarItemProviders.swift,
 				"ViewRelated/Aztec/Extensions/Header+WordPress.swift",
 				"ViewRelated/Aztec/Extensions/TextList+WordPress.swift",
@@ -3530,9 +3504,6 @@
 		};
 		24CE68B82CD3375300C7B37D /* Exceptions for "Classes" folder in "JetpackNotificationServiceExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			additionalCompilerFlagsByRelativePath = {
-				Utility/SFHFKeychainUtils.m = "-fno-objc-arc";
-			};
 			membershipExceptions = (
 				"Extensions/String+Helpers.swift",
 				"Extensions/UIImage+Extensions.swift",
@@ -3556,7 +3527,6 @@
 				Utility/FormattableContent/FormattableRangesFactory.swift,
 				Utility/FormattableContent/FormattableTextContent.swift,
 				Utility/KeychainUtils.swift,
-				Utility/SFHFKeychainUtils.m,
 				ViewRelated/Notifications/FormattableContent/FormattableCommentContent.swift,
 				ViewRelated/Notifications/FormattableContent/FormattableUserContent.swift,
 				ViewRelated/Notifications/FormattableContent/Notifiable.swift,
@@ -3571,9 +3541,6 @@
 		};
 		24CE68B92CD3375300C7B37D /* Exceptions for "Classes" folder in "JetpackStatsWidgets" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			additionalCompilerFlagsByRelativePath = {
-				Utility/SFHFKeychainUtils.m = "-fno-objc-arc";
-			};
 			membershipExceptions = (
 				Services/KeyValueDatabase.swift,
 				System/Constants/Constants.m,
@@ -3586,7 +3553,6 @@
 				Utility/BuildInformation/FeatureFlagRolloutStore.swift,
 				Utility/KeychainUtils.swift,
 				Utility/Logging/CocoaLumberjack.swift,
-				Utility/SFHFKeychainUtils.m,
 				"ViewRelated/Stats/Extensions/Double+Stats.swift",
 				"ViewRelated/Stats/Extensions/NumberFormatter+Stats.swift",
 			);
@@ -3594,13 +3560,9 @@
 		};
 		24CE68BA2CD3375300C7B37D /* Exceptions for "Classes" folder in "JetpackIntents" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			additionalCompilerFlagsByRelativePath = {
-				Utility/SFHFKeychainUtils.m = "-fno-objc-arc";
-			};
 			membershipExceptions = (
 				System/Constants/Constants.m,
 				Utility/Logging/CocoaLumberjack.swift,
-				Utility/SFHFKeychainUtils.m,
 			);
 			target = 0107E13828FE9DB200DE87DB /* JetpackIntents */;
 		};

@@ -1,3 +1,4 @@
+import SFHFKeychainUtils
 import UIKit
 
 class BlogToBlog32to33: NSEntityMigrationPolicy {
