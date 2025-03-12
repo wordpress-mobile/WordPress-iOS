@@ -44,7 +44,7 @@ extension WordPressAuthenticationManager {
     ///
     func initializeWordPressAuthenticator() {
         let displayStrings = WordPressAuthenticatorDisplayStrings(
-            continueWithWPButtonTitle: AppConstants.Login.continueButtonTitle
+            continueWithWPButtonTitle: NSLocalizedString("Continue With WordPress.com", comment: "Button title. Takes the user to the login with WordPress.com flow.")
         )
 
         WordPressAuthenticator.initialize(configuration: authenticatorConfiguation(),

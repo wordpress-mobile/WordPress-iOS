@@ -57,13 +57,6 @@ extension AppConstants {
         static let whatIsNewTitle = NSLocalizedString("What's New in Jetpack", comment: "Opens the What's New / Feature Announcement modal")
     }
 
-    struct Login {
-        static let continueButtonTitle = NSLocalizedString(
-            "Continue With WordPress.com",
-            comment: "Button title. Takes the user to the login with WordPress.com flow."
-        )
-    }
-
     struct Logout {
         static let alertTitle = NSLocalizedString("Log out of Jetpack?", comment: "LogOut confirmation text, whenever there are no local changes")
     }

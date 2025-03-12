@@ -1,5 +1,5 @@
 import Foundation
-import WordPressAuthenticator
+import WordPressKit
 
 /// - Warning:
 /// This configuration class has a **Jetpack** counterpart in the Jetpack bundle.
@@ -55,10 +55,6 @@ extension AppConstants {
         static let aboutTitle: String = NSLocalizedString("About WordPress", comment: "Link to About screen for WordPress for iOS")
         static let shareButtonTitle = NSLocalizedString("Share WordPress with a friend", comment: "Title for a button that recommends the app to others")
         static let whatIsNewTitle = NSLocalizedString("What's New in WordPress", comment: "Opens the What's New / Feature Announcement modal")
-    }
-
-    struct Login {
-        static let continueButtonTitle = WordPressAuthenticatorDisplayStrings.defaultStrings.continueWithWPButtonTitle
     }
 
     struct Logout {
