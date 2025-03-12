@@ -26,18 +26,6 @@ extern NSString *const WPPushNotificationAppId;
 extern NSString *const WPAppGroupName;
 extern NSString *const WPAppKeychainAccessGroup;
 
-/// Share Extension Constants
-///
-extern NSString *const WPShareExtensionKeychainUsernameKey;
-extern NSString *const WPShareExtensionKeychainTokenKey;
-extern NSString *const WPShareExtensionKeychainServiceName;
-extern NSString *const WPShareExtensionUserDefaultsPrimarySiteName;
-extern NSString *const WPShareExtensionUserDefaultsPrimarySiteID;
-extern NSString *const WPShareExtensionUserDefaultsLastUsedSiteName;
-extern NSString *const WPShareExtensionUserDefaultsLastUsedSiteID;
-extern NSString *const WPShareExtensionMaximumMediaDimensionKey;
-extern NSString *const WPShareExtensionRecentSitesKey;
-
 /// Apple ID Constants
 ///
 extern NSString *const WPAppleIDKeychainUsernameKey;
