@@ -6,7 +6,7 @@
 
 @import WordPressKit;
 @import WordPressShared;
-#import "WordPress-Swift.h"
+//#import "WordPress-Swift.h"
 
 static NSString * const DefaultDotcomAccountUUIDDefaultsKey = @"AccountDefaultDotcomUUID";
 static NSString * const DefaultDotcomAccountPasswordRemovedKey = @"DefaultDotcomAccountPasswordRemovedKey";

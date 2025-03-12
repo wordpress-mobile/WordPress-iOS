@@ -3,12 +3,12 @@
 #import "WPAccount.h"
 #import "AccountService.h"
 @import WordPressDataObjC;
-#import "WPError.h"
+//#import "WPError.h"
 #import "Media.h"
 #import "PostCategoryService.h"
 #import "CommentService.h"
 #import "PostService.h"
-#import "WordPress-Swift.h"
+//#import "WordPress-Swift.h"
 #import "PostType.h"
 @import WordPressKit;
 @import WordPressShared;

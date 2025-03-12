@@ -74,6 +74,7 @@ let package = Package(
         .target(
             name: "WordPressDataObjC",
             dependencies: [
+                "SFHFKeychainUtils",
                 .target(name: "WordPressShared"),
                 .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
             ]
