@@ -1,6 +1,6 @@
 import Foundation
 
-extension FileManager {
+public extension FileManager {
 
     /// This method calculates the accumulated size of a directory on the volume in bytes.
     ///
