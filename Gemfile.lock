@@ -239,7 +239,7 @@ GEM
       concurrent-ruby (~> 1.0)
     java-properties (0.3.0)
     jmespath (1.6.2)
-    json (2.10.1)
+    json (2.10.2)
     jwt (2.10.1)
       base64
     kramdown (2.5.1)
