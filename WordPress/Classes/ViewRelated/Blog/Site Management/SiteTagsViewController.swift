@@ -14,7 +14,7 @@ final class SiteTagsViewController: UITableViewController {
     private var isSearching = false
 
     private lazy var context: NSManagedObjectContext = {
-        return ContextManager.sharedInstance().mainContext
+        return ContextManager.shared.mainContext
     }()
 
     private lazy var defaultPredicate: NSPredicate = {
@@ -114,7 +114,7 @@ final class SiteTagsViewController: UITableViewController {
 
     @objc private func refreshTags() {
         isPerformingInitialSync = true
-        let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let tagsService = PostTagService(managedObjectContext: ContextManager.shared.mainContext)
         tagsService.syncTags(for: blog, success: { [weak self] tags in
             self?.isPerformingInitialSync = false
             self?.refreshControl?.endRefreshing()
@@ -181,7 +181,7 @@ extension SiteTagsViewController {
     }
 
     private func delete(_ tag: PostTag) {
-        let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let tagsService = PostTagService(managedObjectContext: ContextManager.shared.mainContext)
         refreshControl?.beginRefreshing()
         tagsService.delete(tag, for: blog, success: { [weak self] in
             self?.refreshControl?.endRefreshing()
@@ -192,7 +192,7 @@ extension SiteTagsViewController {
     }
 
     private func save(_ tag: PostTag) {
-        let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let tagsService = PostTagService(managedObjectContext: ContextManager.shared.mainContext)
         refreshControl?.beginRefreshing()
         tagsService.save(tag, for: blog, success: { [weak self] tag in
             self?.refreshControl?.endRefreshing()
@@ -267,7 +267,7 @@ extension SiteTagsViewController {
             displayAlertForExistingTag(existingTag)
             return
         }
-        guard let newTag = NSEntityDescription.insertNewObject(forEntityName: "PostTag", into: ContextManager.sharedInstance().mainContext) as? PostTag else {
+        guard let newTag = NSEntityDescription.insertNewObject(forEntityName: "PostTag", into: ContextManager.shared.mainContext) as? PostTag else {
             return
         }
 
@@ -307,7 +307,7 @@ extension SiteTagsViewController {
     }
 
     fileprivate func displayAlertForExistingTag(_ tag: PostTag) {
-        let title =  NSLocalizedString("Tag already exists",
+        let title = NSLocalizedString("Tag already exists",
                                        comment: "Title of the alert indicating that a tag with that name already exists.")
         let tagName = tag.name ?? ""
         let message = String(format: NSLocalizedString("A tag named '%@' already exists.",

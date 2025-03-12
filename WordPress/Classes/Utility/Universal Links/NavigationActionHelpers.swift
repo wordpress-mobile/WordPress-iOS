@@ -3,7 +3,7 @@ import WordPressFlux
 
 extension NavigationAction {
     func defaultBlog() -> Blog? {
-        let context = ContextManager.sharedInstance().mainContext
+        let context = ContextManager.shared.mainContext
         return Blog.lastUsedOrFirst(in: context)
     }
 
@@ -12,7 +12,7 @@ extension NavigationAction {
             return nil
         }
 
-        let context = ContextManager.sharedInstance().mainContext
+        let context = ContextManager.shared.mainContext
 
         if let blog = Blog.lookup(hostname: domain, in: context) {
             return blog

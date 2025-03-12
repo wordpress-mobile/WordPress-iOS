@@ -262,7 +262,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
     internal private(set) var contentInfo: ContentInfo?
     lazy var editorSettingsService: BlockEditorSettingsService? = {
-        BlockEditorSettingsService(blog: post.blog, coreDataStack: ContextManager.sharedInstance())
+        BlockEditorSettingsService(blog: post.blog, coreDataStack: ContextManager.shared)
     }()
 
     private let htmlDidChange = PassthroughSubject<Void, Never>()
@@ -426,7 +426,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         // Add bottom border line
         let screenScale = UIScreen.main.scale
         let borderWidth: CGFloat = 1.0 / screenScale
-        let borderColor = UIColor(red: 60/255, green: 60/255, blue: 67/255, alpha: 0.36).cgColor
+        let borderColor = UIColor(red: 60 / 255, green: 60 / 255, blue: 67 / 255, alpha: 0.36).cgColor
 
         let borderBottom = UIView()
         borderBottom.backgroundColor = UIColor(cgColor: borderColor)

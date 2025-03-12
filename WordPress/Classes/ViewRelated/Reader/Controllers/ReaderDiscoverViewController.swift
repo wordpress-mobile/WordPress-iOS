@@ -283,6 +283,7 @@ private class ReaderDiscoverStreamViewController: ReaderStreamViewController {
     private func makeRecommendedTagsCell(for interests: [ReaderTagTopic]) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: readerCardTopicsIdentifier) as! ReaderRecommendedTagsCell
         cell.configure(with: interests, delegate: self)
+        cell.accessibilityIdentifier = "topics-card-cell"
         hideSeparator(for: cell)
         return cell
     }

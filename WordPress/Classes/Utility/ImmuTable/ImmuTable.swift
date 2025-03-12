@@ -378,7 +378,7 @@ open class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewDel
 
     open func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         if target.responds(to: #selector(UITableViewDelegate.tableView(_:editingStyleForRowAt:))) {
-            return target.tableView?(tableView, editingStyleForRowAt: indexPath)  ?? .none
+            return target.tableView?(tableView, editingStyleForRowAt: indexPath) ?? .none
         }
 
         return .none

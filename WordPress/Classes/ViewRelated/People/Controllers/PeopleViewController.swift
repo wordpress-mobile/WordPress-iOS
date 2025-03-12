@@ -81,7 +81,7 @@ class PeopleViewController: UITableViewController {
     }
 
     private var viewContext: NSManagedObjectContext {
-        ContextManager.sharedInstance().mainContext
+        ContextManager.shared.mainContext
     }
 
     /// Core Data FRC
@@ -265,9 +265,9 @@ extension PeopleViewController: NetworkStatusDelegate {
 extension PeopleViewController {
     enum Filter: String, CaseIterable, FilterTabBarItem {
 
-        case users      = "users"
-        case followers  = "followers"
-        case viewers    = "viewers"
+        case users = "users"
+        case followers = "followers"
+        case viewers = "viewers"
 
         static var defaultFilters: [Filter] {
             return [.users, .followers]

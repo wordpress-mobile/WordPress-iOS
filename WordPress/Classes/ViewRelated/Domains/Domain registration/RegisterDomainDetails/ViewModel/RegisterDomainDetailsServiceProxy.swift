@@ -61,7 +61,7 @@ protocol RegisterDomainDetailsServiceProxyProtocol {
 class RegisterDomainDetailsServiceProxy: RegisterDomainDetailsServiceProxyProtocol {
 
     private lazy var context = {
-        ContextManager.sharedInstance().mainContext
+        ContextManager.shared.mainContext
     }()
 
     private lazy var restApi: WordPressComRestApi = {

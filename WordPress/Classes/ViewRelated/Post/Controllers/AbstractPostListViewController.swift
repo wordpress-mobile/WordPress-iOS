@@ -313,7 +313,7 @@ class AbstractPostListViewController: UIViewController,
     }
 
     func managedObjectContext() -> NSManagedObjectContext {
-        return ContextManager.sharedInstance().mainContext
+        return ContextManager.shared.mainContext
     }
 
     func fetchRequest() -> NSFetchRequest<AbstractPost> {

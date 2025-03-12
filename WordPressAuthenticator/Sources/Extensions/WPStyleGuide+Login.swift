@@ -74,7 +74,7 @@ extension WPStyleGuide {
     /// - Returns: A properly styled UIButton
     ///
     class func googleLoginButton() -> UIButton {
-        let baseString =  NSLocalizedString("{G} Log in with Google.", comment: "Label for button to log in using Google. The {G} will be replaced with the Google logo.")
+        let baseString = NSLocalizedString("{G} Log in with Google.", comment: "Label for button to log in using Google. The {G} will be replaced with the Google logo.")
 
         let attrStrNormal = googleButtonString(baseString, linkColor: WordPressAuthenticator.shared.style.textButtonColor)
         let attrStrHighlight = googleButtonString(baseString, linkColor: WordPressAuthenticator.shared.style.textButtonHighlightColor)
@@ -165,7 +165,7 @@ extension WPStyleGuide {
         let button: UIButton
 
         if WordPressAuthenticator.shared.configuration.showLoginOptions {
-            let baseString =  NSLocalizedString("Or log in by _entering your site address_.", comment: "Label for button to log in using site address. Underscores _..._ denote underline.")
+            let baseString = NSLocalizedString("Or log in by _entering your site address_.", comment: "Label for button to log in using site address. Underscores _..._ denote underline.")
 
             let attrStrNormal = baseString.underlined(color: style.subheadlineColor, underlineColor: style.textButtonColor)
             let attrStrHighlight = baseString.underlined(color: style.subheadlineColor, underlineColor: style.textButtonHighlightColor)
@@ -209,7 +209,7 @@ extension WPStyleGuide {
     class func termsButton() -> UIButton {
         let style = WordPressAuthenticator.shared.style
 
-        let baseString =  NSLocalizedString("By signing up, you agree to our _Terms of Service_.", comment: "Legal disclaimer for signup buttons, the underscores _..._ denote underline")
+        let baseString = NSLocalizedString("By signing up, you agree to our _Terms of Service_.", comment: "Legal disclaimer for signup buttons, the underscores _..._ denote underline")
 
         let attrStrNormal = baseString.underlined(color: style.subheadlineColor, underlineColor: style.textButtonColor)
         let attrStrHighlight = baseString.underlined(color: style.subheadlineColor, underlineColor: style.textButtonHighlightColor)

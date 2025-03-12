@@ -543,7 +543,7 @@ private extension NotificationsViewController {
         tableView.register(TableViewCell.self, forCellReuseIdentifier: TableViewCell.reuseIdentifier)
 
         // UITableView
-        tableView.accessibilityIdentifier  = "notifications-table"
+        tableView.accessibilityIdentifier = "notifications-table"
         tableView.cellLayoutMarginsFollowReadableWidth = false
         tableView.estimatedSectionHeaderHeight = UITableView.automaticDimension
         tableView.backgroundColor = .systemBackground
@@ -1335,7 +1335,7 @@ extension NotificationsViewController {
 //
 extension NotificationsViewController: WPTableViewHandlerDelegate {
     func managedObjectContext() -> NSManagedObjectContext {
-        return ContextManager.sharedInstance().mainContext
+        return ContextManager.shared.mainContext
     }
 
     func fetchRequest() -> NSFetchRequest<NSFetchRequestResult>? {
@@ -1756,7 +1756,7 @@ extension NotificationsViewController: SearchableActivityConvertable {
 //
 private extension NotificationsViewController {
     var mainContext: NSManagedObjectContext {
-        return ContextManager.sharedInstance().mainContext
+        return ContextManager.shared.mainContext
     }
 
     var userDefaults: UserPersistentRepository {

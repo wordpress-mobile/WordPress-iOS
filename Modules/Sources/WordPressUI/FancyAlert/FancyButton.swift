@@ -210,16 +210,16 @@ private extension FancyButton {
     /// Style: Primary
     ///
     struct Primary {
-        static let normalBackgroundColor = UIColor(red: 0x00/255.0, green: 0xAA/255.0, blue: 0xDC/255.0, alpha: 0xFF/255.0)
-        static let highlightBackgroundColor = UIColor(red: 0x00/255.0, green: 0x87/255.0, blue: 0xBE/255.0, alpha: 0xFF/255.0)
+        static let normalBackgroundColor = UIColor(red: 0x00 / 255.0, green: 0xAA / 255.0, blue: 0xDC / 255.0, alpha: 0xFF / 255.0)
+        static let highlightBackgroundColor = UIColor(red: 0x00 / 255.0, green: 0x87 / 255.0, blue: 0xBE / 255.0, alpha: 0xFF / 255.0)
     }
 
     /// Style: Secondary
     ///
     struct Secondary {
         static let normalBackgroundColor = UIColor.white
-        static let normalBorderColor = UIColor(red: 0xBD/255.0, green: 0xCE/255.0, blue: 0xDA/255.0, alpha: 0xFF/255.0)
-        static let highlightBackgroundColor = UIColor(red: 0xBD/255.0, green: 0xCE/255.0, blue: 0xDA/255.0, alpha: 0xFF/255.0)
+        static let normalBorderColor = UIColor(red: 0xBD / 255.0, green: 0xCE / 255.0, blue: 0xDA / 255.0, alpha: 0xFF / 255.0)
+        static let highlightBackgroundColor = UIColor(red: 0xBD / 255.0, green: 0xCE / 255.0, blue: 0xDA / 255.0, alpha: 0xFF / 255.0)
         static let highlightBorderColor = highlightBackgroundColor
     }
 
@@ -227,15 +227,15 @@ private extension FancyButton {
     ///
     struct Disabled {
         static let backgroundColor = UIColor.white
-        static let borderColor = UIColor(red: 0xE4/255.0, green: 0xEB/255.0, blue: 0xF0/255.0, alpha: 0xFF/255.0)
+        static let borderColor = UIColor(red: 0xE4 / 255.0, green: 0xEB / 255.0, blue: 0xF0 / 255.0, alpha: 0xFF / 255.0)
     }
 
     /// Style: Title
     ///
     struct Title {
         static let primaryColor = UIColor.white
-        static let secondaryColor = UIColor(red: 46/255.0, green: 68/255.0, blue: 83/255.0, alpha: 255.0/255.0)
-        static let disabledColor = UIColor(red: 233/255.0, green: 239/255.0, blue: 243/255.0, alpha: 255.0/255.0)
+        static let secondaryColor = UIColor(red: 46 / 255.0, green: 68 / 255.0, blue: 83 / 255.0, alpha: 255.0 / 255.0)
+        static let disabledColor = UIColor(red: 233 / 255.0, green: 239 / 255.0, blue: 243 / 255.0, alpha: 255.0 / 255.0)
         static let defaultFont = UIFont.systemFont(ofSize: 22)
     }
 }

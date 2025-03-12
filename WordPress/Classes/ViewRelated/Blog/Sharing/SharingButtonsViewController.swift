@@ -44,7 +44,7 @@ import WordPressShared
     /// Core Data Context
     ///
     var viewContext: NSManagedObjectContext {
-        ContextManager.sharedInstance().mainContext
+        ContextManager.shared.mainContext
     }
 
     struct SharingCellIdentifiers {
@@ -628,8 +628,8 @@ import WordPressShared
     /// - Parameter refreshAfterSync: If true buttons are reloaded when the sync completes.
     ///
     private func saveButtonChanges(_ refreshAfterSync: Bool) {
-        let context = ContextManager.sharedInstance().mainContext
-        ContextManager.sharedInstance().save(context, completion: { [weak self] in
+        let context = ContextManager.shared.mainContext
+        ContextManager.shared.save(context, completion: { [weak self] in
             self?.reloadButtons()
             self?.syncButtonChangesToBlog(refreshAfterSync)
         }, on: .main)
@@ -902,7 +902,7 @@ extension SharingButtonsViewController {
     override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         let sourceSection = sections[sourceIndexPath.section]
 
-        let diff =  destinationIndexPath.row - sourceIndexPath.row
+        let diff = destinationIndexPath.row - sourceIndexPath.row
         let movedRow = sourceSection.rows[sourceIndexPath.row] as! SortableSharingSwitchRow
 
         let movedButton = buttons.filter { (button) -> Bool in

@@ -150,7 +150,7 @@ class PostTagPickerViewController: UIViewController {
 private extension PostTagPickerViewController {
     func loadTags() {
         dataSource = LoadingDataSource()
-        let context = ContextManager.sharedInstance().mainContext
+        let context = ContextManager.shared.mainContext
         let service = PostTagService(managedObjectContext: context)
         service.getTopTags(
             for: blog,

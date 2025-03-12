@@ -44,7 +44,7 @@ class ShareNoticeNavigationCoordinator {
     private static func fetchPost(from userInfo: NSDictionary,
                                   onSuccess: @escaping (_ post: Post?) -> Void,
                                   onFailure: @escaping () -> Void) {
-        let context = ContextManager.sharedInstance().mainContext
+        let context = ContextManager.shared.mainContext
 
         guard let postIDString = userInfo[ShareNoticeUserInfoKey.postID] as? String,
             let postID = NumberFormatter().number(from: postIDString),

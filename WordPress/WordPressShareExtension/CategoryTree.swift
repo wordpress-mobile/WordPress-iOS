@@ -122,6 +122,6 @@ extension RemotePostCategory {
 // MARK: - Constants
 
 fileprivate struct TreeConstants {
-    static let rootNodeID   = NSNumber(value: 0)
+    static let rootNodeID = NSNumber(value: 0)
     static let rootNodeName = "root"
 }

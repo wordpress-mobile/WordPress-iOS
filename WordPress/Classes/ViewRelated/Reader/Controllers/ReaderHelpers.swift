@@ -241,7 +241,7 @@ struct ReaderNotificationKeys {
         ]
 
         let userAgent = WPUserAgent.wordPress()
-        let path  = NSString(format: "%@?%@", pixel, params.componentsJoined(by: "&")) as String
+        let path = NSString(format: "%@?%@", pixel, params.componentsJoined(by: "&")) as String
 
         guard let url = URL(string: path) else {
             return
@@ -257,7 +257,7 @@ struct ReaderNotificationKeys {
     }
 
     @objc open class func isUserAdminOnSiteWithID(_ siteID: NSNumber) -> Bool {
-        Blog.lookup(withID: siteID, in: ContextManager.sharedInstance().mainContext)?.isAdmin ?? false
+        Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext)?.isAdmin ?? false
     }
 
     // convenience method that returns the topic type

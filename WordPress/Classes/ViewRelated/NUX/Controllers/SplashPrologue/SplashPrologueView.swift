@@ -10,7 +10,7 @@ struct SplashPrologueView: View {
                     .resizable()
                     .scaledToFill()
                     .frame(width: Constants.splashBrushWidth)
-                    .offset(x: (proxy.size.width - Constants.splashBrushWidth)/2)
+                    .offset(x: (proxy.size.width - Constants.splashBrushWidth) / 2)
                     .offset(x: Constants.splashBrushOffset.x, y: Constants.splashBrushOffset.y)
                     .foregroundColor(Color(SplashPrologueStyleGuide.BrushStroke.color))
                     .accessibility(hidden: true)

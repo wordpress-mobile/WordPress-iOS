@@ -33,17 +33,4 @@ extension UIAlertController {
         alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Cancel copying link to comment button title"))
         return alertController
     }
-
-    /// This method is will present an alert controller (action sheet style) that
-    /// provides a copy action to allow copying the url parameter to the clip board.
-    /// Once copied, a notice will be posted using the dispacher so the user will know
-    /// the url was copied.
-    @objc static func presentAlertAndCopyCommentURLToClipboard(url: URL) {
-        let noticeTitle = NSLocalizedString("Link Copied to Clipboard", comment: "Link copied to clipboard notice title")
-
-        let copyAlertController = UIAlertController.copyCommentURLAlertController(url) {
-            ActionDispatcher.dispatch(NoticeAction.post(Notice(title: noticeTitle)))
-        }
-        copyAlertController?.presentFromRootViewController()
-    }
 }

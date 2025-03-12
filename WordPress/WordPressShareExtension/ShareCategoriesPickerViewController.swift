@@ -189,7 +189,7 @@ fileprivate extension ShareCategoriesPickerViewController {
         guard let node = categoryTree?.tree.search(category) else {
             return 0
         }
-        return (node.depth-1) * Constants.indentationMultiplier
+        return (node.depth - 1) * Constants.indentationMultiplier
     }
 
     var rowCountForCategories: Int {
@@ -243,8 +243,8 @@ extension ShareCategoriesPickerViewController {
 
 fileprivate extension ShareCategoriesPickerViewController {
     struct Constants {
-        static let cellReuseIdentifier  = String(describing: ShareCategoriesPickerViewController.self)
-        static let defaultRowHeight     = CGFloat(44.0)
+        static let cellReuseIdentifier = String(describing: ShareCategoriesPickerViewController.self)
+        static let defaultRowHeight = CGFloat(44.0)
         static let flashAnimationLength = 0.2
         static let indentationMultiplier = 3
     }

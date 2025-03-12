@@ -25,12 +25,12 @@ class StatsSubscribersLineChart {
 // MARK: - StatsSubscribersLineChartStyling
 
 private struct SubscribersLineChartStyling: LineChartStyling {
-    let primaryLineColor: UIColor                   = UIAppColor.blue(.shade50)
-    let secondaryLineColor: UIColor?                = nil
-    let primaryHighlightColor: UIColor?             = UIColor(red: 209.0/255.0, green: 209.0/255.0, blue: 214.0/255.0, alpha: 1.0)
-    let labelColor: UIColor                         = UIColor(light: .secondaryLabel, dark: .tertiaryLabel)
-    let legendColor: UIColor?                       = nil
-    let legendTitle: String?                        = NSLocalizedString("stats.subscribers.chart.legend", value: "Subscribers", comment: "Title for the legend of the Stats Subscribers line chart.")
-    let lineColor: UIColor                          = UIAppColor.neutral(.shade5)
-    let yAxisValueFormatter: AxisValueFormatter    = VerticalAxisFormatter()
+    let primaryLineColor: UIColor = UIAppColor.blue(.shade50)
+    let secondaryLineColor: UIColor? = nil
+    let primaryHighlightColor: UIColor? = UIColor(red: 209.0 / 255.0, green: 209.0 / 255.0, blue: 214.0 / 255.0, alpha: 1.0)
+    let labelColor: UIColor = UIColor(light: .secondaryLabel, dark: .tertiaryLabel)
+    let legendColor: UIColor? = nil
+    let legendTitle: String? = NSLocalizedString("stats.subscribers.chart.legend", value: "Subscribers", comment: "Title for the legend of the Stats Subscribers line chart.")
+    let lineColor: UIColor = UIAppColor.neutral(.shade5)
+    let yAxisValueFormatter: AxisValueFormatter = VerticalAxisFormatter()
 }

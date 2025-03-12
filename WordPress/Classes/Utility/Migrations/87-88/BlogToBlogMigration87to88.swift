@@ -12,7 +12,7 @@ class BlogToBlogMigration87to88: NSEntityMigrationPolicy {
 
         if gutenbergEnabledFlag != nil {
             let url = dInstance.value(forKey: "url") as? String ?? ""
-            let perSiteEnabledKey = "com.wordpress.gutenberg-autoenabled-"+url
+            let perSiteEnabledKey = "com.wordpress.gutenberg-autoenabled-" + url
             UserPersistentStoreFactory.instance().set(true, forKey: perSiteEnabledKey)
         }
     }

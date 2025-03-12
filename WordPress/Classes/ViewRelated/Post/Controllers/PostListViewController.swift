@@ -236,7 +236,7 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
 
     func comments(_ post: AbstractPost) {
         WPAnalytics.track(.postListCommentsAction, properties: propertiesForAnalytics())
-        let contentCoordinator = DefaultContentCoordinator(controller: self, context: ContextManager.sharedInstance().mainContext)
+        let contentCoordinator = DefaultContentCoordinator(controller: self, context: ContextManager.shared.mainContext)
         try? contentCoordinator.displayCommentsWithPostId(post.postID, siteID: blog.dotComID, commentID: nil, source: .postsList)
     }
 

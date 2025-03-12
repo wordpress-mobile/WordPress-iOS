@@ -173,14 +173,14 @@ struct WordPressDotComAuthenticator {
         let clientSecret = ApiCredentials.secret
         let redirectURI = "x-wordpress-app://oauth2-callback"
 
-        var queries: [String: Any] =  [
+        var queries: [String: Any] = [
             "client_id": clientId,
             "redirect_uri": redirectURI,
             "response_type": "code",
             "scope": "global",
         ]
         if let accountEmail {
-            queries["user_email"] =  accountEmail
+            queries["user_email"] = accountEmail
         }
 
         // Using Alamofire instead of URL to encode query string because URL do not encoded "+" (which may present

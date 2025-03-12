@@ -6,7 +6,7 @@ import Foundation
     /// Threadsafe Helper that indicates whether a Default Dotcom Account is available, or not
     ///
     @objc static func isDotcomAvailable() -> Bool {
-        let context = ContextManager.sharedInstance().mainContext
+        let context = ContextManager.shared.mainContext
         var available = false
 
         context.performAndWait {
@@ -23,12 +23,12 @@ import Foundation
     }
 
     @objc static var noSelfHostedBlogs: Bool {
-        let context = ContextManager.sharedInstance().mainContext
+        let context = ContextManager.shared.mainContext
         return BlogQuery().hostedByWPCom(false).count(in: context) == 0 && (try? Blog.hasAnyJetpackBlogs(in: context)) == false
     }
 
     static var hasBlogs: Bool {
-        let context = ContextManager.sharedInstance().mainContext
+        let context = ContextManager.shared.mainContext
         return Blog.count(in: context) > 0
     }
 
@@ -37,13 +37,13 @@ import Foundation
     }
 
     static var defaultSiteId: NSNumber? {
-        let context = ContextManager.sharedInstance().mainContext
+        let context = ContextManager.shared.mainContext
         let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context)
         return account?.defaultBlog?.dotComID
     }
 
     static var authToken: String? {
-        let context = ContextManager.sharedInstance().mainContext
+        let context = ContextManager.shared.mainContext
         let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context)
         return account?.authToken
     }
@@ -74,7 +74,7 @@ import Foundation
 
     static func logOutDefaultWordPressComAccount() {
         // Unschedule any scheduled blogging reminders
-        let service = AccountService(coreDataStack: ContextManager.sharedInstance())
+        let service = AccountService(coreDataStack: ContextManager.shared)
 
         // Unschedule any scheduled blogging reminders for the account's blogs.
         // We don't just clear all reminders, in case the user has self-hosted

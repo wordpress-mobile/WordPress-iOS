@@ -10,7 +10,7 @@ final class ReaderMenuStore: ReaderMenuStoreProtocol {
 
     private var isLoading = false
 
-    init(context: NSManagedObjectContext = ContextManager.sharedInstance().mainContext,
+    init(context: NSManagedObjectContext = ContextManager.shared.mainContext,
          service: ReaderTopicService? = nil) {
         self.context = context
         self.service = service ?? ReaderTopicService(coreDataStack: ContextManager.shared)

@@ -80,7 +80,7 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
     /// Designed Initializer
     ///
     convenience init?() {
-        let manager = ContextManager.sharedInstance()
+        let manager = ContextManager.shared
 
         guard let dotcomAPI = try? WPAccount.lookupDefaultWordPressComAccount(in: manager.mainContext)?.wordPressComRestApi else {
             return nil

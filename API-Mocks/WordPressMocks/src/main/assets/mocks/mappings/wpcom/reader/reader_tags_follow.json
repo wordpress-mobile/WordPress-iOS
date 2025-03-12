@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "POST",
-    "urlPath": "/rest/v1.1/read/tags/travel/mine/new",
+    "urlPathPattern": "/rest/v1.1/read/tags/([^/]+)/mine/new",
     "queryParameters": {
       "locale": {
         "matches": "(.*)"
@@ -15,11 +15,11 @@
       "tags": [
         {
           "ID": "123",
-          "slug": "travel",
-          "title": "Travel",
-          "display_name": "travel",
+          "slug": "{{request.pathSegments.[4]}}",
+          "title": "{{capitalize request.pathSegments.[4]}}",
+          "display_name": "{{request.pathSegments.[4]}}",
           "description": null,
-          "URL": "https://public-api.wordpress.com/rest/v1.1/read/tags/travel/posts"
+          "URL": "https://public-api.wordpress.com/rest/v1.1/read/tags/{{request.pathSegments.[4]}}/posts"
         }
       ],
       "added_tag": "123"
@@ -28,6 +28,9 @@
       "Content-Type": "application/json",
       "Connection": "keep-alive",
       "Cache-Control": "no-cache, must-revalidate, max-age=0"
-    }
+    },
+    "transformers": [
+      "response-template"
+    ]
   }
 }

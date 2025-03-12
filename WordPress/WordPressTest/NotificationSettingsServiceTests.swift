@@ -8,25 +8,25 @@ import OHHTTPStubsSwift
 // MARK: - NotificationSettingsServiceTests
 //
 class NotificationSettingsServiceTests: CoreDataTestCase {
-    typealias StreamKind    = NotificationSettings.Stream.Kind
+    typealias StreamKind = NotificationSettings.Stream.Kind
 
     // MARK: - Properties
     var remoteApi: WordPressComRestApi!
     var service: NotificationSettingsService!
 
     // MARK: - Constants
-    let timeout             = 2.0
-    let contentTypeJson     = "application/json"
-    let settingsEndpoint    = "notifications/settings/"
-    let settingsFilename    = "notifications-settings.json"
-    let dummyDeviceId       = "1234"
+    let timeout = 2.0
+    let contentTypeJson = "application/json"
+    let settingsEndpoint = "notifications/settings/"
+    let settingsFilename = "notifications-settings.json"
+    let dummyDeviceId = "1234"
 
     // MARK: - Overriden Methods
     override func setUp() {
         super.setUp()
 
-        remoteApi           = WordPressComRestApi(oAuthToken: nil, userAgent: nil)
-        service             = NotificationSettingsService(coreDataStack: contextManager, wordPressComRestApi: remoteApi)
+        remoteApi = WordPressComRestApi(oAuthToken: nil, userAgent: nil)
+        service = NotificationSettingsService(coreDataStack: contextManager, wordPressComRestApi: remoteApi)
 
         stub(condition: { request in
             return request.url?.absoluteString.range(of: self.settingsEndpoint) != nil
@@ -45,16 +45,16 @@ class NotificationSettingsServiceTests: CoreDataTestCase {
     // MARK: - Unit Tests!
     func testNotificationSettingsCorrectlyParsesThreeSiteEntities() {
 
-        let targetChannel   = NotificationSettings.Channel.blog(blogId: 1)
-        let targetSettings  = loadNotificationSettings().filter { $0.channel == targetChannel }
+        let targetChannel = NotificationSettings.Channel.blog(blogId: 1)
+        let targetSettings = loadNotificationSettings().filter { $0.channel == targetChannel }
         XCTAssert(targetSettings.count == 1, "Error while parsing Site Settings")
 
         let targetSite = targetSettings.first!
         XCTAssert(targetSite.streams.count == 3, "Error while parsing Site Stream Settings")
 
-        let parsedDeviceSettings    = targetSite.streams.filter { $0.kind == StreamKind.device }.first
-        let parsedEmailSettings     = targetSite.streams.filter { $0.kind == StreamKind.email }.first
-        let parsedTimelineSettings  = targetSite.streams.filter { $0.kind == StreamKind.timeline }.first
+        let parsedDeviceSettings = targetSite.streams.filter { $0.kind == StreamKind.device }.first
+        let parsedEmailSettings = targetSite.streams.filter { $0.kind == StreamKind.email }.first
+        let parsedTimelineSettings = targetSite.streams.filter { $0.kind == StreamKind.timeline }.first
 
         let expectedTimelineSettings = [
             "new_comment": false,
@@ -103,9 +103,9 @@ class NotificationSettingsServiceTests: CoreDataTestCase {
         let otherSettings = filteredSettings.first!
         XCTAssert(otherSettings.streams.count == 3, "Error while parsing Other Streams")
 
-        let parsedDeviceSettings    = otherSettings.streams.filter { $0.kind == StreamKind.device }.first
-        let parsedEmailSettings     = otherSettings.streams.filter { $0.kind == StreamKind.email }.first
-        let parsedTimelineSettings  = otherSettings.streams.filter { $0.kind == StreamKind.timeline }.first
+        let parsedDeviceSettings = otherSettings.streams.filter { $0.kind == StreamKind.device }.first
+        let parsedEmailSettings = otherSettings.streams.filter { $0.kind == StreamKind.email }.first
+        let parsedTimelineSettings = otherSettings.streams.filter { $0.kind == StreamKind.timeline }.first
 
         let expectedDeviceSettings = [
             "comment_like": true,

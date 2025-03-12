@@ -528,7 +528,7 @@ private extension ZendeskUtils {
          2. If not, use selected site.
          */
 
-        let context = ContextManager.sharedInstance().mainContext
+        let context = ContextManager.shared.mainContext
 
         // 1. Check for WP account
         if let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: context) {
@@ -753,7 +753,7 @@ private extension ZendeskUtils {
     }
 
     static func getCurrentSiteDescription() -> String {
-        guard let blog = Blog.lastUsed(in: ContextManager.sharedInstance().mainContext) else {
+        guard let blog = Blog.lastUsed(in: ContextManager.shared.mainContext) else {
             return Constants.noValue
         }
 
@@ -762,7 +762,7 @@ private extension ZendeskUtils {
     }
 
     static func getBlogInformation() -> String {
-        let allBlogs = (try? BlogQuery().blogs(in: ContextManager.sharedInstance().mainContext)) ?? []
+        let allBlogs = (try? BlogQuery().blogs(in: ContextManager.shared.mainContext)) ?? []
         guard allBlogs.count > 0 else {
             return Constants.noValue
         }
@@ -779,7 +779,7 @@ private extension ZendeskUtils {
 
     static func getTags() -> [String] {
 
-        let context = ContextManager.sharedInstance().mainContext
+        let context = ContextManager.shared.mainContext
         let allBlogs = (try? BlogQuery().blogs(in: context)) ?? []
         var tags = [String]()
 

@@ -61,7 +61,7 @@ class PostCoordinator: NSObject {
 
     init(mediaCoordinator: MediaCoordinator? = nil,
          actionDispatcherFacade: ActionDispatcherFacade = ActionDispatcherFacade(),
-         coreDataStack: CoreDataStackSwift = ContextManager.sharedInstance()) {
+         coreDataStack: CoreDataStackSwift = ContextManager.shared) {
         self.coreDataStack = coreDataStack
         self.mediaCoordinator = mediaCoordinator ?? MediaCoordinator.shared
         self.actionDispatcherFacade = actionDispatcherFacade

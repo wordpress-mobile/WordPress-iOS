@@ -14,9 +14,9 @@ private class InlineErrorRetryTableViewCellAccessoryView: UIStackView {
 
     /// A collection of parameters uses for view layout
     private struct Metrics {
-        static let minimumHeight    = CGFloat(28)
-        static let retryDimension   = CGFloat(16)
-        static let padding          = CGFloat(4)
+        static let minimumHeight = CGFloat(28)
+        static let retryDimension = CGFloat(16)
+        static let padding = CGFloat(4)
     }
 
     /// One of the arranged subviews : a "refresh" Gridicon
@@ -93,8 +93,8 @@ final class InlineErrorRetryTableViewCell: UITableViewCell, ReusableCell {
 
     /// A collection of parameters uses for view layout
     private struct Metrics {
-        static let height           = CGFloat(44)
-        static let trailingInset    = CGFloat(16)
+        static let height = CGFloat(44)
+        static let trailingInset = CGFloat(16)
     }
 
     /// A subview akin to an accessory view

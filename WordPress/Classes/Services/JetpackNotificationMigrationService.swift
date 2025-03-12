@@ -26,7 +26,7 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
     }
 
     private lazy var notificationSettingsService: NotificationSettingsService? = {
-        NotificationSettingsService(coreDataStack: ContextManager.sharedInstance())
+        NotificationSettingsService(coreDataStack: ContextManager.shared)
     }()
 
     private lazy var bloggingRemindersScheduler: BloggingRemindersScheduler? = {

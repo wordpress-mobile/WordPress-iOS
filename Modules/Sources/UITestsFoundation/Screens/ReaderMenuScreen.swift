@@ -13,9 +13,10 @@ public final class ReaderMenuScreen: ScreenObject {
         case discover
         case saved
         case likes
+        case search
 
         func menuButton(_ app: XCUIApplication) -> XCUIElement {
-            app.staticTexts["reader_sidebar_\(rawValue)"].firstMatch
+            app.otherElements["reader_sidebar_\(rawValue)"].firstMatch
         }
     }
 

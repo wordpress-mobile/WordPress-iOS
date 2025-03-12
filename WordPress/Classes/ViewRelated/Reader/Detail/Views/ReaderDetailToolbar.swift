@@ -325,7 +325,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
             return
         }
 
-        let stat: WPAnalyticsStat  = post.isLiked
+        let stat: WPAnalyticsStat = post.isLiked
             ? .readerArticleDetailLiked
             : .readerArticleDetailUnliked
 

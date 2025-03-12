@@ -54,10 +54,10 @@ final class SiteCreationWizardLauncher {
         case .intent:
             return SiteIntentStep(creator: self.creator)
         case .segments:
-            let segmentsService = SiteCreationSegmentsService(coreDataStack: ContextManager.sharedInstance())
+            let segmentsService = SiteCreationSegmentsService(coreDataStack: ContextManager.shared)
             return SiteSegmentsStep(creator: self.creator, service: segmentsService)
         case .siteAssembly:
-            let siteAssemblyService = EnhancedSiteCreationService(coreDataStack: ContextManager.sharedInstance())
+            let siteAssemblyService = EnhancedSiteCreationService(coreDataStack: ContextManager.shared)
             return SiteAssemblyStep(creator: self.creator, service: siteAssemblyService)
         }
     }

@@ -798,7 +798,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             return
         }
 
-        guard let blog = Blog.lastUsedOrFirst(in: ContextManager.sharedInstance().mainContext) else {
+        guard let blog = Blog.lastUsedOrFirst(in: ContextManager.shared.mainContext) else {
             return
         }
 
@@ -856,7 +856,7 @@ extension MySiteViewController: BlogDetailsPresentationDelegate {
     /// - Parameters:
     ///         - subsection: The specific subsection to show.
     ///
-    func showBlogDetailsSubsection(_ subsection: BlogDetailsSubsection, userInfo: [AnyHashable: Any] =  [:]) {
+    func showBlogDetailsSubsection(_ subsection: BlogDetailsSubsection, userInfo: [AnyHashable: Any] = [:]) {
         blogDetailsViewController?.showDetailView(for: subsection, userInfo: userInfo)
     }
 

@@ -12,7 +12,7 @@ class RevisionPreviewViewController: UIViewController, StoryboardLoadable {
         }
     }
 
-    private let mainContext = ContextManager.sharedInstance().mainContext
+    private let mainContext = ContextManager.shared.mainContext
     private let textViewManager = RevisionPreviewTextViewManager()
     private var titleInsets = UIEdgeInsets(top: 8.0, left: 8.0, bottom: 8.0, right: 8.0)
 

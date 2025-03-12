@@ -96,7 +96,7 @@ class SiteIntentViewController: CollapsableHeaderViewController {
         tableView.register(InlineErrorRetryTableViewCell.self, forCellReuseIdentifier: InlineErrorRetryTableViewCell.cellReuseIdentifier())
         tableView.cellLayoutMarginsFollowReadableWidth = true
         tableView.backgroundColor = .systemBackground
-        tableView.accessibilityIdentifier  = "Site Intent Table"
+        tableView.accessibilityIdentifier = "Site Intent Table"
     }
 
     // MARK: Actions

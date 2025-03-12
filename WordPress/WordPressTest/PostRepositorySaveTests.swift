@@ -35,7 +35,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         let post = makePost {
             $0.status = .draft
             $0.authorID = 29043
-            $0.dateCreated =  Date(timeIntervalSince1970: 1709852440)
+            $0.dateCreated = Date(timeIntervalSince1970: 1709852440)
             $0.postTitle = "Hello"
             $0.content = "content-1"
             $0.foreignID = UUID(uuidString: "F99A6E82-0AFD-4F30-9229-929AF39DA4D9")

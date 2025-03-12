@@ -40,7 +40,7 @@ class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController, St
     private var displayingEmptyView = false
 
     private lazy var mainContext: NSManagedObjectContext = {
-        return ContextManager.sharedInstance().mainContext
+        return ContextManager.shared.mainContext
     }()
 
     private var viewModel: SiteStatsInsightsViewModel?

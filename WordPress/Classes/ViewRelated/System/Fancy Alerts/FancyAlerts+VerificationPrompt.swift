@@ -12,7 +12,7 @@ extension FancyAlertViewController {
     @objc public static func verificationPromptController(completion: (() -> Void)?) -> FancyAlertViewController {
         let resendEmailButton = FancyAlertViewController.Config.ButtonConfig(Strings.resendEmail) { controller, button in
 
-            let accountService = AccountService(coreDataStack: ContextManager.sharedInstance())
+            let accountService = AccountService(coreDataStack: ContextManager.shared)
 
             let submitButton = button as? NUXButton
 

@@ -34,7 +34,7 @@ class ExpandableCell: WPReusableTableViewCell {
                 transform = CGAffineTransform(rotationAngle: CGFloat.pi)
                 alpha = 1
             } else {
-                transform =  CGAffineTransform.identity
+                transform = CGAffineTransform.identity
                 alpha = 0
             }
 

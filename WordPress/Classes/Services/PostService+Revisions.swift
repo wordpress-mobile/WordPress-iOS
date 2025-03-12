@@ -23,7 +23,7 @@ extension PostService {
                                             for: postId.intValue,
                                             with: blogId.intValue
                                         )
-                                        ContextManager.sharedInstance().save(self.managedObjectContext, completion: success, on: .main)
+                                        ContextManager.shared.save(self.managedObjectContext, completion: success, on: .main)
                                     }
         }, failure: failure)
     }

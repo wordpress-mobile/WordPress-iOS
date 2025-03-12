@@ -182,11 +182,11 @@ public class WordPressComLanguageDatabase: NSObject {
     /// Keys used to parse the raw languages.
     ///
     fileprivate struct Keys {
-        static let popular      = "popular"
-        static let all          = "all"
-        static let identifier   = "i"
-        static let slug         = "s"
-        static let name         = "n"
+        static let popular = "popular"
+        static let all = "all"
+        static let identifier = "i"
+        static let slug = "s"
+        static let name = "n"
     }
 }
 

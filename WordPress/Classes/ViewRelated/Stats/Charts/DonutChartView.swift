@@ -178,7 +178,7 @@ class DonutChartView: UIView {
         // Here we'll increase the size of small segments if necessary. We loop through segments.count times
         // to ensure that after each adjustment the remaining segments are still an acceptable size.
         var displaySegments = adjustedSegmentsForDisplay(segments)
-        for _ in 0..<segments.count-1 {
+        for _ in 0..<segments.count - 1 {
             displaySegments = adjustedSegmentsForDisplay(displaySegments)
         }
 
@@ -203,7 +203,7 @@ class DonutChartView: UIView {
             currentTotal = segmentEndPercentage
 
             let startAngle = segmentStartPercentage.radiansFromPercent().radiansRotated(byDegrees: Constants.chartRotationDegrees) + endCapOffset
-            let endAngle =  segmentEndPercentage.radiansFromPercent().radiansRotated(byDegrees: Constants.chartRotationDegrees) - endCapOffset
+            let endAngle = segmentEndPercentage.radiansFromPercent().radiansRotated(byDegrees: Constants.chartRotationDegrees) - endCapOffset
 
             let path = UIBezierPath(arcCenter: chartCenterPoint,
                                     radius: chartRadius,

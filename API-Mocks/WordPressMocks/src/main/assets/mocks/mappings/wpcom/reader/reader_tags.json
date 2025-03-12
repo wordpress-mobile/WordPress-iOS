@@ -16,7 +16,7 @@
     "jsonBody": {
       "success": true,
       "tags": [
-        "travel"
+        "{{lookup request.query 'tags[]'}}"
       ],
       "sort": "date",
       "lang": "en",
@@ -73,7 +73,23 @@
             "height": 600
           },
           "format": "standard",
-          "tags": {},
+          "tags": {
+            "{{capitalize (lookup request.query 'tags[]')}}": {
+              "ID": 2290,
+              "name": "{{lookup request.query 'tags[]'}}",
+              "slug": "{{lookup request.query 'tags[]'}}",
+              "description": "",
+              "post_count": 24,
+              "parent": 0,
+              "meta": {
+                "links": {
+                  "self": "https://public-api.wordpress.com/rest/v1.1/sites/181977606/categories/slug:architecture",
+                  "help": "https://public-api.wordpress.com/rest/v/sites/181977606/categories/slug:architecture/help",
+                  "site": "https://public-api.wordpress.com/rest/v1.2/sites/181977606"
+                }
+              }
+            }
+          },
           "categories": {
             "Architecture": {
               "ID": 2290,
@@ -322,7 +338,7 @@
           }
         }
       ],
-      "next_page_handle": "ZnJvbT0xMCZiZWZvcmU9MjAyMy0wOC0yMlQwOSUzQTAyJTNBMTElMkIwOCUzQTAw",
+      "next_page_handle": null,
       "date_range": {
         "before": "2023-08-21T22:44:57-04:00",
         "after": "2023-08-22T09:02:11+08:00"

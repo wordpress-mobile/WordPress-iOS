@@ -17,18 +17,18 @@ class StatsBarChartView: BarChartView {
     // MARK: Properties
 
     private struct Constants {
-        static let intrinsicHeight          = CGFloat(150)
-        static let highlightAlpha           = CGFloat(1)
+        static let intrinsicHeight = CGFloat(150)
+        static let highlightAlpha = CGFloat(1)
         static let horizontalAxisLabelCount = 2
-        static let markerAlpha              = CGFloat(0.1)
-        static let presentationDelay        = TimeInterval(0.01)
-        static let primaryDataSetIndex      = 0
-        static let rotationDelay            = TimeInterval(0.35)
-        static let secondaryDataSetIndex    = 1
-        static let topOffsetSansLegend      = CGFloat(5)
-        static let topOffsetWithLegend      = CGFloat(16)
-        static let trailingOffset           = CGFloat(20)
-        static let verticalAxisLabelCount   = 5
+        static let markerAlpha = CGFloat(0.1)
+        static let presentationDelay = TimeInterval(0.01)
+        static let primaryDataSetIndex = 0
+        static let rotationDelay = TimeInterval(0.35)
+        static let secondaryDataSetIndex = 1
+        static let topOffsetSansLegend = CGFloat(5)
+        static let topOffsetWithLegend = CGFloat(16)
+        static let trailingOffset = CGFloat(20)
+        static let verticalAxisLabelCount = 5
     }
 
     /// Height for "stub" bars when a chart is empty, which is the height of the default chart.

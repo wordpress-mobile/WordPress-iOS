@@ -3,7 +3,7 @@ protocol RevisionsView: AnyObject {
 }
 
 final class ShowRevisionsListManger {
-    let context = ContextManager.sharedInstance().mainContext
+    let context = ContextManager.shared.mainContext
 
     private var isLoading = false
     private weak var revisionsView: RevisionsView?

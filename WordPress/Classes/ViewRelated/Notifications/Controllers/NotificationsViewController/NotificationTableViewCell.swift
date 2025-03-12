@@ -131,7 +131,7 @@ final class NotificationTableViewCell: HostingTableViewCell<NotificationsTableVi
 
     private func likeInlineActionIcon(filled: Bool) -> (image: Image, color: Color?) {
         let image: Image = Image.DS.icon(named: filled ? .starFill : .starOutline)
-        let color: Color? = filled ? AppColor.primary: nil
+        let color: Color? = filled ? AppColor.primary : nil
         return (image: image, color: color)
     }
 

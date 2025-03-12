@@ -29,7 +29,7 @@ public class WordPressComAccountService {
                  connectParameters: [String: AnyObject]? = nil,
                  success: @escaping () -> Void,
                  failure: @escaping (Error) -> Void) {
-        let loggedAPI  = WordPressComRestApi(oAuthToken: wpcomAuthToken,
+        let loggedAPI = WordPressComRestApi(oAuthToken: wpcomAuthToken,
                                              userAgent: configuration.userAgent,
                                              baseURL: configuration.wpcomAPIBaseURL)
         let remote = AccountServiceRemoteREST(wordPressComRestApi: loggedAPI)

@@ -93,7 +93,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         window.makeKeyAndVisible()
 
         // Restore a disassociated account prior to fixing tokens.
-        AccountService(coreDataStack: ContextManager.sharedInstance()).restoreDisassociatedAccountIfNecessary()
+        AccountService(coreDataStack: ContextManager.shared).restoreDisassociatedAccountIfNecessary()
 
         customizeAppearance()
         configureAnalytics()
@@ -290,7 +290,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func mergeDuplicateAccountsIfNeeded() {
-        AccountService(coreDataStack: ContextManager.sharedInstance()).mergeDuplicatesIfNecessary()
+        AccountService(coreDataStack: ContextManager.shared).mergeDuplicatesIfNecessary()
     }
 
     private func setupPingHub() {
@@ -721,7 +721,7 @@ extension WordPressAppDelegate {
 extension WordPressAppDelegate {
 
     func setupWordPressExtensions() {
-        let accountService = AccountService(coreDataStack: ContextManager.sharedInstance())
+        let accountService = AccountService(coreDataStack: ContextManager.shared)
         accountService.setupAppExtensionsWithDefaultAccount()
 
         let maxImagesize = MediaSettings().maxImageSizeSetting

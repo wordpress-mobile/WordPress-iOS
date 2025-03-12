@@ -7,17 +7,17 @@ import Foundation
 
 /// Characterizes the known types of notification types
 enum NotificationKind: String {
-    case comment        = "comment"
-    case commentLike    = "comment_like"
-    case follow         = "follow"
-    case like           = "like"
-    case matcher        = "automattcher"
-    case newPost        = "new_post"
-    case post           = "post"
-    case user           = "user"
-    case login          = "push_auth"
-    case viewMilestone  = "view_milestone"
-    case unknown        = "unknown"
+    case comment = "comment"
+    case commentLike = "comment_like"
+    case follow = "follow"
+    case like = "like"
+    case matcher = "automattcher"
+    case newPost = "new_post"
+    case post = "post"
+    case user = "user"
+    case login = "push_auth"
+    case viewMilestone = "view_milestone"
+    case unknown = "unknown"
 }
 
 extension NotificationKind {

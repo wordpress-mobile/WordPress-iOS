@@ -202,7 +202,7 @@ open class ThemeBrowserCell: UICollectionViewCell {
             return screenshotUrl
         }
 
-        var queryItems: [URLQueryItem] = components.queryItems ??  []
+        var queryItems: [URLQueryItem] = components.queryItems ?? []
 
         if let screenshotWidth = presenter?.screenshotWidth {
             queryItems.append(URLQueryItem(name: "w", value: "\(screenshotWidth)"))

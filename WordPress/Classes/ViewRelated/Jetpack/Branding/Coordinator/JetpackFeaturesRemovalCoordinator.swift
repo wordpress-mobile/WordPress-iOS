@@ -299,6 +299,6 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
     }
 
     private static func hasBlog() -> Bool {
-        Blog.count(in: ContextManager.sharedInstance().mainContext) > 0
+        Blog.count(in: ContextManager.shared.mainContext) > 0
     }
 }

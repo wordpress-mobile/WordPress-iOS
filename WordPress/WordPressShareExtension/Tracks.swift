@@ -10,8 +10,8 @@ open class Tracks {
     fileprivate let uploader: Uploader
 
     // MARK: - Constants
-    fileprivate static let version      = "1.0"
-    fileprivate static let userAgent    = "Nosara Extensions Client for iOS Mark " + version
+    fileprivate static let version = "1.0"
+    fileprivate static let userAgent = "Nosara Extensions Client for iOS Mark " + version
 
     // MARK: - Initializers
     init(appGroupName: String) {
@@ -21,7 +21,7 @@ open class Tracks {
     // MARK: - Public Methods
     open func track(_ eventName: String, properties: [String: Any]? = nil) {
         let prefixedEventName = "\(TracksConfiguration.eventNamePrefix)_\(eventName)"
-        let payload  = payloadWithEventName(prefixedEventName, properties: properties)
+        let payload = payloadWithEventName(prefixedEventName, properties: properties)
         uploader.send(payload)
 
         logInfo("🔵 Tracked: \(prefixedEventName), \(properties ?? [:])")
@@ -29,13 +29,13 @@ open class Tracks {
 
     // MARK: - Private Helpers
     fileprivate func payloadWithEventName(_ eventName: String, properties: [String: Any]?) -> [String: Any] {
-        let timestamp   = NSNumber(value: Int64(Date().timeIntervalSince1970 * 1000) as Int64)
-        let anonUserID  = UUID().uuidString
-        let device      = UIDevice.current
-        let bundle      = Bundle.main
-        let appName     = bundle.object(forInfoDictionaryKey: "CFBundleName") as? String
-        let appVersion  = bundle.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
-        let appCode     = bundle.object(forInfoDictionaryKey: "CFBundleVersion") as? String
+        let timestamp = NSNumber(value: Int64(Date().timeIntervalSince1970 * 1000) as Int64)
+        let anonUserID = UUID().uuidString
+        let device = UIDevice.current
+        let bundle = Bundle.main
+        let appName = bundle.object(forInfoDictionaryKey: "CFBundleName") as? String
+        let appVersion = bundle.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
+        let appCode = bundle.object(forInfoDictionaryKey: "CFBundleVersion") as? String
 
         // Main Payload
         var payload = [
@@ -43,9 +43,9 @@ open class Tracks {
             "_ts": timestamp,
             "_via_ua": Tracks.userAgent as Any,
             "_rt": timestamp,
-            "device_info_app_name": appName as Any?       ?? "WordPress" as Any,
-            "device_info_app_version": appVersion as Any?    ?? "Unknown",
-            "device_info_app_version_code": appCode       ?? "Unknown",
+            "device_info_app_name": appName as Any? ?? "WordPress" as Any,
+            "device_info_app_version": appVersion as Any? ?? "Unknown",
+            "device_info_app_version_code": appCode ?? "Unknown",
             "device_info_os": device.systemName,
             "device_info_os_version": device.systemVersion
         ] as [String: Any]
@@ -80,9 +80,9 @@ open class Tracks {
         fileprivate var session: Foundation.URLSession!
 
         // MARK: - Constants
-        fileprivate let tracksURL   = "https://public-api.wordpress.com/rest/v1.1/tracks/record"
-        fileprivate let httpMethod  = "POST"
-        fileprivate let headers     = [ "Content-Type": "application/json",
+        fileprivate let tracksURL = "https://public-api.wordpress.com/rest/v1.1/tracks/record"
+        fileprivate let httpMethod = "POST"
+        fileprivate let headers = [ "Content-Type": "application/json",
                                     "Accept": "application/json",
                                     "User-Agent": "WPiOS App Extension"]
 

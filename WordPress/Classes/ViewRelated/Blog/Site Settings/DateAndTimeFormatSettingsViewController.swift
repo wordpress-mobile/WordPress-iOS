@@ -203,7 +203,7 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
     // MARK: - Footer handler
 
     @objc fileprivate func handleLearnMoreTap(_ sender: UITapGestureRecognizer) {
-        guard let url =  URL(string: DateAndTimeFormatSettingsViewController.learnMoreUrl) else {
+        guard let url = URL(string: DateAndTimeFormatSettingsViewController.learnMoreUrl) else {
             return
         }
         let webViewController = WebViewControllerFactory.controller(url: url, source: "site_settings_date_time_format_learn_more")

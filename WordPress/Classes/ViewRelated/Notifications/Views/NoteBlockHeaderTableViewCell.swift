@@ -20,7 +20,7 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
     // MARK: - Public Properties
     @objc var headerTitle: String? {
         set {
-            headerTitleLabel.text  = newValue
+            headerTitleLabel.text = newValue
         }
         get {
             return headerTitleLabel.text
@@ -29,7 +29,7 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
 
     @objc var attributedHeaderTitle: NSAttributedString? {
         set {
-            headerTitleLabel.attributedText  = newValue
+            headerTitleLabel.attributedText = newValue
         }
         get {
             return headerTitleLabel.attributedText
@@ -47,7 +47,7 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
 
     @objc var attributedHeaderDetails: NSAttributedString? {
         set {
-            headerDetailsLabel.attributedText  = newValue
+            headerDetailsLabel.attributedText = newValue
         }
         get {
             return headerDetailsLabel.attributedText

@@ -166,7 +166,7 @@ extension PostEditor where Self: UIViewController {
             EditPostViewController.encode(post: post)
         }
         if context.hasChanges {
-            ContextManager.sharedInstance().saveContextAndWait(context)
+            ContextManager.shared.saveContextAndWait(context)
         }
     }
 
