@@ -9,15 +9,12 @@ extern NSString *const WPComDefaultAccountUrlKey;
 /// WordPress URL's
 ///
 extern NSString *const WPMobileReaderURL;
-extern NSString *const WPMobileReaderDetailURL;
-extern NSString *const WPAutomatticMainURL;
 extern NSString *const WPAutomatticTermsOfServiceURL;
 extern NSString *const WPAutomatticPrivacyURL;
 extern NSString *const WPAutomatticCCPAPrivacyNoticeURL;
 extern NSString *const WPAutomatticCookiesURL;
 extern NSString *const WPGithubMainURL;
 extern NSString *const WPComReferrerURL;
-extern NSString *const AutomatticDomain;
 extern NSString *const WPComDomain;
 
 /// Notifications Constants

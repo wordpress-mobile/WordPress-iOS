@@ -9,15 +9,12 @@ NSString *const WPComDefaultAccountUrlKey                           = @"AccountD
 /// WordPress URL's
 ///
 NSString *const WPMobileReaderURL                                   = @"https://en.wordpress.com/reader/mobile/v2/?chrome=no";
-NSString *const WPMobileReaderDetailURL                             = @"https://en.wordpress.com/reader/mobile/v2/?template=details";
-NSString *const WPAutomatticMainURL                                 = @"https://automattic.com/";
 NSString *const WPAutomatticTermsOfServiceURL                       = @"https://wordpress.com/tos/";
 NSString *const WPAutomatticPrivacyURL                              = @"https://automattic.com/privacy/";
 NSString *const WPAutomatticCCPAPrivacyNoticeURL                    = @"https://automattic.com/privacy/#california-consumer-privacy-act-ccpa";
 NSString *const WPAutomatticCookiesURL                              = @"https://automattic.com/cookies/";
 NSString *const WPGithubMainURL                                     = @"https://github.com/wordpress-mobile/WordPress-iOS/";
 NSString *const WPComReferrerURL                                    = @"https://wordpress.com";
-NSString *const AutomatticDomain                                    = @"automattic.com";
 NSString *const WPComDomain                                         = @"wordpress.com";
 
 /// Keychain Constants
