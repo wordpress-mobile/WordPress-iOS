@@ -3319,7 +3319,6 @@
 			};
 			membershipExceptions = (
 				"Extensions/Colors and Styles/WPStyleGuide+ApplicationStyles.swift",
-				"Extensions/Colors and Styles/WPStyleGuide+Gridicon.swift",
 				"Extensions/NSAttributedStringKey+Conversion.swift",
 				"Extensions/String+RegEx.swift",
 				"Extensions/UIApplication+mainWindow.swift",
@@ -3356,7 +3355,6 @@
 			};
 			membershipExceptions = (
 				"Extensions/Colors and Styles/WPStyleGuide+ApplicationStyles.swift",
-				"Extensions/Colors and Styles/WPStyleGuide+Gridicon.swift",
 				"Extensions/NSAttributedStringKey+Conversion.swift",
 				"Extensions/String+RegEx.swift",
 				"Extensions/UIApplication+mainWindow.swift",
@@ -3465,7 +3463,6 @@
 			};
 			membershipExceptions = (
 				"Extensions/Colors and Styles/WPStyleGuide+ApplicationStyles.swift",
-				"Extensions/Colors and Styles/WPStyleGuide+Gridicon.swift",
 				"Extensions/NSAttributedStringKey+Conversion.swift",
 				"Extensions/String+RegEx.swift",
 				"Extensions/UIApplication+mainWindow.swift",
@@ -3500,7 +3497,6 @@
 			};
 			membershipExceptions = (
 				"Extensions/Colors and Styles/WPStyleGuide+ApplicationStyles.swift",
-				"Extensions/Colors and Styles/WPStyleGuide+Gridicon.swift",
 				"Extensions/NSAttributedStringKey+Conversion.swift",
 				"Extensions/String+RegEx.swift",
 				"Extensions/UIApplication+mainWindow.swift",
