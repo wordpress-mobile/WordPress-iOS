@@ -34,14 +34,6 @@ import WordPressKit
     #endif
 }
 
-// MARK: - Tab bar order
-@objc enum WPTab: Int {
-    case mySites
-    case reader
-    case notifications
-    case me
-}
-
 // MARK: - Localized Strings
 extension AppConstants {
 

@@ -1,6 +1,11 @@
 // MARK: - Tab Access Tracking
 
-fileprivate extension WPTab {
+@objc enum WPTab: Int {
+    case mySites
+    case reader
+    case notifications
+    case me
+
     var hasStaticScreen: Bool {
         switch self {
         case .reader:
