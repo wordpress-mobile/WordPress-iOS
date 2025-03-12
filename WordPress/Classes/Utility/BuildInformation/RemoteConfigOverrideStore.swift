@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 /// Used to override values for remote config parameters at runtime in debug builds
 ///

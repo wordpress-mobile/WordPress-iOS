@@ -1,3 +1,5 @@
+import WordPressShared
+
 protocol UserPersistentRepositoryReader {
     func string(forKey key: String) -> String?
     func bool(forKey key: String) -> Bool

@@ -1,5 +1,6 @@
 import Foundation
 import AVFoundation
+import WordPressShared
 
 class MediaSettings: NSObject {
     // MARK: - Constants

@@ -1,3 +1,4 @@
+import WordPressShared
 import XCTest
 import Nimble
 

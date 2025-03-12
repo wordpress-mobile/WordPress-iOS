@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 // Protocol allows easier unit testing, so we can implement mock
 // feature flags to use in test cases.

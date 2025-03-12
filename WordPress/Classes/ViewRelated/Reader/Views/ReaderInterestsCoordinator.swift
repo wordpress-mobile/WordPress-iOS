@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 class ReaderSelectInterestsCoordinator {
     private let interestsService: ReaderFollowedInterestsService
