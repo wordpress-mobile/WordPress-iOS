@@ -2,6 +2,7 @@ import XCTest
 import OHHTTPStubs
 import OHHTTPStubsSwift
 import CoreData
+import WordPressShared
 
 @testable import WordPress
 
