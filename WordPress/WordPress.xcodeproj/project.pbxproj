@@ -2684,7 +2684,6 @@
 		8511CFC41C60884400B7CEED /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
 		8511CFC61C60894200B7CEED /* WordPressScreenshotGeneration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WordPressScreenshotGeneration.swift; sourceTree = "<group>"; };
 		8527B15717CE98C5001CBA2E /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
-		8546B44C1BEAD3EC00193C07 /* Wordpress-Alpha-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Wordpress-Alpha-Info.plist"; sourceTree = "<group>"; };
 		8546B44E1BEAD48900193C07 /* WordPress-Alpha.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "WordPress-Alpha.entitlements"; sourceTree = "<group>"; };
 		855408851A6F105700DDBD79 /* app-review-prompt-all-enabled.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "app-review-prompt-all-enabled.json"; sourceTree = "<group>"; };
 		855408871A6F106800DDBD79 /* app-review-prompt-notifications-disabled.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "app-review-prompt-notifications-disabled.json"; sourceTree = "<group>"; };
@@ -2718,7 +2717,6 @@
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		91BE834D2C48FF0F00BB5B3B /* UIImageView+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Additions.swift"; sourceTree = "<group>"; };
 		91CFB9542CE21196005CD369 /* URLHelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLHelpersTests.swift; sourceTree = "<group>"; };
-		930C6374182BD86400976C21 /* WordPress-Internal-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "WordPress-Internal-Info.plist"; sourceTree = "<group>"; };
 		930FD0A519882742000CC81D /* BlogServiceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogServiceTest.m; sourceTree = "<group>"; };
 		931215E0267DE1C0008C3B69 /* StatsTotalRowDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsTotalRowDataTests.swift; sourceTree = "<group>"; };
 		931D26FF19EDAE8600114F17 /* CoreDataMigrationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataMigrationTests.m; sourceTree = "<group>"; };
@@ -4254,8 +4252,6 @@
 				8D1107310486CEB800E47090 /* Info.plist */,
 				931DF4D818D09A2F00540BDD /* InfoPlist.strings */,
 				E1D91454134A853D0089019C /* Localizable.strings */,
-				930C6374182BD86400976C21 /* WordPress-Internal-Info.plist */,
-				8546B44C1BEAD3EC00193C07 /* Wordpress-Alpha-Info.plist */,
 				80293CF6284450AD0083F946 /* WordPress-Swift.h */,
 				4A690C142BA790BC00A8E0C5 /* PrivacyInfo.xcprivacy */,
 			);
@@ -11883,7 +11879,7 @@
 					"$(inherited)",
 					/usr/include/libxml2,
 				);
-				INFOPLIST_FILE = "WordPress-Alpha-Info.plist";
+				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				JP_SCHEME = jpalpha;
