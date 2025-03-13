@@ -459,4 +459,3 @@ struct DefaultCurrentDateProvider: CurrentDateProvider {
         return Date()
     }
 }
-
