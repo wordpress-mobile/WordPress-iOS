@@ -1,3 +1,6 @@
 #include "Common.xcconfig"
 
 DEVELOPMENT_TEAM = 99KV9Z6BKV
+
+WP_APP_GROUP_NAME = group.org.wordpress.alpha
+WP_APP_KEYCHAIN_ACCESS_GROUP = 99KV9Z6BKV.org.wordpress.alpha
