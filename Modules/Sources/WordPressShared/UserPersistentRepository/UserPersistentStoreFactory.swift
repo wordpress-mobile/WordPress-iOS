@@ -6,13 +6,13 @@ import Foundation
 /// If it is evident that this kind of thing is no longer needed after migration is complete, we can remove this
 /// and update call-sites to call `standard` directly.
 @objc
-final class UserPersistentStoreFactory: NSObject {
-    static func instance() -> UserPersistentRepository {
+public final class UserPersistentStoreFactory: NSObject {
+    public static func instance() -> UserPersistentRepository {
         UserDefaults.standard
     }
 
     @objc
-    static func userDefaultsInstance() -> UserDefaults {
+    public static func userDefaultsInstance() -> UserDefaults {
         return UserDefaults.standard
     }
 }

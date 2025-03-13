@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 enum StatsTabType: Int, FilterTabBarItem, CaseIterable {
     case insights = 0

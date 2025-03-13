@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 // A protocol to constrain Site Stats pinned items together
 protocol SiteStatsPinnable { /* not implemented */ }

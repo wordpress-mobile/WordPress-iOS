@@ -1,3 +1,5 @@
+import WordPressShared
+
 /// Encapsulates logic related to content migration from WordPress to Jetpack.
 ///
 @objc class ContentMigrationCoordinator: NSObject {

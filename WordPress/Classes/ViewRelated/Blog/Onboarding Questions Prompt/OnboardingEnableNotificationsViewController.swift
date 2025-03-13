@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 class OnboardingEnableNotificationsViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!

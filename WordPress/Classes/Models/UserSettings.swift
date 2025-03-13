@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 struct UserSettings {
     /// Stores all `UserSettings` keys.

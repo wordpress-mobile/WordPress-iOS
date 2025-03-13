@@ -1,5 +1,6 @@
 import SwiftUI
 import AutomatticTracks
+import WordPressShared
 
 extension PostSettingsViewController {
 

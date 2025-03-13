@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 protocol RootViewPresenter: AnyObject {
     var rootViewController: UIViewController { get }

@@ -1,5 +1,6 @@
 import Foundation
 import Security
+import WordPressShared
 
 private let keychainDebugWipeArgument = "WipeKeychainItem"
 

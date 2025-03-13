@@ -1,5 +1,6 @@
 import Foundation
 import WordPressKit
+import WordPressShared
 
 /// This service encapsulates the Restful API related to WordPress Notifications.
 ///

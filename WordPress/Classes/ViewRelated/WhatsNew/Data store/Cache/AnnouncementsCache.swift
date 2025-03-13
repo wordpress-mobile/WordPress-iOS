@@ -1,4 +1,5 @@
 import WordPressKit
+import WordPressShared
 
 /// Generic feature announcement cache
 protocol AnnouncementsCache {

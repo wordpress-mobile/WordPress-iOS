@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 struct AppUpdateType {
     let appStoreInfo: AppStoreLookupResponse.AppStoreInfo

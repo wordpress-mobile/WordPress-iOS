@@ -1,3 +1,5 @@
+import WordPressShared
+
 // MARK: - Push Notification Primer
 //
 extension NotificationsViewController {
