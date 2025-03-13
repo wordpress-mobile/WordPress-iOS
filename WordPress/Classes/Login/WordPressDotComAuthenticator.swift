@@ -32,6 +32,7 @@ struct WordPressDotComAuthenticator {
     enum AuthenticationError: Error {
         case invalidCallbackURL
         case loginDenied(message: String)
+        case loginAgainRejected
         case obtainAccessToken
         case urlError(URLError)
         case parsing(DecodingError)
@@ -168,7 +169,8 @@ struct WordPressDotComAuthenticator {
     func authenticate(
         from viewController: UIViewController,
         prefersEphemeralWebBrowserSession: Bool,
-        accountEmail: String? = nil
+        accountEmail: String? = nil,
+        recoverDenyAccess: Bool = true
     ) async throws(AuthenticationError) -> String {
         let clientId = ApiCredentials.client
         let clientSecret = ApiCredentials.secret
@@ -192,7 +194,42 @@ struct WordPressDotComAuthenticator {
 
         let callbackURL = try await authorize(from: viewController, url: authorizeURL, prefersEphemeralWebBrowserSession: prefersEphemeralWebBrowserSession)
 
-        return try await handleAuthorizeCallbackURL(callbackURL, clientId: clientId, clientSecret: clientSecret, redirectURI: redirectURI)
+        let theError: AuthenticationError
+        do {
+            return try await handleAuthorizeCallbackURL(callbackURL, clientId: clientId, clientSecret: clientSecret, redirectURI: redirectURI)
+        } catch {
+            theError = error
+        }
+
+        guard case let .loginDenied(alertMessage) = theError, recoverDenyAccess else {
+            throw theError
+        }
+
+        // Try to re-authenticate when user taps the "Deny" button.
+        let reLogin = await withCheckedContinuation { continuation in
+            DispatchQueue.main.async {
+                let alert = UIAlertController(
+                    title: NSLocalizedString("generic.error.title", value: "Error", comment: "A generic title for an error"),
+                    message: alertMessage,
+                    preferredStyle: .alert
+                )
+                alert.addAction(UIAlertAction(title: SharedStrings.Button.close, style: .cancel) { _ in
+                    continuation.resume(returning: false)
+                })
+
+                let retry = NSLocalizedString("wpComLogin.alert.button.reLogin", value: "Log in with a different account", comment: "Button title for logging in with a different WordPress.com account")
+                alert.addAction(UIAlertAction(title: retry, style: .default) { _ in
+                    continuation.resume(returning: true)
+                })
+                viewController.present(alert, animated: true)
+            }
+        }
+
+        guard reLogin else {
+            throw .loginAgainRejected
+        }
+
+        return try await self.authenticate(from: viewController, prefersEphemeralWebBrowserSession: true, accountEmail: accountEmail, recoverDenyAccess: false)
     }
 
     private func authorize(from viewController: UIViewController, url authorizeURL: URL, prefersEphemeralWebBrowserSession: Bool) async throws(AuthenticationError) -> URL {
@@ -320,6 +357,9 @@ private extension WordPressDotComAuthenticator.AuthenticationError {
         case .cancelled:
             // `.cancelled` error is thrown when user taps the cancel button in the presented Safari view controller.
             // No need to show an alert for this error.
+            return nil
+        case .loginAgainRejected:
+            // This error is originated from an alert. We don't need to show another alert for the error.
             return nil
         case let .loginDenied(message):
             return message
