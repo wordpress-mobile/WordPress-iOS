@@ -3282,7 +3282,6 @@
 		24CE68AE2CD3375300C7B37D /* Exceptions for "Classes" folder in "WordPress" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				"Utility/Migrations/20-21/SafeReaderTopicToReaderTopic.m",
 				"ViewRelated/Me/All Domains/Coordinators/AllDomainsAddDomainCoordinator.swift",
 				"ViewRelated/Me/All Domains/View Models/AllDomainsListViewModel.swift",
 				"ViewRelated/Me/All Domains/View Models/AllDomainsListViewModel+Strings.swift",
@@ -3388,7 +3387,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Extensions/UIApplication+mainWindow.swift",
-				"Utility/Migrations/20-21/SafeReaderTopicToReaderTopic.m",
 			);
 			target = E16AB92914D978240047A2E5 /* WordPressTest */;
 		};
@@ -3406,7 +3404,6 @@
 				"Utility/App Configuration/AppConstants.swift",
 				"Utility/App Configuration/AppDependency.swift",
 				"Utility/App Configuration/ExtensionConfiguration.swift",
-				"Utility/Migrations/20-21/SafeReaderTopicToReaderTopic.m",
 			);
 			target = FABB1F8F2602FC2C00C8785C /* Jetpack */;
 		};
