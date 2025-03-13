@@ -2759,8 +2759,6 @@
 		93A379EB19FFBF7900415023 /* KeychainTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainTest.m; sourceTree = "<group>"; };
 		93A3F7DD1843F6F00082FEEA /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		93B853221B4416A30064FE72 /* WPAnalyticsTrackerAutomatticTracksTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAnalyticsTrackerAutomatticTracksTests.m; sourceTree = "<group>"; };
-		93C3C2561CAB031E0092F837 /* Info-Internal.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Info-Internal.plist"; path = "WordPressShareExtension/Info-Internal.plist"; sourceTree = SOURCE_ROOT; };
-		93C3C2581CAB032C0092F837 /* Info-Alpha.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Info-Alpha.plist"; path = "WordPressShareExtension/Info-Alpha.plist"; sourceTree = SOURCE_ROOT; };
 		93C882981EEB18D700227A59 /* html_page_with_link_to_rsd_non_standard.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = html_page_with_link_to_rsd_non_standard.html; sourceTree = "<group>"; };
 		93C882991EEB18D700227A59 /* html_page_with_link_to_rsd.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = html_page_with_link_to_rsd.html; sourceTree = "<group>"; };
 		93C8829A1EEB18D700227A59 /* plugin_redirect.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = plugin_redirect.html; sourceTree = "<group>"; };
@@ -6041,8 +6039,6 @@
 			isa = PBXGroup;
 			children = (
 				B50248B91C96FFCC00AFBDED /* Info.plist */,
-				93C3C2581CAB032C0092F837 /* Info-Alpha.plist */,
-				93C3C2561CAB031E0092F837 /* Info-Internal.plist */,
 				B50248BD1C96FFCC00AFBDED /* WordPressShare.entitlements */,
 				B50248BA1C96FFCC00AFBDED /* WordPressShare-Alpha.entitlements */,
 				B50248BB1C96FFCC00AFBDED /* WordPressShare-Internal.entitlements */,
@@ -12022,7 +12018,7 @@
 					"\"${PODS_ROOT}/Headers/Public/HockeySDK\"",
 					"\"$(SDKROOT)/usr/include/libxml2/\"",
 				);
-				INFOPLIST_FILE = WordPressShareExtension/Info.plist;
+				INFOPLIST_FILE = "WordPressShareExtension/Info.plist\n";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -12089,7 +12085,7 @@
 					"\"${PODS_ROOT}/Headers/Public/HockeySDK\"",
 					"\"$(SDKROOT)/usr/include/libxml2/\"",
 				);
-				INFOPLIST_FILE = WordPressShareExtension/Info.plist;
+				INFOPLIST_FILE = "WordPressShareExtension/Info.plist\n";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -12155,7 +12151,7 @@
 					"\"${PODS_ROOT}/Headers/Public/HockeySDK\"",
 					"\"$(SDKROOT)/usr/include/libxml2/\"",
 				);
-				INFOPLIST_FILE = "WordPressShareExtension/Info-Alpha.plist";
+				INFOPLIST_FILE = "WordPressShareExtension/Info.plist\n";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
