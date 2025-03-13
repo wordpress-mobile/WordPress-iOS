@@ -1,3 +1,5 @@
+import WordPressShared
+
 @objcMembers
 final class SharedDataIssueSolver: NSObject {
 
@@ -36,17 +38,18 @@ final class SharedDataIssueSolver: NSObject {
     ///
     func migrateAuthKey(for username: String) {
         guard AppConfiguration.isJetpack,
-              let token = try? keychainUtils.password(for: username, serviceName: WPAccountConstants.authToken.rawValue) else {
+              let token = try? keychainUtils.getPassword(for: username, serviceName: WPAccountConstants.authToken.rawValue) else {
             return
         }
 
         // If the token has already been migrated, no need to resolve the issue again.
         // There might also be a possibility that the user logged in to JP by themselves. In which, we won't need to migrate.
-        if let _ = try? keychainUtils.password(for: username, serviceName: WPAccountConstants.authToken.valueForJetpack) {
+        if let _ = try? keychainUtils.getPassword(for: username, serviceName: WPAccountConstants.authToken.valueForJetpack) {
             return
         }
 
         // if authToken for the account username exists, move it to the authToken location for JP.
+        // FIXME: This should be done via a `KeychainAccessible` method
         try? keychainUtils.store(username: username,
                                  password: token,
                                  serviceName: WPAccountConstants.authToken.valueForJetpack,

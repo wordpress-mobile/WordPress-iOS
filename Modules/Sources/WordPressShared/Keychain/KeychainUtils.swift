@@ -1,12 +1,11 @@
 import SFHFKeychainUtils
-import WordPressShared
 
 @objcMembers
-class KeychainUtils: NSObject {
+public class KeychainUtils: NSObject {
 
     private let keychainUtils: SFHFKeychainUtils.Type
 
-    init(keychainUtils: SFHFKeychainUtils.Type = SFHFKeychainUtils.self) {
+    public init(keychainUtils: SFHFKeychainUtils.Type = SFHFKeychainUtils.self) {
         self.keychainUtils = keychainUtils
     }
 
@@ -30,7 +29,8 @@ class KeychainUtils: NSObject {
         return try keychainUtils.getPasswordForUsername(username, andServiceName: serviceName, accessGroup: accessGroup)
     }
 
-    func store(username: String, password: String, serviceName: String, accessGroup: String? = nil, updateExisting: Bool) throws {
+    // FIXME: Might become internal once all consumers interface with this via `KeychainAccessible`
+    public func store(username: String, password: String, serviceName: String, accessGroup: String? = nil, updateExisting: Bool) throws {
         return try keychainUtils.storeUsername(username,
                                                andPassword: password,
                                                forServiceName: serviceName,
@@ -40,11 +40,11 @@ class KeychainUtils: NSObject {
 }
 
 extension KeychainUtils: KeychainAccessible {
-    func getPassword(for username: String, serviceName: String) throws -> String {
+    public func getPassword(for username: String, serviceName: String) throws -> String {
         try self.keychainUtils.getPasswordForUsername(username, andServiceName: serviceName)
     }
 
-    func setPassword(for username: String, to newValue: String?, serviceName: String) throws {
+    public func setPassword(for username: String, to newValue: String?, serviceName: String) throws {
         if let newValue {
             try keychainUtils.storeUsername(username, andPassword: newValue, forServiceName: serviceName, updateExisting: true)
         } else {
