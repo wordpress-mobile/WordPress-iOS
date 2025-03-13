@@ -40,21 +40,4 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
     return _wordPressUserAgent;
 }
 
-+ (void)useWordPressUserAgentInWebViews
-{
-    // Cleanup unused NSUserDefaults keys from older WPUserAgent implementation
-    [[UserPersistentStoreFactory userDefaultsInstance] removeObjectForKey:@"DefaultUserAgent"];
-    [[UserPersistentStoreFactory userDefaultsInstance] removeObjectForKey:@"AppUserAgent"];
-
-    NSString *userAgent = [self wordPressUserAgent];
-
-    NSParameterAssert([userAgent isKindOfClass:[NSString class]]);
-    
-    NSDictionary *dictionary = @{WPUserAgentKeyUserAgent: userAgent};
-    // We have to call registerDefaults else the change isn't picked up by WKWebViews.
-    [[UserPersistentStoreFactory userDefaultsInstance] registerDefaults:dictionary];
-    
-    DDLogVerbose(@"User-Agent set to: %@", userAgent);
-}
-
 @end

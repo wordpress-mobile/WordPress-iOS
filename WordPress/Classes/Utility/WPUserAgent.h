@@ -16,9 +16,4 @@
  */
 + (NSString *)wordPressUserAgent;
 
-/**
- *  @brief      Sets User-Agent header of all web views to be the WordPress one.
- */
-+ (void)useWordPressUserAgentInWebViews;
-
 @end

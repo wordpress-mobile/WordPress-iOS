@@ -54,26 +54,6 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
     XCTAssertEqual([regex numberOfMatchesInString:userAgent options:0 range:NSMakeRange(0, userAgent.length)], 1);
 }
 
-- (void)testUseWordPressUserAgentInWebViews
-{
-    NSString *defaultUA = [WPUserAgent defaultUserAgent];
-    NSString *wordPressUA = [WPUserAgent wordPressUserAgent];
-
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:WPUserAgentKeyUserAgent];
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{WPUserAgentKeyUserAgent: defaultUA}];
-
-    XCTAssertEqualObjects([self currentUserAgentFromUserDefaults], defaultUA);
-    XCTAssertEqualObjects([self currentUserAgentFromWebView], defaultUA);
-
-    if (@available(iOS 17, *)) {
-        XCTSkip("In iOS 17, WKWebView no longer reads User Agent from UserDefaults. Skipping while working on an alternative setup.");
-    }
-
-    [WPUserAgent useWordPressUserAgentInWebViews];
-    XCTAssertEqualObjects([self currentUserAgentFromUserDefaults], wordPressUA);
-    XCTAssertEqualObjects([self currentUserAgentFromWebView], wordPressUA);
-}
-
 - (void)testThatOriginalRemovalOfWPUseKeyUserAgentDoesntWork {
     if (@available(iOS 17, *)) {
         XCTSkip("In iOS 17, WKWebView no longer reads User Agent from UserDefaults. Skipping while working on an alternative setup.");
