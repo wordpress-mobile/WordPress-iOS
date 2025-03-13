@@ -2591,8 +2591,6 @@
 		74AF4D711FE417D200E3EBFE /* PostUploadOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostUploadOperation.swift; sourceTree = "<group>"; };
 		74B335EB1F06F9520053A184 /* MockWordPressComRestApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockWordPressComRestApi.swift; sourceTree = "<group>"; };
 		74BC35B720499EEB00AC1525 /* RemotePostCategory+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemotePostCategory+Extensions.swift"; sourceTree = "<group>"; };
-		74CC4311202B5AA4000DAE1A /* Info-Alpha.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-Alpha.plist"; sourceTree = "<group>"; };
-		74CC4312202B5AA4000DAE1A /* Info-Internal.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-Internal.plist"; sourceTree = "<group>"; };
 		74CC4313202B5AA4000DAE1A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		74CEF0761F9AA0F700B729CA /* ShareExtensionSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareExtensionSessionManager.swift; sourceTree = "<group>"; };
 		74D6DA90202B651300A0E1FE /* WordPressDraftActionExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WordPressDraftActionExtension.entitlements; sourceTree = "<group>"; };
@@ -2655,8 +2653,6 @@
 		8096212A28E553A500940A5D /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8096218528E55C9400940A5D /* JetpackDraftActionExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = JetpackDraftActionExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		8096218828E55D2400940A5D /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8096218928E55D2400940A5D /* Info-Internal.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-Internal.plist"; sourceTree = "<group>"; };
-		8096218A28E55D2400940A5D /* Info-Alpha.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-Alpha.plist"; sourceTree = "<group>"; };
 		809A91022A7A4C710063D4FA /* NotificationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTests.swift; sourceTree = "<group>"; };
 		80B016CE27FEBDC900D15566 /* DashboardCardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardCardTests.swift; sourceTree = "<group>"; };
 		80B42ABE2AB2CB1300377607 /* PagesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagesTests.swift; sourceTree = "<group>"; };
@@ -5444,8 +5440,6 @@
 			children = (
 				099D768127D14B8E00F77EDE /* InfoPlist.strings */,
 				74CC4313202B5AA4000DAE1A /* Info.plist */,
-				74CC4312202B5AA4000DAE1A /* Info-Internal.plist */,
-				74CC4311202B5AA4000DAE1A /* Info-Alpha.plist */,
 				74D6DA90202B651300A0E1FE /* WordPressDraftActionExtension.entitlements */,
 				74D6DA92202B669100A0E1FE /* WordPressDraftActionExtension-Alpha.entitlements */,
 				74D6DA91202B669100A0E1FE /* WordPressDraftActionExtension-Internal.entitlements */,
@@ -5609,8 +5603,6 @@
 		8096218728E55CB800940A5D /* JetpackDraftActionExtension */ = {
 			isa = PBXGroup;
 			children = (
-				8096218A28E55D2400940A5D /* Info-Alpha.plist */,
-				8096218928E55D2400940A5D /* Info-Internal.plist */,
 				8096218828E55D2400940A5D /* Info.plist */,
 				8058730D28F7B70B00340C11 /* InfoPlist.strings */,
 			);
@@ -11148,7 +11140,7 @@
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				INFOPLIST_FILE = "WordPressDraftActionExtension/Info-Alpha.plist";
+				INFOPLIST_FILE = WordPressDraftActionExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -11509,7 +11501,7 @@
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				INFOPLIST_FILE = "JetpackDraftActionExtension/Info-Alpha.plist";
+				INFOPLIST_FILE = JetpackDraftActionExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
