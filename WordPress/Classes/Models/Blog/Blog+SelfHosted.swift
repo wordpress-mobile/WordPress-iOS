@@ -1,6 +1,7 @@
 import Foundation
 import CryptoKit
 import WordPressAPI
+import WordPressShared
 
 extension Blog {
 

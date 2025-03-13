@@ -1,4 +1,5 @@
 import SFHFKeychainUtils
+import WordPressShared
 
 @objcMembers
 class KeychainUtils: NSObject {
@@ -50,9 +51,4 @@ extension KeychainUtils: KeychainAccessible {
             try keychainUtils.deleteItem(forUsername: username, andServiceName: serviceName)
         }
     }
-}
-
-protocol KeychainAccessible {
-    func getPassword(for username: String, serviceName: String) throws -> String
-    func setPassword(for username: String, to newValue: String?, serviceName: String) throws
 }
