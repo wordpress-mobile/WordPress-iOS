@@ -1,5 +1,5 @@
 import Foundation
-import BuildSettings
+import BuildSettingsKit
 import SFHFKeychainUtils
 
 @objc
@@ -7,10 +7,14 @@ open class ShareExtensionService: NSObject {
     private let appGroupName: String
     private let appKeychainAccessGroup: String
 
-    public override init(
-        appGroupName: String = BuildSettings.appGroupName,
-        appKeychainAccessGroup: String = BuildSettings.appKeychainAccessGroup
-    ) {
+    @objc public convenience override init() {
+        self.init(
+            appGroupName: BuildSettings.appGroupName,
+            appKeychainAccessGroup: BuildSettings.appKeychainAccessGroup
+        )
+    }
+
+    public init(appGroupName: String, appKeychainAccessGroup: String) {
         self.appGroupName = appGroupName
         self.appKeychainAccessGroup = appKeychainAccessGroup
     }

@@ -59,7 +59,7 @@ let package = Package(
             .product(name: "Collections", package: "swift-collections"),
             .product(name: "Gifu", package: "Gifu"),
         ]),
-        .target(name: "BuildSettings"),
+        .target(name: "BuildSettingsKit"),
         .target(name: "DesignSystem", swiftSettings: [.swiftLanguageMode(.v5)]),
         .target(name: "JetpackStatsWidgetsCore", swiftSettings: [.swiftLanguageMode(.v5)]),
         // SFHFKeychainUtils is an old Objective-C keychain wrapper.
@@ -152,7 +152,7 @@ enum XcodeSupport {
 
     static var targets: [Target] {
         let wordPresAuthentificatorDependencies: [Target.Dependency] = [
-            "BuildSettings",
+            "BuildSettingsKit",
             "WordPressShared",
             "WordPressUI",
             .product(name: "Gridicons", package: "Gridicons-iOS"),
@@ -164,7 +164,7 @@ enum XcodeSupport {
         ]
 
         let shareAndDraftExtensionsDependencies: [Target.Dependency] = [
-            "BuildSettings",
+            "BuildSettingsKit",
             "SFHFKeychainUtils",
             "WordPressShared",
             "WordPressUI",
@@ -188,7 +188,7 @@ enum XcodeSupport {
         return [
             .xcodeTarget("XcodeTarget_App", dependencies: [
                 "DesignSystem",
-                "BuildSettings",
+                "BuildSettingsKit",
                 "JetpackStatsWidgetsCore",
                 "SFHFKeychainUtils",
                 "WordPressData",
