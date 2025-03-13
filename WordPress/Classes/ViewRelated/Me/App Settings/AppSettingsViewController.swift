@@ -152,7 +152,7 @@ class AppSettingsViewController: UITableViewController {
     @objc func imageSizeChanged() -> (Int) -> Void {
         return { value in
             MediaSettings().maxImageSizeSetting = value
-            ShareExtensionService.configureShareExtensionMaximumMediaDimension(value)
+            ShareExtensionService().configureShareExtensionMaximumMediaDimension(value)
 
             self.debounce(#selector(self.trackImageSizeChanged), afterDelay: 0.5)
         }

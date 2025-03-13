@@ -236,7 +236,7 @@ private extension TypeBasedExtensionContentExtractor {
     /// Maximum Image Size
     ///
     var maximumImageSize: CGSize {
-        let dimension = ShareExtensionService.retrieveShareExtensionMaximumMediaDimension() ?? Constants.defaultMaxDimension
+        let dimension = ShareExtensionService().retrieveShareExtensionMaximumMediaDimension() ?? Constants.defaultMaxDimension
         return CGSize(width: dimension, height: dimension)
     }
 

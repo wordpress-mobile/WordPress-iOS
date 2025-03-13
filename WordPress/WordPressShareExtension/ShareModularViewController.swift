@@ -796,7 +796,7 @@ fileprivate extension ShareModularViewController {
 
         // Next, save the selected site for later use
         if let selectedSiteName = shareData.selectedSiteName {
-            ShareExtensionService.configureShareExtensionLastUsedSiteID(siteID, lastUsedSiteName: selectedSiteName)
+            ShareExtensionService().configureShareExtensionLastUsedSiteID(siteID, lastUsedSiteName: selectedSiteName)
         }
 
         // Then proceed uploading the actual post

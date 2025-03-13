@@ -404,9 +404,11 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     NSNumber *siteId    = defaultBlog.dotComID;
     NSString *blogName  = defaultBlog.settings.name;
 
+    ShareExtensionService* shareExtensionService = [ShareExtensionService new];
+
     if (defaultBlog == nil || defaultBlog.isDeleted) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [ShareExtensionService removeShareExtensionConfiguration];
+            [shareExtensionService removeShareExtensionConfiguration];
 
             [NotificationSupportService deleteServiceExtensionToken];
         });
@@ -414,9 +416,9 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         dispatch_async(dispatch_get_main_queue(), ^{
             WPAccount *defaultAccount = [self.coreDataStack.mainContext existingObjectWithID:defaultAccountObjectID error:nil];
 
-            [ShareExtensionService configureShareExtensionDefaultSiteID:siteId.integerValue defaultSiteName:blogName];
-            [ShareExtensionService configureShareExtensionToken:defaultAccount.authToken];
-            [ShareExtensionService configureShareExtensionUsername:defaultAccount.username];
+            [shareExtensionService configureShareExtensionDefaultSiteID:siteId.integerValue defaultSiteName:blogName];
+            [shareExtensionService configureShareExtensionToken:defaultAccount.authToken];
+            [shareExtensionService configureShareExtensionUsername:defaultAccount.username];
 
             [NotificationSupportService insertServiceExtensionToken:defaultAccount.authToken];
             [NotificationSupportService insertServiceExtensionUsername:defaultAccount.username];

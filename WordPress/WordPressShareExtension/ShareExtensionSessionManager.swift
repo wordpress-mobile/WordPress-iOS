@@ -245,7 +245,7 @@ import WordPressFlux
     }
 
     private func token() -> String? {
-        return ShareExtensionService.retrieveShareExtensionToken()
+        return ShareExtensionService().retrieveShareExtensionToken()
     }
 
     private func updateMedia(postID: Int64?, siteID: Int64, onComplete: CompletionBlock?) {

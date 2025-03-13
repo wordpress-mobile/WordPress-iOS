@@ -726,7 +726,7 @@ extension WordPressAppDelegate {
         accountService.setupAppExtensionsWithDefaultAccount()
 
         let maxImagesize = MediaSettings().maxImageSizeSetting
-        ShareExtensionService.configureShareExtensionMaximumMediaDimension(maxImagesize)
+        ShareExtensionService().configureShareExtensionMaximumMediaDimension(maxImagesize)
 
         saveRecentSitesForExtensions()
     }
@@ -736,18 +736,18 @@ extension WordPressAppDelegate {
     func setupShareExtensionToken() {
 
         if let account = try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext), let authToken = account.authToken {
-            ShareExtensionService.configureShareExtensionToken(authToken)
-            ShareExtensionService.configureShareExtensionUsername(account.username)
+            ShareExtensionService().configureShareExtensionToken(authToken)
+            ShareExtensionService().configureShareExtensionUsername(account.username)
         }
     }
 
     func removeShareExtensionConfiguration() {
-        ShareExtensionService.removeShareExtensionConfiguration()
+        ShareExtensionService().removeShareExtensionConfiguration()
     }
 
     @objc func saveRecentSitesForExtensions() {
         let recentSites = RecentSitesService().recentSites
-        ShareExtensionService.configureShareExtensionRecentSites(recentSites)
+        ShareExtensionService().configureShareExtensionRecentSites(recentSites)
     }
 
     // MARK: - Notification Service Extension

@@ -92,7 +92,7 @@ private extension MainShareViewController {
 
     func trackExtensionLaunch() {
         let tracks = Tracks(appGroupName: WPAppGroupName)
-        let oauth2Token = ShareExtensionService.retrieveShareExtensionToken()
+        let oauth2Token = ShareExtensionService().retrieveShareExtensionToken()
         tracks.trackExtensionLaunched(oauth2Token != nil)
     }
 }
