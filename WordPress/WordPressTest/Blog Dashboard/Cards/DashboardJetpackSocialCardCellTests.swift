@@ -1,3 +1,4 @@
+import WordPressShared
 import XCTest
 @testable import WordPress
 
@@ -66,6 +67,7 @@ class DashboardJetpackSocialCardCellTests: CoreDataTestCase {
         // Given
         let blog = createTestBlog()
         let dotComID = try XCTUnwrap(blog.dotComID)
+        // FIXME: Using this production type in the test will mess the global state
         let repository = UserPersistentStoreFactory.instance()
         let key = DashboardJetpackSocialCardCell.Constants.hideNoConnectionViewKey
 

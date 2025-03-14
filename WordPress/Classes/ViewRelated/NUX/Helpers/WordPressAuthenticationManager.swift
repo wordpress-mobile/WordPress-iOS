@@ -1,6 +1,7 @@
 import Foundation
 import SFHFKeychainUtils
 import WordPressAuthenticator
+import WordPressShared
 import Gridicons
 import UIKit
 

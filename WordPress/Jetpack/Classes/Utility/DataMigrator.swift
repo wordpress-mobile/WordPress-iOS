@@ -1,5 +1,6 @@
 import Foundation
 import AutomatticTracks
+import WordPressShared
 
 protocol ContentDataMigrating {
     /// Exports user content data to a shared location that's accessible by the Jetpack app.

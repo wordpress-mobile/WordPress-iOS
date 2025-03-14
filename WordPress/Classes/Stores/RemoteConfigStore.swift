@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 fileprivate extension DispatchQueue {
     static let remoteConfigStoreQueue = DispatchQueue(label: "remote-config-store-queue")

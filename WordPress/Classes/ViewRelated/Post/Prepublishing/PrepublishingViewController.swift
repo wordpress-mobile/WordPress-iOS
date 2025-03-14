@@ -2,6 +2,7 @@ import UIKit
 import Combine
 import SwiftUI
 import WordPressData
+import WordPressShared
 import WordPressUI
 
 enum PrepublishingSheetResult {

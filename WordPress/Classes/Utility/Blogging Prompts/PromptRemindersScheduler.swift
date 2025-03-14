@@ -1,5 +1,6 @@
 import Foundation
 import UserNotifications
+import WordPressShared
 
 /// Encapsulates the local notification scheduling logic for Blogging Prompts.
 ///
@@ -456,46 +457,5 @@ protocol CurrentDateProvider {
 struct DefaultCurrentDateProvider: CurrentDateProvider {
     func date() -> Date {
         return Date()
-    }
-}
-
-// MARK: - Local Store
-
-/// A wrapper protocol intended for `FileManager`.
-/// Created to simplify unit testing.
-///
-protocol LocalFileStore {
-    func data(from url: URL) throws -> Data
-
-    func fileExists(at url: URL) -> Bool
-
-    @discardableResult
-    func save(contents: Data, at url: URL) -> Bool
-
-    func containerURL(forAppGroup appGroup: String) -> URL?
-
-    func removeItem(at url: URL) throws
-
-    func copyItem(at srcURL: URL, to dstURL: URL) throws
-}
-
-extension LocalFileStore {
-    func data(from url: URL) throws -> Data {
-        return try Data(contentsOf: url)
-    }
-}
-
-extension FileManager: LocalFileStore {
-    func containerURL(forAppGroup appGroup: String) -> URL? {
-        return containerURL(forSecurityApplicationGroupIdentifier: appGroup)
-    }
-
-    func fileExists(at url: URL) -> Bool {
-        return fileExists(atPath: url.path)
-    }
-
-    @discardableResult
-    func save(contents: Data, at url: URL) -> Bool {
-        return createFile(atPath: url.path, contents: contents)
     }
 }

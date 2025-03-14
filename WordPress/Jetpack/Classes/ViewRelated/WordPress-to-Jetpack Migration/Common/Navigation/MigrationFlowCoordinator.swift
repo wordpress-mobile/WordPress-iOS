@@ -1,5 +1,6 @@
 import Combine
 import UserNotifications
+import WordPressShared
 
 /// Coordinator for the migration to jetpack flow
 final class MigrationFlowCoordinator: ObservableObject {

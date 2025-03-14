@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 class JetpackBrandingMenuCardPresenter {
 

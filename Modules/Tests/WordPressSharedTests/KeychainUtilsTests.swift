@@ -1,7 +1,6 @@
-// TODO: Port to yet to create SFHFKeychainUtils test package
 import SFHFKeychainUtils
 import XCTest
-@testable import WordPress
+@testable import WordPressShared
 
 class KeychainUtilsTests: XCTestCase {
 
@@ -15,7 +14,7 @@ class KeychainUtilsTests: XCTestCase {
         let service = "service"
         let username = "username"
         let password = "password"
-        let sharedGroup = WPAppKeychainAccessGroup
+        let sharedGroup = "testgroup"
         let subject = KeychainUtils(keychainUtils: SFHFKeychainUtilsMock.self)
         SFHFKeychainUtilsMock.configure(with: ["default": [service: [username: password]]])
 

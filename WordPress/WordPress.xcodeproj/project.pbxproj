@@ -379,6 +379,7 @@
 		3F60D39C2D2C4BA4008ACD86 /* yoga.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F60D3932D2C4BA4008ACD86 /* yoga.xcframework */; };
 		3F60D39D2D2C4BA4008ACD86 /* yoga.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3F60D3932D2C4BA4008ACD86 /* yoga.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3F6DA04125646F96002AB88F /* HomeWidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6DA04025646F96002AB88F /* HomeWidgetData.swift */; };
+		3F6E6A5B2D82ACE000DAF6EA /* KeychainUtilsMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6E6A5A2D82ACE000DAF6EA /* KeychainUtilsMock.swift */; };
 		3F751D462491A93D0008A2B1 /* ZendeskUtilsTests+Plans.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F751D452491A93D0008A2B1 /* ZendeskUtilsTests+Plans.swift */; };
 		3F759FBA2A2DA93B0039A845 /* WPAccount+Fixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F759FB92A2DA93B0039A845 /* WPAccount+Fixture.swift */; };
 		3F759FBC2A2DB2CF0039A845 /* TestError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F759FBB2A2DB2CF0039A845 /* TestError.swift */; };
@@ -946,7 +947,6 @@
 		8332DD2829259BEB00802F7D /* DataMigratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8332DD2729259BEB00802F7D /* DataMigratorTests.swift */; };
 		834CE7341256D0DE0046A4A3 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 834CE7331256D0DE0046A4A3 /* CFNetwork.framework */; };
 		8355D7D911D260AA00A61362 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8355D7D811D260AA00A61362 /* CoreData.framework */; };
-		8384C64428AAC85F00EABE26 /* KeychainUtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8384C64328AAC85F00EABE26 /* KeychainUtilsTests.swift */; };
 		83BFAE502A6EBF9900C7B683 /* DashboardJetpackSocialCardCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BFAE4F2A6EBF9900C7B683 /* DashboardJetpackSocialCardCellTests.swift */; };
 		83E1E5592A58B5C2000B576F /* JetpackSocialError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E1E5582A58B5C2000B576F /* JetpackSocialError.swift */; };
 		83E1E55A2A58B5C2000B576F /* JetpackSocialError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E1E5582A58B5C2000B576F /* JetpackSocialError.swift */; };
@@ -2203,6 +2203,7 @@
 		3F60D3932D2C4BA4008ACD86 /* yoga.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = yoga.xcframework; path = Frameworks/yoga.xcframework; sourceTree = "<group>"; };
 		3F63B93B258179D100F581BE /* StatsWidgetEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsWidgetEntry.swift; sourceTree = "<group>"; };
 		3F6DA04025646F96002AB88F /* HomeWidgetData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWidgetData.swift; sourceTree = "<group>"; };
+		3F6E6A5A2D82ACE000DAF6EA /* KeychainUtilsMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainUtilsMock.swift; sourceTree = "<group>"; };
 		3F751D452491A93D0008A2B1 /* ZendeskUtilsTests+Plans.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ZendeskUtilsTests+Plans.swift"; sourceTree = "<group>"; };
 		3F759FB92A2DA93B0039A845 /* WPAccount+Fixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPAccount+Fixture.swift"; sourceTree = "<group>"; };
 		3F759FBB2A2DB2CF0039A845 /* TestError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestError.swift; sourceTree = "<group>"; };
@@ -2678,7 +2679,6 @@
 		8355D67D11D13EAD00A61362 /* MobileCoreServices.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		8355D7D811D260AA00A61362 /* CoreData.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		835E2402126E66E50085940B /* AssetsLibrary.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
-		8384C64328AAC85F00EABE26 /* KeychainUtilsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainUtilsTests.swift; sourceTree = "<group>"; };
 		83BFAE4F2A6EBF9900C7B683 /* DashboardJetpackSocialCardCellTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardJetpackSocialCardCellTests.swift; sourceTree = "<group>"; };
 		83E1E5582A58B5C2000B576F /* JetpackSocialError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackSocialError.swift; sourceTree = "<group>"; };
 		83EF3D7C2937E969000AF9BF /* SharedDataIssueSolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedDataIssueSolverTests.swift; sourceTree = "<group>"; };
@@ -3307,7 +3307,6 @@
 				"Utility/App Configuration/ExtensionConfiguration.swift",
 				Utility/AppLocalizedString.swift,
 				Utility/BuildInformation/BuildConfiguration.swift,
-				Utility/KeychainUtils.swift,
 				Utility/Logging/CocoaLumberjack.swift,
 				ViewRelated/Aztec/Extensions/FormatBarItemProviders.swift,
 				"ViewRelated/Aztec/Extensions/Header+WordPress.swift",
@@ -3335,7 +3334,6 @@
 				"Utility/App Configuration/ExtensionConfiguration.swift",
 				Utility/AppLocalizedString.swift,
 				Utility/BuildInformation/BuildConfiguration.swift,
-				Utility/KeychainUtils.swift,
 				Utility/Logging/CocoaLumberjack.swift,
 				ViewRelated/Aztec/Extensions/FormatBarItemProviders.swift,
 				"ViewRelated/Aztec/Extensions/Header+WordPress.swift",
@@ -3370,7 +3368,6 @@
 				Utility/FormattableContent/FormattableMediaContent.swift,
 				Utility/FormattableContent/FormattableRangesFactory.swift,
 				Utility/FormattableContent/FormattableTextContent.swift,
-				Utility/KeychainUtils.swift,
 				ViewRelated/Notifications/FormattableContent/FormattableCommentContent.swift,
 				ViewRelated/Notifications/FormattableContent/FormattableUserContent.swift,
 				ViewRelated/Notifications/FormattableContent/Notifiable.swift,
@@ -3420,7 +3417,6 @@
 				"Utility/App Configuration/AppStyleGuide.swift",
 				Utility/AppLocalizedString.swift,
 				Utility/BuildInformation/BuildConfiguration.swift,
-				Utility/KeychainUtils.swift,
 				Utility/Logging/CocoaLumberjack.swift,
 				ViewRelated/Aztec/Extensions/FormatBarItemProviders.swift,
 				"ViewRelated/Aztec/Extensions/Header+WordPress.swift",
@@ -3446,7 +3442,6 @@
 				"Utility/App Configuration/AppStyleGuide.swift",
 				Utility/AppLocalizedString.swift,
 				Utility/BuildInformation/BuildConfiguration.swift,
-				Utility/KeychainUtils.swift,
 				Utility/Logging/CocoaLumberjack.swift,
 				ViewRelated/Aztec/Extensions/FormatBarItemProviders.swift,
 				"ViewRelated/Aztec/Extensions/Header+WordPress.swift",
@@ -3479,7 +3474,6 @@
 				Utility/FormattableContent/FormattableMediaContent.swift,
 				Utility/FormattableContent/FormattableRangesFactory.swift,
 				Utility/FormattableContent/FormattableTextContent.swift,
-				Utility/KeychainUtils.swift,
 				ViewRelated/Notifications/FormattableContent/FormattableCommentContent.swift,
 				ViewRelated/Notifications/FormattableContent/FormattableUserContent.swift,
 				ViewRelated/Notifications/FormattableContent/Notifiable.swift,
@@ -3500,7 +3494,6 @@
 				"Utility/App Configuration/AppStyleGuide.swift",
 				Utility/AppLocalizedString.swift,
 				Utility/BuildInformation/BuildConfiguration.swift,
-				Utility/KeychainUtils.swift,
 				Utility/Logging/CocoaLumberjack.swift,
 				"ViewRelated/Stats/Extensions/Double+Stats.swift",
 				"ViewRelated/Stats/Extensions/NumberFormatter+Stats.swift",
@@ -5666,6 +5659,7 @@
 				8332DD2729259BEB00802F7D /* DataMigratorTests.swift */,
 				83EF3D7C2937E969000AF9BF /* SharedDataIssueSolverTests.swift */,
 				08AA640D2A8540590076E38D /* MockEventTracker.swift */,
+				3F6E6A5A2D82ACE000DAF6EA /* KeychainUtilsMock.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -5713,7 +5707,6 @@
 				173D82E6238EE2A7008432DA /* FeatureFlagTests.swift */,
 				E1EBC3721C118ED200F638E0 /* ImmuTableTest.swift */,
 				4A266B8E282B05210089CF3D /* JSONObjectTests.swift */,
-				8384C64328AAC85F00EABE26 /* KeychainUtilsTests.swift */,
 				179501CC27A01D4100882787 /* PublicizeAuthorizationURLComponentsTests.swift */,
 				1759F1711FE017F20003EC81 /* QueueTests.swift */,
 				803DE81828FFB7B5007D4E9C /* RemoteParameterTests.swift */,
@@ -9449,6 +9442,7 @@
 				E135965D1E7152D1006C6606 /* RecentSitesServiceTests.swift in Sources */,
 				F4D7FD6C2A57030E00642E06 /* CompliancePopoverViewControllerTests.swift in Sources */,
 				DCFC6A29292523D20062D65B /* SiteStatsPinnedItemStoreTests.swift in Sources */,
+				3F6E6A5B2D82ACE000DAF6EA /* KeychainUtilsMock.swift in Sources */,
 				D88A64AC208D9B09008AE9BC /* StockPhotosPageableTests.swift in Sources */,
 				3FFB3F222AFC72EC00A742B0 /* DeepLinkSourceTests.swift in Sources */,
 				0148CC2B2859C87000CF5D96 /* BlogServiceMock.swift in Sources */,
@@ -9679,7 +9673,6 @@
 				93D86B981C691E71003D8E3E /* LocalCoreDataServiceTests.m in Sources */,
 				0CD6299B2B9AAA9A00325EA4 /* Foundation+Extensions.swift in Sources */,
 				1DF7A0D32BA0B1810003CBA3 /* GutenbergContentParser.swift in Sources */,
-				8384C64428AAC85F00EABE26 /* KeychainUtilsTests.swift in Sources */,
 				73178C2921BEE09300E37C9A /* SiteSegmentsStepTests.swift in Sources */,
 				FEAA6F79298CE4A600ADB44C /* PluginJetpackProxyServiceTests.swift in Sources */,
 				08F8CD311EBD2A960049D0C0 /* MediaImageExporterTests.swift in Sources */,

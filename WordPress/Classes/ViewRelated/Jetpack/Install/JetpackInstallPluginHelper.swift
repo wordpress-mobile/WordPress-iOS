@@ -1,3 +1,5 @@
+import WordPressShared
+
 @objc
 class JetpackInstallPluginHelper: NSObject {
 

@@ -1,5 +1,6 @@
 import BackgroundTasks
 import SwiftUI
+import WordPressShared
 
 struct BlueButton: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {

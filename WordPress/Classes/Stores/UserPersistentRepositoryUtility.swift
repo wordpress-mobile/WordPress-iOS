@@ -1,50 +1,6 @@
-import Foundation
-
-private enum UPRUConstants {
-    static let promptKey = "onboarding_notifications_prompt_displayed"
-    static let questionKey = "onboarding_question_selection"
-    static let notificationPrimerAlertWasDisplayed = "NotificationPrimerAlertWasDisplayed"
-    static let notificationsTabAccessCount = "NotificationsTabAccessCount"
-    static let notificationPrimerInlineWasAcknowledged = "notificationPrimerInlineWasAcknowledged"
-    static let secondNotificationsAlertCount = "secondNotificationsAlertCount"
-    static let hasShownCustomAppIconUpgradeAlert = "custom-app-icon-upgrade-alert-shown"
-    static let savedPostsPromoWasDisplayed = "SavedPostsV1PromoWasDisplayed"
-    static let currentAnnouncementsKey = "currentAnnouncements"
-    static let currentAnnouncementsDateKey = "currentAnnouncementsDate"
-    static let announcementsVersionDisplayedKey = "announcementsVersionDisplayed"
-    static let isJPContentImportCompleteKey = "jetpackContentImportComplete"
-    static let jetpackContentMigrationStateKey = "jetpackContentMigrationState"
-    static let mediaAspectRatioModeEnabledKey = "mediaAspectRatioModeEnabled"
-    static let readerSidebarSelectionKey = "readerSidebarSelectionKey"
-    static let isReaderSelectedKey = "isReaderSelectedKey"
-    static let readerSearchHistoryKey = "readerSearchHistoryKey"
-    static let readerDidSelectInterestsKey = "readerDidSelectInterestsKey"
-}
-
-protocol UserPersistentRepositoryUtility: AnyObject {
-    var onboardingNotificationsPromptDisplayed: Bool { get set }
-    var notificationPrimerAlertWasDisplayed: Bool { get set }
-}
+import WordPressShared
 
 extension UserPersistentRepositoryUtility {
-    var onboardingNotificationsPromptDisplayed: Bool {
-        get {
-            UserPersistentStoreFactory.instance().bool(forKey: UPRUConstants.promptKey)
-        }
-        set {
-            UserPersistentStoreFactory.instance().set(newValue, forKey: UPRUConstants.promptKey)
-        }
-    }
-
-    var notificationPrimerAlertWasDisplayed: Bool {
-        get {
-            UserPersistentStoreFactory.instance().bool(forKey: UPRUConstants.notificationPrimerAlertWasDisplayed)
-        }
-        set {
-            UserPersistentStoreFactory.instance().set(newValue, forKey: UPRUConstants.notificationPrimerAlertWasDisplayed)
-        }
-    }
-
     var notificationsTabAccessCount: Int {
         get {
             UserPersistentStoreFactory.instance().integer(forKey: UPRUConstants.notificationsTabAccessCount)
