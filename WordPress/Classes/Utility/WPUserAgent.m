@@ -14,14 +14,7 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
 
 + (NSString *)wordPressUserAgent
 {
-    static NSString * _wordPressUserAgent;
-    if (_wordPressUserAgent == nil) {
-        NSString *defaultUA = [self defaultUserAgent];
-        NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-        _wordPressUserAgent = [NSString stringWithFormat:@"%@ wp-iphone/%@", defaultUA, appVersion];
-    }
-    
-    return _wordPressUserAgent;
+    return [TemporaryWPUserAgent wordPressUserAgentWithUserDefaults:[UserPersistentStoreFactory userDefaultsInstance] bundle:[NSBundle mainBundle]];
 }
 
 + (void)useWordPressUserAgentInWebViews
