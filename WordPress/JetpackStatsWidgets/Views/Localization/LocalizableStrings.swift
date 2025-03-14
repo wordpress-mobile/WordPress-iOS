@@ -1,4 +1,5 @@
 import SwiftUI
+import WordPressShared
 
 enum LocalizableStrings {
     // Today Widget title

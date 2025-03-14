@@ -1,5 +1,6 @@
 import Foundation
 import WordPressKit
+import WordPressShared
 
 enum PostStatus: String {
     case draft = "draft"

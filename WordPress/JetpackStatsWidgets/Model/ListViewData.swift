@@ -3,7 +3,7 @@ import JetpackStatsWidgetsCore
 
 struct ListViewData {
 
-    let widgetTitle: LocalizedString
+    let widgetTitle: String
     let siteName: String
     let items: [ThisWeekWidgetDay]
 

@@ -1,37 +1,4 @@
-import SwiftUI
-
-extension Bundle {
-    /// Returns the `Bundle` for the host `.app`.
-    ///
-    /// - If this is called from code already located in the main app's bundle or from a Pod/Framework,
-    ///   this will return the same as `Bundle.main`, aka the bundle of the app itself.
-    /// - If this is called from an App Extension (Widget, ShareExtension, etc), this will return the bundle of the
-    ///   main app hosting said App Extension (while `Bundle.main` would return the App Extension itself)
-    ///
-    /// This is particularly useful to reference a resource or string bundled inside the app from an App Extension / Widget.
-    ///
-    /// - Note:
-    ///   In the context of Unit Tests this will return the Test Harness (aka Test Host) app, since that is the app running said tests.
-    ///
-    static let app: Bundle = {
-        var url = Bundle.main.bundleURL
-        while url.pathExtension != "app" && url.lastPathComponent != "/" {
-            url.deleteLastPathComponent()
-        }
-        guard let appBundle = Bundle(url: url) else { fatalError("Unable to find the parent app bundle") }
-        return appBundle
-    }()
-}
-
-/// Use this to express *intent* on your API that the string you are manipulating / returning is intended to already be localized
-/// and its value to have been provided via a call to `NSLocalizedString` or `AppLocalizedString`.
-///
-/// Semantically speaking, a method taking or returning a `LocalizedString` is signaling that you can display said UI string
-/// to the end user, without the need to be treated as a key to be localized. The string is expected to already have been localized
-/// at that point of the code, via a call to `NSLocalizedString`, `AppLocalizedString` or similar upstream in the code.
-///
-/// - Note: Remember though that, as a `typealias`, this won't provide any compile-time guarantee.
-typealias LocalizedString = String
+import Foundation
 
 /// Use this function instead of `NSLocalizedString` to reference localized strings **from the app bundle** – especially
 /// when using localized strings from the code of an app extension.
@@ -63,6 +30,29 @@ typealias LocalizedString = String
 /// - Returns: A localized version of the string designated by `key` in the table identified by `tableName`.
 ///   If the localized string for `key` cannot be found within the table, `value` is returned.
 ///   (However, `key` is returned instead when `value` is `nil` or the empty string).
-func AppLocalizedString(_ key: String, tableName: String? = nil, value: String? = nil, comment: String) -> LocalizedString {
+public func AppLocalizedString(_ key: String, tableName: String? = nil, value: String? = nil, comment: String) -> String {
     Bundle.app.localizedString(forKey: key, value: value, table: nil)
+}
+
+extension Bundle {
+    /// Returns the `Bundle` for the host `.app`.
+    ///
+    /// - If this is called from code already located in the main app's bundle or from a Pod/Framework,
+    ///   this will return the same as `Bundle.main`, aka the bundle of the app itself.
+    /// - If this is called from an App Extension (Widget, ShareExtension, etc), this will return the bundle of the
+    ///   main app hosting said App Extension (while `Bundle.main` would return the App Extension itself)
+    ///
+    /// This is particularly useful to reference a resource or string bundled inside the app from an App Extension / Widget.
+    ///
+    /// - Note:
+    ///   In the context of Unit Tests this will return the Test Harness (aka Test Host) app, since that is the app running said tests.
+    ///
+    static let app: Bundle = {
+        var url = Bundle.main.bundleURL
+        while url.pathExtension != "app" && url.lastPathComponent != "/" {
+            url.deleteLastPathComponent()
+        }
+        guard let appBundle = Bundle(url: url) else { fatalError("Unable to find the parent app bundle") }
+        return appBundle
+    }()
 }

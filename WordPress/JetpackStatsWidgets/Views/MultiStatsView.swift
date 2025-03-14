@@ -1,4 +1,5 @@
- import SwiftUI
+import SwiftUI
+import WordPressShared
 
  struct MultiStatsView: View {
     let viewData: GroupedViewData
@@ -27,9 +28,9 @@
     }
 
     /// Constructs a two-card column for the medium size Today widget
-    private func makeColumn(upperTitle: LocalizedString,
+    private func makeColumn(upperTitle: String,
                             upperValue: Int,
-                            lowerTitle: LocalizedString,
+                            lowerTitle: String,
                             lowerValue: Int) -> some View {
         VStack(alignment: .leading) {
             VerticalCard(title: upperTitle, value: upperValue, largeText: false)

@@ -2,6 +2,7 @@ import Foundation
 import Gridicons
 import Aztec
 import UIKit
+import WordPressShared
 
 protocol FormatBarItemProvider {
     var iconImage: UIImage { get }

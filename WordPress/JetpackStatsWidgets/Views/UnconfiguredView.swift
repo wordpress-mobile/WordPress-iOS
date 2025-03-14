@@ -14,7 +14,7 @@ struct UnconfiguredView: View {
             .removableWidgetBackground()
     }
 
-    var unconfiguredMessage: LocalizedString {
+    var unconfiguredMessage: String {
         switch timelineEntry {
         case .loggedOut(let widgetKind):
             switch widgetKind {

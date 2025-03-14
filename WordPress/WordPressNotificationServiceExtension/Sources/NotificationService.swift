@@ -2,6 +2,7 @@ import SFHFKeychainUtils
 import UserNotifications
 import BuildSettingsKit
 import WordPressKit
+import WordPressShared
 
 // MARK: - NotificationService
 

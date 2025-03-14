@@ -3,11 +3,11 @@ import SwiftUI
 /// A card with a title and a numeric or string value that can be either vertically or horizontally stacked
 struct FlexibleCard: View {
     let axis: Axis
-    let title: LocalizedString
+    let title: String
     let value: Value
     let lineLimit: Int
 
-    init(axis: Axis, title: LocalizedString, value: Value, lineLimit: Int = 1) {
+    init(axis: Axis, title: String, value: Value, lineLimit: Int = 1) {
         self.axis = axis
         self.title = title
         self.value = value

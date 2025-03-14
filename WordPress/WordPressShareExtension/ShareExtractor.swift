@@ -6,6 +6,7 @@ import ZIPFoundation
 import Down
 import Aztec
 import TextBundle
+import WordPressShared
 
 /// A type that represents the information we can extract from an extension context
 ///

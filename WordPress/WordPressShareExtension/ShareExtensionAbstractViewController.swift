@@ -2,6 +2,7 @@ import CoreData
 import BuildSettingsKit
 import UIKit
 import WordPressKit
+import WordPressShared
 
 enum OriginatingExtension: String {
     case share

@@ -1,6 +1,7 @@
 
 import SwiftUI
 import WidgetKit
+import WordPressShared
 
 struct ListRow: View {
     @Environment(\.widgetFamily) var family: WidgetFamily
@@ -48,7 +49,7 @@ struct ListRow: View {
         return percentValue < 0 ? Constants.negativeColor : Constants.positiveColor
     }
 
-    private var differenceLabelText: LocalizedString {
+    private var differenceLabelText: String {
         guard !isToday else {
             return LocalizableStrings.todayWidgetTitle
         }

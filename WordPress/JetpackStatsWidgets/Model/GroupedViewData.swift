@@ -1,16 +1,16 @@
-import SwiftUI
+import Foundation
 
 struct GroupedViewData {
 
-    let widgetTitle: LocalizedString
+    let widgetTitle: String
     let siteName: String
-    let upperLeftTitle: LocalizedString
+    let upperLeftTitle: String
     let upperLeftValue: Int
-    let upperRightTitle: LocalizedString
+    let upperRightTitle: String
     let upperRightValue: Int
-    let lowerLeftTitle: LocalizedString
+    let lowerLeftTitle: String
     let lowerLeftValue: Int
-    let lowerRightTitle: LocalizedString
+    let lowerRightTitle: String
     let lowerRightValue: Int
 
     let statsURL: URL?

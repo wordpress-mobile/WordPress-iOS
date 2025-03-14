@@ -2,7 +2,7 @@ import SwiftUI
 
 /// A card with a title and a value stacked vertically
 struct VerticalCard: View {
-    let title: LocalizedString
+    let title: String
     let value: Int
     let largeText: Bool
 

@@ -1,6 +1,7 @@
 import Foundation
 import Aztec
 import UIKit
+import WordPressShared
 
 // MARK: - TextList.Style
 //

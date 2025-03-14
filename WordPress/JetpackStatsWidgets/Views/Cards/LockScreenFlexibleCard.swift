@@ -2,11 +2,11 @@ import SwiftUI
 
 /// A card with a title and a string value that is shown on LockScreen without background
 struct LockScreenFlexibleCard: View {
-    let title: LocalizedString
-    let description: LocalizedString
+    let title: String
+    let description: String
     let lineLimit: Int
 
-    init(title: LocalizedString, description: LocalizedString, lineLimit: Int = 1) {
+    init(title: String, description: String, lineLimit: Int = 1) {
         self.title = title
         self.description = description
         self.lineLimit = lineLimit

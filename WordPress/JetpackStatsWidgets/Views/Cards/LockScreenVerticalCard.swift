@@ -2,7 +2,7 @@ import SwiftUI
 
 /// A card with a title and a value stacked vertically shown on LockScreen without background
 struct LockScreenVerticalCard: View {
-    let title: LocalizedString
+    let title: String
     let value: Int
 
     private var accessibilityLabel: Text {

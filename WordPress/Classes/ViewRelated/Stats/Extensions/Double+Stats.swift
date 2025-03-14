@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 fileprivate struct Unit {
     let abbreviationFormat: String
