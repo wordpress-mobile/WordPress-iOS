@@ -1,4 +1,36 @@
 import Foundation
+import WebKit
+import WordPressShared
+
+// TODO: We'll implement this one step at a time then renamed it to WPUserAgent
+@objc
+public class TemporaryWPUserAgent: NSObject {
+
+    public static let userAgentKey = "UserAgent"
+
+    @objc
+    public static func defaultUserAgent(userDefaults: UserDefaults) -> String {
+        // FIXME: What's the point of reading from user defaults then returning a possibly different value?
+        // See original Objective-C implementation at
+        // https://github.com/wordpress-mobile/WordPress-iOS/blob/a6eaa7aa8acb50828449df2d3fccaa50d7def821/WordPress/Classes/Utility/WPUserAgent.m#L10-L29
+
+        // 1. Extract current stored user agent
+        let registrationDomain = userDefaults.volatileDomain(forName: UserDefaults.registrationDomain)
+        let storedUserAgent = registrationDomain[userAgentKey] as? String
+
+        // 2. Flush stored user agent
+        userDefaults.register(defaults: [userAgentKey: ""])
+
+        // 3. Reset the stored user agent if there was one in the first place (why??)
+        if let storedUserAgent {
+            userDefaults.register(defaults: [userAgentKey: storedUserAgent])
+        }
+
+        let userAgent = WPUserAgent.webViewUserAgent
+        assert(!userAgent.isEmpty, "User agent should not be empty")
+        return userAgent
+    }
+}
 
 extension WPUserAgent {
 

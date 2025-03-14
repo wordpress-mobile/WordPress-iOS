@@ -9,23 +9,7 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
 
 + (NSString *)defaultUserAgent
 {
-    static NSString * _defaultUserAgent;
-    static dispatch_once_t _onceToken;
-    dispatch_once(&_onceToken, ^{
-        NSDictionary * registrationDomain = [[UserPersistentStoreFactory userDefaultsInstance] volatileDomainForName:NSRegistrationDomain];
-        NSString *storeCurrentUA = [registrationDomain objectForKey:WPUserAgentKeyUserAgent];
-        [[UserPersistentStoreFactory userDefaultsInstance] registerDefaults:@{WPUserAgentKeyUserAgent: @(0)}];
-
-        _defaultUserAgent = [self webViewUserAgent];
-
-        if (storeCurrentUA) {
-            [[UserPersistentStoreFactory userDefaultsInstance] registerDefaults:@{WPUserAgentKeyUserAgent: storeCurrentUA}];
-        }
-    });
-    NSAssert(_defaultUserAgent != nil, @"User agent shouldn't be nil");
-    NSAssert([_defaultUserAgent length] > 0, @"User agent shouldn't be empty");
-
-    return _defaultUserAgent;
+    return [TemporaryWPUserAgent defaultUserAgentWithUserDefaults:[UserPersistentStoreFactory userDefaultsInstance]];
 }
 
 + (NSString *)wordPressUserAgent
