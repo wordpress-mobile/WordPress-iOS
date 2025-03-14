@@ -2,9 +2,8 @@ import Foundation
 import WebKit
 import WordPressShared
 
-// TODO: We'll implement this one step at a time then renamed it to WPUserAgent
 @objc
-public class TemporaryWPUserAgent: NSObject {
+public class WPUserAgent: NSObject {
 
     public static let userAgentKey = "UserAgent"
 
@@ -43,7 +42,7 @@ public class TemporaryWPUserAgent: NSObject {
     }
 
     @objc
-    public static func useWordPressUserAgentInWebViews(userDefaults: UserDefaults) {
+    public static func useWordPressInWebViews(userDefaults: UserDefaults) {
         // Cleanup unused UserDefaults keys from older WPUserAgent implementation
         // FIXME: How old are those older implementations? Can we remove this code because "old enough"?
         userDefaults.removeObject(forKey: "DefaultUserAgent")
@@ -55,9 +54,6 @@ public class TemporaryWPUserAgent: NSObject {
 
         DDLogVerbose("User-Agent set to \(userAgent)")
     }
-}
-
-extension WPUserAgent {
 
     /// Returns a user agent string similar to (but may not exactly match) the one used in `WKWebView`.
     @objc static var webViewUserAgent: String {
@@ -96,5 +92,25 @@ extension WPUserAgent {
         }
 
         return "Mozilla/5.0 (\(deviceModel); CPU \(osName) \(osVersion) like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148"
+    }
+}
+
+public extension WPUserAgent {
+
+    private static let userDefaults = UserPersistentStoreFactory.userDefaultsInstance()
+
+    @objc
+    static func defaultUserAgent() -> String {
+        defaultUserAgent(userDefaults: userDefaults)
+    }
+
+    @objc(wordPressUserAgent)
+    static func wordPress() -> String {
+        wordPressUserAgent(userDefaults: userDefaults)
+    }
+
+    @objc
+    static func useWordPressInWebViews() {
+        useWordPressInWebViews(userDefaults: userDefaults)
     }
 }

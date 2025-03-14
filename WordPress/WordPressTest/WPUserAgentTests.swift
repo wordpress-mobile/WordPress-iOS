@@ -7,7 +7,7 @@ class WPWPUserAgentTests {
 
     @Test
     func userAgentFormat() throws {
-        let userAgent = TemporaryWPUserAgent.defaultUserAgent(userDefaults: .standard)
+        let userAgent = WPUserAgent.defaultUserAgent(userDefaults: .standard)
 
         #expect(
             try webKitUserAgentRegExp().numberOfMatches(
@@ -22,10 +22,10 @@ class WPWPUserAgentTests {
     func wordPressUserAgentValue() throws {
         let userDefaults = UserDefaults.standard
         let appVersion = try #require(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String)
-        let defaultUserAgent = TemporaryWPUserAgent.defaultUserAgent(userDefaults: userDefaults)
+        let defaultUserAgent = WPUserAgent.defaultUserAgent(userDefaults: userDefaults)
         let expectedUserAgent = String.init(format: "%@ wp-iphone/%@", defaultUserAgent, appVersion)
 
-        #expect(TemporaryWPUserAgent.wordPressUserAgent(userDefaults: userDefaults) == expectedUserAgent)
+        #expect(WPUserAgent.wordPressUserAgent(userDefaults: userDefaults) == expectedUserAgent)
     }
 
     @Test @MainActor
@@ -36,16 +36,16 @@ class WPWPUserAgentTests {
         }
 
         let userDefaults = UserDefaults.standard
-        let defaultUserAgent = TemporaryWPUserAgent.defaultUserAgent(userDefaults: userDefaults)
-        let wordPressUserAgent = TemporaryWPUserAgent.wordPressUserAgent(userDefaults: userDefaults)
+        let defaultUserAgent = WPUserAgent.defaultUserAgent(userDefaults: userDefaults)
+        let wordPressUserAgent = WPUserAgent.wordPressUserAgent(userDefaults: userDefaults)
 
         // FIXME: Is this necessary?
         // See original implementation at
         // https://github.com/wordpress-mobile/WordPress-iOS/blob/a6eaa7aa8acb50828449df2d3fccaa50d7def821/WordPress/WordPressTest/WPUserAgentTests.m#L57-L75
-        userDefaults.removeObject(forKey: TemporaryWPUserAgent.userAgentKey)
-        userDefaults.register(defaults: [TemporaryWPUserAgent.userAgentKey: defaultUserAgent])
+        userDefaults.removeObject(forKey: WPUserAgent.userAgentKey)
+        userDefaults.register(defaults: [WPUserAgent.userAgentKey: defaultUserAgent])
 
-        TemporaryWPUserAgent.useWordPressUserAgentInWebViews(userDefaults: userDefaults)
+        WPUserAgent.useWordPressInWebViews(userDefaults: userDefaults)
 
         #expect(try currentUserAgent(userDefaults: userDefaults) == wordPressUserAgent)
         #expect(try currentUserAgentFromWebView() == wordPressUserAgent)
@@ -58,13 +58,13 @@ class WPWPUserAgentTests {
     func accessingWordPressUserAgentOutsideMainThread() {
         #expect(throws: Never.self, "Accessing outside the main thread should work") {
             DispatchQueue.global(qos: .background).sync {
-                TemporaryWPUserAgent.wordPressUserAgent(userDefaults: .standard)
+                WPUserAgent.wordPressUserAgent(userDefaults: .standard)
             }
         }
     }
 
     func currentUserAgent(userDefaults: UserDefaults) throws -> String {
-        try #require(userDefaults.object(forKey: TemporaryWPUserAgent.userAgentKey) as? String)
+        try #require(userDefaults.object(forKey: WPUserAgent.userAgentKey) as? String)
     }
 
     @MainActor

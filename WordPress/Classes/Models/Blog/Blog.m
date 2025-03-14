@@ -2,7 +2,6 @@
 #import "WPAccount.h"
 #import "AccountService.h"
 @import WordPressDataObjC;
-#import "WPUserAgent.h"
 #import "WordPress-Swift.h"
 @import SFHFKeychainUtils;
 
