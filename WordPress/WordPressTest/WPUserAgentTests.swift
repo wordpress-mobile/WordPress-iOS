@@ -28,7 +28,7 @@ class WPWPUserAgentTests {
         #expect(TemporaryWPUserAgent.wordPressUserAgent(userDefaults: userDefaults) == expectedUserAgent)
     }
 
-    @Test
+    @Test @MainActor
     func usesWordPressUserAgentInWebViews() throws {
         if #available(iOS 17, *) { // #available cannot go as an argument in @Test(.enabled(if: ..))
             print("In iOS 17, WKWebView no longer reads User Agent from UserDefaults. Skipping while working on an alternative setup.")
@@ -67,6 +67,7 @@ class WPWPUserAgentTests {
         try #require(userDefaults.object(forKey: TemporaryWPUserAgent.userAgentKey) as? String)
     }
 
+    @MainActor
     func currentUserAgentFromWebView() throws -> String {
         try #require(WKWebView.userAgent())
     }
@@ -98,7 +99,7 @@ class WPWPUserAgentTests {
 
     // If this test fails, it may mean `WKWebView` uses a user agent with an unexpected format (see `webKitUserAgentRegExp`)
     // and we may need to adjust our implementation to match the new `WKWebView` user agent.
-    @Test
+    @Test @MainActor
     func testWebKitUserAgentFormat() throws {
         let regExp = try webKitUserAgentRegExp()
         // Please note: WKWebView's user agent may be different on different test device types.
