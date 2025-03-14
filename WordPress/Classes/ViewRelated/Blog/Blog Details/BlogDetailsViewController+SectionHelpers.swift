@@ -123,7 +123,7 @@ extension BlogDetailsViewController {
     }
 
     @objc func shouldAddDomainRegistrationRow() -> Bool {
-        return AppConfiguration.allowsDomainRegistration && blog.supports(.domains)
+        return FeatureFlag.domainRegistration.enabled && blog.supports(.domains)
     }
 
     @objc func showUsers() {

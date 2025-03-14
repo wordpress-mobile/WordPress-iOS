@@ -2,6 +2,12 @@
 /// different builds.
 @objc
 enum FeatureFlag: Int, CaseIterable {
+    case signUp
+    case customAppIcons
+    case domainRegistration
+    case selfHostedSites
+    case whatsNew
+    case qrCodeLogin
     case bloggingPrompts
     case jetpackDisconnect
     case siteIconCreator
@@ -18,13 +24,29 @@ enum FeatureFlag: Int, CaseIterable {
     case readerGutenbergCommentComposer
     case pluginManagementOverhaul
 
-    /// Returns a boolean indicating if the feature is enabled
+    /// Returns a boolean indicating if the feature is enabled.
+    ///
+    /// - warning: If the feature is unconditionally enabled, it doesn't mean
+    /// that the flag can be removed. It provides a capability of conditionally
+    /// disabling a feature if necessary. Use your best judgmenet.
     var enabled: Bool {
         if let overriddenValue = FeatureFlagOverrideStore().overriddenValue(for: self) {
             return overriddenValue
         }
 
         switch self {
+        case .signUp:
+            return true
+        case .customAppIcons:
+            return true
+        case .domainRegistration:
+            return AppConfiguration.isJetpack
+        case .selfHostedSites:
+            return true
+        case .whatsNew:
+            return true
+        case .qrCodeLogin:
+            return AppConfiguration.isJetpack
         case .bloggingPrompts:
             return AppConfiguration.isJetpack
         case .jetpackDisconnect:
@@ -77,6 +99,12 @@ extension FeatureFlag {
     /// Descriptions used to display the feature flag override menu in debug builds
     var description: String {
         return switch self {
+        case .signUp: "Sign Up"
+        case .customAppIcons: "Custom App Icons"
+        case .domainRegistration: "Domain Registration"
+        case .selfHostedSites: "Self-Hosted Sites"
+        case .whatsNew: "What's New"
+        case .qrCodeLogin: "QR Code Login"
         case .bloggingPrompts: "Blogging Prompts"
         case .jetpackDisconnect: "Jetpack disconnect"
         case .siteIconCreator: "Site Icon Creator"

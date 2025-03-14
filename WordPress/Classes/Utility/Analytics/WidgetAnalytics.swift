@@ -1,5 +1,6 @@
 import Foundation
 import WidgetKit
+import JetpackStatsWidgetsCore
 
 @objcMembers class WidgetAnalytics: NSObject {
     static func trackLoadedWidgetsOnApplicationOpened() {
@@ -17,7 +18,7 @@ import WidgetKit
         }
 
         let widgetAnalyticNames: [String] = installedWidgets.map { widgetInfo in
-            guard let eventKind = AppConfiguration.Widget.Stats.Kind(rawValue: widgetInfo.kind) else {
+            guard let eventKind = WidgetStatsConfiguration.Kind(rawValue: widgetInfo.kind) else {
                 DDLogWarn("⚠️ Make sure the widget: \(widgetInfo.kind), has the correct kind.")
                 return "\(widgetInfo.kind)_\(widgetInfo.family)"
             }
@@ -42,7 +43,7 @@ import WidgetKit
         case lockScreenAllTimeViewsVisitorsWidget = "widget_all_time_views_visitors_lockscreen"
         case lockScreenAllTimePostsBestViewsWidget = "widget_all_time_posts_best_views_lockscreen"
 
-        static func eventPrefix(for widgetKind: AppConfiguration.Widget.Stats.Kind) -> Events {
+        static func eventPrefix(for widgetKind: WidgetStatsConfiguration.Kind) -> Events {
             switch widgetKind {
             case .homeToday:
                 return .homeTodayWidget

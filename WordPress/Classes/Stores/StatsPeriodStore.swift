@@ -1,6 +1,7 @@
 import Foundation
 import WordPressFlux
 import WidgetKit
+import JetpackStatsWidgetsCore
 
 enum PeriodType: CaseIterable {
     case timeIntervalsSummary

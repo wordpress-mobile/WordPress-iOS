@@ -1,3 +1,4 @@
+import Foundation
 import WidgetKit
 import JetpackStatsWidgetsCore
 
@@ -13,8 +14,8 @@ struct LockScreenTodayLikesCommentsStatWidgetConfig: LockScreenStatsWidgetConfig
         LocalizableStrings.todayPreviewDescription
     }
 
-    var kind: AppConfiguration.Widget.Stats.Kind {
-        AppConfiguration.Widget.Stats.Kind.lockScreenTodayLikesComments
+    var kind: WidgetStatsConfiguration.Kind {
+        WidgetStatsConfiguration.Kind.lockScreenTodayLikesComments
     }
 
     var placeholderContent: HomeWidgetTodayData {

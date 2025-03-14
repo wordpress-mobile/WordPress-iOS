@@ -1,4 +1,6 @@
+import Foundation
 import WidgetKit
+import JetpackStatsWidgetsCore
 
 struct LockScreenTodayViewsVisitorsStatWidgetConfig: LockScreenStatsWidgetConfig {
     typealias WidgetData = HomeWidgetTodayData
@@ -12,8 +14,8 @@ struct LockScreenTodayViewsVisitorsStatWidgetConfig: LockScreenStatsWidgetConfig
         LocalizableStrings.todayPreviewDescription
     }
 
-    var kind: AppConfiguration.Widget.Stats.Kind {
-        AppConfiguration.Widget.Stats.Kind.lockScreenTodayViewsVisitors
+    var kind: WidgetStatsConfiguration.Kind {
+        WidgetStatsConfiguration.Kind.lockScreenTodayViewsVisitors
     }
 
     var placeholderContent: HomeWidgetTodayData {

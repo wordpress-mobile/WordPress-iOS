@@ -1,5 +1,6 @@
 import Intents
 import BuildSettingsKit
+import JetpackStatsWidgetsCore
 
 class SitesDataProvider {
     private(set) var sites = [Site]()
@@ -59,8 +60,7 @@ class SitesDataProvider {
     // MARK: - Default Site
 
     private var defaultSiteID: Int? {
-
-        return UserDefaults(suiteName: BuildSettings.appGroupName)?.object(forKey: AppConfiguration.Widget.Stats.userDefaultsSiteIdKey) as? Int
+        UserDefaults(suiteName: BuildSettings.appGroupName)?.object(forKey: WidgetStatsConfiguration.userDefaultsSiteIdKey) as? Int
     }
 
     var defaultSite: Site? {

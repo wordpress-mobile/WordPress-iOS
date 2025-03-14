@@ -196,7 +196,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
         workaroundLargeTitleCollapseBug()
 
-        if AppConfiguration.showsWhatIsNew {
+        if FeatureFlag.whatsNew.enabled {
             RootViewCoordinator.shared.presentWhatIsNew(on: self)
         }
 

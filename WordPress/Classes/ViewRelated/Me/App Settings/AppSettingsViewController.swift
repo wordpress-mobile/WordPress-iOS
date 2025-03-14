@@ -574,7 +574,7 @@ private extension AppSettingsViewController {
 
         var rows: [ImmuTableRow] = [experimentalFeaturesRow, settingsRow]
 
-        if AppConfiguration.allowsCustomAppIcons && UIApplication.shared.supportsAlternateIcons {
+        if FeatureFlag.customAppIcons.enabled && UIApplication.shared.supportsAlternateIcons {
             // We don't show custom icons for Jetpack
             rows.insert(iconRow, at: 0)
         }
@@ -586,7 +586,7 @@ private extension AppSettingsViewController {
 
         if let presenter = RootViewCoordinator.shared.whatIsNewScenePresenter as? WhatIsNewScenePresenter,
             presenter.versionHasAnnouncements,
-            AppConfiguration.showsWhatIsNew {
+            FeatureFlag.whatsNew.enabled {
             let whatIsNewRow = NavigationItemRow(title: AppConstants.Settings.whatIsNewTitle,
                                                  action: presentWhatIsNew())
             rows.append(whatIsNewRow)

@@ -15,8 +15,7 @@ struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
     let minElapsedTimeToRefresh = 1
 
     private var defaultSiteID: Int? {
-
-        UserDefaults(suiteName: BuildSettings.appGroupName)?.object(forKey: AppConfiguration.Widget.Stats.userDefaultsSiteIdKey) as? Int
+        UserDefaults(suiteName: BuildSettings.appGroupName)?.object(forKey: WidgetStatsConfiguration.userDefaultsSiteIdKey) as? Int
     }
 
     private let widgetDataLoader = WidgetDataReader<T>()

@@ -31,7 +31,7 @@ struct AppIcon {
 
     /// The image file name of the current icon used by the app, whether custom or default.
     static var currentOrDefaultIconName: String {
-        guard AppConfiguration.allowsCustomAppIcons else {
+        guard FeatureFlag.customAppIcons.enabled else {
             return iconNameFromBundle()
         }
 

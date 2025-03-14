@@ -11,7 +11,7 @@ extension FancyAlertViewController {
     }
 
     static func presentCustomAppIconUpgradeAlertIfNecessary(from origin: UIViewController & UIViewControllerTransitioningDelegate) {
-        guard AppConfiguration.allowsCustomAppIcons,
+        guard FeatureFlag.customAppIcons.enabled,
               AppIcon.isUsingCustomIcon,
               origin.presentedViewController == nil,
               UserPersistentStoreFactory.instance().hasShownCustomAppIconUpgradeAlert == false else {

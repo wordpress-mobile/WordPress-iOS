@@ -1,4 +1,5 @@
 import WidgetKit
+import JetpackStatsWidgetsCore
 
 struct LockScreenAllTimeViewsStatWidgetConfig: LockScreenStatsWidgetConfig {
     typealias WidgetData = HomeWidgetAllTimeData
@@ -12,8 +13,8 @@ struct LockScreenAllTimeViewsStatWidgetConfig: LockScreenStatsWidgetConfig {
         LocalizableStrings.allTimePreviewDescription
     }
 
-    var kind: AppConfiguration.Widget.Stats.Kind {
-        AppConfiguration.Widget.Stats.Kind.lockScreenAllTimeViews
+    var kind: WidgetStatsConfiguration.Kind {
+        WidgetStatsConfiguration.Kind.lockScreenAllTimeViews
     }
 
     var placeholderContent: HomeWidgetAllTimeData {
