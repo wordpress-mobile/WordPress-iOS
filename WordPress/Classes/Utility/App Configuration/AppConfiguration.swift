@@ -9,7 +9,6 @@ import Foundation
 @objc class AppConfiguration: NSObject {
     @objc static let isJetpack: Bool = false
     @objc static let isWordPress: Bool = true
-    @objc static let allowSignUp: Bool = true
     @objc static let allowsCustomAppIcons: Bool = true
     @objc static let allowsDomainRegistration: Bool = false
     @objc static let showAddSelfHostedSiteButton: Bool = true

@@ -2,6 +2,7 @@
 /// different builds.
 @objc
 enum FeatureFlag: Int, CaseIterable {
+    case signUp
     case bloggingPrompts
     case jetpackDisconnect
     case siteIconCreator
@@ -25,6 +26,8 @@ enum FeatureFlag: Int, CaseIterable {
         }
 
         switch self {
+        case .signUp:
+            return true
         case .bloggingPrompts:
             return AppConfiguration.isJetpack
         case .jetpackDisconnect:
@@ -77,6 +80,7 @@ extension FeatureFlag {
     /// Descriptions used to display the feature flag override menu in debug builds
     var description: String {
         return switch self {
+        case .signUp: "Sign Up"
         case .bloggingPrompts: "Blogging Prompts"
         case .jetpackDisconnect: "Jetpack disconnect"
         case .siteIconCreator: "Site Icon Creator"
