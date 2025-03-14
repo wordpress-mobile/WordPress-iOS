@@ -1,6 +1,6 @@
+import CocoaLumberjackSwift
 import Foundation
 import WebKit
-import WordPressShared
 
 @objc
 public class WPUserAgent: NSObject {

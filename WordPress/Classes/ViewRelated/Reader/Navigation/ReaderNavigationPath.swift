@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 enum ReaderNavigationPath: Hashable {
     case recent

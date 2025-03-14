@@ -1,5 +1,6 @@
 import Foundation
 import WordPressKit
+import WordPressShared
 
 private enum SubscriptionAction {
     case notifications(siteId: Int)

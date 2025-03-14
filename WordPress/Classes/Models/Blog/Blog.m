@@ -2,6 +2,7 @@
 #import "WPAccount.h"
 #import "AccountService.h"
 @import WordPressDataObjC;
+@import WordPressShared;
 #import "WordPress-Swift.h"
 @import SFHFKeychainUtils;
 

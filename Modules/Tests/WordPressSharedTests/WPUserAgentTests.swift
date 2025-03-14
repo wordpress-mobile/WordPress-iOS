@@ -1,7 +1,7 @@
 import Foundation
 import Testing
 import WebKit
-@testable import WordPress
+import WordPressShared
 
 class WPWPUserAgentTests {
 

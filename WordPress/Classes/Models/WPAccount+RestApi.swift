@@ -1,5 +1,5 @@
-
 import Foundation
+import WordPressShared
 import WordPressKit
 
 extension WPAccount {
