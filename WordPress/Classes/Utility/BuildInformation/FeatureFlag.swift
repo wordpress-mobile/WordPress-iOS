@@ -19,7 +19,11 @@ enum FeatureFlag: Int, CaseIterable {
     case readerGutenbergCommentComposer
     case pluginManagementOverhaul
 
-    /// Returns a boolean indicating if the feature is enabled
+    /// Returns a boolean indicating if the feature is enabled.
+    ///
+    /// - warning: If the feature is unconditionally enabled, it doesn't mean
+    /// that the flag can be removed. It provides a capability of conditionally
+    /// disabling a feature if necessary. Use your best judgmenet.
     var enabled: Bool {
         if let overriddenValue = FeatureFlagOverrideStore().overriddenValue(for: self) {
             return overriddenValue
