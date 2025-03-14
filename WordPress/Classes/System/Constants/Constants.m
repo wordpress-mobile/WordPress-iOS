@@ -1,11 +1,5 @@
 #import "Constants.h"
 
-
-/// XMLRPC Constants
-///
-NSString *const WPComXMLRPCUrl                                      = @"https://wordpress.com/xmlrpc.php";
-NSString *const WPComDefaultAccountUrlKey                           = @"AccountDefaultDotcom";
-
 /// WordPress URL's
 ///
 NSString *const WPMobileReaderURL                                   = @"https://en.wordpress.com/reader/mobile/v2/?chrome=no";

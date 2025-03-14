@@ -1,11 +1,5 @@
 #import <Foundation/Foundation.h>
 
-
-/// XMLRPC Constants
-///
-extern NSString *const WPComXMLRPCUrl;
-extern NSString *const WPComDefaultAccountUrlKey;
-
 /// WordPress URL's
 ///
 extern NSString *const WPMobileReaderURL;
