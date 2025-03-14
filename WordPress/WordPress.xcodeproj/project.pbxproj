@@ -1858,7 +1858,6 @@
 		015BA4EA29A788A300920F4B /* StatsTotalInsightsCellTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsTotalInsightsCellTests.swift; sourceTree = "<group>"; };
 		0167F4AD2AAA0250005B9E42 /* JetpackIntents.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = JetpackIntents.entitlements; sourceTree = "<group>"; };
 		0167F4AE2AAA0250005B9E42 /* JetpackIntentsRelease-Alpha.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = "JetpackIntentsRelease-Alpha.entitlements"; sourceTree = "<group>"; };
-		0167F4B02AAA0250005B9E42 /* JetpackIntents-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "JetpackIntents-Bridging-Header.h"; sourceTree = "<group>"; };
 		0167F4B22AAA02BD005B9E42 /* JetpackStatsWidgets.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = JetpackStatsWidgets.entitlements; sourceTree = "<group>"; };
 		0167F4B42AAA02BD005B9E42 /* JetpackStatsWidgetsRelease-Alpha.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = "JetpackStatsWidgetsRelease-Alpha.entitlements"; sourceTree = "<group>"; };
 		0167F4B52AAA02BD005B9E42 /* JetpackStatsWidgets-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "JetpackStatsWidgets-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -2511,7 +2510,6 @@
 		7358E6B8210BD318002323EB /* WordPressNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WordPressNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		73768B6A212B4E4F005136A1 /* UNNotificationContent+RemoteNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UNNotificationContent+RemoteNotification.swift"; sourceTree = "<group>"; };
 		7396FE65210F730600496D0D /* NotificationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
-		73ACDF9F2118B03700233AD4 /* WordPressNotificationServiceExtension-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WordPressNotificationServiceExtension-Bridging-Header.h"; sourceTree = "<group>"; };
 		73B6693921CAD960008456C3 /* ErrorStateViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorStateViewTests.swift; sourceTree = "<group>"; };
 		73C8F06521BEF76B00DDDF7E /* SiteAssemblyViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteAssemblyViewTests.swift; sourceTree = "<group>"; };
 		73E40D8B21238C520012ABA6 /* Tracks+ServiceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tracks+ServiceExtension.swift"; sourceTree = "<group>"; };
@@ -2545,7 +2543,6 @@
 		748437E91F1D4A4800E8DDAF /* gallery-reader-post-private.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "gallery-reader-post-private.json"; sourceTree = "<group>"; };
 		748437EA1F1D4A4800E8DDAF /* gallery-reader-post-public.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "gallery-reader-post-public.json"; sourceTree = "<group>"; };
 		748437ED1F1D4A7300E8DDAF /* RichContentFormatterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RichContentFormatterTests.swift; sourceTree = "<group>"; };
-		74869D82202BA971007A0454 /* WordPressDraftActionExtension-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WordPressDraftActionExtension-Bridging-Header.h"; sourceTree = "<group>"; };
 		748BD8841F19234300813F9A /* notifications-mark-as-read.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "notifications-mark-as-read.json"; sourceTree = "<group>"; };
 		748BD8861F19238600813F9A /* notifications-load-all.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "notifications-load-all.json"; sourceTree = "<group>"; };
 		748BD8881F1923D500813F9A /* notifications-last-seen.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "notifications-last-seen.json"; sourceTree = "<group>"; };
@@ -2746,7 +2743,6 @@
 		B030FE0927EBF0BC000F6F5E /* SiteCreationIntentTracksEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationIntentTracksEventTests.swift; sourceTree = "<group>"; };
 		B09879782B5730BC0048256D /* StatsTrafficDatePickerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsTrafficDatePickerViewModelTests.swift; sourceTree = "<group>"; };
 		B50248AE1C96FF6200AFBDED /* WPStyleGuide+Share.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "WPStyleGuide+Share.swift"; path = "WordPressShareExtension/WPStyleGuide+Share.swift"; sourceTree = SOURCE_ROOT; };
-		B50248B81C96FFB000AFBDED /* WordPressShare-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "WordPressShare-Bridging-Header.h"; path = "WordPressShareExtension/WordPressShare-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		B50248B91C96FFCC00AFBDED /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = WordPressShareExtension/Info.plist; sourceTree = SOURCE_ROOT; };
 		B50248BA1C96FFCC00AFBDED /* WordPressShare-Alpha.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "WordPressShare-Alpha.entitlements"; path = "WordPressShareExtension/WordPressShare-Alpha.entitlements"; sourceTree = SOURCE_ROOT; };
 		B50248BD1C96FFCC00AFBDED /* WordPressShare.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = WordPressShare.entitlements; path = WordPressShareExtension/WordPressShare.entitlements; sourceTree = SOURCE_ROOT; };
@@ -3246,7 +3242,6 @@
 				"Extensions/String+RegEx.swift",
 				"Extensions/UIApplication+mainWindow.swift",
 				Services/ShareExtensionService.swift,
-				System/Constants/Constants.m,
 				"Utility/App Configuration/AppColor.swift",
 				"Utility/App Configuration/AppConfiguration.swift",
 				"Utility/App Configuration/AppStyleGuide.swift",
@@ -3273,7 +3268,6 @@
 				"Extensions/String+RegEx.swift",
 				"Extensions/UIApplication+mainWindow.swift",
 				Services/ShareExtensionService.swift,
-				System/Constants/Constants.m,
 				"Utility/App Configuration/AppColor.swift",
 				"Utility/App Configuration/AppConfiguration.swift",
 				"Utility/App Configuration/AppStyleGuide.swift",
@@ -3298,7 +3292,6 @@
 				"Extensions/String+Helpers.swift",
 				"Extensions/UIImage+Extensions.swift",
 				"Extensions/URL+Helpers.swift",
-				System/Constants/Constants.m,
 				"Utility/App Configuration/AppConfiguration.swift",
 				"Utility/App Configuration/ExtensionConfiguration.swift",
 				Utility/AppLocalizedString.swift,
@@ -3358,7 +3351,6 @@
 				"Extensions/String+RegEx.swift",
 				"Extensions/UIApplication+mainWindow.swift",
 				Services/ShareExtensionService.swift,
-				System/Constants/Constants.m,
 				"Utility/App Configuration/AppColor.swift",
 				"Utility/App Configuration/AppStyleGuide.swift",
 				Utility/AppLocalizedString.swift,
@@ -3383,7 +3375,6 @@
 				"Extensions/String+RegEx.swift",
 				"Extensions/UIApplication+mainWindow.swift",
 				Services/ShareExtensionService.swift,
-				System/Constants/Constants.m,
 				"Utility/App Configuration/AppColor.swift",
 				"Utility/App Configuration/AppStyleGuide.swift",
 				Utility/AppLocalizedString.swift,
@@ -3406,7 +3397,6 @@
 				"Extensions/String+Helpers.swift",
 				"Extensions/UIImage+Extensions.swift",
 				"Extensions/URL+Helpers.swift",
-				System/Constants/Constants.m,
 				Utility/AppLocalizedString.swift,
 				Utility/BuildInformation/BuildConfiguration.swift,
 				Utility/FormattableContent/Actions/DefaultFormattableContentAction.swift,
@@ -3449,7 +3439,6 @@
 		24CE68BA2CD3375300C7B37D /* Exceptions for "Classes" folder in "JetpackIntents" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				System/Constants/Constants.m,
 				Utility/Logging/CocoaLumberjack.swift,
 			);
 			target = 0107E13828FE9DB200DE87DB /* JetpackIntents */;
@@ -3731,7 +3720,6 @@
 			children = (
 				0167F4AD2AAA0250005B9E42 /* JetpackIntents.entitlements */,
 				0167F4AE2AAA0250005B9E42 /* JetpackIntentsRelease-Alpha.entitlements */,
-				0167F4B02AAA0250005B9E42 /* JetpackIntents-Bridging-Header.h */,
 				4A690C1A2BA7958F00A8E0C5 /* PrivacyInfo.xcprivacy */,
 			);
 			path = "Supporting Files";
@@ -5291,7 +5279,6 @@
 				73768B69212B4DE8005136A1 /* NotificationContent */,
 				73E40D8A21238C400012ABA6 /* Tracks */,
 				7396FE65210F730600496D0D /* NotificationService.swift */,
-				73ACDF9F2118B03700233AD4 /* WordPressNotificationServiceExtension-Bridging-Header.h */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -5361,7 +5348,6 @@
 			children = (
 				741AF3A3202F3DFC00C771A5 /* Tracks */,
 				74576686202B571700F42E40 /* Supporting Files */,
-				74869D82202BA971007A0454 /* WordPressDraftActionExtension-Bridging-Header.h */,
 			);
 			path = WordPressDraftActionExtension;
 			sourceTree = "<group>";
@@ -5720,7 +5706,6 @@
 				B5FA22841C99F6340016CA7C /* Tracks */,
 				7430C4471F97F0DA00E2673E /* UI */,
 				B5BEA5661C7CEB4400C8035B /* Supporting Files */,
-				B50248B81C96FFB000AFBDED /* WordPressShare-Bridging-Header.h */,
 				E1AFA8C21E8E34230004A323 /* WordPressShare.js */,
 			);
 			path = WordPressShareExtension;
@@ -10215,7 +10200,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "Jetpack iOS Development Intents";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OBJC_BRIDGING_HEADER = "JetpackIntents/Supporting Files/JetpackIntents-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -10263,7 +10247,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.automattic.jetpack.JetpackIntents";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
-				SWIFT_OBJC_BRIDGING_HEADER = "JetpackIntents/Supporting Files/JetpackIntents-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = jetpack;
@@ -10311,7 +10294,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse com.jetpack.alpha.JetpackIntents";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
-				SWIFT_OBJC_BRIDGING_HEADER = "JetpackIntents/Supporting Files/JetpackIntents-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = jpalpha;
@@ -10807,7 +10789,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress iOS Development Notification Service Ext";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_WORDPRESS;
-				SWIFT_OBJC_BRIDGING_HEADER = "WordPressNotificationServiceExtension/Sources/WordPressNotificationServiceExtension-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -10853,7 +10834,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore org.wordpress.WordPressNotificationServiceExtension";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_WORDPRESS;
-				SWIFT_OBJC_BRIDGING_HEADER = "WordPressNotificationServiceExtension/Sources/WordPressNotificationServiceExtension-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wordpress;
@@ -10898,7 +10878,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.alpha.WordPressNotificationServiceExtension";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_WORDPRESS;
-				SWIFT_OBJC_BRIDGING_HEADER = "WordPressNotificationServiceExtension/Sources/WordPressNotificationServiceExtension-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wpalpha;
@@ -10949,7 +10928,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress Draft Action Development";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_WORDPRESS;
-				SWIFT_OBJC_BRIDGING_HEADER = "WordPressDraftActionExtension/WordPressDraftActionExtension-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -11001,7 +10979,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore org.wordpress.WordPressDraftAction";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_WORDPRESS;
-				SWIFT_OBJC_BRIDGING_HEADER = "WordPressDraftActionExtension/WordPressDraftActionExtension-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wordpress;
@@ -11053,7 +11030,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.alpha.WordPressDraftAction";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_WORDPRESS;
-				SWIFT_OBJC_BRIDGING_HEADER = "WordPressDraftActionExtension/WordPressDraftActionExtension-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wpalpha;
@@ -11122,7 +11098,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "Jetpack iOS Development Share Extension";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
-				SWIFT_OBJC_BRIDGING_HEADER = "WordPressShareExtension/WordPressShare-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				WPCOM_SCHEME = jpdebug;
@@ -11189,7 +11164,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.automattic.jetpack.JetpackShare";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
-				SWIFT_OBJC_BRIDGING_HEADER = "WordPressShareExtension/WordPressShare-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				WPCOM_SCHEME = jetpack;
 			};
@@ -11257,7 +11231,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse com.jetpack.alpha.JetpackShare";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
-				SWIFT_OBJC_BRIDGING_HEADER = "WordPressShareExtension/WordPressShare-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				WPCOM_SCHEME = jpalpha;
 			};
@@ -11308,7 +11281,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "Jetpack iOS Development Draft Action Extensions";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG IS_JETPACK";
-				SWIFT_OBJC_BRIDGING_HEADER = "WordPressDraftActionExtension/WordPressDraftActionExtension-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -11361,7 +11333,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.automattic.jetpack.JetpackDraftAction";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
-				SWIFT_OBJC_BRIDGING_HEADER = "WordPressDraftActionExtension/WordPressDraftActionExtension-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = jetpack;
@@ -11414,7 +11385,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse com.jetpack.alpha.JetpackDraftAction";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
-				SWIFT_OBJC_BRIDGING_HEADER = "WordPressDraftActionExtension/WordPressDraftActionExtension-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = jpalpha;
@@ -11460,7 +11430,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "Jetpack iOS Development Notification Service Ext.";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OBJC_BRIDGING_HEADER = "WordPressNotificationServiceExtension/Sources/WordPressNotificationServiceExtension-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -11507,7 +11476,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.automattic.jetpack.$(PRODUCT_NAME:rfc1034identifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
-				SWIFT_OBJC_BRIDGING_HEADER = "WordPressNotificationServiceExtension/Sources/WordPressNotificationServiceExtension-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = jetpack;
@@ -11553,7 +11521,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse com.jetpack.alpha.$(PRODUCT_NAME:rfc1034identifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
-				SWIFT_OBJC_BRIDGING_HEADER = "WordPressNotificationServiceExtension/Sources/WordPressNotificationServiceExtension-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = jpalpha;
@@ -11923,7 +11890,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress Share Extension Development";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_WORDPRESS;
-				SWIFT_OBJC_BRIDGING_HEADER = "WordPressShareExtension/WordPressShare-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				WPCOM_SCHEME = wpdebug;
@@ -11989,7 +11955,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore org.wordpress.WordPressShare";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_WORDPRESS;
-				SWIFT_OBJC_BRIDGING_HEADER = "WordPressShareExtension/WordPressShare-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				WPCOM_SCHEME = wordpress;
 			};
@@ -12056,7 +12021,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.alpha.WordPressShare";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_WORDPRESS;
-				SWIFT_OBJC_BRIDGING_HEADER = "WordPressShareExtension/WordPressShare-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				WPCOM_SCHEME = wpalpha;
 			};

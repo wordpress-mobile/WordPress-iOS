@@ -1,3 +1,4 @@
+import Foundation
 
 struct NotificationContentRangeFactory: FormattableRangesFactory {
     static func contentRange(from dictionary: [String: AnyObject]) -> FormattableContentRange? {

@@ -1,3 +1,4 @@
+import Foundation
 
 public class NotificationContentRange: FormattableContentRange, LinkContentRange {
     public let kind: FormattableRangeKind

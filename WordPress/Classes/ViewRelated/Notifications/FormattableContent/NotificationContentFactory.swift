@@ -1,3 +1,4 @@
+import Foundation
 
 private enum Constants {
     static let Actions = "actions"
