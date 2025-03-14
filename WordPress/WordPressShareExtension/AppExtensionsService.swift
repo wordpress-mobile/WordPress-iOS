@@ -1,4 +1,5 @@
 import Aztec
+import BuildSettingsKit
 import CoreData
 import WordPressKit
 
@@ -22,7 +23,7 @@ class AppExtensionsService {
     /// Unique identifier for background sessions
     ///
     fileprivate lazy var backgroundSessionIdentifier: String = {
-        let identifier = WPAppGroupName + "." + UUID().uuidString
+        let identifier = BuildSettings.appGroupName + "." + UUID().uuidString
         return identifier
     }()
 
@@ -39,7 +40,7 @@ class AppExtensionsService {
                             userAgent: nil,
                             backgroundUploads: false,
                             backgroundSessionIdentifier: backgroundSessionIdentifier,
-                            sharedContainerIdentifier: WPAppGroupName)
+                            sharedContainerIdentifier: BuildSettings.appGroupName)
     }()
 
     /// Backgrounding Rest API
@@ -49,13 +50,13 @@ class AppExtensionsService {
                                    userAgent: nil,
                                    backgroundUploads: true,
                                    backgroundSessionIdentifier: backgroundSessionIdentifier,
-                                   sharedContainerIdentifier: WPAppGroupName)
+                                   sharedContainerIdentifier: BuildSettings.appGroupName)
     }()
 
     /// Tracks Instance
     ///
     fileprivate lazy var tracks: Tracks = {
-        Tracks(appGroupName: WPAppGroupName)
+        Tracks(appGroupName: BuildSettings.appGroupName)
     }()
 
     /// WordPress.com Username

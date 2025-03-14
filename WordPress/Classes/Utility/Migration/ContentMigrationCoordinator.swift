@@ -1,4 +1,6 @@
+import Foundation
 import WordPressShared
+import BuildSettingsKit
 
 /// Encapsulates logic related to content migration from WordPress to Jetpack.
 ///
@@ -30,7 +32,7 @@ import WordPressShared
          dataMigrator: ContentDataMigrating = DataMigrator(),
          notificationCenter: NotificationCenter = .default,
          userPersistentRepository: UserPersistentRepository = UserDefaults.standard,
-         sharedPersistentRepository: UserPersistentRepository? = UserDefaults(suiteName: WPAppGroupName),
+         sharedPersistentRepository: UserPersistentRepository? = UserDefaults(suiteName: BuildSettings.appGroupName),
          eligibilityProvider: ContentMigrationEligibilityProvider = AppConfiguration(),
          tracker: MigrationAnalyticsTracker = .init()) {
         self.coreDataStack = coreDataStack

@@ -1,5 +1,6 @@
 import SFHFKeychainUtils
 import UIKit
+import BuildSettingsKit
 import CocoaLumberjackSwift
 import Reachability
 import AutomatticTracks
@@ -202,8 +203,9 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
         // 21-Oct-2017: We are only handling background URLSessions initiated by the share extension so there
         // is no need to inspect the identifier beyond the simple check here.
-        if identifier.contains(WPAppGroupName) {
-            let manager = ShareExtensionSessionManager(appGroup: WPAppGroupName, backgroundSessionIdentifier: identifier)
+        let appGroupName = BuildSettings.appGroupName
+        if identifier.contains(appGroupName) {
+            let manager = ShareExtensionSessionManager(appGroup: appGroupName, backgroundSessionIdentifier: identifier)
             manager.backgroundSessionCompletionBlock = completionHandler
             manager.startBackgroundSession()
         }

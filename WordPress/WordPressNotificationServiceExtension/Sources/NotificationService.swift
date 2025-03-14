@@ -1,5 +1,6 @@
 import SFHFKeychainUtils
 import UserNotifications
+import BuildSettingsKit
 
 import WordPressKit
 
@@ -11,7 +12,7 @@ class NotificationService: UNNotificationServiceExtension {
     // MARK: Properties
 
     /// Manages analytics calls via Tracks
-    private let tracks = Tracks(appGroupName: WPAppGroupName)
+    private let tracks = Tracks(appGroupName: BuildSettings.appGroupName)
 
     /// The content handler received from the extension
     private var contentHandler: ((UNNotificationContent) -> Void)?

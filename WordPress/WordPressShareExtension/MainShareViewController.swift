@@ -1,4 +1,5 @@
 import UIKit
+import BuildSettingsKit
 import WordPressShared
 import WordPressUI
 
@@ -91,7 +92,7 @@ private extension MainShareViewController {
     }
 
     func trackExtensionLaunch() {
-        let tracks = Tracks(appGroupName: WPAppGroupName)
+        let tracks = Tracks(appGroupName: BuildSettings.appGroupName)
         let oauth2Token = ShareExtensionService().retrieveShareExtensionToken()
         tracks.trackExtensionLaunched(oauth2Token != nil)
     }

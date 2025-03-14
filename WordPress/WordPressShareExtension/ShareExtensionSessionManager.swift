@@ -1,4 +1,5 @@
 import Aztec
+import BuildSettingsKit
 import CoreData
 import Foundation
 import WordPressData
@@ -241,7 +242,7 @@ import WordPressFlux
                                    userAgent: nil,
                                    backgroundUploads: false,
                                    backgroundSessionIdentifier: backgroundSessionIdentifier,
-                                   sharedContainerIdentifier: WPAppGroupName)
+                                   sharedContainerIdentifier: BuildSettings.appGroupName)
     }
 
     private func token() -> String? {
