@@ -13,7 +13,7 @@ enum BuildConfiguration: String {
 
     static var current: BuildConfiguration {
         #if DEBUG
-            return testingOverride ?? .localDeveloper
+            return .localDeveloper
         #elseif ALPHA_BUILD
             return .a8cBranchTest
         #elseif INTERNAL_BUILD
@@ -26,16 +26,6 @@ enum BuildConfiguration: String {
     static func ~=(a: BuildConfiguration, b: Set<BuildConfiguration>) -> Bool {
         return b.contains(a)
     }
-
-    #if DEBUG
-    private static var testingOverride: BuildConfiguration?
-
-    func test(_ closure: () -> ()) {
-        BuildConfiguration.testingOverride = self
-        closure()
-        BuildConfiguration.testingOverride = nil
-    }
-    #endif
 
     var isInternal: Bool {
         self ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
