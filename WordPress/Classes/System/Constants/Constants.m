@@ -17,18 +17,6 @@ NSString *const WPGithubMainURL                                     = @"https://
 NSString *const WPComReferrerURL                                    = @"https://wordpress.com";
 NSString *const WPComDomain                                         = @"wordpress.com";
 
-/// Keychain Constants
-///
-/// Note: Multiple compiler flags are set for some builds, so conditional ordering matters.
-///
-#if defined(ALPHA_BUILD)
-NSString *const WPAppKeychainAccessGroup                            = @"99KV9Z6BKV.org.wordpress.alpha";
-#elif defined(INTERNAL_BUILD)
-NSString *const WPAppKeychainAccessGroup                            = @"99KV9Z6BKV.org.wordpress.internal";
-#else
-NSString *const WPAppKeychainAccessGroup                            = @"3TMU3BH3NK.org.wordpress";
-#endif
-
 /// Apple ID Constants
 ///
 NSString *const WPAppleIDKeychainUsernameKey                        = @"Username";
