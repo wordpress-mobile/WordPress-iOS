@@ -12,7 +12,7 @@ struct LockScreenSiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
     let minElapsedTimeToRefresh = 1
 
     private var defaultSiteID: Int? {
-        UserDefaults(suiteName: WPAppGroupName)?.object(forKey: AppConfiguration.Widget.Stats.userDefaultsSiteIdKey) as? Int
+        UserDefaults(suiteName: WPAppGroupName)?.object(forKey: WidgetStatsConfiguration.userDefaultsSiteIdKey) as? Int
     }
 
     private let widgetDataLoader = WidgetDataReader<T>()

@@ -219,8 +219,8 @@ private extension StatsWidgetsService {
 
     private func createStatsService(for widgetData: HomeWidgetData) throws -> StatsServiceRemoteV2 {
         let token = try SFHFKeychainUtils.getPasswordForUsername(
-            AppConfiguration.Widget.Stats.keychainTokenKey,
-            andServiceName: AppConfiguration.Widget.Stats.keychainServiceName,
+            WidgetStatsConfiguration.keychainTokenKey,
+            andServiceName: WidgetStatsConfiguration.keychainServiceName,
             accessGroup: WPAppKeychainAccessGroup
         )
         let wpApi = WordPressComRestApi(oAuthToken: token)

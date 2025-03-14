@@ -8,7 +8,7 @@ struct HomeWidgetThisWeekData: HomeWidgetData {
     let timeZone: TimeZone
     let date: Date
     let stats: ThisWeekWidgetStats
-    static let filename = AppConfiguration.Widget.Stats.thisWeekFilename
+    static let filename = WidgetStatsConfiguration.thisWeekFilename
 
     var statsURL: URL? {
         guard let statsUrl = URL(string: "https://wordpress.com/stats/week/") else {

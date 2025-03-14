@@ -36,7 +36,7 @@ struct HomeWidgetThisWeek: Widget {
 
     var body: some WidgetConfiguration {
         IntentConfiguration(
-            kind: AppConfiguration.Widget.Stats.Kind.homeThisWeek.rawValue,
+            kind: WidgetStatsConfiguration.Kind.homeThisWeek.rawValue,
             intent: SelectSiteIntent.self,
             provider: SiteListProvider<HomeWidgetThisWeekData>(service: StatsWidgetsService(),
                                                                placeholderContent: placeholderContent,

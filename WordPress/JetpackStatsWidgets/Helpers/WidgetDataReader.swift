@@ -31,7 +31,7 @@ final class WidgetDataReader<T: HomeWidgetData> {
         return cacheReader.widgetData(
             forSiteIdentifier: configuration.site?.identifier,
             defaultSiteID: defaultSiteID,
-            userLoggedIn: defaults.bool(forKey: AppConfiguration.Widget.Stats.userDefaultsLoggedInKey)
+            userLoggedIn: defaults.bool(forKey: WidgetStatsConfiguration.userDefaultsLoggedInKey)
         )
     }
 }

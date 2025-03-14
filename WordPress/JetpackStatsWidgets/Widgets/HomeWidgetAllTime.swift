@@ -17,7 +17,7 @@ struct HomeWidgetAllTime: Widget {
 
     var body: some WidgetConfiguration {
         IntentConfiguration(
-            kind: AppConfiguration.Widget.Stats.Kind.homeAllTime.rawValue,
+            kind: WidgetStatsConfiguration.Kind.homeAllTime.rawValue,
             intent: SelectSiteIntent.self,
             provider: SiteListProvider<HomeWidgetAllTimeData>(service: StatsWidgetsService(),
                                                               placeholderContent: placeholderContent,

@@ -13,8 +13,8 @@ struct LockScreenAllTimeViewsVisitorsStatWidgetConfig: LockScreenStatsWidgetConf
         LocalizableStrings.allTimePreviewDescription
     }
 
-    var kind: AppConfiguration.Widget.Stats.Kind {
-        AppConfiguration.Widget.Stats.Kind.lockScreenAllTimeViewsVisitors
+    var kind: WidgetStatsConfiguration.Kind {
+        WidgetStatsConfiguration.Kind.lockScreenAllTimeViewsVisitors
     }
 
     var placeholderContent: HomeWidgetAllTimeData {

@@ -13,8 +13,8 @@ struct LockScreenAllTimePostsBestViewsStatWidgetConfig: LockScreenStatsWidgetCon
         LocalizableStrings.allTimePreviewDescription
     }
 
-    var kind: AppConfiguration.Widget.Stats.Kind {
-        AppConfiguration.Widget.Stats.Kind.lockScreenAllTimePostsBestViews
+    var kind: WidgetStatsConfiguration.Kind {
+        WidgetStatsConfiguration.Kind.lockScreenAllTimePostsBestViews
     }
 
     var placeholderContent: HomeWidgetAllTimeData {
