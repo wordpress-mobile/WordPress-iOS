@@ -41,6 +41,20 @@ public class TemporaryWPUserAgent: NSObject {
         let appVersion = bundle.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown"
         return "\(defaultUserAgent(userDefaults: userDefaults)) wp-iphone/\(appVersion)"
     }
+
+    @objc
+    public static func useWordPressUserAgentInWebViews(userDefaults: UserDefaults) {
+        // Cleanup unused UserDefaults keys from older WPUserAgent implementation
+        // FIXME: How old are those older implementations? Can we remove this code because "old enough"?
+        userDefaults.removeObject(forKey: "DefaultUserAgent")
+        userDefaults.removeObject(forKey: "AppUserAgent")
+
+        let userAgent = wordPressUserAgent(userDefaults: userDefaults)
+
+        userDefaults.register(defaults: [userAgentKey: userAgent])
+
+        DDLogVerbose("User-Agent set to \(userAgent)")
+    }
 }
 
 extension WPUserAgent {

@@ -45,7 +45,7 @@ class WPWPUserAgentTests {
         userDefaults.removeObject(forKey: TemporaryWPUserAgent.userAgentKey)
         userDefaults.register(defaults: [TemporaryWPUserAgent.userAgentKey: defaultUserAgent])
 
-        WPUserAgent.useWordPressInWebViews()
+        TemporaryWPUserAgent.useWordPressUserAgentInWebViews(userDefaults: userDefaults)
 
         #expect(try currentUserAgent(userDefaults: userDefaults) == wordPressUserAgent)
         #expect(try currentUserAgentFromWebView() == wordPressUserAgent)
