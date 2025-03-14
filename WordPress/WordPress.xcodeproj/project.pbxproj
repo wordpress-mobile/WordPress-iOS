@@ -64,7 +64,6 @@
 		0107E0C028F97D5000DE87DB /* HomeWidgetToday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F526C522538CF2A0069706C /* HomeWidgetToday.swift */; };
 		0107E0C128F97D5000DE87DB /* FlexibleCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F568A2E254216550048A9E4 /* FlexibleCard.swift */; };
 		0107E0C228F97D5000DE87DB /* VerticalCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F568A1E254213B60048A9E4 /* VerticalCard.swift */; };
-		0107E0C428F97D5000DE87DB /* HomeWidgetAllTimeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5C861925C9EA2500BABE64 /* HomeWidgetAllTimeData.swift */; };
 		0107E0C528F97D5000DE87DB /* GroupedViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE20C1425CF165700A15525 /* GroupedViewData.swift */; };
 		0107E0C728F97D5000DE87DB /* StatsWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8EEC4D25B4817000EC9DAE /* StatsWidgets.swift */; };
 		0107E0C828F97D5000DE87DB /* StatsValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA59B99258289E30073772F /* StatsValueView.swift */; };
@@ -91,7 +90,6 @@
 		0107E11528FD7FE500DE87DB /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25FA332609AAAA0005E08F /* AppConfiguration.swift */; };
 		0107E11628FD7FE800DE87DB /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25FA332609AAAA0005E08F /* AppConfiguration.swift */; };
 		0107E13B28FE9DB200DE87DB /* Sites.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 3F46AB0225BF5D6300CE2E98 /* Sites.intentdefinition */; settings = {ATTRIBUTES = (codegen, ); }; };
-		0107E13D28FE9DB200DE87DB /* HomeWidgetAllTimeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5C861925C9EA2500BABE64 /* HomeWidgetAllTimeData.swift */; };
 		0107E13E28FE9DB200DE87DB /* SitesDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1482CDF2575BDA4007E4DD6 /* SitesDataProvider.swift */; };
 		0107E13F28FE9DB200DE87DB /* HomeWidgetTodayData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB34ACA25672A90001A74A6 /* HomeWidgetTodayData.swift */; };
 		0107E14128FE9DB200DE87DB /* HomeWidgetCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA53E9B256571D800F4D9A2 /* HomeWidgetCache.swift */; };
@@ -351,7 +349,6 @@
 		3F4EB39228AC561600B8DD86 /* JetpackWordPressLogoAnimation_rtl.json in Resources */ = {isa = PBXBuildFile; fileRef = 3F4EB39128AC561600B8DD86 /* JetpackWordPressLogoAnimation_rtl.json */; };
 		3F56F55C2AEA2F67006BDCEA /* ReaderPostBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F56F55B2AEA2F67006BDCEA /* ReaderPostBuilder.swift */; };
 		3F593FDD2A81DC6D00B29E86 /* NSError+TestInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F593FDC2A81DC6D00B29E86 /* NSError+TestInstance.swift */; };
-		3F5C865D25C9EBEF00BABE64 /* HomeWidgetAllTimeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5C861925C9EA2500BABE64 /* HomeWidgetAllTimeData.swift */; };
 		3F608F7F2D2D1A9E008ACD86 /* Gutenberg.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F60D3902D2C4BA3008ACD86 /* Gutenberg.xcframework */; };
 		3F608F802D2D1A9E008ACD86 /* Gutenberg.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3F60D3902D2C4BA3008ACD86 /* Gutenberg.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3F608F812D2D1A9E008ACD86 /* hermes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F60D3922D2C4BA3008ACD86 /* hermes.xcframework */; };
@@ -1449,7 +1446,6 @@
 		FABB23E62602FC2C00C8785C /* ShareMediaFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7430C4481F97F23600E2673E /* ShareMediaFileManager.swift */; };
 		FABB24062602FC2C00C8785C /* UploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741E22441FC0CC55007967AB /* UploadOperation.swift */; };
 		FABB24702602FC2C00C8785C /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5552D7F1CD1028C00B26DF6 /* String+Extensions.swift */; };
-		FABB24DA2602FC2C00C8785C /* HomeWidgetAllTimeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5C861925C9EA2500BABE64 /* HomeWidgetAllTimeData.swift */; };
 		FABB24EF2602FC2C00C8785C /* ShareNoticeConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EA3B87202A0462004F802D /* ShareNoticeConstants.swift */; };
 		FABB24F32602FC2C00C8785C /* HomeWidgetTodayData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB34ACA25672A90001A74A6 /* HomeWidgetTodayData.swift */; };
 		FABB254A2602FC2C00C8785C /* SharePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = E125F1E31E8E595E00320B67 /* SharePost.swift */; };
@@ -2178,7 +2174,6 @@
 		3F568A2E254216550048A9E4 /* FlexibleCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexibleCard.swift; sourceTree = "<group>"; };
 		3F56F55B2AEA2F67006BDCEA /* ReaderPostBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderPostBuilder.swift; sourceTree = "<group>"; };
 		3F593FDC2A81DC6D00B29E86 /* NSError+TestInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSError+TestInstance.swift"; sourceTree = "<group>"; };
-		3F5C861925C9EA2500BABE64 /* HomeWidgetAllTimeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWidgetAllTimeData.swift; sourceTree = "<group>"; };
 		3F5C86BF25CA197500BABE64 /* HomeWidgetAllTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWidgetAllTime.swift; sourceTree = "<group>"; };
 		3F60D38F2D2C4BA3008ACD86 /* React.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = React.xcframework; path = Frameworks/React.xcframework; sourceTree = "<group>"; };
 		3F60D3902D2C4BA3008ACD86 /* Gutenberg.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Gutenberg.xcframework; path = Frameworks/Gutenberg.xcframework; sourceTree = "<group>"; };
@@ -4474,7 +4469,6 @@
 			isa = PBXGroup;
 			children = (
 				3F6DA04025646F96002AB88F /* HomeWidgetData.swift */,
-				3F5C861925C9EA2500BABE64 /* HomeWidgetAllTimeData.swift */,
 				3F8B136C25D08F34004FAC0A /* HomeWidgetThisWeekData.swift */,
 				3FB34ACA25672A90001A74A6 /* HomeWidgetTodayData.swift */,
 				3F63B93B258179D100F581BE /* StatsWidgetEntry.swift */,
@@ -8784,7 +8778,6 @@
 				0107E0C128F97D5000DE87DB /* FlexibleCard.swift in Sources */,
 				0107E0C228F97D5000DE87DB /* VerticalCard.swift in Sources */,
 				C9B477A929CC13CB008CBF49 /* LockScreenSiteListProvider.swift in Sources */,
-				0107E0C428F97D5000DE87DB /* HomeWidgetAllTimeData.swift in Sources */,
 				0107E0C528F97D5000DE87DB /* GroupedViewData.swift in Sources */,
 				C9C21D7829BECFC7009F68E5 /* LockScreenStatsWidget.swift in Sources */,
 				0188FE492AA62D080093EDA5 /* LockScreenMultiStatWidgetViewProvider.swift in Sources */,
@@ -8825,7 +8818,6 @@
 				0167F4B62AAA0342005B9E42 /* WidgetConfiguration.swift in Sources */,
 				0107E13B28FE9DB200DE87DB /* Sites.intentdefinition in Sources */,
 				0107E16F28FFEF4500DE87DB /* AppConfiguration.swift in Sources */,
-				0107E13D28FE9DB200DE87DB /* HomeWidgetAllTimeData.swift in Sources */,
 				0107E13E28FE9DB200DE87DB /* SitesDataProvider.swift in Sources */,
 				0107E13F28FE9DB200DE87DB /* HomeWidgetTodayData.swift in Sources */,
 				0107E14128FE9DB200DE87DB /* HomeWidgetCache.swift in Sources */,
@@ -8863,7 +8855,6 @@
 				741E22461FC0CC55007967AB /* UploadOperation.swift in Sources */,
 				F4D8296A2931083000038726 /* MigrationSuccessCell+WordPress.swift in Sources */,
 				B5552D831CD1062400B26DF6 /* String+Extensions.swift in Sources */,
-				3F5C865D25C9EBEF00BABE64 /* HomeWidgetAllTimeData.swift in Sources */,
 				74EA3B88202A0462004F802D /* ShareNoticeConstants.swift in Sources */,
 				3FB34ADA25672AA5001A74A6 /* HomeWidgetTodayData.swift in Sources */,
 				83E1E5592A58B5C2000B576F /* JetpackSocialError.swift in Sources */,
@@ -9753,7 +9744,6 @@
 				FAADE42626159AFE00BF29FE /* AppConstants.swift in Sources */,
 				3FF15A56291B4EEA00E1B4E5 /* MigrationCenterView.swift in Sources */,
 				F49B9A08293A21F4000CEFCE /* MigrationEvent.swift in Sources */,
-				FABB24DA2602FC2C00C8785C /* HomeWidgetAllTimeData.swift in Sources */,
 				F4D82972293109A600038726 /* DashboardMigrationSuccessCell+Jetpack.swift in Sources */,
 				FABB24EF2602FC2C00C8785C /* ShareNoticeConstants.swift in Sources */,
 				FABB24F32602FC2C00C8785C /* HomeWidgetTodayData.swift in Sources */,

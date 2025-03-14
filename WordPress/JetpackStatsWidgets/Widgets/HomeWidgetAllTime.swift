@@ -5,15 +5,19 @@ import JetpackStatsWidgetsCore
 struct HomeWidgetAllTime: Widget {
     private let tracks = Tracks(appGroupName: WPAppGroupName)
 
-    private let placeholderContent = HomeWidgetAllTimeData(siteID: 0,
-                                                        siteName: "My WordPress Site",
-                                                        url: "",
-                                                        timeZone: TimeZone.current,
-                                                        date: Date(),
-                                                        stats: AllTimeWidgetStats(views: 649,
-                                                                                  visitors: 572,
-                                                                                  posts: 16,
-                                                                                  bestViews: 8))
+    private let placeholderContent = HomeWidgetAllTimeData(
+        siteID: 0,
+        siteName: "My WordPress Site",
+        url: "",
+        timeZone: TimeZone.current,
+        date: Date(),
+        stats: AllTimeWidgetStats(
+            views: 649,
+            visitors: 572,
+            posts: 16,
+            bestViews: 8
+        )
+    )
 
     var body: some WidgetConfiguration {
         IntentConfiguration(
