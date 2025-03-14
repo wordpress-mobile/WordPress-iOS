@@ -586,7 +586,7 @@ private extension AppSettingsViewController {
 
         if let presenter = RootViewCoordinator.shared.whatIsNewScenePresenter as? WhatIsNewScenePresenter,
             presenter.versionHasAnnouncements,
-            AppConfiguration.showsWhatIsNew {
+            FeatureFlag.whatsNew.enabled {
             let whatIsNewRow = NavigationItemRow(title: AppConstants.Settings.whatIsNewTitle,
                                                  action: presentWhatIsNew())
             rows.append(whatIsNewRow)

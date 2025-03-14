@@ -202,7 +202,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
         super.viewDidAppear(animated)
 
         defer {
-            if AppConfiguration.showsWhatIsNew {
+            if FeatureFlag.whatsNew.enabled {
                 RootViewCoordinator.shared.presentWhatIsNew(on: self)
             }
         }

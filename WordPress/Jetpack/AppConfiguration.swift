@@ -9,6 +9,5 @@ import Foundation
 @objc class AppConfiguration: NSObject {
     @objc static let isJetpack: Bool = true
     @objc static let isWordPress: Bool = false
-    @objc static let showsWhatIsNew: Bool = true
     @objc static let qrLoginEnabled: Bool = true
 }
