@@ -11998,7 +11998,7 @@
 					"\"${PODS_ROOT}/Headers/Public/HockeySDK\"",
 					"\"$(SDKROOT)/usr/include/libxml2/\"",
 				);
-				INFOPLIST_FILE = "WordPressShareExtension/Info.plist\n";
+				INFOPLIST_FILE = WordPressShareExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -12065,7 +12065,7 @@
 					"\"${PODS_ROOT}/Headers/Public/HockeySDK\"",
 					"\"$(SDKROOT)/usr/include/libxml2/\"",
 				);
-				INFOPLIST_FILE = "WordPressShareExtension/Info.plist\n";
+				INFOPLIST_FILE = WordPressShareExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -12131,7 +12131,7 @@
 					"\"${PODS_ROOT}/Headers/Public/HockeySDK\"",
 					"\"$(SDKROOT)/usr/include/libxml2/\"",
 				);
-				INFOPLIST_FILE = "WordPressShareExtension/Info.plist\n";
+				INFOPLIST_FILE = WordPressShareExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
