@@ -128,8 +128,6 @@
 		018FF1372AE67C2600F301C3 /* LockScreenFlexibleCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018FF1362AE67C2600F301C3 /* LockScreenFlexibleCard.swift */; };
 		019C5B972BD6A49900A69DB0 /* StatsSubscribersViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019C5B962BD6A49900A69DB0 /* StatsSubscribersViewModelTests.swift */; };
 		019D699E2A5EA963003B676D /* RootViewCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D699D2A5EA963003B676D /* RootViewCoordinatorTests.swift */; };
-		01ABF1702AD578B3004331BD /* WidgetAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01ABF16F2AD578B3004331BD /* WidgetAnalytics.swift */; };
-		01ABF1712AD578B3004331BD /* WidgetAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01ABF16F2AD578B3004331BD /* WidgetAnalytics.swift */; };
 		01B7590E2B3EEEA400179AE6 /* SiteDomainsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B7590D2B3EEEA400179AE6 /* SiteDomainsViewModelTests.swift */; };
 		01CE5007290A889F00A9C2E0 /* TracksConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CE5006290A889F00A9C2E0 /* TracksConfiguration.swift */; };
 		01CE5008290A88BD00A9C2E0 /* TracksConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CE5006290A889F00A9C2E0 /* TracksConfiguration.swift */; };
@@ -1901,7 +1899,6 @@
 		018FF1362AE67C2600F301C3 /* LockScreenFlexibleCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenFlexibleCard.swift; sourceTree = "<group>"; };
 		019C5B962BD6A49900A69DB0 /* StatsSubscribersViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsSubscribersViewModelTests.swift; sourceTree = "<group>"; };
 		019D699D2A5EA963003B676D /* RootViewCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewCoordinatorTests.swift; sourceTree = "<group>"; };
-		01ABF16F2AD578B3004331BD /* WidgetAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetAnalytics.swift; sourceTree = "<group>"; };
 		01B7590D2B3EEEA400179AE6 /* SiteDomainsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteDomainsViewModelTests.swift; sourceTree = "<group>"; };
 		01CE5006290A889F00A9C2E0 /* TracksConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksConfiguration.swift; sourceTree = "<group>"; };
 		01CE5010290A890300A9C2E0 /* TracksConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksConfiguration.swift; sourceTree = "<group>"; };
@@ -3763,7 +3760,6 @@
 				3FB34ABB25672A59001A74A6 /* Model */,
 				3FFDDC0325B89F0C008D5BDD /* Cache */,
 				3F2F0C06256C68E1003351C7 /* Remote service */,
-				3FA59DCC2582E53F0073772F /* Tracks */,
 				3F526D2B2539F9D60069706C /* Views */,
 				3F526C552538CF2B0069706C /* Assets.xcassets */,
 				0107E1832900043200DE87DB /* Info.plist */,
@@ -4488,14 +4484,6 @@
 				F4D829672931059000038726 /* MigrationSuccessActionHandler.swift */,
 			);
 			path = "Success card";
-			sourceTree = "<group>";
-		};
-		3FA59DCC2582E53F0073772F /* Tracks */ = {
-			isa = PBXGroup;
-			children = (
-				01ABF16F2AD578B3004331BD /* WidgetAnalytics.swift */,
-			);
-			path = Tracks;
 			sourceTree = "<group>";
 		};
 		3FB34ABB25672A59001A74A6 /* Model */ = {
@@ -8895,7 +8883,6 @@
 				F49B9A09293A3243000CEFCE /* MigrationEvent.swift in Sources */,
 				74AF4D741FE417D200E3EBFE /* MediaUploadOperation.swift in Sources */,
 				C9B477AE29CC35A0008CBF49 /* WidgetDataReader.swift in Sources */,
-				01ABF1702AD578B3004331BD /* WidgetAnalytics.swift in Sources */,
 				3F46AAFE25BF5D6300CE2E98 /* Sites.intentdefinition in Sources */,
 				C9B477BB29CD576F008CBF49 /* LockScreenUnconfiguredViewModel.swift in Sources */,
 				7492F78E1F9BD94500B5A04A /* ShareMediaFileManager.swift in Sources */,
@@ -9765,7 +9752,6 @@
 				FABB22452602FC2C00C8785C /* SharedCoreDataStack.swift in Sources */,
 				F41BDD792910AFCA00B7F2B0 /* MigrationFlowCoordinator.swift in Sources */,
 				FABB22972602FC2C00C8785C /* MediaUploadOperation.swift in Sources */,
-				01ABF1712AD578B3004331BD /* WidgetAnalytics.swift in Sources */,
 				F49B9A06293A21BF000CEFCE /* MigrationAnalyticsTracker.swift in Sources */,
 				F49B99FF2937C9B4000CEFCE /* MigrationEmailService.swift in Sources */,
 				F4F9D5F2290993D400502576 /* MigrationWelcomeViewModel.swift in Sources */,
