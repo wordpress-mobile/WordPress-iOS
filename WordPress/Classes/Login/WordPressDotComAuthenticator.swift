@@ -201,24 +201,24 @@ struct WordPressDotComAuthenticator {
             theError = error
         }
 
-        guard case let .loginDenied(alertMessage) = theError, recoverDenyAccess else {
+        guard case .loginDenied = theError, recoverDenyAccess else {
             throw theError
         }
 
         // Try to re-authenticate when user taps the "Deny" button.
         let reLogin = await withCheckedContinuation { continuation in
             DispatchQueue.main.async {
+                let format = NSLocalizedString("wpComLogin.loginDenied.message", value: "You can sign in with a different account if you need a different one. Tap \"%@\" to start.", comment: "Message shown when user denies WordPress.com login, offering option to try with different account")
+                let buttonText = NSLocalizedString("wpComLogin.loginDenied.useDifferentAccount", value: "Use Different Account", comment: "Button title for signing in with a different WordPress.com account")
                 let alert = UIAlertController(
-                    title: NSLocalizedString("generic.error.title", value: "Error", comment: "A generic title for an error"),
-                    message: alertMessage,
+                    title: NSLocalizedString("wpComLogin.loginDenied.title", value: "Login Cancelled", comment: "Title of alert shown when user cancels WordPress.com login"),
+                    message: String(format: format, buttonText),
                     preferredStyle: .alert
                 )
                 alert.addAction(UIAlertAction(title: SharedStrings.Button.close, style: .cancel) { _ in
                     continuation.resume(returning: false)
                 })
-
-                let retry = NSLocalizedString("wpComLogin.alert.button.reLogin", value: "Log in with a different account", comment: "Button title for logging in with a different WordPress.com account")
-                alert.addAction(UIAlertAction(title: retry, style: .default) { _ in
+                alert.addAction(UIAlertAction(title: buttonText, style: .default) { _ in
                     continuation.resume(returning: true)
                 })
                 viewController.present(alert, animated: true)
