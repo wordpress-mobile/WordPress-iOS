@@ -242,6 +242,7 @@ enum XcodeSupport {
             .xcodeTarget("XcodeTarget_NotificationServiceExtension", dependencies: [
                 "SFHFKeychainUtils",
                 "WordPressShared",
+                "BuildSettingsKit",
             ]),
             .xcodeTarget("XcodeTarget_StatsWidget", dependencies: [
                 "BuildSettingsKit",
