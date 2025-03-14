@@ -6,11 +6,14 @@ import WidgetKit
 class StatsWidgetsStore {
     private let coreDataStack: CoreDataStack
     private let appGroupName: String
+    private let appKeychainAccessGroup: String
 
     init(coreDataStack: CoreDataStack = ContextManager.shared,
-         appGroupName: String = BuildSettings.appGroupName) {
+         appGroupName: String = BuildSettings.appGroupName,
+         appKeychainAccessGroup: String = BuildSettings.appKeychainAccessGroup) {
         self.coreDataStack = coreDataStack
         self.appGroupName = appGroupName
+        self.appKeychainAccessGroup = appKeychainAccessGroup
 
         observeAccountChangesForWidgets()
         observeAccountSignInForWidgets()
@@ -336,7 +339,7 @@ private extension StatsWidgetsStore {
                 AppConfiguration.Widget.Stats.keychainTokenKey,
                 andPassword: token,
                 forServiceName: AppConfiguration.Widget.Stats.keychainServiceName,
-                accessGroup: WPAppKeychainAccessGroup,
+                accessGroup: appKeychainAccessGroup,
                 updateExisting: true
             )
         } catch {
