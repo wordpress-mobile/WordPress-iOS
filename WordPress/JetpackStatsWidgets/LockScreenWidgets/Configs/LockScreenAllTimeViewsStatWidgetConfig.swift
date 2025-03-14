@@ -1,4 +1,5 @@
 import WidgetKit
+import JetpackStatsWidgetsCore
 
 struct LockScreenAllTimeViewsStatWidgetConfig: LockScreenStatsWidgetConfig {
     typealias WidgetData = HomeWidgetAllTimeData

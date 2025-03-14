@@ -1,5 +1,6 @@
 import WidgetKit
 import SwiftUI
+import JetpackStatsWidgetsCore
 
 struct HomeWidgetAllTime: Widget {
     private let tracks = Tracks(appGroupName: WPAppGroupName)

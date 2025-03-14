@@ -2,6 +2,7 @@ import Foundation
 import WordPressKit
 import WordPressFlux
 import WidgetKit
+import JetpackStatsWidgetsCore
 
 enum InsightAction: Action {
 
