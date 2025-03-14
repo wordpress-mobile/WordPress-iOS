@@ -4,6 +4,7 @@
 enum FeatureFlag: Int, CaseIterable {
     case signUp
     case customAppIcons
+    case domainRegistration
     case bloggingPrompts
     case jetpackDisconnect
     case siteIconCreator
@@ -35,6 +36,8 @@ enum FeatureFlag: Int, CaseIterable {
             return true
         case .customAppIcons:
             return true
+        case .domainRegistration:
+            return AppConfiguration.isJetpack
         case .bloggingPrompts:
             return AppConfiguration.isJetpack
         case .jetpackDisconnect:
@@ -89,6 +92,7 @@ extension FeatureFlag {
         return switch self {
         case .signUp: "Sign Up"
         case .customAppIcons: "Custom App Icons"
+        case .domainRegistration: "Domain Registration"
         case .bloggingPrompts: "Blogging Prompts"
         case .jetpackDisconnect: "Jetpack disconnect"
         case .siteIconCreator: "Site Icon Creator"
