@@ -1,8 +1,22 @@
+import Foundation
 import Testing
 import WebKit
 @testable import WordPress
 
 class WPWPUserAgentTests {
+
+    @Test
+    func userAgentFormat() throws {
+        let userAgent = TemporaryWPUserAgent.defaultUserAgent(userDefaults: .standard)
+
+        #expect(
+            try webKitUserAgentRegExp().numberOfMatches(
+                in: userAgent,
+                options: [],
+                range: NSRange(location: 0, length: userAgent.utf16.count)
+            ) == 1
+        )
+    }
 
     @Test
     func wordPressUserAgentValue() throws {
@@ -55,5 +69,46 @@ class WPWPUserAgentTests {
 
     func currentUserAgentFromWebView() throws -> String {
         try #require(WKWebView.userAgent())
+    }
+
+    func webKitUserAgentRegExp() throws -> NSRegularExpression {
+        try NSRegularExpression(
+            pattern: "^Mozilla/5\\.0 \\([a-zA-Z]+; CPU [\\sa-zA-Z]+ [_0-9]+ like Mac OS X\\) AppleWebKit/605\\.1\\.15 \\(KHTML, like Gecko\\) Mobile/15E148$"
+        )
+    }
+
+    // MARK: - Tests for underlying assumptions
+
+    @Test
+    func registerInUserDefaultsAdds() throws {
+        let userDefaults = UserDefaults.standard
+        let domainName = try #require(userDefaults.volatileDomainNames.first)
+        let originalDomain = userDefaults.volatileDomain(forName: domainName)
+
+        userDefaults.register(defaults: ["test-key": 0])
+
+        let updatedDomain = userDefaults.volatileDomain(forName: domainName)
+
+        // From the docs:
+        // Registered defaults are never stored between runs of an application, and are visible only to the application that registers them
+        //
+        // So we expect the count to be +1
+        #expect(updatedDomain.count == originalDomain.count + 1)
+    }
+
+    // If this test fails, it may mean `WKWebView` uses a user agent with an unexpected format (see `webKitUserAgentRegExp`)
+    // and we may need to adjust our implementation to match the new `WKWebView` user agent.
+    @Test
+    func testWebKitUserAgentFormat() throws {
+        let regExp = try webKitUserAgentRegExp()
+        // Please note: WKWebView's user agent may be different on different test device types.
+        let userAgent = try currentUserAgentFromWebView()
+        #expect(
+            try webKitUserAgentRegExp().numberOfMatches(
+                in: userAgent,
+                options: [],
+                range: NSRange(location: 0, length: userAgent.utf16.count)
+            ) == 1
+        )
     }
 }
