@@ -22,13 +22,10 @@ NSString *const WPComDomain                                         = @"wordpres
 /// Note: Multiple compiler flags are set for some builds, so conditional ordering matters.
 ///
 #if defined(ALPHA_BUILD)
-NSString *const WPAppGroupName                                      = @"group.org.wordpress.alpha";
 NSString *const WPAppKeychainAccessGroup                            = @"99KV9Z6BKV.org.wordpress.alpha";
 #elif defined(INTERNAL_BUILD)
-NSString *const WPAppGroupName                                      = @"group.org.wordpress.internal";
 NSString *const WPAppKeychainAccessGroup                            = @"99KV9Z6BKV.org.wordpress.internal";
 #else
-NSString *const WPAppGroupName                                      = @"group.org.wordpress";
 NSString *const WPAppKeychainAccessGroup                            = @"3TMU3BH3NK.org.wordpress";
 #endif
 
