@@ -1,4 +1,5 @@
 import Intents
+import JetpackStatsWidgetsCore
 
 class SitesDataProvider {
     private(set) var sites = [Site]()
