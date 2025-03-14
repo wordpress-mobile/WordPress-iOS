@@ -1,3 +1,4 @@
+import Foundation
 import JetpackStatsWidgetsCore
 import SFHFKeychainUtils
 import WidgetKit

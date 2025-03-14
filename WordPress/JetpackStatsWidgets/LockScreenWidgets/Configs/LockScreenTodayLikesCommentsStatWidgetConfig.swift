@@ -1,3 +1,4 @@
+import Foundation
 import WidgetKit
 import JetpackStatsWidgetsCore
 
