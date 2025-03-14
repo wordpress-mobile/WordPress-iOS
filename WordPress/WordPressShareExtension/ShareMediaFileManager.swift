@@ -1,4 +1,5 @@
 import Foundation
+import BuildSettingsKit
 
 /// Encapsulates media file operations relative to the shared container's Media directory.
 ///
@@ -12,7 +13,7 @@ import Foundation
     ///
     @objc var mediaUploadDirectoryURL: URL? {
         let fileManager = FileManager.default
-        guard let sharedContainerRootURL = fileManager.containerURL(forSecurityApplicationGroupIdentifier: WPAppGroupName) else {
+        guard let sharedContainerRootURL = fileManager.containerURL(forSecurityApplicationGroupIdentifier: BuildSettings.appGroupName) else {
             return nil
         }
         let mediaDirectoryURL = sharedContainerRootURL.appendingPathComponent(mediaDirectoryName, isDirectory: true)

@@ -1,4 +1,5 @@
 import CoreData
+import BuildSettingsKit
 import UIKit
 import WordPressKit
 
@@ -109,7 +110,7 @@ class ShareExtensionAbstractViewController: UIViewController, ShareSegueHandler 
     /// Tracks Instance
     ///
     internal lazy var tracks: Tracks = {
-        Tracks(appGroupName: WPAppGroupName)
+        Tracks(appGroupName: BuildSettings.appGroupName)
     }()
 
     // MARK: - Lifecycle Methods

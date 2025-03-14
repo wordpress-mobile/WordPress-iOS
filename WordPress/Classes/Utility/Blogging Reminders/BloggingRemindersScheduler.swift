@@ -1,4 +1,5 @@
 import Foundation
+import BuildSettingsKit
 import WordPressData
 
 protocol NotificationScheduler {
@@ -148,7 +149,7 @@ class BloggingRemindersScheduler {
     }
 
     private static func sharedDataFileURL() -> URL? {
-        let sharedDirectory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: WPAppGroupName)
+        let sharedDirectory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: BuildSettings.appGroupName)
         return sharedDirectory?.appendingPathComponent(defaultDataFileName)
     }
 

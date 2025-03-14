@@ -1,8 +1,9 @@
 import WidgetKit
 import SwiftUI
+import BuildSettingsKit
 
 struct HomeWidgetAllTime: Widget {
-    private let tracks = Tracks(appGroupName: WPAppGroupName)
+    private let tracks = Tracks(appGroupName: BuildSettings.appGroupName)
 
     private let placeholderContent = HomeWidgetAllTimeData(siteID: 0,
                                                         siteName: "My WordPress Site",

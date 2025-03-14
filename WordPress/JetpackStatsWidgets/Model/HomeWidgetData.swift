@@ -1,4 +1,5 @@
 import JetpackStatsWidgetsCore
+import BuildSettingsKit
 
 // MARK: - Local cache
 
@@ -7,7 +8,7 @@ extension HomeWidgetData {
     static func read(from cache: HomeWidgetCache<Self>? = nil) -> [Int: Self]? {
 
         let cache = cache ?? HomeWidgetCache<Self>(fileName: Self.filename,
-                                                                  appGroup: WPAppGroupName)
+                                                                  appGroup: BuildSettings.appGroupName)
         do {
             return try cache.read()
         } catch {
@@ -19,7 +20,7 @@ extension HomeWidgetData {
     static func write(items: [Int: Self], to cache: HomeWidgetCache<Self>? = nil) {
 
         let cache = cache ?? HomeWidgetCache<Self>(fileName: Self.filename,
-                                                                  appGroup: WPAppGroupName)
+                                                                  appGroup: BuildSettings.appGroupName)
 
         do {
             try cache.write(items: items)
@@ -30,7 +31,7 @@ extension HomeWidgetData {
 
     static func delete(cache: HomeWidgetCache<Self>? = nil) {
         let cache = cache ?? HomeWidgetCache<Self>(fileName: Self.filename,
-                                                                  appGroup: WPAppGroupName)
+                                                                  appGroup: BuildSettings.appGroupName)
 
         do {
             try cache.delete()
@@ -41,7 +42,7 @@ extension HomeWidgetData {
 
     static func setItem(item: Self, to cache: HomeWidgetCache<Self>? = nil) {
         let cache = cache ?? HomeWidgetCache<Self>(fileName: Self.filename,
-                                                                  appGroup: WPAppGroupName)
+                                                                  appGroup: BuildSettings.appGroupName)
 
         do {
             try cache.setItem(item: item)

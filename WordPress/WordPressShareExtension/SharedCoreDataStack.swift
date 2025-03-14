@@ -1,5 +1,6 @@
 import Foundation
 import CoreData
+import BuildSettingsKit
 import WordPressKit
 
 /// NSPersistentContainer subclass that defaults to the shared container directory
@@ -7,7 +8,7 @@ import WordPressKit
 final class SharedPersistentContainer: NSPersistentContainer {
     internal override class func defaultDirectoryURL() -> URL {
         var url = super.defaultDirectoryURL()
-        if let newURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: WPAppGroupName) {
+        if let newURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: BuildSettings.appGroupName) {
             url = newURL
         }
         return url

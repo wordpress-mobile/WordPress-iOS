@@ -1,5 +1,6 @@
 import Foundation
 import AutomatticTracks
+import BuildSettingsKit
 import WordPressShared
 
 protocol ContentDataMigrating {
@@ -26,10 +27,10 @@ final class DataMigrator {
     private let crashLogger: CrashLogging
 
     init(coreDataStack: CoreDataStack = ContextManager.shared,
-         backupLocation: URL? = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: WPAppGroupName)?.appendingPathComponent("WordPress.sqlite"),
+         backupLocation: URL? = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: BuildSettings.appGroupName)?.appendingPathComponent("WordPress.sqlite"),
          keychainUtils: KeychainUtils = KeychainUtils(),
          localDefaults: UserPersistentRepository = UserDefaults.standard,
-         sharedDefaults: UserPersistentRepository? = UserDefaults(suiteName: WPAppGroupName),
+         sharedDefaults: UserPersistentRepository? = UserDefaults(suiteName: BuildSettings.appGroupName),
          crashLogger: CrashLogging = .main) {
         self.coreDataStack = coreDataStack
         self.backupLocation = backupLocation

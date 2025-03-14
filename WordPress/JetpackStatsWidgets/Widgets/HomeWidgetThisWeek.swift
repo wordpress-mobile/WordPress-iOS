@@ -1,9 +1,10 @@
 import WidgetKit
 import SwiftUI
+import BuildSettingsKit
 import JetpackStatsWidgetsCore
 
 struct HomeWidgetThisWeek: Widget {
-    private let tracks = Tracks(appGroupName: WPAppGroupName)
+    private let tracks = Tracks(appGroupName: BuildSettings.appGroupName)
 
     static let secondsPerDay = 86400.0
 

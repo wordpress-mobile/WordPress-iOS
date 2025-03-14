@@ -244,6 +244,7 @@ enum XcodeSupport {
                 "WordPressShared",
             ]),
             .xcodeTarget("XcodeTarget_StatsWidget", dependencies: [
+                "BuildSettingsKit",
                 "JetpackStatsWidgetsCore",
                 "SFHFKeychainUtils",
                 "WordPressShared",
@@ -253,6 +254,7 @@ enum XcodeSupport {
                 .product(name: "ColorStudio", package: "color-studio"),
             ]),
             .xcodeTarget("XcodeTarget_Intents", dependencies: [
+                "BuildSettingsKit",
                 "JetpackStatsWidgetsCore",
                 .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
             ]),

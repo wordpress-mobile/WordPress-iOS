@@ -1,4 +1,5 @@
 import Intents
+import BuildSettingsKit
 
 class SitesDataProvider {
     private(set) var sites = [Site]()
@@ -59,7 +60,7 @@ class SitesDataProvider {
 
     private var defaultSiteID: Int? {
 
-        return UserDefaults(suiteName: WPAppGroupName)?.object(forKey: AppConfiguration.Widget.Stats.userDefaultsSiteIdKey) as? Int
+        return UserDefaults(suiteName: BuildSettings.appGroupName)?.object(forKey: AppConfiguration.Widget.Stats.userDefaultsSiteIdKey) as? Int
     }
 
     var defaultSite: Site? {

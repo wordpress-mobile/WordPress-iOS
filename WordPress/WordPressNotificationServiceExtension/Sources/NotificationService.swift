@@ -1,6 +1,6 @@
 import SFHFKeychainUtils
 import UserNotifications
-
+import BuildSettingsKit
 import WordPressKit
 
 // MARK: - NotificationService
@@ -11,7 +11,7 @@ class NotificationService: UNNotificationServiceExtension {
     // MARK: Properties
 
     /// Manages analytics calls via Tracks
-    private let tracks = Tracks(appGroupName: WPAppGroupName)
+    private let tracks = Tracks(appGroupName: BuildSettings.appGroupName)
 
     /// The content handler received from the extension
     private var contentHandler: ((UNNotificationContent) -> Void)?
@@ -280,7 +280,7 @@ private extension NotificationService {
     func readExtensionToken() -> String? {
         guard let oauthToken = try? SFHFKeychainUtils.getPasswordForUsername(AppConfiguration.Extension.NotificationsService.keychainTokenKey,
                                                                              andServiceName: AppConfiguration.Extension.NotificationsService.keychainServiceName,
-                                                                             accessGroup: WPAppKeychainAccessGroup) else {
+                                                                             accessGroup: BuildSettings.appKeychainAccessGroup) else {
             debugPrint("Unable to retrieve Notification Service Extension OAuth token")
             return nil
         }
@@ -295,7 +295,7 @@ private extension NotificationService {
     func readExtensionUsername() -> String? {
         guard let username = try? SFHFKeychainUtils.getPasswordForUsername(AppConfiguration.Extension.NotificationsService.keychainUsernameKey,
                                                                            andServiceName: AppConfiguration.Extension.NotificationsService.keychainServiceName,
-                                                                           accessGroup: WPAppKeychainAccessGroup) else {
+                                                                           accessGroup: BuildSettings.appKeychainAccessGroup) else {
             debugPrint("Unable to retrieve Notification Service Extension username")
             return nil
         }
@@ -310,7 +310,7 @@ private extension NotificationService {
     func readExtensionUserID() -> String? {
         guard let userID = try? SFHFKeychainUtils.getPasswordForUsername(AppConfiguration.Extension.NotificationsService.keychainUserIDKey,
                                                                          andServiceName: AppConfiguration.Extension.NotificationsService.keychainServiceName,
-                                                                         accessGroup: WPAppKeychainAccessGroup) else {
+                                                                         accessGroup: BuildSettings.appKeychainAccessGroup) else {
             debugPrint("Unable to retrieve Notification Service Extension userID")
             return nil
         }
