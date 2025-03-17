@@ -299,7 +299,7 @@ GEM
       observer (~> 0.1)
       pkg-config (~> 1.4)
     rouge (3.28.0)
-    rubocop (1.73.2)
+    rubocop (1.74.0)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.1.0)
@@ -310,7 +310,7 @@ GEM
       rubocop-ast (>= 1.38.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 4.0)
-    rubocop-ast (1.38.1)
+    rubocop-ast (1.39.0)
       parser (>= 3.3.1.0)
     rubocop-rake (0.7.1)
       lint_roller (~> 1.1)
@@ -370,7 +370,7 @@ DEPENDENCIES
   fastlane-plugin-wpmreleasetoolkit (~> 12.5)
   rake
   rmagick (~> 6.1.1)
-  rubocop (~> 1.73)
+  rubocop (~> 1.74)
   rubocop-rake (~> 0.7)
   xcpretty-travis-formatter
 
