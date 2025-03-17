@@ -5,7 +5,7 @@ import BuildSettingsKit
 import JetpackStatsWidgetsCore
 
 struct HomeWidgetToday: Widget {
-    private let tracks = Tracks(appGroupName: BuildSettings.appGroupName)
+    private let tracks = Tracks(appGroupName: BuildSettings.current.appGroupName)
 
     private let placeholderContent = HomeWidgetTodayData(siteID: 0,
                                                         siteName: "My WordPress Site",

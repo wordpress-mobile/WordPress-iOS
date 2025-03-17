@@ -11,7 +11,7 @@ final class SharedDataIssueSolver: NSObject {
 
     init(contextManager: CoreDataStack = ContextManager.shared,
          keychainUtils: KeychainUtils = KeychainUtils(),
-         sharedDefaults: UserPersistentRepository? = UserDefaults(suiteName: BuildSettings.appGroupName),
+         sharedDefaults: UserPersistentRepository? = UserDefaults(suiteName: BuildSettings.current.appGroupName),
          localFileStore: LocalFileStore = FileManager.default) {
         self.contextManager = contextManager
         self.keychainUtils = keychainUtils
@@ -148,8 +148,8 @@ private extension SharedDataIssueSolver {
         ]
 
         fileNames.forEach { fileName in
-            guard let sourceURL = localFileStore.containerURL(forAppGroup: BuildSettings.appGroupName)?.appendingPathComponent(fileName.rawValue),
-                  let targetURL = localFileStore.containerURL(forAppGroup: BuildSettings.appGroupName)?.appendingPathComponent(fileName.valueForJetpack),
+            guard let sourceURL = localFileStore.containerURL(forAppGroup: BuildSettings.current.appGroupName)?.appendingPathComponent(fileName.rawValue),
+                  let targetURL = localFileStore.containerURL(forAppGroup: BuildSettings.current.appGroupName)?.appendingPathComponent(fileName.valueForJetpack),
                   localFileStore.fileExists(at: sourceURL) else {
                 return
             }

@@ -4,7 +4,7 @@ import BuildSettingsKit
 import JetpackStatsWidgetsCore
 
 struct HomeWidgetAllTime: Widget {
-    private let tracks = Tracks(appGroupName: BuildSettings.appGroupName)
+    private let tracks = Tracks(appGroupName: BuildSettings.current.appGroupName)
 
     private let placeholderContent = HomeWidgetAllTimeData(
         siteID: 0,

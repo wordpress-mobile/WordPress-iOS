@@ -1,16 +1,5 @@
 import Foundation
 
-public protocol BuildSettingsContainer: Sendable {
-    var pushNotificationAppID: String { get }
-    var appGroupName: String { get }
-    var appKeychainAccessGroup: String { get }
-}
-
-public enum AppBrand: String, Sendable {
-    case wordpress
-    case jetpack
-}
-
 /// Manages global build settings.
 ///
 /// The build settings work differently depending on the environment:
@@ -22,29 +11,15 @@ public enum AppBrand: String, Sendable {
 /// changed at runtime.
 /// - **Test** – `BuildSettings` are not available when running unit tests as
 /// they are incompatible with parallelized tests and are generally not recommended.
-public enum BuildSettings {
-    public static var current: BuildSettingsContainer {
+public struct BuildSettings: Sendable {
+    public var pushNotificationAppID: String
+    public var appGroupName: String
+    public var appKeychainAccessGroup: String
+
+    public static var current: BuildSettings {
         switch BuildSettingsEnvironment.current {
-        case .live: BuildSettingsLiveContainer.shared
-        case .preview: BuildSettingsPreviewContainer.shared
+        case .live: .live
+        case .preview: .preview
         }
     }
-}
-
-private enum BuildSettingsEnvironment {
-    case live
-    case preview
-
-    static let current: BuildSettingsEnvironment = {
-#if DEBUG
-        let environment = ProcessInfo.processInfo.environment
-        if environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
-            return .preview
-        }
-        if NSClassFromString("XCTestCase") != nil {
-            fatalError("BuildSettings are unavailable when running unit tests. Make sure to inject the values manually in system under test.")
-        }
-#endif
-        return .live
-    }()
 }

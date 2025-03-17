@@ -6,7 +6,7 @@ final class WidgetDataReader<T: HomeWidgetData> {
     let userDefaults: UserDefaults?
     let cacheReader: WidgetDataCacheReader
 
-    init(_ userDefaults: UserDefaults? = UserDefaults(suiteName: BuildSettings.appGroupName),
+    init(_ userDefaults: UserDefaults? = UserDefaults(suiteName: BuildSettings.current.appGroupName),
          _ cacheReader: any WidgetDataCacheReader = HomeWidgetDataFileReader()
     ) {
         self.userDefaults = userDefaults

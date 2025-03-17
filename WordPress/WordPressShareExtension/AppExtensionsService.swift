@@ -23,7 +23,7 @@ class AppExtensionsService {
     /// Unique identifier for background sessions
     ///
     fileprivate lazy var backgroundSessionIdentifier: String = {
-        let identifier = BuildSettings.appGroupName + "." + UUID().uuidString
+        let identifier = BuildSettings.current.appGroupName + "." + UUID().uuidString
         return identifier
     }()
 
@@ -40,7 +40,7 @@ class AppExtensionsService {
                             userAgent: nil,
                             backgroundUploads: false,
                             backgroundSessionIdentifier: backgroundSessionIdentifier,
-                            sharedContainerIdentifier: BuildSettings.appGroupName)
+                            sharedContainerIdentifier: BuildSettings.current.appGroupName)
     }()
 
     /// Backgrounding Rest API
@@ -50,13 +50,13 @@ class AppExtensionsService {
                                    userAgent: nil,
                                    backgroundUploads: true,
                                    backgroundSessionIdentifier: backgroundSessionIdentifier,
-                                   sharedContainerIdentifier: BuildSettings.appGroupName)
+                                   sharedContainerIdentifier: BuildSettings.current.appGroupName)
     }()
 
     /// Tracks Instance
     ///
     fileprivate lazy var tracks: Tracks = {
-        Tracks(appGroupName: BuildSettings.appGroupName)
+        Tracks(appGroupName: BuildSettings.current.appGroupName)
     }()
 
     /// WordPress.com Username

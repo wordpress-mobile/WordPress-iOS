@@ -222,7 +222,7 @@ private extension StatsWidgetsService {
         let token = try SFHFKeychainUtils.getPasswordForUsername(
             WidgetStatsConfiguration.keychainTokenKey,
             andServiceName: WidgetStatsConfiguration.keychainServiceName,
-            accessGroup: BuildSettings.appKeychainAccessGroup
+            accessGroup: BuildSettings.current.appKeychainAccessGroup
         )
         let wpApi = WordPressComRestApi(oAuthToken: token)
         return StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: widgetData.siteID, siteTimezone: widgetData.timeZone)

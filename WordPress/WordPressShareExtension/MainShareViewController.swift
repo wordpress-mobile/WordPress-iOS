@@ -92,7 +92,7 @@ private extension MainShareViewController {
     }
 
     func trackExtensionLaunch() {
-        let tracks = Tracks(appGroupName: BuildSettings.appGroupName)
+        let tracks = Tracks(appGroupName: BuildSettings.current.appGroupName)
         let oauth2Token = ShareExtensionService().retrieveShareExtensionToken()
         tracks.trackExtensionLaunched(oauth2Token != nil)
     }

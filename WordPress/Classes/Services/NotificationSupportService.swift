@@ -7,7 +7,7 @@ open class NotificationSupportService: NSObject {
     private let appKeychainAccessGroup: String
 
     @objc convenience override init() {
-        self.init(appKeychainAccessGroup: BuildSettings.appKeychainAccessGroup)
+        self.init(appKeychainAccessGroup: BuildSettings.current.appKeychainAccessGroup)
     }
 
     init(appKeychainAccessGroup: String) {

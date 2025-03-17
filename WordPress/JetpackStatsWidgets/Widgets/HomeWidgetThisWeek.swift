@@ -4,7 +4,7 @@ import BuildSettingsKit
 import JetpackStatsWidgetsCore
 
 struct HomeWidgetThisWeek: Widget {
-    private let tracks = Tracks(appGroupName: BuildSettings.appGroupName)
+    private let tracks = Tracks(appGroupName: BuildSettings.current.appGroupName)
 
     static let secondsPerDay = 86400.0
 

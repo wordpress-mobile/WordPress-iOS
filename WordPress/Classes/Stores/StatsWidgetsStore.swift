@@ -10,8 +10,8 @@ class StatsWidgetsStore {
     private let appKeychainAccessGroup: String
 
     init(coreDataStack: CoreDataStack = ContextManager.shared,
-         appGroupName: String = BuildSettings.appGroupName,
-         appKeychainAccessGroup: String = BuildSettings.appKeychainAccessGroup) {
+         appGroupName: String = BuildSettings.current.appGroupName,
+         appKeychainAccessGroup: String = BuildSettings.current.appKeychainAccessGroup) {
         self.coreDataStack = coreDataStack
         self.appGroupName = appGroupName
         self.appKeychainAccessGroup = appKeychainAccessGroup

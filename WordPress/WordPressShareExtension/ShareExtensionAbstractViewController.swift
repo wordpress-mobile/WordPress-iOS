@@ -111,7 +111,7 @@ class ShareExtensionAbstractViewController: UIViewController, ShareSegueHandler 
     /// Tracks Instance
     ///
     internal lazy var tracks: Tracks = {
-        Tracks(appGroupName: BuildSettings.appGroupName)
+        Tracks(appGroupName: BuildSettings.current.appGroupName)
     }()
 
     // MARK: - Lifecycle Methods

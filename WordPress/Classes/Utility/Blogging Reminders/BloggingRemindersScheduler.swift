@@ -149,7 +149,7 @@ class BloggingRemindersScheduler {
     }
 
     private static func sharedDataFileURL() -> URL? {
-        let sharedDirectory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: BuildSettings.appGroupName)
+        let sharedDirectory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: BuildSettings.current.appGroupName)
         return sharedDirectory?.appendingPathComponent(defaultDataFileName)
     }
 

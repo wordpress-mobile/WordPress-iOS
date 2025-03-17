@@ -242,7 +242,7 @@ import WordPressFlux
                                    userAgent: nil,
                                    backgroundUploads: false,
                                    backgroundSessionIdentifier: backgroundSessionIdentifier,
-                                   sharedContainerIdentifier: BuildSettings.appGroupName)
+                                   sharedContainerIdentifier: BuildSettings.current.appGroupName)
     }
 
     private func token() -> String? {

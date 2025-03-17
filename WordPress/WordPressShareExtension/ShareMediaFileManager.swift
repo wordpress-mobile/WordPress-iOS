@@ -13,7 +13,7 @@ import BuildSettingsKit
     ///
     @objc var mediaUploadDirectoryURL: URL? {
         let fileManager = FileManager.default
-        guard let sharedContainerRootURL = fileManager.containerURL(forSecurityApplicationGroupIdentifier: BuildSettings.appGroupName) else {
+        guard let sharedContainerRootURL = fileManager.containerURL(forSecurityApplicationGroupIdentifier: BuildSettings.current.appGroupName) else {
             return nil
         }
         let mediaDirectoryURL = sharedContainerRootURL.appendingPathComponent(mediaDirectoryName, isDirectory: true)

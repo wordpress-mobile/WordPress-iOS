@@ -4,7 +4,7 @@ import SwiftUI
 import JetpackStatsWidgetsCore
 
 struct LockScreenStatsWidget<T: LockScreenStatsWidgetConfig>: Widget {
-    private let tracks = Tracks(appGroupName: BuildSettings.appGroupName)
+    private let tracks = Tracks(appGroupName: BuildSettings.current.appGroupName)
     private let config: T
 
     init(config: T) {

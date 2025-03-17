@@ -9,8 +9,8 @@ open class ShareExtensionService: NSObject {
 
     @objc public convenience override init() {
         self.init(
-            appGroupName: BuildSettings.appGroupName,
-            appKeychainAccessGroup: BuildSettings.appKeychainAccessGroup
+            appGroupName: BuildSettings.current.appGroupName,
+            appKeychainAccessGroup: BuildSettings.current.appKeychainAccessGroup
         )
     }
 
