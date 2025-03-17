@@ -49,7 +49,7 @@
 - (void)removeBlogsObject:(Blog *)value;
 - (void)addBlogs:(NSSet *)values;
 - (void)removeBlogs:(NSSet *)values;
-+ (NSString *)tokenForUsername:(NSString *)username;
++ (NSString *)tokenForUsername:(NSString *)username isJetpack:(BOOL)isJetpack;
 - (BOOL)hasAtomicSite;
 
 @end
