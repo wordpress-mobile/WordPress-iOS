@@ -1,6 +1,5 @@
-import Foundation
-import WordPressShared
 import WordPressKit
+import WordPressShared
 
 extension WPAccount {
     /// Returns an instance of the WPCOM REST API suitable for v2 endpoints.
