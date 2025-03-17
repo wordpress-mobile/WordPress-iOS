@@ -15,7 +15,7 @@ public enum BuildSettings {
     }
 
     public static var appKeychainAccessGroup: String {
-        infoPlistValue(forKey: "WPAppKt steychainAccessGroup")
+        infoPlistValue(forKey: "WPAppKeychainAccessGroup")
     }
 }
 
