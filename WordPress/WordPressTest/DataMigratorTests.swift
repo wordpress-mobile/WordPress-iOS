@@ -9,6 +9,7 @@ class DataMigratorTests: XCTestCase {
     private var keychainUtils: KeychainUtilsMock!
     private var sharedUserDefaults: InMemoryUserDefaults!
     private var localUserDefaults: InMemoryUserDefaults!
+    private let appGroupName = "xctest_app_group_name"
 
     override func setUp() {
         super.setUp()
@@ -18,11 +19,14 @@ class DataMigratorTests: XCTestCase {
         keychainUtils = KeychainUtilsMock()
         sharedUserDefaults = InMemoryUserDefaults()
         localUserDefaults = InMemoryUserDefaults()
-        migrator = DataMigrator(coreDataStack: coreDataStack,
-                                backupLocation: URL(string: "/dev/null"),
-                                keychainUtils: keychainUtils,
-                                localDefaults: localUserDefaults,
-                                sharedDefaults: sharedUserDefaults)
+        migrator = DataMigrator(
+            coreDataStack: coreDataStack,
+            backupLocation: URL(string: "/dev/null"),
+            keychainUtils: keychainUtils,
+            localDefaults: localUserDefaults,
+            sharedDefaults: sharedUserDefaults,
+            appGroupName: appGroupName
+        )
     }
 
     func testExportSucceeds() {
@@ -65,7 +69,7 @@ class DataMigratorTests: XCTestCase {
 
     func testExportFailsWhenSharedUserDefaultsNil() {
         // Given
-        migrator = DataMigrator(coreDataStack: coreDataStack, keychainUtils: keychainUtils, sharedDefaults: nil)
+        migrator = DataMigrator(coreDataStack: coreDataStack, backupLocation: nil, keychainUtils: keychainUtils, sharedDefaults: nil,  appGroupName: appGroupName)
 
         // When
         let migratorError = getExportDataMigratorError(migrator)
@@ -136,11 +140,14 @@ class DataMigratorTests: XCTestCase {
         let backupLocation = temporaryDatabaseFileURL()
         _ = try! createFileContext(for: previousModel, at: backupLocation)
 
-        migrator = DataMigrator(coreDataStack: coreDataStack,
-                                backupLocation: backupLocation,
-                                keychainUtils: keychainUtils,
-                                localDefaults: localUserDefaults,
-                                sharedDefaults: sharedUserDefaults)
+        migrator = DataMigrator(
+            coreDataStack: coreDataStack,
+            backupLocation: backupLocation,
+            keychainUtils: keychainUtils,
+            localDefaults: localUserDefaults,
+            sharedDefaults: sharedUserDefaults,
+            appGroupName: appGroupName
+        )
 
         // When
         let expect = expectation(description: "Import data should succeed")
@@ -182,11 +189,14 @@ class DataMigratorTests: XCTestCase {
         let backupLocation = temporaryDatabaseFileURL()
         _ = try! createFileContext(for: currentModel, at: backupLocation)
 
-        migrator = DataMigrator(coreDataStack: coreDataStack,
-                                backupLocation: backupLocation,
-                                keychainUtils: keychainUtils,
-                                localDefaults: localUserDefaults,
-                                sharedDefaults: sharedUserDefaults)
+        migrator = DataMigrator(
+            coreDataStack: coreDataStack,
+            backupLocation: backupLocation,
+            keychainUtils: keychainUtils,
+            localDefaults: localUserDefaults,
+            sharedDefaults: sharedUserDefaults,
+            appGroupName: appGroupName
+        )
 
         // When
         let expect = expectation(description: "Import data should succeed")

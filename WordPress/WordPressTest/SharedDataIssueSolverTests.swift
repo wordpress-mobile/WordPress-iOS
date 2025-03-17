@@ -19,10 +19,13 @@ class SharedDataIssueSolverTests: XCTestCase {
         keychainUtils = KeychainUtilsMock()
         sharedUserDefaults = InMemoryUserDefaults()
         mockLocalStore = MockLocalFileStore()
-        sharedDataIssueSolver = SharedDataIssueSolver(contextManager: contextManager,
-                                                      keychainUtils: keychainUtils,
-                                                      sharedDefaults: sharedUserDefaults,
-                                                      localFileStore: mockLocalStore)
+        sharedDataIssueSolver = SharedDataIssueSolver(
+            contextManager: contextManager,
+            keychainUtils: keychainUtils,
+            sharedDefaults: sharedUserDefaults,
+            localFileStore: mockLocalStore,
+            appGroupName: "xctest_app_group_name"
+        )
     }
 
     // MARK: Widget Migration Tests

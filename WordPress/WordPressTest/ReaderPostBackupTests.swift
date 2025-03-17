@@ -30,7 +30,13 @@ final class ReaderPostBackupTests: XCTestCase {
             post.card = [card]
         }
 
-        let migrator = DataMigrator(coreDataStack: coreDataStack, backupLocation: backupURL)
+        let migrator = DataMigrator(
+            coreDataStack: coreDataStack,
+            backupLocation: backupURL,
+            localDefaults: InMemoryUserDefaults(),
+            sharedDefaults: InMemoryUserDefaults(),
+            appGroupName: "xctest_app_group_name"
+        )
         waitUntil { done in
             migrator.exportData { result in
                 XCTAssertNoThrow {

@@ -25,19 +25,22 @@ final class DataMigrator {
     private let localDefaults: UserPersistentRepository
     private let sharedDefaults: UserPersistentRepository?
     private let crashLogger: CrashLogging
+    private let appGroupName: String
 
     init(coreDataStack: CoreDataStack = ContextManager.shared,
          backupLocation: URL? = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: BuildSettings.current.appGroupName)?.appendingPathComponent("WordPress.sqlite"),
          keychainUtils: KeychainUtils = KeychainUtils(),
          localDefaults: UserPersistentRepository = UserDefaults.standard,
          sharedDefaults: UserPersistentRepository? = UserDefaults(suiteName: BuildSettings.current.appGroupName),
-         crashLogger: CrashLogging = .main) {
+         crashLogger: CrashLogging = .main,
+         appGroupName: String = BuildSettings.current.appGroupName) {
         self.coreDataStack = coreDataStack
         self.backupLocation = backupLocation
         self.keychainUtils = keychainUtils
         self.localDefaults = localDefaults
         self.sharedDefaults = sharedDefaults
         self.crashLogger = crashLogger
+        self.appGroupName = appGroupName
     }
 }
 
@@ -55,7 +58,7 @@ extension DataMigrator: ContentDataMigrating {
             completion?(.failure(error))
             return
         }
-        BloggingRemindersScheduler.handleRemindersMigration()
+        BloggingRemindersScheduler.handleRemindersMigration(appGroupName: appGroupName)
 
         isDataReadyToMigrate = true
 
@@ -83,10 +86,15 @@ extension DataMigrator: ContentDataMigrating {
             return
         }
 
-        let sharedDataIssueSolver = SharedDataIssueSolver()
+        let sharedDataIssueSolver = SharedDataIssueSolver(
+            contextManager: coreDataStack,
+            keychainUtils: keychainUtils,
+            sharedDefaults: sharedDefaults,
+            appGroupName: appGroupName
+        )
         sharedDataIssueSolver.migrateAuthKey()
         sharedDataIssueSolver.migrateExtensionsData()
-        BloggingRemindersScheduler.handleRemindersMigration()
+        BloggingRemindersScheduler.handleRemindersMigration(appGroupName: appGroupName)
         completion?(.success(()))
     }
 
@@ -107,7 +115,7 @@ extension DataMigrator: ContentDataMigrating {
         sharedDefaults.removeObject(forKey: DefaultsWrapper.dictKey)
 
         // remove blogging reminders backup
-        BloggingRemindersScheduler.deleteBackupReminders()
+        BloggingRemindersScheduler.deleteBackupReminders(appGroupName: appGroupName)
     }
 }
 
