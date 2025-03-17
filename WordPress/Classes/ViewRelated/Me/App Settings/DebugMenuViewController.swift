@@ -1,5 +1,6 @@
 import UIKit
 import AutomatticTracks
+import BuildSettingsKit
 import SwiftUI
 import WordPressFlux
 import TipKit
@@ -9,6 +10,16 @@ struct DebugMenuView: View {
 
     fileprivate var navigation: NavigationContext
 
+    private var name: String {
+#if DEBUG
+        "Debug"
+#elseif ALPHA_BUILD
+        "Alpha"
+#else
+        "Release"
+#endif
+    }
+
     var body: some View {
         List {
             Section { main }
@@ -17,6 +28,9 @@ struct DebugMenuView: View {
                 Section(Strings.sectionTipKit) { tipKit }
             }
             Section(Strings.sectionLogging) { logging }
+            Section("Push info") {
+                Text("On \(name) build with PushNotificationAppID: \(BuildSettings.pushNotificationAppID)")
+            }
         }
         .toolbar {
             ToolbarItem(placement: .principal) {
