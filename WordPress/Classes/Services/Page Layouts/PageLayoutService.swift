@@ -64,7 +64,7 @@ class PageLayoutService {
     }
 
     private static let supportedBlocks: String = {
-        let isDevMode = BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+        let isDevMode = BuildConfiguration.current ~= [.localDeveloper, .alpha]
         return Gutenberg.supportedBlocks(isDev: isDevMode).joined(separator: ",")
     }()
 
@@ -73,7 +73,7 @@ class PageLayoutService {
     private static let type = "mobile"
 
     // Return "true" or "false" for isBeta that gets passed into the endpoint.
-    private static let isBeta = String(BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest])
+    private static let isBeta = String(BuildConfiguration.current ~= [.localDeveloper, .alpha])
 
 }
 

@@ -62,7 +62,7 @@ enum FeatureFlag: Int, CaseIterable {
         case .googleDomainsCard:
             return false
         case .voiceToContent:
-            return AppConfiguration.isJetpack && BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return AppConfiguration.isJetpack && BuildConfiguration.current ~= [.localDeveloper, .alpha]
         case .authenticateUsingApplicationPassword:
             return false
         case .newGutenberg:
