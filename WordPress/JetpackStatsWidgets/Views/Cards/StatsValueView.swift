@@ -1,5 +1,5 @@
-
 import SwiftUI
+import WordPressShared
 
 /// a Text containing a stats value, replaced by a placeholder when the placeholder condition is met
 struct StatsValueView: View {

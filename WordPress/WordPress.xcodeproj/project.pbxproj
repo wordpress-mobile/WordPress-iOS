@@ -3424,8 +3424,6 @@
 				"Utility/App Configuration/AppStyleGuide.swift",
 				Utility/BuildInformation/BuildConfiguration.swift,
 				Utility/Logging/CocoaLumberjack.swift,
-				"ViewRelated/Stats/Extensions/Double+Stats.swift",
-				"ViewRelated/Stats/Extensions/NumberFormatter+Stats.swift",
 			);
 			target = 0107E0B128F97D5000DE87DB /* JetpackStatsWidgets */;
 		};

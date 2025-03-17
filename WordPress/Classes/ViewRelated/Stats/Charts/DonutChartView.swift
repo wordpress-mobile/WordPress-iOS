@@ -39,7 +39,7 @@ class DonutChartView: UIView {
 
     var totalCount: CGFloat = 0 {
         didSet {
-            totalCountLabel.text = Float(totalCount).abbreviatedString()
+            totalCountLabel.text = Double(totalCount).abbreviatedString()
         }
     }
 

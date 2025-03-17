@@ -1,5 +1,4 @@
 import Foundation
-import WordPressShared
 
 fileprivate struct Unit {
     let abbreviationFormat: String
@@ -7,7 +6,6 @@ fileprivate struct Unit {
 }
 
 extension Double {
-
     private var numberFormatter: NumberFormatter {
         get {
             struct Cache {
@@ -103,7 +101,7 @@ extension Double {
     ///  - 1000000000 becomes "1b"
     ///  - 1000000000000 becomes "1t"
 
-    func abbreviatedString(forHeroNumber: Bool = false) -> String {
+    public func abbreviatedString(forHeroNumber: Bool = false) -> String {
         let absValue = fabs(self)
         let abbreviationLimit = forHeroNumber ? 100000.0 : 10000.0
 
@@ -144,7 +142,7 @@ extension Double {
         return formattedString
     }
 
-    func percentageString() -> String {
+    public func percentageString() -> String {
         return NumberFormatter.statsPercentage.string(from: .init(value: self))!
     }
 
@@ -158,32 +156,29 @@ extension Double {
 
 }
 
-extension NSNumber {
-    func abbreviatedString(forHeroNumber: Bool = false) -> String {
-        return self.doubleValue.abbreviatedString(forHeroNumber: forHeroNumber)
-    }
-
-    func percentageString() -> String {
-        return self.doubleValue.percentageString()
-    }
-}
-
-extension Float {
-    func abbreviatedString(forHeroNumber: Bool = false) -> String {
-        return Double(self).abbreviatedString(forHeroNumber: forHeroNumber)
-    }
-
-    func percentageString() -> String {
-        return Double(self).percentageString()
-    }
-}
-
 extension Int {
-    func abbreviatedString(forHeroNumber: Bool = false) -> String {
-        return Double(self).abbreviatedString(forHeroNumber: forHeroNumber)
+    public func abbreviatedString(forHeroNumber: Bool = false) -> String {
+        Double(self).abbreviatedString(forHeroNumber: forHeroNumber)
     }
 
-    func percentageString() -> String {
-        return Double(self).percentageString()
+    public func percentageString() -> String {
+        Double(self).percentageString()
     }
+}
+
+private extension NumberFormatter {
+    static let statsPercentage: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .percent
+        formatter.multiplier = 1
+        formatter.minimumFractionDigits = 0
+        formatter.maximumFractionDigits = 2
+        if let preferredLocaleIdentifier = Bundle.main.preferredLocalizations.first {
+            formatter.locale = Locale(identifier: preferredLocaleIdentifier)
+        } else {
+            formatter.locale = Locale.current
+        }
+
+        return formatter
+    }()
 }
