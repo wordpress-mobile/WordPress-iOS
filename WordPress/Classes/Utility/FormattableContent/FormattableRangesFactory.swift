@@ -1,3 +1,4 @@
+import Foundation
 
 protocol FormattableRangesFactory {
     static func contentRange(from dictionary: [String: AnyObject]) -> FormattableContentRange?

@@ -6,6 +6,10 @@ import Foundation
 /// - warning: Most of these values exist only in Info.plist files for apps as
 /// app extensions only need a tiny subset of these settings.
 public enum BuildSettings {
+    public static var pushNotificationAppID: String {
+        infoPlistValue(forKey: "WPPushNotificationAppID")
+    }
+
     public static var appGroupName: String {
         infoPlistValue(forKey: "WPAppGroupName")
     }

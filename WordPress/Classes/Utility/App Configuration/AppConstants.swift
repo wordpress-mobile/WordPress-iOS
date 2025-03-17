@@ -16,22 +16,6 @@ import WordPressKit
     @objc static let eventNamePrefix = "wpios"
     @objc static let explatPlatform = "wpios"
     @objc static let authKeychainServiceName = "public-api.wordpress.com"
-
-    /// Notifications Constants
-    ///
-    #if DEBUG
-    static let pushNotificationAppId = "org.wordpress.appstore.dev"
-    #else
-    #if INTERNAL_BUILD
-    static let pushNotificationAppId = "org.wordpress.internal"
-    #else
-    #if ALPHA_BUILD
-    static let pushNotificationAppId = "org.wordpress.alpha"
-    #else
-    static let pushNotificationAppId = "org.wordpress.appstore"
-    #endif
-    #endif
-    #endif
 }
 
 // MARK: - Localized Strings

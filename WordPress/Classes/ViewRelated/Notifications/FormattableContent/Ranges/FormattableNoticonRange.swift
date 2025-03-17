@@ -1,3 +1,4 @@
+import Foundation
 
 /// This class is used as part of the Notification Formattable Content system.
 /// It inserts the given icon into an attributed string at the given range.

@@ -56,25 +56,17 @@ class GutenbergSettingsTests: CoreDataTestCase {
     }
 
     func testGutenbergDisabledByDefaultAndToggleEnablesInSecondLaunch() {
+        let database = EphemeralKeyValueDatabase()
+        let blog = self.newTestBlog()
+        // This simulates the first launch
+        let settings = GutenbergSettings(database: database)
+        settings.setGutenbergEnabled(false, for: blog)
 
-        let testClosure: () -> () = { () in
-            let database = EphemeralKeyValueDatabase()
-            let blog = self.newTestBlog()
-            // This simulates the first launch
-            let settings = GutenbergSettings(database: database)
-            settings.setGutenbergEnabled(false, for: blog)
+        XCTAssertFalse(blog.isGutenbergEnabled)
 
-            XCTAssertFalse(blog.isGutenbergEnabled)
+        settings.setGutenbergEnabled(true, for: blog)
 
-            settings.setGutenbergEnabled(true, for: blog)
-
-            XCTAssertTrue(blog.isGutenbergEnabled)
-        }
-
-        BuildConfiguration.localDeveloper.test(testClosure)
-        BuildConfiguration.a8cBranchTest.test(testClosure)
-        BuildConfiguration.a8cPrereleaseTesting.test(testClosure)
-        BuildConfiguration.appStore.test(testClosure)
+        XCTAssertTrue(blog.isGutenbergEnabled)
     }
 
     func testGutenbergAlwaysUsedForExistingGutenbergPosts() {
