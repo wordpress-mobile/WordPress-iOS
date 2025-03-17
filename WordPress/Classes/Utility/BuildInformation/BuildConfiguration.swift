@@ -5,9 +5,6 @@ enum BuildConfiguration: String {
     /// Continuous integration builds for Automattic employees to test branches & PRs
     case a8cBranchTest
 
-    /// Beta released internally for Automattic employees
-    case a8cPrereleaseTesting
-
     /// Production build released in the app store
     case appStore
 
@@ -26,6 +23,6 @@ enum BuildConfiguration: String {
     }
 
     var isInternal: Bool {
-        self ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
+        self ~= [.localDeveloper, .a8cBranchTest]
     }
 }
