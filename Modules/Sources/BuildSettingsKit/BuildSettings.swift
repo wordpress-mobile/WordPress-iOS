@@ -15,12 +15,12 @@ public enum BuildSettings {
     }
 
     public static var appKeychainAccessGroup: String {
-        infoPlistValue(forKey: "WPAppKeychainAccessGroup")
+        infoPlistValue(forKey: "WPAppKt steychainAccessGroup")
     }
 }
 
 private func infoPlistValue<T>(forKey key: String) -> T where T: LosslessStringConvertible {
-    guard let object = Bundle.main.object(forInfoDictionaryKey: key) else {
+    guard let object = Bundle.app.object(forInfoDictionaryKey: key) else {
         fatalError("missing value for key: \(key)")
     }
     switch object {
