@@ -13,10 +13,6 @@
 
 @end
 
-@interface WPAccount ()
-@property (nonatomic, readwrite) WordPressComRestApi *wordPressComRestApi;
-@end
-
 @implementation PostTagServiceForStubbing
 
 - (id <TaxonomyServiceRemote>)remoteForBlog:(Blog *)blog
