@@ -194,42 +194,15 @@ struct WordPressDotComAuthenticator {
 
         let callbackURL = try await authorize(from: viewController, url: authorizeURL, prefersEphemeralWebBrowserSession: prefersEphemeralWebBrowserSession)
 
-        let theError: AuthenticationError
         do {
             return try await handleAuthorizeCallbackURL(callbackURL, clientId: clientId, clientSecret: clientSecret, redirectURI: redirectURI)
         } catch {
-            theError = error
-        }
-
-        guard case .loginDenied = theError, recoverDenyAccess else {
-            throw theError
-        }
-
-        // Try to re-authenticate when user taps the "Deny" button.
-        let reLogin = await withCheckedContinuation { continuation in
-            DispatchQueue.main.async {
-                let format = NSLocalizedString("wpComLogin.loginDenied.message", value: "You can sign in with a different account if you need a different one. Tap \"%@\" to start.", comment: "Message shown when user denies WordPress.com login, offering option to try with different account")
-                let buttonText = NSLocalizedString("wpComLogin.loginDenied.useDifferentAccount", value: "Use Different Account", comment: "Button title for signing in with a different WordPress.com account")
-                let alert = UIAlertController(
-                    title: NSLocalizedString("wpComLogin.loginDenied.title", value: "Login Cancelled", comment: "Title of alert shown when user cancels WordPress.com login"),
-                    message: String(format: format, buttonText),
-                    preferredStyle: .alert
-                )
-                alert.addAction(UIAlertAction(title: SharedStrings.Button.close, style: .cancel) { _ in
-                    continuation.resume(returning: false)
-                })
-                alert.addAction(UIAlertAction(title: buttonText, style: .default) { _ in
-                    continuation.resume(returning: true)
-                })
-                viewController.present(alert, animated: true)
+            if case .loginDenied = error, recoverDenyAccess {
+                return try await self.recoverLoginDeniedError(viewController: viewController, accountEmail: accountEmail)
+            } else {
+                throw error
             }
         }
-
-        guard reLogin else {
-            throw .loginAgainRejected
-        }
-
-        return try await self.authenticate(from: viewController, prefersEphemeralWebBrowserSession: true, accountEmail: accountEmail, recoverDenyAccess: false)
     }
 
     private func authorize(from viewController: UIViewController, url authorizeURL: URL, prefersEphemeralWebBrowserSession: Bool) async throws(AuthenticationError) -> URL {
@@ -271,7 +244,7 @@ struct WordPressDotComAuthenticator {
 
         guard let code = queryMap["code"] else {
             if queryMap["error"] == "access_denied" {
-                let message = NSLocalizedString("wpComLogin.error.accessDenied", value: "Access denied. You need to approve to log in to WordPress.com", comment: "Error message when user denies access to WordPress.com")
+                let message = Strings.accessDenied
                 throw .loginDenied(message: message)
             }
             throw .invalidCallbackURL
@@ -316,6 +289,33 @@ struct WordPressDotComAuthenticator {
             throw .unknown(error)
         }
     }
+
+    // Present an alert to ask the user to re-authenticate after they tap the "Deny" button.
+    private func recoverLoginDeniedError(viewController: UIViewController, accountEmail: String?) async throws(AuthenticationError) -> String {
+        let reLogin = await withCheckedContinuation { continuation in
+            DispatchQueue.main.async {
+                let alert = UIAlertController(
+                    title: Strings.loginDeniedTitle,
+                    message: Strings.loginDeniedAlertMessage(),
+                    preferredStyle: .alert
+                )
+                alert.addAction(UIAlertAction(title: SharedStrings.Button.close, style: .cancel) { _ in
+                    continuation.resume(returning: false)
+                })
+                alert.addAction(UIAlertAction(title: Strings.useDifferentAccount, style: .default) { _ in
+                    continuation.resume(returning: true)
+                })
+                viewController.present(alert, animated: true)
+            }
+        }
+
+        guard reLogin else {
+            throw .loginAgainRejected
+        }
+
+        // Use an ephemeral session here to ignore the existing account in Safari and allow user to sign in with whatever account they'd like to use.
+        return try await self.authenticate(from: viewController, prefersEphemeralWebBrowserSession: true, accountEmail: accountEmail, recoverDenyAccess: false)
+    }
 }
 
 /// typed-throw version of `withCheckedThrowingContinuation`
@@ -337,17 +337,14 @@ private extension WordPressDotComAuthenticator.SignInError {
         case let .authentication(error):
             return error.alertMessage
         case .fetchUser:
-            return NSLocalizedString("wpComLogin.error.fetchUser", value: "Failed to load user details", comment: "Error message when failing to load user details during WordPress.com login")
+            return Strings.fetchUserError
         case let .mismatchedEmail(expectedEmail):
-            let format = NSLocalizedString("wpComLogin.error.mismatchedEmail", value: "Please sign in with email address %@", comment: "Error message when user signs in with an unexpected email address. The first argument is the expected email address")
-            return String(format: format, expectedEmail)
+            return Strings.mismatchedEmail(expectedEmail)
         case let .alreadySignedIn(signedInAccountEmail):
-            let format = NSLocalizedString("wpComLogin.error.alreadySignedIn", value: "You have already signed in with email address %@. Please sign out try again.", comment: "Error message when user signs in with an different account than the account that's alredy signed in. The first argument is the current signed-in account email address")
-            return String(format: format, signedInAccountEmail)
+            return Strings.alreadySignedIn(signedInAccountEmail)
         case .loadingSites:
-            return NSLocalizedString("wpComLogin.error.loadingSites", value: "Your account's sites cannot be loaded. Please try again later.", comment: "Error message when failing to load account's site after signing in")
+            return Strings.loadingSitesError
         }
-
     }
 }
 
@@ -370,5 +367,28 @@ private extension WordPressDotComAuthenticator.AuthenticationError {
             wpAssertionFailure("WP.com web login failed", userInfo: ["error": "\(self)"])
             return SharedStrings.Error.generic
         }
+    }
+}
+
+private enum Strings {
+    static let accessDenied = NSLocalizedString("wpComLogin.error.accessDenied", value: "Access denied. You need to approve to log in to WordPress.com", comment: "Error message when user denies access to WordPress.com")
+    static let loginDeniedTitle = NSLocalizedString("wpComLogin.loginDenied.title", value: "Login Cancelled", comment: "Title of alert shown when user cancels WordPress.com login")
+    static let loginDeniedMessage = NSLocalizedString("wpComLogin.loginDenied.message", value: "You can sign in with a different account if you need a different one. Tap \"%@\" to start.", comment: "Message shown when user denies WordPress.com login, offering option to try with different account")
+    static let useDifferentAccount = NSLocalizedString("wpComLogin.loginDenied.useDifferentAccount", value: "Use Different Account", comment: "Button title for signing in with a different WordPress.com account")
+    static let fetchUserError = NSLocalizedString("wpComLogin.error.fetchUser", value: "Failed to load user details", comment: "Error message when failing to load user details during WordPress.com login")
+    static let mismatchedEmail = NSLocalizedString("wpComLogin.error.mismatchedEmail", value: "Please sign in with email address %@", comment: "Error message when user signs in with an unexpected email address. The first argument is the expected email address")
+    static let alreadySignedIn = NSLocalizedString("wpComLogin.error.alreadySignedIn", value: "You have already signed in with email address %@. Please sign out try again.", comment: "Error message when user signs in with an different account than the account that's alredy signed in. The first argument is the current signed-in account email address")
+    static let loadingSitesError = NSLocalizedString("wpComLogin.error.loadingSites", value: "Your account's sites cannot be loaded. Please try again later.", comment: "Error message when failing to load account's site after signing in")
+
+    static func loginDeniedAlertMessage() -> String {
+        String(format: loginDeniedMessage, useDifferentAccount)
+    }
+
+    static func mismatchedEmail(_ email: String) -> String {
+        String(format: mismatchedEmail, email)
+    }
+
+    static func alreadySignedIn(_ email: String) -> String {
+        String(format: alreadySignedIn, email)
     }
 }
