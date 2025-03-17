@@ -14,8 +14,6 @@ class JetpackRedirector {
         return "jpdebug"
         #elseif ALPHA_BUILD
         return "jpalpha"
-        #elseif INTERNAL_BUILD
-        return "jpinternal"
         #else
         return "jetpack"
         #endif

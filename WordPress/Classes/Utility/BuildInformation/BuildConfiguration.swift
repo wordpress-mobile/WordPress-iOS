@@ -16,8 +16,6 @@ enum BuildConfiguration: String {
             return .localDeveloper
         #elseif ALPHA_BUILD
             return .a8cBranchTest
-        #elseif INTERNAL_BUILD
-            return .a8cPrereleaseTesting
         #else
             return .appStore
         #endif
