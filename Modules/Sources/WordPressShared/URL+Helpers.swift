@@ -2,10 +2,10 @@ import Foundation
 import MobileCoreServices
 import UniformTypeIdentifiers
 
-extension URL {
+public extension URL {
 
     struct Helpers {
-        static func temporaryFile(named name: String = UUID().uuidString) -> URL {
+        public static func temporaryFile(named name: String = UUID().uuidString) -> URL {
             if #available(iOS 16.0, *) {
                 return URL.temporaryDirectory.appending(path: name)
             } else {
@@ -13,7 +13,7 @@ extension URL {
             }
         }
 
-        static func temporaryDirectory(named name: String) -> URL {
+        public static func temporaryDirectory(named name: String) -> URL {
             if #available(iOS 16.0, *) {
                 return URL.temporaryDirectory.appending(path: name, directoryHint: .isDirectory)
             } else {
@@ -106,7 +106,7 @@ extension URL {
     }
 }
 
-extension NSURL {
+public extension NSURL {
     @objc var isVideo: Bool {
         return (self as URL).isVideo
     }
@@ -120,7 +120,7 @@ extension NSURL {
 
 }
 
-extension URL {
+public extension URL {
     /// Appends query items to the URL.
     /// - Parameter newQueryItems: The new query items to add to the URL. These will **not** overwrite any existing items but are appended to the existing list.
     /// - Returns: The URL with added query items.
@@ -134,7 +134,7 @@ extension URL {
 
     /// Gravatar doesn't support "Cache-Control: none" header. So we add a random query parameter to
     /// bypass the backend cache and get the latest image.
-    public func appendingGravatarCacheBusterParam() -> URL {
+    func appendingGravatarCacheBusterParam() -> URL {
         var urlComponents = URLComponents(url: self, resolvingAgainstBaseURL: false)
         if urlComponents?.queryItems == nil {
             urlComponents?.queryItems = []

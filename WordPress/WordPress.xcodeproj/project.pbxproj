@@ -3289,7 +3289,6 @@
 			membershipExceptions = (
 				"Extensions/String+Helpers.swift",
 				"Extensions/UIImage+Extensions.swift",
-				"Extensions/URL+Helpers.swift",
 				"Utility/App Configuration/AppConfiguration.swift",
 				"Utility/App Configuration/ExtensionConfiguration.swift",
 				Utility/BuildInformation/BuildConfiguration.swift,
@@ -3391,7 +3390,6 @@
 			membershipExceptions = (
 				"Extensions/String+Helpers.swift",
 				"Extensions/UIImage+Extensions.swift",
-				"Extensions/URL+Helpers.swift",
 				Utility/BuildInformation/BuildConfiguration.swift,
 				Utility/FormattableContent/Actions/DefaultFormattableContentAction.swift,
 				Utility/FormattableContent/Actions/FormattableContentAction.swift,

@@ -2,6 +2,7 @@
 #import "MediaService.h"
 #import "Blog.h"
 @import WordPressDataObjC;
+@import WordPressShared;
 #import "WordPress-Swift.h"
 
 @implementation Media (Extensions)
