@@ -13,8 +13,7 @@ typealias ReaderSiteSearchFailureBlock = (_ error: Error?) -> Void
 
     private func apiRequest() -> WordPressComRestApi {
         let api = coreDataStack.performQuery {
-            let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: $0)
-            return defaultAccount?.wordPressComRestApi
+            try? WPAccount.defaultWordPressComAccountRestAPI(in: $0)
         }
 
         if let api, api.hasCredentials() {

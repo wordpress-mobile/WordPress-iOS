@@ -10,8 +10,7 @@ import Foundation
     ///   - failure: Closure called when the request fails.
     func flagSite(withID id: NSNumber, asBlocked blocked: Bool, success: (() -> Void)? = nil, failure: ((Error?) -> Void)? = nil) {
         let queryResult: (NSNumber, WordPressComRestApi)? = self.coreDataStack.performQuery({
-            guard
-                let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: $0),
+            guard let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: $0),
                 let api = defaultAccount.wordPressComRestApi,
                 api.hasCredentials()
             else {
