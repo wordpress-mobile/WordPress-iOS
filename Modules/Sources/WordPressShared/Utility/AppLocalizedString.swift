@@ -34,7 +34,7 @@ public func AppLocalizedString(_ key: String, tableName: String? = nil, value: S
     Bundle.app.localizedString(forKey: key, value: value, table: nil)
 }
 
-extension Bundle {
+private extension Bundle {
     /// Returns the `Bundle` for the host `.app`.
     ///
     /// - If this is called from code already located in the main app's bundle or from a Pod/Framework,
