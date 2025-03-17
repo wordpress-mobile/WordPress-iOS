@@ -4,14 +4,14 @@ extension BuildSettings {
     static let live = BuildSettings(bundle: .app)
 
     init(bundle: Bundle) {
-        self.pushNotificationAppID = bundle.infoPlistValue(forKey: "WPPushNotificationAppID")
-        self.appGroupName = bundle.infoPlistValue(forKey: "WPAppGroupName")
-        self.appKeychainAccessGroup = bundle.infoPlistValue(forKey: "WPAppKeychainAccessGroup")
+        pushNotificationAppID = bundle.infoValue(forKey: "WPPushNotificationAppID")
+        appGroupName = bundle.infoValue(forKey: "WPAppGroupName")
+        appKeychainAccessGroup = bundle.infoValue(forKey: "WPAppKeychainAccessGroup")
     }
 }
 
 private extension Bundle {
-    func infoPlistValue<T>(forKey key: String) -> T where T: LosslessStringConvertible {
+    func infoValue<T>(forKey key: String) -> T where T: LosslessStringConvertible {
         guard let object = object(forInfoDictionaryKey: key) else {
             fatalError("missing value for key: \(key)")
         }
