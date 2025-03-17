@@ -69,7 +69,7 @@ class DataMigratorTests: XCTestCase {
 
     func testExportFailsWhenSharedUserDefaultsNil() {
         // Given
-        migrator = DataMigrator(coreDataStack: coreDataStack, backupLocation: nil, keychainUtils: keychainUtils, sharedDefaults: nil,  appGroupName: appGroupName)
+        migrator = DataMigrator(coreDataStack: coreDataStack, backupLocation: nil, keychainUtils: keychainUtils, sharedDefaults: nil, appGroupName: appGroupName)
 
         // When
         let migratorError = getExportDataMigratorError(migrator)
