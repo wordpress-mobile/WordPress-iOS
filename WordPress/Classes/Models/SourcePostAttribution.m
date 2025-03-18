@@ -1,5 +1,4 @@
 #import "SourcePostAttribution.h"
-#import "ReaderPost.h"
 
 NSString * const SourcePostAttributionTypePost = @"post";
 NSString * const SourcePostAttributionTypeSite = @"site";
