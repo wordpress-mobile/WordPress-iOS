@@ -27,11 +27,11 @@ struct LockScreenSingleStatWidgetViewProvider<WidgetData: HomeWidgetData>: LockS
         let message: String
         switch widgetKind {
         case .today:
-            message = AppConfiguration.Widget.Localization.unconfiguredViewTodayTitle
+            message = LocalizableStrings.unconfiguredViewJetpackTodayTitle
         case .allTime:
-            message = AppConfiguration.Widget.Localization.unconfiguredViewAllTimeTitle
+            message = LocalizableStrings.unconfiguredViewJetpackAllTimeTitle
         case .thisWeek:
-            message = AppConfiguration.Widget.Localization.unconfiguredViewThisWeekTitle
+            message = LocalizableStrings.unconfiguredViewJetpackThisWeekTitle
         }
         let viewModel = LockScreenUnconfiguredViewModel(message: message)
         return LockScreenUnconfiguredView(viewModel: viewModel)

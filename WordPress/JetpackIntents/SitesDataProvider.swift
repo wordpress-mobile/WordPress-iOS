@@ -73,3 +73,15 @@ class SitesDataProvider {
         }
     }
 }
+
+private extension HomeWidgetData {
+    static func read(from cache: HomeWidgetCache<Self>? = nil) -> [Int: Self]? {
+
+        let cache = cache ?? HomeWidgetCache<Self>(fileName: Self.filename, appGroup: BuildSettings.current.appGroupName)
+        do {
+            return try cache.read()
+        } catch {
+            return nil
+        }
+    }
+}

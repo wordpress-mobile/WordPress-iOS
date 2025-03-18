@@ -1,3 +1,5 @@
+import Foundation
+import CocoaLumberjackSwift
 import WidgetKit
 import SwiftUI
 import BuildSettingsKit
