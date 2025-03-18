@@ -451,11 +451,12 @@ public protocol ThemePresenter: AnyObject {
         }
     }
 
-    fileprivate func syncThemePage(_ page: NSInteger, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
+    fileprivate func syncThemePage(_ page: NSInteger, search: String, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
         assert(page > 0)
         themesSyncingPage = page
         _ = themeService.getThemesFor(blog,
             page: themesSyncingPage,
+            search: search,
             sync: page == 1,
             success: {[weak self](themes: [Theme]?, hasMore: Bool, themeCount: NSInteger) in
                 if let success {
@@ -508,7 +509,7 @@ public protocol ThemePresenter: AnyObject {
 
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
         if syncHelper == themesSyncHelper {
-            syncThemePage(1, success: success, failure: failure)
+            syncThemePage(1, search: searchName, success: success, failure: failure)
         } else if syncHelper == customThemesSyncHelper {
             syncCustomThemes(success: success, failure: failure)
         }
@@ -517,7 +518,7 @@ public protocol ThemePresenter: AnyObject {
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncMoreWithSuccess success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
         if syncHelper == themesSyncHelper {
             let nextPage = themesSyncingPage + 1
-            syncThemePage(nextPage, success: success, failure: failure)
+            syncThemePage(nextPage, search: searchName, success: success, failure: failure)
         }
     }
 
@@ -656,11 +657,36 @@ public protocol ThemePresenter: AnyObject {
 
     // MARK: - Search support
 
+    fileprivate var searchDebounceTimer: Timer?
+    fileprivate let searchDebounceInterval: TimeInterval = 0.5
+
     fileprivate func beginSearchFor(_ pattern: String) {
         searchController.isActive = true
         searchController.searchBar.text = pattern
 
-        searchName = pattern
+        updateSearchName(pattern)
+    }
+
+    fileprivate func updateSearchName(_ searchText: String) {
+        // Cancel any existing timer
+        searchDebounceTimer?.invalidate()
+
+        // If search text is empty, update immediately
+        if searchText.isEmpty {
+            self.searchName = searchText
+            self.fetchThemes()
+            self.reloadThemes()
+            return
+        }
+
+        // Create a new timer for debounce
+        searchDebounceTimer = Timer.scheduledTimer(withTimeInterval: searchDebounceInterval, repeats: false) { [weak self] _ in
+            guard let self = self else { return }
+            self.searchName = searchText
+            // Reset to first page when searching
+            self.themesSyncingPage = 0
+            self.themesSyncHelper.syncContent()
+        }
     }
 
     // MARK: - UISearchControllerDelegate
@@ -708,19 +734,11 @@ public protocol ThemePresenter: AnyObject {
     // MARK: - UISearchResultsUpdating
 
     open func updateSearchResults(for searchController: UISearchController) {
-        searchName = searchController.searchBar.text ?? ""
+        updateSearchName(searchController.searchBar.text ?? "")
     }
 
     // MARK: - NSFetchedResultsController helpers
-
-    fileprivate func searchNamePredicate() -> NSPredicate? {
-        guard !searchName.isEmpty else {
-            return nil
-        }
-
-        return NSPredicate(format: "name contains[c] %@", searchName)
-    }
-
+    
     fileprivate func browsePredicate() -> NSPredicate? {
         return browsePredicateThemesWithCustomValue(false)
     }
@@ -732,7 +750,7 @@ public protocol ThemePresenter: AnyObject {
     fileprivate func browsePredicateThemesWithCustomValue(_ custom: Bool) -> NSPredicate? {
         let blogPredicate = NSPredicate(format: "blog == %@ AND custom == %d", self.blog, custom ? 1 : 0)
 
-        let subpredicates = [blogPredicate, searchNamePredicate(), filterType.predicate].compactMap { $0 }
+        let subpredicates = [blogPredicate, filterType.predicate].compactMap { $0 }
         switch subpredicates.count {
         case 1:
             return subpredicates[0]
