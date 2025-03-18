@@ -4,12 +4,27 @@ import JetpackStatsWidgetsCore
 /// Cache manager that stores `HomeWidgetData` values in a plist file, contained in the specified security application group and with the specified file name.
 /// The corresponding dictionary is always in the form `[Int: T]`, where the `Int` key is the SiteID, and the `T` value is any `HomeWidgetData` instance.
 struct HomeWidgetCache<T: HomeWidgetData> {
-
     let fileName: String
     let appGroup: String
 
+    init(fileName: String = T.filename, appGroup: String) {
+        self.fileName = fileName
+        self.appGroup = appGroup
+    }
+
     private var fileURL: URL? {
-        FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup)?.appendingPathComponent(fileName)
+        if appGroup.hasPrefix(Self.testAppGroupNamePrefix) {
+            return makeTestingFileURL()
+        }
+        return FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup)?.appendingPathComponent(fileName)
+    }
+
+    /// Tests are not eligible to write to shared secure groups.
+    private func makeTestingFileURL() -> URL? {
+        let directoryURL = FileManager.default.temporaryDirectory
+            .appendingPathComponent(appGroup)
+        try? FileManager.default.createDirectory(at: directoryURL, withIntermediateDirectories: true, attributes: nil)
+        return directoryURL.appendingPathComponent(fileName)
     }
 
     func read() throws -> [Int: T]? {
@@ -48,4 +63,6 @@ struct HomeWidgetCache<T: HomeWidgetData> {
         }
         try FileManager.default.removeItem(at: fileURL)
     }
+
+    static var testAppGroupNamePrefix: String { "xctest" }
 }
