@@ -149,11 +149,13 @@ const NSInteger ThemeOrderTrailing = 9999;
 
 - (NSProgress *)getThemesForBlog:(Blog *)blog
                              page:(NSInteger)page
+                           search:(NSString *)search
                              sync:(BOOL)sync
                           success:(ThemeServiceThemesRequestSuccessBlock)success
                           failure:(ThemeServiceFailureBlock)failure
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
+    NSParameterAssert([search isKindOfClass:[NSString class]]);
     NSAssert([self blogSupportsThemeServices:blog],
              @"Do not call this method on unsupported blogs, check with blogSupportsThemeServices first.");
     
@@ -166,6 +168,7 @@ const NSInteger ThemeOrderTrailing = 9999;
     if ([blog supports:BlogFeatureCustomThemes]) {
         return [remote getWPThemesPage:page
                               freeOnly:![blog supports:BlogFeaturePremiumThemes]
+                               search:search
                                success:^(NSArray<RemoteTheme *> *remoteThemes, BOOL hasMore, NSInteger totalThemeCount) {
                                    NSArray * __block themeObjectIDs = nil;
                                    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
@@ -205,6 +208,7 @@ const NSInteger ThemeOrderTrailing = 9999;
     } else {
         return [remote getThemesForBlogId:[blog dotComID]
                                      page:page
+                                   search:search
                                   success:^(NSArray<RemoteTheme *> *remoteThemes, BOOL hasMore, NSInteger totalThemeCount) {
                                       NSArray * __block themeObjectIDs = nil;
                                       [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
