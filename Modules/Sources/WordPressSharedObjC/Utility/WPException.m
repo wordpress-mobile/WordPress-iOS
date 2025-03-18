@@ -2,7 +2,7 @@
 
 @implementation WPException
 
-+ (BOOL)objcTryBlock:(void (^)(void))block error:(NSError * __autoreleasing *)outError;
++ (BOOL)objcTryBlock:(void (NS_NOESCAPE ^)(void))block error:(NSError * __autoreleasing *)outError;
 {
     @try {
         if (block) {
