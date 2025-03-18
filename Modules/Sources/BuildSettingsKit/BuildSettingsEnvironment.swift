@@ -1,11 +1,11 @@
 import Foundation
 
-enum BuildSettingsEnvironment {
+public enum BuildSettingsEnvironment: Sendable {
     case live
     case preview
     case test
 
-    static let current: BuildSettingsEnvironment = {
+    public static let current: BuildSettingsEnvironment = {
 #if DEBUG
         let processInfo = ProcessInfo.processInfo
         if processInfo.isXcodePreview {

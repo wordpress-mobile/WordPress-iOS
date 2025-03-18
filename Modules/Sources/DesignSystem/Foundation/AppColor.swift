@@ -8,21 +8,21 @@ public enum UIAppColor {
     ///
     /// - note: The Jetpack app uses
     public static var tint: UIColor {
-        switch BuildSettings.current.brand {
+        switch AppBrand.current {
         case .wordpress: primary
         case .jetpack: UIColor.label
         }
     }
 
     public static var primary: UIColor {
-        switch BuildSettings.current.brand {
+        switch AppBrand.current {
         case .wordpress: UIColor(light: CSColor.Blue.base, dark: primary(.shade40))
         case .jetpack: UIColor(light: CSColor.JetpackGreen.shade(.shade40), dark: CSColor.JetpackGreen.shade(.shade30))
         }
     }
 
     public static func primary(_ shade: ColorStudioShade) -> UIColor {
-        switch BuildSettings.current.brand {
+        switch AppBrand.current {
         case .wordpress: CSColor.Blue.shade(shade)
         case .jetpack: CSColor.JetpackGreen.shade(shade)
         }

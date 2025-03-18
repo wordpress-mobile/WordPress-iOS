@@ -21,8 +21,7 @@ final class CompliancePopoverCoordinatorTests: XCTestCase {
 
     // MARK: - Tests
 
-    // TODO: replace without showing actual UI
-    func xTestPopoverIsShown() async {
+    func testPopoverIsShown() async {
         // Given
         self.defaults.didShowCompliancePopupOverride = false
 
