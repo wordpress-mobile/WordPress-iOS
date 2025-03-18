@@ -5,7 +5,7 @@ GEM
       base64
       nkf
       rexml
-    activesupport (8.0.1)
+    activesupport (8.0.2)
       base64
       benchmark (>= 0.3)
       bigdecimal
@@ -171,7 +171,7 @@ GEM
       csv
     fastlane-plugin-sentry (1.28.0)
       os (~> 1.1, >= 1.1.4)
-    fastlane-plugin-wpmreleasetoolkit (12.5.0)
+    fastlane-plugin-wpmreleasetoolkit (13.0.0)
       activesupport (>= 6.1.7.1)
       buildkit (~> 1.5)
       chroma (= 0.2.0)
@@ -252,7 +252,7 @@ GEM
     mini_magick (4.13.2)
     mini_mime (1.1.5)
     mini_portile2 (2.8.8)
-    minitest (5.25.4)
+    minitest (5.25.5)
     multi_json (1.15.0)
     multipart-post (2.4.1)
     mutex_m (0.3.0)
@@ -260,7 +260,7 @@ GEM
     nap (1.1.0)
     naturally (2.2.1)
     nkf (0.2.0)
-    nokogiri (1.18.3)
+    nokogiri (1.18.4)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
     observer (0.1.2)
@@ -367,7 +367,7 @@ DEPENDENCIES
   fastlane (~> 2.227)
   fastlane-plugin-appcenter (~> 2.1)
   fastlane-plugin-sentry
-  fastlane-plugin-wpmreleasetoolkit (~> 12.5)
+  fastlane-plugin-wpmreleasetoolkit (~> 13.0)
   rake
   rmagick (~> 6.1.1)
   rubocop (~> 1.74)
