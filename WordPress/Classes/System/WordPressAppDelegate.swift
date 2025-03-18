@@ -135,6 +135,10 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             WKWebView.warmup()
         }
 
+        if let account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext) {
+            BlogService(coreDataStack: ContextManager.shared).syncBlogs(for: account, success: { /* Do nothing */ }, failure: { _ in /* Do nothing */ })
+        }
+
         return true
     }
 
