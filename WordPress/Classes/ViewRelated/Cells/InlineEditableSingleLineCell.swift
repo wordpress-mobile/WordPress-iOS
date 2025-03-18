@@ -1,4 +1,5 @@
-import Foundation
+import UIKit
+import WordPressUI
 
 // UITableViewCell that displays an editable UITextField to allow text to be modified inline.
 // The text field and keyboard styles are set based on the TextFieldStyle. The default is `text`.

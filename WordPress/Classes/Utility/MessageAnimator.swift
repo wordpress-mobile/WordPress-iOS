@@ -1,5 +1,6 @@
 import UIKit
 import WordPressShared
+import WordPressUI
 
 /// NoticeAnimator is a helper class to animate error messages.
 ///

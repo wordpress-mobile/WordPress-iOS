@@ -1,5 +1,5 @@
 import UIKit
-import Gridicons
+import WordPressUI
 
 /// A view that consists of the frame of a Dashboard card
 /// Title, icon and action can be customizable

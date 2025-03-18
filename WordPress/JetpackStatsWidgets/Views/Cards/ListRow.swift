@@ -1,7 +1,7 @@
 
 import SwiftUI
 import WidgetKit
-import WordPressShared
+import WordPressUI
 
 struct ListRow: View {
     @Environment(\.widgetFamily) var family: WidgetFamily

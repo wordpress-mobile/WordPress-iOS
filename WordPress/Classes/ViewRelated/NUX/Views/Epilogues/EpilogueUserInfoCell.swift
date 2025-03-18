@@ -1,5 +1,6 @@
 import UIKit
 import WordPressAuthenticator
+import WordPressUI
 
 // MARK: - EpilogueUserInfoCell
 //

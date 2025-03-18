@@ -1,5 +1,6 @@
 import Foundation
 import WordPressReader
+import WordPressUI
 
 /// A collection of utilities for managing rendering for comments.
 @MainActor

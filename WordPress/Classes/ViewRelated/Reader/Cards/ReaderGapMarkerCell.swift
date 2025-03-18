@@ -1,5 +1,6 @@
-import Foundation
+import UIKit
 import WordPressShared
+import WordPressUI
 
 open class ReaderGapMarkerCell: UITableViewCell {
     @IBOutlet fileprivate weak var tearBackgroundView: UIView!

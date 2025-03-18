@@ -1,5 +1,5 @@
-
 import UIKit
+import WordPressUI
 
 final class TitleBadgeDisclosureCell: WPTableViewCell {
     @IBOutlet weak var cellTitle: UILabel!

@@ -1,8 +1,8 @@
-import Foundation
 import UIKit
 import SwiftUI
 import WordPressShared
 import WordPressFlux
+import WordPressUI
 
 func AccountSettingsViewController(account: WPAccount) -> ImmuTableViewController? {
     guard let api = account.wordPressComRestApi else {

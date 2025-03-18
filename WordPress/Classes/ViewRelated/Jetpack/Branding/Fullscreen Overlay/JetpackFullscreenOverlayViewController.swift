@@ -1,5 +1,6 @@
 import UIKit
 import Lottie
+import WordPressUI
 
 class JetpackFullscreenOverlayViewController: UIViewController {
 

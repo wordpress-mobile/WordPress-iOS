@@ -1,6 +1,7 @@
 import UIKit
 import Gridicons
 import WordPressShared
+import WordPressUI
 
 /// Displays a list of available keyring connection accounts that can be used to
 /// forge a publicize connection.

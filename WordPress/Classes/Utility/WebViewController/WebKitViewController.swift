@@ -1,6 +1,7 @@
 import UIKit
 @preconcurrency import WebKit
 import WordPressShared
+import WordPressUI
 
 protocol WebKitAuthenticatable {
     var authenticator: RequestAuthenticator? { get }

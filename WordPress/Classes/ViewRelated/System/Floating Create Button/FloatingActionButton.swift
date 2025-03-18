@@ -1,5 +1,5 @@
 import UIKit
-import Gridicons
+import WordPressUI
 
 /// A rounded button with a shadow intended for use as a "Floating Action Button"
 final class FloatingActionButton: UIButton {

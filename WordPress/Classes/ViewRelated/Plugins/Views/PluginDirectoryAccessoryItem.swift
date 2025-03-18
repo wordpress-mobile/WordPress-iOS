@@ -1,5 +1,6 @@
 import UIKit
 import Gridicons
+import WordPressUI
 
 struct PluginDirectoryAccessoryItem {
 

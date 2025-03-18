@@ -1,4 +1,6 @@
+import UIKit
 import SwiftUI
+import WordPressUI
 
 class PrepublishingSocialAccountsTableFooterView: UITableViewHeaderFooterView, Reusable {
 

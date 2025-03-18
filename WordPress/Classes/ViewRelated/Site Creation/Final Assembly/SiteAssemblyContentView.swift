@@ -1,7 +1,7 @@
-import Foundation
 import UIKit
 import Gridicons
 import WordPressShared
+import WordPressUI
 
 // MARK: SiteAssemblyContentView
 

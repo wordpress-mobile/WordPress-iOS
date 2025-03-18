@@ -1,4 +1,5 @@
 import SwiftUI
+import WordPressUI
 
 struct ReaderUserProfileView: View {
     let viewModel: ReaderUserProfileViewModel

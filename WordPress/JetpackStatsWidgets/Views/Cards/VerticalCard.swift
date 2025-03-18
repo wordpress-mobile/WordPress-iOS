@@ -1,4 +1,5 @@
 import SwiftUI
+import WordPressUI
 
 /// A card with a title and a value stacked vertically
 struct VerticalCard: View {

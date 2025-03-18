@@ -1,3 +1,6 @@
+import UIKit
+import WordPressUI
+
 /// This class groups styles used by blogging prompts
 ///
 extension WPStyleGuide {

@@ -60,7 +60,15 @@ let package = Package(
             .product(name: "Gifu", package: "Gifu"),
         ]),
         .target(name: "BuildSettingsKit"),
-        .target(name: "DesignSystem", swiftSettings: [.swiftLanguageMode(.v5)]),
+        .target(
+            name: "DesignSystem",
+            dependencies: [
+                "BuildSettingsKit",
+                .product(name: "ColorStudio", package: "color-studio"),
+            ],
+            resources: [.process("Resources")],
+            swiftSettings: [.swiftLanguageMode(.v5)]
+        ),
         .target(name: "JetpackStatsWidgetsCore", swiftSettings: [.swiftLanguageMode(.v5)]),
         // SFHFKeychainUtils is an old Objective-C keychain wrapper.
         // The implementatoin predates ARC, hence the dedicated target with ARC disabled, for the time being.
@@ -96,7 +104,7 @@ let package = Package(
         .target(name: "WordPressTesting", resources: [.process("Resources")]),
         .target(
             name: "WordPressUI",
-            dependencies: ["AsyncImageKit", "WordPressShared"],
+            dependencies: ["AsyncImageKit", "DesignSystem", "WordPressShared"],
             resources: [.process("Resources")],
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
@@ -175,7 +183,6 @@ enum XcodeSupport {
             .product(name: "Reachability", package: "Reachability"),
             .product(name: "SVProgressHUD", package: "SVProgressHUD"),
             .product(name: "ZIPFoundation", package: "ZIPFoundation"),
-            .product(name: "ColorStudio", package: "color-studio"),
             .product(name: "Aztec", package: "AztecEditor-iOS"),
             .product(name: "WordPressEditor", package: "AztecEditor-iOS"),
         ]
@@ -252,7 +259,6 @@ enum XcodeSupport {
                 "WordPressUI",
                 .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
                 .product(name: "WordPressAPI", package: "wordpress-rs"),
-                .product(name: "ColorStudio", package: "color-studio"),
             ]),
             .xcodeTarget("XcodeTarget_Intents", dependencies: [
                 "BuildSettingsKit",

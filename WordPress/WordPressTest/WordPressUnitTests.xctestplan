@@ -40,13 +40,6 @@
     },
     {
       "target" : {
-        "containerPath" : "container:..\/Modules",
-        "identifier" : "DesignSystemTests",
-        "name" : "DesignSystemTests"
-      }
-    },
-    {
-      "target" : {
         "containerPath" : "container:WordPress.xcodeproj",
         "identifier" : "4AD953BA2C21451700D0EEFA",
         "name" : "WordPressAuthenticatorTests"

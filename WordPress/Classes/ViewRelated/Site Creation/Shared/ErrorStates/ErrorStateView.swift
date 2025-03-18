@@ -1,7 +1,7 @@
 import UIKit
-
 import Gridicons
 import WordPressAuthenticator
+import WordPressUI
 
 // MARK: ErrorStateView
 

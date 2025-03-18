@@ -1,5 +1,5 @@
-import Foundation
-import Gridicons
+import UIKit
+import WordPressUI
 
 /// A view containing weekday symbols horizontally aligned for use in a calendar header
 class WeekdaysHeaderView: UIStackView {

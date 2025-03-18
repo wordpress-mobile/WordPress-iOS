@@ -1,4 +1,5 @@
 import SwiftUI
+import BuildSettingsKit
 
 public struct DSButtonStyle {
     public enum Emphasis: CaseIterable {
@@ -17,7 +18,11 @@ public struct DSButtonStyle {
     public let size: Size
     public let isJetpack: Bool
 
-    public init(emphasis: Emphasis, size: Size, isJetpack: Bool) {
+    public init(
+        emphasis: Emphasis,
+        size: Size,
+        isJetpack: Bool = BuildSettings.current.brand == .jetpack
+    ) {
         self.emphasis = emphasis
         self.size = size
         self.isJetpack = isJetpack

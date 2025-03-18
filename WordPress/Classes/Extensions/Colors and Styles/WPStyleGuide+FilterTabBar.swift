@@ -1,4 +1,5 @@
 import UIKit
+import WordPressUI
 
 extension WPStyleGuide {
     @objc class func configureFilterTabBar(_ filterTabBar: FilterTabBar) {

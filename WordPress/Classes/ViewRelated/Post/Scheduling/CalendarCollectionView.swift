@@ -1,5 +1,6 @@
-import Foundation
+import UIKit
 import JTAppleCalendar
+import WordPressUI
 
 enum CalendarCollectionViewStyle {
     case month

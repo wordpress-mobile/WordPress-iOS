@@ -1,4 +1,5 @@
 import UIKit
+import WordPressUI
 
 /// A view with an injected content and a description withl highlighted words
 class MigrationCenterView: UIView {

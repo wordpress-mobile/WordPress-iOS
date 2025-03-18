@@ -1,3 +1,6 @@
+import UIKit
+import WordPressUI
+
 protocol JetpackRemoteInstallStateViewDelegate: AnyObject {
     func mainButtonDidTouch()
     func customerSupportButtonDidTouch()

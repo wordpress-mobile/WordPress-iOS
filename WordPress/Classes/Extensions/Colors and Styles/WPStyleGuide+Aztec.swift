@@ -1,6 +1,6 @@
 import UIKit
-import Gridicons
 import WordPressShared
+import WordPressUI
 
 extension WPStyleGuide {
     static let aztecFormatBarInactiveColor: UIColor = .secondaryLabel

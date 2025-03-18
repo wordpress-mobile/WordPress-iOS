@@ -1,3 +1,5 @@
+import UIKit
+import WordPressUI
 
 class RevisionsTableViewFooter: UIView {
     private var footerLabel: UILabel!

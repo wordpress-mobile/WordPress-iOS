@@ -1,5 +1,6 @@
 import UIKit
 import Gridicons
+import WordPressUI
 
 /// Encapsulates status display logic for PostCardTableViewCells.
 ///

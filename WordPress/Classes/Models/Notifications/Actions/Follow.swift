@@ -1,3 +1,6 @@
+import UIKit
+import WordPressUI
+
 /// Encapsulates logic to follow a blog
 final class Follow: DefaultNotificationActionCommand {
     static let title = NSLocalizedString("notifications.action.subscribe.title", value: "Subscribe", comment: "Prompt to subscribe to a blog.")

@@ -2,6 +2,7 @@ import Foundation
 import Gridicons
 import UIKit
 import SwiftUI
+import WordPressUI
 
 struct PublishDatePickerConfiguration {
     var date: Date? {

@@ -1,4 +1,5 @@
 import SwiftUI
+import WordPressUI
 
 /// Prologue intro view
 struct UnifiedPrologueIntroContentView: View {

@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 import WordPressKit
+import WordPressUI
 
 final class BlazeCampaignStatusView: UIView {
     let titleLabel = UILabel()

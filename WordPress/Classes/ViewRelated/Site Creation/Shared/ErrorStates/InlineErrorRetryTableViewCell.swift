@@ -1,8 +1,7 @@
 
 import UIKit
-
 import Gridicons
-import WordPressShared
+import WordPressUI
 
 // MARK: - InlineErrorRetryTableViewCellAccessoryView
 

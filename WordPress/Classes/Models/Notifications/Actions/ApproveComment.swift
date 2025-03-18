@@ -1,3 +1,6 @@
+import UIKit
+import WordPressUI
+
 /// Encapsulates logic to approve a comment
 class ApproveComment: DefaultNotificationActionCommand {
     enum TitleStrings {

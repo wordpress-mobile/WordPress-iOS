@@ -1,5 +1,6 @@
-import Foundation
+import UIKit
 import WordPressShared
+import WordPressUI
 
 /// A WPStyleGuide extension with styles and methods specific to the Themes feature.
 ///

@@ -2,6 +2,7 @@ import UIKit
 import WordPressShared
 import Gridicons
 import CoreGraphics
+import WordPressUI
 
 class ExpandableCell: WPReusableTableViewCell {
 

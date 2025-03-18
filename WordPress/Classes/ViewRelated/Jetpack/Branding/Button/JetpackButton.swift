@@ -1,5 +1,6 @@
 import UIKit
 import SwiftUI
+import WordPressUI
 
 /// A "Jetpack powered" button with two different styles (`badge` or    `banner`)
 class JetpackButton: CircularImageButton {

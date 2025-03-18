@@ -1,4 +1,6 @@
+import UIKit
 import Gridicons
+import WordPressUI
 
 protocol PostEditorNavigationBarManagerDelegate: AnyObject {
     var publishButtonText: String { get }

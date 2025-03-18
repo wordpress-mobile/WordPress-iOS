@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUI
+import WordPressUI
 
 final class PostMediaUploadsViewController: UIHostingController<PostMediaUploadsView> {
     private let viewModel: PostMediaUploadsViewModel

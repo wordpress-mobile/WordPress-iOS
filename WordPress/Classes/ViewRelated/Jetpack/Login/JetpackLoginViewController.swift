@@ -2,6 +2,7 @@ import Foundation
 import UIKit
 import WordPressShared
 import WordPressAuthenticator
+import WordPressUI
 
 /// A view controller that presents a Jetpack login form.
 ///

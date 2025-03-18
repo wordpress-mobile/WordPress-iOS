@@ -1,4 +1,5 @@
-import Foundation
+import UIKit
+import WordPressUI
 
 /// This class will display a small view prompt to gather info about the users'
 /// current feelings regarding the app.

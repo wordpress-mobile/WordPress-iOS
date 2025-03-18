@@ -1,5 +1,6 @@
 import UIKit
 import WordPressKit
+import WordPressUI
 
 final class DashboardBlazeCampaignsCardView: UIView {
     private let frameView = BlogDashboardCardFrameView()

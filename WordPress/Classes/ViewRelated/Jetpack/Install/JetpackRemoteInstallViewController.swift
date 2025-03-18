@@ -1,3 +1,6 @@
+import UIKit
+import WordPressUI
+
 protocol JetpackRemoteInstallDelegate: AnyObject {
     func jetpackRemoteInstallCompleted()
     func jetpackRemoteInstallCanceled()

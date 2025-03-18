@@ -1,5 +1,5 @@
 import UIKit
-import WordPressShared
+import WordPressUI
 
 struct StatsTotalInsightsData: Equatable {
     var count: Int

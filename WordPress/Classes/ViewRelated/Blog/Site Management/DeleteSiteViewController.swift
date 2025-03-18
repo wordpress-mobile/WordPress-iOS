@@ -2,6 +2,7 @@ import UIKit
 import SVProgressHUD
 import WordPressShared
 import Gridicons
+import WordPressUI
 
 /// DeleteSiteViewController allows user delete their site.
 ///

@@ -3,6 +3,7 @@ import Foundation
 enum BuildSettingsEnvironment {
     case live
     case preview
+    case test
 
     static let current: BuildSettingsEnvironment = {
 #if DEBUG
@@ -11,7 +12,7 @@ enum BuildSettingsEnvironment {
             return .preview
         }
         if processInfo.isTesting {
-            fatalError("BuildSettings are unavailable when running unit tests. Make sure to inject the values manually in system under test.")
+            return .test
         }
 #endif
         return .live

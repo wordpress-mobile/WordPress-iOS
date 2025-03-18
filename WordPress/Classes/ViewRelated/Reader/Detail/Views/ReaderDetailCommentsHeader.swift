@@ -1,5 +1,6 @@
 import UIKit
 import WordPressReader
+import WordPressUI
 
 class ReaderDetailCommentsHeader: UITableViewHeaderFooterView, NibReusable {
 
