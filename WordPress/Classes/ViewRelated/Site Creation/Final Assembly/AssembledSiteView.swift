@@ -1,5 +1,5 @@
-
 import UIKit
+import WordPressShared
 @preconcurrency import WebKit
 
 // MARK: AssembledSiteView

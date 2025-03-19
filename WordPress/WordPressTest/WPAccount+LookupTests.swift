@@ -96,6 +96,15 @@ class WPAccountLookupTests: CoreDataTestCase {
         try XCTAssertEqual(WPAccount.lookupNumberOfAccounts(in: contextManager.mainContext), 3)
     }
 
+    // MARK: - Default account WordPress.com REST API
+
+    func testNoAPIWhenNoDefaultAccount() throws {
+        makeAccount()
+        try XCTAssertNil(WPAccount.defaultWordPressComAccountRestAPI(in: contextManager.mainContext))
+    }
+
+    // MARK: -
+
     @discardableResult
     func makeAccount(_ additionalSetup: (AccountBuilder) -> (AccountBuilder) = { $0 }) -> WPAccount {
         additionalSetup(AccountBuilder(contextManager.mainContext)).build()

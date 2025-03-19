@@ -1,3 +1,5 @@
+import Foundation
+import CocoaLumberjackSwift
 import SFHFKeychainUtils
 import BuildSettingsKit
 import WordPressKit

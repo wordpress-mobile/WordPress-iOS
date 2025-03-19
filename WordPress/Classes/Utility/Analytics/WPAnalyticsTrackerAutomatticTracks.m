@@ -42,14 +42,18 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     return [self eventPairForStat:stat].eventName;
 }
 
-- (instancetype)init
+- (instancetype)init {
+    return [self initWithEventNamePrefix:[WPAnalytics eventNamePrefix] platform:[WPAnalytics explatPlatform]];
+}
+
+- (instancetype)initWithEventNamePrefix:(NSString *)eventNamePrefix platform:(NSString *)platform
 {
     self = [super init];
     if (self) {
         _contextManager = [TracksContextManager new];
         _tracksService = [[TracksService alloc] initWithContextManager:_contextManager];
-        _tracksService.eventNamePrefix = AppConstants.eventNamePrefix;
-        _tracksService.platform = AppConstants.explatPlatform;
+        _tracksService.eventNamePrefix = eventNamePrefix;
+        _tracksService.platform = platform;
     }
     return self;
 }

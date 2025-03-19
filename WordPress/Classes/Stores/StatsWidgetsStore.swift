@@ -186,18 +186,18 @@ private extension StatsWidgetsStore {
     var initializedWeekdays: [ThisWeekWidgetDay] {
         var days = [ThisWeekWidgetDay]()
         for index in 0...7 {
-            days.insert(ThisWeekWidgetDay(date: NSCalendar.current.date(byAdding: .day,
-                                                                        value: -index,
-                                                                        to: Date()) ?? Date(),
-                                          viewsCount: 0,
-                                          dailyChangePercent: 0),
-                        at: index)
+            let day = ThisWeekWidgetDay(
+                date: NSCalendar.current.date(byAdding: .day, value: -index, to: Date()) ?? Date(),
+                viewsCount: 0,
+                dailyChangePercent: 0
+            )
+            days.insert(day, at: index)
         }
         return days
     }
 
     func refreshStats<T: HomeWidgetData>(type: T.Type) -> [Int: T]? {
-        guard let currentData = T.read() else {
+        guard let currentData = getCachedItems(for: T.self) else {
             return nil
         }
         let updatedSiteList = (try? BlogQuery().hostedByWPCom(true).blogs(in: coreDataStack.mainContext)) ?? []
@@ -223,33 +223,39 @@ private extension StatsWidgetsStore {
 
                 let stats = (existingSite as? HomeWidgetTodayData)?.stats ?? TodayWidgetStats()
 
-                sitesList[blogID.intValue] = HomeWidgetTodayData(siteID: blogID.intValue,
-                                                                 siteName: siteName,
-                                                                 url: siteURL,
-                                                                 timeZone: timeZone,
-                                                                 date: date,
-                                                                 stats: stats) as? T
+                sitesList[blogID.intValue] = HomeWidgetTodayData(
+                    siteID: blogID.intValue,
+                    siteName: siteName,
+                    url: siteURL,
+                    timeZone: timeZone,
+                    date: date,
+                    stats: stats
+                ) as? T
             } else if type == HomeWidgetAllTimeData.self {
 
                 let stats = (existingSite as? HomeWidgetAllTimeData)?.stats ?? AllTimeWidgetStats()
 
-                sitesList[blogID.intValue] = HomeWidgetAllTimeData(siteID: blogID.intValue,
-                                                                   siteName: siteName,
-                                                                   url: siteURL,
-                                                                   timeZone: timeZone,
-                                                                   date: date,
-                                                                   stats: stats) as? T
+                sitesList[blogID.intValue] = HomeWidgetAllTimeData(
+                    siteID: blogID.intValue,
+                    siteName: siteName,
+                    url: siteURL,
+                    timeZone: timeZone,
+                    date: date,
+                    stats: stats
+                ) as? T
 
             } else if type == HomeWidgetThisWeekData.self {
 
                 let stats = (existingSite as? HomeWidgetThisWeekData)?.stats ?? ThisWeekWidgetStats(days: initializedWeekdays)
 
-                sitesList[blogID.intValue] = HomeWidgetThisWeekData(siteID: blogID.intValue,
-                                                                    siteName: siteName,
-                                                                    url: siteURL,
-                                                                    timeZone: timeZone,
-                                                                    date: date,
-                                                                    stats: stats) as? T
+                sitesList[blogID.intValue] = HomeWidgetThisWeekData(
+                    siteID: blogID.intValue,
+                    siteName: siteName,
+                    url: siteURL,
+                    timeZone: timeZone,
+                    date: date,
+                    stats: stats
+                ) as? T
             }
         }
         return newData
@@ -265,26 +271,40 @@ private extension StatsWidgetsStore {
                 let title = (element.title ?? url).isEmpty ? url : element.title ?? url
                 let timeZone = blog.timeZone
                 if type == HomeWidgetTodayData.self {
-                    result[blogID.intValue] = HomeWidgetTodayData(siteID: blogID.intValue,
-                                                                  siteName: title,
-                                                                  url: url,
-                                                                  timeZone: timeZone ?? TimeZone.current,
-                                                                  date: Date(timeIntervalSinceReferenceDate: 0),
-                                                                  stats: TodayWidgetStats()) as? T
+                    result[blogID.intValue] = HomeWidgetTodayData(
+                        siteID: blogID.intValue,
+                        siteName: title,
+                        url: url,
+                        timeZone: timeZone ?? TimeZone.current,
+                        date: Date(
+                            timeIntervalSinceReferenceDate: 0
+                        ),
+                        stats: TodayWidgetStats()
+                    ) as? T
                 } else if type == HomeWidgetAllTimeData.self {
-                    result[blogID.intValue] = HomeWidgetAllTimeData(siteID: blogID.intValue,
-                                                                    siteName: title,
-                                                                    url: url,
-                                                                    timeZone: timeZone ?? TimeZone.current,
-                                                                    date: Date(timeIntervalSinceReferenceDate: 0),
-                                                                    stats: AllTimeWidgetStats()) as? T
+                    result[blogID.intValue] = HomeWidgetAllTimeData(
+                        siteID: blogID.intValue,
+                        siteName: title,
+                        url: url,
+                        timeZone: timeZone ?? TimeZone.current,
+                        date: Date(
+                            timeIntervalSinceReferenceDate: 0
+                        ),
+                        stats: AllTimeWidgetStats()
+                    ) as? T
                 } else if type == HomeWidgetThisWeekData.self {
-                    result[blogID.intValue] = HomeWidgetThisWeekData(siteID: blogID.intValue,
-                                                                     siteName: title,
-                                                                     url: url,
-                                                                     timeZone: timeZone ?? TimeZone.current,
-                                                                     date: Date(timeIntervalSinceReferenceDate: 0),
-                                                                     stats: ThisWeekWidgetStats(days: initializedWeekdays)) as? T
+                    result[blogID.intValue] = HomeWidgetThisWeekData(
+                        siteID: blogID.intValue,
+                        siteName: title,
+                        url: url,
+                        timeZone: timeZone ?? TimeZone.current,
+                        date: Date(
+                            timeIntervalSinceReferenceDate: 0
+                        ),
+                        stats: ThisWeekWidgetStats(
+                            days: initializedWeekdays
+                        )
+                    ) as? T
                 }
             }
         }

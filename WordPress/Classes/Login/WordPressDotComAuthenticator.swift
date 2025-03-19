@@ -3,6 +3,7 @@ import AuthenticationServices
 import Foundation
 import UIKit
 import WordPressData
+import WordPressShared
 
 /// Log in or sign up a WordPress.com account via web.
 ///

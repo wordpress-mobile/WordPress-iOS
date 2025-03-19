@@ -8,10 +8,6 @@
 
 @import OCMock;
 
-@interface WPAccount ()
-@property (nonatomic, readwrite) WordPressComRestApi *wordPressComRestApi;
-@end
-
 @interface MenusServiceTests : XCTestCase
 @property (nonatomic, strong) id<CoreDataStack> manager;
 @end

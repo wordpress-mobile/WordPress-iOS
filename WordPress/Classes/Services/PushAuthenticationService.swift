@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 /// The purpose of this service is to encapsulate the Restful API that performs Mobile 2FA
 /// Code Verification.
@@ -46,7 +47,7 @@ class PushAuthenticationService {
 
         var api: WordPressComRestApi? = nil
 
-        if let unwrappedRestApi = (try? WPAccount.lookupDefaultWordPressComAccount(in: context))?.wordPressComRestApi {
+        if let unwrappedRestApi = (try? WPAccount.defaultWordPressComAccountRestAPI(in: context)) {
             if unwrappedRestApi.hasCredentials() {
                 api = unwrappedRestApi
             }

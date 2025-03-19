@@ -1,4 +1,5 @@
 import WordPressKit
+import WordPressShared
 
 // MARK: - SiteAddressService
 

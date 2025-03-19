@@ -13,7 +13,19 @@ typedef void(^OCMockInvocationBlock)(NSInvocation* invocation);
 
 @implementation WPAppAnalyticsTests
 
+- (void)setUp {
+    [super setUp];
+
+    WPAnalyticsTesting.eventNamePrefix = @"xctest";
+    WPAnalyticsTesting.explatPlatform = @"xctest";
+}
+
 - (void)tearDown {
+    [super tearDown];
+
+    WPAnalyticsTesting.eventNamePrefix = nil;
+    WPAnalyticsTesting.explatPlatform = nil;
+
     [WPAnalytics clearTrackers];
 }
 
@@ -23,7 +35,7 @@ typedef void(^OCMockInvocationBlock)(NSInvocation* invocation);
 
     id analyticsMock = [OCMockObject mockForClass:[WPAnalytics class]];
     id apiCredentialsMock = [OCMockObject mockForClass:[ApiCredentials class]];
-    
+
     OCMockInvocationBlock registerTrackerInvocationBlock = ^(NSInvocation *invocation) {
         __unsafe_unretained id<WPAnalyticsTracker> tracker = nil;
         [invocation getArgument:&tracker atIndex:2];
@@ -39,7 +51,7 @@ typedef void(^OCMockInvocationBlock)(NSInvocation* invocation);
     WPAppAnalyticsLastVisibleScreenCallback lastVisibleScreenCallback = ^NSString*{
         return @"TEST";
     };
-    
+
     XCTAssertNoThrow(analytics = [[WPAppAnalytics alloc] initWithLastVisibleScreenBlock:lastVisibleScreenCallback],
                      @"Allocating or initializing this object shouldn't throw an exception");
     XCTAssert([analytics isKindOfClass:[WPAppAnalytics class]]);

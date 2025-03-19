@@ -19,11 +19,11 @@ struct UnconfiguredView: View {
         case .loggedOut(let widgetKind):
             switch widgetKind {
             case .today:
-                return AppConfiguration.Widget.Localization.unconfiguredViewTodayTitle
+                return LocalizableStrings.unconfiguredViewJetpackTodayTitle
             case .allTime:
-                return AppConfiguration.Widget.Localization.unconfiguredViewAllTimeTitle
+                return LocalizableStrings.unconfiguredViewJetpackAllTimeTitle
             case .thisWeek:
-                return AppConfiguration.Widget.Localization.unconfiguredViewThisWeekTitle
+                return LocalizableStrings.unconfiguredViewJetpackThisWeekTitle
             }
         case .noSite(let widgetKind):
             switch widgetKind {

@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 typealias ReaderSiteSearchSuccessBlock = (_ feeds: [ReaderFeed], _ hasMore: Bool, _ feedCount: Int) -> Void
 typealias ReaderSiteSearchFailureBlock = (_ error: Error?) -> Void
@@ -12,8 +13,7 @@ typealias ReaderSiteSearchFailureBlock = (_ error: Error?) -> Void
 
     private func apiRequest() -> WordPressComRestApi {
         let api = coreDataStack.performQuery {
-            let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: $0)
-            return defaultAccount?.wordPressComRestApi
+            try? WPAccount.defaultWordPressComAccountRestAPI(in: $0)
         }
 
         if let api, api.hasCredentials() {

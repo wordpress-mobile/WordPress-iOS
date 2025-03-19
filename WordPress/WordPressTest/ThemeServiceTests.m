@@ -10,10 +10,6 @@
 
 #pragma mark - Support classes
 
-@interface WPAccount ()
-@property (nonatomic, readwrite) WordPressComRestApi *wordPressComRestApi;
-@end
-
 #pragma mark - Tests
 
 @interface ThemeServiceTests : XCTestCase
