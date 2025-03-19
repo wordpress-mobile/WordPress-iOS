@@ -55,9 +55,7 @@ class AppExtensionsService {
 
     /// Tracks Instance
     ///
-    fileprivate lazy var tracks: Tracks = {
-        Tracks(appGroupName: BuildSettings.current.appGroupName)
-    }()
+    fileprivate lazy var tracks = Tracks()
 
     /// WordPress.com Username
     ///

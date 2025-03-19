@@ -17,7 +17,7 @@ open class Tracks {
     private let eventNamePrefix: String
 
     // MARK: - Initializers
-    init(appGroupName: String,
+    init(appGroupName: String = BuildSettings.current.appGroupName,
          eventNamePrefix: String = BuildSettings.current.eventNamePrefix) {
         uploader = Uploader(appGroupName: appGroupName)
         self.eventNamePrefix = eventNamePrefix

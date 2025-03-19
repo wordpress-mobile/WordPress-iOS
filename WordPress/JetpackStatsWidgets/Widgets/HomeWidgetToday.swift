@@ -1,11 +1,10 @@
 import Foundation
 import WidgetKit
 import SwiftUI
-import BuildSettingsKit
 import JetpackStatsWidgetsCore
 
 struct HomeWidgetToday: Widget {
-    private let tracks = Tracks(appGroupName: BuildSettings.current.appGroupName)
+    private let tracks = Tracks()
 
     private let placeholderContent = HomeWidgetTodayData(siteID: 0,
                                                         siteName: "My WordPress Site",
