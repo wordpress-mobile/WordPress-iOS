@@ -1,4 +1,4 @@
-import WordPressNotificationsCore
+import FormattableContentKit
 
 class ActivityCommentRange: ActivityRange {
     let commentID: Int

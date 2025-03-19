@@ -1,4 +1,4 @@
-import WordPressNotificationsCore
+import FormattableContentKit
 
 class ActivityPostRange: ActivityRange {
     let postID: Int

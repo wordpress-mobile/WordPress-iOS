@@ -1,4 +1,4 @@
-import WordPressNotificationsCore
+import FormattableContentKit
 
 /// Encapsulates logic to mark a comment as spam
 class MarkAsSpam: DefaultNotificationActionCommand {

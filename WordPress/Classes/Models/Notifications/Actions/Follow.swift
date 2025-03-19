@@ -1,6 +1,6 @@
 import UIKit
 import WordPressUI
-import WordPressNotificationsCore
+import FormattableContentKit
 
 /// Encapsulates logic to follow a blog
 final class Follow: DefaultNotificationActionCommand {

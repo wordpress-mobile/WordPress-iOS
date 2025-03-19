@@ -1,4 +1,4 @@
-import WordPressNotificationsCore
+import FormattableContentKit
 
 class HeaderContentStyles: FormattableContentStyles {
     var attributes: [NSAttributedString.Key: Any] {

@@ -1,5 +1,5 @@
 import WordPressShared
-import WordPressNotificationsCore
+import FormattableContentKit
 
 class SubjectContentStyles: FormattableContentStyles {
     var attributes: [NSAttributedString.Key: Any] {

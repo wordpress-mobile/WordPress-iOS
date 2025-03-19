@@ -1,5 +1,5 @@
 import Foundation
-import WordPressNotificationsCore
+import FormattableContentKit
 
 /// This service encapsulates all of the Actions that can be performed with a NotificationBlock
 ///

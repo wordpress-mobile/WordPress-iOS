@@ -15,7 +15,7 @@ let package = Package(
         .library(name: "WordPressData", targets: ["WordPressData"]),
         .library(name: "WordPressFlux", targets: ["WordPressFlux"]),
         .library(name: "WordPressShared", targets: ["WordPressShared"]),
-        .library(name: "WordPressNotificationsCore", targets: ["WordPressNotificationsCore"]),
+        .library(name: "FormattableContentKit", targets: ["FormattableContentKit"]),
         .library(name: "WordPressUI", targets: ["WordPressUI"]),
         .library(name: "WordPressReader", targets: ["WordPressReader"]),
     ],
@@ -71,7 +71,7 @@ let package = Package(
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
         .target(name: "JetpackStatsWidgetsCore", swiftSettings: [.swiftLanguageMode(.v5)]),
-        .target(name: "WordPressNotificationsCore", dependencies: ["WordPressShared"]),
+        .target(name: "FormattableContentKit", dependencies: ["WordPressShared"]),
         // SFHFKeychainUtils is an old Objective-C keychain wrapper.
         // The implementatoin predates ARC, hence the dedicated target with ARC disabled, for the time being.
         .target(
@@ -202,7 +202,7 @@ enum XcodeSupport {
                 "SFHFKeychainUtils",
                 "WordPressData",
                 "WordPressFlux",
-                "WordPressNotificationsCore",
+                "FormattableContentKit",
                 "WordPressShared",
                 "WordPressReader",
                 "AsyncImageKit",
@@ -253,7 +253,7 @@ enum XcodeSupport {
                 "SFHFKeychainUtils",
                 "WordPressShared",
                 "BuildSettingsKit",
-                "WordPressNotificationsCore",
+                "FormattableContentKit",
             ]),
             .xcodeTarget("XcodeTarget_StatsWidget", dependencies: [
                 "BuildSettingsKit",

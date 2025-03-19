@@ -1,5 +1,5 @@
 import UIKit
-import WordPressNotificationsCore
+import FormattableContentKit
 
 protocol WizardStep {
     static var identifier: Identifier { get }

@@ -1,4 +1,4 @@
-import WordPressNotificationsCore
+import FormattableContentKit
 
 struct ActivityContentRouter: ContentRouter {
     private let coordinator: ContentCoordinator

@@ -7,4 +7,4 @@
 //
 
 import Foundation
-import WordPressNotificationsCore
+import FormattableContentKit

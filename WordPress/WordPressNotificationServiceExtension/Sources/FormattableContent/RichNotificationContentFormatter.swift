@@ -1,6 +1,6 @@
 import Foundation
 import WordPressKit
-import WordPressNotificationsCore
+import FormattableContentKit
 
 // MARK: - RichNotificationContentFormatter
 

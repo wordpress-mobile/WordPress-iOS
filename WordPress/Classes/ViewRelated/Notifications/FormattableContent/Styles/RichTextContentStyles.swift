@@ -1,4 +1,4 @@
-import WordPressNotificationsCore
+import FormattableContentKit
 
 class RichTextContentStyles: FormattableContentStyles {
 

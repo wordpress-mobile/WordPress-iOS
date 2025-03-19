@@ -1,4 +1,4 @@
-import WordPressNotificationsCore
+import FormattableContentKit
 
 class BodyContentGroup: FormattableContentGroup {
     class func create(from body: [[String: AnyObject]], parent: Notification) -> [FormattableContentGroup] {

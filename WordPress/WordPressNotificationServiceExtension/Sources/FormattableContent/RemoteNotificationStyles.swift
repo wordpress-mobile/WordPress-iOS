@@ -1,6 +1,6 @@
 import Foundation
 import WordPressShared
-import WordPressNotificationsCore
+import FormattableContentKit
 
 // MARK: - RemoteNotificationStyles
 

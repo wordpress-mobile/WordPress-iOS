@@ -1,4 +1,4 @@
-import WordPressNotificationsCore
+import FormattableContentKit
 
 /// Encapsulates logic to Edit a comment
 class EditComment: DefaultNotificationActionCommand {

@@ -1,5 +1,5 @@
 
-import WordPressNotificationsCore
+import FormattableContentKit
 
 class FooterContentGroup: FormattableContentGroup {
     convenience init(blocks: [FormattableContent]) {

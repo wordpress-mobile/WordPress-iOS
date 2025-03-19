@@ -1,7 +1,7 @@
 import Foundation
 import CoreData
 import WordPressKit
-import WordPressNotificationsCore
+import FormattableContentKit
 
 // MARK: - Notification Entity
 //

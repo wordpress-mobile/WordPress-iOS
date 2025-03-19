@@ -1,4 +1,4 @@
-import WordPressNotificationsCore
+import FormattableContentKit
 
 /// Encapsulates logic to Like a comment
 class LikeComment: DefaultNotificationActionCommand {
