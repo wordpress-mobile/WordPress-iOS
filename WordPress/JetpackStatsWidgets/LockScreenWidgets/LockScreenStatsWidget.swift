@@ -1,10 +1,10 @@
 import WidgetKit
-import BuildSettingsKit
 import SwiftUI
 import JetpackStatsWidgetsCore
+import TracksMini
 
 struct LockScreenStatsWidget<T: LockScreenStatsWidgetConfig>: Widget {
-    private let tracks = Tracks(appGroupName: BuildSettings.current.appGroupName)
+    private let tracks = Tracks()
     private let config: T
 
     init(config: T) {
