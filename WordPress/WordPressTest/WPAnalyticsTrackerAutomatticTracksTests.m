@@ -25,7 +25,7 @@
 - (void)setUp {
     [super setUp];
 
-    self.subject = [[WPAnalyticsTrackerAutomatticTracks alloc] init];
+    self.subject = [[WPAnalyticsTrackerAutomatticTracks alloc] initWithEventNamePrefix:@"xctest" platform:@"xctest"];
     self.serviceMock = OCMStrictClassMock([TracksService class]);
     self.subject.tracksService = self.serviceMock;
     self.subject.contextManager = nil;

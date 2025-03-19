@@ -1,5 +1,5 @@
-
 import Foundation
+import WordPressShared
 
 protocol TemplatePreviewViewDelegate: AnyObject {
     typealias PreviewDevice = PreviewDeviceSelectionViewController.PreviewDevice

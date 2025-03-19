@@ -1,5 +1,6 @@
 import UIKit
 import OSLog
+import BuildSettingsKit
 
 open class Tracks {
     // MARK: - Public Properties
@@ -13,14 +14,18 @@ open class Tracks {
     fileprivate static let version = "1.0"
     fileprivate static let userAgent = "Nosara Extensions Client for iOS Mark " + version
 
+    private let eventNamePrefix: String
+
     // MARK: - Initializers
-    init(appGroupName: String) {
+    init(appGroupName: String,
+         eventNamePrefix: String = BuildSettings.current.eventNamePrefix) {
         uploader = Uploader(appGroupName: appGroupName)
+        self.eventNamePrefix = eventNamePrefix
     }
 
     // MARK: - Public Methods
     open func track(_ eventName: String, properties: [String: Any]? = nil) {
-        let prefixedEventName = "\(TracksConfiguration.eventNamePrefix)_\(eventName)"
+        let prefixedEventName = "\(eventNamePrefix)_\(eventName)"
         let payload = payloadWithEventName(prefixedEventName, properties: properties)
         uploader.send(payload)
 

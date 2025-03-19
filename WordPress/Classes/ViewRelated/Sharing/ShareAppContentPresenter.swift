@@ -1,3 +1,5 @@
+import WordPressShared
+
 /// Encapsulates the logic required to fetch, prepare, and present the contents for sharing the app to others.
 ///
 /// The contents for sharing is first fetched from the API, so the share presentation logic is not synchronously executed.

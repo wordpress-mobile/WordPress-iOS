@@ -1,6 +1,6 @@
-
 import Foundation
 import WordPressKit
+import WordPressShared
 
 /// Abstracts the service to obtain site types
 typealias SiteSegmentsServiceCompletion = (SiteSegmentsResult) -> Void

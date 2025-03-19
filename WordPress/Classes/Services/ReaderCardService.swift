@@ -1,5 +1,6 @@
 import Foundation
 import WordPressKit
+import WordPressShared
 
 protocol ReaderCardServiceRemote {
     func fetchStreamCards(stream: ReaderStream,

@@ -2,6 +2,7 @@ import UIKit
 import CoreData
 import Gutenberg
 import WordPressKit
+import WordPressShared
 
 class PageLayoutService {
     private struct Parameters {

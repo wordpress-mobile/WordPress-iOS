@@ -1,6 +1,7 @@
 import Foundation
 import WordPressFlux
 import WordPressKit
+import WordPressShared
 
 enum PluginAction: Action {
     case activate(id: String, site: JetpackSiteRef)
