@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 /// The purpose of this service is to encapsulate the Restful API that performs Mobile 2FA
 /// Code Verification.

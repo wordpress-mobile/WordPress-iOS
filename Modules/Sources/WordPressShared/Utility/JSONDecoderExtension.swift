@@ -1,6 +1,6 @@
 import Foundation
 
-extension JSONDecoder.DateDecodingStrategy {
+public extension JSONDecoder.DateDecodingStrategy {
     static var supportMultipleDateFormats: JSONDecoder.DateDecodingStrategy {
         return JSONDecoder.DateDecodingStrategy.custom({ (decoder) -> Date in
             let container = try decoder.singleValueContainer()

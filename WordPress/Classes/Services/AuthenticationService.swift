@@ -1,5 +1,6 @@
 import AutomatticTracks
 import Foundation
+import WordPressShared
 
 class AuthenticationService {
 

@@ -199,8 +199,9 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
         if let newSite = Blog.lastUsedOrFirst(in: ContextManager.shared.mainContext) {
             self.sidebarViewModel.selection = .blog(TaggedManagedObjectID(newSite))
-        } else {
+        } else if AccountHelper.isDotcomAvailable() {
             self.sidebarViewModel.selection = .welcome
+        } else {
             WordPressAppDelegate.shared?.windowManager.showSignInUI()
         }
     }

@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 typealias ReaderSiteSearchSuccessBlock = (_ feeds: [ReaderFeed], _ hasMore: Bool, _ feedCount: Int) -> Void
 typealias ReaderSiteSearchFailureBlock = (_ error: Error?) -> Void

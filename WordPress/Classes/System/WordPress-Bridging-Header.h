@@ -76,10 +76,8 @@
 #import "WPStyleGuide+Pages.h"
 #import "WPStyleGuide+WebView.h"
 #import "WPTableViewHandler.h"
-#import "WPUserAgent.h"
 #import "WPWebViewController.h"
 #import "WPTabBarController.h"
-#import "WPUserAgent.h"
 #import "WPLogger.h"
 #import "WPException.h"
 

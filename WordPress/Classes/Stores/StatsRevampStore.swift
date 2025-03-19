@@ -1,5 +1,6 @@
 import Foundation
 import WordPressFlux
+import WordPressShared
 
 /// StatsRevampStore is created to support use cases in Stats that can combine
 /// different periods and endpoints.

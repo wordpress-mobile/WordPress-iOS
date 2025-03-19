@@ -8,6 +8,10 @@
 	<string>${WP_APP_KEYCHAIN_ACCESS_GROUP}</string>
 	<key>WPPushNotificationAppID</key>
 	<string>${WP_PUSH_NOTIFICATION_APP_ID}</string>
+	<key>WPEventNamePrefix</key>
+	<string>jpios</string>
+	<key>WPExplatPlatform</key>
+	<string>wpios</string>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>org.wordpress.bgtask.weeklyroundup</string>
