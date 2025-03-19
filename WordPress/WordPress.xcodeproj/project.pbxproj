@@ -119,13 +119,6 @@
 		019C5B972BD6A49900A69DB0 /* StatsSubscribersViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019C5B962BD6A49900A69DB0 /* StatsSubscribersViewModelTests.swift */; };
 		019D699E2A5EA963003B676D /* RootViewCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D699D2A5EA963003B676D /* RootViewCoordinatorTests.swift */; };
 		01B7590E2B3EEEA400179AE6 /* SiteDomainsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B7590D2B3EEEA400179AE6 /* SiteDomainsViewModelTests.swift */; };
-		01CE5007290A889F00A9C2E0 /* TracksConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CE5006290A889F00A9C2E0 /* TracksConfiguration.swift */; };
-		01CE5008290A88BD00A9C2E0 /* TracksConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CE5006290A889F00A9C2E0 /* TracksConfiguration.swift */; };
-		01CE500E290A88C100A9C2E0 /* TracksConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CE5006290A889F00A9C2E0 /* TracksConfiguration.swift */; };
-		01CE5012290A890B00A9C2E0 /* TracksConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CE5010290A890300A9C2E0 /* TracksConfiguration.swift */; };
-		01CE5013290A890E00A9C2E0 /* TracksConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CE5010290A890300A9C2E0 /* TracksConfiguration.swift */; };
-		01CE5014290A890E00A9C2E0 /* TracksConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CE5010290A890300A9C2E0 /* TracksConfiguration.swift */; };
-		01CE5015290A890F00A9C2E0 /* TracksConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CE5010290A890300A9C2E0 /* TracksConfiguration.swift */; };
 		01D2FF5F2AA733690038E040 /* LockScreenFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D2FF5D2AA733690038E040 /* LockScreenFieldView.swift */; };
 		01D2FF622AA77C5F0038E040 /* LockScreenAllTimeViewsStatWidgetConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D2FF602AA77C5F0038E040 /* LockScreenAllTimeViewsStatWidgetConfig.swift */; };
 		01D2FF652AA77F790038E040 /* LockScreenTodayViewsVisitorsStatWidgetConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D2FF632AA77F790038E040 /* LockScreenTodayViewsVisitorsStatWidgetConfig.swift */; };
@@ -1872,8 +1865,6 @@
 		019C5B962BD6A49900A69DB0 /* StatsSubscribersViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsSubscribersViewModelTests.swift; sourceTree = "<group>"; };
 		019D699D2A5EA963003B676D /* RootViewCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewCoordinatorTests.swift; sourceTree = "<group>"; };
 		01B7590D2B3EEEA400179AE6 /* SiteDomainsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteDomainsViewModelTests.swift; sourceTree = "<group>"; };
-		01CE5006290A889F00A9C2E0 /* TracksConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksConfiguration.swift; sourceTree = "<group>"; };
-		01CE5010290A890300A9C2E0 /* TracksConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksConfiguration.swift; sourceTree = "<group>"; };
 		01D2FF5D2AA733690038E040 /* LockScreenFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenFieldView.swift; sourceTree = "<group>"; };
 		01D2FF602AA77C5F0038E040 /* LockScreenAllTimeViewsStatWidgetConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenAllTimeViewsStatWidgetConfig.swift; sourceTree = "<group>"; };
 		01D2FF632AA77F790038E040 /* LockScreenTodayViewsVisitorsStatWidgetConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenTodayViewsVisitorsStatWidgetConfig.swift; sourceTree = "<group>"; };
@@ -5946,7 +5937,6 @@
 			children = (
 				B5FA22821C99F6180016CA7C /* Tracks.swift */,
 				B504F5F41C9C2BD000F8B1C6 /* Tracks+ShareExtension.swift */,
-				01CE5006290A889F00A9C2E0 /* TracksConfiguration.swift */,
 			);
 			name = Tracks;
 			sourceTree = "<group>";
@@ -7098,7 +7088,6 @@
 				FAADE3F02615996E00BF29FE /* AppConstants.swift */,
 				C7F7BDBC26262A1B00CE547F /* AppDependency.swift */,
 				0107E15C28FFE99300DE87DB /* WidgetConfiguration.swift */,
-				01CE5010290A890300A9C2E0 /* TracksConfiguration.swift */,
 				800035C229230A0B007D2D26 /* ExtensionConfiguration.swift */,
 			);
 			name = "App Configuration";
@@ -8673,7 +8662,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C9B4778729C85949008CBF49 /* LockScreenStatsWidgetEntry.swift in Sources */,
-				01CE5012290A890B00A9C2E0 /* TracksConfiguration.swift in Sources */,
 				C9C21D7C29BED18C009F68E5 /* LockScreenStatsWidgetsView.swift in Sources */,
 				C9FE382F29C204E700D39841 /* LockScreenSingleStatViewModel.swift in Sources */,
 				0107E0B528F97D5000DE87DB /* StatsWidgetEntry.swift in Sources */,
@@ -8982,7 +8970,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				7335AC6021220D550012EF2D /* RemoteNotificationActionParser.swift in Sources */,
-				01CE500E290A88C100A9C2E0 /* TracksConfiguration.swift in Sources */,
 				73F6DD42212BA54700CE447D /* RichNotificationContentFormatter.swift in Sources */,
 				7396FE66210F730600496D0D /* NotificationService.swift in Sources */,
 				73E40D8921238BF50012ABA6 /* Tracks.swift in Sources */,
@@ -9019,7 +9006,6 @@
 				CBF6201426E8FB8A0061A1F8 /* RemotePost+ShareData.swift in Sources */,
 				CE39E17320CB117B00CABA05 /* RemoteBlog+Capabilities.swift in Sources */,
 				74021A0F202E1370006CC39F /* ExtensionTransitioningManager.swift in Sources */,
-				01CE5008290A88BD00A9C2E0 /* TracksConfiguration.swift in Sources */,
 				741AF3A5202F3E2A00C771A5 /* Tracks+DraftAction.swift in Sources */,
 				74021A0B202E1330006CC39F /* WPStyleGuide+Share.swift in Sources */,
 				74021A16202E139A006CC39F /* ShareData.swift in Sources */,
@@ -9062,7 +9048,6 @@
 				809620F828E540D700940A5D /* CategoryTree.swift in Sources */,
 				809620F928E540D700940A5D /* ExtensionPresentationController.swift in Sources */,
 				8031F346292FF46100E8F95E /* ExtensionConfiguration.swift in Sources */,
-				01CE5015290A890F00A9C2E0 /* TracksConfiguration.swift in Sources */,
 				809620FB28E540D700940A5D /* RemoteBlog+Capabilities.swift in Sources */,
 				809620FC28E540D700940A5D /* ShareModularViewController.swift in Sources */,
 				809620FD28E540D700940A5D /* NSExtensionContext+Extensions.swift in Sources */,
@@ -9106,7 +9091,6 @@
 				8096215928E55C9400940A5D /* RemoteBlog+Capabilities.swift in Sources */,
 				8096215A28E55C9400940A5D /* ExtensionTransitioningManager.swift in Sources */,
 				8031F347292FF46200E8F95E /* ExtensionConfiguration.swift in Sources */,
-				01CE5014290A890E00A9C2E0 /* TracksConfiguration.swift in Sources */,
 				8096215C28E55C9400940A5D /* Tracks+DraftAction.swift in Sources */,
 				8096215E28E55C9400940A5D /* WPStyleGuide+Share.swift in Sources */,
 				8096216128E55C9400940A5D /* ShareData.swift in Sources */,
@@ -9130,7 +9114,6 @@
 				8031F348292FF46400E8F95E /* ExtensionConfiguration.swift in Sources */,
 				80F6D02328EE866A00953C1A /* RemoteNotificationActionParser.swift in Sources */,
 				0107E11428FD7FE300DE87DB /* AppConfiguration.swift in Sources */,
-				01CE5013290A890E00A9C2E0 /* TracksConfiguration.swift in Sources */,
 				80F6D03828EE866A00953C1A /* RichNotificationContentFormatter.swift in Sources */,
 				80F6D03C28EE866A00953C1A /* NotificationService.swift in Sources */,
 				80F6D03D28EE866A00953C1A /* Tracks.swift in Sources */,
@@ -9181,7 +9164,6 @@
 				CBF6201326E8FB520061A1F8 /* RemotePost+ShareData.swift in Sources */,
 				74448F542044BC7600BD4CDA /* CategoryTree.swift in Sources */,
 				74402F2A200528F200A1D4A2 /* ExtensionPresentationController.swift in Sources */,
-				01CE5007290A889F00A9C2E0 /* TracksConfiguration.swift in Sources */,
 				CE39E17220CB117B00CABA05 /* RemoteBlog+Capabilities.swift in Sources */,
 				BE6787F51FFF2886005D9F01 /* ShareModularViewController.swift in Sources */,
 				B5552D7E1CD101A600B26DF6 /* NSExtensionContext+Extensions.swift in Sources */,
