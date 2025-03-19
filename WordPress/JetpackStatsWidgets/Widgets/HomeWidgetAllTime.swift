@@ -1,6 +1,7 @@
 import WidgetKit
 import SwiftUI
 import JetpackStatsWidgetsCore
+import TracksMini
 
 struct HomeWidgetAllTime: Widget {
     private let tracks = Tracks()

@@ -2,6 +2,7 @@ import Foundation
 import WidgetKit
 import SwiftUI
 import JetpackStatsWidgetsCore
+import TracksMini
 
 struct HomeWidgetToday: Widget {
     private let tracks = Tracks()

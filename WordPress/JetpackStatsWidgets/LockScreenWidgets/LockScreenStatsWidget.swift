@@ -1,6 +1,7 @@
 import WidgetKit
 import SwiftUI
 import JetpackStatsWidgetsCore
+import TracksMini
 
 struct LockScreenStatsWidget<T: LockScreenStatsWidgetConfig>: Widget {
     private let tracks = Tracks()

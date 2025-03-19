@@ -1,6 +1,7 @@
 import CoreData
 import BuildSettingsKit
 import UIKit
+import TracksMini
 import WordPressKit
 import WordPressShared
 

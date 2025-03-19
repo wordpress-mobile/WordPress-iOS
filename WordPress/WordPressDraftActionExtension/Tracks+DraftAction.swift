@@ -1,4 +1,5 @@
 import Foundation
+import TracksMini
 
 /// This extension implements helper tracking methods, meant for Draft Action Extension usage.
 ///

@@ -1,6 +1,7 @@
 import WidgetKit
 import SwiftUI
 import JetpackStatsWidgetsCore
+import TracksMini
 
 struct HomeWidgetThisWeek: Widget {
     private let tracks = Tracks()
