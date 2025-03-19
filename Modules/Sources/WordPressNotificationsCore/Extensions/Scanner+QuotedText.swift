@@ -1,7 +1,7 @@
 import Foundation
 
 extension Scanner {
-    public func scanQuotedText() -> [String] {
+    func scanQuotedText() -> [String] {
         var allQuotedTextFound = [String]()
         var textRead: String?
         let quoteString = "\""
