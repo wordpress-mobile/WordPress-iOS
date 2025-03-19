@@ -55,5 +55,5 @@ public struct HomeWidgetCache<T: HomeWidgetData> {
         try FileManager.default.removeItem(at: fileURL)
     }
 
-    static var testAppGroupNamePrefix: String { "xctest" }
+    public static var testAppGroupNamePrefix: String { "xctest" }
 }
