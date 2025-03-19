@@ -1,4 +1,3 @@
-import CocoaLumberjackSwift
 import Foundation
 import WebKit
 
@@ -52,7 +51,7 @@ public class WPUserAgent: NSObject {
 
         userDefaults.register(defaults: [userAgentKey: userAgent])
 
-        DDLogVerbose("User-Agent set to \(userAgent)")
+        print("User-Agent set to \(userAgent)")
     }
 
     /// Returns a user agent string similar to (but may not exactly match) the one used in `WKWebView`.

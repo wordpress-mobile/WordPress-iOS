@@ -1,4 +1,3 @@
-import CocoaLumberjackSwift
 import WebKit
 
 @objc
@@ -10,7 +9,7 @@ public extension WKWebView {
     func userAgent() -> String {
         guard let userAgent = value(forKey: WKWebView.userAgentKey) as? String, !userAgent.isEmpty else {
             // TODO: Original implementation logged a message to Tracks/Sentry
-            DDLogError("This method for retrieveing the user agent seems to be no longer working.  We need to figure out an alternative.")
+            print("This method for retrieveing the user agent seems to be no longer working. We need to figure out an alternative.")
             return ""
         }
 

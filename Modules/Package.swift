@@ -87,8 +87,6 @@ let package = Package(
         .target(
             name: "WordPressShared",
             dependencies: [
-                // TODO: Consider removing CocoaLumberjack from this lower level framework
-                .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
                 .target(name: "SFHFKeychainUtils"),
                 .target(name: "WordPressSharedObjC"),
             ],
