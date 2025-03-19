@@ -3388,13 +3388,6 @@
 			);
 			target = 0107E0B128F97D5000DE87DB /* JetpackStatsWidgets */;
 		};
-		24CE68BA2CD3375300C7B37D /* Exceptions for "Classes" folder in "JetpackIntents" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Utility/Logging/CocoaLumberjack.swift,
-			);
-			target = 0107E13828FE9DB200DE87DB /* JetpackIntents */;
-		};
 		24CE68BB2CD3375300C7B37D /* Exceptions for "Classes" folder in "JetpackUITests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -3419,7 +3412,6 @@
 				24CE68B72CD3375300C7B37D /* Exceptions for "Classes" folder in "JetpackDraftActionExtension" target */,
 				24CE68B82CD3375300C7B37D /* Exceptions for "Classes" folder in "JetpackNotificationServiceExtension" target */,
 				24CE68B92CD3375300C7B37D /* Exceptions for "Classes" folder in "JetpackStatsWidgets" target */,
-				24CE68BA2CD3375300C7B37D /* Exceptions for "Classes" folder in "JetpackIntents" target */,
 				24CE68BB2CD3375300C7B37D /* Exceptions for "Classes" folder in "JetpackUITests" target */,
 			);
 			path = Classes;
