@@ -319,32 +319,11 @@ platform :ios do
   # Helper Functions
   #################################################
 
-
-  # Generates a build number for Prototype Builds, based on the PR number and short commit SHA1
-  #
-  # @note This function uses Buildkite-specific ENV vars
-  #
-  def generate_prototype_build_number
-    if ENV['BUILDKITE']
-      commit = ENV.fetch('BUILDKITE_COMMIT', nil)[0, 7]
-      branch = ENV.fetch('BUILDKITE_BRANCH', nil)
-      pr_num = ENV.fetch('BUILDKITE_PULL_REQUEST', nil)
-
-      pr_num == 'false' ? "#{branch}-#{commit}" : "pr#{pr_num}-#{commit}"
-    else
-      repo = Git.open(PROJECT_ROOT_FOLDER)
-      commit = repo.current_branch
-      branch = repo.revparse('HEAD')[0, 7]
-
-      "#{branch}-#{commit}"
-    end
-  end
-
   # Builds a Prototype Build for WordPress or Jetpack, then uploads it to Firebase App Distribution and comment with a link to it on the PR.
   #
   def build_and_upload_prototype_build(scheme:, output_app_name:, firebase_app_config:, sentry_project_slug:, app_identifier:)
     build_number = ENV.fetch('BUILDKITE_BUILD_NUMBER', '0')
-    pr_or_branch = ENV.fetch('BUILDKITE_PULL_REQUEST', nil)&.then { |num| "PR ##{num}" } || ENV.fetch('BUILDKITE_BRANCH', nil)
+    pr_or_branch = pull_request_number&.then { |num| "PR ##{num}" } || ENV.fetch('BUILDKITE_BRANCH', nil)
 
     # Build
     build_app(
@@ -439,7 +418,7 @@ platform :ios do
   #
   def upload_build_to_firebase_app_distribution(firebase_app_config:)
     release_notes = <<~NOTES
-      Pull Request: ##{ENV.fetch('BUILDKITE_PULL_REQUEST', 'N/A')}
+      Pull Request: ##{pull_request_number || 'N/A'}
       Branch: `#{ENV.fetch('BUILDKITE_BRANCH', 'N/A')}`
       Commit: #{ENV.fetch('BUILDKITE_COMMIT', 'N/A')[0...7]}
     NOTES
@@ -451,7 +430,7 @@ platform :ios do
       groups: firebase_app_config[:testers_group]
     )
 
-    return if ENV['BUILDKITE_PULL_REQUEST'].nil?
+    return if pull_request_number.nil?
 
     # PR Comment
     comment_body = prototype_build_details_comment(
@@ -462,7 +441,7 @@ platform :ios do
     )
     comment_on_pr(
       project: GITHUB_REPO,
-      pr_number: Integer(ENV.fetch('BUILDKITE_PULL_REQUEST', nil)),
+      pr_number: pull_request_number,
       reuse_identifier: "prototype-build-link-#{firebase_app_config[:app_id]}",
       body: comment_body
     )
