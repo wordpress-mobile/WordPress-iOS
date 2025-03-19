@@ -159,6 +159,11 @@ const NSInteger ThemeOrderTrailing = 9999;
     NSAssert([self blogSupportsThemeServices:blog],
              @"Do not call this method on unsupported blogs, check with blogSupportsThemeServices first.");
     
+    // Set search to nil if it's empty to clear search results
+    if (search.length == 0) {
+        search = nil;
+    }
+
     if (blog.wordPressComRestApi == nil) {
         return nil;
     }
@@ -167,8 +172,8 @@ const NSInteger ThemeOrderTrailing = 9999;
 
     if ([blog supports:BlogFeatureCustomThemes]) {
         return [remote getWPThemesPage:page
+                                search:search
                               freeOnly:![blog supports:BlogFeaturePremiumThemes]
-                               search:search
                                success:^(NSArray<RemoteTheme *> *remoteThemes, BOOL hasMore, NSInteger totalThemeCount) {
                                    NSArray * __block themeObjectIDs = nil;
                                    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
@@ -208,7 +213,6 @@ const NSInteger ThemeOrderTrailing = 9999;
     } else {
         return [remote getThemesForBlogId:[blog dotComID]
                                      page:page
-                                   search:search
                                   success:^(NSArray<RemoteTheme *> *remoteThemes, BOOL hasMore, NSInteger totalThemeCount) {
                                       NSArray * __block themeObjectIDs = nil;
                                       [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
