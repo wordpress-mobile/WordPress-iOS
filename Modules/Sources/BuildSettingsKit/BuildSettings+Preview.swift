@@ -6,7 +6,8 @@ extension BuildSettings {
         pushNotificationAppID: "xcpreview_push_notification_id",
         appGroupName: "xcpreview_app_group_name",
         appKeychainAccessGroup: "xcpreview_app_keychain_access_group",
-        tracksEventNamePrefix: "xcpreview"
+        eventNamePrefix: "xcpreview",
+        explatPlatform: "xcpreview"
     )
 }
 

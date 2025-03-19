@@ -1,6 +1,14 @@
 import Foundation
+import BuildSettingsKit
 
 extension WPAnalytics {
+    @objc class var eventNamePrefix: String {
+        BuildSettings.current.eventNamePrefix
+    }
+
+    @objc class var explatPlatform: String {
+        BuildSettings.current.explatPlatform
+    }
 
     /// Checks if the Domain Purchasing Feature Flag is enabled.
     private static var domainPurchasingEnabled: Bool {

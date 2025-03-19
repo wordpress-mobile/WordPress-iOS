@@ -15,7 +15,8 @@ public struct BuildSettings: Sendable {
     public var pushNotificationAppID: String
     public var appGroupName: String
     public var appKeychainAccessGroup: String
-    public var tracksEventNamePrefix: String
+    public var eventNamePrefix: String
+    public var explatPlatform: String
 
     public static var current: BuildSettings {
         switch BuildSettingsEnvironment.current {

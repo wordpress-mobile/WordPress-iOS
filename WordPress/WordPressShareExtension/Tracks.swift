@@ -18,7 +18,7 @@ open class Tracks {
 
     // MARK: - Initializers
     init(appGroupName: String,
-         eventNamePrefix: String = BuildSettings.current.tracksEventNamePrefix) {
+         eventNamePrefix: String = BuildSettings.current.eventNamePrefix) {
         uploader = Uploader(appGroupName: appGroupName)
         self.eventNamePrefix = eventNamePrefix
     }

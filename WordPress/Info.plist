@@ -8,7 +8,9 @@
 	<string>${WP_APP_KEYCHAIN_ACCESS_GROUP}</string>
 	<key>WPPushNotificationAppID</key>
 	<string>${WP_PUSH_NOTIFICATION_APP_ID}</string>
-	<key>WPTracksEventNamePrefix</key>
+	<key>WPEventNamePrefix</key>
+	<string>wpios</string>
+	<key>WPExplatPlatform</key>
 	<string>wpios</string>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
