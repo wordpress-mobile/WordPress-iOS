@@ -451,7 +451,7 @@ public protocol ThemePresenter: AnyObject {
         }
     }
 
-    fileprivate func syncThemePage(_ page: NSInteger, search: String, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
+    private func syncThemePage(_ page: NSInteger, search: String, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
         assert(page > 0)
         themesSyncingPage = page
         _ = themeService.getThemesFor(blog,
@@ -657,12 +657,12 @@ public protocol ThemePresenter: AnyObject {
 
     // MARK: - Search support
 
-    fileprivate var searchDebounceTimer: Timer?
-    fileprivate let searchDebounceInterval: TimeInterval = 0.5
-    
-    fileprivate func resetRemoteSearch() {
+    private var searchDebounceTimer: Timer?
+    private let searchDebounceInterval: TimeInterval = 0.5
+
+    private func resetRemoteSearch() {
         themesSyncingPage = 0
-        
+ 
         if blog.supports(BlogFeature.customThemes) {
             themesSyncHelper.syncContent()
         }
@@ -675,7 +675,7 @@ public protocol ThemePresenter: AnyObject {
         updateSearchName(pattern)
     }
 
-    fileprivate func updateSearchName(_ searchText: String) {
+    private func updateSearchName(_ searchText: String) {
         // Cancel any existing timer
         searchDebounceTimer?.invalidate()
 
@@ -693,7 +693,7 @@ public protocol ThemePresenter: AnyObject {
         
         // Create a new timer for debounce
         searchDebounceTimer = Timer.scheduledTimer(withTimeInterval: searchDebounceInterval, repeats: false) { [weak self] _ in
-            guard let self = self else { return }
+            guard let self else { return }
             self.searchName = searchText
 
             // Apply local search immediately
@@ -776,7 +776,7 @@ public protocol ThemePresenter: AnyObject {
     fileprivate func customThemesBrowsePredicate() -> NSPredicate? {
         let browsePredicate = browsePredicateThemesWithCustomValue(true)
 
-        // Add search predicate for custom themes (local search only)
+        // Search predicate for custom themes (local search only)
         if !searchName.isEmpty {
             let searchPredicate = NSPredicate(format: "name CONTAINS[cd] %@", searchName)
             if let existingPredicate = browsePredicate {
