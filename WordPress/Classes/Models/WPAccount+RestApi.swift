@@ -11,15 +11,8 @@ extension WPAccount {
     /// This was done in the context of https://github.com/wordpress-mobile/WordPress-iOS/pull/24165 .
     @objc var wordPressComRestApi: WordPressComRestApi? {
         get {
-            if let api = objc_getAssociatedObject(self, &apiAssociatedKey) as? WordPressComRestApi {
-                return api
-            } else {
-                if authToken.isEmpty {
-                    DispatchQueue.main.async {
-                        WordPressAuthenticationManager.showSigninForWPComFixingAuthToken()
-                    }
-                    return nil
-                } else {
+            guard let api = objc_getAssociatedObject(self, &apiAssociatedKey) as? WordPressComRestApi else {
+                guard authToken.isEmpty else {
                     let api = WordPressComRestApi.defaultApi(
                         oAuthToken: authToken,
                         userAgent: WPUserAgent.defaultUserAgent(),
@@ -48,7 +41,13 @@ extension WPAccount {
 
                     return api
                 }
+
+                DispatchQueue.main.async {
+                    WordPressAuthenticationManager.showSigninForWPComFixingAuthToken()
+                }
+                return nil
             }
+            return api
         }
         set(api) {
             objc_setAssociatedObject(self, &apiAssociatedKey, api, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
