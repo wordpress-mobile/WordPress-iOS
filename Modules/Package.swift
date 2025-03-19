@@ -12,6 +12,8 @@ let package = Package(
         .library(name: "DesignSystem", targets: ["DesignSystem"]),
         .library(name: "FormattableContentKit", targets: ["FormattableContentKit"]),
         .library(name: "JetpackStatsWidgetsCore", targets: ["JetpackStatsWidgetsCore"]),
+        .library(name: "NotificationServiceExtensionCore", targets: ["NotificationServiceExtensionCore"]),
+        .library(name: "ShareExtensionCore", targets: ["ShareExtensionCore"]),
         .library(name: "SFHFKeychainUtils", targets: ["SFHFKeychainUtils"]),
         .library(name: "WordPressData", targets: ["WordPressData"]),
         .library(name: "WordPressFlux", targets: ["WordPressFlux"]),
@@ -72,6 +74,14 @@ let package = Package(
         ),
         .target(name: "FormattableContentKit", dependencies: ["WordPressShared"]),
         .target(name: "JetpackStatsWidgetsCore", swiftSettings: [.swiftLanguageMode(.v5)]),
+        .target(
+            name: "ShareExtensionCore",
+            dependencies: ["BuildSettingsKit", "SFHFKeychainUtils"]
+        ),
+        .target(
+            name: "NotificationServiceExtensionCore",
+            dependencies: ["BuildSettingsKit"]
+        ),
         // SFHFKeychainUtils is an old Objective-C keychain wrapper.
         // The implementatoin predates ARC, hence the dedicated target with ARC disabled, for the time being.
         .target(
@@ -181,6 +191,7 @@ enum XcodeSupport {
         let shareAndDraftExtensionsDependencies: [Target.Dependency] = [
             "BuildSettingsKit",
             "SFHFKeychainUtils",
+            "ShareExtensionCore",
             "WordPressShared",
             "WordPressUI",
             "TextBundle",
@@ -206,7 +217,9 @@ enum XcodeSupport {
                 "BuildSettingsKit",
                 "FormattableContentKit",
                 "JetpackStatsWidgetsCore",
+                "NotificationServiceExtensionCore",
                 "SFHFKeychainUtils",
+                "ShareExtensionCore",
                 "WordPressData",
                 "WordPressFlux",
                 "WordPressShared",
@@ -258,6 +271,7 @@ enum XcodeSupport {
             .xcodeTarget("XcodeTarget_NotificationServiceExtension", dependencies: [
                 "BuildSettingsKit",
                 "FormattableContentKit",
+                "NotificationServiceExtensionCore",
                 "SFHFKeychainUtils",
                 "TracksMini",
                 "WordPressShared",

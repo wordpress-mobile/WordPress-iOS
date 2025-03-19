@@ -1,10 +1,12 @@
-import SFHFKeychainUtils
-import UserNotifications
+import UIKit
 import BuildSettingsKit
+import FormattableContentKit
+import NotificationServiceExtensionCore
+import SFHFKeychainUtils
 import TracksMini
+import UserNotifications
 import WordPressKit
 import WordPressShared
-import FormattableContentKit
 
 // MARK: - NotificationService
 
@@ -24,6 +26,10 @@ class NotificationService: UNNotificationServiceExtension {
 
     /// The service used to retrieve remote notifications
     private var notificationService: NotificationSyncServiceRemote?
+
+    private let configuration = BuildSettings.current.notificationServiceExtensionConfiguration
+
+    private let appKeychainAccessGroup = BuildSettings.current.appKeychainAccessGroup
 
     // MARK: UNNotificationServiceExtension
 
@@ -281,9 +287,11 @@ private extension NotificationService {
     /// - Returns: the token if found; `nil` otherwise
     ///
     func readExtensionToken() -> String? {
-        guard let oauthToken = try? SFHFKeychainUtils.getPasswordForUsername(AppConfiguration.Extension.NotificationsService.keychainTokenKey,
-                                                                             andServiceName: AppConfiguration.Extension.NotificationsService.keychainServiceName,
-                                                                             accessGroup: BuildSettings.current.appKeychainAccessGroup) else {
+        guard let oauthToken = try? SFHFKeychainUtils.getPasswordForUsername(
+            configuration.keychainTokenKey,
+            andServiceName: configuration.keychainServiceName,
+            accessGroup: appKeychainAccessGroup
+        ) else {
             debugPrint("Unable to retrieve Notification Service Extension OAuth token")
             return nil
         }
@@ -296,9 +304,11 @@ private extension NotificationService {
     /// - Returns: the username if found; `nil` otherwise
     ///
     func readExtensionUsername() -> String? {
-        guard let username = try? SFHFKeychainUtils.getPasswordForUsername(AppConfiguration.Extension.NotificationsService.keychainUsernameKey,
-                                                                           andServiceName: AppConfiguration.Extension.NotificationsService.keychainServiceName,
-                                                                           accessGroup: BuildSettings.current.appKeychainAccessGroup) else {
+        guard let username = try? SFHFKeychainUtils.getPasswordForUsername(
+            configuration.keychainUsernameKey,
+            andServiceName: configuration.keychainServiceName,
+            accessGroup: appKeychainAccessGroup
+        ) else {
             debugPrint("Unable to retrieve Notification Service Extension username")
             return nil
         }
@@ -311,9 +321,11 @@ private extension NotificationService {
     /// - Returns: the userID if found; `nil` otherwise
     ///
     func readExtensionUserID() -> String? {
-        guard let userID = try? SFHFKeychainUtils.getPasswordForUsername(AppConfiguration.Extension.NotificationsService.keychainUserIDKey,
-                                                                         andServiceName: AppConfiguration.Extension.NotificationsService.keychainServiceName,
-                                                                         accessGroup: BuildSettings.current.appKeychainAccessGroup) else {
+        guard let userID = try? SFHFKeychainUtils.getPasswordForUsername(
+            configuration.keychainUserIDKey,
+            andServiceName: configuration.keychainServiceName,
+            accessGroup: appKeychainAccessGroup
+        ) else {
             debugPrint("Unable to retrieve Notification Service Extension userID")
             return nil
         }

@@ -1,4 +1,6 @@
 import UIKit
+import BuildSettingsKit
+import ShareExtensionCore
 import TracksMini
 import WordPressShared
 import WordPressUI

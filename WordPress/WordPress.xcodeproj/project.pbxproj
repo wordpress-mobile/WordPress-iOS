@@ -779,7 +779,6 @@
 		7EAA66EF22CB36FD00869038 /* TestAnalyticsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA66EE22CB36FD00869038 /* TestAnalyticsTracker.swift */; };
 		7EC9FE0B22C627DB00C5A888 /* PostEditorAnalyticsSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC9FE0A22C627DB00C5A888 /* PostEditorAnalyticsSessionTests.swift */; };
 		7EF2EEA0210A67B60007A76B /* notifications-unapproved-comment.json in Resources */ = {isa = PBXBuildFile; fileRef = 7EF2EE9F210A67B60007A76B /* notifications-unapproved-comment.json */; };
-		800035C329230A0B007D2D26 /* ExtensionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800035C229230A0B007D2D26 /* ExtensionConfiguration.swift */; };
 		801D950D291AB3CF0051993E /* JetpackReaderLogoAnimation_ltr.json in Resources */ = {isa = PBXBuildFile; fileRef = 801D9507291AB3CD0051993E /* JetpackReaderLogoAnimation_ltr.json */; };
 		801D950F291AB3CF0051993E /* JetpackReaderLogoAnimation_rtl.json in Resources */ = {isa = PBXBuildFile; fileRef = 801D9508291AB3CD0051993E /* JetpackReaderLogoAnimation_rtl.json */; };
 		801D9511291AB3CF0051993E /* JetpackStatsLogoAnimation_ltr.json in Resources */ = {isa = PBXBuildFile; fileRef = 801D9509291AB3CE0051993E /* JetpackStatsLogoAnimation_ltr.json */; };
@@ -787,9 +786,6 @@
 		801D9515291AB3CF0051993E /* JetpackNotificationsLogoAnimation_rtl.json in Resources */ = {isa = PBXBuildFile; fileRef = 801D950B291AB3CE0051993E /* JetpackNotificationsLogoAnimation_rtl.json */; };
 		801D9517291AB3CF0051993E /* JetpackNotificationsLogoAnimation_ltr.json in Resources */ = {isa = PBXBuildFile; fileRef = 801D950C291AB3CF0051993E /* JetpackNotificationsLogoAnimation_ltr.json */; };
 		801D951D291ADB7E0051993E /* OverlayFrequencyTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801D951C291ADB7E0051993E /* OverlayFrequencyTrackerTests.swift */; };
-		8031F346292FF46100E8F95E /* ExtensionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800035C229230A0B007D2D26 /* ExtensionConfiguration.swift */; };
-		8031F347292FF46200E8F95E /* ExtensionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800035C229230A0B007D2D26 /* ExtensionConfiguration.swift */; };
-		8031F348292FF46400E8F95E /* ExtensionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800035C229230A0B007D2D26 /* ExtensionConfiguration.swift */; };
 		80379C6E2A5C0D8F00D924AC /* PostTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80379C6D2A5C0D8F00D924AC /* PostTests.swift */; };
 		80379C6F2A5C0D8F00D924AC /* PostTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80379C6D2A5C0D8F00D924AC /* PostTests.swift */; };
 		803BB99429667CF700B3F6D6 /* JetpackBrandingTextProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803BB99329667CF700B3F6D6 /* JetpackBrandingTextProviderTests.swift */; };
@@ -2548,7 +2544,6 @@
 		7EAA66EE22CB36FD00869038 /* TestAnalyticsTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAnalyticsTracker.swift; sourceTree = "<group>"; };
 		7EC9FE0A22C627DB00C5A888 /* PostEditorAnalyticsSessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostEditorAnalyticsSessionTests.swift; sourceTree = "<group>"; };
 		7EF2EE9F210A67B60007A76B /* notifications-unapproved-comment.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "notifications-unapproved-comment.json"; sourceTree = "<group>"; };
-		800035C229230A0B007D2D26 /* ExtensionConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionConfiguration.swift; sourceTree = "<group>"; };
 		801D9507291AB3CD0051993E /* JetpackReaderLogoAnimation_ltr.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = JetpackReaderLogoAnimation_ltr.json; sourceTree = "<group>"; };
 		801D9508291AB3CD0051993E /* JetpackReaderLogoAnimation_rtl.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = JetpackReaderLogoAnimation_rtl.json; sourceTree = "<group>"; };
 		801D9509291AB3CE0051993E /* JetpackStatsLogoAnimation_ltr.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = JetpackStatsLogoAnimation_ltr.json; sourceTree = "<group>"; };
@@ -3203,10 +3198,8 @@
 				"Extensions/NSAttributedStringKey+Conversion.swift",
 				"Extensions/String+RegEx.swift",
 				"Extensions/UIApplication+mainWindow.swift",
-				Services/ShareExtensionService.swift,
 				"Utility/App Configuration/AppConfiguration.swift",
 				"Utility/App Configuration/AppStyleGuide.swift",
-				"Utility/App Configuration/ExtensionConfiguration.swift",
 				Utility/BuildInformation/BuildConfiguration.swift,
 				Utility/Logging/CocoaLumberjack.swift,
 				ViewRelated/Aztec/Extensions/FormatBarItemProviders.swift,
@@ -3227,10 +3220,8 @@
 				"Extensions/NSAttributedStringKey+Conversion.swift",
 				"Extensions/String+RegEx.swift",
 				"Extensions/UIApplication+mainWindow.swift",
-				Services/ShareExtensionService.swift,
 				"Utility/App Configuration/AppConfiguration.swift",
 				"Utility/App Configuration/AppStyleGuide.swift",
-				"Utility/App Configuration/ExtensionConfiguration.swift",
 				Utility/BuildInformation/BuildConfiguration.swift,
 				Utility/Logging/CocoaLumberjack.swift,
 				ViewRelated/Aztec/Extensions/FormatBarItemProviders.swift,
@@ -3249,7 +3240,6 @@
 			membershipExceptions = (
 				"Extensions/UIImage+Extensions.swift",
 				"Utility/App Configuration/AppConfiguration.swift",
-				"Utility/App Configuration/ExtensionConfiguration.swift",
 				Utility/BuildInformation/BuildConfiguration.swift,
 			);
 			target = 7358E6B7210BD318002323EB /* WordPressNotificationServiceExtension */;
@@ -3274,7 +3264,6 @@
 				"Utility/App Configuration/AppConfiguration.swift",
 				"Utility/App Configuration/AppConstants.swift",
 				"Utility/App Configuration/AppDependency.swift",
-				"Utility/App Configuration/ExtensionConfiguration.swift",
 			);
 			target = FABB1F8F2602FC2C00C8785C /* Jetpack */;
 		};
@@ -3285,7 +3274,6 @@
 				"Extensions/NSAttributedStringKey+Conversion.swift",
 				"Extensions/String+RegEx.swift",
 				"Extensions/UIApplication+mainWindow.swift",
-				Services/ShareExtensionService.swift,
 				"Utility/App Configuration/AppStyleGuide.swift",
 				Utility/BuildInformation/BuildConfiguration.swift,
 				Utility/Logging/CocoaLumberjack.swift,
@@ -3307,7 +3295,6 @@
 				"Extensions/NSAttributedStringKey+Conversion.swift",
 				"Extensions/String+RegEx.swift",
 				"Extensions/UIApplication+mainWindow.swift",
-				Services/ShareExtensionService.swift,
 				"Utility/App Configuration/AppStyleGuide.swift",
 				Utility/BuildInformation/BuildConfiguration.swift,
 				Utility/Logging/CocoaLumberjack.swift,
@@ -6979,7 +6966,6 @@
 				FA25FA332609AAAA0005E08F /* AppConfiguration.swift */,
 				FAADE3F02615996E00BF29FE /* AppConstants.swift */,
 				C7F7BDBC26262A1B00CE547F /* AppDependency.swift */,
-				800035C229230A0B007D2D26 /* ExtensionConfiguration.swift */,
 			);
 			name = "App Configuration";
 			sourceTree = "<group>";
@@ -8926,7 +8912,6 @@
 				809620F628E540D700940A5D /* RemotePost+ShareData.swift in Sources */,
 				809620F828E540D700940A5D /* CategoryTree.swift in Sources */,
 				809620F928E540D700940A5D /* ExtensionPresentationController.swift in Sources */,
-				8031F346292FF46100E8F95E /* ExtensionConfiguration.swift in Sources */,
 				809620FB28E540D700940A5D /* RemoteBlog+Capabilities.swift in Sources */,
 				809620FC28E540D700940A5D /* ShareModularViewController.swift in Sources */,
 				809620FD28E540D700940A5D /* NSExtensionContext+Extensions.swift in Sources */,
@@ -8968,7 +8953,6 @@
 				8096215728E55C9400940A5D /* RemotePost+ShareData.swift in Sources */,
 				8096215928E55C9400940A5D /* RemoteBlog+Capabilities.swift in Sources */,
 				8096215A28E55C9400940A5D /* ExtensionTransitioningManager.swift in Sources */,
-				8031F347292FF46200E8F95E /* ExtensionConfiguration.swift in Sources */,
 				8096215C28E55C9400940A5D /* Tracks+DraftAction.swift in Sources */,
 				8096215E28E55C9400940A5D /* WPStyleGuide+Share.swift in Sources */,
 				8096216128E55C9400940A5D /* ShareData.swift in Sources */,
@@ -8988,7 +8972,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8031F348292FF46400E8F95E /* ExtensionConfiguration.swift in Sources */,
 				80F6D02328EE866A00953C1A /* RemoteNotificationActionParser.swift in Sources */,
 				0107E11428FD7FE300DE87DB /* AppConfiguration.swift in Sources */,
 				80F6D03828EE866A00953C1A /* RichNotificationContentFormatter.swift in Sources */,
@@ -9488,7 +9471,6 @@
 				3FFDEF7829177D7500B625CE /* MigrationNotificationsViewModel.swift in Sources */,
 				FED65D79293511E4008071BF /* SharedDataIssueSolver.swift in Sources */,
 				8332DD2529259AE300802F7D /* DataMigrator.swift in Sources */,
-				800035C329230A0B007D2D26 /* ExtensionConfiguration.swift in Sources */,
 				3FFDEF8A2918597700B625CE /* MigrationDoneViewController.swift in Sources */,
 				F4D829622930E9F300038726 /* MigrationDeleteWordPressViewController.swift in Sources */,
 				3FFDEF852918215700B625CE /* MigrationStepView.swift in Sources */,

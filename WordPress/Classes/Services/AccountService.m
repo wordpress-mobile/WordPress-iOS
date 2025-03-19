@@ -6,6 +6,7 @@
 
 @import WordPressKit;
 @import WordPressShared;
+@import ShareExtensionCore;
 #import "WordPress-Swift.h"
 
 static NSString * const DefaultDotcomAccountUUIDDefaultsKey = @"AccountDefaultDotcomUUID";

@@ -3,6 +3,7 @@ import BuildSettingsKit
 import CoreData
 import TracksMini
 import WordPressKit
+import ShareExtensionCore
 
 /// Provides site fetching and post/media uploading functionality to app extensions.
 ///

@@ -2,6 +2,7 @@ import SFHFKeychainUtils
 import UIKit
 import BuildSettingsKit
 import CocoaLumberjackSwift
+import ShareExtensionCore
 import Reachability
 import AutomatticTracks
 import AutomatticEncryptedLogs

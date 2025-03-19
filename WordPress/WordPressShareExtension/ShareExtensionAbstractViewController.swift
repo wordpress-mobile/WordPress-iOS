@@ -4,6 +4,7 @@ import UIKit
 import TracksMini
 import WordPressKit
 import WordPressShared
+import ShareExtensionCore
 
 enum OriginatingExtension: String {
     case share
