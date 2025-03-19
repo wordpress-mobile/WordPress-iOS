@@ -659,6 +659,14 @@ public protocol ThemePresenter: AnyObject {
 
     fileprivate var searchDebounceTimer: Timer?
     fileprivate let searchDebounceInterval: TimeInterval = 0.5
+    
+    fileprivate func resetRemoteSearch() {
+        themesSyncingPage = 0
+        
+        if blog.supports(BlogFeature.customThemes) {
+            themesSyncHelper.syncContent()
+        }
+    }
 
     fileprivate func beginSearchFor(_ pattern: String) {
         searchController.isActive = true
@@ -671,14 +679,18 @@ public protocol ThemePresenter: AnyObject {
         // Cancel any existing timer
         searchDebounceTimer?.invalidate()
 
-        // If search text is empty, update immediately
+        // If search text is empty, update immediately and reset remote search
         if searchText.isEmpty {
             self.searchName = searchText
             self.fetchThemes()
+            self.resetRemoteSearch()
             self.reloadThemes()
             return
         }
 
+        // Check if we have a previously longer search that is now under 3 characters
+        let previouslyHadRemoteSearch = self.searchName.count >= 3
+        
         // Create a new timer for debounce
         searchDebounceTimer = Timer.scheduledTimer(withTimeInterval: searchDebounceInterval, repeats: false) { [weak self] _ in
             guard let self = self else { return }
@@ -694,14 +706,15 @@ public protocol ThemePresenter: AnyObject {
                     // Reset to first page when searching
                     self.themesSyncingPage = 0
                     self.themesSyncHelper.syncContent()
-                } else {
-                    // Just reload with local results for shorter queries
-                    self.reloadThemes()
+                } else if previouslyHadRemoteSearch {
+                    // If we previously had 3+ characters but now have less,
+                    // we need to reset the remote search results
+                    self.resetRemoteSearch()
                 }
-            } else {
-                // For blogs without custom themes support, we already fetched locally
-                self.reloadThemes()
             }
+            
+            // Always reload with local results
+            self.reloadThemes()
         }
     }
 
@@ -723,6 +736,7 @@ public protocol ThemePresenter: AnyObject {
         hideSectionHeaders = false
         searchName = ""
         searchController.searchBar.text = ""
+        resetRemoteSearch()
     }
 
     open func didDismissSearchController(_ searchController: UISearchController) {
