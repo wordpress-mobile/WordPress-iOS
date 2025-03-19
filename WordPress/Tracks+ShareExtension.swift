@@ -1,4 +1,5 @@
 import Foundation
+import TracksMini
 
 /// This extension implements helper tracking methods, meant for Share Extension Usage.
 ///

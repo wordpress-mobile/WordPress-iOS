@@ -1,10 +1,10 @@
 import WidgetKit
 import SwiftUI
-import BuildSettingsKit
 import JetpackStatsWidgetsCore
+import TracksMini
 
 struct HomeWidgetAllTime: Widget {
-    private let tracks = Tracks(appGroupName: BuildSettings.current.appGroupName)
+    private let tracks = Tracks()
 
     private let placeholderContent = HomeWidgetAllTimeData(
         siteID: 0,

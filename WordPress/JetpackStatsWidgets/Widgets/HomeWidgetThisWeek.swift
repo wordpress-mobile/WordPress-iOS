@@ -1,10 +1,10 @@
 import WidgetKit
 import SwiftUI
-import BuildSettingsKit
 import JetpackStatsWidgetsCore
+import TracksMini
 
 struct HomeWidgetThisWeek: Widget {
-    private let tracks = Tracks(appGroupName: BuildSettings.current.appGroupName)
+    private let tracks = Tracks()
 
     static let secondsPerDay = 86400.0
 

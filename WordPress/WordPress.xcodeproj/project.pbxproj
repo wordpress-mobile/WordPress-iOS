@@ -76,7 +76,6 @@
 		0107E0D728F97D5000DE87DB /* Sites.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 3F46AB0225BF5D6300CE2E98 /* Sites.intentdefinition */; };
 		0107E0D828F97D5000DE87DB /* LocalizableStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE77C8225B0CA89007DE9E5 /* LocalizableStrings.swift */; };
 		0107E0DA28F97D5000DE87DB /* ListViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE20C3625CF211F00A15525 /* ListViewData.swift */; };
-		0107E0DC28F97D5000DE87DB /* Tracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FA22821C99F6180016CA7C /* Tracks.swift */; };
 		0107E0DE28F97D5000DE87DB /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F526C4F2538CF2A0069706C /* SwiftUI.framework */; };
 		0107E0DF28F97D5000DE87DB /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F526C4D2538CF2A0069706C /* WidgetKit.framework */; };
 		0107E0E228F97D5000DE87DB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F526C552538CF2B0069706C /* Assets.xcassets */; };
@@ -675,7 +674,6 @@
 		7396FE66210F730600496D0D /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7396FE65210F730600496D0D /* NotificationService.swift */; };
 		73B6693A21CAD960008456C3 /* ErrorStateViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B6693921CAD960008456C3 /* ErrorStateViewTests.swift */; };
 		73C8F06621BEF76B00DDDF7E /* SiteAssemblyViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73C8F06521BEF76B00DDDF7E /* SiteAssemblyViewTests.swift */; };
-		73E40D8921238BF50012ABA6 /* Tracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FA22821C99F6180016CA7C /* Tracks.swift */; };
 		73E40D8C21238C520012ABA6 /* Tracks+ServiceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E40D8B21238C520012ABA6 /* Tracks+ServiceExtension.swift */; };
 		73EDC70A212E5D6700E5E3ED /* RemoteNotificationStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73EDC709212E5D6700E5E3ED /* RemoteNotificationStyles.swift */; };
 		73F6DD42212BA54700CE447D /* RichNotificationContentFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F6DD41212BA54700CE447D /* RichNotificationContentFormatter.swift */; };
@@ -694,7 +692,6 @@
 		74021A0B202E1330006CC39F /* WPStyleGuide+Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50248AE1C96FF6200AFBDED /* WPStyleGuide+Share.swift */; };
 		74021A0C202E1338006CC39F /* ShareExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CE41641E8D101A000CF5A4 /* ShareExtractor.swift */; };
 		74021A0D202E133D006CC39F /* ShareMediaFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7430C4481F97F23600E2673E /* ShareMediaFileManager.swift */; };
-		74021A0E202E1358006CC39F /* Tracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FA22821C99F6180016CA7C /* Tracks.swift */; };
 		74021A0F202E1370006CC39F /* ExtensionTransitioningManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74402F2B2005337D00A1D4A2 /* ExtensionTransitioningManager.swift */; };
 		74021A10202E1370006CC39F /* ExtensionPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74402F29200528F200A1D4A2 /* ExtensionPresentationController.swift */; };
 		74021A11202E1370006CC39F /* ExtensionPresentationAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74402F2D2005344700A1D4A2 /* ExtensionPresentationAnimator.swift */; };
@@ -841,7 +838,6 @@
 		8096210928E540D700940A5D /* RemotePostCategory+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74BC35B720499EEB00AC1525 /* RemotePostCategory+Extensions.swift */; };
 		8096211028E540D700940A5D /* MediaUploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AF4D6D1FE417D200E3EBFE /* MediaUploadOperation.swift */; };
 		8096211228E540D700940A5D /* ShareMediaFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7430C4481F97F23600E2673E /* ShareMediaFileManager.swift */; };
-		8096211328E540D700940A5D /* Tracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FA22821C99F6180016CA7C /* Tracks.swift */; };
 		8096211728E540D700940A5D /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 740C7C4E202F4CD6001C31B0 /* MainInterface.storyboard */; };
 		8096211828E540D700940A5D /* WordPressShare.js in Resources */ = {isa = PBXBuildFile; fileRef = E1AFA8C21E8E34230004A323 /* WordPressShare.js */; };
 		8096211928E540D700940A5D /* ShareExtension.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 74F5CD371FE0646F00764E7C /* ShareExtension.storyboard */; };
@@ -874,7 +870,6 @@
 		8096216328E55C9400940A5D /* MainShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74337EDC20054D5500777997 /* MainShareViewController.swift */; };
 		8096216628E55C9400940A5D /* ShareModularViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6787F41FFF2886005D9F01 /* ShareModularViewController.swift */; };
 		8096216728E55C9400940A5D /* MediaUploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AF4D6D1FE417D200E3EBFE /* MediaUploadOperation.swift */; };
-		8096216828E55C9400940A5D /* Tracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FA22821C99F6180016CA7C /* Tracks.swift */; };
 		8096216928E55C9400940A5D /* RemotePostCategory+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74BC35B720499EEB00AC1525 /* RemotePostCategory+Extensions.swift */; };
 		8096216A28E55C9400940A5D /* ShareNoticeConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EA3B87202A0462004F802D /* ShareNoticeConstants.swift */; };
 		8096216E28E55C9400940A5D /* ShareExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CE41641E8D101A000CF5A4 /* ShareExtractor.swift */; };
@@ -896,7 +891,6 @@
 		80F6D02328EE866A00953C1A /* RemoteNotificationActionParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7335AC5F21220D550012EF2D /* RemoteNotificationActionParser.swift */; };
 		80F6D03828EE866A00953C1A /* RichNotificationContentFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F6DD41212BA54700CE447D /* RichNotificationContentFormatter.swift */; };
 		80F6D03C28EE866A00953C1A /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7396FE65210F730600496D0D /* NotificationService.swift */; };
-		80F6D03D28EE866A00953C1A /* Tracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FA22821C99F6180016CA7C /* Tracks.swift */; };
 		80F6D04628EE866A00953C1A /* Tracks+ServiceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E40D8B21238C520012ABA6 /* Tracks+ServiceExtension.swift */; };
 		80F6D04728EE866A00953C1A /* UNNotificationContent+RemoteNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73768B6A212B4E4F005136A1 /* UNNotificationContent+RemoteNotification.swift */; };
 		80F6D04828EE866A00953C1A /* RichNotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F6DD43212C714F00CE447D /* RichNotificationViewModel.swift */; };
@@ -1013,7 +1007,6 @@
 		B5ECA6CD1DBAAD510062D7E0 /* CoreDataHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ECA6CC1DBAAD510062D7E0 /* CoreDataHelperTests.swift */; };
 		B5EFB1C91B333C5A007608A3 /* NotificationSettingsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EFB1C81B333C5A007608A3 /* NotificationSettingsServiceTests.swift */; };
 		B5EFB1D11B33630C007608A3 /* notifications-settings.json in Resources */ = {isa = PBXBuildFile; fileRef = B5EFB1D01B33630C007608A3 /* notifications-settings.json */; };
-		B5FA22831C99F6180016CA7C /* Tracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FA22821C99F6180016CA7C /* Tracks.swift */; };
 		B5FA868C1D10A4C400AB5F7E /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FA868A1D10A41600AB5F7E /* UIImage+Extensions.swift */; };
 		BE2B4E9F1FD664F5007AE3E4 /* BaseScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2B4E9E1FD664F5007AE3E4 /* BaseScreen.swift */; };
 		BE6787F51FFF2886005D9F01 /* ShareModularViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6787F41FFF2886005D9F01 /* ShareModularViewController.swift */; };
@@ -2740,7 +2733,6 @@
 		B5ECA6CC1DBAAD510062D7E0 /* CoreDataHelperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataHelperTests.swift; sourceTree = "<group>"; };
 		B5EFB1C81B333C5A007608A3 /* NotificationSettingsServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationSettingsServiceTests.swift; sourceTree = "<group>"; };
 		B5EFB1D01B33630C007608A3 /* notifications-settings.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "notifications-settings.json"; sourceTree = "<group>"; };
-		B5FA22821C99F6180016CA7C /* Tracks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Tracks.swift; path = WordPressShareExtension/Tracks.swift; sourceTree = SOURCE_ROOT; wrapsLines = 0; };
 		B5FA868A1D10A41600AB5F7E /* UIImage+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIImage+Extensions.swift"; path = "WordPressShareExtension/UIImage+Extensions.swift"; sourceTree = SOURCE_ROOT; };
 		BE2B4E9E1FD664F5007AE3E4 /* BaseScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseScreen.swift; sourceTree = "<group>"; };
 		BE6787F41FFF2886005D9F01 /* ShareModularViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareModularViewController.swift; sourceTree = "<group>"; };
@@ -3255,7 +3247,6 @@
 		24CE68B22CD3375300C7B37D /* Exceptions for "Classes" folder in "WordPressNotificationServiceExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				"Extensions/String+Helpers.swift",
 				"Extensions/UIImage+Extensions.swift",
 				"Utility/App Configuration/AppConfiguration.swift",
 				"Utility/App Configuration/ExtensionConfiguration.swift",
@@ -3354,7 +3345,6 @@
 		24CE68B82CD3375300C7B37D /* Exceptions for "Classes" folder in "JetpackNotificationServiceExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				"Extensions/String+Helpers.swift",
 				"Extensions/UIImage+Extensions.swift",
 				Utility/BuildInformation/BuildConfiguration.swift,
 				Utility/FormattableContent/Actions/DefaultFormattableContentAction.swift,
@@ -3380,14 +3370,6 @@
 			);
 			target = 80F6D01F28EE866A00953C1A /* JetpackNotificationServiceExtension */;
 		};
-		24CE68B92CD3375300C7B37D /* Exceptions for "Classes" folder in "JetpackStatsWidgets" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				"Utility/App Configuration/AppStyleGuide.swift",
-				Utility/BuildInformation/BuildConfiguration.swift,
-			);
-			target = 0107E0B128F97D5000DE87DB /* JetpackStatsWidgets */;
-		};
 		24CE68BB2CD3375300C7B37D /* Exceptions for "Classes" folder in "JetpackUITests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -3411,7 +3393,6 @@
 				24CE68B62CD3375300C7B37D /* Exceptions for "Classes" folder in "JetpackShareExtension" target */,
 				24CE68B72CD3375300C7B37D /* Exceptions for "Classes" folder in "JetpackDraftActionExtension" target */,
 				24CE68B82CD3375300C7B37D /* Exceptions for "Classes" folder in "JetpackNotificationServiceExtension" target */,
-				24CE68B92CD3375300C7B37D /* Exceptions for "Classes" folder in "JetpackStatsWidgets" target */,
 				24CE68BB2CD3375300C7B37D /* Exceptions for "Classes" folder in "JetpackUITests" target */,
 			);
 			path = Classes;
@@ -5887,7 +5868,6 @@
 		B5FA22841C99F6340016CA7C /* Tracks */ = {
 			isa = PBXGroup;
 			children = (
-				B5FA22821C99F6180016CA7C /* Tracks.swift */,
 				B504F5F41C9C2BD000F8B1C6 /* Tracks+ShareExtension.swift */,
 			);
 			name = Tracks;
@@ -8662,7 +8642,6 @@
 				C9FE383229C2053300D39841 /* LockScreenSingleStatView.swift in Sources */,
 				0107E0DA28F97D5000DE87DB /* ListViewData.swift in Sources */,
 				0188FE462AA624A40093EDA5 /* LockScreenSiteTitleView.swift in Sources */,
-				0107E0DC28F97D5000DE87DB /* Tracks.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8914,7 +8893,6 @@
 				7335AC6021220D550012EF2D /* RemoteNotificationActionParser.swift in Sources */,
 				73F6DD42212BA54700CE447D /* RichNotificationContentFormatter.swift in Sources */,
 				7396FE66210F730600496D0D /* NotificationService.swift in Sources */,
-				73E40D8921238BF50012ABA6 /* Tracks.swift in Sources */,
 				73E40D8C21238C520012ABA6 /* Tracks+ServiceExtension.swift in Sources */,
 				73768B6B212B4E4F005136A1 /* UNNotificationContent+RemoteNotification.swift in Sources */,
 				73F6DD45212C714F00CE447D /* RichNotificationViewModel.swift in Sources */,
@@ -8954,7 +8932,6 @@
 				F5EF481723ABCAD8004C3532 /* MainShareViewController.swift in Sources */,
 				74021A15202E1397006CC39F /* ShareModularViewController.swift in Sources */,
 				74021A00202E12F4006CC39F /* MediaUploadOperation.swift in Sources */,
-				74021A0E202E1358006CC39F /* Tracks.swift in Sources */,
 				74BC35BA20499EEB00AC1525 /* RemotePostCategory+Extensions.swift in Sources */,
 				74E44AD62031E85A00556205 /* ShareNoticeConstants.swift in Sources */,
 				74021A0C202E1338006CC39F /* ShareExtractor.swift in Sources */,
@@ -9002,7 +8979,6 @@
 				8096210928E540D700940A5D /* RemotePostCategory+Extensions.swift in Sources */,
 				8096211028E540D700940A5D /* MediaUploadOperation.swift in Sources */,
 				8096211228E540D700940A5D /* ShareMediaFileManager.swift in Sources */,
-				8096211328E540D700940A5D /* Tracks.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9039,7 +9015,6 @@
 				8096216328E55C9400940A5D /* MainShareViewController.swift in Sources */,
 				8096216628E55C9400940A5D /* ShareModularViewController.swift in Sources */,
 				8096216728E55C9400940A5D /* MediaUploadOperation.swift in Sources */,
-				8096216828E55C9400940A5D /* Tracks.swift in Sources */,
 				0107E11328FD7FE300DE87DB /* AppConfiguration.swift in Sources */,
 				8096216928E55C9400940A5D /* RemotePostCategory+Extensions.swift in Sources */,
 				8096216A28E55C9400940A5D /* ShareNoticeConstants.swift in Sources */,
@@ -9058,7 +9033,6 @@
 				0107E11428FD7FE300DE87DB /* AppConfiguration.swift in Sources */,
 				80F6D03828EE866A00953C1A /* RichNotificationContentFormatter.swift in Sources */,
 				80F6D03C28EE866A00953C1A /* NotificationService.swift in Sources */,
-				80F6D03D28EE866A00953C1A /* Tracks.swift in Sources */,
 				80F6D04628EE866A00953C1A /* Tracks+ServiceExtension.swift in Sources */,
 				80F6D04728EE866A00953C1A /* UNNotificationContent+RemoteNotification.swift in Sources */,
 				80F6D04828EE866A00953C1A /* RichNotificationViewModel.swift in Sources */,
@@ -9117,7 +9091,6 @@
 				74BC35B920499EEB00AC1525 /* RemotePostCategory+Extensions.swift in Sources */,
 				74AF4D751FE417D200E3EBFE /* MediaUploadOperation.swift in Sources */,
 				7430C4491F97F23600E2673E /* ShareMediaFileManager.swift in Sources */,
-				B5FA22831C99F6180016CA7C /* Tracks.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

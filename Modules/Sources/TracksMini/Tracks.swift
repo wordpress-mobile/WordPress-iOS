@@ -8,16 +8,16 @@ open class Tracks {
     open var wpcomUserID: String?
 
     // MARK: - Private Properties
-    fileprivate let uploader: Uploader
+    private let uploader: Uploader
 
     // MARK: - Constants
-    fileprivate static let version = "1.0"
-    fileprivate static let userAgent = "Nosara Extensions Client for iOS Mark " + version
+    private static let version = "1.0"
+    private static let userAgent = "Nosara Extensions Client for iOS Mark " + version
 
     private let eventNamePrefix: String
 
     // MARK: - Initializers
-    init(appGroupName: String,
+    public init(appGroupName: String = BuildSettings.current.appGroupName,
          eventNamePrefix: String = BuildSettings.current.eventNamePrefix) {
         uploader = Uploader(appGroupName: appGroupName)
         self.eventNamePrefix = eventNamePrefix
@@ -33,7 +33,7 @@ open class Tracks {
     }
 
     // MARK: - Private Helpers
-    fileprivate func payloadWithEventName(_ eventName: String, properties: [String: Any]?) -> [String: Any] {
+    private func payloadWithEventName(_ eventName: String, properties: [String: Any]?) -> [String: Any] {
         let timestamp = NSNumber(value: Int64(Date().timeIntervalSince1970 * 1000) as Int64)
         let anonUserID = UUID().uuidString
         let device = UIDevice.current
@@ -80,16 +80,18 @@ open class Tracks {
     /// Private Internal Helper:
     /// Encapsulates all of the Backend Tracks Interaction, and deals with NSURLSession's API.
     ///
-    fileprivate class Uploader: NSObject, URLSessionDelegate {
+    private class Uploader: NSObject, URLSessionDelegate {
         // MARK: - Properties
-        fileprivate var session: Foundation.URLSession!
+        private var session: Foundation.URLSession!
 
         // MARK: - Constants
-        fileprivate let tracksURL = "https://public-api.wordpress.com/rest/v1.1/tracks/record"
-        fileprivate let httpMethod = "POST"
-        fileprivate let headers = [ "Content-Type": "application/json",
-                                    "Accept": "application/json",
-                                    "User-Agent": "WPiOS App Extension"]
+        private let tracksURL = "https://public-api.wordpress.com/rest/v1.1/tracks/record"
+        private let httpMethod = "POST"
+        private let headers = [
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "User-Agent": "WPiOS App Extension"
+        ]
 
         // MARK: - Deinitializers
         deinit {

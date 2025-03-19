@@ -77,6 +77,11 @@ let package = Package(
             cSettings: [.unsafeFlags(["-fno-objc-arc"])]
         ),
         .target(name: "TextBundle"),
+        .target(
+            name: "TracksMini",
+            dependencies: ["BuildSettingsKit"],
+            swiftSettings: [.swiftLanguageMode(.v5)]
+        ),
         .target(name: "UITestsFoundation", dependencies: [
             .product(name: "ScreenObject", package: "ScreenObject"),
             .product(name: "XCUITestHelpers", package: "ScreenObject"),
@@ -177,6 +182,7 @@ enum XcodeSupport {
             "WordPressShared",
             "WordPressUI",
             "TextBundle",
+            "TracksMini",
             .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
             .product(name: "Down", package: "Down"),
             .product(name: "Gridicons", package: "Gridicons-iOS"),
@@ -248,13 +254,15 @@ enum XcodeSupport {
             .xcodeTarget("XcodeTarget_DraftActionExtension", dependencies: shareAndDraftExtensionsDependencies),
             .xcodeTarget("XcodeTarget_NotificationServiceExtension", dependencies: [
                 "SFHFKeychainUtils",
-                "WordPressShared",
                 "BuildSettingsKit",
+                "WordPressShared",
+                "TracksMini",
             ]),
             .xcodeTarget("XcodeTarget_StatsWidget", dependencies: [
                 "BuildSettingsKit",
                 "JetpackStatsWidgetsCore",
                 "SFHFKeychainUtils",
+                "TracksMini",
                 "WordPressShared",
                 "WordPressUI",
                 .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
