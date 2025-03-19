@@ -48,7 +48,7 @@ typedef void(^ThemeServiceFailureBlock)(NSError *error);
  *
  *  @param      blogId      The blog to get the themes for.  Cannot be nil.
  *  @param      page        Results page to return.
- *  @param      search      Search string to filter themes. Cannot be nil.
+ *  @param      search      Search string to filter themes.
  *  @param      sync        Whether to remove unsynced results.
  *  @param      success     The success handler.  Can be nil.
  *  @param      failure     The failure handler.  Can be nil.
