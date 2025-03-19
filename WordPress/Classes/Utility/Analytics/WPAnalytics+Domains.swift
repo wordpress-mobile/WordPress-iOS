@@ -3,11 +3,11 @@ import BuildSettingsKit
 
 extension WPAnalytics {
     @objc class var eventNamePrefix: String {
-        BuildSettings.current.eventNamePrefix
+        WPAnalyticsTesting.eventNamePrefix ?? BuildSettings.current.eventNamePrefix
     }
 
     @objc class var explatPlatform: String {
-        BuildSettings.current.explatPlatform
+        WPAnalyticsTesting.explatPlatform ?? BuildSettings.current.explatPlatform
     }
 
     /// Checks if the Domain Purchasing Feature Flag is enabled.
@@ -60,4 +60,10 @@ extension WPAnalytics {
 enum DomainsAnalyticsWebViewOrigin: String {
     case siteCreation = "site_creation"
     case menu
+}
+
+// TODO: remove when WPAppAnalyticsTests get rewritten, preferably in Swift
+@objc final class WPAnalyticsTesting: NSObject {
+    @objc static var eventNamePrefix: String?
+    @objc static var explatPlatform: String?
 }
