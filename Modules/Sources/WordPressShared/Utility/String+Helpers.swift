@@ -216,4 +216,12 @@ extension String {
         let prefix = self.prefix(limit - 1)
         return "\(prefix)…"
     }
+
+    public func arrayOfTags() -> [String] {
+        guard !self.isEmpty else {
+            return [String()]
+        }
+
+        return self.components(separatedBy: ",").map({ $0.trimmingCharacters(in: .whitespacesAndNewlines) })
+    }
 }
