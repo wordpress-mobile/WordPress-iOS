@@ -683,9 +683,25 @@ public protocol ThemePresenter: AnyObject {
         searchDebounceTimer = Timer.scheduledTimer(withTimeInterval: searchDebounceInterval, repeats: false) { [weak self] _ in
             guard let self = self else { return }
             self.searchName = searchText
-            // Reset to first page when searching
-            self.themesSyncingPage = 0
-            self.themesSyncHelper.syncContent()
+
+            // Apply local search immediately
+            self.fetchThemes()
+
+            // Remote search only applies to WordPress.com themes and only if customThemes are supported.
+            // The remote endpoint support search just for 3+ characters
+            if self.blog.supports(BlogFeature.customThemes) {
+                if searchText.count >= 3 {
+                    // Reset to first page when searching
+                    self.themesSyncingPage = 0
+                    self.themesSyncHelper.syncContent()
+                } else {
+                    // Just reload with local results for shorter queries
+                    self.reloadThemes()
+                }
+            } else {
+                // For blogs without custom themes support, we already fetched locally
+                self.reloadThemes()
+            }
         }
     }
 
@@ -744,13 +760,34 @@ public protocol ThemePresenter: AnyObject {
     }
 
     fileprivate func customThemesBrowsePredicate() -> NSPredicate? {
-        return browsePredicateThemesWithCustomValue(true)
+        let browsePredicate = browsePredicateThemesWithCustomValue(true)
+
+        // Add search predicate for custom themes (local search only)
+        if !searchName.isEmpty {
+            let searchPredicate = NSPredicate(format: "name CONTAINS[cd] %@", searchName)
+            if let existingPredicate = browsePredicate {
+                return NSCompoundPredicate(andPredicateWithSubpredicates: [existingPredicate, searchPredicate])
+            } else {
+                return searchPredicate
+            }
+        }
+
+        return browsePredicate
     }
 
     fileprivate func browsePredicateThemesWithCustomValue(_ custom: Bool) -> NSPredicate? {
         let blogPredicate = NSPredicate(format: "blog == %@ AND custom == %d", self.blog, custom ? 1 : 0)
 
         let subpredicates = [blogPredicate, filterType.predicate].compactMap { $0 }
+        
+        // For regular themes, add local search predicate if:
+        // 1. Not using custom themes feature, or
+        // 2. Search term is less than 3 characters (we'll only search locally for short terms)
+        if !searchName.isEmpty && !custom && (!blog.supports(BlogFeature.customThemes) || searchName.count < 3) {
+            let searchPredicate = NSPredicate(format: "name CONTAINS[cd] %@", searchName)
+            return NSCompoundPredicate(andPredicateWithSubpredicates: subpredicates + [searchPredicate])
+        }
+        
         switch subpredicates.count {
         case 1:
             return subpredicates[0]
