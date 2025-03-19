@@ -48,7 +48,7 @@ import BuildSettingsKit
             return handleViewStats(url: url)
         case "debugging":
             return handleDebugging(url: url)
-        case WordPressDotComAuthenticator.redirectURI.host():
+        case BuildSettings.current.appURLScheme where url.absoluteString.hasPrefix(WordPressDotComAuthenticator.redirectURI(for: BuildSettings.current.appURLScheme)):
             NotificationCenter.default.post(name: WordPressDotComAuthenticator.callbackNotification, object: url)
             return true
         default:

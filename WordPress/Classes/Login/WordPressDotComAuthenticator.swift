@@ -49,18 +49,23 @@ struct WordPressDotComAuthenticator {
         case loadingSites(Error)
     }
 
-    static let redirectURI = URL(string: BuildSettings.current.appURLScheme + "://oauth2-callback")!
     static let callbackNotification = Foundation.Notification.Name(rawValue: "WordPressDotComAuthenticatorCallbackURL")
+    static func redirectURI(for scheme: String) -> String {
+        "\(scheme)://oauth2-callback"
+    }
 
+    let redirectURIScheme: String
     private let coreDataStack: CoreDataStackSwift
     private let authenticator: ((URL) throws(AuthenticationError) -> URL)?
 
     init(
         coreDataStack: CoreDataStackSwift = ContextManager.shared,
-        authenticator: ((URL) throws(AuthenticationError) -> URL)? = nil
+        authenticator: ((URL) throws(AuthenticationError) -> URL)? = nil,
+        redirectURIScheme: String = BuildSettings.current.appURLScheme
     ) {
         self.coreDataStack = coreDataStack
         self.authenticator = authenticator
+        self.redirectURIScheme = redirectURIScheme
     }
 
     /// Sign in WP.com account.
@@ -177,10 +182,11 @@ struct WordPressDotComAuthenticator {
     ) async throws(AuthenticationError) -> String {
         let clientId = ApiCredentials.client
         let clientSecret = ApiCredentials.secret
+        let redirectURI = Self.redirectURI(for: redirectURIScheme)
 
         var queries: [String: Any] = [
             "client_id": clientId,
-            "redirect_uri": Self.redirectURI,
+            "redirect_uri": redirectURI,
             "response_type": "code",
             "scope": "global",
         ]
@@ -194,13 +200,13 @@ struct WordPressDotComAuthenticator {
         let authorizeURL = try? URLEncoding.queryString.encode(URLRequest(url: URL(string: "https://public-api.wordpress.com/oauth2/authorize")!), with: queries).url
         guard let authorizeURL else { throw .urlError(URLError(.badURL)) }
 
-        let callbackURL = try await authorize(from: viewController, url: authorizeURL, prefersEphemeralWebBrowserSession: prefersEphemeralWebBrowserSession)
+        let callbackURL = try await authorize(from: viewController, url: authorizeURL, prefersEphemeralWebBrowserSession: prefersEphemeralWebBrowserSession, redirectURI: redirectURI)
 
-        return try await handleAuthorizeCallbackURL(callbackURL, clientId: clientId, clientSecret: clientSecret, redirectURI: Self.redirectURI)
+        return try await handleAuthorizeCallbackURL(callbackURL, clientId: clientId, clientSecret: clientSecret, redirectURI: redirectURI)
     }
 
     @MainActor
-    private func authorize(from viewController: UIViewController, url authorizeURL: URL, prefersEphemeralWebBrowserSession: Bool) async throws(AuthenticationError) -> URL {
+    private func authorize(from viewController: UIViewController, url authorizeURL: URL, prefersEphemeralWebBrowserSession: Bool, redirectURI: String) async throws(AuthenticationError) -> URL {
         if let authenticator {
             return try authenticator(authorizeURL)
         }
@@ -228,14 +234,14 @@ struct WordPressDotComAuthenticator {
                 return nil
             }
             .filter { (url: URL) in
-                url.absoluteString.hasPrefix(Self.redirectURI.absoluteString)
+                url.absoluteString.hasPrefix(redirectURI)
             }
             .setFailureType(to: AuthenticationError.self)
             .first()
 
         let callbackURLViaWebAuthenticationSession = PassthroughSubject<URL, AuthenticationError>()
         let provider = WebAuthenticationPresentationAnchorProvider(anchor: viewController.view.window ?? UIWindow())
-        let session = ASWebAuthenticationSession(url: authorizeURL, callbackURLScheme: Self.redirectURI.scheme!) { url, error in
+        let session = ASWebAuthenticationSession(url: authorizeURL, callbackURLScheme: redirectURIScheme) { url, error in
             if let url {
                 callbackURLViaWebAuthenticationSession.send(url)
                 callbackURLViaWebAuthenticationSession.send(completion: .finished)
@@ -280,7 +286,7 @@ struct WordPressDotComAuthenticator {
         _ url: URL,
         clientId: String,
         clientSecret: String,
-        redirectURI: URL
+        redirectURI: String
     ) async throws(AuthenticationError) -> String {
         guard let query = URLComponents(url: url, resolvingAgainstBaseURL: true)?.queryItems else {
             throw .invalidCallbackURL
@@ -302,7 +308,7 @@ struct WordPressDotComAuthenticator {
             "grant_type": "authorization_code",
             "client_id": clientId,
             "client_secret": clientSecret,
-            "redirect_uri": redirectURI.absoluteString,
+            "redirect_uri": redirectURI,
             "code": code,
         ]
 
