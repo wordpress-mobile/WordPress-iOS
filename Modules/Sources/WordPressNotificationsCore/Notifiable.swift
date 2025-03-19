@@ -1,12 +1,10 @@
-import WordPressKit
-
 /// Known kinds of Notifications
 import Foundation
 
 // MARK: - NotificationKind
 
 /// Characterizes the known types of notification types
-enum NotificationKind: String {
+public enum NotificationKind: String, Sendable {
     case comment = "comment"
     case commentLike = "comment_like"
     case follow = "follow"
@@ -78,7 +76,7 @@ extension NotificationKind {
 // MARK: - Notifiable
 
 /// This protocol represents the traits of a local or remote notification.
-protocol Notifiable {
+public protocol Notifiable {
     /// The unique identifier for the notification; `note_id` in the APNS payload, `notificationId` in Core Data
     var notificationIdentifier: String { get }
 
@@ -90,19 +88,10 @@ protocol Notifiable {
 }
 
 extension Notifiable {
-    var kind: NotificationKind {
+    public var kind: NotificationKind {
         guard let type, let kind = NotificationKind(rawValue: type) else {
             return .unknown
         }
         return kind
-    }
-}
-
-// MARK: - RemoteNotification
-
-/// RemoteNotification is located in WordPressKit
-extension RemoteNotification: Notifiable {
-    var notificationIdentifier: String {
-        return notificationId
     }
 }
