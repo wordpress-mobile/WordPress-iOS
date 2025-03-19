@@ -1,3 +1,4 @@
+import WordPressNotificationsCore
 
 class FormattableActivity {
     let activity: Activity

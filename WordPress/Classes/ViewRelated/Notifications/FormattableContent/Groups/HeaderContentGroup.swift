@@ -1,3 +1,4 @@
+import WordPressNotificationsCore
 
 class HeaderContentGroup: FormattableContentGroup {
     class func createGroup(from header: [[String: AnyObject]], parent: Notification) -> FormattableContentGroup {

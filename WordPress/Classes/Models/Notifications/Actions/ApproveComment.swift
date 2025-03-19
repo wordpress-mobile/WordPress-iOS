@@ -1,5 +1,6 @@
 import UIKit
 import WordPressUI
+import WordPressNotificationsCore
 
 /// Encapsulates logic to approve a comment
 class ApproveComment: DefaultNotificationActionCommand {

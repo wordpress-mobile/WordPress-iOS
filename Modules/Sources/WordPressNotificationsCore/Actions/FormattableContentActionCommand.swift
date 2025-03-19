@@ -2,7 +2,7 @@ import UIKit
 
 /// Abstracts the logic behind contextual actions that can be applied to FormattableContent.
 ///
-protocol FormattableContentActionCommand: CustomStringConvertible {
+public protocol FormattableContentActionCommand: CustomStringConvertible {
     var identifier: Identifier { get }
     var on: Bool { get set }
 
@@ -13,13 +13,13 @@ protocol FormattableContentActionCommand: CustomStringConvertible {
 }
 
 extension FormattableContentActionCommand {
-    static func commandIdentifier() -> Identifier {
+    public static func commandIdentifier() -> Identifier {
         return Identifier(value: String(describing: self))
     }
 }
 
 extension FormattableContentActionCommand {
-    var description: String {
+    public var description: String {
         return identifier.description
     }
 }

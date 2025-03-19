@@ -1,5 +1,6 @@
 import UIKit
 import WordPressUI
+import WordPressNotificationsCore
 
 /// Base Notification Action Command.
 class DefaultNotificationActionCommand: FormattableContentActionCommand {

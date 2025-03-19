@@ -1,4 +1,5 @@
 import UIKit
+import WordPressNotificationsCore
 
 protocol WizardStep {
     static var identifier: Identifier { get }

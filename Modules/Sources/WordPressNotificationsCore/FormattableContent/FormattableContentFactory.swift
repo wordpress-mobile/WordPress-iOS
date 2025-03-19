@@ -1,18 +1,18 @@
 
-protocol FormattableContentFactory {
+public protocol FormattableContentFactory {
 
 }
 
 extension FormattableContentFactory {
-    static func getRawActions(from dictionary: [String: AnyObject]) -> [String: AnyObject]? {
+    public static func getRawActions(from dictionary: [String: AnyObject]) -> [String: AnyObject]? {
         return dictionary[Constants.ActionsKey] as? [String: AnyObject]
     }
 
-    static func getRawRanges(from dictionary: [String: AnyObject]) -> [[String: AnyObject]]? {
+    public static func getRawRanges(from dictionary: [String: AnyObject]) -> [[String: AnyObject]]? {
         return dictionary[Constants.Ranges] as? [[String: AnyObject]]
     }
 
-    static func getText(from dictionary: [String: AnyObject]) -> String {
+    public static func getText(from dictionary: [String: AnyObject]) -> String {
         return dictionary[Constants.Text] as? String ?? ""
     }
 }

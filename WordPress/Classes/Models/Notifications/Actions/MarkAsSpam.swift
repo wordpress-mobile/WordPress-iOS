@@ -1,3 +1,5 @@
+import WordPressNotificationsCore
+
 /// Encapsulates logic to mark a comment as spam
 class MarkAsSpam: DefaultNotificationActionCommand {
     static let title = NSLocalizedString("Spam", comment: "Marks comment as spam.")

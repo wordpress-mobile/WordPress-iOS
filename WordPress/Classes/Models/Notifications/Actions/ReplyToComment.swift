@@ -1,4 +1,5 @@
 import Foundation
+import WordPressNotificationsCore
 
 /// Encapsulates logic to reply to a comment
 class ReplyToComment: DefaultNotificationActionCommand {

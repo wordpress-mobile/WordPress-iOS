@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 import WordPressKit
+import WordPressNotificationsCore
 
 /// Convenience class that manages the data and display logic for likes.
 /// This is intended to be used as replacement for table view delegate and data source.

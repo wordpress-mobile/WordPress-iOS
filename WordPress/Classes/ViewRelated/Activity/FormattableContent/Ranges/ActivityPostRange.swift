@@ -1,3 +1,4 @@
+import WordPressNotificationsCore
 
 class ActivityPostRange: ActivityRange {
     let postID: Int

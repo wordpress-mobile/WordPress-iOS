@@ -1,11 +1,11 @@
 import Foundation
 
-protocol FormattableRangesFactory {
+public protocol FormattableRangesFactory {
     static func contentRange(from dictionary: [String: AnyObject]) -> FormattableContentRange?
 }
 
 extension FormattableRangesFactory {
-    static func rangeFrom(_ dictionary: [String: AnyObject]) -> NSRange? {
+    public static func rangeFrom(_ dictionary: [String: AnyObject]) -> NSRange? {
         guard let indices = dictionary[RangeKeys.indices] as? [Int],
             let start = indices.first,
             let end = indices.last else {
@@ -14,7 +14,7 @@ extension FormattableRangesFactory {
         return NSMakeRange(start, end - start)
     }
 
-    static func kindString(from dictionary: [String: AnyObject]) -> String? {
+    public static func kindString(from dictionary: [String: AnyObject]) -> String? {
         if let section = dictionary[RangeKeys.section] as? String {
             return section
         }

@@ -2,13 +2,13 @@ import Foundation
 import UIKit
 
 extension FormattableContentKind {
-    static let image = FormattableContentKind("image")
-    static let comment = FormattableContentKind("comment")
-    static let user = FormattableContentKind("user")
-    static let button = FormattableContentKind("button")
+    public static let image = FormattableContentKind("image")
+    public static let comment = FormattableContentKind("comment")
+    public static let user = FormattableContentKind("user")
+    public static let button = FormattableContentKind("button")
 }
 
-protocol FormattableMediaContent {
+public protocol FormattableMediaContent {
     var textOverride: String? { get }
     var media: [FormattableMediaItem] { get }
     var imageUrls: [URL] { get }
@@ -17,7 +17,7 @@ protocol FormattableMediaContent {
 }
 
 extension FormattableMediaContent where Self: FormattableContent {
-    var imageUrls: [URL] {
+    public var imageUrls: [URL] {
         return media.compactMap {
             guard $0.kind == .image && $0.mediaURL != nil else {
                 return nil
@@ -27,7 +27,7 @@ extension FormattableMediaContent where Self: FormattableContent {
         }
     }
 
-    func buildRangesToImagesMap(_ mediaMap: [URL: UIImage]) -> [NSValue: UIImage]? {
+    public func buildRangesToImagesMap(_ mediaMap: [URL: UIImage]) -> [NSValue: UIImage]? {
         guard textOverride == nil else {
             return nil
         }
@@ -49,17 +49,17 @@ extension FormattableMediaContent where Self: FormattableContent {
     }
 }
 
-class NotificationTextContent: FormattableTextContent, FormattableMediaContent {
-    var textOverride: String?
-    let media: [FormattableMediaItem]
-    let parent: Notifiable
-    let meta: [String: AnyObject]?
+public class NotificationTextContent: FormattableTextContent, FormattableMediaContent {
+    public var textOverride: String?
+    public let media: [FormattableMediaItem]
+    public let parent: Notifiable
+    public let meta: [String: AnyObject]?
 
-    override var text: String? {
+    public override var text: String? {
         return textOverride ?? super.text
     }
 
-    override var kind: FormattableContentKind {
+    public override var kind: FormattableContentKind {
         if let firstMedia = media.first, firstMedia.kind == .image || firstMedia.kind == .badge {
             return .image
         }
@@ -84,7 +84,7 @@ class NotificationTextContent: FormattableTextContent, FormattableMediaContent {
         super.init(text: text, ranges: ranges, actions: commandActions)
     }
 
-    func formattableContentRangeWithCommentId(_ commentID: NSNumber) -> NotificationContentRange? {
+    public func formattableContentRangeWithCommentId(_ commentID: NSNumber) -> NotificationContentRange? {
         for range in ranges.compactMap({ $0 as? NotificationCommentRange }) {
             if let commentID = range.commentID, commentID.isEqual(commentID) {
                 return range

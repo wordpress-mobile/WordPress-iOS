@@ -1,5 +1,5 @@
-
 import Foundation
+import WordPressNotificationsCore
 
 extension FormattableRangeKind {
     static let `default` = FormattableRangeKind("default")

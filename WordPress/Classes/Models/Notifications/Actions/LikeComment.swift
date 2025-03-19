@@ -1,3 +1,5 @@
+import WordPressNotificationsCore
+
 /// Encapsulates logic to Like a comment
 class LikeComment: DefaultNotificationActionCommand {
     enum TitleStrings {

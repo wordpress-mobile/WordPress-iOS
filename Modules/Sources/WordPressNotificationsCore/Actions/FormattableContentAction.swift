@@ -1,6 +1,6 @@
 import WordPressShared
 
-protocol FormattableContentActionParser {
+public protocol FormattableContentActionParser {
     func parse(_ dictionary: [String: AnyObject]?) -> [FormattableContentAction]
 }
 
@@ -23,6 +23,7 @@ public enum NotificationDeletionKind {
 public struct NotificationDeletionRequest {
     public let kind: NotificationDeletionKind
     public let action: (_ completion: @escaping ((Bool) -> Void)) -> Void
+
     public init(kind: NotificationDeletionKind, action: @escaping (_ completion: @escaping ((Bool) -> Void)) -> Void) {
         self.kind = kind
         self.action = action
@@ -55,21 +56,21 @@ extension Identifier {
     }
 }
 
-typealias ActionContextRequest = (NotificationDeletionRequest?, Bool) -> Void
-struct ActionContext<ContentType: FormattableContent> {
-    let block: ContentType
-    let content: String
-    let completion: ActionContextRequest?
+public typealias ActionContextRequest = (NotificationDeletionRequest?, Bool) -> Void
 
-    init(block: ContentType, content: String = "", completion: ActionContextRequest? = nil) {
+public struct ActionContext<ContentType: FormattableContent> {
+    public let block: ContentType
+    public let content: String
+    public let completion: ActionContextRequest?
+
+    public init(block: ContentType, content: String = "", completion: ActionContextRequest? = nil) {
         self.block = block
         self.content = content
         self.completion = completion
     }
 }
 
-protocol FormattableContentAction: CustomStringConvertible {
-
+public protocol FormattableContentAction: CustomStringConvertible {
     var identifier: Identifier { get }
     var enabled: Bool { get }
     var on: Bool { get }

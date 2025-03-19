@@ -1,25 +1,24 @@
-
 import Foundation
 
 extension FormattableContentKind {
-    static let text = FormattableContentKind("text")
+    public static let text = FormattableContentKind("text")
 }
 
-class FormattableTextContent: FormattableContent {
-    var kind: FormattableContentKind {
+public class FormattableTextContent: FormattableContent {
+    public var kind: FormattableContentKind {
         return .text
     }
 
-    var text: String? {
+    public var text: String? {
         return internalText
     }
 
-    let ranges: [FormattableContentRange]
-    var actions: [FormattableContentAction]?
+    public let ranges: [FormattableContentRange]
+    public var actions: [FormattableContentAction]?
 
     private let internalText: String?
 
-    init(text: String, ranges: [FormattableContentRange], actions commandActions: [FormattableContentAction]? = nil) {
+    public init(text: String, ranges: [FormattableContentRange], actions commandActions: [FormattableContentAction]? = nil) {
         internalText = text
         actions = commandActions
         self.ranges = ranges

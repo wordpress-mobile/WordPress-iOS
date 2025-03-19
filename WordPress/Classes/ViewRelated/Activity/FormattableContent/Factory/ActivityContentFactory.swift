@@ -1,3 +1,4 @@
+import WordPressNotificationsCore
 
 struct ActivityContentFactory: FormattableContentFactory {
 

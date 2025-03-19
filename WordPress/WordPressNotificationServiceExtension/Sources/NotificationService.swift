@@ -3,6 +3,7 @@ import UserNotifications
 import BuildSettingsKit
 import WordPressKit
 import WordPressShared
+import WordPressNotificationsCore
 
 // MARK: - NotificationService
 

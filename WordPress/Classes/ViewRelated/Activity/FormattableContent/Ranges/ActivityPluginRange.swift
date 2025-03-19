@@ -1,3 +1,4 @@
+import WordPressNotificationsCore
 
 class ActivityPluginRange: ActivityRange {
     let siteSlug: String

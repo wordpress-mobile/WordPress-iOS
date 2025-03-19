@@ -1,7 +1,7 @@
 import Foundation
 
-class FooterTextContent: FormattableTextContent {
-    override init(text: String, ranges: [FormattableContentRange], actions: [FormattableContentAction]?) {
+public class FooterTextContent: FormattableTextContent {
+    public override init(text: String, ranges: [FormattableContentRange], actions: [FormattableContentAction]?) {
         if text == "You replied to this comment." {
             let localizedText = NSLocalizedString("You replied to this comment.", comment: "Notification text - below a comment notification detail")
 

@@ -1,11 +1,11 @@
 import Foundation
 
-class FormattableUserContent: NotificationTextContent {
-    override var kind: FormattableContentKind {
+public class FormattableUserContent: NotificationTextContent {
+    public override var kind: FormattableContentKind {
         return .user
     }
 
-    var metaLinksHome: URL? {
+    public var metaLinksHome: URL? {
         guard let rawLink = metaLinks?[Constants.MetaKeys.Home] as? String else {
             return nil
         }
@@ -29,17 +29,17 @@ class FormattableUserContent: NotificationTextContent {
         return meta?[Constants.MetaKeys.Ids] as? [String: AnyObject]
     }
 
-    var notificationID: String? {
+    public var notificationID: String? {
         return parent.notificationIdentifier
     }
 
-    var metaSiteID: NSNumber? {
+    public var metaSiteID: NSNumber? {
         return metaIds?[Constants.MetaKeys.Site] as? NSNumber
     }
 }
 
 extension FormattableUserContent: Equatable {
-    static func == (lhs: FormattableUserContent, rhs: FormattableUserContent) -> Bool {
+    public static func == (lhs: FormattableUserContent, rhs: FormattableUserContent) -> Bool {
         return lhs.isEqual(to: rhs) &&
             lhs.parent.notificationIdentifier == rhs.parent.notificationIdentifier
     }

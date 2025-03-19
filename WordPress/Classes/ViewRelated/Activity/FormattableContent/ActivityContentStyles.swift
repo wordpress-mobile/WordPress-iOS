@@ -1,3 +1,4 @@
+import WordPressNotificationsCore
 
 class ActivityContentStyles: FormattableContentStyles {
     var attributes: [NSAttributedString.Key: Any] {

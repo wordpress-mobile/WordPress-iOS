@@ -1,4 +1,5 @@
 import Foundation
+import WordPressNotificationsCore
 
 @objc class CommentAnalytics: NSObject {
 

@@ -1,23 +1,24 @@
 import Foundation
 
 extension FormattableContentGroup.Kind {
-    static let text = FormattableContentGroup.Kind("text")
-    static let image = FormattableContentGroup.Kind("image")
-    static let user = FormattableContentGroup.Kind("user")
-    static let comment = FormattableContentGroup.Kind("comment")
-    static let actions = FormattableContentGroup.Kind("actions")
-    static let subject = FormattableContentGroup.Kind("subject")
-    static let header = FormattableContentGroup.Kind("header")
-    static let footer = FormattableContentGroup.Kind("footer")
-    static let button = FormattableContentGroup.Kind("button")
+    public static let text = FormattableContentGroup.Kind("text")
+    public static let image = FormattableContentGroup.Kind("image")
+    public static let user = FormattableContentGroup.Kind("user")
+    public static let comment = FormattableContentGroup.Kind("comment")
+    public static let actions = FormattableContentGroup.Kind("actions")
+    public static let subject = FormattableContentGroup.Kind("subject")
+    public static let header = FormattableContentGroup.Kind("header")
+    public static let footer = FormattableContentGroup.Kind("footer")
+    public static let button = FormattableContentGroup.Kind("button")
 }
 
 // MARK: - FormattableContentGroup: Adapter to match 1 View <> 1 BlockGroup
 //
-class FormattableContentGroup {
+open class FormattableContentGroup {
 
-    struct Kind: Equatable {
+    public struct Kind: Equatable, Sendable {
         private var rawValue: String
+
         public init(_ rawValue: String) {
             self.rawValue = rawValue
         }
@@ -25,13 +26,13 @@ class FormattableContentGroup {
 
     /// Grouped Blocks
     ///
-    let blocks: [FormattableContent]
+    public let blocks: [FormattableContent]
 
-    let kind: Kind
+    public let kind: Kind
 
     /// Designated Initializer
     ///
-    init(blocks: [FormattableContent], kind: Kind) {
+    public init(blocks: [FormattableContent], kind: Kind) {
         self.blocks = blocks
         self.kind = kind
     }
@@ -41,13 +42,13 @@ class FormattableContentGroup {
 //
 extension FormattableContentGroup {
 
-    func blockOfKind<ContentType: FormattableContent>(_ kind: FormattableContentKind) -> ContentType? {
+    public func blockOfKind<ContentType: FormattableContent>(_ kind: FormattableContentKind) -> ContentType? {
         return FormattableContentGroup.blockOfKind(kind, from: blocks)
     }
 
     /// Returns the First Block of a specified kind.
     ///
-    class func blockOfKind<ContentType: FormattableContent>(_ kind: FormattableContentKind, from blocks: [FormattableContent]) -> ContentType? {
+    public class func blockOfKind<ContentType: FormattableContent>(_ kind: FormattableContentKind, from blocks: [FormattableContent]) -> ContentType? {
         for block in blocks where block.kind == kind {
             return block as? ContentType
         }

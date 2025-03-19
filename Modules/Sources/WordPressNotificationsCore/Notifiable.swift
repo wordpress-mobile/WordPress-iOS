@@ -39,7 +39,7 @@ extension NotificationKind {
     ///
     /// - Parameter kind: the notification type to evaluate
     /// - Returns: `true` if the kind of rich notification includes a body; `false` otherwise
-    static func omitsRichNotificationBody(_ kind: NotificationKind) -> Bool {
+    public static func omitsRichNotificationBody(_ kind: NotificationKind) -> Bool {
         return kindsWithoutRichNotificationBodyText.contains(kind)
     }
 
@@ -47,14 +47,14 @@ extension NotificationKind {
     ///
     /// - Parameter kind: the notification type to evaluate
     /// - Returns: `true` if the kind supports rich notifications; `false` otherwise
-    static func isSupportedByRichNotifications(_ kind: NotificationKind) -> Bool {
+    public static func isSupportedByRichNotifications(_ kind: NotificationKind) -> Bool {
         return kindsWithRichNotificationSupport.contains(kind)
     }
 
     /// Indicates whether or not a given kind is view milestone.
     /// - Parameter kind: the notification type to evaluate
     /// - Returns: `true` if the notification kind is `viewMilestone`, `false` otherwise
-    static func isViewMilestone(_ kind: NotificationKind) -> Bool {
+    public static func isViewMilestone(_ kind: NotificationKind) -> Bool {
         return kind == .viewMilestone
     }
 
@@ -63,7 +63,7 @@ extension NotificationKind {
     ///
     /// NB: These should all be set on the server, but in practice, they are not.
     ///
-    var contentExtensionCategoryIdentifier: String? {
+    public var contentExtensionCategoryIdentifier: String? {
         switch self {
         case .commentLike, .like, .matcher, .login:
             return rawValue

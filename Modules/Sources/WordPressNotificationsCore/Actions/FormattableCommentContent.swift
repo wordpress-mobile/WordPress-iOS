@@ -1,17 +1,17 @@
 import Foundation
 
-class FormattableCommentContent: NotificationTextContent {
+public class FormattableCommentContent: NotificationTextContent {
 
-    var metaCommentID: NSNumber? {
+    public var metaCommentID: NSNumber? {
         return metaIds?[Constants.MetaKeys.Comment] as? NSNumber
     }
 
-    var isCommentApproved: Bool {
+    public var isCommentApproved: Bool {
         let identifier = ApproveCommentAction.actionIdentifier()
         return isActionOn(id: identifier) || !isActionEnabled(id: identifier)
     }
 
-    override var kind: FormattableContentKind {
+    public override var kind: FormattableContentKind {
         return .comment
     }
 
@@ -19,17 +19,17 @@ class FormattableCommentContent: NotificationTextContent {
         return meta?[Constants.MetaKeys.Ids] as? [String: AnyObject]
     }
 
-    var metaSiteID: NSNumber? {
+    public var metaSiteID: NSNumber? {
         return metaIds?[Constants.MetaKeys.Site] as? NSNumber
     }
 
-    var notificationID: String? {
+    public var notificationID: String? {
         return parent.notificationIdentifier
     }
 }
 
 extension FormattableCommentContent: Equatable {
-    static func == (lhs: FormattableCommentContent, rhs: FormattableCommentContent) -> Bool {
+    public static func == (lhs: FormattableCommentContent, rhs: FormattableCommentContent) -> Bool {
         return lhs.isEqual(to: rhs) &&
             lhs.parent.notificationIdentifier == rhs.parent.notificationIdentifier
     }

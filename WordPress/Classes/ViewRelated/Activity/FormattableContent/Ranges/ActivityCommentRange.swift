@@ -1,3 +1,4 @@
+import WordPressNotificationsCore
 
 class ActivityCommentRange: ActivityRange {
     let commentID: Int

@@ -2,6 +2,7 @@ import Foundation
 import Combine
 import CoreData
 import WordPressShared
+import WordPressNotificationsCore
 import Gridicons
 import UIKit
 import WordPressUI

@@ -1,13 +1,15 @@
 import Foundation
 import WordPressShared
 
-class FormattableContentFormatter {
+public class FormattableContentFormatter {
 
     /// Helper used by the +Interface Extension.
     ///
     fileprivate var dynamicAttributesCache = [String: AnyObject]()
 
-    func render(content: FormattableContent, with styles: FormattableContentStyles) -> NSAttributedString {
+    public init() {}
+
+    public func render(content: FormattableContent, with styles: FormattableContentStyles) -> NSAttributedString {
         let attributedText = memoize {
             let snippet = self.text(from: content, with: styles)
 
@@ -17,7 +19,7 @@ class FormattableContentFormatter {
         return attributedText(styles.key)
     }
 
-    func resetCache() {
+    public func resetCache() {
         dynamicAttributesCache.removeAll()
     }
 

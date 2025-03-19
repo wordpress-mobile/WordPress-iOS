@@ -1,3 +1,5 @@
+import WordPressNotificationsCore
+
 /// Encapsulates logic to Edit a comment
 class EditComment: DefaultNotificationActionCommand {
     static let title = NSLocalizedString("Edit", comment: "Edits a Comment")

@@ -1,3 +1,4 @@
+import WordPressNotificationsCore
 
 class ActivityContentGroup: FormattableContentGroup {
     class func create(with subject: [[String: AnyObject]]) -> FormattableContentGroup {

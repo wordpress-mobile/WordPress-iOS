@@ -1,3 +1,4 @@
+import WordPressNotificationsCore
 
 class FooterContentStyles: FormattableContentStyles {
     var attributes: [NSAttributedString.Key: Any] {

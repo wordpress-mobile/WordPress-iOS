@@ -1,3 +1,4 @@
+import WordPressNotificationsCore
 
 class BadgeContentStyles: FormattableContentStyles {
 
