@@ -14,6 +14,8 @@
 	<string>jpios</string>
 	<key>WPExplatPlatform</key>
 	<string>wpios</string>
+	<key>WPItunesAppID</key>
+	<string>1565481562</string>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>org.wordpress.bgtask.weeklyroundup</string>

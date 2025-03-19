@@ -18,6 +18,7 @@ public struct BuildSettings: Sendable {
     public var appKeychainAccessGroup: String
     public var eventNamePrefix: String
     public var explatPlatform: String
+    public var itunesAppID: String
 
     public static var current: BuildSettings {
         switch BuildSettingsEnvironment.current {

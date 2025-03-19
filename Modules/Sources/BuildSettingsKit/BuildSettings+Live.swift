@@ -10,6 +10,7 @@ extension BuildSettings {
         appKeychainAccessGroup = bundle.infoValue(forKey: "WPAppKeychainAccessGroup")
         eventNamePrefix = bundle.infoValue(forKey: "WPEventNamePrefix")
         explatPlatform = bundle.infoValue(forKey: "WPExplatPlatform")
+        itunesAppID = bundle.infoValue(forKey: "WPItunesAppID")
     }
 }
 
