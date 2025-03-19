@@ -22,7 +22,7 @@ enum NotificationKind: String {
 
 extension NotificationKind {
     /// Enumerates the Kinds that currently provide Rich Notification support
-    private static var kindsWithRichNotificationSupport: Set<NotificationKind> = [
+    private static let kindsWithRichNotificationSupport: Set<NotificationKind> = [
         .comment,
         .commentLike,
         .like,
@@ -31,7 +31,7 @@ extension NotificationKind {
     ]
 
     /// Enumerates the Kinds of rich notifications that include body text
-    private static var kindsWithoutRichNotificationBodyText: Set<NotificationKind> = [
+    private static let kindsWithoutRichNotificationBodyText: Set<NotificationKind> = [
         .commentLike,
         .like,
         .login,
