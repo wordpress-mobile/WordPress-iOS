@@ -155,11 +155,9 @@ const NSInteger ThemeOrderTrailing = 9999;
                           failure:(ThemeServiceFailureBlock)failure
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
-    NSParameterAssert([search isKindOfClass:[NSString class]]);
     NSAssert([self blogSupportsThemeServices:blog],
              @"Do not call this method on unsupported blogs, check with blogSupportsThemeServices first.");
     
-    // Set search to nil if it's empty to clear search results
     if (search.length == 0) {
         search = nil;
     }
