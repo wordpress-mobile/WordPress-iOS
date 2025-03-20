@@ -14,8 +14,8 @@ public class SnippetsContentStyles: FormattableContentStyles {
     public var key: String
 
     public init(
-        quoteStyles: [NSAttributedString.Key : Any]? = nil,
-        rangeStylesMap: [FormattableRangeKind : [NSAttributedString.Key : Any]]? = nil,
+        quoteStyles: [NSAttributedString.Key: Any]? = nil,
+        rangeStylesMap: [FormattableRangeKind: [NSAttributedString.Key: Any]]? = nil,
         linksColor: UIColor? = nil,
         key: String = "SnippetsContentStyles"
     ) {
