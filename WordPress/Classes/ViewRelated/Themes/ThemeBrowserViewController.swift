@@ -662,7 +662,7 @@ public protocol ThemePresenter: AnyObject {
 
     private func resetRemoteSearch() {
         themesSyncingPage = 0
- 
+
         if blog.supports(BlogFeature.customThemes) {
             themesSyncHelper.syncContent()
         }
@@ -690,7 +690,7 @@ public protocol ThemePresenter: AnyObject {
 
         // Check if we have a previously longer search that is now under 3 characters
         let previouslyHadRemoteSearch = self.searchName.count >= 3
-        
+
         // Create a new timer for debounce
         searchDebounceTimer = Timer.scheduledTimer(withTimeInterval: searchDebounceInterval, repeats: false) { [weak self] _ in
             guard let self else { return }
@@ -712,7 +712,7 @@ public protocol ThemePresenter: AnyObject {
                     self.resetRemoteSearch()
                 }
             }
-            
+
             // Always reload with local results
             self.reloadThemes()
         }
@@ -768,7 +768,7 @@ public protocol ThemePresenter: AnyObject {
     }
 
     // MARK: - NSFetchedResultsController helpers
-    
+
     fileprivate func browsePredicate() -> NSPredicate? {
         return browsePredicateThemesWithCustomValue(false)
     }
@@ -793,7 +793,7 @@ public protocol ThemePresenter: AnyObject {
         let blogPredicate = NSPredicate(format: "blog == %@ AND custom == %d", self.blog, custom ? 1 : 0)
 
         let subpredicates = [blogPredicate, filterType.predicate].compactMap { $0 }
-        
+
         // For regular themes, add local search predicate if:
         // 1. Not using custom themes feature, or
         // 2. Search term is less than 3 characters (we'll only search locally for short terms)
@@ -801,7 +801,7 @@ public protocol ThemePresenter: AnyObject {
             let searchPredicate = NSPredicate(format: "name CONTAINS[cd] %@", searchName)
             return NSCompoundPredicate(andPredicateWithSubpredicates: subpredicates + [searchPredicate])
         }
-        
+
         switch subpredicates.count {
         case 1:
             return subpredicates[0]
