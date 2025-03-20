@@ -4,6 +4,7 @@ extension BuildSettings {
     static let live = BuildSettings(bundle: .app)
 
     init(bundle: Bundle) {
+        configuration = BuildConfiguration(rawValue: bundle.infoValue(forKey: "WPBuildConfiguration"))!
         brand = AppBrand(rawValue: bundle.infoValue(forKey: "WPAppBrand"))!
         pushNotificationAppID = bundle.infoValue(forKey: "WPPushNotificationAppID")
         appGroupName = bundle.infoValue(forKey: "WPAppGroupName")

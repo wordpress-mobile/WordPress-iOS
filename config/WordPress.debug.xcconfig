@@ -3,3 +3,4 @@
 
 BUILD_SCHEME = WordPress
 WP_PUSH_NOTIFICATION_APP_ID = "org.wordpress.appstore.dev"
+WP_BUILD_CONFIGURATION = debug

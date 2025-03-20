@@ -1,4 +1,5 @@
 import Foundation
+import BuildSettingsKit
 
 @objc
 enum RemoteFeatureFlag: Int, CaseIterable {

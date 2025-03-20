@@ -1,4 +1,5 @@
 import Foundation
+import BuildSettingsKit
 import SFHFKeychainUtils
 import WordPressAuthenticator
 import WordPressShared

@@ -1,3 +1,5 @@
+import BuildSettingsKit
+
 /// FeatureFlag exposes a series of features to be conditionally enabled on
 /// different builds.
 @objc

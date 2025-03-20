@@ -3151,7 +3151,6 @@
 				"Extensions/Colors and Styles/WPStyleGuide+ApplicationStyles.swift",
 				"Utility/App Configuration/AppConfiguration.swift",
 				"Utility/App Configuration/AppStyleGuide.swift",
-				Utility/BuildInformation/BuildConfiguration.swift,
 				ViewRelated/Cells/WPReusableTableViewCells.swift,
 				ViewRelated/Views/NoResults.storyboard,
 				ViewRelated/Views/NoResultsViewController.swift,
@@ -3164,7 +3163,6 @@
 				"Extensions/Colors and Styles/WPStyleGuide+ApplicationStyles.swift",
 				"Utility/App Configuration/AppConfiguration.swift",
 				"Utility/App Configuration/AppStyleGuide.swift",
-				Utility/BuildInformation/BuildConfiguration.swift,
 				ViewRelated/Cells/WPReusableTableViewCells.swift,
 				ViewRelated/Views/NoResults.storyboard,
 				ViewRelated/Views/NoResultsViewController.swift,
@@ -3176,7 +3174,6 @@
 			membershipExceptions = (
 				"Extensions/UIImage+Extensions.swift",
 				"Utility/App Configuration/AppConfiguration.swift",
-				Utility/BuildInformation/BuildConfiguration.swift,
 			);
 			target = 7358E6B7210BD318002323EB /* WordPressNotificationServiceExtension */;
 		};
@@ -3201,7 +3198,6 @@
 			membershipExceptions = (
 				"Extensions/Colors and Styles/WPStyleGuide+ApplicationStyles.swift",
 				"Utility/App Configuration/AppStyleGuide.swift",
-				Utility/BuildInformation/BuildConfiguration.swift,
 				ViewRelated/Cells/WPReusableTableViewCells.swift,
 				ViewRelated/Views/NoResults.storyboard,
 				ViewRelated/Views/NoResultsViewController.swift,
@@ -3213,7 +3209,6 @@
 			membershipExceptions = (
 				"Extensions/Colors and Styles/WPStyleGuide+ApplicationStyles.swift",
 				"Utility/App Configuration/AppStyleGuide.swift",
-				Utility/BuildInformation/BuildConfiguration.swift,
 				ViewRelated/Cells/WPReusableTableViewCells.swift,
 				ViewRelated/Views/NoResults.storyboard,
 				ViewRelated/Views/NoResultsViewController.swift,
@@ -3224,7 +3219,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Extensions/UIImage+Extensions.swift",
-				Utility/BuildInformation/BuildConfiguration.swift,
 			);
 			target = 80F6D01F28EE866A00953C1A /* JetpackNotificationServiceExtension */;
 		};

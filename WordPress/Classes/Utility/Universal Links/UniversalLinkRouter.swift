@@ -1,4 +1,5 @@
 import Foundation
+import BuildSettingsKit
 
 protocol LinkRouter {
     init(routes: [Route])
