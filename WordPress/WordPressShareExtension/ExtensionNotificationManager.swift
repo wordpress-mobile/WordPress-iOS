@@ -1,4 +1,5 @@
 import Foundation
+import CocoaLumberjackSwift
 import UserNotifications
 import ShareExtensionCore
 

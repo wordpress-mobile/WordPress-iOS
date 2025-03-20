@@ -1,5 +1,6 @@
 import Aztec
 import BuildSettingsKit
+import CocoaLumberjackSwift
 import CoreData
 import TracksMini
 import WordPressKit
