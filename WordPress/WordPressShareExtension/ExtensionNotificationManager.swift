@@ -1,5 +1,6 @@
 import Foundation
 import UserNotifications
+import ShareExtensionCore
 
 /// This handles the scheduling of user notifications in app extensions only.
 ///

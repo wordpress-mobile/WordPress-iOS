@@ -3,6 +3,7 @@ import Aztec
 import WordPressEditor
 import Gridicons
 import WordPressUI
+import ShareExtensionCore
 
 class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
 
