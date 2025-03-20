@@ -1,14 +1,14 @@
 import Foundation
 import Aztec
 
-class ImgUploadProcessor: Processor {
+public class ImgUploadProcessor: Processor {
 
     let mediaUploadID: String
     let width: Int?
     let height: Int?
     let remoteURLString: String
 
-    init(mediaUploadID: String, remoteURLString: String, width: Int?, height: Int?) {
+    public init(mediaUploadID: String, remoteURLString: String, width: Int?, height: Int?) {
         self.mediaUploadID = mediaUploadID
         self.remoteURLString = remoteURLString
         self.width = width
@@ -39,7 +39,11 @@ class ImgUploadProcessor: Processor {
         return html
     })
 
-    func process(_ text: String) -> String {
+    public func process(_ text: String) -> String {
         return imgPostMediaUploadProcessor.process(text)
     }
+}
+
+extension MediaAttachment {
+    static let uploadKey = "data-wp_upload_id"
 }
