@@ -3149,12 +3149,10 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Extensions/Colors and Styles/WPStyleGuide+ApplicationStyles.swift",
-				"Extensions/UIApplication+mainWindow.swift",
 				"Utility/App Configuration/AppConfiguration.swift",
 				"Utility/App Configuration/AppStyleGuide.swift",
 				Utility/BuildInformation/BuildConfiguration.swift,
 				ViewRelated/Cells/WPReusableTableViewCells.swift,
-				ViewRelated/Tools/TableViewKeyboardObserver.swift,
 				ViewRelated/Views/NoResults.storyboard,
 				ViewRelated/Views/NoResultsViewController.swift,
 			);
@@ -3164,12 +3162,10 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Extensions/Colors and Styles/WPStyleGuide+ApplicationStyles.swift",
-				"Extensions/UIApplication+mainWindow.swift",
 				"Utility/App Configuration/AppConfiguration.swift",
 				"Utility/App Configuration/AppStyleGuide.swift",
 				Utility/BuildInformation/BuildConfiguration.swift,
 				ViewRelated/Cells/WPReusableTableViewCells.swift,
-				ViewRelated/Tools/TableViewKeyboardObserver.swift,
 				ViewRelated/Views/NoResults.storyboard,
 				ViewRelated/Views/NoResultsViewController.swift,
 			);
@@ -3184,17 +3180,10 @@
 			);
 			target = 7358E6B7210BD318002323EB /* WordPressNotificationServiceExtension */;
 		};
-		24CE68B32CD3375300C7B37D /* Exceptions for "Classes" folder in "WordPressTest" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				"Extensions/UIApplication+mainWindow.swift",
-			);
-			target = E16AB92914D978240047A2E5 /* WordPressTest */;
-		};
 		24CE68B42CD3375300C7B37D /* Exceptions for "Classes" folder in "WordPressUITests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				"Extensions/UIApplication+mainWindow.swift",
+				"Extensions/UIApplication+MainWindow.swift",
 			);
 			target = FF27168E1CAAC87A0006E2D4 /* WordPressUITests */;
 		};
@@ -3211,11 +3200,9 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Extensions/Colors and Styles/WPStyleGuide+ApplicationStyles.swift",
-				"Extensions/UIApplication+mainWindow.swift",
 				"Utility/App Configuration/AppStyleGuide.swift",
 				Utility/BuildInformation/BuildConfiguration.swift,
 				ViewRelated/Cells/WPReusableTableViewCells.swift,
-				ViewRelated/Tools/TableViewKeyboardObserver.swift,
 				ViewRelated/Views/NoResults.storyboard,
 				ViewRelated/Views/NoResultsViewController.swift,
 			);
@@ -3225,11 +3212,9 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Extensions/Colors and Styles/WPStyleGuide+ApplicationStyles.swift",
-				"Extensions/UIApplication+mainWindow.swift",
 				"Utility/App Configuration/AppStyleGuide.swift",
 				Utility/BuildInformation/BuildConfiguration.swift,
 				ViewRelated/Cells/WPReusableTableViewCells.swift,
-				ViewRelated/Tools/TableViewKeyboardObserver.swift,
 				ViewRelated/Views/NoResults.storyboard,
 				ViewRelated/Views/NoResultsViewController.swift,
 			);
@@ -3246,7 +3231,7 @@
 		24CE68BB2CD3375300C7B37D /* Exceptions for "Classes" folder in "JetpackUITests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				"Extensions/UIApplication+mainWindow.swift",
+				"Extensions/UIApplication+MainWindow.swift",
 			);
 			target = EA14532229AD874C001F3143 /* JetpackUITests */;
 		};
@@ -3260,7 +3245,6 @@
 				24CE68AF2CD3375300C7B37D /* Exceptions for "Classes" folder in "WordPressShareExtension" target */,
 				24CE68B02CD3375300C7B37D /* Exceptions for "Classes" folder in "WordPressDraftActionExtension" target */,
 				24CE68B22CD3375300C7B37D /* Exceptions for "Classes" folder in "WordPressNotificationServiceExtension" target */,
-				24CE68B32CD3375300C7B37D /* Exceptions for "Classes" folder in "WordPressTest" target */,
 				24CE68B42CD3375300C7B37D /* Exceptions for "Classes" folder in "WordPressUITests" target */,
 				24CE68B52CD3375300C7B37D /* Exceptions for "Classes" folder in "Jetpack" target */,
 				24CE68B62CD3375300C7B37D /* Exceptions for "Classes" folder in "JetpackShareExtension" target */,

@@ -37,7 +37,7 @@ class ShareTagsPickerViewController: UIViewController {
         return button
     }()
 
-    @objc fileprivate let keyboardObserver = TableViewKeyboardObserver()
+    fileprivate let keyboardObserver = TableViewKeyboardObserver()
     fileprivate let textView = UITextView()
     fileprivate let textViewContainer = UIView()
     fileprivate let tableView = UITableView(frame: .zero, style: .plain)
