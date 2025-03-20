@@ -84,7 +84,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
         case .inAppUpdates:
             return false
         case .gravatarQuickEditor:
-            return BuildConfiguration.current ~= [.debug, .alpha]
+            return BuildConfiguration.current.isInternal
         case .dotComWebLogin:
             return false
         }

@@ -13,11 +13,11 @@ public enum BuildConfiguration: String, Sendable {
         BuildSettings.current.configuration
     }
 
-    public static func ~=(a: BuildConfiguration, b: Set<BuildConfiguration>) -> Bool {
-        return b.contains(a)
-    }
-
+    /// Returns `true` if the build is intented only for internal use.
     public var isInternal: Bool {
-        self ~= [.debug, .alpha]
+        switch self {
+        case .debug, .alpha: true
+        case .appStore: false
+        }
     }
 }
