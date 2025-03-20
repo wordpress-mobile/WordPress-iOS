@@ -68,6 +68,35 @@ class WordPressDotComAuthenticatorTests: CoreDataTestCase {
     }
 
     @MainActor
+    func testSignInViaMagicLink() async throws {
+        stubTokenExchange()
+        stubGetAccountDetails()
+        stubGetSites()
+
+        // Given the app is not signed in with a WP.com account
+        try XCTAssertNil(WPAccount.lookupDefaultWordPressComAccount(in: mainContext))
+
+        // When signing in with a WP.com account via web authentication session using a magic link
+        let authenticator = WordPressDotComAuthenticator(coreDataStack: contextManager, redirectURIScheme: "testapp")
+        // Here we post a notification to simulate this scenario in the production app:
+        // - user taps the magic link in their email
+        // - the link opens Safari and then redirects to the app
+        // - the app posts a notification.
+        Task.detached { @MainActor in
+            try await Task.sleep(for: .milliseconds(100))
+            let handled = WordPressDotComAuthenticator.handleAppOpeningURL(URL(string: "testapp://oauth2-callback?code=random")!, appURLScheme: "testapp")
+            XCTAssertTrue(handled)
+        }
+
+        let accountID = await authenticator.signIn(from: UIViewController(), context: .default)
+        XCTAssertNotNil(accountID)
+
+        // The new WP.com acount should be set as the default account.
+        let isDefaultAccount = try mainContext.existingObject(with: XCTUnwrap(accountID)).isDefaultWordPressComAccount
+        XCTAssertTrue(isDefaultAccount)
+    }
+
+    @MainActor
     func testSignInAnotherAccount() async throws {
         stubTokenExchange()
         stubGetAccountDetails()

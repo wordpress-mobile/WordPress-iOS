@@ -30,6 +30,10 @@ import BuildSettingsKit
             return JetpackNotificationMigrationService.shared.handleNotificationMigrationOnWordPress()
         }
 
+        if WordPressDotComAuthenticator.handleAppOpeningURL(url) {
+            return true
+        }
+
         guard url.scheme == BuildSettings.current.appURLScheme else {
             return false
         }
@@ -48,9 +52,6 @@ import BuildSettingsKit
             return handleViewStats(url: url)
         case "debugging":
             return handleDebugging(url: url)
-        case BuildSettings.current.appURLScheme where url.absoluteString.hasPrefix(WordPressDotComAuthenticator.redirectURI(for: BuildSettings.current.appURLScheme)):
-            NotificationCenter.default.post(name: WordPressDotComAuthenticator.callbackNotification, object: url)
-            return true
         default:
             return false
         }

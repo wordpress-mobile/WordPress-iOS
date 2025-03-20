@@ -49,9 +49,19 @@ struct WordPressDotComAuthenticator {
         case loadingSites(Error)
     }
 
-    static let callbackNotification = Foundation.Notification.Name(rawValue: "WordPressDotComAuthenticatorCallbackURL")
+    private static let callbackNotification = Foundation.Notification.Name(rawValue: "WordPressDotComAuthenticatorCallbackURL")
+
     static func redirectURI(for scheme: String) -> String {
         "\(scheme)://oauth2-callback"
+    }
+
+    static func handleAppOpeningURL(_ url: URL, appURLScheme: String = BuildSettings.current.appURLScheme) -> Bool {
+        guard url.scheme == appURLScheme, url.absoluteString.hasPrefix(redirectURI(for: appURLScheme)) else {
+            return false
+        }
+
+        NotificationCenter.default.post(name: callbackNotification, object: url)
+        return true
     }
 
     let redirectURIScheme: String
