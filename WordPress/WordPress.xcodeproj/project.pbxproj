@@ -3174,7 +3174,6 @@
 		24CE68B22CD3375300C7B37D /* Exceptions for "Classes" folder in "WordPressNotificationServiceExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				"Extensions/UIImage+Extensions.swift",
 				"Utility/App Configuration/AppConfiguration.swift",
 				Utility/BuildInformation/BuildConfiguration.swift,
 			);
@@ -3223,7 +3222,6 @@
 		24CE68B82CD3375300C7B37D /* Exceptions for "Classes" folder in "JetpackNotificationServiceExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				"Extensions/UIImage+Extensions.swift",
 				Utility/BuildInformation/BuildConfiguration.swift,
 			);
 			target = 80F6D01F28EE866A00953C1A /* JetpackNotificationServiceExtension */;
