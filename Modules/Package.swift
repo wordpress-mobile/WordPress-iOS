@@ -79,7 +79,8 @@ let package = Package(
             dependencies: [
                 "BuildSettingsKit",
                 "SFHFKeychainUtils",
-                "WordPressShared"
+                "WordPressShared",
+                .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
             ]
         ),
         .target(
