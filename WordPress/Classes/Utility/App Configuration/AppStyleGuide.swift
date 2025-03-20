@@ -1,45 +1,28 @@
 import Foundation
+import BuildSettingsKit
 import WordPressShared
-import WordPressUI
-import ColorStudio
 
 struct AppStyleGuide {
+    var navigationBarStandardFont: UIFont
+    var navigationBarLargeFont: UIFont
+    var epilogueTitleFont: UIFont
 
-#if IS_JETPACK
-    static let navigationBarStandardFont: UIFont = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
-    static let navigationBarLargeFont: UIFont = WPStyleGuide.fontForTextStyle(.largeTitle, fontWeight: .semibold)
-    static let epilogueTitleFont: UIFont = WPStyleGuide.fontForTextStyle(.largeTitle, fontWeight: .semibold)
-#endif
-
-#if IS_WORDPRESS
-    static let navigationBarStandardFont: UIFont = WPStyleGuide.fixedSerifFontForTextStyle(.headline, fontWeight: .semibold)
-    static let navigationBarLargeFont: UIFont = WPStyleGuide.fixedSerifFontForTextStyle(.largeTitle, fontWeight: .semibold)
-    static let epilogueTitleFont: UIFont = WPStyleGuide.fixedSerifFontForTextStyle(.largeTitle, fontWeight: .semibold)
-#endif
-}
-
-// MARK: - Images
-extension AppStyleGuide {
-#if IS_JETPACK
-    static let mySiteTabIcon = UIImage(named: "jetpack-icon-tab-mysites")
-#endif
-
-#if IS_WORDPRESS
-    static let mySiteTabIcon = UIImage(named: "icon-tab-mysites")
-#endif
-}
-
-// MARK: - Fonts
-extension AppStyleGuide {
-#if IS_JETPACK
-    static func prominentFont(textStyle: UIFont.TextStyle, weight: UIFont.Weight) -> UIFont {
-        WPStyleGuide.fontForTextStyle(textStyle, fontWeight: weight)
+    static var current: AppStyleGuide {
+        switch BuildSettings.current.brand {
+        case .wordpress: .wordpress
+        case .jetpack: .jetpack
+        }
     }
-#endif
 
-#if IS_WORDPRESS
-    static func prominentFont(textStyle: UIFont.TextStyle, weight: UIFont.Weight) -> UIFont {
-        WPStyleGuide.serifFontForTextStyle(textStyle, fontWeight: weight)
-    }
-#endif
+    static let jetpack = AppStyleGuide(
+        navigationBarStandardFont: WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold),
+        navigationBarLargeFont: WPStyleGuide.fontForTextStyle(.largeTitle, fontWeight: .semibold),
+        epilogueTitleFont: WPStyleGuide.fontForTextStyle(.largeTitle, fontWeight: .semibold)
+    )
+
+    static let wordpress = AppStyleGuide(
+        navigationBarStandardFont: WPStyleGuide.fixedSerifFontForTextStyle(.headline, fontWeight: .semibold),
+        navigationBarLargeFont: WPStyleGuide.fixedSerifFontForTextStyle(.largeTitle, fontWeight: .semibold),
+        epilogueTitleFont: WPStyleGuide.fixedSerifFontForTextStyle(.largeTitle, fontWeight: .semibold)
+    )
 }
