@@ -1,5 +1,6 @@
 import WordPressKit
 import WordPressFlux
+import WordPressUI
 
 protocol PluginPresenter: AnyObject {
     func present(plugin: Plugin, capabilities: SitePluginCapabilities)

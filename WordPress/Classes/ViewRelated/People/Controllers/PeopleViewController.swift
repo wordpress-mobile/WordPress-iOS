@@ -1,7 +1,7 @@
 import UIKit
 import Combine
-
 import WordPressShared
+import WordPressUI
 
 // MARK: - PeopleViewController
 

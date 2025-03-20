@@ -3110,8 +3110,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Utility/App Configuration/AppConfiguration.swift",
-				ViewRelated/Views/NoResults.storyboard,
-				ViewRelated/Views/NoResultsViewController.swift,
 			);
 			target = 932225A61C7CE50300443B02 /* WordPressShareExtension */;
 		};
@@ -3119,8 +3117,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Utility/App Configuration/AppConfiguration.swift",
-				ViewRelated/Views/NoResults.storyboard,
-				ViewRelated/Views/NoResultsViewController.swift,
 			);
 			target = 74576671202B558C00F42E40 /* WordPressDraftActionExtension */;
 		};
@@ -3147,22 +3143,6 @@
 			);
 			target = FABB1F8F2602FC2C00C8785C /* Jetpack */;
 		};
-		24CE68B62CD3375300C7B37D /* Exceptions for "Classes" folder in "JetpackShareExtension" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				ViewRelated/Views/NoResults.storyboard,
-				ViewRelated/Views/NoResultsViewController.swift,
-			);
-			target = 809620CF28E540D700940A5D /* JetpackShareExtension */;
-		};
-		24CE68B72CD3375300C7B37D /* Exceptions for "Classes" folder in "JetpackDraftActionExtension" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				ViewRelated/Views/NoResults.storyboard,
-				ViewRelated/Views/NoResultsViewController.swift,
-			);
-			target = 8096213028E55C9400940A5D /* JetpackDraftActionExtension */;
-		};
 		24CE68BB2CD3375300C7B37D /* Exceptions for "Classes" folder in "JetpackUITests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -3182,8 +3162,6 @@
 				24CE68B22CD3375300C7B37D /* Exceptions for "Classes" folder in "WordPressNotificationServiceExtension" target */,
 				24CE68B42CD3375300C7B37D /* Exceptions for "Classes" folder in "WordPressUITests" target */,
 				24CE68B52CD3375300C7B37D /* Exceptions for "Classes" folder in "Jetpack" target */,
-				24CE68B62CD3375300C7B37D /* Exceptions for "Classes" folder in "JetpackShareExtension" target */,
-				24CE68B72CD3375300C7B37D /* Exceptions for "Classes" folder in "JetpackDraftActionExtension" target */,
 				24CE68BB2CD3375300C7B37D /* Exceptions for "Classes" folder in "JetpackUITests" target */,
 			);
 			path = Classes;

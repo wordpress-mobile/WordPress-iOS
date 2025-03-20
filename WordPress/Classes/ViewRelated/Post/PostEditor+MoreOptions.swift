@@ -1,5 +1,6 @@
 import Foundation
 import WordPressFlux
+import WordPressUI
 
 extension PostEditor {
 

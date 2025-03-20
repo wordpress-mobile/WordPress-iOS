@@ -1,5 +1,6 @@
 import UIKit
 import WordPressFlux
+import WordPressUI
 
 class JetpackScanViewController: UIViewController, JetpackScanView {
     private let blog: Blog

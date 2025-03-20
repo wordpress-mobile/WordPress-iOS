@@ -1,9 +1,8 @@
 import UIKit
 import WordPressShared
 import Reachability
-import WordPressUI
 
-@objc protocol NoResultsViewControllerDelegate {
+@objc public protocol NoResultsViewControllerDelegate {
     @objc optional func actionButtonPressed()
     @objc optional func dismissButtonPressed()
 }
@@ -19,11 +18,11 @@ import WordPressUI
 /// If this view is presented as a result of connectivity issue we will override the title, subtitle, image and accessorySubview (if it was set) to default values defined in the NoConnection struct
 ///
 /// - warning: Soft-deprecated
-@objc class NoResultsViewController: UIViewController {
+@objc public class NoResultsViewController: UIViewController {
 
     // MARK: - Properties
 
-    @objc weak var delegate: NoResultsViewControllerDelegate?
+    @objc public weak var delegate: NoResultsViewControllerDelegate?
     @IBOutlet weak var noResultsView: UIView!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
@@ -35,7 +34,7 @@ import WordPressUI
     @IBOutlet weak var labelStackView: UIStackView!
     @IBOutlet weak var labelButtonStackView: UIStackView!
 
-    private(set) var isReachable = false
+    public private(set) var isReachable = false
 
     // To allow storing values until view is loaded.
     private var titleText: String?
@@ -52,7 +51,7 @@ import WordPressUI
     var labelButtonStackViewSpacing: CGFloat = 20
 
     /// Allows caller to customize subtitle attributed text after default styling.
-    typealias AttributedSubtitleConfiguration = (_ attributedText: NSAttributedString) -> NSAttributedString?
+    public typealias AttributedSubtitleConfiguration = (_ attributedText: NSAttributedString) -> NSAttributedString?
     /// Called after default styling of attributed subtitle, if non nil.
     private var configureAttributedSubtitle: AttributedSubtitleConfiguration? = nil
 
@@ -68,36 +67,36 @@ import WordPressUI
     //For No results on connection issue
     private let reachability = Reachability.forInternetConnection()
     /// sets an additional/alternate handler for the action button that can be directly injected
-    var actionButtonHandler: (() -> Void)?
+    public var actionButtonHandler: (() -> Void)?
     /// sets an additional/alternate handler for the dismiss button that can be directly injected
-    var dismissButtonHandler: (() -> Void)?
+    public var dismissButtonHandler: (() -> Void)?
 
-    var buttonMenu: UIMenu?
+    public var buttonMenu: UIMenu?
 
     // MARK: - View
 
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         WPStyleGuide.configureColors(view: view, tableView: nil)
     }
 
-    override func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         reachability?.startNotifier()
         configureView()
     }
 
-    override func viewDidDisappear(_ animated: Bool) {
+    public override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         reachability?.stopNotifier()
     }
 
-    override func didMove(toParent parent: UIViewController?) {
+    public override func didMove(toParent parent: UIViewController?) {
         super.didMove(toParent: parent)
         configureView()
     }
 
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         setAccessoryViewsVisibility()
         // `traitCollectionDidChange` is not fired for iOS 16.0 + Media adding flow. The reason why the constraints update call was moved to here.
@@ -107,7 +106,7 @@ import WordPressUI
         }
     }
 
-    override func viewDidLayoutSubviews() {
+    public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         adjustTitleOnlyLabelHeight()
     }
@@ -124,7 +123,7 @@ import WordPressUI
     ///   - subtitleImage:      Name of image file to use in place of subtitle. Optional.
     ///   - accessoryView:      View to show instead of the image. Optional.
     ///
-    @objc class func controllerWith(title: String,
+    @objc public class func controllerWith(title: String,
                                     attributedTitle: NSAttributedString? = nil,
                                     buttonTitle: String? = nil,
                                     subtitle: String? = nil,
@@ -142,8 +141,8 @@ import WordPressUI
     /// As this only creates the controller, the configure method should be called
     /// to set the view values before presenting the No Results View.
     ///
-    @objc class func controller() -> NoResultsViewController {
-        let storyBoard = UIStoryboard(name: "NoResults", bundle: nil)
+    @objc public class func controller() -> NoResultsViewController {
+        let storyBoard = UIStoryboard(name: "NoResults", bundle: Bundle.module)
         let controller = storyBoard.instantiateViewController(withIdentifier: "NoResults") as! NoResultsViewController
         return controller
     }
@@ -160,7 +159,7 @@ import WordPressUI
     ///   - subtitleImage:      Name of image file to use in place of subtitle. Optional.
     ///   - accessoryView:      View to show instead of the image. Optional.
     ///
-    @objc func configure(title: String,
+    @objc public func configure(title: String,
                          attributedTitle: NSAttributedString? = nil,
                          noConnectionTitle: String? = nil,
                          buttonTitle: String? = nil,
@@ -199,14 +198,14 @@ import WordPressUI
     ///
     /// - Parameters:
     ///   - title:  Main descriptive text. Required.
-    func configureForNoSearchResults(title: String) {
+    public func configureForNoSearchResults(title: String) {
         configure(title: title)
         displayTitleViewOnly = true
     }
 
     /// Public method to remove No Results View from parent view.
     ///
-    @objc func removeFromView() {
+    @objc public func removeFromView() {
         willMove(toParent: nil)
         view.removeFromSuperview()
         removeFromParent()
@@ -214,7 +213,7 @@ import WordPressUI
 
     /// Public method to show a 'Dismiss' button in the navigation bar in place of the 'Back' button.
     /// Accepts an optional title, if none is provided, will default to 'Dismiss'
-    func showDismissButton(title: String? = nil) {
+    public func showDismissButton(title: String? = nil) {
         navigationItem.hidesBackButton = true
         let buttonTitle = title ?? AppLocalizedString(
             "noResultsViewController.dismissButton",
@@ -230,18 +229,12 @@ import WordPressUI
         navigationItem.leftBarButtonItem = dismissButton
     }
 
-    /// Public method to get the view height when adding the No Results View to a table cell.
-    ///
-    func heightForTableCell() -> CGFloat {
-        return noResultsView.frame.height
-    }
-
     /// Public method to get an attributed string styled for No Results.
     ///
     /// - Parameters:
     ///   - attributedString: The attributed string to be styled.
     ///
-    func applyMessageStyleTo(attributedString: NSAttributedString) -> NSAttributedString {
+    private func applyMessageStyleTo(attributedString: NSAttributedString) -> NSAttributedString {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = subtitleTextView.textAlignment
 
@@ -258,7 +251,7 @@ import WordPressUI
         return finalAttributedString
     }
 
-    @objc class func loadingAccessoryView() -> UIView {
+    @objc public class func loadingAccessoryView() -> UIView {
         let indicator = UIActivityIndicatorView()
         indicator.startAnimating()
         return indicator
@@ -266,26 +259,20 @@ import WordPressUI
 
     /// Public method to hide/show the image view.
     ///
-    @objc func hideImageView(_ hide: Bool = true) {
+    @objc public func hideImageView(_ hide: Bool = true) {
         hideImage = hide
     }
 
     /// Public method to expose the private configure view method
     ///
-    func updateView() {
+    public func updateView() {
         configureView()
     }
 
     /// Public method to reset the button text
     ///
-    func resetButtonText() {
+    public func resetButtonText() {
         buttonText = nil
-    }
-
-    /// Public method to expose the private set accessory views method
-    ///
-    func updateAccessoryViewsVisibility() {
-        setAccessoryViewsVisibility()
     }
 }
 

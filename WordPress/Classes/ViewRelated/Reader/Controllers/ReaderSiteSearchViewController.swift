@@ -1,6 +1,7 @@
 import UIKit
 import Combine
 import SwiftUI
+import WordPressUI
 
 /// Displays search results from a reader site search.
 ///

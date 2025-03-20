@@ -1,4 +1,5 @@
 import UIKit
+import WordPressUI
 
 class JetpackScanHistoryViewController: UIViewController {
     private let blog: Blog

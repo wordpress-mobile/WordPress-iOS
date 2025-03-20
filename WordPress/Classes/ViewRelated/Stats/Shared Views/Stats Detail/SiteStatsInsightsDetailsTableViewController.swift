@@ -1,5 +1,6 @@
 import UIKit
 import WordPressFlux
+import WordPressUI
 
 class SiteStatsInsightsDetailsTableViewController: SiteStatsBaseTableViewController {
 

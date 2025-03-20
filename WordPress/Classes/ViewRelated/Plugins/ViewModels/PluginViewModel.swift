@@ -1,5 +1,6 @@
 import Foundation
 import WordPressFlux
+import WordPressUI
 
 class PluginViewModel: Observable {
     private enum State {

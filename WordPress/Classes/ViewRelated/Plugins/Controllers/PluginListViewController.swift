@@ -1,6 +1,7 @@
 import UIKit
 import WordPressKit
 import WordPressFlux
+import WordPressUI
 
 class PluginListViewController: UITableViewController, ImmuTablePresenter {
     let site: JetpackSiteRef

@@ -1,3 +1,5 @@
+import WordPressUI
+
 // Empty states for Media Library
 
 extension NoResultsViewController {

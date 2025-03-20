@@ -1,6 +1,7 @@
 import UIKit
 import Gridicons
 import Gutenberg
+import WordPressUI
 
 extension PageTemplateLayout: Thumbnail {
     var urlDesktop: String? { preview }

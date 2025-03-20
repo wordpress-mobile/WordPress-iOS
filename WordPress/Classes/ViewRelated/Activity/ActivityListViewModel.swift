@@ -1,4 +1,5 @@
 import WordPressFlux
+import WordPressUI
 
 protocol ActivityPresenter: AnyObject {
     func presentDetailsFor(activity: FormattableActivity)
