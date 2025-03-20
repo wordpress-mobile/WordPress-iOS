@@ -23,6 +23,17 @@ final class BlogListViewModel: NSObject, ObservableObject {
 
     var onAddSiteTapped: (AddSiteMenuViewModel.Selection) -> Void = { _ in }
 
+    weak var sidebarViewModel: SidebarViewModel?
+    
+    var currentSite: BlogListSiteViewModel? {
+        guard let sidebarViewModel = sidebarViewModel,
+              case let .blog(selectedBlogID) = sidebarViewModel.selection else {
+            return nil
+        }
+        
+        return allSites.first { $0.id == selectedBlogID }
+    }
+    
     init(configuration: BlogListConfiguration = .defaultConfig,
          contextManager: ContextManager = ContextManager.shared,
          recentSitesService: RecentSitesService = RecentSitesService(),
