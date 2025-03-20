@@ -51,7 +51,7 @@ struct WPCrashLoggingDataProvider: CrashLoggingDataProvider {
         return UserSettings.userHasOptedOutOfCrashLogging
     }
 
-    var buildType: String = BuildConfiguration.current.rawValue
+    var buildType: String { BuildConfiguration.current.rawValue }
 
     var shouldEnableAutomaticSessionTracking: Bool {
         return !UserSettings.userHasOptedOutOfCrashLogging
