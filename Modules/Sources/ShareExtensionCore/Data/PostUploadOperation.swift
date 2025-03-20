@@ -38,7 +38,7 @@ public class PostUploadOperation: UploadOperation {
 extension PostUploadOperation {
     /// Returns a RemotePost object based on this PostUploadOperation
     ///
-    var remotePost: RemotePost {
+    public var remotePost: RemotePost {
         let remotePost = RemotePost()
         remotePost.postID = NSNumber(value: remotePostID)
         remotePost.content = postContent
@@ -58,7 +58,7 @@ extension PostUploadOperation {
 extension PostUploadOperation {
     /// Updates the local fields with the new values stored in a given RemotePost
     ///
-    func updateWithPost(remote: RemotePost) {
+    public func updateWithPost(remote: RemotePost) {
 
         if let postId = remote.postID?.int64Value {
             remotePostID = postId

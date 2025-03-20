@@ -87,7 +87,8 @@ let package = Package(
                 "WordPressShared",
                 .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
                 .product(name: "WordPressKit", package: "WordPressKit-iOS"),
-            ]
+            ],
+            resources: [.process("Resources/Extensions.xcdatamodeld")]
         ),
         .target(
             name: "NotificationServiceExtensionCore",

@@ -38,7 +38,7 @@ public class MediaUploadOperation: UploadOperation {
 extension MediaUploadOperation {
     /// Returns a RemoteMedia object based on this MediaUploadOperation
     ///
-    var remoteMedia: RemoteMedia {
+    public var remoteMedia: RemoteMedia {
         let remoteMedia = RemoteMedia()
         remoteMedia.mediaID = NSNumber(value: remoteMediaID)
         remoteMedia.mimeType = mimeType
@@ -60,7 +60,7 @@ extension MediaUploadOperation {
 extension MediaUploadOperation {
     /// Updates the local fields with the new values stored in a given RemoteMedia
     ///
-    func updateWithMedia(remote: RemoteMedia) {
+    public func updateWithMedia(remote: RemoteMedia) {
         if let mediaId = remote.mediaID?.int64Value {
             remoteMediaID = mediaId
         }

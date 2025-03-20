@@ -418,23 +418,25 @@ fileprivate extension AppExtensionsService {
             self?.coreDataStack.saveContext()
 
             // Associate the remote media with the newly-uploaded post
-            let updatedMedia = mediaUploadOps.compactMap({return $0.remoteMedia})
+            let updatedMedia = mediaUploadOps.compactMap { $0.remoteMedia }
             self?.updateMedia(updatedMedia, postID: postID, siteID: siteID, onComplete: {
                 // Schedule a local success notification
-                ExtensionNotificationManager.scheduleSuccessNotification(postUploadOpID: uploadPostOp.objectID.uriRepresentation().absoluteString,
-                                                                         postID: String(uploadPostOp.remotePostID),
-                                                                         blogID: String(uploadPostOp.siteID),
-                                                                         mediaItemCount: mediaUploadOps.count,
-                                                                         postStatus: postStatus)
+                ExtensionNotificationManager.scheduleSuccessNotification(
+                    postUploadOpID: uploadPostOp.objectID.uriRepresentation().absoluteString,
+                    postID: String(uploadPostOp.remotePostID),
+                    blogID: String(uploadPostOp.siteID),
+                    mediaItemCount: mediaUploadOps.count,
+                    postStatus: postStatus)
             })
         }, onFailure: {
             // Schedule a local failure notification
             if let uploadPostOp = self.coreDataStack.fetchPostUploadOp(withObjectID: uploadPostOpID) {
-                ExtensionNotificationManager.scheduleFailureNotification(postUploadOpID: uploadPostOp.objectID.uriRepresentation().absoluteString,
-                                                                         postID: String(uploadPostOp.remotePostID),
-                                                                         blogID: String(uploadPostOp.siteID),
-                                                                         mediaItemCount: mediaUploadOps.count,
-                                                                         postStatus: postStatus)
+                ExtensionNotificationManager.scheduleFailureNotification(
+                    postUploadOpID: uploadPostOp.objectID.uriRepresentation().absoluteString,
+                    postID: String(uploadPostOp.remotePostID),
+                    blogID: String(uploadPostOp.siteID),
+                    mediaItemCount: mediaUploadOps.count,
+                    postStatus: postStatus)
             }
         })
     }

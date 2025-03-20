@@ -1,5 +1,5 @@
-
 import SwiftUI
+import DesignSystem
 import WidgetKit
 import WordPressUI
 

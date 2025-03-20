@@ -6,7 +6,7 @@ import WordPressKit
 public class UploadOperation: NSManagedObject {
     /// Curent status for this upload op
     ///
-    var currentStatus: UploadStatus {
+    public var currentStatus: UploadStatus {
         get {
             return UploadStatus(rawValue: Int(self.uploadStatus))!
         }
@@ -14,6 +14,7 @@ public class UploadOperation: NSManagedObject {
             self.uploadStatus = Int32(newValue.rawValue)
         }
     }
+
     @NSManaged private var uploadStatus: Int32
 
     /// ID which is unique to a group of upload operations within WPiOS (and its extensions)
@@ -42,7 +43,7 @@ public class UploadOperation: NSManagedObject {
 extension UploadOperation {
     /// Status types for a given upload operation
     ///
-    enum UploadStatus: Int {
+    public enum UploadStatus: Int {
         /// Upload has been queued, but not started
         ///
         case pending
@@ -61,10 +62,10 @@ extension UploadOperation {
 
         var stringValue: String {
             switch self {
-            case .pending:      return "Pending"
-            case .inProgress:   return "In Progress"
-            case .complete:     return "Complete"
-            case .error:        return "Error"
+            case .pending: "Pending"
+            case .inProgress: "In Progress"
+            case .complete: "Complete"
+            case .error: "Error"
             }
         }
     }

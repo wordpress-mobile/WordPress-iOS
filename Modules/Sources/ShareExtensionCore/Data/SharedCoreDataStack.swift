@@ -20,7 +20,7 @@ final class SharedPersistentContainer: NSPersistentContainer {
 extension SharedPersistentContainer: @unchecked Sendable {}
 #endif
 
-class SharedCoreDataStack {
+public final class SharedCoreDataStack {
 
     // MARK: - Private Properties
 
@@ -40,7 +40,7 @@ class SharedCoreDataStack {
 
     /// Returns the managed context associated with the main queue
     ///
-    lazy var managedContext: NSManagedObjectContext = {
+    public lazy var managedContext: NSManagedObjectContext = {
         return self.storeContainer.viewContext
     }()
 
@@ -48,7 +48,7 @@ class SharedCoreDataStack {
 
     /// Initialize the SharedPersistentContainer using the standard Extensions model.
     ///
-    convenience init() {
+    public convenience init() {
         self.init(modelName: Constants.sharedModelName)
     }
 
@@ -67,7 +67,7 @@ class SharedCoreDataStack {
 
     /// Commit unsaved changes (if any exist) using the main queue's managed context
     ///
-    func saveContext() {
+    public func saveContext() {
         guard managedContext.hasChanges else {
             return
         }
@@ -89,7 +89,7 @@ extension SharedCoreDataStack {
     /// - Parameter sessionID: the session ID
     /// - Returns: group ID or nil if session does not have an associated group
     ///
-    func fetchGroupID(for sessionID: String) -> String? {
+    public func fetchGroupID(for sessionID: String) -> String? {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "UploadOperation")
         request.predicate = NSPredicate(format: "(backgroundSessionIdentifier == %@)", sessionID)
         request.fetchLimit = 1
@@ -104,7 +104,7 @@ extension SharedCoreDataStack {
     /// - Parameter objectID: Managed object ID string for a given post upload op
     /// - Returns: PostUploadOperation or nil
     ///
-    func fetchPostUploadOp(withObjectID objectID: String) -> PostUploadOperation? {
+    public func fetchPostUploadOp(withObjectID objectID: String) -> PostUploadOperation? {
         guard let storeCoordinator = managedContext.persistentStoreCoordinator,
             let url = URL(string: objectID),
             let managedObjectID = storeCoordinator.managedObjectID(forURIRepresentation: url) else {
@@ -119,7 +119,7 @@ extension SharedCoreDataStack {
     /// - Parameter postUploadOpObjectID: Managed object ID for a given post upload op
     /// - Returns: PostUploadOperation or nil
     ///
-    func fetchPostUploadOp(withObjectID postUploadOpObjectID: NSManagedObjectID) -> PostUploadOperation? {
+    public func fetchPostUploadOp(withObjectID postUploadOpObjectID: NSManagedObjectID) -> PostUploadOperation? {
         var postUploadOp: PostUploadOperation?
         do {
             postUploadOp = try managedContext.existingObject(with: postUploadOpObjectID) as? PostUploadOperation
@@ -136,7 +136,7 @@ extension SharedCoreDataStack {
     /// - Parameter groupID: group ID for a set of upload ops
     /// - Returns: post PostUploadOperation or nil
     ///
-    func fetchPostUploadOp(for groupID: String) -> PostUploadOperation? {
+    public func fetchPostUploadOp(for groupID: String) -> PostUploadOperation? {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "PostUploadOperation")
         request.predicate = NSPredicate(format: "(groupID == %@)", groupID)
         request.fetchLimit = 1
@@ -151,7 +151,7 @@ extension SharedCoreDataStack {
     /// - Parameter groupID: group ID for a set of upload ops
     /// - Returns: An array of MediaUploadOperations or nil
     ///
-    func fetchMediaUploadOps(for groupID: String) -> [MediaUploadOperation]? {
+    public func fetchMediaUploadOps(for groupID: String) -> [MediaUploadOperation]? {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "MediaUploadOperation")
         request.predicate = NSPredicate(format: "(groupID == %@)", groupID)
         guard let results = (try? managedContext.fetch(request)) as? [MediaUploadOperation] else {
@@ -168,7 +168,7 @@ extension SharedCoreDataStack {
     ///   - sessionID: background session ID
     /// - Returns: MediaUploadOperation or nil
     ///
-    func fetchMediaUploadOp(for fileName: String, with sessionID: String) -> MediaUploadOperation? {
+    public func fetchMediaUploadOp(for fileName: String, with sessionID: String) -> MediaUploadOperation? {
         guard let fileNameWithoutExtension = URL(string: fileName)?.deletingPathExtension().lastPathComponent else {
             return nil
         }
@@ -192,7 +192,7 @@ extension SharedCoreDataStack {
     ///   - sessionID: background session ID
     /// - Returns: An array of UploadOperations or nil
     ///
-    func fetchSessionUploadOps(for taskIdentifier: Int, with sessionID: String) -> [UploadOperation]? {
+    public func fetchSessionUploadOps(for taskIdentifier: Int, with sessionID: String) -> [UploadOperation]? {
         var uploadOps: [UploadOperation]?
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "UploadOperation")
         request.predicate = NSPredicate(format: "(backgroundSessionTaskID == %d AND backgroundSessionIdentifier == %@)", taskIdentifier, sessionID)
@@ -216,7 +216,7 @@ extension SharedCoreDataStack {
     ///   - status: New status
     ///   - uploadOpObjectID: Managed object ID for a given upload op
     ///
-    func updateStatus(_ status: UploadOperation.UploadStatus, forUploadOpWithObjectID uploadOpObjectID: NSManagedObjectID) {
+    public func updateStatus(_ status: UploadOperation.UploadStatus, forUploadOpWithObjectID uploadOpObjectID: NSManagedObjectID) {
         var uploadOp: UploadOperation?
         do {
             uploadOp = try managedContext.existingObject(with: uploadOpObjectID) as? UploadOperation
@@ -238,7 +238,7 @@ extension SharedCoreDataStack {
     ///   - status: New status
     /// - Returns: Managed object ID of newly saved media upload operation object
     ///
-    func saveMediaOperation(_ remoteMedia: RemoteMedia, sessionID: String, groupIdentifier: String, siteID: NSNumber, with status: UploadOperation.UploadStatus) -> NSManagedObjectID {
+    public func saveMediaOperation(_ remoteMedia: RemoteMedia, sessionID: String, groupIdentifier: String, siteID: NSNumber, with status: UploadOperation.UploadStatus) -> NSManagedObjectID {
         let mediaUploadOp = MediaUploadOperation(context: managedContext)
         mediaUploadOp.updateWithMedia(remote: remoteMedia)
         mediaUploadOp.backgroundSessionIdentifier = sessionID
@@ -262,7 +262,7 @@ extension SharedCoreDataStack {
     ///   - remoteMediaID: remote media ID
     ///   - remoteURL: remote media URL string
     ///
-    func updateMediaOperation(for fileName: String, with sessionID: String, remoteMediaID: Int64?, remoteURL: String?, width: Int32?, height: Int32?) {
+    public func updateMediaOperation(for fileName: String, with sessionID: String, remoteMediaID: Int64?, remoteURL: String?, width: Int32?, height: Int32?) {
         guard let mediaUploadOp = fetchMediaUploadOp(for: fileName, with: sessionID) else {
             DDLogError("Error loading UploadOperation Object with File Name: \(fileName)")
             return
@@ -289,7 +289,7 @@ extension SharedCoreDataStack {
     ///   - status: New status
     /// - Returns: Managed object ID of newly saved post upload operation object
     ///
-    func savePostOperation(_ remotePost: RemotePost, groupIdentifier: String, with status: UploadOperation.UploadStatus) -> NSManagedObjectID {
+    public func savePostOperation(_ remotePost: RemotePost, groupIdentifier: String, with status: UploadOperation.UploadStatus) -> NSManagedObjectID {
         let postUploadOp = PostUploadOperation(context: managedContext)
         postUploadOp.updateWithPost(remote: remotePost)
         postUploadOp.groupID = groupIdentifier
@@ -307,7 +307,7 @@ extension SharedCoreDataStack {
     ///   - remotePostID: New remote post ID
     ///   - postUploadOpObjectID: Managed object ID for a given post upload op
     ///
-    func updatePostOperation(with status: UploadOperation.UploadStatus, remotePostID: Int64, forPostUploadOpWithObjectID postUploadOpObjectID: NSManagedObjectID) {
+    public func updatePostOperation(with status: UploadOperation.UploadStatus, remotePostID: Int64, forPostUploadOpWithObjectID postUploadOpObjectID: NSManagedObjectID) {
         guard let postUploadOp = (try? managedContext.existingObject(with: postUploadOpObjectID)) as? PostUploadOperation else {
             DDLogError("Error loading PostUploadOperation Object with ID: \(postUploadOpObjectID)")
             return
@@ -323,7 +323,7 @@ extension SharedCoreDataStack {
     ///   - taskID: New background session task ID
     ///   - uploadOpObjectID: Managed object ID for a given upload op
     ///
-    func updateTaskID(_ taskID: NSNumber, forUploadOpWithObjectID uploadOpObjectID: NSManagedObjectID) {
+    public func updateTaskID(_ taskID: NSNumber, forUploadOpWithObjectID uploadOpObjectID: NSManagedObjectID) {
         var uploadOp: UploadOperation?
         do {
             uploadOp = try managedContext.existingObject(with: uploadOpObjectID) as? UploadOperation
