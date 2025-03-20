@@ -52,7 +52,7 @@ enum FeatureFlag: Int, CaseIterable {
         case .bloggingPrompts:
             return AppConfiguration.isJetpack
         case .jetpackDisconnect:
-            return BuildConfiguration.current == .localDeveloper
+            return BuildConfiguration.current == .debug
         case .siteIconCreator:
             return BuildConfiguration.current != .appStore
         case .betaSiteDesigns:
@@ -64,7 +64,7 @@ enum FeatureFlag: Int, CaseIterable {
         case .googleDomainsCard:
             return false
         case .voiceToContent:
-            return AppConfiguration.isJetpack && BuildConfiguration.current ~= [.localDeveloper, .alpha]
+            return AppConfiguration.isJetpack && BuildConfiguration.current ~= [.debug, .alpha]
         case .authenticateUsingApplicationPassword:
             return false
         case .newGutenberg:

@@ -13,7 +13,7 @@ protocol LinkRouter {
 struct UniversalLinkRouter: LinkRouter {
     private let matcher: RouteMatcher
 
-    private static let extraLoggingEnabled = BuildConfiguration.current == .localDeveloper
+    private static let extraLoggingEnabled = BuildConfiguration.current == .debug
 
     init(routes: [Route]) {
         matcher = RouteMatcher(routes: routes)

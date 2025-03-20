@@ -1,7 +1,7 @@
 /// The configuration the app was compiled with.
 public enum BuildConfiguration: String, Sendable {
     /// Development build, usually run from Xcode.
-    case localDeveloper = "debug"
+    case debug = "debug"
 
     /// Preproduction builds for Automattic employees.
     case alpha = "alpha"
@@ -18,6 +18,6 @@ public enum BuildConfiguration: String, Sendable {
     }
 
     public var isInternal: Bool {
-        self ~= [.localDeveloper, .alpha]
+        self ~= [.debug, .alpha]
     }
 }
