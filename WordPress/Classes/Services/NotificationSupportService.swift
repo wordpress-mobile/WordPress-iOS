@@ -1,6 +1,7 @@
 import Foundation
 import BuildSettingsKit
 import SFHFKeychainUtils
+import NotificationServiceExtensionCore
 
 @objc
 open class NotificationSupportService: NSObject {
