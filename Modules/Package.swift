@@ -62,6 +62,11 @@ let package = Package(
             .product(name: "Collections", package: "swift-collections"),
             .product(name: "Gifu", package: "Gifu"),
         ]),
+        .target(name: "AztecExtensions", dependencies: [
+            "WordPressShared",
+            .product(name: "Gridicons", package: "Gridicons-iOS"),
+            .product(name: "Aztec", package: "AztecEditor-iOS"),
+        ], swiftSettings: [.swiftLanguageMode(.v5)]),
         .target(name: "BuildSettingsKit"),
         .target(
             name: "DesignSystem",
@@ -76,7 +81,13 @@ let package = Package(
         .target(name: "JetpackStatsWidgetsCore", swiftSettings: [.swiftLanguageMode(.v5)]),
         .target(
             name: "ShareExtensionCore",
-            dependencies: ["BuildSettingsKit", "SFHFKeychainUtils"]
+            dependencies: [
+                "BuildSettingsKit",
+                "SFHFKeychainUtils",
+                "WordPressShared",
+                .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
+                .product(name: "WordPressKit", package: "WordPressKit-iOS"),
+            ]
         ),
         .target(
             name: "NotificationServiceExtensionCore",
@@ -189,6 +200,7 @@ enum XcodeSupport {
         ]
 
         let shareAndDraftExtensionsDependencies: [Target.Dependency] = [
+            "AztecExtensions",
             "BuildSettingsKit",
             "SFHFKeychainUtils",
             "ShareExtensionCore",
@@ -213,6 +225,8 @@ enum XcodeSupport {
 
         return [
             .xcodeTarget("XcodeTarget_App", dependencies: [
+                "AsyncImageKit",
+                "AztecExtensions",
                 "DesignSystem",
                 "BuildSettingsKit",
                 "FormattableContentKit",
@@ -224,7 +238,6 @@ enum XcodeSupport {
                 "WordPressFlux",
                 "WordPressShared",
                 "WordPressReader",
-                "AsyncImageKit",
                 "WordPressUI",
                 "WordPressCore",
                 .product(name: "Alamofire", package: "Alamofire"),

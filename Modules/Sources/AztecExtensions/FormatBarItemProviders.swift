@@ -1,10 +1,9 @@
-import Foundation
+import UIKit
 import Gridicons
 import Aztec
-import UIKit
 import WordPressShared
 
-protocol FormatBarItemProvider {
+public protocol FormatBarItemProvider {
     var iconImage: UIImage { get }
     var accessibilityIdentifier: String { get }
     var accessibilityLabel: String { get }
@@ -13,7 +12,7 @@ protocol FormatBarItemProvider {
 // MARK: - FormattingIdentifier
 //
 extension FormattingIdentifier: FormatBarItemProvider {
-    var iconImage: UIImage {
+    public var iconImage: UIImage {
         switch self {
         case .media:
             return .gridicon(.addOutline)
@@ -68,7 +67,7 @@ extension FormattingIdentifier: FormatBarItemProvider {
         return UIView.userInterfaceLayoutDirection(for: .unspecified)
     }
 
-    var accessibilityIdentifier: String {
+    public var accessibilityIdentifier: String {
         switch self {
         case .media:
             return "format_toolbar_insert_media"
@@ -115,7 +114,7 @@ extension FormattingIdentifier: FormatBarItemProvider {
         }
     }
 
-    var accessibilityLabel: String {
+    public var accessibilityLabel: String {
         switch self {
         case .media:
             return AppLocalizedString("Insert media", comment: "Accessibility label for insert media button on formatting toolbar.")
@@ -163,7 +162,7 @@ extension FormattingIdentifier: FormatBarItemProvider {
     }
 }
 
-enum FormatBarMediaIdentifier: String {
+public enum FormatBarMediaIdentifier: String {
     case deviceLibrary
     case camera
     case mediaLibrary
@@ -171,7 +170,7 @@ enum FormatBarMediaIdentifier: String {
 }
 
 extension FormatBarMediaIdentifier: FormatBarItemProvider {
-    var iconImage: UIImage {
+    public var iconImage: UIImage {
         switch self {
         case .deviceLibrary:
             return .gridicon(.imageMultiple)
@@ -184,7 +183,7 @@ extension FormatBarMediaIdentifier: FormatBarItemProvider {
         }
     }
 
-    var accessibilityIdentifier: String {
+    public var accessibilityIdentifier: String {
         switch self {
         case .deviceLibrary:
             return "format_toolbar_media_photo_library"
@@ -197,7 +196,7 @@ extension FormatBarMediaIdentifier: FormatBarItemProvider {
         }
     }
 
-    var accessibilityLabel: String {
+    public var accessibilityLabel: String {
         switch self {
         case .deviceLibrary:
             return AppLocalizedString("Photo Library", comment: "Accessibility label for selecting an image or video from the device's photo library on formatting toolbar.")

@@ -1,5 +1,6 @@
 import Foundation
 import UserNotifications
+import ShareExtensionCore
 import WordPressFlux
 
 // MARK: - InteractiveNotificationsManager

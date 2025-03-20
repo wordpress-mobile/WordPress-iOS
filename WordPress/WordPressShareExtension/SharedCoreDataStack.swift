@@ -1,5 +1,6 @@
 import Foundation
 import CoreData
+import CocoaLumberjackSwift
 import BuildSettingsKit
 import WordPressKit
 

@@ -1,5 +1,6 @@
 import AutomatticTracks
 import Aztec
+import AztecExtensions
 import Combine
 import Foundation
 import WordPressData

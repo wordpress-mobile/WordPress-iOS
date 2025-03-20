@@ -2,25 +2,24 @@ import Foundation
 import Aztec
 import Gridicons
 import WordPressShared
-import WordPressUI
 
 // MARK: - Header and List presentation extensions
 //
 extension Header.HeaderType {
-    var formattingIdentifier: FormattingIdentifier {
+    public var formattingIdentifier: FormattingIdentifier {
         switch self {
         case .none: return FormattingIdentifier.p
-        case .h1:   return FormattingIdentifier.header1
-        case .h2:   return FormattingIdentifier.header2
-        case .h3:   return FormattingIdentifier.header3
-        case .h4:   return FormattingIdentifier.header4
-        case .h5:   return FormattingIdentifier.header5
-        case .h6:   return FormattingIdentifier.header6
+        case .h1: return FormattingIdentifier.header1
+        case .h2: return FormattingIdentifier.header2
+        case .h3: return FormattingIdentifier.header3
+        case .h4: return FormattingIdentifier.header4
+        case .h5: return FormattingIdentifier.header5
+        case .h6: return FormattingIdentifier.header6
         @unknown default: fatalError()
         }
     }
 
-    var description: String {
+    public var description: String {
         switch self {
         case .none: return AppLocalizedString("Default", comment: "Description of the default paragraph formatting style in the editor.")
         case .h1: return AppLocalizedString("Heading 1", comment: "H1 Aztec Style")
@@ -33,7 +32,7 @@ extension Header.HeaderType {
         }
     }
 
-    var accessibilityLabel: String {
+    public var accessibilityLabel: String {
         switch self {
         case .none: return AppLocalizedString("Switches to the default Font Size", comment: "Accessibility Identifier for the Default Font Aztec Style.")
         case .h1: return AppLocalizedString("Switches to the Heading 1 font size", comment: "Accessibility Identifier for the H1 Aztec Style")
@@ -46,7 +45,7 @@ extension Header.HeaderType {
         }
     }
 
-    var iconImage: UIImage? {
+    public var iconImage: UIImage? {
         switch self {
         case .none: return UIImage(color: .clear, size: Gridicon.defaultSize)
         default: return formattingIdentifier.iconImage

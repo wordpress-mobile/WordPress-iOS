@@ -13,7 +13,7 @@ extension String {
     ///
     /// - Returns: the new string.
     ///
-    func replacingMatches(of regex: String, options: NSRegularExpression.Options = [], using block: (String, [String]) -> String) -> String {
+    public func replacingMatches(of regex: String, options: NSRegularExpression.Options = [], using block: (String, [String]) -> String) -> String {
 
         let regex = try! NSRegularExpression(pattern: regex, options: options)
         let fullRange = NSRange(location: 0, length: count)
@@ -47,7 +47,7 @@ extension String {
     ///
     /// - Returns: the requested matches.
     ///
-    func matches(regex: String, options: NSRegularExpression.Options = []) -> [NSTextCheckingResult] {
+    public func matches(regex: String, options: NSRegularExpression.Options = []) -> [NSTextCheckingResult] {
         let regex = try! NSRegularExpression(pattern: regex, options: options)
         let fullRange = NSRange(location: 0, length: count)
 
@@ -63,7 +63,7 @@ extension String {
     ///
     /// - Returns: a new string after replacing all matches with the specified template.
     ///
-    func replacingMatches(of regex: String, with template: String, options: NSRegularExpression.Options = []) -> String {
+    public func replacingMatches(of regex: String, with template: String, options: NSRegularExpression.Options = []) -> String {
 
         let regex = try! NSRegularExpression(pattern: regex, options: options)
         let fullRange = NSRange(location: 0, length: count)

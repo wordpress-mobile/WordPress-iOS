@@ -690,7 +690,6 @@
 		74021A0A202E1329006CC39F /* AppExtensionsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74FA2EE3200E8A6C001DDC13 /* AppExtensionsService.swift */; };
 		74021A0B202E1330006CC39F /* WPStyleGuide+Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50248AE1C96FF6200AFBDED /* WPStyleGuide+Share.swift */; };
 		74021A0C202E1338006CC39F /* ShareExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CE41641E8D101A000CF5A4 /* ShareExtractor.swift */; };
-		74021A0D202E133D006CC39F /* ShareMediaFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7430C4481F97F23600E2673E /* ShareMediaFileManager.swift */; };
 		74021A0F202E1370006CC39F /* ExtensionTransitioningManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74402F2B2005337D00A1D4A2 /* ExtensionTransitioningManager.swift */; };
 		74021A10202E1370006CC39F /* ExtensionPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74402F29200528F200A1D4A2 /* ExtensionPresentationController.swift */; };
 		74021A11202E1370006CC39F /* ExtensionPresentationAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74402F2D2005344700A1D4A2 /* ExtensionPresentationAnimator.swift */; };
@@ -698,7 +697,6 @@
 		74021A14202E1393006CC39F /* ShareExtensionEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F5CD391FE0653500764E7C /* ShareExtensionEditorViewController.swift */; };
 		74021A15202E1397006CC39F /* ShareModularViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6787F41FFF2886005D9F01 /* ShareModularViewController.swift */; };
 		74021A16202E139A006CC39F /* ShareData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745EAF4920040B220066F415 /* ShareData.swift */; };
-		74021A17202E13C6006CC39F /* SharePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = E125F1E31E8E595E00320B67 /* SharePost.swift */; };
 		740C7C4F202F4CD6001C31B0 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 740C7C4E202F4CD6001C31B0 /* MainInterface.storyboard */; };
 		7414A141203CBAE0005A7D9B /* ShareCategoriesPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7414A140203CBADF005A7D9B /* ShareCategoriesPickerViewController.swift */; };
 		7414A142203CD066005A7D9B /* ShareCategoriesPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7414A140203CBADF005A7D9B /* ShareCategoriesPickerViewController.swift */; };
@@ -706,7 +704,6 @@
 		741AF3A5202F3E2A00C771A5 /* Tracks+DraftAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741AF3A4202F3E2A00C771A5 /* Tracks+DraftAction.swift */; };
 		741E22461FC0CC55007967AB /* UploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741E22441FC0CC55007967AB /* UploadOperation.swift */; };
 		741E224B1FC0E5C0007967AB /* UploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741E22441FC0CC55007967AB /* UploadOperation.swift */; };
-		7430C4491F97F23600E2673E /* ShareMediaFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7430C4481F97F23600E2673E /* ShareMediaFileManager.swift */; };
 		74337EDD20054D5500777997 /* MainShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74337EDC20054D5500777997 /* MainShareViewController.swift */; };
 		74402F2A200528F200A1D4A2 /* ExtensionPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74402F29200528F200A1D4A2 /* ExtensionPresentationController.swift */; };
 		74402F2C2005337D00A1D4A2 /* ExtensionTransitioningManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74402F2B2005337D00A1D4A2 /* ExtensionTransitioningManager.swift */; };
@@ -720,8 +717,6 @@
 		745EAF452003FD050066F415 /* ShareSegueHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745EAF442003FD050066F415 /* ShareSegueHandler.swift */; };
 		745EAF472003FDAA0066F415 /* ShareExtensionAbstractViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745EAF462003FDAA0066F415 /* ShareExtensionAbstractViewController.swift */; };
 		745EAF4A20040B220066F415 /* ShareData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745EAF4920040B220066F415 /* ShareData.swift */; };
-		7462BFD02028C49800B552D8 /* ShareNoticeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7462BFCF2028C49800B552D8 /* ShareNoticeViewModel.swift */; };
-		7462BFD42028CD4400B552D8 /* ShareNoticeNavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7462BFD32028CD4400B552D8 /* ShareNoticeNavigationCoordinator.swift */; };
 		746D6B251FBF701F003C45BE /* SharedCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746D6B241FBF701F003C45BE /* SharedCoreDataStack.swift */; };
 		747D09862034837C0085EABF /* WordPressShare.js in Resources */ = {isa = PBXBuildFile; fileRef = E1AFA8C21E8E34230004A323 /* WordPressShare.js */; };
 		747F88C1203778E000523C7C /* ShareTagsPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 747F88C0203778E000523C7C /* ShareTagsPickerViewController.swift */; };
@@ -733,21 +728,13 @@
 		748437F11F1D4ECC00E8DDAF /* notifications-last-seen.json in Resources */ = {isa = PBXBuildFile; fileRef = 748BD8881F1923D500813F9A /* notifications-last-seen.json */; };
 		7484D94D20320DFE006E94B4 /* WordPressShare.js in Resources */ = {isa = PBXBuildFile; fileRef = E1AFA8C21E8E34230004A323 /* WordPressShare.js */; };
 		748BD8851F19234300813F9A /* notifications-mark-as-read.json in Resources */ = {isa = PBXBuildFile; fileRef = 748BD8841F19234300813F9A /* notifications-mark-as-read.json */; };
-		7492F78E1F9BD94500B5A04A /* ShareMediaFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7430C4481F97F23600E2673E /* ShareMediaFileManager.swift */; };
 		74AC1DA1200D0CC300973CAD /* UINavigationController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AC1DA0200D0CC300973CAD /* UINavigationController+Extensions.swift */; };
 		74AF4D741FE417D200E3EBFE /* MediaUploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AF4D6D1FE417D200E3EBFE /* MediaUploadOperation.swift */; };
 		74AF4D751FE417D200E3EBFE /* MediaUploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AF4D6D1FE417D200E3EBFE /* MediaUploadOperation.swift */; };
 		74AF4D7C1FE417D200E3EBFE /* PostUploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AF4D711FE417D200E3EBFE /* PostUploadOperation.swift */; };
 		74AF4D7D1FE417D200E3EBFE /* PostUploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AF4D711FE417D200E3EBFE /* PostUploadOperation.swift */; };
 		74B335EC1F06F9520053A184 /* MockWordPressComRestApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B335EB1F06F9520053A184 /* MockWordPressComRestApi.swift */; };
-		74BC35B820499EEB00AC1525 /* RemotePostCategory+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74BC35B720499EEB00AC1525 /* RemotePostCategory+Extensions.swift */; };
-		74BC35B920499EEB00AC1525 /* RemotePostCategory+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74BC35B720499EEB00AC1525 /* RemotePostCategory+Extensions.swift */; };
-		74BC35BA20499EEB00AC1525 /* RemotePostCategory+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74BC35B720499EEB00AC1525 /* RemotePostCategory+Extensions.swift */; };
-		74CEF0781F9AA10100B729CA /* ShareExtensionSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74CEF0761F9AA0F700B729CA /* ShareExtensionSessionManager.swift */; };
 		74E44AD52031E83C00556205 /* ExtensionNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F89406202A1965008610FA /* ExtensionNotificationManager.swift */; };
-		74E44AD62031E85A00556205 /* ShareNoticeConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EA3B87202A0462004F802D /* ShareNoticeConstants.swift */; };
-		74EA3B88202A0462004F802D /* ShareNoticeConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EA3B87202A0462004F802D /* ShareNoticeConstants.swift */; };
-		74EA3B89202A0462004F802D /* ShareNoticeConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EA3B87202A0462004F802D /* ShareNoticeConstants.swift */; };
 		74F5CD381FE0646F00764E7C /* ShareExtension.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 74F5CD371FE0646F00764E7C /* ShareExtension.storyboard */; };
 		74F5CD3A1FE0653500764E7C /* ShareExtensionEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F5CD391FE0653500764E7C /* ShareExtensionEditorViewController.swift */; };
 		74F89407202A1965008610FA /* ExtensionNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F89406202A1965008610FA /* ExtensionNotificationManager.swift */; };
@@ -801,7 +788,6 @@
 		806E53E427E01CFE0064315E /* DashboardStatsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E53E327E01CFE0064315E /* DashboardStatsViewModelTests.swift */; };
 		8070EB3E28D807CB005C6513 /* InMemoryUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8070EB3D28D807CB005C6513 /* InMemoryUserDefaults.swift */; };
 		809620D228E540D700940A5D /* UploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741E22441FC0CC55007967AB /* UploadOperation.swift */; };
-		809620D428E540D700940A5D /* ShareNoticeConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EA3B87202A0462004F802D /* ShareNoticeConstants.swift */; };
 		809620D528E540D700940A5D /* WPStyleGuide+Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50248AE1C96FF6200AFBDED /* WPStyleGuide+Share.swift */; };
 		809620D628E540D700940A5D /* ShareExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CE41641E8D101A000CF5A4 /* ShareExtractor.swift */; };
 		809620D928E540D700940A5D /* ShareTagsPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 747F88C0203778E000523C7C /* ShareTagsPickerViewController.swift */; };
@@ -811,7 +797,6 @@
 		809620DF28E540D700940A5D /* Extensions.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 74FA4BE31FBFA0660031EAAD /* Extensions.xcdatamodeld */; };
 		809620E228E540D700940A5D /* AppExtensionsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74FA2EE3200E8A6C001DDC13 /* AppExtensionsService.swift */; };
 		809620E328E540D700940A5D /* ExtensionNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F89406202A1965008610FA /* ExtensionNotificationManager.swift */; };
-		809620E628E540D700940A5D /* SharePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = E125F1E31E8E595E00320B67 /* SharePost.swift */; };
 		809620E728E540D700940A5D /* ShareData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745EAF4920040B220066F415 /* ShareData.swift */; };
 		809620EA28E540D700940A5D /* ExtensionTransitioningManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74402F2B2005337D00A1D4A2 /* ExtensionTransitioningManager.swift */; };
 		809620EB28E540D700940A5D /* MainShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74337EDC20054D5500777997 /* MainShareViewController.swift */; };
@@ -829,9 +814,7 @@
 		8096210128E540D700940A5D /* PostUploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AF4D711FE417D200E3EBFE /* PostUploadOperation.swift */; };
 		8096210628E540D700940A5D /* Tracks+ShareExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B504F5F41C9C2BD000F8B1C6 /* Tracks+ShareExtension.swift */; };
 		8096210828E540D700940A5D /* ShareSegueHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745EAF442003FD050066F415 /* ShareSegueHandler.swift */; };
-		8096210928E540D700940A5D /* RemotePostCategory+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74BC35B720499EEB00AC1525 /* RemotePostCategory+Extensions.swift */; };
 		8096211028E540D700940A5D /* MediaUploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AF4D6D1FE417D200E3EBFE /* MediaUploadOperation.swift */; };
-		8096211228E540D700940A5D /* ShareMediaFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7430C4481F97F23600E2673E /* ShareMediaFileManager.swift */; };
 		8096211728E540D700940A5D /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 740C7C4E202F4CD6001C31B0 /* MainInterface.storyboard */; };
 		8096211828E540D700940A5D /* WordPressShare.js in Resources */ = {isa = PBXBuildFile; fileRef = E1AFA8C21E8E34230004A323 /* WordPressShare.js */; };
 		8096211928E540D700940A5D /* ShareExtension.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 74F5CD371FE0646F00764E7C /* ShareExtension.storyboard */; };
@@ -845,9 +828,7 @@
 		8096214228E55C9400940A5D /* PostUploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AF4D711FE417D200E3EBFE /* PostUploadOperation.swift */; };
 		8096214828E55C9400940A5D /* ShareExtensionAbstractViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745EAF462003FDAA0066F415 /* ShareExtensionAbstractViewController.swift */; };
 		8096214928E55C9400940A5D /* ExtensionPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74402F29200528F200A1D4A2 /* ExtensionPresentationController.swift */; };
-		8096214A28E55C9400940A5D /* SharePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = E125F1E31E8E595E00320B67 /* SharePost.swift */; };
 		8096214B28E55C9400940A5D /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FA868A1D10A41600AB5F7E /* UIImage+Extensions.swift */; };
-		8096214C28E55C9400940A5D /* ShareMediaFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7430C4481F97F23600E2673E /* ShareMediaFileManager.swift */; };
 		8096214D28E55C9400940A5D /* SharePostTypePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB48172926E0D93D008C2D9B /* SharePostTypePickerViewController.swift */; };
 		8096215028E55C9400940A5D /* ExtensionNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F89406202A1965008610FA /* ExtensionNotificationManager.swift */; };
 		8096215128E55C9400940A5D /* CategoryTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74448F532044BC7600BD4CDA /* CategoryTree.swift */; };
@@ -863,8 +844,6 @@
 		8096216328E55C9400940A5D /* MainShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74337EDC20054D5500777997 /* MainShareViewController.swift */; };
 		8096216628E55C9400940A5D /* ShareModularViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6787F41FFF2886005D9F01 /* ShareModularViewController.swift */; };
 		8096216728E55C9400940A5D /* MediaUploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AF4D6D1FE417D200E3EBFE /* MediaUploadOperation.swift */; };
-		8096216928E55C9400940A5D /* RemotePostCategory+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74BC35B720499EEB00AC1525 /* RemotePostCategory+Extensions.swift */; };
-		8096216A28E55C9400940A5D /* ShareNoticeConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EA3B87202A0462004F802D /* ShareNoticeConstants.swift */; };
 		8096216E28E55C9400940A5D /* ShareExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CE41641E8D101A000CF5A4 /* ShareExtractor.swift */; };
 		8096217328E55C9400940A5D /* AppExtensionsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74FA2EE3200E8A6C001DDC13 /* AppExtensionsService.swift */; };
 		8096217428E55C9400940A5D /* ExtensionPresentationAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74402F2D2005344700A1D4A2 /* ExtensionPresentationAnimator.swift */; };
@@ -1130,8 +1109,6 @@
 		E10F3DA11E5C2CE0008FAADA /* PostListFilterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10F3DA01E5C2CE0008FAADA /* PostListFilterTests.swift */; };
 		E11330511A13BAA300D36D84 /* me-sites-with-jetpack.json in Resources */ = {isa = PBXBuildFile; fileRef = E11330501A13BAA300D36D84 /* me-sites-with-jetpack.json */; };
 		E11DF3E420C97F0A00C0B07C /* NotificationCenterObserveOnceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11DF3E320C97F0A00C0B07C /* NotificationCenterObserveOnceTests.swift */; };
-		E125F1E41E8E595E00320B67 /* SharePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = E125F1E31E8E595E00320B67 /* SharePost.swift */; };
-		E125F1E51E8E596200320B67 /* SharePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = E125F1E31E8E595E00320B67 /* SharePost.swift */; };
 		E12BE5EE1C5235DB000FD5CA /* get-me-settings-v1.1.json in Resources */ = {isa = PBXBuildFile; fileRef = E12BE5ED1C5235DB000FD5CA /* get-me-settings-v1.1.json */; };
 		E131CB5616CACF1E004B0314 /* get-user-blogs_has-blog.json in Resources */ = {isa = PBXBuildFile; fileRef = E131CB5516CACF1E004B0314 /* get-user-blogs_has-blog.json */; };
 		E131CB5816CACFB4004B0314 /* get-user-blogs_doesnt-have-blog.json in Resources */ = {isa = PBXBuildFile; fileRef = E131CB5716CACFB4004B0314 /* get-user-blogs_doesnt-have-blog.json */; };
@@ -1387,19 +1364,12 @@
 		FABB20762602FC2C00C8785C /* WordPressShare.js in Resources */ = {isa = PBXBuildFile; fileRef = E1AFA8C21E8E34230004A323 /* WordPressShare.js */; };
 		FABB207D2602FC2C00C8785C /* RELEASE-NOTES.txt in Resources */ = {isa = PBXBuildFile; fileRef = FF37F90822385C9F00AFA3DB /* RELEASE-NOTES.txt */; };
 		FABB20862602FC2C00C8785C /* n.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5D69DBC3165428CA00A2D1F7 /* n.caf */; };
-		FABB20C92602FC2C00C8785C /* ShareNoticeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7462BFCF2028C49800B552D8 /* ShareNoticeViewModel.swift */; };
 		FABB20CD2602FC2C00C8785C /* PostUploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AF4D711FE417D200E3EBFE /* PostUploadOperation.swift */; };
-		FABB21392602FC2C00C8785C /* ShareExtensionSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74CEF0761F9AA0F700B729CA /* ShareExtensionSessionManager.swift */; };
 		FABB213B2602FC2C00C8785C /* Extensions.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 74FA4BE31FBFA0660031EAAD /* Extensions.xcdatamodeld */; };
-		FABB21F92602FC2C00C8785C /* RemotePostCategory+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74BC35B720499EEB00AC1525 /* RemotePostCategory+Extensions.swift */; };
-		FABB22342602FC2C00C8785C /* ShareNoticeNavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7462BFD32028CD4400B552D8 /* ShareNoticeNavigationCoordinator.swift */; };
 		FABB22452602FC2C00C8785C /* SharedCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746D6B241FBF701F003C45BE /* SharedCoreDataStack.swift */; };
 		FABB22972602FC2C00C8785C /* MediaUploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AF4D6D1FE417D200E3EBFE /* MediaUploadOperation.swift */; };
 		FABB23A32602FC2C00C8785C /* Sites.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 3F46AB0225BF5D6300CE2E98 /* Sites.intentdefinition */; settings = {ATTRIBUTES = (codegen, ); }; };
-		FABB23E62602FC2C00C8785C /* ShareMediaFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7430C4481F97F23600E2673E /* ShareMediaFileManager.swift */; };
 		FABB24062602FC2C00C8785C /* UploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741E22441FC0CC55007967AB /* UploadOperation.swift */; };
-		FABB24EF2602FC2C00C8785C /* ShareNoticeConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EA3B87202A0462004F802D /* ShareNoticeConstants.swift */; };
-		FABB254A2602FC2C00C8785C /* SharePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = E125F1E31E8E595E00320B67 /* SharePost.swift */; };
 		FABB26202602FC2C00C8785C /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E21C760202BBC8D00837CF5 /* iAd.framework */; };
 		FABB26212602FC2C00C8785C /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8298F3911EEF3BA7008EB7F0 /* StoreKit.framework */; };
 		FABB26222602FC2C00C8785C /* CoreSpotlight.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F2E5431E9E5A570050D489 /* CoreSpotlight.framework */; };
@@ -2474,7 +2444,6 @@
 		7414A140203CBADF005A7D9B /* ShareCategoriesPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareCategoriesPickerViewController.swift; sourceTree = "<group>"; };
 		741AF3A4202F3E2A00C771A5 /* Tracks+DraftAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tracks+DraftAction.swift"; sourceTree = "<group>"; };
 		741E22441FC0CC55007967AB /* UploadOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadOperation.swift; sourceTree = "<group>"; };
-		7430C4481F97F23600E2673E /* ShareMediaFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareMediaFileManager.swift; sourceTree = "<group>"; };
 		74337EDC20054D5500777997 /* MainShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainShareViewController.swift; sourceTree = "<group>"; };
 		74402F29200528F200A1D4A2 /* ExtensionPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionPresentationController.swift; sourceTree = "<group>"; };
 		74402F2B2005337D00A1D4A2 /* ExtensionTransitioningManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionTransitioningManager.swift; sourceTree = "<group>"; };
@@ -2488,8 +2457,6 @@
 		745EAF462003FDAA0066F415 /* ShareExtensionAbstractViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareExtensionAbstractViewController.swift; sourceTree = "<group>"; };
 		745EAF4920040B220066F415 /* ShareData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareData.swift; sourceTree = "<group>"; };
 		745F7A69204460A10058BF3E /* Extensions 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Extensions 3.xcdatamodel"; sourceTree = "<group>"; };
-		7462BFCF2028C49800B552D8 /* ShareNoticeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareNoticeViewModel.swift; sourceTree = "<group>"; };
-		7462BFD32028CD4400B552D8 /* ShareNoticeNavigationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareNoticeNavigationCoordinator.swift; sourceTree = "<group>"; };
 		746D6B241FBF701F003C45BE /* SharedCoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedCoreDataStack.swift; sourceTree = "<group>"; };
 		747F88C0203778E000523C7C /* ShareTagsPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareTagsPickerViewController.swift; sourceTree = "<group>"; };
 		748437E91F1D4A4800E8DDAF /* gallery-reader-post-private.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "gallery-reader-post-private.json"; sourceTree = "<group>"; };
@@ -2502,13 +2469,10 @@
 		74AF4D6D1FE417D200E3EBFE /* MediaUploadOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaUploadOperation.swift; sourceTree = "<group>"; };
 		74AF4D711FE417D200E3EBFE /* PostUploadOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostUploadOperation.swift; sourceTree = "<group>"; };
 		74B335EB1F06F9520053A184 /* MockWordPressComRestApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockWordPressComRestApi.swift; sourceTree = "<group>"; };
-		74BC35B720499EEB00AC1525 /* RemotePostCategory+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemotePostCategory+Extensions.swift"; sourceTree = "<group>"; };
 		74CC4313202B5AA4000DAE1A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		74CEF0761F9AA0F700B729CA /* ShareExtensionSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareExtensionSessionManager.swift; sourceTree = "<group>"; };
 		74D6DA90202B651300A0E1FE /* WordPressDraftActionExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WordPressDraftActionExtension.entitlements; sourceTree = "<group>"; };
 		74D6DA92202B669100A0E1FE /* WordPressDraftActionExtension-Alpha.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = "WordPressDraftActionExtension-Alpha.entitlements"; sourceTree = "<group>"; };
 		74E44AD82031ED2300556205 /* WordPressDraftPrefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressDraftPrefix.pch; sourceTree = "<group>"; };
-		74EA3B87202A0462004F802D /* ShareNoticeConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareNoticeConstants.swift; sourceTree = "<group>"; };
 		74F5CD371FE0646F00764E7C /* ShareExtension.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ShareExtension.storyboard; sourceTree = "<group>"; };
 		74F5CD391FE0653500764E7C /* ShareExtensionEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareExtensionEditorViewController.swift; sourceTree = "<group>"; };
 		74F89406202A1965008610FA /* ExtensionNotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionNotificationManager.swift; sourceTree = "<group>"; };
@@ -2855,7 +2819,6 @@
 		E11DF3E320C97F0A00C0B07C /* NotificationCenterObserveOnceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCenterObserveOnceTests.swift; sourceTree = "<group>"; };
 		E1225A4C147E6D2400B4F3A0 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E1225A4D147E6D2C00B4F3A0 /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = id.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E125F1E31E8E595E00320B67 /* SharePost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharePost.swift; sourceTree = "<group>"; };
 		E12963A8174654B2002E7744 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E12BE5ED1C5235DB000FD5CA /* get-me-settings-v1.1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "get-me-settings-v1.1.json"; sourceTree = "<group>"; };
 		E12F95A51557C9C20067A653 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -3186,19 +3149,10 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Extensions/Colors and Styles/WPStyleGuide+ApplicationStyles.swift",
-				"Extensions/NSAttributedStringKey+Conversion.swift",
-				"Extensions/String+RegEx.swift",
-				"Extensions/UIApplication+mainWindow.swift",
 				"Utility/App Configuration/AppConfiguration.swift",
 				"Utility/App Configuration/AppStyleGuide.swift",
 				Utility/BuildInformation/BuildConfiguration.swift,
-				Utility/Logging/CocoaLumberjack.swift,
-				ViewRelated/Aztec/Extensions/FormatBarItemProviders.swift,
-				"ViewRelated/Aztec/Extensions/Header+WordPress.swift",
-				"ViewRelated/Aztec/Extensions/TextList+WordPress.swift",
-				ViewRelated/Aztec/Processors/ImgUploadProcessor.swift,
 				ViewRelated/Cells/WPReusableTableViewCells.swift,
-				ViewRelated/Tools/TableViewKeyboardObserver.swift,
 				ViewRelated/Views/NoResults.storyboard,
 				ViewRelated/Views/NoResultsViewController.swift,
 			);
@@ -3208,19 +3162,10 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Extensions/Colors and Styles/WPStyleGuide+ApplicationStyles.swift",
-				"Extensions/NSAttributedStringKey+Conversion.swift",
-				"Extensions/String+RegEx.swift",
-				"Extensions/UIApplication+mainWindow.swift",
 				"Utility/App Configuration/AppConfiguration.swift",
 				"Utility/App Configuration/AppStyleGuide.swift",
 				Utility/BuildInformation/BuildConfiguration.swift,
-				Utility/Logging/CocoaLumberjack.swift,
-				ViewRelated/Aztec/Extensions/FormatBarItemProviders.swift,
-				"ViewRelated/Aztec/Extensions/Header+WordPress.swift",
-				"ViewRelated/Aztec/Extensions/TextList+WordPress.swift",
-				ViewRelated/Aztec/Processors/ImgUploadProcessor.swift,
 				ViewRelated/Cells/WPReusableTableViewCells.swift,
-				ViewRelated/Tools/TableViewKeyboardObserver.swift,
 				ViewRelated/Views/NoResults.storyboard,
 				ViewRelated/Views/NoResultsViewController.swift,
 			);
@@ -3235,17 +3180,10 @@
 			);
 			target = 7358E6B7210BD318002323EB /* WordPressNotificationServiceExtension */;
 		};
-		24CE68B32CD3375300C7B37D /* Exceptions for "Classes" folder in "WordPressTest" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				"Extensions/UIApplication+mainWindow.swift",
-			);
-			target = E16AB92914D978240047A2E5 /* WordPressTest */;
-		};
 		24CE68B42CD3375300C7B37D /* Exceptions for "Classes" folder in "WordPressUITests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				"Extensions/UIApplication+mainWindow.swift",
+				"Extensions/UIApplication+MainWindow.swift",
 			);
 			target = FF27168E1CAAC87A0006E2D4 /* WordPressUITests */;
 		};
@@ -3262,18 +3200,9 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Extensions/Colors and Styles/WPStyleGuide+ApplicationStyles.swift",
-				"Extensions/NSAttributedStringKey+Conversion.swift",
-				"Extensions/String+RegEx.swift",
-				"Extensions/UIApplication+mainWindow.swift",
 				"Utility/App Configuration/AppStyleGuide.swift",
 				Utility/BuildInformation/BuildConfiguration.swift,
-				Utility/Logging/CocoaLumberjack.swift,
-				ViewRelated/Aztec/Extensions/FormatBarItemProviders.swift,
-				"ViewRelated/Aztec/Extensions/Header+WordPress.swift",
-				"ViewRelated/Aztec/Extensions/TextList+WordPress.swift",
-				ViewRelated/Aztec/Processors/ImgUploadProcessor.swift,
 				ViewRelated/Cells/WPReusableTableViewCells.swift,
-				ViewRelated/Tools/TableViewKeyboardObserver.swift,
 				ViewRelated/Views/NoResults.storyboard,
 				ViewRelated/Views/NoResultsViewController.swift,
 			);
@@ -3283,18 +3212,9 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Extensions/Colors and Styles/WPStyleGuide+ApplicationStyles.swift",
-				"Extensions/NSAttributedStringKey+Conversion.swift",
-				"Extensions/String+RegEx.swift",
-				"Extensions/UIApplication+mainWindow.swift",
 				"Utility/App Configuration/AppStyleGuide.swift",
 				Utility/BuildInformation/BuildConfiguration.swift,
-				Utility/Logging/CocoaLumberjack.swift,
-				ViewRelated/Aztec/Extensions/FormatBarItemProviders.swift,
-				"ViewRelated/Aztec/Extensions/Header+WordPress.swift",
-				"ViewRelated/Aztec/Extensions/TextList+WordPress.swift",
-				ViewRelated/Aztec/Processors/ImgUploadProcessor.swift,
 				ViewRelated/Cells/WPReusableTableViewCells.swift,
-				ViewRelated/Tools/TableViewKeyboardObserver.swift,
 				ViewRelated/Views/NoResults.storyboard,
 				ViewRelated/Views/NoResultsViewController.swift,
 			);
@@ -3311,7 +3231,7 @@
 		24CE68BB2CD3375300C7B37D /* Exceptions for "Classes" folder in "JetpackUITests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				"Extensions/UIApplication+mainWindow.swift",
+				"Extensions/UIApplication+MainWindow.swift",
 			);
 			target = EA14532229AD874C001F3143 /* JetpackUITests */;
 		};
@@ -3325,7 +3245,6 @@
 				24CE68AF2CD3375300C7B37D /* Exceptions for "Classes" folder in "WordPressShareExtension" target */,
 				24CE68B02CD3375300C7B37D /* Exceptions for "Classes" folder in "WordPressDraftActionExtension" target */,
 				24CE68B22CD3375300C7B37D /* Exceptions for "Classes" folder in "WordPressNotificationServiceExtension" target */,
-				24CE68B32CD3375300C7B37D /* Exceptions for "Classes" folder in "WordPressTest" target */,
 				24CE68B42CD3375300C7B37D /* Exceptions for "Classes" folder in "WordPressUITests" target */,
 				24CE68B52CD3375300C7B37D /* Exceptions for "Classes" folder in "Jetpack" target */,
 				24CE68B62CD3375300C7B37D /* Exceptions for "Classes" folder in "JetpackShareExtension" target */,
@@ -3997,7 +3916,6 @@
 				24CE57C42CD3375200C7B37D /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
-				E125F1E21E8E594C00320B67 /* Shared */,
 				FABB1F8E2602FC0100C8785C /* Jetpack */,
 				8096218728E55CB800940A5D /* JetpackDraftActionExtension */,
 				F1F163BF25658B4D003DC13B /* JetpackIntents */,
@@ -5229,9 +5147,6 @@
 			isa = PBXGroup;
 			children = (
 				74F89406202A1965008610FA /* ExtensionNotificationManager.swift */,
-				74EA3B87202A0462004F802D /* ShareNoticeConstants.swift */,
-				7462BFCF2028C49800B552D8 /* ShareNoticeViewModel.swift */,
-				7462BFD32028CD4400B552D8 /* ShareNoticeNavigationCoordinator.swift */,
 			);
 			name = Notices;
 			sourceTree = "<group>";
@@ -5670,8 +5585,6 @@
 			isa = PBXGroup;
 			children = (
 				E1CE41641E8D101A000CF5A4 /* ShareExtractor.swift */,
-				7430C4481F97F23600E2673E /* ShareMediaFileManager.swift */,
-				74CEF0761F9AA0F700B729CA /* ShareExtensionSessionManager.swift */,
 				74448F532044BC7600BD4CDA /* CategoryTree.swift */,
 			);
 			name = Tools;
@@ -5817,7 +5730,6 @@
 				B5552D7D1CD101A600B26DF6 /* NSExtensionContext+Extensions.swift */,
 				B5FA868A1D10A41600AB5F7E /* UIImage+Extensions.swift */,
 				74AC1DA0200D0CC300973CAD /* UINavigationController+Extensions.swift */,
-				74BC35B720499EEB00AC1525 /* RemotePostCategory+Extensions.swift */,
 				CE39E17120CB117B00CABA05 /* RemoteBlog+Capabilities.swift */,
 				CBF6201226E8FB520061A1F8 /* RemotePost+ShareData.swift */,
 			);
@@ -6277,14 +6189,6 @@
 				4AC299D52C6EEAD0002E74C8 /* ApplicationPasswords */,
 			);
 			name = Tests;
-			sourceTree = "<group>";
-		};
-		E125F1E21E8E594C00320B67 /* Shared */ = {
-			isa = PBXGroup;
-			children = (
-				E125F1E31E8E595E00320B67 /* SharePost.swift */,
-			);
-			path = Shared;
 			sourceTree = "<group>";
 		};
 		E131CB5B16CAD638004B0314 /* Helpers */ = {
@@ -8594,16 +8498,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7462BFD02028C49800B552D8 /* ShareNoticeViewModel.swift in Sources */,
 				74AF4D7C1FE417D200E3EBFE /* PostUploadOperation.swift in Sources */,
-				74CEF0781F9AA10100B729CA /* ShareExtensionSessionManager.swift in Sources */,
 				74FA4BE51FBFA0660031EAAD /* Extensions.xcdatamodeld in Sources */,
 				F446B843296F2DED008B94B7 /* MigrationState.swift in Sources */,
 				F49B9A0029393049000CEFCE /* MigrationAppDetection.swift in Sources */,
-				74BC35B820499EEB00AC1525 /* RemotePostCategory+Extensions.swift in Sources */,
 				F49B9A0A293A3249000CEFCE /* MigrationAnalyticsTracker.swift in Sources */,
 				3F8B45A9292C1F2C00730FA4 /* DashboardMigrationSuccessCell.swift in Sources */,
-				7462BFD42028CD4400B552D8 /* ShareNoticeNavigationCoordinator.swift in Sources */,
 				3F8B45A8292C1F2500730FA4 /* MigrationSuccessCardView.swift in Sources */,
 				74FA4BED1FBFA2350031EAAD /* SharedCoreDataStack.swift in Sources */,
 				3F8B45AC292C455800730FA4 /* MigrationSuccessCell.swift in Sources */,
@@ -8611,12 +8511,9 @@
 				F49B9A09293A3243000CEFCE /* MigrationEvent.swift in Sources */,
 				74AF4D741FE417D200E3EBFE /* MediaUploadOperation.swift in Sources */,
 				3F46AAFE25BF5D6300CE2E98 /* Sites.intentdefinition in Sources */,
-				7492F78E1F9BD94500B5A04A /* ShareMediaFileManager.swift in Sources */,
 				741E22461FC0CC55007967AB /* UploadOperation.swift in Sources */,
 				F4D8296A2931083000038726 /* MigrationSuccessCell+WordPress.swift in Sources */,
-				74EA3B88202A0462004F802D /* ShareNoticeConstants.swift in Sources */,
 				83E1E5592A58B5C2000B576F /* JetpackSocialError.swift in Sources */,
-				E125F1E41E8E595E00320B67 /* SharePost.swift in Sources */,
 				F4DD58322A095210009A772D /* DataMigrationError.swift in Sources */,
 				F4D829702931097900038726 /* DashboardMigrationSuccessCell+WordPress.swift in Sources */,
 				24351254264DCA08009BB2B6 /* Secrets.swift in Sources */,
@@ -8847,9 +8744,7 @@
 				740219FF202E12F4006CC39F /* PostUploadOperation.swift in Sources */,
 				74021A13202E1383006CC39F /* ShareExtensionAbstractViewController.swift in Sources */,
 				74021A10202E1370006CC39F /* ExtensionPresentationController.swift in Sources */,
-				74021A17202E13C6006CC39F /* SharePost.swift in Sources */,
 				74021A05202E1307006CC39F /* UIImage+Extensions.swift in Sources */,
-				74021A0D202E133D006CC39F /* ShareMediaFileManager.swift in Sources */,
 				CB1FD8D826E4BBAA00EDAF06 /* SharePostTypePickerViewController.swift in Sources */,
 				74E44AD52031E83C00556205 /* ExtensionNotificationManager.swift in Sources */,
 				74448F552044BC7600BD4CDA /* CategoryTree.swift in Sources */,
@@ -8865,8 +8760,6 @@
 				F5EF481723ABCAD8004C3532 /* MainShareViewController.swift in Sources */,
 				74021A15202E1397006CC39F /* ShareModularViewController.swift in Sources */,
 				74021A00202E12F4006CC39F /* MediaUploadOperation.swift in Sources */,
-				74BC35BA20499EEB00AC1525 /* RemotePostCategory+Extensions.swift in Sources */,
-				74E44AD62031E85A00556205 /* ShareNoticeConstants.swift in Sources */,
 				74021A0C202E1338006CC39F /* ShareExtractor.swift in Sources */,
 				74021A0A202E1329006CC39F /* AppExtensionsService.swift in Sources */,
 				74021A11202E1370006CC39F /* ExtensionPresentationAnimator.swift in Sources */,
@@ -8878,7 +8771,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				809620D228E540D700940A5D /* UploadOperation.swift in Sources */,
-				809620D428E540D700940A5D /* ShareNoticeConstants.swift in Sources */,
 				809620D528E540D700940A5D /* WPStyleGuide+Share.swift in Sources */,
 				809620D628E540D700940A5D /* ShareExtractor.swift in Sources */,
 				809620D928E540D700940A5D /* ShareTagsPickerViewController.swift in Sources */,
@@ -8888,7 +8780,6 @@
 				809620DF28E540D700940A5D /* Extensions.xcdatamodeld in Sources */,
 				809620E228E540D700940A5D /* AppExtensionsService.swift in Sources */,
 				809620E328E540D700940A5D /* ExtensionNotificationManager.swift in Sources */,
-				809620E628E540D700940A5D /* SharePost.swift in Sources */,
 				809620E728E540D700940A5D /* ShareData.swift in Sources */,
 				809620EA28E540D700940A5D /* ExtensionTransitioningManager.swift in Sources */,
 				809620EB28E540D700940A5D /* MainShareViewController.swift in Sources */,
@@ -8907,9 +8798,7 @@
 				8096210628E540D700940A5D /* Tracks+ShareExtension.swift in Sources */,
 				0107E11228FD7FE200DE87DB /* AppConfiguration.swift in Sources */,
 				8096210828E540D700940A5D /* ShareSegueHandler.swift in Sources */,
-				8096210928E540D700940A5D /* RemotePostCategory+Extensions.swift in Sources */,
 				8096211028E540D700940A5D /* MediaUploadOperation.swift in Sources */,
-				8096211228E540D700940A5D /* ShareMediaFileManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8926,9 +8815,7 @@
 				8096214228E55C9400940A5D /* PostUploadOperation.swift in Sources */,
 				8096214828E55C9400940A5D /* ShareExtensionAbstractViewController.swift in Sources */,
 				8096214928E55C9400940A5D /* ExtensionPresentationController.swift in Sources */,
-				8096214A28E55C9400940A5D /* SharePost.swift in Sources */,
 				8096214B28E55C9400940A5D /* UIImage+Extensions.swift in Sources */,
-				8096214C28E55C9400940A5D /* ShareMediaFileManager.swift in Sources */,
 				8096214D28E55C9400940A5D /* SharePostTypePickerViewController.swift in Sources */,
 				8096215028E55C9400940A5D /* ExtensionNotificationManager.swift in Sources */,
 				8096215128E55C9400940A5D /* CategoryTree.swift in Sources */,
@@ -8945,8 +8832,6 @@
 				8096216628E55C9400940A5D /* ShareModularViewController.swift in Sources */,
 				8096216728E55C9400940A5D /* MediaUploadOperation.swift in Sources */,
 				0107E11328FD7FE300DE87DB /* AppConfiguration.swift in Sources */,
-				8096216928E55C9400940A5D /* RemotePostCategory+Extensions.swift in Sources */,
-				8096216A28E55C9400940A5D /* ShareNoticeConstants.swift in Sources */,
 				8096216E28E55C9400940A5D /* ShareExtractor.swift in Sources */,
 				8096217328E55C9400940A5D /* AppExtensionsService.swift in Sources */,
 				8096217428E55C9400940A5D /* ExtensionPresentationAnimator.swift in Sources */,
@@ -8987,7 +8872,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				741E224B1FC0E5C0007967AB /* UploadOperation.swift in Sources */,
-				74EA3B89202A0462004F802D /* ShareNoticeConstants.swift in Sources */,
 				B50248AF1C96FF6200AFBDED /* WPStyleGuide+Share.swift in Sources */,
 				E1CE41661E8D1026000CF5A4 /* ShareExtractor.swift in Sources */,
 				747F88C1203778E000523C7C /* ShareTagsPickerViewController.swift in Sources */,
@@ -8997,7 +8881,6 @@
 				74FA4BE61FBFA0660031EAAD /* Extensions.xcdatamodeld in Sources */,
 				74FA2EE4200E8A6C001DDC13 /* AppExtensionsService.swift in Sources */,
 				74F89407202A1965008610FA /* ExtensionNotificationManager.swift in Sources */,
-				E125F1E51E8E596200320B67 /* SharePost.swift in Sources */,
 				745EAF4A20040B220066F415 /* ShareData.swift in Sources */,
 				74402F2C2005337D00A1D4A2 /* ExtensionTransitioningManager.swift in Sources */,
 				74337EDD20054D5500777997 /* MainShareViewController.swift in Sources */,
@@ -9015,9 +8898,7 @@
 				74AF4D7D1FE417D200E3EBFE /* PostUploadOperation.swift in Sources */,
 				B504F5F51C9C2BD000F8B1C6 /* Tracks+ShareExtension.swift in Sources */,
 				745EAF452003FD050066F415 /* ShareSegueHandler.swift in Sources */,
-				74BC35B920499EEB00AC1525 /* RemotePostCategory+Extensions.swift in Sources */,
 				74AF4D751FE417D200E3EBFE /* MediaUploadOperation.swift in Sources */,
-				7430C4491F97F23600E2673E /* ShareMediaFileManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9420,7 +9301,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FABB20C92602FC2C00C8785C /* ShareNoticeViewModel.swift in Sources */,
 				FABB20CD2602FC2C00C8785C /* PostUploadOperation.swift in Sources */,
 				C7F7BDBD26262A1B00CE547F /* AppDependency.swift in Sources */,
 				C33A5ADC2935848F00961E3A /* MigrationAppDetection.swift in Sources */,
@@ -9429,7 +9309,6 @@
 				F4D829682931059000038726 /* MigrationSuccessActionHandler.swift in Sources */,
 				83E1E55A2A58B5C2000B576F /* JetpackSocialError.swift in Sources */,
 				3F8B45AB292C42CC00730FA4 /* MigrationSuccessCell.swift in Sources */,
-				FABB21392602FC2C00C8785C /* ShareExtensionSessionManager.swift in Sources */,
 				FABB213B2602FC2C00C8785C /* Extensions.xcdatamodeld in Sources */,
 				C3E77F89293A4EA10034AE5A /* MigrationLoadWordPressViewModel.swift in Sources */,
 				3FFDEF7A29177D8C00B625CE /* MigrationNotificationsViewController.swift in Sources */,
@@ -9441,9 +9320,7 @@
 				C31466CC2939950900D62FC7 /* MigrationLoadWordPressViewController.swift in Sources */,
 				C7D30C652638B07A00A1695B /* JetpackPrologueStyleGuide.swift in Sources */,
 				F4F9D5EC29096CF500502576 /* MigrationHeaderView.swift in Sources */,
-				FABB21F92602FC2C00C8785C /* RemotePostCategory+Extensions.swift in Sources */,
 				3FFDEF7F29177FB100B625CE /* MigrationStepConfiguration.swift in Sources */,
-				FABB22342602FC2C00C8785C /* ShareNoticeNavigationCoordinator.swift in Sources */,
 				FABB22452602FC2C00C8785C /* SharedCoreDataStack.swift in Sources */,
 				F41BDD792910AFCA00B7F2B0 /* MigrationFlowCoordinator.swift in Sources */,
 				FABB22972602FC2C00C8785C /* MediaUploadOperation.swift in Sources */,
@@ -9460,7 +9337,6 @@
 				FABB23A32602FC2C00C8785C /* Sites.intentdefinition in Sources */,
 				F4F9D5EA2909622E00502576 /* MigrationWelcomeViewController.swift in Sources */,
 				3F46EECE28BC4962004F02B2 /* JetpackLandingScreenView.swift in Sources */,
-				FABB23E62602FC2C00C8785C /* ShareMediaFileManager.swift in Sources */,
 				3FFDEF9129187F2100B625CE /* MigrationActionsConfiguration.swift in Sources */,
 				FABB24062602FC2C00C8785C /* UploadOperation.swift in Sources */,
 				F4DD58332A095210009A772D /* DataMigrationError.swift in Sources */,
@@ -9476,11 +9352,9 @@
 				3FF15A56291B4EEA00E1B4E5 /* MigrationCenterView.swift in Sources */,
 				F49B9A08293A21F4000CEFCE /* MigrationEvent.swift in Sources */,
 				F4D82972293109A600038726 /* DashboardMigrationSuccessCell+Jetpack.swift in Sources */,
-				FABB24EF2602FC2C00C8785C /* ShareNoticeConstants.swift in Sources */,
 				C72A52CF2649B158009CA633 /* JetpackWindowManager.swift in Sources */,
 				3F8B45A7292C1A2300730FA4 /* MigrationSuccessCardView.swift in Sources */,
 				F4D829662931046F00038726 /* UIButton+Dismiss.swift in Sources */,
-				FABB254A2602FC2C00C8785C /* SharePost.swift in Sources */,
 				3FF15A5C291ED21100E1B4E5 /* MigrationNotificationsCenterView.swift in Sources */,
 				3FFDEF812917882800B625CE /* MigrationNavigationController.swift in Sources */,
 				C34E94BA28EDF7D900D27A16 /* InfiniteScrollerView.swift in Sources */,
