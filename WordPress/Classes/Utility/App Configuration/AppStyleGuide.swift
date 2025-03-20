@@ -8,7 +8,7 @@ struct AppStyleGuide {
     var epilogueTitleFont: UIFont
 
     static var current: AppStyleGuide {
-        switch BuildSettings.current.brand {
+        switch AppBrand.current {
         case .wordpress: .wordpress
         case .jetpack: .jetpack
         }
@@ -25,4 +25,14 @@ struct AppStyleGuide {
         navigationBarLargeFont: WPStyleGuide.fixedSerifFontForTextStyle(.largeTitle, fontWeight: .semibold),
         epilogueTitleFont: WPStyleGuide.fixedSerifFontForTextStyle(.largeTitle, fontWeight: .semibold)
     )
+}
+
+private extension AppBrand {
+    /// TODO: remove this when unit tests not longer rely on `BuildSettings.current`.
+    static var current: AppBrand {
+        if BuildSettingsEnvironment.current == .test {
+            return .jetpack
+        }
+        return BuildSettings.current.brand
+    }
 }

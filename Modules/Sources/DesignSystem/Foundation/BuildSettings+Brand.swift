@@ -2,8 +2,8 @@ import Foundation
 import BuildSettingsKit
 
 extension AppBrand {
+    /// TODO: remove this when unit tests not longer rely on `BuildSettings.current`.
     static var current: AppBrand {
-        // TODO: remove this when unit tests not longer rely on `BuildSettings.current`.
         if BuildSettingsEnvironment.current == .test {
             return .jetpack
         }
