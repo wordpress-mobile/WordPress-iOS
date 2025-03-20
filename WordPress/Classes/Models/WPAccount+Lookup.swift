@@ -18,7 +18,7 @@ public extension WPAccount {
     // This is here in an extension that belongs to the apps target so we can decouple WPAccount from AppConfiguration.
     // Decoupling allows moving the type to WordPressData, see https://github.com/wordpress-mobile/WordPress-iOS/issues/24165.
     @objc
-    static func tokenForUsername(_ username: String) -> String {
+    static func tokenForUsername(_ username: String) -> String? {
         token(forUsername: username, isJetpack: AppConfiguration.isJetpack)
     }
 
