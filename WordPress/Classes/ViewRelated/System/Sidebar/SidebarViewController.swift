@@ -230,37 +230,37 @@ extension BlogListViewModel {
     var topSites: [BlogListSiteViewModel] {
         var displaySites = [BlogListSiteViewModel]()
         var encounteredIDs = Set<TaggedManagedObjectID<Blog>>()
-        
+
         // Ensure the current site is included (if there is one)
-        if let currentSite = currentSite {
+        if let currentSite {
             displaySites.append(currentSite)
             encounteredIDs.insert(currentSite.id)
         }
-        
+
         // Add recent sites up to the limit
         for site in recentSites {
             if displaySites.count >= SidebarView.displayedSiteLimit {
                 break
             }
-            
+
             if !encounteredIDs.contains(site.id) {
                 displaySites.append(site)
                 encounteredIDs.insert(site.id)
             }
         }
-        
+
         // If we still have space, add other sites
         for site in allSites {
             if displaySites.count >= SidebarView.displayedSiteLimit {
                 break
             }
-            
+
             if !encounteredIDs.contains(site.id) {
                 displaySites.append(site)
                 encounteredIDs.insert(site.id)
             }
         }
-        
+
         // Sort the sites alphabetically
         return displaySites.sorted { $0.title.localizedCaseInsensitiveCompare($1.title) == .orderedAscending }
     }
