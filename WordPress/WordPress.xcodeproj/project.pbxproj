@@ -3111,7 +3111,6 @@
 			membershipExceptions = (
 				"Utility/App Configuration/AppConfiguration.swift",
 				Utility/BuildInformation/BuildConfiguration.swift,
-				ViewRelated/Cells/WPReusableTableViewCells.swift,
 				ViewRelated/Views/NoResults.storyboard,
 				ViewRelated/Views/NoResultsViewController.swift,
 			);
@@ -3122,7 +3121,6 @@
 			membershipExceptions = (
 				"Utility/App Configuration/AppConfiguration.swift",
 				Utility/BuildInformation/BuildConfiguration.swift,
-				ViewRelated/Cells/WPReusableTableViewCells.swift,
 				ViewRelated/Views/NoResults.storyboard,
 				ViewRelated/Views/NoResultsViewController.swift,
 			);
@@ -3156,7 +3154,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Utility/BuildInformation/BuildConfiguration.swift,
-				ViewRelated/Cells/WPReusableTableViewCells.swift,
 				ViewRelated/Views/NoResults.storyboard,
 				ViewRelated/Views/NoResultsViewController.swift,
 			);
@@ -3166,7 +3163,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Utility/BuildInformation/BuildConfiguration.swift,
-				ViewRelated/Cells/WPReusableTableViewCells.swift,
 				ViewRelated/Views/NoResults.storyboard,
 				ViewRelated/Views/NoResultsViewController.swift,
 			);

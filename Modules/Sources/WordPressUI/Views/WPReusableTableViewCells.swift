@@ -1,11 +1,8 @@
-import Foundation
 import UIKit
 import WordPressShared
-import WordPressUI
-import Gridicons
 
-class WPReusableTableViewCell: WPTableViewCell {
-    override func prepareForReuse() {
+open class WPReusableTableViewCell: WPTableViewCell {
+    open override func prepareForReuse() {
         super.prepareForReuse()
 
         textLabel?.text = nil
@@ -20,12 +17,12 @@ class WPReusableTableViewCell: WPTableViewCell {
         accessibilityLabel = nil
     }
 
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         commonInit()
     }
 
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         commonInit()
     }
@@ -41,53 +38,53 @@ class WPReusableTableViewCell: WPTableViewCell {
     }
 }
 
-class WPTableViewCellDefault: WPReusableTableViewCell {
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+open class WPTableViewCellDefault: WPReusableTableViewCell {
+    public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
     }
 
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
 }
 
-class WPTableViewCellSubtitle: WPReusableTableViewCell {
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+open class WPTableViewCellSubtitle: WPReusableTableViewCell {
+    public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
     }
 
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
 }
 
-class WPTableViewCellValue1: WPReusableTableViewCell {
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+open class WPTableViewCellValue1: WPReusableTableViewCell {
+    public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .value1, reuseIdentifier: reuseIdentifier)
     }
 
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
 
-    override func commonInit() {
+    public override func commonInit() {
         super.commonInit()
         detailTextLabel?.numberOfLines = 1
     }
 }
 
-class WPTableViewCellValue2: WPReusableTableViewCell {
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+open class WPTableViewCellValue2: WPReusableTableViewCell {
+    public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .value2, reuseIdentifier: reuseIdentifier)
     }
 
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
 }
 
-class WPTableViewCellBadge: WPTableViewCellDefault {
-    @objc var badgeCount: Int = 0 {
+open class WPTableViewCellBadge: WPTableViewCellDefault {
+    @objc public var badgeCount: Int = 0 {
         didSet {
             if badgeCount > 0 {
                 badgeLabel.text = String(badgeCount)
@@ -115,8 +112,8 @@ class WPTableViewCellBadge: WPTableViewCellDefault {
     }
 }
 
-class WPTableViewCellIndicator: WPTableViewCellDefault {
-    var showIndicator: Bool = false {
+open class WPTableViewCellIndicator: WPTableViewCellDefault {
+    public var showIndicator: Bool = false {
         didSet {
             if showIndicator {
                 accessoryView = indicatorView
