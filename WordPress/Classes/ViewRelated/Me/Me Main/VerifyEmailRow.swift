@@ -177,8 +177,8 @@ private class VerifyEmailViewModel: ObservableObject {
 
 private enum Strings {
     static let verifyEmailTitle = NSLocalizedString("me.verifyEmail.title", value: "Verify Your Email", comment: "Title for email verification card")
-    static let verifyMessage = NSLocalizedString("me.verifyEmail.message.withEmail", value: "Verify you email to secure your account and access more features.\nCheck your inbox at %@ for the confirmation email, or click '%@' to get a new one.", comment: "Message for email verification card with email address")
-    static let verifyMessageNoEmail = NSLocalizedString("me.verifyEmail.message.noEmail", value: "Verify you email to secure your account and access more features.\nCheck your inbox for the confirmation email, or click '%@' to get a new one..", comment: "Message for email verification card")
+    static let verifyMessage = NSLocalizedString("me.verifyEmail.message.withEmail", value: "Verify your email to secure your account and access more features.\nCheck your inbox at %@ for the confirmation email, or click '%@' to get a new one.", comment: "Message for email verification card with email address")
+    static let verifyMessageNoEmail = NSLocalizedString("me.verifyEmail.message.noEmail", value: "Verify your email to secure your account and access more features.\nCheck your inbox for the confirmation email, or click '%@' to get a new one..", comment: "Message for email verification card")
     static let sendButton = NSLocalizedString("me.verifyEmail.button.send", value: "Resend email", comment: "Button title to send verification link")
     static let sendingButton = NSLocalizedString("me.verifyEmail.button.sending", value: "Sending...", comment: "Button title while verification link is being sent")
     static let sentButton = NSLocalizedString("me.verifyEmail.button.sent", value: "Email sent", comment: "Button title after verification link is sent")
