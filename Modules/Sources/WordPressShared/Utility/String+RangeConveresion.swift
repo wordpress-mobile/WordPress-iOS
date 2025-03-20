@@ -181,8 +181,7 @@ extension String {
     func utf16NSRange(from range: Range<String.Index>) -> NSRange {
 
         guard let lowerBound = range.lowerBound.samePosition(in: utf16),
-            let upperBound = range.upperBound.samePosition(in: utf16) else
-        {
+            let upperBound = range.upperBound.samePosition(in: utf16) else {
             fatalError()
         }
 
