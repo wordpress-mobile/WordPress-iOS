@@ -54,7 +54,7 @@ enum FeatureFlag: Int, CaseIterable {
         case .jetpackDisconnect:
             return BuildConfiguration.current == .debug
         case .siteIconCreator:
-            return BuildConfiguration.current != .appStore
+            return BuildConfiguration.current.isInternal
         case .betaSiteDesigns:
             return false
         case .commentModerationUpdate:
