@@ -685,7 +685,6 @@
 		74021A01202E12F4006CC39F /* SharedCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746D6B241FBF701F003C45BE /* SharedCoreDataStack.swift */; };
 		74021A02202E12FF006CC39F /* Extensions.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 74FA4BE31FBFA0660031EAAD /* Extensions.xcdatamodeld */; };
 		74021A03202E1307006CC39F /* NSExtensionContext+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5552D7D1CD101A600B26DF6 /* NSExtensionContext+Extensions.swift */; };
-		74021A04202E1307006CC39F /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5552D7F1CD1028C00B26DF6 /* String+Extensions.swift */; };
 		74021A05202E1307006CC39F /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FA868A1D10A41600AB5F7E /* UIImage+Extensions.swift */; };
 		74021A07202E1307006CC39F /* UINavigationController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AC1DA0200D0CC300973CAD /* UINavigationController+Extensions.swift */; };
 		74021A09202E1323006CC39F /* ShareSegueHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745EAF442003FD050066F415 /* ShareSegueHandler.swift */; };
@@ -831,7 +830,6 @@
 		809620FB28E540D700940A5D /* RemoteBlog+Capabilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE39E17120CB117B00CABA05 /* RemoteBlog+Capabilities.swift */; };
 		809620FC28E540D700940A5D /* ShareModularViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6787F41FFF2886005D9F01 /* ShareModularViewController.swift */; };
 		809620FD28E540D700940A5D /* NSExtensionContext+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5552D7D1CD101A600B26DF6 /* NSExtensionContext+Extensions.swift */; };
-		809620FE28E540D700940A5D /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5552D7F1CD1028C00B26DF6 /* String+Extensions.swift */; };
 		8096210028E540D700940A5D /* UINavigationController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AC1DA0200D0CC300973CAD /* UINavigationController+Extensions.swift */; };
 		8096210128E540D700940A5D /* PostUploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AF4D711FE417D200E3EBFE /* PostUploadOperation.swift */; };
 		8096210628E540D700940A5D /* Tracks+ShareExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B504F5F41C9C2BD000F8B1C6 /* Tracks+ShareExtension.swift */; };
@@ -850,7 +848,6 @@
 		8096213E28E55C9400940A5D /* NSExtensionContext+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5552D7D1CD101A600B26DF6 /* NSExtensionContext+Extensions.swift */; };
 		8096214028E55C9400940A5D /* Extensions.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 74FA4BE31FBFA0660031EAAD /* Extensions.xcdatamodeld */; };
 		8096214228E55C9400940A5D /* PostUploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AF4D711FE417D200E3EBFE /* PostUploadOperation.swift */; };
-		8096214528E55C9400940A5D /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5552D7F1CD1028C00B26DF6 /* String+Extensions.swift */; };
 		8096214828E55C9400940A5D /* ShareExtensionAbstractViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745EAF462003FDAA0066F415 /* ShareExtensionAbstractViewController.swift */; };
 		8096214928E55C9400940A5D /* ExtensionPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74402F29200528F200A1D4A2 /* ExtensionPresentationController.swift */; };
 		8096214A28E55C9400940A5D /* SharePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = E125F1E31E8E595E00320B67 /* SharePost.swift */; };
@@ -990,8 +987,6 @@
 		B532ACD31DC3AE1200FFFA57 /* OHHTTPStubs+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B532ACD21DC3AE1200FFFA57 /* OHHTTPStubs+Helpers.swift */; };
 		B5416CFE1C1756B900006DD8 /* PushNotificationsManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B5416CFD1C1756B900006DD8 /* PushNotificationsManagerTests.m */; };
 		B5552D7E1CD101A600B26DF6 /* NSExtensionContext+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5552D7D1CD101A600B26DF6 /* NSExtensionContext+Extensions.swift */; };
-		B5552D801CD1028C00B26DF6 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5552D7F1CD1028C00B26DF6 /* String+Extensions.swift */; };
-		B5552D821CD1061F00B26DF6 /* StringExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5552D811CD1061F00B26DF6 /* StringExtensionsTests.swift */; };
 		B556EFCB1DCA374200728F93 /* DictionaryHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B556EFCA1DCA374200728F93 /* DictionaryHelpersTests.swift */; };
 		B55F1AA21C107CE200FD04D4 /* BlogSettingsDiscussionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55F1AA11C107CE200FD04D4 /* BlogSettingsDiscussionTests.swift */; };
 		B566EC751B83867800278395 /* NSMutableAttributedStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566EC741B83867800278395 /* NSMutableAttributedStringTests.swift */; };
@@ -2715,8 +2710,6 @@
 		B532ACD21DC3AE1200FFFA57 /* OHHTTPStubs+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OHHTTPStubs+Helpers.swift"; sourceTree = "<group>"; };
 		B5416CFD1C1756B900006DD8 /* PushNotificationsManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PushNotificationsManagerTests.m; sourceTree = "<group>"; };
 		B5552D7D1CD101A600B26DF6 /* NSExtensionContext+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSExtensionContext+Extensions.swift"; path = "WordPressShareExtension/NSExtensionContext+Extensions.swift"; sourceTree = SOURCE_ROOT; };
-		B5552D7F1CD1028C00B26DF6 /* String+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "String+Extensions.swift"; path = "WordPressShareExtension/String+Extensions.swift"; sourceTree = SOURCE_ROOT; };
-		B5552D811CD1061F00B26DF6 /* StringExtensionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensionsTests.swift; sourceTree = "<group>"; };
 		B556EFCA1DCA374200728F93 /* DictionaryHelpersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryHelpersTests.swift; sourceTree = "<group>"; };
 		B55F1AA11C107CE200FD04D4 /* BlogSettingsDiscussionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlogSettingsDiscussionTests.swift; sourceTree = "<group>"; };
 		B566EC741B83867800278395 /* NSMutableAttributedStringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSMutableAttributedStringTests.swift; sourceTree = "<group>"; };
@@ -5884,7 +5877,6 @@
 			isa = PBXGroup;
 			children = (
 				B5552D7D1CD101A600B26DF6 /* NSExtensionContext+Extensions.swift */,
-				B5552D7F1CD1028C00B26DF6 /* String+Extensions.swift */,
 				B5FA868A1D10A41600AB5F7E /* UIImage+Extensions.swift */,
 				74AC1DA0200D0CC300973CAD /* UINavigationController+Extensions.swift */,
 				74BC35B720499EEB00AC1525 /* RemotePostCategory+Extensions.swift */,
@@ -6487,7 +6479,6 @@
 			children = (
 				B556EFCA1DCA374200728F93 /* DictionaryHelpersTests.swift */,
 				E1C9AA551C10427100732665 /* MathTest.swift */,
-				B5552D811CD1061F00B26DF6 /* StringExtensionsTests.swift */,
 				E1AB5A081E0BF31E00574B4E /* ArrayTests.swift */,
 				0885A3661E837AFE00619B4D /* URLIncrementalFilenameTests.swift */,
 				D88A649D208D82D2008AE9BC /* XCTestCase+Wait.swift */,
@@ -8918,7 +8909,6 @@
 				74021A03202E1307006CC39F /* NSExtensionContext+Extensions.swift in Sources */,
 				74021A02202E12FF006CC39F /* Extensions.xcdatamodeld in Sources */,
 				740219FF202E12F4006CC39F /* PostUploadOperation.swift in Sources */,
-				74021A04202E1307006CC39F /* String+Extensions.swift in Sources */,
 				74021A13202E1383006CC39F /* ShareExtensionAbstractViewController.swift in Sources */,
 				74021A10202E1370006CC39F /* ExtensionPresentationController.swift in Sources */,
 				74021A17202E13C6006CC39F /* SharePost.swift in Sources */,
@@ -8977,7 +8967,6 @@
 				809620FB28E540D700940A5D /* RemoteBlog+Capabilities.swift in Sources */,
 				809620FC28E540D700940A5D /* ShareModularViewController.swift in Sources */,
 				809620FD28E540D700940A5D /* NSExtensionContext+Extensions.swift in Sources */,
-				809620FE28E540D700940A5D /* String+Extensions.swift in Sources */,
 				8096210028E540D700940A5D /* UINavigationController+Extensions.swift in Sources */,
 				8096210128E540D700940A5D /* PostUploadOperation.swift in Sources */,
 				8096210628E540D700940A5D /* Tracks+ShareExtension.swift in Sources */,
@@ -9000,7 +8989,6 @@
 				8096213E28E55C9400940A5D /* NSExtensionContext+Extensions.swift in Sources */,
 				8096214028E55C9400940A5D /* Extensions.xcdatamodeld in Sources */,
 				8096214228E55C9400940A5D /* PostUploadOperation.swift in Sources */,
-				8096214528E55C9400940A5D /* String+Extensions.swift in Sources */,
 				8096214828E55C9400940A5D /* ShareExtensionAbstractViewController.swift in Sources */,
 				8096214928E55C9400940A5D /* ExtensionPresentationController.swift in Sources */,
 				8096214A28E55C9400940A5D /* SharePost.swift in Sources */,
@@ -9090,7 +9078,6 @@
 				CE39E17220CB117B00CABA05 /* RemoteBlog+Capabilities.swift in Sources */,
 				BE6787F51FFF2886005D9F01 /* ShareModularViewController.swift in Sources */,
 				B5552D7E1CD101A600B26DF6 /* NSExtensionContext+Extensions.swift in Sources */,
-				B5552D801CD1028C00B26DF6 /* String+Extensions.swift in Sources */,
 				74AC1DA1200D0CC300973CAD /* UINavigationController+Extensions.swift in Sources */,
 				74AF4D7D1FE417D200E3EBFE /* PostUploadOperation.swift in Sources */,
 				B504F5F51C9C2BD000F8B1C6 /* Tracks+ShareExtension.swift in Sources */,
@@ -9336,7 +9323,6 @@
 				DCF892D0282FA42A00BB71E1 /* SiteStatsImmuTableRowsTests.swift in Sources */,
 				93EF094C19ED533500C89770 /* ContextManagerTests.swift in Sources */,
 				F17A2A2023BFBD84001E96AC /* UIView+ExistingConstraints.swift in Sources */,
-				B5552D821CD1061F00B26DF6 /* StringExtensionsTests.swift in Sources */,
 				3F759FBA2A2DA93B0039A845 /* WPAccount+Fixture.swift in Sources */,
 				77A141172B68546100BF75DD /* BooleanUserDefaultsDebugViewModelTests.swift in Sources */,
 				73178C3521BEE9AC00E37C9A /* TitleSubtitleHeaderTests.swift in Sources */,
