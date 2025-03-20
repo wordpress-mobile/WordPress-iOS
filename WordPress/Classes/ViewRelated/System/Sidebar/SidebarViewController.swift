@@ -26,7 +26,7 @@ final class SidebarViewController: UIHostingController<AnyView> {
     }
 }
 
-private struct SidebarView: View {
+struct SidebarView: View {
     @ObservedObject var viewModel: SidebarViewModel
     @ObservedObject var blogListViewModel: BlogListViewModel
     @StateObject private var notificationsButtonViewModel = NotificationsButtonViewModel()
@@ -222,7 +222,7 @@ private struct SidebarProfileContainerView: View {
     }
 }
 
-private extension BlogListViewModel {
+extension BlogListViewModel {
     /// Returns a list of sites to display in the sidebar, ensuring that:
     /// 1. The current site is always included
     /// 2. The most recent sites are included up to the display limit
