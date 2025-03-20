@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 extension AbstractPost {
     /// When updating the app through the App Store or installing a new version

@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 /// Encapsulates a custom icon used by the app and provides some convenience
 /// methods around using custom icons.
