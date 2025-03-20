@@ -128,10 +128,13 @@
 
 #pragma mark - Static methods
 
-+ (NSString *)tokenForUsername:(NSString *)username
++ (NSString *)tokenForUsername:(NSString *)username isJetpack:(BOOL)isJetpack
 {
+    if (isJetpack) {
+        [WPAccount migrateAuthKeyForUsername:username];
+    }
+
     NSError *error = nil;
-    [WPAccount migrateAuthKeyForUsername:username];
     NSString *authToken = [SFHFKeychainUtils getPasswordForUsername:username
                                                      andServiceName:[WPAccount authKeychainServiceName]
                                                         accessGroup:nil
@@ -147,10 +150,8 @@
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        if ([AppConfiguration isJetpack]) {
-            SharedDataIssueSolver *sharedDataIssueSolver = [SharedDataIssueSolver instance];
-            [sharedDataIssueSolver migrateAuthKeyFor:username];
-        }
+        SharedDataIssueSolver *sharedDataIssueSolver = [SharedDataIssueSolver instance];
+        [sharedDataIssueSolver migrateAuthKeyFor:username];
     });
 }
 

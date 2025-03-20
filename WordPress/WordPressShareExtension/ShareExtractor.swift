@@ -1,4 +1,5 @@
 import Foundation
+import CocoaLumberjackSwift
 import MobileCoreServices
 import UniformTypeIdentifiers
 import UIKit

@@ -1,5 +1,7 @@
 import Foundation
+import CocoaLumberjackSwift
 import UserNotifications
+import ShareExtensionCore
 
 /// This handles the scheduling of user notifications in app extensions only.
 ///

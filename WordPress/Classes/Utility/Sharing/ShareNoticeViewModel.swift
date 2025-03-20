@@ -1,3 +1,6 @@
+import Foundation
+import ShareExtensionCore
+
 struct ShareNoticeViewModel {
     private let postInContext: Post?
     private let uploadStatus: UploadOperation.UploadStatus

@@ -4,8 +4,8 @@ import MobileCoreServices
 
 /// A simple shared model to represent a Site
 ///
-@objc class ShareBlog: NSObject {
-    @objc static let typeIdentifier = "org.wordpress.share-blog"
+@objc public class ShareBlog: NSObject {
+    @objc public static let typeIdentifier = "org.wordpress.share-blog"
 }
 
 /// A simple shared model to represent a post
@@ -16,29 +16,29 @@ import MobileCoreServices
 /// It supports NSCoding and can be imported/exported as NSData. It also defines
 /// its own UTI data type.
 ///
-@objc class SharePost: NSObject, NSSecureCoding {
-    @objc static let typeIdentifier = "org.wordpress.share-post"
-    @objc static let activityType = UIActivity.ActivityType(rawValue: "org.wordpress.WordPressShare")
+@objc public class SharePost: NSObject, NSSecureCoding {
+    @objc public static let typeIdentifier = "org.wordpress.share-post"
+    @objc public static let activityType = UIActivity.ActivityType(rawValue: "org.wordpress.WordPressShare")
 
-    @objc let title: String?
-    @objc let summary: String?
-    @objc let url: URL?
+    @objc public let title: String?
+    @objc public let summary: String?
+    @objc public let url: URL?
 
-    @objc init(title: String?, summary: String?, url: String?) {
+    @objc public init(title: String?, summary: String?, url: String?) {
         self.title = title
         self.summary = summary
         self.url = url.flatMap(URL.init(string:))
         super.init()
     }
 
-    required convenience init?(coder aDecoder: NSCoder) {
+    public required convenience init?(coder aDecoder: NSCoder) {
         let title = aDecoder.decodeString(forKey: .title)
         let summary = aDecoder.decodeString(forKey: .summary)
         let url = aDecoder.decodeString(forKey: .url)
         self.init(title: title, summary: summary, url: url)
     }
 
-    @objc convenience init?(data: Data) {
+    @objc public convenience init?(data: Data) {
         do {
             let decoder = try NSKeyedUnarchiver(forReadingFrom: data)
             self.init(coder: decoder)
@@ -47,17 +47,17 @@ import MobileCoreServices
         }
     }
 
-    func encode(with aCoder: NSCoder) {
+    public func encode(with aCoder: NSCoder) {
         aCoder.encode(title, forKey: .title)
         aCoder.encode(summary, forKey: .summary)
         aCoder.encode(url?.absoluteString, forKey: .url)
     }
 
-    static var supportsSecureCoding: Bool {
+    public static var supportsSecureCoding: Bool {
         return true
     }
 
-    @objc var content: String {
+    @objc public var content: String {
         var content = ""
         if let title {
             content.append("\(title)\n\n")
@@ -68,7 +68,7 @@ import MobileCoreServices
         return content
     }
 
-    @objc var data: Data {
+    @objc public var data: Data {
         let encoder = NSKeyedArchiver(requiringSecureCoding: false)
         encode(with: encoder)
         encoder.finishEncoding()

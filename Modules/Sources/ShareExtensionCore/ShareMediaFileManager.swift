@@ -1,9 +1,10 @@
 import Foundation
 import BuildSettingsKit
+import CocoaLumberjackSwift
 
 /// Encapsulates media file operations relative to the shared container's Media directory.
 ///
-@objc class ShareMediaFileManager: NSObject {
+public final class ShareMediaFileManager: Sendable {
 
     /// Directory name for media uploads
     ///
@@ -11,9 +12,9 @@ import BuildSettingsKit
 
     /// URL for the Media upload directory in the shared container. Can return nil.
     ///
-    @objc var mediaUploadDirectoryURL: URL? {
+    public var mediaUploadDirectoryURL: URL? {
         let fileManager = FileManager.default
-        guard let sharedContainerRootURL = fileManager.containerURL(forSecurityApplicationGroupIdentifier: BuildSettings.current.appGroupName) else {
+        guard let sharedContainerRootURL = fileManager.containerURL(forSecurityApplicationGroupIdentifier: appGroupName) else {
             return nil
         }
         let mediaDirectoryURL = sharedContainerRootURL.appendingPathComponent(mediaDirectoryName, isDirectory: true)
@@ -31,16 +32,21 @@ import BuildSettingsKit
         return mediaDirectoryURL
     }
 
+    private let appGroupName: String
+
     // MARK: - Singleton
 
-    @objc static let shared: ShareMediaFileManager = ShareMediaFileManager()
-    private override init() {}
+    public static let shared = ShareMediaFileManager()
+
+    private init(appGroupName: String = BuildSettings.current.appGroupName) {
+        self.appGroupName = appGroupName
+    }
 
     // MARK: - Instance methods
 
     /// Removes *all* files from the Media upload directory.
     ///
-    @objc func purgeUploadDirectory() {
+    public func purgeUploadDirectory() {
         guard let mediaDirectory = mediaUploadDirectoryURL else {
             return
         }
@@ -75,7 +81,7 @@ import BuildSettingsKit
     ///
     /// - Parameter fileName: fileName: Name of file to remove
     ///
-    @objc func removeFromUploadDirectory(fileName: String) {
+    public func removeFromUploadDirectory(fileName: String) {
         guard let mediaDirectory = mediaUploadDirectoryURL, fileName.isEmpty == false else {
             return
         }
