@@ -24,10 +24,19 @@ public final class SharedCoreDataStack {
 
     // MARK: - Private Properties
 
-    fileprivate let modelName: String
+    /// - warning: Has to be loaded exactly once per process.
+    nonisolated(unsafe) static let model: NSManagedObjectModel = {
+        guard let modelURL = Bundle.module.url(forResource: "Extensions", withExtension: "momd") else {
+            fatalError("Core Data model missing")
+        }
+        guard let model = NSManagedObjectModel(contentsOf: modelURL) else {
+            fatalError("failed to load model")
+        }
+        return model
+    }()
 
     fileprivate lazy var storeContainer: SharedPersistentContainer = {
-        let container = SharedPersistentContainer(name: self.modelName)
+        let container = SharedPersistentContainer(name: "SharedCoreDataStack", managedObjectModel: SharedCoreDataStack.model)
         container.loadPersistentStores { (storeDescription, error) in
             if let error = error as NSError? {
                 DDLogError("Error loading persistent stores: \(error), \(error.userInfo)")
@@ -48,20 +57,7 @@ public final class SharedCoreDataStack {
 
     /// Initialize the SharedPersistentContainer using the standard Extensions model.
     ///
-    public convenience init() {
-        self.init(modelName: Constants.sharedModelName)
-    }
-
-    /// Initialize the core data stack with the given model name.
-    ///
-    /// This initializer is meant for testing. You probably want to use the convenience `init()` that uses the standard Extensions model
-    ///
-    /// - Parameters:
-    ///     - modelName: Name of the model to initialize the SharedPersistentContainer with.
-    ///
-    init(modelName: String) {
-        self.modelName = modelName
-    }
+    public init() {}
 
     // MARK: - Public Funcntions
 
