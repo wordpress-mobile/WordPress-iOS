@@ -76,7 +76,11 @@ let package = Package(
         .target(name: "JetpackStatsWidgetsCore", swiftSettings: [.swiftLanguageMode(.v5)]),
         .target(
             name: "ShareExtensionCore",
-            dependencies: ["BuildSettingsKit", "SFHFKeychainUtils"]
+            dependencies: [
+                "BuildSettingsKit",
+                "SFHFKeychainUtils",
+                "WordPressShared"
+            ]
         ),
         .target(
             name: "NotificationServiceExtensionCore",
