@@ -1,6 +1,5 @@
 import Foundation
 
-
 // MARK: - String NSRange and Location convertion Extensions
 //
 extension String {
@@ -138,7 +137,7 @@ extension String {
         var newBound = bound.samePosition(in: self) // nil if we're inside a grapheme cluster
         var i = 1
 
-        while(newBound == nil) {
+        while newBound == nil {
             let newOffset = method(bound.utf16Offset(in: self), i)
             let newIndex = String.UTF16View.Index(utf16Offset: newOffset, in: self)
             newBound = newIndex.samePosition(in: self)
@@ -148,7 +147,6 @@ extension String {
         // We've verified aboe that this is a valid bound, so force upwrapping it is ok
         return newBound!
     }
-
 
     func nsRange(of string: String) -> NSRange? {
         guard let range = self.range(of: string) else {
