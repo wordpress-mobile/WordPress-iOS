@@ -17,7 +17,7 @@ class AppRatingUtility: NSObject {
     /// The App Review URL that we send off to UIApplication to open up the app
     /// store review page.
     ///
-    @objc let appReviewUrl: URL = Constants.defaultAppReviewURL
+    @objc var appReviewUrl: URL { Constants.defaultAppReviewURL }
 
     /// Sets the number of days that have to pass between AppReview prompts
     /// Apple only allows 3 prompts per year. We're trying to be a bit more conservative and are doing
