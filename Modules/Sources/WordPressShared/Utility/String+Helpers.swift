@@ -224,4 +224,12 @@ extension String {
 
         return self.components(separatedBy: ",").map({ $0.trimmingCharacters(in: .whitespacesAndNewlines) })
     }
+
+    /// Returns a Boolean value indicating if this String begins with the provided prefix.
+    /// - Parameter prefix: The prefix to check for.
+    /// - Parameter options: The string comparison options to use when checking for the prefix.
+    public func hasPrefix(_ prefix: String, with options: CompareOptions) -> Bool {
+        let fullOptions = options.union([.anchored])
+        return range(of: prefix, options: fullOptions) != nil
+    }
 }
