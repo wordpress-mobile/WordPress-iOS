@@ -1,4 +1,5 @@
 import Foundation
+import FormattableContentKit
 
 class LikeUserTableViewCell: UITableViewCell, NibReusable {
 

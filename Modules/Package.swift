@@ -77,7 +77,18 @@ let package = Package(
             resources: [.process("Resources")],
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
-        .target(name: "FormattableContentKit", dependencies: ["WordPressShared"]),
+        .target(
+            name: "FormattableContentKit",
+            dependencies: [
+                "WordPressShared",
+                "WordPressUI",
+                .product(name: "Gridicons", package: "Gridicons-iOS"),
+                // TODO: Remove — It's here just for a NSMutableParagraphStyle init helper
+                .product(name: "WordPressKit", package: "WordPressKit-iOS"),
+            ],
+            // Set to v5 to avoid @Sendable warnings and errors
+            swiftSettings: [.swiftLanguageMode(.v5)]
+        ),
         .target(name: "JetpackStatsWidgetsCore", swiftSettings: [.swiftLanguageMode(.v5)]),
         .target(
             name: "ShareExtensionCore",

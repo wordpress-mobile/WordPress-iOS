@@ -1,16 +1,15 @@
 import WordPressShared
-import FormattableContentKit
 
-class SubjectContentStyles: FormattableContentStyles {
-    var attributes: [NSAttributedString.Key: Any] {
+public class SubjectContentStyles: FormattableContentStyles {
+    public var attributes: [NSAttributedString.Key: Any] {
         return WPStyleGuide.Notifications.subjectRegularStyle
     }
 
-    var quoteStyles: [NSAttributedString.Key: Any]? {
+    public var quoteStyles: [NSAttributedString.Key: Any]? {
         return WPStyleGuide.Notifications.subjectItalicsStyle
     }
 
-    var rangeStylesMap: [FormattableRangeKind: [NSAttributedString.Key: Any]]? {
+    public var rangeStylesMap: [FormattableRangeKind: [NSAttributedString.Key: Any]]? {
         return [
             .user: WPStyleGuide.Notifications.subjectRegularStyle,
             .post: WPStyleGuide.Notifications.subjectRegularStyle,
@@ -21,6 +20,11 @@ class SubjectContentStyles: FormattableContentStyles {
         ]
     }
 
-    var linksColor: UIColor? = nil
-    var key: String = "SubjectContentStyles"
+    public var linksColor: UIColor?
+    public var key: String
+
+    public init(linkColor: UIColor? = nil, key: String = "SubjectContentStyles") {
+        self.linksColor = linkColor
+        self.key = key
+    }
 }
