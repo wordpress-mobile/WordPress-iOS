@@ -3149,7 +3149,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Extensions/Colors and Styles/WPStyleGuide+ApplicationStyles.swift",
-				"Extensions/NSAttributedStringKey+Conversion.swift",
 				"Extensions/UIApplication+mainWindow.swift",
 				"Utility/App Configuration/AppConfiguration.swift",
 				"Utility/App Configuration/AppStyleGuide.swift",
@@ -3169,7 +3168,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Extensions/Colors and Styles/WPStyleGuide+ApplicationStyles.swift",
-				"Extensions/NSAttributedStringKey+Conversion.swift",
 				"Extensions/UIApplication+mainWindow.swift",
 				"Utility/App Configuration/AppConfiguration.swift",
 				"Utility/App Configuration/AppStyleGuide.swift",
@@ -3221,7 +3219,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Extensions/Colors and Styles/WPStyleGuide+ApplicationStyles.swift",
-				"Extensions/NSAttributedStringKey+Conversion.swift",
 				"Extensions/UIApplication+mainWindow.swift",
 				"Utility/App Configuration/AppStyleGuide.swift",
 				Utility/BuildInformation/BuildConfiguration.swift,
@@ -3240,7 +3237,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Extensions/Colors and Styles/WPStyleGuide+ApplicationStyles.swift",
-				"Extensions/NSAttributedStringKey+Conversion.swift",
 				"Extensions/UIApplication+mainWindow.swift",
 				"Utility/App Configuration/AppStyleGuide.swift",
 				Utility/BuildInformation/BuildConfiguration.swift,
