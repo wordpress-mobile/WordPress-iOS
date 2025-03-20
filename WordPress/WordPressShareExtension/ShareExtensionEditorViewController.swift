@@ -1,5 +1,6 @@
 import UIKit
 import Aztec
+import AztecExtensions
 import WordPressEditor
 import Gridicons
 import WordPressUI
