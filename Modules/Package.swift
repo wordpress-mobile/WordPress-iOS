@@ -279,6 +279,7 @@ enum XcodeSupport {
             .xcodeTarget("XcodeTarget_WordPressTests", dependencies: testDependencies + [
                 "SFHFKeychainUtils",
                 "WordPressShared",
+                "WordPressUI",
                 .product(name: "Gravatar", package: "Gravatar-SDK-iOS"),
                 .product(name: "Nimble", package: "Nimble"),
                 .product(name: "BuildkiteTestCollector", package: "test-collector-swift"),
