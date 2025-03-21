@@ -31,7 +31,15 @@ final class BlogListViewModel: NSObject, ObservableObject {
             return nil
         }
 
-        return allSites.first { $0.id == selectedBlogID }
+        do {
+            if let blog = try contextManager.mainContext.existingObject(with: selectedBlogID.objectID) as? Blog {
+                return BlogListSiteViewModel(blog: blog)
+            }
+        } catch {
+            DDLogError("Failed to fetch blog with ID \(selectedBlogID): \(error)")
+        }
+
+        return nil
     }
 
     init(configuration: BlogListConfiguration = .defaultConfig,
