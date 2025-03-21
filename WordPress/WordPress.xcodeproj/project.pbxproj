@@ -9606,7 +9606,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
-					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
@@ -9626,7 +9625,6 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_SCHEME = jpdebug;
 			};
 			name = Debug;
 		};
@@ -9653,10 +9651,6 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
-				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = JetpackStatsWidgets/Info.plist;
@@ -9674,7 +9668,6 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_SCHEME = jetpack;
 			};
 			name = Release;
 		};
@@ -9704,7 +9697,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					ALPHA_BUILD,
-					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
@@ -9723,7 +9715,6 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_SCHEME = jpalpha;
 			};
 			name = "Release-Alpha";
 		};
@@ -9750,7 +9741,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
-					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
@@ -9770,7 +9760,6 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_SCHEME = jpdebug;
 			};
 			name = Debug;
 		};
@@ -9795,10 +9784,6 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
-				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = JetpackIntents/Info.plist;
@@ -9816,7 +9801,6 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_SCHEME = jetpack;
 			};
 			name = Release;
 		};
@@ -9844,7 +9828,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					ALPHA_BUILD,
-					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
@@ -9863,7 +9846,6 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_SCHEME = jpalpha;
 			};
 			name = "Release-Alpha";
 		};
@@ -9913,7 +9895,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"NSLOGGER_BUILD_USERNAME=\"${USER}\"",
-					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
@@ -9957,7 +9938,6 @@
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_SCHEME = wpdebug;
 			};
 			name = Debug;
 		};
@@ -9980,7 +9960,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					NS_BLOCK_ASSERTIONS,
-					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
@@ -10021,7 +10000,6 @@
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_SCHEME = wordpress;
 			};
 			name = Release;
 		};
@@ -10339,7 +10317,6 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
-					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 					"DEBUG=1",
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -10359,7 +10336,6 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_SCHEME = wpdebug;
 			};
 			name = Debug;
 		};
@@ -10383,10 +10359,6 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
-				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = WordPressNotificationServiceExtension/Info.plist;
@@ -10403,7 +10375,6 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_WORDPRESS;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_SCHEME = wordpress;
 			};
 			name = Release;
 		};
@@ -10427,10 +10398,6 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
-				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = WordPressNotificationServiceExtension/Info.plist;
@@ -10447,7 +10414,6 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_WORDPRESS;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_SCHEME = wpalpha;
 			};
 			name = "Release-Alpha";
 		};
@@ -10478,7 +10444,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"DEBUG=1",
-					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
@@ -10498,7 +10463,6 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_SCHEME = wpdebug;
 			};
 			name = Debug;
 		};
@@ -10527,10 +10491,6 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = WordPressDraftActionExtension/WordPressDraftPrefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
-				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				INFOPLIST_FILE = WordPressDraftActionExtension/Info.plist;
@@ -10548,7 +10508,6 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_WORDPRESS;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_SCHEME = wordpress;
 			};
 			name = Release;
 		};
@@ -10580,7 +10539,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					ALPHA_BUILD,
-					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
@@ -10599,7 +10557,6 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_WORDPRESS;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_SCHEME = wpalpha;
 			};
 			name = "Release-Alpha";
 		};
@@ -10636,7 +10593,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"DEBUG=1",
-					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -10667,7 +10623,6 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				WPCOM_SCHEME = jpdebug;
 			};
 			name = Debug;
 		};
@@ -10701,10 +10656,6 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = WordPressShareExtension/WordPressSharePrefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
-				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -10732,7 +10683,6 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
 				SWIFT_VERSION = 5.0;
-				WPCOM_SCHEME = jetpack;
 			};
 			name = Release;
 		};
@@ -10769,7 +10719,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					ALPHA_BUILD,
-					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -10799,7 +10748,6 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
 				SWIFT_VERSION = 5.0;
-				WPCOM_SCHEME = jpalpha;
 			};
 			name = "Release-Alpha";
 		};
@@ -10831,7 +10779,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"DEBUG=1",
-					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
@@ -10851,7 +10798,6 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_SCHEME = jpdebug;
 			};
 			name = Debug;
 		};
@@ -10881,10 +10827,6 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = WordPressDraftActionExtension/WordPressDraftPrefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
-				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				INFOPLIST_FILE = JetpackDraftActionExtension/Info.plist;
@@ -10902,7 +10844,6 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_SCHEME = jetpack;
 			};
 			name = Release;
 		};
@@ -10935,7 +10876,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					ALPHA_BUILD,
-					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
@@ -10954,7 +10894,6 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_SCHEME = jpalpha;
 			};
 			name = "Release-Alpha";
 		};
@@ -10980,7 +10919,6 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
-					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 					"DEBUG=1",
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -11000,7 +10938,6 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_SCHEME = jpdebug;
 			};
 			name = Debug;
 		};
@@ -11025,10 +10962,6 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
-				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = JetpackNotificationServiceExtension/Info.plist;
@@ -11045,7 +10978,6 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_SCHEME = jetpack;
 			};
 			name = Release;
 		};
@@ -11070,10 +11002,6 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
-				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = JetpackNotificationServiceExtension/Info.plist;
@@ -11090,7 +11018,6 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_JETPACK;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_SCHEME = jpalpha;
 			};
 			name = "Release-Alpha";
 		};
@@ -11307,7 +11234,6 @@
 				GCC_PREFIX_HEADER = WordPress_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
-					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 					ALPHA_BUILD,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
@@ -11350,7 +11276,6 @@
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_SCHEME = wpalpha;
 			};
 			name = "Release-Alpha";
 		};
@@ -11428,7 +11353,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"DEBUG=1",
-					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -11459,7 +11383,6 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_WORDPRESS;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				WPCOM_SCHEME = wpdebug;
 			};
 			name = Debug;
 		};
@@ -11492,10 +11415,7 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = WordPressShareExtension/WordPressSharePrefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
-				);
+				"GCC_PREPROCESSOR_DEFINITIONS[arch=*]" = "$(inherited)";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -11523,7 +11443,6 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_WORDPRESS;
 				SWIFT_VERSION = 5.0;
-				WPCOM_SCHEME = wordpress;
 			};
 			name = Release;
 		};
@@ -11559,7 +11478,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					ALPHA_BUILD,
-					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -11589,7 +11507,6 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = IS_WORDPRESS;
 				SWIFT_VERSION = 5.0;
-				WPCOM_SCHEME = wpalpha;
 			};
 			name = "Release-Alpha";
 		};
@@ -11958,7 +11875,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"NSLOGGER_BUILD_USERNAME=\"${USER}\"",
-					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
@@ -12001,7 +11917,6 @@
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_SCHEME = jpdebug;
 			};
 			name = Debug;
 		};
@@ -12026,7 +11941,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					NS_BLOCK_ASSERTIONS,
-					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
@@ -12067,7 +11981,6 @@
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_SCHEME = jetpack;
 			};
 			name = Release;
 		};
@@ -12091,7 +12004,6 @@
 				GCC_PREFIX_HEADER = WordPress_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
-					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 					ALPHA_BUILD,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
@@ -12133,7 +12045,6 @@
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_SCHEME = jpalpha;
 			};
 			name = "Release-Alpha";
 		};

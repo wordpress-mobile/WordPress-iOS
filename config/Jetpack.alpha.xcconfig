@@ -3,3 +3,4 @@
 BUILD_SCHEME = Jetpack
 WP_PUSH_NOTIFICATION_APP_ID = "com.jetpack.alpha"
 WP_BUILD_CONFIGURATION = alpha
+WP_APP_URL_SCHEME = jpalpha

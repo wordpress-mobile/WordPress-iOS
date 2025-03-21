@@ -19,7 +19,7 @@
 	<key>WPBuildConfiguration</key>
 	<string>${WP_BUILD_CONFIGURATION}</string>
 	<key>WPAppURLScheme</key>
-	<string>${WPCOM_SCHEME}</string>
+	<string>${WP_APP_URL_SCHEME}</string>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>org.wordpress.bgtask.weeklyroundup</string>
@@ -569,7 +569,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>wordpress-oauth-v2</string>
-				<string>${WPCOM_SCHEME}</string>
+				<string>${WP_APP_URL_SCHEME}</string>
 				<string>jetpacknotificationmigration</string>
 			</array>
 		</dict>
