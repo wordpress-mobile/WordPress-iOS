@@ -17,7 +17,8 @@ extension BuildSettings {
             twitterURL: URL(string: "www.example.com")!,
             blogURL: URL(string: "www.example.com")!
         ),
-        zendeskSourcePlatform: "zen"
+        zendeskSourcePlatform: "zen",
+        mobileAnnounceAppID: "1234567890"
     )
 }
 

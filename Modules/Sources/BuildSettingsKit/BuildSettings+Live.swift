@@ -19,6 +19,7 @@ extension BuildSettings {
             blogURL: URL(string: bundle.infoValue(forKey: "WPProductBlogURL"))!
         )
         zendeskSourcePlatform = bundle.infoValue(forKey: "WPZendeskSourcePlatform")
+        mobileAnnounceAppID = bundle.infoValue(forKey: "WPMobileAnnounceAppID")
     }
 }
 

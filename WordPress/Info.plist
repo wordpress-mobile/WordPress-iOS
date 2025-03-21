@@ -28,6 +28,8 @@
 	<string>https://wordpress.org/news/</string>
 	<key>WPZendeskSourcePlatform</key>
 	<string>mobile_-_ios</string>
+	<key>WPMobileAnnounceAppID</key>
+	<string>2</string>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>org.wordpress.bgtask.weeklyroundup</string>
