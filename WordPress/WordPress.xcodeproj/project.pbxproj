@@ -1312,7 +1312,6 @@
 		F98C58192228849E0073D752 /* XCTest+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2716A01CABC7D40006E2D4 /* XCTest+Extensions.swift */; };
 		F9C47A6B238C7CFD00AAD9ED /* LoginFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED4D8321FF11E3800A11345 /* LoginFlow.swift */; };
 		F9C47A78238C7DAC00AAD9ED /* BaseScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2B4E9E1FD664F5007AE3E4 /* BaseScreen.swift */; };
-		FA25FA342609AAAA0005E08F /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25FA332609AAAA0005E08F /* AppConfiguration.swift */; };
 		FA3FBF8E2A2777E00012FC90 /* DashboardActivityLogViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FBF8D2A2777E00012FC90 /* DashboardActivityLogViewModelTests.swift */; };
 		FA4ADADA1C509FE400F858D7 /* SiteManagementServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */; };
 		FA6C32C02BF255FA00BBDDB4 /* AppUpdateCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6C32BF2BF255FA00BBDDB4 /* AppUpdateCoordinatorTests.swift */; };
@@ -3017,7 +3016,6 @@
 		F5D0A65123CCD3B600B20D27 /* PreviewWebKitViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewWebKitViewControllerTests.swift; sourceTree = "<group>"; };
 		F93735F722D53C3B00A3C312 /* LoggingURLRedactorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoggingURLRedactorTests.swift; sourceTree = "<group>"; };
 		F9463A7221C05EE90081F11E /* ScreenshotCredentials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenshotCredentials.swift; sourceTree = "<group>"; };
-		FA25FA332609AAAA0005E08F /* AppConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfiguration.swift; sourceTree = "<group>"; };
 		FA3FBF8D2A2777E00012FC90 /* DashboardActivityLogViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardActivityLogViewModelTests.swift; sourceTree = "<group>"; };
 		FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteManagementServiceTests.swift; sourceTree = "<group>"; };
 		FA6C32BF2BF255FA00BBDDB4 /* AppUpdateCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUpdateCoordinatorTests.swift; sourceTree = "<group>"; };
@@ -3110,7 +3108,6 @@
 		24CE68B52CD3375300C7B37D /* Exceptions for "Classes" folder in "Jetpack" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				"Utility/App Configuration/AppConfiguration.swift",
 				"Utility/App Configuration/AppConstants.swift",
 				"Utility/App Configuration/AppDependency.swift",
 			);
@@ -6698,7 +6695,6 @@
 		FA25FB8C2609B9CB0005E08F /* App Configuration */ = {
 			isa = PBXGroup;
 			children = (
-				FA25FA332609AAAA0005E08F /* AppConfiguration.swift */,
 				FAADE3F02615996E00BF29FE /* AppConstants.swift */,
 				C7F7BDBC26262A1B00CE547F /* AppDependency.swift */,
 			);
@@ -9123,7 +9119,6 @@
 				3F8B45AB292C42CC00730FA4 /* MigrationSuccessCell.swift in Sources */,
 				C3E77F89293A4EA10034AE5A /* MigrationLoadWordPressViewModel.swift in Sources */,
 				3FFDEF7A29177D8C00B625CE /* MigrationNotificationsViewController.swift in Sources */,
-				FA25FA342609AAAA0005E08F /* AppConfiguration.swift in Sources */,
 				3F8B45A029283D6C00730FA4 /* DashboardMigrationSuccessCell.swift in Sources */,
 				F4D8296C2931087100038726 /* MigrationSuccessCell+Jetpack.swift in Sources */,
 				F478B152292FC1BC00AA8645 /* MigrationAppearance.swift in Sources */,
