@@ -3954,13 +3954,6 @@
 			name = "Select Interests";
 			sourceTree = "<group>";
 		};
-		325D3B3A23A8372500766DF6 /* Comments */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Comments;
-			sourceTree = "<group>";
-		};
 		3F00739D2915BAA100A37FD1 /* Notifications Permission */ = {
 			isa = PBXGroup;
 			children = (
@@ -5629,7 +5622,6 @@
 				F44FB6C92878957E0001E3CE /* Mention */,
 				8B69F0E2255C2BC0006B1CEF /* Activity */,
 				8BD36E042395CC2F00EFFF1C /* Aztec */,
-				325D3B3A23A8372500766DF6 /* Comments */,
 				BEC8A3FD1B4BAA08001CB8C3 /* Blog */,
 				E1B921BA1C0ED481003EA3CB /* Cells */,
 				C3E42AAD27F4D2CF00546706 /* Menus */,
