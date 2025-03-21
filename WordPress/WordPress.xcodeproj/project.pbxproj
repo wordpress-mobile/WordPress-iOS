@@ -80,10 +80,6 @@
 		0107E0DF28F97D5000DE87DB /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F526C4D2538CF2A0069706C /* WidgetKit.framework */; };
 		0107E0E228F97D5000DE87DB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F526C552538CF2B0069706C /* Assets.xcassets */; };
 		0107E0EE28F97E6900DE87DB /* JetpackStatsWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 0107E0EA28F97D5000DE87DB /* JetpackStatsWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		0107E11228FD7FE200DE87DB /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25FA332609AAAA0005E08F /* AppConfiguration.swift */; };
-		0107E11328FD7FE300DE87DB /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25FA332609AAAA0005E08F /* AppConfiguration.swift */; };
-		0107E11428FD7FE300DE87DB /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25FA332609AAAA0005E08F /* AppConfiguration.swift */; };
-		0107E11628FD7FE800DE87DB /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25FA332609AAAA0005E08F /* AppConfiguration.swift */; };
 		0107E13B28FE9DB200DE87DB /* Sites.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 3F46AB0225BF5D6300CE2E98 /* Sites.intentdefinition */; settings = {ATTRIBUTES = (codegen, ); }; };
 		0107E13E28FE9DB200DE87DB /* SitesDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1482CDF2575BDA4007E4DD6 /* SitesDataProvider.swift */; };
 		0107E14928FE9DB200DE87DB /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F163C025658B4D003DC13B /* IntentHandler.swift */; };
@@ -3104,27 +3100,6 @@
 			);
 			target = 1D6058900D05DD3D006BFB54 /* WordPress */;
 		};
-		24CE68AF2CD3375300C7B37D /* Exceptions for "Classes" folder in "WordPressShareExtension" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				"Utility/App Configuration/AppConfiguration.swift",
-			);
-			target = 932225A61C7CE50300443B02 /* WordPressShareExtension */;
-		};
-		24CE68B02CD3375300C7B37D /* Exceptions for "Classes" folder in "WordPressDraftActionExtension" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				"Utility/App Configuration/AppConfiguration.swift",
-			);
-			target = 74576671202B558C00F42E40 /* WordPressDraftActionExtension */;
-		};
-		24CE68B22CD3375300C7B37D /* Exceptions for "Classes" folder in "WordPressNotificationServiceExtension" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				"Utility/App Configuration/AppConfiguration.swift",
-			);
-			target = 7358E6B7210BD318002323EB /* WordPressNotificationServiceExtension */;
-		};
 		24CE68B42CD3375300C7B37D /* Exceptions for "Classes" folder in "WordPressUITests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -3155,9 +3130,6 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				24CE68AE2CD3375300C7B37D /* Exceptions for "Classes" folder in "WordPress" target */,
-				24CE68AF2CD3375300C7B37D /* Exceptions for "Classes" folder in "WordPressShareExtension" target */,
-				24CE68B02CD3375300C7B37D /* Exceptions for "Classes" folder in "WordPressDraftActionExtension" target */,
-				24CE68B22CD3375300C7B37D /* Exceptions for "Classes" folder in "WordPressNotificationServiceExtension" target */,
 				24CE68B42CD3375300C7B37D /* Exceptions for "Classes" folder in "WordPressUITests" target */,
 				24CE68B52CD3375300C7B37D /* Exceptions for "Classes" folder in "Jetpack" target */,
 				24CE68BB2CD3375300C7B37D /* Exceptions for "Classes" folder in "JetpackUITests" target */,
@@ -8652,7 +8624,6 @@
 				809620FD28E540D700940A5D /* NSExtensionContext+Extensions.swift in Sources */,
 				8096210028E540D700940A5D /* UINavigationController+Extensions.swift in Sources */,
 				8096210628E540D700940A5D /* Tracks+ShareExtension.swift in Sources */,
-				0107E11228FD7FE200DE87DB /* AppConfiguration.swift in Sources */,
 				8096210828E540D700940A5D /* ShareSegueHandler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -8681,7 +8652,6 @@
 				8096216128E55C9400940A5D /* ShareData.swift in Sources */,
 				8096216328E55C9400940A5D /* MainShareViewController.swift in Sources */,
 				8096216628E55C9400940A5D /* ShareModularViewController.swift in Sources */,
-				0107E11328FD7FE300DE87DB /* AppConfiguration.swift in Sources */,
 				8096216E28E55C9400940A5D /* ShareExtractor.swift in Sources */,
 				8096217328E55C9400940A5D /* AppExtensionsService.swift in Sources */,
 				8096217428E55C9400940A5D /* ExtensionPresentationAnimator.swift in Sources */,
@@ -8693,7 +8663,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				80F6D02328EE866A00953C1A /* RemoteNotificationActionParser.swift in Sources */,
-				0107E11428FD7FE300DE87DB /* AppConfiguration.swift in Sources */,
 				80F6D03828EE866A00953C1A /* RichNotificationContentFormatter.swift in Sources */,
 				80F6D03C28EE866A00953C1A /* NotificationService.swift in Sources */,
 				80F6D04628EE866A00953C1A /* Tracks+ServiceExtension.swift in Sources */,
@@ -9207,7 +9176,6 @@
 			files = (
 				FAF64B6F2637DEEC00E8A1DF /* BaseScreen.swift in Sources */,
 				FAF64B722637DEEC00E8A1DF /* XCTest+Extensions.swift in Sources */,
-				0107E11628FD7FE800DE87DB /* AppConfiguration.swift in Sources */,
 				FAF64E4F2637E85800E8A1DF /* JetpackScreenshotGeneration.swift in Sources */,
 				FAF64B742637DEEC00E8A1DF /* WPUITestCredentials.swift in Sources */,
 				FAF64B7B2637DEEC00E8A1DF /* LoginFlow.swift in Sources */,
