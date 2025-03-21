@@ -2148,8 +2148,6 @@
 		4A76A4BE29D4F0A500AABF4B /* reader-post-comments-success.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "reader-post-comments-success.json"; sourceTree = "<group>"; };
 		4A76F9102CE207FA0025F7FA /* UserListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListViewModelTests.swift; sourceTree = "<group>"; };
 		4A9314DB297790C300360232 /* PeopleServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleServiceTests.swift; sourceTree = "<group>"; };
-		4A98A9022C2274E100A2CE58 /* WordPressKitTests.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = WordPressKitTests.xcconfig; sourceTree = "<group>"; };
-		4A98A9032C2274E100A2CE58 /* WordPressKit.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = WordPressKit.xcconfig; sourceTree = "<group>"; };
 		4A9948E129714EF1006282A9 /* AccountSettingsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsServiceTests.swift; sourceTree = "<group>"; };
 		4AA7EE0E2ADF7367007D261D /* PostRepositoryPostsListTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostRepositoryPostsListTests.swift; sourceTree = "<group>"; };
 		4AAD69072A6F68A5007FE77E /* MediaRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaRepositoryTests.swift; sourceTree = "<group>"; };
@@ -6235,8 +6233,6 @@
 				4AD955572C2155B300D0EEFA /* WordPressAuthenticator.xcconfig */,
 				3F9DD3F82CC21E7B00DF1760 /* WordPressAuthenticator.enterprise.xcconfig */,
 				4A2F746A2C2198CB00E72117 /* WordPressAuthenticatorTests.xcconfig */,
-				4A98A9032C2274E100A2CE58 /* WordPressKit.xcconfig */,
-				4A98A9022C2274E100A2CE58 /* WordPressKitTests.xcconfig */,
 			);
 			name = config;
 			path = ../config;
