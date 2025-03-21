@@ -1,7 +1,7 @@
-import Foundation
+import UIKit
 import BuildSettingsKit
 import WordPressUI
-import UIKit
+import WordPressKit
 import WordPressShared
 import AutomatticAbout
 import SwiftUI
@@ -43,7 +43,7 @@ class AppAboutScreenConfiguration: AboutScreenConfiguration {
                 }),
                 AboutItem(title: TextContent.share, action: { [weak self] context in
                     self?.tracker.buttonPressed(.share)
-                    self?.sharePresenter.present(for: AppConstants.shareAppName, in: context.viewController, source: .about, sourceView: context.sourceView)
+                    self?.sharePresenter.present(for: BuildSettings.current.shareAppName, in: context.viewController, source: .about, sourceView: context.sourceView)
                 }),
                 AboutItem(title: TextContent.twitter, subtitle: BuildSettings.current.about.twitterHandle, cellStyle: .value1, action: { [weak self] context in
                     self?.tracker.buttonPressed(.twitter)
@@ -170,6 +170,15 @@ class LegalAndMoreSubmenuConfiguration: AboutScreenConfiguration {
         static let termsOfService = URL(string: WPAutomatticTermsOfServiceURL)!
         static let privacyPolicy = URL(string: WPAutomatticPrivacyURL)!
         static let sourceCode = URL(string: WPGithubMainURL)!
+    }
+}
+
+extension BuildSettings {
+    var shareAppName: ShareAppName {
+        switch brand {
+        case .wordpress: .wordpress
+        case .jetpack: .jetpack
+        }
     }
 }
 
