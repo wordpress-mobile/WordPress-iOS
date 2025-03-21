@@ -24,7 +24,7 @@ final class DataMigrator {
     private let keychainUtils: KeychainUtils
     private let localDefaults: UserPersistentRepository
     private let sharedDefaults: UserPersistentRepository?
-    private let crashLogger: CrashLogging
+    private let crashLogger: CrashLogging?
     private let appGroupName: String
 
     init(coreDataStack: CoreDataStack = ContextManager.shared,
@@ -32,7 +32,7 @@ final class DataMigrator {
          keychainUtils: KeychainUtils = KeychainUtils(),
          localDefaults: UserPersistentRepository = UserDefaults.standard,
          sharedDefaults: UserPersistentRepository? = UserDefaults(suiteName: BuildSettings.current.appGroupName),
-         crashLogger: CrashLogging = .main,
+         crashLogger: CrashLogging? = .main,
          appGroupName: String = BuildSettings.current.appGroupName) {
         self.coreDataStack = coreDataStack
         self.backupLocation = backupLocation
@@ -180,7 +180,7 @@ private extension DataMigrator {
     private func log(error: DataMigrationError, userInfo: [String: Any] = [:]) {
         let userInfo = userInfo.merging(self.userInfo(for: error)) { $1 }
         DDLogError("\(error)")
-        crashLogger.logError(error, userInfo: userInfo, level: .error)
+        crashLogger?.logError(error, userInfo: userInfo, level: .error)
     }
 
     private func userInfo(for error: DataMigrationError) -> [String: Any] {

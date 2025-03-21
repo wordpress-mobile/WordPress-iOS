@@ -3,6 +3,7 @@ import Foundation
 /// The container for Xcode previews.
 extension BuildSettings {
     nonisolated(unsafe) static var preview = BuildSettings(
+        configuration: .debug,
         brand: .jetpack,
         pushNotificationAppID: "xcpreview_push_notification_id",
         appGroupName: "xcpreview_app_group_name",

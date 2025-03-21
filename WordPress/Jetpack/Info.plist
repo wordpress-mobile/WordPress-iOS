@@ -16,6 +16,8 @@
 	<string>wpios</string>
 	<key>WPItunesAppID</key>
 	<string>1565481562</string>
+	<key>WPBuildConfiguration</key>
+	<string>${WP_BUILD_CONFIGURATION}</string>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>org.wordpress.bgtask.weeklyroundup</string>

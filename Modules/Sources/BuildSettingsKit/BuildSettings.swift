@@ -12,6 +12,7 @@ import Foundation
 /// - **Test** – `BuildSettings` are not available when running unit tests as
 /// they are incompatible with parallelized tests and are generally not recommended.
 public struct BuildSettings: Sendable {
+    public var configuration: BuildConfiguration
     public var brand: AppBrand
     public var pushNotificationAppID: String
     public var appGroupName: String

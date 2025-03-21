@@ -2,3 +2,4 @@
 
 BUILD_SCHEME = Jetpack
 WP_PUSH_NOTIFICATION_APP_ID = "com.jetpack.appstore.dev"
+WP_BUILD_CONFIGURATION = debug

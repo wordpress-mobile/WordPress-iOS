@@ -1,4 +1,5 @@
 import Foundation
+import BuildSettingsKit
 import SFHFKeychainUtils
 import WordPressAuthenticator
 import WordPressShared
@@ -59,7 +60,7 @@ extension WordPressAuthenticationManager {
     private func authenticatorConfiguation() -> WordPressAuthenticatorConfiguration {
         // SIWA can not be enabled for internal builds
         // Ref https://github.com/wordpress-mobile/WordPress-iOS/pull/12332#issuecomment-521994963
-        let enableSignInWithApple = !(BuildConfiguration.current ~= [.alpha])
+        let enableSignInWithApple = BuildConfiguration.current != .alpha
 
         return WordPressAuthenticatorConfiguration(
             wpcomClientId: ApiCredentials.client,

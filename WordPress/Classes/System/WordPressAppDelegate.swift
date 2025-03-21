@@ -548,7 +548,7 @@ extension WordPressAppDelegate {
     /// Otherwise an anonymous remote will be used
     func updateFeatureFlags(authToken: String? = nil, completion: (() -> Void)? = nil) {
         // Enable certain feature flags on test builds.
-        if BuildConfiguration.current ~= [.alpha, .localDeveloper] {
+        if BuildConfiguration.current.isInternal {
             FeatureFlagOverrideStore().override(RemoteFeatureFlag.dotComWebLogin, withValue: true)
         }
 
