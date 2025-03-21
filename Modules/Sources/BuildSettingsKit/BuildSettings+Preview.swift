@@ -11,7 +11,8 @@ extension BuildSettings {
         eventNamePrefix: "xcpreview",
         explatPlatform: "xcpreview",
         itunesAppID: "1234567890",
-        appURLScheme: "xcpreview"
+        appURLScheme: "xcpreview",
+        jetpackAppURLScheme: "jetpack"
     )
 }
 

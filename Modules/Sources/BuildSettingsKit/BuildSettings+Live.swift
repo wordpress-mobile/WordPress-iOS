@@ -13,6 +13,7 @@ extension BuildSettings {
         explatPlatform = bundle.infoValue(forKey: "WPExplatPlatform")
         itunesAppID = bundle.infoValue(forKey: "WPItunesAppID")
         appURLScheme = bundle.infoValue(forKey: "WPAppURLScheme")
+        jetpackAppURLScheme = bundle.infoValue(forKey: "WPJetpackAppURLScheme")
     }
 }
 

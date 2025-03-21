@@ -20,6 +20,8 @@
 	<string>${WP_BUILD_CONFIGURATION}</string>
 	<key>WPAppURLScheme</key>
 	<string>${WP_APP_URL_SCHEME}</string>
+	<key>WPJetpackAppURLScheme</key>
+	<string>${WP_JETPACK_APP_URL_SCHEME}</string>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>org.wordpress.bgtask.weeklyroundup</string>

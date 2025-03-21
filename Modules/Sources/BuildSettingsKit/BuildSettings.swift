@@ -21,6 +21,7 @@ public struct BuildSettings: Sendable {
     public var explatPlatform: String
     public var itunesAppID: String
     public var appURLScheme: String
+    public var jetpackAppURLScheme: String
 
     public static var current: BuildSettings {
         switch BuildSettingsEnvironment.current {
