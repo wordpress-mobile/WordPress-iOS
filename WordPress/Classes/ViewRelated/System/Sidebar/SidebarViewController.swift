@@ -237,20 +237,8 @@ extension BlogListViewModel {
             encounteredIDs.insert(currentSite.id)
         }
 
-        // Add recent sites up to the limit
-        for site in recentSites {
-            if displaySites.count >= SidebarView.displayedSiteLimit {
-                break
-            }
-
-            if !encounteredIDs.contains(site.id) {
-                displaySites.append(site)
-                encounteredIDs.insert(site.id)
-            }
-        }
-
-        // If we still have space, add other sites
-        for site in allSites {
+        // Add recent sites up to the limit, if we still have space, add other sites
+        for site in recentSites + allSites {
             if displaySites.count >= SidebarView.displayedSiteLimit {
                 break
             }
