@@ -17,10 +17,6 @@ import WordPressKit
 
 // MARK: - Localized Strings
 extension AppConstants {
-    struct Settings {
-        static let whatIsNewTitle = NSLocalizedString("What's New in WordPress", comment: "Opens the What's New / Feature Announcement modal")
-    }
-
     struct Logout {
         static let alertTitle = NSLocalizedString("Log out of WordPress?", comment: "LogOut confirmation text, whenever there are no local changes")
     }
