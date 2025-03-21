@@ -20,6 +20,7 @@ public struct BuildSettings: Sendable {
     public var eventNamePrefix: String
     public var explatPlatform: String
     public var itunesAppID: String
+    public var appURLScheme: String
 
     public static var current: BuildSettings {
         switch BuildSettingsEnvironment.current {

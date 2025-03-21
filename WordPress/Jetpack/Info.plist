@@ -18,6 +18,8 @@
 	<string>1565481562</string>
 	<key>WPBuildConfiguration</key>
 	<string>${WP_BUILD_CONFIGURATION}</string>
+	<key>WPAppURLScheme</key>
+	<string>${WPCOM_SCHEME}</string>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>org.wordpress.bgtask.weeklyroundup</string>

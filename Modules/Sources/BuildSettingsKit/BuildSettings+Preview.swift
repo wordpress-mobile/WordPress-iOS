@@ -10,7 +10,8 @@ extension BuildSettings {
         appKeychainAccessGroup: "xcpreview_app_keychain_access_group",
         eventNamePrefix: "xcpreview",
         explatPlatform: "xcpreview",
-        itunesAppID: "1234567890"
+        itunesAppID: "1234567890",
+        appURLScheme: "xcpreview"
     )
 }
 

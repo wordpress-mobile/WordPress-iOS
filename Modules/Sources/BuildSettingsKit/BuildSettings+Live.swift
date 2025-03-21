@@ -12,6 +12,7 @@ extension BuildSettings {
         eventNamePrefix = bundle.infoValue(forKey: "WPEventNamePrefix")
         explatPlatform = bundle.infoValue(forKey: "WPExplatPlatform")
         itunesAppID = bundle.infoValue(forKey: "WPItunesAppID")
+        appURLScheme = bundle.infoValue(forKey: "WPAppURLScheme")
     }
 }
 
