@@ -1,4 +1,5 @@
 import Foundation
+import BuildSettingsKit
 
 class JetpackRedirector {
 
@@ -8,15 +9,7 @@ class JetpackRedirector {
     /// Note: The string values should kept in-sync with Jetpack's URL scheme.
     ///
     static var jetpackDeepLinkScheme: String {
-        /// Important: Multiple compiler flags are set for some builds
-        /// so ordering matters.
-        #if DEBUG
-        return "jpdebug"
-        #elseif ALPHA_BUILD
-        return "jpalpha"
-        #else
-        return "jetpack"
-        #endif
+        BuildSettings.current.jetpackAppURLScheme
     }
 
     static func redirectToJetpack() {
