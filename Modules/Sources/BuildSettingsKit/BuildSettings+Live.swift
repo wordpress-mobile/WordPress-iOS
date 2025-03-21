@@ -14,6 +14,7 @@ extension BuildSettings {
         itunesAppID = bundle.infoValue(forKey: "WPItunesAppID")
         appURLScheme = bundle.infoValue(forKey: "WPAppURLScheme")
         productTwitterHandle = bundle.infoValue(forKey: "WPProductTwitterHandle")
+        productTwitterURL = URL(string: bundle.infoValue(forKey: "WPProductTwitterURL"))!
     }
 }
 

@@ -12,7 +12,8 @@ extension BuildSettings {
         explatPlatform: "xcpreview",
         itunesAppID: "1234567890",
         appURLScheme: "xcpreview",
-        productTwitterHandle: "@x"
+        productTwitterHandle: "@x",
+        productTwitterURL: URL(string: "www.example.com")!
     )
 }
 

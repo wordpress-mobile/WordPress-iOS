@@ -22,6 +22,7 @@ public struct BuildSettings: Sendable {
     public var itunesAppID: String
     public var appURLScheme: String
     public var productTwitterHandle: String
+    public var productTwitterURL: URL
 
     public static var current: BuildSettings {
         switch BuildSettingsEnvironment.current {

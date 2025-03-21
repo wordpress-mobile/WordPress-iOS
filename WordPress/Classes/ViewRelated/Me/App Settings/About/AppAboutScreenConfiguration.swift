@@ -103,7 +103,7 @@ class AppAboutScreenConfiguration: AboutScreenConfiguration {
     }
 
     private enum Links {
-        static let twitter = URL(string: AppConstants.productTwitterURL)!
+        static let twitter = BuildSettings.current.productTwitterURL
         static let blog = URL(string: AppConstants.productBlogURL)!
         static let workWithUs = URL(string: Strings.current.workWithUsURL)!
         static let automattic = URL(string: "https://automattic.com")!

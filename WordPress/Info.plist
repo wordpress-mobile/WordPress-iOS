@@ -22,6 +22,8 @@
 	<string>${WP_APP_URL_SCHEME}</string>
 	<key>WPProductTwitterHandle</key>
 	<string>@WordPressiOS</string>
+	<key>WPProductTwitterURL</key>
+	<string>https://twitter.com/WordPressiOS</string>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>org.wordpress.bgtask.weeklyroundup</string>
