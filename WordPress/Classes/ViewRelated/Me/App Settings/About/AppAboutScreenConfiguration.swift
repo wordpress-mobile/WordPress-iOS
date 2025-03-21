@@ -45,7 +45,7 @@ class AppAboutScreenConfiguration: AboutScreenConfiguration {
                     self?.tracker.buttonPressed(.share)
                     self?.sharePresenter.present(for: AppConstants.shareAppName, in: context.viewController, source: .about, sourceView: context.sourceView)
                 }),
-                AboutItem(title: TextContent.twitter, subtitle: AppConstants.productTwitterHandle, cellStyle: .value1, action: { [weak self] context in
+                AboutItem(title: TextContent.twitter, subtitle: BuildSettings.current.productTwitterHandle, cellStyle: .value1, action: { [weak self] context in
                     self?.tracker.buttonPressed(.twitter)
                     self?.webViewPresenter.presentInNavigationControlller(url: Links.twitter, context: context)
                 }),
