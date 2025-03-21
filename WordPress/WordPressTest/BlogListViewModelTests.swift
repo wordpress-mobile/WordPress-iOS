@@ -71,7 +71,7 @@ final class BlogListViewModelTests: CoreDataTestCase {
         XCTAssertEqual(displayedNames, [".Org", "51 Zone", "A", "C"])
     }
 
-    func test_topSites_includes_current_site() throws {
+    func testTopSitesIncludesCurrentSite() throws {
         // Given: Create test sites
         let siteA = BlogBuilder(mainContext)
             .with(siteName: "A Site")
@@ -111,7 +111,7 @@ final class BlogListViewModelTests: CoreDataTestCase {
         XCTAssertTrue(viewModel.topSites.contains(where: { $0.id == TaggedManagedObjectID(siteZ) }))
     }
 
-    func test_topSites_respects_site_limit() throws {
+    func testTopSitesRespectsSiteLimit() throws {
         // Given: Create 6 test sites (more than the current display limit of 4)
         let sites = (1...6).map { i in
             return BlogBuilder(mainContext)
@@ -131,7 +131,7 @@ final class BlogListViewModelTests: CoreDataTestCase {
         XCTAssertEqual(viewModel.topSites.count, SidebarView.displayedSiteLimit)
     }
 
-    func test_topSites_prioritizes_current_site_then_recent_sites() throws {
+    func testTopSitesPrioritizesCurrentSiteThenRecentSites() throws {
         // Given
         // Create test sites with names that would be sorted differently alphabetically
         let siteA = BlogBuilder(mainContext)
