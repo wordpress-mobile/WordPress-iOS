@@ -49,7 +49,7 @@ class AppAboutScreenConfiguration: AboutScreenConfiguration {
                     self?.tracker.buttonPressed(.twitter)
                     self?.webViewPresenter.presentInNavigationControlller(url: Links.twitter, context: context)
                 }),
-                AboutItem(title: Strings.current.blogName, subtitle: AppConstants.productBlogDisplayURL, cellStyle: .value1, action: { [weak self] context in
+                AboutItem(title: Strings.current.blogName, subtitle: productBlogDisplayURL, cellStyle: .value1, action: { [weak self] context in
                     self?.tracker.buttonPressed(.blog)
                     self?.webViewPresenter.presentInNavigationControlller(url: Links.blog, context: context)
                 })
@@ -91,6 +91,11 @@ class AppAboutScreenConfiguration: AboutScreenConfiguration {
 
     init(sharePresenter: ShareAppContentPresenter) {
         self.sharePresenter = sharePresenter
+    }
+
+    private var productBlogDisplayURL: String {
+        let blogURL = BuildSettings.current.about.blogURL
+        return [blogURL.host, blogURL.path].compactMap { $0 }.joined()
     }
 
     private enum TextContent {
