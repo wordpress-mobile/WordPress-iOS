@@ -13,8 +13,11 @@ extension BuildSettings {
         explatPlatform = bundle.infoValue(forKey: "WPExplatPlatform")
         itunesAppID = bundle.infoValue(forKey: "WPItunesAppID")
         appURLScheme = bundle.infoValue(forKey: "WPAppURLScheme")
-        productTwitterHandle = bundle.infoValue(forKey: "WPProductTwitterHandle")
-        productTwitterURL = URL(string: bundle.infoValue(forKey: "WPProductTwitterURL"))!
+        about = ProductAboutDetails(
+            twitterHandle: bundle.infoValue(forKey: "WPProductTwitterHandle"),
+            twitterURL: URL(string: bundle.infoValue(forKey: "WPProductTwitterURL"))!,
+            blogURL: URL(string: bundle.infoValue(forKey: "WPProductBlogURL"))!
+        )
     }
 }
 

@@ -24,6 +24,8 @@
 	<string>@jetpack</string>
 	<key>WPProductTwitterURL</key>
 	<string>https://twitter.com/jetpack</string>
+	<key>WPProductBlogURL</key>
+	<string>https://jetpack.com/blog</string>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>org.wordpress.bgtask.weeklyroundup</string>

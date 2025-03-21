@@ -45,7 +45,7 @@ class AppAboutScreenConfiguration: AboutScreenConfiguration {
                     self?.tracker.buttonPressed(.share)
                     self?.sharePresenter.present(for: AppConstants.shareAppName, in: context.viewController, source: .about, sourceView: context.sourceView)
                 }),
-                AboutItem(title: TextContent.twitter, subtitle: BuildSettings.current.productTwitterHandle, cellStyle: .value1, action: { [weak self] context in
+                AboutItem(title: TextContent.twitter, subtitle: BuildSettings.current.about.twitterHandle, cellStyle: .value1, action: { [weak self] context in
                     self?.tracker.buttonPressed(.twitter)
                     self?.webViewPresenter.presentInNavigationControlller(url: Links.twitter, context: context)
                 }),
@@ -103,8 +103,8 @@ class AppAboutScreenConfiguration: AboutScreenConfiguration {
     }
 
     private enum Links {
-        static let twitter = BuildSettings.current.productTwitterURL
-        static let blog = URL(string: AppConstants.productBlogURL)!
+        static let twitter = BuildSettings.current.about.twitterURL
+        static let blog = BuildSettings.current.about.blogURL
         static let workWithUs = URL(string: Strings.current.workWithUsURL)!
         static let automattic = URL(string: "https://automattic.com")!
     }

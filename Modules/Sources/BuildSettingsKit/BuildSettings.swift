@@ -21,8 +21,13 @@ public struct BuildSettings: Sendable {
     public var explatPlatform: String
     public var itunesAppID: String
     public var appURLScheme: String
-    public var productTwitterHandle: String
-    public var productTwitterURL: URL
+    public var about: ProductAboutDetails
+
+    public struct ProductAboutDetails: Sendable {
+        public var twitterHandle: String
+        public var twitterURL: URL
+        public var blogURL: URL
+    }
 
     public static var current: BuildSettings {
         switch BuildSettingsEnvironment.current {

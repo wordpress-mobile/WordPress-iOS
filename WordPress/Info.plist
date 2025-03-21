@@ -24,6 +24,8 @@
 	<string>@WordPressiOS</string>
 	<key>WPProductTwitterURL</key>
 	<string>https://twitter.com/WordPressiOS</string>
+	<key>WPProductBlogURL</key>
+	<string>https://wordpress.org/news/</string>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>org.wordpress.bgtask.weeklyroundup</string>
