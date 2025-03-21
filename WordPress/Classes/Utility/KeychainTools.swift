@@ -43,7 +43,7 @@ final class KeychainTools: NSObject {
     static fileprivate func serviceForItem(_ item: String) -> String? {
         switch item {
         case "wordpress.com":
-            return AppConstants.authKeychainServiceName
+            return BuildSettings.current.authKeychainServiceName
         case "*", "all":
             return nil
         default:

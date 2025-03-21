@@ -30,6 +30,8 @@
 	<string>mobile_-_ios</string>
 	<key>WPMobileAnnounceAppID</key>
 	<string>2</string>
+	<key>WPAuthKeychainServiceName</key>
+	<string>public-api.wordpress.com</string>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>org.wordpress.bgtask.weeklyroundup</string>

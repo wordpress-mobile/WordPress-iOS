@@ -155,9 +155,4 @@
     });
 }
 
-+ (NSString *)authKeychainServiceName
-{
-    return [AppConstants authKeychainServiceName];
-}
-
 @end

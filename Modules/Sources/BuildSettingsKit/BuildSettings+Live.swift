@@ -20,6 +20,7 @@ extension BuildSettings {
         )
         zendeskSourcePlatform = bundle.infoValue(forKey: "WPZendeskSourcePlatform")
         mobileAnnounceAppID = bundle.infoValue(forKey: "WPMobileAnnounceAppID")
+        authKeychainServiceName = bundle.infoValue(forKey: "WPAuthKeychainServiceName")
     }
 }
 

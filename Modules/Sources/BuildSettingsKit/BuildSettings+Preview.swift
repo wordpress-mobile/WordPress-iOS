@@ -18,7 +18,8 @@ extension BuildSettings {
             blogURL: URL(string: "www.example.com")!
         ),
         zendeskSourcePlatform: "zen",
-        mobileAnnounceAppID: "1234567890"
+        mobileAnnounceAppID: "1234567890",
+        authKeychainServiceName: "public-api.wordpress.com"
     )
 }
 

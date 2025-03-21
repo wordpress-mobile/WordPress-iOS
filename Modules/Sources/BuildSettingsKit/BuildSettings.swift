@@ -24,6 +24,7 @@ public struct BuildSettings: Sendable {
     public var about: ProductAboutDetails
     public var zendeskSourcePlatform: String
     public var mobileAnnounceAppID: String
+    public var authKeychainServiceName: String
 
     public struct ProductAboutDetails: Sendable {
         public var twitterHandle: String
