@@ -17,13 +17,6 @@ import WordPressKit
 
 // MARK: - Localized Strings
 extension AppConstants {
-
-    struct AboutScreen {
-        static let blogName = NSLocalizedString("News", comment: "Title of a button that displays the WordPress.org blog")
-        static let workWithUs = NSLocalizedString("Contribute", comment: "Title of button that displays the WordPress.org contributor page")
-        static let workWithUsURL = "https://make.wordpress.org/mobile/handbook"
-    }
-
     struct AppRatings {
         static let prompt = NSLocalizedString("appRatings.wordpress.prompt", value: "What do you think about WordPress?", comment: "This is the string we display when prompting the user to review the WordPress app")
     }

@@ -1,4 +1,5 @@
 import Foundation
+import BuildSettingsKit
 import WordPressUI
 import UIKit
 import WordPressShared
@@ -48,7 +49,7 @@ class AppAboutScreenConfiguration: AboutScreenConfiguration {
                     self?.tracker.buttonPressed(.twitter)
                     self?.webViewPresenter.presentInNavigationControlller(url: Links.twitter, context: context)
                 }),
-                AboutItem(title: AppConstants.AboutScreen.blogName, subtitle: AppConstants.productBlogDisplayURL, cellStyle: .value1, action: { [weak self] context in
+                AboutItem(title: Strings.current.blogName, subtitle: AppConstants.productBlogDisplayURL, cellStyle: .value1, action: { [weak self] context in
                     self?.tracker.buttonPressed(.blog)
                     self?.webViewPresenter.presentInNavigationControlller(url: Links.blog, context: context)
                 })
@@ -68,7 +69,7 @@ class AppAboutScreenConfiguration: AboutScreenConfiguration {
                 AboutItem(title: "", cellStyle: .appLogos, accessoryType: .none)
             ] : nil,
             [
-                AboutItem(title: AppConstants.AboutScreen.workWithUs, subtitle: TextContent.workWithUsSubtitle, cellStyle: .subtitle, accessoryType: .disclosureIndicator, action: { [weak self] context in
+                AboutItem(title: Strings.current.workWithUs, subtitle: TextContent.workWithUsSubtitle, cellStyle: .subtitle, accessoryType: .disclosureIndicator, action: { [weak self] context in
                     self?.tracker.buttonPressed(.workWithUs)
                     self?.webViewPresenter.presentInNavigationControlller(url: Links.workWithUs, context: context)
                 }),
@@ -104,7 +105,7 @@ class AppAboutScreenConfiguration: AboutScreenConfiguration {
     private enum Links {
         static let twitter = URL(string: AppConstants.productTwitterURL)!
         static let blog = URL(string: AppConstants.productBlogURL)!
-        static let workWithUs = URL(string: AppConstants.AboutScreen.workWithUsURL)!
+        static let workWithUs = URL(string: Strings.current.workWithUsURL)!
         static let automattic = URL(string: "https://automattic.com")!
     }
 }
@@ -165,4 +166,29 @@ class LegalAndMoreSubmenuConfiguration: AboutScreenConfiguration {
         static let privacyPolicy = URL(string: WPAutomatticPrivacyURL)!
         static let sourceCode = URL(string: WPGithubMainURL)!
     }
+}
+
+private struct Strings {
+    var blogName: String
+    var workWithUs: String
+    var workWithUsURL: String
+
+    static var current: Strings {
+        switch BuildSettings.current.brand {
+        case .wordpress: .wordpress
+        case .jetpack: .jetpack
+        }
+    }
+
+    static let wordpress = Strings(
+        blogName: NSLocalizedString("News", comment: "Title of a button that displays the WordPress.org blog"),
+        workWithUs: NSLocalizedString("Contribute", comment: "Title of button that displays the WordPress.org contributor page"),
+        workWithUsURL: "https://make.wordpress.org/mobile/handbook"
+    )
+
+    static let jetpack = Strings(
+        blogName: NSLocalizedString("Blog", comment: "Title of a button that displays the WordPress.com blog"),
+        workWithUs: NSLocalizedString("Work With Us", comment: "Title of button that displays the Automattic Work With Us web page"),
+        workWithUsURL: "https://automattic.com/work-with-us"
+    )
 }
