@@ -63,7 +63,7 @@ class Notification: NSManagedObject {
     ///
     fileprivate var cachedTimestampAsDate: Date?
 
-    let formatter = FormattableContentFormatter()
+    private let formatter = FormattableContentFormatter()
 
     /// Subject Blocks Transient Storage.
     ///
