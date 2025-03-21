@@ -1268,7 +1268,6 @@
 		FA4ADADA1C509FE400F858D7 /* SiteManagementServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */; };
 		FA6C32C02BF255FA00BBDDB4 /* AppUpdateCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6C32BF2BF255FA00BBDDB4 /* AppUpdateCoordinatorTests.swift */; };
 		FA6C32C72BF2588C00BBDDB4 /* app-store-lookup-response.json in Resources */ = {isa = PBXBuildFile; fileRef = FA6C32C62BF2588C00BBDDB4 /* app-store-lookup-response.json */; };
-		FAADE42626159AFE00BF29FE /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAADE3F02615996E00BF29FE /* AppConstants.swift */; };
 		FAB4F32724EDE12A00F259BA /* FollowCommentsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB4F32624EDE12A00F259BA /* FollowCommentsServiceTests.swift */; };
 		FABB1FC12602FC2C00C8785C /* defaultPostTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */; };
 		FABB1FC32602FC2C00C8785C /* defaultPostTemplate_old.html in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97040E33B21600CA8540 /* defaultPostTemplate_old.html */; };
@@ -2922,7 +2921,6 @@
 		FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteManagementServiceTests.swift; sourceTree = "<group>"; };
 		FA6C32BF2BF255FA00BBDDB4 /* AppUpdateCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUpdateCoordinatorTests.swift; sourceTree = "<group>"; };
 		FA6C32C62BF2588C00BBDDB4 /* app-store-lookup-response.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "app-store-lookup-response.json"; sourceTree = "<group>"; };
-		FAADE3F02615996E00BF29FE /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		FAB4F32624EDE12A00F259BA /* FollowCommentsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowCommentsServiceTests.swift; sourceTree = "<group>"; };
 		FABB26522602FC2C00C8785C /* Jetpack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Jetpack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FABB26872602FCCA00C8785C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -3010,7 +3008,6 @@
 		24CE68B52CD3375300C7B37D /* Exceptions for "Classes" folder in "Jetpack" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				"Utility/App Configuration/AppConstants.swift",
 				"Utility/App Configuration/AppDependency.swift",
 			);
 			target = FABB1F8F2602FC2C00C8785C /* Jetpack */;
@@ -6449,7 +6446,6 @@
 		FA25FB8C2609B9CB0005E08F /* App Configuration */ = {
 			isa = PBXGroup;
 			children = (
-				FAADE3F02615996E00BF29FE /* AppConstants.swift */,
 				C7F7BDBC26262A1B00CE547F /* AppDependency.swift */,
 			);
 			name = "App Configuration";
@@ -8861,7 +8857,6 @@
 				F4D829642930EA4C00038726 /* MigrationDeleteWordPressViewModel.swift in Sources */,
 				3FF717FF291F07AB00323614 /* MigrationCenterViewConfiguration.swift in Sources */,
 				3FFDEF882918596B00B625CE /* MigrationDoneViewModel.swift in Sources */,
-				FAADE42626159AFE00BF29FE /* AppConstants.swift in Sources */,
 				3FF15A56291B4EEA00E1B4E5 /* MigrationCenterView.swift in Sources */,
 				F49B9A08293A21F4000CEFCE /* MigrationEvent.swift in Sources */,
 				F4D82972293109A600038726 /* DashboardMigrationSuccessCell+Jetpack.swift in Sources */,

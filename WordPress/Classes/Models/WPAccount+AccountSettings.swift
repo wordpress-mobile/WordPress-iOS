@@ -35,7 +35,7 @@ extension WPAccount {
         return verificationStatus == .unverified
     }
 
-    @objc var authKeychainServiceName: String {
+    @objc class var authKeychainServiceName: String {
         BuildSettings.current.authKeychainServiceName
     }
 }
