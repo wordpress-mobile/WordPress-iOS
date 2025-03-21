@@ -18,6 +18,7 @@ typedef void(^OCMockInvocationBlock)(NSInvocation* invocation);
 
     WPAnalyticsTesting.eventNamePrefix = @"xctest";
     WPAnalyticsTesting.explatPlatform = @"xctest";
+    WPAnalyticsTesting.appURLScheme = @"xctest";
 }
 
 - (void)tearDown {
@@ -25,6 +26,7 @@ typedef void(^OCMockInvocationBlock)(NSInvocation* invocation);
 
     WPAnalyticsTesting.eventNamePrefix = nil;
     WPAnalyticsTesting.explatPlatform = nil;
+    WPAnalyticsTesting.appURLScheme = nil;
 
     [WPAnalytics clearTrackers];
 }

@@ -66,4 +66,5 @@ enum DomainsAnalyticsWebViewOrigin: String {
 @objc final class WPAnalyticsTesting: NSObject {
     @objc static var eventNamePrefix: String?
     @objc static var explatPlatform: String?
+    @objc static var appURLScheme: String?
 }
