@@ -27,8 +27,10 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         guard let window else {
             fatalError("The App cannot run without a window.")
         }
-
-        return AppDependency.windowManager(window: window)
+        return switch BuildSettings.current.brand {
+        case .wordpress: WindowManager(window: window)
+        case .jetpack: JetpackWindowManager(window: window)
+        }
     }()
 
     var analytics: WPAppAnalytics?
@@ -422,7 +424,12 @@ extension WordPressAppDelegate {
     }
 
     @objc func configureWordPressAuthenticator() {
-        let authManager = AppDependency.authenticationManager(windowManager: windowManager)
+        let isJetpack = BuildSettings.current.brand == .jetpack
+        let authManager = WordPressAuthenticationManager(
+            windowManager: windowManager,
+            authenticationHandler: isJetpack ? JetpackAuthenticationManager() : nil,
+            remoteFeaturesStore: RemoteFeatureFlagStore()
+        )
 
         authManager.initializeWordPressAuthenticator()
         authManager.startRelayingSupportNotifications()
