@@ -1118,7 +1118,7 @@ private extension ZendeskUtils {
         static let profileNameKey = "name"
         static let userDefaultsZendeskUnreadNotifications = "wp_zendesk_unread_notifications"
         static let nameFieldCharacterLimit = 50
-        static let sourcePlatform = AppConstants.zendeskSourcePlatform
+        static var sourcePlatform = BuildSettings.current.zendeskSourcePlatform
         static let gutenbergIsDefault = "mobile_gutenberg_is_default"
         static let mobileSelfHosted = "selected_site_self_hosted"
 

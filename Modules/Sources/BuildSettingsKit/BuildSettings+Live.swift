@@ -18,6 +18,7 @@ extension BuildSettings {
             twitterURL: URL(string: bundle.infoValue(forKey: "WPProductTwitterURL"))!,
             blogURL: URL(string: bundle.infoValue(forKey: "WPProductBlogURL"))!
         )
+        zendeskSourcePlatform = bundle.infoValue(forKey: "WPZendeskSourcePlatform")
     }
 }
 

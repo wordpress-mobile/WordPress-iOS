@@ -22,6 +22,7 @@ public struct BuildSettings: Sendable {
     public var itunesAppID: String
     public var appURLScheme: String
     public var about: ProductAboutDetails
+    public var zendeskSourcePlatform: String
 
     public struct ProductAboutDetails: Sendable {
         public var twitterHandle: String

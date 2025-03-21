@@ -16,7 +16,8 @@ extension BuildSettings {
             twitterHandle: "@wordpress",
             twitterURL: URL(string: "www.example.com")!,
             blogURL: URL(string: "www.example.com")!
-        )
+        ),
+        zendeskSourcePlatform: "zen"
     )
 }
 
