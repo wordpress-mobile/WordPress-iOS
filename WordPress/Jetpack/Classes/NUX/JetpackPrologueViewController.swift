@@ -1,5 +1,6 @@
 import UIKit
 import CoreMotion
+import WordPressUI
 
 class JetpackPrologueViewController: UIViewController {
     @IBOutlet weak var stackView: UIStackView!
@@ -12,7 +13,7 @@ class JetpackPrologueViewController: UIViewController {
     }()
 
     private lazy var jetpackAnimatedView: UIView = {
-        let jetpackAnimatedView = InfiniteScrollerView { JetpackLandingScreenView() }
+        let jetpackAnimatedView = InfiniteScrollView { JetpackLandingScreenView() }
         jetpackAnimatedView.scrollerDelegate = self
         jetpackAnimatedView.translatesAutoresizingMaskIntoConstraints = false
         return jetpackAnimatedView
@@ -145,7 +146,7 @@ class JetpackPrologueViewController: UIViewController {
     }
 }
 
-extension JetpackPrologueViewController: InfiniteScrollerViewDelegate {
+extension JetpackPrologueViewController: InfiniteScrollViewDelegate {
     /// Provides rate in points per second for a given angle in degrees.
     ///
     /// - Returns: Points per second.
@@ -185,7 +186,7 @@ extension JetpackPrologueViewController: InfiniteScrollerViewDelegate {
         return angleRad * 180 / .pi
     }
 
-    func rate(for infiniteScrollerView: InfiniteScrollerView) -> CGFloat {
+    func rate(for infiniteScrollView: InfiniteScrollView) -> CGFloat {
         let deviceAngle = angleForDeviceOrientation() ?? Self.Constants.defaultAngleDegrees
         return rateForAngle(angle: deviceAngle)
     }
