@@ -1,4 +1,5 @@
 import Foundation
+import BuildSettingsKit
 import WordPressAuthenticator
 import WordPressKit
 import WordPressShared
@@ -1107,7 +1108,6 @@ private extension ZendeskUtils {
         static let unknownValue = "unknown"
         static let noValue = "none"
         static let platformTag = "iOS"
-        static let ticketSubject = AppConstants.Zendesk.ticketSubject
         static let blogSeperator = "\n----------\n"
         static let jetpackTag = "jetpack"
         static let wpComTag = "wpcom"
@@ -1121,6 +1121,15 @@ private extension ZendeskUtils {
         static let sourcePlatform = AppConstants.zendeskSourcePlatform
         static let gutenbergIsDefault = "mobile_gutenberg_is_default"
         static let mobileSelfHosted = "selected_site_self_hosted"
+
+        static var ticketSubject: String {
+            switch BuildSettings.current.brand {
+            case .wordpress:
+                NSLocalizedString("WordPress for iOS Support", comment: "Subject of new Zendesk ticket.")
+            case .jetpack:
+                NSLocalizedString("Jetpack for iOS Support", comment: "Subject of new Zendesk ticket.")
+            }
+        }
     }
 
     enum TicketFieldIDs {

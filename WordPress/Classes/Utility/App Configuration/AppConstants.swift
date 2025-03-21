@@ -14,14 +14,3 @@ import WordPressKit
     static let mobileAnnounceAppId = "2"
     @objc static let authKeychainServiceName = "public-api.wordpress.com"
 }
-
-// MARK: - Localized Strings
-extension AppConstants {
-    struct Logout {
-        static let alertTitle = NSLocalizedString("Log out of WordPress?", comment: "LogOut confirmation text, whenever there are no local changes")
-    }
-
-    struct Zendesk {
-        static let ticketSubject = NSLocalizedString("WordPress for iOS Support", comment: "Subject of new Zendesk ticket.")
-    }
-}

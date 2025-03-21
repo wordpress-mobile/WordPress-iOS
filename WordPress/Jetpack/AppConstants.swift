@@ -14,14 +14,3 @@ import WordPressKit
     static let mobileAnnounceAppId = "6"
     @objc static let authKeychainServiceName = "jetpack.public-api.wordpress.com"
 }
-
-// MARK: - Localized Strings
-extension AppConstants {
-    struct Logout {
-        static let alertTitle = NSLocalizedString("Log out of Jetpack?", comment: "LogOut confirmation text, whenever there are no local changes")
-    }
-
-    struct Zendesk {
-        static let ticketSubject = NSLocalizedString("Jetpack for iOS Support", comment: "Subject of new Zendesk ticket.")
-    }
-}
