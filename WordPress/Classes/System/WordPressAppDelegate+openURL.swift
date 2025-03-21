@@ -1,5 +1,6 @@
 import WordPressAuthenticator
 import AutomatticTracks
+import BuildSettingsKit
 
 @objc extension WordPressAppDelegate {
     internal func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
@@ -29,7 +30,7 @@ import AutomatticTracks
             return JetpackNotificationMigrationService.shared.handleNotificationMigrationOnWordPress()
         }
 
-        guard url.scheme == WPComScheme else {
+        guard url.scheme == BuildSettings.current.appURLScheme else {
             return false
         }
 
@@ -228,5 +229,11 @@ private extension URL {
                 return nil
         }
         return queryItems
+    }
+}
+
+extension WordPressAppDelegate {
+    @objc class var appURLScheme: String {
+        BuildSettings.current.appURLScheme
     }
 }

@@ -65,7 +65,7 @@ extension WordPressAuthenticationManager {
         return WordPressAuthenticatorConfiguration(
             wpcomClientId: ApiCredentials.client,
             wpcomSecret: ApiCredentials.secret,
-            wpcomScheme: WPComScheme,
+            wpcomScheme: BuildSettings.current.appURLScheme,
             wpcomTermsOfServiceURL: URL(string: WPAutomatticTermsOfServiceURL)!,
             wpcomBaseURL: WordPressComOAuthClient.WordPressComOAuthDefaultBaseURL,
             wpcomAPIBaseURL: AppEnvironment.current.wordPressComApiBase,

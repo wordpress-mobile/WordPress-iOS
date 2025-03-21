@@ -23,7 +23,3 @@ extern NSString *const WPAppleIDKeychainServiceName;
 /// iTunes Constants
 ///
 extern NSString *const WPiTunesAppId;
-
-/// Scheme Constants
-///
-extern NSString *const WPComScheme;
