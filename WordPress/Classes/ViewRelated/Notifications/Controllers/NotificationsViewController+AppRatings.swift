@@ -8,7 +8,7 @@ extension NotificationsViewController {
     static let contactURL = "https://support.wordpress.com/contact/"
 
     func setupAppRatings() {
-        inlinePromptView.setupHeading(Strings.ratingPrompt)
+        inlinePromptView.setupHeading(ratingPrompt)
         let yesTitle = NSLocalizedString("notifications.appRatings.prompt.yes.buttonTitle", value: "I like it",
                                          comment: "This is one of the buttons we display inside of the prompt to review the app")
         let noTitle = NSLocalizedString("notifications.appRatings.prompt.no.buttonTitle", value: "Could improve",
@@ -90,13 +90,11 @@ extension NotificationsViewController {
     }
 }
 
-private enum Strings {
-    static var ratingPrompt: String {
-        switch BuildSettings.current.brand {
-        case .wordpress:
-            NSLocalizedString("appRatings.wordpress.prompt", value: "What do you think about WordPress?", comment: "This is the string we display when prompting the user to review the WordPress app")
-        case .jetpack:
-            NSLocalizedString("appRatings.jetpack.prompt", value: "What do you think about Jetpack?", comment: "This is the string we display when prompting the user to review the Jetpack app")
-        }
+private var ratingPrompt: String {
+    switch BuildSettings.current.brand {
+    case .wordpress:
+        NSLocalizedString("appRatings.wordpress.prompt", value: "What do you think about WordPress?", comment: "This is the string we display when prompting the user to review the WordPress app")
+    case .jetpack:
+        NSLocalizedString("appRatings.jetpack.prompt", value: "What do you think about Jetpack?", comment: "This is the string we display when prompting the user to review the Jetpack app")
     }
 }

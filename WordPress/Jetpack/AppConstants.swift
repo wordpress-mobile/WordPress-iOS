@@ -18,7 +18,6 @@ import WordPressKit
 // MARK: - Localized Strings
 extension AppConstants {
     struct Settings {
-        static let aboutTitle = NSLocalizedString("About Jetpack for iOS", comment: "Link to About screen for Jetpack for iOS")
         static let whatIsNewTitle = NSLocalizedString("What's New in Jetpack", comment: "Opens the What's New / Feature Announcement modal")
     }
 

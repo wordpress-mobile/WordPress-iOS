@@ -18,7 +18,6 @@ import WordPressKit
 // MARK: - Localized Strings
 extension AppConstants {
     struct Settings {
-        static let aboutTitle: String = NSLocalizedString("About WordPress", comment: "Link to About screen for WordPress for iOS")
         static let whatIsNewTitle = NSLocalizedString("What's New in WordPress", comment: "Opens the What's New / Feature Announcement modal")
     }
 

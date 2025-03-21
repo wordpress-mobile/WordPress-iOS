@@ -1,4 +1,5 @@
 import UIKit
+import BuildSettingsKit
 import WordPressShared
 import AutomatticAbout
 
@@ -568,7 +569,14 @@ private extension MeViewController {
         static let support = NSLocalizedString("Help & Support", comment: "Link to Help section")
         static let logIn = NSLocalizedString("Log In", comment: "Label for logging in to WordPress.com account")
         static let logOut = NSLocalizedString("Log Out", comment: "Label for logging out from WordPress.com account")
-        static let about = AppConstants.Settings.aboutTitle
+        static var about: String {
+            switch BuildSettings.current.brand {
+            case .wordpress:
+                NSLocalizedString("About WordPress", comment: "Link to About screen for WordPress for iOS")
+            case .jetpack:
+                NSLocalizedString("About Jetpack for iOS", comment: "Link to About screen for Jetpack for iOS")
+            }
+        }
     }
 
     enum HeaderTitles {
