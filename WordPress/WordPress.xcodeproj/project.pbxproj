@@ -2987,19 +2987,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		24CE68AE2CD3375300C7B37D /* Exceptions for "Classes" folder in "WordPress" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				"ViewRelated/Me/All Domains/Coordinators/AllDomainsAddDomainCoordinator.swift",
-				"ViewRelated/Me/All Domains/View Models/AllDomainsListViewModel.swift",
-				"ViewRelated/Me/All Domains/View Models/AllDomainsListViewModel+Strings.swift",
-				"ViewRelated/Me/All Domains/Views/AllDomainsListActivityIndicatorTableViewCell.swift",
-				"ViewRelated/Me/All Domains/Views/AllDomainsListEmptyView.swift",
-				"ViewRelated/Me/All Domains/Views/AllDomainsListTableViewCell.swift",
-				"ViewRelated/Me/All Domains/Views/AllDomainsListViewController.swift",
-			);
-			target = 1D6058900D05DD3D006BFB54 /* WordPress */;
-		};
 		24CE68B42CD3375300C7B37D /* Exceptions for "Classes" folder in "WordPressUITests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -3033,7 +3020,6 @@
 		24CE57C42CD3375200C7B37D /* Classes */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				24CE68AE2CD3375300C7B37D /* Exceptions for "Classes" folder in "WordPress" target */,
 				24CE68B42CD3375300C7B37D /* Exceptions for "Classes" folder in "WordPressUITests" target */,
 				24CE68B52CD3375300C7B37D /* Exceptions for "Classes" folder in "Jetpack" target */,
 				24CE68BB2CD3375300C7B37D /* Exceptions for "Classes" folder in "JetpackUITests" target */,

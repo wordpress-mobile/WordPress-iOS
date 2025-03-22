@@ -1,4 +1,5 @@
 import UIKit
+import BuildSettingsKit
 import WordPressShared
 import AutomatticAbout
 
@@ -191,8 +192,7 @@ class MeViewController: UITableViewController {
             ImmuTableSection(rows: [helpAndSupportIndicator]),
         ])
 
-#if IS_JETPACK
-        if RemoteFeatureFlag.domainManagement.enabled() && loggedIn && !isSidebarModeEnabled {
+        if BuildSettings.current.brand == .jetpack, RemoteFeatureFlag.domainManagement.enabled() && loggedIn && !isSidebarModeEnabled {
             sections.append(.init(rows: [
                 NavigationItemRow(
                     title: AllDomainsListViewController.Strings.title,
@@ -208,7 +208,6 @@ class MeViewController: UITableViewController {
             ])
             )
         }
-#endif
 
         sections.append(
             ImmuTableSection(rows: [
@@ -363,9 +362,7 @@ class MeViewController: UITableViewController {
     /// Selects the All Domains row and pushes the All Domains view controller
     ///
     public func navigateToAllDomains() {
-    #if IS_JETPACK
         navigateToTarget(for: AllDomainsListViewController.Strings.title)
-    #endif
     }
 
     /// Selects the App Settings row and pushes the App Settings view controller
