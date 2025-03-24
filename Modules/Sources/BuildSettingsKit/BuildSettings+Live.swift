@@ -15,8 +15,8 @@ extension BuildSettings {
         appURLScheme = bundle.infoValue(forKey: "WPAppURLScheme")
         about = ProductAboutDetails(
             twitterHandle: bundle.infoValue(forKey: "WPProductTwitterHandle"),
-            twitterURL: URL(string: bundle.infoValue(forKey: "WPProductTwitterURL"))!,
-            blogURL: URL(string: bundle.infoValue(forKey: "WPProductBlogURL"))!
+            twitterURL: bundle.urlValue(forKey: "WPProductTwitterURL"),
+            blogURL: bundle.urlValue(forKey: "WPProductBlogURL")
         )
         zendeskSourcePlatform = bundle.infoValue(forKey: "WPZendeskSourcePlatform")
         mobileAnnounceAppID = bundle.infoValue(forKey: "WPMobileAnnounceAppID")
@@ -38,6 +38,11 @@ private extension Bundle {
         default:
             fatalError("unexpected value: \(object) for key: \(key)")
         }
+    }
+
+    func urlValue(forKey key: String) -> URL {
+        let urlWithoutScheme: String = infoValue(forKey: key)
+        return URL(string: "https://\(urlWithoutScheme)")!
     }
 }
 
