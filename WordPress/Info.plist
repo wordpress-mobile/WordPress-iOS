@@ -23,9 +23,9 @@
 	<key>WPProductTwitterHandle</key>
 	<string>@WordPressiOS</string>
 	<key>WPProductTwitterURL</key>
-	<string>https://twitter.com/WordPressiOS</string>
+	<string>twitter.com/WordPressiOS</string>
 	<key>WPProductBlogURL</key>
-	<string>https://wordpress.org/news/</string>
+	<string>wordpress.org/news/</string>
 	<key>WPZendeskSourcePlatform</key>
 	<string>mobile_-_ios</string>
 	<key>WPMobileAnnounceAppID</key>
