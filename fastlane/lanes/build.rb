@@ -262,7 +262,7 @@ platform :ios do
     update_certs_and_profiles_wordpress_enterprise
 
     build_and_upload_prototype_build(
-      scheme: 'WordPress Alpha',
+      scheme: 'WordPress',
       output_app_name: 'WordPress Alpha',
       appcenter_app_name: 'WPiOS-One-Offs',
       app_icon: ':wordpress:', # Use Buildkite emoji
