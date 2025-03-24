@@ -21,6 +21,7 @@ public struct BuildSettings: Sendable {
     public var explatPlatform: String
     public var itunesAppID: String
     public var appURLScheme: String
+    public var jetpackAppURLScheme: String
     public var about: ProductAboutDetails
     public var zendeskSourcePlatform: String
     public var mobileAnnounceAppID: String

@@ -261,6 +261,9 @@ open class DeleteSiteViewController: UITableViewController {
 
             // Pop the primary navigation controller back to the sites list
             primaryNavigationController.popToRootViewController(animated: true)
+        } else if let presentingViewController {
+            // This view is presented as a modal on iPad.
+            presentingViewController.dismiss(animated: true)
         }
     }
 

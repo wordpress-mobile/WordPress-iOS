@@ -12,6 +12,7 @@ extension BuildSettings {
         explatPlatform: "xcpreview",
         itunesAppID: "1234567890",
         appURLScheme: "xcpreview",
+        jetpackAppURLScheme: "jetpack",
         about: ProductAboutDetails(
             twitterHandle: "@wordpress",
             twitterURL: URL(string: "www.example.com")!,

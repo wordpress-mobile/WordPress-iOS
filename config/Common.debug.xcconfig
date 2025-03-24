@@ -1,3 +1,4 @@
 #include "Common.xcconfig"
 
 CODE_SIGN_IDENTITY=Apple Development: Created via API (886NX39KP6)
+WP_JETPACK_APP_URL_SCHEME = jpdebug
