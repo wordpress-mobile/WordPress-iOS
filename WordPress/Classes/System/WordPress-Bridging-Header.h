@@ -67,9 +67,7 @@
 
 #import "WPAccount.h"
 #import "WPActivityDefaults.h"
-#import "WPAnalyticsTrackerWPCom.h"
 #import "WPAppAnalytics.h"
-#import "WPAnalyticsTrackerAutomatticTracks.h"
 #import "WPAuthTokenIssueSolver.h"
 #import "WPUploadStatusButton.h"
 #import "WPError.h"
@@ -77,6 +75,5 @@
 #import "WPWebViewController.h"
 #import "WPTabBarController.h"
 #import "WPLogger.h"
-#import "WPException.h"
 
 FOUNDATION_EXTERN void SetCocoaLumberjackObjCLogLevel(NSUInteger ddLogLevelRawValue);
