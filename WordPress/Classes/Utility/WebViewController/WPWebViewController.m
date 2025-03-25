@@ -3,7 +3,6 @@
 #import "WPActivityDefaults.h"
 #import "Constants.h"
 #import "WPError.h"
-#import "WPStyleGuide+WebView.h"
 #import "WordPress-Swift.h"
 
 @import Gridicons;

@@ -3,9 +3,6 @@
 //
 
 #ifdef __OBJC__
-	// Core Frameworks
-	#import <UIKit/UIKit.h>
-
 	// 3rd Party    
     @import CocoaLumberjack;
 
