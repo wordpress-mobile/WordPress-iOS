@@ -1718,6 +1718,7 @@
 		0C896DE62A3A832B00D7D4E7 /* SiteVisibilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteVisibilityTests.swift; sourceTree = "<group>"; };
 		0C8FC9A92A8C57000059DCE4 /* ItemProviderMediaExporterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemProviderMediaExporterTests.swift; sourceTree = "<group>"; };
 		0C8FC9AB2A8C57930059DCE4 /* test-webp.webp */ = {isa = PBXFileReference; lastKnownFileType = file; path = "test-webp.webp"; sourceTree = "<group>"; };
+		0C96AC202D92FC17000779B8 /* Common.release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Common.release.xcconfig; sourceTree = "<group>"; };
 		0C9CD79C2B9A6ABF0045BE03 /* PostRepositorySaveTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostRepositorySaveTests.swift; sourceTree = "<group>"; };
 		0C9CD79F2B9A6FDC0045BE03 /* remote-post.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "remote-post.json"; sourceTree = "<group>"; };
 		0CA15B4D2BB2128800518D6E /* PostCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCoordinatorTests.swift; sourceTree = "<group>"; };
@@ -5654,6 +5655,7 @@
 			isa = PBXGroup;
 			children = (
 				98FB6E9F23074CE5002DDC8D /* Common.xcconfig */,
+				0C96AC202D92FC17000779B8 /* Common.release.xcconfig */,
 				3F9DD3F72CC2188400DF1760 /* Common.alpha.xcconfig */,
 				3F9DD3F62CC214BF00DF1760 /* Common.debug.xcconfig */,
 				F14B5F74208E64F900439554 /* Version.public.xcconfig */,
