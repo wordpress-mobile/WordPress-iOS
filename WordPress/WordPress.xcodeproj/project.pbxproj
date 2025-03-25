@@ -7,17 +7,6 @@
 	objects = {
 
 /* Begin PBXAggregateTarget section */
-		096A92F526E29FFF00448C68 /* GenerateCredentials */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = 096A92FA26E2A00000448C68 /* Build configuration list for PBXAggregateTarget "GenerateCredentials" */;
-			buildPhases = (
-				096A92FB26E2A05400448C68 /* Generate Secrets / Credentials */,
-			);
-			dependencies = (
-			);
-			name = GenerateCredentials;
-			productName = GenerateCredentials;
-		};
 		3F47AC482A7206BE00208F0D /* ConfigureSimulatorForUITesting */ = {
 			isa = PBXAggregateTarget;
 			buildConfigurationList = 3F47AC4D2A7206C000208F0D /* Build configuration list for PBXAggregateTarget "ConfigureSimulatorForUITesting" */;
@@ -1314,13 +1303,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 0107E13828FE9DB200DE87DB;
 			remoteInfo = JetpackIntents;
-		};
-		096A92FC26E2A0AE00448C68 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 096A92F526E29FFF00448C68;
-			remoteInfo = GenerateCredentials;
 		};
 		3F47AC4F2A72074300208F0D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -6303,6 +6285,7 @@
 			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "WordPress" */;
 			buildPhases = (
 				09607CE7281C9CA6002D2E5A /* [Lint] Check AppLocalizedString usage */,
+				0C96F99E2D92E28E000779B8 /* Generate Credentials */,
 				825F0EBF1F7EBF7C00321528 /* App Icons: Add Version For Internal Releases */,
 				24E55D502CCC143F008D071D /* Build Acknowledgements Bundle */,
 				1D60588D0D05DD3D006BFB54 /* Resources */,
@@ -6316,7 +6299,6 @@
 			);
 			dependencies = (
 				3FCFFAFE2994A949002840C9 /* PBXTargetDependency */,
-				096A92FD26E2A0AE00448C68 /* PBXTargetDependency */,
 				932225B01C7CE50300443B02 /* PBXTargetDependency */,
 				7457667B202B558C00F42E40 /* PBXTargetDependency */,
 				7358E6BE210BD318002323EB /* PBXTargetDependency */,
@@ -6652,9 +6634,6 @@
 				LastUpgradeCheck = 1540;
 				ORGANIZATIONNAME = WordPress;
 				TargetAttributes = {
-					096A92F526E29FFF00448C68 = {
-						CreatedOnToolsVersion = 12.5;
-					};
 					1D6058900D05DD3D006BFB54 = {
 						DevelopmentTeam = PZYM8XX95Q;
 						LastSwiftMigration = 1000;
@@ -6810,7 +6789,6 @@
 				E16AB92914D978240047A2E5 /* WordPressTest */,
 				FF27168E1CAAC87A0006E2D4 /* WordPressUITests */,
 				8511CFB51C607A7000B7CEED /* WordPressScreenshotGeneration */,
-				096A92F526E29FFF00448C68 /* GenerateCredentials */,
 				A2795807198819DE0031C6A3 /* OCLint */,
 				FFA8E22A1F94E3DE0002170F /* SwiftLint */,
 				FABB1F8F2602FC2C00C8785C /* Jetpack */,
@@ -7411,9 +7389,8 @@
 			shellScript = "\"$SRCROOT/../Scripts/BuildPhases/LintAppLocalizedStringsUsage.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		096A92FB26E2A05400448C68 /* Generate Secrets / Credentials */ = {
+		0C96F99E2D92E28E000779B8 /* Generate Credentials */ = {
 			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -7422,7 +7399,7 @@
 			);
 			inputPaths = (
 			);
-			name = "Generate Secrets / Credentials";
+			name = "Generate Credentials";
 			outputFileListPaths = (
 			);
 			outputPaths = (
@@ -7431,7 +7408,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "$SRCROOT/../Scripts/BuildPhases/GenerateCredentials.sh\n";
-			showEnvVarsInLog = 0;
 		};
 		245562402C5C3C5D00A15446 /* Build Acknowledgements Bundle */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -8455,11 +8431,6 @@
 			target = 0107E13828FE9DB200DE87DB /* JetpackIntents */;
 			targetProxy = 0107E15628FEA03800DE87DB /* PBXContainerItemProxy */;
 		};
-		096A92FD26E2A0AE00448C68 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 096A92F526E29FFF00448C68 /* GenerateCredentials */;
-			targetProxy = 096A92FC26E2A0AE00448C68 /* PBXContainerItemProxy */;
-		};
 		3F47AC502A72074300208F0D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 3F47AC482A7206BE00208F0D /* ConfigureSimulatorForUITesting */;
@@ -8978,33 +8949,6 @@
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = "Release-Alpha";
-		};
-		096A92F626E2A00000448C68 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_STYLE = Automatic;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		096A92F726E2A00000448C68 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_STYLE = Automatic;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
-		096A92F926E2A00000448C68 /* Release-Alpha */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_STYLE = Automatic;
-				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = "Release-Alpha";
 		};
@@ -11426,16 +11370,6 @@
 				0107E15028FE9DB200DE87DB /* Debug */,
 				0107E15128FE9DB200DE87DB /* Release */,
 				0107E15328FE9DB200DE87DB /* Release-Alpha */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		096A92FA26E2A00000448C68 /* Build configuration list for PBXAggregateTarget "GenerateCredentials" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				096A92F626E2A00000448C68 /* Debug */,
-				096A92F726E2A00000448C68 /* Release */,
-				096A92F926E2A00000448C68 /* Release-Alpha */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
