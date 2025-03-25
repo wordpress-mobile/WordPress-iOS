@@ -10915,7 +10915,6 @@
 				CURRENT_PROJECT_VERSION = "${VERSION_LONG}";
 				DEFINES_MODULE = YES;
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREFIX_HEADER = WordPress_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -10935,7 +10934,6 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MARKETING_VERSION = "${VERSION_SHORT}";
 				OTHER_CFLAGS = (
 					"$(inherited)",
@@ -10980,7 +10978,6 @@
 				CURRENT_PROJECT_VERSION = "${VERSION_LONG}";
 				DEFINES_MODULE = YES;
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREFIX_HEADER = WordPress_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -10999,7 +10996,6 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MARKETING_VERSION = "${VERSION_SHORT}";
 				OTHER_CFLAGS = (
 					"$(inherited)",
@@ -11014,7 +11010,6 @@
 					"-l\"sqlite3.0\"",
 					"-l\"z\"",
 				);
-				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.jetpack;
 				PRODUCT_MODULE_NAME = WordPress;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -11042,7 +11037,6 @@
 				CURRENT_PROJECT_VERSION = "${VERSION_LONG}";
 				DEFINES_MODULE = YES;
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREFIX_HEADER = WordPress_Prefix.pch;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
@@ -11057,7 +11051,6 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MARKETING_VERSION = "${VERSION_SHORT}";
 				OTHER_CFLAGS = (
 					"$(inherited)",
