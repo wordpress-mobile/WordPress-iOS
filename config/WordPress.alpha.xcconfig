@@ -1,5 +1,4 @@
 #include "Version.public.xcconfig"
-#include "Common.alpha.xcconfig"
 
 WP_PUSH_NOTIFICATION_APP_ID = org.wordpress.alpha
 WP_BUILD_CONFIGURATION = alpha

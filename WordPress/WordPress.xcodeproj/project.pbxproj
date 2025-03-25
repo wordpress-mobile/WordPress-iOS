@@ -8706,6 +8706,7 @@
 /* Begin XCBuildConfiguration section */
 		0107E0E628F97D5000DE87DB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 24350E7C264DB76E009BB2B6 /* Jetpack.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
@@ -8752,6 +8753,7 @@
 		};
 		0107E0E728F97D5000DE87DB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 24351059264DC1E2009BB2B6 /* Jetpack.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
@@ -8793,6 +8795,7 @@
 		};
 		0107E0E928F97D5000DE87DB /* Release-Alpha */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2439B1DB264ECBDF00239130 /* Jetpack.alpha.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
@@ -8834,6 +8837,7 @@
 		};
 		0107E15028FE9DB200DE87DB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 24350E7C264DB76E009BB2B6 /* Jetpack.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -8878,6 +8882,7 @@
 		};
 		0107E15128FE9DB200DE87DB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 24351059264DC1E2009BB2B6 /* Jetpack.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -8917,6 +8922,7 @@
 		};
 		0107E15328FE9DB200DE87DB /* Release-Alpha */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2439B1DB264ECBDF00239130 /* Jetpack.alpha.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -8956,6 +8962,7 @@
 		};
 		1D6058940D05DD3E006BFB54 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F14B5F70208E648200439554 /* WordPress.debug.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -9019,6 +9026,7 @@
 		};
 		1D6058950D05DD3E006BFB54 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F14B5F71208E648200439554 /* WordPress.release.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -9372,6 +9380,7 @@
 		};
 		7358E6C0210BD318002323EB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F14B5F70208E648200439554 /* WordPress.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -9414,6 +9423,7 @@
 		};
 		7358E6C1210BD318002323EB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F14B5F71208E648200439554 /* WordPress.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -9452,6 +9462,7 @@
 		};
 		7358E6C3210BD318002323EB /* Release-Alpha */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F14B5F73208E648300439554 /* WordPress.alpha.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -9490,6 +9501,7 @@
 		};
 		7457667D202B558C00F42E40 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F14B5F70208E648200439554 /* WordPress.debug.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "extension-icon";
@@ -9538,6 +9550,7 @@
 		};
 		7457667E202B558C00F42E40 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F14B5F71208E648200439554 /* WordPress.release.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "extension-icon";
@@ -9582,6 +9595,7 @@
 		};
 		74576680202B558C00F42E40 /* Release-Alpha */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F14B5F73208E648300439554 /* WordPress.alpha.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "extension-icon";
@@ -9626,6 +9640,7 @@
 		};
 		8096211F28E540D700940A5D /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 24350E7C264DB76E009BB2B6 /* Jetpack.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APPLICATION_EXTENSION_API_ONLY = YES;
@@ -9690,6 +9705,7 @@
 		};
 		8096212028E540D700940A5D /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 24351059264DC1E2009BB2B6 /* Jetpack.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APPLICATION_EXTENSION_API_ONLY = YES;
@@ -9748,6 +9764,7 @@
 		};
 		8096212228E540D700940A5D /* Release-Alpha */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2439B1DB264ECBDF00239130 /* Jetpack.alpha.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APPLICATION_EXTENSION_API_ONLY = YES;
@@ -9806,6 +9823,7 @@
 		};
 		8096218128E55C9400940A5D /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 24350E7C264DB76E009BB2B6 /* Jetpack.debug.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "jp-extension-icon";
@@ -9855,6 +9873,7 @@
 		};
 		8096218228E55C9400940A5D /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 24351059264DC1E2009BB2B6 /* Jetpack.release.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "jp-extension-icon";
@@ -9899,6 +9918,7 @@
 		};
 		8096218428E55C9400940A5D /* Release-Alpha */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2439B1DB264ECBDF00239130 /* Jetpack.alpha.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "jp-extension-icon";
@@ -9943,6 +9963,7 @@
 		};
 		80F6D05028EE866A00953C1A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 24350E7C264DB76E009BB2B6 /* Jetpack.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -9986,6 +10007,7 @@
 		};
 		80F6D05128EE866A00953C1A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 24351059264DC1E2009BB2B6 /* Jetpack.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -10024,6 +10046,7 @@
 		};
 		80F6D05328EE866A00953C1A /* Release-Alpha */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2439B1DB264ECBDF00239130 /* Jetpack.alpha.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -10062,6 +10085,7 @@
 		};
 		8511CFBD1C607A7000B7CEED /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F14B5F70208E648200439554 /* WordPress.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -10112,6 +10136,7 @@
 		};
 		8511CFBE1C607A7000B7CEED /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F14B5F71208E648200439554 /* WordPress.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -10156,6 +10181,7 @@
 		};
 		8511CFC01C607A7000B7CEED /* Release-Alpha */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F14B5F73208E648300439554 /* WordPress.alpha.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APPLICATION_EXTENSION_API_ONLY = NO;
@@ -10200,7 +10226,7 @@
 		};
 		8546B4431BEAD39700193C07 /* Release-Alpha */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F14B5F73208E648300439554 /* WordPress.alpha.xcconfig */;
+			baseConfigurationReference = 3F9DD3F72CC2188400DF1760 /* Common.alpha.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -10257,6 +10283,7 @@
 		};
 		8546B4441BEAD39700193C07 /* Release-Alpha */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F14B5F73208E648300439554 /* WordPress.alpha.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -10313,6 +10340,7 @@
 		};
 		8546B4451BEAD39700193C07 /* Release-Alpha */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F14B5F73208E648300439554 /* WordPress.alpha.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
 				CLANG_ENABLE_MODULES = "$(inherited)";
@@ -10353,6 +10381,7 @@
 		};
 		932225B21C7CE50400443B02 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F14B5F70208E648200439554 /* WordPress.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APPLICATION_EXTENSION_API_ONLY = YES;
@@ -10417,6 +10446,7 @@
 		};
 		932225B31C7CE50400443B02 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F14B5F71208E648200439554 /* WordPress.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APPLICATION_EXTENSION_API_ONLY = YES;
@@ -10475,6 +10505,7 @@
 		};
 		932225B51C7CE50400443B02 /* Release-Alpha */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F14B5F73208E648300439554 /* WordPress.alpha.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APPLICATION_EXTENSION_API_ONLY = YES;
@@ -10551,7 +10582,7 @@
 		};
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F14B5F70208E648200439554 /* WordPress.debug.xcconfig */;
+			baseConfigurationReference = 3F9DD3F62CC214BF00DF1760 /* Common.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -10609,7 +10640,7 @@
 		};
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F14B5F71208E648200439554 /* WordPress.release.xcconfig */;
+			baseConfigurationReference = 0C96AC202D92FC17000779B8 /* Common.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -10666,6 +10697,7 @@
 		};
 		E16AB93914D978240047A2E5 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F14B5F70208E648200439554 /* WordPress.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
 				CLANG_ENABLE_MODULES = "$(inherited)";
@@ -10705,6 +10737,7 @@
 		};
 		E16AB93A14D978240047A2E5 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F14B5F71208E648200439554 /* WordPress.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
 				CLANG_ENABLE_MODULES = "$(inherited)";
@@ -10736,6 +10769,7 @@
 		};
 		EA14533E29AD874C001F3143 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 24350E7C264DB76E009BB2B6 /* Jetpack.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -10785,6 +10819,7 @@
 		};
 		EA14533F29AD874C001F3143 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 24351059264DC1E2009BB2B6 /* Jetpack.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -10828,6 +10863,7 @@
 		};
 		EA14534129AD874C001F3143 /* Release-Alpha */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2439B1DB264ECBDF00239130 /* Jetpack.alpha.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -11053,6 +11089,7 @@
 		};
 		FAF64B9E2637DEEC00E8A1DF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 24350E7C264DB76E009BB2B6 /* Jetpack.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -11104,6 +11141,7 @@
 		};
 		FAF64B9F2637DEEC00E8A1DF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 24351059264DC1E2009BB2B6 /* Jetpack.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -11149,6 +11187,7 @@
 		};
 		FAF64BA12637DEEC00E8A1DF /* Release-Alpha */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2439B1DB264ECBDF00239130 /* Jetpack.alpha.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APPLICATION_EXTENSION_API_ONLY = NO;
@@ -11194,6 +11233,7 @@
 		};
 		FF2716961CAAC87B0006E2D4 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F14B5F70208E648200439554 /* WordPress.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -11243,6 +11283,7 @@
 		};
 		FF2716971CAAC87B0006E2D4 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F14B5F71208E648200439554 /* WordPress.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -11286,6 +11327,7 @@
 		};
 		FF2716991CAAC87B0006E2D4 /* Release-Alpha */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F14B5F73208E648300439554 /* WordPress.alpha.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";

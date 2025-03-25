@@ -1,5 +1,4 @@
 #include "Version.public.xcconfig"
-#include "Common.release.xcconfig"
 
 WP_PUSH_NOTIFICATION_APP_ID = org.wordpress.appstore
 WP_BUILD_CONFIGURATION = release
