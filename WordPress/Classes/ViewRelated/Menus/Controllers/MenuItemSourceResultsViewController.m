@@ -205,12 +205,12 @@ static CGFloat const SearchBarHeight = 44.0;
 
 - (void)searchBarInputChangeDetectedForLocalResultsUpdateWithText:(NSString *)searchText
 {
-    NSAssert(NO, @"You must override %@ in a subclass", NSStringFromSelector(_cmd))();
+    NSAssert(NO, @"You must override %@ in a subclass", NSStringFromSelector(_cmd));
 }
 
 - (void)searchBarInputChangeDetectedForRemoteResultsUpdateWithText:(NSString *)searchText
 {
-    NSAssert(NO, @"You must override %@ in a subclass", NSStringFromSelector(_cmd))();
+    NSAssert(NO, @"You must override %@ in a subclass", NSStringFromSelector(_cmd));
 }
 
 - (void)showLoadingSourcesIndicatorIfEmpty
@@ -259,7 +259,7 @@ static CGFloat const SearchBarHeight = 44.0;
 
 - (NSString *)sourceItemType
 {
-    NSAssert(NO, @"You must override %@ in a subclass", NSStringFromSelector(_cmd))();
+    NSAssert(NO, @"You must override %@ in a subclass", NSStringFromSelector(_cmd));
     return nil;
 }
 
@@ -347,7 +347,7 @@ static CGFloat const SearchBarHeight = 44.0;
 
 - (void)configureSourceCell:(MenuItemSourceCell *)cell forIndexPath:(NSIndexPath *)indexPath
 {
-    NSAssert(NO, @"You must override %@ in a subclass", NSStringFromSelector(_cmd))();
+    NSAssert(NO, @"You must override %@ in a subclass", NSStringFromSelector(_cmd));
 }
 
 - (void)scrollingWillDisplayEndOfTableView:(UITableView *)tableView

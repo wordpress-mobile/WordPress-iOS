@@ -1,5 +1,4 @@
-#import <Foundation/Foundation.h>
-
+@import UIKit;
 
 typedef void (^UIAlertControllerCompletionBlock) (UIAlertController *alertController, NSInteger buttonIndex);
 

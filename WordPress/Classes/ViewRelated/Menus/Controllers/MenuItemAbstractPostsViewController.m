@@ -107,7 +107,7 @@
 
 - (Class)entityClass
 {
-    NSAssert(NO, @"You must override %@ in a subclass", NSStringFromSelector(_cmd))();
+    NSAssert(NO, @"You must override %@ in a subclass", NSStringFromSelector(_cmd));
     return nil;
 }
 

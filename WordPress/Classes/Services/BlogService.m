@@ -28,7 +28,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
                     success:(void (^)(void))success
                     failure:(void (^)(NSError *error))failure
 {
-    DDLogInfo("BlogService syncBlogsForAccount");
+    DDLogInfo(@"BlogService syncBlogsForAccount");
 
     id<AccountServiceRemote> remote = [self remoteForAccount:account];
     
